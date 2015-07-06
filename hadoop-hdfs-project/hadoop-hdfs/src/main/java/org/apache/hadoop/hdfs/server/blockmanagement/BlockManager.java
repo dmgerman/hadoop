@@ -28,22 +28,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_HA_NAMENODES_KEY_PREFIX
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|ExitUtil
@@ -1525,7 +1509,7 @@ specifier|private
 specifier|final
 name|Set
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|postponedMisreplicatedBlocks
 init|=
@@ -2047,12 +2031,8 @@ name|DFSConfigKeys
 operator|.
 name|NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY
 argument_list|)
-operator|==
+operator|!=
 literal|null
-condition|?
-literal|false
-else|:
-literal|true
 expr_stmt|;
 name|this
 operator|.
@@ -2676,15 +2656,13 @@ block|{
 return|return
 name|isBlockTokenEnabled
 argument_list|()
-condition|?
+operator|&&
 name|blockTokenSecretManager
 operator|.
 name|updateKeys
 argument_list|(
 name|updateTime
 argument_list|)
-else|:
-literal|false
 return|;
 block|}
 DECL|method|activate (Configuration conf)
@@ -2924,7 +2902,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|Block
+name|BlockInfo
 name|block
 range|:
 name|neededReplications
@@ -2949,7 +2927,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|Block
+name|BlockInfo
 name|block
 range|:
 name|postponedMisreplicatedBlocks
@@ -2990,12 +2968,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Dump the metadata for the given block in a human-readable    * form.    */
-DECL|method|dumpBlockMeta (Block block, PrintWriter out)
+DECL|method|dumpBlockMeta (BlockInfo block, PrintWriter out)
 specifier|private
 name|void
 name|dumpBlockMeta
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 name|PrintWriter
@@ -3010,9 +2988,7 @@ name|containingNodes
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|List
@@ -3049,8 +3025,8 @@ operator|.
 name|LEVEL
 argument_list|)
 expr_stmt|;
-comment|// containingLiveReplicasNodes can include READ_ONLY_SHARED replicas which are
-comment|// not included in the numReplicas.liveReplicas() count
+comment|// containingLiveReplicasNodes can include READ_ONLY_SHARED replicas which
+comment|// are not included in the numReplicas.liveReplicas() count
 assert|assert
 name|containingLiveReplicasNodes
 operator|.
@@ -3075,22 +3051,10 @@ operator|.
 name|decommissionedAndDecommissioning
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|block
-operator|instanceof
-name|BlockInfo
-condition|)
-block|{
 name|BlockCollection
 name|bc
 init|=
-operator|(
-operator|(
-name|BlockInfo
-operator|)
 name|block
-operator|)
 operator|.
 name|getBlockCollection
 argument_list|()
@@ -3120,7 +3084,6 @@ operator|+
 literal|": "
 argument_list|)
 expr_stmt|;
-block|}
 comment|// l: == live:, d: == decommissioned c: == corrupt e: == excess
 name|out
 operator|.
@@ -4137,10 +4100,9 @@ name|long
 name|curPos
 init|=
 literal|0
-decl_stmt|,
+decl_stmt|;
+name|long
 name|blkSize
-init|=
-literal|0
 decl_stmt|;
 name|int
 name|nrBlocks
@@ -6124,7 +6086,7 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    *     * @param b    * @param storageInfo storage that contains the block, if known. null otherwise.    * @throws IOException    */
+comment|/**    * Mark a replica (of a contiguous block) or an internal block (of a striped    * block group) as corrupt.    * @param b Indicating the reported bad block and the corresponding BlockInfo    *          stored in blocksMap.    * @param storageInfo storage that contains the block, if known. null otherwise.    */
 DECL|method|markBlockAsCorrupt (BlockToMarkCorrupt b, DatanodeStorageInfo storageInfo, DatanodeDescriptor node)
 specifier|private
 name|void
@@ -6220,7 +6182,7 @@ name|addToCorruptReplicasMap
 argument_list|(
 name|b
 operator|.
-name|corrupted
+name|stored
 argument_list|,
 name|node
 argument_list|,
@@ -6329,6 +6291,8 @@ argument_list|(
 name|b
 argument_list|,
 name|node
+argument_list|,
+name|numberOfReplicas
 argument_list|)
 expr_stmt|;
 block|}
@@ -6356,8 +6320,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Invalidates the given block on the given datanode.    * @return true if the block was successfully invalidated and no longer    * present in the BlocksMap    */
-DECL|method|invalidateBlock (BlockToMarkCorrupt b, DatanodeInfo dn )
+comment|/**    * Invalidates the given block on the given datanode. Note that before this    * call we have already checked the current live replicas of the block and    * make sure it's safe to invalidate the replica.    *    * @return true if the replica was successfully invalidated and no longer    *         associated with the DataNode.    */
+DECL|method|invalidateBlock (BlockToMarkCorrupt b, DatanodeInfo dn, NumberReplicas nr)
 specifier|private
 name|boolean
 name|invalidateBlock
@@ -6367,6 +6331,9 @@ name|b
 parameter_list|,
 name|DatanodeInfo
 name|dn
+parameter_list|,
+name|NumberReplicas
+name|nr
 parameter_list|)
 throws|throws
 name|IOException
@@ -6417,16 +6384,6 @@ argument_list|)
 throw|;
 block|}
 comment|// Check how many copies we have of the block
-name|NumberReplicas
-name|nr
-init|=
-name|countNodes
-argument_list|(
-name|b
-operator|.
-name|stored
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|nr
@@ -6461,25 +6418,18 @@ name|postponeBlock
 argument_list|(
 name|b
 operator|.
-name|corrupted
+name|stored
 argument_list|)
 expr_stmt|;
 return|return
 literal|false
 return|;
 block|}
-elseif|else
-if|if
-condition|(
-name|nr
-operator|.
-name|liveReplicas
-argument_list|()
-operator|>=
-literal|1
-condition|)
+else|else
 block|{
-comment|// If we have at least one copy on a live node, then we can delete it.
+comment|// we already checked the number of replicas in the caller of this
+comment|// function and we know there is at least one copy on a live node, so we
+comment|// can delete it.
 name|addToInvalidates
 argument_list|(
 name|b
@@ -6513,25 +6463,6 @@ return|return
 literal|true
 return|;
 block|}
-else|else
-block|{
-name|blockLog
-operator|.
-name|info
-argument_list|(
-literal|"BLOCK* invalidateBlocks: {} on {} is the only copy and"
-operator|+
-literal|" was not deleted"
-argument_list|,
-name|b
-argument_list|,
-name|dn
-argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
 block|}
 DECL|method|setPostponeBlocksFromFuture (boolean postpone)
 specifier|public
@@ -6549,12 +6480,12 @@ operator|=
 name|postpone
 expr_stmt|;
 block|}
-DECL|method|postponeBlock (Block blk)
+DECL|method|postponeBlock (BlockInfo blk)
 specifier|private
 name|void
 name|postponeBlock
 parameter_list|(
-name|Block
+name|BlockInfo
 name|blk
 parameter_list|)
 block|{
@@ -6792,8 +6723,6 @@ name|srcNode
 decl_stmt|;
 name|BlockCollection
 name|bc
-init|=
-literal|null
 decl_stmt|;
 name|int
 name|additionalReplRequired
@@ -7570,19 +7499,10 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|int
-name|k
-init|=
-literal|0
-init|;
-name|k
-operator|<
+name|DatanodeStorageInfo
+name|target
+range|:
 name|targets
-operator|.
-name|length
-condition|;
-name|k
-operator|++
 control|)
 block|{
 name|targetList
@@ -7596,10 +7516,7 @@ name|targetList
 operator|.
 name|append
 argument_list|(
-name|targets
-index|[
-name|k
-index|]
+name|target
 operator|.
 name|getDatanodeDescriptor
 argument_list|()
@@ -7975,20 +7892,10 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|String
+name|nodeStr
+range|:
 name|nodes
-operator|.
-name|size
-argument_list|()
-condition|;
-name|i
-operator|++
 control|)
 block|{
 name|DatanodeDescriptor
@@ -7998,12 +7905,7 @@ name|datanodeManager
 operator|.
 name|getDatanodeDescriptor
 argument_list|(
-name|nodes
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
+name|nodeStr
 argument_list|)
 decl_stmt|;
 if|if
@@ -8030,11 +7932,11 @@ block|}
 comment|/**    * Parse the data-nodes the block belongs to and choose one,    * which will be the replication source.    *    * We prefer nodes that are in DECOMMISSION_INPROGRESS state to other nodes    * since the former do not have write traffic and hence are less busy.    * We do not use already decommissioned nodes as a source.    * Otherwise we choose a random node among those that did not reach their    * replication limits.  However, if the replication is of the highest priority    * and all nodes have reached their replication limits, we will choose a    * random node despite the replication limit.    *    * In addition form a list of all nodes containing the block    * and calculate its replication numbers.    *    * @param block Block for which a replication source is needed    * @param containingNodes List to be populated with nodes found to contain the     *                        given block    * @param nodesContainingLiveReplicas List to be populated with nodes found to    *                                    contain live replicas of the given block    * @param numReplicas NumberReplicas instance to be initialized with the     *                                   counts of live, corrupt, excess, and    *                                   decommissioned replicas of the given    *                                   block.    * @param priority integer representing replication priority of the given    *                 block    * @return the DatanodeDescriptor of the chosen node from which to replicate    *         the given block    */
 annotation|@
 name|VisibleForTesting
-DECL|method|chooseSourceDatanode (Block block, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> nodesContainingLiveReplicas, NumberReplicas numReplicas, int priority)
+DECL|method|chooseSourceDatanode (BlockInfo block, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> nodesContainingLiveReplicas, NumberReplicas numReplicas, int priority)
 name|DatanodeDescriptor
 name|chooseSourceDatanode
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 name|List
@@ -8421,19 +8323,10 @@ try|try
 block|{
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|BlockInfo
+name|timedOutItem
+range|:
 name|timedOutItems
-operator|.
-name|length
-condition|;
-name|i
-operator|++
 control|)
 block|{
 comment|/*            * Use the blockinfo from the blocksmap to be certain we're working            * with the most up-to-date block information (e.g. genstamp).            */
@@ -8442,10 +8335,7 @@ name|bi
 init|=
 name|getStoredBlock
 argument_list|(
-name|timedOutItems
-index|[
-name|i
-index|]
+name|timedOutItem
 argument_list|)
 decl_stmt|;
 if|if
@@ -8462,10 +8352,7 @@ name|num
 init|=
 name|countNodes
 argument_list|(
-name|timedOutItems
-index|[
-name|i
-index|]
+name|timedOutItem
 argument_list|)
 decl_stmt|;
 if|if
@@ -8539,8 +8426,6 @@ argument_list|()
 assert|;
 name|DatanodeDescriptor
 name|node
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -9679,7 +9564,7 @@ block|}
 block|}
 name|Iterator
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|it
 init|=
@@ -10154,8 +10039,6 @@ argument_list|()
 assert|;
 name|BlockToMarkCorrupt
 name|b
-init|=
-literal|null
 decl_stmt|;
 if|if
 condition|(
@@ -12675,6 +12558,8 @@ argument_list|(
 name|storedBlock
 argument_list|,
 name|reportedBlock
+argument_list|,
+name|num
 argument_list|)
 expr_stmt|;
 block|}
@@ -12765,7 +12650,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Invalidate corrupt replicas.    *<p>    * This will remove the replicas from the block's location list,    * add them to {@link #invalidateBlocks} so that they could be further    * deleted from the respective data-nodes,    * and remove the block from corruptReplicasMap.    *<p>    * This method should be called when the block has sufficient    * number of live replicas.    *    * @param blk Block whose corrupt replicas need to be invalidated    */
-DECL|method|invalidateCorruptReplicas (BlockInfo blk, Block reported)
+DECL|method|invalidateCorruptReplicas (BlockInfo blk, Block reported, NumberReplicas numberReplicas)
 specifier|private
 name|void
 name|invalidateCorruptReplicas
@@ -12775,6 +12660,9 @@ name|blk
 parameter_list|,
 name|Block
 name|reported
+parameter_list|,
+name|NumberReplicas
+name|numberReplicas
 parameter_list|)
 block|{
 name|Collection
@@ -12815,7 +12703,10 @@ argument_list|(
 operator|new
 name|DatanodeDescriptor
 index|[
-literal|0
+name|nodes
+operator|.
+name|size
+argument_list|()
 index|]
 argument_list|)
 decl_stmt|;
@@ -12849,6 +12740,8 @@ name|ANY
 argument_list|)
 argument_list|,
 name|node
+argument_list|,
+name|numberReplicas
 argument_list|)
 condition|)
 block|{
@@ -13027,7 +12920,6 @@ argument_list|(
 literal|"Interrupted while waiting for replicationQueueInitializer. Returning.."
 argument_list|)
 expr_stmt|;
-return|return;
 block|}
 finally|finally
 block|{
@@ -14644,10 +14536,6 @@ block|{
 name|boolean
 name|removed
 init|=
-literal|false
-decl_stmt|;
-name|removed
-operator||=
 name|node
 operator|.
 name|getPendingCached
@@ -14657,7 +14545,7 @@ name|remove
 argument_list|(
 name|cblock
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|removed
 operator||=
 name|node
@@ -16631,15 +16519,6 @@ argument_list|()
 condition|)
 block|{
 specifier|final
-name|BlockInfoUnderConstruction
-name|uc
-init|=
-operator|(
-name|BlockInfoUnderConstruction
-operator|)
-name|b
-decl_stmt|;
-specifier|final
 name|int
 name|numNodes
 init|=
@@ -17191,30 +17070,12 @@ name|b
 argument_list|)
 return|;
 block|}
-DECL|method|numCorruptReplicas (Block block)
-specifier|public
-name|int
-name|numCorruptReplicas
-parameter_list|(
-name|Block
-name|block
-parameter_list|)
-block|{
-return|return
-name|corruptReplicas
-operator|.
-name|numCorruptReplicas
-argument_list|(
-name|block
-argument_list|)
-return|;
-block|}
-DECL|method|removeBlockFromMap (Block block)
+DECL|method|removeBlockFromMap (BlockInfo block)
 specifier|public
 name|void
 name|removeBlockFromMap
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -17240,12 +17101,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * If a block is removed from blocksMap, remove it from excessReplicateMap.    */
-DECL|method|removeFromExcessReplicateMap (Block block)
+DECL|method|removeFromExcessReplicateMap (BlockInfo block)
 specifier|private
 name|void
 name|removeFromExcessReplicateMap
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -17361,7 +17222,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get the replicas which are corrupt for a given block.    */
-DECL|method|getCorruptReplicas (Block block)
+DECL|method|getCorruptReplicas (BlockInfo block)
 specifier|public
 name|Collection
 argument_list|<
@@ -17369,7 +17230,7 @@ name|DatanodeDescriptor
 argument_list|>
 name|getCorruptReplicas
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -17383,12 +17244,12 @@ argument_list|)
 return|;
 block|}
 comment|/**   * Get reason for certain corrupted replicas for a given block and a given dn.   */
-DECL|method|getCorruptReason (Block block, DatanodeDescriptor node)
+DECL|method|getCorruptReason (BlockInfo block, DatanodeDescriptor node)
 specifier|public
 name|String
 name|getCorruptReason
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 name|DatanodeDescriptor
@@ -17714,7 +17575,6 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-empty_stmt|;
 DECL|method|newLocatedBlock ( ExtendedBlock b, DatanodeStorageInfo[] storages, long startOffset, boolean corrupt)
 specifier|public
 specifier|static

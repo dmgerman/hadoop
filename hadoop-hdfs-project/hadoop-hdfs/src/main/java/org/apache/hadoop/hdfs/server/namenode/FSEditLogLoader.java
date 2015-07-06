@@ -6780,7 +6780,7 @@ name|path
 argument_list|)
 throw|;
 block|}
-name|Block
+name|BlockInfo
 name|oldBlock
 init|=
 name|oldBlocks

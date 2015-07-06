@@ -22,15 +22,15 @@ end_package
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
-name|classification
+name|annotations
 operator|.
-name|InterfaceAudience
+name|VisibleForTesting
 import|;
 end_import
 
@@ -42,11 +42,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|classification
 operator|.
-name|protocol
-operator|.
-name|Block
+name|InterfaceAudience
 import|;
 end_import
 
@@ -137,12 +135,13 @@ DECL|enumConstant|CORRUPTION_REPORTED
 name|CORRUPTION_REPORTED
 comment|// client or datanode reported the corruption
 block|}
+comment|/**    * Used to track corrupted replicas (for contiguous block) or internal blocks    * (for striped block) and the corresponding DataNodes. For a striped block,    * the key here is the striped block group object stored in the blocksMap.    */
 DECL|field|corruptReplicasMap
 specifier|private
 specifier|final
 name|SortedMap
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|,
 name|Map
 argument_list|<
@@ -155,24 +154,15 @@ name|corruptReplicasMap
 init|=
 operator|new
 name|TreeMap
-argument_list|<
-name|Block
-argument_list|,
-name|Map
-argument_list|<
-name|DatanodeDescriptor
-argument_list|,
-name|Reason
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * Mark the block belonging to datanode as corrupt.    *    * @param blk Block to be added to CorruptReplicasMap    * @param dn DatanodeDescriptor which holds the corrupt replica    * @param reason a textual reason (for logging purposes)    * @param reasonCode the enum representation of the reason    */
-DECL|method|addToCorruptReplicasMap (Block blk, DatanodeDescriptor dn, String reason, Reason reasonCode)
+DECL|method|addToCorruptReplicasMap (BlockInfo blk, DatanodeDescriptor dn, String reason, Reason reasonCode)
 name|void
 name|addToCorruptReplicasMap
 parameter_list|(
-name|Block
+name|BlockInfo
 name|blk
 parameter_list|,
 name|DatanodeDescriptor
@@ -211,11 +201,7 @@ name|nodes
 operator|=
 operator|new
 name|HashMap
-argument_list|<
-name|DatanodeDescriptor
-argument_list|,
-name|Reason
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|corruptReplicasMap
@@ -332,11 +318,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Remove Block from CorruptBlocksMap    *    * @param blk Block to be removed    */
-DECL|method|removeFromCorruptReplicasMap (Block blk)
+DECL|method|removeFromCorruptReplicasMap (BlockInfo blk)
 name|void
 name|removeFromCorruptReplicasMap
 parameter_list|(
-name|Block
+name|BlockInfo
 name|blk
 parameter_list|)
 block|{
@@ -357,11 +343,11 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Remove the block at the given datanode from CorruptBlockMap    * @param blk block to be removed    * @param datanode datanode where the block is located    * @return true if the removal is successful;               false if the replica is not in the map    */
-DECL|method|removeFromCorruptReplicasMap (Block blk, DatanodeDescriptor datanode)
+DECL|method|removeFromCorruptReplicasMap (BlockInfo blk, DatanodeDescriptor datanode)
 name|boolean
 name|removeFromCorruptReplicasMap
 parameter_list|(
-name|Block
+name|BlockInfo
 name|blk
 parameter_list|,
 name|DatanodeDescriptor
@@ -381,11 +367,11 @@ name|ANY
 argument_list|)
 return|;
 block|}
-DECL|method|removeFromCorruptReplicasMap (Block blk, DatanodeDescriptor datanode, Reason reason)
+DECL|method|removeFromCorruptReplicasMap (BlockInfo blk, DatanodeDescriptor datanode, Reason reason)
 name|boolean
 name|removeFromCorruptReplicasMap
 parameter_list|(
-name|Block
+name|BlockInfo
 name|blk
 parameter_list|,
 name|DatanodeDescriptor
@@ -490,14 +476,14 @@ literal|false
 return|;
 block|}
 comment|/**    * Get Nodes which have corrupt replicas of Block    *     * @param blk Block for which nodes are requested    * @return collection of nodes. Null if does not exists    */
-DECL|method|getNodes (Block blk)
+DECL|method|getNodes (BlockInfo blk)
 name|Collection
 argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|getNodes
 parameter_list|(
-name|Block
+name|BlockInfo
 name|blk
 parameter_list|)
 block|{
@@ -516,28 +502,25 @@ argument_list|(
 name|blk
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+return|return
 name|nodes
-operator|==
+operator|!=
 literal|null
-condition|)
-return|return
-literal|null
-return|;
-return|return
+condition|?
 name|nodes
 operator|.
 name|keySet
 argument_list|()
+else|:
+literal|null
 return|;
 block|}
 comment|/**    * Check if replica belonging to Datanode is corrupt    *    * @param blk Block to check    * @param node DatanodeDescriptor which holds the replica    * @return true if replica is corrupt, false if does not exists in this map    */
-DECL|method|isReplicaCorrupt (Block blk, DatanodeDescriptor node)
+DECL|method|isReplicaCorrupt (BlockInfo blk, DatanodeDescriptor node)
 name|boolean
 name|isReplicaCorrupt
 parameter_list|(
-name|Block
+name|BlockInfo
 name|blk
 parameter_list|,
 name|DatanodeDescriptor
@@ -574,11 +557,11 @@ operator|)
 operator|)
 return|;
 block|}
-DECL|method|numCorruptReplicas (Block blk)
+DECL|method|numCorruptReplicas (BlockInfo blk)
 name|int
 name|numCorruptReplicas
 parameter_list|(
-name|Block
+name|BlockInfo
 name|blk
 parameter_list|)
 block|{
@@ -620,7 +603,9 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**    * Return a range of corrupt replica block ids. Up to numExpectedBlocks     * blocks starting at the next block after startingBlockId are returned    * (fewer if numExpectedBlocks blocks are unavailable). If startingBlockId     * is null, up to numExpectedBlocks blocks are returned from the beginning.    * If startingBlockId cannot be found, null is returned.    *    * @param numExpectedBlocks Number of block ids to return.    *  0<= numExpectedBlocks<= 100    * @param startingBlockId Block id from which to start. If null, start at    *  beginning.    * @return Up to numExpectedBlocks blocks from startingBlockId if it exists    *    */
+comment|/**    * Return a range of corrupt replica block ids. Up to numExpectedBlocks    * blocks starting at the next block after startingBlockId are returned    * (fewer if numExpectedBlocks blocks are unavailable). If startingBlockId    * is null, up to numExpectedBlocks blocks are returned from the beginning.    * If startingBlockId cannot be found, null is returned.    *    * @param numExpectedBlocks Number of block ids to return.    *  0<= numExpectedBlocks<= 100    * @param startingBlockId Block id from which to start. If null, start at    *  beginning.    * @return Up to numExpectedBlocks blocks from startingBlockId if it exists    *    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getCorruptReplicaBlockIds (int numExpectedBlocks, Long startingBlockId)
 name|long
 index|[]
@@ -650,7 +635,7 @@ return|;
 block|}
 name|Iterator
 argument_list|<
-name|Block
+name|BlockInfo
 argument_list|>
 name|blockIt
 init|=
@@ -685,7 +670,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|Block
+name|BlockInfo
 name|b
 init|=
 name|blockIt
@@ -729,9 +714,7 @@ name|corruptReplicaBlockIds
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Long
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|// append up to numExpectedBlocks blockIds to our list
@@ -817,11 +800,11 @@ name|ret
 return|;
 block|}
 comment|/**    * return the reason about corrupted replica for a given block    * on a given dn    * @param block block that has corrupted replica    * @param node datanode that contains this corrupted replica    * @return reason    */
-DECL|method|getCorruptReason (Block block, DatanodeDescriptor node)
+DECL|method|getCorruptReason (BlockInfo block, DatanodeDescriptor node)
 name|String
 name|getCorruptReason
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 name|DatanodeDescriptor

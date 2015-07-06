@@ -174,7 +174,7 @@ name|targets
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Convert an under construction block to a complete block.    *    * @return BlockInfo - a complete block.    * @throws IOException if the state of the block    * (the generation stamp and the length) has not been committed by    * the client or it does not have at least a minimal number of replicas    * reported from data-nodes.    */
+comment|/**    * Convert an under construction block to a complete block.    *    * @return BlockInfo - a complete block.    */
 annotation|@
 name|Override
 DECL|method|convertToCompleteBlock ()
@@ -210,7 +210,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|addStorage (DatanodeStorageInfo storage, Block reportedBlock)
-name|boolean
+name|void
 name|addStorage
 parameter_list|(
 name|DatanodeStorageInfo
@@ -220,7 +220,6 @@ name|Block
 name|reportedBlock
 parameter_list|)
 block|{
-return|return
 name|ContiguousBlockStorageOp
 operator|.
 name|addStorage
@@ -229,7 +228,7 @@ name|this
 argument_list|,
 name|storage
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -288,6 +287,22 @@ argument_list|,
 name|newBlock
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|hasEmptyStorage ()
+name|boolean
+name|hasEmptyStorage
+parameter_list|()
+block|{
+return|return
+name|ContiguousBlockStorageOp
+operator|.
+name|hasEmptyStorage
+argument_list|(
+name|this
+argument_list|)
+return|;
 block|}
 annotation|@
 name|Override

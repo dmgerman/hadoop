@@ -135,7 +135,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|addStorage (DatanodeStorageInfo storage, Block reportedBlock)
-name|boolean
+name|void
 name|addStorage
 parameter_list|(
 name|DatanodeStorageInfo
@@ -145,7 +145,6 @@ name|Block
 name|reportedBlock
 parameter_list|)
 block|{
-return|return
 name|ContiguousBlockStorageOp
 operator|.
 name|addStorage
@@ -154,7 +153,7 @@ name|this
 argument_list|,
 name|storage
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -259,6 +258,22 @@ argument_list|)
 expr_stmt|;
 return|return
 name|ucBlock
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|hasEmptyStorage ()
+name|boolean
+name|hasEmptyStorage
+parameter_list|()
+block|{
+return|return
+name|ContiguousBlockStorageOp
+operator|.
+name|hasEmptyStorage
+argument_list|(
+name|this
+argument_list|)
 return|;
 block|}
 block|}

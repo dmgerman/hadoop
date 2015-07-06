@@ -358,9 +358,6 @@ argument_list|,
 literal|"127.0.0.1"
 argument_list|)
 decl_stmt|;
-name|boolean
-name|added
-init|=
 name|blockInfo
 operator|.
 name|addStorage
@@ -368,13 +365,6 @@ argument_list|(
 name|storage
 argument_list|,
 name|blockInfo
-argument_list|)
-decl_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|added
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -420,9 +410,6 @@ init|=
 operator|new
 name|BlockInfoContiguous
 argument_list|(
-operator|(
-name|BlockInfoContiguous
-operator|)
 name|old
 argument_list|)
 decl_stmt|;
@@ -668,9 +655,7 @@ name|blockList
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Block
-argument_list|>
+argument_list|<>
 argument_list|(
 name|MAX_BLOCKS
 argument_list|)
@@ -683,9 +668,7 @@ name|blockInfoList
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|BlockInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|int

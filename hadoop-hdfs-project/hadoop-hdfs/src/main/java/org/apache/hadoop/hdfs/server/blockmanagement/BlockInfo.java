@@ -748,7 +748,7 @@ function_decl|;
 comment|/**    * Add a {@link DatanodeStorageInfo} location for a block    * @param storage The storage to add    * @param reportedBlock The block reported from the datanode. This is only    *                      used by erasure coded blocks, this block's id contains    *                      information indicating the index of the block in the    *                      corresponding block group.    */
 DECL|method|addStorage (DatanodeStorageInfo storage, Block reportedBlock)
 specifier|abstract
-name|boolean
+name|void
 name|addStorage
 parameter_list|(
 name|DatanodeStorageInfo
@@ -777,6 +777,13 @@ parameter_list|(
 name|BlockInfo
 name|newBlock
 parameter_list|)
+function_decl|;
+comment|/**    * @return true if there is no storage storing the block    */
+DECL|method|hasEmptyStorage ()
+specifier|abstract
+name|boolean
+name|hasEmptyStorage
+parameter_list|()
 function_decl|;
 comment|/**    * Find specified DatanodeStorageInfo.    * @return DatanodeStorageInfo or null if not found.    */
 DECL|method|findStorageInfo (DatanodeDescriptor dn)
