@@ -5307,8 +5307,6 @@ operator|.
 name|getXAttr
 argument_list|(
 name|json
-argument_list|,
-name|name
 argument_list|)
 return|;
 block|}
