@@ -7,6 +7,13 @@ begin_comment
 comment|/**  * This package provides access to JMX primarily through the  * {@link org.apache.hadoop.jmx.JMXJsonServlet} class.  */
 end_comment
 
+begin_annotation
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+end_annotation
+
 begin_package
 DECL|package|org.apache.hadoop.jmx
 package|package
@@ -19,6 +26,20 @@ operator|.
 name|jmx
 package|;
 end_package
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
 
 end_unit
 
