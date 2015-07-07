@@ -36,6 +36,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -891,16 +901,31 @@ literal|true
 decl_stmt|;
 for|for
 control|(
-name|ReplicaUnderConstruction
-name|replica
-range|:
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
 name|replicas
+operator|.
+name|size
+argument_list|()
+condition|;
+name|i
+operator|++
 control|)
 block|{
 comment|// Check if all replicas have been tried or not.
 if|if
 condition|(
-name|replica
+name|replicas
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
 operator|.
 name|isAlive
 argument_list|()
@@ -908,12 +933,19 @@ condition|)
 block|{
 name|allLiveReplicasTriedAsPrimary
 operator|=
+operator|(
 name|allLiveReplicasTriedAsPrimary
 operator|&&
-name|replica
+name|replicas
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
 operator|.
 name|getChosenAsPrimary
 argument_list|()
+operator|)
 expr_stmt|;
 block|}
 block|}
@@ -925,13 +957,28 @@ block|{
 comment|// Just set all the replicas to be chosen whether they are alive or not.
 for|for
 control|(
-name|ReplicaUnderConstruction
-name|replica
-range|:
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
 name|replicas
+operator|.
+name|size
+argument_list|()
+condition|;
+name|i
+operator|++
 control|)
 block|{
-name|replica
+name|replicas
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
 operator|.
 name|setChosenAsPrimary
 argument_list|(
@@ -1207,7 +1254,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Convert an under construction block to a complete block.    *    * @return a complete block.    */
+comment|/**    * Convert an under construction block to a complete block.    *    * @return a complete block.    * @throws IOException    *           if the state of the block (the generation stamp and the length)    *           has not been committed by the client or it does not have at    *           least a minimal number of replicas reported from data-nodes.    */
 DECL|method|convertToCompleteBlock ()
 specifier|public
 specifier|abstract
@@ -1369,10 +1416,7 @@ operator|.
 name|append
 argument_list|(
 literal|", truncateBlock="
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 name|truncateBlock
 argument_list|)
 operator|.

@@ -428,11 +428,11 @@ name|info
 return|;
 block|}
 comment|/**    * Remove the block from the block map;    * remove it from all data-node lists it belongs to;    * and remove all data-node locations associated with the block.    */
-DECL|method|removeBlock (BlockInfo block)
+DECL|method|removeBlock (Block block)
 name|void
 name|removeBlock
 parameter_list|(
-name|BlockInfo
+name|Block
 name|block
 parameter_list|)
 block|{
@@ -725,8 +725,12 @@ if|if
 condition|(
 name|info
 operator|.
-name|hasEmptyStorage
-argument_list|()
+name|getDatanode
+argument_list|(
+literal|0
+argument_list|)
+operator|==
+literal|null
 comment|// no datanodes left
 operator|&&
 name|info

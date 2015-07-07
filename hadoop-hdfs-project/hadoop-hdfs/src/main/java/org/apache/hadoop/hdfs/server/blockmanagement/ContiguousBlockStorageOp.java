@@ -149,7 +149,7 @@ return|;
 block|}
 DECL|method|addStorage (BlockInfo b, DatanodeStorageInfo storage)
 specifier|static
-name|void
+name|boolean
 name|addStorage
 parameter_list|(
 name|BlockInfo
@@ -197,6 +197,9 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 DECL|method|removeStorage (BlockInfo b, DatanodeStorageInfo storage)
 specifier|static
@@ -517,26 +520,6 @@ literal|"newBlock already exists."
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-DECL|method|hasEmptyStorage (BlockInfo b)
-specifier|static
-name|boolean
-name|hasEmptyStorage
-parameter_list|(
-name|BlockInfo
-name|b
-parameter_list|)
-block|{
-return|return
-name|b
-operator|.
-name|getStorageInfo
-argument_list|(
-literal|0
-argument_list|)
-operator|==
-literal|null
-return|;
 block|}
 block|}
 end_class

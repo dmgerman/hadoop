@@ -249,20 +249,24 @@ name|Map
 argument_list|<
 name|Long
 argument_list|,
-name|BlockInfo
+name|Block
 argument_list|>
 name|block_map
 init|=
 operator|new
 name|HashMap
-argument_list|<>
+argument_list|<
+name|Long
+argument_list|,
+name|Block
+argument_list|>
 argument_list|()
 decl_stmt|;
 comment|// Allow easy block creation by block id
 comment|// Return existing block if one with same block id already exists
 DECL|method|getBlock (Long block_id)
 specifier|private
-name|BlockInfo
+name|Block
 name|getBlock
 parameter_list|(
 name|Long
@@ -287,9 +291,6 @@ argument_list|(
 name|block_id
 argument_list|,
 operator|new
-name|BlockInfoContiguous
-argument_list|(
-operator|new
 name|Block
 argument_list|(
 name|block_id
@@ -297,12 +298,6 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
-argument_list|)
-argument_list|,
-operator|(
-name|short
-operator|)
-literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -318,7 +313,7 @@ return|;
 block|}
 DECL|method|getBlock (int block_id)
 specifier|private
-name|BlockInfo
+name|Block
 name|getBlock
 parameter_list|(
 name|int
@@ -442,7 +437,9 @@ name|block_ids
 init|=
 operator|new
 name|LinkedList
-argument_list|<>
+argument_list|<
+name|Long
+argument_list|>
 argument_list|()
 decl_stmt|;
 for|for
@@ -743,7 +740,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addToCorruptReplicasMap (CorruptReplicasMap crm, BlockInfo blk, DatanodeDescriptor dn)
+DECL|method|addToCorruptReplicasMap (CorruptReplicasMap crm, Block blk, DatanodeDescriptor dn)
 specifier|private
 specifier|static
 name|void
@@ -752,7 +749,7 @@ parameter_list|(
 name|CorruptReplicasMap
 name|crm
 parameter_list|,
-name|BlockInfo
+name|Block
 name|blk
 parameter_list|,
 name|DatanodeDescriptor

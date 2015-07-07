@@ -720,7 +720,7 @@ specifier|private
 name|FSDirWriteFileOp
 parameter_list|()
 block|{}
-DECL|method|unprotectedRemoveBlock ( FSDirectory fsd, String path, INodesInPath iip, INodeFile fileNode, BlockInfo block)
+DECL|method|unprotectedRemoveBlock ( FSDirectory fsd, String path, INodesInPath iip, INodeFile fileNode, Block block)
 specifier|static
 name|boolean
 name|unprotectedRemoveBlock
@@ -737,7 +737,7 @@ parameter_list|,
 name|INodeFile
 name|fileNode
 parameter_list|,
-name|BlockInfo
+name|Block
 name|block
 parameter_list|)
 throws|throws
@@ -1098,25 +1098,8 @@ expr_stmt|;
 try|try
 block|{
 comment|// Remove the block from the pending creates list
-name|BlockInfo
-name|storedBlock
-init|=
-name|fsd
-operator|.
-name|getBlockManager
-argument_list|()
-operator|.
-name|getStoredBlock
-argument_list|(
-name|localBlock
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|storedBlock
-operator|!=
-literal|null
-operator|&&
 operator|!
 name|unprotectedRemoveBlock
 argument_list|(
@@ -1128,7 +1111,7 @@ name|iip
 argument_list|,
 name|file
 argument_list|,
-name|storedBlock
+name|localBlock
 argument_list|)
 condition|)
 block|{
