@@ -1910,6 +1910,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+try|try
+block|{
 name|this
 operator|.
 name|type
@@ -1921,6 +1923,30 @@ argument_list|(
 name|storageTypeString
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Storage type "
+operator|+
+name|storageTypeString
+operator|+
+literal|" is not available. Available storage types are "
+operator|+
+name|StorageType
+operator|.
+name|getTypesSupportingQuota
+argument_list|()
+argument_list|)
+throw|;
+block|}
 block|}
 name|this
 operator|.
