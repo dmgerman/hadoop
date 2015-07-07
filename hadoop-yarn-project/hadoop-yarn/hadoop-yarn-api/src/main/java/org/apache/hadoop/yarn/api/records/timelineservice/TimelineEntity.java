@@ -68,6 +68,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|codehaus
+operator|.
+name|jackson
+operator|.
+name|annotate
+operator|.
+name|JsonSetter
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|xml
@@ -1499,6 +1513,11 @@ argument_list|()
 return|;
 block|}
 block|}
+annotation|@
+name|JsonSetter
+argument_list|(
+literal|"isrelatedto"
+argument_list|)
 DECL|method|setIsRelatedToEntities ( Map<String, Set<String>> isRelatedToEntities)
 specifier|public
 name|void
@@ -2012,6 +2031,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|JsonSetter
+argument_list|(
+literal|"relatesto"
+argument_list|)
 DECL|method|setRelatesToEntities (Map<String, Set<String>> relatesToEntities)
 specifier|public
 name|void
@@ -2093,6 +2117,11 @@ argument_list|()
 return|;
 block|}
 block|}
+annotation|@
+name|JsonSetter
+argument_list|(
+literal|"createdtime"
+argument_list|)
 DECL|method|setCreatedTime (long createdTime)
 specifier|public
 name|void
@@ -2161,6 +2190,11 @@ argument_list|()
 return|;
 block|}
 block|}
+annotation|@
+name|JsonSetter
+argument_list|(
+literal|"modifiedtime"
+argument_list|)
 DECL|method|setModifiedTime (long modifiedTime)
 specifier|public
 name|void
