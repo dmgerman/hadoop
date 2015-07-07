@@ -290,6 +290,34 @@ name|getCpuUsage
 argument_list|()
 return|;
 block|}
+comment|/**    * Obtain the aggregated number of bytes read over the network.    * @return total number of bytes read.    */
+DECL|method|getNetworkBytesRead ()
+specifier|public
+name|long
+name|getNetworkBytesRead
+parameter_list|()
+block|{
+return|return
+name|sys
+operator|.
+name|getNetworkBytesRead
+argument_list|()
+return|;
+block|}
+comment|/**    * Obtain the aggregated number of bytes written to the network.    * @return total number of bytes written.    */
+DECL|method|getNetworkBytesWritten ()
+specifier|public
+name|long
+name|getNetworkBytesWritten
+parameter_list|()
+block|{
+return|return
+name|sys
+operator|.
+name|getNetworkBytesWritten
+argument_list|()
+return|;
+block|}
 comment|/**    * Create the ResourceCalculatorPlugin from the class name and configure it. If    * class name is null, this method will try and return a memory calculator    * plugin available for this system.    *    * @param clazz ResourceCalculator plugin class-name    * @param conf configure the plugin with this.    * @return ResourceCalculatorPlugin or null if ResourceCalculatorPlugin is not    * 		 available for current system    */
 DECL|method|getResourceCalculatorPlugin ( Class<? extends ResourceCalculatorPlugin> clazz, Configuration conf)
 specifier|public

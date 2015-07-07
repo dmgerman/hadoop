@@ -714,6 +714,34 @@ return|return
 name|cpuUsage
 return|;
 block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+DECL|method|getNetworkBytesRead ()
+specifier|public
+name|long
+name|getNetworkBytesRead
+parameter_list|()
+block|{
+comment|// TODO unimplemented
+return|return
+literal|0L
+return|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+DECL|method|getNetworkBytesWritten ()
+specifier|public
+name|long
+name|getNetworkBytesWritten
+parameter_list|()
+block|{
+comment|// TODO unimplemented
+return|return
+literal|0L
+return|;
+block|}
 block|}
 end_class
 

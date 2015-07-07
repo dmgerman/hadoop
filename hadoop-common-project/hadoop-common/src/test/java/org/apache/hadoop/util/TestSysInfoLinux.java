@@ -130,7 +130,7 @@ name|currentTime
 init|=
 literal|0
 decl_stmt|;
-DECL|method|FakeLinuxResourceCalculatorPlugin (String procfsMemFile, String procfsCpuFile, String procfsStatFile, long jiffyLengthInMillis)
+DECL|method|FakeLinuxResourceCalculatorPlugin (String procfsMemFile, String procfsCpuFile, String procfsStatFile, String procfsNetFile, long jiffyLengthInMillis)
 specifier|public
 name|FakeLinuxResourceCalculatorPlugin
 parameter_list|(
@@ -143,6 +143,9 @@ parameter_list|,
 name|String
 name|procfsStatFile
 parameter_list|,
+name|String
+name|procfsNetFile
+parameter_list|,
 name|long
 name|jiffyLengthInMillis
 parameter_list|)
@@ -154,6 +157,8 @@ argument_list|,
 name|procfsCpuFile
 argument_list|,
 name|procfsStatFile
+argument_list|,
+name|procfsNetFile
 argument_list|,
 name|jiffyLengthInMillis
 argument_list|)
@@ -247,6 +252,13 @@ specifier|final
 name|String
 name|FAKE_STATFILE
 decl_stmt|;
+DECL|field|FAKE_NETFILE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|FAKE_NETFILE
+decl_stmt|;
 DECL|field|FAKE_JIFFY_LENGTH
 specifier|private
 specifier|static
@@ -308,6 +320,18 @@ literal|"STATINFO_"
 operator|+
 name|randomNum
 expr_stmt|;
+name|FAKE_NETFILE
+operator|=
+name|TEST_ROOT_DIR
+operator|+
+name|File
+operator|.
+name|separator
+operator|+
+literal|"NETINFO_"
+operator|+
+name|randomNum
+expr_stmt|;
 name|plugin
 operator|=
 operator|new
@@ -318,6 +342,8 @@ argument_list|,
 name|FAKE_CPUFILE
 argument_list|,
 name|FAKE_STATFILE
+argument_list|,
+name|FAKE_NETFILE
 argument_list|,
 name|FAKE_JIFFY_LENGTH
 argument_list|)
@@ -468,6 +494,30 @@ operator|+
 literal|"procs_running 1\n"
 operator|+
 literal|"procs_blocked 0\n"
+decl_stmt|;
+DECL|field|NETINFO_FORMAT
+specifier|static
+specifier|final
+name|String
+name|NETINFO_FORMAT
+init|=
+literal|"Inter-|   Receive                                                |  Transmit\n"
+operator|+
+literal|"face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets"
+operator|+
+literal|"errs drop fifo colls carrier compressed\n"
+operator|+
+literal|"   lo: 42236310  563003    0    0    0     0          0         0 42236310  563003    "
+operator|+
+literal|"0    0    0     0       0          0\n"
+operator|+
+literal|" eth0: %d 3452527    0    0    0     0          0    299787 %d 1866280    0    0    "
+operator|+
+literal|"0     0       0          0\n"
+operator|+
+literal|" eth1: %d 3152521    0    0    0     0          0    219781 %d 1866290    0    0    "
+operator|+
+literal|"0     0       0          0\n"
 decl_stmt|;
 comment|/**    * Test parsing /proc/stat and /proc/cpuinfo    * @throws IOException    */
 annotation|@
@@ -1537,6 +1587,110 @@ name|fWriter
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Test parsing /proc/net/dev    * @throws IOException    */
+annotation|@
+name|Test
+DECL|method|parsingProcNetFile ()
+specifier|public
+name|void
+name|parsingProcNetFile
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|long
+name|numBytesReadIntf1
+init|=
+literal|2097172468L
+decl_stmt|;
+name|long
+name|numBytesWrittenIntf1
+init|=
+literal|1355620114L
+decl_stmt|;
+name|long
+name|numBytesReadIntf2
+init|=
+literal|1097172460L
+decl_stmt|;
+name|long
+name|numBytesWrittenIntf2
+init|=
+literal|1055620110L
+decl_stmt|;
+name|File
+name|tempFile
+init|=
+operator|new
+name|File
+argument_list|(
+name|FAKE_NETFILE
+argument_list|)
+decl_stmt|;
+name|tempFile
+operator|.
+name|deleteOnExit
+argument_list|()
+expr_stmt|;
+name|FileWriter
+name|fWriter
+init|=
+operator|new
+name|FileWriter
+argument_list|(
+name|FAKE_NETFILE
+argument_list|)
+decl_stmt|;
+name|fWriter
+operator|.
+name|write
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+name|NETINFO_FORMAT
+argument_list|,
+name|numBytesReadIntf1
+argument_list|,
+name|numBytesWrittenIntf1
+argument_list|,
+name|numBytesReadIntf2
+argument_list|,
+name|numBytesWrittenIntf2
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|fWriter
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|plugin
+operator|.
+name|getNetworkBytesRead
+argument_list|()
+argument_list|,
+name|numBytesReadIntf1
+operator|+
+name|numBytesReadIntf2
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|plugin
+operator|.
+name|getNetworkBytesWritten
+argument_list|()
+argument_list|,
+name|numBytesWrittenIntf1
+operator|+
+name|numBytesWrittenIntf2
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

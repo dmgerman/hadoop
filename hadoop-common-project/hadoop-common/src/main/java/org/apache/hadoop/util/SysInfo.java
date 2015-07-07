@@ -177,6 +177,22 @@ name|float
 name|getCpuUsage
 parameter_list|()
 function_decl|;
+comment|/**    * Obtain the aggregated number of bytes read over the network.    * @return total number of bytes read.    */
+DECL|method|getNetworkBytesRead ()
+specifier|public
+specifier|abstract
+name|long
+name|getNetworkBytesRead
+parameter_list|()
+function_decl|;
+comment|/**    * Obtain the aggregated number of bytes written to the network.    * @return total number of bytes written.    */
+DECL|method|getNetworkBytesWritten ()
+specifier|public
+specifier|abstract
+name|long
+name|getNetworkBytesWritten
+parameter_list|()
+function_decl|;
 block|}
 end_class
 
