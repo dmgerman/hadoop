@@ -109,7 +109,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Unix touch like commands   */
+comment|/**  * Unix touch like commands  */
 end_comment
 
 begin_class
