@@ -102,6 +102,15 @@ specifier|public
 class|class
 name|PrivilegedOperation
 block|{
+DECL|field|LINUX_FILE_PATH_SEPARATOR
+specifier|public
+specifier|final
+specifier|static
+name|char
+name|LINUX_FILE_PATH_SEPARATOR
+init|=
+literal|'%'
+decl_stmt|;
 DECL|enum|OperationType
 specifier|public
 enum|enum

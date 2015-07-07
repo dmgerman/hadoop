@@ -1606,7 +1606,9 @@ name|StringUtils
 operator|.
 name|join
 argument_list|(
-literal|","
+name|PrivilegedOperation
+operator|.
+name|LINUX_FILE_PATH_SEPARATOR
 argument_list|,
 name|localDirs
 argument_list|)
@@ -1615,7 +1617,9 @@ name|StringUtils
 operator|.
 name|join
 argument_list|(
-literal|","
+name|PrivilegedOperation
+operator|.
+name|LINUX_FILE_PATH_SEPARATOR
 argument_list|,
 name|logDirs
 argument_list|)
@@ -2365,7 +2369,9 @@ name|StringUtils
 operator|.
 name|join
 argument_list|(
-literal|","
+name|PrivilegedOperation
+operator|.
+name|LINUX_FILE_PATH_SEPARATOR
 argument_list|,
 name|localDirs
 argument_list|)
@@ -2374,7 +2380,9 @@ name|StringUtils
 operator|.
 name|join
 argument_list|(
-literal|","
+name|PrivilegedOperation
+operator|.
+name|LINUX_FILE_PATH_SEPARATOR
 argument_list|,
 name|logDirs
 argument_list|)

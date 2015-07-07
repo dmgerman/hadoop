@@ -1002,7 +1002,9 @@ name|finalOpArg
 operator|.
 name|append
 argument_list|(
-literal|","
+name|PrivilegedOperation
+operator|.
+name|LINUX_FILE_PATH_SEPARATOR
 argument_list|)
 expr_stmt|;
 name|finalOpArg

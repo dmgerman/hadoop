@@ -3879,6 +3879,33 @@ name|toString
 argument_list|()
 return|;
 block|}
+DECL|method|join (char separator, Iterable<?> strings)
+specifier|public
+specifier|static
+name|String
+name|join
+parameter_list|(
+name|char
+name|separator
+parameter_list|,
+name|Iterable
+argument_list|<
+name|?
+argument_list|>
+name|strings
+parameter_list|)
+block|{
+return|return
+name|join
+argument_list|(
+name|separator
+operator|+
+literal|""
+argument_list|,
+name|strings
+argument_list|)
+return|;
+block|}
 comment|/**    * Concatenates strings, using a separator.    *    * @param separator to join with    * @param strings to join    * @return  the joined string    */
 DECL|method|join (CharSequence separator, String[] strings)
 specifier|public
@@ -3948,6 +3975,31 @@ name|sb
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+DECL|method|join (char separator, String[] strings)
+specifier|public
+specifier|static
+name|String
+name|join
+parameter_list|(
+name|char
+name|separator
+parameter_list|,
+name|String
+index|[]
+name|strings
+parameter_list|)
+block|{
+return|return
+name|join
+argument_list|(
+name|separator
+operator|+
+literal|""
+argument_list|,
+name|strings
+argument_list|)
 return|;
 block|}
 comment|/**    * Convert SOME_STUFF to SomeStuff    *    * @param s input string    * @return camelized string    */
