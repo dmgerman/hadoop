@@ -610,7 +610,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|AfterClass
+name|After
 import|;
 end_import
 
@@ -621,16 +621,6 @@ operator|.
 name|junit
 operator|.
 name|Before
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|BeforeClass
 import|;
 end_import
 
@@ -787,12 +777,11 @@ name|Path
 name|parent
 decl_stmt|;
 annotation|@
-name|BeforeClass
-DECL|method|startUp ()
+name|Before
+DECL|method|setUp ()
 specifier|public
-specifier|static
 name|void
-name|startUp
+name|setUp
 parameter_list|()
 throws|throws
 name|IOException
@@ -889,12 +878,19 @@ operator|.
 name|getFileSystem
 argument_list|()
 expr_stmt|;
+name|parent
+operator|=
+operator|new
+name|Path
+argument_list|(
+literal|"/test"
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
-name|AfterClass
+name|After
 DECL|method|tearDown ()
 specifier|public
-specifier|static
 name|void
 name|tearDown
 parameter_list|()
@@ -922,34 +918,6 @@ name|cluster
 operator|.
 name|shutdown
 argument_list|()
-expr_stmt|;
-block|}
-annotation|@
-name|Before
-DECL|method|setup ()
-specifier|public
-name|void
-name|setup
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|parent
-operator|=
-operator|new
-name|Path
-argument_list|(
-literal|"/test"
-argument_list|)
-expr_stmt|;
-name|fs
-operator|.
-name|delete
-argument_list|(
-name|parent
-argument_list|,
-literal|true
-argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Truncate files of different sizes byte by byte.    */
