@@ -1521,6 +1521,23 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+return|return
+name|getTimelineReaderWebAppURL
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
+DECL|method|getTimelineReaderWebAppURL (Configuration conf)
+specifier|public
+specifier|static
+name|String
+name|getTimelineReaderWebAppURL
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
 if|if
 condition|(
 name|YarnConfiguration

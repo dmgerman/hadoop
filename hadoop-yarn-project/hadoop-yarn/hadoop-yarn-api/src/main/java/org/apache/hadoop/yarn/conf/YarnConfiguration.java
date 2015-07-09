@@ -6810,6 +6810,17 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"writer.class"
 decl_stmt|;
+DECL|field|TIMELINE_SERVICE_READER_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_READER_CLASS
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"reader.class"
+decl_stmt|;
 comment|// mark app-history related configs @Private as application history is going
 comment|// to be integrated into the timeline service
 annotation|@
