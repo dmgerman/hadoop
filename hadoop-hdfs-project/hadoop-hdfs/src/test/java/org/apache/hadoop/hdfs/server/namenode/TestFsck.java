@@ -11291,6 +11291,7 @@ operator|.
 name|getFileSystem
 argument_list|()
 expr_stmt|;
+comment|// create a contiguous file
 name|Path
 name|replDirPath
 init|=
@@ -11343,6 +11344,7 @@ argument_list|,
 name|factor
 argument_list|)
 expr_stmt|;
+comment|// create a large striped file
 name|Path
 name|ecDirPath
 init|=
@@ -11353,21 +11355,15 @@ literal|"/striped"
 argument_list|)
 decl_stmt|;
 name|Path
-name|ecFilePath
+name|largeFilePath
 init|=
 operator|new
 name|Path
 argument_list|(
 name|ecDirPath
 argument_list|,
-literal|"ecfile"
+literal|"largeFile"
 argument_list|)
-decl_stmt|;
-specifier|final
-name|int
-name|numBlocks
-init|=
-literal|4
 decl_stmt|;
 name|DFSTestUtil
 operator|.
@@ -11375,15 +11371,38 @@ name|createStripedFile
 argument_list|(
 name|cluster
 argument_list|,
-name|ecFilePath
+name|largeFilePath
 argument_list|,
 name|ecDirPath
 argument_list|,
-name|numBlocks
+literal|1
 argument_list|,
 literal|2
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+comment|// create a small striped file
+name|Path
+name|smallFilePath
+init|=
+operator|new
+name|Path
+argument_list|(
+name|ecDirPath
+argument_list|,
+literal|"smallFile"
+argument_list|)
+decl_stmt|;
+name|DFSTestUtil
+operator|.
+name|writeFile
+argument_list|(
+name|fs
+argument_list|,
+name|smallFilePath
+argument_list|,
+literal|"hello world!"
 argument_list|)
 expr_stmt|;
 name|long
@@ -11406,7 +11425,7 @@ name|fs
 operator|.
 name|getFileStatus
 argument_list|(
-name|ecFilePath
+name|largeFilePath
 argument_list|)
 operator|.
 name|getAccessTime
@@ -11462,7 +11481,7 @@ name|fs
 operator|.
 name|getFileStatus
 argument_list|(
-name|ecFilePath
+name|largeFilePath
 argument_list|)
 operator|.
 name|getAccessTime
