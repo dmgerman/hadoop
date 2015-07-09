@@ -5292,6 +5292,19 @@ operator|+
 literal|1
 argument_list|)
 expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|2000
+argument_list|)
+expr_stmt|;
+comment|// trigger the second time BR to delete the corrupted replica if there's one
+name|cluster
+operator|.
+name|triggerBlockReports
+argument_list|()
+expr_stmt|;
 comment|// Wait replicas come to 3
 name|DFSTestUtil
 operator|.
