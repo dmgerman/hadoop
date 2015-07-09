@@ -72,7 +72,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|DrainDispatcher (BlockingQueue<Event> eventQueue)
-specifier|private
+specifier|public
 name|DrainDispatcher
 parameter_list|(
 name|BlockingQueue
@@ -88,6 +88,27 @@ name|eventQueue
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    *  Wait till event thread enters WAITING state (i.e. waiting for new events).    */
+DECL|method|waitForEventThreadToWait ()
+specifier|public
+name|void
+name|waitForEventThreadToWait
+parameter_list|()
+block|{
+while|while
+condition|(
+operator|!
+name|isEventThreadWaiting
+argument_list|()
+condition|)
+block|{
+name|Thread
+operator|.
+name|yield
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Busy loop waiting for all queued events to drain.    */
 DECL|method|await ()
 specifier|public
@@ -97,8 +118,7 @@ parameter_list|()
 block|{
 while|while
 condition|(
-operator|!
-name|isDrained
+name|hasPendingEvents
 argument_list|()
 condition|)
 block|{
