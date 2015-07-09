@@ -500,7 +500,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|allocations
 init|=
@@ -509,7 +509,7 @@ name|HashMap
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -555,6 +555,11 @@ operator|.
 name|getInterpreter
 argument_list|()
 decl_stmt|;
+name|boolean
+name|hasGang
+init|=
+literal|false
+decl_stmt|;
 comment|// Iterate the stages in backward from deadline
 for|for
 control|(
@@ -599,12 +604,21 @@ argument_list|,
 name|totalCapacity
 argument_list|)
 expr_stmt|;
+name|hasGang
+operator||=
+name|currentReservationStage
+operator|.
+name|getConcurrency
+argument_list|()
+operator|>
+literal|1
+expr_stmt|;
 comment|// run allocation for a single stage
 name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|curAlloc
 init|=
@@ -786,21 +800,14 @@ argument_list|)
 throw|;
 block|}
 comment|// create reservation with above allocations if not null/empty
-name|ReservationRequest
+name|Resource
 name|ZERO_RES
 init|=
-name|ReservationRequest
-operator|.
-name|newInstance
-argument_list|(
 name|Resource
 operator|.
 name|newInstance
 argument_list|(
 literal|0
-argument_list|,
-literal|0
-argument_list|)
 argument_list|,
 literal|0
 argument_list|)
@@ -888,6 +895,8 @@ name|plan
 operator|.
 name|getMinimumAllocation
 argument_list|()
+argument_list|,
+name|hasGang
 argument_list|)
 decl_stmt|;
 if|if
@@ -1040,7 +1049,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|placeSingleStage
 parameter_list|(
@@ -1071,7 +1080,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|allocationRequests
 init|=
@@ -1080,7 +1089,7 @@ name|HashMap
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1394,7 +1403,7 @@ name|curDeadline
 argument_list|)
 decl_stmt|;
 name|ReservationRequest
-name|reservationRes
+name|reservationRequest
 init|=
 name|ReservationRequest
 operator|.
@@ -1428,6 +1437,17 @@ comment|// allocation for the entire request). This is needed since we might be
 comment|// placing other ReservationRequest within the same
 comment|// ReservationDefinition,
 comment|// and we must avoid double-counting the available resources
+specifier|final
+name|Resource
+name|reservationRes
+init|=
+name|ReservationSystemUtil
+operator|.
+name|toResource
+argument_list|(
+name|reservationRequest
+argument_list|)
+decl_stmt|;
 name|tempAssigned
 operator|.
 name|addInterval
@@ -1481,7 +1501,7 @@ name|Entry
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|tempAllocation
 range|:

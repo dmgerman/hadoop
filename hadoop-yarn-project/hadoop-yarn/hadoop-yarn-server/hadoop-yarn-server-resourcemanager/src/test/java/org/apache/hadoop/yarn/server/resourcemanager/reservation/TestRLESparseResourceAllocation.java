@@ -275,7 +275,7 @@ name|Entry
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 argument_list|>
 name|inputs
@@ -298,7 +298,7 @@ name|Entry
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|ip
 range|:
@@ -475,7 +475,7 @@ name|Entry
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|ip
 range|:
@@ -627,7 +627,7 @@ name|Entry
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 argument_list|>
 name|inputs
@@ -650,7 +650,7 @@ name|Entry
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|ip
 range|:
@@ -831,7 +831,7 @@ name|Entry
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|ip
 range|:
@@ -983,7 +983,7 @@ name|Entry
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 argument_list|>
 name|inputs
@@ -1006,7 +1006,7 @@ name|Entry
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|ip
 range|:
@@ -1187,7 +1187,7 @@ name|Entry
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|ip
 range|:
@@ -1324,10 +1324,6 @@ operator|.
 name|MAX_VALUE
 argument_list|)
 argument_list|,
-name|ReservationRequest
-operator|.
-name|newInstance
-argument_list|(
 name|Resource
 operator|.
 name|newInstance
@@ -1335,11 +1331,6 @@ argument_list|(
 literal|0
 argument_list|,
 literal|0
-argument_list|)
-argument_list|,
-operator|(
-literal|0
-operator|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1396,7 +1387,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|generateAllocation
 parameter_list|(
@@ -1415,7 +1406,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|req
 init|=
@@ -1424,7 +1415,7 @@ name|HashMap
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1493,6 +1484,10 @@ operator|+
 literal|1
 argument_list|)
 argument_list|,
+name|ReservationSystemUtil
+operator|.
+name|toResource
+argument_list|(
 name|ReservationRequest
 operator|.
 name|newInstance
@@ -1509,6 +1504,7 @@ argument_list|,
 operator|(
 name|numContainers
 operator|)
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

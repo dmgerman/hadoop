@@ -453,7 +453,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|allocations
 init|=
@@ -651,7 +651,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|allocations
 init|=
@@ -853,7 +853,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|allocations
 init|=
@@ -1043,7 +1043,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|allocations
 init|=
@@ -1052,7 +1052,7 @@ name|HashMap
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1185,11 +1185,16 @@ operator|.
 name|length
 argument_list|)
 decl_stmt|;
+name|boolean
+name|isGang
+init|=
+literal|true
+decl_stmt|;
 name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|allocations
 init|=
@@ -1201,7 +1206,7 @@ name|alloc
 argument_list|,
 literal|false
 argument_list|,
-literal|true
+name|isGang
 argument_list|)
 decl_stmt|;
 name|ReservationAllocation
@@ -1233,6 +1238,8 @@ argument_list|,
 name|resCalc
 argument_list|,
 name|minAlloc
+argument_list|,
+name|isGang
 argument_list|)
 decl_stmt|;
 name|doAssertions
@@ -1314,7 +1321,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|doAssertions (ReservationAllocation rAllocation, ReservationId reservationID, ReservationDefinition rDef, Map<ReservationInterval, ReservationRequest> allocations, int start, int[] alloc)
+DECL|method|doAssertions (ReservationAllocation rAllocation, ReservationId reservationID, ReservationDefinition rDef, Map<ReservationInterval, Resource> allocations, int start, int[] alloc)
 specifier|private
 name|void
 name|doAssertions
@@ -1332,7 +1339,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|allocations
 parameter_list|,
@@ -1540,7 +1547,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|generateAllocation
 parameter_list|(
@@ -1562,7 +1569,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|req
 init|=
@@ -1571,7 +1578,7 @@ name|HashMap
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1674,7 +1681,12 @@ operator|+
 literal|1
 argument_list|)
 argument_list|,
+name|ReservationSystemUtil
+operator|.
+name|toResource
+argument_list|(
 name|rr
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

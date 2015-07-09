@@ -3449,7 +3449,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|alloc
 init|=

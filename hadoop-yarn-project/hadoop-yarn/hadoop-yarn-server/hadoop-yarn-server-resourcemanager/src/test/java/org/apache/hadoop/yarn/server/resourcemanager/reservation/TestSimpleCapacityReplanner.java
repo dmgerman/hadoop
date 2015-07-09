@@ -1154,7 +1154,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|generateAllocation
 parameter_list|(
@@ -1170,7 +1170,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|req
 init|=
@@ -1179,7 +1179,7 @@ name|TreeMap
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1218,6 +1218,10 @@ operator|+
 literal|1
 argument_list|)
 argument_list|,
+name|ReservationSystemUtil
+operator|.
+name|toResource
+argument_list|(
 name|ReservationRequest
 operator|.
 name|newInstance
@@ -1235,6 +1239,7 @@ name|alloc
 index|[
 name|i
 index|]
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
