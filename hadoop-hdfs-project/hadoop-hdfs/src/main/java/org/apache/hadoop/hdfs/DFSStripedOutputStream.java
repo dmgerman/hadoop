@@ -1866,6 +1866,9 @@ argument_list|(
 name|i
 argument_list|)
 expr_stmt|;
+name|adjustChunkBoundary
+argument_list|()
+expr_stmt|;
 return|return
 name|getCurrentStreamer
 argument_list|()

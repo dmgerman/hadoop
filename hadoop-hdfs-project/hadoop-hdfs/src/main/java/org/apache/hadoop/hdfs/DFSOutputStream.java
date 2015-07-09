@@ -2692,7 +2692,7 @@ expr_stmt|;
 block|}
 comment|/**    * If the reopened file did not end at chunk boundary and the above    * write filled up its partial chunk. Tell the summer to generate full    * crc chunks from now on.    */
 DECL|method|adjustChunkBoundary ()
-specifier|private
+specifier|protected
 name|void
 name|adjustChunkBoundary
 parameter_list|()
