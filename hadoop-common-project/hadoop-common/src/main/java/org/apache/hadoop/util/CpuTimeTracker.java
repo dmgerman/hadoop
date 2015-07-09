@@ -4,15 +4,13 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.util
+DECL|package|org.apache.hadoop.util
 package|package
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
-operator|.
-name|yarn
 operator|.
 name|util
 package|;
@@ -56,6 +54,10 @@ name|BigInteger
 import|;
 end_import
 
+begin_comment
+comment|/**  * Utility for sampling and computing CPU usage.  */
+end_comment
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -77,17 +79,18 @@ specifier|final
 name|int
 name|UNAVAILABLE
 init|=
-name|ResourceCalculatorProcessTree
-operator|.
-name|UNAVAILABLE
+operator|-
+literal|1
 decl_stmt|;
-DECL|field|MINIMUM_UPDATE_INTERVAL
+DECL|field|minimumTimeInterval
+specifier|private
 specifier|final
 name|long
-name|MINIMUM_UPDATE_INTERVAL
+name|minimumTimeInterval
 decl_stmt|;
 comment|// CPU used time since system is on (ms)
 DECL|field|cumulativeCpuTime
+specifier|private
 name|BigInteger
 name|cumulativeCpuTime
 init|=
@@ -97,6 +100,7 @@ name|ZERO
 decl_stmt|;
 comment|// CPU used time read last time (ms)
 DECL|field|lastCumulativeCpuTime
+specifier|private
 name|BigInteger
 name|lastCumulativeCpuTime
 init|=
@@ -106,18 +110,22 @@ name|ZERO
 decl_stmt|;
 comment|// Unix timestamp while reading the CPU time (ms)
 DECL|field|sampleTime
+specifier|private
 name|long
 name|sampleTime
 decl_stmt|;
 DECL|field|lastSampleTime
+specifier|private
 name|long
 name|lastSampleTime
 decl_stmt|;
 DECL|field|cpuUsage
+specifier|private
 name|float
 name|cpuUsage
 decl_stmt|;
 DECL|field|jiffyLengthInMillis
+specifier|private
 name|BigInteger
 name|jiffyLengthInMillis
 decl_stmt|;
@@ -158,14 +166,14 @@ name|lastSampleTime
 operator|=
 name|UNAVAILABLE
 expr_stmt|;
-name|MINIMUM_UPDATE_INTERVAL
+name|minimumTimeInterval
 operator|=
 literal|10
 operator|*
 name|jiffyLengthInMillis
 expr_stmt|;
 block|}
-comment|/**    * Return percentage of cpu time spent over the time since last update.    * CPU time spent is based on elapsed jiffies multiplied by amount of    * time for 1 core. Thus, if you use 2 cores completely you would have spent    * twice the actual time between updates and this will return 200%.    *    * @return Return percentage of cpu usage since last update, {@link    * CpuTimeTracker#UNAVAILABLE} if there haven't been 2 updates more than    * {@link CpuTimeTracker#MINIMUM_UPDATE_INTERVAL} apart    */
+comment|/**    * Return percentage of cpu time spent over the time since last update.    * CPU time spent is based on elapsed jiffies multiplied by amount of    * time for 1 core. Thus, if you use 2 cores completely you would have spent    * twice the actual time between updates and this will return 200%.    *    * @return Return percentage of cpu usage since last update, {@link    * CpuTimeTracker#UNAVAILABLE} if there haven't been 2 updates more than    * {@link CpuTimeTracker#minimumTimeInterval} apart    */
 DECL|method|getCpuTrackerUsagePercent ()
 specifier|public
 name|float
@@ -205,7 +213,7 @@ name|sampleTime
 operator|>
 name|lastSampleTime
 operator|+
-name|MINIMUM_UPDATE_INTERVAL
+name|minimumTimeInterval
 condition|)
 block|{
 name|cpuUsage
@@ -250,34 +258,45 @@ return|return
 name|cpuUsage
 return|;
 block|}
-DECL|method|updateElapsedJiffies (BigInteger elapedJiffies, long sampleTime)
+comment|/**    * Obtain the cumulative CPU time since the system is on.    * @return cumulative CPU time in milliseconds    */
+DECL|method|getCumulativeCpuTime ()
+specifier|public
+name|long
+name|getCumulativeCpuTime
+parameter_list|()
+block|{
+return|return
+name|cumulativeCpuTime
+operator|.
+name|longValue
+argument_list|()
+return|;
+block|}
+comment|/**    * Apply delta to accumulators.    * @param elapsedJiffies updated jiffies    * @param newTime new sample time    */
+DECL|method|updateElapsedJiffies (BigInteger elapsedJiffies, long newTime)
 specifier|public
 name|void
 name|updateElapsedJiffies
 parameter_list|(
 name|BigInteger
-name|elapedJiffies
+name|elapsedJiffies
 parameter_list|,
 name|long
-name|sampleTime
+name|newTime
 parameter_list|)
 block|{
-name|this
-operator|.
 name|cumulativeCpuTime
 operator|=
-name|elapedJiffies
+name|elapsedJiffies
 operator|.
 name|multiply
 argument_list|(
 name|jiffyLengthInMillis
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
 name|sampleTime
 operator|=
-name|sampleTime
+name|newTime
 expr_stmt|;
 block|}
 annotation|@

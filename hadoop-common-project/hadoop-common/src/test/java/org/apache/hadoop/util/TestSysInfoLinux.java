@@ -4,15 +4,13 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.util
+DECL|package|org.apache.hadoop.util
 package|package
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
-operator|.
-name|yarn
 operator|.
 name|util
 package|;
@@ -45,16 +43,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
 import|;
 end_import
 
@@ -119,14 +107,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A JUnit test to test {@link LinuxResourceCalculatorPlugin}  * Create the fake /proc/ information and verify the parsing and calculation  */
+comment|/**  * A JUnit test to test {@link SysInfoLinux}  * Create the fake /proc/ information and verify the parsing and calculation  */
 end_comment
 
 begin_class
-DECL|class|TestLinuxResourceCalculatorPlugin
+DECL|class|TestSysInfoLinux
 specifier|public
 class|class
-name|TestLinuxResourceCalculatorPlugin
+name|TestSysInfoLinux
 block|{
 comment|/**    * LinuxResourceCalculatorPlugin with a fake timer    */
 DECL|class|FakeLinuxResourceCalculatorPlugin
@@ -134,7 +122,7 @@ specifier|static
 class|class
 name|FakeLinuxResourceCalculatorPlugin
 extends|extends
-name|LinuxResourceCalculatorPlugin
+name|SysInfoLinux
 block|{
 DECL|field|currentTime
 name|long
