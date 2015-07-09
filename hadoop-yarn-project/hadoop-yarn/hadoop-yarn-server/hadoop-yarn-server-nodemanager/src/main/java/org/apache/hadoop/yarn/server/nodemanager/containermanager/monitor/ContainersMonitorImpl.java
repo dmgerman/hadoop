@@ -254,6 +254,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceUtilization
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|nodemanager
 operator|.
 name|ContainerExecutor
@@ -528,6 +548,11 @@ specifier|private
 name|int
 name|nodeCpuPercentageForYARN
 decl_stmt|;
+DECL|field|containersUtilization
+specifier|private
+name|ResourceUtilization
+name|containersUtilization
+decl_stmt|;
 DECL|method|ContainersMonitorImpl (ContainerExecutor exec, AsyncDispatcher dispatcher, Context context)
 specifier|public
 name|ContainersMonitorImpl
@@ -596,6 +621,21 @@ operator|=
 operator|new
 name|MonitoringThread
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|containersUtilization
+operator|=
+name|ResourceUtilization
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0.0f
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -1742,6 +1782,22 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Temporary structure to calculate the total resource utilization of
+comment|// the containers
+name|ResourceUtilization
+name|trackedContainersUtilization
+init|=
+name|ResourceUtilization
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0.0f
+argument_list|)
+decl_stmt|;
 comment|// Now do the monitoring for the trackingContainers
 comment|// Check memory usage and kill any overflowing containers
 name|long
@@ -2151,6 +2207,34 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Add resource utilization for this container
+name|trackedContainersUtilization
+operator|.
+name|addTo
+argument_list|(
+call|(
+name|int
+call|)
+argument_list|(
+name|currentPmemUsage
+operator|>>
+literal|20
+argument_list|)
+argument_list|,
+call|(
+name|int
+call|)
+argument_list|(
+name|currentVmemUsage
+operator|>>
+literal|20
+argument_list|)
+argument_list|,
+name|milliVcoresUsed
+operator|/
+literal|1000.0f
+argument_list|)
+expr_stmt|;
 comment|// Add usage to container metrics
 if|if
 condition|(
@@ -2470,6 +2554,12 @@ name|cpuUsagePercentPerCoreByAllContainers
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Save the aggregated utilization of the containers
+name|setContainersUtilization
+argument_list|(
+name|trackedContainersUtilization
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|Thread
@@ -2720,6 +2810,36 @@ name|this
 operator|.
 name|vmemCheckEnabled
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getContainersUtilization ()
+specifier|public
+name|ResourceUtilization
+name|getContainersUtilization
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|containersUtilization
+return|;
+block|}
+DECL|method|setContainersUtilization (ResourceUtilization utilization)
+specifier|public
+name|void
+name|setContainersUtilization
+parameter_list|(
+name|ResourceUtilization
+name|utilization
+parameter_list|)
+block|{
+name|this
+operator|.
+name|containersUtilization
+operator|=
+name|utilization
+expr_stmt|;
 block|}
 annotation|@
 name|Override
