@@ -295,6 +295,14 @@ argument_list|>
 name|getAppsToCleanup
 parameter_list|()
 function_decl|;
+DECL|method|getRunningApps ()
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|getRunningApps
+parameter_list|()
+function_decl|;
 comment|/**    * Update a {@link NodeHeartbeatResponse} with the list of containers and    * applications to clean up for this node.    * @param response the {@link NodeHeartbeatResponse} to update    */
 DECL|method|updateNodeHeartbeatResponseForCleanup (NodeHeartbeatResponse response)
 specifier|public

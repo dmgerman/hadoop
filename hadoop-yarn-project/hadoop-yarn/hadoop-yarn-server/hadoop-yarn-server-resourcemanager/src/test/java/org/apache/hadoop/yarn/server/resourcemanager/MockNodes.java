@@ -1050,6 +1050,21 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getRunningApps ()
+specifier|public
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|getRunningApps
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|updateNodeHeartbeatResponseForCleanup (NodeHeartbeatResponse response)
 specifier|public
 name|void
