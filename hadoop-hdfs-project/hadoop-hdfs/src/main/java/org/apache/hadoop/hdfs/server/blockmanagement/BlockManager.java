@@ -16631,15 +16631,6 @@ argument_list|()
 condition|)
 block|{
 specifier|final
-name|BlockInfoUnderConstruction
-name|uc
-init|=
-operator|(
-name|BlockInfoUnderConstruction
-operator|)
-name|b
-decl_stmt|;
-specifier|final
 name|int
 name|numNodes
 init|=
