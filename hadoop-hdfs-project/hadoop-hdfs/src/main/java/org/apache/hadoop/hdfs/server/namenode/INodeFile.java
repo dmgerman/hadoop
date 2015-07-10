@@ -1918,8 +1918,7 @@ return|;
 block|}
 comment|/** Set the replication factor of this file. */
 DECL|method|setFileReplication (short replication)
-specifier|public
-specifier|final
+specifier|private
 name|void
 name|setFileReplication
 parameter_list|(
@@ -2105,6 +2104,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// INodeFileAttributes
 DECL|method|getHeaderLong ()
 specifier|public
 name|long
@@ -2118,6 +2118,7 @@ block|}
 comment|/** @return the blocks of the file. */
 annotation|@
 name|Override
+comment|// BlockCollection
 DECL|method|getBlocks ()
 specifier|public
 name|BlockInfo
@@ -2153,10 +2154,12 @@ argument_list|()
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 name|getBlocks
 argument_list|()
 return|;
+block|}
 name|FileDiff
 name|diff
 init|=
@@ -2190,9 +2193,11 @@ name|snapshotBlocks
 operator|!=
 literal|null
 condition|)
+block|{
 return|return
 name|snapshotBlocks
 return|;
+block|}
 comment|// Blocks are not in the current snapshot
 comment|// Find next snapshot with blocks present or return current file blocks
 name|snapshotBlocks
@@ -2218,7 +2223,9 @@ else|:
 name|snapshotBlocks
 return|;
 block|}
+comment|/** Used during concat to update the BlockCollection for each block. */
 DECL|method|updateBlockCollection ()
+specifier|private
 name|void
 name|updateBlockCollection
 parameter_list|()
@@ -2454,7 +2461,7 @@ block|}
 block|}
 comment|/** Set the blocks. */
 DECL|method|setBlocks (BlockInfo[] blocks)
-specifier|public
+specifier|private
 name|void
 name|setBlocks
 parameter_list|(
@@ -2468,6 +2475,19 @@ operator|.
 name|blocks
 operator|=
 name|blocks
+expr_stmt|;
+block|}
+comment|/** Clear all blocks of the file. */
+DECL|method|clearBlocks ()
+specifier|public
+name|void
+name|clearBlocks
+parameter_list|()
+block|{
+name|setBlocks
+argument_list|(
+literal|null
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -2733,10 +2753,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|setBlocks
-argument_list|(
-literal|null
-argument_list|)
+name|clearBlocks
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -3882,9 +3900,11 @@ name|oldBlocks
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 literal|0
 return|;
+block|}
 comment|// find the minimum n such that the size of the first n blocks> max
 name|int
 name|n
@@ -3932,9 +3952,11 @@ name|oldBlocks
 operator|.
 name|length
 condition|)
+block|{
 return|return
 name|size
 return|;
+block|}
 comment|// starting from block n, the data is beyond max.
 comment|// resize the array.
 name|truncateBlocksTo

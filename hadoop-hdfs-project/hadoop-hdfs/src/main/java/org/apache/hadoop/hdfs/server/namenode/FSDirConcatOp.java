@@ -1298,10 +1298,8 @@ condition|)
 block|{
 name|nodeToRemove
 operator|.
-name|setBlocks
-argument_list|(
-literal|null
-argument_list|)
+name|clearBlocks
+argument_list|()
 expr_stmt|;
 name|nodeToRemove
 operator|.
