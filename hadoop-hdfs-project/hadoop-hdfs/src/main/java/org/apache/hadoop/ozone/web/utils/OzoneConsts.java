@@ -149,6 +149,24 @@ name|OZONE_ACL_WRITE_READ
 init|=
 literal|"wr"
 decl_stmt|;
+DECL|field|OZONE_DATE_FORMAT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_DATE_FORMAT
+init|=
+literal|"EEE, dd MMM yyyy HH:mm:ss zzz"
+decl_stmt|;
+DECL|field|OZONE_TIME_ZONE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_TIME_ZONE
+init|=
+literal|"GMT"
+decl_stmt|;
 DECL|method|OzoneConsts ()
 specifier|private
 name|OzoneConsts

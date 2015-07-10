@@ -108,20 +108,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Time
-import|;
-end_import
-
-begin_import
-import|import
 name|javax
 operator|.
 name|ws
@@ -277,6 +263,13 @@ specifier|final
 class|class
 name|OzoneUtils
 block|{
+DECL|method|OzoneUtils ()
+specifier|private
+name|OzoneUtils
+parameter_list|()
+block|{
+comment|// Never constructed
+block|}
 comment|/**    * verifies that bucket name / volume name is a valid DNS name.    *    * @param bucketName Bucket Name to be validated    *    * @throws IllegalArgumentException    */
 DECL|method|verifyBucketName (String bucketName)
 specifier|public
@@ -645,7 +638,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Returns a random Request ID.    *    * Request ID is returned to the client as well as flows thru the system    * facilitating debugging on why a certain request failed.    *    * @return String random request ID    */
+comment|/**    * Returns a random Request ID.    *    * Request ID is returned to the client as well as flows through the system    * facilitating debugging on why a certain request failed.    *    * @return String random request ID    */
 DECL|method|getRequestID ()
 specifier|public
 specifier|static
@@ -851,7 +844,9 @@ init|=
 operator|new
 name|SimpleDateFormat
 argument_list|(
-literal|"EEE, dd MMM yyyy HH:mm:ss zzz"
+name|OzoneConsts
+operator|.
+name|OZONE_DATE_FORMAT
 argument_list|,
 name|Locale
 operator|.
@@ -866,7 +861,9 @@ name|TimeZone
 operator|.
 name|getTimeZone
 argument_list|(
-literal|"GMT"
+name|OzoneConsts
+operator|.
+name|OZONE_TIME_ZONE
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -943,7 +940,9 @@ init|=
 operator|new
 name|SimpleDateFormat
 argument_list|(
-literal|"EEE, dd MMM yyyy HH:mm:ss zzz"
+name|OzoneConsts
+operator|.
+name|OZONE_DATE_FORMAT
 argument_list|,
 name|Locale
 operator|.
@@ -958,7 +957,9 @@ name|TimeZone
 operator|.
 name|getTimeZone
 argument_list|(
-literal|"GMT"
+name|OzoneConsts
+operator|.
+name|OZONE_TIME_ZONE
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -972,9 +973,9 @@ argument_list|(
 operator|new
 name|Date
 argument_list|(
-name|Time
+name|System
 operator|.
-name|monotonicNow
+name|currentTimeMillis
 argument_list|()
 argument_list|)
 argument_list|)
@@ -1052,7 +1053,9 @@ init|=
 operator|new
 name|SimpleDateFormat
 argument_list|(
-literal|"EEE, dd MMM yyyy HH:mm:ss zzz"
+name|OzoneConsts
+operator|.
+name|OZONE_DATE_FORMAT
 argument_list|,
 name|Locale
 operator|.
@@ -1067,7 +1070,9 @@ name|TimeZone
 operator|.
 name|getTimeZone
 argument_list|(
-literal|"GMT"
+name|OzoneConsts
+operator|.
+name|OZONE_TIME_ZONE
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1081,9 +1086,9 @@ argument_list|(
 operator|new
 name|Date
 argument_list|(
-name|Time
+name|System
 operator|.
-name|monotonicNow
+name|currentTimeMillis
 argument_list|()
 argument_list|)
 argument_list|)
@@ -1146,13 +1151,6 @@ operator|.
 name|build
 argument_list|()
 return|;
-block|}
-DECL|method|OzoneUtils ()
-specifier|private
-name|OzoneUtils
-parameter_list|()
-block|{
-comment|// Never constructed
 block|}
 block|}
 end_class
