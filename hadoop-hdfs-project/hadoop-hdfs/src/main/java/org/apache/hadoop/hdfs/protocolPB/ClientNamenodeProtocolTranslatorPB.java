@@ -7077,6 +7077,12 @@ operator|.
 name|setRenewer
 argument_list|(
 name|renewer
+operator|==
+literal|null
+condition|?
+literal|""
+else|:
+name|renewer
 operator|.
 name|toString
 argument_list|()
