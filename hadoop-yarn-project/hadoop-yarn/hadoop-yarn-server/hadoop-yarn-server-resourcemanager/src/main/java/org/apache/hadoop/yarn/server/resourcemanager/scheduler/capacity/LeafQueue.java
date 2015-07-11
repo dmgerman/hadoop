@@ -4232,6 +4232,16 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|rmAppAttempt
+operator|.
+name|getSubmissionContext
+argument_list|()
+operator|.
+name|getUnmanagedAM
+argument_list|()
+operator|==
+literal|false
+operator|&&
 literal|null
 operator|==
 name|rmAppAttempt

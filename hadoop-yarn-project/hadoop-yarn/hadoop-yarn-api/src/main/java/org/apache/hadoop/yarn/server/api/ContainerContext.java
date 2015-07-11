@@ -152,6 +152,12 @@ specifier|final
 name|Resource
 name|resource
 decl_stmt|;
+DECL|field|containerType
+specifier|private
+specifier|final
+name|ContainerType
+name|containerType
+decl_stmt|;
 annotation|@
 name|Private
 annotation|@
@@ -171,6 +177,41 @@ name|resource
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|user
+argument_list|,
+name|containerId
+argument_list|,
+name|resource
+argument_list|,
+name|ContainerType
+operator|.
+name|TASK
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|ContainerContext (String user, ContainerId containerId, Resource resource, ContainerType containerType)
+specifier|public
+name|ContainerContext
+parameter_list|(
+name|String
+name|user
+parameter_list|,
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|,
+name|ContainerType
+name|containerType
+parameter_list|)
+block|{
+name|this
 operator|.
 name|user
 operator|=
@@ -187,6 +228,12 @@ operator|.
 name|resource
 operator|=
 name|resource
+expr_stmt|;
+name|this
+operator|.
+name|containerType
+operator|=
+name|containerType
 expr_stmt|;
 block|}
 comment|/**    * Get user of the container being initialized or stopped.    *    * @return the user    */
@@ -220,6 +267,17 @@ parameter_list|()
 block|{
 return|return
 name|resource
+return|;
+block|}
+comment|/**    * Get {@link ContainerType} the type of the container    * being initialized or stopped.    *    * @return the type of the container    */
+DECL|method|getContainerType ()
+specifier|public
+name|ContainerType
+name|getContainerType
+parameter_list|()
+block|{
+return|return
+name|containerType
 return|;
 block|}
 block|}
