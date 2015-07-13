@@ -2000,6 +2000,14 @@ name|getNumBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|target
+operator|.
+name|getDDatanode
+argument_list|()
+operator|.
+name|setHasSuccess
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -2794,6 +2802,14 @@ name|hasFailure
 init|=
 literal|false
 decl_stmt|;
+DECL|field|hasSuccess
+specifier|private
+specifier|volatile
+name|boolean
+name|hasSuccess
+init|=
+literal|false
+decl_stmt|;
 DECL|field|maxConcurrentMoves
 specifier|private
 specifier|final
@@ -3140,6 +3156,18 @@ block|{
 name|this
 operator|.
 name|hasFailure
+operator|=
+literal|true
+expr_stmt|;
+block|}
+DECL|method|setHasSuccess ()
+name|void
+name|setHasSuccess
+parameter_list|()
+block|{
+name|this
+operator|.
+name|hasSuccess
 operator|=
 literal|true
 expr_stmt|;
@@ -4858,6 +4886,49 @@ name|ignored
 parameter_list|)
 block|{       }
 block|}
+block|}
+comment|/**    * @return true if some moves are success.    */
+DECL|method|checkForSuccess ( Iterable<? extends StorageGroup> targets)
+specifier|public
+specifier|static
+name|boolean
+name|checkForSuccess
+parameter_list|(
+name|Iterable
+argument_list|<
+name|?
+extends|extends
+name|StorageGroup
+argument_list|>
+name|targets
+parameter_list|)
+block|{
+name|boolean
+name|hasSuccess
+init|=
+literal|false
+decl_stmt|;
+for|for
+control|(
+name|StorageGroup
+name|t
+range|:
+name|targets
+control|)
+block|{
+name|hasSuccess
+operator||=
+name|t
+operator|.
+name|getDDatanode
+argument_list|()
+operator|.
+name|hasSuccess
+expr_stmt|;
+block|}
+return|return
+name|hasSuccess
+return|;
 block|}
 comment|/**    * Decide if the block is a good candidate to be moved from source to target.    * A block is a good candidate if    * 1. the block is not in the process of being moved/has not been moved;    * 2. the block does not have a replica on the target;    * 3. doing the move does not reduce the number of racks that the block has    */
 DECL|method|isGoodBlockCandidate (StorageGroup source, StorageGroup target, StorageType targetStorageType, DBlock block)

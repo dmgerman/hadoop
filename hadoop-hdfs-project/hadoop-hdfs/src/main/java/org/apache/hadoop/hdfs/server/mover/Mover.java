@@ -1781,9 +1781,27 @@ name|values
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|boolean
+name|hasSuccess
+init|=
+name|Dispatcher
+operator|.
+name|checkForSuccess
+argument_list|(
+name|storages
+operator|.
+name|targets
+operator|.
+name|values
+argument_list|()
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|hasFailed
+operator|&&
+operator|!
+name|hasSuccess
 condition|)
 block|{
 if|if
@@ -1796,9 +1814,14 @@ operator|==
 name|retryMaxAttempts
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
+name|result
+operator|.
+name|setRetryFailed
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|error
 argument_list|(
 literal|"Failed to move some block's after "
 operator|+
@@ -1806,7 +1829,10 @@ name|retryMaxAttempts
 operator|+
 literal|" retries."
 argument_list|)
-throw|;
+expr_stmt|;
+return|return
+name|result
+return|;
 block|}
 else|else
 block|{
@@ -4343,6 +4369,11 @@ specifier|private
 name|boolean
 name|noBlockMoved
 decl_stmt|;
+DECL|field|retryFailed
+specifier|private
+name|boolean
+name|retryFailed
+decl_stmt|;
 DECL|method|Result ()
 name|Result
 parameter_list|()
@@ -4354,6 +4385,10 @@ expr_stmt|;
 name|noBlockMoved
 operator|=
 literal|true
+expr_stmt|;
+name|retryFailed
+operator|=
+literal|false
 expr_stmt|;
 block|}
 DECL|method|isHasRemaining ()
@@ -4404,11 +4439,36 @@ operator|=
 name|noBlockMoved
 expr_stmt|;
 block|}
-comment|/**      * @return SUCCESS if all moves are success and there is no remaining move.      *         Return NO_MOVE_BLOCK if there moves available but all the moves      *         cannot be scheduled. Otherwise, return IN_PROGRESS since there      *         must be some remaining moves.      */
+DECL|method|setRetryFailed ()
+name|void
+name|setRetryFailed
+parameter_list|()
+block|{
+name|this
+operator|.
+name|retryFailed
+operator|=
+literal|true
+expr_stmt|;
+block|}
+comment|/**      * @return NO_MOVE_PROGRESS if no progress in move after some retry. Return      *         SUCCESS if all moves are success and there is no remaining move.      *         Return NO_MOVE_BLOCK if there moves available but all the moves      *         cannot be scheduled. Otherwise, return IN_PROGRESS since there      *         must be some remaining moves.      */
 DECL|method|getExitStatus ()
 name|ExitStatus
 name|getExitStatus
 parameter_list|()
+block|{
+if|if
+condition|(
+name|retryFailed
+condition|)
+block|{
+return|return
+name|ExitStatus
+operator|.
+name|NO_MOVE_PROGRESS
+return|;
+block|}
+else|else
 block|{
 return|return
 operator|!
@@ -4430,6 +4490,7 @@ name|ExitStatus
 operator|.
 name|IN_PROGRESS
 return|;
+block|}
 block|}
 block|}
 comment|/**    * Run a Mover in command line.    *    * @param args Command line arguments    */

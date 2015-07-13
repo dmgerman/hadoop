@@ -2994,7 +2994,7 @@ literal|"Movement should fail after some retry"
 argument_list|,
 name|ExitStatus
 operator|.
-name|IO_EXCEPTION
+name|NO_MOVE_PROGRESS
 operator|.
 name|getExitCode
 argument_list|()
