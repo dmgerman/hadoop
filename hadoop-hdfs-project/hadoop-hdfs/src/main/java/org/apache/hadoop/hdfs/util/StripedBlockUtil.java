@@ -374,6 +374,7 @@ index|[
 name|i
 index|]
 decl_stmt|;
+comment|// for now we do not use redundant replica of an internal block
 if|if
 condition|(
 name|idx
@@ -993,17 +994,28 @@ name|ExecutionException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
 name|DFSClient
 operator|.
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"ExecutionException "
 operator|+
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|StripingChunkReadResult
@@ -3190,9 +3202,12 @@ index|]
 operator|=
 operator|new
 name|StripingChunk
-argument_list|()
+argument_list|(
+name|StripingChunk
+operator|.
+name|ALLZERO
+argument_list|)
 expr_stmt|;
-comment|// chunk state is set to ALLZERO
 block|}
 block|}
 block|}
@@ -3663,10 +3678,13 @@ operator|=
 name|buf
 expr_stmt|;
 block|}
-DECL|method|StripingChunk ()
+DECL|method|StripingChunk (int state)
 specifier|public
 name|StripingChunk
-parameter_list|()
+parameter_list|(
+name|int
+name|state
+parameter_list|)
 block|{
 name|this
 operator|.
@@ -3684,7 +3702,7 @@ name|this
 operator|.
 name|state
 operator|=
-name|ALLZERO
+name|state
 expr_stmt|;
 block|}
 DECL|method|addByteArraySlice (int offset, int length)
