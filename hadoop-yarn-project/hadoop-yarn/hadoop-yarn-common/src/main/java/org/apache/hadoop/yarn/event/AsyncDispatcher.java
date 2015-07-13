@@ -280,6 +280,16 @@ name|drainEventsOnStop
 init|=
 literal|false
 decl_stmt|;
+comment|// Indicates all the remaining dispatcher's events on stop have been drained
+comment|// and processed.
+DECL|field|drained
+specifier|private
+specifier|volatile
+name|boolean
+name|drained
+init|=
+literal|true
+decl_stmt|;
 DECL|field|waitForDrained
 specifier|private
 name|Object
@@ -421,6 +431,13 @@ name|isInterrupted
 argument_list|()
 condition|)
 block|{
+name|drained
+operator|=
+name|eventQueue
+operator|.
+name|isEmpty
+argument_list|()
+expr_stmt|;
 comment|// blockNewEvents is only set when dispatcher is draining to stop,
 comment|// adding this check is to avoid the overhead of acquiring the lock
 comment|// and calling notify every time in the normal run of the loop.
@@ -436,10 +453,7 @@ init|)
 block|{
 if|if
 condition|(
-name|eventQueue
-operator|.
-name|isEmpty
-argument_list|()
+name|drained
 condition|)
 block|{
 name|waitForDrained
@@ -626,10 +640,7 @@ block|{
 while|while
 condition|(
 operator|!
-name|eventQueue
-operator|.
-name|isEmpty
-argument_list|()
+name|drained
 operator|&&
 name|eventHandlingThread
 operator|.
@@ -1038,43 +1049,6 @@ return|return
 name|handlerInstance
 return|;
 block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|hasPendingEvents ()
-specifier|protected
-name|boolean
-name|hasPendingEvents
-parameter_list|()
-block|{
-return|return
-operator|!
-name|eventQueue
-operator|.
-name|isEmpty
-argument_list|()
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|isEventThreadWaiting ()
-specifier|protected
-name|boolean
-name|isEventThreadWaiting
-parameter_list|()
-block|{
-return|return
-name|eventHandlingThread
-operator|.
-name|getState
-argument_list|()
-operator|==
-name|Thread
-operator|.
-name|State
-operator|.
-name|WAITING
-return|;
-block|}
 DECL|class|GenericEventHandler
 class|class
 name|GenericEventHandler
@@ -1100,6 +1074,10 @@ condition|)
 block|{
 return|return;
 block|}
+name|drained
+operator|=
+literal|false
+expr_stmt|;
 comment|/* all this method does is enqueue all the events onto the queue */
 name|int
 name|qSize
@@ -1324,6 +1302,20 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|isDrained ()
+specifier|protected
+name|boolean
+name|isDrained
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|drained
 return|;
 block|}
 block|}
