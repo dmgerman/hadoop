@@ -55,6 +55,11 @@ extends|extends
 name|TestConfigurationFieldsBase
 block|{
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|initializeMemberVariables ()
 specifier|public
@@ -91,6 +96,15 @@ name|String
 argument_list|>
 argument_list|()
 expr_stmt|;
+name|configurationPrefixToSkipCompare
+operator|=
+operator|new
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+expr_stmt|;
 comment|// Set error modes
 name|errorIfMissingConfigProps
 operator|=
@@ -98,7 +112,7 @@ literal|true
 expr_stmt|;
 name|errorIfMissingXmlProps
 operator|=
-literal|false
+literal|true
 expr_stmt|;
 comment|// Specific properties to skip
 name|configurationPropsToSkipCompare
@@ -218,6 +232,115 @@ operator|.
 name|YARN_SECURITY_SERVICE_AUTHORIZATION_RESOURCETRACKER_PROTOCOL
 argument_list|)
 expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|DEFAULT_SCM_STORE_CLASS
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|DEFAULT_SCM_APP_CHECKER_CLASS
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|DEFAULT_SHARED_CACHE_CHECKSUM_ALGO_IMPL
+argument_list|)
+expr_stmt|;
+comment|// Ignore all YARN Application Timeline Service (version 1) properties
+name|configurationPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"yarn.timeline-service."
+argument_list|)
+expr_stmt|;
+comment|// Used as Java command line properties, not XML
+name|configurationPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"yarn.app.container"
+argument_list|)
+expr_stmt|;
+comment|// Ignore NodeManager "work in progress" variables
+name|configurationPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_NETWORK_RESOURCE_ENABLED
+argument_list|)
+expr_stmt|;
+name|configurationPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_NETWORK_RESOURCE_INTERFACE
+argument_list|)
+expr_stmt|;
+name|configurationPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_MBIT
+argument_list|)
+expr_stmt|;
+name|configurationPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_YARN_MBIT
+argument_list|)
+expr_stmt|;
+name|configurationPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_DISK_RESOURCE_ENABLED
+argument_list|)
+expr_stmt|;
+comment|// Set by container-executor.cfg
+name|configurationPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_USER_HOME_DIR
+argument_list|)
+expr_stmt|;
+comment|// Ignore deprecated properties
+name|configurationPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|YARN_CLIENT_APP_SUBMISSION_POLL_INTERVAL_MS
+argument_list|)
+expr_stmt|;
 comment|// Allocate for usage
 name|xmlPropsToSkipCompare
 operator|=
@@ -275,22 +398,15 @@ argument_list|(
 literal|"yarn.nodemanager.hostname"
 argument_list|)
 expr_stmt|;
-name|xmlPropsToSkipCompare
-operator|.
-name|add
-argument_list|(
-literal|"yarn.timeline-service.hostname"
-argument_list|)
-expr_stmt|;
-comment|// Currently defined in TimelineAuthenticationFilterInitializer
+comment|// Ignore all YARN Application Timeline Service (version 1) properties
 name|xmlPrefixToSkipCompare
 operator|.
 name|add
 argument_list|(
-literal|"yarn.timeline-service.http-authentication"
+literal|"yarn.timeline-service"
 argument_list|)
 expr_stmt|;
-comment|// Currently defined in RegistryConstants
+comment|// Currently defined in RegistryConstants/core-site.xml
 name|xmlPrefixToSkipCompare
 operator|.
 name|add
