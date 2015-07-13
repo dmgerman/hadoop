@@ -2235,9 +2235,8 @@ name|remaining
 argument_list|()
 decl_stmt|;
 name|int
-name|ckLen
+name|chunks
 init|=
-operator|(
 operator|(
 name|toWrite
 operator|-
@@ -2247,7 +2246,11 @@ operator|/
 name|bytesPerChecksum
 operator|+
 literal|1
-operator|)
+decl_stmt|;
+name|int
+name|ckLen
+init|=
+name|chunks
 operator|*
 name|getChecksumSize
 argument_list|()
@@ -2282,6 +2285,13 @@ operator|.
 name|incBytesCurBlock
 argument_list|(
 name|toWrite
+argument_list|)
+expr_stmt|;
+name|p
+operator|.
+name|incNumChunks
+argument_list|(
+name|chunks
 argument_list|)
 expr_stmt|;
 name|packets

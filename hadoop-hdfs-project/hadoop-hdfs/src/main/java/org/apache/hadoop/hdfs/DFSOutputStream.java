@@ -2538,7 +2538,9 @@ expr_stmt|;
 name|currentPacket
 operator|.
 name|incNumChunks
-argument_list|()
+argument_list|(
+literal|1
+argument_list|)
 expr_stmt|;
 name|streamer
 operator|.
