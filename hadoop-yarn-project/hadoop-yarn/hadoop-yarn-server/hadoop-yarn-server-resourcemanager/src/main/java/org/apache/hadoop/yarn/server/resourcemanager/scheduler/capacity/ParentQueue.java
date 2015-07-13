@@ -1188,9 +1188,9 @@ control|(
 name|String
 name|nodeLabel
 range|:
-name|labelManager
+name|queueCapacities
 operator|.
-name|getClusterNodeLabelNames
+name|getExistingNodeLabels
 argument_list|()
 control|)
 block|{
