@@ -95,7 +95,7 @@ name|EVENT
 name|event
 parameter_list|)
 throws|throws
-name|InvalidStateTransitonException
+name|InvalidStateTransitionException
 function_decl|;
 block|}
 end_interface

@@ -1043,7 +1043,7 @@ name|EVENT
 name|event
 parameter_list|)
 throws|throws
-name|InvalidStateTransitonException
+name|InvalidStateTransitionException
 block|{
 comment|// We can assume that stateMachineTable is non-null because we call
 comment|//  maybeMakeStateMachineTable() when we build an InnerStateMachine ,
@@ -1123,7 +1123,7 @@ block|}
 block|}
 throw|throw
 operator|new
-name|InvalidStateTransitonException
+name|InvalidStateTransitionException
 argument_list|(
 name|oldState
 argument_list|,
@@ -1554,7 +1554,7 @@ name|EVENTTYPE
 name|eventType
 parameter_list|)
 throws|throws
-name|InvalidStateTransitonException
+name|InvalidStateTransitionException
 block|{
 name|STATE
 name|postState
@@ -1581,7 +1581,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|InvalidStateTransitonException
+name|InvalidStateTransitionException
 argument_list|(
 name|oldState
 argument_list|,
@@ -1737,7 +1737,7 @@ name|EVENT
 name|event
 parameter_list|)
 throws|throws
-name|InvalidStateTransitonException
+name|InvalidStateTransitionException
 block|{
 name|currentState
 operator|=

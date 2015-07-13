@@ -790,7 +790,7 @@ name|yarn
 operator|.
 name|state
 operator|.
-name|InvalidStateTransitonException
+name|InvalidStateTransitionException
 import|;
 end_import
 
@@ -2602,7 +2602,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|InvalidStateTransitonException
+name|InvalidStateTransitionException
 name|e
 parameter_list|)
 block|{
