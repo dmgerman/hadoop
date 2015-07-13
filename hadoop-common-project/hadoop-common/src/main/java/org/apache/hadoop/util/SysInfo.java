@@ -193,6 +193,22 @@ name|long
 name|getNetworkBytesWritten
 parameter_list|()
 function_decl|;
+comment|/**    * Obtain the aggregated number of bytes read from disks.    *    * @return total number of bytes read.    */
+DECL|method|getStorageBytesRead ()
+specifier|public
+specifier|abstract
+name|long
+name|getStorageBytesRead
+parameter_list|()
+function_decl|;
+comment|/**    * Obtain the aggregated number of bytes written to disks.    *    * @return total number of bytes written.    */
+DECL|method|getStorageBytesWritten ()
+specifier|public
+specifier|abstract
+name|long
+name|getStorageBytesWritten
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

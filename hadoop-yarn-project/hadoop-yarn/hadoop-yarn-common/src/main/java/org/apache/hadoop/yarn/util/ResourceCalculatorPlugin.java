@@ -362,6 +362,34 @@ name|getNetworkBytesWritten
 argument_list|()
 return|;
 block|}
+comment|/**    * Obtain the aggregated number of bytes read from disks.    *    * @return total number of bytes read.    */
+DECL|method|getStorageBytesRead ()
+specifier|public
+name|long
+name|getStorageBytesRead
+parameter_list|()
+block|{
+return|return
+name|sys
+operator|.
+name|getStorageBytesRead
+argument_list|()
+return|;
+block|}
+comment|/**    * Obtain the aggregated number of bytes written to disks.    *    * @return total number of bytes written.    */
+DECL|method|getStorageBytesWritten ()
+specifier|public
+name|long
+name|getStorageBytesWritten
+parameter_list|()
+block|{
+return|return
+name|sys
+operator|.
+name|getStorageBytesWritten
+argument_list|()
+return|;
+block|}
 comment|/**    * Create the ResourceCalculatorPlugin from the class name and configure it. If    * class name is null, this method will try and return a memory calculator    * plugin available for this system.    *    * @param clazz ResourceCalculator plugin class-name    * @param conf configure the plugin with this.    * @return ResourceCalculatorPlugin or null if ResourceCalculatorPlugin is not    * 		 available for current system    */
 DECL|method|getResourceCalculatorPlugin ( Class<? extends ResourceCalculatorPlugin> clazz, Configuration conf)
 specifier|public

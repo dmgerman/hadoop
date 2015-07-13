@@ -144,6 +144,26 @@ name|NETWORK_BYTES_WRITTEN
 init|=
 literal|"mapred.tasktracker.networkwritten.testing"
 decl_stmt|;
+comment|/** cumulative number of bytes read from disks */
+DECL|field|STORAGE_BYTES_READ
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STORAGE_BYTES_READ
+init|=
+literal|"mapred.tasktracker.storageread.testing"
+decl_stmt|;
+comment|/** cumulative number of bytes written to disks */
+DECL|field|STORAGE_BYTES_WRITTEN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STORAGE_BYTES_WRITTEN
+init|=
+literal|"mapred.tasktracker.storagewritten.testing"
+decl_stmt|;
 comment|/** process cumulative CPU usage time for testing */
 DECL|field|PROC_CUMULATIVE_CPU_TIME
 specifier|public
@@ -402,6 +422,50 @@ operator|.
 name|getLong
 argument_list|(
 name|NETWORK_BYTES_WRITTEN
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+return|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+DECL|method|getStorageBytesRead ()
+specifier|public
+name|long
+name|getStorageBytesRead
+parameter_list|()
+block|{
+return|return
+name|getConf
+argument_list|()
+operator|.
+name|getLong
+argument_list|(
+name|STORAGE_BYTES_READ
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+return|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+DECL|method|getStorageBytesWritten ()
+specifier|public
+name|long
+name|getStorageBytesWritten
+parameter_list|()
+block|{
+return|return
+name|getConf
+argument_list|()
+operator|.
+name|getLong
+argument_list|(
+name|STORAGE_BYTES_WRITTEN
 argument_list|,
 operator|-
 literal|1

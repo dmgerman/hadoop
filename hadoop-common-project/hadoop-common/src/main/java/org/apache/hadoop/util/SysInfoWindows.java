@@ -742,6 +742,32 @@ return|return
 literal|0L
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getStorageBytesRead ()
+specifier|public
+name|long
+name|getStorageBytesRead
+parameter_list|()
+block|{
+comment|// TODO unimplemented
+return|return
+literal|0L
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getStorageBytesWritten ()
+specifier|public
+name|long
+name|getStorageBytesWritten
+parameter_list|()
+block|{
+comment|// TODO unimplemented
+return|return
+literal|0L
+return|;
+block|}
 block|}
 end_class
 

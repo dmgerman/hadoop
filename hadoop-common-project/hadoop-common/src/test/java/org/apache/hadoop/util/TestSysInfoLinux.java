@@ -124,13 +124,21 @@ name|FakeLinuxResourceCalculatorPlugin
 extends|extends
 name|SysInfoLinux
 block|{
+DECL|field|SECTORSIZE
+specifier|static
+specifier|final
+name|int
+name|SECTORSIZE
+init|=
+literal|4096
+decl_stmt|;
 DECL|field|currentTime
 name|long
 name|currentTime
 init|=
 literal|0
 decl_stmt|;
-DECL|method|FakeLinuxResourceCalculatorPlugin (String procfsMemFile, String procfsCpuFile, String procfsStatFile, String procfsNetFile, long jiffyLengthInMillis)
+DECL|method|FakeLinuxResourceCalculatorPlugin (String procfsMemFile, String procfsCpuFile, String procfsStatFile, String procfsNetFile, String procfsDisksFile, long jiffyLengthInMillis)
 specifier|public
 name|FakeLinuxResourceCalculatorPlugin
 parameter_list|(
@@ -146,6 +154,9 @@ parameter_list|,
 name|String
 name|procfsNetFile
 parameter_list|,
+name|String
+name|procfsDisksFile
+parameter_list|,
 name|long
 name|jiffyLengthInMillis
 parameter_list|)
@@ -159,6 +170,8 @@ argument_list|,
 name|procfsStatFile
 argument_list|,
 name|procfsNetFile
+argument_list|,
+name|procfsDisksFile
 argument_list|,
 name|jiffyLengthInMillis
 argument_list|)
@@ -193,6 +206,23 @@ operator|.
 name|getJiffyLengthInMillis
 argument_list|()
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|readDiskBlockInformation (String diskName, int defSector)
+name|int
+name|readDiskBlockInformation
+parameter_list|(
+name|String
+name|diskName
+parameter_list|,
+name|int
+name|defSector
+parameter_list|)
+block|{
+return|return
+name|SECTORSIZE
+return|;
 block|}
 block|}
 DECL|field|plugin
@@ -258,6 +288,13 @@ specifier|static
 specifier|final
 name|String
 name|FAKE_NETFILE
+decl_stmt|;
+DECL|field|FAKE_DISKSFILE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|FAKE_DISKSFILE
 decl_stmt|;
 DECL|field|FAKE_JIFFY_LENGTH
 specifier|private
@@ -332,6 +369,18 @@ literal|"NETINFO_"
 operator|+
 name|randomNum
 expr_stmt|;
+name|FAKE_DISKSFILE
+operator|=
+name|TEST_ROOT_DIR
+operator|+
+name|File
+operator|.
+name|separator
+operator|+
+literal|"DISKSINFO_"
+operator|+
+name|randomNum
+expr_stmt|;
 name|plugin
 operator|=
 operator|new
@@ -344,6 +393,8 @@ argument_list|,
 name|FAKE_STATFILE
 argument_list|,
 name|FAKE_NETFILE
+argument_list|,
+name|FAKE_DISKSFILE
 argument_list|,
 name|FAKE_JIFFY_LENGTH
 argument_list|)
@@ -518,6 +569,72 @@ operator|+
 literal|" eth1: %d 3152521    0    0    0     0          0    219781 %d 1866290    0    0    "
 operator|+
 literal|"0     0       0          0\n"
+decl_stmt|;
+DECL|field|DISKSINFO_FORMAT
+specifier|static
+specifier|final
+name|String
+name|DISKSINFO_FORMAT
+init|=
+literal|"1       0 ram0 0 0 0 0 0 0 0 0 0 0 0\n"
+operator|+
+literal|"1       1 ram1 0 0 0 0 0 0 0 0 0 0 0\n"
+operator|+
+literal|"1       2 ram2 0 0 0 0 0 0 0 0 0 0 0\n"
+operator|+
+literal|"1       3 ram3 0 0 0 0 0 0 0 0 0 0 0\n"
+operator|+
+literal|"1       4 ram4 0 0 0 0 0 0 0 0 0 0 0\n"
+operator|+
+literal|"1       5 ram5 0 0 0 0 0 0 0 0 0 0 0\n"
+operator|+
+literal|"1       6 ram6 0 0 0 0 0 0 0 0 0 0 0\n"
+operator|+
+literal|"7       0 loop0 0 0 0 0 0 0 0 0 0 0 0\n"
+operator|+
+literal|"7       1 loop1 0 0 0 0 0 0 0 0 0 0 0\n"
+operator|+
+literal|"8       0 sda 82575678 2486518 %d 59876600 3225402 19761924 %d "
+operator|+
+literal|"6407705 4 48803346 66227952\n"
+operator|+
+literal|"8       1 sda1 732 289 21354 787 7 3 32 4 0 769 791"
+operator|+
+literal|"8       2 sda2 744272 2206315 23605200 6742762 336830 2979630 "
+operator|+
+literal|"26539520 1424776 4 1820130 8165444\n"
+operator|+
+literal|"8       3 sda3 81830497 279914 17881852954 53132969 2888558 16782291 "
+operator|+
+literal|"157367552 4982925 0 47077660 58061635\n"
+operator|+
+literal|"8      32 sdc 10148118 693255 %d 122125461 6090515 401630172 %d 2696685590 "
+operator|+
+literal|"0 26848216 2818793840\n"
+operator|+
+literal|"8      33 sdc1 10147917 693230 2054138426 122125426 6090506 401630172 "
+operator|+
+literal|"3261765880 2696685589 0 26848181 2818793804\n"
+operator|+
+literal|"8      64 sde 9989771 553047 %d 93407551 5978572 391997273 %d 2388274325 "
+operator|+
+literal|"0 24396646 2481664818\n"
+operator|+
+literal|"8      65 sde1 9989570 553022 1943973346 93407489 5978563 391997273 3183807264 "
+operator|+
+literal|"2388274325 0 24396584 2481666274\n"
+operator|+
+literal|"8      80 sdf 10197163 693995 %d 144374395 6216644 408395438 %d 2669389056 0 "
+operator|+
+literal|"26164759 2813746348\n"
+operator|+
+literal|"8      81 sdf1 10196962 693970 2033452794 144374355 6216635 408395438 3316897064 "
+operator|+
+literal|"2669389056 0 26164719 2813746308\n"
+operator|+
+literal|"8     129 sdi1 10078602 657936 2056552626 108362198 6134036 403851153 3279882064 "
+operator|+
+literal|"2639256086 0 26260432 2747601085\n"
 decl_stmt|;
 comment|/**    * Test parsing /proc/stat and /proc/cpuinfo    * @throws IOException    */
 annotation|@
@@ -1689,6 +1806,168 @@ argument_list|,
 name|numBytesWrittenIntf1
 operator|+
 name|numBytesWrittenIntf2
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test parsing /proc/diskstats    * @throws IOException    */
+annotation|@
+name|Test
+DECL|method|parsingProcDisksFile ()
+specifier|public
+name|void
+name|parsingProcDisksFile
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|long
+name|numSectorsReadsda
+init|=
+literal|1790549L
+decl_stmt|;
+name|long
+name|numSectorsWrittensda
+init|=
+literal|1839071L
+decl_stmt|;
+name|long
+name|numSectorsReadsdc
+init|=
+literal|20541402L
+decl_stmt|;
+name|long
+name|numSectorsWrittensdc
+init|=
+literal|32617658L
+decl_stmt|;
+name|long
+name|numSectorsReadsde
+init|=
+literal|19439751L
+decl_stmt|;
+name|long
+name|numSectorsWrittensde
+init|=
+literal|31838072L
+decl_stmt|;
+name|long
+name|numSectorsReadsdf
+init|=
+literal|20334546L
+decl_stmt|;
+name|long
+name|numSectorsWrittensdf
+init|=
+literal|33168970L
+decl_stmt|;
+name|File
+name|tempFile
+init|=
+operator|new
+name|File
+argument_list|(
+name|FAKE_DISKSFILE
+argument_list|)
+decl_stmt|;
+name|tempFile
+operator|.
+name|deleteOnExit
+argument_list|()
+expr_stmt|;
+name|FileWriter
+name|fWriter
+init|=
+operator|new
+name|FileWriter
+argument_list|(
+name|FAKE_DISKSFILE
+argument_list|)
+decl_stmt|;
+name|fWriter
+operator|.
+name|write
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+name|DISKSINFO_FORMAT
+argument_list|,
+name|numSectorsReadsda
+argument_list|,
+name|numSectorsWrittensda
+argument_list|,
+name|numSectorsReadsdc
+argument_list|,
+name|numSectorsWrittensdc
+argument_list|,
+name|numSectorsReadsde
+argument_list|,
+name|numSectorsWrittensde
+argument_list|,
+name|numSectorsReadsdf
+argument_list|,
+name|numSectorsWrittensdf
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|fWriter
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|long
+name|expectedNumSectorsRead
+init|=
+name|numSectorsReadsda
+operator|+
+name|numSectorsReadsdc
+operator|+
+name|numSectorsReadsde
+operator|+
+name|numSectorsReadsdf
+decl_stmt|;
+name|long
+name|expectedNumSectorsWritten
+init|=
+name|numSectorsWrittensda
+operator|+
+name|numSectorsWrittensdc
+operator|+
+name|numSectorsWrittensde
+operator|+
+name|numSectorsWrittensdf
+decl_stmt|;
+comment|// use non-default sector size
+name|int
+name|diskSectorSize
+init|=
+name|FakeLinuxResourceCalculatorPlugin
+operator|.
+name|SECTORSIZE
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|expectedNumSectorsRead
+operator|*
+name|diskSectorSize
+argument_list|,
+name|plugin
+operator|.
+name|getStorageBytesRead
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|expectedNumSectorsWritten
+operator|*
+name|diskSectorSize
+argument_list|,
+name|plugin
+operator|.
+name|getStorageBytesWritten
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
