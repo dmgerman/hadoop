@@ -4326,7 +4326,7 @@ name|tEvent
 operator|.
 name|addEventInfo
 argument_list|(
-literal|"WORKLFOW_ID"
+literal|"WORKFLOW_ID"
 argument_list|,
 name|jse
 operator|.
