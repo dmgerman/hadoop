@@ -56,7 +56,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerResourceDecrease
+name|ContainerResourceChangeRequest
 import|;
 end_import
 
@@ -110,7 +110,7 @@ name|proto
 operator|.
 name|YarnProtos
 operator|.
-name|ContainerResourceDecreaseProto
+name|ContainerResourceChangeRequestProto
 import|;
 end_import
 
@@ -128,7 +128,7 @@ name|proto
 operator|.
 name|YarnProtos
 operator|.
-name|ContainerResourceDecreaseProtoOrBuilder
+name|ContainerResourceChangeRequestProtoOrBuilder
 import|;
 end_import
 
@@ -151,24 +151,24 @@ import|;
 end_import
 
 begin_class
-DECL|class|ContainerResourceDecreasePBImpl
+DECL|class|ContainerResourceChangeRequestPBImpl
 specifier|public
 class|class
-name|ContainerResourceDecreasePBImpl
+name|ContainerResourceChangeRequestPBImpl
 extends|extends
-name|ContainerResourceDecrease
+name|ContainerResourceChangeRequest
 block|{
 DECL|field|proto
-name|ContainerResourceDecreaseProto
+name|ContainerResourceChangeRequestProto
 name|proto
 init|=
-name|ContainerResourceDecreaseProto
+name|ContainerResourceChangeRequestProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
-name|ContainerResourceDecreaseProto
+name|ContainerResourceChangeRequestProto
 operator|.
 name|Builder
 name|builder
@@ -195,24 +195,24 @@ name|targetCapability
 init|=
 literal|null
 decl_stmt|;
-DECL|method|ContainerResourceDecreasePBImpl ()
+DECL|method|ContainerResourceChangeRequestPBImpl ()
 specifier|public
-name|ContainerResourceDecreasePBImpl
+name|ContainerResourceChangeRequestPBImpl
 parameter_list|()
 block|{
 name|builder
 operator|=
-name|ContainerResourceDecreaseProto
+name|ContainerResourceChangeRequestProto
 operator|.
 name|newBuilder
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|ContainerResourceDecreasePBImpl (ContainerResourceDecreaseProto proto)
+DECL|method|ContainerResourceChangeRequestPBImpl ( ContainerResourceChangeRequestProto proto)
 specifier|public
-name|ContainerResourceDecreasePBImpl
+name|ContainerResourceChangeRequestPBImpl
 parameter_list|(
-name|ContainerResourceDecreaseProto
+name|ContainerResourceChangeRequestProto
 name|proto
 parameter_list|)
 block|{
@@ -229,7 +229,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
-name|ContainerResourceDecreaseProto
+name|ContainerResourceChangeRequestProto
 name|getProto
 parameter_list|()
 block|{
@@ -263,7 +263,7 @@ name|ContainerId
 name|getContainerId
 parameter_list|()
 block|{
-name|ContainerResourceDecreaseProtoOrBuilder
+name|ContainerResourceChangeRequestProtoOrBuilder
 name|p
 init|=
 name|viaProto
@@ -356,7 +356,7 @@ name|Resource
 name|getCapability
 parameter_list|()
 block|{
-name|ContainerResourceDecreaseProtoOrBuilder
+name|ContainerResourceChangeRequestProtoOrBuilder
 name|p
 init|=
 name|viaProto
@@ -564,7 +564,7 @@ condition|)
 block|{
 name|builder
 operator|=
-name|ContainerResourceDecreaseProto
+name|ContainerResourceChangeRequestProto
 operator|.
 name|newBuilder
 argument_list|(

@@ -101,7 +101,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * {@code ContainerStatus} represents the current status of a  * {@code Container}.  *<p>  * It provides details such as:  *<ul>  *<li>{@code ContainerId} of the container.</li>  *<li>{@code ContainerState} of the container.</li>  *<li><em>Exit status</em> of a completed container.</li>  *<li><em>Diagnostic</em> message for a failed container.</li>  *</ul>  */
+comment|/**  * {@code ContainerStatus} represents the current status of a  * {@code Container}.  *<p>  * It provides details such as:  *<ul>  *<li>{@code ContainerId} of the container.</li>  *<li>{@code ContainerState} of the container.</li>  *<li><em>Exit status</em> of a completed container.</li>  *<li><em>Diagnostic</em> message for a failed container.</li>  *<li>{@link Resource} allocated to the container.</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -284,6 +284,32 @@ name|setDiagnostics
 parameter_list|(
 name|String
 name|diagnostics
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<code>Resource</code> allocated to the container.    * @return<code>Resource</code> allocated to the container    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getCapability ()
+specifier|public
+specifier|abstract
+name|Resource
+name|getCapability
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setCapability (Resource capability)
+specifier|public
+specifier|abstract
+name|void
+name|setCapability
+parameter_list|(
+name|Resource
+name|capability
 parameter_list|)
 function_decl|;
 block|}

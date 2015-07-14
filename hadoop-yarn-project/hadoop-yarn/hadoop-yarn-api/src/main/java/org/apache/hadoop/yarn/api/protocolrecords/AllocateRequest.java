@@ -70,6 +70,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -146,7 +162,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerResourceIncreaseRequest
+name|ContainerResourceChangeRequest
 import|;
 end_import
 
@@ -185,7 +201,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The core request sent by the<code>ApplicationMaster</code> to the   *<code>ResourceManager</code> to obtain resources in the cluster.</p>   *  *<p>The request includes:  *<ul>  *<li>A response id to track duplicate responses.</li>  *<li>Progress information.</li>  *<li>  *     A list of {@link ResourceRequest} to inform the  *<code>ResourceManager</code> about the application's  *     resource requirements.  *</li>  *<li>  *     A list of unused {@link Container} which are being returned.  *</li>  *</ul>  *   * @see ApplicationMasterProtocol#allocate(AllocateRequest)  */
+comment|/**  *<p>The core request sent by the<code>ApplicationMaster</code> to the   *<code>ResourceManager</code> to obtain resources in the cluster.</p>   *  *<p>The request includes:  *<ul>  *<li>A response id to track duplicate responses.</li>  *<li>Progress information.</li>  *<li>  *     A list of {@link ResourceRequest} to inform the  *<code>ResourceManager</code> about the application's  *     resource requirements.  *</li>  *<li>  *     A list of unused {@link Container} which are being returned.  *</li>  *<li>  *     A list of {@link ContainerResourceChangeRequest} to inform  *     the<code>ResourceManager</code> about the resource increase  *     requirements of running containers.  *</li>  *<li>  *     A list of {@link ContainerResourceChangeRequest} to inform  *     the<code>ResourceManager</code> about the resource decrease  *     requirements of running containers.  *</li>  *</ul>  *   * @see ApplicationMasterProtocol#allocate(AllocateRequest)  */
 end_comment
 
 begin_class
@@ -245,6 +261,8 @@ argument_list|,
 name|resourceBlacklistRequest
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -252,7 +270,7 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|newInstance (int responseID, float appProgress, List<ResourceRequest> resourceAsk, List<ContainerId> containersToBeReleased, ResourceBlacklistRequest resourceBlacklistRequest, List<ContainerResourceIncreaseRequest> increaseRequests)
+DECL|method|newInstance (int responseID, float appProgress, List<ResourceRequest> resourceAsk, List<ContainerId> containersToBeReleased, ResourceBlacklistRequest resourceBlacklistRequest, List<ContainerResourceChangeRequest> increaseRequests, List<ContainerResourceChangeRequest> decreaseRequests)
 specifier|public
 specifier|static
 name|AllocateRequest
@@ -281,9 +299,15 @@ name|resourceBlacklistRequest
 parameter_list|,
 name|List
 argument_list|<
-name|ContainerResourceIncreaseRequest
+name|ContainerResourceChangeRequest
 argument_list|>
 name|increaseRequests
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|decreaseRequests
 parameter_list|)
 block|{
 name|AllocateRequest
@@ -338,6 +362,13 @@ operator|.
 name|setIncreaseRequests
 argument_list|(
 name|increaseRequests
+argument_list|)
+expr_stmt|;
+name|allocateRequest
+operator|.
+name|setDecreaseRequests
+argument_list|(
+name|decreaseRequests
 argument_list|)
 expr_stmt|;
 return|return
@@ -491,27 +522,27 @@ name|ResourceBlacklistRequest
 name|resourceBlacklistRequest
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<code>ContainerResourceIncreaseRequest</code> being sent by the    *<code>ApplicationMaster</code>    */
+comment|/**    * Get the list of container resource increase requests being sent by the    *<code>ApplicationMaster</code>.    */
 annotation|@
 name|Public
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|getIncreaseRequests ()
 specifier|public
 specifier|abstract
 name|List
 argument_list|<
-name|ContainerResourceIncreaseRequest
+name|ContainerResourceChangeRequest
 argument_list|>
 name|getIncreaseRequests
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<code>ContainerResourceIncreaseRequest</code> to inform the    *<code>ResourceManager</code> about some container's resources need to be    * increased    */
+comment|/**    * Set the list of container resource increase requests to inform the    *<code>ResourceManager</code> about the containers whose resources need    * to be increased.    */
 annotation|@
 name|Public
 annotation|@
-name|Stable
-DECL|method|setIncreaseRequests ( List<ContainerResourceIncreaseRequest> increaseRequests)
+name|Unstable
+DECL|method|setIncreaseRequests ( List<ContainerResourceChangeRequest> increaseRequests)
 specifier|public
 specifier|abstract
 name|void
@@ -519,9 +550,42 @@ name|setIncreaseRequests
 parameter_list|(
 name|List
 argument_list|<
-name|ContainerResourceIncreaseRequest
+name|ContainerResourceChangeRequest
 argument_list|>
 name|increaseRequests
+parameter_list|)
+function_decl|;
+comment|/**    * Get the list of container resource decrease requests being sent by the    *<code>ApplicationMaster</code>.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getDecreaseRequests ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|getDecreaseRequests
+parameter_list|()
+function_decl|;
+comment|/**    * Set the list of container resource decrease requests to inform the    *<code>ResourceManager</code> about the containers whose resources need    * to be decreased.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setDecreaseRequests ( List<ContainerResourceChangeRequest> decreaseRequests)
+specifier|public
+specifier|abstract
+name|void
+name|setDecreaseRequests
+parameter_list|(
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|decreaseRequests
 parameter_list|)
 function_decl|;
 block|}

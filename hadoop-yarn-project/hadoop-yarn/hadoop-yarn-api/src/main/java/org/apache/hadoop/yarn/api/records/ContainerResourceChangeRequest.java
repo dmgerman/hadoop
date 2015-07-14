@@ -44,6 +44,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ApplicationMasterProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|util
@@ -53,24 +85,28 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Used by Application Master, send a container resource increase request to  * Resource Manager  */
+comment|/**  * {@code ContainerResourceChangeRequest} represents the request made by an  * application to the {@code ResourceManager} to change resource allocation of  * a running {@code Container}.  *<p>  * It includes:  *<ul>  *<li>{@link ContainerId} for the container.</li>  *<li>  *     {@link Resource} capability of the container after the resource change  *     is completed.  *</li>  *</ul>  *  * @see ApplicationMasterProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  */
 end_comment
 
 begin_class
 annotation|@
 name|Public
-DECL|class|ContainerResourceIncreaseRequest
+annotation|@
+name|Unstable
+DECL|class|ContainerResourceChangeRequest
 specifier|public
 specifier|abstract
 class|class
-name|ContainerResourceIncreaseRequest
+name|ContainerResourceChangeRequest
 block|{
 annotation|@
 name|Public
+annotation|@
+name|Unstable
 DECL|method|newInstance ( ContainerId existingContainerId, Resource targetCapability)
 specifier|public
 specifier|static
-name|ContainerResourceIncreaseRequest
+name|ContainerResourceChangeRequest
 name|newInstance
 parameter_list|(
 name|ContainerId
@@ -80,14 +116,14 @@ name|Resource
 name|targetCapability
 parameter_list|)
 block|{
-name|ContainerResourceIncreaseRequest
+name|ContainerResourceChangeRequest
 name|context
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|ContainerResourceIncreaseRequest
+name|ContainerResourceChangeRequest
 operator|.
 name|class
 argument_list|)
@@ -110,8 +146,11 @@ return|return
 name|context
 return|;
 block|}
+comment|/**    * Get the<code>ContainerId</code> of the container.    * @return<code>ContainerId</code> of the container    */
 annotation|@
 name|Public
+annotation|@
+name|Unstable
 DECL|method|getContainerId ()
 specifier|public
 specifier|abstract
@@ -119,8 +158,11 @@ name|ContainerId
 name|getContainerId
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<code>ContainerId</code> of the container.    * @param containerId<code>ContainerId</code> of the container    */
 annotation|@
 name|Public
+annotation|@
+name|Unstable
 DECL|method|setContainerId (ContainerId containerId)
 specifier|public
 specifier|abstract
@@ -131,8 +173,11 @@ name|ContainerId
 name|containerId
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<code>Resource</code> capability of the container.    * @return<code>Resource</code> capability of the container    */
 annotation|@
 name|Public
+annotation|@
+name|Unstable
 DECL|method|getCapability ()
 specifier|public
 specifier|abstract
@@ -140,8 +185,11 @@ name|Resource
 name|getCapability
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<code>Resource</code> capability of the container.    * @param capability<code>Resource</code> capability of the container    */
 annotation|@
 name|Public
+annotation|@
+name|Unstable
 DECL|method|setCapability (Resource capability)
 specifier|public
 specifier|abstract
@@ -189,14 +237,14 @@ if|if
 condition|(
 name|other
 operator|instanceof
-name|ContainerResourceIncreaseRequest
+name|ContainerResourceChangeRequest
 condition|)
 block|{
-name|ContainerResourceIncreaseRequest
+name|ContainerResourceChangeRequest
 name|ctx
 init|=
 operator|(
-name|ContainerResourceIncreaseRequest
+name|ContainerResourceChangeRequest
 operator|)
 name|other
 decl_stmt|;
