@@ -176,6 +176,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|resource
+operator|.
+name|ResourceCalculator
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -543,6 +561,14 @@ name|Resource
 name|clusterCapacity
 parameter_list|)
 block|{}
+comment|/**    * The {@link ResourceCalculator} returned by this method should be used    * for any calculations involving resources.    *    * @return ResourceCalculator instance to use    */
+DECL|method|getResourceCalculator ()
+specifier|public
+specifier|abstract
+name|ResourceCalculator
+name|getResourceCalculator
+parameter_list|()
+function_decl|;
 comment|/**    * @return returns the name of {@link SchedulingPolicy}    */
 DECL|method|getName ()
 specifier|public
