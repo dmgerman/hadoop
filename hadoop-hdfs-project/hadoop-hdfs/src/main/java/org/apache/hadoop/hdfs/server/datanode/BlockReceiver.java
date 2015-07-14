@@ -3076,6 +3076,13 @@ name|onDiskLen
 operator|%
 name|bytesPerChecksum
 decl_stmt|;
+name|long
+name|lastChunkBoundary
+init|=
+name|onDiskLen
+operator|-
+name|partialChunkSizeOnDisk
+decl_stmt|;
 name|boolean
 name|alignedOnDisk
 init|=
@@ -3092,18 +3099,31 @@ name|bytesPerChecksum
 operator|==
 literal|0
 decl_stmt|;
-comment|// Since data is always appended, not overwritten, partial CRC
-comment|// recalculation is necessary if the on-disk data is not chunk-
-comment|// aligned, regardless of whether the beginning of the data in
-comment|// the packet is chunk-aligned.
+comment|// If the end of the on-disk data is not chunk-aligned, the last
+comment|// checksum needs to be overwritten.
 name|boolean
-name|doPartialCrc
+name|overwriteLastCrc
 init|=
 operator|!
 name|alignedOnDisk
 operator|&&
 operator|!
 name|shouldNotWriteChecksum
+decl_stmt|;
+comment|// If the starting offset of the packat data is at the last chunk
+comment|// boundary of the data on disk, the partial checksum recalculation
+comment|// can be skipped and the checksum supplied by the client can be used
+comment|// instead. This reduces disk reads and cpu load.
+name|boolean
+name|doCrcRecalc
+init|=
+name|overwriteLastCrc
+operator|&&
+operator|(
+name|lastChunkBoundary
+operator|!=
+name|firstByteInBlock
+operator|)
 decl_stmt|;
 comment|// If this is a partial chunk, then verify that this is the only
 comment|// chunk in the packet. If the starting offset is not chunk
@@ -3148,7 +3168,8 @@ block|}
 comment|// If the last portion of the block file is not a full chunk,
 comment|// then read in pre-existing partial data chunk and recalculate
 comment|// the checksum so that the checksum calculation can continue
-comment|// from the right state.
+comment|// from the right state. If the client provided the checksum for
+comment|// the whole chunk, this is not necessary.
 name|Checksum
 name|partialCrc
 init|=
@@ -3156,7 +3177,7 @@ literal|null
 decl_stmt|;
 if|if
 condition|(
-name|doPartialCrc
+name|doCrcRecalc
 condition|)
 block|{
 if|if
@@ -3329,13 +3350,25 @@ name|crcBytes
 init|=
 literal|null
 decl_stmt|;
-comment|// First, overwrite the partial crc at the end, if necessary.
+comment|// First, prepare to overwrite the partial crc at the end.
 if|if
 condition|(
-name|doPartialCrc
+name|overwriteLastCrc
 condition|)
 block|{
 comment|// not chunk-aligned on disk
+comment|// prepare to overwrite last checksum
+name|adjustCrcFilePosition
+argument_list|()
+expr_stmt|;
+block|}
+comment|// The CRC was recalculated for the last partial chunk. Update the
+comment|// CRC by reading the rest of the chunk, then write it out.
+if|if
+condition|(
+name|doCrcRecalc
+condition|)
+block|{
 comment|// Calculate new crc for this chunk.
 name|int
 name|bytesToReadForRecalc
@@ -3401,10 +3434,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-comment|// prepare to overwrite last checksum
-name|adjustCrcFilePosition
-argument_list|()
-expr_stmt|;
 name|checksumOut
 operator|.
 name|write
@@ -3443,17 +3472,6 @@ comment|// Determine how many checksums need to be skipped up to the last
 comment|// boundary. The checksum after the boundary was already counted
 comment|// above. Only count the number of checksums skipped up to the
 comment|// boundary here.
-name|long
-name|lastChunkBoundary
-init|=
-name|onDiskLen
-operator|-
-operator|(
-name|onDiskLen
-operator|%
-name|bytesPerChecksum
-operator|)
-decl_stmt|;
 name|long
 name|skippedDataBytes
 init|=
