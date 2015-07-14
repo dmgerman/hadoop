@@ -152,6 +152,7 @@ comment|/**    * Check if native-bzip2 code is loaded& initialized correctly and
 DECL|method|isNativeBzip2Loaded (Configuration conf)
 specifier|public
 specifier|static
+specifier|synchronized
 name|boolean
 name|isNativeBzip2Loaded
 parameter_list|(
