@@ -915,19 +915,15 @@ return|return
 name|numChunks
 return|;
 block|}
-comment|/**    * increase the number of chunks by n    */
-DECL|method|incNumChunks (int n)
+comment|/**    * increase the number of chunks by one    */
+DECL|method|incNumChunks ()
 specifier|synchronized
 name|void
 name|incNumChunks
-parameter_list|(
-name|int
-name|n
-parameter_list|)
+parameter_list|()
 block|{
 name|numChunks
-operator|+=
-name|n
+operator|++
 expr_stmt|;
 block|}
 comment|/**    * get the maximum number of packets    *    * @return the maximum number of packets    */
