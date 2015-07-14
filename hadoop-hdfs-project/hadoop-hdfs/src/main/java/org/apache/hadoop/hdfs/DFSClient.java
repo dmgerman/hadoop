@@ -14611,6 +14611,13 @@ argument_list|(
 name|socketTimeout
 argument_list|)
 expr_stmt|;
+name|peer
+operator|.
+name|setWriteTimeout
+argument_list|(
+name|socketTimeout
+argument_list|)
+expr_stmt|;
 name|success
 operator|=
 literal|true
