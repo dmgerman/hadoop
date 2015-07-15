@@ -705,6 +705,13 @@ name|boolean
 name|isStriped
 parameter_list|()
 function_decl|;
+comment|/** @return true if there is no datanode storage associated with the block */
+DECL|method|hasNoStorage ()
+specifier|abstract
+name|boolean
+name|hasNoStorage
+parameter_list|()
+function_decl|;
 comment|/**    * Find specified DatanodeDescriptor.    * @return index or -1 if not found.    */
 DECL|method|findDatanode (DatanodeDescriptor dn)
 name|boolean

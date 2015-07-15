@@ -6405,7 +6405,7 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    *     * @param b    * @param storageInfo storage that contains the block, if known. null otherwise.    * @throws IOException    */
+comment|/**    * Mark a replica (of a contiguous block) or an internal block (of a striped    * block group) as corrupt.    * @param b Indicating the reported bad block and the corresponding BlockInfo    *          stored in blocksMap.    * @param storageInfo storage that contains the block, if known. null otherwise.    */
 DECL|method|markBlockAsCorrupt (BlockToMarkCorrupt b, DatanodeStorageInfo storageInfo, DatanodeDescriptor node)
 specifier|private
 name|void
@@ -6494,13 +6494,46 @@ name|corrupted
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Add this replica to corruptReplicas Map
+comment|// Add this replica to corruptReplicas Map. For striped blocks, we always
+comment|// use the id of whole striped block group when adding to corruptReplicas
+name|Block
+name|corrupted
+init|=
+operator|new
+name|Block
+argument_list|(
+name|b
+operator|.
+name|corrupted
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|b
+operator|.
+name|stored
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+name|corrupted
+operator|.
+name|setBlockId
+argument_list|(
+name|b
+operator|.
+name|stored
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|corruptReplicas
 operator|.
 name|addToCorruptReplicasMap
 argument_list|(
-name|b
-operator|.
 name|corrupted
 argument_list|,
 name|node
@@ -6610,6 +6643,8 @@ argument_list|(
 name|b
 argument_list|,
 name|node
+argument_list|,
+name|numberOfReplicas
 argument_list|)
 expr_stmt|;
 block|}
@@ -6638,7 +6673,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Invalidates the given block on the given datanode.    * @return true if the block was successfully invalidated and no longer    * present in the BlocksMap    */
-DECL|method|invalidateBlock (BlockToMarkCorrupt b, DatanodeInfo dn )
+DECL|method|invalidateBlock (BlockToMarkCorrupt b, DatanodeInfo dn, NumberReplicas nr)
 specifier|private
 name|boolean
 name|invalidateBlock
@@ -6648,6 +6683,9 @@ name|b
 parameter_list|,
 name|DatanodeInfo
 name|dn
+parameter_list|,
+name|NumberReplicas
+name|nr
 parameter_list|)
 throws|throws
 name|IOException
@@ -6698,16 +6736,6 @@ argument_list|)
 throw|;
 block|}
 comment|// Check how many copies we have of the block
-name|NumberReplicas
-name|nr
-init|=
-name|countNodes
-argument_list|(
-name|b
-operator|.
-name|stored
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|nr
@@ -6749,18 +6777,10 @@ return|return
 literal|false
 return|;
 block|}
-elseif|else
-if|if
-condition|(
-name|nr
-operator|.
-name|liveReplicas
-argument_list|()
-operator|>=
-literal|1
-condition|)
+else|else
 block|{
-comment|// If we have at least one copy on a live node, then we can delete it.
+comment|// we already checked the number of replicas in the caller of this
+comment|// function and know there are enough live replicas, so we can delete it.
 name|addToInvalidates
 argument_list|(
 name|b
@@ -6792,25 +6812,6 @@ argument_list|)
 expr_stmt|;
 return|return
 literal|true
-return|;
-block|}
-else|else
-block|{
-name|blockLog
-operator|.
-name|info
-argument_list|(
-literal|"BLOCK* invalidateBlocks: {} on {} is the only copy and"
-operator|+
-literal|" was not deleted"
-argument_list|,
-name|b
-argument_list|,
-name|dn
-argument_list|)
-expr_stmt|;
-return|return
-literal|false
 return|;
 block|}
 block|}
@@ -13280,6 +13281,8 @@ argument_list|(
 name|storedBlock
 argument_list|,
 name|reportedBlock
+argument_list|,
+name|num
 argument_list|)
 expr_stmt|;
 block|}
@@ -13370,7 +13373,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Invalidate corrupt replicas.    *<p>    * This will remove the replicas from the block's location list,    * add them to {@link #invalidateBlocks} so that they could be further    * deleted from the respective data-nodes,    * and remove the block from corruptReplicasMap.    *<p>    * This method should be called when the block has sufficient    * number of live replicas.    *    * @param blk Block whose corrupt replicas need to be invalidated    */
-DECL|method|invalidateCorruptReplicas (BlockInfo blk, Block reported)
+DECL|method|invalidateCorruptReplicas (BlockInfo blk, Block reported, NumberReplicas numberReplicas)
 specifier|private
 name|void
 name|invalidateCorruptReplicas
@@ -13380,6 +13383,9 @@ name|blk
 parameter_list|,
 name|Block
 name|reported
+parameter_list|,
+name|NumberReplicas
+name|numberReplicas
 parameter_list|)
 block|{
 name|Collection
@@ -13420,7 +13426,10 @@ argument_list|(
 operator|new
 name|DatanodeDescriptor
 index|[
-literal|0
+name|nodes
+operator|.
+name|size
+argument_list|()
 index|]
 argument_list|)
 decl_stmt|;
@@ -13454,6 +13463,8 @@ name|ANY
 argument_list|)
 argument_list|,
 name|node
+argument_list|,
+name|numberReplicas
 argument_list|)
 condition|)
 block|{

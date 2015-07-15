@@ -770,12 +770,8 @@ if|if
 condition|(
 name|info
 operator|.
-name|getDatanode
-argument_list|(
-literal|0
-argument_list|)
-operator|==
-literal|null
+name|hasNoStorage
+argument_list|()
 comment|// no datanodes left
 operator|&&
 name|info

@@ -669,6 +669,23 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|hasNoStorage ()
+specifier|final
+name|boolean
+name|hasNoStorage
+parameter_list|()
+block|{
+return|return
+name|getStorageInfo
+argument_list|(
+literal|0
+argument_list|)
+operator|==
+literal|null
+return|;
+block|}
 block|}
 end_class
 
