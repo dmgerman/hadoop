@@ -332,13 +332,13 @@ name|withBlocks
 condition|)
 block|{
 comment|// Store blocks if this is the first update
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blks
 init|=
 name|iNodeFile
 operator|.
-name|getContiguousBlocks
+name|getBlocks
 argument_list|()
 decl_stmt|;
 assert|assert
@@ -357,7 +357,7 @@ block|}
 block|}
 DECL|method|findEarlierSnapshotBlocks (int snapshotId)
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|findEarlierSnapshotBlocks
 parameter_list|(
@@ -410,7 +410,7 @@ argument_list|,
 name|snapshotId
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -467,7 +467,7 @@ return|;
 block|}
 DECL|method|findLaterSnapshotBlocks (int snapshotId)
 specifier|public
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|findLaterSnapshotBlocks
 parameter_list|(
@@ -520,7 +520,7 @@ argument_list|,
 name|snapshotId
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -597,7 +597,7 @@ name|FileDiff
 name|removed
 parameter_list|)
 block|{
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|removedBlocks
 init|=
@@ -691,7 +691,7 @@ name|removedBlocks
 argument_list|)
 expr_stmt|;
 block|}
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|earlierBlocks
 init|=
@@ -712,7 +712,7 @@ argument_list|()
 operator|)
 decl_stmt|;
 comment|// Find later snapshot (or file itself) with blocks
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|laterBlocks
 init|=
@@ -734,7 +734,7 @@ operator|)
 condition|?
 name|file
 operator|.
-name|getContiguousBlocks
+name|getBlocks
 argument_list|()
 else|:
 name|laterBlocks

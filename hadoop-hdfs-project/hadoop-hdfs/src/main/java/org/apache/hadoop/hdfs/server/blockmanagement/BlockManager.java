@@ -14240,7 +14240,7 @@ name|OK
 return|;
 block|}
 comment|/** Set replication for the blocks. */
-DECL|method|setReplication (final short oldRepl, final short newRepl, final String src, final BlockInfoContiguous... blocks)
+DECL|method|setReplication (final short oldRepl, final short newRepl, final String src, final BlockInfo... blocks)
 specifier|public
 name|void
 name|setReplication
@@ -14258,7 +14258,7 @@ name|String
 name|src
 parameter_list|,
 specifier|final
-name|BlockInfoContiguous
+name|BlockInfo
 modifier|...
 name|blocks
 parameter_list|)
@@ -14275,7 +14275,7 @@ block|}
 comment|// update needReplication priority queues
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 range|:
 name|blocks
@@ -14320,7 +14320,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 range|:
 name|blocks

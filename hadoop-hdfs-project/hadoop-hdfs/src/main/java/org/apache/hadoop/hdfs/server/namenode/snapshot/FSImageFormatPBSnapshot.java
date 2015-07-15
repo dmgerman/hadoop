@@ -1962,6 +1962,11 @@ name|getStoragePolicyID
 argument_list|()
 argument_list|,
 name|xAttrs
+argument_list|,
+name|fileInPb
+operator|.
+name|getIsStriped
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

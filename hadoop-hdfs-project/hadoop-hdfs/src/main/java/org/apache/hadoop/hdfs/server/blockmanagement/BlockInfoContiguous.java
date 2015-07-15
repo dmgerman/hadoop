@@ -86,16 +86,6 @@ name|BlockInfoContiguous
 extends|extends
 name|BlockInfo
 block|{
-DECL|field|EMPTY_ARRAY
-specifier|public
-specifier|static
-specifier|final
-name|BlockInfoContiguous
-index|[]
-name|EMPTY_ARRAY
-init|=
-block|{}
-decl_stmt|;
 DECL|method|BlockInfoContiguous (short size)
 specifier|public
 name|BlockInfoContiguous

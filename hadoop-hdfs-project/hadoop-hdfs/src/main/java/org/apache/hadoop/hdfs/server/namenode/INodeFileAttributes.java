@@ -111,6 +111,13 @@ name|short
 name|getFileReplication
 parameter_list|()
 function_decl|;
+comment|/** @return whether the file is striped (instead of contiguous) */
+DECL|method|isStriped ()
+specifier|public
+name|boolean
+name|isStriped
+parameter_list|()
+function_decl|;
 comment|/** @return preferred block size in bytes */
 DECL|method|getPreferredBlockSize ()
 specifier|public
@@ -159,7 +166,7 @@ specifier|final
 name|long
 name|header
 decl_stmt|;
-DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime, short replication, long preferredBlockSize, byte storagePolicyID, XAttrFeature xAttrsFeature)
+DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime, short replication, long preferredBlockSize, byte storagePolicyID, XAttrFeature xAttrsFeature, boolean isStriped)
 specifier|public
 name|SnapshotCopy
 parameter_list|(
@@ -190,6 +197,9 @@ name|storagePolicyID
 parameter_list|,
 name|XAttrFeature
 name|xAttrsFeature
+parameter_list|,
+name|boolean
+name|isStriped
 parameter_list|)
 block|{
 name|super
@@ -216,6 +226,8 @@ argument_list|(
 name|preferredBlockSize
 argument_list|,
 name|replication
+argument_list|,
+name|isStriped
 argument_list|,
 name|storagePolicyID
 argument_list|)
@@ -268,6 +280,23 @@ return|return
 name|HeaderFormat
 operator|.
 name|getReplication
+argument_list|(
+name|header
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isStriped ()
+specifier|public
+name|boolean
+name|isStriped
+parameter_list|()
+block|{
+return|return
+name|HeaderFormat
+operator|.
+name|isStriped
 argument_list|(
 name|header
 argument_list|)

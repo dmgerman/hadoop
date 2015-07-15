@@ -90,7 +90,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -1107,7 +1107,7 @@ operator|.
 name|getLast
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|snapshotBlocks
 init|=

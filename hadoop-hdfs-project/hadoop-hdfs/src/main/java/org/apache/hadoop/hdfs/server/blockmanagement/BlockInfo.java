@@ -95,6 +95,16 @@ name|LightWeightGSet
 operator|.
 name|LinkedElement
 block|{
+DECL|field|EMPTY_ARRAY
+specifier|public
+specifier|static
+specifier|final
+name|BlockInfo
+index|[]
+name|EMPTY_ARRAY
+init|=
+block|{}
+decl_stmt|;
 DECL|field|bc
 specifier|private
 name|BlockCollection

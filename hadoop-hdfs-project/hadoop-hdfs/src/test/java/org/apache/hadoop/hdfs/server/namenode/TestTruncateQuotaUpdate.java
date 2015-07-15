@@ -469,7 +469,7 @@ name|file
 argument_list|,
 name|file
 operator|.
-name|getContiguousBlocks
+name|getBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -993,7 +993,7 @@ name|replication
 argument_list|)
 return|;
 block|}
-DECL|method|addSnapshotFeature (INodeFile file, BlockInfoContiguous[] blocks)
+DECL|method|addSnapshotFeature (INodeFile file, BlockInfo[] blocks)
 specifier|private
 specifier|static
 name|void
@@ -1002,7 +1002,7 @@ parameter_list|(
 name|INodeFile
 name|file
 parameter_list|,
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 parameter_list|)

@@ -2466,13 +2466,10 @@ name|isStriped
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|BlockInfoStriped
+name|BlockInfo
 name|stored
 init|=
 name|fileNode
-operator|.
-name|getStripedBlocksFeature
-argument_list|()
 operator|.
 name|getBlocks
 argument_list|()
