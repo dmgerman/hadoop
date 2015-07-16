@@ -822,6 +822,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|ensureAppendEditlogFile
 argument_list|()
 expr_stmt|;
@@ -857,9 +859,13 @@ argument_list|(
 name|editlogOs
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|ensureCloseEditlogFile
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -876,6 +882,8 @@ name|labels
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
 block|{
 name|ensureAppendEditlogFile
 argument_list|()
@@ -912,9 +920,13 @@ argument_list|(
 name|editlogOs
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|ensureCloseEditlogFile
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -931,6 +943,8 @@ name|labels
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
 block|{
 name|ensureAppendEditlogFile
 argument_list|()
@@ -975,9 +989,13 @@ argument_list|(
 name|editlogOs
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|ensureCloseEditlogFile
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/* (non-Javadoc)    * @see org.apache.hadoop.yarn.nodelabels.NodeLabelsStore#recover(boolean)    */
 annotation|@
