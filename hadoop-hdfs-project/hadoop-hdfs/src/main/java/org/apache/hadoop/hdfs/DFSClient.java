@@ -4149,58 +4149,9 @@ name|namenode
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Abort and release resources held.  Ignore all errors. */
-DECL|method|abort ()
-specifier|public
-name|void
-name|abort
-parameter_list|()
-block|{
-name|clientRunning
-operator|=
-literal|false
-expr_stmt|;
-name|closeAllFilesBeingWritten
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-try|try
-block|{
-comment|// remove reference to this client and stop the renewer,
-comment|// if there is no more clients under the renewer.
-name|getLeaseRenewer
-argument_list|()
-operator|.
-name|closeClient
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Exception occurred while aborting the client "
-operator|+
-name|ioe
-argument_list|)
-expr_stmt|;
-block|}
-name|closeConnectionToNamenode
-argument_list|()
-expr_stmt|;
-block|}
 comment|/** Close/abort all files being written. */
 DECL|method|closeAllFilesBeingWritten (final boolean abort)
-specifier|private
+specifier|public
 name|void
 name|closeAllFilesBeingWritten
 parameter_list|(

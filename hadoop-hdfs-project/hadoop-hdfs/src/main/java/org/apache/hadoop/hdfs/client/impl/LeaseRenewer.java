@@ -866,6 +866,27 @@ return|return
 name|renewal
 return|;
 block|}
+comment|/** Used for testing only. */
+annotation|@
+name|VisibleForTesting
+DECL|method|setRenewalTime (final long renewal)
+specifier|public
+specifier|synchronized
+name|void
+name|setRenewalTime
+parameter_list|(
+specifier|final
+name|long
+name|renewal
+parameter_list|)
+block|{
+name|this
+operator|.
+name|renewal
+operator|=
+name|renewal
+expr_stmt|;
+block|}
 comment|/** Add a client. */
 DECL|method|addClient (final DFSClient dfsc)
 specifier|private
@@ -2006,17 +2027,34 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+name|DFSClient
+name|dfsClient
+init|=
 name|dfsclients
 operator|.
 name|get
 argument_list|(
 literal|0
 argument_list|)
+decl_stmt|;
+name|dfsClient
 operator|.
-name|abort
-argument_list|()
+name|closeAllFilesBeingWritten
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|closeClient
+argument_list|(
+name|dfsClient
+argument_list|)
 expr_stmt|;
 block|}
+comment|//Expire the current LeaseRenewer thread.
+name|emptyTime
+operator|=
+literal|0
+expr_stmt|;
 block|}
 break|break;
 block|}
