@@ -52,9 +52,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|test
 operator|.
-name|NativeCodeLoader
+name|GenericTestUtils
 import|;
 end_import
 
@@ -92,18 +92,6 @@ name|assertNotNull
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
-operator|.
-name|assumeTrue
-import|;
-end_import
-
 begin_class
 DECL|class|TestCryptoStreamsWithOpensslAesCtrCryptoCodec
 specifier|public
@@ -123,13 +111,10 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assumeTrue
-argument_list|(
-name|NativeCodeLoader
+name|GenericTestUtils
 operator|.
-name|isNativeCodeLoaded
+name|assumeNativeCodeLoaded
 argument_list|()
-argument_list|)
 expr_stmt|;
 name|Configuration
 name|conf

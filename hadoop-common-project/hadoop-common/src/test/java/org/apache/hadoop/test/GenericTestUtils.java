@@ -228,6 +228,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|NativeCodeLoader
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|StringUtils
 import|;
 end_import
@@ -313,6 +327,16 @@ operator|.
 name|junit
 operator|.
 name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
 import|;
 end_import
 
@@ -1933,6 +1957,25 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**    * Skip test if native code is not loaded.    */
+DECL|method|assumeNativeCodeLoaded ()
+specifier|public
+specifier|static
+name|void
+name|assumeNativeCodeLoaded
+parameter_list|()
+block|{
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+name|NativeCodeLoader
+operator|.
+name|isNativeCodeLoaded
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
