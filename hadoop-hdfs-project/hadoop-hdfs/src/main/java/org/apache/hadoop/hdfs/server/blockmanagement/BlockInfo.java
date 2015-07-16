@@ -1229,7 +1229,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**    * BlockInfo represents a block that is not being constructed.    * In order to start modifying the block, the BlockInfo should be converted to    * {@link BlockInfoContiguousUnderConstruction} or    * {@link BlockInfoStripedUnderConstruction}.    * @return {@link HdfsServerConstants.BlockUCState#COMPLETE}    */
+comment|/**    * BlockInfo represents a block that is not being constructed.    * In order to start modifying the block, the BlockInfo should be converted to    * {@link BlockInfoUnderConstructionContiguous} or    * {@link BlockInfoUnderConstructionStriped}.    * @return {@link HdfsServerConstants.BlockUCState#COMPLETE}    */
 DECL|method|getBlockUCState ()
 specifier|public
 name|HdfsServerConstants

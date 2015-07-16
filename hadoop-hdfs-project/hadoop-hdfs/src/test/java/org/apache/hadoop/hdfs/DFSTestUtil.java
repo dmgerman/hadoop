@@ -1312,7 +1312,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 import|;
 end_import
 
@@ -10173,14 +10173,14 @@ name|storedBlock
 argument_list|,
 name|storedBlock
 operator|instanceof
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 argument_list|)
 expr_stmt|;
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 name|ucBlock
 init|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 operator|)
 name|storedBlock
 decl_stmt|;

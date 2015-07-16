@@ -386,7 +386,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 import|;
 end_import
 
@@ -422,7 +422,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 import|;
 end_import
 
@@ -2902,7 +2902,7 @@ decl_stmt|;
 name|ucBlk
 operator|=
 operator|new
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 argument_list|(
 name|striped
 argument_list|,
@@ -2923,7 +2923,7 @@ block|{
 name|ucBlk
 operator|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 argument_list|(
 name|lastBlk
 argument_list|,

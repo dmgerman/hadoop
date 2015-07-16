@@ -2798,7 +2798,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 import|;
 end_import
 
@@ -11594,7 +11594,7 @@ name|truncateBlock
 init|=
 operator|(
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 operator|)
 name|last
 operator|)
@@ -11995,7 +11995,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 name|truncatedBlockUC
 decl_stmt|;
 if|if
@@ -12008,7 +12008,7 @@ comment|// use oldBlock as a source for copy-on-truncate recovery
 name|truncatedBlockUC
 operator|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 argument_list|(
 name|newBlock
 argument_list|,
@@ -12120,7 +12120,7 @@ assert|;
 name|truncatedBlockUC
 operator|=
 operator|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 operator|)
 name|oldBlock
 expr_stmt|;

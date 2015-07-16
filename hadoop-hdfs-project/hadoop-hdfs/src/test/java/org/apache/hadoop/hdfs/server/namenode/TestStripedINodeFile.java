@@ -194,7 +194,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 import|;
 end_import
 
@@ -821,10 +821,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testBlockStripedUCFileSize ()
+DECL|method|testBlockUCStripedFileSize ()
 specifier|public
 name|void
-name|testBlockStripedUCFileSize
+name|testBlockUCStripedFileSize
 parameter_list|()
 throws|throws
 name|IOException
@@ -846,11 +846,11 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
-name|BlockInfoStripedUnderConstruction
-name|bInfoStripedUC
+name|BlockInfoUnderConstructionStriped
+name|bInfoUCStriped
 init|=
 operator|new
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 argument_list|(
 name|blk
 argument_list|,
@@ -859,7 +859,7 @@ argument_list|,
 name|cellSize
 argument_list|)
 decl_stmt|;
-name|bInfoStripedUC
+name|bInfoUCStriped
 operator|.
 name|setNumBytes
 argument_list|(
@@ -870,7 +870,7 @@ name|inf
 operator|.
 name|addBlock
 argument_list|(
-name|bInfoStripedUC
+name|bInfoUCStriped
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -998,10 +998,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testBlockStripedUCComputeQuotaUsage ()
+DECL|method|testBlockUCStripedComputeQuotaUsage ()
 specifier|public
 name|void
-name|testBlockStripedUCComputeQuotaUsage
+name|testBlockUCStripedComputeQuotaUsage
 parameter_list|()
 throws|throws
 name|IOException
@@ -1023,11 +1023,11 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
-name|BlockInfoStripedUnderConstruction
-name|bInfoStripedUC
+name|BlockInfoUnderConstructionStriped
+name|bInfoUCStriped
 init|=
 operator|new
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 argument_list|(
 name|blk
 argument_list|,
@@ -1036,7 +1036,7 @@ argument_list|,
 name|cellSize
 argument_list|)
 decl_stmt|;
-name|bInfoStripedUC
+name|bInfoUCStriped
 operator|.
 name|setNumBytes
 argument_list|(
@@ -1047,7 +1047,7 @@ name|inf
 operator|.
 name|addBlock
 argument_list|(
-name|bInfoStripedUC
+name|bInfoUCStriped
 argument_list|)
 expr_stmt|;
 name|QuotaCounts
@@ -1089,7 +1089,7 @@ name|getNameSpace
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Consumed space in the case of BlockInfoStripedUC can be calculated
+comment|// Consumed space in the case of BlockInfoUCStriped can be calculated
 comment|// by using preferred block size. This is 1024 and total block num
 comment|// is 9(= 3 + 6). Consumed storage space should be 1024 * 9 = 9216.
 name|assertEquals

@@ -296,7 +296,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 import|;
 end_import
 
@@ -1356,11 +1356,11 @@ name|BLOCK_GROUP_INDEX_MASK
 argument_list|)
 expr_stmt|;
 specifier|final
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 name|blockUC
 init|=
 operator|(
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 operator|)
 name|block
 decl_stmt|;
@@ -1560,11 +1560,11 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 name|lastBlk
 init|=
 operator|(
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 operator|)
 name|fileNode
 operator|.
@@ -1720,7 +1720,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test BlockInfoStripedUnderConstruction#addReplicaIfNotPresent in different    * scenarios.    */
+comment|/**    * Test BlockInfoUnderConstructionStriped#addReplicaIfNotPresent in different    * scenarios.    */
 annotation|@
 name|Test
 DECL|method|testAddUCReplica ()
@@ -1843,11 +1843,11 @@ operator|.
 name|getLastBlock
 argument_list|()
 decl_stmt|;
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 name|ucBlock
 init|=
 operator|(
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 operator|)
 name|lastBlock
 decl_stmt|;
@@ -1892,7 +1892,7 @@ name|length
 argument_list|)
 expr_stmt|;
 comment|// 2. mimic incremental block reports and make sure the uc-replica list in
-comment|// the BlockStripedUC is correct
+comment|// the BlockInfoUCStriped is correct
 name|int
 name|i
 init|=
@@ -2263,11 +2263,11 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 name|ucBlock
 init|=
 operator|(
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 operator|)
 name|lastBlock
 decl_stmt|;

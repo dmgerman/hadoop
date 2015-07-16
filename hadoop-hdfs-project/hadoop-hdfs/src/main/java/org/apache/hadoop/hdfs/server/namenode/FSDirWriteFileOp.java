@@ -450,7 +450,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 import|;
 end_import
 
@@ -468,7 +468,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 import|;
 end_import
 
@@ -3438,7 +3438,7 @@ expr_stmt|;
 name|blockInfo
 operator|=
 operator|new
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 argument_list|(
 name|block
 argument_list|,
@@ -3494,7 +3494,7 @@ decl_stmt|;
 name|blockInfo
 operator|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 argument_list|(
 name|block
 argument_list|,

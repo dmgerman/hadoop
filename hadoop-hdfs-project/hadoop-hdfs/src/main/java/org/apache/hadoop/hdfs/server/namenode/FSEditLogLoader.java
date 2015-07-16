@@ -360,7 +360,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 import|;
 end_import
 
@@ -476,7 +476,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 import|;
 end_import
 
@@ -1571,22 +1571,6 @@ operator|.
 name|util
 operator|.
 name|Holder
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
-name|ECSchema
 import|;
 end_import
 
@@ -6603,7 +6587,7 @@ block|{
 name|newBlockInfo
 operator|=
 operator|new
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 argument_list|(
 name|newBlock
 argument_list|,
@@ -6624,7 +6608,7 @@ block|{
 name|newBlockInfo
 operator|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 argument_list|(
 name|newBlock
 argument_list|,
@@ -7112,7 +7096,7 @@ block|{
 name|newBI
 operator|=
 operator|new
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoUnderConstructionStriped
 argument_list|(
 name|newBlock
 argument_list|,
@@ -7133,7 +7117,7 @@ block|{
 name|newBI
 operator|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoUnderConstructionContiguous
 argument_list|(
 name|newBlock
 argument_list|,
