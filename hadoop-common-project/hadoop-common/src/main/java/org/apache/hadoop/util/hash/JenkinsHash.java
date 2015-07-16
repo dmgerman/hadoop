@@ -1254,6 +1254,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+try|try
+init|(
 name|FileInputStream
 name|in
 init|=
@@ -1265,7 +1267,8 @@ index|[
 literal|0
 index|]
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|byte
 index|[]
 name|bytes
@@ -1342,6 +1345,7 @@ name|value
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class
