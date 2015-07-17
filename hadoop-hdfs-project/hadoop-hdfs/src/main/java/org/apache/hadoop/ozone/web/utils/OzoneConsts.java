@@ -167,6 +167,21 @@ name|OZONE_TIME_ZONE
 init|=
 literal|"GMT"
 decl_stmt|;
+comment|/**    * Supports Bucket Versioning.    */
+DECL|enum|Versioning
+DECL|enumConstant|NOT_DEFINED
+DECL|enumConstant|ENABLED
+DECL|enumConstant|DISABLED
+specifier|public
+enum|enum
+name|Versioning
+block|{
+name|NOT_DEFINED
+block|,
+name|ENABLED
+block|,
+name|DISABLED
+block|}
 DECL|method|OzoneConsts ()
 specifier|private
 name|OzoneConsts
