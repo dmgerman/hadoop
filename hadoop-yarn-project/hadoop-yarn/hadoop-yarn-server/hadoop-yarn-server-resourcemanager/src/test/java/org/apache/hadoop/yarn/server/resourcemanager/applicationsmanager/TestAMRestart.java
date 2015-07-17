@@ -1816,7 +1816,7 @@ argument_list|()
 operator|.
 name|size
 argument_list|()
-operator|!=
+operator|<
 name|expectedNum
 operator|&&
 name|count
