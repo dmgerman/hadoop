@@ -78,14 +78,7 @@ begin_interface
 annotation|@
 name|InterfaceAudience
 operator|.
-name|LimitedPrivate
-argument_list|(
-block|{
-literal|"HDFS"
-block|,
-literal|"MapReduce"
-block|}
-argument_list|)
+name|Public
 annotation|@
 name|InterfaceStability
 operator|.
