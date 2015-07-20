@@ -28,22 +28,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_HA_NAMENODES_KEY_PREFIX
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|ExitUtil
@@ -1680,6 +1664,28 @@ specifier|final
 name|BlockStoragePolicySuite
 name|storagePolicySuite
 decl_stmt|;
+comment|/** The number of times a block under construction's recovery will be     * attempted using all known replicas. e.g. if there are 3 replicas, each     * node will be tried 5 times (for a total of 15 retries across all nodes)*/
+DECL|field|maxBlockUCRecoveries
+specifier|private
+specifier|static
+name|int
+name|maxBlockUCRecoveries
+init|=
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_UC_MAX_RECOVERY_ATTEMPTS_DEFAULT
+decl_stmt|;
+DECL|method|getMaxBlockUCRecoveries ()
+specifier|public
+specifier|static
+name|int
+name|getMaxBlockUCRecoveries
+parameter_list|()
+block|{
+return|return
+name|maxBlockUCRecoveries
+return|;
+block|}
 comment|/** Check whether name system is running before terminating */
 DECL|field|checkNSRunning
 specifier|private
@@ -1727,6 +1733,21 @@ name|datanodeManager
 operator|.
 name|getHeartbeatManager
 argument_list|()
+expr_stmt|;
+name|maxBlockUCRecoveries
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_UC_MAX_RECOVERY_ATTEMPTS
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_UC_MAX_RECOVERY_ATTEMPTS_DEFAULT
+argument_list|)
 expr_stmt|;
 name|startupDelayBlockDeletionInMs
 operator|=
@@ -3781,7 +3802,7 @@ return|return
 name|block
 return|;
 block|}
-comment|/**    * Force the given block in the given file to be marked as complete,    * regardless of whether enough replicas are present. This is necessary    * when tailing edit logs as a Standby.    */
+comment|/**    * Force the given block in the given file to be marked as complete,    * regardless of whether enough replicas are present. This is necessary    * when tailing edit logs as a Standby or when recovering a lease on a file    * with missing blocks.    */
 DECL|method|forceCompleteBlock (final BlockCollection bc, final BlockInfoUnderConstruction block)
 specifier|public
 name|BlockInfo

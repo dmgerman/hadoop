@@ -16740,6 +16740,43 @@ return|return
 literal|true
 return|;
 block|}
+comment|//If the block's recovery has been attempted enough times, mark the block
+comment|//complete anyway and recover the lease
+if|if
+condition|(
+name|uc
+operator|.
+name|getNumRecoveryAttemptsLeft
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+name|blockManager
+operator|.
+name|forceCompleteBlock
+argument_list|(
+name|pendingFile
+argument_list|,
+name|uc
+argument_list|)
+expr_stmt|;
+name|finalizeINodeFileUnderConstruction
+argument_list|(
+name|src
+argument_list|,
+name|pendingFile
+argument_list|,
+name|iip
+operator|.
+name|getLatestSnapshotId
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
 comment|// start recovery of the last block for this file
 name|long
 name|blockRecoveryId
