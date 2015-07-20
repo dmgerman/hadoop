@@ -42,6 +42,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|LocatedFileStatus
 import|;
 end_import
@@ -389,12 +403,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|compareTo (Object o)
+DECL|method|compareTo (FileStatus o)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|Object
+name|FileStatus
 name|o
 parameter_list|)
 block|{

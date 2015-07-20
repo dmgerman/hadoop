@@ -139,6 +139,9 @@ implements|implements
 name|Writable
 implements|,
 name|Comparable
+argument_list|<
+name|FileStatus
+argument_list|>
 block|{
 DECL|field|path
 specifier|private
@@ -1221,26 +1224,18 @@ literal|null
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Compare this object to another object    *     * @param   o the object to be compared.    * @return  a negative integer, zero, or a positive integer as this object    *   is less than, equal to, or greater than the specified object.    *     * @throws ClassCastException if the specified object's is not of     *         type FileStatus    */
+comment|/**    * Compare this FileStatus to another FileStatus    * @param   o the FileStatus to be compared.    * @return  a negative integer, zero, or a positive integer as this object    *   is less than, equal to, or greater than the specified object.    */
 annotation|@
 name|Override
-DECL|method|compareTo (Object o)
+DECL|method|compareTo (FileStatus o)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|Object
+name|FileStatus
 name|o
 parameter_list|)
 block|{
-name|FileStatus
-name|other
-init|=
-operator|(
-name|FileStatus
-operator|)
-name|o
-decl_stmt|;
 return|return
 name|this
 operator|.
@@ -1249,7 +1244,7 @@ argument_list|()
 operator|.
 name|compareTo
 argument_list|(
-name|other
+name|o
 operator|.
 name|getPath
 argument_list|()
