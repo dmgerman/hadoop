@@ -65,7 +65,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A codec utility.  */
+comment|/**  * A codec& coder utility to help create raw coders conveniently.  */
 end_comment
 
 begin_class
@@ -79,8 +79,8 @@ DECL|method|CodecUtil ()
 specifier|private
 name|CodecUtil
 parameter_list|()
-block|{}
-comment|/**    * Create RS raw encoder according to configuration.    * @param conf    * @param numDataUnits    * @param numParityUnits    * @return raw encoder    */
+block|{ }
+comment|/**    * Create RS raw encoder according to configuration.    * @param conf configuration possibly with some items to configure the coder    * @param numDataUnits number of data units in a coding group    * @param numParityUnits number of parity units in a coding group    * @return raw encoder    */
 DECL|method|createRSRawEncoder ( Configuration conf, int numDataUnits, int numParityUnits)
 specifier|public
 specifier|static
@@ -140,7 +140,7 @@ operator|)
 name|rawCoder
 return|;
 block|}
-comment|/**    * Create RS raw decoder according to configuration.    * @param conf    * @param numDataUnits    * @param numParityUnits    * @return raw decoder    */
+comment|/**    * Create RS raw decoder according to configuration.    * @param conf configuration possibly with some items to configure the coder    * @param numDataUnits number of data units in a coding group    * @param numParityUnits number of parity units in a coding group    * @return raw decoder    */
 DECL|method|createRSRawDecoder ( Configuration conf, int numDataUnits, int numParityUnits)
 specifier|public
 specifier|static
@@ -200,7 +200,7 @@ operator|)
 name|rawCoder
 return|;
 block|}
-comment|/**    * Create XOR raw encoder according to configuration.    * @param conf    * @param numDataUnits    * @param numParityUnits    * @return raw encoder    */
+comment|/**    * Create XOR raw encoder according to configuration.    * @param conf configuration possibly with some items to configure the coder    * @param numDataUnits number of data units in a coding group    * @param numParityUnits number of parity units in a coding group    * @return raw encoder    */
 DECL|method|createXORRawEncoder ( Configuration conf, int numDataUnits, int numParityUnits)
 specifier|public
 specifier|static
@@ -260,7 +260,7 @@ operator|)
 name|rawCoder
 return|;
 block|}
-comment|/**    * Create XOR raw decoder according to configuration.    * @param conf    * @param numDataUnits    * @param numParityUnits    * @return raw decoder    */
+comment|/**    * Create XOR raw decoder according to configuration.    * @param conf configuration possibly with some items to configure the coder    * @param numDataUnits number of data units in a coding group    * @param numParityUnits number of parity units in a coding group    * @return raw decoder    */
 DECL|method|createXORRawDecoder ( Configuration conf, int numDataUnits, int numParityUnits)
 specifier|public
 specifier|static
@@ -320,7 +320,7 @@ operator|)
 name|rawCoder
 return|;
 block|}
-comment|/**    * Create raw coder using specified conf and raw coder factory key.    * @param conf    * @param rawCoderFactoryKey    * @param isEncoder    * @param numDataUnits    * @param numParityUnits    * @return raw coder    */
+comment|/**    * Create raw coder using specified conf and raw coder factory key.    * @param conf configuration possibly with some items to configure the coder    * @param rawCoderFactoryKey configuration key to find the raw coder factory    * @param isEncoder is encoder or not we're going to create    * @param numDataUnits number of data units in a coding group    * @param numParityUnits number of parity units in a coding group    * @return raw coder    */
 DECL|method|createRawCoder (Configuration conf, String rawCoderFactoryKey, boolean isEncoder, int numDataUnits, int numParityUnits)
 specifier|public
 specifier|static

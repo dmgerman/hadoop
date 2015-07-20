@@ -115,6 +115,17 @@ argument_list|,
 name|outputs
 argument_list|)
 expr_stmt|;
+name|boolean
+name|usingDirectBuffer
+init|=
+name|inputs
+index|[
+literal|0
+index|]
+operator|.
+name|isDirect
+argument_list|()
+decl_stmt|;
 name|int
 name|dataLen
 init|=
@@ -135,35 +146,28 @@ condition|)
 block|{
 return|return;
 block|}
-name|ensureLength
+name|ensureLengthAndType
 argument_list|(
 name|inputs
 argument_list|,
 literal|false
 argument_list|,
 name|dataLen
+argument_list|,
+name|usingDirectBuffer
 argument_list|)
 expr_stmt|;
-name|ensureLength
+name|ensureLengthAndType
 argument_list|(
 name|outputs
 argument_list|,
 literal|false
 argument_list|,
 name|dataLen
+argument_list|,
+name|usingDirectBuffer
 argument_list|)
 expr_stmt|;
-name|boolean
-name|usingDirectBuffer
-init|=
-name|inputs
-index|[
-literal|0
-index|]
-operator|.
-name|isDirect
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|usingDirectBuffer
@@ -264,6 +268,11 @@ index|]
 operator|=
 name|buffer
 operator|.
+name|arrayOffset
+argument_list|()
+operator|+
+name|buffer
+operator|.
 name|position
 argument_list|()
 expr_stmt|;
@@ -307,6 +316,11 @@ index|[
 name|i
 index|]
 operator|=
+name|buffer
+operator|.
+name|arrayOffset
+argument_list|()
+operator|+
 name|buffer
 operator|.
 name|position
@@ -493,7 +507,7 @@ name|outputOffsets
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Perform the real encoding work using bytes array, supporting offsets    * and lengths.    * @param inputs    * @param inputOffsets    * @param dataLen    * @param outputs    * @param outputOffsets    */
+comment|/**    * Perform the real encoding work using bytes array, supporting offsets    * and lengths.    * @param inputs the input byte arrays to read data from    * @param inputOffsets offsets for the input byte arrays to read data from    * @param dataLen how much data are to be read from    * @param outputs the output byte arrays to write resultant data into    * @param outputOffsets offsets from which to write resultant data into    */
 DECL|method|doEncode (byte[][] inputs, int[] inputOffsets, int dataLen, byte[][] outputs, int[] outputOffsets)
 specifier|protected
 specifier|abstract
@@ -568,17 +582,20 @@ name|newOutputs
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Check and validate decoding parameters, throw exception accordingly.    * @param inputs    * @param outputs    */
-DECL|method|checkParameters (Object[] inputs, Object[] outputs)
+comment|/**    * Check and validate decoding parameters, throw exception accordingly.    * @param inputs input buffers to check    * @param outputs output buffers to check    */
+DECL|method|checkParameters (T[] inputs, T[] outputs)
 specifier|protected
+parameter_list|<
+name|T
+parameter_list|>
 name|void
 name|checkParameters
 parameter_list|(
-name|Object
+name|T
 index|[]
 name|inputs
 parameter_list|,
-name|Object
+name|T
 index|[]
 name|outputs
 parameter_list|)

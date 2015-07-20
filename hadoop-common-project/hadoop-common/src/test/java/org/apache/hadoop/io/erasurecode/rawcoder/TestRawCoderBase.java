@@ -183,6 +183,8 @@ name|performTestCoding
 argument_list|(
 name|baseChunkSize
 argument_list|,
+literal|true
+argument_list|,
 literal|false
 argument_list|,
 literal|false
@@ -197,6 +199,8 @@ argument_list|,
 literal|false
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|performTestCoding
@@ -204,6 +208,8 @@ argument_list|(
 name|baseChunkSize
 operator|+
 literal|16
+argument_list|,
+literal|true
 argument_list|,
 literal|false
 argument_list|,
@@ -235,6 +241,8 @@ block|{
 name|performTestCoding
 argument_list|(
 name|baseChunkSize
+argument_list|,
+literal|false
 argument_list|,
 literal|true
 argument_list|,
@@ -282,6 +290,8 @@ block|{
 name|performTestCoding
 argument_list|(
 name|baseChunkSize
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|,
@@ -360,13 +370,16 @@ block|{
 comment|// Expected
 block|}
 block|}
-DECL|method|performTestCoding (int chunkSize, boolean useBadInput, boolean useBadOutput)
+DECL|method|performTestCoding (int chunkSize, boolean usingSlicedBuffer, boolean useBadInput, boolean useBadOutput)
 specifier|private
 name|void
 name|performTestCoding
 parameter_list|(
 name|int
 name|chunkSize
+parameter_list|,
+name|boolean
+name|usingSlicedBuffer
 parameter_list|,
 name|boolean
 name|useBadInput
@@ -378,6 +391,11 @@ block|{
 name|setChunkSize
 argument_list|(
 name|chunkSize
+argument_list|)
+expr_stmt|;
+name|prepareBufferAllocator
+argument_list|(
+name|usingSlicedBuffer
 argument_list|)
 expr_stmt|;
 name|dumpSetting

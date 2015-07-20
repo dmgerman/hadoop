@@ -43,7 +43,7 @@ specifier|private
 name|ByteBuffer
 name|chunkBuffer
 decl_stmt|;
-comment|/**    * Wrapping a ByteBuffer    * @param buffer    */
+comment|/**    * Wrapping a ByteBuffer    * @param buffer buffer to be wrapped by the chunk    */
 DECL|method|ECChunk (ByteBuffer buffer)
 specifier|public
 name|ECChunk
@@ -59,7 +59,7 @@ operator|=
 name|buffer
 expr_stmt|;
 block|}
-comment|/**    * Wrapping a bytes array    * @param buffer    */
+comment|/**    * Wrapping a bytes array    * @param buffer buffer to be wrapped by the chunk    */
 DECL|method|ECChunk (byte[] buffer)
 specifier|public
 name|ECChunk
@@ -92,7 +92,7 @@ return|return
 name|chunkBuffer
 return|;
 block|}
-comment|/**    * Convert an array of this chunks to an array of ByteBuffers    * @param chunks    * @return an array of ByteBuffers    */
+comment|/**    * Convert an array of this chunks to an array of ByteBuffers    * @param chunks chunks to convert into buffers    * @return an array of ByteBuffers    */
 DECL|method|toBuffers (ECChunk[] chunks)
 specifier|public
 specifier|static

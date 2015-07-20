@@ -52,7 +52,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * A constructor specifying isParity and isErased.    * @param isParity    * @param isErased    */
+comment|/**    * A constructor specifying isParity and isErased.    * @param isParity is a parity block    * @param isErased is erased or not    */
 DECL|method|ECBlock (boolean isParity, boolean isErased)
 specifier|public
 name|ECBlock
@@ -77,7 +77,7 @@ operator|=
 name|isErased
 expr_stmt|;
 block|}
-comment|/**    * Set true if it's for a parity block.    * @param isParity    */
+comment|/**    * Set true if it's for a parity block.    * @param isParity is parity or not    */
 DECL|method|setParity (boolean isParity)
 specifier|public
 name|void
@@ -94,21 +94,21 @@ operator|=
 name|isParity
 expr_stmt|;
 block|}
-comment|/**    * Set true if the block is missing.    * @param isMissing    */
-DECL|method|setErased (boolean isMissing)
+comment|/**    * Set true if the block is missing.    * @param isErased is erased or not    */
+DECL|method|setErased (boolean isErased)
 specifier|public
 name|void
 name|setErased
 parameter_list|(
 name|boolean
-name|isMissing
+name|isErased
 parameter_list|)
 block|{
 name|this
 operator|.
 name|isErased
 operator|=
-name|isMissing
+name|isErased
 expr_stmt|;
 block|}
 comment|/**    *    * @return true if it's parity block, otherwise false    */
@@ -122,7 +122,7 @@ return|return
 name|isParity
 return|;
 block|}
-comment|/**    *    * @return true if it's missing or corrupt due to erasure, otherwise false    */
+comment|/**    *    * @return true if it's erased due to erasure, otherwise false    */
 DECL|method|isErased ()
 specifier|public
 name|boolean

@@ -139,6 +139,14 @@ argument_list|(
 name|inputs
 argument_list|)
 decl_stmt|;
+name|boolean
+name|usingDirectBuffer
+init|=
+name|validInput
+operator|.
+name|isDirect
+argument_list|()
+decl_stmt|;
 name|int
 name|dataLen
 init|=
@@ -156,32 +164,28 @@ condition|)
 block|{
 return|return;
 block|}
-name|ensureLength
+name|ensureLengthAndType
 argument_list|(
 name|inputs
 argument_list|,
 literal|true
 argument_list|,
 name|dataLen
+argument_list|,
+name|usingDirectBuffer
 argument_list|)
 expr_stmt|;
-name|ensureLength
+name|ensureLengthAndType
 argument_list|(
 name|outputs
 argument_list|,
 literal|false
 argument_list|,
 name|dataLen
+argument_list|,
+name|usingDirectBuffer
 argument_list|)
 expr_stmt|;
-name|boolean
-name|usingDirectBuffer
-init|=
-name|validInput
-operator|.
-name|isDirect
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|usingDirectBuffer
@@ -291,6 +295,11 @@ index|]
 operator|=
 name|buffer
 operator|.
+name|arrayOffset
+argument_list|()
+operator|+
+name|buffer
+operator|.
 name|position
 argument_list|()
 expr_stmt|;
@@ -335,6 +344,11 @@ index|[
 name|i
 index|]
 operator|=
+name|buffer
+operator|.
+name|arrayOffset
+argument_list|()
+operator|+
 name|buffer
 operator|.
 name|position
@@ -402,10 +416,10 @@ name|buffer
 operator|.
 name|position
 argument_list|(
-name|inputOffsets
-index|[
-name|i
-index|]
+name|buffer
+operator|.
+name|position
+argument_list|()
 operator|+
 name|dataLen
 argument_list|)
@@ -413,7 +427,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Perform the real decoding using Direct ByteBuffer.    * @param inputs Direct ByteBuffers expected    * @param erasedIndexes    * @param outputs Direct ByteBuffers expected    */
+comment|/**    * Perform the real decoding using Direct ByteBuffer.    * @param inputs Direct ByteBuffers expected    * @param erasedIndexes indexes of erased units in the inputs array    * @param outputs Direct ByteBuffers expected    */
 DECL|method|doDecode (ByteBuffer[] inputs, int[] erasedIndexes, ByteBuffer[] outputs)
 specifier|protected
 specifier|abstract
@@ -549,7 +563,7 @@ name|outputOffsets
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Perform the real decoding using bytes array, supporting offsets and    * lengths.    * @param inputs    * @param inputOffsets    * @param dataLen    * @param erasedIndexes    * @param outputs    * @param outputOffsets    */
+comment|/**    * Perform the real decoding using bytes array, supporting offsets and    * lengths.    * @param inputs the input byte arrays to read data from    * @param inputOffsets offsets for the input byte arrays to read data from    * @param dataLen how much data are to be read from    * @param erasedIndexes indexes of erased units in the inputs array    * @param outputs the output byte arrays to write resultant data into    * @param outputOffsets offsets from which to write resultant data into    */
 DECL|method|doDecode (byte[][] inputs, int[] inputOffsets, int dataLen, int[] erasedIndexes, byte[][] outputs, int[] outputOffsets)
 specifier|protected
 specifier|abstract
@@ -634,13 +648,16 @@ name|newOutputs
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Check and validate decoding parameters, throw exception accordingly. The    * checking assumes it's a MDS code. Other code  can override this.    * @param inputs    * @param erasedIndexes    * @param outputs    */
-DECL|method|checkParameters (Object[] inputs, int[] erasedIndexes, Object[] outputs)
+comment|/**    * Check and validate decoding parameters, throw exception accordingly. The    * checking assumes it's a MDS code. Other code  can override this.    * @param inputs input buffers to check    * @param erasedIndexes indexes of erased units in the inputs array    * @param outputs output buffers to check    */
+DECL|method|checkParameters (T[] inputs, int[] erasedIndexes, T[] outputs)
 specifier|protected
+parameter_list|<
+name|T
+parameter_list|>
 name|void
 name|checkParameters
 parameter_list|(
-name|Object
+name|T
 index|[]
 name|inputs
 parameter_list|,
@@ -648,7 +665,7 @@ name|int
 index|[]
 name|erasedIndexes
 parameter_list|,
-name|Object
+name|T
 index|[]
 name|outputs
 parameter_list|)
@@ -718,27 +735,15 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|T
+name|input
+range|:
 name|inputs
-operator|.
-name|length
-condition|;
-operator|++
-name|i
 control|)
 block|{
 if|if
 condition|(
-name|inputs
-index|[
-name|i
-index|]
+name|input
 operator|!=
 literal|null
 condition|)
@@ -767,13 +772,16 @@ throw|;
 block|}
 block|}
 comment|/**    * Get indexes into inputs array for items marked as null, either erased or    * not to read.    * @return indexes into inputs array    */
-DECL|method|getErasedOrNotToReadIndexes (Object[] inputs)
+DECL|method|getErasedOrNotToReadIndexes (T[] inputs)
 specifier|protected
+parameter_list|<
+name|T
+parameter_list|>
 name|int
 index|[]
 name|getErasedOrNotToReadIndexes
 parameter_list|(
-name|Object
+name|T
 index|[]
 name|inputs
 parameter_list|)
@@ -843,7 +851,7 @@ name|idx
 argument_list|)
 return|;
 block|}
-comment|/**    * Find the valid input from all the inputs.    * @param inputs    * @return the first valid input    */
+comment|/**    * Find the valid input from all the inputs.    * @param inputs input buffers to look for valid input    * @return the first valid input    */
 DECL|method|findFirstValidInput (T[] inputs)
 specifier|protected
 specifier|static
@@ -860,36 +868,21 @@ parameter_list|)
 block|{
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|T
+name|input
+range|:
 name|inputs
-operator|.
-name|length
-condition|;
-name|i
-operator|++
 control|)
 block|{
 if|if
 condition|(
-name|inputs
-index|[
-name|i
-index|]
+name|input
 operator|!=
 literal|null
 condition|)
 block|{
 return|return
-name|inputs
-index|[
-name|i
-index|]
+name|input
 return|;
 block|}
 block|}

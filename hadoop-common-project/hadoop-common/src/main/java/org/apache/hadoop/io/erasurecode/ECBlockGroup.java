@@ -40,7 +40,7 @@ name|ECBlock
 index|[]
 name|parityBlocks
 decl_stmt|;
-comment|/**    * A constructor specifying data blocks and parity blocks.    * @param dataBlocks    * @param parityBlocks    */
+comment|/**    * A constructor specifying data blocks and parity blocks.    * @param dataBlocks data blocks in the group    * @param parityBlocks parity blocks in the group    */
 DECL|method|ECBlockGroup (ECBlock[] dataBlocks, ECBlock[] parityBlocks)
 specifier|public
 name|ECBlockGroup
@@ -179,7 +179,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Get erased blocks count    * @return    */
+comment|/**    * Get erased blocks count    * @return erased count of blocks    */
 DECL|method|getErasedCount ()
 specifier|public
 name|int

@@ -58,7 +58,7 @@ name|RawErasureEncoder
 extends|extends
 name|RawErasureCoder
 block|{
-comment|/**    * Encode with inputs and generates outputs    * @param inputs    * @param outputs    */
+comment|/**    * Encode with inputs and generates outputs.    *    * Note, for both inputs and outputs, no mixing of on-heap buffers and direct    * buffers are allowed.    *    * @param inputs inputs to read data from, contents may change after the call    * @param outputs    */
 DECL|method|encode (ByteBuffer[] inputs, ByteBuffer[] outputs)
 specifier|public
 name|void
@@ -73,7 +73,7 @@ index|[]
 name|outputs
 parameter_list|)
 function_decl|;
-comment|/**    * Encode with inputs and generates outputs    * @param inputs    * @param outputs    */
+comment|/**    * Encode with inputs and generates outputs    * @param inputs inputs to read data from, contents may change after the call    * @param outputs outputs to write into for data generated, ready for reading    *                the result data from after the call    */
 DECL|method|encode (byte[][] inputs, byte[][] outputs)
 specifier|public
 name|void
@@ -90,7 +90,7 @@ index|[]
 name|outputs
 parameter_list|)
 function_decl|;
-comment|/**    * Encode with inputs and generates outputs    * @param inputs    * @param outputs    */
+comment|/**    * Encode with inputs and generates outputs.    *    * Note, for both input and output ECChunks, no mixing of on-heap buffers and    * direct buffers are allowed.    *    * @param inputs inputs to read data from, contents may change after the call    * @param outputs outputs to write into for data generated, ready for reading    *                the result data from after the call    */
 DECL|method|encode (ECChunk[] inputs, ECChunk[] outputs)
 specifier|public
 name|void
