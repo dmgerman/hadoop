@@ -31,7 +31,10 @@ name|FINISH_APPS
 block|,
 DECL|enumConstant|FINISH_CONTAINERS
 name|FINISH_CONTAINERS
-block|, }
+block|,
+DECL|enumConstant|DECREASE_CONTAINERS_RESOURCE
+name|DECREASE_CONTAINERS_RESOURCE
+block|}
 end_enum
 
 end_unit

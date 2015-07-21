@@ -1317,16 +1317,19 @@ comment|// do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|authorizeStartRequest (NMTokenIdentifier nmTokenIdentifier, ContainerTokenIdentifier containerTokenIdentifier)
+DECL|method|authorizeStartAndResourceIncreaseRequest ( NMTokenIdentifier nmTokenIdentifier, ContainerTokenIdentifier containerTokenIdentifier, boolean startRequest)
 specifier|protected
 name|void
-name|authorizeStartRequest
+name|authorizeStartAndResourceIncreaseRequest
 parameter_list|(
 name|NMTokenIdentifier
 name|nmTokenIdentifier
 parameter_list|,
 name|ContainerTokenIdentifier
 name|containerTokenIdentifier
+parameter_list|,
+name|boolean
+name|startRequest
 parameter_list|)
 throws|throws
 name|YarnException
