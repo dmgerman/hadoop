@@ -1324,35 +1324,6 @@ parameter_list|)
 throws|throws
 name|AclException
 block|{
-if|if
-condition|(
-name|aclBuilder
-operator|.
-name|size
-argument_list|()
-operator|>
-name|MAX_ENTRIES
-condition|)
-block|{
-throw|throw
-operator|new
-name|AclException
-argument_list|(
-literal|"Invalid ACL: ACL has "
-operator|+
-name|aclBuilder
-operator|.
-name|size
-argument_list|()
-operator|+
-literal|" entries, which exceeds maximum of "
-operator|+
-name|MAX_ENTRIES
-operator|+
-literal|"."
-argument_list|)
-throw|;
-block|}
 name|aclBuilder
 operator|.
 name|trimToSize
@@ -1450,8 +1421,6 @@ operator|=
 name|entry
 expr_stmt|;
 block|}
-comment|// Search for the required base access entries.  If there is a default ACL,
-comment|// then do the same check on the default entries.
 name|ScopedAclEntries
 name|scopedEntries
 init|=
@@ -1461,6 +1430,13 @@ argument_list|(
 name|aclBuilder
 argument_list|)
 decl_stmt|;
+name|checkMaxEntries
+argument_list|(
+name|scopedEntries
+argument_list|)
+expr_stmt|;
+comment|// Search for the required base access entries.  If there is a default ACL,
+comment|// then do the same check on the default entries.
 for|for
 control|(
 name|AclEntryType
@@ -1598,6 +1574,101 @@ argument_list|(
 name|aclBuilder
 argument_list|)
 return|;
+block|}
+comment|// Check the max entries separately on access and default entries
+comment|// HDFS-7582
+DECL|method|checkMaxEntries (ScopedAclEntries scopedEntries)
+specifier|private
+specifier|static
+name|void
+name|checkMaxEntries
+parameter_list|(
+name|ScopedAclEntries
+name|scopedEntries
+parameter_list|)
+throws|throws
+name|AclException
+block|{
+name|List
+argument_list|<
+name|AclEntry
+argument_list|>
+name|accessEntries
+init|=
+name|scopedEntries
+operator|.
+name|getAccessEntries
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|AclEntry
+argument_list|>
+name|defaultEntries
+init|=
+name|scopedEntries
+operator|.
+name|getDefaultEntries
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|accessEntries
+operator|.
+name|size
+argument_list|()
+operator|>
+name|MAX_ENTRIES
+condition|)
+block|{
+throw|throw
+operator|new
+name|AclException
+argument_list|(
+literal|"Invalid ACL: ACL has "
+operator|+
+name|accessEntries
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" access entries, which exceeds maximum of "
+operator|+
+name|MAX_ENTRIES
+operator|+
+literal|"."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|defaultEntries
+operator|.
+name|size
+argument_list|()
+operator|>
+name|MAX_ENTRIES
+condition|)
+block|{
+throw|throw
+operator|new
+name|AclException
+argument_list|(
+literal|"Invalid ACL: ACL has "
+operator|+
+name|defaultEntries
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" default entries, which exceeds maximum of "
+operator|+
+name|MAX_ENTRIES
+operator|+
+literal|"."
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    * Calculates mask entries required for the ACL.  Mask calculation is performed    * separately for each scope: access and default.  This method is responsible    * for handling the following cases of mask calculation:    * 1. Throws an exception if the caller attempts to remove the mask entry of an    *   existing ACL that requires it.  If the ACL has any named entries, then a    *   mask entry is required.    * 2. If the caller supplied a mask in the ACL spec, use it.    * 3. If the caller did not supply a mask, but there are ACL entry changes in    *   this scope, then automatically calculate a new mask.  The permissions of    *   the new mask are the union of the permissions on the group entry and all    *   named entries.    *    * @param aclBuilder ArrayList<AclEntry> containing entries to build    * @param providedMask EnumMap<AclEntryScope, AclEntry> mapping each scope to    *   the mask entry that was provided for that scope (if provided)    * @param maskDirty EnumSet<AclEntryScope> which contains a scope if the mask    *   entry is dirty (added or deleted) in that scope    * @param scopeDirty EnumSet<AclEntryScope> which contains a scope if any entry    *   is dirty (added or deleted) in that scope    * @throws AclException if validation fails    */
 DECL|method|calculateMasks (List<AclEntry> aclBuilder, EnumMap<AclEntryScope, AclEntry> providedMask, EnumSet<AclEntryScope> maskDirty, EnumSet<AclEntryScope> scopeDirty)
@@ -2196,35 +2267,6 @@ parameter_list|)
 throws|throws
 name|AclException
 block|{
-if|if
-condition|(
-name|aclSpec
-operator|.
-name|size
-argument_list|()
-operator|>
-name|MAX_ENTRIES
-condition|)
-block|{
-throw|throw
-operator|new
-name|AclException
-argument_list|(
-literal|"Invalid ACL: ACL spec has "
-operator|+
-name|aclSpec
-operator|.
-name|size
-argument_list|()
-operator|+
-literal|" entries, which exceeds maximum of "
-operator|+
-name|MAX_ENTRIES
-operator|+
-literal|"."
-argument_list|)
-throw|;
-block|}
 name|Collections
 operator|.
 name|sort
@@ -2232,6 +2274,15 @@ argument_list|(
 name|aclSpec
 argument_list|,
 name|ACL_ENTRY_COMPARATOR
+argument_list|)
+expr_stmt|;
+name|checkMaxEntries
+argument_list|(
+operator|new
+name|ScopedAclEntries
+argument_list|(
+name|aclSpec
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|this
