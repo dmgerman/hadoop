@@ -156,20 +156,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|BlockStoragePolicySpi
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|Path
 import|;
 end_import
@@ -543,24 +529,6 @@ operator|.
 name|util
 operator|.
 name|ToolRunner
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|util
-operator|.
-name|StripedBlockUtil
-operator|.
-name|getInternalBlockLength
 import|;
 end_import
 
