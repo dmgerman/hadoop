@@ -883,6 +883,20 @@ return|;
 comment|// f does not exist
 block|}
 block|}
+comment|/**    * Override getCononicalServiceName because we don't support token in Swift    */
+annotation|@
+name|Override
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
+block|{
+comment|// Does not support Token
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Return an array containing hostnames, offset and size of    * portions of the given file.  For a nonexistent    * file or regions, null will be returned.    *<p>    * This call is most helpful with DFS, where it returns    * hostnames of machines that contain the given file.    *<p>    * The FileSystem will simply return an elt containing 'localhost'.    */
 annotation|@
 name|Override

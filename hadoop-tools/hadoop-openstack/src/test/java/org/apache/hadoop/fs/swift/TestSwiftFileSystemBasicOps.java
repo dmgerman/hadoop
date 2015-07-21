@@ -22,6 +22,16 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|apache
 operator|.
 name|commons
@@ -1556,6 +1566,30 @@ parameter_list|)
 block|{
 comment|// expected
 block|}
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+name|SWIFT_TEST_TIMEOUT
+argument_list|)
+DECL|method|testGetCanonicalServiceName ()
+specifier|public
+name|void
+name|testGetCanonicalServiceName
+parameter_list|()
+block|{
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+name|fs
+operator|.
+name|getCanonicalServiceName
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
