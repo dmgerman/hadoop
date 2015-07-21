@@ -36,6 +36,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -206,12 +216,6 @@ DECL|field|truncateBlock
 specifier|protected
 name|Block
 name|truncateBlock
-decl_stmt|;
-comment|/** The number of times all replicas will be used to attempt recovery before    * giving up and marking the block under construction missing.    */
-DECL|field|recoveryAttemptsBeforeMarkingBlockMissing
-specifier|private
-name|int
-name|recoveryAttemptsBeforeMarkingBlockMissing
 decl_stmt|;
 comment|/**    * ReplicaUnderConstruction contains information about replicas while    * they are under construction.    * The GS, the length and the state of the replica is as reported by    * the data-node.    * It is not guaranteed, but expected, that data-nodes actually have    * corresponding replicas.    */
 DECL|class|ReplicaUnderConstruction
@@ -540,15 +544,6 @@ name|setExpectedLocations
 argument_list|(
 name|targets
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|recoveryAttemptsBeforeMarkingBlockMissing
-operator|=
-name|BlockManager
-operator|.
-name|getMaxBlockUCRecoveries
-argument_list|()
 expr_stmt|;
 block|}
 comment|/** Set expected locations. */
@@ -895,7 +890,7 @@ literal|"BLOCK* "
 operator|+
 literal|"BlockInfoUnderConstruction.initLeaseRecovery: "
 operator|+
-literal|"No replicas found."
+literal|"No blocks found, lease removed."
 argument_list|)
 expr_stmt|;
 block|}
@@ -959,28 +954,6 @@ condition|(
 name|allLiveReplicasTriedAsPrimary
 condition|)
 block|{
-name|recoveryAttemptsBeforeMarkingBlockMissing
-operator|--
-expr_stmt|;
-name|NameNode
-operator|.
-name|blockStateChangeLog
-operator|.
-name|info
-argument_list|(
-literal|"Tried to recover "
-operator|+
-name|this
-operator|+
-literal|" using all"
-operator|+
-literal|" replicas. Will try "
-operator|+
-name|recoveryAttemptsBeforeMarkingBlockMissing
-operator|+
-literal|" more times"
-argument_list|)
-expr_stmt|;
 comment|// Just set all the replicas to be chosen whether they are alive or not.
 for|for
 control|(
@@ -1280,16 +1253,6 @@ name|rState
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|getNumRecoveryAttemptsLeft ()
-specifier|public
-name|int
-name|getNumRecoveryAttemptsLeft
-parameter_list|()
-block|{
-return|return
-name|recoveryAttemptsBeforeMarkingBlockMissing
-return|;
 block|}
 comment|/**    * Convert an under construction block to a complete block.    *    * @return a complete block.    * @throws IOException    *           if the state of the block (the generation stamp and the length)    *           has not been committed by the client or it does not have at    *           least a minimal number of replicas reported from data-nodes.    */
 DECL|method|convertToCompleteBlock ()
