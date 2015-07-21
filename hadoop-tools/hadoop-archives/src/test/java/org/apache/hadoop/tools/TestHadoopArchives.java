@@ -4637,7 +4637,9 @@ literal|"-p"
 block|,
 name|inputPathStr
 block|,
-literal|"-r 3"
+literal|"-r"
+block|,
+literal|"3"
 block|,
 literal|"*"
 block|,
