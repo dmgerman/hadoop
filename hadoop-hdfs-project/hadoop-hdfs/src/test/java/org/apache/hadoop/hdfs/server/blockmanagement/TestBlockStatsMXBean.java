@@ -672,15 +672,6 @@ literal|"/jmx"
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-name|result
-argument_list|)
-expr_stmt|;
 name|Map
 argument_list|<
 name|String
