@@ -6547,6 +6547,26 @@ name|DEFAULT_NODELABEL_CONFIGURATION_TYPE
 init|=
 name|CENTALIZED_NODELABEL_CONFIGURATION_TYPE
 decl_stmt|;
+DECL|field|MAX_CLUSTER_LEVEL_APPLICATION_PRIORITY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAX_CLUSTER_LEVEL_APPLICATION_PRIORITY
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"cluster.max-application-priority"
+decl_stmt|;
+DECL|field|DEFAULT_CLUSTER_LEVEL_APPLICATION_PRIORITY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_CLUSTER_LEVEL_APPLICATION_PRIORITY
+init|=
+literal|0
+decl_stmt|;
 annotation|@
 name|Private
 DECL|method|isDistributedNodeLabelConfiguration (Configuration conf)

@@ -1645,6 +1645,19 @@ name|Resource
 name|resourceToDec
 parameter_list|)
 block|{   }
+annotation|@
+name|Override
+DECL|method|getDefaultApplicationPriority ()
+specifier|public
+name|Priority
+name|getDefaultApplicationPriority
+parameter_list|()
+block|{
+comment|// TODO add implementation for FSParentQueue
+return|return
+literal|null
+return|;
+block|}
 DECL|method|fitsInMaxShare (Resource additionalResource)
 specifier|public
 name|boolean

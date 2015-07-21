@@ -5365,6 +5365,24 @@ argument_list|(
 name|appId
 argument_list|)
 expr_stmt|;
+name|when
+argument_list|(
+name|app
+operator|.
+name|getPriority
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// add to LeafQueue
 name|LeafQueue
 name|queue

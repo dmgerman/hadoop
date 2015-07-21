@@ -1073,6 +1073,11 @@ name|FiCaSchedulerApp
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|defaultAppPriorityPerQueue
+specifier|private
+name|Priority
+name|defaultAppPriorityPerQueue
+decl_stmt|;
 DECL|field|pendingApplications
 name|Set
 argument_list|<
@@ -1654,6 +1659,21 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|defaultAppPriorityPerQueue
+operator|=
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+name|conf
+operator|.
+name|getDefaultApplicationPriorityConfPerQueue
+argument_list|(
+name|getQueuePath
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -1850,6 +1870,10 @@ name|getPreemptionDisabled
 argument_list|()
 operator|+
 literal|"\n"
+operator|+
+literal|"defaultAppPriorityPerQueue = "
+operator|+
+name|defaultAppPriorityPerQueue
 argument_list|)
 expr_stmt|;
 block|}
@@ -9737,6 +9761,18 @@ name|orderingPolicy
 operator|=
 name|orderingPolicy
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDefaultApplicationPriority ()
+specifier|public
+name|Priority
+name|getDefaultApplicationPriority
+parameter_list|()
+block|{
+return|return
+name|defaultAppPriorityPerQueue
+return|;
 block|}
 comment|/*    * Holds shared values used by all applications in    * the queue to calculate headroom on demand    */
 DECL|class|QueueResourceLimitsInfo

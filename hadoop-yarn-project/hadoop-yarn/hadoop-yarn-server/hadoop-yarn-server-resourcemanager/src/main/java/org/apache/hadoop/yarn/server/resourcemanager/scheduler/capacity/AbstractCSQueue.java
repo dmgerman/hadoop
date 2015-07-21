@@ -166,6 +166,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|QueueACL
 import|;
 end_import
@@ -2731,6 +2749,19 @@ block|}
 comment|// sorry, you cannot access
 return|return
 literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDefaultApplicationPriority ()
+specifier|public
+name|Priority
+name|getDefaultApplicationPriority
+parameter_list|()
+block|{
+comment|// TODO add dummy implementation
+return|return
+literal|null
 return|;
 block|}
 block|}
