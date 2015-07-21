@@ -19930,6 +19930,33 @@ name|info
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"NumEncryptionZones"
+block|,
+literal|"The number of encryption zones"
+block|}
+argument_list|)
+DECL|method|getNumEncryptionZones ()
+specifier|public
+name|int
+name|getNumEncryptionZones
+parameter_list|()
+block|{
+return|return
+name|dir
+operator|.
+name|ezManager
+operator|.
+name|getNumEncryptionZones
+argument_list|()
+return|;
+block|}
 DECL|method|getNumberOfDatanodes (DatanodeReportType type)
 name|int
 name|getNumberOfDatanodes

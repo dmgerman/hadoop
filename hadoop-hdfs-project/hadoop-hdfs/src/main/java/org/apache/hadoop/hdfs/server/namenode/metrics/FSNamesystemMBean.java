@@ -214,6 +214,12 @@ name|String
 name|getTopUserOpCounts
 parameter_list|()
 function_decl|;
+comment|/**    * Return the number of encryption zones in the system.    */
+DECL|method|getNumEncryptionZones ()
+name|int
+name|getNumEncryptionZones
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
