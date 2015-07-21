@@ -1167,6 +1167,15 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Need to reset drained flag to true if event queue is empty,
+comment|// otherwise dispatcher will hang on stop.
+name|drained
+operator|=
+name|eventQueue
+operator|.
+name|isEmpty
+argument_list|()
+expr_stmt|;
 throw|throw
 operator|new
 name|YarnRuntimeException
@@ -1302,6 +1311,27 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|isEventThreadWaiting ()
+specifier|protected
+name|boolean
+name|isEventThreadWaiting
+parameter_list|()
+block|{
+return|return
+name|eventHandlingThread
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|Thread
+operator|.
+name|State
+operator|.
+name|WAITING
 return|;
 block|}
 annotation|@
