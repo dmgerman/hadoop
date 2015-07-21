@@ -368,7 +368,7 @@ literal|"Param n cannot be less than 0"
 argument_list|,
 name|crm
 operator|.
-name|getCorruptReplicaBlockIds
+name|getCorruptReplicaBlockIdsForTesting
 argument_list|(
 operator|-
 literal|1
@@ -383,7 +383,7 @@ literal|"Param n cannot be greater than 100"
 argument_list|,
 name|crm
 operator|.
-name|getCorruptReplicaBlockIds
+name|getCorruptReplicaBlockIdsForTesting
 argument_list|(
 literal|101
 argument_list|,
@@ -397,7 +397,7 @@ name|l
 init|=
 name|crm
 operator|.
-name|getCorruptReplicaBlockIds
+name|getCorruptReplicaBlockIdsForTesting
 argument_list|(
 literal|0
 argument_list|,
@@ -658,7 +658,7 @@ block|}
 argument_list|,
 name|crm
 operator|.
-name|getCorruptReplicaBlockIds
+name|getCorruptReplicaBlockIdsForTesting
 argument_list|(
 literal|5
 argument_list|,
@@ -673,7 +673,7 @@ name|info
 argument_list|(
 name|crm
 operator|.
-name|getCorruptReplicaBlockIds
+name|getCorruptReplicaBlockIdsForTesting
 argument_list|(
 literal|10
 argument_list|,
@@ -730,7 +730,7 @@ block|}
 argument_list|,
 name|crm
 operator|.
-name|getCorruptReplicaBlockIds
+name|getCorruptReplicaBlockIdsForTesting
 argument_list|(
 literal|10
 argument_list|,
