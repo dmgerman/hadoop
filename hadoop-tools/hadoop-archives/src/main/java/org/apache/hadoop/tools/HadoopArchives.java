@@ -893,7 +893,18 @@ name|NAME
 operator|+
 literal|".block.size"
 decl_stmt|;
-comment|/**the size of the part files that will be created when archiving **/
+comment|/** the replication factor for the file in archiving. **/
+DECL|field|HAR_REPLICATION_LABEL
+specifier|static
+specifier|final
+name|String
+name|HAR_REPLICATION_LABEL
+init|=
+name|NAME
+operator|+
+literal|".replication.factor"
+decl_stmt|;
+comment|/** the size of the part files that will be created when archiving **/
 DECL|field|HAR_PARTSIZE_LABEL
 specifier|static
 specifier|final
@@ -928,12 +939,12 @@ literal|1024
 operator|*
 literal|1024l
 decl_stmt|;
-comment|/** the desired replication degree; default is 10 **/
+comment|/** the desired replication degree; default is 3 **/
 DECL|field|repl
 name|short
 name|repl
 init|=
-literal|10
+literal|3
 decl_stmt|;
 DECL|field|usage
 specifier|private
@@ -2703,6 +2714,15 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|HAR_REPLICATION_LABEL
+argument_list|,
+name|repl
+argument_list|)
+expr_stmt|;
 name|Path
 name|outputPath
 init|=
@@ -3196,16 +3216,6 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|//increase the replication of src files
-name|jobfs
-operator|.
-name|setReplication
-argument_list|(
-name|srcFiles
-argument_list|,
-name|repl
-argument_list|)
-expr_stmt|;
 name|conf
 operator|.
 name|setInt
@@ -3444,6 +3454,13 @@ literal|128
 operator|*
 literal|1024
 decl_stmt|;
+DECL|field|replication
+specifier|private
+name|int
+name|replication
+init|=
+literal|3
+decl_stmt|;
 DECL|field|blockSize
 name|long
 name|blockSize
@@ -3472,6 +3489,17 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|replication
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|HAR_REPLICATION_LABEL
+argument_list|,
+literal|3
+argument_list|)
 expr_stmt|;
 comment|// this is tightly tied to map reduce
 comment|// since it does not expose an api
@@ -4162,6 +4190,18 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|destFs
+operator|.
+name|setReplication
+argument_list|(
+name|tmpOutput
+argument_list|,
+operator|(
+name|short
+operator|)
+name|replication
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/** the reduce for creating the index and the master index     *     */
@@ -4265,6 +4305,13 @@ name|written
 init|=
 literal|0
 decl_stmt|;
+DECL|field|replication
+specifier|private
+name|int
+name|replication
+init|=
+literal|3
+decl_stmt|;
 DECL|field|keyVal
 specifier|private
 name|int
@@ -4317,6 +4364,17 @@ argument_list|(
 name|tmpOutputDir
 argument_list|,
 literal|"_index"
+argument_list|)
+expr_stmt|;
+name|replication
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|HAR_REPLICATION_LABEL
+argument_list|,
+literal|3
 argument_list|)
 expr_stmt|;
 try|try
@@ -4662,7 +4720,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|5
+name|replication
 argument_list|)
 expr_stmt|;
 name|fs
@@ -4674,7 +4732,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|5
+name|replication
 argument_list|)
 expr_stmt|;
 block|}
