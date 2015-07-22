@@ -101,6 +101,16 @@ name|TestResourceCalculatorPlugin
 extends|extends
 name|ResourceCalculatorPlugin
 block|{
+DECL|method|TestResourceCalculatorPlugin ()
+name|TestResourceCalculatorPlugin
+parameter_list|()
+block|{
+name|super
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getVirtualMemorySize ()
