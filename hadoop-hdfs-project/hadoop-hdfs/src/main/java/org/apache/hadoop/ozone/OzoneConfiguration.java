@@ -53,10 +53,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|StorageContainerConfiguration
+DECL|class|OzoneConfiguration
 specifier|public
 class|class
-name|StorageContainerConfiguration
+name|OzoneConfiguration
 extends|extends
 name|Configuration
 block|{
@@ -75,6 +75,13 @@ operator|.
 name|addDefaultResource
 argument_list|(
 literal|"hdfs-site.xml"
+argument_list|)
+expr_stmt|;
+name|Configuration
+operator|.
+name|addDefaultResource
+argument_list|(
+literal|"ozone-default.xml"
 argument_list|)
 expr_stmt|;
 name|Configuration

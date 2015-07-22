@@ -72,7 +72,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|StorageContainerConfiguration
+name|OzoneConfiguration
 import|;
 end_import
 
@@ -424,11 +424,11 @@ operator|new
 name|ReentrantReadWriteLock
 argument_list|()
 expr_stmt|;
-name|StorageContainerConfiguration
+name|OzoneConfiguration
 name|conf
 init|=
 operator|new
-name|StorageContainerConfiguration
+name|OzoneConfiguration
 argument_list|()
 decl_stmt|;
 name|String
