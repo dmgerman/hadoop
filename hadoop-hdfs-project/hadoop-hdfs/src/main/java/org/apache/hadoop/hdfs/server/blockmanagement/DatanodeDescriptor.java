@@ -3166,6 +3166,32 @@ name|deleteList
 return|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|containsInvalidateBlock (Block block)
+specifier|public
+name|boolean
+name|containsInvalidateBlock
+parameter_list|(
+name|Block
+name|block
+parameter_list|)
+block|{
+synchronized|synchronized
+init|(
+name|invalidateBlocks
+init|)
+block|{
+return|return
+name|invalidateBlocks
+operator|.
+name|contains
+argument_list|(
+name|block
+argument_list|)
+return|;
+block|}
+block|}
 comment|/**    * @return Approximate number of blocks currently scheduled to be written     */
 DECL|method|getRemaining (StorageType t)
 specifier|public

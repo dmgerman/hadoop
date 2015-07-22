@@ -4017,6 +4017,24 @@ range|:
 name|targets
 control|)
 block|{
+specifier|final
+name|Block
+name|b
+init|=
+name|getBlockOnStorage
+argument_list|(
+name|oldBlock
+argument_list|,
+name|storage
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|b
+operator|!=
+literal|null
+condition|)
+block|{
 name|invalidateBlocks
 operator|.
 name|remove
@@ -4026,9 +4044,10 @@ operator|.
 name|getDatanodeDescriptor
 argument_list|()
 argument_list|,
-name|oldBlock
+name|b
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// Adjust safe-mode totals, since under-construction blocks don't
 comment|// count in safe-mode.
@@ -4098,7 +4117,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get all valid locations of the block    */
-DECL|method|getValidLocations (Block block)
+DECL|method|getValidLocations (BlockInfo block)
 specifier|private
 name|List
 argument_list|<
@@ -4106,7 +4125,7 @@ name|DatanodeStorageInfo
 argument_list|>
 name|getValidLocations
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -4145,8 +4164,22 @@ argument_list|)
 control|)
 block|{
 comment|// filter invalidate replicas
+name|Block
+name|b
+init|=
+name|getBlockOnStorage
+argument_list|(
+name|block
+argument_list|,
+name|storage
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
+name|b
+operator|!=
+literal|null
+operator|&&
 operator|!
 name|invalidateBlocks
 operator|.
@@ -4157,7 +4190,7 @@ operator|.
 name|getDatanodeDescriptor
 argument_list|()
 argument_list|,
-name|block
+name|b
 argument_list|)
 condition|)
 block|{
@@ -6161,15 +6194,34 @@ argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
+specifier|final
+name|Block
+name|b
+init|=
+name|getBlockOnStorage
+argument_list|(
+name|block
+argument_list|,
+name|storageInfo
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|b
+operator|!=
+literal|null
+condition|)
+block|{
 name|invalidateBlocks
 operator|.
 name|remove
 argument_list|(
 name|node
 argument_list|,
-name|block
+name|b
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|namesystem
 operator|.
@@ -6272,7 +6324,7 @@ specifier|final
 name|Block
 name|b
 init|=
-name|getBlockToInvalidate
+name|getBlockOnStorage
 argument_list|(
 name|storedBlock
 argument_list|,
@@ -6337,10 +6389,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getBlockToInvalidate (BlockInfo storedBlock, DatanodeStorageInfo storage)
+DECL|method|getBlockOnStorage (BlockInfo storedBlock, DatanodeStorageInfo storage)
 specifier|private
 name|Block
-name|getBlockToInvalidate
+name|getBlockOnStorage
 parameter_list|(
 name|BlockInfo
 name|storedBlock
@@ -10165,6 +10217,23 @@ name|getDatanodeDescriptor
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Block
+name|b
+init|=
+name|getBlockOnStorage
+argument_list|(
+name|block
+argument_list|,
+name|zombie
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|b
+operator|!=
+literal|null
+condition|)
+block|{
 name|invalidateBlocks
 operator|.
 name|remove
@@ -10174,9 +10243,10 @@ operator|.
 name|getDatanodeDescriptor
 argument_list|()
 argument_list|,
-name|block
+name|b
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 assert|assert
 operator|(
@@ -15486,7 +15556,7 @@ specifier|final
 name|Block
 name|blockToInvalidate
 init|=
-name|getBlockToInvalidate
+name|getBlockOnStorage
 argument_list|(
 name|storedBlock
 argument_list|,
@@ -18209,6 +18279,33 @@ name|toInvalidate
 operator|.
 name|size
 argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|containsInvalidateBlock (final DatanodeInfo dn, final Block block)
+specifier|public
+name|boolean
+name|containsInvalidateBlock
+parameter_list|(
+specifier|final
+name|DatanodeInfo
+name|dn
+parameter_list|,
+specifier|final
+name|Block
+name|block
+parameter_list|)
+block|{
+return|return
+name|invalidateBlocks
+operator|.
+name|contains
+argument_list|(
+name|dn
+argument_list|,
+name|block
+argument_list|)
 return|;
 block|}
 DECL|method|blockHasEnoughRacks (BlockInfo storedBlock, int expectedStorageNum)
