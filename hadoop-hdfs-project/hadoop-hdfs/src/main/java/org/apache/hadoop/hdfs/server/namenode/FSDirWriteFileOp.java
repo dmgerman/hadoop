@@ -1481,6 +1481,9 @@ argument_list|)
 decl_stmt|;
 name|fsn
 operator|.
+name|getFSDirectory
+argument_list|()
+operator|.
 name|getBlockManager
 argument_list|()
 operator|.
@@ -2685,7 +2688,7 @@ expr_stmt|;
 block|}
 name|setNewINodeStoragePolicy
 argument_list|(
-name|fsn
+name|fsd
 operator|.
 name|getBlockManager
 argument_list|()

@@ -3075,9 +3075,6 @@ name|loc
 operator|=
 name|fsd
 operator|.
-name|getFSNamesystem
-argument_list|()
-operator|.
 name|getBlockManager
 argument_list|()
 operator|.

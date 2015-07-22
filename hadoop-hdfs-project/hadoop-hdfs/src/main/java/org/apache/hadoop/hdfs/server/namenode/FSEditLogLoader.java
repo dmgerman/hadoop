@@ -3193,11 +3193,11 @@ block|}
 name|LocatedBlock
 name|lb
 init|=
-name|fsNamesys
+name|FSDirAppendOp
 operator|.
 name|prepareFileForAppend
 argument_list|(
-name|path
+name|fsNamesys
 argument_list|,
 name|iip
 argument_list|,
@@ -3634,11 +3634,11 @@ block|{
 name|LocatedBlock
 name|lb
 init|=
-name|fsNamesys
+name|FSDirAppendOp
 operator|.
 name|prepareFileForAppend
 argument_list|(
-name|path
+name|fsNamesys
 argument_list|,
 name|iip
 argument_list|,
