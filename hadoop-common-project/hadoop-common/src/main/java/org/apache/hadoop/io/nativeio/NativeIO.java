@@ -453,33 +453,6 @@ name|O_SYNC
 init|=
 literal|010000
 decl_stmt|;
-DECL|field|O_ASYNC
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|O_ASYNC
-init|=
-literal|020000
-decl_stmt|;
-DECL|field|O_FSYNC
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|O_FSYNC
-init|=
-name|O_SYNC
-decl_stmt|;
-DECL|field|O_NDELAY
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|O_NDELAY
-init|=
-name|O_NONBLOCK
-decl_stmt|;
 comment|// Flags for posix_fadvise() from bits/fcntl.h
 comment|/* No further special treatment.  */
 DECL|field|POSIX_FADV_NORMAL
@@ -1584,16 +1557,6 @@ init|=
 literal|0140000
 decl_stmt|;
 comment|/* socket */
-DECL|field|S_IFWHT
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|S_IFWHT
-init|=
-literal|0160000
-decl_stmt|;
-comment|/* whiteout */
 DECL|field|S_ISUID
 specifier|public
 specifier|static
