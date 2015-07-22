@@ -76,6 +76,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -87,16 +97,6 @@ operator|.
 name|util
 operator|.
 name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|TreeMap
 import|;
 end_import
 
@@ -275,7 +275,7 @@ argument_list|>
 name|node2blocks
 init|=
 operator|new
-name|TreeMap
+name|HashMap
 argument_list|<
 name|DatanodeInfo
 argument_list|,
