@@ -2499,7 +2499,7 @@ name|clone
 argument_list|(
 name|user
 operator|.
-name|getUsed
+name|getAllUsed
 argument_list|()
 argument_list|)
 argument_list|,
@@ -8990,6 +8990,19 @@ return|return
 name|userResourceUsage
 operator|.
 name|getUsed
+argument_list|()
+return|;
+block|}
+DECL|method|getAllUsed ()
+specifier|public
+name|Resource
+name|getAllUsed
+parameter_list|()
+block|{
+return|return
+name|userResourceUsage
+operator|.
+name|getAllUsed
 argument_list|()
 return|;
 block|}

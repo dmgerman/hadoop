@@ -3134,7 +3134,7 @@ name|clone
 argument_list|(
 name|attemptResourceUsage
 operator|.
-name|getUsed
+name|getAllUsed
 argument_list|()
 argument_list|)
 decl_stmt|;
