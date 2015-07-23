@@ -24,16 +24,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -168,20 +158,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileAlreadyExistsException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|FsServerDefaults
 import|;
 end_import
@@ -196,51 +172,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|InvalidPathException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|Options
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Options
-operator|.
-name|Rename
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|ParentNotDirectoryException
 import|;
 end_import
 
@@ -255,20 +187,6 @@ operator|.
 name|fs
 operator|.
 name|StorageType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|UnresolvedLinkException
 import|;
 end_import
 
@@ -470,42 +388,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
-operator|.
-name|NotReplicatedYetException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|SafeModeException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|protocol
 operator|.
 name|DatanodeStorageReport
@@ -569,20 +451,6 @@ operator|.
 name|retry
 operator|.
 name|Idempotent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|AccessControlException
 import|;
 end_import
 
@@ -692,7 +560,7 @@ decl_stmt|;
 comment|///////////////////////////////////////
 comment|// File contents
 comment|///////////////////////////////////////
-comment|/**    * Get locations of the blocks of the specified file    * within the specified range.    * DataNode locations for each block are sorted by    * the proximity to the client.    *<p>    * Return {@link LocatedBlocks} which contains    * file length, blocks and their locations.    * DataNode locations for each block are sorted by    * the distance to the client's address.    *<p>    * The client will then have to contact    * one of the indicated DataNodes to obtain the actual data.    *    * @param src file name    * @param offset range start offset    * @param length range length    *    * @return file length and array of blocks with their locations    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> does not exist    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * Get locations of the blocks of the specified file    * within the specified range.    * DataNode locations for each block are sorted by    * the proximity to the client.    *<p>    * Return {@link LocatedBlocks} which contains    * file length, blocks and their locations.    * DataNode locations for each block are sorted by    * the distance to the client's address.    *<p>    * The client will then have to contact    * one of the indicated DataNodes to obtain the actual data.    *    * @param src file name    * @param offset range start offset    * @param length range length    *    * @return file length and array of blocks with their locations    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> does not    *           exist    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|getBlockLocations (String src, long offset, long length)
@@ -721,7 +589,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create a new file entry in the namespace.    *<p>    * This will create an empty file specified by the source path.    * The path should reflect a full path originated at the root.    * The name-node does not have a notion of "current" directory for a client.    *<p>    * Once created, the file is visible and available for read to other clients.    * Although, other clients cannot {@link #delete(String, boolean)}, re-create    * or {@link #rename(String, String)} it until the file is completed    * or explicitly as a result of lease expiration.    *<p>    * Blocks have a maximum size.  Clients that intend to create    * multi-block files must also use    * {@link #addBlock}    *    * @param src path of the file being created.    * @param masked masked permission.    * @param clientName name of the current client.    * @param flag indicates whether the file should be    * overwritten if it already exists or create if it does not exist or append.    * @param createParent create missing parent directory if true    * @param replication block replication factor.    * @param blockSize maximum block size.    * @param supportedVersions CryptoProtocolVersions supported by the client    *    * @return the status of the created file, it could be null if the server    *           doesn't support returning the file status    * @throws AccessControlException If access is denied    * @throws AlreadyBeingCreatedException if the path does not exist.    * @throws DSQuotaExceededException If file creation violates disk space    *           quota restriction    * @throws FileAlreadyExistsException If file<code>src</code> already exists    * @throws FileNotFoundException If parent of<code>src</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>src</code> is not a    *           directory.    * @throws NSQuotaExceededException If file creation violates name space    *           quota restriction    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    *    * RuntimeExceptions:    * @throws InvalidPathException Path<code>src</code> is invalid    *<p>    *<em>Note that create with {@link CreateFlag#OVERWRITE} is idempotent.</em>    */
+comment|/**    * Create a new file entry in the namespace.    *<p>    * This will create an empty file specified by the source path.    * The path should reflect a full path originated at the root.    * The name-node does not have a notion of "current" directory for a client.    *<p>    * Once created, the file is visible and available for read to other clients.    * Although, other clients cannot {@link #delete(String, boolean)}, re-create    * or {@link #rename(String, String)} it until the file is completed    * or explicitly as a result of lease expiration.    *<p>    * Blocks have a maximum size.  Clients that intend to create    * multi-block files must also use    * {@link #addBlock}    *    * @param src path of the file being created.    * @param masked masked permission.    * @param clientName name of the current client.    * @param flag indicates whether the file should be    * overwritten if it already exists or create if it does not exist or append.    * @param createParent create missing parent directory if true    * @param replication block replication factor.    * @param blockSize maximum block size.    * @param supportedVersions CryptoProtocolVersions supported by the client    *    * @return the status of the created file, it could be null if the server    *           doesn't support returning the file status    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws AlreadyBeingCreatedException if the path does not exist.    * @throws DSQuotaExceededException If file creation violates disk space    *           quota restriction    * @throws org.apache.hadoop.fs.FileAlreadyExistsException If file    *<code>src</code> already exists    * @throws java.io.FileNotFoundException If parent of<code>src</code> does    *           not exist and<code>createParent</code> is false    * @throws org.apache.hadoop.fs.ParentNotDirectoryException If parent of    *<code>src</code> is not a directory.    * @throws NSQuotaExceededException If file creation violates name space    *           quota restriction    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException create not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    *    * RuntimeExceptions:    * @throws org.apache.hadoop.fs.InvalidPathException Path<code>src</code> is    *           invalid    *<p>    *<em>Note that create with {@link CreateFlag#OVERWRITE} is idempotent.</em>    */
 annotation|@
 name|AtMostOnce
 DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions)
@@ -759,7 +627,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Append to the end of the file.    * @param src path of the file being created.    * @param clientName name of the current client.    * @param flag indicates whether the data is appended to a new block.    * @return wrapper with information about the last partial block and file    *    status if any    * @throws AccessControlException if permission to append file is    * denied by the system. As usually on the client side the exception will    * be wrapped into {@link org.apache.hadoop.ipc.RemoteException}.    * Allows appending to an existing file if the server is    * configured with the parameter dfs.support.append set to true, otherwise    * throws an IOException.    *    * @throws AccessControlException If permission to append to file is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws DSQuotaExceededException If append violates disk space quota    *           restriction    * @throws SafeModeException append not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred.    *    * RuntimeExceptions:    * @throws UnsupportedOperationException if append is not supported    */
+comment|/**    * Append to the end of the file.    * @param src path of the file being created.    * @param clientName name of the current client.    * @param flag indicates whether the data is appended to a new block.    * @return wrapper with information about the last partial block and file    *    status if any    * @throws org.apache.hadoop.security.AccessControlException if permission to    * append file is denied by the system. As usually on the client side the    * exception will be wrapped into    * {@link org.apache.hadoop.ipc.RemoteException}.    * Allows appending to an existing file if the server is    * configured with the parameter dfs.support.append set to true, otherwise    * throws an IOException.    *    * @throws org.apache.hadoop.security.AccessControlException If permission to    *           append to file is denied    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws DSQuotaExceededException If append violates disk space quota    *           restriction    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException append not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred.    *    * RuntimeExceptions:    * @throws UnsupportedOperationException if append is not supported    */
 annotation|@
 name|AtMostOnce
 DECL|method|append (String src, String clientName, EnumSetWritable<CreateFlag> flag)
@@ -781,7 +649,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Set replication for an existing file.    *<p>    * The NameNode sets replication to the new value and returns.    * The actual block replication is not expected to be performed during    * this method call. The blocks will be populated or removed in the    * background as the result of the routine block maintenance procedures.    *    * @param src file name    * @param replication new replication    *    * @return true if successful;    *         false if file does not exist or is a directory    *    * @throws AccessControlException If access is denied    * @throws DSQuotaExceededException If replication violates disk space    *           quota restriction    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException not allowed in safemode    * @throws UnresolvedLinkException if<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+comment|/**    * Set replication for an existing file.    *<p>    * The NameNode sets replication to the new value and returns.    * The actual block replication is not expected to be performed during    * this method call. The blocks will be populated or removed in the    * background as the result of the routine block maintenance procedures.    *    * @param src file name    * @param replication new replication    *    * @return true if successful;    *         false if file does not exist or is a directory    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws DSQuotaExceededException If replication violates disk space    *           quota restriction    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>src</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|setReplication (String src, short replication)
@@ -808,7 +676,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Set the storage policy for a file/directory.    * @param src Path of an existing file/directory.    * @param policyName The name of the storage policy    * @throws SnapshotAccessControlException If access is denied    * @throws UnresolvedLinkException if<code>src</code> contains a symlink    * @throws FileNotFoundException If file/dir<code>src</code> is not found    * @throws QuotaExceededException If changes violate the quota restriction    */
+comment|/**    * Set the storage policy for a file/directory.    * @param src Path of an existing file/directory.    * @param policyName The name of the storage policy    * @throws SnapshotAccessControlException If access is denied    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>src</code>    *           contains a symlink    * @throws java.io.FileNotFoundException If file/dir<code>src</code> is not    *           found    * @throws QuotaExceededException If changes violate the quota restriction    */
 annotation|@
 name|Idempotent
 DECL|method|setStoragePolicy (String src, String policyName)
@@ -824,7 +692,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Set permissions for an existing file/directory.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+comment|/**    * Set permissions for an existing file/directory.    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|setPermission (String src, FsPermission permission)
@@ -840,7 +708,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Set Owner of a path (i.e. a file or a directory).    * The parameters username and groupname cannot both be null.    * @param src file path    * @param username If it is null, the original username remains unchanged.    * @param groupname If it is null, the original groupname remains unchanged.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+comment|/**    * Set Owner of a path (i.e. a file or a directory).    * The parameters username and groupname cannot both be null.    * @param src file path    * @param username If it is null, the original username remains unchanged.    * @param groupname If it is null, the original groupname remains unchanged.    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|setOwner (String src, String username, String groupname)
@@ -859,7 +727,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * The client can give up on a block by calling abandonBlock().    * The client can then either obtain a new block, or complete or abandon the    * file.    * Any partial writes to the block will be discarded.    *    * @param b         Block to abandon    * @param fileId    The id of the file where the block resides.  Older clients    *                    will pass GRANDFATHER_INODE_ID here.    * @param src       The path of the file where the block resides.    * @param holder    Lease holder.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * The client can give up on a block by calling abandonBlock().    * The client can then either obtain a new block, or complete or abandon the    * file.    * Any partial writes to the block will be discarded.    *    * @param b         Block to abandon    * @param fileId    The id of the file where the block resides.  Older clients    *                    will pass GRANDFATHER_INODE_ID here.    * @param src       The path of the file where the block resides.    * @param holder    Lease holder.    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException file<code>src</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|abandonBlock (ExtendedBlock b, long fileId, String src, String holder)
@@ -881,7 +749,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * A client that wants to write an additional block to the    * indicated filename (which must currently be open for writing)    * should call addBlock().    *    * addBlock() allocates a new block and datanodes the block data    * should be replicated to.    *    * addBlock() also commits the previous block by reporting    * to the name-node the actual generation stamp and the length    * of the block that the client has transmitted to data-nodes.    *    * @param src the file being created    * @param clientName the name of the client that adds the block    * @param previous  previous block    * @param excludeNodes a list of nodes that should not be    * allocated for the current block    * @param fileId the id uniquely identifying a file    * @param favoredNodes the list of nodes where the client wants the blocks.    *          Nodes are identified by either host name or address.    *    * @return LocatedBlock allocated block information.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws NotReplicatedYetException previous blocks of the file are not    *           replicated yet. Blocks cannot be added until replication    *           completes.    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * A client that wants to write an additional block to the    * indicated filename (which must currently be open for writing)    * should call addBlock().    *    * addBlock() allocates a new block and datanodes the block data    * should be replicated to.    *    * addBlock() also commits the previous block by reporting    * to the name-node the actual generation stamp and the length    * of the block that the client has transmitted to data-nodes.    *    * @param src the file being created    * @param clientName the name of the client that adds the block    * @param previous  previous block    * @param excludeNodes a list of nodes that should not be    * allocated for the current block    * @param fileId the id uniquely identifying a file    * @param favoredNodes the list of nodes where the client wants the blocks.    *          Nodes are identified by either host name or address.    *    * @return LocatedBlock allocated block information.    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws org.apache.hadoop.hdfs.server.namenode.NotReplicatedYetException    *           previous blocks of the file are not replicated yet.    *           Blocks cannot be added until replication completes.    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException create not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludeNodes, long fileId, String[] favoredNodes)
@@ -911,7 +779,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get a datanode for an existing pipeline.    *    * @param src the file being written    * @param fileId the ID of the file being written    * @param blk the block being written    * @param existings the existing nodes in the pipeline    * @param excludes the excluded nodes    * @param numAdditionalNodes number of additional datanodes    * @param clientName the name of the client    *    * @return the located block.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * Get a datanode for an existing pipeline.    *    * @param src the file being written    * @param fileId the ID of the file being written    * @param blk the block being written    * @param existings the existing nodes in the pipeline    * @param excludes the excluded nodes    * @param numAdditionalNodes number of additional datanodes    * @param clientName the name of the client    *    * @return the located block.    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException create not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|getAdditionalDatanode (final String src, final long fileId, final ExtendedBlock blk, final DatanodeInfo[] existings, final String[] existingStorageIDs, final DatanodeInfo[] excludes, final int numAdditionalNodes, final String clientName )
@@ -956,7 +824,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * The client is done writing data to the given filename, and would    * like to complete it.    *    * The function returns whether the file has been closed successfully.    * If the function returns false, the caller should try again.    *    * close() also commits the last block of file by reporting    * to the name-node the actual generation stamp and the length    * of the block that the client has transmitted to data-nodes.    *    * A call to complete() will not return true until all the file's    * blocks have been replicated the minimum number of times.  Thus,    * DataNode failures may cause a client to call complete() several    * times before succeeding.    *    * @param src the file being created    * @param clientName the name of the client that adds the block    * @param last the last block info    * @param fileId the id uniquely identifying a file    *    * @return true if all file blocks are minimally replicated or false otherwise    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * The client is done writing data to the given filename, and would    * like to complete it.    *    * The function returns whether the file has been closed successfully.    * If the function returns false, the caller should try again.    *    * close() also commits the last block of file by reporting    * to the name-node the actual generation stamp and the length    * of the block that the client has transmitted to data-nodes.    *    * A call to complete() will not return true until all the file's    * blocks have been replicated the minimum number of times.  Thus,    * DataNode failures may cause a client to call complete() several    * times before succeeding.    *    * @param src the file being created    * @param clientName the name of the client that adds the block    * @param last the last block info    * @param fileId the id uniquely identifying a file    *    * @return true if all file blocks are minimally replicated or false otherwise    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException create not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|complete (String src, String clientName, ExtendedBlock last, long fileId)
@@ -1011,7 +879,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Moves blocks from srcs to trg and delete srcs.    *    * @param trg existing file    * @param srcs - list of existing files (same block size, same replication)    * @throws IOException if some arguments are invalid    * @throws UnresolvedLinkException if<code>trg</code> or<code>srcs</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    */
+comment|/**    * Moves blocks from srcs to trg and delete srcs.    *    * @param trg existing file    * @param srcs - list of existing files (same block size, same replication)    * @throws IOException if some arguments are invalid    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>trg</code> or    *<code>srcs</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    */
 annotation|@
 name|AtMostOnce
 DECL|method|concat (String trg, String[] srcs)
@@ -1028,7 +896,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Rename src to dst.    *<ul>    *<li>Fails if src is a file and dst is a directory.    *<li>Fails if src is a directory and dst is a file.    *<li>Fails if the parent of dst does not exist or is a file.    *</ul>    *<p>    * Without OVERWRITE option, rename fails if the dst already exists.    * With OVERWRITE option, rename overwrites the dst, if it is a file    * or an empty directory. Rename fails if dst is a non-empty directory.    *<p>    * This implementation of rename is atomic.    *<p>    * @param src existing file or directory name.    * @param dst new name.    * @param options Rename options    *    * @throws AccessControlException If access is denied    * @throws DSQuotaExceededException If rename violates disk space    *           quota restriction    * @throws FileAlreadyExistsException If<code>dst</code> already exists and    *<code>options</code> has {@link Rename#OVERWRITE} option    *           false.    * @throws FileNotFoundException If<code>src</code> does not exist    * @throws NSQuotaExceededException If rename violates namespace    *           quota restriction    * @throws ParentNotDirectoryException If parent of<code>dst</code>    *           is not a directory    * @throws SafeModeException rename not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> or    *<code>dst</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+comment|/**    * Rename src to dst.    *<ul>    *<li>Fails if src is a file and dst is a directory.    *<li>Fails if src is a directory and dst is a file.    *<li>Fails if the parent of dst does not exist or is a file.    *</ul>    *<p>    * Without OVERWRITE option, rename fails if the dst already exists.    * With OVERWRITE option, rename overwrites the dst, if it is a file    * or an empty directory. Rename fails if dst is a non-empty directory.    *<p>    * This implementation of rename is atomic.    *<p>    * @param src existing file or directory name.    * @param dst new name.    * @param options Rename options    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws DSQuotaExceededException If rename violates disk space    *           quota restriction    * @throws org.apache.hadoop.fs.FileAlreadyExistsException If<code>dst</code>    *           already exists and<code>options</code> has    *           {@link org.apache.hadoop.fs.Options.Rename#OVERWRITE} option    *           false.    * @throws java.io.FileNotFoundException If<code>src</code> does not exist    * @throws NSQuotaExceededException If rename violates namespace    *           quota restriction    * @throws org.apache.hadoop.fs.ParentNotDirectoryException If parent of    *<code>dst</code> is not a directory    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException rename not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code> or    *<code>dst</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|AtMostOnce
 DECL|method|rename2 (String src, String dst, Options.Rename... options)
@@ -1050,7 +918,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Truncate file src to new size.    *<ul>    *<li>Fails if src is a directory.    *<li>Fails if src does not exist.    *<li>Fails if src is not closed.    *<li>Fails if new size is greater than current size.    *</ul>    *<p>    * This implementation of truncate is purely a namespace operation if truncate    * occurs at a block boundary. Requires DataNode block recovery otherwise.    *<p>    * @param src  existing file    * @param newLength  the target size    *    * @return true if client does not need to wait for block recovery,    * false if client needs to wait for block recovery.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException truncate not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+comment|/**    * Truncate file src to new size.    *<ul>    *<li>Fails if src is a directory.    *<li>Fails if src does not exist.    *<li>Fails if src is not closed.    *<li>Fails if new size is greater than current size.    *</ul>    *<p>    * This implementation of truncate is purely a namespace operation if truncate    * occurs at a block boundary. Requires DataNode block recovery otherwise.    *<p>    * @param src  existing file    * @param newLength  the target size    *    * @return true if client does not need to wait for block recovery,    * false if client needs to wait for block recovery.    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException truncate    *           not allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|truncate (String src, long newLength, String clientName)
@@ -1069,7 +937,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delete the given file or directory from the file system.    *<p>    * same as delete but provides a way to avoid accidentally    * deleting non empty directories programmatically.    * @param src existing name    * @param recursive if true deletes a non empty directory recursively,    * else throws an exception.    * @return true only if the existing file or directory was actually removed    * from the file system.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+comment|/**    * Delete the given file or directory from the file system.    *<p>    * same as delete but provides a way to avoid accidentally    * deleting non empty directories programmatically.    * @param src existing name    * @param recursive if true deletes a non empty directory recursively,    * else throws an exception.    * @return true only if the existing file or directory was actually removed    * from the file system.    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException create not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|AtMostOnce
 DECL|method|delete (String src, boolean recursive)
@@ -1085,7 +953,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create a directory (or hierarchy of directories) with the given    * name and permission.    *    * @param src The path of the directory being created    * @param masked The masked permission of the directory being created    * @param createParent create missing parent directory if true    *    * @return True if the operation success.    *    * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If<code>src</code> already exists    * @throws FileNotFoundException If parent of<code>src</code> does not exist    *           and<code>createParent</code> is false    * @throws NSQuotaExceededException If file creation violates quota    *           restriction    * @throws ParentNotDirectoryException If parent of<code>src</code>    *           is not a directory    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred.    *    * RunTimeExceptions:    * @throws InvalidPathException If<code>src</code> is invalid    */
+comment|/**    * Create a directory (or hierarchy of directories) with the given    * name and permission.    *    * @param src The path of the directory being created    * @param masked The masked permission of the directory being created    * @param createParent create missing parent directory if true    *    * @return True if the operation success.    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws org.apache.hadoop.fs.FileAlreadyExistsException If<code>src</code>    *           already exists    * @throws java.io.FileNotFoundException If parent of<code>src</code> does    *           not exist and<code>createParent</code> is false    * @throws NSQuotaExceededException If file creation violates quota    *           restriction    * @throws org.apache.hadoop.fs.ParentNotDirectoryException If parent of    *<code>src</code> is not a directory    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException create not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred.    *    * RunTimeExceptions:    * @throws org.apache.hadoop.fs.InvalidPathException If<code>src</code> is    *           invalid    */
 annotation|@
 name|Idempotent
 DECL|method|mkdirs (String src, FsPermission masked, boolean createParent)
@@ -1104,7 +972,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get a partial listing of the indicated directory.    *    * @param src the directory name    * @param startAfter the name to start listing after encoded in java UTF8    * @param needLocation if the FileStatus should contain block locations    *    * @return a partial listing starting after startAfter    *    * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * Get a partial listing of the indicated directory.    *    * @param src the directory name    * @param startAfter the name to start listing after encoded in java UTF8    * @param needLocation if the FileStatus should contain block locations    *    * @return a partial listing starting after startAfter    *    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>src</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|getListing (String src, byte[] startAfter, boolean needLocation)
@@ -1138,7 +1006,7 @@ function_decl|;
 comment|///////////////////////////////////////
 comment|// System issues and management
 comment|///////////////////////////////////////
-comment|/**    * Client programs can cause stateful changes in the NameNode    * that affect other clients.  A client may obtain a file and    * neither abandon nor complete it.  A client might hold a series    * of locks that prevent other clients from proceeding.    * Clearly, it would be bad if a client held a bunch of locks    * that it never gave up.  This can happen easily if the client    * dies unexpectedly.    *<p>    * So, the NameNode will revoke the locks and live file-creates    * for clients that it thinks have died.  A client tells the    * NameNode that it is still alive by periodically calling    * renewLease().  If a certain amount of time passes since    * the last call to renewLease(), the NameNode assumes the    * client has died.    *    * @throws AccessControlException permission denied    * @throws IOException If an I/O error occurred    */
+comment|/**    * Client programs can cause stateful changes in the NameNode    * that affect other clients.  A client may obtain a file and    * neither abandon nor complete it.  A client might hold a series    * of locks that prevent other clients from proceeding.    * Clearly, it would be bad if a client held a bunch of locks    * that it never gave up.  This can happen easily if the client    * dies unexpectedly.    *<p>    * So, the NameNode will revoke the locks and live file-creates    * for clients that it thinks have died.  A client tells the    * NameNode that it is still alive by periodically calling    * renewLease().  If a certain amount of time passes since    * the last call to renewLease(), the NameNode assumes the    * client has died.    *    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|renewLease (String clientName)
@@ -1252,7 +1120,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the block size for the given file.    * @param filename The name of the file    * @return The number of bytes in each block    * @throws IOException    * @throws UnresolvedLinkException if the path contains a symlink.    */
+comment|/**    * Get the block size for the given file.    * @param filename The name of the file    * @return The number of bytes in each block    * @throws IOException    * @throws org.apache.hadoop.fs.UnresolvedLinkException if the path contains    *           a symlink.    */
 annotation|@
 name|Idempotent
 DECL|method|getPreferredBlockSize (String filename)
@@ -1299,7 +1167,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Roll the edit log.    * Requires superuser privileges.    *    * @throws AccessControlException if the superuser privilege is violated    * @throws IOException if log roll fails    * @return the txid of the new segment    */
+comment|/**    * Roll the edit log.    * Requires superuser privileges.    *    * @throws org.apache.hadoop.security.AccessControlException if the superuser    *           privilege is violated    * @throws IOException if log roll fails    * @return the txid of the new segment    */
 annotation|@
 name|Idempotent
 DECL|method|rollEdits ()
@@ -1309,7 +1177,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Enable/Disable restore failed storage.    *<p>    * sets flag to enable restore of failed storage replicas    *    * @throws AccessControlException if the superuser privilege is violated.    */
+comment|/**    * Enable/Disable restore failed storage.    *<p>    * sets flag to enable restore of failed storage replicas    *    * @throws org.apache.hadoop.security.AccessControlException if the superuser    *           privilege is violated.    */
 annotation|@
 name|Idempotent
 DECL|method|restoreFailedStorage (String arg)
@@ -1397,7 +1265,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the file info for a specific file or directory.    * @param src The string representation of the path to the file    *    * @return object containing information regarding the file    *         or null if file not found    * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException if the path contains a symlink.    * @throws IOException If an I/O error occurred    */
+comment|/**    * Get the file info for a specific file or directory.    * @param src The string representation of the path to the file    *    * @return object containing information regarding the file    *         or null if file not found    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>src</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException if the path contains    *           a symlink.    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|getFileInfo (String src)
@@ -1410,7 +1278,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the close status of a file.    * @param src The string representation of the path to the file    *    * @return return true if file is closed    * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException if the path contains a symlink.    * @throws IOException If an I/O error occurred    */
+comment|/**    * Get the close status of a file.    * @param src The string representation of the path to the file    *    * @return return true if file is closed    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>src</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException if the path contains    *           a symlink.    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|isFileClosed (String src)
@@ -1423,7 +1291,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the file info for a specific file or directory. If the path    * refers to a symlink then the FileStatus of the symlink is returned.    * @param src The string representation of the path to the file    *    * @return object containing information regarding the file    *         or null if file not found    *    * @throws AccessControlException permission denied    * @throws UnresolvedLinkException if<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * Get the file info for a specific file or directory. If the path    * refers to a symlink then the FileStatus of the symlink is returned.    * @param src The string representation of the path to the file    *    * @return object containing information regarding the file    *         or null if file not found    *    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>src</code>    *           contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|getFileLinkInfo (String src)
@@ -1436,7 +1304,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get {@link ContentSummary} rooted at the specified directory.    * @param path The string representation of the path    *    * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>path</code> is not found    * @throws UnresolvedLinkException if<code>path</code> contains a symlink.    * @throws IOException If an I/O error occurred    */
+comment|/**    * Get {@link ContentSummary} rooted at the specified directory.    * @param path The string representation of the path    *    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>path</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>path</code>    *           contains a symlink.    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|getContentSummary (String path)
@@ -1449,7 +1317,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Set the quota for a directory.    * @param path  The string representation of the path to the directory    * @param namespaceQuota Limit on the number of names in the tree rooted    *                       at the directory    * @param storagespaceQuota Limit on storage space occupied all the files    *                       under this directory.    * @param type StorageType that the space quota is intended to be set on.    *             It may be null when called by traditional space/namespace    *             quota. When type is is not null, the storagespaceQuota    *             parameter is for type specified and namespaceQuota must be    *             {@link HdfsConstants#QUOTA_DONT_SET}.    *    *<br><br>    *    * The quota can have three types of values : (1) 0 or more will set    * the quota to that value, (2) {@link HdfsConstants#QUOTA_DONT_SET}  implies    * the quota will not be changed, and (3) {@link HdfsConstants#QUOTA_RESET}    * implies the quota will be reset. Any other value is a runtime error.    *    * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>path</code> is not found    * @throws QuotaExceededException if the directory size    *           is greater than the given quota    * @throws UnresolvedLinkException if the<code>path</code> contains    *           a symlink.    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+comment|/**    * Set the quota for a directory.    * @param path  The string representation of the path to the directory    * @param namespaceQuota Limit on the number of names in the tree rooted    *                       at the directory    * @param storagespaceQuota Limit on storage space occupied all the files    *                       under this directory.    * @param type StorageType that the space quota is intended to be set on.    *             It may be null when called by traditional space/namespace    *             quota. When type is is not null, the storagespaceQuota    *             parameter is for type specified and namespaceQuota must be    *             {@link HdfsConstants#QUOTA_DONT_SET}.    *    *<br><br>    *    * The quota can have three types of values : (1) 0 or more will set    * the quota to that value, (2) {@link HdfsConstants#QUOTA_DONT_SET}  implies    * the quota will not be changed, and (3) {@link HdfsConstants#QUOTA_RESET}    * implies the quota will be reset. Any other value is a runtime error.    *    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>path</code> is not found    * @throws QuotaExceededException if the directory size    *           is greater than the given quota    * @throws org.apache.hadoop.fs.UnresolvedLinkException if the    *<code>path</code> contains a symlink.    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|setQuota (String path, long namespaceQuota, long storagespaceQuota, StorageType type)
@@ -1471,7 +1339,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Write all metadata for this file into persistent storage.    * The file must be currently open for writing.    * @param src The string representation of the path    * @param inodeId The inode ID, or GRANDFATHER_INODE_ID if the client is    *                too old to support fsync with inode IDs.    * @param client The string representation of the client    * @param lastBlockLength The length of the last block (under construction)    *                        to be reported to NameNode    * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException if<code>src</code> contains a symlink.    * @throws IOException If an I/O error occurred    */
+comment|/**    * Write all metadata for this file into persistent storage.    * The file must be currently open for writing.    * @param src The string representation of the path    * @param inodeId The inode ID, or GRANDFATHER_INODE_ID if the client is    *                too old to support fsync with inode IDs.    * @param client The string representation of the client    * @param lastBlockLength The length of the last block (under construction)    *                        to be reported to NameNode    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>src</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>src</code>    *           contains a symlink.    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|fsync (String src, long inodeId, String client, long lastBlockLength)
@@ -1493,7 +1361,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Sets the modification and access time of the file to the specified time.    * @param src The string representation of the path    * @param mtime The number of milliseconds since Jan 1, 1970.    *              Setting mtime to -1 means that modification time should not    *              be set by this call.    * @param atime The number of milliseconds since Jan 1, 1970.    *              Setting atime to -1 means that access time should not be set    *              by this call.    *    * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException if<code>src</code> contains a symlink.    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+comment|/**    * Sets the modification and access time of the file to the specified time.    * @param src The string representation of the path    * @param mtime The number of milliseconds since Jan 1, 1970.    *              Setting mtime to -1 means that modification time should not    *              be set by this call.    * @param atime The number of milliseconds since Jan 1, 1970.    *              Setting atime to -1 means that access time should not be set    *              by this call.    *    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>src</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>src</code>    *           contains a symlink.    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|setTimes (String src, long mtime, long atime)
@@ -1512,7 +1380,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create symlink to a file or directory.    * @param target The path of the destination that the    *               link points to.    * @param link The path of the link being created.    * @param dirPerm permissions to use when creating parent directories    * @param createParent - if true then missing parent dirs are created    *                       if false then parent must exist    *    * @throws AccessControlException permission denied    * @throws FileAlreadyExistsException If file<code>link</code> already exists    * @throws FileNotFoundException If parent of<code>link</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>link</code> is not a    *           directory.    * @throws UnresolvedLinkException if<code>link</code> contains a symlink.    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+comment|/**    * Create symlink to a file or directory.    * @param target The path of the destination that the    *               link points to.    * @param link The path of the link being created.    * @param dirPerm permissions to use when creating parent directories    * @param createParent - if true then missing parent dirs are created    *                       if false then parent must exist    *    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws org.apache.hadoop.fs.FileAlreadyExistsException If file    *<code>link</code> already exists    * @throws java.io.FileNotFoundException If parent of<code>link</code> does    *           not exist and<code>createParent</code> is false    * @throws org.apache.hadoop.fs.ParentNotDirectoryException If parent of    *<code>link</code> is not a directory.    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>link</code>    *           contains a symlink.    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|AtMostOnce
 DECL|method|createSymlink (String target, String link, FsPermission dirPerm, boolean createParent)
@@ -1534,7 +1402,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Return the target of the given symlink. If there is an intermediate    * symlink in the path (ie a symlink leading up to the final path component)    * then the given path is returned with this symlink resolved.    *    * @param path The path with a link that needs resolution.    * @return The path after resolving the first symbolic link in the path.    * @throws AccessControlException permission denied    * @throws FileNotFoundException If<code>path</code> does not exist    * @throws IOException If the given path does not refer to a symlink    *           or an I/O error occurred    */
+comment|/**    * Return the target of the given symlink. If there is an intermediate    * symlink in the path (ie a symlink leading up to the final path component)    * then the given path is returned with this symlink resolved.    *    * @param path The path with a link that needs resolution.    * @return The path after resolving the first symbolic link in the path.    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException If<code>path</code> does not exist    * @throws IOException If the given path does not refer to a symlink    *           or an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|getLinkTarget (String path)
@@ -2086,7 +1954,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Checks if the user can access a path.  The mode specifies which access    * checks to perform.  If the requested permissions are granted, then the    * method returns normally.  If access is denied, then the method throws an    * {@link AccessControlException}.    * In general, applications should avoid using this method, due to the risk of    * time-of-check/time-of-use race conditions.  The permissions on a file may    * change immediately after the access call returns.    *    * @param path Path to check    * @param mode type of access to check    * @throws AccessControlException if access is denied    * @throws FileNotFoundException if the path does not exist    * @throws IOException see specific implementation    */
+comment|/**    * Checks if the user can access a path.  The mode specifies which access    * checks to perform.  If the requested permissions are granted, then the    * method returns normally.  If access is denied, then the method throws an    * {@link org.apache.hadoop.security.AccessControlException}.    * In general, applications should avoid using this method, due to the risk of    * time-of-check/time-of-use race conditions.  The permissions on a file may    * change immediately after the access call returns.    *    * @param path Path to check    * @param mode type of access to check    * @throws org.apache.hadoop.security.AccessControlException if access is    *           denied    * @throws java.io.FileNotFoundException if the path does not exist    * @throws IOException see specific implementation    */
 annotation|@
 name|Idempotent
 DECL|method|checkAccess (String path, FsAction mode)
