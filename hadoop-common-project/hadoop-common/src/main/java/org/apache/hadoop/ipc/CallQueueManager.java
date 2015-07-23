@@ -137,12 +137,32 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// Number of checkpoints for empty queue.
+DECL|field|CHECKPOINT_NUM
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|CHECKPOINT_NUM
+init|=
+literal|20
+decl_stmt|;
+comment|// Interval to check empty queue.
+DECL|field|CHECKPOINT_INTERVAL_MS
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|CHECKPOINT_INTERVAL_MS
+init|=
+literal|10
+decl_stmt|;
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|convertQueueClass ( Class<?> queneClass, Class<E> elementClass)
+DECL|method|convertQueueClass ( Class<?> queueClass, Class<E> elementClass)
 specifier|static
 parameter_list|<
 name|E
@@ -162,7 +182,7 @@ name|Class
 argument_list|<
 name|?
 argument_list|>
-name|queneClass
+name|queueClass
 parameter_list|,
 name|Class
 argument_list|<
@@ -183,7 +203,7 @@ name|E
 argument_list|>
 argument_list|>
 operator|)
-name|queneClass
+name|queueClass
 return|;
 block|}
 DECL|field|clientBackOffEnabled
@@ -708,7 +728,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Checks if queue is empty by checking at two points in time.    * This doesn't mean the queue might not fill up at some point later, but    * it should decrease the probability that we lose a call this way.    */
+comment|/**    * Checks if queue is empty by checking at CHECKPOINT_NUM points with    * CHECKPOINT_INTERVAL_MS interval.    * This doesn't mean the queue might not fill up at some point later, but    * it should decrease the probability that we lose a call this way.    */
 DECL|method|queueIsReallyEmpty (BlockingQueue<?> q)
 specifier|private
 name|boolean
@@ -721,21 +741,28 @@ argument_list|>
 name|q
 parameter_list|)
 block|{
-name|boolean
-name|wasEmpty
+for|for
+control|(
+name|int
+name|i
 init|=
-name|q
-operator|.
-name|isEmpty
-argument_list|()
-decl_stmt|;
+literal|0
+init|;
+name|i
+operator|<
+name|CHECKPOINT_NUM
+condition|;
+name|i
+operator|++
+control|)
+block|{
 try|try
 block|{
 name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|10
+name|CHECKPOINT_INTERVAL_MS
 argument_list|)
 expr_stmt|;
 block|}
@@ -749,13 +776,22 @@ return|return
 literal|false
 return|;
 block|}
-return|return
+if|if
+condition|(
+operator|!
 name|q
 operator|.
 name|isEmpty
 argument_list|()
-operator|&&
-name|wasEmpty
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+block|}
+return|return
+literal|true
 return|;
 block|}
 DECL|method|stringRepr (Object o)

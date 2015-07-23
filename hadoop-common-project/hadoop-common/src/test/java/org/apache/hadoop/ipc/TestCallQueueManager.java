@@ -768,7 +768,7 @@ literal|0
 init|;
 name|i
 operator|<
-literal|50
+literal|1000
 condition|;
 name|i
 operator|++
@@ -829,7 +829,7 @@ literal|0
 init|;
 name|i
 operator|<
-literal|20
+literal|100
 condition|;
 name|i
 operator|++
@@ -885,7 +885,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|10
+literal|500
 argument_list|)
 expr_stmt|;
 for|for
