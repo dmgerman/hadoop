@@ -1555,11 +1555,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|alignedStripe
-operator|.
-name|chunks
-operator|.
-name|length
+name|dataBlkNum
 condition|;
 name|i
 operator|++
