@@ -2508,6 +2508,29 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getStoragePolicy (final Path src)
+specifier|public
+name|BlockStoragePolicySpi
+name|getStoragePolicy
+parameter_list|(
+specifier|final
+name|Path
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|getStoragePolicy
+argument_list|(
+name|src
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getAllStoragePolicies ()
 specifier|public
 name|Collection
