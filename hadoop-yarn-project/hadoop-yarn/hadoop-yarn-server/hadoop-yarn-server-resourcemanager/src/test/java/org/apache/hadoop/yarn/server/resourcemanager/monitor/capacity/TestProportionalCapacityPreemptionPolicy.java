@@ -2641,7 +2641,7 @@ name|mDisp
 argument_list|,
 name|times
 argument_list|(
-literal|20
+literal|10
 argument_list|)
 argument_list|)
 operator|.
@@ -2684,7 +2684,7 @@ name|mDisp
 argument_list|,
 name|times
 argument_list|(
-literal|30
+literal|20
 argument_list|)
 argument_list|)
 operator|.
@@ -2718,7 +2718,7 @@ name|subList
 argument_list|(
 literal|20
 argument_list|,
-literal|30
+literal|20
 argument_list|)
 control|)
 block|{

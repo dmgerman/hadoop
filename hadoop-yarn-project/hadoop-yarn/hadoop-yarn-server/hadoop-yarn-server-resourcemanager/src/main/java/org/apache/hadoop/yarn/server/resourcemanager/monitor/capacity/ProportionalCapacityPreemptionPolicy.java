@@ -1462,6 +1462,22 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|preempted
+operator|.
+name|get
+argument_list|(
+name|container
+argument_list|)
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// We already updated the information to scheduler earlier, we need
+comment|// not have to raise another event.
+continue|continue;
+block|}
 comment|//otherwise just send preemption events
 name|rmContext
 operator|.
@@ -1486,18 +1502,6 @@ name|PREEMPT_CONTAINER
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|preempted
-operator|.
-name|get
-argument_list|(
-name|container
-argument_list|)
-operator|==
-literal|null
-condition|)
-block|{
 name|preempted
 operator|.
 name|put
@@ -1510,7 +1514,6 @@ name|getTime
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
