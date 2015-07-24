@@ -293,7 +293,7 @@ specifier|final
 name|String
 name|OVER
 init|=
-literal|"font-size:1px;background:rgba(255, 140, 0, 0.8)"
+literal|"font-size:1px;background:#FFA333"
 decl_stmt|;
 DECL|field|UNDER
 specifier|static
@@ -301,7 +301,7 @@ specifier|final
 name|String
 name|UNDER
 init|=
-literal|"font-size:1px;background:rgba(50, 205, 50, 0.8)"
+literal|"font-size:1px;background:#5BD75B"
 decl_stmt|;
 DECL|field|EPSILON
 specifier|static
