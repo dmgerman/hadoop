@@ -1152,6 +1152,31 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|re
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|re
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"RenameEvent [srcPath="
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|long
 name|eventsBehind
 init|=
@@ -1271,6 +1296,16 @@ name|getTimestamp
 argument_list|()
 operator|>
 literal|0
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|re2
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// AddOp with overwrite
@@ -1435,6 +1470,31 @@ name|getDefaultBlockSize
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|ce
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|ce
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"CreateEvent [INodeType="
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// CloseOp
 name|batch
 operator|=
@@ -1545,6 +1605,31 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|ce2
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|ce2
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"CloseEvent [path="
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// AppendOp
 name|batch
 operator|=
@@ -1636,6 +1721,31 @@ name|append2
 operator|.
 name|toNewBlock
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|append2
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|append2
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"AppendEvent [path="
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// CloseOp
@@ -1823,6 +1933,31 @@ operator|.
 name|TIMES
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|mue
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|mue
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"MetadataUpdateEvent [path="
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// SetReplicationOp
 name|batch
 operator|=
@@ -1937,6 +2072,16 @@ name|getReplication
 argument_list|()
 operator|==
 literal|1
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|mue2
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// ConcatDeleteOp
@@ -2085,6 +2230,31 @@ name|getTimestamp
 argument_list|()
 operator|>
 literal|0
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|ue2
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|ue2
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"UnlinkEvent [path="
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2252,6 +2422,16 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|ue
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// MkdirOp
 name|batch
 operator|=
@@ -2392,6 +2572,16 @@ operator|==
 literal|null
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|ce4
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// SetPermissionsOp
 name|batch
 operator|=
@@ -2512,6 +2702,16 @@ name|contains
 argument_list|(
 literal|"rw-rw-rw-"
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|mue3
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// SetOwnerOp
@@ -2646,6 +2846,16 @@ name|equals
 argument_list|(
 literal|"groupname"
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|mue4
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// SymlinkOp
@@ -2789,6 +2999,16 @@ name|equals
 argument_list|(
 literal|"/dir"
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|ce5
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// SetXAttrOp
@@ -2944,6 +3164,16 @@ name|isxAttrsRemoved
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|mue5
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// RemoveXAttrOp
 name|batch
 operator|=
@@ -3096,6 +3326,16 @@ name|isxAttrsRemoved
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|mue6
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// SetAclOp (1)
 name|batch
 operator|=
@@ -3222,6 +3462,16 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|mue7
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// SetAclOp (2)
 name|batch
 operator|=
@@ -3338,6 +3588,16 @@ operator|==
 literal|null
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|mue8
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// RenameOp (2)
 name|batch
 operator|=
@@ -3451,6 +3711,16 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|re3
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// TruncateOp
 name|batch
 operator|=
@@ -3561,6 +3831,31 @@ name|getTimestamp
 argument_list|()
 operator|>
 literal|0
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|et
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|et
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"TruncateEvent [path="
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Returns null when there are no further events
