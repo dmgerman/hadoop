@@ -1295,7 +1295,10 @@ name|nmTokenSecretManager
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|setScheduler (ResourceScheduler scheduler)
+specifier|public
 name|void
 name|setScheduler
 parameter_list|(

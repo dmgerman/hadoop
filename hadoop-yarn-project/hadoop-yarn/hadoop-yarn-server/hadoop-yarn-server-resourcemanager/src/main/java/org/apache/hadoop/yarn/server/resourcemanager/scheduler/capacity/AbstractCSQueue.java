@@ -606,6 +606,7 @@ name|Resource
 name|minimumAllocation
 decl_stmt|;
 DECL|field|maximumAllocation
+specifier|volatile
 name|Resource
 name|maximumAllocation
 decl_stmt|;
@@ -663,6 +664,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|reservationsContinueLooking
+specifier|volatile
 name|boolean
 name|reservationsContinueLooking
 decl_stmt|;
@@ -1847,7 +1849,6 @@ annotation|@
 name|Private
 DECL|method|getMaximumAllocation ()
 specifier|public
-specifier|synchronized
 name|Resource
 name|getMaximumAllocation
 parameter_list|()
@@ -2241,7 +2242,7 @@ name|none
 argument_list|()
 return|;
 block|}
-DECL|method|canAssignToThisQueue (Resource clusterResource, String nodePartition, ResourceLimits currentResourceLimits, Resource nowRequired, Resource resourceCouldBeUnreserved, SchedulingMode schedulingMode)
+DECL|method|canAssignToThisQueue (Resource clusterResource, String nodePartition, ResourceLimits currentResourceLimits, Resource resourceCouldBeUnreserved, SchedulingMode schedulingMode)
 specifier|synchronized
 name|boolean
 name|canAssignToThisQueue
@@ -2256,33 +2257,12 @@ name|ResourceLimits
 name|currentResourceLimits
 parameter_list|,
 name|Resource
-name|nowRequired
-parameter_list|,
-name|Resource
 name|resourceCouldBeUnreserved
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
 parameter_list|)
 block|{
-comment|// New total resource = used + required
-name|Resource
-name|newTotalResource
-init|=
-name|Resources
-operator|.
-name|add
-argument_list|(
-name|queueUsage
-operator|.
-name|getUsed
-argument_list|(
-name|nodePartition
-argument_list|)
-argument_list|,
-name|nowRequired
-argument_list|)
-decl_stmt|;
 comment|// Get current limited resource:
 comment|// - When doing RESPECT_PARTITION_EXCLUSIVITY allocation, we will respect
 comment|// queues' max capacity.
@@ -2308,17 +2288,42 @@ argument_list|,
 name|schedulingMode
 argument_list|)
 decl_stmt|;
+name|Resource
+name|nowTotalUsed
+init|=
+name|queueUsage
+operator|.
+name|getUsed
+argument_list|(
+name|nodePartition
+argument_list|)
+decl_stmt|;
+comment|// Set headroom for currentResourceLimits
+name|currentResourceLimits
+operator|.
+name|setHeadroom
+argument_list|(
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|currentLimitResource
+argument_list|,
+name|nowTotalUsed
+argument_list|)
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|Resources
 operator|.
-name|greaterThan
+name|greaterThanOrEqual
 argument_list|(
 name|resourceCalculator
 argument_list|,
 name|clusterResource
 argument_list|,
-name|newTotalResource
+name|nowTotalUsed
 argument_list|,
 name|currentLimitResource
 argument_list|)
@@ -2368,7 +2373,7 @@ name|Resources
 operator|.
 name|subtract
 argument_list|(
-name|newTotalResource
+name|nowTotalUsed
 argument_list|,
 name|resourceCouldBeUnreserved
 argument_list|)
@@ -2433,20 +2438,6 @@ name|currentLimitResource
 argument_list|)
 expr_stmt|;
 block|}
-name|currentResourceLimits
-operator|.
-name|setAmountNeededUnreserve
-argument_list|(
-name|Resources
-operator|.
-name|subtract
-argument_list|(
-name|newTotalResource
-argument_list|,
-name|currentLimitResource
-argument_list|)
-argument_list|)
-expr_stmt|;
 return|return
 literal|true
 return|;

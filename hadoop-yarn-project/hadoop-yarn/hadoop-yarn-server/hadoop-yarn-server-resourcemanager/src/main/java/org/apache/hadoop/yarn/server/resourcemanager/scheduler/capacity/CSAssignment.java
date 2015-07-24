@@ -183,13 +183,11 @@ name|type
 decl_stmt|;
 DECL|field|excessReservation
 specifier|private
-specifier|final
 name|RMContainer
 name|excessReservation
 decl_stmt|;
 DECL|field|application
 specifier|private
-specifier|final
 name|FiCaSchedulerApp
 name|application
 decl_stmt|;
@@ -419,6 +417,22 @@ return|return
 name|application
 return|;
 block|}
+DECL|method|setApplication (FiCaSchedulerApp application)
+specifier|public
+name|void
+name|setApplication
+parameter_list|(
+name|FiCaSchedulerApp
+name|application
+parameter_list|)
+block|{
+name|this
+operator|.
+name|application
+operator|=
+name|application
+expr_stmt|;
+block|}
 DECL|method|getExcessReservation ()
 specifier|public
 name|RMContainer
@@ -428,6 +442,20 @@ block|{
 return|return
 name|excessReservation
 return|;
+block|}
+DECL|method|setExcessReservation (RMContainer rmContainer)
+specifier|public
+name|void
+name|setExcessReservation
+parameter_list|(
+name|RMContainer
+name|rmContainer
+parameter_list|)
+block|{
+name|excessReservation
+operator|=
+name|rmContainer
+expr_stmt|;
 block|}
 DECL|method|getSkipped ()
 specifier|public

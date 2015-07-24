@@ -739,6 +739,13 @@ specifier|final
 name|CapacitySchedulerContext
 name|scheduler
 decl_stmt|;
+DECL|field|needToResortQueuesAtNextAllocation
+specifier|private
+name|boolean
+name|needToResortQueuesAtNextAllocation
+init|=
+literal|false
+decl_stmt|;
 DECL|field|recordFactory
 specifier|private
 specifier|final
@@ -2398,8 +2405,6 @@ argument_list|()
 argument_list|,
 name|resourceLimits
 argument_list|,
-name|minimumAllocation
-argument_list|,
 name|Resources
 operator|.
 name|createResource
@@ -2933,6 +2938,43 @@ name|NO_LABEL
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|needToResortQueuesAtNextAllocation
+condition|)
+block|{
+comment|// If we skipped resort queues last time, we need to re-sort queue
+comment|// before allocation
+name|List
+argument_list|<
+name|CSQueue
+argument_list|>
+name|childrenList
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
+name|childQueues
+argument_list|)
+decl_stmt|;
+name|childQueues
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|childQueues
+operator|.
+name|addAll
+argument_list|(
+name|childrenList
+argument_list|)
+expr_stmt|;
+name|needToResortQueuesAtNextAllocation
+operator|=
+literal|false
+expr_stmt|;
+block|}
 return|return
 name|childQueues
 operator|.
@@ -3506,6 +3548,14 @@ break|break;
 block|}
 block|}
 block|}
+comment|// If we skipped sort queue this time, we need to resort queues to make
+comment|// sure we allocate from least usage (or order defined by queue policy)
+comment|// queues.
+name|needToResortQueuesAtNextAllocation
+operator|=
+operator|!
+name|sortQueues
+expr_stmt|;
 block|}
 comment|// Inform the parent
 if|if
