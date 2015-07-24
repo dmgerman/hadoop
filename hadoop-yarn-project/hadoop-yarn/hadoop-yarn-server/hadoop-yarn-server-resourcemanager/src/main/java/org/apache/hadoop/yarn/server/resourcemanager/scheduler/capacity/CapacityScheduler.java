@@ -10329,6 +10329,13 @@ condition|(
 literal|null
 operator|==
 name|queue
+operator|||
+literal|null
+operator|==
+name|queue
+operator|.
+name|getDefaultApplicationPriority
+argument_list|()
 condition|)
 block|{
 comment|// Return with default application priority
