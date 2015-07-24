@@ -18462,6 +18462,30 @@ annotation|@
 name|Metric
 argument_list|(
 block|{
+literal|"TimeOfTheOldestBlockToBeReplicated"
+block|,
+literal|"The timestamp of the oldest block to be replicated. If there are no"
+operator|+
+literal|"under-replicated or corrupt blocks, return 0."
+block|}
+argument_list|)
+DECL|method|getTimeOfTheOldestBlockToBeReplicated ()
+specifier|public
+name|long
+name|getTimeOfTheOldestBlockToBeReplicated
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getTimeOfTheOldestBlockToBeReplicated
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Metric
+argument_list|(
+block|{
 literal|"ExpiredHeartbeats"
 block|,
 literal|"Number of expired heartbeats"

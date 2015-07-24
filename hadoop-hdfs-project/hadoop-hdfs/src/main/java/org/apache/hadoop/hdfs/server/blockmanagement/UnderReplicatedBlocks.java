@@ -36,6 +36,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -46,7 +56,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|LinkedHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -81,6 +111,20 @@ operator|.
 name|namenode
 operator|.
 name|NameNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -180,6 +224,32 @@ name|corruptReplOneBlocks
 init|=
 literal|0
 decl_stmt|;
+comment|/** Keep timestamp when a block is put into the queue. */
+DECL|field|timestampsMap
+specifier|private
+specifier|final
+name|Map
+argument_list|<
+name|BlockInfo
+argument_list|,
+name|Long
+argument_list|>
+name|timestampsMap
+init|=
+name|Collections
+operator|.
+name|synchronizedMap
+argument_list|(
+operator|new
+name|LinkedHashMap
+argument_list|<
+name|BlockInfo
+argument_list|,
+name|Long
+argument_list|>
+argument_list|()
+argument_list|)
+decl_stmt|;
 comment|/** Create an object. */
 DECL|method|UnderReplicatedBlocks ()
 name|UnderReplicatedBlocks
@@ -214,7 +284,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Empty the queues.    */
+comment|/**    * Empty the queues and timestamps.    */
 DECL|method|clear ()
 name|void
 name|clear
@@ -246,6 +316,11 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+name|timestampsMap
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
 comment|/** Return the total number of under replication blocks */
 DECL|method|size ()
@@ -342,6 +417,47 @@ block|}
 return|return
 name|size
 return|;
+block|}
+comment|/**    * Return the smallest timestamp of the under-replicated/corrupt blocks.    * If there are no under-replicated or corrupt blocks, return 0.    */
+DECL|method|getTimeOfTheOldestBlockToBeReplicated ()
+name|long
+name|getTimeOfTheOldestBlockToBeReplicated
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|timestampsMap
+init|)
+block|{
+if|if
+condition|(
+name|timestampsMap
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
+comment|// Since we are using LinkedHashMap, the first value is the smallest.
+return|return
+name|timestampsMap
+operator|.
+name|entrySet
+argument_list|()
+operator|.
+name|iterator
+argument_list|()
+operator|.
+name|next
+argument_list|()
+operator|.
+name|getValue
+argument_list|()
+return|;
+block|}
 block|}
 comment|/** Return the number of corrupt blocks */
 DECL|method|getCorruptBlockSize ()
@@ -603,6 +719,18 @@ argument_list|,
 name|priLevel
 argument_list|)
 expr_stmt|;
+name|timestampsMap
+operator|.
+name|put
+argument_list|(
+name|block
+argument_list|,
+name|Time
+operator|.
+name|now
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;
@@ -732,6 +860,13 @@ argument_list|,
 name|priLevel
 argument_list|)
 expr_stmt|;
+name|timestampsMap
+operator|.
+name|remove
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;
@@ -783,6 +918,13 @@ argument_list|,
 name|block
 argument_list|,
 name|priLevel
+argument_list|)
+expr_stmt|;
+name|timestampsMap
+operator|.
+name|remove
+argument_list|(
+name|block
 argument_list|)
 expr_stmt|;
 return|return
