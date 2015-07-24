@@ -286,6 +286,7 @@ block|}
 block|}
 comment|/**    * Empty the queues and timestamps.    */
 DECL|method|clear ()
+specifier|synchronized
 name|void
 name|clear
 parameter_list|()
@@ -316,6 +317,10 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+name|corruptReplOneBlocks
+operator|=
+literal|0
+expr_stmt|;
 name|timestampsMap
 operator|.
 name|clear
