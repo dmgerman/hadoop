@@ -613,7 +613,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|idxInBlockGroup
+name|idxInReturnedLocs
 operator|<
 name|blockTokens
 operator|.
@@ -626,7 +626,7 @@ name|setBlockToken
 argument_list|(
 name|blockTokens
 index|[
-name|idxInBlockGroup
+name|idxInReturnedLocs
 index|]
 argument_list|)
 expr_stmt|;
