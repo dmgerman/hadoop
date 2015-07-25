@@ -4,7 +4,7 @@ comment|/***********************************************************************
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.reservation
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.reservation.planning
 package|package
 name|org
 operator|.
@@ -19,6 +19,8 @@ operator|.
 name|resourcemanager
 operator|.
 name|reservation
+operator|.
+name|planning
 package|;
 end_package
 
@@ -55,6 +57,26 @@ operator|.
 name|records
 operator|.
 name|ReservationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|reservation
+operator|.
+name|Plan
 import|;
 end_import
 

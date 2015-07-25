@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.reservation
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.reservation.planning
 package|package
 name|org
 operator|.
@@ -19,18 +19,10 @@ operator|.
 name|resourcemanager
 operator|.
 name|reservation
+operator|.
+name|planning
 package|;
 end_package
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
 
 begin_import
 import|import
@@ -60,52 +52,63 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ReservationRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
 operator|.
 name|reservation
 operator|.
-name|exceptions
-operator|.
-name|PlanningException
+name|Plan
 import|;
 end_import
 
+begin_comment
+comment|/**  * Interface for setting the earliest start time of a stage in IterativePlanner.  */
+end_comment
+
 begin_interface
-DECL|interface|Planner
+DECL|interface|StageEarliestStart
 specifier|public
 interface|interface
-name|Planner
+name|StageEarliestStart
 block|{
-comment|/**    * Update the existing {@link Plan}, by adding/removing/updating existing    * reservations, and adding a subset of the reservation requests in the    * contracts parameter.    *    * @param plan the {@link Plan} to replan    * @param contracts the list of reservation requests    * @throws PlanningException    */
-DECL|method|plan (Plan plan, List<ReservationDefinition> contracts)
-specifier|public
-name|void
-name|plan
+comment|/**    * Computes the earliest allowed starting time for a given stage.    *    * @param plan the Plan to which the reservation must be fitted    * @param reservation the job contract    * @param index the index of the stage in the job contract    * @param currentReservationStage the stage    * @param stageDeadline the deadline of the stage set by the two phase    *          planning algorithm    *    * @return the earliest allowed starting time for the stage.    */
+DECL|method|setEarliestStartTime (Plan plan, ReservationDefinition reservation, int index, ReservationRequest currentReservationStage, long stageDeadline)
+name|long
+name|setEarliestStartTime
 parameter_list|(
 name|Plan
 name|plan
 parameter_list|,
-name|List
-argument_list|<
 name|ReservationDefinition
-argument_list|>
-name|contracts
-parameter_list|)
-throws|throws
-name|PlanningException
-function_decl|;
-comment|/**    * Initialize the replanner    *    * @param planQueueName the name of the queue for this plan    * @param conf the scheduler configuration    */
-DECL|method|init (String planQueueName, ReservationSchedulerConfiguration conf)
-name|void
-name|init
-parameter_list|(
-name|String
-name|planQueueName
+name|reservation
 parameter_list|,
-name|ReservationSchedulerConfiguration
-name|conf
+name|int
+name|index
+parameter_list|,
+name|ReservationRequest
+name|currentReservationStage
+parameter_list|,
+name|long
+name|stageDeadline
 parameter_list|)
 function_decl|;
 block|}

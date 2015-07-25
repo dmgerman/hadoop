@@ -211,7 +211,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is a run length encoded sparse data structure that maintains resource  * allocations over time  */
+comment|/**  * This is a run length encoded sparse data structure that maintains resource  * allocations over time.  */
 end_comment
 
 begin_class
@@ -422,7 +422,7 @@ argument_list|)
 operator|)
 return|;
 block|}
-comment|/**    * Add a resource for the specified interval    *     * @param reservationInterval the interval for which the resource is to be    *          added    * @param totCap the resource to be added    * @return true if addition is successful, false otherwise    */
+comment|/**    * Add a resource for the specified interval    *    * @param reservationInterval the interval for which the resource is to be    *          added    * @param totCap the resource to be added    * @return true if addition is successful, false otherwise    */
 DECL|method|addInterval (ReservationInterval reservationInterval, Resource totCap)
 specifier|public
 name|boolean
@@ -764,7 +764,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Removes a resource for the specified interval    *     * @param reservationInterval the interval for which the resource is to be    *          removed    * @param totCap the resource to be removed    * @return true if removal is successful, false otherwise    */
+comment|/**    * Removes a resource for the specified interval    *    * @param reservationInterval the interval for which the resource is to be    *          removed    * @param totCap the resource to be removed    * @return true if removal is successful, false otherwise    */
 DECL|method|removeInterval (ReservationInterval reservationInterval, Resource totCap)
 specifier|public
 name|boolean
@@ -1032,7 +1032,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns the capacity, i.e. total resources allocated at the specified point    * of time    *     * @param tick the time (UTC in ms) at which the capacity is requested    * @return the resources allocated at the specified time    */
+comment|/**    * Returns the capacity, i.e. total resources allocated at the specified point    * of time    *    * @param tick the time (UTC in ms) at which the capacity is requested    * @return the resources allocated at the specified time    */
 DECL|method|getCapacityAtTime (long tick)
 specifier|public
 name|Resource
@@ -1101,7 +1101,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the timestamp of the earliest resource allocation    *     * @return the timestamp of the first resource allocation    */
+comment|/**    * Get the timestamp of the earliest resource allocation    *    * @return the timestamp of the first resource allocation    */
 DECL|method|getEarliestStartTime ()
 specifier|public
 name|long
@@ -1147,7 +1147,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the timestamp of the latest resource allocation    *     * @return the timestamp of the last resource allocation    */
+comment|/**    * Get the timestamp of the latest resource allocation    *    * @return the timestamp of the last resource allocation    */
 DECL|method|getLatestEndTime ()
 specifier|public
 name|long
@@ -1193,7 +1193,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns true if there are no non-zero entries    *     * @return true if there are no allocations or false otherwise    */
+comment|/**    * Returns true if there are no non-zero entries    *    * @return true if there are no allocations or false otherwise    */
 DECL|method|isEmpty ()
 specifier|public
 name|boolean
@@ -1398,7 +1398,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns the JSON string representation of the current resources allocated    * over time    *     * @return the JSON string representation of the current resources allocated    *         over time    */
+comment|/**    * Returns the JSON string representation of the current resources allocated    * over time    *    * @return the JSON string representation of the current resources allocated    *         over time    */
 DECL|method|toMemJSONString ()
 specifier|public
 name|String
@@ -1503,6 +1503,143 @@ block|{
 comment|// This should not happen
 return|return
 literal|""
+return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Returns the representation of the current resources allocated over time as    * an interval map.    *    * @return the representation of the current resources allocated over time as    *         an interval map.    */
+DECL|method|toIntervalMap ()
+specifier|public
+name|Map
+argument_list|<
+name|ReservationInterval
+argument_list|,
+name|Resource
+argument_list|>
+name|toIntervalMap
+parameter_list|()
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|Map
+argument_list|<
+name|ReservationInterval
+argument_list|,
+name|Resource
+argument_list|>
+name|allocations
+init|=
+operator|new
+name|TreeMap
+argument_list|<
+name|ReservationInterval
+argument_list|,
+name|Resource
+argument_list|>
+argument_list|()
+decl_stmt|;
+comment|// Empty
+if|if
+condition|(
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+name|allocations
+return|;
+block|}
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|Long
+argument_list|,
+name|Resource
+argument_list|>
+name|lastEntry
+init|=
+literal|null
+decl_stmt|;
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|Long
+argument_list|,
+name|Resource
+argument_list|>
+name|entry
+range|:
+name|cumulativeCapacity
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|lastEntry
+operator|!=
+literal|null
+condition|)
+block|{
+name|ReservationInterval
+name|interval
+init|=
+operator|new
+name|ReservationInterval
+argument_list|(
+name|lastEntry
+operator|.
+name|getKey
+argument_list|()
+argument_list|,
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|Resource
+name|resource
+init|=
+name|lastEntry
+operator|.
+name|getValue
+argument_list|()
+decl_stmt|;
+name|allocations
+operator|.
+name|put
+argument_list|(
+name|interval
+argument_list|,
+name|resource
+argument_list|)
+expr_stmt|;
+block|}
+name|lastEntry
+operator|=
+name|entry
+expr_stmt|;
+block|}
+return|return
+name|allocations
 return|;
 block|}
 finally|finally

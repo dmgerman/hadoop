@@ -133,11 +133,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An in memory implementation of a reservation allocation using the  * {@link RLESparseResourceAllocation}  *   */
+comment|/**  * An in memory implementation of a reservation allocation using the  * {@link RLESparseResourceAllocation}  *  */
 end_comment
 
 begin_class
 DECL|class|InMemoryReservationAllocation
+specifier|public
 class|class
 name|InMemoryReservationAllocation
 implements|implements
@@ -211,6 +212,7 @@ name|RLESparseResourceAllocation
 name|resourcesOverTime
 decl_stmt|;
 DECL|method|InMemoryReservationAllocation (ReservationId reservationID, ReservationDefinition contract, String user, String planName, long startTime, long endTime, Map<ReservationInterval, Resource> allocations, ResourceCalculator calculator, Resource minAlloc)
+specifier|public
 name|InMemoryReservationAllocation
 parameter_list|(
 name|ReservationId
@@ -271,6 +273,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|InMemoryReservationAllocation (ReservationId reservationID, ReservationDefinition contract, String user, String planName, long startTime, long endTime, Map<ReservationInterval, Resource> allocations, ResourceCalculator calculator, Resource minAlloc, boolean hasGang)
+specifier|public
 name|InMemoryReservationAllocation
 parameter_list|(
 name|ReservationId
