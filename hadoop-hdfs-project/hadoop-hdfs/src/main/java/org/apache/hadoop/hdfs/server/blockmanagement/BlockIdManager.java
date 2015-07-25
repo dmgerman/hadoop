@@ -714,6 +714,15 @@ name|BLOCK_GROUP_INDEX_MASK
 argument_list|)
 return|;
 block|}
+DECL|method|getBlockGroupIdGenerator ()
+name|SequentialBlockGroupIdGenerator
+name|getBlockGroupIdGenerator
+parameter_list|()
+block|{
+return|return
+name|blockGroupIdGenerator
+return|;
+block|}
 block|}
 end_class
 

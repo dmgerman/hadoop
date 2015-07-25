@@ -348,7 +348,7 @@ literal|"; indices="
 operator|+
 name|Arrays
 operator|.
-name|asList
+name|toString
 argument_list|(
 name|blockIndices
 argument_list|)
