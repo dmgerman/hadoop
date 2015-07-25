@@ -1297,6 +1297,23 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|flush ()
+specifier|public
+name|void
+name|flush
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// flush all buffered mutators
+name|entityTable
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * close the hbase connections The close APIs perform flushing and release any    * resources held    */
 annotation|@
 name|Override

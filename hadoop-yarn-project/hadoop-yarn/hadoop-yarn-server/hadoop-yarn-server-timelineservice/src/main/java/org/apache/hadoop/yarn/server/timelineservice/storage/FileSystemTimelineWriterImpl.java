@@ -674,6 +674,18 @@ name|ENTITIES_DIR
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|flush ()
+specifier|public
+name|void
+name|flush
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// no op
+block|}
 DECL|method|mkdirs (String... dirStrs)
 specifier|private
 specifier|static

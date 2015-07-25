@@ -6821,6 +6821,27 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"reader.class"
 decl_stmt|;
+comment|/** The setting that controls how often the timeline collector flushes the    * timeline writer.    */
+DECL|field|TIMELINE_SERVICE_WRITER_FLUSH_INTERVAL_SECONDS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_WRITER_FLUSH_INTERVAL_SECONDS
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"writer.flush-interval-seconds"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DEFAULT_TIMELINE_SERVICE_WRITER_FLUSH_INTERVAL_SECONDS
+name|DEFAULT_TIMELINE_SERVICE_WRITER_FLUSH_INTERVAL_SECONDS
+init|=
+literal|60
+decl_stmt|;
 comment|// mark app-history related configs @Private as application history is going
 comment|// to be integrated into the timeline service
 annotation|@

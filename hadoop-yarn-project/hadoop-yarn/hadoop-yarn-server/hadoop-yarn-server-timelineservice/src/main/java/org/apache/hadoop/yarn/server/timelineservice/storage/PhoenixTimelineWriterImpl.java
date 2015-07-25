@@ -1031,6 +1031,18 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|flush ()
+specifier|public
+name|void
+name|flush
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// currently no-op
+block|}
 comment|// Utility functions
 annotation|@
 name|Private

@@ -197,6 +197,14 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Flushes the data to the backend storage. Whatever may be buffered will be    * written to the storage when the method returns. This may be a potentially    * time-consuming operation, and should be used judiciously.    *    * @throws IOException    */
+DECL|method|flush ()
+name|void
+name|flush
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

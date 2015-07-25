@@ -439,6 +439,25 @@ block|}
 block|}
 annotation|@
 name|Test
+DECL|method|testStartingWriterFlusher ()
+specifier|public
+name|void
+name|testStartingWriterFlusher
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|assertTrue
+argument_list|(
+name|collectorManager
+operator|.
+name|writerFlusherRunning
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testStartWebApp ()
 specifier|public
 name|void
