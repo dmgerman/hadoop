@@ -7435,7 +7435,7 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-comment|// Write 1 MB to a dummy socket to ensure the write times out
+comment|// Write 10 MB to a dummy socket to ensure the write times out
 name|ServerSocket
 name|socket
 init|=
@@ -7485,6 +7485,8 @@ init|=
 operator|new
 name|byte
 index|[
+literal|10
+operator|*
 literal|1024
 operator|*
 literal|1024
@@ -7500,11 +7502,27 @@ argument_list|(
 name|buf
 argument_list|)
 expr_stmt|;
+name|long
+name|delta
+init|=
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|-
+name|start
+decl_stmt|;
 name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"write should timeout"
+literal|"write finish in "
+operator|+
+name|delta
+operator|+
+literal|" ms"
+operator|+
+literal|"but should timedout"
 argument_list|)
 expr_stmt|;
 block|}
@@ -7528,7 +7546,11 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"write timedout too soon"
+literal|"write timedout too soon in "
+operator|+
+name|delta
+operator|+
+literal|" ms"
 argument_list|,
 name|delta
 operator|>=
@@ -7541,13 +7563,17 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"write timedout too late"
+literal|"write timedout too late in "
+operator|+
+name|delta
+operator|+
+literal|" ms"
 argument_list|,
 name|delta
 operator|<=
 name|timeout
 operator|*
-literal|1.1
+literal|1.2
 argument_list|)
 expr_stmt|;
 block|}
