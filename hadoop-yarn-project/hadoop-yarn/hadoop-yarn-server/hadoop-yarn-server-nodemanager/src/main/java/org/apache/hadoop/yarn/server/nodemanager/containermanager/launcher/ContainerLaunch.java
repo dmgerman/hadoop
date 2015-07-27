@@ -2186,6 +2186,11 @@ argument_list|(
 name|container
 argument_list|)
 operator|.
+name|setLocalizedResources
+argument_list|(
+name|localResources
+argument_list|)
+operator|.
 name|setNmPrivateContainerScriptPath
 argument_list|(
 name|nmPrivateContainerScriptPath
@@ -2759,6 +2764,11 @@ operator|.
 name|Builder
 argument_list|()
 operator|.
+name|setContainer
+argument_list|(
+name|container
+argument_list|)
+operator|.
 name|setUser
 argument_list|(
 name|user
@@ -3218,6 +3228,21 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|whitelistedEnv (String key, String value)
+specifier|public
+specifier|abstract
+name|void
+name|whitelistedEnv
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|String
+name|value
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 DECL|method|env (String key, String value)
 specifier|public
 specifier|abstract
@@ -3506,6 +3531,40 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|whitelistedEnv (String key, String value)
+specifier|public
+name|void
+name|whitelistedEnv
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|String
+name|value
+parameter_list|)
+block|{
+name|line
+argument_list|(
+literal|"export "
+argument_list|,
+name|key
+argument_list|,
+literal|"=${"
+argument_list|,
+name|key
+argument_list|,
+literal|":-"
+argument_list|,
+literal|"\""
+argument_list|,
+name|value
+argument_list|,
+literal|"\"}"
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|env (String key, String value)
 specifier|public
 name|void
@@ -3688,6 +3747,37 @@ literal|" "
 argument_list|,
 name|command
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|errorCheck
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|whitelistedEnv (String key, String value)
+specifier|public
+name|void
+name|whitelistedEnv
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|String
+name|value
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|lineWithLenCheck
+argument_list|(
+literal|"@set "
+argument_list|,
+name|key
+argument_list|,
+literal|"="
+argument_list|,
+name|value
 argument_list|)
 expr_stmt|;
 name|errorCheck

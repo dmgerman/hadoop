@@ -194,6 +194,16 @@ parameter_list|)
 throws|throws
 name|ResourceHandlerException
 function_decl|;
+comment|/**    * Gets the relative path for the cgroup, independent of a controller, for a    * given cgroup id.    * @param cGroupId - id of the cgroup    * @return path for the cgroup relative to the root of (any) controller.    */
+DECL|method|getRelativePathForCGroup (String cGroupId)
+specifier|public
+name|String
+name|getRelativePathForCGroup
+parameter_list|(
+name|String
+name|cGroupId
+parameter_list|)
+function_decl|;
 comment|/**    * Gets the full path for the cgroup, given a controller and a cgroup id    * @param controller - controller type for the cgroup    * @param cGroupId - id of the cgroup    * @return full path for the cgroup    */
 DECL|method|getPathForCGroup (CGroupController controller, String cGroupId)
 specifier|public
