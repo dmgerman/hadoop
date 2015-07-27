@@ -405,9 +405,16 @@ name|value
 argument_list|)
 return|;
 block|}
-comment|/**    * @param result from which to reads timeseries data    * @param columnPrefixBytes optional prefix to limit columns. If null all    *          columns are returned.    * @return the cell values at each respective time in for form    *         {idA={timestamp1->value1}, idA={timestamp2->value2},    *         idB={timestamp3->value3}, idC={timestamp1->value4}}    * @throws IOException    */
-DECL|method|readTimeseriesResults ( Result result, byte[] columnPrefixBytes)
+comment|/**    * @param result from which to reads data with timestamps    * @param columnPrefixBytes optional prefix to limit columns. If null all    *          columns are returned.    * @param<V> the type of the values. The values will be cast into that type.    * @return the cell values at each respective time in for form    *         {idA={timestamp1->value1}, idA={timestamp2->value2},    *         idB={timestamp3->value3}, idC={timestamp1->value4}}    * @throws IOException    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 specifier|public
+parameter_list|<
+name|V
+parameter_list|>
 name|NavigableMap
 argument_list|<
 name|String
@@ -416,10 +423,11 @@ name|NavigableMap
 argument_list|<
 name|Long
 argument_list|,
-name|Number
+name|V
 argument_list|>
 argument_list|>
-name|readTimeseriesResults
+DECL|method|readResultsWithTimestamps (Result result, byte[] columnPrefixBytes)
+name|readResultsWithTimestamps
 parameter_list|(
 name|Result
 name|result
@@ -439,7 +447,7 @@ name|NavigableMap
 argument_list|<
 name|Long
 argument_list|,
-name|Number
+name|V
 argument_list|>
 argument_list|>
 name|results
@@ -453,7 +461,7 @@ name|NavigableMap
 argument_list|<
 name|Long
 argument_list|,
-name|Number
+name|V
 argument_list|>
 argument_list|>
 argument_list|()
@@ -651,7 +659,7 @@ name|NavigableMap
 argument_list|<
 name|Long
 argument_list|,
-name|Number
+name|V
 argument_list|>
 name|cellResults
 init|=
@@ -660,7 +668,7 @@ name|TreeMap
 argument_list|<
 name|Long
 argument_list|,
-name|Number
+name|V
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -702,11 +710,11 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-name|Number
+name|V
 name|value
 init|=
 operator|(
-name|Number
+name|V
 operator|)
 name|GenericObjectMapper
 operator|.

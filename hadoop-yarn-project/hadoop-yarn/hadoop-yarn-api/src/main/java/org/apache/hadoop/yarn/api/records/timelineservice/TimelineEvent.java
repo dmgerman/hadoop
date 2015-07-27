@@ -175,6 +175,15 @@ argument_list|<
 name|TimelineEvent
 argument_list|>
 block|{
+DECL|field|INVALID_TIMESTAMP
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|INVALID_TIMESTAMP
+init|=
+literal|0L
+decl_stmt|;
 DECL|field|id
 specifier|private
 name|String
@@ -399,7 +408,7 @@ literal|null
 operator|&&
 name|timestamp
 operator|!=
-literal|0L
+name|INVALID_TIMESTAMP
 operator|)
 return|;
 block|}

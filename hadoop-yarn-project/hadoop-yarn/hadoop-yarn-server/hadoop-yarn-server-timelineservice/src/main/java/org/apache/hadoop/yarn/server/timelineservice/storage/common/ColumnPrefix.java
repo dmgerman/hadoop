@@ -157,9 +157,11 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * @param result from which to reads timeseries data    * @return the cell values at each respective time in for form    *         {idA={timestamp1->value1}, idA={timestamp2->value2},    *         idB={timestamp3->value3}, idC={timestamp1->value4}}    * @throws IOException    */
-DECL|method|readTimeseriesResults ( Result result)
+comment|/**    * @param result from which to reads data with timestamps    * @param<V> the type of the values. The values will be cast into that type.    * @return the cell values at each respective time in for form    *         {idA={timestamp1->value1}, idA={timestamp2->value2},    *         idB={timestamp3->value3}, idC={timestamp1->value4}}    * @throws IOException    */
 specifier|public
+parameter_list|<
+name|V
+parameter_list|>
 name|NavigableMap
 argument_list|<
 name|String
@@ -168,10 +170,11 @@ name|NavigableMap
 argument_list|<
 name|Long
 argument_list|,
-name|Number
+name|V
 argument_list|>
 argument_list|>
-name|readTimeseriesResults
+DECL|method|readResultsWithTimestamps (Result result)
+name|readResultsWithTimestamps
 parameter_list|(
 name|Result
 name|result

@@ -233,6 +233,17 @@ argument_list|,
 literal|"r"
 argument_list|)
 block|,
+comment|/**    * To store TimelineEntity info values.    */
+DECL|enumConstant|INFO
+name|INFO
+argument_list|(
+name|EntityColumnFamily
+operator|.
+name|INFO
+argument_list|,
+literal|"i"
+argument_list|)
+block|,
 comment|/**    * Lifecycle events for an entity    */
 DECL|enumConstant|EVENT
 name|EVENT
@@ -375,7 +386,7 @@ block|}
 block|}
 comment|/**    * @return the column name value    */
 DECL|method|getColumnPrefix ()
-specifier|private
+specifier|public
 name|String
 name|getColumnPrefix
 parameter_list|()
@@ -536,9 +547,11 @@ name|columnPrefixBytes
 argument_list|)
 return|;
 block|}
-comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.ColumnPrefix    * #readTimeseriesResults(org.apache.hadoop.hbase.client.Result)    */
-DECL|method|readTimeseriesResults ( Result result)
+comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.ColumnPrefix    * #readResultsWithTimestamps(org.apache.hadoop.hbase.client.Result)    */
 specifier|public
+parameter_list|<
+name|T
+parameter_list|>
 name|NavigableMap
 argument_list|<
 name|String
@@ -547,10 +560,11 @@ name|NavigableMap
 argument_list|<
 name|Long
 argument_list|,
-name|Number
+name|T
 argument_list|>
 argument_list|>
-name|readTimeseriesResults
+DECL|method|readResultsWithTimestamps (Result result)
+name|readResultsWithTimestamps
 parameter_list|(
 name|Result
 name|result
@@ -561,7 +575,7 @@ block|{
 return|return
 name|column
 operator|.
-name|readTimeseriesResults
+name|readResultsWithTimestamps
 argument_list|(
 name|result
 argument_list|,

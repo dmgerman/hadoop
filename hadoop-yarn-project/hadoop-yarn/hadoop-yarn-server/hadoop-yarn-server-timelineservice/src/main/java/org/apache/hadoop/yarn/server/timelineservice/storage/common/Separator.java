@@ -253,6 +253,17 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @return the original value of the separator    */
+DECL|method|getValue ()
+specifier|public
+name|String
+name|getValue
+parameter_list|()
+block|{
+return|return
+name|value
+return|;
+block|}
 comment|/**    * Used to make token safe to be used with this separator without collisions.    *    * @param token    * @return the token with any occurrences of this separator URLEncoded.    */
 DECL|method|encode (String token)
 specifier|public
