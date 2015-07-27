@@ -3965,7 +3965,13 @@ literal|"    var q = $('.q', data.rslt.obj).first().text();"
 argument_list|,
 literal|"    if (q == 'Queue: root') q = '';"
 argument_list|,
-literal|"    else q = '^' + q.substr(q.lastIndexOf(':') + 2) + '$';"
+literal|"    else {"
+argument_list|,
+literal|"      q = q.substr(q.lastIndexOf(':') + 2);"
+argument_list|,
+literal|"      q = '^' + q.substr(q.lastIndexOf('.') + 1) + '$';"
+argument_list|,
+literal|"    }"
 argument_list|,
 literal|"    $('#apps').dataTable().fnFilter(q, 4, true);"
 argument_list|,
