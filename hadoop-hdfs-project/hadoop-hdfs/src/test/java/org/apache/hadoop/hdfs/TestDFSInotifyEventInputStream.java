@@ -1290,7 +1290,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|re
+name|re2
 operator|.
 name|getTimestamp
 argument_list|()
@@ -3703,7 +3703,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|re
+name|re3
 operator|.
 name|getTimestamp
 argument_list|()
