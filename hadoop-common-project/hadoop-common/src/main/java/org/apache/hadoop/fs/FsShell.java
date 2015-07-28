@@ -206,6 +206,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|tracing
+operator|.
+name|SpanReceiverHost
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|tools
 operator|.
 name|TableListing
@@ -372,6 +386,19 @@ name|usagePrefix
 init|=
 literal|"Usage: hadoop fs [generic options]"
 decl_stmt|;
+DECL|field|spanReceiverHost
+specifier|private
+name|SpanReceiverHost
+name|spanReceiverHost
+decl_stmt|;
+DECL|field|SEHLL_HTRACE_PREFIX
+specifier|static
+specifier|final
+name|String
+name|SEHLL_HTRACE_PREFIX
+init|=
+literal|"dfs.shell.htrace."
+decl_stmt|;
 comment|/**    * Default ctor with no configuration.  Be sure to invoke    * {@link #setConf(Configuration)} with a valid configuration prior    * to running commands.    */
 DECL|method|FsShell ()
 specifier|public
@@ -524,6 +551,20 @@ name|commandFactory
 argument_list|)
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|spanReceiverHost
+operator|=
+name|SpanReceiverHost
+operator|.
+name|get
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|,
+name|SEHLL_HTRACE_PREFIX
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|registerCommands (CommandFactory factory)
 specifier|protected
@@ -1356,7 +1397,7 @@ name|TraceUtils
 operator|.
 name|wrapHadoopConf
 argument_list|(
-literal|"dfs.shell.htrace."
+name|SEHLL_HTRACE_PREFIX
 argument_list|,
 name|getConf
 argument_list|()
@@ -1663,6 +1704,23 @@ expr_stmt|;
 name|fs
 operator|=
 literal|null
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|spanReceiverHost
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|spanReceiverHost
+operator|.
+name|closeReceivers
+argument_list|()
 expr_stmt|;
 block|}
 block|}

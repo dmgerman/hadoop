@@ -420,6 +420,7 @@ return|;
 block|}
 block|}
 DECL|method|assertSpanNamesFound (final String[] expectedSpanNames)
+specifier|public
 specifier|static
 name|void
 name|assertSpanNamesFound
