@@ -1515,7 +1515,7 @@ return|return
 name|nodeReport
 return|;
 block|}
-DECL|method|newContainerStatus (ContainerId containerId, ContainerState containerState, String diagnostics, int exitStatus)
+DECL|method|newContainerStatus (ContainerId containerId, ContainerState containerState, String diagnostics, int exitStatus, Resource capability)
 specifier|public
 specifier|static
 name|ContainerStatus
@@ -1532,6 +1532,9 @@ name|diagnostics
 parameter_list|,
 name|int
 name|exitStatus
+parameter_list|,
+name|Resource
+name|capability
 parameter_list|)
 block|{
 name|ContainerStatus
@@ -1572,6 +1575,13 @@ operator|.
 name|setExitStatus
 argument_list|(
 name|exitStatus
+argument_list|)
+expr_stmt|;
+name|containerStatus
+operator|.
+name|setCapability
+argument_list|(
+name|capability
 argument_list|)
 expr_stmt|;
 return|return

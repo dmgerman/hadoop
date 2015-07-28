@@ -215,6 +215,58 @@ argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
+name|Resource
+name|largerResource
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|Resource
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|largerResource
+operator|.
+name|setMemory
+argument_list|(
+literal|1024
+argument_list|)
+expr_stmt|;
+name|largerResource
+operator|.
+name|setVirtualCores
+argument_list|(
+literal|2
+argument_list|)
+expr_stmt|;
+name|Resource
+name|smallerResource
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|Resource
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|smallerResource
+operator|.
+name|setMemory
+argument_list|(
+literal|256
+argument_list|)
+expr_stmt|;
+name|smallerResource
+operator|.
+name|setVirtualCores
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
 name|metrics
 operator|.
 name|addResource
@@ -317,6 +369,26 @@ operator|.
 name|runningContainer
 argument_list|()
 expr_stmt|;
+comment|// Increase resource for a container
+name|metrics
+operator|.
+name|changeContainer
+argument_list|(
+name|resource
+argument_list|,
+name|largerResource
+argument_list|)
+expr_stmt|;
+comment|// Decrease resource for a container
+name|metrics
+operator|.
+name|changeContainer
+argument_list|(
+name|resource
+argument_list|,
+name|smallerResource
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertTrue
@@ -351,8 +423,8 @@ argument_list|)
 expr_stmt|;
 comment|// availableGB is expected to be floored,
 comment|// while allocatedGB is expected to be ceiled.
-comment|// allocatedGB: 3.5GB allocated memory is shown as 4GB
-comment|// availableGB: 4.5GB available memory is shown as 4GB
+comment|// allocatedGB: 3.75GB allocated memory is shown as 4GB
+comment|// availableGB: 4.25GB available memory is shown as 4GB
 name|checkMetrics
 argument_list|(
 literal|10
@@ -373,9 +445,9 @@ literal|7
 argument_list|,
 literal|4
 argument_list|,
-literal|14
+literal|13
 argument_list|,
-literal|2
+literal|3
 argument_list|)
 expr_stmt|;
 block|}

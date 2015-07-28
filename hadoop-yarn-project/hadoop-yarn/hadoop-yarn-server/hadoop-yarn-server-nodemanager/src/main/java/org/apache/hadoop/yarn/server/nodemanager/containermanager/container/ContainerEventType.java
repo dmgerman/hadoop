@@ -43,13 +43,6 @@ block|,
 DECL|enumConstant|CONTAINER_DONE
 name|CONTAINER_DONE
 block|,
-DECL|enumConstant|CHANGE_CONTAINER_RESOURCE
-name|CHANGE_CONTAINER_RESOURCE
-block|,
-comment|// Producer: ContainerMonitor
-DECL|enumConstant|CONTAINER_RESOURCE_CHANGED
-name|CONTAINER_RESOURCE_CHANGED
-block|,
 comment|// DownloadManager
 DECL|enumConstant|CONTAINER_INITED
 name|CONTAINER_INITED

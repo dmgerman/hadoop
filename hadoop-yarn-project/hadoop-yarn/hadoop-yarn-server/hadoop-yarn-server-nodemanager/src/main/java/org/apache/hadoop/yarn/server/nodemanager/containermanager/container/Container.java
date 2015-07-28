@@ -217,6 +217,14 @@ name|Resource
 name|getResource
 parameter_list|()
 function_decl|;
+DECL|method|setResource (Resource targetResource)
+name|void
+name|setResource
+parameter_list|(
+name|Resource
+name|targetResource
+parameter_list|)
+function_decl|;
 DECL|method|getContainerTokenIdentifier ()
 name|ContainerTokenIdentifier
 name|getContainerTokenIdentifier

@@ -6894,6 +6894,11 @@ argument_list|,
 literal|""
 argument_list|,
 literal|0
+argument_list|,
+name|c1
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|nm1

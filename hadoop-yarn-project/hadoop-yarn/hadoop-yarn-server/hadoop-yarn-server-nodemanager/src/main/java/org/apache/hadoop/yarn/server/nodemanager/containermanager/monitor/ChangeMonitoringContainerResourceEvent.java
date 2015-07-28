@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.container
+DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.monitor
 package|package
 name|org
 operator|.
@@ -20,7 +20,7 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|container
+name|monitor
 package|;
 end_package
 
@@ -61,24 +61,25 @@ import|;
 end_import
 
 begin_class
-DECL|class|ChangeContainerResourceEvent
+DECL|class|ChangeMonitoringContainerResourceEvent
 specifier|public
 class|class
-name|ChangeContainerResourceEvent
+name|ChangeMonitoringContainerResourceEvent
 extends|extends
-name|ContainerEvent
+name|ContainersMonitorEvent
 block|{
 DECL|field|resource
 specifier|private
+specifier|final
 name|Resource
 name|resource
 decl_stmt|;
-DECL|method|ChangeContainerResourceEvent (ContainerId c, Resource resource)
+DECL|method|ChangeMonitoringContainerResourceEvent (ContainerId containerId, Resource resource)
 specifier|public
-name|ChangeContainerResourceEvent
+name|ChangeMonitoringContainerResourceEvent
 parameter_list|(
 name|ContainerId
-name|c
+name|containerId
 parameter_list|,
 name|Resource
 name|resource
@@ -86,11 +87,11 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|c
+name|containerId
 argument_list|,
-name|ContainerEventType
+name|ContainersMonitorEventType
 operator|.
-name|CHANGE_CONTAINER_RESOURCE
+name|CHANGE_MONITORING_CONTAINER_RESOURCE
 argument_list|)
 expr_stmt|;
 name|this
