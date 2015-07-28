@@ -499,41 +499,6 @@ return|return
 name|versioning
 return|;
 block|}
-comment|/**    * Converts a valid String to Enum for ease of use.    *    * @param version version string.    */
-DECL|method|setVersioning (String version)
-specifier|public
-name|void
-name|setVersioning
-parameter_list|(
-name|String
-name|version
-parameter_list|)
-block|{
-if|if
-condition|(
-name|version
-operator|!=
-literal|null
-condition|)
-block|{
-name|this
-operator|.
-name|versioning
-operator|=
-name|OzoneConsts
-operator|.
-name|Versioning
-operator|.
-name|valueOf
-argument_list|(
-name|version
-operator|.
-name|toUpperCase
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 comment|/**    * SetVersioning Info.    *    * @param versioning - Enum value    */
 DECL|method|setVersioning (OzoneConsts.Versioning versioning)
 specifier|public

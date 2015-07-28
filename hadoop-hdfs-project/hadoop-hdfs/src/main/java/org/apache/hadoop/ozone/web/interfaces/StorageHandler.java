@@ -66,6 +66,24 @@ name|web
 operator|.
 name|handlers
 operator|.
+name|BucketArgs
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|web
+operator|.
+name|handlers
+operator|.
 name|UserArgs
 import|;
 end_import
@@ -85,6 +103,42 @@ operator|.
 name|handlers
 operator|.
 name|VolumeArgs
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|web
+operator|.
+name|response
+operator|.
+name|BucketInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|web
+operator|.
+name|response
+operator|.
+name|ListBuckets
 import|;
 end_import
 
@@ -235,6 +289,110 @@ name|VolumeInfo
 name|getVolumeInfo
 parameter_list|(
 name|VolumeArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+function_decl|;
+comment|/**    * Creates a Bucket in specified Volume.    *    * @param args BucketArgs- BucketName, UserName and Acls    *    * @throws IOException    */
+DECL|method|createBucket (BucketArgs args)
+name|void
+name|createBucket
+parameter_list|(
+name|BucketArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+function_decl|;
+comment|/**    * Adds or Removes ACLs from a Bucket.    *    * @param args - BucketArgs    *    * @throws IOException    */
+DECL|method|setBucketAcls (BucketArgs args)
+name|void
+name|setBucketAcls
+parameter_list|(
+name|BucketArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+function_decl|;
+comment|/**    * Enables or disables Bucket Versioning.    *    * @param args - BucketArgs    *    * @throws IOException    */
+DECL|method|setBucketVersioning (BucketArgs args)
+name|void
+name|setBucketVersioning
+parameter_list|(
+name|BucketArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+function_decl|;
+comment|/**    * Sets the Storage Class of a Bucket.    *    * @param args - BucketArgs    *    * @throws IOException    */
+DECL|method|setBucketStorageClass (BucketArgs args)
+name|void
+name|setBucketStorageClass
+parameter_list|(
+name|BucketArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+function_decl|;
+comment|/**    * Deletes a bucket if it is empty.    *    * @param args Bucket args structure    *    * @throws IOException    */
+DECL|method|deleteBucket (BucketArgs args)
+name|void
+name|deleteBucket
+parameter_list|(
+name|BucketArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+function_decl|;
+comment|/**    * true if the bucket exists and user has read access    * to the bucket else throws Exception.    *    * @param args Bucket args structure    *    * @throws IOException    */
+DECL|method|checkBucketAccess (BucketArgs args)
+name|void
+name|checkBucketAccess
+parameter_list|(
+name|BucketArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+function_decl|;
+comment|/**    * Returns all Buckets of a specified Volume.    *    * @param args --User Args    *    * @return ListAllBuckets    *    * @throws OzoneException    */
+DECL|method|listBuckets (VolumeArgs args)
+name|ListBuckets
+name|listBuckets
+parameter_list|(
+name|VolumeArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+function_decl|;
+comment|/**    * Returns Bucket's Metadata as a String.    *    * @param args Bucket args structure    *    * @return Info about the bucket    *    * @throws IOException    */
+DECL|method|getBucketInfo (BucketArgs args)
+name|BucketInfo
+name|getBucketInfo
+parameter_list|(
+name|BucketArgs
 name|args
 parameter_list|)
 throws|throws

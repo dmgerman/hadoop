@@ -327,6 +327,23 @@ argument_list|,
 literal|"Malformed bucket version or version not unique."
 argument_list|)
 decl_stmt|;
+DECL|field|MALFORMED_STORAGE_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|OzoneException
+name|MALFORMED_STORAGE_TYPE
+init|=
+operator|new
+name|OzoneException
+argument_list|(
+name|HTTP_BAD_REQUEST
+argument_list|,
+literal|"malformedStorageType"
+argument_list|,
+literal|"Invalid storage Type specified."
+argument_list|)
+decl_stmt|;
 DECL|field|MALFORMED_STORAGE_CLASS
 specifier|public
 specifier|static
