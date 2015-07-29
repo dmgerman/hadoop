@@ -1314,6 +1314,15 @@ name|DS_APP_ATTEMPT
 block|,
 name|DS_CONTAINER
 block|}
+DECL|field|YARN_SHELL_ID
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|YARN_SHELL_ID
+init|=
+literal|"YARN_SHELL_ID"
+decl_stmt|;
 comment|// Configuration
 DECL|field|conf
 specifier|private
@@ -1638,6 +1647,13 @@ name|String
 name|windows_command
 init|=
 literal|"cmd /c"
+decl_stmt|;
+DECL|field|yarnShellIdCounter
+specifier|private
+name|int
+name|yarnShellIdCounter
+init|=
+literal|1
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
@@ -4192,6 +4208,19 @@ range|:
 name|allocatedContainers
 control|)
 block|{
+name|String
+name|yarnShellId
+init|=
+name|Integer
+operator|.
+name|toString
+argument_list|(
+name|yarnShellIdCounter
+argument_list|)
+decl_stmt|;
+name|yarnShellIdCounter
+operator|++
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -4204,6 +4233,10 @@ name|allocatedContainer
 operator|.
 name|getId
 argument_list|()
+operator|+
+literal|", yarnShellId="
+operator|+
+name|yarnShellId
 operator|+
 literal|", containerNode="
 operator|+
@@ -4261,6 +4294,8 @@ init|=
 name|createLaunchContainerThread
 argument_list|(
 name|allocatedContainer
+argument_list|,
+name|yarnShellId
 argument_list|)
 decl_stmt|;
 comment|// launch and start the container on a separate thread to keep
@@ -4722,15 +4757,21 @@ name|Runnable
 block|{
 comment|// Allocated container
 DECL|field|container
+specifier|private
 name|Container
 name|container
+decl_stmt|;
+DECL|field|shellId
+specifier|private
+name|String
+name|shellId
 decl_stmt|;
 DECL|field|containerListener
 name|NMCallbackHandler
 name|containerListener
 decl_stmt|;
 comment|/**      * @param lcontainer Allocated container      * @param containerListener Callback handler of the container      */
-DECL|method|LaunchContainerRunnable ( Container lcontainer, NMCallbackHandler containerListener)
+DECL|method|LaunchContainerRunnable (Container lcontainer, NMCallbackHandler containerListener, String shellId)
 specifier|public
 name|LaunchContainerRunnable
 parameter_list|(
@@ -4739,6 +4780,9 @@ name|lcontainer
 parameter_list|,
 name|NMCallbackHandler
 name|containerListener
+parameter_list|,
+name|String
+name|shellId
 parameter_list|)
 block|{
 name|this
@@ -4752,6 +4796,12 @@ operator|.
 name|containerListener
 operator|=
 name|containerListener
+expr_stmt|;
+name|this
+operator|.
+name|shellId
+operator|=
+name|shellId
 expr_stmt|;
 block|}
 annotation|@
@@ -4773,6 +4823,10 @@ name|container
 operator|.
 name|getId
 argument_list|()
+operator|+
+literal|" with shellid="
+operator|+
+name|shellId
 argument_list|)
 expr_stmt|;
 comment|// Set the local resources
@@ -5130,6 +5184,34 @@ comment|// tokens. We are populating them mainly for NodeManagers to be able to
 comment|// download anyfiles in the distributed file-system. The tokens are
 comment|// otherwise also useful in cases, for e.g., when one is running a
 comment|// "hadoop dfs" command inside the distributed shell.
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|myShellEnv
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+argument_list|(
+name|shellEnv
+argument_list|)
+decl_stmt|;
+name|myShellEnv
+operator|.
+name|put
+argument_list|(
+name|YARN_SHELL_ID
+argument_list|,
+name|shellId
+argument_list|)
+expr_stmt|;
 name|ContainerLaunchContext
 name|ctx
 init|=
@@ -5139,7 +5221,7 @@ name|newInstance
 argument_list|(
 name|localResources
 argument_list|,
-name|shellEnv
+name|myShellEnv
 argument_list|,
 name|commands
 argument_list|,
@@ -5987,12 +6069,15 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|createLaunchContainerThread (Container allocatedContainer)
+DECL|method|createLaunchContainerThread (Container allocatedContainer, String shellId)
 name|Thread
 name|createLaunchContainerThread
 parameter_list|(
 name|Container
 name|allocatedContainer
+parameter_list|,
+name|String
+name|shellId
 parameter_list|)
 block|{
 name|LaunchContainerRunnable
@@ -6004,6 +6089,8 @@ argument_list|(
 name|allocatedContainer
 argument_list|,
 name|containerListener
+argument_list|,
+name|shellId
 argument_list|)
 decl_stmt|;
 return|return
