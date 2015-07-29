@@ -643,6 +643,10 @@ operator|!
 name|drained
 operator|&&
 name|eventHandlingThread
+operator|!=
+literal|null
+operator|&&
+name|eventHandlingThread
 operator|.
 name|isAlive
 argument_list|()
