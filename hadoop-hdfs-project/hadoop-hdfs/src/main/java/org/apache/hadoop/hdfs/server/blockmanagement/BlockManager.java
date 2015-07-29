@@ -1475,20 +1475,6 @@ name|count
 argument_list|()
 return|;
 block|}
-comment|/** Used by metrics. */
-DECL|method|getTimeOfTheOldestBlockToBeReplicated ()
-specifier|public
-name|long
-name|getTimeOfTheOldestBlockToBeReplicated
-parameter_list|()
-block|{
-return|return
-name|neededReplications
-operator|.
-name|getTimeOfTheOldestBlockToBeReplicated
-argument_list|()
-return|;
-block|}
 comment|/**replicationRecheckInterval is how often namenode checks for new replication work*/
 DECL|field|replicationRecheckInterval
 specifier|private
