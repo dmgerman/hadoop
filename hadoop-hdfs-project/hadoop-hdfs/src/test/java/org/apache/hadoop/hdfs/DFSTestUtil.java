@@ -8215,7 +8215,7 @@ name|setStoragePolicy
 argument_list|(
 name|pathFileCreate
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|)

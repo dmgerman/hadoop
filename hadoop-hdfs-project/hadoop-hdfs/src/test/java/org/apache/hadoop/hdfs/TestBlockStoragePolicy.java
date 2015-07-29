@@ -738,7 +738,7 @@ argument_list|(
 literal|"/"
 argument_list|)
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|)
@@ -832,7 +832,7 @@ argument_list|(
 literal|"/"
 argument_list|)
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|)
@@ -6284,7 +6284,7 @@ name|setStoragePolicy
 argument_list|(
 name|invalidPath
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|WARM_STORAGE_POLICY_NAME
 argument_list|)
@@ -6358,7 +6358,7 @@ name|setStoragePolicy
 argument_list|(
 name|fooFile
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|)
@@ -6369,7 +6369,7 @@ name|setStoragePolicy
 argument_list|(
 name|barDir
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|WARM_STORAGE_POLICY_NAME
 argument_list|)
@@ -6380,7 +6380,7 @@ name|setStoragePolicy
 argument_list|(
 name|barFile2
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|)
@@ -6391,7 +6391,7 @@ name|assertEquals
 argument_list|(
 literal|"File storage policy should be COLD"
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|,
@@ -6412,7 +6412,7 @@ name|assertEquals
 argument_list|(
 literal|"File storage policy should be WARM"
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|WARM_STORAGE_POLICY_NAME
 argument_list|,
@@ -6433,7 +6433,7 @@ name|assertEquals
 argument_list|(
 literal|"File storage policy should be HOT"
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|,
@@ -6818,7 +6818,7 @@ name|setStoragePolicy
 argument_list|(
 name|fooDir
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|WARM_STORAGE_POLICY_NAME
 argument_list|)
@@ -6910,7 +6910,7 @@ name|setStoragePolicy
 argument_list|(
 name|fooFile1
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|)
@@ -7064,7 +7064,7 @@ name|setStoragePolicy
 argument_list|(
 name|fooDir
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|)
@@ -7901,7 +7901,7 @@ name|Exception
 block|{
 name|testChangeFileRep
 argument_list|(
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|,
@@ -7964,7 +7964,7 @@ name|Exception
 block|{
 name|testChangeFileRep
 argument_list|(
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|WARM_STORAGE_POLICY_NAME
 argument_list|,
@@ -8027,7 +8027,7 @@ name|Exception
 block|{
 name|testChangeFileRep
 argument_list|(
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|,
