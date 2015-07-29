@@ -87,7 +87,7 @@ name|Pattern
 operator|.
 name|compile
 argument_list|(
-literal|"^\\s*[+]?()([0-7]{3})\\s*$"
+literal|"^\\s*[+]?(0*)([0-7]{3})\\s*$"
 argument_list|)
 decl_stmt|;
 comment|// no leading 1 for sticky bit
