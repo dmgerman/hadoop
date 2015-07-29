@@ -7693,7 +7693,7 @@ try|try
 block|{
 name|fsdis
 operator|.
-name|read
+name|readFully
 argument_list|(
 name|bb
 argument_list|)
@@ -7993,7 +7993,7 @@ try|try
 block|{
 name|fsdis
 operator|.
-name|read
+name|readFully
 argument_list|(
 name|bb
 argument_list|)
