@@ -620,6 +620,24 @@ name|Integer
 operator|.
 name|MAX_VALUE
 decl_stmt|;
+DECL|field|DFS_DATANODE_NON_LOCAL_LAZY_PERSIST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_NON_LOCAL_LAZY_PERSIST
+init|=
+literal|"dfs.datanode.non.local.lazy.persist"
+decl_stmt|;
+DECL|field|DFS_DATANODE_NON_LOCAL_LAZY_PERSIST_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_DATANODE_NON_LOCAL_LAZY_PERSIST_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// This setting is for testing/internal use only.
 DECL|field|DFS_DATANODE_DUPLICATE_REPLICA_DELETION
 specifier|public
