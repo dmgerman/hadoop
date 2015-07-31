@@ -709,7 +709,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Not a valid JAR: "
+literal|"JAR does not exist or is not a normal file: "
 operator|+
 name|file
 operator|.
