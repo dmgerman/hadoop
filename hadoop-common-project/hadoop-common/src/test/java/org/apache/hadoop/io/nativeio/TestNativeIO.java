@@ -426,6 +426,48 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|nativeio
+operator|.
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|nativeio
+operator|.
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|Stat
+operator|.
+name|*
+import|;
+end_import
+
 begin_class
 DECL|class|TestNativeIO
 specifier|public
@@ -668,12 +710,6 @@ name|assertEquals
 argument_list|(
 literal|"Stat mode field should indicate a regular file"
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
-name|Stat
-operator|.
 name|S_IFREG
 argument_list|,
 name|stat
@@ -681,12 +717,6 @@ operator|.
 name|getMode
 argument_list|()
 operator|&
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
-name|Stat
-operator|.
 name|S_IFMT
 argument_list|)
 expr_stmt|;
@@ -868,12 +898,6 @@ name|assertEquals
 argument_list|(
 literal|"Stat mode field should indicate a regular file"
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
-name|Stat
-operator|.
 name|S_IFREG
 argument_list|,
 name|stat
@@ -881,12 +905,6 @@ operator|.
 name|getMode
 argument_list|()
 operator|&
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
-name|Stat
-operator|.
 name|S_IFMT
 argument_list|)
 expr_stmt|;
@@ -2071,10 +2089,6 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|O_WRONLY
 argument_list|,
 literal|0700
@@ -2166,16 +2180,8 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|O_WRONLY
 operator||
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|O_CREAT
 argument_list|,
 literal|0700
@@ -2254,22 +2260,10 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|O_WRONLY
 operator||
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|O_CREAT
 operator||
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|O_EXCL
 argument_list|,
 literal|0700
@@ -2370,16 +2364,8 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|O_WRONLY
 operator||
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|O_CREAT
 argument_list|,
 literal|0700
@@ -2627,10 +2613,6 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|POSIX_FADV_SEQUENTIAL
 argument_list|)
 expr_stmt|;
@@ -2682,10 +2664,6 @@ literal|0
 argument_list|,
 literal|1024
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|POSIX_FADV_SEQUENTIAL
 argument_list|)
 expr_stmt|;
@@ -2728,10 +2706,6 @@ literal|0
 argument_list|,
 literal|1024
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|POSIX_FADV_SEQUENTIAL
 argument_list|)
 expr_stmt|;
@@ -2807,10 +2781,6 @@ literal|0
 argument_list|,
 literal|1024
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|SYNC_FILE_RANGE_WRITE
 argument_list|)
 expr_stmt|;
@@ -2856,10 +2826,6 @@ literal|0
 argument_list|,
 literal|1024
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|SYNC_FILE_RANGE_WRITE
 argument_list|)
 expr_stmt|;
@@ -3851,6 +3817,321 @@ name|TEST_DIR
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+DECL|method|testNativePosixConsts ()
+specifier|public
+name|void
+name|testNativePosixConsts
+parameter_list|()
+block|{
+name|assumeTrue
+argument_list|(
+literal|"Native POSIX constants not required for Windows"
+argument_list|,
+operator|!
+name|Path
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native 0_RDONLY const not set"
+argument_list|,
+name|O_RDONLY
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native 0_WRONLY const not set"
+argument_list|,
+name|O_WRONLY
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native 0_RDWR const not set"
+argument_list|,
+name|O_RDWR
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native 0_CREAT const not set"
+argument_list|,
+name|O_CREAT
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native 0_EXCL const not set"
+argument_list|,
+name|O_EXCL
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native 0_NOCTTY const not set"
+argument_list|,
+name|O_NOCTTY
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native 0_TRUNC const not set"
+argument_list|,
+name|O_TRUNC
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native 0_APPEND const not set"
+argument_list|,
+name|O_APPEND
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native 0_NONBLOCK const not set"
+argument_list|,
+name|O_NONBLOCK
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native 0_SYNC const not set"
+argument_list|,
+name|O_SYNC
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_IFMT const not set"
+argument_list|,
+name|S_IFMT
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_IFIFO const not set"
+argument_list|,
+name|S_IFIFO
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_IFCHR const not set"
+argument_list|,
+name|S_IFCHR
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_IFDIR const not set"
+argument_list|,
+name|S_IFDIR
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_IFBLK const not set"
+argument_list|,
+name|S_IFBLK
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_IFREG const not set"
+argument_list|,
+name|S_IFREG
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_IFLNK const not set"
+argument_list|,
+name|S_IFLNK
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_IFSOCK const not set"
+argument_list|,
+name|S_IFSOCK
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_ISUID const not set"
+argument_list|,
+name|S_ISUID
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_ISGID const not set"
+argument_list|,
+name|S_ISGID
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_ISVTX const not set"
+argument_list|,
+name|S_ISVTX
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_IRUSR const not set"
+argument_list|,
+name|S_IRUSR
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_IWUSR const not set"
+argument_list|,
+name|S_IWUSR
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native S_IXUSR const not set"
+argument_list|,
+name|S_IXUSR
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+DECL|method|testNativeFadviseConsts ()
+specifier|public
+name|void
+name|testNativeFadviseConsts
+parameter_list|()
+block|{
+name|assumeTrue
+argument_list|(
+literal|"Fadvise constants not supported"
+argument_list|,
+name|fadvisePossible
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native POSIX_FADV_NORMAL const not set"
+argument_list|,
+name|POSIX_FADV_NORMAL
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native POSIX_FADV_RANDOM const not set"
+argument_list|,
+name|POSIX_FADV_RANDOM
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native POSIX_FADV_SEQUENTIAL const not set"
+argument_list|,
+name|POSIX_FADV_SEQUENTIAL
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native POSIX_FADV_WILLNEED const not set"
+argument_list|,
+name|POSIX_FADV_WILLNEED
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native POSIX_FADV_DONTNEED const not set"
+argument_list|,
+name|POSIX_FADV_DONTNEED
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Native POSIX_FADV_NOREUSE const not set"
+argument_list|,
+name|POSIX_FADV_NOREUSE
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
