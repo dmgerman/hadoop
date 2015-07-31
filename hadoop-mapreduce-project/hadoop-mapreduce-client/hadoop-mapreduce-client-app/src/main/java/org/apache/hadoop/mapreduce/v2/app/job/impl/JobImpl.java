@@ -9390,7 +9390,8 @@ operator|.
 name|getRecoveredJobStartTime
 argument_list|()
 operator|!=
-literal|0
+operator|-
+literal|1L
 condition|)
 block|{
 name|job

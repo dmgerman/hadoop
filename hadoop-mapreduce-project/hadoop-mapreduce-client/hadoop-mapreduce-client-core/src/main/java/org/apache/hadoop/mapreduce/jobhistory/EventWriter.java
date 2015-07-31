@@ -156,6 +156,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FSDataOutputStream
@@ -218,12 +246,35 @@ name|Counters
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Event Writer is an utility class used to write events to the underlying  * stream. Typically, one event writer (which translates to one stream)   * is created per job   *   */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|EventWriter
+specifier|public
 class|class
 name|EventWriter
 block|{
@@ -288,6 +339,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * avro encoding format supported by EventWriter.    */
 DECL|enum|WriteMode
 DECL|enumConstant|JSON
 DECL|enumConstant|BINARY
@@ -312,7 +364,10 @@ name|boolean
 name|jsonOutput
 decl_stmt|;
 comment|// Cache value while we have 2 modes
+annotation|@
+name|VisibleForTesting
 DECL|method|EventWriter (FSDataOutputStream out, WriteMode mode)
+specifier|public
 name|EventWriter
 parameter_list|(
 name|FSDataOutputStream
@@ -563,7 +618,10 @@ name|hflush
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|close ()
+specifier|public
 name|void
 name|close
 parameter_list|()

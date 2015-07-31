@@ -2453,7 +2453,8 @@ specifier|private
 name|long
 name|recoveredJobStartTime
 init|=
-literal|0
+operator|-
+literal|1L
 decl_stmt|;
 DECL|field|mainStarted
 specifier|private
