@@ -684,6 +684,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|rmcontainer
+operator|.
+name|ContainerAllocationExpirer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|scheduler
 operator|.
 name|event
@@ -1024,6 +1044,12 @@ DECL|field|nodeManagerVersion
 specifier|private
 name|String
 name|nodeManagerVersion
+decl_stmt|;
+DECL|field|containerAllocationExpirer
+specifier|private
+specifier|final
+name|ContainerAllocationExpirer
+name|containerAllocationExpirer
 decl_stmt|;
 comment|/* set of containers that have just launched */
 DECL|field|launchedContainers
@@ -1952,6 +1978,15 @@ name|ConcurrentLinkedQueue
 argument_list|<
 name|UpdatedContainerInfo
 argument_list|>
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|containerAllocationExpirer
+operator|=
+name|context
+operator|.
+name|getContainerAllocationExpirer
 argument_list|()
 expr_stmt|;
 block|}
@@ -5058,6 +5093,14 @@ argument_list|(
 name|remoteContainer
 argument_list|)
 expr_stmt|;
+comment|// Unregister from containerAllocationExpirer.
+name|containerAllocationExpirer
+operator|.
+name|unregister
+argument_list|(
+name|containerId
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 else|else
@@ -5075,6 +5118,14 @@ operator|.
 name|add
 argument_list|(
 name|remoteContainer
+argument_list|)
+expr_stmt|;
+comment|// Unregister from containerAllocationExpirer.
+name|containerAllocationExpirer
+operator|.
+name|unregister
+argument_list|(
+name|containerId
 argument_list|)
 expr_stmt|;
 block|}
