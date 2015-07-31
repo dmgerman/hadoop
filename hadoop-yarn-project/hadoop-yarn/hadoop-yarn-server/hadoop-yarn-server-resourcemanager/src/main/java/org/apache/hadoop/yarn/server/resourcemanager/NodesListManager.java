@@ -1128,6 +1128,15 @@ name|values
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+operator|!
+name|app
+operator|.
+name|isAppFinalStateStored
+argument_list|()
+condition|)
+block|{
 name|this
 operator|.
 name|rmContext
@@ -1156,6 +1165,7 @@ name|NODE_UNUSABLE
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 break|break;
 case|case
@@ -1202,6 +1212,15 @@ name|values
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+operator|!
+name|app
+operator|.
+name|isAppFinalStateStored
+argument_list|()
+condition|)
+block|{
 name|this
 operator|.
 name|rmContext
@@ -1230,6 +1249,7 @@ name|NODE_USABLE
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 break|break;
 default|default:
