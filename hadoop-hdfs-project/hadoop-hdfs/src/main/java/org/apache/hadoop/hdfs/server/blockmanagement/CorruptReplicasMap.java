@@ -334,7 +334,7 @@ name|NameNode
 operator|.
 name|blockStateChangeLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK NameSystem.addToCorruptReplicasMap: {} added as corrupt on "
 operator|+
@@ -362,7 +362,7 @@ name|NameNode
 operator|.
 name|blockStateChangeLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK NameSystem.addToCorruptReplicasMap: duplicate requested for"
 operator|+

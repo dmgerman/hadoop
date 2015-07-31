@@ -5933,7 +5933,7 @@ condition|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* addToInvalidates: {} {}"
 argument_list|,
@@ -6036,7 +6036,7 @@ comment|// thread of Datanode reports bad block before Block reports are sent
 comment|// by the Datanode on startup
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* findAndMarkBlockAsCorrupt: {} not found"
 argument_list|,
@@ -6154,7 +6154,7 @@ condition|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK markBlockAsCorrupt: {} cannot be marked as"
 operator|+
@@ -6373,7 +6373,7 @@ name|IOException
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* invalidateBlock: {} on {}"
 argument_list|,
@@ -6439,7 +6439,7 @@ condition|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* invalidateBlocks: postponing "
 operator|+
@@ -6517,7 +6517,7 @@ else|else
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* invalidateBlocks: {} on {} is the only copy and"
 operator|+
@@ -7045,7 +7045,7 @@ expr_stmt|;
 comment|// remove from neededReplications
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* Removing {} from neededReplications as"
 operator|+
@@ -7375,7 +7375,7 @@ literal|null
 expr_stmt|;
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* Removing {} from neededReplications as"
 operator|+
@@ -7608,7 +7608,7 @@ expr_stmt|;
 block|}
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* ask {} to replicate {} to {}"
 argument_list|,
@@ -10296,7 +10296,7 @@ condition|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* markBlockReplicasAsCorrupt: mark block replica"
 operator|+
@@ -12276,7 +12276,7 @@ block|{
 comment|// If this block does not belong to anyfile, then we are done.
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* addStoredBlock: {} on {} size {} but it does not"
 operator|+
@@ -12699,7 +12699,7 @@ condition|(
 operator|!
 name|blockLog
 operator|.
-name|isInfoEnabled
+name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
@@ -12755,7 +12755,7 @@ argument_list|)
 expr_stmt|;
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 name|sb
 operator|.
@@ -12866,7 +12866,7 @@ parameter_list|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"invalidateCorruptReplicas error in deleting bad block"
 operator|+
@@ -14268,7 +14268,7 @@ argument_list|)
 expr_stmt|;
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* chooseExcessReplicates: "
 operator|+
@@ -15318,7 +15318,7 @@ condition|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* addBlock: logged info for {} of {} reported."
 argument_list|,
@@ -15338,7 +15338,7 @@ control|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* addBlock: block {} on node {} size {} does not "
 operator|+
@@ -16871,7 +16871,7 @@ expr_stmt|;
 block|}
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* {}: ask {} to delete {}"
 argument_list|,

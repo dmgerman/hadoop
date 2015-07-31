@@ -36,16 +36,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Iterator
 import|;
 end_import
@@ -760,7 +750,7 @@ name|NameNode
 operator|.
 name|blockStateChangeLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* Removing stale replica "
 operator|+
@@ -1128,7 +1118,7 @@ name|NameNode
 operator|.
 name|blockStateChangeLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* {} recovery started, primary={}"
 argument_list|,

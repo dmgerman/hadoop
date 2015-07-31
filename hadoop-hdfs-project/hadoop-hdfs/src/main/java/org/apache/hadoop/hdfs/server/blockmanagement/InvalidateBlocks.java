@@ -590,7 +590,7 @@ name|NameNode
 operator|.
 name|blockStateChangeLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* {}: add {} to {}"
 argument_list|,
