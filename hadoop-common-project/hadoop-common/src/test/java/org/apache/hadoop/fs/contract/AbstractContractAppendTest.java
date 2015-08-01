@@ -90,24 +90,6 @@ name|contract
 operator|.
 name|ContractTestUtils
 operator|.
-name|cleanup
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|contract
-operator|.
-name|ContractTestUtils
-operator|.
 name|createFile
 import|;
 end_import
@@ -149,7 +131,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test concat -if supported  */
+comment|/**  * Test append -if supported  */
 end_comment
 
 begin_class
@@ -594,6 +576,13 @@ argument_list|,
 literal|"renamed"
 argument_list|)
 decl_stmt|;
+name|rename
+argument_list|(
+name|target
+argument_list|,
+name|renamed
+argument_list|)
+expr_stmt|;
 name|outputStream
 operator|.
 name|close
