@@ -24,16 +24,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -70,28 +60,16 @@ end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|reservation
-operator|.
-name|planning
-operator|.
-name|ReservationAgent
+name|Set
 import|;
 end_import
 
 begin_comment
-comment|/**  * This interface provides a read-only view on the allocations made in this  * plan. This methods are used for example by {@link ReservationAgent}s to  * determine the free resources in a certain point in time, and by  * PlanFollowerPolicy to publish this plan to the scheduler.  */
+comment|/**  * This interface provides a read-only view on the allocations made in this  * plan. This methods are used for example by {@code ReservationAgent}s to  * determine the free resources in a certain point in time, and by  * PlanFollowerPolicy to publish this plan to the scheduler.  */
 end_comment
 
 begin_interface
@@ -137,7 +115,6 @@ parameter_list|()
 function_decl|;
 comment|/**    * Returns the total {@link Resource} reserved for all users at the specified    * time    *     * @param tick the time (UTC in ms) for which the reserved resources are    *          requested    * @return the total {@link Resource} reserved for all users at the specified    *         time    */
 DECL|method|getTotalCommittedResources (long tick)
-specifier|public
 name|Resource
 name|getTotalCommittedResources
 parameter_list|(
@@ -160,7 +137,6 @@ parameter_list|)
 function_decl|;
 comment|/**    * Returns the overall capacity in terms of {@link Resource} assigned to this    * plan (typically will correspond to the absolute capacity of the    * corresponding queue).    *     * @return the overall capacity in terms of {@link Resource} assigned to this    *         plan    */
 DECL|method|getTotalCapacity ()
-specifier|public
 name|Resource
 name|getTotalCapacity
 parameter_list|()

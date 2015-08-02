@@ -24,16 +24,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -172,64 +162,16 @@ end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|ResourceManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Resource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|reservation
-operator|.
-name|planning
-operator|.
-name|ReservationAgent
+name|Map
 import|;
 end_import
 
 begin_comment
-comment|/**  * This interface is the one implemented by any system that wants to support  * Reservations i.e. make {@link Resource} allocations in future. Implementors  * need to bootstrap all configured {@link Plan}s in the active  * {@link ResourceScheduler} along with their corresponding  * {@link ReservationAgent} and {@link SharingPolicy}. It is also responsible  * for managing the {@link PlanFollower} to ensure the {@link Plan}s are in sync  * with the {@link ResourceScheduler}.  */
+comment|/**  * This interface is the one implemented by any system that wants to support  * Reservations i.e. make {@code Resource} allocations in future. Implementors  * need to bootstrap all configured {@link Plan}s in the active  * {@link ResourceScheduler} along with their corresponding  * {@code ReservationAgent} and {@link SharingPolicy}. It is also responsible  * for managing the {@link PlanFollower} to ensure the {@link Plan}s are in sync  * with the {@link ResourceScheduler}.  */
 end_comment
 
 begin_interface
@@ -245,7 +187,7 @@ specifier|public
 interface|interface
 name|ReservationSystem
 block|{
-comment|/**    * Set RMContext for {@link ReservationSystem}. This method should be called    * immediately after instantiating a reservation system once.    *     * @param rmContext created by {@link ResourceManager}    */
+comment|/**    * Set RMContext for {@link ReservationSystem}. This method should be called    * immediately after instantiating a reservation system once.    *     * @param rmContext created by {@code ResourceManager}    */
 DECL|method|setRMContext (RMContext rmContext)
 name|void
 name|setRMContext
@@ -254,7 +196,7 @@ name|RMContext
 name|rmContext
 parameter_list|)
 function_decl|;
-comment|/**    * Re-initialize the {@link ReservationSystem}.    *     * @param conf configuration    * @param rmContext current context of the {@link ResourceManager}    * @throws YarnException    */
+comment|/**    * Re-initialize the {@link ReservationSystem}.    *     * @param conf configuration    * @param rmContext current context of the {@code ResourceManager}    * @throws YarnException    */
 DECL|method|reinitialize (Configuration conf, RMContext rmContext)
 name|void
 name|reinitialize

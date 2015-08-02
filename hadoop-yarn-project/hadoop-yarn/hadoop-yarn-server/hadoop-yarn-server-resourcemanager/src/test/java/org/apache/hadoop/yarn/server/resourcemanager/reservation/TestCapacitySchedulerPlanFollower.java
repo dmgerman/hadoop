@@ -978,13 +978,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|ReservationSystemTestUtil
-name|testUtil
-init|=
-operator|new
-name|ReservationSystemTestUtil
-argument_list|()
-decl_stmt|;
 name|mClock
 operator|=
 name|mock
@@ -1006,7 +999,7 @@ expr_stmt|;
 name|String
 name|reservationQ
 init|=
-name|testUtil
+name|ReservationSystemTestUtil
 operator|.
 name|getFullReservationQueueName
 argument_list|()

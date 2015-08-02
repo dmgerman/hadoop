@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or more contributor license agreements.  See the NOTICE file * distributed with this work for additional information * regarding copyright ownership.  The ASF licenses this file * to you under the Apache License, Version 2.0 (the * "License"); you may not use this file except in compliance * with the License.  You may obtain a copy of the License at * *     http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See the License for the specific language governing permissions and * limitations under the License. */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -670,7 +670,7 @@ name|FairSchedulerTestBase
 operator|.
 name|TEST_DIR
 argument_list|,
-name|TestFairReservationSystem
+name|TestSchedulerPlanFollowerBase
 operator|.
 name|class
 operator|.
@@ -791,13 +791,6 @@ argument_list|(
 name|ALLOC_FILE
 argument_list|)
 expr_stmt|;
-name|ReservationSystemTestUtil
-name|testUtil
-init|=
-operator|new
-name|ReservationSystemTestUtil
-argument_list|()
-decl_stmt|;
 comment|// Setup
 name|rmContext
 operator|=
@@ -819,8 +812,6 @@ name|ReservationSystemTestUtil
 operator|.
 name|setupFairScheduler
 argument_list|(
-name|testUtil
-argument_list|,
 name|spyRMContext
 argument_list|,
 name|conf
@@ -938,13 +929,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|ReservationSystemTestUtil
-name|testUtil
-init|=
-operator|new
-name|ReservationSystemTestUtil
-argument_list|()
-decl_stmt|;
 name|mClock
 operator|=
 name|mock
@@ -966,7 +950,7 @@ expr_stmt|;
 name|String
 name|reservationQ
 init|=
-name|testUtil
+name|ReservationSystemTestUtil
 operator|.
 name|getFullReservationQueueName
 argument_list|()
