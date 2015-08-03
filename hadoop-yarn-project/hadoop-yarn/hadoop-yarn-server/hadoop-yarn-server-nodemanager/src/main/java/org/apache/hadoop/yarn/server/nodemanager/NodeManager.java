@@ -873,6 +873,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|nmStartupTime
+specifier|private
+specifier|static
+name|long
+name|nmStartupTime
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
 DECL|field|metrics
 specifier|protected
 specifier|final
@@ -975,6 +986,17 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getNMStartupTime ()
+specifier|public
+specifier|static
+name|long
+name|getNMStartupTime
+parameter_list|()
+block|{
+return|return
+name|nmStartupTime
+return|;
 block|}
 DECL|method|createNodeStatusUpdater (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker)
 specifier|protected
