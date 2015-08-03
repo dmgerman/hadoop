@@ -3322,6 +3322,17 @@ name|put
 argument_list|(
 name|ApplicationMetricsConstants
 operator|.
+name|UNMANAGED_APPLICATION_ENTITY_INFO
+argument_list|,
+literal|"false"
+argument_list|)
+expr_stmt|;
+name|entityInfo
+operator|.
+name|put
+argument_list|(
+name|ApplicationMetricsConstants
+operator|.
 name|SUBMITTED_TIME_ENTITY_INFO
 argument_list|,
 name|Integer

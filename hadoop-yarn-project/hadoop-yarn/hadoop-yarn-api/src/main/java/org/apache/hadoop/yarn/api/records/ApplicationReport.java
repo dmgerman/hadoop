@@ -362,7 +362,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType, Token amRmToken, Set<String> tags)
+DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType, Token amRmToken, Set<String> tags, boolean unmanagedApplication)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -430,6 +430,9 @@ argument_list|<
 name|String
 argument_list|>
 name|tags
+parameter_list|,
+name|boolean
+name|unmanagedApplication
 parameter_list|)
 block|{
 name|ApplicationReport
@@ -481,6 +484,13 @@ operator|.
 name|setApplicationTags
 argument_list|(
 name|tags
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setUnmanagedApp
+argument_list|(
+name|unmanagedApplication
 argument_list|)
 expr_stmt|;
 return|return
@@ -1038,6 +1048,33 @@ name|setLogAggregationStatus
 parameter_list|(
 name|LogAggregationStatus
 name|logAggregationStatus
+parameter_list|)
+function_decl|;
+comment|/**    * @return true if the AM is not managed by the RM    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|isUnmanagedApp ()
+specifier|public
+specifier|abstract
+name|boolean
+name|isUnmanagedApp
+parameter_list|()
+function_decl|;
+comment|/**    * @param value true if RM should not manage the AM    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setUnmanagedApp (boolean unmanagedApplication)
+specifier|public
+specifier|abstract
+name|void
+name|setUnmanagedApp
+parameter_list|(
+name|boolean
+name|unmanagedApplication
 parameter_list|)
 function_decl|;
 block|}

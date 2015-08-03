@@ -215,6 +215,15 @@ name|APP_TAGS_INFO
 init|=
 literal|"YARN_APPLICATION_TAGS"
 decl_stmt|;
+DECL|field|UNMANAGED_APPLICATION_ENTITY_INFO
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|UNMANAGED_APPLICATION_ENTITY_INFO
+init|=
+literal|"YARN_APPLICATION_UNMANAGED_APPLICATION"
+decl_stmt|;
 block|}
 end_class
 

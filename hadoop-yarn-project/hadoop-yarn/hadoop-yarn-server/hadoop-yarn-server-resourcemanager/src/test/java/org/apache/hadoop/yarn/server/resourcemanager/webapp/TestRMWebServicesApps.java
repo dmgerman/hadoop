@@ -11163,6 +11163,15 @@ name|element
 argument_list|,
 literal|"logAggregationStatus"
 argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlBoolean
+argument_list|(
+name|element
+argument_list|,
+literal|"unmanagedApplication"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -11187,7 +11196,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|28
+literal|29
 argument_list|,
 name|info
 operator|.
@@ -11369,10 +11378,17 @@ name|getString
 argument_list|(
 literal|"logAggregationStatus"
 argument_list|)
+argument_list|,
+name|info
+operator|.
+name|getBoolean
+argument_list|(
+literal|"unmanagedApplication"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyAppInfoGeneric (RMApp app, String id, String user, String name, String applicationType, String queue, String state, String finalStatus, float progress, String trackingUI, String diagnostics, long clusterId, long startedTime, long finishedTime, long elapsedTime, String amHostHttpAddress, String amContainerLogs, int allocatedMB, int allocatedVCores, int numContainers, int preemptedResourceMB, int preemptedResourceVCores, int numNonAMContainerPreempted, int numAMContainerPreempted, String logAggregationStatus)
+DECL|method|verifyAppInfoGeneric (RMApp app, String id, String user, String name, String applicationType, String queue, String state, String finalStatus, float progress, String trackingUI, String diagnostics, long clusterId, long startedTime, long finishedTime, long elapsedTime, String amHostHttpAddress, String amContainerLogs, int allocatedMB, int allocatedVCores, int numContainers, int preemptedResourceMB, int preemptedResourceVCores, int numNonAMContainerPreempted, int numAMContainerPreempted, String logAggregationStatus, boolean unmanagedApplication)
 specifier|public
 name|void
 name|verifyAppInfoGeneric
@@ -11451,6 +11467,9 @@ name|numAMContainerPreempted
 parameter_list|,
 name|String
 name|logAggregationStatus
+parameter_list|,
+name|boolean
+name|unmanagedApplication
 parameter_list|)
 throws|throws
 name|JSONException
@@ -11803,6 +11822,21 @@ name|toString
 argument_list|()
 argument_list|,
 name|logAggregationStatus
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"unmanagedApplication doesn't match"
+argument_list|,
+name|app
+operator|.
+name|getApplicationSubmissionContext
+argument_list|()
+operator|.
+name|getUnmanagedAM
+argument_list|()
+argument_list|,
+name|unmanagedApplication
 argument_list|)
 expr_stmt|;
 block|}

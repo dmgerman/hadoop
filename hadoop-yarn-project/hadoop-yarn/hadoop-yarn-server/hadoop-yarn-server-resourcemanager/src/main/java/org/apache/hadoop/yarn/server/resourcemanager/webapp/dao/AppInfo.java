@@ -615,6 +615,11 @@ specifier|protected
 name|LogAggregationStatus
 name|logAggregationStatus
 decl_stmt|;
+DECL|field|unmanagedApplication
+specifier|protected
+name|boolean
+name|unmanagedApplication
+decl_stmt|;
 DECL|method|AppInfo ()
 specifier|public
 name|AppInfo
@@ -1219,6 +1224,16 @@ operator|.
 name|getVcoreSeconds
 argument_list|()
 expr_stmt|;
+name|unmanagedApplication
+operator|=
+name|app
+operator|.
+name|getApplicationSubmissionContext
+argument_list|()
+operator|.
+name|getUnmanagedAM
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|method|isTrackingUrlReady ()
@@ -1619,6 +1634,16 @@ return|return
 name|this
 operator|.
 name|logAggregationStatus
+return|;
+block|}
+DECL|method|isUnmanagedApp ()
+specifier|public
+name|boolean
+name|isUnmanagedApp
+parameter_list|()
+block|{
+return|return
+name|unmanagedApplication
 return|;
 block|}
 block|}

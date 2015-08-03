@@ -318,6 +318,11 @@ specifier|private
 name|int
 name|allocatedMemoryMB
 decl_stmt|;
+DECL|field|unmanagedApplication
+specifier|protected
+name|boolean
+name|unmanagedApplication
+decl_stmt|;
 DECL|method|AppInfo ()
 specifier|public
 name|AppInfo
@@ -578,6 +583,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|unmanagedApplication
+operator|=
+name|app
+operator|.
+name|isUnmanagedApp
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getAppId ()
 specifier|public
@@ -797,6 +809,16 @@ parameter_list|()
 block|{
 return|return
 name|applicationTags
+return|;
+block|}
+DECL|method|isUnmanagedApp ()
+specifier|public
+name|boolean
+name|isUnmanagedApp
+parameter_list|()
+block|{
+return|return
+name|unmanagedApplication
 return|;
 block|}
 block|}

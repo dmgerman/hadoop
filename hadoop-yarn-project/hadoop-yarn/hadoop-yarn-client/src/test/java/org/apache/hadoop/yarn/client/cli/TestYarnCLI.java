@@ -982,6 +982,10 @@ argument_list|,
 literal|"YARN"
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|newApplicationReport
@@ -1202,6 +1206,13 @@ operator|.
 name|println
 argument_list|(
 literal|"\tDiagnostics : diagnostics"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tUnmanaged Application : false"
 argument_list|)
 expr_stmt|;
 name|pw

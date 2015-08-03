@@ -4437,6 +4437,16 @@ argument_list|(
 name|logAggregationStatus
 argument_list|)
 expr_stmt|;
+name|report
+operator|.
+name|setUnmanagedApp
+argument_list|(
+name|submissionContext
+operator|.
+name|getUnmanagedAM
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|report
 return|;

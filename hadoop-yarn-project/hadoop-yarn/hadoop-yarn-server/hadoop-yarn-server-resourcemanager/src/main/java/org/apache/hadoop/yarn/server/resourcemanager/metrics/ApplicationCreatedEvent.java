@@ -96,7 +96,12 @@ name|String
 argument_list|>
 name|appTags
 decl_stmt|;
-DECL|method|ApplicationCreatedEvent (ApplicationId appId, String name, String type, String user, String queue, long submittedTime, long createdTime, Set<String> appTags)
+DECL|field|unmanagedApplication
+specifier|private
+name|boolean
+name|unmanagedApplication
+decl_stmt|;
+DECL|method|ApplicationCreatedEvent (ApplicationId appId, String name, String type, String user, String queue, long submittedTime, long createdTime, Set<String> appTags, boolean unmanagedApplication)
 specifier|public
 name|ApplicationCreatedEvent
 parameter_list|(
@@ -126,6 +131,9 @@ argument_list|<
 name|String
 argument_list|>
 name|appTags
+parameter_list|,
+name|boolean
+name|unmanagedApplication
 parameter_list|)
 block|{
 name|super
@@ -178,6 +186,12 @@ operator|.
 name|appTags
 operator|=
 name|appTags
+expr_stmt|;
+name|this
+operator|.
+name|unmanagedApplication
+operator|=
+name|unmanagedApplication
 expr_stmt|;
 block|}
 annotation|@
@@ -266,6 +280,16 @@ parameter_list|()
 block|{
 return|return
 name|appTags
+return|;
+block|}
+DECL|method|isUnmanagedApp ()
+specifier|public
+name|boolean
+name|isUnmanagedApp
+parameter_list|()
+block|{
+return|return
+name|unmanagedApplication
 return|;
 block|}
 block|}

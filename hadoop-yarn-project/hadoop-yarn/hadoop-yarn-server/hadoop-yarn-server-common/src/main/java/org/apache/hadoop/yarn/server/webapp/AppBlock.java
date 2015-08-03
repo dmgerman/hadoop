@@ -1516,6 +1516,18 @@ name|getDiagnosticsInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|overviewTable
+operator|.
+name|_
+argument_list|(
+literal|"Unmanaged Application:"
+argument_list|,
+name|app
+operator|.
+name|isUnmanagedApp
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Collection
 argument_list|<
 name|ApplicationAttemptReport
