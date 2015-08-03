@@ -324,6 +324,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|ContainerType
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -558,10 +576,14 @@ comment|// intercept the event of the AM container being created and initialize 
 comment|// app level collector service
 if|if
 condition|(
-name|isApplicationMaster
-argument_list|(
 name|context
-argument_list|)
+operator|.
+name|getContainerType
+argument_list|()
+operator|==
+name|ContainerType
+operator|.
+name|APPLICATION_MASTER
 condition|)
 block|{
 name|ApplicationId
@@ -601,10 +623,14 @@ comment|// intercept the event of the AM container being stopped and remove the 
 comment|// level collector service
 if|if
 condition|(
-name|isApplicationMaster
-argument_list|(
 name|context
-argument_list|)
+operator|.
+name|getContainerType
+argument_list|()
+operator|==
+name|ContainerType
+operator|.
+name|APPLICATION_MASTER
 condition|)
 block|{
 name|ApplicationId
@@ -627,35 +653,6 @@ name|appId
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-DECL|method|isApplicationMaster (ContainerContext context)
-specifier|private
-name|boolean
-name|isApplicationMaster
-parameter_list|(
-name|ContainerContext
-name|context
-parameter_list|)
-block|{
-comment|// TODO this is based on a (shaky) assumption that the container id (the
-comment|// last field of the full container id) for an AM is always 1
-comment|// we want to make this much more reliable
-name|ContainerId
-name|containerId
-init|=
-name|context
-operator|.
-name|getContainerId
-argument_list|()
-decl_stmt|;
-return|return
-name|containerId
-operator|.
-name|getContainerId
-argument_list|()
-operator|==
-literal|1L
-return|;
 block|}
 annotation|@
 name|VisibleForTesting
