@@ -340,6 +340,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|event
 operator|.
 name|EventHandler
@@ -1384,6 +1400,11 @@ literal|""
 argument_list|)
 expr_stmt|;
 block|}
+DECL|field|saveNonAMContainerMetaInfo
+specifier|private
+name|boolean
+name|saveNonAMContainerMetaInfo
+decl_stmt|;
 DECL|method|RMContainerImpl (Container container, ApplicationAttemptId appAttemptId, NodeId nodeId, String user, RMContext rmContext, String nodeLabelExpression)
 specifier|public
 name|RMContainerImpl
@@ -1574,6 +1595,24 @@ operator|.
 name|writeLock
 argument_list|()
 expr_stmt|;
+name|saveNonAMContainerMetaInfo
+operator|=
+name|rmContext
+operator|.
+name|getYarnConfiguration
+argument_list|()
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|APPLICATION_HISTORY_SAVE_NON_AM_CONTAINER_META_INFO
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_APPLICATION_HISTORY_SAVE_NON_AM_CONTAINER_META_INFO
+argument_list|)
+expr_stmt|;
 name|rmContext
 operator|.
 name|getRMApplicationHistoryWriter
@@ -1584,6 +1623,15 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+comment|// If saveNonAMContainerMetaInfo is true, store system metrics for all
+comment|// containers. If false, and if this container is marked as the AM, metrics
+comment|// will still be published for this container, but that calculation happens
+comment|// later.
+if|if
+condition|(
+name|saveNonAMContainerMetaInfo
+condition|)
+block|{
 name|rmContext
 operator|.
 name|getSystemMetricsPublisher
@@ -1598,6 +1646,7 @@ operator|.
 name|creationTime
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -2157,6 +2206,35 @@ name|writeLock
 operator|.
 name|unlock
 argument_list|()
+expr_stmt|;
+block|}
+comment|// Even if saveNonAMContainerMetaInfo is not true, the AM container's system
+comment|// metrics still need to be saved so that the AM's logs can be accessed.
+comment|// This call to getSystemMetricsPublisher().containerCreated() is mutually
+comment|// exclusive with the one in the RMContainerImpl constructor.
+if|if
+condition|(
+operator|!
+name|saveNonAMContainerMetaInfo
+operator|&&
+name|this
+operator|.
+name|isAMContainer
+condition|)
+block|{
+name|rmContext
+operator|.
+name|getSystemMetricsPublisher
+argument_list|()
+operator|.
+name|containerCreated
+argument_list|(
+name|this
+argument_list|,
+name|this
+operator|.
+name|creationTime
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -2827,6 +2905,37 @@ argument_list|(
 name|container
 argument_list|)
 expr_stmt|;
+name|boolean
+name|saveNonAMContainerMetaInfo
+init|=
+name|container
+operator|.
+name|rmContext
+operator|.
+name|getYarnConfiguration
+argument_list|()
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|APPLICATION_HISTORY_SAVE_NON_AM_CONTAINER_META_INFO
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_APPLICATION_HISTORY_SAVE_NON_AM_CONTAINER_META_INFO
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|saveNonAMContainerMetaInfo
+operator|||
+name|container
+operator|.
+name|isAMContainer
+argument_list|()
+condition|)
+block|{
 name|container
 operator|.
 name|rmContext
@@ -2843,6 +2952,7 @@ operator|.
 name|finishTime
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|updateAttemptMetrics (RMContainerImpl container)
 specifier|private

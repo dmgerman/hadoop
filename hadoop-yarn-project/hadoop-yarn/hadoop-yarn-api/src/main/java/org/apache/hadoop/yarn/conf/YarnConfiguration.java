@@ -5025,6 +5025,31 @@ name|APPLICATION_HISTORY_PREFIX
 operator|+
 literal|"store-class"
 decl_stmt|;
+comment|/** Save container meta-info in the application history store. */
+annotation|@
+name|Private
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|APPLICATION_HISTORY_SAVE_NON_AM_CONTAINER_META_INFO
+name|APPLICATION_HISTORY_SAVE_NON_AM_CONTAINER_META_INFO
+init|=
+name|APPLICATION_HISTORY_PREFIX
+operator|+
+literal|"save-non-am-container-meta-info"
+decl_stmt|;
+annotation|@
+name|Private
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|DEFAULT_APPLICATION_HISTORY_SAVE_NON_AM_CONTAINER_META_INFO
+name|DEFAULT_APPLICATION_HISTORY_SAVE_NON_AM_CONTAINER_META_INFO
+init|=
+literal|true
+decl_stmt|;
 comment|/** URI for FileSystemApplicationHistoryStore */
 annotation|@
 name|Private

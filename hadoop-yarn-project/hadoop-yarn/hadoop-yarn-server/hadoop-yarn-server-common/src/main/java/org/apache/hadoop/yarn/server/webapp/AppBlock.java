@@ -1838,6 +1838,16 @@ name|report
 init|=
 literal|null
 decl_stmt|;
+if|if
+condition|(
+name|request
+operator|.
+name|getContainerId
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 try|try
 block|{
 name|report
@@ -1869,6 +1879,7 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|report
