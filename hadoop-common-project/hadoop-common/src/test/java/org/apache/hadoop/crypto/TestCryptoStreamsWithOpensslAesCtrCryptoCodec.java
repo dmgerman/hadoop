@@ -113,7 +113,7 @@ name|Exception
 block|{
 name|GenericTestUtils
 operator|.
-name|assumeNativeCodeLoaded
+name|assumeInNativeProfile
 argument_list|()
 expr_stmt|;
 name|Configuration

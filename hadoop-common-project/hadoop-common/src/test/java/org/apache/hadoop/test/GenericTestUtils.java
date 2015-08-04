@@ -1958,22 +1958,31 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Skip test if native code is not loaded.    */
-DECL|method|assumeNativeCodeLoaded ()
+comment|/**    * Skip test if native build profile of Maven is not activated.    * Sub-project using this must set 'runningWithNative' property to true    * in the definition of native profile in pom.xml.    */
+DECL|method|assumeInNativeProfile ()
 specifier|public
 specifier|static
 name|void
-name|assumeNativeCodeLoaded
+name|assumeInNativeProfile
 parameter_list|()
 block|{
 name|Assume
 operator|.
 name|assumeTrue
 argument_list|(
-name|NativeCodeLoader
+name|Boolean
 operator|.
-name|isNativeCodeLoaded
-argument_list|()
+name|valueOf
+argument_list|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"runningWithNative"
+argument_list|,
+literal|"false"
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
