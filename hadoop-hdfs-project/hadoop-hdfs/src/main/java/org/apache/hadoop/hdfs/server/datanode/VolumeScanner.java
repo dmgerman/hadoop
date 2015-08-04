@@ -2424,6 +2424,13 @@ literal|0
 return|;
 block|}
 block|}
+if|if
+condition|(
+name|curBlockIter
+operator|!=
+literal|null
+condition|)
+block|{
 name|long
 name|saveDelta
 init|=
@@ -2461,6 +2468,7 @@ argument_list|(
 name|curBlockIter
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|bytesScanned
 operator|=
