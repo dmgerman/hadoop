@@ -3923,6 +3923,8 @@ argument_list|)
 condition|)
 block|{
 return|return
+name|CSAssignment
+operator|.
 name|NULL_ASSIGNMENT
 return|;
 block|}
@@ -3978,6 +3980,8 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
+name|CSAssignment
+operator|.
 name|NULL_ASSIGNMENT
 return|;
 block|}
@@ -4036,6 +4040,8 @@ argument_list|)
 condition|)
 block|{
 return|return
+name|CSAssignment
+operator|.
 name|NULL_ASSIGNMENT
 return|;
 block|}
@@ -4215,11 +4221,15 @@ block|{
 comment|// If we don't allocate anything, and it is not skipped by application,
 comment|// we will return to respect FIFO of applications
 return|return
+name|CSAssignment
+operator|.
 name|NULL_ASSIGNMENT
 return|;
 block|}
 block|}
 return|return
+name|CSAssignment
+operator|.
 name|NULL_ASSIGNMENT
 return|;
 block|}

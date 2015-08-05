@@ -2277,6 +2277,8 @@ argument_list|)
 condition|)
 block|{
 return|return
+name|CSAssignment
+operator|.
 name|NULL_ASSIGNMENT
 return|;
 block|}
@@ -2334,6 +2336,8 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
+name|CSAssignment
+operator|.
 name|NULL_ASSIGNMENT
 return|;
 block|}
