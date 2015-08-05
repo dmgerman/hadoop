@@ -82,6 +82,28 @@ name|Separator
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
+name|TimelineWriterUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Represents a rowkey for the entity table.  */
 end_comment
@@ -150,7 +172,7 @@ name|Bytes
 operator|.
 name|toBytes
 argument_list|(
-name|EntityRowKey
+name|TimelineWriterUtils
 operator|.
 name|invert
 argument_list|(
@@ -250,7 +272,7 @@ name|Bytes
 operator|.
 name|toBytes
 argument_list|(
-name|EntityRowKey
+name|TimelineWriterUtils
 operator|.
 name|invert
 argument_list|(
@@ -299,25 +321,6 @@ name|second
 argument_list|,
 name|third
 argument_list|)
-return|;
-block|}
-comment|/**    * Converts a timestamp into it's inverse timestamp to be used in (row) keys    * where we want to have the most recent timestamp in the top of the table    * (scans start at the most recent timestamp first).    *    * @param key value to be inverted so that the latest version will be first in    *          a scan.    * @return inverted long    */
-DECL|method|invert (Long key)
-specifier|public
-specifier|static
-name|long
-name|invert
-parameter_list|(
-name|Long
-name|key
-parameter_list|)
-block|{
-return|return
-name|Long
-operator|.
-name|MAX_VALUE
-operator|-
-name|key
 return|;
 block|}
 block|}
