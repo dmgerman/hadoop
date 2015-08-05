@@ -64,7 +64,16 @@ name|UPDATE_DELEGATION_TOKEN
 block|,
 DECL|enumConstant|UPDATE_AMRM_TOKEN
 name|UPDATE_AMRM_TOKEN
-block|}
+block|,
+DECL|enumConstant|STORE_RESERVATION
+name|STORE_RESERVATION
+block|,
+DECL|enumConstant|UPDATE_RESERVATION
+name|UPDATE_RESERVATION
+block|,
+DECL|enumConstant|REMOVE_RESERVATION
+name|REMOVE_RESERVATION
+block|, }
 end_enum
 
 end_unit

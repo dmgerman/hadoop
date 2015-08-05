@@ -1258,6 +1258,11 @@ argument_list|(
 name|zkTester
 argument_list|)
 expr_stmt|;
+name|testReservationStateStore
+argument_list|(
+name|zkTester
+argument_list|)
+expr_stmt|;
 operator|(
 operator|(
 name|TestZKRMStateStoreTester

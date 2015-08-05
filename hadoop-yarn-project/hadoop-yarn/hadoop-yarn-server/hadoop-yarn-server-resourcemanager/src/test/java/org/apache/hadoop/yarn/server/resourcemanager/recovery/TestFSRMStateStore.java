@@ -1236,6 +1236,11 @@ argument_list|(
 name|fsTester
 argument_list|)
 expr_stmt|;
+name|testReservationStateStore
+argument_list|(
+name|fsTester
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
