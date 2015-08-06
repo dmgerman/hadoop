@@ -7462,11 +7462,11 @@ comment|// Adding this block collection to the BlockManager, so that when we add
 comment|// block under construction, the BlockManager will realize the expected
 comment|// replication has been achieved and remove it from the under-replicated
 comment|// queue.
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|info
 init|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|block1
 argument_list|,
@@ -7882,7 +7882,7 @@ argument_list|)
 block|}
 decl_stmt|;
 specifier|final
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|ucBlock
 init|=
 name|info

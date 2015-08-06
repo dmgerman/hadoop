@@ -36,6 +36,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -52,20 +62,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -77,24 +73,6 @@ operator|.
 name|protocol
 operator|.
 name|Block
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
 import|;
 end_import
 
@@ -161,23 +139,22 @@ comment|/**  * Represents a block that is currently being constructed.<br>  * Th
 end_comment
 
 begin_class
-DECL|class|BlockInfoUnderConstruction
+DECL|class|BlockInfoContiguousUnderConstruction
 specifier|public
-specifier|abstract
 class|class
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 extends|extends
-name|BlockInfo
+name|BlockInfoContiguous
 block|{
 comment|/** Block state. See {@link BlockUCState} */
 DECL|field|blockUCState
-specifier|protected
+specifier|private
 name|BlockUCState
 name|blockUCState
 decl_stmt|;
 comment|/**    * Block replicas as assigned when the block was allocated.    * This defines the pipeline order.    */
 DECL|field|replicas
-specifier|protected
+specifier|private
 name|List
 argument_list|<
 name|ReplicaUnderConstruction
@@ -203,11 +180,11 @@ literal|0
 decl_stmt|;
 comment|/**    * The block source to use in the event of copy-on-write truncate.    */
 DECL|field|truncateBlock
-specifier|protected
+specifier|private
 name|Block
 name|truncateBlock
 decl_stmt|;
-comment|/**    * ReplicaUnderConstruction contains information about replicas while    * they are under construction.    * The GS, the length and the state of the replica is as reported by    * the data-node.    * It is not guaranteed, but expected, that data-nodes actually have    * corresponding replicas.    */
+comment|/**    * ReplicaUnderConstruction contains information about replicas while    * they are under construction.    * The GS, the length and the state of the replica is as reported by     * the data-node.    * It is not guaranteed, but expected, that data-nodes actually have    * corresponding replicas.    */
 DECL|class|ReplicaUnderConstruction
 specifier|static
 class|class
@@ -459,9 +436,9 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Create block and set its state to    * {@link BlockUCState#UNDER_CONSTRUCTION}.    */
-DECL|method|BlockInfoUnderConstruction (Block blk, short replication)
+DECL|method|BlockInfoContiguousUnderConstruction (Block blk, short replication)
 specifier|public
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 parameter_list|(
 name|Block
 name|blk
@@ -485,9 +462,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a block that is currently being constructed.    */
-DECL|method|BlockInfoUnderConstruction (Block blk, short replication, BlockUCState state, DatanodeStorageInfo[] targets)
+DECL|method|BlockInfoContiguousUnderConstruction (Block blk, short replication, BlockUCState state, DatanodeStorageInfo[] targets)
 specifier|public
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 parameter_list|(
 name|Block
 name|blk
@@ -510,20 +487,16 @@ argument_list|,
 name|replication
 argument_list|)
 expr_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
+assert|assert
 name|getBlockUCState
 argument_list|()
 operator|!=
 name|BlockUCState
 operator|.
 name|COMPLETE
-argument_list|,
+operator|:
 literal|"BlockInfoUnderConstruction cannot be in COMPLETE state"
-argument_list|)
-expr_stmt|;
+assert|;
 name|this
 operator|.
 name|blockUCState
@@ -536,10 +509,35 @@ name|targets
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Set expected locations. */
+comment|/**    * Convert an under construction block to a complete block.    *     * @return BlockInfo - a complete block.    * @throws IOException if the state of the block     * (the generation stamp and the length) has not been committed by     * the client or it does not have at least a minimal number of replicas     * reported from data-nodes.     */
+DECL|method|convertToCompleteBlock ()
+name|BlockInfo
+name|convertToCompleteBlock
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+assert|assert
+name|getBlockUCState
+argument_list|()
+operator|!=
+name|BlockUCState
+operator|.
+name|COMPLETE
+operator|:
+literal|"Trying to convert a COMPLETE block"
+assert|;
+return|return
+operator|new
+name|BlockInfoContiguous
+argument_list|(
+name|this
+argument_list|)
+return|;
+block|}
+comment|/** Set expected locations */
 DECL|method|setExpectedLocations (DatanodeStorageInfo[] targets)
 specifier|public
-specifier|abstract
 name|void
 name|setExpectedLocations
 parameter_list|(
@@ -547,7 +545,68 @@ name|DatanodeStorageInfo
 index|[]
 name|targets
 parameter_list|)
-function_decl|;
+block|{
+name|int
+name|numLocations
+init|=
+name|targets
+operator|==
+literal|null
+condition|?
+literal|0
+else|:
+name|targets
+operator|.
+name|length
+decl_stmt|;
+name|this
+operator|.
+name|replicas
+operator|=
+operator|new
+name|ArrayList
+argument_list|<
+name|ReplicaUnderConstruction
+argument_list|>
+argument_list|(
+name|numLocations
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|numLocations
+condition|;
+name|i
+operator|++
+control|)
+name|replicas
+operator|.
+name|add
+argument_list|(
+operator|new
+name|ReplicaUnderConstruction
+argument_list|(
+name|this
+argument_list|,
+name|targets
+index|[
+name|i
+index|]
+argument_list|,
+name|ReplicaState
+operator|.
+name|RBW
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Create array of expected replica locations    * (as has been assigned by chooseTargets()).    */
 DECL|method|getExpectedStorageLocations ()
 specifier|public
@@ -594,7 +653,6 @@ condition|;
 name|i
 operator|++
 control|)
-block|{
 name|storages
 index|[
 name|i
@@ -610,12 +668,11 @@ operator|.
 name|getExpectedStorageLocation
 argument_list|()
 expr_stmt|;
-block|}
 return|return
 name|storages
 return|;
 block|}
-comment|/** Get the number of expected locations. */
+comment|/** Get the number of expected locations */
 DECL|method|getNumExpectedLocations ()
 specifier|public
 name|int
@@ -662,7 +719,7 @@ operator|=
 name|s
 expr_stmt|;
 block|}
-comment|/** Get block recovery ID. */
+comment|/** Get block recovery ID */
 DECL|method|getBlockRecoveryId ()
 specifier|public
 name|long
@@ -673,24 +730,33 @@ return|return
 name|blockRecoveryId
 return|;
 block|}
-comment|/** Get recover block. */
+comment|/** Get recover block */
 DECL|method|getTruncateBlock ()
 specifier|public
-specifier|abstract
 name|Block
 name|getTruncateBlock
 parameter_list|()
-function_decl|;
+block|{
+return|return
+name|truncateBlock
+return|;
+block|}
 DECL|method|setTruncateBlock (Block recoveryBlock)
 specifier|public
-specifier|abstract
 name|void
 name|setTruncateBlock
 parameter_list|(
 name|Block
 name|recoveryBlock
 parameter_list|)
-function_decl|;
+block|{
+name|this
+operator|.
+name|truncateBlock
+operator|=
+name|recoveryBlock
+expr_stmt|;
+block|}
 comment|/**    * Process the recorded replicas. When about to commit or finish the    * pipeline recovery sort out bad replicas.    * @param genStamp  The final generation stamp for the block.    */
 DECL|method|setGenerationStampAndVerifyReplicas (long genStamp)
 specifier|public
@@ -713,9 +779,7 @@ name|replicas
 operator|==
 literal|null
 condition|)
-block|{
 return|return;
-block|}
 comment|// Remove the replicas with wrong gen stamp.
 comment|// The replica list is unchanged.
 for|for
@@ -765,7 +829,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Commit block's length and generation stamp as reported by the client.    * Set block state to {@link BlockUCState#COMMITTED}.    * @param block - contains client reported block length and generation    * @throws IOException if block ids are inconsistent.    */
+comment|/**    * Commit block's length and generation stamp as reported by the client.    * Set block state to {@link BlockUCState#COMMITTED}.    * @param block - contains client reported block length and generation     * @throws IOException if block ids are inconsistent.    */
 DECL|method|commitBlock (Block block)
 name|void
 name|commitBlock
@@ -786,7 +850,6 @@ operator|.
 name|getBlockId
 argument_list|()
 condition|)
-block|{
 throw|throw
 operator|new
 name|IOException
@@ -804,7 +867,6 @@ name|getBlockId
 argument_list|()
 argument_list|)
 throw|;
-block|}
 name|blockUCState
 operator|=
 name|BlockUCState
@@ -876,11 +938,11 @@ name|blockStateChangeLog
 operator|.
 name|warn
 argument_list|(
-literal|"BLOCK* "
+literal|"BLOCK*"
 operator|+
-literal|"BlockInfoUnderConstruction.initLeaseRecovery: "
+literal|" BlockInfoUnderConstruction.initLeaseRecovery:"
 operator|+
-literal|"No blocks found, lease removed."
+literal|" No blocks found, lease removed."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1243,45 +1305,6 @@ name|rState
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**    * Convert an under construction block to a complete block.    *    * @return a complete block.    * @throws IOException    *           if the state of the block (the generation stamp and the length)    *           has not been committed by the client or it does not have at    *           least a minimal number of replicas reported from data-nodes.    */
-DECL|method|convertToCompleteBlock ()
-specifier|public
-specifier|abstract
-name|BlockInfo
-name|convertToCompleteBlock
-parameter_list|()
-function_decl|;
-annotation|@
-name|Override
-DECL|method|convertCompleteBlockToUC (HdfsServerConstants.BlockUCState s, DatanodeStorageInfo[] targets)
-name|BlockInfoUnderConstruction
-name|convertCompleteBlockToUC
-parameter_list|(
-name|HdfsServerConstants
-operator|.
-name|BlockUCState
-name|s
-parameter_list|,
-name|DatanodeStorageInfo
-index|[]
-name|targets
-parameter_list|)
-block|{
-name|BlockManager
-operator|.
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"convertCompleteBlockToUC should only be applied "
-operator|+
-literal|"on complete blocks."
-argument_list|)
-expr_stmt|;
-return|return
-literal|null
-return|;
 block|}
 annotation|@
 name|Override

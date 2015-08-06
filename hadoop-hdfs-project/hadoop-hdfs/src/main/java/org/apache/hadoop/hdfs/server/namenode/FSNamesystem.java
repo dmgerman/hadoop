@@ -2672,7 +2672,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -15693,11 +15693,11 @@ case|case
 name|UNDER_RECOVERY
 case|:
 specifier|final
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|uc
 init|=
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|lastBlock
 decl_stmt|;
@@ -16260,12 +16260,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isInSnapshot (BlockInfoUnderConstruction blockUC)
+DECL|method|isInSnapshot (BlockInfoContiguousUnderConstruction blockUC)
 specifier|public
 name|boolean
 name|isInSnapshot
 parameter_list|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|blockUC
 parameter_list|)
 block|{
@@ -16462,7 +16462,7 @@ name|copyTruncate
 init|=
 literal|false
 decl_stmt|;
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|truncatedBlock
 init|=
 literal|null
@@ -16697,7 +16697,7 @@ block|}
 name|truncatedBlock
 operator|=
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|iFile
 operator|.
@@ -24322,11 +24322,11 @@ name|clientName
 argument_list|)
 decl_stmt|;
 specifier|final
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|blockinfo
 init|=
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|pendingFile
 operator|.

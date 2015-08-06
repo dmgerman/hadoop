@@ -386,7 +386,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -2894,7 +2894,7 @@ operator|-
 literal|1
 argument_list|,
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|lastBlk
 argument_list|,

@@ -184,25 +184,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -541,7 +523,7 @@ name|truncatedBlock
 init|=
 operator|(
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|last
 operator|)
@@ -1195,7 +1177,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|truncatedBlockUC
 decl_stmt|;
 name|BlockManager
@@ -1219,7 +1201,7 @@ comment|// use oldBlock as a source for copy-on-truncate recovery
 name|truncatedBlockUC
 operator|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,
@@ -1326,7 +1308,7 @@ assert|;
 name|truncatedBlockUC
 operator|=
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|oldBlock
 expr_stmt|;

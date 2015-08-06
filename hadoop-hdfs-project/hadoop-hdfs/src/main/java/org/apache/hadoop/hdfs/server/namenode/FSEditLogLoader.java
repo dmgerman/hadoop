@@ -406,25 +406,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -6367,7 +6349,7 @@ if|if
 condition|(
 name|oldLastBlock
 operator|instanceof
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 condition|)
 block|{
 name|fsNamesys
@@ -6380,7 +6362,7 @@ argument_list|(
 name|file
 argument_list|,
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|oldLastBlock
 argument_list|)
@@ -6421,7 +6403,7 @@ name|BlockInfo
 name|newBI
 init|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,
@@ -6671,7 +6653,7 @@ if|if
 condition|(
 name|oldBlock
 operator|instanceof
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|&&
 operator|(
 operator|!
@@ -6698,7 +6680,7 @@ argument_list|(
 name|file
 argument_list|,
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|oldBlock
 argument_list|)
@@ -6892,7 +6874,7 @@ comment|// until several blocks in?
 name|newBI
 operator|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,

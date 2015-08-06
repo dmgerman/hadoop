@@ -270,7 +270,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -1108,7 +1108,7 @@ name|assertTrue
 argument_list|(
 name|b
 operator|instanceof
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 argument_list|)
 expr_stmt|;
 if|if

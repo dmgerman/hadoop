@@ -434,25 +434,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstruction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -745,7 +727,7 @@ name|IOException
 block|{
 comment|// modify file-> block and blocksMap
 comment|// fileNode should be under construction
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|uc
 init|=
 name|fileNode
@@ -1623,7 +1605,7 @@ argument_list|()
 decl_stmt|;
 operator|(
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|lastBlockInFile
 operator|)
@@ -3244,11 +3226,11 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// associate new last block for the file
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|blockInfo
 init|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|block
 argument_list|,
@@ -3849,11 +3831,11 @@ operator|.
 name|computeFileSize
 argument_list|()
 decl_stmt|;
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|lastBlockUC
 init|=
 operator|(
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|lastBlockInFile
 decl_stmt|;

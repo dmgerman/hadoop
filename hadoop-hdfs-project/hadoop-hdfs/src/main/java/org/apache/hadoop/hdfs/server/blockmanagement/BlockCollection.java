@@ -148,7 +148,7 @@ function_decl|;
 comment|/**    * Convert the last block of the collection to an under-construction block    * and set the locations.    */
 DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeStorageInfo[] targets)
 specifier|public
-name|BlockInfoUnderConstruction
+name|BlockInfoContiguousUnderConstruction
 name|setLastBlock
 parameter_list|(
 name|BlockInfo
