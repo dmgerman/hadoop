@@ -241,7 +241,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|TestReadStripedFileWithMissingBlocks
+name|TestWriteStripedFileWithFailure
 operator|.
 name|class
 argument_list|)
@@ -663,7 +663,7 @@ name|dataBlocks
 operator|+
 name|parityBlocks
 argument_list|,
-name|dataDNFailureNum
+name|parityDNFailureNum
 argument_list|)
 decl_stmt|;
 name|Assert
