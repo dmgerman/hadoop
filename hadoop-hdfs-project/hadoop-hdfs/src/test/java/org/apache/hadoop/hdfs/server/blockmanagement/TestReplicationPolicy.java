@@ -8008,8 +8008,6 @@ operator|.
 name|addStorage
 argument_list|(
 name|storage
-argument_list|,
-name|ucBlock
 argument_list|)
 expr_stmt|;
 name|when

@@ -366,8 +366,6 @@ operator|.
 name|addStorage
 argument_list|(
 name|storage
-argument_list|,
-name|blockInfo
 argument_list|)
 decl_stmt|;
 name|Assert

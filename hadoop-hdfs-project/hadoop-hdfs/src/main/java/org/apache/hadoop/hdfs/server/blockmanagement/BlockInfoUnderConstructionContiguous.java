@@ -209,15 +209,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addStorage (DatanodeStorageInfo storage, Block reportedBlock)
+DECL|method|addStorage (DatanodeStorageInfo storage)
 name|boolean
 name|addStorage
 parameter_list|(
 name|DatanodeStorageInfo
 name|storage
-parameter_list|,
-name|Block
-name|reportedBlock
 parameter_list|)
 block|{
 return|return

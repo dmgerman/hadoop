@@ -4129,7 +4129,7 @@ condition|)
 block|{
 name|LightWeightLinkedSet
 argument_list|<
-name|BlockInfo
+name|Block
 argument_list|>
 name|blocksExcess
 init|=
