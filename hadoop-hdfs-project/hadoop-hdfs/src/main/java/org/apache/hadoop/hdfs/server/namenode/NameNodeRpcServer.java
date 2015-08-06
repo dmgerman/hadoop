@@ -4968,6 +4968,31 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getStoragePolicy (String path)
+specifier|public
+name|BlockStoragePolicy
+name|getStoragePolicy
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
+return|return
+name|namesystem
+operator|.
+name|getStoragePolicy
+argument_list|(
+name|path
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getStoragePolicies ()
 specifier|public
 name|BlockStoragePolicy

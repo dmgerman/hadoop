@@ -692,6 +692,19 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get the storage policy for a file/directory.    * @param path    *          Path of an existing file/directory.    * @throws AccessControlException    *           If access is denied    * @throws org.apache.hadoop.fs.UnresolvedLinkException    *           if<code>src</code> contains a symlink    * @throws java.io.FileNotFoundException    *           If file/dir<code>src</code> is not found    */
+annotation|@
+name|Idempotent
+DECL|method|getStoragePolicy (String path)
+name|BlockStoragePolicy
+name|getStoragePolicy
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Set permissions for an existing file/directory.    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
