@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.entity
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.apptoflow
 package|package
 name|org
 operator|.
@@ -20,19 +20,9 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|entity
+name|apptoflow
 package|;
 end_package
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
 
 begin_import
 import|import
@@ -176,74 +166,51 @@ name|TypedBufferedMutator
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
-comment|/**  * Identifies fully qualified columns for the {@link EntityTable}.  */
+comment|/**  * Identifies fully qualified columns for the {@link AppToFlowTable}.  */
 end_comment
 
 begin_enum
-DECL|enum|EntityColumn
+DECL|enum|AppToFlowColumn
 specifier|public
 enum|enum
-name|EntityColumn
+name|AppToFlowColumn
 implements|implements
 name|Column
 argument_list|<
-name|EntityTable
+name|AppToFlowTable
 argument_list|>
 block|{
-comment|/**    * Identifier for the entity.    */
-DECL|enumConstant|ID
-name|ID
+comment|/**    * The flow ID    */
+DECL|enumConstant|FLOW_ID
+name|FLOW_ID
 argument_list|(
-name|EntityColumnFamily
+name|AppToFlowColumnFamily
 operator|.
-name|INFO
+name|MAPPING
 argument_list|,
-literal|"id"
+literal|"flow_id"
 argument_list|)
 block|,
-comment|/**    * The type of entity    */
-DECL|enumConstant|TYPE
-name|TYPE
+comment|/**    * The flow run ID    */
+DECL|enumConstant|FLOW_RUN_ID
+name|FLOW_RUN_ID
 argument_list|(
-name|EntityColumnFamily
+name|AppToFlowColumnFamily
 operator|.
-name|INFO
+name|MAPPING
 argument_list|,
-literal|"type"
-argument_list|)
-block|,
-comment|/**    * When the entity was created.    */
-DECL|enumConstant|CREATED_TIME
-name|CREATED_TIME
-argument_list|(
-name|EntityColumnFamily
-operator|.
-name|INFO
-argument_list|,
-literal|"created_time"
-argument_list|)
-block|,
-comment|/**    * When it was modified.    */
-DECL|enumConstant|MODIFIED_TIME
-name|MODIFIED_TIME
-argument_list|(
-name|EntityColumnFamily
-operator|.
-name|INFO
-argument_list|,
-literal|"modified_time"
-argument_list|)
-block|,
-comment|/**    * The version of the flow that this entity belongs to.    */
-DECL|enumConstant|FLOW_VERSION
-name|FLOW_VERSION
-argument_list|(
-name|EntityColumnFamily
-operator|.
-name|INFO
-argument_list|,
-literal|"flow_version"
+literal|"flow_run_id"
 argument_list|)
 block|;
 DECL|field|column
@@ -251,7 +218,7 @@ specifier|private
 specifier|final
 name|ColumnHelper
 argument_list|<
-name|EntityTable
+name|AppToFlowTable
 argument_list|>
 name|column
 decl_stmt|;
@@ -260,7 +227,7 @@ specifier|private
 specifier|final
 name|ColumnFamily
 argument_list|<
-name|EntityTable
+name|AppToFlowTable
 argument_list|>
 name|columnFamily
 decl_stmt|;
@@ -277,12 +244,12 @@ name|byte
 index|[]
 name|columnQualifierBytes
 decl_stmt|;
-DECL|method|EntityColumn (ColumnFamily<EntityTable> columnFamily, String columnQualifier)
-name|EntityColumn
+DECL|method|AppToFlowColumn (ColumnFamily<AppToFlowTable> columnFamily, String columnQualifier)
+name|AppToFlowColumn
 parameter_list|(
 name|ColumnFamily
 argument_list|<
-name|EntityTable
+name|AppToFlowTable
 argument_list|>
 name|columnFamily
 parameter_list|,
@@ -328,7 +295,7 @@ operator|=
 operator|new
 name|ColumnHelper
 argument_list|<
-name|EntityTable
+name|AppToFlowTable
 argument_list|>
 argument_list|(
 name|columnFamily
@@ -346,7 +313,7 @@ return|return
 name|columnQualifier
 return|;
 block|}
-DECL|method|store (byte[] rowKey, TypedBufferedMutator<EntityTable> tableMutator, Long timestamp, Object inputValue)
+DECL|method|store (byte[] rowKey, TypedBufferedMutator<AppToFlowTable> tableMutator, Long timestamp, Object inputValue)
 specifier|public
 name|void
 name|store
@@ -357,7 +324,7 @@ name|rowKey
 parameter_list|,
 name|TypedBufferedMutator
 argument_list|<
-name|EntityTable
+name|AppToFlowTable
 argument_list|>
 name|tableMutator
 parameter_list|,
@@ -408,12 +375,12 @@ name|columnQualifierBytes
 argument_list|)
 return|;
 block|}
-comment|/**    * Retrieve an {@link EntityColumn} given a name, or null if there is no    * match. The following holds true: {@code columnFor(x) == columnFor(y)} if    * and only if {@code x.equals(y)} or {@code (x == y == null)}    *    * @param columnQualifier Name of the column to retrieve    * @return the corresponding {@link EntityColumn} or null    */
+comment|/**    * Retrieve an {@link AppToFlowColumn} given a name, or null if there is no    * match. The following holds true: {@code columnFor(x) == columnFor(y)} if    * and only if {@code x.equals(y)} or {@code (x == y == null)}    *    * @param columnQualifier Name of the column to retrieve    * @return the corresponding {@link AppToFlowColumn} or null    */
 DECL|method|columnFor (String columnQualifier)
 specifier|public
 specifier|static
 specifier|final
-name|EntityColumn
+name|AppToFlowColumn
 name|columnFor
 parameter_list|(
 name|String
@@ -423,10 +390,10 @@ block|{
 comment|// Match column based on value, assume column family matches.
 for|for
 control|(
-name|EntityColumn
+name|AppToFlowColumn
 name|ec
 range|:
-name|EntityColumn
+name|AppToFlowColumn
 operator|.
 name|values
 argument_list|()
@@ -456,15 +423,15 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Retrieve an {@link EntityColumn} given a name, or null if there is no    * match. The following holds true: {@code columnFor(a,x) == columnFor(b,y)}    * if and only if {@code a.equals(b)& x.equals(y)} or    * {@code (x == y == null)}    *    * @param columnFamily The columnFamily for which to retrieve the column.    * @param name Name of the column to retrieve    * @return the corresponding {@link EntityColumn} or null if both arguments    *         don't match.    */
-DECL|method|columnFor (EntityColumnFamily columnFamily, String name)
+comment|/**    * Retrieve an {@link AppToFlowColumn} given a name, or null if there is no    * match. The following holds true: {@code columnFor(a,x) == columnFor(b,y)}    * if and only if {@code a.equals(b)& x.equals(y)} or    * {@code (x == y == null)}    *    * @param columnFamily The columnFamily for which to retrieve the column.    * @param name Name of the column to retrieve    * @return the corresponding {@link AppToFlowColumn} or null if both arguments    *         don't match.    */
+DECL|method|columnFor ( AppToFlowColumnFamily columnFamily, String name)
 specifier|public
 specifier|static
 specifier|final
-name|EntityColumn
+name|AppToFlowColumn
 name|columnFor
 parameter_list|(
-name|EntityColumnFamily
+name|AppToFlowColumnFamily
 name|columnFamily
 parameter_list|,
 name|String
@@ -473,10 +440,10 @@ parameter_list|)
 block|{
 for|for
 control|(
-name|EntityColumn
+name|AppToFlowColumn
 name|ec
 range|:
-name|EntityColumn
+name|AppToFlowColumn
 operator|.
 name|values
 argument_list|()

@@ -140,7 +140,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * @param resultfrom which to read columns    * @return the latest values of columns in the column family with this prefix    *         (or all of them if the prefix value is null).    * @throws IOException    */
+comment|/**    * @param result from which to read columns    * @return the latest values of columns in the column family with this prefix    *         (or all of them if the prefix value is null).    * @throws IOException    */
 DECL|method|readResults (Result result)
 specifier|public
 name|Map

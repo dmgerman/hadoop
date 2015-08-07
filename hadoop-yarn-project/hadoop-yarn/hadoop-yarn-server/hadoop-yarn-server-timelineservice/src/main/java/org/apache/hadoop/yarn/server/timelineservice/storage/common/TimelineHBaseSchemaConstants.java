@@ -81,10 +81,10 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|class|TimelineEntitySchemaConstants
+DECL|class|TimelineHBaseSchemaConstants
 specifier|public
 class|class
-name|TimelineEntitySchemaConstants
+name|TimelineHBaseSchemaConstants
 block|{
 comment|/**    * Used to create a pre-split for tables starting with a username in the    * prefix. TODO: this may have to become a config variable (string with    * separators) so that different installations can presplit based on their own    * commonly occurring names.    */
 DECL|field|USERNAME_SPLITS

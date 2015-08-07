@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.entity
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.apptoflow
 package|package
 name|org
 operator|.
@@ -20,7 +20,7 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|entity
+name|apptoflow
 package|;
 end_package
 
@@ -85,37 +85,23 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Represents the entity table column families.  */
+comment|/**  * Represents the app_flow table column families.  */
 end_comment
 
 begin_enum
-DECL|enum|EntityColumnFamily
+DECL|enum|AppToFlowColumnFamily
 specifier|public
 enum|enum
-name|EntityColumnFamily
+name|AppToFlowColumnFamily
 implements|implements
 name|ColumnFamily
 argument_list|<
-name|EntityTable
+name|AppToFlowTable
 argument_list|>
 block|{
-comment|/**    * Info column family houses known columns, specifically ones included in    * columnfamily filters.    */
-DECL|enumConstant|INFO
-name|INFO
-argument_list|(
-literal|"i"
-argument_list|)
-block|,
-comment|/**    * Configurations are in a separate column family for two reasons: a) the size    * of the config values can be very large and b) we expect that config values    * are often separately accessed from other metrics and info columns.    */
-DECL|enumConstant|CONFIGS
-name|CONFIGS
-argument_list|(
-literal|"c"
-argument_list|)
-block|,
-comment|/**    * Metrics have a separate column family, because they have a separate TTL.    */
-DECL|enumConstant|METRICS
-name|METRICS
+comment|/**    * Mapping column family houses known columns such as flowId and flowRunId    */
+DECL|enumConstant|MAPPING
+name|MAPPING
 argument_list|(
 literal|"m"
 argument_list|)
@@ -129,8 +115,8 @@ index|[]
 name|bytes
 decl_stmt|;
 comment|/**    * @param value create a column family with this name. Must be lower case and    *          without spaces.    */
-DECL|method|EntityColumnFamily (String value)
-name|EntityColumnFamily
+DECL|method|AppToFlowColumnFamily (String value)
+name|AppToFlowColumnFamily
 parameter_list|(
 name|String
 name|value

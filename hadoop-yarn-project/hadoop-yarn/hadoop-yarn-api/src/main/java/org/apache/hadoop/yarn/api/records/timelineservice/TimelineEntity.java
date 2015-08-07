@@ -172,7 +172,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|NavigableSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|TreeSet
 import|;
 end_import
 
@@ -620,16 +640,17 @@ name|HashSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
+comment|// events should be sorted by timestamp in descending order
 DECL|field|events
 specifier|private
-name|Set
+name|NavigableSet
 argument_list|<
 name|TimelineEvent
 argument_list|>
 name|events
 init|=
 operator|new
-name|HashSet
+name|TreeSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -1493,7 +1514,7 @@ literal|"events"
 argument_list|)
 DECL|method|getEvents ()
 specifier|public
-name|Set
+name|NavigableSet
 argument_list|<
 name|TimelineEvent
 argument_list|>
@@ -1521,12 +1542,12 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|setEvents (Set<TimelineEvent> events)
+DECL|method|setEvents (NavigableSet<TimelineEvent> events)
 specifier|public
 name|void
 name|setEvents
 parameter_list|(
-name|Set
+name|NavigableSet
 argument_list|<
 name|TimelineEvent
 argument_list|>

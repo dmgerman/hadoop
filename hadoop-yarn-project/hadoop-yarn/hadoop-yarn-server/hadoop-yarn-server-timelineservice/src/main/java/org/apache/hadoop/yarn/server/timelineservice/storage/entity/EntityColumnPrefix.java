@@ -311,7 +311,6 @@ name|columnPrefixBytes
 decl_stmt|;
 comment|/**    * Private constructor, meant to be used by the enum definition.    *    * @param columnFamily that this column is stored in.    * @param columnPrefix for this column.    */
 DECL|method|EntityColumnPrefix (ColumnFamily<EntityTable> columnFamily, String columnPrefix)
-specifier|private
 name|EntityColumnPrefix
 parameter_list|(
 name|ColumnFamily
