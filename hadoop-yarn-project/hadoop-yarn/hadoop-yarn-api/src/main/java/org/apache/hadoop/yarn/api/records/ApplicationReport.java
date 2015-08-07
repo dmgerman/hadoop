@@ -1077,6 +1077,32 @@ name|boolean
 name|unmanagedApplication
 parameter_list|)
 function_decl|;
+comment|/**    * Get priority of the application    *    * @return Application's priority    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getPriority ()
+specifier|public
+specifier|abstract
+name|Priority
+name|getPriority
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setPriority (Priority priority)
+specifier|public
+specifier|abstract
+name|void
+name|setPriority
+parameter_list|(
+name|Priority
+name|priority
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

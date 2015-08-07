@@ -2300,7 +2300,7 @@ return|return
 name|request
 return|;
 block|}
-DECL|method|newApplicationReport ( ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String appType, Token amRmToken, Set<String> tags)
+DECL|method|newApplicationReport ( ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String appType, Token amRmToken, Set<String> tags, Priority priority)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -2368,6 +2368,9 @@ argument_list|<
 name|String
 argument_list|>
 name|tags
+parameter_list|,
+name|Priority
+name|priority
 parameter_list|)
 block|{
 name|ApplicationReport
@@ -2520,6 +2523,13 @@ operator|.
 name|setApplicationTags
 argument_list|(
 name|tags
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setPriority
+argument_list|(
+name|priority
 argument_list|)
 expr_stmt|;
 return|return

@@ -997,6 +997,18 @@ operator|.
 name|SUCCEEDED
 argument_list|)
 expr_stmt|;
+name|newApplicationReport
+operator|.
+name|setPriority
+argument_list|(
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|when
 argument_list|(
 name|client
@@ -1119,6 +1131,13 @@ operator|.
 name|println
 argument_list|(
 literal|"\tQueue : queue"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tApplication Priority : 0"
 argument_list|)
 expr_stmt|;
 name|pw

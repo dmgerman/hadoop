@@ -4428,6 +4428,13 @@ argument_list|,
 name|amrmToken
 argument_list|,
 name|applicationTags
+argument_list|,
+name|this
+operator|.
+name|submissionContext
+operator|.
+name|getPriority
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|report

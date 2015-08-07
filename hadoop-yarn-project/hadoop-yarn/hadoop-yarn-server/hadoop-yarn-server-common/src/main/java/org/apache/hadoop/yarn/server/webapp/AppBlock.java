@@ -1228,6 +1228,19 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"Application Priority:"
+argument_list|,
+name|clarifyAppPriority
+argument_list|(
+name|app
+operator|.
+name|getPriority
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"YarnApplicationState:"
 argument_list|,
 name|app
@@ -2266,6 +2279,21 @@ return|return
 name|ret
 return|;
 block|}
+block|}
+DECL|method|clarifyAppPriority (int priority)
+specifier|private
+name|String
+name|clarifyAppPriority
+parameter_list|(
+name|int
+name|priority
+parameter_list|)
+block|{
+return|return
+name|priority
+operator|+
+literal|" (Higher Integer value indicates higher priority)"
+return|;
 block|}
 DECL|method|clairfyAppFinalStatus (FinalApplicationStatus status)
 specifier|private

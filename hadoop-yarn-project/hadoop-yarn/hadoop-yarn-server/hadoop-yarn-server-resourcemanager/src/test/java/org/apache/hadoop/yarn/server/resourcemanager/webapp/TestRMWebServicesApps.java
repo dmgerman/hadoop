@@ -10995,6 +10995,15 @@ argument_list|)
 argument_list|,
 name|WebServicesTestUtils
 operator|.
+name|getXmlInt
+argument_list|(
+name|element
+argument_list|,
+literal|"priority"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
 name|getXmlString
 argument_list|(
 name|element
@@ -11196,7 +11205,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|29
+literal|30
 argument_list|,
 name|info
 operator|.
@@ -11241,6 +11250,13 @@ operator|.
 name|getString
 argument_list|(
 literal|"queue"
+argument_list|)
+argument_list|,
+name|info
+operator|.
+name|getInt
+argument_list|(
+literal|"priority"
 argument_list|)
 argument_list|,
 name|info
@@ -11388,7 +11404,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyAppInfoGeneric (RMApp app, String id, String user, String name, String applicationType, String queue, String state, String finalStatus, float progress, String trackingUI, String diagnostics, long clusterId, long startedTime, long finishedTime, long elapsedTime, String amHostHttpAddress, String amContainerLogs, int allocatedMB, int allocatedVCores, int numContainers, int preemptedResourceMB, int preemptedResourceVCores, int numNonAMContainerPreempted, int numAMContainerPreempted, String logAggregationStatus, boolean unmanagedApplication)
+DECL|method|verifyAppInfoGeneric (RMApp app, String id, String user, String name, String applicationType, String queue, int prioirty, String state, String finalStatus, float progress, String trackingUI, String diagnostics, long clusterId, long startedTime, long finishedTime, long elapsedTime, String amHostHttpAddress, String amContainerLogs, int allocatedMB, int allocatedVCores, int numContainers, int preemptedResourceMB, int preemptedResourceVCores, int numNonAMContainerPreempted, int numAMContainerPreempted, String logAggregationStatus, boolean unmanagedApplication)
 specifier|public
 name|void
 name|verifyAppInfoGeneric
@@ -11410,6 +11426,9 @@ name|applicationType
 parameter_list|,
 name|String
 name|queue
+parameter_list|,
+name|int
+name|prioirty
 parameter_list|,
 name|String
 name|state
@@ -11547,6 +11566,15 @@ name|getQueue
 argument_list|()
 argument_list|,
 name|queue
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"priority doesn't match"
+argument_list|,
+literal|0
+argument_list|,
+name|prioirty
 argument_list|)
 expr_stmt|;
 name|WebServicesTestUtils

@@ -186,7 +186,7 @@ name|isFairSchedulerPage
 condition|?
 literal|"[6, 7]"
 else|:
-literal|"[5, 6]"
+literal|"[6, 7]"
 operator|)
 argument_list|)
 operator|.
@@ -223,7 +223,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"[12]"
+literal|"[13]"
 argument_list|)
 expr_stmt|;
 block|}
