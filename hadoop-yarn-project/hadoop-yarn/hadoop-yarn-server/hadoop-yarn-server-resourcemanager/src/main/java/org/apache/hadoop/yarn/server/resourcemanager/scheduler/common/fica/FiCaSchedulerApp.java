@@ -1204,29 +1204,6 @@ name|event
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Completed container: "
-operator|+
-name|rmContainer
-operator|.
-name|getContainerId
-argument_list|()
-operator|+
-literal|" in state: "
-operator|+
-name|rmContainer
-operator|.
-name|getState
-argument_list|()
-operator|+
-literal|" event:"
-operator|+
-name|event
-argument_list|)
-expr_stmt|;
 name|containersToPreempt
 operator|.
 name|remove

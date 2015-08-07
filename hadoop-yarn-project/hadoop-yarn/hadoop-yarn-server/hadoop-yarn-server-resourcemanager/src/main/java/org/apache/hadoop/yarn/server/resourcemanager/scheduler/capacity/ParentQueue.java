@@ -3440,39 +3440,28 @@ name|getPartition
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
-argument_list|(
-literal|"completedContainer"
-operator|+
-literal|" queue="
-operator|+
-name|getQueueName
+name|isDebugEnabled
 argument_list|()
-operator|+
-literal|" usedCapacity="
-operator|+
-name|getUsedCapacity
-argument_list|()
-operator|+
-literal|" absoluteUsedCapacity="
-operator|+
-name|getAbsoluteUsedCapacity
-argument_list|()
-operator|+
-literal|" used="
-operator|+
-name|queueUsage
+condition|)
+block|{
+name|LOG
 operator|.
-name|getUsed
-argument_list|()
+name|debug
+argument_list|(
+literal|"completedContainer "
 operator|+
-literal|" cluster="
+name|this
+operator|+
+literal|", cluster="
 operator|+
 name|clusterResource
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Note that this is using an iterator on the childQueues so this can't
 comment|// be called if already within an iterator for the childQueues. Like
 comment|// from assignContainersToChildQueues.
@@ -3525,22 +3514,24 @@ operator|.
 name|remove
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Re-sorting completed queue: "
 operator|+
 name|csqueue
-operator|.
-name|getQueuePath
-argument_list|()
-operator|+
-literal|" stats: "
-operator|+
-name|csqueue
 argument_list|)
 expr_stmt|;
+block|}
 name|childQueues
 operator|.
 name|add

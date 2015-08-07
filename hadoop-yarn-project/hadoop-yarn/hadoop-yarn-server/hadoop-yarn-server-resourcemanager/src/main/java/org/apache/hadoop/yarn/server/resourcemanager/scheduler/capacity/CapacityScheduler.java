@@ -5706,17 +5706,6 @@ operator|==
 literal|null
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Calling allocate on removed "
-operator|+
-literal|"or non existant application "
-operator|+
-name|applicationAttemptId
-argument_list|)
-expr_stmt|;
 return|return
 name|EMPTY_ALLOCATION
 return|;
@@ -5772,17 +5761,6 @@ name|isStopped
 argument_list|()
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Calling allocate on a stopped "
-operator|+
-literal|"application "
-operator|+
-name|applicationAttemptId
-argument_list|)
-expr_stmt|;
 return|return
 name|EMPTY_ALLOCATION
 return|;
@@ -5808,23 +5786,24 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"allocate: pre-update"
-operator|+
-literal|" applicationAttemptId="
+literal|"allocate: pre-update "
 operator|+
 name|applicationAttemptId
 operator|+
-literal|" application="
+literal|" ask size ="
 operator|+
-name|application
+name|ask
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|application
 operator|.
 name|showRequests
 argument_list|()
 expr_stmt|;
+block|}
 comment|// Update application requests
 if|if
 condition|(
@@ -5847,6 +5826,14 @@ name|getQueue
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -5860,32 +5847,6 @@ name|showRequests
 argument_list|()
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"allocate:"
-operator|+
-literal|" applicationAttemptId="
-operator|+
-name|applicationAttemptId
-operator|+
-literal|" #ask="
-operator|+
-name|ask
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 name|application
 operator|.
@@ -6237,15 +6198,6 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Container FINISHED: "
-operator|+
-name|containerId
-argument_list|)
-expr_stmt|;
 name|completedContainer
 argument_list|(
 name|container
@@ -8333,33 +8285,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|true
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Application attempt "
-operator|+
-name|application
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-operator|+
-literal|" released container "
-operator|+
-name|container
-operator|.
-name|getId
-argument_list|()
-operator|+
-literal|" on node: "
-operator|+
-name|node
-operator|+
-literal|" with event: "
-operator|+
-name|event
 argument_list|)
 expr_stmt|;
 if|if

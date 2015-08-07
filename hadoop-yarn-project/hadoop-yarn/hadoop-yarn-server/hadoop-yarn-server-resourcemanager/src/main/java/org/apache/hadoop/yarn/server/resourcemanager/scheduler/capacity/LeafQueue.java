@@ -5296,25 +5296,6 @@ argument_list|,
 name|rmContainer
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"completedContainer"
-operator|+
-literal|" container="
-operator|+
-name|container
-operator|+
-literal|" queue="
-operator|+
-name|this
-operator|+
-literal|" cluster="
-operator|+
-name|clusterResource
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 if|if
@@ -5707,9 +5688,17 @@ name|getHeadroom
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 name|getQueueName
 argument_list|()
@@ -5737,6 +5726,7 @@ name|getUsed
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|updateAbsoluteCapacityResource (Resource clusterResource)
 specifier|private
