@@ -7267,6 +7267,12 @@ operator|.
 name|SAFEMODE
 argument_list|)
 expr_stmt|;
+name|long
+name|completeBlocksTotal
+init|=
+name|getCompleteBlocksTotal
+argument_list|()
+decl_stmt|;
 name|prog
 operator|.
 name|setTotal
@@ -7277,12 +7283,13 @@ name|SAFEMODE
 argument_list|,
 name|STEP_AWAITING_REPORTED_BLOCKS
 argument_list|,
-name|getCompleteBlocksTotal
-argument_list|()
+name|completeBlocksTotal
 argument_list|)
 expr_stmt|;
 name|setBlockTotal
-argument_list|()
+argument_list|(
+name|completeBlocksTotal
+argument_list|)
 expr_stmt|;
 name|blockManager
 operator|.
@@ -21817,11 +21824,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set the total number of blocks in the system.     */
-DECL|method|setBlockTotal ()
+DECL|method|setBlockTotal (long completeBlocksTotal)
 specifier|public
 name|void
 name|setBlockTotal
-parameter_list|()
+parameter_list|(
+name|long
+name|completeBlocksTotal
+parameter_list|)
 block|{
 comment|// safeMode is volatile, and may be set to null at any time
 name|SafeModeInfo
@@ -21845,8 +21855,7 @@ argument_list|(
 operator|(
 name|int
 operator|)
-name|getCompleteBlocksTotal
-argument_list|()
+name|completeBlocksTotal
 argument_list|)
 expr_stmt|;
 block|}
@@ -21915,9 +21924,9 @@ name|countLease
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the total number of COMPLETE blocks in the system.    * For safe mode only complete blocks are counted.    */
+comment|/**    * Get the total number of COMPLETE blocks in the system.    * For safe mode only complete blocks are counted.    * This is invoked only during NN startup and checkpointing.    */
 DECL|method|getCompleteBlocksTotal ()
-specifier|private
+specifier|public
 name|long
 name|getCompleteBlocksTotal
 parameter_list|()
@@ -21931,6 +21940,8 @@ decl_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|numUCBlocks
 operator|=
 name|leaseManager
@@ -21938,8 +21949,6 @@ operator|.
 name|getNumUnderConstructionBlocks
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 return|return
 name|getBlocksTotal
 argument_list|()

@@ -72,6 +72,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Comparator
 import|;
 end_import
@@ -615,36 +625,15 @@ block|}
 comment|/** @return the number of paths contained in all leases */
 DECL|method|countPath ()
 specifier|synchronized
-name|int
+name|long
 name|countPath
 parameter_list|()
 block|{
-name|int
-name|count
-init|=
-literal|0
-decl_stmt|;
-for|for
-control|(
-name|Lease
-name|lease
-range|:
-name|sortedLeases
-control|)
-block|{
-name|count
-operator|+=
-name|lease
-operator|.
-name|getFiles
-argument_list|()
+return|return
+name|leasesById
 operator|.
 name|size
 argument_list|()
-expr_stmt|;
-block|}
-return|return
-name|count
 return|;
 block|}
 comment|/**    * Adds (or re-adds) the lease for the specified file.    */
@@ -1218,7 +1207,12 @@ name|getFiles
 parameter_list|()
 block|{
 return|return
+name|Collections
+operator|.
+name|unmodifiableCollection
+argument_list|(
 name|files
+argument_list|)
 return|;
 block|}
 DECL|method|getHolder ()
