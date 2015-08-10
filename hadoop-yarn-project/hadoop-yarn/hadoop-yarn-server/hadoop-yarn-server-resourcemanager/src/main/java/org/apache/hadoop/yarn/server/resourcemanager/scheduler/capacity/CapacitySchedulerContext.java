@@ -247,14 +247,6 @@ name|Configuration
 name|getConf
 parameter_list|()
 function_decl|;
-DECL|method|getApplicationComparator ()
-name|Comparator
-argument_list|<
-name|FiCaSchedulerApp
-argument_list|>
-name|getApplicationComparator
-parameter_list|()
-function_decl|;
 DECL|method|getResourceCalculator ()
 name|ResourceCalculator
 name|getResourceCalculator
