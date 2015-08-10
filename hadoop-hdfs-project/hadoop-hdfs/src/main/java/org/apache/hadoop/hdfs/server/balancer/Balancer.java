@@ -192,6 +192,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -613,29 +625,6 @@ argument_list|(
 literal|"/system/balancer.id"
 argument_list|)
 decl_stmt|;
-DECL|field|GB
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|GB
-init|=
-literal|1L
-operator|<<
-literal|30
-decl_stmt|;
-comment|//1GB
-DECL|field|MAX_SIZE_TO_MOVE
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|MAX_SIZE_TO_MOVE
-init|=
-literal|10
-operator|*
-name|GB
-decl_stmt|;
 DECL|field|USAGE
 specifier|private
 specifier|static
@@ -720,6 +709,12 @@ specifier|private
 specifier|final
 name|double
 name|threshold
+decl_stmt|;
+DECL|field|maxSizeToMove
+specifier|private
+specifier|final
+name|long
+name|maxSizeToMove
 decl_stmt|;
 comment|// all data node lists
 DECL|field|overUtilized
@@ -829,6 +824,150 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|getLong (Configuration conf, String key, long defaultValue)
+specifier|static
+name|long
+name|getLong
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|long
+name|defaultValue
+parameter_list|)
+block|{
+specifier|final
+name|long
+name|v
+init|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|key
+argument_list|,
+name|defaultValue
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|key
+operator|+
+literal|" = "
+operator|+
+name|v
+operator|+
+literal|" (default="
+operator|+
+name|defaultValue
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|v
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+name|key
+operator|+
+literal|" = "
+operator|+
+name|v
+operator|+
+literal|"<= "
+operator|+
+literal|0
+argument_list|)
+throw|;
+block|}
+return|return
+name|v
+return|;
+block|}
+DECL|method|getInt (Configuration conf, String key, int defaultValue)
+specifier|static
+name|int
+name|getInt
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|int
+name|defaultValue
+parameter_list|)
+block|{
+specifier|final
+name|int
+name|v
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|key
+argument_list|,
+name|defaultValue
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|key
+operator|+
+literal|" = "
+operator|+
+name|v
+operator|+
+literal|" (default="
+operator|+
+name|defaultValue
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|v
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+name|key
+operator|+
+literal|" = "
+operator|+
+name|v
+operator|+
+literal|"<= "
+operator|+
+literal|0
+argument_list|)
+throw|;
+block|}
+return|return
+name|v
+return|;
+block|}
 comment|/**    * Construct a balancer.    * Initialize balancer. It sets the value of the threshold, and     * builds the communication proxies to    * namenode as a client and a secondary namenode and retry proxies    * when connection fails.    */
 DECL|method|Balancer (NameNodeConnector theblockpool, Parameters p, Configuration conf)
 name|Balancer
@@ -847,10 +986,10 @@ specifier|final
 name|long
 name|movedWinWidth
 init|=
-name|conf
-operator|.
 name|getLong
 argument_list|(
+name|conf
+argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_BALANCER_MOVEDWINWIDTH_KEY
@@ -864,10 +1003,10 @@ specifier|final
 name|int
 name|moverThreads
 init|=
-name|conf
-operator|.
 name|getInt
 argument_list|(
+name|conf
+argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_BALANCER_MOVERTHREADS_KEY
@@ -881,10 +1020,10 @@ specifier|final
 name|int
 name|dispatcherThreads
 init|=
-name|conf
-operator|.
 name|getInt
 argument_list|(
+name|conf
+argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_BALANCER_DISPATCHERTHREADS_KEY
@@ -898,10 +1037,10 @@ specifier|final
 name|int
 name|maxConcurrentMovesPerNode
 init|=
-name|conf
-operator|.
 name|getInt
 argument_list|(
+name|conf
+argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_KEY
@@ -968,6 +1107,23 @@ operator|=
 name|p
 operator|.
 name|runDuringUpgrade
+expr_stmt|;
+name|this
+operator|.
+name|maxSizeToMove
+operator|=
+name|getLong
+argument_list|(
+name|conf
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_BALANCER_MAX_SIZE_TO_MOVE_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_BALANCER_MAX_SIZE_TO_MOVE_DEFAULT
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getCapacity (DatanodeStorageReport report, StorageType t)
@@ -1237,6 +1393,8 @@ argument_list|,
 name|utilizationDiff
 argument_list|,
 name|threshold
+argument_list|,
+name|maxSizeToMove
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1416,7 +1574,7 @@ name|underLoadedBytes
 argument_list|)
 return|;
 block|}
-DECL|method|computeMaxSize2Move (final long capacity, final long remaining, final double utilizationDiff, final double threshold)
+DECL|method|computeMaxSize2Move (final long capacity, final long remaining, final double utilizationDiff, final double threshold, final long max)
 specifier|private
 specifier|static
 name|long
@@ -1437,6 +1595,10 @@ parameter_list|,
 specifier|final
 name|double
 name|threshold
+parameter_list|,
+specifier|final
+name|long
+name|max
 parameter_list|)
 block|{
 specifier|final
@@ -1491,7 +1653,7 @@ name|Math
 operator|.
 name|min
 argument_list|(
-name|MAX_SIZE_TO_MOVE
+name|max
 argument_list|,
 name|maxSizeToMove
 argument_list|)
@@ -1683,6 +1845,17 @@ name|matcher
 parameter_list|)
 block|{
 comment|/* first step: match each overUtilized datanode (source) to      * one or more underUtilized datanodes (targets).      */
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"chooseStorageGroups for "
+operator|+
+name|matcher
+operator|+
+literal|": overUtilized => underUtilized"
+argument_list|)
+expr_stmt|;
 name|chooseStorageGroups
 argument_list|(
 name|overUtilized
@@ -1693,6 +1866,17 @@ name|matcher
 argument_list|)
 expr_stmt|;
 comment|/* match each remaining overutilized datanode (source) to       * below average utilized datanodes (targets).      * Note only overutilized datanodes that haven't had that max bytes to move      * satisfied in step 1 are selected      */
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"chooseStorageGroups for "
+operator|+
+name|matcher
+operator|+
+literal|": overUtilized => belowAvgUtilized"
+argument_list|)
+expr_stmt|;
 name|chooseStorageGroups
 argument_list|(
 name|overUtilized
@@ -1703,6 +1887,17 @@ name|matcher
 argument_list|)
 expr_stmt|;
 comment|/* match each remaining underutilized datanode (target) to       * above average utilized datanodes (source).      * Note only underutilized datanodes that have not had that max bytes to      * move satisfied in step 1 are selected.      */
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"chooseStorageGroups for "
+operator|+
+name|matcher
+operator|+
+literal|": underUtilized => aboveAvgUtilized"
+argument_list|)
+expr_stmt|;
 name|chooseStorageGroups
 argument_list|(
 name|underUtilized
