@@ -756,11 +756,6 @@ argument_list|,
 name|resolveLink
 argument_list|)
 decl_stmt|;
-name|boolean
-name|isSuperUser
-init|=
-literal|true
-decl_stmt|;
 if|if
 condition|(
 name|fsd
@@ -790,13 +785,6 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|isSuperUser
-operator|=
-name|pc
-operator|.
-name|isSuperUser
-argument_list|()
-expr_stmt|;
 block|}
 return|return
 name|getFileInfo
@@ -813,8 +801,6 @@ name|isReservedRawName
 argument_list|(
 name|srcArg
 argument_list|)
-argument_list|,
-name|isSuperUser
 argument_list|)
 return|;
 block|}
@@ -2310,7 +2296,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getFileInfo ( FSDirectory fsd, String src, boolean resolveLink, boolean isRawPath, boolean includeStoragePolicy)
+DECL|method|getFileInfo ( FSDirectory fsd, String src, boolean resolveLink, boolean isRawPath)
 specifier|static
 name|HdfsFileStatus
 name|getFileInfo
@@ -2326,9 +2312,6 @@ name|resolveLink
 parameter_list|,
 name|boolean
 name|isRawPath
-parameter_list|,
-name|boolean
-name|includeStoragePolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -2443,7 +2426,7 @@ name|iip
 argument_list|,
 name|isRawPath
 argument_list|,
-name|includeStoragePolicy
+literal|true
 argument_list|)
 return|;
 block|}

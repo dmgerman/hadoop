@@ -2743,8 +2743,6 @@ argument_list|,
 literal|false
 argument_list|,
 name|isRawPath
-argument_list|,
-literal|true
 argument_list|)
 return|;
 block|}
