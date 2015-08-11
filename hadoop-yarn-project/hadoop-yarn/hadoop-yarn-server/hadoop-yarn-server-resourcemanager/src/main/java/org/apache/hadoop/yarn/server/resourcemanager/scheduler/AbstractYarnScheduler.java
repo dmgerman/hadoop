@@ -3939,6 +3939,25 @@ literal|0
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|updateApplicationPriority (Priority newPriority, ApplicationId applicationId)
+specifier|public
+name|void
+name|updateApplicationPriority
+parameter_list|(
+name|Priority
+name|newPriority
+parameter_list|,
+name|ApplicationId
+name|applicationId
+parameter_list|)
+throws|throws
+name|YarnException
+block|{
+comment|// Dummy Implementation till Application Priority changes are done in
+comment|// specific scheduler.
+block|}
 block|}
 end_class
 

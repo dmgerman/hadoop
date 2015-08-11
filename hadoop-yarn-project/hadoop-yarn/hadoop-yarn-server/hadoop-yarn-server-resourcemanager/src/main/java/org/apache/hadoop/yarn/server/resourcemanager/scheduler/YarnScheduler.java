@@ -887,6 +887,21 @@ parameter_list|)
 throws|throws
 name|YarnException
 function_decl|;
+comment|/**    *    * Change application priority of a submitted application at runtime    *    * @param newPriority Submitted Application priority.    *    * @param applicationId Application ID    */
+DECL|method|updateApplicationPriority (Priority newPriority, ApplicationId applicationId)
+specifier|public
+name|void
+name|updateApplicationPriority
+parameter_list|(
+name|Priority
+name|newPriority
+parameter_list|,
+name|ApplicationId
+name|applicationId
+parameter_list|)
+throws|throws
+name|YarnException
+function_decl|;
 block|}
 end_interface
 

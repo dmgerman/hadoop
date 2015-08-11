@@ -3719,6 +3719,25 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|updateApplicationStateSynchronously ( ApplicationStateData appState)
+specifier|public
+name|void
+name|updateApplicationStateSynchronously
+parameter_list|(
+name|ApplicationStateData
+name|appState
+parameter_list|)
+block|{
+name|handleStoreEvent
+argument_list|(
+operator|new
+name|RMStateUpdateAppEvent
+argument_list|(
+name|appState
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|updateFencedState ()
 specifier|public
 name|void

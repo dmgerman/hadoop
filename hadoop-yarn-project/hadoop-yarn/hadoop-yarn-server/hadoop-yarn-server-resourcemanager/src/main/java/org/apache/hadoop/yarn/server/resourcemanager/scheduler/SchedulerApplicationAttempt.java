@@ -973,6 +973,7 @@ name|logAggregationContext
 decl_stmt|;
 DECL|field|appPriority
 specifier|private
+specifier|volatile
 name|Priority
 name|appPriority
 init|=
