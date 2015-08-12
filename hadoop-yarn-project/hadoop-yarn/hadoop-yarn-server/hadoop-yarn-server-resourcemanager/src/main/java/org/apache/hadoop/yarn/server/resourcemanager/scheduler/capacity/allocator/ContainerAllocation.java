@@ -126,6 +126,27 @@ specifier|public
 class|class
 name|ContainerAllocation
 block|{
+comment|/**    * Skip the locality (e.g. node-local, rack-local, any), and look at other    * localities of the same priority    */
+DECL|field|LOCALITY_SKIPPED
+specifier|public
+specifier|static
+specifier|final
+name|ContainerAllocation
+name|LOCALITY_SKIPPED
+init|=
+operator|new
+name|ContainerAllocation
+argument_list|(
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+name|AllocationState
+operator|.
+name|LOCALITY_SKIPPED
+argument_list|)
+decl_stmt|;
+comment|/**    * Skip the priority, and look at other priorities of the same application    */
 DECL|field|PRIORITY_SKIPPED
 specifier|public
 specifier|static
@@ -145,6 +166,7 @@ operator|.
 name|PRIORITY_SKIPPED
 argument_list|)
 decl_stmt|;
+comment|/**    * Skip the application, and look at other applications of the same queue    */
 DECL|field|APP_SKIPPED
 specifier|public
 specifier|static
@@ -164,6 +186,7 @@ operator|.
 name|APP_SKIPPED
 argument_list|)
 decl_stmt|;
+comment|/**    * Skip the leaf-queue, and look at other queues of the same parent queue    */
 DECL|field|QUEUE_SKIPPED
 specifier|public
 specifier|static
@@ -181,25 +204,6 @@ argument_list|,
 name|AllocationState
 operator|.
 name|QUEUE_SKIPPED
-argument_list|)
-decl_stmt|;
-DECL|field|LOCALITY_SKIPPED
-specifier|public
-specifier|static
-specifier|final
-name|ContainerAllocation
-name|LOCALITY_SKIPPED
-init|=
-operator|new
-name|ContainerAllocation
-argument_list|(
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-name|AllocationState
-operator|.
-name|LOCALITY_SKIPPED
 argument_list|)
 decl_stmt|;
 DECL|field|containerToBeUnreserved
