@@ -1048,6 +1048,16 @@ name|racks
 argument_list|,
 name|blk
 operator|.
+name|getStorageIDs
+argument_list|()
+argument_list|,
+name|blk
+operator|.
+name|getStorageTypes
+argument_list|()
+argument_list|,
+name|blk
+operator|.
 name|getStartOffset
 argument_list|()
 argument_list|,

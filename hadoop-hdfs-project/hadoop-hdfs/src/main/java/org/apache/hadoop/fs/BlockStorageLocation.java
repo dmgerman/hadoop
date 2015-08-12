@@ -67,6 +67,8 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Public
+annotation|@
+name|Deprecated
 DECL|class|BlockStorageLocation
 specifier|public
 class|class

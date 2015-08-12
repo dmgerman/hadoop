@@ -1710,11 +1710,13 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Used to query storage location information for a list of blocks. This list    * of blocks is normally constructed via a series of calls to    * {@link DistributedFileSystem#getFileBlockLocations(Path, long, long)} to    * get the blocks for ranges of a file.    *     * The returned array of {@link BlockStorageLocation} augments    * {@link BlockLocation} with a {@link VolumeId} per block replica. The    * VolumeId specifies the volume on the datanode on which the replica resides.    * The VolumeId associated with a replica may be null because volume    * information can be unavailable if the corresponding datanode is down or    * if the requested block is not found.    *     * This API is unstable, and datanode-side support is disabled by default. It    * can be enabled by setting "dfs.datanode.hdfs-blocks-metadata.enabled" to    * true.    *     * @param blocks    *          List of target BlockLocations to query volume location information    * @return volumeBlockLocations Augmented array of    *         {@link BlockStorageLocation}s containing additional volume location    *         information for each replica of each block.    */
+comment|/**    * This API has been deprecated since the NameNode now tracks datanode    * storages separately. Storage IDs can be gotten from {@link    * BlockLocation#getStorageIds()}, which are functionally equivalent to    * the volume IDs returned here (although a String rather than a byte[]).    *    * Used to query storage location information for a list of blocks. This list    * of blocks is normally constructed via a series of calls to    * {@link DistributedFileSystem#getFileBlockLocations(Path, long, long)} to    * get the blocks for ranges of a file.    *     * The returned array of {@link BlockStorageLocation} augments    * {@link BlockLocation} with a {@link VolumeId} per block replica. The    * VolumeId specifies the volume on the datanode on which the replica resides.    * The VolumeId associated with a replica may be null because volume    * information can be unavailable if the corresponding datanode is down or    * if the requested block is not found.    *     * This API is unstable, and datanode-side support is disabled by default. It    * can be enabled by setting "dfs.datanode.hdfs-blocks-metadata.enabled" to    * true.    *     * @param blocks    *          List of target BlockLocations to query volume location information    * @return volumeBlockLocations Augmented array of    *         {@link BlockStorageLocation}s containing additional volume location    *         information for each replica of each block.    */
 annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
+annotation|@
+name|Deprecated
 DECL|method|getFileBlockStorageLocations ( List<BlockLocation> blocks)
 specifier|public
 name|BlockStorageLocation
