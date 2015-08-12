@@ -4614,6 +4614,26 @@ literal|30
 operator|*
 literal|1000
 decl_stmt|;
+DECL|field|DISPATCHER_DRAIN_EVENTS_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DISPATCHER_DRAIN_EVENTS_TIMEOUT
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"dispatcher.drain-events.timeout"
+decl_stmt|;
+DECL|field|DEFAULT_DISPATCHER_DRAIN_EVENTS_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_DISPATCHER_DRAIN_EVENTS_TIMEOUT
+init|=
+literal|300000
+decl_stmt|;
 comment|/**    * CLASSPATH for YARN applications. A comma-separated list of CLASSPATH    * entries    */
 DECL|field|YARN_APPLICATION_CLASSPATH
 specifier|public

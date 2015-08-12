@@ -410,6 +410,13 @@ name|shouldRun
 operator|=
 literal|false
 expr_stmt|;
+if|if
+condition|(
+name|monitorThread
+operator|!=
+literal|null
+condition|)
+block|{
 name|monitorThread
 operator|.
 name|interrupt
@@ -437,6 +444,7 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|isStarted ()

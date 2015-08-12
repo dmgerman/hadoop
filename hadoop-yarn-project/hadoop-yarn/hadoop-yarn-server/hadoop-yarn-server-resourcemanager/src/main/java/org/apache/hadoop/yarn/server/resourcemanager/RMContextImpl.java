@@ -601,6 +601,16 @@ specifier|private
 name|Configuration
 name|yarnConfiguration
 decl_stmt|;
+DECL|field|rmApplicationHistoryWriter
+specifier|private
+name|RMApplicationHistoryWriter
+name|rmApplicationHistoryWriter
+decl_stmt|;
+DECL|field|systemMetricsPublisher
+specifier|private
+name|SystemMetricsPublisher
+name|systemMetricsPublisher
+decl_stmt|;
 comment|/**    * Default constructor. To be used in conjunction with setter methods for    * individual fields.    */
 DECL|method|RMContextImpl ()
 specifier|public
@@ -610,7 +620,7 @@ block|{    }
 annotation|@
 name|VisibleForTesting
 comment|// helper constructor for tests
-DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer delegationTokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager, RMApplicationHistoryWriter rmApplicationHistoryWriter, ResourceScheduler scheduler)
+DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer delegationTokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager, ResourceScheduler scheduler)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -640,9 +650,6 @@ name|nmTokenSecretManager
 parameter_list|,
 name|ClientToAMTokenSecretManagerInRM
 name|clientToAMTokenSecretManager
-parameter_list|,
-name|RMApplicationHistoryWriter
-name|rmApplicationHistoryWriter
 parameter_list|,
 name|ResourceScheduler
 name|scheduler
@@ -681,8 +688,6 @@ name|nmTokenSecretManager
 argument_list|,
 name|clientToAMTokenSecretManager
 argument_list|,
-name|rmApplicationHistoryWriter
-argument_list|,
 name|scheduler
 argument_list|)
 argument_list|)
@@ -703,7 +708,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 comment|// helper constructor for tests
-DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer delegationTokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager, RMApplicationHistoryWriter rmApplicationHistoryWriter)
+DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer delegationTokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -733,9 +738,6 @@ name|nmTokenSecretManager
 parameter_list|,
 name|ClientToAMTokenSecretManagerInRM
 name|clientToAMTokenSecretManager
-parameter_list|,
-name|RMApplicationHistoryWriter
-name|rmApplicationHistoryWriter
 parameter_list|)
 block|{
 name|this
@@ -757,8 +759,6 @@ argument_list|,
 name|nmTokenSecretManager
 argument_list|,
 name|clientToAMTokenSecretManager
-argument_list|,
-name|rmApplicationHistoryWriter
 argument_list|,
 literal|null
 argument_list|)
@@ -1497,10 +1497,9 @@ name|getRMApplicationHistoryWriter
 parameter_list|()
 block|{
 return|return
-name|activeServiceContext
+name|this
 operator|.
-name|getRMApplicationHistoryWriter
-argument_list|()
+name|rmApplicationHistoryWriter
 return|;
 block|}
 annotation|@
@@ -1514,12 +1513,11 @@ name|SystemMetricsPublisher
 name|systemMetricsPublisher
 parameter_list|)
 block|{
-name|activeServiceContext
+name|this
 operator|.
-name|setSystemMetricsPublisher
-argument_list|(
 name|systemMetricsPublisher
-argument_list|)
+operator|=
+name|systemMetricsPublisher
 expr_stmt|;
 block|}
 annotation|@
@@ -1531,10 +1529,9 @@ name|getSystemMetricsPublisher
 parameter_list|()
 block|{
 return|return
-name|activeServiceContext
+name|this
 operator|.
-name|getSystemMetricsPublisher
-argument_list|()
+name|systemMetricsPublisher
 return|;
 block|}
 annotation|@
@@ -1548,12 +1545,11 @@ name|RMApplicationHistoryWriter
 name|rmApplicationHistoryWriter
 parameter_list|)
 block|{
-name|activeServiceContext
+name|this
 operator|.
-name|setRMApplicationHistoryWriter
-argument_list|(
 name|rmApplicationHistoryWriter
-argument_list|)
+operator|=
+name|rmApplicationHistoryWriter
 expr_stmt|;
 block|}
 annotation|@
