@@ -362,7 +362,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType, Token amRmToken, Set<String> tags, boolean unmanagedApplication)
+DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType, Token amRmToken, Set<String> tags, boolean unmanagedApplication, Priority priority)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -433,6 +433,9 @@ name|tags
 parameter_list|,
 name|boolean
 name|unmanagedApplication
+parameter_list|,
+name|Priority
+name|priority
 parameter_list|)
 block|{
 name|ApplicationReport
@@ -491,6 +494,13 @@ operator|.
 name|setUnmanagedApp
 argument_list|(
 name|unmanagedApplication
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setPriority
+argument_list|(
+name|priority
 argument_list|)
 expr_stmt|;
 return|return

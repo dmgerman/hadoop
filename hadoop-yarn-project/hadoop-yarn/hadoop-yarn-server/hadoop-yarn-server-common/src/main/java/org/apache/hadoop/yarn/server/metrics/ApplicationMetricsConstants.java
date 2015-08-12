@@ -224,6 +224,15 @@ name|UNMANAGED_APPLICATION_ENTITY_INFO
 init|=
 literal|"YARN_APPLICATION_UNMANAGED_APPLICATION"
 decl_stmt|;
+DECL|field|APPLICATION_PRIORITY_INFO
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|APPLICATION_PRIORITY_INFO
+init|=
+literal|"YARN_APPLICATION_PRIORITY"
+decl_stmt|;
 block|}
 end_class
 

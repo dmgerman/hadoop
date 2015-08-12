@@ -50,6 +50,24 @@ name|ApplicationId
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Priority
+import|;
+end_import
+
 begin_class
 DECL|class|ApplicationCreatedEvent
 specifier|public
@@ -101,7 +119,12 @@ specifier|private
 name|boolean
 name|unmanagedApplication
 decl_stmt|;
-DECL|method|ApplicationCreatedEvent (ApplicationId appId, String name, String type, String user, String queue, long submittedTime, long createdTime, Set<String> appTags, boolean unmanagedApplication)
+DECL|field|applicationPriority
+specifier|private
+name|Priority
+name|applicationPriority
+decl_stmt|;
+DECL|method|ApplicationCreatedEvent (ApplicationId appId, String name, String type, String user, String queue, long submittedTime, long createdTime, Set<String> appTags, boolean unmanagedApplication, Priority applicationPriority)
 specifier|public
 name|ApplicationCreatedEvent
 parameter_list|(
@@ -134,6 +157,9 @@ name|appTags
 parameter_list|,
 name|boolean
 name|unmanagedApplication
+parameter_list|,
+name|Priority
+name|applicationPriority
 parameter_list|)
 block|{
 name|super
@@ -192,6 +218,12 @@ operator|.
 name|unmanagedApplication
 operator|=
 name|unmanagedApplication
+expr_stmt|;
+name|this
+operator|.
+name|applicationPriority
+operator|=
+name|applicationPriority
 expr_stmt|;
 block|}
 annotation|@
@@ -290,6 +322,16 @@ parameter_list|()
 block|{
 return|return
 name|unmanagedApplication
+return|;
+block|}
+DECL|method|getApplicationPriority ()
+specifier|public
+name|Priority
+name|getApplicationPriority
+parameter_list|()
+block|{
+return|return
+name|applicationPriority
 return|;
 block|}
 block|}
