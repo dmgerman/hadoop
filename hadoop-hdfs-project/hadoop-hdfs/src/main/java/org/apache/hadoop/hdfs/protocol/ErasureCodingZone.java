@@ -18,22 +18,6 @@ name|protocol
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
-name|ECSchema
-import|;
-end_import
-
 begin_comment
 comment|/**  * Information about the EC Zone at the specified path.  */
 end_comment
@@ -49,28 +33,20 @@ specifier|private
 name|String
 name|dir
 decl_stmt|;
-DECL|field|schema
+DECL|field|ecPolicy
 specifier|private
-name|ECSchema
-name|schema
+name|ErasureCodingPolicy
+name|ecPolicy
 decl_stmt|;
-DECL|field|cellSize
-specifier|private
-name|int
-name|cellSize
-decl_stmt|;
-DECL|method|ErasureCodingZone (String dir, ECSchema schema, int cellSize)
+DECL|method|ErasureCodingZone (String dir, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|ErasureCodingZone
 parameter_list|(
 name|String
 name|dir
 parameter_list|,
-name|ECSchema
-name|schema
-parameter_list|,
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 block|{
 name|this
@@ -81,15 +57,9 @@ name|dir
 expr_stmt|;
 name|this
 operator|.
-name|schema
+name|ecPolicy
 operator|=
-name|schema
-expr_stmt|;
-name|this
-operator|.
-name|cellSize
-operator|=
-name|cellSize
+name|ecPolicy
 expr_stmt|;
 block|}
 comment|/**    * Get directory of the EC zone.    *     * @return    */
@@ -103,26 +73,15 @@ return|return
 name|dir
 return|;
 block|}
-comment|/**    * Get the schema for the EC Zone    *     * @return    */
-DECL|method|getSchema ()
+comment|/**    * Get the erasure coding policy for the EC Zone    *     * @return    */
+DECL|method|getErasureCodingPolicy ()
 specifier|public
-name|ECSchema
-name|getSchema
+name|ErasureCodingPolicy
+name|getErasureCodingPolicy
 parameter_list|()
 block|{
 return|return
-name|schema
-return|;
-block|}
-comment|/**    * Get cellSize for the EC Zone    */
-DECL|method|getCellSize ()
-specifier|public
-name|int
-name|getCellSize
-parameter_list|()
-block|{
-return|return
-name|cellSize
+name|ecPolicy
 return|;
 block|}
 annotation|@
@@ -139,13 +98,9 @@ operator|+
 name|getDir
 argument_list|()
 operator|+
-literal|", Schema: "
+literal|", Policy: "
 operator|+
-name|schema
-operator|+
-literal|", cellSize: "
-operator|+
-name|cellSize
+name|ecPolicy
 return|;
 block|}
 block|}

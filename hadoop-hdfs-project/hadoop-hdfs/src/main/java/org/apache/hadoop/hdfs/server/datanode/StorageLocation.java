@@ -231,7 +231,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Unsupported URI schema in "
+literal|"Unsupported URI ecPolicy in "
 operator|+
 name|uri
 argument_list|)

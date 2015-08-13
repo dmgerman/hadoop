@@ -2332,6 +2332,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|ErasureCodingPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|EncryptionZone
 import|;
 end_import
@@ -3838,22 +3854,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
-name|ECSchema
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ipc
 operator|.
 name|RetriableException
@@ -4852,11 +4852,11 @@ specifier|final
 name|CacheManager
 name|cacheManager
 decl_stmt|;
-DECL|field|ecSchemaManager
+DECL|field|ecPolicyManager
 specifier|private
 specifier|final
-name|ErasureCodingSchemaManager
-name|ecSchemaManager
+name|ErasureCodingPolicyManager
+name|ecPolicyManager
 decl_stmt|;
 DECL|field|datanodeStatistics
 specifier|private
@@ -5315,7 +5315,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|ecSchemaManager
+name|ecPolicyManager
 operator|.
 name|clear
 argument_list|()
@@ -6442,10 +6442,10 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|ecSchemaManager
+name|ecPolicyManager
 operator|=
 operator|new
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 argument_list|()
 expr_stmt|;
 name|this
@@ -18844,12 +18844,12 @@ name|iip
 argument_list|)
 decl_stmt|;
 specifier|final
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 name|ecZone
 operator|.
-name|getSchema
+name|getErasureCodingPolicy
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -18859,7 +18859,7 @@ init|=
 operator|(
 name|short
 operator|)
-name|ecSchema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
@@ -18871,7 +18871,7 @@ init|=
 operator|(
 name|short
 operator|)
-name|ecSchema
+name|ecPolicy
 operator|.
 name|getNumParityUnits
 argument_list|()
@@ -18904,12 +18904,7 @@ name|BlockInfoStriped
 argument_list|(
 name|commitBlock
 argument_list|,
-name|ecSchema
-argument_list|,
-name|ecZone
-operator|.
-name|getCellSize
-argument_list|()
+name|ecPolicy
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -30983,15 +30978,15 @@ return|return
 name|cacheManager
 return|;
 block|}
-comment|/** @return the ErasureCodingSchemaManager. */
-DECL|method|getErasureCodingSchemaManager ()
+comment|/** @return the ErasureCodingPolicyManager. */
+DECL|method|getErasureCodingPolicyManager ()
 specifier|public
-name|ErasureCodingSchemaManager
-name|getErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
+name|getErasureCodingPolicyManager
 parameter_list|()
 block|{
 return|return
-name|ecSchemaManager
+name|ecPolicyManager
 return|;
 block|}
 comment|/** @return the ErasureCodingZoneManager. */
@@ -34970,8 +34965,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create an erasure coding zone on directory src.    * @param srcArg  the path of a directory which will be the root of the    *                erasure coding zone. The directory must be empty.    * @param schema  ECSchema for the erasure coding zone    * @param cellSize Cell size of stripe     * @throws AccessControlException  if the caller is not the superuser.    * @throws UnresolvedLinkException if the path can't be resolved.    * @throws SafeModeException       if the Namenode is in safe mode.    */
-DECL|method|createErasureCodingZone (final String srcArg, final ECSchema schema, int cellSize, final boolean logRetryCache)
+comment|/**    * Create an erasure coding zone on directory src.    * @param srcArg  the path of a directory which will be the root of the    *                erasure coding zone. The directory must be empty.    * @param ecPolicy  erasure coding policy for the erasure coding zone    * @throws AccessControlException  if the caller is not the superuser.    * @throws UnresolvedLinkException if the path can't be resolved.    * @throws SafeModeException       if the Namenode is in safe mode.    */
+DECL|method|createErasureCodingZone (final String srcArg, final ErasureCodingPolicy ecPolicy, final boolean logRetryCache)
 name|void
 name|createErasureCodingZone
 parameter_list|(
@@ -34980,11 +34975,8 @@ name|String
 name|srcArg
 parameter_list|,
 specifier|final
-name|ECSchema
-name|schema
-parameter_list|,
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|,
 specifier|final
 name|boolean
@@ -35048,9 +35040,7 @@ name|this
 argument_list|,
 name|srcArg
 argument_list|,
-name|schema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|,
 name|logRetryCache
 argument_list|)
@@ -35140,11 +35130,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get available erasure coding schemas    */
-DECL|method|getErasureCodingSchemas ()
-name|ECSchema
+comment|/**    * Get available erasure coding polices    */
+DECL|method|getErasureCodingPolicies ()
+name|ErasureCodingPolicy
 index|[]
-name|getErasureCodingSchemas
+name|getErasureCodingPolicies
 parameter_list|()
 throws|throws
 name|IOException
@@ -35174,60 +35164,9 @@ expr_stmt|;
 return|return
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingSchemas
+name|getErasureCodingPolicies
 argument_list|(
 name|this
-argument_list|)
-return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Get the ECSchema specified by the name    */
-DECL|method|getErasureCodingSchema (String schemaName)
-name|ECSchema
-name|getErasureCodingSchema
-parameter_list|(
-name|String
-name|schemaName
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|checkOperation
-argument_list|(
-name|OperationCategory
-operator|.
-name|READ
-argument_list|)
-expr_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|checkOperation
-argument_list|(
-name|OperationCategory
-operator|.
-name|READ
-argument_list|)
-expr_stmt|;
-return|return
-name|FSDirErasureCodingOp
-operator|.
-name|getErasureCodingSchema
-argument_list|(
-name|this
-argument_list|,
-name|schemaName
 argument_list|)
 return|;
 block|}

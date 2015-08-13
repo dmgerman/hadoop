@@ -104,7 +104,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 import|;
 end_import
 
@@ -152,11 +152,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -392,8 +392,6 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 comment|/* Verify files under the zone are striped */
@@ -494,8 +492,6 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 name|fail
@@ -566,8 +562,6 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 name|fs
@@ -597,8 +591,6 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 name|fail
@@ -654,8 +646,6 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 name|fail
@@ -748,8 +738,6 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 name|fs
@@ -765,8 +753,6 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -1014,8 +1000,6 @@ argument_list|(
 name|testDir
 argument_list|,
 literal|null
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -1107,10 +1091,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testGetErasureCodingInfoWithSystemDefaultSchema ()
+DECL|method|testGetErasureCodingInfoWithSystemDefaultECPolicy ()
 specifier|public
 name|void
-name|testGetErasureCodingInfoWithSystemDefaultSchema
+name|testGetErasureCodingInfoWithSystemDefaultECPolicy
 parameter_list|()
 throws|throws
 name|Exception
@@ -1155,7 +1139,7 @@ argument_list|(
 name|src
 argument_list|)
 operator|.
-name|getECSchema
+name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1170,24 +1154,22 @@ argument_list|(
 name|src
 argument_list|,
 literal|null
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 comment|//Default one will be used.
-name|ECSchema
-name|sysDefaultSchema
+name|ErasureCodingPolicy
+name|sysDefaultECPolicy
 init|=
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 operator|.
-name|getSystemDefaultSchema
+name|getSystemDefaultPolicy
 argument_list|()
 decl_stmt|;
 name|verifyErasureCodingInfo
 argument_list|(
 name|src
 argument_list|,
-name|sysDefaultSchema
+name|sysDefaultECPolicy
 argument_list|)
 expr_stmt|;
 name|fs
@@ -1213,7 +1195,7 @@ name|src
 operator|+
 literal|"/child1"
 argument_list|,
-name|sysDefaultSchema
+name|sysDefaultECPolicy
 argument_list|)
 expr_stmt|;
 block|}
@@ -1227,30 +1209,30 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|ECSchema
+name|ErasureCodingPolicy
 index|[]
-name|sysSchemas
+name|sysECPolicies
 init|=
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 operator|.
-name|getSystemSchemas
+name|getSystemPolices
 argument_list|()
 decl_stmt|;
 name|assertTrue
 argument_list|(
-literal|"System schemas should be of only 1 for now"
+literal|"System ecPolicies should be of only 1 for now"
 argument_list|,
-name|sysSchemas
+name|sysECPolicies
 operator|.
 name|length
 operator|==
 literal|1
 argument_list|)
 expr_stmt|;
-name|ECSchema
-name|usingSchema
+name|ErasureCodingPolicy
+name|usingECPolicy
 init|=
-name|sysSchemas
+name|sysECPolicies
 index|[
 literal|0
 index|]
@@ -1295,7 +1277,7 @@ argument_list|(
 name|src
 argument_list|)
 operator|.
-name|getECSchema
+name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1309,16 +1291,14 @@ name|createErasureCodingZone
 argument_list|(
 name|src
 argument_list|,
-name|usingSchema
-argument_list|,
-literal|0
+name|usingECPolicy
 argument_list|)
 expr_stmt|;
 name|verifyErasureCodingInfo
 argument_list|(
 name|src
 argument_list|,
-name|usingSchema
+name|usingECPolicy
 argument_list|)
 expr_stmt|;
 name|fs
@@ -1344,11 +1324,11 @@ name|src
 operator|+
 literal|"/child1"
 argument_list|,
-name|usingSchema
+name|usingECPolicy
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyErasureCodingInfo ( String src, ECSchema usingSchema)
+DECL|method|verifyErasureCodingInfo ( String src, ErasureCodingPolicy usingECPolicy)
 specifier|private
 name|void
 name|verifyErasureCodingInfo
@@ -1356,8 +1336,8 @@ parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|ECSchema
-name|usingSchema
+name|ErasureCodingPolicy
+name|usingECPolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -1375,26 +1355,26 @@ argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
-name|ECSchema
-name|schema
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 name|hdfsFileStatus
 operator|.
-name|getECSchema
+name|getErasureCodingPolicy
 argument_list|()
 decl_stmt|;
 name|assertNotNull
 argument_list|(
-name|schema
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Actually used schema should be equal with target schema"
+literal|"Actually used ecPolicy should be equal with target ecPolicy"
 argument_list|,
-name|usingSchema
+name|usingECPolicy
 argument_list|,
-name|schema
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}

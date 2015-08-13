@@ -86,13 +86,6 @@ name|CODEC_NAME_KEY
 init|=
 literal|"codec"
 decl_stmt|;
-comment|/**    * A friendly and understandable name that can mean what's it, also serves as    * the identifier that distinguish it from other schemas.    */
-DECL|field|schemaName
-specifier|private
-specifier|final
-name|String
-name|schemaName
-decl_stmt|;
 comment|/**    * The erasure codec name associated.    */
 DECL|field|codecName
 specifier|private
@@ -126,14 +119,11 @@ name|String
 argument_list|>
 name|extraOptions
 decl_stmt|;
-comment|/**    * Constructor with schema name and provided all options. Note the options may    * contain additional information for the erasure codec to interpret further.    * @param schemaName schema name    * @param allOptions all schema options    */
-DECL|method|ECSchema (String schemaName, Map<String, String> allOptions)
+comment|/**    * Constructor with schema name and provided all options. Note the options may    * contain additional information for the erasure codec to interpret further.    * @param allOptions all schema options    */
+DECL|method|ECSchema (Map<String, String> allOptions)
 specifier|public
 name|ECSchema
 parameter_list|(
-name|String
-name|schemaName
-parameter_list|,
 name|Map
 argument_list|<
 name|String
@@ -143,25 +133,6 @@ argument_list|>
 name|allOptions
 parameter_list|)
 block|{
-assert|assert
-operator|(
-name|schemaName
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|schemaName
-operator|.
-name|isEmpty
-argument_list|()
-operator|)
-assert|;
-name|this
-operator|.
-name|schemaName
-operator|=
-name|schemaName
-expr_stmt|;
 if|if
 condition|(
 name|allOptions
@@ -298,14 +269,11 @@ name|allOptions
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor with key parameters provided.    * @param schemaName schema name    * @param codecName codec name    * @param numDataUnits number of data units used in the schema    * @param numParityUnits number os parity units used in the schema    */
-DECL|method|ECSchema (String schemaName, String codecName, int numDataUnits, int numParityUnits)
+comment|/**    * Constructor with key parameters provided.    * @param codecName codec name    * @param numDataUnits number of data units used in the schema    * @param numParityUnits number os parity units used in the schema    */
+DECL|method|ECSchema (String codecName, int numDataUnits, int numParityUnits)
 specifier|public
 name|ECSchema
 parameter_list|(
-name|String
-name|schemaName
-parameter_list|,
 name|String
 name|codecName
 parameter_list|,
@@ -318,8 +286,6 @@ parameter_list|)
 block|{
 name|this
 argument_list|(
-name|schemaName
-argument_list|,
 name|codecName
 argument_list|,
 name|numDataUnits
@@ -330,14 +296,11 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor with key parameters provided. Note the extraOptions may contain    * additional information for the erasure codec to interpret further.    * @param schemaName schema name    * @param codecName codec name    * @param numDataUnits number of data units used in the schema    * @param numParityUnits number os parity units used in the schema    * @param extraOptions extra options to configure the codec    */
-DECL|method|ECSchema (String schemaName, String codecName, int numDataUnits, int numParityUnits, Map<String, String> extraOptions)
+comment|/**    * Constructor with key parameters provided. Note the extraOptions may contain    * additional information for the erasure codec to interpret further.    * @param codecName codec name    * @param numDataUnits number of data units used in the schema    * @param numParityUnits number os parity units used in the schema    * @param extraOptions extra options to configure the codec    */
+DECL|method|ECSchema (String codecName, int numDataUnits, int numParityUnits, Map<String, String> extraOptions)
 specifier|public
 name|ECSchema
 parameter_list|(
-name|String
-name|schemaName
-parameter_list|,
 name|String
 name|codecName
 parameter_list|,
@@ -358,19 +321,6 @@ parameter_list|)
 block|{
 assert|assert
 operator|(
-name|schemaName
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|schemaName
-operator|.
-name|isEmpty
-argument_list|()
-operator|)
-assert|;
-assert|assert
-operator|(
 name|codecName
 operator|!=
 literal|null
@@ -393,12 +343,6 @@ operator|>
 literal|0
 operator|)
 assert|;
-name|this
-operator|.
-name|schemaName
-operator|=
-name|schemaName
-expr_stmt|;
 name|this
 operator|.
 name|codecName
@@ -548,17 +492,6 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Get the schema name    * @return schema name    */
-DECL|method|getSchemaName ()
-specifier|public
-name|String
-name|getSchemaName
-parameter_list|()
-block|{
-return|return
-name|schemaName
-return|;
-block|}
 comment|/**    * Get the codec name    * @return codec name    */
 DECL|method|getCodecName ()
 specifier|public
@@ -626,17 +559,6 @@ argument_list|(
 literal|"ECSchema=["
 argument_list|)
 decl_stmt|;
-name|sb
-operator|.
-name|append
-argument_list|(
-literal|"Name="
-operator|+
-name|schemaName
-operator|+
-literal|", "
-argument_list|)
-expr_stmt|;
 name|sb
 operator|.
 name|append
@@ -827,23 +749,6 @@ block|}
 if|if
 condition|(
 operator|!
-name|schemaName
-operator|.
-name|equals
-argument_list|(
-name|ecSchema
-operator|.
-name|schemaName
-argument_list|)
-condition|)
-block|{
-return|return
-literal|false
-return|;
-block|}
-if|if
-condition|(
-operator|!
 name|codecName
 operator|.
 name|equals
@@ -880,22 +785,11 @@ block|{
 name|int
 name|result
 init|=
-name|schemaName
-operator|.
-name|hashCode
-argument_list|()
-decl_stmt|;
-name|result
-operator|=
-literal|31
-operator|*
-name|result
-operator|+
 name|codecName
 operator|.
 name|hashCode
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|result
 operator|=
 literal|31

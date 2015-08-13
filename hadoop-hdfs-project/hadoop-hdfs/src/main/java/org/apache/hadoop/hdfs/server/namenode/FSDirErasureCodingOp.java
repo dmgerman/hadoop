@@ -82,6 +82,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|ErasureCodingPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|ErasureCodingZone
 import|;
 end_import
@@ -102,22 +118,6 @@ name|HdfsFileStatus
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
-name|ECSchema
-import|;
-end_import
-
 begin_comment
 comment|/**  * Helper class to perform erasure coding related operations.  */
 end_comment
@@ -134,8 +134,8 @@ specifier|private
 name|FSDirErasureCodingOp
 parameter_list|()
 block|{}
-comment|/**    * Create an erasure coding zone on directory src.    *    * @param fsn namespace    * @param srcArg the path of a directory which will be the root of the    *          erasure coding zone. The directory must be empty.    * @param schema ECSchema for the erasure coding zone    * @param cellSize Cell size of stripe    * @param logRetryCache whether to record RPC ids in editlog for retry    *          cache rebuilding    * @return {@link HdfsFileStatus}    * @throws IOException    */
-DECL|method|createErasureCodingZone (final FSNamesystem fsn, final String srcArg, final ECSchema schema, final int cellSize, final boolean logRetryCache)
+comment|/**    * Create an erasure coding zone on directory src.    *    * @param fsn namespace    * @param srcArg the path of a directory which will be the root of the    *          erasure coding zone. The directory must be empty.    * @param ecPolicy erasure coding policy for the erasure coding zone    * @param logRetryCache whether to record RPC ids in editlog for retry    *          cache rebuilding    * @return {@link HdfsFileStatus}    * @throws IOException    */
+DECL|method|createErasureCodingZone (final FSNamesystem fsn, final String srcArg, final ErasureCodingPolicy ecPolicy, final boolean logRetryCache)
 specifier|static
 name|HdfsFileStatus
 name|createErasureCodingZone
@@ -149,12 +149,8 @@ name|String
 name|srcArg
 parameter_list|,
 specifier|final
-name|ECSchema
-name|schema
-parameter_list|,
-specifier|final
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|,
 specifier|final
 name|boolean
@@ -262,9 +258,7 @@ name|createErasureCodingZone
 argument_list|(
 name|iip
 argument_list|,
-name|schema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}
@@ -409,7 +403,7 @@ name|srcArg
 argument_list|)
 decl_stmt|;
 return|return
-name|getErasureCodingSchemaForPath
+name|getErasureCodingPolicyForPath
 argument_list|(
 name|fsn
 argument_list|,
@@ -437,7 +431,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|getErasureCodingSchema
+name|getErasureCodingPolicy
 argument_list|(
 name|fsn
 argument_list|,
@@ -447,11 +441,11 @@ operator|!=
 literal|null
 return|;
 block|}
-comment|/**    * Get erasure coding schema.    *    * @param fsn namespace    * @param iip inodes in the path containing the file    * @return {@link ECSchema}    * @throws IOException    */
-DECL|method|getErasureCodingSchema (final FSNamesystem fsn, final INodesInPath iip)
+comment|/**    * Get the erasure coding policy.    *    * @param fsn namespace    * @param iip inodes in the path containing the file    * @return {@link ErasureCodingPolicy}    * @throws IOException    */
+DECL|method|getErasureCodingPolicy (final FSNamesystem fsn, final INodesInPath iip)
 specifier|static
-name|ECSchema
-name|getErasureCodingSchema
+name|ErasureCodingPolicy
+name|getErasureCodingPolicy
 parameter_list|(
 specifier|final
 name|FSNamesystem
@@ -471,7 +465,7 @@ name|hasReadLock
 argument_list|()
 assert|;
 return|return
-name|getErasureCodingSchemaForPath
+name|getErasureCodingPolicyForPath
 argument_list|(
 name|fsn
 argument_list|,
@@ -479,12 +473,12 @@ name|iip
 argument_list|)
 return|;
 block|}
-comment|/**    * Get available erasure coding schemas.    *    * @param fsn namespace    * @return {@link ECSchema} array    */
-DECL|method|getErasureCodingSchemas (final FSNamesystem fsn)
+comment|/**    * Get available erasure coding polices.    *    * @param fsn namespace    * @return {@link ErasureCodingPolicy} array    */
+DECL|method|getErasureCodingPolicies (final FSNamesystem fsn)
 specifier|static
-name|ECSchema
+name|ErasureCodingPolicy
 index|[]
-name|getErasureCodingSchemas
+name|getErasureCodingPolicies
 parameter_list|(
 specifier|final
 name|FSNamesystem
@@ -502,46 +496,11 @@ assert|;
 return|return
 name|fsn
 operator|.
-name|getErasureCodingSchemaManager
+name|getErasureCodingPolicyManager
 argument_list|()
 operator|.
-name|getSchemas
+name|getPolicies
 argument_list|()
-return|;
-block|}
-comment|/**    * Get the ECSchema specified by the name.    *    * @param fsn namespace    * @param schemaName schema name    * @return {@link ECSchema}    */
-DECL|method|getErasureCodingSchema (final FSNamesystem fsn, final String schemaName)
-specifier|static
-name|ECSchema
-name|getErasureCodingSchema
-parameter_list|(
-specifier|final
-name|FSNamesystem
-name|fsn
-parameter_list|,
-specifier|final
-name|String
-name|schemaName
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-assert|assert
-name|fsn
-operator|.
-name|hasReadLock
-argument_list|()
-assert|;
-return|return
-name|fsn
-operator|.
-name|getErasureCodingSchemaManager
-argument_list|()
-operator|.
-name|getSchema
-argument_list|(
-name|schemaName
-argument_list|)
 return|;
 block|}
 DECL|method|getINodesInPath (final FSNamesystem fsn, final String srcArg)
@@ -705,11 +664,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getErasureCodingSchemaForPath (final FSNamesystem fsn, final INodesInPath iip)
+DECL|method|getErasureCodingPolicyForPath (final FSNamesystem fsn, final INodesInPath iip)
 specifier|private
 specifier|static
-name|ECSchema
-name|getErasureCodingSchemaForPath
+name|ErasureCodingPolicy
+name|getErasureCodingPolicyForPath
 parameter_list|(
 specifier|final
 name|FSNamesystem
@@ -744,7 +703,7 @@ operator|.
 name|getErasureCodingZoneManager
 argument_list|()
 operator|.
-name|getErasureCodingSchema
+name|getErasureCodingPolicy
 argument_list|(
 name|iip
 argument_list|)

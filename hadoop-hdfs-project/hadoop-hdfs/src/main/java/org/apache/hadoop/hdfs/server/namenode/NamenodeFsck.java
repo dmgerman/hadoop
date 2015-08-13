@@ -3777,7 +3777,7 @@ if|if
 condition|(
 name|file
 operator|.
-name|getECSchema
+name|getErasureCodingPolicy
 argument_list|()
 operator|!=
 literal|null
@@ -7113,10 +7113,10 @@ name|ErasureCodingResult
 extends|extends
 name|Result
 block|{
-DECL|field|defaultSchema
+DECL|field|defaultECPolicy
 specifier|final
 name|String
-name|defaultSchema
+name|defaultECPolicy
 decl_stmt|;
 DECL|method|ErasureCodingResult (Configuration conf)
 name|ErasureCodingResult
@@ -7125,14 +7125,14 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|defaultSchema
+name|defaultECPolicy
 operator|=
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 operator|.
-name|getSystemDefaultSchema
+name|getSystemDefaultPolicy
 argument_list|()
 operator|.
-name|getSchemaName
+name|getName
 argument_list|()
 expr_stmt|;
 block|}
@@ -7682,12 +7682,12 @@ name|res
 operator|.
 name|append
 argument_list|(
-literal|"\n Default schema:\t\t"
+literal|"\n Default ecPolicy:\t\t"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|defaultSchema
+name|defaultECPolicy
 argument_list|)
 operator|.
 name|append

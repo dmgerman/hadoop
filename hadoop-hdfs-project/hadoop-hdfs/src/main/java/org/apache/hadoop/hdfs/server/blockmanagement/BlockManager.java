@@ -1042,11 +1042,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -5054,8 +5054,8 @@ name|hasReadLock
 argument_list|()
 assert|;
 specifier|final
-name|ECSchema
-name|schema
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 name|ecZone
 operator|!=
@@ -5063,25 +5063,10 @@ literal|null
 condition|?
 name|ecZone
 operator|.
-name|getSchema
+name|getErasureCodingPolicy
 argument_list|()
 else|:
 literal|null
-decl_stmt|;
-specifier|final
-name|int
-name|cellSize
-init|=
-name|ecZone
-operator|!=
-literal|null
-condition|?
-name|ecZone
-operator|.
-name|getCellSize
-argument_list|()
-else|:
-literal|0
 decl_stmt|;
 if|if
 condition|(
@@ -5126,9 +5111,7 @@ literal|false
 argument_list|,
 name|feInfo
 argument_list|,
-name|schema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|)
 return|;
 block|}
@@ -5295,9 +5278,7 @@ name|isComplete
 argument_list|,
 name|feInfo
 argument_list|,
-name|schema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|)
 return|;
 block|}
@@ -8120,7 +8101,7 @@ name|blockLog
 operator|.
 name|warn
 argument_list|(
-literal|"No EC schema found for the file {}. "
+literal|"No erasure coding policy found for the file {}. "
 operator|+
 literal|"So cannot proceed for recovery"
 argument_list|,
@@ -8173,12 +8154,7 @@ name|liveBlockIndicies
 argument_list|,
 name|ecZone
 operator|.
-name|getSchema
-argument_list|()
-argument_list|,
-name|ecZone
-operator|.
-name|getCellSize
+name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;

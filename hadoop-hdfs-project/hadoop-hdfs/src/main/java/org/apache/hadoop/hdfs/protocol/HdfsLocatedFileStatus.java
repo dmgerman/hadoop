@@ -128,22 +128,6 @@ name|DFSUtilClient
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
-name|ECSchema
-import|;
-end_import
-
 begin_comment
 comment|/**   * Interface that represents the over the wire information  * including block locations for a file.  */
 end_comment
@@ -171,7 +155,7 @@ name|LocatedBlocks
 name|locations
 decl_stmt|;
 comment|/**    * Constructor    *     * @param length size    * @param isdir if this is directory    * @param block_replication the file's replication factor    * @param blocksize the file's block size    * @param modification_time most recent modification time    * @param access_time most recent access time    * @param permission permission    * @param owner owner    * @param group group    * @param symlink symbolic link    * @param path local path name in java UTF8 format     * @param fileId the file id    * @param locations block locations    * @param feInfo file encryption info    */
-DECL|method|HdfsLocatedFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, LocatedBlocks locations, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy, ECSchema schema, int stripeCellSize)
+DECL|method|HdfsLocatedFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, LocatedBlocks locations, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|HdfsLocatedFileStatus
 parameter_list|(
@@ -225,11 +209,8 @@ parameter_list|,
 name|byte
 name|storagePolicy
 parameter_list|,
-name|ECSchema
-name|schema
-parameter_list|,
-name|int
-name|stripeCellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 block|{
 name|super
@@ -264,9 +245,7 @@ name|feInfo
 argument_list|,
 name|storagePolicy
 argument_list|,
-name|schema
-argument_list|,
-name|stripeCellSize
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 name|this

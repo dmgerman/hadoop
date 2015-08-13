@@ -42,6 +42,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|ErasureCodingPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|erasurecode
@@ -71,7 +87,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This manages EC schemas predefined and activated in the system.  * It loads customized schemas and syncs with persisted ones in  * NameNode image.  *  * This class is instantiated by the FSNamesystem.  */
+comment|/**  * This manages erasure coding policies predefined and activated in the system.  * It loads customized policies and syncs with persisted ones in  * NameNode image.  *  * This class is instantiated by the FSNamesystem.  */
 end_comment
 
 begin_class
@@ -84,11 +100,11 @@ block|{
 literal|"HDFS"
 block|}
 argument_list|)
-DECL|class|ErasureCodingSchemaManager
+DECL|class|ErasureCodingPolicyManager
 specifier|public
 specifier|final
 class|class
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 block|{
 comment|/**    * TODO: HDFS-8095    */
 DECL|field|DEFAULT_DATA_BLOCKS
@@ -109,6 +125,17 @@ name|DEFAULT_PARITY_BLOCKS
 init|=
 literal|3
 decl_stmt|;
+DECL|field|DEFAULT_CELLSIZE
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_CELLSIZE
+init|=
+literal|64
+operator|*
+literal|1024
+decl_stmt|;
 DECL|field|DEFAULT_CODEC_NAME
 specifier|private
 specifier|static
@@ -118,14 +145,14 @@ name|DEFAULT_CODEC_NAME
 init|=
 literal|"rs"
 decl_stmt|;
-DECL|field|DEFAULT_SCHEMA_NAME
+DECL|field|DEFAULT_POLICY_NAME
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|DEFAULT_SCHEMA_NAME
+name|DEFAULT_POLICY_NAME
 init|=
-literal|"RS-6-3"
+literal|"RS-6-3-64k"
 decl_stmt|;
 DECL|field|SYS_DEFAULT_SCHEMA
 specifier|private
@@ -137,8 +164,6 @@ init|=
 operator|new
 name|ECSchema
 argument_list|(
-name|DEFAULT_SCHEMA_NAME
-argument_list|,
 name|DEFAULT_CODEC_NAME
 argument_list|,
 name|DEFAULT_DATA_BLOCKS
@@ -146,163 +171,134 @@ argument_list|,
 name|DEFAULT_PARITY_BLOCKS
 argument_list|)
 decl_stmt|;
-comment|//We may add more later.
-DECL|field|SYS_SCHEMAS
+DECL|field|SYS_DEFAULT_POLICY
 specifier|private
 specifier|static
-name|ECSchema
-index|[]
-name|SYS_SCHEMAS
+specifier|final
+name|ErasureCodingPolicy
+name|SYS_DEFAULT_POLICY
 init|=
 operator|new
-name|ECSchema
+name|ErasureCodingPolicy
+argument_list|(
+name|DEFAULT_POLICY_NAME
+argument_list|,
+name|SYS_DEFAULT_SCHEMA
+argument_list|,
+name|DEFAULT_CELLSIZE
+argument_list|)
+decl_stmt|;
+comment|//We may add more later.
+DECL|field|SYS_POLICY
+specifier|private
+specifier|static
+name|ErasureCodingPolicy
+index|[]
+name|SYS_POLICY
+init|=
+operator|new
+name|ErasureCodingPolicy
 index|[]
 block|{
-name|SYS_DEFAULT_SCHEMA
+name|SYS_DEFAULT_POLICY
 block|}
 decl_stmt|;
-comment|/**    * All active EC activeSchemas maintained in NN memory for fast querying,    * identified and sorted by its name.    */
-DECL|field|activeSchemas
+comment|/**    * All active policies maintained in NN memory for fast querying,    * identified and sorted by its name.    */
+DECL|field|activePolicies
 specifier|private
 specifier|final
 name|Map
 argument_list|<
 name|String
 argument_list|,
-name|ECSchema
+name|ErasureCodingPolicy
 argument_list|>
-name|activeSchemas
+name|activePolicies
 decl_stmt|;
-DECL|method|ErasureCodingSchemaManager ()
-name|ErasureCodingSchemaManager
+DECL|method|ErasureCodingPolicyManager ()
+name|ErasureCodingPolicyManager
 parameter_list|()
 block|{
 name|this
 operator|.
-name|activeSchemas
+name|activePolicies
 operator|=
 operator|new
 name|TreeMap
-argument_list|<
-name|String
-argument_list|,
-name|ECSchema
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 for|for
 control|(
-name|ECSchema
-name|schema
+name|ErasureCodingPolicy
+name|policy
 range|:
-name|SYS_SCHEMAS
+name|SYS_POLICY
 control|)
 block|{
-name|activeSchemas
+name|activePolicies
 operator|.
 name|put
 argument_list|(
-name|schema
+name|policy
 operator|.
-name|getSchemaName
+name|getName
 argument_list|()
 argument_list|,
-name|schema
+name|policy
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * TODO: HDFS-7859 persist into NameNode      * load persistent schemas from image and editlog, which is done only once      * during NameNode startup. This can be done here or in a separate method.      */
+comment|/**      * TODO: HDFS-7859 persist into NameNode      * load persistent policies from image and editlog, which is done only once      * during NameNode startup. This can be done here or in a separate method.      */
 block|}
-comment|/**    * Get system defined schemas.    * @return system schemas    */
-DECL|method|getSystemSchemas ()
+comment|/**    * Get system defined policies.    * @return system policies    */
+DECL|method|getSystemPolices ()
 specifier|public
 specifier|static
-name|ECSchema
+name|ErasureCodingPolicy
 index|[]
-name|getSystemSchemas
+name|getSystemPolices
 parameter_list|()
 block|{
 return|return
-name|SYS_SCHEMAS
+name|SYS_POLICY
 return|;
 block|}
-comment|/**    * Get system-wide default EC schema, which can be used by default when no    * schema is specified for an EC zone.    * @return schema    */
-DECL|method|getSystemDefaultSchema ()
+comment|/**    * Get system-wide default policy, which can be used by default    * when no policy is specified for an EC zone.    * @return ecPolicy    */
+DECL|method|getSystemDefaultPolicy ()
 specifier|public
 specifier|static
-name|ECSchema
-name|getSystemDefaultSchema
+name|ErasureCodingPolicy
+name|getSystemDefaultPolicy
 parameter_list|()
 block|{
 return|return
-name|SYS_DEFAULT_SCHEMA
+name|SYS_DEFAULT_POLICY
 return|;
 block|}
-comment|/**    * Tell the specified schema is the system default one or not.    * @param schema    * @return true if it's the default false otherwise    */
-DECL|method|isSystemDefault (ECSchema schema)
+comment|/**    * Get all policies that's available to use.    * @return all policies    */
+DECL|method|getPolicies ()
 specifier|public
-specifier|static
-name|boolean
-name|isSystemDefault
-parameter_list|(
-name|ECSchema
-name|schema
-parameter_list|)
-block|{
-if|if
-condition|(
-name|schema
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Invalid schema parameter"
-argument_list|)
-throw|;
-block|}
-comment|// schema name is the identifier.
-return|return
-name|SYS_DEFAULT_SCHEMA
-operator|.
-name|getSchemaName
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|schema
-operator|.
-name|getSchemaName
-argument_list|()
-argument_list|)
-return|;
-block|}
-comment|/**    * Get all EC schemas that's available to use.    * @return all EC schemas    */
-DECL|method|getSchemas ()
-specifier|public
-name|ECSchema
+name|ErasureCodingPolicy
 index|[]
-name|getSchemas
+name|getPolicies
 parameter_list|()
 block|{
-name|ECSchema
+name|ErasureCodingPolicy
 index|[]
 name|results
 init|=
 operator|new
-name|ECSchema
+name|ErasureCodingPolicy
 index|[
-name|activeSchemas
+name|activePolicies
 operator|.
 name|size
 argument_list|()
 index|]
 decl_stmt|;
 return|return
-name|activeSchemas
+name|activePolicies
 operator|.
 name|values
 argument_list|()
@@ -313,22 +309,22 @@ name|results
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the EC schema specified by the schema name.    * @param schemaName    * @return EC schema specified by the schema name    */
-DECL|method|getSchema (String schemaName)
+comment|/**    * Get the policy specified by the policy name.    */
+DECL|method|getPolicy (String name)
 specifier|public
-name|ECSchema
-name|getSchema
+name|ErasureCodingPolicy
+name|getPolicy
 parameter_list|(
 name|String
-name|schemaName
+name|name
 parameter_list|)
 block|{
 return|return
-name|activeSchemas
+name|activePolicies
 operator|.
 name|get
 argument_list|(
-name|schemaName
+name|name
 argument_list|)
 return|;
 block|}
@@ -339,7 +335,7 @@ name|void
 name|clear
 parameter_list|()
 block|{
-name|activeSchemas
+name|activePolicies
 operator|.
 name|clear
 argument_list|()

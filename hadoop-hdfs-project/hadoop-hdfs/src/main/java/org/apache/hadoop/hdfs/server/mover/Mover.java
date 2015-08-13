@@ -454,11 +454,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -1344,7 +1344,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|newDBlock (LocatedBlock lb, List<MLocation> locations, ECSchema ecSchema)
+DECL|method|newDBlock (LocatedBlock lb, List<MLocation> locations, ErasureCodingPolicy ecPolicy)
 name|DBlock
 name|newDBlock
 parameter_list|(
@@ -1357,8 +1357,8 @@ name|MLocation
 argument_list|>
 name|locations
 parameter_list|,
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 block|{
 name|Block
@@ -1452,7 +1452,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-name|ecSchema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
@@ -2332,12 +2332,12 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 specifier|final
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 name|status
 operator|.
-name|getECSchema
+name|getErasureCodingPolicy
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -2480,7 +2480,7 @@ name|diff
 argument_list|,
 name|lb
 argument_list|,
-name|ecSchema
+name|ecPolicy
 argument_list|)
 condition|)
 block|{
@@ -2513,7 +2513,7 @@ return|return
 name|hasRemaining
 return|;
 block|}
-DECL|method|scheduleMoves4Block (StorageTypeDiff diff, LocatedBlock lb, ECSchema ecSchema)
+DECL|method|scheduleMoves4Block (StorageTypeDiff diff, LocatedBlock lb, ErasureCodingPolicy ecPolicy)
 name|boolean
 name|scheduleMoves4Block
 parameter_list|(
@@ -2523,8 +2523,8 @@ parameter_list|,
 name|LocatedBlock
 name|lb
 parameter_list|,
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 block|{
 specifier|final
@@ -2569,7 +2569,7 @@ name|lb
 argument_list|,
 name|locations
 argument_list|,
-name|ecSchema
+name|ecPolicy
 argument_list|)
 decl_stmt|;
 for|for

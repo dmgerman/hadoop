@@ -348,11 +348,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -968,8 +968,8 @@ name|policyName
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create the ErasureCoding zone    *    * @param path    *          Directory to create the ErasureCoding zone    * @param schema    *          ECSchema for the zone. If not specified default will be used.    * @param cellSize    *          Cellsize for the striped ErasureCoding    * @throws IOException    */
-DECL|method|createErasureCodingZone (final Path path, final ECSchema schema, final int cellSize)
+comment|/**    * Create the ErasureCoding zone    *    * @param path Directory to create the ErasureCoding zone    * @param ecPolicy erasure coding policy for the zone. If null, the default will be used.    * @throws IOException    */
+DECL|method|createErasureCodingZone (final Path path, final ErasureCodingPolicy ecPolicy)
 specifier|public
 name|void
 name|createErasureCodingZone
@@ -979,12 +979,8 @@ name|Path
 name|path
 parameter_list|,
 specifier|final
-name|ECSchema
-name|schema
-parameter_list|,
-specifier|final
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -995,9 +991,7 @@ name|createErasureCodingZone
 argument_list|(
 name|path
 argument_list|,
-name|schema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}
@@ -1023,12 +1017,12 @@ name|path
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the ErasureCoding schemas supported.    *    * @return ECSchemas    * @throws IOException    */
-DECL|method|getECSchemas ()
+comment|/**    * Get the ErasureCoding policies supported.    *    * @throws IOException    */
+DECL|method|getErasureCodingPolicies ()
 specifier|public
-name|ECSchema
+name|ErasureCodingPolicy
 index|[]
-name|getECSchemas
+name|getErasureCodingPolicies
 parameter_list|()
 throws|throws
 name|IOException
@@ -1039,7 +1033,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|getECSchemas
+name|getErasureCodingPolicies
 argument_list|()
 return|;
 block|}

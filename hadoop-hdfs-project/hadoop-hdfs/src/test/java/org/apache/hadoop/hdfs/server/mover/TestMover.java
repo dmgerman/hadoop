@@ -3236,8 +3236,6 @@ argument_list|(
 name|barDir
 argument_list|,
 literal|null
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 comment|// write file to barDir

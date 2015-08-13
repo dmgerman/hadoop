@@ -646,8 +646,6 @@ argument_list|(
 literal|"/eczone"
 argument_list|,
 literal|null
-argument_list|,
-name|cellSize
 argument_list|)
 expr_stmt|;
 block|}

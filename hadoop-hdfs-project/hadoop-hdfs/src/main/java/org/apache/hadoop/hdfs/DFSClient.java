@@ -2174,11 +2174,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -6737,17 +6737,17 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|ECSchema
-name|schema
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 name|locatedBlocks
 operator|.
-name|getECSchema
+name|getErasureCodingPolicy
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|schema
+name|ecPolicy
 operator|!=
 literal|null
 condition|)
@@ -6762,12 +6762,7 @@ name|src
 argument_list|,
 name|verifyChecksum
 argument_list|,
-name|schema
-argument_list|,
-name|locatedBlocks
-operator|.
-name|getStripeCellSize
-argument_list|()
+name|ecPolicy
 argument_list|,
 name|locatedBlocks
 argument_list|)
@@ -13974,7 +13969,7 @@ name|traceSampler
 argument_list|)
 return|;
 block|}
-DECL|method|createErasureCodingZone (String src, ECSchema schema, int cellSize)
+DECL|method|createErasureCodingZone (String src, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|void
 name|createErasureCodingZone
@@ -13982,11 +13977,8 @@ parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|ECSchema
-name|schema
-parameter_list|,
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -14012,9 +14004,7 @@ name|createErasureCodingZone
 argument_list|(
 name|src
 argument_list|,
-name|schema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}
@@ -14694,11 +14684,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getECSchemas ()
+DECL|method|getErasureCodingPolicies ()
 specifier|public
-name|ECSchema
+name|ErasureCodingPolicy
 index|[]
-name|getECSchemas
+name|getErasureCodingPolicies
 parameter_list|()
 throws|throws
 name|IOException
@@ -14713,7 +14703,7 @@ name|Trace
 operator|.
 name|startSpan
 argument_list|(
-literal|"getECSchemas"
+literal|"getErasureCodingPolicies"
 argument_list|,
 name|traceSampler
 argument_list|)
@@ -14723,7 +14713,7 @@ block|{
 return|return
 name|namenode
 operator|.
-name|getECSchemas
+name|getErasureCodingPolicies
 argument_list|()
 return|;
 block|}

@@ -194,11 +194,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -1504,7 +1504,7 @@ operator|-
 name|parityBlkNum
 return|;
 block|}
-comment|/**    * Decode based on the given input buffers and schema.    */
+comment|/**    * Decode based on the given input buffers and erasure coding policy.    */
 DECL|method|decodeAndFillBuffer (final byte[][] decodeInputs, AlignedStripe alignedStripe, int dataBlkNum, int parityBlkNum, RawErasureDecoder decoder)
 specifier|public
 specifier|static
@@ -1716,15 +1716,15 @@ block|}
 block|}
 block|}
 comment|/**    * Similar functionality with {@link #divideByteRangeIntoStripes}, but is used    * by stateful read and uses ByteBuffer as reading target buffer. Besides the    * read range is within a single stripe thus the calculation logic is simpler.    */
-DECL|method|divideOneStripe (ECSchema ecSchema, int cellSize, LocatedStripedBlock blockGroup, long rangeStartInBlockGroup, long rangeEndInBlockGroup, ByteBuffer buf)
+DECL|method|divideOneStripe (ErasureCodingPolicy ecPolicy, int cellSize, LocatedStripedBlock blockGroup, long rangeStartInBlockGroup, long rangeEndInBlockGroup, ByteBuffer buf)
 specifier|public
 specifier|static
 name|AlignedStripe
 index|[]
 name|divideOneStripe
 parameter_list|(
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|,
 name|int
 name|cellSize
@@ -1746,7 +1746,7 @@ specifier|final
 name|int
 name|dataBlkNum
 init|=
-name|ecSchema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
@@ -1758,7 +1758,7 @@ name|cells
 init|=
 name|getStripingCellsOfByteRange
 argument_list|(
-name|ecSchema
+name|ecPolicy
 argument_list|,
 name|cellSize
 argument_list|,
@@ -1776,7 +1776,7 @@ name|ranges
 init|=
 name|getRangesForInternalBlocks
 argument_list|(
-name|ecSchema
+name|ecPolicy
 argument_list|,
 name|cellSize
 argument_list|,
@@ -1790,7 +1790,7 @@ name|stripes
 init|=
 name|mergeRangesForInternalBlocks
 argument_list|(
-name|ecSchema
+name|ecPolicy
 argument_list|,
 name|ranges
 argument_list|)
@@ -2006,16 +2006,16 @@ return|return
 name|stripes
 return|;
 block|}
-comment|/**    * This method divides a requested byte range into an array of inclusive    * {@link AlignedStripe}.    * @param ecSchema The codec schema for the file, which carries the numbers    *                 of data / parity blocks    * @param cellSize Cell size of stripe    * @param blockGroup The striped block group    * @param rangeStartInBlockGroup The byte range's start offset in block group    * @param rangeEndInBlockGroup The byte range's end offset in block group    * @param buf Destination buffer of the read operation for the byte range    * @param offsetInBuf Start offset into the destination buffer    *    * At most 5 stripes will be generated from each logical range, as    * demonstrated in the header of {@link AlignedStripe}.    */
-DECL|method|divideByteRangeIntoStripes (ECSchema ecSchema, int cellSize, LocatedStripedBlock blockGroup, long rangeStartInBlockGroup, long rangeEndInBlockGroup, byte[] buf, int offsetInBuf)
+comment|/**    * This method divides a requested byte range into an array of inclusive    * {@link AlignedStripe}.    * @param ecPolicy The codec policy for the file, which carries the numbers    *                 of data / parity blocks    * @param cellSize Cell size of stripe    * @param blockGroup The striped block group    * @param rangeStartInBlockGroup The byte range's start offset in block group    * @param rangeEndInBlockGroup The byte range's end offset in block group    * @param buf Destination buffer of the read operation for the byte range    * @param offsetInBuf Start offset into the destination buffer    *    * At most 5 stripes will be generated from each logical range, as    * demonstrated in the header of {@link AlignedStripe}.    */
+DECL|method|divideByteRangeIntoStripes (ErasureCodingPolicy ecPolicy, int cellSize, LocatedStripedBlock blockGroup, long rangeStartInBlockGroup, long rangeEndInBlockGroup, byte[] buf, int offsetInBuf)
 specifier|public
 specifier|static
 name|AlignedStripe
 index|[]
 name|divideByteRangeIntoStripes
 parameter_list|(
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|,
 name|int
 name|cellSize
@@ -2042,7 +2042,7 @@ specifier|final
 name|int
 name|dataBlkNum
 init|=
-name|ecSchema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
@@ -2054,7 +2054,7 @@ name|cells
 init|=
 name|getStripingCellsOfByteRange
 argument_list|(
-name|ecSchema
+name|ecPolicy
 argument_list|,
 name|cellSize
 argument_list|,
@@ -2072,7 +2072,7 @@ name|ranges
 init|=
 name|getRangesForInternalBlocks
 argument_list|(
-name|ecSchema
+name|ecPolicy
 argument_list|,
 name|cellSize
 argument_list|,
@@ -2086,7 +2086,7 @@ name|stripes
 init|=
 name|mergeRangesForInternalBlocks
 argument_list|(
-name|ecSchema
+name|ecPolicy
 argument_list|,
 name|ranges
 argument_list|)
@@ -2124,15 +2124,15 @@ block|}
 comment|/**    * Map the logical byte range to a set of inclusive {@link StripingCell}    * instances, each representing the overlap of the byte range to a cell    * used by {@link DFSStripedOutputStream} in encoding    */
 annotation|@
 name|VisibleForTesting
-DECL|method|getStripingCellsOfByteRange (ECSchema ecSchema, int cellSize, LocatedStripedBlock blockGroup, long rangeStartInBlockGroup, long rangeEndInBlockGroup)
+DECL|method|getStripingCellsOfByteRange (ErasureCodingPolicy ecPolicy, int cellSize, LocatedStripedBlock blockGroup, long rangeStartInBlockGroup, long rangeEndInBlockGroup)
 specifier|private
 specifier|static
 name|StripingCell
 index|[]
 name|getStripingCellsOfByteRange
 parameter_list|(
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|,
 name|int
 name|cellSize
@@ -2258,7 +2258,7 @@ operator|=
 operator|new
 name|StripingCell
 argument_list|(
-name|ecSchema
+name|ecPolicy
 argument_list|,
 name|firstCellSize
 argument_list|,
@@ -2299,7 +2299,7 @@ operator|=
 operator|new
 name|StripingCell
 argument_list|(
-name|ecSchema
+name|ecPolicy
 argument_list|,
 name|lastCellSize
 argument_list|,
@@ -2334,7 +2334,7 @@ operator|=
 operator|new
 name|StripingCell
 argument_list|(
-name|ecSchema
+name|ecPolicy
 argument_list|,
 name|cellSize
 argument_list|,
@@ -2353,15 +2353,15 @@ block|}
 comment|/**    * Given a logical byte range, mapped to each {@link StripingCell}, calculate    * the physical byte range (inclusive) on each stored internal block.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|getRangesForInternalBlocks (ECSchema ecSchema, int cellSize, StripingCell[] cells)
+DECL|method|getRangesForInternalBlocks (ErasureCodingPolicy ecPolicy, int cellSize, StripingCell[] cells)
 specifier|private
 specifier|static
 name|VerticalRange
 index|[]
 name|getRangesForInternalBlocks
 parameter_list|(
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|,
 name|int
 name|cellSize
@@ -2374,7 +2374,7 @@ block|{
 name|int
 name|dataBlkNum
 init|=
-name|ecSchema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
@@ -2382,7 +2382,7 @@ decl_stmt|;
 name|int
 name|parityBlkNum
 init|=
-name|ecSchema
+name|ecPolicy
 operator|.
 name|getNumParityUnits
 argument_list|()
@@ -2571,15 +2571,15 @@ name|ranges
 return|;
 block|}
 comment|/**    * Merge byte ranges on each internal block into a set of inclusive    * {@link AlignedStripe} instances.    */
-DECL|method|mergeRangesForInternalBlocks ( ECSchema ecSchema, VerticalRange[] ranges)
+DECL|method|mergeRangesForInternalBlocks ( ErasureCodingPolicy ecPolicy, VerticalRange[] ranges)
 specifier|private
 specifier|static
 name|AlignedStripe
 index|[]
 name|mergeRangesForInternalBlocks
 parameter_list|(
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|,
 name|VerticalRange
 index|[]
@@ -2589,7 +2589,7 @@ block|{
 name|int
 name|dataBlkNum
 init|=
-name|ecSchema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
@@ -2597,7 +2597,7 @@ decl_stmt|;
 name|int
 name|parityBlkNum
 init|=
-name|ecSchema
+name|ecPolicy
 operator|.
 name|getNumParityUnits
 argument_list|()
@@ -3039,10 +3039,10 @@ specifier|static
 class|class
 name|StripingCell
 block|{
-DECL|field|schema
+DECL|field|ecPolicy
 specifier|final
-name|ECSchema
-name|schema
+name|ErasureCodingPolicy
+name|ecPolicy
 decl_stmt|;
 comment|/** Logical order in a block group, used when doing I/O to a block group */
 DECL|field|idxInBlkGroup
@@ -3071,11 +3071,11 @@ specifier|final
 name|int
 name|size
 decl_stmt|;
-DECL|method|StripingCell (ECSchema ecSchema, int cellSize, int idxInBlkGroup, int offset)
+DECL|method|StripingCell (ErasureCodingPolicy ecPolicy, int cellSize, int idxInBlkGroup, int offset)
 name|StripingCell
 parameter_list|(
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|,
 name|int
 name|cellSize
@@ -3089,9 +3089,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|schema
+name|ecPolicy
 operator|=
-name|ecSchema
+name|ecPolicy
 expr_stmt|;
 name|this
 operator|.
@@ -3105,7 +3105,7 @@ name|idxInInternalBlk
 operator|=
 name|idxInBlkGroup
 operator|/
-name|ecSchema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
@@ -3120,7 +3120,7 @@ name|this
 operator|.
 name|idxInInternalBlk
 operator|*
-name|ecSchema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()

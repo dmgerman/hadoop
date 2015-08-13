@@ -102,11 +102,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -208,27 +208,22 @@ init|=
 literal|0
 decl_stmt|;
 comment|/**    * Constructor with null storage targets.    */
-DECL|method|BlockInfoUnderConstructionStriped (Block blk, ECSchema schema, int cellSize)
+DECL|method|BlockInfoUnderConstructionStriped (Block blk, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|BlockInfoUnderConstructionStriped
 parameter_list|(
 name|Block
 name|blk
 parameter_list|,
-name|ECSchema
-name|schema
-parameter_list|,
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 block|{
 name|this
 argument_list|(
 name|blk
 argument_list|,
-name|schema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|,
 name|UNDER_CONSTRUCTION
 argument_list|,
@@ -237,18 +232,15 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a striped block that is currently being constructed.    */
-DECL|method|BlockInfoUnderConstructionStriped (Block blk, ECSchema schema, int cellSize, BlockUCState state, DatanodeStorageInfo[] targets)
+DECL|method|BlockInfoUnderConstructionStriped (Block blk, ErasureCodingPolicy ecPolicy, BlockUCState state, DatanodeStorageInfo[] targets)
 specifier|public
 name|BlockInfoUnderConstructionStriped
 parameter_list|(
 name|Block
 name|blk
 parameter_list|,
-name|ECSchema
-name|schema
-parameter_list|,
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|,
 name|BlockUCState
 name|state
@@ -262,9 +254,7 @@ name|super
 argument_list|(
 name|blk
 argument_list|,
-name|schema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 assert|assert

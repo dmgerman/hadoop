@@ -277,7 +277,7 @@ name|CLIENT_NAMENODE_PROTOCOL_NAME
 init|=
 literal|"org.apache.hadoop.hdfs.protocol.ClientProtocol"
 decl_stmt|;
-comment|/*    * These values correspond to the values used by the system default erasure    * coding schema.    * TODO: to be removed once all places use schema.    */
+comment|/*    * These values correspond to the values used by the system default erasure    * coding policy.    * TODO: get these values from ec policy of the associated INodeFile    */
 DECL|field|NUM_DATA_BLOCKS
 specifier|public
 specifier|static

@@ -1056,11 +1056,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -11065,8 +11065,8 @@ name|lastReadTxid
 argument_list|)
 return|;
 block|}
-comment|/**    * Create the erasurecoding zone    *     * @param path Directory to create the ec zone    * @param schema ECSchema for the zone. If not specified default will be used.    * @param cellSize Cellsize for the striped erasure coding    * @throws IOException    */
-DECL|method|createErasureCodingZone (final Path path, final ECSchema schema, final int cellSize)
+comment|/**    * Create the erasurecoding zone    *     * @param path Directory to create the ec zone    * @param ecPolicy erasure coding policy for the zone. If not specified default will be used.    * @throws IOException    */
+DECL|method|createErasureCodingZone (final Path path, final ErasureCodingPolicy ecPolicy)
 specifier|public
 name|void
 name|createErasureCodingZone
@@ -11076,12 +11076,8 @@ name|Path
 name|path
 parameter_list|,
 specifier|final
-name|ECSchema
-name|schema
-parameter_list|,
-specifier|final
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -11125,9 +11121,7 @@ argument_list|(
 name|p
 argument_list|)
 argument_list|,
-name|schema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 return|return
@@ -11172,9 +11166,7 @@ name|createErasureCodingZone
 argument_list|(
 name|p
 argument_list|,
-name|schema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 return|return

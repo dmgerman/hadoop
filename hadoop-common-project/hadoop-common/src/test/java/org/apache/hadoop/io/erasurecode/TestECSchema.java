@@ -74,11 +74,6 @@ name|void
 name|testGoodSchema
 parameter_list|()
 block|{
-name|String
-name|schemaName
-init|=
-literal|"goodSchema"
-decl_stmt|;
 name|int
 name|numDataUnits
 init|=
@@ -179,8 +174,6 @@ init|=
 operator|new
 name|ECSchema
 argument_list|(
-name|schemaName
-argument_list|,
 name|options
 argument_list|)
 decl_stmt|;
@@ -193,16 +186,6 @@ argument_list|(
 name|schema
 operator|.
 name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-name|schemaName
-argument_list|,
-name|schema
-operator|.
-name|getSchemaName
 argument_list|()
 argument_list|)
 expr_stmt|;

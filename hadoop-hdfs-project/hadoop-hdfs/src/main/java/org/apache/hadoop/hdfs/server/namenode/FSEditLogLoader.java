@@ -6593,12 +6593,7 @@ name|newBlock
 argument_list|,
 name|ecZone
 operator|.
-name|getSchema
-argument_list|()
-argument_list|,
-name|ecZone
-operator|.
-name|getCellSize
+name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7102,12 +7097,7 @@ name|newBlock
 argument_list|,
 name|ecZone
 operator|.
-name|getSchema
-argument_list|()
-argument_list|,
-name|ecZone
-operator|.
-name|getCellSize
+name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7135,7 +7125,6 @@ comment|// OP_CLOSE should add finalized blocks. This code path
 comment|// is only executed when loading edits written by prior
 comment|// versions of Hadoop. Current versions always log
 comment|// OP_ADD operations as each block is allocated.
-comment|// TODO: ECSchema can be restored from persisted file (HDFS-7859).
 if|if
 condition|(
 name|isStriped
@@ -7148,14 +7137,9 @@ name|BlockInfoStriped
 argument_list|(
 name|newBlock
 argument_list|,
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 operator|.
-name|getSystemDefaultSchema
-argument_list|()
-argument_list|,
-name|ecZone
-operator|.
-name|getCellSize
+name|getSystemDefaultPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;

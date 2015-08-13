@@ -80,11 +80,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -118,17 +118,11 @@ name|BlockInfoStriped
 extends|extends
 name|BlockInfo
 block|{
-DECL|field|schema
+DECL|field|ecPolicy
 specifier|private
 specifier|final
-name|ECSchema
-name|schema
-decl_stmt|;
-DECL|field|cellSize
-specifier|private
-specifier|final
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 decl_stmt|;
 comment|/**    * Always the same size with triplets. Record the block index for each triplet    * TODO: actually this is only necessary for over-replicated block. Thus can    * be further optimized to save memory usage.    */
 DECL|field|indices
@@ -137,18 +131,15 @@ name|byte
 index|[]
 name|indices
 decl_stmt|;
-DECL|method|BlockInfoStriped (Block blk, ECSchema schema, int cellSize)
+DECL|method|BlockInfoStriped (Block blk, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|BlockInfoStriped
 parameter_list|(
 name|Block
 name|blk
 parameter_list|,
-name|ECSchema
-name|schema
-parameter_list|,
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 block|{
 name|super
@@ -159,12 +150,12 @@ call|(
 name|short
 call|)
 argument_list|(
-name|schema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
 operator|+
-name|schema
+name|ecPolicy
 operator|.
 name|getNumParityUnits
 argument_list|()
@@ -176,12 +167,12 @@ operator|=
 operator|new
 name|byte
 index|[
-name|schema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
 operator|+
-name|schema
+name|ecPolicy
 operator|.
 name|getNumParityUnits
 argument_list|()
@@ -192,15 +183,9 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|schema
+name|ecPolicy
 operator|=
-name|schema
-expr_stmt|;
-name|this
-operator|.
-name|cellSize
-operator|=
-name|cellSize
+name|ecPolicy
 expr_stmt|;
 block|}
 DECL|method|BlockInfoStriped (BlockInfoStriped b)
@@ -216,12 +201,7 @@ name|b
 argument_list|,
 name|b
 operator|.
-name|getSchema
-argument_list|()
-argument_list|,
-name|b
-operator|.
-name|getCellSize
+name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -247,16 +227,12 @@ call|(
 name|short
 call|)
 argument_list|(
-name|this
-operator|.
-name|schema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
 operator|+
-name|this
-operator|.
-name|schema
+name|ecPolicy
 operator|.
 name|getNumParityUnits
 argument_list|()
@@ -273,9 +249,7 @@ return|return
 operator|(
 name|short
 operator|)
-name|this
-operator|.
-name|schema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
@@ -291,15 +265,13 @@ return|return
 operator|(
 name|short
 operator|)
-name|this
-operator|.
-name|schema
+name|ecPolicy
 operator|.
 name|getNumParityUnits
 argument_list|()
 return|;
 block|}
-comment|/**    * If the block is committed/completed and its length is less than a full    * stripe, it returns the the number of actual data blocks.    * Otherwise it returns the number of data units specified by schema.    */
+comment|/**    * If the block is committed/completed and its length is less than a full    * stripe, it returns the the number of actual data blocks.    * Otherwise it returns the number of data units specified by erasure coding policy.    */
 DECL|method|getRealDataBlockNum ()
 specifier|public
 name|short
@@ -370,24 +342,14 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|getSchema ()
+DECL|method|getErasureCodingPolicy ()
 specifier|public
-name|ECSchema
-name|getSchema
+name|ErasureCodingPolicy
+name|getErasureCodingPolicy
 parameter_list|()
 block|{
 return|return
-name|schema
-return|;
-block|}
-DECL|method|getCellSize ()
-specifier|public
-name|int
-name|getCellSize
-parameter_list|()
-block|{
-return|return
-name|cellSize
+name|ecPolicy
 return|;
 block|}
 DECL|method|initIndices ()
@@ -1079,16 +1041,12 @@ argument_list|(
 name|getNumBytes
 argument_list|()
 argument_list|,
-name|this
-operator|.
-name|schema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
 argument_list|,
-name|this
-operator|.
-name|schema
+name|ecPolicy
 operator|.
 name|getNumParityUnits
 argument_list|()
@@ -1211,9 +1169,7 @@ name|BlockInfoUnderConstructionStriped
 argument_list|(
 name|this
 argument_list|,
-name|schema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|,
 name|s
 argument_list|,

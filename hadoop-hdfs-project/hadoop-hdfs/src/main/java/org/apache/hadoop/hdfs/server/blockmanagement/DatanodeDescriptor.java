@@ -452,11 +452,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -2789,7 +2789,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Store block erasure coding work.    */
-DECL|method|addBlockToBeErasureCoded (ExtendedBlock block, DatanodeDescriptor[] sources, DatanodeStorageInfo[] targets, short[] liveBlockIndices, ECSchema ecSchema, int cellSize)
+DECL|method|addBlockToBeErasureCoded (ExtendedBlock block, DatanodeDescriptor[] sources, DatanodeStorageInfo[] targets, short[] liveBlockIndices, ErasureCodingPolicy ecPolicy)
 name|void
 name|addBlockToBeErasureCoded
 parameter_list|(
@@ -2808,11 +2808,8 @@ name|short
 index|[]
 name|liveBlockIndices
 parameter_list|,
-name|ECSchema
-name|ecSchema
-parameter_list|,
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 block|{
 assert|assert
@@ -2846,9 +2843,7 @@ name|targets
 argument_list|,
 name|liveBlockIndices
 argument_list|,
-name|ecSchema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|)
 decl_stmt|;
 name|erasurecodeBlocks

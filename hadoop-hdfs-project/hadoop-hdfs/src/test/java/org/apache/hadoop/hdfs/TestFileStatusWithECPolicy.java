@@ -116,7 +116,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 import|;
 end_import
 
@@ -128,11 +128,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -167,10 +167,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestFileStatusWithECschema
+DECL|class|TestFileStatusWithECPolicy
 specifier|public
 class|class
-name|TestFileStatusWithECschema
+name|TestFileStatusWithECPolicy
 block|{
 DECL|field|cluster
 specifier|private
@@ -261,10 +261,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testFileStatusWithECschema ()
+DECL|method|testFileStatusWithECPolicy ()
 specifier|public
 name|void
-name|testFileStatusWithECschema
+name|testFileStatusWithECPolicy
 parameter_list|()
 throws|throws
 name|Exception
@@ -307,7 +307,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|getECSchema
+name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -346,7 +346,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|getECSchema
+name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -360,12 +360,12 @@ literal|true
 argument_list|)
 expr_stmt|;
 specifier|final
-name|ECSchema
-name|schema1
+name|ErasureCodingPolicy
+name|ecPolicy1
 init|=
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 operator|.
-name|getSystemDefaultSchema
+name|getSystemDefaultPolicy
 argument_list|()
 decl_stmt|;
 comment|// create EC zone on dir
@@ -375,14 +375,12 @@ name|createErasureCodingZone
 argument_list|(
 name|dir
 argument_list|,
-name|schema1
-argument_list|,
-literal|0
+name|ecPolicy1
 argument_list|)
 expr_stmt|;
 specifier|final
-name|ECSchema
-name|schame2
+name|ErasureCodingPolicy
+name|ecPolicy2
 init|=
 name|client
 operator|.
@@ -397,21 +395,21 @@ name|getPath
 argument_list|()
 argument_list|)
 operator|.
-name|getECSchema
+name|getErasureCodingPolicy
 argument_list|()
 decl_stmt|;
 name|assertNotNull
 argument_list|(
-name|schame2
+name|ecPolicy2
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|schema1
+name|ecPolicy1
 operator|.
 name|equals
 argument_list|(
-name|schame2
+name|ecPolicy2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -427,8 +425,8 @@ name|close
 argument_list|()
 expr_stmt|;
 specifier|final
-name|ECSchema
-name|schame3
+name|ErasureCodingPolicy
+name|ecPolicy3
 init|=
 name|fs
 operator|.
@@ -446,21 +444,21 @@ name|getPath
 argument_list|()
 argument_list|)
 operator|.
-name|getECSchema
+name|getErasureCodingPolicy
 argument_list|()
 decl_stmt|;
 name|assertNotNull
 argument_list|(
-name|schame3
+name|ecPolicy3
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|schema1
+name|ecPolicy1
 operator|.
 name|equals
 argument_list|(
-name|schame3
+name|ecPolicy3
 argument_list|)
 argument_list|)
 expr_stmt|;

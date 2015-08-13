@@ -4913,26 +4913,6 @@ name|DFS_REJECT_UNRESOLVED_DN_TOPOLOGY_MAPPING_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-DECL|field|DFS_CLIENT_STRIPED_READ_THREADPOOL_MAX_SIZE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_CLIENT_STRIPED_READ_THREADPOOL_MAX_SIZE
-init|=
-literal|"dfs.client.striped.read.threadpool.size"
-decl_stmt|;
-comment|// With default 3+2 schema, each normal read could span 3 DNs. So this
-comment|// default value accommodates 6 read streams
-DECL|field|DFS_CLIENT_STRIPED_READ_THREADPOOL_MAX_DEFAULT_SIZE
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DFS_CLIENT_STRIPED_READ_THREADPOOL_MAX_DEFAULT_SIZE
-init|=
-literal|18
-decl_stmt|;
 comment|// Slow io warning log threshold settings for dfsclient and datanode.
 DECL|field|DFS_DATANODE_SLOW_IO_WARNING_THRESHOLD_KEY
 specifier|public

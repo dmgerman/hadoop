@@ -216,22 +216,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|namenode
@@ -248,11 +232,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -337,13 +321,13 @@ name|factory
 operator|.
 name|addClass
 argument_list|(
-name|ListECSchemas
+name|ListPolicies
 operator|.
 name|class
 argument_list|,
 literal|"-"
 operator|+
-name|ListECSchemas
+name|ListPolicies
 operator|.
 name|NAME
 argument_list|)
@@ -434,7 +418,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create EC encoding zone command. Zones are created to use specific EC    * encoding schema, other than default while encoding the files under some    * specific directory.    */
+comment|/**    * A command to create an EC zone for a path, with a erasure coding policy name.    */
 DECL|class|CreateECZoneCommand
 specifier|static
 class|class
@@ -458,7 +442,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-s<schemaName>] [-c<cellSize>]<path>"
+literal|"[-s<policyName>]<path>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -467,44 +451,27 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Create a zone to encode files using a specified schema\n"
+literal|"Create a zone to encode files using a specified policy\n"
 operator|+
 literal|"Options :\n"
 operator|+
-literal|"  -s<schemaName> : EC schema name to encode files. "
+literal|"  -s<policyName> : erasure coding policy name to encode files. "
 operator|+
-literal|"If not passed default schema will be used\n"
-operator|+
-literal|"  -c<cellSize> : cell size to use for striped encoding files."
-operator|+
-literal|" If not passed default cellsize of "
-operator|+
-name|HdfsConstants
-operator|.
-name|BLOCK_STRIPED_CELL_SIZE
-operator|+
-literal|" will be used\n"
+literal|"If not passed the default policy will be used\n"
 operator|+
 literal|"<path>  : Path to an empty directory. Under this directory "
 operator|+
-literal|"files will be encoded using specified schema"
+literal|"files will be encoded using specified erasure coding policy"
 decl_stmt|;
-DECL|field|schemaName
+DECL|field|ecPolicyName
 specifier|private
 name|String
-name|schemaName
+name|ecPolicyName
 decl_stmt|;
-DECL|field|cellSize
+DECL|field|ecPolicy
 specifier|private
-name|int
-name|cellSize
-init|=
-literal|0
-decl_stmt|;
-DECL|field|schema
-specifier|private
-name|ECSchema
-name|schema
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 literal|null
 decl_stmt|;
@@ -524,7 +491,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|schemaName
+name|ecPolicyName
 operator|=
 name|StringUtils
 operator|.
@@ -535,40 +502,6 @@ argument_list|,
 name|args
 argument_list|)
 expr_stmt|;
-name|String
-name|cellSizeStr
-init|=
-name|StringUtils
-operator|.
-name|popOptionWithArgument
-argument_list|(
-literal|"-c"
-argument_list|,
-name|args
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|cellSizeStr
-operator|!=
-literal|null
-condition|)
-block|{
-name|cellSize
-operator|=
-operator|(
-name|int
-operator|)
-name|StringUtils
-operator|.
-name|TraditionalBinaryPrefix
-operator|.
-name|string2long
-argument_list|(
-name|cellSizeStr
-argument_list|)
-expr_stmt|;
-block|}
 if|if
 condition|(
 name|args
@@ -638,54 +571,56 @@ try|try
 block|{
 if|if
 condition|(
-name|schemaName
+name|ecPolicyName
 operator|!=
 literal|null
 condition|)
 block|{
-name|ECSchema
+name|ErasureCodingPolicy
 index|[]
-name|ecSchemas
+name|ecPolicies
 init|=
 name|dfs
 operator|.
 name|getClient
 argument_list|()
 operator|.
-name|getECSchemas
+name|getErasureCodingPolicies
 argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 range|:
-name|ecSchemas
+name|ecPolicies
 control|)
 block|{
 if|if
 condition|(
-name|schemaName
+name|ecPolicyName
 operator|.
 name|equals
 argument_list|(
-name|ecSchema
+name|ecPolicy
 operator|.
-name|getSchemaName
+name|getName
 argument_list|()
 argument_list|)
 condition|)
 block|{
-name|schema
+name|this
+operator|.
+name|ecPolicy
 operator|=
-name|ecSchema
+name|ecPolicy
 expr_stmt|;
 break|break;
 block|}
 block|}
 if|if
 condition|(
-name|schema
+name|ecPolicy
 operator|==
 literal|null
 condition|)
@@ -701,21 +636,21 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"Schema '"
+literal|"Policy '"
 argument_list|)
 expr_stmt|;
 name|sb
 operator|.
 name|append
 argument_list|(
-name|schemaName
+name|ecPolicyName
 argument_list|)
 expr_stmt|;
 name|sb
 operator|.
 name|append
 argument_list|(
-literal|"' does not match any of the supported schemas."
+literal|"' does not match any of the supported policies."
 argument_list|)
 expr_stmt|;
 name|sb
@@ -729,7 +664,7 @@ name|List
 argument_list|<
 name|String
 argument_list|>
-name|schemaNames
+name|ecPolicyNames
 init|=
 operator|new
 name|ArrayList
@@ -740,19 +675,19 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 range|:
-name|ecSchemas
+name|ecPolicies
 control|)
 block|{
-name|schemaNames
+name|ecPolicyNames
 operator|.
 name|add
 argument_list|(
-name|ecSchema
+name|ecPolicy
 operator|.
-name|getSchemaName
+name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -761,7 +696,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-name|schemaNames
+name|ecPolicyNames
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -784,9 +719,7 @@ name|item
 operator|.
 name|path
 argument_list|,
-name|schema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 name|out
@@ -1020,11 +953,11 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * List all supported EC Schemas    */
-DECL|class|ListECSchemas
+comment|/**    * List all supported erasure coding policies    */
+DECL|class|ListPolicies
 specifier|static
 class|class
-name|ListECSchemas
+name|ListPolicies
 extends|extends
 name|ECCommand
 block|{
@@ -1035,7 +968,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"listSchemas"
+literal|"listPolicies"
 decl_stmt|;
 DECL|field|USAGE
 specifier|public
@@ -1053,7 +986,7 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Get the list of ECSchemas supported\n"
+literal|"Get the list of erasure coding policies supported\n"
 decl_stmt|;
 annotation|@
 name|Override
@@ -1124,16 +1057,16 @@ name|DistributedFileSystem
 operator|)
 name|fs
 decl_stmt|;
-name|ECSchema
+name|ErasureCodingPolicy
 index|[]
-name|ecSchemas
+name|ecPolicies
 init|=
 name|dfs
 operator|.
 name|getClient
 argument_list|()
 operator|.
-name|getECSchemas
+name|getErasureCodingPolicies
 argument_list|()
 decl_stmt|;
 name|StringBuilder
@@ -1152,15 +1085,15 @@ while|while
 condition|(
 name|i
 operator|<
-name|ecSchemas
+name|ecPolicies
 operator|.
 name|length
 condition|)
 block|{
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
-name|ecSchemas
+name|ecPolicies
 index|[
 name|i
 index|]
@@ -1169,9 +1102,9 @@ name|sb
 operator|.
 name|append
 argument_list|(
-name|ecSchema
+name|ecPolicy
 operator|.
-name|getSchemaName
+name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1182,7 +1115,7 @@ if|if
 condition|(
 name|i
 operator|<
-name|ecSchemas
+name|ecPolicies
 operator|.
 name|length
 condition|)

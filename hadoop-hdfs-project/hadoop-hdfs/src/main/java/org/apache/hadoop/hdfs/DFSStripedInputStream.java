@@ -296,11 +296,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -799,11 +799,11 @@ specifier|private
 name|ByteBuffer
 name|parityBuf
 decl_stmt|;
-DECL|field|schema
+DECL|field|ecPolicy
 specifier|private
 specifier|final
-name|ECSchema
-name|schema
+name|ErasureCodingPolicy
+name|ecPolicy
 decl_stmt|;
 DECL|field|decoder
 specifier|private
@@ -826,7 +826,7 @@ name|Void
 argument_list|>
 name|readingService
 decl_stmt|;
-DECL|method|DFSStripedInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, ECSchema schema, int cellSize, LocatedBlocks locatedBlocks)
+DECL|method|DFSStripedInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, ErasureCodingPolicy ecPolicy, LocatedBlocks locatedBlocks)
 name|DFSStripedInputStream
 parameter_list|(
 name|DFSClient
@@ -838,11 +838,8 @@ parameter_list|,
 name|boolean
 name|verifyChecksum
 parameter_list|,
-name|ECSchema
-name|schema
-parameter_list|,
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|,
 name|LocatedBlocks
 name|locatedBlocks
@@ -862,28 +859,31 @@ name|locatedBlocks
 argument_list|)
 expr_stmt|;
 assert|assert
-name|schema
+name|ecPolicy
 operator|!=
 literal|null
 assert|;
 name|this
 operator|.
-name|schema
+name|ecPolicy
 operator|=
-name|schema
+name|ecPolicy
 expr_stmt|;
 name|this
 operator|.
 name|cellSize
 operator|=
-name|cellSize
+name|ecPolicy
+operator|.
+name|getCellSize
+argument_list|()
 expr_stmt|;
 name|dataBlkNum
 operator|=
 operator|(
 name|short
 operator|)
-name|schema
+name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
@@ -893,7 +893,7 @@ operator|=
 operator|(
 name|short
 operator|)
-name|schema
+name|ecPolicy
 operator|.
 name|getNumParityUnits
 argument_list|()
@@ -1423,7 +1423,7 @@ name|StripedBlockUtil
 operator|.
 name|divideOneStripe
 argument_list|(
-name|schema
+name|ecPolicy
 argument_list|,
 name|cellSize
 argument_list|,
@@ -2536,7 +2536,7 @@ name|StripedBlockUtil
 operator|.
 name|divideByteRangeIntoStripes
 argument_list|(
-name|schema
+name|ecPolicy
 argument_list|,
 name|cellSize
 argument_list|,

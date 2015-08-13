@@ -1730,7 +1730,7 @@ if|if
 condition|(
 name|stat
 operator|.
-name|getECSchema
+name|getErasureCodingPolicy
 argument_list|()
 operator|!=
 literal|null

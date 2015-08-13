@@ -134,11 +134,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -320,19 +320,13 @@ name|short
 index|[]
 name|liveBlockIndices
 decl_stmt|;
-DECL|field|ecSchema
+DECL|field|ecPolicy
 specifier|private
 specifier|final
-name|ECSchema
-name|ecSchema
+name|ErasureCodingPolicy
+name|ecPolicy
 decl_stmt|;
-DECL|field|cellSize
-specifier|private
-specifier|final
-name|int
-name|cellSize
-decl_stmt|;
-DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeStorageInfo[] targetDnStorageInfo, short[] liveBlockIndices, ECSchema ecSchema, int cellSize)
+DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeStorageInfo[] targetDnStorageInfo, short[] liveBlockIndices, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|BlockECRecoveryInfo
 parameter_list|(
@@ -351,11 +345,8 @@ name|short
 index|[]
 name|liveBlockIndices
 parameter_list|,
-name|ECSchema
-name|ecSchema
-parameter_list|,
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 block|{
 name|this
@@ -387,13 +378,11 @@ argument_list|)
 argument_list|,
 name|liveBlockIndices
 argument_list|,
-name|ecSchema
-argument_list|,
-name|cellSize
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeInfo[] targets, String[] targetStorageIDs, StorageType[] targetStorageTypes, short[] liveBlockIndices, ECSchema ecSchema, int cellSize)
+DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeInfo[] targets, String[] targetStorageIDs, StorageType[] targetStorageTypes, short[] liveBlockIndices, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|BlockECRecoveryInfo
 parameter_list|(
@@ -420,11 +409,8 @@ name|short
 index|[]
 name|liveBlockIndices
 parameter_list|,
-name|ECSchema
-name|ecSchema
-parameter_list|,
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 block|{
 name|this
@@ -465,15 +451,9 @@ name|liveBlockIndices
 expr_stmt|;
 name|this
 operator|.
-name|ecSchema
+name|ecPolicy
 operator|=
-name|ecSchema
-expr_stmt|;
-name|this
-operator|.
-name|cellSize
-operator|=
-name|cellSize
+name|ecPolicy
 expr_stmt|;
 block|}
 DECL|method|getExtendedBlock ()
@@ -541,24 +521,14 @@ return|return
 name|liveBlockIndices
 return|;
 block|}
-DECL|method|getECSchema ()
+DECL|method|getErasureCodingPolicy ()
 specifier|public
-name|ECSchema
-name|getECSchema
+name|ErasureCodingPolicy
+name|getErasureCodingPolicy
 parameter_list|()
 block|{
 return|return
-name|ecSchema
-return|;
-block|}
-DECL|method|getCellSize ()
-specifier|public
-name|int
-name|getCellSize
-parameter_list|()
-block|{
-return|return
-name|cellSize
+name|ecPolicy
 return|;
 block|}
 annotation|@

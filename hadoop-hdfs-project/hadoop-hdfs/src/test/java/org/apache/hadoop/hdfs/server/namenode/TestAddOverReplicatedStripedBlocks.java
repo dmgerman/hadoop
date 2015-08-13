@@ -574,8 +574,6 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|CELLSIZE
 argument_list|)
 expr_stmt|;
 block|}
@@ -1305,12 +1303,10 @@ name|BlockInfoStriped
 argument_list|(
 name|blk
 argument_list|,
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 operator|.
-name|getSystemDefaultSchema
+name|getSystemDefaultPolicy
 argument_list|()
-argument_list|,
-name|CELLSIZE
 argument_list|)
 decl_stmt|;
 for|for

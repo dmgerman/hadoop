@@ -564,22 +564,6 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|erasurecode
-operator|.
-name|ECSchema
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
 name|retry
 operator|.
 name|AtMostOnce
@@ -2480,10 +2464,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create an erasure coding zone with specified schema, if any, otherwise    * default    */
+comment|/**    * Create an erasure coding zone with specified policy, if any, otherwise    * default    */
 annotation|@
 name|AtMostOnce
-DECL|method|createErasureCodingZone (String src, ECSchema schema, int cellSize)
+DECL|method|createErasureCodingZone (String src, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|void
 name|createErasureCodingZone
@@ -2491,23 +2475,20 @@ parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|ECSchema
-name|schema
-parameter_list|,
-name|int
-name|cellSize
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets list of ECSchemas loaded in Namenode    *    * @return Returns the list of ECSchemas loaded at Namenode    * @throws IOException    */
+comment|/**    * Get the erasure coding policies loaded in Namenode    *    * @throws IOException    */
 annotation|@
 name|Idempotent
-DECL|method|getECSchemas ()
+DECL|method|getErasureCodingPolicies ()
 specifier|public
-name|ECSchema
+name|ErasureCodingPolicy
 index|[]
-name|getECSchemas
+name|getErasureCodingPolicies
 parameter_list|()
 throws|throws
 name|IOException

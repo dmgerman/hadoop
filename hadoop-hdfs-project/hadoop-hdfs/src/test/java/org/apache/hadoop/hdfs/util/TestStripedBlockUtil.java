@@ -190,7 +190,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 import|;
 end_import
 
@@ -202,11 +202,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -333,15 +333,15 @@ name|BLK_GROUP_STRIPE_NUM
 init|=
 literal|16
 decl_stmt|;
-DECL|field|SCEHMA
+DECL|field|ECPOLICY
 specifier|private
 specifier|final
-name|ECSchema
-name|SCEHMA
+name|ErasureCodingPolicy
+name|ECPOLICY
 init|=
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 operator|.
-name|getSystemDefaultSchema
+name|getSystemDefaultPolicy
 argument_list|()
 decl_stmt|;
 DECL|field|random
@@ -885,7 +885,7 @@ init|=
 operator|new
 name|StripingCell
 argument_list|(
-name|SCEHMA
+name|ECPOLICY
 argument_list|,
 name|CELLSIZE
 argument_list|,
@@ -1532,7 +1532,7 @@ name|stripes
 init|=
 name|divideByteRangeIntoStripes
 argument_list|(
-name|SCEHMA
+name|ECPOLICY
 argument_list|,
 name|CELLSIZE
 argument_list|,

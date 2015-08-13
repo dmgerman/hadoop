@@ -288,7 +288,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 import|;
 end_import
 
@@ -332,11 +332,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|erasurecode
+name|protocol
 operator|.
-name|ECSchema
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -504,15 +504,15 @@ argument_list|,
 literal|"file"
 argument_list|)
 decl_stmt|;
-DECL|field|schema
+DECL|field|ecPolicy
 specifier|private
 specifier|final
-name|ECSchema
-name|schema
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 operator|.
-name|getSystemDefaultSchema
+name|getSystemDefaultPolicy
 argument_list|()
 decl_stmt|;
 DECL|field|DATA_BLK_NUM
@@ -674,8 +674,6 @@ name|toString
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|CELLSIZE
 argument_list|)
 expr_stmt|;
 block|}
@@ -778,9 +776,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-name|schema
-argument_list|,
-name|CELLSIZE
+name|ecPolicy
 argument_list|,
 literal|null
 argument_list|)
@@ -1227,9 +1223,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-name|schema
-argument_list|,
-name|CELLSIZE
+name|ecPolicy
 argument_list|,
 literal|null
 argument_list|)
@@ -1584,12 +1578,10 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-name|ErasureCodingSchemaManager
+name|ErasureCodingPolicyManager
 operator|.
-name|getSystemDefaultSchema
+name|getSystemDefaultPolicy
 argument_list|()
-argument_list|,
-name|CELLSIZE
 argument_list|,
 literal|null
 argument_list|)
@@ -2341,9 +2333,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-name|schema
-argument_list|,
-name|CELLSIZE
+name|ecPolicy
 argument_list|,
 literal|null
 argument_list|)

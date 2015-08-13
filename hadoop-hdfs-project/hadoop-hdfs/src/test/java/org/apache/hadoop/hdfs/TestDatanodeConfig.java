@@ -466,7 +466,7 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-comment|// 1. Test unsupported schema. Only "file:" is supported.
+comment|// 1. Test unsupported ecPolicy. Only "file:" is supported.
 name|String
 name|dnDir
 init|=
@@ -552,7 +552,7 @@ argument_list|,
 name|dn
 argument_list|)
 expr_stmt|;
-comment|// 2. Test "file:" schema and no schema (path-only). Both should work.
+comment|// 2. Test "file:" ecPolicy and no ecPolicy (path-only). Both should work.
 name|String
 name|dnDir1
 init|=

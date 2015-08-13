@@ -1231,8 +1231,6 @@ argument_list|,
 name|storagePolicy
 argument_list|,
 literal|null
-argument_list|,
-literal|0
 argument_list|)
 return|;
 block|}
@@ -3604,8 +3602,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
-argument_list|,
-literal|0
 argument_list|)
 return|;
 block|}
