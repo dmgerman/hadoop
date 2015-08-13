@@ -3062,6 +3062,8 @@ argument_list|,
 name|containerStatus
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 comment|// Adding to finished containers cache. Cache will keep it around at
 comment|// least for #durationToTrackStoppedContainers duration. In the
 comment|// subsequent call to stop container it will get removed from cache.
@@ -3070,8 +3072,6 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 block|}
 else|else
 block|{
