@@ -579,7 +579,7 @@ DECL|field|rpcProcessingTime
 annotation|@
 name|Metric
 argument_list|(
-literal|"Processsing time"
+literal|"Processing time"
 argument_list|)
 name|MutableRate
 name|rpcProcessingTime
@@ -619,7 +619,7 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
-literal|"Number of authorization sucesses"
+literal|"Number of authorization successes"
 argument_list|)
 DECL|field|rpcAuthorizationSuccesses
 name|MutableCounterLong
@@ -672,7 +672,7 @@ return|;
 block|}
 comment|// Public instrumentation methods that could be extracted to an
 comment|// abstract class if we decide to do custom instrumentation classes a la
-comment|// JobTrackerInstrumenation. The methods with //@Override comment are
+comment|// JobTrackerInstrumentation. The methods with //@Override comment are
 comment|// candidates for abstract methods in a abstract instrumentation class.
 comment|/**    * One authentication failure event    */
 comment|//@Override
