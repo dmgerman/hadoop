@@ -1854,6 +1854,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|util
 operator|.
 name|concurrent
@@ -7678,6 +7692,22 @@ name|nodeState
 parameter_list|)
 block|{
 comment|// rerun previously successful map tasks
+comment|// do this only if the job is still in the running state and there are
+comment|// running reducers
+if|if
+condition|(
+name|getInternalState
+argument_list|()
+operator|==
+name|JobStateInternal
+operator|.
+name|RUNNING
+operator|&&
+operator|!
+name|allReducersComplete
+argument_list|()
+condition|)
+block|{
 name|List
 argument_list|<
 name|TaskAttemptId
@@ -7756,8 +7786,26 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
 comment|// currently running task attempts on unusable nodes are handled in
 comment|// RMContainerAllocator
+block|}
+DECL|method|allReducersComplete ()
+specifier|private
+name|boolean
+name|allReducersComplete
+parameter_list|()
+block|{
+return|return
+name|numReduceTasks
+operator|==
+literal|0
+operator|||
+name|numReduceTasks
+operator|==
+name|getCompletedReduces
+argument_list|()
+return|;
 block|}
 comment|/*   private int getBlockSize() {     String inputClassName = conf.get(MRJobConfig.INPUT_FORMAT_CLASS_ATTR);     if (inputClassName != null) {       Class<?> inputClass - Class.forName(inputClassName);       if (FileInputFormat<K, V>)     }   }   */
 comment|/**     * Get the workflow adjacencies from the job conf     * The string returned is of the form "key"="value" "key"="value" ...     */
@@ -11945,6 +11993,20 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|decrementSucceededMapperCount ()
+name|void
+name|decrementSucceededMapperCount
+parameter_list|()
+block|{
+name|completedTaskCount
+operator|--
+expr_stmt|;
+name|succeededMapTaskCount
+operator|--
+expr_stmt|;
+block|}
 DECL|class|MapTaskRescheduledTransition
 specifier|private
 specifier|static
@@ -11975,13 +12037,8 @@ block|{
 comment|//succeeded map task is restarted back
 name|job
 operator|.
-name|completedTaskCount
-operator|--
-expr_stmt|;
-name|job
-operator|.
-name|succeededMapTaskCount
-operator|--
+name|decrementSucceededMapperCount
+argument_list|()
 expr_stmt|;
 block|}
 block|}
