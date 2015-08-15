@@ -3947,7 +3947,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnRuntimeException
+name|RMContainerAllocationException
 argument_list|(
 literal|"Resource Manager doesn't recognize AttemptId: "
 operator|+
@@ -4047,7 +4047,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnRuntimeException
+name|RMContainerAllocationException
 argument_list|(
 literal|"Could not contact RM after "
 operator|+
