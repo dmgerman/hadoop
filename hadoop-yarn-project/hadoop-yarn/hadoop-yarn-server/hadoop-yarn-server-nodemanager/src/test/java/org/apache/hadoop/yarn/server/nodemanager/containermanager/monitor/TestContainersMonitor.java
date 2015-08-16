@@ -873,7 +873,7 @@ name|setClass
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_CONTAINER_MON_RESOURCE_CALCULATOR
+name|NM_MON_RESOURCE_CALCULATOR
 argument_list|,
 name|LinuxResourceCalculatorPlugin
 operator|.

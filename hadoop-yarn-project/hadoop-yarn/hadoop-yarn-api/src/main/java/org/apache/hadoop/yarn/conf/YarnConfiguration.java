@@ -3623,6 +3623,27 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_NM_WEBAPP_HTTPS_PORT
 decl_stmt|;
+comment|/** How often to monitor resource in a node.*/
+DECL|field|NM_RESOURCE_MON_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_RESOURCE_MON_INTERVAL_MS
+init|=
+name|NM_PREFIX
+operator|+
+literal|"resource-monitor.interval-ms"
+decl_stmt|;
+DECL|field|DEFAULT_NM_RESOURCE_MON_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_RESOURCE_MON_INTERVAL_MS
+init|=
+literal|3000
+decl_stmt|;
 comment|/** How often to monitor containers.*/
 DECL|field|NM_CONTAINER_MON_INTERVAL_MS
 specifier|public
@@ -3635,6 +3656,8 @@ name|NM_PREFIX
 operator|+
 literal|"container-monitor.interval-ms"
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DEFAULT_NM_CONTAINER_MON_INTERVAL_MS
 specifier|public
 specifier|final
@@ -3643,6 +3666,18 @@ name|int
 name|DEFAULT_NM_CONTAINER_MON_INTERVAL_MS
 init|=
 literal|3000
+decl_stmt|;
+comment|/** Class that calculates current resource utilization.*/
+DECL|field|NM_MON_RESOURCE_CALCULATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_MON_RESOURCE_CALCULATOR
+init|=
+name|NM_PREFIX
+operator|+
+literal|"resource-calculator.class"
 decl_stmt|;
 comment|/** Class that calculates containers current resource utilization.*/
 DECL|field|NM_CONTAINER_MON_RESOURCE_CALCULATOR

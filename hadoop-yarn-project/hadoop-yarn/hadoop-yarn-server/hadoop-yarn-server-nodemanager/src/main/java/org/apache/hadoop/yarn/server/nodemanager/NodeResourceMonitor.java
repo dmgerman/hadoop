@@ -34,6 +34,30 @@ name|Service
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceUtilization
+import|;
+end_import
+
+begin_comment
+comment|/**  * Interface for monitoring the resources of a node.  */
+end_comment
+
 begin_interface
 DECL|interface|NodeResourceMonitor
 specifier|public
@@ -41,7 +65,15 @@ interface|interface
 name|NodeResourceMonitor
 extends|extends
 name|Service
-block|{  }
+block|{
+comment|/**    * Get the<em>resource utilization</em> of the node.    * @return<em>resource utilization</em> of the node.    */
+DECL|method|getUtilization ()
+specifier|public
+name|ResourceUtilization
+name|getUtilization
+parameter_list|()
+function_decl|;
+block|}
 end_interface
 
 end_unit
