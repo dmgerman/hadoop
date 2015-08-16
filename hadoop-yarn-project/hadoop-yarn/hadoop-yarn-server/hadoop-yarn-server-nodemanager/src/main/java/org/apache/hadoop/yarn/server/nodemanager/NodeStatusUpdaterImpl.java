@@ -2834,6 +2834,12 @@ init|=
 name|getContainersUtilization
 argument_list|()
 decl_stmt|;
+name|ResourceUtilization
+name|nodeUtilization
+init|=
+name|getNodeUtilization
+argument_list|()
+decl_stmt|;
 name|NodeStatus
 name|nodeStatus
 init|=
@@ -2853,6 +2859,8 @@ argument_list|,
 name|nodeHealthStatus
 argument_list|,
 name|containersUtilization
+argument_list|,
+name|nodeUtilization
 argument_list|)
 decl_stmt|;
 return|return
@@ -2891,6 +2899,33 @@ return|return
 name|containersMonitor
 operator|.
 name|getContainersUtilization
+argument_list|()
+return|;
+block|}
+comment|/**    * Get the utilization of the node. This includes the containers.    * @return Resource utilization of the node.    */
+DECL|method|getNodeUtilization ()
+specifier|private
+name|ResourceUtilization
+name|getNodeUtilization
+parameter_list|()
+block|{
+name|NodeResourceMonitorImpl
+name|nodeResourceMonitor
+init|=
+operator|(
+name|NodeResourceMonitorImpl
+operator|)
+name|this
+operator|.
+name|context
+operator|.
+name|getNodeResourceMonitor
+argument_list|()
+decl_stmt|;
+return|return
+name|nodeResourceMonitor
+operator|.
+name|getUtilization
 argument_list|()
 return|;
 block|}

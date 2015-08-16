@@ -177,8 +177,8 @@ specifier|abstract
 class|class
 name|NodeStatus
 block|{
-comment|/**    * Create a new {@code NodeStatus}.    * @param nodeId Identifier for this node.    * @param responseId Identifier for the response.    * @param containerStatuses Status of the containers running in this node.    * @param keepAliveApplications Applications to keep alive.    * @param nodeHealthStatus Health status of the node.    * @param containersUtilizations Utilization of the containers in this node.    * @return New {@code NodeStatus} with the provided information.    */
-DECL|method|newInstance (NodeId nodeId, int responseId, List<ContainerStatus> containerStatuses, List<ApplicationId> keepAliveApplications, NodeHealthStatus nodeHealthStatus, ResourceUtilization containersUtilization)
+comment|/**    * Create a new {@code NodeStatus}.    * @param nodeId Identifier for this node.    * @param responseId Identifier for the response.    * @param containerStatuses Status of the containers running in this node.    * @param keepAliveApplications Applications to keep alive.    * @param nodeHealthStatus Health status of the node.    * @param containersUtilizations Utilization of the containers in this node.    * @param nodeUtilization Utilization of the node.    * @return New {@code NodeStatus} with the provided information.    */
+DECL|method|newInstance (NodeId nodeId, int responseId, List<ContainerStatus> containerStatuses, List<ApplicationId> keepAliveApplications, NodeHealthStatus nodeHealthStatus, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization)
 specifier|public
 specifier|static
 name|NodeStatus
@@ -207,6 +207,9 @@ name|nodeHealthStatus
 parameter_list|,
 name|ResourceUtilization
 name|containersUtilization
+parameter_list|,
+name|ResourceUtilization
+name|nodeUtilization
 parameter_list|)
 block|{
 name|NodeStatus
@@ -261,6 +264,13 @@ operator|.
 name|setContainersUtilization
 argument_list|(
 name|containersUtilization
+argument_list|)
+expr_stmt|;
+name|nodeStatus
+operator|.
+name|setNodeUtilization
+argument_list|(
+name|nodeUtilization
 argument_list|)
 expr_stmt|;
 return|return
@@ -388,6 +398,32 @@ name|setContainersUtilization
 parameter_list|(
 name|ResourceUtilization
 name|containersUtilization
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>resource utilization</em> of the node.    * @return<em>resource utilization</em> of the node    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getNodeUtilization ()
+specifier|public
+specifier|abstract
+name|ResourceUtilization
+name|getNodeUtilization
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNodeUtilization ( ResourceUtilization nodeUtilization)
+specifier|public
+specifier|abstract
+name|void
+name|setNodeUtilization
+parameter_list|(
+name|ResourceUtilization
+name|nodeUtilization
 parameter_list|)
 function_decl|;
 block|}

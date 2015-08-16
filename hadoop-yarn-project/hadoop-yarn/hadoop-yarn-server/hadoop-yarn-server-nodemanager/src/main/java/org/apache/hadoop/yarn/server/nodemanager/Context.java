@@ -372,6 +372,11 @@ name|ContainerManagementProtocol
 name|getContainerManager
 parameter_list|()
 function_decl|;
+DECL|method|getNodeResourceMonitor ()
+name|NodeResourceMonitor
+name|getNodeResourceMonitor
+parameter_list|()
+function_decl|;
 DECL|method|getLocalDirsHandler ()
 name|LocalDirsHandlerService
 name|getLocalDirsHandler
