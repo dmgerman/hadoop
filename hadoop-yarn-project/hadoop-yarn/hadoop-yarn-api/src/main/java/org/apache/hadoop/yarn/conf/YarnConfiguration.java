@@ -7651,6 +7651,40 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// 7 days
+comment|// Timeline service v2 offlien aggregation related keys
+DECL|field|TIMELINE_OFFLINE_AGGREGATION_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_OFFLINE_AGGREGATION_PREFIX
+init|=
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"aggregation.offline."
+decl_stmt|;
+DECL|field|PHOENIX_OFFLINE_STORAGE_CONN_STR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PHOENIX_OFFLINE_STORAGE_CONN_STR
+init|=
+name|TIMELINE_OFFLINE_AGGREGATION_PREFIX
+operator|+
+literal|"phoenix.connectionString"
+decl_stmt|;
+DECL|field|PHOENIX_OFFLINE_STORAGE_CONN_STR_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PHOENIX_OFFLINE_STORAGE_CONN_STR_DEFAULT
+init|=
+literal|"jdbc:phoenix:localhost:2181:/hbase"
+decl_stmt|;
 comment|// ///////////////////////////////
 comment|// Shared Cache Configs
 comment|// ///////////////////////////////
