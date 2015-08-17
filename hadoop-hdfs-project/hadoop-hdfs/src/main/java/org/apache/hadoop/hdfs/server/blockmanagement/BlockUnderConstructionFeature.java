@@ -24,16 +24,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -139,12 +129,10 @@ comment|/**  * Represents a block that is currently being constructed.<br>  * Th
 end_comment
 
 begin_class
-DECL|class|BlockInfoContiguousUnderConstruction
+DECL|class|BlockUnderConstructionFeature
 specifier|public
 class|class
-name|BlockInfoContiguousUnderConstruction
-extends|extends
-name|BlockInfoContiguous
+name|BlockUnderConstructionFeature
 block|{
 comment|/** Block state. See {@link BlockUCState} */
 DECL|field|blockUCState
@@ -184,14 +172,17 @@ specifier|private
 name|Block
 name|truncateBlock
 decl_stmt|;
-comment|/**    * ReplicaUnderConstruction contains information about replicas while    * they are under construction.    * The GS, the length and the state of the replica is as reported by     * the data-node.    * It is not guaranteed, but expected, that data-nodes actually have    * corresponding replicas.    */
+comment|/**    * ReplicaUnderConstruction contains information about replicas while    * they are under construction.    * The GS, the length and the state of the replica is as reported by    * the data-node.    * It is not guaranteed, but expected, that data-nodes actually have    * corresponding replicas.    */
 DECL|class|ReplicaUnderConstruction
 specifier|static
 class|class
 name|ReplicaUnderConstruction
-extends|extends
-name|Block
 block|{
+DECL|field|generationStamp
+specifier|private
+name|long
+name|generationStamp
+decl_stmt|;
 DECL|field|expectedLocation
 specifier|private
 specifier|final
@@ -208,11 +199,11 @@ specifier|private
 name|boolean
 name|chosenAsPrimary
 decl_stmt|;
-DECL|method|ReplicaUnderConstruction (Block block, DatanodeStorageInfo target, ReplicaState state)
+DECL|method|ReplicaUnderConstruction (long generationStamp, DatanodeStorageInfo target, ReplicaState state)
 name|ReplicaUnderConstruction
 parameter_list|(
-name|Block
-name|block
+name|long
+name|generationStamp
 parameter_list|,
 name|DatanodeStorageInfo
 name|target
@@ -221,10 +212,11 @@ name|ReplicaState
 name|state
 parameter_list|)
 block|{
-name|super
-argument_list|(
-name|block
-argument_list|)
+name|this
+operator|.
+name|generationStamp
+operator|=
+name|generationStamp
 expr_stmt|;
 name|this
 operator|.
@@ -245,9 +237,34 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+DECL|method|getGenerationStamp ()
+name|long
+name|getGenerationStamp
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|generationStamp
+return|;
+block|}
+DECL|method|setGenerationStamp (long generationStamp)
+name|void
+name|setGenerationStamp
+parameter_list|(
+name|long
+name|generationStamp
+parameter_list|)
+block|{
+name|this
+operator|.
+name|generationStamp
+operator|=
+name|generationStamp
+expr_stmt|;
+block|}
 comment|/**      * Expected block replica location as assigned when the block was allocated.      * This defines the pipeline order.      * It is not guaranteed, but expected, that the data-node actually has      * the replica.      */
 DECL|method|getExpectedStorageLocation ()
-specifier|private
 name|DatanodeStorageInfo
 name|getExpectedStorageLocation
 parameter_list|()
@@ -323,50 +340,6 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// Block
-DECL|method|hashCode ()
-specifier|public
-name|int
-name|hashCode
-parameter_list|()
-block|{
-return|return
-name|super
-operator|.
-name|hashCode
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// Block
-DECL|method|equals (Object obj)
-specifier|public
-name|boolean
-name|equals
-parameter_list|(
-name|Object
-name|obj
-parameter_list|)
-block|{
-comment|// Sufficient to rely on super's implementation
-return|return
-operator|(
-name|this
-operator|==
-name|obj
-operator|)
-operator|||
-name|super
-operator|.
-name|equals
-argument_list|(
-name|obj
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -382,31 +355,6 @@ name|StringBuilder
 argument_list|(
 literal|50
 argument_list|)
-decl_stmt|;
-name|appendStringTo
-argument_list|(
-name|b
-argument_list|)
-expr_stmt|;
-return|return
-name|b
-operator|.
-name|toString
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|appendStringTo (StringBuilder sb)
-specifier|public
-name|void
-name|appendStringTo
-parameter_list|(
-name|StringBuilder
-name|sb
-parameter_list|)
-block|{
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -432,45 +380,22 @@ name|append
 argument_list|(
 literal|"]"
 argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Create block and set its state to    * {@link BlockUCState#UNDER_CONSTRUCTION}.    */
-DECL|method|BlockInfoContiguousUnderConstruction (Block blk, short replication)
-specifier|public
-name|BlockInfoContiguousUnderConstruction
-parameter_list|(
-name|Block
-name|blk
-parameter_list|,
-name|short
-name|replication
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|blk
-argument_list|,
-name|replication
-argument_list|,
-name|BlockUCState
+decl_stmt|;
+return|return
+name|b
 operator|.
-name|UNDER_CONSTRUCTION
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 comment|/**    * Create a block that is currently being constructed.    */
-DECL|method|BlockInfoContiguousUnderConstruction (Block blk, short replication, BlockUCState state, DatanodeStorageInfo[] targets)
+DECL|method|BlockUnderConstructionFeature (Block block, BlockUCState state, DatanodeStorageInfo[] targets)
 specifier|public
-name|BlockInfoContiguousUnderConstruction
+name|BlockUnderConstructionFeature
 parameter_list|(
 name|Block
-name|blk
-parameter_list|,
-name|short
-name|replication
+name|block
 parameter_list|,
 name|BlockUCState
 name|state
@@ -480,13 +405,6 @@ index|[]
 name|targets
 parameter_list|)
 block|{
-name|super
-argument_list|(
-name|blk
-argument_list|,
-name|replication
-argument_list|)
-expr_stmt|;
 assert|assert
 name|getBlockUCState
 argument_list|()
@@ -505,42 +423,24 @@ name|state
 expr_stmt|;
 name|setExpectedLocations
 argument_list|(
+name|block
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|,
 name|targets
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Convert an under construction block to a complete block.    *     * @return BlockInfo - a complete block.    * @throws IOException if the state of the block     * (the generation stamp and the length) has not been committed by     * the client or it does not have at least a minimal number of replicas     * reported from data-nodes.     */
-DECL|method|convertToCompleteBlock ()
-name|BlockInfo
-name|convertToCompleteBlock
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-assert|assert
-name|getBlockUCState
-argument_list|()
-operator|!=
-name|BlockUCState
-operator|.
-name|COMPLETE
-operator|:
-literal|"Trying to convert a COMPLETE block"
-assert|;
-return|return
-operator|new
-name|BlockInfoContiguous
-argument_list|(
-name|this
-argument_list|)
-return|;
-block|}
 comment|/** Set expected locations */
-DECL|method|setExpectedLocations (DatanodeStorageInfo[] targets)
+DECL|method|setExpectedLocations (long generationStamp, DatanodeStorageInfo[] targets)
 specifier|public
 name|void
 name|setExpectedLocations
 parameter_list|(
+name|long
+name|generationStamp
+parameter_list|,
 name|DatanodeStorageInfo
 index|[]
 name|targets
@@ -565,9 +465,7 @@ name|replicas
 operator|=
 operator|new
 name|ArrayList
-argument_list|<
-name|ReplicaUnderConstruction
-argument_list|>
+argument_list|<>
 argument_list|(
 name|numLocations
 argument_list|)
@@ -586,6 +484,7 @@ condition|;
 name|i
 operator|++
 control|)
+block|{
 name|replicas
 operator|.
 name|add
@@ -593,7 +492,7 @@ argument_list|(
 operator|new
 name|ReplicaUnderConstruction
 argument_list|(
-name|this
+name|generationStamp
 argument_list|,
 name|targets
 index|[
@@ -606,6 +505,7 @@ name|RBW
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Create array of expected replica locations    * (as has been assigned by chooseTargets()).    */
 DECL|method|getExpectedStorageLocations ()
@@ -653,6 +553,7 @@ condition|;
 name|i
 operator|++
 control|)
+block|{
 name|storages
 index|[
 name|i
@@ -668,6 +569,7 @@ operator|.
 name|getExpectedStorageLocation
 argument_list|()
 expr_stmt|;
+block|}
 return|return
 name|storages
 return|;
@@ -693,9 +595,6 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Return the state of the block under construction.    * @see BlockUCState    */
-annotation|@
-name|Override
-comment|// BlockInfo
 DECL|method|getBlockUCState ()
 specifier|public
 name|BlockUCState
@@ -757,31 +656,49 @@ operator|=
 name|recoveryBlock
 expr_stmt|;
 block|}
-comment|/**    * Process the recorded replicas. When about to commit or finish the    * pipeline recovery sort out bad replicas.    * @param genStamp  The final generation stamp for the block.    */
-DECL|method|setGenerationStampAndVerifyReplicas (long genStamp)
-specifier|public
+comment|/**    * Set {@link #blockUCState} to {@link BlockUCState#COMMITTED}.    */
+DECL|method|commit ()
 name|void
-name|setGenerationStampAndVerifyReplicas
+name|commit
+parameter_list|()
+block|{
+name|blockUCState
+operator|=
+name|BlockUCState
+operator|.
+name|COMMITTED
+expr_stmt|;
+block|}
+DECL|method|getStaleReplicas (long genStamp)
+name|List
+argument_list|<
+name|ReplicaUnderConstruction
+argument_list|>
+name|getStaleReplicas
 parameter_list|(
 name|long
 name|genStamp
 parameter_list|)
 block|{
-comment|// Set the generation stamp for the block.
-name|setGenerationStamp
-argument_list|(
-name|genStamp
-argument_list|)
-expr_stmt|;
+name|List
+argument_list|<
+name|ReplicaUnderConstruction
+argument_list|>
+name|staleReplicas
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|replicas
-operator|==
+operator|!=
 literal|null
 condition|)
-return|return;
-comment|// Remove the replicas with wrong gen stamp.
-comment|// The replica list is unchanged.
+block|{
+comment|// Remove replicas with wrong gen stamp. The replica list is unchanged.
 for|for
 control|(
 name|ReplicaUnderConstruction
@@ -800,113 +717,29 @@ name|getGenerationStamp
 argument_list|()
 condition|)
 block|{
+name|staleReplicas
+operator|.
+name|add
+argument_list|(
 name|r
-operator|.
-name|getExpectedStorageLocation
-argument_list|()
-operator|.
-name|removeBlock
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
-name|NameNode
-operator|.
-name|blockStateChangeLog
-operator|.
-name|debug
-argument_list|(
-literal|"BLOCK* Removing stale replica "
-operator|+
-literal|"from location: {}"
-argument_list|,
-name|r
-operator|.
-name|getExpectedStorageLocation
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Commit block's length and generation stamp as reported by the client.    * Set block state to {@link BlockUCState#COMMITTED}.    * @param block - contains client reported block length and generation     * @throws IOException if block ids are inconsistent.    */
-DECL|method|commitBlock (Block block)
-name|void
-name|commitBlock
-parameter_list|(
-name|Block
-name|block
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|getBlockId
-argument_list|()
-operator|!=
-name|block
-operator|.
-name|getBlockId
-argument_list|()
-condition|)
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Trying to commit inconsistent block: id = "
-operator|+
-name|block
-operator|.
-name|getBlockId
-argument_list|()
-operator|+
-literal|", expected id = "
-operator|+
-name|getBlockId
-argument_list|()
-argument_list|)
-throw|;
-name|blockUCState
-operator|=
-name|BlockUCState
-operator|.
-name|COMMITTED
-expr_stmt|;
-name|this
-operator|.
-name|set
-argument_list|(
-name|getBlockId
-argument_list|()
-argument_list|,
-name|block
-operator|.
-name|getNumBytes
-argument_list|()
-argument_list|,
-name|block
-operator|.
-name|getGenerationStamp
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// Sort out invalid replicas.
-name|setGenerationStampAndVerifyReplicas
-argument_list|(
-name|block
-operator|.
-name|getGenerationStamp
-argument_list|()
-argument_list|)
-expr_stmt|;
+return|return
+name|staleReplicas
+return|;
 block|}
 comment|/**    * Initialize lease recovery for this block.    * Find the first alive data-node starting from the previous primary and    * make it primary.    */
-DECL|method|initializeBlockRecovery (long recoveryId)
+DECL|method|initializeBlockRecovery (BlockInfo block, long recoveryId)
 specifier|public
 name|void
 name|initializeBlockRecovery
 parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|,
 name|long
 name|recoveryId
 parameter_list|)
@@ -953,31 +786,16 @@ literal|true
 decl_stmt|;
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|ReplicaUnderConstruction
+name|replica
+range|:
 name|replicas
-operator|.
-name|size
-argument_list|()
-condition|;
-name|i
-operator|++
 control|)
 block|{
 comment|// Check if all replicas have been tried or not.
 if|if
 condition|(
-name|replicas
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
+name|replica
 operator|.
 name|isAlive
 argument_list|()
@@ -985,19 +803,12 @@ condition|)
 block|{
 name|allLiveReplicasTriedAsPrimary
 operator|=
-operator|(
 name|allLiveReplicasTriedAsPrimary
 operator|&&
-name|replicas
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
+name|replica
 operator|.
 name|getChosenAsPrimary
 argument_list|()
-operator|)
 expr_stmt|;
 block|}
 block|}
@@ -1009,28 +820,13 @@ block|{
 comment|// Just set all the replicas to be chosen whether they are alive or not.
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|ReplicaUnderConstruction
+name|replica
+range|:
 name|replicas
-operator|.
-name|size
-argument_list|()
-condition|;
-name|i
-operator|++
 control|)
 block|{
-name|replicas
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
+name|replica
 operator|.
 name|setChosenAsPrimary
 argument_list|(
@@ -1166,7 +962,7 @@ argument_list|()
 operator|.
 name|addBlockToBeRecovered
 argument_list|(
-name|this
+name|block
 argument_list|)
 expr_stmt|;
 name|primary
@@ -1298,6 +1094,9 @@ operator|new
 name|ReplicaUnderConstruction
 argument_list|(
 name|block
+operator|.
+name|getGenerationStamp
+argument_list|()
 argument_list|,
 name|storage
 argument_list|,
@@ -1305,51 +1104,6 @@ name|rState
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-comment|// BlockInfo
-comment|// BlockInfoUnderConstruction participates in maps the same way as BlockInfo
-DECL|method|hashCode ()
-specifier|public
-name|int
-name|hashCode
-parameter_list|()
-block|{
-return|return
-name|super
-operator|.
-name|hashCode
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// BlockInfo
-DECL|method|equals (Object obj)
-specifier|public
-name|boolean
-name|equals
-parameter_list|(
-name|Object
-name|obj
-parameter_list|)
-block|{
-comment|// Sufficient to rely on super's implementation
-return|return
-operator|(
-name|this
-operator|==
-name|obj
-operator|)
-operator|||
-name|super
-operator|.
-name|equals
-argument_list|(
-name|obj
-argument_list|)
-return|;
 block|}
 annotation|@
 name|Override
@@ -1369,7 +1123,7 @@ argument_list|(
 literal|100
 argument_list|)
 decl_stmt|;
-name|appendStringTo
+name|appendUCParts
 argument_list|(
 name|b
 argument_list|)
@@ -1380,30 +1134,6 @@ operator|.
 name|toString
 argument_list|()
 return|;
-block|}
-annotation|@
-name|Override
-DECL|method|appendStringTo (StringBuilder sb)
-specifier|public
-name|void
-name|appendStringTo
-parameter_list|(
-name|StringBuilder
-name|sb
-parameter_list|)
-block|{
-name|super
-operator|.
-name|appendStringTo
-argument_list|(
-name|sb
-argument_list|)
-expr_stmt|;
-name|appendUCParts
-argument_list|(
-name|sb
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|appendUCParts (StringBuilder sb)
 specifier|private
@@ -1429,7 +1159,10 @@ operator|.
 name|append
 argument_list|(
 literal|", truncateBlock="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|truncateBlock
 argument_list|)
 operator|.
@@ -1474,14 +1207,14 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
+name|sb
+operator|.
+name|append
+argument_list|(
 name|iter
 operator|.
 name|next
 argument_list|()
-operator|.
-name|appendStringTo
-argument_list|(
-name|sb
 argument_list|)
 expr_stmt|;
 while|while
@@ -1499,14 +1232,14 @@ argument_list|(
 literal|", "
 argument_list|)
 expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
 name|iter
 operator|.
 name|next
 argument_list|()
-operator|.
-name|appendStringTo
-argument_list|(
-name|sb
 argument_list|)
 expr_stmt|;
 block|}

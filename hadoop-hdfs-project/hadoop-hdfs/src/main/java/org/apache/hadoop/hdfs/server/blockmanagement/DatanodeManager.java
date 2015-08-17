@@ -5643,7 +5643,7 @@ index|]
 return|;
 block|}
 comment|//check lease recovery
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -5676,18 +5676,31 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|b
 range|:
 name|blocks
 control|)
 block|{
+name|BlockUnderConstructionFeature
+name|uc
+init|=
+name|b
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
+decl_stmt|;
+assert|assert
+name|uc
+operator|!=
+literal|null
+assert|;
 specifier|final
 name|DatanodeStorageInfo
 index|[]
 name|storages
 init|=
-name|b
+name|uc
 operator|.
 name|getExpectedStorageLocations
 argument_list|()
@@ -5760,7 +5773,7 @@ comment|// to old block.
 name|boolean
 name|truncateRecovery
 init|=
-name|b
+name|uc
 operator|.
 name|getTruncateBlock
 argument_list|()
@@ -5772,7 +5785,7 @@ name|copyOnTruncateRecovery
 init|=
 name|truncateRecovery
 operator|&&
-name|b
+name|uc
 operator|.
 name|getTruncateBlock
 argument_list|()
@@ -5797,7 +5810,7 @@ name|ExtendedBlock
 argument_list|(
 name|blockPoolId
 argument_list|,
-name|b
+name|uc
 operator|.
 name|getTruncateBlock
 argument_list|()
@@ -5896,7 +5909,7 @@ operator|)
 condition|?
 name|b
 else|:
-name|b
+name|uc
 operator|.
 name|getTruncateBlock
 argument_list|()
@@ -5930,7 +5943,7 @@ name|primaryBlock
 argument_list|,
 name|recoveryInfos
 argument_list|,
-name|b
+name|uc
 operator|.
 name|getBlockRecoveryId
 argument_list|()

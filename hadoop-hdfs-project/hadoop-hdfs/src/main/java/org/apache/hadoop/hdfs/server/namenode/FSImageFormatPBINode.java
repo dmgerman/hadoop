@@ -386,7 +386,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockManager
 import|;
 end_import
 
@@ -402,9 +402,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
+name|common
 operator|.
-name|BlockManager
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -2881,25 +2881,17 @@ operator|.
 name|getLastBlock
 argument_list|()
 decl_stmt|;
-comment|// replace the last block of file
-name|file
-operator|.
-name|setBlock
-argument_list|(
-name|file
-operator|.
-name|numBlocks
-argument_list|()
-operator|-
-literal|1
-argument_list|,
-operator|new
-name|BlockInfoContiguousUnderConstruction
-argument_list|(
 name|lastBlk
+operator|.
+name|convertToBlockUnderConstruction
+argument_list|(
+name|HdfsServerConstants
+operator|.
+name|BlockUCState
+operator|.
+name|UNDER_CONSTRUCTION
 argument_list|,
-name|replication
-argument_list|)
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

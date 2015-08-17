@@ -7462,11 +7462,11 @@ comment|// Adding this block collection to the BlockManager, so that when we add
 comment|// block under construction, the BlockManager will realize the expected
 comment|// replication has been achieved and remove it from the under-replicated
 comment|// queue.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoContiguous
 name|info
 init|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoContiguous
 argument_list|(
 name|block1
 argument_list|,
@@ -7476,6 +7476,17 @@ operator|)
 literal|1
 argument_list|)
 decl_stmt|;
+name|info
+operator|.
+name|convertToBlockUnderConstruction
+argument_list|(
+name|BlockUCState
+operator|.
+name|UNDER_CONSTRUCTION
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
 name|BlockCollection
 name|bc
 init|=
@@ -7881,10 +7892,6 @@ argument_list|)
 argument_list|)
 block|}
 decl_stmt|;
-specifier|final
-name|BlockInfoContiguousUnderConstruction
-name|ucBlock
-init|=
 name|info
 operator|.
 name|convertToBlockUnderConstruction
@@ -7895,7 +7902,7 @@ name|UNDER_CONSTRUCTION
 argument_list|,
 name|storageAry
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|DatanodeStorageInfo
 name|storage
 init|=
@@ -8003,7 +8010,7 @@ operator|.
 name|ADDED
 argument_list|)
 expr_stmt|;
-name|ucBlock
+name|info
 operator|.
 name|addStorage
 argument_list|(
@@ -8014,26 +8021,13 @@ name|when
 argument_list|(
 name|mbc
 operator|.
-name|setLastBlock
-argument_list|(
-operator|(
-name|BlockInfo
-operator|)
-name|any
+name|getLastBlock
 argument_list|()
-argument_list|,
-operator|(
-name|DatanodeStorageInfo
-index|[]
-operator|)
-name|any
-argument_list|()
-argument_list|)
 argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|ucBlock
+name|info
 argument_list|)
 expr_stmt|;
 name|bm

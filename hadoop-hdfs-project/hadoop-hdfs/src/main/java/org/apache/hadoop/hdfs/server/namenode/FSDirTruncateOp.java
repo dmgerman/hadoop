@@ -184,7 +184,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -203,6 +203,24 @@ operator|.
 name|blockmanagement
 operator|.
 name|BlockManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockUnderConstructionFeature
 import|;
 end_import
 
@@ -521,12 +539,10 @@ specifier|final
 name|Block
 name|truncatedBlock
 init|=
-operator|(
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|last
-operator|)
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
 operator|.
 name|getTruncateBlock
 argument_list|()
@@ -1177,7 +1193,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|BlockInfoContiguousUnderConstruction
+specifier|final
+name|BlockInfo
 name|truncatedBlockUC
 decl_stmt|;
 name|BlockManager
@@ -1201,7 +1218,7 @@ comment|// use oldBlock as a source for copy-on-truncate recovery
 name|truncatedBlockUC
 operator|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoContiguous
 argument_list|(
 name|newBlock
 argument_list|,
@@ -1209,6 +1226,22 @@ name|file
 operator|.
 name|getPreferredBlockReplication
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|truncatedBlockUC
+operator|.
+name|convertToBlockUnderConstruction
+argument_list|(
+name|BlockUCState
+operator|.
+name|UNDER_CONSTRUCTION
+argument_list|,
+name|blockManager
+operator|.
+name|getStorages
+argument_list|(
+name|oldBlock
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|truncatedBlockUC
@@ -1225,6 +1258,9 @@ argument_list|)
 expr_stmt|;
 name|truncatedBlockUC
 operator|.
+name|getUnderConstructionFeature
+argument_list|()
+operator|.
 name|setTruncateBlock
 argument_list|(
 name|oldBlock
@@ -1235,13 +1271,6 @@ operator|.
 name|setLastBlock
 argument_list|(
 name|truncatedBlockUC
-argument_list|,
-name|blockManager
-operator|.
-name|getStorages
-argument_list|(
-name|oldBlock
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|blockManager
@@ -1270,10 +1299,7 @@ argument_list|()
 argument_list|,
 name|newBlock
 argument_list|,
-name|truncatedBlockUC
-operator|.
-name|getTruncateBlock
-argument_list|()
+name|oldBlock
 argument_list|)
 expr_stmt|;
 block|}
@@ -1305,14 +1331,15 @@ argument_list|()
 operator|:
 literal|"oldBlock should be under construction"
 assert|;
-name|truncatedBlockUC
-operator|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
+name|BlockUnderConstructionFeature
+name|uc
+init|=
 name|oldBlock
-expr_stmt|;
-name|truncatedBlockUC
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
+decl_stmt|;
+name|uc
 operator|.
 name|setTruncateBlock
 argument_list|(
@@ -1323,7 +1350,7 @@ name|oldBlock
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|truncatedBlockUC
+name|uc
 operator|.
 name|getTruncateBlock
 argument_list|()
@@ -1338,7 +1365,7 @@ operator|-
 name|lastBlockDelta
 argument_list|)
 expr_stmt|;
-name|truncatedBlockUC
+name|uc
 operator|.
 name|getTruncateBlock
 argument_list|()
@@ -1351,25 +1378,29 @@ name|getGenerationStamp
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|truncatedBlockUC
+operator|=
+name|oldBlock
+expr_stmt|;
 name|NameNode
 operator|.
 name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* prepareFileForTruncate: {} Scheduling in-place block "
+literal|"BLOCK* prepareFileForTruncate: "
 operator|+
-literal|"truncate to new size {}"
+literal|"{} Scheduling in-place block truncate to new size {}"
 argument_list|,
-name|truncatedBlockUC
+name|uc
+argument_list|,
+name|uc
 operator|.
 name|getTruncateBlock
 argument_list|()
 operator|.
 name|getNumBytes
 argument_list|()
-argument_list|,
-name|truncatedBlockUC
 argument_list|)
 expr_stmt|;
 block|}
@@ -1380,8 +1411,13 @@ condition|)
 block|{
 name|truncatedBlockUC
 operator|.
+name|getUnderConstructionFeature
+argument_list|()
+operator|.
 name|initializeBlockRecovery
 argument_list|(
+name|truncatedBlockUC
+argument_list|,
 name|newBlock
 operator|.
 name|getGenerationStamp

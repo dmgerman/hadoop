@@ -1760,20 +1760,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileAlreadyExistsException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|FileStatus
 import|;
 end_import
@@ -2672,7 +2658,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockManager
 import|;
 end_import
 
@@ -2690,7 +2676,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockManager
+name|BlockUnderConstructionFeature
 import|;
 end_import
 
@@ -15590,9 +15576,7 @@ init|=
 name|penultimateBlock
 operator|==
 literal|null
-condition|?
-literal|true
-else|:
+operator|||
 name|blockManager
 operator|.
 name|checkMinReplication
@@ -15699,14 +15683,13 @@ case|:
 case|case
 name|UNDER_RECOVERY
 case|:
-specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockUnderConstructionFeature
 name|uc
 init|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|lastBlock
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
 decl_stmt|;
 comment|// determine if last block was intended to be truncated
 name|Block
@@ -15734,7 +15717,7 @@ operator|.
 name|getBlockId
 argument_list|()
 operator|!=
-name|uc
+name|lastBlock
 operator|.
 name|getBlockId
 argument_list|()
@@ -15748,7 +15731,7 @@ operator|.
 name|getBlockId
 argument_list|()
 operator|<
-name|uc
+name|lastBlock
 operator|.
 name|getBlockId
 argument_list|()
@@ -15758,7 +15741,7 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 operator|<
-name|uc
+name|lastBlock
 operator|.
 name|getGenerationStamp
 argument_list|()
@@ -15768,7 +15751,7 @@ operator|.
 name|getNumBytes
 argument_list|()
 operator|>
-name|uc
+name|lastBlock
 operator|.
 name|getNumBytes
 argument_list|()
@@ -15790,6 +15773,11 @@ name|uc
 operator|.
 name|setExpectedLocations
 argument_list|(
+name|lastBlock
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|,
 name|blockManager
 operator|.
 name|getStorages
@@ -15808,7 +15796,7 @@ argument_list|()
 operator|==
 literal|0
 operator|&&
-name|uc
+name|lastBlock
 operator|.
 name|getNumBytes
 argument_list|()
@@ -15864,7 +15852,7 @@ name|blockIdManager
 operator|.
 name|isLegacyBlock
 argument_list|(
-name|uc
+name|lastBlock
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -15886,7 +15874,7 @@ condition|(
 name|copyOnTruncate
 condition|)
 block|{
-name|uc
+name|lastBlock
 operator|.
 name|setGenerationStamp
 argument_list|(
@@ -15912,6 +15900,8 @@ name|uc
 operator|.
 name|initializeBlockRecovery
 argument_list|(
+name|lastBlock
+argument_list|,
 name|blockRecoveryId
 argument_list|)
 expr_stmt|;
@@ -16267,12 +16257,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isInSnapshot (BlockInfoContiguousUnderConstruction blockUC)
+DECL|method|isInSnapshot (BlockInfo blockUC)
 specifier|public
 name|boolean
 name|isInSnapshot
 parameter_list|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|blockUC
 parameter_list|)
 block|{
@@ -16469,7 +16459,7 @@ name|copyTruncate
 init|=
 literal|false
 decl_stmt|;
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|truncatedBlock
 init|=
 literal|null
@@ -16703,9 +16693,6 @@ return|return;
 block|}
 name|truncatedBlock
 operator|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|iFile
 operator|.
 name|getLastBlock
@@ -16715,6 +16702,9 @@ name|long
 name|recoveryId
 init|=
 name|truncatedBlock
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
 operator|.
 name|getBlockRecoveryId
 argument_list|()
@@ -17085,7 +17075,7 @@ condition|)
 block|{
 name|iFile
 operator|.
-name|setLastBlock
+name|convertLastBlockToUC
 argument_list|(
 name|truncatedBlock
 argument_list|,
@@ -17097,7 +17087,7 @@ else|else
 block|{
 name|iFile
 operator|.
-name|setLastBlock
+name|convertLastBlockToUC
 argument_list|(
 name|storedBlock
 argument_list|,
@@ -24358,17 +24348,21 @@ name|clientName
 argument_list|)
 decl_stmt|;
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|blockinfo
 init|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|pendingFile
 operator|.
 name|getLastBlock
 argument_list|()
 decl_stmt|;
+assert|assert
+operator|!
+name|blockinfo
+operator|.
+name|isComplete
+argument_list|()
+assert|;
 comment|// check new GS& length: this is not expected
 if|if
 condition|(
@@ -24476,8 +24470,16 @@ argument_list|)
 decl_stmt|;
 name|blockinfo
 operator|.
+name|getUnderConstructionFeature
+argument_list|()
+operator|.
 name|setExpectedLocations
 argument_list|(
+name|blockinfo
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|,
 name|storages
 argument_list|)
 expr_stmt|;

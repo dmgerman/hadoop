@@ -434,7 +434,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoContiguous
 import|;
 end_import
 
@@ -453,6 +453,24 @@ operator|.
 name|blockmanagement
 operator|.
 name|BlockManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockUnderConstructionFeature
 import|;
 end_import
 
@@ -727,7 +745,7 @@ name|IOException
 block|{
 comment|// modify file-> block and blocksMap
 comment|// fileNode should be under construction
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|uc
 init|=
 name|fileNode
@@ -1603,15 +1621,18 @@ operator|.
 name|getLastBlock
 argument_list|()
 decl_stmt|;
-operator|(
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|lastBlockInFile
-operator|)
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
 operator|.
 name|setExpectedLocations
 argument_list|(
+name|lastBlockInFile
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|,
 name|targets
 argument_list|)
 expr_stmt|;
@@ -3224,11 +3245,11 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// associate new last block for the file
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|blockInfo
 init|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoContiguous
 argument_list|(
 name|block
 argument_list|,
@@ -3236,7 +3257,12 @@ name|fileINode
 operator|.
 name|getFileReplication
 argument_list|()
-argument_list|,
+argument_list|)
+decl_stmt|;
+name|blockInfo
+operator|.
+name|convertToBlockUnderConstruction
+argument_list|(
 name|HdfsServerConstants
 operator|.
 name|BlockUCState
@@ -3245,7 +3271,7 @@ name|UNDER_CONSTRUCTION
 argument_list|,
 name|targets
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|fsd
 operator|.
 name|getBlockManager
@@ -3829,13 +3855,13 @@ operator|.
 name|computeFileSize
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguousUnderConstruction
-name|lastBlockUC
+name|BlockUnderConstructionFeature
+name|uc
 init|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|lastBlockInFile
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
 decl_stmt|;
 name|onRetryBlock
 index|[
@@ -3848,7 +3874,7 @@ name|fsn
 argument_list|,
 name|lastBlockInFile
 argument_list|,
-name|lastBlockUC
+name|uc
 operator|.
 name|getExpectedStorageLocations
 argument_list|()

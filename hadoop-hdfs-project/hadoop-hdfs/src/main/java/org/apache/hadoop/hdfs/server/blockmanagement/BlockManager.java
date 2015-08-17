@@ -28,22 +28,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_HA_NAMENODES_KEY_PREFIX
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|ExitUtil
@@ -3335,14 +3319,14 @@ operator|)
 return|;
 block|}
 comment|/**    * Commit a block of a file    *     * @param block block to be committed    * @param commitBlock - contains client reported block length and generation    * @return true if the block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
-DECL|method|commitBlock ( final BlockInfoContiguousUnderConstruction block, final Block commitBlock)
+DECL|method|commitBlock (final BlockInfo block, final Block commitBlock)
 specifier|private
 specifier|static
 name|boolean
 name|commitBlock
 parameter_list|(
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|block
 parameter_list|,
 specifier|final
@@ -3462,9 +3446,6 @@ name|b
 init|=
 name|commitBlock
 argument_list|(
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|lastBlock
 argument_list|,
 name|commitBlock
@@ -3550,18 +3531,10 @@ condition|)
 return|return
 name|curBlock
 return|;
-name|BlockInfoContiguousUnderConstruction
-name|ucBlock
-init|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
-name|curBlock
-decl_stmt|;
 name|int
 name|numNodes
 init|=
-name|ucBlock
+name|curBlock
 operator|.
 name|numNodes
 argument_list|()
@@ -3589,7 +3562,7 @@ condition|(
 operator|!
 name|force
 operator|&&
-name|ucBlock
+name|curBlock
 operator|.
 name|getBlockUCState
 argument_list|()
@@ -3608,7 +3581,7 @@ throw|;
 name|BlockInfo
 name|completeBlock
 init|=
-name|ucBlock
+name|curBlock
 operator|.
 name|convertToCompleteBlock
 argument_list|()
@@ -3732,7 +3705,7 @@ name|block
 return|;
 block|}
 comment|/**    * Force the given block in the given file to be marked as complete,    * regardless of whether enough replicas are present. This is necessary    * when tailing edit logs as a Standby.    */
-DECL|method|forceCompleteBlock (final BlockCollection bc, final BlockInfoContiguousUnderConstruction block)
+DECL|method|forceCompleteBlock (final BlockCollection bc, final BlockInfo block)
 specifier|public
 name|BlockInfo
 name|forceCompleteBlock
@@ -3742,7 +3715,7 @@ name|BlockCollection
 name|bc
 parameter_list|,
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|block
 parameter_list|)
 throws|throws
@@ -3782,7 +3755,7 @@ throws|throws
 name|IOException
 block|{
 name|BlockInfo
-name|oldBlock
+name|lastBlock
 init|=
 name|bc
 operator|.
@@ -3791,7 +3764,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|oldBlock
+name|lastBlock
 operator|==
 literal|null
 operator|||
@@ -3800,22 +3773,24 @@ operator|.
 name|getPreferredBlockSize
 argument_list|()
 operator|==
-name|oldBlock
+name|lastBlock
 operator|.
 name|getNumBytes
 argument_list|()
 operator|-
 name|bytesToRemove
 condition|)
+block|{
 return|return
 literal|null
 return|;
+block|}
 assert|assert
-name|oldBlock
+name|lastBlock
 operator|==
 name|getStoredBlock
 argument_list|(
-name|oldBlock
+name|lastBlock
 argument_list|)
 operator|:
 literal|"last block of the file is not in blocksMap"
@@ -3826,26 +3801,18 @@ name|targets
 init|=
 name|getStorages
 argument_list|(
-name|oldBlock
+name|lastBlock
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguousUnderConstruction
-name|ucBlock
-init|=
+comment|// convert the last block to under construction. note no block replacement
+comment|// is happening
 name|bc
 operator|.
-name|setLastBlock
+name|convertLastBlockToUC
 argument_list|(
-name|oldBlock
+name|lastBlock
 argument_list|,
 name|targets
-argument_list|)
-decl_stmt|;
-name|blocksMap
-operator|.
-name|replaceBlock
-argument_list|(
-name|ucBlock
 argument_list|)
 expr_stmt|;
 comment|// Remove block from replication queue.
@@ -3854,14 +3821,14 @@ name|replicas
 init|=
 name|countNodes
 argument_list|(
-name|ucBlock
+name|lastBlock
 argument_list|)
 decl_stmt|;
 name|neededReplications
 operator|.
 name|remove
 argument_list|(
-name|ucBlock
+name|lastBlock
 argument_list|,
 name|replicas
 operator|.
@@ -3875,7 +3842,7 @@ argument_list|()
 argument_list|,
 name|getReplication
 argument_list|(
-name|ucBlock
+name|lastBlock
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3883,7 +3850,7 @@ name|pendingReplications
 operator|.
 name|remove
 argument_list|(
-name|ucBlock
+name|lastBlock
 argument_list|)
 expr_stmt|;
 comment|// remove this block from the list of pending blocks to be deleted.
@@ -3904,7 +3871,7 @@ operator|.
 name|getDatanodeDescriptor
 argument_list|()
 argument_list|,
-name|oldBlock
+name|lastBlock
 argument_list|)
 expr_stmt|;
 block|}
@@ -3952,7 +3919,7 @@ name|pos
 init|=
 name|fileLength
 operator|-
-name|ucBlock
+name|lastBlock
 operator|.
 name|getNumBytes
 argument_list|()
@@ -3960,7 +3927,7 @@ decl_stmt|;
 return|return
 name|createLocatedBlock
 argument_list|(
-name|ucBlock
+name|lastBlock
 argument_list|,
 name|pos
 argument_list|,
@@ -4440,46 +4407,22 @@ name|IOException
 block|{
 if|if
 condition|(
-name|blk
-operator|instanceof
-name|BlockInfoContiguousUnderConstruction
-condition|)
-block|{
-if|if
-condition|(
+operator|!
 name|blk
 operator|.
 name|isComplete
 argument_list|()
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"blk instanceof BlockInfoUnderConstruction&& blk.isComplete()"
-operator|+
-literal|", blk="
-operator|+
-name|blk
-argument_list|)
-throw|;
-block|}
-specifier|final
-name|BlockInfoContiguousUnderConstruction
-name|uc
-init|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
-name|blk
-decl_stmt|;
 specifier|final
 name|DatanodeStorageInfo
 index|[]
 name|storages
 init|=
-name|uc
+name|blk
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
 operator|.
 name|getExpectedStorageLocations
 argument_list|()
@@ -8578,7 +8521,7 @@ name|StatefulBlockInfo
 block|{
 DECL|field|storedBlock
 specifier|final
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|storedBlock
 decl_stmt|;
 DECL|field|reportedBlock
@@ -8591,10 +8534,10 @@ specifier|final
 name|ReplicaState
 name|reportedState
 decl_stmt|;
-DECL|method|StatefulBlockInfo (BlockInfoContiguousUnderConstruction storedBlock, Block reportedBlock, ReplicaState reportedState)
+DECL|method|StatefulBlockInfo (BlockInfo storedBlock, Block reportedBlock, ReplicaState reportedState)
 name|StatefulBlockInfo
 parameter_list|(
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|storedBlock
 parameter_list|,
 name|Block
@@ -8604,6 +8547,17 @@ name|ReplicaState
 name|reportedState
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|!
+name|storedBlock
+operator|.
+name|isComplete
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|storedBlock
@@ -10464,12 +10418,10 @@ name|reportedState
 argument_list|)
 condition|)
 block|{
-operator|(
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|storedBlock
-operator|)
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
 operator|.
 name|addReplicaIfNotPresent
 argument_list|(
@@ -10483,28 +10435,23 @@ expr_stmt|;
 comment|// OpenFileBlocks only inside snapshots also will be added to safemode
 comment|// threshold. So we need to update such blocks to safemode
 comment|// refer HDFS-5283
-name|BlockInfoContiguousUnderConstruction
-name|blockUC
-init|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
-name|storedBlock
-decl_stmt|;
 if|if
 condition|(
 name|namesystem
 operator|.
 name|isInSnapshot
 argument_list|(
-name|blockUC
+name|storedBlock
 argument_list|)
 condition|)
 block|{
 name|int
 name|numOfReplicas
 init|=
-name|blockUC
+name|storedBlock
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
 operator|.
 name|getNumExpectedLocations
 argument_list|()
@@ -10955,7 +10902,6 @@ name|block
 argument_list|)
 condition|)
 block|{
-comment|/*        * TODO: following assertion is incorrect, see HDFS-2668 assert        * storedBlock.findDatanode(dn)< 0 : "Block " + block +        * " in recentInvalidatesSet should not appear in DN " + dn;        */
 return|return
 name|storedBlock
 return|;
@@ -11039,9 +10985,6 @@ argument_list|(
 operator|new
 name|StatefulBlockInfo
 argument_list|(
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|storedBlock
 argument_list|,
 operator|new
@@ -11850,7 +11793,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|block
 init|=
 name|ucBlock
@@ -11858,6 +11801,9 @@ operator|.
 name|storedBlock
 decl_stmt|;
 name|block
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
 operator|.
 name|addReplicaIfNotPresent
 argument_list|(
@@ -12083,9 +12029,11 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+operator|!
 name|block
-operator|instanceof
-name|BlockInfoContiguousUnderConstruction
+operator|.
+name|isComplete
+argument_list|()
 condition|)
 block|{
 comment|//refresh our copy in case the block got completed in another thread
@@ -16439,15 +16387,6 @@ argument_list|()
 condition|)
 block|{
 specifier|final
-name|BlockInfoContiguousUnderConstruction
-name|uc
-init|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
-name|b
-decl_stmt|;
-specifier|final
 name|int
 name|numNodes
 init|=
@@ -16466,7 +16405,7 @@ name|b
 operator|+
 literal|" is not COMPLETE (ucState = "
 operator|+
-name|uc
+name|b
 operator|.
 name|getBlockUCState
 argument_list|()

@@ -274,24 +274,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
-operator|.
-name|BlockInfoContiguousUnderConstruction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|common
 operator|.
 name|HdfsServerConstants
@@ -925,12 +907,20 @@ name|i
 index|]
 operator|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoContiguous
 argument_list|(
 name|blk
 argument_list|,
 name|blockReplication
-argument_list|,
+argument_list|)
+expr_stmt|;
+name|blocks
+index|[
+name|i
+index|]
+operator|.
+name|convertToBlockUnderConstruction
+argument_list|(
 name|BlockUCState
 operator|.
 name|UNDER_CONSTRUCTION
@@ -1144,7 +1134,7 @@ argument_list|)
 expr_stmt|;
 comment|//  do not store locations of last block
 block|}
-comment|/**    * Serialize a {@link INodeFile} node    * @param node The node to write    * @param out The {@link DataOutputStream} where the fields are written    * @param writeBlock Whether to write block information    */
+comment|/**    * Serialize a {@link INodeFile} node    * @param file The INodeFile to write    * @param out The {@link DataOutputStream} where the fields are written    * @param writeUnderConstruction Whether to write under construction information    */
 DECL|method|writeINodeFile (INodeFile file, DataOutput out, boolean writeUnderConstruction)
 specifier|public
 specifier|static

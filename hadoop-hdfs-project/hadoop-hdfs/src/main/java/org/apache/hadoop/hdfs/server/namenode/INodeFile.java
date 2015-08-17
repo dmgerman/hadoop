@@ -294,24 +294,6 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
 name|BlockStoragePolicySuite
 import|;
 end_import
@@ -601,7 +583,6 @@ return|;
 block|}
 comment|/**     * Bit format:    * [4-bit storagePolicyID][12-bit replication][48-bit preferredBlockSize]    */
 DECL|enum|HeaderFormat
-specifier|static
 enum|enum
 name|HeaderFormat
 block|{
@@ -1335,10 +1316,10 @@ block|}
 annotation|@
 name|Override
 comment|// BlockCollection, the file should be under construction
-DECL|method|setLastBlock ( BlockInfo lastBlock, DatanodeStorageInfo[] locations)
+DECL|method|convertLastBlockToUC (BlockInfo lastBlock, DatanodeStorageInfo[] locations)
 specifier|public
-name|BlockInfoContiguousUnderConstruction
-name|setLastBlock
+name|void
+name|convertLastBlockToUC
 parameter_list|(
 name|BlockInfo
 name|lastBlock
@@ -1376,9 +1357,6 @@ literal|"Failed to set last block: File is empty."
 argument_list|)
 throw|;
 block|}
-name|BlockInfoContiguousUnderConstruction
-name|ucBlock
-init|=
 name|lastBlock
 operator|.
 name|convertToBlockUnderConstruction
@@ -1389,7 +1367,23 @@ name|UNDER_CONSTRUCTION
 argument_list|,
 name|locations
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+DECL|method|setLastBlock (BlockInfo blk)
+name|void
+name|setLastBlock
+parameter_list|(
+name|BlockInfo
+name|blk
+parameter_list|)
+block|{
+name|blk
+operator|.
+name|setBlockCollection
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
 name|setBlock
 argument_list|(
 name|numBlocks
@@ -1397,16 +1391,13 @@ argument_list|()
 operator|-
 literal|1
 argument_list|,
-name|ucBlock
+name|blk
 argument_list|)
 expr_stmt|;
-return|return
-name|ucBlock
-return|;
 block|}
 comment|/**    * Remove a block from the block list. This block should be    * the last one on the list.    */
 DECL|method|removeLastBlock (Block oldblock)
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|removeLastBlock
 parameter_list|(
 name|Block
@@ -1467,12 +1458,9 @@ return|return
 literal|null
 return|;
 block|}
-name|BlockInfoContiguousUnderConstruction
-name|uc
+name|BlockInfo
+name|ucBlock
 init|=
-operator|(
-name|BlockInfoContiguousUnderConstruction
-operator|)
 name|blocks
 index|[
 name|size_1
@@ -1510,7 +1498,7 @@ name|newlist
 argument_list|)
 expr_stmt|;
 return|return
-name|uc
+name|ucBlock
 return|;
 block|}
 comment|/* End of Under-Construction Feature */
@@ -3418,12 +3406,14 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+operator|!
 name|blocks
 index|[
 name|last
 index|]
-operator|instanceof
-name|BlockInfoContiguousUnderConstruction
+operator|.
+name|isComplete
+argument_list|()
 condition|)
 block|{
 if|if
