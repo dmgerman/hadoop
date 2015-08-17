@@ -2119,12 +2119,11 @@ argument_list|<
 name|T
 argument_list|>
 block|{
-comment|/** The starting modification for fail-fast. */
-DECL|field|startModification
+comment|/** The current modification epoch. */
+DECL|field|expectedModification
 specifier|private
-specifier|final
 name|int
-name|startModification
+name|expectedModification
 init|=
 name|modification
 decl_stmt|;
@@ -2148,6 +2147,14 @@ name|next
 init|=
 name|nextNonemptyEntry
 argument_list|()
+decl_stmt|;
+DECL|field|current
+specifier|private
+name|LinkedElement
+argument_list|<
+name|T
+argument_list|>
+name|current
 decl_stmt|;
 DECL|method|nextNonemptyEntry ()
 specifier|private
@@ -2221,7 +2228,7 @@ if|if
 condition|(
 name|modification
 operator|!=
-name|startModification
+name|expectedModification
 condition|)
 block|{
 throw|throw
@@ -2232,9 +2239,9 @@ literal|"modification="
 operator|+
 name|modification
 operator|+
-literal|" != startModification = "
+literal|" != expectedModification = "
 operator|+
-name|startModification
+name|expectedModification
 argument_list|)
 throw|;
 block|}
@@ -2251,6 +2258,10 @@ name|NoSuchElementException
 argument_list|()
 throw|;
 block|}
+name|current
+operator|=
+name|next
+expr_stmt|;
 specifier|final
 name|T
 name|e
@@ -2294,13 +2305,59 @@ name|void
 name|remove
 parameter_list|()
 block|{
+if|if
+condition|(
+name|current
+operator|==
+literal|null
+condition|)
+block|{
 throw|throw
 operator|new
-name|UnsupportedOperationException
+name|NoSuchElementException
+argument_list|()
+throw|;
+block|}
+if|if
+condition|(
+name|modification
+operator|!=
+name|expectedModification
+condition|)
+block|{
+throw|throw
+operator|new
+name|ConcurrentModificationException
 argument_list|(
-literal|"Remove is not supported."
+literal|"modification="
+operator|+
+name|modification
+operator|+
+literal|" != expectedModification = "
+operator|+
+name|expectedModification
 argument_list|)
 throw|;
+block|}
+name|LightWeightHashSet
+operator|.
+name|this
+operator|.
+name|removeElem
+argument_list|(
+name|current
+operator|.
+name|element
+argument_list|)
+expr_stmt|;
+name|current
+operator|=
+literal|null
+expr_stmt|;
+name|expectedModification
+operator|=
+name|modification
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Clear the set. Resize it to the original capacity.    */
