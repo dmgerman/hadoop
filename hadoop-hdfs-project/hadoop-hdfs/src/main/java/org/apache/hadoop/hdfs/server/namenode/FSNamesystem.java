@@ -19062,6 +19062,33 @@ name|getNumEncryptionZones
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns the length of the wait Queue for the FSNameSystemLock.    *    * A larger number here indicates lots of threads are waiting for    * FSNameSystemLock.    *    * @return int - Number of Threads waiting to acquire FSNameSystemLock    */
+annotation|@
+name|Override
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"LockQueueLength"
+block|,
+literal|"Number of threads waiting to "
+operator|+
+literal|"acquire FSNameSystemLock"
+block|}
+argument_list|)
+DECL|method|getFsLockQueueLength ()
+specifier|public
+name|int
+name|getFsLockQueueLength
+parameter_list|()
+block|{
+return|return
+name|fsLock
+operator|.
+name|getQueueLength
+argument_list|()
+return|;
+block|}
 DECL|method|getNumberOfDatanodes (DatanodeReportType type)
 name|int
 name|getNumberOfDatanodes

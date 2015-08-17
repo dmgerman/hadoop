@@ -195,6 +195,20 @@ name|isWriteLockedByCurrentThread
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns the QueueLength of waiting threads.    *    * A larger number indicates greater lock contention.    *    * @return int - Number of threads waiting on this lock    */
+DECL|method|getQueueLength ()
+specifier|public
+name|int
+name|getQueueLength
+parameter_list|()
+block|{
+return|return
+name|coarseLock
+operator|.
+name|getQueueLength
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
