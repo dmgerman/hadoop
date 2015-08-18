@@ -182,16 +182,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|TreeMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|TreeSet
 import|;
 end_import
@@ -1536,15 +1526,8 @@ argument_list|>
 name|excessReplicateMap
 init|=
 operator|new
-name|TreeMap
-argument_list|<
-name|String
-argument_list|,
-name|LightWeightLinkedSet
-argument_list|<
-name|Block
-argument_list|>
-argument_list|>
+name|HashMap
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * Store set of Blocks that need to be replicated 1 or more times.    * We also store pending replication-orders.    */
