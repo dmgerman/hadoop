@@ -716,6 +716,12 @@ specifier|final
 name|long
 name|maxSizeToMove
 decl_stmt|;
+DECL|field|defaultBlockSize
+specifier|private
+specifier|final
+name|long
+name|defaultBlockSize
+decl_stmt|;
 comment|// all data node lists
 DECL|field|overUtilized
 specifier|private
@@ -1163,6 +1169,23 @@ operator|.
 name|DFS_BALANCER_MAX_SIZE_TO_MOVE_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|defaultBlockSize
+operator|=
+name|getLong
+argument_list|(
+name|conf
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_SIZE_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_SIZE_DEFAULT
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getCapacity (DatanodeStorageReport report, StorageType t)
 specifier|private
@@ -1221,7 +1244,6 @@ return|;
 block|}
 DECL|method|getRemaining (DatanodeStorageReport report, StorageType t)
 specifier|private
-specifier|static
 name|long
 name|getRemaining
 parameter_list|(
@@ -1261,6 +1283,16 @@ operator|==
 name|t
 condition|)
 block|{
+if|if
+condition|(
+name|r
+operator|.
+name|getRemaining
+argument_list|()
+operator|>=
+name|defaultBlockSize
+condition|)
+block|{
 name|remaining
 operator|+=
 name|r
@@ -1268,6 +1300,7 @@ operator|.
 name|getRemaining
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 return|return
@@ -1429,8 +1462,6 @@ name|t
 argument_list|)
 argument_list|,
 name|utilizationDiff
-argument_list|,
-name|threshold
 argument_list|,
 name|maxSizeToMove
 argument_list|)
@@ -1612,7 +1643,7 @@ name|underLoadedBytes
 argument_list|)
 return|;
 block|}
-DECL|method|computeMaxSize2Move (final long capacity, final long remaining, final double utilizationDiff, final double threshold, final long max)
+DECL|method|computeMaxSize2Move (final long capacity, final long remaining, final double utilizationDiff, final long max)
 specifier|private
 specifier|static
 name|long
@@ -1631,10 +1662,6 @@ name|double
 name|utilizationDiff
 parameter_list|,
 specifier|final
-name|double
-name|threshold
-parameter_list|,
-specifier|final
 name|long
 name|max
 parameter_list|)
@@ -1645,16 +1672,9 @@ name|diff
 init|=
 name|Math
 operator|.
-name|min
-argument_list|(
-name|threshold
-argument_list|,
-name|Math
-operator|.
 name|abs
 argument_list|(
 name|utilizationDiff
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|long
