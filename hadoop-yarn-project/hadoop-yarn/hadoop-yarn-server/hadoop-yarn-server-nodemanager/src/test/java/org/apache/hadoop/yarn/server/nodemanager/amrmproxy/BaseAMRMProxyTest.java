@@ -858,6 +858,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|nodemanager
+operator|.
+name|timelineservice
+operator|.
+name|NMTimelinePublisher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|security
 operator|.
 name|ApplicationACLsManager
@@ -3369,6 +3389,27 @@ DECL|method|getContainerAllocator ()
 specifier|public
 name|OpportunisticContainerAllocator
 name|getContainerAllocator
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+DECL|method|setNMTimelinePublisher (NMTimelinePublisher nmMetricsPublisher)
+specifier|public
+name|void
+name|setNMTimelinePublisher
+parameter_list|(
+name|NMTimelinePublisher
+name|nmMetricsPublisher
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
+DECL|method|getNMTimelinePublisher ()
+specifier|public
+name|NMTimelinePublisher
+name|getNMTimelinePublisher
 parameter_list|()
 block|{
 return|return

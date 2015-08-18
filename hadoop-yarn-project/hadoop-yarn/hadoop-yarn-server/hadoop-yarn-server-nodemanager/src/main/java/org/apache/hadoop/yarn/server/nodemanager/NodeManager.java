@@ -946,6 +946,26 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|timelineservice
+operator|.
+name|NMTimelinePublisher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|webapp
 operator|.
 name|WebServer
@@ -3039,6 +3059,11 @@ specifier|final
 name|QueuingContext
 name|queuingContext
 decl_stmt|;
+DECL|field|nmTimelinePublisher
+specifier|private
+name|NMTimelinePublisher
+name|nmTimelinePublisher
+decl_stmt|;
 DECL|method|NMContext (NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager, LocalDirsHandlerService dirsHandler, ApplicationACLsManager aclsManager, NMStateStoreService stateStore, boolean isDistSchedulingEnabled, Configuration conf)
 specifier|public
 name|NMContext
@@ -3649,6 +3674,36 @@ argument_list|(
 name|newRegisteredCollectors
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|setNMTimelinePublisher (NMTimelinePublisher nmMetricsPublisher)
+specifier|public
+name|void
+name|setNMTimelinePublisher
+parameter_list|(
+name|NMTimelinePublisher
+name|nmMetricsPublisher
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nmTimelinePublisher
+operator|=
+name|nmMetricsPublisher
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNMTimelinePublisher ()
+specifier|public
+name|NMTimelinePublisher
+name|getNMTimelinePublisher
+parameter_list|()
+block|{
+return|return
+name|nmTimelinePublisher
+return|;
 block|}
 block|}
 comment|/**    * Class that keeps the context for containers queued at the NM.    */

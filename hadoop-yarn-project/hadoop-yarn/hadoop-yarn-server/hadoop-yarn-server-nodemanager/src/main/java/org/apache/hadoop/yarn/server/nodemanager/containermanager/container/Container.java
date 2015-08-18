@@ -140,6 +140,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -315,6 +333,11 @@ function_decl|;
 DECL|method|toString ()
 name|String
 name|toString
+parameter_list|()
+function_decl|;
+DECL|method|getPriority ()
+name|Priority
+name|getPriority
 parameter_list|()
 function_decl|;
 block|}

@@ -42,6 +42,24 @@ name|ContainerId
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerStatus
+import|;
+end_import
+
 begin_class
 DECL|class|ApplicationContainerFinishedEvent
 specifier|public
@@ -50,22 +68,25 @@ name|ApplicationContainerFinishedEvent
 extends|extends
 name|ApplicationEvent
 block|{
-DECL|field|containerID
+DECL|field|containerStatus
 specifier|private
-name|ContainerId
-name|containerID
+name|ContainerStatus
+name|containerStatus
 decl_stmt|;
-DECL|method|ApplicationContainerFinishedEvent ( ContainerId containerID)
+DECL|method|ApplicationContainerFinishedEvent (ContainerStatus containerStatus)
 specifier|public
 name|ApplicationContainerFinishedEvent
 parameter_list|(
-name|ContainerId
-name|containerID
+name|ContainerStatus
+name|containerStatus
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|containerID
+name|containerStatus
+operator|.
+name|getContainerId
+argument_list|()
 operator|.
 name|getApplicationAttemptId
 argument_list|()
@@ -80,9 +101,9 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|containerID
+name|containerStatus
 operator|=
-name|containerID
+name|containerStatus
 expr_stmt|;
 block|}
 DECL|method|getContainerID ()
@@ -92,9 +113,20 @@ name|getContainerID
 parameter_list|()
 block|{
 return|return
-name|this
+name|containerStatus
 operator|.
-name|containerID
+name|getContainerId
+argument_list|()
+return|;
+block|}
+DECL|method|getContainerStatus ()
+specifier|public
+name|ContainerStatus
+name|getContainerStatus
+parameter_list|()
+block|{
+return|return
+name|containerStatus
 return|;
 block|}
 block|}
