@@ -528,16 +528,6 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMESERVICE_ID
 argument_list|)
-block|,
-operator|new
-name|DeprecationDelta
-argument_list|(
-literal|"dfs.client.file-block-storage-locations.timeout"
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_CLIENT_FILE_BLOCK_STORAGE_LOCATIONS_TIMEOUT_MS
-argument_list|)
 block|,     }
 argument_list|)
 expr_stmt|;
