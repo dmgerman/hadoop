@@ -528,6 +528,11 @@ specifier|private
 name|boolean
 name|vmemCheckEnabled
 decl_stmt|;
+DECL|field|containersMonitorEnabled
+specifier|private
+name|boolean
+name|containersMonitorEnabled
+decl_stmt|;
 DECL|field|maxVCoresAllottedForContainers
 specifier|private
 name|long
@@ -937,6 +942,20 @@ operator|+
 name|vmemCheckEnabled
 argument_list|)
 expr_stmt|;
+name|containersMonitorEnabled
+operator|=
+name|isEnabled
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"ContainersMonitor enabled: "
+operator|+
+name|containersMonitorEnabled
+argument_list|)
+expr_stmt|;
 name|nodeCpuPercentageForYARN
 operator|=
 name|NodeManagerHardwareUtils
@@ -1171,10 +1190,7 @@ name|Exception
 block|{
 if|if
 condition|(
-name|this
-operator|.
-name|isEnabled
-argument_list|()
+name|containersMonitorEnabled
 condition|)
 block|{
 name|this
@@ -1203,10 +1219,7 @@ name|Exception
 block|{
 if|if
 condition|(
-name|this
-operator|.
-name|isEnabled
-argument_list|()
+name|containersMonitorEnabled
 condition|)
 block|{
 name|this
@@ -2877,8 +2890,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|isEnabled
-argument_list|()
+name|containersMonitorEnabled
 condition|)
 block|{
 return|return;
