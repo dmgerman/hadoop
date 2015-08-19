@@ -3392,7 +3392,7 @@ name|length
 operator|-
 literal|1
 decl_stmt|;
-comment|//check if the last block is BlockInfoUnderConstruction
+comment|//check if the last block is under-construction
 name|long
 name|size
 init|=

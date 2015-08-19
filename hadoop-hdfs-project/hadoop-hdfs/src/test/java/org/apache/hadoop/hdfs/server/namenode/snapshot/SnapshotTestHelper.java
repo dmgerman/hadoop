@@ -1400,8 +1400,8 @@ literal|"Quota[]"
 argument_list|)
 expr_stmt|;
 block|}
-comment|// skip the specific fields of BlockInfoUnderConstruction when the node
-comment|// is an INodeFileSnapshot or an INodeFileUnderConstructionSnapshot
+comment|// skip the specific fields of BlockUnderConstructionFeature when the
+comment|// node is an INodeFileSnapshot or INodeFileUnderConstructionSnapshot
 if|if
 condition|(
 name|line1

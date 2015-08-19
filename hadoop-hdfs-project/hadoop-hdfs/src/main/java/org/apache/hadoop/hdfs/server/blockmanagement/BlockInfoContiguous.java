@@ -109,7 +109,7 @@ name|size
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Copy construction.    * This is used to convert BlockReplicationInfoUnderConstruction    * @param from BlockReplicationInfo to copy from.    */
+comment|/**    * Copy construction.    * @param from BlockInfoContiguous to copy from.    */
 DECL|method|BlockInfoContiguous (BlockInfoContiguous from)
 specifier|protected
 name|BlockInfoContiguous

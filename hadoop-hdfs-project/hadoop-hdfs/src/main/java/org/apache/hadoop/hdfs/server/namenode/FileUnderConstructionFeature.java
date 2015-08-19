@@ -225,7 +225,7 @@ operator|.
 name|getFullPathName
 argument_list|()
 operator|+
-literal|" is not a BlockInfoUnderConstruction when updating its length"
+literal|" is not under-construction when updating its length"
 assert|;
 name|lastBlock
 operator|.

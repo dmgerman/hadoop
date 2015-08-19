@@ -413,7 +413,7 @@ name|BlockUCState
 operator|.
 name|COMPLETE
 operator|:
-literal|"BlockInfoUnderConstruction cannot be in COMPLETE state"
+literal|"BlockUnderConstructionFeature cannot be in COMPLETE state"
 assert|;
 name|this
 operator|.
@@ -773,7 +773,7 @@ name|warn
 argument_list|(
 literal|"BLOCK*"
 operator|+
-literal|" BlockInfoUnderConstruction.initLeaseRecovery:"
+literal|" BlockUnderConstructionFeature.initLeaseRecovery:"
 operator|+
 literal|" No blocks found, lease removed."
 argument_list|)

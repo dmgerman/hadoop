@@ -285,7 +285,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|/**    * Copy construction.    * This is used to convert BlockInfoUnderConstruction    * @param from BlockInfo to copy from.    */
+comment|/**    * Copy construction.    * @param from BlockInfo to copy from.    */
 DECL|method|BlockInfo (BlockInfo from)
 specifier|protected
 name|BlockInfo

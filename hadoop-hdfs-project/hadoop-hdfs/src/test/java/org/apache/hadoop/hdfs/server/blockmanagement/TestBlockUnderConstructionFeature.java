@@ -111,14 +111,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class provides tests for BlockInfoUnderConstruction class  */
+comment|/**  * This class provides tests for {@link BlockUnderConstructionFeature} class  */
 end_comment
 
 begin_class
-DECL|class|TestBlockInfoUnderConstruction
+DECL|class|TestBlockUnderConstructionFeature
 specifier|public
 class|class
-name|TestBlockInfoUnderConstruction
+name|TestBlockUnderConstructionFeature
 block|{
 annotation|@
 name|Test
