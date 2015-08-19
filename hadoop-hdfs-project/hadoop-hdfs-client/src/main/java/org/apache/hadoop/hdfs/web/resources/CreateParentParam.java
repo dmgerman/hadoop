@@ -50,7 +50,7 @@ specifier|final
 name|String
 name|DEFAULT
 init|=
-name|FALSE
+name|TRUE
 decl_stmt|;
 DECL|field|DOMAIN
 specifier|private

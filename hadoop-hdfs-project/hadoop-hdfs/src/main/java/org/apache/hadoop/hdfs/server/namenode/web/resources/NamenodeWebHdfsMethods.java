@@ -2354,7 +2354,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|putRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions, @QueryParam(CreateParentParam.NAME) @DefaultValue(CreateParentParam.DEFAULT) final CreateParentParam createParent, @QueryParam(TokenArgumentParam.NAME) @DefaultValue(TokenArgumentParam.DEFAULT) final TokenArgumentParam delegationTokenArgument, @QueryParam(AclPermissionParam.NAME) @DefaultValue(AclPermissionParam.DEFAULT) final AclPermissionParam aclPermission, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final XAttrNameParam xattrName, @QueryParam(XAttrValueParam.NAME) @DefaultValue(XAttrValueParam.DEFAULT) final XAttrValueParam xattrValue, @QueryParam(XAttrSetFlagParam.NAME) @DefaultValue(XAttrSetFlagParam.DEFAULT) final XAttrSetFlagParam xattrSetFlag, @QueryParam(SnapshotNameParam.NAME) @DefaultValue(SnapshotNameParam.DEFAULT) final SnapshotNameParam snapshotName, @QueryParam(OldSnapshotNameParam.NAME) @DefaultValue(OldSnapshotNameParam.DEFAULT) final OldSnapshotNameParam oldSnapshotName, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes )
+DECL|method|putRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions, @QueryParam(CreateParentParam.NAME) @DefaultValue(CreateParentParam.DEFAULT) final CreateParentParam createParent, @QueryParam(TokenArgumentParam.NAME) @DefaultValue(TokenArgumentParam.DEFAULT) final TokenArgumentParam delegationTokenArgument, @QueryParam(AclPermissionParam.NAME) @DefaultValue(AclPermissionParam.DEFAULT) final AclPermissionParam aclPermission, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final XAttrNameParam xattrName, @QueryParam(XAttrValueParam.NAME) @DefaultValue(XAttrValueParam.DEFAULT) final XAttrValueParam xattrValue, @QueryParam(XAttrSetFlagParam.NAME) @DefaultValue(XAttrSetFlagParam.DEFAULT) final XAttrSetFlagParam xattrSetFlag, @QueryParam(SnapshotNameParam.NAME) @DefaultValue(SnapshotNameParam.DEFAULT) final SnapshotNameParam snapshotName, @QueryParam(OldSnapshotNameParam.NAME) @DefaultValue(OldSnapshotNameParam.DEFAULT) final OldSnapshotNameParam oldSnapshotName, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes, @QueryParam(CreateFlagParam.NAME) @DefaultValue(CreateFlagParam.DEFAULT) final CreateFlagParam createFlagParam )
 specifier|public
 name|Response
 name|putRoot
@@ -2796,6 +2796,24 @@ argument_list|)
 specifier|final
 name|ExcludeDatanodesParam
 name|excludeDatanodes
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|CreateFlagParam
+operator|.
+name|NAME
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+name|CreateFlagParam
+operator|.
+name|DEFAULT
+argument_list|)
+specifier|final
+name|CreateFlagParam
+name|createFlagParam
 parameter_list|)
 throws|throws
 name|IOException
@@ -2856,6 +2874,8 @@ argument_list|,
 name|oldSnapshotName
 argument_list|,
 name|excludeDatanodes
+argument_list|,
+name|createFlagParam
 argument_list|)
 return|;
 block|}
@@ -2893,7 +2913,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|put ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions, @QueryParam(CreateParentParam.NAME) @DefaultValue(CreateParentParam.DEFAULT) final CreateParentParam createParent, @QueryParam(TokenArgumentParam.NAME) @DefaultValue(TokenArgumentParam.DEFAULT) final TokenArgumentParam delegationTokenArgument, @QueryParam(AclPermissionParam.NAME) @DefaultValue(AclPermissionParam.DEFAULT) final AclPermissionParam aclPermission, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final XAttrNameParam xattrName, @QueryParam(XAttrValueParam.NAME) @DefaultValue(XAttrValueParam.DEFAULT) final XAttrValueParam xattrValue, @QueryParam(XAttrSetFlagParam.NAME) @DefaultValue(XAttrSetFlagParam.DEFAULT) final XAttrSetFlagParam xattrSetFlag, @QueryParam(SnapshotNameParam.NAME) @DefaultValue(SnapshotNameParam.DEFAULT) final SnapshotNameParam snapshotName, @QueryParam(OldSnapshotNameParam.NAME) @DefaultValue(OldSnapshotNameParam.DEFAULT) final OldSnapshotNameParam oldSnapshotName, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes )
+DECL|method|put ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions, @QueryParam(CreateParentParam.NAME) @DefaultValue(CreateParentParam.DEFAULT) final CreateParentParam createParent, @QueryParam(TokenArgumentParam.NAME) @DefaultValue(TokenArgumentParam.DEFAULT) final TokenArgumentParam delegationTokenArgument, @QueryParam(AclPermissionParam.NAME) @DefaultValue(AclPermissionParam.DEFAULT) final AclPermissionParam aclPermission, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final XAttrNameParam xattrName, @QueryParam(XAttrValueParam.NAME) @DefaultValue(XAttrValueParam.DEFAULT) final XAttrValueParam xattrValue, @QueryParam(XAttrSetFlagParam.NAME) @DefaultValue(XAttrSetFlagParam.DEFAULT) final XAttrSetFlagParam xattrSetFlag, @QueryParam(SnapshotNameParam.NAME) @DefaultValue(SnapshotNameParam.DEFAULT) final SnapshotNameParam snapshotName, @QueryParam(OldSnapshotNameParam.NAME) @DefaultValue(OldSnapshotNameParam.DEFAULT) final OldSnapshotNameParam oldSnapshotName, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes, @QueryParam(CreateFlagParam.NAME) @DefaultValue(CreateFlagParam.DEFAULT) final CreateFlagParam createFlagParam )
 specifier|public
 name|Response
 name|put
@@ -3346,6 +3366,24 @@ argument_list|)
 specifier|final
 name|ExcludeDatanodesParam
 name|excludeDatanodes
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|CreateFlagParam
+operator|.
+name|NAME
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+name|CreateFlagParam
+operator|.
+name|DEFAULT
+argument_list|)
+specifier|final
+name|CreateFlagParam
+name|createFlagParam
 parameter_list|)
 throws|throws
 name|IOException
@@ -3403,6 +3441,8 @@ argument_list|,
 name|oldSnapshotName
 argument_list|,
 name|excludeDatanodes
+argument_list|,
+name|createFlagParam
 argument_list|)
 expr_stmt|;
 return|return
@@ -3487,6 +3527,8 @@ argument_list|,
 name|oldSnapshotName
 argument_list|,
 name|excludeDatanodes
+argument_list|,
+name|createFlagParam
 argument_list|)
 return|;
 block|}
@@ -3501,7 +3543,7 @@ block|}
 argument_list|)
 return|;
 block|}
-DECL|method|put ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final PutOpParam op, final DestinationParam destination, final OwnerParam owner, final GroupParam group, final PermissionParam permission, final OverwriteParam overwrite, final BufferSizeParam bufferSize, final ReplicationParam replication, final BlockSizeParam blockSize, final ModificationTimeParam modificationTime, final AccessTimeParam accessTime, final RenameOptionSetParam renameOptions, final CreateParentParam createParent, final TokenArgumentParam delegationTokenArgument, final AclPermissionParam aclPermission, final XAttrNameParam xattrName, final XAttrValueParam xattrValue, final XAttrSetFlagParam xattrSetFlag, final SnapshotNameParam snapshotName, final OldSnapshotNameParam oldSnapshotName, final ExcludeDatanodesParam exclDatanodes )
+DECL|method|put ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final PutOpParam op, final DestinationParam destination, final OwnerParam owner, final GroupParam group, final PermissionParam permission, final OverwriteParam overwrite, final BufferSizeParam bufferSize, final ReplicationParam replication, final BlockSizeParam blockSize, final ModificationTimeParam modificationTime, final AccessTimeParam accessTime, final RenameOptionSetParam renameOptions, final CreateParentParam createParent, final TokenArgumentParam delegationTokenArgument, final AclPermissionParam aclPermission, final XAttrNameParam xattrName, final XAttrValueParam xattrValue, final XAttrSetFlagParam xattrSetFlag, final SnapshotNameParam snapshotName, final OldSnapshotNameParam oldSnapshotName, final ExcludeDatanodesParam exclDatanodes, final CreateFlagParam createFlagParam )
 specifier|private
 name|Response
 name|put
@@ -3609,6 +3651,10 @@ parameter_list|,
 specifier|final
 name|ExcludeDatanodesParam
 name|exclDatanodes
+parameter_list|,
+specifier|final
+name|CreateFlagParam
+name|createFlagParam
 parameter_list|)
 throws|throws
 name|IOException
@@ -3713,6 +3759,10 @@ argument_list|,
 name|replication
 argument_list|,
 name|blockSize
+argument_list|,
+name|createParent
+argument_list|,
+name|createFlagParam
 argument_list|)
 decl_stmt|;
 return|return
