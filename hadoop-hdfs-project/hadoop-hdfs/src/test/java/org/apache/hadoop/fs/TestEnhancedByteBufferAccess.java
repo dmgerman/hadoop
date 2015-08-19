@@ -2482,7 +2482,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CONTEXT
 argument_list|,
@@ -4080,7 +4080,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CONTEXT
 argument_list|,
@@ -4924,7 +4924,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CONTEXT
 argument_list|,
@@ -5124,7 +5124,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CONTEXT
 argument_list|,
@@ -5390,7 +5390,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CONTEXT
 argument_list|,

@@ -796,7 +796,7 @@ name|conf
 operator|.
 name|setLong
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_BYTES_PER_CHECKSUM_KEY
 argument_list|,
@@ -820,7 +820,7 @@ name|conf
 operator|.
 name|setLong
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CACHE_READAHEAD
 argument_list|,

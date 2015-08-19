@@ -488,7 +488,7 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_USE_LEGACY_BLOCKREADER
 argument_list|,

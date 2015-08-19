@@ -42,7 +42,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CACHE_DROP_BEHIND_READS
 import|;
@@ -58,7 +60,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CACHE_DROP_BEHIND_WRITES
 import|;
@@ -74,7 +78,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CACHE_READAHEAD
 import|;
@@ -90,7 +96,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CONTEXT
 import|;
@@ -106,7 +114,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CONTEXT_DEFAULT
 import|;
@@ -3659,7 +3669,7 @@ literal|0
 condition|?
 name|t
 operator|+
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|WRITE_TIMEOUT_EXTENSION
 operator|*
@@ -3690,7 +3700,7 @@ name|t
 operator|>
 literal|0
 condition|?
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|READ_TIMEOUT_EXTENSION
 operator|*

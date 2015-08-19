@@ -142,7 +142,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -586,7 +588,7 @@ name|feature
 operator|+
 literal|" is enabled but "
 operator|+
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DOMAIN_SOCKET_PATH_KEY
 operator|+

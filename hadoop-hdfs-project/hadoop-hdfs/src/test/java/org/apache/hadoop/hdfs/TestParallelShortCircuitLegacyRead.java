@@ -129,7 +129,7 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_USE_LEGACY_BLOCKREADERLOCAL
 argument_list|,
@@ -140,7 +140,7 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_DOMAIN_SOCKET_DATA_TRAFFIC
 argument_list|,

@@ -26,7 +26,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
 import|;
@@ -1482,7 +1484,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_SOCKET_WRITE_TIMEOUT_KEY
 argument_list|,
@@ -1515,7 +1517,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_MAX_BLOCK_ACQUIRE_FAILURES_KEY
 argument_list|,
@@ -4170,7 +4172,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_MAX_BLOCK_ACQUIRE_FAILURES_KEY
 argument_list|,

@@ -304,7 +304,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.socket.timeout"
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
 argument_list|)
@@ -474,7 +474,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.write.packet.size"
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_WRITE_PACKET_SIZE_KEY
 argument_list|)
@@ -504,7 +504,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"io.bytes.per.checksum"
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_BYTES_PER_CHECKSUM_KEY
 argument_list|)
@@ -527,6 +527,16 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMESERVICE_ID
+argument_list|)
+block|,
+operator|new
+name|DeprecationDelta
+argument_list|(
+literal|"dfs.client.file-block-storage-locations.timeout"
+argument_list|,
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_FILE_BLOCK_STORAGE_LOCATIONS_TIMEOUT_MS
 argument_list|)
 block|,     }
 argument_list|)

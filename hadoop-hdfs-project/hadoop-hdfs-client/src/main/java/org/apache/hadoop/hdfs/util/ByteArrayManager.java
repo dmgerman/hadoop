@@ -64,34 +64,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|HadoopIllegalArgumentException
@@ -140,8 +112,28 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
-comment|/**  * Manage byte array creation and release.   */
+comment|/**  * Manage byte array creation and release.  */
 end_comment
 
 begin_class
@@ -158,19 +150,19 @@ block|{
 DECL|field|LOG
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|ByteArrayManager
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|debugMessage
+DECL|field|DEBUG_MESSAGE
 specifier|private
 specifier|static
 specifier|final
@@ -178,7 +170,7 @@ name|ThreadLocal
 argument_list|<
 name|StringBuilder
 argument_list|>
-name|debugMessage
+name|DEBUG_MESSAGE
 init|=
 operator|new
 name|ThreadLocal
@@ -211,7 +203,7 @@ specifier|final
 name|StringBuilder
 name|b
 init|=
-name|debugMessage
+name|DEBUG_MESSAGE
 operator|.
 name|get
 argument_list|()
@@ -221,6 +213,9 @@ operator|.
 name|debug
 argument_list|(
 name|b
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|b
@@ -409,7 +404,7 @@ return|return
 name|count
 return|;
 block|}
-comment|/**      * Increment the counter, and reset it if there is no increment      * for acertain time period.      *      * @return the new count.      */
+comment|/**      * Increment the counter, and reset it if there is no increment      * for a certain time period.      *      * @return the new count.      */
 DECL|method|increment ()
 specifier|synchronized
 name|long
@@ -453,6 +448,7 @@ block|}
 comment|/** A map from integers to counters. */
 DECL|class|CounterMap
 specifier|static
+specifier|final
 class|class
 name|CounterMap
 block|{
@@ -476,11 +472,7 @@ name|map
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|Integer
-argument_list|,
-name|Counter
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|method|CounterMap (long countResetTimePeriodMs)
@@ -554,18 +546,6 @@ return|return
 name|count
 return|;
 block|}
-DECL|method|clear ()
-specifier|synchronized
-name|void
-name|clear
-parameter_list|()
-block|{
-name|map
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/** Manage byte arrays with the same fixed length. */
 DECL|class|FixedLengthManager
@@ -597,10 +577,7 @@ name|freeQueue
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|byte
-index|[]
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|numAllocated
@@ -633,7 +610,7 @@ operator|=
 name|maxAllocated
 expr_stmt|;
 block|}
-comment|/**      * Allocate a byte array.      *      * If the number of allocated arrays>= maximum, the current thread is      * blocked until the number of allocated arrays drops to below the maximum.      *       * The byte array allocated by this method must be returned for recycling      * via the {@link FixedLengthManager#recycle(byte[])} method.      */
+comment|/**      * Allocate a byte array.      *      * If the number of allocated arrays>= maximum, the current thread is      * blocked until the number of allocated arrays drops to below the maximum.      *      * The byte array allocated by this method must be returned for recycling      * via the {@link FixedLengthManager#recycle(byte[])} method.      */
 DECL|method|allocate ()
 specifier|synchronized
 name|byte
@@ -651,7 +628,7 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|debugMessage
+name|DEBUG_MESSAGE
 operator|.
 name|get
 argument_list|()
@@ -684,7 +661,7 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|debugMessage
+name|DEBUG_MESSAGE
 operator|.
 name|get
 argument_list|()
@@ -709,7 +686,7 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|debugMessage
+name|DEBUG_MESSAGE
 operator|.
 name|get
 argument_list|()
@@ -747,7 +724,7 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|debugMessage
+name|DEBUG_MESSAGE
 operator|.
 name|get
 argument_list|()
@@ -816,7 +793,7 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|debugMessage
+name|DEBUG_MESSAGE
 operator|.
 name|get
 argument_list|()
@@ -872,7 +849,7 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|debugMessage
+name|DEBUG_MESSAGE
 operator|.
 name|get
 argument_list|()
@@ -956,11 +933,7 @@ name|map
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|Integer
-argument_list|,
-name|FixedLengthManager
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|method|ManagerMap (int countLimit)
@@ -1035,19 +1008,8 @@ return|return
 name|manager
 return|;
 block|}
-DECL|method|clear ()
-specifier|synchronized
-name|void
-name|clear
-parameter_list|()
-block|{
-name|map
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
 block|}
-block|}
+comment|/**    * Configuration for ByteArrayManager.    */
 DECL|class|Conf
 specifier|public
 specifier|static
@@ -1109,7 +1071,7 @@ name|countResetTimePeriodMs
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create a byte array for the given length, where the length of    * the returned array is larger than or equal to the given length.    *    * The current thread may be blocked if some resource is unavailable.    *     * The byte array created by this method must be released    * via the {@link ByteArrayManager#release(byte[])} method.    *    * @return a byte array with length larger than or equal to the given length.    */
+comment|/**    * Create a byte array for the given length, where the length of    * the returned array is larger than or equal to the given length.    *    * The current thread may be blocked if some resource is unavailable.    *    * The byte array created by this method must be released    * via the {@link ByteArrayManager#release(byte[])} method.    *    * @return a byte array with length larger than or equal to the given length.    */
 DECL|method|newByteArray (int size)
 specifier|public
 specifier|abstract
@@ -1123,7 +1085,7 @@ parameter_list|)
 throws|throws
 name|InterruptedException
 function_decl|;
-comment|/**    * Release the given byte array.    *     * The byte array may or may not be created    * by the {@link ByteArrayManager#newByteArray(int)} method.    *     * @return the number of free array.    */
+comment|/**    * Release the given byte array.    *    * The byte array may or may not be created    * by the {@link ByteArrayManager#newByteArray(int)} method.    *    * @return the number of free array.    */
 DECL|method|release (byte[] array)
 specifier|public
 specifier|abstract
@@ -1272,7 +1234,7 @@ name|countLimit
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Allocate a byte array, where the length of the allocated array      * is the least power of two of the given length      * unless the given length is less than {@link #MIN_ARRAY_LENGTH}.      * In such case, the returned array length is equal to {@link #MIN_ARRAY_LENGTH}.      *      * If the number of allocated arrays exceeds the capacity,      * the current thread is blocked until      * the number of allocated arrays drops to below the capacity.      *       * The byte array allocated by this method must be returned for recycling      * via the {@link Impl#release(byte[])} method.      *      * @return a byte array with length larger than or equal to the given length.      */
+comment|/**      * Allocate a byte array, where the length of the allocated array      * is the least power of two of the given length      * unless the given length is less than {@link #MIN_ARRAY_LENGTH}.      * In such case, the returned array length is equal to {@link      * #MIN_ARRAY_LENGTH}.      *      * If the number of allocated arrays exceeds the capacity,      * the current thread is blocked until      * the number of allocated arrays drops to below the capacity.      *      * The byte array allocated by this method must be returned for recycling      * via the {@link Impl#release(byte[])} method.      *      * @return a byte array with length larger than or equal to the given      * length.      */
 annotation|@
 name|Override
 DECL|method|newByteArray (final int arrayLength)
@@ -1305,7 +1267,7 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|debugMessage
+name|DEBUG_MESSAGE
 operator|.
 name|get
 argument_list|()
@@ -1408,7 +1370,7 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|debugMessage
+name|DEBUG_MESSAGE
 operator|.
 name|get
 argument_list|()
@@ -1459,7 +1421,7 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|debugMessage
+name|DEBUG_MESSAGE
 operator|.
 name|get
 argument_list|()
@@ -1489,7 +1451,7 @@ return|return
 name|array
 return|;
 block|}
-comment|/**      * Recycle the given byte array.      *       * The byte array may or may not be allocated      * by the {@link Impl#newByteArray(int)} method.      *       * This is a non-blocking call.      */
+comment|/**      * Recycle the given byte array.      *      * The byte array may or may not be allocated      * by the {@link Impl#newByteArray(int)} method.      *      * This is a non-blocking call.      */
 annotation|@
 name|Override
 DECL|method|release (final byte[] array)
@@ -1518,7 +1480,7 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|debugMessage
+name|DEBUG_MESSAGE
 operator|.
 name|get
 argument_list|()
@@ -1597,7 +1559,7 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|debugMessage
+name|DEBUG_MESSAGE
 operator|.
 name|get
 argument_list|()

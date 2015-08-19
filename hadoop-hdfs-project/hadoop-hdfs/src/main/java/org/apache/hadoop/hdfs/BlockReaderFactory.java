@@ -772,9 +772,13 @@ decl_stmt|;
 comment|/**    * Injects failures into specific operations during unit tests.    */
 DECL|field|failureInjector
 specifier|private
-specifier|final
+specifier|static
 name|FailureInjector
 name|failureInjector
+init|=
+operator|new
+name|FailureInjector
+argument_list|()
 decl_stmt|;
 comment|/**    * The file name, for logging and debugging purposes.    */
 DECL|field|fileName
@@ -905,17 +909,6 @@ operator|.
 name|conf
 operator|=
 name|conf
-expr_stmt|;
-name|this
-operator|.
-name|failureInjector
-operator|=
-name|conf
-operator|.
-name|getShortCircuitConf
-argument_list|()
-operator|.
-name|brfFailureInjector
 expr_stmt|;
 name|this
 operator|.
@@ -1233,6 +1226,23 @@ expr_stmt|;
 return|return
 name|this
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setFailureInjectorForTesting (FailureInjector injector)
+specifier|public
+specifier|static
+name|void
+name|setFailureInjectorForTesting
+parameter_list|(
+name|FailureInjector
+name|injector
+parameter_list|)
+block|{
+name|failureInjector
+operator|=
+name|injector
+expr_stmt|;
 block|}
 comment|/**    * Build a BlockReader with the given options.    *    * This function will do the best it can to create a block reader that meets    * all of our requirements.  We prefer short-circuit block readers    * (BlockReaderLocal and BlockReaderLocalLegacy) over remote ones, since the    * former avoid the overhead of socket communication.  If short-circuit is    * unavailable, our next fallback is data transfer over UNIX domain sockets,    * if dfs.client.domain.socket.data.traffic has been enabled.  If that doesn't    * work, we will try to create a remote block reader that operates over TCP    * sockets.    *    * There are a few caches that are important here.    *    * The ShortCircuitCache stores file descriptor objects which have been passed    * from the DataNode.     *    * The DomainSocketFactory stores information about UNIX domain socket paths    * that we not been able to use in the past, so that we don't waste time    * retrying them over and over.  (Like all the caches, it does have a timeout,    * though.)    *    * The PeerCache stores peers that we have used in the past.  If we can reuse    * one of these peers, we avoid the overhead of re-opening a socket.  However,    * if the socket has been timed out on the remote end, our attempt to reuse    * the socket may end with an IOException.  For that reason, we limit our    * attempts at socket reuse to dfs.client.cached.conn.retry times.  After    * that, we create new sockets.  This avoids the problem where a thread tries    * to talk to a peer that it hasn't talked to in a while, and has to clean out    * every entry in a socket cache full of stale entries.    *    * @return The new BlockReader.  We will not return null.    *    * @throws InvalidToken    *             If the block token was invalid.    *         InvalidEncryptionKeyException    *             If the encryption key was invalid.    *         Other IOException    *             If there was another problem.    */
 DECL|method|build ()

@@ -259,7 +259,7 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_DOMAIN_SOCKET_DATA_TRAFFIC
 argument_list|,
@@ -282,7 +282,7 @@ name|conf
 operator|.
 name|setLong
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_SOCKET_CACHE_EXPIRY_MSEC_KEY
 argument_list|,
@@ -297,7 +297,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_SOCKET_CACHE_CAPACITY_KEY
 argument_list|,

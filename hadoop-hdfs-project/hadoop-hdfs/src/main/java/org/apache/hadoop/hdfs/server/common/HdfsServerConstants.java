@@ -1161,42 +1161,6 @@ return|;
 block|}
 block|}
 block|}
-comment|// Timeouts for communicating with DataNode for streaming writes/reads
-DECL|field|READ_TIMEOUT
-name|int
-name|READ_TIMEOUT
-init|=
-literal|60
-operator|*
-literal|1000
-decl_stmt|;
-DECL|field|READ_TIMEOUT_EXTENSION
-name|int
-name|READ_TIMEOUT_EXTENSION
-init|=
-literal|5
-operator|*
-literal|1000
-decl_stmt|;
-DECL|field|WRITE_TIMEOUT
-name|int
-name|WRITE_TIMEOUT
-init|=
-literal|8
-operator|*
-literal|60
-operator|*
-literal|1000
-decl_stmt|;
-DECL|field|WRITE_TIMEOUT_EXTENSION
-name|int
-name|WRITE_TIMEOUT_EXTENSION
-init|=
-literal|5
-operator|*
-literal|1000
-decl_stmt|;
-comment|//for write pipeline
 comment|/**    * Defines the NameNode role.    */
 DECL|enum|NamenodeRole
 enum|enum

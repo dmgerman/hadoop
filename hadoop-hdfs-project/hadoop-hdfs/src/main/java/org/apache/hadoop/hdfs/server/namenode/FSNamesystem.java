@@ -144,7 +144,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_BYTES_PER_CHECKSUM_DEFAULT
 import|;
@@ -160,7 +162,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_BYTES_PER_CHECKSUM_KEY
 import|;
@@ -208,7 +212,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_WRITE_PACKET_SIZE_DEFAULT
 import|;
@@ -224,7 +230,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_WRITE_PACKET_SIZE_KEY
 import|;

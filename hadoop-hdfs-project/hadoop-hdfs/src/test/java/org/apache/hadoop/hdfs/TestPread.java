@@ -1448,7 +1448,7 @@ name|assertTrue
 argument_list|(
 name|numBlocks
 operator|<=
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_MAX_BLOCK_ACQUIRE_FAILURES_DEFAULT
 argument_list|)

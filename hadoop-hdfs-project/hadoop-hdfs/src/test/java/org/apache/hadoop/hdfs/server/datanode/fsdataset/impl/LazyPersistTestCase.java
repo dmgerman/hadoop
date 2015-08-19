@@ -1702,6 +1702,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|HdfsClientConfigKeys
+operator|.
 name|DFS_CLIENT_CONTEXT
 argument_list|,
 name|UUID
@@ -1737,6 +1739,8 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
+name|HdfsClientConfigKeys
+operator|.
 name|DFS_CLIENT_USE_LEGACY_BLOCKREADERLOCAL
 argument_list|,
 literal|true
