@@ -1355,6 +1355,34 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+DECL|method|testCapabilitiesInited ()
+specifier|public
+name|void
+name|testCapabilitiesInited
+parameter_list|()
+block|{
+name|NamespaceInfo
+name|nsInfo
+init|=
+operator|new
+name|NamespaceInfo
+argument_list|()
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|nsInfo
+operator|.
+name|isCapabilitySupported
+argument_list|(
+name|Capability
+operator|.
+name|STORAGE_BLOCK_REPORT_BUFFERS
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testDatanodeDetect ()
 specifier|public
 name|void
