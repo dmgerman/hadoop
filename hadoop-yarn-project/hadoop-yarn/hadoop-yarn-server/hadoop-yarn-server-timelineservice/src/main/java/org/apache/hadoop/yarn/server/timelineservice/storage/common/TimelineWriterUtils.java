@@ -105,6 +105,17 @@ index|[
 literal|0
 index|]
 decl_stmt|;
+comment|/** indicator for no limits for splitting */
+DECL|field|NO_LIMIT_SPLIT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|NO_LIMIT_SPLIT
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/**    * Splits the source array into multiple array segments using the given    * separator, up to a maximum of count items. This will naturally produce    * copied byte arrays for each of the split segments. To identify the split    * ranges without the array copies, see    * {@link TimelineWriterUtils#splitRanges(byte[], byte[])}.    *    * @param source    * @param separator    * @return byte[] array after splitting the source    */
 DECL|method|split (byte[] source, byte[] separator)
 specifier|public
@@ -130,12 +141,11 @@ name|source
 argument_list|,
 name|separator
 argument_list|,
-operator|-
-literal|1
+name|NO_LIMIT_SPLIT
 argument_list|)
 return|;
 block|}
-comment|/**    * Splits the source array into multiple array segments using the given    * separator, up to a maximum of count items. This will naturally produce    * copied byte arrays for each of the split segments. To identify the split    * ranges without the array copies, see    * {@link TimelineWriterUtils#splitRanges(byte[], byte[])}.    *    * @param source    * @param separator    * @param limit a negative value indicates no limit on number of segments.    * @return byte[][] after splitting the input source    */
+comment|/**    * Splits the source array into multiple array segments using the given    * separator, up to a maximum of count items. This will naturally produce    * copied byte arrays for each of the split segments. To identify the split    * ranges without the array copies, see    * {@link TimelineWriterUtils#splitRanges(byte[], byte[])}.    *    * @param source    * @param separator    * @param limit a non-positive value indicates no limit on number of segments.    * @return byte[][] after splitting the input source    */
 DECL|method|split (byte[] source, byte[] separator, int limit)
 specifier|public
 specifier|static
@@ -296,8 +306,7 @@ name|source
 argument_list|,
 name|separator
 argument_list|,
-operator|-
-literal|1
+name|NO_LIMIT_SPLIT
 argument_list|)
 return|;
 block|}

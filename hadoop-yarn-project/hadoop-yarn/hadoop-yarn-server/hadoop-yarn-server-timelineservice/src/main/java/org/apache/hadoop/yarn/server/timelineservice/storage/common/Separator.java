@@ -115,7 +115,7 @@ comment|/**    * separator in values, and/or compound key/column qualifier field
 DECL|enumConstant|VALUES
 name|VALUES
 argument_list|(
-literal|"?"
+literal|"="
 argument_list|,
 literal|"%1$"
 argument_list|)
@@ -980,7 +980,7 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Splits the source array into multiple array segments using this separator,    * up to a maximum of count items. This will naturally produce copied byte    * arrays for each of the split segments.    * @param source to be split    * @param limit on how many segments are supposed to be returned. Negative    *          value indicates no limit on number of segments.    * @return source split by this separator.    */
+comment|/**    * Splits the source array into multiple array segments using this separator,    * up to a maximum of count items. This will naturally produce copied byte    * arrays for each of the split segments.    * @param source to be split    * @param limit on how many segments are supposed to be returned. A    *          non-positive value indicates no limit on number of segments.    * @return source split by this separator.    */
 DECL|method|split (byte[] source, int limit)
 specifier|public
 name|byte
@@ -1008,6 +1008,32 @@ operator|.
 name|bytes
 argument_list|,
 name|limit
+argument_list|)
+return|;
+block|}
+comment|/**    * Splits the source array into multiple array segments using this separator,    * as many times as splits are found. This will naturally produce copied byte    * arrays for each of the split segments.    * @param source to be split    * @return source split by this separator.    */
+DECL|method|split (byte[] source)
+specifier|public
+name|byte
+index|[]
+index|[]
+name|split
+parameter_list|(
+name|byte
+index|[]
+name|source
+parameter_list|)
+block|{
+return|return
+name|TimelineWriterUtils
+operator|.
+name|split
+argument_list|(
+name|source
+argument_list|,
+name|this
+operator|.
+name|bytes
 argument_list|)
 return|;
 block|}
