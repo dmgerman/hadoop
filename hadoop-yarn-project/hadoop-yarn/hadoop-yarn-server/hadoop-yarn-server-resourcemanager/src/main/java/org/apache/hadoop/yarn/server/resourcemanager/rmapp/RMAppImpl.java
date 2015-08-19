@@ -4934,6 +4934,15 @@ name|diagnostics
 operator|.
 name|append
 argument_list|(
+literal|null
+operator|==
+name|appState
+operator|.
+name|getDiagnostics
+argument_list|()
+condition|?
+literal|""
+else|:
 name|appState
 operator|.
 name|getDiagnostics

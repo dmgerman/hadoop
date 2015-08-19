@@ -1441,7 +1441,7 @@ name|overviewTable
 operator|.
 name|_
 argument_list|(
-literal|"Log Aggregation Status"
+literal|"Log Aggregation Status:"
 argument_list|,
 literal|"N/A"
 argument_list|)
@@ -1473,7 +1473,7 @@ name|overviewTable
 operator|.
 name|_
 argument_list|(
-literal|"Log Aggregation Status"
+literal|"Log Aggregation Status:"
 argument_list|,
 name|status
 operator|.
@@ -1488,7 +1488,7 @@ name|overviewTable
 operator|.
 name|_
 argument_list|(
-literal|"Log Aggregation Status"
+literal|"Log Aggregation Status:"
 argument_list|,
 name|root_url
 argument_list|(
