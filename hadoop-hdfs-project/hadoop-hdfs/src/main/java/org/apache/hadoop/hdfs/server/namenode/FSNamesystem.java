@@ -33234,6 +33234,63 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Return total number of Sync Operations on FSEditLog.    */
+annotation|@
+name|Override
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"TotalSyncCount"
+block|,
+literal|"Total number of sync operations performed on edit logs"
+block|}
+argument_list|)
+DECL|method|getTotalSyncCount ()
+specifier|public
+name|long
+name|getTotalSyncCount
+parameter_list|()
+block|{
+return|return
+name|fsImage
+operator|.
+name|editLog
+operator|.
+name|getTotalSyncCount
+argument_list|()
+return|;
+block|}
+comment|/**    * Return total time spent doing sync operations on FSEditLog.    */
+annotation|@
+name|Override
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"TotalSyncTimes"
+block|,
+literal|"Total time spend in sync operation on various edit logs"
+block|}
+argument_list|)
+DECL|method|getTotalSyncTimes ()
+specifier|public
+name|String
+name|getTotalSyncTimes
+parameter_list|()
+block|{
+return|return
+name|fsImage
+operator|.
+name|editLog
+operator|.
+name|getJournalSet
+argument_list|()
+operator|.
+name|getSyncTimes
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
