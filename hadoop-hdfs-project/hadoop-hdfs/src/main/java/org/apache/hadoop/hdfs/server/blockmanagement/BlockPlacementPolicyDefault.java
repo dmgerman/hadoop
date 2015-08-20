@@ -4197,6 +4197,8 @@ name|storage
 operator|.
 name|getStorageType
 argument_list|()
+argument_list|,
+name|requiredSize
 argument_list|)
 decl_stmt|;
 if|if
