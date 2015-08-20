@@ -331,7 +331,12 @@ argument_list|(
 name|scheduler
 operator|.
 name|isBlockReportDue
+argument_list|(
+name|scheduler
+operator|.
+name|monotonicNow
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

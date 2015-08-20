@@ -171,6 +171,23 @@ name|values
 argument_list|()
 argument_list|)
 decl_stmt|;
+DECL|field|MINIMUM_COMPATIBLE_LAYOUT_VERSION
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|MINIMUM_COMPATIBLE_LAYOUT_VERSION
+init|=
+name|LayoutVersion
+operator|.
+name|getMinimumCompatibleLayoutVersion
+argument_list|(
+name|Feature
+operator|.
+name|values
+argument_list|()
+argument_list|)
+decl_stmt|;
 static|static
 block|{
 name|LayoutVersion
@@ -252,7 +269,7 @@ name|lv
 argument_list|)
 return|;
 block|}
-comment|/**    * Enums for features that change the layout version.    *<br><br>    * To add a new layout version:    *<ul>    *<li>Define a new enum constant with a short enum name, the new layout version     * and description of the added feature.</li>    *<li>When adding a layout version with an ancestor that is not same as    * its immediate predecessor, use the constructor where a specific ancestor    * can be passed.    *</li>    *</ul>    */
+comment|/**    * Enums for features that change the layout version.    *<br><br>    * To add a new layout version:    *<ul>    *<li>Define a new enum constant with a short enum name, the new layout version     * and description of the added feature.</li>    *<li>When adding a layout version with an ancestor that is not same as    * its immediate predecessor, use the constructor where a specific ancestor    * can be passed.    *</li>    *<li>Specify a minimum compatible layout version.  The minimum compatible    * layout version is the earliest prior version to which a downgrade is    * possible after initiating rolling upgrade.  If the feature cannot satisfy    * compatibility with any prior version, then set its minimum compatible    * lqyout version to itself to indicate that downgrade is impossible.    * Satisfying compatibility might require adding logic to the new feature to    * reject operations or handle them differently while rolling upgrade is in    * progress.  In general, it's possible to satisfy compatiblity for downgrade    * if the new feature just involves adding new edit log ops.  Deeper    * structural changes, such as changing the way we place files in the metadata    * directories, might be incompatible.  Feature implementations should strive    * for compatibility, because it's in the best interest of our users to    * support downgrade.    *</ul>    */
 DECL|enum|Feature
 specifier|public
 specifier|static
@@ -270,6 +287,9 @@ argument_list|,
 operator|-
 literal|53
 argument_list|,
+operator|-
+literal|55
+argument_list|,
 literal|"Support rolling upgrade"
 argument_list|,
 literal|false
@@ -278,6 +298,9 @@ block|,
 DECL|enumConstant|EDITLOG_LENGTH
 name|EDITLOG_LENGTH
 argument_list|(
+operator|-
+literal|56
+argument_list|,
 operator|-
 literal|56
 argument_list|,
@@ -290,12 +313,18 @@ argument_list|(
 operator|-
 literal|57
 argument_list|,
+operator|-
+literal|57
+argument_list|,
 literal|"Extended attributes"
 argument_list|)
 block|,
 DECL|enumConstant|CREATE_OVERWRITE
 name|CREATE_OVERWRITE
 argument_list|(
+operator|-
+literal|58
+argument_list|,
 operator|-
 literal|58
 argument_list|,
@@ -310,12 +339,18 @@ argument_list|(
 operator|-
 literal|59
 argument_list|,
+operator|-
+literal|59
+argument_list|,
 literal|"Increase number of xattr namespaces"
 argument_list|)
 block|,
 DECL|enumConstant|BLOCK_STORAGE_POLICY
 name|BLOCK_STORAGE_POLICY
 argument_list|(
+operator|-
+literal|60
+argument_list|,
 operator|-
 literal|60
 argument_list|,
@@ -328,6 +363,9 @@ argument_list|(
 operator|-
 literal|61
 argument_list|,
+operator|-
+literal|61
+argument_list|,
 literal|"Truncate"
 argument_list|)
 block|,
@@ -336,6 +374,9 @@ name|APPEND_NEW_BLOCK
 argument_list|(
 operator|-
 literal|62
+argument_list|,
+operator|-
+literal|61
 argument_list|,
 literal|"Support appending to new block"
 argument_list|)
@@ -346,6 +387,9 @@ argument_list|(
 operator|-
 literal|63
 argument_list|,
+operator|-
+literal|61
+argument_list|,
 literal|"Support quota for specific storage types"
 argument_list|)
 block|,
@@ -354,6 +398,9 @@ name|ERASURE_CODING
 argument_list|(
 operator|-
 literal|64
+argument_list|,
+operator|-
+literal|61
 argument_list|,
 literal|"Support erasure coding"
 argument_list|)
@@ -364,13 +411,16 @@ specifier|final
 name|FeatureInfo
 name|info
 decl_stmt|;
-comment|/**      * Feature that is added at layout version {@code lv} - 1.       * @param lv new layout version with the addition of this feature      * @param description description of the feature      */
-DECL|method|Feature (final int lv, final String description)
+comment|/**      * Feature that is added at layout version {@code lv} - 1.       * @param lv new layout version with the addition of this feature      * @param minCompatLV minimium compatible layout version      * @param description description of the feature      */
+DECL|method|Feature (final int lv, int minCompatLV, final String description)
 name|Feature
 parameter_list|(
 specifier|final
 name|int
 name|lv
+parameter_list|,
+name|int
+name|minCompatLV
 parameter_list|,
 specifier|final
 name|String
@@ -385,14 +435,16 @@ name|lv
 operator|+
 literal|1
 argument_list|,
+name|minCompatLV
+argument_list|,
 name|description
 argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * NameNode feature that is added at layout version {@code ancestoryLV}.      * @param lv new layout version with the addition of this feature      * @param ancestorLV layout version from which the new lv is derived from.      * @param description description of the feature      * @param reserved true when this is a layout version reserved for previous      *        versions      * @param features set of features that are to be enabled for this version      */
-DECL|method|Feature (final int lv, final int ancestorLV, final String description, boolean reserved, Feature... features)
+comment|/**      * NameNode feature that is added at layout version {@code ancestoryLV}.      * @param lv new layout version with the addition of this feature      * @param ancestorLV layout version from which the new lv is derived from.      * @param minCompatLV minimum compatible layout version      * @param description description of the feature      * @param reserved true when this is a layout version reserved for previous      *        versions      * @param features set of features that are to be enabled for this version      */
+DECL|method|Feature (final int lv, final int ancestorLV, int minCompatLV, final String description, boolean reserved, Feature... features)
 name|Feature
 parameter_list|(
 specifier|final
@@ -402,6 +454,9 @@ parameter_list|,
 specifier|final
 name|int
 name|ancestorLV
+parameter_list|,
+name|int
+name|minCompatLV
 parameter_list|,
 specifier|final
 name|String
@@ -423,6 +478,8 @@ argument_list|(
 name|lv
 argument_list|,
 name|ancestorLV
+argument_list|,
+name|minCompatLV
 argument_list|,
 name|description
 argument_list|,

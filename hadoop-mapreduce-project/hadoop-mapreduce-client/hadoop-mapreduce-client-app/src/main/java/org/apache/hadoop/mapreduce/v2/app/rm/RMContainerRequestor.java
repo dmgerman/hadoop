@@ -889,13 +889,18 @@ specifier|final
 name|Priority
 name|priority
 decl_stmt|;
+DECL|field|nodeLabelExpression
+specifier|final
+name|String
+name|nodeLabelExpression
+decl_stmt|;
 comment|/**      * the time when this request object was formed; can be used to avoid      * aggressive preemption for recently placed requests      */
 DECL|field|requestTimeMs
 specifier|final
 name|long
 name|requestTimeMs
 decl_stmt|;
-DECL|method|ContainerRequest (ContainerRequestEvent event, Priority priority)
+DECL|method|ContainerRequest (ContainerRequestEvent event, Priority priority, String nodeLabelExpression)
 specifier|public
 name|ContainerRequest
 parameter_list|(
@@ -904,6 +909,9 @@ name|event
 parameter_list|,
 name|Priority
 name|priority
+parameter_list|,
+name|String
+name|nodeLabelExpression
 parameter_list|)
 block|{
 name|this
@@ -929,6 +937,8 @@ name|getRacks
 argument_list|()
 argument_list|,
 name|priority
+argument_list|,
+name|nodeLabelExpression
 argument_list|)
 expr_stmt|;
 block|}
@@ -971,10 +981,12 @@ argument_list|,
 name|priority
 argument_list|,
 name|requestTimeMs
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ContainerRequest (TaskAttemptId attemptID, Resource capability, String[] hosts, String[] racks, Priority priority)
+DECL|method|ContainerRequest (TaskAttemptId attemptID, Resource capability, String[] hosts, String[] racks, Priority priority, String nodeLabelExpression)
 specifier|public
 name|ContainerRequest
 parameter_list|(
@@ -994,6 +1006,9 @@ name|racks
 parameter_list|,
 name|Priority
 name|priority
+parameter_list|,
+name|String
+name|nodeLabelExpression
 parameter_list|)
 block|{
 name|this
@@ -1012,10 +1027,12 @@ name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
+argument_list|,
+name|nodeLabelExpression
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ContainerRequest (TaskAttemptId attemptID, Resource capability, String[] hosts, String[] racks, Priority priority, long requestTimeMs)
+DECL|method|ContainerRequest (TaskAttemptId attemptID, Resource capability, String[] hosts, String[] racks, Priority priority, long requestTimeMs,String nodeLabelExpression)
 specifier|public
 name|ContainerRequest
 parameter_list|(
@@ -1038,6 +1055,9 @@ name|priority
 parameter_list|,
 name|long
 name|requestTimeMs
+parameter_list|,
+name|String
+name|nodeLabelExpression
 parameter_list|)
 block|{
 name|this
@@ -1075,6 +1095,12 @@ operator|.
 name|requestTimeMs
 operator|=
 name|requestTimeMs
+expr_stmt|;
+name|this
+operator|.
+name|nodeLabelExpression
+operator|=
+name|nodeLabelExpression
 expr_stmt|;
 block|}
 DECL|method|toString ()
@@ -2380,6 +2406,8 @@ argument_list|,
 name|req
 operator|.
 name|capability
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -2406,6 +2434,8 @@ argument_list|,
 name|req
 operator|.
 name|capability
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -2423,6 +2453,10 @@ argument_list|,
 name|req
 operator|.
 name|capability
+argument_list|,
+name|req
+operator|.
+name|nodeLabelExpression
 argument_list|)
 expr_stmt|;
 block|}
@@ -2500,7 +2534,7 @@ name|capability
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addResourceRequest (Priority priority, String resourceName, Resource capability)
+DECL|method|addResourceRequest (Priority priority, String resourceName, Resource capability, String nodeLabelExpression)
 specifier|private
 name|void
 name|addResourceRequest
@@ -2513,6 +2547,9 @@ name|resourceName
 parameter_list|,
 name|Resource
 name|capability
+parameter_list|,
+name|String
+name|nodeLabelExpression
 parameter_list|)
 block|{
 name|Map
@@ -2687,6 +2724,13 @@ operator|.
 name|setNumContainers
 argument_list|(
 literal|0
+argument_list|)
+expr_stmt|;
+name|remoteRequest
+operator|.
+name|setNodeLabelExpression
+argument_list|(
+name|nodeLabelExpression
 argument_list|)
 expr_stmt|;
 name|reqMap
@@ -3211,6 +3255,10 @@ argument_list|,
 name|orig
 operator|.
 name|priority
+argument_list|,
+name|orig
+operator|.
+name|nodeLabelExpression
 argument_list|)
 decl_stmt|;
 return|return

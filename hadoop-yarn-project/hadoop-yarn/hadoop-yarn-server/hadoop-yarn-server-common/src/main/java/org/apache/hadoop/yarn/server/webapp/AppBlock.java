@@ -316,24 +316,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ContainerReport
 import|;
 end_import
@@ -1246,6 +1228,19 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"Application Priority:"
+argument_list|,
+name|clarifyAppPriority
+argument_list|(
+name|app
+operator|.
+name|getPriority
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"YarnApplicationState:"
 argument_list|,
 name|app
@@ -1534,6 +1529,18 @@ name|getDiagnosticsInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|overviewTable
+operator|.
+name|_
+argument_list|(
+literal|"Unmanaged Application:"
+argument_list|,
+name|app
+operator|.
+name|isUnmanagedApp
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Collection
 argument_list|<
 name|ApplicationAttemptReport
@@ -1793,7 +1800,6 @@ name|containerReport
 decl_stmt|;
 try|try
 block|{
-comment|// AM container is always the first container of the attempt
 specifier|final
 name|GetContainerReportRequest
 name|request
@@ -1802,17 +1808,10 @@ name|GetContainerReportRequest
 operator|.
 name|newInstance
 argument_list|(
-name|ContainerId
-operator|.
-name|newContainerId
-argument_list|(
 name|appAttemptReport
 operator|.
-name|getApplicationAttemptId
+name|getAMContainerId
 argument_list|()
-argument_list|,
-literal|1
-argument_list|)
 argument_list|)
 decl_stmt|;
 if|if
@@ -1864,6 +1863,16 @@ name|report
 init|=
 literal|null
 decl_stmt|;
+if|if
+condition|(
+name|request
+operator|.
+name|getContainerId
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 try|try
 block|{
 name|report
@@ -1895,6 +1904,7 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|report
@@ -2269,6 +2279,21 @@ return|return
 name|ret
 return|;
 block|}
+block|}
+DECL|method|clarifyAppPriority (int priority)
+specifier|private
+name|String
+name|clarifyAppPriority
+parameter_list|(
+name|int
+name|priority
+parameter_list|)
+block|{
+return|return
+name|priority
+operator|+
+literal|" (Higher Integer value indicates higher priority)"
+return|;
 block|}
 DECL|method|clairfyAppFinalStatus (FinalApplicationStatus status)
 specifier|private

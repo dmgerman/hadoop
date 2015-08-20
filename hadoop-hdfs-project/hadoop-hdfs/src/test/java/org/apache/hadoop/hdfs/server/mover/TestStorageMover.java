@@ -356,6 +356,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -513,24 +529,6 @@ operator|.
 name|blockmanagement
 operator|.
 name|BlockStoragePolicySuite
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
 import|;
 end_import
 
@@ -951,7 +949,7 @@ name|DEFAULT_POLICIES
 operator|.
 name|getPolicy
 argument_list|(
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|)
@@ -962,7 +960,7 @@ name|DEFAULT_POLICIES
 operator|.
 name|getPolicy
 argument_list|(
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|WARM_STORAGE_POLICY_NAME
 argument_list|)
@@ -973,7 +971,7 @@ name|DEFAULT_POLICIES
 operator|.
 name|getPolicy
 argument_list|(
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|)
@@ -1603,7 +1601,11 @@ name|setStoragePolicy
 argument_list|()
 expr_stmt|;
 name|migrate
-argument_list|()
+argument_list|(
+name|ExitStatus
+operator|.
+name|SUCCESS
+argument_list|)
 expr_stmt|;
 name|verify
 argument_list|(
@@ -1690,15 +1692,20 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Run the migration tool.      */
-DECL|method|migrate ()
+DECL|method|migrate (ExitStatus expectedExitCode)
 name|void
 name|migrate
-parameter_list|()
+parameter_list|(
+name|ExitStatus
+name|expectedExitCode
+parameter_list|)
 throws|throws
 name|Exception
 block|{
 name|runMover
-argument_list|()
+argument_list|(
+name|expectedExitCode
+argument_list|)
 expr_stmt|;
 name|Thread
 operator|.
@@ -1749,11 +1756,14 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|runMover ()
+DECL|method|runMover (ExitStatus expectedExitCode)
 specifier|private
 name|void
 name|runMover
-parameter_list|()
+parameter_list|(
+name|ExitStatus
+name|expectedExitCode
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -1820,9 +1830,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|ExitStatus
-operator|.
-name|SUCCESS
+name|expectedExitCode
 operator|.
 name|getExitCode
 argument_list|()
@@ -3669,7 +3677,11 @@ comment|// set /foo to COLD
 name|test
 operator|.
 name|migrate
-argument_list|()
+argument_list|(
+name|ExitStatus
+operator|.
+name|SUCCESS
+argument_list|)
 expr_stmt|;
 comment|// make sure the under construction block has not been migrated
 name|LocatedBlocks
@@ -3994,7 +4006,11 @@ expr_stmt|;
 name|test
 operator|.
 name|migrate
-argument_list|()
+argument_list|(
+name|ExitStatus
+operator|.
+name|SUCCESS
+argument_list|)
 expr_stmt|;
 name|test
 operator|.
@@ -4561,7 +4577,11 @@ expr_stmt|;
 name|test
 operator|.
 name|migrate
-argument_list|()
+argument_list|(
+name|ExitStatus
+operator|.
+name|NO_MOVE_BLOCK
+argument_list|)
 expr_stmt|;
 name|test
 operator|.
@@ -4919,7 +4939,11 @@ expr_stmt|;
 name|test
 operator|.
 name|migrate
-argument_list|()
+argument_list|(
+name|ExitStatus
+operator|.
+name|SUCCESS
+argument_list|)
 expr_stmt|;
 name|test
 operator|.

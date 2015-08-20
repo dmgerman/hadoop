@@ -325,22 +325,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|// We use these in an HA setup to ensure that the pair of NNs produce block
-comment|// token serial numbers that are in different ranges.
-DECL|field|LOW_MASK
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|LOW_MASK
-init|=
-operator|~
-operator|(
-literal|1
-operator|<<
-literal|31
-operator|)
-decl_stmt|;
 DECL|field|DUMMY_TOKEN
 specifier|public
 specifier|static
@@ -363,11 +347,6 @@ specifier|private
 specifier|final
 name|boolean
 name|isMaster
-decl_stmt|;
-DECL|field|nnIndex
-specifier|private
-name|int
-name|nnIndex
 decl_stmt|;
 comment|/**    * keyUpdateInterval is the interval that NN updates its block keys. It should    * be set long enough so that all live DN's and Balancer should have sync'ed    * their block keys with NN at least once during each interval.    */
 DECL|field|keyUpdateInterval
@@ -418,6 +397,18 @@ specifier|final
 name|String
 name|encryptionAlgorithm
 decl_stmt|;
+DECL|field|intRange
+specifier|private
+specifier|final
+name|int
+name|intRange
+decl_stmt|;
+DECL|field|nnRangeStart
+specifier|private
+specifier|final
+name|int
+name|nnRangeStart
+decl_stmt|;
 DECL|field|nonceGenerator
 specifier|private
 specifier|final
@@ -428,8 +419,7 @@ operator|new
 name|SecureRandom
 argument_list|()
 decl_stmt|;
-empty_stmt|;
-comment|/**    * Constructor for slaves.    *     * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    */
+comment|/**    * Constructor for slaves.    *    * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    */
 DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime, String blockPoolId, String encryptionAlgorithm)
 specifier|public
 name|BlockTokenSecretManager
@@ -458,11 +448,15 @@ argument_list|,
 name|blockPoolId
 argument_list|,
 name|encryptionAlgorithm
+argument_list|,
+literal|0
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor for masters.    *     * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    * @param nnIndex namenode index    * @param blockPoolId block pool ID    * @param encryptionAlgorithm encryption algorithm to use    */
-DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime, int nnIndex, String blockPoolId, String encryptionAlgorithm)
+comment|/**    * Constructor for masters.    *     * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    * @param nnIndex namenode index of the namenode for which we are creating the manager    * @param blockPoolId block pool ID    * @param encryptionAlgorithm encryption algorithm to use    * @param numNNs number of namenodes possible    */
+DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime, int nnIndex, int numNNs, String blockPoolId, String encryptionAlgorithm)
 specifier|public
 name|BlockTokenSecretManager
 parameter_list|(
@@ -474,6 +468,9 @@ name|tokenLifetime
 parameter_list|,
 name|int
 name|nnIndex
+parameter_list|,
+name|int
+name|numNNs
 parameter_list|,
 name|String
 name|blockPoolId
@@ -493,6 +490,10 @@ argument_list|,
 name|blockPoolId
 argument_list|,
 name|encryptionAlgorithm
+argument_list|,
+name|nnIndex
+argument_list|,
+name|numNNs
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -500,19 +501,18 @@ operator|.
 name|checkArgument
 argument_list|(
 name|nnIndex
-operator|==
+operator|>=
 literal|0
-operator|||
-name|nnIndex
-operator|==
-literal|1
 argument_list|)
 expr_stmt|;
-name|this
+name|Preconditions
 operator|.
-name|nnIndex
-operator|=
-name|nnIndex
+name|checkArgument
+argument_list|(
+name|numNNs
+operator|>
+literal|0
+argument_list|)
 expr_stmt|;
 name|setSerialNo
 argument_list|(
@@ -528,7 +528,7 @@ name|generateKeys
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|BlockTokenSecretManager (boolean isMaster, long keyUpdateInterval, long tokenLifetime, String blockPoolId, String encryptionAlgorithm)
+DECL|method|BlockTokenSecretManager (boolean isMaster, long keyUpdateInterval, long tokenLifetime, String blockPoolId, String encryptionAlgorithm, int nnIndex, int numNNs)
 specifier|private
 name|BlockTokenSecretManager
 parameter_list|(
@@ -546,8 +546,32 @@ name|blockPoolId
 parameter_list|,
 name|String
 name|encryptionAlgorithm
+parameter_list|,
+name|int
+name|nnIndex
+parameter_list|,
+name|int
+name|numNNs
 parameter_list|)
 block|{
+name|this
+operator|.
+name|intRange
+operator|=
+name|Integer
+operator|.
+name|MAX_VALUE
+operator|/
+name|numNNs
+expr_stmt|;
+name|this
+operator|.
+name|nnRangeStart
+operator|=
+name|intRange
+operator|*
+name|nnIndex
+expr_stmt|;
 name|this
 operator|.
 name|isMaster
@@ -607,20 +631,19 @@ name|int
 name|serialNo
 parameter_list|)
 block|{
+comment|// we mod the serial number by the range and then add that times the index
 name|this
 operator|.
 name|serialNo
 operator|=
 operator|(
 name|serialNo
-operator|&
-name|LOW_MASK
+operator|%
+name|intRange
 operator|)
-operator||
+operator|+
 operator|(
-name|nnIndex
-operator|<<
-literal|31
+name|nnRangeStart
 operator|)
 expr_stmt|;
 block|}

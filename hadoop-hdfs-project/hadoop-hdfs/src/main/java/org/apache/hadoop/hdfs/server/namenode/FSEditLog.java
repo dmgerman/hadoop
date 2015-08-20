@@ -378,9 +378,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|common
+name|blockmanagement
 operator|.
-name|HdfsServerConstants
+name|BlockInfo
 import|;
 end_import
 
@@ -396,9 +396,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
+name|common
 operator|.
-name|BlockInfo
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -2181,11 +2181,14 @@ name|editsDirs
 return|;
 block|}
 comment|/**    * Initialize the output stream for logging, opening the first    * log segment.    */
-DECL|method|openForWrite ()
+DECL|method|openForWrite (int layoutVersion)
 specifier|synchronized
 name|void
 name|openForWrite
-parameter_list|()
+parameter_list|(
+name|int
+name|layoutVersion
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -2297,6 +2300,8 @@ block|}
 name|startLogSegmentAndWriteHeaderTxn
 argument_list|(
 name|segmentTxId
+argument_list|,
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 assert|assert
@@ -2598,7 +2603,7 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * Write an operation to the edit log. Do not sync to persistent    * store yet.    */
+comment|/**    * Write an operation to the edit log.    *<p/>    * Additionally, this will sync the edit log if required by the underlying    * edit stream's automatic sync policy (e.g. when the buffer is full, or    * if a time interval has elapsed).    */
 DECL|method|logEdit (final FSEditLogOp op)
 name|void
 name|logEdit
@@ -2608,6 +2613,11 @@ name|FSEditLogOp
 name|op
 parameter_list|)
 block|{
+name|boolean
+name|needsSync
+init|=
+literal|false
+decl_stmt|;
 synchronized|synchronized
 init|(
 name|this
@@ -2670,24 +2680,32 @@ name|start
 argument_list|)
 expr_stmt|;
 comment|// check if it is time to schedule an automatic sync
-if|if
-condition|(
-operator|!
+name|needsSync
+operator|=
 name|shouldForceSync
 argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|needsSync
 condition|)
 block|{
-return|return;
-block|}
 name|isAutoSyncScheduled
 operator|=
 literal|true
 expr_stmt|;
 block|}
-comment|// sync buffered edit log entries to persistent store
+block|}
+comment|// Sync the log if an automatic sync is required.
+if|if
+condition|(
+name|needsSync
+condition|)
+block|{
 name|logSync
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Wait if an automatic sync is scheduled    */
 DECL|method|waitIfAutoSyncScheduled ()
@@ -5930,12 +5948,15 @@ name|fromTxId
 argument_list|)
 return|;
 block|}
-comment|/**    * Finalizes the current edit log and opens a new log segment.    * @return the transaction id of the BEGIN_LOG_SEGMENT transaction    * in the new log.    */
-DECL|method|rollEditLog ()
+comment|/**    * Finalizes the current edit log and opens a new log segment.    *    * @param layoutVersion The layout version of the new edit log segment.    * @return the transaction id of the BEGIN_LOG_SEGMENT transaction in the new    * log.    */
+DECL|method|rollEditLog (int layoutVersion)
 specifier|synchronized
 name|long
 name|rollEditLog
-parameter_list|()
+parameter_list|(
+name|int
+name|layoutVersion
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -5962,6 +5983,8 @@ decl_stmt|;
 name|startLogSegmentAndWriteHeaderTxn
 argument_list|(
 name|nextTxId
+argument_list|,
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 assert|assert
@@ -5974,7 +5997,7 @@ name|nextTxId
 return|;
 block|}
 comment|/**    * Remote namenode just has started a log segment, start log segment locally.    */
-DECL|method|startLogSegment (long txid, boolean abortCurrentLogSegment)
+DECL|method|startLogSegment (long txid, boolean abortCurrentLogSegment, int layoutVersion)
 specifier|public
 specifier|synchronized
 name|void
@@ -5985,6 +6008,9 @@ name|txid
 parameter_list|,
 name|boolean
 name|abortCurrentLogSegment
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -6081,11 +6107,13 @@ expr_stmt|;
 name|startLogSegment
 argument_list|(
 name|txid
+argument_list|,
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Start writing to the log segment with the given txid.    * Transitions from BETWEEN_LOG_SEGMENTS state to IN_LOG_SEGMENT state.     */
-DECL|method|startLogSegment (final long segmentTxId)
+DECL|method|startLogSegment (final long segmentTxId, int layoutVersion)
 specifier|private
 name|void
 name|startLogSegment
@@ -6093,6 +6121,9 @@ parameter_list|(
 specifier|final
 name|long
 name|segmentTxId
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -6205,9 +6236,7 @@ name|startLogSegment
 argument_list|(
 name|segmentTxId
 argument_list|,
-name|NameNodeLayoutVersion
-operator|.
-name|CURRENT_LAYOUT_VERSION
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 block|}
@@ -6242,7 +6271,7 @@ operator|.
 name|IN_SEGMENT
 expr_stmt|;
 block|}
-DECL|method|startLogSegmentAndWriteHeaderTxn (final long segmentTxId )
+DECL|method|startLogSegmentAndWriteHeaderTxn (final long segmentTxId, int layoutVersion)
 specifier|synchronized
 name|void
 name|startLogSegmentAndWriteHeaderTxn
@@ -6250,6 +6279,9 @@ parameter_list|(
 specifier|final
 name|long
 name|segmentTxId
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -6257,6 +6289,8 @@ block|{
 name|startLogSegment
 argument_list|(
 name|segmentTxId
+argument_list|,
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 name|logEdit

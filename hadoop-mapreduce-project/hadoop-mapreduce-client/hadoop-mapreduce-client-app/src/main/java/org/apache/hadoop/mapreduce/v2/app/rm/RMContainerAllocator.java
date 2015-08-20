@@ -1457,6 +1457,16 @@ operator|new
 name|ScheduleStats
 argument_list|()
 decl_stmt|;
+DECL|field|mapNodeLabelExpression
+specifier|private
+name|String
+name|mapNodeLabelExpression
+decl_stmt|;
+DECL|field|reduceNodeLabelExpression
+specifier|private
+name|String
+name|reduceNodeLabelExpression
+decl_stmt|;
 DECL|method|RMContainerAllocator (ClientService clientService, AppContext context, AMPreemptionPolicy preemptionPolicy)
 specifier|public
 name|RMContainerAllocator
@@ -1636,6 +1646,28 @@ argument_list|,
 name|MRJobConfig
 operator|.
 name|DEFAULT_MR_AM_TO_RM_WAIT_INTERVAL_MS
+argument_list|)
+expr_stmt|;
+name|mapNodeLabelExpression
+operator|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MAP_NODE_LABEL_EXP
+argument_list|)
+expr_stmt|;
+name|reduceNodeLabelExpression
+operator|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|MRJobConfig
+operator|.
+name|REDUCE_NODE_LABEL_EXP
 argument_list|)
 expr_stmt|;
 comment|// Init startTime to current time. If all goes well, it will be reset after
@@ -2608,6 +2640,8 @@ argument_list|(
 name|reqEvent
 argument_list|,
 name|PRIORITY_REDUCE
+argument_list|,
+name|reduceNodeLabelExpression
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2624,6 +2658,8 @@ argument_list|(
 name|reqEvent
 argument_list|,
 name|PRIORITY_REDUCE
+argument_list|,
+name|reduceNodeLabelExpression
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3911,7 +3947,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnRuntimeException
+name|RMContainerAllocationException
 argument_list|(
 literal|"Resource Manager doesn't recognize AttemptId: "
 operator|+
@@ -4011,7 +4047,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnRuntimeException
+name|RMContainerAllocationException
 argument_list|(
 literal|"Could not contact RM after "
 operator|+
@@ -5358,6 +5394,8 @@ argument_list|(
 name|event
 argument_list|,
 name|PRIORITY_FAST_FAIL_MAP
+argument_list|,
+name|mapNodeLabelExpression
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -5543,6 +5581,8 @@ argument_list|(
 name|event
 argument_list|,
 name|PRIORITY_MAP
+argument_list|,
+name|mapNodeLabelExpression
 argument_list|)
 expr_stmt|;
 block|}

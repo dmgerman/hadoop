@@ -4898,13 +4898,6 @@ argument_list|)
 expr_stmt|;
 name|appInfo
 operator|.
-name|setPriority
-argument_list|(
-literal|3
-argument_list|)
-expr_stmt|;
-name|appInfo
-operator|.
 name|setMaxAppAttempts
 argument_list|(
 literal|2
@@ -4922,6 +4915,13 @@ operator|.
 name|setApplicationType
 argument_list|(
 name|appType
+argument_list|)
+expr_stmt|;
+name|appInfo
+operator|.
+name|setPriority
+argument_list|(
+literal|0
 argument_list|)
 expr_stmt|;
 name|HashMap

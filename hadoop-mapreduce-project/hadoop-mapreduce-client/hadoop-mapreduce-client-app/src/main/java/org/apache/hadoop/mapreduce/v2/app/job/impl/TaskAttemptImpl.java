@@ -1252,6 +1252,28 @@ name|job
 operator|.
 name|event
 operator|.
+name|TaskAttemptTooManyFetchFailureEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
+name|job
+operator|.
+name|event
+operator|.
 name|TaskEventType
 import|;
 end_import
@@ -1814,7 +1836,7 @@ name|yarn
 operator|.
 name|state
 operator|.
-name|InvalidStateTransitonException
+name|InvalidStateTransitionException
 import|;
 end_import
 
@@ -5622,6 +5644,20 @@ block|}
 block|}
 comment|// Fill in the fields needed per-container that are missing in the common
 comment|// spec.
+name|boolean
+name|userClassesTakesPrecedence
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_USER_CLASSPATH_FIRST
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
 comment|// Setup environment by cloning from common env.
 name|Map
 argument_list|<
@@ -5665,6 +5701,26 @@ argument_list|(
 name|env
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|userClassesTakesPrecedence
+condition|)
+block|{
+name|myEnv
+operator|.
+name|put
+argument_list|(
+name|Environment
+operator|.
+name|CLASSPATH_PREPEND_DISTCACHE
+operator|.
+name|name
+argument_list|()
+argument_list|,
+literal|"true"
+argument_list|)
+expr_stmt|;
+block|}
 name|MapReduceChildJVM
 operator|.
 name|setVMEnv
@@ -6655,7 +6711,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|InvalidStateTransitonException
+name|InvalidStateTransitionException
 name|e
 parameter_list|)
 block|{
@@ -10628,6 +10684,14 @@ name|TaskAttemptEvent
 name|event
 parameter_list|)
 block|{
+name|TaskAttemptTooManyFetchFailureEvent
+name|fetchFailureEvent
+init|=
+operator|(
+name|TaskAttemptTooManyFetchFailureEvent
+operator|)
+name|event
+decl_stmt|;
 comment|// too many fetch failure can only happen for map tasks
 name|Preconditions
 operator|.
@@ -10654,7 +10718,21 @@ name|taskAttempt
 operator|.
 name|addDiagnosticInfo
 argument_list|(
-literal|"Too Many fetch failures.Failing the attempt"
+literal|"Too many fetch failures."
+operator|+
+literal|" Failing the attempt. Last failure reported by "
+operator|+
+name|fetchFailureEvent
+operator|.
+name|getReduceId
+argument_list|()
+operator|+
+literal|" from host "
+operator|+
+name|fetchFailureEvent
+operator|.
+name|getReduceHost
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -12025,6 +12103,27 @@ operator|>
 literal|0
 condition|)
 block|{
+name|String
+name|hostname
+init|=
+name|taskAttempt
+operator|.
+name|container
+operator|==
+literal|null
+condition|?
+literal|"UNKNOWN"
+else|:
+name|taskAttempt
+operator|.
+name|container
+operator|.
+name|getNodeId
+argument_list|()
+operator|.
+name|getHost
+argument_list|()
+decl_stmt|;
 name|taskAttempt
 operator|.
 name|eventHandler
@@ -12043,6 +12142,8 @@ operator|.
 name|reportedStatus
 operator|.
 name|fetchFailedMaps
+argument_list|,
+name|hostname
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -1737,6 +1737,12 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
+name|SafeModeException
+name|ignored
+parameter_list|)
+block|{     }
+catch|catch
+parameter_list|(
 name|IOException
 name|ioe
 parameter_list|)

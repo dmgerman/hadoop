@@ -278,6 +278,15 @@ argument_list|)
 name|MutableGaugeInt
 name|numRebootedNMs
 decl_stmt|;
+DECL|field|numShutdownNMs
+annotation|@
+name|Metric
+argument_list|(
+literal|"# of Shutdown NMs"
+argument_list|)
+name|MutableGaugeInt
+name|numShutdownNMs
+decl_stmt|;
 DECL|field|aMLaunchDelay
 annotation|@
 name|Metric
@@ -629,6 +638,44 @@ name|decrNumRebootedNMs
 parameter_list|()
 block|{
 name|numRebootedNMs
+operator|.
+name|decr
+argument_list|()
+expr_stmt|;
+block|}
+comment|// Shutdown NMs
+DECL|method|getNumShutdownNMs ()
+specifier|public
+name|int
+name|getNumShutdownNMs
+parameter_list|()
+block|{
+return|return
+name|numShutdownNMs
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|incrNumShutdownNMs ()
+specifier|public
+name|void
+name|incrNumShutdownNMs
+parameter_list|()
+block|{
+name|numShutdownNMs
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|decrNumShutdownNMs ()
+specifier|public
+name|void
+name|decrNumShutdownNMs
+parameter_list|()
+block|{
+name|numShutdownNMs
 operator|.
 name|decr
 argument_list|()

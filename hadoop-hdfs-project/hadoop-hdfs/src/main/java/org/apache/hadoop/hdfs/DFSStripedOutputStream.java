@@ -3364,7 +3364,7 @@ operator|>
 literal|0
 condition|)
 block|{
-name|setCurrentPacket2Empty
+name|setCurrentPacketToEmpty
 argument_list|()
 expr_stmt|;
 block|}

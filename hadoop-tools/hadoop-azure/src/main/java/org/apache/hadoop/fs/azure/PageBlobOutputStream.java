@@ -520,6 +520,14 @@ specifier|private
 name|WriteRequest
 name|lastQueuedTask
 decl_stmt|;
+comment|// Whether the stream has been closed.
+DECL|field|closed
+specifier|private
+name|boolean
+name|closed
+init|=
+literal|false
+decl_stmt|;
 DECL|field|LOG
 specifier|public
 specifier|static
@@ -799,12 +807,20 @@ annotation|@
 name|Override
 DECL|method|close ()
 specifier|public
+specifier|synchronized
 name|void
 name|close
 parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|closed
+condition|)
+block|{
+return|return;
+block|}
 name|LOG
 operator|.
 name|debug
@@ -902,15 +918,9 @@ name|interrupt
 argument_list|()
 expr_stmt|;
 block|}
-name|this
-operator|.
-name|lastError
+name|closed
 operator|=
-operator|new
-name|IOException
-argument_list|(
-literal|"Stream is already closed."
-argument_list|)
+literal|true
 expr_stmt|;
 block|}
 comment|// Log the stacks of all threads.

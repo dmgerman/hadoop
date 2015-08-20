@@ -344,7 +344,25 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockInfo
 import|;
 end_import
 
@@ -1097,7 +1115,7 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Compare two dumped trees that are stored in two files. The following is an    * example of the dumped tree:    *     *<pre>    * information of root    * +- the first child of root (e.g., /foo)    *   +- the first child of /foo    *   ...    *   \- the last child of /foo (e.g., /foo/bar)    *     +- the first child of /foo/bar    *     ...    *   snapshots of /foo    *   +- snapshot s_1    *   ...    *   \- snapshot s_n    * +- second child of root    *   ...    * \- last child of root    *     * The following information is dumped for each inode:    * localName (className@hashCode) parent permission group user    *     * Specific information for different types of INode:     * {@link INodeDirectory}:childrenSize     * {@link INodeFile}: fileSize, block list. Check {@link BlockInfoContiguous#toString()}    * and {@link BlockInfoUnderConstructionContiguous#toString()} for detailed information.    * {@link FileWithSnapshot}: next link    *</pre>    * @see INode#dumpTreeRecursively()    */
+comment|/**    * Compare two dumped trees that are stored in two files. The following is an    * example of the dumped tree:    *     *<pre>    * information of root    * +- the first child of root (e.g., /foo)    *   +- the first child of /foo    *   ...    *   \- the last child of /foo (e.g., /foo/bar)    *     +- the first child of /foo/bar    *     ...    *   snapshots of /foo    *   +- snapshot s_1    *   ...    *   \- snapshot s_n    * +- second child of root    *   ...    * \- last child of root    *     * The following information is dumped for each inode:    * localName (className@hashCode) parent permission group user    *     * Specific information for different types of INode:     * {@link INodeDirectory}:childrenSize    * {@link INodeFile}: fileSize, block list. Check {@link BlockInfo#toString()}    * and {@link BlockInfoContiguousUnderConstruction#toString()} for detailed information.    * {@link FileWithSnapshot}: next link    *</pre>    * @see INode#dumpTreeRecursively()    */
 DECL|method|compareDumpedTreeInFile (File file1, File file2, boolean compareQuota)
 specifier|public
 specifier|static

@@ -127,8 +127,8 @@ parameter_list|)
 block|{
 name|datum
 operator|.
-name|taskid
-operator|=
+name|setTaskid
+argument_list|(
 operator|new
 name|Utf8
 argument_list|(
@@ -137,12 +137,14 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+argument_list|)
 expr_stmt|;
 name|datum
 operator|.
+name|setFinishTime
+argument_list|(
 name|finishTime
-operator|=
-name|finishTime
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|TaskUpdatedEvent ()
@@ -192,7 +194,8 @@ name|forName
 argument_list|(
 name|datum
 operator|.
-name|taskid
+name|getTaskid
+argument_list|()
 operator|.
 name|toString
 argument_list|()
@@ -209,7 +212,8 @@ block|{
 return|return
 name|datum
 operator|.
-name|finishTime
+name|getFinishTime
+argument_list|()
 return|;
 block|}
 comment|/** Get the event type */

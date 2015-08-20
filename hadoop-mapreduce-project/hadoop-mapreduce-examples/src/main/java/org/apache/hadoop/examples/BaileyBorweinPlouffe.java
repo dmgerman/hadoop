@@ -2332,13 +2332,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java "
-operator|+
-name|getClass
-argument_list|()
-operator|.
-name|getName
-argument_list|()
+literal|"Usage: bbp "
 operator|+
 literal|"<startDigit><nDigits><nMaps><workingDir>"
 argument_list|)

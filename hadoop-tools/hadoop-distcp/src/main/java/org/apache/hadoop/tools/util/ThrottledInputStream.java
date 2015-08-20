@@ -101,7 +101,7 @@ decl_stmt|;
 DECL|field|maxBytesPerSec
 specifier|private
 specifier|final
-name|long
+name|float
 name|maxBytesPerSec
 decl_stmt|;
 DECL|field|startTime
@@ -156,14 +156,14 @@ name|MAX_VALUE
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ThrottledInputStream (InputStream rawStream, long maxBytesPerSec)
+DECL|method|ThrottledInputStream (InputStream rawStream, float maxBytesPerSec)
 specifier|public
 name|ThrottledInputStream
 parameter_list|(
 name|InputStream
 name|rawStream
 parameter_list|,
-name|long
+name|float
 name|maxBytesPerSec
 parameter_list|)
 block|{

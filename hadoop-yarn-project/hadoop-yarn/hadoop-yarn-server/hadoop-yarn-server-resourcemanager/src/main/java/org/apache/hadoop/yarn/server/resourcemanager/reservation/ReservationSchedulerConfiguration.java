@@ -121,7 +121,7 @@ specifier|final
 name|String
 name|DEFAULT_RESERVATION_AGENT_NAME
 init|=
-literal|"org.apache.hadoop.yarn.server.resourcemanager.reservation.GreedyReservationAgent"
+literal|"org.apache.hadoop.yarn.server.resourcemanager.reservation.planning.AlignedPlannerWithGreedy"
 decl_stmt|;
 annotation|@
 name|InterfaceAudience
@@ -134,7 +134,7 @@ specifier|final
 name|String
 name|DEFAULT_RESERVATION_PLANNER_NAME
 init|=
-literal|"org.apache.hadoop.yarn.server.resourcemanager.reservation.SimpleCapacityReplanner"
+literal|"org.apache.hadoop.yarn.server.resourcemanager.reservation.planning.SimpleCapacityReplanner"
 decl_stmt|;
 annotation|@
 name|InterfaceAudience
@@ -217,7 +217,7 @@ name|configuration
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Checks if the queue participates in reservation based scheduling    * @param queue    * @return true if the queue participates in reservation based scheduling    */
+comment|/**    * Checks if the queue participates in reservation based scheduling    * @param queue name of the queue    * @return true if the queue participates in reservation based scheduling    */
 DECL|method|isReservable (String queue)
 specifier|public
 specifier|abstract
@@ -284,7 +284,7 @@ return|return
 name|DEFAULT_RESERVATION_ADMISSION_POLICY
 return|;
 block|}
-comment|/**    * Gets the name of the {@link ReservationAgent} class associated with the    * queue    * @param queue name of the queue    * @return the class name of the {@link ReservationAgent}    */
+comment|/**    * Gets the name of the {@code ReservationAgent} class associated with the    * queue    * @param queue name of the queue    * @return the class name of the {@code ReservationAgent}    */
 DECL|method|getReservationAgent (String queue)
 specifier|public
 name|String
@@ -312,7 +312,7 @@ return|return
 name|DEFAULT_SHOW_RESERVATIONS_AS_QUEUES
 return|;
 block|}
-comment|/**    * Gets the name of the {@link Planner} class associated with the    * queue    * @param queue name of the queue    * @return the class name of the {@link Planner}    */
+comment|/**    * Gets the name of the {@code Planner} class associated with the    * queue    * @param queue name of the queue    * @return the class name of the {@code Planner}    */
 DECL|method|getReplanner (String queue)
 specifier|public
 name|String
@@ -340,7 +340,7 @@ return|return
 name|DEFAULT_RESERVATION_MOVE_ON_EXPIRY
 return|;
 block|}
-comment|/**    * Gets the time in milliseconds for which the {@link Planner} will verify    * the {@link Plan}s satisfy the constraints    * @param queue name of the queue    * @return the time in milliseconds for which to check constraints    */
+comment|/**    * Gets the time in milliseconds for which the {@code Planner} will verify    * the {@link Plan}s satisfy the constraints    * @param queue name of the queue    * @return the time in milliseconds for which to check constraints    */
 DECL|method|getEnforcementWindow (String queue)
 specifier|public
 name|long

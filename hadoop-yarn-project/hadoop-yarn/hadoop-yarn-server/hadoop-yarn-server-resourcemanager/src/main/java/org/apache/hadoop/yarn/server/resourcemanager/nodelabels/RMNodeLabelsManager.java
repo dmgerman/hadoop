@@ -184,6 +184,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|service
+operator|.
+name|Service
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -663,11 +677,30 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|getServiceState
+argument_list|()
+operator|==
+name|Service
+operator|.
+name|STATE
+operator|.
+name|STARTED
+condition|)
+block|{
+comment|// We cannot remove node labels from collection when some queue(s) are
+comment|// using any of them.
+comment|// We will only do this check when service starting finished. Before
+comment|// service starting, we will replay edit logs and recover state. It is
+comment|// possible that a history operation removed some labels which were being
+comment|// used by some queues in the past but not used by current queues.
 name|checkRemoveFromClusterNodeLabelsOfQueue
 argument_list|(
 name|labelsToRemove
 argument_list|)
 expr_stmt|;
+block|}
 comment|// copy before NMs
 name|Map
 argument_list|<

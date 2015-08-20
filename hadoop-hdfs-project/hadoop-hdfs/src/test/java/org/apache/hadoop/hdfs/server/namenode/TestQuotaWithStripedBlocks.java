@@ -510,7 +510,7 @@ name|setStoragePolicy
 argument_list|(
 name|ecDir
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|)

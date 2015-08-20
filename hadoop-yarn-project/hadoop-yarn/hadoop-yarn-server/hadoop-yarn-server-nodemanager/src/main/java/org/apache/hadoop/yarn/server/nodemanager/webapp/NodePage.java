@@ -482,7 +482,21 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Node Manager Version:"
+literal|"NodeManager started on"
+argument_list|,
+operator|new
+name|Date
+argument_list|(
+name|info
+operator|.
+name|getNMStartupTime
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"NodeManager Version:"
 argument_list|,
 name|info
 operator|.

@@ -259,6 +259,23 @@ name|getNumBytes
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|block
+operator|+
+literal|" size="
+operator|+
+name|getNumBytes
+argument_list|()
+return|;
+block|}
 block|}
 DECL|field|CUR_WIN
 specifier|private

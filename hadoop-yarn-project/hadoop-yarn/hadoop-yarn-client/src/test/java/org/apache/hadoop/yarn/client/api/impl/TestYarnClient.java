@@ -6726,6 +6726,8 @@ argument_list|(
 name|rmClient
 argument_list|,
 name|appId
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|//managed AMs don't return AMRM token
@@ -6755,6 +6757,8 @@ argument_list|(
 name|rmClient
 argument_list|,
 name|appId
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|long
@@ -6892,6 +6896,8 @@ argument_list|(
 name|rmClient
 argument_list|,
 name|appId
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|long
@@ -7150,7 +7156,7 @@ return|return
 name|appId
 return|;
 block|}
-DECL|method|waitTillAccepted (YarnClient rmClient, ApplicationId appId)
+DECL|method|waitTillAccepted (YarnClient rmClient, ApplicationId appId, boolean unmanagedApplication)
 specifier|private
 name|void
 name|waitTillAccepted
@@ -7160,6 +7166,9 @@ name|rmClient
 parameter_list|,
 name|ApplicationId
 name|appId
+parameter_list|,
+name|boolean
+name|unmanagedApplication
 parameter_list|)
 throws|throws
 name|Exception
@@ -7239,6 +7248,18 @@ name|appId
 argument_list|)
 expr_stmt|;
 block|}
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|unmanagedApplication
+argument_list|,
+name|report
+operator|.
+name|isUnmanagedApp
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(

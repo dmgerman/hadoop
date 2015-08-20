@@ -106,10 +106,11 @@ specifier|public
 enum|enum
 name|StorageType
 block|{
-DECL|enumConstant|DISK
-name|DISK
+comment|// sorted by the speed of the storage types, from fast to slow
+DECL|enumConstant|RAM_DISK
+name|RAM_DISK
 argument_list|(
-literal|false
+literal|true
 argument_list|)
 block|,
 DECL|enumConstant|SSD
@@ -118,16 +119,16 @@ argument_list|(
 literal|false
 argument_list|)
 block|,
-DECL|enumConstant|ARCHIVE
-name|ARCHIVE
+DECL|enumConstant|DISK
+name|DISK
 argument_list|(
 literal|false
 argument_list|)
 block|,
-DECL|enumConstant|RAM_DISK
-name|RAM_DISK
+DECL|enumConstant|ARCHIVE
+name|ARCHIVE
 argument_list|(
-literal|true
+literal|false
 argument_list|)
 block|;
 DECL|field|isTransient

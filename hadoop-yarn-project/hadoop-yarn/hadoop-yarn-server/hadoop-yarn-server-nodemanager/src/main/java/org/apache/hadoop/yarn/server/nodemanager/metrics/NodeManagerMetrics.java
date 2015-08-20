@@ -320,6 +320,13 @@ DECL|field|goodLogDirsDiskUtilizationPerc
 name|MutableGaugeInt
 name|goodLogDirsDiskUtilizationPerc
 decl_stmt|;
+DECL|field|jvmMetrics
+specifier|private
+name|JvmMetrics
+name|jvmMetrics
+init|=
+literal|null
+decl_stmt|;
 DECL|field|allocatedMB
 specifier|private
 name|long
@@ -330,6 +337,21 @@ specifier|private
 name|long
 name|availableMB
 decl_stmt|;
+DECL|method|NodeManagerMetrics (JvmMetrics jvmMetrics)
+specifier|public
+name|NodeManagerMetrics
+parameter_list|(
+name|JvmMetrics
+name|jvmMetrics
+parameter_list|)
+block|{
+name|this
+operator|.
+name|jvmMetrics
+operator|=
+name|jvmMetrics
+expr_stmt|;
+block|}
 DECL|method|create ()
 specifier|public
 specifier|static
@@ -357,6 +379,9 @@ name|ms
 parameter_list|)
 block|{
 name|JvmMetrics
+name|jm
+init|=
+name|JvmMetrics
 operator|.
 name|create
 argument_list|(
@@ -366,7 +391,7 @@ literal|null
 argument_list|,
 name|ms
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 return|return
 name|ms
 operator|.
@@ -374,8 +399,20 @@ name|register
 argument_list|(
 operator|new
 name|NodeManagerMetrics
-argument_list|()
+argument_list|(
+name|jm
 argument_list|)
+argument_list|)
+return|;
+block|}
+DECL|method|getJvmMetrics ()
+specifier|public
+name|JvmMetrics
+name|getJvmMetrics
+parameter_list|()
+block|{
+return|return
+name|jvmMetrics
 return|;
 block|}
 comment|// Potential instrumentation interface methods

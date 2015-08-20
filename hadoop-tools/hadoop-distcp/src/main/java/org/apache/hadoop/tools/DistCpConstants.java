@@ -51,7 +51,7 @@ DECL|field|DEFAULT_BANDWIDTH_MB
 specifier|public
 specifier|static
 specifier|final
-name|int
+name|float
 name|DEFAULT_BANDWIDTH_MB
 init|=
 literal|100

@@ -358,7 +358,7 @@ specifier|final
 name|int
 name|FILEOUTPUTCOMMITTER_ALGORITHM_VERSION_DEFAULT
 init|=
-literal|1
+literal|2
 decl_stmt|;
 DECL|field|outputPath
 specifier|private

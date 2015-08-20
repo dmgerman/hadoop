@@ -54,7 +54,19 @@ name|lang
 operator|.
 name|ref
 operator|.
-name|WeakReference
+name|PhantomReference
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|lang
+operator|.
+name|ref
+operator|.
+name|ReferenceQueue
 import|;
 end_import
 
@@ -165,16 +177,6 @@ operator|.
 name|util
 operator|.
 name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|LinkedList
 import|;
 end_import
 
@@ -623,6 +625,42 @@ operator|.
 name|util
 operator|.
 name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|Span
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|Trace
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|TraceScope
 import|;
 end_import
 
@@ -4884,7 +4922,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *     * @param f given path    * @return the statuses of the files/directories in the given patch    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    * @param f given path    * @return the statuses of the files/directories in the given patch    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
 DECL|method|listStatus (Path f)
 specifier|public
 specifier|abstract
@@ -5026,7 +5064,7 @@ literal|" listCorruptFileBlocks"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Filter files/directories in the given path using the user-supplied path    * filter.    *     * @param f    *          a path name    * @param filter    *          the user-supplied path filter    * @return an array of FileStatus objects for the files under the given path    *         after applying the filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation       */
+comment|/**    * Filter files/directories in the given path using the user-supplied path    * filter.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    *     * @param f    *          a path name    * @param filter    *          the user-supplied path filter    * @return an array of FileStatus objects for the files under the given path    *         after applying the filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation       */
 DECL|method|listStatus (Path f, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -5082,7 +5120,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Filter files/directories in the given list of paths using default    * path filter.    *     * @param files    *          a list of paths    * @return a list of statuses for the files under the given paths after    *         applying the filter default Path filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * Filter files/directories in the given list of paths using default    * path filter.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    *     * @param files    *          a list of paths    * @return a list of statuses for the files under the given paths after    *         applying the filter default Path filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
 DECL|method|listStatus (Path[] files)
 specifier|public
 name|FileStatus
@@ -5107,7 +5145,7 @@ name|DEFAULT_FILTER
 argument_list|)
 return|;
 block|}
-comment|/**    * Filter files/directories in the given list of paths using user-supplied    * path filter.    *     * @param files    *          a list of paths    * @param filter    *          the user-supplied path filter    * @return a list of statuses for the files under the given paths after    *         applying the filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * Filter files/directories in the given list of paths using user-supplied    * path filter.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    *     * @param files    *          a list of paths    * @param filter    *          the user-supplied path filter    * @return a list of statuses for the files under the given paths after    *         applying the filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
 DECL|method|listStatus (Path[] files, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -5409,7 +5447,7 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * Returns a remote iterator so that followup calls are made on demand    * while consuming the entries. Each file system implementation should    * override this method and provide a more efficient implementation, if    * possible.     *    * @param p target path    * @return remote iterator    */
+comment|/**    * Returns a remote iterator so that followup calls are made on demand    * while consuming the entries. Each file system implementation should    * override this method and provide a more efficient implementation, if    * possible.     * Does not guarantee to return the iterator that traverses statuses    * of the files in a sorted order.    *    * @param p target path    * @return remote iterator    */
 DECL|method|listStatusIterator (final Path p)
 specifier|public
 name|RemoteIterator
@@ -5504,7 +5542,7 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * List the statuses and block locations of the files in the given path.    *     * If the path is a directory,     *   if recursive is false, returns files in the directory;    *   if recursive is true, return files in the subtree rooted at the path.    * If the path is a file, return the file's status and block locations.    *     * @param f is the path    * @param recursive if the subdirectories need to be traversed recursively    *    * @return an iterator that traverses statuses of the files    *    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * List the statuses and block locations of the files in the given path.    * Does not guarantee to return the iterator that traverses statuses    * of the files in a sorted order.    *     * If the path is a directory,     *   if recursive is false, returns files in the directory;    *   if recursive is true, return files in the subtree rooted at the path.    * If the path is a file, return the file's status and block locations.    *     * @param f is the path    * @param recursive if the subdirectories need to be traversed recursively    *    * @return an iterator that traverses statuses of the files    *    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
 DECL|method|listFiles ( final Path f, final boolean recursive)
 specifier|public
 name|RemoteIterator
@@ -6273,30 +6311,37 @@ name|used
 init|=
 literal|0
 decl_stmt|;
-name|FileStatus
-index|[]
+name|RemoteIterator
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
 name|files
 init|=
-name|listStatus
+name|listFiles
 argument_list|(
 operator|new
 name|Path
 argument_list|(
 literal|"/"
 argument_list|)
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
-for|for
-control|(
-name|FileStatus
-name|file
-range|:
+while|while
+condition|(
 name|files
-control|)
+operator|.
+name|hasNext
+argument_list|()
+condition|)
 block|{
 name|used
 operator|+=
-name|file
+name|files
+operator|.
+name|next
+argument_list|()
 operator|.
 name|getLen
 argument_list|()
@@ -7507,6 +7552,33 @@ literal|" doesn't support setStoragePolicy"
 argument_list|)
 throw|;
 block|}
+comment|/**    * Query the effective storage policy ID for the given file or directory.    *    * @param src file or directory path.    * @return storage policy for give file.    * @throws IOException    */
+DECL|method|getStoragePolicy (final Path src)
+specifier|public
+name|BlockStoragePolicySpi
+name|getStoragePolicy
+parameter_list|(
+specifier|final
+name|Path
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support getStoragePolicy"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Retrieve all the storage policies supported by this file system.    *    * @return all storage policies supported by this filesystem.    * @throws IOException    */
 DECL|method|getAllStoragePolicies ()
 specifier|public
@@ -7766,6 +7838,46 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|TraceScope
+name|scope
+init|=
+name|Trace
+operator|.
+name|startSpan
+argument_list|(
+literal|"FileSystem#createFileSystem"
+argument_list|)
+decl_stmt|;
+name|Span
+name|span
+init|=
+name|scope
+operator|.
+name|getSpan
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|span
+operator|!=
+literal|null
+condition|)
+block|{
+name|span
+operator|.
+name|addKVAnnotation
+argument_list|(
+literal|"scheme"
+argument_list|,
+name|uri
+operator|.
+name|getScheme
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+try|try
+block|{
 name|Class
 argument_list|<
 name|?
@@ -7809,6 +7921,15 @@ expr_stmt|;
 return|return
 name|fs
 return|;
+block|}
+finally|finally
+block|{
+name|scope
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/** Caching FileSystem objects */
 DECL|class|Cache
@@ -8863,32 +8984,6 @@ specifier|volatile
 name|int
 name|writeOps
 decl_stmt|;
-comment|/**        * Stores a weak reference to the thread owning this StatisticsData.        * This allows us to remove StatisticsData objects that pertain to        * threads that no longer exist.        */
-DECL|field|owner
-specifier|final
-name|WeakReference
-argument_list|<
-name|Thread
-argument_list|>
-name|owner
-decl_stmt|;
-DECL|method|StatisticsData (WeakReference<Thread> owner)
-name|StatisticsData
-parameter_list|(
-name|WeakReference
-argument_list|<
-name|Thread
-argument_list|>
-name|owner
-parameter_list|)
-block|{
-name|this
-operator|.
-name|owner
-operator|=
-name|owner
-expr_stmt|;
-block|}
 comment|/**        * Add another StatisticsData object to this one.        */
 DECL|method|add (StatisticsData other)
 name|void
@@ -9117,15 +9212,81 @@ name|StatisticsData
 argument_list|>
 name|threadData
 decl_stmt|;
-comment|/**      * List of all thread-local data areas.  Protected by the Statistics lock.      */
+comment|/**      * Set of all thread-local data areas.  Protected by the Statistics lock.      * The references to the statistics data are kept using phantom references      * to the associated threads. Proper clean-up is performed by the cleaner      * thread when the threads are garbage collected.      */
 DECL|field|allData
 specifier|private
-name|LinkedList
+specifier|final
+name|Set
 argument_list|<
-name|StatisticsData
+name|StatisticsDataReference
 argument_list|>
 name|allData
 decl_stmt|;
+comment|/**      * Global reference queue and a cleaner thread that manage statistics data      * references from all filesystem instances.      */
+DECL|field|STATS_DATA_REF_QUEUE
+specifier|private
+specifier|static
+specifier|final
+name|ReferenceQueue
+argument_list|<
+name|Thread
+argument_list|>
+name|STATS_DATA_REF_QUEUE
+decl_stmt|;
+DECL|field|STATS_DATA_CLEANER
+specifier|private
+specifier|static
+specifier|final
+name|Thread
+name|STATS_DATA_CLEANER
+decl_stmt|;
+static|static
+block|{
+name|STATS_DATA_REF_QUEUE
+operator|=
+operator|new
+name|ReferenceQueue
+argument_list|<
+name|Thread
+argument_list|>
+argument_list|()
+expr_stmt|;
+comment|// start a single daemon cleaner thread
+name|STATS_DATA_CLEANER
+operator|=
+operator|new
+name|Thread
+argument_list|(
+operator|new
+name|StatisticsDataReferenceCleaner
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|STATS_DATA_CLEANER
+operator|.
+name|setName
+argument_list|(
+name|StatisticsDataReferenceCleaner
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|STATS_DATA_CLEANER
+operator|.
+name|setDaemon
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|STATS_DATA_CLEANER
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|Statistics (String scheme)
 specifier|public
 name|Statistics
@@ -9146,9 +9307,7 @@ name|rootData
 operator|=
 operator|new
 name|StatisticsData
-argument_list|(
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -9165,7 +9324,12 @@ name|this
 operator|.
 name|allData
 operator|=
-literal|null
+operator|new
+name|HashSet
+argument_list|<
+name|StatisticsDataReference
+argument_list|>
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**      * Copy constructor.      *       * @param other    The input Statistics object which is cloned.      */
@@ -9191,9 +9355,7 @@ name|rootData
 operator|=
 operator|new
 name|StatisticsData
-argument_list|(
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|other
 operator|.
@@ -9247,6 +9409,166 @@ name|StatisticsData
 argument_list|>
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|allData
+operator|=
+operator|new
+name|HashSet
+argument_list|<
+name|StatisticsDataReference
+argument_list|>
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**      * A phantom reference to a thread that also includes the data associated      * with that thread. On the thread being garbage collected, it is enqueued      * to the reference queue for clean-up.      */
+DECL|class|StatisticsDataReference
+specifier|private
+class|class
+name|StatisticsDataReference
+extends|extends
+name|PhantomReference
+argument_list|<
+name|Thread
+argument_list|>
+block|{
+DECL|field|data
+specifier|private
+specifier|final
+name|StatisticsData
+name|data
+decl_stmt|;
+DECL|method|StatisticsDataReference (StatisticsData data, Thread thread)
+specifier|public
+name|StatisticsDataReference
+parameter_list|(
+name|StatisticsData
+name|data
+parameter_list|,
+name|Thread
+name|thread
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|thread
+argument_list|,
+name|STATS_DATA_REF_QUEUE
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|data
+operator|=
+name|data
+expr_stmt|;
+block|}
+DECL|method|getData ()
+specifier|public
+name|StatisticsData
+name|getData
+parameter_list|()
+block|{
+return|return
+name|data
+return|;
+block|}
+comment|/**        * Performs clean-up action when the associated thread is garbage        * collected.        */
+DECL|method|cleanUp ()
+specifier|public
+name|void
+name|cleanUp
+parameter_list|()
+block|{
+comment|// use the statistics lock for safety
+synchronized|synchronized
+init|(
+name|Statistics
+operator|.
+name|this
+init|)
+block|{
+comment|/*            * If the thread that created this thread-local data no longer exists,            * remove the StatisticsData from our list and fold the values into            * rootData.            */
+name|rootData
+operator|.
+name|add
+argument_list|(
+name|data
+argument_list|)
+expr_stmt|;
+name|allData
+operator|.
+name|remove
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**      * Background action to act on references being removed.      */
+DECL|class|StatisticsDataReferenceCleaner
+specifier|private
+specifier|static
+class|class
+name|StatisticsDataReferenceCleaner
+implements|implements
+name|Runnable
+block|{
+annotation|@
+name|Override
+DECL|method|run ()
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+while|while
+condition|(
+literal|true
+condition|)
+block|{
+try|try
+block|{
+name|StatisticsDataReference
+name|ref
+init|=
+operator|(
+name|StatisticsDataReference
+operator|)
+name|STATS_DATA_REF_QUEUE
+operator|.
+name|remove
+argument_list|()
+decl_stmt|;
+name|ref
+operator|.
+name|cleanUp
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|th
+parameter_list|)
+block|{
+comment|// the cleaner thread should continue to run even if there are
+comment|// exceptions, including InterruptedException
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"exception in the cleaner thread but it will continue to "
+operator|+
+literal|"run"
+argument_list|,
+name|th
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 block|}
 comment|/**      * Get or create the thread-local data associated with the current thread.      */
 DECL|method|getThreadStatistics ()
@@ -9274,19 +9596,7 @@ name|data
 operator|=
 operator|new
 name|StatisticsData
-argument_list|(
-operator|new
-name|WeakReference
-argument_list|<
-name|Thread
-argument_list|>
-argument_list|(
-name|Thread
-operator|.
-name|currentThread
 argument_list|()
-argument_list|)
-argument_list|)
 expr_stmt|;
 name|threadData
 operator|.
@@ -9295,33 +9605,30 @@ argument_list|(
 name|data
 argument_list|)
 expr_stmt|;
+name|StatisticsDataReference
+name|ref
+init|=
+operator|new
+name|StatisticsDataReference
+argument_list|(
+name|data
+argument_list|,
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+argument_list|)
+decl_stmt|;
 synchronized|synchronized
 init|(
 name|this
 init|)
 block|{
-if|if
-condition|(
-name|allData
-operator|==
-literal|null
-condition|)
-block|{
-name|allData
-operator|=
-operator|new
-name|LinkedList
-argument_list|<
-name|StatisticsData
-argument_list|>
-argument_list|()
-expr_stmt|;
-block|}
 name|allData
 operator|.
 name|add
 argument_list|(
-name|data
+name|ref
 argument_list|)
 expr_stmt|;
 block|}
@@ -9444,39 +9751,20 @@ argument_list|(
 name|rootData
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|allData
-operator|!=
-literal|null
-condition|)
-block|{
 for|for
 control|(
-name|Iterator
-argument_list|<
-name|StatisticsData
-argument_list|>
-name|iter
-init|=
+name|StatisticsDataReference
+name|ref
+range|:
 name|allData
-operator|.
-name|iterator
-argument_list|()
-init|;
-name|iter
-operator|.
-name|hasNext
-argument_list|()
-condition|;
 control|)
 block|{
 name|StatisticsData
 name|data
 init|=
-name|iter
+name|ref
 operator|.
-name|next
+name|getData
 argument_list|()
 decl_stmt|;
 name|visitor
@@ -9486,33 +9774,6 @@ argument_list|(
 name|data
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|data
-operator|.
-name|owner
-operator|.
-name|get
-argument_list|()
-operator|==
-literal|null
-condition|)
-block|{
-comment|/*              * If the thread that created this thread-local data no              * longer exists, remove the StatisticsData from our list              * and fold the values into rootData.              */
-name|rootData
-operator|.
-name|add
-argument_list|(
-name|data
-argument_list|)
-expr_stmt|;
-name|iter
-operator|.
-name|remove
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 block|}
 return|return
 name|visitor
@@ -9816,9 +10077,7 @@ name|total
 init|=
 operator|new
 name|StatisticsData
-argument_list|(
-literal|null
-argument_list|)
+argument_list|()
 decl_stmt|;
 annotation|@
 name|Override
@@ -9876,9 +10135,7 @@ name|total
 init|=
 operator|new
 name|StatisticsData
-argument_list|(
-literal|null
-argument_list|)
+argument_list|()
 decl_stmt|;
 annotation|@
 name|Override
@@ -9932,6 +10189,21 @@ parameter_list|()
 block|{
 return|return
 name|scheme
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getAllThreadLocalDataSize ()
+specifier|synchronized
+name|int
+name|getAllThreadLocalDataSize
+parameter_list|()
+block|{
+return|return
+name|allData
+operator|.
+name|size
+argument_list|()
 return|;
 block|}
 block|}

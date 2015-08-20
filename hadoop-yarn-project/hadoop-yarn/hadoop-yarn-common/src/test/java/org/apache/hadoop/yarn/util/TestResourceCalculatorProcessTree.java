@@ -211,8 +211,6 @@ name|getCpuUsagePercent
 parameter_list|()
 block|{
 return|return
-name|CpuTimeTracker
-operator|.
 name|UNAVAILABLE
 return|;
 block|}

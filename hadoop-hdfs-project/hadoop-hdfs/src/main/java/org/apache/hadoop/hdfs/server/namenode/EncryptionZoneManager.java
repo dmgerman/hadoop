@@ -1560,6 +1560,20 @@ name|hasMore
 argument_list|)
 return|;
 block|}
+comment|/**    * @return number of encryption zones.    */
+DECL|method|getNumEncryptionZones ()
+specifier|public
+name|int
+name|getNumEncryptionZones
+parameter_list|()
+block|{
+return|return
+name|encryptionZones
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

@@ -313,7 +313,7 @@ literal|"administrative commands.\n"
 operator|+
 literal|"The full syntax is: \n\n"
 operator|+
-literal|"hadoop scmadmin"
+literal|"yarn scmadmin"
 operator|+
 literal|" [-runCleanerTask]"
 operator|+

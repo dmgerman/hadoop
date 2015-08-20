@@ -391,9 +391,11 @@ literal|"[-list-corruptfileblocks | "
 operator|+
 literal|"[-move | -delete | -openforwrite] "
 operator|+
-literal|"[-files [-blocks [-locations | -racks]]]] "
+literal|"[-files [-blocks [-locations | -racks | -replicaDetails]]]] "
 operator|+
-literal|"[-includeSnapshots] [-showprogress]\n"
+literal|"[-includeSnapshots] [-showprogress] "
+operator|+
+literal|"[-storagepolicies] [-blockId<blk_Id>]\n"
 operator|+
 literal|"\t<path>\tstart checking from this path\n"
 operator|+
@@ -423,6 +425,8 @@ literal|"\t-files -blocks -racks"
 operator|+
 literal|"\tprint out network topology for data-node locations\n"
 operator|+
+literal|"\t-files -blocks -replicaDetails\tprint out each replica details \n"
+operator|+
 literal|"\t-storagepolicies\tprint out storage policy summary for the blocks\n"
 operator|+
 literal|"\t-showprogress\tshow progress in output. Default is OFF (no progress)\n"
@@ -431,9 +435,7 @@ literal|"\t-blockId\tprint out which file this blockId belongs to, locations"
 operator|+
 literal|" (nodes, racks) of this block, and other diagnostics info"
 operator|+
-literal|" (under replicated, corrupted or not, etc)\n"
-operator|+
-literal|"\t-replicaDetails\tprint out each replica details \n\n"
+literal|" (under replicated, corrupted or not, etc)\n\n"
 operator|+
 literal|"Please Note:\n"
 operator|+
@@ -2091,15 +2093,6 @@ operator|)
 condition|)
 block|{
 name|printUsage
-argument_list|(
-name|System
-operator|.
-name|err
-argument_list|)
-expr_stmt|;
-name|ToolRunner
-operator|.
-name|printGenericCommandUsage
 argument_list|(
 name|System
 operator|.

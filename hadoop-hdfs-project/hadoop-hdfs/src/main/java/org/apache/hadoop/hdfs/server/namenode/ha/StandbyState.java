@@ -337,6 +337,11 @@ block|{
 return|return;
 block|}
 name|String
+name|faq
+init|=
+literal|". Visit https://s.apache.org/sbnn-error"
+decl_stmt|;
+name|String
 name|msg
 init|=
 literal|"Operation category "
@@ -349,6 +354,8 @@ name|context
 operator|.
 name|getState
 argument_list|()
+operator|+
+name|faq
 decl_stmt|;
 throw|throw
 operator|new

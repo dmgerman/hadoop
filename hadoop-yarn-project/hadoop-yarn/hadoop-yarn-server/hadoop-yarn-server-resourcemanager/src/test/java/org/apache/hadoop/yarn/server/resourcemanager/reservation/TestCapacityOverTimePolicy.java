@@ -47,18 +47,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|when
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -187,6 +175,28 @@ operator|.
 name|exceptions
 operator|.
 name|ResourceOverCommitException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|reservation
+operator|.
+name|planning
+operator|.
+name|ReservationAgent
 import|;
 end_import
 
@@ -1267,7 +1277,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|req
 init|=
@@ -1276,7 +1286,7 @@ name|TreeMap
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1318,6 +1328,10 @@ operator|+
 name|win
 argument_list|)
 argument_list|,
+name|ReservationSystemUtil
+operator|.
+name|toResource
+argument_list|(
 name|ReservationRequest
 operator|.
 name|newInstance
@@ -1332,6 +1346,7 @@ literal|1
 argument_list|)
 argument_list|,
 name|cont
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1393,7 +1408,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|req
 init|=
@@ -1402,7 +1417,7 @@ name|TreeMap
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1444,6 +1459,10 @@ operator|+
 name|win
 argument_list|)
 argument_list|,
+name|ReservationSystemUtil
+operator|.
+name|toResource
+argument_list|(
 name|ReservationRequest
 operator|.
 name|newInstance
@@ -1458,6 +1477,7 @@ literal|1
 argument_list|)
 argument_list|,
 name|cont
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

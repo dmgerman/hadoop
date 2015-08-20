@@ -98,7 +98,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|StorageType
+name|Path
 import|;
 end_import
 
@@ -110,13 +110,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
+name|StorageType
 import|;
 end_import
 
@@ -369,12 +365,14 @@ name|StorageLocation
 argument_list|(
 name|storageType
 argument_list|,
-name|Util
-operator|.
-name|stringAsURI
+operator|new
+name|Path
 argument_list|(
 name|location
 argument_list|)
+operator|.
+name|toUri
+argument_list|()
 argument_list|)
 return|;
 block|}

@@ -646,6 +646,11 @@ name|VolumeFailureSummary
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|Mockito
+operator|.
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|StorageReport

@@ -617,25 +617,48 @@ name|GROUP_NAME_ATTR_DEFAULT
 init|=
 literal|"cn"
 decl_stmt|;
-comment|/*    * Posix attributes    */
-DECL|field|POSIX_UIDNUMBER
+comment|/*    * LDAP attribute names to use when doing posix-like lookups    */
+DECL|field|POSIX_UID_ATTR_KEY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|POSIX_UIDNUMBER
+name|POSIX_UID_ATTR_KEY
+init|=
+name|LDAP_CONFIG_PREFIX
+operator|+
+literal|".posix.attr.uid.name"
+decl_stmt|;
+DECL|field|POSIX_UID_ATTR_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|POSIX_UID_ATTR_DEFAULT
 init|=
 literal|"uidNumber"
 decl_stmt|;
-DECL|field|POSIX_GIDNUMBER
+DECL|field|POSIX_GID_ATTR_KEY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|POSIX_GIDNUMBER
+name|POSIX_GID_ATTR_KEY
+init|=
+name|LDAP_CONFIG_PREFIX
+operator|+
+literal|".posix.attr.gid.name"
+decl_stmt|;
+DECL|field|POSIX_GID_ATTR_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|POSIX_GID_ATTR_DEFAULT
 init|=
 literal|"gidNumber"
 decl_stmt|;
+comment|/*    * Posix attributes    */
 DECL|field|POSIX_GROUP
 specifier|public
 specifier|static
@@ -779,6 +802,16 @@ DECL|field|groupNameAttr
 specifier|private
 name|String
 name|groupNameAttr
+decl_stmt|;
+DECL|field|posixUidAttr
+specifier|private
+name|String
+name|posixUidAttr
+decl_stmt|;
+DECL|field|posixGidAttr
+specifier|private
+name|String
+name|posixGidAttr
 decl_stmt|;
 DECL|field|isPosix
 specifier|private
@@ -1064,7 +1097,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-name|POSIX_GIDNUMBER
+name|posixGidAttr
 argument_list|)
 decl_stmt|;
 name|Attribute
@@ -1077,7 +1110,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-name|POSIX_UIDNUMBER
+name|posixUidAttr
 argument_list|)
 decl_stmt|;
 if|if
@@ -1141,7 +1174,7 @@ name|groupSearchFilter
 operator|+
 literal|"(|("
 operator|+
-name|POSIX_GIDNUMBER
+name|posixGidAttr
 operator|+
 literal|"={0})"
 operator|+
@@ -1661,6 +1694,28 @@ argument_list|,
 name|GROUP_NAME_ATTR_DEFAULT
 argument_list|)
 expr_stmt|;
+name|posixUidAttr
+operator|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|POSIX_UID_ATTR_KEY
+argument_list|,
+name|POSIX_UID_ATTR_DEFAULT
+argument_list|)
+expr_stmt|;
+name|posixGidAttr
+operator|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|POSIX_GID_ATTR_KEY
+argument_list|,
+name|POSIX_GID_ATTR_DEFAULT
+argument_list|)
+expr_stmt|;
 name|int
 name|dirSearchTimeout
 init|=
@@ -1680,7 +1735,8 @@ argument_list|(
 name|dirSearchTimeout
 argument_list|)
 expr_stmt|;
-comment|// Limit the attributes returned to only those required to speed up the search. See HADOOP-10626 for more details.
+comment|// Limit the attributes returned to only those required to speed up the search.
+comment|// See HADOOP-10626 and HADOOP-12001 for more details.
 name|SEARCH_CONTROLS
 operator|.
 name|setReturningAttributes
@@ -1690,6 +1746,10 @@ name|String
 index|[]
 block|{
 name|groupNameAttr
+block|,
+name|posixUidAttr
+block|,
+name|posixGidAttr
 block|}
 argument_list|)
 expr_stmt|;

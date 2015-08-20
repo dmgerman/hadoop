@@ -955,11 +955,11 @@ argument_list|,
 operator|new
 name|UsageInfo
 argument_list|(
-literal|"[label1(exclusive=true),"
+literal|"<\"label1(exclusive=true),"
 operator|+
-literal|"label2(exclusive=false),label3]"
+literal|"label2(exclusive=false),label3\">"
 argument_list|,
-literal|"add to cluster node labels "
+literal|"add to cluster node labels. Default exclusivity is true"
 argument_list|)
 argument_list|)
 decl|.
@@ -970,7 +970,7 @@ argument_list|,
 operator|new
 name|UsageInfo
 argument_list|(
-literal|"[label1,label2,label3] (label splitted by \",\")"
+literal|"<label1,label2,label3> (label splitted by \",\")"
 argument_list|,
 literal|"remove from cluster node labels"
 argument_list|)
@@ -983,7 +983,7 @@ argument_list|,
 operator|new
 name|UsageInfo
 argument_list|(
-literal|"[node1[:port]=label1,label2 node2[:port]=label1,label2]"
+literal|"<\"node1[:port]=label1,label2 node2[:port]=label1,label2\">"
 argument_list|,
 literal|"replace labels on nodes"
 operator|+
@@ -1002,7 +1002,7 @@ name|UsageInfo
 argument_list|(
 literal|""
 argument_list|,
-literal|"Directly access node label store, "
+literal|"This is DEPRECATED, will be removed in future releases. Directly access node label store, "
 operator|+
 literal|"with this option, all node label related operations"
 operator|+
@@ -1538,11 +1538,13 @@ literal|" [-refreshServiceAcl]"
 operator|+
 literal|" [-getGroup [username]]"
 operator|+
-literal|" [[-addToClusterNodeLabels [label1,label2,label3]]"
+literal|" [-addToClusterNodeLabels<\"label1(exclusive=true),"
 operator|+
-literal|" [-removeFromClusterNodeLabels [label1,label2,label3]]"
+literal|"label2(exclusive=false),label3\">]"
 operator|+
-literal|" [-replaceLabelsOnNode [node1[:port]=label1,label2 node2[:port]=label1]"
+literal|" [-removeFromClusterNodeLabels<label1,label2,label3>]"
+operator|+
+literal|" [-replaceLabelsOnNode<\"node1[:port]=label1,label2 node2[:port]=label1\">]"
 operator|+
 literal|" [-directlyAccessNodeLabelStore]]"
 argument_list|)
@@ -3996,6 +3998,13 @@ argument_list|(
 name|NO_LABEL_ERR_MSG
 argument_list|)
 expr_stmt|;
+name|printUsage
+argument_list|(
+literal|""
+argument_list|,
+name|isHAEnabled
+argument_list|)
+expr_stmt|;
 name|exitCode
 operator|=
 operator|-
@@ -4045,6 +4054,13 @@ argument_list|(
 name|NO_LABEL_ERR_MSG
 argument_list|)
 expr_stmt|;
+name|printUsage
+argument_list|(
+literal|""
+argument_list|,
+name|isHAEnabled
+argument_list|)
+expr_stmt|;
 name|exitCode
 operator|=
 operator|-
@@ -4092,6 +4108,13 @@ operator|.
 name|println
 argument_list|(
 name|NO_MAPPING_ERR_MSG
+argument_list|)
+expr_stmt|;
+name|printUsage
+argument_list|(
+literal|""
+argument_list|,
+name|isHAEnabled
 argument_list|)
 expr_stmt|;
 name|exitCode
@@ -4606,6 +4629,31 @@ name|rmId
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * returns the list of all resourcemanager ids for the given configuration.    */
+annotation|@
+name|Override
+DECL|method|getTargetIds (String targetNodeToActivate)
+specifier|protected
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|getTargetIds
+parameter_list|(
+name|String
+name|targetNodeToActivate
+parameter_list|)
+block|{
+return|return
+name|HAUtil
+operator|.
+name|getRMHAIds
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
+return|;
 block|}
 annotation|@
 name|Override

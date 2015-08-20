@@ -358,6 +358,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -821,6 +839,20 @@ operator|.
 name|resource
 operator|.
 name|Resources
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -2666,6 +2698,31 @@ name|void
 name|run
 parameter_list|()
 block|{
+name|clearPendingContainerCache
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Release request cache is cleaned up"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+argument_list|,
+name|nmExpireInterval
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|clearPendingContainerCache ()
+specifier|public
+name|void
+name|clearPendingContainerCache
+parameter_list|()
+block|{
 for|for
 control|(
 name|SchedulerApplication
@@ -2688,6 +2745,13 @@ operator|.
 name|getCurrentAppAttempt
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|attempt
+operator|!=
+literal|null
+condition|)
+block|{
 synchronized|synchronized
 init|(
 name|attempt
@@ -2721,7 +2785,9 @@ literal|"Unauthorized access or invalid container"
 argument_list|,
 literal|"Scheduler"
 argument_list|,
-literal|"Trying to release container not owned by app or with invalid id."
+literal|"Trying to release container not owned by app "
+operator|+
+literal|"or with invalid id."
 argument_list|,
 name|attempt
 operator|.
@@ -2742,19 +2808,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Release request cache is cleaned up"
-argument_list|)
-expr_stmt|;
 block|}
-block|}
-argument_list|,
-name|nmExpireInterval
-argument_list|)
-expr_stmt|;
 block|}
 comment|// clean up a completed container
 DECL|method|completedContainer (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
@@ -3851,6 +3905,58 @@ block|}
 return|return
 literal|null
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|checkAndGetApplicationPriority (Priority priorityFromContext, String user, String queueName, ApplicationId applicationId)
+specifier|public
+name|Priority
+name|checkAndGetApplicationPriority
+parameter_list|(
+name|Priority
+name|priorityFromContext
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|String
+name|queueName
+parameter_list|,
+name|ApplicationId
+name|applicationId
+parameter_list|)
+throws|throws
+name|YarnException
+block|{
+comment|// Dummy Implementation till Application Priority changes are done in
+comment|// specific scheduler.
+return|return
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|updateApplicationPriority (Priority newPriority, ApplicationId applicationId)
+specifier|public
+name|void
+name|updateApplicationPriority
+parameter_list|(
+name|Priority
+name|newPriority
+parameter_list|,
+name|ApplicationId
+name|applicationId
+parameter_list|)
+throws|throws
+name|YarnException
+block|{
+comment|// Dummy Implementation till Application Priority changes are done in
+comment|// specific scheduler.
 block|}
 block|}
 end_class

@@ -130,8 +130,8 @@ parameter_list|)
 block|{
 name|datum
 operator|.
-name|jobid
-operator|=
+name|setJobid
+argument_list|(
 operator|new
 name|Utf8
 argument_list|(
@@ -140,18 +140,21 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+argument_list|)
 expr_stmt|;
 name|datum
 operator|.
+name|setSubmitTime
+argument_list|(
 name|submitTime
-operator|=
-name|submitTime
+argument_list|)
 expr_stmt|;
 name|datum
 operator|.
+name|setLaunchTime
+argument_list|(
 name|launchTime
-operator|=
-name|launchTime
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|JobInfoChangeEvent ()
@@ -201,7 +204,8 @@ name|forName
 argument_list|(
 name|datum
 operator|.
-name|jobid
+name|getJobid
+argument_list|()
 operator|.
 name|toString
 argument_list|()
@@ -218,7 +222,8 @@ block|{
 return|return
 name|datum
 operator|.
-name|submitTime
+name|getSubmitTime
+argument_list|()
 return|;
 block|}
 comment|/** Get the Job launch time */
@@ -231,7 +236,8 @@ block|{
 return|return
 name|datum
 operator|.
-name|launchTime
+name|getLaunchTime
+argument_list|()
 return|;
 block|}
 DECL|method|getEventType ()

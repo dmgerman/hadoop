@@ -3124,6 +3124,23 @@ name|appReportStr
 operator|.
 name|print
 argument_list|(
+literal|"\tApplication Priority : "
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|println
+argument_list|(
+name|appReport
+operator|.
+name|getPriority
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|print
+argument_list|(
 literal|"\tStart-Time : "
 argument_list|)
 expr_stmt|;
@@ -3368,11 +3385,28 @@ argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|print
+name|println
 argument_list|(
 name|appReport
 operator|.
 name|getDiagnostics
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|print
+argument_list|(
+literal|"\tUnmanaged Application : "
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|print
+argument_list|(
+name|appReport
+operator|.
+name|isUnmanagedApp
 argument_list|()
 argument_list|)
 expr_stmt|;

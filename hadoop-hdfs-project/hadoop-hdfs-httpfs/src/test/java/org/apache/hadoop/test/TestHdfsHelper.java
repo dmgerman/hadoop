@@ -194,6 +194,7 @@ decl_stmt|;
 DECL|field|HDFS_CONF_TL
 specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|Configuration
@@ -210,6 +211,7 @@ decl_stmt|;
 DECL|field|HDFS_TEST_DIR_TL
 specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|Path

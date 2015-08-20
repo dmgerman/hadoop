@@ -982,6 +982,17 @@ argument_list|,
 literal|"YARN"
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|false
+argument_list|,
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|newApplicationReport
@@ -991,6 +1002,18 @@ argument_list|(
 name|LogAggregationStatus
 operator|.
 name|SUCCEEDED
+argument_list|)
+expr_stmt|;
+name|newApplicationReport
+operator|.
+name|setPriority
+argument_list|(
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|when
@@ -1121,6 +1144,13 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|"\tApplication Priority : 0"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|"\tStart-Time : 0"
 argument_list|)
 expr_stmt|;
@@ -1202,6 +1232,13 @@ operator|.
 name|println
 argument_list|(
 literal|"\tDiagnostics : diagnostics"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tUnmanaged Application : false"
 argument_list|)
 expr_stmt|;
 name|pw

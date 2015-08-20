@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/*******************************************************************************  *   Licensed to the Apache Software Foundation (ASF) under one  *   or more contributor license agreements.  See the NOTICE file  *   distributed with this work for additional information  *   regarding copyright ownership.  The ASF licenses this file  *   to you under the Apache License, Version 2.0 (the  *   "License"); you may not use this file except in compliance  *   with the License.  You may obtain a copy of the License at  *  *       http://www.apache.org/licenses/LICENSE-2.0  *  *   Unless required by applicable law or agreed to in writing, software  *   distributed under the License is distributed on an "AS IS" BASIS,  *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  *   See the License for the specific language governing permissions and  *   limitations under the License.  *******************************************************************************/
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -21,16 +21,6 @@ operator|.
 name|reservation
 package|;
 end_package
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
 
 begin_import
 import|import
@@ -68,8 +58,18 @@ name|Resource
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
 begin_comment
-comment|/**  * This interface provides a read-only view on the allocations made in this  * plan. This methods are used for example by {@link ReservationAgent}s to  * determine the free resources in a certain point in time, and by  * PlanFollowerPolicy to publish this plan to the scheduler.  */
+comment|/**  * This interface provides a read-only view on the allocations made in this  * plan. This methods are used for example by {@code ReservationAgent}s to  * determine the free resources in a certain point in time, and by  * PlanFollowerPolicy to publish this plan to the scheduler.  */
 end_comment
 
 begin_interface
@@ -115,7 +115,6 @@ parameter_list|()
 function_decl|;
 comment|/**    * Returns the total {@link Resource} reserved for all users at the specified    * time    *     * @param tick the time (UTC in ms) for which the reserved resources are    *          requested    * @return the total {@link Resource} reserved for all users at the specified    *         time    */
 DECL|method|getTotalCommittedResources (long tick)
-specifier|public
 name|Resource
 name|getTotalCommittedResources
 parameter_list|(
@@ -138,7 +137,6 @@ parameter_list|)
 function_decl|;
 comment|/**    * Returns the overall capacity in terms of {@link Resource} assigned to this    * plan (typically will correspond to the absolute capacity of the    * corresponding queue).    *     * @return the overall capacity in terms of {@link Resource} assigned to this    *         plan    */
 DECL|method|getTotalCapacity ()
-specifier|public
 name|Resource
 name|getTotalCapacity
 parameter_list|()

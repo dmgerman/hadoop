@@ -30,6 +30,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
+name|webapp
+operator|.
+name|AMParams
+operator|.
+name|TASK_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|webapp
@@ -306,6 +328,62 @@ literal|"{autoHeight:false, active:0}"
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Determine which navigation column is active.    */
+DECL|method|setActiveNavColumnForTask ()
+specifier|protected
+name|void
+name|setActiveNavColumnForTask
+parameter_list|()
+block|{
+name|String
+name|tid
+init|=
+name|$
+argument_list|(
+name|TASK_ID
+argument_list|)
+decl_stmt|;
+name|String
+name|activeNav
+init|=
+literal|"2"
+decl_stmt|;
+if|if
+condition|(
+operator|(
+name|tid
+operator|==
+literal|null
+operator|||
+name|tid
+operator|.
+name|isEmpty
+argument_list|()
+operator|)
+condition|)
+block|{
+name|activeNav
+operator|=
+literal|"1"
+expr_stmt|;
+block|}
+name|set
+argument_list|(
+name|initID
+argument_list|(
+name|ACCORDION
+argument_list|,
+literal|"nav"
+argument_list|)
+argument_list|,
+literal|"{autoHeight:false, active:"
+operator|+
+name|activeNav
+operator|+
+literal|"}"
+argument_list|)
+expr_stmt|;
+block|}
 comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.yarn.webapp.view.TwoColumnLayout#nav()    */
 annotation|@
 name|Override
@@ -377,7 +455,7 @@ operator|.
 comment|// Sort by id upon page load
 name|append
 argument_list|(
-literal|", aaSorting: [[2, 'desc']]"
+literal|", aaSorting: [[3, 'desc']]"
 argument_list|)
 operator|.
 name|append
@@ -388,7 +466,9 @@ operator|.
 comment|// Maps Total, Maps Completed, Reduces Total and Reduces Completed
 name|append
 argument_list|(
-literal|"{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 7, 8, 9, 10 ] }"
+literal|"{'sType':'numeric', 'bSearchable': false"
+operator|+
+literal|", 'aTargets': [ 8, 9, 10, 11 ] }"
 argument_list|)
 operator|.
 name|append

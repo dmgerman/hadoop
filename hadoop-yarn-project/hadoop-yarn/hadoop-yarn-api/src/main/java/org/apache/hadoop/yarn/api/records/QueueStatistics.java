@@ -526,6 +526,63 @@ name|long
 name|pendingVCores
 parameter_list|)
 function_decl|;
+comment|/**    * Get the number of pending containers.    * @return the number of pending containers.    */
+DECL|method|getPendingContainers ()
+specifier|public
+specifier|abstract
+name|long
+name|getPendingContainers
+parameter_list|()
+function_decl|;
+comment|/**    * Set the number of pending containers.    * @param pendingContainers the pending containers.    */
+DECL|method|setPendingContainers (long pendingContainers)
+specifier|public
+specifier|abstract
+name|void
+name|setPendingContainers
+parameter_list|(
+name|long
+name|pendingContainers
+parameter_list|)
+function_decl|;
+comment|/**    * Get the number of allocated containers.    * @return the number of allocated containers.    */
+DECL|method|getAllocatedContainers ()
+specifier|public
+specifier|abstract
+name|long
+name|getAllocatedContainers
+parameter_list|()
+function_decl|;
+comment|/**    * Set the number of allocated containers.    * @param allocatedContainers the allocated containers.    */
+DECL|method|setAllocatedContainers (long allocatedContainers)
+specifier|public
+specifier|abstract
+name|void
+name|setAllocatedContainers
+parameter_list|(
+name|long
+name|allocatedContainers
+parameter_list|)
+function_decl|;
+comment|/**    * Get the number of reserved containers.    * @return the number of reserved containers.    */
+DECL|method|getReservedContainers ()
+specifier|public
+specifier|abstract
+name|long
+name|getReservedContainers
+parameter_list|()
+function_decl|;
+comment|/**    * Set the number of reserved containers.    * @param reservedContainers the reserved containers.    */
+DECL|method|setReservedContainers (long reservedContainers)
+specifier|public
+specifier|abstract
+name|void
+name|setReservedContainers
+parameter_list|(
+name|long
+name|reservedContainers
+parameter_list|)
+function_decl|;
 comment|/**    * Get the reserved vcores    *     * @return the reserved vcores    */
 DECL|method|getReservedVCores ()
 specifier|public

@@ -1793,7 +1793,6 @@ name|uploadedLogsInThisCycle
 operator|=
 literal|true
 expr_stmt|;
-block|}
 name|this
 operator|.
 name|delService
@@ -1824,6 +1823,7 @@ index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 comment|// This container is finished, and all its logs have been uploaded,
 comment|// remove it from containerLogAggregators.
 if|if
@@ -3332,7 +3332,7 @@ literal|","
 argument_list|,
 name|dirsHandler
 operator|.
-name|getLogDirs
+name|getLogDirsForRead
 argument_list|()
 argument_list|)
 argument_list|)
@@ -3356,7 +3356,7 @@ name|LogValue
 argument_list|(
 name|dirsHandler
 operator|.
-name|getLogDirs
+name|getLogDirsForRead
 argument_list|()
 argument_list|,
 name|containerId

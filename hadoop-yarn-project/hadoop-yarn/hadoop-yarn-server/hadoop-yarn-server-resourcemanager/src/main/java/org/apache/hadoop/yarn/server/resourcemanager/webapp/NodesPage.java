@@ -741,6 +741,9 @@ case|:
 case|case
 name|REBOOTED
 case|:
+case|case
+name|SHUTDOWN
+case|:
 name|rmNodes
 operator|=
 name|this

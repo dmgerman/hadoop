@@ -435,6 +435,8 @@ argument_list|,
 operator|-
 literal|1
 argument_list|,
+literal|true
+argument_list|,
 name|isHttps
 argument_list|)
 expr_stmt|;

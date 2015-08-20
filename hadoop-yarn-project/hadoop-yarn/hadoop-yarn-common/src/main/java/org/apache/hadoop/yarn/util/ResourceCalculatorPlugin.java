@@ -24,6 +24,34 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -98,12 +126,12 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|Shell
+name|SysInfo
 import|;
 end_import
 
 begin_comment
-comment|/**  * Plugin to calculate resource information on the system.  *  */
+comment|/**  * Plugin to calculate resource information on the system.  */
 end_comment
 
 begin_class
@@ -124,76 +152,244 @@ operator|.
 name|Unstable
 DECL|class|ResourceCalculatorPlugin
 specifier|public
-specifier|abstract
 class|class
 name|ResourceCalculatorPlugin
 extends|extends
 name|Configured
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|ResourceCalculatorPlugin
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+DECL|field|sys
+specifier|private
+specifier|final
+name|SysInfo
+name|sys
+decl_stmt|;
+DECL|method|ResourceCalculatorPlugin ()
+specifier|protected
+name|ResourceCalculatorPlugin
+parameter_list|()
+block|{
+name|this
+argument_list|(
+name|SysInfo
+operator|.
+name|newInstance
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|ResourceCalculatorPlugin (SysInfo sys)
+specifier|public
+name|ResourceCalculatorPlugin
+parameter_list|(
+name|SysInfo
+name|sys
+parameter_list|)
+block|{
+name|this
+operator|.
+name|sys
+operator|=
+name|sys
+expr_stmt|;
+block|}
 comment|/**    * Obtain the total size of the virtual memory present in the system.    *    * @return virtual memory size in bytes.    */
 DECL|method|getVirtualMemorySize ()
 specifier|public
-specifier|abstract
 name|long
 name|getVirtualMemorySize
 parameter_list|()
-function_decl|;
+block|{
+return|return
+name|sys
+operator|.
+name|getVirtualMemorySize
+argument_list|()
+return|;
+block|}
 comment|/**    * Obtain the total size of the physical memory present in the system.    *    * @return physical memory size bytes.    */
 DECL|method|getPhysicalMemorySize ()
 specifier|public
-specifier|abstract
 name|long
 name|getPhysicalMemorySize
 parameter_list|()
-function_decl|;
+block|{
+return|return
+name|sys
+operator|.
+name|getPhysicalMemorySize
+argument_list|()
+return|;
+block|}
 comment|/**    * Obtain the total size of the available virtual memory present    * in the system.    *    * @return available virtual memory size in bytes.    */
 DECL|method|getAvailableVirtualMemorySize ()
 specifier|public
-specifier|abstract
 name|long
 name|getAvailableVirtualMemorySize
 parameter_list|()
-function_decl|;
+block|{
+return|return
+name|sys
+operator|.
+name|getAvailableVirtualMemorySize
+argument_list|()
+return|;
+block|}
 comment|/**    * Obtain the total size of the available physical memory present    * in the system.    *    * @return available physical memory size bytes.    */
 DECL|method|getAvailablePhysicalMemorySize ()
 specifier|public
-specifier|abstract
 name|long
 name|getAvailablePhysicalMemorySize
 parameter_list|()
-function_decl|;
-comment|/**    * Obtain the total number of processors present on the system.    *    * @return number of processors    */
+block|{
+return|return
+name|sys
+operator|.
+name|getAvailablePhysicalMemorySize
+argument_list|()
+return|;
+block|}
+comment|/**    * Obtain the total number of logical processors present on the system.    *    * @return number of logical processors    */
 DECL|method|getNumProcessors ()
 specifier|public
-specifier|abstract
 name|int
 name|getNumProcessors
 parameter_list|()
-function_decl|;
+block|{
+return|return
+name|sys
+operator|.
+name|getNumProcessors
+argument_list|()
+return|;
+block|}
+comment|/**    * Obtain total number of physical cores present on the system.    *    * @return number of physical cores    */
+DECL|method|getNumCores ()
+specifier|public
+name|int
+name|getNumCores
+parameter_list|()
+block|{
+return|return
+name|sys
+operator|.
+name|getNumCores
+argument_list|()
+return|;
+block|}
 comment|/**    * Obtain the CPU frequency of on the system.    *    * @return CPU frequency in kHz    */
 DECL|method|getCpuFrequency ()
 specifier|public
-specifier|abstract
 name|long
 name|getCpuFrequency
 parameter_list|()
-function_decl|;
+block|{
+return|return
+name|sys
+operator|.
+name|getCpuFrequency
+argument_list|()
+return|;
+block|}
 comment|/**    * Obtain the cumulative CPU time since the system is on.    *    * @return cumulative CPU time in milliseconds    */
 DECL|method|getCumulativeCpuTime ()
 specifier|public
-specifier|abstract
 name|long
 name|getCumulativeCpuTime
 parameter_list|()
-function_decl|;
+block|{
+return|return
+name|sys
+operator|.
+name|getCumulativeCpuTime
+argument_list|()
+return|;
+block|}
 comment|/**    * Obtain the CPU usage % of the machine. Return -1 if it is unavailable    *    * @return CPU usage in %    */
 DECL|method|getCpuUsage ()
 specifier|public
-specifier|abstract
 name|float
 name|getCpuUsage
 parameter_list|()
-function_decl|;
+block|{
+return|return
+name|sys
+operator|.
+name|getCpuUsage
+argument_list|()
+return|;
+block|}
+comment|/**    * Obtain the aggregated number of bytes read over the network.    * @return total number of bytes read.    */
+DECL|method|getNetworkBytesRead ()
+specifier|public
+name|long
+name|getNetworkBytesRead
+parameter_list|()
+block|{
+return|return
+name|sys
+operator|.
+name|getNetworkBytesRead
+argument_list|()
+return|;
+block|}
+comment|/**    * Obtain the aggregated number of bytes written to the network.    * @return total number of bytes written.    */
+DECL|method|getNetworkBytesWritten ()
+specifier|public
+name|long
+name|getNetworkBytesWritten
+parameter_list|()
+block|{
+return|return
+name|sys
+operator|.
+name|getNetworkBytesWritten
+argument_list|()
+return|;
+block|}
+comment|/**    * Obtain the aggregated number of bytes read from disks.    *    * @return total number of bytes read.    */
+DECL|method|getStorageBytesRead ()
+specifier|public
+name|long
+name|getStorageBytesRead
+parameter_list|()
+block|{
+return|return
+name|sys
+operator|.
+name|getStorageBytesRead
+argument_list|()
+return|;
+block|}
+comment|/**    * Obtain the aggregated number of bytes written to disks.    *    * @return total number of bytes written.    */
+DECL|method|getStorageBytesWritten ()
+specifier|public
+name|long
+name|getStorageBytesWritten
+parameter_list|()
+block|{
+return|return
+name|sys
+operator|.
+name|getStorageBytesWritten
+argument_list|()
+return|;
+block|}
 comment|/**    * Create the ResourceCalculatorPlugin from the class name and configure it. If    * class name is null, this method will try and return a memory calculator    * plugin available for this system.    *    * @param clazz ResourceCalculator plugin class-name    * @param conf configure the plugin with this.    * @return ResourceCalculatorPlugin or null if ResourceCalculatorPlugin is not    * 		 available for current system    */
 DECL|method|getResourceCalculatorPlugin ( Class<? extends ResourceCalculatorPlugin> clazz, Configuration conf)
 specifier|public
@@ -231,48 +427,32 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|// No class given, try a os specific class
 try|try
 block|{
-if|if
-condition|(
-name|Shell
-operator|.
-name|LINUX
-condition|)
-block|{
 return|return
 operator|new
-name|LinuxResourceCalculatorPlugin
+name|ResourceCalculatorPlugin
 argument_list|()
 return|;
-block|}
-if|if
-condition|(
-name|Shell
-operator|.
-name|WINDOWS
-condition|)
-block|{
-return|return
-operator|new
-name|WindowsResourceCalculatorPlugin
-argument_list|()
-return|;
-block|}
 block|}
 catch|catch
 parameter_list|(
-name|SecurityException
-name|se
+name|Throwable
+name|t
 parameter_list|)
 block|{
-comment|// Failed to get Operating System name.
-return|return
-literal|null
-return|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|t
+operator|+
+literal|": Failed to instantiate default resource calculator."
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
 block|}
-comment|// Not supported on this system.
 return|return
 literal|null
 return|;

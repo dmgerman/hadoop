@@ -124,6 +124,46 @@ name|CPU_USAGE
 init|=
 literal|"mapred.tasktracker.cpuusage.testing"
 decl_stmt|;
+comment|/** cumulative number of bytes read over the network */
+DECL|field|NETWORK_BYTES_READ
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NETWORK_BYTES_READ
+init|=
+literal|"mapred.tasktracker.networkread.testing"
+decl_stmt|;
+comment|/** cumulative number of bytes written over the network */
+DECL|field|NETWORK_BYTES_WRITTEN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NETWORK_BYTES_WRITTEN
+init|=
+literal|"mapred.tasktracker.networkwritten.testing"
+decl_stmt|;
+comment|/** cumulative number of bytes read from disks */
+DECL|field|STORAGE_BYTES_READ
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STORAGE_BYTES_READ
+init|=
+literal|"mapred.tasktracker.storageread.testing"
+decl_stmt|;
+comment|/** cumulative number of bytes written to disks */
+DECL|field|STORAGE_BYTES_WRITTEN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STORAGE_BYTES_WRITTEN
+init|=
+literal|"mapred.tasktracker.storagewritten.testing"
+decl_stmt|;
 comment|/** process cumulative CPU usage time for testing */
 DECL|field|PROC_CUMULATIVE_CPU_TIME
 specifier|public
@@ -267,6 +307,20 @@ block|}
 comment|/** {@inheritDoc} */
 annotation|@
 name|Override
+DECL|method|getNumCores ()
+specifier|public
+name|int
+name|getNumCores
+parameter_list|()
+block|{
+return|return
+name|getNumProcessors
+argument_list|()
+return|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|getCpuFrequency ()
 specifier|public
 name|long
@@ -324,6 +378,94 @@ operator|.
 name|getFloat
 argument_list|(
 name|CPU_USAGE
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+return|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+DECL|method|getNetworkBytesRead ()
+specifier|public
+name|long
+name|getNetworkBytesRead
+parameter_list|()
+block|{
+return|return
+name|getConf
+argument_list|()
+operator|.
+name|getLong
+argument_list|(
+name|NETWORK_BYTES_READ
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+return|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+DECL|method|getNetworkBytesWritten ()
+specifier|public
+name|long
+name|getNetworkBytesWritten
+parameter_list|()
+block|{
+return|return
+name|getConf
+argument_list|()
+operator|.
+name|getLong
+argument_list|(
+name|NETWORK_BYTES_WRITTEN
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+return|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+DECL|method|getStorageBytesRead ()
+specifier|public
+name|long
+name|getStorageBytesRead
+parameter_list|()
+block|{
+return|return
+name|getConf
+argument_list|()
+operator|.
+name|getLong
+argument_list|(
+name|STORAGE_BYTES_READ
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+return|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+DECL|method|getStorageBytesWritten ()
+specifier|public
+name|long
+name|getStorageBytesWritten
+parameter_list|()
+block|{
+return|return
+name|getConf
+argument_list|()
+operator|.
+name|getLong
+argument_list|(
+name|STORAGE_BYTES_WRITTEN
 argument_list|,
 operator|-
 literal|1

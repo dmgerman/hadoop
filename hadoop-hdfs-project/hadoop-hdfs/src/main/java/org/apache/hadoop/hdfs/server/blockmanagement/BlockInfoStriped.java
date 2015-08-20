@@ -1141,7 +1141,7 @@ block|}
 comment|/**    * Convert a complete block to an under construction block.    * @return BlockInfoUnderConstruction -  an under construction block.    */
 DECL|method|convertToBlockUnderConstruction ( BlockUCState s, DatanodeStorageInfo[] targets)
 specifier|public
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 name|convertToBlockUnderConstruction
 parameter_list|(
 name|BlockUCState
@@ -1153,7 +1153,7 @@ name|targets
 parameter_list|)
 block|{
 specifier|final
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 name|ucBlock
 decl_stmt|;
 if|if
@@ -1165,7 +1165,7 @@ block|{
 name|ucBlock
 operator|=
 operator|new
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 argument_list|(
 name|this
 argument_list|,
@@ -1191,7 +1191,7 @@ comment|// the block is already under construction
 name|ucBlock
 operator|=
 operator|(
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 operator|)
 name|this
 expr_stmt|;

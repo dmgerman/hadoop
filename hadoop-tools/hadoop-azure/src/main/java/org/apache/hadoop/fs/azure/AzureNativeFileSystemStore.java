@@ -8359,7 +8359,7 @@ block|{
 return|return
 name|PageBlobInputStream
 operator|.
-name|getPageBlobSize
+name|getPageBlobDataSize
 argument_list|(
 operator|(
 name|CloudPageBlobWrapper
@@ -8841,28 +8841,6 @@ argument_list|(
 name|dstKey
 argument_list|)
 decl_stmt|;
-comment|// TODO: Remove at the time when we move to Azure Java SDK 1.2+.
-comment|// This is the workaround provided by Azure Java SDK team to
-comment|// mitigate the issue with un-encoded x-ms-copy-source HTTP
-comment|// request header. Azure sdk version before 1.2+ does not encode this
-comment|// header what causes all URIs that have special (category "other")
-comment|// characters in the URI not to work with startCopyFromBlob when
-comment|// specified as source (requests fail with HTTP 403).
-name|URI
-name|srcUri
-init|=
-operator|new
-name|URI
-argument_list|(
-name|srcBlob
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|toASCIIString
-argument_list|()
-argument_list|)
-decl_stmt|;
 comment|// Rename the source blob to the destination blob by copying it to
 comment|// the destination blob then deleting it.
 comment|//
@@ -8876,7 +8854,7 @@ name|dstBlob
 operator|.
 name|startCopyFromBlob
 argument_list|(
-name|srcUri
+name|srcBlob
 argument_list|,
 literal|null
 argument_list|,
@@ -8985,7 +8963,7 @@ name|dstBlob
 operator|.
 name|startCopyFromBlob
 argument_list|(
-name|srcUri
+name|srcBlob
 argument_list|,
 name|options
 argument_list|,

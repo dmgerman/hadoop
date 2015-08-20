@@ -87,6 +87,21 @@ name|Counters
 name|getCounters
 parameter_list|()
 function_decl|;
+DECL|method|getRawCounters ()
+specifier|public
+specifier|abstract
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|Counters
+name|getRawCounters
+parameter_list|()
+function_decl|;
 DECL|method|getRunningAttemptsList ()
 specifier|public
 specifier|abstract
@@ -216,6 +231,24 @@ name|setCounters
 parameter_list|(
 name|Counters
 name|counters
+parameter_list|)
+function_decl|;
+specifier|public
+specifier|abstract
+name|void
+DECL|method|setRawCounters (org.apache.hadoop.mapreduce.Counters rCounters)
+name|setRawCounters
+parameter_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|Counters
+name|rCounters
 parameter_list|)
 function_decl|;
 DECL|method|addAllRunningAttempts (List<TaskAttemptId> taskAttempts)

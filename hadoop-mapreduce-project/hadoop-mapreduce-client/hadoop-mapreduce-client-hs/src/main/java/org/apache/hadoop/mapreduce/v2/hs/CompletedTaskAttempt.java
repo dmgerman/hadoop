@@ -817,15 +817,10 @@ argument_list|)
 expr_stmt|;
 name|report
 operator|.
-name|setCounters
-argument_list|(
-name|TypeConverter
-operator|.
-name|toYarn
+name|setRawCounters
 argument_list|(
 name|getCounters
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|report

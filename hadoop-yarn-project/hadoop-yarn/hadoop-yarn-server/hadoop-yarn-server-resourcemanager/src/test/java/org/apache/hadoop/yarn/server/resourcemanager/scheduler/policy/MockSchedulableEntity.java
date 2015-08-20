@@ -144,6 +144,11 @@ name|serial
 init|=
 literal|0
 decl_stmt|;
+DECL|field|priority
+specifier|private
+name|Priority
+name|priority
+decl_stmt|;
 DECL|method|MockSchedulableEntity ()
 specifier|public
 name|MockSchedulableEntity
@@ -317,6 +322,34 @@ return|return
 literal|1
 return|;
 comment|//let other types go before this, if any
+block|}
+annotation|@
+name|Override
+DECL|method|getPriority ()
+specifier|public
+name|Priority
+name|getPriority
+parameter_list|()
+block|{
+return|return
+name|priority
+return|;
+block|}
+DECL|method|setApplicationPriority (Priority priority)
+specifier|public
+name|void
+name|setApplicationPriority
+parameter_list|(
+name|Priority
+name|priority
+parameter_list|)
+block|{
+name|this
+operator|.
+name|priority
+operator|=
+name|priority
+expr_stmt|;
 block|}
 block|}
 end_class

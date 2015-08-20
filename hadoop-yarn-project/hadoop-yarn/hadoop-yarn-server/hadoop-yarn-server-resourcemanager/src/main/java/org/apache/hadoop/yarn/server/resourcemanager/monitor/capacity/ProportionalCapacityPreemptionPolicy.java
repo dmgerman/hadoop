@@ -278,9 +278,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|event
+name|exceptions
 operator|.
-name|EventHandler
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -294,9 +294,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|server
 operator|.
-name|YarnRuntimeException
+name|resourcemanager
+operator|.
+name|RMContext
 import|;
 end_import
 
@@ -377,26 +379,6 @@ operator|.
 name|scheduler
 operator|.
 name|ContainerPreemptEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|ContainerPreemptEventType
 import|;
 end_import
 
@@ -551,6 +533,28 @@ operator|.
 name|fica
 operator|.
 name|FiCaSchedulerApp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|event
+operator|.
+name|SchedulerEventType
 import|;
 end_import
 
@@ -738,14 +742,10 @@ name|NATURAL_TERMINATION_FACTOR
 init|=
 literal|"yarn.resourcemanager.monitor.capacity.preemption.natural_termination_factor"
 decl_stmt|;
-comment|// the dispatcher to send preempt and kill events
-DECL|field|dispatcher
-specifier|public
-name|EventHandler
-argument_list|<
-name|ContainerPreemptEvent
-argument_list|>
-name|dispatcher
+DECL|field|rmContext
+specifier|private
+name|RMContext
+name|rmContext
 decl_stmt|;
 DECL|field|clock
 specifier|private
@@ -850,18 +850,15 @@ name|SystemClock
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|ProportionalCapacityPreemptionPolicy (Configuration config, EventHandler<ContainerPreemptEvent> dispatcher, CapacityScheduler scheduler)
+DECL|method|ProportionalCapacityPreemptionPolicy (Configuration config, RMContext context, CapacityScheduler scheduler)
 specifier|public
 name|ProportionalCapacityPreemptionPolicy
 parameter_list|(
 name|Configuration
 name|config
 parameter_list|,
-name|EventHandler
-argument_list|<
-name|ContainerPreemptEvent
-argument_list|>
-name|dispatcher
+name|RMContext
+name|context
 parameter_list|,
 name|CapacityScheduler
 name|scheduler
@@ -871,7 +868,7 @@ name|this
 argument_list|(
 name|config
 argument_list|,
-name|dispatcher
+name|context
 argument_list|,
 name|scheduler
 argument_list|,
@@ -881,18 +878,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ProportionalCapacityPreemptionPolicy (Configuration config, EventHandler<ContainerPreemptEvent> dispatcher, CapacityScheduler scheduler, Clock clock)
+DECL|method|ProportionalCapacityPreemptionPolicy (Configuration config, RMContext context, CapacityScheduler scheduler, Clock clock)
 specifier|public
 name|ProportionalCapacityPreemptionPolicy
 parameter_list|(
 name|Configuration
 name|config
 parameter_list|,
-name|EventHandler
-argument_list|<
-name|ContainerPreemptEvent
-argument_list|>
-name|dispatcher
+name|RMContext
+name|context
 parameter_list|,
 name|CapacityScheduler
 name|scheduler
@@ -905,7 +899,7 @@ name|init
 argument_list|(
 name|config
 argument_list|,
-name|dispatcher
+name|context
 argument_list|,
 name|scheduler
 argument_list|)
@@ -917,7 +911,7 @@ operator|=
 name|clock
 expr_stmt|;
 block|}
-DECL|method|init (Configuration config, EventHandler<ContainerPreemptEvent> disp, PreemptableResourceScheduler sched)
+DECL|method|init (Configuration config, RMContext context, PreemptableResourceScheduler sched)
 specifier|public
 name|void
 name|init
@@ -925,11 +919,8 @@ parameter_list|(
 name|Configuration
 name|config
 parameter_list|,
-name|EventHandler
-argument_list|<
-name|ContainerPreemptEvent
-argument_list|>
-name|disp
+name|RMContext
+name|context
 parameter_list|,
 name|PreemptableResourceScheduler
 name|sched
@@ -992,9 +983,9 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-name|dispatcher
+name|rmContext
 operator|=
-name|disp
+name|context
 expr_stmt|;
 name|scheduler
 operator|=
@@ -1140,6 +1131,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This method selects and tracks containers to be preempted. If a container    * is in the target list for more than maxWaitTime it is killed.    *    * @param root the root of the CapacityScheduler queue hierarchy    * @param clusterResources the total amount of resources in the cluster    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|containerBasedPreemptOrKill (CSQueue root, Resource clusterResources)
 specifier|private
 name|void
@@ -1358,6 +1354,14 @@ name|entrySet
 argument_list|()
 control|)
 block|{
+name|ApplicationAttemptId
+name|appAttemptId
+init|=
+name|e
+operator|.
+name|getKey
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|LOG
@@ -1372,10 +1376,7 @@ name|debug
 argument_list|(
 literal|"Send to scheduler: in app="
 operator|+
-name|e
-operator|.
-name|getKey
-argument_list|()
+name|appAttemptId
 operator|+
 literal|" #containers-to-be-preempted="
 operator|+
@@ -1428,21 +1429,24 @@ argument_list|()
 condition|)
 block|{
 comment|// kill it
-name|dispatcher
+name|rmContext
+operator|.
+name|getDispatcher
+argument_list|()
+operator|.
+name|getEventHandler
+argument_list|()
 operator|.
 name|handle
 argument_list|(
 operator|new
 name|ContainerPreemptEvent
 argument_list|(
-name|e
-operator|.
-name|getKey
-argument_list|()
+name|appAttemptId
 argument_list|,
 name|container
 argument_list|,
-name|ContainerPreemptEventType
+name|SchedulerEventType
 operator|.
 name|KILL_CONTAINER
 argument_list|)
@@ -1458,27 +1462,6 @@ expr_stmt|;
 block|}
 else|else
 block|{
-comment|//otherwise just send preemption events
-name|dispatcher
-operator|.
-name|handle
-argument_list|(
-operator|new
-name|ContainerPreemptEvent
-argument_list|(
-name|e
-operator|.
-name|getKey
-argument_list|()
-argument_list|,
-name|container
-argument_list|,
-name|ContainerPreemptEventType
-operator|.
-name|PREEMPT_CONTAINER
-argument_list|)
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|preempted
@@ -1487,10 +1470,38 @@ name|get
 argument_list|(
 name|container
 argument_list|)
-operator|==
+operator|!=
 literal|null
 condition|)
 block|{
+comment|// We already updated the information to scheduler earlier, we need
+comment|// not have to raise another event.
+continue|continue;
+block|}
+comment|//otherwise just send preemption events
+name|rmContext
+operator|.
+name|getDispatcher
+argument_list|()
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainerPreemptEvent
+argument_list|(
+name|appAttemptId
+argument_list|,
+name|container
+argument_list|,
+name|SchedulerEventType
+operator|.
+name|PREEMPT_CONTAINER
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|preempted
 operator|.
 name|put
@@ -1503,7 +1514,6 @@ name|getTime
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -3584,6 +3594,11 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Given a target preemption for a specific application, select containers    * to preempt (after unreserving all reservation for that app).    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|preemptFrom (FiCaSchedulerApp app, Resource clusterResource, Map<String, Resource> resToObtainByPartition, List<RMContainer> skippedAMContainerlist, Resource skippedAMSize, Map<ApplicationAttemptId, Set<RMContainer>> preemptMap)
 specifier|private
 name|void
@@ -3712,7 +3727,13 @@ operator|!
 name|observeOnly
 condition|)
 block|{
-name|dispatcher
+name|rmContext
+operator|.
+name|getDispatcher
+argument_list|()
+operator|.
+name|getEventHandler
+argument_list|()
 operator|.
 name|handle
 argument_list|(
@@ -3723,7 +3744,7 @@ name|appId
 argument_list|,
 name|c
 argument_list|,
-name|ContainerPreemptEventType
+name|SchedulerEventType
 operator|.
 name|DROP_RESERVATION
 argument_list|)
@@ -4005,16 +4026,6 @@ name|getQueueCapacities
 argument_list|()
 decl_stmt|;
 name|float
-name|absUsed
-init|=
-name|qc
-operator|.
-name|getAbsoluteUsedCapacity
-argument_list|(
-name|partitionToLookAt
-argument_list|)
-decl_stmt|;
-name|float
 name|absCap
 init|=
 name|qc
@@ -4045,13 +4056,14 @@ decl_stmt|;
 name|Resource
 name|current
 init|=
-name|Resources
+name|curQueue
 operator|.
-name|multiply
+name|getQueueResourceUsage
+argument_list|()
+operator|.
+name|getUsed
 argument_list|(
-name|partitionResource
-argument_list|,
-name|absUsed
+name|partitionToLookAt
 argument_list|)
 decl_stmt|;
 name|Resource
@@ -4372,7 +4384,7 @@ name|untouchableExtra
 operator|=
 name|Resources
 operator|.
-name|subtractFrom
+name|subtract
 argument_list|(
 name|extra
 argument_list|,
@@ -4380,6 +4392,23 @@ name|childrensPreemptable
 argument_list|)
 expr_stmt|;
 block|}
+name|ret
+operator|.
+name|preemptableExtra
+operator|=
+name|Resources
+operator|.
+name|min
+argument_list|(
+name|rc
+argument_list|,
+name|partitionResource
+argument_list|,
+name|childrensPreemptable
+argument_list|,
+name|extra
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 name|addTempQueuePartition
@@ -5645,6 +5674,28 @@ name|pctOver
 operator|)
 return|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getQueuePartitions ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|TempQueuePerPartition
+argument_list|>
+argument_list|>
+name|getQueuePartitions
+parameter_list|()
+block|{
+return|return
+name|queueToPartitions
+return|;
 block|}
 block|}
 end_class

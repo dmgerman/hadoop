@@ -121,6 +121,26 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|nativeio
+operator|.
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|POSIX_FADV_DONTNEED
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -379,10 +399,6 @@ operator|-
 name|getStartOffset
 argument_list|()
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|POSIX_FADV_DONTNEED
 argument_list|)
 expr_stmt|;

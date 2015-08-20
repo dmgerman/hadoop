@@ -1700,23 +1700,18 @@ name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|startAllocatorThread ()
-specifier|protected
-name|void
-name|startAllocatorThread
-parameter_list|()
-block|{
-name|allocatorThread
-operator|=
-operator|new
-name|Thread
-argument_list|(
-operator|new
+annotation|@
+name|VisibleForTesting
+DECL|class|AllocatorRunnable
+specifier|public
+class|class
+name|AllocatorRunnable
+implements|implements
 name|Runnable
-argument_list|()
 block|{
 annotation|@
 name|Override
+DECL|method|run ()
 specifier|public
 name|void
 name|run
@@ -1757,7 +1752,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRuntimeException
+name|RMContainerAllocationException
 name|e
 parameter_list|)
 block|{
@@ -1837,6 +1832,20 @@ block|}
 block|}
 block|}
 block|}
+DECL|method|startAllocatorThread ()
+specifier|protected
+name|void
+name|startAllocatorThread
+parameter_list|()
+block|{
+name|allocatorThread
+operator|=
+operator|new
+name|Thread
+argument_list|(
+operator|new
+name|AllocatorRunnable
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allocatorThread

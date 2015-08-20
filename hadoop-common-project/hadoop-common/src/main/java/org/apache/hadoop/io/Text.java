@@ -240,6 +240,7 @@ block|{
 DECL|field|ENCODER_FACTORY
 specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|CharsetEncoder
@@ -291,6 +292,7 @@ decl_stmt|;
 DECL|field|DECODER_FACTORY
 specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|CharsetDecoder

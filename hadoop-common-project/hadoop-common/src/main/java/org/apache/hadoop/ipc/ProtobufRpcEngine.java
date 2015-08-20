@@ -1484,7 +1484,7 @@ literal|"Call got exception: "
 operator|+
 name|e
 operator|.
-name|getMessage
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;

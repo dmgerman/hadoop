@@ -835,7 +835,7 @@ operator|.
 name|getLocalDirsHandler
 argument_list|()
 operator|.
-name|getLocalDirs
+name|getLocalDirsForRead
 argument_list|()
 control|)
 block|{

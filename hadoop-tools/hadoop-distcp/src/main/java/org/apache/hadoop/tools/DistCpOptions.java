@@ -201,7 +201,7 @@ name|DEFAULT_MAPS
 decl_stmt|;
 DECL|field|mapBandwidth
 specifier|private
-name|int
+name|float
 name|mapBandwidth
 init|=
 name|DistCpConstants
@@ -1138,7 +1138,7 @@ block|}
 comment|/** Get the map bandwidth in MB    *    * @return Bandwidth in MB    */
 DECL|method|getMapBandwidth ()
 specifier|public
-name|int
+name|float
 name|getMapBandwidth
 parameter_list|()
 block|{
@@ -1147,12 +1147,12 @@ name|mapBandwidth
 return|;
 block|}
 comment|/**    * Set per map bandwidth    *    * @param mapBandwidth - per map bandwidth    */
-DECL|method|setMapBandwidth (int mapBandwidth)
+DECL|method|setMapBandwidth (float mapBandwidth)
 specifier|public
 name|void
 name|setMapBandwidth
 parameter_list|(
-name|int
+name|float
 name|mapBandwidth
 parameter_list|)
 block|{

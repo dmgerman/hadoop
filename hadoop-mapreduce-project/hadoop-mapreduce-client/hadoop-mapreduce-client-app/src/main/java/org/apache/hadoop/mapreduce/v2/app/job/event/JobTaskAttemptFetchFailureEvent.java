@@ -77,7 +77,13 @@ name|TaskAttemptId
 argument_list|>
 name|maps
 decl_stmt|;
-DECL|method|JobTaskAttemptFetchFailureEvent (TaskAttemptId reduce, List<TaskAttemptId> maps)
+DECL|field|hostname
+specifier|private
+specifier|final
+name|String
+name|hostname
+decl_stmt|;
+DECL|method|JobTaskAttemptFetchFailureEvent (TaskAttemptId reduce, List<TaskAttemptId> maps, String host)
 specifier|public
 name|JobTaskAttemptFetchFailureEvent
 parameter_list|(
@@ -89,6 +95,9 @@ argument_list|<
 name|TaskAttemptId
 argument_list|>
 name|maps
+parameter_list|,
+name|String
+name|host
 parameter_list|)
 block|{
 name|super
@@ -118,6 +127,12 @@ name|maps
 operator|=
 name|maps
 expr_stmt|;
+name|this
+operator|.
+name|hostname
+operator|=
+name|host
+expr_stmt|;
 block|}
 DECL|method|getMaps ()
 specifier|public
@@ -140,6 +155,16 @@ parameter_list|()
 block|{
 return|return
 name|reduce
+return|;
+block|}
+DECL|method|getHost ()
+specifier|public
+name|String
+name|getHost
+parameter_list|()
+block|{
+return|return
+name|hostname
 return|;
 block|}
 block|}

@@ -550,7 +550,13 @@ name|tearDown
 parameter_list|()
 throws|throws
 name|Exception
-block|{   }
+block|{
+name|resourceManager
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 specifier|private
 name|org
 operator|.

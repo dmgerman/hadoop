@@ -3648,6 +3648,8 @@ name|getNumBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 return|return
 name|getBlockPoolSlice
 argument_list|(
@@ -3659,6 +3661,25 @@ argument_list|(
 name|b
 argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|exception
+parameter_list|)
+block|{
+name|releaseReservedSpace
+argument_list|(
+name|b
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+throw|throw
+name|exception
+throw|;
+block|}
 block|}
 comment|/**    *    * @param bytesReservedForRbw Space that was reserved during    *     block creation. Now that the block is being finalized we    *     can free up this space.    * @return    * @throws IOException    */
 DECL|method|addFinalizedBlock (String bpid, Block b, File f, long bytesReservedForRbw)

@@ -1040,18 +1040,9 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
-name|int
-name|sortId
+name|TaskId
+name|taskId
 init|=
-name|attempt
-operator|.
-name|getID
-argument_list|()
-operator|.
-name|getId
-argument_list|()
-operator|+
-operator|(
 name|attempt
 operator|.
 name|getID
@@ -1059,12 +1050,6 @@ argument_list|()
 operator|.
 name|getTaskId
 argument_list|()
-operator|.
-name|getId
-argument_list|()
-operator|*
-literal|10000
-operator|)
 decl_stmt|;
 name|attemptsTableData
 operator|.
@@ -1075,14 +1060,12 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|sortId
-operator|+
-literal|" "
-argument_list|)
-operator|.
-name|append
+name|getAttemptId
 argument_list|(
-name|taid
+name|taskId
+argument_list|,
+name|ta
+argument_list|)
 argument_list|)
 operator|.
 name|append
@@ -1885,6 +1868,25 @@ name|_
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|getAttemptId (TaskId taskId, TaskAttemptInfo ta)
+specifier|protected
+name|String
+name|getAttemptId
+parameter_list|(
+name|TaskId
+name|taskId
+parameter_list|,
+name|TaskAttemptInfo
+name|ta
+parameter_list|)
+block|{
+return|return
+name|ta
+operator|.
+name|getId
+argument_list|()
+return|;
+block|}
 comment|/**      * @return true if this is a valid request else false.      */
 DECL|method|isValidRequest ()
 specifier|protected
@@ -2128,7 +2130,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|", 'mRender': parseHadoopAttemptID }"
+literal|", 'mRender': parseHadoopID }"
 argument_list|)
 operator|.
 name|append

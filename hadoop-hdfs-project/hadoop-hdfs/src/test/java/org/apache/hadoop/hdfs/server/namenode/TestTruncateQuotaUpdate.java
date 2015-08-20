@@ -612,12 +612,12 @@ argument_list|,
 name|REPLICATION
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 name|blocks
 init|=
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[
 name|file
 operator|.
@@ -839,7 +839,7 @@ parameter_list|)
 block|{
 name|ArrayList
 argument_list|<
-name|BlockInfoContiguous
+name|BlockInfo
 argument_list|>
 name|blocks
 init|=
@@ -874,7 +874,7 @@ operator|-
 name|createdSize
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|bi
 init|=
 name|newBlock
@@ -941,7 +941,7 @@ operator|.
 name|toArray
 argument_list|(
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[
 name|blocks
 operator|.
@@ -958,7 +958,7 @@ return|;
 block|}
 DECL|method|newBlock (long size, short replication)
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 name|newBlock
 parameter_list|(
 name|long

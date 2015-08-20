@@ -436,6 +436,14 @@ name|ApplicationId
 argument_list|>
 name|toCleanUpApplications
 decl_stmt|;
+DECL|field|runningApplications
+specifier|private
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|runningApplications
+decl_stmt|;
 DECL|method|FakeRMNodeImpl (NodeId nodeId, String nodeAddr, String httpAddress, Resource perNode, String rackName, String healthReport, int cmdPort, String hostName, NodeState state)
 specifier|public
 name|FakeRMNodeImpl
@@ -537,6 +545,15 @@ operator|new
 name|ArrayList
 argument_list|<
 name|ContainerId
+argument_list|>
+argument_list|()
+expr_stmt|;
+name|runningApplications
+operator|=
+operator|new
+name|ArrayList
+argument_list|<
+name|ApplicationId
 argument_list|>
 argument_list|()
 expr_stmt|;
@@ -689,6 +706,19 @@ parameter_list|()
 block|{
 return|return
 name|toCleanUpApplications
+return|;
+block|}
+DECL|method|getRunningApps ()
+specifier|public
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|getRunningApps
+parameter_list|()
+block|{
+return|return
+name|runningApplications
 return|;
 block|}
 DECL|method|updateNodeHeartbeatResponseForCleanup ( NodeHeartbeatResponse response)

@@ -133,6 +133,7 @@ DECL|enumConstant|APPEND
 DECL|enumConstant|RENAME
 DECL|enumConstant|METADATA
 DECL|enumConstant|UNLINK
+DECL|enumConstant|TRUNCATE
 name|CREATE
 block|,
 name|CLOSE
@@ -144,6 +145,8 @@ block|,
 name|METADATA
 block|,
 name|UNLINK
+block|,
+name|TRUNCATE
 block|}
 DECL|field|eventType
 specifier|private
@@ -176,6 +179,10 @@ name|eventType
 expr_stmt|;
 block|}
 comment|/**    * Sent when a file is closed after append or create.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
 DECL|class|CloseEvent
 specifier|public
 specifier|static
@@ -271,8 +278,40 @@ return|return
 name|timestamp
 return|;
 block|}
+annotation|@
+name|Override
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"CloseEvent [path="
+operator|+
+name|path
+operator|+
+literal|", fileSize="
+operator|+
+name|fileSize
+operator|+
+literal|", timestamp="
+operator|+
+name|timestamp
+operator|+
+literal|"]"
+return|;
+block|}
 block|}
 comment|/**    * Sent when a new file is created (including overwrite).    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
 DECL|class|CreateEvent
 specifier|public
 specifier|static
@@ -808,8 +847,107 @@ return|return
 name|defaultBlockSize
 return|;
 block|}
+annotation|@
+name|Override
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+name|StringBuilder
+name|content
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|content
+operator|.
+name|append
+argument_list|(
+literal|"CreateEvent [INodeType="
+operator|+
+name|iNodeType
+operator|+
+literal|", path="
+operator|+
+name|path
+operator|+
+literal|", ctime="
+operator|+
+name|ctime
+operator|+
+literal|", replication="
+operator|+
+name|replication
+operator|+
+literal|", ownerName="
+operator|+
+name|ownerName
+operator|+
+literal|", groupName="
+operator|+
+name|groupName
+operator|+
+literal|", perms="
+operator|+
+name|perms
+operator|+
+literal|", "
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|symlinkTarget
+operator|!=
+literal|null
+condition|)
+block|{
+name|content
+operator|.
+name|append
+argument_list|(
+literal|"symlinkTarget="
+operator|+
+name|symlinkTarget
+operator|+
+literal|", "
+argument_list|)
+expr_stmt|;
+block|}
+name|content
+operator|.
+name|append
+argument_list|(
+literal|"overwrite="
+operator|+
+name|overwrite
+operator|+
+literal|", defaultBlockSize="
+operator|+
+name|defaultBlockSize
+operator|+
+literal|"]"
+argument_list|)
+expr_stmt|;
+return|return
+name|content
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 comment|/**    * Sent when there is an update to directory or file (none of the metadata    * tracked here applies to symlinks) that is not associated with another    * inotify event. The tracked metadata includes atime/mtime, replication,    * owner/group, permissions, ACLs, and XAttributes. Fields not relevant to the    * metadataType of the MetadataUpdateEvent will be null or will have their default    * values.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
 DECL|class|MetadataUpdateEvent
 specifier|public
 specifier|static
@@ -1422,8 +1560,156 @@ return|return
 name|xAttrsRemoved
 return|;
 block|}
+annotation|@
+name|Override
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+name|StringBuilder
+name|content
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|content
+operator|.
+name|append
+argument_list|(
+literal|"MetadataUpdateEvent [path="
+operator|+
+name|path
+operator|+
+literal|", metadataType="
+operator|+
+name|metadataType
+argument_list|)
+expr_stmt|;
+switch|switch
+condition|(
+name|metadataType
+condition|)
+block|{
+case|case
+name|TIMES
+case|:
+name|content
+operator|.
+name|append
+argument_list|(
+literal|", mtime="
+operator|+
+name|mtime
+operator|+
+literal|", atime="
+operator|+
+name|atime
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|REPLICATION
+case|:
+name|content
+operator|.
+name|append
+argument_list|(
+literal|", replication="
+operator|+
+name|replication
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|OWNER
+case|:
+name|content
+operator|.
+name|append
+argument_list|(
+literal|", ownerName="
+operator|+
+name|ownerName
+operator|+
+literal|", groupName="
+operator|+
+name|groupName
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|PERMS
+case|:
+name|content
+operator|.
+name|append
+argument_list|(
+literal|", perms="
+operator|+
+name|perms
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|ACLS
+case|:
+name|content
+operator|.
+name|append
+argument_list|(
+literal|", acls="
+operator|+
+name|acls
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|XATTRS
+case|:
+name|content
+operator|.
+name|append
+argument_list|(
+literal|", xAttrs="
+operator|+
+name|xAttrs
+operator|+
+literal|", xAttrsRemoved="
+operator|+
+name|xAttrsRemoved
+argument_list|)
+expr_stmt|;
+break|break;
+default|default:
+break|break;
+block|}
+name|content
+operator|.
+name|append
+argument_list|(
+literal|']'
+argument_list|)
+expr_stmt|;
+return|return
+name|content
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 comment|/**    * Sent when a file, directory, or symlink is renamed.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
 DECL|class|RenameEvent
 specifier|public
 specifier|static
@@ -1611,8 +1897,40 @@ return|return
 name|timestamp
 return|;
 block|}
+annotation|@
+name|Override
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"RenameEvent [srcPath="
+operator|+
+name|srcPath
+operator|+
+literal|", dstPath="
+operator|+
+name|dstPath
+operator|+
+literal|", timestamp="
+operator|+
+name|timestamp
+operator|+
+literal|"]"
+return|;
+block|}
 block|}
 comment|/**    * Sent when an existing file is opened for append.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
 DECL|class|AppendEvent
 specifier|public
 specifier|static
@@ -1752,8 +2070,36 @@ return|return
 name|newBlock
 return|;
 block|}
+annotation|@
+name|Override
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"AppendEvent [path="
+operator|+
+name|path
+operator|+
+literal|", newBlock="
+operator|+
+name|newBlock
+operator|+
+literal|"]"
+return|;
+block|}
 block|}
 comment|/**    * Sent when a file, directory, or symlink is deleted.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
 DECL|class|UnlinkEvent
 specifier|public
 specifier|static
@@ -1892,6 +2238,159 @@ parameter_list|()
 block|{
 return|return
 name|timestamp
+return|;
+block|}
+annotation|@
+name|Override
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"UnlinkEvent [path="
+operator|+
+name|path
+operator|+
+literal|", timestamp="
+operator|+
+name|timestamp
+operator|+
+literal|"]"
+return|;
+block|}
+block|}
+comment|/**    * Sent when a file is truncated.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+DECL|class|TruncateEvent
+specifier|public
+specifier|static
+class|class
+name|TruncateEvent
+extends|extends
+name|Event
+block|{
+DECL|field|path
+specifier|private
+name|String
+name|path
+decl_stmt|;
+DECL|field|fileSize
+specifier|private
+name|long
+name|fileSize
+decl_stmt|;
+DECL|field|timestamp
+specifier|private
+name|long
+name|timestamp
+decl_stmt|;
+DECL|method|TruncateEvent (String path, long fileSize, long timestamp)
+specifier|public
+name|TruncateEvent
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|long
+name|fileSize
+parameter_list|,
+name|long
+name|timestamp
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|EventType
+operator|.
+name|TRUNCATE
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|path
+operator|=
+name|path
+expr_stmt|;
+name|this
+operator|.
+name|fileSize
+operator|=
+name|fileSize
+expr_stmt|;
+name|this
+operator|.
+name|timestamp
+operator|=
+name|timestamp
+expr_stmt|;
+block|}
+DECL|method|getPath ()
+specifier|public
+name|String
+name|getPath
+parameter_list|()
+block|{
+return|return
+name|path
+return|;
+block|}
+comment|/**      * The size of the truncated file in bytes.      */
+DECL|method|getFileSize ()
+specifier|public
+name|long
+name|getFileSize
+parameter_list|()
+block|{
+return|return
+name|fileSize
+return|;
+block|}
+comment|/**      * The time when this event occurred, in milliseconds since the epoch.      */
+DECL|method|getTimestamp ()
+specifier|public
+name|long
+name|getTimestamp
+parameter_list|()
+block|{
+return|return
+name|timestamp
+return|;
+block|}
+annotation|@
+name|Override
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"TruncateEvent [path="
+operator|+
+name|path
+operator|+
+literal|", fileSize="
+operator|+
+name|fileSize
+operator|+
+literal|", timestamp="
+operator|+
+name|timestamp
+operator|+
+literal|"]"
 return|;
 block|}
 block|}

@@ -682,6 +682,26 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"User Name:"
+argument_list|,
+name|jinfo
+operator|.
+name|getUserName
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Queue Name:"
+argument_list|,
+name|jinfo
+operator|.
+name|getQueueName
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"State:"
 argument_list|,
 name|jinfo

@@ -296,7 +296,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 import|;
 end_import
 
@@ -1354,11 +1354,11 @@ name|BLOCK_GROUP_INDEX_MASK
 argument_list|)
 expr_stmt|;
 specifier|final
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 name|blockUC
 init|=
 operator|(
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 operator|)
 name|block
 decl_stmt|;
@@ -1558,11 +1558,11 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 name|lastBlk
 init|=
 operator|(
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 operator|)
 name|fileNode
 operator|.
@@ -1718,7 +1718,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test BlockInfoUnderConstructionStriped#addReplicaIfNotPresent in different    * scenarios.    */
+comment|/**    * Test BlockInfoStripedUnderConstruction#addReplicaIfNotPresent in different    * scenarios.    */
 annotation|@
 name|Test
 DECL|method|testAddUCReplica ()
@@ -1841,11 +1841,11 @@ operator|.
 name|getLastBlock
 argument_list|()
 decl_stmt|;
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 name|ucBlock
 init|=
 operator|(
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 operator|)
 name|lastBlock
 decl_stmt|;
@@ -2261,11 +2261,11 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 name|ucBlock
 init|=
 operator|(
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 operator|)
 name|lastBlock
 decl_stmt|;

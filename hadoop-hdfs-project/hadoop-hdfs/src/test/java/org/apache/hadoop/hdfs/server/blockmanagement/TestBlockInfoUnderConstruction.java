@@ -204,11 +204,11 @@ name|isAlive
 operator|=
 literal|true
 expr_stmt|;
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 name|blockInfo
 init|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 operator|new
 name|Block

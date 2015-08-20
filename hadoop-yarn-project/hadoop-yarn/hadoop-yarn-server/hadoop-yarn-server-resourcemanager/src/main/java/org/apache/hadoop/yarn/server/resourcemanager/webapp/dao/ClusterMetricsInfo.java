@@ -277,6 +277,11 @@ specifier|protected
 name|int
 name|activeNodes
 decl_stmt|;
+DECL|field|shutdownNodes
+specifier|protected
+name|int
+name|shutdownNodes
+decl_stmt|;
 DECL|method|ClusterMetricsInfo ()
 specifier|public
 name|ClusterMetricsInfo
@@ -514,6 +519,15 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
+name|shutdownNodes
+operator|=
+name|clusterMetrics
+operator|.
+name|getNumShutdownNMs
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|totalNodes
 operator|=
 name|activeNodes
@@ -525,6 +539,8 @@ operator|+
 name|rebootedNodes
 operator|+
 name|unhealthyNodes
+operator|+
+name|shutdownNodes
 expr_stmt|;
 block|}
 DECL|method|getAppsSubmitted ()
@@ -791,6 +807,18 @@ return|return
 name|this
 operator|.
 name|decommissionedNodes
+return|;
+block|}
+DECL|method|getShutdownNodes ()
+specifier|public
+name|int
+name|getShutdownNodes
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|shutdownNodes
 return|;
 block|}
 block|}

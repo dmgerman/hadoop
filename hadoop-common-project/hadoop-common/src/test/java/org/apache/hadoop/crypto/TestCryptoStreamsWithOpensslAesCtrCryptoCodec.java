@@ -48,9 +48,13 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Assert
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
 import|;
 end_import
 
@@ -61,6 +65,30 @@ operator|.
 name|junit
 operator|.
 name|BeforeClass
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
 import|;
 end_import
 
@@ -83,6 +111,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|GenericTestUtils
+operator|.
+name|assumeInNativeProfile
+argument_list|()
+expr_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -115,8 +148,24 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|Assert
+name|assertNotNull
+argument_list|(
+literal|"Unable to instantiate codec "
+operator|+
+name|OpensslAesCtrCryptoCodec
 operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|", is the required "
+operator|+
+literal|"version of OpenSSL installed?"
+argument_list|,
+name|codec
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 name|OpensslAesCtrCryptoCodec

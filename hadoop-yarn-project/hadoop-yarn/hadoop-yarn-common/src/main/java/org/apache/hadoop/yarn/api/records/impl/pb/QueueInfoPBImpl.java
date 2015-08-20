@@ -1643,6 +1643,9 @@ name|p
 operator|.
 name|getDefaultNodeLabelExpression
 argument_list|()
+operator|.
+name|trim
+argument_list|()
 else|:
 literal|null
 return|;

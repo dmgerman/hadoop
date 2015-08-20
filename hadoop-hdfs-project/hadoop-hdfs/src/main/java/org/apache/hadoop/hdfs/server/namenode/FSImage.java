@@ -3039,10 +3039,13 @@ return|return
 name|editLog
 return|;
 block|}
-DECL|method|openEditLogForWrite ()
+DECL|method|openEditLogForWrite (int layoutVersion)
 name|void
 name|openEditLogForWrite
-parameter_list|()
+parameter_list|(
+name|int
+name|layoutVersion
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -3056,7 +3059,9 @@ assert|;
 name|editLog
 operator|.
 name|openForWrite
-argument_list|()
+argument_list|(
+name|layoutVersion
+argument_list|)
 expr_stmt|;
 name|storage
 operator|.
@@ -4721,16 +4726,10 @@ name|StorageType
 argument_list|>
 name|typeSpaces
 init|=
-operator|new
-name|EnumCounters
-argument_list|<
-name|StorageType
-argument_list|>
-argument_list|(
-name|StorageType
+name|counts
 operator|.
-name|class
-argument_list|)
+name|getTypeSpaces
+argument_list|()
 decl_stmt|;
 for|for
 control|(
@@ -4747,10 +4746,7 @@ specifier|final
 name|long
 name|typeSpace
 init|=
-name|counts
-operator|.
-name|getTypeSpaces
-argument_list|()
+name|typeSpaces
 operator|.
 name|get
 argument_list|(
@@ -5743,11 +5739,21 @@ argument_list|,
 name|canceler
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|source
+operator|.
+name|isRollingUpgrade
+argument_list|()
+condition|)
+block|{
 name|storage
 operator|.
 name|writeAll
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -5763,6 +5769,11 @@ argument_list|(
 name|imageTxId
 operator|+
 literal|1
+argument_list|,
+name|source
+operator|.
+name|getEffectiveLayoutVersion
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Take this opportunity to note the current transaction.
@@ -6145,6 +6156,15 @@ comment|// old edit logs and checkpoints.
 name|purgeOldStorage
 argument_list|(
 name|nnf
+argument_list|)
+expr_stmt|;
+name|archivalManager
+operator|.
+name|purgeCheckpoints
+argument_list|(
+name|NameNodeFile
+operator|.
+name|IMAGE_NEW
 argument_list|)
 expr_stmt|;
 block|}
@@ -6706,10 +6726,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|rollEditLog ()
+DECL|method|rollEditLog (int layoutVersion)
 name|CheckpointSignature
 name|rollEditLog
-parameter_list|()
+parameter_list|(
+name|int
+name|layoutVersion
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -6717,7 +6740,9 @@ name|getEditLog
 argument_list|()
 operator|.
 name|rollEditLog
-argument_list|()
+argument_list|(
+name|layoutVersion
+argument_list|)
 expr_stmt|;
 comment|// Record this log segment ID in all of the storage directories, so
 comment|// we won't miss this log segment on a restart if the edits directories
@@ -6742,7 +6767,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Start checkpoint.    *<p>    * If backup storage contains image that is newer than or incompatible with     * what the active name-node has, then the backup node should shutdown.<br>    * If the backup image is older than the active one then it should     * be discarded and downloaded from the active node.<br>    * If the images are the same then the backup image will be used as current.    *     * @param bnReg the backup node registration.    * @param nnReg this (active) name-node registration.    * @return {@link NamenodeCommand} if backup node should shutdown or    * {@link CheckpointCommand} prescribing what backup node should     *         do with its image.    * @throws IOException    */
-DECL|method|startCheckpoint (NamenodeRegistration bnReg, NamenodeRegistration nnReg)
+DECL|method|startCheckpoint (NamenodeRegistration bnReg, NamenodeRegistration nnReg, int layoutVersion)
 name|NamenodeCommand
 name|startCheckpoint
 parameter_list|(
@@ -6752,6 +6777,9 @@ parameter_list|,
 comment|// backup node
 name|NamenodeRegistration
 name|nnReg
+parameter_list|,
+name|int
+name|layoutVersion
 parameter_list|)
 comment|// active name-node
 throws|throws
@@ -6965,7 +6993,9 @@ name|CheckpointSignature
 name|sig
 init|=
 name|rollEditLog
-argument_list|()
+argument_list|(
+name|layoutVersion
+argument_list|)
 decl_stmt|;
 return|return
 operator|new

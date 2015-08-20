@@ -490,7 +490,7 @@ name|styles
 operator|.
 name|add
 argument_list|(
-literal|"  color:#000; background:rgba(255, 255, 255, 0.8)}"
+literal|"  color:#000; background:#fefefe}"
 argument_list|)
 expr_stmt|;
 for|for

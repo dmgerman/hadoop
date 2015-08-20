@@ -1606,6 +1606,8 @@ name|System
 operator|.
 name|nanoTime
 argument_list|()
+argument_list|,
+literal|0L
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1695,6 +1697,8 @@ name|System
 operator|.
 name|nanoTime
 argument_list|()
+argument_list|,
+literal|0L
 argument_list|)
 argument_list|)
 expr_stmt|;

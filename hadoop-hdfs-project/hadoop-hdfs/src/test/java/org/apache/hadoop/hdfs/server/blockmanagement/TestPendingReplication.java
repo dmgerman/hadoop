@@ -996,7 +996,7 @@ decl_stmt|;
 name|Block
 name|block
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 decl_stmt|;
 try|try

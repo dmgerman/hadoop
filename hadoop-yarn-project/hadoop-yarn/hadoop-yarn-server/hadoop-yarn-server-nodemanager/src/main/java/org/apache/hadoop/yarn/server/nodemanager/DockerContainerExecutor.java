@@ -2607,10 +2607,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isContainerProcessAlive (ContainerLivenessContext ctx)
+DECL|method|isContainerAlive (ContainerLivenessContext ctx)
 specifier|public
 name|boolean
-name|isContainerProcessAlive
+name|isContainerAlive
 parameter_list|(
 name|ContainerLivenessContext
 name|ctx

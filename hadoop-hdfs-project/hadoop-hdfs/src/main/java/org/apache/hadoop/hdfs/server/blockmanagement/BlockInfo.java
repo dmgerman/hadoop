@@ -61,6 +61,8 @@ operator|.
 name|common
 operator|.
 name|HdfsServerConstants
+operator|.
+name|BlockUCState
 import|;
 end_import
 
@@ -722,60 +724,6 @@ name|boolean
 name|hasNoStorage
 parameter_list|()
 function_decl|;
-comment|/**    * Find specified DatanodeDescriptor.    * @return index or -1 if not found.    */
-DECL|method|findDatanode (DatanodeDescriptor dn)
-name|boolean
-name|findDatanode
-parameter_list|(
-name|DatanodeDescriptor
-name|dn
-parameter_list|)
-block|{
-name|int
-name|len
-init|=
-name|getCapacity
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|int
-name|idx
-init|=
-literal|0
-init|;
-name|idx
-operator|<
-name|len
-condition|;
-name|idx
-operator|++
-control|)
-block|{
-name|DatanodeDescriptor
-name|cur
-init|=
-name|getDatanode
-argument_list|(
-name|idx
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|cur
-operator|==
-name|dn
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-block|}
-return|return
-literal|false
-return|;
-block|}
 comment|/**    * Find specified DatanodeStorageInfo.    * @return DatanodeStorageInfo or null if not found.    */
 DECL|method|findStorageInfo (DatanodeDescriptor dn)
 name|DatanodeStorageInfo
@@ -1229,24 +1177,20 @@ return|return
 name|this
 return|;
 block|}
-comment|/**    * BlockInfo represents a block that is not being constructed.    * In order to start modifying the block, the BlockInfo should be converted to    * {@link BlockInfoUnderConstructionContiguous} or    * {@link BlockInfoUnderConstructionStriped}.    * @return {@link HdfsServerConstants.BlockUCState#COMPLETE}    */
+comment|/**    * BlockInfo represents a block that is not being constructed.    * In order to start modifying the block, the BlockInfo should be converted to    * {@link BlockInfoContiguousUnderConstruction} or    * {@link BlockInfoStripedUnderConstruction}.    * @return {@link BlockUCState#COMPLETE}    */
 DECL|method|getBlockUCState ()
 specifier|public
-name|HdfsServerConstants
-operator|.
 name|BlockUCState
 name|getBlockUCState
 parameter_list|()
 block|{
 return|return
-name|HdfsServerConstants
-operator|.
 name|BlockUCState
 operator|.
 name|COMPLETE
 return|;
 block|}
-comment|/**    * Is this block complete?    *    * @return true if the state of the block is    *         {@link HdfsServerConstants.BlockUCState#COMPLETE}    */
+comment|/**    * Is this block complete?    *    * @return true if the state of the block is {@link BlockUCState#COMPLETE}    */
 DECL|method|isComplete ()
 specifier|public
 name|boolean
@@ -1259,8 +1203,6 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|HdfsServerConstants
-operator|.
 name|BlockUCState
 operator|.
 name|COMPLETE

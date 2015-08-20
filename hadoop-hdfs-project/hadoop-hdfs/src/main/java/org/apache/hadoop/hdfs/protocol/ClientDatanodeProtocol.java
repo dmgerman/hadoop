@@ -349,6 +349,17 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get a list of allowed properties for reconfiguration.    */
+DECL|method|listReconfigurableProperties ()
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|listReconfigurableProperties
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Trigger a new block report.    */
 DECL|method|triggerBlockReport (BlockReportOptions options)
 name|void

@@ -1486,7 +1486,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|AclProtos
+name|EditLogProtos
 operator|.
 name|AclEditLogProto
 import|;
@@ -1506,7 +1506,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|XAttrProtos
+name|EditLogProtos
 operator|.
 name|XAttrEditLogProto
 import|;

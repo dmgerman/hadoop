@@ -629,7 +629,7 @@ specifier|final
 name|String
 name|Q_GIVEN
 init|=
-literal|"left:0%;background:none;border:1px dashed rgba(0,0,0,0.25)"
+literal|"left:0%;background:none;border:1px dashed #BFBFBF"
 decl_stmt|;
 DECL|field|Q_OVER
 specifier|static
@@ -637,7 +637,7 @@ specifier|final
 name|String
 name|Q_OVER
 init|=
-literal|"background:rgba(255, 140, 0, 0.8)"
+literal|"background:#FFA333"
 decl_stmt|;
 DECL|field|Q_UNDER
 specifier|static
@@ -645,7 +645,7 @@ specifier|final
 name|String
 name|Q_UNDER
 init|=
-literal|"background:rgba(50, 205, 50, 0.8)"
+literal|"background:#5BD75B"
 decl_stmt|;
 annotation|@
 name|RequestScoped
@@ -3965,7 +3965,13 @@ literal|"    var q = $('.q', data.rslt.obj).first().text();"
 argument_list|,
 literal|"    if (q == 'Queue: root') q = '';"
 argument_list|,
-literal|"    else q = '^' + q.substr(q.lastIndexOf(':') + 2) + '$';"
+literal|"    else {"
+argument_list|,
+literal|"      q = q.substr(q.lastIndexOf(':') + 2);"
+argument_list|,
+literal|"      q = '^' + q.substr(q.lastIndexOf('.') + 1) + '$';"
+argument_list|,
+literal|"    }"
 argument_list|,
 literal|"    $('#apps').dataTable().fnFilter(q, 4, true);"
 argument_list|,

@@ -80,6 +80,18 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
+name|anyBoolean
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
 name|anyInt
 import|;
 end_import
@@ -167,6 +179,18 @@ operator|.
 name|util
 operator|.
 name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadLocalRandom
 import|;
 end_import
 
@@ -1388,6 +1412,16 @@ argument_list|,
 name|ha
 argument_list|,
 literal|null
+argument_list|,
+name|ThreadLocalRandom
+operator|.
+name|current
+argument_list|()
+operator|.
+name|nextLong
+argument_list|()
+operator||
+literal|1L
 argument_list|)
 decl_stmt|;
 name|doReturn
@@ -1434,6 +1468,9 @@ operator|(
 name|VolumeFailureSummary
 operator|)
 name|any
+argument_list|()
+argument_list|,
+name|anyBoolean
 argument_list|()
 argument_list|)
 expr_stmt|;

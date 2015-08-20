@@ -102,6 +102,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|QueueACL
 import|;
 end_import
@@ -304,6 +322,13 @@ parameter_list|,
 name|Resource
 name|resourceToDec
 parameter_list|)
+function_decl|;
+comment|/**    * Get the Default Application Priority for this queue    *    * @return default application priority    */
+DECL|method|getDefaultApplicationPriority ()
+specifier|public
+name|Priority
+name|getDefaultApplicationPriority
+parameter_list|()
 function_decl|;
 block|}
 end_interface

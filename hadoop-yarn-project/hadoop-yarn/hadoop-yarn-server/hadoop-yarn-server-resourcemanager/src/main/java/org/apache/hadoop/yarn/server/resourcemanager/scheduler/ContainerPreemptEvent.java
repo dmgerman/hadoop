@@ -50,9 +50,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|event
+name|server
 operator|.
-name|AbstractEvent
+name|resourcemanager
+operator|.
+name|rmcontainer
+operator|.
+name|RMContainer
 import|;
 end_import
 
@@ -70,9 +74,33 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|rmcontainer
+name|scheduler
 operator|.
-name|RMContainer
+name|event
+operator|.
+name|SchedulerEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|event
+operator|.
+name|SchedulerEventType
 import|;
 end_import
 
@@ -86,10 +114,7 @@ specifier|public
 class|class
 name|ContainerPreemptEvent
 extends|extends
-name|AbstractEvent
-argument_list|<
-name|ContainerPreemptEventType
-argument_list|>
+name|SchedulerEvent
 block|{
 DECL|field|aid
 specifier|private
@@ -103,7 +128,7 @@ specifier|final
 name|RMContainer
 name|container
 decl_stmt|;
-DECL|method|ContainerPreemptEvent (ApplicationAttemptId aid, RMContainer container, ContainerPreemptEventType type)
+DECL|method|ContainerPreemptEvent (ApplicationAttemptId aid, RMContainer container, SchedulerEventType type)
 specifier|public
 name|ContainerPreemptEvent
 parameter_list|(
@@ -113,7 +138,7 @@ parameter_list|,
 name|RMContainer
 name|container
 parameter_list|,
-name|ContainerPreemptEventType
+name|SchedulerEventType
 name|type
 parameter_list|)
 block|{

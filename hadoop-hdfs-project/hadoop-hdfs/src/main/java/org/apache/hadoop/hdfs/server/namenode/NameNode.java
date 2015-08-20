@@ -1828,7 +1828,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: java NameNode ["
+literal|"Usage: hdfs namenode ["
 operator|+
 name|StartupOption
 operator|.
@@ -5716,6 +5716,11 @@ operator|.
 name|txid
 argument_list|,
 literal|false
+argument_list|,
+name|fsns
+operator|.
+name|getEffectiveLayoutVersion
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|segmentOpen

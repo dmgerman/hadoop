@@ -2324,6 +2324,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"Error invoking metrics timer"
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;

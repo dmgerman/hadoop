@@ -1078,7 +1078,7 @@ argument_list|(
 name|origStorages
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 init|=
 name|addBlockOnNodes
@@ -1230,7 +1230,7 @@ argument_list|(
 name|origStorages
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 init|=
 name|addBlockOnNodes
@@ -1461,7 +1461,7 @@ argument_list|(
 name|origStorages
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 init|=
 name|addBlockOnNodes
@@ -1734,7 +1734,7 @@ argument_list|(
 name|origStorages
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 init|=
 name|addBlockOnNodes
@@ -2036,7 +2036,7 @@ name|origNodes
 init|=
 name|rackA
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 init|=
 name|addBlockOnNodes
@@ -2298,12 +2298,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Tell the block manager that replication is completed for the given    * pipeline.    */
-DECL|method|fulfillPipeline (BlockInfoContiguous blockInfo, DatanodeStorageInfo[] pipeline)
+DECL|method|fulfillPipeline (BlockInfo blockInfo, DatanodeStorageInfo[] pipeline)
 specifier|private
 name|void
 name|fulfillPipeline
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 parameter_list|,
 name|DatanodeStorageInfo
@@ -2362,7 +2362,7 @@ block|}
 block|}
 DECL|method|blockOnNodes (long blkId, List<DatanodeDescriptor> nodes)
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockOnNodes
 parameter_list|(
 name|long
@@ -2384,7 +2384,7 @@ argument_list|(
 name|blkId
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 init|=
 operator|new
@@ -2621,7 +2621,7 @@ return|;
 block|}
 DECL|method|addBlockOnNodes (long blockId, List<DatanodeDescriptor> nodes)
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 name|addBlockOnNodes
 parameter_list|(
 name|long
@@ -2664,7 +2664,7 @@ operator|.
 name|getPreferredBlockReplication
 argument_list|()
 expr_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 init|=
 name|blockOnNodes
@@ -4058,7 +4058,7 @@ init|=
 literal|42
 decl_stmt|;
 comment|// arbitrary
-name|BlockInfoContiguous
+name|BlockInfo
 name|receivedBlock
 init|=
 name|addBlockToBM
@@ -4110,7 +4110,7 @@ name|receivingBlockId
 init|=
 literal|43
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|receivingBlock
 init|=
 name|addUcBlockToBM
@@ -4164,7 +4164,7 @@ name|receivingReceivedBlockId
 init|=
 literal|44
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|receivingReceivedBlock
 init|=
 name|addBlockToBM
@@ -4291,7 +4291,7 @@ name|existedBlockId
 init|=
 literal|46
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|existedBlock
 init|=
 name|addBlockToBM
@@ -4426,7 +4426,7 @@ name|assertTrue
 argument_list|(
 operator|(
 operator|(
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|bm
 operator|.
@@ -4505,7 +4505,7 @@ expr_stmt|;
 block|}
 DECL|method|addBlockToBM (long blkId)
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 name|addBlockToBM
 parameter_list|(
 name|long
@@ -4521,7 +4521,7 @@ argument_list|(
 name|blkId
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blockInfo
 init|=
 operator|new
@@ -4582,7 +4582,7 @@ return|;
 block|}
 DECL|method|addUcBlockToBM (long blkId)
 specifier|private
-name|BlockInfoContiguous
+name|BlockInfo
 name|addUcBlockToBM
 parameter_list|(
 name|long
@@ -4598,11 +4598,11 @@ argument_list|(
 name|blkId
 argument_list|)
 decl_stmt|;
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 name|blockInfo
 init|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|block
 argument_list|,

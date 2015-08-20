@@ -174,34 +174,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -488,6 +460,26 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class extends the DatanodeInfo class with ephemeral information (eg  * health, capacity, what blocks are associated with the Datanode) that is  * private to the Namenode, ie this class is not exposed to clients.  */
 end_comment
@@ -512,12 +504,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|DatanodeDescriptor
 operator|.
@@ -779,9 +771,7 @@ name|results
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|E
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -860,11 +850,7 @@ name|storageMap
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * A list of CachedBlock objects on this datanode.    */
@@ -1140,9 +1126,7 @@ name|currApproxBlocksScheduled
 init|=
 operator|new
 name|EnumCounters
-argument_list|<
-name|StorageType
-argument_list|>
+argument_list|<>
 argument_list|(
 name|StorageType
 operator|.
@@ -1159,9 +1143,7 @@ name|prevApproxBlocksScheduled
 init|=
 operator|new
 name|EnumCounters
-argument_list|<
-name|StorageType
-argument_list|>
+argument_list|<>
 argument_list|(
 name|StorageType
 operator|.
@@ -1567,13 +1549,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{} had lastBlockReportId 0x{} but curBlockReportId = 0x{}"
+argument_list|,
 name|storageInfo
 operator|.
 name|getStorageID
 argument_list|()
-operator|+
-literal|" had lastBlockReportId 0x"
-operator|+
+argument_list|,
 name|Long
 operator|.
 name|toHexString
@@ -1583,9 +1565,7 @@ operator|.
 name|getLastBlockReportId
 argument_list|()
 argument_list|)
-operator|+
-literal|", but curBlockReportId = 0x"
-operator|+
+argument_list|,
 name|Long
 operator|.
 name|toHexString
@@ -1610,9 +1590,7 @@ name|zombies
 operator|=
 operator|new
 name|LinkedList
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
@@ -2054,21 +2032,29 @@ condition|(
 name|checkFailedStorages
 condition|)
 block|{
+if|if
+condition|(
+name|this
+operator|.
+name|volumeFailures
+operator|!=
+name|volFailures
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Number of failed storage changes from "
-operator|+
+literal|"Number of failed storages changes from {} to {}"
+argument_list|,
 name|this
 operator|.
 name|volumeFailures
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|volFailures
 argument_list|)
 expr_stmt|;
+block|}
 synchronized|synchronized
 init|(
 name|storageMap
@@ -2078,9 +2064,7 @@ name|failedStorageInfos
 operator|=
 operator|new
 name|HashSet
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|(
 name|storageMap
 operator|.
@@ -2288,33 +2272,24 @@ init|(
 name|storageMap
 init|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Number of storages reported in heartbeat="
+literal|"Number of storages reported in heartbeat={};"
 operator|+
+literal|" Number of storages in storageMap={}"
+argument_list|,
 name|reports
 operator|.
 name|length
-operator|+
-literal|"; Number of storages in storageMap="
-operator|+
+argument_list|,
 name|storageMap
 operator|.
 name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|HashMap
 argument_list|<
 name|String
@@ -2328,11 +2303,7 @@ name|excessStorages
 operator|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|(
 name|storageMap
 argument_list|)
@@ -2399,42 +2370,29 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Removed storage "
-operator|+
+literal|"Removed storage {} from DataNode {}"
+argument_list|,
 name|storageInfo
-operator|+
-literal|" from DataNode"
-operator|+
+argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
+else|else
 block|{
 comment|// This can occur until all block reports are received.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deferring removal of stale storage "
-operator|+
+literal|"Deferring removal of stale storage {} with {} blocks"
+argument_list|,
 name|storageInfo
-operator|+
-literal|" with "
-operator|+
+argument_list|,
 name|storageInfo
 operator|.
 name|numBlocks
 argument_list|()
-operator|+
-literal|" blocks"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2479,9 +2437,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{} failed."
+argument_list|,
 name|storageInfo
-operator|+
-literal|" failed."
 argument_list|)
 expr_stmt|;
 name|storageInfo
@@ -3940,15 +3898,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Adding new storage ID "
-operator|+
+literal|"Adding new storage ID {} for DN {}"
+argument_list|,
 name|s
 operator|.
 name|getStorageID
 argument_list|()
-operator|+
-literal|" for DN "
-operator|+
+argument_list|,
 name|getXferAddr
 argument_list|()
 argument_list|)

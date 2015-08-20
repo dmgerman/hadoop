@@ -1222,7 +1222,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Total input paths to process : "
+literal|"Total input files to process : "
 operator|+
 name|result
 operator|.

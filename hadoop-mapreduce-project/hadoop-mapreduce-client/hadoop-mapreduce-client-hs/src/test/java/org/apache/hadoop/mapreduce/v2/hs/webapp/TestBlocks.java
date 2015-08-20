@@ -1763,7 +1763,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"0 attempt_0_0001_r_000000_0"
+literal|"attempt_0_0001_r_000000_0"
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -68,6 +68,28 @@ name|ContainerId
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
+name|Container
+import|;
+end_import
+
 begin_comment
 comment|/**  * Encapsulates information required for container reacquisition.  */
 end_comment
@@ -87,6 +109,12 @@ specifier|final
 class|class
 name|ContainerReacquisitionContext
 block|{
+DECL|field|container
+specifier|private
+specifier|final
+name|Container
+name|container
+decl_stmt|;
 DECL|field|user
 specifier|private
 specifier|final
@@ -106,6 +134,11 @@ specifier|final
 class|class
 name|Builder
 block|{
+DECL|field|container
+specifier|private
+name|Container
+name|container
+decl_stmt|;
 DECL|field|user
 specifier|private
 name|String
@@ -121,6 +154,25 @@ specifier|public
 name|Builder
 parameter_list|()
 block|{     }
+DECL|method|setContainer (Container container)
+specifier|public
+name|Builder
+name|setContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+name|this
+operator|.
+name|container
+operator|=
+name|container
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|setUser (String user)
 specifier|public
 name|Builder
@@ -184,6 +236,14 @@ parameter_list|)
 block|{
 name|this
 operator|.
+name|container
+operator|=
+name|builder
+operator|.
+name|container
+expr_stmt|;
+name|this
+operator|.
 name|user
 operator|=
 name|builder
@@ -198,6 +258,18 @@ name|builder
 operator|.
 name|containerId
 expr_stmt|;
+block|}
+DECL|method|getContainer ()
+specifier|public
+name|Container
+name|getContainer
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|container
+return|;
 block|}
 DECL|method|getUser ()
 specifier|public

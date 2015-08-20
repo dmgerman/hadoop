@@ -253,6 +253,13 @@ operator|new
 name|TestContext
 argument_list|()
 decl_stmt|;
+DECL|field|nns
+specifier|private
+name|int
+name|nns
+init|=
+literal|2
+decl_stmt|;
 DECL|method|HAStressTestHarness ()
 specifier|public
 name|HAStressTestHarness
@@ -321,6 +328,23 @@ literal|16
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Set the number of namenodes that should be run. This must be set before calling    * {@link #startCluster()}    */
+DECL|method|setNumberOfNameNodes (int nns)
+specifier|public
+name|void
+name|setNumberOfNameNodes
+parameter_list|(
+name|int
+name|nns
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nns
+operator|=
+name|nns
+expr_stmt|;
+block|}
 comment|/**    * Start and return the MiniDFSCluster.    */
 DECL|method|startCluster ()
 specifier|public
@@ -345,7 +369,9 @@ argument_list|(
 name|MiniDFSNNTopology
 operator|.
 name|simpleHATopology
-argument_list|()
+argument_list|(
+name|nns
+argument_list|)
 argument_list|)
 operator|.
 name|numDataNodes
@@ -489,7 +515,7 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add a thread which periodically triggers failover back and forth between    * the two namenodes.    */
+comment|/**    * Add a thread which periodically triggers failover back and forth between the namenodes.    */
 DECL|method|addFailoverThread (final int msBetweenFailovers)
 specifier|public
 name|void
@@ -519,6 +545,34 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// fail over from one namenode to the next, all the way back to the original NN
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|nns
+condition|;
+name|i
+operator|++
+control|)
+block|{
+comment|// next node, mod nns so we wrap to the 0th NN on the last iteration
+name|int
+name|next
+init|=
+operator|(
+name|i
+operator|+
+literal|1
+operator|)
+operator|%
+name|nns
+decl_stmt|;
 name|System
 operator|.
 name|err
@@ -527,23 +581,60 @@ name|println
 argument_list|(
 literal|"==============================\n"
 operator|+
-literal|"Failing over from 0->1\n"
+literal|"[Starting] Failing over from "
 operator|+
-literal|"=================================="
+name|i
+operator|+
+literal|"->"
+operator|+
+name|next
+operator|+
+literal|"\n"
+operator|+
+literal|"=============================="
 argument_list|)
 expr_stmt|;
 name|cluster
 operator|.
 name|transitionToStandby
 argument_list|(
-literal|0
+name|i
 argument_list|)
 expr_stmt|;
 name|cluster
 operator|.
 name|transitionToActive
 argument_list|(
-literal|1
+name|next
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"==============================\n"
+operator|+
+literal|"[Completed] Failing over from "
+operator|+
+name|i
+operator|+
+literal|"->"
+operator|+
+name|next
+operator|+
+literal|". Sleeping for "
+operator|+
+operator|(
+name|msBetweenFailovers
+operator|/
+literal|1000
+operator|)
+operator|+
+literal|"sec \n"
+operator|+
+literal|"=============================="
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -553,40 +644,7 @@ argument_list|(
 name|msBetweenFailovers
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"==============================\n"
-operator|+
-literal|"Failing over from 1->0\n"
-operator|+
-literal|"=================================="
-argument_list|)
-expr_stmt|;
-name|cluster
-operator|.
-name|transitionToStandby
-argument_list|(
-literal|1
-argument_list|)
-expr_stmt|;
-name|cluster
-operator|.
-name|transitionToActive
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|msBetweenFailovers
-argument_list|)
-expr_stmt|;
+block|}
 block|}
 block|}
 argument_list|)

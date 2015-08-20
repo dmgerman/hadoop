@@ -2186,6 +2186,11 @@ argument_list|(
 name|container
 argument_list|)
 operator|.
+name|setLocalizedResources
+argument_list|(
+name|localResources
+argument_list|)
+operator|.
 name|setNmPrivateContainerScriptPath
 argument_list|(
 name|nmPrivateContainerScriptPath
@@ -2759,6 +2764,11 @@ operator|.
 name|Builder
 argument_list|()
 operator|.
+name|setContainer
+argument_list|(
+name|container
+argument_list|)
+operator|.
 name|setUser
 argument_list|(
 name|user
@@ -3218,6 +3228,21 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|whitelistedEnv (String key, String value)
+specifier|public
+specifier|abstract
+name|void
+name|whitelistedEnv
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|String
+name|value
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 DECL|method|env (String key, String value)
 specifier|public
 specifier|abstract
@@ -3506,6 +3531,40 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|whitelistedEnv (String key, String value)
+specifier|public
+name|void
+name|whitelistedEnv
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|String
+name|value
+parameter_list|)
+block|{
+name|line
+argument_list|(
+literal|"export "
+argument_list|,
+name|key
+argument_list|,
+literal|"=${"
+argument_list|,
+name|key
+argument_list|,
+literal|":-"
+argument_list|,
+literal|"\""
+argument_list|,
+name|value
+argument_list|,
+literal|"\"}"
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|env (String key, String value)
 specifier|public
 name|void
@@ -3688,6 +3747,37 @@ literal|" "
 argument_list|,
 name|command
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|errorCheck
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|whitelistedEnv (String key, String value)
+specifier|public
+name|void
+name|whitelistedEnv
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|String
+name|value
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|lineWithLenCheck
+argument_list|(
+literal|"@set "
+argument_list|,
+name|key
+argument_list|,
+literal|"="
+argument_list|,
+name|value
 argument_list|)
 expr_stmt|;
 name|errorCheck
@@ -4371,21 +4461,27 @@ comment|//there but on windows they are not available when the classpath
 comment|//jar is created and so they "are lost" and have to be explicitly
 comment|//added to the classpath instead.  This also means that their position
 comment|//is lost relative to other non-distcache classpath entries which will
-comment|//break things like mapreduce.job.user.classpath.first.
+comment|//break things like mapreduce.job.user.classpath.first.  An environment
+comment|//variable can be set to indicate that distcache entries should come
+comment|//first
 name|boolean
 name|preferLocalizedJars
 init|=
-name|conf
+name|Boolean
 operator|.
-name|getBoolean
+name|valueOf
 argument_list|(
-name|YarnConfiguration
+name|environment
 operator|.
-name|YARN_APPLICATION_CLASSPATH_PREPEND_DISTCACHE
-argument_list|,
-name|YarnConfiguration
+name|get
+argument_list|(
+name|Environment
 operator|.
-name|DEFAULT_YARN_APPLICATION_CLASSPATH_PREPEND_DISTCACHE
+name|CLASSPATH_PREPEND_DISTCACHE
+operator|.
+name|name
+argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|boolean

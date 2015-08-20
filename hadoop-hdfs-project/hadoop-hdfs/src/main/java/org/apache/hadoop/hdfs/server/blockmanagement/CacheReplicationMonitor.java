@@ -2276,7 +2276,7 @@ block|}
 name|BlockInfo
 name|blockInfo
 init|=
-name|namesystem
+name|blockManager
 operator|.
 name|getStoredBlock
 argument_list|(
@@ -2784,7 +2784,7 @@ comment|// blocksMap.  We don't want to try to cache a corrupt replica, though.
 name|BlockInfo
 name|blockInfo
 init|=
-name|namesystem
+name|blockManager
 operator|.
 name|getStoredBlock
 argument_list|(
@@ -3011,7 +3011,7 @@ decl_stmt|;
 name|BlockInfo
 name|info
 init|=
-name|namesystem
+name|blockManager
 operator|.
 name|getStoredBlock
 argument_list|(
@@ -3071,7 +3071,7 @@ decl_stmt|;
 name|BlockInfo
 name|info
 init|=
-name|namesystem
+name|blockManager
 operator|.
 name|getStoredBlock
 argument_list|(

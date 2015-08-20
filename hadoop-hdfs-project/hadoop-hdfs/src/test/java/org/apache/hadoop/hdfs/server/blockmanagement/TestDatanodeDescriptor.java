@@ -317,7 +317,7 @@ name|numBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blk
 init|=
 operator|new
@@ -335,7 +335,7 @@ operator|)
 literal|1
 argument_list|)
 decl_stmt|;
-name|BlockInfoContiguous
+name|BlockInfo
 name|blk1
 init|=
 operator|new

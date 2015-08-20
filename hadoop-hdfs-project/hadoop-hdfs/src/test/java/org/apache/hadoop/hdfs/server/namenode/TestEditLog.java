@@ -1893,7 +1893,11 @@ expr_stmt|;
 name|editLog
 operator|.
 name|rollEditLog
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
 expr_stmt|;
 name|assertExistsInStorageDirs
 argument_list|(
@@ -2223,7 +2227,11 @@ comment|// we should now be writing to edits_inprogress_3
 name|fsimage
 operator|.
 name|rollEditLog
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
 expr_stmt|;
 comment|// Remember the current lastInodeId and will reset it back to test
 comment|// loading editlog segments.The transactions in the following allocate new
@@ -2367,7 +2375,11 @@ comment|// Roll another time to finalize edits_inprogress_3
 name|fsimage
 operator|.
 name|rollEditLog
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
 expr_stmt|;
 name|long
 name|expectedTxns
@@ -4799,7 +4811,11 @@ expr_stmt|;
 name|log
 operator|.
 name|openForWrite
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
@@ -4897,7 +4913,11 @@ block|{
 name|log
 operator|.
 name|openForWrite
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
 expr_stmt|;
 name|NameNodeMetrics
 name|mockMetrics
@@ -5733,7 +5753,11 @@ expr_stmt|;
 name|editlog
 operator|.
 name|openForWrite
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
 expr_stmt|;
 for|for
 control|(
@@ -5789,7 +5813,11 @@ block|{
 name|editlog
 operator|.
 name|rollEditLog
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
 expr_stmt|;
 name|editlog
 operator|.
@@ -7554,7 +7582,11 @@ expr_stmt|;
 name|editLog
 operator|.
 name|rollEditLog
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
 expr_stmt|;
 name|assertExistsInStorageDirs
 argument_list|(

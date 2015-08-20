@@ -216,6 +216,7 @@ block|}
 block|}
 comment|/**    * Empty the queues.    */
 DECL|method|clear ()
+specifier|synchronized
 name|void
 name|clear
 parameter_list|()
@@ -246,6 +247,10 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+name|corruptReplOneBlocks
+operator|=
+literal|0
+expr_stmt|;
 block|}
 comment|/** Return the total number of under replication blocks */
 DECL|method|size ()

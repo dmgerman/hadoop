@@ -362,11 +362,11 @@ init|=
 literal|0
 decl_stmt|;
 comment|/**    * Helper method to extract the actual data size of a page blob.    * This typically involves 2 service requests (one for page ranges, another    * for the last page's data).    *    * @param blob The blob to get the size from.    * @param opContext The operation context to use for the requests.    * @return The total data size of the blob in bytes.    * @throws IOException If the format is corrupt.    * @throws StorageException If anything goes wrong in the requests.    */
-DECL|method|getPageBlobSize (CloudPageBlobWrapper blob, OperationContext opContext)
+DECL|method|getPageBlobDataSize (CloudPageBlobWrapper blob, OperationContext opContext)
 specifier|public
 specifier|static
 name|long
-name|getPageBlobSize
+name|getPageBlobDataSize
 parameter_list|(
 name|CloudPageBlobWrapper
 name|blob
@@ -736,7 +736,7 @@ try|try
 block|{
 name|pageBlobSize
 operator|=
-name|getPageBlobSize
+name|getPageBlobDataSize
 argument_list|(
 name|blob
 argument_list|,
@@ -820,7 +820,7 @@ operator|.
 name|length
 return|;
 block|}
-comment|/**    * Check our buffer and download more from the server if needed.    * @return true if there's more data in the buffer, false if we're done.    * @throws IOException    */
+comment|/**    * Check our buffer and download more from the server if needed.    * If data is not available in the buffer, method downloads maximum    * page blob download size (4MB) or if there is less then 4MB left,    * all remaining pages.    * If we are on the last page, method will return true even if    * we reached the end of stream.    * @return true if there's more data in the buffer, false if buffer is empty    *         and we reached the end of the blob.    * @throws IOException    */
 DECL|method|ensureDataInBuffer ()
 specifier|private
 specifier|synchronized
@@ -1163,6 +1163,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// If len is zero return 0 per the InputStream contract
+if|if
+condition|(
+name|len
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
 name|int
 name|numberOfBytesRead
 init|=
@@ -1182,13 +1194,7 @@ name|ensureDataInBuffer
 argument_list|()
 condition|)
 block|{
-name|filePosition
-operator|+=
-name|numberOfBytesRead
-expr_stmt|;
-return|return
-name|numberOfBytesRead
-return|;
+break|break;
 block|}
 name|int
 name|bytesRemainingInCurrentPage
@@ -1257,6 +1263,20 @@ name|numBytesToRead
 expr_stmt|;
 block|}
 block|}
+comment|// if outputBuffer len is> 0 and zero bytes were read, we reached
+comment|// an EOF
+if|if
+condition|(
+name|numberOfBytesRead
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
 name|filePosition
 operator|+=
 name|numberOfBytesRead
@@ -1285,19 +1305,23 @@ index|[
 literal|1
 index|]
 decl_stmt|;
-if|if
-condition|(
+name|int
+name|result
+init|=
 name|read
 argument_list|(
 name|oneByte
 argument_list|)
-operator|==
+decl_stmt|;
+if|if
+condition|(
+name|result
+operator|<
 literal|0
 condition|)
 block|{
 return|return
-operator|-
-literal|1
+name|result
 return|;
 block|}
 return|return

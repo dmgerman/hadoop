@@ -1341,11 +1341,11 @@ literal|0
 index|]
 block|}
 decl_stmt|;
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 name|blockInfo
 init|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 operator|new
 name|Block
@@ -1544,7 +1544,7 @@ expr_stmt|;
 name|blockInfo
 operator|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 operator|new
 name|Block
@@ -1735,7 +1735,7 @@ expr_stmt|;
 name|blockInfo
 operator|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 operator|new
 name|Block

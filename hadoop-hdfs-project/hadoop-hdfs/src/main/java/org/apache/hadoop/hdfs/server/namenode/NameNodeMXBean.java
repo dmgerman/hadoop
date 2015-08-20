@@ -141,7 +141,7 @@ name|boolean
 name|isUpgradeFinalized
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the RollingUpgrade information    *    * @return Rolling upgrade information    */
+comment|/**    * Gets the RollingUpgrade information.    *    * @return Rolling upgrade information if an upgrade is in progress. Else    * (e.g. if there is no upgrade or the upgrade is finalized), returns null.    */
 DECL|method|getRollingUpgradeStatus ()
 specifier|public
 name|RollingUpgradeInfo

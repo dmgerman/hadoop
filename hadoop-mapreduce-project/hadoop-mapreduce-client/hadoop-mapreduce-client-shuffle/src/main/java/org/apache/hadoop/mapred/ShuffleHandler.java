@@ -1702,6 +1702,27 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|AUDITLOG
+specifier|private
+specifier|static
+specifier|final
+name|Log
+name|AUDITLOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|ShuffleHandler
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|".audit"
+argument_list|)
+decl_stmt|;
 DECL|field|SHUFFLE_MANAGE_OS_CACHE
 specifier|public
 specifier|static
@@ -4948,6 +4969,41 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+comment|// this audit log is disabled by default,
+comment|// to turn it on please enable this audit log
+comment|// on log4j.properties by uncommenting the setting
+if|if
+condition|(
+name|AUDITLOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|AUDITLOG
+operator|.
+name|debug
+argument_list|(
+literal|"shuffle for "
+operator|+
+name|jobQ
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|+
+literal|" reducer "
+operator|+
+name|reduceQ
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|int
 name|reduceId
 decl_stmt|;
@@ -5264,6 +5320,8 @@ operator|=
 name|getMapOutputInfo
 argument_list|(
 name|outputBasePathStr
+operator|+
+name|mapId
 argument_list|,
 name|mapId
 argument_list|,
@@ -5811,13 +5869,22 @@ operator|!
 name|keepAliveParam
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Setting connection close header..."
 argument_list|)
 expr_stmt|;
+block|}
 name|response
 operator|.
 name|setHeader

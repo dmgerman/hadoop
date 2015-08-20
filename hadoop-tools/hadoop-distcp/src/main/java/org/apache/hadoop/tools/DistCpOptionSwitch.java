@@ -447,7 +447,7 @@ literal|"copied to<= n bytes"
 argument_list|)
 argument_list|)
 block|,
-comment|/**    * Specify bandwidth per map in MB    */
+comment|/**    * Specify bandwidth per map in MB, accepts bandwidth as a fraction    */
 DECL|enumConstant|BANDWIDTH
 name|BANDWIDTH
 argument_list|(
@@ -462,7 +462,9 @@ literal|"bandwidth"
 argument_list|,
 literal|true
 argument_list|,
-literal|"Specify bandwidth per map in MB"
+literal|"Specify bandwidth per map in MB,"
+operator|+
+literal|" accepts bandwidth as a fraction."
 argument_list|)
 argument_list|)
 block|,

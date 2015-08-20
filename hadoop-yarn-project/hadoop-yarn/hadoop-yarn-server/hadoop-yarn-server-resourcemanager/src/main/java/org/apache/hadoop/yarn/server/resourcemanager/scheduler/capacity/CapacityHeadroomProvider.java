@@ -86,17 +86,13 @@ DECL|field|application
 name|FiCaSchedulerApp
 name|application
 decl_stmt|;
-DECL|field|required
-name|Resource
-name|required
-decl_stmt|;
 DECL|field|queueResourceLimitsInfo
 name|LeafQueue
 operator|.
 name|QueueResourceLimitsInfo
 name|queueResourceLimitsInfo
 decl_stmt|;
-DECL|method|CapacityHeadroomProvider ( LeafQueue.User user, LeafQueue queue, FiCaSchedulerApp application, Resource required, LeafQueue.QueueResourceLimitsInfo queueResourceLimitsInfo)
+DECL|method|CapacityHeadroomProvider (LeafQueue.User user, LeafQueue queue, FiCaSchedulerApp application, LeafQueue.QueueResourceLimitsInfo queueResourceLimitsInfo)
 specifier|public
 name|CapacityHeadroomProvider
 parameter_list|(
@@ -110,9 +106,6 @@ name|queue
 parameter_list|,
 name|FiCaSchedulerApp
 name|application
-parameter_list|,
-name|Resource
-name|required
 parameter_list|,
 name|LeafQueue
 operator|.
@@ -137,12 +130,6 @@ operator|.
 name|application
 operator|=
 name|application
-expr_stmt|;
-name|this
-operator|.
-name|required
-operator|=
-name|required
 expr_stmt|;
 name|this
 operator|.
@@ -197,8 +184,6 @@ argument_list|,
 name|clusterResource
 argument_list|,
 name|application
-argument_list|,
-name|required
 argument_list|)
 decl_stmt|;
 comment|// Corner case to deal with applications being slightly over-limit

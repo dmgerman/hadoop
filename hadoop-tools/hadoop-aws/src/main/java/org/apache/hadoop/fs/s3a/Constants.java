@@ -334,7 +334,7 @@ DECL|field|DEFAULT_MIN_MULTIPART_THRESHOLD
 specifier|public
 specifier|static
 specifier|final
-name|int
+name|long
 name|DEFAULT_MIN_MULTIPART_THRESHOLD
 init|=
 name|Integer
@@ -457,6 +457,16 @@ name|String
 name|SERVER_SIDE_ENCRYPTION_ALGORITHM
 init|=
 literal|"fs.s3a.server-side-encryption-algorithm"
+decl_stmt|;
+comment|//override signature algorithm used for signing requests
+DECL|field|SIGNING_ALGORITHM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SIGNING_ALGORITHM
+init|=
+literal|"fs.s3a.signing-algorithm"
 decl_stmt|;
 DECL|field|S3N_FOLDER_SUFFIX
 specifier|public

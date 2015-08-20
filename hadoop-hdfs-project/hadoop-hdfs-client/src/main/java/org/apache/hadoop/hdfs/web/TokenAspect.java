@@ -54,34 +54,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -285,6 +257,26 @@ operator|.
 name|delegation
 operator|.
 name|AbstractDelegationTokenSelector
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -705,7 +697,7 @@ decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|final
-name|Log
+name|Logger
 name|LOG
 decl_stmt|;
 DECL|field|serviceName
@@ -733,9 +725,9 @@ name|this
 operator|.
 name|LOG
 operator|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|fs
 operator|.
@@ -839,8 +831,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Created new DT for "
-operator|+
+literal|"Created new DT for {}"
+argument_list|,
 name|token
 operator|.
 name|getService
@@ -906,8 +898,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Found existing DT for "
-operator|+
+literal|"Found existing DT for {}"
+argument_list|,
 name|token
 operator|.
 name|getService

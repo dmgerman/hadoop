@@ -360,7 +360,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 import|;
 end_import
 
@@ -476,7 +476,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -3245,11 +3245,11 @@ block|}
 name|LocatedBlock
 name|lb
 init|=
-name|fsNamesys
+name|FSDirAppendOp
 operator|.
 name|prepareFileForAppend
 argument_list|(
-name|path
+name|fsNamesys
 argument_list|,
 name|iip
 argument_list|,
@@ -3720,11 +3720,11 @@ block|{
 name|LocatedBlock
 name|lb
 init|=
-name|fsNamesys
+name|FSDirAppendOp
 operator|.
 name|prepareFileForAppend
 argument_list|(
-name|path
+name|fsNamesys
 argument_list|,
 name|iip
 argument_list|,
@@ -6171,10 +6171,12 @@ name|TruncateOp
 operator|)
 name|op
 decl_stmt|;
-name|fsDir
+name|FSDirTruncateOp
 operator|.
 name|unprotectedTruncate
 argument_list|(
+name|fsNamesys
+argument_list|,
 name|truncateOp
 operator|.
 name|src
@@ -6587,7 +6589,7 @@ block|{
 name|newBlockInfo
 operator|=
 operator|new
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,
@@ -6603,7 +6605,7 @@ block|{
 name|newBlockInfo
 operator|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,
@@ -7091,7 +7093,7 @@ block|{
 name|newBI
 operator|=
 operator|new
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,
@@ -7107,7 +7109,7 @@ block|{
 name|newBI
 operator|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|newBlock
 argument_list|,

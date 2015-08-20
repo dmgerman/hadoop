@@ -94,7 +94,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguous
+name|BlockInfo
 import|;
 end_import
 
@@ -903,7 +903,7 @@ argument_list|,
 literal|1
 argument_list|,
 operator|new
-name|BlockInfoContiguous
+name|BlockInfo
 index|[]
 block|{}
 argument_list|,

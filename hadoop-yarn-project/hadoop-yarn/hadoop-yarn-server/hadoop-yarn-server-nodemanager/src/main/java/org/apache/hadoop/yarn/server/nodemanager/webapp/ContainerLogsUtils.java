@@ -519,7 +519,7 @@ name|logDirs
 init|=
 name|dirsHandler
 operator|.
-name|getLogDirs
+name|getLogDirsForRead
 argument_list|()
 decl_stmt|;
 name|List

@@ -1295,7 +1295,7 @@ block|{
 comment|// mostly via T_KILL? JOB_KILL?
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
 literal|"Returning, interrupted : "
 operator|+

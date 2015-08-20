@@ -386,6 +386,24 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|BlockInfoContiguousUnderConstruction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|BlockStoragePolicySuite
 import|;
 end_import
@@ -2521,8 +2539,9 @@ else|:
 name|snapshotBlocks
 return|;
 block|}
-comment|/** Used during concat to update the BlockCollection for each block */
+comment|/** Used during concat to update the BlockCollection for each block. */
 DECL|method|updateBlockCollection ()
+specifier|private
 name|void
 name|updateBlockCollection
 parameter_list|()
@@ -2804,6 +2823,7 @@ operator|=
 name|blocks
 expr_stmt|;
 block|}
+comment|/** Clear all blocks of the file. */
 DECL|method|clearBlocks ()
 specifier|public
 name|void
@@ -4475,9 +4495,11 @@ name|oldBlocks
 operator|.
 name|length
 condition|)
+block|{
 return|return
 name|size
 return|;
+block|}
 comment|// starting from block n, the data is beyond max.
 comment|// resize the array.
 name|truncateBlocksTo

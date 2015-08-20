@@ -314,6 +314,14 @@ name|ru
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Create a new configuration.    */
+DECL|method|getNewConf ()
+specifier|protected
+specifier|abstract
+name|Configuration
+name|getNewConf
+parameter_list|()
+function_decl|;
 annotation|@
 name|VisibleForTesting
 DECL|method|getChangedProperties ( Configuration newConf, Configuration oldConf)
@@ -397,8 +405,11 @@ decl_stmt|;
 name|Configuration
 name|newConf
 init|=
-operator|new
-name|Configuration
+name|this
+operator|.
+name|parent
+operator|.
+name|getNewConf
 argument_list|()
 decl_stmt|;
 name|Collection
@@ -462,34 +473,27 @@ name|prop
 argument_list|)
 condition|)
 block|{
-name|errorMessage
-operator|=
-literal|"Property "
-operator|+
-name|change
-operator|.
-name|prop
-operator|+
-literal|" is not reconfigurable"
-expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-name|errorMessage
-argument_list|)
-expr_stmt|;
-name|results
+name|String
 operator|.
-name|put
+name|format
 argument_list|(
-name|change
+literal|"Property %s is not configurable: old value: %s, new value: %s"
 argument_list|,
-name|Optional
+name|change
 operator|.
-name|of
-argument_list|(
-name|errorMessage
+name|prop
+argument_list|,
+name|change
+operator|.
+name|oldVal
+argument_list|,
+name|change
+operator|.
+name|newVal
 argument_list|)
 argument_list|)
 expr_stmt|;

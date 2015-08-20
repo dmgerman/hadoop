@@ -234,6 +234,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|management
+operator|.
+name|ObjectName
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -282,7 +292,35 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtilClient
 import|;
 end_import
 
@@ -455,20 +493,6 @@ operator|.
 name|protocol
 operator|.
 name|ExtendedBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileEncryptionInfo
 import|;
 end_import
 
@@ -752,6 +776,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|CachedBlock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|NameNode
 import|;
 end_import
@@ -940,6 +982,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|DatanodeRegistration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|DatanodeStorage
 import|;
 end_import
@@ -1083,6 +1143,22 @@ operator|.
 name|StripedBlockUtil
 operator|.
 name|getInternalBlockLength
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|util
+operator|.
+name|MBeans
 import|;
 end_import
 
@@ -1247,6 +1323,8 @@ DECL|class|BlockManager
 specifier|public
 class|class
 name|BlockManager
+implements|implements
+name|BlockStatsMXBean
 block|{
 DECL|field|LOG
 specifier|public
@@ -1388,6 +1466,17 @@ specifier|private
 specifier|final
 name|long
 name|startupDelayBlockDeletionInMs
+decl_stmt|;
+DECL|field|blockReportLeaseManager
+specifier|private
+specifier|final
+name|BlockReportLeaseManager
+name|blockReportLeaseManager
+decl_stmt|;
+DECL|field|mxBeanName
+specifier|private
+name|ObjectName
+name|mxBeanName
 decl_stmt|;
 comment|/** Used by metrics */
 DECL|method|getPendingReplicationBlocksCount ()
@@ -2178,6 +2267,16 @@ operator|.
 name|DFS_BLOCK_MISREPLICATION_PROCESSING_LIMIT_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|blockReportLeaseManager
+operator|=
+operator|new
+name|BlockReportLeaseManager
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -2444,8 +2543,24 @@ condition|(
 name|isHaEnabled
 condition|)
 block|{
+comment|// figure out which index we are of the nns
+name|Collection
+argument_list|<
 name|String
-name|thisNnId
+argument_list|>
+name|nnIds
+init|=
+name|DFSUtilClient
+operator|.
+name|getNameNodeIds
+argument_list|(
+name|conf
+argument_list|,
+name|nsId
+argument_list|)
+decl_stmt|;
+name|String
+name|nnId
 init|=
 name|HAUtil
 operator|.
@@ -2456,18 +2571,35 @@ argument_list|,
 name|nsId
 argument_list|)
 decl_stmt|;
-name|String
-name|otherNnId
+name|int
+name|nnIndex
 init|=
-name|HAUtil
-operator|.
-name|getNameNodeIdOfOtherNode
-argument_list|(
-name|conf
-argument_list|,
-name|nsId
-argument_list|)
+literal|0
 decl_stmt|;
+for|for
+control|(
+name|String
+name|id
+range|:
+name|nnIds
+control|)
+block|{
+if|if
+condition|(
+name|id
+operator|.
+name|equals
+argument_list|(
+name|nnId
+argument_list|)
+condition|)
+block|{
+break|break;
+block|}
+name|nnIndex
+operator|++
+expr_stmt|;
+block|}
 return|return
 operator|new
 name|BlockTokenSecretManager
@@ -2484,18 +2616,12 @@ literal|60
 operator|*
 literal|1000L
 argument_list|,
-name|thisNnId
+name|nnIndex
+argument_list|,
+name|nnIds
 operator|.
-name|compareTo
-argument_list|(
-name|otherNnId
-argument_list|)
-operator|<
-literal|0
-condition|?
-literal|0
-else|:
-literal|1
+name|size
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2522,6 +2648,8 @@ operator|*
 literal|1000L
 argument_list|,
 literal|0
+argument_list|,
+literal|1
 argument_list|,
 literal|null
 argument_list|,
@@ -2707,6 +2835,19 @@ name|replicationThread
 operator|.
 name|start
 argument_list|()
+expr_stmt|;
+name|mxBeanName
+operator|=
+name|MBeans
+operator|.
+name|register
+argument_list|(
+literal|"NameNode"
+argument_list|,
+literal|"BlockStats"
+argument_list|,
+name|this
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|close ()
@@ -4584,6 +4725,8 @@ specifier|final
 name|long
 name|pos
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -4603,11 +4746,11 @@ argument_list|()
 condition|)
 block|{
 specifier|final
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 name|uc
 init|=
 operator|(
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 operator|)
 name|blk
 decl_stmt|;
@@ -4659,14 +4802,14 @@ block|{
 assert|assert
 name|blk
 operator|instanceof
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 assert|;
 specifier|final
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 name|uc
 init|=
 operator|(
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|blk
 decl_stmt|;
@@ -5684,12 +5827,12 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * Check if a block is replicated to at least the minimum replication.    */
-DECL|method|isSufficientlyReplicated (BlockInfoContiguous b)
+DECL|method|isSufficientlyReplicated (BlockInfo b)
 specifier|public
 name|boolean
 name|isSufficientlyReplicated
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 parameter_list|)
 block|{
@@ -6356,7 +6499,7 @@ condition|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* addToInvalidates: {} {}"
 argument_list|,
@@ -6492,7 +6635,7 @@ comment|// thread of Datanode reports bad block before Block reports are sent
 comment|// by the Datanode on startup
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* findAndMarkBlockAsCorrupt: {} not found"
 argument_list|,
@@ -6610,7 +6753,7 @@ condition|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK markBlockAsCorrupt: {} cannot be marked as"
 operator|+
@@ -6867,7 +7010,7 @@ name|IOException
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* invalidateBlock: {} on {}"
 argument_list|,
@@ -6923,7 +7066,7 @@ condition|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* invalidateBlocks: postponing "
 operator|+
@@ -7522,7 +7665,7 @@ expr_stmt|;
 comment|// remove from neededReplications
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* Removing {} from neededReplications as"
 operator|+
@@ -7958,7 +8101,7 @@ literal|null
 expr_stmt|;
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* Removing {} from neededReplications as"
 operator|+
@@ -8323,7 +8466,7 @@ expr_stmt|;
 block|}
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* ask {} to replicate {} to {}"
 argument_list|,
@@ -9357,6 +9500,105 @@ block|}
 comment|/* If we know the target datanodes where the replication timedout,        * we could invoke decBlocksScheduled() on it. Its ok for now.        */
 block|}
 block|}
+DECL|method|requestBlockReportLeaseId (DatanodeRegistration nodeReg)
+specifier|public
+name|long
+name|requestBlockReportLeaseId
+parameter_list|(
+name|DatanodeRegistration
+name|nodeReg
+parameter_list|)
+block|{
+assert|assert
+name|namesystem
+operator|.
+name|hasReadLock
+argument_list|()
+assert|;
+name|DatanodeDescriptor
+name|node
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|node
+operator|=
+name|datanodeManager
+operator|.
+name|getDatanode
+argument_list|(
+name|nodeReg
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnregisteredNodeException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unregistered datanode {}"
+argument_list|,
+name|nodeReg
+argument_list|)
+expr_stmt|;
+return|return
+literal|0
+return|;
+block|}
+if|if
+condition|(
+name|node
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to find datanode {}"
+argument_list|,
+name|nodeReg
+argument_list|)
+expr_stmt|;
+return|return
+literal|0
+return|;
+block|}
+comment|// Request a new block report lease.  The BlockReportLeaseManager has
+comment|// its own internal locking.
+name|long
+name|leaseId
+init|=
+name|blockReportLeaseManager
+operator|.
+name|requestLease
+argument_list|(
+name|node
+argument_list|)
+decl_stmt|;
+name|BlockManagerFaultInjector
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|requestBlockReportLease
+argument_list|(
+name|node
+argument_list|,
+name|leaseId
+argument_list|)
+expr_stmt|;
+return|return
+name|leaseId
+return|;
+block|}
 comment|/**    * StatefulBlockInfo is used to build the "toUC" list, which is a list of    * updates to the information about under-construction blocks.    * Besides the block in question, it provides the ReplicaState    * reported by the datanode in the block report.     */
 DECL|class|StatefulBlockInfo
 specifier|static
@@ -9398,11 +9640,11 @@ name|checkArgument
 argument_list|(
 name|storedBlock
 operator|instanceof
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 operator|||
 name|storedBlock
 operator|instanceof
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 argument_list|)
 expr_stmt|;
 name|this
@@ -9784,6 +10026,36 @@ return|;
 block|}
 if|if
 condition|(
+name|context
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|blockReportLeaseManager
+operator|.
+name|checkLease
+argument_list|(
+name|node
+argument_list|,
+name|startTime
+argument_list|,
+name|context
+operator|.
+name|getLeaseId
+argument_list|()
+argument_list|)
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+block|}
+if|if
+condition|(
 name|storageInfo
 operator|.
 name|getBlockReportCount
@@ -9880,6 +10152,28 @@ name|getTotalRpcs
 argument_list|()
 condition|)
 block|{
+name|long
+name|leaseId
+init|=
+name|blockReportLeaseManager
+operator|.
+name|removeLease
+argument_list|(
+name|node
+argument_list|)
+decl_stmt|;
+name|BlockManagerFaultInjector
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|removeBlockReportLease
+argument_list|(
+name|node
+argument_list|,
+name|leaseId
+argument_list|)
+expr_stmt|;
 name|List
 argument_list|<
 name|DatanodeStorageInfo
@@ -10988,7 +11282,7 @@ condition|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* markBlockReplicasAsCorrupt: mark block replica"
 operator|+
@@ -13030,11 +13324,11 @@ if|if
 condition|(
 name|block
 operator|instanceof
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 operator|||
 name|block
 operator|instanceof
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 condition|)
 block|{
 comment|//refresh our copy in case the block got completed in another thread
@@ -13068,7 +13362,7 @@ block|{
 comment|// If this block does not belong to anyfile, then we are done.
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* addStoredBlock: {} on {} size {} but it does not"
 operator|+
@@ -13495,7 +13789,7 @@ condition|(
 operator|!
 name|blockLog
 operator|.
-name|isInfoEnabled
+name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
@@ -13551,7 +13845,7 @@ argument_list|)
 expr_stmt|;
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 name|sb
 operator|.
@@ -13670,7 +13964,7 @@ parameter_list|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"invalidateCorruptReplicas error in deleting bad block"
 operator|+
@@ -15591,7 +15885,7 @@ argument_list|)
 expr_stmt|;
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* chooseExcessReplicates: "
 operator|+
@@ -15926,6 +16220,104 @@ name|node
 argument_list|)
 expr_stmt|;
 return|return;
+block|}
+name|CachedBlock
+name|cblock
+init|=
+name|namesystem
+operator|.
+name|getCacheManager
+argument_list|()
+operator|.
+name|getCachedBlocks
+argument_list|()
+operator|.
+name|get
+argument_list|(
+operator|new
+name|CachedBlock
+argument_list|(
+name|storedBlock
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|0
+argument_list|,
+literal|false
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cblock
+operator|!=
+literal|null
+condition|)
+block|{
+name|boolean
+name|removed
+init|=
+literal|false
+decl_stmt|;
+name|removed
+operator||=
+name|node
+operator|.
+name|getPendingCached
+argument_list|()
+operator|.
+name|remove
+argument_list|(
+name|cblock
+argument_list|)
+expr_stmt|;
+name|removed
+operator||=
+name|node
+operator|.
+name|getCached
+argument_list|()
+operator|.
+name|remove
+argument_list|(
+name|cblock
+argument_list|)
+expr_stmt|;
+name|removed
+operator||=
+name|node
+operator|.
+name|getPendingUncached
+argument_list|()
+operator|.
+name|remove
+argument_list|(
+name|cblock
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|removed
+condition|)
+block|{
+name|blockLog
+operator|.
+name|debug
+argument_list|(
+literal|"BLOCK* removeStoredBlock: {} removed from caching "
+operator|+
+literal|"related lists on node {}"
+argument_list|,
+name|storedBlock
+argument_list|,
+name|node
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|//
 comment|// It's possible that the block was removed because of a datanode
@@ -16427,18 +16819,31 @@ block|}
 comment|//
 comment|// Modify the blocks->datanode map and node's map.
 comment|//
-name|pendingReplications
-operator|.
-name|decrement
-argument_list|(
+name|BlockInfo
+name|storedBlock
+init|=
 name|getStoredBlock
 argument_list|(
 name|block
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|storedBlock
+operator|!=
+literal|null
+condition|)
+block|{
+name|pendingReplications
+operator|.
+name|decrement
+argument_list|(
+name|storedBlock
 argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
+block|}
 name|processAndHandleReportedBlock
 argument_list|(
 name|storageInfo
@@ -16638,7 +17043,7 @@ condition|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* addBlock: logged info for {} of {} reported."
 argument_list|,
@@ -16658,7 +17063,7 @@ control|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* addBlock: block {} on node {} size {} does not "
 operator|+
@@ -17171,7 +17576,7 @@ name|stale
 argument_list|)
 return|;
 block|}
-comment|/**     * Simpler, faster form of {@link #countNodes} that only returns the number    * of live nodes.  If in startup safemode (or its 30-sec extension period),    * then it gains speed by ignoring issues of excess replicas or nodes    * that are decommissioned or in process of becoming decommissioned.    * If not in startup, then it calls {@link #countNodes} instead.    *     * @param b - the block being tested    * @return count of live nodes for this block    */
+comment|/**     * Simpler, faster form of {@link #countNodes} that only returns the number    * of live nodes.  If in startup safemode (or its 30-sec extension period),    * then it gains speed by ignoring issues of excess replicas or nodes    * that are decommissioned or in process of becoming decommissioned.    * If not in startup, then it calls {@link #countNodes} instead.    *    * @param b - the block being tested    * @return count of live nodes for this block    */
 DECL|method|countLiveNodes (BlockInfo b)
 name|int
 name|countLiveNodes
@@ -18275,7 +18680,7 @@ expr_stmt|;
 block|}
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* {}: ask {} to delete {}"
 argument_list|,
@@ -19572,7 +19977,7 @@ name|locs
 argument_list|,
 operator|(
 operator|(
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 operator|)
 name|info
 operator|)
@@ -20065,7 +20470,7 @@ finally|finally
 block|{       }
 block|}
 block|}
-comment|/**    * A simple result enum for the result of    * {@link BlockManager#processMisReplicatedBlock}.    */
+comment|/**    * A simple result enum for the result of    * {@link BlockManager#processMisReplicatedBlock(BlockInfo)}.    */
 DECL|enum|MisReplicationResult
 enum|enum
 name|MisReplicationResult
@@ -20108,6 +20513,17 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|MBeans
+operator|.
+name|unregister
+argument_list|(
+name|mxBeanName
+argument_list|)
+expr_stmt|;
+name|mxBeanName
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|clear ()
 specifier|public
@@ -20123,6 +20539,40 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|getBlockReportLeaseManager ()
+specifier|public
+name|BlockReportLeaseManager
+name|getBlockReportLeaseManager
+parameter_list|()
+block|{
+return|return
+name|blockReportLeaseManager
+return|;
+block|}
+annotation|@
+name|Override
+comment|// BlockStatsMXBean
+DECL|method|getStorageTypeStats ()
+specifier|public
+name|Map
+argument_list|<
+name|StorageType
+argument_list|,
+name|StorageTypeStats
+argument_list|>
+name|getStorageTypeStats
+parameter_list|()
+block|{
+return|return
+name|datanodeManager
+operator|.
+name|getDatanodeStatistics
+argument_list|()
+operator|.
+name|getStorageTypeStats
+argument_list|()
+return|;
 block|}
 block|}
 end_class

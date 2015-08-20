@@ -28,6 +28,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -486,10 +500,9 @@ argument_list|(
 name|containerExecutorExe
 argument_list|)
 expr_stmt|;
-name|fullCommand
-operator|.
-name|add
-argument_list|(
+name|String
+name|cliSwitch
+init|=
 name|operation
 operator|.
 name|getOperationType
@@ -497,8 +510,24 @@ argument_list|()
 operator|.
 name|getOption
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|cliSwitch
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|fullCommand
+operator|.
+name|add
+argument_list|(
+name|cliSwitch
 argument_list|)
 expr_stmt|;
+block|}
 name|fullCommand
 operator|.
 name|addAll
@@ -629,6 +658,25 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"command array:"
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|fullCommandArray
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
 literal|"Privileged Execution Operation Output:"
 argument_list|)
 expr_stmt|;
@@ -698,11 +746,28 @@ argument_list|(
 name|logLine
 argument_list|)
 expr_stmt|;
+comment|//stderr from shell executor seems to be stuffed into the exception
+comment|//'message' - so, we have to extract it and set it as the error out
 throw|throw
 operator|new
 name|PrivilegedOperationException
 argument_list|(
 name|e
+argument_list|,
+name|e
+operator|.
+name|getExitCode
+argument_list|()
+argument_list|,
+name|exec
+operator|.
+name|getOutput
+argument_list|()
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -821,7 +886,7 @@ name|CGROUP_ARG_PREFIX
 argument_list|)
 decl_stmt|;
 name|boolean
-name|noneArgsOnly
+name|noTasks
 init|=
 literal|true
 decl_stmt|;
@@ -983,7 +1048,9 @@ name|tasksFile
 operator|.
 name|equals
 argument_list|(
-literal|"none"
+name|PrivilegedOperation
+operator|.
+name|CGROUP_ARG_NO_TASKS
 argument_list|)
 condition|)
 block|{
@@ -992,7 +1059,7 @@ continue|continue;
 block|}
 if|if
 condition|(
-name|noneArgsOnly
+name|noTasks
 operator|==
 literal|false
 condition|)
@@ -1002,7 +1069,9 @@ name|finalOpArg
 operator|.
 name|append
 argument_list|(
-literal|","
+name|PrivilegedOperation
+operator|.
+name|LINUX_FILE_PATH_SEPARATOR
 argument_list|)
 expr_stmt|;
 name|finalOpArg
@@ -1022,7 +1091,7 @@ argument_list|(
 name|tasksFile
 argument_list|)
 expr_stmt|;
-name|noneArgsOnly
+name|noTasks
 operator|=
 literal|false
 expr_stmt|;
@@ -1030,17 +1099,20 @@ block|}
 block|}
 if|if
 condition|(
-name|noneArgsOnly
+name|noTasks
 condition|)
 block|{
 name|finalOpArg
 operator|.
 name|append
 argument_list|(
-literal|"none"
+name|PrivilegedOperation
+operator|.
+name|CGROUP_ARG_NO_TASKS
 argument_list|)
 expr_stmt|;
-comment|//there were no tasks file to append
+comment|//there
+comment|// were no tasks file to append
 block|}
 name|PrivilegedOperation
 name|finalOp

@@ -167,11 +167,6 @@ specifier|private
 name|PlanQueue
 name|parent
 decl_stmt|;
-DECL|field|maxSystemApps
-specifier|private
-name|int
-name|maxSystemApps
-decl_stmt|;
 DECL|method|ReservationQueue (CapacitySchedulerContext cs, String queueName, PlanQueue parent)
 specifier|public
 name|ReservationQueue
@@ -198,16 +193,6 @@ name|parent
 argument_list|,
 literal|null
 argument_list|)
-expr_stmt|;
-name|maxSystemApps
-operator|=
-name|cs
-operator|.
-name|getConfiguration
-argument_list|()
-operator|.
-name|getMaximumSystemApplications
-argument_list|()
 expr_stmt|;
 comment|// the following parameters are common to all reservation in the plan
 name|updateQuotas
@@ -405,19 +390,6 @@ argument_list|()
 operator|*
 name|getCapacity
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|setMaxApplications
-argument_list|(
-call|(
-name|int
-call|)
-argument_list|(
-name|maxSystemApps
-operator|*
-name|getAbsoluteCapacity
-argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// note: we currently set maxCapacity to capacity

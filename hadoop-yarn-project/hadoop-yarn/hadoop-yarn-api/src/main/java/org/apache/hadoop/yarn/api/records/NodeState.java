@@ -93,6 +93,10 @@ block|,
 comment|/** Node decommission is in progress */
 DECL|enumConstant|DECOMMISSIONING
 name|DECOMMISSIONING
+block|,
+comment|/** Node has shutdown gracefully. */
+DECL|enumConstant|SHUTDOWN
+name|SHUTDOWN
 block|;
 DECL|method|isUnusable ()
 specifier|public
@@ -113,6 +117,10 @@ operator|||
 name|this
 operator|==
 name|LOST
+operator|||
+name|this
+operator|==
+name|SHUTDOWN
 operator|)
 return|;
 block|}

@@ -7,16 +7,7 @@ begin_annotation
 annotation|@
 name|InterfaceAudience
 operator|.
-name|LimitedPrivate
-argument_list|(
-block|{
-literal|"HBase"
-block|,
-literal|"HDFS"
-block|,
-literal|"MapReduce"
-block|}
-argument_list|)
+name|Public
 end_annotation
 
 begin_annotation

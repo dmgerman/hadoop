@@ -490,7 +490,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -3582,7 +3582,7 @@ literal|1
 index|]
 operator|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|lastBlk
 argument_list|,
@@ -5505,7 +5505,7 @@ literal|" [key-value pairs]"
 operator|+
 literal|" option to automatically rename these paths during upgrade."
 decl_stmt|;
-comment|/**    * Same as {@link #renameReservedPathsOnUpgrade(String)}, but for a single    * byte array path component.    */
+comment|/**    * Same as {@link #renameReservedPathsOnUpgrade}, but for a single    * byte array path component.    */
 DECL|method|renameReservedComponentOnUpgrade (byte[] component, final int layoutVersion)
 specifier|private
 specifier|static
@@ -5590,7 +5590,7 @@ return|return
 name|component
 return|;
 block|}
-comment|/**    * Same as {@link #renameReservedPathsOnUpgrade(String)}, but for a single    * byte array path component.    */
+comment|/**    * Same as {@link #renameReservedPathsOnUpgrade}, but for a single    * byte array path component.    */
 DECL|method|renameReservedRootComponentOnUpgrade (byte[] component, final int layoutVersion)
 specifier|private
 specifier|static

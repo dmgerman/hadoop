@@ -1300,6 +1300,25 @@ name|HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_DEFAULT
 init|=
 literal|"/dev/urandom"
 decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_KEY
+init|=
+literal|"hadoop.shell.missing.defaultFs.warning"
+decl_stmt|;
+DECL|field|HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 block|}
 end_class
 

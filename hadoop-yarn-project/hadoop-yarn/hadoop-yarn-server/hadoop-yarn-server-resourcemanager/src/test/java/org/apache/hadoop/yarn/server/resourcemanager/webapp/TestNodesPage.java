@@ -224,7 +224,7 @@ specifier|final
 name|int
 name|numberOfNodesPerRack
 init|=
-literal|7
+literal|8
 decl_stmt|;
 comment|// The following is because of the way TestRMWebApp.mockRMContext creates
 comment|// nodes.
@@ -249,7 +249,7 @@ specifier|final
 name|int
 name|numberOfThInMetricsTable
 init|=
-literal|20
+literal|21
 decl_stmt|;
 DECL|field|numberOfActualTableHeaders
 specifier|final

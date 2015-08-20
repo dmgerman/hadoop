@@ -875,6 +875,11 @@ operator|+
 name|getRelaxLocality
 argument_list|()
 operator|+
+literal|", Node Label Expression: "
+operator|+
+name|getNodeLabelExpression
+argument_list|()
+operator|+
 literal|"}"
 return|;
 block|}
@@ -913,6 +918,9 @@ operator|(
 name|p
 operator|.
 name|getNodeLabelExpression
+argument_list|()
+operator|.
+name|trim
 argument_list|()
 operator|)
 return|;

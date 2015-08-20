@@ -86,16 +86,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|FileDescriptor
 import|;
 end_import
@@ -563,6 +553,46 @@ operator|.
 name|util
 operator|.
 name|Time
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|nativeio
+operator|.
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|POSIX_FADV_DONTNEED
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|nativeio
+operator|.
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|SYNC_FILE_RANGE_WRITE
 import|;
 end_import
 
@@ -3070,22 +3100,116 @@ operator|<
 name|offsetInBlock
 condition|)
 block|{
-comment|//finally write to the disk :
-if|if
-condition|(
+comment|// Normally the beginning of an incoming packet is aligned with the
+comment|// existing data on disk. If the beginning packet data offset is not
+comment|// checksum chunk aligned, the end of packet will not go beyond the
+comment|// next chunk boundary.
+comment|// When a failure-recovery is involved, the client state and the
+comment|// the datanode state may not exactly agree. I.e. the client may
+comment|// resend part of data that is already on disk. Correct number of
+comment|// bytes should be skipped when writing the data and checksum
+comment|// buffers out to disk.
+name|long
+name|partialChunkSizeOnDisk
+init|=
 name|onDiskLen
 operator|%
 name|bytesPerChecksum
-operator|!=
+decl_stmt|;
+name|long
+name|lastChunkBoundary
+init|=
+name|onDiskLen
+operator|-
+name|partialChunkSizeOnDisk
+decl_stmt|;
+name|boolean
+name|alignedOnDisk
+init|=
+name|partialChunkSizeOnDisk
+operator|==
 literal|0
+decl_stmt|;
+name|boolean
+name|alignedInPacket
+init|=
+name|firstByteInBlock
+operator|%
+name|bytesPerChecksum
+operator|==
+literal|0
+decl_stmt|;
+comment|// If the end of the on-disk data is not chunk-aligned, the last
+comment|// checksum needs to be overwritten.
+name|boolean
+name|overwriteLastCrc
+init|=
+operator|!
+name|alignedOnDisk
+operator|&&
+operator|!
+name|shouldNotWriteChecksum
+decl_stmt|;
+comment|// If the starting offset of the packat data is at the last chunk
+comment|// boundary of the data on disk, the partial checksum recalculation
+comment|// can be skipped and the checksum supplied by the client can be used
+comment|// instead. This reduces disk reads and cpu load.
+name|boolean
+name|doCrcRecalc
+init|=
+name|overwriteLastCrc
+operator|&&
+operator|(
+name|lastChunkBoundary
+operator|!=
+name|firstByteInBlock
+operator|)
+decl_stmt|;
+comment|// If this is a partial chunk, then verify that this is the only
+comment|// chunk in the packet. If the starting offset is not chunk
+comment|// aligned, the packet should terminate at or before the next
+comment|// chunk boundary.
+if|if
+condition|(
+operator|!
+name|alignedInPacket
+operator|&&
+name|len
+operator|>
+name|bytesPerChecksum
 condition|)
 block|{
-comment|// prepare to overwrite last checksum
-name|adjustCrcFilePosition
-argument_list|()
-expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unexpected packet data length for "
+operator|+
+name|block
+operator|+
+literal|" from "
+operator|+
+name|inAddr
+operator|+
+literal|": a partial chunk must be "
+operator|+
+literal|" sent in an individual packet (data length = "
+operator|+
+name|len
+operator|+
+literal|"> bytesPerChecksum = "
+operator|+
+name|bytesPerChecksum
+operator|+
+literal|")"
+argument_list|)
+throw|;
 block|}
-comment|// If this is a partial chunk, then read in pre-existing checksum
+comment|// If the last portion of the block file is not a full chunk,
+comment|// then read in pre-existing partial data chunk and recalculate
+comment|// the checksum so that the checksum calculation can continue
+comment|// from the right state. If the client provided the checksum for
+comment|// the whole chunk, this is not necessary.
 name|Checksum
 name|partialCrc
 init|=
@@ -3093,14 +3217,7 @@ literal|null
 decl_stmt|;
 if|if
 condition|(
-operator|!
-name|shouldNotWriteChecksum
-operator|&&
-name|firstByteInBlock
-operator|%
-name|bytesPerChecksum
-operator|!=
-literal|0
+name|doCrcRecalc
 condition|)
 block|{
 if|if
@@ -3119,13 +3236,11 @@ literal|"receivePacket for "
 operator|+
 name|block
 operator|+
-literal|": bytesPerChecksum="
+literal|": previous write did not end at the chunk boundary."
 operator|+
-name|bytesPerChecksum
+literal|" onDiskLen="
 operator|+
-literal|" does not divide firstByteInBlock="
-operator|+
-name|firstByteInBlock
+name|onDiskLen
 argument_list|)
 expr_stmt|;
 block|}
@@ -3153,6 +3268,9 @@ name|offsetInChecksum
 argument_list|)
 expr_stmt|;
 block|}
+comment|// The data buffer position where write will begin. If the packet
+comment|// data and on-disk data have no overlap, this will not be at the
+comment|// beginning of the buffer.
 name|int
 name|startByteToDisk
 init|=
@@ -3175,6 +3293,7 @@ operator|.
 name|position
 argument_list|()
 decl_stmt|;
+comment|// Actual number of data bytes to write.
 name|int
 name|numBytesToDisk
 init|=
@@ -3258,48 +3377,62 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|partialCrc
-operator|!=
+else|else
+block|{
+name|int
+name|skip
+init|=
+literal|0
+decl_stmt|;
+name|byte
+index|[]
+name|crcBytes
+init|=
 literal|null
-condition|)
-block|{
-comment|// If this is a partial chunk, then verify that this is the only
-comment|// chunk in the packet. Calculate new crc for this chunk.
+decl_stmt|;
+comment|// First, prepare to overwrite the partial crc at the end.
 if|if
 condition|(
-name|len
-operator|>
-name|bytesPerChecksum
+name|overwriteLastCrc
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
+comment|// not chunk-aligned on disk
+comment|// prepare to overwrite last checksum
+name|adjustCrcFilePosition
+argument_list|()
+expr_stmt|;
+block|}
+comment|// The CRC was recalculated for the last partial chunk. Update the
+comment|// CRC by reading the rest of the chunk, then write it out.
+if|if
+condition|(
+name|doCrcRecalc
+condition|)
+block|{
+comment|// Calculate new crc for this chunk.
+name|int
+name|bytesToReadForRecalc
+init|=
+call|(
+name|int
+call|)
 argument_list|(
-literal|"Unexpected packet data length for "
-operator|+
-name|block
-operator|+
-literal|" from "
-operator|+
-name|inAddr
-operator|+
-literal|": a partial chunk must be "
-operator|+
-literal|" sent in an individual packet (data length = "
-operator|+
-name|len
-operator|+
-literal|"> bytesPerChecksum = "
-operator|+
 name|bytesPerChecksum
-operator|+
-literal|")"
+operator|-
+name|partialChunkSizeOnDisk
 argument_list|)
-throw|;
+decl_stmt|;
+if|if
+condition|(
+name|numBytesToDisk
+operator|<
+name|bytesToReadForRecalc
+condition|)
+block|{
+name|bytesToReadForRecalc
+operator|=
+name|numBytesToDisk
+expr_stmt|;
 block|}
 name|partialCrc
 operator|.
@@ -3312,7 +3445,7 @@ argument_list|()
 argument_list|,
 name|startByteToDisk
 argument_list|,
-name|numBytesToDisk
+name|bytesToReadForRecalc
 argument_list|)
 expr_stmt|;
 name|byte
@@ -3328,7 +3461,7 @@ argument_list|,
 name|checksumSize
 argument_list|)
 decl_stmt|;
-name|lastCrc
+name|crcBytes
 operator|=
 name|copyLastChunkChecksum
 argument_list|(
@@ -3363,17 +3496,68 @@ argument_list|(
 literal|"Writing out partial crc for data len "
 operator|+
 name|len
+operator|+
+literal|", skip="
+operator|+
+name|skip
 argument_list|)
 expr_stmt|;
 block|}
-name|partialCrc
-operator|=
-literal|null
+name|skip
+operator|++
+expr_stmt|;
+comment|//  For the partial chunk that was just read.
+block|}
+comment|// Determine how many checksums need to be skipped up to the last
+comment|// boundary. The checksum after the boundary was already counted
+comment|// above. Only count the number of checksums skipped up to the
+comment|// boundary here.
+name|long
+name|skippedDataBytes
+init|=
+name|lastChunkBoundary
+operator|-
+name|firstByteInBlock
+decl_stmt|;
+if|if
+condition|(
+name|skippedDataBytes
+operator|>
+literal|0
+condition|)
+block|{
+name|skip
+operator|+=
+call|(
+name|int
+call|)
+argument_list|(
+name|skippedDataBytes
+operator|/
+name|bytesPerChecksum
+argument_list|)
+operator|+
+operator|(
+operator|(
+name|skippedDataBytes
+operator|%
+name|bytesPerChecksum
+operator|==
+literal|0
+operator|)
+condition|?
+literal|0
+else|:
+literal|1
+operator|)
 expr_stmt|;
 block|}
-else|else
-block|{
-comment|// write checksum
+name|skip
+operator|*=
+name|checksumSize
+expr_stmt|;
+comment|// Convert to number of bytes
+comment|// write the rest of checksum
 specifier|final
 name|int
 name|offset
@@ -3387,6 +3571,8 @@ name|checksumBuf
 operator|.
 name|position
 argument_list|()
+operator|+
+name|skip
 decl_stmt|;
 specifier|final
 name|int
@@ -3395,6 +3581,38 @@ init|=
 name|offset
 operator|+
 name|checksumLen
+operator|-
+name|skip
+decl_stmt|;
+comment|// If offset> end, there is no more checksum to write.
+comment|// I.e. a partial chunk checksum rewrite happened and there is no
+comment|// more to write after that.
+if|if
+condition|(
+name|offset
+operator|>
+name|end
+condition|)
+block|{
+assert|assert
+name|crcBytes
+operator|!=
+literal|null
+assert|;
+name|lastCrc
+operator|=
+name|crcBytes
+expr_stmt|;
+block|}
+else|else
+block|{
+specifier|final
+name|int
+name|remainingBytes
+init|=
+name|checksumLen
+operator|-
+name|skip
 decl_stmt|;
 name|lastCrc
 operator|=
@@ -3421,9 +3639,10 @@ argument_list|()
 argument_list|,
 name|offset
 argument_list|,
-name|checksumLen
+name|remainingBytes
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/// flush entire packet, sync if requested
 name|flushOrSync
@@ -3706,10 +3925,6 @@ name|offsetInBlock
 operator|-
 name|lastCacheManagementOffset
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|SYNC_FILE_RANGE_WRITE
 argument_list|)
 expr_stmt|;
@@ -3730,10 +3945,6 @@ name|offsetInBlock
 operator|-
 name|lastCacheManagementOffset
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|SYNC_FILE_RANGE_WRITE
 argument_list|)
 expr_stmt|;
@@ -3785,10 +3996,6 @@ literal|0
 argument_list|,
 name|dropPos
 argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
 name|POSIX_FADV_DONTNEED
 argument_list|)
 expr_stmt|;
@@ -4194,71 +4401,6 @@ operator|!
 name|isTransfer
 condition|)
 block|{
-name|File
-name|blockFile
-init|=
-operator|(
-operator|(
-name|ReplicaInPipeline
-operator|)
-name|replicaInfo
-operator|)
-operator|.
-name|getBlockFile
-argument_list|()
-decl_stmt|;
-name|File
-name|restartMeta
-init|=
-operator|new
-name|File
-argument_list|(
-name|blockFile
-operator|.
-name|getParent
-argument_list|()
-operator|+
-name|File
-operator|.
-name|pathSeparator
-operator|+
-literal|"."
-operator|+
-name|blockFile
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|".restart"
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|restartMeta
-operator|.
-name|exists
-argument_list|()
-operator|&&
-operator|!
-name|restartMeta
-operator|.
-name|delete
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to delete restart meta file: "
-operator|+
-name|restartMeta
-operator|.
-name|getPath
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 try|try
 init|(
 name|Writer
@@ -4267,11 +4409,10 @@ init|=
 operator|new
 name|OutputStreamWriter
 argument_list|(
-operator|new
-name|FileOutputStream
-argument_list|(
-name|restartMeta
-argument_list|)
+name|replicaInfo
+operator|.
+name|createRestartMetaStream
+argument_list|()
 argument_list|,
 literal|"UTF-8"
 argument_list|)

@@ -30,6 +30,36 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|InetAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|UnknownHostException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -420,7 +450,7 @@ name|SYMLINK_NO_PRIVILEGE
 init|=
 literal|2
 decl_stmt|;
-comment|/**    * convert an array of FileStatus to an array of Path    *     * @param stats    *          an array of FileStatus objects    * @return an array of paths corresponding to the input    */
+comment|/**    * convert an array of FileStatus to an array of Path    *    * @param stats    *          an array of FileStatus objects    * @return an array of paths corresponding to the input    */
 DECL|method|stat2Paths (FileStatus[] stats)
 specifier|public
 specifier|static
@@ -817,7 +847,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Delete the contents of a directory, not the directory itself.  If    * we return false, the directory may be partially-deleted.    * If dir is a symlink to a directory, all the contents of the actual    * directory pointed to by dir will be deleted.    * @param tryGrantPermissions if 'true', try grant +rwx permissions to this     * and all the underlying directories before trying to delete their contents.    */
+comment|/**    * Delete the contents of a directory, not the directory itself.  If    * we return false, the directory may be partially-deleted.    * If dir is a symlink to a directory, all the contents of the actual    * directory pointed to by dir will be deleted.    * @param tryGrantPermissions if 'true', try grant +rwx permissions to this    * and all the underlying directories before trying to delete their contents.    */
 DECL|method|fullyDeleteContents (final File dir, final boolean tryGrantPermissions)
 specifier|public
 specifier|static
@@ -977,7 +1007,7 @@ return|return
 name|deletionSucceeded
 return|;
 block|}
-comment|/**    * Recursively delete a directory.    *     * @param fs {@link FileSystem} on which the path is present    * @param dir directory to recursively delete     * @throws IOException    * @deprecated Use {@link FileSystem#delete(Path, boolean)}    */
+comment|/**    * Recursively delete a directory.    *    * @param fs {@link FileSystem} on which the path is present    * @param dir directory to recursively delete    * @throws IOException    * @deprecated Use {@link FileSystem#delete(Path, boolean)}    */
 annotation|@
 name|Deprecated
 DECL|method|fullyDelete (FileSystem fs, Path dir)
@@ -2109,6 +2139,29 @@ name|e
 throw|;
 block|}
 block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|src
+operator|.
+name|canRead
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|src
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|": Permission denied"
+argument_list|)
+throw|;
+block|}
 else|else
 block|{
 throw|throw
@@ -2511,7 +2564,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Convert a os-native filename to a path that works for the shell.    * @param file The filename to convert    * @param makeCanonicalPath     *          Whether to make canonical path for the file passed    * @return The unix pathname    * @throws IOException on windows, there can be problems with the subprocess    */
+comment|/**    * Convert a os-native filename to a path that works for the shell.    * @param file The filename to convert    * @param makeCanonicalPath    *          Whether to make canonical path for the file passed    * @return The unix pathname    * @throws IOException on windows, there can be problems with the subprocess    */
 DECL|method|makeShellPath (File file, boolean makeCanonicalPath)
 specifier|public
 specifier|static
@@ -2555,7 +2608,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Takes an input dir and returns the du on that local directory. Very basic    * implementation.    *     * @param dir    *          The input dir to get the disk space of this local dir    * @return The total disk space of the input local directory    */
+comment|/**    * Takes an input dir and returns the du on that local directory. Very basic    * implementation.    *    * @param dir    *          The input dir to get the disk space of this local dir    * @return The total disk space of the input local directory    */
 DECL|method|getDU (File dir)
 specifier|public
 specifier|static
@@ -2911,7 +2964,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Given a Tar File as input it will untar the file in a the untar directory    * passed as the second parameter    *     * This utility will untar ".tar" files and ".tar.gz","tgz" files.    *      * @param inFile The tar file as input.     * @param untarDir The untar directory where to untar the tar file.    * @throws IOException    */
+comment|/**    * Given a Tar File as input it will untar the file in a the untar directory    * passed as the second parameter    *    * This utility will untar ".tar" files and ".tar.gz","tgz" files.    *    * @param inFile The tar file as input.    * @param untarDir The untar directory where to untar the tar file.    * @throws IOException    */
 DECL|method|unTar (File inFile, File untarDir)
 specifier|public
 specifier|static
@@ -3441,6 +3494,39 @@ argument_list|)
 throw|;
 block|}
 block|}
+if|if
+condition|(
+name|entry
+operator|.
+name|isLink
+argument_list|()
+condition|)
+block|{
+name|File
+name|src
+init|=
+operator|new
+name|File
+argument_list|(
+name|outputDir
+argument_list|,
+name|entry
+operator|.
+name|getLinkName
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|HardLink
+operator|.
+name|createHardLink
+argument_list|(
+name|src
+argument_list|,
+name|outputFile
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|int
 name|count
 decl_stmt|;
@@ -3530,7 +3616,7 @@ comment|// This is a stub to assist with coordinated change between
 comment|// COMMON and HDFS projects.  It will be removed after the
 comment|// corresponding change is committed to HDFS.
 block|}
-comment|/**    * Create a soft link between a src and destination    * only on a local disk. HDFS does not support this.    * On Windows, when symlink creation fails due to security    * setting, we will log a warning. The return code in this    * case is 2.    *    * @param target the target for symlink     * @param linkname the symlink    * @return 0 on success    */
+comment|/**    * Create a soft link between a src and destination    * only on a local disk. HDFS does not support this.    * On Windows, when symlink creation fails due to security    * setting, we will log a warning. The return code in this    * case is 2.    *    * @param target the target for symlink    * @param linkname the symlink    * @return 0 on success    */
 DECL|method|symLink (String target, String linkname)
 specifier|public
 specifier|static
@@ -5239,7 +5325,7 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * A wrapper for {@link File#listFiles()}. This java.io API returns null     * when a dir is not a directory or for any I/O error. Instead of having    * null check everywhere File#listFiles() is used, we will add utility API    * to get around this problem. For the majority of cases where we prefer     * an IOException to be thrown.    * @param dir directory for which listing should be performed    * @return list of files or empty list    * @exception IOException for invalid directory or for a bad disk.    */
+comment|/**    * A wrapper for {@link File#listFiles()}. This java.io API returns null    * when a dir is not a directory or for any I/O error. Instead of having    * null check everywhere File#listFiles() is used, we will add utility API    * to get around this problem. For the majority of cases where we prefer    * an IOException to be thrown.    * @param dir directory for which listing should be performed    * @return list of files or empty list    * @exception IOException for invalid directory or for a bad disk.    */
 DECL|method|listFiles (File dir)
 specifier|public
 specifier|static
@@ -5286,7 +5372,7 @@ return|return
 name|files
 return|;
 block|}
-comment|/**    * A wrapper for {@link File#list()}. This java.io API returns null     * when a dir is not a directory or for any I/O error. Instead of having    * null check everywhere File#list() is used, we will add utility API    * to get around this problem. For the majority of cases where we prefer     * an IOException to be thrown.    * @param dir directory for which listing should be performed    * @return list of file names or empty string list    * @exception IOException for invalid directory or for a bad disk.    */
+comment|/**    * A wrapper for {@link File#list()}. This java.io API returns null    * when a dir is not a directory or for any I/O error. Instead of having    * null check everywhere File#list() is used, we will add utility API    * to get around this problem. For the majority of cases where we prefer    * an IOException to be thrown.    * @param dir directory for which listing should be performed    * @return list of file names or empty string list    * @exception IOException for invalid directory or for a bad disk.    */
 DECL|method|list (File dir)
 specifier|public
 specifier|static
@@ -5370,7 +5456,7 @@ name|callerEnv
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a jar file at the given path, containing a manifest with a classpath    * that references all specified entries.    *     * Some platforms may have an upper limit on command line length.  For example,    * the maximum command line length on Windows is 8191 characters, but the    * length of the classpath may exceed this.  To work around this limitation,    * use this method to create a small intermediate jar with a manifest that    * contains the full classpath.  It returns the absolute path to the new jar,    * which the caller may set as the classpath for a new process.    *     * Environment variable evaluation is not supported within a jar manifest, so    * this method expands environment variables before inserting classpath entries    * to the manifest.  The method parses environment variables according to    * platform-specific syntax (%VAR% on Windows, or $VAR otherwise).  On Windows,    * environment variables are case-insensitive.  For example, %VAR% and %var%    * evaluate to the same value.    *     * Specifying the classpath in a jar manifest does not support wildcards, so    * this method expands wildcards internally.  Any classpath entry that ends    * with * is translated to all files at that path with extension .jar or .JAR.    *     * @param inputClassPath String input classpath to bundle into the jar manifest    * @param pwd Path to working directory to save jar    * @param targetDir path to where the jar execution will have its working dir    * @param callerEnv Map<String, String> caller's environment variables to use    *   for expansion    * @return String[] with absolute path to new jar in position 0 and    *   unexpanded wild card entry path in position 1    * @throws IOException if there is an I/O error while writing the jar file    */
+comment|/**    * Create a jar file at the given path, containing a manifest with a classpath    * that references all specified entries.    *    * Some platforms may have an upper limit on command line length.  For example,    * the maximum command line length on Windows is 8191 characters, but the    * length of the classpath may exceed this.  To work around this limitation,    * use this method to create a small intermediate jar with a manifest that    * contains the full classpath.  It returns the absolute path to the new jar,    * which the caller may set as the classpath for a new process.    *    * Environment variable evaluation is not supported within a jar manifest, so    * this method expands environment variables before inserting classpath entries    * to the manifest.  The method parses environment variables according to    * platform-specific syntax (%VAR% on Windows, or $VAR otherwise).  On Windows,    * environment variables are case-insensitive.  For example, %VAR% and %var%    * evaluate to the same value.    *    * Specifying the classpath in a jar manifest does not support wildcards, so    * this method expands wildcards internally.  Any classpath entry that ends    * with * is translated to all files at that path with extension .jar or .JAR.    *    * @param inputClassPath String input classpath to bundle into the jar manifest    * @param pwd Path to working directory to save jar    * @param targetDir path to where the jar execution will have its working dir    * @param callerEnv Map<String, String> caller's environment variables to use    *   for expansion    * @return String[] with absolute path to new jar in position 0 and    *   unexpanded wild card entry path in position 1    * @throws IOException if there is an I/O error while writing the jar file    */
 DECL|method|createJarWithClassPath (String inputClassPath, Path pwd, Path targetDir, Map<String, String> callerEnv)
 specifier|public
 specifier|static
@@ -5927,6 +6013,250 @@ block|}
 decl_stmt|;
 return|return
 name|jarCp
+return|;
+block|}
+DECL|method|compareFs (FileSystem srcFs, FileSystem destFs)
+specifier|public
+specifier|static
+name|boolean
+name|compareFs
+parameter_list|(
+name|FileSystem
+name|srcFs
+parameter_list|,
+name|FileSystem
+name|destFs
+parameter_list|)
+block|{
+if|if
+condition|(
+name|srcFs
+operator|==
+literal|null
+operator|||
+name|destFs
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+name|URI
+name|srcUri
+init|=
+name|srcFs
+operator|.
+name|getUri
+argument_list|()
+decl_stmt|;
+name|URI
+name|dstUri
+init|=
+name|destFs
+operator|.
+name|getUri
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|srcUri
+operator|.
+name|getScheme
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|srcUri
+operator|.
+name|getScheme
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|dstUri
+operator|.
+name|getScheme
+argument_list|()
+argument_list|)
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+name|String
+name|srcHost
+init|=
+name|srcUri
+operator|.
+name|getHost
+argument_list|()
+decl_stmt|;
+name|String
+name|dstHost
+init|=
+name|dstUri
+operator|.
+name|getHost
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|(
+name|srcHost
+operator|!=
+literal|null
+operator|)
+operator|&&
+operator|(
+name|dstHost
+operator|!=
+literal|null
+operator|)
+condition|)
+block|{
+if|if
+condition|(
+name|srcHost
+operator|.
+name|equals
+argument_list|(
+name|dstHost
+argument_list|)
+condition|)
+block|{
+return|return
+name|srcUri
+operator|.
+name|getPort
+argument_list|()
+operator|==
+name|dstUri
+operator|.
+name|getPort
+argument_list|()
+return|;
+block|}
+try|try
+block|{
+name|srcHost
+operator|=
+name|InetAddress
+operator|.
+name|getByName
+argument_list|(
+name|srcHost
+argument_list|)
+operator|.
+name|getCanonicalHostName
+argument_list|()
+expr_stmt|;
+name|dstHost
+operator|=
+name|InetAddress
+operator|.
+name|getByName
+argument_list|(
+name|dstHost
+argument_list|)
+operator|.
+name|getCanonicalHostName
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnknownHostException
+name|ue
+parameter_list|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Could not compare file-systems. Unknown host: "
+argument_list|,
+name|ue
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|srcHost
+operator|.
+name|equals
+argument_list|(
+name|dstHost
+argument_list|)
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|srcHost
+operator|==
+literal|null
+operator|&&
+name|dstHost
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|srcHost
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|// check for ports
+return|return
+name|srcUri
+operator|.
+name|getPort
+argument_list|()
+operator|==
+name|dstUri
+operator|.
+name|getPort
+argument_list|()
 return|;
 block|}
 block|}

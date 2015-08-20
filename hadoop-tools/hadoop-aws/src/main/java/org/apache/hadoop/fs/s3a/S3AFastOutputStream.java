@@ -1404,7 +1404,7 @@ condition|)
 block|{
 name|om
 operator|.
-name|setServerSideEncryption
+name|setSSEAlgorithm
 argument_list|(
 name|serverSideEncryptionAlgorithm
 argument_list|)

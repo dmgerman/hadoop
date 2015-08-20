@@ -62,6 +62,25 @@ literal|true
 argument_list|)
 return|;
 block|}
+DECL|method|appsTableInit (boolean isResourceManager)
+specifier|public
+specifier|static
+name|String
+name|appsTableInit
+parameter_list|(
+name|boolean
+name|isResourceManager
+parameter_list|)
+block|{
+return|return
+name|appsTableInit
+argument_list|(
+literal|false
+argument_list|,
+name|isResourceManager
+argument_list|)
+return|;
+block|}
 DECL|method|appsTableInit ( boolean isFairSchedulerPage, boolean isResourceManager)
 specifier|public
 specifier|static
@@ -167,7 +186,7 @@ name|isFairSchedulerPage
 condition|?
 literal|"[6, 7]"
 else|:
-literal|"[5, 6]"
+literal|"[6, 7]"
 operator|)
 argument_list|)
 operator|.
@@ -190,7 +209,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"[11]"
+literal|"[13]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -204,7 +223,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"[10]"
+literal|"[13]"
 argument_list|)
 expr_stmt|;
 block|}

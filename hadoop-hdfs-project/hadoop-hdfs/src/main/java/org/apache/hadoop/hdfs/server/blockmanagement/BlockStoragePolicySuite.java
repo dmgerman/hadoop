@@ -465,7 +465,7 @@ name|BlockStoragePolicy
 argument_list|(
 name|hotId
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|,
@@ -510,7 +510,7 @@ name|BlockStoragePolicy
 argument_list|(
 name|warmId
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|WARM_STORAGE_POLICY_NAME
 argument_list|,
@@ -572,7 +572,7 @@ name|BlockStoragePolicy
 argument_list|(
 name|coldId
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|COLD_STORAGE_POLICY_NAME
 argument_list|,

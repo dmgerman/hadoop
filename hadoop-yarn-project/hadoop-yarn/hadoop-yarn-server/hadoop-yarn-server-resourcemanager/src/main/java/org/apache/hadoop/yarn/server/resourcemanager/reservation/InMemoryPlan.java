@@ -172,24 +172,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ReservationRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Resource
 import|;
 end_import
@@ -213,6 +195,50 @@ operator|.
 name|exceptions
 operator|.
 name|PlanningException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|reservation
+operator|.
+name|planning
+operator|.
+name|Planner
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|reservation
+operator|.
+name|planning
+operator|.
+name|ReservationAgent
 import|;
 end_import
 
@@ -324,8 +350,13 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class represents an in memory representation of the state of our  * reservation system, and provides accelerated access to both individual  * reservations and aggregate utilization of resources over time.  */
+end_comment
+
 begin_class
 DECL|class|InMemoryPlan
+specifier|public
 class|class
 name|InMemoryPlan
 implements|implements
@@ -532,6 +563,7 @@ name|Resource
 name|totalCapacity
 decl_stmt|;
 DECL|method|InMemoryPlan (QueueMetrics queueMetrics, SharingPolicy policy, ReservationAgent agent, Resource totalCapacity, long step, ResourceCalculator resCalc, Resource minAlloc, Resource maxAlloc, String queueName, Planner replanner, boolean getMoveOnExpiry)
+specifier|public
 name|InMemoryPlan
 parameter_list|(
 name|QueueMetrics
@@ -599,6 +631,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|InMemoryPlan (QueueMetrics queueMetrics, SharingPolicy policy, ReservationAgent agent, Resource totalCapacity, long step, ResourceCalculator resCalc, Resource minAlloc, Resource maxAlloc, String queueName, Planner replanner, boolean getMoveOnExpiry, Clock clock)
+specifier|public
 name|InMemoryPlan
 parameter_list|(
 name|QueueMetrics
@@ -756,7 +789,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|allocationRequests
 init|=
@@ -819,7 +852,7 @@ name|Entry
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|r
 range|:
@@ -882,7 +915,7 @@ name|Map
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|allocationRequests
 init|=
@@ -917,7 +950,7 @@ name|Entry
 argument_list|<
 name|ReservationInterval
 argument_list|,
-name|ReservationRequest
+name|Resource
 argument_list|>
 name|r
 range|:

@@ -446,6 +446,34 @@ name|Reducer
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|MRJobConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|TaskAttemptID
+import|;
+end_import
+
 begin_comment
 comment|/**  * This program executes a specified operation that applies load to   * the NameNode.  *   * When run simultaneously on multiple nodes, this program functions   * as a stress-test and benchmark for namenode, especially when   * the number of bytes written to each file is small.  *   * Valid operations are:  *   create_write  *   open_read  *   rename  *   delete  *   * NOTE: The open_read, rename and delete operations assume that the files  *       they operate on are already available. The create_write operation   *       must be run before running the other operations.  */
 end_comment
@@ -997,7 +1025,7 @@ literal|"\t-replicationFactorPerFile<Replication factor for the files."
 operator|+
 literal|" default is 1. This is not mandatory>\n"
 operator|+
-literal|"\t-baseDir<base DFS path. default is /becnhmarks/NNBench. "
+literal|"\t-baseDir<base DFS path. default is /benchmarks/NNBench. "
 operator|+
 literal|"This is not mandatory>\n"
 operator|+
@@ -3492,6 +3520,29 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+name|int
+name|taskId
+init|=
+name|TaskAttemptID
+operator|.
+name|forName
+argument_list|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|MRJobConfig
+operator|.
+name|TASK_ATTEMPT_ID
+argument_list|)
+argument_list|)
+operator|.
+name|getTaskID
+argument_list|()
+operator|.
+name|getId
+argument_list|()
+decl_stmt|;
 name|long
 name|totalTimeTPmS
 init|=
@@ -3533,6 +3584,15 @@ name|barrier
 argument_list|()
 condition|)
 block|{
+name|String
+name|filePrefix
+init|=
+literal|"file_"
+operator|+
+name|taskId
+operator|+
+literal|"_"
+decl_stmt|;
 if|if
 condition|(
 name|op
@@ -3552,11 +3612,7 @@ argument_list|()
 expr_stmt|;
 name|doCreateWriteOp
 argument_list|(
-literal|"file_"
-operator|+
-name|hostName
-operator|+
-literal|"_"
+name|filePrefix
 argument_list|,
 name|reporter
 argument_list|)
@@ -3582,11 +3638,7 @@ argument_list|()
 expr_stmt|;
 name|doOpenReadOp
 argument_list|(
-literal|"file_"
-operator|+
-name|hostName
-operator|+
-literal|"_"
+name|filePrefix
 argument_list|,
 name|reporter
 argument_list|)
@@ -3612,11 +3664,7 @@ argument_list|()
 expr_stmt|;
 name|doRenameOp
 argument_list|(
-literal|"file_"
-operator|+
-name|hostName
-operator|+
-literal|"_"
+name|filePrefix
 argument_list|,
 name|reporter
 argument_list|)
@@ -3642,11 +3690,7 @@ argument_list|()
 expr_stmt|;
 name|doDeleteOp
 argument_list|(
-literal|"file_"
-operator|+
-name|hostName
-operator|+
-literal|"_"
+name|filePrefix
 argument_list|,
 name|reporter
 argument_list|)

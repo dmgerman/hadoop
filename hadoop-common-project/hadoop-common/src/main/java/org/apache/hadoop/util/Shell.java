@@ -70,6 +70,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|InterruptedIOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|charset
@@ -1183,6 +1193,15 @@ name|pid
 block|}
 return|;
 block|}
+DECL|field|ENV_NAME_REGEX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ENV_NAME_REGEX
+init|=
+literal|"[A-Za-z_][A-Za-z0-9_]*"
+decl_stmt|;
 comment|/** Return a regular expression string that match environment variables */
 DECL|method|getEnvironmentVariableRegex ()
 specifier|public
@@ -1196,9 +1215,17 @@ operator|(
 name|WINDOWS
 operator|)
 condition|?
-literal|"%([A-Za-z_][A-Za-z0-9_]*?)%"
+literal|"%("
+operator|+
+name|ENV_NAME_REGEX
+operator|+
+literal|"?)%"
 else|:
-literal|"\\$([A-Za-z_][A-Za-z0-9_]*)"
+literal|"\\$("
+operator|+
+name|ENV_NAME_REGEX
+operator|+
+literal|")"
 return|;
 block|}
 comment|/**    * Returns a File referencing a script with the given basename, inside the    * given parent directory.  The file extension is inferred by platform: ".cmd"    * on Windows, or ".sh" otherwise.    *     * @param parent File parent directory    * @param basename String script file basename    * @return File referencing the script in the directory    */
@@ -1786,6 +1813,54 @@ name|setsidSupported
 operator|=
 literal|false
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Error
+name|err
+parameter_list|)
+block|{
+if|if
+condition|(
+name|err
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"posix_spawn is not "
+operator|+
+literal|"a supported process launch mechanism"
+argument_list|)
+operator|&&
+operator|(
+name|Shell
+operator|.
+name|FREEBSD
+operator|||
+name|Shell
+operator|.
+name|MAC
+operator|)
+condition|)
+block|{
+comment|// HADOOP-11924: This is a workaround to avoid failure of class init
+comment|// by JDK issue on TR locale(JDK-8047340).
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Avoiding JDK-8047340 on BSD-based systems."
+argument_list|,
+name|err
+argument_list|)
+expr_stmt|;
+name|setsidSupported
+operator|=
+literal|false
+expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -2444,15 +2519,27 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{
-throw|throw
+name|InterruptedIOException
+name|iie
+init|=
 operator|new
-name|IOException
+name|InterruptedIOException
 argument_list|(
 name|ie
 operator|.
 name|toString
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|iie
+operator|.
+name|initCause
+argument_list|(
+name|ie
+argument_list|)
+expr_stmt|;
+throw|throw
+name|iie
 throw|;
 block|}
 finally|finally

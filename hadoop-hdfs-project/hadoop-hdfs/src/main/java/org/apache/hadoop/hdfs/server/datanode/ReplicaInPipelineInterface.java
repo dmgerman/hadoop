@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStream
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -140,6 +150,15 @@ parameter_list|,
 name|DataChecksum
 name|requestedChecksum
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Create an output stream to write restart metadata in case of datanode    * shutting down for quick restart.    *    * @return output stream for writing.    * @throws IOException if any error occurs    */
+DECL|method|createRestartMetaStream ()
+specifier|public
+name|OutputStream
+name|createRestartMetaStream
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

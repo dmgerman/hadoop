@@ -69,6 +69,7 @@ class|class
 name|ResourceLimits
 block|{
 DECL|field|limit
+specifier|private
 specifier|volatile
 name|Resource
 name|limit
@@ -82,6 +83,15 @@ specifier|volatile
 name|Resource
 name|amountNeededUnreserve
 decl_stmt|;
+comment|// How much resource you can use for next allocation, if this isn't enough for
+comment|// next container allocation, you may need to consider unreserve some
+comment|// containers.
+DECL|field|headroom
+specifier|private
+specifier|volatile
+name|Resource
+name|headroom
+decl_stmt|;
 DECL|method|ResourceLimits (Resource limit)
 specifier|public
 name|ResourceLimits
@@ -91,19 +101,14 @@ name|limit
 parameter_list|)
 block|{
 name|this
-operator|.
-name|amountNeededUnreserve
-operator|=
+argument_list|(
+name|limit
+argument_list|,
 name|Resources
 operator|.
 name|none
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|limit
-operator|=
-name|limit
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|ResourceLimits (Resource limit, Resource amountNeededUnreserve)
@@ -125,6 +130,12 @@ name|amountNeededUnreserve
 expr_stmt|;
 name|this
 operator|.
+name|headroom
+operator|=
+name|limit
+expr_stmt|;
+name|this
+operator|.
 name|limit
 operator|=
 name|limit
@@ -139,6 +150,32 @@ block|{
 return|return
 name|limit
 return|;
+block|}
+DECL|method|getHeadroom ()
+specifier|public
+name|Resource
+name|getHeadroom
+parameter_list|()
+block|{
+return|return
+name|headroom
+return|;
+block|}
+DECL|method|setHeadroom (Resource headroom)
+specifier|public
+name|void
+name|setHeadroom
+parameter_list|(
+name|Resource
+name|headroom
+parameter_list|)
+block|{
+name|this
+operator|.
+name|headroom
+operator|=
+name|headroom
+expr_stmt|;
 block|}
 DECL|method|getAmountNeededUnreserve ()
 specifier|public

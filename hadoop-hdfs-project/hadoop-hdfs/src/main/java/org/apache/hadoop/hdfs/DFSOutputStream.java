@@ -88,34 +88,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|HadoopIllegalArgumentException
@@ -722,6 +694,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -771,12 +763,12 @@ block|{
 DECL|field|LOG
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|DFSOutputStream
 operator|.
@@ -1039,7 +1031,8 @@ name|isClosed
 argument_list|()
 condition|)
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getLastException
 argument_list|()
@@ -1064,7 +1057,8 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|streamerClosed
 argument_list|()
@@ -1078,7 +1072,8 @@ name|DatanodeInfo
 index|[]
 name|currentNodes
 init|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getNodes
 argument_list|()
@@ -1138,7 +1133,7 @@ return|return
 name|value
 return|;
 block|}
-comment|/**     * @return the object for computing checksum.    *         The type is NULL if checksum is not computed.    */
+comment|/**    * @return the object for computing checksum.    *         The type is NULL if checksum is not computed.    */
 DECL|method|getChecksum4Compute (DataChecksum checksum, HdfsFileStatus stat)
 specifier|private
 specifier|static
@@ -1923,7 +1918,8 @@ argument_list|,
 name|byteArrayManager
 argument_list|)
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setBytesCurBlock
 argument_list|(
@@ -1938,7 +1934,8 @@ argument_list|(
 name|stat
 argument_list|)
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setPipelineInConstruction
 argument_list|(
@@ -2101,7 +2098,8 @@ argument_list|(
 name|freeInCksum
 argument_list|)
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setAppendChunk
 argument_list|(
@@ -2192,10 +2190,10 @@ if|if
 condition|(
 name|stat
 operator|.
-name|getReplication
+name|getErasureCodingPolicy
 argument_list|()
-operator|==
-literal|0
+operator|!=
+literal|null
 condition|)
 block|{
 throw|throw
@@ -2455,12 +2453,14 @@ name|packetSize
 argument_list|,
 name|chunksPerPacket
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAndIncCurrentSeqno
 argument_list|()
@@ -2505,7 +2505,8 @@ name|chunksPerPacket
 operator|+
 literal|", bytesCurBlock="
 operator|+
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2540,7 +2541,8 @@ operator|.
 name|incNumChunks
 argument_list|()
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|incBytesCurBlock
 argument_list|(
@@ -2560,7 +2562,8 @@ operator|.
 name|getMaxChunks
 argument_list|()
 operator|||
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2580,7 +2583,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|waitAndQueuePacket
 argument_list|(
@@ -2599,50 +2603,36 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"enqueue full "
+literal|"enqueue full {}, src={}, bytesCurBlock={}, blockSize={},"
 operator|+
+literal|" appendChunk={}, {}"
+argument_list|,
 name|currentPacket
-operator|+
-literal|", src="
-operator|+
+argument_list|,
 name|src
-operator|+
-literal|", bytesCurBlock="
-operator|+
-name|streamer
+argument_list|,
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
-operator|+
-literal|", blockSize="
-operator|+
+argument_list|,
 name|blockSize
-operator|+
-literal|", appendChunk="
-operator|+
-name|streamer
+argument_list|,
+name|getStreamer
+argument_list|()
 operator|.
 name|getAppendChunk
 argument_list|()
-operator|+
-literal|", "
-operator|+
-name|streamer
+argument_list|,
+name|getStreamer
+argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|enqueueCurrentPacket
 argument_list|()
 expr_stmt|;
@@ -2653,10 +2643,10 @@ name|endBlock
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** create an empty packet to mark the end of the block */
-DECL|method|setCurrentPacket2Empty ()
+comment|/** create an empty packet to mark the end of the block. */
+DECL|method|setCurrentPacketToEmpty ()
 name|void
-name|setCurrentPacket2Empty
+name|setCurrentPacketToEmpty
 parameter_list|()
 throws|throws
 name|InterruptedIOException
@@ -2669,12 +2659,14 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAndIncCurrentSeqno
 argument_list|()
@@ -2699,12 +2691,14 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAppendChunk
 argument_list|()
 operator|&&
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2714,7 +2708,8 @@ operator|==
 literal|0
 condition|)
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setAppendChunk
 argument_list|(
@@ -2728,7 +2723,8 @@ block|}
 if|if
 condition|(
 operator|!
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAppendChunk
 argument_list|()
@@ -2747,7 +2743,8 @@ call|)
 argument_list|(
 name|blockSize
 operator|-
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2782,7 +2779,8 @@ name|IOException
 block|{
 if|if
 condition|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -2790,13 +2788,14 @@ operator|==
 name|blockSize
 condition|)
 block|{
-name|setCurrentPacket2Empty
+name|setCurrentPacketToEmpty
 argument_list|()
 expr_stmt|;
 name|enqueueCurrentPacket
 argument_list|()
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setBytesCurBlock
 argument_list|(
@@ -2906,7 +2905,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * The expected semantics is all data have flushed out to all replicas     * and all replicas have done posix fsync equivalent - ie the OS has     * flushed it to the disk device (but the disk may have it in its cache).    *     * Note that only the current block is flushed to the disk device.    * To guarantee durable sync across block boundaries the stream should    * be created with {@link CreateFlag#SYNC_BLOCK}.    *     * @param syncFlags    *          Indicate the semantic of the sync. Currently used to specify    *          whether or not to update the block length in NameNode.    */
+comment|/**    * The expected semantics is all data have flushed out to all replicas     * and all replicas have done posix fsync equivalent - ie the OS has     * flushed it to the disk device (but the disk may have it in its cache).    *    * Note that only the current block is flushed to the disk device.    * To guarantee durable sync across block boundaries the stream should    * be created with {@link CreateFlag#SYNC_BLOCK}.    *    * @param syncFlags    *          Indicate the semantic of the sync. Currently used to specify    *          whether or not to update the block length in NameNode.    */
 DECL|method|hsync (EnumSet<SyncFlag> syncFlags)
 specifier|public
 name|void
@@ -2952,7 +2951,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Flush/Sync buffered data to DataNodes.    *     * @param isSync    *          Whether or not to require all replicas to flush data to the disk    *          device    * @param syncFlags    *          Indicate extra detailed semantic of the flush/sync. Currently    *          mainly used to specify whether or not to update the file length in    *          the NameNode    * @throws IOException    */
+comment|/**    * Flush/Sync buffered data to DataNodes.    *    * @param isSync    *          Whether or not to require all replicas to flush data to the disk    *          device    * @param syncFlags    *          Indicate extra detailed semantic of the flush/sync. Currently    *          mainly used to specify whether or not to update the file length in    *          the NameNode    * @throws IOException    */
 DECL|method|flushOrSync (boolean isSync, EnumSet<SyncFlag> syncFlags)
 specifier|private
 name|void
@@ -3052,7 +3051,8 @@ literal|"DFSClient flush(): "
 operator|+
 literal|" bytesCurBlock="
 operator|+
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -3072,14 +3072,16 @@ if|if
 condition|(
 name|lastFlushOffset
 operator|!=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 condition|)
 block|{
 assert|assert
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -3089,7 +3091,8 @@ assert|;
 comment|// record the valid offset of this flush
 name|lastFlushOffset
 operator|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -3117,12 +3120,14 @@ name|packetSize
 argument_list|,
 name|chunksPerPacket
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAndIncCurrentSeqno
 argument_list|()
@@ -3138,7 +3143,8 @@ if|if
 condition|(
 name|isSync
 operator|&&
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -3152,7 +3158,8 @@ block|{
 comment|// Nothing to send right now,
 comment|// and the block was partially written,
 comment|// and sync was requested.
-comment|// So send an empty sync packet if we do not end the block right now
+comment|// So send an empty sync packet if we do not end the block right
+comment|// now
 name|currentPacket
 operator|=
 name|createPacket
@@ -3161,12 +3168,14 @@ name|packetSize
 argument_list|,
 name|chunksPerPacket
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAndIncCurrentSeqno
 argument_list|()
@@ -3219,7 +3228,8 @@ if|if
 condition|(
 name|endBlock
 operator|&&
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -3237,12 +3247,14 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
 argument_list|,
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getAndIncCurrentSeqno
 argument_list|()
@@ -3262,7 +3274,8 @@ expr_stmt|;
 name|enqueueCurrentPacket
 argument_list|()
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setBytesCurBlock
 argument_list|(
@@ -3278,11 +3291,13 @@ else|else
 block|{
 comment|// Restore state of stream. Record the last flush offset
 comment|// of the last full chunk that was flushed.
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setBytesCurBlock
 argument_list|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -3293,14 +3308,16 @@ expr_stmt|;
 block|}
 name|toWaitFor
 operator|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getLastQueuedSeqno
 argument_list|()
 expr_stmt|;
 block|}
 comment|// end synchronized
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|waitForAckedSeqno
 argument_list|(
@@ -3312,7 +3329,8 @@ if|if
 condition|(
 name|updateLength
 operator|||
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getPersistBlocks
 argument_list|()
@@ -3329,12 +3347,14 @@ block|{
 if|if
 condition|(
 operator|!
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|streamerClosed
 argument_list|()
 operator|&&
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBlock
 argument_list|()
@@ -3344,7 +3364,8 @@ condition|)
 block|{
 name|lastBlockLength
 operator|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBlock
 argument_list|()
@@ -3360,7 +3381,8 @@ comment|// update length in NN is required, then persist block locations on
 comment|// namenode.
 if|if
 condition|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getPersistBlocks
 argument_list|()
@@ -3433,13 +3455,15 @@ block|{
 if|if
 condition|(
 operator|!
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|streamerClosed
 argument_list|()
 condition|)
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setHflush
 argument_list|()
@@ -3489,7 +3513,8 @@ name|isClosed
 argument_list|()
 condition|)
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getLastException
 argument_list|()
@@ -3528,7 +3553,7 @@ name|getCurrentBlockReplication
 argument_list|()
 return|;
 block|}
-comment|/**    * Note that this is not a public API;    * use {@link HdfsDataOutputStream#getCurrentBlockReplication()} instead.    *     * @return the number of valid replicas of the current block    */
+comment|/**    * Note that this is not a public API;    * use {@link HdfsDataOutputStream#getCurrentBlockReplication()} instead.    *    * @return the number of valid replicas of the current block    */
 DECL|method|getCurrentBlockReplication ()
 specifier|public
 specifier|synchronized
@@ -3548,7 +3573,8 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|streamerClosed
 argument_list|()
@@ -3563,7 +3589,8 @@ name|DatanodeInfo
 index|[]
 name|currentNodes
 init|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getNodes
 argument_list|()
@@ -3614,7 +3641,8 @@ expr_stmt|;
 comment|//
 comment|// If there is data in the current buffer, send it across
 comment|//
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|queuePacket
 argument_list|(
@@ -3627,13 +3655,15 @@ literal|null
 expr_stmt|;
 name|toWaitFor
 operator|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getLastQueuedSeqno
 argument_list|()
 expr_stmt|;
 block|}
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|waitForAckedSeqno
 argument_list|(
@@ -3648,7 +3678,8 @@ name|void
 name|start
 parameter_list|()
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|start
 argument_list|()
@@ -3671,7 +3702,8 @@ condition|)
 block|{
 return|return;
 block|}
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getLastException
 argument_list|()
@@ -3720,7 +3752,8 @@ block|{
 return|return
 name|closed
 operator|||
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|streamerClosed
 argument_list|()
@@ -3735,7 +3768,8 @@ name|closed
 operator|=
 literal|true
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|release
 argument_list|()
@@ -3756,19 +3790,22 @@ name|IOException
 block|{
 try|try
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|close
 argument_list|(
 name|force
 argument_list|)
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|join
 argument_list|()
 expr_stmt|;
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|closeSocket
 argument_list|()
@@ -3790,7 +3827,8 @@ throw|;
 block|}
 finally|finally
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setSocketToNull
 argument_list|()
@@ -3854,7 +3892,8 @@ name|isClosed
 argument_list|()
 condition|)
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getLastException
 argument_list|()
@@ -3885,7 +3924,8 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
@@ -3893,7 +3933,7 @@ operator|!=
 literal|0
 condition|)
 block|{
-name|setCurrentPacket2Empty
+name|setCurrentPacketToEmpty
 argument_list|()
 expr_stmt|;
 block|}
@@ -3905,7 +3945,8 @@ comment|// get last block before destroying the streamer
 name|ExtendedBlock
 name|lastBlock
 init|=
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBlock
 argument_list|()
@@ -4206,7 +4247,8 @@ name|long
 name|period
 parameter_list|)
 block|{
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|setArtificialSlowdown
 argument_list|(
@@ -4282,7 +4324,8 @@ name|getBlockToken
 parameter_list|()
 block|{
 return|return
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBlockToken
 argument_list|()
@@ -4362,7 +4405,8 @@ name|getBlock
 parameter_list|()
 block|{
 return|return
-name|streamer
+name|getStreamer
+argument_list|()
 operator|.
 name|getBlock
 argument_list|()
@@ -4378,6 +4422,17 @@ parameter_list|()
 block|{
 return|return
 name|fileId
+return|;
+block|}
+comment|/**    * Returns the data streamer object.    */
+DECL|method|getStreamer ()
+specifier|protected
+name|DataStreamer
+name|getStreamer
+parameter_list|()
+block|{
+return|return
+name|streamer
 return|;
 block|}
 annotation|@

@@ -58,16 +58,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Map
 import|;
 end_import
@@ -166,41 +156,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ReservationRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Resource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|Records
 import|;
 end_import
 
@@ -255,7 +211,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is a run length encoded sparse data structure that maintains resource  * allocations over time  */
+comment|/**  * This is a run length encoded sparse data structure that maintains resource  * allocations over time.  */
 end_comment
 
 begin_class
@@ -466,8 +422,8 @@ argument_list|)
 operator|)
 return|;
 block|}
-comment|/**    * Add a resource for the specified interval    *     * @param reservationInterval the interval for which the resource is to be    *          added    * @param capacity the resource to be added    * @return true if addition is successful, false otherwise    */
-DECL|method|addInterval (ReservationInterval reservationInterval, ReservationRequest capacity)
+comment|/**    * Add a resource for the specified interval    *    * @param reservationInterval the interval for which the resource is to be    *          added    * @param totCap the resource to be added    * @return true if addition is successful, false otherwise    */
+DECL|method|addInterval (ReservationInterval reservationInterval, Resource totCap)
 specifier|public
 name|boolean
 name|addInterval
@@ -475,31 +431,10 @@ parameter_list|(
 name|ReservationInterval
 name|reservationInterval
 parameter_list|,
-name|ReservationRequest
-name|capacity
-parameter_list|)
-block|{
 name|Resource
 name|totCap
-init|=
-name|Resources
-operator|.
-name|multiply
-argument_list|(
-name|capacity
-operator|.
-name|getCapability
-argument_list|()
-argument_list|,
-operator|(
-name|float
-operator|)
-name|capacity
-operator|.
-name|getNumContainers
-argument_list|()
-argument_list|)
-decl_stmt|;
+parameter_list|)
+block|{
 if|if
 condition|(
 name|totCap
@@ -829,124 +764,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Add multiple resources for the specified interval    *     * @param reservationInterval the interval for which the resource is to be    *          added    * @param ReservationRequests the resources to be added    * @param clusterResource the total resources in the cluster    * @return true if addition is successful, false otherwise    */
-DECL|method|addCompositeInterval (ReservationInterval reservationInterval, List<ReservationRequest> ReservationRequests, Resource clusterResource)
-specifier|public
-name|boolean
-name|addCompositeInterval
-parameter_list|(
-name|ReservationInterval
-name|reservationInterval
-parameter_list|,
-name|List
-argument_list|<
-name|ReservationRequest
-argument_list|>
-name|ReservationRequests
-parameter_list|,
-name|Resource
-name|clusterResource
-parameter_list|)
-block|{
-name|ReservationRequest
-name|aggregateReservationRequest
-init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
-name|ReservationRequest
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|Resource
-name|capacity
-init|=
-name|Resource
-operator|.
-name|newInstance
-argument_list|(
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|ReservationRequest
-name|ReservationRequest
-range|:
-name|ReservationRequests
-control|)
-block|{
-name|Resources
-operator|.
-name|addTo
-argument_list|(
-name|capacity
-argument_list|,
-name|Resources
-operator|.
-name|multiply
-argument_list|(
-name|ReservationRequest
-operator|.
-name|getCapability
-argument_list|()
-argument_list|,
-name|ReservationRequest
-operator|.
-name|getNumContainers
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-name|aggregateReservationRequest
-operator|.
-name|setNumContainers
-argument_list|(
-operator|(
-name|int
-operator|)
-name|Math
-operator|.
-name|ceil
-argument_list|(
-name|Resources
-operator|.
-name|divide
-argument_list|(
-name|resourceCalculator
-argument_list|,
-name|clusterResource
-argument_list|,
-name|capacity
-argument_list|,
-name|minAlloc
-argument_list|)
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|aggregateReservationRequest
-operator|.
-name|setCapability
-argument_list|(
-name|minAlloc
-argument_list|)
-expr_stmt|;
-return|return
-name|addInterval
-argument_list|(
-name|reservationInterval
-argument_list|,
-name|aggregateReservationRequest
-argument_list|)
-return|;
-block|}
-comment|/**    * Removes a resource for the specified interval    *     * @param reservationInterval the interval for which the resource is to be    *          removed    * @param capacity the resource to be removed    * @return true if removal is successful, false otherwise    */
-DECL|method|removeInterval (ReservationInterval reservationInterval, ReservationRequest capacity)
+comment|/**    * Removes a resource for the specified interval    *    * @param reservationInterval the interval for which the resource is to be    *          removed    * @param totCap the resource to be removed    * @return true if removal is successful, false otherwise    */
+DECL|method|removeInterval (ReservationInterval reservationInterval, Resource totCap)
 specifier|public
 name|boolean
 name|removeInterval
@@ -954,31 +773,10 @@ parameter_list|(
 name|ReservationInterval
 name|reservationInterval
 parameter_list|,
-name|ReservationRequest
-name|capacity
-parameter_list|)
-block|{
 name|Resource
 name|totCap
-init|=
-name|Resources
-operator|.
-name|multiply
-argument_list|(
-name|capacity
-operator|.
-name|getCapability
-argument_list|()
-argument_list|,
-operator|(
-name|float
-operator|)
-name|capacity
-operator|.
-name|getNumContainers
-argument_list|()
-argument_list|)
-decl_stmt|;
+parameter_list|)
+block|{
 if|if
 condition|(
 name|totCap
@@ -1234,7 +1032,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns the capacity, i.e. total resources allocated at the specified point    * of time    *     * @param tick the time (UTC in ms) at which the capacity is requested    * @return the resources allocated at the specified time    */
+comment|/**    * Returns the capacity, i.e. total resources allocated at the specified point    * of time    *    * @param tick the time (UTC in ms) at which the capacity is requested    * @return the resources allocated at the specified time    */
 DECL|method|getCapacityAtTime (long tick)
 specifier|public
 name|Resource
@@ -1303,7 +1101,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the timestamp of the earliest resource allocation    *     * @return the timestamp of the first resource allocation    */
+comment|/**    * Get the timestamp of the earliest resource allocation    *    * @return the timestamp of the first resource allocation    */
 DECL|method|getEarliestStartTime ()
 specifier|public
 name|long
@@ -1349,7 +1147,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the timestamp of the latest resource allocation    *     * @return the timestamp of the last resource allocation    */
+comment|/**    * Get the timestamp of the latest resource allocation    *    * @return the timestamp of the last resource allocation    */
 DECL|method|getLatestEndTime ()
 specifier|public
 name|long
@@ -1395,7 +1193,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns true if there are no non-zero entries    *     * @return true if there are no allocations or false otherwise    */
+comment|/**    * Returns true if there are no non-zero entries    *    * @return true if there are no allocations or false otherwise    */
 DECL|method|isEmpty ()
 specifier|public
 name|boolean
@@ -1600,7 +1398,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns the JSON string representation of the current resources allocated    * over time    *     * @return the JSON string representation of the current resources allocated    *         over time    */
+comment|/**    * Returns the JSON string representation of the current resources allocated    * over time    *    * @return the JSON string representation of the current resources allocated    *         over time    */
 DECL|method|toMemJSONString ()
 specifier|public
 name|String
@@ -1705,6 +1503,143 @@ block|{
 comment|// This should not happen
 return|return
 literal|""
+return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Returns the representation of the current resources allocated over time as    * an interval map.    *    * @return the representation of the current resources allocated over time as    *         an interval map.    */
+DECL|method|toIntervalMap ()
+specifier|public
+name|Map
+argument_list|<
+name|ReservationInterval
+argument_list|,
+name|Resource
+argument_list|>
+name|toIntervalMap
+parameter_list|()
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|Map
+argument_list|<
+name|ReservationInterval
+argument_list|,
+name|Resource
+argument_list|>
+name|allocations
+init|=
+operator|new
+name|TreeMap
+argument_list|<
+name|ReservationInterval
+argument_list|,
+name|Resource
+argument_list|>
+argument_list|()
+decl_stmt|;
+comment|// Empty
+if|if
+condition|(
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+name|allocations
+return|;
+block|}
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|Long
+argument_list|,
+name|Resource
+argument_list|>
+name|lastEntry
+init|=
+literal|null
+decl_stmt|;
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|Long
+argument_list|,
+name|Resource
+argument_list|>
+name|entry
+range|:
+name|cumulativeCapacity
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|lastEntry
+operator|!=
+literal|null
+condition|)
+block|{
+name|ReservationInterval
+name|interval
+init|=
+operator|new
+name|ReservationInterval
+argument_list|(
+name|lastEntry
+operator|.
+name|getKey
+argument_list|()
+argument_list|,
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|Resource
+name|resource
+init|=
+name|lastEntry
+operator|.
+name|getValue
+argument_list|()
+decl_stmt|;
+name|allocations
+operator|.
+name|put
+argument_list|(
+name|interval
+argument_list|,
+name|resource
+argument_list|)
+expr_stmt|;
+block|}
+name|lastEntry
+operator|=
+name|entry
+expr_stmt|;
+block|}
+return|return
+name|allocations
 return|;
 block|}
 finally|finally

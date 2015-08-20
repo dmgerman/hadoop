@@ -158,6 +158,50 @@ name|RegisterNodeManagerResponse
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|UnRegisterNodeManagerRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|UnRegisterNodeManagerResponse
+import|;
+end_import
+
+begin_comment
+comment|/**  * This is used by the Node Manager to register/nodeHeartbeat/unregister with  * the ResourceManager.  */
+end_comment
+
 begin_interface
 DECL|interface|ResourceTracker
 specifier|public
@@ -167,7 +211,6 @@ block|{
 annotation|@
 name|Idempotent
 DECL|method|registerNodeManager ( RegisterNodeManagerRequest request)
-specifier|public
 name|RegisterNodeManagerResponse
 name|registerNodeManager
 parameter_list|(
@@ -182,11 +225,24 @@ function_decl|;
 annotation|@
 name|AtMostOnce
 DECL|method|nodeHeartbeat (NodeHeartbeatRequest request)
-specifier|public
 name|NodeHeartbeatResponse
 name|nodeHeartbeat
 parameter_list|(
 name|NodeHeartbeatRequest
+name|request
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+annotation|@
+name|Idempotent
+DECL|method|unRegisterNodeManager ( UnRegisterNodeManagerRequest request)
+name|UnRegisterNodeManagerResponse
+name|unRegisterNodeManager
+parameter_list|(
+name|UnRegisterNodeManagerRequest
 name|request
 parameter_list|)
 throws|throws

@@ -186,7 +186,7 @@ name|EMPTY_ARRAY
 init|=
 block|{}
 decl_stmt|;
-DECL|method|toDatanodeInfos (DatanodeStorageInfo[] storages)
+DECL|method|toDatanodeInfos ( DatanodeStorageInfo[] storages)
 specifier|public
 specifier|static
 name|DatanodeInfo
@@ -1070,11 +1070,11 @@ return|return
 name|result
 return|;
 block|}
-DECL|method|addBlock (BlockInfoContiguous b)
+DECL|method|addBlock (BlockInfo b)
 name|AddBlockResult
 name|addBlock
 parameter_list|(
-name|BlockInfoContiguous
+name|BlockInfo
 name|b
 parameter_list|)
 block|{

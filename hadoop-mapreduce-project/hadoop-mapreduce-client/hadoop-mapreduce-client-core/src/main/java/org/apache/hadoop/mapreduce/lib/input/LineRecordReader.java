@@ -722,7 +722,7 @@ expr_stmt|;
 name|in
 operator|=
 operator|new
-name|SplitLineReader
+name|UncompressedSplitLineReader
 argument_list|(
 name|fileIn
 argument_list|,
@@ -731,6 +731,11 @@ argument_list|,
 name|this
 operator|.
 name|recordDelimiterBytes
+argument_list|,
+name|split
+operator|.
+name|getLength
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|filePosition

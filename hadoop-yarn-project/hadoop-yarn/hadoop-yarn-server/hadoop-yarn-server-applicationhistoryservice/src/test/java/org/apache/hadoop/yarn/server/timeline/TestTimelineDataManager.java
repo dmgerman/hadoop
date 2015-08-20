@@ -437,6 +437,13 @@ argument_list|,
 literal|"admin"
 argument_list|)
 expr_stmt|;
+name|dataManaer
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|adminACLsManager
 operator|=
 operator|new

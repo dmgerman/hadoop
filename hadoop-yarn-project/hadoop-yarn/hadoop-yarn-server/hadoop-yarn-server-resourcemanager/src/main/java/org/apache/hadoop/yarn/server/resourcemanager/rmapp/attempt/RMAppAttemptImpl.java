@@ -1340,7 +1340,7 @@ name|yarn
 operator|.
 name|state
 operator|.
-name|InvalidStateTransitonException
+name|InvalidStateTransitionException
 import|;
 end_import
 
@@ -4512,7 +4512,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|InvalidStateTransitonException
+name|InvalidStateTransitionException
 name|e
 parameter_list|)
 block|{
@@ -7342,7 +7342,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" check application tracking page: "
+literal|" check the application tracking page: "
 argument_list|)
 operator|.
 name|append
@@ -7355,7 +7355,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" Then, click on links to logs of each attempt.\n"
+literal|" Then click on links to logs of each attempt.\n"
 argument_list|)
 expr_stmt|;
 block|}
@@ -8100,6 +8100,55 @@ name|currentState
 return|;
 block|}
 block|}
+comment|// Ack NM to remove finished AM container, not waiting for
+comment|// new appattempt to pull am container complete msg, new  appattempt
+comment|// may launch fail and leaves too many completed container in NM
+DECL|method|sendFinishedAMContainerToNM (NodeId nodeId, ContainerId containerId)
+specifier|private
+name|void
+name|sendFinishedAMContainerToNM
+parameter_list|(
+name|NodeId
+name|nodeId
+parameter_list|,
+name|ContainerId
+name|containerId
+parameter_list|)
+block|{
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+name|containerIdList
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|ContainerId
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|containerIdList
+operator|.
+name|add
+argument_list|(
+name|containerId
+argument_list|)
+expr_stmt|;
+name|eventHandler
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMNodeFinishedContainersPulledByAMEvent
+argument_list|(
+name|nodeId
+argument_list|,
+name|containerIdList
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Ack NM to remove finished containers from context.
 DECL|method|sendFinishedContainersToNM ()
 specifier|private
@@ -8260,6 +8309,24 @@ name|appAttempt
 operator|.
 name|sendFinishedContainersToNM
 argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|appAttempt
+operator|.
+name|sendFinishedAMContainerToNM
+argument_list|(
+name|nodeId
+argument_list|,
+name|containerFinishedEvent
+operator|.
+name|getContainerStatus
+argument_list|()
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 block|}

@@ -226,6 +226,7 @@ block|}
 DECL|field|DATA_TL
 specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|Data

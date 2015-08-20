@@ -5056,6 +5056,8 @@ name|System
 operator|.
 name|nanoTime
 argument_list|()
+argument_list|,
+literal|0L
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5117,6 +5119,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 operator|.
 name|getCommands
@@ -5381,6 +5385,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 operator|.
 name|getCommands
@@ -6567,6 +6573,8 @@ name|System
 operator|.
 name|nanoTime
 argument_list|()
+argument_list|,
+literal|0L
 argument_list|)
 argument_list|)
 expr_stmt|;

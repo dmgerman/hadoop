@@ -844,7 +844,7 @@ expr_stmt|;
 block|}
 name|infoBlock
 operator|.
-name|_
+name|_r
 argument_list|(
 literal|"Diagnostics:"
 argument_list|,

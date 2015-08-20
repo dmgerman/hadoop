@@ -317,7 +317,7 @@ name|String
 argument_list|>
 name|filterConfig
 decl_stmt|;
-comment|/**    * Initializes {@link TimelineAuthenticationFilter}    *<p>    * Propagates to {@link TimelineAuthenticationFilter} configuration all YARN    * configuration properties prefixed with    * {@code yarn.timeline-service.authentication.}    *     * @param container    *          The filter container    * @param conf    *          Configuration for run-time parameters    */
+comment|/**    * Initializes {@link TimelineAuthenticationFilter}    *<p>    * Propagates to {@link TimelineAuthenticationFilter} configuration all YARN    * configuration properties prefixed with {@value #PREFIX}    *    * @param container    *          The filter container    * @param conf    *          Configuration for run-time parameters    */
 annotation|@
 name|Override
 DECL|method|initFilter (FilterContainer container, Configuration conf)

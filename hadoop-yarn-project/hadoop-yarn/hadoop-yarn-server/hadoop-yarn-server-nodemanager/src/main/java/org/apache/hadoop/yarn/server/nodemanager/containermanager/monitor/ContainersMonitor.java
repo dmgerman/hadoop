@@ -48,6 +48,26 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceUtilization
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|event
 operator|.
 name|EventHandler
@@ -86,7 +106,14 @@ name|ContainersMonitorEvent
 argument_list|>
 extends|,
 name|ResourceView
-block|{  }
+block|{
+DECL|method|getContainersUtilization ()
+specifier|public
+name|ResourceUtilization
+name|getContainersUtilization
+parameter_list|()
+function_decl|;
+block|}
 end_interface
 
 end_unit

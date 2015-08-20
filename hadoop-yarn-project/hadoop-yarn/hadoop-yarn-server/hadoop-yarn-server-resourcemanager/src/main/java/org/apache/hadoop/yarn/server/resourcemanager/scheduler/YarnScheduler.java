@@ -260,6 +260,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|QueueACL
 import|;
 end_import
@@ -847,6 +865,42 @@ name|SchedulerResourceTypes
 argument_list|>
 name|getSchedulingResourceTypes
 parameter_list|()
+function_decl|;
+comment|/**    *    * Verify whether a submitted application priority is valid as per configured    * Queue    *    * @param priorityFromContext    *          Submitted Application priority.    * @param user    *          User who submitted the Application    * @param queueName    *          Name of the Queue    * @param applicationId    *          Application ID    * @return Updated Priority from scheduler    */
+DECL|method|checkAndGetApplicationPriority (Priority priorityFromContext, String user, String queueName, ApplicationId applicationId)
+specifier|public
+name|Priority
+name|checkAndGetApplicationPriority
+parameter_list|(
+name|Priority
+name|priorityFromContext
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|String
+name|queueName
+parameter_list|,
+name|ApplicationId
+name|applicationId
+parameter_list|)
+throws|throws
+name|YarnException
+function_decl|;
+comment|/**    *    * Change application priority of a submitted application at runtime    *    * @param newPriority Submitted Application priority.    *    * @param applicationId Application ID    */
+DECL|method|updateApplicationPriority (Priority newPriority, ApplicationId applicationId)
+specifier|public
+name|void
+name|updateApplicationPriority
+parameter_list|(
+name|Priority
+name|newPriority
+parameter_list|,
+name|ApplicationId
+name|applicationId
+parameter_list|)
+throws|throws
+name|YarnException
 function_decl|;
 block|}
 end_interface

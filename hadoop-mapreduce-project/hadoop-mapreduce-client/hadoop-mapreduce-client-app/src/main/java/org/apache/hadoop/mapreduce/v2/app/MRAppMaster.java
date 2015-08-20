@@ -2453,7 +2453,8 @@ specifier|private
 name|long
 name|recoveredJobStartTime
 init|=
-literal|0
+operator|-
+literal|1L
 decl_stmt|;
 DECL|field|mainStarted
 specifier|private
@@ -3054,7 +3055,9 @@ condition|)
 block|{
 name|shutDownMessage
 operator|=
-literal|"We crashed after successfully committing. Recovering."
+literal|"Job commit succeeded in a prior MRAppMaster attempt "
+operator|+
+literal|"before it crashed. Recovering."
 expr_stmt|;
 name|forcedState
 operator|=
@@ -3071,7 +3074,9 @@ condition|)
 block|{
 name|shutDownMessage
 operator|=
-literal|"We crashed after a commit failure."
+literal|"Job commit failed in a prior MRAppMaster attempt "
+operator|+
+literal|"before it crashed. Not retrying."
 expr_stmt|;
 name|forcedState
 operator|=
@@ -3085,7 +3090,9 @@ block|{
 comment|//The commit is still pending, commit error
 name|shutDownMessage
 operator|=
-literal|"We crashed durring a commit"
+literal|"Job commit from a prior MRAppMaster attempt is "
+operator|+
+literal|"potentially in progress. Preventing multiple commit executions"
 expr_stmt|;
 name|forcedState
 operator|=
@@ -4135,7 +4142,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"We are finishing cleanly so this is the last retry"
+literal|"Job finished cleanly, recording last MRAppMaster retry"
 argument_list|)
 expr_stmt|;
 name|isLastAMRetry
@@ -6619,6 +6626,20 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|shutdownTaskLog ()
+specifier|protected
+name|void
+name|shutdownTaskLog
+parameter_list|()
+block|{
+name|TaskLog
+operator|.
+name|syncLogsShutdown
+argument_list|(
+name|logSyncer
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|stop ()
@@ -6632,12 +6653,8 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-name|TaskLog
-operator|.
-name|syncLogsShutdown
-argument_list|(
-name|logSyncer
-argument_list|)
+name|shutdownTaskLog
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|isRecoverySupported ()
@@ -8997,6 +9014,18 @@ throws|throws
 name|Exception
 function_decl|;
 block|}
+DECL|method|shutdownLogManager ()
+specifier|protected
+name|void
+name|shutdownLogManager
+parameter_list|()
+block|{
+name|LogManager
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|serviceStop ()
@@ -9012,9 +9041,7 @@ operator|.
 name|serviceStop
 argument_list|()
 expr_stmt|;
-name|LogManager
-operator|.
-name|shutdown
+name|shutdownLogManager
 argument_list|()
 expr_stmt|;
 block|}

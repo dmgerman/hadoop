@@ -477,6 +477,7 @@ block|}
 DECL|field|TEST_DIR_TL
 specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|File

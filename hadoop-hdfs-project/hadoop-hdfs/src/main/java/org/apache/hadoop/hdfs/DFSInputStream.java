@@ -5548,7 +5548,7 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * Read data from one DataNode.    * @param datanode the datanode from which to read data    * @param block the located block containing the requested data    * @param startInBlk the startInBlk offset of the block    * @param endInBlk the endInBlk offset of the block    * @param buf the given byte array into which the data is read    * @param offset the offset in buf    * @param corruptedBlockMap map recording list of datanodes with corrupted    *                          block replica    */
+comment|/**    * Read data from one DataNode.    *    * @param datanode          the datanode from which to read data    * @param block             the located block containing the requested data    * @param startInBlk        the startInBlk offset of the block    * @param endInBlk          the endInBlk offset of the block    * @param buf               the given byte array into which the data is read    * @param offset            the offset in buf    * @param corruptedBlockMap map recording list of datanodes with corrupted    *                          block replica    */
 DECL|method|actualGetFromOneDataNode (final DNAddrPair datanode, LocatedBlock block, final long startInBlk, final long endInBlk, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
 name|void
 name|actualGetFromOneDataNode
@@ -7641,6 +7641,20 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|currentNode
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|seekToBlockSource
+argument_list|(
+name|targetPos
+argument_list|)
+return|;
+block|}
 name|boolean
 name|markedDead
 init|=

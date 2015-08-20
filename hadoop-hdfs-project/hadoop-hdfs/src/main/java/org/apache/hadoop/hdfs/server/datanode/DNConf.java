@@ -222,6 +222,38 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_DATANODE_NON_LOCAL_LAZY_PERSIST
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_NON_LOCAL_LAZY_PERSIST_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_DATANODE_MAX_LOCKED_MEMORY_DEFAULT
 import|;
 end_import
@@ -722,10 +754,10 @@ specifier|final
 name|long
 name|blockReportSplitThreshold
 decl_stmt|;
-DECL|field|initialBlockReportDelay
+DECL|field|initialBlockReportDelayMs
 specifier|final
 name|long
-name|initialBlockReportDelay
+name|initialBlockReportDelayMs
 decl_stmt|;
 DECL|field|cacheReportInterval
 specifier|final
@@ -787,6 +819,13 @@ DECL|field|maxLockedMemory
 specifier|final
 name|long
 name|maxLockedMemory
+decl_stmt|;
+comment|// Allow LAZY_PERSIST writes from non-local clients?
+DECL|field|allowNonLocalLazyPersist
+specifier|private
+specifier|final
+name|boolean
+name|allowNonLocalLazyPersist
 decl_stmt|;
 DECL|method|DNConf (Configuration conf)
 specifier|public
@@ -1070,7 +1109,7 @@ literal|" Setting initial delay to 0 msec:"
 argument_list|)
 expr_stmt|;
 block|}
-name|initialBlockReportDelay
+name|initialBlockReportDelayMs
 operator|=
 name|initBRDelay
 expr_stmt|;
@@ -1214,6 +1253,19 @@ argument_list|)
 operator|*
 literal|1000L
 expr_stmt|;
+name|this
+operator|.
+name|allowNonLocalLazyPersist
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFS_DATANODE_NON_LOCAL_LAZY_PERSIST
+argument_list|,
+name|DFS_DATANODE_NON_LOCAL_LAZY_PERSIST_DEFAULT
+argument_list|)
+expr_stmt|;
 block|}
 comment|// We get minimumNameNodeVersion via a method so it can be mocked out in tests.
 DECL|method|getMinimumNameNodeVersion ()
@@ -1344,6 +1396,16 @@ parameter_list|()
 block|{
 return|return
 name|ignoreSecurePortsForTesting
+return|;
+block|}
+DECL|method|getAllowNonLocalLazyPersist ()
+specifier|public
+name|boolean
+name|getAllowNonLocalLazyPersist
+parameter_list|()
+block|{
+return|return
+name|allowNonLocalLazyPersist
 return|;
 block|}
 block|}

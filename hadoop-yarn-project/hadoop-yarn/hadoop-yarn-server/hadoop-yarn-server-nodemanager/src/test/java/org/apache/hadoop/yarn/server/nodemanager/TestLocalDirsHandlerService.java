@@ -1116,7 +1116,7 @@ argument_list|(
 operator|new
 name|File
 argument_list|(
-name|logDir1
+name|logDir2
 argument_list|)
 argument_list|)
 expr_stmt|;

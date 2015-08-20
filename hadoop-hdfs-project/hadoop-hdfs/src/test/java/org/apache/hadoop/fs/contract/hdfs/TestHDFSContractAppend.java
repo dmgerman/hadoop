@@ -70,22 +70,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|contract
-operator|.
-name|ContractTestUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|AfterClass
@@ -99,16 +83,6 @@ operator|.
 name|junit
 operator|.
 name|BeforeClass
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileNotFoundException
 import|;
 end_import
 
@@ -182,49 +156,6 @@ argument_list|(
 name|conf
 argument_list|)
 return|;
-block|}
-annotation|@
-name|Override
-DECL|method|testRenameFileBeingAppended ()
-specifier|public
-name|void
-name|testRenameFileBeingAppended
-parameter_list|()
-throws|throws
-name|Throwable
-block|{
-try|try
-block|{
-name|super
-operator|.
-name|testRenameFileBeingAppended
-argument_list|()
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Expected a FileNotFoundException"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|e
-parameter_list|)
-block|{
-comment|// downgrade
-name|ContractTestUtils
-operator|.
-name|downgrade
-argument_list|(
-literal|"Renaming an open file"
-operator|+
-literal|"still creates the old path"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 end_class

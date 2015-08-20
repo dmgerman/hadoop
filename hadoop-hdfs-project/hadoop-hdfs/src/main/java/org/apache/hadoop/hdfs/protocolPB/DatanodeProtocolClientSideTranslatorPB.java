@@ -1149,7 +1149,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary)
+DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -1178,6 +1178,9 @@ name|failedVolumes
 parameter_list|,
 name|VolumeFailureSummary
 name|volumeFailureSummary
+parameter_list|,
+name|boolean
+name|requestFullBlockReportLease
 parameter_list|)
 throws|throws
 name|IOException
@@ -1215,6 +1218,11 @@ operator|.
 name|setFailedVolumes
 argument_list|(
 name|failedVolumes
+argument_list|)
+operator|.
+name|setRequestFullBlockReportLease
+argument_list|(
+name|requestFullBlockReportLease
 argument_list|)
 decl_stmt|;
 name|builder
@@ -1405,6 +1413,11 @@ argument_list|()
 argument_list|)
 argument_list|,
 name|rollingUpdateStatus
+argument_list|,
+name|resp
+operator|.
+name|getFullBlockReportLeaseId
+argument_list|()
 argument_list|)
 return|;
 block|}

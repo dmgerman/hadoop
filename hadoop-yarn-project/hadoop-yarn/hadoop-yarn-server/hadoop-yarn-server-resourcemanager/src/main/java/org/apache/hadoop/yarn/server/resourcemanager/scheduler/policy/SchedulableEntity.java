@@ -124,6 +124,13 @@ name|ResourceUsage
 name|getSchedulingResourceUsage
 parameter_list|()
 function_decl|;
+comment|/**    * Get the priority of the application    */
+DECL|method|getPriority ()
+specifier|public
+name|Priority
+name|getPriority
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

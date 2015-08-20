@@ -98,6 +98,20 @@ name|SUPPORTS_APPEND
 init|=
 literal|"supports-append"
 decl_stmt|;
+comment|/**    * Flag to indicate that setTimes is supported.    * @{value}    */
+DECL|field|SUPPORTS_SETTIMES
+name|String
+name|SUPPORTS_SETTIMES
+init|=
+literal|"supports-settimes"
+decl_stmt|;
+comment|/**    * Flag to indicate that getFileStatus is supported.    * @{value}    */
+DECL|field|SUPPORTS_GETFILESTATUS
+name|String
+name|SUPPORTS_GETFILESTATUS
+init|=
+literal|"supports-getfilestatus"
+decl_stmt|;
 comment|/**    * Flag to indicate that renames are atomic    * @{value}    */
 DECL|field|SUPPORTS_ATOMIC_RENAME
 name|String

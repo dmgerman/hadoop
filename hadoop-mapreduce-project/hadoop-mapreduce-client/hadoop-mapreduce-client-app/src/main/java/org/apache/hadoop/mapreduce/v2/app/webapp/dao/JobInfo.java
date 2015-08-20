@@ -399,6 +399,11 @@ specifier|protected
 name|String
 name|user
 decl_stmt|;
+DECL|field|queue
+specifier|protected
+name|String
+name|queue
+decl_stmt|;
 DECL|field|state
 specifier|protected
 name|JobState
@@ -666,6 +671,15 @@ operator|=
 name|job
 operator|.
 name|getUserName
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|queue
+operator|=
+name|job
+operator|.
+name|getQueueName
 argument_list|()
 expr_stmt|;
 name|this
@@ -1195,6 +1209,18 @@ return|return
 name|this
 operator|.
 name|name
+return|;
+block|}
+DECL|method|getQueueName ()
+specifier|public
+name|String
+name|getQueueName
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|queue
 return|;
 block|}
 DECL|method|getId ()

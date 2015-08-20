@@ -2424,6 +2424,13 @@ literal|0
 return|;
 block|}
 block|}
+if|if
+condition|(
+name|curBlockIter
+operator|!=
+literal|null
+condition|)
+block|{
 name|long
 name|saveDelta
 init|=
@@ -2461,6 +2468,7 @@ argument_list|(
 name|curBlockIter
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|bytesScanned
 operator|=
@@ -2932,7 +2940,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"{}: Not scheduling suspect block {} for "
 operator|+
@@ -2964,7 +2972,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"{}: Not scheduling suspect block {} for "
 operator|+
@@ -2989,7 +2997,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"{}: suspect block {} is already queued for "
 operator|+
@@ -3020,7 +3028,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"{}: Scheduling suspect block {} for rescanning."
 argument_list|,

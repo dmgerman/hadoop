@@ -466,7 +466,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 import|;
 end_import
 
@@ -484,7 +484,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 import|;
 end_import
 
@@ -1691,16 +1691,12 @@ operator|.
 name|getLastBlock
 argument_list|()
 decl_stmt|;
-specifier|final
-name|BlockInfoUnderConstruction
-name|uc
-init|=
 operator|(
-name|BlockInfoUnderConstruction
+operator|(
+name|BlockInfoContiguousUnderConstruction
 operator|)
 name|lastBlockInFile
-decl_stmt|;
-name|uc
+operator|)
 operator|.
 name|setExpectedLocations
 argument_list|(
@@ -2785,7 +2781,7 @@ expr_stmt|;
 block|}
 name|setNewINodeStoragePolicy
 argument_list|(
-name|fsn
+name|fsd
 operator|.
 name|getBlockManager
 argument_list|()
@@ -2858,8 +2854,6 @@ argument_list|,
 literal|false
 argument_list|,
 name|isRawPath
-argument_list|,
-literal|true
 argument_list|)
 return|;
 block|}
@@ -3438,7 +3432,7 @@ expr_stmt|;
 name|blockInfo
 operator|=
 operator|new
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 argument_list|(
 name|block
 argument_list|,
@@ -3489,7 +3483,7 @@ decl_stmt|;
 name|blockInfo
 operator|=
 operator|new
-name|BlockInfoUnderConstructionContiguous
+name|BlockInfoContiguousUnderConstruction
 argument_list|(
 name|block
 argument_list|,

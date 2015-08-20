@@ -739,6 +739,13 @@ specifier|final
 name|CapacitySchedulerContext
 name|scheduler
 decl_stmt|;
+DECL|field|needToResortQueuesAtNextAllocation
+specifier|private
+name|boolean
+name|needToResortQueuesAtNextAllocation
+init|=
+literal|false
+decl_stmt|;
 DECL|field|recordFactory
 specifier|private
 specifier|final
@@ -1188,9 +1195,9 @@ control|(
 name|String
 name|nodeLabel
 range|:
-name|labelManager
+name|queueCapacities
 operator|.
-name|getClusterNodeLabelNames
+name|getExistingNodeLabels
 argument_list|()
 control|)
 block|{
@@ -2270,6 +2277,8 @@ argument_list|)
 condition|)
 block|{
 return|return
+name|CSAssignment
+operator|.
 name|NULL_ASSIGNMENT
 return|;
 block|}
@@ -2327,6 +2336,8 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
+name|CSAssignment
+operator|.
 name|NULL_ASSIGNMENT
 return|;
 block|}
@@ -2397,8 +2408,6 @@ name|getPartition
 argument_list|()
 argument_list|,
 name|resourceLimits
-argument_list|,
-name|minimumAllocation
 argument_list|,
 name|Resources
 operator|.
@@ -2933,6 +2942,43 @@ name|NO_LABEL
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|needToResortQueuesAtNextAllocation
+condition|)
+block|{
+comment|// If we skipped resort queues last time, we need to re-sort queue
+comment|// before allocation
+name|List
+argument_list|<
+name|CSQueue
+argument_list|>
+name|childrenList
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
+name|childQueues
+argument_list|)
+decl_stmt|;
+name|childQueues
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|childQueues
+operator|.
+name|addAll
+argument_list|(
+name|childrenList
+argument_list|)
+expr_stmt|;
+name|needToResortQueuesAtNextAllocation
+operator|=
+literal|false
+expr_stmt|;
+block|}
 return|return
 name|childQueues
 operator|.
@@ -3394,39 +3440,28 @@ name|getPartition
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
-argument_list|(
-literal|"completedContainer"
-operator|+
-literal|" queue="
-operator|+
-name|getQueueName
+name|isDebugEnabled
 argument_list|()
-operator|+
-literal|" usedCapacity="
-operator|+
-name|getUsedCapacity
-argument_list|()
-operator|+
-literal|" absoluteUsedCapacity="
-operator|+
-name|getAbsoluteUsedCapacity
-argument_list|()
-operator|+
-literal|" used="
-operator|+
-name|queueUsage
+condition|)
+block|{
+name|LOG
 operator|.
-name|getUsed
-argument_list|()
+name|debug
+argument_list|(
+literal|"completedContainer "
 operator|+
-literal|" cluster="
+name|this
+operator|+
+literal|", cluster="
 operator|+
 name|clusterResource
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Note that this is using an iterator on the childQueues so this can't
 comment|// be called if already within an iterator for the childQueues. Like
 comment|// from assignContainersToChildQueues.
@@ -3479,22 +3514,24 @@ operator|.
 name|remove
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Re-sorting completed queue: "
 operator|+
 name|csqueue
-operator|.
-name|getQueuePath
-argument_list|()
-operator|+
-literal|" stats: "
-operator|+
-name|csqueue
 argument_list|)
 expr_stmt|;
+block|}
 name|childQueues
 operator|.
 name|add
@@ -3506,6 +3543,14 @@ break|break;
 block|}
 block|}
 block|}
+comment|// If we skipped sort queue this time, we need to resort queues to make
+comment|// sure we allocate from least usage (or order defined by queue policy)
+comment|// queues.
+name|needToResortQueuesAtNextAllocation
+operator|=
+operator|!
+name|sortQueues
+expr_stmt|;
 block|}
 comment|// Inform the parent
 if|if

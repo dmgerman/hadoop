@@ -167,6 +167,17 @@ parameter_list|)
 block|{     }
 annotation|@
 name|Override
+DECL|method|demandUpdated (S schedulableEntity)
+specifier|public
+name|void
+name|demandUpdated
+parameter_list|(
+name|S
+name|schedulableEntity
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
 DECL|method|getInfo ()
 specifier|public
 name|String

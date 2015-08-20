@@ -266,6 +266,18 @@ name|assertEquals
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_class
 DECL|class|TestDebugAdmin
 specifier|public
@@ -773,6 +785,48 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 block|}
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
+DECL|method|testRecoverLeaseforFileNotFound ()
+specifier|public
+name|void
+name|testRecoverLeaseforFileNotFound
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|assertTrue
+argument_list|(
+name|runCmd
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"recoverLease"
+block|,
+literal|"-path"
+block|,
+literal|"/foo"
+block|,
+literal|"-retries"
+block|,
+literal|"2"
+block|}
+argument_list|)
+operator|.
+name|contains
+argument_list|(
+literal|"Giving up on recoverLease for /foo after 1 try"
 argument_list|)
 argument_list|)
 expr_stmt|;

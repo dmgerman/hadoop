@@ -330,6 +330,9 @@ comment|// we want a/b
 if|if
 condition|(
 operator|!
+name|createParents
+operator|&&
+operator|!
 name|item
 operator|.
 name|fs
@@ -350,9 +353,6 @@ operator|.
 name|getParent
 argument_list|()
 argument_list|)
-operator|&&
-operator|!
-name|createParents
 condition|)
 block|{
 throw|throw

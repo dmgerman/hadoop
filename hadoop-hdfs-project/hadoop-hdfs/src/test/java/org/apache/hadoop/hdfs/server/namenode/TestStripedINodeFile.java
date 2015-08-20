@@ -324,7 +324,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 import|;
 end_import
 
@@ -912,10 +912,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testBlockUCStripedFileSize ()
+DECL|method|testBlockStripedUCFileSize ()
 specifier|public
 name|void
-name|testBlockUCStripedFileSize
+name|testBlockStripedUCFileSize
 parameter_list|()
 throws|throws
 name|IOException
@@ -937,11 +937,11 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 name|bInfoUCStriped
 init|=
 operator|new
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 argument_list|(
 name|blk
 argument_list|,
@@ -1085,10 +1085,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testBlockUCStripedComputeQuotaUsage ()
+DECL|method|testBlockStripedUCComputeQuotaUsage ()
 specifier|public
 name|void
-name|testBlockUCStripedComputeQuotaUsage
+name|testBlockStripedUCComputeQuotaUsage
 parameter_list|()
 throws|throws
 name|IOException
@@ -1110,11 +1110,11 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 name|bInfoUCStriped
 init|=
 operator|new
-name|BlockInfoUnderConstructionStriped
+name|BlockInfoStripedUnderConstruction
 argument_list|(
 name|blk
 argument_list|,
@@ -1174,7 +1174,7 @@ name|getNameSpace
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Consumed space in the case of BlockInfoUCStriped can be calculated
+comment|// Consumed space in the case of BlockInfoStripedUC can be calculated
 comment|// by using preferred block size. This is 1024 and total block num
 comment|// is 9(= 3 + 6). Consumed storage space should be 1024 * 9 = 9216.
 name|assertEquals

@@ -136,6 +136,18 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
+name|times
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
 name|verify
 import|;
 end_import
@@ -926,6 +938,17 @@ operator|.
 name|RM_HA_ENABLED
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_HA_IDS
+argument_list|,
+literal|"rm1,rm2"
 argument_list|)
 expr_stmt|;
 name|rmAdminCLIWithHAEnabled
@@ -1840,6 +1863,20 @@ name|class
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// HAAdmin#isOtherTargetNodeActive should check state of non-target node.
+name|verify
+argument_list|(
+name|haadmin
+argument_list|,
+name|times
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+operator|.
+name|getServiceStatus
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Test
@@ -2204,11 +2241,11 @@ literal|"UserGroupsConfiguration] [-refreshUserToGroupsMappings] "
 operator|+
 literal|"[-refreshAdminAcls] [-refreshServiceAcl] [-getGroup"
 operator|+
-literal|" [username]] [[-addToClusterNodeLabels [label1,label2,label3]]"
+literal|" [username]] [-addToClusterNodeLabels<\"label1(exclusive=true),label2(exclusive=false),label3\">]"
 operator|+
-literal|" [-removeFromClusterNodeLabels [label1,label2,label3]] [-replaceLabelsOnNode "
+literal|" [-removeFromClusterNodeLabels<label1,label2,label3>] [-replaceLabelsOnNode "
 operator|+
-literal|"[node1[:port]=label1,label2 node2[:port]=label1] [-directlyAccessNodeLabelStore]] "
+literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] [-directlyAccessNodeLabelStore]] "
 operator|+
 literal|"[-help [cmd]]"
 argument_list|)
@@ -2603,11 +2640,13 @@ literal|"UserGroupsConfiguration] [-refreshUserToGroupsMappings] "
 operator|+
 literal|"[-refreshAdminAcls] [-refreshServiceAcl] [-getGroup"
 operator|+
-literal|" [username]] [[-addToClusterNodeLabels [label1,label2,label3]]"
+literal|" [username]] [-addToClusterNodeLabels<\"label1(exclusive=true),"
 operator|+
-literal|" [-removeFromClusterNodeLabels [label1,label2,label3]] [-replaceLabelsOnNode "
+literal|"label2(exclusive=false),label3\">]"
 operator|+
-literal|"[node1[:port]=label1,label2 node2[:port]=label1] [-directlyAccessNodeLabelStore]] "
+literal|" [-removeFromClusterNodeLabels<label1,label2,label3>] [-replaceLabelsOnNode "
+operator|+
+literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] [-directlyAccessNodeLabelStore]] "
 operator|+
 literal|"[-transitionToActive [--forceactive]<serviceId>] "
 operator|+
