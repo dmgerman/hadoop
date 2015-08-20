@@ -3640,8 +3640,6 @@ index|[]
 block|{
 literal|"-update"
 block|,
-literal|"-delete"
-block|,
 literal|"-diff"
 block|,
 literal|"s1"
@@ -3724,8 +3722,6 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"-delete"
-block|,
 literal|"-diff"
 block|,
 literal|"s1"
@@ -3815,8 +3811,6 @@ literal|"-diff"
 block|,
 literal|"s1"
 block|,
-literal|"-delete"
-block|,
 literal|"-update"
 block|,
 literal|"hdfs://localhost:8020/source/first"
@@ -3847,7 +3841,7 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-comment|// make sure -diff is only valid when -update and -delete is specified
+comment|// make sure -diff is only valid when -update is specified
 try|try
 block|{
 name|OptionsParser
@@ -3872,7 +3866,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"-diff should fail if -update or -delete option is not specified"
+literal|"-diff should fail if -update option is not specified"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3886,7 +3880,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Diff is valid only with update and delete options"
+literal|"Diff is valid only with update options"
 argument_list|,
 name|e
 argument_list|)
@@ -3910,6 +3904,8 @@ literal|"s2"
 block|,
 literal|"-update"
 block|,
+literal|"-delete"
+block|,
 literal|"hdfs://localhost:8020/source/first"
 block|,
 literal|"hdfs://localhost:8020/target/"
@@ -3918,7 +3914,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"-diff should fail if -update or -delete option is not specified"
+literal|"-diff should fail if -delete option is specified"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3932,7 +3928,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Diff is valid only with update and delete options"
+literal|"Diff is valid only with update options"
 argument_list|,
 name|e
 argument_list|)
@@ -3966,7 +3962,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"-diff should fail if -update or -delete option is not specified"
+literal|"-diff should fail if -update option is not specified"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3980,7 +3976,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Diff is valid only with update and delete options"
+literal|"Diff is valid only with update options"
 argument_list|,
 name|e
 argument_list|)
