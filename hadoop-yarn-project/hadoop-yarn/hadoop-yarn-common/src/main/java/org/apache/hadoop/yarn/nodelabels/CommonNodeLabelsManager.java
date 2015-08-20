@@ -4693,7 +4693,8 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|checkAndThrowLabelName (String label)
-specifier|private
+specifier|public
+specifier|static
 name|void
 name|checkAndThrowLabelName
 parameter_list|(
