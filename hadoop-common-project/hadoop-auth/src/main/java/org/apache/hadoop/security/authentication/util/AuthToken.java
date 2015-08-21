@@ -400,7 +400,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Sets the max inactive interval of the token.    *    * @param max inactive interval of the token in milliseconds since the epoch.    */
+comment|/**    * Sets the max inactive interval of the token.    *    * @param interval max inactive interval of the token in milliseconds since    *                 the epoch.    */
 DECL|method|setMaxInactives (long interval)
 specifier|public
 name|void
