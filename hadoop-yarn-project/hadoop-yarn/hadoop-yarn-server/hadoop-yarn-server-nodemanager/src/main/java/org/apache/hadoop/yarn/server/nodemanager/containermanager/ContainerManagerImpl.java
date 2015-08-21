@@ -3260,6 +3260,11 @@ name|rcs
 operator|.
 name|getKilled
 argument_list|()
+argument_list|,
+name|rcs
+operator|.
+name|getCapability
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|context
@@ -6999,6 +7004,21 @@ operator|!
 name|serviceStopped
 condition|)
 block|{
+comment|// Persist container resource change for recovery
+name|this
+operator|.
+name|context
+operator|.
+name|getNMStateStore
+argument_list|()
+operator|.
+name|storeContainerResourceChanged
+argument_list|(
+name|containerId
+argument_list|,
+name|targetResource
+argument_list|)
+expr_stmt|;
 name|getContainersMonitor
 argument_list|()
 operator|.

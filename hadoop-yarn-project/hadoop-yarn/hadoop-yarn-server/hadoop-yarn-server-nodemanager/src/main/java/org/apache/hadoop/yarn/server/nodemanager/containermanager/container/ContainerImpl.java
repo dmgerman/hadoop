@@ -1494,7 +1494,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// constructor for a recovered container
-DECL|method|ContainerImpl (Configuration conf, Dispatcher dispatcher, NMStateStoreService stateStore, ContainerLaunchContext launchContext, Credentials creds, NodeManagerMetrics metrics, ContainerTokenIdentifier containerTokenIdentifier, RecoveredContainerStatus recoveredStatus, int exitCode, String diagnostics, boolean wasKilled)
+DECL|method|ContainerImpl (Configuration conf, Dispatcher dispatcher, NMStateStoreService stateStore, ContainerLaunchContext launchContext, Credentials creds, NodeManagerMetrics metrics, ContainerTokenIdentifier containerTokenIdentifier, RecoveredContainerStatus recoveredStatus, int exitCode, String diagnostics, boolean wasKilled, Resource recoveredCapability)
 specifier|public
 name|ContainerImpl
 parameter_list|(
@@ -1530,6 +1530,9 @@ name|diagnostics
 parameter_list|,
 name|boolean
 name|wasKilled
+parameter_list|,
+name|Resource
+name|recoveredCapability
 parameter_list|)
 block|{
 name|this
@@ -1576,6 +1579,44 @@ argument_list|(
 name|diagnostics
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|recoveredCapability
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|this
+operator|.
+name|resource
+operator|.
+name|equals
+argument_list|(
+name|recoveredCapability
+argument_list|)
+condition|)
+block|{
+comment|// resource capability had been updated before NM was down
+name|this
+operator|.
+name|resource
+operator|=
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+name|recoveredCapability
+operator|.
+name|getMemory
+argument_list|()
+argument_list|,
+name|recoveredCapability
+operator|.
+name|getVirtualCores
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|field|UPDATE_DIAGNOSTICS_TRANSITION
 specifier|private
