@@ -5226,9 +5226,9 @@ block|}
 comment|/**    * Start a list of containers on this NodeManager.    */
 annotation|@
 name|Override
+DECL|method|startContainers ( StartContainersRequest requests)
 specifier|public
 name|StartContainersResponse
-DECL|method|startContainers (StartContainersRequest requests)
 name|startContainers
 parameter_list|(
 name|StartContainersRequest
@@ -5308,6 +5308,17 @@ name|SerializedException
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|// Synchronize with NodeStatusUpdaterImpl#registerWithRM
+comment|// to avoid race condition during NM-RM resync (due to RM restart) while a
+comment|// container is being started, in particular when the container has not yet
+comment|// been added to the containers map in NMContext.
+synchronized|synchronized
+init|(
+name|this
+operator|.
+name|context
+init|)
+block|{
 for|for
 control|(
 name|StartContainerRequest
@@ -5505,6 +5516,7 @@ argument_list|,
 name|failedContainers
 argument_list|)
 return|;
+block|}
 block|}
 DECL|method|buildAppProto (ApplicationId appId, String user, Credentials credentials, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext)
 specifier|private
@@ -6396,6 +6408,18 @@ name|SerializedException
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|// Synchronize with NodeStatusUpdaterImpl#registerWithRM
+comment|// to avoid race condition during NM-RM resync (due to RM restart) while a
+comment|// container resource is being increased in NM, in particular when the
+comment|// increased container has not yet been added to the increasedContainers
+comment|// map in NMContext.
+synchronized|synchronized
+init|(
+name|this
+operator|.
+name|context
+init|)
+block|{
 comment|// Process container resource increase requests
 for|for
 control|(
@@ -6548,6 +6572,7 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 return|return
@@ -6875,6 +6900,89 @@ name|toString
 argument_list|()
 argument_list|)
 throw|;
+block|}
+if|if
+condition|(
+name|increase
+condition|)
+block|{
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Container
+name|increasedContainer
+init|=
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Container
+operator|.
+name|newInstance
+argument_list|(
+name|containerId
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+name|targetResource
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|context
+operator|.
+name|getIncreasedContainers
+argument_list|()
+operator|.
+name|putIfAbsent
+argument_list|(
+name|containerId
+argument_list|,
+name|increasedContainer
+argument_list|)
+operator|!=
+literal|null
+condition|)
+block|{
+throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+literal|"Container "
+operator|+
+name|containerId
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" resource is being increased."
+argument_list|)
+throw|;
+block|}
 block|}
 name|this
 operator|.

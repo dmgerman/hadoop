@@ -128,6 +128,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerStatus
 import|;
 end_import
@@ -177,8 +195,8 @@ specifier|abstract
 class|class
 name|NodeStatus
 block|{
-comment|/**    * Create a new {@code NodeStatus}.    * @param nodeId Identifier for this node.    * @param responseId Identifier for the response.    * @param containerStatuses Status of the containers running in this node.    * @param keepAliveApplications Applications to keep alive.    * @param nodeHealthStatus Health status of the node.    * @param containersUtilization Utilization of the containers in this node.    * @param nodeUtilization Utilization of the node.    * @return New {@code NodeStatus} with the provided information.    */
-DECL|method|newInstance (NodeId nodeId, int responseId, List<ContainerStatus> containerStatuses, List<ApplicationId> keepAliveApplications, NodeHealthStatus nodeHealthStatus, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization)
+comment|/**    * Create a new {@code NodeStatus}.    * @param nodeId Identifier for this node.    * @param responseId Identifier for the response.    * @param containerStatuses Status of the containers running in this node.    * @param keepAliveApplications Applications to keep alive.    * @param nodeHealthStatus Health status of the node.    * @param containersUtilization Utilization of the containers in this node.    * @param nodeUtilization Utilization of the node.    * @param increasedContainers Containers whose resource has been increased.    * @return New {@code NodeStatus} with the provided information.    */
+DECL|method|newInstance (NodeId nodeId, int responseId, List<ContainerStatus> containerStatuses, List<ApplicationId> keepAliveApplications, NodeHealthStatus nodeHealthStatus, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization, List<Container> increasedContainers)
 specifier|public
 specifier|static
 name|NodeStatus
@@ -210,6 +228,12 @@ name|containersUtilization
 parameter_list|,
 name|ResourceUtilization
 name|nodeUtilization
+parameter_list|,
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|increasedContainers
 parameter_list|)
 block|{
 name|NodeStatus
@@ -271,6 +295,13 @@ operator|.
 name|setNodeUtilization
 argument_list|(
 name|nodeUtilization
+argument_list|)
+expr_stmt|;
+name|nodeStatus
+operator|.
+name|setIncreasedContainers
+argument_list|(
+name|increasedContainers
 argument_list|)
 expr_stmt|;
 return|return
@@ -424,6 +455,37 @@ name|setNodeUtilization
 parameter_list|(
 name|ResourceUtilization
 name|nodeUtilization
+parameter_list|)
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getIncreasedContainers ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|getIncreasedContainers
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setIncreasedContainers ( List<Container> increasedContainers)
+specifier|public
+specifier|abstract
+name|void
+name|setIncreasedContainers
+parameter_list|(
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|increasedContainers
 parameter_list|)
 function_decl|;
 block|}

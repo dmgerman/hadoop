@@ -1212,7 +1212,8 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|createContainerId (int id)
-specifier|private
+specifier|public
+specifier|static
 name|ContainerId
 name|createContainerId
 parameter_list|(
