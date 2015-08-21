@@ -5408,15 +5408,10 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// getTransferredContainers should not throw NPE.
-operator|(
-operator|(
-name|AbstractYarnScheduler
-operator|)
 name|rm2
 operator|.
 name|getResourceScheduler
 argument_list|()
-operator|)
 operator|.
 name|getTransferredContainers
 argument_list|(

@@ -224,6 +224,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
 import|;
 end_import
@@ -901,6 +919,18 @@ name|applicationId
 parameter_list|)
 throws|throws
 name|YarnException
+function_decl|;
+comment|/**    *    * Get previous attempts' live containers for work-preserving AM restart.    *    * @param appAttemptId the id of the application attempt    *    * @return list of live containers for the given attempt    */
+DECL|method|getTransferredContainers (ApplicationAttemptId appAttemptId)
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|getTransferredContainers
+parameter_list|(
+name|ApplicationAttemptId
+name|appAttemptId
+parameter_list|)
 function_decl|;
 block|}
 end_interface
