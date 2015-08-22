@@ -1850,7 +1850,7 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
+name|PBHelperClient
 import|;
 end_import
 
@@ -9286,7 +9286,7 @@ name|BlockOpResponseProto
 operator|.
 name|parseFrom
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|vintPrefixed
 argument_list|(
@@ -9440,7 +9440,7 @@ condition|)
 block|{
 name|ct
 operator|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -10037,7 +10037,7 @@ name|BlockOpResponseProto
 operator|.
 name|parseFrom
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|vintPrefixed
 argument_list|(
@@ -10069,7 +10069,7 @@ name|logInfo
 argument_list|)
 expr_stmt|;
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

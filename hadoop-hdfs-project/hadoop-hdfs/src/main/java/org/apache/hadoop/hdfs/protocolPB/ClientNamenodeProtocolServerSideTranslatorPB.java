@@ -6506,7 +6506,7 @@ name|DatanodeInfoProto
 argument_list|>
 name|result
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -7474,7 +7474,7 @@ operator|.
 name|hasStorageType
 argument_list|()
 condition|?
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageType
 argument_list|(
@@ -8027,7 +8027,7 @@ name|rspBuilder
 operator|.
 name|setToken
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

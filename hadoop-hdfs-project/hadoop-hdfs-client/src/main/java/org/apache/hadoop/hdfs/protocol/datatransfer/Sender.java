@@ -416,7 +416,7 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
+name|PBHelperClient
 import|;
 end_import
 
@@ -989,7 +989,7 @@ argument_list|)
 operator|.
 name|setStorageType
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageType
 argument_list|(
@@ -999,7 +999,7 @@ argument_list|)
 operator|.
 name|addAllTargets
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1011,7 +1011,7 @@ argument_list|)
 operator|.
 name|addAllTargetStorageTypes
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageTypes
 argument_list|(
@@ -1074,7 +1074,7 @@ argument_list|)
 operator|.
 name|addAllTargetPinnings
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1095,7 +1095,7 @@ name|proto
 operator|.
 name|setSource
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertDatanodeInfo
 argument_list|(
@@ -1178,7 +1178,7 @@ argument_list|)
 operator|.
 name|addAllTargets
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1188,7 +1188,7 @@ argument_list|)
 operator|.
 name|addAllTargetStorageTypes
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageTypes
 argument_list|(
@@ -1279,7 +1279,7 @@ name|builder
 operator|.
 name|setSlotId
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1340,7 +1340,7 @@ argument_list|()
 operator|.
 name|setSlotId
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1557,7 +1557,7 @@ argument_list|)
 operator|.
 name|setStorageType
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageType
 argument_list|(
@@ -1572,7 +1572,7 @@ argument_list|)
 operator|.
 name|setSource
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertDatanodeInfo
 argument_list|(

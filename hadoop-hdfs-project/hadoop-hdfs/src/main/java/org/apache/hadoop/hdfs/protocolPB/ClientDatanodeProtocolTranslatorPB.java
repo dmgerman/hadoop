@@ -1346,7 +1346,7 @@ argument_list|()
 operator|.
 name|setBlock
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1521,7 +1521,7 @@ argument_list|()
 operator|.
 name|setBlock
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1531,7 +1531,7 @@ argument_list|)
 operator|.
 name|setToken
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

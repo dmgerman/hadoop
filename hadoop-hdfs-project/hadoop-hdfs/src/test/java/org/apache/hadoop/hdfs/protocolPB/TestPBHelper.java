@@ -1640,7 +1640,7 @@ decl_stmt|;
 name|DatanodeIDProto
 name|dnProto
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -3074,7 +3074,7 @@ decl_stmt|;
 name|ExtendedBlockProto
 name|bProto
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -3108,7 +3108,7 @@ argument_list|)
 expr_stmt|;
 name|bProto
 operator|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -3607,7 +3607,7 @@ decl_stmt|;
 name|TokenProto
 name|tokenProto
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5133,7 +5133,7 @@ name|Type
 operator|.
 name|NULL
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5153,7 +5153,7 @@ name|Type
 operator|.
 name|CRC32
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5173,7 +5173,7 @@ name|Type
 operator|.
 name|CRC32C
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5187,7 +5187,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5207,7 +5207,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5227,7 +5227,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

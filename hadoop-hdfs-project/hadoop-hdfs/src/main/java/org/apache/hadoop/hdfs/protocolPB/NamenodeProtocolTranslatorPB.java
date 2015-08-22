@@ -828,7 +828,7 @@ argument_list|()
 operator|.
 name|setDatanode
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

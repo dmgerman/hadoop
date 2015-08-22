@@ -146,7 +146,7 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|vintPrefixed
 import|;

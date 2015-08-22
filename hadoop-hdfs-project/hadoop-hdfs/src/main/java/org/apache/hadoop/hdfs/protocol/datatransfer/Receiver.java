@@ -72,7 +72,7 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|vintPrefixed
 import|;
@@ -375,6 +375,22 @@ operator|.
 name|protocolPB
 operator|.
 name|PBHelper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolPB
+operator|.
+name|PBHelperClient
 import|;
 end_import
 
@@ -903,7 +919,7 @@ name|getBlock
 argument_list|()
 argument_list|)
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageType
 argument_list|(
@@ -1547,7 +1563,7 @@ name|getBlock
 argument_list|()
 argument_list|)
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageType
 argument_list|(

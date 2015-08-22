@@ -1648,7 +1648,7 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
+name|PBHelperClient
 import|;
 end_import
 
@@ -10781,7 +10781,7 @@ name|DNTransferAckProto
 operator|.
 name|parseFrom
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|vintPrefixed
 argument_list|(
