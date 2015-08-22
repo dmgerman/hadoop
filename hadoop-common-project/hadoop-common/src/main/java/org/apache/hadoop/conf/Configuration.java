@@ -3805,15 +3805,35 @@ condition|(
 name|val
 operator|==
 literal|null
+operator|||
+name|val
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
-name|val
-operator|=
+name|String
+name|raw
+init|=
 name|getRaw
 argument_list|(
 name|var
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|raw
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// if System.getProperty(var) returns an empty string, retain this
+comment|// value instead of return null
+name|val
+operator|=
+name|raw
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
