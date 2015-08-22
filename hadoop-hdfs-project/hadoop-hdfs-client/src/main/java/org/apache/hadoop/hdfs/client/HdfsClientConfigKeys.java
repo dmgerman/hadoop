@@ -455,6 +455,16 @@ name|DFS_HDFS_BLOCKS_METADATA_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|REPLICA_ACCESSOR_BUILDER_CLASSES_KEY
+specifier|static
+specifier|final
+name|String
+name|REPLICA_ACCESSOR_BUILDER_CLASSES_KEY
+init|=
+name|PREFIX
+operator|+
+literal|"replica.accessor.builder.classes"
+decl_stmt|;
 comment|/** dfs.client.retry configuration properties */
 DECL|interface|Retry
 interface|interface

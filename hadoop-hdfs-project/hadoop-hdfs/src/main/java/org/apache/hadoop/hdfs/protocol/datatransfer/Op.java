@@ -185,6 +185,15 @@ name|byte
 operator|)
 literal|89
 argument_list|)
+block|,
+DECL|enumConstant|CUSTOM
+name|CUSTOM
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|127
+argument_list|)
 block|;
 comment|/** The code for this operation. */
 DECL|field|code
