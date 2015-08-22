@@ -248,22 +248,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|Block
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|DatanodeID
 import|;
 end_import
@@ -988,9 +972,9 @@ specifier|final
 name|int
 name|numExpected
 init|=
-name|bc
+name|block
 operator|.
-name|getPreferredBlockReplication
+name|getReplication
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -1010,8 +994,6 @@ operator|.
 name|isNeededReplication
 argument_list|(
 name|block
-argument_list|,
-name|numExpected
 argument_list|,
 name|numLive
 argument_list|)
@@ -1144,13 +1126,13 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|logBlockReplicationInfo (Block block, BlockCollection bc, DatanodeDescriptor srcNode, NumberReplicas num, Iterable<DatanodeStorageInfo> storages)
+DECL|method|logBlockReplicationInfo (BlockInfo block, BlockCollection bc, DatanodeDescriptor srcNode, NumberReplicas num, Iterable<DatanodeStorageInfo> storages)
 specifier|private
 specifier|static
 name|void
 name|logBlockReplicationInfo
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|,
 name|BlockCollection
@@ -1180,9 +1162,9 @@ decl_stmt|;
 name|int
 name|curExpectedReplicas
 init|=
-name|bc
+name|block
 operator|.
-name|getPreferredBlockReplication
+name|getReplication
 argument_list|()
 decl_stmt|;
 name|StringBuilder
@@ -2197,11 +2179,6 @@ name|isNeededReplication
 argument_list|(
 name|block
 argument_list|,
-name|bc
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
-argument_list|,
 name|liveReplicas
 argument_list|)
 condition|)
@@ -2251,9 +2228,9 @@ operator|.
 name|decommissionedAndDecommissioning
 argument_list|()
 argument_list|,
-name|bc
+name|block
 operator|.
-name|getPreferredBlockReplication
+name|getReplication
 argument_list|()
 argument_list|)
 expr_stmt|;

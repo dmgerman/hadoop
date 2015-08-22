@@ -197,12 +197,18 @@ name|EMPTY_ARRAY
 init|=
 block|{}
 decl_stmt|;
+comment|/**    * Replication factor    */
+DECL|field|replication
+specifier|private
+name|short
+name|replication
+decl_stmt|;
 DECL|field|bc
 specifier|private
 name|BlockCollection
 name|bc
 decl_stmt|;
-comment|/** For implementing {@link LightWeightGSet.LinkedElement} interface */
+comment|/** For implementing {@link LightWeightGSet.LinkedElement} interface. */
 DECL|field|nextLinkedElement
 specifier|private
 name|LightWeightGSet
@@ -249,6 +255,12 @@ name|bc
 operator|=
 literal|null
 expr_stmt|;
+name|this
+operator|.
+name|replication
+operator|=
+name|replication
+expr_stmt|;
 block|}
 DECL|method|BlockInfo (Block blk, short replication)
 specifier|public
@@ -284,6 +296,12 @@ name|bc
 operator|=
 literal|null
 expr_stmt|;
+name|this
+operator|.
+name|replication
+operator|=
+name|replication
+expr_stmt|;
 block|}
 comment|/**    * Copy construction.    * @param from BlockInfo to copy from.    */
 DECL|method|BlockInfo (BlockInfo from)
@@ -294,32 +312,49 @@ name|BlockInfo
 name|from
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 name|from
+argument_list|,
+name|from
+operator|.
+name|getReplication
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|triplets
+name|bc
 operator|=
-operator|new
-name|Object
-index|[
 name|from
 operator|.
-name|triplets
-operator|.
-name|length
-index|]
+name|bc
 expr_stmt|;
+block|}
+DECL|method|getReplication ()
+specifier|public
+name|short
+name|getReplication
+parameter_list|()
+block|{
+return|return
+name|replication
+return|;
+block|}
+DECL|method|setReplication (short repl)
+specifier|public
+name|void
+name|setReplication
+parameter_list|(
+name|short
+name|repl
+parameter_list|)
+block|{
 name|this
 operator|.
-name|bc
+name|replication
 operator|=
-name|from
-operator|.
-name|bc
+name|repl
 expr_stmt|;
 block|}
 DECL|method|getBlockCollection ()

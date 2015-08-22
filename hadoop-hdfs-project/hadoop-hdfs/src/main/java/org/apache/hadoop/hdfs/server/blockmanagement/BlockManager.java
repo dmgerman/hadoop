@@ -6067,10 +6067,7 @@ name|b
 operator|.
 name|corrupted
 operator|.
-name|getBlockCollection
-argument_list|()
-operator|.
-name|getPreferredBlockReplication
+name|getReplication
 argument_list|()
 decl_stmt|;
 comment|// Add replica to the data-node if it is not already there
@@ -6781,10 +6778,10 @@ continue|continue;
 block|}
 name|requiredReplication
 operator|=
-name|bc
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
+name|getExpectedReplicaNum
+argument_list|(
+name|block
+argument_list|)
 expr_stmt|;
 comment|// get a source data-node
 name|containingNodes
@@ -7174,10 +7171,10 @@ continue|continue;
 block|}
 name|requiredReplication
 operator|=
-name|bc
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
+name|getExpectedReplicaNum
+argument_list|(
+name|block
+argument_list|)
 expr_stmt|;
 comment|// do not schedule more if enough replicas is already pending
 name|NumberReplicas
@@ -8350,11 +8347,6 @@ condition|(
 name|isNeededReplication
 argument_list|(
 name|bi
-argument_list|,
-name|getReplication
-argument_list|(
-name|bi
-argument_list|)
 argument_list|,
 name|num
 operator|.
@@ -12322,10 +12314,10 @@ comment|// handle underReplication/overReplication
 name|short
 name|fileReplication
 init|=
-name|bc
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
+name|getExpectedReplicaNum
+argument_list|(
+name|storedBlock
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -12333,8 +12325,6 @@ operator|!
 name|isNeededReplication
 argument_list|(
 name|storedBlock
-argument_list|,
-name|fileReplication
 argument_list|,
 name|numCurrentReplica
 argument_list|)
@@ -13264,13 +13254,10 @@ comment|// calculate current replication
 name|short
 name|expectedReplication
 init|=
+name|getExpectedReplicaNum
+argument_list|(
 name|block
-operator|.
-name|getBlockCollection
-argument_list|()
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
+argument_list|)
 decl_stmt|;
 name|NumberReplicas
 name|num
@@ -13294,8 +13281,6 @@ condition|(
 name|isNeededReplication
 argument_list|(
 name|block
-argument_list|,
-name|expectedReplication
 argument_list|,
 name|numCurrentReplica
 argument_list|)
@@ -13380,7 +13365,7 @@ name|OK
 return|;
 block|}
 comment|/** Set replication for the blocks. */
-DECL|method|setReplication (final short oldRepl, final short newRepl, final String src, final BlockInfo... blocks)
+DECL|method|setReplication ( final short oldRepl, final short newRepl, final BlockInfo b)
 specifier|public
 name|void
 name|setReplication
@@ -13394,13 +13379,8 @@ name|short
 name|newRepl
 parameter_list|,
 specifier|final
-name|String
-name|src
-parameter_list|,
-specifier|final
 name|BlockInfo
-modifier|...
-name|blocks
+name|b
 parameter_list|)
 block|{
 if|if
@@ -13413,14 +13393,13 @@ block|{
 return|return;
 block|}
 comment|// update needReplication priority queues
-for|for
-control|(
-name|BlockInfo
 name|b
-range|:
-name|blocks
-control|)
-block|{
+operator|.
+name|setReplication
+argument_list|(
+name|newRepl
+argument_list|)
+expr_stmt|;
 name|updateNeededReplications
 argument_list|(
 name|b
@@ -13432,39 +13411,12 @@ operator|-
 name|oldRepl
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|oldRepl
 operator|>
 name|newRepl
 condition|)
-block|{
-comment|// old replication> the new one; need to remove copies
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Decreasing replication from "
-operator|+
-name|oldRepl
-operator|+
-literal|" to "
-operator|+
-name|newRepl
-operator|+
-literal|" for "
-operator|+
-name|src
-argument_list|)
-expr_stmt|;
-for|for
-control|(
-name|BlockInfo
-name|b
-range|:
-name|blocks
-control|)
 block|{
 name|processOverReplicatedBlock
 argument_list|(
@@ -13475,28 +13427,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-else|else
-block|{
-comment|// replication factor is increased
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Increasing replication from "
-operator|+
-name|oldRepl
-operator|+
-literal|" to "
-operator|+
-name|newRepl
-operator|+
-literal|" for "
-operator|+
-name|src
 argument_list|)
 expr_stmt|;
 block|}
@@ -15764,22 +15694,12 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|BlockCollection
-name|bc
-init|=
-name|blocksMap
-operator|.
-name|getBlockCollection
-argument_list|(
-name|block
-argument_list|)
-decl_stmt|;
 name|short
 name|expectedReplication
 init|=
-name|bc
+name|block
 operator|.
-name|getPreferredBlockReplication
+name|getReplication
 argument_list|()
 decl_stmt|;
 name|NumberReplicas
@@ -16162,8 +16082,6 @@ name|isNeededReplication
 argument_list|(
 name|block
 argument_list|,
-name|curExpectedReplicas
-argument_list|,
 name|repl
 operator|.
 name|liveReplicas
@@ -16251,15 +16169,6 @@ name|BlockCollection
 name|bc
 parameter_list|)
 block|{
-specifier|final
-name|short
-name|expected
-init|=
-name|bc
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
-decl_stmt|;
 for|for
 control|(
 name|BlockInfo
@@ -16271,6 +16180,15 @@ name|getBlocks
 argument_list|()
 control|)
 block|{
+specifier|final
+name|short
+name|expected
+init|=
+name|block
+operator|.
+name|getReplication
+argument_list|()
+decl_stmt|;
 specifier|final
 name|NumberReplicas
 name|n
@@ -16285,8 +16203,6 @@ condition|(
 name|isNeededReplication
 argument_list|(
 name|block
-argument_list|,
-name|expected
 argument_list|,
 name|n
 operator|.
@@ -16428,37 +16344,20 @@ literal|true
 return|;
 block|}
 comment|/**     * @return 0 if the block is not found;    *         otherwise, return the replication factor of the block.    */
-DECL|method|getReplication (Block block)
+DECL|method|getReplication (BlockInfo block)
 specifier|private
 name|int
 name|getReplication
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
-specifier|final
-name|BlockCollection
-name|bc
-init|=
-name|blocksMap
-operator|.
-name|getBlockCollection
+return|return
+name|getExpectedReplicaNum
 argument_list|(
 name|block
 argument_list|)
-decl_stmt|;
-return|return
-name|bc
-operator|==
-literal|null
-condition|?
-literal|0
-else|:
-name|bc
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
 return|;
 block|}
 comment|/**    * Get blocks to invalidate for<i>nodeId</i>    * in {@link #invalidateBlocks}.    *    * @return number of blocks scheduled for removal during this iteration.    */
@@ -16617,11 +16516,11 @@ name|size
 argument_list|()
 return|;
 block|}
-DECL|method|blockHasEnoughRacks (Block b)
+DECL|method|blockHasEnoughRacks (BlockInfo b)
 name|boolean
 name|blockHasEnoughRacks
 parameter_list|(
-name|Block
+name|BlockInfo
 name|b
 parameter_list|)
 block|{
@@ -16794,20 +16693,25 @@ name|enoughRacks
 return|;
 block|}
 comment|/**    * A block needs replication if the number of replicas is less than expected    * or if it does not have enough racks.    */
-DECL|method|isNeededReplication (Block b, int expected, int current)
+DECL|method|isNeededReplication (BlockInfo storedBlock, int current)
 name|boolean
 name|isNeededReplication
 parameter_list|(
-name|Block
-name|b
-parameter_list|,
-name|int
-name|expected
+name|BlockInfo
+name|storedBlock
 parameter_list|,
 name|int
 name|current
 parameter_list|)
 block|{
+name|int
+name|expected
+init|=
+name|storedBlock
+operator|.
+name|getReplication
+argument_list|()
+decl_stmt|;
 return|return
 name|current
 operator|<
@@ -16816,8 +16720,24 @@ operator|||
 operator|!
 name|blockHasEnoughRacks
 argument_list|(
-name|b
+name|storedBlock
 argument_list|)
+return|;
+block|}
+DECL|method|getExpectedReplicaNum (BlockInfo block)
+specifier|public
+name|short
+name|getExpectedReplicaNum
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|)
+block|{
+return|return
+name|block
+operator|.
+name|getReplication
+argument_list|()
 return|;
 block|}
 DECL|method|getMissingBlocksCount ()

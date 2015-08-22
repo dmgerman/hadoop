@@ -3938,8 +3938,6 @@ name|logVersion
 argument_list|)
 argument_list|,
 name|replication
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 break|break;
@@ -6906,7 +6904,7 @@ name|newBlock
 argument_list|,
 name|file
 operator|.
-name|getPreferredBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
