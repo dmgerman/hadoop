@@ -61,10 +61,10 @@ end_import
 begin_class
 annotation|@
 name|Private
-DECL|class|AllContainerLogAggregationPolicy
+DECL|class|NoneContainerLogAggregationPolicy
 specifier|public
 class|class
-name|AllContainerLogAggregationPolicy
+name|NoneContainerLogAggregationPolicy
 extends|extends
 name|AbstractContainerLogAggregationPolicy
 block|{
@@ -78,7 +78,7 @@ name|logContext
 parameter_list|)
 block|{
 return|return
-literal|true
+literal|false
 return|;
 block|}
 block|}

@@ -54,33 +54,38 @@ name|server
 operator|.
 name|api
 operator|.
-name|ContainerLogContext
+name|ContainerLogAggregationPolicy
 import|;
 end_import
+
+begin_comment
+comment|// The class provides no-op implementation for parseParameters. Polices
+end_comment
+
+begin_comment
+comment|// that don't need parameters can derive from this class.
+end_comment
 
 begin_class
 annotation|@
 name|Private
-DECL|class|AllContainerLogAggregationPolicy
+DECL|class|AbstractContainerLogAggregationPolicy
 specifier|public
+specifier|abstract
 class|class
-name|AllContainerLogAggregationPolicy
-extends|extends
 name|AbstractContainerLogAggregationPolicy
+implements|implements
+name|ContainerLogAggregationPolicy
 block|{
-DECL|method|shouldDoLogAggregation (ContainerLogContext logContext)
+DECL|method|parseParameters (String parameters)
 specifier|public
-name|boolean
-name|shouldDoLogAggregation
+name|void
+name|parseParameters
 parameter_list|(
-name|ContainerLogContext
-name|logContext
+name|String
+name|parameters
 parameter_list|)
-block|{
-return|return
-literal|true
-return|;
-block|}
+block|{   }
 block|}
 end_class
 

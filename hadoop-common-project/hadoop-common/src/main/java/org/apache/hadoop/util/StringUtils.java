@@ -1337,6 +1337,35 @@ name|String
 name|str
 parameter_list|)
 block|{
+name|String
+name|delim
+init|=
+literal|","
+decl_stmt|;
+return|return
+name|getStrings
+argument_list|(
+name|str
+argument_list|,
+name|delim
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns an arraylist of strings.    * @param str the string values    * @param delim delimiter to separate the values    * @return the arraylist of the seperated string values    */
+DECL|method|getStrings (String str, String delim)
+specifier|public
+specifier|static
+name|String
+index|[]
+name|getStrings
+parameter_list|(
+name|String
+name|str
+parameter_list|,
+name|String
+name|delim
+parameter_list|)
+block|{
 name|Collection
 argument_list|<
 name|String
@@ -1346,6 +1375,8 @@ init|=
 name|getStringCollection
 argument_list|(
 name|str
+argument_list|,
+name|delim
 argument_list|)
 decl_stmt|;
 if|if

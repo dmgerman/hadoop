@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.logaggregation
+DECL|package|org.apache.hadoop.yarn.server.api
 package|package
 name|org
 operator|.
@@ -16,11 +16,7 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|nodemanager
-operator|.
-name|containermanager
-operator|.
-name|logaggregation
+name|api
 package|;
 end_package
 
@@ -36,7 +32,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
+name|Public
 import|;
 end_import
 
@@ -48,41 +44,48 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|classification
 operator|.
-name|server
+name|InterfaceStability
 operator|.
-name|api
-operator|.
-name|ContainerLogContext
+name|Unstable
 import|;
 end_import
 
-begin_class
+begin_comment
+comment|/**  * This API is used by NodeManager to decide if a given container's logs  * should be aggregated at run time.  */
+end_comment
+
+begin_interface
 annotation|@
-name|Private
-DECL|class|AllContainerLogAggregationPolicy
+name|Public
+annotation|@
+name|Unstable
+DECL|interface|ContainerLogAggregationPolicy
 specifier|public
-class|class
-name|AllContainerLogAggregationPolicy
-extends|extends
-name|AbstractContainerLogAggregationPolicy
+interface|interface
+name|ContainerLogAggregationPolicy
 block|{
+comment|/**    *<p>    * The method used by the NodeManager log aggregation service    * to initial the policy object with parameters specified by the application    * or the cluster-wide setting.    *</p>    *    * @param parameters parameters with scheme defined by the policy class.    */
+DECL|method|parseParameters (String parameters)
+name|void
+name|parseParameters
+parameter_list|(
+name|String
+name|parameters
+parameter_list|)
+function_decl|;
+comment|/**    *<p>    * The method used by the NodeManager log aggregation service    * to ask the policy object if a given container's logs should be aggregated.    *</p>    *    * @param logContext ContainerLogContext    * @return Whether or not the container's logs should be aggregated.    */
 DECL|method|shouldDoLogAggregation (ContainerLogContext logContext)
-specifier|public
 name|boolean
 name|shouldDoLogAggregation
 parameter_list|(
 name|ContainerLogContext
 name|logContext
 parameter_list|)
-block|{
-return|return
-literal|true
-return|;
+function_decl|;
 block|}
-block|}
-end_class
+end_interface
 
 end_unit
 

@@ -34,11 +34,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
 name|api
 operator|.
-name|records
-operator|.
-name|ContainerId
+name|ContainerLogContext
 import|;
 end_import
 
@@ -50,15 +50,12 @@ name|AppLogAggregator
 extends|extends
 name|Runnable
 block|{
-DECL|method|startContainerLogAggregation (ContainerId containerId, boolean wasContainerSuccessful)
+DECL|method|startContainerLogAggregation (ContainerLogContext logContext)
 name|void
 name|startContainerLogAggregation
 parameter_list|(
-name|ContainerId
-name|containerId
-parameter_list|,
-name|boolean
-name|wasContainerSuccessful
+name|ContainerLogContext
+name|logContext
 parameter_list|)
 function_decl|;
 DECL|method|abortLogAggregation ()

@@ -104,22 +104,6 @@ name|LogAggregationContext
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|logaggregation
-operator|.
-name|ContainerLogsRetentionPolicy
-import|;
-end_import
-
 begin_class
 DECL|class|LogHandlerAppStartedEvent
 specifier|public
@@ -133,12 +117,6 @@ specifier|private
 specifier|final
 name|ApplicationId
 name|applicationId
-decl_stmt|;
-DECL|field|retentionPolicy
-specifier|private
-specifier|final
-name|ContainerLogsRetentionPolicy
-name|retentionPolicy
 decl_stmt|;
 DECL|field|user
 specifier|private
@@ -169,7 +147,7 @@ specifier|final
 name|LogAggregationContext
 name|logAggregationContext
 decl_stmt|;
-DECL|method|LogHandlerAppStartedEvent (ApplicationId appId, String user, Credentials credentials, ContainerLogsRetentionPolicy retentionPolicy, Map<ApplicationAccessType, String> appAcls)
+DECL|method|LogHandlerAppStartedEvent (ApplicationId appId, String user, Credentials credentials, Map<ApplicationAccessType, String> appAcls)
 specifier|public
 name|LogHandlerAppStartedEvent
 parameter_list|(
@@ -181,9 +159,6 @@ name|user
 parameter_list|,
 name|Credentials
 name|credentials
-parameter_list|,
-name|ContainerLogsRetentionPolicy
-name|retentionPolicy
 parameter_list|,
 name|Map
 argument_list|<
@@ -202,15 +177,13 @@ name|user
 argument_list|,
 name|credentials
 argument_list|,
-name|retentionPolicy
-argument_list|,
 name|appAcls
 argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|LogHandlerAppStartedEvent (ApplicationId appId, String user, Credentials credentials, ContainerLogsRetentionPolicy retentionPolicy, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext)
+DECL|method|LogHandlerAppStartedEvent (ApplicationId appId, String user, Credentials credentials, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext)
 specifier|public
 name|LogHandlerAppStartedEvent
 parameter_list|(
@@ -222,9 +195,6 @@ name|user
 parameter_list|,
 name|Credentials
 name|credentials
-parameter_list|,
-name|ContainerLogsRetentionPolicy
-name|retentionPolicy
 parameter_list|,
 name|Map
 argument_list|<
@@ -265,12 +235,6 @@ name|credentials
 expr_stmt|;
 name|this
 operator|.
-name|retentionPolicy
-operator|=
-name|retentionPolicy
-expr_stmt|;
-name|this
-operator|.
 name|appAcls
 operator|=
 name|appAcls
@@ -304,18 +268,6 @@ return|return
 name|this
 operator|.
 name|credentials
-return|;
-block|}
-DECL|method|getLogRetentionPolicy ()
-specifier|public
-name|ContainerLogsRetentionPolicy
-name|getLogRetentionPolicy
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|retentionPolicy
 return|;
 block|}
 DECL|method|getUser ()

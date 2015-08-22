@@ -61,10 +61,10 @@ end_import
 begin_class
 annotation|@
 name|Private
-DECL|class|AllContainerLogAggregationPolicy
+DECL|class|FailedOrKilledContainerLogAggregationPolicy
 specifier|public
 class|class
-name|AllContainerLogAggregationPolicy
+name|FailedOrKilledContainerLogAggregationPolicy
 extends|extends
 name|AbstractContainerLogAggregationPolicy
 block|{
@@ -78,7 +78,12 @@ name|logContext
 parameter_list|)
 block|{
 return|return
-literal|true
+name|logContext
+operator|.
+name|getExitCode
+argument_list|()
+operator|!=
+literal|0
 return|;
 block|}
 block|}
