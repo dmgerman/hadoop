@@ -58,6 +58,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -2348,6 +2358,31 @@ name|entity
 argument_list|,
 name|fieldsToRetrieve
 argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Cannot find entity {id:"
+operator|+
+name|entityId
+operator|+
+literal|" , type:"
+operator|+
+name|entityType
+operator|+
+literal|"}. Will send HTTP 404 in response."
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
 return|;
 block|}
 block|}

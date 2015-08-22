@@ -450,7 +450,6 @@ init|=
 literal|30
 decl_stmt|;
 DECL|field|TIMELINE_READER_MANAGER_ATTR
-specifier|private
 specifier|static
 specifier|final
 name|String
