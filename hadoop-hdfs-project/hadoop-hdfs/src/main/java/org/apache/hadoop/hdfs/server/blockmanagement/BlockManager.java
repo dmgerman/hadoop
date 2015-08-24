@@ -8893,6 +8893,13 @@ argument_list|,
 name|nodeID
 argument_list|)
 expr_stmt|;
+name|blockReportLeaseManager
+operator|.
+name|removeLease
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
 return|return
 operator|!
 name|node
