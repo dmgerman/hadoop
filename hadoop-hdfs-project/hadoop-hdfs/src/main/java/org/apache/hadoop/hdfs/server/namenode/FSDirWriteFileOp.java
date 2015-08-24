@@ -1629,9 +1629,6 @@ operator|.
 name|setExpectedLocations
 argument_list|(
 name|lastBlockInFile
-operator|.
-name|getGenerationStamp
-argument_list|()
 argument_list|,
 name|targets
 argument_list|)

@@ -15782,9 +15782,6 @@ operator|.
 name|setExpectedLocations
 argument_list|(
 name|lastBlock
-operator|.
-name|getGenerationStamp
-argument_list|()
 argument_list|,
 name|blockManager
 operator|.
@@ -24484,9 +24481,6 @@ operator|.
 name|setExpectedLocations
 argument_list|(
 name|blockinfo
-operator|.
-name|getGenerationStamp
-argument_list|()
 argument_list|,
 name|storages
 argument_list|)
