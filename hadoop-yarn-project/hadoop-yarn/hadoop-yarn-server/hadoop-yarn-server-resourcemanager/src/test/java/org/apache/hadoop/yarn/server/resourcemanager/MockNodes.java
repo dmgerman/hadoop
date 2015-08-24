@@ -1088,6 +1088,14 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|resetLastNodeHeartBeatResponse ()
+specifier|public
+name|void
+name|resetLastNodeHeartBeatResponse
+parameter_list|()
+block|{     }
+annotation|@
+name|Override
 DECL|method|getNodeManagerVersion ()
 specifier|public
 name|String

@@ -590,6 +590,25 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|resetLastNodeHeartBeatResponse ()
+specifier|public
+name|void
+name|resetLastNodeHeartBeatResponse
+parameter_list|()
+block|{
+name|node
+operator|.
+name|getLastNodeHeartBeatResponse
+argument_list|()
+operator|.
+name|setResponseId
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 annotation|@
 name|SuppressWarnings
 argument_list|(

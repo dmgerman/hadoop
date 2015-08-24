@@ -740,6 +740,12 @@ return|return
 literal|null
 return|;
 block|}
+DECL|method|resetLastNodeHeartBeatResponse ()
+specifier|public
+name|void
+name|resetLastNodeHeartBeatResponse
+parameter_list|()
+block|{     }
 DECL|method|pullContainerUpdates ()
 specifier|public
 name|List

@@ -319,6 +319,12 @@ name|NodeHeartbeatResponse
 name|getLastNodeHeartBeatResponse
 parameter_list|()
 function_decl|;
+comment|/**    * Reset lastNodeHeartbeatResponse's ID to 0.    */
+DECL|method|resetLastNodeHeartBeatResponse ()
+name|void
+name|resetLastNodeHeartBeatResponse
+parameter_list|()
+function_decl|;
 comment|/**    * Get and clear the list of containerUpdates accumulated across NM    * heartbeats.    *     * @return containerUpdates accumulated across NM heartbeats.    */
 DECL|method|pullContainerUpdates ()
 specifier|public
