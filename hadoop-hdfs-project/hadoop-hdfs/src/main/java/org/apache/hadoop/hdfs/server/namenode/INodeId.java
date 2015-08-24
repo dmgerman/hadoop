@@ -115,6 +115,16 @@ name|LAST_RESERVED_ID
 operator|+
 literal|1
 decl_stmt|;
+DECL|field|INVALID_INODE_ID
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|INVALID_INODE_ID
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/**    * To check if the request id is the same as saved id. Don't check fileId    * with GRANDFATHER_INODE_ID for backward compatibility.    */
 DECL|method|checkId (long requestId, INode inode)
 specifier|public

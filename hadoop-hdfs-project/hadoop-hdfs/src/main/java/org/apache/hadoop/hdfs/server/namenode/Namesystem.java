@@ -80,6 +80,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockCollection
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|namenode
 operator|.
 name|NameNode
@@ -181,6 +199,14 @@ name|isGenStampInFuture
 parameter_list|(
 name|Block
 name|block
+parameter_list|)
+function_decl|;
+DECL|method|getBlockCollection (long id)
+name|BlockCollection
+name|getBlockCollection
+parameter_list|(
+name|long
+name|id
 parameter_list|)
 function_decl|;
 DECL|method|adjustSafeModeBlockTotals (int deltaSafe, int deltaTotal)

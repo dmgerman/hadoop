@@ -3067,15 +3067,13 @@ block|{
 name|BlockCollection
 name|bc
 init|=
-operator|(
+name|getBlockCollection
+argument_list|(
 operator|(
 name|BlockInfo
 operator|)
 name|block
-operator|)
-operator|.
-name|getBlockCollection
-argument_list|()
+argument_list|)
 decl_stmt|;
 name|String
 name|fileName
@@ -6732,8 +6730,6 @@ block|{
 comment|// block should belong to a file
 name|bc
 operator|=
-name|blocksMap
-operator|.
 name|getBlockCollection
 argument_list|(
 name|block
@@ -7119,8 +7115,6 @@ comment|// Recheck since global lock was released
 comment|// block should belong to a file
 name|bc
 operator|=
-name|blocksMap
-operator|.
 name|getBlockCollection
 argument_list|(
 name|block
@@ -11929,10 +11923,10 @@ condition|)
 block|{
 name|completeBlock
 argument_list|(
-name|storedBlock
-operator|.
 name|getBlockCollection
-argument_list|()
+argument_list|(
+name|storedBlock
+argument_list|)
 argument_list|,
 name|storedBlock
 argument_list|,
@@ -12078,10 +12072,10 @@ block|}
 name|BlockCollection
 name|bc
 init|=
-name|storedBlock
-operator|.
 name|getBlockCollection
-argument_list|()
+argument_list|(
+name|storedBlock
+argument_list|)
 decl_stmt|;
 assert|assert
 name|bc
@@ -13693,12 +13687,20 @@ name|hasWriteLock
 argument_list|()
 assert|;
 comment|// first form a rack to datanodes map and
+name|BlockInfo
+name|bi
+init|=
+name|getStoredBlock
+argument_list|(
+name|b
+argument_list|)
+decl_stmt|;
 name|BlockCollection
 name|bc
 init|=
 name|getBlockCollection
 argument_list|(
-name|b
+name|bi
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -14405,11 +14407,9 @@ comment|//
 name|BlockCollection
 name|bc
 init|=
-name|blocksMap
-operator|.
 name|getBlockCollection
 argument_list|(
-name|block
+name|storedBlock
 argument_list|)
 decl_stmt|;
 if|if
@@ -16802,21 +16802,24 @@ name|bc
 argument_list|)
 return|;
 block|}
-DECL|method|getBlockCollection (Block b)
+DECL|method|getBlockCollection (BlockInfo b)
 specifier|public
 name|BlockCollection
 name|getBlockCollection
 parameter_list|(
-name|Block
+name|BlockInfo
 name|b
 parameter_list|)
 block|{
 return|return
-name|blocksMap
+name|namesystem
 operator|.
 name|getBlockCollection
 argument_list|(
 name|b
+operator|.
+name|getBlockCollectionId
+argument_list|()
 argument_list|)
 return|;
 block|}

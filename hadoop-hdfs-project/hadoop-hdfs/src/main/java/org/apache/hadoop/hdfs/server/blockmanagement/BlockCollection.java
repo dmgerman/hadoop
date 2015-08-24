@@ -161,6 +161,12 @@ name|boolean
 name|isUnderConstruction
 parameter_list|()
 function_decl|;
+comment|/**    * @return the id for the block collection    */
+DECL|method|getId ()
+name|long
+name|getId
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

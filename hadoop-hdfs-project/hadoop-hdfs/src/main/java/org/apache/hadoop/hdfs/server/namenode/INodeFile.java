@@ -647,7 +647,6 @@ name|LongBitFormat
 name|BITS
 decl_stmt|;
 DECL|method|HeaderFormat (LongBitFormat previous, int length, long min)
-specifier|private
 name|HeaderFormat
 parameter_list|(
 name|LongBitFormat
@@ -1397,9 +1396,12 @@ parameter_list|)
 block|{
 name|blk
 operator|.
-name|setBlockCollection
+name|setBlockCollectionId
 argument_list|(
 name|this
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|setBlock
@@ -2354,9 +2356,10 @@ control|)
 block|{
 name|b
 operator|.
-name|setBlockCollection
+name|setBlockCollectionId
 argument_list|(
-name|this
+name|getId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|short
@@ -2768,9 +2771,11 @@ argument_list|)
 expr_stmt|;
 name|blk
 operator|.
-name|setBlockCollection
+name|setBlockCollectionId
 argument_list|(
-literal|null
+name|INodeId
+operator|.
+name|INVALID_INODE_ID
 argument_list|)
 expr_stmt|;
 block|}

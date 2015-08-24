@@ -146,6 +146,26 @@ name|LightWeightGSet
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INodeId
+operator|.
+name|INVALID_INODE_ID
+import|;
+end_import
+
 begin_comment
 comment|/**  * BlockInfo class maintains for a given block  * the {@link BlockCollection} it is part of and datanodes where the replicas of  * the block are stored.  */
 end_comment
@@ -177,16 +197,17 @@ name|EMPTY_ARRAY
 init|=
 block|{}
 decl_stmt|;
-comment|/**    * Replication factor    */
+comment|/**    * Replication factor.    */
 DECL|field|replication
 specifier|private
 name|short
 name|replication
 decl_stmt|;
-DECL|field|bc
+comment|/**    * Block collection ID.    */
+DECL|field|bcId
 specifier|private
-name|BlockCollection
-name|bc
+name|long
+name|bcId
 decl_stmt|;
 comment|/** For implementing {@link LightWeightGSet.LinkedElement} interface. */
 DECL|field|nextLinkedElement
@@ -231,9 +252,9 @@ index|]
 expr_stmt|;
 name|this
 operator|.
-name|bc
+name|bcId
 operator|=
-literal|null
+name|INVALID_INODE_ID
 expr_stmt|;
 name|this
 operator|.
@@ -272,9 +293,9 @@ index|]
 expr_stmt|;
 name|this
 operator|.
-name|bc
+name|bcId
 operator|=
-literal|null
+name|INVALID_INODE_ID
 expr_stmt|;
 name|this
 operator|.
@@ -304,11 +325,11 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|bc
+name|bcId
 operator|=
 name|from
 operator|.
-name|bc
+name|bcId
 expr_stmt|;
 block|}
 DECL|method|getReplication ()
@@ -337,30 +358,30 @@ operator|=
 name|repl
 expr_stmt|;
 block|}
-DECL|method|getBlockCollection ()
+DECL|method|getBlockCollectionId ()
 specifier|public
-name|BlockCollection
-name|getBlockCollection
+name|long
+name|getBlockCollectionId
 parameter_list|()
 block|{
 return|return
-name|bc
+name|bcId
 return|;
 block|}
-DECL|method|setBlockCollection (BlockCollection bc)
+DECL|method|setBlockCollectionId (long id)
 specifier|public
 name|void
-name|setBlockCollection
+name|setBlockCollectionId
 parameter_list|(
-name|BlockCollection
-name|bc
+name|long
+name|id
 parameter_list|)
 block|{
 name|this
 operator|.
-name|bc
+name|bcId
 operator|=
-name|bc
+name|id
 expr_stmt|;
 block|}
 DECL|method|isDeleted ()
@@ -370,11 +391,9 @@ name|isDeleted
 parameter_list|()
 block|{
 return|return
-operator|(
-name|bc
+name|bcId
 operator|==
-literal|null
-operator|)
+name|INVALID_INODE_ID
 return|;
 block|}
 DECL|method|getDatanode (int index)
