@@ -1316,7 +1316,7 @@ block|}
 DECL|method|loadXAttrs ( XAttrFeatureProto proto, final String[] stringTable)
 specifier|public
 specifier|static
-name|ImmutableList
+name|List
 argument_list|<
 name|XAttr
 argument_list|>
@@ -1331,17 +1331,15 @@ index|[]
 name|stringTable
 parameter_list|)
 block|{
-name|ImmutableList
-operator|.
-name|Builder
+name|List
 argument_list|<
 name|XAttr
 argument_list|>
 name|b
 init|=
-name|ImmutableList
-operator|.
-name|builder
+operator|new
+name|ArrayList
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -1469,9 +1467,6 @@ expr_stmt|;
 block|}
 return|return
 name|b
-operator|.
-name|build
-argument_list|()
 return|;
 block|}
 DECL|method|loadQuotaByStorageTypeEntries ( QuotaByStorageTypeFeatureProto proto)

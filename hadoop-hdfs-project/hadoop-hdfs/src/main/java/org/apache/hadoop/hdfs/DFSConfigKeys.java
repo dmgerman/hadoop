@@ -2163,6 +2163,15 @@ name|DFS_NAMENODE_MAX_XATTR_SIZE_DEFAULT
 init|=
 literal|16384
 decl_stmt|;
+DECL|field|DFS_NAMENODE_MAX_XATTR_SIZE_HARD_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_NAMENODE_MAX_XATTR_SIZE_HARD_LIMIT
+init|=
+literal|32768
+decl_stmt|;
 comment|//Following keys have no defaults
 DECL|field|DFS_DATANODE_DATA_DIR_KEY
 specifier|public

@@ -651,7 +651,7 @@ block|{
 name|String
 name|name
 init|=
-name|getPrefixName
+name|getPrefixedName
 argument_list|(
 name|xAttr
 argument_list|)
@@ -696,11 +696,11 @@ name|xAttrMap
 return|;
 block|}
 comment|/**    * Get name with prefix from<code>XAttr</code>    */
-DECL|method|getPrefixName (XAttr xAttr)
+DECL|method|getPrefixedName (XAttr xAttr)
 specifier|public
 specifier|static
 name|String
-name|getPrefixName
+name|getPrefixedName
 parameter_list|(
 name|XAttr
 name|xAttr
@@ -717,31 +717,50 @@ return|return
 literal|null
 return|;
 block|}
-name|String
-name|namespace
-init|=
+return|return
+name|getPrefixedName
+argument_list|(
 name|xAttr
 operator|.
 name|getNameSpace
 argument_list|()
+argument_list|,
+name|xAttr
 operator|.
-name|toString
+name|getName
 argument_list|()
-decl_stmt|;
+argument_list|)
+return|;
+block|}
+DECL|method|getPrefixedName (XAttr.NameSpace ns, String name)
+specifier|public
+specifier|static
+name|String
+name|getPrefixedName
+parameter_list|(
+name|XAttr
+operator|.
+name|NameSpace
+name|ns
+parameter_list|,
+name|String
+name|name
+parameter_list|)
+block|{
 return|return
 name|StringUtils
 operator|.
 name|toLowerCase
 argument_list|(
-name|namespace
+name|ns
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 operator|+
 literal|"."
 operator|+
-name|xAttr
-operator|.
-name|getName
-argument_list|()
+name|name
 return|;
 block|}
 comment|/**    * Build<code>XAttr</code> list from xattr name list.    */
