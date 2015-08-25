@@ -6431,6 +6431,20 @@ name|flowRunIdStr
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|context
+operator|.
+name|getApplications
+argument_list|()
+operator|.
+name|containsKey
+argument_list|(
+name|applicationID
+argument_list|)
+condition|)
+block|{
 name|Application
 name|application
 init|=
@@ -6456,8 +6470,6 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-literal|null
-operator|==
 name|context
 operator|.
 name|getApplications
@@ -6469,6 +6481,8 @@ name|applicationID
 argument_list|,
 name|application
 argument_list|)
+operator|==
+literal|null
 condition|)
 block|{
 name|LOG
@@ -6545,6 +6559,7 @@ name|logAggregationContext
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|dispatcher
 operator|.
