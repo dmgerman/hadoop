@@ -390,7 +390,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|method|waitForNextEvents (DFSInotifyEventInputStream eis)
-specifier|private
+specifier|public
 specifier|static
 name|EventBatch
 name|waitForNextEvents
