@@ -5129,6 +5129,25 @@ argument_list|(
 name|attempt
 argument_list|)
 expr_stmt|;
+comment|// Update attempt priority to the latest to avoid race condition i.e
+comment|// SchedulerApplicationAttempt is created with old priority but it is not
+comment|// set to SchedulerApplication#setCurrentAppAttempt.
+comment|// Scenario would occur is
+comment|// 1. SchdulerApplicationAttempt is created with old priority.
+comment|// 2. updateApplicationPriority() updates SchedulerApplication. Since
+comment|// currentAttempt is null, it just return.
+comment|// 3. ScheduelerApplcationAttempt is set in
+comment|// SchedulerApplication#setCurrentAppAttempt.
+name|attempt
+operator|.
+name|setPriority
+argument_list|(
+name|application
+operator|.
+name|getPriority
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|queue
 operator|.
 name|submitApplicationAttempt
@@ -10233,7 +10252,6 @@ annotation|@
 name|Override
 DECL|method|updateApplicationPriority (Priority newPriority, ApplicationId applicationId)
 specifier|public
-specifier|synchronized
 name|void
 name|updateApplicationPriority
 parameter_list|(
@@ -10378,6 +10396,8 @@ operator|.
 name|updateApplicationStateSynchronously
 argument_list|(
 name|appState
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// As we use iterator over a TreeSet for OrderingPolicy, once we change

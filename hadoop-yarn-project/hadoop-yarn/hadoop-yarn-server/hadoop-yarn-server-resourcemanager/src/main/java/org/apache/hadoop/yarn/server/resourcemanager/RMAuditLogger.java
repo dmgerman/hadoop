@@ -324,6 +324,15 @@ name|RELEASE_CONTAINER
 init|=
 literal|"AM Released Container"
 decl_stmt|;
+DECL|field|UPDATE_APP_PRIORITY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|UPDATE_APP_PRIORITY
+init|=
+literal|"Update Application Priority Request"
+decl_stmt|;
 comment|// Some commonly used descriptions
 DECL|field|UNAUTHORIZED_USER
 specifier|public

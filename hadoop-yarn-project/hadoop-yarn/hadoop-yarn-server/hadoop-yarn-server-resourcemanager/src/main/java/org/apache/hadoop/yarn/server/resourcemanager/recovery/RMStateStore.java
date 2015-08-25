@@ -1610,6 +1610,19 @@ argument_list|,
 name|appState
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|(
+operator|(
+name|RMStateUpdateAppEvent
+operator|)
+name|event
+operator|)
+operator|.
+name|isNotifyApplication
+argument_list|()
+condition|)
+block|{
 name|store
 operator|.
 name|notifyApplication
@@ -1625,6 +1638,7 @@ name|APP_UPDATE_SAVED
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -3719,13 +3733,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|updateApplicationStateSynchronously ( ApplicationStateData appState)
+DECL|method|updateApplicationStateSynchronously ( ApplicationStateData appState, boolean notifyApp)
 specifier|public
 name|void
 name|updateApplicationStateSynchronously
 parameter_list|(
 name|ApplicationStateData
 name|appState
+parameter_list|,
+name|boolean
+name|notifyApp
 parameter_list|)
 block|{
 name|handleStoreEvent
@@ -3734,6 +3751,8 @@ operator|new
 name|RMStateUpdateAppEvent
 argument_list|(
 name|appState
+argument_list|,
+name|notifyApp
 argument_list|)
 argument_list|)
 expr_stmt|;

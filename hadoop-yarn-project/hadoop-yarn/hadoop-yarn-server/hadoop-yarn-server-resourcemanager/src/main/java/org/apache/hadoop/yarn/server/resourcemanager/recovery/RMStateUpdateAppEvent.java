@@ -58,6 +58,13 @@ specifier|final
 name|ApplicationStateData
 name|appState
 decl_stmt|;
+comment|// After application state is updated in state store,
+comment|// should notify back to application or not
+DECL|field|notifyApplication
+specifier|private
+name|boolean
+name|notifyApplication
+decl_stmt|;
 DECL|method|RMStateUpdateAppEvent (ApplicationStateData appState)
 specifier|public
 name|RMStateUpdateAppEvent
@@ -79,6 +86,35 @@ name|appState
 operator|=
 name|appState
 expr_stmt|;
+name|this
+operator|.
+name|notifyApplication
+operator|=
+literal|true
+expr_stmt|;
+block|}
+DECL|method|RMStateUpdateAppEvent (ApplicationStateData appState, boolean notifyApp)
+specifier|public
+name|RMStateUpdateAppEvent
+parameter_list|(
+name|ApplicationStateData
+name|appState
+parameter_list|,
+name|boolean
+name|notifyApp
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|appState
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|notifyApplication
+operator|=
+name|notifyApp
+expr_stmt|;
 block|}
 DECL|method|getAppState ()
 specifier|public
@@ -88,6 +124,16 @@ parameter_list|()
 block|{
 return|return
 name|appState
+return|;
+block|}
+DECL|method|isNotifyApplication ()
+specifier|public
+name|boolean
+name|isNotifyApplication
+parameter_list|()
+block|{
+return|return
+name|notifyApplication
 return|;
 block|}
 block|}
