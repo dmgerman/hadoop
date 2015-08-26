@@ -2472,6 +2472,8 @@ operator|new
 name|RamDiskAsyncLazyPersistService
 argument_list|(
 name|datanode
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|deletingBlock
@@ -4912,7 +4914,7 @@ name|dstfile
 return|;
 block|}
 comment|/**    * Copy the block and meta files for the given block to the given destination.    * @return the new meta and block files.    * @throws IOException    */
-DECL|method|copyBlockFiles (long blockId, long genStamp, File srcMeta, File srcFile, File destRoot, boolean calculateChecksum, int smallBufferSize)
+DECL|method|copyBlockFiles (long blockId, long genStamp, File srcMeta, File srcFile, File destRoot, boolean calculateChecksum, int smallBufferSize, final Configuration conf)
 specifier|static
 name|File
 index|[]
@@ -4938,6 +4940,10 @@ name|calculateChecksum
 parameter_list|,
 name|int
 name|smallBufferSize
+parameter_list|,
+specifier|final
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -4997,10 +5003,12 @@ argument_list|,
 name|calculateChecksum
 argument_list|,
 name|smallBufferSize
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}
-DECL|method|copyBlockFiles (File srcMeta, File srcFile, File dstMeta, File dstFile, boolean calculateChecksum, int smallBufferSize)
+DECL|method|copyBlockFiles (File srcMeta, File srcFile, File dstMeta, File dstFile, boolean calculateChecksum, int smallBufferSize, final Configuration conf)
 specifier|static
 name|File
 index|[]
@@ -5023,6 +5031,10 @@ name|calculateChecksum
 parameter_list|,
 name|int
 name|smallBufferSize
+parameter_list|,
+specifier|final
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -5041,6 +5053,8 @@ argument_list|,
 name|srcFile
 argument_list|,
 name|smallBufferSize
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -5400,6 +5414,8 @@ name|isOnTransientStorage
 argument_list|()
 argument_list|,
 name|smallBufferSize
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|ReplicaInfo
@@ -5490,7 +5506,7 @@ name|replicaInfo
 return|;
 block|}
 comment|/**    * Compute and store the checksum for a block file that does not already have    * its checksum computed.    *    * @param srcMeta source meta file, containing only the checksum header, not a    *     calculated checksum    * @param dstMeta destination meta file, into which this method will write a    *     full computed checksum    * @param blockFile block file for which the checksum will be computed    * @throws IOException    */
-DECL|method|computeChecksum (File srcMeta, File dstMeta, File blockFile, int smallBufferSize)
+DECL|method|computeChecksum (File srcMeta, File dstMeta, File blockFile, int smallBufferSize, final Configuration conf)
 specifier|private
 specifier|static
 name|void
@@ -5507,6 +5523,10 @@ name|blockFile
 parameter_list|,
 name|int
 name|smallBufferSize
+parameter_list|,
+specifier|final
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -5520,6 +5540,13 @@ operator|.
 name|readDataChecksum
 argument_list|(
 name|srcMeta
+argument_list|,
+name|DFSUtil
+operator|.
+name|getIoFileBufferSize
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -13298,6 +13325,8 @@ argument_list|,
 literal|true
 argument_list|,
 name|smallBufferSize
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}

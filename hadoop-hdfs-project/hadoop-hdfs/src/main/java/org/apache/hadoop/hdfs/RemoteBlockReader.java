@@ -1646,7 +1646,7 @@ name|this
 operator|.
 name|isLocal
 operator|=
-name|DFSClient
+name|DFSUtilClient
 operator|.
 name|isLocalAddress
 argument_list|(
