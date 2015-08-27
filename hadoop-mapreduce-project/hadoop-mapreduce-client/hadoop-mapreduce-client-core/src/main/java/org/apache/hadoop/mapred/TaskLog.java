@@ -1147,30 +1147,13 @@ name|String
 name|getBaseLogDir
 parameter_list|()
 block|{
-name|String
-name|logDir
-init|=
+return|return
 name|System
 operator|.
 name|getProperty
 argument_list|(
 literal|"hadoop.log.dir"
 argument_list|)
-decl_stmt|;
-comment|// file is treating "" different from null {@see File#File(String, String)}
-return|return
-name|logDir
-operator|==
-literal|null
-operator|||
-name|logDir
-operator|.
-name|isEmpty
-argument_list|()
-condition|?
-literal|null
-else|:
-name|logDir
 return|;
 block|}
 DECL|method|getAttemptDir (TaskAttemptID taskid, boolean isCleanup)
