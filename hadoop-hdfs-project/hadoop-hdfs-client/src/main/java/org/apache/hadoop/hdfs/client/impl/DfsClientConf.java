@@ -464,78 +464,6 @@ name|client
 operator|.
 name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_FILE_BLOCK_STORAGE_LOCATIONS_NUM_THREADS
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|HdfsClientConfigKeys
-operator|.
-name|DFS_CLIENT_FILE_BLOCK_STORAGE_LOCATIONS_NUM_THREADS_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|HdfsClientConfigKeys
-operator|.
-name|DFS_CLIENT_FILE_BLOCK_STORAGE_LOCATIONS_TIMEOUT_MS
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|HdfsClientConfigKeys
-operator|.
-name|DFS_CLIENT_FILE_BLOCK_STORAGE_LOCATIONS_TIMEOUT_MS_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|HdfsClientConfigKeys
-operator|.
 name|DFS_CLIENT_KEY_PROVIDER_CACHE_EXPIRY_DEFAULT
 import|;
 end_import
@@ -915,42 +843,6 @@ operator|.
 name|HdfsClientConfigKeys
 operator|.
 name|DFS_DOMAIN_SOCKET_PATH_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|HdfsClientConfigKeys
-operator|.
-name|DFS_HDFS_BLOCKS_METADATA_ENABLED
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|HdfsClientConfigKeys
-operator|.
-name|DFS_HDFS_BLOCKS_METADATA_ENABLED_DEFAULT
 import|;
 end_import
 
@@ -2029,14 +1921,7 @@ name|classes
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Class
-argument_list|<
-name|?
-extends|extends
-name|ReplicaAccessorBuilder
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|ClassLoader
@@ -3305,150 +3190,58 @@ name|String
 name|confAsString
 parameter_list|()
 block|{
-name|StringBuilder
-name|builder
-init|=
-operator|new
-name|StringBuilder
-argument_list|()
-decl_stmt|;
-name|builder
-operator|.
-name|append
-argument_list|(
-literal|"shortCircuitStreamsCacheSize = "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|shortCircuitStreamsCacheSize
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", shortCircuitStreamsCacheExpiryMs = "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|shortCircuitStreamsCacheExpiryMs
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", shortCircuitMmapCacheSize = "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|shortCircuitMmapCacheSize
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", shortCircuitMmapCacheExpiryMs = "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|shortCircuitMmapCacheExpiryMs
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", shortCircuitMmapCacheRetryTimeout = "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|shortCircuitMmapCacheRetryTimeout
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", shortCircuitCacheStaleThresholdMs = "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|shortCircuitCacheStaleThresholdMs
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", socketCacheCapacity = "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|socketCacheCapacity
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", socketCacheExpiry = "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|socketCacheExpiry
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", shortCircuitLocalReads = "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|shortCircuitLocalReads
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", useLegacyBlockReaderLocal = "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|useLegacyBlockReaderLocal
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", domainSocketDataTraffic = "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|domainSocketDataTraffic
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", shortCircuitSharedMemoryWatcherInterruptCheckMs = "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|shortCircuitSharedMemoryWatcherInterruptCheckMs
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", keyProviderCacheExpiryMs = "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|keyProviderCacheExpiryMs
-argument_list|)
-expr_stmt|;
 return|return
-name|builder
-operator|.
-name|toString
-argument_list|()
+literal|"shortCircuitStreamsCacheSize = "
+operator|+
+name|shortCircuitStreamsCacheSize
+operator|+
+literal|", shortCircuitStreamsCacheExpiryMs = "
+operator|+
+name|shortCircuitStreamsCacheExpiryMs
+operator|+
+literal|", shortCircuitMmapCacheSize = "
+operator|+
+name|shortCircuitMmapCacheSize
+operator|+
+literal|", shortCircuitMmapCacheExpiryMs = "
+operator|+
+name|shortCircuitMmapCacheExpiryMs
+operator|+
+literal|", shortCircuitMmapCacheRetryTimeout = "
+operator|+
+name|shortCircuitMmapCacheRetryTimeout
+operator|+
+literal|", shortCircuitCacheStaleThresholdMs = "
+operator|+
+name|shortCircuitCacheStaleThresholdMs
+operator|+
+literal|", socketCacheCapacity = "
+operator|+
+name|socketCacheCapacity
+operator|+
+literal|", socketCacheExpiry = "
+operator|+
+name|socketCacheExpiry
+operator|+
+literal|", shortCircuitLocalReads = "
+operator|+
+name|shortCircuitLocalReads
+operator|+
+literal|", useLegacyBlockReaderLocal = "
+operator|+
+name|useLegacyBlockReaderLocal
+operator|+
+literal|", domainSocketDataTraffic = "
+operator|+
+name|domainSocketDataTraffic
+operator|+
+literal|", shortCircuitSharedMemoryWatcherInterruptCheckMs = "
+operator|+
+name|shortCircuitSharedMemoryWatcherInterruptCheckMs
+operator|+
+literal|", keyProviderCacheExpiryMs = "
+operator|+
+name|keyProviderCacheExpiryMs
 return|;
 block|}
 block|}

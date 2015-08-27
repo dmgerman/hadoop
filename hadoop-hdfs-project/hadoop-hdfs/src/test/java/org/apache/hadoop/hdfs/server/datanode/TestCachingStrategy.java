@@ -729,11 +729,7 @@ name|map
 init|=
 operator|new
 name|TreeMap
-argument_list|<
-name|String
-argument_list|,
-name|Stats
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 annotation|@
@@ -2273,14 +2269,6 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// verify that we dropped everything from the cache.
-name|Assert
-operator|.
-name|assertNull
-argument_list|(
-name|stats
-argument_list|)
-expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -2393,6 +2381,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 comment|// verify that we can seek after setDropBehind
+try|try
+init|(
 name|FSDataInputStream
 name|fis
 init|=
@@ -2406,8 +2396,7 @@ argument_list|(
 name|TEST_PATH
 argument_list|)
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|Assert
 operator|.
@@ -2439,14 +2428,6 @@ literal|2
 argument_list|)
 expr_stmt|;
 comment|// seek
-block|}
-finally|finally
-block|{
-name|fis
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 finally|finally

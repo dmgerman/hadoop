@@ -456,8 +456,6 @@ init|=
 literal|false
 decl_stmt|;
 DECL|field|REPLICA_ACCESSOR_BUILDER_CLASSES_KEY
-specifier|static
-specifier|final
 name|String
 name|REPLICA_ACCESSOR_BUILDER_CLASSES_KEY
 init|=
