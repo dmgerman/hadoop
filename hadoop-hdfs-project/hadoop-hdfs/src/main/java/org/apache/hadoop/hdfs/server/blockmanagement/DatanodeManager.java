@@ -5663,7 +5663,7 @@ index|]
 return|;
 block|}
 comment|//check lease recovery
-name|BlockInfoUnderConstruction
+name|BlockInfo
 index|[]
 name|blocks
 init|=
@@ -5696,18 +5696,32 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|BlockInfoUnderConstruction
+name|BlockInfo
 name|b
 range|:
 name|blocks
 control|)
 block|{
 specifier|final
+name|BlockUnderConstructionFeature
+name|uc
+init|=
+name|b
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
+decl_stmt|;
+assert|assert
+name|uc
+operator|!=
+literal|null
+assert|;
+specifier|final
 name|DatanodeStorageInfo
 index|[]
 name|storages
 init|=
-name|b
+name|uc
 operator|.
 name|getExpectedStorageLocations
 argument_list|()
@@ -5765,7 +5779,7 @@ comment|// to old block.
 name|boolean
 name|truncateRecovery
 init|=
-name|b
+name|uc
 operator|.
 name|getTruncateBlock
 argument_list|()
@@ -5777,7 +5791,7 @@ name|copyOnTruncateRecovery
 init|=
 name|truncateRecovery
 operator|&&
-name|b
+name|uc
 operator|.
 name|getTruncateBlock
 argument_list|()
@@ -5786,9 +5800,6 @@ name|getBlockId
 argument_list|()
 operator|!=
 name|b
-operator|.
-name|toBlock
-argument_list|()
 operator|.
 name|getBlockId
 argument_list|()
@@ -5805,7 +5816,7 @@ name|ExtendedBlock
 argument_list|(
 name|blockPoolId
 argument_list|,
-name|b
+name|uc
 operator|.
 name|getTruncateBlock
 argument_list|()
@@ -5817,9 +5828,6 @@ argument_list|(
 name|blockPoolId
 argument_list|,
 name|b
-operator|.
-name|toBlock
-argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// If we only get 1 replica after eliminating stale nodes, then choose all
@@ -5906,11 +5914,8 @@ name|copyOnTruncateRecovery
 operator|)
 condition|?
 name|b
-operator|.
-name|toBlock
-argument_list|()
 else|:
-name|b
+name|uc
 operator|.
 name|getTruncateBlock
 argument_list|()
@@ -5944,7 +5949,7 @@ name|primaryBlock
 argument_list|,
 name|recoveryInfos
 argument_list|,
-name|b
+name|uc
 operator|.
 name|getBlockRecoveryId
 argument_list|()

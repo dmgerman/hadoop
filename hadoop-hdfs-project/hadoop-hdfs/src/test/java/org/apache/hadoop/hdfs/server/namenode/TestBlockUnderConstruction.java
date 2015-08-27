@@ -40,6 +40,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -270,7 +282,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockManager
 import|;
 end_import
 
@@ -979,6 +991,18 @@ name|getNameNodeRpc
 argument_list|()
 decl_stmt|;
 specifier|final
+name|BlockManager
+name|blockManager
+init|=
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|()
+decl_stmt|;
+specifier|final
 name|Path
 name|p
 init|=
@@ -1104,11 +1128,17 @@ operator|.
 name|getLocalBlock
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertFalse
+argument_list|(
+name|blockManager
+operator|.
+name|getStoredBlock
 argument_list|(
 name|b
-operator|instanceof
-name|BlockInfoContiguousUnderConstruction
+argument_list|)
+operator|.
+name|isComplete
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if

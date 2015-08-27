@@ -402,24 +402,6 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
 name|BlockInfoStriped
 import|;
 end_import
@@ -438,7 +420,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoStripedUnderConstruction
+name|BlockManager
 import|;
 end_import
 
@@ -454,9 +436,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
+name|common
 operator|.
-name|BlockManager
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -3000,7 +2982,7 @@ decl_stmt|;
 name|ucBlk
 operator|=
 operator|new
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoStriped
 argument_list|(
 name|striped
 argument_list|,
@@ -3013,7 +2995,7 @@ block|{
 name|ucBlk
 operator|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoContiguous
 argument_list|(
 name|lastBlk
 argument_list|,
@@ -3021,6 +3003,19 @@ name|replication
 argument_list|)
 expr_stmt|;
 block|}
+name|ucBlk
+operator|.
+name|convertToBlockUnderConstruction
+argument_list|(
+name|HdfsServerConstants
+operator|.
+name|BlockUCState
+operator|.
+name|UNDER_CONSTRUCTION
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
 name|file
 operator|.
 name|setBlock

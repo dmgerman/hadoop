@@ -356,24 +356,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfoStripedUnderConstruction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|Block
@@ -474,9 +456,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
+name|common
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -495,6 +477,8 @@ operator|.
 name|common
 operator|.
 name|HdfsServerConstants
+operator|.
+name|BlockUCState
 import|;
 end_import
 
@@ -6589,7 +6573,7 @@ block|{
 name|newBlockInfo
 operator|=
 operator|new
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoStriped
 argument_list|(
 name|newBlock
 argument_list|,
@@ -6605,7 +6589,7 @@ block|{
 name|newBlockInfo
 operator|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoContiguous
 argument_list|(
 name|newBlock
 argument_list|,
@@ -6616,6 +6600,17 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|newBlockInfo
+operator|.
+name|convertToBlockUnderConstruction
+argument_list|(
+name|BlockUCState
+operator|.
+name|UNDER_CONSTRUCTION
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
 name|fsNamesys
 operator|.
 name|getBlockManager
@@ -7093,7 +7088,7 @@ block|{
 name|newBI
 operator|=
 operator|new
-name|BlockInfoStripedUnderConstruction
+name|BlockInfoStriped
 argument_list|(
 name|newBlock
 argument_list|,
@@ -7109,7 +7104,7 @@ block|{
 name|newBI
 operator|=
 operator|new
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfoContiguous
 argument_list|(
 name|newBlock
 argument_list|,
@@ -7120,6 +7115,17 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|newBI
+operator|.
+name|convertToBlockUnderConstruction
+argument_list|(
+name|BlockUCState
+operator|.
+name|UNDER_CONSTRUCTION
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{

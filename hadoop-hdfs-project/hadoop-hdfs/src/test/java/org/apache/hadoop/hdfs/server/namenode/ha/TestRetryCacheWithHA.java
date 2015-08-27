@@ -758,7 +758,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 import|;
 end_import
 
@@ -4522,18 +4522,15 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|BlockInfoContiguousUnderConstruction
+name|BlockInfo
 name|blkUC
 init|=
-call|(
-name|BlockInfoContiguousUnderConstruction
-call|)
-argument_list|(
+operator|(
 name|fileNode
 operator|.
 name|getBlocks
 argument_list|()
-argument_list|)
+operator|)
 index|[
 literal|1
 index|]
@@ -4542,6 +4539,9 @@ name|int
 name|datanodeNum
 init|=
 name|blkUC
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
 operator|.
 name|getExpectedStorageLocations
 argument_list|()
@@ -4577,6 +4577,9 @@ expr_stmt|;
 name|datanodeNum
 operator|=
 name|blkUC
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
 operator|.
 name|getExpectedStorageLocations
 argument_list|()
