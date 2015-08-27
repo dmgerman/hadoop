@@ -1829,13 +1829,6 @@ name|getFullPathName
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|blockInfo
-operator|!=
-literal|null
-condition|)
-block|{
 name|out
 operator|.
 name|println
@@ -1848,7 +1841,6 @@ name|getReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|out
 operator|.
 name|println

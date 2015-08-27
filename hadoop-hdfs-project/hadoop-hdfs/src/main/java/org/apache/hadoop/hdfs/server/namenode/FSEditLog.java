@@ -7820,6 +7820,7 @@ block|}
 comment|/**    * Return total number of syncs happened on this edit log.    * @return long - count    */
 DECL|method|getTotalSyncCount ()
 specifier|public
+specifier|synchronized
 name|long
 name|getTotalSyncCount
 parameter_list|()
