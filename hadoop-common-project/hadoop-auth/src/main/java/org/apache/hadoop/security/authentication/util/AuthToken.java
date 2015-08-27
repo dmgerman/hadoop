@@ -148,6 +148,15 @@ name|PRINCIPAL
 init|=
 literal|"p"
 decl_stmt|;
+DECL|field|MAX_INACTIVES
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|MAX_INACTIVES
+init|=
+literal|"i"
+decl_stmt|;
 DECL|field|EXPIRES
 specifier|private
 specifier|static
@@ -190,6 +199,8 @@ name|USER_NAME
 argument_list|,
 name|PRINCIPAL
 argument_list|,
+name|MAX_INACTIVES
+argument_list|,
 name|EXPIRES
 argument_list|,
 name|TYPE
@@ -210,6 +221,11 @@ DECL|field|type
 specifier|private
 name|String
 name|type
+decl_stmt|;
+DECL|field|maxInactives
+specifier|private
+name|long
+name|maxInactives
 decl_stmt|;
 DECL|field|expires
 specifier|private
@@ -237,6 +253,11 @@ expr_stmt|;
 name|type
 operator|=
 literal|null
+expr_stmt|;
+name|maxInactives
+operator|=
+operator|-
+literal|1
 expr_stmt|;
 name|expires
 operator|=
@@ -320,6 +341,13 @@ name|type
 expr_stmt|;
 name|this
 operator|.
+name|maxInactives
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+name|this
+operator|.
 name|expires
 operator|=
 operator|-
@@ -372,6 +400,23 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Sets the max inactive interval of the token.    *    * @param interval max inactive interval of the token in milliseconds since    *                 the epoch.    */
+DECL|method|setMaxInactives (long interval)
+specifier|public
+name|void
+name|setMaxInactives
+parameter_list|(
+name|long
+name|interval
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maxInactives
+operator|=
+name|interval
+expr_stmt|;
+block|}
 comment|/**    * Sets the expiration of the token.    *    * @param expires expiration time of the token in milliseconds since the epoch.    */
 DECL|method|setExpires (long expires)
 specifier|public
@@ -400,6 +445,23 @@ name|isExpired
 parameter_list|()
 block|{
 return|return
+operator|(
+name|getMaxInactives
+argument_list|()
+operator|!=
+operator|-
+literal|1
+operator|&&
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|>
+name|getMaxInactives
+argument_list|()
+operator|)
+operator|||
+operator|(
 name|getExpires
 argument_list|()
 operator|!=
@@ -413,6 +475,7 @@ argument_list|()
 operator|>
 name|getExpires
 argument_list|()
+operator|)
 return|;
 block|}
 comment|/**    * Generates the token.    */
@@ -502,6 +565,29 @@ name|sb
 operator|.
 name|append
 argument_list|(
+name|MAX_INACTIVES
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getMaxInactives
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|ATTR_SEPARATOR
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
 name|EXPIRES
 argument_list|)
 operator|.
@@ -557,6 +643,17 @@ parameter_list|()
 block|{
 return|return
 name|type
+return|;
+block|}
+comment|/**    * Returns the max inactive time of the token.    *    * @return the max inactive time of the token, in milliseconds since Epoc.    */
+DECL|method|getMaxInactives ()
+specifier|public
+name|long
+name|getMaxInactives
+parameter_list|()
+block|{
+return|return
+name|maxInactives
 return|;
 block|}
 comment|/**    * Returns the expiration time of the token.    *    * @return the expiration time of the token, in milliseconds since Epoc.    */
@@ -694,6 +791,21 @@ argument_list|)
 throw|;
 block|}
 name|long
+name|maxInactives
+init|=
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|map
+operator|.
+name|get
+argument_list|(
+name|MAX_INACTIVES
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|long
 name|expires
 init|=
 name|Long
@@ -736,6 +848,13 @@ name|TYPE
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|token
+operator|.
+name|setMaxInactives
+argument_list|(
+name|maxInactives
+argument_list|)
+expr_stmt|;
 name|token
 operator|.
 name|setExpires

@@ -148,6 +148,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|namenode
 operator|.
 name|FSDirectory
@@ -257,7 +275,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class tests the replication handling/calculation of snapshots. In  * particular, {@link INodeFile#getFileReplication()} and  * {@link INodeFile#getPreferredBlockReplication()} are tested to make sure  * the number of replication is calculated correctly with/without snapshots.  */
+comment|/**  * This class tests the replication handling/calculation of snapshots to make  * sure the number of replication is calculated correctly with/without  * snapshots.  */
 end_comment
 
 begin_class
@@ -447,7 +465,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Check the replication of a given file. We test both    * {@link INodeFile#getFileReplication()} and    * {@link INodeFile#getPreferredBlockReplication()}.    *    * @param file The given file    * @param replication The expected replication number    * @param blockReplication The expected replication number for the block    * @throws Exception    */
+comment|/**    * Check the replication of a given file.    *    * @param file The given file    * @param replication The expected replication number    * @param blockReplication The expected replication number for the block    * @throws Exception    */
 DECL|method|checkFileReplication (Path file, short replication, short blockReplication)
 specifier|private
 name|void
@@ -509,21 +527,31 @@ operator|instanceof
 name|INodeFile
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|BlockInfo
+name|b
+range|:
+name|inode
+operator|.
+name|asFile
+argument_list|()
+operator|.
+name|getBlocks
+argument_list|()
+control|)
+block|{
 name|assertEquals
 argument_list|(
 name|blockReplication
 argument_list|,
-operator|(
-operator|(
-name|INodeFile
-operator|)
-name|inode
-operator|)
+name|b
 operator|.
-name|getPreferredBlockReplication
+name|getReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Test replication number calculation for a normal file without snapshots.    */
 annotation|@
@@ -678,16 +706,28 @@ argument_list|(
 name|currentFile
 argument_list|)
 decl_stmt|;
+for|for
+control|(
+name|BlockInfo
+name|b
+range|:
+name|inodeOfCurrentFile
+operator|.
+name|getBlocks
+argument_list|()
+control|)
+block|{
 name|assertEquals
 argument_list|(
 name|expectedBlockRep
 argument_list|,
-name|inodeOfCurrentFile
+name|b
 operator|.
-name|getPreferredBlockReplication
+name|getReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Then check replication for every snapshot
 for|for
 control|(
@@ -731,16 +771,28 @@ decl_stmt|;
 comment|// The replication number derived from the
 comment|// INodeFileWithLink#getPreferredBlockReplication should
 comment|// always == expectedBlockRep
+for|for
+control|(
+name|BlockInfo
+name|b
+range|:
+name|ssInode
+operator|.
+name|getBlocks
+argument_list|()
+control|)
+block|{
 name|assertEquals
 argument_list|(
 name|expectedBlockRep
 argument_list|,
-name|ssInode
+name|b
 operator|.
-name|getPreferredBlockReplication
+name|getReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Also check the number derived from INodeFile#getFileReplication
 name|assertEquals
 argument_list|(
@@ -1123,16 +1175,28 @@ decl_stmt|;
 comment|// The replication number derived from the
 comment|// INodeFileWithLink#getPreferredBlockReplication should
 comment|// always == expectedBlockRep
+for|for
+control|(
+name|BlockInfo
+name|b
+range|:
+name|ssInode
+operator|.
+name|getBlocks
+argument_list|()
+control|)
+block|{
 name|assertEquals
 argument_list|(
 name|REPLICATION
 argument_list|,
-name|ssInode
+name|b
 operator|.
-name|getPreferredBlockReplication
+name|getReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Also check the number derived from INodeFile#getFileReplication
 name|assertEquals
 argument_list|(

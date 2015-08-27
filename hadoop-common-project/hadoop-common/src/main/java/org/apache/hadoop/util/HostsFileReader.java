@@ -457,8 +457,11 @@ name|i
 operator|++
 control|)
 block|{
-if|if
-condition|(
+name|nodes
+index|[
+name|i
+index|]
+operator|=
 name|nodes
 index|[
 name|i
@@ -466,6 +469,13 @@ index|]
 operator|.
 name|trim
 argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|nodes
+index|[
+name|i
+index|]
 operator|.
 name|startsWith
 argument_list|(
@@ -492,14 +502,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Adding "
+literal|"Adding a node \""
 operator|+
 name|nodes
 index|[
 name|i
 index|]
 operator|+
-literal|" to the list of "
+literal|"\" to the list of "
 operator|+
 name|type
 operator|+

@@ -26,7 +26,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CONTEXT
 import|;
@@ -42,7 +44,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_MAX_BLOCK_ACQUIRE_FAILURES_KEY
 import|;
@@ -58,7 +62,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_SOCKET_CACHE_EXPIRY_MSEC_KEY
 import|;
@@ -106,7 +112,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_SOCKET_WRITE_TIMEOUT_KEY
 import|;

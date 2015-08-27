@@ -2213,7 +2213,7 @@ literal|"name"
 argument_list|,
 name|XAttrHelper
 operator|.
-name|getPrefixName
+name|getPrefixedName
 argument_list|(
 name|xAttr
 argument_list|)
@@ -2470,7 +2470,7 @@ name|add
 argument_list|(
 name|XAttrHelper
 operator|.
-name|getPrefixName
+name|getPrefixedName
 argument_list|(
 name|xAttr
 argument_list|)

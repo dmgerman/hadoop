@@ -855,6 +855,25 @@ name|IPC_SERVER_MAX_CONNECTIONS_DEFAULT
 init|=
 literal|0
 decl_stmt|;
+comment|/** Logs if a RPC is really slow compared to rest of RPCs. */
+DECL|field|IPC_SERVER_LOG_SLOW_RPC
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_SERVER_LOG_SLOW_RPC
+init|=
+literal|"ipc.server.log.slow.rpc"
+decl_stmt|;
+DECL|field|IPC_SERVER_LOG_SLOW_RPC_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|IPC_SERVER_LOG_SLOW_RPC_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_KEY
 specifier|public

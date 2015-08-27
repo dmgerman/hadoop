@@ -702,8 +702,9 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Return a SampleStat object that supports    * calls like StdDev and Mean.    * @return SampleStat    */
 DECL|method|lastStat ()
-specifier|private
+specifier|public
 name|SampleStat
 name|lastStat
 parameter_list|()

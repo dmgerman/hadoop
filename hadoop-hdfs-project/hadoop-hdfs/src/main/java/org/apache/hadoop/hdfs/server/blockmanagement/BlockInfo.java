@@ -42,6 +42,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -98,9 +108,47 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|LightWeightGSet
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INodeId
+operator|.
+name|INVALID_INODE_ID
 import|;
 end_import
 
@@ -131,12 +179,19 @@ name|EMPTY_ARRAY
 init|=
 block|{}
 decl_stmt|;
-DECL|field|bc
+comment|/**    * Replication factor.    */
+DECL|field|replication
 specifier|private
-name|BlockCollection
-name|bc
+name|short
+name|replication
 decl_stmt|;
-comment|/** For implementing {@link LightWeightGSet.LinkedElement} interface */
+comment|/**    * Block collection ID.    */
+DECL|field|bcId
+specifier|private
+name|long
+name|bcId
+decl_stmt|;
+comment|/** For implementing {@link LightWeightGSet.LinkedElement} interface. */
 DECL|field|nextLinkedElement
 specifier|private
 name|LightWeightGSet
@@ -179,9 +234,20 @@ index|]
 expr_stmt|;
 name|this
 operator|.
-name|bc
+name|bcId
 operator|=
-literal|null
+name|INVALID_INODE_ID
+expr_stmt|;
+name|this
+operator|.
+name|replication
+operator|=
+name|isStriped
+argument_list|()
+condition|?
+literal|0
+else|:
+name|size
 expr_stmt|;
 block|}
 DECL|method|BlockInfo (Block blk, short size)
@@ -214,36 +280,85 @@ index|]
 expr_stmt|;
 name|this
 operator|.
-name|bc
+name|bcId
 operator|=
-literal|null
+name|INVALID_INODE_ID
+expr_stmt|;
+name|this
+operator|.
+name|replication
+operator|=
+name|isStriped
+argument_list|()
+condition|?
+literal|0
+else|:
+name|size
 expr_stmt|;
 block|}
-DECL|method|getBlockCollection ()
+DECL|method|getReplication ()
 specifier|public
-name|BlockCollection
-name|getBlockCollection
+name|short
+name|getReplication
 parameter_list|()
 block|{
 return|return
-name|bc
+name|replication
 return|;
 block|}
-DECL|method|setBlockCollection (BlockCollection bc)
+DECL|method|setReplication (short repl)
 specifier|public
 name|void
-name|setBlockCollection
+name|setReplication
 parameter_list|(
-name|BlockCollection
-name|bc
+name|short
+name|repl
 parameter_list|)
 block|{
 name|this
 operator|.
-name|bc
+name|replication
 operator|=
-name|bc
+name|repl
 expr_stmt|;
+block|}
+DECL|method|getBlockCollectionId ()
+specifier|public
+name|long
+name|getBlockCollectionId
+parameter_list|()
+block|{
+return|return
+name|bcId
+return|;
+block|}
+DECL|method|setBlockCollectionId (long id)
+specifier|public
+name|void
+name|setBlockCollectionId
+parameter_list|(
+name|long
+name|id
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bcId
+operator|=
+name|id
+expr_stmt|;
+block|}
+DECL|method|isDeleted ()
+specifier|public
+name|boolean
+name|isDeleted
+parameter_list|()
+block|{
+return|return
+name|bcId
+operator|==
+name|INVALID_INODE_ID
+return|;
 block|}
 DECL|method|getDatanode (int index)
 specifier|public
@@ -1206,20 +1321,6 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|isDeleted ()
-specifier|public
-name|boolean
-name|isDeleted
-parameter_list|()
-block|{
-return|return
-operator|(
-name|bc
-operator|==
-literal|null
-operator|)
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|hashCode ()
@@ -1468,13 +1569,54 @@ name|genStamp
 argument_list|)
 expr_stmt|;
 comment|// Remove the replicas with wrong gen stamp
+name|List
+argument_list|<
+name|ReplicaUnderConstruction
+argument_list|>
+name|staleReplicas
+init|=
 name|uc
 operator|.
-name|removeStaleReplicas
+name|getStaleReplicas
+argument_list|(
+name|genStamp
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|ReplicaUnderConstruction
+name|r
+range|:
+name|staleReplicas
+control|)
+block|{
+name|r
+operator|.
+name|getExpectedStorageLocation
+argument_list|()
+operator|.
+name|removeBlock
 argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+name|NameNode
+operator|.
+name|blockStateChangeLog
+operator|.
+name|debug
+argument_list|(
+literal|"BLOCK* Removing stale replica "
+operator|+
+literal|"from location: {}"
+argument_list|,
+name|r
+operator|.
+name|getExpectedStorageLocation
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Commit block's length and generation stamp as reported by the client.    * Set block state to {@link BlockUCState#COMMITTED}.    * @param block - contains client reported block length and generation    * @throws IOException if block ids are inconsistent.    */
 DECL|method|commitBlock (Block block)

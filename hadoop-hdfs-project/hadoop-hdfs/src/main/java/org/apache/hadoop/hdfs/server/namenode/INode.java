@@ -3085,7 +3085,7 @@ specifier|final
 name|QuotaDelta
 name|quotaDelta
 decl_stmt|;
-comment|/**      * @param bsps      *          block storage policy suite to calculate intended storage type      *          usage      * @param collectedBlocks      *          blocks collected from the descents for further block      *          deletion/update will be added to the given map.      * @param removedINodes  *          INodes collected from the descents for further cleaning up of      * @param removedUCFiles      *      files that the NN need to remove the leases      */
+comment|/**      * @param bsps  *          block storage policy suite to calculate intended storage type  *          usage      * @param collectedBlocks *          blocks collected from the descents for further block *          deletion/update will be added to the given map.      * @param removedINodes *          INodes collected from the descents for further cleaning up of      * @param removedUCFiles      */
 DECL|method|ReclaimContext ( BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, List<Long> removedUCFiles)
 specifier|public
 name|ReclaimContext
@@ -3201,6 +3201,72 @@ specifier|static
 class|class
 name|BlocksMapUpdateInfo
 block|{
+comment|/**      * The blocks whose replication factor need to be updated.      */
+DECL|class|UpdatedReplicationInfo
+specifier|public
+specifier|static
+class|class
+name|UpdatedReplicationInfo
+block|{
+comment|/**        * the expected replication after the update.        */
+DECL|field|targetReplication
+specifier|private
+specifier|final
+name|short
+name|targetReplication
+decl_stmt|;
+comment|/**        * The block whose replication needs to be updated.        */
+DECL|field|block
+specifier|private
+specifier|final
+name|BlockInfo
+name|block
+decl_stmt|;
+DECL|method|UpdatedReplicationInfo (short targetReplication, BlockInfo block)
+specifier|public
+name|UpdatedReplicationInfo
+parameter_list|(
+name|short
+name|targetReplication
+parameter_list|,
+name|BlockInfo
+name|block
+parameter_list|)
+block|{
+name|this
+operator|.
+name|targetReplication
+operator|=
+name|targetReplication
+expr_stmt|;
+name|this
+operator|.
+name|block
+operator|=
+name|block
+expr_stmt|;
+block|}
+DECL|method|block ()
+specifier|public
+name|BlockInfo
+name|block
+parameter_list|()
+block|{
+return|return
+name|block
+return|;
+block|}
+DECL|method|targetReplication ()
+specifier|public
+name|short
+name|targetReplication
+parameter_list|()
+block|{
+return|return
+name|targetReplication
+return|;
+block|}
+block|}
 comment|/**      * The list of blocks that need to be removed from blocksMap      */
 DECL|field|toDeleteList
 specifier|private
@@ -3211,12 +3277,29 @@ name|BlockInfo
 argument_list|>
 name|toDeleteList
 decl_stmt|;
+comment|/**      * The list of blocks whose replication factor needs to be adjusted      */
+DECL|field|toUpdateReplicationInfo
+specifier|private
+specifier|final
+name|List
+argument_list|<
+name|UpdatedReplicationInfo
+argument_list|>
+name|toUpdateReplicationInfo
+decl_stmt|;
 DECL|method|BlocksMapUpdateInfo ()
 specifier|public
 name|BlocksMapUpdateInfo
 parameter_list|()
 block|{
 name|toDeleteList
+operator|=
+operator|new
+name|ChunkedArrayList
+argument_list|<>
+argument_list|()
+expr_stmt|;
+name|toUpdateReplicationInfo
 operator|=
 operator|new
 name|ChunkedArrayList
@@ -3236,6 +3319,19 @@ parameter_list|()
 block|{
 return|return
 name|toDeleteList
+return|;
+block|}
+DECL|method|toUpdateReplicationInfo ()
+specifier|public
+name|List
+argument_list|<
+name|UpdatedReplicationInfo
+argument_list|>
+name|toUpdateReplicationInfo
+parameter_list|()
+block|{
+return|return
+name|toUpdateReplicationInfo
 return|;
 block|}
 comment|/**      * Add a to-be-deleted block into the      * {@link BlocksMapUpdateInfo#toDeleteList}      * @param toDelete the to-be-deleted block      */
@@ -3284,6 +3380,32 @@ operator|.
 name|remove
 argument_list|(
 name|block
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addUpdateReplicationFactor (BlockInfo block, short targetRepl)
+specifier|public
+name|void
+name|addUpdateReplicationFactor
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|,
+name|short
+name|targetRepl
+parameter_list|)
+block|{
+name|toUpdateReplicationInfo
+operator|.
+name|add
+argument_list|(
+operator|new
+name|UpdatedReplicationInfo
+argument_list|(
+name|targetRepl
+argument_list|,
+name|block
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

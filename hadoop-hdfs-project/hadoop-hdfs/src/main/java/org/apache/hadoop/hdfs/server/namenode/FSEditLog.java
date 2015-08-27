@@ -7817,6 +7817,35 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Return total number of syncs happened on this edit log.    * @return long - count    */
+DECL|method|getTotalSyncCount ()
+specifier|public
+specifier|synchronized
+name|long
+name|getTotalSyncCount
+parameter_list|()
+block|{
+if|if
+condition|(
+name|editLogStream
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|editLogStream
+operator|.
+name|getNumSync
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|0
+return|;
+block|}
+block|}
 block|}
 end_class
 

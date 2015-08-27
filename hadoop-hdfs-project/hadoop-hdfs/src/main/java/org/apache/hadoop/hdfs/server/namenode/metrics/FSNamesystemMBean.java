@@ -226,6 +226,18 @@ name|int
 name|getFsLockQueueLength
 parameter_list|()
 function_decl|;
+comment|/**    * Return total number of Sync Operations on FSEditLog.    */
+DECL|method|getTotalSyncCount ()
+name|long
+name|getTotalSyncCount
+parameter_list|()
+function_decl|;
+comment|/**    * Return total time spent doing sync operations on FSEditLog.    */
+DECL|method|getTotalSyncTimes ()
+name|String
+name|getTotalSyncTimes
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

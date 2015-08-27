@@ -4781,6 +4781,26 @@ return|return
 name|exitCode
 return|;
 block|}
+if|if
+condition|(
+name|bandwidth
+operator|<
+literal|0
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Bandwidth should be a non-negative integer"
+argument_list|)
+expr_stmt|;
+return|return
+name|exitCode
+return|;
+block|}
 name|FileSystem
 name|fs
 init|=

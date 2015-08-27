@@ -30,11 +30,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocolPB
+name|util
 operator|.
-name|PBHelper
+name|StripedBlockUtil
 operator|.
-name|vintPrefixed
+name|getInternalBlockLength
 import|;
 end_import
 
@@ -48,11 +48,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|util
+name|protocolPB
 operator|.
-name|StripedBlockUtil
+name|PBHelperClient
 operator|.
-name|getInternalBlockLength
+name|vintPrefixed
 import|;
 end_import
 
@@ -143,16 +143,6 @@ operator|.
 name|util
 operator|.
 name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Arrays
 import|;
 end_import
 
@@ -652,24 +642,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|common
-operator|.
-name|HdfsServerConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|protocol
 operator|.
 name|BlocksWithLocations
@@ -789,20 +761,6 @@ operator|.
 name|token
 operator|.
 name|Token
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|HostsFileReader
 import|;
 end_import
 
@@ -2000,7 +1958,7 @@ name|getXferAddr
 argument_list|()
 argument_list|)
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)
@@ -4488,10 +4446,25 @@ block|{
 comment|// fetch new blocks
 try|try
 block|{
-name|blocksToReceive
-operator|-=
+specifier|final
+name|long
+name|received
+init|=
 name|getBlockList
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|received
+operator|==
+literal|0
+condition|)
+block|{
+return|return;
+block|}
+name|blocksToReceive
+operator|-=
+name|received
 expr_stmt|;
 continue|continue;
 block|}
@@ -5109,19 +5082,19 @@ literal|"Excluding datanode "
 operator|+
 name|dn
 operator|+
-literal|": "
+literal|": decommissioned="
 operator|+
 name|decommissioned
 operator|+
-literal|", "
+literal|", decommissioning="
 operator|+
 name|decommissioning
 operator|+
-literal|", "
+literal|", excluded="
 operator|+
 name|excluded
 operator|+
-literal|", "
+literal|", notIncluded="
 operator|+
 name|notIncluded
 argument_list|)
@@ -6321,114 +6294,6 @@ name|port
 argument_list|)
 operator|)
 return|;
-block|}
-comment|/**      * Parse a comma separated string to obtain set of host names      *       * @return set of host names      */
-DECL|method|parseHostList (String string)
-specifier|static
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|parseHostList
-parameter_list|(
-name|String
-name|string
-parameter_list|)
-block|{
-name|String
-index|[]
-name|addrs
-init|=
-name|StringUtils
-operator|.
-name|getTrimmedStrings
-argument_list|(
-name|string
-argument_list|)
-decl_stmt|;
-return|return
-operator|new
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-name|addrs
-argument_list|)
-argument_list|)
-return|;
-block|}
-comment|/**      * Read set of host names from a file      *       * @return set of host names      */
-DECL|method|getHostListFromFile (String fileName, String type)
-specifier|static
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|getHostListFromFile
-parameter_list|(
-name|String
-name|fileName
-parameter_list|,
-name|String
-name|type
-parameter_list|)
-block|{
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|nodes
-init|=
-operator|new
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-argument_list|()
-decl_stmt|;
-try|try
-block|{
-name|HostsFileReader
-operator|.
-name|readFileToSet
-argument_list|(
-name|type
-argument_list|,
-name|fileName
-argument_list|,
-name|nodes
-argument_list|)
-expr_stmt|;
-return|return
-name|StringUtils
-operator|.
-name|getTrimmedStrings
-argument_list|(
-name|nodes
-argument_list|)
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Failed to read host list from file: "
-operator|+
-name|fileName
-argument_list|)
-throw|;
-block|}
 block|}
 block|}
 block|}

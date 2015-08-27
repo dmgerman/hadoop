@@ -979,7 +979,7 @@ name|srcRepl
 init|=
 name|src
 operator|.
-name|getPreferredBlockReplication
+name|getFileReplication
 argument_list|()
 decl_stmt|;
 name|long
@@ -1294,6 +1294,11 @@ operator|.
 name|concatBlocks
 argument_list|(
 name|srcList
+argument_list|,
+name|fsd
+operator|.
+name|getBlockManager
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// since we are in the same dir - we can use same parent to remove files

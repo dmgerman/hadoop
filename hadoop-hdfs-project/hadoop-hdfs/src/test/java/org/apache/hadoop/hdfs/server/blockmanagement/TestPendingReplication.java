@@ -1120,24 +1120,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|Mockito
-operator|.
-name|doReturn
-argument_list|(
-operator|(
-name|short
-operator|)
-literal|3
-argument_list|)
-operator|.
-name|when
-argument_list|(
-name|bc
-argument_list|)
-operator|.
-name|getPreferredBlockReplication
-argument_list|()
-expr_stmt|;
 comment|// Place into blocksmap with GenerationStamp = 1
 name|blockInfo
 operator|.

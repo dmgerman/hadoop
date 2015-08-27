@@ -2921,7 +2921,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|/**        * This is a server side method, which is invoked over RPC. On success        * the return response has protobuf response payload. On failure, the        * exception name and the stack trace are return in the resposne.        * See {@link HadoopRpcResponseProto}        *         * In this method there three types of exceptions possible and they are        * returned in response as follows.        *<ol>        *<li> Exceptions encountered in this method that are returned         * as {@link RpcServerException}</li>        *<li> Exceptions thrown by the service is wrapped in ServiceException.         * In that this method returns in response the exception thrown by the         * service.</li>        *<li> Other exceptions thrown by the service. They are returned as        * it is.</li>        *</ol>        */
+comment|/**        * This is a server side method, which is invoked over RPC. On success        * the return response has protobuf response payload. On failure, the        * exception name and the stack trace are returned in the response.        * See {@link HadoopRpcResponseProto}        *         * In this method there three types of exceptions possible and they are        * returned in response as follows.        *<ol>        *<li> Exceptions encountered in this method that are returned         * as {@link RpcServerException}</li>        *<li> Exceptions thrown by the service is wrapped in ServiceException.         * In that this method returns in response the exception thrown by the         * service.</li>        *<li> Other exceptions thrown by the service. They are returned as        * it is.</li>        *</ol>        */
 DECL|method|call (RPC.Server server, String connectionProtocolName, Writable writableRequest, long receiveTime)
 specifier|public
 name|Writable
@@ -3312,6 +3312,24 @@ argument_list|,
 name|processingTime
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|server
+operator|.
+name|isLogSlowRPC
+argument_list|()
+condition|)
+block|{
+name|server
+operator|.
+name|logSlowRpcCalls
+argument_list|(
+name|methodName
+argument_list|,
+name|processingTime
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 return|return
 operator|new

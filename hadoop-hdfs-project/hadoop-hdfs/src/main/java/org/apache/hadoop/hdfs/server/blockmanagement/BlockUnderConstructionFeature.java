@@ -95,6 +95,26 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -515,21 +535,26 @@ operator|.
 name|COMMITTED
 expr_stmt|;
 block|}
-DECL|method|removeStaleReplicas (BlockInfo block)
-name|void
-name|removeStaleReplicas
+DECL|method|getStaleReplicas (long genStamp)
+name|List
+argument_list|<
+name|ReplicaUnderConstruction
+argument_list|>
+name|getStaleReplicas
 parameter_list|(
-name|BlockInfo
-name|block
-parameter_list|)
-block|{
-specifier|final
 name|long
 name|genStamp
+parameter_list|)
+block|{
+name|List
+argument_list|<
+name|ReplicaUnderConstruction
+argument_list|>
+name|staleReplicas
 init|=
-name|block
-operator|.
-name|getGenerationStamp
+operator|new
+name|ArrayList
+argument_list|<>
 argument_list|()
 decl_stmt|;
 if|if
@@ -558,35 +583,19 @@ name|getGenerationStamp
 argument_list|()
 condition|)
 block|{
-name|r
+name|staleReplicas
 operator|.
-name|getExpectedStorageLocation
-argument_list|()
-operator|.
-name|removeBlock
+name|add
 argument_list|(
-name|block
-argument_list|)
-expr_stmt|;
-name|NameNode
-operator|.
-name|blockStateChangeLog
-operator|.
-name|debug
-argument_list|(
-literal|"BLOCK* Removing stale replica "
-operator|+
-literal|"from location: {}"
-argument_list|,
 name|r
-operator|.
-name|getExpectedStorageLocation
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
+return|return
+name|staleReplicas
+return|;
 block|}
 comment|/**    * Initialize lease recovery for this block.    * Find the first alive data-node starting from the previous primary and    * make it primary.    */
 DECL|method|initializeBlockRecovery (BlockInfo blockInfo, long recoveryId)
@@ -633,7 +642,7 @@ name|warn
 argument_list|(
 literal|"BLOCK*"
 operator|+
-literal|" BlockUnderConstructionFeature.initLeaseRecovery:"
+literal|" BlockUnderConstructionFeature.initializeBlockRecovery:"
 operator|+
 literal|" No blocks found, lease removed."
 argument_list|)
@@ -670,14 +679,12 @@ condition|)
 block|{
 name|allLiveReplicasTriedAsPrimary
 operator|=
-operator|(
 name|allLiveReplicasTriedAsPrimary
 operator|&&
 name|replica
 operator|.
 name|getChosenAsPrimary
 argument_list|()
-operator|)
 expr_stmt|;
 block|}
 block|}
@@ -838,7 +845,7 @@ name|NameNode
 operator|.
 name|blockStateChangeLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* {} recovery started, primary={}"
 argument_list|,
@@ -932,19 +939,6 @@ operator|==
 name|storage
 condition|)
 block|{
-name|replicas
-index|[
-name|i
-index|]
-operator|.
-name|setBlockId
-argument_list|(
-name|reportedBlock
-operator|.
-name|getBlockId
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|replicas
 index|[
 name|i

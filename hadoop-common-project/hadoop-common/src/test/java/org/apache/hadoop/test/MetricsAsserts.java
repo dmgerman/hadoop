@@ -541,7 +541,7 @@ return|return
 name|rb
 return|;
 block|}
-comment|/**    * Call getMetrics on source and get a record builder mock to verify    * @param source  the metrics source    * @param all     if true, return all metrics even if not changed    * @return the record builder mock to verify    */
+comment|/**    * Call getMetrics on source and get a record builder mock to verify    * @param source  the metrics source    * @param all     if true, return all metrics even if not changed    * @return the record builder mock to verifyÃ    */
 DECL|method|getMetrics (MetricsSource source, boolean all)
 specifier|public
 specifier|static

@@ -1919,7 +1919,7 @@ expr_stmt|;
 block|}
 comment|//1st append does not add any data so that the last block remains full
 comment|//and the last block in INodeFileUnderConstruction is a BlockInfo
-comment|//but not BlockInfoUnderConstruction.
+comment|//but does not have a BlockUnderConstructionFeature.
 name|fs2
 operator|.
 name|append
@@ -2121,7 +2121,7 @@ expr_stmt|;
 block|}
 comment|//1st append does not add any data so that the last block remains full
 comment|//and the last block in INodeFileUnderConstruction is a BlockInfo
-comment|//but not BlockInfoUnderConstruction.
+comment|//but does not have a BlockUnderConstructionFeature.
 operator|(
 operator|(
 name|DistributedFileSystem

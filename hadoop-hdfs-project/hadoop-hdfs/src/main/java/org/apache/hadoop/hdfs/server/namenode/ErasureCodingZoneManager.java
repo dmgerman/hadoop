@@ -452,7 +452,7 @@ name|equals
 argument_list|(
 name|XAttrHelper
 operator|.
-name|getPrefixName
+name|getPrefixedName
 argument_list|(
 name|xAttr
 argument_list|)

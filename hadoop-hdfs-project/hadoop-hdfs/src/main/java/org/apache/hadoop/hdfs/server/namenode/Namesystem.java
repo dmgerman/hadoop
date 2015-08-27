@@ -90,6 +90,24 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|BlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|BlockCollection
 import|;
 end_import
@@ -209,6 +227,14 @@ name|Block
 name|block
 parameter_list|)
 function_decl|;
+DECL|method|getBlockCollection (long id)
+name|BlockCollection
+name|getBlockCollection
+parameter_list|(
+name|long
+name|id
+parameter_list|)
+function_decl|;
 DECL|method|adjustSafeModeBlockTotals (int deltaSafe, int deltaTotal)
 name|void
 name|adjustSafeModeBlockTotals
@@ -230,14 +256,6 @@ parameter_list|)
 throws|throws
 name|StandbyException
 function_decl|;
-DECL|method|isInSnapshot (BlockCollection bc)
-name|boolean
-name|isInSnapshot
-parameter_list|(
-name|BlockCollection
-name|bc
-parameter_list|)
-function_decl|;
 comment|/**    * Gets the ECZone for path    * @param src    *          - path    * @return {@link ErasureCodingZone}    * @throws IOException    */
 DECL|method|getErasureCodingZoneForPath (String src)
 name|ErasureCodingZone
@@ -248,6 +266,14 @@ name|src
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+DECL|method|isInSnapshot (BlockInfo blockUC)
+name|boolean
+name|isInSnapshot
+parameter_list|(
+name|BlockInfo
+name|blockUC
+parameter_list|)
 function_decl|;
 DECL|method|getCacheManager ()
 name|CacheManager

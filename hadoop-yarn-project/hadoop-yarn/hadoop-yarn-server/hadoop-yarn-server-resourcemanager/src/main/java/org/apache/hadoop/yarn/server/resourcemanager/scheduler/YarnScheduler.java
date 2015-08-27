@@ -150,6 +150,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -207,6 +221,24 @@ operator|.
 name|records
 operator|.
 name|ApplicationResourceUsageReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Container
 import|;
 end_import
 
@@ -898,6 +930,29 @@ name|newPriority
 parameter_list|,
 name|ApplicationId
 name|applicationId
+parameter_list|)
+throws|throws
+name|YarnException
+function_decl|;
+comment|/**    *    * Get previous attempts' live containers for work-preserving AM restart.    *    * @param appAttemptId the id of the application attempt    *    * @return list of live containers for the given attempt    */
+DECL|method|getTransferredContainers (ApplicationAttemptId appAttemptId)
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|getTransferredContainers
+parameter_list|(
+name|ApplicationAttemptId
+name|appAttemptId
+parameter_list|)
+function_decl|;
+comment|/**    * Set the cluster max priority    *     * @param conf    * @throws YarnException    */
+DECL|method|setClusterMaxPriority (Configuration conf)
+name|void
+name|setClusterMaxPriority
+parameter_list|(
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|YarnException

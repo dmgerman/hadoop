@@ -68,20 +68,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|DFSTestUtil
 import|;
 end_import
@@ -227,7 +213,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CONTEXT
 argument_list|,
@@ -256,7 +242,7 @@ name|conf
 operator|.
 name|setLong
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
 argument_list|,
@@ -267,7 +253,7 @@ name|conf
 operator|.
 name|setLong
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_SOCKET_CACHE_EXPIRY_MSEC_KEY
 argument_list|,

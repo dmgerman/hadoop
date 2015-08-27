@@ -6700,6 +6700,14 @@ argument_list|()
 expr_stmt|;
 comment|// register the ClientTokenMasterKey after it is saved in the store,
 comment|// otherwise client may hold an invalid ClientToken after RM restarts.
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
 name|appAttempt
 operator|.
 name|rmContext
@@ -6720,6 +6728,7 @@ name|getClientTokenMasterKey
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@

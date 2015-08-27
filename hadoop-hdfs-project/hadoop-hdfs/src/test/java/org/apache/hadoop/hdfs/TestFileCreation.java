@@ -90,7 +90,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_BYTES_PER_CHECKSUM_DEFAULT
 import|;
@@ -106,7 +108,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_BYTES_PER_CHECKSUM_KEY
 import|;
@@ -122,7 +126,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_WRITE_PACKET_SIZE_DEFAULT
 import|;
@@ -138,7 +144,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_WRITE_PACKET_SIZE_KEY
 import|;
@@ -281,6 +289,18 @@ operator|.
 name|Assert
 operator|.
 name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
 import|;
 end_import
 
@@ -651,6 +671,22 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -1730,7 +1766,7 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_USE_DN_HOSTNAME
 argument_list|,
@@ -4694,6 +4730,42 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+try|try
+block|{
+name|testFileCreationNonRecursive
+argument_list|(
+name|fs
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|fs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|// Worker method for testing non-recursive. Extracted to allow other
+comment|// FileSystem implementations to re-use the tests
+DECL|method|testFileCreationNonRecursive (FileSystem fs)
+specifier|public
+specifier|static
+name|void
+name|testFileCreationNonRecursive
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 specifier|final
 name|Path
 name|path
@@ -4716,8 +4788,6 @@ name|out
 init|=
 literal|null
 decl_stmt|;
-try|try
-block|{
 name|IOException
 name|expectedException
 init|=
@@ -4763,8 +4833,8 @@ name|CREATE
 argument_list|)
 decl_stmt|;
 comment|// Create a new file in root dir, should succeed
-name|out
-operator|=
+name|assertNull
+argument_list|(
 name|createNonRecursive
 argument_list|(
 name|fs
@@ -4775,15 +4845,11 @@ literal|1
 argument_list|,
 name|createFlag
 argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|close
-argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// Create a file when parent dir exists as file, should fail
-try|try
-block|{
+name|expectedException
+operator|=
 name|createNonRecursive
 argument_list|(
 name|fs
@@ -4801,18 +4867,6 @@ argument_list|,
 name|createFlag
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|expectedException
-operator|=
-name|e
-expr_stmt|;
-block|}
 name|assertTrue
 argument_list|(
 literal|"Create a file when parent directory exists as a file"
@@ -4852,10 +4906,6 @@ argument_list|)
 decl_stmt|;
 name|expectedException
 operator|=
-literal|null
-expr_stmt|;
-try|try
-block|{
 name|createNonRecursive
 argument_list|(
 name|fs
@@ -4867,18 +4917,6 @@ argument_list|,
 name|createFlag
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|expectedException
-operator|=
-name|e
-expr_stmt|;
-block|}
 name|assertTrue
 argument_list|(
 literal|"Create a file in a non-exist dir using"
@@ -4914,8 +4952,8 @@ name|OVERWRITE
 argument_list|)
 decl_stmt|;
 comment|// Overwrite a file in root dir, should succeed
-name|out
-operator|=
+name|assertNull
+argument_list|(
 name|createNonRecursive
 argument_list|(
 name|fs
@@ -4926,19 +4964,11 @@ literal|1
 argument_list|,
 name|overwriteFlag
 argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|close
-argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// Overwrite a file when parent dir exists as file, should fail
 name|expectedException
 operator|=
-literal|null
-expr_stmt|;
-try|try
-block|{
 name|createNonRecursive
 argument_list|(
 name|fs
@@ -4956,18 +4986,6 @@ argument_list|,
 name|overwriteFlag
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|expectedException
-operator|=
-name|e
-expr_stmt|;
-block|}
 name|assertTrue
 argument_list|(
 literal|"Overwrite a file when parent directory exists as a file"
@@ -5007,10 +5025,6 @@ argument_list|)
 decl_stmt|;
 name|expectedException
 operator|=
-literal|null
-expr_stmt|;
-try|try
-block|{
 name|createNonRecursive
 argument_list|(
 name|fs
@@ -5022,18 +5036,6 @@ argument_list|,
 name|overwriteFlag
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|expectedException
-operator|=
-name|e
-expr_stmt|;
-block|}
 name|assertTrue
 argument_list|(
 literal|"Overwrite a file in a non-exist dir using"
@@ -5050,24 +5052,17 @@ name|FileNotFoundException
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|fs
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-comment|// creates a file using DistributedFileSystem.createNonRecursive()
+comment|// Attempts to create and close a file using FileSystem.createNonRecursive(),
+comment|// catching and returning an exception if one occurs or null
+comment|// if the operation is successful.
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|createNonRecursive (FileSystem fs, Path name, int repl, EnumSet<CreateFlag> flag)
 specifier|static
-name|FSDataOutputStream
+name|IOException
 name|createNonRecursive
 parameter_list|(
 name|FileSystem
@@ -5088,13 +5083,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|System
 operator|.
 name|out
 operator|.
 name|println
 argument_list|(
-literal|"createNonRecursive: Created "
+literal|"createNonRecursive: Attempting to create "
 operator|+
 name|name
 operator|+
@@ -5105,27 +5102,9 @@ operator|+
 literal|" replica."
 argument_list|)
 expr_stmt|;
-name|FSDataOutputStream
-name|stm
+name|int
+name|bufferSize
 init|=
-operator|(
-operator|(
-name|DistributedFileSystem
-operator|)
-name|fs
-operator|)
-operator|.
-name|createNonRecursive
-argument_list|(
-name|name
-argument_list|,
-name|FsPermission
-operator|.
-name|getDefault
-argument_list|()
-argument_list|,
-name|flag
-argument_list|,
 name|fs
 operator|.
 name|getConf
@@ -5139,6 +5118,24 @@ name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 literal|4096
 argument_list|)
+decl_stmt|;
+name|FSDataOutputStream
+name|stm
+init|=
+name|fs
+operator|.
+name|createNonRecursive
+argument_list|(
+name|name
+argument_list|,
+name|FsPermission
+operator|.
+name|getDefault
+argument_list|()
+argument_list|,
+name|flag
+argument_list|,
+name|bufferSize
 argument_list|,
 operator|(
 name|short
@@ -5150,11 +5147,27 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-return|return
 name|stm
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+return|return
+name|e
 return|;
 block|}
-comment|/**  * Test that file data becomes available before file is closed.  */
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Test that file data becomes available before file is closed.   */
 annotation|@
 name|Test
 DECL|method|testFileCreationSimulated ()

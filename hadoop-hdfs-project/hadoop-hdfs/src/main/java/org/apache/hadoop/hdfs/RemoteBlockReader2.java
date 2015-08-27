@@ -386,7 +386,7 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
+name|PBHelperClient
 import|;
 end_import
 
@@ -1503,7 +1503,7 @@ name|this
 operator|.
 name|isLocal
 operator|=
-name|DFSClient
+name|DFSUtilClient
 operator|.
 name|isLocalAddress
 argument_list|(
@@ -1990,7 +1990,7 @@ name|BlockOpResponseProto
 operator|.
 name|parseFrom
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|vintPrefixed
 argument_list|(

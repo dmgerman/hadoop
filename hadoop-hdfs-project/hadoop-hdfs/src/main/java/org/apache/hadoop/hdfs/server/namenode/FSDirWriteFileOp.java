@@ -3491,7 +3491,7 @@ argument_list|()
 argument_list|,
 name|fileINode
 operator|.
-name|getPreferredBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|,
 literal|true

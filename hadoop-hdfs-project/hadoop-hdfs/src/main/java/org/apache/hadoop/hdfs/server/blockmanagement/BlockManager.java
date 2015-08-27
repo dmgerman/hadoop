@@ -192,16 +192,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|TreeMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|TreeSet
 import|;
 end_import
@@ -1090,6 +1080,22 @@ name|hdfs
 operator|.
 name|util
 operator|.
+name|LightWeightHashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
 name|LightWeightLinkedSet
 import|;
 end_import
@@ -1273,20 +1279,6 @@ operator|.
 name|base
 operator|.
 name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|Sets
 import|;
 end_import
 
@@ -1637,15 +1629,15 @@ comment|/**    * After a failover, over-replicated blocks may not be handled    
 DECL|field|postponedMisreplicatedBlocks
 specifier|private
 specifier|final
-name|Set
+name|LightWeightHashSet
 argument_list|<
 name|Block
 argument_list|>
 name|postponedMisreplicatedBlocks
 init|=
-name|Sets
-operator|.
-name|newHashSet
+operator|new
+name|LightWeightHashSet
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * Maps a StorageID to the set of blocks that are "extra" for this    * DataNode. We'll eventually remove these extras.    */
@@ -1664,7 +1656,7 @@ argument_list|>
 name|excessReplicateMap
 init|=
 operator|new
-name|TreeMap
+name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -3195,15 +3187,13 @@ block|{
 name|BlockCollection
 name|bc
 init|=
-operator|(
+name|getBlockCollection
+argument_list|(
 operator|(
 name|BlockInfo
 operator|)
 name|block
-operator|)
-operator|.
-name|getBlockCollection
-argument_list|()
+argument_list|)
 decl_stmt|;
 name|String
 name|fileName
@@ -4021,9 +4011,11 @@ argument_list|()
 operator|-
 name|bytesToRemove
 condition|)
+block|{
 return|return
 literal|null
 return|;
+block|}
 assert|assert
 name|lastBlock
 operator|==
@@ -6710,13 +6702,6 @@ argument_list|(
 name|b
 operator|.
 name|stored
-operator|.
-name|getBlockCollection
-argument_list|()
-argument_list|,
-name|b
-operator|.
-name|stored
 argument_list|)
 decl_stmt|;
 comment|// Add replica to the data-node if it is not already there
@@ -7385,8 +7370,6 @@ block|{
 comment|// block should belong to a file
 name|bc
 operator|=
-name|blocksMap
-operator|.
 name|getBlockCollection
 argument_list|(
 name|block
@@ -7433,8 +7416,6 @@ name|requiredReplication
 operator|=
 name|getExpectedReplicaNum
 argument_list|(
-name|bc
-argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
@@ -7900,8 +7881,6 @@ comment|// Recheck since global lock was released
 comment|// block should belong to a file
 name|bc
 operator|=
-name|blocksMap
-operator|.
 name|getBlockCollection
 argument_list|(
 name|block
@@ -7954,8 +7933,6 @@ name|requiredReplication
 operator|=
 name|getExpectedReplicaNum
 argument_list|(
-name|bc
-argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
@@ -8121,10 +8098,10 @@ assert|;
 name|String
 name|src
 init|=
-name|block
-operator|.
 name|getBlockCollection
-argument_list|()
+argument_list|(
+name|block
+argument_list|)
 operator|.
 name|getName
 argument_list|()
@@ -9381,11 +9358,6 @@ name|isNeededReplication
 argument_list|(
 name|bi
 argument_list|,
-name|getReplication
-argument_list|(
-name|bi
-argument_list|)
-argument_list|,
 name|num
 operator|.
 name|liveReplicas
@@ -9941,6 +9913,13 @@ operator|+
 literal|" because namenode still in startup phase"
 argument_list|,
 name|nodeID
+argument_list|)
+expr_stmt|;
+name|blockReportLeaseManager
+operator|.
+name|removeLease
+argument_list|(
+name|node
 argument_list|)
 expr_stmt|;
 return|return
@@ -11486,9 +11465,6 @@ operator|.
 name|isInSnapshot
 argument_list|(
 name|storedBlock
-operator|.
-name|getBlockCollection
-argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -11772,7 +11748,7 @@ name|delimiter
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Process a block replica reported by the data-node.    * No side effects except adding to the passed-in Collections.    *     *<ol>    *<li>If the block is not known to the system (not in blocksMap) then the    * data-node should be notified to invalidate this block.</li>    *<li>If the reported replica is valid that is has the same generation stamp    * and length as recorded on the name-node, then the replica location should    * be added to the name-node.</li>    *<li>If the reported replica is not valid, then it is marked as corrupt,    * which triggers replication of the existing valid replicas.    * Corrupt replicas are removed from the system when the block    * is fully replicated.</li>    *<li>If the reported replica is for a block currently marked "under    * construction" in the NN, then it should be added to the     * BlockInfoUnderConstruction's list of replicas.</li>    *</ol>    *     * @param storageInfo DatanodeStorageInfo that sent the report.    * @param block reported block replica    * @param reportedState reported replica state    * @param toAdd add to DatanodeDescriptor    * @param toInvalidate missing blocks (not in the blocks map)    *        should be removed from the data-node    * @param toCorrupt replicas with unexpected length or generation stamp;    *        add to corrupt replicas    * @param toUC replicas of blocks currently under construction    * @return the up-to-date stored block, if it should be kept.    *         Otherwise, null.    */
+comment|/**    * Process a block replica reported by the data-node.    * No side effects except adding to the passed-in Collections.    *     *<ol>    *<li>If the block is not known to the system (not in blocksMap) then the    * data-node should be notified to invalidate this block.</li>    *<li>If the reported replica is valid that is has the same generation stamp    * and length as recorded on the name-node, then the replica location should    * be added to the name-node.</li>    *<li>If the reported replica is not valid, then it is marked as corrupt,    * which triggers replication of the existing valid replicas.    * Corrupt replicas are removed from the system when the block    * is fully replicated.</li>    *<li>If the reported replica is for a block currently marked "under    * construction" in the NN, then it should be added to the     * BlockUnderConstructionFeature's list of replicas.</li>    *</ol>    *     * @param storageInfo DatanodeStorageInfo that sent the report.    * @param block reported block replica    * @param reportedState reported replica state    * @param toAdd add to DatanodeDescriptor    * @param toInvalidate missing blocks (not in the blocks map)    *        should be removed from the data-node    * @param toCorrupt replicas with unexpected length or generation stamp;    *        add to corrupt replicas    * @param toUC replicas of blocks currently under construction    * @return the up-to-date stored block, if it should be kept.    *         Otherwise, null.    */
 DECL|method|processReportedBlock ( final DatanodeStorageInfo storageInfo, final Block block, final ReplicaState reportedState, final Collection<BlockInfoToAdd> toAdd, final Collection<Block> toInvalidate, final Collection<BlockToMarkCorrupt> toCorrupt, final Collection<StatefulBlockInfo> toUC)
 specifier|private
 name|BlockInfo
@@ -13149,10 +13125,10 @@ condition|)
 block|{
 name|completeBlock
 argument_list|(
-name|storedBlock
-operator|.
 name|getBlockCollection
-argument_list|()
+argument_list|(
+name|storedBlock
+argument_list|)
 argument_list|,
 name|storedBlock
 argument_list|,
@@ -13302,11 +13278,18 @@ block|}
 name|BlockCollection
 name|bc
 init|=
-name|storedBlock
-operator|.
 name|getBlockCollection
-argument_list|()
+argument_list|(
+name|storedBlock
+argument_list|)
 decl_stmt|;
+assert|assert
+name|bc
+operator|!=
+literal|null
+operator|:
+literal|"Block must belong to a file"
+assert|;
 comment|// add block to the datanode
 name|AddBlockResult
 name|result
@@ -13547,8 +13530,6 @@ name|fileReplication
 init|=
 name|getExpectedReplicaNum
 argument_list|(
-name|bc
-argument_list|,
 name|storedBlock
 argument_list|)
 decl_stmt|;
@@ -13558,8 +13539,6 @@ operator|!
 name|isNeededReplication
 argument_list|(
 name|storedBlock
-argument_list|,
-name|fileReplication
 argument_list|,
 name|numCurrentReplica
 argument_list|)
@@ -14522,11 +14501,6 @@ init|=
 name|getExpectedReplicaNum
 argument_list|(
 name|block
-operator|.
-name|getBlockCollection
-argument_list|()
-argument_list|,
-name|block
 argument_list|)
 decl_stmt|;
 name|NumberReplicas
@@ -14551,8 +14525,6 @@ condition|(
 name|isNeededReplication
 argument_list|(
 name|block
-argument_list|,
-name|expectedReplication
 argument_list|,
 name|numCurrentReplica
 argument_list|)
@@ -14637,7 +14609,7 @@ name|OK
 return|;
 block|}
 comment|/** Set replication for the blocks. */
-DECL|method|setReplication (final short oldRepl, final short newRepl, final String src, final BlockInfo... blocks)
+DECL|method|setReplication ( final short oldRepl, final short newRepl, final BlockInfo b)
 specifier|public
 name|void
 name|setReplication
@@ -14651,13 +14623,8 @@ name|short
 name|newRepl
 parameter_list|,
 specifier|final
-name|String
-name|src
-parameter_list|,
-specifier|final
 name|BlockInfo
-modifier|...
-name|blocks
+name|b
 parameter_list|)
 block|{
 if|if
@@ -14670,14 +14637,13 @@ block|{
 return|return;
 block|}
 comment|// update needReplication priority queues
-for|for
-control|(
-name|BlockInfo
 name|b
-range|:
-name|blocks
-control|)
-block|{
+operator|.
+name|setReplication
+argument_list|(
+name|newRepl
+argument_list|)
+expr_stmt|;
 name|updateNeededReplications
 argument_list|(
 name|b
@@ -14689,39 +14655,12 @@ operator|-
 name|oldRepl
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|oldRepl
 operator|>
 name|newRepl
 condition|)
-block|{
-comment|// old replication> the new one; need to remove copies
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Decreasing replication from "
-operator|+
-name|oldRepl
-operator|+
-literal|" to "
-operator|+
-name|newRepl
-operator|+
-literal|" for "
-operator|+
-name|src
-argument_list|)
-expr_stmt|;
-for|for
-control|(
-name|BlockInfo
-name|b
-range|:
-name|blocks
-control|)
 block|{
 name|processOverReplicatedBlock
 argument_list|(
@@ -14732,28 +14671,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-else|else
-block|{
-comment|// replication factor is increased
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Increasing replication from "
-operator|+
-name|oldRepl
-operator|+
-literal|" to "
-operator|+
-name|newRepl
-operator|+
-literal|" for "
-operator|+
-name|src
 argument_list|)
 expr_stmt|;
 block|}
@@ -16243,10 +16160,10 @@ comment|//
 name|BlockCollection
 name|bc
 init|=
-name|storedBlock
-operator|.
 name|getBlockCollection
-argument_list|()
+argument_list|(
+name|storedBlock
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -18144,8 +18061,6 @@ name|isNeededReplication
 argument_list|(
 name|block
 argument_list|,
-name|curExpectedReplicas
-argument_list|,
 name|repl
 operator|.
 name|liveReplicas
@@ -18249,8 +18164,6 @@ name|expected
 init|=
 name|getExpectedReplicaNum
 argument_list|(
-name|bc
-argument_list|,
 name|block
 argument_list|)
 decl_stmt|;
@@ -18268,8 +18181,6 @@ condition|(
 name|isNeededReplication
 argument_list|(
 name|block
-argument_list|,
-name|expected
 argument_list|,
 name|n
 operator|.
@@ -18435,28 +18346,9 @@ name|BlockInfo
 name|block
 parameter_list|)
 block|{
-specifier|final
-name|BlockCollection
-name|bc
-init|=
-name|blocksMap
-operator|.
-name|getBlockCollection
-argument_list|(
-name|block
-argument_list|)
-decl_stmt|;
 return|return
-name|bc
-operator|==
-literal|null
-condition|?
-literal|0
-else|:
 name|getExpectedReplicaNum
 argument_list|(
-name|bc
-argument_list|,
 name|block
 argument_list|)
 return|;
@@ -19012,7 +18904,7 @@ name|enoughRacks
 return|;
 block|}
 comment|/**    * A block needs replication if the number of replicas is less than expected    * or if it does not have enough racks.    */
-DECL|method|isNeededReplication (BlockInfo storedBlock, int expected, int current)
+DECL|method|isNeededReplication (BlockInfo storedBlock, int current)
 name|boolean
 name|isNeededReplication
 parameter_list|(
@@ -19020,12 +18912,17 @@ name|BlockInfo
 name|storedBlock
 parameter_list|,
 name|int
-name|expected
-parameter_list|,
-name|int
 name|current
 parameter_list|)
 block|{
+name|int
+name|expected
+init|=
+name|getExpectedReplicaNum
+argument_list|(
+name|storedBlock
+argument_list|)
+decl_stmt|;
 return|return
 name|current
 operator|<
@@ -19040,27 +18937,21 @@ name|expected
 argument_list|)
 return|;
 block|}
-DECL|method|getExpectedReplicaNum (BlockCollection bc, BlockInfo block)
+DECL|method|getExpectedReplicaNum (BlockInfo block)
 specifier|public
 name|short
 name|getExpectedReplicaNum
 parameter_list|(
-name|BlockCollection
-name|bc
-parameter_list|,
 name|BlockInfo
 name|block
 parameter_list|)
 block|{
-if|if
-condition|(
+return|return
 name|block
 operator|.
 name|isStriped
 argument_list|()
-condition|)
-block|{
-return|return
+condition|?
 operator|(
 operator|(
 name|BlockInfoStriped
@@ -19070,17 +18961,12 @@ operator|)
 operator|.
 name|getRealTotalBlockNum
 argument_list|()
-return|;
-block|}
-else|else
-block|{
-return|return
-name|bc
+else|:
+name|block
 operator|.
-name|getPreferredBlockReplication
+name|getReplication
 argument_list|()
 return|;
-block|}
 block|}
 DECL|method|getMissingBlocksCount ()
 specifier|public
@@ -19186,21 +19072,24 @@ name|bc
 argument_list|)
 return|;
 block|}
-DECL|method|getBlockCollection (Block b)
+DECL|method|getBlockCollection (BlockInfo b)
 specifier|public
 name|BlockCollection
 name|getBlockCollection
 parameter_list|(
-name|Block
+name|BlockInfo
 name|b
 parameter_list|)
 block|{
 return|return
-name|blocksMap
+name|namesystem
 operator|.
 name|getBlockCollection
 argument_list|(
 name|b
+operator|.
+name|getBlockCollectionId
+argument_list|()
 argument_list|)
 return|;
 block|}

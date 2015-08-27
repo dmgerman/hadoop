@@ -229,7 +229,7 @@ if|if
 condition|(
 name|XAttrHelper
 operator|.
-name|getPrefixName
+name|getPrefixedName
 argument_list|(
 name|xAttr
 argument_list|)
@@ -272,7 +272,7 @@ literal|"User doesn't have permission for xattr: "
 operator|+
 name|XAttrHelper
 operator|.
-name|getPrefixName
+name|getPrefixedName
 argument_list|(
 name|xAttr
 argument_list|)
@@ -489,7 +489,7 @@ if|if
 condition|(
 name|XAttrHelper
 operator|.
-name|getPrefixName
+name|getPrefixedName
 argument_list|(
 name|xAttr
 argument_list|)

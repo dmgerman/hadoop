@@ -4298,7 +4298,7 @@ argument_list|()
 operator|.
 name|setB
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4427,7 +4427,7 @@ name|req
 operator|.
 name|setPrevious
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4445,7 +4445,7 @@ name|req
 operator|.
 name|addAllExcludeNodes
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4578,7 +4578,7 @@ argument_list|)
 operator|.
 name|setBlk
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4588,7 +4588,7 @@ argument_list|)
 operator|.
 name|addAllExistings
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4608,7 +4608,7 @@ argument_list|)
 operator|.
 name|addAllExcludes
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4731,7 +4731,7 @@ name|req
 operator|.
 name|setLast
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -6649,7 +6649,7 @@ name|builder
 operator|.
 name|setStorageType
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageType
 argument_list|(
@@ -7062,7 +7062,7 @@ argument_list|()
 operator|.
 name|setBlock
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -7157,7 +7157,7 @@ argument_list|)
 operator|.
 name|setOldBlock
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -7167,7 +7167,7 @@ argument_list|)
 operator|.
 name|setNewBlock
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -7353,7 +7353,7 @@ argument_list|()
 operator|.
 name|setToken
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -7422,7 +7422,7 @@ argument_list|()
 operator|.
 name|setToken
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

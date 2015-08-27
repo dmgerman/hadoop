@@ -446,7 +446,7 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|ContainerLogsRetentionPolicy
+name|LogAggregationUtils
 import|;
 end_import
 
@@ -460,9 +460,29 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|logaggregation
+name|server
 operator|.
-name|LogAggregationUtils
+name|api
+operator|.
+name|ContainerLogContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|ContainerType
 import|;
 end_import
 
@@ -1955,7 +1975,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|initApp (final ApplicationId appId, String user, Credentials credentials, ContainerLogsRetentionPolicy logRetentionPolicy, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext)
+DECL|method|initApp (final ApplicationId appId, String user, Credentials credentials, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext)
 specifier|private
 name|void
 name|initApp
@@ -1969,9 +1989,6 @@ name|user
 parameter_list|,
 name|Credentials
 name|credentials
-parameter_list|,
-name|ContainerLogsRetentionPolicy
-name|logRetentionPolicy
 parameter_list|,
 name|Map
 argument_list|<
@@ -2003,8 +2020,6 @@ argument_list|,
 name|user
 argument_list|,
 name|credentials
-argument_list|,
-name|logRetentionPolicy
 argument_list|,
 name|appAcls
 argument_list|,
@@ -2099,7 +2114,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|initAppAggregator (final ApplicationId appId, String user, Credentials credentials, ContainerLogsRetentionPolicy logRetentionPolicy, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext)
+DECL|method|initAppAggregator (final ApplicationId appId, String user, Credentials credentials, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext)
 specifier|protected
 name|void
 name|initAppAggregator
@@ -2113,9 +2128,6 @@ name|user
 parameter_list|,
 name|Credentials
 name|credentials
-parameter_list|,
-name|ContainerLogsRetentionPolicy
-name|logRetentionPolicy
 parameter_list|,
 name|Map
 argument_list|<
@@ -2191,8 +2203,6 @@ name|appId
 argument_list|,
 name|user
 argument_list|)
-argument_list|,
-name|logRetentionPolicy
 argument_list|,
 name|appAcls
 argument_list|,
@@ -2450,15 +2460,38 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+name|ContainerType
+name|containerType
+init|=
+name|context
+operator|.
+name|getContainers
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|containerId
+argument_list|)
+operator|.
+name|getContainerTokenIdentifier
+argument_list|()
+operator|.
+name|getContainerType
+argument_list|()
+decl_stmt|;
 name|aggregator
 operator|.
 name|startContainerLogAggregation
 argument_list|(
+operator|new
+name|ContainerLogContext
+argument_list|(
 name|containerId
 argument_list|,
+name|containerType
+argument_list|,
 name|exitCode
-operator|==
-literal|0
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2556,11 +2589,6 @@ argument_list|,
 name|appStartEvent
 operator|.
 name|getCredentials
-argument_list|()
-argument_list|,
-name|appStartEvent
-operator|.
-name|getLogRetentionPolicy
 argument_list|()
 argument_list|,
 name|appStartEvent

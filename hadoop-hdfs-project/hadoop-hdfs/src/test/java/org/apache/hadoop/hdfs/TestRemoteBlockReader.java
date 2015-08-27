@@ -16,6 +16,22 @@ name|hdfs
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+import|;
+end_import
+
 begin_class
 DECL|class|TestRemoteBlockReader
 specifier|public
@@ -40,7 +56,7 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_USE_LEGACY_BLOCKREADER
 argument_list|,

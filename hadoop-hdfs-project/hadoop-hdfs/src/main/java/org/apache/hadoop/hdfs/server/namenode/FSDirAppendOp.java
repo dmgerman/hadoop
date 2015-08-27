@@ -1260,9 +1260,9 @@ specifier|final
 name|short
 name|repl
 init|=
-name|file
+name|lastBlock
 operator|.
-name|getPreferredBlockReplication
+name|getReplication
 argument_list|()
 decl_stmt|;
 name|delta

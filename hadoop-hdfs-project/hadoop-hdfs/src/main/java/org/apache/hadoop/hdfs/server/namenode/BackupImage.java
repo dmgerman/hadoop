@@ -98,6 +98,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|common
@@ -271,6 +285,11 @@ specifier|private
 name|FSNamesystem
 name|namesystem
 decl_stmt|;
+DECL|field|quotaInitThreads
+specifier|private
+name|int
+name|quotaInitThreads
+decl_stmt|;
 comment|/**    * Construct a backup image.    * @param conf Configuration    * @throws IOException if storage cannot be initialised.    */
 DECL|method|BackupImage (Configuration conf)
 name|BackupImage
@@ -298,6 +317,21 @@ operator|=
 name|BNState
 operator|.
 name|DROP_UNTIL_NEXT_ROLL
+expr_stmt|;
+name|quotaInitThreads
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_QUOTA_INIT_THREADS_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_QUOTA_INIT_THREADS_DEFAULT
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getNamesystem ()
@@ -766,9 +800,10 @@ operator|.
 name|dir
 operator|.
 name|rootDir
+argument_list|,
+name|quotaInitThreads
 argument_list|)
 expr_stmt|;
-comment|// inefficient!
 block|}
 finally|finally
 block|{

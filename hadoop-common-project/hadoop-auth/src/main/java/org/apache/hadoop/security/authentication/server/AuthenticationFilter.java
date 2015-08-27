@@ -374,6 +374,16 @@ name|SIGNATURE_SECRET
 operator|+
 literal|".file"
 decl_stmt|;
+comment|/**    * Constant for the configuration property    * that indicates the max inactive interval of the generated token.    */
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|AUTH_TOKEN_MAX_INACTIVE_INTERVAL
+name|AUTH_TOKEN_MAX_INACTIVE_INTERVAL
+init|=
+literal|"token.MaxInactiveInterval"
+decl_stmt|;
 comment|/**    * Constant for the configuration property that indicates the validity of the generated token.    */
 DECL|field|AUTH_TOKEN_VALIDITY
 specifier|public
@@ -453,6 +463,11 @@ DECL|field|authHandler
 specifier|private
 name|AuthenticationHandler
 name|authHandler
+decl_stmt|;
+DECL|field|maxInactiveInterval
+specifier|private
+name|long
+name|maxInactiveInterval
 decl_stmt|;
 DECL|field|validity
 specifier|private
@@ -634,6 +649,25 @@ operator|=
 name|authHandlerName
 expr_stmt|;
 block|}
+name|maxInactiveInterval
+operator|=
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|config
+operator|.
+name|getProperty
+argument_list|(
+name|AUTH_TOKEN_MAX_INACTIVE_INTERVAL
+argument_list|,
+literal|"1800"
+argument_list|)
+argument_list|)
+operator|*
+literal|1000
+expr_stmt|;
+comment|// 30 minutes;
 name|validity
 operator|=
 name|Long
@@ -1185,6 +1219,19 @@ operator|!=
 name|ZKSignerSecretProvider
 operator|.
 name|class
+return|;
+block|}
+comment|/**    * Returns the max inactive interval time of the generated tokens.    *    * @return the max inactive interval time of the generated tokens in seconds.    */
+DECL|method|getMaxInactiveInterval ()
+specifier|protected
+name|long
+name|getMaxInactiveInterval
+parameter_list|()
+block|{
+return|return
+name|maxInactiveInterval
+operator|/
+literal|1000
 return|;
 block|}
 comment|/**    * Returns the validity time of the generated tokens.    *    * @return the validity time of the generated tokens, in seconds.    */
@@ -1763,17 +1810,46 @@ operator|!=
 literal|null
 operator|&&
 name|token
+operator|!=
+name|AuthenticationToken
+operator|.
+name|ANONYMOUS
+condition|)
+block|{
+if|if
+condition|(
+name|token
+operator|.
+name|getMaxInactives
+argument_list|()
+operator|!=
+literal|0
+condition|)
+block|{
+name|token
+operator|.
+name|setMaxInactives
+argument_list|(
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|+
+name|getMaxInactiveInterval
+argument_list|()
+operator|*
+literal|1000
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|token
 operator|.
 name|getExpires
 argument_list|()
 operator|!=
 literal|0
-operator|&&
-name|token
-operator|!=
-name|AuthenticationToken
-operator|.
-name|ANONYMOUS
 condition|)
 block|{
 name|token
@@ -1791,6 +1867,7 @@ operator|*
 literal|1000
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|newToken
 operator|=
@@ -1899,6 +1976,44 @@ return|;
 block|}
 block|}
 expr_stmt|;
+comment|// If cookie persistence is configured to false,
+comment|// it means the cookie will be a session cookie.
+comment|// If the token is an old one, renew the its maxInactiveInterval.
+if|if
+condition|(
+operator|!
+name|newToken
+operator|&&
+operator|!
+name|isCookiePersistent
+argument_list|()
+operator|&&
+name|getMaxInactiveInterval
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|token
+operator|.
+name|setMaxInactives
+argument_list|(
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|+
+name|getMaxInactiveInterval
+argument_list|()
+operator|*
+literal|1000
+argument_list|)
+expr_stmt|;
+name|newToken
+operator|=
+literal|true
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|newToken
@@ -2159,7 +2274,7 @@ name|response
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates the Hadoop authentication HTTP cookie.    *    * @param resp the response object.    * @param token authentication token for the cookie.    * @param domain the cookie domain.    * @param path the cokie path.    * @param expires UNIX timestamp that indicates the expire date of the    *                cookie. It has no effect if its value&lt; 0.    * @param isSecure is the cookie secure?    * @param token the token.    * @param expires the cookie expiration time.    * @param isCookiePersistent whether the cookie is persistent or not.    *    * XXX the following code duplicate some logic in Jetty / Servlet API,    * because of the fact that Hadoop is stuck at servlet 2.5 and jetty 6    * right now.    */
+comment|/**    * Creates the Hadoop authentication HTTP cookie.    *    * @param resp the response object.    * @param token authentication token for the cookie.    * @param domain the cookie domain.    * @param path the cookie path.    * @param expires UNIX timestamp that indicates the expire date of the    *                cookie. It has no effect if its value&lt; 0.    * @param isSecure is the cookie secure?    * @param isCookiePersistent whether the cookie is persistent or not.    *    * XXX the following code duplicate some logic in Jetty / Servlet API,    * because of the fact that Hadoop is stuck at servlet 2.5 and jetty 6    * right now.    */
 DECL|method|createAuthCookie (HttpServletResponse resp, String token, String domain, String path, long expires, boolean isCookiePersistent, boolean isSecure)
 specifier|public
 specifier|static

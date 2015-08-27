@@ -826,7 +826,7 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
+name|PBHelperClient
 import|;
 end_import
 
@@ -847,24 +847,6 @@ operator|.
 name|block
 operator|.
 name|BlockTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
 import|;
 end_import
 
@@ -3006,7 +2988,7 @@ argument_list|)
 operator|.
 name|setId
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -3668,7 +3650,7 @@ name|ClientReadStatusProto
 operator|.
 name|parseFrom
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|vintPrefixed
 argument_list|(
@@ -4450,7 +4432,7 @@ operator|.
 name|socketTimeout
 operator|+
 operator|(
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|READ_TIMEOUT_EXTENSION
 operator|*
@@ -4467,7 +4449,7 @@ operator|.
 name|socketWriteTimeout
 operator|+
 operator|(
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|WRITE_TIMEOUT_EXTENSION
 operator|*
@@ -4732,7 +4714,7 @@ name|BlockOpResponseProto
 operator|.
 name|parseFrom
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|vintPrefixed
 argument_list|(
@@ -5949,7 +5931,7 @@ argument_list|)
 operator|.
 name|setCrcType
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -6946,7 +6928,7 @@ name|BlockOpResponseProto
 operator|.
 name|parseFrom
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|vintPrefixed
 argument_list|(

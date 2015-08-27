@@ -2215,6 +2215,12 @@ argument_list|(
 name|nodeId
 argument_list|)
 expr_stmt|;
+comment|// Reset heartbeat ID since node just restarted.
+name|oldNode
+operator|.
+name|resetLastNodeHeartBeatResponse
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|rmContext

@@ -1751,7 +1751,6 @@ operator|(
 operator|!
 name|syncFolder
 operator|||
-operator|!
 name|deleteMissing
 operator|)
 operator|&&
@@ -1762,7 +1761,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Diff is valid only with update and delete options"
+literal|"Diff is valid only with update options"
 argument_list|)
 throw|;
 block|}

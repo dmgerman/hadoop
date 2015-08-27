@@ -2502,6 +2502,153 @@ name|handlers
 init|=
 literal|null
 decl_stmt|;
+DECL|field|logSlowRPC
+specifier|private
+name|boolean
+name|logSlowRPC
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * Checks if LogSlowRPC is set true.    * @return    */
+DECL|method|isLogSlowRPC ()
+specifier|protected
+name|boolean
+name|isLogSlowRPC
+parameter_list|()
+block|{
+return|return
+name|logSlowRPC
+return|;
+block|}
+comment|/**    * Sets slow RPC flag.    * @param logSlowRPCFlag    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setLogSlowRPC (boolean logSlowRPCFlag)
+specifier|protected
+name|void
+name|setLogSlowRPC
+parameter_list|(
+name|boolean
+name|logSlowRPCFlag
+parameter_list|)
+block|{
+name|this
+operator|.
+name|logSlowRPC
+operator|=
+name|logSlowRPCFlag
+expr_stmt|;
+block|}
+comment|/**    * Logs a Slow RPC Request.    *    * @param methodName - RPC Request method name    * @param processingTime - Processing Time.    *    * if this request took too much time relative to other requests    * we consider that as a slow RPC. 3 is a magic number that comes    * from 3 sigma deviation. A very simple explanation can be found    * by searching for 68â95â99.7 rule. We flag an RPC as slow RPC    * if and only if it falls above 99.7% of requests. We start this logic    * only once we have enough sample size.    */
+DECL|method|logSlowRpcCalls (String methodName, int processingTime)
+name|void
+name|logSlowRpcCalls
+parameter_list|(
+name|String
+name|methodName
+parameter_list|,
+name|int
+name|processingTime
+parameter_list|)
+block|{
+specifier|final
+name|int
+name|deviation
+init|=
+literal|3
+decl_stmt|;
+comment|// 1024 for minSampleSize just a guess -- not a number computed based on
+comment|// sample size analysis. It is chosen with the hope that this
+comment|// number is high enough to avoid spurious logging, yet useful
+comment|// in practice.
+specifier|final
+name|int
+name|minSampleSize
+init|=
+literal|1024
+decl_stmt|;
+specifier|final
+name|double
+name|threeSigma
+init|=
+name|rpcMetrics
+operator|.
+name|getProcessingMean
+argument_list|()
+operator|+
+operator|(
+name|rpcMetrics
+operator|.
+name|getProcessingStdDev
+argument_list|()
+operator|*
+name|deviation
+operator|)
+decl_stmt|;
+if|if
+condition|(
+operator|(
+name|rpcMetrics
+operator|.
+name|getProcessingSampleCount
+argument_list|()
+operator|>
+name|minSampleSize
+operator|)
+operator|&&
+operator|(
+name|processingTime
+operator|>
+name|threeSigma
+operator|)
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isWarnEnabled
+argument_list|()
+condition|)
+block|{
+name|String
+name|client
+init|=
+name|CurCall
+operator|.
+name|get
+argument_list|()
+operator|.
+name|connection
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Slow RPC : "
+operator|+
+name|methodName
+operator|+
+literal|" took "
+operator|+
+name|processingTime
+operator|+
+literal|" milliseconds to process from client "
+operator|+
+name|client
+argument_list|)
+expr_stmt|;
+block|}
+name|rpcMetrics
+operator|.
+name|incrSlowRpc
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * A convenience method to bind to a given address and report     * better exceptions if the address is not a valid host.    * @param socket the socket to bind    * @param address the address to bind to    * @param backlog the number of connections allowed in the queue    * @throws BindException if the address can't be bound    * @throws UnknownHostException if the address isn't a valid host name    * @throws IOException other random errors from bind    */
 DECL|method|bind (ServerSocket socket, InetSocketAddress address, int backlog)
 specifier|public
@@ -11356,6 +11503,24 @@ argument_list|,
 name|CommonConfigurationKeysPublic
 operator|.
 name|IPC_SERVER_TCPNODELAY_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|setLogSlowRPC
+argument_list|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|CommonConfigurationKeysPublic
+operator|.
+name|IPC_SERVER_LOG_SLOW_RPC
+argument_list|,
+name|CommonConfigurationKeysPublic
+operator|.
+name|IPC_SERVER_LOG_SLOW_RPC_DEFAULT
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Create the responder here

@@ -248,6 +248,22 @@ name|hdfs
 operator|.
 name|client
 operator|.
+name|HdfsClientConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
 name|HdfsDataOutputStream
 import|;
 end_import
@@ -1352,7 +1368,7 @@ name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Invalid values: "
 operator|+
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_BYTES_PER_CHECKSUM_KEY
 operator|+

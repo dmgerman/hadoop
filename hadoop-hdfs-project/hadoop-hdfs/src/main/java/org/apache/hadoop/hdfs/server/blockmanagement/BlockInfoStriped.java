@@ -188,34 +188,6 @@ operator|=
 name|ecPolicy
 expr_stmt|;
 block|}
-DECL|method|BlockInfoStriped (BlockInfoStriped b)
-name|BlockInfoStriped
-parameter_list|(
-name|BlockInfoStriped
-name|b
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|b
-argument_list|,
-name|b
-operator|.
-name|getErasureCodingPolicy
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|setBlockCollection
-argument_list|(
-name|b
-operator|.
-name|getBlockCollection
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|getTotalBlockNum ()
 specifier|public
 name|short

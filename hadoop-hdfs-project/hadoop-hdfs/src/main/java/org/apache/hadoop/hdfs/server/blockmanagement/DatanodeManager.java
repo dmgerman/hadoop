@@ -5702,7 +5702,6 @@ range|:
 name|blocks
 control|)
 block|{
-specifier|final
 name|BlockUnderConstructionFeature
 name|uc
 init|=

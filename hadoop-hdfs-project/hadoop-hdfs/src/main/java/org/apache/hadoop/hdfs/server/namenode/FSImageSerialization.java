@@ -1117,7 +1117,7 @@ argument_list|)
 expr_stmt|;
 comment|//  do not store locations of last block
 block|}
-comment|/**    * Serialize a {@link INodeFile} node    * @param file The node to write    * @param out The {@link DataOutputStream} where the fields are written    * @param writeUnderConstruction Whether to write block information    */
+comment|/**    * Serialize a {@link INodeFile} node    * @param file The INodeFile to write    * @param out The {@link DataOutputStream} where the fields are written    * @param writeUnderConstruction Whether to write under construction information    */
 DECL|method|writeINodeFile (INodeFile file, DataOutput out, boolean writeUnderConstruction)
 specifier|public
 specifier|static

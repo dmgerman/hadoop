@@ -284,22 +284,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsBlocksMetadata
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|common
@@ -1688,21 +1672,6 @@ name|getBlockLocalPathInfo
 parameter_list|(
 name|ExtendedBlock
 name|b
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Get a {@link HdfsBlocksMetadata} corresponding to the list of blocks in     *<code>blocks</code>.    *     * @param bpid pool to query    * @param blockIds List of block ids for which to return metadata    * @return metadata Metadata for the list of blocks    * @throws IOException    */
-DECL|method|getHdfsBlocksMetadata (String bpid, long[] blockIds)
-name|HdfsBlocksMetadata
-name|getHdfsBlocksMetadata
-parameter_list|(
-name|String
-name|bpid
-parameter_list|,
-name|long
-index|[]
-name|blockIds
 parameter_list|)
 throws|throws
 name|IOException

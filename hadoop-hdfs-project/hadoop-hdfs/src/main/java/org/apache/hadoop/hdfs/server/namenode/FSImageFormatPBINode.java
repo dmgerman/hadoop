@@ -362,6 +362,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocolPB
+operator|.
+name|PBHelperClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -1334,7 +1350,7 @@ block|}
 DECL|method|loadXAttrs ( XAttrFeatureProto proto, final String[] stringTable)
 specifier|public
 specifier|static
-name|ImmutableList
+name|List
 argument_list|<
 name|XAttr
 argument_list|>
@@ -1349,17 +1365,15 @@ index|[]
 name|stringTable
 parameter_list|)
 block|{
-name|ImmutableList
-operator|.
-name|Builder
+name|List
 argument_list|<
 name|XAttr
 argument_list|>
 name|b
 init|=
-name|ImmutableList
-operator|.
-name|builder
+operator|new
+name|ArrayList
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -1487,9 +1501,6 @@ expr_stmt|;
 block|}
 return|return
 name|b
-operator|.
-name|build
-argument_list|()
 return|;
 block|}
 DECL|method|loadQuotaByStorageTypeEntries ( QuotaByStorageTypeFeatureProto proto)
@@ -1532,7 +1543,7 @@ block|{
 name|StorageType
 name|type
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageType
 argument_list|(
@@ -3741,7 +3752,7 @@ argument_list|()
 operator|.
 name|setStorageType
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageType
 argument_list|(

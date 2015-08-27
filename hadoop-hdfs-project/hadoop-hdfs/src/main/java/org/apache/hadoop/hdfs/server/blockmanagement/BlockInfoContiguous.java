@@ -99,44 +99,6 @@ name|size
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Copy construction. This is used to convert    * BlockReplicationInfoUnderConstruction    *    * @param from BlockReplicationInfo to copy from.    */
-DECL|method|BlockInfoContiguous (BlockInfoContiguous from)
-specifier|protected
-name|BlockInfoContiguous
-parameter_list|(
-name|BlockInfoContiguous
-name|from
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|from
-argument_list|,
-call|(
-name|short
-call|)
-argument_list|(
-name|from
-operator|.
-name|triplets
-operator|.
-name|length
-operator|/
-literal|3
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|setBlockCollection
-argument_list|(
-name|from
-operator|.
-name|getBlockCollection
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Ensure that there is enough  space to include num more triplets.    * @return first free triplet index.    */
 DECL|method|ensureCapacity (int num)
 specifier|private

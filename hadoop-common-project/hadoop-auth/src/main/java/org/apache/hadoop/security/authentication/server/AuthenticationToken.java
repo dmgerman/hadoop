@@ -137,6 +137,14 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|setMaxInactives
+argument_list|(
+name|token
+operator|.
+name|getMaxInactives
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|setExpires
 argument_list|(
 name|token
@@ -170,6 +178,34 @@ argument_list|,
 name|type
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Sets the max inactive time of the token.    *    * @param max inactive time of the token in milliseconds since the epoch.    */
+DECL|method|setMaxInactives (long maxInactives)
+specifier|public
+name|void
+name|setMaxInactives
+parameter_list|(
+name|long
+name|maxInactives
+parameter_list|)
+block|{
+if|if
+condition|(
+name|this
+operator|!=
+name|AuthenticationToken
+operator|.
+name|ANONYMOUS
+condition|)
+block|{
+name|super
+operator|.
+name|setMaxInactives
+argument_list|(
+name|maxInactives
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Sets the expiration of the token.    *    * @param expires expiration time of the token in milliseconds since the epoch.    */
 DECL|method|setExpires (long expires)

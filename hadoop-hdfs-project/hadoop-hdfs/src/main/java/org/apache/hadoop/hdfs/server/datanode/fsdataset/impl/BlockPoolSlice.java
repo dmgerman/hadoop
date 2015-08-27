@@ -1689,7 +1689,7 @@ name|DiskErrorException
 block|{
 name|DiskChecker
 operator|.
-name|checkDirs
+name|checkDir
 argument_list|(
 name|finalizedDir
 argument_list|)

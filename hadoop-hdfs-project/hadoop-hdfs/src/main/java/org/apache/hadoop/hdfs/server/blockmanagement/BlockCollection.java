@@ -118,7 +118,7 @@ name|short
 name|getPreferredBlockReplication
 parameter_list|()
 function_decl|;
-comment|/**     * @return the storage policy ID.    */
+comment|/**    * @return the storage policy ID.    */
 DECL|method|getStoragePolicyID ()
 specifier|public
 name|byte
@@ -170,9 +170,14 @@ parameter_list|()
 function_decl|;
 comment|/**    * @return whether the block collection is in striping format    */
 DECL|method|isStriped ()
-specifier|public
 name|boolean
 name|isStriped
+parameter_list|()
+function_decl|;
+comment|/**    * @return the id for the block collection    */
+DECL|method|getId ()
+name|long
+name|getId
 parameter_list|()
 function_decl|;
 block|}

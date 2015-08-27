@@ -634,6 +634,15 @@ DECL|field|rpcClientBackoff
 name|MutableCounterLong
 name|rpcClientBackoff
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of Slow RPC calls"
+argument_list|)
+DECL|field|rpcSlowCalls
+name|MutableCounterLong
+name|rpcSlowCalls
+decl_stmt|;
 DECL|method|numOpenConnections ()
 annotation|@
 name|Metric
@@ -871,6 +880,95 @@ operator|.
 name|incr
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Increments the Slow RPC counter.    */
+DECL|method|incrSlowRpc ()
+specifier|public
+name|void
+name|incrSlowRpc
+parameter_list|()
+block|{
+name|rpcSlowCalls
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Returns a MutableRate Counter.    * @return Mutable Rate    */
+DECL|method|getRpcProcessingTime ()
+specifier|public
+name|MutableRate
+name|getRpcProcessingTime
+parameter_list|()
+block|{
+return|return
+name|rpcProcessingTime
+return|;
+block|}
+comment|/**    * Returns the number of samples that we have seen so far.    * @return long    */
+DECL|method|getProcessingSampleCount ()
+specifier|public
+name|long
+name|getProcessingSampleCount
+parameter_list|()
+block|{
+return|return
+name|rpcProcessingTime
+operator|.
+name|lastStat
+argument_list|()
+operator|.
+name|numSamples
+argument_list|()
+return|;
+block|}
+comment|/**    * Returns mean of RPC Processing Times.    * @return double    */
+DECL|method|getProcessingMean ()
+specifier|public
+name|double
+name|getProcessingMean
+parameter_list|()
+block|{
+return|return
+name|rpcProcessingTime
+operator|.
+name|lastStat
+argument_list|()
+operator|.
+name|mean
+argument_list|()
+return|;
+block|}
+comment|/**    * Return Standard Deviation of the Processing Time.    * @return  double    */
+DECL|method|getProcessingStdDev ()
+specifier|public
+name|double
+name|getProcessingStdDev
+parameter_list|()
+block|{
+return|return
+name|rpcProcessingTime
+operator|.
+name|lastStat
+argument_list|()
+operator|.
+name|stddev
+argument_list|()
+return|;
+block|}
+comment|/**    * Returns the number of slow calls.    * @return long    */
+DECL|method|getRpcSlowCalls ()
+specifier|public
+name|long
+name|getRpcSlowCalls
+parameter_list|()
+block|{
+return|return
+name|rpcSlowCalls
+operator|.
+name|value
+argument_list|()
+return|;
 block|}
 block|}
 end_class

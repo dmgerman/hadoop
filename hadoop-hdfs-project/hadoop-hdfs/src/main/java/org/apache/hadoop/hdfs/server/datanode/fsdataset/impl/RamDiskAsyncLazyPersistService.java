@@ -60,6 +60,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSUtil
@@ -267,6 +281,12 @@ specifier|final
 name|DataNode
 name|datanode
 decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
 DECL|field|threadGroup
 specifier|private
 specifier|final
@@ -304,11 +324,14 @@ name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
 comment|/**    * Create a RamDiskAsyncLazyPersistService with a set of volumes (specified by their    * root directories).    *    * The RamDiskAsyncLazyPersistService uses one ThreadPool per volume to do the async    * disk operations.    */
-DECL|method|RamDiskAsyncLazyPersistService (DataNode datanode)
+DECL|method|RamDiskAsyncLazyPersistService (DataNode datanode, Configuration conf)
 name|RamDiskAsyncLazyPersistService
 parameter_list|(
 name|DataNode
 name|datanode
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -316,6 +339,12 @@ operator|.
 name|datanode
 operator|=
 name|datanode
+expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
 expr_stmt|;
 name|this
 operator|.
@@ -1110,6 +1139,8 @@ argument_list|,
 literal|true
 argument_list|,
 name|smallBufferSize
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 comment|// Lock FsDataSetImpl during onCompleteLazyPersist callback

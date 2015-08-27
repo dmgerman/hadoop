@@ -1752,7 +1752,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_CONTEXT
 argument_list|,
@@ -1810,7 +1810,7 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_USE_LEGACY_BLOCKREADERLOCAL
 argument_list|,
@@ -1888,8 +1888,6 @@ argument_list|)
 operator|.
 name|isDirectory
 argument_list|()
-operator|==
-literal|true
 argument_list|)
 expr_stmt|;
 name|byte
@@ -2704,8 +2702,6 @@ argument_list|)
 operator|.
 name|isDirectory
 argument_list|()
-operator|==
-literal|true
 argument_list|)
 expr_stmt|;
 name|byte
@@ -3174,15 +3170,11 @@ name|cluster
 operator|=
 literal|null
 expr_stmt|;
+try|try
+init|(
 name|RandomAccessFile
 name|raf
 init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|raf
-operator|=
 operator|new
 name|RandomAccessFile
 argument_list|(
@@ -3190,27 +3182,14 @@ name|dataFile
 argument_list|,
 literal|"rw"
 argument_list|)
-expr_stmt|;
+init|)
+block|{
 name|raf
 operator|.
 name|setLength
 argument_list|(
 literal|0
 argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|raf
-operator|!=
-literal|null
-condition|)
-name|raf
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 name|cluster
@@ -3546,7 +3525,7 @@ argument_list|,
 name|checksum
 argument_list|)
 expr_stmt|;
-comment|//Override fileSize and DATA_TO_WRITE to much larger values for benchmark test
+comment|// Override fileSize and DATA_TO_WRITE to much larger values for benchmark test
 name|int
 name|fileSize
 init|=
@@ -3903,7 +3882,7 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_USE_LEGACY_BLOCKREADER
 argument_list|,
@@ -3988,8 +3967,6 @@ argument_list|)
 operator|.
 name|isDirectory
 argument_list|()
-operator|==
-literal|true
 argument_list|)
 expr_stmt|;
 name|byte

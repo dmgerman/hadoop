@@ -233,7 +233,7 @@ name|getCurrentValue
 argument_list|()
 return|;
 block|}
-comment|/**    * @param b A block object whose id is set to the starting point for check    * @return true if any ID in the range    *      {id, id+HdfsConstants.MAX_BLOCKS_IN_GROUP} is pointed-to by a file    */
+comment|/**    * @param b A block object whose id is set to the starting point for check    * @return true if any ID in the range    *      {id, id+HdfsConstants.MAX_BLOCKS_IN_GROUP} is pointed-to by a stored    *      block.    */
 DECL|method|hasValidBlockInRange (Block b)
 specifier|private
 name|boolean
@@ -280,7 +280,7 @@ if|if
 condition|(
 name|blockManager
 operator|.
-name|getBlockCollection
+name|getStoredBlock
 argument_list|(
 name|b
 argument_list|)
