@@ -2324,11 +2324,6 @@ DECL|field|lastNodeUpdateTime
 name|long
 name|lastNodeUpdateTime
 decl_stmt|;
-DECL|field|maxClusterLevelAppPriority
-specifier|private
-name|Priority
-name|maxClusterLevelAppPriority
-decl_stmt|;
 comment|/**    * EXPERT    */
 DECL|field|asyncScheduleInterval
 specifier|private
@@ -2707,26 +2702,6 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
-name|maxClusterLevelAppPriority
-operator|=
-name|Priority
-operator|.
-name|newInstance
-argument_list|(
-name|yarnConf
-operator|.
-name|getInt
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|MAX_CLUSTER_LEVEL_APPLICATION_PRIORITY
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_CLUSTER_LEVEL_APPLICATION_PRIORITY
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -10236,16 +10211,6 @@ operator|.
 name|getPriority
 argument_list|()
 argument_list|)
-return|;
-block|}
-DECL|method|getMaxClusterLevelAppPriority ()
-specifier|public
-name|Priority
-name|getMaxClusterLevelAppPriority
-parameter_list|()
-block|{
-return|return
-name|maxClusterLevelAppPriority
 return|;
 block|}
 annotation|@

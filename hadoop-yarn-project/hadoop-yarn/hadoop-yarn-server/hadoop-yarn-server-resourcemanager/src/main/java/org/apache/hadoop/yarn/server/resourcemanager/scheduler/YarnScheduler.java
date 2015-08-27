@@ -150,6 +150,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -931,6 +945,17 @@ parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|)
+function_decl|;
+comment|/**    * Set the cluster max priority    *     * @param conf    * @throws YarnException    */
+DECL|method|setClusterMaxPriority (Configuration conf)
+name|void
+name|setClusterMaxPriority
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|YarnException
 function_decl|;
 block|}
 end_interface
