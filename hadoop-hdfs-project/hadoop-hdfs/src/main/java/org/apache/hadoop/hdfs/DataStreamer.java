@@ -1356,7 +1356,6 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|class|LastExceptionInStreamer
-specifier|static
 class|class
 name|LastExceptionInStreamer
 block|{
@@ -1442,7 +1441,11 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Got Exception while checking"
+literal|"Got Exception while checking, "
+operator|+
+name|DataStreamer
+operator|.
+name|this
 argument_list|,
 operator|new
 name|Throwable
@@ -3209,15 +3212,6 @@ block|}
 comment|// get new block from namenode.
 if|if
 condition|(
-name|stage
-operator|==
-name|BlockConstructionStage
-operator|.
-name|PIPELINE_SETUP_CREATE
-condition|)
-block|{
-if|if
-condition|(
 name|LOG
 operator|.
 name|isDebugEnabled
@@ -3228,12 +3222,25 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Allocating new block "
+literal|"stage="
+operator|+
+name|stage
+operator|+
+literal|", "
 operator|+
 name|this
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|stage
+operator|==
+name|BlockConstructionStage
+operator|.
+name|PIPELINE_SETUP_CREATE
+condition|)
+block|{
 name|setPipeline
 argument_list|(
 name|nextBlockOutputStream
@@ -3254,24 +3261,6 @@ operator|.
 name|PIPELINE_SETUP_APPEND
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Append to block "
-operator|+
-name|block
-argument_list|)
-expr_stmt|;
-block|}
 name|setupPipelineForAppendOrRecovery
 argument_list|()
 expr_stmt|;
@@ -3463,11 +3452,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DataStreamer block "
+name|this
 operator|+
-name|block
-operator|+
-literal|" sending packet "
+literal|" sending "
 operator|+
 name|one
 argument_list|)
@@ -6761,10 +6748,14 @@ argument_list|(
 name|block
 argument_list|,
 name|newBlock
+argument_list|,
+name|nodes
+argument_list|,
+name|storageIDs
 argument_list|)
 return|;
 block|}
-DECL|method|callUpdatePipeline (ExtendedBlock oldBlock, ExtendedBlock newBlock)
+DECL|method|callUpdatePipeline (ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeInfo[] newNodes, String[] newStorageIDs)
 name|ExtendedBlock
 name|callUpdatePipeline
 parameter_list|(
@@ -6773,6 +6764,14 @@ name|oldBlock
 parameter_list|,
 name|ExtendedBlock
 name|newBlock
+parameter_list|,
+name|DatanodeInfo
+index|[]
+name|newNodes
+parameter_list|,
+name|String
+index|[]
+name|newStorageIDs
 parameter_list|)
 throws|throws
 name|IOException
@@ -6791,13 +6790,28 @@ name|oldBlock
 argument_list|,
 name|newBlock
 argument_list|,
-name|nodes
+name|newNodes
 argument_list|,
-name|storageIDs
+name|newStorageIDs
 argument_list|)
 expr_stmt|;
 return|return
 name|newBlock
+return|;
+block|}
+DECL|method|getNumBlockWriteRetry ()
+name|int
+name|getNumBlockWriteRetry
+parameter_list|()
+block|{
+return|return
+name|dfsClient
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|getNumBlockWriteRetry
+argument_list|()
 return|;
 block|}
 comment|/**    * Open a DataStreamer to a DataNode so that it can be written to.    * This happens when a file is created and each time a new block is allocated.    * Must get block ID and the IDs of the destinations from the namenode.    * Returns the list of target datanodes.    */
@@ -6829,11 +6843,6 @@ decl_stmt|;
 name|int
 name|count
 init|=
-name|dfsClient
-operator|.
-name|getConf
-argument_list|()
-operator|.
 name|getNumBlockWriteRetry
 argument_list|()
 decl_stmt|;
@@ -7142,10 +7151,14 @@ literal|"pipeline = "
 operator|+
 name|Arrays
 operator|.
-name|asList
+name|toString
 argument_list|(
 name|nodes
 argument_list|)
+operator|+
+literal|", "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 block|}
@@ -7559,7 +7572,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Exception in createBlockOutputStream"
+literal|"Exception in createBlockOutputStream "
+operator|+
+name|this
 argument_list|,
 name|ie
 argument_list|)
@@ -7948,7 +7963,6 @@ return|;
 block|}
 block|}
 DECL|method|locateFollowingBlock (DatanodeInfo[] excludedNodes)
-specifier|protected
 name|LocatedBlock
 name|locateFollowingBlock
 parameter_list|(
@@ -8393,6 +8407,16 @@ parameter_list|()
 block|{
 return|return
 name|nodes
+return|;
+block|}
+DECL|method|getStorageIDs ()
+name|String
+index|[]
+name|getStorageIDs
+parameter_list|()
+block|{
+return|return
+name|storageIDs
 return|;
 block|}
 comment|/**    * return the token of the block    *    * @return the token of the block    */
@@ -8885,28 +8909,18 @@ name|toString
 parameter_list|()
 block|{
 return|return
-operator|(
 name|block
 operator|==
 literal|null
 condition|?
-literal|null
+literal|"block==null"
 else|:
+literal|""
+operator|+
 name|block
 operator|.
 name|getLocalBlock
 argument_list|()
-operator|)
-operator|+
-literal|"@"
-operator|+
-name|Arrays
-operator|.
-name|toString
-argument_list|(
-name|getNodes
-argument_list|()
-argument_list|)
 return|;
 block|}
 block|}

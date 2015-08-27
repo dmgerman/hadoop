@@ -1011,9 +1011,16 @@ decl_stmt|;
 name|long
 name|numBytes
 init|=
+name|atBlockGroupBoundary
+condition|?
 name|b0
 operator|.
 name|getNumBytes
+argument_list|()
+else|:
+name|s0
+operator|.
+name|getBytesCurBlock
 argument_list|()
 decl_stmt|;
 for|for
@@ -1025,7 +1032,7 @@ literal|1
 init|;
 name|i
 operator|<
-name|numDataBlocks
+name|numAllBlocks
 condition|;
 name|i
 operator|++
@@ -1077,6 +1084,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|i
+operator|<
+name|numDataBlocks
+condition|)
+block|{
 name|numBytes
 operator|+=
 name|atBlockGroupBoundary
@@ -1091,6 +1105,7 @@ operator|.
 name|getBytesCurBlock
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 name|block
 operator|.
@@ -1875,8 +1890,6 @@ parameter_list|(
 name|int
 name|newIdx
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 comment|// backup currentPacket for current streamer
 name|int
@@ -2016,11 +2029,14 @@ name|parityBuffers
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkStreamers ()
+DECL|method|checkStreamers (boolean setExternalError)
 specifier|private
 name|void
 name|checkStreamers
-parameter_list|()
+parameter_list|(
+name|boolean
+name|setExternalError
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -2048,6 +2064,8 @@ condition|)
 block|{
 if|if
 condition|(
+name|setExternalError
+operator|&&
 name|s
 operator|.
 name|getBlock
@@ -2133,6 +2151,33 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|handleStreamerFailure
+argument_list|(
+name|err
+argument_list|,
+name|e
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|handleStreamerFailure (String err, Exception e, boolean setExternalError)
+specifier|private
+name|void
+name|handleStreamerFailure
+parameter_list|(
+name|String
+name|err
+parameter_list|,
+name|Exception
+name|e
+parameter_list|,
+name|boolean
+name|setExternalError
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|LOG
 operator|.
 name|warn
@@ -2157,7 +2202,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 name|checkStreamers
-argument_list|()
+argument_list|(
+name|setExternalError
+argument_list|)
 expr_stmt|;
 name|currentPacket
 operator|=
@@ -2719,13 +2766,11 @@ return|return
 name|sum
 return|;
 block|}
-DECL|method|writeParityCellsForLastStripe ()
+DECL|method|generateParityCellsForLastStripe ()
 specifier|private
-name|void
-name|writeParityCellsForLastStripe
+name|boolean
+name|generateParityCellsForLastStripe
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 specifier|final
 name|long
@@ -2744,7 +2789,9 @@ operator|==
 literal|0
 condition|)
 block|{
-return|return;
+return|return
+literal|false
+return|;
 block|}
 specifier|final
 name|int
@@ -2872,9 +2919,9 @@ name|flip
 argument_list|()
 expr_stmt|;
 block|}
-name|writeParityCells
-argument_list|()
-expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 DECL|method|writeParityCells ()
 name|void
@@ -3297,13 +3344,6 @@ block|{
 name|flushBuffer
 argument_list|()
 expr_stmt|;
-comment|// if the last stripe is incomplete, generate and write parity cells
-name|writeParityCellsForLastStripe
-argument_list|()
-expr_stmt|;
-name|enqueueAllCurrentPackets
-argument_list|()
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -3313,12 +3353,29 @@ parameter_list|)
 block|{
 name|handleStreamerFailure
 argument_list|(
-literal|"closeImpl"
+literal|"flushBuffer "
+operator|+
+name|getCurrentStreamer
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
 block|}
+comment|// if the last stripe is incomplete, generate and write parity cells
+if|if
+condition|(
+name|generateParityCellsForLastStripe
+argument_list|()
+condition|)
+block|{
+name|writeParityCells
+argument_list|()
+expr_stmt|;
+block|}
+name|enqueueAllCurrentPackets
+argument_list|()
+expr_stmt|;
 for|for
 control|(
 name|int
@@ -3381,9 +3438,13 @@ parameter_list|)
 block|{
 name|handleStreamerFailure
 argument_list|(
-literal|"closeImpl"
+literal|"flushInternal "
+operator|+
+name|s
 argument_list|,
 name|e
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3491,21 +3552,52 @@ name|i
 operator|++
 control|)
 block|{
+specifier|final
+name|StripedDataStreamer
+name|si
+init|=
 name|setCurrentStreamer
 argument_list|(
 name|i
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
+operator|!
+name|si
+operator|.
+name|isFailed
+argument_list|()
+operator|&&
 name|currentPacket
 operator|!=
 literal|null
 condition|)
 block|{
+try|try
+block|{
 name|enqueueCurrentPacket
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|handleStreamerFailure
+argument_list|(
+literal|"enqueueAllCurrentPackets, i="
+operator|+
+name|i
+argument_list|,
+name|e
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 name|setCurrentStreamer

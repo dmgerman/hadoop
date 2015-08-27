@@ -2470,21 +2470,17 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|DFSClient
-operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DFSClient writeChunk allocating new packet seqno="
+literal|"WriteChunk allocating new packet seqno="
 operator|+
 name|currentPacket
 operator|.
@@ -2510,6 +2506,10 @@ argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
+operator|+
+literal|", "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 block|}

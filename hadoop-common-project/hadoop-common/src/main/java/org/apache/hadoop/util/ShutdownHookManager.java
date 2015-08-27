@@ -644,6 +644,19 @@ name|get
 argument_list|()
 return|;
 block|}
+comment|/**    * clear all registered shutdownHooks.    */
+DECL|method|clearShutdownHooks ()
+specifier|public
+name|void
+name|clearShutdownHooks
+parameter_list|()
+block|{
+name|hooks
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 

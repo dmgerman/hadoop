@@ -1130,6 +1130,17 @@ name|isUnderConstruction
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|file
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+return|return;
+comment|// do not abandon block for striped file
+block|}
 name|Block
 name|localBlock
 init|=
