@@ -931,11 +931,11 @@ name|conf
 operator|.
 name|getLong
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_KEY
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)

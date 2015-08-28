@@ -5330,7 +5330,7 @@ try|try
 block|{
 name|proxy
 operator|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|createClientDatanodeProtocolProxy
 argument_list|(

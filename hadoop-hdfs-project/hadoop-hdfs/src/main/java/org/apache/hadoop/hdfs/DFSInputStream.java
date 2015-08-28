@@ -1945,7 +1945,7 @@ try|try
 block|{
 name|cdp
 operator|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|createClientDatanodeProtocolProxy
 argument_list|(

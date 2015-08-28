@@ -422,6 +422,8 @@ name|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT
 init|=
 literal|5
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DFS_DATANODE_READAHEAD_BYTES_KEY
 specifier|public
 specifier|static
@@ -429,8 +431,12 @@ specifier|final
 name|String
 name|DFS_DATANODE_READAHEAD_BYTES_KEY
 init|=
-literal|"dfs.datanode.readahead.bytes"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_DATANODE_READAHEAD_BYTES_KEY
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 specifier|public
 specifier|static
@@ -438,13 +444,10 @@ specifier|final
 name|long
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 init|=
-literal|4
-operator|*
-literal|1024
-operator|*
-literal|1024
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 decl_stmt|;
-comment|// 4MB
 DECL|field|DFS_DATANODE_DROP_CACHE_BEHIND_WRITES_KEY
 specifier|public
 specifier|static
@@ -3688,7 +3691,9 @@ specifier|final
 name|String
 name|DFS_DATANODE_KERBEROS_PRINCIPAL_KEY
 init|=
-literal|"dfs.datanode.kerberos.principal"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_DATANODE_KERBEROS_PRINCIPAL_KEY
 decl_stmt|;
 annotation|@
 name|Deprecated
@@ -4392,7 +4397,9 @@ specifier|final
 name|String
 name|DFS_ENCRYPTION_KEY_PROVIDER_URI
 init|=
-literal|"dfs.encryption.key.provider.uri"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_ENCRYPTION_KEY_PROVIDER_URI
 decl_stmt|;
 comment|// Journal-node related configs. These are read on the JN side.
 DECL|field|DFS_JOURNALNODE_EDITS_DIR_KEY
