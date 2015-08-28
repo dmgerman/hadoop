@@ -3004,6 +3004,21 @@ operator|.
 name|getApplicationId
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|applicationId
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|ApplicationNotFoundException
+argument_list|(
+literal|"Invalid application id: null"
+argument_list|)
+throw|;
+block|}
 name|UserGroupInformation
 name|callerUGI
 decl_stmt|;
