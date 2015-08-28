@@ -727,6 +727,31 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"name space="
+operator|+
+name|getNameSpace
+argument_list|()
+operator|+
+literal|"\nstorage space="
+operator|+
+name|getStorageSpace
+argument_list|()
+operator|+
+literal|"\nstorage types="
+operator|+
+name|getTypeSpaces
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|equals (Object obj)
 specifier|public
 name|boolean
