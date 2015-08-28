@@ -674,6 +674,7 @@ name|isEmpty
 argument_list|()
 return|;
 block|}
+comment|/**    * Read the includes and excludes lists from the named files.  Any previous    * includes and excludes lists are discarded.    * @param includeFile the path to the new includes list    * @param excludeFile the path to the new excludes list    * @throws IOException thrown if there is a problem reading one of the files    */
 DECL|method|refresh (String includeFile, String excludeFile)
 name|void
 name|refresh
@@ -707,6 +708,28 @@ argument_list|,
 name|excludeFile
 argument_list|)
 decl_stmt|;
+name|refresh
+argument_list|(
+name|newIncludes
+argument_list|,
+name|newExcludes
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Set the includes and excludes lists by the new HostSet instances. The    * old instances are discarded.    * @param newIncludes the new includes list    * @param newExcludes the new excludes list    */
+annotation|@
+name|VisibleForTesting
+DECL|method|refresh (HostSet newIncludes, HostSet newExcludes)
+name|void
+name|refresh
+parameter_list|(
+name|HostSet
+name|newIncludes
+parameter_list|,
+name|HostSet
+name|newExcludes
+parameter_list|)
+block|{
 synchronized|synchronized
 init|(
 name|this

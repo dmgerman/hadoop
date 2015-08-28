@@ -5218,6 +5218,7 @@ decl_stmt|;
 if|if
 condition|(
 operator|(
+operator|(
 name|listLiveNodes
 operator|&&
 operator|!
@@ -5235,6 +5236,14 @@ name|listDecommissioningNodes
 operator|&&
 name|isDecommissioning
 operator|)
+operator|)
+operator|&&
+name|hostFileManager
+operator|.
+name|isIncluded
+argument_list|(
+name|dn
+argument_list|)
 condition|)
 block|{
 name|nodes
