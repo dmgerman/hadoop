@@ -164,7 +164,7 @@ specifier|final
 name|int
 name|DEFAULT_MAX_ERROR_RETRIES
 init|=
-literal|10
+literal|20
 decl_stmt|;
 comment|// seconds until we give up trying to establish a connection to s3
 DECL|field|ESTABLISH_TIMEOUT
@@ -202,7 +202,7 @@ specifier|final
 name|int
 name|DEFAULT_SOCKET_TIMEOUT
 init|=
-literal|50000
+literal|200000
 decl_stmt|;
 comment|// number of records to get while paging through a directory listing
 DECL|field|MAX_PAGING_KEYS
