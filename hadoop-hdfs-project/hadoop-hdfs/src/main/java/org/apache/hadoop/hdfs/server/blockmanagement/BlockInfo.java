@@ -877,16 +877,6 @@ name|DatanodeStorageInfo
 name|storage
 parameter_list|)
 function_decl|;
-comment|/**    * Replace the current BlockInfo with the new one in corresponding    * DatanodeStorageInfo's linked list    */
-DECL|method|replaceBlock (BlockInfo newBlock)
-specifier|abstract
-name|void
-name|replaceBlock
-parameter_list|(
-name|BlockInfo
-name|newBlock
-parameter_list|)
-function_decl|;
 comment|/**    * Find specified DatanodeStorageInfo.    * @return DatanodeStorageInfo or null if not found.    */
 DECL|method|findStorageInfo (DatanodeDescriptor dn)
 name|DatanodeStorageInfo
@@ -1520,13 +1510,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Convert an under construction block to a complete block.    *    * @return BlockInfo - a complete block.    * @throws IOException if the state of the block    * (the generation stamp and the length) has not been committed by    * the client or it does not have at least a minimal number of replicas    * reported from data-nodes.    */
+comment|/**    * Convert an under construction block to complete.    */
 DECL|method|convertToCompleteBlock ()
-name|BlockInfo
+name|void
 name|convertToCompleteBlock
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 assert|assert
 name|getBlockUCState
@@ -1542,9 +1530,6 @@ name|uc
 operator|=
 literal|null
 expr_stmt|;
-return|return
-name|this
-return|;
 block|}
 comment|/**    * Process the recorded replicas. When about to commit or finish the    * pipeline recovery sort out bad replicas.    * @param genStamp  The final generation stamp for the block.    */
 DECL|method|setGenerationStampAndVerifyReplicas (long genStamp)

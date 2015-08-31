@@ -3886,8 +3886,6 @@ decl_stmt|;
 comment|// add the new block to the INodeFile
 name|addNewBlock
 argument_list|(
-name|fsDir
-argument_list|,
 name|addBlockOp
 argument_list|,
 name|oldFile
@@ -6193,14 +6191,11 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Add a new block into the given INodeFile    */
-DECL|method|addNewBlock (FSDirectory fsDir, AddBlockOp op, INodeFile file)
+DECL|method|addNewBlock (AddBlockOp op, INodeFile file)
 specifier|private
 name|void
 name|addNewBlock
 parameter_list|(
-name|FSDirectory
-name|fsDir
-parameter_list|,
 name|AddBlockOp
 name|op
 parameter_list|,
@@ -6341,8 +6336,6 @@ argument_list|()
 operator|.
 name|forceCompleteBlock
 argument_list|(
-name|file
-argument_list|,
 name|oldLastBlock
 argument_list|)
 expr_stmt|;
@@ -6671,8 +6664,6 @@ argument_list|()
 operator|.
 name|forceCompleteBlock
 argument_list|(
-name|file
-argument_list|,
 name|oldBlock
 argument_list|)
 expr_stmt|;
