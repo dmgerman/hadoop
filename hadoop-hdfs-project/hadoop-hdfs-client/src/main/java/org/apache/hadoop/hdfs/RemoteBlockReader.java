@@ -484,6 +484,26 @@ name|TraceScope
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * @deprecated this is an old implementation that is being left around  * in case any issues spring up with the new {@link RemoteBlockReader2} implementation.  * It will be removed in the next release.  */
 end_comment
@@ -504,6 +524,21 @@ name|FSInputChecker
 implements|implements
 name|BlockReader
 block|{
+DECL|field|LOG
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|FSInputChecker
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|peer
 specifier|private
 specifier|final
@@ -2227,7 +2262,7 @@ block|{
 comment|// An optimistic estimate of how much data is available
 comment|// to us without doing network I/O.
 return|return
-name|DFSClient
+name|RemoteBlockReader2
 operator|.
 name|TCP_WINDOW_SIZE
 return|;
