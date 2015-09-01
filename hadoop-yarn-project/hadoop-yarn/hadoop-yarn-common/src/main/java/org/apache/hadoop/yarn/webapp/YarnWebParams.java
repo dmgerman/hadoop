@@ -155,6 +155,12 @@ name|WEB_UI_TYPE
 init|=
 literal|"web.ui.type"
 decl_stmt|;
+DECL|field|NEXT_REFRESH_INTERVAL
+name|String
+name|NEXT_REFRESH_INTERVAL
+init|=
+literal|"next.fresh.interval"
+decl_stmt|;
 block|}
 end_interface
 
