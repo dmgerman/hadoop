@@ -5336,7 +5336,7 @@ name|server
 operator|.
 name|abandonBlock
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5443,7 +5443,7 @@ operator|.
 name|hasPrevious
 argument_list|()
 condition|?
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5627,7 +5627,7 @@ operator|.
 name|getFileId
 argument_list|()
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5775,7 +5775,7 @@ operator|.
 name|hasLast
 argument_list|()
 condition|?
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -7951,7 +7951,7 @@ name|server
 operator|.
 name|updateBlockForPipeline
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -8047,7 +8047,7 @@ operator|.
 name|getClientName
 argument_list|()
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -8057,7 +8057,7 @@ name|getOldBlock
 argument_list|()
 argument_list|)
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

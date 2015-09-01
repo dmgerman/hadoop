@@ -2550,17 +2550,6 @@ operator|*
 literal|1000L
 decl_stmt|;
 comment|// 1 hour
-DECL|field|TCP_WINDOW_SIZE
-specifier|static
-specifier|final
-name|int
-name|TCP_WINDOW_SIZE
-init|=
-literal|128
-operator|*
-literal|1024
-decl_stmt|;
-comment|// 128 KB
 DECL|field|conf
 specifier|private
 specifier|final

@@ -1649,7 +1649,7 @@ argument_list|()
 argument_list|,
 literal|true
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -1699,7 +1699,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -1948,7 +1948,7 @@ argument_list|()
 argument_list|,
 literal|true
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -1972,7 +1972,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -2197,7 +2197,7 @@ argument_list|()
 argument_list|,
 literal|true
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -2221,7 +2221,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -2800,7 +2800,7 @@ argument_list|()
 argument_list|,
 literal|true
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -3120,7 +3120,7 @@ argument_list|()
 argument_list|,
 literal|true
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -3144,7 +3144,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -3402,7 +3402,7 @@ argument_list|()
 argument_list|,
 literal|true
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -3426,7 +3426,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -3865,7 +3865,7 @@ argument_list|()
 argument_list|,
 literal|true
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -3889,7 +3889,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -3957,7 +3957,7 @@ argument_list|()
 argument_list|,
 literal|true
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)
@@ -3981,7 +3981,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 argument_list|)

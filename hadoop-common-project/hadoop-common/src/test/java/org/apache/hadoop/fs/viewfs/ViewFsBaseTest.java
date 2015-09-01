@@ -512,6 +512,7 @@ end_comment
 
 begin_class
 DECL|class|ViewFsBaseTest
+specifier|abstract
 specifier|public
 class|class
 name|ViewFsBaseTest

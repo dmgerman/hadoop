@@ -4664,11 +4664,10 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-comment|// Test that non-live and bogus hostnames are considered "dead".
-comment|// The dead report should have an entry for (1) the DN  that is
-comment|// now considered dead because it is no longer allowed to connect
-comment|// and (2) the bogus entry in the hosts file (these entries are
-comment|// always added last)
+comment|// Test that bogus hostnames are considered "dead".
+comment|// The dead report should have an entry for the bogus entry in the hosts
+comment|// file.  The original datanode is excluded from the report because it
+comment|// is no longer in the included list.
 name|info
 operator|=
 name|client
@@ -4682,45 +4681,13 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"There should be 2 dead nodes"
+literal|"There should be 1 dead node"
 argument_list|,
-literal|2
+literal|1
 argument_list|,
 name|info
 operator|.
 name|length
-argument_list|)
-expr_stmt|;
-name|DatanodeID
-name|id
-init|=
-name|cluster
-operator|.
-name|getDataNodes
-argument_list|()
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|getDatanodeId
-argument_list|()
-decl_stmt|;
-name|assertEquals
-argument_list|(
-name|id
-operator|.
-name|getHostName
-argument_list|()
-argument_list|,
-name|info
-index|[
-literal|0
-index|]
-operator|.
-name|getHostName
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -4729,7 +4696,7 @@ name|bogusIp
 argument_list|,
 name|info
 index|[
-literal|1
+literal|0
 index|]
 operator|.
 name|getHostName

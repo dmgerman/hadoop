@@ -258,6 +258,16 @@ name|FS_TRASH_CHECKPOINT_INTERVAL_DEFAULT
 init|=
 literal|0
 decl_stmt|;
+comment|/**    * Directories that cannot be removed unless empty, even by an    * administrator.    */
+DECL|field|FS_PROTECTED_DIRECTORIES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_PROTECTED_DIRECTORIES
+init|=
+literal|"fs.protected.directories"
+decl_stmt|;
 comment|// TBD: Code is still using hardcoded values (e.g. "fs.automatic.close")
 comment|// instead of constant (e.g. FS_AUTOMATIC_CLOSE_KEY)
 comment|//

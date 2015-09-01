@@ -833,52 +833,6 @@ return|return
 name|capacity
 return|;
 block|}
-comment|/**    * Replace a block in the block map by a new block.    * The new block and the old one have the same key.    * @param newBlock - block for replacement    * @return new block    */
-DECL|method|replaceBlock (BlockInfo newBlock)
-name|BlockInfo
-name|replaceBlock
-parameter_list|(
-name|BlockInfo
-name|newBlock
-parameter_list|)
-block|{
-name|BlockInfo
-name|currentBlock
-init|=
-name|blocks
-operator|.
-name|get
-argument_list|(
-name|newBlock
-argument_list|)
-decl_stmt|;
-assert|assert
-name|currentBlock
-operator|!=
-literal|null
-operator|:
-literal|"the block if not in blocksMap"
-assert|;
-comment|// replace block in data-node lists
-name|currentBlock
-operator|.
-name|replaceBlock
-argument_list|(
-name|newBlock
-argument_list|)
-expr_stmt|;
-comment|// replace block in the map itself
-name|blocks
-operator|.
-name|put
-argument_list|(
-name|newBlock
-argument_list|)
-expr_stmt|;
-return|return
-name|newBlock
-return|;
-block|}
 block|}
 end_class
 

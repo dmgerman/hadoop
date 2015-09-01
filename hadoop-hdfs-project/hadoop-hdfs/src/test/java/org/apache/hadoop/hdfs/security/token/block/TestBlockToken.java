@@ -318,7 +318,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -550,7 +550,7 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
+name|PBHelperClient
 import|;
 end_import
 
@@ -1260,7 +1260,7 @@ name|id
 argument_list|,
 literal|null
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -2073,7 +2073,7 @@ try|try
 block|{
 name|proxy
 operator|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|createClientDatanodeProtocolProxy
 argument_list|(
@@ -2376,7 +2376,7 @@ condition|)
 block|{
 name|proxy
 operator|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|createClientDatanodeProtocolProxy
 argument_list|(

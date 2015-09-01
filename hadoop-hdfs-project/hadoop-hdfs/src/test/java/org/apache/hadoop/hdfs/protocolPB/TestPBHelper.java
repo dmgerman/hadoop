@@ -3400,7 +3400,7 @@ decl_stmt|;
 name|ExtendedBlock
 name|b1
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -3433,7 +3433,7 @@ argument_list|)
 expr_stmt|;
 name|b1
 operator|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

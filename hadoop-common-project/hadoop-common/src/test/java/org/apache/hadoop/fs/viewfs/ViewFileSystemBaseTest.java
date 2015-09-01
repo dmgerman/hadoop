@@ -496,6 +496,7 @@ end_comment
 
 begin_class
 DECL|class|ViewFileSystemBaseTest
+specifier|abstract
 specifier|public
 class|class
 name|ViewFileSystemBaseTest

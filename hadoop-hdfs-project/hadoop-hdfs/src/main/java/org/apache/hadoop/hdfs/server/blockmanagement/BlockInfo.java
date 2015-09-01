@@ -72,6 +72,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -157,6 +171,10 @@ comment|/**  * For a given block (or an erasure coding block group), BlockInfo c
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|BlockInfo
 specifier|public
 specifier|abstract
@@ -844,16 +862,6 @@ name|DatanodeStorageInfo
 name|storage
 parameter_list|)
 function_decl|;
-comment|/**    * Replace the current BlockInfo with the new one in corresponding    * DatanodeStorageInfo's linked list    */
-DECL|method|replaceBlock (BlockInfo newBlock)
-specifier|abstract
-name|void
-name|replaceBlock
-parameter_list|(
-name|BlockInfo
-name|newBlock
-parameter_list|)
-function_decl|;
 DECL|method|isStriped ()
 specifier|public
 specifier|abstract
@@ -1513,13 +1521,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Convert an under construction block to a complete block.    *    * @return BlockInfo - a complete block.    * @throws IOException if the state of the block    * (the generation stamp and the length) has not been committed by    * the client or it does not have at least a minimal number of replicas    * reported from data-nodes.    */
+comment|/**    * Convert an under construction block to complete.    */
 DECL|method|convertToCompleteBlock ()
-name|BlockInfo
+name|void
 name|convertToCompleteBlock
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 assert|assert
 name|getBlockUCState
@@ -1535,9 +1541,6 @@ name|uc
 operator|=
 literal|null
 expr_stmt|;
-return|return
-name|this
-return|;
 block|}
 comment|/**    * Process the recorded replicas. When about to commit or finish the    * pipeline recovery sort out bad replicas.    * @param genStamp  The final generation stamp for the block.    */
 DECL|method|setGenerationStampAndVerifyReplicas (long genStamp)

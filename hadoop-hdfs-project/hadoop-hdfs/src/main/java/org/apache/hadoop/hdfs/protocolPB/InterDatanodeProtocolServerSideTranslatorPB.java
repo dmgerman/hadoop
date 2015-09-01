@@ -388,7 +388,7 @@ name|impl
 operator|.
 name|updateReplicaUnderRecovery
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

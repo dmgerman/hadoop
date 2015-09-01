@@ -2101,7 +2101,7 @@ name|impl
 operator|.
 name|commitBlockSynchronization
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

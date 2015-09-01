@@ -6515,8 +6515,6 @@ argument_list|()
 operator|.
 name|forceCompleteBlock
 argument_list|(
-name|file
-argument_list|,
 name|oldLastBlock
 argument_list|)
 expr_stmt|;
@@ -6878,8 +6876,6 @@ argument_list|()
 operator|.
 name|forceCompleteBlock
 argument_list|(
-name|file
-argument_list|,
 name|oldBlock
 argument_list|)
 expr_stmt|;

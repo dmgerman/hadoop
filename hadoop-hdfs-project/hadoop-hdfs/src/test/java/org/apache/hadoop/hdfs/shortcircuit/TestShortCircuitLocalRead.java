@@ -296,7 +296,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -2488,7 +2488,7 @@ decl_stmt|;
 name|ClientDatanodeProtocol
 name|proxy
 init|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|createClientDatanodeProtocolProxy
 argument_list|(
