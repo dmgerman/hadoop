@@ -227,8 +227,8 @@ argument_list|,
 literal|"Remove support for 0.13 disk layout"
 argument_list|)
 block|,
-DECL|enumConstant|EDITS_CHESKUM
-name|EDITS_CHESKUM
+DECL|enumConstant|EDITS_CHECKSUM
+name|EDITS_CHECKSUM
 argument_list|(
 operator|-
 literal|28

@@ -4583,10 +4583,11 @@ argument_list|)
 expr_stmt|;
 name|reader
 operator|=
-operator|new
 name|FSEditLogOp
 operator|.
 name|Reader
+operator|.
+name|create
 argument_list|(
 name|in
 argument_list|,

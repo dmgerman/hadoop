@@ -822,10 +822,11 @@ block|}
 block|}
 name|reader
 operator|=
-operator|new
 name|FSEditLogOp
 operator|.
 name|Reader
+operator|.
+name|create
 argument_list|(
 name|dataIn
 argument_list|,
