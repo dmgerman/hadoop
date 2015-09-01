@@ -338,6 +338,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|SchedulerApplicationAttempt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|common
 operator|.
 name|fica
@@ -744,6 +764,51 @@ specifier|public
 name|ResourceUsage
 name|getQueueResourceUsage
 parameter_list|()
+function_decl|;
+comment|/**    * When partition of node updated, we will update queue's resource usage if it    * has container(s) running on that.    */
+DECL|method|incUsedResource (String nodePartition, Resource resourceToInc, SchedulerApplicationAttempt application)
+specifier|public
+name|void
+name|incUsedResource
+parameter_list|(
+name|String
+name|nodePartition
+parameter_list|,
+name|Resource
+name|resourceToInc
+parameter_list|,
+name|SchedulerApplicationAttempt
+name|application
+parameter_list|)
+function_decl|;
+comment|/**    * When partition of node updated, we will update queue's resource usage if it    * has container(s) running on that.    */
+DECL|method|decUsedResource (String nodePartition, Resource resourceToDec, SchedulerApplicationAttempt application)
+specifier|public
+name|void
+name|decUsedResource
+parameter_list|(
+name|String
+name|nodePartition
+parameter_list|,
+name|Resource
+name|resourceToDec
+parameter_list|,
+name|SchedulerApplicationAttempt
+name|application
+parameter_list|)
+function_decl|;
+comment|/**    * When an outstanding resource is fulfilled or canceled, calling this will    * decrease pending resource in a queue.    *    * @param nodeLabel    *          asked by application    * @param resourceToDec    *          new resource asked    */
+DECL|method|decPendingResource (String nodeLabel, Resource resourceToDec)
+specifier|public
+name|void
+name|decPendingResource
+parameter_list|(
+name|String
+name|nodeLabel
+parameter_list|,
+name|Resource
+name|resourceToDec
+parameter_list|)
 function_decl|;
 block|}
 end_interface
