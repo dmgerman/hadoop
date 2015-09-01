@@ -3540,6 +3540,8 @@ index|[
 literal|2048
 index|]
 decl_stmt|;
+try|try
+init|(
 name|BufferedOutputStream
 name|outputStream
 init|=
@@ -3552,7 +3554,9 @@ argument_list|(
 name|outputFile
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|;
+init|)
+block|{
 while|while
 condition|(
 operator|(
@@ -3587,11 +3591,7 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
-name|outputStream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 comment|/**    * Class for creating hardlinks.    * Supports Unix, WindXP.    * @deprecated Use {@link org.apache.hadoop.fs.HardLink}    */
 annotation|@
