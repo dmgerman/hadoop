@@ -1054,8 +1054,7 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+comment|// set replication should be a no-op
 name|fs
 operator|.
 name|setReplication
@@ -1068,26 +1067,6 @@ operator|)
 literal|3
 argument_list|)
 expr_stmt|;
-name|fail
-argument_list|(
-literal|"Shouldn't allow to set replication to a file with striped blocks"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|assertExceptionContains
-argument_list|(
-literal|"Cannot set replication to a file with striped blocks"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Test

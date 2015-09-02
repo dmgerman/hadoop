@@ -2444,8 +2444,17 @@ name|inode
 operator|.
 name|isFile
 argument_list|()
+operator|||
+name|inode
+operator|.
+name|asFile
+argument_list|()
+operator|.
+name|isStriped
+argument_list|()
 condition|)
 block|{
+comment|// TODO we do not support replication on stripe layout files yet
 return|return
 literal|null
 return|;
@@ -2458,22 +2467,6 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|file
-operator|.
-name|isStriped
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|UnsupportedActionException
-argument_list|(
-literal|"Cannot set replication to a file with striped blocks"
-argument_list|)
-throw|;
-block|}
 comment|// Make sure the directory has sufficient quotas
 name|short
 name|oldBR
