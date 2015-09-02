@@ -7316,8 +7316,6 @@ name|nodeStatusUpdater
 argument_list|,
 name|metrics
 argument_list|,
-name|aclsManager
-argument_list|,
 name|dirsHandler
 argument_list|)
 block|{
@@ -8290,8 +8288,6 @@ name|nodeStatusUpdater
 argument_list|,
 name|metrics
 argument_list|,
-name|aclsManager
-argument_list|,
 name|diskhandler
 argument_list|)
 block|{
@@ -9092,8 +9088,6 @@ argument_list|,
 name|nodeStatusUpdater
 argument_list|,
 name|metrics
-argument_list|,
-name|aclsManager
 argument_list|,
 name|dirsHandler
 argument_list|)

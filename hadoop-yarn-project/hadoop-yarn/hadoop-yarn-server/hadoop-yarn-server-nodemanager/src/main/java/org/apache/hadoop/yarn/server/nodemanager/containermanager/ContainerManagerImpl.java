@@ -2028,24 +2028,6 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|security
-operator|.
-name|ApplicationACLsManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
 name|utils
 operator|.
 name|BuilderUtils
@@ -2194,12 +2176,6 @@ specifier|final
 name|AsyncDispatcher
 name|dispatcher
 decl_stmt|;
-DECL|field|aclsManager
-specifier|private
-specifier|final
-name|ApplicationACLsManager
-name|aclsManager
-decl_stmt|;
 DECL|field|deletionService
 specifier|private
 specifier|final
@@ -2241,7 +2217,7 @@ specifier|private
 name|long
 name|waitForContainersOnShutdownMillis
 decl_stmt|;
-DECL|method|ContainerManagerImpl (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, ApplicationACLsManager aclsManager, LocalDirsHandlerService dirsHandler)
+DECL|method|ContainerManagerImpl (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, LocalDirsHandlerService dirsHandler)
 specifier|public
 name|ContainerManagerImpl
 parameter_list|(
@@ -2259,9 +2235,6 @@ name|nodeStatusUpdater
 parameter_list|,
 name|NodeManagerMetrics
 name|metrics
-parameter_list|,
-name|ApplicationACLsManager
-name|aclsManager
 parameter_list|,
 name|LocalDirsHandlerService
 name|dirsHandler
@@ -2343,12 +2316,6 @@ operator|.
 name|nodeStatusUpdater
 operator|=
 name|nodeStatusUpdater
-expr_stmt|;
-name|this
-operator|.
-name|aclsManager
-operator|=
-name|aclsManager
 expr_stmt|;
 comment|// Start configurable services
 name|auxiliaryServices

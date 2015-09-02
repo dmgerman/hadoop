@@ -2625,8 +2625,6 @@ name|nodeStatusUpdater
 argument_list|,
 name|metrics
 argument_list|,
-name|aclsManager
-argument_list|,
 name|dirsHandler
 argument_list|)
 block|{
