@@ -4968,7 +4968,7 @@ else|:
 name|replication
 return|;
 block|}
-comment|/**    * Check whether the replication parameter is within the range    * determined by system configuration.    */
+comment|/**    * Check whether the replication parameter is within the range    * determined by system configuration and throw an exception if it's not.    *    * @param src the path to the target file    * @param replication the requested replication factor    * @param clientName the name of the client node making the request    * @throws java.io.IOException thrown if the requested replication factor    * is out of bounds    */
 DECL|method|verifyReplication (String src, short replication, String clientName)
 specifier|public
 name|void
@@ -4989,78 +4989,112 @@ block|{
 if|if
 condition|(
 name|replication
-operator|>=
+argument_list|<
 name|minReplication
-operator|&&
+operator|||
 name|replication
-operator|<=
+argument_list|>
 name|maxReplication
 condition|)
 block|{
-comment|//common case. avoid building 'text'
-return|return;
-block|}
-name|String
-name|text
+name|StringBuilder
+name|msg
 init|=
-literal|"file "
-operator|+
-name|src
-operator|+
-operator|(
-operator|(
-name|clientName
-operator|!=
-literal|null
-operator|)
-condition|?
-literal|" on client "
-operator|+
-name|clientName
-else|:
-literal|""
-operator|)
-operator|+
-literal|".\n"
-operator|+
-literal|"Requested replication "
-operator|+
-name|replication
+operator|new
+name|StringBuilder
+argument_list|(
+literal|"Requested replication factor of "
+argument_list|)
 decl_stmt|;
+name|msg
+operator|.
+name|append
+argument_list|(
+name|replication
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|replication
 operator|>
 name|maxReplication
 condition|)
-throw|throw
-operator|new
-name|IOException
+block|{
+name|msg
+operator|.
+name|append
 argument_list|(
-name|text
-operator|+
-literal|" exceeds maximum "
-operator|+
+literal|" exceeds maximum of "
+argument_list|)
+expr_stmt|;
+name|msg
+operator|.
+name|append
+argument_list|(
 name|maxReplication
 argument_list|)
-throw|;
+expr_stmt|;
+block|}
+else|else
+block|{
+name|msg
+operator|.
+name|append
+argument_list|(
+literal|" is less than the required minimum of "
+argument_list|)
+expr_stmt|;
+name|msg
+operator|.
+name|append
+argument_list|(
+name|minReplication
+argument_list|)
+expr_stmt|;
+block|}
+name|msg
+operator|.
+name|append
+argument_list|(
+literal|" for "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
-name|replication
-operator|<
-name|minReplication
+name|clientName
+operator|!=
+literal|null
 condition|)
+block|{
+name|msg
+operator|.
+name|append
+argument_list|(
+literal|" from "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|clientName
+argument_list|)
+expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-name|text
-operator|+
-literal|" is less than the required minimum "
-operator|+
-name|minReplication
+name|msg
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 throw|;
+block|}
 block|}
 comment|/**    * Check if a block is replicated to at least the minimum replication.    */
 DECL|method|isSufficientlyReplicated (BlockInfo b)
