@@ -690,6 +690,10 @@ literal|"\n\t[-include [-f<hosts-file> |<comma-separated list of hosts>]]"
 operator|+
 literal|"\tIncludes only the specified datanodes."
 operator|+
+literal|"\n\t[-blockpools<comma-separated list of blockpool ids>]"
+operator|+
+literal|"\tThe balancer will only run on blockpools included in this list."
+operator|+
 literal|"\n\t[-idleiterations<idleiterations>]"
 operator|+
 literal|"\tNumber of consecutive idle iterations (-1 for Infinite) before "
@@ -3174,6 +3178,30 @@ range|:
 name|connectors
 control|)
 block|{
+if|if
+condition|(
+name|p
+operator|.
+name|blockpools
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|0
+operator|||
+name|p
+operator|.
+name|blockpools
+operator|.
+name|contains
+argument_list|(
+name|nnc
+operator|.
+name|getBlockpoolID
+argument_list|()
+argument_list|)
+condition|)
+block|{
 specifier|final
 name|Balancer
 name|b
@@ -3244,7 +3272,7 @@ operator|.
 name|SUCCESS
 condition|)
 block|{
-comment|//must be an error statue, return.
+comment|// must be an error statue, return.
 return|return
 name|r
 operator|.
@@ -3253,7 +3281,6 @@ operator|.
 name|getExitCode
 argument_list|()
 return|;
-block|}
 block|}
 if|if
 condition|(
@@ -3268,6 +3295,23 @@ argument_list|(
 name|sleeptime
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Skipping blockpool "
+operator|+
+name|nnc
+operator|.
+name|getBlockpoolID
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -3453,6 +3497,14 @@ operator|>
 name|emptySet
 argument_list|()
 argument_list|,
+name|Collections
+operator|.
+expr|<
+name|String
+operator|>
+name|emptySet
+argument_list|()
+argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
@@ -3498,13 +3550,22 @@ name|String
 argument_list|>
 name|sourceNodes
 decl_stmt|;
+comment|/**      * A set of block pools to run the balancer on.      */
+DECL|field|blockpools
+specifier|final
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|blockpools
+decl_stmt|;
 comment|/**      * Whether to run the balancer during upgrade.      */
 DECL|field|runDuringUpgrade
 specifier|final
 name|boolean
 name|runDuringUpgrade
 decl_stmt|;
-DECL|method|Parameters (BalancingPolicy policy, double threshold, int maxIdleIteration, Set<String> excludedNodes, Set<String> includedNodes, Set<String> sourceNodes, boolean runDuringUpgrade)
+DECL|method|Parameters (BalancingPolicy policy, double threshold, int maxIdleIteration, Set<String> excludedNodes, Set<String> includedNodes, Set<String> sourceNodes, Set<String> blockpools, boolean runDuringUpgrade)
 name|Parameters
 parameter_list|(
 name|BalancingPolicy
@@ -3533,6 +3594,12 @@ argument_list|<
 name|String
 argument_list|>
 name|sourceNodes
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|blockpools
 parameter_list|,
 name|boolean
 name|runDuringUpgrade
@@ -3576,6 +3643,12 @@ name|sourceNodes
 expr_stmt|;
 name|this
 operator|.
+name|blockpools
+operator|=
+name|blockpools
+expr_stmt|;
+name|this
+operator|.
 name|runDuringUpgrade
 operator|=
 name|runDuringUpgrade
@@ -3605,6 +3678,8 @@ operator|+
 literal|" #included nodes = %s,"
 operator|+
 literal|" #source nodes = %s,"
+operator|+
+literal|" #blockpools = %s,"
 operator|+
 literal|" run during upgrade = %s]"
 argument_list|,
@@ -3638,6 +3713,11 @@ name|size
 argument_list|()
 argument_list|,
 name|sourceNodes
+operator|.
+name|size
+argument_list|()
+argument_list|,
+name|blockpools
 operator|.
 name|size
 argument_list|()
@@ -3891,6 +3971,18 @@ operator|.
 name|DEFAULT
 operator|.
 name|sourceNodes
+decl_stmt|;
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|blockpools
+init|=
+name|Parameters
+operator|.
+name|DEFAULT
+operator|.
+name|blockpools
 decl_stmt|;
 name|boolean
 name|runDuringUpgrade
@@ -4210,6 +4302,62 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"-blockpools"
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|args
+index|[
+name|i
+index|]
+argument_list|)
+condition|)
+block|{
+name|checkArgument
+argument_list|(
+operator|++
+name|i
+operator|<
+name|args
+operator|.
+name|length
+argument_list|,
+literal|"blockpools value is missing: args = "
+operator|+
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|blockpools
+operator|=
+name|parseBlockPoolList
+argument_list|(
+name|args
+index|[
+name|i
+index|]
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Balancer will run on the following blockpools: "
+operator|+
+name|blockpools
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 literal|"-idleiterations"
 operator|.
 name|equalsIgnoreCase
@@ -4361,6 +4509,8 @@ argument_list|,
 name|includedNodes
 argument_list|,
 name|sourceNodes
+argument_list|,
+name|blockpools
 argument_list|,
 name|runDuringUpgrade
 argument_list|)
@@ -4524,6 +4674,46 @@ expr_stmt|;
 block|}
 return|return
 name|i
+return|;
+block|}
+DECL|method|parseBlockPoolList (String string)
+specifier|private
+specifier|static
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|parseBlockPoolList
+parameter_list|(
+name|String
+name|string
+parameter_list|)
+block|{
+name|String
+index|[]
+name|addrs
+init|=
+name|StringUtils
+operator|.
+name|getTrimmedStrings
+argument_list|(
+name|string
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|addrs
+argument_list|)
+argument_list|)
 return|;
 block|}
 DECL|method|printUsage (PrintStream out)
