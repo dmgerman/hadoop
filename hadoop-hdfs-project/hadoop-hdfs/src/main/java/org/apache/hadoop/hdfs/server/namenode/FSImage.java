@@ -4588,6 +4588,11 @@ operator|.
 name|join
 argument_list|()
 expr_stmt|;
+name|p
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info
