@@ -28080,6 +28080,19 @@ block|}
 annotation|@
 name|Override
 comment|// NameNodeMXBean
+DECL|method|getNNStartedTimeInMillis ()
+specifier|public
+name|long
+name|getNNStartedTimeInMillis
+parameter_list|()
+block|{
+return|return
+name|startTime
+return|;
+block|}
+annotation|@
+name|Override
+comment|// NameNodeMXBean
 DECL|method|getCompileInfo ()
 specifier|public
 name|String
