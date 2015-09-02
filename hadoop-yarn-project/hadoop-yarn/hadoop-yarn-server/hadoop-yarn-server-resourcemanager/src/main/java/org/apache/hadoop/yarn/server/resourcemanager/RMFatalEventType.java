@@ -51,6 +51,10 @@ block|,
 comment|// Source<- Embedded Elector
 DECL|enumConstant|EMBEDDED_ELECTOR_FAILED
 name|EMBEDDED_ELECTOR_FAILED
+block|,
+comment|// Source<- Admin Service
+DECL|enumConstant|TRANSITION_TO_ACTIVE_FAILED
+name|TRANSITION_TO_ACTIVE_FAILED
 block|}
 end_enum
 
