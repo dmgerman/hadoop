@@ -7236,19 +7236,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Set the ID if we haven't already
-if|if
-condition|(
-literal|null
-operator|==
-name|id
-condition|)
-block|{
 name|id
 operator|=
 name|bpRegistration
 expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!

@@ -3605,13 +3605,14 @@ name|IOException
 block|{
 comment|// The handshake() phase loaded the block pool storage
 comment|// off disk - so update the bpRegistration object from that info
-name|bpRegistration
-operator|=
+name|DatanodeRegistration
+name|newBpRegistration
+init|=
 name|bpos
 operator|.
 name|createRegistration
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|LOG
 operator|.
 name|info
@@ -3630,21 +3631,25 @@ block|{
 try|try
 block|{
 comment|// Use returned registration from namenode with updated fields
-name|bpRegistration
+name|newBpRegistration
 operator|=
 name|bpNamenode
 operator|.
 name|registerDatanode
 argument_list|(
-name|bpRegistration
+name|newBpRegistration
 argument_list|)
 expr_stmt|;
-name|bpRegistration
+name|newBpRegistration
 operator|.
 name|setNamespaceInfo
 argument_list|(
 name|nsInfo
 argument_list|)
+expr_stmt|;
+name|bpRegistration
+operator|=
+name|newBpRegistration
 expr_stmt|;
 break|break;
 block|}

@@ -1379,13 +1379,10 @@ literal|"cluster ID"
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
 name|bpRegistration
 operator|=
 name|reg
 expr_stmt|;
-block|}
 name|dn
 operator|.
 name|bpRegistrationSucceeded
