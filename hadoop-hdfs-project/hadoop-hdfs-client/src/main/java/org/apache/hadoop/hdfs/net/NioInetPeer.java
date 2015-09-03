@@ -120,6 +120,7 @@ end_comment
 
 begin_class
 DECL|class|NioInetPeer
+specifier|public
 class|class
 name|NioInetPeer
 implements|implements
@@ -152,6 +153,7 @@ name|boolean
 name|isLocal
 decl_stmt|;
 DECL|method|NioInetPeer (Socket socket)
+specifier|public
 name|NioInetPeer
 parameter_list|(
 name|Socket

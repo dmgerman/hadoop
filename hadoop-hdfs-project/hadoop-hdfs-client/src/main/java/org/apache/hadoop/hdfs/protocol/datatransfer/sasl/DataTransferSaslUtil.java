@@ -64,7 +64,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATA_TRANSFER_PROTECTION_KEY
 import|;
@@ -80,7 +82,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATA_TRANSFER_SASL_PROPS_RESOLVER_CLASS_KEY
 import|;
@@ -96,7 +100,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_KEY_BITLENGTH_KEY
 import|;
@@ -112,7 +118,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_KEY_BITLENGTH_DEFAULT
 import|;
@@ -128,7 +136,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
 import|;
@@ -484,7 +494,7 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
+name|PBHelperClient
 import|;
 end_import
 
@@ -1350,7 +1360,7 @@ name|cipherOptions
 operator|.
 name|add
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1676,7 +1686,7 @@ name|builder
 operator|.
 name|addCipherOption
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1990,7 +2000,7 @@ name|builder
 operator|.
 name|addAllCipherOption
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertCipherOptions
 argument_list|(
@@ -2113,7 +2123,7 @@ name|CipherOption
 argument_list|>
 name|options
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertCipherOptionProtos
 argument_list|(
