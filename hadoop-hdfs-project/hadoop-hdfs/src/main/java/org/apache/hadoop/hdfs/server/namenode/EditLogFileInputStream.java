@@ -1392,7 +1392,8 @@ name|getName
 argument_list|()
 return|;
 block|}
-DECL|method|validateEditLog (File file)
+comment|/**    * @param file File being validated.    * @param maxTxIdToValidate Maximum Tx ID to try to validate. Validation    *                          returns after reading this or a higher ID.    *                          The file portion beyond this ID is potentially    *                          being updated.    * @return Result of the validation    * @throws IOException    */
+DECL|method|validateEditLog (File file, long maxTxIdToValidate)
 specifier|static
 name|FSEditLogLoader
 operator|.
@@ -1401,6 +1402,9 @@ name|validateEditLog
 parameter_list|(
 name|File
 name|file
+parameter_list|,
+name|long
+name|maxTxIdToValidate
 parameter_list|)
 throws|throws
 name|IOException
@@ -1471,6 +1475,8 @@ operator|.
 name|validateEditLog
 argument_list|(
 name|in
+argument_list|,
+name|maxTxIdToValidate
 argument_list|)
 return|;
 block|}

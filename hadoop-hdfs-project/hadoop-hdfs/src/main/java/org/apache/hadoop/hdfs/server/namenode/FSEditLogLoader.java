@@ -7135,14 +7135,17 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Find the last valid transaction ID in the stream.    * If there are invalid or corrupt transactions in the middle of the stream,    * validateEditLog will skip over them.    * This reads through the stream but does not close it.    */
-DECL|method|validateEditLog (EditLogInputStream in)
+comment|/**    * Find the last valid transaction ID in the stream.    * If there are invalid or corrupt transactions in the middle of the stream,    * validateEditLog will skip over them.    * This reads through the stream but does not close it.    *    * @param maxTxIdToValidate Maximum Tx ID to try to validate. Validation    *                          returns after reading this or a higher ID.    *                          The file portion beyond this ID is potentially    *                          being updated.    */
+DECL|method|validateEditLog (EditLogInputStream in, long maxTxIdToValidate)
 specifier|static
 name|EditLogValidation
 name|validateEditLog
 parameter_list|(
 name|EditLogInputStream
 name|in
+parameter_list|,
+name|long
+name|maxTxIdToValidate
 parameter_list|)
 block|{
 name|long
@@ -7271,6 +7274,15 @@ operator|.
 name|getTransactionId
 argument_list|()
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|lastTxId
+operator|>=
+name|maxTxIdToValidate
+condition|)
+block|{
+break|break;
 block|}
 name|numValid
 operator|++

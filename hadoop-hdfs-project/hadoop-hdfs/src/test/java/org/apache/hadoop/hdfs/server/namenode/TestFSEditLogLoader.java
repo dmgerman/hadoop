@@ -1847,6 +1847,10 @@ operator|.
 name|validateEditLog
 argument_list|(
 name|logFile
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
 argument_list|)
 decl_stmt|;
 name|assertTrue
@@ -1944,6 +1948,10 @@ operator|.
 name|validateEditLog
 argument_list|(
 name|logFile
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
 argument_list|)
 decl_stmt|;
 name|assertTrue
@@ -2028,6 +2036,10 @@ operator|.
 name|validateEditLog
 argument_list|(
 name|logFile
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
 argument_list|)
 expr_stmt|;
 name|long
@@ -2135,6 +2147,10 @@ operator|.
 name|validateEditLog
 argument_list|(
 name|logFile
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
 argument_list|)
 expr_stmt|;
 name|long
@@ -2250,6 +2266,10 @@ operator|.
 name|validateEditLog
 argument_list|(
 name|logFile
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
 argument_list|)
 decl_stmt|;
 name|assertTrue

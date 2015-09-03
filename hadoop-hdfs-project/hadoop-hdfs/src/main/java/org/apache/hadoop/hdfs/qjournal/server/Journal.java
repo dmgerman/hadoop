@@ -1003,12 +1003,13 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|highestWrittenTxId
-operator|=
+name|updateHighestWrittenTxId
+argument_list|(
 name|latest
 operator|.
 name|getLastTxId
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -1439,6 +1440,28 @@ block|{
 return|return
 name|highestWrittenTxId
 return|;
+block|}
+comment|/**    * Update the highest Tx ID that has been written to the journal. Also update    * the {@link FileJournalManager#lastReadableTxId} of the underlying fjm.    * @param val The new value    */
+DECL|method|updateHighestWrittenTxId (long val)
+specifier|private
+name|void
+name|updateHighestWrittenTxId
+parameter_list|(
+name|long
+name|val
+parameter_list|)
+block|{
+name|highestWrittenTxId
+operator|=
+name|val
+expr_stmt|;
+name|fjm
+operator|.
+name|setLastReadableTxId
+argument_list|(
+name|val
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
@@ -1931,9 +1954,10 @@ argument_list|(
 name|numTxns
 argument_list|)
 expr_stmt|;
-name|highestWrittenTxId
-operator|=
+name|updateHighestWrittenTxId
+argument_list|(
 name|lastTxnId
+argument_list|)
 expr_stmt|;
 name|nextTxId
 operator|=
@@ -3500,8 +3524,8 @@ literal|": no current segment in place"
 argument_list|)
 expr_stmt|;
 comment|// Update the highest txid for lag metrics
-name|highestWrittenTxId
-operator|=
+name|updateHighestWrittenTxId
+argument_list|(
 name|Math
 operator|.
 name|max
@@ -3512,6 +3536,7 @@ name|getEndTxId
 argument_list|()
 argument_list|,
 name|highestWrittenTxId
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3635,12 +3660,13 @@ name|highestWrittenTxId
 argument_list|)
 condition|)
 block|{
-name|highestWrittenTxId
-operator|=
+name|updateHighestWrittenTxId
+argument_list|(
 name|segment
 operator|.
 name|getEndTxId
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 block|}

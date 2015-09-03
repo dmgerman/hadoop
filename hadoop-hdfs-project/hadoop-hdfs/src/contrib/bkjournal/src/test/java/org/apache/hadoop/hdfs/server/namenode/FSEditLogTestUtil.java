@@ -114,6 +114,10 @@ operator|.
 name|validateEditLog
 argument_list|(
 name|in
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
 argument_list|)
 decl_stmt|;
 return|return

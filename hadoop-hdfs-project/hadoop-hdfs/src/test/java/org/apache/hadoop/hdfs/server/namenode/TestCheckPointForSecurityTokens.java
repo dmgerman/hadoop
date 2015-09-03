@@ -577,7 +577,11 @@ expr_stmt|;
 name|log
 operator|.
 name|validateLog
-argument_list|()
+argument_list|(
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|)
 expr_stmt|;
 name|long
 name|numTransactions
@@ -689,7 +693,11 @@ expr_stmt|;
 name|log
 operator|.
 name|validateLog
-argument_list|()
+argument_list|(
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|)
 expr_stmt|;
 name|long
 name|numTransactions
