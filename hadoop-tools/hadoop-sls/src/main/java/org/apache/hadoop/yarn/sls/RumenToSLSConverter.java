@@ -781,7 +781,7 @@ name|println
 argument_list|(
 literal|"ERROR: Cannot create output directory in path: "
 operator|+
-name|jsonFile
+name|nodeFile
 operator|.
 name|getParentFile
 argument_list|()
