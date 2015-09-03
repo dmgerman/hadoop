@@ -354,6 +354,17 @@ literal|5
 operator|*
 literal|60
 decl_stmt|;
+DECL|field|randnum
+specifier|private
+specifier|static
+specifier|final
+name|Random
+name|randnum
+init|=
+operator|new
+name|Random
+argument_list|()
+decl_stmt|;
 annotation|@
 name|Inject
 DECL|method|RMWebAppFilter (Injector injector, Configuration conf)
@@ -728,6 +739,15 @@ literal|" seconds."
 else|:
 literal|"There is no active RM right now."
 decl_stmt|;
+name|redirectMsg
+operator|+=
+literal|"\nHA Zookeeper Connection State: "
+operator|+
+name|rmWebApp
+operator|.
+name|getHAZookeeperConnectionState
+argument_list|()
+expr_stmt|;
 name|PrintWriter
 name|out
 init|=
@@ -1005,11 +1025,7 @@ argument_list|(
 name|baseTime
 operator|*
 operator|(
-operator|(
-operator|new
-name|Random
-argument_list|()
-operator|)
+name|randnum
 operator|.
 name|nextDouble
 argument_list|()

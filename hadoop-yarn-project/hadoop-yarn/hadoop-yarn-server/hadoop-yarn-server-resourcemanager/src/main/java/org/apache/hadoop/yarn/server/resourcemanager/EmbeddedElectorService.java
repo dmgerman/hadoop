@@ -1048,6 +1048,19 @@ name|localActiveNodeInfo
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getHAZookeeperConnectionState ()
+specifier|public
+name|String
+name|getHAZookeeperConnectionState
+parameter_list|()
+block|{
+return|return
+name|elector
+operator|.
+name|getHAZookeeperConnectionState
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

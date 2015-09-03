@@ -4126,6 +4126,21 @@ operator|+
 name|appClient
 return|;
 block|}
+DECL|method|getHAZookeeperConnectionState ()
+specifier|public
+name|String
+name|getHAZookeeperConnectionState
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|zkConnectionState
+operator|.
+name|name
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

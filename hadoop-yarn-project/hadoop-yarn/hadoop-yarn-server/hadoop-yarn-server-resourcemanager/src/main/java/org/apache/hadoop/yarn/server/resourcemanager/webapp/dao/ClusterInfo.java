@@ -236,6 +236,11 @@ specifier|protected
 name|String
 name|hadoopVersionBuiltOn
 decl_stmt|;
+DECL|field|haZooKeeperConnectionState
+specifier|protected
+name|String
+name|haZooKeeperConnectionState
+decl_stmt|;
 DECL|method|ClusterInfo ()
 specifier|public
 name|ClusterInfo
@@ -361,6 +366,21 @@ operator|=
 name|VersionInfo
 operator|.
 name|getDate
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|haZooKeeperConnectionState
+operator|=
+name|rm
+operator|.
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMAdminService
+argument_list|()
+operator|.
+name|getHAZookeeperConnectionState
 argument_list|()
 expr_stmt|;
 block|}
@@ -500,6 +520,18 @@ return|return
 name|this
 operator|.
 name|startedOn
+return|;
+block|}
+DECL|method|getHAZookeeperConnectionState ()
+specifier|public
+name|String
+name|getHAZookeeperConnectionState
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|haZooKeeperConnectionState
 return|;
 block|}
 block|}

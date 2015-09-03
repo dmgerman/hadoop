@@ -4441,6 +4441,45 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|getHAZookeeperConnectionState ()
+specifier|public
+name|String
+name|getHAZookeeperConnectionState
+parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|rmContext
+operator|.
+name|isHAEnabled
+argument_list|()
+condition|)
+block|{
+return|return
+literal|"ResourceManager HA is not enabled."
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|autoFailoverEnabled
+condition|)
+block|{
+return|return
+literal|"Auto Failover is not enabled."
+return|;
+block|}
+return|return
+name|this
+operator|.
+name|embeddedElector
+operator|.
+name|getHAZookeeperConnectionState
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
