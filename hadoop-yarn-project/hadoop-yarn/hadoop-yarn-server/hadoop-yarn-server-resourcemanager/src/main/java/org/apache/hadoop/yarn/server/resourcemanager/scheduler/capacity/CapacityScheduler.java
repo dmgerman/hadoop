@@ -10132,7 +10132,7 @@ name|applicationId
 operator|+
 literal|"' is submitted without priority "
 operator|+
-literal|"hence considering default queue/cluster priority:"
+literal|"hence considering default queue/cluster priority: "
 operator|+
 name|priorityFromContext
 operator|.
@@ -10185,15 +10185,15 @@ operator|.
 name|getPriority
 argument_list|()
 operator|+
-literal|"' is acceptable in queue :"
+literal|"' is acceptable in queue : "
 operator|+
 name|queueName
 operator|+
-literal|"for application:"
+literal|" for application: "
 operator|+
 name|applicationId
 operator|+
-literal|"for the user: "
+literal|" for the user: "
 operator|+
 name|user
 argument_list|)
@@ -10313,21 +10313,6 @@ literal|"' is not present, hence could not change priority."
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|application
-operator|.
-name|getPriority
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|newPriority
-argument_list|)
-condition|)
-block|{
-return|return;
-block|}
 name|RMApp
 name|rmApp
 init|=
@@ -10360,6 +10345,21 @@ argument_list|,
 name|applicationId
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|application
+operator|.
+name|getPriority
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|appPriority
+argument_list|)
+condition|)
+block|{
+return|return;
+block|}
 comment|// Update new priority in Submission Context to keep track in HA
 name|rmApp
 operator|.
@@ -10483,11 +10483,11 @@ operator|.
 name|getQueue
 argument_list|()
 operator|+
-literal|"for application:"
+literal|" for application: "
 operator|+
 name|applicationId
 operator|+
-literal|"for the user: "
+literal|" for the user: "
 operator|+
 name|rmApp
 operator|.

@@ -4031,9 +4031,15 @@ name|sysout
 operator|.
 name|println
 argument_list|(
-literal|"Successfully updated the priority of any application "
+literal|"Successfully updated the application with id "
 operator|+
 name|applicationId
+operator|+
+literal|" with priority '"
+operator|+
+name|priority
+operator|+
+literal|"'"
 argument_list|)
 expr_stmt|;
 block|}
