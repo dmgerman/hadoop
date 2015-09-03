@@ -380,7 +380,7 @@ name|int
 name|i
 parameter_list|)
 throws|throws
-name|InterruptedIOException
+name|IOException
 block|{
 for|for
 control|(
@@ -453,6 +453,9 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
+throw|throw
+name|ioe
+throw|;
 block|}
 block|}
 block|}

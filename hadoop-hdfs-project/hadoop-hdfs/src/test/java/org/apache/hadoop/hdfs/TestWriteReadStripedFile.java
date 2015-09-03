@@ -357,7 +357,7 @@ decl_stmt|;
 DECL|field|fs
 specifier|private
 specifier|static
-name|FileSystem
+name|DistributedFileSystem
 name|fs
 decl_stmt|;
 DECL|field|conf
@@ -491,7 +491,7 @@ name|void
 name|testFileEmpty
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -518,7 +518,7 @@ name|void
 name|testFileSmallerThanOneCell1
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -545,7 +545,7 @@ name|void
 name|testFileSmallerThanOneCell2
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -576,7 +576,7 @@ name|void
 name|testFileEqualsWithOneCell
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -603,7 +603,7 @@ name|void
 name|testFileSmallerThanOneStripe1
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -638,7 +638,7 @@ name|void
 name|testFileSmallerThanOneStripe2
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -669,7 +669,7 @@ name|void
 name|testFileEqualsWithOneStripe
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -700,7 +700,7 @@ name|void
 name|testFileMoreThanOneStripe1
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -735,7 +735,7 @@ name|void
 name|testFileMoreThanOneStripe2
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -778,7 +778,7 @@ name|void
 name|testLessThanFullBlockGroup
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -825,7 +825,7 @@ name|void
 name|testFileFullBlockGroup
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -856,7 +856,7 @@ name|void
 name|testFileMoreThanABlockGroup1
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -891,7 +891,7 @@ name|void
 name|testFileMoreThanABlockGroup2
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -930,7 +930,7 @@ name|void
 name|testFileMoreThanABlockGroup3
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -985,7 +985,7 @@ name|int
 name|fileLength
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFileUsingDFSStripedInputStream
 argument_list|(
@@ -1012,7 +1012,7 @@ name|boolean
 name|withDataNodeFailure
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 specifier|final
 name|byte
@@ -1048,6 +1048,15 @@ name|String
 argument_list|(
 name|expected
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|StripedFileTestUtil
+operator|.
+name|waitBlockGroupsReported
+argument_list|(
+name|fs
+argument_list|,
+name|src
 argument_list|)
 expr_stmt|;
 name|StripedFileTestUtil

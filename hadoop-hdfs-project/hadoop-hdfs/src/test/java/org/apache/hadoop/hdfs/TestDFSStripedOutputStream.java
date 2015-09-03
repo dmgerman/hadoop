@@ -470,6 +470,17 @@ argument_list|,
 name|blockSize
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|=
 operator|new
@@ -541,7 +552,7 @@ name|void
 name|testFileEmpty
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -559,7 +570,7 @@ name|void
 name|testFileSmallerThanOneCell1
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -577,7 +588,7 @@ name|void
 name|testFileSmallerThanOneCell2
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -597,7 +608,7 @@ name|void
 name|testFileEqualsWithOneCell
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -615,7 +626,7 @@ name|void
 name|testFileSmallerThanOneStripe1
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -637,7 +648,7 @@ name|void
 name|testFileSmallerThanOneStripe2
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -657,7 +668,7 @@ name|void
 name|testFileEqualsWithOneStripe
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -677,7 +688,7 @@ name|void
 name|testFileMoreThanOneStripe1
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -699,7 +710,7 @@ name|void
 name|testFileMoreThanOneStripe2
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -725,7 +736,7 @@ name|void
 name|testFileLessThanFullBlockGroup
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -753,7 +764,7 @@ name|void
 name|testFileFullBlockGroup
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -773,7 +784,7 @@ name|void
 name|testFileMoreThanABlockGroup1
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -795,7 +806,7 @@ name|void
 name|testFileMoreThanABlockGroup2
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -819,7 +830,7 @@ name|void
 name|testFileMoreThanABlockGroup3
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|testOneFile
 argument_list|(
@@ -930,7 +941,7 @@ name|int
 name|writeBytes
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|src
 operator|+=
@@ -969,6 +980,15 @@ name|String
 argument_list|(
 name|bytes
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|StripedFileTestUtil
+operator|.
+name|waitBlockGroupsReported
+argument_list|(
+name|fs
+argument_list|,
+name|src
 argument_list|)
 expr_stmt|;
 comment|// check file length

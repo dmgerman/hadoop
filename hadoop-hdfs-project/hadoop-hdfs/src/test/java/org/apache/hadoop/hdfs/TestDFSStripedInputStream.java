@@ -594,6 +594,17 @@ argument_list|,
 name|INTERNAL_BLOCK_SIZE
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 name|SimulatedFSDataset
 operator|.
 name|setFactory
