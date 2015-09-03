@@ -1397,18 +1397,24 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
 literal|"Interrupted while waiting for clientExecutor"
 operator|+
-literal|"to stop"
-argument_list|,
-name|e
+literal|" to stop"
 argument_list|)
 expr_stmt|;
 name|clientExecutor
 operator|.
 name|shutdownNow
+argument_list|()
+expr_stmt|;
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
 argument_list|()
 expr_stmt|;
 block|}
@@ -1544,6 +1550,24 @@ argument_list|,
 name|timeout
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getClientExecutor ()
+specifier|public
+specifier|static
+specifier|final
+name|ExecutorService
+name|getClientExecutor
+parameter_list|()
+block|{
+return|return
+name|Client
+operator|.
+name|clientExcecutorFactory
+operator|.
+name|clientExecutor
+return|;
 block|}
 comment|/**    * Increment this client's reference count    *    */
 DECL|method|incCount ()
