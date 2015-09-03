@@ -13556,13 +13556,13 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"logsLink doesn't match"
+literal|"logsLink doesn't match "
 argument_list|,
 name|logsLink
 operator|.
 name|startsWith
 argument_list|(
-literal|"//"
+literal|"http://"
 argument_list|)
 argument_list|)
 expr_stmt|;

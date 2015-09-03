@@ -950,6 +950,13 @@ name|rmApp
 operator|.
 name|getUser
 argument_list|()
+argument_list|,
+name|WebAppUtils
+operator|.
+name|getHttpSchemePrefix
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|String

@@ -5494,11 +5494,16 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
-DECL|method|getAppAttempts (@athParamR) String appId)
+DECL|method|getAppAttempts (@ontext HttpServletRequest hsr, @PathParam(R) String appId)
 specifier|public
 name|AppAttemptsInfo
 name|getAppAttempts
 parameter_list|(
+annotation|@
+name|Context
+name|HttpServletRequest
+name|hsr
+parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
@@ -5634,6 +5639,13 @@ name|app
 operator|.
 name|getUser
 argument_list|()
+argument_list|,
+name|hsr
+operator|.
+name|getScheme
+argument_list|()
+operator|+
+literal|"://"
 argument_list|)
 decl_stmt|;
 name|appAttemptsInfo
