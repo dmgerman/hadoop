@@ -2972,6 +2972,28 @@ name|DEFAULT_RM_PROXY_USER_PRIVILEGES_ENABLED
 init|=
 literal|false
 decl_stmt|;
+comment|/** The expiry interval for node IP caching. -1 disables the caching */
+DECL|field|RM_NODE_IP_CACHE_EXPIRY_INTERVAL_SECS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_NODE_IP_CACHE_EXPIRY_INTERVAL_SECS
+init|=
+name|RM_PREFIX
+operator|+
+literal|"node-ip-cache.expiry-interval-secs"
+decl_stmt|;
+DECL|field|DEFAULT_RM_NODE_IP_CACHE_EXPIRY_INTERVAL_SECS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_NODE_IP_CACHE_EXPIRY_INTERVAL_SECS
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/**    * How many diagnostics/failure messages can be saved in RM for    * log aggregation. It also defines the number of diagnostics/failure    * messages can be shown in log aggregation web ui.    */
 DECL|field|RM_MAX_LOG_AGGREGATION_DIAGNOSTICS_IN_MEMORY
 specifier|public
