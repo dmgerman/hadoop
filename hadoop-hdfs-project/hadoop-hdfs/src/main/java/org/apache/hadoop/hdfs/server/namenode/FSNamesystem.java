@@ -4867,13 +4867,6 @@ specifier|final
 name|boolean
 name|haEnabled
 decl_stmt|;
-comment|/** flag indicating whether replication queues have been initialized */
-DECL|field|initializedReplQueues
-name|boolean
-name|initializedReplQueues
-init|=
-literal|false
-decl_stmt|;
 comment|/**    * Whether the namenode is in the middle of starting the active service    */
 DECL|field|startingActiveService
 specifier|private
@@ -7241,6 +7234,8 @@ operator|!=
 literal|null
 operator|&&
 operator|!
+name|blockManager
+operator|.
 name|isPopulatingReplQueues
 argument_list|()
 assert|;
@@ -7503,6 +7498,8 @@ argument_list|(
 literal|"Reprocessing replication and invalidation queues"
 argument_list|)
 expr_stmt|;
+name|blockManager
+operator|.
 name|initializeReplQueues
 argument_list|()
 expr_stmt|;
@@ -7723,30 +7720,6 @@ name|HAServiceState
 operator|.
 name|ACTIVE
 return|;
-block|}
-comment|/**    * Initialize replication queues.    */
-DECL|method|initializeReplQueues ()
-specifier|private
-name|void
-name|initializeReplQueues
-parameter_list|()
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"initializing replication queues"
-argument_list|)
-expr_stmt|;
-name|blockManager
-operator|.
-name|processMisReplicatedBlocks
-argument_list|()
-expr_stmt|;
-name|initializedReplQueues
-operator|=
-literal|true
-expr_stmt|;
 block|}
 comment|/**    * @return Whether the namenode is transitioning to active state and is in the    *         middle of the {@link #startActiveServices()}    */
 DECL|method|inTransitionToActive ()
@@ -7972,11 +7945,14 @@ operator|.
 name|clearQueues
 argument_list|()
 expr_stmt|;
-block|}
-name|initializedReplQueues
-operator|=
+name|blockManager
+operator|.
+name|setInitializedReplQueues
+argument_list|(
 literal|false
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -20163,13 +20139,19 @@ comment|// In the standby, do not populate repl queues
 if|if
 condition|(
 operator|!
+name|blockManager
+operator|.
 name|isPopulatingReplQueues
 argument_list|()
 operator|&&
+name|blockManager
+operator|.
 name|shouldPopulateReplQueues
 argument_list|()
 condition|)
 block|{
+name|blockManager
+operator|.
 name|initializeReplQueues
 argument_list|()
 expr_stmt|;
@@ -20352,6 +20334,8 @@ name|canInitializeReplQueues
 parameter_list|()
 block|{
 return|return
+name|blockManager
+operator|.
 name|shouldPopulateReplQueues
 argument_list|()
 operator|&&
@@ -20500,6 +20484,8 @@ name|canInitializeReplQueues
 argument_list|()
 operator|&&
 operator|!
+name|blockManager
+operator|.
 name|isPopulatingReplQueues
 argument_list|()
 operator|&&
@@ -20507,6 +20493,8 @@ operator|!
 name|haEnabled
 condition|)
 block|{
+name|blockManager
+operator|.
 name|initializeReplQueues
 argument_list|()
 expr_stmt|;
@@ -20611,6 +20599,8 @@ name|canInitializeReplQueues
 argument_list|()
 operator|&&
 operator|!
+name|blockManager
+operator|.
 name|isPopulatingReplQueues
 argument_list|()
 operator|&&
@@ -20618,6 +20608,8 @@ operator|!
 name|haEnabled
 condition|)
 block|{
+name|blockManager
+operator|.
 name|initializeReplQueues
 argument_list|()
 expr_stmt|;
@@ -21706,62 +21698,6 @@ operator|&&
 name|safeMode
 operator|.
 name|isOn
-argument_list|()
-return|;
-block|}
-comment|/**    * Check if replication queues are to be populated    * @return true when node is HAState.Active and not in the very first safemode    */
-annotation|@
-name|Override
-DECL|method|isPopulatingReplQueues ()
-specifier|public
-name|boolean
-name|isPopulatingReplQueues
-parameter_list|()
-block|{
-if|if
-condition|(
-operator|!
-name|shouldPopulateReplQueues
-argument_list|()
-condition|)
-block|{
-return|return
-literal|false
-return|;
-block|}
-return|return
-name|initializedReplQueues
-return|;
-block|}
-DECL|method|shouldPopulateReplQueues ()
-specifier|private
-name|boolean
-name|shouldPopulateReplQueues
-parameter_list|()
-block|{
-if|if
-condition|(
-name|haContext
-operator|==
-literal|null
-operator|||
-name|haContext
-operator|.
-name|getState
-argument_list|()
-operator|==
-literal|null
-condition|)
-return|return
-literal|false
-return|;
-return|return
-name|haContext
-operator|.
-name|getState
-argument_list|()
-operator|.
-name|shouldPopulateReplQueues
 argument_list|()
 return|;
 block|}
@@ -24963,6 +24899,8 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
+name|blockManager
+operator|.
 name|isPopulatingReplQueues
 argument_list|()
 condition|)
@@ -28192,6 +28130,18 @@ parameter_list|()
 block|{
 return|return
 name|cacheManager
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getHAContext ()
+specifier|public
+name|HAContext
+name|getHAContext
+parameter_list|()
+block|{
+return|return
+name|haContext
 return|;
 block|}
 annotation|@

@@ -2232,7 +2232,7 @@ argument_list|)
 operator|==
 literal|0
 operator|&&
-name|namesystem
+name|blockManager
 operator|.
 name|isPopulatingReplQueues
 argument_list|()

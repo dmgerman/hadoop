@@ -4824,7 +4824,7 @@ literal|"single-rack cluster to be multi-rack. "
 decl_stmt|;
 if|if
 condition|(
-name|namesystem
+name|blockManager
 operator|.
 name|isPopulatingReplQueues
 argument_list|()
@@ -4866,7 +4866,7 @@ literal|true
 expr_stmt|;
 if|if
 condition|(
-name|namesystem
+name|blockManager
 operator|.
 name|isPopulatingReplQueues
 argument_list|()

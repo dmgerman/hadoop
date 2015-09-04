@@ -1465,6 +1465,9 @@ operator|.
 name|getNamesystem
 argument_list|()
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|isPopulatingReplQueues
 argument_list|()
 return|;
