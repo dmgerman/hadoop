@@ -64,6 +64,20 @@ name|CommandExecutor
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
 begin_class
 DECL|class|CLITestCmdMR
 specifier|public
@@ -94,13 +108,16 @@ block|}
 comment|/**    * This is not implemented because HadoopArchive constructor requires JobConf    * to create an archive object. Because TestMRCLI uses setup method from    * TestHDFSCLI the initialization of executor objects happens before a config    * is created and updated. Thus, actual calls to executors happen in the body    * of the test method.    */
 annotation|@
 name|Override
-DECL|method|getExecutor (String tag)
+DECL|method|getExecutor (String tag, Configuration conf)
 specifier|public
 name|CommandExecutor
 name|getExecutor
 parameter_list|(
 name|String
 name|tag
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IllegalArgumentException

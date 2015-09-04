@@ -1848,6 +1848,8 @@ operator|.
 name|getExecutor
 argument_list|(
 name|namenode
+argument_list|,
+name|config
 argument_list|)
 decl_stmt|;
 name|executor

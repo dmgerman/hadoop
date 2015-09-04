@@ -26,6 +26,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FsShell
@@ -80,13 +94,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getExecutor (String tag)
+DECL|method|getExecutor (String tag, Configuration conf)
 specifier|public
 name|CommandExecutor
 name|getExecutor
 parameter_list|(
 name|String
 name|tag
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IllegalArgumentException
@@ -106,7 +123,9 @@ name|tag
 argument_list|,
 operator|new
 name|FsShell
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 return|;
 throw|throw

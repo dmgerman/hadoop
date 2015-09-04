@@ -96,6 +96,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|ContentSummary
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileSystem
 import|;
 end_import
@@ -184,8 +198,54 @@ name|Trash
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ToolRunner
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES_DEFAULT
+import|;
+end_import
+
 begin_comment
-comment|/**  * Classes that delete paths  */
+comment|/**  * Classes that delete paths.  */
 end_comment
 
 begin_class
@@ -281,7 +341,9 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-f] [-r|-R] [-skipTrash]<src> ..."
+literal|"[-f] [-r|-R] [-skipTrash] "
+operator|+
+literal|"[-safely]<src> ..."
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -294,15 +356,25 @@ literal|"Delete all files that match the specified file pattern. "
 operator|+
 literal|"Equivalent to the Unix command \"rm<src>\"\n"
 operator|+
-literal|"-skipTrash: option bypasses trash, if enabled, and immediately "
-operator|+
-literal|"deletes<src>\n"
-operator|+
 literal|"-f: If the file does not exist, do not display a diagnostic "
 operator|+
 literal|"message or modify the exit status to reflect an error.\n"
 operator|+
-literal|"-[rR]:  Recursively deletes directories"
+literal|"-[rR]:  Recursively deletes directories.\n"
+operator|+
+literal|"-skipTrash: option bypasses trash, if enabled, and immediately "
+operator|+
+literal|"deletes<src>.\n"
+operator|+
+literal|"-safely: option requires safety confirmationï¼if enabled, "
+operator|+
+literal|"requires confirmation before deleting large directory with more "
+operator|+
+literal|"than<hadoop.shell.delete.limit.num.files> files. Delay is "
+operator|+
+literal|"expected when walking over large directory recursively to count "
+operator|+
+literal|"the number of files to be deleted before the confirmation.\n"
 decl_stmt|;
 DECL|field|skipTrash
 specifier|private
@@ -322,6 +394,13 @@ DECL|field|ignoreFNF
 specifier|private
 name|boolean
 name|ignoreFNF
+init|=
+literal|false
+decl_stmt|;
+DECL|field|safeDelete
+specifier|private
+name|boolean
+name|safeDelete
 init|=
 literal|false
 decl_stmt|;
@@ -360,6 +439,8 @@ argument_list|,
 literal|"R"
 argument_list|,
 literal|"skipTrash"
+argument_list|,
+literal|"safely"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -401,6 +482,15 @@ operator|.
 name|getOpt
 argument_list|(
 literal|"skipTrash"
+argument_list|)
+expr_stmt|;
+name|safeDelete
+operator|=
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"safely"
 argument_list|)
 expr_stmt|;
 block|}
@@ -531,6 +621,12 @@ name|moveToTrash
 argument_list|(
 name|item
 argument_list|)
+operator|||
+operator|!
+name|canBeSafelyDeleted
+argument_list|(
+name|item
+argument_list|)
 condition|)
 block|{
 return|return;
@@ -572,6 +668,114 @@ operator|+
 name|item
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|canBeSafelyDeleted (PathData item)
+specifier|private
+name|boolean
+name|canBeSafelyDeleted
+parameter_list|(
+name|PathData
+name|item
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|boolean
+name|shouldDelete
+init|=
+literal|true
+decl_stmt|;
+if|if
+condition|(
+name|safeDelete
+condition|)
+block|{
+specifier|final
+name|long
+name|deleteLimit
+init|=
+name|getConf
+argument_list|()
+operator|.
+name|getLong
+argument_list|(
+name|HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES
+argument_list|,
+name|HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES_DEFAULT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|deleteLimit
+operator|>
+literal|0
+condition|)
+block|{
+name|ContentSummary
+name|cs
+init|=
+name|item
+operator|.
+name|fs
+operator|.
+name|getContentSummary
+argument_list|(
+name|item
+operator|.
+name|path
+argument_list|)
+decl_stmt|;
+specifier|final
+name|long
+name|numFiles
+init|=
+name|cs
+operator|.
+name|getFileCount
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|numFiles
+operator|>
+name|deleteLimit
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|ToolRunner
+operator|.
+name|confirmPrompt
+argument_list|(
+literal|"Proceed deleting "
+operator|+
+name|numFiles
+operator|+
+literal|" files?"
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Delete aborted at user request.\n"
+argument_list|)
+expr_stmt|;
+name|shouldDelete
+operator|=
+literal|false
+expr_stmt|;
+block|}
+block|}
+block|}
+block|}
+return|return
+name|shouldDelete
+return|;
 block|}
 DECL|method|moveToTrash (PathData item)
 specifier|private

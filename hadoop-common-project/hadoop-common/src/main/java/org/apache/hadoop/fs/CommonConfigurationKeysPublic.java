@@ -1348,6 +1348,25 @@ name|HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES
+init|=
+literal|"hadoop.shell.safely.delete.limit.num.files"
+decl_stmt|;
+DECL|field|HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES_DEFAULT
+init|=
+literal|100
+decl_stmt|;
 block|}
 end_class
 
