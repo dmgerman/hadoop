@@ -505,16 +505,31 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
+if|if
+condition|(
+operator|!
 name|cons
 operator|.
 name|isUnderConstruction
 argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The file "
+operator|+
+name|cons
+operator|.
+name|getFullPathName
+argument_list|()
+operator|+
+literal|" is not under construction but has lease."
 argument_list|)
 expr_stmt|;
+continue|continue;
+block|}
 name|BlockInfo
 index|[]
 name|blocks

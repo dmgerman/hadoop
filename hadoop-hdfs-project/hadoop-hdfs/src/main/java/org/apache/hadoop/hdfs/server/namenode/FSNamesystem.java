@@ -16183,15 +16183,25 @@ operator|.
 name|getFileUnderConstructionFeature
 argument_list|()
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
+if|if
+condition|(
 name|uc
-operator|!=
+operator|==
 literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot finalize file "
+operator|+
+name|src
+operator|+
+literal|" because it is not under construction"
 argument_list|)
-expr_stmt|;
+throw|;
+block|}
 name|leaseManager
 operator|.
 name|removeLease
