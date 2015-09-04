@@ -14350,6 +14350,22 @@ block|}
 annotation|@
 name|Override
 comment|// DataNodeMXBean
+DECL|method|getSoftwareVersion ()
+specifier|public
+name|String
+name|getSoftwareVersion
+parameter_list|()
+block|{
+return|return
+name|VersionInfo
+operator|.
+name|getVersion
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// DataNodeMXBean
 DECL|method|getVersion ()
 specifier|public
 name|String
@@ -14360,6 +14376,13 @@ return|return
 name|VersionInfo
 operator|.
 name|getVersion
+argument_list|()
+operator|+
+literal|", r"
+operator|+
+name|VersionInfo
+operator|.
+name|getRevision
 argument_list|()
 return|;
 block|}
@@ -14421,6 +14444,19 @@ name|get
 argument_list|(
 literal|"dfs.datanode.info.port"
 argument_list|)
+return|;
+block|}
+DECL|method|getRevision ()
+specifier|public
+name|String
+name|getRevision
+parameter_list|()
+block|{
+return|return
+name|VersionInfo
+operator|.
+name|getRevision
+argument_list|()
 return|;
 block|}
 comment|/**    * @return the datanode's http port    */

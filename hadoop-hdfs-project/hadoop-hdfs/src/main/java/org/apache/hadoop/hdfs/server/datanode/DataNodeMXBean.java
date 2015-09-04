@@ -83,6 +83,13 @@ name|String
 name|getVersion
 parameter_list|()
 function_decl|;
+comment|/**    * Get the version of software running on the DataNode    *    * @return a string representing the version    */
+DECL|method|getSoftwareVersion ()
+specifier|public
+name|String
+name|getSoftwareVersion
+parameter_list|()
+function_decl|;
 comment|/**    * Gets the rpc port.    *     * @return the rpc port    */
 DECL|method|getRpcPort ()
 specifier|public
