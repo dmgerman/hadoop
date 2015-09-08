@@ -1593,7 +1593,7 @@ specifier|final
 name|boolean
 name|DEFAULT_YARN_FAIL_FAST
 init|=
-literal|true
+literal|false
 decl_stmt|;
 DECL|field|RM_FAIL_FAST
 specifier|public
