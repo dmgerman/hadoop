@@ -68,6 +68,11 @@ name|void
 name|finishLogAggregation
 parameter_list|()
 function_decl|;
+DECL|method|disableLogAggregation ()
+name|void
+name|disableLogAggregation
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -2246,6 +2246,11 @@ argument_list|)
 throw|;
 block|}
 comment|// wait until check for existing aggregator to create dirs
+name|YarnRuntimeException
+name|appDirException
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 comment|// Create the app dir
@@ -2265,17 +2270,10 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|appLogAggregators
+name|appLogAggregator
 operator|.
-name|remove
-argument_list|(
-name|appId
-argument_list|)
-expr_stmt|;
-name|closeFileSystems
-argument_list|(
-name|userUgi
-argument_list|)
+name|disableLogAggregation
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -2287,7 +2285,7 @@ name|YarnRuntimeException
 operator|)
 condition|)
 block|{
-name|e
+name|appDirException
 operator|=
 operator|new
 name|YarnRuntimeException
@@ -2296,12 +2294,16 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-throw|throw
+else|else
+block|{
+name|appDirException
+operator|=
 operator|(
 name|YarnRuntimeException
 operator|)
 name|e
-throw|;
+expr_stmt|;
+block|}
 block|}
 comment|// TODO Get the user configuration for the list of containers that need log
 comment|// aggregation.
@@ -2353,6 +2355,17 @@ argument_list|(
 name|aggregatorWrapper
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|appDirException
+operator|!=
+literal|null
+condition|)
+block|{
+throw|throw
+name|appDirException
+throw|;
+block|}
 block|}
 DECL|method|closeFileSystems (final UserGroupInformation userUgi)
 specifier|protected

@@ -3476,6 +3476,21 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
+name|Override
+DECL|method|disableLogAggregation ()
+specifier|public
+name|void
+name|disableLogAggregation
+parameter_list|()
+block|{
+name|this
+operator|.
+name|logAggregationDisabled
+operator|=
+literal|true
+expr_stmt|;
+block|}
+annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
