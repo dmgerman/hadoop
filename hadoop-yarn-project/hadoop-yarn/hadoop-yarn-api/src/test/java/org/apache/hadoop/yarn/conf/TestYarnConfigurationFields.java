@@ -259,6 +259,15 @@ operator|.
 name|DEFAULT_SHARED_CACHE_CHECKSUM_ALGO_IMPL
 argument_list|)
 expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|DEFAULT_AMRM_PROXY_INTERCEPTOR_CLASS_PIPELINE
+argument_list|)
+expr_stmt|;
 comment|// Ignore all YARN Application Timeline Service (version 1) properties
 name|configurationPrefixToSkipCompare
 operator|.
