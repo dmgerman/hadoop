@@ -1108,6 +1108,15 @@ name|DFS_NAMENODE_REPLICATION_MIN_DEFAULT
 init|=
 literal|1
 decl_stmt|;
+DECL|field|DFS_NAMENODE_SAFEMODE_REPLICATION_MIN_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_SAFEMODE_REPLICATION_MIN_KEY
+init|=
+literal|"dfs.namenode.safemode.replication.min"
+decl_stmt|;
 DECL|field|DFS_NAMENODE_REPLICATION_PENDING_TIMEOUT_SEC_KEY
 specifier|public
 specifier|static

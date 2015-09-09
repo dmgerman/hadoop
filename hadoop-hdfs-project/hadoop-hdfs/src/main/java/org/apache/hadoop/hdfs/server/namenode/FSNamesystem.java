@@ -794,38 +794,6 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_MIN_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_REPLICATION_MIN_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_REPL_QUEUE_THRESHOLD_PCT_KEY
 import|;
 end_import
@@ -19919,6 +19887,26 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+name|int
+name|minReplication
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_MIN_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_MIN_DEFAULT
+argument_list|)
+decl_stmt|;
+comment|// DFS_NAMENODE_SAFEMODE_REPLICATION_MIN_KEY is an expert level setting,
+comment|// setting this lower than the min replication is not recommended
+comment|// and/or dangerous for production setups.
+comment|// When it's unset, safeReplication will use dfs.namenode.replication.min
 name|this
 operator|.
 name|safeReplication
@@ -19927,9 +19915,11 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|DFS_NAMENODE_REPLICATION_MIN_KEY
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_SAFEMODE_REPLICATION_MIN_KEY
 argument_list|,
-name|DFS_NAMENODE_REPLICATION_MIN_DEFAULT
+name|minReplication
 argument_list|)
 expr_stmt|;
 name|LOG
