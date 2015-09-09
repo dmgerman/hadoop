@@ -15159,10 +15159,12 @@ name|clearAllKeysForTesting
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Get current value of the max balancer bandwidth in bytes per second.    *    * @return Balancer bandwidth in bytes per second for this datanode.    */
+annotation|@
+name|Override
+comment|// ClientDatanodeProtocol
 DECL|method|getBalancerBandwidth ()
 specifier|public
-name|Long
+name|long
 name|getBalancerBandwidth
 parameter_list|()
 block|{

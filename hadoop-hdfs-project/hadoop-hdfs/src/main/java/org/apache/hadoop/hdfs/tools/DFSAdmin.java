@@ -2476,6 +2476,8 @@ literal|"\t[-deleteBlockPool datanode_host:ipc_port blockpoolId [force]]\n"
 operator|+
 literal|"\t[-setBalancerBandwidth<bandwidth in bytes per second>]\n"
 operator|+
+literal|"\t[-getBalancerBandwidth<datanode_host:ipc_port>]\n"
+operator|+
 literal|"\t[-fetchImage<local directory>]\n"
 operator|+
 literal|"\t[-allowSnapshot<snapshotDir>]\n"
@@ -4990,6 +4992,81 @@ return|return
 name|exitCode
 return|;
 block|}
+comment|/**    * Command to get balancer bandwidth for the given datanode. Usage: hdfs    * dfsadmin -getBalancerBandwidth {@literal<datanode_host:ipc_port>}    * @param argv List of of command line parameters.    * @param idx The index of the command that is being processed.    * @exception IOException    */
+DECL|method|getBalancerBandwidth (String[] argv, int idx)
+specifier|public
+name|int
+name|getBalancerBandwidth
+parameter_list|(
+name|String
+index|[]
+name|argv
+parameter_list|,
+name|int
+name|idx
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|ClientDatanodeProtocol
+name|dnProxy
+init|=
+name|getDataNodeProxy
+argument_list|(
+name|argv
+index|[
+name|idx
+index|]
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|long
+name|bandwidth
+init|=
+name|dnProxy
+operator|.
+name|getBalancerBandwidth
+argument_list|()
+decl_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Balancer bandwidth is "
+operator|+
+name|bandwidth
+operator|+
+literal|" bytes per second."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Datanode unreachable."
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
+return|return
+literal|0
+return|;
+block|}
 comment|/**    * Download the most recent fsimage from the name node, and save it to a local    * file in the given directory.    *     * @param argv    *          List of of command line parameters.    * @param idx    *          The index of the command that is being processed.    * @return an exit code indicating success or failure.    * @throws IOException    */
 DECL|method|fetchImage (final String[] argv, final int idx)
 specifier|public
@@ -5335,6 +5412,19 @@ operator|+
 literal|"\t\tthe dfs.balance.bandwidthPerSec parameter.\n\n"
 operator|+
 literal|"\t\t--- NOTE: The new value is not persistent on the DataNode.---\n"
+decl_stmt|;
+name|String
+name|getBalancerBandwidth
+init|=
+literal|"-getBalancerBandwidth<datanode_host:ipc_port>:\n"
+operator|+
+literal|"\tGet the network bandwidth for the given datanode.\n"
+operator|+
+literal|"\tThis is the maximum network bandwidth used by the datanode\n"
+operator|+
+literal|"\tduring HDFS block balancing.\n\n"
+operator|+
+literal|"\t--- NOTE: This value is not persistent on the DataNode.---\n"
 decl_stmt|;
 name|String
 name|fetchImage
@@ -5908,6 +5998,27 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"getBalancerBandwidth"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|getBalancerBandwidth
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 literal|"fetchImage"
 operator|.
 name|equals
@@ -6257,6 +6368,15 @@ operator|.
 name|println
 argument_list|(
 name|setBalancerBandwidth
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|getBalancerBandwidth
 argument_list|)
 expr_stmt|;
 name|System
@@ -9220,6 +9340,29 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"-getBalancerBandwidth"
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Usage: hdfs dfsadmin"
+operator|+
+literal|" [-getBalancerBandwidth<datanode_host:ipc_port>]"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 literal|"-fetchImage"
 operator|.
 name|equals
@@ -10000,6 +10143,36 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"-getBalancerBandwidth"
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|argv
+operator|.
+name|length
+operator|!=
+literal|2
+condition|)
+block|{
+name|printUsage
+argument_list|(
+name|cmd
+argument_list|)
+expr_stmt|;
+return|return
+name|exitCode
+return|;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
 literal|"-fetchImage"
 operator|.
 name|equals
@@ -10671,6 +10844,27 @@ block|{
 name|exitCode
 operator|=
 name|setBalancerBandwidth
+argument_list|(
+name|argv
+argument_list|,
+name|i
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+literal|"-getBalancerBandwidth"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|exitCode
+operator|=
+name|getBalancerBandwidth
 argument_list|(
 name|argv
 argument_list|,
