@@ -472,6 +472,24 @@ literal|1L
 return|;
 block|}
 block|}
+annotation|@
+name|Metric
+argument_list|(
+literal|"The timestamp of last successfully written transaction"
+argument_list|)
+DECL|method|getLastJournalTimestamp ()
+specifier|public
+name|long
+name|getLastJournalTimestamp
+parameter_list|()
+block|{
+return|return
+name|journal
+operator|.
+name|getLastJournalTimestamp
+argument_list|()
+return|;
+block|}
 DECL|method|addSync (long us)
 name|void
 name|addSync
