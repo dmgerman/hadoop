@@ -3162,6 +3162,10 @@ block|}
 comment|// The locks were released and reacquired. Check parent first.
 if|if
 condition|(
+operator|!
+name|isRoot
+argument_list|()
+operator|&&
 name|getParent
 argument_list|()
 operator|==
