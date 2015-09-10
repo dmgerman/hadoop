@@ -1338,22 +1338,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZone
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|EncryptionZone
 import|;
 end_import
@@ -13420,10 +13404,10 @@ name|traceSampler
 argument_list|)
 return|;
 block|}
-DECL|method|createErasureCodingZone (String src, ErasureCodingPolicy ecPolicy)
+DECL|method|setErasureCodingPolicy (String src, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|void
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 parameter_list|(
 name|String
 name|src
@@ -13442,7 +13426,7 @@ name|scope
 init|=
 name|getPathTraceScope
 argument_list|(
-literal|"createErasureCodingZone"
+literal|"setErasureCodingPolicy"
 argument_list|,
 name|src
 argument_list|)
@@ -13451,7 +13435,7 @@ try|try
 block|{
 name|namenode
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|src
 argument_list|,
@@ -14974,11 +14958,11 @@ return|return
 name|scope
 return|;
 block|}
-comment|/**    * Get the erasure coding zone information for the specified path    *     * @param src path to get the information for    * @return Returns the zone information if path is in EC Zone, null otherwise    * @throws IOException    */
-DECL|method|getErasureCodingZone (String src)
+comment|/**    * Get the erasure coding policy information for the specified path    *    * @param src path to get the information for    * @return Returns the policy information if file or directory on the path is    * erasure coded, null otherwise    * @throws IOException    */
+DECL|method|getErasureCodingPolicy (String src)
 specifier|public
-name|ErasureCodingZone
-name|getErasureCodingZone
+name|ErasureCodingPolicy
+name|getErasureCodingPolicy
 parameter_list|(
 name|String
 name|src
@@ -14994,7 +14978,7 @@ name|scope
 init|=
 name|getPathTraceScope
 argument_list|(
-literal|"getErasureCodingZone"
+literal|"getErasureCodingPolicy"
 argument_list|,
 name|src
 argument_list|)
@@ -15004,7 +14988,7 @@ block|{
 return|return
 name|namenode
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 name|src
 argument_list|)

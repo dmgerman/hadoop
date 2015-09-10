@@ -2315,6 +2315,32 @@ name|storagePolicyId
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @return The ID of the erasure coding policy on the file. 0 represents no    *          EC policy (file is in contiguous format). 1 represents the system    *          default EC policy:    *          {@link ErasureCodingPolicyManager#SYS_DEFAULT_POLICY}.    * TODO: support more policies by reusing {@link HeaderFormat#REPLICATION}.    */
+annotation|@
+name|VisibleForTesting
+annotation|@
+name|Override
+DECL|method|getErasureCodingPolicyID ()
+specifier|public
+name|byte
+name|getErasureCodingPolicyID
+parameter_list|()
+block|{
+return|return
+name|isStriped
+argument_list|()
+condition|?
+operator|(
+name|byte
+operator|)
+literal|1
+else|:
+operator|(
+name|byte
+operator|)
+literal|0
+return|;
+block|}
 comment|/**    * @return true if the file is in the striping layout.    */
 annotation|@
 name|VisibleForTesting

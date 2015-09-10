@@ -2298,22 +2298,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZone
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|ExtendedBlock
 import|;
 end_import
@@ -2447,22 +2431,6 @@ operator|.
 name|protocol
 operator|.
 name|LocatedStripedBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|QuotaExceededException
 import|;
 end_import
 
@@ -11741,7 +11709,7 @@ condition|(
 operator|!
 name|FSDirErasureCodingOp
 operator|.
-name|isInErasureCodingZone
+name|hasErasureCodingPolicy
 argument_list|(
 name|this
 argument_list|,
@@ -16364,26 +16332,17 @@ argument_list|()
 condition|)
 block|{
 specifier|final
-name|ErasureCodingZone
-name|ecZone
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 name|this
 argument_list|,
 name|iip
 argument_list|)
-decl_stmt|;
-specifier|final
-name|ErasureCodingPolicy
-name|ecPolicy
-init|=
-name|ecZone
-operator|.
-name|getErasureCodingPolicy
-argument_list|()
 decl_stmt|;
 specifier|final
 name|short
@@ -28656,19 +28615,6 @@ return|return
 name|ecPolicyManager
 return|;
 block|}
-comment|/** @return the ErasureCodingZoneManager. */
-DECL|method|getErasureCodingZoneManager ()
-specifier|public
-name|ErasureCodingZoneManager
-name|getErasureCodingZoneManager
-parameter_list|()
-block|{
-return|return
-name|dir
-operator|.
-name|ecZoneManager
-return|;
-block|}
 annotation|@
 name|Override
 comment|// NameNodeMXBean
@@ -32715,10 +32661,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create an erasure coding zone on directory src.    * @param srcArg  the path of a directory which will be the root of the    *                erasure coding zone. The directory must be empty.    * @param ecPolicy  erasure coding policy for the erasure coding zone    * @throws AccessControlException  if the caller is not the superuser.    * @throws UnresolvedLinkException if the path can't be resolved.    * @throws SafeModeException       if the Namenode is in safe mode.    */
-DECL|method|createErasureCodingZone (final String srcArg, final ErasureCodingPolicy ecPolicy, final boolean logRetryCache)
+comment|/**    * Set an erasure coding policy on the given path.    * @param srcArg  The path of the target directory.    * @param ecPolicy The erasure coding policy to set on the target directory.    * @throws AccessControlException  if the caller is not the superuser.    * @throws UnresolvedLinkException if the path can't be resolved.    * @throws SafeModeException       if the Namenode is in safe mode.    */
+DECL|method|setErasureCodingPolicy (final String srcArg, final ErasureCodingPolicy ecPolicy, final boolean logRetryCache)
 name|void
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 parameter_list|(
 specifier|final
 name|String
@@ -32775,7 +32721,7 @@ argument_list|)
 expr_stmt|;
 name|checkNameNodeSafeMode
 argument_list|(
-literal|"Cannot create erasure coding zone on "
+literal|"Cannot set erasure coding policy on "
 operator|+
 name|srcArg
 argument_list|)
@@ -32784,7 +32730,7 @@ name|resultingStat
 operator|=
 name|FSDirErasureCodingOp
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|this
 argument_list|,
@@ -32821,7 +32767,7 @@ name|logAuditEvent
 argument_list|(
 name|success
 argument_list|,
-literal|"createErasureCodingZone"
+literal|"setErasureCodingPolicy"
 argument_list|,
 name|srcArg
 argument_list|,
@@ -32832,10 +32778,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the erasure coding zone information for specified path    */
-DECL|method|getErasureCodingZone (String src)
-name|ErasureCodingZone
-name|getErasureCodingZone
+comment|/**    * Get the erasure coding policy information for specified path    */
+DECL|method|getErasureCodingPolicy (String src)
+name|ErasureCodingPolicy
+name|getErasureCodingPolicy
 parameter_list|(
 name|String
 name|src
@@ -32867,7 +32813,7 @@ name|READ
 argument_list|)
 expr_stmt|;
 return|return
-name|getErasureCodingZoneForPath
+name|getErasureCodingPolicyForPath
 argument_list|(
 name|src
 argument_list|)
@@ -34088,10 +34034,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getErasureCodingZoneForPath (String src)
+DECL|method|getErasureCodingPolicyForPath (String src)
 specifier|public
-name|ErasureCodingZone
-name|getErasureCodingZoneForPath
+name|ErasureCodingPolicy
+name|getErasureCodingPolicyForPath
 parameter_list|(
 name|String
 name|src
@@ -34102,7 +34048,7 @@ block|{
 return|return
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 name|this
 argument_list|,

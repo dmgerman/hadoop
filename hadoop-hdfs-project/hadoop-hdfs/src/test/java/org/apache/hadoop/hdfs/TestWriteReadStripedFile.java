@@ -444,7 +444,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 literal|"/"
 argument_list|,

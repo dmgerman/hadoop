@@ -466,22 +466,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZone
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|ExtendedBlock
 import|;
 end_import
@@ -4931,7 +4915,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Create a LocatedBlocks. */
-DECL|method|createLocatedBlocks (final BlockInfo[] blocks, final long fileSizeExcludeBlocksUnderConstruction, final boolean isFileUnderConstruction, final long offset, final long length, final boolean needBlockToken, final boolean inSnapshot, FileEncryptionInfo feInfo, ErasureCodingZone ecZone)
+DECL|method|createLocatedBlocks (final BlockInfo[] blocks, final long fileSizeExcludeBlocksUnderConstruction, final boolean isFileUnderConstruction, final long offset, final long length, final boolean needBlockToken, final boolean inSnapshot, FileEncryptionInfo feInfo, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|LocatedBlocks
 name|createLocatedBlocks
@@ -4968,8 +4952,8 @@ parameter_list|,
 name|FileEncryptionInfo
 name|feInfo
 parameter_list|,
-name|ErasureCodingZone
-name|ecZone
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -4980,21 +4964,6 @@ operator|.
 name|hasReadLock
 argument_list|()
 assert|;
-specifier|final
-name|ErasureCodingPolicy
-name|ecPolicy
-init|=
-name|ecZone
-operator|!=
-literal|null
-condition|?
-name|ecZone
-operator|.
-name|getErasureCodingPolicy
-argument_list|()
-else|:
-literal|null
-decl_stmt|;
 if|if
 condition|(
 name|blocks
@@ -8201,18 +8170,18 @@ operator|.
 name|getName
 argument_list|()
 decl_stmt|;
-name|ErasureCodingZone
-name|ecZone
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 literal|null
 decl_stmt|;
 try|try
 block|{
-name|ecZone
+name|ecPolicy
 operator|=
 name|namesystem
 operator|.
-name|getErasureCodingZoneForPath
+name|getErasureCodingPolicyForPath
 argument_list|(
 name|src
 argument_list|)
@@ -8228,7 +8197,7 @@ name|blockLog
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to get the EC zone for the file {} "
+literal|"Failed to get EC policy for the file {} "
 argument_list|,
 name|src
 argument_list|)
@@ -8236,7 +8205,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|ecZone
+name|ecPolicy
 operator|==
 literal|null
 condition|)
@@ -8302,10 +8271,7 @@ operator|.
 name|getLiveBlockIndicies
 argument_list|()
 argument_list|,
-name|ecZone
-operator|.
-name|getErasureCodingPolicy
-argument_list|()
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}

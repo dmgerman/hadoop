@@ -264,7 +264,7 @@ return|return
 name|SYS_POLICY
 return|;
 block|}
-comment|/**    * Get system-wide default policy, which can be used by default    * when no policy is specified for an EC zone.    * @return ecPolicy    */
+comment|/**    * Get system-wide default policy, which can be used by default    * when no policy is specified for a path.    * @return ecPolicy    */
 DECL|method|getSystemDefaultPolicy ()
 specifier|public
 specifier|static

@@ -200,22 +200,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|ErasureCodingZone
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|namenode
@@ -291,13 +275,13 @@ name|factory
 operator|.
 name|addClass
 argument_list|(
-name|CreateECZoneCommand
+name|SetECPolicyCommand
 operator|.
 name|class
 argument_list|,
 literal|"-"
 operator|+
-name|CreateECZoneCommand
+name|SetECPolicyCommand
 operator|.
 name|NAME
 argument_list|)
@@ -306,13 +290,13 @@ name|factory
 operator|.
 name|addClass
 argument_list|(
-name|GetECZoneCommand
+name|GetECPolicyCommand
 operator|.
 name|class
 argument_list|,
 literal|"-"
 operator|+
-name|GetECZoneCommand
+name|GetECPolicyCommand
 operator|.
 name|NAME
 argument_list|)
@@ -418,11 +402,11 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * A command to create an EC zone for a path, with a erasure coding policy name.    */
-DECL|class|CreateECZoneCommand
+comment|/**    * A command to set the erasure coding policy for a directory, with the name    * of the policy.    */
+DECL|class|SetECPolicyCommand
 specifier|static
 class|class
-name|CreateECZoneCommand
+name|SetECPolicyCommand
 extends|extends
 name|ECCommand
 block|{
@@ -433,7 +417,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"createZone"
+literal|"setPolicy"
 decl_stmt|;
 DECL|field|USAGE
 specifier|public
@@ -451,7 +435,7 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Create a zone to encode files using a specified policy\n"
+literal|"Set a specified erasure coding policy to a directory\n"
 operator|+
 literal|"Options :\n"
 operator|+
@@ -459,7 +443,7 @@ literal|"  -s<policyName> : erasure coding policy name to encode files. "
 operator|+
 literal|"If not passed the default policy will be used\n"
 operator|+
-literal|"<path>  : Path to an empty directory. Under this directory "
+literal|"<path>  : Path to a directory. Under this directory "
 operator|+
 literal|"files will be encoded using specified erasure coding policy"
 decl_stmt|;
@@ -713,7 +697,7 @@ block|}
 block|}
 name|dfs
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|item
 operator|.
@@ -726,7 +710,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"EC Zone created successfully at "
+literal|"EC policy set successfully at "
 operator|+
 name|item
 operator|.
@@ -744,7 +728,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unable to create EC zone for the path "
+literal|"Unable to set EC policy for the path "
 operator|+
 name|item
 operator|.
@@ -761,11 +745,11 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Get the information about the zone    */
-DECL|class|GetECZoneCommand
+comment|/**    * Get the erasure coding policy of a file or directory    */
+DECL|class|GetECPolicyCommand
 specifier|static
 class|class
-name|GetECZoneCommand
+name|GetECPolicyCommand
 extends|extends
 name|ECCommand
 block|{
@@ -776,7 +760,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"getZone"
+literal|"getPolicy"
 decl_stmt|;
 DECL|field|USAGE
 specifier|public
@@ -794,7 +778,7 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Get information about the EC zone at specified path\n"
+literal|"Get erasure coding policy information about at specified path\n"
 decl_stmt|;
 annotation|@
 name|Override
@@ -879,12 +863,12 @@ name|fs
 decl_stmt|;
 try|try
 block|{
-name|ErasureCodingZone
-name|ecZone
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 name|dfs
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 name|item
 operator|.
@@ -893,7 +877,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|ecZone
+name|ecPolicy
 operator|!=
 literal|null
 condition|)
@@ -902,7 +886,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-name|ecZone
+name|ecPolicy
 operator|.
 name|toString
 argument_list|()
@@ -921,7 +905,7 @@ name|item
 operator|.
 name|path
 operator|+
-literal|" is not in EC zone"
+literal|" is not erasure coded."
 argument_list|)
 expr_stmt|;
 block|}
@@ -936,7 +920,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unable to get EC zone for the path "
+literal|"Unable to get EC policy for the path "
 operator|+
 name|item
 operator|.

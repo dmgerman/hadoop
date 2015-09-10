@@ -269,7 +269,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// test directory not in EC zone
+comment|// test directory doesn't have an EC policy
 specifier|final
 name|Path
 name|dir
@@ -311,7 +311,7 @@ name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// test file not in EC zone
+comment|// test file doesn't have an EC policy
 specifier|final
 name|Path
 name|file
@@ -368,10 +368,10 @@ operator|.
 name|getSystemDefaultPolicy
 argument_list|()
 decl_stmt|;
-comment|// create EC zone on dir
+comment|// set EC policy on dir
 name|fs
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|dir
 argument_list|,
@@ -413,7 +413,7 @@ name|ecPolicy2
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// test file in EC zone
+comment|// test file doesn't have an EC policy
 name|fs
 operator|.
 name|create

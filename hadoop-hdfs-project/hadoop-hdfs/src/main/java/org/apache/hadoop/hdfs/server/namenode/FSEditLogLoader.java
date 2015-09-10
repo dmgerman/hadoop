@@ -256,7 +256,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZone
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -3344,12 +3344,12 @@ operator|.
 name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
-name|ErasureCodingZone
-name|ecZone
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 name|fsDir
 operator|.
@@ -3369,7 +3369,7 @@ name|iip
 argument_list|,
 name|newFile
 argument_list|,
-name|ecZone
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 break|break;
@@ -3501,12 +3501,12 @@ operator|.
 name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
-name|ErasureCodingZone
-name|ecZone
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 name|fsDir
 operator|.
@@ -3526,7 +3526,7 @@ name|iip
 argument_list|,
 name|file
 argument_list|,
-name|ecZone
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 comment|// Now close the file
@@ -3879,12 +3879,12 @@ name|path
 argument_list|)
 decl_stmt|;
 comment|// Update in-memory data structures
-name|ErasureCodingZone
-name|ecZone
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 name|fsDir
 operator|.
@@ -3904,7 +3904,7 @@ name|iip
 argument_list|,
 name|oldFile
 argument_list|,
-name|ecZone
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 if|if
@@ -4017,12 +4017,12 @@ name|path
 argument_list|)
 decl_stmt|;
 comment|// add the new block to the INodeFile
-name|ErasureCodingZone
-name|ecZone
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 name|fsDir
 operator|.
@@ -4038,7 +4038,7 @@ name|addBlockOp
 argument_list|,
 name|oldFile
 argument_list|,
-name|ecZone
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 break|break;
@@ -6371,7 +6371,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Add a new block into the given INodeFile    */
-DECL|method|addNewBlock (AddBlockOp op, INodeFile file, ErasureCodingZone ecZone)
+DECL|method|addNewBlock (AddBlockOp op, INodeFile file, ErasureCodingPolicy ecPolicy)
 specifier|private
 name|void
 name|addNewBlock
@@ -6382,8 +6382,8 @@ parameter_list|,
 name|INodeFile
 name|file
 parameter_list|,
-name|ErasureCodingZone
-name|ecZone
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -6557,7 +6557,7 @@ decl_stmt|;
 name|boolean
 name|isStriped
 init|=
-name|ecZone
+name|ecPolicy
 operator|!=
 literal|null
 decl_stmt|;
@@ -6573,10 +6573,7 @@ name|BlockInfoStriped
 argument_list|(
 name|newBlock
 argument_list|,
-name|ecZone
-operator|.
-name|getErasureCodingPolicy
-argument_list|()
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}
@@ -6638,7 +6635,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Update in-memory data structures with new block information.    * @throws IOException    */
-DECL|method|updateBlocks (FSDirectory fsDir, BlockListUpdatingOp op, INodesInPath iip, INodeFile file, ErasureCodingZone ecZone)
+DECL|method|updateBlocks (FSDirectory fsDir, BlockListUpdatingOp op, INodesInPath iip, INodeFile file, ErasureCodingPolicy ecPolicy)
 specifier|private
 name|void
 name|updateBlocks
@@ -6655,8 +6652,8 @@ parameter_list|,
 name|INodeFile
 name|file
 parameter_list|,
-name|ErasureCodingZone
-name|ecZone
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -7026,7 +7023,7 @@ specifier|final
 name|boolean
 name|isStriped
 init|=
-name|ecZone
+name|ecPolicy
 operator|!=
 literal|null
 decl_stmt|;
@@ -7086,10 +7083,7 @@ name|BlockInfoStriped
 argument_list|(
 name|newBlock
 argument_list|,
-name|ecZone
-operator|.
-name|getErasureCodingPolicy
-argument_list|()
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}

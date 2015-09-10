@@ -533,15 +533,15 @@ specifier|private
 name|SequentialBlockGroupIdGenerator
 name|blockGrpIdGenerator
 decl_stmt|;
-DECL|field|eczone
+DECL|field|ecDir
 specifier|private
 name|Path
-name|eczone
+name|ecDir
 init|=
 operator|new
 name|Path
 argument_list|(
-literal|"/eczone"
+literal|"/ecDir"
 argument_list|)
 decl_stmt|;
 annotation|@
@@ -630,7 +630,7 @@ name|fs
 operator|.
 name|mkdirs
 argument_list|(
-name|eczone
+name|ecDir
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -641,9 +641,9 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
-literal|"/eczone"
+literal|"/ecDir"
 argument_list|,
 literal|null
 argument_list|)
@@ -702,7 +702,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|eczone
+name|ecDir
 argument_list|,
 literal|"testBlockGrpIdGeneration.dat"
 argument_list|)
@@ -883,7 +883,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|eczone
+name|ecDir
 argument_list|,
 literal|"testBlockGrpIdCollisionDetection_file1.dat"
 argument_list|)
@@ -953,7 +953,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|eczone
+name|ecDir
 argument_list|,
 literal|"testBlockGrpIdCollisionDetection_file2.dat"
 argument_list|)
@@ -1292,7 +1292,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|eczone
+name|ecDir
 argument_list|,
 literal|"testCollisionWithLegacyBlock_file2.dat"
 argument_list|)

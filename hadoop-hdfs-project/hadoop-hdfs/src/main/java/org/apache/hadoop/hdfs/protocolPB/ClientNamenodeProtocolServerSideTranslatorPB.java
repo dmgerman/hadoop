@@ -274,22 +274,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZone
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|EncryptionZone
 import|;
 end_import
@@ -3600,7 +3584,7 @@ name|proto
 operator|.
 name|ErasureCodingProtos
 operator|.
-name|GetErasureCodingZoneRequestProto
+name|GetErasureCodingPolicyRequestProto
 import|;
 end_import
 
@@ -3620,7 +3604,7 @@ name|proto
 operator|.
 name|ErasureCodingProtos
 operator|.
-name|GetErasureCodingZoneResponseProto
+name|GetErasureCodingPolicyResponseProto
 import|;
 end_import
 
@@ -3640,7 +3624,7 @@ name|proto
 operator|.
 name|ErasureCodingProtos
 operator|.
-name|CreateErasureCodingZoneRequestProto
+name|SetErasureCodingPolicyRequestProto
 import|;
 end_import
 
@@ -3660,7 +3644,7 @@ name|proto
 operator|.
 name|ErasureCodingProtos
 operator|.
-name|CreateErasureCodingZoneResponseProto
+name|SetErasureCodingPolicyResponseProto
 import|;
 end_import
 
@@ -10145,15 +10129,15 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|createErasureCodingZone ( RpcController controller, CreateErasureCodingZoneRequestProto req)
+DECL|method|setErasureCodingPolicy ( RpcController controller, SetErasureCodingPolicyRequestProto req)
 specifier|public
-name|CreateErasureCodingZoneResponseProto
-name|createErasureCodingZone
+name|SetErasureCodingPolicyResponseProto
+name|setErasureCodingPolicy
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|CreateErasureCodingZoneRequestProto
+name|SetErasureCodingPolicyRequestProto
 name|req
 parameter_list|)
 throws|throws
@@ -10183,7 +10167,7 @@ literal|null
 decl_stmt|;
 name|server
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|req
 operator|.
@@ -10194,7 +10178,7 @@ name|ecPolicy
 argument_list|)
 expr_stmt|;
 return|return
-name|CreateErasureCodingZoneResponseProto
+name|SetErasureCodingPolicyResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -10902,15 +10886,15 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getErasureCodingZone (RpcController controller, GetErasureCodingZoneRequestProto request)
+DECL|method|getErasureCodingPolicy (RpcController controller, GetErasureCodingPolicyRequestProto request)
 specifier|public
-name|GetErasureCodingZoneResponseProto
-name|getErasureCodingZone
+name|GetErasureCodingPolicyResponseProto
+name|getErasureCodingPolicy
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|GetErasureCodingZoneRequestProto
+name|GetErasureCodingPolicyRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -10918,12 +10902,12 @@ name|ServiceException
 block|{
 try|try
 block|{
-name|ErasureCodingZone
-name|ecZone
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 name|server
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 name|request
 operator|.
@@ -10931,32 +10915,32 @@ name|getSrc
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|GetErasureCodingZoneResponseProto
+name|GetErasureCodingPolicyResponseProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|GetErasureCodingZoneResponseProto
+name|GetErasureCodingPolicyResponseProto
 operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|ecZone
+name|ecPolicy
 operator|!=
 literal|null
 condition|)
 block|{
 name|builder
 operator|.
-name|setECZone
+name|setEcPolicy
 argument_list|(
 name|PBHelper
 operator|.
-name|convertErasureCodingZone
+name|convertErasureCodingPolicy
 argument_list|(
-name|ecZone
+name|ecPolicy
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -1237,26 +1237,26 @@ argument_list|)
 decl_stmt|;
 specifier|final
 name|Path
-name|zone
+name|ecDir
 init|=
 operator|new
 name|Path
 argument_list|(
 name|parentDir
 argument_list|,
-literal|"zone"
+literal|"ecDir"
 argument_list|)
 decl_stmt|;
 specifier|final
 name|Path
-name|zoneFile
+name|ecFile
 init|=
 operator|new
 name|Path
 argument_list|(
-name|zone
+name|ecDir
 argument_list|,
-literal|"zoneFile"
+literal|"ecFile"
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1348,15 +1348,15 @@ name|dfs
 operator|.
 name|mkdirs
 argument_list|(
-name|zone
+name|ecDir
 argument_list|)
 expr_stmt|;
-comment|// create erasure zone
+comment|// set erasure coding policy
 name|dfs
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
-name|zone
+name|ecDir
 argument_list|,
 literal|null
 argument_list|)
@@ -1367,7 +1367,7 @@ name|createFile
 argument_list|(
 name|dfs
 argument_list|,
-name|zoneFile
+name|ecFile
 argument_list|,
 name|len
 argument_list|,
@@ -1415,12 +1415,12 @@ name|fsd
 operator|.
 name|getINode
 argument_list|(
-literal|"/parentDir/zone/zoneFile"
+literal|"/parentDir/ecDir/ecFile"
 argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
-literal|"Failed to get INodeFile for /parentDir/zone/zoneFile"
+literal|"Failed to get INodeFile for /parentDir/ecDir/ecFile"
 argument_list|,
 name|inodeStriped
 operator|instanceof
@@ -1463,12 +1463,12 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// delete erasure zone directory
+comment|// delete directory with erasure coding policy
 name|dfs
 operator|.
 name|delete
 argument_list|(
-name|zone
+name|ecDir
 argument_list|,
 literal|true
 argument_list|)

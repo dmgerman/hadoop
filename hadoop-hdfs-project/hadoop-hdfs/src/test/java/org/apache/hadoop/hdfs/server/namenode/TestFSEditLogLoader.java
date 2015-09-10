@@ -2753,7 +2753,7 @@ operator|.
 name|getNamenode
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|testDir
 argument_list|,
@@ -3194,7 +3194,7 @@ operator|.
 name|getNamenode
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|testDir
 argument_list|,

@@ -172,22 +172,6 @@ name|hdfs
 operator|.
 name|StripedFileTestUtil
 operator|.
-name|cellSize
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|StripedFileTestUtil
-operator|.
 name|dataBlocks
 import|;
 end_import
@@ -350,7 +334,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 literal|"/"
 argument_list|,

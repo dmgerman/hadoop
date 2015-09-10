@@ -1518,14 +1518,6 @@ specifier|final
 name|EncryptionZoneManager
 name|ezManager
 decl_stmt|;
-annotation|@
-name|VisibleForTesting
-DECL|field|ecZoneManager
-specifier|public
-specifier|final
-name|ErasureCodingZoneManager
-name|ecZoneManager
-decl_stmt|;
 comment|/**    * Caches frequently used file names used in {@link INode} to reuse     * byte[] objects and reduce heap usage.    */
 DECL|field|nameCache
 specifier|private
@@ -2016,14 +2008,6 @@ argument_list|(
 name|this
 argument_list|,
 name|conf
-argument_list|)
-expr_stmt|;
-name|ecZoneManager
-operator|=
-operator|new
-name|ErasureCodingZoneManager
-argument_list|(
-name|this
 argument_list|)
 expr_stmt|;
 block|}

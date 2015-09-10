@@ -72,7 +72,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZone
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -256,10 +256,10 @@ parameter_list|)
 throws|throws
 name|StandbyException
 function_decl|;
-comment|/**    * Gets the ECZone for path    * @param src    *          - path    * @return {@link ErasureCodingZone}    * @throws IOException    */
-DECL|method|getErasureCodingZoneForPath (String src)
-name|ErasureCodingZone
-name|getErasureCodingZoneForPath
+comment|/**    * Gets the erasure coding policy for the path    * @param src    *          - path    * @return {@link ErasureCodingPolicy}    * @throws IOException    */
+DECL|method|getErasureCodingPolicyForPath (String src)
+name|ErasureCodingPolicy
+name|getErasureCodingPolicyForPath
 parameter_list|(
 name|String
 name|src

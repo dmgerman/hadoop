@@ -1403,11 +1403,11 @@ name|SECURITY_XATTR_UNREADABLE_BY_SUPERUSER
 init|=
 literal|"security.hdfs.unreadable.by.superuser"
 decl_stmt|;
-DECL|field|XATTR_ERASURECODING_ZONE
+DECL|field|XATTR_ERASURECODING_POLICY
 name|String
-name|XATTR_ERASURECODING_ZONE
+name|XATTR_ERASURECODING_POLICY
 init|=
-literal|"raw.hdfs.erasurecoding.zone"
+literal|"raw.hdfs.erasurecoding.policy"
 decl_stmt|;
 DECL|field|BLOCK_GROUP_INDEX_MASK
 name|long

@@ -978,22 +978,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZone
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|EncryptionZone
 import|;
 end_import
@@ -10572,10 +10556,10 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|createErasureCodingZone (String src, ErasureCodingPolicy ecPolicy)
+DECL|method|setErasureCodingPolicy (String src, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|void
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 parameter_list|(
 name|String
 name|src
@@ -10623,7 +10607,7 @@ try|try
 block|{
 name|namesystem
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|src
 argument_list|,
@@ -11596,10 +11580,10 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|getErasureCodingZone (String src)
+DECL|method|getErasureCodingPolicy (String src)
 specifier|public
-name|ErasureCodingZone
-name|getErasureCodingZone
+name|ErasureCodingPolicy
+name|getErasureCodingPolicy
 parameter_list|(
 name|String
 name|src
@@ -11613,7 +11597,7 @@ expr_stmt|;
 return|return
 name|namesystem
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 name|src
 argument_list|)

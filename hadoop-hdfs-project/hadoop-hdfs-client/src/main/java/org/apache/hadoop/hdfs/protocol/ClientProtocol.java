@@ -2006,12 +2006,12 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create an erasure coding zone with specified policy, if any, otherwise    * default    */
+comment|/**    * Set an erasure coding policy on a specified path.    * @param src The path to set policy on.    * @param ecPolicy The erasure coding policy. If null, default policy will    *                 be used    */
 annotation|@
 name|AtMostOnce
-DECL|method|createErasureCodingZone (String src, ErasureCodingPolicy ecPolicy)
+DECL|method|setErasureCodingPolicy (String src, ErasureCodingPolicy ecPolicy)
 name|void
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 parameter_list|(
 name|String
 name|src
@@ -2033,12 +2033,12 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the information about the EC zone for the path    *     * @param src path to get the info for    * @throws IOException    */
+comment|/**    * Get the information about the EC policy for the path    *    * @param src path to get the info for    * @throws IOException    */
 annotation|@
 name|Idempotent
-DECL|method|getErasureCodingZone (String src)
-name|ErasureCodingZone
-name|getErasureCodingZone
+DECL|method|getErasureCodingPolicy (String src)
+name|ErasureCodingPolicy
+name|getErasureCodingPolicy
 parameter_list|(
 name|String
 name|src

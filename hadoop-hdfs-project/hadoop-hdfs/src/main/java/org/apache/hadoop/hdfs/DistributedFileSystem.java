@@ -778,22 +778,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZone
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|EncryptionZone
 import|;
 end_import
@@ -11084,11 +11068,11 @@ name|lastReadTxid
 argument_list|)
 return|;
 block|}
-comment|/**    * Create the erasurecoding zone    *     * @param path Directory to create the ec zone    * @param ecPolicy erasure coding policy for the zone. If not specified default will be used.    * @throws IOException    */
-DECL|method|createErasureCodingZone (final Path path, final ErasureCodingPolicy ecPolicy)
+comment|/**    * Set the source path to the specified erasure coding policy.    *    * @param path     The directory to set the policy    * @param ecPolicy The erasure coding policy. If not specified default will be used.    * @throws IOException    */
+DECL|method|setErasureCodingPolicy (final Path path, final ErasureCodingPolicy ecPolicy)
 specifier|public
 name|void
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 parameter_list|(
 specifier|final
 name|Path
@@ -11133,7 +11117,7 @@ name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|getPathName
 argument_list|(
@@ -11181,7 +11165,7 @@ name|fs
 decl_stmt|;
 name|myDfs
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|p
 argument_list|,
@@ -11196,7 +11180,7 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"Cannot createErasureCodingZone through a symlink to a "
+literal|"Cannot setErasureCodingPolicy through a symlink to a "
 operator|+
 literal|"non-DistributedFileSystem: "
 operator|+
@@ -11218,11 +11202,11 @@ name|absF
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get ErasureCoding zone information for the specified path    *     * @param path    * @return Returns the zone information if path is in EC zone, null otherwise    * @throws IOException    */
-DECL|method|getErasureCodingZone (final Path path)
+comment|/**    * Get erasure coding policy information for the specified path    *    * @param path The path of the file or directory    * @return Returns the policy information if file or directory on the path    * is erasure coded, null otherwise    * @throws IOException    */
+DECL|method|getErasureCodingPolicy (final Path path)
 specifier|public
-name|ErasureCodingZone
-name|getErasureCodingZone
+name|ErasureCodingPolicy
+name|getErasureCodingPolicy
 parameter_list|(
 specifier|final
 name|Path
@@ -11243,14 +11227,14 @@ return|return
 operator|new
 name|FileSystemLinkResolver
 argument_list|<
-name|ErasureCodingZone
+name|ErasureCodingPolicy
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|ErasureCodingZone
+name|ErasureCodingPolicy
 name|doCall
 parameter_list|(
 specifier|final
@@ -11265,7 +11249,7 @@ block|{
 return|return
 name|dfs
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 name|getPathName
 argument_list|(
@@ -11277,7 +11261,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|ErasureCodingZone
+name|ErasureCodingPolicy
 name|next
 parameter_list|(
 specifier|final
@@ -11309,7 +11293,7 @@ decl_stmt|;
 return|return
 name|myDfs
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 name|p
 argument_list|)
@@ -11319,7 +11303,7 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"Cannot getErasureCodingZone through a symlink to a "
+literal|"Cannot getErasureCodingPolicy through a symlink to a "
 operator|+
 literal|"non-DistributedFileSystem: "
 operator|+

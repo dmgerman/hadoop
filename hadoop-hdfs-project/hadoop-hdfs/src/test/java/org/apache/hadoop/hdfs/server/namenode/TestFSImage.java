@@ -1060,7 +1060,7 @@ block|{
 comment|// contruct a INode with StripedBlock for saving and loading
 name|fsn
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 literal|"/"
 argument_list|,
@@ -2726,7 +2726,7 @@ operator|.
 name|getNamenode
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 literal|"/"
 argument_list|,

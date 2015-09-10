@@ -11606,7 +11606,7 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-comment|// If outer test already created EC zone, dir should be left as null
+comment|// If outer test already set EC policy, dir should be left as null
 if|if
 condition|(
 name|toMkdir
@@ -11631,7 +11631,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|dir
 operator|.

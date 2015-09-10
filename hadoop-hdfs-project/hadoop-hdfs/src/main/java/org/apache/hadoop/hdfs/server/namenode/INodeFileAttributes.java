@@ -70,24 +70,6 @@ name|HeaderFormat
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|XAttrFeature
-import|;
-end_import
-
 begin_comment
 comment|/**  * The attributes of a file.  */
 end_comment
@@ -116,6 +98,13 @@ DECL|method|isStriped ()
 specifier|public
 name|boolean
 name|isStriped
+parameter_list|()
+function_decl|;
+comment|/** @return whether the file is striped (instead of contiguous) */
+DECL|method|getErasureCodingPolicyID ()
+specifier|public
+name|byte
+name|getErasureCodingPolicyID
 parameter_list|()
 function_decl|;
 comment|/** @return preferred block size in bytes */
@@ -300,6 +289,29 @@ name|isStriped
 argument_list|(
 name|header
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getErasureCodingPolicyID ()
+specifier|public
+name|byte
+name|getErasureCodingPolicyID
+parameter_list|()
+block|{
+return|return
+name|isStriped
+argument_list|()
+condition|?
+operator|(
+name|byte
+operator|)
+literal|1
+else|:
+operator|(
+name|byte
+operator|)
+literal|0
 return|;
 block|}
 annotation|@

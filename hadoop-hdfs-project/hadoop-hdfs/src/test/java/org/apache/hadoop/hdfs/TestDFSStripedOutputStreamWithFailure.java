@@ -1023,7 +1023,7 @@ argument_list|)
 expr_stmt|;
 name|dfs
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|dir
 argument_list|,

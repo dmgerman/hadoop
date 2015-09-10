@@ -3495,10 +3495,10 @@ operator|.
 name|HOT_STORAGE_POLICY_NAME
 argument_list|)
 expr_stmt|;
-comment|// set "/bar" directory with EC zone.
+comment|// set an EC policy on "/bar" directory
 name|client
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|barDir
 argument_list|,

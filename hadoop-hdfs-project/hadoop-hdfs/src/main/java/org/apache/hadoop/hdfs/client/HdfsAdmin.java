@@ -290,22 +290,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZone
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|HdfsConstants
 import|;
 end_import
@@ -968,11 +952,11 @@ name|policyName
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create the ErasureCoding zone    *    * @param path Directory to create the ErasureCoding zone    * @param ecPolicy erasure coding policy for the zone. If null, the default will be used.    * @throws IOException    */
-DECL|method|createErasureCodingZone (final Path path, final ErasureCodingPolicy ecPolicy)
+comment|/**    * Set the source path to the specified erasure coding policy.    *    * @param path The source path referring to a directory.    * @param ecPolicy The erasure coding policy for the directory.    *                 If null, the default will be used.    * @throws IOException    */
+DECL|method|setErasureCodingPolicy (final Path path, final ErasureCodingPolicy ecPolicy)
 specifier|public
 name|void
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 parameter_list|(
 specifier|final
 name|Path
@@ -987,7 +971,7 @@ name|IOException
 block|{
 name|dfs
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|path
 argument_list|,
@@ -995,11 +979,11 @@ name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the ErasureCoding zone information for the specified path    *    * @param path    * @return Returns the zone information if path is in EC zone, null otherwise    * @throws IOException    */
-DECL|method|getErasureCodingZone (final Path path)
+comment|/**    * Get the erasure coding policy information for the specified path    *    * @param path    * @return Returns the policy information if file or directory on the path is    *          erasure coded. Null otherwise.    * @throws IOException    */
+DECL|method|getErasureCodingPolicy (final Path path)
 specifier|public
-name|ErasureCodingZone
-name|getErasureCodingZone
+name|ErasureCodingPolicy
+name|getErasureCodingPolicy
 parameter_list|(
 specifier|final
 name|Path
@@ -1011,13 +995,13 @@ block|{
 return|return
 name|dfs
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 name|path
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the ErasureCoding policies supported.    *    * @throws IOException    */
+comment|/**    * Get the Erasure coding policies supported.    *    * @throws IOException    */
 DECL|method|getErasureCodingPolicies ()
 specifier|public
 name|ErasureCodingPolicy

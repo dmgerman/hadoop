@@ -229,10 +229,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestErasureCodingZones
+DECL|class|TestErasureCodingPolicies
 specifier|public
 class|class
-name|TestErasureCodingZones
+name|TestErasureCodingPolicies
 block|{
 DECL|field|conf
 specifier|private
@@ -346,10 +346,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCreateECZone ()
+DECL|method|testBasicSetECPolicy ()
 specifier|public
 name|void
-name|testCreateECZone
+name|testBasicSetECPolicy
 parameter_list|()
 throws|throws
 name|IOException
@@ -378,13 +378,13 @@ name|getDirDefault
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|/* Normal creation of an erasure coding zone */
+comment|/* Normal creation of an erasure coding directory */
 name|fs
 operator|.
 name|getClient
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|testDir
 operator|.
@@ -394,7 +394,7 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-comment|/* Verify files under the zone are striped */
+comment|/* Verify files under the directory are striped */
 specifier|final
 name|Path
 name|ECFilePath
@@ -441,7 +441,7 @@ name|isStriped
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|/* Verify that EC zone cannot be created on non-empty dir */
+comment|/**      * Verify that setting EC policy on non-empty directory only affects      * newly created files under the directory.      */
 specifier|final
 name|Path
 name|notEmpty
@@ -464,27 +464,31 @@ name|getDirDefault
 argument_list|()
 argument_list|)
 expr_stmt|;
+specifier|final
+name|Path
+name|oldFile
+init|=
+operator|new
+name|Path
+argument_list|(
+name|notEmpty
+argument_list|,
+literal|"old"
+argument_list|)
+decl_stmt|;
 name|fs
 operator|.
 name|create
 argument_list|(
-operator|new
-name|Path
-argument_list|(
-name|notEmpty
-argument_list|,
-literal|"foo"
-argument_list|)
+name|oldFile
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|fs
 operator|.
 name|getClient
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|notEmpty
 operator|.
@@ -494,54 +498,107 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|fail
-argument_list|(
-literal|"Erasure coding zone on non-empty dir"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|assertExceptionContains
-argument_list|(
-literal|"erasure coding zone for a non-empty directory"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-comment|/* Verify that nested EC zones cannot be created */
 specifier|final
 name|Path
-name|zone1
+name|newFile
 init|=
 operator|new
 name|Path
 argument_list|(
-literal|"/zone1"
+name|notEmpty
+argument_list|,
+literal|"new"
+argument_list|)
+decl_stmt|;
+name|fs
+operator|.
+name|create
+argument_list|(
+name|newFile
+argument_list|)
+expr_stmt|;
+name|INode
+name|oldInode
+init|=
+name|namesystem
+operator|.
+name|getFSDirectory
+argument_list|()
+operator|.
+name|getINode
+argument_list|(
+name|oldFile
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|assertFalse
+argument_list|(
+name|oldInode
+operator|.
+name|asFile
+argument_list|()
+operator|.
+name|isStriped
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|INode
+name|newInode
+init|=
+name|namesystem
+operator|.
+name|getFSDirectory
+argument_list|()
+operator|.
+name|getINode
+argument_list|(
+name|newFile
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|newInode
+operator|.
+name|asFile
+argument_list|()
+operator|.
+name|isStriped
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|/* Verify that nested EC policies not supported */
+specifier|final
+name|Path
+name|dir1
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"/dir1"
 argument_list|)
 decl_stmt|;
 specifier|final
 name|Path
-name|zone2
+name|dir2
 init|=
 operator|new
 name|Path
 argument_list|(
-name|zone1
+name|dir1
 argument_list|,
-literal|"zone2"
+literal|"dir2"
 argument_list|)
 decl_stmt|;
 name|fs
 operator|.
 name|mkdir
 argument_list|(
-name|zone1
+name|dir1
 argument_list|,
 name|FsPermission
 operator|.
@@ -554,9 +611,9 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
-name|zone1
+name|dir1
 operator|.
 name|toString
 argument_list|()
@@ -568,7 +625,7 @@ name|fs
 operator|.
 name|mkdir
 argument_list|(
-name|zone2
+name|dir2
 argument_list|,
 name|FsPermission
 operator|.
@@ -583,9 +640,9 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
-name|zone2
+name|dir2
 operator|.
 name|toString
 argument_list|()
@@ -595,7 +652,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"Nested erasure coding zones"
+literal|"Nested erasure coding policies"
 argument_list|)
 expr_stmt|;
 block|}
@@ -607,13 +664,13 @@ parameter_list|)
 block|{
 name|assertExceptionContains
 argument_list|(
-literal|"already in an erasure coding zone"
+literal|"already has an erasure coding policy"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
 block|}
-comment|/* Verify that EC zone cannot be created on a file */
+comment|/* Verify that EC policy cannot be set on a file */
 specifier|final
 name|Path
 name|fPath
@@ -638,7 +695,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|fPath
 operator|.
@@ -650,7 +707,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"Erasure coding zone on file"
+literal|"Erasure coding policy on file"
 argument_list|)
 expr_stmt|;
 block|}
@@ -662,7 +719,7 @@ parameter_list|)
 block|{
 name|assertExceptionContains
 argument_list|(
-literal|"erasure coding zone for a file"
+literal|"erasure coding policy for a file"
 argument_list|,
 name|e
 argument_list|)
@@ -730,7 +787,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|srcECDir
 operator|.
@@ -745,7 +802,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|dstECDir
 operator|.
@@ -830,7 +887,7 @@ argument_list|)
 expr_stmt|;
 comment|// move back
 comment|// Test move file
-comment|/* Verify that a file can be moved between 2 EC zones */
+comment|/* Verify that a file can be moved between 2 EC dirs */
 name|fs
 operator|.
 name|rename
@@ -856,7 +913,7 @@ name|srcECDir
 argument_list|)
 expr_stmt|;
 comment|// move back
-comment|/* Verify that a file cannot be moved from a non-EC dir to an EC zone */
+comment|/* Verify that a file can be moved from a non-EC dir to an EC dir */
 specifier|final
 name|Path
 name|nonECDir
@@ -879,8 +936,6 @@ name|getDirDefault
 argument_list|()
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|fs
 operator|.
 name|rename
@@ -890,29 +945,7 @@ argument_list|,
 name|nonECDir
 argument_list|)
 expr_stmt|;
-name|fail
-argument_list|(
-literal|"A file shouldn't be able to move from a non-EC dir to an EC zone"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|assertExceptionContains
-argument_list|(
-literal|"can't be moved because the source and "
-operator|+
-literal|"destination have different erasure coding policies"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-comment|/* Verify that a file cannot be moved from an EC zone to a non-EC dir */
+comment|/* Verify that a file can be moved from an EC dir to a non-EC dir */
 specifier|final
 name|Path
 name|nonECFile
@@ -932,8 +965,6 @@ argument_list|(
 name|nonECFile
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|fs
 operator|.
 name|rename
@@ -943,23 +974,6 @@ argument_list|,
 name|dstECDir
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|assertExceptionContains
-argument_list|(
-literal|"can't be moved because the source and "
-operator|+
-literal|"destination have different erasure coding policies"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Test
@@ -995,7 +1009,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|testDir
 argument_list|,
@@ -1070,10 +1084,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testGetErasureCodingInfoWithSystemDefaultECPolicy ()
+DECL|method|testGetErasureCodingPolicyWithSystemDefaultECPolicy ()
 specifier|public
 name|void
-name|testGetErasureCodingInfoWithSystemDefaultECPolicy
+name|testGetErasureCodingPolicyWithSystemDefaultECPolicy
 parameter_list|()
 throws|throws
 name|Exception
@@ -1105,7 +1119,7 @@ name|getDirDefault
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// dir ECInfo before creating ec zone
+comment|// dir EC policy should be null
 name|assertNull
 argument_list|(
 name|fs
@@ -1122,13 +1136,13 @@ name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// dir ECInfo after creating ec zone
+comment|// dir EC policy after setting
 name|fs
 operator|.
 name|getClient
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|src
 argument_list|,
@@ -1167,7 +1181,7 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-comment|// verify for the files in ec zone
+comment|// verify for the files in ec dir
 name|verifyErasureCodingInfo
 argument_list|(
 name|src
@@ -1180,10 +1194,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testGetErasureCodingInfo ()
+DECL|method|testGetErasureCodingPolicy ()
 specifier|public
 name|void
-name|testGetErasureCodingInfo
+name|testGetErasureCodingPolicy
 parameter_list|()
 throws|throws
 name|Exception
@@ -1243,7 +1257,7 @@ name|getDirDefault
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// dir ECInfo before creating ec zone
+comment|// dir ECInfo before being set
 name|assertNull
 argument_list|(
 name|fs
@@ -1260,13 +1274,13 @@ name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// dir ECInfo after creating ec zone
+comment|// dir ECInfo after set
 name|fs
 operator|.
 name|getClient
 argument_list|()
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 name|src
 argument_list|,
@@ -1296,7 +1310,7 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-comment|// verify for the files in ec zone
+comment|// verify for the files in ec dir
 name|verifyErasureCodingInfo
 argument_list|(
 name|src

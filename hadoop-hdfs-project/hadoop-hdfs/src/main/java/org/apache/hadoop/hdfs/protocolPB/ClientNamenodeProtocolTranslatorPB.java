@@ -590,22 +590,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingZone
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|EncryptionZone
 import|;
 end_import
@@ -2742,7 +2726,7 @@ name|proto
 operator|.
 name|ErasureCodingProtos
 operator|.
-name|GetErasureCodingZoneRequestProto
+name|GetErasureCodingPolicyRequestProto
 import|;
 end_import
 
@@ -2762,7 +2746,7 @@ name|proto
 operator|.
 name|ErasureCodingProtos
 operator|.
-name|GetErasureCodingZoneResponseProto
+name|GetErasureCodingPolicyResponseProto
 import|;
 end_import
 
@@ -2782,7 +2766,7 @@ name|proto
 operator|.
 name|ErasureCodingProtos
 operator|.
-name|CreateErasureCodingZoneRequestProto
+name|SetErasureCodingPolicyRequestProto
 import|;
 end_import
 
@@ -9668,10 +9652,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|createErasureCodingZone (String src, ErasureCodingPolicy ecPolicy)
+DECL|method|setErasureCodingPolicy (String src, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|void
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 parameter_list|(
 name|String
 name|src
@@ -9683,12 +9667,12 @@ throws|throws
 name|IOException
 block|{
 specifier|final
-name|CreateErasureCodingZoneRequestProto
+name|SetErasureCodingPolicyRequestProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|CreateErasureCodingZoneRequestProto
+name|SetErasureCodingPolicyRequestProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -9720,7 +9704,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|CreateErasureCodingZoneRequestProto
+name|SetErasureCodingPolicyRequestProto
 name|req
 init|=
 name|builder
@@ -9732,7 +9716,7 @@ try|try
 block|{
 name|rpcProxy
 operator|.
-name|createErasureCodingZone
+name|setErasureCodingPolicy
 argument_list|(
 literal|null
 argument_list|,
@@ -10543,10 +10527,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getErasureCodingZone (String src)
+DECL|method|getErasureCodingPolicy (String src)
 specifier|public
-name|ErasureCodingZone
-name|getErasureCodingZone
+name|ErasureCodingPolicy
+name|getErasureCodingPolicy
 parameter_list|(
 name|String
 name|src
@@ -10554,10 +10538,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|GetErasureCodingZoneRequestProto
+name|GetErasureCodingPolicyRequestProto
 name|req
 init|=
-name|GetErasureCodingZoneRequestProto
+name|GetErasureCodingPolicyRequestProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -10572,12 +10556,12 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-name|GetErasureCodingZoneResponseProto
+name|GetErasureCodingPolicyResponseProto
 name|response
 init|=
 name|rpcProxy
 operator|.
-name|getErasureCodingZone
+name|getErasureCodingPolicy
 argument_list|(
 literal|null
 argument_list|,
@@ -10588,18 +10572,18 @@ if|if
 condition|(
 name|response
 operator|.
-name|hasECZone
+name|hasEcPolicy
 argument_list|()
 condition|)
 block|{
 return|return
 name|PBHelper
 operator|.
-name|convertErasureCodingZone
+name|convertErasureCodingPolicy
 argument_list|(
 name|response
 operator|.
-name|getECZone
+name|getEcPolicy
 argument_list|()
 argument_list|)
 return|;
