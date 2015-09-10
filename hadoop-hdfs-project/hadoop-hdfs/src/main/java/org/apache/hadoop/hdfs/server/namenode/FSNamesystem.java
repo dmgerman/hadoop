@@ -7532,6 +7532,12 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Initialize the quota.
+name|dir
+operator|.
+name|updateCountForQuota
+argument_list|()
+expr_stmt|;
 comment|// Enable quota checks.
 name|dir
 operator|.
