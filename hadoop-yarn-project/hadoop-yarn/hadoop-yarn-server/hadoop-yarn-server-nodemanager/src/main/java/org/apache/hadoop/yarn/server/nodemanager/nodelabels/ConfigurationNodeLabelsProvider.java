@@ -48,16 +48,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Date
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|HashSet
 import|;
 end_import
@@ -182,53 +172,6 @@ argument_list|(
 literal|"Configuration Based NodeLabels Provider"
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|serviceInit (Configuration conf)
-specifier|protected
-name|void
-name|serviceInit
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|super
-operator|.
-name|serviceInit
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-comment|// In case timer is not configured avoid calling timertask.run thus avoiding
-comment|// unnecessary creation of YarnConfiguration Object
-name|updateNodeLabelsFromConfig
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|intervalTime
-operator|!=
-name|DISABLE_NODE_LABELS_PROVIDER_FETCH_TIMER
-condition|)
-block|{
-name|startTime
-operator|=
-operator|new
-name|Date
-argument_list|()
-operator|.
-name|getTime
-argument_list|()
-operator|+
-name|intervalTime
-expr_stmt|;
-block|}
 block|}
 DECL|method|updateNodeLabelsFromConfig (Configuration conf)
 specifier|private

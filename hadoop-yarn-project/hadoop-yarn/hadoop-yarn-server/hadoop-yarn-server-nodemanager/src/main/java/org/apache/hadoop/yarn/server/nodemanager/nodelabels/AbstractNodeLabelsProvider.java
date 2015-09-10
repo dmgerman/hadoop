@@ -168,20 +168,6 @@ name|CommonNodeLabelsManager
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
 begin_comment
 comment|/**  * Provides base implementation of NodeLabelsProvider with Timer and expects  * subclass to provide TimerTask which can fetch NodeLabels  */
 end_comment
@@ -256,14 +242,6 @@ init|=
 name|CommonNodeLabelsManager
 operator|.
 name|EMPTY_NODELABEL_SET
-decl_stmt|;
-annotation|@
-name|VisibleForTesting
-DECL|field|startTime
-name|long
-name|startTime
-init|=
-literal|0
 decl_stmt|;
 DECL|method|AbstractNodeLabelsProvider (String name)
 specifier|public
@@ -353,6 +331,11 @@ operator|=
 name|createTimerTask
 argument_list|()
 expr_stmt|;
+name|timerTask
+operator|.
+name|run
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|intervalTime
@@ -378,7 +361,7 @@ name|scheduleAtFixedRate
 argument_list|(
 name|timerTask
 argument_list|,
-name|startTime
+name|intervalTime
 argument_list|,
 name|intervalTime
 argument_list|)
