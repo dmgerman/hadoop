@@ -669,15 +669,24 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Refreshing proxy as NMToken got updated for node : "
 operator|+
 name|containerManagerBindAddr
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Token is updated. check if anyone has already tried closing it.
 if|if
 condition|(
@@ -1001,9 +1010,17 @@ operator|<
 literal|0
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Closing proxy : "
 operator|+
@@ -1012,6 +1029,7 @@ operator|.
 name|containerManagerBindAddr
 argument_list|)
 expr_stmt|;
+block|}
 name|cmProxy
 operator|.
 name|remove
@@ -1325,15 +1343,24 @@ argument_list|(
 name|containerManagerBindAddr
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Opening proxy : "
 operator|+
 name|containerManagerBindAddr
 argument_list|)
 expr_stmt|;
+block|}
 comment|// the user in createRemoteUser in this context has to be ContainerID
 name|UserGroupInformation
 name|user
