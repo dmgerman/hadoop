@@ -1705,6 +1705,8 @@ argument_list|,
 name|injectedTags
 argument_list|,
 name|period
+operator|*
+literal|1000L
 argument_list|,
 name|conf
 operator|!=
@@ -2277,7 +2279,7 @@ name|millis
 init|=
 name|period
 operator|*
-literal|1000
+literal|1000L
 decl_stmt|;
 name|timer
 operator|=
@@ -3395,6 +3397,8 @@ argument_list|,
 name|injectedTags
 argument_list|,
 name|period
+operator|*
+literal|1000L
 argument_list|,
 name|sysConf
 operator|==
