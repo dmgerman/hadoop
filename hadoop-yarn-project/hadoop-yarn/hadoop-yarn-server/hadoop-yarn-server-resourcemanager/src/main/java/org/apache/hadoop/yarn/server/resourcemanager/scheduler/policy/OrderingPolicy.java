@@ -238,7 +238,7 @@ name|S
 name|schedulableEntity
 parameter_list|)
 function_decl|;
-comment|/**    * Display information regarding configuration& status    */
+comment|/**    * Display information regarding configuration and status    */
 DECL|method|getInfo ()
 specifier|public
 name|String

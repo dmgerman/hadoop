@@ -21,7 +21,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * Container property encoding allocation and execution semantics.  *   *<p>  * The container types are the following:  *<ul>  *<li>{@link #APPLICATION_MASTER}  *<li>{@link #TASK}  *</ul>  *</p>  */
+comment|/**  * Container property encoding allocation and execution semantics.  *   *<p>  * The container types are the following:  *<ul>  *<li>{@link #APPLICATION_MASTER}  *<li>{@link #TASK}  *</ul>  */
 end_comment
 
 begin_enum

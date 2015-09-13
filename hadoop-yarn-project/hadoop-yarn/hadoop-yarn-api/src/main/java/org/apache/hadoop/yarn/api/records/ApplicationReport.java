@@ -1072,7 +1072,7 @@ name|boolean
 name|isUnmanagedApp
 parameter_list|()
 function_decl|;
-comment|/**    * @param value true if RM should not manage the AM    */
+comment|/**    * @param unmanagedApplication true if RM should not manage the AM    */
 annotation|@
 name|Public
 annotation|@

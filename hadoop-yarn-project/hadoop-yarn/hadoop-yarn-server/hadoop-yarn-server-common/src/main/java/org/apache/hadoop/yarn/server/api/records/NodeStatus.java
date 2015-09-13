@@ -177,7 +177,7 @@ specifier|abstract
 class|class
 name|NodeStatus
 block|{
-comment|/**    * Create a new {@code NodeStatus}.    * @param nodeId Identifier for this node.    * @param responseId Identifier for the response.    * @param containerStatuses Status of the containers running in this node.    * @param keepAliveApplications Applications to keep alive.    * @param nodeHealthStatus Health status of the node.    * @param containersUtilizations Utilization of the containers in this node.    * @param nodeUtilization Utilization of the node.    * @return New {@code NodeStatus} with the provided information.    */
+comment|/**    * Create a new {@code NodeStatus}.    * @param nodeId Identifier for this node.    * @param responseId Identifier for the response.    * @param containerStatuses Status of the containers running in this node.    * @param keepAliveApplications Applications to keep alive.    * @param nodeHealthStatus Health status of the node.    * @param containersUtilization Utilization of the containers in this node.    * @param nodeUtilization Utilization of the node.    * @return New {@code NodeStatus} with the provided information.    */
 DECL|method|newInstance (NodeId nodeId, int responseId, List<ContainerStatus> containerStatuses, List<ApplicationId> keepAliveApplications, NodeHealthStatus nodeHealthStatus, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization)
 specifier|public
 specifier|static
