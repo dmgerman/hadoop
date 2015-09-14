@@ -5590,6 +5590,37 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|(
+name|ex
+operator|instanceof
+name|YarnRuntimeException
+operator|)
+operator|&&
+operator|(
+name|ex
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|InterruptedException
+operator|)
+condition|)
+block|{
+comment|// AsyncDispatcher translates InterruptedException to
+comment|// YarnRuntimeException with cause InterruptedException.
+comment|// Need to throw InterruptedException to stop schedulingThread.
+throw|throw
+operator|(
+name|InterruptedException
+operator|)
+name|ex
+operator|.
+name|getCause
+argument_list|()
+throw|;
+block|}
 block|}
 block|}
 name|long
