@@ -500,19 +500,30 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|blacklist
+DECL|field|userBlacklist
 specifier|private
 name|Set
 argument_list|<
 name|String
 argument_list|>
-name|blacklist
+name|userBlacklist
 init|=
 operator|new
 name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
+DECL|field|amBlacklist
+specifier|private
+name|Set
 argument_list|<
 name|String
 argument_list|>
+name|amBlacklist
+init|=
+operator|new
+name|HashSet
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|//private final ApplicationStore store;
@@ -1131,9 +1142,8 @@ return|return
 name|anyResourcesUpdated
 return|;
 block|}
-comment|/**    * The ApplicationMaster is updating the blacklist    *    * @param blacklistAdditions resources to be added to the blacklist    * @param blacklistRemovals resources to be removed from the blacklist    */
+comment|/**    * The ApplicationMaster is updating the userBlacklist used for containers    * other than AMs.    *    * @param blacklistAdditions resources to be added to the userBlacklist    * @param blacklistRemovals resources to be removed from the userBlacklist    */
 DECL|method|updateBlacklist ( List<String> blacklistAdditions, List<String> blacklistRemovals)
-specifier|synchronized
 specifier|public
 name|void
 name|updateBlacklist
@@ -1151,7 +1161,73 @@ argument_list|>
 name|blacklistRemovals
 parameter_list|)
 block|{
-comment|// Add to blacklist
+name|updateUserOrAMBlacklist
+argument_list|(
+name|userBlacklist
+argument_list|,
+name|blacklistAdditions
+argument_list|,
+name|blacklistRemovals
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * RM is updating blacklist for AM containers.    * @param blacklistAdditions resources to be added to the amBlacklist    * @param blacklistRemovals resources to be added to the amBlacklist    */
+DECL|method|updateAMBlacklist ( List<String> blacklistAdditions, List<String> blacklistRemovals)
+specifier|public
+name|void
+name|updateAMBlacklist
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistAdditions
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistRemovals
+parameter_list|)
+block|{
+name|updateUserOrAMBlacklist
+argument_list|(
+name|amBlacklist
+argument_list|,
+name|blacklistAdditions
+argument_list|,
+name|blacklistRemovals
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|updateUserOrAMBlacklist (Set<String> blacklist, List<String> blacklistAdditions, List<String> blacklistRemovals)
+name|void
+name|updateUserOrAMBlacklist
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|blacklist
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistAdditions
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistRemovals
+parameter_list|)
+block|{
+synchronized|synchronized
+init|(
+name|blacklist
+init|)
+block|{
 if|if
 condition|(
 name|blacklistAdditions
@@ -1167,7 +1243,6 @@ name|blacklistAdditions
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Remove from blacklist
 if|if
 condition|(
 name|blacklistRemovals
@@ -1182,6 +1257,7 @@ argument_list|(
 name|blacklistRemovals
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|getPriorities ()
@@ -1357,24 +1433,56 @@ name|getCapability
 argument_list|()
 return|;
 block|}
-DECL|method|isBlacklisted (String resourceName)
+comment|/**    * Returns if the node is either blacklisted by the user or the system    * @param resourceName the resourcename    * @param useAMBlacklist true if it should check amBlacklist    * @return true if its blacklisted    */
+DECL|method|isBlacklisted (String resourceName, boolean useAMBlacklist)
 specifier|public
-specifier|synchronized
 name|boolean
 name|isBlacklisted
 parameter_list|(
 name|String
 name|resourceName
+parameter_list|,
+name|boolean
+name|useAMBlacklist
 parameter_list|)
 block|{
+if|if
+condition|(
+name|useAMBlacklist
+condition|)
+block|{
+synchronized|synchronized
+init|(
+name|amBlacklist
+init|)
+block|{
 return|return
-name|blacklist
+name|amBlacklist
 operator|.
 name|contains
 argument_list|(
 name|resourceName
 argument_list|)
 return|;
+block|}
+block|}
+else|else
+block|{
+synchronized|synchronized
+init|(
+name|userBlacklist
+init|)
+block|{
+return|return
+name|userBlacklist
+operator|.
+name|contains
+argument_list|(
+name|resourceName
+argument_list|)
+return|;
+block|}
+block|}
 block|}
 comment|/**    * Resources have been allocated to this application by the resource    * scheduler. Track them.    *     * @param type    *          the type of the node    * @param node    *          the nodeinfo of the node    * @param priority    *          the priority of the request.    * @param request    *          the request    * @param container    *          the containers allocated.    */
 DECL|method|allocate (NodeType type, SchedulerNode node, Priority priority, ResourceRequest request, Container container)
@@ -2349,7 +2457,6 @@ expr_stmt|;
 block|}
 DECL|method|getBlackList ()
 specifier|public
-specifier|synchronized
 name|Set
 argument_list|<
 name|String
@@ -2360,18 +2467,22 @@ block|{
 return|return
 name|this
 operator|.
-name|blacklist
+name|userBlacklist
 return|;
 block|}
 DECL|method|getBlackListCopy ()
 specifier|public
-specifier|synchronized
 name|Set
 argument_list|<
 name|String
 argument_list|>
 name|getBlackListCopy
 parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|userBlacklist
+init|)
 block|{
 return|return
 operator|new
@@ -2380,9 +2491,10 @@ argument_list|<>
 argument_list|(
 name|this
 operator|.
-name|blacklist
+name|userBlacklist
 argument_list|)
 return|;
+block|}
 block|}
 DECL|method|transferStateFromPreviousAppSchedulingInfo ( AppSchedulingInfo appInfo)
 specifier|public
@@ -2396,9 +2508,13 @@ parameter_list|)
 block|{
 comment|//    this.priorities = appInfo.getPriorities();
 comment|//    this.requests = appInfo.getRequests();
+comment|// This should not require locking the userBlacklist since it will not be
+comment|// used by this instance until after setCurrentAppAttempt.
+comment|// Should cleanup this to avoid sharing between instances and can
+comment|// then remove getBlacklist as well.
 name|this
 operator|.
-name|blacklist
+name|userBlacklist
 operator|=
 name|appInfo
 operator|.

@@ -3713,12 +3713,7 @@ literal|"default"
 argument_list|,
 name|submissionContext
 argument_list|,
-name|this
-operator|.
-name|rmContext
-operator|.
-name|getScheduler
-argument_list|()
+name|scheduler
 argument_list|,
 name|this
 operator|.
