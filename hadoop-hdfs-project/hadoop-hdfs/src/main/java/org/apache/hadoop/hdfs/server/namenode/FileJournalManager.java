@@ -1155,10 +1155,12 @@ try|try
 block|{
 name|elf
 operator|.
-name|validateLog
+name|scanLog
 argument_list|(
 name|getLastReadableTxId
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -1836,7 +1838,7 @@ name|inProgressOk
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addStreamsToCollectionFromFiles (Collection<EditLogFile> elfs, Collection<EditLogInputStream> streams, long fromTxId, long maxTxIdToValidate, boolean inProgressOk)
+DECL|method|addStreamsToCollectionFromFiles (Collection<EditLogFile> elfs, Collection<EditLogInputStream> streams, long fromTxId, long maxTxIdToScan, boolean inProgressOk)
 specifier|static
 name|void
 name|addStreamsToCollectionFromFiles
@@ -1857,7 +1859,7 @@ name|long
 name|fromTxId
 parameter_list|,
 name|long
-name|maxTxIdToValidate
+name|maxTxIdToScan
 parameter_list|,
 name|boolean
 name|inProgressOk
@@ -1913,9 +1915,11 @@ try|try
 block|{
 name|elf
 operator|.
-name|validateLog
+name|scanLog
 argument_list|(
-name|maxTxIdToValidate
+name|maxTxIdToScan
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2159,10 +2163,12 @@ continue|continue;
 block|}
 name|elf
 operator|.
-name|validateLog
+name|scanLog
 argument_list|(
 name|getLastReadableTxId
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 if|if
@@ -2787,54 +2793,18 @@ operator|<=
 name|lastTxId
 return|;
 block|}
-comment|/**       * Find out where the edit log ends.      * This will update the lastTxId of the EditLogFile or      * mark it as corrupt if it is.      * @param maxTxIdToValidate Maximum Tx ID to try to validate. Validation      *                          returns after reading this or a higher ID.      *                          The file portion beyond this ID is potentially      *                          being updated.      */
-DECL|method|validateLog (long maxTxIdToValidate)
-specifier|public
-name|void
-name|validateLog
-parameter_list|(
-name|long
-name|maxTxIdToValidate
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|EditLogValidation
-name|val
-init|=
-name|EditLogFileInputStream
-operator|.
-name|validateEditLog
-argument_list|(
-name|file
-argument_list|,
-name|maxTxIdToValidate
-argument_list|)
-decl_stmt|;
-name|this
-operator|.
-name|lastTxId
-operator|=
-name|val
-operator|.
-name|getEndTxId
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|hasCorruptHeader
-operator|=
-name|val
-operator|.
-name|hasCorruptHeader
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|scanLog ()
+comment|/**       * Find out where the edit log ends.      * This will update the lastTxId of the EditLogFile or      * mark it as corrupt if it is.      * @param maxTxIdToScan Maximum Tx ID to try to scan.      *                      The scan returns after reading this or a higher ID.      *                      The file portion beyond this ID is potentially being      *                      updated.      * @param verifyVersion Whether the scan should verify the layout version      */
+DECL|method|scanLog (long maxTxIdToScan, boolean verifyVersion)
 specifier|public
 name|void
 name|scanLog
-parameter_list|()
+parameter_list|(
+name|long
+name|maxTxIdToScan
+parameter_list|,
+name|boolean
+name|verifyVersion
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -2846,6 +2816,10 @@ operator|.
 name|scanEditLog
 argument_list|(
 name|file
+argument_list|,
+name|maxTxIdToScan
+argument_list|,
+name|verifyVersion
 argument_list|)
 decl_stmt|;
 name|this

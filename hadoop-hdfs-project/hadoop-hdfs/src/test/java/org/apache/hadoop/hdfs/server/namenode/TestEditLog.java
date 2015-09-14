@@ -6243,7 +6243,7 @@ name|val
 init|=
 name|FSEditLogLoader
 operator|.
-name|validateEditLog
+name|scanEditLog
 argument_list|(
 name|edits
 argument_list|,

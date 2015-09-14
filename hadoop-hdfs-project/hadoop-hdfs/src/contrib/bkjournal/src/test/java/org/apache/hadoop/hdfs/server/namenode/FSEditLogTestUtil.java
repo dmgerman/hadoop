@@ -111,7 +111,7 @@ name|validation
 init|=
 name|FSEditLogLoader
 operator|.
-name|validateEditLog
+name|scanEditLog
 argument_list|(
 name|in
 argument_list|,
