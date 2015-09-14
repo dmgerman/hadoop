@@ -86,7 +86,15 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Listens for a connection to be made to this server and accepts     * it. The method blocks until a connection is made.    *    * @exception IOException  if an I/O error occurs when waiting for a    *               connection.    * @exception SecurityException  if a security manager exists and its      *<code>checkAccept</code> method doesn't allow the operation.    * @exception SocketTimeoutException if a timeout was previously set and    *             the timeout has been reached.    */
+comment|/**    * Get the receive buffer size of the PeerServer.    *    * @return     The receive buffer size.    */
+DECL|method|getReceiveBufferSize ()
+name|int
+name|getReceiveBufferSize
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Listens for a connection to be made to this server and accepts    * it. The method blocks until a connection is made.    *    * @exception IOException  if an I/O error occurs when waiting for a    *               connection.    * @exception SecurityException  if a security manager exists and its      *<code>checkAccept</code> method doesn't allow the operation.    * @exception SocketTimeoutException if a timeout was previously set and    *             the timeout has been reached.    */
 DECL|method|accept ()
 specifier|public
 name|Peer

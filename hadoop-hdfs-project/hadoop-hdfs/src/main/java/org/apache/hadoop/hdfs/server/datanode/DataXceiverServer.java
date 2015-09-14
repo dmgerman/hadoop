@@ -1160,6 +1160,17 @@ name|size
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getPeerServer ()
+name|PeerServer
+name|getPeerServer
+parameter_list|()
+block|{
+return|return
+name|peerServer
+return|;
+block|}
 DECL|method|releasePeer (Peer peer)
 specifier|synchronized
 name|void

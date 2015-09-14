@@ -311,6 +311,25 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getReceiveBufferSize ()
+specifier|public
+name|int
+name|getReceiveBufferSize
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|this
+operator|.
+name|serverSocket
+operator|.
+name|getReceiveBufferSize
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|accept ()
 specifier|public
 name|Peer
