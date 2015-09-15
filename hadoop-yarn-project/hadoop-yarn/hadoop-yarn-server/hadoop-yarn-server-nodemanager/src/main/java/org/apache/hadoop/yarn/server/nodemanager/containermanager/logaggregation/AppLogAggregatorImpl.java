@@ -2245,6 +2245,10 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|writer
+operator|=
+literal|null
+expr_stmt|;
 block|}
 name|long
 name|currentTime
