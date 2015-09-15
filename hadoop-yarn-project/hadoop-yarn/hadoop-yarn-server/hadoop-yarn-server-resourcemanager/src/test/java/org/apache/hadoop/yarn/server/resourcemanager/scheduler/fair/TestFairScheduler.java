@@ -10221,6 +10221,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Second ask, queue2 requests 1 large + (2 * minReqSize)
@@ -10303,6 +10307,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Third ask, queue2 requests 1 large
@@ -10360,6 +10368,10 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -18432,6 +18444,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -19089,6 +19105,10 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -21652,6 +21672,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// then node2 should get the container
@@ -21975,6 +21999,10 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -28483,6 +28511,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// waiting for continuous_scheduler_sleep_time
@@ -28611,6 +28643,10 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -29200,6 +29236,10 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -29925,6 +29965,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 operator|.
 name|getContainers
@@ -30099,6 +30143,10 @@ name|host
 argument_list|)
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -30141,6 +30189,10 @@ name|singletonList
 argument_list|(
 name|host
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertFalse
@@ -30210,6 +30262,10 @@ name|host
 argument_list|)
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -30274,6 +30330,10 @@ name|singletonList
 argument_list|(
 name|host
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertFalse

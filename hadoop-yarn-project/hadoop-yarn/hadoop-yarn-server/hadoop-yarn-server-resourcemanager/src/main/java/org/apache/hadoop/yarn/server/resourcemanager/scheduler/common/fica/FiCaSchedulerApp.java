@@ -222,6 +222,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NMToken
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeId
 import|;
 end_import
@@ -750,7 +768,7 @@ name|capacity
 operator|.
 name|allocator
 operator|.
-name|RegularContainerAllocator
+name|AbstractContainerAllocator
 import|;
 end_import
 
@@ -891,7 +909,7 @@ name|scheduler
 decl_stmt|;
 DECL|field|containerAllocator
 specifier|private
-name|ContainerAllocator
+name|AbstractContainerAllocator
 name|containerAllocator
 decl_stmt|;
 DECL|method|FiCaSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext)
@@ -1067,7 +1085,7 @@ block|}
 name|containerAllocator
 operator|=
 operator|new
-name|RegularContainerAllocator
+name|ContainerAllocator
 argument_list|(
 name|this
 argument_list|,
@@ -1474,6 +1492,7 @@ return|;
 block|}
 DECL|method|unreserve (Priority priority, FiCaSchedulerNode node, RMContainer rmContainer)
 specifier|public
+specifier|synchronized
 name|boolean
 name|unreserve
 parameter_list|(
@@ -1487,10 +1506,16 @@ name|RMContainer
 name|rmContainer
 parameter_list|)
 block|{
+comment|// Cancel increase request (if it has reserved increase request
+name|rmContainer
+operator|.
+name|cancelIncreaseReservation
+argument_list|()
+expr_stmt|;
 comment|// Done with the reservation?
 if|if
 condition|(
-name|unreserve
+name|internalUnreserve
 argument_list|(
 name|node
 argument_list|,
@@ -1518,10 +1543,7 @@ argument_list|()
 argument_list|,
 name|rmContainer
 operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getResource
+name|getReservedResource
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1533,13 +1555,10 @@ return|return
 literal|false
 return|;
 block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|unreserve (FiCaSchedulerNode node, Priority priority)
-specifier|public
-specifier|synchronized
+DECL|method|internalUnreserve (FiCaSchedulerNode node, Priority priority)
+specifier|private
 name|boolean
-name|unreserve
+name|internalUnreserve
 parameter_list|(
 name|FiCaSchedulerNode
 name|node
@@ -1640,10 +1659,7 @@ name|resource
 init|=
 name|reservedContainer
 operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getResource
+name|getReservedResource
 argument_list|()
 decl_stmt|;
 name|this
@@ -1997,10 +2013,40 @@ argument_list|,
 name|numCont
 argument_list|)
 decl_stmt|;
-name|ContainersAndNMTokensAllocation
-name|allocation
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|newlyAllocatedContainers
 init|=
-name|pullNewlyAllocatedContainersAndNMTokens
+name|pullNewlyAllocatedContainers
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|newlyIncreasedContainers
+init|=
+name|pullNewlyIncreasedContainers
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|newlyDecreasedContainers
+init|=
+name|pullNewlyDecreasedContainers
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|NMToken
+argument_list|>
+name|updatedNMTokens
+init|=
+name|pullUpdatedNMTokens
 argument_list|()
 decl_stmt|;
 name|Resource
@@ -2018,10 +2064,7 @@ return|return
 operator|new
 name|Allocation
 argument_list|(
-name|allocation
-operator|.
-name|getContainerList
-argument_list|()
+name|newlyAllocatedContainers
 argument_list|,
 name|headroom
 argument_list|,
@@ -2036,10 +2079,11 @@ argument_list|(
 name|rr
 argument_list|)
 argument_list|,
-name|allocation
-operator|.
-name|getNMTokenList
-argument_list|()
+name|updatedNMTokens
+argument_list|,
+name|newlyIncreasedContainers
+argument_list|,
+name|newlyDecreasedContainers
 argument_list|)
 return|;
 block|}
@@ -2124,18 +2168,33 @@ operator|.
 name|getKey
 argument_list|()
 decl_stmt|;
-name|Resource
-name|containerResource
+name|RMContainer
+name|reservedContainer
 init|=
 name|entry
 operator|.
 name|getValue
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|reservedContainer
 operator|.
-name|getContainer
+name|hasIncreaseReservation
 argument_list|()
+condition|)
+block|{
+comment|// Currently, only regular container allocation supports continuous
+comment|// reservation looking, we don't support canceling increase request
+comment|// reservation when allocating regular container.
+continue|continue;
+block|}
+name|Resource
+name|reservedResource
+init|=
+name|reservedContainer
 operator|.
-name|getResource
+name|getReservedResource
 argument_list|()
 decl_stmt|;
 comment|// make sure we unreserve one with at least the same amount of
@@ -2144,7 +2203,7 @@ if|if
 condition|(
 name|Resources
 operator|.
-name|lessThanOrEqual
+name|fitsIn
 argument_list|(
 name|rc
 argument_list|,
@@ -2152,7 +2211,7 @@ name|clusterResource
 argument_list|,
 name|resourceNeedUnreserve
 argument_list|,
-name|containerResource
+name|reservedResource
 argument_list|)
 condition|)
 block|{
@@ -2170,7 +2229,7 @@ name|debug
 argument_list|(
 literal|"unreserving node with reservation size: "
 operator|+
-name|containerResource
+name|reservedResource
 operator|+
 literal|" in order to allocate container with size: "
 operator|+
@@ -2279,6 +2338,75 @@ operator|.
 name|getHeadroomProvider
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|reserveIncreasedContainer (Priority priority, FiCaSchedulerNode node, RMContainer rmContainer, Resource reservedResource)
+specifier|public
+name|boolean
+name|reserveIncreasedContainer
+parameter_list|(
+name|Priority
+name|priority
+parameter_list|,
+name|FiCaSchedulerNode
+name|node
+parameter_list|,
+name|RMContainer
+name|rmContainer
+parameter_list|,
+name|Resource
+name|reservedResource
+parameter_list|)
+block|{
+comment|// Inform the application
+if|if
+condition|(
+name|super
+operator|.
+name|reserveIncreasedContainer
+argument_list|(
+name|node
+argument_list|,
+name|priority
+argument_list|,
+name|rmContainer
+argument_list|,
+name|reservedResource
+argument_list|)
+condition|)
+block|{
+name|queue
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|reserveResource
+argument_list|(
+name|getUser
+argument_list|()
+argument_list|,
+name|reservedResource
+argument_list|)
+expr_stmt|;
+comment|// Update the node
+name|node
+operator|.
+name|reserveResource
+argument_list|(
+name|this
+argument_list|,
+name|priority
+argument_list|,
+name|rmContainer
+argument_list|)
+expr_stmt|;
+comment|// Succeeded
+return|return
+literal|true
+return|;
+block|}
+return|return
+literal|false
+return|;
 block|}
 DECL|method|reserve (Priority priority, FiCaSchedulerNode node, RMContainer rmContainer, Container container)
 specifier|public

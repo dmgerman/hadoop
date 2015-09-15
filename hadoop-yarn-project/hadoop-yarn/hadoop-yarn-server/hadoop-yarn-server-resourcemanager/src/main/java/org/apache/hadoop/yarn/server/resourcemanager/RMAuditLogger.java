@@ -333,6 +333,15 @@ name|UPDATE_APP_PRIORITY
 init|=
 literal|"Update Application Priority Request"
 decl_stmt|;
+DECL|field|CHANGE_CONTAINER_RESOURCE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHANGE_CONTAINER_RESOURCE
+init|=
+literal|"AM Changed Container Resource"
+decl_stmt|;
 comment|// Some commonly used descriptions
 DECL|field|UNAUTHORIZED_USER
 specifier|public

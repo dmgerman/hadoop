@@ -22,58 +22,77 @@ name|rmcontainer
 package|;
 end_package
 
-begin_enum
-DECL|enum|RMContainerEventType
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerId
+import|;
+end_import
+
+begin_class
+DECL|class|RMContainerUpdatesAcquiredEvent
 specifier|public
-enum|enum
-name|RMContainerEventType
+class|class
+name|RMContainerUpdatesAcquiredEvent
+extends|extends
+name|RMContainerEvent
 block|{
-comment|// Source: SchedulerApp
-DECL|enumConstant|START
-name|START
-block|,
-DECL|enumConstant|ACQUIRED
-name|ACQUIRED
-block|,
-DECL|enumConstant|KILL
-name|KILL
-block|,
-comment|// Also from Node on NodeRemoval
-DECL|enumConstant|RESERVED
-name|RESERVED
-block|,
-comment|// when a container acquired by AM after
-comment|// it increased/decreased
-DECL|enumConstant|ACQUIRE_UPDATED_CONTAINER
+DECL|field|increasedContainer
+specifier|private
+specifier|final
+name|boolean
+name|increasedContainer
+decl_stmt|;
+DECL|method|RMContainerUpdatesAcquiredEvent (ContainerId containerId, boolean increasedContainer)
+specifier|public
+name|RMContainerUpdatesAcquiredEvent
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|boolean
+name|increasedContainer
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|containerId
+argument_list|,
+name|RMContainerEventType
+operator|.
 name|ACQUIRE_UPDATED_CONTAINER
-block|,
-DECL|enumConstant|LAUNCHED
-name|LAUNCHED
-block|,
-DECL|enumConstant|FINISHED
-name|FINISHED
-block|,
-comment|// Source: ApplicationMasterService->Scheduler
-DECL|enumConstant|RELEASED
-name|RELEASED
-block|,
-comment|// Source: ContainerAllocationExpirer
-DECL|enumConstant|EXPIRE
-name|EXPIRE
-block|,
-DECL|enumConstant|RECOVER
-name|RECOVER
-block|,
-comment|// Source: Scheduler
-comment|// Resource change approved by scheduler
-DECL|enumConstant|CHANGE_RESOURCE
-name|CHANGE_RESOURCE
-block|,
-comment|// NM reported resource change is done
-DECL|enumConstant|NM_DONE_CHANGE_RESOURCE
-name|NM_DONE_CHANGE_RESOURCE
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|increasedContainer
+operator|=
+name|increasedContainer
+expr_stmt|;
 block|}
-end_enum
+DECL|method|isIncreasedContainer ()
+specifier|public
+name|boolean
+name|isIncreasedContainer
+parameter_list|()
+block|{
+return|return
+name|increasedContainer
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

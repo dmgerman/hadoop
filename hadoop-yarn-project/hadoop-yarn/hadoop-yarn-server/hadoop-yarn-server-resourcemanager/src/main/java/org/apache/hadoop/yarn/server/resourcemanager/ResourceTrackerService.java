@@ -2875,6 +2875,13 @@ argument_list|(
 name|nodeHeartBeatResponse
 argument_list|)
 expr_stmt|;
+name|rmNode
+operator|.
+name|updateNodeHeartbeatResponseForContainersDecreasing
+argument_list|(
+name|nodeHeartBeatResponse
+argument_list|)
+expr_stmt|;
 name|populateKeys
 argument_list|(
 name|request
@@ -2937,6 +2944,11 @@ name|getKeepAliveApplications
 argument_list|()
 argument_list|,
 name|nodeHeartBeatResponse
+argument_list|,
+name|remoteNodeStatus
+operator|.
+name|getIncreasedContainers
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if

@@ -274,6 +274,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerResourceChangeRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeId
 import|;
 end_import
@@ -642,13 +660,13 @@ name|int
 name|getNumClusterNodes
 parameter_list|()
 function_decl|;
-comment|/**    * The main api between the ApplicationMaster and the Scheduler.    * The ApplicationMaster is updating his future resource requirements    * and may release containers he doens't need.    *     * @param appAttemptId    * @param ask    * @param release    * @param blacklistAdditions     * @param blacklistRemovals     * @return the {@link Allocation} for the application    */
+comment|/**    * The main api between the ApplicationMaster and the Scheduler.    * The ApplicationMaster is updating his future resource requirements    * and may release containers he doens't need.    *     * @param appAttemptId    * @param ask    * @param release    * @param blacklistAdditions     * @param blacklistRemovals     * @param increaseRequests    * @param decreaseRequests    * @return the {@link Allocation} for the application    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
+DECL|method|allocate (ApplicationAttemptId appAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, List<ContainerResourceChangeRequest> increaseRequests, List<ContainerResourceChangeRequest> decreaseRequests)
 name|Allocation
-DECL|method|allocate (ApplicationAttemptId appAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals)
 name|allocate
 parameter_list|(
 name|ApplicationAttemptId
@@ -677,6 +695,18 @@ argument_list|<
 name|String
 argument_list|>
 name|blacklistRemovals
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|increaseRequests
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|decreaseRequests
 parameter_list|)
 function_decl|;
 comment|/**    * Get node resource usage report.    * @param nodeId    * @return the {@link SchedulerNodeReport} for the node or null    * if nodeId does not point to a defined node.    */

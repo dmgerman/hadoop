@@ -792,6 +792,134 @@ literal|" available after allocation"
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|changeContainerResource (ContainerId containerId, Resource deltaResource, boolean increase)
+specifier|private
+specifier|synchronized
+name|void
+name|changeContainerResource
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Resource
+name|deltaResource
+parameter_list|,
+name|boolean
+name|increase
+parameter_list|)
+block|{
+if|if
+condition|(
+name|increase
+condition|)
+block|{
+name|deductAvailableResource
+argument_list|(
+name|deltaResource
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|addAvailableResource
+argument_list|(
+name|deltaResource
+argument_list|)
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+operator|(
+name|increase
+condition|?
+literal|"Increased"
+else|:
+literal|"Decreased"
+operator|)
+operator|+
+literal|" container "
+operator|+
+name|containerId
+operator|+
+literal|" of capacity "
+operator|+
+name|deltaResource
+operator|+
+literal|" on host "
+operator|+
+name|rmNode
+operator|.
+name|getNodeAddress
+argument_list|()
+operator|+
+literal|", which has "
+operator|+
+name|numContainers
+operator|+
+literal|" containers, "
+operator|+
+name|getUsedResource
+argument_list|()
+operator|+
+literal|" used and "
+operator|+
+name|getAvailableResource
+argument_list|()
+operator|+
+literal|" available after allocation"
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * The Scheduler increased container    */
+DECL|method|increaseContainer (ContainerId containerId, Resource deltaResource)
+specifier|public
+specifier|synchronized
+name|void
+name|increaseContainer
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Resource
+name|deltaResource
+parameter_list|)
+block|{
+name|changeContainerResource
+argument_list|(
+name|containerId
+argument_list|,
+name|deltaResource
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * The Scheduler decreased container    */
+DECL|method|decreaseContainer (ContainerId containerId, Resource deltaResource)
+specifier|public
+specifier|synchronized
+name|void
+name|decreaseContainer
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Resource
+name|deltaResource
+parameter_list|)
+block|{
+name|changeContainerResource
+argument_list|(
+name|containerId
+argument_list|,
+name|deltaResource
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Get available resources on the node.    *     * @return available resources on the node    */
 DECL|method|getAvailableResource ()
 specifier|public

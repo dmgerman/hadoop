@@ -466,6 +466,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerResourceChangeRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerStatus
 import|;
 end_import
@@ -847,6 +865,26 @@ operator|.
 name|scheduler
 operator|.
 name|SchedulerApplicationAttempt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|SchedContainerChangeRequest
 import|;
 end_import
 
@@ -1786,7 +1824,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocate (ApplicationAttemptId attemptId, List<ResourceRequest> resourceRequests, List<ContainerId> containerIds, List<String> strings, List<String> strings2)
+DECL|method|allocate (ApplicationAttemptId attemptId, List<ResourceRequest> resourceRequests, List<ContainerId> containerIds, List<String> strings, List<String> strings2, List<ContainerResourceChangeRequest> increaseRequests, List<ContainerResourceChangeRequest> decreaseRequests)
 specifier|public
 name|Allocation
 name|allocate
@@ -1817,6 +1855,18 @@ argument_list|<
 name|String
 argument_list|>
 name|strings2
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|increaseRequests
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|decreaseRequests
 parameter_list|)
 block|{
 if|if
@@ -1857,6 +1907,10 @@ argument_list|,
 name|strings
 argument_list|,
 name|strings2
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 return|return
@@ -1919,6 +1973,10 @@ argument_list|,
 name|strings
 argument_list|,
 name|strings2
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -5507,6 +5565,22 @@ argument_list|(
 literal|0
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|decreaseContainer ( SchedContainerChangeRequest decreaseRequest, SchedulerApplicationAttempt attempt)
+specifier|protected
+name|void
+name|decreaseContainer
+parameter_list|(
+name|SchedContainerChangeRequest
+name|decreaseRequest
+parameter_list|,
+name|SchedulerApplicationAttempt
+name|attempt
+parameter_list|)
+block|{
+comment|// TODO Auto-generated method stub
 block|}
 block|}
 end_class

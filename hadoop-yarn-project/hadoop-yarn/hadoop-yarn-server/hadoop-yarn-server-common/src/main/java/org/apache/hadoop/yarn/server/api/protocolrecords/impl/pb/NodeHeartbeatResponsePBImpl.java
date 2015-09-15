@@ -52,6 +52,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -118,7 +128,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerId
+name|Container
 import|;
 end_import
 
@@ -136,7 +146,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Container
+name|ContainerId
 import|;
 end_import
 
@@ -2106,13 +2116,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addAllContainersToDecrease ( final List<Container> containersToDecrease)
+DECL|method|addAllContainersToDecrease ( final Collection<Container> containersToDecrease)
 specifier|public
 name|void
 name|addAllContainersToDecrease
 parameter_list|(
 specifier|final
-name|List
+name|Collection
 argument_list|<
 name|Container
 argument_list|>

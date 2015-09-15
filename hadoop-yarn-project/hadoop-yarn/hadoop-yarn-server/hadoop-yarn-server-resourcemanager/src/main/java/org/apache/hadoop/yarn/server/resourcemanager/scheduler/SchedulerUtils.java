@@ -1608,14 +1608,14 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|checkResourceRequestMatchingNodePartition ( ResourceRequest offswitchResourceRequest, String nodePartition, SchedulingMode schedulingMode)
+DECL|method|checkResourceRequestMatchingNodePartition ( String requestedPartition, String nodePartition, SchedulingMode schedulingMode)
 specifier|public
 specifier|static
 name|boolean
 name|checkResourceRequestMatchingNodePartition
 parameter_list|(
-name|ResourceRequest
-name|offswitchResourceRequest
+name|String
+name|requestedPartition
 parameter_list|,
 name|String
 name|nodePartition
@@ -1654,22 +1654,14 @@ operator|.
 name|NO_LABEL
 expr_stmt|;
 block|}
-name|String
-name|askedNodePartition
-init|=
-name|offswitchResourceRequest
-operator|.
-name|getNodeLabelExpression
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 literal|null
 operator|==
-name|askedNodePartition
+name|requestedPartition
 condition|)
 block|{
-name|askedNodePartition
+name|requestedPartition
 operator|=
 name|RMNodeLabelsManager
 operator|.
@@ -1677,7 +1669,7 @@ name|NO_LABEL
 expr_stmt|;
 block|}
 return|return
-name|askedNodePartition
+name|requestedPartition
 operator|.
 name|equals
 argument_list|(

@@ -276,6 +276,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerResourceChangeRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerState
 import|;
 end_import
@@ -3397,7 +3415,7 @@ comment|// override this to copy the objects otherwise FifoScheduler updates the
 comment|// numContainers in same objects as kept by RMContainerAllocator
 annotation|@
 name|Override
-DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals)
+DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, List<ContainerResourceChangeRequest> increaseRequests, List<ContainerResourceChangeRequest> decreaseRequests)
 specifier|public
 specifier|synchronized
 name|Allocation
@@ -3429,6 +3447,18 @@ argument_list|<
 name|String
 argument_list|>
 name|blacklistRemovals
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|increaseRequests
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|decreaseRequests
 parameter_list|)
 block|{
 name|List
@@ -3523,6 +3553,10 @@ argument_list|,
 name|blacklistAdditions
 argument_list|,
 name|blacklistRemovals
+argument_list|,
+name|increaseRequests
+argument_list|,
+name|decreaseRequests
 argument_list|)
 return|;
 block|}

@@ -38,6 +38,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -84,7 +94,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerId
+name|Container
 import|;
 end_import
 
@@ -102,7 +112,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Container
+name|ContainerId
 import|;
 end_import
 
@@ -336,11 +346,11 @@ argument_list|>
 name|getContainersToDecrease
 parameter_list|()
 function_decl|;
-DECL|method|addAllContainersToDecrease (List<Container> containersToDecrease)
+DECL|method|addAllContainersToDecrease (Collection<Container> containersToDecrease)
 name|void
 name|addAllContainersToDecrease
 parameter_list|(
-name|List
+name|Collection
 argument_list|<
 name|Container
 argument_list|>
