@@ -328,6 +328,16 @@ specifier|protected
 name|boolean
 name|unmanagedApplication
 decl_stmt|;
+DECL|field|appNodeLabelExpression
+specifier|private
+name|String
+name|appNodeLabelExpression
+decl_stmt|;
+DECL|field|amNodeLabelExpression
+specifier|private
+name|String
+name|amNodeLabelExpression
+decl_stmt|;
 DECL|method|AppInfo ()
 specifier|public
 name|AppInfo
@@ -620,6 +630,20 @@ operator|.
 name|isUnmanagedApp
 argument_list|()
 expr_stmt|;
+name|appNodeLabelExpression
+operator|=
+name|app
+operator|.
+name|getAppNodeLabelExpression
+argument_list|()
+expr_stmt|;
+name|amNodeLabelExpression
+operator|=
+name|app
+operator|.
+name|getAmNodeLabelExpression
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getAppId ()
 specifier|public
@@ -859,6 +883,26 @@ parameter_list|()
 block|{
 return|return
 name|priority
+return|;
+block|}
+DECL|method|getAppNodeLabelExpression ()
+specifier|public
+name|String
+name|getAppNodeLabelExpression
+parameter_list|()
+block|{
+return|return
+name|appNodeLabelExpression
+return|;
+block|}
+DECL|method|getAmNodeLabelExpression ()
+specifier|public
+name|String
+name|getAmNodeLabelExpression
+parameter_list|()
+block|{
+return|return
+name|amNodeLabelExpression
 return|;
 block|}
 block|}

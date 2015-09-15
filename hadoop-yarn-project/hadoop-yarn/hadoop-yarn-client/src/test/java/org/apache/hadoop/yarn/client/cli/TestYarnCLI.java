@@ -502,6 +502,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NodeLabel
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeReport
 import|;
 end_import
@@ -993,6 +1011,10 @@ name|newInstance
 argument_list|(
 literal|0
 argument_list|)
+argument_list|,
+literal|"high-mem"
+argument_list|,
+literal|"high-mem"
 argument_list|)
 decl_stmt|;
 name|newApplicationReport
@@ -1239,6 +1261,20 @@ operator|.
 name|println
 argument_list|(
 literal|"\tUnmanaged Application : false"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tApplication Node Label Expression : high-mem"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tAM container Node Label Expression : high-mem"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -10794,6 +10830,10 @@ operator|.
 name|println
 argument_list|(
 literal|"\tDefault Node Label expression : "
+operator|+
+name|NodeLabel
+operator|.
+name|DEFAULT_NODE_LABEL_PARTITION
 argument_list|)
 expr_stmt|;
 name|pw

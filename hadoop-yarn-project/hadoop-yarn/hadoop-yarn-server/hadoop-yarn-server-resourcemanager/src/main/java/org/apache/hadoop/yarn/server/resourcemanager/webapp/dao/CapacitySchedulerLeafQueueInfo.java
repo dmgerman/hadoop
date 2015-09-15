@@ -180,6 +180,11 @@ specifier|protected
 name|boolean
 name|preemptionDisabled
 decl_stmt|;
+DECL|field|defaultNodeLabelExpression
+specifier|protected
+name|String
+name|defaultNodeLabelExpression
+decl_stmt|;
 annotation|@
 name|XmlTransient
 DECL|field|orderingPolicyInfo
@@ -322,6 +327,13 @@ operator|.
 name|getInfo
 argument_list|()
 expr_stmt|;
+name|defaultNodeLabelExpression
+operator|=
+name|q
+operator|.
+name|getDefaultNodeLabelExpression
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getNumActiveApplications ()
 specifier|public
@@ -452,6 +464,16 @@ parameter_list|()
 block|{
 return|return
 name|orderingPolicyInfo
+return|;
+block|}
+DECL|method|getDefaultNodeLabelExpression ()
+specifier|public
+name|String
+name|getDefaultNodeLabelExpression
+parameter_list|()
+block|{
+return|return
+name|defaultNodeLabelExpression
 return|;
 block|}
 block|}

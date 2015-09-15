@@ -2047,7 +2047,12 @@ literal|"YARN"
 argument_list|,
 literal|null
 argument_list|,
-literal|null
+name|mock
+argument_list|(
+name|ResourceRequest
+operator|.
+name|class
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|testAppStartState

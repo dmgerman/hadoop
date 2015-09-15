@@ -559,6 +559,17 @@ name|LogAggregationStatus
 name|getLogAggregationStatusForAppReport
 parameter_list|()
 function_decl|;
+comment|/**    * Return the node label expression of the AM container.    */
+DECL|method|getAmNodeLabelExpression ()
+name|String
+name|getAmNodeLabelExpression
+parameter_list|()
+function_decl|;
+DECL|method|getAppNodeLabelExpression ()
+name|String
+name|getAppNodeLabelExpression
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
