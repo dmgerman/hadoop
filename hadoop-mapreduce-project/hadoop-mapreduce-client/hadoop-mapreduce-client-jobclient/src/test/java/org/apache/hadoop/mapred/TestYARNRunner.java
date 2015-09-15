@@ -3738,6 +3738,12 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+name|int
+name|tmpDirPos
+init|=
+operator|-
+literal|1
+decl_stmt|;
 for|for
 control|(
 name|String
@@ -3803,11 +3809,30 @@ name|userIndex
 operator|=
 name|index
 expr_stmt|;
+name|tmpDirPos
+operator|=
+name|command
+operator|.
+name|indexOf
+argument_list|(
+literal|"-Djava.io.tmpdir="
+argument_list|)
+expr_stmt|;
 block|}
 name|index
 operator|++
 expr_stmt|;
 block|}
+comment|// Check java.io.tmpdir opts are set in the commands
+name|assertTrue
+argument_list|(
+literal|"java.io.tmpdir is not set for AM"
+argument_list|,
+name|tmpDirPos
+operator|>
+literal|0
+argument_list|)
+expr_stmt|;
 comment|// Check both admin java opts and user java opts are in the commands
 name|assertTrue
 argument_list|(
