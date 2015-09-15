@@ -220,6 +220,17 @@ name|Configuration
 block|{
 annotation|@
 name|Private
+DECL|field|DR_CONFIGURATION_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DR_CONFIGURATION_FILE
+init|=
+literal|"dynamic-resources.xml"
+decl_stmt|;
+annotation|@
+name|Private
 DECL|field|CS_CONFIGURATION_FILE
 specifier|public
 specifier|static
@@ -291,6 +302,8 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
+name|DR_CONFIGURATION_FILE
+argument_list|,
 name|CS_CONFIGURATION_FILE
 argument_list|,
 name|HADOOP_POLICY_CONFIGURATION_FILE

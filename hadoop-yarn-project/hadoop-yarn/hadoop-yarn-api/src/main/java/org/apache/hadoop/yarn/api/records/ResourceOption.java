@@ -143,6 +143,17 @@ return|return
 name|resourceOption
 return|;
 block|}
+comment|/** Negative value means no timeout. */
+DECL|field|OVER_COMMIT_TIMEOUT_MILLIS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OVER_COMMIT_TIMEOUT_MILLIS_DEFAULT
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/**    * Get the<em>resource</em> of the ResourceOption.    * @return<em>resource</em> of the ResourceOption    */
 annotation|@
 name|Private

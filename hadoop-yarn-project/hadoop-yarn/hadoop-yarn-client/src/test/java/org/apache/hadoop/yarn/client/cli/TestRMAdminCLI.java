@@ -1491,7 +1491,6 @@ name|args
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//    verify(admin).refreshNodes(any(RefreshNodesRequest.class));
 name|verify
 argument_list|(
 name|admin
@@ -2306,17 +2305,27 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"yarn rmadmin [-refreshQueues] [-refreshNodes [-g [timeout in seconds]]] [-refreshSuper"
+literal|"yarn rmadmin [-refreshQueues] [-refreshNodes [-g [timeout in "
 operator|+
-literal|"UserGroupsConfiguration] [-refreshUserToGroupsMappings] "
+literal|"seconds]]] [-refreshNodesResources] [-refreshSuperUserGroups"
 operator|+
-literal|"[-refreshAdminAcls] [-refreshServiceAcl] [-getGroup"
+literal|"Configuration] [-refreshUserToGroupsMappings] "
 operator|+
-literal|" [username]] [-addToClusterNodeLabels<\"label1(exclusive=true),label2(exclusive=false),label3\">]"
+literal|"[-refreshAdminAcls] [-refreshServiceAcl] [-getGroup "
 operator|+
-literal|" [-removeFromClusterNodeLabels<label1,label2,label3>] [-replaceLabelsOnNode "
+literal|"[username]] [-addToClusterNodeLabels "
 operator|+
-literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] [-directlyAccessNodeLabelStore]] "
+literal|"<\"label1(exclusive=true),label2(exclusive=false),label3\">] "
+operator|+
+literal|"[-removeFromClusterNodeLabels<label1,label2,label3>] "
+operator|+
+literal|"[-replaceLabelsOnNode "
+operator|+
+literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] "
+operator|+
+literal|"[-directlyAccessNodeLabelStore]] [-updateNodeResource "
+operator|+
+literal|"[NodeID] [MemSize] [vCores] ([OvercommitTimeout]) "
 operator|+
 literal|"[-help [cmd]]"
 argument_list|)
@@ -2347,6 +2356,21 @@ operator|.
 name|contains
 argument_list|(
 literal|"-refreshNodes [-g [timeout in seconds]]: Refresh the hosts information at the "
+operator|+
+literal|"ResourceManager."
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|dataOut
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"-refreshNodesResources: Refresh resources of NodeManagers at the "
 operator|+
 literal|"ResourceManager."
 argument_list|)
@@ -2455,6 +2479,24 @@ literal|"-refreshNodes"
 block|}
 argument_list|,
 literal|"Usage: yarn rmadmin [-refreshNodes [-g [timeout in seconds]]]"
+argument_list|,
+name|dataErr
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|testError
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-help"
+block|,
+literal|"-refreshNodesResources"
+block|}
+argument_list|,
+literal|"Usage: yarn rmadmin [-refreshNodesResources]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -2705,9 +2747,11 @@ expr_stmt|;
 name|String
 name|expectedHelpMsg
 init|=
-literal|"yarn rmadmin [-refreshQueues] [-refreshNodes [-g [timeout in seconds]]] [-refreshSuper"
+literal|"yarn rmadmin [-refreshQueues] [-refreshNodes [-g [timeout in seconds]]] "
 operator|+
-literal|"UserGroupsConfiguration] [-refreshUserToGroupsMappings] "
+literal|"[-refreshNodesResources] [-refreshSuperUserGroupsConfiguration] "
+operator|+
+literal|"[-refreshUserToGroupsMappings] "
 operator|+
 literal|"[-refreshAdminAcls] [-refreshServiceAcl] [-getGroup"
 operator|+
@@ -2718,6 +2762,8 @@ operator|+
 literal|" [-removeFromClusterNodeLabels<label1,label2,label3>] [-replaceLabelsOnNode "
 operator|+
 literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] [-directlyAccessNodeLabelStore]] "
+operator|+
+literal|"[-updateNodeResource [NodeID] [MemSize] [vCores] ([OvercommitTimeout]) "
 operator|+
 literal|"[-transitionToActive [--forceactive]<serviceId>] "
 operator|+

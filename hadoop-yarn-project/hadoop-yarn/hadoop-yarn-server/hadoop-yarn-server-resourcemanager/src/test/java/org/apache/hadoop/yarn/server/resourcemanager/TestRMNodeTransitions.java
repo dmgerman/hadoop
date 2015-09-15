@@ -5236,7 +5236,7 @@ argument_list|,
 literal|2
 argument_list|)
 argument_list|,
-name|RMNode
+name|ResourceOption
 operator|.
 name|OVER_COMMIT_TIMEOUT_MILLIS_DEFAULT
 argument_list|)
@@ -5391,7 +5391,7 @@ argument_list|,
 literal|2
 argument_list|)
 argument_list|,
-name|RMNode
+name|ResourceOption
 operator|.
 name|OVER_COMMIT_TIMEOUT_MILLIS_DEFAULT
 argument_list|)
@@ -5516,7 +5516,7 @@ argument_list|,
 literal|2
 argument_list|)
 argument_list|,
-name|RMNode
+name|ResourceOption
 operator|.
 name|OVER_COMMIT_TIMEOUT_MILLIS_DEFAULT
 argument_list|)
