@@ -2977,9 +2977,9 @@ literal|0
 operator|&&
 name|port
 operator|!=
-name|NameNode
+name|HdfsClientConfigKeys
 operator|.
-name|DEFAULT_PORT
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 condition|)
 block|{
 comment|// Throwing here without any cleanup is fine since we have not

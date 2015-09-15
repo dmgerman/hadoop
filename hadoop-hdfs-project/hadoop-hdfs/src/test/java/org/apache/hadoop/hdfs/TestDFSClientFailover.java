@@ -805,9 +805,9 @@ argument_list|)
 operator|+
 literal|":"
 operator|+
-name|NameNode
+name|HdfsClientConfigKeys
 operator|.
-name|DEFAULT_PORT
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 operator|+
 literal|"/"
 operator|+

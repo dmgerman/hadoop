@@ -342,6 +342,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|ClientProtocol
@@ -361,24 +377,6 @@ operator|.
 name|protocol
 operator|.
 name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockManager
 import|;
 end_import
 
@@ -1313,6 +1311,24 @@ operator|.
 name|CommonConfigurationKeysPublic
 operator|.
 name|FS_TRASH_INTERVAL_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 import|;
 end_import
 
@@ -2469,6 +2485,9 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * @deprecated Use {@link HdfsClientConfigKeys#DFS_NAMENODE_RPC_PORT_DEFAULT}    *             instead.    */
+annotation|@
+name|Deprecated
 DECL|field|DEFAULT_PORT
 specifier|public
 specifier|static
@@ -2476,7 +2495,7 @@ specifier|final
 name|int
 name|DEFAULT_PORT
 init|=
-literal|8020
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 decl_stmt|;
 DECL|field|LOG
 specifier|public
@@ -2961,7 +2980,7 @@ name|createSocketAddr
 argument_list|(
 name|address
 argument_list|,
-name|DEFAULT_PORT
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 argument_list|)
 return|;
 block|}
@@ -3197,9 +3216,11 @@ decl_stmt|;
 name|String
 name|portString
 init|=
+operator|(
 name|port
 operator|==
-name|DEFAULT_PORT
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
+operator|)
 condition|?
 literal|""
 else|:
