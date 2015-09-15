@@ -1163,7 +1163,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Enabling OAuth2 in WebHDFS"
 argument_list|)
@@ -1182,7 +1182,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Not enabling OAuth2 in WebHDFS"
 argument_list|)
