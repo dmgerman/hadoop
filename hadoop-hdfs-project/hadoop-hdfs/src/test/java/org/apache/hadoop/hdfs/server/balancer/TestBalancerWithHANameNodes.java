@@ -622,9 +622,7 @@ name|run
 argument_list|(
 name|namenodes
 argument_list|,
-name|Balancer
-operator|.
-name|Parameters
+name|BalancerParameters
 operator|.
 name|DEFAULT
 argument_list|,
@@ -655,9 +653,7 @@ name|client
 argument_list|,
 name|cluster
 argument_list|,
-name|Balancer
-operator|.
-name|Parameters
+name|BalancerParameters
 operator|.
 name|DEFAULT
 argument_list|)
