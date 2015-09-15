@@ -1025,9 +1025,6 @@ operator|.
 name|getUser
 argument_list|()
 operator|.
-name|toString
-argument_list|()
-operator|.
 name|equals
 argument_list|(
 name|userQuery
@@ -1179,11 +1176,24 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
-DECL|method|getNodeContainers ()
+DECL|method|getNodeContainers (@avax.ws.rs.core.Context HttpServletRequest hsr)
 specifier|public
 name|ContainersInfo
 name|getNodeContainers
-parameter_list|()
+parameter_list|(
+annotation|@
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|core
+operator|.
+name|Context
+name|HttpServletRequest
+name|hsr
+parameter_list|)
 block|{
 name|init
 argument_list|()
@@ -1256,6 +1266,11 @@ name|webapp
 operator|.
 name|name
 argument_list|()
+argument_list|,
+name|hsr
+operator|.
+name|getRemoteUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|allContainers
@@ -1290,11 +1305,24 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
-DECL|method|getNodeContainer (@athParamR) String id)
+DECL|method|getNodeContainer (@avax.ws.rs.core.Context HttpServletRequest hsr, @PathParam(R) String id)
 specifier|public
 name|ContainerInfo
 name|getNodeContainer
 parameter_list|(
+annotation|@
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|core
+operator|.
+name|Context
+name|HttpServletRequest
+name|hsr
+parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
@@ -1393,6 +1421,11 @@ argument_list|,
 name|webapp
 operator|.
 name|name
+argument_list|()
+argument_list|,
+name|hsr
+operator|.
+name|getRemoteUser
 argument_list|()
 argument_list|)
 return|;

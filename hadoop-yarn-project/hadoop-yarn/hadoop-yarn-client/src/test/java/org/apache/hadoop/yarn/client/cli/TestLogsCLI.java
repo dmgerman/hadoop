@@ -1272,7 +1272,14 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 Container log files"
+literal|"                                 container log files. Use \"ALL\" to fetch"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 all the log files for the container."
 argument_list|)
 expr_stmt|;
 name|pw
