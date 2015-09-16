@@ -2697,6 +2697,16 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|waitForMetric
+argument_list|(
+name|metricName
+argument_list|,
+operator|(
+name|int
+operator|)
+name|expectedValue
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 name|expectedValue
