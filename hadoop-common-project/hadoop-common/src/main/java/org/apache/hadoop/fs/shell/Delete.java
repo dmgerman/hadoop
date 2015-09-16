@@ -1140,7 +1140,8 @@ throw|;
 block|}
 block|}
 block|}
-comment|/** empty the trash */
+comment|// delete files from the trash that are older
+comment|// than the retention threshold.
 DECL|class|Expunge
 specifier|static
 class|class
@@ -1173,7 +1174,9 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Empty the Trash"
+literal|"Delete files from the trash that are older "
+operator|+
+literal|"than the retention threshold"
 decl_stmt|;
 comment|// TODO: should probably allow path arguments for the filesystems
 annotation|@
