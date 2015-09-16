@@ -957,6 +957,18 @@ parameter_list|)
 throws|throws
 name|YarnException
 function_decl|;
+comment|/**    * @param attemptId    */
+DECL|method|getPendingResourceRequestsForAttempt ( ApplicationAttemptId attemptId)
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|getPendingResourceRequestsForAttempt
+parameter_list|(
+name|ApplicationAttemptId
+name|attemptId
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

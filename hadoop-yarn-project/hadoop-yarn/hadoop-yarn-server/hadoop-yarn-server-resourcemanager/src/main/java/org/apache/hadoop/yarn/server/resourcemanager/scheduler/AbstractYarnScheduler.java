@@ -3878,6 +3878,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|getPendingResourceRequestsForAttempt ( ApplicationAttemptId attemptId)
 specifier|public
 name|List
