@@ -11095,9 +11095,9 @@ name|createNonHAProxy
 argument_list|(
 name|conf
 argument_list|,
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getAddress
+name|getNNAddress
 argument_list|(
 name|nameNodeUri
 argument_list|)

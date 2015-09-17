@@ -2343,9 +2343,9 @@ operator|.
 name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 argument_list|,
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getAddress
+name|getNNAddress
 argument_list|(
 name|confForNn
 argument_list|)
@@ -2401,9 +2401,9 @@ operator|.
 name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 argument_list|,
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getAddress
+name|getNNAddress
 argument_list|(
 name|confForNn
 argument_list|)
@@ -2638,9 +2638,9 @@ name|NetUtils
 operator|.
 name|getHostPortString
 argument_list|(
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getAddress
+name|getNNAddress
 argument_list|(
 name|conf
 argument_list|)
@@ -2747,9 +2747,9 @@ name|NetUtils
 operator|.
 name|getHostPortString
 argument_list|(
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getAddress
+name|getNNAddress
 argument_list|(
 name|conf
 argument_list|)
