@@ -426,7 +426,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-s<policyName>]<path>"
+literal|"[-p<policyName>]<path>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -439,7 +439,7 @@ literal|"Set a specified erasure coding policy to a directory\n"
 operator|+
 literal|"Options :\n"
 operator|+
-literal|"  -s<policyName> : erasure coding policy name to encode files. "
+literal|"  -p<policyName> : erasure coding policy name to encode files. "
 operator|+
 literal|"If not passed the default policy will be used\n"
 operator|+
@@ -481,7 +481,7 @@ name|StringUtils
 operator|.
 name|popOptionWithArgument
 argument_list|(
-literal|"-s"
+literal|"-p"
 argument_list|,
 name|args
 argument_list|)
