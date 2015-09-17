@@ -969,6 +969,12 @@ name|ApplicationAttemptId
 name|attemptId
 parameter_list|)
 function_decl|;
+comment|/**    * Get cluster max priority.    *     * @return maximum priority of cluster    */
+DECL|method|getMaxClusterLevelAppPriority ()
+name|Priority
+name|getMaxClusterLevelAppPriority
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

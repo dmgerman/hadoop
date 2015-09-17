@@ -1291,6 +1291,21 @@ operator|.
 name|getDefaultNodeLabelExpression
 argument_list|()
 argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Default Application Priority:"
+argument_list|,
+name|Integer
+operator|.
+name|toString
+argument_list|(
+name|lqinfo
+operator|.
+name|getDefaultApplicationPriority
+argument_list|()
+argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 block|}

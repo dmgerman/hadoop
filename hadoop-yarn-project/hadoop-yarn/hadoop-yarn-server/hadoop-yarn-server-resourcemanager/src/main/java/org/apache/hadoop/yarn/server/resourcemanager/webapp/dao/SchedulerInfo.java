@@ -232,6 +232,11 @@ name|SchedulerResourceTypes
 argument_list|>
 name|schedulingResourceTypes
 decl_stmt|;
+DECL|field|maximumClusterPriority
+specifier|protected
+name|int
+name|maximumClusterPriority
+decl_stmt|;
 DECL|method|SchedulerInfo ()
 specifier|public
 name|SchedulerInfo
@@ -334,6 +339,18 @@ operator|.
 name|getSchedulingResourceTypes
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|maximumClusterPriority
+operator|=
+name|rs
+operator|.
+name|getMaxClusterLevelAppPriority
+argument_list|()
+operator|.
+name|getPriority
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getSchedulerType ()
 specifier|public
@@ -384,6 +401,18 @@ name|schedulingResourceTypes
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+DECL|method|getMaxClusterLevelAppPriority ()
+specifier|public
+name|int
+name|getMaxClusterLevelAppPriority
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|maximumClusterPriority
 return|;
 block|}
 block|}

@@ -185,6 +185,11 @@ specifier|protected
 name|String
 name|defaultNodeLabelExpression
 decl_stmt|;
+DECL|field|defaultPriority
+specifier|protected
+name|int
+name|defaultPriority
+decl_stmt|;
 annotation|@
 name|XmlTransient
 DECL|field|orderingPolicyInfo
@@ -334,6 +339,16 @@ operator|.
 name|getDefaultNodeLabelExpression
 argument_list|()
 expr_stmt|;
+name|defaultPriority
+operator|=
+name|q
+operator|.
+name|getDefaultApplicationPriority
+argument_list|()
+operator|.
+name|getPriority
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getNumActiveApplications ()
 specifier|public
@@ -474,6 +489,16 @@ parameter_list|()
 block|{
 return|return
 name|defaultNodeLabelExpression
+return|;
+block|}
+DECL|method|getDefaultApplicationPriority ()
+specifier|public
+name|int
+name|getDefaultApplicationPriority
+parameter_list|()
+block|{
+return|return
+name|defaultPriority
 return|;
 block|}
 block|}
