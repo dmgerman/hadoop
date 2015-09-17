@@ -5672,6 +5672,14 @@ operator|.
 name|size
 argument_list|()
 expr_stmt|;
+name|int
+name|reducePending
+init|=
+name|reduces
+operator|.
+name|size
+argument_list|()
+decl_stmt|;
 while|while
 condition|(
 name|it
@@ -5841,10 +5849,11 @@ argument_list|)
 operator|<=
 literal|0
 operator|||
-name|reduces
-operator|.
-name|isEmpty
-argument_list|()
+operator|(
+name|reducePending
+operator|<=
+literal|0
+operator|)
 condition|)
 block|{
 name|LOG
@@ -5861,17 +5870,18 @@ literal|" container memory less than required "
 operator|+
 name|reduceResourceRequest
 operator|+
-literal|" or no pending reduce tasks - reduces.isEmpty="
-operator|+
-name|reduces
-operator|.
-name|isEmpty
-argument_list|()
+literal|" or no pending reduce tasks."
 argument_list|)
 expr_stmt|;
 name|isAssignable
 operator|=
 literal|false
+expr_stmt|;
+block|}
+else|else
+block|{
+name|reducePending
+operator|--
 expr_stmt|;
 block|}
 block|}
