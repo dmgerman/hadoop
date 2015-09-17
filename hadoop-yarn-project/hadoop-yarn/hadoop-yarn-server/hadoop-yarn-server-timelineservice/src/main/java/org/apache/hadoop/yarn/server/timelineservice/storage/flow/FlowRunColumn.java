@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.apptoflow
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.flow
 package|package
 name|org
 operator|.
@@ -20,9 +20,19 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|apptoflow
+name|flow
 package|;
 end_package
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
 
 begin_import
 import|import
@@ -162,7 +172,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TypedBufferedMutator
+name|TimelineWriterUtils
 import|;
 end_import
 
@@ -182,67 +192,68 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|flow
+name|common
 operator|.
-name|Attribute
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
+name|TypedBufferedMutator
 import|;
 end_import
 
 begin_comment
-comment|/**  * Identifies fully qualified columns for the {@link AppToFlowTable}.  */
+comment|/**  * Identifies fully qualified columns for the {@link FlowRunTable}.  */
 end_comment
 
 begin_enum
-DECL|enum|AppToFlowColumn
+DECL|enum|FlowRunColumn
 specifier|public
 enum|enum
-name|AppToFlowColumn
+name|FlowRunColumn
 implements|implements
 name|Column
 argument_list|<
-name|AppToFlowTable
+name|FlowRunTable
 argument_list|>
 block|{
-comment|/**    * The flow ID    */
-DECL|enumConstant|FLOW_ID
-name|FLOW_ID
+comment|/**    * When the flow was started. This is the minimum of currently known    * application start times.    */
+DECL|enumConstant|MIN_START_TIME
+name|MIN_START_TIME
 argument_list|(
-name|AppToFlowColumnFamily
+name|FlowRunColumnFamily
 operator|.
-name|MAPPING
+name|INFO
 argument_list|,
-literal|"flow_id"
+literal|"min_start_time"
+argument_list|,
+name|AggregationOperation
+operator|.
+name|MIN
 argument_list|)
 block|,
-comment|/**    * The flow run ID    */
-DECL|enumConstant|FLOW_RUN_ID
-name|FLOW_RUN_ID
+comment|/**    * When the flow ended. This is the maximum of currently known application end    * times.    */
+DECL|enumConstant|MAX_END_TIME
+name|MAX_END_TIME
 argument_list|(
-name|AppToFlowColumnFamily
+name|FlowRunColumnFamily
 operator|.
-name|MAPPING
+name|INFO
 argument_list|,
-literal|"flow_run_id"
+literal|"max_end_time"
+argument_list|,
+name|AggregationOperation
+operator|.
+name|MAX
+argument_list|)
+block|,
+comment|/**    * The version of the flow that this flow belongs to.    */
+DECL|enumConstant|FLOW_VERSION
+name|FLOW_VERSION
+argument_list|(
+name|FlowRunColumnFamily
+operator|.
+name|INFO
+argument_list|,
+literal|"flow_version"
+argument_list|,
+literal|null
 argument_list|)
 block|;
 DECL|field|column
@@ -250,7 +261,7 @@ specifier|private
 specifier|final
 name|ColumnHelper
 argument_list|<
-name|AppToFlowTable
+name|FlowRunTable
 argument_list|>
 name|column
 decl_stmt|;
@@ -259,7 +270,7 @@ specifier|private
 specifier|final
 name|ColumnFamily
 argument_list|<
-name|AppToFlowTable
+name|FlowRunTable
 argument_list|>
 name|columnFamily
 decl_stmt|;
@@ -276,17 +287,27 @@ name|byte
 index|[]
 name|columnQualifierBytes
 decl_stmt|;
-DECL|method|AppToFlowColumn (ColumnFamily<AppToFlowTable> columnFamily, String columnQualifier)
-name|AppToFlowColumn
+DECL|field|aggOp
+specifier|private
+specifier|final
+name|AggregationOperation
+name|aggOp
+decl_stmt|;
+DECL|method|FlowRunColumn (ColumnFamily<FlowRunTable> columnFamily, String columnQualifier, AggregationOperation aggOp)
+specifier|private
+name|FlowRunColumn
 parameter_list|(
 name|ColumnFamily
 argument_list|<
-name|AppToFlowTable
+name|FlowRunTable
 argument_list|>
 name|columnFamily
 parameter_list|,
 name|String
 name|columnQualifier
+parameter_list|,
+name|AggregationOperation
+name|aggOp
 parameter_list|)
 block|{
 name|this
@@ -300,6 +321,12 @@ operator|.
 name|columnQualifier
 operator|=
 name|columnQualifier
+expr_stmt|;
+name|this
+operator|.
+name|aggOp
+operator|=
+name|aggOp
 expr_stmt|;
 comment|// Future-proof by ensuring the right column prefix hygiene.
 name|this
@@ -327,7 +354,7 @@ operator|=
 operator|new
 name|ColumnHelper
 argument_list|<
-name|AppToFlowTable
+name|FlowRunTable
 argument_list|>
 argument_list|(
 name|columnFamily
@@ -345,7 +372,32 @@ return|return
 name|columnQualifier
 return|;
 block|}
-DECL|method|store (byte[] rowKey, TypedBufferedMutator<AppToFlowTable> tableMutator, Long timestamp, Object inputValue, Attribute... attributes)
+DECL|method|getColumnQualifierBytes ()
+specifier|public
+name|byte
+index|[]
+name|getColumnQualifierBytes
+parameter_list|()
+block|{
+return|return
+name|columnQualifierBytes
+operator|.
+name|clone
+argument_list|()
+return|;
+block|}
+DECL|method|getAggregationOperation ()
+specifier|public
+name|AggregationOperation
+name|getAggregationOperation
+parameter_list|()
+block|{
+return|return
+name|aggOp
+return|;
+block|}
+comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.Column#store    * (byte[], org.apache.hadoop.yarn.server.timelineservice.storage.common.    * TypedBufferedMutator, java.lang.Long, java.lang.Object,    * org.apache.hadoop.yarn.server.timelineservice.storage.flow.Attribute[])    */
+DECL|method|store (byte[] rowKey, TypedBufferedMutator<FlowRunTable> tableMutator, Long timestamp, Object inputValue, Attribute... attributes)
 specifier|public
 name|void
 name|store
@@ -356,7 +408,7 @@ name|rowKey
 parameter_list|,
 name|TypedBufferedMutator
 argument_list|<
-name|AppToFlowTable
+name|FlowRunTable
 argument_list|>
 name|tableMutator
 parameter_list|,
@@ -373,6 +425,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Attribute
+index|[]
+name|combinedAttributes
+init|=
+name|TimelineWriterUtils
+operator|.
+name|combineAttributes
+argument_list|(
+name|attributes
+argument_list|,
+name|aggOp
+argument_list|)
+decl_stmt|;
 name|column
 operator|.
 name|store
@@ -387,7 +452,7 @@ name|timestamp
 argument_list|,
 name|inputValue
 argument_list|,
-name|attributes
+name|combinedAttributes
 argument_list|)
 expr_stmt|;
 block|}
@@ -413,12 +478,12 @@ name|columnQualifierBytes
 argument_list|)
 return|;
 block|}
-comment|/**    * Retrieve an {@link AppToFlowColumn} given a name, or null if there is no    * match. The following holds true: {@code columnFor(x) == columnFor(y)} if    * and only if {@code x.equals(y)} or {@code (x == y == null)}    *    * @param columnQualifier Name of the column to retrieve    * @return the corresponding {@link AppToFlowColumn} or null    */
+comment|/**    * Retrieve an {@link FlowRunColumn} given a name, or null if there is no    * match. The following holds true: {@code columnFor(x) == columnFor(y)} if    * and only if {@code x.equals(y)} or {@code (x == y == null)}    *    * @param columnQualifier    *          Name of the column to retrieve    * @return the corresponding {@link FlowRunColumn} or null    */
 DECL|method|columnFor (String columnQualifier)
 specifier|public
 specifier|static
 specifier|final
-name|AppToFlowColumn
+name|FlowRunColumn
 name|columnFor
 parameter_list|(
 name|String
@@ -428,10 +493,10 @@ block|{
 comment|// Match column based on value, assume column family matches.
 for|for
 control|(
-name|AppToFlowColumn
+name|FlowRunColumn
 name|ec
 range|:
-name|AppToFlowColumn
+name|FlowRunColumn
 operator|.
 name|values
 argument_list|()
@@ -461,15 +526,15 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Retrieve an {@link AppToFlowColumn} given a name, or null if there is no    * match. The following holds true: {@code columnFor(a,x) == columnFor(b,y)}    * if and only if {@code a.equals(b)& x.equals(y)} or    * {@code (x == y == null)}    *    * @param columnFamily The columnFamily for which to retrieve the column.    * @param name Name of the column to retrieve    * @return the corresponding {@link AppToFlowColumn} or null if both arguments    *         don't match.    */
-DECL|method|columnFor ( AppToFlowColumnFamily columnFamily, String name)
+comment|/**    * Retrieve an {@link FlowRunColumn} given a name, or null if there is no    * match. The following holds true: {@code columnFor(a,x) == columnFor(b,y)}    * if and only if {@code a.equals(b)& x.equals(y)} or    * {@code (x == y == null)}    *    * @param columnFamily    *          The columnFamily for which to retrieve the column.    * @param name    *          Name of the column to retrieve    * @return the corresponding {@link FlowRunColumn} or null if both arguments    *         don't match.    */
+DECL|method|columnFor (FlowRunColumnFamily columnFamily, String name)
 specifier|public
 specifier|static
 specifier|final
-name|AppToFlowColumn
+name|FlowRunColumn
 name|columnFor
 parameter_list|(
-name|AppToFlowColumnFamily
+name|FlowRunColumnFamily
 name|columnFamily
 parameter_list|,
 name|String
@@ -478,10 +543,10 @@ parameter_list|)
 block|{
 for|for
 control|(
-name|AppToFlowColumn
+name|FlowRunColumn
 name|ec
 range|:
-name|AppToFlowColumn
+name|FlowRunColumn
 operator|.
 name|values
 argument_list|()

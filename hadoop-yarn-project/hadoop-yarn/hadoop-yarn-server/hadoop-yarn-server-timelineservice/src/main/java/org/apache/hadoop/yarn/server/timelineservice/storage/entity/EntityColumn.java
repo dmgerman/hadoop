@@ -36,6 +36,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -173,6 +183,28 @@ operator|.
 name|common
 operator|.
 name|TypedBufferedMutator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|flow
+operator|.
+name|Attribute
 import|;
 end_import
 
@@ -346,7 +378,7 @@ return|return
 name|columnQualifier
 return|;
 block|}
-DECL|method|store (byte[] rowKey, TypedBufferedMutator<EntityTable> tableMutator, Long timestamp, Object inputValue)
+DECL|method|store (byte[] rowKey, TypedBufferedMutator<EntityTable> tableMutator, Long timestamp, Object inputValue, Attribute... attributes)
 specifier|public
 name|void
 name|store
@@ -366,6 +398,10 @@ name|timestamp
 parameter_list|,
 name|Object
 name|inputValue
+parameter_list|,
+name|Attribute
+modifier|...
+name|attributes
 parameter_list|)
 throws|throws
 name|IOException
@@ -383,6 +419,8 @@ argument_list|,
 name|timestamp
 argument_list|,
 name|inputValue
+argument_list|,
+name|attributes
 argument_list|)
 expr_stmt|;
 block|}

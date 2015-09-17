@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.entity
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.flow
 package|package
 name|org
 operator|.
@@ -20,7 +20,7 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|entity
+name|flow
 package|;
 end_package
 
@@ -192,7 +192,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TypedBufferedMutator
+name|TimelineWriterUtils
 import|;
 end_import
 
@@ -212,91 +212,40 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|flow
+name|common
 operator|.
-name|Attribute
+name|TypedBufferedMutator
 import|;
 end_import
 
 begin_comment
-comment|/**  * Identifies partially qualified columns for the entity table.  */
+comment|/**  * Identifies partially qualified columns for the {@link FlowRunTable}.  */
 end_comment
 
 begin_enum
-DECL|enum|EntityColumnPrefix
+DECL|enum|FlowRunColumnPrefix
 specifier|public
 enum|enum
-name|EntityColumnPrefix
+name|FlowRunColumnPrefix
 implements|implements
 name|ColumnPrefix
 argument_list|<
-name|EntityTable
+name|FlowRunTable
 argument_list|>
 block|{
-comment|/**    * To store TimelineEntity getIsRelatedToEntities values.    */
-DECL|enumConstant|IS_RELATED_TO
-name|IS_RELATED_TO
-argument_list|(
-name|EntityColumnFamily
-operator|.
-name|INFO
-argument_list|,
-literal|"s"
-argument_list|)
-block|,
-comment|/**    * To store TimelineEntity getRelatesToEntities values.    */
-DECL|enumConstant|RELATES_TO
-name|RELATES_TO
-argument_list|(
-name|EntityColumnFamily
-operator|.
-name|INFO
-argument_list|,
-literal|"r"
-argument_list|)
-block|,
-comment|/**    * To store TimelineEntity info values.    */
-DECL|enumConstant|INFO
-name|INFO
-argument_list|(
-name|EntityColumnFamily
-operator|.
-name|INFO
-argument_list|,
-literal|"i"
-argument_list|)
-block|,
-comment|/**    * Lifecycle events for an entity    */
-DECL|enumConstant|EVENT
-name|EVENT
-argument_list|(
-name|EntityColumnFamily
-operator|.
-name|INFO
-argument_list|,
-literal|"e"
-argument_list|)
-block|,
-comment|/**    * Config column stores configuration with config key as the column name.    */
-DECL|enumConstant|CONFIG
-name|CONFIG
-argument_list|(
-name|EntityColumnFamily
-operator|.
-name|CONFIGS
-argument_list|,
-literal|null
-argument_list|)
-block|,
-comment|/**    * Metrics are stored with the metric name as the column name.    */
+comment|/**    * To store flow run info values.    */
 DECL|enumConstant|METRIC
 name|METRIC
 argument_list|(
-name|EntityColumnFamily
+name|FlowRunColumnFamily
 operator|.
-name|METRICS
+name|INFO
 argument_list|,
-literal|null
+literal|"m"
+argument_list|,
+name|AggregationOperation
+operator|.
+name|SUM
 argument_list|)
 block|;
 DECL|field|column
@@ -304,7 +253,7 @@ specifier|private
 specifier|final
 name|ColumnHelper
 argument_list|<
-name|EntityTable
+name|FlowRunTable
 argument_list|>
 name|column
 decl_stmt|;
@@ -313,7 +262,7 @@ specifier|private
 specifier|final
 name|ColumnFamily
 argument_list|<
-name|EntityTable
+name|FlowRunTable
 argument_list|>
 name|columnFamily
 decl_stmt|;
@@ -331,18 +280,28 @@ name|byte
 index|[]
 name|columnPrefixBytes
 decl_stmt|;
-comment|/**    * Private constructor, meant to be used by the enum definition.    *    * @param columnFamily that this column is stored in.    * @param columnPrefix for this column.    */
-DECL|method|EntityColumnPrefix (ColumnFamily<EntityTable> columnFamily, String columnPrefix)
-name|EntityColumnPrefix
+DECL|field|aggOp
+specifier|private
+specifier|final
+name|AggregationOperation
+name|aggOp
+decl_stmt|;
+comment|/**    * Private constructor, meant to be used by the enum definition.    *    * @param columnFamily    *          that this column is stored in.    * @param columnPrefix    *          for this column.    */
+DECL|method|FlowRunColumnPrefix (ColumnFamily<FlowRunTable> columnFamily, String columnPrefix, AggregationOperation fra)
+specifier|private
+name|FlowRunColumnPrefix
 parameter_list|(
 name|ColumnFamily
 argument_list|<
-name|EntityTable
+name|FlowRunTable
 argument_list|>
 name|columnFamily
 parameter_list|,
 name|String
 name|columnPrefix
+parameter_list|,
+name|AggregationOperation
+name|fra
 parameter_list|)
 block|{
 name|column
@@ -350,7 +309,7 @@ operator|=
 operator|new
 name|ColumnHelper
 argument_list|<
-name|EntityTable
+name|FlowRunTable
 argument_list|>
 argument_list|(
 name|columnFamily
@@ -404,6 +363,12 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|aggOp
+operator|=
+name|fra
+expr_stmt|;
 block|}
 comment|/**    * @return the column name value    */
 DECL|method|getColumnPrefix ()
@@ -416,8 +381,32 @@ return|return
 name|columnPrefix
 return|;
 block|}
-comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.ColumnPrefix    * #store(byte[],    * org.apache.hadoop.yarn.server.timelineservice.storage.common.    * TypedBufferedMutator, java.lang.String, java.lang.Long, java.lang.Object,    * org.apache.hadoop.yarn.server.timelineservice.storage.flow.Attribute[])    */
-DECL|method|store (byte[] rowKey, TypedBufferedMutator<EntityTable> tableMutator, String qualifier, Long timestamp, Object inputValue, Attribute... attributes)
+DECL|method|getColumnPrefixBytes ()
+specifier|public
+name|byte
+index|[]
+name|getColumnPrefixBytes
+parameter_list|()
+block|{
+return|return
+name|columnPrefixBytes
+operator|.
+name|clone
+argument_list|()
+return|;
+block|}
+DECL|method|getAttribute ()
+specifier|public
+name|AggregationOperation
+name|getAttribute
+parameter_list|()
+block|{
+return|return
+name|aggOp
+return|;
+block|}
+comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.ColumnPrefix    * #store(byte[],    * org.apache.hadoop.yarn.server.timelineservice.storage.common.    * TypedBufferedMutator, java.lang.String, java.lang.Long, java.lang.Object)    */
+DECL|method|store (byte[] rowKey, TypedBufferedMutator<FlowRunTable> tableMutator, String qualifier, Long timestamp, Object inputValue, Attribute... attributes)
 specifier|public
 name|void
 name|store
@@ -428,7 +417,7 @@ name|rowKey
 parameter_list|,
 name|TypedBufferedMutator
 argument_list|<
-name|EntityTable
+name|FlowRunTable
 argument_list|>
 name|tableMutator
 parameter_list|,
@@ -487,6 +476,21 @@ argument_list|,
 name|qualifier
 argument_list|)
 decl_stmt|;
+name|Attribute
+index|[]
+name|combinedAttributes
+init|=
+name|TimelineWriterUtils
+operator|.
+name|combineAttributes
+argument_list|(
+name|attributes
+argument_list|,
+name|this
+operator|.
+name|aggOp
+argument_list|)
+decl_stmt|;
 name|column
 operator|.
 name|store
@@ -501,12 +505,12 @@ name|timestamp
 argument_list|,
 name|inputValue
 argument_list|,
-name|attributes
+name|combinedAttributes
 argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.ColumnPrefix    * #store(byte[],    * org.apache.hadoop.yarn.server.timelineservice.storage.common.    * TypedBufferedMutator, java.lang.String, java.lang.Long, java.lang.Object)    */
-DECL|method|store (byte[] rowKey, TypedBufferedMutator<EntityTable> tableMutator, byte[] qualifier, Long timestamp, Object inputValue, Attribute... attributes)
+DECL|method|store (byte[] rowKey, TypedBufferedMutator<FlowRunTable> tableMutator, byte[] qualifier, Long timestamp, Object inputValue, Attribute... attributes)
 specifier|public
 name|void
 name|store
@@ -517,7 +521,7 @@ name|rowKey
 parameter_list|,
 name|TypedBufferedMutator
 argument_list|<
-name|EntityTable
+name|FlowRunTable
 argument_list|>
 name|tableMutator
 parameter_list|,
@@ -577,6 +581,21 @@ argument_list|,
 name|qualifier
 argument_list|)
 decl_stmt|;
+name|Attribute
+index|[]
+name|combinedAttributes
+init|=
+name|TimelineWriterUtils
+operator|.
+name|combineAttributes
+argument_list|(
+name|attributes
+argument_list|,
+name|this
+operator|.
+name|aggOp
+argument_list|)
+decl_stmt|;
 name|column
 operator|.
 name|store
@@ -591,7 +610,7 @@ name|timestamp
 argument_list|,
 name|inputValue
 argument_list|,
-name|attributes
+name|combinedAttributes
 argument_list|)
 expr_stmt|;
 block|}
@@ -664,38 +683,11 @@ name|columnPrefixBytes
 argument_list|)
 return|;
 block|}
-comment|/**    * @param result from which to read columns    * @return the latest values of columns in the column family. The column    *         qualifier is returned as a list of parts, each part a byte[]. This    *         is to facilitate returning byte arrays of values that were not    *         Strings. If they can be treated as Strings, you should use    *         {@link #readResults(Result)} instead.    * @throws IOException    */
-DECL|method|readResultsHavingCompoundColumnQualifiers (Result result)
-specifier|public
-name|Map
-argument_list|<
-name|?
-argument_list|,
-name|Object
-argument_list|>
-name|readResultsHavingCompoundColumnQualifiers
-parameter_list|(
-name|Result
-name|result
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|column
-operator|.
-name|readResultsHavingCompoundColumnQualifiers
-argument_list|(
-name|result
-argument_list|,
-name|columnPrefixBytes
-argument_list|)
-return|;
-block|}
 comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.ColumnPrefix    * #readResultsWithTimestamps(org.apache.hadoop.hbase.client.Result)    */
+DECL|method|readResultsWithTimestamps ( Result result)
 specifier|public
 parameter_list|<
-name|V
+name|T
 parameter_list|>
 name|NavigableMap
 argument_list|<
@@ -705,10 +697,9 @@ name|NavigableMap
 argument_list|<
 name|Long
 argument_list|,
-name|V
+name|T
 argument_list|>
 argument_list|>
-DECL|method|readResultsWithTimestamps (Result result)
 name|readResultsWithTimestamps
 parameter_list|(
 name|Result
@@ -728,12 +719,12 @@ name|columnPrefixBytes
 argument_list|)
 return|;
 block|}
-comment|/**    * Retrieve an {@link EntityColumnPrefix} given a name, or null if there is no    * match. The following holds true: {@code columnFor(x) == columnFor(y)} if    * and only if {@code x.equals(y)} or {@code (x == y == null)}    *    * @param columnPrefix Name of the column to retrieve    * @return the corresponding {@link EntityColumnPrefix} or null    */
+comment|/**    * Retrieve an {@link FlowRunColumnPrefix} given a name, or null if there is    * no match. The following holds true: {@code columnFor(x) == columnFor(y)} if    * and only if {@code x.equals(y)} or {@code (x == y == null)}    *    * @param columnPrefix    *          Name of the column to retrieve    * @return the corresponding {@link FlowRunColumnPrefix} or null    */
 DECL|method|columnFor (String columnPrefix)
 specifier|public
 specifier|static
 specifier|final
-name|EntityColumnPrefix
+name|FlowRunColumnPrefix
 name|columnFor
 parameter_list|(
 name|String
@@ -743,10 +734,10 @@ block|{
 comment|// Match column based on value, assume column family matches.
 for|for
 control|(
-name|EntityColumnPrefix
-name|ecp
+name|FlowRunColumnPrefix
+name|frcp
 range|:
-name|EntityColumnPrefix
+name|FlowRunColumnPrefix
 operator|.
 name|values
 argument_list|()
@@ -755,7 +746,7 @@ block|{
 comment|// Find a match based only on name.
 if|if
 condition|(
-name|ecp
+name|frcp
 operator|.
 name|getColumnPrefix
 argument_list|()
@@ -767,7 +758,7 @@ argument_list|)
 condition|)
 block|{
 return|return
-name|ecp
+name|frcp
 return|;
 block|}
 block|}
@@ -776,15 +767,15 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Retrieve an {@link EntityColumnPrefix} given a name, or null if there is no    * match. The following holds true: {@code columnFor(a,x) == columnFor(b,y)}    * if and only if {@code (x == y == null)} or    * {@code a.equals(b)& x.equals(y)}    *    * @param columnFamily The columnFamily for which to retrieve the column.    * @param columnPrefix Name of the column to retrieve    * @return the corresponding {@link EntityColumnPrefix} or null if both    *         arguments don't match.    */
-DECL|method|columnFor ( EntityColumnFamily columnFamily, String columnPrefix)
+comment|/**    * Retrieve an {@link FlowRunColumnPrefix} given a name, or null if there is    * no match. The following holds true:    * {@code columnFor(a,x) == columnFor(b,y)} if and only if    * {@code (x == y == null)} or {@code a.equals(b)& x.equals(y)}    *    * @param columnFamily    *          The columnFamily for which to retrieve the column.    * @param columnPrefix    *          Name of the column to retrieve    * @return the corresponding {@link FlowRunColumnPrefix} or null if both    *         arguments don't match.    */
+DECL|method|columnFor ( FlowRunColumnFamily columnFamily, String columnPrefix)
 specifier|public
 specifier|static
 specifier|final
-name|EntityColumnPrefix
+name|FlowRunColumnPrefix
 name|columnFor
 parameter_list|(
-name|EntityColumnFamily
+name|FlowRunColumnFamily
 name|columnFamily
 parameter_list|,
 name|String
@@ -795,10 +786,10 @@ comment|// TODO: needs unit test to confirm and need to update javadoc to explai
 comment|// null prefix case.
 for|for
 control|(
-name|EntityColumnPrefix
-name|ecp
+name|FlowRunColumnPrefix
+name|frcp
 range|:
-name|EntityColumnPrefix
+name|FlowRunColumnPrefix
 operator|.
 name|values
 argument_list|()
@@ -807,7 +798,7 @@ block|{
 comment|// Find a match based column family and on name.
 if|if
 condition|(
-name|ecp
+name|frcp
 operator|.
 name|columnFamily
 operator|.
@@ -825,7 +816,7 @@ literal|null
 operator|)
 operator|&&
 operator|(
-name|ecp
+name|frcp
 operator|.
 name|getColumnPrefix
 argument_list|()
@@ -835,7 +826,7 @@ operator|)
 operator|)
 operator|||
 operator|(
-name|ecp
+name|frcp
 operator|.
 name|getColumnPrefix
 argument_list|()
@@ -849,7 +840,7 @@ operator|)
 condition|)
 block|{
 return|return
-name|ecp
+name|frcp
 return|;
 block|}
 block|}

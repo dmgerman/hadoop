@@ -84,6 +84,28 @@ name|Result
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|flow
+operator|.
+name|Attribute
+import|;
+end_import
+
 begin_comment
 comment|/**  * Used to represent a partially qualified column, where the actual column name  * will be composed of a prefix and the remainder of the column qualifier. The  * prefix can be null, in which case the column qualifier will be completely  * determined when the values are stored.  */
 end_comment
@@ -97,8 +119,41 @@ parameter_list|<
 name|T
 parameter_list|>
 block|{
-comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey identifying the row to write. Nothing gets written when null.    * @param tableMutator used to modify the underlying HBase table. Caller is    *          responsible to pass a mutator for the table that actually has this    *          column.    * @param qualifier column qualifier. Nothing gets written when null.    * @param timestamp version timestamp. When null the server timestamp will be    *          used.    * @param inputValue the value to write to the rowKey and column qualifier.    *          Nothing gets written when null.    * @throws IOException    */
-DECL|method|store (byte[] rowKey, TypedBufferedMutator<T> tableMutator, String qualifier, Long timestamp, Object inputValue)
+comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey identifying the row to write. Nothing gets written when null.    * @param tableMutator used to modify the underlying HBase table. Caller is    *          responsible to pass a mutator for the table that actually has this    *          column.    * @param qualifier column qualifier. Nothing gets written when null.    * @param timestamp version timestamp. When null the server timestamp will be    *          used.    *@param attributes attributes for the mutation that are used by the coprocessor    *          to set/read the cell tags    * @param inputValue the value to write to the rowKey and column qualifier.    *          Nothing gets written when null.    * @throws IOException    */
+DECL|method|store (byte[] rowKey, TypedBufferedMutator<T> tableMutator, byte[] qualifier, Long timestamp, Object inputValue, Attribute... attributes)
+specifier|public
+name|void
+name|store
+parameter_list|(
+name|byte
+index|[]
+name|rowKey
+parameter_list|,
+name|TypedBufferedMutator
+argument_list|<
+name|T
+argument_list|>
+name|tableMutator
+parameter_list|,
+name|byte
+index|[]
+name|qualifier
+parameter_list|,
+name|Long
+name|timestamp
+parameter_list|,
+name|Object
+name|inputValue
+parameter_list|,
+name|Attribute
+modifier|...
+name|attributes
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey identifying the row to write. Nothing gets written when null.    * @param tableMutator used to modify the underlying HBase table. Caller is    *          responsible to pass a mutator for the table that actually has this    *          column.    * @param qualifier column qualifier. Nothing gets written when null.    * @param timestamp version timestamp. When null the server timestamp will be    *          used.    *@param attributes attributes for the mutation that are used by the coprocessor    *          to set/read the cell tags    * @param inputValue the value to write to the rowKey and column qualifier.    *          Nothing gets written when null.    * @throws IOException    */
+DECL|method|store (byte[] rowKey, TypedBufferedMutator<T> tableMutator, String qualifier, Long timestamp, Object inputValue, Attribute... attributes)
 specifier|public
 name|void
 name|store
@@ -121,6 +176,10 @@ name|timestamp
 parameter_list|,
 name|Object
 name|inputValue
+parameter_list|,
+name|Attribute
+modifier|...
+name|attributes
 parameter_list|)
 throws|throws
 name|IOException

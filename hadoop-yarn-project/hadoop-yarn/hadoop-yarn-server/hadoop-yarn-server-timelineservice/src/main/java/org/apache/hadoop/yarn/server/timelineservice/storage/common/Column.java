@@ -64,6 +64,28 @@ name|Result
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|flow
+operator|.
+name|Attribute
+import|;
+end_import
+
 begin_comment
 comment|/**  * A Column represents the way to store a fully qualified column in a specific  * table.  */
 end_comment
@@ -77,8 +99,8 @@ parameter_list|<
 name|T
 parameter_list|>
 block|{
-comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey identifying the row to write. Nothing gets written when null.    * @param tableMutator used to modify the underlying HBase table. Caller is    *          responsible to pass a mutator for the table that actually has this    *          column.    * @param timestamp version timestamp. When null the server timestamp will be    *          used.    * @param inputValue the value to write to the rowKey and column qualifier.    *          Nothing gets written when null.    * @throws IOException    */
-DECL|method|store (byte[] rowKey, TypedBufferedMutator<T> tableMutator, Long timestamp, Object inputValue)
+comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey identifying the row to write. Nothing gets written when null.    * @param tableMutator used to modify the underlying HBase table. Caller is    *          responsible to pass a mutator for the table that actually has this    *          column.    * @param timestamp version timestamp. When null the server timestamp will be    *          used.    * @param attributes Map of attributes for this mutation. used in the coprocessor    *          to set/read the cell tags. Can be null.    * @param inputValue the value to write to the rowKey and column qualifier.    *          Nothing gets written when null.    * @throws IOException    */
+DECL|method|store (byte[] rowKey, TypedBufferedMutator<T> tableMutator, Long timestamp, Object inputValue, Attribute... attributes)
 specifier|public
 name|void
 name|store
@@ -98,6 +120,10 @@ name|timestamp
 parameter_list|,
 name|Object
 name|inputValue
+parameter_list|,
+name|Attribute
+modifier|...
+name|attributes
 parameter_list|)
 throws|throws
 name|IOException
