@@ -941,7 +941,7 @@ return|;
 comment|// partial cell
 block|}
 comment|/**    * Get the next completed striped read task    *    * @return {@link StripingChunkReadResult} indicating the status of the read task    *          succeeded, and the block index of the task. If the method times    *          out without getting any completed read tasks, -1 is returned as    *          block index.    * @throws InterruptedException    */
-DECL|method|getNextCompletedStripedRead ( CompletionService<Void> readService, Map<Future<Void>, Integer> futures, final long threshold)
+DECL|method|getNextCompletedStripedRead ( CompletionService<Void> readService, Map<Future<Void>, Integer> futures, final long timeoutMillis)
 specifier|public
 specifier|static
 name|StripingChunkReadResult
@@ -966,7 +966,7 @@ name|futures
 parameter_list|,
 specifier|final
 name|long
-name|threshold
+name|timeoutMillis
 parameter_list|)
 throws|throws
 name|InterruptedException
@@ -994,7 +994,7 @@ try|try
 block|{
 if|if
 condition|(
-name|threshold
+name|timeoutMillis
 operator|>
 literal|0
 condition|)
@@ -1005,7 +1005,7 @@ name|readService
 operator|.
 name|poll
 argument_list|(
-name|threshold
+name|timeoutMillis
 argument_list|,
 name|TimeUnit
 operator|.

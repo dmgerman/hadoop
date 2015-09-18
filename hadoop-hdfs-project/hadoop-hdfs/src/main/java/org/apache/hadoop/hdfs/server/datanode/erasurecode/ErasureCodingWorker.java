@@ -894,11 +894,11 @@ specifier|private
 name|ThreadPoolExecutor
 name|STRIPED_READ_THREAD_POOL
 decl_stmt|;
-DECL|field|STRIPED_READ_THRESHOLD_MILLIS
+DECL|field|STRIPED_READ_TIMEOUT_MILLIS
 specifier|private
 specifier|final
 name|int
-name|STRIPED_READ_THRESHOLD_MILLIS
+name|STRIPED_READ_TIMEOUT_MILLIS
 decl_stmt|;
 DECL|field|STRIPED_READ_BUFFER_SIZE
 specifier|private
@@ -929,7 +929,7 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
-name|STRIPED_READ_THRESHOLD_MILLIS
+name|STRIPED_READ_TIMEOUT_MILLIS
 operator|=
 name|conf
 operator|.
@@ -937,11 +937,11 @@ name|getInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_STRIPED_READ_THRESHOLD_MILLIS_KEY
+name|DFS_DATANODE_STRIPED_READ_TIMEOUT_MILLIS_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_STRIPED_READ_THRESHOLD_MILLIS_DEFAULT
+name|DFS_DATANODE_STRIPED_READ_TIMEOUT_MILLIS_DEFAULT
 argument_list|)
 expr_stmt|;
 name|initializeStripedReadThreadPool
@@ -2927,7 +2927,7 @@ name|readService
 argument_list|,
 name|futures
 argument_list|,
-name|STRIPED_READ_THRESHOLD_MILLIS
+name|STRIPED_READ_TIMEOUT_MILLIS
 argument_list|)
 decl_stmt|;
 name|int
