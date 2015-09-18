@@ -130,6 +130,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSUtilClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|MiniDFSCluster
 import|;
 end_import
@@ -598,7 +612,6 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// provide namenodes names for the job to get the delegation tokens for
-comment|//String nnUri = dfsCluster.getNameNode().getUri(namenode).toString();
 name|NameNode
 name|nn
 init|=
@@ -610,9 +623,9 @@ decl_stmt|;
 name|URI
 name|nnUri
 init|=
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getUri
+name|getNNUri
 argument_list|(
 name|nn
 operator|.
