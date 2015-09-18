@@ -233,14 +233,7 @@ specifier|final
 name|int
 name|numberOfLostNodesPerRack
 init|=
-name|numberOfNodesPerRack
-operator|/
-name|NodeState
-operator|.
-name|values
-argument_list|()
-operator|.
-name|length
+literal|1
 decl_stmt|;
 comment|// Number of Actual Table Headers for NodesPage.NodesBlock might change in
 comment|// future. In that case this value should be adjusted to the new value.

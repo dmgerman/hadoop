@@ -2250,7 +2250,7 @@ name|nodeId
 argument_list|,
 name|RMNodeEventType
 operator|.
-name|DECOMMISSION_WITH_TIMEOUT
+name|GRACEFUL_DECOMMISSION
 argument_list|)
 argument_list|)
 expr_stmt|;
