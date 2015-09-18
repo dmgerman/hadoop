@@ -419,11 +419,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeContentSummary ( final ContentSummaryComputationContext summary)
+DECL|method|computeContentSummary (int snapshotId, final ContentSummaryComputationContext summary)
 specifier|public
 name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
+name|int
+name|snapshotId
+parameter_list|,
 specifier|final
 name|ContentSummaryComputationContext
 name|summary

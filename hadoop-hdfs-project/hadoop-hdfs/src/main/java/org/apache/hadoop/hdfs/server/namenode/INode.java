@@ -1369,6 +1369,10 @@ block|{
 return|return
 name|computeAndConvertContentSummary
 argument_list|(
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+argument_list|,
 operator|new
 name|ContentSummaryComputationContext
 argument_list|(
@@ -1378,12 +1382,15 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Compute {@link ContentSummary}.     */
-DECL|method|computeAndConvertContentSummary ( ContentSummaryComputationContext summary)
+DECL|method|computeAndConvertContentSummary (int snapshotId, ContentSummaryComputationContext summary)
 specifier|public
 specifier|final
 name|ContentSummary
 name|computeAndConvertContentSummary
 parameter_list|(
+name|int
+name|snapshotId
+parameter_list|,
 name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
@@ -1393,6 +1400,8 @@ name|counts
 init|=
 name|computeContentSummary
 argument_list|(
+name|snapshotId
+argument_list|,
 name|summary
 argument_list|)
 operator|.
@@ -1489,13 +1498,16 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Count subtree content summary with a {@link ContentCounts}.    *    * @param summary the context object holding counts for the subtree.    * @return The same objects as summary.    */
-DECL|method|computeContentSummary ( ContentSummaryComputationContext summary)
+comment|/**    * Count subtree content summary with a {@link ContentCounts}.    *    * @param snapshotId Specify the time range for the calculation. If this    *                   parameter equals to {@link Snapshot#CURRENT_STATE_ID},    *                   the result covers both the current states and all the    *                   snapshots. Otherwise the result only covers all the    *                   files/directories contained in the specific snapshot.    * @param summary the context object holding counts for the subtree.    * @return The same objects as summary.    */
+DECL|method|computeContentSummary ( int snapshotId, ContentSummaryComputationContext summary)
 specifier|public
 specifier|abstract
 name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
+name|int
+name|snapshotId
+parameter_list|,
 name|ContentSummaryComputationContext
 name|summary
 parameter_list|)

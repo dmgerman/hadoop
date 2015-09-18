@@ -412,6 +412,9 @@ specifier|public
 name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
+name|int
+name|snapshotId
+parameter_list|,
 name|ContentSummaryComputationContext
 name|summary
 parameter_list|)

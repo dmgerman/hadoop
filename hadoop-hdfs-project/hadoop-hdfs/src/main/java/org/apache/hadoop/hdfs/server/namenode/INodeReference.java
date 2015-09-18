@@ -1167,11 +1167,14 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|computeContentSummary ( ContentSummaryComputationContext summary)
+DECL|method|computeContentSummary (int snapshotId, ContentSummaryComputationContext summary)
 specifier|public
 name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
+name|int
+name|snapshotId
+parameter_list|,
 name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
@@ -1181,6 +1184,8 @@ name|referred
 operator|.
 name|computeContentSummary
 argument_list|(
+name|snapshotId
+argument_list|,
 name|summary
 argument_list|)
 return|;
@@ -2056,16 +2061,31 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeContentSummary ( ContentSummaryComputationContext summary)
+DECL|method|computeContentSummary ( int snapshotId, ContentSummaryComputationContext summary)
 specifier|public
 specifier|final
 name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
+name|int
+name|snapshotId
+parameter_list|,
 name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
 block|{
+specifier|final
+name|int
+name|s
+init|=
+name|snapshotId
+operator|<
+name|lastSnapshotId
+condition|?
+name|snapshotId
+else|:
+name|lastSnapshotId
+decl_stmt|;
 comment|// only count storagespace for WithName
 specifier|final
 name|QuotaCounts
@@ -2083,7 +2103,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|,
-name|lastSnapshotId
+name|s
 argument_list|)
 decl_stmt|;
 name|summary

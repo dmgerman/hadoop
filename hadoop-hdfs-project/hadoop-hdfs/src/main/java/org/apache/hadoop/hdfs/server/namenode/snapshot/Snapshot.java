@@ -923,30 +923,18 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeContentSummary ( ContentSummaryComputationContext summary)
+DECL|method|computeContentSummary ( int snapshotId, ContentSummaryComputationContext summary)
 specifier|public
 name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
+name|int
+name|snapshotId
+parameter_list|,
 name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
 block|{
-name|int
-name|snapshotId
-init|=
-name|getParent
-argument_list|()
-operator|.
-name|getSnapshot
-argument_list|(
-name|getLocalNameBytes
-argument_list|()
-argument_list|)
-operator|.
-name|getId
-argument_list|()
-decl_stmt|;
 return|return
 name|computeDirectoryContentSummary
 argument_list|(

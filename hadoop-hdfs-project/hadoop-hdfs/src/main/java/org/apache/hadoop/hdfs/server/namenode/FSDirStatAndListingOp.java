@@ -3424,6 +3424,11 @@ name|targetNode
 operator|.
 name|computeAndConvertContentSummary
 argument_list|(
+name|iip
+operator|.
+name|getPathSnapshotId
+argument_list|()
+argument_list|,
 name|cscc
 argument_list|)
 decl_stmt|;
