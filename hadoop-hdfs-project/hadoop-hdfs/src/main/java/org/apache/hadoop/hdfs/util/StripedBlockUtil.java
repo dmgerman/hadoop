@@ -1807,6 +1807,9 @@ argument_list|(
 name|rangeStartInBlockGroup
 operator|%
 operator|(
+operator|(
+name|long
+operator|)
 name|cellSize
 operator|*
 name|dataBlkNum

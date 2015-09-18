@@ -5232,6 +5232,15 @@ name|isStriped
 argument_list|()
 condition|)
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|b
+operator|instanceof
+name|LocatedStripedBlock
+argument_list|)
+expr_stmt|;
 name|LocatedStripedBlock
 name|sb
 init|=

@@ -666,10 +666,6 @@ DECL|field|blockReaderOffset
 name|long
 name|blockReaderOffset
 decl_stmt|;
-DECL|field|targetBlock
-name|LocatedBlock
-name|targetBlock
-decl_stmt|;
 comment|/**      * We use this field to indicate whether we should use this reader. In case      * we hit any issue with this reader, we set this field to true and avoid      * using it for the next stripe.      */
 DECL|field|shouldSkip
 name|boolean
@@ -677,14 +673,11 @@ name|shouldSkip
 init|=
 literal|false
 decl_stmt|;
-DECL|method|BlockReaderInfo (BlockReader reader, LocatedBlock targetBlock, DatanodeInfo dn, long offset)
+DECL|method|BlockReaderInfo (BlockReader reader, DatanodeInfo dn, long offset)
 name|BlockReaderInfo
 parameter_list|(
 name|BlockReader
 name|reader
-parameter_list|,
-name|LocatedBlock
-name|targetBlock
 parameter_list|,
 name|DatanodeInfo
 name|dn
@@ -698,12 +691,6 @@ operator|.
 name|reader
 operator|=
 name|reader
-expr_stmt|;
-name|this
-operator|.
-name|targetBlock
-operator|=
-name|targetBlock
 expr_stmt|;
 name|this
 operator|.
@@ -3304,8 +3291,6 @@ name|BlockReaderInfo
 argument_list|(
 name|reader
 argument_list|,
-name|block
-argument_list|,
 name|dnInfo
 operator|.
 name|info
@@ -4260,14 +4245,25 @@ operator|+
 name|parityBlkNum
 index|]
 expr_stmt|;
+specifier|final
 name|ByteBuffer
 name|cur
-init|=
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|DFSStripedInputStream
+operator|.
+name|this
+init|)
+block|{
+name|cur
+operator|=
 name|curStripeBuf
 operator|.
 name|duplicate
 argument_list|()
-decl_stmt|;
+expr_stmt|;
+block|}
 name|StripedBlockUtil
 operator|.
 name|VerticalRange
