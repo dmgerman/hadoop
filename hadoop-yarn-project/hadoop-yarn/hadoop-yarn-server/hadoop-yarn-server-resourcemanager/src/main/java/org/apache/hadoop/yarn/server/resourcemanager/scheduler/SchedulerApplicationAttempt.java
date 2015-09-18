@@ -2625,31 +2625,6 @@ name|TASK
 decl_stmt|;
 comment|// The working knowledge is that masterContainer for AM is null as it
 comment|// itself is the master container.
-name|RMAppAttempt
-name|appAttempt
-init|=
-name|rmContext
-operator|.
-name|getRMApps
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|container
-operator|.
-name|getId
-argument_list|()
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|)
-operator|.
-name|getCurrentAppAttempt
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|isWaitingForAMContainer

@@ -494,6 +494,11 @@ operator|=
 name|logAggregationReportsForApps
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|getNMReportedIncreasedContainers ()
 specifier|public
 name|List
