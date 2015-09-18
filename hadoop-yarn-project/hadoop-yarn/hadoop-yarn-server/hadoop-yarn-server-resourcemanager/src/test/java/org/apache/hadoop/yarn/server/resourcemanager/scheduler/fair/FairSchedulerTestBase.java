@@ -639,6 +639,15 @@ specifier|protected
 name|ResourceManager
 name|resourceManager
 decl_stmt|;
+DECL|field|TEST_RESERVATION_THRESHOLD
+specifier|public
+specifier|static
+specifier|final
+name|float
+name|TEST_RESERVATION_THRESHOLD
+init|=
+literal|0.09f
+decl_stmt|;
 comment|// Helper methods
 DECL|method|createConfiguration ()
 specifier|public
@@ -723,6 +732,17 @@ operator|.
 name|PREEMPTION_THRESHOLD
 argument_list|,
 literal|0f
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setFloat
+argument_list|(
+name|FairSchedulerConfiguration
+operator|.
+name|RM_SCHEDULER_RESERVATION_THRESHOLD_INCERMENT_MULTIPLE
+argument_list|,
+name|TEST_RESERVATION_THRESHOLD
 argument_list|)
 expr_stmt|;
 return|return

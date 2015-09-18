@@ -1689,6 +1689,13 @@ DECL|field|allocConf
 name|AllocationConfiguration
 name|allocConf
 decl_stmt|;
+comment|// Container size threshold for making a reservation.
+annotation|@
+name|VisibleForTesting
+DECL|field|reservationThreshold
+name|Resource
+name|reservationThreshold
+decl_stmt|;
 DECL|method|FairScheduler ()
 specifier|public
 name|FairScheduler
@@ -1732,6 +1739,33 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|isAtLeastReservationThreshold ( ResourceCalculator resourceCalculator, Resource resource)
+specifier|public
+name|boolean
+name|isAtLeastReservationThreshold
+parameter_list|(
+name|ResourceCalculator
+name|resourceCalculator
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|)
+block|{
+return|return
+name|Resources
+operator|.
+name|greaterThanOrEqual
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|clusterResource
+argument_list|,
+name|resource
+argument_list|,
+name|reservationThreshold
+argument_list|)
+return|;
 block|}
 DECL|method|validateConf (Configuration conf)
 specifier|private
@@ -6919,6 +6953,9 @@ operator|.
 name|getIncrementAllocation
 argument_list|()
 expr_stmt|;
+name|updateReservationThreshold
+argument_list|()
+expr_stmt|;
 name|continuousSchedulingEnabled
 operator|=
 name|this
@@ -7269,6 +7306,35 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|updateReservationThreshold ()
+specifier|private
+name|void
+name|updateReservationThreshold
+parameter_list|()
+block|{
+name|Resource
+name|newThreshold
+init|=
+name|Resources
+operator|.
+name|multiply
+argument_list|(
+name|getIncrementResourceCapability
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|conf
+operator|.
+name|getReservationThresholdIncrementMultiple
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|reservationThreshold
+operator|=
+name|newThreshold
+expr_stmt|;
 block|}
 DECL|method|startSchedulerThreads ()
 specifier|private
