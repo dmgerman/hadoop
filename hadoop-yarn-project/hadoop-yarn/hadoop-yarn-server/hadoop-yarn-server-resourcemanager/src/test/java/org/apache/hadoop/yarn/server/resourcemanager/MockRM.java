@@ -1651,6 +1651,10 @@ name|app
 operator|.
 name|getState
 argument_list|()
+operator|+
+literal|" for the application "
+operator|+
+name|appId
 argument_list|)
 expr_stmt|;
 block|}
@@ -1841,6 +1845,10 @@ name|attempt
 operator|.
 name|getAppAttemptState
 argument_list|()
+operator|+
+literal|" for the application attempt "
+operator|+
+name|attemptId
 argument_list|)
 expr_stmt|;
 block|}
