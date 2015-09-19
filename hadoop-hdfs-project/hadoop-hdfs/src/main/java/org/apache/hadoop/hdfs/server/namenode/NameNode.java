@@ -2930,28 +2930,6 @@ name|addr
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Deprecated
-comment|/**    * @deprecated Use {@link DFSUtilClient#getNNUri(InetSocketAddress)} instead.    */
-DECL|method|getUri (InetSocketAddress namenode)
-specifier|public
-specifier|static
-name|URI
-name|getUri
-parameter_list|(
-name|InetSocketAddress
-name|namenode
-parameter_list|)
-block|{
-return|return
-name|DFSUtilClient
-operator|.
-name|getNNUri
-argument_list|(
-name|namenode
-argument_list|)
-return|;
-block|}
 comment|//
 comment|// Common NameNode methods implementation for the active name-node role.
 comment|//
