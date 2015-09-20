@@ -1305,6 +1305,8 @@ range|:
 name|ecTasks
 control|)
 block|{
+try|try
+block|{
 name|STRIPED_BLK_RECOVERY_THREAD_POOL
 operator|.
 name|submit
@@ -1316,6 +1318,31 @@ name|recoveryInfo
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to recover striped block "
+operator|+
+name|recoveryInfo
+operator|.
+name|getExtendedBlock
+argument_list|()
+operator|.
+name|getLocalBlock
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * ReconstructAndTransferBlock recover one or more missed striped block in the    * striped block group, the minimum number of live striped blocks should be    * no less than data block number.    *     * |<- Striped Block Group -> |    *  blk_0      blk_1       blk_2(*)   blk_3   ...<- A striped block group    *    |          |           |          |      *    v          v           v          v     * +------+   +------+   +------+   +------+    * |cell_0|   |cell_1|   |cell_2|   |cell_3|  ...        * +------+   +------+   +------+   +------+         * |cell_4|   |cell_5|   |cell_6|   |cell_7|  ...    * +------+   +------+   +------+   +------+    * |cell_8|   |cell_9|   |cell10|   |cell11|  ...    * +------+   +------+   +------+   +------+    *  ...         ...       ...         ...    *      *     * We use following steps to recover striped block group, in each round, we    * recover<code>bufferSize</code> data until finish, the     *<code>bufferSize</code> is configurable and may be less or larger than     * cell size:    * step1: read<code>bufferSize</code> data from minimum number of sources     *        required by recovery.    * step2: decode data for targets.    * step3: transfer data to targets.    *     * In step1, try to read<code>bufferSize</code> data from minimum number    * of sources , if there is corrupt or stale sources, read from new source    * will be scheduled. The best sources are remembered for next round and     * may be updated in each round.    *     * In step2, typically if source blocks we read are all data blocks, we     * need to call encode, and if there is one parity block, we need to call    * decode. Notice we only read once and recover all missed striped block     * if they are more than one.    *     * In step3, send the recovered data to targets by constructing packet     * and send them directly. Same as continuous block replication, we     * don't check the packet ack. Since the datanode doing the recovery work    * are one of the source datanodes, so the recovered data are sent     * remotely.    *     * There are some points we can do further improvements in next phase:    * 1. we can read the block file directly on the local datanode,     *    currently we use remote block reader. (Notice short-circuit is not    *    a good choice, see inline comments).    * 2. We need to check the packet ack for EC recovery? Since EC recovery    *    is more expensive than continuous block replication, it needs to     *    read from several other datanodes, should we make sure the     *    recovered result received by targets?     */
