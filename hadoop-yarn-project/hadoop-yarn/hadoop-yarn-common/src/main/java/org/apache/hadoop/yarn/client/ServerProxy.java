@@ -415,7 +415,14 @@ name|retryPolicy
 operator|=
 name|RetryPolicies
 operator|.
-name|RETRY_FOREVER
+name|retryForeverWithFixedSleep
+argument_list|(
+name|retryIntervalMS
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
 expr_stmt|;
 block|}
 else|else
