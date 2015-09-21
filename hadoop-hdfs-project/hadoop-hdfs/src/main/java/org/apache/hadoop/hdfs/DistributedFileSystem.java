@@ -11325,6 +11325,30 @@ name|absF
 argument_list|)
 return|;
 block|}
+comment|/**    * Retrieve all the erasure coding policies supported by this file system.    *    * @return all erasure coding policies supported by this file system.    * @throws IOException    */
+DECL|method|getAllErasureCodingPolicies ()
+specifier|public
+name|Collection
+argument_list|<
+name|ErasureCodingPolicy
+argument_list|>
+name|getAllErasureCodingPolicies
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|dfs
+operator|.
+name|getErasureCodingPolicies
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 
