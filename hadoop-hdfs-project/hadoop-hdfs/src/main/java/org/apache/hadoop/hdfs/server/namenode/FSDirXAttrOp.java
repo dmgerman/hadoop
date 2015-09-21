@@ -206,7 +206,7 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
+name|PBHelperClient
 import|;
 end_import
 
@@ -1666,7 +1666,7 @@ operator|.
 name|getId
 argument_list|()
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1676,7 +1676,7 @@ name|getSuite
 argument_list|()
 argument_list|)
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

@@ -1117,9 +1117,9 @@ name|createNonHAProxy
 argument_list|(
 name|conf
 argument_list|,
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getAddress
+name|getNNAddress
 argument_list|(
 name|nameNodeUri
 argument_list|)
@@ -1226,9 +1226,9 @@ name|SecurityUtil
 operator|.
 name|buildTokenService
 argument_list|(
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getAddress
+name|getNNAddress
 argument_list|(
 name|nameNodeUri
 argument_list|)
@@ -1246,9 +1246,9 @@ name|proxy
 argument_list|,
 name|dtService
 argument_list|,
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getAddress
+name|getNNAddress
 argument_list|(
 name|nameNodeUri
 argument_list|)
@@ -1512,9 +1512,9 @@ name|SecurityUtil
 operator|.
 name|buildTokenService
 argument_list|(
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getAddress
+name|getNNAddress
 argument_list|(
 name|nameNodeUri
 argument_list|)
@@ -1532,9 +1532,9 @@ name|proxy
 argument_list|,
 name|dtService
 argument_list|,
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getAddress
+name|getNNAddress
 argument_list|(
 name|nameNodeUri
 argument_list|)
@@ -2977,9 +2977,9 @@ literal|0
 operator|&&
 name|port
 operator|!=
-name|NameNode
+name|HdfsClientConfigKeys
 operator|.
-name|DEFAULT_PORT
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 condition|)
 block|{
 comment|// Throwing here without any cleanup is fine since we have not

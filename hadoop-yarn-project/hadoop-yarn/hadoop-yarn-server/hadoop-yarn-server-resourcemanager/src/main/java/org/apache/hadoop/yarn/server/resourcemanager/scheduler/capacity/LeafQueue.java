@@ -4297,12 +4297,8 @@ name|headroom
 init|=
 name|Resources
 operator|.
-name|min
+name|componentwiseMin
 argument_list|(
-name|resourceCalculator
-argument_list|,
-name|clusterResource
-argument_list|,
 name|Resources
 operator|.
 name|subtract
@@ -5497,7 +5493,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 name|getQueueName
 argument_list|()

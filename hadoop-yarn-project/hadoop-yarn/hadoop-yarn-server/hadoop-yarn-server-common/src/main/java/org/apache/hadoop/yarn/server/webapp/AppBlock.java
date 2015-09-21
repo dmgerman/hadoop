@@ -1541,6 +1541,48 @@ name|isUnmanagedApp
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|overviewTable
+operator|.
+name|_
+argument_list|(
+literal|"Application Node Label expression:"
+argument_list|,
+name|app
+operator|.
+name|getAppNodeLabelExpression
+argument_list|()
+operator|==
+literal|null
+condition|?
+literal|"<Not set>"
+else|:
+name|app
+operator|.
+name|getAppNodeLabelExpression
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|overviewTable
+operator|.
+name|_
+argument_list|(
+literal|"AM container Node Label expression:"
+argument_list|,
+name|app
+operator|.
+name|getAmNodeLabelExpression
+argument_list|()
+operator|==
+literal|null
+condition|?
+literal|"<Not set>"
+else|:
+name|app
+operator|.
+name|getAmNodeLabelExpression
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Collection
 argument_list|<
 name|ApplicationAttemptReport

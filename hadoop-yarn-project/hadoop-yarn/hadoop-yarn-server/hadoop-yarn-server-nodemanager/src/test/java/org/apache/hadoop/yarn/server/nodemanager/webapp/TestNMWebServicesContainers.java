@@ -156,6 +156,24 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|sun
+operator|.
+name|jersey
+operator|.
+name|api
+operator|.
+name|client
+operator|.
+name|filter
+operator|.
+name|LoggingFilter
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1819,6 +1837,16 @@ argument_list|(
 name|app2
 argument_list|)
 expr_stmt|;
+name|client
+argument_list|()
+operator|.
+name|addFilter
+argument_list|(
+operator|new
+name|LoggingFilter
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|ClientResponse
 name|response
 init|=
@@ -3096,6 +3124,20 @@ argument_list|(
 name|app2
 argument_list|)
 expr_stmt|;
+name|client
+argument_list|()
+operator|.
+name|addFilter
+argument_list|(
+operator|new
+name|LoggingFilter
+argument_list|(
+name|System
+operator|.
+name|out
+argument_list|)
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|String
@@ -3602,6 +3644,23 @@ literal|"containerLogsLink"
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// verify that the container log files element exists
+name|assertTrue
+argument_list|(
+literal|"containerLogFiles missing"
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlString
+argument_list|(
+name|element
+argument_list|,
+literal|"containerLogFiles"
+argument_list|)
+operator|!=
+literal|null
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|verifyNodeContainerInfo (JSONObject info, Container cont)
@@ -3624,7 +3683,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|9
+literal|10
 argument_list|,
 name|info
 operator|.
@@ -3698,6 +3757,21 @@ name|getString
 argument_list|(
 literal|"containerLogsLink"
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// verify that the container log files element exists
+name|assertTrue
+argument_list|(
+literal|"containerLogFiles missing"
+argument_list|,
+name|info
+operator|.
+name|getJSONArray
+argument_list|(
+literal|"containerLogFiles"
+argument_list|)
+operator|!=
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

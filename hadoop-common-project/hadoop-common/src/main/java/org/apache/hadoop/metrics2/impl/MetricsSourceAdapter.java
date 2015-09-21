@@ -406,7 +406,7 @@ literal|0
 decl_stmt|;
 DECL|field|jmxCacheTTL
 specifier|private
-name|int
+name|long
 name|jmxCacheTTL
 decl_stmt|;
 DECL|field|infoCache
@@ -425,7 +425,7 @@ specifier|final
 name|boolean
 name|startMBeans
 decl_stmt|;
-DECL|method|MetricsSourceAdapter (String prefix, String name, String description, MetricsSource source, Iterable<MetricsTag> injectedTags, MetricsFilter recordFilter, MetricsFilter metricFilter, int jmxCacheTTL, boolean startMBeans)
+DECL|method|MetricsSourceAdapter (String prefix, String name, String description, MetricsSource source, Iterable<MetricsTag> injectedTags, MetricsFilter recordFilter, MetricsFilter metricFilter, long jmxCacheTTL, boolean startMBeans)
 name|MetricsSourceAdapter
 parameter_list|(
 name|String
@@ -452,7 +452,7 @@ parameter_list|,
 name|MetricsFilter
 name|metricFilter
 parameter_list|,
-name|int
+name|long
 name|jmxCacheTTL
 parameter_list|,
 name|boolean
@@ -549,7 +549,7 @@ operator|=
 name|startMBeans
 expr_stmt|;
 block|}
-DECL|method|MetricsSourceAdapter (String prefix, String name, String description, MetricsSource source, Iterable<MetricsTag> injectedTags, int period, MetricsConfig conf)
+DECL|method|MetricsSourceAdapter (String prefix, String name, String description, MetricsSource source, Iterable<MetricsTag> injectedTags, long period, MetricsConfig conf)
 name|MetricsSourceAdapter
 parameter_list|(
 name|String
@@ -570,7 +570,7 @@ name|MetricsTag
 argument_list|>
 name|injectedTags
 parameter_list|,
-name|int
+name|long
 name|period
 parameter_list|,
 name|MetricsConfig
@@ -1211,6 +1211,17 @@ parameter_list|()
 block|{
 return|return
 name|mbeanName
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getJmxCacheTTL ()
+name|long
+name|getJmxCacheTTL
+parameter_list|()
+block|{
+return|return
+name|jmxCacheTTL
 return|;
 block|}
 DECL|method|updateInfoCache ()

@@ -306,6 +306,35 @@ operator|new
 name|RetryForever
 argument_list|()
 decl_stmt|;
+comment|/**    *<p>    * Keep trying forever with a fixed time between attempts.    *</p>    */
+DECL|method|retryForeverWithFixedSleep (long sleepTime, TimeUnit timeUnit)
+specifier|public
+specifier|static
+specifier|final
+name|RetryPolicy
+name|retryForeverWithFixedSleep
+parameter_list|(
+name|long
+name|sleepTime
+parameter_list|,
+name|TimeUnit
+name|timeUnit
+parameter_list|)
+block|{
+return|return
+operator|new
+name|RetryUpToMaximumCountWithFixedSleep
+argument_list|(
+name|Integer
+operator|.
+name|MAX_VALUE
+argument_list|,
+name|sleepTime
+argument_list|,
+name|timeUnit
+argument_list|)
+return|;
+block|}
 comment|/**    *<p>    * Keep trying a limited number of times, waiting a fixed time between attempts,    * and then fail by re-throwing the exception.    *</p>    */
 DECL|method|retryUpToMaximumCountWithFixedSleep (int maxRetries, long sleepTime, TimeUnit timeUnit)
 specifier|public

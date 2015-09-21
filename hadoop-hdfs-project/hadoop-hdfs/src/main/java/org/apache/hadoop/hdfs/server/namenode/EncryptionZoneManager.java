@@ -272,7 +272,7 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
+name|PBHelperClient
 import|;
 end_import
 
@@ -1283,7 +1283,7 @@ operator|.
 name|ZoneEncryptionInfoProto
 name|proto
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

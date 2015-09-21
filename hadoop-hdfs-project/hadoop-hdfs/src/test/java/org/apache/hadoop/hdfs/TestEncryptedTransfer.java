@@ -653,7 +653,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_TRUSTEDCHANNEL_RESOLVER_CLASS
 argument_list|,
@@ -1310,7 +1310,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
 argument_list|,

@@ -360,6 +360,44 @@ name|FILEOUTPUTCOMMITTER_ALGORITHM_VERSION_DEFAULT
 init|=
 literal|2
 decl_stmt|;
+comment|// Skip cleanup _temporary folders under job's output directory
+DECL|field|FILEOUTPUTCOMMITTER_CLEANUP_SKIPPED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FILEOUTPUTCOMMITTER_CLEANUP_SKIPPED
+init|=
+literal|"mapreduce.fileoutputcommitter.cleanup.skipped"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|FILEOUTPUTCOMMITTER_CLEANUP_SKIPPED_DEFAULT
+name|FILEOUTPUTCOMMITTER_CLEANUP_SKIPPED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
+comment|// Ignore exceptions in cleanup _temporary folder under job's output directory
+DECL|field|FILEOUTPUTCOMMITTER_CLEANUP_FAILURES_IGNORED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FILEOUTPUTCOMMITTER_CLEANUP_FAILURES_IGNORED
+init|=
+literal|"mapreduce.fileoutputcommitter.cleanup-failures.ignored"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|FILEOUTPUTCOMMITTER_CLEANUP_FAILURES_IGNORED_DEFAULT
+name|FILEOUTPUTCOMMITTER_CLEANUP_FAILURES_IGNORED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 DECL|field|outputPath
 specifier|private
 name|Path
@@ -379,6 +417,18 @@ specifier|private
 specifier|final
 name|int
 name|algorithmVersion
+decl_stmt|;
+DECL|field|skipCleanup
+specifier|private
+specifier|final
+name|boolean
+name|skipCleanup
+decl_stmt|;
+DECL|field|ignoreCleanupFailures
+specifier|private
+specifier|final
+name|boolean
+name|ignoreCleanupFailures
 decl_stmt|;
 comment|/**    * Create a file output committer    * @param outputPath the job's output path, or null if you want the output    * committer to act as a noop.    * @param context the task's context    * @throws IOException    */
 DECL|method|FileOutputCommitter (Path outputPath, TaskAttemptContext context)
@@ -485,6 +535,45 @@ literal|"Only 1 or 2 algorithm version is supported"
 argument_list|)
 throw|;
 block|}
+comment|// if skip cleanup
+name|skipCleanup
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|FILEOUTPUTCOMMITTER_CLEANUP_SKIPPED
+argument_list|,
+name|FILEOUTPUTCOMMITTER_CLEANUP_SKIPPED_DEFAULT
+argument_list|)
+expr_stmt|;
+comment|// if ignore failures in cleanup
+name|ignoreCleanupFailures
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|FILEOUTPUTCOMMITTER_CLEANUP_FAILURES_IGNORED
+argument_list|,
+name|FILEOUTPUTCOMMITTER_CLEANUP_FAILURES_IGNORED_DEFAULT
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"FileOutputCommitter skip cleanup _temporary folders under "
+operator|+
+literal|"output directory:"
+operator|+
+name|skipCleanup
+operator|+
+literal|", ignore cleanup failures: "
+operator|+
+name|ignoreCleanupFailures
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|outputPath
@@ -1183,12 +1272,65 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// delete the _temporary folder and create a _done file in the o/p folder
+if|if
+condition|(
+name|skipCleanup
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Skip cleanup the _temporary folders under job's output "
+operator|+
+literal|"directory in commitJob."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// delete the _temporary folder and create a _done file in the o/p
+comment|// folder
+try|try
+block|{
 name|cleanupJob
 argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|ignoreCleanupFailures
+condition|)
+block|{
+comment|// swallow exceptions in cleanup as user configure to make sure
+comment|// commitJob could be success even when cleanup get failure.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error in cleanup job, manually cleanup is needed."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// throw back exception to fail commitJob.
+throw|throw
+name|e
+throw|;
+block|}
+block|}
+block|}
 comment|// True if the job requires output.dir marked on successful job.
 comment|// Note that by default it is set to true.
 if|if

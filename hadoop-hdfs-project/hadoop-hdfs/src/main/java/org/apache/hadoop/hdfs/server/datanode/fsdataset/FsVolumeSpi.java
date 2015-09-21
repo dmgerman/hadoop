@@ -172,16 +172,16 @@ name|boolean
 name|isTransientStorage
 parameter_list|()
 function_decl|;
-comment|/**    * Reserve disk space for an RBW block so a writer does not run out of    * space before the block is full.    */
-DECL|method|reserveSpaceForRbw (long bytesToReserve)
+comment|/**    * Reserve disk space for a block (RBW or Re-replicating)    * so a writer does not run out of space before the block is full.    */
+DECL|method|reserveSpaceForReplica (long bytesToReserve)
 name|void
-name|reserveSpaceForRbw
+name|reserveSpaceForReplica
 parameter_list|(
 name|long
 name|bytesToReserve
 parameter_list|)
 function_decl|;
-comment|/**    * Release disk space previously reserved for RBW block.    */
+comment|/**    * Release disk space previously reserved for block opened for write.    */
 DECL|method|releaseReservedSpace (long bytesToRelease)
 name|void
 name|releaseReservedSpace

@@ -423,6 +423,7 @@ end_import
 begin_class
 DECL|class|RMHATestBase
 specifier|public
+specifier|abstract
 class|class
 name|RMHATestBase
 extends|extends

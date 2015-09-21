@@ -512,6 +512,8 @@ operator|.
 name|getExecutor
 argument_list|(
 name|namenode
+argument_list|,
+name|conf
 argument_list|)
 operator|.
 name|executeCommand

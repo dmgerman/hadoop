@@ -32,7 +32,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
 import|;

@@ -48,9 +48,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
 operator|.
-name|DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_DATA_TRANSFER_PROTECTION_KEY
 import|;
 end_import
 
@@ -66,7 +68,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_DATA_TRANSFER_PROTECTION_KEY
+name|DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY
 import|;
 end_import
 

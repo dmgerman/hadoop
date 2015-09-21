@@ -153,7 +153,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Set the write timeout on this peer.    *    * Note: this is not honored for BasicInetPeer.    * See {@link BasicSocketPeer#setWriteTimeout} for details.    *     * @param timeoutMs       The timeout in milliseconds.    */
+comment|/**    * Set the write timeout on this peer.    *    * Note: this is not honored for BasicInetPeer.    * See {@link BasicInetPeer#setWriteTimeout} for details.    *    * @param timeoutMs       The timeout in milliseconds.    */
 DECL|method|setWriteTimeout (int timeoutMs)
 specifier|public
 name|void
@@ -181,14 +181,14 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * @return               A string representing the remote end of our     *                       connection to the peer.    */
+comment|/**    * @return               A string representing the remote end of our    *                       connection to the peer.    */
 DECL|method|getRemoteAddressString ()
 specifier|public
 name|String
 name|getRemoteAddressString
 parameter_list|()
 function_decl|;
-comment|/**    * @return               A string representing the local end of our     *                       connection to the peer.    */
+comment|/**    * @return               A string representing the local end of our    *                       connection to the peer.    */
 DECL|method|getLocalAddressString ()
 specifier|public
 name|String

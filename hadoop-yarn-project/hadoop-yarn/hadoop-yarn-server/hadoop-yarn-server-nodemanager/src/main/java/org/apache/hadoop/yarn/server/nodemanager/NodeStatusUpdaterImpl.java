@@ -4904,6 +4904,23 @@ specifier|private
 name|boolean
 name|updatedLabelsSentToRM
 decl_stmt|;
+DECL|field|lastNodeLabelSendFailMills
+specifier|private
+name|long
+name|lastNodeLabelSendFailMills
+init|=
+literal|0L
+decl_stmt|;
+comment|// TODO : Need to check which conf to use.Currently setting as 1 min
+DECL|field|FAILEDLABELRESENDINTERVAL
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|FAILEDLABELRESENDINTERVAL
+init|=
+literal|60000
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|getNodeLabelsForRegistration ()
@@ -5099,6 +5116,9 @@ name|containsAll
 argument_list|(
 name|nodeLabelsForHeartbeat
 argument_list|)
+operator|||
+name|checkResendLabelOnFailure
+argument_list|()
 decl_stmt|;
 name|updatedLabelsSentToRM
 operator|=
@@ -5115,6 +5135,22 @@ name|nodeLabelsForHeartbeat
 expr_stmt|;
 try|try
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Modified labels from provider: "
+operator|+
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+literal|","
+argument_list|,
+name|previousNodeLabels
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|validateNodeLabels
 argument_list|(
 name|nodeLabelsForHeartbeat
@@ -5270,6 +5306,46 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/*      * In case of failure when RM doesnt accept labels need to resend Labels to      * RM. This method checks whether we need to resend      */
+DECL|method|checkResendLabelOnFailure ()
+specifier|public
+name|boolean
+name|checkResendLabelOnFailure
+parameter_list|()
+block|{
+if|if
+condition|(
+name|lastNodeLabelSendFailMills
+operator|>
+literal|0L
+condition|)
+block|{
+name|long
+name|lastFailTimePassed
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|-
+name|lastNodeLabelSendFailMills
+decl_stmt|;
+if|if
+condition|(
+name|lastFailTimePassed
+operator|>
+name|FAILEDLABELRESENDINTERVAL
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+return|return
+literal|false
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|verifyRMHeartbeatResponseForNodeLabels ( NodeHeartbeatResponse response)
@@ -5294,6 +5370,10 @@ name|getAreNodeLabelsAcceptedByRM
 argument_list|()
 condition|)
 block|{
+name|lastNodeLabelSendFailMills
+operator|=
+literal|0L
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -5317,6 +5397,13 @@ else|else
 block|{
 comment|// case where updated labels from NodeLabelsProvider is sent to RM and
 comment|// RM rejected the labels
+name|lastNodeLabelSendFailMills
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|error

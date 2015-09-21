@@ -6359,14 +6359,6 @@ name|getBlockId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// unlink the finalized replica
-name|replicaInfo
-operator|.
-name|unlinkBlock
-argument_list|(
-literal|1
-argument_list|)
-expr_stmt|;
 comment|// construct a RBW replica with the new GS
 name|File
 name|blkfile
@@ -6659,7 +6651,7 @@ argument_list|)
 expr_stmt|;
 name|v
 operator|.
-name|reserveSpaceForRbw
+name|reserveSpaceForReplica
 argument_list|(
 name|estimateBlockLen
 operator|-
@@ -8387,7 +8379,13 @@ operator|.
 name|getParentFile
 argument_list|()
 argument_list|,
-literal|0
+name|b
+operator|.
+name|getLocalBlock
+argument_list|()
+operator|.
+name|getNumBytes
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|volumeMap
@@ -13090,13 +13088,6 @@ operator|>
 name|newlength
 condition|)
 block|{
-name|rur
-operator|.
-name|unlinkBlock
-argument_list|(
-literal|1
-argument_list|)
-expr_stmt|;
 name|truncateBlock
 argument_list|(
 name|blockFile
@@ -13538,12 +13529,13 @@ name|long
 name|reservedSpace
 decl_stmt|;
 comment|// size of space reserved for non-HDFS
-DECL|field|reservedSpaceForRBW
+DECL|field|reservedSpaceForReplicas
 specifier|final
 name|long
-name|reservedSpaceForRBW
+name|reservedSpaceForReplicas
 decl_stmt|;
-comment|// size of space reserved RBW
+comment|// size of space reserved RBW or
+comment|// re-replication
 DECL|method|VolumeInfo (FsVolumeImpl v, long usedSpace, long freeSpace)
 name|VolumeInfo
 parameter_list|(
@@ -13589,11 +13581,11 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|reservedSpaceForRBW
+name|reservedSpaceForReplicas
 operator|=
 name|v
 operator|.
-name|getReservedForRbw
+name|getReservedForReplicas
 argument_list|()
 expr_stmt|;
 block|}
@@ -13823,11 +13815,11 @@ name|innerInfo
 operator|.
 name|put
 argument_list|(
-literal|"reservedSpaceForRBW"
+literal|"reservedSpaceForReplicas"
 argument_list|,
 name|v
 operator|.
-name|reservedSpaceForRBW
+name|reservedSpaceForReplicas
 argument_list|)
 expr_stmt|;
 name|info

@@ -162,20 +162,6 @@ specifier|private
 name|boolean
 name|usingCRLF
 decl_stmt|;
-DECL|field|unusedBytes
-specifier|private
-name|int
-name|unusedBytes
-init|=
-literal|0
-decl_stmt|;
-DECL|field|lastBytesRead
-specifier|private
-name|int
-name|lastBytesRead
-init|=
-literal|0
-decl_stmt|;
 DECL|method|UncompressedSplitLineReader (FSDataInputStream in, Configuration conf, byte[] recordDelimiterBytes, long splitLength)
 specifier|public
 name|UncompressedSplitLineReader
@@ -287,10 +273,6 @@ argument_list|,
 name|maxBytesToRead
 argument_list|)
 decl_stmt|;
-name|lastBytesRead
-operator|=
-name|bytesRead
-expr_stmt|;
 comment|// If the split ended in the middle of a record delimiter then we need
 comment|// to read one additional record, as the consumer of the next split will
 comment|// not recognize the partial delimiter as a record.
@@ -370,7 +352,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|long
+name|int
 name|bytesRead
 init|=
 literal|0
@@ -397,11 +379,6 @@ expr_stmt|;
 block|}
 name|bytesRead
 operator|=
-name|totalBytesRead
-expr_stmt|;
-name|int
-name|bytesConsumed
-init|=
 name|super
 operator|.
 name|readLine
@@ -412,86 +389,9 @@ name|maxLineLength
 argument_list|,
 name|maxBytesToConsume
 argument_list|)
-decl_stmt|;
-name|bytesRead
-operator|=
-name|totalBytesRead
-operator|-
-name|bytesRead
-expr_stmt|;
-comment|// No records left.
-if|if
-condition|(
-name|bytesConsumed
-operator|==
-literal|0
-operator|&&
-name|bytesRead
-operator|==
-literal|0
-condition|)
-block|{
-return|return
-literal|0
-return|;
-block|}
-name|int
-name|bufferSize
-init|=
-name|getBufferSize
-argument_list|()
-decl_stmt|;
-comment|// Add the remaining buffer size not used for the last call
-comment|// of fillBuffer method.
-if|if
-condition|(
-name|lastBytesRead
-operator|<=
-literal|0
-condition|)
-block|{
-name|bytesRead
-operator|+=
-name|bufferSize
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|bytesRead
-operator|>
-literal|0
-condition|)
-block|{
-name|bytesRead
-operator|+=
-name|bufferSize
-operator|-
-name|lastBytesRead
-expr_stmt|;
-block|}
-comment|// Adjust the size of the buffer not used for this record.
-comment|// The size is carried over for the next calculation.
-name|bytesRead
-operator|+=
-name|unusedBytes
-expr_stmt|;
-name|unusedBytes
-operator|=
-name|bufferSize
-operator|-
-name|getBufferPosn
-argument_list|()
-expr_stmt|;
-name|bytesRead
-operator|-=
-name|unusedBytes
 expr_stmt|;
 block|}
 return|return
-operator|(
-name|int
-operator|)
 name|bytesRead
 return|;
 block|}

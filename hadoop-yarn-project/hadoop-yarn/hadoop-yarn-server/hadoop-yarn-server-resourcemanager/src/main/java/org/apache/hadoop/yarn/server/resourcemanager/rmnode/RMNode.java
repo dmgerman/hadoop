@@ -176,17 +176,6 @@ specifier|public
 interface|interface
 name|RMNode
 block|{
-comment|/** negative value means no timeout */
-DECL|field|OVER_COMMIT_TIMEOUT_MILLIS_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|OVER_COMMIT_TIMEOUT_MILLIS_DEFAULT
-init|=
-operator|-
-literal|1
-decl_stmt|;
 comment|/**    * the node id of of this node.    * @return the node id of this node.    */
 DECL|method|getNodeID ()
 specifier|public

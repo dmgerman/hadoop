@@ -2270,6 +2270,15 @@ name|getXmlString
 argument_list|(
 name|element
 argument_list|,
+literal|"haZooKeeperConnectionState"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlString
+argument_list|(
+name|element
+argument_list|,
 literal|"hadoopVersionBuiltOn"
 argument_list|)
 argument_list|,
@@ -2360,7 +2369,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|11
+literal|12
 argument_list|,
 name|info
 operator|.
@@ -2396,6 +2405,13 @@ operator|.
 name|getString
 argument_list|(
 literal|"haState"
+argument_list|)
+argument_list|,
+name|info
+operator|.
+name|getString
+argument_list|(
+literal|"haZooKeeperConnectionState"
 argument_list|)
 argument_list|,
 name|info
@@ -2442,7 +2458,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyClusterGeneric (long clusterid, long startedon, String state, String haState, String hadoopVersionBuiltOn, String hadoopBuildVersion, String hadoopVersion, String resourceManagerVersionBuiltOn, String resourceManagerBuildVersion, String resourceManagerVersion)
+DECL|method|verifyClusterGeneric (long clusterid, long startedon, String state, String haState, String haZooKeeperConnectionState, String hadoopVersionBuiltOn, String hadoopBuildVersion, String hadoopVersion, String resourceManagerVersionBuiltOn, String resourceManagerBuildVersion, String resourceManagerVersion)
 specifier|public
 name|void
 name|verifyClusterGeneric
@@ -2458,6 +2474,9 @@ name|state
 parameter_list|,
 name|String
 name|haState
+parameter_list|,
+name|String
+name|haZooKeeperConnectionState
 parameter_list|,
 name|String
 name|hadoopVersionBuiltOn

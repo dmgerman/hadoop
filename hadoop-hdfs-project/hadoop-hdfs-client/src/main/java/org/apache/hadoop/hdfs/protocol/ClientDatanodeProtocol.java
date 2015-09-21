@@ -349,6 +349,14 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get current value of the balancer bandwidth in bytes per second.    *    * @return balancer bandwidth    */
+DECL|method|getBalancerBandwidth ()
+name|long
+name|getBalancerBandwidth
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

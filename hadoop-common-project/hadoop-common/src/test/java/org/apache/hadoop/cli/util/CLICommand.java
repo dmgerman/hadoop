@@ -18,6 +18,20 @@ name|util
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
 begin_comment
 comment|/**  * This interface is to generalize types of test command for upstream projects  */
 end_comment
@@ -28,13 +42,16 @@ specifier|public
 interface|interface
 name|CLICommand
 block|{
-DECL|method|getExecutor (String tag)
+DECL|method|getExecutor (String tag, Configuration conf)
 specifier|public
 name|CommandExecutor
 name|getExecutor
 parameter_list|(
 name|String
 name|tag
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IllegalArgumentException

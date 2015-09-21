@@ -147,6 +147,8 @@ operator|.
 name|getExecutor
 argument_list|(
 literal|""
+argument_list|,
+name|conf
 argument_list|)
 operator|.
 name|executeCommand

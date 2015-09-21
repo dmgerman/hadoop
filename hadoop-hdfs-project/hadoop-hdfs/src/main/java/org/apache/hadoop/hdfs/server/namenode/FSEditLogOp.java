@@ -1524,7 +1524,7 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
+name|PBHelperClient
 import|;
 end_import
 
@@ -3630,7 +3630,7 @@ name|in
 argument_list|)
 decl_stmt|;
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertXAttrs
 argument_list|(
@@ -4364,7 +4364,7 @@ name|b
 operator|.
 name|addAllXAttrs
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertXAttrProto
 argument_list|(
@@ -10217,7 +10217,7 @@ name|b
 operator|.
 name|addAllXAttrs
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertXAttrProto
 argument_list|(
@@ -22679,7 +22679,7 @@ argument_list|()
 expr_stmt|;
 name|xAttrs
 operator|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertXAttrs
 argument_list|(
@@ -22739,7 +22739,7 @@ name|b
 operator|.
 name|addAllXAttrs
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertXAttrProto
 argument_list|(
@@ -22935,7 +22935,7 @@ argument_list|()
 expr_stmt|;
 name|xAttrs
 operator|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertXAttrs
 argument_list|(
@@ -22995,7 +22995,7 @@ name|b
 operator|.
 name|addAllXAttrs
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertXAttrProto
 argument_list|(
@@ -23211,7 +23211,7 @@ argument_list|()
 expr_stmt|;
 name|aclEntries
 operator|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertAclEntry
 argument_list|(
@@ -23262,7 +23262,7 @@ name|b
 operator|.
 name|addAllEntries
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertAclEntryProto
 argument_list|(

@@ -68,7 +68,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -125,7 +127,7 @@ name|conf
 operator|.
 name|getClass
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_TRUSTEDCHANNEL_RESOLVER_CLASS
 argument_list|,

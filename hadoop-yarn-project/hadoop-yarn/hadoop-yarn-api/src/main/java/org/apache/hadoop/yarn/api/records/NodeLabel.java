@@ -116,6 +116,34 @@ argument_list|<
 name|NodeLabel
 argument_list|>
 block|{
+comment|/**    * Default node label partition.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|field|DEFAULT_NODE_LABEL_PARTITION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_NODE_LABEL_PARTITION
+init|=
+literal|"<DEFAULT_PARTITION>"
+decl_stmt|;
+comment|/**    * Node Label expression not set .    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|field|NODE_LABEL_EXPRESSION_NOT_SET
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NODE_LABEL_EXPRESSION_NOT_SET
+init|=
+literal|"<Not set>"
+decl_stmt|;
 comment|/**    * By default, node label is exclusive or not    */
 annotation|@
 name|Private

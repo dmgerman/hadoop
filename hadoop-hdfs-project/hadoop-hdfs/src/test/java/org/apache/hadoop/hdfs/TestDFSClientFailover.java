@@ -805,9 +805,9 @@ argument_list|)
 operator|+
 literal|":"
 operator|+
-name|NameNode
+name|HdfsClientConfigKeys
 operator|.
-name|DEFAULT_PORT
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 operator|+
 literal|"/"
 operator|+
@@ -1713,9 +1713,9 @@ name|createNonHAProxy
 argument_list|(
 name|conf
 argument_list|,
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getAddress
+name|getNNAddress
 argument_list|(
 name|uri
 argument_list|)

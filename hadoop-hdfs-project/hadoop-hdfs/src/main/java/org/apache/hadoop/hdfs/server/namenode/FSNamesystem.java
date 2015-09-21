@@ -776,38 +776,6 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_MIN_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_REPLICATION_MIN_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_REPL_QUEUE_THRESHOLD_PCT_KEY
 import|;
 end_import
@@ -4941,13 +4909,6 @@ specifier|final
 name|boolean
 name|haEnabled
 decl_stmt|;
-comment|/** flag indicating whether replication queues have been initialized */
-DECL|field|initializedReplQueues
-name|boolean
-name|initializedReplQueues
-init|=
-literal|false
-decl_stmt|;
 comment|/**    * Whether the namenode is in the middle of starting the active service    */
 DECL|field|startingActiveService
 specifier|private
@@ -7328,6 +7289,8 @@ operator|!=
 literal|null
 operator|&&
 operator|!
+name|blockManager
+operator|.
 name|isPopulatingReplQueues
 argument_list|()
 assert|;
@@ -7590,6 +7553,8 @@ argument_list|(
 literal|"Reprocessing replication and invalidation queues"
 argument_list|)
 expr_stmt|;
+name|blockManager
+operator|.
 name|initializeReplQueues
 argument_list|()
 expr_stmt|;
@@ -7654,6 +7619,12 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Initialize the quota.
+name|dir
+operator|.
+name|updateCountForQuota
+argument_list|()
+expr_stmt|;
 comment|// Enable quota checks.
 name|dir
 operator|.
@@ -7810,30 +7781,6 @@ name|HAServiceState
 operator|.
 name|ACTIVE
 return|;
-block|}
-comment|/**    * Initialize replication queues.    */
-DECL|method|initializeReplQueues ()
-specifier|private
-name|void
-name|initializeReplQueues
-parameter_list|()
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"initializing replication queues"
-argument_list|)
-expr_stmt|;
-name|blockManager
-operator|.
-name|processMisReplicatedBlocks
-argument_list|()
-expr_stmt|;
-name|initializedReplQueues
-operator|=
-literal|true
-expr_stmt|;
 block|}
 comment|/**    * @return Whether the namenode is transitioning to active state and is in the    *         middle of the {@link #startActiveServices()}    */
 DECL|method|inTransitionToActive ()
@@ -8059,11 +8006,14 @@ operator|.
 name|clearQueues
 argument_list|()
 expr_stmt|;
-block|}
-name|initializedReplQueues
-operator|=
+name|blockManager
+operator|.
+name|setInitializedReplQueues
+argument_list|(
 literal|false
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -16514,15 +16464,25 @@ operator|.
 name|getFileUnderConstructionFeature
 argument_list|()
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
+if|if
+condition|(
 name|uc
-operator|!=
+operator|==
 literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot finalize file "
+operator|+
+name|src
+operator|+
+literal|" because it is not under construction"
 argument_list|)
-expr_stmt|;
+throw|;
+block|}
 name|leaseManager
 operator|.
 name|removeLease
@@ -20277,6 +20237,26 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+name|int
+name|minReplication
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_MIN_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_MIN_DEFAULT
+argument_list|)
+decl_stmt|;
+comment|// DFS_NAMENODE_SAFEMODE_REPLICATION_MIN_KEY is an expert level setting,
+comment|// setting this lower than the min replication is not recommended
+comment|// and/or dangerous for production setups.
+comment|// When it's unset, safeReplication will use dfs.namenode.replication.min
 name|this
 operator|.
 name|safeReplication
@@ -20285,9 +20265,11 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|DFS_NAMENODE_REPLICATION_MIN_KEY
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_SAFEMODE_REPLICATION_MIN_KEY
 argument_list|,
-name|DFS_NAMENODE_REPLICATION_MIN_DEFAULT
+name|minReplication
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -20497,13 +20479,19 @@ comment|// In the standby, do not populate repl queues
 if|if
 condition|(
 operator|!
+name|blockManager
+operator|.
 name|isPopulatingReplQueues
 argument_list|()
 operator|&&
+name|blockManager
+operator|.
 name|shouldPopulateReplQueues
 argument_list|()
 condition|)
 block|{
+name|blockManager
+operator|.
 name|initializeReplQueues
 argument_list|()
 expr_stmt|;
@@ -20686,6 +20674,8 @@ name|canInitializeReplQueues
 parameter_list|()
 block|{
 return|return
+name|blockManager
+operator|.
 name|shouldPopulateReplQueues
 argument_list|()
 operator|&&
@@ -20834,6 +20824,8 @@ name|canInitializeReplQueues
 argument_list|()
 operator|&&
 operator|!
+name|blockManager
+operator|.
 name|isPopulatingReplQueues
 argument_list|()
 operator|&&
@@ -20841,6 +20833,8 @@ operator|!
 name|haEnabled
 condition|)
 block|{
+name|blockManager
+operator|.
 name|initializeReplQueues
 argument_list|()
 expr_stmt|;
@@ -20945,6 +20939,8 @@ name|canInitializeReplQueues
 argument_list|()
 operator|&&
 operator|!
+name|blockManager
+operator|.
 name|isPopulatingReplQueues
 argument_list|()
 operator|&&
@@ -20952,6 +20948,8 @@ operator|!
 name|haEnabled
 condition|)
 block|{
+name|blockManager
+operator|.
 name|initializeReplQueues
 argument_list|()
 expr_stmt|;
@@ -22064,62 +22062,6 @@ operator|&&
 name|safeMode
 operator|.
 name|isOn
-argument_list|()
-return|;
-block|}
-comment|/**    * Check if replication queues are to be populated    * @return true when node is HAState.Active and not in the very first safemode    */
-annotation|@
-name|Override
-DECL|method|isPopulatingReplQueues ()
-specifier|public
-name|boolean
-name|isPopulatingReplQueues
-parameter_list|()
-block|{
-if|if
-condition|(
-operator|!
-name|shouldPopulateReplQueues
-argument_list|()
-condition|)
-block|{
-return|return
-literal|false
-return|;
-block|}
-return|return
-name|initializedReplQueues
-return|;
-block|}
-DECL|method|shouldPopulateReplQueues ()
-specifier|private
-name|boolean
-name|shouldPopulateReplQueues
-parameter_list|()
-block|{
-if|if
-condition|(
-name|haContext
-operator|==
-literal|null
-operator|||
-name|haContext
-operator|.
-name|getState
-argument_list|()
-operator|==
-literal|null
-condition|)
-return|return
-literal|false
-return|;
-return|return
-name|haContext
-operator|.
-name|getState
-argument_list|()
-operator|.
-name|shouldPopulateReplQueues
 argument_list|()
 return|;
 block|}
@@ -25386,6 +25328,8 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
+name|blockManager
+operator|.
 name|isPopulatingReplQueues
 argument_list|()
 condition|)
@@ -27193,6 +27137,29 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|node
+operator|.
+name|getUpgradeDomain
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|innerinfo
+operator|.
+name|put
+argument_list|(
+literal|"upgradeDomain"
+argument_list|,
+name|node
+operator|.
+name|getUpgradeDomain
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|info
 operator|.
 name|put
@@ -28513,6 +28480,19 @@ block|}
 annotation|@
 name|Override
 comment|// NameNodeMXBean
+DECL|method|getNNStartedTimeInMillis ()
+specifier|public
+name|long
+name|getNNStartedTimeInMillis
+parameter_list|()
+block|{
+return|return
+name|startTime
+return|;
+block|}
+annotation|@
+name|Override
+comment|// NameNodeMXBean
 DECL|method|getCompileInfo ()
 specifier|public
 name|String
@@ -28613,6 +28593,18 @@ parameter_list|()
 block|{
 return|return
 name|ecPolicyManager
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getHAContext ()
+specifier|public
+name|HAContext
+name|getHAContext
+parameter_list|()
+block|{
+return|return
+name|haContext
 return|;
 block|}
 annotation|@

@@ -1181,7 +1181,14 @@ name|retryPolicy
 operator|=
 name|RetryPolicies
 operator|.
-name|RETRY_FOREVER
+name|retryForeverWithFixedSleep
+argument_list|(
+name|rmConnectionRetryIntervalMS
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
 expr_stmt|;
 block|}
 else|else

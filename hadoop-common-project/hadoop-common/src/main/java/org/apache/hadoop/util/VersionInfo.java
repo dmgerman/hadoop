@@ -389,7 +389,7 @@ name|_getBuildVersion
 parameter_list|()
 block|{
 return|return
-name|getVersion
+name|_getVersion
 argument_list|()
 operator|+
 literal|" from "

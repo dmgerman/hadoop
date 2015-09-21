@@ -92,6 +92,7 @@ end_comment
 
 begin_class
 DECL|class|BasicInetPeer
+specifier|public
 class|class
 name|BasicInetPeer
 implements|implements

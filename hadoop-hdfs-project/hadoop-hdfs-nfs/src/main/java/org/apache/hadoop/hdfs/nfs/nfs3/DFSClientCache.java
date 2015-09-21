@@ -202,11 +202,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|nfs
-operator|.
-name|conf
-operator|.
-name|NfsConfiguration
+name|DFSUtilClient
 import|;
 end_import
 
@@ -220,11 +216,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|nfs
 operator|.
-name|namenode
+name|conf
 operator|.
-name|NameNode
+name|NfsConfiguration
 import|;
 end_import
 
@@ -907,9 +903,9 @@ return|return
 operator|new
 name|DFSClient
 argument_list|(
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getAddress
+name|getNNAddress
 argument_list|(
 name|config
 argument_list|)

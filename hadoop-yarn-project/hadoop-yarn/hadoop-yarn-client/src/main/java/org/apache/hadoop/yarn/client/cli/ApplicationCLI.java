@@ -3537,11 +3537,45 @@ argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|print
+name|println
 argument_list|(
 name|appReport
 operator|.
 name|isUnmanagedApp
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|print
+argument_list|(
+literal|"\tApplication Node Label Expression : "
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|println
+argument_list|(
+name|appReport
+operator|.
+name|getAppNodeLabelExpression
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|print
+argument_list|(
+literal|"\tAM container Node Label Expression : "
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|print
+argument_list|(
+name|appReport
+operator|.
+name|getAmNodeLabelExpression
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4031,9 +4065,15 @@ name|sysout
 operator|.
 name|println
 argument_list|(
-literal|"Successfully updated the priority of any application "
+literal|"Successfully updated the application with id "
 operator|+
 name|applicationId
+operator|+
+literal|" with priority '"
+operator|+
+name|priority
+operator|+
+literal|"'"
 argument_list|)
 expr_stmt|;
 block|}

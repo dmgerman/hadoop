@@ -824,6 +824,26 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|ha
+operator|.
+name|HAContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|metrics
 operator|.
 name|NameNodeMetrics
@@ -1412,6 +1432,12 @@ name|long
 name|scheduledReplicationBlocksCount
 init|=
 literal|0L
+decl_stmt|;
+comment|/** flag indicating whether replication queues have been initialized */
+DECL|field|initializedReplQueues
+specifier|private
+name|boolean
+name|initializedReplQueues
 decl_stmt|;
 DECL|field|excessBlocksCount
 specifier|private
@@ -5494,7 +5520,7 @@ else|:
 name|replication
 return|;
 block|}
-comment|/**    * Check whether the replication parameter is within the range    * determined by system configuration.    */
+comment|/**    * Check whether the replication parameter is within the range    * determined by system configuration and throw an exception if it's not.    *    * @param src the path to the target file    * @param replication the requested replication factor    * @param clientName the name of the client node making the request    * @throws java.io.IOException thrown if the requested replication factor    * is out of bounds    */
 DECL|method|verifyReplication (String src, short replication, String clientName)
 specifier|public
 name|void
@@ -5515,78 +5541,112 @@ block|{
 if|if
 condition|(
 name|replication
-operator|>=
+argument_list|<
 name|minReplication
-operator|&&
+operator|||
 name|replication
-operator|<=
+argument_list|>
 name|maxReplication
 condition|)
 block|{
-comment|//common case. avoid building 'text'
-return|return;
-block|}
-name|String
-name|text
+name|StringBuilder
+name|msg
 init|=
-literal|"file "
-operator|+
-name|src
-operator|+
-operator|(
-operator|(
-name|clientName
-operator|!=
-literal|null
-operator|)
-condition|?
-literal|" on client "
-operator|+
-name|clientName
-else|:
-literal|""
-operator|)
-operator|+
-literal|".\n"
-operator|+
-literal|"Requested replication "
-operator|+
-name|replication
+operator|new
+name|StringBuilder
+argument_list|(
+literal|"Requested replication factor of "
+argument_list|)
 decl_stmt|;
+name|msg
+operator|.
+name|append
+argument_list|(
+name|replication
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|replication
 operator|>
 name|maxReplication
 condition|)
-throw|throw
-operator|new
-name|IOException
+block|{
+name|msg
+operator|.
+name|append
 argument_list|(
-name|text
-operator|+
-literal|" exceeds maximum "
-operator|+
+literal|" exceeds maximum of "
+argument_list|)
+expr_stmt|;
+name|msg
+operator|.
+name|append
+argument_list|(
 name|maxReplication
 argument_list|)
-throw|;
+expr_stmt|;
+block|}
+else|else
+block|{
+name|msg
+operator|.
+name|append
+argument_list|(
+literal|" is less than the required minimum of "
+argument_list|)
+expr_stmt|;
+name|msg
+operator|.
+name|append
+argument_list|(
+name|minReplication
+argument_list|)
+expr_stmt|;
+block|}
+name|msg
+operator|.
+name|append
+argument_list|(
+literal|" for "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
-name|replication
-operator|<
-name|minReplication
+name|clientName
+operator|!=
+literal|null
 condition|)
+block|{
+name|msg
+operator|.
+name|append
+argument_list|(
+literal|" from "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|clientName
+argument_list|)
+expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-name|text
-operator|+
-literal|" is less than the required minimum "
-operator|+
-name|minReplication
+name|msg
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 throw|;
+block|}
 block|}
 comment|/**    * Check if a block is replicated to at least the minimum replication.    */
 DECL|method|isSufficientlyReplicated (BlockInfo b)
@@ -6132,8 +6192,6 @@ block|{
 if|if
 condition|(
 operator|!
-name|namesystem
-operator|.
 name|isPopulatingReplQueues
 argument_list|()
 condition|)
@@ -6165,8 +6223,6 @@ block|{
 if|if
 condition|(
 operator|!
-name|namesystem
-operator|.
 name|isPopulatingReplQueues
 argument_list|()
 condition|)
@@ -6321,8 +6377,6 @@ block|{
 if|if
 condition|(
 operator|!
-name|namesystem
-operator|.
 name|isPopulatingReplQueues
 argument_list|()
 condition|)
@@ -6725,8 +6779,6 @@ block|}
 elseif|else
 if|if
 condition|(
-name|namesystem
-operator|.
 name|isPopulatingReplQueues
 argument_list|()
 condition|)
@@ -12856,8 +12908,6 @@ operator|.
 name|isInStartupSafeMode
 argument_list|()
 operator|||
-name|namesystem
-operator|.
 name|isPopulatingReplQueues
 argument_list|()
 condition|)
@@ -13300,8 +13350,6 @@ comment|// do not try to handle over/under-replicated blocks during first safe m
 if|if
 condition|(
 operator|!
-name|namesystem
-operator|.
 name|isPopulatingReplQueues
 argument_list|()
 condition|)
@@ -17306,8 +17354,6 @@ block|{
 if|if
 condition|(
 operator|!
-name|namesystem
-operator|.
 name|isPopulatingReplQueues
 argument_list|()
 condition|)
@@ -17817,8 +17863,6 @@ block|{
 if|if
 condition|(
 operator|!
-name|namesystem
-operator|.
 name|isPopulatingReplQueues
 argument_list|()
 condition|)
@@ -19139,8 +19183,6 @@ block|{
 comment|// Process replication work only when active NN is out of safe mode.
 if|if
 condition|(
-name|namesystem
-operator|.
 name|isPopulatingReplQueues
 argument_list|()
 condition|)
@@ -19700,6 +19742,106 @@ name|getDatanodeStatistics
 argument_list|()
 operator|.
 name|getStorageTypeStats
+argument_list|()
+return|;
+block|}
+comment|/**    * Initialize replication queues.    */
+DECL|method|initializeReplQueues ()
+specifier|public
+name|void
+name|initializeReplQueues
+parameter_list|()
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"initializing replication queues"
+argument_list|)
+expr_stmt|;
+name|processMisReplicatedBlocks
+argument_list|()
+expr_stmt|;
+name|initializedReplQueues
+operator|=
+literal|true
+expr_stmt|;
+block|}
+comment|/**    * Check if replication queues are to be populated    * @return true when node is HAState.Active and not in the very first safemode    */
+DECL|method|isPopulatingReplQueues ()
+specifier|public
+name|boolean
+name|isPopulatingReplQueues
+parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|shouldPopulateReplQueues
+argument_list|()
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+return|return
+name|initializedReplQueues
+return|;
+block|}
+DECL|method|setInitializedReplQueues (boolean v)
+specifier|public
+name|void
+name|setInitializedReplQueues
+parameter_list|(
+name|boolean
+name|v
+parameter_list|)
+block|{
+name|this
+operator|.
+name|initializedReplQueues
+operator|=
+name|v
+expr_stmt|;
+block|}
+DECL|method|shouldPopulateReplQueues ()
+specifier|public
+name|boolean
+name|shouldPopulateReplQueues
+parameter_list|()
+block|{
+name|HAContext
+name|haContext
+init|=
+name|namesystem
+operator|.
+name|getHAContext
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|haContext
+operator|==
+literal|null
+operator|||
+name|haContext
+operator|.
+name|getState
+argument_list|()
+operator|==
+literal|null
+condition|)
+return|return
+literal|false
+return|;
+return|return
+name|haContext
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|shouldPopulateReplQueues
 argument_list|()
 return|;
 block|}

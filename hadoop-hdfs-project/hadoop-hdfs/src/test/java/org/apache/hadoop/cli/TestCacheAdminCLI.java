@@ -178,6 +178,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileSystem
@@ -679,13 +693,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getExecutor (String tag)
+DECL|method|getExecutor (String tag, Configuration conf)
 specifier|public
 name|CommandExecutor
 name|getExecutor
 parameter_list|(
 name|String
 name|tag
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IllegalArgumentException
@@ -718,6 +735,8 @@ operator|.
 name|getExecutor
 argument_list|(
 name|tag
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}
@@ -741,6 +760,8 @@ operator|.
 name|getExecutor
 argument_list|(
 literal|""
+argument_list|,
+name|conf
 argument_list|)
 operator|.
 name|executeCommand

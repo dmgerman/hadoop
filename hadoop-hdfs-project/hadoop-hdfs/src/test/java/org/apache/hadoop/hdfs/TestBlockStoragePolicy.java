@@ -656,7 +656,7 @@ specifier|final
 name|byte
 name|COLD
 init|=
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|COLD_STORAGE_POLICY_ID
 decl_stmt|;
@@ -666,7 +666,7 @@ specifier|final
 name|byte
 name|WARM
 init|=
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|WARM_STORAGE_POLICY_ID
 decl_stmt|;
@@ -676,7 +676,7 @@ specifier|final
 name|byte
 name|HOT
 init|=
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|HOT_STORAGE_POLICY_ID
 decl_stmt|;
@@ -686,7 +686,7 @@ specifier|final
 name|byte
 name|ONESSD
 init|=
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|ONESSD_STORAGE_POLICY_ID
 decl_stmt|;
@@ -696,7 +696,7 @@ specifier|final
 name|byte
 name|ALLSSD
 init|=
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|ALLSSD_STORAGE_POLICY_ID
 decl_stmt|;
@@ -706,7 +706,7 @@ specifier|final
 name|byte
 name|LAZY_PERSIST
 init|=
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|MEMORY_STORAGE_POLICY_ID
 decl_stmt|;
@@ -9600,9 +9600,7 @@ operator|.
 name|getStoragePolicy
 argument_list|()
 operator|==
-name|HdfsServerConstants
-operator|.
-name|HOT_STORAGE_POLICY_ID
+name|HOT
 argument_list|)
 expr_stmt|;
 comment|// 6. restart NameNode for reloading edits logs.
@@ -9637,9 +9635,7 @@ operator|.
 name|getStoragePolicy
 argument_list|()
 operator|==
-name|HdfsServerConstants
-operator|.
-name|HOT_STORAGE_POLICY_ID
+name|HOT
 argument_list|)
 expr_stmt|;
 block|}

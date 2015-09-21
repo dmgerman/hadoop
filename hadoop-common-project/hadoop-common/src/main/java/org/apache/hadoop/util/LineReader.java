@@ -886,6 +886,13 @@ operator|<=
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+name|ambiguousByteCount
+operator|>
+literal|0
+condition|)
+block|{
 name|str
 operator|.
 name|append
@@ -897,6 +904,11 @@ argument_list|,
 name|ambiguousByteCount
 argument_list|)
 expr_stmt|;
+name|bytesConsumed
+operator|+=
+name|ambiguousByteCount
+expr_stmt|;
+block|}
 break|break;
 comment|// EOF
 block|}
@@ -994,20 +1006,22 @@ operator|-
 name|txtLength
 expr_stmt|;
 block|}
+name|bytesConsumed
+operator|+=
+name|ambiguousByteCount
+expr_stmt|;
 if|if
 condition|(
 name|appendLength
-operator|>
+operator|>=
 literal|0
-condition|)
-block|{
-if|if
-condition|(
+operator|&&
 name|ambiguousByteCount
 operator|>
 literal|0
 condition|)
 block|{
+comment|//appending the ambiguous characters (refer case 2.2)
 name|str
 operator|.
 name|append
@@ -1019,16 +1033,18 @@ argument_list|,
 name|ambiguousByteCount
 argument_list|)
 expr_stmt|;
-comment|//appending the ambiguous characters (refer case 2.2)
-name|bytesConsumed
-operator|+=
-name|ambiguousByteCount
-expr_stmt|;
 name|ambiguousByteCount
 operator|=
 literal|0
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|appendLength
+operator|>
+literal|0
+condition|)
+block|{
 name|str
 operator|.
 name|append

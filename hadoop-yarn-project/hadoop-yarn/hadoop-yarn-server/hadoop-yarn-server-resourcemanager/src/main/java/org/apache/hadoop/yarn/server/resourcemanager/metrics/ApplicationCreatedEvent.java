@@ -124,7 +124,17 @@ specifier|private
 name|Priority
 name|applicationPriority
 decl_stmt|;
-DECL|method|ApplicationCreatedEvent (ApplicationId appId, String name, String type, String user, String queue, long submittedTime, long createdTime, Set<String> appTags, boolean unmanagedApplication, Priority applicationPriority)
+DECL|field|appNodeLabelsExpression
+specifier|private
+name|String
+name|appNodeLabelsExpression
+decl_stmt|;
+DECL|field|amNodeLabelsExpression
+specifier|private
+name|String
+name|amNodeLabelsExpression
+decl_stmt|;
+DECL|method|ApplicationCreatedEvent (ApplicationId appId, String name, String type, String user, String queue, long submittedTime, long createdTime, Set<String> appTags, boolean unmanagedApplication, Priority applicationPriority, String appNodeLabelsExpression, String amNodeLabelsExpression)
 specifier|public
 name|ApplicationCreatedEvent
 parameter_list|(
@@ -160,6 +170,12 @@ name|unmanagedApplication
 parameter_list|,
 name|Priority
 name|applicationPriority
+parameter_list|,
+name|String
+name|appNodeLabelsExpression
+parameter_list|,
+name|String
+name|amNodeLabelsExpression
 parameter_list|)
 block|{
 name|super
@@ -224,6 +240,18 @@ operator|.
 name|applicationPriority
 operator|=
 name|applicationPriority
+expr_stmt|;
+name|this
+operator|.
+name|appNodeLabelsExpression
+operator|=
+name|appNodeLabelsExpression
+expr_stmt|;
+name|this
+operator|.
+name|amNodeLabelsExpression
+operator|=
+name|amNodeLabelsExpression
 expr_stmt|;
 block|}
 annotation|@
@@ -332,6 +360,26 @@ parameter_list|()
 block|{
 return|return
 name|applicationPriority
+return|;
+block|}
+DECL|method|getAppNodeLabelsExpression ()
+specifier|public
+name|String
+name|getAppNodeLabelsExpression
+parameter_list|()
+block|{
+return|return
+name|appNodeLabelsExpression
+return|;
+block|}
+DECL|method|getAmNodeLabelsExpression ()
+specifier|public
+name|String
+name|getAmNodeLabelsExpression
+parameter_list|()
+block|{
+return|return
+name|amNodeLabelsExpression
 return|;
 block|}
 block|}

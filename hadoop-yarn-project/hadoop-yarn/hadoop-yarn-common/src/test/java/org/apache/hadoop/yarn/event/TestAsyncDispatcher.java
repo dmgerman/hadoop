@@ -240,13 +240,33 @@ argument_list|(
 name|event
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Expected YarnRuntimeException"
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
 name|YarnRuntimeException
 name|e
 parameter_list|)
-block|{     }
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|e
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|InterruptedException
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Queue should be empty and dispatcher should not hang on close
 name|Assert
 operator|.

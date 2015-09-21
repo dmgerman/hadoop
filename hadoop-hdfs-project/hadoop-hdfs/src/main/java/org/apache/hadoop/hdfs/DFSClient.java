@@ -1096,22 +1096,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|net
-operator|.
-name|TcpPeerServer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|AclException
@@ -1974,24 +1958,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|NameNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|SafeModeException
 import|;
 end_import
@@ -2737,7 +2703,7 @@ name|DFSOutputStream
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Same as this(NameNode.getAddress(conf), conf);    * @see #DFSClient(InetSocketAddress, Configuration)    * @deprecated Deprecated at 0.21    */
+comment|/**    * Same as this(NameNode.getNNAddress(conf), conf);    * @see #DFSClient(InetSocketAddress, Configuration)    * @deprecated Deprecated at 0.21    */
 annotation|@
 name|Deprecated
 DECL|method|DFSClient (Configuration conf)
@@ -2752,9 +2718,9 @@ name|IOException
 block|{
 name|this
 argument_list|(
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getAddress
+name|getNNAddress
 argument_list|(
 name|conf
 argument_list|)
@@ -2778,9 +2744,9 @@ name|IOException
 block|{
 name|this
 argument_list|(
-name|NameNode
+name|DFSUtilClient
 operator|.
-name|getUri
+name|getNNUri
 argument_list|(
 name|address
 argument_list|)
@@ -14280,7 +14246,7 @@ argument_list|)
 expr_stmt|;
 name|peer
 operator|=
-name|TcpPeerServer
+name|DFSUtilClient
 operator|.
 name|peerFromSocketAndKey
 argument_list|(

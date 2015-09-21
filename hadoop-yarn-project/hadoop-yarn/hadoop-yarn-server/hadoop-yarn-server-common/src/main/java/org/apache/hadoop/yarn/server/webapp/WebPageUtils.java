@@ -179,15 +179,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"\n, {'sType':'numeric', 'aTargets': "
-operator|+
-operator|(
-name|isFairSchedulerPage
-condition|?
-literal|"[6, 7]"
-else|:
-literal|"[6, 7]"
-operator|)
+literal|"\n, {'sType':'numeric', 'aTargets': [6, 7]"
 argument_list|)
 operator|.
 name|append

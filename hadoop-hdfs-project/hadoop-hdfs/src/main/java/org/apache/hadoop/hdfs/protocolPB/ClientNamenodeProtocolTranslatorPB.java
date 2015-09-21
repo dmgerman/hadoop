@@ -3503,7 +3503,7 @@ operator|.
 name|hasLocations
 argument_list|()
 condition|?
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -3550,7 +3550,7 @@ decl_stmt|;
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -3657,7 +3657,7 @@ argument_list|)
 operator|.
 name|setMasked
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -3672,7 +3672,7 @@ argument_list|)
 operator|.
 name|setCreateFlag
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertCreateFlag
 argument_list|(
@@ -3699,7 +3699,7 @@ name|builder
 operator|.
 name|addAllCryptoProtocolVersion
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -3735,7 +3735,7 @@ operator|.
 name|hasFs
 argument_list|()
 condition|?
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -3895,7 +3895,7 @@ argument_list|)
 operator|.
 name|setFlag
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertCreateFlag
 argument_list|(
@@ -3928,7 +3928,7 @@ operator|.
 name|hasBlock
 argument_list|()
 condition|?
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertLocatedBlockProto
 argument_list|(
@@ -3950,7 +3950,7 @@ name|hasStat
 argument_list|()
 operator|)
 condition|?
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4106,7 +4106,7 @@ argument_list|)
 operator|.
 name|setPermission
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4460,7 +4460,7 @@ block|}
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertLocatedBlockProto
 argument_list|(
@@ -4616,7 +4616,7 @@ decl_stmt|;
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertLocatedBlockProto
 argument_list|(
@@ -4786,7 +4786,7 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertLocatedBlocks
 argument_list|(
@@ -5221,7 +5221,7 @@ argument_list|)
 operator|.
 name|setMasked
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5349,7 +5349,7 @@ argument_list|()
 condition|)
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5522,7 +5522,7 @@ block|{
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5577,7 +5577,7 @@ argument_list|()
 operator|.
 name|setType
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5591,7 +5591,7 @@ decl_stmt|;
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5650,7 +5650,7 @@ argument_list|()
 operator|.
 name|setType
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5664,7 +5664,7 @@ decl_stmt|;
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertDatanodeStorageReports
 argument_list|(
@@ -5787,7 +5787,7 @@ argument_list|()
 operator|.
 name|setAction
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -6116,7 +6116,7 @@ argument_list|()
 operator|.
 name|setAction
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -6151,7 +6151,7 @@ argument_list|()
 condition|)
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -6229,7 +6229,7 @@ expr_stmt|;
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -6378,7 +6378,7 @@ operator|.
 name|hasFs
 argument_list|()
 condition|?
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -6460,7 +6460,7 @@ operator|.
 name|hasFs
 argument_list|()
 condition|?
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -6534,7 +6534,7 @@ decl_stmt|;
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -6899,7 +6899,7 @@ argument_list|)
 operator|.
 name|setDirPerm
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -7065,7 +7065,7 @@ decl_stmt|;
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertLocatedBlockProto
 argument_list|(
@@ -7165,7 +7165,7 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -7282,7 +7282,7 @@ operator|.
 name|hasToken
 argument_list|()
 condition|?
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertDelegationToken
 argument_list|(
@@ -7575,7 +7575,7 @@ operator|.
 name|hasDataEncryptionKey
 argument_list|()
 condition|?
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -8068,7 +8068,7 @@ argument_list|()
 condition|)
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -8159,7 +8159,7 @@ name|req
 argument_list|)
 decl_stmt|;
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -8219,7 +8219,7 @@ argument_list|()
 operator|.
 name|setInfo
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -8240,7 +8240,7 @@ name|builder
 operator|.
 name|setCacheFlags
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertCacheFlags
 argument_list|(
@@ -8315,7 +8315,7 @@ argument_list|()
 operator|.
 name|setInfo
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -8336,7 +8336,7 @@ name|builder
 operator|.
 name|setCacheFlags
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertCacheFlags
 argument_list|(
@@ -8469,7 +8469,7 @@ name|i
 parameter_list|)
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -8575,7 +8575,7 @@ argument_list|)
 operator|.
 name|setFilter
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -8632,7 +8632,7 @@ name|builder
 operator|.
 name|setInfo
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -8698,7 +8698,7 @@ name|builder
 operator|.
 name|setInfo
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -8843,7 +8843,7 @@ name|i
 argument_list|)
 decl_stmt|;
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -8976,7 +8976,7 @@ argument_list|)
 operator|.
 name|addAllAclSpec
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertAclEntryProto
 argument_list|(
@@ -9049,7 +9049,7 @@ argument_list|)
 operator|.
 name|addAllAclSpec
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertAclEntryProto
 argument_list|(
@@ -9236,7 +9236,7 @@ argument_list|)
 operator|.
 name|addAllAclSpec
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertAclEntryProto
 argument_list|(
@@ -9307,7 +9307,7 @@ decl_stmt|;
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -9495,7 +9495,7 @@ argument_list|()
 condition|)
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -9609,7 +9609,7 @@ name|elements
 operator|.
 name|add
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -9695,7 +9695,7 @@ name|builder
 operator|.
 name|setEcPolicy
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertErasureCodingPolicy
 argument_list|(
@@ -9777,7 +9777,7 @@ argument_list|)
 operator|.
 name|setXAttr
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertXAttrProto
 argument_list|(
@@ -9787,7 +9787,7 @@ argument_list|)
 operator|.
 name|setFlag
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -9876,7 +9876,7 @@ name|builder
 operator|.
 name|addAllXAttrs
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertXAttrProto
 argument_list|(
@@ -9896,7 +9896,7 @@ decl_stmt|;
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -9971,7 +9971,7 @@ decl_stmt|;
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -10033,7 +10033,7 @@ argument_list|)
 operator|.
 name|setXAttr
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertXAttrProto
 argument_list|(
@@ -10103,7 +10103,7 @@ argument_list|)
 operator|.
 name|setMode
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -10239,7 +10239,7 @@ decl_stmt|;
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -10299,7 +10299,7 @@ name|VOID_GET_STORAGE_POLICIES_REQUEST
 argument_list|)
 decl_stmt|;
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStoragePolicies
 argument_list|(
@@ -10406,7 +10406,7 @@ decl_stmt|;
 try|try
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -10497,7 +10497,7 @@ name|i
 operator|++
 index|]
 operator|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertErasureCodingPolicy
 argument_list|(
@@ -10577,7 +10577,7 @@ argument_list|()
 condition|)
 block|{
 return|return
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertErasureCodingPolicy
 argument_list|(

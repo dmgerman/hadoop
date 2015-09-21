@@ -155,7 +155,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * ProducerConsumer class encapsulates input and output queues and a  * thread-pool of Workers that loop on WorkRequest<T> inputQueue and for each  * consumed WorkRequest Workers invoke WorkRequestProcessor.processItem()  * and output resulting WorkReport<R> to the outputQueue.  */
+comment|/**  * ProducerConsumer class encapsulates input and output queues and a  * thread-pool of Workers that loop on WorkRequest{@literal<T>} inputQueue  * and for each consumed WorkRequest Workers invoke  * WorkRequestProcessor.processItem() and output resulting  * WorkReport{@literal<R>} to the outputQueue.  */
 end_comment
 
 begin_class
@@ -270,7 +270,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    *  Add another worker that will consume WorkRequest<T> items from input    *  queue, process each item using supplied processor, and for every    *  processed item output WorkReport<R> to output queue.    *    *  @param processor  Processor implementing WorkRequestProcessor interface.    *    */
+comment|/**    *  Add another worker that will consume WorkRequest{@literal<T>} items    *  from input queue, process each item using supplied processor, and for    *  every processed item output WorkReport{@literal<R>} to output queue.    *    *  @param processor  Processor implementing WorkRequestProcessor interface.    *    */
 DECL|method|addWorker (WorkRequestProcessor<T, R> processor)
 specifier|public
 name|void
@@ -340,7 +340,7 @@ operator|>
 literal|0
 return|;
 block|}
-comment|/**    *  Blocking put workRequest to ProducerConsumer input queue.    *    *  @param  WorkRequest<T> item to be processed.    */
+comment|/**    *  Blocking put workRequest to ProducerConsumer input queue.    *    *  @param  workRequest item to be processed.    */
 DECL|method|put (WorkRequest<T> workRequest)
 specifier|public
 name|void
@@ -399,7 +399,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    *  Blocking take from ProducerConsumer output queue that can be interrupted.    *    *  @return  WorkReport<R> item returned by processor's processItem().    */
+comment|/**    *  Blocking take from ProducerConsumer output queue that can be interrupted.    *    *  @return  item returned by processor's processItem().    */
 DECL|method|take ()
 specifier|public
 name|WorkReport
@@ -431,7 +431,7 @@ return|return
 name|report
 return|;
 block|}
-comment|/**    *  Blocking take from ProducerConsumer output queue (catches exceptions and    *  retries forever).    *    *  @return  WorkReport<R> item returned by processor's processItem().    */
+comment|/**    *  Blocking take from ProducerConsumer output queue (catches exceptions and    *  retries forever).    *    *  @return  item returned by processor's processItem().    */
 DECL|method|blockingTake ()
 specifier|public
 name|WorkReport

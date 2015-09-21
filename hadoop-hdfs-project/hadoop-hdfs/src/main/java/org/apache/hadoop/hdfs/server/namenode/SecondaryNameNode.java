@@ -4537,6 +4537,10 @@ name|streams
 argument_list|,
 name|fromTxId
 argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|,
 name|inProgressOk
 argument_list|)
 expr_stmt|;

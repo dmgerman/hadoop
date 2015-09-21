@@ -179,7 +179,7 @@ name|type
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Sets the max inactive time of the token.    *    * @param max inactive time of the token in milliseconds since the epoch.    */
+comment|/**    * Sets the max inactive time of the token.    *    * @param maxInactives inactive time of the token in milliseconds    *                     since the epoch.    */
 DECL|method|setMaxInactives (long maxInactives)
 specifier|public
 name|void

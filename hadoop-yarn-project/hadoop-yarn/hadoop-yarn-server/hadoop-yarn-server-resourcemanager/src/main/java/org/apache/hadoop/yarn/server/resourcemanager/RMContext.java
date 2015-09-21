@@ -214,6 +214,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|placement
+operator|.
+name|PlacementManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|recovery
 operator|.
 name|RMStateStore
@@ -692,6 +712,19 @@ DECL|method|getYarnConfiguration ()
 name|Configuration
 name|getYarnConfiguration
 parameter_list|()
+function_decl|;
+DECL|method|getQueuePlacementManager ()
+name|PlacementManager
+name|getQueuePlacementManager
+parameter_list|()
+function_decl|;
+DECL|method|setQueuePlacementManager (PlacementManager placementMgr)
+name|void
+name|setQueuePlacementManager
+parameter_list|(
+name|PlacementManager
+name|placementMgr
+parameter_list|)
 function_decl|;
 block|}
 end_interface

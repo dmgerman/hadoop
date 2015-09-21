@@ -3755,14 +3755,69 @@ argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|"PLAIN auth failed: wrong password"
-argument_list|,
+name|String
+name|message
+init|=
 name|e
 operator|.
 name|getMessage
 argument_list|()
+decl_stmt|;
+name|assertContains
+argument_list|(
+literal|"PLAIN auth failed"
+argument_list|,
+name|message
+argument_list|)
+expr_stmt|;
+name|assertContains
+argument_list|(
+literal|"wrong password"
+argument_list|,
+name|message
+argument_list|)
+expr_stmt|;
+block|}
+end_function
+
+begin_function
+DECL|method|assertContains (String expected, String text)
+specifier|private
+name|void
+name|assertContains
+parameter_list|(
+name|String
+name|expected
+parameter_list|,
+name|String
+name|text
+parameter_list|)
+block|{
+name|assertNotNull
+argument_list|(
+literal|"null text"
+argument_list|,
+name|text
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"No {"
+operator|+
+name|expected
+operator|+
+literal|"} in {"
+operator|+
+name|text
+operator|+
+literal|"}"
+argument_list|,
+name|text
+operator|.
+name|contains
+argument_list|(
+name|expected
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

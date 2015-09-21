@@ -2989,11 +2989,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeContentSummary ( ContentSummaryComputationContext summary)
+DECL|method|computeContentSummary (int snapshotId, ContentSummaryComputationContext summary)
 specifier|public
 name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
+name|int
+name|snapshotId
+parameter_list|,
 name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
@@ -3010,8 +3013,16 @@ condition|(
 name|sf
 operator|!=
 literal|null
+operator|&&
+name|snapshotId
+operator|==
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
+comment|// if the getContentSummary call is against a non-snapshot path, the
+comment|// computation should include all the deleted files/directories
 name|sf
 operator|.
 name|computeContentSummary4Snapshot
@@ -3040,6 +3051,12 @@ condition|(
 name|q
 operator|!=
 literal|null
+operator|&&
+name|snapshotId
+operator|==
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 return|return
@@ -3060,9 +3077,7 @@ name|computeDirectoryContentSummary
 argument_list|(
 name|summary
 argument_list|,
-name|Snapshot
-operator|.
-name|CURRENT_STATE_ID
+name|snapshotId
 argument_list|)
 return|;
 block|}
@@ -3141,6 +3156,8 @@ name|child
 operator|.
 name|computeContentSummary
 argument_list|(
+name|snapshotId
+argument_list|,
 name|summary
 argument_list|)
 expr_stmt|;
@@ -3162,6 +3179,10 @@ block|}
 comment|// The locks were released and reacquired. Check parent first.
 if|if
 condition|(
+operator|!
+name|isRoot
+argument_list|()
+operator|&&
 name|getParent
 argument_list|()
 operator|==

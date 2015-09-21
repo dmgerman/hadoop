@@ -19,7 +19,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  *  WorkRequest<T> is a simple container for items of class T and its  *  corresponding retry counter that indicates how many times this item  *  was previously attempted to be processed.  */
+comment|/**  *  WorkRequest{@literal<T>} is a simple container for items of class T and its  *  corresponding retry counter that indicates how many times this item  *  was previously attempted to be processed.  */
 end_comment
 
 begin_class

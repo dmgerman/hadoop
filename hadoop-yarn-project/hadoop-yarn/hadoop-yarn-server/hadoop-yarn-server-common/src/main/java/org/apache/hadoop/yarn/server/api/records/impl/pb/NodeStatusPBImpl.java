@@ -1441,6 +1441,7 @@ annotation|@
 name|Override
 DECL|method|getContainersUtilization ()
 specifier|public
+specifier|synchronized
 name|ResourceUtilization
 name|getContainersUtilization
 parameter_list|()
@@ -1487,6 +1488,7 @@ annotation|@
 name|Override
 DECL|method|setContainersUtilization ( ResourceUtilization containersUtilization)
 specifier|public
+specifier|synchronized
 name|void
 name|setContainersUtilization
 parameter_list|(
@@ -1530,6 +1532,7 @@ annotation|@
 name|Override
 DECL|method|getNodeUtilization ()
 specifier|public
+specifier|synchronized
 name|ResourceUtilization
 name|getNodeUtilization
 parameter_list|()
@@ -1576,6 +1579,7 @@ annotation|@
 name|Override
 DECL|method|setNodeUtilization ( ResourceUtilization nodeUtilization)
 specifier|public
+specifier|synchronized
 name|void
 name|setNodeUtilization
 parameter_list|(

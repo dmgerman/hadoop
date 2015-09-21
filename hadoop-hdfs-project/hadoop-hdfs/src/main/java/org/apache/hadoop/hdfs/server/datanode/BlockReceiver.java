@@ -843,7 +843,6 @@ decl_stmt|;
 comment|/** the replica to write */
 DECL|field|replicaInfo
 specifier|private
-specifier|final
 name|ReplicaInPipelineInterface
 name|replicaInfo
 decl_stmt|;
@@ -1633,6 +1632,19 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+if|if
+condition|(
+name|replicaInfo
+operator|!=
+literal|null
+condition|)
+block|{
+name|replicaInfo
+operator|.
+name|releaseAllBytesReserved
+argument_list|()
+expr_stmt|;
+block|}
 name|IOUtils
 operator|.
 name|closeStream
@@ -5431,7 +5443,7 @@ condition|)
 block|{
 name|wait
 argument_list|(
-name|PipelineAck
+name|datanode
 operator|.
 name|getOOBTimeout
 argument_list|(

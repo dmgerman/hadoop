@@ -233,6 +233,24 @@ name|APPLICATION_PRIORITY_INFO
 init|=
 literal|"YARN_APPLICATION_PRIORITY"
 decl_stmt|;
+DECL|field|APP_NODE_LABEL_EXPRESSION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|APP_NODE_LABEL_EXPRESSION
+init|=
+literal|"YARN_APP_NODE_LABEL_EXPRESSION"
+decl_stmt|;
+DECL|field|AM_NODE_LABEL_EXPRESSION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AM_NODE_LABEL_EXPRESSION
+init|=
+literal|"YARN_AM_NODE_LABEL_EXPRESSION"
+decl_stmt|;
 block|}
 end_class
 

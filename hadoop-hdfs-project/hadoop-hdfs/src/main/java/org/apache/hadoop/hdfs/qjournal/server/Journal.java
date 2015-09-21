@@ -714,6 +714,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -916,6 +930,13 @@ specifier|final
 name|JournalMetrics
 name|metrics
 decl_stmt|;
+DECL|field|lastJournalTimestamp
+specifier|private
+name|long
+name|lastJournalTimestamp
+init|=
+literal|0
+decl_stmt|;
 comment|/**    * Time threshold for sync calls, beyond which a warning should be logged to the console.    */
 DECL|field|WARN_SYNC_MILLIS_THRESHOLD
 specifier|private
@@ -1003,12 +1024,13 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|highestWrittenTxId
-operator|=
+name|updateHighestWrittenTxId
+argument_list|(
 name|latest
 operator|.
 name|getLastTxId
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -1173,7 +1195,13 @@ decl_stmt|;
 name|latestLog
 operator|.
 name|scanLog
-argument_list|()
+argument_list|(
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|,
+literal|false
+argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
@@ -1390,6 +1418,16 @@ name|get
 argument_list|()
 return|;
 block|}
+DECL|method|getLastJournalTimestamp ()
+specifier|synchronized
+name|long
+name|getLastJournalTimestamp
+parameter_list|()
+block|{
+return|return
+name|lastJournalTimestamp
+return|;
+block|}
 DECL|method|getCurrentLagTxns ()
 specifier|synchronized
 name|long
@@ -1439,6 +1477,28 @@ block|{
 return|return
 name|highestWrittenTxId
 return|;
+block|}
+comment|/**    * Update the highest Tx ID that has been written to the journal. Also update    * the {@link FileJournalManager#lastReadableTxId} of the underlying fjm.    * @param val The new value    */
+DECL|method|updateHighestWrittenTxId (long val)
+specifier|private
+name|void
+name|updateHighestWrittenTxId
+parameter_list|(
+name|long
+name|val
+parameter_list|)
+block|{
+name|highestWrittenTxId
+operator|=
+name|val
+expr_stmt|;
+name|fjm
+operator|.
+name|setLastReadableTxId
+argument_list|(
+name|val
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
@@ -1931,15 +1991,23 @@ argument_list|(
 name|numTxns
 argument_list|)
 expr_stmt|;
-name|highestWrittenTxId
-operator|=
+name|updateHighestWrittenTxId
+argument_list|(
 name|lastTxnId
+argument_list|)
 expr_stmt|;
 name|nextTxId
 operator|=
 name|lastTxnId
 operator|+
 literal|1
+expr_stmt|;
+name|lastJournalTimestamp
+operator|=
+name|Time
+operator|.
+name|now
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|heartbeat (RequestInfo reqInfo)
@@ -2402,7 +2470,13 @@ comment|// start of each segment.
 name|existing
 operator|.
 name|scanLog
-argument_list|()
+argument_list|(
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|,
+literal|false
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -2665,7 +2739,13 @@ expr_stmt|;
 name|elf
 operator|.
 name|scanLog
-argument_list|()
+argument_list|(
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|,
+literal|false
+argument_list|)
 expr_stmt|;
 name|checkSync
 argument_list|(
@@ -2999,7 +3079,13 @@ block|{
 name|elf
 operator|.
 name|scanLog
-argument_list|()
+argument_list|(
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|,
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 if|if
@@ -3500,8 +3586,8 @@ literal|": no current segment in place"
 argument_list|)
 expr_stmt|;
 comment|// Update the highest txid for lag metrics
-name|highestWrittenTxId
-operator|=
+name|updateHighestWrittenTxId
+argument_list|(
 name|Math
 operator|.
 name|max
@@ -3512,6 +3598,7 @@ name|getEndTxId
 argument_list|()
 argument_list|,
 name|highestWrittenTxId
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3635,12 +3722,13 @@ name|highestWrittenTxId
 argument_list|)
 condition|)
 block|{
-name|highestWrittenTxId
-operator|=
+name|updateHighestWrittenTxId
+argument_list|(
 name|segment
 operator|.
 name|getEndTxId
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 block|}

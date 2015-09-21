@@ -597,6 +597,16 @@ name|currentInProgress
 init|=
 literal|null
 decl_stmt|;
+comment|/**    * A FileJournalManager should maintain the largest Tx ID that has been    * safely written to its edit log files.    * It should limit readers to read beyond this ID to avoid potential race    * with ongoing writers.    * Initial value indicates that all transactions can be read.    */
+DECL|field|lastReadableTxId
+specifier|private
+name|long
+name|lastReadableTxId
+init|=
+name|Long
+operator|.
+name|MAX_VALUE
+decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|field|purger
@@ -942,6 +952,32 @@ operator|=
 name|size
 expr_stmt|;
 block|}
+DECL|method|getLastReadableTxId ()
+specifier|public
+name|long
+name|getLastReadableTxId
+parameter_list|()
+block|{
+return|return
+name|lastReadableTxId
+return|;
+block|}
+DECL|method|setLastReadableTxId (long id)
+specifier|public
+name|void
+name|setLastReadableTxId
+parameter_list|(
+name|long
+name|id
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lastReadableTxId
+operator|=
+name|id
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|purgeLogsOlderThan (long minTxIdToKeep)
@@ -1119,8 +1155,13 @@ try|try
 block|{
 name|elf
 operator|.
-name|validateLog
+name|scanLog
+argument_list|(
+name|getLastReadableTxId
 argument_list|()
+argument_list|,
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -1790,11 +1831,14 @@ name|streams
 argument_list|,
 name|fromTxId
 argument_list|,
+name|getLastReadableTxId
+argument_list|()
+argument_list|,
 name|inProgressOk
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addStreamsToCollectionFromFiles (Collection<EditLogFile> elfs, Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk)
+DECL|method|addStreamsToCollectionFromFiles (Collection<EditLogFile> elfs, Collection<EditLogInputStream> streams, long fromTxId, long maxTxIdToScan, boolean inProgressOk)
 specifier|static
 name|void
 name|addStreamsToCollectionFromFiles
@@ -1813,6 +1857,9 @@ name|streams
 parameter_list|,
 name|long
 name|fromTxId
+parameter_list|,
+name|long
+name|maxTxIdToScan
 parameter_list|,
 name|boolean
 name|inProgressOk
@@ -1868,8 +1915,12 @@ try|try
 block|{
 name|elf
 operator|.
-name|validateLog
-argument_list|()
+name|scanLog
+argument_list|(
+name|maxTxIdToScan
+argument_list|,
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -2112,8 +2163,13 @@ continue|continue;
 block|}
 name|elf
 operator|.
-name|validateLog
+name|scanLog
+argument_list|(
+name|getLastReadableTxId
 argument_list|()
+argument_list|,
+literal|true
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -2737,49 +2793,18 @@ operator|<=
 name|lastTxId
 return|;
 block|}
-comment|/**       * Find out where the edit log ends.      * This will update the lastTxId of the EditLogFile or      * mark it as corrupt if it is.      */
-DECL|method|validateLog ()
-specifier|public
-name|void
-name|validateLog
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|EditLogValidation
-name|val
-init|=
-name|EditLogFileInputStream
-operator|.
-name|validateEditLog
-argument_list|(
-name|file
-argument_list|)
-decl_stmt|;
-name|this
-operator|.
-name|lastTxId
-operator|=
-name|val
-operator|.
-name|getEndTxId
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|hasCorruptHeader
-operator|=
-name|val
-operator|.
-name|hasCorruptHeader
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|scanLog ()
+comment|/**       * Find out where the edit log ends.      * This will update the lastTxId of the EditLogFile or      * mark it as corrupt if it is.      * @param maxTxIdToScan Maximum Tx ID to try to scan.      *                      The scan returns after reading this or a higher ID.      *                      The file portion beyond this ID is potentially being      *                      updated.      * @param verifyVersion Whether the scan should verify the layout version      */
+DECL|method|scanLog (long maxTxIdToScan, boolean verifyVersion)
 specifier|public
 name|void
 name|scanLog
-parameter_list|()
+parameter_list|(
+name|long
+name|maxTxIdToScan
+parameter_list|,
+name|boolean
+name|verifyVersion
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -2791,6 +2816,10 @@ operator|.
 name|scanEditLog
 argument_list|(
 name|file
+argument_list|,
+name|maxTxIdToScan
+argument_list|,
+name|verifyVersion
 argument_list|)
 decl_stmt|;
 name|this

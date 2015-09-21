@@ -1906,6 +1906,15 @@ argument_list|,
 literal|"NORMAL"
 argument_list|)
 argument_list|)
+argument_list|,
+name|getString
+argument_list|(
+name|m
+argument_list|,
+literal|"upgradeDomain"
+argument_list|,
+literal|""
+argument_list|)
 argument_list|)
 return|;
 block|}

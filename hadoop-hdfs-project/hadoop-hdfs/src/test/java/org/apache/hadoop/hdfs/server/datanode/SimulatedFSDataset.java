@@ -2378,10 +2378,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|reserveSpaceForRbw (long bytesToReserve)
+DECL|method|reserveSpaceForReplica (long bytesToReserve)
 specifier|public
 name|void
-name|reserveSpaceForRbw
+name|reserveSpaceForReplica
 parameter_list|(
 name|long
 name|bytesToReserve

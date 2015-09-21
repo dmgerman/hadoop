@@ -468,7 +468,7 @@ literal|0
 argument_list|,
 literal|1024L
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|COLD_STORAGE_POLICY_ID
 argument_list|,

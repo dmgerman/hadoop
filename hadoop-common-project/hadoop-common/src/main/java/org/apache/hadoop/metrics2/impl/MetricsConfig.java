@@ -391,6 +391,15 @@ init|=
 literal|10
 decl_stmt|;
 comment|// seconds
+comment|// For testing, this will have the priority.
+DECL|field|PERIOD_MILLIS_KEY
+specifier|static
+specifier|final
+name|String
+name|PERIOD_MILLIS_KEY
+init|=
+literal|"periodMillis"
+decl_stmt|;
 DECL|field|QUEUE_CAPACITY_KEY
 specifier|static
 specifier|final

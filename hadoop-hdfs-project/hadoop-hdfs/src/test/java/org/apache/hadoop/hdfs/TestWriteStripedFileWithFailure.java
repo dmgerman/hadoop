@@ -116,6 +116,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -372,6 +382,9 @@ expr_stmt|;
 block|}
 block|}
 comment|// Test writing file with some Datanodes failure
+comment|// TODO: enable this test after HDFS-8704 and HDFS-9040
+annotation|@
+name|Ignore
 annotation|@
 name|Test
 argument_list|(

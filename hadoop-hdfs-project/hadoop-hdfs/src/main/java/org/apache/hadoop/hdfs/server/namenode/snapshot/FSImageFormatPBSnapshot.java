@@ -354,7 +354,7 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
+name|PBHelperClient
 import|;
 end_import
 
@@ -2086,7 +2086,7 @@ block|{
 name|Block
 name|blk
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -3926,7 +3926,7 @@ name|fb
 operator|.
 name|addBlocks
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

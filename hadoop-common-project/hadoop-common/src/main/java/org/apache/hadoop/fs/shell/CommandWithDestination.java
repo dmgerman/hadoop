@@ -423,6 +423,13 @@ name|lazyPersist
 init|=
 literal|false
 decl_stmt|;
+DECL|field|direct
+specifier|private
+name|boolean
+name|direct
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * The name of the raw xattr namespace. It would be nice to use    * XAttr.RAW.name() but we can't reference the hadoop-hdfs project.    */
 DECL|field|RAW
 specifier|private
@@ -496,6 +503,20 @@ name|flag
 parameter_list|)
 block|{
 name|writeChecksum
+operator|=
+name|flag
+expr_stmt|;
+block|}
+DECL|method|setDirectWrite (boolean flag)
+specifier|protected
+name|void
+name|setDirectWrite
+parameter_list|(
+name|boolean
+name|flag
+parameter_list|)
+block|{
+name|direct
 operator|=
 name|flag
 expr_stmt|;
@@ -1785,7 +1806,7 @@ return|return
 name|preserveRawXattrs
 return|;
 block|}
-comment|/**    * Copies the stream contents to a temporary file.  If the copy is    * successful, the temporary file will be renamed to the real path,    * else the temporary file will be deleted.    * @param in the input stream for the copy    * @param target where to store the contents of the stream    * @throws IOException if copy fails    */
+comment|/**    * If direct write is disabled ,copies the stream contents to a temporary    * file "<target>._COPYING_". If the copy is    * successful, the temporary file will be renamed to the real path,    * else the temporary file will be deleted.    * if direct write is enabled , then creation temporary file is skipped.    * @param in the input stream for the copy    * @param target where to store the contents of the stream    * @throws IOException if copy fails    */
 DECL|method|copyStreamToTarget (InputStream in, PathData target)
 specifier|protected
 name|void
@@ -1846,6 +1867,10 @@ block|{
 name|PathData
 name|tempTarget
 init|=
+name|direct
+condition|?
+name|target
+else|:
 name|target
 operator|.
 name|suffix
@@ -1869,8 +1894,16 @@ argument_list|,
 name|tempTarget
 argument_list|,
 name|lazyPersist
+argument_list|,
+name|direct
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|direct
+condition|)
+block|{
 name|targetFs
 operator|.
 name|rename
@@ -1880,6 +1913,7 @@ argument_list|,
 name|target
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -2252,7 +2286,7 @@ name|fs
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|writeStreamToFile (InputStream in, PathData target, boolean lazyPersist)
+DECL|method|writeStreamToFile (InputStream in, PathData target, boolean lazyPersist, boolean direct)
 name|void
 name|writeStreamToFile
 parameter_list|(
@@ -2264,6 +2298,9 @@ name|target
 parameter_list|,
 name|boolean
 name|lazyPersist
+parameter_list|,
+name|boolean
+name|direct
 parameter_list|)
 throws|throws
 name|IOException
@@ -2282,6 +2319,8 @@ argument_list|(
 name|target
 argument_list|,
 name|lazyPersist
+argument_list|,
+name|direct
 argument_list|)
 expr_stmt|;
 name|IOUtils
@@ -2312,7 +2351,7 @@ comment|// just in case copyBytes didn't
 block|}
 block|}
 comment|// tag created files as temp files
-DECL|method|create (PathData item, boolean lazyPersist)
+DECL|method|create (PathData item, boolean lazyPersist, boolean direct)
 name|FSDataOutputStream
 name|create
 parameter_list|(
@@ -2321,6 +2360,9 @@ name|item
 parameter_list|,
 name|boolean
 name|lazyPersist
+parameter_list|,
+name|boolean
+name|direct
 parameter_list|)
 throws|throws
 name|IOException
@@ -2419,6 +2461,12 @@ block|}
 finally|finally
 block|{
 comment|// might have been created but stream was interrupted
+if|if
+condition|(
+operator|!
+name|direct
+condition|)
+block|{
 name|deleteOnExit
 argument_list|(
 name|item
@@ -2426,6 +2474,7 @@ operator|.
 name|path
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|rename (PathData src, PathData target)

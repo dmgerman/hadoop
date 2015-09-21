@@ -2245,6 +2245,10 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|writer
+operator|=
+literal|null
+expr_stmt|;
 block|}
 name|long
 name|currentTime
@@ -3473,6 +3477,21 @@ name|this
 operator|.
 name|notifyAll
 argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|disableLogAggregation ()
+specifier|public
+name|void
+name|disableLogAggregation
+parameter_list|()
+block|{
+name|this
+operator|.
+name|logAggregationDisabled
+operator|=
+literal|true
 expr_stmt|;
 block|}
 annotation|@

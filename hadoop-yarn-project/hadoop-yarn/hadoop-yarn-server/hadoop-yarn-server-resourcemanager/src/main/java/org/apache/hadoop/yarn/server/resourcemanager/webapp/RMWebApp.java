@@ -698,6 +698,25 @@ return|return
 name|path
 return|;
 block|}
+DECL|method|getHAZookeeperConnectionState ()
+specifier|public
+name|String
+name|getHAZookeeperConnectionState
+parameter_list|()
+block|{
+return|return
+name|rm
+operator|.
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMAdminService
+argument_list|()
+operator|.
+name|getHAZookeeperConnectionState
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

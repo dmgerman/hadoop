@@ -354,22 +354,6 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
-name|PBHelper
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocolPB
-operator|.
 name|PBHelperClient
 import|;
 end_import
@@ -743,7 +727,7 @@ name|getBlock
 argument_list|()
 argument_list|)
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -850,7 +834,7 @@ name|DatanodeInfo
 index|[]
 name|targets
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -909,7 +893,7 @@ name|getStorageType
 argument_list|()
 argument_list|)
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -935,7 +919,7 @@ argument_list|()
 argument_list|,
 name|targets
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageTypes
 argument_list|(
@@ -949,7 +933,7 @@ operator|.
 name|length
 argument_list|)
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1044,7 +1028,7 @@ literal|false
 operator|)
 argument_list|,
 operator|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertBooleanList
 argument_list|(
@@ -1103,7 +1087,7 @@ name|DatanodeInfo
 index|[]
 name|targets
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1152,7 +1136,7 @@ name|getBlock
 argument_list|()
 argument_list|)
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1178,7 +1162,7 @@ argument_list|()
 argument_list|,
 name|targets
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageTypes
 argument_list|(
@@ -1245,7 +1229,7 @@ name|hasSlotId
 argument_list|()
 operator|)
 condition|?
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1293,7 +1277,7 @@ name|getBlock
 argument_list|()
 argument_list|)
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1384,7 +1368,7 @@ try|try
 block|{
 name|releaseShortCircuitFds
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1553,7 +1537,7 @@ name|getStorageType
 argument_list|()
 argument_list|)
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1571,7 +1555,7 @@ operator|.
 name|getDelHint
 argument_list|()
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1659,7 +1643,7 @@ name|getBlock
 argument_list|()
 argument_list|)
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1750,7 +1734,7 @@ name|getBlock
 argument_list|()
 argument_list|)
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

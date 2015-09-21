@@ -239,6 +239,16 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"ResourceManager HA zookeeper connection state:"
+argument_list|,
+name|cinfo
+operator|.
+name|getHAZookeeperConnectionState
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"ResourceManager RMStateStore:"
 argument_list|,
 name|cinfo

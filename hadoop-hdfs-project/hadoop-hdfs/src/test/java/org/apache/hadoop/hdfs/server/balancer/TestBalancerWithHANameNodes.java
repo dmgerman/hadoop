@@ -188,9 +188,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|client
 operator|.
-name|ClientProtocol
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -204,11 +204,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|namenode
-operator|.
-name|NameNode
+name|ClientProtocol
 import|;
 end_import
 
@@ -384,9 +382,9 @@ name|nn1Conf
 operator|.
 name|setIpcPort
 argument_list|(
-name|NameNode
+name|HdfsClientConfigKeys
 operator|.
-name|DEFAULT_PORT
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 argument_list|)
 expr_stmt|;
 name|Configuration
@@ -624,9 +622,7 @@ name|run
 argument_list|(
 name|namenodes
 argument_list|,
-name|Balancer
-operator|.
-name|Parameters
+name|BalancerParameters
 operator|.
 name|DEFAULT
 argument_list|,
@@ -657,9 +653,7 @@ name|client
 argument_list|,
 name|cluster
 argument_list|,
-name|Balancer
-operator|.
-name|Parameters
+name|BalancerParameters
 operator|.
 name|DEFAULT
 argument_list|)

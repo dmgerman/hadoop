@@ -90,6 +90,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_DATA_TRANSFER_PROTECTION_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_BLOCKREPORT_INITIAL_DELAY_KEY
@@ -173,22 +191,6 @@ operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_IPC_ADDRESS_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_DATA_TRANSFER_PROTECTION_KEY
 import|;
 end_import
 

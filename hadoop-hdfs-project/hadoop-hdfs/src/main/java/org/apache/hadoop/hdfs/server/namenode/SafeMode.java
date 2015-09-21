@@ -87,13 +87,6 @@ name|boolean
 name|isInStartupSafeMode
 parameter_list|()
 function_decl|;
-comment|/** Check whether replication queues are being populated. */
-DECL|method|isPopulatingReplQueues ()
-specifier|public
-name|boolean
-name|isPopulatingReplQueues
-parameter_list|()
-function_decl|;
 comment|/**    * Increment number of blocks that reached minimal replication.    * @param replication current replication    * @param storedBlock current stored Block    */
 DECL|method|incrementSafeBlockCount (int replication, BlockInfo storedBlock)
 specifier|public

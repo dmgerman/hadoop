@@ -274,6 +274,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|placement
+operator|.
+name|PlacementManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|recovery
 operator|.
 name|RMStateStore
@@ -616,7 +636,7 @@ DECL|method|RMContextImpl ()
 specifier|public
 name|RMContextImpl
 parameter_list|()
-block|{    }
+block|{   }
 annotation|@
 name|VisibleForTesting
 comment|// helper constructor for tests
@@ -1777,6 +1797,44 @@ operator|.
 name|yarnConfiguration
 operator|=
 name|yarnConfiguration
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getQueuePlacementManager ()
+specifier|public
+name|PlacementManager
+name|getQueuePlacementManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|activeServiceContext
+operator|.
+name|getQueuePlacementManager
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setQueuePlacementManager (PlacementManager placementMgr)
+specifier|public
+name|void
+name|setQueuePlacementManager
+parameter_list|(
+name|PlacementManager
+name|placementMgr
+parameter_list|)
+block|{
+name|this
+operator|.
+name|activeServiceContext
+operator|.
+name|setQueuePlacementManager
+argument_list|(
+name|placementMgr
+argument_list|)
 expr_stmt|;
 block|}
 block|}

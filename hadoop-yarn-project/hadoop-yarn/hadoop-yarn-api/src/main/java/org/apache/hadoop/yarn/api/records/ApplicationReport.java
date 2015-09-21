@@ -362,7 +362,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType, Token amRmToken, Set<String> tags, boolean unmanagedApplication, Priority priority)
+DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType, Token amRmToken, Set<String> tags, boolean unmanagedApplication, Priority priority, String appNodeLabelExpression, String amNodeLabelExpression)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -436,6 +436,12 @@ name|unmanagedApplication
 parameter_list|,
 name|Priority
 name|priority
+parameter_list|,
+name|String
+name|appNodeLabelExpression
+parameter_list|,
+name|String
+name|amNodeLabelExpression
 parameter_list|)
 block|{
 name|ApplicationReport
@@ -501,6 +507,20 @@ operator|.
 name|setPriority
 argument_list|(
 name|priority
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setAppNodeLabelExpression
+argument_list|(
+name|appNodeLabelExpression
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setAmNodeLabelExpression
+argument_list|(
+name|amNodeLabelExpression
 argument_list|)
 expr_stmt|;
 return|return
@@ -1072,7 +1092,7 @@ name|boolean
 name|isUnmanagedApp
 parameter_list|()
 function_decl|;
-comment|/**    * @param value true if RM should not manage the AM    */
+comment|/**    * @param unmanagedApplication true if RM should not manage the AM    */
 annotation|@
 name|Public
 annotation|@
@@ -1111,6 +1131,50 @@ name|setPriority
 parameter_list|(
 name|Priority
 name|priority
+parameter_list|)
+function_decl|;
+comment|/**    * Get the default Node Label expression for all the application's containers    *    * @return Application's NodeLabelExpression    */
+annotation|@
+name|Unstable
+DECL|method|getAppNodeLabelExpression ()
+specifier|public
+specifier|abstract
+name|String
+name|getAppNodeLabelExpression
+parameter_list|()
+function_decl|;
+annotation|@
+name|Unstable
+DECL|method|setAppNodeLabelExpression (String appNodeLabelExpression)
+specifier|public
+specifier|abstract
+name|void
+name|setAppNodeLabelExpression
+parameter_list|(
+name|String
+name|appNodeLabelExpression
+parameter_list|)
+function_decl|;
+comment|/**    * Get the default Node Label expression for all the application's containers    *    * @return Application's NodeLabelExpression    */
+annotation|@
+name|Unstable
+DECL|method|getAmNodeLabelExpression ()
+specifier|public
+specifier|abstract
+name|String
+name|getAmNodeLabelExpression
+parameter_list|()
+function_decl|;
+annotation|@
+name|Unstable
+DECL|method|setAmNodeLabelExpression (String amNodeLabelExpression)
+specifier|public
+specifier|abstract
+name|void
+name|setAmNodeLabelExpression
+parameter_list|(
+name|String
+name|amNodeLabelExpression
 parameter_list|)
 function_decl|;
 block|}

@@ -2887,7 +2887,7 @@ name|newInstance
 argument_list|(
 name|newResource
 argument_list|,
-name|RMNode
+name|ResourceOption
 operator|.
 name|OVER_COMMIT_TIMEOUT_MILLIS_DEFAULT
 argument_list|)

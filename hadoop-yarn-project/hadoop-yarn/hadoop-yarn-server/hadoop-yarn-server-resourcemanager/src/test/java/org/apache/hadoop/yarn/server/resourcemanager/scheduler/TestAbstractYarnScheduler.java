@@ -702,9 +702,6 @@ argument_list|()
 expr_stmt|;
 name|testMaximumAllocationMemoryHelper
 argument_list|(
-operator|(
-name|AbstractYarnScheduler
-operator|)
 name|rm
 operator|.
 name|getResourceScheduler
@@ -766,9 +763,6 @@ argument_list|()
 expr_stmt|;
 name|testMaximumAllocationMemoryHelper
 argument_list|(
-operator|(
-name|AbstractYarnScheduler
-operator|)
 name|rm
 operator|.
 name|getResourceScheduler
@@ -803,12 +797,12 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|testMaximumAllocationMemoryHelper ( AbstractYarnScheduler scheduler, final int node1MaxMemory, final int node2MaxMemory, final int node3MaxMemory, final int... expectedMaxMemory)
+DECL|method|testMaximumAllocationMemoryHelper ( YarnScheduler scheduler, final int node1MaxMemory, final int node2MaxMemory, final int node3MaxMemory, final int... expectedMaxMemory)
 specifier|private
 name|void
 name|testMaximumAllocationMemoryHelper
 parameter_list|(
-name|AbstractYarnScheduler
+name|YarnScheduler
 name|scheduler
 parameter_list|,
 specifier|final
@@ -1274,9 +1268,6 @@ argument_list|()
 expr_stmt|;
 name|testMaximumAllocationVCoresHelper
 argument_list|(
-operator|(
-name|AbstractYarnScheduler
-operator|)
 name|rm
 operator|.
 name|getResourceScheduler
@@ -1338,9 +1329,6 @@ argument_list|()
 expr_stmt|;
 name|testMaximumAllocationVCoresHelper
 argument_list|(
-operator|(
-name|AbstractYarnScheduler
-operator|)
 name|rm
 operator|.
 name|getResourceScheduler
@@ -1375,12 +1363,12 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|testMaximumAllocationVCoresHelper ( AbstractYarnScheduler scheduler, final int node1MaxVCores, final int node2MaxVCores, final int node3MaxVCores, final int... expectedMaxVCores)
+DECL|method|testMaximumAllocationVCoresHelper ( YarnScheduler scheduler, final int node1MaxVCores, final int node2MaxVCores, final int node3MaxVCores, final int... expectedMaxVCores)
 specifier|private
 name|void
 name|testMaximumAllocationVCoresHelper
 parameter_list|(
-name|AbstractYarnScheduler
+name|YarnScheduler
 name|scheduler
 parameter_list|,
 specifier|final
@@ -3286,7 +3274,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyMaximumResourceCapability ( Resource expectedMaximumResource, AbstractYarnScheduler scheduler)
+DECL|method|verifyMaximumResourceCapability ( Resource expectedMaximumResource, YarnScheduler scheduler)
 specifier|private
 name|void
 name|verifyMaximumResourceCapability
@@ -3294,7 +3282,7 @@ parameter_list|(
 name|Resource
 name|expectedMaximumResource
 parameter_list|,
-name|AbstractYarnScheduler
+name|YarnScheduler
 name|scheduler
 parameter_list|)
 block|{

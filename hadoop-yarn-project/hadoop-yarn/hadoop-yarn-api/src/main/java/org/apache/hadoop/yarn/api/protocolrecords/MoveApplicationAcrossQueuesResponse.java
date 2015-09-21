@@ -111,6 +111,7 @@ annotation|@
 name|Unstable
 DECL|class|MoveApplicationAcrossQueuesResponse
 specifier|public
+specifier|abstract
 class|class
 name|MoveApplicationAcrossQueuesResponse
 block|{
@@ -120,6 +121,7 @@ annotation|@
 name|Unstable
 DECL|method|newInstance ()
 specifier|public
+specifier|static
 name|MoveApplicationAcrossQueuesResponse
 name|newInstance
 parameter_list|()

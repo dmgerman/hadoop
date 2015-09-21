@@ -973,7 +973,7 @@ name|StorageReport
 index|[]
 name|report
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageReports
 argument_list|(
@@ -1174,7 +1174,7 @@ name|builder
 operator|.
 name|setRollingUpgradeStatus
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertRollingUpgradeStatus
 argument_list|(
@@ -1327,7 +1327,7 @@ operator|=
 operator|new
 name|StorageBlockReport
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1682,7 +1682,7 @@ operator|=
 operator|new
 name|StorageReceivedDeletedBlocks
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1947,7 +1947,7 @@ index|[
 name|i
 index|]
 operator|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertLocatedBlockProto
 argument_list|(
@@ -2051,7 +2051,7 @@ index|[
 name|i
 index|]
 operator|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

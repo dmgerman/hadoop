@@ -78,11 +78,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|nio
+name|io
 operator|.
-name|channels
-operator|.
-name|ClosedChannelException
+name|OutputStreamWriter
 import|;
 end_import
 
@@ -90,9 +88,11 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
+name|nio
 operator|.
-name|OutputStreamWriter
+name|channels
+operator|.
+name|ClosedChannelException
 import|;
 end_import
 
@@ -267,48 +267,6 @@ operator|.
 name|atomic
 operator|.
 name|AtomicLong
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Joiner
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
 import|;
 end_import
 
@@ -496,7 +454,7 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
-name|FsVolumeReference
+name|FsDatasetSpi
 import|;
 end_import
 
@@ -516,7 +474,7 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
-name|FsDatasetSpi
+name|FsVolumeReference
 import|;
 end_import
 
@@ -566,20 +524,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
-operator|.
-name|CloseableReferenceCount
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|IOUtils
@@ -596,25 +540,23 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|DiskChecker
-operator|.
-name|DiskErrorException
+name|CloseableReferenceCount
 import|;
 end_import
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|common
+name|hadoop
 operator|.
 name|util
 operator|.
-name|concurrent
+name|DiskChecker
 operator|.
-name|ThreadFactoryBuilder
+name|DiskErrorException
 import|;
 end_import
 
@@ -677,6 +619,64 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Joiner
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadFactoryBuilder
 import|;
 end_import
 
@@ -780,11 +780,18 @@ operator|new
 name|CloseableReferenceCount
 argument_list|()
 decl_stmt|;
-comment|// Disk space reserved for open blocks.
-DECL|field|reservedForRbw
+comment|// Disk space reserved for blocks (RBW or Re-replicating) open for write.
+DECL|field|reservedForReplicas
 specifier|private
 name|AtomicLong
-name|reservedForRbw
+name|reservedForReplicas
+decl_stmt|;
+DECL|field|recentReserved
+specifier|private
+name|long
+name|recentReserved
+init|=
+literal|0
 decl_stmt|;
 comment|// Capacity configured. This is useful when we want to
 comment|// limit the visible capacity for tests. If negative, then we just
@@ -853,7 +860,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|reservedForRbw
+name|reservedForReplicas
 operator|=
 operator|new
 name|AtomicLong
@@ -1829,7 +1836,7 @@ operator|-
 name|getDfsUsed
 argument_list|()
 operator|-
-name|reservedForRbw
+name|reservedForReplicas
 operator|.
 name|get
 argument_list|()
@@ -1844,7 +1851,7 @@ argument_list|()
 operator|-
 name|reserved
 operator|-
-name|reservedForRbw
+name|reservedForReplicas
 operator|.
 name|get
 argument_list|()
@@ -1875,17 +1882,28 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getReservedForRbw ()
+DECL|method|getReservedForReplicas ()
 specifier|public
 name|long
-name|getReservedForRbw
+name|getReservedForReplicas
 parameter_list|()
 block|{
 return|return
-name|reservedForRbw
+name|reservedForReplicas
 operator|.
 name|get
 argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getRecentReserved ()
+name|long
+name|getRecentReserved
+parameter_list|()
+block|{
+return|return
+name|recentReserved
 return|;
 block|}
 DECL|method|getReserved ()
@@ -2068,6 +2086,16 @@ block|{
 name|checkReference
 argument_list|()
 expr_stmt|;
+name|reserveSpaceForReplica
+argument_list|(
+name|b
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+try|try
+block|{
 return|return
 name|getBlockPoolSlice
 argument_list|(
@@ -2080,12 +2108,31 @@ name|b
 argument_list|)
 return|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|exception
+parameter_list|)
+block|{
+name|releaseReservedSpace
+argument_list|(
+name|b
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+throw|throw
+name|exception
+throw|;
+block|}
+block|}
 annotation|@
 name|Override
-DECL|method|reserveSpaceForRbw (long bytesToReserve)
+DECL|method|reserveSpaceForReplica (long bytesToReserve)
 specifier|public
 name|void
-name|reserveSpaceForRbw
+name|reserveSpaceForReplica
 parameter_list|(
 name|long
 name|bytesToReserve
@@ -2098,12 +2145,16 @@ operator|!=
 literal|0
 condition|)
 block|{
-name|reservedForRbw
+name|reservedForReplicas
 operator|.
 name|addAndGet
 argument_list|(
 name|bytesToReserve
 argument_list|)
+expr_stmt|;
+name|recentReserved
+operator|=
+name|bytesToReserve
 expr_stmt|;
 block|}
 block|}
@@ -2134,7 +2185,7 @@ do|do
 block|{
 name|oldReservation
 operator|=
-name|reservedForRbw
+name|reservedForReplicas
 operator|.
 name|get
 argument_list|()
@@ -2152,8 +2203,8 @@ operator|<
 literal|0
 condition|)
 block|{
-comment|// Failsafe, this should never occur in practice, but if it does we don't
-comment|// want to start advertising more space than we have available.
+comment|// Failsafe, this should never occur in practice, but if it does we
+comment|// don't want to start advertising more space than we have available.
 name|newReservation
 operator|=
 literal|0
@@ -2163,7 +2214,7 @@ block|}
 do|while
 condition|(
 operator|!
-name|reservedForRbw
+name|reservedForReplicas
 operator|.
 name|compareAndSet
 argument_list|(
@@ -3640,7 +3691,7 @@ block|{
 name|checkReference
 argument_list|()
 expr_stmt|;
-name|reserveSpaceForRbw
+name|reserveSpaceForReplica
 argument_list|(
 name|b
 operator|.
@@ -3681,8 +3732,8 @@ name|exception
 throw|;
 block|}
 block|}
-comment|/**    *    * @param bytesReservedForRbw Space that was reserved during    *     block creation. Now that the block is being finalized we    *     can free up this space.    * @return    * @throws IOException    */
-DECL|method|addFinalizedBlock (String bpid, Block b, File f, long bytesReservedForRbw)
+comment|/**    *    * @param bytesReserved Space that was reserved during    *     block creation. Now that the block is being finalized we    *     can free up this space.    * @return    * @throws IOException    */
+DECL|method|addFinalizedBlock (String bpid, Block b, File f, long bytesReserved)
 name|File
 name|addFinalizedBlock
 parameter_list|(
@@ -3696,14 +3747,14 @@ name|File
 name|f
 parameter_list|,
 name|long
-name|bytesReservedForRbw
+name|bytesReserved
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 name|releaseReservedSpace
 argument_list|(
-name|bytesReservedForRbw
+name|bytesReserved
 argument_list|)
 expr_stmt|;
 return|return

@@ -204,7 +204,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|ContentSummaryComputationContext
+name|ContentCounts
 import|;
 end_import
 
@@ -1175,35 +1175,23 @@ name|snapshot
 return|;
 block|}
 block|}
-DECL|method|computeContentSummary ( final BlockStoragePolicySuite bsps, final INodeDirectory snapshotRoot, final ContentSummaryComputationContext summary)
+annotation|@
+name|Override
+DECL|method|computeContentSummary4Snapshot (final BlockStoragePolicySuite bsps, final ContentCounts counts)
 specifier|public
-name|ContentSummaryComputationContext
-name|computeContentSummary
+name|void
+name|computeContentSummary4Snapshot
 parameter_list|(
 specifier|final
 name|BlockStoragePolicySuite
 name|bsps
 parameter_list|,
 specifier|final
-name|INodeDirectory
-name|snapshotRoot
-parameter_list|,
-specifier|final
-name|ContentSummaryComputationContext
-name|summary
+name|ContentCounts
+name|counts
 parameter_list|)
 block|{
-name|snapshotRoot
-operator|.
-name|computeContentSummary
-argument_list|(
-name|summary
-argument_list|)
-expr_stmt|;
-name|summary
-operator|.
-name|getCounts
-argument_list|()
+name|counts
 operator|.
 name|addContent
 argument_list|(
@@ -1217,10 +1205,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|summary
-operator|.
-name|getCounts
-argument_list|()
+name|counts
 operator|.
 name|addContent
 argument_list|(
@@ -1231,9 +1216,15 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-return|return
-name|summary
-return|;
+name|super
+operator|.
+name|computeContentSummary4Snapshot
+argument_list|(
+name|bsps
+argument_list|,
+name|counts
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Compute the difference between two snapshots (or a snapshot and the current    * directory) of the directory.    *    * @param from The name of the start point of the comparison. Null indicating    *          the current tree.    * @param to The name of the end point. Null indicating the current tree.    * @return The difference between the start/end points.    * @throws SnapshotException If there is no snapshot matching the starting    *           point, or if endSnapshotName is not null but cannot be identified    *           as a previous snapshot.    */
 DECL|method|computeDiff (final INodeDirectory snapshotRoot, final String from, final String to)

@@ -353,11 +353,9 @@ condition|(
 name|success
 condition|)
 block|{
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Moved: '"
 operator|+

@@ -188,26 +188,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|webapp
-operator|.
-name|RMAppAttemptBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|ConverterUtils
@@ -292,7 +272,7 @@ specifier|public
 name|AppAttemptInfo
 parameter_list|()
 block|{   }
-DECL|method|AppAttemptInfo (ResourceManager rm, RMAppAttempt attempt, String user)
+DECL|method|AppAttemptInfo (ResourceManager rm, RMAppAttempt attempt, String user, String schemePrefix)
 specifier|public
 name|AppAttemptInfo
 parameter_list|(
@@ -304,6 +284,9 @@ name|attempt
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|String
+name|schemePrefix
 parameter_list|)
 block|{
 name|this
@@ -426,7 +409,7 @@ name|WebAppUtils
 operator|.
 name|getRunningLogURL
 argument_list|(
-literal|"//"
+name|schemePrefix
 operator|+
 name|masterContainer
 operator|.

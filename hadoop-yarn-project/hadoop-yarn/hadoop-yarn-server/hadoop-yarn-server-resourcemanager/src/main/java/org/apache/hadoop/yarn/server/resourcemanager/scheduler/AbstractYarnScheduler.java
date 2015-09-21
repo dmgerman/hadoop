@@ -3878,6 +3878,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|getPendingResourceRequestsForAttempt ( ApplicationAttemptId attemptId)
 specifier|public
 name|List
@@ -3971,6 +3973,8 @@ block|{
 comment|// Dummy Implementation till Application Priority changes are done in
 comment|// specific scheduler.
 block|}
+annotation|@
+name|Override
 DECL|method|getMaxClusterLevelAppPriority ()
 specifier|public
 name|Priority

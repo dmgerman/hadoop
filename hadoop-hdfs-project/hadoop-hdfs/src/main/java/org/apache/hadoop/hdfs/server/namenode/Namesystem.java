@@ -142,6 +142,26 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|ha
+operator|.
+name|HAContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|util
 operator|.
 name|RwLock
@@ -278,6 +298,11 @@ function_decl|;
 DECL|method|getCacheManager ()
 name|CacheManager
 name|getCacheManager
+parameter_list|()
+function_decl|;
+DECL|method|getHAContext ()
+name|HAContext
+name|getHAContext
 parameter_list|()
 function_decl|;
 block|}

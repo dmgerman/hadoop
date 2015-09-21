@@ -2439,6 +2439,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|stateStore
+argument_list|,
+name|dirsHandler
 argument_list|)
 expr_stmt|;
 name|this

@@ -2346,6 +2346,8 @@ operator|new
 name|IOException
 argument_list|(
 literal|"ResourceHandlerChain.preStart() failed!"
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}

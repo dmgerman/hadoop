@@ -330,6 +330,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|blacklist
+operator|.
+name|BlacklistManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmapp
 operator|.
 name|RMApp
@@ -505,6 +525,12 @@ comment|/**    * Get application container and resource usage information.    * 
 DECL|method|getApplicationResourceUsageReport ()
 name|ApplicationResourceUsageReport
 name|getApplicationResourceUsageReport
+parameter_list|()
+function_decl|;
+comment|/**    * Get the {@link BlacklistManager} that manages blacklists for AM failures    * @return the {@link BlacklistManager} that tracks AM failures.    */
+DECL|method|getAMBlacklist ()
+name|BlacklistManager
+name|getAMBlacklist
 parameter_list|()
 function_decl|;
 comment|/**    * the start time of the application.    * @return the start time of the application.    */

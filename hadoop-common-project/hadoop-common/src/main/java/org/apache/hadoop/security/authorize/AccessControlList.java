@@ -843,7 +843,15 @@ return|return
 literal|true
 return|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+operator|!
+name|groups
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
 block|{
 for|for
 control|(

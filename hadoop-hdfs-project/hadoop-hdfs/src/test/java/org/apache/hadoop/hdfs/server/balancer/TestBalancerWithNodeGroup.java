@@ -1057,9 +1057,7 @@ name|run
 argument_list|(
 name|namenodes
 argument_list|,
-name|Balancer
-operator|.
-name|Parameters
+name|BalancerParameters
 operator|.
 name|DEFAULT
 argument_list|,
@@ -1148,9 +1146,7 @@ name|run
 argument_list|(
 name|namenodes
 argument_list|,
-name|Balancer
-operator|.
-name|Parameters
+name|BalancerParameters
 operator|.
 name|DEFAULT
 argument_list|,

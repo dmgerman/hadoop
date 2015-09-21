@@ -1689,6 +1689,13 @@ DECL|field|allocConf
 name|AllocationConfiguration
 name|allocConf
 decl_stmt|;
+comment|// Container size threshold for making a reservation.
+annotation|@
+name|VisibleForTesting
+DECL|field|reservationThreshold
+name|Resource
+name|reservationThreshold
+decl_stmt|;
 DECL|method|FairScheduler ()
 specifier|public
 name|FairScheduler
@@ -1732,6 +1739,33 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|isAtLeastReservationThreshold ( ResourceCalculator resourceCalculator, Resource resource)
+specifier|public
+name|boolean
+name|isAtLeastReservationThreshold
+parameter_list|(
+name|ResourceCalculator
+name|resourceCalculator
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|)
+block|{
+return|return
+name|Resources
+operator|.
+name|greaterThanOrEqual
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|clusterResource
+argument_list|,
+name|resource
+argument_list|,
+name|reservationThreshold
+argument_list|)
+return|;
 block|}
 DECL|method|validateConf (Configuration conf)
 specifier|private
@@ -5117,6 +5151,32 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|application
+operator|.
+name|isWaitingForAMContainer
+argument_list|(
+name|application
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+condition|)
+block|{
+comment|// Allocate is for AM and update AM blacklist for this
+name|application
+operator|.
+name|updateAMBlacklist
+argument_list|(
+name|blacklistAdditions
+argument_list|,
+name|blacklistRemovals
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|application
 operator|.
 name|updateBlacklist
@@ -5126,6 +5186,7 @@ argument_list|,
 name|blacklistRemovals
 argument_list|)
 expr_stmt|;
+block|}
 name|ContainersAndNMTokensAllocation
 name|allocation
 init|=
@@ -5563,6 +5624,37 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|(
+name|ex
+operator|instanceof
+name|YarnRuntimeException
+operator|)
+operator|&&
+operator|(
+name|ex
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|InterruptedException
+operator|)
+condition|)
+block|{
+comment|// AsyncDispatcher translates InterruptedException to
+comment|// YarnRuntimeException with cause InterruptedException.
+comment|// Need to throw InterruptedException to stop schedulingThread.
+throw|throw
+operator|(
+name|InterruptedException
+operator|)
+name|ex
+operator|.
+name|getCause
+argument_list|()
+throw|;
+block|}
 block|}
 block|}
 name|long
@@ -6861,6 +6953,9 @@ operator|.
 name|getIncrementAllocation
 argument_list|()
 expr_stmt|;
+name|updateReservationThreshold
+argument_list|()
+expr_stmt|;
 name|continuousSchedulingEnabled
 operator|=
 name|this
@@ -7211,6 +7306,35 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|updateReservationThreshold ()
+specifier|private
+name|void
+name|updateReservationThreshold
+parameter_list|()
+block|{
+name|Resource
+name|newThreshold
+init|=
+name|Resources
+operator|.
+name|multiply
+argument_list|(
+name|getIncrementResourceCapability
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|conf
+operator|.
+name|getReservationThresholdIncrementMultiple
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|reservationThreshold
+operator|=
+name|newThreshold
+expr_stmt|;
 block|}
 DECL|method|startSchedulerThreads ()
 specifier|private

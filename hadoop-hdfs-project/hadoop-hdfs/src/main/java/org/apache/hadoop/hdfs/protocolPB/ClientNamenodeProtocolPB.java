@@ -56,7 +56,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -174,7 +176,7 @@ name|KerberosInfo
 argument_list|(
 name|serverPrincipal
 operator|=
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|)

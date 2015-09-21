@@ -4227,7 +4227,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get mapping of labels info to nodes for specified set of labels.    *    * @param nodelabels    *          set of nodelabels for which labels to nodes mapping will be    *          returned.    * @return labels to nodes map    */
+comment|/**    * Get mapping of labels info to nodes for specified set of labels.    *    * @param labels    *          set of nodelabels for which labels to nodes mapping will be    *          returned.    * @return labels to nodes map    */
 DECL|method|getLabelsInfoToNodes (Set<String> labels)
 specifier|public
 name|Map

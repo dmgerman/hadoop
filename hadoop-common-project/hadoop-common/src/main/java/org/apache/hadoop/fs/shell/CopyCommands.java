@@ -722,7 +722,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-f] [-p | -p[topax]]<src> ...<dst>"
+literal|"[-f] [-p | -p[topax]] [-d]<src> ...<dst>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -755,7 +755,9 @@ literal|"target pathnames are in the /.reserved/raw hierarchy. raw namespace "
 operator|+
 literal|"xattr preservation is determined solely by the presence (or absence) "
 operator|+
-literal|"of the /.reserved/raw prefix and not by the -p option.\n"
+literal|"of the /.reserved/raw prefix and not by the -p option. Passing -d "
+operator|+
+literal|"will skip creation of temporary file(<dst>._COPYING_).\n"
 decl_stmt|;
 annotation|@
 name|Override
@@ -791,6 +793,8 @@ operator|.
 name|MAX_VALUE
 argument_list|,
 literal|"f"
+argument_list|,
+literal|"d"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -798,6 +802,16 @@ operator|.
 name|parse
 argument_list|(
 name|args
+argument_list|)
+expr_stmt|;
+name|setDirectWrite
+argument_list|(
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"d"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|setOverwrite
@@ -1113,7 +1127,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-f] [-p] [-l]<localsrc> ...<dst>"
+literal|"[-f] [-p] [-l] [-d]<localsrc> ...<dst>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -1139,6 +1153,8 @@ operator|+
 literal|"       replication factor of 1. This flag will result in reduced\n"
 operator|+
 literal|"       durability. Use with care.\n"
+operator|+
+literal|"  -d : Skip creation of temporary file(<dst>._COPYING_).\n"
 decl_stmt|;
 annotation|@
 name|Override
@@ -1173,6 +1189,8 @@ argument_list|,
 literal|"p"
 argument_list|,
 literal|"l"
+argument_list|,
+literal|"d"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -1209,6 +1227,16 @@ operator|.
 name|getOpt
 argument_list|(
 literal|"l"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|setDirectWrite
+argument_list|(
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"d"
 argument_list|)
 argument_list|)
 expr_stmt|;
