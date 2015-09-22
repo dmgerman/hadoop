@@ -586,37 +586,6 @@ literal|" "
 argument_list|)
 return|;
 block|}
-DECL|method|isCygwin ()
-specifier|public
-specifier|static
-name|boolean
-name|isCygwin
-parameter_list|()
-block|{
-name|String
-name|OS
-init|=
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"os.name"
-argument_list|)
-decl_stmt|;
-return|return
-operator|(
-name|OS
-operator|.
-name|indexOf
-argument_list|(
-literal|"Windows"
-argument_list|)
-operator|>
-operator|-
-literal|1
-operator|)
-return|;
-block|}
 comment|/**    * Is perl supported on this machine ?    * @return true if perl is available and is working as expected    */
 DECL|method|hasPerlSupport ()
 specifier|public
