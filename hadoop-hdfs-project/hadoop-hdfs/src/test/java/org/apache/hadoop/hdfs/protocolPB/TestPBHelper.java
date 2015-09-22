@@ -1650,7 +1650,7 @@ decl_stmt|;
 name|DatanodeID
 name|dn2
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1839,7 +1839,7 @@ decl_stmt|;
 name|BlockProto
 name|bProto
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1849,7 +1849,7 @@ decl_stmt|;
 name|Block
 name|b2
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -3620,7 +3620,7 @@ name|BlockTokenIdentifier
 argument_list|>
 name|token2
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4282,7 +4282,7 @@ decl_stmt|;
 name|LocatedBlockProto
 name|lbProto
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4292,7 +4292,7 @@ decl_stmt|;
 name|LocatedBlock
 name|lb2
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4324,7 +4324,7 @@ decl_stmt|;
 name|LocatedBlockProto
 name|lbProto
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4334,7 +4334,7 @@ decl_stmt|;
 name|LocatedBlock
 name|lb2
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4400,7 +4400,7 @@ name|LocatedBlockProto
 argument_list|>
 name|lbpl
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertLocatedBlock2
 argument_list|(
@@ -4413,7 +4413,7 @@ name|LocatedBlock
 argument_list|>
 name|lbl2
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertLocatedBlock
 argument_list|(
@@ -4516,7 +4516,7 @@ name|LocatedBlockProto
 index|[]
 name|lbpl
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertLocatedBlock
 argument_list|(
@@ -4527,7 +4527,7 @@ name|LocatedBlock
 index|[]
 name|lbl2
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertLocatedBlock
 argument_list|(
@@ -4750,7 +4750,7 @@ decl_stmt|;
 name|DatanodeStorageProto
 name|proto
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -4760,7 +4760,7 @@ decl_stmt|;
 name|DatanodeStorage
 name|dns2
 init|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -5420,11 +5420,11 @@ name|Lists
 operator|.
 name|newArrayList
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertAclEntry
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertAclEntryProto
 argument_list|(
@@ -5540,11 +5540,11 @@ name|assertEquals
 argument_list|(
 name|s
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

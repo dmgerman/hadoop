@@ -1229,7 +1229,7 @@ name|builder
 operator|.
 name|addAllReports
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convertStorageReports
 argument_list|(
@@ -1385,7 +1385,7 @@ condition|)
 block|{
 name|rollingUpdateStatus
 operator|=
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1504,7 +1504,7 @@ argument_list|()
 operator|.
 name|setStorage
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1851,7 +1851,7 @@ name|repBuilder
 operator|.
 name|setStorage
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -2100,7 +2100,7 @@ name|addBlocks
 argument_list|(
 name|i
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

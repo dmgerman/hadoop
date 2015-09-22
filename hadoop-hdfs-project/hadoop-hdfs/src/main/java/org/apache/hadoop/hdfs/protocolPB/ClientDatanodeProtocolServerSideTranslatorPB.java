@@ -939,7 +939,7 @@ name|getBlock
 argument_list|()
 argument_list|)
 argument_list|,
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(
@@ -1079,7 +1079,7 @@ argument_list|()
 operator|.
 name|setLocalInfo
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|convert
 argument_list|(

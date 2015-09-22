@@ -412,7 +412,7 @@ argument_list|)
 operator|.
 name|setRecords
 argument_list|(
-name|PBHelper
+name|PBHelperClient
 operator|.
 name|getByteString
 argument_list|(
