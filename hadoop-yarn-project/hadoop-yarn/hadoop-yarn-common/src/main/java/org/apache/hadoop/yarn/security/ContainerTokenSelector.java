@@ -245,7 +245,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Looking for service: "
 operator|+

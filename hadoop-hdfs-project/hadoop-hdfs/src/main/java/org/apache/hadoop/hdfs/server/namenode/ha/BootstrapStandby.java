@@ -2134,7 +2134,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|debug
 argument_list|(
 name|msg
 argument_list|,
