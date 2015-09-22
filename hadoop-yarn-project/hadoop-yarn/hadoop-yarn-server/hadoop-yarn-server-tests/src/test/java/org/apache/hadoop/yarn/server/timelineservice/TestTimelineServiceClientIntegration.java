@@ -682,11 +682,11 @@ operator|.
 name|DEFAULT_RM_CLUSTER_ID
 argument_list|)
 expr_stmt|;
-name|FlowEntity
+name|FlowRunEntity
 name|flow
 init|=
 operator|new
-name|FlowEntity
+name|FlowRunEntity
 argument_list|()
 decl_stmt|;
 name|flow

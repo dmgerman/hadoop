@@ -1273,11 +1273,11 @@ argument_list|(
 literal|"test cluster id"
 argument_list|)
 expr_stmt|;
-name|FlowEntity
+name|FlowRunEntity
 name|flow1
 init|=
 operator|new
-name|FlowEntity
+name|FlowRunEntity
 argument_list|()
 decl_stmt|;
 comment|//flow1.setId("test flow id 1");
@@ -1312,11 +1312,11 @@ argument_list|(
 literal|1L
 argument_list|)
 expr_stmt|;
-name|FlowEntity
+name|FlowRunEntity
 name|flow2
 init|=
 operator|new
-name|FlowEntity
+name|FlowRunEntity
 argument_list|()
 decl_stmt|;
 comment|//flow2.setId("test flow run id 2");
@@ -1494,7 +1494,7 @@ name|addChild
 argument_list|(
 name|TimelineEntityType
 operator|.
-name|YARN_FLOW
+name|YARN_FLOW_RUN
 operator|.
 name|toString
 argument_list|()
@@ -1528,7 +1528,7 @@ name|addChild
 argument_list|(
 name|TimelineEntityType
 operator|.
-name|YARN_FLOW
+name|YARN_FLOW_RUN
 operator|.
 name|toString
 argument_list|()
@@ -1545,7 +1545,7 @@ name|setParent
 argument_list|(
 name|TimelineEntityType
 operator|.
-name|YARN_FLOW
+name|YARN_FLOW_RUN
 operator|.
 name|toString
 argument_list|()
@@ -1596,7 +1596,7 @@ name|setParent
 argument_list|(
 name|TimelineEntityType
 operator|.
-name|YARN_FLOW
+name|YARN_FLOW_RUN
 operator|.
 name|toString
 argument_list|()
@@ -1647,7 +1647,7 @@ name|setParent
 argument_list|(
 name|TimelineEntityType
 operator|.
-name|YARN_FLOW
+name|YARN_FLOW_RUN
 operator|.
 name|toString
 argument_list|()

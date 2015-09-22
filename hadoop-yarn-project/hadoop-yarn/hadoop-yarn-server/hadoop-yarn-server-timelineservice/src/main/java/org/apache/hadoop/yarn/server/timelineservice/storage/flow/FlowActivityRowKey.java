@@ -200,6 +200,35 @@ return|return
 name|flowId
 return|;
 block|}
+DECL|method|getRowKeyPrefix (String clusterId)
+specifier|public
+specifier|static
+name|byte
+index|[]
+name|getRowKeyPrefix
+parameter_list|(
+name|String
+name|clusterId
+parameter_list|)
+block|{
+return|return
+name|Bytes
+operator|.
+name|toBytes
+argument_list|(
+name|Separator
+operator|.
+name|QUALIFIERS
+operator|.
+name|joinEncoded
+argument_list|(
+name|clusterId
+argument_list|,
+literal|""
+argument_list|)
+argument_list|)
+return|;
+block|}
 comment|/**    * Constructs a row key for the flow activity table as follows:    * {@code clusterId!dayTimestamp!user!flowId}    *    * Will insert into current day's record in the table    * @param clusterId    * @param userId    * @param flowId    * @return byte array with the row key prefix    */
 DECL|method|getRowKey (String clusterId, String userId, String flowId)
 specifier|public

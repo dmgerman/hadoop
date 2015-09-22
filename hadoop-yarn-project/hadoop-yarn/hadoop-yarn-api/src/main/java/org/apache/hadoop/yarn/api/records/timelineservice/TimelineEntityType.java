@@ -67,8 +67,8 @@ block|{
 DECL|enumConstant|YARN_CLUSTER
 name|YARN_CLUSTER
 block|,
-DECL|enumConstant|YARN_FLOW
-name|YARN_FLOW
+DECL|enumConstant|YARN_FLOW_RUN
+name|YARN_FLOW_RUN
 block|,
 DECL|enumConstant|YARN_APPLICATION
 name|YARN_APPLICATION
@@ -84,7 +84,11 @@ name|YARN_USER
 block|,
 DECL|enumConstant|YARN_QUEUE
 name|YARN_QUEUE
+block|,
+DECL|enumConstant|YARN_FLOW_ACTIVITY
+name|YARN_FLOW_ACTIVITY
 block|;
+comment|/**    * Whether the input type can be a parent of this entity.    */
 DECL|method|isParent (TimelineEntityType type)
 specifier|public
 name|boolean
@@ -106,10 +110,10 @@ return|return
 literal|false
 return|;
 case|case
-name|YARN_FLOW
+name|YARN_FLOW_RUN
 case|:
 return|return
-name|YARN_FLOW
+name|YARN_FLOW_RUN
 operator|==
 name|type
 operator|||
@@ -121,7 +125,7 @@ case|case
 name|YARN_APPLICATION
 case|:
 return|return
-name|YARN_FLOW
+name|YARN_FLOW_RUN
 operator|==
 name|type
 operator|||
@@ -159,6 +163,7 @@ literal|false
 return|;
 block|}
 block|}
+comment|/**    * Whether the input type can be a child of this entity.    */
 DECL|method|isChild (TimelineEntityType type)
 specifier|public
 name|boolean
@@ -177,7 +182,7 @@ case|case
 name|YARN_CLUSTER
 case|:
 return|return
-name|YARN_FLOW
+name|YARN_FLOW_RUN
 operator|==
 name|type
 operator|||
@@ -186,10 +191,10 @@ operator|==
 name|type
 return|;
 case|case
-name|YARN_FLOW
+name|YARN_FLOW_RUN
 case|:
 return|return
-name|YARN_FLOW
+name|YARN_FLOW_RUN
 operator|==
 name|type
 operator|||
@@ -232,6 +237,26 @@ return|return
 literal|false
 return|;
 block|}
+block|}
+comment|/**    * Whether the type of this entity matches the type indicated by the input    * argument.    */
+DECL|method|matches (String typeString)
+specifier|public
+name|boolean
+name|matches
+parameter_list|(
+name|String
+name|typeString
+parameter_list|)
+block|{
+return|return
+name|toString
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|typeString
+argument_list|)
+return|;
 block|}
 block|}
 end_enum

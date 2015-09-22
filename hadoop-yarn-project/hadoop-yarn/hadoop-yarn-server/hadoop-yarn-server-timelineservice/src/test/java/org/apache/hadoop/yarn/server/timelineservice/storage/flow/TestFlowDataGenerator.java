@@ -253,7 +253,7 @@ argument_list|(
 name|type
 argument_list|)
 expr_stmt|;
-name|Long
+name|long
 name|cTime
 init|=
 literal|1425016501000L
@@ -324,7 +324,7 @@ name|ts
 operator|-
 literal|100000
 argument_list|,
-literal|2
+literal|2L
 argument_list|)
 expr_stmt|;
 name|metricValues
@@ -335,7 +335,7 @@ name|ts
 operator|-
 literal|80000
 argument_list|,
-literal|40
+literal|40L
 argument_list|)
 expr_stmt|;
 name|m1
@@ -401,7 +401,7 @@ name|ts
 operator|-
 literal|100000
 argument_list|,
-literal|31
+literal|31L
 argument_list|)
 expr_stmt|;
 name|metricValues
@@ -412,7 +412,7 @@ name|ts
 operator|-
 literal|80000
 argument_list|,
-literal|57
+literal|57L
 argument_list|)
 expr_stmt|;
 name|m2
@@ -491,7 +491,7 @@ argument_list|(
 name|type
 argument_list|)
 expr_stmt|;
-name|Long
+name|long
 name|cTime
 init|=
 literal|1425016501000L
@@ -652,12 +652,12 @@ argument_list|(
 name|type
 argument_list|)
 expr_stmt|;
-name|Long
+name|long
 name|cTime
 init|=
 literal|20000000000000L
 decl_stmt|;
-name|Long
+name|long
 name|mTime
 init|=
 literal|1425026901000L
@@ -735,7 +735,7 @@ name|ts
 operator|-
 literal|120000
 argument_list|,
-literal|100000000
+literal|100000000L
 argument_list|)
 expr_stmt|;
 name|metricValues
@@ -746,7 +746,7 @@ name|ts
 operator|-
 literal|100000
 argument_list|,
-literal|200000000
+literal|200000000L
 argument_list|)
 expr_stmt|;
 name|metricValues
@@ -757,7 +757,7 @@ name|ts
 operator|-
 literal|80000
 argument_list|,
-literal|300000000
+literal|300000000L
 argument_list|)
 expr_stmt|;
 name|metricValues
@@ -768,7 +768,7 @@ name|ts
 operator|-
 literal|60000
 argument_list|,
-literal|400000000
+literal|400000000L
 argument_list|)
 expr_stmt|;
 name|metricValues
@@ -839,7 +839,7 @@ operator|.
 name|CREATED_EVENT_TYPE
 argument_list|)
 expr_stmt|;
-name|Long
+name|long
 name|expTs
 init|=
 literal|1436512802000L
@@ -919,11 +919,14 @@ return|return
 name|entity
 return|;
 block|}
-DECL|method|getEntityGreaterStartTime ()
+DECL|method|getEntityGreaterStartTime (long startTs)
 specifier|static
 name|TimelineEntity
 name|getEntityGreaterStartTime
-parameter_list|()
+parameter_list|(
+name|long
+name|startTs
+parameter_list|)
 block|{
 name|TimelineEntity
 name|entity
@@ -936,7 +939,7 @@ name|entity
 operator|.
 name|setCreatedTime
 argument_list|(
-literal|30000000000000L
+name|startTs
 argument_list|)
 expr_stmt|;
 name|entity
@@ -1109,11 +1112,14 @@ return|return
 name|entity
 return|;
 block|}
-DECL|method|getEntityMinStartTime ()
+DECL|method|getEntityMinStartTime (long startTs)
 specifier|static
 name|TimelineEntity
 name|getEntityMinStartTime
-parameter_list|()
+parameter_list|(
+name|long
+name|startTs
+parameter_list|)
 block|{
 name|TimelineEntity
 name|entity
@@ -1151,16 +1157,11 @@ argument_list|(
 name|type
 argument_list|)
 expr_stmt|;
-name|Long
-name|cTime
-init|=
-literal|10000000000000L
-decl_stmt|;
 name|entity
 operator|.
 name|setCreatedTime
 argument_list|(
-name|cTime
+name|startTs
 argument_list|)
 expr_stmt|;
 name|TimelineEvent
@@ -1242,7 +1243,7 @@ argument_list|(
 name|type
 argument_list|)
 expr_stmt|;
-name|Long
+name|long
 name|cTime
 init|=
 literal|1425016501000L
@@ -1270,7 +1271,7 @@ operator|.
 name|CREATED_EVENT_TYPE
 argument_list|)
 expr_stmt|;
-name|Long
+name|long
 name|expTs
 init|=
 literal|1436512802000L

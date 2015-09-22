@@ -191,7 +191,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Implements behavior common to tables used in the timeline service storage.  *  * @param<T> reference to the table instance class itself for type safety.  */
+comment|/**  * Implements behavior common to tables used in the timeline service storage. It  * is thread-safe, and can be used by multiple threads concurrently.  *  * @param<T> reference to the table instance class itself for type safety.  */
 end_comment
 
 begin_class

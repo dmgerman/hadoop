@@ -442,7 +442,7 @@ name|records
 operator|.
 name|timelineservice
 operator|.
-name|FlowEntity
+name|FlowRunEntity
 import|;
 end_import
 
@@ -1231,14 +1231,14 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-name|YARN_FLOW
+name|YARN_FLOW_RUN
 case|:
 name|entitiesToReturn
 operator|.
 name|addEntity
 argument_list|(
 operator|new
-name|FlowEntity
+name|FlowRunEntity
 argument_list|(
 name|entity
 argument_list|)
