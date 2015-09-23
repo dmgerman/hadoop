@@ -3055,7 +3055,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|ApplicationNotFoundException
 name|e
 parameter_list|)
 block|{
@@ -3066,27 +3066,6 @@ name|historyServiceEnabled
 condition|)
 block|{
 comment|// Just throw it as usual if historyService is not enabled.
-throw|throw
-name|e
-throw|;
-block|}
-comment|// Even if history-service is enabled, treat all exceptions still the same
-comment|// except the following
-if|if
-condition|(
-operator|!
-operator|(
-name|e
-operator|.
-name|getClass
-argument_list|()
-operator|==
-name|ApplicationNotFoundException
-operator|.
-name|class
-operator|)
-condition|)
-block|{
 throw|throw
 name|e
 throw|;
