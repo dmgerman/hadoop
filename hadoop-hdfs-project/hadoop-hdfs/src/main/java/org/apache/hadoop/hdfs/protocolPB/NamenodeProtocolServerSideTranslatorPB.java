@@ -58,7 +58,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|HdfsProtos
+name|HdfsServerProtos
 operator|.
 name|VersionRequestProto
 import|;
@@ -78,7 +78,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|HdfsProtos
+name|HdfsServerProtos
 operator|.
 name|VersionResponseProto
 import|;
