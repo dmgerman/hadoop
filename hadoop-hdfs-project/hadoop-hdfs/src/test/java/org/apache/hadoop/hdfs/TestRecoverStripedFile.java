@@ -525,7 +525,7 @@ specifier|final
 name|int
 name|dataBlkNum
 init|=
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|NUM_DATA_BLOCKS
 decl_stmt|;
@@ -536,7 +536,7 @@ specifier|final
 name|int
 name|parityBlkNum
 init|=
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|NUM_PARITY_BLOCKS
 decl_stmt|;
@@ -547,7 +547,7 @@ specifier|final
 name|int
 name|cellSize
 init|=
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|BLOCK_STRIPED_CELL_SIZE
 decl_stmt|;

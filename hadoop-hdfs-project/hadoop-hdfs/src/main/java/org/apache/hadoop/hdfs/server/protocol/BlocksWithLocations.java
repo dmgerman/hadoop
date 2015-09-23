@@ -414,7 +414,12 @@ specifier|final
 name|short
 name|dataBlockNum
 decl_stmt|;
-DECL|method|StripedBlockWithLocations (BlockWithLocations blk, byte[] indices, short dataBlockNum)
+DECL|field|cellSize
+specifier|final
+name|int
+name|cellSize
+decl_stmt|;
+DECL|method|StripedBlockWithLocations (BlockWithLocations blk, byte[] indices, short dataBlockNum, int cellSize)
 specifier|public
 name|StripedBlockWithLocations
 parameter_list|(
@@ -427,6 +432,9 @@ name|indices
 parameter_list|,
 name|short
 name|dataBlockNum
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|)
 block|{
 name|super
@@ -480,6 +488,12 @@ name|dataBlockNum
 operator|=
 name|dataBlockNum
 expr_stmt|;
+name|this
+operator|.
+name|cellSize
+operator|=
+name|cellSize
+expr_stmt|;
 block|}
 DECL|method|getIndices ()
 specifier|public
@@ -500,6 +514,16 @@ parameter_list|()
 block|{
 return|return
 name|dataBlockNum
+return|;
+block|}
+DECL|method|getCellSize ()
+specifier|public
+name|int
+name|getCellSize
+parameter_list|()
+block|{
+return|return
+name|cellSize
 return|;
 block|}
 block|}

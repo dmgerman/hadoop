@@ -2120,9 +2120,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|BLOCK_STRIPED_CELL_SIZE
 import|;
@@ -2138,9 +2136,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|NUM_DATA_BLOCKS
 import|;

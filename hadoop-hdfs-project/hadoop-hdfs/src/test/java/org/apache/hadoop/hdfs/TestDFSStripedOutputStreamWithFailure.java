@@ -588,7 +588,7 @@ specifier|final
 name|int
 name|NUM_DATA_BLOCKS
 init|=
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|NUM_DATA_BLOCKS
 decl_stmt|;
@@ -599,7 +599,7 @@ specifier|final
 name|int
 name|NUM_PARITY_BLOCKS
 init|=
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|NUM_PARITY_BLOCKS
 decl_stmt|;
@@ -610,7 +610,7 @@ specifier|final
 name|int
 name|CELL_SIZE
 init|=
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|BLOCK_STRIPED_CELL_SIZE
 decl_stmt|;
@@ -1813,7 +1813,7 @@ decl_stmt|;
 name|int
 name|fileLength
 init|=
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|BLOCK_STRIPED_CELL_SIZE
 operator|-

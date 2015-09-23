@@ -2457,7 +2457,12 @@ specifier|final
 name|short
 name|dataBlockNum
 decl_stmt|;
-DECL|method|DBlockStriped (Block block, byte[] indices, short dataBlockNum)
+DECL|field|cellSize
+specifier|final
+name|int
+name|cellSize
+decl_stmt|;
+DECL|method|DBlockStriped (Block block, byte[] indices, short dataBlockNum, int cellSize)
 specifier|public
 name|DBlockStriped
 parameter_list|(
@@ -2470,6 +2475,9 @@ name|indices
 parameter_list|,
 name|short
 name|dataBlockNum
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|)
 block|{
 name|super
@@ -2488,6 +2496,12 @@ operator|.
 name|dataBlockNum
 operator|=
 name|dataBlockNum
+expr_stmt|;
+name|this
+operator|.
+name|cellSize
+operator|=
+name|cellSize
 expr_stmt|;
 block|}
 DECL|method|getInternalBlock (StorageGroup storage)
@@ -2548,9 +2562,7 @@ argument_list|(
 name|getNumBytes
 argument_list|()
 argument_list|,
-name|HdfsConstants
-operator|.
-name|BLOCK_STRIPED_CELL_SIZE
+name|cellSize
 argument_list|,
 name|dataBlockNum
 argument_list|,
@@ -3829,6 +3841,11 @@ argument_list|,
 name|sblkLocs
 operator|.
 name|getDataBlockNum
+argument_list|()
+argument_list|,
+name|sblkLocs
+operator|.
+name|getCellSize
 argument_list|()
 argument_list|)
 expr_stmt|;

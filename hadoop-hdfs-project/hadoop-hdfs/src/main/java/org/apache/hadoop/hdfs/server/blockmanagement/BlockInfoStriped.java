@@ -88,24 +88,6 @@ name|ErasureCodingPolicy
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsConstants
-operator|.
-name|BLOCK_STRIPED_CELL_SIZE
-import|;
-end_import
-
 begin_comment
 comment|/**  * Subclass of {@link BlockInfo}, presenting a block group in erasure coding.  *  * We still use triplets to store DatanodeStorageInfo for each block in the  * block group, as well as the previous/next block in the corresponding  * DatanodeStorageInfo. For a (m+k) block group, the first (m+k) triplet units  * are sorted and strictly mapped to the corresponding block.  *  * Normally each block belonging to group is stored in only one DataNode.  * However, it is possible that some block is over-replicated. Thus the triplet  * array's size can be larger than (m+k). Thus currently we use an extra byte  * array to record the block index for each triplet.  */
 end_comment
@@ -243,6 +225,19 @@ name|getNumParityUnits
 argument_list|()
 return|;
 block|}
+DECL|method|getCellSize ()
+specifier|public
+name|int
+name|getCellSize
+parameter_list|()
+block|{
+return|return
+name|ecPolicy
+operator|.
+name|getCellSize
+argument_list|()
+return|;
+block|}
 comment|/**    * If the block is committed/completed and its length is less than a full    * stripe, it returns the the number of actual data blocks.    * Otherwise it returns the number of data units specified by erasure coding policy.    */
 DECL|method|getRealDataBlockNum ()
 specifier|public
@@ -281,7 +276,10 @@ operator|-
 literal|1
 operator|)
 operator|/
-name|BLOCK_STRIPED_CELL_SIZE
+name|ecPolicy
+operator|.
+name|getCellSize
+argument_list|()
 operator|+
 literal|1
 argument_list|)
@@ -905,7 +903,10 @@ operator|.
 name|getNumParityUnits
 argument_list|()
 argument_list|,
-name|BLOCK_STRIPED_CELL_SIZE
+name|ecPolicy
+operator|.
+name|getCellSize
+argument_list|()
 argument_list|)
 return|;
 block|}

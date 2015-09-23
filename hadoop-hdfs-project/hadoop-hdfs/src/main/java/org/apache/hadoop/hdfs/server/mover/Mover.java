@@ -1446,6 +1446,11 @@ name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
+argument_list|,
+name|ecPolicy
+operator|.
+name|getCellSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

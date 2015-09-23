@@ -190,9 +190,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|NUM_DATA_BLOCKS
 import|;
@@ -208,9 +206,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|NUM_PARITY_BLOCKS
 import|;

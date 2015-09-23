@@ -652,6 +652,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StripedFileTestUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -1337,7 +1351,7 @@ DECL|field|dataBlocks
 name|int
 name|dataBlocks
 init|=
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|NUM_DATA_BLOCKS
 decl_stmt|;
@@ -1345,7 +1359,7 @@ DECL|field|parityBlocks
 name|int
 name|parityBlocks
 init|=
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|NUM_PARITY_BLOCKS
 decl_stmt|;
@@ -1364,7 +1378,7 @@ specifier|static
 name|int
 name|cellSize
 init|=
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|BLOCK_STRIPED_CELL_SIZE
 decl_stmt|;

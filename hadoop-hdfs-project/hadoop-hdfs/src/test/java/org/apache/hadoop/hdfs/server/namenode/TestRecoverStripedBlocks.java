@@ -296,9 +296,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|BLOCK_STRIPED_CELL_SIZE
 import|;
@@ -314,9 +312,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|NUM_DATA_BLOCKS
 import|;
@@ -332,9 +328,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
+name|StripedFileTestUtil
 operator|.
 name|NUM_PARITY_BLOCKS
 import|;
@@ -388,9 +382,14 @@ specifier|final
 name|short
 name|GROUP_SIZE
 init|=
+call|(
+name|short
+call|)
+argument_list|(
 name|NUM_DATA_BLOCKS
 operator|+
 name|NUM_PARITY_BLOCKS
+argument_list|)
 decl_stmt|;
 DECL|field|cluster
 specifier|private
