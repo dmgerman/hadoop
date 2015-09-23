@@ -514,7 +514,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|NameNodeProxies
+name|NameNodeProxiesClient
 import|;
 end_import
 
@@ -1569,7 +1569,7 @@ name|ClientProtocol
 argument_list|>
 name|failoverProxyProvider
 init|=
-name|NameNodeProxies
+name|NameNodeProxiesClient
 operator|.
 name|createFailoverProxyProvider
 argument_list|(

@@ -82,7 +82,7 @@ name|T
 argument_list|>
 block|{
 DECL|field|fallbackToSimpleAuth
-specifier|protected
+specifier|private
 name|AtomicBoolean
 name|fallbackToSimpleAuth
 decl_stmt|;
@@ -111,6 +111,17 @@ name|fallbackToSimpleAuth
 operator|=
 name|fallbackToSimpleAuth
 expr_stmt|;
+block|}
+DECL|method|getFallbackToSimpleAuth ()
+specifier|public
+specifier|synchronized
+name|AtomicBoolean
+name|getFallbackToSimpleAuth
+parameter_list|()
+block|{
+return|return
+name|fallbackToSimpleAuth
+return|;
 block|}
 block|}
 end_class
