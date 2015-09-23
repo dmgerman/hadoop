@@ -28030,23 +28030,6 @@ block|}
 annotation|@
 name|Override
 comment|// NameNodeMXBean
-DECL|method|getNNStarted ()
-specifier|public
-name|String
-name|getNNStarted
-parameter_list|()
-block|{
-return|return
-name|getStartTime
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// NameNodeMXBean
 DECL|method|getNNStartedTimeInMillis ()
 specifier|public
 name|long

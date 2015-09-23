@@ -571,32 +571,15 @@ name|getPendingDeletionBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|String
-name|nnStartedStr
+name|long
+name|nnStarted
 init|=
 name|cluster
 operator|.
 name|getNamesystem
 argument_list|()
 operator|.
-name|getNNStarted
-argument_list|()
-decl_stmt|;
-name|long
-name|nnStarted
-init|=
-operator|new
-name|SimpleDateFormat
-argument_list|(
-literal|"EEE MMM dd HH:mm:ss zzz yyyy"
-argument_list|)
-operator|.
-name|parse
-argument_list|(
-name|nnStartedStr
-argument_list|)
-operator|.
-name|getTime
+name|getNNStartedTimeInMillis
 argument_list|()
 decl_stmt|;
 name|long
@@ -618,13 +601,11 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Expect blockDeletionStartTime = %d> nnStarted = %d/nnStartedStr = %s."
+literal|"Expect blockDeletionStartTime = %d> nnStarted = %d."
 argument_list|,
 name|blockDeletionStartTime
 argument_list|,
 name|nnStarted
-argument_list|,
-name|nnStartedStr
 argument_list|)
 argument_list|,
 name|blockDeletionStartTime
