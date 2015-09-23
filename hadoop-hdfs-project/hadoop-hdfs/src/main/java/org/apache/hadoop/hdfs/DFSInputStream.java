@@ -5079,30 +5079,10 @@ operator|==
 literal|null
 condition|)
 block|{
-name|DFSClient
-operator|.
-name|LOG
-operator|.
-name|warn
+name|reportLostBlock
 argument_list|(
-literal|"No live nodes contain block "
-operator|+
 name|block
-operator|.
-name|getBlock
-argument_list|()
-operator|+
-literal|" after checking nodes = "
-operator|+
-name|Arrays
-operator|.
-name|toString
-argument_list|(
-name|nodes
-argument_list|)
-operator|+
-literal|", ignoredNodes = "
-operator|+
+argument_list|,
 name|ignoredNodes
 argument_list|)
 expr_stmt|;
@@ -5170,6 +5150,59 @@ argument_list|,
 name|storageType
 argument_list|)
 return|;
+block|}
+comment|/**    * Warn the user of a lost block    */
+DECL|method|reportLostBlock (LocatedBlock lostBlock, Collection<DatanodeInfo> ignoredNodes)
+specifier|protected
+name|void
+name|reportLostBlock
+parameter_list|(
+name|LocatedBlock
+name|lostBlock
+parameter_list|,
+name|Collection
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+name|ignoredNodes
+parameter_list|)
+block|{
+name|DatanodeInfo
+index|[]
+name|nodes
+init|=
+name|lostBlock
+operator|.
+name|getLocations
+argument_list|()
+decl_stmt|;
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"No live nodes contain block "
+operator|+
+name|lostBlock
+operator|.
+name|getBlock
+argument_list|()
+operator|+
+literal|" after checking nodes = "
+operator|+
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|nodes
+argument_list|)
+operator|+
+literal|", ignoredNodes = "
+operator|+
+name|ignoredNodes
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getBestNodeDNAddrPairErrorString ( DatanodeInfo nodes[], AbstractMap<DatanodeInfo, DatanodeInfo> deadNodes, Collection<DatanodeInfo> ignoredNodes)
 specifier|private
