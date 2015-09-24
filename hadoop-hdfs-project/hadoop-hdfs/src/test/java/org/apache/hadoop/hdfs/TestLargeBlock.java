@@ -198,7 +198,7 @@ specifier|public
 class|class
 name|TestLargeBlock
 block|{
-comment|/**   {     ((Log4JLogger)DataNode.LOG).getLogger().setLevel(Level.ALL);     ((Log4JLogger)LeaseManager.LOG).getLogger().setLevel(Level.ALL);     ((Log4JLogger)FSNamesystem.LOG).getLogger().setLevel(Level.ALL);     ((Log4JLogger)DFSClient.LOG).getLogger().setLevel(Level.ALL);     ((Log4JLogger)TestLargeBlock.LOG).getLogger().setLevel(Level.ALL);   }  */
+comment|/**   {     GenericTestUtils.setLogLevel(DataNode.LOG, Level.ALL);     GenericTestUtils.setLogLevel(LeaseManager.LOG, Level.ALL);     GenericTestUtils.setLogLevel(FSNamesystem.LOG, Level.ALL);     GenericTestUtils.setLogLevel(DFSClient.LOG, Level.ALL);     GenericTestUtils.setLogLevel(TestLargeBlock.LOG, Level.ALL);   }  */
 DECL|field|LOG
 specifier|private
 specifier|static
