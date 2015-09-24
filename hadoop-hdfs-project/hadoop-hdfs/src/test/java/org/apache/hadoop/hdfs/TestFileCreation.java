@@ -1700,7 +1700,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_LOCAL_INTERFACES
 argument_list|,

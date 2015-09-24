@@ -1030,6 +1030,22 @@ name|hdfs
 operator|.
 name|client
 operator|.
+name|HdfsClientConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
 name|HdfsDataInputStream
 import|;
 end_import
@@ -2803,7 +2819,7 @@ name|stats
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Create a new DFSClient connected to the given nameNodeUri or rpcNamenode.    * If HA is enabled and a positive value is set for     * {@link DFSConfigKeys#DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY} in the    * configuration, the DFSClient will use {@link LossyRetryInvocationHandler}    * as its RetryInvocationHandler. Otherwise one of nameNodeUri or rpcNamenode     * must be null.    */
+comment|/**     * Create a new DFSClient connected to the given nameNodeUri or rpcNamenode.    * If HA is enabled and a positive value is set for    * {@link HdfsClientConfigKeys#DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY}    * in the configuration, the DFSClient will use    * {@link LossyRetryInvocationHandler} as its RetryInvocationHandler.    * Otherwise one of nameNodeUri or rpcNamenode must be null.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|DFSClient (URI nameNodeUri, ClientProtocol rpcNamenode, Configuration conf, FileSystem.Statistics stats)
@@ -2833,7 +2849,7 @@ name|get
 argument_list|(
 name|conf
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_HTRACE_PREFIX
 argument_list|)
@@ -2847,7 +2863,7 @@ name|TraceUtils
 operator|.
 name|wrapHadoopConf
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_HTRACE_PREFIX
 argument_list|,
@@ -2980,11 +2996,11 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT
 argument_list|)
@@ -3018,7 +3034,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
 operator|+
@@ -3157,7 +3173,7 @@ name|conf
 operator|.
 name|getTrimmedStrings
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_LOCAL_INTERFACES
 argument_list|)

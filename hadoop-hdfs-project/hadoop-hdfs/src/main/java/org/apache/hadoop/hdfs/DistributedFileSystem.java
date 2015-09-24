@@ -1140,7 +1140,7 @@ specifier|private
 name|String
 name|homeDirPrefix
 init|=
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_USER_HOME_DIR_PREFIX_DEFAULT
 decl_stmt|;
@@ -1256,11 +1256,11 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_USER_HOME_DIR_PREFIX_KEY
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_USER_HOME_DIR_PREFIX_DEFAULT
 argument_list|)

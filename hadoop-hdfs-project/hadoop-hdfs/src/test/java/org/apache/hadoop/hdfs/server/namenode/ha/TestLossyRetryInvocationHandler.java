@@ -46,20 +46,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|HdfsConfiguration
 import|;
 end_import
@@ -96,6 +82,22 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -103,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This test makes sure that when  * {@link DFSConfigKeys#DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY} is set,  * DFSClient instances can still be created within NN/DN (e.g., the fs instance  * used by the trash emptier thread in NN)  */
+comment|/**  * This test makes sure that when  * {@link HdfsClientConfigKeys#DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY} is set,  * DFSClient instances can still be created within NN/DN (e.g., the fs instance  * used by the trash emptier thread in NN)  */
 end_comment
 
 begin_class
@@ -148,7 +150,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
 argument_list|,

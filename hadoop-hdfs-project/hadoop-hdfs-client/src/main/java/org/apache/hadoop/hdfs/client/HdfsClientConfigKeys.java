@@ -564,6 +564,45 @@ name|PREFIX
 operator|+
 literal|"replica.accessor.builder.classes"
 decl_stmt|;
+comment|// The number of NN response dropped by client proactively in each RPC call.
+comment|// For testing NN retry cache, we can set this property with positive value.
+DECL|field|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
+name|String
+name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
+init|=
+literal|"dfs.client.test.drop.namenode.response.number"
+decl_stmt|;
+DECL|field|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT
+name|int
+name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT
+init|=
+literal|0
+decl_stmt|;
+DECL|field|DFS_CLIENT_LOCAL_INTERFACES
+name|String
+name|DFS_CLIENT_LOCAL_INTERFACES
+init|=
+literal|"dfs.client.local.interfaces"
+decl_stmt|;
+comment|// HDFS client HTrace configuration.
+DECL|field|DFS_CLIENT_HTRACE_PREFIX
+name|String
+name|DFS_CLIENT_HTRACE_PREFIX
+init|=
+literal|"dfs.client.htrace."
+decl_stmt|;
+DECL|field|DFS_USER_HOME_DIR_PREFIX_KEY
+name|String
+name|DFS_USER_HOME_DIR_PREFIX_KEY
+init|=
+literal|"dfs.user.home.dir.prefix"
+decl_stmt|;
+DECL|field|DFS_USER_HOME_DIR_PREFIX_DEFAULT
+name|String
+name|DFS_USER_HOME_DIR_PREFIX_DEFAULT
+init|=
+literal|"/user"
+decl_stmt|;
 comment|/** dfs.client.retry configuration properties */
 DECL|interface|Retry
 interface|interface
