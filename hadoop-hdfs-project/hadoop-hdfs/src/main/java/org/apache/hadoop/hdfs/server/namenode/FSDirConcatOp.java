@@ -484,10 +484,12 @@ block|{
 comment|// check the target
 if|if
 condition|(
-name|fsd
+name|FSDirEncryptionZoneOp
 operator|.
 name|getEZForPath
 argument_list|(
+name|fsd
+argument_list|,
 name|targetIIP
 argument_list|)
 operator|!=
