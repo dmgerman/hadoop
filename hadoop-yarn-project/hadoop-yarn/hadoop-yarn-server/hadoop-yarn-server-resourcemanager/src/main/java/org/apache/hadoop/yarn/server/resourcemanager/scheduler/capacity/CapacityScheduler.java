@@ -10613,6 +10613,22 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Update the changed application state to timeline server
+name|rmContext
+operator|.
+name|getSystemMetricsPublisher
+argument_list|()
+operator|.
+name|appUpdated
+argument_list|(
+name|rmApp
+argument_list|,
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info

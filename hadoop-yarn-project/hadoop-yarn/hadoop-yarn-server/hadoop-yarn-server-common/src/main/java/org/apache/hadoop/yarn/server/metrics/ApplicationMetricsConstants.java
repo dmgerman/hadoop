@@ -98,6 +98,15 @@ name|ACLS_UPDATED_EVENT_TYPE
 init|=
 literal|"YARN_APPLICATION_ACLS_UPDATED"
 decl_stmt|;
+DECL|field|UPDATED_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|UPDATED_EVENT_TYPE
+init|=
+literal|"YARN_APPLICATION_UPDATED"
+decl_stmt|;
 DECL|field|NAME_ENTITY_INFO
 specifier|public
 specifier|static
