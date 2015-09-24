@@ -4387,6 +4387,16 @@ return|return
 name|fileId
 return|;
 block|}
+comment|/**    * Return the source of stream.    */
+DECL|method|getSrc ()
+name|String
+name|getSrc
+parameter_list|()
+block|{
+return|return
+name|src
+return|;
+block|}
 comment|/**    * Returns the data streamer object.    */
 DECL|method|getStreamer ()
 specifier|protected

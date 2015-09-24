@@ -4188,7 +4188,14 @@ else|:
 literal|"close"
 operator|)
 operator|+
-literal|" inode "
+literal|" file: "
+operator|+
+name|out
+operator|.
+name|getSrc
+argument_list|()
+operator|+
+literal|" with inode: "
 operator|+
 name|inodeId
 argument_list|,
