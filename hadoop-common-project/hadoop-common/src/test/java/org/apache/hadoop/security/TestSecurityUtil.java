@@ -665,7 +665,9 @@ argument_list|(
 name|SecurityUtil
 operator|.
 name|getLocalHostName
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|assertEquals

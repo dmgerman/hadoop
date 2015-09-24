@@ -1053,6 +1053,26 @@ init|=
 literal|"hadoop.security.auth_to_local"
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_DNS_INTERFACE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_DNS_INTERFACE_KEY
+init|=
+literal|"hadoop.security.dns.interface"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_DNS_NAMESERVER_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_DNS_NAMESERVER_KEY
+init|=
+literal|"hadoop.security.dns.nameserver"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN
 specifier|public
 specifier|static
