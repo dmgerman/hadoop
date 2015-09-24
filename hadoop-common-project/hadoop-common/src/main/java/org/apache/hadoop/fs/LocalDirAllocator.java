@@ -664,6 +664,12 @@ specifier|private
 name|DF
 index|[]
 name|dirDF
+init|=
+operator|new
+name|DF
+index|[
+literal|0
+index|]
 decl_stmt|;
 DECL|field|contextCfgItemName
 specifier|private
@@ -675,6 +681,12 @@ specifier|private
 name|String
 index|[]
 name|localDirs
+init|=
+operator|new
+name|String
+index|[
+literal|0
+index|]
 decl_stmt|;
 DECL|field|savedLocalDirs
 specifier|private
