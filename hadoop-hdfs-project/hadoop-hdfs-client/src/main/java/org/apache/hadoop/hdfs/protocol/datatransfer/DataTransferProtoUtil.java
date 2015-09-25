@@ -889,6 +889,16 @@ name|IOException
 argument_list|(
 literal|"Got error"
 operator|+
+literal|", status="
+operator|+
+name|response
+operator|.
+name|getStatus
+argument_list|()
+operator|.
+name|name
+argument_list|()
+operator|+
 literal|", status message "
 operator|+
 name|response
