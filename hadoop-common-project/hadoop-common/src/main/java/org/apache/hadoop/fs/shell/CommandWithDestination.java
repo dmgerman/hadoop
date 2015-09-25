@@ -1164,6 +1164,28 @@ throw|throw
 name|e
 throw|;
 block|}
+comment|// When a path is normalized, all trailing slashes are removed
+comment|// except for the root
+if|if
+condition|(
+operator|!
+name|srcPath
+operator|.
+name|endsWith
+argument_list|(
+name|Path
+operator|.
+name|SEPARATOR
+argument_list|)
+condition|)
+block|{
+name|srcPath
+operator|+=
+name|Path
+operator|.
+name|SEPARATOR
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|dstPath
@@ -1171,10 +1193,6 @@ operator|.
 name|startsWith
 argument_list|(
 name|srcPath
-operator|+
-name|Path
-operator|.
-name|SEPARATOR
 argument_list|)
 condition|)
 block|{
