@@ -34,6 +34,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -212,6 +222,22 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMESERVICES
+import|;
+end_import
+
 begin_comment
 comment|/**  * One of the NN NameNodes acting as the target of an administrative command  * (e.g. failover).  */
 end_comment
@@ -330,11 +356,66 @@ operator|==
 literal|null
 condition|)
 block|{
+name|String
+name|errorString
+init|=
+literal|"Unable to determine the name service ID."
+decl_stmt|;
+name|String
+index|[]
+name|dfsNames
+init|=
+name|conf
+operator|.
+name|getStrings
+argument_list|(
+name|DFS_NAMESERVICES
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|(
+name|dfsNames
+operator|!=
+literal|null
+operator|)
+operator|&&
+operator|(
+name|dfsNames
+operator|.
+name|length
+operator|>
+literal|1
+operator|)
+condition|)
+block|{
+name|errorString
+operator|=
+literal|"Unable to determine the name service ID. "
+operator|+
+literal|"This is an HA configuration with multiple name services "
+operator|+
+literal|"configured. "
+operator|+
+name|DFS_NAMESERVICES
+operator|+
+literal|" is set to "
+operator|+
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|dfsNames
+argument_list|)
+operator|+
+literal|". Please re-run with the -ns option."
+expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Unable to determine the nameservice id."
+name|errorString
 argument_list|)
 throw|;
 block|}
