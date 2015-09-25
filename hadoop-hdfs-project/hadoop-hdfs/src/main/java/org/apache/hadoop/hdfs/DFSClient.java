@@ -1952,24 +1952,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|common
-operator|.
-name|HdfsServerConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|datanode
 operator|.
 name|CachingStrategy
@@ -4005,7 +3987,7 @@ if|if
 condition|(
 name|elapsed
 operator|>
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|LEASE_HARDLIMIT_PERIOD
 condition|)
@@ -4029,7 +4011,7 @@ operator|+
 literal|" seconds (>= hard-limit ="
 operator|+
 operator|(
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|LEASE_HARDLIMIT_PERIOD
 operator|/
