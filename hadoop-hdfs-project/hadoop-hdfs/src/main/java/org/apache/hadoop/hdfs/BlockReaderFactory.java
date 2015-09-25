@@ -1601,6 +1601,14 @@ name|getBlockPoolId
 argument_list|()
 argument_list|)
 operator|.
+name|setGenerationStamp
+argument_list|(
+name|block
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|)
+operator|.
 name|setBlockAccessToken
 argument_list|(
 name|tokenBytes

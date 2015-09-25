@@ -532,6 +532,10 @@ DECL|field|blockPoolId
 name|String
 name|blockPoolId
 decl_stmt|;
+DECL|field|genstamp
+name|long
+name|genstamp
+decl_stmt|;
 DECL|field|verifyChecksum
 name|boolean
 name|verifyChecksum
@@ -598,6 +602,27 @@ operator|.
 name|blockPoolId
 operator|=
 name|blockPoolId
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setGenerationStamp (long genstamp)
+specifier|public
+name|ReplicaAccessorBuilder
+name|setGenerationStamp
+parameter_list|(
+name|long
+name|genstamp
+parameter_list|)
+block|{
+name|this
+operator|.
+name|genstamp
+operator|=
+name|genstamp
 expr_stmt|;
 return|return
 name|this
@@ -812,6 +837,11 @@ name|prefix
 init|=
 literal|""
 decl_stmt|;
+DECL|field|genstamp
+specifier|final
+name|long
+name|genstamp
+decl_stmt|;
 DECL|method|SyntheticReplicaAccessor (SyntheticReplicaAccessorBuilder builder)
 name|SyntheticReplicaAccessor
 parameter_list|(
@@ -850,6 +880,14 @@ operator|.
 name|builder
 operator|=
 name|builder
+expr_stmt|;
+name|this
+operator|.
+name|genstamp
+operator|=
+name|builder
+operator|.
+name|genstamp
 expr_stmt|;
 name|String
 name|uuid
@@ -1211,6 +1249,15 @@ parameter_list|()
 block|{
 return|return
 name|error
+return|;
+block|}
+DECL|method|getGenerationStamp ()
+name|long
+name|getGenerationStamp
+parameter_list|()
+block|{
+return|return
+name|genstamp
 return|;
 block|}
 DECL|method|addError (String text)
@@ -1625,6 +1672,21 @@ operator|.
 name|builder
 operator|.
 name|fileName
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|block
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|,
+name|accessor
+operator|.
+name|getGenerationStamp
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert
