@@ -83,7 +83,7 @@ specifier|abstract
 class|class
 name|ReplicaAccessor
 block|{
-comment|/**    * Read bytes from the replica.    *    * @param pos    The position in the replica to start reading at.    *                 Must not be negative.    * @param buf    The byte array to read into.    * @param off    The offset within buf to start reading into.    * @param len    The maximum length to read.    *    * @return       The number of bytes read.  If the read extends past the end    *                  of the replica, a short read count will be returned.  We    *                  will never return a negative number.  We will never    *                  return a short read count unless EOF is reached.    */
+comment|/**    * Read bytes from the replica.    *    * @param pos    The position in the replica to start reading at.    *                 Must not be negative.    * @param buf    The byte array to read into.    * @param off    The offset within buf to start reading into.    * @param len    The maximum length to read.    *    * @return       The number of bytes read.  If the read extends past the end    *                  of the replica, a short read count will be returned.  We    *                  will should return -1 if EOF is reached and no bytes    *                  can be returned.  We will never return a short read    *                  count unless EOF is reached.    */
 DECL|method|read (long pos, byte[] buf, int off, int len)
 specifier|public
 specifier|abstract
@@ -106,7 +106,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Read bytes from the replica.    *    * @param pos    The position in the replica to start reading at.    *                 Must not be negative.    * @param buf    The byte buffer to read into.  The amount to read will be    *                 dictated by the remaining bytes between the current    *                 position and the limit.  The ByteBuffer may or may not be    *                 direct.    *    * @return       The number of bytes read.  If the read extends past the end    *                 of the replica, a short read count will be returned.  We    *                 will never return a negative number.  We will never return    *                 a short read count unless EOF is reached.    */
+comment|/**    * Read bytes from the replica.    *    * @param pos    The position in the replica to start reading at.    *                 Must not be negative.    * @param buf    The byte buffer to read into.  The amount to read will be    *                 dictated by the remaining bytes between the current    *                 position and the limit.  The ByteBuffer may or may not be    *                 direct.    *    * @return       The number of bytes read.  If the read extends past the end    *                 of the replica, a short read count will be returned.  We    *                 should return -1 if EOF is reached and no bytes can be    *                 returned.  We will never return a short read count unless    *                 EOF is reached.    */
 DECL|method|read (long pos, ByteBuffer buf)
 specifier|public
 specifier|abstract
