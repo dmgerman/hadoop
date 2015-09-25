@@ -420,6 +420,20 @@ name|FlowRunTable
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * This creates the schema for a hbase based backend for storing application  * timeline information.  */
 end_comment
@@ -1227,6 +1241,8 @@ return|return
 name|commandLine
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|createAllTables (Configuration hbaseConf, boolean skipExisting)
 specifier|public
 specifier|static

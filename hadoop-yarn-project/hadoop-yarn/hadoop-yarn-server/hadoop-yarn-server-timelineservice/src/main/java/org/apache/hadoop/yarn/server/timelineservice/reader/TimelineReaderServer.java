@@ -565,6 +565,21 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Using store "
+operator|+
+name|readerStore
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|readerStore
 operator|.
 name|init

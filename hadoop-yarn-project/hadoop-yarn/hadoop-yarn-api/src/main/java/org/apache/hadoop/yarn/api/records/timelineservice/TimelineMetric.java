@@ -706,6 +706,49 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+name|String
+name|str
+init|=
+literal|"{id:"
+operator|+
+name|id
+operator|+
+literal|", type:"
+operator|+
+name|type
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|values
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|str
+operator|+=
+literal|", values:"
+operator|+
+name|values
+expr_stmt|;
+block|}
+name|str
+operator|+=
+literal|"}"
+expr_stmt|;
+return|return
+name|str
+return|;
+block|}
 block|}
 end_class
 
