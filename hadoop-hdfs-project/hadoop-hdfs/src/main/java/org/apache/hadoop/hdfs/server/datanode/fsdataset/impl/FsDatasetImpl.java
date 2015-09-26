@@ -472,7 +472,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -2224,7 +2224,7 @@ name|this
 operator|.
 name|smallBufferSize
 operator|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getSmallBufferSize
 argument_list|(
@@ -5541,7 +5541,7 @@ name|readDataChecksum
 argument_list|(
 name|srcMeta
 argument_list|,
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getIoFileBufferSize
 argument_list|(

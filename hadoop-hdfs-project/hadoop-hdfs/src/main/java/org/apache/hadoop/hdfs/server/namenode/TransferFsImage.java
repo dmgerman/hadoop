@@ -300,7 +300,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -861,7 +861,7 @@ argument_list|()
 expr_stmt|;
 name|IO_FILE_BUFFER_SIZE
 operator|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getIoFileBufferSize
 argument_list|(

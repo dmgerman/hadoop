@@ -255,6 +255,7 @@ block|{
 DECL|field|LOG
 specifier|public
 specifier|static
+specifier|final
 name|Logger
 name|LOG
 init|=

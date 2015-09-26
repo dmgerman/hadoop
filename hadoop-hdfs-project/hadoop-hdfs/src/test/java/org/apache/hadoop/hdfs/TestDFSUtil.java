@@ -5703,7 +5703,7 @@ name|assertFalse
 argument_list|(
 literal|"encryption enabled on no provider key"
 argument_list|,
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|isHDFSEncryptionEnabled
 argument_list|(
@@ -5726,7 +5726,7 @@ name|assertFalse
 argument_list|(
 literal|"encryption enabled on empty provider key"
 argument_list|,
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|isHDFSEncryptionEnabled
 argument_list|(
@@ -5749,7 +5749,7 @@ name|assertFalse
 argument_list|(
 literal|"encryption enabled on whitespace provider key"
 argument_list|,
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|isHDFSEncryptionEnabled
 argument_list|(
@@ -5772,7 +5772,7 @@ name|assertTrue
 argument_list|(
 literal|"encryption disabled on valid provider key"
 argument_list|,
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|isHDFSEncryptionEnabled
 argument_list|(

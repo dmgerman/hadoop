@@ -414,34 +414,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|HadoopIllegalArgumentException
@@ -2002,6 +1974,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|IOUtilsClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|DataOutputBuffer
@@ -2444,6 +2432,26 @@ name|InetAddresses
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/********************************************************  * DFSClient can connect to a Hadoop Filesystem and   * perform basic file tasks.  It uses the ClientProtocol  * to communicate with a NameNode daemon, and connects   * directly to DataNodes to read/write block data.  *  * Hadoop DFS users should obtain an instance of   * DistributedFileSystem, which uses DFSClient to handle  * filesystem tasks.  *  ********************************************************/
 end_comment
@@ -2472,12 +2480,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|DFSClient
 operator|.
@@ -2909,7 +2917,7 @@ name|this
 operator|.
 name|smallBufferSize
 operator|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getSmallBufferSize
 argument_list|(
@@ -4685,7 +4693,7 @@ static|static
 block|{
 comment|//Ensure that HDFS Configuration files are loaded before trying to use
 comment|// the renewer.
-name|HdfsConfiguration
+name|HdfsConfigurationLoader
 operator|.
 name|init
 argument_list|()
@@ -9898,7 +9906,7 @@ return|;
 block|}
 finally|finally
 block|{
-name|IOUtils
+name|IOUtilsClient
 operator|.
 name|cleanup
 argument_list|(
@@ -14093,7 +14101,7 @@ operator|!
 name|success
 condition|)
 block|{
-name|IOUtils
+name|IOUtilsClient
 operator|.
 name|cleanup
 argument_list|(
@@ -14381,7 +14389,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Probe for encryption enabled on this filesystem.    * See {@link DFSUtil#isHDFSEncryptionEnabled(Configuration)}    * @return true if encryption is enabled    */
+comment|/**    * Probe for encryption enabled on this filesystem.    * See {@link DFSUtilClient#isHDFSEncryptionEnabled(Configuration)}    * @return true if encryption is enabled    */
 DECL|method|isHDFSEncryptionEnabled ()
 specifier|public
 name|boolean
@@ -14389,7 +14397,7 @@ name|isHDFSEncryptionEnabled
 parameter_list|()
 block|{
 return|return
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|isHDFSEncryptionEnabled
 argument_list|(

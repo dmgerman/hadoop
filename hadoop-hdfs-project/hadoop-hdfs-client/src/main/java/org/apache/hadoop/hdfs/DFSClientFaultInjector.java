@@ -75,7 +75,7 @@ class|class
 name|DFSClientFaultInjector
 block|{
 DECL|field|instance
-specifier|public
+specifier|private
 specifier|static
 name|DFSClientFaultInjector
 name|instance
@@ -106,6 +106,23 @@ block|{
 return|return
 name|instance
 return|;
+block|}
+DECL|method|set (DFSClientFaultInjector instance)
+specifier|public
+specifier|static
+name|void
+name|set
+parameter_list|(
+name|DFSClientFaultInjector
+name|instance
+parameter_list|)
+block|{
+name|DFSClientFaultInjector
+operator|.
+name|instance
+operator|=
+name|instance
+expr_stmt|;
 block|}
 DECL|method|corruptPacket ()
 specifier|public

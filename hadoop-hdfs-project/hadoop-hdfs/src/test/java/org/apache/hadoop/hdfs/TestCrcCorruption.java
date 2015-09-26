@@ -314,9 +314,10 @@ argument_list|)
 expr_stmt|;
 name|DFSClientFaultInjector
 operator|.
-name|instance
-operator|=
+name|set
+argument_list|(
 name|faultInjector
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**     * Test case for data corruption during data transmission for    * create/write. To recover from corruption while writing, at    * least two replicas are needed.    */
