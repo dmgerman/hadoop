@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -195,6 +209,20 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
 import|;
 end_import
 
@@ -402,6 +430,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|StopWatch
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Time
 import|;
 end_import
@@ -438,6 +480,37 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|MILLIS_PER_SECOND
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|MILLIS_PER_SECOND
+init|=
+literal|1000
+decl_stmt|;
+DECL|field|START_MESSAGE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|START_MESSAGE
+init|=
+literal|"Periodic Directory Tree Verification scan"
+operator|+
+literal|" starting at %dms with interval of %dms"
+decl_stmt|;
+DECL|field|START_MESSAGE_WITH_THROTTLE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|START_MESSAGE_WITH_THROTTLE
+init|=
+name|START_MESSAGE
+operator|+
+literal|" and throttle limit of %dms/s"
+decl_stmt|;
 DECL|field|dataset
 specifier|private
 specifier|final
@@ -465,6 +538,12 @@ specifier|final
 name|long
 name|scanPeriodMsecs
 decl_stmt|;
+DECL|field|throttleLimitMsPerSec
+specifier|private
+specifier|final
+name|int
+name|throttleLimitMsPerSec
+decl_stmt|;
 DECL|field|shouldRun
 specifier|private
 specifier|volatile
@@ -486,6 +565,37 @@ specifier|final
 name|DataNode
 name|datanode
 decl_stmt|;
+comment|/**    * Total combined wall clock time (in milliseconds) spent by the report    * compiler threads executing.  Used for testing purposes.    */
+annotation|@
+name|VisibleForTesting
+DECL|field|timeRunningMs
+specifier|final
+name|AtomicLong
+name|timeRunningMs
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0L
+argument_list|)
+decl_stmt|;
+comment|/**    * Total combined wall clock time (in milliseconds) spent by the report    * compiler threads blocked by the throttle.  Used for testing purposes.    */
+annotation|@
+name|VisibleForTesting
+DECL|field|timeWaitingMs
+specifier|final
+name|AtomicLong
+name|timeWaitingMs
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0L
+argument_list|)
+decl_stmt|;
+comment|/**    * The complete list of block differences indexed by block pool ID.    */
+annotation|@
+name|VisibleForTesting
 DECL|field|diffs
 specifier|final
 name|ScanInfoPerBlockPool
@@ -495,6 +605,9 @@ operator|new
 name|ScanInfoPerBlockPool
 argument_list|()
 decl_stmt|;
+comment|/**    * Statistics about the block differences in each blockpool, indexed by    * block pool ID.    */
+annotation|@
+name|VisibleForTesting
 DECL|field|stats
 specifier|final
 name|Map
@@ -514,7 +627,9 @@ name|Stats
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Allow retaining diffs for unit test and analysis    * @param b - defaults to false (off)    */
+comment|/**    * Allow retaining diffs for unit test and analysis. Defaults to false (off)    * @param b whether to retain diffs    */
+annotation|@
+name|VisibleForTesting
 DECL|method|setRetainDiffs (boolean b)
 name|void
 name|setRetainDiffs
@@ -528,7 +643,9 @@ operator|=
 name|b
 expr_stmt|;
 block|}
-comment|/** Stats tracked for reporting and testing, per blockpool */
+comment|/**    * Stats tracked for reporting and testing, per blockpool    */
+annotation|@
+name|VisibleForTesting
 DECL|class|Stats
 specifier|static
 class|class
@@ -575,6 +692,7 @@ name|duplicateBlocks
 init|=
 literal|0
 decl_stmt|;
+comment|/**      * Create a new Stats object for the given blockpool ID.      * @param bpid blockpool ID      */
 DECL|method|Stats (String bpid)
 specifier|public
 name|Stats
@@ -625,6 +743,7 @@ name|mismatchBlocks
 return|;
 block|}
 block|}
+comment|/**    * Helper class for compiling block info reports from report compiler threads.    */
 DECL|class|ScanInfoPerBlockPool
 specifier|static
 class|class
@@ -649,6 +768,7 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+comment|/**      * Create a new info list.      */
 DECL|method|ScanInfoPerBlockPool ()
 name|ScanInfoPerBlockPool
 parameter_list|()
@@ -657,6 +777,7 @@ name|super
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**      * Create a new info list initialized to the given expected size.      * See {@link java.util.HashMap#HashMap(int)}.      *      * @param sz initial expected size      */
 DECL|method|ScanInfoPerBlockPool (int sz)
 name|ScanInfoPerBlockPool
 parameter_list|(
@@ -670,7 +791,7 @@ name|sz
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Merges {@code that} ScanInfoPerBlockPool into this one      */
+comment|/**      * Merges {@code that} ScanInfoPerBlockPool into this one      *      * @param the ScanInfoPerBlockPool to merge      */
 DECL|method|addAll (ScanInfoPerBlockPool that)
 specifier|public
 name|void
@@ -764,7 +885,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**      * Convert all the LinkedList values in this ScanInfoPerBlockPool map      * into sorted arrays, and return a new map of these arrays per blockpool      * @return a map of ScanInfo arrays per blockpool      */
+comment|/**      * Convert all the LinkedList values in this ScanInfoPerBlockPool map      * into sorted arrays, and return a new map of these arrays per blockpool      *      * @return a map of ScanInfo arrays per blockpool      */
 DECL|method|toSortedArrays ()
 specifier|public
 name|Map
@@ -955,7 +1076,7 @@ operator|.
 name|separator
 argument_list|)
 decl_stmt|;
-comment|/**      * Get the most condensed version of the path.      *      * For example, the condensed version of /foo//bar is /foo/bar      * Unlike {@link File#getCanonicalPath()}, this will never perform I/O      * on the filesystem.      */
+comment|/**      * Get the most condensed version of the path.      *      * For example, the condensed version of /foo//bar is /foo/bar      * Unlike {@link File#getCanonicalPath()}, this will never perform I/O      * on the filesystem.      *      * @param path the path to condense      * @return the condensed path      */
 DECL|method|getCondensedPath (String path)
 specifier|private
 specifier|static
@@ -1039,6 +1160,7 @@ name|fullPath
 argument_list|)
 throw|;
 block|}
+comment|/**      * Create a ScanInfo object for a block. This constructor will examine      * the block data and meta-data files.      *      * @param blockId the block ID      * @param blockFile the path to the block data file      * @param metaFile the path to the block meta-data file      * @param vol the volume that contains the block      */
 DECL|method|ScanInfo (long blockId, File blockFile, File metaFile, FsVolumeSpi vol)
 name|ScanInfo
 parameter_list|(
@@ -1169,6 +1291,7 @@ operator|=
 name|vol
 expr_stmt|;
 block|}
+comment|/**      * Returns the block data file.      *      * @return the block data file      */
 DECL|method|getBlockFile ()
 name|File
 name|getBlockFile
@@ -1195,6 +1318,7 @@ name|blockSuffix
 argument_list|)
 return|;
 block|}
+comment|/**      * Return the length of the data block. The length returned is the length      * cached when this object was created.      *      * @return the length of the data block      */
 DECL|method|getBlockFileLength ()
 name|long
 name|getBlockFileLength
@@ -1204,6 +1328,7 @@ return|return
 name|blockFileLength
 return|;
 block|}
+comment|/**      * Returns the block meta data file or null if there isn't one.      *      * @return the block meta data file      */
 DECL|method|getMetaFile ()
 name|File
 name|getMetaFile
@@ -1259,6 +1384,7 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**      * Returns the block ID.      *      * @return the block ID      */
 DECL|method|getBlockId ()
 name|long
 name|getBlockId
@@ -1268,6 +1394,7 @@ return|return
 name|blockId
 return|;
 block|}
+comment|/**      * Returns the volume that contains the block that this object describes.      *      * @return the volume      */
 DECL|method|getVolume ()
 name|FsVolumeSpi
 name|getVolume
@@ -1426,6 +1553,7 @@ name|GRANDFATHER_GENERATION_STAMP
 return|;
 block|}
 block|}
+comment|/**    * Create a new directory scanner, but don't cycle it running yet.    *    * @param datanode the parent datanode    * @param dataset the dataset to scan    * @param conf the Configuration object    */
 DECL|method|DirectoryScanner (DataNode datanode, FsDatasetSpi<?> dataset, Configuration conf)
 name|DirectoryScanner
 parameter_list|(
@@ -1474,9 +1602,95 @@ name|scanPeriodMsecs
 operator|=
 name|interval
 operator|*
-literal|1000L
+name|MILLIS_PER_SECOND
 expr_stmt|;
 comment|//msec
+name|int
+name|throttle
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_DEFAULT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|(
+name|throttle
+operator|>
+name|MILLIS_PER_SECOND
+operator|)
+operator|||
+operator|(
+name|throttle
+operator|<=
+literal|0
+operator|)
+condition|)
+block|{
+if|if
+condition|(
+name|throttle
+operator|>
+name|MILLIS_PER_SECOND
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_KEY
+operator|+
+literal|" set to value above 1000 ms/sec. Assuming default value of "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_DEFAULT
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_KEY
+operator|+
+literal|" set to value below 1 ms/sec. Assuming default value of "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_DEFAULT
+argument_list|)
+expr_stmt|;
+block|}
+name|throttleLimitMsPerSec
+operator|=
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_DEFAULT
+expr_stmt|;
+block|}
+else|else
+block|{
+name|throttleLimitMsPerSec
+operator|=
+name|throttle
+expr_stmt|;
+block|}
 name|int
 name|threads
 init|=
@@ -1523,6 +1737,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Start the scanner.  The scanner will run every    * {@link DFSConfigKeys#DFS_DATANODE_DIRECTORYSCAN_INTERVAL_KEY} seconds.    */
 DECL|method|start ()
 name|void
 name|start
@@ -1548,11 +1763,11 @@ call|)
 argument_list|(
 name|scanPeriodMsecs
 operator|/
-literal|1000L
+name|MILLIS_PER_SECOND
 argument_list|)
 argument_list|)
 operator|*
-literal|1000L
+name|MILLIS_PER_SECOND
 decl_stmt|;
 comment|//msec
 name|long
@@ -1565,17 +1780,53 @@ argument_list|()
 operator|+
 name|offset
 decl_stmt|;
+name|String
+name|logMsg
+decl_stmt|;
+if|if
+condition|(
+name|throttleLimitMsPerSec
+operator|<
+name|MILLIS_PER_SECOND
+condition|)
+block|{
+name|logMsg
+operator|=
+name|String
+operator|.
+name|format
+argument_list|(
+name|START_MESSAGE_WITH_THROTTLE
+argument_list|,
+name|firstScanTime
+argument_list|,
+name|scanPeriodMsecs
+argument_list|,
+name|throttleLimitMsPerSec
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|logMsg
+operator|=
+name|String
+operator|.
+name|format
+argument_list|(
+name|START_MESSAGE
+argument_list|,
+name|firstScanTime
+argument_list|,
+name|scanPeriodMsecs
+argument_list|)
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Periodic Directory Tree Verification scan starting at "
-operator|+
-name|firstScanTime
-operator|+
-literal|" with interval "
-operator|+
-name|scanPeriodMsecs
+name|logMsg
 argument_list|)
 expr_stmt|;
 name|masterThread
@@ -1594,7 +1845,9 @@ name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 block|}
-comment|// for unit test
+comment|/**    * Return whether the scanner has been started.    *    * @return whether the scanner has been started    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getRunStatus ()
 name|boolean
 name|getRunStatus
@@ -1604,6 +1857,7 @@ return|return
 name|shouldRun
 return|;
 block|}
+comment|/**    * Clear the current cache of diffs and statistics.    */
 DECL|method|clear ()
 specifier|private
 name|void
@@ -1621,7 +1875,7 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Main program loop for DirectoryScanner    * Runs "reconcile()" periodically under the masterThread.    */
+comment|/**    * Main program loop for DirectoryScanner.  Runs {@link reconcile()}    * and handles any exceptions.    */
 annotation|@
 name|Override
 DECL|method|run ()
@@ -1691,6 +1945,7 @@ name|er
 throw|;
 block|}
 block|}
+comment|/**    * Stops the directory scanner.  This method will wait for 1 minute for the    * main thread to exit and an additional 1 minute for the report compilation    * threads to exit.  If a thread does not exit in that time period, it is    * left running, and an error is logged.    */
 DECL|method|shutdown ()
 name|void
 name|shutdown
@@ -1741,11 +1996,13 @@ name|reportCompileThreadPool
 operator|!=
 literal|null
 condition|)
+block|{
 name|reportCompileThreadPool
 operator|.
-name|shutdown
+name|shutdownNow
 argument_list|()
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|masterThread
@@ -1836,6 +2093,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Reconcile differences between disk and in-memory blocks    */
+annotation|@
+name|VisibleForTesting
 DECL|method|reconcile ()
 name|void
 name|reconcile
@@ -1932,6 +2191,7 @@ expr_stmt|;
 block|}
 comment|/**    * Scan for the differences between disk and in-memory blocks    * Scan only the "finalized blocks" lists of both disk and memory.    */
 DECL|method|scan ()
+specifier|private
 name|void
 name|scan
 parameter_list|()
@@ -2464,7 +2724,7 @@ comment|//end for
 block|}
 comment|//end synchronized
 block|}
-comment|/**    * Block is found on the disk. In-memory block is missing or does not match    * the block on the disk    */
+comment|/**    * Add the ScanInfo object to the list of differences and adjust the stats    * accordingly.  This method is called when a block is found on the disk,    * but the in-memory block is missing or does not match the block on the disk.    *    * @param diffRecord the list to which to add the info    * @param statsRecord the stats to update    * @param info the differing info    */
 DECL|method|addDifference (LinkedList<ScanInfo> diffRecord, Stats statsRecord, ScanInfo info)
 specifier|private
 name|void
@@ -2521,7 +2781,7 @@ name|info
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Block is not found on the disk */
+comment|/**    * Add a new ScanInfo object to the list of differences and adjust the stats    * accordingly.  This method is called when a block is not found on the disk.    *    * @param diffRecord the list to which to add the info    * @param statsRecord the stats to update    * @param blockId the id of the missing block    * @param vol the volume that contains the missing block    */
 DECL|method|addDifference (LinkedList<ScanInfo> diffRecord, Stats statsRecord, long blockId, FsVolumeSpi vol)
 specifier|private
 name|void
@@ -2571,7 +2831,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Get lists of blocks on the disk sorted by blockId, per blockpool */
+comment|/**    * Get the lists of blocks on the disks in the dataset, sorted by blockId.    * The returned map contains one entry per blockpool, keyed by the blockpool    * ID.    *    * @return a map of sorted arrays of block information    */
 DECL|method|getDiskReport ()
 specifier|private
 name|Map
@@ -2741,6 +3001,26 @@ operator|.
 name|get
 argument_list|()
 expr_stmt|;
+comment|// If our compiler threads were interrupted, give up on this run
+if|if
+condition|(
+name|dirReports
+index|[
+name|report
+operator|.
+name|getKey
+argument_list|()
+index|]
+operator|==
+literal|null
+condition|)
+block|{
+name|dirReports
+operator|=
+literal|null
+expr_stmt|;
+break|break;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2816,6 +3096,7 @@ name|toSortedArrays
 argument_list|()
 return|;
 block|}
+comment|/**    * Helper method to determine if a file name is consistent with a block.    * meta-data file    *    * @param blockId the block ID    * @param metaFile the file to check    * @return whether the file name is a block meta-data file name    */
 DECL|method|isBlockMetaFile (String blockId, String metaFile)
 specifier|private
 specifier|static
@@ -2847,9 +3128,9 @@ name|METADATA_EXTENSION
 argument_list|)
 return|;
 block|}
+comment|/**    * The ReportCompiler class encapsulates the process of searching a datanode's    * disks for block information.  It operates by performing a DFS of the    * volume to discover block information.    *    * When the ReportCompiler discovers block information, it create a new    * ScanInfo object for it and adds that object to its report list.  The report    * list is returned by the {@link #call()} method.    */
 DECL|class|ReportCompiler
 specifier|private
-specifier|static
 class|class
 name|ReportCompiler
 implements|implements
@@ -2870,6 +3151,37 @@ specifier|final
 name|DataNode
 name|datanode
 decl_stmt|;
+comment|// Variable for tracking time spent running for throttling purposes
+DECL|field|throttleTimer
+specifier|private
+specifier|final
+name|StopWatch
+name|throttleTimer
+init|=
+operator|new
+name|StopWatch
+argument_list|()
+decl_stmt|;
+comment|// Variable for tracking time spent running and waiting for testing
+comment|// purposes
+DECL|field|perfTimer
+specifier|private
+specifier|final
+name|StopWatch
+name|perfTimer
+init|=
+operator|new
+name|StopWatch
+argument_list|()
+decl_stmt|;
+comment|/**      * The associated thread.  Used for testing purposes only.      */
+annotation|@
+name|VisibleForTesting
+DECL|field|currentThread
+name|Thread
+name|currentThread
+decl_stmt|;
+comment|/**      * Create a report compiler for the given volume on the given datanode.      *      * @param datanode the target datanode      * @param volume the target volume      */
 DECL|method|ReportCompiler (DataNode datanode, FsVolumeSpi volume)
 specifier|public
 name|ReportCompiler
@@ -2894,6 +3206,7 @@ operator|=
 name|volume
 expr_stmt|;
 block|}
+comment|/**      * Run this report compiler thread.      *      * @return the block info report list      * @throws IOException if the block pool isn't found      */
 annotation|@
 name|Override
 DECL|method|call ()
@@ -2902,8 +3215,15 @@ name|ScanInfoPerBlockPool
 name|call
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
+name|currentThread
+operator|=
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+expr_stmt|;
 name|String
 index|[]
 name|bpList
@@ -2940,9 +3260,7 @@ name|report
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|ScanInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|File
@@ -2955,6 +3273,18 @@ argument_list|(
 name|bpid
 argument_list|)
 decl_stmt|;
+name|perfTimer
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|throttleTimer
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|result
 operator|.
 name|put
@@ -2974,11 +3304,25 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ex
+parameter_list|)
+block|{
+comment|// Exit quickly and flag the scanner to do the same
+name|result
+operator|=
+literal|null
+expr_stmt|;
+break|break;
+block|}
+block|}
 return|return
 name|result
 return|;
 block|}
-comment|/** Compile list {@link ScanInfo} for the blocks in the directory<dir> */
+comment|/**      * Compile a list of {@link ScanInfo} for the blocks in the directory      * given by {@code dir}.      *      * @param vol the volume that contains the directory to scan      * @param bpFinalizedDir the root directory of the directory to scan      * @param dir the directory to scan      * @param report the list onto which blocks reports are placed      */
 DECL|method|compileReport (FsVolumeSpi vol, File bpFinalizedDir, File dir, LinkedList<ScanInfo> report)
 specifier|private
 name|LinkedList
@@ -3002,11 +3346,16 @@ name|ScanInfo
 argument_list|>
 name|report
 parameter_list|)
+throws|throws
+name|InterruptedException
 block|{
 name|File
 index|[]
 name|files
 decl_stmt|;
+name|throttle
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|files
@@ -3070,6 +3419,22 @@ name|i
 operator|++
 control|)
 block|{
+comment|// Make sure this thread can make a timely exit. With a low throttle
+comment|// rate, completing a run can take a looooong time.
+if|if
+condition|(
+name|Thread
+operator|.
+name|interrupted
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|InterruptedException
+argument_list|()
+throw|;
+block|}
 if|if
 condition|(
 name|files
@@ -3368,6 +3733,122 @@ literal|" has to be upgraded to block ID-based layout"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**      * Called by the thread before each potential disk scan so that a pause      * can be optionally inserted to limit the number of scans per second.      * The limit is controlled by      * {@link DFSConfigKeys#DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_KEY}.      */
+DECL|method|throttle ()
+specifier|private
+name|void
+name|throttle
+parameter_list|()
+throws|throws
+name|InterruptedException
+block|{
+name|accumulateTimeRunning
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+operator|(
+name|throttleLimitMsPerSec
+operator|<
+literal|1000
+operator|)
+operator|&&
+operator|(
+name|throttleTimer
+operator|.
+name|now
+argument_list|(
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+operator|>
+name|throttleLimitMsPerSec
+operator|)
+condition|)
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|MILLIS_PER_SECOND
+operator|-
+name|throttleLimitMsPerSec
+argument_list|)
+expr_stmt|;
+name|throttleTimer
+operator|.
+name|reset
+argument_list|()
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
+name|accumulateTimeWaiting
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**      * Helper method to measure time running.      */
+DECL|method|accumulateTimeRunning ()
+specifier|private
+name|void
+name|accumulateTimeRunning
+parameter_list|()
+block|{
+name|timeRunningMs
+operator|.
+name|getAndAdd
+argument_list|(
+name|perfTimer
+operator|.
+name|now
+argument_list|(
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|perfTimer
+operator|.
+name|reset
+argument_list|()
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**      * Helper method to measure time waiting.      */
+DECL|method|accumulateTimeWaiting ()
+specifier|private
+name|void
+name|accumulateTimeWaiting
+parameter_list|()
+block|{
+name|timeWaitingMs
+operator|.
+name|getAndAdd
+argument_list|(
+name|perfTimer
+operator|.
+name|now
+argument_list|(
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|perfTimer
+operator|.
+name|reset
+argument_list|()
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}
