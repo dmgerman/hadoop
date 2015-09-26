@@ -1603,6 +1603,13 @@ name|getLocalizedMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|printUsage
+argument_list|(
+name|System
+operator|.
+name|err
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|instance
