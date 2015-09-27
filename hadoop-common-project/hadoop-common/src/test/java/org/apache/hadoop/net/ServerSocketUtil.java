@@ -96,6 +96,16 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|rand
+specifier|private
+specifier|static
+name|Random
+name|rand
+init|=
+operator|new
+name|Random
+argument_list|()
+decl_stmt|;
 comment|/**    * Port scan& allocate is how most other apps find ports    *     * @param port given port    * @param retries number of retires    * @return    * @throws IOException    */
 DECL|method|getPort (int port, int retries)
 specifier|public
@@ -112,13 +122,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Random
-name|rand
-init|=
-operator|new
-name|Random
-argument_list|()
-decl_stmt|;
 name|int
 name|tryPort
 init|=
@@ -139,6 +142,10 @@ condition|(
 name|tries
 operator|>
 literal|0
+operator|||
+name|tryPort
+operator|==
+literal|0
 condition|)
 block|{
 name|tryPort
@@ -154,6 +161,15 @@ operator|-
 name|port
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|tryPort
+operator|==
+literal|0
+condition|)
+block|{
+continue|continue;
 block|}
 name|LOG
 operator|.
