@@ -962,6 +962,16 @@ name|NFS_EXPORTS_ALLOWED_HOSTS_KEY_DEFAULT
 init|=
 literal|"* rw"
 decl_stmt|;
+comment|// HDFS client HTrace configuration.
+DECL|field|FS_CLIENT_HTRACE_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_CLIENT_HTRACE_PREFIX
+init|=
+literal|"fs.client.htrace."
+decl_stmt|;
 block|}
 end_class
 

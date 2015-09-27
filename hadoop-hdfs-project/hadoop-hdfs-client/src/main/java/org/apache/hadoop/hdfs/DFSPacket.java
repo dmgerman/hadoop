@@ -140,7 +140,37 @@ name|apache
 operator|.
 name|htrace
 operator|.
+name|core
+operator|.
 name|Span
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|core
+operator|.
+name|SpanId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|core
+operator|.
+name|TraceScope
 import|;
 end_import
 
@@ -170,12 +200,12 @@ decl_stmt|;
 DECL|field|EMPTY
 specifier|private
 specifier|static
-name|long
+name|SpanId
 index|[]
 name|EMPTY
 init|=
 operator|new
-name|long
+name|SpanId
 index|[
 literal|0
 index|]
@@ -250,7 +280,7 @@ name|dataPos
 decl_stmt|;
 DECL|field|traceParents
 specifier|private
-name|long
+name|SpanId
 index|[]
 name|traceParents
 init|=
@@ -261,10 +291,10 @@ specifier|private
 name|int
 name|traceParentsUsed
 decl_stmt|;
-DECL|field|span
+DECL|field|scope
 specifier|private
-name|Span
-name|span
+name|TraceScope
+name|scope
 decl_stmt|;
 comment|/**    * Create a new packet.    *    * @param buf the buffer storing data and checksums    * @param chunksPerPkt maximum number of chunks per packet.    * @param offsetInBlock offset in bytes into the HDFS block.    * @param seqno the sequence number of this packet    * @param checksumSize the size of checksum    * @param lastPacketInBlock if this is the last packet    */
 DECL|method|DFSPacket (byte[] buf, int chunksPerPkt, long offsetInBlock, long seqno, int checksumSize, boolean lastPacketInBlock)
@@ -918,15 +948,26 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addTraceParent (long id)
+DECL|method|addTraceParent (SpanId id)
 specifier|public
 name|void
 name|addTraceParent
 parameter_list|(
-name|long
+name|SpanId
 name|id
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|id
+operator|.
+name|isValid
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 if|if
 condition|(
 name|traceParentsUsed
@@ -981,7 +1022,7 @@ block|}
 comment|/**    * Get the trace parent spans for this packet.<p/>    *    * Will always be non-null.<p/>    *    * Protected by the DFSOutputStream dataQueue lock.    */
 DECL|method|getTraceParents ()
 specifier|public
-name|long
+name|SpanId
 index|[]
 name|getTraceParents
 parameter_list|()
@@ -1012,12 +1053,13 @@ name|j
 init|=
 literal|0
 decl_stmt|;
-name|long
+name|SpanId
 name|prevVal
 init|=
-literal|0
+name|SpanId
+operator|.
+name|INVALID
 decl_stmt|;
-comment|// 0 is not a valid span id
 while|while
 condition|(
 literal|true
@@ -1032,7 +1074,7 @@ condition|)
 block|{
 break|break;
 block|}
-name|long
+name|SpanId
 name|val
 init|=
 name|traceParents
@@ -1042,9 +1084,13 @@ index|]
 decl_stmt|;
 if|if
 condition|(
+operator|!
 name|val
-operator|!=
+operator|.
+name|equals
+argument_list|(
 name|prevVal
+argument_list|)
 condition|)
 block|{
 name|traceParents
@@ -1097,30 +1143,30 @@ return|return
 name|traceParents
 return|;
 block|}
-DECL|method|setTraceSpan (Span span)
+DECL|method|setTraceScope (TraceScope scope)
 specifier|public
 name|void
-name|setTraceSpan
+name|setTraceScope
 parameter_list|(
-name|Span
-name|span
+name|TraceScope
+name|scope
 parameter_list|)
 block|{
 name|this
 operator|.
-name|span
+name|scope
 operator|=
-name|span
+name|scope
 expr_stmt|;
 block|}
-DECL|method|getTraceSpan ()
+DECL|method|getTraceScope ()
 specifier|public
-name|Span
-name|getTraceSpan
+name|TraceScope
+name|getTraceScope
 parameter_list|()
 block|{
 return|return
-name|span
+name|scope
 return|;
 block|}
 block|}

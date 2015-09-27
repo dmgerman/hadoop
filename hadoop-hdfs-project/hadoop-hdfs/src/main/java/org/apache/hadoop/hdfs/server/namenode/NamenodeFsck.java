@@ -926,6 +926,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|core
+operator|.
+name|Tracer
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -1141,6 +1155,11 @@ specifier|private
 name|long
 name|staleInterval
 decl_stmt|;
+DECL|field|tracer
+specifier|private
+name|Tracer
+name|tracer
+decl_stmt|;
 comment|/**    * True if we encountered an internal error during FSCK, such as not being    * able to delete a corrupt file.    */
 DECL|field|internalError
 specifier|private
@@ -1343,6 +1362,21 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_DEFAULT
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|tracer
+operator|=
+operator|new
+name|Tracer
+operator|.
+name|Builder
+argument_list|(
+literal|"NamenodeFsck"
+argument_list|)
+operator|.
+name|build
+argument_list|()
 expr_stmt|;
 for|for
 control|(
@@ -5412,6 +5446,11 @@ argument_list|(
 name|namenode
 operator|.
 name|conf
+argument_list|)
+operator|.
+name|setTracer
+argument_list|(
+name|tracer
 argument_list|)
 operator|.
 name|setRemotePeerFactory

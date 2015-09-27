@@ -456,31 +456,23 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|Sampler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
-operator|.
-name|Trace
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
+name|core
 operator|.
 name|TraceScope
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|core
+operator|.
+name|Tracer
 import|;
 end_import
 
@@ -664,6 +656,12 @@ specifier|private
 specifier|final
 name|PeerCache
 name|peerCache
+decl_stmt|;
+DECL|field|tracer
+specifier|private
+specifier|final
+name|Tracer
+name|tracer
 decl_stmt|;
 comment|/* FSInputChecker interface */
 comment|/* same interface as inputStream java.io.InputStream#read()    * used by DFSInputStream#read()    * This violates one rule when there is a checksum error:    * "Read should not modify user buffer before successful read"    * because it first reads the data to user buffer and then checks    * the checksum.    */
@@ -1063,19 +1061,15 @@ block|{
 name|TraceScope
 name|scope
 init|=
-name|Trace
+name|tracer
 operator|.
-name|startSpan
+name|newScope
 argument_list|(
 literal|"RemoteBlockReader#readChunk("
 operator|+
 name|blockId
 operator|+
 literal|")"
-argument_list|,
-name|Sampler
-operator|.
-name|NEVER
 argument_list|)
 decl_stmt|;
 try|try
@@ -1586,7 +1580,7 @@ return|return
 name|bytesToRead
 return|;
 block|}
-DECL|method|RemoteBlockReader (String file, String bpid, long blockId, DataInputStream in, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache)
+DECL|method|RemoteBlockReader (String file, String bpid, long blockId, DataInputStream in, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache, Tracer tracer)
 specifier|private
 name|RemoteBlockReader
 parameter_list|(
@@ -1625,6 +1619,9 @@ name|datanodeID
 parameter_list|,
 name|PeerCache
 name|peerCache
+parameter_list|,
+name|Tracer
+name|tracer
 parameter_list|)
 block|{
 comment|// Path is used only for printing block and file information in debug
@@ -1794,9 +1791,15 @@ name|peerCache
 operator|=
 name|peerCache
 expr_stmt|;
+name|this
+operator|.
+name|tracer
+operator|=
+name|tracer
+expr_stmt|;
 block|}
 comment|/**    * Create a new BlockReader specifically to satisfy a read.    * This method also sends the OP_READ_BLOCK request.    *    * @param file  File location    * @param block  The block object    * @param blockToken  The block token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param bufferSize  The IO buffer size (not the client buffer size)    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @return New BlockReader instance, or null on error.    */
-DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, int bufferSize, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache, CachingStrategy cachingStrategy)
+DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, int bufferSize, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache, CachingStrategy cachingStrategy, Tracer tracer)
 specifier|public
 specifier|static
 name|RemoteBlockReader
@@ -1840,6 +1843,9 @@ name|peerCache
 parameter_list|,
 name|CachingStrategy
 name|cachingStrategy
+parameter_list|,
+name|Tracer
+name|tracer
 parameter_list|)
 throws|throws
 name|IOException
@@ -2038,6 +2044,8 @@ argument_list|,
 name|datanodeID
 argument_list|,
 name|peerCache
+argument_list|,
+name|tracer
 argument_list|)
 return|;
 block|}

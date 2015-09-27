@@ -144,31 +144,23 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|Sampler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
-operator|.
-name|Trace
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
+name|core
 operator|.
 name|TraceScope
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|core
+operator|.
+name|Tracer
 import|;
 end_import
 
@@ -268,16 +260,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * The trace sampler to use when making RPCs to the NameNode.    */
-DECL|field|traceSampler
-specifier|private
-specifier|final
-name|Sampler
-argument_list|<
-name|?
-argument_list|>
-name|traceSampler
-decl_stmt|;
 DECL|field|namenode
 specifier|private
 specifier|final
@@ -313,6 +295,12 @@ operator|new
 name|Random
 argument_list|()
 decl_stmt|;
+DECL|field|tracer
+specifier|private
+specifier|final
+name|Tracer
+name|tracer
+decl_stmt|;
 DECL|field|INITIAL_WAIT_MS
 specifier|private
 specifier|static
@@ -322,17 +310,14 @@ name|INITIAL_WAIT_MS
 init|=
 literal|10
 decl_stmt|;
-DECL|method|DFSInotifyEventInputStream (Sampler<?> traceSampler, ClientProtocol namenode)
+DECL|method|DFSInotifyEventInputStream (ClientProtocol namenode, Tracer tracer)
 name|DFSInotifyEventInputStream
 parameter_list|(
-name|Sampler
-argument_list|<
-name|?
-argument_list|>
-name|traceSampler
-parameter_list|,
 name|ClientProtocol
 name|namenode
+parameter_list|,
+name|Tracer
+name|tracer
 parameter_list|)
 throws|throws
 name|IOException
@@ -340,9 +325,9 @@ block|{
 comment|// Only consider new transaction IDs.
 name|this
 argument_list|(
-name|traceSampler
-argument_list|,
 name|namenode
+argument_list|,
+name|tracer
 argument_list|,
 name|namenode
 operator|.
@@ -351,14 +336,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|DFSInotifyEventInputStream (Sampler traceSampler, ClientProtocol namenode, long lastReadTxid)
+DECL|method|DFSInotifyEventInputStream (ClientProtocol namenode, Tracer tracer, long lastReadTxid)
 name|DFSInotifyEventInputStream
 parameter_list|(
-name|Sampler
-name|traceSampler
-parameter_list|,
 name|ClientProtocol
 name|namenode
+parameter_list|,
+name|Tracer
+name|tracer
 parameter_list|,
 name|long
 name|lastReadTxid
@@ -366,12 +351,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|this
-operator|.
-name|traceSampler
-operator|=
-name|traceSampler
-expr_stmt|;
 name|this
 operator|.
 name|namenode
@@ -393,6 +372,12 @@ name|lastReadTxid
 operator|=
 name|lastReadTxid
 expr_stmt|;
+name|this
+operator|.
+name|tracer
+operator|=
+name|tracer
+expr_stmt|;
 block|}
 comment|/**    * Returns the next batch of events in the stream or null if no new    * batches are currently available.    *    * @throws IOException because of network error or edit log    * corruption. Also possible if JournalNodes are unresponsive in the    * QJM setting (even one unresponsive JournalNode is enough in rare cases),    * so catching this exception and retrying at least a few times is    * recommended.    * @throws MissingEventsException if we cannot return the next batch in the    * stream because the data for the events (and possibly some subsequent    * events) has been deleted (generally because this stream is a very large    * number of transactions behind the current state of the NameNode). It is    * safe to continue reading from the stream after this exception is thrown    * The next available batch of events will be returned.    */
 DECL|method|poll ()
@@ -408,13 +393,11 @@ block|{
 name|TraceScope
 name|scope
 init|=
-name|Trace
+name|tracer
 operator|.
-name|startSpan
+name|newScope
 argument_list|(
 literal|"inotifyPoll"
-argument_list|,
-name|traceSampler
 argument_list|)
 decl_stmt|;
 try|try
@@ -648,13 +631,11 @@ block|{
 name|TraceScope
 name|scope
 init|=
-name|Trace
+name|tracer
 operator|.
-name|startSpan
+name|newScope
 argument_list|(
 literal|"inotifyPollWithTimeout"
-argument_list|,
-name|traceSampler
 argument_list|)
 decl_stmt|;
 name|EventBatch
@@ -801,13 +782,11 @@ block|{
 name|TraceScope
 name|scope
 init|=
-name|Trace
+name|tracer
 operator|.
-name|startSpan
+name|newScope
 argument_list|(
 literal|"inotifyTake"
-argument_list|,
-name|traceSampler
 argument_list|)
 decl_stmt|;
 name|EventBatch

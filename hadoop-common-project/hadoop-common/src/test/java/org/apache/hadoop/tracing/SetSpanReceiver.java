@@ -52,6 +52,8 @@ name|apache
 operator|.
 name|htrace
 operator|.
+name|core
+operator|.
 name|Span
 import|;
 end_import
@@ -64,6 +66,22 @@ name|apache
 operator|.
 name|htrace
 operator|.
+name|core
+operator|.
+name|SpanId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|core
+operator|.
 name|SpanReceiver
 import|;
 end_import
@@ -75,6 +93,8 @@ operator|.
 name|apache
 operator|.
 name|htrace
+operator|.
+name|core
 operator|.
 name|HTraceConfiguration
 import|;
@@ -173,7 +193,7 @@ DECL|class|SetSpanReceiver
 specifier|public
 class|class
 name|SetSpanReceiver
-implements|implements
+extends|extends
 name|SpanReceiver
 block|{
 DECL|method|SetSpanReceiver (HTraceConfiguration conf)
@@ -297,7 +317,7 @@ specifier|public
 specifier|static
 name|ConcurrentHashMap
 argument_list|<
-name|Long
+name|SpanId
 argument_list|,
 name|Span
 argument_list|>
@@ -306,7 +326,7 @@ init|=
 operator|new
 name|ConcurrentHashMap
 argument_list|<
-name|Long
+name|SpanId
 argument_list|,
 name|Span
 argument_list|>

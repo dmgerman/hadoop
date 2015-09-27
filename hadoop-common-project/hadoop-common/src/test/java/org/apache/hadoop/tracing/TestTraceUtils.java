@@ -76,6 +76,8 @@ name|apache
 operator|.
 name|htrace
 operator|.
+name|core
+operator|.
 name|HTraceConfiguration
 import|;
 end_import

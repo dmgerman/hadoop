@@ -96,20 +96,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|tracing
-operator|.
-name|SpanReceiverHost
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|ToolRunner
@@ -124,7 +110,9 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|SamplerBuilder
+name|core
+operator|.
+name|AlwaysSampler
 import|;
 end_import
 
@@ -136,9 +124,9 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|impl
+name|core
 operator|.
-name|AlwaysSampler
+name|Tracer
 import|;
 end_import
 
@@ -267,9 +255,7 @@ decl_stmt|;
 name|String
 name|prefix
 init|=
-name|FsShell
-operator|.
-name|SEHLL_HTRACE_PREFIX
+literal|"fs.shell.htrace."
 decl_stmt|;
 name|conf
 operator|.
@@ -277,9 +263,9 @@ name|set
 argument_list|(
 name|prefix
 operator|+
-name|SpanReceiverHost
+name|Tracer
 operator|.
-name|SPAN_RECEIVERS_CONF_SUFFIX
+name|SPAN_RECEIVER_CLASSES_KEY
 argument_list|,
 name|SetSpanReceiver
 operator|.
@@ -295,9 +281,9 @@ name|set
 argument_list|(
 name|prefix
 operator|+
-name|SamplerBuilder
+name|Tracer
 operator|.
-name|SAMPLER_CONF_KEY
+name|SAMPLER_CLASSES_KEY
 argument_list|,
 name|AlwaysSampler
 operator|.

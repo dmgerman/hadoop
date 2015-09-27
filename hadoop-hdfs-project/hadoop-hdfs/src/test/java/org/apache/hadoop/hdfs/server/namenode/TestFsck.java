@@ -3067,6 +3067,17 @@ argument_list|,
 literal|"-move"
 argument_list|)
 expr_stmt|;
+name|FSImage
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"WATERMELON: outStr = "
+operator|+
+name|outStr
+argument_list|)
+expr_stmt|;
 name|assertTrue
 argument_list|(
 name|outStr

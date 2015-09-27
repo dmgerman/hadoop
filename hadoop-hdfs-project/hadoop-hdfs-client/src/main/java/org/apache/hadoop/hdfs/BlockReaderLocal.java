@@ -256,31 +256,23 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|Sampler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
-operator|.
-name|Trace
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
+name|core
 operator|.
 name|TraceScope
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|core
+operator|.
+name|Tracer
 import|;
 end_import
 
@@ -419,6 +411,11 @@ DECL|field|storageType
 specifier|private
 name|StorageType
 name|storageType
+decl_stmt|;
+DECL|field|tracer
+specifier|private
+name|Tracer
+name|tracer
 decl_stmt|;
 DECL|method|Builder (ShortCircuitConf conf)
 specifier|public
@@ -627,6 +624,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setTracer (Tracer tracer)
+specifier|public
+name|Builder
+name|setTracer
+parameter_list|(
+name|Tracer
+name|tracer
+parameter_list|)
+block|{
+name|this
+operator|.
+name|tracer
+operator|=
+name|tracer
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|BlockReaderLocal
@@ -763,6 +779,13 @@ DECL|field|storageType
 specifier|private
 name|StorageType
 name|storageType
+decl_stmt|;
+comment|/**    * The Tracer to use.    */
+DECL|field|tracer
+specifier|private
+specifier|final
+name|Tracer
+name|tracer
 decl_stmt|;
 DECL|method|BlockReaderLocal (Builder builder)
 specifier|private
@@ -992,6 +1015,14 @@ operator|=
 name|builder
 operator|.
 name|storageType
+expr_stmt|;
+name|this
+operator|.
+name|tracer
+operator|=
+name|builder
+operator|.
+name|tracer
 expr_stmt|;
 block|}
 DECL|method|createDataBufIfNeeded ()
@@ -1273,9 +1304,9 @@ block|{
 name|TraceScope
 name|scope
 init|=
-name|Trace
+name|tracer
 operator|.
-name|startSpan
+name|newScope
 argument_list|(
 literal|"BlockReaderLocal#fillBuffer("
 operator|+
@@ -1285,10 +1316,6 @@ name|getBlockId
 argument_list|()
 operator|+
 literal|")"
-argument_list|,
-name|Sampler
-operator|.
-name|NEVER
 argument_list|)
 decl_stmt|;
 try|try
