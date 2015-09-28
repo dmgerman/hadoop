@@ -10250,7 +10250,7 @@ init|=
 literal|10
 decl_stmt|;
 name|int
-name|appPriorty
+name|appPriority
 init|=
 literal|5
 decl_stmt|;
@@ -10307,7 +10307,7 @@ name|Priority
 operator|.
 name|newInstance
 argument_list|(
-name|appPriorty
+name|appPriority
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -10317,7 +10317,7 @@ name|assertEquals
 argument_list|(
 literal|"Incorrect priority has been set to application"
 argument_list|,
-name|appPriorty
+name|appPriority
 argument_list|,
 name|app1
 operator|.
@@ -10331,7 +10331,7 @@ name|getPriority
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|appPriorty
+name|appPriority
 operator|=
 literal|9
 expr_stmt|;
@@ -10359,7 +10359,7 @@ name|Priority
 operator|.
 name|newInstance
 argument_list|(
-name|appPriorty
+name|appPriority
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -10376,7 +10376,7 @@ name|assertEquals
 argument_list|(
 literal|"Incorrect priority has been set to application"
 argument_list|,
-name|appPriorty
+name|appPriority
 argument_list|,
 name|app1
 operator|.
@@ -10414,60 +10414,79 @@ operator|.
 name|KILLED
 argument_list|)
 expr_stmt|;
+name|appPriority
+operator|=
+literal|8
+expr_stmt|;
+name|UpdateApplicationPriorityRequest
+name|updateRequestNew
+init|=
+name|UpdateApplicationPriorityRequest
+operator|.
+name|newInstance
+argument_list|(
+name|app1
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|,
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+name|appPriority
+argument_list|)
+argument_list|)
+decl_stmt|;
 comment|// Update priority request for application in KILLED state
-try|try
-block|{
 name|rmService
 operator|.
 name|updateApplicationPriority
 argument_list|(
-name|updateRequest
+name|updateRequestNew
 argument_list|)
 expr_stmt|;
+comment|// Hence new priority should not be updated
 name|Assert
 operator|.
-name|fail
+name|assertNotEquals
 argument_list|(
-literal|"Can not update priority for an application in KILLED state"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|YarnException
-name|e
-parameter_list|)
-block|{
-name|String
-name|msg
-init|=
-literal|"Application in "
-operator|+
+literal|"Priority should not be updated as app is in KILLED state"
+argument_list|,
+name|appPriority
+argument_list|,
 name|app1
 operator|.
-name|getState
+name|getApplicationSubmissionContext
 argument_list|()
-operator|+
-literal|" state cannot be update priority."
-decl_stmt|;
-name|Assert
 operator|.
-name|assertTrue
-argument_list|(
-literal|""
-argument_list|,
-name|msg
-operator|.
-name|contains
-argument_list|(
-name|e
-operator|.
-name|getMessage
+name|getPriority
 argument_list|()
-argument_list|)
+operator|.
+name|getPriority
+argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Priority should be same as old one before update"
+argument_list|,
+literal|9
+argument_list|,
+name|app1
+operator|.
+name|getApplicationSubmissionContext
+argument_list|()
+operator|.
+name|getPriority
+argument_list|()
+operator|.
+name|getPriority
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Update priority request for invalid application id.
 name|ApplicationId
 name|invalidAppId
@@ -10493,7 +10512,7 @@ name|Priority
 operator|.
 name|newInstance
 argument_list|(
-name|appPriorty
+name|appPriority
 argument_list|)
 argument_list|)
 expr_stmt|;
