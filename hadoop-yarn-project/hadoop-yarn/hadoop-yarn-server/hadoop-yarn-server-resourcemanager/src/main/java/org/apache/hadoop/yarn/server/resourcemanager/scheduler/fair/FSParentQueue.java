@@ -118,6 +118,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|ImmutableList
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1348,9 +1362,9 @@ expr_stmt|;
 try|try
 block|{
 return|return
-name|Collections
+name|ImmutableList
 operator|.
-name|unmodifiableList
+name|copyOf
 argument_list|(
 name|childQueues
 argument_list|)
