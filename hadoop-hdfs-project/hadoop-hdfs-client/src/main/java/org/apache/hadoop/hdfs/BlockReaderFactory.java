@@ -1611,6 +1611,13 @@ operator|.
 name|newInstance
 argument_list|()
 decl_stmt|;
+name|long
+name|visibleLength
+init|=
+name|startOffset
+operator|+
+name|length
+decl_stmt|;
 name|ReplicaAccessor
 name|accessor
 init|=
@@ -1669,7 +1676,7 @@ argument_list|)
 operator|.
 name|setVisibleLength
 argument_list|(
-name|length
+name|visibleLength
 argument_list|)
 operator|.
 name|build
@@ -1714,7 +1721,7 @@ name|ExternalBlockReader
 argument_list|(
 name|accessor
 argument_list|,
-name|length
+name|visibleLength
 argument_list|,
 name|startOffset
 argument_list|)
