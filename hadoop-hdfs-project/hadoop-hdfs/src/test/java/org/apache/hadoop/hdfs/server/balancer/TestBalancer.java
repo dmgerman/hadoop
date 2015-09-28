@@ -10681,7 +10681,7 @@ argument_list|,
 name|fileLen
 argument_list|)
 decl_stmt|;
-name|DFSTestUtil
+name|StripedFileTestUtil
 operator|.
 name|verifyLocatedStripedBlocks
 argument_list|(
@@ -10787,7 +10787,7 @@ argument_list|,
 name|fileLen
 argument_list|)
 expr_stmt|;
-name|DFSTestUtil
+name|StripedFileTestUtil
 operator|.
 name|verifyLocatedStripedBlocks
 argument_list|(

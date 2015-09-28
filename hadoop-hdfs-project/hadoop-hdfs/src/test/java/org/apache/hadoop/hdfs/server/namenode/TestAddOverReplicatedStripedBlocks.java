@@ -162,22 +162,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|LocatedBlocks
 import|;
 end_import
@@ -342,18 +326,6 @@ name|assertEquals
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
 begin_class
 DECL|class|TestAddOverReplicatedStripedBlocks
 specifier|public
@@ -506,6 +478,17 @@ operator|.
 name|DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY
 argument_list|,
 literal|0
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 name|SimulatedFSDataset
@@ -870,7 +853,7 @@ argument_list|,
 name|fileLen
 argument_list|)
 expr_stmt|;
-name|DFSTestUtil
+name|StripedFileTestUtil
 operator|.
 name|verifyLocatedStripedBlocks
 argument_list|(
@@ -1159,7 +1142,7 @@ argument_list|,
 name|fileLen
 argument_list|)
 expr_stmt|;
-name|DFSTestUtil
+name|StripedFileTestUtil
 operator|.
 name|verifyLocatedStripedBlocks
 argument_list|(
@@ -1546,7 +1529,7 @@ argument_list|,
 name|fileLen
 argument_list|)
 expr_stmt|;
-name|DFSTestUtil
+name|StripedFileTestUtil
 operator|.
 name|verifyLocatedStripedBlocks
 argument_list|(
@@ -1774,6 +1757,13 @@ operator|.
 name|triggerBlockReports
 argument_list|()
 expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|2000
+argument_list|)
+expr_stmt|;
 comment|// add to invalidates
 name|cluster
 operator|.
@@ -1813,7 +1803,7 @@ argument_list|,
 name|fileLen
 argument_list|)
 expr_stmt|;
-name|DFSTestUtil
+name|StripedFileTestUtil
 operator|.
 name|verifyLocatedStripedBlocks
 argument_list|(

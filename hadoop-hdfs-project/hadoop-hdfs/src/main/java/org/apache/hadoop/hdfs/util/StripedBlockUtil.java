@@ -4076,18 +4076,15 @@ literal|")"
 return|;
 block|}
 block|}
-comment|/**    * Check if the information such as IDs and generation stamps in block-i    * match block-j, where block-i and block-j are in the same group.    */
-DECL|method|checkBlocks (int j, ExtendedBlock blockj, int i, ExtendedBlock blocki)
+comment|/**    * Check if the information such as IDs and generation stamps in block-i    * match the block group.    */
+DECL|method|checkBlocks (ExtendedBlock blockGroup, int i, ExtendedBlock blocki)
 specifier|public
 specifier|static
 name|void
 name|checkBlocks
 parameter_list|(
-name|int
-name|j
-parameter_list|,
 name|ExtendedBlock
-name|blockj
+name|blockGroup
 parameter_list|,
 name|int
 name|i
@@ -4108,7 +4105,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|blockj
+name|blockGroup
 operator|.
 name|getBlockPoolId
 argument_list|()
@@ -4121,19 +4118,15 @@ name|IOException
 argument_list|(
 literal|"Block pool IDs mismatched: block"
 operator|+
-name|j
-operator|+
-literal|"="
-operator|+
-name|blockj
-operator|+
-literal|", block"
-operator|+
 name|i
 operator|+
 literal|"="
 operator|+
 name|blocki
+operator|+
+literal|", expected block group="
+operator|+
+name|blockGroup
 argument_list|)
 throw|;
 block|}
@@ -4146,12 +4139,10 @@ argument_list|()
 operator|-
 name|i
 operator|!=
-name|blockj
+name|blockGroup
 operator|.
 name|getBlockId
 argument_list|()
-operator|-
-name|j
 condition|)
 block|{
 throw|throw
@@ -4160,19 +4151,15 @@ name|IOException
 argument_list|(
 literal|"Block IDs mismatched: block"
 operator|+
-name|j
-operator|+
-literal|"="
-operator|+
-name|blockj
-operator|+
-literal|", block"
-operator|+
 name|i
 operator|+
 literal|"="
 operator|+
 name|blocki
+operator|+
+literal|", expected block group="
+operator|+
+name|blockGroup
 argument_list|)
 throw|;
 block|}
@@ -4183,7 +4170,7 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 operator|!=
-name|blockj
+name|blockGroup
 operator|.
 name|getGenerationStamp
 argument_list|()
@@ -4195,19 +4182,15 @@ name|IOException
 argument_list|(
 literal|"Generation stamps mismatched: block"
 operator|+
-name|j
-operator|+
-literal|"="
-operator|+
-name|blockj
-operator|+
-literal|", block"
-operator|+
 name|i
 operator|+
 literal|"="
 operator|+
 name|blocki
+operator|+
+literal|", expected block group="
+operator|+
+name|blockGroup
 argument_list|)
 throw|;
 block|}

@@ -3608,7 +3608,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|DFSTestUtil
+name|StripedFileTestUtil
 operator|.
 name|verifyLocatedStripedBlocks
 argument_list|(
@@ -3863,7 +3863,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|DFSTestUtil
+name|StripedFileTestUtil
 operator|.
 name|verifyLocatedStripedBlocks
 argument_list|(
