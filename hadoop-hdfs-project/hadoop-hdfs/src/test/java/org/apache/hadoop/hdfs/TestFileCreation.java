@@ -5001,11 +5001,6 @@ block|}
 comment|// Attempts to create and close a file using FileSystem.createNonRecursive(),
 comment|// catching and returning an exception if one occurs or null
 comment|// if the operation is successful.
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|createNonRecursive (FileSystem fs, Path name, int repl, EnumSet<CreateFlag> flag)
 specifier|static
 name|IOException

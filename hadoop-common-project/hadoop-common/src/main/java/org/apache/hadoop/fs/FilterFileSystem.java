@@ -825,8 +825,6 @@ return|;
 block|}
 annotation|@
 name|Override
-annotation|@
-name|Deprecated
 DECL|method|createNonRecursive (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream

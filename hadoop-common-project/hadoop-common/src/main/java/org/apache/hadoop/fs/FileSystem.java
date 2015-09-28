@@ -3633,9 +3633,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    * @deprecated API only for 0.20-append    */
-annotation|@
-name|Deprecated
+comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
 DECL|method|createNonRecursive (Path f, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3686,9 +3684,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param permission    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    * @deprecated API only for 0.20-append    */
-annotation|@
-name|Deprecated
+comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param permission    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
 DECL|method|createNonRecursive (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3759,9 +3755,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**     * Opens an FSDataOutputStream at the indicated Path with write-progress     * reporting. Same as create(), except fails if parent directory doesn't     * already exist.     * @param f the file name to open     * @param permission     * @param flags {@link CreateFlag}s to use for this stream.     * @param bufferSize the size of the buffer to be used.     * @param replication required block replication for the file.     * @param blockSize     * @param progress     * @throws IOException     * @see #setPermission(Path, FsPermission)     * @deprecated API only for 0.20-append     */
-annotation|@
-name|Deprecated
+comment|/**     * Opens an FSDataOutputStream at the indicated Path with write-progress     * reporting. Same as create(), except fails if parent directory doesn't     * already exist.     * @param f the file name to open     * @param permission     * @param flags {@link CreateFlag}s to use for this stream.     * @param bufferSize the size of the buffer to be used.     * @param replication required block replication for the file.     * @param blockSize     * @param progress     * @throws IOException     * @see #setPermission(Path, FsPermission)     */
 DECL|method|createNonRecursive (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
