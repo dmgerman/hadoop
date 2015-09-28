@@ -3597,9 +3597,9 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"createRbw() Should have removed the block with the older "
+literal|"createTemporary should have allowed the block with newer "
 operator|+
-literal|"genstamp and replaced it with the newer one: "
+literal|" generation stamp to be created "
 operator|+
 name|blocks
 index|[
