@@ -3174,13 +3174,6 @@ operator|new
 name|StopWatch
 argument_list|()
 decl_stmt|;
-comment|/**      * The associated thread.  Used for testing purposes only.      */
-annotation|@
-name|VisibleForTesting
-DECL|field|currentThread
-name|Thread
-name|currentThread
-decl_stmt|;
 comment|/**      * Create a report compiler for the given volume on the given datanode.      *      * @param datanode the target datanode      * @param volume the target volume      */
 DECL|method|ReportCompiler (DataNode datanode, FsVolumeSpi volume)
 specifier|public
@@ -3217,13 +3210,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|currentThread
-operator|=
-name|Thread
-operator|.
-name|currentThread
-argument_list|()
-expr_stmt|;
 name|String
 index|[]
 name|bpList
