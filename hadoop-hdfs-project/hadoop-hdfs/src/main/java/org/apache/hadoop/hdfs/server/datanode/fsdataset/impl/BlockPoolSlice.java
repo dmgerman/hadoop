@@ -3697,17 +3697,44 @@ comment|// In case of any exception during parsing this cache file, fall back
 comment|// to scan all the files on disk.
 for|for
 control|(
+name|Iterator
+argument_list|<
 name|ReplicaInfo
-name|info
-range|:
+argument_list|>
+name|iter
+init|=
 name|tmpReplicaMap
 operator|.
 name|replicas
 argument_list|(
 name|bpid
 argument_list|)
+operator|.
+name|iterator
+argument_list|()
+init|;
+name|iter
+operator|.
+name|hasNext
+argument_list|()
+condition|;
 control|)
 block|{
+name|ReplicaInfo
+name|info
+init|=
+name|iter
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+comment|// We use a lightweight GSet to store replicaInfo, we need to remove
+comment|// it from one GSet before adding to another.
+name|iter
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
 name|volumeMap
 operator|.
 name|add

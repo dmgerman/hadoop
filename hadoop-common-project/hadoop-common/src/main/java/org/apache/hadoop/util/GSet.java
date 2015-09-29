@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -141,9 +151,19 @@ name|K
 name|key
 parameter_list|)
 function_decl|;
+comment|/**    * Clear the set.    */
 DECL|method|clear ()
 name|void
 name|clear
+parameter_list|()
+function_decl|;
+comment|/**    * Returns a {@link Collection} view of the values contained in this set.    * The collection is backed by the set, so changes to the set are    * reflected in the collection, and vice-versa.    *    * @return the collection of values.    */
+DECL|method|values ()
+name|Collection
+argument_list|<
+name|E
+argument_list|>
+name|values
 parameter_list|()
 function_decl|;
 block|}

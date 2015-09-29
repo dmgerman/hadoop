@@ -32,6 +32,36 @@ name|java
 operator|.
 name|util
 operator|.
+name|AbstractCollection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|ConcurrentModificationException
 import|;
 end_import
@@ -69,20 +99,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
 import|;
 end_import
 
@@ -131,13 +147,11 @@ block|{
 comment|/**    * Elements of {@link LightWeightGSet}.    */
 DECL|interface|LinkedElement
 specifier|public
-specifier|static
 interface|interface
 name|LinkedElement
 block|{
 comment|/** Set the next element. */
 DECL|method|setNext (LinkedElement next)
-specifier|public
 name|void
 name|setNext
 parameter_list|(
@@ -147,7 +161,6 @@ parameter_list|)
 function_decl|;
 comment|/** Get the next element. */
 DECL|method|getNext ()
-specifier|public
 name|LinkedElement
 name|getNext
 parameter_list|()
@@ -174,22 +187,20 @@ literal|1
 decl_stmt|;
 comment|/**    * An internal array of entries, which are the rows of the hash table.    * The size must be a power of two.    */
 DECL|field|entries
-specifier|private
-specifier|final
+specifier|protected
 name|LinkedElement
 index|[]
 name|entries
 decl_stmt|;
 comment|/** A mask for computing the array index from the hash value of an element. */
 DECL|field|hash_mask
-specifier|private
-specifier|final
+specifier|protected
 name|int
 name|hash_mask
 decl_stmt|;
 comment|/** The size of the set (not the entry array). */
 DECL|field|size
-specifier|private
+specifier|protected
 name|int
 name|size
 init|=
@@ -197,12 +208,25 @@ literal|0
 decl_stmt|;
 comment|/** Modification version for fail-fast.    * @see ConcurrentModificationException    */
 DECL|field|modification
-specifier|private
+specifier|protected
 name|int
 name|modification
 init|=
 literal|0
 decl_stmt|;
+DECL|field|values
+specifier|private
+name|Collection
+argument_list|<
+name|E
+argument_list|>
+name|values
+decl_stmt|;
+DECL|method|LightWeightGSet ()
+specifier|protected
+name|LightWeightGSet
+parameter_list|()
+block|{   }
 comment|/**    * @param recommended_length Recommended size of the internal array.    */
 DECL|method|LightWeightGSet (final int recommended_length)
 specifier|public
@@ -263,7 +287,7 @@ expr_stmt|;
 block|}
 comment|//compute actual length
 DECL|method|actualArrayLength (int recommended)
-specifier|private
+specifier|protected
 specifier|static
 name|int
 name|actualArrayLength
@@ -334,7 +358,7 @@ name|size
 return|;
 block|}
 DECL|method|getIndex (final K key)
-specifier|private
+specifier|protected
 name|int
 name|getIndex
 parameter_list|(
@@ -353,7 +377,7 @@ name|hash_mask
 return|;
 block|}
 DECL|method|convert (final LinkedElement e)
-specifier|private
+specifier|protected
 name|E
 name|convert
 parameter_list|(
@@ -496,7 +520,7 @@ name|E
 name|element
 parameter_list|)
 block|{
-comment|//validate element
+comment|// validate element
 if|if
 condition|(
 name|element
@@ -512,15 +536,26 @@ literal|"Null element is not supported."
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-operator|!
+name|LinkedElement
+name|e
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|e
+operator|=
 operator|(
-name|element
-operator|instanceof
 name|LinkedElement
 operator|)
-condition|)
+name|element
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ClassCastException
+name|ex
+parameter_list|)
 block|{
 throw|throw
 operator|new
@@ -535,16 +570,7 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-specifier|final
-name|LinkedElement
-name|e
-init|=
-operator|(
-name|LinkedElement
-operator|)
-name|element
-decl_stmt|;
-comment|//find index
+comment|// find index
 specifier|final
 name|int
 name|index
@@ -554,7 +580,7 @@ argument_list|(
 name|element
 argument_list|)
 decl_stmt|;
-comment|//remove if it already exists
+comment|// remove if it already exists
 specifier|final
 name|E
 name|existing
@@ -566,7 +592,7 @@ argument_list|,
 name|element
 argument_list|)
 decl_stmt|;
-comment|//insert the element to the head of the linked list
+comment|// insert the element to the head of the linked list
 name|modification
 operator|++
 expr_stmt|;
@@ -596,7 +622,7 @@ return|;
 block|}
 comment|/**    * Remove the element corresponding to the key,    * given key.hashCode() == index.    *    * @return If such element exists, return it.    *         Otherwise, return null.    */
 DECL|method|remove (final int index, final K key)
-specifier|private
+specifier|protected
 name|E
 name|remove
 parameter_list|(
@@ -806,6 +832,125 @@ argument_list|,
 name|key
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|values ()
+specifier|public
+name|Collection
+argument_list|<
+name|E
+argument_list|>
+name|values
+parameter_list|()
+block|{
+if|if
+condition|(
+name|values
+operator|==
+literal|null
+condition|)
+block|{
+name|values
+operator|=
+operator|new
+name|Values
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|values
+return|;
+block|}
+DECL|class|Values
+specifier|private
+specifier|final
+class|class
+name|Values
+extends|extends
+name|AbstractCollection
+argument_list|<
+name|E
+argument_list|>
+block|{
+annotation|@
+name|Override
+DECL|method|iterator ()
+specifier|public
+name|Iterator
+argument_list|<
+name|E
+argument_list|>
+name|iterator
+parameter_list|()
+block|{
+return|return
+name|LightWeightGSet
+operator|.
+name|this
+operator|.
+name|iterator
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|size ()
+specifier|public
+name|int
+name|size
+parameter_list|()
+block|{
+return|return
+name|size
+return|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
+name|Override
+DECL|method|contains (Object o)
+specifier|public
+name|boolean
+name|contains
+parameter_list|(
+name|Object
+name|o
+parameter_list|)
+block|{
+return|return
+name|LightWeightGSet
+operator|.
+name|this
+operator|.
+name|contains
+argument_list|(
+operator|(
+name|K
+operator|)
+name|o
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|clear ()
+specifier|public
+name|void
+name|clear
+parameter_list|()
+block|{
+name|LightWeightGSet
+operator|.
+name|this
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1595,31 +1740,18 @@ name|void
 name|clear
 parameter_list|()
 block|{
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|entries
-operator|.
-name|length
-condition|;
-name|i
+name|modification
 operator|++
-control|)
-block|{
-name|entries
-index|[
-name|i
-index|]
-operator|=
-literal|null
 expr_stmt|;
-block|}
+name|Arrays
+operator|.
+name|fill
+argument_list|(
+name|entries
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
 name|size
 operator|=
 literal|0
