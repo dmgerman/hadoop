@@ -42,6 +42,11 @@ comment|// Also from Node on NodeRemoval
 DECL|enumConstant|RESERVED
 name|RESERVED
 block|,
+comment|// when a container acquired by AM after
+comment|// it increased/decreased
+DECL|enumConstant|ACQUIRE_UPDATED_CONTAINER
+name|ACQUIRE_UPDATED_CONTAINER
+block|,
 DECL|enumConstant|LAUNCHED
 name|LAUNCHED
 block|,
@@ -58,6 +63,15 @@ name|EXPIRE
 block|,
 DECL|enumConstant|RECOVER
 name|RECOVER
+block|,
+comment|// Source: Scheduler
+comment|// Resource change approved by scheduler
+DECL|enumConstant|CHANGE_RESOURCE
+name|CHANGE_RESOURCE
+block|,
+comment|// NM reported resource change is done
+DECL|enumConstant|NM_DONE_CHANGE_RESOURCE
+name|NM_DONE_CHANGE_RESOURCE
 block|}
 end_enum
 

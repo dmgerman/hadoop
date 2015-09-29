@@ -418,7 +418,9 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|Trace
+name|core
+operator|.
+name|TraceScope
 import|;
 end_import
 
@@ -430,7 +432,9 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|TraceScope
+name|core
+operator|.
+name|Tracer
 import|;
 end_import
 
@@ -1285,27 +1289,34 @@ literal|"]"
 argument_list|)
 throw|;
 block|}
+comment|// if Tracing is on then start a new span for this rpc.
+comment|// guard it in the if statement to make sure there isn't
+comment|// any extra string manipulation.
+name|Tracer
+name|tracer
+init|=
+name|Tracer
+operator|.
+name|curThreadTracer
+argument_list|()
+decl_stmt|;
 name|TraceScope
 name|traceScope
 init|=
 literal|null
 decl_stmt|;
-comment|// if Tracing is on then start a new span for this rpc.
-comment|// guard it in the if statement to make sure there isn't
-comment|// any extra string manipulation.
 if|if
 condition|(
-name|Trace
-operator|.
-name|isTracing
-argument_list|()
+name|tracer
+operator|!=
+literal|null
 condition|)
 block|{
 name|traceScope
 operator|=
-name|Trace
+name|tracer
 operator|.
-name|startSpan
+name|newScope
 argument_list|(
 name|RpcClientUtil
 operator|.
@@ -1467,16 +1478,12 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|Trace
-operator|.
-name|isTracing
-argument_list|()
+name|traceScope
+operator|!=
+literal|null
 condition|)
 block|{
 name|traceScope
-operator|.
-name|getSpan
-argument_list|()
 operator|.
 name|addTimelineAnnotation
 argument_list|(

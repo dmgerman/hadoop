@@ -352,6 +352,28 @@ argument_list|>
 name|getContainers
 parameter_list|()
 function_decl|;
+name|ConcurrentMap
+argument_list|<
+name|ContainerId
+argument_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Container
+argument_list|>
+DECL|method|getIncreasedContainers ()
+name|getIncreasedContainers
+parameter_list|()
+function_decl|;
 DECL|method|getContainerTokenSecretManager ()
 name|NMContainerTokenSecretManager
 name|getContainerTokenSecretManager

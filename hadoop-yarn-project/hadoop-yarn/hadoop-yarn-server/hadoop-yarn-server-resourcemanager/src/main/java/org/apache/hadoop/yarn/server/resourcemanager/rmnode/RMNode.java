@@ -88,6 +88,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
 import|;
 end_import
@@ -332,6 +350,25 @@ argument_list|<
 name|String
 argument_list|>
 name|getNodeLabels
+parameter_list|()
+function_decl|;
+comment|/**    * Update containers to be decreased    */
+DECL|method|updateNodeHeartbeatResponseForContainersDecreasing ( NodeHeartbeatResponse response)
+specifier|public
+name|void
+name|updateNodeHeartbeatResponseForContainersDecreasing
+parameter_list|(
+name|NodeHeartbeatResponse
+name|response
+parameter_list|)
+function_decl|;
+DECL|method|pullNewlyIncreasedContainers ()
+specifier|public
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|pullNewlyIncreasedContainers
 parameter_list|()
 function_decl|;
 block|}

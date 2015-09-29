@@ -112,7 +112,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|HdfsProtos
+name|HdfsServerProtos
 operator|.
 name|NamenodeCommandProto
 import|;
@@ -132,27 +132,9 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|HdfsProtos
+name|HdfsServerProtos
 operator|.
 name|VersionRequestProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|NamenodeProtocolProtos
 import|;
 end_import
 

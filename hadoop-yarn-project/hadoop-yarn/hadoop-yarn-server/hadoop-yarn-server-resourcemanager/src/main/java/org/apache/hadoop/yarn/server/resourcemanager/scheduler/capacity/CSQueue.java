@@ -358,6 +358,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|SchedContainerChangeRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|common
 operator|.
 name|fica
@@ -657,6 +677,25 @@ name|boolean
 name|sortQueues
 parameter_list|)
 function_decl|;
+comment|/**    * We have a reserved increased container in the queue, we need to unreserve    * it. Since we just want to cancel the reserved increase request instead of    * stop the container, we shouldn't call completedContainer for such purpose.    */
+DECL|method|unreserveIncreasedContainer (Resource clusterResource, FiCaSchedulerApp app, FiCaSchedulerNode node, RMContainer rmContainer)
+specifier|public
+name|void
+name|unreserveIncreasedContainer
+parameter_list|(
+name|Resource
+name|clusterResource
+parameter_list|,
+name|FiCaSchedulerApp
+name|app
+parameter_list|,
+name|FiCaSchedulerNode
+name|node
+parameter_list|,
+name|RMContainer
+name|rmContainer
+parameter_list|)
+function_decl|;
 comment|/**    * Get the number of applications in the queue.    * @return number of applications    */
 DECL|method|getNumApplications ()
 specifier|public
@@ -808,6 +847,22 @@ name|nodeLabel
 parameter_list|,
 name|Resource
 name|resourceToDec
+parameter_list|)
+function_decl|;
+comment|/**    * Decrease container resource in the queue    */
+DECL|method|decreaseContainer (Resource clusterResource, SchedContainerChangeRequest decreaseRequest, FiCaSchedulerApp app)
+specifier|public
+name|void
+name|decreaseContainer
+parameter_list|(
+name|Resource
+name|clusterResource
+parameter_list|,
+name|SchedContainerChangeRequest
+name|decreaseRequest
+parameter_list|,
+name|FiCaSchedulerApp
+name|app
 parameter_list|)
 function_decl|;
 block|}

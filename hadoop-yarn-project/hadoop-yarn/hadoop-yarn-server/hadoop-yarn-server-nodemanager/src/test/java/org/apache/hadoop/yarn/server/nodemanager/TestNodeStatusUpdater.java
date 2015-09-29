@@ -9807,6 +9807,15 @@ operator|+
 name|containerState
 argument_list|,
 literal|0
+argument_list|,
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+literal|1024
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 decl_stmt|;
 return|return

@@ -505,6 +505,35 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|fitsIn (Resource cluster, Resource smaller, Resource bigger)
+specifier|public
+name|boolean
+name|fitsIn
+parameter_list|(
+name|Resource
+name|cluster
+parameter_list|,
+name|Resource
+name|smaller
+parameter_list|,
+name|Resource
+name|bigger
+parameter_list|)
+block|{
+return|return
+name|smaller
+operator|.
+name|getMemory
+argument_list|()
+operator|<=
+name|bigger
+operator|.
+name|getMemory
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

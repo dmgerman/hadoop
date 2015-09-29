@@ -875,7 +875,8 @@ name|ugi
 argument_list|,
 literal|false
 argument_list|,
-name|fallbackToSimpleAuth
+name|getFallbackToSimpleAuth
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

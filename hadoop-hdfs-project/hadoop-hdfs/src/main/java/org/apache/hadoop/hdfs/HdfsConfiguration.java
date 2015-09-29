@@ -82,19 +82,10 @@ name|addDeprecatedKeys
 argument_list|()
 expr_stmt|;
 comment|// adds the default resources
-name|Configuration
+name|HdfsConfigurationLoader
 operator|.
-name|addDefaultResource
-argument_list|(
-literal|"hdfs-default.xml"
-argument_list|)
-expr_stmt|;
-name|Configuration
-operator|.
-name|addDefaultResource
-argument_list|(
-literal|"hdfs-site.xml"
-argument_list|)
+name|init
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|HdfsConfiguration ()
@@ -134,7 +125,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This method is here so that when invoked, HdfsConfiguration is class-loaded if    * it hasn't already been previously loaded.  Upon loading the class, the static     * initializer block above will be executed to add the deprecated keys and to add    * the default resources.   It is safe for this method to be called multiple times     * as the static initializer block will only get invoked once.    *     * This replaces the previously, dangerous practice of other classes calling    * Configuration.addDefaultResource("hdfs-default.xml") directly without loading     * HdfsConfiguration class first, thereby skipping the key deprecation    */
+comment|/**    * This method is here so that when invoked, HdfsConfiguration is class-loaded if    * it hasn't already been previously loaded.  Upon loading the class, the static     * initializer block above will be executed to add the deprecated keys and to add    * the default resources via {@link HdfsConfigurationLoader#init()}. It is    * safe for this method to be called multiple times as the static initializer    * block will only get invoked once.    *    * This replaces the previously, dangerous practice of other classes calling    * Configuration.addDefaultResource("hdfs-default.xml") directly without loading     * HdfsConfiguration class first, thereby skipping the key deprecation    */
 DECL|method|init ()
 specifier|public
 specifier|static

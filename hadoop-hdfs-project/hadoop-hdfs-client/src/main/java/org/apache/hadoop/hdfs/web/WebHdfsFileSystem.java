@@ -6745,11 +6745,6 @@ return|;
 block|}
 annotation|@
 name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|createNonRecursive (final Path f, final FsPermission permission, final EnumSet<CreateFlag> flag, final int bufferSize, final short replication, final long blockSize, final Progressable progress)
 specifier|public
 name|FSDataOutputStream

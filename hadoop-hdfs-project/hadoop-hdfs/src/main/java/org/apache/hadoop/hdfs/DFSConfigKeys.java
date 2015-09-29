@@ -18,18 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|TimeUnit
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -260,6 +248,8 @@ name|HdfsClientConfigKeys
 operator|.
 name|DFS_BYTES_PER_CHECKSUM_DEFAULT
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DFS_USER_HOME_DIR_PREFIX_KEY
 specifier|public
 specifier|static
@@ -267,8 +257,12 @@ specifier|final
 name|String
 name|DFS_USER_HOME_DIR_PREFIX_KEY
 init|=
-literal|"dfs.user.home.dir.prefix"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_USER_HOME_DIR_PREFIX_KEY
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DFS_USER_HOME_DIR_PREFIX_DEFAULT
 specifier|public
 specifier|static
@@ -276,7 +270,9 @@ specifier|final
 name|String
 name|DFS_USER_HOME_DIR_PREFIX_DEFAULT
 init|=
-literal|"/user"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_USER_HOME_DIR_PREFIX_DEFAULT
 decl_stmt|;
 DECL|field|DFS_CHECKSUM_TYPE_KEY
 specifier|public
@@ -333,26 +329,14 @@ name|HdfsClientConfigKeys
 operator|.
 name|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT
 decl_stmt|;
-comment|// HDFS HTrace configuration is controlled by dfs.htrace.spanreceiver.classes,
-comment|// etc.
-DECL|field|DFS_SERVER_HTRACE_PREFIX
+DECL|field|DFS_CLIENT_HTRACE_SAMPLER_CLASSES
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DFS_SERVER_HTRACE_PREFIX
+name|DFS_CLIENT_HTRACE_SAMPLER_CLASSES
 init|=
-literal|"dfs.htrace."
-decl_stmt|;
-comment|// HDFS client HTrace configuration.
-DECL|field|DFS_CLIENT_HTRACE_PREFIX
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_CLIENT_HTRACE_PREFIX
-init|=
-literal|"dfs.client.htrace."
+literal|"dfs.client.htrace.sampler.classes"
 decl_stmt|;
 comment|// HA related configuration
 DECL|field|DFS_DATANODE_RESTART_REPLICA_EXPIRY_KEY
@@ -2881,6 +2865,24 @@ name|int
 name|DFS_DATANODE_STRIPED_BLK_RECOVERY_THREADS_DEFAULT
 init|=
 literal|8
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_KEY
+name|DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_KEY
+init|=
+literal|"dfs.datanode.directoryscan.throttle.limit.ms.per.sec"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_DEFAULT
+name|DFS_DATANODE_DIRECTORYSCAN_THROTTLE_LIMIT_MS_PER_SEC_DEFAULT
+init|=
+literal|1000
 decl_stmt|;
 DECL|field|DFS_DATANODE_DNS_INTERFACE_KEY
 specifier|public
@@ -6967,6 +6969,8 @@ name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_USE_LEGACY_BLOCKREADERLOCAL_DEFAULT
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DFS_CLIENT_LOCAL_INTERFACES
 specifier|public
 specifier|static
@@ -6974,7 +6978,9 @@ specifier|final
 name|String
 name|DFS_CLIENT_LOCAL_INTERFACES
 init|=
-literal|"dfs.client.local.interfaces"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_LOCAL_INTERFACES
 decl_stmt|;
 annotation|@
 name|Deprecated
@@ -7002,8 +7008,8 @@ name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_DOMAIN_SOCKET_DATA_TRAFFIC_DEFAULT
 decl_stmt|;
-comment|// The number of NN response dropped by client proactively in each RPC call.
-comment|// For testing NN retry cache, we can set this property with positive value.
+annotation|@
+name|Deprecated
 DECL|field|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
 specifier|public
 specifier|static
@@ -7011,8 +7017,12 @@ specifier|final
 name|String
 name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
 init|=
-literal|"dfs.client.test.drop.namenode.response.number"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT
 specifier|public
 specifier|static
@@ -7020,7 +7030,9 @@ specifier|final
 name|int
 name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT
 init|=
-literal|0
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT
 decl_stmt|;
 annotation|@
 name|Deprecated

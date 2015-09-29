@@ -120,6 +120,7 @@ name|user
 decl_stmt|;
 DECL|field|currentAttempt
 specifier|private
+specifier|volatile
 name|T
 name|currentAttempt
 decl_stmt|;

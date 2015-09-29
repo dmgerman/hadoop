@@ -435,6 +435,11 @@ name|exists
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|RawLocalFileSystem
+operator|.
+name|useStatIfAvailable
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Test the capability of setting the working directory.    */
 annotation|@

@@ -538,6 +538,21 @@ specifier|final
 name|ActiveUsersManager
 name|activeUsersManager
 decl_stmt|;
+DECL|field|EMPTY_LIST
+specifier|public
+specifier|static
+specifier|final
+name|List
+argument_list|<
+name|FSQueue
+argument_list|>
+name|EMPTY_LIST
+init|=
+name|Collections
+operator|.
+name|emptyList
+argument_list|()
+decl_stmt|;
 DECL|method|FSLeafQueue (String name, FairScheduler scheduler, FSParentQueue parent)
 specifier|public
 name|FSLeafQueue
@@ -1863,14 +1878,7 @@ name|getChildQueues
 parameter_list|()
 block|{
 return|return
-operator|new
-name|ArrayList
-argument_list|<
-name|FSQueue
-argument_list|>
-argument_list|(
-literal|1
-argument_list|)
+name|EMPTY_LIST
 return|;
 block|}
 annotation|@

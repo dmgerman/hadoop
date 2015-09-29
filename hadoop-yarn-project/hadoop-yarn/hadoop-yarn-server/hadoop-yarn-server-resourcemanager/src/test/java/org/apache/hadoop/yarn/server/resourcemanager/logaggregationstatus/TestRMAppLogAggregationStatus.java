@@ -1380,6 +1380,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|node1ReportForApp
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1464,6 +1466,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|node2ReportForApp
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1722,6 +1726,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|node1ReportForApp2
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2164,6 +2170,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|node1ReportForApp3
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2471,6 +2479,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|node2ReportForApp2
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;

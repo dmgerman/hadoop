@@ -68,6 +68,58 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|IncreaseContainersResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|IncreaseContainersResourceResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -291,7 +343,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The protocol between an<code>ApplicationMaster</code> and a   *<code>NodeManager</code> to start/stop containers and to get status  * of running containers.</p>  *   *<p>If security is enabled the<code>NodeManager</code> verifies that the  *<code>ApplicationMaster</code> has truly been allocated the container  * by the<code>ResourceManager</code> and also verifies all interactions such   * as stopping the container or obtaining status information for the container.  *</p>  */
+comment|/**  *<p>The protocol between an<code>ApplicationMaster</code> and a   *<code>NodeManager</code> to start/stop and increase resource of containers  * and to get status of running containers.</p>  *  *<p>If security is enabled the<code>NodeManager</code> verifies that the  *<code>ApplicationMaster</code> has truly been allocated the container  * by the<code>ResourceManager</code> and also verifies all interactions such   * as stopping the container or obtaining status information for the container.  *</p>  */
 end_comment
 
 begin_interface
@@ -348,6 +400,23 @@ name|GetContainerStatusesResponse
 name|getContainerStatuses
 parameter_list|(
 name|GetContainerStatusesRequest
+name|request
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    *<p>    * The API used by the<code>ApplicationMaster</code> to request for    * resource increase of running containers on the<code>NodeManager</code>.    *</p>    *    * @param request    *         request to increase resource of a list of containers    * @return response which includes a list of containerIds of containers    *         whose resource has been successfully increased and a    *         containerId-to-exception map for failed requests.    *    * @throws YarnException    * @throws IOException    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|increaseContainersResource ( IncreaseContainersResourceRequest request)
+name|IncreaseContainersResourceResponse
+name|increaseContainersResource
+parameter_list|(
+name|IncreaseContainersResourceRequest
 name|request
 parameter_list|)
 throws|throws

@@ -6192,7 +6192,7 @@ name|getCallQueueLen
 argument_list|()
 operator|!=
 literal|1
-operator|&&
+operator|||
 name|countThreads
 argument_list|(
 name|CallQueueManager
@@ -6204,10 +6204,10 @@ argument_list|()
 argument_list|)
 operator|!=
 literal|1
-operator|&&
+operator|||
 name|countThreads
 argument_list|(
-name|TestProtocol
+name|TestImpl
 operator|.
 name|class
 operator|.

@@ -412,26 +412,6 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|NodeType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|ResourceLimits
 import|;
 end_import
@@ -473,6 +453,26 @@ operator|.
 name|scheduler
 operator|.
 name|SchedulerApplicationAttempt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|SchedContainerChangeRequest
 import|;
 end_import
 
@@ -660,6 +660,7 @@ name|preemptionDisabled
 decl_stmt|;
 comment|// Track resource usage-by-label like used-resource/pending-resource, etc.
 DECL|field|queueUsage
+specifier|volatile
 name|ResourceUsage
 name|queueUsage
 decl_stmt|;
@@ -1887,7 +1888,7 @@ return|return
 name|minimumAllocation
 return|;
 block|}
-DECL|method|allocateResource (Resource clusterResource, Resource resource, String nodePartition)
+DECL|method|allocateResource (Resource clusterResource, Resource resource, String nodePartition, boolean changeContainerResource)
 specifier|synchronized
 name|void
 name|allocateResource
@@ -1900,6 +1901,9 @@ name|resource
 parameter_list|,
 name|String
 name|nodePartition
+parameter_list|,
+name|boolean
+name|changeContainerResource
 parameter_list|)
 block|{
 name|queueUsage
@@ -1911,9 +1915,16 @@ argument_list|,
 name|resource
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|changeContainerResource
+condition|)
+block|{
 operator|++
 name|numContainers
 expr_stmt|;
+block|}
 name|CSQueueUtils
 operator|.
 name|updateQueueStatistics
@@ -1932,7 +1943,7 @@ name|nodePartition
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|releaseResource (Resource clusterResource, Resource resource, String nodePartition)
+DECL|method|releaseResource (Resource clusterResource, Resource resource, String nodePartition, boolean changeContainerResource)
 specifier|protected
 specifier|synchronized
 name|void
@@ -1946,6 +1957,9 @@ name|resource
 parameter_list|,
 name|String
 name|nodePartition
+parameter_list|,
+name|boolean
+name|changeContainerResource
 parameter_list|)
 block|{
 name|queueUsage
@@ -1974,9 +1988,16 @@ argument_list|,
 name|nodePartition
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|changeContainerResource
+condition|)
+block|{
 operator|--
 name|numContainers
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Private

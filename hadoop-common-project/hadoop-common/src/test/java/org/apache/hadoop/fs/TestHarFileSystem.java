@@ -370,11 +370,6 @@ name|class
 argument_list|)
 decl_stmt|;
 comment|/**    * FileSystem methods that must not be overwritten by    * {@link HarFileSystem}. Either because there is a default implementation    * already available or because it is not relevant.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|interface|MustNotImplement
 specifier|private
 interface|interface

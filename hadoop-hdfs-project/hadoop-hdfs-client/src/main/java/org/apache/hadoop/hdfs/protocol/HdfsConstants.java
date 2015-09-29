@@ -406,6 +406,30 @@ literal|5
 operator|*
 literal|1000
 decl_stmt|;
+comment|/**    * For a HDFS client to write to a file, a lease is granted; During the lease    * period, no other client can write to the file. The writing client can    * periodically renew the lease. When the file is closed, the lease is    * revoked. The lease duration is bound by this soft limit and a    * {@link HdfsConstants#LEASE_HARDLIMIT_PERIOD hard limit}. Until the    * soft limit expires, the writer has sole write access to the file. If the    * soft limit expires and the client fails to close the file or renew the    * lease, another client can preempt the lease.    */
+DECL|field|LEASE_SOFTLIMIT_PERIOD
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|LEASE_SOFTLIMIT_PERIOD
+init|=
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
+comment|/**    * For a HDFS client to write to a file, a lease is granted; During the lease    * period, no other client can write to the file. The writing client can    * periodically renew the lease. When the file is closed, the lease is    * revoked. The lease duration is bound by a    * {@link HdfsConstants#LEASE_SOFTLIMIT_PERIOD soft limit} and this hard    * limit. If after the hard limit expires and the client has failed to renew    * the lease, HDFS assumes that the client has quit and will automatically    * close the file on behalf of the writer, and recover the lease.    */
+DECL|field|LEASE_HARDLIMIT_PERIOD
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|LEASE_HARDLIMIT_PERIOD
+init|=
+literal|60
+operator|*
+name|LEASE_SOFTLIMIT_PERIOD
+decl_stmt|;
 comment|// SafeMode actions
 DECL|enum|SafeModeAction
 specifier|public

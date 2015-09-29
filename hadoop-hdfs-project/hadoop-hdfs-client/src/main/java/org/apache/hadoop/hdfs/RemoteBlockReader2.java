@@ -468,29 +468,7 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|Sampler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
-operator|.
-name|Trace
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
+name|core
 operator|.
 name|TraceScope
 import|;
@@ -507,6 +485,20 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|core
+operator|.
+name|Tracer
 import|;
 end_import
 
@@ -685,6 +677,12 @@ name|sentStatusCode
 init|=
 literal|false
 decl_stmt|;
+DECL|field|tracer
+specifier|private
+specifier|final
+name|Tracer
+name|tracer
+decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|method|getPeer ()
@@ -788,19 +786,15 @@ block|{
 name|TraceScope
 name|scope
 init|=
-name|Trace
+name|tracer
 operator|.
-name|startSpan
+name|newScope
 argument_list|(
 literal|"RemoteBlockReader2#readNextPacket("
 operator|+
 name|blockId
 operator|+
 literal|")"
-argument_list|,
-name|Sampler
-operator|.
-name|NEVER
 argument_list|)
 decl_stmt|;
 try|try
@@ -922,19 +916,15 @@ block|{
 name|TraceScope
 name|scope
 init|=
-name|Trace
+name|tracer
 operator|.
-name|startSpan
+name|newScope
 argument_list|(
 literal|"RemoteBlockReader2#readNextPacket("
 operator|+
 name|blockId
 operator|+
 literal|")"
-argument_list|,
-name|Sampler
-operator|.
-name|NEVER
 argument_list|)
 decl_stmt|;
 try|try
@@ -1464,7 +1454,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|RemoteBlockReader2 (String file, String bpid, long blockId, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache)
+DECL|method|RemoteBlockReader2 (String file, String bpid, long blockId, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache, Tracer tracer)
 specifier|protected
 name|RemoteBlockReader2
 parameter_list|(
@@ -1500,6 +1490,9 @@ name|datanodeID
 parameter_list|,
 name|PeerCache
 name|peerCache
+parameter_list|,
+name|Tracer
+name|tracer
 parameter_list|)
 block|{
 name|this
@@ -1619,6 +1612,12 @@ name|checksum
 operator|.
 name|getChecksumSize
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|tracer
+operator|=
+name|tracer
 expr_stmt|;
 block|}
 annotation|@
@@ -1885,7 +1884,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a new BlockReader specifically to satisfy a read.    * This method also sends the OP_READ_BLOCK request.    *    * @param file  File location    * @param block  The block object    * @param blockToken  The block token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @param peer  The Peer to use    * @param datanodeID  The DatanodeID this peer is connected to    * @return New BlockReader instance, or null on error.    */
-DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache, CachingStrategy cachingStrategy)
+DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache, CachingStrategy cachingStrategy, Tracer tracer)
 specifier|public
 specifier|static
 name|BlockReader
@@ -1926,6 +1925,9 @@ name|peerCache
 parameter_list|,
 name|CachingStrategy
 name|cachingStrategy
+parameter_list|,
+name|Tracer
+name|tracer
 parameter_list|)
 throws|throws
 name|IOException
@@ -2114,6 +2116,8 @@ argument_list|,
 name|datanodeID
 argument_list|,
 name|peerCache
+argument_list|,
+name|tracer
 argument_list|)
 return|;
 block|}

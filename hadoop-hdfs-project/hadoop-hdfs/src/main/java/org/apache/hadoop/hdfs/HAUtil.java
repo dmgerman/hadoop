@@ -240,7 +240,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|NameNodeProxies
+name|NameNodeProxiesClient
 operator|.
 name|ProxyAndInfo
 import|;
@@ -1131,7 +1131,7 @@ name|ClientProtocol
 argument_list|>
 name|provider
 init|=
-name|NameNodeProxies
+name|NameNodeProxiesClient
 operator|.
 name|createFailoverProxyProvider
 argument_list|(
@@ -1586,18 +1586,12 @@ name|values
 argument_list|()
 control|)
 block|{
-name|NameNodeProxies
-operator|.
 name|ProxyAndInfo
 argument_list|<
 name|T
 argument_list|>
 name|proxyInfo
 init|=
-literal|null
-decl_stmt|;
-name|proxyInfo
-operator|=
 name|NameNodeProxies
 operator|.
 name|createNonHAProxy
@@ -1615,7 +1609,7 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|proxies
 operator|.
 name|add

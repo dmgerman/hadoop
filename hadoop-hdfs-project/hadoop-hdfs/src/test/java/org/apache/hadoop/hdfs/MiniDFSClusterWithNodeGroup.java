@@ -168,7 +168,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|SimulatedFSDataset
+name|SecureDataNodeStarter
+operator|.
+name|SecureResources
 import|;
 end_import
 
@@ -186,9 +188,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|SecureDataNodeStarter
-operator|.
-name|SecureResources
+name|SimulatedFSDataset
 import|;
 end_import
 

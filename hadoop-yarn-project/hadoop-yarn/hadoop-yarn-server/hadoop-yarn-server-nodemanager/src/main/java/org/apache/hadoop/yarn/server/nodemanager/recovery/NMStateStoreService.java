@@ -246,6 +246,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|proto
 operator|.
 name|YarnProtos
@@ -468,6 +486,10 @@ DECL|field|startRequest
 name|StartContainerRequest
 name|startRequest
 decl_stmt|;
+DECL|field|capability
+name|Resource
+name|capability
+decl_stmt|;
 DECL|method|getStatus ()
 specifier|public
 name|RecoveredContainerStatus
@@ -516,6 +538,16 @@ parameter_list|()
 block|{
 return|return
 name|startRequest
+return|;
+block|}
+DECL|method|getCapability ()
+specifier|public
+name|Resource
+name|getCapability
+parameter_list|()
+block|{
+return|return
+name|capability
 return|;
 block|}
 block|}
@@ -1056,6 +1088,22 @@ name|storeContainerLaunched
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Record that a container resource has been changed    * @param containerId the container ID    * @param capability the container resource capability    * @throws IOException    */
+DECL|method|storeContainerResourceChanged (ContainerId containerId, Resource capability)
+specifier|public
+specifier|abstract
+name|void
+name|storeContainerResourceChanged
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Resource
+name|capability
 parameter_list|)
 throws|throws
 name|IOException

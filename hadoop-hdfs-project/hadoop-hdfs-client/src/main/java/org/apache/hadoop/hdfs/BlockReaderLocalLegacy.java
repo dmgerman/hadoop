@@ -464,31 +464,23 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|Sampler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
-operator|.
-name|Trace
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
+name|core
 operator|.
 name|TraceScope
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|core
+operator|.
+name|Tracer
 import|;
 end_import
 
@@ -959,8 +951,14 @@ specifier|private
 name|long
 name|blockId
 decl_stmt|;
+DECL|field|tracer
+specifier|private
+specifier|final
+name|Tracer
+name|tracer
+decl_stmt|;
 comment|/**    * The only way this object can be instantiated.    */
-DECL|method|newBlockReader (DfsClientConf conf, UserGroupInformation userGroupInformation, Configuration configuration, String file, ExtendedBlock blk, Token<BlockTokenIdentifier> token, DatanodeInfo node, long startOffset, long length, StorageType storageType)
+DECL|method|newBlockReader (DfsClientConf conf, UserGroupInformation userGroupInformation, Configuration configuration, String file, ExtendedBlock blk, Token<BlockTokenIdentifier> token, DatanodeInfo node, long startOffset, long length, StorageType storageType, Tracer tracer)
 specifier|static
 name|BlockReaderLocalLegacy
 name|newBlockReader
@@ -997,6 +995,9 @@ name|length
 parameter_list|,
 name|StorageType
 name|storageType
+parameter_list|,
+name|Tracer
+name|tracer
 parameter_list|)
 throws|throws
 name|IOException
@@ -1264,6 +1265,8 @@ argument_list|,
 name|firstChunkOffset
 argument_list|,
 name|checksumIn
+argument_list|,
+name|tracer
 argument_list|)
 expr_stmt|;
 block|}
@@ -1289,6 +1292,8 @@ argument_list|,
 name|pathinfo
 argument_list|,
 name|dataIn
+argument_list|,
+name|tracer
 argument_list|)
 expr_stmt|;
 block|}
@@ -1633,7 +1638,7 @@ operator|/
 name|bytesPerChecksum
 return|;
 block|}
-DECL|method|BlockReaderLocalLegacy (ShortCircuitConf conf, String hdfsfile, ExtendedBlock block, Token<BlockTokenIdentifier> token, long startOffset, long length, BlockLocalPathInfo pathinfo, FileInputStream dataIn)
+DECL|method|BlockReaderLocalLegacy (ShortCircuitConf conf, String hdfsfile, ExtendedBlock block, Token<BlockTokenIdentifier> token, long startOffset, long length, BlockLocalPathInfo pathinfo, FileInputStream dataIn, Tracer tracer)
 specifier|private
 name|BlockReaderLocalLegacy
 parameter_list|(
@@ -1663,6 +1668,9 @@ name|pathinfo
 parameter_list|,
 name|FileInputStream
 name|dataIn
+parameter_list|,
+name|Tracer
+name|tracer
 parameter_list|)
 throws|throws
 name|IOException
@@ -1703,10 +1711,12 @@ argument_list|,
 name|startOffset
 argument_list|,
 literal|null
+argument_list|,
+name|tracer
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|BlockReaderLocalLegacy (ShortCircuitConf conf, String hdfsfile, ExtendedBlock block, Token<BlockTokenIdentifier> token, long startOffset, long length, BlockLocalPathInfo pathinfo, DataChecksum checksum, boolean verifyChecksum, FileInputStream dataIn, long firstChunkOffset, FileInputStream checksumIn)
+DECL|method|BlockReaderLocalLegacy (ShortCircuitConf conf, String hdfsfile, ExtendedBlock block, Token<BlockTokenIdentifier> token, long startOffset, long length, BlockLocalPathInfo pathinfo, DataChecksum checksum, boolean verifyChecksum, FileInputStream dataIn, long firstChunkOffset, FileInputStream checksumIn, Tracer tracer)
 specifier|private
 name|BlockReaderLocalLegacy
 parameter_list|(
@@ -1748,6 +1758,9 @@ name|firstChunkOffset
 parameter_list|,
 name|FileInputStream
 name|checksumIn
+parameter_list|,
+name|Tracer
+name|tracer
 parameter_list|)
 throws|throws
 name|IOException
@@ -1956,6 +1969,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|this
+operator|.
+name|tracer
+operator|=
+name|tracer
+expr_stmt|;
 block|}
 comment|/**    * Reads bytes into a buffer until EOF or the buffer's limit is reached    */
 DECL|method|fillBuffer (FileInputStream stream, ByteBuffer buf)
@@ -1975,19 +1994,15 @@ block|{
 name|TraceScope
 name|scope
 init|=
-name|Trace
+name|tracer
 operator|.
-name|startSpan
+name|newScope
 argument_list|(
 literal|"BlockReaderLocalLegacy#fillBuffer("
 operator|+
 name|blockId
 operator|+
 literal|")"
-argument_list|,
-name|Sampler
-operator|.
-name|NEVER
 argument_list|)
 decl_stmt|;
 try|try

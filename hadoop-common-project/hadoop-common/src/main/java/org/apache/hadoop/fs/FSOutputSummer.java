@@ -66,7 +66,9 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|NullScope
+name|core
+operator|.
+name|TraceScope
 import|;
 end_import
 
@@ -78,7 +80,9 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|TraceScope
+name|core
+operator|.
+name|Tracer
 import|;
 end_import
 
@@ -166,6 +170,12 @@ DECL|field|count
 specifier|private
 name|int
 name|count
+decl_stmt|;
+comment|// The HTrace tracer to use
+DECL|field|tracer
+specifier|private
+name|Tracer
+name|tracer
 decl_stmt|;
 comment|// We want this value to be a multiple of 3 because the native code checksums
 comment|// 3 chunks simultaneously. The chosen value of 9 strikes a balance between
@@ -687,9 +697,7 @@ name|createWriteTraceScope
 parameter_list|()
 block|{
 return|return
-name|NullScope
-operator|.
-name|INSTANCE
+literal|null
 return|;
 block|}
 comment|/** Generate checksums for the given data chunks and output chunks& checksums    * to the underlying output stream.    */
@@ -805,11 +813,19 @@ block|}
 block|}
 finally|finally
 block|{
+if|if
+condition|(
+name|scope
+operator|!=
+literal|null
+condition|)
+block|{
 name|scope
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Converts a checksum integer value to a byte stream    */

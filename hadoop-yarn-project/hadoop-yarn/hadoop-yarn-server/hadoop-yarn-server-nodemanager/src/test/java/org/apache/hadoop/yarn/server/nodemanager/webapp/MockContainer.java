@@ -779,6 +779,17 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|setResource (Resource targetResource)
+specifier|public
+name|void
+name|setResource
+parameter_list|(
+name|Resource
+name|targetResource
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
 DECL|method|getContainerTokenIdentifier ()
 specifier|public
 name|ContainerTokenIdentifier

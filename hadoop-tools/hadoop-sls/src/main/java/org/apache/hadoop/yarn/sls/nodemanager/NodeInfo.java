@@ -128,6 +128,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerExitStatus
 import|;
 end_import
@@ -863,6 +881,35 @@ return|return
 name|RMNodeLabelsManager
 operator|.
 name|EMPTY_STRING_SET
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|updateNodeHeartbeatResponseForContainersDecreasing ( NodeHeartbeatResponse response)
+specifier|public
+name|void
+name|updateNodeHeartbeatResponseForContainersDecreasing
+parameter_list|(
+name|NodeHeartbeatResponse
+name|response
+parameter_list|)
+block|{
+comment|// TODO Auto-generated method stub
+block|}
+annotation|@
+name|Override
+DECL|method|pullNewlyIncreasedContainers ()
+specifier|public
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|pullNewlyIncreasedContainers
+parameter_list|()
+block|{
+comment|// TODO Auto-generated method stub
+return|return
+literal|null
 return|;
 block|}
 block|}

@@ -4835,11 +4835,6 @@ return|;
 block|}
 annotation|@
 name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|createNonRecursive (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -5156,11 +5151,6 @@ return|;
 block|}
 annotation|@
 name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|createNonRecursive (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -5251,11 +5241,6 @@ return|;
 block|}
 annotation|@
 name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|createNonRecursive (Path f, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream

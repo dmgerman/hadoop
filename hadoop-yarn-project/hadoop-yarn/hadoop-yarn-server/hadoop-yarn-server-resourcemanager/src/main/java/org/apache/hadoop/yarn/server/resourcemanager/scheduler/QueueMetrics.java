@@ -2329,6 +2329,7 @@ name|Resource
 name|res
 parameter_list|)
 block|{
+comment|// if #container = 0, means change container resource
 name|pendingContainers
 operator|.
 name|decr
@@ -2345,7 +2346,14 @@ operator|.
 name|getMemory
 argument_list|()
 operator|*
+name|Math
+operator|.
+name|max
+argument_list|(
 name|containers
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|pendingVCores
@@ -2357,7 +2365,14 @@ operator|.
 name|getVirtualCores
 argument_list|()
 operator|*
+name|Math
+operator|.
+name|max
+argument_list|(
 name|containers
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2379,6 +2394,7 @@ name|boolean
 name|decrPending
 parameter_list|)
 block|{
+comment|// if #containers = 0, means change container resource
 name|allocatedContainers
 operator|.
 name|incr
@@ -2402,7 +2418,14 @@ operator|.
 name|getMemory
 argument_list|()
 operator|*
+name|Math
+operator|.
+name|max
+argument_list|(
 name|containers
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|allocatedVCores
@@ -2414,7 +2437,14 @@ operator|.
 name|getVirtualCores
 argument_list|()
 operator|*
+name|Math
+operator|.
+name|max
+argument_list|(
 name|containers
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -2496,6 +2526,7 @@ name|Resource
 name|res
 parameter_list|)
 block|{
+comment|// if #container = 0, means change container resource.
 name|allocatedContainers
 operator|.
 name|decr
@@ -2519,7 +2550,14 @@ operator|.
 name|getMemory
 argument_list|()
 operator|*
+name|Math
+operator|.
+name|max
+argument_list|(
 name|containers
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|allocatedVCores
@@ -2531,7 +2569,14 @@ operator|.
 name|getVirtualCores
 argument_list|()
 operator|*
+name|Math
+operator|.
+name|max
+argument_list|(
 name|containers
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|QueueMetrics

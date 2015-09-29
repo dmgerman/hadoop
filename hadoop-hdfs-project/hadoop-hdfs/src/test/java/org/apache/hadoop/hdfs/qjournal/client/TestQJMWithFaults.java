@@ -248,22 +248,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|impl
-operator|.
-name|Log4JLogger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|conf
@@ -1196,20 +1180,14 @@ expr_stmt|;
 comment|// If the user specifies a seed, then we should gather all the
 comment|// IPC trace information so that debugging is easier. This makes
 comment|// the test run about 25% slower otherwise.
-operator|(
-operator|(
-name|Log4JLogger
-operator|)
+name|GenericTestUtils
+operator|.
+name|setLogLevel
+argument_list|(
 name|ProtobufRpcEngine
 operator|.
 name|LOG
-operator|)
-operator|.
-name|getLogger
-argument_list|()
-operator|.
-name|setLevel
-argument_list|(
+argument_list|,
 name|Level
 operator|.
 name|ALL

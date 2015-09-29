@@ -320,6 +320,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerResourceChangeRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerStatus
 import|;
 end_import
@@ -1016,9 +1034,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApplicationAttempt
-operator|.
-name|ContainersAndNMTokensAllocation
+name|SchedContainerChangeRequest
 import|;
 end_import
 
@@ -2327,7 +2343,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals)
+DECL|method|allocate (ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, List<ContainerResourceChangeRequest> increaseRequests, List<ContainerResourceChangeRequest> decreaseRequests)
 specifier|public
 name|Allocation
 name|allocate
@@ -2358,6 +2374,18 @@ argument_list|<
 name|String
 argument_list|>
 name|blacklistRemovals
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|increaseRequests
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|decreaseRequests
 parameter_list|)
 block|{
 name|FiCaSchedulerApp
@@ -2557,14 +2585,6 @@ name|blacklistRemovals
 argument_list|)
 expr_stmt|;
 block|}
-name|ContainersAndNMTokensAllocation
-name|allocation
-init|=
-name|application
-operator|.
-name|pullNewlyAllocatedContainersAndNMTokens
-argument_list|()
-decl_stmt|;
 name|Resource
 name|headroom
 init|=
@@ -2584,9 +2604,9 @@ return|return
 operator|new
 name|Allocation
 argument_list|(
-name|allocation
+name|application
 operator|.
-name|getContainerList
+name|pullNewlyAllocatedContainers
 argument_list|()
 argument_list|,
 name|headroom
@@ -2597,9 +2617,9 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-name|allocation
+name|application
 operator|.
-name|getNMTokenList
+name|pullUpdatedNMTokens
 argument_list|()
 argument_list|)
 return|;
@@ -5465,6 +5485,22 @@ block|{
 return|return
 name|usedResource
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|decreaseContainer ( SchedContainerChangeRequest decreaseRequest, SchedulerApplicationAttempt attempt)
+specifier|protected
+name|void
+name|decreaseContainer
+parameter_list|(
+name|SchedContainerChangeRequest
+name|decreaseRequest
+parameter_list|,
+name|SchedulerApplicationAttempt
+name|attempt
+parameter_list|)
+block|{
+comment|// TODO Auto-generated method stub
 block|}
 block|}
 end_class

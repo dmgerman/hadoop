@@ -556,7 +556,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|NameNodeProxies
+name|NameNodeProxiesClient
 operator|.
 name|ProxyAndInfo
 import|;

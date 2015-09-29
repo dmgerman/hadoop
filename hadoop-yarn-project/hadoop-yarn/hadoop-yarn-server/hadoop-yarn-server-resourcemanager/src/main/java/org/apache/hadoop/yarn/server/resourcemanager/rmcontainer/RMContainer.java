@@ -333,6 +333,16 @@ name|String
 name|getNodeLabelExpression
 parameter_list|()
 function_decl|;
+DECL|method|hasIncreaseReservation ()
+name|boolean
+name|hasIncreaseReservation
+parameter_list|()
+function_decl|;
+DECL|method|cancelIncreaseReservation ()
+name|void
+name|cancelIncreaseReservation
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

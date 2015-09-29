@@ -5624,6 +5624,23 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+name|app
+operator|.
+name|rmContext
+operator|.
+name|getSystemMetricsPublisher
+argument_list|()
+operator|.
+name|appUpdated
+argument_list|(
+name|app
+argument_list|,
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// TODO: Write out change to state store (YARN-1558)
 comment|// Also take care of RM failover
 name|moveEvent

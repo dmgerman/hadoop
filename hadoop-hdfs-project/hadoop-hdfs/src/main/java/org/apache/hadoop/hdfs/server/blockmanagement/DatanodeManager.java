@@ -3515,8 +3515,8 @@ return|return
 name|dependencies
 return|;
 block|}
-comment|/**    * Remove an already decommissioned data node who is neither in include nor    * exclude hosts lists from the the list of live or dead nodes.  This is used    * to not display an already decommssioned data node to the operators.    * The operation procedure of making a already decommissioned data node not    * to be displayed is as following:    *<ol>    *<li>     *   Host must have been in the include hosts list and the include hosts list    *   must not be empty.    *</li>    *<li>    *   Host is decommissioned by remaining in the include hosts list and added    *   into the exclude hosts list. Name node is updated with the new     *   information by issuing dfsadmin -refreshNodes command.    *</li>    *<li>    *   Host is removed from both include hosts and exclude hosts lists.  Name     *   node is updated with the new informationby issuing dfsamin -refreshNodes     *   command.    *<li>    *</ol>    *     * @param nodeList    *          , array list of live or dead nodes.    */
-DECL|method|removeDecomNodeFromList (final List<DatanodeDescriptor> nodeList)
+comment|/**    * Remove decommissioned datanode from the the list of live or dead nodes.    * This is used to not to display a decommissioned datanode to the operators.    * @param nodeList , array list of live or dead nodes.    */
+DECL|method|removeDecomNodeFromList ( final List<DatanodeDescriptor> nodeList)
 specifier|private
 name|void
 name|removeDecomNodeFromList
@@ -3529,27 +3529,18 @@ argument_list|>
 name|nodeList
 parameter_list|)
 block|{
-comment|// If the include list is empty, any nodes are welcomed and it does not
-comment|// make sense to exclude any nodes from the cluster. Therefore, no remove.
-if|if
-condition|(
-operator|!
-name|hostFileManager
-operator|.
-name|hasIncludes
-argument_list|()
-condition|)
-block|{
-return|return;
-block|}
-for|for
-control|(
 name|Iterator
 argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|it
 init|=
+literal|null
+decl_stmt|;
+for|for
+control|(
+name|it
+operator|=
 name|nodeList
 operator|.
 name|iterator
@@ -3572,35 +3563,12 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-operator|(
-operator|!
-name|hostFileManager
-operator|.
-name|isIncluded
-argument_list|(
-name|node
-argument_list|)
-operator|)
-operator|&&
-operator|(
-operator|!
-name|hostFileManager
-operator|.
-name|isExcluded
-argument_list|(
-name|node
-argument_list|)
-operator|)
-operator|&&
 name|node
 operator|.
 name|isDecommissioned
 argument_list|()
 condition|)
 block|{
-comment|// Include list is not empty, an existing datanode does not appear
-comment|// in both include or exclude lists and it has been decommissioned.
-comment|// Remove it from the node list.
 name|it
 operator|.
 name|remove

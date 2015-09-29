@@ -3081,6 +3081,35 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getIncreasedContainers ()
+specifier|public
+name|ConcurrentMap
+argument_list|<
+name|ContainerId
+argument_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Container
+argument_list|>
+name|getIncreasedContainers
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getContainerTokenSecretManager ()
 specifier|public
 name|NMContainerTokenSecretManager

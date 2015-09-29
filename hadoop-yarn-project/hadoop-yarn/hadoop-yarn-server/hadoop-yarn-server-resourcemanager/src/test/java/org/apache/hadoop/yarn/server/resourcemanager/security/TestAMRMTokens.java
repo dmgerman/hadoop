@@ -1326,6 +1326,14 @@ argument_list|,
 literal|"AM Container Finished"
 argument_list|,
 literal|0
+argument_list|,
+name|attempt
+operator|.
+name|getMasterContainer
+argument_list|()
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|rm

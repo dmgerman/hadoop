@@ -779,6 +779,126 @@ name|testStartContainerFailureWithUnknownAuxService
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|testIncreaseContainerResourceWithInvalidRequests ()
+specifier|public
+name|void
+name|testIncreaseContainerResourceWithInvalidRequests
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Don't run the test if the binary is not available.
+if|if
+condition|(
+operator|!
+name|shouldRunTest
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"LCE binary path is not passed. Not running the test"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Running testIncreaseContainerResourceWithInvalidRequests"
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|testIncreaseContainerResourceWithInvalidRequests
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|testIncreaseContainerResourceWithInvalidResource ()
+specifier|public
+name|void
+name|testIncreaseContainerResourceWithInvalidResource
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Don't run the test if the binary is not available.
+if|if
+condition|(
+operator|!
+name|shouldRunTest
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"LCE binary path is not passed. Not running the test"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Running testIncreaseContainerResourceWithInvalidResource"
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|testIncreaseContainerResourceWithInvalidResource
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|testChangeContainerResource ()
+specifier|public
+name|void
+name|testChangeContainerResource
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Don't run the test if the binary is not available.
+if|if
+condition|(
+operator|!
+name|shouldRunTest
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"LCE binary path is not passed. Not running the test"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Running testChangeContainerResource"
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|testChangeContainerResource
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|shouldRunTest ()
 specifier|private
 name|boolean

@@ -418,6 +418,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerResourceChangeRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerStatus
 import|;
 end_import
@@ -1363,7 +1381,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocate (ApplicationAttemptId attemptId, List<ResourceRequest> resourceRequests, List<ContainerId> containerIds, List<String> strings, List<String> strings2)
+DECL|method|allocate (ApplicationAttemptId attemptId, List<ResourceRequest> resourceRequests, List<ContainerId> containerIds, List<String> strings, List<String> strings2, List<ContainerResourceChangeRequest> increaseRequests, List<ContainerResourceChangeRequest> decreaseRequests)
 specifier|public
 name|Allocation
 name|allocate
@@ -1394,6 +1412,18 @@ argument_list|<
 name|String
 argument_list|>
 name|strings2
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|increaseRequests
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|decreaseRequests
 parameter_list|)
 block|{
 if|if
@@ -1434,6 +1464,10 @@ argument_list|,
 name|strings
 argument_list|,
 name|strings2
+argument_list|,
+name|increaseRequests
+argument_list|,
+name|decreaseRequests
 argument_list|)
 expr_stmt|;
 return|return
@@ -1496,6 +1530,10 @@ argument_list|,
 name|strings
 argument_list|,
 name|strings2
+argument_list|,
+name|increaseRequests
+argument_list|,
+name|decreaseRequests
 argument_list|)
 return|;
 block|}
@@ -2774,7 +2812,11 @@ block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(
+block|{
 literal|"unchecked"
+block|,
+literal|"rawtypes"
+block|}
 argument_list|)
 DECL|method|initMetrics ()
 specifier|private

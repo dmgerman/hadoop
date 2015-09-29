@@ -1886,8 +1886,8 @@ expr_stmt|;
 comment|// Set up the InjectionHandler
 name|DFSClientFaultInjector
 operator|.
-name|instance
-operator|=
+name|set
+argument_list|(
 name|Mockito
 operator|.
 name|mock
@@ -1896,13 +1896,15 @@ name|DFSClientFaultInjector
 operator|.
 name|class
 argument_list|)
+argument_list|)
 expr_stmt|;
 name|DFSClientFaultInjector
 name|injector
 init|=
 name|DFSClientFaultInjector
 operator|.
-name|instance
+name|get
+argument_list|()
 decl_stmt|;
 specifier|final
 name|int
@@ -2354,8 +2356,8 @@ expr_stmt|;
 comment|// Set up the InjectionHandler
 name|DFSClientFaultInjector
 operator|.
-name|instance
-operator|=
+name|set
+argument_list|(
 name|Mockito
 operator|.
 name|mock
@@ -2364,13 +2366,15 @@ name|DFSClientFaultInjector
 operator|.
 name|class
 argument_list|)
+argument_list|)
 expr_stmt|;
 name|DFSClientFaultInjector
 name|injector
 init|=
 name|DFSClientFaultInjector
 operator|.
-name|instance
+name|get
+argument_list|()
 decl_stmt|;
 comment|// make preads sleep for 50ms
 name|Mockito

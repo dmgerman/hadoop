@@ -206,6 +206,17 @@ argument_list|,
 name|len
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|nread
+operator|<
+literal|0
+condition|)
+block|{
+return|return
+name|nread
+return|;
+block|}
 name|pos
 operator|+=
 name|nread
@@ -239,6 +250,17 @@ argument_list|,
 name|buf
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|nread
+operator|<
+literal|0
+condition|)
+block|{
+return|return
+name|nread
+return|;
+block|}
 name|pos
 operator|+=
 name|nread
@@ -272,7 +294,8 @@ return|return
 literal|0
 return|;
 block|}
-comment|// You can't skip past the end of the replica.
+comment|// You can't skip past the last offset that we want to read with this
+comment|// block reader.
 name|long
 name|oldPos
 init|=
@@ -310,12 +333,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// We return the amount of bytes that we haven't read yet from the
-comment|// replica, based on our current position.  Some of the other block
-comment|// readers return a shorter length than that.  The only advantage to
-comment|// returning a shorter length is that the DFSInputStream will
-comment|// trash your block reader and create a new one if someone tries to
-comment|// seek() beyond the available() region.
+comment|// We return the amount of bytes between the current offset and the visible
+comment|// length.  Some of the other block readers return a shorter length than
+comment|// that.  The only advantage to returning a shorter length is that the
+comment|// DFSInputStream will trash your block reader and create a new one if
+comment|// someone tries to seek() beyond the available() region.
 name|long
 name|diff
 init|=

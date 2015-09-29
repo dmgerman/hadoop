@@ -882,7 +882,7 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-name|TimelineAuthenticationFilterInitializer
+name|StaticUserWebFilter
 operator|.
 name|class
 operator|.
@@ -891,7 +891,7 @@ argument_list|()
 operator|+
 literal|","
 operator|+
-name|StaticUserWebFilter
+name|TimelineAuthenticationFilterInitializer
 operator|.
 name|class
 operator|.

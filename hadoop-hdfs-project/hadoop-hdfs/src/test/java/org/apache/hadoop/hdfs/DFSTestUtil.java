@@ -6678,7 +6678,7 @@ argument_list|,
 name|writeTimeout
 argument_list|)
 argument_list|,
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getSmallBufferSize
 argument_list|(

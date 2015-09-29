@@ -329,6 +329,22 @@ return|return
 name|defaultWorkingDirectory
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|createFileContextHelper ()
+specifier|protected
+name|FileContextTestHelper
+name|createFileContextHelper
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FileContextTestHelper
+argument_list|(
+literal|"/tmp/TestWebHdfsFileContextMainOperations"
+argument_list|)
+return|;
+block|}
 DECL|method|getWebhdfsUrl ()
 specifier|public
 name|URI

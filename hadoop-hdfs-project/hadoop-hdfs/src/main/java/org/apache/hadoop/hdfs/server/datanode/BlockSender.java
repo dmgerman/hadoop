@@ -200,7 +200,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -404,6 +404,8 @@ name|apache
 operator|.
 name|htrace
 operator|.
+name|core
+operator|.
 name|Sampler
 import|;
 end_import
@@ -416,17 +418,7 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|Trace
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
+name|core
 operator|.
 name|TraceScope
 import|;
@@ -584,7 +576,7 @@ argument_list|()
 decl_stmt|;
 name|IO_FILE_BUFFER_SIZE
 operator|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getIoFileBufferSize
 argument_list|(
@@ -2977,9 +2969,11 @@ block|{
 name|TraceScope
 name|scope
 init|=
-name|Trace
+name|datanode
 operator|.
-name|startSpan
+name|tracer
+operator|.
+name|newScope
 argument_list|(
 literal|"sendBlock_"
 operator|+
@@ -2987,10 +2981,6 @@ name|block
 operator|.
 name|getBlockId
 argument_list|()
-argument_list|,
-name|Sampler
-operator|.
-name|NEVER
 argument_list|)
 decl_stmt|;
 try|try

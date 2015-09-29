@@ -4238,7 +4238,7 @@ name|READ
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|/*          * This can be further improved if the replica is local, then we can          * read directly from DN and need to check the replica is FINALIZED          * state, notice we should not use short-circuit local read which          * requires config for domain-socket in UNIX or legacy config in Windows.          */
+comment|/*          * This can be further improved if the replica is local, then we can          * read directly from DN and need to check the replica is FINALIZED          * state, notice we should not use short-circuit local read which          * requires config for domain-socket in UNIX or legacy config in Windows.          *          * TODO: add proper tracer          */
 return|return
 name|RemoteBlockReader2
 operator|.
@@ -4279,6 +4279,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|cachingStrategy
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -5160,7 +5162,7 @@ name|BufferedOutputStream
 argument_list|(
 name|unbufOut
 argument_list|,
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getSmallBufferSize
 argument_list|(

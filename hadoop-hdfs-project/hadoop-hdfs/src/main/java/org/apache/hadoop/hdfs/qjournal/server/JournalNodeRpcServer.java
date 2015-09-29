@@ -640,6 +640,17 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|server
+operator|.
+name|setTracer
+argument_list|(
+name|jn
+operator|.
+name|tracer
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|start ()
 name|void

@@ -152,6 +152,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|proto
 operator|.
 name|YarnProtos
@@ -412,6 +430,22 @@ name|storeContainerLaunched
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeContainerResourceChanged (ContainerId containerId, Resource capability)
+specifier|public
+name|void
+name|storeContainerResourceChanged
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Resource
+name|capability
 parameter_list|)
 throws|throws
 name|IOException

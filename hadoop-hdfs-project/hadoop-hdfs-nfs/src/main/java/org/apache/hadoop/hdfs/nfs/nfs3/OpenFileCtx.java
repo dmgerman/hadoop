@@ -2436,13 +2436,13 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Got overwrite with appended data (%d-%d),"
+literal|"Got overwrite with appended data [%d-%d),"
 operator|+
 literal|" current offset %d,"
 operator|+
-literal|" drop the overlapped section (%d-%d)"
+literal|" drop the overlapped section [%d-%d)"
 operator|+
-literal|" and append new data (%d-%d)."
+literal|" and append new data [%d-%d)."
 argument_list|,
 name|offset
 argument_list|,
@@ -2450,19 +2450,13 @@ operator|(
 name|offset
 operator|+
 name|count
-operator|-
-literal|1
 operator|)
 argument_list|,
 name|cachedOffset
 argument_list|,
 name|offset
 argument_list|,
-operator|(
 name|cachedOffset
-operator|-
-literal|1
-operator|)
 argument_list|,
 name|cachedOffset
 argument_list|,
@@ -2470,8 +2464,6 @@ operator|(
 name|offset
 operator|+
 name|count
-operator|-
-literal|1
 operator|)
 argument_list|)
 argument_list|)
@@ -2550,6 +2542,103 @@ name|smallerCount
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|trimWriteRequest (WriteCtx writeCtx, long currentOffset)
+specifier|private
+specifier|static
+name|void
+name|trimWriteRequest
+parameter_list|(
+name|WriteCtx
+name|writeCtx
+parameter_list|,
+name|long
+name|currentOffset
+parameter_list|)
+block|{
+name|long
+name|offset
+init|=
+name|writeCtx
+operator|.
+name|getOffset
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|int
+name|count
+init|=
+name|writeCtx
+operator|.
+name|getCount
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Trim request [%d-%d),"
+operator|+
+literal|" current offset %d,"
+operator|+
+literal|" drop the overlapped section [%d-%d)"
+operator|+
+literal|" and write new data [%d-%d)"
+argument_list|,
+name|offset
+argument_list|,
+operator|(
+name|offset
+operator|+
+name|count
+operator|)
+argument_list|,
+name|currentOffset
+argument_list|,
+name|offset
+argument_list|,
+operator|(
+name|currentOffset
+operator|)
+argument_list|,
+name|currentOffset
+argument_list|,
+operator|(
+name|offset
+operator|+
+name|count
+operator|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+name|writeCtx
+operator|.
+name|trimWrite
+argument_list|(
+call|(
+name|int
+call|)
+argument_list|(
+name|currentOffset
+operator|-
+name|offset
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Creates and adds a WriteCtx into the pendingWrites map. This is a    * synchronized method to handle concurrent writes.    *     * @return A non-null {@link WriteCtx} instance if the incoming write    *         request's offset>= nextOffset. Otherwise null.    */
 DECL|method|addWritesToCache (WRITE3Request request, Channel channel, int xid)
 specifier|private
@@ -2620,7 +2709,48 @@ name|cachedOffset
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Handle a special case first
+comment|// Ignore write request with range below the current offset
+if|if
+condition|(
+name|offset
+operator|+
+name|count
+operator|<=
+name|cachedOffset
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Got overwrite [%d-%d) smaller than"
+operator|+
+literal|" current offset %d,"
+operator|+
+literal|" drop the request."
+argument_list|,
+name|offset
+argument_list|,
+operator|(
+name|offset
+operator|+
+name|count
+operator|)
+argument_list|,
+name|cachedOffset
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+comment|// Handle a special case: trim request whose offset is smaller than
+comment|// the current offset
 if|if
 condition|(
 operator|(
@@ -2651,13 +2781,13 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Got overwrite with appended data (%d-%d),"
+literal|"Got overwrite with appended data [%d-%d),"
 operator|+
 literal|" current offset %d,"
 operator|+
-literal|" drop the overlapped section (%d-%d)"
+literal|" drop the overlapped section [%d-%d)"
 operator|+
-literal|" and append new data (%d-%d)."
+literal|" and append new data [%d-%d)."
 argument_list|,
 name|offset
 argument_list|,
@@ -2665,19 +2795,13 @@ operator|(
 name|offset
 operator|+
 name|count
-operator|-
-literal|1
 operator|)
 argument_list|,
 name|cachedOffset
 argument_list|,
 name|offset
 argument_list|,
-operator|(
 name|cachedOffset
-operator|-
-literal|1
-operator|)
 argument_list|,
 name|cachedOffset
 argument_list|,
@@ -2685,32 +2809,10 @@ operator|(
 name|offset
 operator|+
 name|count
-operator|-
-literal|1
 operator|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|pendingWrites
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"There are other pending writes, fail this jumbo write"
-argument_list|)
-expr_stmt|;
-return|return
-literal|null
-return|;
-block|}
 name|LOG
 operator|.
 name|warn
@@ -5077,6 +5179,49 @@ if|if
 condition|(
 name|range
 operator|.
+name|getMax
+argument_list|()
+operator|<=
+name|offset
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Remove write "
+operator|+
+name|range
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" which is already written from the list"
+argument_list|)
+expr_stmt|;
+block|}
+comment|// remove the WriteCtx from cache
+name|pendingWrites
+operator|.
+name|remove
+argument_list|(
+name|range
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|range
+operator|.
 name|getMin
 argument_list|()
 operator|<
@@ -5090,30 +5235,22 @@ operator|>
 name|offset
 condition|)
 block|{
-comment|// shouldn't happen since we do sync for overlapped concurrent writers
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Got an overlapping write ("
+literal|"Got an overlapping write "
 operator|+
 name|range
 operator|.
-name|getMin
+name|toString
 argument_list|()
 operator|+
-literal|", "
-operator|+
-name|range
-operator|.
-name|getMax
-argument_list|()
-operator|+
-literal|"), nextOffset="
+literal|", nextOffset="
 operator|+
 name|offset
 operator|+
-literal|". Silently drop it now"
+literal|". Remove and trim it"
 argument_list|)
 expr_stmt|;
 name|pendingWrites
@@ -5123,15 +5260,48 @@ argument_list|(
 name|range
 argument_list|)
 expr_stmt|;
-name|processCommits
+name|trimWriteRequest
 argument_list|(
+name|toWrite
+argument_list|,
+name|offset
+argument_list|)
+expr_stmt|;
+comment|// update nextOffset
+name|nextOffset
+operator|.
+name|addAndGet
+argument_list|(
+name|toWrite
+operator|.
+name|getCount
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Change nextOffset (after trim) to "
+operator|+
 name|nextOffset
 operator|.
 name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// handle race
+block|}
+return|return
+name|toWrite
+return|;
 block|}
 else|else
 block|{
@@ -5147,21 +5317,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Remove write("
+literal|"Remove write "
 operator|+
 name|range
 operator|.
-name|getMin
+name|toString
 argument_list|()
 operator|+
-literal|"-"
-operator|+
-name|range
-operator|.
-name|getMax
-argument_list|()
-operator|+
-literal|") from the list"
+literal|" from the list"
 argument_list|)
 expr_stmt|;
 block|}
@@ -6453,21 +6616,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Fail pending write: ("
+literal|"Fail pending write: "
 operator|+
 name|key
 operator|.
-name|getMin
+name|toString
 argument_list|()
 operator|+
-literal|", "
-operator|+
-name|key
-operator|.
-name|getMax
-argument_list|()
-operator|+
-literal|"), nextOffset="
+literal|", nextOffset="
 operator|+
 name|nextOffset
 operator|.

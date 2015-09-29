@@ -567,6 +567,22 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|createFileContextHelper ()
+specifier|protected
+name|FileContextTestHelper
+name|createFileContextHelper
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FileContextTestHelper
+argument_list|(
+literal|"/tmp/TestSWebHdfsFileContextMainOperations"
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getWebhdfsUrl ()
 specifier|public
 name|URI

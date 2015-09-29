@@ -340,7 +340,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsFileStatus
+name|HdfsConstants
 import|;
 end_import
 
@@ -354,11 +354,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|common
-operator|.
-name|HdfsServerConstants
+name|HdfsFileStatus
 import|;
 end_import
 
@@ -797,7 +795,7 @@ operator|.
 name|monotonicNow
 argument_list|()
 operator|-
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|LEASE_SOFTLIMIT_PERIOD
 operator|-
@@ -864,7 +862,7 @@ operator|.
 name|monotonicNow
 argument_list|()
 operator|-
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|LEASE_HARDLIMIT_PERIOD
 operator|-

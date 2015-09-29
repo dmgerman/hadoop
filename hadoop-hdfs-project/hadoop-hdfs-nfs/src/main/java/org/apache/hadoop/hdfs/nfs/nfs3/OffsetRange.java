@@ -289,6 +289,26 @@ return|return
 literal|false
 return|;
 block|}
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"["
+operator|+
+name|getMin
+argument_list|()
+operator|+
+literal|", "
+operator|+
+name|getMax
+argument_list|()
+operator|+
+literal|")"
+return|;
+block|}
 block|}
 end_class
 

@@ -92,6 +92,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -240,6 +252,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|StopWatch
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Time
 import|;
 end_import
@@ -261,6 +287,20 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -339,6 +379,16 @@ operator|new
 name|Monitor
 argument_list|()
 argument_list|)
+decl_stmt|;
+DECL|field|heartbeatStopWatch
+specifier|private
+specifier|final
+name|StopWatch
+name|heartbeatStopWatch
+init|=
+operator|new
+name|StopWatch
+argument_list|()
 decl_stmt|;
 DECL|field|namesystem
 specifier|final
@@ -1166,6 +1216,52 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|restartHeartbeatStopWatch ()
+name|void
+name|restartHeartbeatStopWatch
+parameter_list|()
+block|{
+name|heartbeatStopWatch
+operator|.
+name|reset
+argument_list|()
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|shouldAbortHeartbeatCheck (long offset)
+name|boolean
+name|shouldAbortHeartbeatCheck
+parameter_list|(
+name|long
+name|offset
+parameter_list|)
+block|{
+name|long
+name|elapsed
+init|=
+name|heartbeatStopWatch
+operator|.
+name|now
+argument_list|(
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+decl_stmt|;
+return|return
+name|elapsed
+operator|+
+name|offset
+operator|>
+name|heartbeatRecheckInterval
+return|;
+block|}
 comment|/**    * Check if there are any expired heartbeats, and if so,    * whether any blocks have to be re-replicated.    * While removing dead datanodes, make sure that only one datanode is marked    * dead at a time within the synchronized section. Otherwise, a cascading    * effect causes more datanodes to be declared dead.    * Check if there are any failed storage and if so,    * Remove all the blocks on the storage. It also covers the following less    * common scenarios. After DatanodeStorage is marked FAILED, it is still    * possible to receive IBR for this storage.    * 1) DN could deliver IBR for failed storage due to its implementation.    *    a) DN queues a pending IBR request.    *    b) The storage of the block fails.    *    c) DN first sends HB, NN will mark the storage FAILED.    *    d) DN then sends the pending IBR request.    * 2) SBN processes block request from pendingDNMessages.    *    It is possible to have messages in pendingDNMessages that refer    *    to some failed storage.    *    a) SBN receives a IBR and put it in pendingDNMessages.    *    b) The storage of the block fails.    *    c) Edit log replay get the IBR from pendingDNMessages.    * Alternatively, we can resolve these scenarios with the following approaches.    * A. Make sure DN don't deliver IBR for failed storage.    * B. Remove all blocks in PendingDataNodeMessages for the failed storage    *    when we remove all blocks from BlocksMap for that storage.    */
 DECL|method|heartbeatCheck ()
 name|void
@@ -1240,6 +1336,17 @@ range|:
 name|datanodes
 control|)
 block|{
+comment|// check if an excessive GC pause has occurred
+if|if
+condition|(
+name|shouldAbortHeartbeatCheck
+argument_list|(
+literal|0
+argument_list|)
+condition|)
+block|{
+return|return;
+block|}
 if|if
 condition|(
 name|dead
@@ -1491,6 +1598,9 @@ name|isRunning
 argument_list|()
 condition|)
 block|{
+name|restartHeartbeatStopWatch
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 specifier|final
@@ -1593,6 +1703,32 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{         }
+comment|// avoid declaring nodes dead for another cycle if a GC pause lasts
+comment|// longer than the node recheck interval
+if|if
+condition|(
+name|shouldAbortHeartbeatCheck
+argument_list|(
+operator|-
+literal|5000
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Skipping next heartbeat scan due to excessive pause"
+argument_list|)
+expr_stmt|;
+name|lastHeartbeatCheck
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}

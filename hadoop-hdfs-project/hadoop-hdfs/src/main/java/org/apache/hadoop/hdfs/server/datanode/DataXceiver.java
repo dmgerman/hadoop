@@ -444,7 +444,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -1284,6 +1284,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|super
+argument_list|(
+name|datanode
+operator|.
+name|tracer
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|peer
@@ -1344,7 +1351,7 @@ name|this
 operator|.
 name|ioFileBufferSize
 operator|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getIoFileBufferSize
 argument_list|(
@@ -1358,7 +1365,7 @@ name|this
 operator|.
 name|smallBufferSize
 operator|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getSmallBufferSize
 argument_list|(

@@ -38,6 +38,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -67,6 +77,24 @@ operator|.
 name|records
 operator|.
 name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Container
 import|;
 end_import
 
@@ -308,6 +336,25 @@ name|setAreNodeLabelsAcceptedByRM
 parameter_list|(
 name|boolean
 name|areNodeLabelsAcceptedByRM
+parameter_list|)
+function_decl|;
+DECL|method|getContainersToDecrease ()
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|getContainersToDecrease
+parameter_list|()
+function_decl|;
+DECL|method|addAllContainersToDecrease (Collection<Container> containersToDecrease)
+name|void
+name|addAllContainersToDecrease
+parameter_list|(
+name|Collection
+argument_list|<
+name|Container
+argument_list|>
+name|containersToDecrease
 parameter_list|)
 function_decl|;
 block|}

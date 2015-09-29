@@ -10038,7 +10038,7 @@ literal|0
 init|;
 name|i
 operator|<
-literal|100000
+literal|10000
 condition|;
 name|i
 operator|++

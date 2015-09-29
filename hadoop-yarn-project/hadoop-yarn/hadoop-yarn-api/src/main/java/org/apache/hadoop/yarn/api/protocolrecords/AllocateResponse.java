@@ -176,42 +176,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerResourceDecrease
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ContainerResourceIncrease
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ContainerStatus
 import|;
 end_import
@@ -323,7 +287,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The response sent by the<code>ResourceManager</code> the  *<code>ApplicationMaster</code> during resource negotiation.  *<p>  * The response, includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *     An AMCommand sent by ResourceManager to let the  *     {@code ApplicationMaster} take some actions (resync, shutdown etc.).  *</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}s' statuses.</li>  *<li>  *     The available headroom for resources in the cluster for the  *     application.  *</li>  *<li>A list of nodes whose status has been updated.</li>  *<li>The number of available nodes in a cluster.</li>  *<li>A description of resources requested back by the cluster</li>  *<li>AMRMToken, if AMRMToken has been rolled over</li>  *</ul>  *   * @see ApplicationMasterProtocol#allocate(AllocateRequest)  */
+comment|/**  * The response sent by the<code>ResourceManager</code> the  *<code>ApplicationMaster</code> during resource negotiation.  *<p>  * The response, includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *     An AMCommand sent by ResourceManager to let the  *     {@code ApplicationMaster} take some actions (resync, shutdown etc.).  *</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}s' statuses.</li>  *<li>  *     The available headroom for resources in the cluster for the  *     application.  *</li>  *<li>A list of nodes whose status has been updated.</li>  *<li>The number of available nodes in a cluster.</li>  *<li>A description of resources requested back by the cluster</li>  *<li>AMRMToken, if AMRMToken has been rolled over</li>  *<li>  *     A list of {@link Container} representing the containers  *     whose resource has been increased.  *</li>  *<li>  *     A list of {@link Container} representing the containers  *     whose resource has been decreased.  *</li>  *</ul>  *   * @see ApplicationMasterProtocol#allocate(AllocateRequest)  */
 end_comment
 
 begin_class
@@ -470,7 +434,7 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, List<ContainerResourceIncrease> increasedContainers, List<ContainerResourceDecrease> decreasedContainers)
+DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, List<Container> increasedContainers, List<Container> decreasedContainers)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -517,13 +481,13 @@ name|nmTokens
 parameter_list|,
 name|List
 argument_list|<
-name|ContainerResourceIncrease
+name|Container
 argument_list|>
 name|increasedContainers
 parameter_list|,
 name|List
 argument_list|<
-name|ContainerResourceDecrease
+name|Container
 argument_list|>
 name|decreasedContainers
 parameter_list|)
@@ -574,7 +538,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, Token amRMToken, List<ContainerResourceIncrease> increasedContainers, List<ContainerResourceDecrease> decreasedContainers)
+DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, Token amRMToken, List<Container> increasedContainers, List<Container> decreasedContainers)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -624,13 +588,13 @@ name|amRMToken
 parameter_list|,
 name|List
 argument_list|<
-name|ContainerResourceIncrease
+name|Container
 argument_list|>
 name|increasedContainers
 parameter_list|,
 name|List
 argument_list|<
-name|ContainerResourceDecrease
+name|Container
 argument_list|>
 name|decreasedContainers
 parameter_list|)
@@ -934,27 +898,27 @@ argument_list|>
 name|nmTokens
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of newly increased containers by<code>ResourceManager</code>    */
+comment|/**    * Get the list of newly increased containers by    *<code>ResourceManager</code>.    */
 annotation|@
 name|Public
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|getIncreasedContainers ()
 specifier|public
 specifier|abstract
 name|List
 argument_list|<
-name|ContainerResourceIncrease
+name|Container
 argument_list|>
 name|getIncreasedContainers
 parameter_list|()
 function_decl|;
-comment|/**    * Set the list of newly increased containers by<code>ResourceManager</code>    */
+comment|/**    * Set the list of newly increased containers by    *<code>ResourceManager</code>.    */
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setIncreasedContainers ( List<ContainerResourceIncrease> increasedContainers)
+DECL|method|setIncreasedContainers ( List<Container> increasedContainers)
 specifier|public
 specifier|abstract
 name|void
@@ -962,32 +926,32 @@ name|setIncreasedContainers
 parameter_list|(
 name|List
 argument_list|<
-name|ContainerResourceIncrease
+name|Container
 argument_list|>
 name|increasedContainers
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of newly decreased containers by<code>NodeManager</code>    */
+comment|/**    * Get the list of newly decreased containers by    *<code>ResourceManager</code>.    */
 annotation|@
 name|Public
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|getDecreasedContainers ()
 specifier|public
 specifier|abstract
 name|List
 argument_list|<
-name|ContainerResourceDecrease
+name|Container
 argument_list|>
 name|getDecreasedContainers
 parameter_list|()
 function_decl|;
-comment|/**    * Set the list of newly decreased containers by<code>NodeManager</code>    */
+comment|/**    * Set the list of newly decreased containers by    *<code>ResourceManager</code>.    */
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setDecreasedContainers ( List<ContainerResourceDecrease> decreasedContainers)
+DECL|method|setDecreasedContainers ( List<Container> decreasedContainers)
 specifier|public
 specifier|abstract
 name|void
@@ -995,7 +959,7 @@ name|setDecreasedContainers
 parameter_list|(
 name|List
 argument_list|<
-name|ContainerResourceDecrease
+name|Container
 argument_list|>
 name|decreasedContainers
 parameter_list|)

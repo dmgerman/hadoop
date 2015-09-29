@@ -636,7 +636,9 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|Span
+name|core
+operator|.
+name|Tracer
 import|;
 end_import
 
@@ -648,17 +650,7 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|Trace
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
+name|core
 operator|.
 name|TraceScope
 import|;
@@ -826,6 +818,22 @@ DECL|field|resolveSymlinks
 name|boolean
 name|resolveSymlinks
 decl_stmt|;
+DECL|field|tracer
+specifier|private
+name|Tracer
+name|tracer
+decl_stmt|;
+DECL|method|getTracer ()
+specifier|protected
+specifier|final
+name|Tracer
+name|getTracer
+parameter_list|()
+block|{
+return|return
+name|tracer
+return|;
+block|}
 comment|/**    * This method adds a file system for testing so that we can find it later. It    * is only for testing.    * @param uri the uri to store it under    * @param conf the configuration to store it under    * @param fs the file system to store    * @throws IOException    */
 DECL|method|addFileSystemForTesting (URI uri, Configuration conf, FileSystem fs)
 specifier|static
@@ -3625,9 +3633,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    * @deprecated API only for 0.20-append    */
-annotation|@
-name|Deprecated
+comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
 DECL|method|createNonRecursive (Path f, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3678,9 +3684,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param permission    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    * @deprecated API only for 0.20-append    */
-annotation|@
-name|Deprecated
+comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param permission    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
 DECL|method|createNonRecursive (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3751,9 +3755,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**     * Opens an FSDataOutputStream at the indicated Path with write-progress     * reporting. Same as create(), except fails if parent directory doesn't     * already exist.     * @param f the file name to open     * @param permission     * @param flags {@link CreateFlag}s to use for this stream.     * @param bufferSize the size of the buffer to be used.     * @param replication required block replication for the file.     * @param blockSize     * @param progress     * @throws IOException     * @see #setPermission(Path, FsPermission)     * @deprecated API only for 0.20-append     */
-annotation|@
-name|Deprecated
+comment|/**     * Opens an FSDataOutputStream at the indicated Path with write-progress     * reporting. Same as create(), except fails if parent directory doesn't     * already exist.     * @param f the file name to open     * @param permission     * @param flags {@link CreateFlag}s to use for this stream.     * @param bufferSize the size of the buffer to be used.     * @param replication required block replication for the file.     * @param blockSize     * @param progress     * @throws IOException     * @see #setPermission(Path, FsPermission)     */
 DECL|method|createNonRecursive (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -7838,32 +7840,27 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Tracer
+name|tracer
+init|=
+name|FsTracer
+operator|.
+name|get
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 name|TraceScope
 name|scope
 init|=
-name|Trace
+name|tracer
 operator|.
-name|startSpan
+name|newScope
 argument_list|(
 literal|"FileSystem#createFileSystem"
 argument_list|)
 decl_stmt|;
-name|Span
-name|span
-init|=
 name|scope
-operator|.
-name|getSpan
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|span
-operator|!=
-literal|null
-condition|)
-block|{
-name|span
 operator|.
 name|addKVAnnotation
 argument_list|(
@@ -7875,7 +7872,6 @@ name|getScheme
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|Class
@@ -7909,6 +7905,12 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+name|fs
+operator|.
+name|tracer
+operator|=
+name|tracer
+expr_stmt|;
 name|fs
 operator|.
 name|initialize

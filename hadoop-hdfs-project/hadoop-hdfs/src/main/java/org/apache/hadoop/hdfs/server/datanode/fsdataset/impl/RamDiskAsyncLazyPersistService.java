@@ -76,7 +76,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -1110,7 +1110,7 @@ block|{
 name|int
 name|smallBufferSize
 init|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getSmallBufferSize
 argument_list|(

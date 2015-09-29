@@ -1322,7 +1322,9 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|Span
+name|core
+operator|.
+name|SpanId
 import|;
 end_import
 
@@ -1334,31 +1336,23 @@ name|apache
 operator|.
 name|htrace
 operator|.
-name|Trace
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
-operator|.
-name|TraceInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
+name|core
 operator|.
 name|TraceScope
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|core
+operator|.
+name|Tracer
 import|;
 end_import
 
@@ -1485,6 +1479,11 @@ init|=
 operator|new
 name|ExceptionsHandler
 argument_list|()
+decl_stmt|;
+DECL|field|tracer
+specifier|private
+name|Tracer
+name|tracer
 decl_stmt|;
 DECL|method|addTerseExceptions (Class<?>.... exceptionClass)
 specifier|public
@@ -3214,13 +3213,13 @@ name|byte
 index|[]
 name|clientId
 decl_stmt|;
-DECL|field|traceSpan
+DECL|field|traceScope
 specifier|private
 specifier|final
-name|Span
-name|traceSpan
+name|TraceScope
+name|traceScope
 decl_stmt|;
-comment|// the tracing span on the server side
+comment|// the HTrace scope on the server side
 DECL|method|Call (int id, int retryCount, Writable param, Connection connection)
 specifier|public
 name|Call
@@ -3304,7 +3303,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Call (int id, int retryCount, Writable param, Connection connection, RPC.RpcKind kind, byte[] clientId, Span span)
+DECL|method|Call (int id, int retryCount, Writable param, Connection connection, RPC.RpcKind kind, byte[] clientId, TraceScope traceScope)
 specifier|public
 name|Call
 parameter_list|(
@@ -3329,8 +3328,8 @@ name|byte
 index|[]
 name|clientId
 parameter_list|,
-name|Span
-name|span
+name|TraceScope
+name|traceScope
 parameter_list|)
 block|{
 name|this
@@ -3386,9 +3385,9 @@ name|clientId
 expr_stmt|;
 name|this
 operator|.
-name|traceSpan
+name|traceScope
 operator|=
-name|span
+name|traceScope
 expr_stmt|;
 block|}
 annotation|@
@@ -9593,8 +9592,8 @@ name|err
 argument_list|)
 throw|;
 block|}
-name|Span
-name|traceSpan
+name|TraceScope
+name|traceScope
 init|=
 literal|null
 decl_stmt|;
@@ -9606,12 +9605,20 @@ name|hasTraceInfo
 argument_list|()
 condition|)
 block|{
-comment|// If the incoming RPC included tracing info, always continue the trace
-name|TraceInfo
-name|parentSpan
+if|if
+condition|(
+name|tracer
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// If the incoming RPC included tracing info, always continue the
+comment|// trace
+name|SpanId
+name|parentSpanId
 init|=
 operator|new
-name|TraceInfo
+name|SpanId
 argument_list|(
 name|header
 operator|.
@@ -9630,11 +9637,11 @@ name|getParentId
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|traceSpan
+name|traceScope
 operator|=
-name|Trace
+name|tracer
 operator|.
-name|startSpan
+name|newScope
 argument_list|(
 name|RpcClientUtil
 operator|.
@@ -9646,12 +9653,15 @@ name|toString
 argument_list|()
 argument_list|)
 argument_list|,
-name|parentSpan
+name|parentSpanId
 argument_list|)
+expr_stmt|;
+name|traceScope
 operator|.
 name|detach
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 name|Call
 name|call
@@ -9691,7 +9701,7 @@ operator|.
 name|toByteArray
 argument_list|()
 argument_list|,
-name|traceSpan
+name|traceScope
 argument_list|)
 decl_stmt|;
 if|if
@@ -10450,21 +10460,23 @@ if|if
 condition|(
 name|call
 operator|.
-name|traceSpan
+name|traceScope
 operator|!=
 literal|null
 condition|)
 block|{
-name|traceScope
-operator|=
-name|Trace
-operator|.
-name|continueSpan
-argument_list|(
 name|call
 operator|.
-name|traceSpan
-argument_list|)
+name|traceScope
+operator|.
+name|reattach
+argument_list|()
+expr_stmt|;
+name|traceScope
+operator|=
+name|call
+operator|.
+name|traceScope
 expr_stmt|;
 name|traceScope
 operator|.
@@ -10887,10 +10899,9 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|Trace
-operator|.
-name|isTracing
-argument_list|()
+name|traceScope
+operator|!=
+literal|null
 condition|)
 block|{
 name|traceScope
@@ -10938,10 +10949,9 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|Trace
-operator|.
-name|isTracing
-argument_list|()
+name|traceScope
+operator|!=
+literal|null
 condition|)
 block|{
 name|traceScope
@@ -10965,19 +10975,6 @@ block|}
 block|}
 finally|finally
 block|{
-if|if
-condition|(
-name|traceScope
-operator|!=
-literal|null
-condition|)
-block|{
-name|traceScope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 name|IOUtils
 operator|.
 name|cleanup
@@ -12610,6 +12607,22 @@ operator|.
 name|socketSendBufferSize
 operator|=
 name|size
+expr_stmt|;
+block|}
+DECL|method|setTracer (Tracer t)
+specifier|public
+name|void
+name|setTracer
+parameter_list|(
+name|Tracer
+name|t
+parameter_list|)
+block|{
+name|this
+operator|.
+name|tracer
+operator|=
+name|t
 expr_stmt|;
 block|}
 comment|/** Starts the service.  Must be called before any calls will be handled. */

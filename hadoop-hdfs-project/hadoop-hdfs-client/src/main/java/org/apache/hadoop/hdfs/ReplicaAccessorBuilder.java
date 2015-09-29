@@ -102,6 +102,17 @@ name|String
 name|blockPoolId
 parameter_list|)
 function_decl|;
+comment|/** Set the genstamp of the block which is being opened. */
+DECL|method|setGenerationStamp (long genstamp)
+specifier|public
+specifier|abstract
+name|ReplicaAccessorBuilder
+name|setGenerationStamp
+parameter_list|(
+name|long
+name|genstamp
+parameter_list|)
+function_decl|;
 comment|/**    * Set whether checksums must be verified.  Checksums should be skipped if    * the user has disabled checksum verification in the configuration.  Users    * may wish to do this if their software does checksum verification at a    * higher level than HDFS.    */
 specifier|public
 specifier|abstract

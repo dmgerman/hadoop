@@ -1261,34 +1261,6 @@ argument_list|,
 name|journalTxnInfo
 argument_list|)
 expr_stmt|;
-comment|// get attribute "NNStarted"
-name|String
-name|nnStarted
-init|=
-operator|(
-name|String
-operator|)
-name|mbs
-operator|.
-name|getAttribute
-argument_list|(
-name|mxbeanName
-argument_list|,
-literal|"NNStarted"
-argument_list|)
-decl_stmt|;
-name|assertEquals
-argument_list|(
-literal|"Bad value for NNStarted"
-argument_list|,
-name|fsn
-operator|.
-name|getNNStarted
-argument_list|()
-argument_list|,
-name|nnStarted
-argument_list|)
-expr_stmt|;
 comment|// get attribute "CompileInfo"
 name|String
 name|compileInfo

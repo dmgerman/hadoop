@@ -262,6 +262,11 @@ specifier|final
 name|AssignmentInformation
 name|assignmentInformation
 decl_stmt|;
+DECL|field|increaseAllocation
+specifier|private
+name|boolean
+name|increaseAllocation
+decl_stmt|;
 DECL|method|CSAssignment (Resource resource, NodeType type)
 specifier|public
 name|CSAssignment
@@ -680,6 +685,30 @@ name|this
 operator|.
 name|assignmentInformation
 return|;
+block|}
+DECL|method|isIncreasedAllocation ()
+specifier|public
+name|boolean
+name|isIncreasedAllocation
+parameter_list|()
+block|{
+return|return
+name|increaseAllocation
+return|;
+block|}
+DECL|method|setIncreasedAllocation (boolean flag)
+specifier|public
+name|void
+name|setIncreasedAllocation
+parameter_list|(
+name|boolean
+name|flag
+parameter_list|)
+block|{
+name|increaseAllocation
+operator|=
+name|flag
+expr_stmt|;
 block|}
 block|}
 end_class

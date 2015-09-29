@@ -1001,6 +1001,15 @@ argument_list|,
 literal|"Success"
 argument_list|,
 literal|0
+argument_list|,
+name|BuilderUtils
+operator|.
+name|newResource
+argument_list|(
+name|memory
+argument_list|,
+name|vCores
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|ArrayList

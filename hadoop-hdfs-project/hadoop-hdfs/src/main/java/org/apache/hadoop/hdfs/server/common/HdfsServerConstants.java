@@ -112,6 +112,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|HdfsConstants
@@ -238,23 +254,22 @@ name|MIN_BLOCKS_FOR_WRITE
 init|=
 literal|1
 decl_stmt|;
-comment|/**    * For a HDFS client to write to a file, a lease is granted; During the lease    * period, no other client can write to the file. The writing client can    * periodically renew the lease. When the file is closed, the lease is    * revoked. The lease duration is bound by this soft limit and a    * {@link HdfsServerConstants#LEASE_HARDLIMIT_PERIOD hard limit}. Until the    * soft limit expires, the writer has sole write access to the file. If the    * soft limit expires and the client fails to close the file or renew the    * lease, another client can preempt the lease.    */
+comment|/**    * Please see {@link HdfsConstants#LEASE_SOFTLIMIT_PERIOD} and    * {@link HdfsConstants#LEASE_HARDLIMIT_PERIOD} for more information.    */
 DECL|field|LEASE_SOFTLIMIT_PERIOD
 name|long
 name|LEASE_SOFTLIMIT_PERIOD
 init|=
-literal|60
-operator|*
-literal|1000
+name|HdfsConstants
+operator|.
+name|LEASE_SOFTLIMIT_PERIOD
 decl_stmt|;
-comment|/**    * For a HDFS client to write to a file, a lease is granted; During the lease    * period, no other client can write to the file. The writing client can    * periodically renew the lease. When the file is closed, the lease is    * revoked. The lease duration is bound by a    * {@link HdfsServerConstants#LEASE_SOFTLIMIT_PERIOD soft limit} and this hard    * limit. If after the hard limit expires and the client has failed to renew    * the lease, HDFS assumes that the client has quit and will automatically    * close the file on behalf of the writer, and recover the lease.    */
 DECL|field|LEASE_HARDLIMIT_PERIOD
 name|long
 name|LEASE_HARDLIMIT_PERIOD
 init|=
-literal|60
-operator|*
-name|LEASE_SOFTLIMIT_PERIOD
+name|HdfsConstants
+operator|.
+name|LEASE_HARDLIMIT_PERIOD
 decl_stmt|;
 DECL|field|LEASE_RECOVER_PERIOD
 name|long

@@ -300,7 +300,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|LocatedBlocks
+name|HdfsConstants
 import|;
 end_import
 
@@ -314,11 +314,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|common
-operator|.
-name|HdfsServerConstants
+name|LocatedBlocks
 import|;
 end_import
 
@@ -700,7 +698,7 @@ name|setLeasePeriod
 argument_list|(
 literal|1000
 argument_list|,
-name|HdfsServerConstants
+name|HdfsConstants
 operator|.
 name|LEASE_HARDLIMIT_PERIOD
 argument_list|)

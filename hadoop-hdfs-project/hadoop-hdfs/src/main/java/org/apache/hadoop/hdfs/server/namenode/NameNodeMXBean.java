@@ -297,13 +297,6 @@ name|String
 name|getJournalTransactionInfo
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the NN start time    *    * @return the NN start time    */
-DECL|method|getNNStarted ()
-specifier|public
-name|String
-name|getNNStarted
-parameter_list|()
-function_decl|;
 comment|/**    * Gets the NN start time in milliseconds.    * @return the NN start time in msec    */
 DECL|method|getNNStartedTimeInMillis ()
 name|long
