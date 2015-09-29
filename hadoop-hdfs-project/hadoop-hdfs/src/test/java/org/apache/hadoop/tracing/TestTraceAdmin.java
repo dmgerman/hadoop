@@ -421,7 +421,7 @@ name|assertEquals
 argument_list|(
 literal|"ret:0, Added trace span receiver 1 with "
 operator|+
-literal|"configuration dfs.htrace.local-file-span-receiver.path = "
+literal|"configuration hadoop.htrace.local.file.span.receiver.path = "
 operator|+
 name|tracePath
 operator|+
@@ -444,7 +444,7 @@ literal|"-class"
 argument_list|,
 literal|"org.apache.htrace.core.LocalFileSpanReceiver"
 argument_list|,
-literal|"-Cdfs.htrace.local-file-span-receiver.path="
+literal|"-Chadoop.htrace.local.file.span.receiver.path="
 operator|+
 name|tracePath
 argument_list|)
@@ -545,7 +545,7 @@ name|assertEquals
 argument_list|(
 literal|"ret:0, Added trace span receiver 2 with "
 operator|+
-literal|"configuration dfs.htrace.local-file-span-receiver.path = "
+literal|"configuration hadoop.htrace.local.file.span.receiver.path = "
 operator|+
 name|tracePath
 operator|+
@@ -568,7 +568,7 @@ literal|"-class"
 argument_list|,
 literal|"LocalFileSpanReceiver"
 argument_list|,
-literal|"-Cdfs.htrace.local-file-span-receiver.path="
+literal|"-Chadoop.htrace.local.file.span.receiver.path="
 operator|+
 name|tracePath
 argument_list|)

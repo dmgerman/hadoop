@@ -584,13 +584,6 @@ name|DFS_CLIENT_LOCAL_INTERFACES
 init|=
 literal|"dfs.client.local.interfaces"
 decl_stmt|;
-comment|// HDFS client HTrace configuration.
-DECL|field|DFS_CLIENT_HTRACE_PREFIX
-name|String
-name|DFS_CLIENT_HTRACE_PREFIX
-init|=
-literal|"dfs.client.htrace."
-decl_stmt|;
 DECL|field|DFS_USER_HOME_DIR_PREFIX_KEY
 name|String
 name|DFS_USER_HOME_DIR_PREFIX_KEY

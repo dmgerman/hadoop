@@ -311,15 +311,6 @@ name|HdfsClientConfigKeys
 operator|.
 name|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT
 decl_stmt|;
-DECL|field|DFS_CLIENT_HTRACE_SAMPLER_CLASSES
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_CLIENT_HTRACE_SAMPLER_CLASSES
-init|=
-literal|"dfs.client.htrace.sampler.classes"
-decl_stmt|;
 comment|// HA related configuration
 DECL|field|DFS_DATANODE_RESTART_REPLICA_EXPIRY_KEY
 specifier|public

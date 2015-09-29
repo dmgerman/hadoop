@@ -3774,7 +3774,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|clientRpcServer
+name|serviceRpcServer
 operator|.
 name|setTracer
 argument_list|(
