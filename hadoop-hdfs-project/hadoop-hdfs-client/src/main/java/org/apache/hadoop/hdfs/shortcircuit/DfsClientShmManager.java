@@ -587,33 +587,22 @@ name|isFull
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
+literal|"{}: pulled the last slot {} out of {}"
+argument_list|,
 name|this
-operator|+
-literal|": pulled the last slot "
-operator|+
+argument_list|,
 name|slot
 operator|.
 name|getSlotIdx
 argument_list|()
-operator|+
-literal|" out of "
-operator|+
+argument_list|,
 name|shm
 argument_list|)
 expr_stmt|;
-block|}
 name|DfsClientShm
 name|removedShm
 init|=
@@ -645,33 +634,22 @@ expr_stmt|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
+literal|"{}: pulled slot {} out of {}"
+argument_list|,
 name|this
-operator|+
-literal|": pulled slot "
-operator|+
+argument_list|,
 name|slot
 operator|.
 name|getSlotIdx
 argument_list|()
-operator|+
-literal|" out of "
-operator|+
+argument_list|,
 name|shm
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 name|slot
@@ -874,26 +852,17 @@ argument_list|,
 name|peer
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
+literal|"{}: createNewShm: created {}"
+argument_list|,
 name|this
-operator|+
-literal|": createNewShm: created "
-operator|+
+argument_list|,
 name|shm
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|shm
 return|;
@@ -1009,24 +978,15 @@ condition|(
 name|closed
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
+literal|"{}: the DfsClientShmManager has been closed."
+argument_list|,
 name|this
-operator|+
-literal|": the DfsClientShmManager has been closed."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -1036,24 +996,15 @@ condition|(
 name|disabled
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
+literal|"{}: shared memory segment access is disabled."
+argument_list|,
 name|this
-operator|+
-literal|": shared memory segment access is disabled."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -1085,24 +1036,15 @@ condition|(
 name|loading
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
+literal|"{}: waiting for loading to finish..."
+argument_list|,
 name|this
-operator|+
-literal|": waiting for loading to finish..."
 argument_list|)
 expr_stmt|;
-block|}
 name|finishedLoading
 operator|.
 name|awaitUninterruptibly
@@ -1196,28 +1138,19 @@ comment|// was created, the DomainSocketWatcher callback might already have
 comment|// fired and marked the shm as disconnected.  In this case, we
 comment|// obviously don't want to add the SharedMemorySegment to our list
 comment|// of valid not-full segments.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}: the UNIX domain socket associated with this "
+operator|+
+literal|"short-circuit memory closed before we could make use of "
+operator|+
+literal|"the shm."
+argument_list|,
 name|this
-operator|+
-literal|": the UNIX domain socket associated with "
-operator|+
-literal|"this short-circuit memory closed before we could make "
-operator|+
-literal|"use of the shm."
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -1316,26 +1249,17 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
+literal|"{}: freeing empty stale {}"
+argument_list|,
 name|this
-operator|+
-literal|": freeing empty stale "
-operator|+
+argument_list|,
 name|shm
 argument_list|)
 expr_stmt|;
-block|}
 name|shm
 operator|.
 name|free
@@ -1392,28 +1316,17 @@ comment|// always allocating new slots out of the shared memory segment with the
 comment|// lowest ID, but it could still occur.  In most workloads,
 comment|// fragmentation should not be a major concern, since it doesn't impact
 comment|// peak file descriptor usage or the speed of allocation.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
+literal|"{}: shutting down UNIX domain socket for empty {}"
+argument_list|,
 name|this
-operator|+
-literal|": shutting down UNIX domain socket for "
-operator|+
-literal|"empty "
-operator|+
+argument_list|,
 name|shm
 argument_list|)
 expr_stmt|;
-block|}
 name|shutdown
 argument_list|(
 name|shm
