@@ -483,6 +483,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getCredential ()
+specifier|public
 specifier|abstract
 name|String
 name|getCredential
