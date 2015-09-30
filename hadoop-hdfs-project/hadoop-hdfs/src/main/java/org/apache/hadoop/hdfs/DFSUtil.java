@@ -3641,7 +3641,18 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|// Add the default URI if it is an HDFS URI.
+comment|// Add the default URI if it is an HDFS URI and we haven't come up with a
+comment|// valid non-nameservice NN address yet.  Consider the servicerpc-address
+comment|// and rpc-address to be the "unnamed" nameservice.  defaultFS is our
+comment|// fallback when rpc-address isn't given.  We therefore only want to add
+comment|// the defaultFS when neither the servicerpc-address (which is preferred)
+comment|// nor the rpc-address (which overrides defaultFS) is given.
+if|if
+condition|(
+operator|!
+name|uriFound
+condition|)
+block|{
 name|URI
 name|defaultUri
 init|=
@@ -3731,6 +3742,7 @@ argument_list|(
 name|defaultUri
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|ret

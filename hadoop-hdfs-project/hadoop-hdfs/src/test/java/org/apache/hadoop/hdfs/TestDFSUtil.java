@@ -3718,6 +3718,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test how name service URIs are handled with a variety of configuration    * settings    * @throws Exception    */
 annotation|@
 name|Test
 DECL|method|testGetNNUris ()
@@ -3771,6 +3772,126 @@ name|NN2_ADDR
 init|=
 literal|"nn2.example.com:8020"
 decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFS_NAMESERVICES
+argument_list|,
+literal|"ns1"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSUtil
+operator|.
+name|addKeySuffixes
+argument_list|(
+name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
+argument_list|,
+literal|"ns1"
+argument_list|)
+argument_list|,
+name|NS1_NN1_ADDR
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
+argument_list|,
+literal|"hdfs://"
+operator|+
+name|NN2_ADDR
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|FS_DEFAULT_NAME_KEY
+argument_list|,
+literal|"hdfs://"
+operator|+
+name|NN1_ADDR
+argument_list|)
+expr_stmt|;
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
+name|uris
+init|=
+name|DFSUtil
+operator|.
+name|getNameServiceUris
+argument_list|(
+name|conf
+argument_list|,
+name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
+argument_list|,
+name|DFS_NAMENODE_RPC_ADDRESS_KEY
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Incorrect number of URIs returned"
+argument_list|,
+literal|2
+argument_list|,
+name|uris
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Missing URI for name service ns1"
+argument_list|,
+name|uris
+operator|.
+name|contains
+argument_list|(
+operator|new
+name|URI
+argument_list|(
+literal|"hdfs://"
+operator|+
+name|NS1_NN1_ADDR
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Missing URI for service address"
+argument_list|,
+name|uris
+operator|.
+name|contains
+argument_list|(
+operator|new
+name|URI
+argument_list|(
+literal|"hdfs://"
+operator|+
+name|NN2_ADDR
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|conf
+operator|=
+operator|new
+name|HdfsConfiguration
+argument_list|()
+expr_stmt|;
 name|conf
 operator|.
 name|set
@@ -3872,12 +3993,8 @@ operator|+
 name|NN2_ADDR
 argument_list|)
 expr_stmt|;
-name|Collection
-argument_list|<
-name|URI
-argument_list|>
 name|uris
-init|=
+operator|=
 name|DFSUtil
 operator|.
 name|getNameServiceUris
@@ -3888,10 +4005,12 @@ name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
 argument_list|,
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|4
+literal|"Incorrect number of URIs returned"
+argument_list|,
+literal|3
 argument_list|,
 name|uris
 operator|.
@@ -3901,6 +4020,8 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Missing URI for name service ns1"
+argument_list|,
 name|uris
 operator|.
 name|contains
@@ -3915,6 +4036,8 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Missing URI for name service ns2"
+argument_list|,
 name|uris
 operator|.
 name|contains
@@ -3931,6 +4054,8 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Missing URI for RPC address"
+argument_list|,
 name|uris
 operator|.
 name|contains
@@ -3941,22 +4066,6 @@ argument_list|(
 literal|"hdfs://"
 operator|+
 name|NN1_ADDR
-argument_list|)
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|uris
-operator|.
-name|contains
-argument_list|(
-operator|new
-name|URI
-argument_list|(
-literal|"hdfs://"
-operator|+
-name|NN2_ADDR
 argument_list|)
 argument_list|)
 argument_list|)
@@ -3988,6 +4097,8 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Incorrect number of URIs returned"
+argument_list|,
 literal|3
 argument_list|,
 name|uris
@@ -3998,6 +4109,8 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Missing URI for name service ns1"
+argument_list|,
 name|uris
 operator|.
 name|contains
@@ -4012,6 +4125,8 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Missing URI for name service ns2"
+argument_list|,
 name|uris
 operator|.
 name|contains
@@ -4028,6 +4143,8 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Missing URI for RPC address"
+argument_list|,
 name|uris
 operator|.
 name|contains
@@ -4070,6 +4187,8 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Incorrect number of URIs returned"
+argument_list|,
 literal|3
 argument_list|,
 name|uris
@@ -4080,6 +4199,8 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Missing URI for name service ns1"
+argument_list|,
 name|uris
 operator|.
 name|contains
@@ -4094,6 +4215,8 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Missing URI for name service ns2"
+argument_list|,
 name|uris
 operator|.
 name|contains
@@ -4110,6 +4233,8 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Missing URI for RPC address"
+argument_list|,
 name|uris
 operator|.
 name|contains
@@ -4124,10 +4249,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Make sure that when a service RPC address is used that is distinct from
-comment|// the client RPC address, and that client RPC address is also used as the
-comment|// default URI, that the client URI does not end up in the set of URIs
-comment|// returned.
+comment|// Check that the default URI is returned if there's nothing else to return.
 name|conf
 operator|=
 operator|new
@@ -4147,12 +4269,177 @@ operator|+
 name|NN1_ADDR
 argument_list|)
 expr_stmt|;
+name|uris
+operator|=
+name|DFSUtil
+operator|.
+name|getNameServiceUris
+argument_list|(
+name|conf
+argument_list|,
+name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
+argument_list|,
+name|DFS_NAMENODE_RPC_ADDRESS_KEY
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Incorrect number of URIs returned"
+argument_list|,
+literal|1
+argument_list|,
+name|uris
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Missing URI for RPC address (defaultFS)"
+argument_list|,
+name|uris
+operator|.
+name|contains
+argument_list|(
+operator|new
+name|URI
+argument_list|(
+literal|"hdfs://"
+operator|+
+name|NN1_ADDR
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Check that the RPC address is the only address returned when the RPC
+comment|// and the default FS is given.
 name|conf
 operator|.
 name|set
 argument_list|(
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|,
+name|NN2_ADDR
+argument_list|)
+expr_stmt|;
+name|uris
+operator|=
+name|DFSUtil
+operator|.
+name|getNameServiceUris
+argument_list|(
+name|conf
+argument_list|,
+name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
+argument_list|,
+name|DFS_NAMENODE_RPC_ADDRESS_KEY
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Incorrect number of URIs returned"
+argument_list|,
+literal|1
+argument_list|,
+name|uris
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Missing URI for RPC address"
+argument_list|,
+name|uris
+operator|.
+name|contains
+argument_list|(
+operator|new
+name|URI
+argument_list|(
+literal|"hdfs://"
+operator|+
+name|NN2_ADDR
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Make sure that when a service RPC address is used that is distinct from
+comment|// the client RPC address, and that client RPC address is also used as the
+comment|// default URI, that the client URI does not end up in the set of URIs
+comment|// returned.
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
+argument_list|,
+name|NN1_ADDR
+argument_list|)
+expr_stmt|;
+name|uris
+operator|=
+name|DFSUtil
+operator|.
+name|getNameServiceUris
+argument_list|(
+name|conf
+argument_list|,
+name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
+argument_list|,
+name|DFS_NAMENODE_RPC_ADDRESS_KEY
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Incorrect number of URIs returned"
+argument_list|,
+literal|1
+argument_list|,
+name|uris
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Missing URI for service ns1"
+argument_list|,
+name|uris
+operator|.
+name|contains
+argument_list|(
+operator|new
+name|URI
+argument_list|(
+literal|"hdfs://"
+operator|+
+name|NN1_ADDR
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Check that when the default FS and service address are given, but
+comment|// the RPC address isn't, that only the service address is returned.
+name|conf
+operator|=
+operator|new
+name|HdfsConfiguration
+argument_list|()
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|FS_DEFAULT_NAME_KEY
+argument_list|,
+literal|"hdfs://"
+operator|+
 name|NN1_ADDR
 argument_list|)
 expr_stmt|;
@@ -4180,6 +4467,8 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Incorrect number of URIs returned"
+argument_list|,
 literal|1
 argument_list|,
 name|uris
@@ -4190,6 +4479,8 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Missing URI for service address"
+argument_list|,
 name|uris
 operator|.
 name|contains
