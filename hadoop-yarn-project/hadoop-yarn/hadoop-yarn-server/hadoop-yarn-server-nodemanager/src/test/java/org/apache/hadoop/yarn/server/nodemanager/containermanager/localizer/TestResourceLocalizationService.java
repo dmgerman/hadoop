@@ -5286,6 +5286,8 @@ name|USERCACHE
 operator|+
 name|user1
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|privTracker1
@@ -5304,6 +5306,8 @@ name|USERCACHE
 operator|+
 name|user1
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|LocalizedResource
@@ -5342,6 +5346,8 @@ name|APPCACHE
 operator|+
 name|appId1
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|LocalizedResource
@@ -5370,6 +5376,8 @@ name|APPCACHE
 operator|+
 name|appId2
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|LocalizedResource
@@ -5398,6 +5406,8 @@ name|APPCACHE
 operator|+
 name|appId2
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|LocalizedResource
@@ -5424,6 +5434,8 @@ name|ContainerLocalizer
 operator|.
 name|FILECACHE
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|LocalizedResource
@@ -5450,6 +5462,8 @@ name|ContainerLocalizer
 operator|.
 name|FILECACHE
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|LocalizedResource

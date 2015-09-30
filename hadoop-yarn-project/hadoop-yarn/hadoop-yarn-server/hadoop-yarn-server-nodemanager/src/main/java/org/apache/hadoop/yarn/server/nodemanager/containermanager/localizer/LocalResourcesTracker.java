@@ -144,7 +144,7 @@ name|DeletionService
 name|delService
 parameter_list|)
 function_decl|;
-DECL|method|getPathForLocalization (LocalResourceRequest req, Path localDirPath)
+DECL|method|getPathForLocalization (LocalResourceRequest req, Path localDirPath, DeletionService delService)
 name|Path
 name|getPathForLocalization
 parameter_list|(
@@ -153,6 +153,9 @@ name|req
 parameter_list|,
 name|Path
 name|localDirPath
+parameter_list|,
+name|DeletionService
+name|delService
 parameter_list|)
 function_decl|;
 DECL|method|getUser ()

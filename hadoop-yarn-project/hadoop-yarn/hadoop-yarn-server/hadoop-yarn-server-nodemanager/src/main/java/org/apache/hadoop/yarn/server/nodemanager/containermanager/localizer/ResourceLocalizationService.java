@@ -5525,6 +5525,8 @@ argument_list|(
 name|key
 argument_list|,
 name|publicRootPath
+argument_list|,
+name|delService
 argument_list|)
 decl_stmt|;
 if|if
@@ -6959,6 +6961,8 @@ name|rsrc
 argument_list|)
 argument_list|,
 name|dirPath
+argument_list|,
+name|delService
 argument_list|)
 return|;
 block|}
