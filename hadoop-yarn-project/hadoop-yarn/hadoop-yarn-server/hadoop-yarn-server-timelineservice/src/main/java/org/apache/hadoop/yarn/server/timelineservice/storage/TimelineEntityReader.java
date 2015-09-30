@@ -98,6 +98,34 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
@@ -135,6 +163,22 @@ operator|.
 name|client
 operator|.
 name|Result
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hbase
+operator|.
+name|client
+operator|.
+name|ResultScanner
 import|;
 end_import
 
@@ -254,6 +298,22 @@ specifier|abstract
 class|class
 name|TimelineEntityReader
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|TimelineEntityReader
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|singleEntityRead
 specifier|protected
 specifier|final
@@ -748,6 +808,32 @@ argument_list|,
 name|conn
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|result
+operator|==
+literal|null
+operator|||
+name|result
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// Could not find a matching row.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Cannot find matching entity of type "
+operator|+
+name|entityType
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 return|return
 name|parseEntity
 argument_list|(
@@ -794,10 +880,7 @@ name|TreeSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
-name|Iterable
-argument_list|<
-name|Result
-argument_list|>
+name|ResultScanner
 name|results
 init|=
 name|getResults
@@ -807,6 +890,8 @@ argument_list|,
 name|conn
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|Result
@@ -860,6 +945,15 @@ return|return
 name|entities
 return|;
 block|}
+finally|finally
+block|{
+name|results
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Returns the main table to be used by the entity reader.    */
 DECL|method|getTable ()
 specifier|protected
@@ -911,14 +1005,11 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Fetches an iterator for {@link Result} instances for a multi-entity read.    */
+comment|/**    * Fetches a {@link ResultScanner} for a multi-entity read.    */
 DECL|method|getResults (Configuration hbaseConf, Connection conn)
 specifier|protected
 specifier|abstract
-name|Iterable
-argument_list|<
-name|Result
-argument_list|>
+name|ResultScanner
 name|getResults
 parameter_list|(
 name|Configuration

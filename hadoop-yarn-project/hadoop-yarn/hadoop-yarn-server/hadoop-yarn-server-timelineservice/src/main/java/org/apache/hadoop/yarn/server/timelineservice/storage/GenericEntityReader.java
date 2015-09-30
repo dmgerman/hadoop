@@ -184,6 +184,22 @@ name|hbase
 operator|.
 name|client
 operator|.
+name|ResultScanner
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hbase
+operator|.
+name|client
+operator|.
 name|Scan
 import|;
 end_import
@@ -1303,10 +1319,7 @@ annotation|@
 name|Override
 DECL|method|getResults (Configuration hbaseConf, Connection conn)
 specifier|protected
-name|Iterable
-argument_list|<
-name|Result
-argument_list|>
+name|ResultScanner
 name|getResults
 parameter_list|(
 name|Configuration

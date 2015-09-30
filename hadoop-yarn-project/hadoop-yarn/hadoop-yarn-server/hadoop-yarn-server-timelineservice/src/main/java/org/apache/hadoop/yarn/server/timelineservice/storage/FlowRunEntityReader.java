@@ -132,6 +132,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hbase
+operator|.
+name|client
+operator|.
+name|ResultScanner
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -661,10 +677,7 @@ annotation|@
 name|Override
 DECL|method|getResults (Configuration hbaseConf, Connection conn)
 specifier|protected
-name|Iterable
-argument_list|<
-name|Result
-argument_list|>
+name|ResultScanner
 name|getResults
 parameter_list|(
 name|Configuration
@@ -726,11 +739,11 @@ name|flowRunId
 argument_list|)
 expr_stmt|;
 comment|// read the start time
-name|Long
+name|Number
 name|startTime
 init|=
 operator|(
-name|Long
+name|Number
 operator|)
 name|FlowRunColumn
 operator|.
@@ -753,15 +766,18 @@ operator|.
 name|setStartTime
 argument_list|(
 name|startTime
+operator|.
+name|longValue
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 comment|// read the end time if available
-name|Long
+name|Number
 name|endTime
 init|=
 operator|(
-name|Long
+name|Number
 operator|)
 name|FlowRunColumn
 operator|.
@@ -784,6 +800,9 @@ operator|.
 name|setMaxEndTime
 argument_list|(
 name|endTime
+operator|.
+name|longValue
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
