@@ -74,20 +74,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
-operator|.
-name|core
-operator|.
-name|Tracer
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -170,12 +156,6 @@ DECL|field|count
 specifier|private
 name|int
 name|count
-decl_stmt|;
-comment|// The HTrace tracer to use
-DECL|field|tracer
-specifier|private
-name|Tracer
-name|tracer
 decl_stmt|;
 comment|// We want this value to be a multiple of 3 because the native code checksums
 comment|// 3 chunks simultaneously. The chosen value of 9 strikes a balance between

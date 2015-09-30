@@ -2658,32 +2658,23 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Address "
-operator|+
+literal|"Address {} is {} local"
+argument_list|,
 name|targetAddr
-operator|+
+argument_list|,
 operator|(
 name|cached
 condition|?
-literal|" is local"
+literal|""
 else|:
-literal|" is not local"
+literal|"not"
 operator|)
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|cached
 return|;
@@ -2698,32 +2689,23 @@ argument_list|(
 name|addr
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Address "
-operator|+
+literal|"Address {} is {} local"
+argument_list|,
 name|targetAddr
-operator|+
+argument_list|,
 operator|(
 name|local
 condition|?
-literal|" is local"
+literal|""
 else|:
-literal|" is not local"
+literal|"not"
 operator|)
 argument_list|)
 expr_stmt|;
-block|}
 name|localAddrMap
 operator|.
 name|put

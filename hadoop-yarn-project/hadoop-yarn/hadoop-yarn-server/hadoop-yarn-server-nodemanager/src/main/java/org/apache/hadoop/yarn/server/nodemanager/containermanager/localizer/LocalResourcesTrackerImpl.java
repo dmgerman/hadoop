@@ -2233,12 +2233,12 @@ name|iterator
 argument_list|()
 return|;
 block|}
-comment|/**    * @return {@link Path} absolute path for localization which includes local    *         directory path and the relative hierarchical path (if use local    *         cache directory manager is enabled)    *     * @param {@link LocalResourceRequest} Resource localization request to    *        localize the resource.    * @param {@link Path} local directory path    */
+comment|/**    * @return {@link Path} absolute path for localization which includes local    *         directory path and the relative hierarchical path (if use local    *         cache directory manager is enabled)    *     * @param {@link LocalResourceRequest} Resource localization request to    *        localize the resource.    * @param {@link Path} local directory path    * @param {@link DeletionService} Deletion Service to delete existing    *        path for localization.    */
 annotation|@
 name|Override
+DECL|method|getPathForLocalization (LocalResourceRequest req, Path localDirPath, DeletionService delService)
 specifier|public
 name|Path
-DECL|method|getPathForLocalization (LocalResourceRequest req, Path localDirPath)
 name|getPathForLocalization
 parameter_list|(
 name|LocalResourceRequest
@@ -2246,6 +2246,9 @@ name|req
 parameter_list|,
 name|Path
 name|localDirPath
+parameter_list|,
+name|DeletionService
+name|delService
 parameter_list|)
 block|{
 name|Path
@@ -2341,8 +2344,14 @@ name|rPath
 argument_list|)
 expr_stmt|;
 block|}
-name|rPath
-operator|=
+while|while
+condition|(
+literal|true
+condition|)
+block|{
+name|Path
+name|uniquePath
+init|=
 operator|new
 name|Path
 argument_list|(
@@ -2358,7 +2367,70 @@ name|incrementAndGet
 argument_list|()
 argument_list|)
 argument_list|)
+decl_stmt|;
+name|File
+name|file
+init|=
+operator|new
+name|File
+argument_list|(
+name|uniquePath
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getRawPath
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|file
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+name|rPath
+operator|=
+name|uniquePath
 expr_stmt|;
+break|break;
+block|}
+comment|// If the directory already exists, delete it and move to next one.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Directory "
+operator|+
+name|uniquePath
+operator|+
+literal|" already exists, "
+operator|+
+literal|"try next one."
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|delService
+operator|!=
+literal|null
+condition|)
+block|{
+name|delService
+operator|.
+name|delete
+argument_list|(
+name|getUser
+argument_list|()
+argument_list|,
+name|uniquePath
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 name|Path
 name|localPath
 init|=

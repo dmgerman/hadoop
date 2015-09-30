@@ -819,14 +819,6 @@ argument_list|(
 name|fs
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -839,7 +831,6 @@ name|getService
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|hasInitedToken
 operator|=
@@ -886,14 +877,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -906,7 +889,6 @@ name|getService
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|fs
 operator|.
 name|setDelegationToken

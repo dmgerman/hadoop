@@ -417,6 +417,32 @@ name|boolean
 name|create
 parameter_list|)
 block|{
+return|return
+name|getLeafQueue
+argument_list|(
+name|name
+argument_list|,
+name|create
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+DECL|method|getLeafQueue ( String name, boolean create, boolean recomputeSteadyShares)
+specifier|public
+name|FSLeafQueue
+name|getLeafQueue
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|boolean
+name|create
+parameter_list|,
+name|boolean
+name|recomputeSteadyShares
+parameter_list|)
+block|{
 name|FSQueue
 name|queue
 init|=
@@ -429,6 +455,8 @@ argument_list|,
 name|FSQueueType
 operator|.
 name|LEAF
+argument_list|,
+name|recomputeSteadyShares
 argument_list|)
 decl_stmt|;
 if|if
@@ -490,6 +518,32 @@ name|boolean
 name|create
 parameter_list|)
 block|{
+return|return
+name|getParentQueue
+argument_list|(
+name|name
+argument_list|,
+name|create
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+DECL|method|getParentQueue ( String name, boolean create, boolean recomputeSteadyShares)
+specifier|public
+name|FSParentQueue
+name|getParentQueue
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|boolean
+name|create
+parameter_list|,
+name|boolean
+name|recomputeSteadyShares
+parameter_list|)
+block|{
 name|FSQueue
 name|queue
 init|=
@@ -502,6 +556,8 @@ argument_list|,
 name|FSQueueType
 operator|.
 name|PARENT
+argument_list|,
+name|recomputeSteadyShares
 argument_list|)
 decl_stmt|;
 if|if
@@ -522,7 +578,7 @@ operator|)
 name|queue
 return|;
 block|}
-DECL|method|getQueue (String name, boolean create, FSQueueType queueType)
+DECL|method|getQueue ( String name, boolean create, FSQueueType queueType, boolean recomputeSteadyShares)
 specifier|private
 name|FSQueue
 name|getQueue
@@ -535,8 +591,16 @@ name|create
 parameter_list|,
 name|FSQueueType
 name|queueType
+parameter_list|,
+name|boolean
+name|recomputeSteadyShares
 parameter_list|)
 block|{
+name|boolean
+name|recompute
+init|=
+name|recomputeSteadyShares
+decl_stmt|;
 name|name
 operator|=
 name|ensureRootPrefix
@@ -544,21 +608,23 @@ argument_list|(
 name|name
 argument_list|)
 expr_stmt|;
+name|FSQueue
+name|queue
+decl_stmt|;
 synchronized|synchronized
 init|(
 name|queues
 init|)
 block|{
-name|FSQueue
 name|queue
-init|=
+operator|=
 name|queues
 operator|.
 name|get
 argument_list|(
 name|name
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|queue
@@ -578,12 +644,18 @@ argument_list|,
 name|queueType
 argument_list|)
 expr_stmt|;
-comment|// Update steady fair share for all queues
+block|}
+else|else
+block|{
+name|recompute
+operator|=
+literal|false
+expr_stmt|;
+block|}
+block|}
 if|if
 condition|(
-name|queue
-operator|!=
-literal|null
+name|recompute
 condition|)
 block|{
 name|rootQueue
@@ -592,11 +664,9 @@ name|recomputeSteadyShares
 argument_list|()
 expr_stmt|;
 block|}
-block|}
 return|return
 name|queue
 return|;
-block|}
 block|}
 comment|/**    * Creates a leaf or parent queue based on what is specified in 'queueType'     * and places it in the tree. Creates any parents that don't already exist.    *     * @return    *    the created queue, if successful. null if not allowed (one of the parent    *    queues in the queue name is already a leaf queue)    */
 DECL|method|createQueue (String name, FSQueueType queueType)
@@ -1568,6 +1638,11 @@ name|queueConf
 parameter_list|)
 block|{
 comment|// Create leaf queues and the parent queues in a leaf's ancestry if they do not exist
+synchronized|synchronized
+init|(
+name|queues
+init|)
+block|{
 for|for
 control|(
 name|String
@@ -1603,11 +1678,14 @@ argument_list|(
 name|name
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// At this point all leaves and 'parents with at least one child' would have been created.
+comment|// At this point all leaves and 'parents with
+comment|// at least one child' would have been created.
 comment|// Now create parents with no configured leaf.
 for|for
 control|(
@@ -1644,10 +1722,18 @@ argument_list|(
 name|name
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+name|rootQueue
+operator|.
+name|recomputeSteadyShares
+argument_list|()
+expr_stmt|;
 for|for
 control|(
 name|FSQueue

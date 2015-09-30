@@ -1141,44 +1141,29 @@ argument_list|(
 name|blkfile
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"New BlockReaderLocalLegacy for file "
+literal|"New BlockReaderLocalLegacy for file {} of size {} startOffset "
 operator|+
+literal|"{} length {} short circuit checksum {}"
+argument_list|,
 name|blkfile
-operator|+
-literal|" of size "
-operator|+
+argument_list|,
 name|blkfile
 operator|.
 name|length
 argument_list|()
-operator|+
-literal|" startOffset "
-operator|+
+argument_list|,
 name|startOffset
-operator|+
-literal|" length "
-operator|+
+argument_list|,
 name|length
-operator|+
-literal|" short circuit checksum "
-operator|+
+argument_list|,
 operator|!
 name|skipChecksumCheck
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
@@ -1528,28 +1513,17 @@ name|isTransient
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Cached location of block "
-operator|+
+literal|"Cached location of block {} as {}"
+argument_list|,
 name|blk
-operator|+
-literal|" as "
-operator|+
+argument_list|,
 name|pathinfo
 argument_list|)
 expr_stmt|;
-block|}
 name|localDatanodeInfo
 operator|.
 name|setBlockLocalPathInfo
@@ -2843,28 +2817,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"read off "
-operator|+
+literal|"read off {} len {}"
+argument_list|,
 name|off
-operator|+
-literal|" len "
-operator|+
+argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
@@ -2945,24 +2908,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"skip "
-operator|+
+literal|"skip {}"
+argument_list|,
 name|n
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|n
