@@ -1291,9 +1291,18 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|(
 name|progress
 operator|!=
 literal|null
+operator|)
+operator|&&
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
 condition|)
 block|{
 name|DFSClient
@@ -1304,8 +1313,6 @@ name|debug
 argument_list|(
 literal|"Set non-null progress callback on DFSOutputStream "
 operator|+
-literal|"{}"
-argument_list|,
 name|src
 argument_list|)
 expr_stmt|;
@@ -2245,25 +2252,40 @@ name|chunkSize
 operator|*
 name|chunksPerPacket
 expr_stmt|;
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"computePacketChunkSize: src={}, chunkSize={}, "
+literal|"computePacketChunkSize: src="
 operator|+
-literal|"chunksPerPacket={}, packetSize={}"
-argument_list|,
 name|src
-argument_list|,
+operator|+
+literal|", chunkSize="
+operator|+
 name|chunkSize
-argument_list|,
+operator|+
+literal|", chunksPerPacket="
+operator|+
 name|chunksPerPacket
-argument_list|,
+operator|+
+literal|", packetSize="
+operator|+
 name|packetSize
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|createWriteTraceScope ()
 specifier|protected
@@ -2400,27 +2422,43 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DFSClient writeChunk allocating new packet seqno={},"
+literal|"DFSClient writeChunk allocating new packet seqno="
 operator|+
-literal|" src={}, packetSize={}, chunksPerPacket={}, bytesCurBlock={}"
-argument_list|,
 name|currentPacket
 operator|.
 name|getSeqno
 argument_list|()
-argument_list|,
+operator|+
+literal|", src="
+operator|+
 name|src
-argument_list|,
+operator|+
+literal|", packetSize="
+operator|+
 name|packetSize
-argument_list|,
+operator|+
+literal|", chunksPerPacket="
+operator|+
 name|chunksPerPacket
-argument_list|,
+operator|+
+literal|", bytesCurBlock="
+operator|+
 name|getStreamer
 argument_list|()
 operator|.
@@ -2428,6 +2466,7 @@ name|getBytesCurBlock
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|currentPacket
 operator|.
@@ -2947,27 +2986,42 @@ literal|true
 argument_list|)
 decl_stmt|;
 comment|// bytesCurBlock potentially incremented if there was buffered data
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DFSClient flush():  bytesCurBlock={}, "
+literal|"DFSClient flush(): "
 operator|+
-literal|"lastFlushOffset={}, createNewBlock={}"
-argument_list|,
+literal|" bytesCurBlock="
+operator|+
 name|getStreamer
 argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
-argument_list|,
+operator|+
+literal|" lastFlushOffset="
+operator|+
 name|lastFlushOffset
-argument_list|,
+operator|+
+literal|" createNewBlock="
+operator|+
 name|endBlock
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Flush only if we haven't already flushed till this offset.
 if|if
 condition|(

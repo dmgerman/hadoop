@@ -1399,15 +1399,24 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: returning new legacy block reader local."
-argument_list|,
 name|this
+operator|+
+literal|": returning new legacy block reader local."
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|reader
 return|;
@@ -1427,15 +1436,24 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: returning new block reader local."
-argument_list|,
 name|this
+operator|+
+literal|": returning new block reader local."
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|reader
 return|;
@@ -1462,22 +1480,31 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: returning new remote block reader using UNIX domain "
-operator|+
-literal|"socket on {}"
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|": returning new remote block reader using "
+operator|+
+literal|"UNIX domain socket on "
+operator|+
 name|pathInfo
 operator|.
 name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|reader
 return|;
@@ -1662,20 +1689,29 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: No ReplicaAccessor created by {}"
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|": No ReplicaAccessor created by "
+operator|+
 name|cls
 operator|.
 name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -1727,15 +1763,24 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: trying to construct BlockReaderLocalLegacy"
-argument_list|,
 name|this
+operator|+
+literal|": trying to construct BlockReaderLocalLegacy"
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
@@ -1747,19 +1792,30 @@ name|inetSocketAddress
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: can't construct BlockReaderLocalLegacy because the address"
-operator|+
-literal|"{} is not local"
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|": can't construct BlockReaderLocalLegacy because "
+operator|+
+literal|"the address "
+operator|+
 name|inetSocketAddress
+operator|+
+literal|" is not local"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
@@ -1914,17 +1970,26 @@ parameter_list|()
 throws|throws
 name|InvalidToken
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: trying to construct a BlockReaderLocal for short-circuit "
-operator|+
-literal|" reads."
-argument_list|,
 name|this
+operator|+
+literal|": trying to construct a BlockReaderLocal "
+operator|+
+literal|"for short-circuit reads."
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|pathInfo
@@ -2033,22 +2098,31 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: got InvalidToken exception while trying to construct "
-operator|+
-literal|"BlockReaderLocal via {}"
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|": got InvalidToken exception while trying to "
+operator|+
+literal|"construct BlockReaderLocal via "
+operator|+
 name|pathInfo
 operator|.
 name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|exc
 throw|;
@@ -2180,15 +2254,24 @@ return|return
 name|info
 return|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: trying to create ShortCircuitReplicaInfo."
-argument_list|,
 name|this
+operator|+
+literal|": trying to create ShortCircuitReplicaInfo."
 argument_list|)
 expr_stmt|;
+block|}
 name|BlockReaderPeer
 name|curPeer
 decl_stmt|;
@@ -2289,22 +2372,31 @@ name|booleanValue
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: allocShmSlot used up our previous socket {}.  "
-operator|+
-literal|"Allocating a new one..."
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|": allocShmSlot used up our previous socket "
+operator|+
 name|peer
 operator|.
 name|getDomainSocket
 argument_list|()
+operator|+
+literal|".  Allocating a new one..."
 argument_list|)
 expr_stmt|;
+block|}
 name|curPeer
 operator|=
 name|nextDomainPeer
@@ -2383,19 +2475,28 @@ condition|)
 block|{
 comment|// Handle an I/O error we got when using a cached socket.
 comment|// These are considered less serious, because the socket may be stale.
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"{}: closing stale domain peer {}"
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|": closing stale domain peer "
+operator|+
 name|peer
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 name|IOUtilsClient
 operator|.
 name|cleanup
@@ -2664,8 +2765,8 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Sending receipt verification byte for slot {}"
-argument_list|,
+literal|"Sending receipt verification byte for slot "
+operator|+
 name|slot
 argument_list|)
 expr_stmt|;
@@ -2856,17 +2957,26 @@ operator|.
 name|getMessage
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"{}:{}"
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|":"
+operator|+
 name|msg
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|ShortCircuitReplicaInfo
@@ -2985,22 +3095,31 @@ return|return
 literal|null
 return|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: trying to create a remote block reader from the UNIX domain "
-operator|+
-literal|"socket at {}"
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|": trying to create a remote block reader from the "
+operator|+
+literal|"UNIX domain socket at "
+operator|+
 name|pathInfo
 operator|.
 name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 while|while
 condition|(
 literal|true
@@ -3079,16 +3198,24 @@ name|ioe
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: got security exception while constructing a remote "
-operator|+
-literal|" block reader from the unix domain socket at {}"
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|": got security exception while constructing "
+operator|+
+literal|"a remote block reader from the unix domain socket at "
+operator|+
 name|pathInfo
 operator|.
 name|getPath
@@ -3097,6 +3224,7 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|ioe
 throw|;
@@ -3110,17 +3238,26 @@ condition|)
 block|{
 comment|// Handle an I/O error we got when using a cached peer.  These are
 comment|// considered less serious, because the underlying socket may be stale.
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Closed potentially stale domain peer {}"
-argument_list|,
+literal|"Closed potentially stale domain peer "
+operator|+
 name|peer
 argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -3195,15 +3332,26 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: trying to create a remote block reader from a TCP socket"
-argument_list|,
 name|this
+operator|+
+literal|": trying to create a remote block reader from a "
+operator|+
+literal|"TCP socket"
 argument_list|)
 expr_stmt|;
+block|}
 name|BlockReader
 name|blockReader
 init|=
@@ -3271,21 +3419,30 @@ name|ioe
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: got security exception while constructing a remote "
-operator|+
-literal|"block reader from {}"
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|": got security exception while constructing "
+operator|+
+literal|"a remote block reader from "
+operator|+
 name|peer
 argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|ioe
 throw|;
@@ -3306,17 +3463,26 @@ block|{
 comment|// Handle an I/O error we got when using a cached peer.  These are
 comment|// considered less serious, because the underlying socket may be
 comment|// stale.
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Closed potentially stale remote peer {}"
-argument_list|,
+literal|"Closed potentially stale remote peer "
+operator|+
 name|peer
 argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -3433,15 +3599,24 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"nextDomainPeer: reusing existing peer {}"
-argument_list|,
+literal|"nextDomainPeer: reusing existing peer "
+operator|+
 name|peer
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|BlockReaderPeer
@@ -3532,15 +3707,24 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"nextTcpPeer: reusing existing peer {}"
-argument_list|,
+literal|"nextTcpPeer: reusing existing peer "
+operator|+
 name|peer
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|BlockReaderPeer
@@ -3568,15 +3752,24 @@ argument_list|,
 name|datanode
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"nextTcpPeer: created newConnectedPeer {}"
-argument_list|,
+literal|"nextTcpPeer: created newConnectedPeer "
+operator|+
 name|peer
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|BlockReaderPeer
@@ -3593,17 +3786,26 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"nextTcpPeer: failed to create newConnectedPeer connected to"
+literal|"nextTcpPeer: failed to create newConnectedPeer "
 operator|+
-literal|"{}"
-argument_list|,
+literal|"connected to "
+operator|+
 name|datanode
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|e
 throw|;

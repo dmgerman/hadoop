@@ -492,17 +492,28 @@ name|headerLen
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"readNextPacket: dataPlusChecksumLen={}, headerLen={}"
-argument_list|,
+literal|"readNextPacket: dataPlusChecksumLen = "
+operator|+
 name|dataPlusChecksumLen
-argument_list|,
+operator|+
+literal|" headerLen = "
+operator|+
 name|headerLen
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Sanity check the buffer size so we don't allocate too much memory
 comment|// and OOME.
 name|int

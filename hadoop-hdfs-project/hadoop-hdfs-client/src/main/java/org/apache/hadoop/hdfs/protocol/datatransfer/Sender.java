@@ -645,12 +645,20 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Sending DataTransferOp {}: {}"
-argument_list|,
+literal|"Sending DataTransferOp "
+operator|+
 name|proto
 operator|.
 name|getClass
@@ -658,10 +666,13 @@ argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
-argument_list|,
+operator|+
+literal|": "
+operator|+
 name|proto
 argument_list|)
 expr_stmt|;
+block|}
 name|op
 argument_list|(
 name|out

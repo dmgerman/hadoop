@@ -491,17 +491,26 @@ operator|.
 name|isValid
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: checked shared memory segment.  isStale={}"
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|": checked shared memory segment.  isStale="
+operator|+
 name|stale
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|stale
 return|;
@@ -534,40 +543,60 @@ operator|>
 name|staleThresholdMs
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{} is stale because it's {} ms old and staleThreadholdMS={}"
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|" is stale because it's "
+operator|+
 name|deltaMs
-argument_list|,
+operator|+
+literal|" ms old, and staleThresholdMs = "
+operator|+
 name|staleThresholdMs
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|true
 return|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{} is not stale because it's only {} ms old "
-operator|+
-literal|"and staleThresholdMs={}"
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|" is not stale because it's only "
+operator|+
 name|deltaMs
-argument_list|,
+operator|+
+literal|" ms old, and staleThresholdMs = "
+operator|+
 name|staleThresholdMs
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -600,23 +629,46 @@ operator|.
 name|addAnchor
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|result
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: {} no-checksum anchor to slot {}"
-argument_list|,
 name|this
-argument_list|,
-name|result
-condition|?
-literal|"added"
-else|:
-literal|"could not add"
-argument_list|,
+operator|+
+literal|": added no-checksum anchor to slot "
+operator|+
 name|slot
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+name|this
+operator|+
+literal|": could not add no-checksum anchor to slot "
+operator|+
+name|slot
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 return|return
 name|result
 return|;
@@ -803,17 +855,26 @@ literal|" for later release."
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"closed {}{}"
-argument_list|,
+literal|"closed "
+operator|+
 name|this
-argument_list|,
+operator|+
 name|suffix
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|getDataStream ()
 specifier|public
@@ -918,20 +979,29 @@ argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"{}: created mmap of size {}"
-argument_list|,
 name|this
-argument_list|,
+operator|+
+literal|": created mmap of size "
+operator|+
 name|channel
 operator|.
 name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|mmap
 return|;

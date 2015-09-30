@@ -1680,17 +1680,28 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"newInfo = {}"
-argument_list|,
+literal|"newInfo = "
+operator|+
 name|newInfo
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|newInfo
@@ -2036,18 +2047,28 @@ name|replicaNotFoundCount
 operator|--
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to getReplicaVisibleLength from datanode {}"
+literal|"Failed to getReplicaVisibleLength from datanode "
 operator|+
-literal|" for block {}"
-argument_list|,
 name|datanode
-argument_list|,
+operator|+
+literal|" for block "
+operator|+
 name|locatedblock
 operator|.
 name|getBlock
@@ -2056,6 +2077,7 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -5147,17 +5169,28 @@ name|isConnectToDnViaHostname
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Connecting to datanode {}"
-argument_list|,
+literal|"Connecting to datanode "
+operator|+
 name|dnAddr
 argument_list|)
 expr_stmt|;
+block|}
 name|InetSocketAddress
 name|targetAddr
 init|=
@@ -6497,26 +6530,39 @@ argument_list|()
 expr_stmt|;
 return|return;
 block|}
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Waited {}ms to read from {}; spawning hedged "
+literal|"Waited "
 operator|+
-literal|"read"
-argument_list|,
 name|conf
 operator|.
 name|getHedgedReadThresholdMillis
 argument_list|()
-argument_list|,
+operator|+
+literal|"ms to read from "
+operator|+
 name|chosenNode
 operator|.
 name|info
+operator|+
+literal|"; spawning hedged read"
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Ignore this node on next go around.
 name|ignored
 operator|.
@@ -6648,20 +6694,31 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed getting node for hedged read: {}"
-argument_list|,
+literal|"Failed getting node for hedged read: "
+operator|+
 name|ioe
 operator|.
 name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// if not succeeded. Submit callables for each datanode in a loop, wait
 comment|// for a fixed interval and get the result from the fastest one.
@@ -7774,28 +7831,43 @@ name|e
 parameter_list|)
 block|{
 comment|//make following read to retry
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Exception while seek to {} from {} of {} from "
+literal|"Exception while seek to "
 operator|+
-literal|"{}"
-argument_list|,
 name|targetPos
-argument_list|,
+operator|+
+literal|" from "
+operator|+
 name|getCurrentBlock
 argument_list|()
-argument_list|,
+operator|+
+literal|" of "
+operator|+
 name|src
-argument_list|,
+operator|+
+literal|" from "
+operator|+
 name|currentNode
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -8603,58 +8675,94 @@ operator|<=
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Unable to perform a zero-copy read from offset {}"
+literal|"Unable to perform a zero-copy read from offset "
 operator|+
-literal|" of {}; {} bytes left in block. blockPos={}; curPos={};"
-operator|+
-literal|"curEnd={}"
-argument_list|,
 name|curPos
-argument_list|,
+operator|+
+literal|" of "
+operator|+
 name|src
-argument_list|,
+operator|+
+literal|"; "
+operator|+
 name|length63
-argument_list|,
+operator|+
+literal|" bytes left in block.  "
+operator|+
+literal|"blockPos="
+operator|+
 name|blockPos
-argument_list|,
+operator|+
+literal|"; curPos="
+operator|+
 name|curPos
-argument_list|,
+operator|+
+literal|"; curEnd="
+operator|+
 name|curEnd
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
 block|}
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Reducing read length from {} to {} to avoid going "
+literal|"Reducing read length from "
 operator|+
-literal|"more than one byte past the end of the block.  blockPos={}; "
-operator|+
-literal|" curPos={}; curEnd={}"
-argument_list|,
 name|maxLength
-argument_list|,
+operator|+
+literal|" to "
+operator|+
 name|length63
-argument_list|,
+operator|+
+literal|" to avoid going more than one byte "
+operator|+
+literal|"past the end of the block.  blockPos="
+operator|+
 name|blockPos
-argument_list|,
+operator|+
+literal|"; curPos="
+operator|+
 name|curPos
-argument_list|,
+operator|+
+literal|"; curEnd="
+operator|+
 name|curEnd
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// Make sure that don't go beyond 31-bit offsets in the MappedByteBuffer.
 name|int
@@ -8702,27 +8810,42 @@ comment|// 4-byte signed integers to represent capacity, etc.
 comment|// So we can't mmap the parts of the block higher than the 2 GB offset.
 comment|// FIXME: we could work around this with multiple memory maps.
 comment|// See HDFS-5101.
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Unable to perform a zero-copy read from offset {} "
+literal|"Unable to perform a zero-copy read from offset "
 operator|+
-literal|" of {}; 31-bit MappedByteBuffer limit exceeded.  blockPos={}, "
-operator|+
-literal|"curEnd={}"
-argument_list|,
 name|curPos
-argument_list|,
+operator|+
+literal|" of "
+operator|+
 name|src
-argument_list|,
+operator|+
+literal|"; 31-bit MappedByteBuffer limit "
+operator|+
+literal|"exceeded.  blockPos="
+operator|+
 name|blockPos
-argument_list|,
+operator|+
+literal|", curEnd="
+operator|+
 name|curEnd
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
@@ -8734,27 +8857,46 @@ name|int
 operator|)
 name|length31
 expr_stmt|;
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Reducing read length from {} to {} to avoid 31-bit "
+literal|"Reducing read length from "
 operator|+
-literal|"limit.  blockPos={}; curPos={}; curEnd={}"
-argument_list|,
 name|maxLength
-argument_list|,
+operator|+
+literal|" to "
+operator|+
 name|length
-argument_list|,
+operator|+
+literal|" to avoid 31-bit limit.  "
+operator|+
+literal|"blockPos="
+operator|+
 name|blockPos
-argument_list|,
+operator|+
+literal|"; curPos="
+operator|+
 name|curPos
-argument_list|,
+operator|+
+literal|"; curEnd="
+operator|+
 name|curEnd
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 specifier|final
 name|ClientMmap
@@ -8774,21 +8916,36 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"unable to perform a zero-copy read from offset {} of"
+literal|"unable to perform a zero-copy read from offset "
 operator|+
-literal|" {}; BlockReader#getClientMmap returned null."
-argument_list|,
 name|curPos
-argument_list|,
+operator|+
+literal|" of "
+operator|+
 name|src
+operator|+
+literal|"; BlockReader#getClientMmap returned "
+operator|+
+literal|"null."
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
@@ -8867,23 +9024,38 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|DFSClient
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"readZeroCopy read {} bytes from offset {} via the "
+literal|"readZeroCopy read "
 operator|+
-literal|"zero-copy read path.  blockEnd = {}"
-argument_list|,
 name|length
-argument_list|,
+operator|+
+literal|" bytes from offset "
+operator|+
 name|curPos
-argument_list|,
+operator|+
+literal|" via the zero-copy read "
+operator|+
+literal|"path.  blockEnd = "
+operator|+
 name|blockEnd
 argument_list|)
 expr_stmt|;
+block|}
 name|success
 operator|=
 literal|true

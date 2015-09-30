@@ -1741,6 +1741,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1750,6 +1758,7 @@ operator|+
 literal|"CryptoOutputStream."
 argument_list|)
 expr_stmt|;
+block|}
 name|CryptoCodec
 name|codec
 init|=

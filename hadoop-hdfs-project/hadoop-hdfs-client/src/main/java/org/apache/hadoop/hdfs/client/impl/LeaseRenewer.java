@@ -1271,15 +1271,34 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"LeaseRenewer is interrupted."
+name|LeaseRenewer
+operator|.
+name|this
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" is interrupted."
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -1653,6 +1672,14 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1660,6 +1687,7 @@ argument_list|(
 literal|"Wait for lease checker to terminate"
 argument_list|)
 expr_stmt|;
+block|}
 name|daemonCopy
 operator|.
 name|join
@@ -1804,15 +1832,24 @@ name|renewLease
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Did not renew lease for client {}"
-argument_list|,
+literal|"Did not renew lease for client "
+operator|+
 name|c
 argument_list|)
 expr_stmt|;
+block|}
 continue|continue;
 block|}
 name|previousName
@@ -1822,15 +1859,24 @@ operator|.
 name|getClientName
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Lease renewed for client {}"
-argument_list|,
+literal|"Lease renewed for client "
+operator|+
 name|previousName
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
