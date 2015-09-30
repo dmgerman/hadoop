@@ -739,14 +739,6 @@ condition|(
 name|isSpnego
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -756,7 +748,6 @@ argument_list|,
 name|url
 argument_list|)
 expr_stmt|;
-block|}
 name|UserGroupInformation
 operator|.
 name|getCurrentUser

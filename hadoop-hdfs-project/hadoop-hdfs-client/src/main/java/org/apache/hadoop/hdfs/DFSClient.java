@@ -3514,24 +3514,15 @@ index|[
 name|idx
 index|]
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Using local interface "
-operator|+
+literal|"Using local interface {}"
+argument_list|,
 name|addr
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|addr
 return|;
@@ -6438,26 +6429,17 @@ argument_list|(
 name|permission
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}: masked={}"
+argument_list|,
 name|src
-operator|+
-literal|": masked="
-operator|+
+argument_list|,
 name|masked
 argument_list|)
 expr_stmt|;
-block|}
 specifier|final
 name|DFSOutputStream
 name|result
@@ -8971,37 +8953,24 @@ operator|.
 name|in
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"write to "
-operator|+
+literal|"write to {}: {}, block={}"
+argument_list|,
 name|datanodes
 index|[
 name|j
 index|]
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|Op
 operator|.
 name|BLOCK_CHECKSUM
-operator|+
-literal|", block="
-operator|+
+argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
-block|}
 comment|// get block MD5
 operator|new
 name|Sender
@@ -9319,39 +9288,26 @@ operator|>
 name|lastRetriedIndex
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Got access token error in response to OP_BLOCK_CHECKSUM "
 operator|+
-literal|"for file "
+literal|"for file {} for block {} from datanode {}. Will retry the "
 operator|+
+literal|"block once."
+argument_list|,
 name|src
-operator|+
-literal|" for block "
-operator|+
+argument_list|,
 name|block
-operator|+
-literal|" from datanode "
-operator|+
+argument_list|,
 name|datanodes
 index|[
 name|j
 index|]
-operator|+
-literal|". Will retry the block once."
 argument_list|)
 expr_stmt|;
-block|}
 name|lastRetriedIndex
 operator|=
 name|i
@@ -9568,24 +9524,15 @@ name|isConnectToDnViaHostname
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Connecting to datanode "
-operator|+
+literal|"Connecting to datanode {}"
+argument_list|,
 name|dnAddr
 argument_list|)
 expr_stmt|;
-block|}
 name|NetUtils
 operator|.
 name|connect
@@ -11739,26 +11686,17 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}: masked={}"
+argument_list|,
 name|src
-operator|+
-literal|": masked="
-operator|+
+argument_list|,
 name|absPermission
 argument_list|)
 expr_stmt|;
-block|}
 name|TraceScope
 name|scope
 init|=
@@ -14134,24 +14072,15 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Using hedged reads; pool threads="
-operator|+
+literal|"Using hedged reads; pool threads={}"
+argument_list|,
 name|num
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|getHedgedReadsThreadPool ()
 name|ThreadPoolExecutor

@@ -1210,24 +1210,15 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DFSClient readChunk got header "
-operator|+
+literal|"DFSClient readChunk got header {}"
+argument_list|,
 name|header
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Sanity check the lengths
 if|if
 condition|(

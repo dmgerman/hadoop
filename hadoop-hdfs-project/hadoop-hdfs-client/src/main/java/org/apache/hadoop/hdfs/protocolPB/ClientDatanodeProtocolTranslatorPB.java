@@ -1098,28 +1098,17 @@ argument_list|(
 name|dnAddr
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Connecting to datanode "
-operator|+
+literal|"Connecting to datanode {} addr={}"
+argument_list|,
 name|dnAddr
-operator|+
-literal|" addr="
-operator|+
+argument_list|,
 name|addr
 argument_list|)
 expr_stmt|;
-block|}
 name|rpcProxy
 operator|=
 name|createClientDatanodeProtocolProxy
@@ -1188,28 +1177,17 @@ argument_list|(
 name|dnAddr
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Connecting to datanode "
-operator|+
+literal|"Connecting to datanode {} addr={}"
+argument_list|,
 name|dnAddr
-operator|+
-literal|" addr="
-operator|+
+argument_list|,
 name|addr
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Since we're creating a new UserGroupInformation here, we know that no
 comment|// future RPC proxies will be able to re-use the same connection. And
 comment|// usages of this proxy tend to be one-off calls.

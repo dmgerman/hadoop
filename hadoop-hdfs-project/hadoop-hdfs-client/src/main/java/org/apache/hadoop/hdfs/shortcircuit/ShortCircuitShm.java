@@ -1817,20 +1817,14 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"creating "
+literal|"creating {}(shmId={}, mmappedLength={}, baseAddress={}, "
 operator|+
+literal|"slots.length={})"
+argument_list|,
 name|this
 operator|.
 name|getClass
@@ -1838,17 +1832,11 @@ argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
-operator|+
-literal|"(shmId="
-operator|+
+argument_list|,
 name|shmId
-operator|+
-literal|", mmappedLength="
-operator|+
+argument_list|,
 name|mmappedLength
-operator|+
-literal|", baseAddress="
-operator|+
+argument_list|,
 name|String
 operator|.
 name|format
@@ -1857,17 +1845,12 @@ literal|"%x"
 argument_list|,
 name|baseAddress
 argument_list|)
-operator|+
-literal|", slots.length="
-operator|+
+argument_list|,
 name|slots
 operator|.
 name|length
-operator|+
-literal|")"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|getShmId ()
 specifier|public
@@ -2337,26 +2320,17 @@ index|]
 operator|=
 literal|null
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
+literal|"{}: unregisterSlot {}"
+argument_list|,
 name|this
-operator|+
-literal|": unregisterSlot "
-operator|+
+argument_list|,
 name|slotIdx
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Iterate over all allocated slots.    *     * Note that this method isn't safe if     *    * @return        The slot iterator.    */
 DECL|method|slotIterator ()

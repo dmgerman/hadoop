@@ -1136,24 +1136,15 @@ name|isConnectToDnViaHostname
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Connecting to datanode "
-operator|+
+literal|"Connecting to datanode {}"
+argument_list|,
 name|dnAddr
 argument_list|)
 expr_stmt|;
-block|}
 specifier|final
 name|InetSocketAddress
 name|isa
@@ -1222,27 +1213,18 @@ operator|.
 name|DEFAULT_DATA_SOCKET_SIZE
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Send buf size "
-operator|+
+literal|"Send buf size {}"
+argument_list|,
 name|sock
 operator|.
 name|getSendBufferSize
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|sock
 return|;
@@ -2694,24 +2676,15 @@ name|void
 name|endBlock
 parameter_list|()
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Closing old block "
-operator|+
+literal|"Closing old block {}"
+argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
-block|}
 name|this
 operator|.
 name|setName
@@ -3106,14 +3079,6 @@ operator|.
 name|PIPELINE_SETUP_CREATE
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -3121,7 +3086,6 @@ argument_list|(
 literal|"Allocating new block"
 argument_list|)
 expr_stmt|;
-block|}
 name|setPipeline
 argument_list|(
 name|nextBlockOutputStream
@@ -3142,24 +3106,15 @@ operator|.
 name|PIPELINE_SETUP_APPEND
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Append to block "
-operator|+
+literal|"Append to block {}"
+argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
-block|}
 name|setupPipelineForAppendOrRecovery
 argument_list|()
 expr_stmt|;
@@ -3360,28 +3315,17 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DataStreamer block "
-operator|+
+literal|"DataStreamer block {} sending packet {}"
+argument_list|,
 name|block
-operator|+
-literal|" sending packet "
-operator|+
+argument_list|,
 name|one
 argument_list|)
 expr_stmt|;
-block|}
 comment|// write out data to remote datanode
 name|TraceScope
 name|writeScope
@@ -3759,24 +3703,15 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Waiting for ack for: "
-operator|+
+literal|"Waiting for ack for: {}"
+argument_list|,
 name|seqno
 argument_list|)
 expr_stmt|;
-block|}
 name|long
 name|begin
 init|=
@@ -4563,21 +4498,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
+else|else
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DFSClient "
-operator|+
+literal|"DFSClient {}"
+argument_list|,
 name|ack
 argument_list|)
 expr_stmt|;
@@ -5566,28 +5494,17 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|DataTransferProtocol
-operator|.
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|DataTransferProtocol
 operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"lastAckedSeqno = "
-operator|+
+literal|"lastAckedSeqno = {}"
+argument_list|,
 name|lastAckedSeqno
 argument_list|)
 expr_stmt|;
-block|}
 comment|/*        * Is data transfer necessary?  We have the following cases.        *        * Case 1: Failure in Pipeline Setup        * - Append        *    + Transfer the stored replica, which may be a RBW or a finalized.        * - Create        *    + If no data, then no transfer is required.        *    + If there are data written, transfer RBW. This case may happens        *      when there are streaming failure earlier in this pipeline.        *        * Case 2: Failure in Streaming        * - Append/Create:        *    + transfer RBW        *        * Case 3: Failure in Close        * - Append/Create:        *    + no transfer, let NameNode replicates the block.        */
 if|if
 condition|(
@@ -7891,18 +7808,12 @@ name|getXferAddrWithHostname
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} was chosen by name node (favored={})."
+argument_list|,
 name|nodes
 index|[
 name|i
@@ -7910,18 +7821,13 @@ index|]
 operator|.
 name|getXferAddrWithHostname
 argument_list|()
-operator|+
-literal|" was chosen by name node (favored="
-operator|+
+argument_list|,
 name|pinnings
 index|[
 name|i
 index|]
-operator|+
-literal|")."
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 if|if
 condition|(
@@ -8465,27 +8371,18 @@ operator|.
 name|getSeqno
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Queued packet "
-operator|+
+literal|"Queued packet {}"
+argument_list|,
 name|packet
 operator|.
 name|getSeqno
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|dataQueue
 operator|.
 name|notifyAll
