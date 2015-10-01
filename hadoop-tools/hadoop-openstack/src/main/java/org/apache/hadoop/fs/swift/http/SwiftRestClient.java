@@ -1068,12 +1068,6 @@ specifier|private
 name|URI
 name|objectLocationURI
 decl_stmt|;
-DECL|field|filesystemURI
-specifier|private
-specifier|final
-name|URI
-name|filesystemURI
-decl_stmt|;
 comment|/**    * The name of the service provider    */
 DECL|field|serviceProvider
 specifier|private
@@ -1174,18 +1168,6 @@ parameter_list|()
 block|{
 return|return
 name|endpointURI
-return|;
-block|}
-comment|/**    * object location endpoint    */
-DECL|method|getObjectLocationURI ()
-specifier|private
-specifier|synchronized
-name|URI
-name|getObjectLocationURI
-parameter_list|()
-block|{
-return|return
-name|objectLocationURI
 return|;
 block|}
 comment|/**    * token for Swift communication    */
@@ -1401,44 +1383,6 @@ block|{
 return|return
 operator|new
 name|GetMethod
-argument_list|(
-name|uri
-argument_list|)
-return|;
-block|}
-block|}
-DECL|class|PostMethodProcessor
-specifier|private
-specifier|static
-specifier|abstract
-class|class
-name|PostMethodProcessor
-parameter_list|<
-name|R
-parameter_list|>
-extends|extends
-name|HttpMethodProcessor
-argument_list|<
-name|PostMethod
-argument_list|,
-name|R
-argument_list|>
-block|{
-annotation|@
-name|Override
-DECL|method|doCreateMethod (String uri)
-specifier|protected
-specifier|final
-name|PostMethod
-name|doCreateMethod
-parameter_list|(
-name|String
-name|uri
-parameter_list|)
-block|{
-return|return
-operator|new
-name|PostMethod
 argument_list|(
 name|uri
 argument_list|)
@@ -1744,12 +1688,6 @@ parameter_list|)
 throws|throws
 name|SwiftConfigurationException
 block|{
-name|this
-operator|.
-name|filesystemURI
-operator|=
-name|filesystemURI
-expr_stmt|;
 name|Properties
 name|props
 init|=
@@ -4163,11 +4101,6 @@ argument_list|()
 decl_stmt|;
 comment|//locate the specific service catalog that defines Swift; variations
 comment|//in the name of this add complexity to the search
-name|boolean
-name|catalogMatch
-init|=
-literal|false
-decl_stmt|;
 name|StringBuilder
 name|catList
 init|=
@@ -5350,7 +5283,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|requestContentLen
+name|availableContentRange
 operator|!=
 literal|null
 condition|)
