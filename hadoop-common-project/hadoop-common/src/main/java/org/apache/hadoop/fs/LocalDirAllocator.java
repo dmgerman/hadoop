@@ -1033,6 +1033,16 @@ name|savedLocalDirs
 operator|=
 name|newLocalDirs
 expr_stmt|;
+if|if
+condition|(
+name|dirs
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
 comment|// randomize the first disk picked in the round-robin selection
 name|dirNumLastAccessed
 operator|=
@@ -1046,6 +1056,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|createPath (String path, boolean checkWrite)

@@ -2424,6 +2424,68 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Test to check the LocalDirAllocation for the invalid path HADOOP-8437    *    * @throws Exception    */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testGetLocalPathForWriteForInvalidPaths ()
+specifier|public
+name|void
+name|testGetLocalPathForWriteForInvalidPaths
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CONTEXT
+argument_list|,
+literal|" "
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|dirAllocator
+operator|.
+name|getLocalPathForWrite
+argument_list|(
+literal|"/test"
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"not throwing the exception"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"Incorrect exception message"
+argument_list|,
+literal|"No space available in any of the local directories."
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 
