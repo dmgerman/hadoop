@@ -4951,7 +4951,7 @@ name|countersToJSON
 argument_list|(
 name|jfe
 operator|.
-name|getTotalCounters
+name|getMapCounters
 argument_list|()
 argument_list|)
 argument_list|)
