@@ -1103,8 +1103,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"ExecutionException "
-operator|+
+literal|"Exception during striped read task"
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -1132,6 +1132,28 @@ name|CancellationException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Exception during striped read task"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 operator|new
 name|StripingChunkReadResult

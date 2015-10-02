@@ -2966,12 +2966,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|TraceScope
 name|scope
 init|=
 name|datanode
 operator|.
-name|tracer
+name|getTracer
+argument_list|()
 operator|.
 name|newScope
 argument_list|(

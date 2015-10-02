@@ -3422,6 +3422,7 @@ name|ErasureCodingWorker
 name|ecWorker
 decl_stmt|;
 DECL|field|tracer
+specifier|private
 specifier|final
 name|Tracer
 name|tracer
@@ -16306,6 +16307,16 @@ parameter_list|()
 block|{
 return|return
 name|metricsLoggerTimer
+return|;
+block|}
+DECL|method|getTracer ()
+specifier|public
+name|Tracer
+name|getTracer
+parameter_list|()
+block|{
+return|return
+name|tracer
 return|;
 block|}
 block|}

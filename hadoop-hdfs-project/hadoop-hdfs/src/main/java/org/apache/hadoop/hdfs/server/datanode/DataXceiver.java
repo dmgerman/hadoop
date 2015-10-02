@@ -1288,7 +1288,8 @@ name|super
 argument_list|(
 name|datanode
 operator|.
-name|tracer
+name|getTracer
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
