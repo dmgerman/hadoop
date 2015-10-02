@@ -7534,7 +7534,7 @@ name|attemptState
 return|;
 block|}
 DECL|method|getExternalState ( TaskAttemptStateInternal smState)
-specifier|private
+specifier|protected
 specifier|static
 name|TaskAttemptState
 name|getExternalState
@@ -7641,6 +7641,18 @@ name|smState
 argument_list|)
 throw|;
 block|}
+block|}
+comment|// check whether the attempt is assigned if container is not null
+DECL|method|isContainerAssigned ()
+name|boolean
+name|isContainerAssigned
+parameter_list|()
+block|{
+return|return
+name|container
+operator|!=
+literal|null
+return|;
 block|}
 comment|//always called in write lock
 DECL|method|setFinishTime ()
