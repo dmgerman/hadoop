@@ -512,6 +512,11 @@ init|=
 literal|false
 decl_stmt|;
 comment|// unregister
+DECL|field|unregisterDelayMs
+specifier|private
+name|long
+name|unregisterDelayMs
+decl_stmt|;
 DECL|field|timer
 specifier|private
 name|Timer
@@ -536,7 +541,24 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
-DECL|method|ContainerMetrics ( MetricsSystem ms, ContainerId containerId, long flushPeriodMs)
+comment|// Create a timer to unregister container metrics,
+comment|// whose associated thread run as a daemon.
+DECL|field|unregisterContainerMetricsTimer
+specifier|private
+specifier|final
+specifier|static
+name|Timer
+name|unregisterContainerMetricsTimer
+init|=
+operator|new
+name|Timer
+argument_list|(
+literal|"Container metrics unregistration"
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+DECL|method|ContainerMetrics ( MetricsSystem ms, ContainerId containerId, long flushPeriodMs, long delayMs)
 name|ContainerMetrics
 parameter_list|(
 name|MetricsSystem
@@ -547,6 +569,9 @@ name|containerId
 parameter_list|,
 name|long
 name|flushPeriodMs
+parameter_list|,
+name|long
+name|delayMs
 parameter_list|)
 block|{
 name|this
@@ -593,6 +618,18 @@ operator|.
 name|flushPeriodMs
 operator|=
 name|flushPeriodMs
+expr_stmt|;
+name|this
+operator|.
+name|unregisterDelayMs
+operator|=
+name|delayMs
+operator|<
+literal|0
+condition|?
+literal|0
+else|:
+name|delayMs
 expr_stmt|;
 name|scheduleTimerTaskIfRequired
 argument_list|()
@@ -780,7 +817,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|forContainer ( ContainerId containerId, long flushPeriodMs)
+DECL|method|forContainer ( ContainerId containerId, long flushPeriodMs, long delayMs)
 specifier|public
 specifier|static
 name|ContainerMetrics
@@ -791,6 +828,9 @@ name|containerId
 parameter_list|,
 name|long
 name|flushPeriodMs
+parameter_list|,
+name|long
+name|delayMs
 parameter_list|)
 block|{
 return|return
@@ -804,10 +844,12 @@ argument_list|,
 name|containerId
 argument_list|,
 name|flushPeriodMs
+argument_list|,
+name|delayMs
 argument_list|)
 return|;
 block|}
-DECL|method|forContainer ( MetricsSystem ms, ContainerId containerId, long flushPeriodMs)
+DECL|method|forContainer ( MetricsSystem ms, ContainerId containerId, long flushPeriodMs, long delayMs)
 specifier|synchronized
 specifier|static
 name|ContainerMetrics
@@ -821,6 +863,9 @@ name|containerId
 parameter_list|,
 name|long
 name|flushPeriodMs
+parameter_list|,
+name|long
+name|delayMs
 parameter_list|)
 block|{
 name|ContainerMetrics
@@ -850,6 +895,8 @@ argument_list|,
 name|containerId
 argument_list|,
 name|flushPeriodMs
+argument_list|,
+name|delayMs
 argument_list|)
 operator|.
 name|tag
@@ -900,6 +947,40 @@ return|return
 name|metrics
 return|;
 block|}
+DECL|method|unregisterContainerMetrics (ContainerMetrics cm)
+specifier|synchronized
+specifier|static
+name|void
+name|unregisterContainerMetrics
+parameter_list|(
+name|ContainerMetrics
+name|cm
+parameter_list|)
+block|{
+name|cm
+operator|.
+name|metricsSystem
+operator|.
+name|unregisterSource
+argument_list|(
+name|cm
+operator|.
+name|recordInfo
+operator|.
+name|name
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|usageMetrics
+operator|.
+name|remove
+argument_list|(
+name|cm
+operator|.
+name|containerId
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getMetrics (MetricsCollector collector, boolean all)
@@ -921,23 +1002,6 @@ condition|(
 name|unregister
 condition|)
 block|{
-name|metricsSystem
-operator|.
-name|unregisterSource
-argument_list|(
-name|recordInfo
-operator|.
-name|name
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|usageMetrics
-operator|.
-name|remove
-argument_list|(
-name|containerId
-argument_list|)
-expr_stmt|;
 return|return;
 block|}
 if|if
@@ -1022,6 +1086,9 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+name|scheduleTimerTaskForUnregistration
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|recordMemoryUsage (int memoryMBs)
 specifier|public
@@ -1271,6 +1338,48 @@ name|flushPeriodMs
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|scheduleTimerTaskForUnregistration ()
+specifier|private
+name|void
+name|scheduleTimerTaskForUnregistration
+parameter_list|()
+block|{
+name|TimerTask
+name|timerTask
+init|=
+operator|new
+name|TimerTask
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|ContainerMetrics
+operator|.
+name|unregisterContainerMetrics
+argument_list|(
+name|ContainerMetrics
+operator|.
+name|this
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+decl_stmt|;
+name|unregisterContainerMetricsTimer
+operator|.
+name|schedule
+argument_list|(
+name|timerTask
+argument_list|,
+name|unregisterDelayMs
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

@@ -3809,6 +3809,31 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+comment|/** The delay time ms to unregister container metrics after completion. */
+annotation|@
+name|Private
+DECL|field|NM_CONTAINER_METRICS_UNREGISTER_DELAY_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_METRICS_UNREGISTER_DELAY_MS
+init|=
+name|NM_PREFIX
+operator|+
+literal|"container-metrics.unregister-delay-ms"
+decl_stmt|;
+annotation|@
+name|Private
+DECL|field|DEFAULT_NM_CONTAINER_METRICS_UNREGISTER_DELAY_MS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_CONTAINER_METRICS_UNREGISTER_DELAY_MS
+init|=
+literal|10000
+decl_stmt|;
 comment|/** Prefix for all node manager disk health checker configs. */
 DECL|field|NM_DISK_HEALTH_CHECK_PREFIX
 specifier|private

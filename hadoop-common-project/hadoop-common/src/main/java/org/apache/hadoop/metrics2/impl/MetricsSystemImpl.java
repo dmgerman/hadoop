@@ -2428,7 +2428,10 @@ comment|/**    * Sample all the sources for a snapshot of metrics/tags    * @ret
 end_comment
 
 begin_function
+annotation|@
+name|VisibleForTesting
 DECL|method|sampleMetrics ()
+specifier|public
 specifier|synchronized
 name|MetricsBuffer
 name|sampleMetrics
