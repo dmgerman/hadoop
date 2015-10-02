@@ -1353,7 +1353,7 @@ name|length
 operator|)
 return|;
 block|}
-comment|/**      * Get the next item in the list      * @return the next item in the list      *       * @throws IOException if there is any error      * @throws NoSuchElmentException if no more entry is available      */
+comment|/**      * Get the next item in the list      * @return the next item in the list      *       * @throws IOException if there is any error      * @throws NoSuchElementException if no more entry is available      */
 DECL|method|getNext ()
 specifier|public
 name|HdfsFileStatus
