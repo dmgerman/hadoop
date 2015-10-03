@@ -625,23 +625,23 @@ init|=
 literal|50
 decl_stmt|;
 comment|/** Retry times to connect with NM.*/
-DECL|field|RM_NODEMANAGER_CONNECT_RETIRES
+DECL|field|RM_NODEMANAGER_CONNECT_RETRIES
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RM_NODEMANAGER_CONNECT_RETIRES
+name|RM_NODEMANAGER_CONNECT_RETRIES
 init|=
 name|RM_PREFIX
 operator|+
 literal|"nodemanager-connect-retries"
 decl_stmt|;
-DECL|field|DEFAULT_RM_NODEMANAGER_CONNECT_RETIRES
+DECL|field|DEFAULT_RM_NODEMANAGER_CONNECT_RETRIES
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DEFAULT_RM_NODEMANAGER_CONNECT_RETIRES
+name|DEFAULT_RM_NODEMANAGER_CONNECT_RETRIES
 init|=
 literal|10
 decl_stmt|;

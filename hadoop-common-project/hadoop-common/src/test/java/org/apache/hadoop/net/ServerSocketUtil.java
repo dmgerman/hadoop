@@ -106,7 +106,7 @@ operator|new
 name|Random
 argument_list|()
 decl_stmt|;
-comment|/**    * Port scan& allocate is how most other apps find ports    *     * @param port given port    * @param retries number of retires    * @return    * @throws IOException    */
+comment|/**    * Port scan& allocate is how most other apps find ports    *     * @param port given port    * @param retries number of retries    * @return    * @throws IOException    */
 DECL|method|getPort (int port, int retries)
 specifier|public
 specifier|static

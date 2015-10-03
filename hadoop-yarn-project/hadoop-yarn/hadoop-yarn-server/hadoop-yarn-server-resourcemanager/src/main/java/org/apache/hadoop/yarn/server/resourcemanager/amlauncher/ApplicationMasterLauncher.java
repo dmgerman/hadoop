@@ -431,11 +431,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_NODEMANAGER_CONNECT_RETIRES
+name|RM_NODEMANAGER_CONNECT_RETRIES
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_RM_NODEMANAGER_CONNECT_RETIRES
+name|DEFAULT_RM_NODEMANAGER_CONNECT_RETRIES
 argument_list|)
 argument_list|)
 expr_stmt|;
