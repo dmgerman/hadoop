@@ -74,6 +74,24 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|protocolrecords
+operator|.
+name|SignalContainerRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|records
 operator|.
 name|ApplicationId
@@ -272,6 +290,25 @@ argument_list|<
 name|ApplicationId
 argument_list|>
 name|applications
+parameter_list|)
+function_decl|;
+DECL|method|getContainersToSignalList ()
+name|List
+argument_list|<
+name|SignalContainerRequest
+argument_list|>
+name|getContainersToSignalList
+parameter_list|()
+function_decl|;
+DECL|method|addAllContainersToSignal (List<SignalContainerRequest> containers)
+name|void
+name|addAllContainersToSignal
+parameter_list|(
+name|List
+argument_list|<
+name|SignalContainerRequest
+argument_list|>
+name|containers
 parameter_list|)
 function_decl|;
 DECL|method|getNextHeartBeatInterval ()

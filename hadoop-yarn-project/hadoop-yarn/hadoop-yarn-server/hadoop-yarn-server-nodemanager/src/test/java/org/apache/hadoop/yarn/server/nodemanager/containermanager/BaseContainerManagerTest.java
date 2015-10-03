@@ -860,6 +860,18 @@ name|Before
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|spy
+import|;
+end_import
+
 begin_class
 DECL|class|BaseContainerManagerTest
 specifier|public
@@ -1222,7 +1234,10 @@ name|conf
 argument_list|)
 expr_stmt|;
 return|return
+name|spy
+argument_list|(
 name|exec
+argument_list|)
 return|;
 block|}
 annotation|@

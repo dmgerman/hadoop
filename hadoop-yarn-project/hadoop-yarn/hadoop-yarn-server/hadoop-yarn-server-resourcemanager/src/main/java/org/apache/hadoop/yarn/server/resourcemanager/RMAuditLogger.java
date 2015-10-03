@@ -342,6 +342,15 @@ name|CHANGE_CONTAINER_RESOURCE
 init|=
 literal|"AM Changed Container Resource"
 decl_stmt|;
+DECL|field|SIGNAL_CONTAINER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SIGNAL_CONTAINER
+init|=
+literal|"Signal Container Request"
+decl_stmt|;
 comment|// Some commonly used descriptions
 DECL|field|UNAUTHORIZED_USER
 specifier|public

@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.launcher
+DECL|package|org.apache.hadoop.yarn.api.records
 package|package
 name|org
 operator|.
@@ -14,34 +14,69 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|api
 operator|.
-name|nodemanager
-operator|.
-name|containermanager
-operator|.
-name|launcher
+name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
+begin_comment
+comment|/**  * Enumeration of various signal container commands.  */
+end_comment
+
 begin_enum
-DECL|enum|ContainersLauncherEventType
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|enum|SignalContainerCommand
 specifier|public
 enum|enum
-name|ContainersLauncherEventType
+name|SignalContainerCommand
 block|{
-DECL|enumConstant|LAUNCH_CONTAINER
-name|LAUNCH_CONTAINER
+comment|/**    * Used to capture thread dump.    * On Linux, it is equivalent to SIGQUIT.    */
+DECL|enumConstant|OUTPUT_THREAD_DUMP
+name|OUTPUT_THREAD_DUMP
 block|,
-DECL|enumConstant|RECOVER_CONTAINER
-name|RECOVER_CONTAINER
+comment|/** Gracefully shutdown a container.    * On Linux, it is equivalent to SIGTERM.    */
+DECL|enumConstant|GRACEFUL_SHUTDOWN
+name|GRACEFUL_SHUTDOWN
 block|,
-DECL|enumConstant|CLEANUP_CONTAINER
-name|CLEANUP_CONTAINER
-block|,
-comment|// The process(grp) itself.
-DECL|enumConstant|SIGNAL_CONTAINER
-name|SIGNAL_CONTAINER
+comment|/** Forcefully shutdown a container.    * On Linux, it is equivalent to SIGKILL.    */
+DECL|enumConstant|FORCEFUL_SHUTDOWN
+name|FORCEFUL_SHUTDOWN
 block|, }
 end_enum
 

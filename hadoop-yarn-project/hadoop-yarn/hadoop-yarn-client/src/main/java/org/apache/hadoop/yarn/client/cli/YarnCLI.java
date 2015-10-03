@@ -184,6 +184,15 @@ name|HELP_CMD
 init|=
 literal|"help"
 decl_stmt|;
+DECL|field|SIGNAL_CMD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SIGNAL_CMD
+init|=
+literal|"signal"
+decl_stmt|;
 DECL|field|sysout
 specifier|protected
 name|PrintStream

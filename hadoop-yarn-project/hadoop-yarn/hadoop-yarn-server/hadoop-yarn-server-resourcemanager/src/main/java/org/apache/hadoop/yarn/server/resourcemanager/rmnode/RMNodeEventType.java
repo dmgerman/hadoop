@@ -72,6 +72,10 @@ block|,
 DECL|enumConstant|DECREASE_CONTAINER
 name|DECREASE_CONTAINER
 block|,
+comment|// Source: ClientRMService
+DECL|enumConstant|SIGNAL_CONTAINER
+name|SIGNAL_CONTAINER
+block|,
 comment|// Source: RMAppAttempt
 DECL|enumConstant|FINISHED_CONTAINERS_PULLED_BY_AM
 name|FINISHED_CONTAINERS_PULLED_BY_AM
