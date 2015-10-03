@@ -596,41 +596,22 @@ name|snapshotQuota
 argument_list|)
 expr_stmt|;
 block|}
-name|StringBuilder
-name|fmt
+name|String
+name|lineFormat
 init|=
-operator|new
-name|StringBuilder
-argument_list|()
-decl_stmt|;
-name|fmt
-operator|.
-name|append
-argument_list|(
 literal|"%s%s "
-argument_list|)
-expr_stmt|;
 comment|// permission string
-name|fmt
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|"%"
 operator|+
 name|maxRepl
 operator|+
 literal|"s "
-argument_list|)
-expr_stmt|;
-name|fmt
-operator|.
-name|append
-argument_list|(
+operator|+
 operator|(
 name|maxOwner
 operator|>
 literal|0
-operator|)
 condition|?
 literal|"%-"
 operator|+
@@ -639,17 +620,12 @@ operator|+
 literal|"s "
 else|:
 literal|"%s"
-argument_list|)
-expr_stmt|;
-name|fmt
-operator|.
-name|append
-argument_list|(
+operator|)
+operator|+
 operator|(
 name|maxGroup
 operator|>
 literal|0
-operator|)
 condition|?
 literal|"%-"
 operator|+
@@ -658,65 +634,32 @@ operator|+
 literal|"s "
 else|:
 literal|"%s"
-argument_list|)
-expr_stmt|;
-name|fmt
-operator|.
-name|append
-argument_list|(
+operator|)
+operator|+
 literal|"%"
 operator|+
 name|maxLen
 operator|+
 literal|"s "
-argument_list|)
-expr_stmt|;
-name|fmt
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|"%s "
-argument_list|)
-expr_stmt|;
 comment|// mod time
-name|fmt
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|"%"
 operator|+
 name|maxSnapshotNum
 operator|+
 literal|"s "
-argument_list|)
-expr_stmt|;
-name|fmt
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|"%"
 operator|+
 name|maxSnapshotQuota
 operator|+
 literal|"s "
-argument_list|)
-expr_stmt|;
-name|fmt
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|"%s"
-argument_list|)
-expr_stmt|;
-comment|// path
-name|String
-name|lineFormat
-init|=
-name|fmt
-operator|.
-name|toString
-argument_list|()
 decl_stmt|;
+comment|// path
 name|SimpleDateFormat
 name|dateFormat
 init|=

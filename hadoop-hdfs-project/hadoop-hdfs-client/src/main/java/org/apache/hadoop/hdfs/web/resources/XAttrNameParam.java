@@ -127,15 +127,9 @@ name|String
 name|getXAttrName
 parameter_list|()
 block|{
-specifier|final
-name|String
-name|v
-init|=
+return|return
 name|getValue
 argument_list|()
-decl_stmt|;
-return|return
-name|v
 return|;
 block|}
 block|}

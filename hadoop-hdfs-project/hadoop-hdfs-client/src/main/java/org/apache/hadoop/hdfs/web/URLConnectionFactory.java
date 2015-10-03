@@ -329,8 +329,6 @@ specifier|static
 name|int
 name|DEFAULT_SOCKET_TIMEOUT
 init|=
-literal|1
-operator|*
 literal|60
 operator|*
 literal|1000
@@ -395,7 +393,7 @@ name|DEFAULT_TIMEOUT_CONN_CONFIGURATOR
 argument_list|)
 decl_stmt|;
 comment|/**    * Construct a new URLConnectionFactory based on the configuration. It will    * try to load SSL certificates when it is specified.    */
-DECL|method|newDefaultURLConnectionFactory (Configuration conf)
+DECL|method|newDefaultURLConnectionFactory ( Configuration conf)
 specifier|public
 specifier|static
 name|URLConnectionFactory
@@ -421,10 +419,10 @@ name|conn
 argument_list|)
 return|;
 block|}
+DECL|method|getSSLConnectionConfiguration ( Configuration conf)
 specifier|private
 specifier|static
 name|ConnectionConfigurator
-DECL|method|getSSLConnectionConfiguration (Configuration conf)
 name|getSSLConnectionConfiguration
 parameter_list|(
 name|Configuration
@@ -433,8 +431,6 @@ parameter_list|)
 block|{
 name|ConnectionConfigurator
 name|conn
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -475,10 +471,10 @@ name|conn
 return|;
 block|}
 comment|/**    * Construct a new URLConnectionFactory that supports OAut-based connections.    * It will also try to load the SSL configuration when they are specified.    */
+DECL|method|newOAuth2URLConnectionFactory ( Configuration conf)
 specifier|public
 specifier|static
 name|URLConnectionFactory
-DECL|method|newOAuth2URLConnectionFactory (Configuration conf)
 name|newOAuth2URLConnectionFactory
 parameter_list|(
 name|Configuration
@@ -489,8 +485,6 @@ name|IOException
 block|{
 name|ConnectionConfigurator
 name|conn
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -556,7 +550,7 @@ name|connConfigurator
 expr_stmt|;
 block|}
 comment|/**    * Create a new ConnectionConfigurator for SSL connections    */
-DECL|method|newSslConnConfigurator (final int timeout, Configuration conf)
+DECL|method|newSslConnConfigurator ( final int timeout, Configuration conf)
 specifier|private
 specifier|static
 name|ConnectionConfigurator

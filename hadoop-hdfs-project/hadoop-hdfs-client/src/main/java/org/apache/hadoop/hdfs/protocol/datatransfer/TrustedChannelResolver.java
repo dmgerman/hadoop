@@ -89,7 +89,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class used to indicate whether a channel is trusted or not.  * The default implementation is to return false indicating that  * the channel is not trusted.  * This class can be overridden to provide custom logic to determine  * whether a channel is trusted or not.   * The custom class can be specified via configuration.  *  */
+comment|/**  * Class used to indicate whether a channel is trusted or not.  * The default implementation is to return false indicating that  * the channel is not trusted.  * This class can be overridden to provide custom logic to determine  * whether a channel is trusted or not.  * The custom class can be specified via configuration.  *  */
 end_comment
 
 begin_class
@@ -104,7 +104,7 @@ DECL|field|conf
 name|Configuration
 name|conf
 decl_stmt|;
-comment|/**    * Returns an instance of TrustedChannelResolver.    * Looks up the configuration to see if there is custom class specified.    * @param conf    * @return TrustedChannelResolver    */
+comment|/**    * Returns an instance of TrustedChannelResolver.    * Looks up the configuration to see if there is custom class specified.    * @return TrustedChannelResolver    */
 DECL|method|getInstance (Configuration conf)
 specifier|public
 specifier|static

@@ -330,8 +330,6 @@ specifier|public
 name|int
 name|available
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 comment|// We return the amount of bytes between the current offset and the visible
 comment|// length.  Some of the other block readers return a shorter length than

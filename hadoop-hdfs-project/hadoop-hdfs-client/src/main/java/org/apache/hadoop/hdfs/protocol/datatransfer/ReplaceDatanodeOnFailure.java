@@ -169,35 +169,30 @@ name|condition
 decl_stmt|;
 end_decl_stmt
 
-begin_constructor
+begin_expr_stmt
 DECL|method|Policy (Condition condition)
-specifier|private
 name|Policy
-parameter_list|(
+argument_list|(
 name|Condition
 name|condition
-parameter_list|)
+argument_list|)
 block|{
 name|this
 operator|.
 name|condition
 operator|=
 name|condition
-expr_stmt|;
-block|}
-end_constructor
-
-begin_function
+block|;     }
 DECL|method|getCondition ()
 name|Condition
 name|getCondition
-parameter_list|()
+argument_list|()
 block|{
 return|return
 name|condition
 return|;
 block|}
-end_function
+end_expr_stmt
 
 begin_comment
 unit|}
@@ -207,14 +202,11 @@ end_comment
 begin_interface
 DECL|interface|Condition
 unit|private
-specifier|static
 interface|interface
 name|Condition
 block|{
 comment|/** Return true unconditionally. */
 DECL|field|TRUE
-specifier|static
-specifier|final
 name|Condition
 name|TRUE
 init|=
@@ -253,8 +245,6 @@ block|}
 decl_stmt|;
 comment|/** Return false unconditionally. */
 DECL|field|FALSE
-specifier|static
-specifier|final
 name|Condition
 name|FALSE
 init|=
@@ -293,8 +283,6 @@ block|}
 decl_stmt|;
 comment|/**      * DEFAULT condition:      *   Let r be the replication number.      *   Let n be the number of existing datanodes.      *   Add a new datanode only if r>= 3 and either      *   (1) floor(r/2)>= n; or      *   (2) r> n and the block is hflushed/appended.      */
 DECL|field|DEFAULT
-specifier|static
-specifier|final
 name|Condition
 name|DEFAULT
 init|=
@@ -330,21 +318,12 @@ name|boolean
 name|isHflushed
 parameter_list|)
 block|{
-if|if
-condition|(
-name|replication
-operator|<
-literal|3
-condition|)
-block|{
 return|return
-literal|false
-return|;
-block|}
-else|else
-block|{
-if|if
-condition|(
+name|replication
+operator|>=
+literal|3
+operator|&&
+operator|(
 name|n
 operator|<=
 operator|(
@@ -352,27 +331,17 @@ name|replication
 operator|/
 literal|2
 operator|)
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-else|else
-block|{
-return|return
+operator|||
 name|isAppend
 operator|||
 name|isHflushed
+operator|)
 return|;
-block|}
-block|}
 block|}
 block|}
 decl_stmt|;
 comment|/** Is the condition satisfied? */
 DECL|method|satisfy (short replication, DatanodeInfo[] existings, int nExistings, boolean isAppend, boolean isHflushed)
-specifier|public
 name|boolean
 name|satisfy
 parameter_list|(
@@ -483,7 +452,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Best effort means that the client will try to replace the failed datanode    * (provided that the policy is satisfied), however, it will continue the    * write operation in case that the datanode replacement also fails.    *     * @return Suppose the datanode replacement fails.    *     false: An exception should be thrown so that the write will fail.    *     true : The write should be resumed with the remaining datandoes.    */
+comment|/**    * Best effort means that the client will try to replace the failed datanode    * (provided that the policy is satisfied), however, it will continue the    * write operation in case that the datanode replacement also fails.    *    * @return Suppose the datanode replacement fails.    *     false: An exception should be thrown so that the write will fail.    *     true : The write should be resumed with the remaining datandoes.    */
 end_comment
 
 begin_function
@@ -541,8 +510,10 @@ name|existings
 operator|.
 name|length
 decl_stmt|;
-if|if
-condition|(
+comment|//don't need to add datanode for any policy.
+return|return
+operator|!
+operator|(
 name|n
 operator|==
 literal|0
@@ -550,16 +521,8 @@ operator|||
 name|n
 operator|>=
 name|replication
-condition|)
-block|{
-comment|//don't need to add datanode for any policy.
-return|return
-literal|false
-return|;
-block|}
-else|else
-block|{
-return|return
+operator|)
+operator|&&
 name|policy
 operator|.
 name|getCondition
@@ -578,7 +541,6 @@ argument_list|,
 name|isHflushed
 argument_list|)
 return|;
-block|}
 block|}
 end_function
 

@@ -86,7 +86,7 @@ init|=
 literal|""
 decl_stmt|;
 comment|// local file storing the checksum
-comment|/**    * Constructs BlockLocalPathInfo.    * @param b The block corresponding to this lock path info.     * @param file Block data file.    * @param metafile Metadata file for the block.    */
+comment|/**    * Constructs BlockLocalPathInfo.    * @param b The block corresponding to this lock path info.    * @param file Block data file.    * @param metafile Metadata file for the block.    */
 DECL|method|BlockLocalPathInfo (ExtendedBlock b, String file, String metafile)
 specifier|public
 name|BlockLocalPathInfo

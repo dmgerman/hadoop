@@ -497,7 +497,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * @deprecated this is an old implementation that is being left around  * in case any issues spring up with the new {@link RemoteBlockReader2} implementation.  * It will be removed in the next release.  */
+comment|/**  * @deprecated this is an old implementation that is being left around  * in case any issues spring up with the new {@link RemoteBlockReader2}  * implementation.  * It will be removed in the next release.  */
 end_comment
 
 begin_class
@@ -591,7 +591,7 @@ specifier|final
 name|long
 name|blockId
 decl_stmt|;
-comment|/** offset in block of of first chunk - may be less than startOffset       if startOffset is not chunk-aligned */
+comment|/** offset in block of of first chunk - may be less than startOffset    if startOffset is not chunk-aligned */
 DECL|field|firstChunkOffset
 specifier|private
 specifier|final
@@ -912,7 +912,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|/* Checksum errors are handled outside the BlockReader.       * DFSInputStream does not always call 'seekToNewSource'. In the       * case of pread(), it just tries a different replica without seeking.      */
+comment|/* Checksum errors are handled outside the BlockReader.      * DFSInputStream does not always call 'seekToNewSource'. In the      * case of pread(), it just tries a different replica without seeking.      */
 return|return
 literal|false
 return|;
@@ -959,7 +959,7 @@ literal|"since seek is not required"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Makes sure that checksumBytes has enough capacity     * and limit is set to the number of checksum bytes needed     * to be read.    */
+comment|/**    * Makes sure that checksumBytes has enough capacity    * and limit is set to the number of checksum bytes needed    * to be read.    */
 DECL|method|adjustChecksumBytes (int dataLen)
 specifier|private
 name|void
@@ -1058,8 +1058,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -1071,8 +1073,7 @@ name|blockId
 operator|+
 literal|")"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|readChunkImpl
@@ -1088,14 +1089,6 @@ argument_list|,
 name|checksumBuf
 argument_list|)
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|readChunkImpl (long pos, byte[] buf, int offset, int len, byte[] checksumBuf)
@@ -2255,8 +2248,6 @@ specifier|public
 name|int
 name|available
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 comment|// An optimistic estimate of how much data is available
 comment|// to us without doing network I/O.

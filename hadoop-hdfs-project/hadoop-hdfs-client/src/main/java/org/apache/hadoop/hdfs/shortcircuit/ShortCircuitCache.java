@@ -672,12 +672,10 @@ decl_stmt|;
 name|Long
 name|evictionTimeNs
 init|=
-name|Long
-operator|.
-name|valueOf
-argument_list|(
+operator|(
+name|long
+operator|)
 literal|0
-argument_list|)
 decl_stmt|;
 while|while
 condition|(
@@ -1282,14 +1280,7 @@ name|replicaInfoMap
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|ExtendedBlockId
-argument_list|,
-name|Waitable
-argument_list|<
-name|ShortCircuitReplicaInfo
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * The CacheCleaner.  We don't create this and schedule it until it becomes    * necessary.    */
@@ -1312,11 +1303,7 @@ name|evictable
 init|=
 operator|new
 name|TreeMap
-argument_list|<
-name|Long
-argument_list|,
-name|ShortCircuitReplica
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * Maximum total size of the cache, including both mmapped and    * no$-mmapped elements.    */
@@ -1346,11 +1333,7 @@ name|evictableMmapped
 init|=
 operator|new
 name|TreeMap
-argument_list|<
-name|Long
-argument_list|,
-name|ShortCircuitReplica
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * Maximum number of mmaped evictable elements.    */
@@ -2148,12 +2131,10 @@ decl_stmt|;
 name|Long
 name|evictionTimeNs
 init|=
-name|Long
-operator|.
-name|valueOf
-argument_list|(
+operator|(
+name|long
+operator|)
 literal|0
-argument_list|)
 decl_stmt|;
 while|while
 condition|(
@@ -2945,7 +2926,6 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-continue|continue;
 block|}
 block|}
 block|}
@@ -2968,9 +2948,7 @@ name|newWaitable
 operator|=
 operator|new
 name|Waitable
-argument_list|<
-name|ShortCircuitReplicaInfo
-argument_list|>
+argument_list|<>
 argument_list|(
 name|lock
 operator|.
@@ -3734,15 +3712,10 @@ name|replica
 operator|.
 name|mmapData
 operator|=
-name|Long
-operator|.
-name|valueOf
-argument_list|(
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
-argument_list|)
 expr_stmt|;
 name|newCond
 operator|.
@@ -4150,11 +4123,7 @@ name|replicas
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|ExtendedBlockId
-argument_list|,
-name|ShortCircuitReplica
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Map
@@ -4167,11 +4136,7 @@ name|failedLoads
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|ExtendedBlockId
-argument_list|,
-name|InvalidToken
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -4347,7 +4312,7 @@ operator|+
 literal|")"
 return|;
 block|}
-comment|/**    * Allocate a new shared memory slot.    *    * @param datanode       The datanode to allocate a shm slot with.    * @param peer           A peer connected to the datanode.    * @param usedPeer       Will be set to true if we use up the provided peer.    * @param blockId        The block id and block pool id of the block we're     *                         allocating this slot for.    * @param clientName     The name of the DFSClient allocating the shared    *                         memory.    * @return               Null if short-circuit shared memory is disabled;    *                         a short-circuit memory slot otherwise.    * @throws IOException   An exception if there was an error talking to     *                         the datanode.    */
+comment|/**    * Allocate a new shared memory slot.    *    * @param datanode       The datanode to allocate a shm slot with.    * @param peer           A peer connected to the datanode.    * @param usedPeer       Will be set to true if we use up the provided peer.    * @param blockId        The block id and block pool id of the block we're    *                         allocating this slot for.    * @param clientName     The name of the DFSClient allocating the shared    *                         memory.    * @return               Null if short-circuit shared memory is disabled;    *                         a short-circuit memory slot otherwise.    * @throws IOException   An exception if there was an error talking to    *                         the datanode.    */
 DECL|method|allocShmSlot (DatanodeInfo datanode, DomainPeer peer, MutableBoolean usedPeer, ExtendedBlockId blockId, String clientName)
 specifier|public
 name|Slot
@@ -4402,7 +4367,7 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Free a slot immediately.    *    * ONLY use this if the DataNode is not yet aware of the slot.    *     * @param slot           The slot to free.    */
+comment|/**    * Free a slot immediately.    *    * ONLY use this if the DataNode is not yet aware of the slot.    *    * @param slot           The slot to free.    */
 DECL|method|freeSlot (Slot slot)
 specifier|public
 name|void

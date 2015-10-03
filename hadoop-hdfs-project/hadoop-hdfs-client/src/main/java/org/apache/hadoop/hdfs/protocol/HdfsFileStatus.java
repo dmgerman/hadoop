@@ -146,6 +146,7 @@ specifier|public
 class|class
 name|HdfsFileStatus
 block|{
+comment|// local name of the inode that's encoded in java UTF8
 DECL|field|path
 specifier|private
 specifier|final
@@ -153,7 +154,6 @@ name|byte
 index|[]
 name|path
 decl_stmt|;
-comment|// local name of the inode that's encoded in java UTF8
 DECL|field|symlink
 specifier|private
 specifier|final

@@ -89,9 +89,7 @@ name|DOMAIN
 init|=
 operator|new
 name|Domain
-argument_list|<
-name|CreateFlag
-argument_list|>
+argument_list|<>
 argument_list|(
 name|NAME
 argument_list|,

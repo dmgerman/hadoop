@@ -166,6 +166,13 @@ argument_list|>
 index|[]
 name|blockTokens
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+block|{
+literal|"unchecked"
+block|}
+argument_list|)
 DECL|method|LocatedStripedBlock (ExtendedBlock b, DatanodeInfo[] locs, String[] storageIDs, StorageType[] storageTypes, int[] indices, long startOffset, boolean corrupt, DatanodeInfo[] cachedLocs)
 specifier|public
 name|LocatedStripedBlock

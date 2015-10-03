@@ -79,7 +79,6 @@ name|short
 name|mode
 decl_stmt|;
 DECL|method|CacheFlag (short mode)
-specifier|private
 name|CacheFlag
 parameter_list|(
 name|short

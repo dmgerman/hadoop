@@ -112,7 +112,7 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
-comment|/**    * Obtain the access token that should be added to http connection's header.    * Will be called for each connection, so implementations should be    * performant. Implementations are responsible for any refreshing of    * the token.    *     * @return Access token to be added to connection header.    */
+comment|/**    * Obtain the access token that should be added to http connection's header.    * Will be called for each connection, so implementations should be    * performant. Implementations are responsible for any refreshing of    * the token.    *    * @return Access token to be added to connection header.    */
 DECL|method|getAccessToken ()
 specifier|public
 specifier|abstract

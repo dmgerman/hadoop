@@ -1586,44 +1586,6 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|ErasureCodingProtos
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|ErasureCodingProtos
-operator|.
-name|BlockECRecoveryInfoProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
 name|HdfsProtos
 import|;
 end_import
@@ -4722,9 +4684,7 @@ name|cachedLocs
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeInfo
-argument_list|>
+argument_list|<>
 argument_list|(
 name|locs
 operator|.
@@ -7717,17 +7677,10 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|len
-condition|;
-operator|++
-name|i
+name|LocatedBlockProto
+name|aLb
+range|:
+name|lb
 control|)
 block|{
 name|result
@@ -7736,12 +7689,7 @@ name|add
 argument_list|(
 name|convertLocatedBlockProto
 argument_list|(
-name|lb
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
+name|aLb
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -9745,7 +9693,7 @@ return|return
 name|value
 return|;
 block|}
-DECL|method|convert (SnapshotDiffReportProto reportProto)
+DECL|method|convert ( SnapshotDiffReportProto reportProto)
 specifier|public
 specifier|static
 name|SnapshotDiffReport
@@ -11141,7 +11089,7 @@ name|NORMAL
 return|;
 block|}
 block|}
-DECL|method|convert ( SafeModeAction a)
+DECL|method|convert (SafeModeAction a)
 specifier|public
 specifier|static
 name|SafeModeActionProto
@@ -11365,10 +11313,10 @@ return|return
 name|result
 return|;
 block|}
+DECL|method|convert (DatanodeReportType t)
 specifier|public
 specifier|static
 name|DatanodeReportTypeProto
-DECL|method|convert (DatanodeReportType t)
 name|convert
 parameter_list|(
 name|DatanodeReportType
@@ -12368,19 +12316,10 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|DatanodeStorageReport
+name|report
+range|:
 name|reports
-operator|.
-name|length
-condition|;
-name|i
-operator|++
 control|)
 block|{
 name|protos
@@ -12389,10 +12328,7 @@ name|add
 argument_list|(
 name|convertDatanodeStorageReport
 argument_list|(
-name|reports
-index|[
-name|i
-index|]
+name|report
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12933,9 +12869,7 @@ block|}
 return|return
 operator|new
 name|EnumSetWritable
-argument_list|<
-name|CreateFlag
-argument_list|>
+argument_list|<>
 argument_list|(
 name|result
 argument_list|,
@@ -14406,7 +14340,7 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convertStorageReports (StorageReport[] storages)
+DECL|method|convertStorageReports ( StorageReport[] storages)
 specifier|public
 specifier|static
 name|List
@@ -14429,9 +14363,7 @@ name|protos
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|StorageReportProto
-argument_list|>
+argument_list|<>
 argument_list|(
 name|storages
 operator|.
@@ -14440,19 +14372,10 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|StorageReport
+name|storage
+range|:
 name|storages
-operator|.
-name|length
-condition|;
-name|i
-operator|++
 control|)
 block|{
 name|protos
@@ -14461,10 +14384,7 @@ name|add
 argument_list|(
 name|convert
 argument_list|(
-name|storages
-index|[
-name|i
-index|]
+name|storage
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -14764,9 +14684,7 @@ name|entryProto
 argument_list|)
 expr_stmt|;
 block|}
-name|SnapshotDiffReportProto
-name|reportProto
-init|=
+return|return
 name|SnapshotDiffReportProto
 operator|.
 name|newBuilder
@@ -14803,9 +14721,6 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
-return|return
-name|reportProto
 return|;
 block|}
 DECL|method|convert (CacheDirectiveStats stats)
@@ -15647,7 +15562,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|convertEditsResponse (EventBatchList el)
+DECL|method|convertEditsResponse ( EventBatchList el)
 specifier|public
 specifier|static
 name|GetEditsFromTxidResponseProto

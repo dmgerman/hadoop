@@ -788,7 +788,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Returns the OOB status if this ack contains one.     * @return null if it is not an OOB ack.    */
+comment|/**    * Returns the OOB status if this ack contains one.    * @return null if it is not an OOB ack.    */
 DECL|method|getOOBStatus ()
 specifier|public
 name|Status

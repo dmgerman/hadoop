@@ -265,7 +265,7 @@ name|VERSION
 init|=
 literal|1
 decl_stmt|;
-comment|/**    * Header includes everything except the checksum(s) themselves.    * Version is two bytes. Following it is the DataChecksum    * that occupies 5 bytes.     */
+comment|/**    * Header includes everything except the checksum(s) themselves.    * Version is two bytes. Following it is the DataChecksum    * that occupies 5 bytes.    */
 DECL|field|version
 specifier|private
 specifier|final
@@ -595,7 +595,7 @@ name|in
 argument_list|)
 return|;
 block|}
-comment|/**    * Reads header at the top of metadata file and returns the header.    *     * @return metadata header for the block    * @throws IOException    */
+comment|/**    * Reads header at the top of metadata file and returns the header.    *    * @return metadata header for the block    * @throws IOException    */
 DECL|method|readHeader (File file)
 specifier|public
 specifier|static

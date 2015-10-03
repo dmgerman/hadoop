@@ -455,7 +455,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * After successful SASL negotiation, returns whether it's QOP privacy    *     * @return boolean whether it's QOP privacy    */
+comment|/**    * After successful SASL negotiation, returns whether it's QOP privacy    *    * @return boolean whether it's QOP privacy    */
 DECL|method|isNegotiatedQopPrivacy ()
 specifier|public
 name|boolean
@@ -481,7 +481,7 @@ name|qop
 argument_list|)
 return|;
 block|}
-comment|/**    * Wraps a byte array.    *     * @param bytes The array containing the bytes to wrap.    * @param off The starting position at the array    * @param len The number of bytes to wrap    * @return byte[] wrapped bytes    * @throws SaslException if the bytes cannot be successfully wrapped    */
+comment|/**    * Wraps a byte array.    *    * @param bytes The array containing the bytes to wrap.    * @param off The starting position at the array    * @param len The number of bytes to wrap    * @return byte[] wrapped bytes    * @throws SaslException if the bytes cannot be successfully wrapped    */
 DECL|method|wrap (byte[] bytes, int off, int len)
 specifier|public
 name|byte
@@ -537,7 +537,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Unwraps a byte array.    *     * @param bytes The array containing the bytes to unwrap.    * @param off The starting position at the array    * @param len The number of bytes to unwrap    * @return byte[] unwrapped bytes    * @throws SaslException if the bytes cannot be successfully unwrapped    */
+comment|/**    * Unwraps a byte array.    *    * @param bytes The array containing the bytes to unwrap.    * @param off The starting position at the array    * @param len The number of bytes to unwrap    * @return byte[] unwrapped bytes    * @throws SaslException if the bytes cannot be successfully unwrapped    */
 DECL|method|unwrap (byte[] bytes, int off, int len)
 specifier|public
 name|byte

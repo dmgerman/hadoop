@@ -229,11 +229,7 @@ index|[]
 name|getAbsolutePaths
 parameter_list|()
 block|{
-specifier|final
-name|String
-index|[]
-name|paths
-init|=
+return|return
 name|getValue
 argument_list|()
 operator|.
@@ -241,9 +237,6 @@ name|split
 argument_list|(
 literal|","
 argument_list|)
-decl_stmt|;
-return|return
-name|paths
 return|;
 block|}
 block|}

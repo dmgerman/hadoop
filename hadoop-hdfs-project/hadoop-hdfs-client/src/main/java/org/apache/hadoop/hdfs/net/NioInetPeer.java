@@ -115,7 +115,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Represents a peer that we communicate with by using non-blocking I/O   * on a Socket.  */
+comment|/**  * Represents a peer that we communicate with by using non-blocking I/O  * on a Socket.  */
 end_comment
 
 begin_class

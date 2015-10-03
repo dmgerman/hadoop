@@ -180,7 +180,7 @@ specifier|private
 name|Expiration
 name|expiration
 decl_stmt|;
-comment|/**      * Builds a new CacheDirectiveInfo populated with the set properties.      *       * @return New CacheDirectiveInfo.      */
+comment|/**      * Builds a new CacheDirectiveInfo populated with the set properties.      *      * @return New CacheDirectiveInfo.      */
 DECL|method|build ()
 specifier|public
 name|CacheDirectiveInfo
@@ -264,7 +264,7 @@ name|getExpiration
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**      * Sets the id used in this request.      *       * @param id The id used in this request.      * @return This builder, for call chaining.      */
+comment|/**      * Sets the id used in this request.      *      * @param id The id used in this request.      * @return This builder, for call chaining.      */
 DECL|method|setId (Long id)
 specifier|public
 name|Builder
@@ -284,7 +284,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the path used in this request.      *       * @param path The path used in this request.      * @return This builder, for call chaining.      */
+comment|/**      * Sets the path used in this request.      *      * @param path The path used in this request.      * @return This builder, for call chaining.      */
 DECL|method|setPath (Path path)
 specifier|public
 name|Builder
@@ -304,7 +304,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the replication used in this request.      *       * @param replication The replication used in this request.      * @return This builder, for call chaining.      */
+comment|/**      * Sets the replication used in this request.      *      * @param replication The replication used in this request.      * @return This builder, for call chaining.      */
 DECL|method|setReplication (Short replication)
 specifier|public
 name|Builder
@@ -324,7 +324,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the pool used in this request.      *       * @param pool The pool used in this request.      * @return This builder, for call chaining.      */
+comment|/**      * Sets the pool used in this request.      *      * @param pool The pool used in this request.      * @return This builder, for call chaining.      */
 DECL|method|setPool (String pool)
 specifier|public
 name|Builder
@@ -344,7 +344,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets when the CacheDirective should expire. A      * {@link CacheDirectiveInfo.Expiration} can specify either an absolute or      * relative expiration time.      *       * @param expiration when this CacheDirective should expire      * @return This builder, for call chaining      */
+comment|/**      * Sets when the CacheDirective should expire. A      * {@link CacheDirectiveInfo.Expiration} can specify either an absolute or      * relative expiration time.      *      * @param expiration when this CacheDirective should expire      * @return This builder, for call chaining      */
 DECL|method|setExpiration (Expiration expiration)
 specifier|public
 name|Builder
@@ -400,7 +400,7 @@ argument_list|(
 name|MAX_RELATIVE_EXPIRY_MS
 argument_list|)
 decl_stmt|;
-comment|/**      * Create a new relative Expiration.      *<p>      * Use {@link Expiration#NEVER} to indicate an Expiration that never      * expires.      *       * @param ms how long until the CacheDirective expires, in milliseconds      * @return A relative Expiration      */
+comment|/**      * Create a new relative Expiration.      *<p>      * Use {@link Expiration#NEVER} to indicate an Expiration that never      * expires.      *      * @param ms how long until the CacheDirective expires, in milliseconds      * @return A relative Expiration      */
 DECL|method|newRelative (long ms)
 specifier|public
 specifier|static
@@ -421,7 +421,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**      * Create a new absolute Expiration.      *<p>      * Use {@link Expiration#NEVER} to indicate an Expiration that never      * expires.      *       * @param date when the CacheDirective expires      * @return An absolute Expiration      */
+comment|/**      * Create a new absolute Expiration.      *<p>      * Use {@link Expiration#NEVER} to indicate an Expiration that never      * expires.      *      * @param date when the CacheDirective expires      * @return An absolute Expiration      */
 DECL|method|newAbsolute (Date date)
 specifier|public
 specifier|static
@@ -445,7 +445,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**      * Create a new absolute Expiration.      *<p>      * Use {@link Expiration#NEVER} to indicate an Expiration that never      * expires.      *       * @param ms when the CacheDirective expires, in milliseconds since the Unix      *          epoch.      * @return An absolute Expiration      */
+comment|/**      * Create a new absolute Expiration.      *<p>      * Use {@link Expiration#NEVER} to indicate an Expiration that never      * expires.      *      * @param ms when the CacheDirective expires, in milliseconds since the Unix      *          epoch.      * @return An absolute Expiration      */
 DECL|method|newAbsolute (long ms)
 specifier|public
 specifier|static
@@ -1077,10 +1077,6 @@ argument_list|(
 name|expiration
 argument_list|)
 expr_stmt|;
-name|prefix
-operator|=
-literal|", "
-expr_stmt|;
 block|}
 name|builder
 operator|.
@@ -1098,10 +1094,6 @@ return|;
 block|}
 block|}
 end_class
-
-begin_empty_stmt
-empty_stmt|;
-end_empty_stmt
 
 end_unit
 

@@ -170,8 +170,6 @@ DECL|method|available ()
 name|int
 name|available
 parameter_list|()
-throws|throws
-name|IOException
 function_decl|;
 comment|/**    * Close the block reader.    *    * @throws IOException    */
 annotation|@

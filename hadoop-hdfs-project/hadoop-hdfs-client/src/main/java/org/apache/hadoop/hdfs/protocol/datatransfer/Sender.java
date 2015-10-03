@@ -590,7 +590,7 @@ name|out
 expr_stmt|;
 block|}
 comment|/** Initialize a operation. */
-DECL|method|op (final DataOutput out, final Op op )
+DECL|method|op (final DataOutput out, final Op op)
 specifier|private
 specifier|static
 name|void
@@ -682,7 +682,7 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|getCachingStrategy (CachingStrategy cachingStrategy)
+DECL|method|getCachingStrategy ( CachingStrategy cachingStrategy)
 specifier|static
 specifier|private
 name|CachingStrategyProto
@@ -720,9 +720,6 @@ name|cachingStrategy
 operator|.
 name|getReadahead
 argument_list|()
-operator|.
-name|longValue
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -743,9 +740,6 @@ argument_list|(
 name|cachingStrategy
 operator|.
 name|getDropBehind
-argument_list|()
-operator|.
-name|booleanValue
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -87,9 +87,7 @@ name|DOMAIN
 init|=
 operator|new
 name|Domain
-argument_list|<
-name|XAttrSetFlag
-argument_list|>
+argument_list|<>
 argument_list|(
 name|NAME
 argument_list|,

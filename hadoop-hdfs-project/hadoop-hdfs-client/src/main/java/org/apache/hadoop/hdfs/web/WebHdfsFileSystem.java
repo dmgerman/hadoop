@@ -974,7 +974,7 @@ literal|"/v"
 operator|+
 name|VERSION
 decl_stmt|;
-comment|/** Default connection factory may be overridden in tests to use smaller timeout values */
+comment|/**    * Default connection factory may be overridden in tests to use smaller    * timeout values    */
 DECL|field|connectionFactory
 specifier|protected
 name|URLConnectionFactory
@@ -1445,14 +1445,8 @@ name|workingDir
 operator|=
 name|makeQualified
 argument_list|(
-operator|new
-name|Path
-argument_list|(
-name|getHomeDirectoryString
-argument_list|(
-name|ugi
-argument_list|)
-argument_list|)
+name|getHomeDirectory
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
@@ -2008,7 +2002,7 @@ name|f
 argument_list|)
 return|;
 block|}
-DECL|method|jsonParse (final HttpURLConnection c, final boolean useErrorStream )
+DECL|method|jsonParse (final HttpURLConnection c, final boolean useErrorStream)
 specifier|static
 name|Map
 argument_list|<
@@ -3057,7 +3051,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * Two-step requests redirected to a DN      *      * Create/Append:      * Step 1) Submit a Http request with neither auto-redirect nor data.      * Step 2) Submit another Http request with the URL from the Location header with data.      *      * The reason of having two-step create/append is for preventing clients to      * send out the data before the redirect. This issue is addressed by the      * "Expect: 100-continue" header in HTTP/1.1; see RFC 2616, Section 8.2.3.      * Unfortunately, there are software library bugs (e.g. Jetty 6 http server      * and Java 6 http client), which do not correctly implement "Expect:      * 100-continue". The two-step create/append is a temporary workaround for      * the software library bugs.      *      * Open/Checksum      * Also implements two-step connects for other operations redirected to      * a DN such as open and checksum      */
+comment|/**      * Two-step requests redirected to a DN      *      * Create/Append:      * Step 1) Submit a Http request with neither auto-redirect nor data.      * Step 2) Submit another Http request with the URL from the Location header      * with data.      *      * The reason of having two-step create/append is for preventing clients to      * send out the data before the redirect. This issue is addressed by the      * "Expect: 100-continue" header in HTTP/1.1; see RFC 2616, Section 8.2.3.      * Unfortunately, there are software library bugs (e.g. Jetty 6 http server      * and Java 6 http client), which do not correctly implement "Expect:      * 100-continue". The two-step create/append is a temporary workaround for      * the software library bugs.      *      * Open/Checksum      * Also implements two-step connects for other operations redirected to      * a DN such as open and checksum      */
 DECL|method|connect (URL url)
 specifier|private
 name|HttpURLConnection
@@ -3375,7 +3369,6 @@ block|}
 break|break;
 block|}
 default|default:
-block|{
 name|conn
 operator|.
 name|setDoOutput
@@ -3384,7 +3377,6 @@ name|doOutput
 argument_list|)
 expr_stmt|;
 break|break;
-block|}
 block|}
 name|conn
 operator|.
@@ -6167,9 +6159,7 @@ name|Op
 operator|.
 name|CREATESNAPSHOT
 decl_stmt|;
-name|Path
-name|spath
-init|=
+return|return
 operator|new
 name|FsPathResponseRunner
 argument_list|<
@@ -6226,9 +6216,6 @@ block|}
 operator|.
 name|run
 argument_list|()
-decl_stmt|;
-return|return
-name|spath
 return|;
 block|}
 annotation|@
@@ -7636,6 +7623,11 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|//convert FileStatus
+assert|assert
+name|array
+operator|!=
+literal|null
+assert|;
 specifier|final
 name|FileStatus
 index|[]
@@ -8381,8 +8373,6 @@ name|InetSocketAddress
 index|[]
 name|resolveNNAddr
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|Configuration
 name|conf
@@ -8407,9 +8397,7 @@ name|ret
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|InetSocketAddress
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 if|if

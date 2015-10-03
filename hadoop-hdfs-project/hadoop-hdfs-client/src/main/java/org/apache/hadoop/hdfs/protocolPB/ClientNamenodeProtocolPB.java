@@ -200,7 +200,7 @@ name|protocolVersion
 operator|=
 literal|1
 argument_list|)
-comment|/**  * Protocol that a clients use to communicate with the NameNode.  *   * Note: This extends the protocolbuffer service based interface to  * add annotations required for security.  */
+comment|/**  * Protocol that a clients use to communicate with the NameNode.  *  * Note: This extends the protocolbuffer service based interface to  * add annotations required for security.  */
 DECL|interface|ClientNamenodeProtocolPB
 specifier|public
 interface|interface

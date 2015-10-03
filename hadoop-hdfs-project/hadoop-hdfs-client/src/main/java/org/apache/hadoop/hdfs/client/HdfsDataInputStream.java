@@ -207,8 +207,6 @@ parameter_list|(
 name|DFSInputStream
 name|in
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|super
 argument_list|(
@@ -223,8 +221,6 @@ parameter_list|(
 name|CryptoInputStream
 name|in
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|super
 argument_list|(
@@ -342,14 +338,12 @@ name|getAllBlocks
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the visible length of the file. It will include the length of the last    * block even if that is in UnderConstruction state.    *     * @return The visible length of the file.    */
+comment|/**    * Get the visible length of the file. It will include the length of the last    * block even if that is in UnderConstruction state.    *    * @return The visible length of the file.    */
 DECL|method|getVisibleLength ()
 specifier|public
 name|long
 name|getVisibleLength
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|getDFSInputStream

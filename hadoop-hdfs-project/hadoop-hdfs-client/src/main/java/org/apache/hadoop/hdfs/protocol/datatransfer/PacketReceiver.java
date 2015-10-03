@@ -316,7 +316,7 @@ return|return
 name|curChecksumSlice
 return|;
 block|}
-comment|/**    * Reads all of the data for the next packet into the appropriate buffers.    *     * The data slice and checksum slice members will be set to point to the    * user data and corresponding checksums. The header will be parsed and    * set.    */
+comment|/**    * Reads all of the data for the next packet into the appropriate buffers.    *    * The data slice and checksum slice members will be set to point to the    * user data and corresponding checksums. The header will be parsed and    * set.    */
 DECL|method|receiveNextPacket (ReadableByteChannel in)
 specifier|public
 name|void

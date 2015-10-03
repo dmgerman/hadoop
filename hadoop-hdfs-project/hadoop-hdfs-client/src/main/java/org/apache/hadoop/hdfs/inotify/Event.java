@@ -123,7 +123,6 @@ name|Event
 block|{
 DECL|enum|EventType
 specifier|public
-specifier|static
 enum|enum
 name|EventType
 block|{
@@ -322,7 +321,6 @@ name|Event
 block|{
 DECL|enum|INodeType
 specifier|public
-specifier|static
 enum|enum
 name|INodeType
 block|{
@@ -334,7 +332,7 @@ block|,
 name|DIRECTORY
 block|,
 name|SYMLINK
-block|;     }
+block|}
 DECL|field|iNodeType
 specifier|private
 name|INodeType
@@ -871,33 +869,75 @@ operator|.
 name|append
 argument_list|(
 literal|"CreateEvent [INodeType="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|iNodeType
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", path="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|path
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", ctime="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|ctime
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", replication="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|replication
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", ownerName="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|ownerName
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", groupName="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|groupName
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", perms="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|perms
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", "
 argument_list|)
 expr_stmt|;
@@ -913,9 +953,15 @@ operator|.
 name|append
 argument_list|(
 literal|"symlinkTarget="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|symlinkTarget
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", "
 argument_list|)
 expr_stmt|;
@@ -925,13 +971,25 @@ operator|.
 name|append
 argument_list|(
 literal|"overwrite="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|overwrite
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", defaultBlockSize="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|defaultBlockSize
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"]"
 argument_list|)
 expr_stmt|;
@@ -958,7 +1016,6 @@ name|Event
 block|{
 DECL|enum|MetadataType
 specifier|public
-specifier|static
 enum|enum
 name|MetadataType
 block|{
@@ -979,7 +1036,7 @@ block|,
 name|ACLS
 block|,
 name|XATTRS
-block|;     }
+block|}
 DECL|field|path
 specifier|private
 name|String
@@ -1584,11 +1641,20 @@ operator|.
 name|append
 argument_list|(
 literal|"MetadataUpdateEvent [path="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|path
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", metadataType="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|metadataType
 argument_list|)
 expr_stmt|;
@@ -1605,11 +1671,20 @@ operator|.
 name|append
 argument_list|(
 literal|", mtime="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|mtime
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", atime="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|atime
 argument_list|)
 expr_stmt|;
@@ -1622,7 +1697,10 @@ operator|.
 name|append
 argument_list|(
 literal|", replication="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|replication
 argument_list|)
 expr_stmt|;
@@ -1635,11 +1713,20 @@ operator|.
 name|append
 argument_list|(
 literal|", ownerName="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|ownerName
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", groupName="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|groupName
 argument_list|)
 expr_stmt|;
@@ -1652,7 +1739,10 @@ operator|.
 name|append
 argument_list|(
 literal|", perms="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|perms
 argument_list|)
 expr_stmt|;
@@ -1665,7 +1755,10 @@ operator|.
 name|append
 argument_list|(
 literal|", acls="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|acls
 argument_list|)
 expr_stmt|;
@@ -1678,11 +1771,20 @@ operator|.
 name|append
 argument_list|(
 literal|", xAttrs="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|xAttrs
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", xAttrsRemoved="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|xAttrsRemoved
 argument_list|)
 expr_stmt|;

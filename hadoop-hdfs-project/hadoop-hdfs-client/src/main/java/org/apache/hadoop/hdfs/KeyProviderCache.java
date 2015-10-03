@@ -20,16 +20,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|net
 operator|.
 name|URI
@@ -220,6 +210,16 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -298,6 +298,8 @@ specifier|public
 name|void
 name|onRemoval
 parameter_list|(
+annotation|@
+name|Nonnull
 name|RemovalNotification
 argument_list|<
 name|URI
@@ -309,6 +311,14 @@ parameter_list|)
 block|{
 try|try
 block|{
+assert|assert
+name|notification
+operator|.
+name|getValue
+argument_list|()
+operator|!=
+literal|null
+assert|;
 name|notification
 operator|.
 name|getValue
@@ -340,7 +350,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-empty_stmt|;
 block|}
 block|}
 block|}
@@ -548,8 +557,6 @@ parameter_list|,
 name|KeyProvider
 name|keyProvider
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|URI
 name|uri
@@ -559,6 +566,11 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+assert|assert
+name|uri
+operator|!=
+literal|null
+assert|;
 name|cache
 operator|.
 name|put

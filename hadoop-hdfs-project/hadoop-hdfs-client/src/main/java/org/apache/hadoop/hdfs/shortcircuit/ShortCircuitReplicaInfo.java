@@ -203,10 +203,6 @@ argument_list|(
 name|exc
 argument_list|)
 expr_stmt|;
-name|prefix
-operator|=
-literal|", "
-expr_stmt|;
 block|}
 name|builder
 operator|.

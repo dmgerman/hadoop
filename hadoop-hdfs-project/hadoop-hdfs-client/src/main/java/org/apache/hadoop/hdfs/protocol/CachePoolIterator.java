@@ -180,8 +180,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -189,8 +191,7 @@ name|newScope
 argument_list|(
 literal|"listCachePools"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -200,14 +201,6 @@ argument_list|(
 name|prevKey
 argument_list|)
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 annotation|@

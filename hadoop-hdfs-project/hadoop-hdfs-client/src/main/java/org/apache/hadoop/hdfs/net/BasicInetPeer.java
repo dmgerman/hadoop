@@ -253,7 +253,7 @@ name|int
 name|timeoutMs
 parameter_list|)
 block|{
-comment|/*      * We can't implement write timeouts. :(     *      * Java provides no facility to set a blocking write timeout on a Socket.     * You can simulate a blocking write with a timeout by using     * non-blocking I/O.  However, we can't use nio here, because this Socket     * doesn't have an associated Channel.     *      * See http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4031100 for     * more details.     */
+comment|/*     * We can't implement write timeouts. :(     *     * Java provides no facility to set a blocking write timeout on a Socket.     * You can simulate a blocking write with a timeout by using     * non-blocking I/O.  However, we can't use nio here, because this Socket     * doesn't have an associated Channel.     *     * See http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4031100 for     * more details.     */
 block|}
 annotation|@
 name|Override

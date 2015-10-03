@@ -44,20 +44,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|retry
@@ -86,7 +72,7 @@ specifier|private
 name|AtomicBoolean
 name|fallbackToSimpleAuth
 decl_stmt|;
-comment|/**    * Inquire whether logical HA URI is used for the implementation. If it is    * used, a special token handling may be needed to make sure a token acquired     * from a node in the HA pair can be used against the other node.     *    * @return true if logical HA URI is used. false, if not used.    */
+comment|/**    * Inquire whether logical HA URI is used for the implementation. If it is    * used, a special token handling may be needed to make sure a token acquired    * from a node in the HA pair can be used against the other node.    *    * @return true if logical HA URI is used. false, if not used.    */
 DECL|method|useLogicalURI ()
 specifier|public
 specifier|abstract

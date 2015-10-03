@@ -156,6 +156,16 @@ name|HttpHeaders
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * To support HTTP byte streams, a new connection to an HTTP server needs to be  * created each time. This class hides the complexity of those multiple  * connections from the client. Whenever seek() is called, a new connection  * is made on the successive read(). The normal input stream functions are  * connected to the currently active input stream.  */
 end_comment
@@ -876,11 +886,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|read (byte b[], int off, int len)
+DECL|method|read (@onnull byte b[], int off, int len)
 specifier|public
 name|int
 name|read
 parameter_list|(
+annotation|@
+name|Nonnull
 name|byte
 name|b
 index|[]

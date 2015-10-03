@@ -128,7 +128,7 @@ specifier|public
 interface|interface
 name|RemotePeerFactory
 block|{
-comment|/**    * @param addr          The address to connect to.    * @param blockToken    Token used during optional SASL negotiation    * @param datanodeId    ID of destination DataNode    * @return              A new Peer connected to the address.    *    * @throws IOException  If there was an error connecting or creating     *                      the remote socket, encrypted stream, etc.    */
+comment|/**    * @param addr          The address to connect to.    * @param blockToken    Token used during optional SASL negotiation    * @param datanodeId    ID of destination DataNode    * @return              A new Peer connected to the address.    *    * @throws IOException  If there was an error connecting or creating    *                      the remote socket, encrypted stream, etc.    */
 DECL|method|newConnectedPeer (InetSocketAddress addr, Token<BlockTokenIdentifier> blockToken, DatanodeID datanodeId)
 name|Peer
 name|newConnectedPeer

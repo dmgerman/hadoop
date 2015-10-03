@@ -18,16 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -106,8 +96,6 @@ parameter_list|,
 name|LocatedBlock
 name|block
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 comment|// Initialize with data from passed in BlockLocation
 name|super

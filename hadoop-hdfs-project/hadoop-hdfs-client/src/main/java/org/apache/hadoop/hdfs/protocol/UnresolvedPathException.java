@@ -20,16 +20,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -85,7 +75,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * Thrown when a symbolic link is encountered in a path.  */
+comment|/**  * Thrown when a symbolic link is encountered in a path.  */
 end_comment
 
 begin_class
@@ -201,8 +191,6 @@ specifier|public
 name|Path
 name|getResolvedPath
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 comment|// If the path is absolute we cam throw out the preceding part and
 comment|// just append the remainder to the target, otherwise append each
@@ -310,33 +298,12 @@ return|return
 name|msg
 return|;
 block|}
-name|String
-name|myMsg
-init|=
-literal|"Unresolved path "
-operator|+
-name|path
-decl_stmt|;
-try|try
-block|{
 return|return
 name|getResolvedPath
 argument_list|()
 operator|.
 name|toString
 argument_list|()
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// Ignore
-block|}
-return|return
-name|myMsg
 return|;
 block|}
 block|}

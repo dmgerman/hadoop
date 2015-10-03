@@ -348,8 +348,6 @@ parameter_list|,
 name|long
 name|lastReadTxid
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|this
 operator|.
@@ -390,8 +388,10 @@ name|IOException
 throws|,
 name|MissingEventsException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -399,8 +399,7 @@ name|newScope
 argument_list|(
 literal|"inotifyPoll"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 comment|// need to keep retrying until the NN sends us the latest committed txid
 if|if
@@ -564,14 +563,6 @@ literal|null
 return|;
 block|}
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Return a estimate of how many transaction IDs behind the NameNode's    * current state this stream is. Clients should periodically call this method    * and check if its result is steadily increasing, which indicates that they    * are falling behind (i.e. transaction are being generated faster than the    * client is reading them). If a client falls too far behind events may be    * deleted before the client can read them.    *<p/>    * A return value of -1 indicates that an estimate could not be produced, and    * should be ignored. The value returned by this method is really only useful    * when compared to previous or subsequent returned values.    */
 DECL|method|getTxidsBehindEstimate ()
@@ -628,8 +619,13 @@ name|InterruptedException
 throws|,
 name|MissingEventsException
 block|{
+name|EventBatch
+name|next
+decl_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -637,13 +633,7 @@ name|newScope
 argument_list|(
 literal|"inotifyPollWithTimeout"
 argument_list|)
-decl_stmt|;
-name|EventBatch
-name|next
-init|=
-literal|null
-decl_stmt|;
-try|try
+init|)
 block|{
 name|long
 name|initialTime
@@ -754,14 +744,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 return|return
 name|next
 return|;
@@ -779,8 +761,13 @@ name|InterruptedException
 throws|,
 name|MissingEventsException
 block|{
+name|EventBatch
+name|next
+decl_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -788,13 +775,7 @@ name|newScope
 argument_list|(
 literal|"inotifyTake"
 argument_list|)
-decl_stmt|;
-name|EventBatch
-name|next
-init|=
-literal|null
-decl_stmt|;
-try|try
+init|)
 block|{
 name|int
 name|nextWaitMin
@@ -858,14 +839,6 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 return|return
 name|next

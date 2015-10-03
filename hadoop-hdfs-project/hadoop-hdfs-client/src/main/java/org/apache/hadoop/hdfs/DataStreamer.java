@@ -264,20 +264,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|StorageType
 import|;
 end_import
@@ -792,20 +778,6 @@ name|htrace
 operator|.
 name|core
 operator|.
-name|Sampler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
-operator|.
-name|core
-operator|.
 name|Span
 import|;
 end_import
@@ -939,6 +911,16 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
 import|;
 end_import
 
@@ -2438,7 +2420,7 @@ operator|.
 name|PIPELINE_SETUP_CREATE
 expr_stmt|;
 block|}
-comment|/**    * Construct a data streamer for appending to the last partial block    * @param lastBlock last block of the file to be appended    * @param stat status of the file to be appended    * @throws IOException if error occurs    */
+comment|/**    * Construct a data streamer for appending to the last partial block    * @param lastBlock last block of the file to be appended    * @param stat status of the file to be appended    */
 DECL|method|DataStreamer (LocatedBlock lastBlock, HdfsFileStatus stat, DFSClient dfsClient, String src, Progressable progress, DataChecksum checksum, AtomicReference<CachingStrategy> cachingStrategy, ByteArrayManager byteArrayManage)
 name|DataStreamer
 parameter_list|(
@@ -2469,8 +2451,6 @@ parameter_list|,
 name|ByteArrayManager
 name|byteArrayManage
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|this
 argument_list|(
@@ -3362,8 +3342,10 @@ name|one
 argument_list|)
 expr_stmt|;
 comment|// write out data to remote datanode
+try|try
+init|(
 name|TraceScope
-name|writeScope
+name|ignored
 init|=
 name|dfsClient
 operator|.
@@ -3376,8 +3358,7 @@ literal|"DataStreamer#writeTo"
 argument_list|,
 name|spanId
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|one
 operator|.
@@ -3412,14 +3393,6 @@ expr_stmt|;
 throw|throw
 name|e
 throw|;
-block|}
-finally|finally
-block|{
-name|writeScope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 name|lastPacket
 operator|=
@@ -3721,8 +3694,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|dfsClient
 operator|.
@@ -3733,8 +3708,7 @@ name|newScope
 argument_list|(
 literal|"waitForAckedSeqno"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|LOG
 operator|.
@@ -3813,7 +3787,7 @@ block|}
 catch|catch
 parameter_list|(
 name|ClosedChannelException
-name|e
+name|cce
 parameter_list|)
 block|{       }
 name|long
@@ -3849,14 +3823,6 @@ literal|"ms)"
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * wait for space of dataQueue and queue the packet    *    * @param packet  the DFSPacket to be queued    * @throws IOException    */
@@ -4020,7 +3986,7 @@ block|}
 catch|catch
 parameter_list|(
 name|ClosedChannelException
-name|e
+name|ignored
 parameter_list|)
 block|{       }
 block|}
@@ -4357,8 +4323,7 @@ assert|assert
 literal|false
 assert|;
 block|}
-if|if
-condition|(
+return|return
 name|addr
 operator|!=
 literal|null
@@ -4369,14 +4334,6 @@ name|isLocalAddress
 argument_list|(
 name|addr
 argument_list|)
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-return|return
-literal|false
 return|;
 block|}
 comment|//
@@ -5367,93 +5324,45 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-operator|new
-name|StringBuilder
-argument_list|()
-operator|.
-name|append
-argument_list|(
 literal|"Failed to replace a bad datanode on the existing pipeline "
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|"due to no more good datanodes being available to try. "
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|"(Nodes: current="
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 name|Arrays
 operator|.
 name|asList
 argument_list|(
 name|nodes
 argument_list|)
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|", original="
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 name|Arrays
 operator|.
 name|asList
 argument_list|(
 name|original
 argument_list|)
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|"). "
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|"The current failed datanode replacement policy is "
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 name|dfsClient
 operator|.
 name|dtpReplaceDatanodeOnFailure
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", and "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"a client may configure this via '"
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
+literal|", and a client may configure this via '"
+operator|+
 name|BlockWrite
 operator|.
 name|ReplaceDatanodeOnFailure
 operator|.
 name|POLICY_KEY
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|"' in its configuration."
-argument_list|)
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -5641,9 +5550,7 @@ name|exclude
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeInfo
-argument_list|>
+argument_list|<>
 argument_list|(
 name|failed
 argument_list|)
@@ -6712,9 +6619,9 @@ block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|ie
+name|ignored
 parameter_list|)
-block|{}
+block|{       }
 block|}
 block|}
 DECL|method|updateBlockForPipeline ()
@@ -6848,31 +6755,28 @@ name|IOException
 block|{
 name|LocatedBlock
 name|lb
-init|=
-literal|null
 decl_stmt|;
 name|DatanodeInfo
 index|[]
 name|nodes
-init|=
-literal|null
 decl_stmt|;
 name|StorageType
 index|[]
 name|storageTypes
-init|=
-literal|null
 decl_stmt|;
 name|int
 name|count
 init|=
+name|dfsClient
+operator|.
+name|getConf
+argument_list|()
+operator|.
 name|getNumBlockWriteRetry
 argument_list|()
 decl_stmt|;
 name|boolean
 name|success
-init|=
-literal|false
 decl_stmt|;
 name|ExtendedBlock
 name|oldBlock
@@ -7138,11 +7042,6 @@ return|return
 literal|false
 return|;
 block|}
-name|Status
-name|pipelineStatus
-init|=
-name|SUCCESS
-decl_stmt|;
 name|String
 name|firstBadLink
 init|=
@@ -7398,8 +7297,6 @@ init|=
 name|getPinnings
 argument_list|(
 name|nodes
-argument_list|,
-literal|true
 argument_list|)
 decl_stmt|;
 comment|// send the request
@@ -7456,11 +7353,9 @@ name|isLazyPersistFile
 argument_list|,
 operator|(
 name|targetPinnings
-operator|==
+operator|!=
 literal|null
-condition|?
-literal|false
-else|:
+operator|&&
 name|targetPinnings
 index|[
 literal|0
@@ -7486,13 +7381,14 @@ name|blockReplyStream
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|Status
 name|pipelineStatus
-operator|=
+init|=
 name|resp
 operator|.
 name|getStatus
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|firstBadLink
 operator|=
 name|resp
@@ -7699,9 +7595,8 @@ block|}
 else|else
 block|{
 assert|assert
+operator|!
 name|checkRestart
-operator|==
-literal|false
 assert|;
 name|errorState
 operator|.
@@ -7794,10 +7689,6 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
-name|out
-operator|=
-literal|null
-expr_stmt|;
 name|IOUtils
 operator|.
 name|closeStream
@@ -7816,7 +7707,7 @@ name|result
 return|;
 block|}
 block|}
-DECL|method|getPinnings (DatanodeInfo[] nodes, boolean shouldLog)
+DECL|method|getPinnings (DatanodeInfo[] nodes)
 specifier|private
 name|boolean
 index|[]
@@ -7825,9 +7716,6 @@ parameter_list|(
 name|DatanodeInfo
 index|[]
 name|nodes
-parameter_list|,
-name|boolean
-name|shouldLog
 parameter_list|)
 block|{
 if|if
@@ -7863,9 +7751,7 @@ name|favoredSet
 init|=
 operator|new
 name|HashSet
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|(
 name|Arrays
 operator|.
@@ -7933,8 +7819,6 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|shouldLog
-operator|&&
 operator|!
 name|favoredSet
 operator|.
@@ -8297,8 +8181,6 @@ specifier|private
 name|DFSPacket
 name|createHeartbeatPacket
 parameter_list|()
-throws|throws
-name|InterruptedIOException
 block|{
 specifier|final
 name|byte
@@ -8380,6 +8262,8 @@ specifier|public
 name|void
 name|onRemoval
 parameter_list|(
+annotation|@
+name|Nonnull
 name|RemovalNotification
 argument_list|<
 name|DatanodeInfo

@@ -116,7 +116,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    *     * @param timer Timer instance for unit testing    */
+comment|/**    *    * @param timer Timer instance for unit testing    */
 DECL|method|AccessTokenTimer (Timer timer)
 specifier|public
 name|AccessTokenTimer
@@ -138,7 +138,7 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|/**     * Set when the access token will expire as reported by the oauth server,    * ie in seconds from now.    * @param expiresIn Access time expiration as reported by OAuth server    */
+comment|/**    * Set when the access token will expire as reported by the oauth server,    * ie in seconds from now.    * @param expiresIn Access time expiration as reported by OAuth server    */
 DECL|method|setExpiresIn (String expiresIn)
 specifier|public
 name|void
@@ -160,7 +160,7 @@ name|expiresIn
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set when the access token will expire in milliseconds from epoch,    * as required by the WebHDFS configuration.  This is a bit hacky and lame.    *     * @param expiresInMSSinceEpoch Access time expiration in ms since epoch.    */
+comment|/**    * Set when the access token will expire in milliseconds from epoch,    * as required by the WebHDFS configuration.  This is a bit hacky and lame.    *    * @param expiresInMSSinceEpoch Access time expiration in ms since epoch.    */
 DECL|method|setExpiresInMSSinceEpoch (String expiresInMSSinceEpoch)
 specifier|public
 name|void
@@ -182,7 +182,7 @@ name|expiresInMSSinceEpoch
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get next time we should refresh the token.    *     * @return Next time since epoch we'll need to refresh the token.    */
+comment|/**    * Get next time we should refresh the token.    *    * @return Next time since epoch we'll need to refresh the token.    */
 DECL|method|getNextRefreshMSSinceEpoch ()
 specifier|public
 name|long

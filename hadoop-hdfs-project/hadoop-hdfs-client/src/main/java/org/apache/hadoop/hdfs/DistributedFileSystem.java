@@ -280,20 +280,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileAlreadyExistsException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|FileChecksum
 import|;
 end_import
@@ -423,20 +409,6 @@ operator|.
 name|Options
 operator|.
 name|ChecksumOpt
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|ParentNotDirectoryException
 import|;
 end_import
 
@@ -1006,20 +978,6 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|AccessControlException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
 name|Credentials
 import|;
 end_import
@@ -1438,7 +1396,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Checks that the passed URI belongs to this filesystem and returns    * just the path component. Expects a URI with an absolute path.    *     * @param file URI with absolute path    * @return path component of {file}    * @throws IllegalArgumentException if URI does not belong to this DFS    */
+comment|/**    * Checks that the passed URI belongs to this filesystem and returns    * just the path component. Expects a URI with an absolute path.    *    * @param file URI with absolute path    * @return path component of {file}    * @throws IllegalArgumentException if URI does not belong to this DFS    */
 DECL|method|getPathName (Path file)
 specifier|private
 name|String
@@ -1676,7 +1634,7 @@ operator|=
 name|verifyChecksum
 expr_stmt|;
 block|}
-comment|/**     * Start the lease recovery of a file    *    * @param f a file    * @return true if the file is already closed    * @throws IOException if an error occurs    */
+comment|/**    * Start the lease recovery of a file    *    * @param f a file    * @return true if the file is already closed    * @throws IOException if an error occurs    */
 DECL|method|recoverLease (final Path f)
 specifier|public
 name|boolean
@@ -1717,8 +1675,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|dfs
@@ -1851,8 +1807,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 specifier|final
 name|DFSInputStream
@@ -1960,7 +1914,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Append to an existing file (optional operation).    *     * @param f the existing file to be appended.    * @param flag Flags for the Append operation. CreateFlag.APPEND is mandatory    *          to be present.    * @param bufferSize the size of the buffer to be used.    * @param progress for reporting progress if it is not null.    * @return Returns instance of {@link FSDataOutputStream}    * @throws IOException    */
+comment|/**    * Append to an existing file (optional operation).    *    * @param f the existing file to be appended.    * @param flag Flags for the Append operation. CreateFlag.APPEND is mandatory    *          to be present.    * @param bufferSize the size of the buffer to be used.    * @param progress for reporting progress if it is not null.    * @return Returns instance of {@link FSDataOutputStream}    * @throws IOException    */
 DECL|method|append (Path f, final EnumSet<CreateFlag> flag, final int bufferSize, final Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -2081,7 +2035,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Append to an existing file (optional operation).    *     * @param f the existing file to be appended.    * @param flag Flags for the Append operation. CreateFlag.APPEND is mandatory    *          to be present.    * @param bufferSize the size of the buffer to be used.    * @param progress for reporting progress if it is not null.    * @param favoredNodes Favored nodes for new blocks    * @return Returns instance of {@link FSDataOutputStream}    * @throws IOException    */
+comment|/**    * Append to an existing file (optional operation).    *    * @param f the existing file to be appended.    * @param flag Flags for the Append operation. CreateFlag.APPEND is mandatory    *          to be present.    * @param bufferSize the size of the buffer to be used.    * @param progress for reporting progress if it is not null.    * @param favoredNodes Favored nodes for new blocks    * @return Returns instance of {@link FSDataOutputStream}    * @throws IOException    */
 DECL|method|append (Path f, final EnumSet<CreateFlag> flag, final int bufferSize, final Progressable progress, final InetSocketAddress[] favoredNodes)
 specifier|public
 name|FSDataOutputStream
@@ -2285,7 +2239,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Same as      * {@link #create(Path, FsPermission, boolean, int, short, long,     * Progressable)} with the addition of favoredNodes that is a hint to     * where the namenode should place the file blocks.    * The favored nodes hint is not persisted in HDFS. Hence it may be honored    * at the creation time only. And with favored nodes, blocks will be pinned    * on the datanodes to prevent balancing move the block. HDFS could move the    * blocks during replication, to move the blocks from favored nodes. A value    * of null means no favored nodes for this create    */
+comment|/**    * Same as    * {@link #create(Path, FsPermission, boolean, int, short, long,    * Progressable)} with the addition of favoredNodes that is a hint to    * where the namenode should place the file blocks.    * The favored nodes hint is not persisted in HDFS. Hence it may be honored    * at the creation time only. And with favored nodes, blocks will be pinned    * on the datanodes to prevent balancing move the block. HDFS could move the    * blocks during replication, to move the blocks from favored nodes. A value    * of null means no favored nodes for this create    */
 DECL|method|create (final Path f, final FsPermission permission, final boolean overwrite, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final InetSocketAddress[] favoredNodes)
 specifier|public
 name|HdfsDataOutputStream
@@ -2362,8 +2316,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 specifier|final
 name|DFSOutputStream
@@ -2591,8 +2543,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 specifier|final
 name|DFSOutputStream
@@ -2870,8 +2820,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 specifier|final
 name|DFSOutputStream
@@ -2964,7 +2912,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setReplication (Path src, final short replication )
+DECL|method|setReplication (Path src, final short replication)
 specifier|public
 name|boolean
 name|setReplication
@@ -3014,8 +2962,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|dfs
@@ -3122,8 +3068,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -3259,8 +3203,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|fs
@@ -3306,7 +3248,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Deprecated. Prefer {@link FileSystem#getAllStoragePolicies()}    * @return    * @throws IOException    */
+comment|/**    * Deprecated. Prefer {@link FileSystem#getAllStoragePolicies()}    * @throws IOException    */
 annotation|@
 name|Deprecated
 DECL|method|getStoragePolicies ()
@@ -3332,7 +3274,7 @@ name|getStoragePolicies
 argument_list|()
 return|;
 block|}
-comment|/**    * Move blocks from srcs to trg and delete srcs afterwards.    * The file block sizes must be the same.    *     * @param trg existing file to append to    * @param psrcs list of files (same block size, same replication)    * @throws IOException    */
+comment|/**    * Move blocks from srcs to trg and delete srcs afterwards.    * The file block sizes must be the same.    *    * @param trg existing file to append to    * @param psrcs list of files (same block size, same replication)    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|concat (Path trg, Path [] psrcs)
@@ -3741,8 +3683,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|dfs
@@ -3797,7 +3737,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**     * This rename operation is guaranteed to be atomic.    */
+comment|/**    * This rename operation is guaranteed to be atomic.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3911,8 +3851,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -4023,8 +3961,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|dfs
@@ -4130,8 +4066,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|dfs
@@ -4233,8 +4167,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|dfs
@@ -4284,7 +4216,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/** Set a directory's quotas    * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#setQuota(String, long, long, StorageType)    */
+comment|/** Set a directory's quotas    * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#setQuota(String,    * long, long, StorageType)    */
 DECL|method|setQuota (Path src, final long namespaceQuota, final long storagespaceQuota)
 specifier|public
 name|void
@@ -4331,8 +4263,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -4389,7 +4319,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set the per type storage quota of a directory.    *    * @param src target directory whose quota is to be modified.    * @param type storage type of the specific storage type quota to be modified.    * @param quota value of the specific storage type quota to be modified.    * Maybe {@link HdfsConstants#QUOTA_RESET} to clear quota by storage type.    */
-DECL|method|setQuotaByStorageType ( Path src, final StorageType type, final long quota)
+DECL|method|setQuotaByStorageType (Path src, final StorageType type, final long quota)
 specifier|public
 name|void
 name|setQuotaByStorageType
@@ -4435,8 +4365,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -4473,8 +4401,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// setQuotaByStorageType is not defined in FileSystem, so we only can resolve
-comment|// within this DFS
+comment|// setQuotaByStorageType is not defined in FileSystem, so we only can
+comment|// resolve within this DFS
 return|return
 name|doCall
 argument_list|(
@@ -4647,9 +4575,7 @@ name|listing
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|FileStatus
-argument_list|>
+argument_list|<>
 argument_list|(
 name|totalNumEntries
 argument_list|)
@@ -4831,8 +4757,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|listStatusInternal
@@ -4933,15 +4857,11 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 operator|new
 name|DirListingIterator
-argument_list|<
-name|LocatedFileStatus
-argument_list|>
+argument_list|<>
 argument_list|(
 name|p
 argument_list|,
@@ -5070,15 +4990,11 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 operator|new
 name|DirListingIterator
-argument_list|<
-name|FileStatus
-argument_list|>
+argument_list|<>
 argument_list|(
 name|p
 argument_list|,
@@ -5130,7 +5046,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * This class defines an iterator that returns    * the file status of each file/subdirectory of a directory    *     * if needLocation, status contains block location if it is a file    * throws a RuntimeException with the error as its cause.    *     * @param<T> the type of the file status    */
+comment|/**    * This class defines an iterator that returns    * the file status of each file/subdirectory of a directory    *    * if needLocation, status contains block location if it is a file    * throws a RuntimeException with the error as its cause.    *    * @param<T> the type of the file status    */
 DECL|class|DirListingIterator
 specifier|private
 class|class
@@ -5545,7 +5461,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create a directory, only when the parent directories exist.    *    * See {@link FsPermission#applyUMask(FsPermission)} for details of how    * the permission is applied.    *    * @param f           The path to create    * @param permission  The permission.  See FsPermission#applyUMask for     *                    details about how this is used to calculate the    *                    effective permission.    */
+comment|/**    * Create a directory, only when the parent directories exist.    *    * See {@link FsPermission#applyUMask(FsPermission)} for details of how    * the permission is applied.    *    * @param f           The path to create    * @param permission  The permission.  See FsPermission#applyUMask for    *                    details about how this is used to calculate the    *                    effective permission.    */
 DECL|method|mkdir (Path f, FsPermission permission)
 specifier|public
 name|boolean
@@ -5571,7 +5487,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a directory and its parent directories.    *    * See {@link FsPermission#applyUMask(FsPermission)} for details of how    * the permission is applied.    *    * @param f           The path to create    * @param permission  The permission.  See FsPermission#applyUMask for     *                    details about how this is used to calculate the    *                    effective permission.    */
+comment|/**    * Create a directory and its parent directories.    *    * See {@link FsPermission#applyUMask(FsPermission)} for details of how    * the permission is applied.    *    * @param f           The path to create    * @param permission  The permission.  See FsPermission#applyUMask for    *                    details about how this is used to calculate the    *                    effective permission.    */
 annotation|@
 name|Override
 DECL|method|mkdirs (Path f, FsPermission permission)
@@ -5653,8 +5569,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|dfs
@@ -5863,7 +5777,7 @@ name|getDiskStatus
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns count of blocks with no good replicas left. Normally should be    * zero.    *     * @throws IOException    */
+comment|/**    * Returns count of blocks with no good replicas left. Normally should be    * zero.    *    * @throws IOException    */
 DECL|method|getMissingBlocksCount ()
 specifier|public
 name|long
@@ -5895,7 +5809,7 @@ name|getMissingReplOneBlocksCount
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns count of blocks with one of more replica missing.    *     * @throws IOException    */
+comment|/**    * Returns count of blocks with one of more replica missing.    *    * @throws IOException    */
 DECL|method|getUnderReplicatedBlocksCount ()
 specifier|public
 name|long
@@ -5911,7 +5825,7 @@ name|getUnderReplicatedBlocksCount
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns count of blocks with at least one replica marked corrupt.    *     * @throws IOException    */
+comment|/**    * Returns count of blocks with at least one replica marked corrupt.    *    * @throws IOException    */
 DECL|method|getCorruptBlocksCount ()
 specifier|public
 name|long
@@ -5973,7 +5887,7 @@ argument_list|)
 return|;
 block|}
 comment|/** @return datanode statistics for the given type. */
-DECL|method|getDataNodeStats (final DatanodeReportType type )
+DECL|method|getDataNodeStats (final DatanodeReportType type)
 specifier|public
 name|DatanodeInfo
 index|[]
@@ -5995,7 +5909,7 @@ name|type
 argument_list|)
 return|;
 block|}
-comment|/**    * Enter, leave or get safe mode.    *      * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#setSafeMode(    *    HdfsConstants.SafeModeAction,boolean)    */
+comment|/**    * Enter, leave or get safe mode.    *    * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#setSafeMode(    *    HdfsConstants.SafeModeAction,boolean)    */
 DECL|method|setSafeMode (HdfsConstants.SafeModeAction action)
 specifier|public
 name|boolean
@@ -6018,7 +5932,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Enter, leave or get safe mode.    *     * @param action    *          One of SafeModeAction.ENTER, SafeModeAction.LEAVE and    *          SafeModeAction.GET    * @param isChecked    *          If true check only for Active NNs status, else check first NN's    *          status    * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#setSafeMode(SafeModeAction, boolean)    */
+comment|/**    * Enter, leave or get safe mode.    *    * @param action    *          One of SafeModeAction.ENTER, SafeModeAction.LEAVE and    *          SafeModeAction.GET    * @param isChecked    *          If true check only for Active NNs status, else check first NN's    *          status    * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#setSafeMode(SafeModeAction, boolean)    */
 DECL|method|setSafeMode (HdfsConstants.SafeModeAction action, boolean isChecked)
 specifier|public
 name|boolean
@@ -6096,8 +6010,6 @@ name|long
 name|rollEdits
 parameter_list|()
 throws|throws
-name|AccessControlException
-throws|,
 name|IOException
 block|{
 return|return
@@ -6107,7 +6019,7 @@ name|rollEdits
 argument_list|()
 return|;
 block|}
-comment|/**    * enable/disable/check restoreFaileStorage    *     * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#restoreFailedStorage(String arg)    */
+comment|/**    * enable/disable/check restoreFaileStorage    *    * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#restoreFailedStorage(String arg)    */
 DECL|method|restoreFailedStorage (String arg)
 specifier|public
 name|boolean
@@ -6117,8 +6029,6 @@ name|String
 name|arg
 parameter_list|)
 throws|throws
-name|AccessControlException
-throws|,
 name|IOException
 block|{
 return|return
@@ -6130,7 +6040,7 @@ name|arg
 argument_list|)
 return|;
 block|}
-comment|/**    * Refreshes the list of hosts and excluded hosts from the configured     * files.      */
+comment|/**    * Refreshes the list of hosts and excluded hosts from the configured    * files.    */
 DECL|method|refreshNodes ()
 specifier|public
 name|void
@@ -6181,7 +6091,7 @@ name|action
 argument_list|)
 return|;
 block|}
-comment|/*    * Requests the namenode to dump data strcutures into specified     * file.    */
+comment|/*    * Requests the namenode to dump data strcutures into specified    * file.    */
 DECL|method|metaSave (String pathname)
 specifier|public
 name|void
@@ -6267,8 +6177,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|HdfsFileStatus
 name|fi
@@ -6376,16 +6284,6 @@ name|boolean
 name|createParent
 parameter_list|)
 throws|throws
-name|AccessControlException
-throws|,
-name|FileAlreadyExistsException
-throws|,
-name|FileNotFoundException
-throws|,
-name|ParentNotDirectoryException
-throws|,
-name|UnsupportedFileSystemException
-throws|,
 name|IOException
 block|{
 if|if
@@ -6440,8 +6338,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -6480,8 +6376,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|fs
 operator|.
@@ -6532,12 +6426,6 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
-name|AccessControlException
-throws|,
-name|FileNotFoundException
-throws|,
-name|UnsupportedFileSystemException
-throws|,
 name|IOException
 block|{
 name|statistics
@@ -6578,8 +6466,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|HdfsFileStatus
 name|fi
@@ -6642,8 +6528,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|fs
@@ -6719,12 +6603,6 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
-name|AccessControlException
-throws|,
-name|FileNotFoundException
-throws|,
-name|UnsupportedFileSystemException
-throws|,
 name|IOException
 block|{
 name|statistics
@@ -6763,8 +6641,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|HdfsFileStatus
 name|fi
@@ -6830,8 +6706,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|fs
@@ -6964,8 +6838,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|dfs
@@ -7071,8 +6943,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|dfs
@@ -7113,12 +6983,7 @@ name|DistributedFileSystem
 condition|)
 block|{
 return|return
-operator|(
-operator|(
-name|DistributedFileSystem
-operator|)
 name|fs
-operator|)
 operator|.
 name|getFileChecksum
 argument_list|(
@@ -7208,8 +7073,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -7269,7 +7132,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|setOwner (Path p, final String username, final String groupname )
+DECL|method|setOwner (Path p, final String username, final String groupname)
 specifier|public
 name|void
 name|setOwner
@@ -7341,8 +7204,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -7406,7 +7267,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|setTimes (Path p, final long mtime, final long atime )
+DECL|method|setTimes (Path p, final long mtime, final long atime)
 specifier|public
 name|void
 name|setTimes
@@ -7459,8 +7320,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -7552,12 +7411,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Token
-argument_list|<
-name|DelegationTokenIdentifier
-argument_list|>
-name|result
-init|=
+return|return
 name|dfs
 operator|.
 name|getDelegationToken
@@ -7574,9 +7428,6 @@ argument_list|(
 name|renewer
 argument_list|)
 argument_list|)
-decl_stmt|;
-return|return
-name|result
 return|;
 block|}
 comment|/**    * Requests the namenode to tell all datanodes to use a new, non-persistent    * bandwidth value for dfs.balance.bandwidthPerSec.    * The bandwidth parameter is the max number of bytes per second of network    * bandwidth to be used by a datanode during balancing.    *    * @param bandwidth Balancer bandwidth in bytes per second for all datanodes.    * @throws IOException    */
@@ -7660,7 +7511,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Utility function that returns if the NameNode is in safemode or not. In HA    * mode, this API will return only ActiveNN's safemode status.    *     * @return true if NameNode is in safemode, false otherwise.    * @throws IOException    *           when there is an issue communicating with the NameNode    */
+comment|/**    * Utility function that returns if the NameNode is in safemode or not. In HA    * mode, this API will return only ActiveNN's safemode status.    *    * @return true if NameNode is in safemode, false otherwise.    * @throws IOException    *           when there is an issue communicating with the NameNode    */
 DECL|method|isInSafeMode ()
 specifier|public
 name|boolean
@@ -7720,8 +7571,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -7849,8 +7698,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -7984,8 +7831,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 operator|new
@@ -8124,8 +7969,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -8283,8 +8126,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -8376,7 +8217,7 @@ name|absF
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the difference between two snapshots, or between a snapshot and the    * current tree of a directory.    *     * @see DFSClient#getSnapshotDiffReport(String, String, String)    */
+comment|/**    * Get the difference between two snapshots, or between a snapshot and the    * current tree of a directory.    *    * @see DFSClient#getSnapshotDiffReport(String, String, String)    */
 DECL|method|getSnapshotDiffReport (final Path snapshotDir, final String fromSnapshot, final String toSnapshot)
 specifier|public
 name|SnapshotDiffReport
@@ -8425,8 +8266,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|dfs
@@ -8520,7 +8359,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the close status of a file    * @param src The path to the file    *    * @return return true if file is closed    * @throws FileNotFoundException if the file does not exist.    * @throws IOException If an I/O error occurred         */
+comment|/**    * Get the close status of a file    * @param src The path to the file    *    * @return return true if file is closed    * @throws FileNotFoundException if the file does not exist.    * @throws IOException If an I/O error occurred    */
 DECL|method|isFileClosed (final Path src)
 specifier|public
 name|boolean
@@ -8561,8 +8400,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|dfs
@@ -8674,7 +8511,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Add a new CacheDirective.    *     * @param info Information about a directive to add.    * @param flags {@link CacheFlag}s to use for this operation.    * @return the ID of the directive that was created.    * @throws IOException if the directive could not be added    */
+comment|/**    * Add a new CacheDirective.    *    * @param info Information about a directive to add.    * @param flags {@link CacheFlag}s to use for this operation.    * @return the ID of the directive that was created.    * @throws IOException if the directive could not be added    */
 DECL|method|addCacheDirective ( CacheDirectiveInfo info, EnumSet<CacheFlag> flags)
 specifier|public
 name|long
@@ -8781,7 +8618,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Modify a CacheDirective.    *     * @param info Information about the directive to modify. You must set the ID    *          to indicate which CacheDirective you want to modify.    * @param flags {@link CacheFlag}s to use for this operation.    * @throws IOException if the directive could not be modified    */
+comment|/**    * Modify a CacheDirective.    *    * @param info Information about the directive to modify. You must set the ID    *          to indicate which CacheDirective you want to modify.    * @param flags {@link CacheFlag}s to use for this operation.    * @throws IOException if the directive could not be modified    */
 DECL|method|modifyCacheDirective ( CacheDirectiveInfo info, EnumSet<CacheFlag> flags)
 specifier|public
 name|void
@@ -8860,7 +8697,7 @@ name|flags
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove a CacheDirectiveInfo.    *     * @param id identifier of the CacheDirectiveInfo to remove    * @throws IOException if the directive could not be removed    */
+comment|/**    * Remove a CacheDirectiveInfo.    *    * @param id identifier of the CacheDirectiveInfo to remove    * @throws IOException if the directive could not be removed    */
 DECL|method|removeCacheDirective (long id)
 specifier|public
 name|void
@@ -8880,7 +8717,7 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * List cache directives.  Incrementally fetches results from the server.    *     * @param filter Filter parameters to use when listing the directives, null to    *               list all directives visible to us.    * @return A RemoteIterator which returns CacheDirectiveInfo objects.    */
+comment|/**    * List cache directives.  Incrementally fetches results from the server.    *    * @param filter Filter parameters to use when listing the directives, null to    *               list all directives visible to us.    * @return A RemoteIterator which returns CacheDirectiveInfo objects.    */
 DECL|method|listCacheDirectives ( CacheDirectiveInfo filter)
 specifier|public
 name|RemoteIterator
@@ -9069,7 +8906,7 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * Add a cache pool.    *    * @param info    *          The request to add a cache pool.    * @throws IOException     *          If the request could not be completed.    */
+comment|/**    * Add a cache pool.    *    * @param info    *          The request to add a cache pool.    * @throws IOException    *          If the request could not be completed.    */
 DECL|method|addCachePool (CachePoolInfo info)
 specifier|public
 name|void
@@ -9096,7 +8933,7 @@ name|info
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Modify an existing cache pool.    *    * @param info    *          The request to modify a cache pool.    * @throws IOException     *          If the request could not be completed.    */
+comment|/**    * Modify an existing cache pool.    *    * @param info    *          The request to modify a cache pool.    * @throws IOException    *          If the request could not be completed.    */
 DECL|method|modifyCachePool (CachePoolInfo info)
 specifier|public
 name|void
@@ -9123,7 +8960,7 @@ name|info
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove a cache pool.    *    * @param poolName    *          Name of the cache pool to remove.    * @throws IOException     *          if the cache pool did not exist, or could not be removed.    */
+comment|/**    * Remove a cache pool.    *    * @param poolName    *          Name of the cache pool to remove.    * @throws IOException    *          if the cache pool did not exist, or could not be removed.    */
 DECL|method|removeCachePool (String poolName)
 specifier|public
 name|void
@@ -9452,8 +9289,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|fs
 operator|.
@@ -9549,8 +9384,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|fs
 operator|.
@@ -9750,8 +9583,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|fs
@@ -9816,8 +9647,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -9957,8 +9786,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|dfs
@@ -10263,8 +10090,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|fs
@@ -10382,8 +10207,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|fs
@@ -10508,8 +10331,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|fs
@@ -10615,8 +10436,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|fs
@@ -11043,7 +10862,7 @@ name|lastReadTxid
 argument_list|)
 return|;
 block|}
-comment|/**    * Set the source path to the specified erasure coding policy.    *    * @param path     The directory to set the policy    * @param ecPolicy The erasure coding policy. If not specified default will be used.    * @throws IOException    */
+comment|/**    * Set the source path to the specified erasure coding policy.    *    * @param path     The directory to set the policy    * @param ecPolicy The erasure coding policy. If not specified default will    *                 be used.    * @throws IOException    */
 DECL|method|setErasureCodingPolicy (final Path path, final ErasureCodingPolicy ecPolicy)
 specifier|public
 name|void
@@ -11087,8 +10906,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
@@ -11218,8 +11035,6 @@ name|p
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|dfs

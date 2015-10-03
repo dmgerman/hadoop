@@ -450,20 +450,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|HasEnhancedByteBufferAccess
 import|;
 end_import
@@ -493,20 +479,6 @@ operator|.
 name|fs
 operator|.
 name|StorageType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|UnresolvedLinkException
 import|;
 end_import
 
@@ -878,8 +850,18 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
-comment|/****************************************************************  * DFSInputStream provides bytes from a named file.  It handles   * negotiation of the namenode and various datanodes as necessary.  ****************************************************************/
+comment|/****************************************************************  * DFSInputStream provides bytes from a named file.  It handles  * negotiation of the namenode and various datanodes as necessary.  ****************************************************************/
 end_comment
 
 begin_class
@@ -1043,7 +1025,7 @@ operator|new
 name|Object
 argument_list|()
 decl_stmt|;
-comment|/**    * Track the ByteBuffers that we have handed out to readers.    *     * The value type can be either ByteBufferPool or ClientMmap, depending on    * whether we this is a memory-mapped buffer or not.    */
+comment|/**    * Track the ByteBuffers that we have handed out to readers.    *    * The value type can be either ByteBufferPool or ClientMmap, depending on    * whether we this is a memory-mapped buffer or not.    */
 DECL|field|extendedReadBuffers
 specifier|private
 name|IdentityHashStore
@@ -1077,11 +1059,7 @@ name|extendedReadBuffers
 operator|=
 operator|new
 name|IdentityHashStore
-argument_list|<
-name|ByteBuffer
-argument_list|,
-name|Object
-argument_list|>
+argument_list|<>
 argument_list|(
 literal|0
 argument_list|)
@@ -1363,7 +1341,7 @@ name|failures
 init|=
 literal|0
 decl_stmt|;
-comment|/* XXX Use of CocurrentHashMap is temp fix. Need to fix     * parallel accesses to DFSInputStream (through ptreads) properly */
+comment|/* XXX Use of CocurrentHashMap is temp fix. Need to fix    * parallel accesses to DFSInputStream (through ptreads) properly */
 DECL|field|deadNodes
 specifier|private
 specifier|final
@@ -1377,11 +1355,7 @@ name|deadNodes
 init|=
 operator|new
 name|ConcurrentHashMap
-argument_list|<
-name|DatanodeInfo
-argument_list|,
-name|DatanodeInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|oneByteBuf
@@ -1426,8 +1400,6 @@ name|locatedBlocks
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|this
 operator|.
@@ -1484,8 +1456,6 @@ name|refreshLocatedBlocks
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 specifier|final
 name|DfsClientConf
@@ -2146,7 +2116,7 @@ return|return
 name|currentNode
 return|;
 block|}
-comment|/**    * Returns the block containing the target position.     */
+comment|/**    * Returns the block containing the target position.    */
 DECL|method|getCurrentBlock ()
 specifier|synchronized
 specifier|public
@@ -2194,7 +2164,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get block at the specified position.    * Fetch it from the namenode if not cached.    *     * @param offset block corresponding to this offset in file is returned    * @return located block    * @throws IOException    */
+comment|/**    * Get block at the specified position.    * Fetch it from the namenode if not cached.    *    * @param offset block corresponding to this offset in file is returned    * @return located block    * @throws IOException    */
 DECL|method|getBlockAt (long offset)
 specifier|protected
 name|LocatedBlock
@@ -2559,9 +2529,7 @@ name|blocks
 operator|=
 operator|new
 name|ArrayList
-argument_list|<
-name|LocatedBlock
-argument_list|>
+argument_list|<>
 argument_list|(
 literal|1
 argument_list|)
@@ -2629,9 +2597,7 @@ name|blockRange
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|LocatedBlock
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|// search cached blocks first
@@ -2834,8 +2800,6 @@ comment|// Connect to best DataNode for desired Block, with potential offset
 comment|//
 name|DatanodeInfo
 name|chosenNode
-init|=
-literal|null
 decl_stmt|;
 name|int
 name|refetchToken
@@ -3492,7 +3456,6 @@ interface|interface
 name|ReaderStrategy
 block|{
 DECL|method|doRead (BlockReader blockReader, int off, int len)
-specifier|public
 name|int
 name|doRead
 parameter_list|(
@@ -3506,13 +3469,10 @@ name|int
 name|len
 parameter_list|)
 throws|throws
-name|ChecksumException
-throws|,
 name|IOException
 function_decl|;
 comment|/**      * Copy data from the src ByteBuffer into the read buffer.      * @param src The src buffer where the data is copied from      * @param offset Useful only when the ReadStrategy is based on a byte array.      *               Indicate the offset of the byte array for copy.      * @param length Useful only when the ReadStrategy is based on a byte array.      *               Indicate the length of the data to copy.      */
 DECL|method|copyFrom (ByteBuffer src, int offset, int length)
-specifier|public
 name|int
 name|copyFrom
 parameter_list|(
@@ -3646,8 +3606,6 @@ name|int
 name|len
 parameter_list|)
 throws|throws
-name|ChecksumException
-throws|,
 name|IOException
 block|{
 name|int
@@ -3762,8 +3720,6 @@ name|int
 name|len
 parameter_list|)
 throws|throws
-name|ChecksumException
-throws|,
 name|IOException
 block|{
 name|int
@@ -4077,8 +4033,6 @@ expr_stmt|;
 block|}
 name|boolean
 name|sourceFound
-init|=
-literal|false
 decl_stmt|;
 if|if
 condition|(
@@ -4177,14 +4131,7 @@ name|corruptedBlockMap
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|failures
@@ -4442,12 +4389,14 @@ block|}
 comment|/**    * Read the entire buffer.    */
 annotation|@
 name|Override
-DECL|method|read (final byte buf[], int off, int len)
+DECL|method|read (@onnull final byte buf[], int off, int len)
 specifier|public
 specifier|synchronized
 name|int
 name|read
 parameter_list|(
+annotation|@
+name|Nonnull
 specifier|final
 name|byte
 name|buf
@@ -4471,8 +4420,10 @@ argument_list|(
 name|buf
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|dfsClient
 operator|.
@@ -4482,8 +4433,7 @@ literal|"DFSInputStream#byteArrayRead"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|readWithStrategy
@@ -4495,14 +4445,6 @@ argument_list|,
 name|len
 argument_list|)
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -4529,8 +4471,10 @@ argument_list|(
 name|buf
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|dfsClient
 operator|.
@@ -4540,8 +4484,7 @@ literal|"DFSInputStream#byteBufferRead"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|readWithStrategy
@@ -4556,14 +4499,6 @@ name|remaining
 argument_list|()
 argument_list|)
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Add corrupted block replica into map.    */
@@ -4595,8 +4530,6 @@ argument_list|<
 name|DatanodeInfo
 argument_list|>
 name|dnSet
-init|=
-literal|null
 decl_stmt|;
 if|if
 condition|(
@@ -4626,9 +4559,7 @@ name|dnSet
 operator|=
 operator|new
 name|HashSet
-argument_list|<
-name|DatanodeInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
@@ -4918,7 +4849,7 @@ block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|iex
+name|ignored
 parameter_list|)
 block|{         }
 name|deadNodes
@@ -5527,8 +5458,10 @@ operator|.
 name|position
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|dfsClient
 operator|.
@@ -5543,8 +5476,7 @@ name|hedgedReadId
 argument_list|,
 name|parentSpanId
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|actualGetFromOneDataNode
 argument_list|(
@@ -5566,14 +5498,6 @@ expr_stmt|;
 return|return
 name|bb
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 block|}
@@ -6073,12 +5997,7 @@ name|futures
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Future
-argument_list|<
-name|ByteBuffer
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|CompletionService
@@ -6089,9 +6008,7 @@ name|hedgedService
 init|=
 operator|new
 name|ExecutorCompletionService
-argument_list|<
-name|ByteBuffer
-argument_list|>
+argument_list|<>
 argument_list|(
 name|dfsClient
 operator|.
@@ -6107,15 +6024,11 @@ name|ignored
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|ByteBuffer
 name|bb
-init|=
-literal|null
 decl_stmt|;
 name|int
 name|len
@@ -6308,24 +6221,17 @@ operator|.
 name|incHedgedReadOps
 argument_list|()
 expr_stmt|;
-continue|continue;
-comment|// no need to refresh block locations
+comment|// continue; no need to refresh block locations
 block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|e
-parameter_list|)
-block|{
-comment|// Ignore
-block|}
-catch|catch
-parameter_list|(
+decl||
 name|ExecutionException
 name|e
 parameter_list|)
 block|{
-comment|// Ignore already logged in the call.
+comment|// Ignore
 block|}
 block|}
 else|else
@@ -6636,22 +6542,9 @@ block|}
 catch|catch
 parameter_list|(
 name|ExecutionException
-name|e
-parameter_list|)
-block|{
-comment|// already logged in the Callable
-name|futures
-operator|.
-name|remove
-argument_list|(
-name|future
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
+decl||
 name|CancellationException
-name|ce
+name|e
 parameter_list|)
 block|{
 comment|// already logged in the Callable
@@ -6711,7 +6604,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Should the block access token be refetched on an exception    *     * @param ex Exception received    * @param targetAddr Target datanode address from where exception was received    * @return true if block access token has expired or invalid and it should be    *         refetched    */
+comment|/**    * Should the block access token be refetched on an exception    *    * @param ex Exception received    * @param targetAddr Target datanode address from where exception was received    * @return true if block access token has expired or invalid and it should be    *         refetched    */
 DECL|method|tokenRefetchNeeded (IOException ex, InetSocketAddress targetAddr)
 specifier|protected
 specifier|static
@@ -6760,7 +6653,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Read bytes starting from the specified position.    *     * @param position start read from this position    * @param buffer read buffer    * @param offset offset into buffer    * @param length number of bytes to read    *     * @return actual number of bytes read    */
+comment|/**    * Read bytes starting from the specified position.    *    * @param position start read from this position    * @param buffer read buffer    * @param offset offset into buffer    * @param length number of bytes to read    *    * @return actual number of bytes read    */
 annotation|@
 name|Override
 DECL|method|read (long position, byte[] buffer, int offset, int length)
@@ -6784,8 +6677,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|dfsClient
 operator|.
@@ -6795,8 +6690,7 @@ literal|"DFSInputStream#byteArrayPread"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|pread
@@ -6810,14 +6704,6 @@ argument_list|,
 name|length
 argument_list|)
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|pread (long position, byte[] buffer, int offset, int length)
@@ -6954,14 +6840,7 @@ name|corruptedBlockMap
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -7119,7 +6998,7 @@ return|return
 name|realLen
 return|;
 block|}
-comment|/**    * DFSInputStream reports checksum failure.    * Case I : client has tried multiple data nodes and at least one of the    * attempts has succeeded. We report the other failures as corrupted block to    * namenode.     * Case II: client has tried out all data nodes, but all failed. We    * only report if the total number of replica is 1. We do not    * report otherwise since this maybe due to the client is a handicapped client    * (who can not read).    * @param corruptedBlockMap map of corrupted blocks    * @param dataNodeCount number of data nodes who contains the block replicas    */
+comment|/**    * DFSInputStream reports checksum failure.    * Case I : client has tried multiple data nodes and at least one of the    * attempts has succeeded. We report the other failures as corrupted block to    * namenode.    * Case II: client has tried out all data nodes, but all failed. We    * only report if the total number of replica is 1. We do not    * report otherwise since this maybe due to the client is a handicapped client    * (who can not read).    * @param corruptedBlockMap map of corrupted blocks    * @param dataNodeCount number of data nodes who contains the block replicas    */
 DECL|method|reportCheckSumFailure ( Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, int dataNodeCount)
 specifier|protected
 name|void
@@ -7618,7 +7497,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Seek to given position on a node other than the current node.  If    * a node other than the current node is found, then returns true.     * If another node could not be found, then returns false.    */
+comment|/**    * Seek to given position on a node other than the current node.  If    * a node other than the current node is found, then returns true.    * If another node could not be found, then returns false.    */
 annotation|@
 name|Override
 DECL|method|seekToNewSource (long targetPos)
@@ -7681,7 +7560,7 @@ operator|!
 name|markedDead
 condition|)
 block|{
-comment|/* remove it from deadNodes. blockSeekTo could have cleared         * deadNodes and added currentNode again. Thats ok. */
+comment|/* remove it from deadNodes. blockSeekTo could have cleared        * deadNodes and added currentNode again. Thats ok. */
 name|deadNodes
 operator|.
 name|remove

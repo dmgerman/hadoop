@@ -403,7 +403,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Manages short-circuit memory segments for an HDFS client.  *   * Clients are responsible for requesting and releasing shared memory segments used  * for communicating with the DataNode. The client will try to allocate new slots  * in the set of existing segments, falling back to getting a new segment from the  * DataNode via {@link DataTransferProtocol#requestShortCircuitFds}.  *   * The counterpart to this class on the DataNode is {@link ShortCircuitRegistry}.  * See {@link ShortCircuitRegistry} for more information on the communication protocol.  */
+comment|/**  * Manages short-circuit memory segments for an HDFS client.  *  * Clients are responsible for requesting and releasing shared memory segments  * used for communicating with the DataNode. The client will try to allocate new  * slots in the set of existing segments, falling back to getting a new segment  * from the DataNode via {@link DataTransferProtocol#requestShortCircuitFds}.  *  * The counterpart to this class on the DataNode is  * {@link ShortCircuitRegistry}. See {@link ShortCircuitRegistry} for more  * information on the communication protocol.  */
 end_comment
 
 begin_class
@@ -460,11 +460,7 @@ name|full
 init|=
 operator|new
 name|TreeMap
-argument_list|<
-name|ShmId
-argument_list|,
-name|DfsClientShm
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**      * Shared memory segments which have at least one empty slot.      *      * Protected by the manager lock.      */
@@ -481,11 +477,7 @@ name|notFull
 init|=
 operator|new
 name|TreeMap
-argument_list|<
-name|ShmId
-argument_list|,
-name|DfsClientShm
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**      * True if this datanode doesn't support short-circuit shared memory      * segments.      *      * Protected by the manager lock.      */
@@ -1515,11 +1507,7 @@ name|datanodes
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|DatanodeInfo
-argument_list|,
-name|EndpointShmManager
-argument_list|>
+argument_list|<>
 argument_list|(
 literal|1
 argument_list|)
@@ -1839,11 +1827,7 @@ name|info
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|DatanodeInfo
-argument_list|,
-name|PerDatanodeVisitorInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for

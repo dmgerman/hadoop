@@ -66,7 +66,7 @@ specifier|public
 enum|enum
 name|BlockConstructionStage
 block|{
-comment|/** The enumerates are always listed as regular stage followed by the    * recovery stage.     * Changing this order will make getRecoveryStage not working.    */
+comment|/** The enumerates are always listed as regular stage followed by the    * recovery stage.    * Changing this order will make getRecoveryStage not working.    */
 comment|// pipeline set up for block append
 DECL|enumConstant|PIPELINE_SETUP_APPEND
 name|PIPELINE_SETUP_APPEND

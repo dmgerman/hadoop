@@ -505,7 +505,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * BlockReaderLocalLegacy enables local short circuited reads. If the DFS client is on  * the same machine as the datanode, then the client can read files directly  * from the local file system rather than going through the datanode for better  * performance.<br>  *  * This is the legacy implementation based on HDFS-2246, which requires  * permissions on the datanode to be set so that clients can directly access the  * blocks. The new implementation based on HDFS-347 should be preferred on UNIX  * systems where the required native code has been implemented.<br>  *  * {@link BlockReaderLocalLegacy} works as follows:  *<ul>  *<li>The client performing short circuit reads must be configured at the  * datanode.</li>  *<li>The client gets the path to the file where block is stored using  * {@link org.apache.hadoop.hdfs.protocol.ClientDatanodeProtocol#getBlockLocalPathInfo(ExtendedBlock, Token)}  * RPC call</li>  *<li>Client uses kerberos authentication to connect to the datanode over RPC,  * if security is enabled.</li>  *</ul>  */
+comment|/**  * BlockReaderLocalLegacy enables local short circuited reads. If the DFS client  * is on the same machine as the datanode, then the client can read files  * directly from the local file system rather than going through the datanode  * for better performance.<br>  *  * This is the legacy implementation based on HDFS-2246, which requires  * permissions on the datanode to be set so that clients can directly access the  * blocks. The new implementation based on HDFS-347 should be preferred on UNIX  * systems where the required native code has been implemented.<br>  *  * {@link BlockReaderLocalLegacy} works as follows:  *<ul>  *<li>The client performing short circuit reads must be configured at the  * datanode.</li>  *<li>The client gets the path to the file where block is stored using  * {@link org.apache.hadoop.hdfs.protocol.ClientDatanodeProtocol#getBlockLocalPathInfo(ExtendedBlock, Token)}  * RPC call</li>  *<li>Client uses kerberos authentication to connect to the datanode over RPC,  * if security is enabled.</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -850,11 +850,7 @@ name|localDatanodeInfoMap
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|Integer
-argument_list|,
-name|LocalDatanodeInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|dataIn
@@ -1233,13 +1229,7 @@ name|file
 argument_list|,
 name|blk
 argument_list|,
-name|token
-argument_list|,
 name|startOffset
-argument_list|,
-name|length
-argument_list|,
-name|pathinfo
 argument_list|,
 name|checksum
 argument_list|,
@@ -1268,13 +1258,7 @@ name|file
 argument_list|,
 name|blk
 argument_list|,
-name|token
-argument_list|,
 name|startOffset
-argument_list|,
-name|length
-argument_list|,
-name|pathinfo
 argument_list|,
 name|dataIn
 argument_list|,
@@ -1457,8 +1441,6 @@ argument_list|)
 decl_stmt|;
 name|BlockLocalPathInfo
 name|pathinfo
-init|=
-literal|null
 decl_stmt|;
 name|ClientDatanodeProtocol
 name|proxy
@@ -1492,7 +1474,7 @@ argument_list|,
 name|token
 argument_list|)
 expr_stmt|;
-comment|// We cannot cache the path information for a replica on transient storage.
+comment|// We can't cache the path information for a replica on transient storage.
 comment|// If the replica gets evicted, then it moves to a different path.  Then,
 comment|// our next attempt to read from the cached path would fail to find the
 comment|// file.  Additionally, the failure would cause us to disable legacy
@@ -1612,7 +1594,7 @@ operator|/
 name|bytesPerChecksum
 return|;
 block|}
-DECL|method|BlockReaderLocalLegacy (ShortCircuitConf conf, String hdfsfile, ExtendedBlock block, Token<BlockTokenIdentifier> token, long startOffset, long length, BlockLocalPathInfo pathinfo, FileInputStream dataIn, Tracer tracer)
+DECL|method|BlockReaderLocalLegacy (ShortCircuitConf conf, String hdfsfile, ExtendedBlock block, long startOffset, FileInputStream dataIn, Tracer tracer)
 specifier|private
 name|BlockReaderLocalLegacy
 parameter_list|(
@@ -1625,20 +1607,8 @@ parameter_list|,
 name|ExtendedBlock
 name|block
 parameter_list|,
-name|Token
-argument_list|<
-name|BlockTokenIdentifier
-argument_list|>
-name|token
-parameter_list|,
 name|long
 name|startOffset
-parameter_list|,
-name|long
-name|length
-parameter_list|,
-name|BlockLocalPathInfo
-name|pathinfo
 parameter_list|,
 name|FileInputStream
 name|dataIn
@@ -1657,13 +1627,7 @@ name|hdfsfile
 argument_list|,
 name|block
 argument_list|,
-name|token
-argument_list|,
 name|startOffset
-argument_list|,
-name|length
-argument_list|,
-name|pathinfo
 argument_list|,
 name|DataChecksum
 operator|.
@@ -1690,7 +1654,7 @@ name|tracer
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|BlockReaderLocalLegacy (ShortCircuitConf conf, String hdfsfile, ExtendedBlock block, Token<BlockTokenIdentifier> token, long startOffset, long length, BlockLocalPathInfo pathinfo, DataChecksum checksum, boolean verifyChecksum, FileInputStream dataIn, long firstChunkOffset, FileInputStream checksumIn, Tracer tracer)
+DECL|method|BlockReaderLocalLegacy (ShortCircuitConf conf, String hdfsfile, ExtendedBlock block, long startOffset, DataChecksum checksum, boolean verifyChecksum, FileInputStream dataIn, long firstChunkOffset, FileInputStream checksumIn, Tracer tracer)
 specifier|private
 name|BlockReaderLocalLegacy
 parameter_list|(
@@ -1703,20 +1667,8 @@ parameter_list|,
 name|ExtendedBlock
 name|block
 parameter_list|,
-name|Token
-argument_list|<
-name|BlockTokenIdentifier
-argument_list|>
-name|token
-parameter_list|,
 name|long
 name|startOffset
-parameter_list|,
-name|long
-name|length
-parameter_list|,
-name|BlockLocalPathInfo
-name|pathinfo
 parameter_list|,
 name|DataChecksum
 name|checksum
@@ -1876,7 +1828,8 @@ literal|false
 decl_stmt|;
 try|try
 block|{
-comment|// Skip both input streams to beginning of the chunk containing startOffset
+comment|// Skip both input streams to beginning of the chunk containing
+comment|// startOffset
 name|IOUtils
 operator|.
 name|skipFully
@@ -1965,8 +1918,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -1978,8 +1933,7 @@ name|blockId
 operator|+
 literal|")"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|int
 name|bytesRead
@@ -2049,14 +2003,6 @@ block|}
 return|return
 name|bytesRead
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Utility method used by read(ByteBuffer) to partially copy a ByteBuffer into    * another.    */
@@ -2416,7 +2362,8 @@ block|}
 block|}
 else|else
 block|{
-comment|// Non-checksummed reads are much easier; we can just fill the buffer directly.
+comment|// Non-checksummed reads are much easier; we can just fill the buffer
+comment|// directly.
 name|nRead
 operator|=
 name|doByteBufferRead
@@ -2480,9 +2427,6 @@ assert|;
 block|}
 name|int
 name|dataRead
-init|=
-operator|-
-literal|1
 decl_stmt|;
 name|int
 name|oldpos
@@ -2549,7 +2493,8 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-comment|// Equivalent to (int)Math.ceil(toChecksum.remaining() * 1.0 / bytesPerChecksum );
+comment|// Equivalent to
+comment|// (int)Math.ceil(toChecksum.remaining() * 1.0 / bytesPerChecksum );
 name|int
 name|numChunks
 init|=
@@ -2675,9 +2620,6 @@ name|IOException
 block|{
 name|int
 name|nRead
-init|=
-operator|-
-literal|1
 decl_stmt|;
 if|if
 condition|(
@@ -3345,8 +3287,6 @@ specifier|public
 name|int
 name|available
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 comment|// We never do network I/O in BlockReaderLocalLegacy.
 return|return

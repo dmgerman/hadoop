@@ -601,7 +601,7 @@ operator|+=
 name|len
 expr_stmt|;
 block|}
-comment|/**    * Write the full packet, including the header, to the given output stream.    *    * @param stm    * @throws IOException    */
+comment|/**    * Write the full packet, including the header, to the given output stream.    *    * @throws IOException    */
 DECL|method|writeTo (DataOutputStream stm)
 specifier|public
 specifier|synchronized
@@ -865,7 +865,7 @@ argument_list|()
 throw|;
 block|}
 block|}
-comment|/**    * Release the buffer in this packet to ByteArrayManager.    *    * @param bam    */
+comment|/**    * Release the buffer in this packet to ByteArrayManager.    */
 DECL|method|releaseBuffer (ByteArrayManager bam)
 specifier|synchronized
 name|void

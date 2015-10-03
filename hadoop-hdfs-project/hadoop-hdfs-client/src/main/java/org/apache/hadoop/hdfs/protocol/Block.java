@@ -94,6 +94,16 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**************************************************  * A Block is a Hadoop FS primitive, identified by a  * long.  *  **************************************************/
 end_comment
@@ -951,11 +961,13 @@ block|}
 annotation|@
 name|Override
 comment|// Comparable
-DECL|method|compareTo (Block b)
+DECL|method|compareTo (@onnull Block b)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
+annotation|@
+name|Nonnull
 name|Block
 name|b
 parameter_list|)
@@ -993,32 +1005,15 @@ name|Object
 name|o
 parameter_list|)
 block|{
-if|if
-condition|(
+return|return
 name|this
 operator|==
 name|o
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-if|if
-condition|(
-operator|!
-operator|(
+operator|||
 name|o
 operator|instanceof
 name|Block
-operator|)
-condition|)
-block|{
-return|return
-literal|false
-return|;
-block|}
-return|return
+operator|&&
 name|compareTo
 argument_list|(
 operator|(
@@ -1054,8 +1049,10 @@ return|return
 literal|true
 return|;
 comment|// same block, or both null
-if|if
-condition|(
+comment|// only one null
+return|return
+operator|!
+operator|(
 name|a
 operator|==
 literal|null
@@ -1063,12 +1060,8 @@ operator|||
 name|b
 operator|==
 literal|null
-condition|)
-return|return
-literal|false
-return|;
-comment|// only one null
-return|return
+operator|)
+operator|&&
 name|a
 operator|.
 name|blockId

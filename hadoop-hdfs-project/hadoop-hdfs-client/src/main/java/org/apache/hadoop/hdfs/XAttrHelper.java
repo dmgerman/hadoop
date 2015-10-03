@@ -178,7 +178,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Build<code>XAttr</code> from name with prefix and value.    * Name can not be null. Value can be null. The name and prefix     * are validated.    * Both name and namespace are case sensitive.    */
+comment|/**    * Build<code>XAttr</code> from name with prefix and value.    * Name can not be null. Value can be null. The name and prefix    * are validated.    * Both name and namespace are case sensitive.    */
 DECL|method|buildXAttr (String name, byte[] value)
 specifier|public
 specifier|static
@@ -404,9 +404,7 @@ literal|"prefixed with user/trusted/security/system/raw, followed by a '.'"
 argument_list|)
 throw|;
 block|}
-name|XAttr
-name|xAttr
-init|=
+return|return
 operator|(
 operator|new
 name|XAttr
@@ -439,9 +437,6 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
-return|return
-name|xAttr
 return|;
 block|}
 comment|/**    * Build xattr name with prefix as<code>XAttr</code> list.    */
@@ -595,7 +590,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Build xattr map from<code>XAttr</code> list, the key is     * xattr name with prefix, and value is xattr value.     */
+comment|/**    * Build xattr map from<code>XAttr</code> list, the key is    * xattr name with prefix, and value is xattr value.    */
 DECL|method|buildXAttrMap (List<XAttr> xAttrs)
 specifier|public
 specifier|static

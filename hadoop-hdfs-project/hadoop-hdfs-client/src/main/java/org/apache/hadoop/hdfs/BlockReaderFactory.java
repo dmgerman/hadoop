@@ -755,7 +755,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * Utility class to create BlockReader implementations.  */
+comment|/**  * Utility class to create BlockReader implementations.  */
 end_comment
 
 begin_class
@@ -928,7 +928,7 @@ specifier|private
 name|RemotePeerFactory
 name|remotePeerFactory
 decl_stmt|;
-comment|/**    * UserGroupInformation  to use for legacy block reader local objects, if needed.    */
+comment|/**    * UserGroupInformation to use for legacy block reader local objects,    * if needed.    */
 DECL|field|userGroupInformation
 specifier|private
 name|UserGroupInformation
@@ -1327,7 +1327,7 @@ operator|=
 name|injector
 expr_stmt|;
 block|}
-comment|/**    * Build a BlockReader with the given options.    *    * This function will do the best it can to create a block reader that meets    * all of our requirements.  We prefer short-circuit block readers    * (BlockReaderLocal and BlockReaderLocalLegacy) over remote ones, since the    * former avoid the overhead of socket communication.  If short-circuit is    * unavailable, our next fallback is data transfer over UNIX domain sockets,    * if dfs.client.domain.socket.data.traffic has been enabled.  If that doesn't    * work, we will try to create a remote block reader that operates over TCP    * sockets.    *    * There are a few caches that are important here.    *    * The ShortCircuitCache stores file descriptor objects which have been passed    * from the DataNode.     *    * The DomainSocketFactory stores information about UNIX domain socket paths    * that we not been able to use in the past, so that we don't waste time    * retrying them over and over.  (Like all the caches, it does have a timeout,    * though.)    *    * The PeerCache stores peers that we have used in the past.  If we can reuse    * one of these peers, we avoid the overhead of re-opening a socket.  However,    * if the socket has been timed out on the remote end, our attempt to reuse    * the socket may end with an IOException.  For that reason, we limit our    * attempts at socket reuse to dfs.client.cached.conn.retry times.  After    * that, we create new sockets.  This avoids the problem where a thread tries    * to talk to a peer that it hasn't talked to in a while, and has to clean out    * every entry in a socket cache full of stale entries.    *    * @return The new BlockReader.  We will not return null.    *    * @throws InvalidToken    *             If the block token was invalid.    *         InvalidEncryptionKeyException    *             If the encryption key was invalid.    *         Other IOException    *             If there was another problem.    */
+comment|/**    * Build a BlockReader with the given options.    *    * This function will do the best it can to create a block reader that meets    * all of our requirements.  We prefer short-circuit block readers    * (BlockReaderLocal and BlockReaderLocalLegacy) over remote ones, since the    * former avoid the overhead of socket communication.  If short-circuit is    * unavailable, our next fallback is data transfer over UNIX domain sockets,    * if dfs.client.domain.socket.data.traffic has been enabled.  If that doesn't    * work, we will try to create a remote block reader that operates over TCP    * sockets.    *    * There are a few caches that are important here.    *    * The ShortCircuitCache stores file descriptor objects which have been passed    * from the DataNode.    *    * The DomainSocketFactory stores information about UNIX domain socket paths    * that we not been able to use in the past, so that we don't waste time    * retrying them over and over.  (Like all the caches, it does have a timeout,    * though.)    *    * The PeerCache stores peers that we have used in the past.  If we can reuse    * one of these peers, we avoid the overhead of re-opening a socket.  However,    * if the socket has been timed out on the remote end, our attempt to reuse    * the socket may end with an IOException.  For that reason, we limit our    * attempts at socket reuse to dfs.client.cached.conn.retry times.  After    * that, we create new sockets.  This avoids the problem where a thread tries    * to talk to a peer that it hasn't talked to in a while, and has to clean out    * every entry in a socket cache full of stale entries.    *    * @return The new BlockReader.  We will not return null.    *    * @throws InvalidToken    *             If the block token was invalid.    *         InvalidEncryptionKeyException    *             If the encryption key was invalid.    *         Other IOException    *             If there was another problem.    */
 DECL|method|build ()
 specifier|public
 name|BlockReader
@@ -2146,7 +2146,7 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Fetch a pair of short-circuit block descriptors from a local DataNode.    *    * @return    Null if we could not communicate with the datanode,    *            a new ShortCircuitReplicaInfo object otherwise.    *            ShortCircuitReplicaInfo objects may contain either an InvalidToken    *            exception, or a ShortCircuitReplica object ready to use.    */
+comment|/**    * Fetch a pair of short-circuit block descriptors from a local DataNode.    *    * @return    Null if we could not communicate with the datanode,    *            a new ShortCircuitReplicaInfo object otherwise.    *            ShortCircuitReplicaInfo objects may contain either an    *            InvalidToken exception, or a ShortCircuitReplica object ready to    *            use.    */
 annotation|@
 name|Override
 DECL|method|createShortCircuitReplicaInfo ()
@@ -2461,7 +2461,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Request file descriptors from a DomainPeer.    *    * @param peer   The peer to use for communication.    * @param slot   If non-null, the shared memory slot to associate with the     *               new ShortCircuitReplica.    *     * @return  A ShortCircuitReplica object if we could communicate with the    *          datanode; null, otherwise.     * @throws  IOException If we encountered an I/O exception while communicating    *          with the datanode.    */
+comment|/**    * Request file descriptors from a DomainPeer.    *    * @param peer   The peer to use for communication.    * @param slot   If non-null, the shared memory slot to associate with the    *               new ShortCircuitReplica.    *    * @return  A ShortCircuitReplica object if we could communicate with the    *          datanode; null, otherwise.    * @throws  IOException If we encountered an I/O exception while communicating    *          with the datanode.    */
 DECL|method|requestFileDescriptors (DomainPeer peer, Slot slot)
 specifier|private
 name|ShortCircuitReplicaInfo
@@ -3109,7 +3109,7 @@ name|fromCache
 condition|)
 block|{
 comment|// Handle an I/O error we got when using a cached peer.  These are
-comment|// considered less serious, because the underlying socket may be stale.
+comment|// considered less serious because the underlying socket may be stale.
 name|LOG
 operator|.
 name|debug

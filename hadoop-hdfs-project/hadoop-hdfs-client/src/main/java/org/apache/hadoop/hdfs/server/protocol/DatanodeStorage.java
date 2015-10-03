@@ -63,13 +63,13 @@ block|{
 DECL|enumConstant|NORMAL
 name|NORMAL
 block|,
-comment|/**      * A storage that represents a read-only path to replicas stored on a shared storage device.      * Replicas on {@link #READ_ONLY_SHARED} storage are not counted towards live replicas.      *       *<p>      * In certain implementations, a {@link #READ_ONLY_SHARED} storage may be correlated to       * its {@link #NORMAL} counterpart using the {@link DatanodeStorage#storageID}.  This      * property should be used for debugging purposes only.      *</p>       */
+comment|/**      * A storage that represents a read-only path to replicas stored on a shared      * storage device. Replicas on {@link #READ_ONLY_SHARED} storage are not      * counted towards live replicas.      *      *<p>      * In certain implementations, a {@link #READ_ONLY_SHARED} storage may be      * correlated to its {@link #NORMAL} counterpart using the      * {@link DatanodeStorage#storageID}.  This property should be used for      * debugging purposes only.      *</p>      */
 DECL|enumConstant|READ_ONLY_SHARED
 name|READ_ONLY_SHARED
 block|,
 DECL|enumConstant|FAILED
 name|FAILED
-block|;   }
+block|}
 DECL|field|storageID
 specifier|private
 specifier|final
@@ -231,21 +231,6 @@ operator|==
 literal|0
 condition|)
 block|{
-name|UUID
-operator|.
-name|fromString
-argument_list|(
-name|storageID
-operator|.
-name|substring
-argument_list|(
-name|STORAGE_ID_PREFIX
-operator|.
-name|length
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
 return|return
 literal|true
 return|;
@@ -254,7 +239,7 @@ block|}
 catch|catch
 parameter_list|(
 name|IllegalArgumentException
-name|iae
+name|ignored
 parameter_list|)
 block|{     }
 return|return

@@ -59,7 +59,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This exception is thrown when the name node is in safe mode.  * Client cannot modified namespace until the safe mode is off.   *   */
+comment|/**  * This exception is thrown when the name node is in safe mode.  * Client cannot modified namespace until the safe mode is off.  *  */
 end_comment
 
 begin_class

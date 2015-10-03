@@ -91,7 +91,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class represents to end users the difference between two snapshots of   * the same directory, or the difference between a snapshot of the directory and  * its current state. Instead of capturing all the details of the diff, this  * class only lists where the changes happened and their types.  */
+comment|/**  * This class represents to end users the difference between two snapshots of  * the same directory, or the difference between a snapshot of the directory and  * its current state. Instead of capturing all the details of the diff, this  * class only lists where the changes happened and their types.  */
 end_comment
 
 begin_class
@@ -153,7 +153,6 @@ name|String
 name|label
 decl_stmt|;
 DECL|method|DiffType (String label)
-specifier|private
 name|DiffType
 parameter_list|(
 name|String
@@ -263,7 +262,6 @@ literal|null
 return|;
 block|}
 block|}
-empty_stmt|;
 comment|/**    * Representing the full path and diff type of a file/directory where changes    * have happened.    */
 DECL|class|DiffReportEntry
 specifier|public
@@ -847,19 +845,40 @@ operator|.
 name|append
 argument_list|(
 literal|"Difference between "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|from
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" and "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|to
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" under directory "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|snapshotRoot
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|":"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|LINE_SEPARATOR
 argument_list|)
 expr_stmt|;
@@ -879,7 +898,10 @@ name|entry
 operator|.
 name|toString
 argument_list|()
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|LINE_SEPARATOR
 argument_list|)
 expr_stmt|;

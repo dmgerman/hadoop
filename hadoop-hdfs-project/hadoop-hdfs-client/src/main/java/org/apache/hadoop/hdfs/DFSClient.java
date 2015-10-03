@@ -123,6 +123,60 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_LOCAL_INTERFACES
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -879,20 +933,6 @@ operator|.
 name|fs
 operator|.
 name|StorageType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|UnresolvedLinkException
 import|;
 end_import
 
@@ -2423,7 +2463,7 @@ import|;
 end_import
 
 begin_comment
-comment|/********************************************************  * DFSClient can connect to a Hadoop Filesystem and   * perform basic file tasks.  It uses the ClientProtocol  * to communicate with a NameNode daemon, and connects   * directly to DataNodes to read/write block data.  *  * Hadoop DFS users should obtain an instance of   * DistributedFileSystem, which uses DFSClient to handle  * filesystem tasks.  *  ********************************************************/
+comment|/********************************************************  * DFSClient can connect to a Hadoop Filesystem and  * perform basic file tasks.  It uses the ClientProtocol  * to communicate with a NameNode daemon, and connects  * directly to DataNodes to read/write block data.  *  * Hadoop DFS users should obtain an instance of  * DistributedFileSystem, which uses DFSClient to handle  * filesystem tasks.  *  ********************************************************/
 end_comment
 
 begin_class
@@ -2462,6 +2502,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// 1 hour
 DECL|field|SERVER_DEFAULTS_VALIDITY_PERIOD
 specifier|public
 specifier|static
@@ -2475,7 +2516,6 @@ literal|60
 operator|*
 literal|1000L
 decl_stmt|;
-comment|// 1 hour
 DECL|field|conf
 specifier|private
 specifier|final
@@ -2669,11 +2709,7 @@ name|filesBeingWritten
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|Long
-argument_list|,
-name|DFSOutputStream
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * Same as this(NameNode.getNNAddress(conf), conf);    * @see #DFSClient(InetSocketAddress, Configuration)    * @deprecated Deprecated at 0.21    */
@@ -2729,7 +2765,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Same as this(nameNodeUri, conf, null);    * @see #DFSClient(URI, Configuration, FileSystem.Statistics)    */
-DECL|method|DFSClient (URI nameNodeUri, Configuration conf )
+DECL|method|DFSClient (URI nameNodeUri, Configuration conf)
 specifier|public
 name|DFSClient
 parameter_list|(
@@ -2752,7 +2788,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Same as this(nameNodeUri, null, conf, stats);    * @see #DFSClient(URI, ClientProtocol, Configuration, FileSystem.Statistics)     */
+comment|/**    * Same as this(nameNodeUri, null, conf, stats);    * @see #DFSClient(URI, ClientProtocol, Configuration, FileSystem.Statistics)    */
 DECL|method|DFSClient (URI nameNodeUri, Configuration conf, FileSystem.Statistics stats)
 specifier|public
 name|DFSClient
@@ -2783,7 +2819,7 @@ name|stats
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Create a new DFSClient connected to the given nameNodeUri or rpcNamenode.    * If HA is enabled and a positive value is set for    * {@link HdfsClientConfigKeys#DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY}    * in the configuration, the DFSClient will use    * {@link LossyRetryInvocationHandler} as its RetryInvocationHandler.    * Otherwise one of nameNodeUri or rpcNamenode must be null.    */
+comment|/**    * Create a new DFSClient connected to the given nameNodeUri or rpcNamenode.    * If HA is enabled and a positive value is set for    * {@link HdfsClientConfigKeys#DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY}    * in the configuration, the DFSClient will use    * {@link LossyRetryInvocationHandler} as its RetryInvocationHandler.    * Otherwise one of nameNodeUri or rpcNamenode must be null.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|DFSClient (URI nameNodeUri, ClientProtocol rpcNamenode, Configuration conf, FileSystem.Statistics stats)
@@ -2940,12 +2976,8 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|HdfsClientConfigKeys
-operator|.
 name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
 argument_list|,
-name|HdfsClientConfigKeys
-operator|.
 name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT
 argument_list|)
 decl_stmt|;
@@ -2978,8 +3010,6 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-name|HdfsClientConfigKeys
-operator|.
 name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
 operator|+
 literal|" is set to "
@@ -3117,8 +3147,6 @@ name|conf
 operator|.
 name|getTrimmedStrings
 argument_list|(
-name|HdfsClientConfigKeys
-operator|.
 name|DFS_CLIENT_LOCAL_INTERFACES
 argument_list|)
 decl_stmt|;
@@ -3356,7 +3384,7 @@ name|nnFallbackToSimpleAuth
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return the socket addresses to use with each configured    * local interface. Local interfaces may be specified by IP    * address, IP address range using CIDR notation, interface    * name (e.g. eth0) or sub-interface name (e.g. eth0:0).    * The socket addresses consist of the IPs for the interfaces    * and the ephemeral port (port 0). If an IP, IP range, or    * interface name matches an interface with sub-interfaces    * only the IP of the interface is used. Sub-interfaces can    * be used by specifying them explicitly (by IP or name).    *     * @return SocketAddresses for the configured local interfaces,    *    or an empty array if none are configured    * @throws UnknownHostException if a given interface name is invalid    */
+comment|/**    * Return the socket addresses to use with each configured    * local interface. Local interfaces may be specified by IP    * address, IP address range using CIDR notation, interface    * name (e.g. eth0) or sub-interface name (e.g. eth0:0).    * The socket addresses consist of the IPs for the interfaces    * and the ephemeral port (port 0). If an IP, IP range, or    * interface name matches an interface with sub-interfaces    * only the IP of the interface is used. Sub-interfaces can    * be used by specifying them explicitly (by IP or name).    *    * @return SocketAddresses for the configured local interfaces,    *    or an empty array if none are configured    * @throws UnknownHostException if a given interface name is invalid    */
 DECL|method|getLocalInterfaceAddrs ( String interfaceNames[])
 specifier|private
 specifier|static
@@ -3379,9 +3407,7 @@ name|localAddrs
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|SocketAddress
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -3652,17 +3678,12 @@ operator|!
 name|clientRunning
 condition|)
 block|{
-name|IOException
-name|result
-init|=
+throw|throw
 operator|new
 name|IOException
 argument_list|(
 literal|"Filesystem closed"
 argument_list|)
-decl_stmt|;
-throw|throw
-name|result
 throw|;
 block|}
 block|}
@@ -3672,8 +3693,6 @@ specifier|public
 name|LeaseRenewer
 name|getLeaseRenewer
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|LeaseRenewer
@@ -3741,7 +3760,7 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Put a file. Only called from LeaseRenewer, where proper locking is    *  enforced to consistently update its local dfsclients array and     *  client's filesBeingWritten map.    */
+comment|/** Put a file. Only called from LeaseRenewer, where proper locking is    *  enforced to consistently update its local dfsclients array and    *  client's filesBeingWritten map.    */
 DECL|method|putFileBeingWritten (final long inodeId, final DFSOutputStream out)
 specifier|public
 name|void
@@ -4228,8 +4247,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -4237,8 +4258,7 @@ literal|"getBlockSize"
 argument_list|,
 name|f
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -4267,14 +4287,6 @@ expr_stmt|;
 throw|throw
 name|ie
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Get server default values for a number of configuration params.    * @see ClientProtocol#getServerDefaults()    */
@@ -4386,8 +4398,10 @@ name|dtService
 operator|!=
 literal|null
 assert|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -4395,8 +4409,7 @@ name|newScope
 argument_list|(
 literal|"getDelegationToken"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|Token
 argument_list|<
@@ -4458,16 +4471,8 @@ return|return
 name|token
 return|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Renew a delegation token    * @param token the token to renew    * @return the new expiration time    * @throws InvalidToken    * @throws IOException    * @deprecated Use Token.renew instead.    */
+comment|/**    * Renew a delegation token    * @param token the token to renew    * @return the new expiration time    * @throws IOException    * @deprecated Use Token.renew instead.    */
 annotation|@
 name|Deprecated
 DECL|method|renewDelegationToken (Token<DelegationTokenIdentifier> token)
@@ -4482,8 +4487,6 @@ argument_list|>
 name|token
 parameter_list|)
 throws|throws
-name|InvalidToken
-throws|,
 name|IOException
 block|{
 name|LOG
@@ -4549,7 +4552,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Cancel a delegation token    * @param token the token to cancel    * @throws InvalidToken    * @throws IOException    * @deprecated Use Token.cancel instead.    */
+comment|/**    * Cancel a delegation token    * @param token the token to cancel    * @throws IOException    * @deprecated Use Token.cancel instead.    */
 annotation|@
 name|Deprecated
 DECL|method|cancelDelegationToken (Token<DelegationTokenIdentifier> token)
@@ -4564,8 +4567,6 @@ argument_list|>
 name|token
 parameter_list|)
 throws|throws
-name|InvalidToken
-throws|,
 name|IOException
 block|{
 name|LOG
@@ -5072,8 +5073,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -5081,8 +5084,7 @@ literal|"getBlockLocations"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|callGetBlockLocations
@@ -5096,14 +5098,6 @@ argument_list|,
 name|length
 argument_list|)
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * @see ClientProtocol#getBlockLocations(String, long, long)    */
@@ -5182,8 +5176,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -5191,8 +5187,7 @@ literal|"recoverLease"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -5230,16 +5225,8 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Get block location info about file    *     * getBlockLocations() returns a list of hostnames that store     * data for a specific file region.  It returns a set of hostnames    * for every block within the indicated region.    *    * This function is very useful when writing code that considers    * data-placement when performing operations.  For example, the    * MapReduce system tries to schedule tasks on the same machines    * as the data-block the task processes.     */
+comment|/**    * Get block location info about file    *    * getBlockLocations() returns a list of hostnames that store    * data for a specific file region.  It returns a set of hostnames    * for every block within the indicated region.    *    * This function is very useful when writing code that considers    * data-placement when performing operations.  For example, the    * MapReduce system tries to schedule tasks on the same machines    * as the data-block the task processes.    */
 DECL|method|getBlockLocations (String src, long start, long length)
 specifier|public
 name|BlockLocation
@@ -5257,14 +5244,14 @@ name|length
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -5272,8 +5259,7 @@ literal|"getBlockLocations"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|LocatedBlocks
 name|blocks
@@ -5353,14 +5339,6 @@ return|return
 name|hdfsLocations
 return|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Decrypts a EDEK by consulting the KeyProvider.    */
 DECL|method|decryptEncryptedDataEncryptionKey (FileEncryptionInfo feInfo)
@@ -5374,8 +5352,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -5383,8 +5363,7 @@ name|newScope
 argument_list|(
 literal|"decryptEDEK"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|KeyProvider
 name|provider
@@ -5473,17 +5452,9 @@ argument_list|)
 throw|;
 block|}
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Obtain the crypto protocol version from the provided FileEncryptionInfo,    * checking to see if this version is supported by.    *    * @param feInfo FileEncryptionInfo    * @return CryptoProtocolVersion from the feInfo    * @throws IOException if the protocol version is unsupported.    */
-DECL|method|getCryptoProtocolVersion (FileEncryptionInfo feInfo)
+DECL|method|getCryptoProtocolVersion ( FileEncryptionInfo feInfo)
 specifier|private
 specifier|static
 name|CryptoProtocolVersion
@@ -5891,8 +5862,6 @@ name|src
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|open
@@ -5905,8 +5874,6 @@ name|getIoBufferSize
 argument_list|()
 argument_list|,
 literal|true
-argument_list|,
-literal|null
 argument_list|)
 return|;
 block|}
@@ -5934,8 +5901,6 @@ name|stats
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 return|return
 name|open
@@ -5965,15 +5930,15 @@ name|verifyChecksum
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
 comment|//    Get block info from namenode
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -5981,8 +5946,7 @@ literal|"newDFSInputStream"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|LocatedBlocks
 name|locatedBlocks
@@ -6058,14 +6022,6 @@ name|src
 argument_list|)
 throw|;
 block|}
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Get the namenode associated with this DFSClient object    * @return the namenode associated with this DFSClient object    */
@@ -6234,7 +6190,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Call {@link #create(String, FsPermission, EnumSet, short, long,     * Progressable, int, ChecksumOpt)} with default<code>permission</code>    * {@link FsPermission#getFileDefault()}.    *     * @param src File name    * @param overwrite overwrite an existing file if true    * @param replication replication factor for the file    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffersize    *     * @return output stream    */
+comment|/**    * Call {@link #create(String, FsPermission, EnumSet, short, long,    * Progressable, int, ChecksumOpt)} with default<code>permission</code>    * {@link FsPermission#getFileDefault()}.    *    * @param src File name    * @param overwrite overwrite an existing file if true    * @param replication replication factor for the file    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffersize    *    * @return output stream    */
 DECL|method|create (String src, boolean overwrite, short replication, long blockSize, Progressable progress, int buffersize)
 specifier|public
 name|OutputStream
@@ -6307,7 +6263,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Call {@link #create(String, FsPermission, EnumSet, boolean, short,     * long, Progressable, int, ChecksumOpt)} with<code>createParent</code>    *  set to true.    */
+comment|/**    * Call {@link #create(String, FsPermission, EnumSet, boolean, short,    * long, Progressable, int, ChecksumOpt)} with<code>createParent</code>    *  set to true.    */
 DECL|method|create (String src, FsPermission permission, EnumSet<CreateFlag> flag, short replication, long blockSize, Progressable progress, int buffersize, ChecksumOpt checksumOpt)
 specifier|public
 name|DFSOutputStream
@@ -6368,7 +6324,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a new dfs file with the specified block replication     * with write-progress reporting and return an output stream for writing    * into the file.      *     * @param src File name    * @param permission The permission of the directory being created.    *          If null, use default permission {@link FsPermission#getFileDefault()}    * @param flag indicates create a new file or create/overwrite an    *          existing file or append to an existing file    * @param createParent create missing parent directory if true    * @param replication block replication    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffer size     * @param checksumOpt checksum options    *     * @return output stream    *    * @see ClientProtocol#create for detailed description of exceptions thrown    */
+comment|/**    * Create a new dfs file with the specified block replication    * with write-progress reporting and return an output stream for writing    * into the file.    *    * @param src File name    * @param permission The permission of the directory being created.    *          If null, use default permission    *          {@link FsPermission#getFileDefault()}    * @param flag indicates create a new file or create/overwrite an    *          existing file or append to an existing file    * @param createParent create missing parent directory if true    * @param replication block replication    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffer size    * @param checksumOpt checksum options    *    * @return output stream    *    * @see ClientProtocol#create for detailed description of exceptions thrown    */
 DECL|method|create (String src, FsPermission permission, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, ChecksumOpt checksumOpt)
 specifier|public
 name|DFSOutputStream
@@ -6558,8 +6514,6 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|buffersize
-argument_list|,
 name|dfsClientConf
 operator|.
 name|createChecksum
@@ -6668,7 +6622,7 @@ name|favoredNodeStrs
 return|;
 block|}
 comment|/**    * Append to an existing file if {@link CreateFlag#APPEND} is present    */
-DECL|method|primitiveAppend (String src, EnumSet<CreateFlag> flag, int buffersize, Progressable progress)
+DECL|method|primitiveAppend (String src, EnumSet<CreateFlag> flag, Progressable progress)
 specifier|private
 name|DFSOutputStream
 name|primitiveAppend
@@ -6681,9 +6635,6 @@ argument_list|<
 name|CreateFlag
 argument_list|>
 name|flag
-parameter_list|,
-name|int
-name|buffersize
 parameter_list|,
 name|Progressable
 name|progress
@@ -6756,8 +6707,6 @@ name|callAppend
 argument_list|(
 name|src
 argument_list|,
-name|buffersize
-argument_list|,
 name|flag
 argument_list|,
 name|progress
@@ -6808,8 +6757,6 @@ name|checksumOpt
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|checkOpen
 argument_list|()
@@ -6829,8 +6776,6 @@ argument_list|(
 name|src
 argument_list|,
 name|flag
-argument_list|,
-name|buffersize
 argument_list|,
 name|progress
 argument_list|)
@@ -6874,8 +6819,6 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|buffersize
-argument_list|,
 name|checksum
 argument_list|,
 literal|null
@@ -6896,7 +6839,7 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Creates a symbolic link.    *     * @see ClientProtocol#createSymlink(String, String,FsPermission, boolean)     */
+comment|/**    * Creates a symbolic link.    *    * @see ClientProtocol#createSymlink(String, String,FsPermission, boolean)    */
 DECL|method|createSymlink (String target, String link, boolean createParent)
 specifier|public
 name|void
@@ -6917,8 +6860,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -6926,8 +6871,7 @@ literal|"createSymlink"
 argument_list|,
 name|target
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 specifier|final
 name|FsPermission
@@ -7001,16 +6945,8 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Resolve the *first* symlink, if any, in the path.    *     * @see ClientProtocol#getLinkTarget(String)    */
+comment|/**    * Resolve the *first* symlink, if any, in the path.    *    * @see ClientProtocol#getLinkTarget(String)    */
 DECL|method|getLinkTarget (String path)
 specifier|public
 name|String
@@ -7025,8 +6961,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -7034,8 +6972,7 @@ literal|"getLinkTarget"
 argument_list|,
 name|path
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -7067,26 +7004,15 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/** Method to get stream returned by append call */
-DECL|method|callAppend (String src, int buffersize, EnumSet<CreateFlag> flag, Progressable progress, String[] favoredNodes)
+DECL|method|callAppend (String src, EnumSet<CreateFlag> flag, Progressable progress, String[] favoredNodes)
 specifier|private
 name|DFSOutputStream
 name|callAppend
 parameter_list|(
 name|String
 name|src
-parameter_list|,
-name|int
-name|buffersize
 parameter_list|,
 name|EnumSet
 argument_list|<
@@ -7146,8 +7072,6 @@ argument_list|,
 name|src
 argument_list|,
 name|flag
-argument_list|,
-name|buffersize
 argument_list|,
 name|progress
 argument_list|,
@@ -7218,7 +7142,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Append to an existing HDFS file.      *     * @param src file name    * @param buffersize buffer size    * @param flag indicates whether to append data to a new block instead of    *             the last block    * @param progress for reporting write-progress; null is acceptable.    * @param statistics file system statistics; null is acceptable.    * @return an output stream for writing into the file    *     * @see ClientProtocol#append(String, String, EnumSetWritable)    */
+comment|/**    * Append to an existing HDFS file.    *    * @param src file name    * @param buffersize buffer size    * @param flag indicates whether to append data to a new block instead of    *             the last block    * @param progress for reporting write-progress; null is acceptable.    * @param statistics file system statistics; null is acceptable.    * @return an output stream for writing into the file    *    * @see ClientProtocol#append(String, String, EnumSetWritable)    */
 DECL|method|append (final String src, final int buffersize, EnumSet<CreateFlag> flag, final Progressable progress, final FileSystem.Statistics statistics)
 specifier|public
 name|HdfsDataOutputStream
@@ -7282,7 +7206,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Append to an existing HDFS file.    *     * @param src file name    * @param buffersize buffer size    * @param flag indicates whether to append data to a new block instead of the    *          last block    * @param progress for reporting write-progress; null is acceptable.    * @param statistics file system statistics; null is acceptable.    * @param favoredNodes FavoredNodes for new blocks    * @return an output stream for writing into the file    * @see ClientProtocol#append(String, String, EnumSetWritable)    */
+comment|/**    * Append to an existing HDFS file.    *    * @param src file name    * @param buffersize buffer size    * @param flag indicates whether to append data to a new block instead of the    *          last block    * @param progress for reporting write-progress; null is acceptable.    * @param statistics file system statistics; null is acceptable.    * @param favoredNodes FavoredNodes for new blocks    * @return an output stream for writing into the file    * @see ClientProtocol#append(String, String, EnumSetWritable)    */
 DECL|method|append (final String src, final int buffersize, EnumSet<CreateFlag> flag, final Progressable progress, final FileSystem.Statistics statistics, final InetSocketAddress[] favoredNodes)
 specifier|public
 name|HdfsDataOutputStream
@@ -7392,8 +7316,6 @@ name|callAppend
 argument_list|(
 name|src
 argument_list|,
-name|buffersize
-argument_list|,
 name|flag
 argument_list|,
 name|progress
@@ -7415,7 +7337,7 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Set replication for an existing file.    * @param src file name    * @param replication replication to set the file to    *     * @see ClientProtocol#setReplication(String, short)    */
+comment|/**    * Set replication for an existing file.    * @param src file name    * @param replication replication to set the file to    *    * @see ClientProtocol#setReplication(String, short)    */
 DECL|method|setReplication (String src, short replication)
 specifier|public
 name|boolean
@@ -7433,8 +7355,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -7442,8 +7366,7 @@ literal|"setReplication"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -7497,14 +7420,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Set storage policy for an existing file/directory    * @param src file/directory name    * @param policyName name of the storage policy    */
 DECL|method|setStoragePolicy (String src, String policyName)
@@ -7524,8 +7439,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -7533,8 +7450,7 @@ literal|"setStoragePolicy"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -7583,14 +7499,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * @param path file/directory name    * @return Get the storage policy for specified path    */
 DECL|method|getStoragePolicy (String path)
@@ -7607,8 +7515,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -7616,8 +7526,7 @@ literal|"getStoragePolicy"
 argument_list|,
 name|path
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -7657,14 +7566,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * @return All the existing storage policies    */
 DECL|method|getStoragePolicies ()
@@ -7679,8 +7580,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -7688,8 +7591,7 @@ name|newScope
 argument_list|(
 literal|"getStoragePolicies"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -7697,14 +7599,6 @@ operator|.
 name|getStoragePolicies
 argument_list|()
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Rename file or directory.    * @see ClientProtocol#rename(String, String)    * @deprecated Use {@link #rename(String, String, Options.Rename...)} instead.    */
@@ -7727,8 +7621,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newSrcDstTraceScope
 argument_list|(
@@ -7738,8 +7634,7 @@ name|src
 argument_list|,
 name|dst
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -7789,14 +7684,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Move blocks from src to trg and delete src    * See {@link ClientProtocol#concat}.    */
 DECL|method|concat (String trg, String [] srcs)
@@ -7817,8 +7704,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -7826,8 +7715,7 @@ name|newScope
 argument_list|(
 literal|"concat"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -7863,14 +7751,6 @@ operator|.
 name|class
 argument_list|)
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Rename file or directory.    * @see ClientProtocol#rename2(String, String, Options.Rename...)    */
@@ -7897,8 +7777,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newSrcDstTraceScope
 argument_list|(
@@ -7908,8 +7790,7 @@ name|src
 argument_list|,
 name|dst
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -7976,14 +7857,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Truncate a file to an indicated size    * See {@link ClientProtocol#truncate}.    */
 DECL|method|truncate (String src, long newLength)
@@ -8022,8 +7895,10 @@ literal|"."
 argument_list|)
 throw|;
 block|}
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -8031,8 +7906,7 @@ literal|"truncate"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -8068,16 +7942,8 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Delete file or directory.    * See {@link ClientProtocol#delete(String, boolean)}.     */
+comment|/**    * Delete file or directory.    * See {@link ClientProtocol#delete(String, boolean)}.    */
 annotation|@
 name|Deprecated
 DECL|method|delete (String src)
@@ -8103,7 +7969,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * delete file or directory.    * delete contents of the directory if non empty and recursive     * set to true    *    * @see ClientProtocol#delete(String, boolean)    */
+comment|/**    * delete file or directory.    * delete contents of the directory if non empty and recursive    * set to true    *    * @see ClientProtocol#delete(String, boolean)    */
 DECL|method|delete (String src, boolean recursive)
 specifier|public
 name|boolean
@@ -8121,8 +7987,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -8130,8 +7998,7 @@ literal|"delete"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -8176,14 +8043,6 @@ operator|.
 name|class
 argument_list|)
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/** Implemented using getFileInfo(src)    */
@@ -8259,8 +8118,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -8268,8 +8129,7 @@ literal|"listPaths"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -8309,16 +8169,8 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Get the file info for a specific file or directory.    * @param src The string representation of the path to the file    * @return object containing information regarding the file    *         or null if file not found    *             * @see ClientProtocol#getFileInfo(String) for description of exceptions    */
+comment|/**    * Get the file info for a specific file or directory.    * @param src The string representation of the path to the file    * @return object containing information regarding the file    *         or null if file not found    *    * @see ClientProtocol#getFileInfo(String) for description of exceptions    */
 DECL|method|getFileInfo (String src)
 specifier|public
 name|HdfsFileStatus
@@ -8333,8 +8185,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -8342,8 +8196,7 @@ literal|"getFileInfo"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -8378,14 +8231,6 @@ operator|.
 name|class
 argument_list|)
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Close status of a file    * @return true if file is already closed    */
@@ -8403,8 +8248,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -8412,8 +8259,7 @@ literal|"isFileClosed"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -8449,16 +8295,8 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Get the file info for a specific file or directory. If src    * refers to a symlink then the FileStatus of the link is returned.    * @param src path to a file or directory.    *     * For description of exceptions thrown     * @see ClientProtocol#getFileLinkInfo(String)    */
+comment|/**    * Get the file info for a specific file or directory. If src    * refers to a symlink then the FileStatus of the link is returned.    * @param src path to a file or directory.    *    * For description of exceptions thrown    * @see ClientProtocol#getFileLinkInfo(String)    */
 DECL|method|getFileLinkInfo (String src)
 specifier|public
 name|HdfsFileStatus
@@ -8473,8 +8311,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -8482,8 +8322,7 @@ literal|"getFileLinkInfo"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -8514,14 +8353,6 @@ operator|.
 name|class
 argument_list|)
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -8568,11 +8399,9 @@ argument_list|()
 decl_stmt|;
 return|return
 name|d
-operator|==
+operator|!=
 literal|null
-condition|?
-literal|false
-else|:
+operator|&&
 name|d
 operator|.
 name|getEncryptDataTransfer
@@ -8643,7 +8472,7 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Get the checksum of the whole file of a range of the file. Note that the    * range always starts from the beginning of the file.    * @param src The file path    * @param length the length of the range, i.e., the range is [0, length]    * @return The checksum     * @see DistributedFileSystem#getFileChecksum(Path)    */
+comment|/**    * Get the checksum of the whole file of a range of the file. Note that the    * range always starts from the beginning of the file.    * @param src The file path    * @param length the length of the range, i.e., the range is [0, length]    * @return The checksum    * @see DistributedFileSystem#getFileChecksum(Path)    */
 DECL|method|getFileChecksum (String src, long length)
 specifier|public
 name|MD5MD5CRC32FileChecksum
@@ -9388,9 +9217,9 @@ name|debug
 argument_list|(
 literal|"Got access token error in response to OP_BLOCK_CHECKSUM "
 operator|+
-literal|"for file {} for block {} from datanode {}. Will retry the "
+literal|"for file {} for block {} from datanode {}. Will retry "
 operator|+
-literal|"block once."
+literal|"the block once."
 argument_list|,
 name|src
 argument_list|,
@@ -9887,7 +9716,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set permissions to a file or directory.    * @param src path name.    * @param permission permission to set to    *     * @see ClientProtocol#setPermission(String, FsPermission)    */
+comment|/**    * Set permissions to a file or directory.    * @param src path name.    * @param permission permission to set to    *    * @see ClientProtocol#setPermission(String, FsPermission)    */
 DECL|method|setPermission (String src, FsPermission permission)
 specifier|public
 name|void
@@ -9905,8 +9734,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -9914,8 +9745,7 @@ literal|"setPermission"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -9960,16 +9790,8 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Set file or directory owner.    * @param src path name.    * @param username user id.    * @param groupname user group.    *     * @see ClientProtocol#setOwner(String, String, String)    */
+comment|/**    * Set file or directory owner.    * @param src path name.    * @param username user id.    * @param groupname user group.    *    * @see ClientProtocol#setOwner(String, String, String)    */
 DECL|method|setOwner (String src, String username, String groupname)
 specifier|public
 name|void
@@ -9990,8 +9812,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -9999,8 +9823,7 @@ literal|"setOwner"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -10047,14 +9870,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|callGetStats ()
 specifier|private
@@ -10068,8 +9883,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -10077,8 +9894,7 @@ name|newScope
 argument_list|(
 literal|"getStats"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -10086,14 +9902,6 @@ operator|.
 name|getStats
 argument_list|()
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * @see ClientProtocol#getStats()    */
@@ -10133,7 +9941,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns count of blocks with no good replicas left. Normally should be     * zero.    * @throws IOException    */
+comment|/**    * Returns count of blocks with no good replicas left. Normally should be    * zero.    * @throws IOException    */
 DECL|method|getMissingBlocksCount ()
 specifier|public
 name|long
@@ -10190,7 +9998,7 @@ name|GET_STATS_UNDER_REPLICATED_IDX
 index|]
 return|;
 block|}
-comment|/**    * Returns count of blocks with at least one replica marked corrupt.     * @throws IOException    */
+comment|/**    * Returns count of blocks with at least one replica marked corrupt.    * @throws IOException    */
 DECL|method|getCorruptBlocksCount ()
 specifier|public
 name|long
@@ -10227,8 +10035,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -10236,8 +10046,7 @@ literal|"listCorruptFileBlocks"
 argument_list|,
 name|path
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -10249,14 +10058,6 @@ argument_list|,
 name|cookie
 argument_list|)
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|datanodeReport (DatanodeReportType type)
@@ -10274,8 +10075,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -10283,8 +10086,7 @@ name|newScope
 argument_list|(
 literal|"datanodeReport"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -10294,14 +10096,6 @@ argument_list|(
 name|type
 argument_list|)
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|getDatanodeStorageReport ( DatanodeReportType type)
@@ -10319,8 +10113,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -10328,8 +10124,7 @@ name|newScope
 argument_list|(
 literal|"datanodeStorageReport"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -10340,16 +10135,8 @@ name|type
 argument_list|)
 return|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Enter, leave or get safe mode.    *     * @see ClientProtocol#setSafeMode(HdfsConstants.SafeModeAction,boolean)    */
+comment|/**    * Enter, leave or get safe mode.    *    * @see ClientProtocol#setSafeMode(HdfsConstants.SafeModeAction,boolean)    */
 DECL|method|setSafeMode (SafeModeAction action)
 specifier|public
 name|boolean
@@ -10373,7 +10160,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Enter, leave or get safe mode.    *     * @param action    *          One of SafeModeAction.GET, SafeModeAction.ENTER and    *          SafeModeActiob.LEAVE    * @param isChecked    *          If true, then check only active namenode's safemode status, else    *          check first namenode's status.    * @see ClientProtocol#setSafeMode(HdfsConstants.SafeModeAction, boolean)    */
+comment|/**    * Enter, leave or get safe mode.    *    * @param action    *          One of SafeModeAction.GET, SafeModeAction.ENTER and    *          SafeModeActiob.LEAVE    * @param isChecked    *          If true, then check only active namenode's safemode status, else    *          check first namenode's status.    * @see ClientProtocol#setSafeMode(HdfsConstants.SafeModeAction, boolean)    */
 DECL|method|setSafeMode (SafeModeAction action, boolean isChecked)
 specifier|public
 name|boolean
@@ -10388,8 +10175,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -10397,8 +10186,7 @@ name|newScope
 argument_list|(
 literal|"setSafeMode"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -10411,16 +10199,8 @@ name|isChecked
 argument_list|)
 return|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Create one snapshot.    *     * @param snapshotRoot The directory where the snapshot is to be taken    * @param snapshotName Name of the snapshot    * @return the snapshot path.    * @see ClientProtocol#createSnapshot(String, String)    */
+comment|/**    * Create one snapshot.    *    * @param snapshotRoot The directory where the snapshot is to be taken    * @param snapshotName Name of the snapshot    * @return the snapshot path.    * @see ClientProtocol#createSnapshot(String, String)    */
 DECL|method|createSnapshot (String snapshotRoot, String snapshotName)
 specifier|public
 name|String
@@ -10438,8 +10218,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -10447,8 +10229,7 @@ name|newScope
 argument_list|(
 literal|"createSnapshot"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -10474,16 +10255,8 @@ name|unwrapRemoteException
 argument_list|()
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Delete a snapshot of a snapshottable directory.    *     * @param snapshotRoot The snapshottable directory that the     *                    to-be-deleted snapshot belongs to    * @param snapshotName The name of the to-be-deleted snapshot    * @throws IOException    * @see ClientProtocol#deleteSnapshot(String, String)    */
+comment|/**    * Delete a snapshot of a snapshottable directory.    *    * @param snapshotRoot The snapshottable directory that the    *                    to-be-deleted snapshot belongs to    * @param snapshotName The name of the to-be-deleted snapshot    * @throws IOException    * @see ClientProtocol#deleteSnapshot(String, String)    */
 DECL|method|deleteSnapshot (String snapshotRoot, String snapshotName)
 specifier|public
 name|void
@@ -10501,8 +10274,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -10510,8 +10285,7 @@ name|newScope
 argument_list|(
 literal|"deleteSnapshot"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -10535,14 +10309,6 @@ operator|.
 name|unwrapRemoteException
 argument_list|()
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Rename a snapshot.    * @param snapshotDir The directory path where the snapshot was taken    * @param snapshotOldName Old name of the snapshot    * @param snapshotNewName New name of the snapshot    * @throws IOException    * @see ClientProtocol#renameSnapshot(String, String, String)    */
@@ -10566,8 +10332,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -10575,8 +10343,7 @@ name|newScope
 argument_list|(
 literal|"renameSnapshot"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -10603,14 +10370,6 @@ name|unwrapRemoteException
 argument_list|()
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Get all the current snapshottable directories.    * @return All the current snapshottable directories    * @throws IOException    * @see ClientProtocol#getSnapshottableDirListing()    */
 DECL|method|getSnapshottableDirListing ()
@@ -10625,8 +10384,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -10634,8 +10395,7 @@ name|newScope
 argument_list|(
 literal|"getSnapshottableDirListing"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -10657,16 +10417,8 @@ name|unwrapRemoteException
 argument_list|()
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Allow snapshot on a directory.    *     * @see ClientProtocol#allowSnapshot(String snapshotRoot)    */
+comment|/**    * Allow snapshot on a directory.    *    * @see ClientProtocol#allowSnapshot(String snapshotRoot)    */
 DECL|method|allowSnapshot (String snapshotRoot)
 specifier|public
 name|void
@@ -10681,8 +10433,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -10690,8 +10444,7 @@ name|newScope
 argument_list|(
 literal|"allowSnapshot"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -10714,16 +10467,8 @@ name|unwrapRemoteException
 argument_list|()
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Disallow snapshot on a directory.    *     * @see ClientProtocol#disallowSnapshot(String snapshotRoot)    */
+comment|/**    * Disallow snapshot on a directory.    *    * @see ClientProtocol#disallowSnapshot(String snapshotRoot)    */
 DECL|method|disallowSnapshot (String snapshotRoot)
 specifier|public
 name|void
@@ -10738,8 +10483,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -10747,8 +10494,7 @@ name|newScope
 argument_list|(
 literal|"disallowSnapshot"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -10770,14 +10516,6 @@ operator|.
 name|unwrapRemoteException
 argument_list|()
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Get the difference between two snapshots, or between a snapshot and the    * current tree of a directory.    * @see ClientProtocol#getSnapshotDiffReport(String, String, String)    */
@@ -10801,8 +10539,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -10810,8 +10550,7 @@ name|newScope
 argument_list|(
 literal|"getSnapshotDiffReport"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -10839,14 +10578,6 @@ name|unwrapRemoteException
 argument_list|()
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|addCacheDirective ( CacheDirectiveInfo info, EnumSet<CacheFlag> flags)
 specifier|public
@@ -10868,8 +10599,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -10877,8 +10610,7 @@ name|newScope
 argument_list|(
 literal|"addCacheDirective"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -10904,14 +10636,6 @@ name|unwrapRemoteException
 argument_list|()
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|modifyCacheDirective ( CacheDirectiveInfo info, EnumSet<CacheFlag> flags)
 specifier|public
@@ -10933,8 +10657,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -10942,8 +10668,7 @@ name|newScope
 argument_list|(
 literal|"modifyCacheDirective"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -10968,14 +10693,6 @@ name|unwrapRemoteException
 argument_list|()
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|removeCacheDirective (long id)
 specifier|public
@@ -10991,8 +10708,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -11000,8 +10719,7 @@ name|newScope
 argument_list|(
 literal|"removeCacheDirective"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -11023,14 +10741,6 @@ operator|.
 name|unwrapRemoteException
 argument_list|()
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|listCacheDirectives ( CacheDirectiveInfo filter)
@@ -11076,8 +10786,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -11085,8 +10797,7 @@ name|newScope
 argument_list|(
 literal|"addCachePool"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -11109,14 +10820,6 @@ name|unwrapRemoteException
 argument_list|()
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|modifyCachePool (CachePoolInfo info)
 specifier|public
@@ -11132,8 +10835,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -11141,8 +10846,7 @@ name|newScope
 argument_list|(
 literal|"modifyCachePool"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -11164,14 +10868,6 @@ operator|.
 name|unwrapRemoteException
 argument_list|()
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|removeCachePool (String poolName)
@@ -11188,8 +10884,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -11197,8 +10895,7 @@ name|newScope
 argument_list|(
 literal|"removeCachePool"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -11220,14 +10917,6 @@ operator|.
 name|unwrapRemoteException
 argument_list|()
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|listCachePools ()
@@ -11254,7 +10943,7 @@ name|tracer
 argument_list|)
 return|;
 block|}
-comment|/**    * Save namespace image.    *     * @see ClientProtocol#saveNamespace(long, long)    */
+comment|/**    * Save namespace image.    *    * @see ClientProtocol#saveNamespace(long, long)    */
 DECL|method|saveNamespace (long timeWindow, long txGap)
 name|boolean
 name|saveNamespace
@@ -11271,8 +10960,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -11280,8 +10971,7 @@ name|newScope
 argument_list|(
 literal|"saveNamespace"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -11311,30 +11001,22 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Rolls the edit log on the active NameNode.    * @return the txid of the new log segment     *    * @see ClientProtocol#rollEdits()    */
+comment|/**    * Rolls the edit log on the active NameNode.    * @return the txid of the new log segment    *    * @see ClientProtocol#rollEdits()    */
 DECL|method|rollEdits ()
 name|long
 name|rollEdits
 parameter_list|()
 throws|throws
-name|AccessControlException
-throws|,
 name|IOException
 block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -11342,8 +11024,7 @@ name|newScope
 argument_list|(
 literal|"rollEdits"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -11369,14 +11050,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|VisibleForTesting
@@ -11400,7 +11073,7 @@ name|getBlock
 argument_list|()
 return|;
 block|}
-comment|/**    * enable/disable restore failed storage.    *     * @see ClientProtocol#restoreFailedStorage(String arg)    */
+comment|/**    * enable/disable restore failed storage.    *    * @see ClientProtocol#restoreFailedStorage(String arg)    */
 DECL|method|restoreFailedStorage (String arg)
 name|boolean
 name|restoreFailedStorage
@@ -11409,15 +11082,15 @@ name|String
 name|arg
 parameter_list|)
 throws|throws
-name|AccessControlException
-throws|,
 name|IOException
 block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -11425,8 +11098,7 @@ name|newScope
 argument_list|(
 literal|"restoreFailedStorage"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -11437,16 +11109,8 @@ name|arg
 argument_list|)
 return|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Refresh the hosts and exclude files.  (Rereads them.)    * See {@link ClientProtocol#refreshNodes()}     * for more details.    *     * @see ClientProtocol#refreshNodes()    */
+comment|/**    * Refresh the hosts and exclude files.  (Rereads them.)    * See {@link ClientProtocol#refreshNodes()}    * for more details.    *    * @see ClientProtocol#refreshNodes()    */
 DECL|method|refreshNodes ()
 specifier|public
 name|void
@@ -11458,8 +11122,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -11467,8 +11133,7 @@ name|newScope
 argument_list|(
 literal|"refreshNodes"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -11476,16 +11141,8 @@ name|refreshNodes
 argument_list|()
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Dumps DFS data structures into specified file.    *     * @see ClientProtocol#metaSave(String)    */
+comment|/**    * Dumps DFS data structures into specified file.    *    * @see ClientProtocol#metaSave(String)    */
 DECL|method|metaSave (String pathname)
 specifier|public
 name|void
@@ -11500,8 +11157,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -11509,8 +11168,7 @@ name|newScope
 argument_list|(
 literal|"metaSave"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -11520,16 +11178,8 @@ name|pathname
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Requests the namenode to tell all datanodes to use a new, non-persistent    * bandwidth value for dfs.balance.bandwidthPerSec.    * See {@link ClientProtocol#setBalancerBandwidth(long)}     * for more details.    *     * @see ClientProtocol#setBalancerBandwidth(long)    */
+comment|/**    * Requests the namenode to tell all datanodes to use a new, non-persistent    * bandwidth value for dfs.balance.bandwidthPerSec.    * See {@link ClientProtocol#setBalancerBandwidth(long)}    * for more details.    *    * @see ClientProtocol#setBalancerBandwidth(long)    */
 DECL|method|setBalancerBandwidth (long bandwidth)
 specifier|public
 name|void
@@ -11544,8 +11194,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -11553,8 +11205,7 @@ name|newScope
 argument_list|(
 literal|"setBalancerBandwidth"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -11562,14 +11213,6 @@ name|setBalancerBandwidth
 argument_list|(
 name|bandwidth
 argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -11585,8 +11228,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -11594,20 +11239,11 @@ name|newScope
 argument_list|(
 literal|"finalizeUpgrade"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
 name|finalizeUpgrade
-argument_list|()
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
 argument_list|()
 expr_stmt|;
 block|}
@@ -11625,8 +11261,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -11634,8 +11272,7 @@ name|newScope
 argument_list|(
 literal|"rollingUpgrade"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -11645,14 +11282,6 @@ argument_list|(
 name|action
 argument_list|)
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    */
@@ -11680,7 +11309,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a directory (or hierarchy of directories) with the given    * name and permission.    *    * @param src The path of the directory being created    * @param permission The permission of the directory being created.    * If permission == null, use {@link FsPermission#getDefault()}.    * @param createParent create missing parent directory if true    *     * @return True if the operation success.    *     * @see ClientProtocol#mkdirs(String, FsPermission, boolean)    */
+comment|/**    * Create a directory (or hierarchy of directories) with the given    * name and permission.    *    * @param src The path of the directory being created    * @param permission The permission of the directory being created.    * If permission == null, use {@link FsPermission#getDefault()}.    * @param createParent create missing parent directory if true    *    * @return True if the operation success.    *    * @see ClientProtocol#mkdirs(String, FsPermission, boolean)    */
 DECL|method|mkdirs (String src, FsPermission permission, boolean createParent)
 specifier|public
 name|boolean
@@ -11791,8 +11420,10 @@ argument_list|,
 name|absPermission
 argument_list|)
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -11800,8 +11431,7 @@ name|newScope
 argument_list|(
 literal|"mkdir"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -11873,16 +11503,8 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Get {@link ContentSummary} rooted at the specified directory.    * @param src The string representation of the path    *     * @see ClientProtocol#getContentSummary(String)    */
+comment|/**    * Get {@link ContentSummary} rooted at the specified directory.    * @param src The string representation of the path    *    * @see ClientProtocol#getContentSummary(String)    */
 DECL|method|getContentSummary (String src)
 name|ContentSummary
 name|getContentSummary
@@ -11896,8 +11518,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -11905,8 +11529,7 @@ literal|"getContentSummary"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -11941,14 +11564,6 @@ operator|.
 name|class
 argument_list|)
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Sets or resets quotas for a directory.    * @see ClientProtocol#setQuota(String, long, long, StorageType)    */
@@ -12025,8 +11640,10 @@ name|storagespaceQuota
 argument_list|)
 throw|;
 block|}
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -12034,8 +11651,7 @@ literal|"setQuota"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 comment|// Pass null as storage type for traditional namespace/storagespace quota.
 name|namenode
@@ -12092,14 +11708,6 @@ operator|.
 name|class
 argument_list|)
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Sets or resets quotas by storage type for a directory.    * @see ClientProtocol#setQuota(String, long, long, StorageType)    */
@@ -12188,8 +11796,10 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -12197,8 +11807,7 @@ literal|"setQuotaByStorageType"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -12249,16 +11858,8 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * set the modification and access time of a file    *     * @see ClientProtocol#setTimes(String, long, long)    */
+comment|/**    * set the modification and access time of a file    *    * @see ClientProtocol#setTimes(String, long, long)    */
 DECL|method|setTimes (String src, long mtime, long atime)
 specifier|public
 name|void
@@ -12279,8 +11880,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -12288,8 +11891,7 @@ literal|"setTimes"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -12331,14 +11933,6 @@ operator|.
 name|class
 argument_list|)
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * @deprecated use {@link HdfsDataInputStream} instead.    */
@@ -12531,8 +12125,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -12540,8 +12136,7 @@ literal|"modifyAclEntries"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -12594,14 +12189,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|removeAclEntries (String src, List<AclEntry> aclSpec)
 specifier|public
@@ -12623,8 +12210,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -12632,8 +12221,7 @@ name|newScope
 argument_list|(
 literal|"removeAclEntries"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -12686,14 +12274,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|removeDefaultAcl (String src)
 specifier|public
@@ -12709,8 +12289,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -12718,8 +12300,7 @@ name|newScope
 argument_list|(
 literal|"removeDefaultAcl"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -12769,14 +12350,6 @@ operator|.
 name|class
 argument_list|)
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|removeAcl (String src)
@@ -12793,8 +12366,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -12802,8 +12377,7 @@ name|newScope
 argument_list|(
 literal|"removeAcl"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -12853,14 +12427,6 @@ operator|.
 name|class
 argument_list|)
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|setAcl (String src, List<AclEntry> aclSpec)
@@ -12883,8 +12449,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -12892,8 +12460,7 @@ name|newScope
 argument_list|(
 literal|"setAcl"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -12946,14 +12513,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|getAclStatus (String src)
 specifier|public
@@ -12969,8 +12528,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -12978,8 +12539,7 @@ literal|"getAclStatus"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -13019,14 +12579,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|createEncryptionZone (String src, String keyName)
 specifier|public
@@ -13045,8 +12597,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -13054,8 +12608,7 @@ literal|"createEncryptionZone"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -13092,14 +12645,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|getEZForPath (String src)
 specifier|public
@@ -13115,8 +12660,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -13124,8 +12671,7 @@ literal|"getEZForPath"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -13156,14 +12702,6 @@ operator|.
 name|class
 argument_list|)
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|listEncryptionZones ()
@@ -13207,8 +12745,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -13216,8 +12756,7 @@ literal|"setErasureCodingPolicy"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -13254,14 +12793,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|setXAttr (String src, String name, byte[] value, EnumSet<XAttrSetFlag> flag)
 specifier|public
@@ -13290,8 +12821,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -13299,8 +12832,7 @@ literal|"setXAttr"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -13358,14 +12890,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|getXAttr (String src, String name)
 specifier|public
@@ -13385,8 +12909,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -13394,8 +12920,7 @@ literal|"getXAttr"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 specifier|final
 name|List
@@ -13461,14 +12986,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|getXAttrs (String src)
 specifier|public
@@ -13490,8 +13007,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -13499,8 +13018,7 @@ literal|"getXAttrs"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|XAttrHelper
@@ -13543,14 +13061,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|getXAttrs (String src, List<String> names)
 specifier|public
@@ -13578,8 +13088,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -13587,8 +13099,7 @@ literal|"getXAttrs"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|XAttrHelper
@@ -13636,14 +13147,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|listXAttrs (String src)
 specifier|public
@@ -13662,8 +13165,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -13671,8 +13176,7 @@ literal|"listXAttrs"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 specifier|final
 name|Map
@@ -13733,14 +13237,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|removeXAttr (String src, String name)
 specifier|public
@@ -13759,8 +13255,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -13768,8 +13266,7 @@ literal|"removeXAttr"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -13823,14 +13320,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|checkAccess (String src, FsAction mode)
 specifier|public
@@ -13849,8 +13338,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -13858,8 +13349,7 @@ literal|"checkAccess"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|namenode
 operator|.
@@ -13896,14 +13386,6 @@ name|class
 argument_list|)
 throw|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|getErasureCodingPolicies ()
 specifier|public
@@ -13917,8 +13399,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -13926,8 +13410,7 @@ name|newScope
 argument_list|(
 literal|"getErasureCodingPolicies"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -13935,14 +13418,6 @@ operator|.
 name|getErasureCodingPolicies
 argument_list|()
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|getInotifyEventStream ()
@@ -14532,8 +14007,6 @@ name|KeyProvider
 name|provider
 parameter_list|)
 block|{
-try|try
-block|{
 name|clientContext
 operator|.
 name|getKeyProviderCache
@@ -14546,23 +14019,6 @@ argument_list|,
 name|provider
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Could not set KeyProvider !!"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Probe for encryption enabled on this filesystem.    * See {@link DFSUtilClient#isHDFSEncryptionEnabled(Configuration)}    * @return true if encryption is enabled    */
 DECL|method|isHDFSEncryptionEnabled ()
@@ -14712,8 +14168,10 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|newPathTraceScope
 argument_list|(
@@ -14721,8 +14179,7 @@ literal|"getErasureCodingPolicy"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 return|return
 name|namenode
@@ -14757,14 +14214,6 @@ operator|.
 name|class
 argument_list|)
 throw|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|getTracer ()

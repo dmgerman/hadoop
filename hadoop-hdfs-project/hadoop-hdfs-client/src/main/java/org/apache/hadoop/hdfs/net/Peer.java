@@ -118,14 +118,12 @@ name|Closeable
 block|{
 comment|/**    * @return                The input stream channel associated with this    *                        peer, or null if it has none.    */
 DECL|method|getInputStreamChannel ()
-specifier|public
 name|ReadableByteChannel
 name|getInputStreamChannel
 parameter_list|()
 function_decl|;
 comment|/**    * Set the read timeout on this peer.    *    * @param timeoutMs       The timeout in milliseconds.    */
 DECL|method|setReadTimeout (int timeoutMs)
-specifier|public
 name|void
 name|setReadTimeout
 parameter_list|(
@@ -137,7 +135,6 @@ name|IOException
 function_decl|;
 comment|/**    * @return                The receive buffer size.    */
 DECL|method|getReceiveBufferSize ()
-specifier|public
 name|int
 name|getReceiveBufferSize
 parameter_list|()
@@ -146,7 +143,6 @@ name|IOException
 function_decl|;
 comment|/**    * @return                True if TCP_NODELAY is turned on.    */
 DECL|method|getTcpNoDelay ()
-specifier|public
 name|boolean
 name|getTcpNoDelay
 parameter_list|()
@@ -155,7 +151,6 @@ name|IOException
 function_decl|;
 comment|/**    * Set the write timeout on this peer.    *    * Note: this is not honored for BasicInetPeer.    * See {@link BasicInetPeer#setWriteTimeout} for details.    *    * @param timeoutMs       The timeout in milliseconds.    */
 DECL|method|setWriteTimeout (int timeoutMs)
-specifier|public
 name|void
 name|setWriteTimeout
 parameter_list|(
@@ -167,14 +162,12 @@ name|IOException
 function_decl|;
 comment|/**    * @return                true only if the peer is closed.    */
 DECL|method|isClosed ()
-specifier|public
 name|boolean
 name|isClosed
 parameter_list|()
 function_decl|;
 comment|/**    * Close the peer.    *    * It's safe to re-close a Peer that is already closed.    */
 DECL|method|close ()
-specifier|public
 name|void
 name|close
 parameter_list|()
@@ -183,21 +176,18 @@ name|IOException
 function_decl|;
 comment|/**    * @return               A string representing the remote end of our    *                       connection to the peer.    */
 DECL|method|getRemoteAddressString ()
-specifier|public
 name|String
 name|getRemoteAddressString
 parameter_list|()
 function_decl|;
 comment|/**    * @return               A string representing the local end of our    *                       connection to the peer.    */
 DECL|method|getLocalAddressString ()
-specifier|public
 name|String
 name|getLocalAddressString
 parameter_list|()
 function_decl|;
 comment|/**    * @return               An InputStream associated with the Peer.    *                       This InputStream will be valid until you close    *                       this peer with Peer#close.    */
 DECL|method|getInputStream ()
-specifier|public
 name|InputStream
 name|getInputStream
 parameter_list|()
@@ -206,7 +196,6 @@ name|IOException
 function_decl|;
 comment|/**    * @return               An OutputStream associated with the Peer.    *                       This OutputStream will be valid until you close    *                       this peer with Peer#close.    */
 DECL|method|getOutputStream ()
-specifier|public
 name|OutputStream
 name|getOutputStream
 parameter_list|()
@@ -215,21 +204,18 @@ name|IOException
 function_decl|;
 comment|/**    * @return               True if the peer resides on the same    *                       computer as we.    */
 DECL|method|isLocal ()
-specifier|public
 name|boolean
 name|isLocal
 parameter_list|()
 function_decl|;
 comment|/**    * @return               The DomainSocket associated with the current    *                       peer, or null if there is none.    */
 DECL|method|getDomainSocket ()
-specifier|public
 name|DomainSocket
 name|getDomainSocket
 parameter_list|()
 function_decl|;
 comment|/**    * Return true if the channel is secure.    *    * @return               True if our channel to this peer is not    *                       susceptible to man-in-the-middle attacks.    */
 DECL|method|hasSecureChannel ()
-specifier|public
 name|boolean
 name|hasSecureChannel
 parameter_list|()

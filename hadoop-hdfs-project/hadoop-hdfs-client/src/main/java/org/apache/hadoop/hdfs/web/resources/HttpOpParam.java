@@ -115,7 +115,6 @@ decl_stmt|;
 comment|/** Http operation types */
 DECL|enum|Type
 specifier|public
-specifier|static
 enum|enum
 name|Type
 block|{
@@ -130,52 +129,45 @@ block|,
 name|POST
 block|,
 name|DELETE
-block|;   }
+block|}
 comment|/** Http operation interface. */
 DECL|interface|Op
 specifier|public
-specifier|static
 interface|interface
 name|Op
 block|{
 comment|/** @return the Http operation type. */
 DECL|method|getType ()
-specifier|public
 name|Type
 name|getType
 parameter_list|()
 function_decl|;
 comment|/** @return true if the operation cannot use a token */
 DECL|method|getRequireAuth ()
-specifier|public
 name|boolean
 name|getRequireAuth
 parameter_list|()
 function_decl|;
 comment|/** @return true if the operation will do output. */
 DECL|method|getDoOutput ()
-specifier|public
 name|boolean
 name|getDoOutput
 parameter_list|()
 function_decl|;
 comment|/** @return true if the operation will be redirected. */
 DECL|method|getRedirect ()
-specifier|public
 name|boolean
 name|getRedirect
 parameter_list|()
 function_decl|;
 comment|/** @return true the expected http response code. */
 DECL|method|getExpectedHttpResponseCode ()
-specifier|public
 name|int
 name|getExpectedHttpResponseCode
 parameter_list|()
 function_decl|;
 comment|/** @return a URI query string. */
 DECL|method|toQueryString ()
-specifier|public
 name|String
 name|toQueryString
 parameter_list|()

@@ -202,20 +202,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|ParentNotDirectoryException
 import|;
 end_import
@@ -801,7 +787,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Number of times to retry creating a file when there are transient     * errors (typically related to encryption zones and KeyProvider operations).    */
+comment|/**    * Number of times to retry creating a file when there are transient    * errors (typically related to encryption zones and KeyProvider operations).    */
 annotation|@
 name|VisibleForTesting
 DECL|field|CREATE_RETRY_COUNT
@@ -1127,34 +1113,23 @@ operator|.
 name|length
 index|]
 decl_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
+name|System
+operator|.
+name|arraycopy
+argument_list|(
+name|currentNodes
+argument_list|,
 literal|0
-init|;
-name|i
-operator|<
+argument_list|,
+name|value
+argument_list|,
+literal|0
+argument_list|,
 name|currentNodes
 operator|.
 name|length
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|value
-index|[
-name|i
-index|]
-operator|=
-name|currentNodes
-index|[
-name|i
-index|]
+argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|value
 return|;
@@ -1230,8 +1205,6 @@ parameter_list|,
 name|DataChecksum
 name|checksum
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|super
 argument_list|(
@@ -1297,9 +1270,7 @@ name|cachingStrategy
 operator|=
 operator|new
 name|AtomicReference
-argument_list|<
-name|CachingStrategy
-argument_list|>
+argument_list|<>
 argument_list|(
 name|dfsClient
 operator|.
@@ -1433,8 +1404,6 @@ parameter_list|,
 name|boolean
 name|createStreamer
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|this
 argument_list|(
@@ -1506,7 +1475,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|newStreamForCreate (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, DataChecksum checksum, String[] favoredNodes)
+DECL|method|newStreamForCreate (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, DataChecksum checksum, String[] favoredNodes)
 specifier|static
 name|DFSOutputStream
 name|newStreamForCreate
@@ -1538,9 +1507,6 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|,
-name|int
-name|buffersize
-parameter_list|,
 name|DataChecksum
 name|checksum
 parameter_list|,
@@ -1551,8 +1517,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|dfsClient
 operator|.
@@ -1562,8 +1530,7 @@ literal|"newStreamForCreate"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|HdfsFileStatus
 name|stat
@@ -1611,9 +1578,7 @@ name|clientName
 argument_list|,
 operator|new
 name|EnumSetWritable
-argument_list|<
-name|CreateFlag
-argument_list|>
+argument_list|<>
 argument_list|(
 name|flag
 argument_list|)
@@ -1813,14 +1778,6 @@ expr_stmt|;
 return|return
 name|out
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/** Construct a new output stream for append. */
@@ -2165,7 +2122,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|newStreamForAppend (DFSClient dfsClient, String src, EnumSet<CreateFlag> flags, int bufferSize, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum, String[] favoredNodes)
+DECL|method|newStreamForAppend (DFSClient dfsClient, String src, EnumSet<CreateFlag> flags, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum, String[] favoredNodes)
 specifier|static
 name|DFSOutputStream
 name|newStreamForAppend
@@ -2181,9 +2138,6 @@ argument_list|<
 name|CreateFlag
 argument_list|>
 name|flags
-parameter_list|,
-name|int
-name|bufferSize
 parameter_list|,
 name|Progressable
 name|progress
@@ -2204,18 +2158,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|TraceScope
-name|scope
-init|=
-name|dfsClient
-operator|.
-name|newPathTraceScope
-argument_list|(
-literal|"newStreamForAppend"
-argument_list|,
-name|src
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|stat
@@ -2235,6 +2177,19 @@ argument_list|)
 throw|;
 block|}
 try|try
+init|(
+name|TraceScope
+name|ignored
+init|=
+name|dfsClient
+operator|.
+name|newPathTraceScope
+argument_list|(
+literal|"newStreamForAppend"
+argument_list|,
+name|src
+argument_list|)
+init|)
 block|{
 specifier|final
 name|DFSOutputStream
@@ -2268,14 +2223,6 @@ expr_stmt|;
 return|return
 name|out
 return|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|computePacketChunkSize (int psize, int csize)
@@ -2809,7 +2756,7 @@ literal|0
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Flushes out to all replicas of the block. The data is in the buffers    * of the DNs but not necessarily in the DN's OS buffers.    *    * It is a synchronous operation. When it returns,    * it guarantees that flushed data become visible to new readers.     * It is not guaranteed that data has been flushed to     * persistent store on the datanode.     * Block allocations are persisted on namenode.    */
+comment|/**    * Flushes out to all replicas of the block. The data is in the buffers    * of the DNs but not necessarily in the DN's OS buffers.    *    * It is a synchronous operation. When it returns,    * it guarantees that flushed data become visible to new readers.    * It is not guaranteed that data has been flushed to    * persistent store on the datanode.    * Block allocations are persisted on namenode.    */
 annotation|@
 name|Override
 DECL|method|hflush ()
@@ -2820,8 +2767,10 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|dfsClient
 operator|.
@@ -2831,8 +2780,7 @@ literal|"hflush"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|flushOrSync
 argument_list|(
@@ -2849,14 +2797,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -2868,8 +2808,10 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|dfsClient
 operator|.
@@ -2879,8 +2821,7 @@ literal|"hsync"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|flushOrSync
 argument_list|(
@@ -2897,16 +2838,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * The expected semantics is all data have flushed out to all replicas     * and all replicas have done posix fsync equivalent - ie the OS has     * flushed it to the disk device (but the disk may have it in its cache).    *    * Note that only the current block is flushed to the disk device.    * To guarantee durable sync across block boundaries the stream should    * be created with {@link CreateFlag#SYNC_BLOCK}.    *    * @param syncFlags    *          Indicate the semantic of the sync. Currently used to specify    *          whether or not to update the block length in NameNode.    */
+comment|/**    * The expected semantics is all data have flushed out to all replicas    * and all replicas have done posix fsync equivalent - ie the OS has    * flushed it to the disk device (but the disk may have it in its cache).    *    * Note that only the current block is flushed to the disk device.    * To guarantee durable sync across block boundaries the stream should    * be created with {@link CreateFlag#SYNC_BLOCK}.    *    * @param syncFlags    *          Indicate the semantic of the sync. Currently used to specify    *          whether or not to update the block length in NameNode.    */
 DECL|method|hsync (EnumSet<SyncFlag> syncFlags)
 specifier|public
 name|void
@@ -2921,8 +2854,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|dfsClient
 operator|.
@@ -2932,8 +2867,7 @@ literal|"hsync"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|flushOrSync
 argument_list|(
@@ -2941,14 +2875,6 @@ literal|true
 argument_list|,
 name|syncFlags
 argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -3420,14 +3346,14 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
-comment|// If we got an error here, it might be because some other thread called
-comment|// close before our hflush completed. In that case, we should throw an
-comment|// exception that the stream is closed.
+comment|// If we got an error here, it might be because some other thread
+comment|// called close before our hflush completed. In that case, we should
+comment|// throw an exception that the stream is closed.
 name|checkClosed
 argument_list|()
 expr_stmt|;
-comment|// If we aren't closed but failed to sync, we should expose that to the
-comment|// caller.
+comment|// If we aren't closed but failed to sync, we should expose that to
+comment|// the caller.
 throw|throw
 name|ioe
 throw|;
@@ -3463,9 +3389,9 @@ name|InterruptedIOException
 name|interrupt
 parameter_list|)
 block|{
-comment|// This kind of error doesn't mean that the stream itself is broken - just the
-comment|// flushing thread got interrupted. So, we shouldn't close down the writer,
-comment|// but instead just propagate the error
+comment|// This kind of error doesn't mean that the stream itself is broken - just
+comment|// the flushing thread got interrupted. So, we shouldn't close down the
+comment|// writer, but instead just propagate the error
 throw|throw
 name|interrupt
 throw|;
@@ -3599,7 +3525,7 @@ operator|.
 name|length
 return|;
 block|}
-comment|/**    * Waits till all existing data is flushed and confirmations     * received from datanodes.     */
+comment|/**    * Waits till all existing data is flushed and confirmations    * received from datanodes.    */
 DECL|method|flushInternal ()
 specifier|protected
 name|void
@@ -3671,7 +3597,7 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Aborts this output stream and releases any system     * resources associated with this stream.    */
+comment|/**    * Aborts this output stream and releases any system    * resources associated with this stream.    */
 DECL|method|abort ()
 specifier|synchronized
 name|void
@@ -3824,7 +3750,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Closes this output stream and releases any system     * resources associated with this stream.    */
+comment|/**    * Closes this output stream and releases any system    * resources associated with this stream.    */
 annotation|@
 name|Override
 DECL|method|close ()
@@ -3836,8 +3762,10 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|dfsClient
 operator|.
@@ -3847,18 +3775,9 @@ literal|"DFSOutputStream#close"
 argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|closeImpl
-argument_list|()
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
 argument_list|()
 expr_stmt|;
 block|}
@@ -3942,8 +3861,10 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|dfsClient
 operator|.
@@ -3954,21 +3875,12 @@ name|newScope
 argument_list|(
 literal|"completeFile"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|completeFile
 argument_list|(
 name|lastBlock
 argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 name|dfsClient
@@ -3982,7 +3894,7 @@ block|}
 catch|catch
 parameter_list|(
 name|ClosedChannelException
-name|e
+name|ignored
 parameter_list|)
 block|{     }
 finally|finally
@@ -4111,9 +4023,7 @@ name|msg
 init|=
 literal|"Unable to close file because dfsclient "
 operator|+
-literal|" was unable to contact the HDFS servers."
-operator|+
-literal|" clientRunning "
+literal|" was unable to contact the HDFS servers. clientRunning "
 operator|+
 name|dfsClient
 operator|.

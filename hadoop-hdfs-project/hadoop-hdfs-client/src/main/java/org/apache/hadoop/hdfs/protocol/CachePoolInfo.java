@@ -398,7 +398,7 @@ return|return
 name|maxRelativeExpiryMs
 return|;
 block|}
-comment|/**    * Set the maximum relative expiration of directives of this pool in    * milliseconds.    *     * @param ms in milliseconds    * @return This builder, for call chaining.    */
+comment|/**    * Set the maximum relative expiration of directives of this pool in    * milliseconds.    *    * @param ms in milliseconds    * @return This builder, for call chaining.    */
 DECL|method|setMaxRelativeExpiryMs (Long ms)
 specifier|public
 name|CachePoolInfo
@@ -425,52 +425,23 @@ name|toString
 parameter_list|()
 block|{
 return|return
-operator|new
-name|StringBuilder
-argument_list|()
-operator|.
-name|append
-argument_list|(
 literal|"{"
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|"poolName:"
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 name|poolName
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|", ownerName:"
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 name|ownerName
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|", groupName:"
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 name|groupName
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|", mode:"
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
+operator|(
 operator|(
 name|mode
 operator|==
@@ -490,35 +461,17 @@ operator|.
 name|toShort
 argument_list|()
 argument_list|)
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|)
+operator|+
 literal|", limit:"
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 name|limit
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|", maxRelativeExpiryMs:"
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 name|maxRelativeExpiryMs
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|"}"
-argument_list|)
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 annotation|@

@@ -250,20 +250,6 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
 name|erasurecode
 operator|.
 name|CodecUtil
@@ -2926,8 +2912,6 @@ parameter_list|(
 name|int
 name|index
 parameter_list|)
-throws|throws
-name|IOException
 function_decl|;
 DECL|method|decode ()
 specifier|abstract
@@ -4553,8 +4537,6 @@ parameter_list|(
 name|int
 name|index
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|Preconditions
 operator|.

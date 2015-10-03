@@ -1851,6 +1851,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Returns the configured address for all NameNodes in the cluster.    * @param conf configuration    * @param defaultAddress default address to return in case key is not found.    * @param keys Set of keys to look for in the order of preference    * @return a map(nameserviceId to map(namenodeId to InetSocketAddress))    */
+DECL|method|getAddresses ( Configuration conf, String defaultAddress, String... keys)
 specifier|static
 name|Map
 argument_list|<
@@ -1863,7 +1864,6 @@ argument_list|,
 name|InetSocketAddress
 argument_list|>
 argument_list|>
-DECL|method|getAddresses (Configuration conf, String defaultAddress, String... keys)
 name|getAddresses
 parameter_list|(
 name|Configuration
@@ -1902,6 +1902,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Returns the configured address for all NameNodes in the cluster.    * @param conf configuration    * @param defaultAddress default address to return in case key is not found.    * @param keys Set of keys to look for in the order of preference    *    * @return a map(nameserviceId to map(namenodeId to InetSocketAddress))    */
+DECL|method|getAddressesForNsIds ( Configuration conf, Collection<String> nsIds, String defaultAddress, String... keys)
 specifier|static
 name|Map
 argument_list|<
@@ -1914,7 +1915,6 @@ argument_list|,
 name|InetSocketAddress
 argument_list|>
 argument_list|>
-DECL|method|getAddressesForNsIds ( Configuration conf, Collection<String> nsIds, String defaultAddress, String... keys)
 name|getAddressesForNsIds
 parameter_list|(
 name|Configuration
@@ -2984,8 +2984,6 @@ name|IOException
 block|{
 name|Peer
 name|peer
-init|=
-literal|null
 decl_stmt|;
 name|boolean
 name|success
@@ -3065,17 +3063,7 @@ operator|!
 name|success
 condition|)
 block|{
-if|if
-condition|(
-name|peer
-operator|!=
-literal|null
-condition|)
-name|peer
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+comment|// peer is always null so no need to call peer.close().
 name|socket
 operator|.
 name|close

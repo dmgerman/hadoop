@@ -203,7 +203,6 @@ name|byte
 name|code
 decl_stmt|;
 DECL|method|Op (byte code)
-specifier|private
 name|Op
 parameter_list|(
 name|byte

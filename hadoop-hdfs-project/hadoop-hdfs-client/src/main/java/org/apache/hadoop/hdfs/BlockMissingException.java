@@ -55,7 +55,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**    * This exception is thrown when a read encounters a block that has no locations   * associated with it.   */
+comment|/**   * This exception is thrown when a read encounters a block that has no   * locations associated with it.   */
 end_comment
 
 begin_class

@@ -2993,8 +2993,6 @@ name|?
 argument_list|>
 name|json
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -3007,9 +3005,7 @@ return|return
 literal|null
 return|;
 block|}
-name|String
-name|path
-init|=
+return|return
 operator|(
 name|String
 operator|)
@@ -3019,9 +3015,6 @@ name|get
 argument_list|(
 literal|"Path"
 argument_list|)
-decl_stmt|;
-return|return
-name|path
 return|;
 block|}
 DECL|method|getXAttr (final Map<?, ?> json, final String name)

@@ -100,6 +100,16 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * An InputStream implementations which reads from some other InputStream  * but expects an exact number of bytes. Any attempts to read past the  * specified number of bytes will return as if the end of the stream  * was reached. If the end of the underlying stream is reached prior to  * the specified number of bytes, an EOFException is thrown.  */
 end_comment
@@ -125,7 +135,7 @@ specifier|private
 name|int
 name|remaining
 decl_stmt|;
-comment|/**    * Construct an input stream that will read no more than    * 'numBytes' bytes.    *     * If an EOF occurs on the underlying stream before numBytes    * bytes have been read, an EOFException will be thrown.    *     * @param in the inputstream to wrap    * @param numBytes the number of bytes to read    */
+comment|/**    * Construct an input stream that will read no more than    * 'numBytes' bytes.    *    * If an EOF occurs on the underlying stream before numBytes    * bytes have been read, an EOFException will be thrown.    *    * @param in the inputstream to wrap    * @param numBytes the number of bytes to read    */
 DECL|method|ExactSizeInputStream (InputStream in, int numBytes)
 specifier|public
 name|ExactSizeInputStream
@@ -257,11 +267,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|read (final byte[] b, final int off, int len)
+DECL|method|read (@onnull final byte[] b, final int off, int len)
 specifier|public
 name|int
 name|read
 parameter_list|(
+annotation|@
+name|Nonnull
 specifier|final
 name|byte
 index|[]

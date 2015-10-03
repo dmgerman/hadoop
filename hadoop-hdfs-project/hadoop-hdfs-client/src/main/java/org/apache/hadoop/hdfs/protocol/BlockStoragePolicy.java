@@ -339,9 +339,7 @@ name|types
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|StorageType
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|int
@@ -570,9 +568,7 @@ name|excess
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|StorageType
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -614,9 +610,7 @@ name|removed
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|StorageType
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -890,9 +884,7 @@ name|excess
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|StorageType
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|diff

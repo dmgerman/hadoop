@@ -50,7 +50,6 @@ block|{
 comment|/** Get operations. */
 DECL|enum|Op
 specifier|public
-specifier|static
 enum|enum
 name|Op
 implements|implements
@@ -358,9 +357,7 @@ name|DOMAIN
 init|=
 operator|new
 name|Domain
-argument_list|<
-name|Op
-argument_list|>
+argument_list|<>
 argument_list|(
 name|NAME
 argument_list|,

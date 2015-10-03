@@ -229,9 +229,6 @@ interface|interface
 name|DataTransferProtocol
 block|{
 DECL|field|LOG
-specifier|public
-specifier|static
-specifier|final
 name|Logger
 name|LOG
 init|=
@@ -244,20 +241,16 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/** Version for data transfers between clients and datanodes    * This should change when serialization of DatanodeInfo, not just    * when protocol changes. It is not very obvious.     */
+comment|/** Version for data transfers between clients and datanodes    * This should change when serialization of DatanodeInfo, not just    * when protocol changes. It is not very obvious.    */
 comment|/*    * Version 28:    *    Declare methods in DataTransferProtocol interface.    */
 DECL|field|DATA_TRANSFER_VERSION
-specifier|public
-specifier|static
-specifier|final
 name|int
 name|DATA_TRANSFER_VERSION
 init|=
 literal|28
 decl_stmt|;
-comment|/**     * Read a block.    *     * @param blk the block being read.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param blockOffset offset of the block.    * @param length maximum number of bytes for this read.    * @param sendChecksum if false, the DN should skip reading and sending    *        checksums    * @param cachingStrategy  The caching strategy to use.    */
+comment|/**    * Read a block.    *    * @param blk the block being read.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param blockOffset offset of the block.    * @param length maximum number of bytes for this read.    * @param sendChecksum if false, the DN should skip reading and sending    *        checksums    * @param cachingStrategy  The caching strategy to use.    */
 DECL|method|readBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final long blockOffset, final long length, final boolean sendChecksum, final CachingStrategy cachingStrategy)
-specifier|public
 name|void
 name|readBlock
 parameter_list|(
@@ -295,9 +288,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Write a block to a datanode pipeline.    * The receiver datanode of this call is the next datanode in the pipeline.    * The other downstream datanodes are specified by the targets parameter.    * Note that the receiver {@link DatanodeInfo} is not required in the    * parameter list since the receiver datanode knows its info.  However, the    * {@link StorageType} for storing the replica in the receiver datanode is a     * parameter since the receiver datanode may support multiple storage types.    *    * @param blk the block being written.    * @param storageType for storing the replica in the receiver datanode.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param targets other downstream datanodes in the pipeline.    * @param targetStorageTypes target {@link StorageType}s corresponding    *                           to the target datanodes.    * @param source source datanode.    * @param stage pipeline stage.    * @param pipelineSize the size of the pipeline.    * @param minBytesRcvd minimum number of bytes received.    * @param maxBytesRcvd maximum number of bytes received.    * @param latestGenerationStamp the latest generation stamp of the block.    * @param pinning whether to pin the block, so Balancer won't move it.    * @param targetPinnings whether to pin the block on target datanode    */
+comment|/**    * Write a block to a datanode pipeline.    * The receiver datanode of this call is the next datanode in the pipeline.    * The other downstream datanodes are specified by the targets parameter.    * Note that the receiver {@link DatanodeInfo} is not required in the    * parameter list since the receiver datanode knows its info.  However, the    * {@link StorageType} for storing the replica in the receiver datanode is a    * parameter since the receiver datanode may support multiple storage types.    *    * @param blk the block being written.    * @param storageType for storing the replica in the receiver datanode.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param targets other downstream datanodes in the pipeline.    * @param targetStorageTypes target {@link StorageType}s corresponding    *                           to the target datanodes.    * @param source source datanode.    * @param stage pipeline stage.    * @param pipelineSize the size of the pipeline.    * @param minBytesRcvd minimum number of bytes received.    * @param maxBytesRcvd maximum number of bytes received.    * @param latestGenerationStamp the latest generation stamp of the block.    * @param pinning whether to pin the block, so Balancer won't move it.    * @param targetPinnings whether to pin the block on target datanode    */
 DECL|method|writeBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, final DataChecksum requestedChecksum, final CachingStrategy cachingStrategy, final boolean allowLazyPersist, final boolean pinning, final boolean[] targetPinnings)
-specifier|public
 name|void
 name|writeBlock
 parameter_list|(
@@ -378,9 +370,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Transfer a block to another datanode.    * The block stage must be    * either {@link BlockConstructionStage#TRANSFER_RBW}    * or {@link BlockConstructionStage#TRANSFER_FINALIZED}.    *     * @param blk the block being transferred.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param targets target datanodes.    */
+comment|/**    * Transfer a block to another datanode.    * The block stage must be    * either {@link BlockConstructionStage#TRANSFER_RBW}    * or {@link BlockConstructionStage#TRANSFER_FINALIZED}.    *    * @param blk the block being transferred.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param targets target datanodes.    */
 DECL|method|transferBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes)
-specifier|public
 name|void
 name|transferBlock
 parameter_list|(
@@ -412,9 +403,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Request short circuit access file descriptors from a DataNode.    *    * @param blk             The block to get file descriptors for.    * @param blockToken      Security token for accessing the block.    * @param slotId          The shared memory slot id to use, or null     *                          to use no slot id.    * @param maxVersion      Maximum version of the block data the client     *                          can understand.    * @param supportsReceiptVerification  True if the client supports    *                          receipt verification.    */
+comment|/**    * Request short circuit access file descriptors from a DataNode.    *    * @param blk             The block to get file descriptors for.    * @param blockToken      Security token for accessing the block.    * @param slotId          The shared memory slot id to use, or null    *                          to use no slot id.    * @param maxVersion      Maximum version of the block data the client    *                          can understand.    * @param supportsReceiptVerification  True if the client supports    *                          receipt verification.    */
 DECL|method|requestShortCircuitFds (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, SlotId slotId, int maxVersion, boolean supportsReceiptVerification)
-specifier|public
 name|void
 name|requestShortCircuitFds
 parameter_list|(
@@ -443,7 +433,6 @@ name|IOException
 function_decl|;
 comment|/**    * Release a pair of short-circuit FDs requested earlier.    *    * @param slotId          SlotID used by the earlier file descriptors.    */
 DECL|method|releaseShortCircuitFds (final SlotId slotId)
-specifier|public
 name|void
 name|releaseShortCircuitFds
 parameter_list|(
@@ -454,9 +443,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Request a short circuit shared memory area from a DataNode.    *     * @param clientName       The name of the client.    */
+comment|/**    * Request a short circuit shared memory area from a DataNode.    *    * @param clientName       The name of the client.    */
 DECL|method|requestShortCircuitShm (String clientName)
-specifier|public
 name|void
 name|requestShortCircuitShm
 parameter_list|(
@@ -466,9 +454,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Receive a block from a source datanode    * and then notifies the namenode    * to remove the copy from the original datanode.    * Note that the source datanode and the original datanode can be different.    * It is used for balancing purpose.    *     * @param blk the block being replaced.    * @param storageType the {@link StorageType} for storing the block.    * @param blockToken security token for accessing the block.    * @param delHint the hint for deleting the block in the original datanode.    * @param source the source datanode for receiving the block.    */
+comment|/**    * Receive a block from a source datanode    * and then notifies the namenode    * to remove the copy from the original datanode.    * Note that the source datanode and the original datanode can be different.    * It is used for balancing purpose.    *    * @param blk the block being replaced.    * @param storageType the {@link StorageType} for storing the block.    * @param blockToken security token for accessing the block.    * @param delHint the hint for deleting the block in the original datanode.    * @param source the source datanode for receiving the block.    */
 DECL|method|replaceBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo source)
-specifier|public
 name|void
 name|replaceBlock
 parameter_list|(
@@ -498,9 +485,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Copy a block.     * It is used for balancing purpose.    *     * @param blk the block being copied.    * @param blockToken security token for accessing the block.    */
+comment|/**    * Copy a block.    * It is used for balancing purpose.    *    * @param blk the block being copied.    * @param blockToken security token for accessing the block.    */
 DECL|method|copyBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken)
-specifier|public
 name|void
 name|copyBlock
 parameter_list|(
@@ -518,9 +504,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get block checksum (MD5 of CRC32).    *     * @param blk a block.    * @param blockToken security token for accessing the block.    * @throws IOException    */
+comment|/**    * Get block checksum (MD5 of CRC32).    *    * @param blk a block.    * @param blockToken security token for accessing the block.    * @throws IOException    */
 DECL|method|blockChecksum (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken)
-specifier|public
 name|void
 name|blockChecksum
 parameter_list|(

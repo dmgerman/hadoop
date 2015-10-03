@@ -47,7 +47,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Exception indicating that DataNode does not have a replica  * that matches the target block.    */
+comment|/**  * Exception indicating that DataNode does not have a replica  * that matches the target block.  */
 end_comment
 
 begin_class
@@ -92,7 +92,9 @@ specifier|static
 name|String
 name|UNFINALIZED_AND_NONRBW_REPLICA
 init|=
-literal|"Cannot recover append/close to a replica that's not FINALIZED and not RBW "
+literal|"Cannot recover append/close to a replica that's not FINALIZED and not RBW"
+operator|+
+literal|" "
 decl_stmt|;
 DECL|field|NON_EXISTENT_REPLICA
 specifier|public

@@ -1511,7 +1511,7 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Creates an explicitly HA-enabled proxy object.    *    * @param conf the configuration object    * @param nameNodeUri the URI pointing either to a specific NameNode or to a    *        logical nameservice.    * @param xface the IPC interface which should be created    * @param failoverProxyProvider Failover proxy provider    * @return an object containing both the proxy and the associated    *         delegation token service it corresponds to    * @throws IOException    */
+comment|/**    * Creates an explicitly HA-enabled proxy object.    *    * @param conf the configuration object    * @param nameNodeUri the URI pointing either to a specific NameNode or to a    *        logical nameservice.    * @param xface the IPC interface which should be created    * @param failoverProxyProvider Failover proxy provider    * @return an object containing both the proxy and the associated    *         delegation token service it corresponds to    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1547,8 +1547,6 @@ name|T
 argument_list|>
 name|failoverProxyProvider
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|Preconditions
 operator|.

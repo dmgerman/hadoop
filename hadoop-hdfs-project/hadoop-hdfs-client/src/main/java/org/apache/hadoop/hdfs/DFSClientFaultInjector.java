@@ -59,7 +59,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Used for injecting faults in DFSClient and DFSOutputStream tests.  * Calls into this are a no-op in production code.   */
+comment|/**  * Used for injecting faults in DFSClient and DFSOutputStream tests.  * Calls into this are a no-op in production code.  */
 end_comment
 
 begin_class

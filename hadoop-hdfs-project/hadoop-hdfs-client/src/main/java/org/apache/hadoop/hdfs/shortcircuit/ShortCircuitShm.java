@@ -284,6 +284,16 @@ name|Ints
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * A shared memory segment used to implement short-circuit reads.  */
 end_comment
@@ -485,7 +495,7 @@ specifier|final
 name|long
 name|lo
 decl_stmt|;
-comment|/**      * Generate a random ShmId.      *       * We generate ShmIds randomly to prevent a malicious client from      * successfully guessing one and using that to interfere with another      * client.      */
+comment|/**      * Generate a random ShmId.      *      * We generate ShmIds randomly to prevent a malicious client from      * successfully guessing one and using that to interfere with another      * client.      */
 DECL|method|createRandom ()
 specifier|public
 specifier|static
@@ -678,11 +688,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|compareTo (ShmId other)
+DECL|method|compareTo (@onnull ShmId other)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
+annotation|@
+name|Nonnull
 name|ShmId
 name|other
 parameter_list|)
@@ -716,7 +728,6 @@ argument_list|()
 return|;
 block|}
 block|}
-empty_stmt|;
 comment|/**    * Uniquely identifies a slot.    */
 DECL|class|SlotId
 specifier|public
@@ -1032,7 +1043,7 @@ specifier|public
 class|class
 name|Slot
 block|{
-comment|/**      * Flag indicating that the slot is valid.        *       * The DFSClient sets this flag when it allocates a new slot within one of      * its shared memory regions.      *       * The DataNode clears this flag when the replica associated with this slot      * is no longer valid.  The client itself also clears this flag when it      * believes that the DataNode is no longer using this slot to communicate.      */
+comment|/**      * Flag indicating that the slot is valid.      *      * The DFSClient sets this flag when it allocates a new slot within one of      * its shared memory regions.      *      * The DataNode clears this flag when the replica associated with this slot      * is no longer valid.  The client itself also clears this flag when it      * believes that the DataNode is no longer using this slot to communicate.      */
 DECL|field|VALID_FLAG
 specifier|private
 specifier|static
@@ -1434,23 +1445,16 @@ operator|.
 name|slotAddress
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+comment|// Slot is no longer valid.
+return|return
 operator|(
 name|prev
 operator|&
 name|VALID_FLAG
 operator|)
-operator|==
+operator|!=
 literal|0
-condition|)
-block|{
-comment|// Slot is no longer valid.
-return|return
-literal|false
-return|;
-block|}
-return|return
+operator|&&
 operator|(
 operator|(
 name|prev
@@ -1689,7 +1693,7 @@ specifier|final
 name|BitSet
 name|allocatedSlots
 decl_stmt|;
-comment|/**    * Create the ShortCircuitShm.    *     * @param shmId       The ID to use.    * @param stream      The stream that we're going to use to create this     *                    shared memory segment.    *                        *                    Although this is a FileInputStream, we are going to    *                    assume that the underlying file descriptor is writable    *                    as well as readable. It would be more appropriate to use    *                    a RandomAccessFile here, but that class does not have    *                    any public accessor which returns a FileDescriptor,    *                    unlike FileInputStream.    */
+comment|/**    * Create the ShortCircuitShm.    *    * @param shmId       The ID to use.    * @param stream      The stream that we're going to use to create this    *                    shared memory segment.    *    *                    Although this is a FileInputStream, we are going to    *                    assume that the underlying file descriptor is writable    *                    as well as readable. It would be more appropriate to use    *                    a RandomAccessFile here, but that class does not have    *                    any public accessor which returns a FileDescriptor,    *                    unlike FileInputStream.    */
 DECL|method|ShortCircuitShm (ShmId shmId, FileInputStream stream)
 specifier|public
 name|ShortCircuitShm
@@ -1909,7 +1913,6 @@ block|}
 comment|/**    * Calculate the base address of a slot.    *    * @param slotIdx   Index of the slot.    * @return          The base address of the slot.    */
 DECL|method|calculateSlotAddress (int slotIdx)
 specifier|private
-specifier|final
 name|long
 name|calculateSlotAddress
 parameter_list|(
@@ -2098,7 +2101,7 @@ name|slotIdx
 index|]
 return|;
 block|}
-comment|/**    * Register a slot.    *    * This function looks at a slot which has already been initialized (by    * another process), and registers it with us.  Then, it returns the     * relevant Slot object.    *    * @return    The slot.    *    * @throws InvalidRequestException    *            If the slot index we're trying to allocate has not been    *            initialized, or is already in use.    */
+comment|/**    * Register a slot.    *    * This function looks at a slot which has already been initialized (by    * another process), and registers it with us.  Then, it returns the    * relevant Slot object.    *    * @return    The slot.    *    * @throws InvalidRequestException    *            If the slot index we're trying to allocate has not been    *            initialized, or is already in use.    */
 DECL|method|registerSlot (int slotIdx, ExtendedBlockId blockId)
 specifier|synchronized
 specifier|public
@@ -2274,7 +2277,7 @@ return|return
 name|slot
 return|;
 block|}
-comment|/**    * Unregisters a slot.    *     * This doesn't alter the contents of the slot.  It just means    *    * @param slotIdx  Index of the slot to unregister.    */
+comment|/**    * Unregisters a slot.    *    * This doesn't alter the contents of the slot.  It just means    *    * @param slotIdx  Index of the slot to unregister.    */
 DECL|method|unregisterSlot (int slotIdx)
 specifier|synchronized
 specifier|public
@@ -2332,7 +2335,7 @@ name|slotIdx
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Iterate over all allocated slots.    *     * Note that this method isn't safe if     *    * @return        The slot iterator.    */
+comment|/**    * Iterate over all allocated slots.    *    * Note that this method isn't safe if    *    * @return        The slot iterator.    */
 DECL|method|slotIterator ()
 specifier|public
 name|SlotIterator

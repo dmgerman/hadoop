@@ -191,7 +191,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * ClientContext contains context information for a client.  *   * This allows us to share caches such as the socket cache across  * DFSClient instances.  */
+comment|/**  * ClientContext contains context information for a client.  *  * This allows us to share caches such as the socket cache across  * DFSClient instances.  */
 end_comment
 
 begin_class
@@ -235,11 +235,7 @@ name|CACHES
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|ClientContext
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * Name of context.    */

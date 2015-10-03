@@ -200,7 +200,7 @@ operator|!=
 literal|0
 return|;
 block|}
-comment|/**    * Finalize the upgrade if not already finalized    * @param finalizeTime    */
+comment|/**    * Finalize the upgrade if not already finalized    */
 DECL|method|finalize (long finalizeTime)
 specifier|public
 name|void

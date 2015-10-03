@@ -91,7 +91,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Represents a peer that we communicate with by using blocking I/O   * on a UNIX domain socket.  */
+comment|/**  * Represents a peer that we communicate with by using blocking I/O  * on a UNIX domain socket.  */
 end_comment
 
 begin_class

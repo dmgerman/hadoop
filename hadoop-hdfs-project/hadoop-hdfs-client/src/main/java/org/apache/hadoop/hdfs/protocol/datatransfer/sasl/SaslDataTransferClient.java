@@ -1039,7 +1039,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"SASL client doing encrypted handshake for addr = {}, datanodeId = {}"
+literal|"SASL client doing encrypted handshake for addr = {}, "
+operator|+
+literal|"datanodeId = {}"
 argument_list|,
 name|addr
 argument_list|,
@@ -1174,8 +1176,6 @@ argument_list|,
 name|underlyingIn
 argument_list|,
 name|accessToken
-argument_list|,
-name|datanodeId
 argument_list|)
 return|;
 block|}
@@ -1183,14 +1183,14 @@ else|else
 block|{
 comment|// It's a secured cluster using non-privileged ports, but no SASL.  The
 comment|// only way this can happen is if the DataNode has
-comment|// ignore.secure.ports.for.testing configured, so this is a rare edge case.
+comment|// ignore.secure.ports.for.testing configured so this is a rare edge case.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"SASL client skipping handshake in secured configuration with no SASL "
+literal|"SASL client skipping handshake in secured configuration with "
 operator|+
-literal|"protection configured for addr = {}, datanodeId = {}"
+literal|"no SASL protection configured for addr = {}, datanodeId = {}"
 argument_list|,
 name|addr
 argument_list|,
@@ -1291,7 +1291,7 @@ name|callbackHandler
 argument_list|)
 return|;
 block|}
-comment|/**    * The SASL username for an encrypted handshake consists of the keyId,    * blockPoolId, and nonce with the first two encoded as Strings, and the third    * encoded using Base64. The fields are each separated by a single space.    *     * @param encryptionKey the encryption key to encode as a SASL username.    * @return encoded username containing keyId, blockPoolId, and nonce    */
+comment|/**    * The SASL username for an encrypted handshake consists of the keyId,    * blockPoolId, and nonce with the first two encoded as Strings, and the third    * encoded using Base64. The fields are each separated by a single space.    *    * @param encryptionKey the encryption key to encode as a SASL username.    * @return encoded username containing keyId, blockPoolId, and nonce    */
 DECL|method|getUserNameFromEncryptionKey ( DataEncryptionKey encryptionKey)
 specifier|private
 specifier|static
@@ -1358,7 +1358,7 @@ specifier|final
 name|String
 name|userName
 decl_stmt|;
-comment|/**      * Creates a new SaslClientCallbackHandler.      *      * @param userName SASL user name      * @Param password SASL password      */
+comment|/**      * Creates a new SaslClientCallbackHandler.      *      * @param userName SASL user name      * @param password SASL password      */
 DECL|method|SaslClientCallbackHandler (String userName, char[] password)
 specifier|public
 name|SaslClientCallbackHandler
@@ -1427,16 +1427,6 @@ if|if
 condition|(
 name|callback
 operator|instanceof
-name|RealmChoiceCallback
-condition|)
-block|{
-continue|continue;
-block|}
-elseif|else
-if|if
-condition|(
-name|callback
-operator|instanceof
 name|NameCallback
 condition|)
 block|{
@@ -1480,7 +1470,16 @@ operator|)
 name|callback
 expr_stmt|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+operator|!
+operator|(
+name|callback
+operator|instanceof
+name|RealmChoiceCallback
+operator|)
+condition|)
 block|{
 throw|throw
 operator|new
@@ -1543,8 +1542,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Sends client SASL negotiation for general-purpose handshake.    *    * @param addr connection address    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param accessToken connection block access token    * @param datanodeId ID of destination DataNode    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
-DECL|method|getSaslStreams (InetAddress addr, OutputStream underlyingOut, InputStream underlyingIn, Token<BlockTokenIdentifier> accessToken, DatanodeID datanodeId)
+comment|/**    * Sends client SASL negotiation for general-purpose handshake.    *    * @param addr connection address    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param accessToken connection block access token    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
+DECL|method|getSaslStreams (InetAddress addr, OutputStream underlyingOut, InputStream underlyingIn, Token<BlockTokenIdentifier> accessToken)
 specifier|private
 name|IOStreamPair
 name|getSaslStreams
@@ -1563,9 +1562,6 @@ argument_list|<
 name|BlockTokenIdentifier
 argument_list|>
 name|accessToken
-parameter_list|,
-name|DatanodeID
-name|datanodeId
 parameter_list|)
 throws|throws
 name|IOException

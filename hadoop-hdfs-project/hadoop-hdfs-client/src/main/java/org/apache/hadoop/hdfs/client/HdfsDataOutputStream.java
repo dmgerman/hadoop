@@ -194,7 +194,7 @@ name|startPosition
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|HdfsDataOutputStream (DFSOutputStream out, FileSystem.Statistics stats )
+DECL|method|HdfsDataOutputStream (DFSOutputStream out, FileSystem.Statistics stats)
 specifier|public
 name|HdfsDataOutputStream
 parameter_list|(
@@ -286,7 +286,7 @@ literal|0L
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the actual number of replicas of the current block.    *     * This can be different from the designated replication factor of the file    * because the namenode does not maintain replication for the blocks which are    * currently being written to. Depending on the configuration, the client may    * continue to write to a block even if a few datanodes in the write pipeline    * have failed, or the client may add a new datanodes once a datanode has    * failed.    *     * @return the number of valid replicas of the current block    */
+comment|/**    * Get the actual number of replicas of the current block.    *    * This can be different from the designated replication factor of the file    * because the namenode does not maintain replication for the blocks which are    * currently being written to. Depending on the configuration, the client may    * continue to write to a block even if a few datanodes in the write pipeline    * have failed, or the client may add a new datanodes once a datanode has    * failed.    *    * @return the number of valid replicas of the current block    */
 DECL|method|getCurrentBlockReplication ()
 specifier|public
 specifier|synchronized
@@ -334,7 +334,7 @@ name|getCurrentBlockReplication
 argument_list|()
 return|;
 block|}
-comment|/**    * Sync buffered data to DataNodes (flush to disk devices).    *     * @param syncFlags    *          Indicate the detailed semantic and actions of the hsync.    * @throws IOException    * @see FSDataOutputStream#hsync()    */
+comment|/**    * Sync buffered data to DataNodes (flush to disk devices).    *    * @param syncFlags    *          Indicate the detailed semantic and actions of the hsync.    * @throws IOException    * @see FSDataOutputStream#hsync()    */
 DECL|method|hsync (EnumSet<SyncFlag> syncFlags)
 specifier|public
 name|void
@@ -362,12 +362,7 @@ operator|instanceof
 name|CryptoOutputStream
 condition|)
 block|{
-operator|(
-operator|(
-name|CryptoOutputStream
-operator|)
 name|wrappedStream
-operator|)
 operator|.
 name|flush
 argument_list|()
@@ -400,7 +395,6 @@ expr_stmt|;
 block|}
 DECL|enum|SyncFlag
 specifier|public
-specifier|static
 enum|enum
 name|SyncFlag
 block|{
@@ -411,7 +405,7 @@ block|,
 comment|/**      * Sync the data to DataNode, close the current block, and allocate a new      * block      */
 DECL|enumConstant|END_BLOCK
 name|END_BLOCK
-block|;   }
+block|}
 block|}
 end_class
 

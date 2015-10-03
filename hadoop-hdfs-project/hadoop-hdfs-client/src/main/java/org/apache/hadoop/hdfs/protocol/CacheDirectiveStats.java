@@ -95,7 +95,7 @@ specifier|private
 name|boolean
 name|hasExpired
 decl_stmt|;
-comment|/**      * Builds a new CacheDirectiveStats populated with the set properties.      *       * @return New CacheDirectiveStats.      */
+comment|/**      * Builds a new CacheDirectiveStats populated with the set properties.      *      * @return New CacheDirectiveStats.      */
 DECL|method|build ()
 specifier|public
 name|CacheDirectiveStats
@@ -124,7 +124,7 @@ specifier|public
 name|Builder
 parameter_list|()
 block|{     }
-comment|/**      * Sets the bytes needed by this directive.      *       * @param bytesNeeded The bytes needed.      * @return This builder, for call chaining.      */
+comment|/**      * Sets the bytes needed by this directive.      *      * @param bytesNeeded The bytes needed.      * @return This builder, for call chaining.      */
 DECL|method|setBytesNeeded (long bytesNeeded)
 specifier|public
 name|Builder
@@ -144,7 +144,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the bytes cached by this directive.      *       * @param bytesCached The bytes cached.      * @return This builder, for call chaining.      */
+comment|/**      * Sets the bytes cached by this directive.      *      * @param bytesCached The bytes cached.      * @return This builder, for call chaining.      */
 DECL|method|setBytesCached (long bytesCached)
 specifier|public
 name|Builder
@@ -184,7 +184,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the files cached by this directive.      *       * @param filesCached The number of files cached.      * @return This builder, for call chaining.      */
+comment|/**      * Sets the files cached by this directive.      *      * @param filesCached The number of files cached.      * @return This builder, for call chaining.      */
 DECL|method|setFilesCached (long filesCached)
 specifier|public
 name|Builder
@@ -204,7 +204,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets whether this directive has expired.      *       * @param hasExpired if this directive has expired      * @return This builder, for call chaining.      */
+comment|/**      * Sets whether this directive has expired.      *      * @param hasExpired if this directive has expired      * @return This builder, for call chaining.      */
 DECL|method|setHasExpired (boolean hasExpired)
 specifier|public
 name|Builder
@@ -369,120 +369,42 @@ name|String
 name|toString
 parameter_list|()
 block|{
-name|StringBuilder
-name|builder
-init|=
-operator|new
-name|StringBuilder
-argument_list|()
-decl_stmt|;
-name|builder
-operator|.
-name|append
-argument_list|(
-literal|"{"
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
-name|append
-argument_list|(
-literal|"bytesNeeded: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|bytesNeeded
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
-name|append
-argument_list|(
-literal|", "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"bytesCached: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|bytesCached
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
-name|append
-argument_list|(
-literal|", "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"filesNeeded: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|filesNeeded
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
-name|append
-argument_list|(
-literal|", "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"filesCached: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|filesCached
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
-name|append
-argument_list|(
-literal|", "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"hasExpired: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|hasExpired
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
-name|append
-argument_list|(
-literal|"}"
-argument_list|)
-expr_stmt|;
 return|return
-name|builder
-operator|.
-name|toString
-argument_list|()
+literal|"{"
+operator|+
+literal|"bytesNeeded: "
+operator|+
+name|bytesNeeded
+operator|+
+literal|", "
+operator|+
+literal|"bytesCached: "
+operator|+
+name|bytesCached
+operator|+
+literal|", "
+operator|+
+literal|"filesNeeded: "
+operator|+
+name|filesNeeded
+operator|+
+literal|", "
+operator|+
+literal|"filesCached: "
+operator|+
+name|filesCached
+operator|+
+literal|", "
+operator|+
+literal|"hasExpired: "
+operator|+
+name|hasExpired
+operator|+
+literal|"}"
 return|;
 block|}
 block|}
 end_class
-
-begin_empty_stmt
-empty_stmt|;
-end_empty_stmt
 
 end_unit
 

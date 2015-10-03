@@ -232,11 +232,8 @@ specifier|public
 interface|interface
 name|ClientDatanodeProtocol
 block|{
-comment|/**    * Until version 9, this class ClientDatanodeProtocol served as both    * the client interface to the DN AND the RPC protocol used to     * communicate with the NN.    *     * This class is used by both the DFSClient and the     * DN server side to insulate from the protocol serialization.    *     * If you are adding/changing DN's interface then you need to     * change both this class and ALSO related protocol buffer    * wire protocol definition in ClientDatanodeProtocol.proto.    *     * For more details on protocol buffer wire protocol, please see     * .../org/apache/hadoop/hdfs/protocolPB/overview.html    *     * The log of historical changes can be retrieved from the svn).    * 9: Added deleteBlockPool method    *     * 9 is the last version id when this class was used for protocols    *  serialization. DO not update this version any further.     */
+comment|/**    * Until version 9, this class ClientDatanodeProtocol served as both    * the client interface to the DN AND the RPC protocol used to    * communicate with the NN.    *    * This class is used by both the DFSClient and the    * DN server side to insulate from the protocol serialization.    *    * If you are adding/changing DN's interface then you need to    * change both this class and ALSO related protocol buffer    * wire protocol definition in ClientDatanodeProtocol.proto.    *    * For more details on protocol buffer wire protocol, please see    * .../org/apache/hadoop/hdfs/protocolPB/overview.html    *    * The log of historical changes can be retrieved from the svn).    * 9: Added deleteBlockPool method    *    * 9 is the last version id when this class was used for protocols    *  serialization. DO not update this version any further.    */
 DECL|field|versionID
-specifier|public
-specifier|static
-specifier|final
 name|long
 name|versionID
 init|=
@@ -253,7 +250,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Refresh the list of federated namenodes from updated configuration    * Adds new namenodes and stops the deleted namenodes.    *     * @throws IOException on error    **/
+comment|/**    * Refresh the list of federated namenodes from updated configuration    * Adds new namenodes and stops the deleted namenodes.    *    * @throws IOException on error    **/
 DECL|method|refreshNamenodes ()
 name|void
 name|refreshNamenodes
@@ -261,7 +258,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delete the block pool directory. If force is false it is deleted only if    * it is empty, otherwise it is deleted along with its contents.    *     * @param bpid Blockpool id to be deleted.    * @param force If false blockpool directory is deleted only if it is empty     *          i.e. if it doesn't contain any block files, otherwise it is     *          deleted along with its contents.    * @throws IOException    */
+comment|/**    * Delete the block pool directory. If force is false it is deleted only if    * it is empty, otherwise it is deleted along with its contents.    *    * @param bpid Blockpool id to be deleted.    * @param force If false blockpool directory is deleted only if it is empty    *          i.e. if it doesn't contain any block files, otherwise it is    *          deleted along with its contents.    * @throws IOException    */
 DECL|method|deleteBlockPool (String bpid, boolean force)
 name|void
 name|deleteBlockPool
@@ -275,7 +272,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Retrieves the path names of the block file and metadata file stored on the    * local file system.    *     * In order for this method to work, one of the following should be satisfied:    *<ul>    *<li>    * The client user must be configured at the datanode to be able to use this    * method.</li>    *<li>    * When security is enabled, kerberos authentication must be used to connect    * to the datanode.</li>    *</ul>    *     * @param block    *          the specified block on the local datanode    * @param token    *          the block access token.    * @return the BlockLocalPathInfo of a block    * @throws IOException    *           on error    */
+comment|/**    * Retrieves the path names of the block file and metadata file stored on the    * local file system.    *    * In order for this method to work, one of the following should be satisfied:    *<ul>    *<li>    * The client user must be configured at the datanode to be able to use this    * method.</li>    *<li>    * When security is enabled, kerberos authentication must be used to connect    * to the datanode.</li>    *</ul>    *    * @param block    *          the specified block on the local datanode    * @param token    *          the block access token.    * @return the BlockLocalPathInfo of a block    * @throws IOException    *           on error    */
 DECL|method|getBlockLocalPathInfo (ExtendedBlock block, Token<BlockTokenIdentifier> token)
 name|BlockLocalPathInfo
 name|getBlockLocalPathInfo
@@ -292,7 +289,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Shuts down a datanode.    *    * @param forUpgrade If true, data node does extra prep work before shutting    *          down. The work includes advising clients to wait and saving    *          certain states for quick restart. This should only be used when    *          the stored data will remain the same during upgrade/restart.    * @throws IOException     */
+comment|/**    * Shuts down a datanode.    *    * @param forUpgrade If true, data node does extra prep work before shutting    *          down. The work includes advising clients to wait and saving    *          certain states for quick restart. This should only be used when    *          the stored data will remain the same during upgrade/restart.    * @throws IOException    */
 DECL|method|shutdownDatanode (boolean forUpgrade)
 name|void
 name|shutdownDatanode

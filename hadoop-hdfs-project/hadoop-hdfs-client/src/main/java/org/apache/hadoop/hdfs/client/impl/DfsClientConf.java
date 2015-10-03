@@ -1062,16 +1062,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|lang
-operator|.
-name|Class
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -1938,8 +1928,8 @@ name|conf
 parameter_list|)
 block|{
 name|String
-name|classNames
 index|[]
+name|classNames
 init|=
 name|conf
 operator|.

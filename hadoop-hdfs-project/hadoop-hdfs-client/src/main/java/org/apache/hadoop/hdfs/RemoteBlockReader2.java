@@ -767,8 +767,10 @@ operator|>
 literal|0
 condition|)
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -780,18 +782,9 @@ name|blockId
 operator|+
 literal|")"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|readNextPacket
-argument_list|()
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
 argument_list|()
 expr_stmt|;
 block|}
@@ -871,6 +864,7 @@ name|curDataSlice
 operator|==
 literal|null
 operator|||
+operator|(
 name|curDataSlice
 operator|.
 name|remaining
@@ -881,10 +875,13 @@ operator|&&
 name|bytesNeededToFinish
 operator|>
 literal|0
+operator|)
 condition|)
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -896,18 +893,9 @@ name|blockId
 operator|+
 literal|")"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|readNextPacket
-argument_list|()
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
 argument_list|()
 expr_stmt|;
 block|}
@@ -1406,15 +1394,12 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|RemoteBlockReader2 (String file, String bpid, long blockId, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache, Tracer tracer)
+DECL|method|RemoteBlockReader2 (String file, long blockId, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache, Tracer tracer)
 specifier|protected
 name|RemoteBlockReader2
 parameter_list|(
 name|String
 name|file
-parameter_list|,
-name|String
-name|bpid
 parameter_list|,
 name|long
 name|blockId
@@ -2045,11 +2030,6 @@ name|file
 argument_list|,
 name|block
 operator|.
-name|getBlockPoolId
-argument_list|()
-argument_list|,
-name|block
-operator|.
 name|getBlockId
 argument_list|()
 argument_list|,
@@ -2154,8 +2134,6 @@ specifier|public
 name|int
 name|available
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 comment|// An optimistic estimate of how much data is available
 comment|// to us without doing network I/O.

@@ -325,7 +325,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * BlockReaderLocal enables local short circuited reads. If the DFS client is on  * the same machine as the datanode, then the client can read files directly  * from the local file system rather than going through the datanode for better  * performance.<br>  * {@link BlockReaderLocal} works as follows:  *<ul>  *<li>The client performing short circuit reads must be configured at the  * datanode.</li>  *<li>The client gets the file descriptors for the metadata file and the data   * file for the block using  * {@link org.apache.hadoop.hdfs.server.datanode.DataXceiver#requestShortCircuitFds}.  *</li>  *<li>The client reads the file descriptors.</li>  *</ul>  */
+comment|/**  * BlockReaderLocal enables local short circuited reads. If the DFS client is on  * the same machine as the datanode, then the client can read files directly  * from the local file system rather than going through the datanode for better  * performance.<br>  * {@link BlockReaderLocal} works as follows:  *<ul>  *<li>The client performing short circuit reads must be configured at the  * datanode.</li>  *<li>The client gets the file descriptors for the metadata file and the data  * file for the block using  * {@link org.apache.hadoop.hdfs.server.datanode.DataXceiver#requestShortCircuitFds}.  *</li>  *<li>The client reads the file descriptors.</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -755,7 +755,7 @@ specifier|final
 name|boolean
 name|zeroReadaheadRequested
 decl_stmt|;
-comment|/**    * Maximum amount of readahead we'll do.  This will always be at least the,    * size of a single chunk, even if {@link #zeroReadaheadRequested} is true.    * The reason is because we need to do a certain amount of buffering in order    * to do checksumming.    *     * This determines how many bytes we'll use out of dataBuf and checksumBuf.    * Why do we allocate buffers, and then (potentially) only use part of them?    * The rationale is that allocating a lot of buffers of different sizes would    * make it very difficult for the DirectBufferPool to re-use buffers.     */
+comment|/**    * Maximum amount of readahead we'll do.  This will always be at least the,    * size of a single chunk, even if {@link #zeroReadaheadRequested} is true.    * The reason is because we need to do a certain amount of buffering in order    * to do checksumming.    *    * This determines how many bytes we'll use out of dataBuf and checksumBuf.    * Why do we allocate buffers, and then (potentially) only use part of them?    * The rationale is that allocating a lot of buffers of different sizes would    * make it very difficult for the DirectBufferPool to re-use buffers.    */
 DECL|field|maxReadaheadLength
 specifier|private
 specifier|final
@@ -1301,8 +1301,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|TraceScope
-name|scope
+name|ignored
 init|=
 name|tracer
 operator|.
@@ -1317,8 +1319,7 @@ argument_list|()
 operator|+
 literal|")"
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|int
 name|total
@@ -1501,9 +1502,7 @@ literal|", block file position "
 operator|+
 name|startDataPos
 operator|+
-literal|" for "
-operator|+
-literal|"block "
+literal|" for block "
 operator|+
 name|block
 operator|+
@@ -1555,14 +1554,6 @@ return|return
 name|total
 return|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|createNoChecksumContext ()
 specifier|private
@@ -1570,13 +1561,14 @@ name|boolean
 name|createNoChecksumContext
 parameter_list|()
 block|{
-if|if
-condition|(
+return|return
+operator|!
 name|verifyChecksum
-condition|)
-block|{
-if|if
-condition|(
+operator|||
+comment|// Checksums are not stored for replicas on transient storage.  We do
+comment|// not anchor, because we do not intend for client activity to block
+comment|// eviction from transient storage on the DataNode side.
+operator|(
 name|storageType
 operator|!=
 literal|null
@@ -1585,31 +1577,13 @@ name|storageType
 operator|.
 name|isTransient
 argument_list|()
-condition|)
-block|{
-comment|// Checksums are not stored for replicas on transient storage.  We do not
-comment|// anchor, because we do not intend for client activity to block eviction
-comment|// from transient storage on the DataNode side.
-return|return
-literal|true
-return|;
-block|}
-else|else
-block|{
-return|return
+operator|)
+operator|||
 name|replica
 operator|.
 name|addNoChecksumAnchor
 argument_list|()
 return|;
-block|}
-block|}
-else|else
-block|{
-return|return
-literal|true
-return|;
-block|}
 block|}
 DECL|method|releaseNoChecksumContext ()
 specifier|private
@@ -1875,7 +1849,7 @@ else|:
 name|total
 return|;
 block|}
-comment|/**    * Fill the data buffer.  If necessary, validate the data against the    * checksums.    *     * We always want the offsets of the data contained in dataBuf to be    * aligned to the chunk boundary.  If we are validating checksums, we    * accomplish this by seeking backwards in the file until we're on a    * chunk boundary.  (This is necessary because we can't checksum a    * partial chunk.)  If we are not validating checksums, we simply only    * fill the latter part of dataBuf.    *     * @param canSkipChecksum  true if we can skip checksumming.    * @return                 true if we hit EOF.    * @throws IOException    */
+comment|/**    * Fill the data buffer.  If necessary, validate the data against the    * checksums.    *    * We always want the offsets of the data contained in dataBuf to be    * aligned to the chunk boundary.  If we are validating checksums, we    * accomplish this by seeking backwards in the file until we're on a    * chunk boundary.  (This is necessary because we can't checksum a    * partial chunk.)  If we are not validating checksums, we simply only    * fill the latter part of dataBuf.    *    * @param canSkipChecksum  true if we can skip checksumming.    * @return                 true if we hit EOF.    * @throws IOException    */
 DECL|method|fillDataBuf (boolean canSkipChecksum)
 specifier|private
 specifier|synchronized
@@ -1933,7 +1907,7 @@ name|fillBuffer
 argument_list|(
 name|dataBuf
 argument_list|,
-name|canSkipChecksum
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -1954,7 +1928,7 @@ name|fillBuffer
 argument_list|(
 name|dataBuf
 argument_list|,
-name|canSkipChecksum
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -2010,7 +1984,7 @@ operator|!=
 name|maxReadaheadLength
 return|;
 block|}
-comment|/**    * Read using the bounce buffer.    *    * A 'direct' read actually has three phases. The first drains any    * remaining bytes from the slow read buffer. After this the read is    * guaranteed to be on a checksum chunk boundary. If there are still bytes    * to read, the fast direct path is used for as many remaining bytes as    * possible, up to a multiple of the checksum chunk size. Finally, any    * 'odd' bytes remaining at the end of the read cause another slow read to    * be issued, which involves an extra copy.    *    * Every 'slow' read tries to fill the slow read buffer in one go for    * efficiency's sake. As described above, all non-checksum-chunk-aligned    * reads will be served from the slower read path.    *    * @param buf              The buffer to read into.     * @param canSkipChecksum  True if we can skip checksums.    */
+comment|/**    * Read using the bounce buffer.    *    * A 'direct' read actually has three phases. The first drains any    * remaining bytes from the slow read buffer. After this the read is    * guaranteed to be on a checksum chunk boundary. If there are still bytes    * to read, the fast direct path is used for as many remaining bytes as    * possible, up to a multiple of the checksum chunk size. Finally, any    * 'odd' bytes remaining at the end of the read cause another slow read to    * be issued, which involves an extra copy.    *    * Every 'slow' read tries to fill the slow read buffer in one go for    * efficiency's sake. As described above, all non-checksum-chunk-aligned    * reads will be served from the slower read path.    *    * @param buf              The buffer to read into.    * @param canSkipChecksum  True if we can skip checksums.    */
 DECL|method|readWithBounceBuffer (ByteBuffer buf, boolean canSkipChecksum)
 specifier|private
 specifier|synchronized
@@ -2717,8 +2691,6 @@ specifier|public
 name|int
 name|available
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 comment|// We never do network I/O in BlockReaderLocal.
 return|return
@@ -2865,7 +2837,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Get or create a memory map for this replica.    *     * There are two kinds of ClientMmap objects we could fetch here: one that     * will always read pre-checksummed data, and one that may read data that    * hasn't been checksummed.    *    * If we fetch the former, "safe" kind of ClientMmap, we have to increment    * the anchor count on the shared memory slot.  This will tell the DataNode    * not to munlock the block until this ClientMmap is closed.    * If we fetch the latter, we don't bother with anchoring.    *    * @param opts     The options to use, such as SKIP_CHECKSUMS.    *     * @return         null on failure; the ClientMmap otherwise.    */
+comment|/**    * Get or create a memory map for this replica.    *    * There are two kinds of ClientMmap objects we could fetch here: one that    * will always read pre-checksummed data, and one that may read data that    * hasn't been checksummed.    *    * If we fetch the former, "safe" kind of ClientMmap, we have to increment    * the anchor count on the shared memory slot.  This will tell the DataNode    * not to munlock the block until this ClientMmap is closed.    * If we fetch the latter, we don't bother with anchoring.    *    * @param opts     The options to use, such as SKIP_CHECKSUMS.    *    * @return         null on failure; the ClientMmap otherwise.    */
 annotation|@
 name|Override
 DECL|method|getClientMmap (EnumSet<ReadOption> opts)
@@ -2885,7 +2857,7 @@ name|anchor
 init|=
 name|verifyChecksum
 operator|&&
-operator|(
+operator|!
 name|opts
 operator|.
 name|contains
@@ -2894,9 +2866,6 @@ name|ReadOption
 operator|.
 name|SKIP_CHECKSUMS
 argument_list|)
-operator|==
-literal|false
-operator|)
 decl_stmt|;
 if|if
 condition|(

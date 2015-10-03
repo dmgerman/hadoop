@@ -271,7 +271,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * Used by {@link org.apache.hadoop.hdfs.DFSClient} for renewing file-being-written leases  * on the namenode.  * When a file is opened for write (create or append),  * namenode stores a file lease for recording the identity of the writer.  * The writer (i.e. the DFSClient) is required to renew the lease periodically.  * When the lease is not renewed before it expires,  * the namenode considers the writer as failed and then it may either let  * another writer to obtain the lease or close the file.  *</p>  *<p>  * This class also provides the following functionality:  *<ul>  *<li>  * It maintains a map from (namenode, user) pairs to lease renewers.  * The same {@link LeaseRenewer} instance is used for renewing lease  * for all the {@link org.apache.hadoop.hdfs.DFSClient} to the same namenode and the same user.  *</li>  *<li>  * Each renewer maintains a list of {@link org.apache.hadoop.hdfs.DFSClient}.  * Periodically the leases for all the clients are renewed.  * A client is removed from the list when the client is closed.  *</li>  *<li>  * A thread per namenode per user is used by the {@link LeaseRenewer}  * to renew the leases.  *</li>  *</ul>  *</p>  */
+comment|/**  *<p>  * Used by {@link org.apache.hadoop.hdfs.DFSClient} for renewing  * file-being-written leases on the namenode.  * When a file is opened for write (create or append),  * namenode stores a file lease for recording the identity of the writer.  * The writer (i.e. the DFSClient) is required to renew the lease periodically.  * When the lease is not renewed before it expires,  * the namenode considers the writer as failed and then it may either let  * another writer to obtain the lease or close the file.  *</p>  *<p>  * This class also provides the following functionality:  *<ul>  *<li>  * It maintains a map from (namenode, user) pairs to lease renewers.  * The same {@link LeaseRenewer} instance is used for renewing lease  * for all the {@link org.apache.hadoop.hdfs.DFSClient} to the same namenode and  * the same user.  *</li>  *<li>  * Each renewer maintains a list of {@link org.apache.hadoop.hdfs.DFSClient}.  * Periodically the leases for all the clients are renewed.  * A client is removed from the list when the client is closed.  *</li>  *<li>  * A thread per namenode per user is used by the {@link LeaseRenewer}  * to renew the leases.  *</li>  *</ul>  *</p>  */
 end_comment
 
 begin_class
@@ -336,8 +336,6 @@ specifier|final
 name|DFSClient
 name|dfsc
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 specifier|final
 name|LeaseRenewer
@@ -582,11 +580,7 @@ name|renewers
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|Key
-argument_list|,
-name|LeaseRenewer
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/** Get a renewer. */
@@ -781,9 +775,7 @@ name|dfsclients
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DFSClient
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * A stringified stack trace of the call stack when the Lease Renewer    * was instantiated. This is only generated if trace-level logging is    * enabled on this class.    */
@@ -1691,9 +1683,7 @@ name|copies
 operator|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DFSClient
-argument_list|>
+argument_list|<>
 argument_list|(
 name|dfsclients
 argument_list|)
@@ -1753,33 +1743,13 @@ literal|""
 decl_stmt|;
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|copies
-operator|.
-name|size
-argument_list|()
-condition|;
-name|i
-operator|++
-control|)
-block|{
 specifier|final
 name|DFSClient
 name|c
-init|=
+range|:
 name|copies
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
-decl_stmt|;
+control|)
+block|{
 comment|//skip if current client name is the same as the previous name.
 if|if
 condition|(

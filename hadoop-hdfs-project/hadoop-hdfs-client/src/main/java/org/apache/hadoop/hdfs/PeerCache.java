@@ -184,20 +184,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|Daemon
@@ -547,15 +533,9 @@ name|isDaemonStarted
 parameter_list|()
 block|{
 return|return
-operator|(
 name|daemon
-operator|==
+operator|!=
 literal|null
-operator|)
-condition|?
-literal|false
-else|:
-literal|true
 return|;
 block|}
 DECL|method|startExpiryDaemon ()
@@ -570,8 +550,6 @@ if|if
 condition|(
 name|isDaemonStarted
 argument_list|()
-operator|==
-literal|true
 condition|)
 block|{
 return|return;
@@ -648,7 +626,7 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Get a cached peer connected to the given DataNode.    * @param dnId         The DataNode to get a Peer for.    * @param isDomain     Whether to retrieve a DomainPeer or not.    *    * @return             An open Peer connected to the DN, or null if none    *                     was found.     */
+comment|/**    * Get a cached peer connected to the given DataNode.    * @param dnId         The DataNode to get a Peer for.    * @param isDomain     Whether to retrieve a DomainPeer or not.    *    * @return             An open Peer connected to the DN, or null if none    *                     was found.    */
 DECL|method|get (DatanodeID dnId, boolean isDomain)
 specifier|public
 name|Peer
@@ -1156,7 +1134,7 @@ name|remove
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Periodically check in the cache and expire the entries    * older than expiryPeriod minutes    */
+comment|/**    * Periodically check in the cache and expire the entries older than    * expiryPeriod minutes.    */
 DECL|method|run ()
 specifier|private
 name|void

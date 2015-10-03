@@ -97,7 +97,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Obtain an access token via a a credential (provided through the  * Configuration) using the   *<a href="https://tools.ietf.org/html/rfc6749#section-4.4">  *   Client Credentials Grant workflow</a>.  */
+comment|/**  * Obtain an access token via a a credential (provided through the  * Configuration) using the  *<a href="https://tools.ietf.org/html/rfc6749#section-4.4">  *   Client Credentials Grant workflow</a>.  */
 end_comment
 
 begin_class

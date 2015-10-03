@@ -88,7 +88,6 @@ name|XAttr
 block|{
 DECL|enum|NameSpace
 specifier|public
-specifier|static
 enum|enum
 name|NameSpace
 block|{
@@ -106,7 +105,7 @@ name|SYSTEM
 block|,
 DECL|enumConstant|RAW
 name|RAW
-block|;   }
+block|}
 DECL|field|ns
 specifier|private
 specifier|final

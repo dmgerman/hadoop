@@ -60,22 +60,6 @@ name|StorageType
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|DatanodeInfo
-import|;
-end_import
-
 begin_class
 annotation|@
 name|InterfaceAudience

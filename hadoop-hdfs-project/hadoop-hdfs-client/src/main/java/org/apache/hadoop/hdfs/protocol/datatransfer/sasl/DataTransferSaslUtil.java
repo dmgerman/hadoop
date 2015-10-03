@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *<p/>  * http://www.apache.org/licenses/LICENSE-2.0  *<p/>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -787,7 +787,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Check whether requested SASL Qop contains privacy.    *     * @param saslProps properties of SASL negotiation    * @return boolean true if privacy exists    */
+comment|/**    * Check whether requested SASL Qop contains privacy.    *    * @param saslProps properties of SASL negotiation    * @return boolean true if privacy exists    */
 DECL|method|requestedQopContainsPrivacy ( Map<String, String> saslProps)
 specifier|public
 specifier|static
@@ -948,7 +948,7 @@ name|toCharArray
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns InetAddress from peer.  The getRemoteAddressString has the form    * [host][/ip-address]:port.  The host may be missing.  The IP address (and    * preceding '/') may be missing.  The port preceded by ':' is always present.    *    * @param peer    * @return InetAddress from peer    */
+comment|/**    * Returns InetAddress from peer.  The getRemoteAddressString has the form    * [host][/ip-address]:port.  The host may be missing.  The IP address (and    * preceding '/') may be missing.  The port preceded by ':' is always present.    *    * @return InetAddress from peer    */
 DECL|method|getPeerAddress (Peer peer)
 specifier|public
 specifier|static
@@ -1248,7 +1248,7 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Reads a SASL negotiation message and negotiation cipher options.     *     * @param in stream to read    * @param cipherOptions list to store negotiation cipher options    * @return byte[] SASL negotiation message    * @throws IOException for any error    */
+comment|/**    * Reads a SASL negotiation message and negotiation cipher options.    *    * @param in stream to read    * @param cipherOptions list to store negotiation cipher options    * @return byte[] SASL negotiation message    * @throws IOException for any error    */
 DECL|method|readSaslMessageAndNegotiationCipherOptions ( InputStream in, List<CipherOption> cipherOptions)
 specifier|public
 specifier|static
@@ -1381,7 +1381,7 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Negotiate a cipher option which server supports.    *     * @param conf the configuration    * @param options the cipher options which client supports    * @return CipherOption negotiated cipher option    */
+comment|/**    * Negotiate a cipher option which server supports.    *    * @param conf the configuration    * @param options the cipher options which client supports    * @return CipherOption negotiated cipher option    */
 DECL|method|negotiateCipherOption (Configuration conf, List<CipherOption> options)
 specifier|public
 specifier|static
@@ -1566,6 +1566,11 @@ name|getAlgorithmBlockSize
 argument_list|()
 index|]
 decl_stmt|;
+assert|assert
+name|codec
+operator|!=
+literal|null
+assert|;
 name|codec
 operator|.
 name|generateSecureRandom
@@ -1616,7 +1621,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Send SASL message and negotiated cipher option to client.    *     * @param out stream to receive message    * @param payload to send    * @param option negotiated cipher option    * @throws IOException for any error    */
+comment|/**    * Send SASL message and negotiated cipher option to client.    *    * @param out stream to receive message    * @param payload to send    * @param option negotiated cipher option    * @throws IOException for any error    */
 DECL|method|sendSaslMessageAndNegotiatedCipherOption ( OutputStream out, byte[] payload, CipherOption option)
 specifier|public
 specifier|static
@@ -1716,7 +1721,7 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Create IOStreamPair of {@link org.apache.hadoop.crypto.CryptoInputStream}    * and {@link org.apache.hadoop.crypto.CryptoOutputStream}    *     * @param conf the configuration    * @param cipherOption negotiated cipher option    * @param out underlying output stream    * @param in underlying input stream    * @param isServer is server side    * @return IOStreamPair the stream pair    * @throws IOException for any error    */
+comment|/**    * Create IOStreamPair of {@link org.apache.hadoop.crypto.CryptoInputStream}    * and {@link org.apache.hadoop.crypto.CryptoOutputStream}    *    * @param conf the configuration    * @param cipherOption negotiated cipher option    * @param out underlying output stream    * @param in underlying input stream    * @param isServer is server side    * @return IOStreamPair the stream pair    * @throws IOException for any error    */
 DECL|method|createStreamPair (Configuration conf, CipherOption cipherOption, OutputStream out, InputStream in, boolean isServer)
 specifier|public
 specifier|static
@@ -1918,7 +1923,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Send a SASL negotiation message and negotiation cipher options to server.    *     * @param out stream to receive message    * @param payload to send    * @param options cipher options to negotiate    * @throws IOException for any error    */
+comment|/**    * Send a SASL negotiation message and negotiation cipher options to server.    *    * @param out stream to receive message    * @param payload to send    * @param options cipher options to negotiate    * @throws IOException for any error    */
 DECL|method|sendSaslMessageAndNegotiationCipherOptions ( OutputStream out, byte[] payload, List<CipherOption> options)
 specifier|public
 specifier|static
@@ -2021,7 +2026,7 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Read SASL message and negotiated cipher option from server.    *     * @param in stream to read    * @return SaslResponseWithNegotiatedCipherOption SASL message and     * negotiated cipher option    * @throws IOException for any error    */
+comment|/**    * Read SASL message and negotiated cipher option from server.    *    * @param in stream to read    * @return SaslResponseWithNegotiatedCipherOption SASL message and    * negotiated cipher option    * @throws IOException for any error    */
 specifier|public
 specifier|static
 name|SaslResponseWithNegotiatedCipherOption
@@ -2163,7 +2168,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Encrypt the key and iv of the negotiated cipher option.    *     * @param option negotiated cipher option    * @param sasl SASL participant representing server    * @return CipherOption negotiated cipher option which contains the     * encrypted key and iv    * @throws IOException for any error    */
+comment|/**    * Encrypt the key and iv of the negotiated cipher option.    *    * @param option negotiated cipher option    * @param sasl SASL participant representing server    * @return CipherOption negotiated cipher option which contains the    * encrypted key and iv    * @throws IOException for any error    */
 DECL|method|wrap (CipherOption option, SaslParticipant sasl)
 specifier|public
 specifier|static
@@ -2279,7 +2284,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Decrypt the key and iv of the negotiated cipher option.    *     * @param option negotiated cipher option    * @param sasl SASL participant representing client    * @return CipherOption negotiated cipher option which contains the     * decrypted key and iv    * @throws IOException for any error    */
+comment|/**    * Decrypt the key and iv of the negotiated cipher option.    *    * @param option negotiated cipher option    * @param sasl SASL participant representing client    * @return CipherOption negotiated cipher option which contains the    * decrypted key and iv    * @throws IOException for any error    */
 DECL|method|unwrap (CipherOption option, SaslParticipant sasl)
 specifier|public
 specifier|static

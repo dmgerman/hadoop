@@ -478,9 +478,11 @@ name|proto
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 literal|null
 return|;
+block|}
 name|int
 name|bytesPerChecksum
 init|=
@@ -533,9 +535,7 @@ argument_list|>
 name|blockToken
 parameter_list|)
 block|{
-name|ClientOperationHeaderProto
-name|header
-init|=
+return|return
 name|ClientOperationHeaderProto
 operator|.
 name|newBuilder
@@ -558,9 +558,6 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
-return|return
-name|header
 return|;
 block|}
 DECL|method|buildBaseHeader (ExtendedBlock blk, Token<BlockTokenIdentifier> blockToken)

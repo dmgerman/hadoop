@@ -179,7 +179,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Header data for each packet that goes through the read/write pipelines.  * Includes all of the information about the packet, excluding checksums and  * actual data.  *   * This data includes:  *  - the offset in bytes into the HDFS block of the data in this packet  *  - the sequence number of this packet in the pipeline  *  - whether or not this is the last packet in the pipeline  *  - the length of the data in this packet  *  - whether or not this packet should be synced by the DNs.  *    * When serialized, this header is written out as a protocol buffer, preceded  * by a 4-byte integer representing the full packet length, and a 2-byte short  * representing the header length.  */
+comment|/**  * Header data for each packet that goes through the read/write pipelines.  * Includes all of the information about the packet, excluding checksums and  * actual data.  *  * This data includes:  *  - the offset in bytes into the HDFS block of the data in this packet  *  - the sequence number of this packet in the pipeline  *  - whether or not this is the last packet in the pipeline  *  - the length of the data in this packet  *  - whether or not this packet should be synced by the DNs.  *  * When serialized, this header is written out as a protocol buffer, preceded  * by a 4-byte integer representing the full packet length, and a 2-byte short  * representing the header length.  */
 end_comment
 
 begin_class
@@ -367,7 +367,7 @@ name|builder
 operator|.
 name|setSyncBlock
 argument_list|(
-name|syncBlock
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -798,7 +798,7 @@ name|array
 argument_list|()
 return|;
 block|}
-comment|/**    * Perform a sanity check on the packet, returning true if it is sane.    * @param lastSeqNo the previous sequence number received - we expect the current    * sequence number to be larger by 1.    */
+comment|/**    * Perform a sanity check on the packet, returning true if it is sane.    * @param lastSeqNo the previous sequence number received - we expect the    *                  current sequence number to be larger by 1.    */
 DECL|method|sanityCheck (long lastSeqNo)
 specifier|public
 name|boolean
@@ -846,22 +846,15 @@ return|return
 literal|false
 return|;
 comment|// Seqnos should always increase by 1 with each packet received
-if|if
-condition|(
+return|return
 name|proto
 operator|.
 name|getSeqno
 argument_list|()
-operator|!=
+operator|==
 name|lastSeqNo
 operator|+
 literal|1
-condition|)
-return|return
-literal|false
-return|;
-return|return
-literal|true
 return|;
 block|}
 annotation|@
