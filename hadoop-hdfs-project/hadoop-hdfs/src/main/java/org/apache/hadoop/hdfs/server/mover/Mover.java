@@ -3611,6 +3611,67 @@ operator|.
 name|IN_PROGRESS
 condition|)
 block|{
+if|if
+condition|(
+name|r
+operator|==
+name|ExitStatus
+operator|.
+name|NO_MOVE_PROGRESS
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Failed to move some blocks after "
+operator|+
+name|m
+operator|.
+name|retryMaxAttempts
+operator|+
+literal|" retries. Exiting..."
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|r
+operator|==
+name|ExitStatus
+operator|.
+name|NO_MOVE_BLOCK
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Some blocks can't be moved. Exiting..."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Mover failed. Exiting with status "
+operator|+
+name|r
+operator|+
+literal|"... "
+argument_list|)
+expr_stmt|;
+block|}
 comment|// must be an error statue, return
 return|return
 name|r
@@ -3628,6 +3689,17 @@ name|sleeptime
 argument_list|)
 expr_stmt|;
 block|}
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Mover Successful: all blocks satisfy"
+operator|+
+literal|" the specified storage policy. Exiting..."
+argument_list|)
+expr_stmt|;
 return|return
 name|ExitStatus
 operator|.
