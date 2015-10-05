@@ -279,7 +279,7 @@ literal|"-h,--help              Display usage information and exit\n"
 operator|+
 literal|"-f,--fix-txids         Renumber the transaction IDs in the input,\n"
 operator|+
-literal|"                       so that there are no gaps or invalid "
+literal|"                       so that there are no gaps or invalid\n"
 operator|+
 literal|"                       transaction IDs.\n"
 operator|+
