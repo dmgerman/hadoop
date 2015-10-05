@@ -1326,6 +1326,12 @@ specifier|private
 name|NMNodeLabelsHandler
 name|nodeLabelsHandler
 decl_stmt|;
+DECL|field|nodeLabelsProvider
+specifier|private
+specifier|final
+name|NodeLabelsProvider
+name|nodeLabelsProvider
+decl_stmt|;
 DECL|method|NodeStatusUpdaterImpl (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, NodeManagerMetrics metrics)
 specifier|public
 name|NodeStatusUpdaterImpl
@@ -1393,24 +1399,23 @@ name|healthChecker
 operator|=
 name|healthChecker
 expr_stmt|;
-name|nodeLabelsHandler
+name|this
+operator|.
+name|context
 operator|=
-name|createNMNodeLabelsHandler
-argument_list|(
+name|context
+expr_stmt|;
+name|this
+operator|.
+name|dispatcher
+operator|=
+name|dispatcher
+expr_stmt|;
+name|this
+operator|.
 name|nodeLabelsProvider
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|context
 operator|=
-name|context
-expr_stmt|;
-name|this
-operator|.
-name|dispatcher
-operator|=
-name|dispatcher
+name|nodeLabelsProvider
 expr_stmt|;
 name|this
 operator|.
@@ -1603,6 +1608,13 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_NM_RESOURCEMANAGER_MINIMUM_VERSION
+argument_list|)
+expr_stmt|;
+name|nodeLabelsHandler
+operator|=
+name|createNMNodeLabelsHandler
+argument_list|(
+name|nodeLabelsProvider
 argument_list|)
 expr_stmt|;
 comment|// Default duration to track stopped containers on nodemanager is 10Min.
@@ -4986,6 +4998,11 @@ operator|new
 name|NMDistributedNodeLabelsHandler
 argument_list|(
 name|nodeLabelsProvider
+argument_list|,
+name|this
+operator|.
+name|getConfig
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -5107,12 +5124,15 @@ name|NMDistributedNodeLabelsHandler
 implements|implements
 name|NMNodeLabelsHandler
 block|{
-DECL|method|NMDistributedNodeLabelsHandler ( NodeLabelsProvider nodeLabelsProvider)
+DECL|method|NMDistributedNodeLabelsHandler ( NodeLabelsProvider nodeLabelsProvider, Configuration conf)
 specifier|private
 name|NMDistributedNodeLabelsHandler
 parameter_list|(
 name|NodeLabelsProvider
 name|nodeLabelsProvider
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -5120,6 +5140,23 @@ operator|.
 name|nodeLabelsProvider
 operator|=
 name|nodeLabelsProvider
+expr_stmt|;
+name|this
+operator|.
+name|resyncInterval
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_NODE_LABELS_RESYNC_INTERVAL
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_NODE_LABELS_RESYNC_INTERVAL
+argument_list|)
 expr_stmt|;
 block|}
 DECL|field|nodeLabelsProvider
@@ -5136,27 +5173,23 @@ name|NodeLabel
 argument_list|>
 name|previousNodeLabels
 decl_stmt|;
-DECL|field|updatedLabelsSentToRM
+DECL|field|areLabelsSentToRM
 specifier|private
 name|boolean
-name|updatedLabelsSentToRM
+name|areLabelsSentToRM
 decl_stmt|;
-DECL|field|lastNodeLabelSendFailMills
+DECL|field|lastNodeLabelSendMills
 specifier|private
 name|long
-name|lastNodeLabelSendFailMills
+name|lastNodeLabelSendMills
 init|=
 literal|0L
 decl_stmt|;
-comment|// TODO : Need to check which conf to use.Currently setting as 1 min
-DECL|field|FAILEDLABELRESENDINTERVAL
+DECL|field|resyncInterval
 specifier|private
-specifier|static
 specifier|final
 name|long
-name|FAILEDLABELRESENDINTERVAL
-init|=
-literal|60000
+name|resyncInterval
 decl_stmt|;
 annotation|@
 name|Override
@@ -5353,17 +5386,19 @@ name|containsAll
 argument_list|(
 name|nodeLabelsForHeartbeat
 argument_list|)
-operator|||
-name|checkResendLabelOnFailure
-argument_list|()
 decl_stmt|;
-name|updatedLabelsSentToRM
+name|areLabelsSentToRM
 operator|=
 literal|false
 expr_stmt|;
+comment|// When nodelabels elapsed or resync time is elapsed will send again in
+comment|// heartbeat.
 if|if
 condition|(
 name|areNodeLabelsUpdated
+operator|||
+name|isResyncIntervalElapsed
+argument_list|()
 condition|)
 block|{
 name|previousNodeLabels
@@ -5372,11 +5407,19 @@ name|nodeLabelsForHeartbeat
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"Modified labels from provider: "
+literal|"Labels from provider: "
 operator|+
 name|StringUtils
 operator|.
@@ -5388,12 +5431,13 @@ name|previousNodeLabels
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|validateNodeLabels
 argument_list|(
 name|nodeLabelsForHeartbeat
 argument_list|)
 expr_stmt|;
-name|updatedLabelsSentToRM
+name|areLabelsSentToRM
 operator|=
 literal|true
 expr_stmt|;
@@ -5410,6 +5454,17 @@ comment|// to RM to have same nodeLabels which was earlier set.
 name|nodeLabelsForHeartbeat
 operator|=
 literal|null
+expr_stmt|;
+block|}
+finally|finally
+block|{
+comment|// Set last send time in heartbeat
+name|lastNodeLabelSendMills
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -5543,41 +5598,33 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/*      * In case of failure when RM doesnt accept labels need to resend Labels to      * RM. This method checks whether we need to resend      */
-DECL|method|checkResendLabelOnFailure ()
+comment|/*      * This method checks resync interval is elapsed or not.      */
+DECL|method|isResyncIntervalElapsed ()
 specifier|public
 name|boolean
-name|checkResendLabelOnFailure
+name|isResyncIntervalElapsed
 parameter_list|()
 block|{
-if|if
-condition|(
-name|lastNodeLabelSendFailMills
-operator|>
-literal|0L
-condition|)
-block|{
 name|long
-name|lastFailTimePassed
+name|elapsedTimeSinceLastSync
 init|=
 name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
 operator|-
-name|lastNodeLabelSendFailMills
+name|lastNodeLabelSendMills
 decl_stmt|;
 if|if
 condition|(
-name|lastFailTimePassed
+name|elapsedTimeSinceLastSync
 operator|>
-name|FAILEDLABELRESENDINTERVAL
+name|resyncInterval
 condition|)
 block|{
 return|return
 literal|true
 return|;
-block|}
 block|}
 return|return
 literal|false
@@ -5596,7 +5643,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|updatedLabelsSentToRM
+name|areLabelsSentToRM
 condition|)
 block|{
 if|if
@@ -5605,15 +5652,16 @@ name|response
 operator|.
 name|getAreNodeLabelsAcceptedByRM
 argument_list|()
-condition|)
-block|{
-name|lastNodeLabelSendFailMills
-operator|=
-literal|0L
-expr_stmt|;
+operator|&&
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Node Labels {"
 operator|+
@@ -5634,13 +5682,6 @@ else|else
 block|{
 comment|// case where updated labels from NodeLabelsProvider is sent to RM and
 comment|// RM rejected the labels
-name|lastNodeLabelSendFailMills
-operator|=
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
-expr_stmt|;
 name|LOG
 operator|.
 name|error
