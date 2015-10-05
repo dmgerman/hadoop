@@ -818,13 +818,11 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"kill"
+literal|"bash"
 block|,
-literal|"-0"
+literal|"-c"
 block|,
-literal|"--"
-block|,
-literal|"-"
+literal|"kill -0 -- -"
 operator|+
 name|anyPid
 block|}
@@ -838,10 +836,12 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"kill"
+literal|"bash"
 block|,
-literal|"-0"
+literal|"-c"
 block|,
+literal|"kill -0 "
+operator|+
 name|anyPid
 block|}
 expr_stmt|;
@@ -910,7 +910,7 @@ name|WINUTILS
 block|,
 literal|"task"
 block|,
-literal|"kill"
+literal|"isAlive"
 block|,
 name|anyPid
 block|}
@@ -930,15 +930,11 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"kill"
+literal|"bash"
 block|,
-literal|"-"
-operator|+
-name|anySignal
+literal|"-c"
 block|,
-literal|"--"
-block|,
-literal|"-"
+literal|"kill -9 -- -"
 operator|+
 name|anyPid
 block|}
@@ -952,12 +948,12 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"kill"
+literal|"bash"
 block|,
-literal|"-"
+literal|"-c"
+block|,
+literal|"kill -9 "
 operator|+
-name|anySignal
-block|,
 name|anyPid
 block|}
 expr_stmt|;

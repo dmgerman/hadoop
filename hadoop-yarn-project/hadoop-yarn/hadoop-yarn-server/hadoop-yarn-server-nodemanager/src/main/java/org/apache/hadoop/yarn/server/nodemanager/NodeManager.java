@@ -352,6 +352,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|ShutdownHookManager
 import|;
 end_import
@@ -3180,6 +3194,47 @@ parameter_list|)
 block|{
 try|try
 block|{
+comment|// Failed to start if we're a Unix based system but we don't have bash.
+comment|// Bash is necessary to launch containers under Unix-based systems.
+if|if
+condition|(
+operator|!
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|Shell
+operator|.
+name|isBashSupported
+condition|)
+block|{
+name|String
+name|message
+init|=
+literal|"Failing NodeManager start since we're on a "
+operator|+
+literal|"Unix-based system but bash doesn't seem to be available."
+decl_stmt|;
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+name|message
+argument_list|)
+throw|;
+block|}
+block|}
 comment|// Remove the old hook if we are rebooting.
 if|if
 condition|(
