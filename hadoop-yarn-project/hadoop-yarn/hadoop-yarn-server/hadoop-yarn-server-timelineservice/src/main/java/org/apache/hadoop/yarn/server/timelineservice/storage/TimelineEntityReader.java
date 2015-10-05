@@ -461,8 +461,16 @@ name|?
 argument_list|>
 name|table
 decl_stmt|;
+comment|/**    * Specifies whether keys for this table are sorted in a manner where entities    * can be retrieved by created time. If true, it will be sufficient to collect    * the first results as specified by the limit. Otherwise all matched entities    * will be fetched and then limit applied.    */
+DECL|field|sortedKeys
+specifier|private
+name|boolean
+name|sortedKeys
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Instantiates a reader for multiple-entity reads.    */
-DECL|method|TimelineEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve)
+DECL|method|TimelineEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve, boolean sortedKeys)
 specifier|protected
 name|TimelineEntityReader
 parameter_list|(
@@ -554,6 +562,9 @@ argument_list|<
 name|Field
 argument_list|>
 name|fieldsToRetrieve
+parameter_list|,
+name|boolean
+name|sortedKeys
 parameter_list|)
 block|{
 name|this
@@ -561,6 +572,12 @@ operator|.
 name|singleEntityRead
 operator|=
 literal|false
+expr_stmt|;
+name|this
+operator|.
+name|sortedKeys
+operator|=
+name|sortedKeys
 expr_stmt|;
 name|this
 operator|.
@@ -926,6 +943,12 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|!
+name|sortedKeys
+condition|)
+block|{
+if|if
+condition|(
 name|entities
 operator|.
 name|size
@@ -939,6 +962,22 @@ operator|.
 name|pollLast
 argument_list|()
 expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|entities
+operator|.
+name|size
+argument_list|()
+operator|==
+name|limit
+condition|)
+block|{
+break|break;
+block|}
 block|}
 block|}
 return|return

@@ -643,7 +643,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|DEFAULT_BEGIN_TIME
-specifier|private
+specifier|protected
 specifier|static
 specifier|final
 name|long
@@ -652,7 +652,7 @@ init|=
 literal|0L
 decl_stmt|;
 DECL|field|DEFAULT_END_TIME
-specifier|private
+specifier|protected
 specifier|static
 specifier|final
 name|long
@@ -673,7 +673,7 @@ operator|new
 name|AppToFlowTable
 argument_list|()
 decl_stmt|;
-DECL|method|GenericEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve)
+DECL|method|GenericEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve, boolean sortedKeys)
 specifier|public
 name|GenericEntityReader
 parameter_list|(
@@ -765,6 +765,9 @@ argument_list|<
 name|Field
 argument_list|>
 name|fieldsToRetrieve
+parameter_list|,
+name|boolean
+name|sortedKeys
 parameter_list|)
 block|{
 name|super
@@ -804,6 +807,8 @@ argument_list|,
 name|eventFilters
 argument_list|,
 name|fieldsToRetrieve
+argument_list|,
+name|sortedKeys
 argument_list|)
 expr_stmt|;
 block|}
@@ -874,7 +879,7 @@ name|ENTITY_TABLE
 return|;
 block|}
 DECL|method|lookupFlowContext (String clusterId, String appId, Configuration hbaseConf, Connection conn)
-specifier|private
+specifier|protected
 name|FlowContext
 name|lookupFlowContext
 parameter_list|(
@@ -995,19 +1000,19 @@ throw|;
 block|}
 block|}
 DECL|class|FlowContext
-specifier|private
+specifier|protected
 specifier|static
 class|class
 name|FlowContext
 block|{
 DECL|field|flowId
-specifier|private
+specifier|protected
 specifier|final
 name|String
 name|flowId
 decl_stmt|;
 DECL|field|flowRunId
-specifier|private
+specifier|protected
 specifier|final
 name|Long
 name|flowRunId

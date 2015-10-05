@@ -575,6 +575,8 @@ argument_list|,
 name|eventFilters
 argument_list|,
 name|fieldsToRetrieve
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
