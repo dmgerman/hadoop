@@ -557,6 +557,9 @@ name|xmlInput
 init|=
 name|inputFileName
 operator|.
+name|toLowerCase
+argument_list|()
+operator|.
 name|endsWith
 argument_list|(
 literal|".xml"
