@@ -494,6 +494,24 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|resource
+operator|.
+name|Resources
+import|;
+end_import
+
 begin_comment
 comment|/**  * Keeps the data structures to send container requests to RM.  */
 end_comment
@@ -2362,6 +2380,15 @@ name|getAvailableResources
 parameter_list|()
 block|{
 return|return
+name|availableResources
+operator|==
+literal|null
+condition|?
+name|Resources
+operator|.
+name|none
+argument_list|()
+else|:
 name|availableResources
 return|;
 block|}

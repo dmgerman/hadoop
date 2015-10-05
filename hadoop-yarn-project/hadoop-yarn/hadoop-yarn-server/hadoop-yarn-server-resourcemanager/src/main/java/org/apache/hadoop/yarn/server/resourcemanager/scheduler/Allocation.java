@@ -44,6 +44,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -146,11 +160,6 @@ name|Container
 argument_list|>
 name|containers
 decl_stmt|;
-DECL|field|resourceLimit
-specifier|final
-name|Resource
-name|resourceLimit
-decl_stmt|;
 DECL|field|strictContainers
 specifier|final
 name|Set
@@ -198,6 +207,11 @@ argument_list|<
 name|Container
 argument_list|>
 name|decreasedContainers
+decl_stmt|;
+DECL|field|resourceLimit
+specifier|private
+name|Resource
+name|resourceLimit
 decl_stmt|;
 DECL|method|Allocation (List<Container> containers, Resource resourceLimit, Set<ContainerId> strictContainers, Set<ContainerId> fungibleContainers, List<ResourceRequest> fungibleResources)
 specifier|public
@@ -504,6 +518,24 @@ block|{
 return|return
 name|decreasedContainers
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setResourceLimit (Resource resource)
+specifier|public
+name|void
+name|setResourceLimit
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|)
+block|{
+name|this
+operator|.
+name|resourceLimit
+operator|=
+name|resource
+expr_stmt|;
 block|}
 block|}
 end_class

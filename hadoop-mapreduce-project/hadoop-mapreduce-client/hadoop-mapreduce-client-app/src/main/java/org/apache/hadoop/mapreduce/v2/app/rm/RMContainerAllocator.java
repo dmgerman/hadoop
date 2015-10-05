@@ -1381,11 +1381,17 @@ name|maxReducePreemptionLimit
 init|=
 literal|0
 decl_stmt|;
-comment|/**    * after this threshold, if the container request is not allocated, it is    * considered delayed.    */
-DECL|field|allocationDelayThresholdMs
+comment|// Mapper allocation timeout, after which a reducer is forcibly preempted
+DECL|field|reducerUnconditionalPreemptionDelayMs
 specifier|private
 name|long
-name|allocationDelayThresholdMs
+name|reducerUnconditionalPreemptionDelayMs
+decl_stmt|;
+comment|// Duration to wait before preempting a reducer when there is NO room
+DECL|field|reducerNoHeadroomPreemptionDelayMs
+specifier|private
+name|long
+name|reducerNoHeadroomPreemptionDelayMs
 init|=
 literal|0
 decl_stmt|;
@@ -1577,7 +1583,24 @@ operator|.
 name|DEFAULT_MR_AM_JOB_REDUCE_PREEMPTION_LIMIT
 argument_list|)
 expr_stmt|;
-name|allocationDelayThresholdMs
+name|reducerUnconditionalPreemptionDelayMs
+operator|=
+literal|1000
+operator|*
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_JOB_REDUCER_UNCONDITIONAL_PREEMPT_DELAY_SEC
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_JOB_REDUCER_UNCONDITIONAL_PREEMPT_DELAY_SEC
+argument_list|)
+expr_stmt|;
+name|reducerNoHeadroomPreemptionDelayMs
 operator|=
 name|conf
 operator|.
@@ -2955,11 +2978,9 @@ block|{
 return|return;
 comment|// no reduces
 block|}
-comment|//check if reduces have taken over the whole cluster and there are
-comment|//unassigned maps
 if|if
 condition|(
-name|scheduledRequests
+name|assignedRequests
 operator|.
 name|maps
 operator|.
@@ -2969,44 +2990,55 @@ operator|>
 literal|0
 condition|)
 block|{
-name|Resource
-name|resourceLimit
-init|=
-name|getResourceLimit
+comment|// there are assigned mappers
+return|return;
+block|}
+if|if
+condition|(
+name|scheduledRequests
+operator|.
+name|maps
+operator|.
+name|size
 argument_list|()
-decl_stmt|;
+operator|<=
+literal|0
+condition|)
+block|{
+comment|// there are no pending requests for mappers
+return|return;
+block|}
+comment|// At this point:
+comment|// we have pending mappers and all assigned resources are taken by reducers
+if|if
+condition|(
+name|reducerUnconditionalPreemptionDelayMs
+operator|>=
+literal|0
+condition|)
+block|{
+comment|// Unconditional preemption is enabled.
+comment|// If mappers are pending for longer than the configured threshold,
+comment|// preempt reducers irrespective of what the headroom is.
+if|if
+condition|(
+name|preemptReducersForHangingMapRequests
+argument_list|(
+name|reducerUnconditionalPreemptionDelayMs
+argument_list|)
+condition|)
+block|{
+return|return;
+block|}
+block|}
+comment|// The pending mappers haven't been waiting for too long. Let us see if
+comment|// the headroom can fit a mapper.
 name|Resource
 name|availableResourceForMap
 init|=
-name|Resources
-operator|.
-name|subtract
-argument_list|(
-name|resourceLimit
-argument_list|,
-name|Resources
-operator|.
-name|multiply
-argument_list|(
-name|reduceResourceRequest
-argument_list|,
-name|assignedRequests
-operator|.
-name|reduces
-operator|.
-name|size
+name|getAvailableResources
 argument_list|()
-operator|-
-name|assignedRequests
-operator|.
-name|preemptionWaitingReduces
-operator|.
-name|size
-argument_list|()
-argument_list|)
-argument_list|)
 decl_stmt|;
-comment|// availableMemForMap must be sufficient to run at least 1 map
 if|if
 condition|(
 name|ResourceCalculatorUtils
@@ -3020,13 +3052,68 @@ argument_list|,
 name|getSchedulerResourceTypes
 argument_list|()
 argument_list|)
-operator|<=
+operator|>
 literal|0
 condition|)
 block|{
-comment|// to make sure new containers are given to maps and not reduces
-comment|// ramp down all scheduled reduces if any
-comment|// (since reduces are scheduled at higher priority than maps)
+comment|// the available headroom is enough to run a mapper
+return|return;
+block|}
+comment|// Available headroom is not enough to run mapper. See if we should hold
+comment|// off before preempting reducers and preempt if okay.
+name|preemptReducersForHangingMapRequests
+argument_list|(
+name|reducerNoHeadroomPreemptionDelayMs
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|preemptReducersForHangingMapRequests (long pendingThreshold)
+specifier|private
+name|boolean
+name|preemptReducersForHangingMapRequests
+parameter_list|(
+name|long
+name|pendingThreshold
+parameter_list|)
+block|{
+name|int
+name|hangingMapRequests
+init|=
+name|getNumHangingRequests
+argument_list|(
+name|pendingThreshold
+argument_list|,
+name|scheduledRequests
+operator|.
+name|maps
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|hangingMapRequests
+operator|>
+literal|0
+condition|)
+block|{
+name|preemptReducer
+argument_list|(
+name|hangingMapRequests
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+DECL|method|clearAllPendingReduceRequests ()
+specifier|private
+name|void
+name|clearAllPendingReduceRequests
+parameter_list|()
+block|{
 name|LOG
 operator|.
 name|info
@@ -3069,25 +3156,19 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-comment|//do further checking to find the number of map requests that were
-comment|//hanging around for a while
+block|}
+DECL|method|preemptReducer (int hangingMapRequests)
+specifier|private
+name|void
+name|preemptReducer
+parameter_list|(
 name|int
 name|hangingMapRequests
-init|=
-name|getNumOfHangingRequests
-argument_list|(
-name|scheduledRequests
-operator|.
-name|maps
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|hangingMapRequests
-operator|>
-literal|0
-condition|)
+parameter_list|)
 block|{
+name|clearAllPendingReduceRequests
+argument_list|()
+expr_stmt|;
 comment|// preempt for making space for at least one map
 name|int
 name|preemptionReduceNumForOneMap
@@ -3115,7 +3196,8 @@ name|Resources
 operator|.
 name|multiply
 argument_list|(
-name|resourceLimit
+name|getResourceLimit
+argument_list|()
 argument_list|,
 name|maxReducePreemptionLimit
 argument_list|)
@@ -3186,14 +3268,14 @@ name|toPreempt
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-block|}
-block|}
-DECL|method|getNumOfHangingRequests (Map<TaskAttemptId, ContainerRequest> requestMap)
+DECL|method|getNumHangingRequests (long allocationDelayThresholdMs, Map<TaskAttemptId, ContainerRequest> requestMap)
 specifier|private
 name|int
-name|getNumOfHangingRequests
+name|getNumHangingRequests
 parameter_list|(
+name|long
+name|allocationDelayThresholdMs
+parameter_list|,
 name|Map
 argument_list|<
 name|TaskAttemptId
@@ -3319,21 +3401,6 @@ init|=
 name|getAvailableResources
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|headRoom
-operator|==
-literal|null
-condition|)
-block|{
-name|headRoom
-operator|=
-name|Resources
-operator|.
-name|none
-argument_list|()
-expr_stmt|;
-block|}
 name|LOG
 operator|.
 name|info
@@ -3878,16 +3945,6 @@ comment|// will be null the first time
 name|Resource
 name|headRoom
 init|=
-name|getAvailableResources
-argument_list|()
-operator|==
-literal|null
-condition|?
-name|Resources
-operator|.
-name|none
-argument_list|()
-else|:
 name|Resources
 operator|.
 name|clone
@@ -4066,16 +4123,6 @@ block|}
 name|Resource
 name|newHeadRoom
 init|=
-name|getAvailableResources
-argument_list|()
-operator|==
-literal|null
-condition|?
-name|Resources
-operator|.
-name|none
-argument_list|()
-else|:
 name|getAvailableResources
 argument_list|()
 decl_stmt|;
@@ -5025,21 +5072,6 @@ init|=
 name|getAvailableResources
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|headRoom
-operator|==
-literal|null
-condition|)
-block|{
-name|headRoom
-operator|=
-name|Resources
-operator|.
-name|none
-argument_list|()
-expr_stmt|;
-block|}
 name|Resource
 name|assignedMapResource
 init|=

@@ -2777,7 +2777,28 @@ literal|10
 operator|*
 literal|1000l
 decl_stmt|;
-comment|/**    * The threshold in terms of seconds after which an unsatisfied mapper request    * triggers reducer preemption to free space. Default 0 implies that the reduces    * should be preempted immediately after allocation if there is currently no    * room for newly allocated mappers.    */
+comment|/**    * Duration to wait before forcibly preempting a reducer to allow    * allocating new mappers, even when YARN reports positive headroom.    */
+DECL|field|MR_JOB_REDUCER_UNCONDITIONAL_PREEMPT_DELAY_SEC
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_JOB_REDUCER_UNCONDITIONAL_PREEMPT_DELAY_SEC
+init|=
+literal|"mapreduce.job.reducer.unconditional-preempt.delay.sec"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DEFAULT_MR_JOB_REDUCER_UNCONDITIONAL_PREEMPT_DELAY_SEC
+name|DEFAULT_MR_JOB_REDUCER_UNCONDITIONAL_PREEMPT_DELAY_SEC
+init|=
+literal|5
+operator|*
+literal|60
+decl_stmt|;
+comment|/**    * Duration to wait before preempting a reducer, when there is no headroom    * to allocate new mappers.    */
 DECL|field|MR_JOB_REDUCER_PREEMPT_DELAY_SEC
 specifier|public
 specifier|static
