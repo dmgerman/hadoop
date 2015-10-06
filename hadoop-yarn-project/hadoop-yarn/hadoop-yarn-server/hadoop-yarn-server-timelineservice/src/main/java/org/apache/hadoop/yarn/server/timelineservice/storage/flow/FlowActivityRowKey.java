@@ -80,7 +80,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 import|;
 end_import
 
@@ -250,7 +250,7 @@ block|{
 name|long
 name|dayTs
 init|=
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(
@@ -319,9 +319,9 @@ name|Bytes
 operator|.
 name|toBytes
 argument_list|(
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
-name|invert
+name|invertLong
 argument_list|(
 name|dayTs
 argument_list|)
@@ -425,9 +425,9 @@ decl_stmt|;
 name|long
 name|dayTs
 init|=
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
-name|invert
+name|invertLong
 argument_list|(
 name|Bytes
 operator|.

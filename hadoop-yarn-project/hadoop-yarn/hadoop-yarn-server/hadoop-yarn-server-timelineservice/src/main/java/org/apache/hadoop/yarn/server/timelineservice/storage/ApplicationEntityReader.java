@@ -362,7 +362,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimelineReaderUtils
+name|TimelineStorageUtils
 import|;
 end_import
 
@@ -1208,7 +1208,7 @@ condition|(
 name|checkIsRelatedTo
 operator|&&
 operator|!
-name|TimelineReaderUtils
+name|TimelineStorageUtils
 operator|.
 name|matchRelations
 argument_list|(
@@ -1314,7 +1314,7 @@ condition|(
 name|checkRelatesTo
 operator|&&
 operator|!
-name|TimelineReaderUtils
+name|TimelineStorageUtils
 operator|.
 name|matchRelations
 argument_list|(
@@ -1420,7 +1420,7 @@ condition|(
 name|checkInfo
 operator|&&
 operator|!
-name|TimelineReaderUtils
+name|TimelineStorageUtils
 operator|.
 name|matchFilters
 argument_list|(
@@ -1526,7 +1526,7 @@ condition|(
 name|checkConfigs
 operator|&&
 operator|!
-name|TimelineReaderUtils
+name|TimelineStorageUtils
 operator|.
 name|matchFilters
 argument_list|(
@@ -1628,7 +1628,7 @@ condition|(
 name|checkEvents
 operator|&&
 operator|!
-name|TimelineReaderUtils
+name|TimelineStorageUtils
 operator|.
 name|matchEventFilters
 argument_list|(
@@ -1732,7 +1732,7 @@ condition|(
 name|checkMetrics
 operator|&&
 operator|!
-name|TimelineReaderUtils
+name|TimelineStorageUtils
 operator|.
 name|matchMetricFilters
 argument_list|(

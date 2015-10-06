@@ -320,7 +320,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 import|;
 end_import
 
@@ -680,7 +680,7 @@ name|byte
 index|[]
 name|currentColumnQualifier
 init|=
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
 name|EMPTY_BYTES
 decl_stmt|;
@@ -879,7 +879,7 @@ argument_list|)
 decl_stmt|;
 comment|// We assume that all the operations for a particular column are the same
 return|return
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
 name|getAggregationOperationFromTagsList
 argument_list|(

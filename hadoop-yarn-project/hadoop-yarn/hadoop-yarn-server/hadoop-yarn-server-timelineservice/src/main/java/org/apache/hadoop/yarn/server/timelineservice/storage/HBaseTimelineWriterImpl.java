@@ -532,7 +532,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 import|;
 end_import
 
@@ -1164,7 +1164,7 @@ comment|// table
 name|boolean
 name|isApplication
 init|=
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
 name|isApplicationEntity
 argument_list|(
@@ -1280,7 +1280,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
 name|isApplicationCreated
 argument_list|(
@@ -1327,7 +1327,7 @@ comment|// values
 comment|// of all metrics
 if|if
 condition|(
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
 name|isApplicationFinished
 argument_list|(
@@ -1807,7 +1807,7 @@ name|flowRunTable
 argument_list|,
 literal|null
 argument_list|,
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
 name|getApplicationFinishedTime
 argument_list|(
@@ -2913,9 +2913,9 @@ name|Bytes
 operator|.
 name|toBytes
 argument_list|(
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
-name|invert
+name|invertLong
 argument_list|(
 name|eventTimestamp
 argument_list|)
@@ -2988,7 +2988,7 @@ name|compoundColumnQualifierBytes
 argument_list|,
 literal|null
 argument_list|,
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
 name|EMPTY_BYTES
 argument_list|)
@@ -3010,7 +3010,7 @@ name|compoundColumnQualifierBytes
 argument_list|,
 literal|null
 argument_list|,
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
 name|EMPTY_BYTES
 argument_list|)

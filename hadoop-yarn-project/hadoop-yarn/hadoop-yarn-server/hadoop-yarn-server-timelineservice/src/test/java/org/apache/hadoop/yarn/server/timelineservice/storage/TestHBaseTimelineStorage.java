@@ -584,7 +584,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 import|;
 end_import
 
@@ -2642,7 +2642,20 @@ decl_stmt|;
 name|String
 name|appName
 init|=
-literal|"some app name"
+name|ApplicationId
+operator|.
+name|newInstance
+argument_list|(
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+argument_list|,
+literal|1
+argument_list|)
+operator|.
+name|toString
+argument_list|()
 decl_stmt|;
 name|hbi
 operator|.
@@ -4162,9 +4175,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
-name|invert
+name|invertLong
 argument_list|(
 name|expTs
 argument_list|)
@@ -4636,7 +4649,20 @@ decl_stmt|;
 name|String
 name|appName
 init|=
-literal|"some app name"
+name|ApplicationId
+operator|.
+name|newInstance
+argument_list|(
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+argument_list|,
+literal|1
+argument_list|)
+operator|.
+name|toString
+argument_list|()
 decl_stmt|;
 name|byte
 index|[]
@@ -4882,9 +4908,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
-name|invert
+name|invertLong
 argument_list|(
 name|expTs
 argument_list|)

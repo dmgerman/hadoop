@@ -172,7 +172,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 import|;
 end_import
 
@@ -429,7 +429,7 @@ name|Attribute
 index|[]
 name|combinedAttributes
 init|=
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
 name|combineAttributes
 argument_list|(

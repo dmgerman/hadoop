@@ -997,7 +997,7 @@ name|limit
 parameter_list|)
 block|{
 return|return
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
 name|split
 argument_list|(
@@ -1025,7 +1025,7 @@ name|source
 parameter_list|)
 block|{
 return|return
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
 name|split
 argument_list|(

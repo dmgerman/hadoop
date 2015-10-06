@@ -476,29 +476,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimelineReaderUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|timelineservice
-operator|.
-name|storage
-operator|.
-name|common
-operator|.
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 import|;
 end_import
 
@@ -1629,7 +1607,7 @@ condition|(
 name|checkIsRelatedTo
 operator|&&
 operator|!
-name|TimelineReaderUtils
+name|TimelineStorageUtils
 operator|.
 name|matchRelations
 argument_list|(
@@ -1735,7 +1713,7 @@ condition|(
 name|checkRelatesTo
 operator|&&
 operator|!
-name|TimelineReaderUtils
+name|TimelineStorageUtils
 operator|.
 name|matchRelations
 argument_list|(
@@ -1841,7 +1819,7 @@ condition|(
 name|checkInfo
 operator|&&
 operator|!
-name|TimelineReaderUtils
+name|TimelineStorageUtils
 operator|.
 name|matchFilters
 argument_list|(
@@ -1947,7 +1925,7 @@ condition|(
 name|checkConfigs
 operator|&&
 operator|!
-name|TimelineReaderUtils
+name|TimelineStorageUtils
 operator|.
 name|matchFilters
 argument_list|(
@@ -2049,7 +2027,7 @@ condition|(
 name|checkEvents
 operator|&&
 operator|!
-name|TimelineReaderUtils
+name|TimelineStorageUtils
 operator|.
 name|matchEventFilters
 argument_list|(
@@ -2153,7 +2131,7 @@ condition|(
 name|checkMetrics
 operator|&&
 operator|!
-name|TimelineReaderUtils
+name|TimelineStorageUtils
 operator|.
 name|matchMetricFilters
 argument_list|(
@@ -2540,9 +2518,9 @@ decl_stmt|;
 name|long
 name|ts
 init|=
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
-name|invert
+name|invertLong
 argument_list|(
 name|Bytes
 operator|.

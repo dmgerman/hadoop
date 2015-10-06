@@ -392,7 +392,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 import|;
 end_import
 
@@ -594,7 +594,7 @@ block|{
 name|Tag
 name|t
 init|=
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
 name|getTagFromAttribute
 argument_list|(

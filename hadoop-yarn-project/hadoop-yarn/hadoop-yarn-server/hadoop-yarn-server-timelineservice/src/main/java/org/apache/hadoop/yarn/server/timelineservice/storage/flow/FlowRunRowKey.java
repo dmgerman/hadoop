@@ -80,7 +80,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 import|;
 end_import
 
@@ -253,9 +253,9 @@ name|Bytes
 operator|.
 name|toBytes
 argument_list|(
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
-name|invert
+name|invertLong
 argument_list|(
 name|flowRunId
 argument_list|)
@@ -382,9 +382,9 @@ decl_stmt|;
 name|long
 name|flowRunId
 init|=
-name|TimelineWriterUtils
+name|TimelineStorageUtils
 operator|.
-name|invert
+name|invertLong
 argument_list|(
 name|Bytes
 operator|.
