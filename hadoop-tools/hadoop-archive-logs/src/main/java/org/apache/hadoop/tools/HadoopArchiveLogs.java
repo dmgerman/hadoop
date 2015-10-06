@@ -2590,7 +2590,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/*   The generated script looks like this:   #!/bin/bash   set -e   set -x   if [ "$YARN_SHELL_ID" == "1" ]; then         appId="application_1440448768987_0001"         user="rkanter"   elif [ "$YARN_SHELL_ID" == "2" ]; then         appId="application_1440448768987_0002"         user="rkanter"   else         echo "Unknown Mapping!"         exit 1   fi   export HADOOP_CLIENT_OPTS="-Xmx1024m"   export HADOOP_CLASSPATH=/dist/share/hadoop/tools/lib/hadoop-archive-logs-2.8.0-SNAPSHOT.jar:/dist/share/hadoop/tools/lib/hadoop-archives-2.8.0-SNAPSHOT.jar   "$HADOOP_HOME"/bin/hadoop org.apache.hadoop.tools.HadoopArchiveLogsRunner -appId "$appId" -user "$user" -workingDir /tmp/logs/archive-logs-work -remoteRootLogDir /tmp/logs -suffix logs    */
+comment|/*   The generated script looks like this:   #!/bin/bash   set -e   set -x   if [ "$YARN_SHELL_ID" == "1" ]; then         appId="application_1440448768987_0001"         user="rkanter"   elif [ "$YARN_SHELL_ID" == "2" ]; then         appId="application_1440448768987_0002"         user="rkanter"   else         echo "Unknown Mapping!"         exit 1   fi   export HADOOP_CLIENT_OPTS="-Xmx1024m"   export HADOOP_CLASSPATH=/dist/share/hadoop/tools/lib/hadoop-archive-logs-2.8.0-SNAPSHOT.jar:/dist/share/hadoop/tools/lib/hadoop-archives-2.8.0-SNAPSHOT.jar   "$HADOOP_PREFIX"/bin/hadoop org.apache.hadoop.tools.HadoopArchiveLogsRunner -appId "$appId" -user "$user" -workingDir /tmp/logs/archive-logs-work -remoteRootLogDir /tmp/logs -suffix logs    */
 annotation|@
 name|VisibleForTesting
 DECL|method|generateScript (File localScript, Path workingDir, Path remoteRootLogDir, String suffix)
@@ -2831,7 +2831,7 @@ name|fw
 operator|.
 name|write
 argument_list|(
-literal|"\n\"$HADOOP_HOME\"/bin/hadoop "
+literal|"\n\"$HADOOP_PREFIX\"/bin/hadoop "
 argument_list|)
 expr_stmt|;
 name|fw
