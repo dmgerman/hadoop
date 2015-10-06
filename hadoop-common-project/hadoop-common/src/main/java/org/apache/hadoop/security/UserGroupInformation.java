@@ -7343,6 +7343,30 @@ block|}
 if|if
 condition|(
 name|cause
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"PrivilegedActionException with no "
+operator|+
+literal|"underlying cause. UGI ["
+operator|+
+name|this
+operator|+
+literal|"]"
+argument_list|,
+name|pae
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|cause
 operator|instanceof
 name|IOException
 condition|)
