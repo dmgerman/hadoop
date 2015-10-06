@@ -3856,7 +3856,7 @@ throw|throw
 operator|new
 name|EOFException
 argument_list|(
-literal|"Premature EOF: no length prefix available"
+literal|"Unexpected EOF while trying to read response from server"
 argument_list|)
 throw|;
 block|}
