@@ -264,34 +264,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -564,20 +536,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|metrics2
 operator|.
 name|lib
@@ -611,6 +569,26 @@ operator|.
 name|util
 operator|.
 name|Progressable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -1228,12 +1206,10 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Deleting corruped rename pending file "
-operator|+
+literal|"Deleting corruped rename pending file {} \n {}"
+argument_list|,
 name|redoFile
-operator|+
-literal|"\n"
-operator|+
+argument_list|,
 name|contents
 argument_list|)
 expr_stmt|;
@@ -1454,27 +1430,18 @@ init|=
 name|getRenamePendingFilePath
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Preparing to write atomic rename state to "
-operator|+
+literal|"Preparing to write atomic rename state to {}"
+argument_list|,
 name|path
 operator|.
 name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|OutputStream
 name|output
 init|=
@@ -1540,7 +1507,7 @@ throw|;
 block|}
 finally|finally
 block|{
-name|IOUtils
+name|NativeAzureFileSystem
 operator|.
 name|cleanup
 argument_list|(
@@ -1694,11 +1661,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Internal error: Exceeded maximum rename pending file size of "
-operator|+
+literal|"Internal error: Exceeded maximum rename pending file size of {} bytes."
+argument_list|,
 name|MAX_RENAME_PENDING_FILE_SIZE
-operator|+
-literal|" bytes."
 argument_list|)
 expr_stmt|;
 comment|// return some bad JSON with an error message to make it human readable
@@ -2852,12 +2817,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|NativeAzureFileSystem
 operator|.
@@ -3168,6 +3133,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|int
 name|result
 init|=
@@ -3213,6 +3180,60 @@ return|return
 name|result
 return|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|e
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|StorageException
+condition|)
+block|{
+name|StorageException
+name|storageExcp
+init|=
+operator|(
+name|StorageException
+operator|)
+name|e
+operator|.
+name|getCause
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Encountered Storage Exception for read on Blob : {}"
+operator|+
+literal|" Exception details: {} Error Code : {}"
+argument_list|,
+name|key
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|storageExcp
+operator|.
+name|getErrorCode
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+throw|throw
+name|e
+throw|;
+block|}
+block|}
 comment|/*      * Reads up to len bytes of data from the input stream into an array of      * bytes. An attempt is made to read as many as len bytes, but a smaller      * number may be read. The number of bytes actually read is returned as an      * integer. This method blocks until input data is available, end of file is      * detected, or an exception is thrown. If len is zero, then no bytes are      * read and 0 is returned; otherwise, there is an attempt to read at least      * one byte. If no byte is available because the stream is at end of file,      * the value -1 is returned; otherwise, at least one byte is read and stored      * into b.      *      * @param b -- the buffer into which data is read      *      * @param off -- the start offset in the array b at which data is written      *      * @param len -- the maximum number of bytes read      *      * @ returns int The total number of byes read into the buffer, or -1 if      * there is no more data because the end of stream is reached.      */
 annotation|@
 name|Override
@@ -3234,6 +3255,8 @@ name|len
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
 block|{
 name|int
 name|result
@@ -3284,6 +3307,60 @@ comment|// Return to the caller with the result.
 return|return
 name|result
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|e
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|StorageException
+condition|)
+block|{
+name|StorageException
+name|storageExcp
+init|=
+operator|(
+name|StorageException
+operator|)
+name|e
+operator|.
+name|getCause
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Encountered Storage Exception for read on Blob : {}"
+operator|+
+literal|" Exception details: {} Error Code : {}"
+argument_list|,
+name|key
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|storageExcp
+operator|.
+name|getErrorCode
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+throw|throw
+name|e
+throw|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -3344,23 +3421,11 @@ argument_list|(
 name|pos
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Seek to position %d. Bytes skipped %d"
+literal|"Seek to position {}. Bytes skipped {}"
 argument_list|,
 name|pos
 argument_list|,
@@ -3368,9 +3433,7 @@ name|this
 operator|.
 name|pos
 argument_list|)
-argument_list|)
 expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -3576,6 +3639,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|out
 operator|.
 name|write
@@ -3583,6 +3648,60 @@ argument_list|(
 name|b
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|e
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|StorageException
+condition|)
+block|{
+name|StorageException
+name|storageExcp
+init|=
+operator|(
+name|StorageException
+operator|)
+name|e
+operator|.
+name|getCause
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Encountered Storage Exception for write on Blob : {}"
+operator|+
+literal|" Exception details: {} Error Code : {}"
+argument_list|,
+name|key
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|storageExcp
+operator|.
+name|getErrorCode
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+throw|throw
+name|e
+throw|;
+block|}
 block|}
 comment|/**      * Writes b.length bytes from the specified byte array to this output      * stream. The general contract for write(b) is that it should have exactly      * the same effect as the call write(b, 0, b.length).      *       * @param b      *          Block of bytes to be written to the output stream.      */
 annotation|@
@@ -3599,6 +3718,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|out
 operator|.
 name|write
@@ -3606,6 +3727,60 @@ argument_list|(
 name|b
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|e
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|StorageException
+condition|)
+block|{
+name|StorageException
+name|storageExcp
+init|=
+operator|(
+name|StorageException
+operator|)
+name|e
+operator|.
+name|getCause
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Encountered Storage Exception for write on Blob : {}"
+operator|+
+literal|" Exception details: {} Error Code : {}"
+argument_list|,
+name|key
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|storageExcp
+operator|.
+name|getErrorCode
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+throw|throw
+name|e
+throw|;
+block|}
 block|}
 comment|/**      * Writes<code>len</code> from the specified byte array starting at offset      *<code>off</code> to the output stream. The general contract for write(b,      * off, len) is that some of the bytes in the array<code>      * b</code b> are written to the output stream in order; element      *<code>b[off]</code> is the first byte written and      *<code>b[off+len-1]</code> is the last byte written by this operation.      *       * @param b      *          Byte array to be written.      * @param off      *          Write this offset in stream.      * @param len      *          Number of bytes to be written.      */
 annotation|@
@@ -3628,6 +3803,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|out
 operator|.
 name|write
@@ -3639,6 +3816,60 @@ argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|e
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|StorageException
+condition|)
+block|{
+name|StorageException
+name|storageExcp
+init|=
+operator|(
+name|StorageException
+operator|)
+name|e
+operator|.
+name|getCause
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Encountered Storage Exception for write on Blob : {}"
+operator|+
+literal|" Exception details: {} Error Code : {}"
+argument_list|,
+name|key
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|storageExcp
+operator|.
+name|getErrorCode
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+throw|throw
+name|e
+throw|;
+block|}
 block|}
 comment|/**      * Get the blob name.      *       * @return String Blob name.      */
 DECL|method|getKey ()
@@ -4272,14 +4503,6 @@ argument_list|,
 name|MAX_AZURE_BLOCK_SIZE
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -4291,8 +4514,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"  blockSize  = "
-operator|+
+literal|"  blockSize  = {}"
+argument_list|,
 name|conf
 operator|.
 name|getLong
@@ -4303,7 +4526,6 @@ name|MAX_AZURE_BLOCK_SIZE
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|createDefaultStore (Configuration conf)
 specifier|private
@@ -4972,15 +5194,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Got unexpected exception trying to get lease on "
-operator|+
+literal|"Got unexpected exception trying to get lease on {} . {}"
+argument_list|,
 name|pathToKey
 argument_list|(
 name|parent
 argument_list|)
-operator|+
-literal|". "
-operator|+
+argument_list|,
 name|e
 operator|.
 name|getMessage
@@ -5027,8 +5247,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to free lease because: "
-operator|+
+literal|"Unable to free lease because: {}"
+argument_list|,
 name|e
 operator|.
 name|getMessage
@@ -5108,7 +5328,7 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|IOUtils
+name|NativeAzureFileSystem
 operator|.
 name|cleanup
 argument_list|(
@@ -5327,27 +5547,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Creating file: "
-operator|+
+literal|"Creating file: {}"
+argument_list|,
 name|f
 operator|.
 name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|containsColon
@@ -5798,27 +6009,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleting file: "
-operator|+
+literal|"Deleting file: {}"
+argument_list|,
 name|f
 operator|.
 name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|Path
 name|absolutePath
 init|=
@@ -5952,34 +6154,21 @@ operator|.
 name|Implicit
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Found an implicit parent directory while trying to"
 operator|+
-literal|" delete the file "
+literal|" delete the file {}. Creating the directory blob for"
 operator|+
+literal|" it in {}."
+argument_list|,
 name|f
-operator|+
-literal|". Creating the directory blob for"
-operator|+
-literal|" it in "
-operator|+
+argument_list|,
 name|parentKey
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
-block|}
 name|store
 operator|.
 name|storeEmptyFolder
@@ -6029,6 +6218,18 @@ else|else
 block|{
 comment|// The path specifies a folder. Recursively delete all entries under the
 comment|// folder.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Directory Delete encountered: {}"
+argument_list|,
+name|f
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Path
 name|parentPath
 init|=
@@ -6077,34 +6278,21 @@ operator|.
 name|Implicit
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Found an implicit parent directory while trying to"
 operator|+
-literal|" delete the directory "
+literal|" delete the directory {}. Creating the directory blob for"
 operator|+
+literal|" it in {}. "
+argument_list|,
 name|f
-operator|+
-literal|". Creating the directory blob for"
-operator|+
-literal|" it in "
-operator|+
+argument_list|,
 name|parentKey
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
-block|}
 name|store
 operator|.
 name|storeEmptyFolder
@@ -6318,6 +6506,18 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// File or directory was successfully deleted.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Delete Successful for : {}"
+argument_list|,
+name|f
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;
@@ -6335,27 +6535,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Getting the file status for "
-operator|+
+literal|"Getting the file status for {}"
+argument_list|,
 name|f
 operator|.
 name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Capture the absolute path and the path to key.
 name|Path
 name|absolutePath
@@ -6422,29 +6613,18 @@ condition|)
 block|{
 comment|// The path is a folder with files in it.
 comment|//
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Path "
-operator|+
+literal|"Path {} is a folder."
+argument_list|,
 name|f
 operator|.
 name|toString
 argument_list|()
-operator|+
-literal|"is a folder."
 argument_list|)
 expr_stmt|;
-block|}
 comment|// If a rename operation for the folder was pending, redo it.
 comment|// Then the file does not exist, so signal that.
 if|if
@@ -6476,29 +6656,18 @@ argument_list|)
 return|;
 block|}
 comment|// The path is a file.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Found the path: "
-operator|+
+literal|"Found the path: {} as a file."
+argument_list|,
 name|f
 operator|.
 name|toString
 argument_list|()
-operator|+
-literal|" as a file."
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Return with reference to a file object.
 return|return
 name|newFile
@@ -6660,27 +6829,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Listing status for "
-operator|+
+literal|"Listing status for {}"
+argument_list|,
 name|f
 operator|.
 name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|Path
 name|absolutePath
 init|=
@@ -6736,14 +6896,6 @@ name|isDir
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -6751,7 +6903,6 @@ argument_list|(
 literal|"Found path as a file"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|FileStatus
@@ -6902,51 +7053,33 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Found path as a directory with "
+literal|"Found path as a directory with {}"
 operator|+
+literal|" files in it."
+argument_list|,
 name|status
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|" files in it."
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
 comment|// There is no metadata found for the path.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Did not find any metadata for path: "
-operator|+
+literal|"Did not find any metadata for path: {}"
+argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
-block|}
 throw|throw
 operator|new
 name|FileNotFoundException
@@ -7402,27 +7535,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Creating directory: "
-operator|+
+literal|"Creating directory: {}"
+argument_list|,
 name|f
 operator|.
 name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|containsColon
@@ -7706,27 +7830,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Opening file: "
-operator|+
+literal|"Opening file: {}"
+argument_list|,
 name|f
 operator|.
 name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|Path
 name|absolutePath
 init|=
@@ -7843,28 +7958,17 @@ name|renamePending
 init|=
 literal|null
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Moving "
-operator|+
+literal|"Moving {} to {}"
+argument_list|,
 name|src
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|dst
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|containsColon
@@ -7970,28 +8074,19 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Destination "
+literal|"Destination {} "
 operator|+
+literal|" is a directory, adjusted the destination to be {}"
+argument_list|,
 name|dst
-operator|+
-literal|" is a directory, adjusted the destination to be "
-operator|+
+argument_list|,
 name|dstKey
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 elseif|else
 if|if
@@ -8002,26 +8097,17 @@ literal|null
 condition|)
 block|{
 comment|// Attempting to overwrite a file using rename()
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Destination "
-operator|+
-name|dst
+literal|"Destination {}"
 operator|+
 literal|" is an already existing file, failing the rename."
+argument_list|,
+name|dst
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -8052,26 +8138,17 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Parent of the destination "
-operator|+
-name|dst
+literal|"Parent of the destination {}"
 operator|+
 literal|" doesn't exist, failing the rename."
+argument_list|,
+name|dst
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -8086,26 +8163,17 @@ name|isDir
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Parent of the destination "
-operator|+
-name|dst
+literal|"Parent of the destination {}"
 operator|+
 literal|" is a file, failing the rename."
+argument_list|,
+name|dst
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -8129,26 +8197,15 @@ literal|null
 condition|)
 block|{
 comment|// Source doesn't exist
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Source "
-operator|+
+literal|"Source {} doesn't exist, failing the rename."
+argument_list|,
 name|src
-operator|+
-literal|" doesn't exist, failing the rename."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -8163,26 +8220,15 @@ name|isDir
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Source "
-operator|+
+literal|"Source {} found as a file, renaming."
+argument_list|,
 name|src
-operator|+
-literal|" found as a file, renaming."
 argument_list|)
 expr_stmt|;
-block|}
 name|store
 operator|.
 name|rename
@@ -8217,30 +8263,17 @@ operator|.
 name|execute
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Renamed "
-operator|+
+literal|"Renamed {} to {} successfully."
+argument_list|,
 name|src
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|dst
-operator|+
-literal|" successfully."
 argument_list|)
 expr_stmt|;
-block|}
 name|renamePending
 operator|.
 name|cleanup
@@ -8262,30 +8295,17 @@ argument_list|(
 name|dstKey
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Renamed "
-operator|+
+literal|"Renamed {} to {} successfully."
+argument_list|,
 name|src
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|dst
-operator|+
-literal|" successfully."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -8491,12 +8511,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Got unexpected exception trying to get lease on "
-operator|+
+literal|"Got unexpected exception trying to get lease on {}. {}"
+argument_list|,
 name|parentKey
-operator|+
-literal|". "
-operator|+
+argument_list|,
 name|e
 operator|.
 name|getMessage
@@ -8535,8 +8553,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unable to free lease on "
-operator|+
+literal|"Unable to free lease on {}"
+argument_list|,
 name|parentKey
 argument_list|,
 name|e
@@ -9293,20 +9311,12 @@ name|fileSystemClosed
 argument_list|()
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Submitting metrics when file system closed took "
-operator|+
+literal|"Submitting metrics when file system closed took {} ms."
+argument_list|,
 operator|(
 name|System
 operator|.
@@ -9315,11 +9325,8 @@ argument_list|()
 operator|-
 name|startTime
 operator|)
-operator|+
-literal|" ms."
 argument_list|)
 expr_stmt|;
-block|}
 name|isClosed
 operator|=
 literal|true
@@ -9370,27 +9377,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleting dangling file "
-operator|+
+literal|"Deleting dangling file {}"
+argument_list|,
 name|file
 operator|.
 name|getKey
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|store
 operator|.
 name|delete
@@ -9456,27 +9454,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Recovering "
-operator|+
+literal|"Recovering {}"
+argument_list|,
 name|file
 operator|.
 name|getKey
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Move to the final destination
 name|String
 name|finalDestinationKey
@@ -9743,24 +9732,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Recovering files with dangling temp data in "
-operator|+
+literal|"Recovering files with dangling temp data in {}"
+argument_list|,
 name|root
 argument_list|)
 expr_stmt|;
-block|}
 name|handleFilesWithDanglingTempData
 argument_list|(
 name|root
@@ -9785,24 +9765,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleting files with dangling temp data in "
-operator|+
+literal|"Deleting files with dangling temp data in {}"
+argument_list|,
 name|root
 argument_list|)
 expr_stmt|;
-block|}
 name|handleFilesWithDanglingTempData
 argument_list|(
 name|root
@@ -9907,6 +9878,66 @@ comment|// Return to the caller with the randomized key.
 return|return
 name|randomizedKey
 return|;
+block|}
+DECL|method|cleanup (Logger log, java.io.Closeable closeable)
+specifier|private
+specifier|static
+name|void
+name|cleanup
+parameter_list|(
+name|Logger
+name|log
+parameter_list|,
+name|java
+operator|.
+name|io
+operator|.
+name|Closeable
+name|closeable
+parameter_list|)
+block|{
+if|if
+condition|(
+name|closeable
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|closeable
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|log
+operator|!=
+literal|null
+condition|)
+block|{
+name|log
+operator|.
+name|debug
+argument_list|(
+literal|"Exception in closing {}"
+argument_list|,
+name|closeable
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 block|}
 block|}
 end_class

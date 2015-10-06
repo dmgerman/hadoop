@@ -296,34 +296,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -583,6 +555,26 @@ operator|.
 name|ajax
 operator|.
 name|JSON
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -910,12 +902,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|AzureNativeFileSystemStore
 operator|.
@@ -2145,8 +2137,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Page blob directories:  "
-operator|+
+literal|"Page blob directories:  {}"
+argument_list|,
 name|setToString
 argument_list|(
 name|pageBlobDirs
@@ -2207,8 +2199,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Atomic rename directories:  "
-operator|+
+literal|"Atomic rename directories: {} "
+argument_list|,
 name|setToString
 argument_list|(
 name|atomicRenameDirs
@@ -2887,23 +2879,11 @@ literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"AzureNativeFileSystemStore init. Settings=%d,%b,%d,{%d,%d,%d,%d},{%b,%f,%f}"
+literal|"AzureNativeFileSystemStore init. Settings={},{},{},{{},{},{},{}},{{},{},{}}"
 argument_list|,
 name|concurrentWrites
 argument_list|,
@@ -2935,9 +2915,7 @@ name|selfThrottlingReadFactor
 argument_list|,
 name|selfThrottlingWriteFactor
 argument_list|)
-argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Connect to Azure storage using anonymous credentials.    *     * @param uri    *          - URI to target blob (R/O access to public blob)    *     * @throws StorageException    *           raised on errors communicating with Azure storage.    * @throws IOException    *           raised on errors performing I/O or setting up the session.    * @throws URISyntaxException    *           raised on creating mal-formed URI's.    */
 DECL|method|connectUsingAnonymousCredentials (final URI uri)
@@ -4181,14 +4159,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"URI syntax error creating URI for %s"
+literal|"URI syntax error creating URI for {}"
 argument_list|,
 name|dir
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -6603,24 +6576,15 @@ name|errMsg
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Retrieving metadata for "
-operator|+
+literal|"Retrieving metadata for {}"
+argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 if|if
@@ -6699,26 +6663,15 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Found "
-operator|+
+literal|"Found {} as an explicit blob. Checking if it's a file or folder."
+argument_list|,
 name|key
-operator|+
-literal|" as an explicit blob. Checking if it's a file or folder."
 argument_list|)
 expr_stmt|;
-block|}
 comment|// The blob exists, so capture the metadata from the blob
 comment|// properties.
 name|blob
@@ -6745,24 +6698,15 @@ name|blob
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} is a folder blob."
+argument_list|,
 name|key
-operator|+
-literal|" is a folder blob."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|FileMetadata
@@ -6790,24 +6734,15 @@ return|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} is a normal blob."
+argument_list|,
 name|key
-operator|+
-literal|" is a normal blob."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|FileMetadata
@@ -6893,8 +6828,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Found blob as a directory-using this file under it to infer its properties "
-operator|+
+literal|"Found blob as a directory-using this file under it to infer its properties {}"
+argument_list|,
 name|blobItem
 operator|.
 name|getUri
@@ -8437,6 +8372,28 @@ name|StorageException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Encountered Storage Exception for delete on Blob: {}, Exception Details: {} Error Code: {}"
+argument_list|,
+name|blob
+operator|.
+name|getUri
+argument_list|()
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|e
+operator|.
+name|getErrorCode
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// On exception, check that if:
 comment|// 1. It's a BlobNotFound exception AND
 comment|// 2. It got there after one-or-more retries THEN
@@ -8486,27 +8443,18 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Swallowing delete exception on retry: "
-operator|+
+literal|"Swallowing delete exception on retry: {}"
+argument_list|,
 name|e
 operator|.
 name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 else|else
@@ -8684,28 +8632,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Moving "
-operator|+
+literal|"Moving {} to {}"
+argument_list|,
 name|srcKey
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|dstKey
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|acquireLease
@@ -9331,8 +9268,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"acquiring lease on "
-operator|+
+literal|"acquiring lease on {}"
+argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
