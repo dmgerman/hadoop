@@ -1918,6 +1918,7 @@ name|errorState
 decl_stmt|;
 DECL|field|stage
 specifier|private
+specifier|volatile
 name|BlockConstructionStage
 name|stage
 decl_stmt|;
@@ -3100,7 +3101,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Allocating new block"
+literal|"Allocating new block: "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|setPipeline
@@ -3714,7 +3717,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Waiting for ack for: {}"
+literal|"{} waiting for ack for: {}"
+argument_list|,
+name|this
 argument_list|,
 name|seqno
 argument_list|)
@@ -5053,6 +5058,15 @@ return|return
 literal|false
 return|;
 block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"start process datanode/external error, {}"
+argument_list|,
+name|this
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|response
@@ -6047,7 +6061,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// check number of datanodes
+comment|// Check number of datanodes. Note that if there is no healthy datanode,
+comment|// this must be internal error because we mark external error in striped
+comment|// outputstream only when all the streamers are in the DATA_STREAMING stage
 if|if
 condition|(
 name|nodes
@@ -6071,6 +6087,8 @@ operator|+
 name|src
 operator|+
 literal|"\" - Aborting..."
+operator|+
+name|this
 decl_stmt|;
 name|LOG
 operator|.
@@ -6728,20 +6746,37 @@ return|return
 name|newBlock
 return|;
 block|}
-DECL|method|getNumBlockWriteRetry ()
-specifier|private
-name|int
-name|getNumBlockWriteRetry
+DECL|method|getExcludedNodes ()
+name|DatanodeInfo
+index|[]
+name|getExcludedNodes
 parameter_list|()
 block|{
 return|return
-name|dfsClient
+name|excludedNodes
 operator|.
-name|getConf
+name|getAllPresent
+argument_list|(
+name|excludedNodes
+operator|.
+name|asMap
 argument_list|()
 operator|.
-name|getNumBlockWriteRetry
+name|keySet
 argument_list|()
+argument_list|)
+operator|.
+name|keySet
+argument_list|()
+operator|.
+name|toArray
+argument_list|(
+operator|new
+name|DatanodeInfo
+index|[
+literal|0
+index|]
+argument_list|)
 return|;
 block|}
 comment|/**    * Open a DataStreamer to a DataNode so that it can be written to.    * This happens when a file is created and each time a new block is allocated.    * Must get block ID and the IDs of the destinations from the namenode.    * Returns the list of target datanodes.    */
@@ -6799,30 +6834,8 @@ name|DatanodeInfo
 index|[]
 name|excluded
 init|=
-name|excludedNodes
-operator|.
-name|getAllPresent
-argument_list|(
-name|excludedNodes
-operator|.
-name|asMap
+name|getExcludedNodes
 argument_list|()
-operator|.
-name|keySet
-argument_list|()
-argument_list|)
-operator|.
-name|keySet
-argument_list|()
-operator|.
-name|toArray
-argument_list|(
-operator|new
-name|DatanodeInfo
-index|[
-literal|0
-index|]
-argument_list|)
 decl_stmt|;
 name|block
 operator|=

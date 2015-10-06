@@ -505,6 +505,8 @@ operator|new
 name|IOException
 argument_list|(
 literal|"Unable to create new block."
+operator|+
+name|this
 argument_list|)
 throw|;
 block|}
