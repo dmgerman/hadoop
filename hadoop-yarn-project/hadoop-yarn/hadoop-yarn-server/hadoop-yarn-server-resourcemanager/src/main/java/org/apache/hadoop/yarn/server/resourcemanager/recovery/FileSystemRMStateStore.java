@@ -4013,10 +4013,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|fs
+name|IOUtils
 operator|.
-name|close
-argument_list|()
+name|closeStream
+argument_list|(
+name|fs
+argument_list|)
 expr_stmt|;
 return|return
 literal|null
