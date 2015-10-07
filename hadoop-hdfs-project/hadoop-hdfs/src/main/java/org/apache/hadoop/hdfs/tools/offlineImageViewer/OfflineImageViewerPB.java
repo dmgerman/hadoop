@@ -867,6 +867,25 @@ argument_list|)
 expr_stmt|;
 block|}
 break|break;
+default|default:
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Invalid processor specified : "
+operator|+
+name|processor
+argument_list|)
+expr_stmt|;
+name|printUsage
+argument_list|()
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
 block|}
 return|return
 literal|0
