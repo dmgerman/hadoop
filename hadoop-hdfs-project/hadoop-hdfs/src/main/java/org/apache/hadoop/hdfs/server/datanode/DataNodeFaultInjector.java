@@ -95,6 +95,21 @@ return|return
 name|instance
 return|;
 block|}
+DECL|method|set (DataNodeFaultInjector injector)
+specifier|public
+specifier|static
+name|void
+name|set
+parameter_list|(
+name|DataNodeFaultInjector
+name|injector
+parameter_list|)
+block|{
+name|instance
+operator|=
+name|injector
+expr_stmt|;
+block|}
 DECL|method|getHdfsBlocksMetadata ()
 specifier|public
 name|void
@@ -117,6 +132,16 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{}
+DECL|method|dropHeartbeatPacket ()
+specifier|public
+name|boolean
+name|dropHeartbeatPacket
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

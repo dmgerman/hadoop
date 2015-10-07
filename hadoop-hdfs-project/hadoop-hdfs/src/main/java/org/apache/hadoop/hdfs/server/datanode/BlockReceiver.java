@@ -86,6 +86,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|EOFException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|FileDescriptor
 import|;
 end_import
@@ -908,6 +918,16 @@ specifier|private
 name|boolean
 name|pinning
 decl_stmt|;
+DECL|field|lastSentTime
+specifier|private
+name|long
+name|lastSentTime
+decl_stmt|;
+DECL|field|maxSendIdleTime
+specifier|private
+name|long
+name|maxSendIdleTime
+decl_stmt|;
 DECL|method|BlockReceiver (final ExtendedBlock block, final StorageType storageType, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode datanode, DataChecksum requestedChecksum, CachingStrategy cachingStrategy, final boolean allowLazyPersist, final boolean pinning)
 name|BlockReceiver
 parameter_list|(
@@ -1064,6 +1084,17 @@ name|datanodeSlowIoWarningThresholdMs
 expr_stmt|;
 comment|// For replaceBlock() calls response should be sent to avoid socketTimeout
 comment|// at clients. So sending with the interval of 0.5 * socketTimeout
+specifier|final
+name|long
+name|readTimeout
+init|=
+name|datanode
+operator|.
+name|getDnConf
+argument_list|()
+operator|.
+name|socketTimeout
+decl_stmt|;
 name|this
 operator|.
 name|responseInterval
@@ -1072,12 +1103,7 @@ call|(
 name|long
 call|)
 argument_list|(
-name|datanode
-operator|.
-name|getDnConf
-argument_list|()
-operator|.
-name|socketTimeout
+name|readTimeout
 operator|*
 literal|0.5
 argument_list|)
@@ -1112,6 +1138,32 @@ operator|.
 name|pinning
 operator|=
 name|pinning
+expr_stmt|;
+name|this
+operator|.
+name|lastSentTime
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+comment|// Downstream will timeout in readTimeout on receiving the next packet.
+comment|// If there is no data traffic, a heartbeat packet is sent at
+comment|// the interval of 0.5*readTimeout. Here, we set 0.9*readTimeout to be
+comment|// the threshold for detecting congestion.
+name|this
+operator|.
+name|maxSendIdleTime
+operator|=
+call|(
+name|long
+call|)
+argument_list|(
+name|readTimeout
+operator|*
+literal|0.9
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -2046,6 +2098,63 @@ name|ioe
 throw|;
 block|}
 block|}
+DECL|method|setLastSentTime (long sentTime)
+specifier|synchronized
+name|void
+name|setLastSentTime
+parameter_list|(
+name|long
+name|sentTime
+parameter_list|)
+block|{
+name|lastSentTime
+operator|=
+name|sentTime
+expr_stmt|;
+block|}
+comment|/**    * It can return false if    * - upstream did not send packet for a long time    * - a packet was received but got stuck in local disk I/O.    * - a packet was received but got stuck on send to mirror.    */
+DECL|method|packetSentInTime ()
+specifier|synchronized
+name|boolean
+name|packetSentInTime
+parameter_list|()
+block|{
+name|long
+name|diff
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|lastSentTime
+decl_stmt|;
+if|if
+condition|(
+name|diff
+operator|>
+name|maxSendIdleTime
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"A packet was last sent "
+operator|+
+name|diff
+operator|+
+literal|" milliseconds ago."
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+return|return
+literal|true
+return|;
+block|}
 comment|/**    * Flush block data and metadata files to disk.    * @throws IOException    */
 DECL|method|flushOrSync (boolean isSync)
 name|void
@@ -2763,6 +2872,30 @@ name|SUCCESS
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Drop heartbeat for testing.
+if|if
+condition|(
+name|seqno
+operator|<
+literal|0
+operator|&&
+name|len
+operator|==
+literal|0
+operator|&&
+name|DataNodeFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|dropHeartbeatPacket
+argument_list|()
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
 comment|//First write the packet to the mirror:
 if|if
 condition|(
@@ -2797,12 +2930,22 @@ name|flush
 argument_list|()
 expr_stmt|;
 name|long
-name|duration
+name|now
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+decl_stmt|;
+name|setLastSentTime
+argument_list|(
+name|now
+argument_list|)
+expr_stmt|;
+name|long
+name|duration
+init|=
+name|now
 operator|-
 name|begin
 decl_stmt|;
@@ -6066,6 +6209,39 @@ name|isInterrupted
 operator|=
 literal|true
 expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|ioe
+operator|instanceof
+name|EOFException
+operator|&&
+operator|!
+name|packetSentInTime
+argument_list|()
+condition|)
+block|{
+comment|// The downstream error was caused by upstream including this
+comment|// node not sending packet in time. Let the upstream determine
+comment|// who is at fault.  If the immediate upstream node thinks it
+comment|// has sent a packet in time, this node will be reported as bad.
+comment|// Otherwise, the upstream node will propagate the error up by
+comment|// closing the connection.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The downstream error might be due to congestion in "
+operator|+
+literal|"upstream including this node. Propagating the error: "
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ioe
+throw|;
 block|}
 else|else
 block|{
