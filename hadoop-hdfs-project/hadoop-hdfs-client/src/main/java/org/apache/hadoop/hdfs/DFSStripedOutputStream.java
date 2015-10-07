@@ -3015,6 +3015,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|enqueueCurrentPacketFull ()
+specifier|synchronized
 name|void
 name|enqueueCurrentPacketFull
 parameter_list|()

@@ -2546,6 +2546,7 @@ literal|null
 expr_stmt|;
 block|}
 DECL|method|enqueueCurrentPacketFull ()
+specifier|synchronized
 name|void
 name|enqueueCurrentPacketFull
 parameter_list|()
