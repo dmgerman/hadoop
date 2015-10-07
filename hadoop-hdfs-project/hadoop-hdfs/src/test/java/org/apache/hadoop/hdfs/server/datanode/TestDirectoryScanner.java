@@ -4158,11 +4158,6 @@ name|void
 name|run
 parameter_list|()
 block|{
-name|scanner
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
 name|nowMs
 operator|.
 name|set
@@ -4172,6 +4167,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|scanner
+operator|.
+name|shutdown
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -4196,6 +4196,23 @@ name|getRunStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|long
+name|finalMs
+init|=
+name|nowMs
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
+comment|// If the scan didn't complete before the shutdown was run, check
+comment|// that the shutdown was timely
+if|if
+condition|(
+name|finalMs
+operator|>
+literal|0
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -4208,10 +4225,7 @@ operator|.
 name|monotonicNow
 argument_list|()
 operator|-
-name|nowMs
-operator|.
-name|get
-argument_list|()
+name|finalMs
 operator|)
 operator|+
 literal|"ms to shutdown"
@@ -4226,14 +4240,12 @@ operator|.
 name|monotonicNow
 argument_list|()
 operator|-
-name|nowMs
-operator|.
-name|get
-argument_list|()
+name|finalMs
 operator|<
 literal|1000L
 argument_list|)
 expr_stmt|;
+block|}
 name|ratio
 operator|=
 operator|(
