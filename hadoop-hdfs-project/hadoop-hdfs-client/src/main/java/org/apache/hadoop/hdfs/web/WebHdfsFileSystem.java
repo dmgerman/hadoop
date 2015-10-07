@@ -1445,8 +1445,14 @@ name|workingDir
 operator|=
 name|makeQualified
 argument_list|(
-name|getHomeDirectory
-argument_list|()
+operator|new
+name|Path
+argument_list|(
+name|getHomeDirectoryString
+argument_list|(
+name|ugi
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|this
