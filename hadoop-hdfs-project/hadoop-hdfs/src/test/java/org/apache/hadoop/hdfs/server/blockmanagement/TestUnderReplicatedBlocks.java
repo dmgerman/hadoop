@@ -202,6 +202,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|internal
+operator|.
+name|util
+operator|.
+name|reflection
+operator|.
+name|Whitebox
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -755,6 +771,27 @@ name|bm
 operator|.
 name|computeDatanodeWork
 argument_list|()
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"The number of replication work pending before targets are "
+operator|+
+literal|"determined should be non-negative."
+argument_list|,
+operator|(
+name|Integer
+operator|)
+name|Whitebox
+operator|.
+name|getInternalState
+argument_list|(
+name|secondDn
+argument_list|,
+literal|"pendingReplicationWithoutTargets"
+argument_list|)
+operator|>=
+literal|0
+argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(

@@ -1230,10 +1230,10 @@ init|=
 literal|false
 decl_stmt|;
 comment|// The number of replication work pending before targets are determined
-DECL|field|PendingReplicationWithoutTargets
+DECL|field|pendingReplicationWithoutTargets
 specifier|private
 name|int
-name|PendingReplicationWithoutTargets
+name|pendingReplicationWithoutTargets
 init|=
 literal|0
 decl_stmt|;
@@ -2727,7 +2727,7 @@ name|void
 name|incrementPendingReplicationWithoutTargets
 parameter_list|()
 block|{
-name|PendingReplicationWithoutTargets
+name|pendingReplicationWithoutTargets
 operator|++
 expr_stmt|;
 block|}
@@ -2736,7 +2736,7 @@ name|void
 name|decrementPendingReplicationWithoutTargets
 parameter_list|()
 block|{
-name|PendingReplicationWithoutTargets
+name|pendingReplicationWithoutTargets
 operator|--
 expr_stmt|;
 block|}
@@ -2970,7 +2970,7 @@ name|getNumberOfBlocksToBeReplicated
 parameter_list|()
 block|{
 return|return
-name|PendingReplicationWithoutTargets
+name|pendingReplicationWithoutTargets
 operator|+
 name|replicateBlocks
 operator|.

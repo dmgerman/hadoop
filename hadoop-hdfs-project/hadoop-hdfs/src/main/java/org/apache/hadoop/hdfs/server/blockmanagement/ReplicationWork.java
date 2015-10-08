@@ -121,6 +121,25 @@ argument_list|,
 name|priority
 argument_list|)
 expr_stmt|;
+assert|assert
+name|getSrcNodes
+argument_list|()
+operator|.
+name|length
+operator|==
+literal|1
+operator|:
+literal|"There should be exactly 1 source node that have been selected"
+assert|;
+name|getSrcNodes
+argument_list|()
+index|[
+literal|0
+index|]
+operator|.
+name|incrementPendingReplicationWithoutTargets
+argument_list|()
+expr_stmt|;
 name|BlockManager
 operator|.
 name|LOG
