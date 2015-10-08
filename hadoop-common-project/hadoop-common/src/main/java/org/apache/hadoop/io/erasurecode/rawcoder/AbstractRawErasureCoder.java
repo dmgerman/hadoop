@@ -40,6 +40,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configured
@@ -56,21 +70,15 @@ name|ByteBuffer
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Arrays
-import|;
-end_import
-
 begin_comment
 comment|/**  * A common class of basic facilities to be shared by encoder and decoder  *  * It implements the {@link RawErasureCoder} interface.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|AbstractRawErasureCoder
 specifier|public
 specifier|abstract

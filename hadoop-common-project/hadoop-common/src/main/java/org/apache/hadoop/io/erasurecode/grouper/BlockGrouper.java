@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|erasurecode
@@ -73,6 +87,10 @@ comment|/**  * As part of a codec, to handle how to form a block group for encod
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|BlockGrouper
 specifier|public
 class|class

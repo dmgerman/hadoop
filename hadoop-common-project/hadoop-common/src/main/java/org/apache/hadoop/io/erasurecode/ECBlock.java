@@ -18,11 +18,29 @@ name|erasurecode
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  * A wrapper of block level data source/output that {@link ECChunk}s can be  * extracted from. For HDFS, it can be an HDFS block (250MB). Note it only cares  * about erasure coding specific logic thus avoids coupling with any HDFS block  * details. We can have something like HdfsBlock extend it.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|ECBlock
 specifier|public
 class|class

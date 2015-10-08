@@ -40,6 +40,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|erasurecode
@@ -73,6 +87,10 @@ comment|/**  * An abstract raw erasure decoder that's to be inherited by new dec
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|AbstractRawErasureDecoder
 specifier|public
 specifier|abstract

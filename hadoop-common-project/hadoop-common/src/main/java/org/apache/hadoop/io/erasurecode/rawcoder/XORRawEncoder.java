@@ -30,11 +30,29 @@ name|ByteBuffer
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  * A raw encoder in XOR code scheme in pure Java, adapted from HDFS-RAID.  *  * XOR code is an important primitive code scheme in erasure coding and often  * used in advanced codes, like HitchHiker and LRC, though itself is rarely  * deployed independently.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|XORRawEncoder
 specifier|public
 class|class

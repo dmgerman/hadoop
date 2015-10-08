@@ -30,6 +30,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|erasurecode
@@ -43,6 +57,10 @@ comment|/**  * A dump utility class for debugging data erasure coding/decoding i
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|DumpUtil
 specifier|public
 specifier|final

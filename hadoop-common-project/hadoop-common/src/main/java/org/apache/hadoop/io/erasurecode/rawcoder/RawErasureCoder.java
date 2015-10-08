@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configurable
@@ -39,6 +53,10 @@ comment|/**  * RawErasureCoder is a common interface for {@link RawErasureEncode
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|interface|RawErasureCoder
 specifier|public
 interface|interface

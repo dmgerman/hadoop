@@ -48,6 +48,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|StorageType
@@ -199,6 +213,10 @@ comment|/**  * This class extends {@link DataStreamer} to support writing stripe
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|StripedDataStreamer
 specifier|public
 class|class

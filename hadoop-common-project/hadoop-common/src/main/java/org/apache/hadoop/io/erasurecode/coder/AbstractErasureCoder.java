@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configured
@@ -55,6 +69,10 @@ comment|/**  * A common class of basic facilities to be shared by encoder and de
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|AbstractErasureCoder
 specifier|public
 specifier|abstract

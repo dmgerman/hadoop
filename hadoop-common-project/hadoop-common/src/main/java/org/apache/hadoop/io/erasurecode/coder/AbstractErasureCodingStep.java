@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|erasurecode
@@ -41,6 +55,10 @@ comment|/**  * Abstract class for common facilities shared by {@link ErasureEnco
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|AbstractErasureCodingStep
 specifier|public
 specifier|abstract

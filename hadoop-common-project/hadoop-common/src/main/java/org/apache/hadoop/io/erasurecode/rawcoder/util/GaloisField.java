@@ -52,11 +52,29 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  * Implementation of Galois field arithmetic with 2^p elements. The input must  * be unsigned integers. It's ported from HDFS-RAID, slightly adapted.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|GaloisField
 specifier|public
 class|class

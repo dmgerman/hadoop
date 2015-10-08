@@ -20,11 +20,29 @@ name|rawcoder
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  * Raw erasure coder factory that can be used to create raw encoder and decoder.  * It helps in configuration since only one factory class is needed to be  * configured.  */
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|interface|RawErasureCoderFactory
 specifier|public
 interface|interface

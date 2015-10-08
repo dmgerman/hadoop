@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|erasurecode
@@ -107,6 +121,10 @@ comment|/**  * Xor erasure encoder that encodes a block group.  *  * It implemen
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|XORErasureEncoder
 specifier|public
 class|class
