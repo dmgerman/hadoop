@@ -3926,6 +3926,18 @@ name|DEFAULT_NM_MAX_PER_DISK_UTILIZATION_PERCENTAGE
 init|=
 literal|90.0F
 decl_stmt|;
+comment|/**    * The low threshold percentage of disk space used when an offline disk is    * marked as online. Values can range from 0.0 to 100.0. The value shouldn't    * be more than NM_MAX_PER_DISK_UTILIZATION_PERCENTAGE. If its value is    * more than NM_MAX_PER_DISK_UTILIZATION_PERCENTAGE or not set, it will be    * set to the same value as NM_MAX_PER_DISK_UTILIZATION_PERCENTAGE.    * This applies to nm-local-dirs and nm-log-dirs.    */
+DECL|field|NM_WM_LOW_PER_DISK_UTILIZATION_PERCENTAGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_WM_LOW_PER_DISK_UTILIZATION_PERCENTAGE
+init|=
+name|NM_DISK_HEALTH_CHECK_PREFIX
+operator|+
+literal|"disk-utilization-watermark-low-per-disk-percentage"
+decl_stmt|;
 comment|/**    * The minimum space that must be available on a local dir for it to be used.    * This applies to nm-local-dirs and nm-log-dirs.    */
 DECL|field|NM_MIN_PER_DISK_FREE_SPACE_MB
 specifier|public
