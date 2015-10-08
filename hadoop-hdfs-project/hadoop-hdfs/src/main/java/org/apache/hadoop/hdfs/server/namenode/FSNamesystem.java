@@ -9121,6 +9121,30 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Get the creation time of the file system.    * Notice that this time is initialized to NameNode format time, and updated    * to upgrade time during upgrades.    * @return time in milliseconds.    * See {@link org.apache.hadoop.util.Time#now()}.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getCTime ()
+name|long
+name|getCTime
+parameter_list|()
+block|{
+return|return
+name|fsImage
+operator|==
+literal|null
+condition|?
+literal|0
+else|:
+name|fsImage
+operator|.
+name|getStorage
+argument_list|()
+operator|.
+name|getCTime
+argument_list|()
+return|;
+block|}
 comment|/**    * Version of @see #getNamespaceInfo() that is not protected by a lock.    */
 DECL|method|unprotectedGetNamespaceInfo ()
 name|NamespaceInfo

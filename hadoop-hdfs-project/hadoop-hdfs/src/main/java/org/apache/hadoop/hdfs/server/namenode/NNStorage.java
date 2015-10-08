@@ -2462,7 +2462,10 @@ argument_list|,
 name|newBlockPoolID
 argument_list|()
 argument_list|,
-literal|0L
+name|Time
+operator|.
+name|now
+argument_list|()
 argument_list|)
 return|;
 block|}
