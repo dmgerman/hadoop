@@ -535,7 +535,7 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 name|NullPointerException
-name|e
+name|npe
 init|=
 operator|new
 name|NullPointerException
@@ -545,7 +545,7 @@ name|Mockito
 operator|.
 name|doThrow
 argument_list|(
-name|e
+name|npe
 argument_list|)
 operator|.
 name|when
@@ -572,15 +572,15 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Throwable
-name|t
+name|Exception
+name|e
 parameter_list|)
 block|{
 name|fail
 argument_list|(
 literal|"DataNode shutdown should not have thrown exception "
 operator|+
-name|t
+name|e
 argument_list|)
 expr_stmt|;
 block|}

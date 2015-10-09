@@ -9425,11 +9425,20 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Throwable
+name|Exception
 name|e
 parameter_list|)
 block|{
 comment|// Ignore, since the out of band messaging is advisory.
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Exception interrupting DataXceiverServer: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|// Interrupt the checkDiskErrorThread and terminate it.
