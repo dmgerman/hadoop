@@ -166,6 +166,15 @@ name|KILL_CMD
 init|=
 literal|"kill"
 decl_stmt|;
+DECL|field|FAIL_CMD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FAIL_CMD
+init|=
+literal|"fail"
+decl_stmt|;
 DECL|field|MOVE_TO_QUEUE_CMD
 specifier|public
 specifier|static
@@ -222,8 +231,6 @@ argument_list|)
 expr_stmt|;
 name|client
 operator|=
-name|YarnClient
-operator|.
 name|createYarnClient
 argument_list|()
 expr_stmt|;
@@ -240,6 +247,19 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|createYarnClient ()
+specifier|protected
+name|YarnClient
+name|createYarnClient
+parameter_list|()
+block|{
+return|return
+name|YarnClient
+operator|.
+name|createYarnClient
+argument_list|()
+return|;
 block|}
 DECL|method|setSysOutPrintStream (PrintStream sysout)
 specifier|public

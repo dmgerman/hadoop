@@ -855,6 +855,21 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    *<p>    * Fail an application attempt identified by given ID.    *</p>    *    * @param applicationAttemptId    *          {@link ApplicationAttemptId} of the attempt to fail.    * @throws YarnException    *           in case of errors or if YARN rejects the request due to    *           access-control restrictions.    * @throws IOException    * @see #getQueueAclsInfo()    */
+DECL|method|failApplicationAttempt ( ApplicationAttemptId applicationAttemptId)
+specifier|public
+specifier|abstract
+name|void
+name|failApplicationAttempt
+parameter_list|(
+name|ApplicationAttemptId
+name|applicationAttemptId
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    *<p>    * Kill an application identified by given ID.    *</p>    *     * @param applicationId    *          {@link ApplicationId} of the application that needs to be killed    * @throws YarnException    *           in case of errors or if YARN rejects the request due to    *           access-control restrictions.    * @throws IOException    * @see #getQueueAclsInfo()    */
 DECL|method|killApplication (ApplicationId applicationId)
 specifier|public

@@ -1880,6 +1880,29 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|failApplicationAttempt (ApplicationAttemptId attemptId)
+specifier|public
+name|void
+name|failApplicationAttempt
+parameter_list|(
+name|ApplicationAttemptId
+name|attemptId
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+name|client
+operator|.
+name|failApplicationAttempt
+argument_list|(
+name|attemptId
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|killApplication (ApplicationId applicationId)
 specifier|public
 name|void

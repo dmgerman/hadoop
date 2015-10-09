@@ -225,6 +225,15 @@ name|PAIR_SEPARATOR
 init|=
 literal|'\t'
 decl_stmt|;
+DECL|field|FAIL_ATTEMPT_REQUEST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FAIL_ATTEMPT_REQUEST
+init|=
+literal|"Fail Attempt Request"
+decl_stmt|;
 DECL|field|KILL_APP_REQUEST
 specifier|public
 specifier|static

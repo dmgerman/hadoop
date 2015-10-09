@@ -37,6 +37,9 @@ block|,
 DECL|enumConstant|KILL
 name|KILL
 block|,
+DECL|enumConstant|FAIL
+name|FAIL
+block|,
 comment|// Source: AMLauncher
 DECL|enumConstant|LAUNCHED
 name|LAUNCHED
