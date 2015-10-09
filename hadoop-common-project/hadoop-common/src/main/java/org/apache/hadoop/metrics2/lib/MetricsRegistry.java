@@ -632,7 +632,7 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * Create a mutable metric that estimates quantiles of a stream of values    * @param name of the metric    * @param desc metric description    * @param sampleName of the metric (e.g., "Ops")    * @param valueName of the metric (e.g., "Time" or "Latency")    * @param interval rollover interval of estimator in seconds    * @return a new quantile estimator object    */
+comment|/**    * Create a mutable metric that estimates quantiles of a stream of values    * @param name of the metric    * @param desc metric description    * @param sampleName of the metric (e.g., "Ops")    * @param valueName of the metric (e.g., "Time" or "Latency")    * @param interval rollover interval of estimator in seconds    * @return a new quantile estimator object    * @throws MetricsException if interval is not a positive integer    */
 DECL|method|newQuantiles (String name, String desc, String sampleName, String valueName, int interval)
 specifier|public
 specifier|synchronized
@@ -660,6 +660,25 @@ argument_list|(
 name|name
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|interval
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|MetricsException
+argument_list|(
+literal|"Interval should be positive.  Value passed"
+operator|+
+literal|" is: "
+operator|+
+name|interval
+argument_list|)
+throw|;
+block|}
 name|MutableQuantiles
 name|ret
 init|=

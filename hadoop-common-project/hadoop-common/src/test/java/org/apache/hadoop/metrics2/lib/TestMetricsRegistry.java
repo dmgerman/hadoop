@@ -720,6 +720,64 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test adding illegal parameters    */
+annotation|@
+name|Test
+DECL|method|testAddIllegalParameters ()
+specifier|public
+name|void
+name|testAddIllegalParameters
+parameter_list|()
+block|{
+specifier|final
+name|MetricsRegistry
+name|r
+init|=
+operator|new
+name|MetricsRegistry
+argument_list|(
+literal|"IllegalParamTest"
+argument_list|)
+decl_stmt|;
+name|expectMetricsException
+argument_list|(
+literal|"Interval should be positive.  Value passed is: -20"
+argument_list|,
+operator|new
+name|Runnable
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|r
+operator|.
+name|newQuantiles
+argument_list|(
+literal|"q1"
+argument_list|,
+literal|"New Quantile 1"
+argument_list|,
+literal|"qq1"
+argument_list|,
+literal|"qv1"
+argument_list|,
+operator|(
+name|int
+operator|)
+operator|-
+literal|20
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Ignore
 DECL|method|expectMetricsException (String prefix, Runnable fun)
