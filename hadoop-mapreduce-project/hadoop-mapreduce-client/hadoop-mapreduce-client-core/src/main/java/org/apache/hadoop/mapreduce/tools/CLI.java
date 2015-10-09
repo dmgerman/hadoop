@@ -2801,7 +2801,7 @@ decl_stmt|;
 name|String
 name|taskStates
 init|=
-literal|"running, completed"
+literal|"pending, running, completed, failed, killed"
 decl_stmt|;
 if|if
 condition|(
