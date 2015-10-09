@@ -226,6 +226,11 @@ argument_list|()
 operator|.
 name|getShortUserName
 argument_list|()
+operator|+
+literal|" with renewer "
+operator|+
+name|getRenewer
+argument_list|()
 return|;
 block|}
 comment|/** @return a string representation of the token */

@@ -2057,6 +2057,52 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testDelegationTokenIdentifierToString ()
+specifier|public
+name|void
+name|testDelegationTokenIdentifierToString
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|DelegationTokenIdentifier
+name|dtId
+init|=
+operator|new
+name|DelegationTokenIdentifier
+argument_list|(
+operator|new
+name|Text
+argument_list|(
+literal|"SomeUser"
+argument_list|)
+argument_list|,
+operator|new
+name|Text
+argument_list|(
+literal|"JobTracker"
+argument_list|)
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"HDFS_DELEGATION_TOKEN token 0"
+operator|+
+literal|" for SomeUser with renewer JobTracker"
+argument_list|,
+name|dtId
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
