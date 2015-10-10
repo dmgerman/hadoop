@@ -4616,6 +4616,9 @@ name|e
 operator|.
 name|getCause
 argument_list|()
+operator|.
+name|getCause
+argument_list|()
 operator|instanceof
 name|AccessControlException
 operator|)
@@ -5380,9 +5383,12 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"Exception should have suggested the use of -pb."
+literal|"Failure exception should have suggested the use of -pb."
 argument_list|,
 name|exception
+operator|.
+name|getCause
+argument_list|()
 operator|.
 name|getCause
 argument_list|()
@@ -5400,9 +5406,12 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"Exception should have suggested the use of -skipCrc."
+literal|"Failure exception should have suggested the use of -skipCrc."
 argument_list|,
 name|exception
+operator|.
+name|getCause
+argument_list|()
 operator|.
 name|getCause
 argument_list|()

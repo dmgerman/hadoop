@@ -1618,9 +1618,6 @@ operator|+
 name|target
 argument_list|,
 name|e
-operator|.
-name|getCause
-argument_list|()
 argument_list|)
 throw|;
 block|}
