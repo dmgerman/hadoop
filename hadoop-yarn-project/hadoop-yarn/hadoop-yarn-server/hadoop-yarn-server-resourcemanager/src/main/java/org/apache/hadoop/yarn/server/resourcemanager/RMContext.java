@@ -214,6 +214,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|nodelabels
+operator|.
+name|RMDelegatedNodeLabelsUpdater
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|placement
 operator|.
 name|PlacementManager
@@ -691,6 +711,19 @@ name|setNodeLabelManager
 parameter_list|(
 name|RMNodeLabelsManager
 name|mgr
+parameter_list|)
+function_decl|;
+DECL|method|getRMDelegatedNodeLabelsUpdater ()
+name|RMDelegatedNodeLabelsUpdater
+name|getRMDelegatedNodeLabelsUpdater
+parameter_list|()
+function_decl|;
+DECL|method|setRMDelegatedNodeLabelsUpdater ( RMDelegatedNodeLabelsUpdater nodeLabelsUpdater)
+name|void
+name|setRMDelegatedNodeLabelsUpdater
+parameter_list|(
+name|RMDelegatedNodeLabelsUpdater
+name|nodeLabelsUpdater
 parameter_list|)
 function_decl|;
 DECL|method|getEpoch ()

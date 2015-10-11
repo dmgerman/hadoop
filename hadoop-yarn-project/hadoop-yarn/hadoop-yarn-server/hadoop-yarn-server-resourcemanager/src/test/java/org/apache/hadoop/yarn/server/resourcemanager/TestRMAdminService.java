@@ -4994,10 +4994,10 @@ name|YarnException
 operator|.
 name|class
 argument_list|)
-DECL|method|testModifyLabelsOnNodesWithDistributedConfigurationEnabled ()
+DECL|method|testModifyLabelsOnNodesWithCentralizedConfigurationDisabled ()
 specifier|public
 name|void
-name|testModifyLabelsOnNodesWithDistributedConfigurationEnabled
+name|testModifyLabelsOnNodesWithCentralizedConfigurationDisabled
 parameter_list|()
 throws|throws
 name|IOException
@@ -5017,9 +5017,9 @@ name|rm
 operator|.
 name|adminService
 operator|.
-name|isDistributedNodeLabelConfiguration
+name|isCentralizedNodeLabelConfiguration
 operator|=
-literal|true
+literal|false
 expr_stmt|;
 operator|(
 operator|(
@@ -5111,10 +5111,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testRemoveClusterNodeLabelsWithDistributedConfigurationEnabled ()
+DECL|method|testRemoveClusterNodeLabelsWithCentralizedConfigurationDisabled ()
 specifier|public
 name|void
-name|testRemoveClusterNodeLabelsWithDistributedConfigurationEnabled
+name|testRemoveClusterNodeLabelsWithCentralizedConfigurationDisabled
 parameter_list|()
 throws|throws
 name|IOException
@@ -5160,9 +5160,9 @@ name|rm
 operator|.
 name|adminService
 operator|.
-name|isDistributedNodeLabelConfiguration
+name|isCentralizedNodeLabelConfiguration
 operator|=
-literal|true
+literal|false
 expr_stmt|;
 comment|// by default, distributed configuration for node label is disabled, this
 comment|// should pass

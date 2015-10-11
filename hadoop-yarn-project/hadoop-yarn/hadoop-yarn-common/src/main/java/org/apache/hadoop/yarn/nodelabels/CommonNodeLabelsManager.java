@@ -793,12 +793,12 @@ name|nodeLabelsEnabled
 init|=
 literal|false
 decl_stmt|;
-DECL|field|isDistributedNodeLabelConfiguration
+DECL|field|isCentralizedNodeLabelConfiguration
 specifier|private
 name|boolean
-name|isDistributedNodeLabelConfiguration
+name|isCentralizedNodeLabelConfiguration
 init|=
-literal|false
+literal|true
 decl_stmt|;
 comment|/**    * A<code>Host</code> can have multiple<code>Node</code>s     */
 DECL|class|Host
@@ -1325,11 +1325,11 @@ operator|.
 name|DEFAULT_NODE_LABELS_ENABLED
 argument_list|)
 expr_stmt|;
-name|isDistributedNodeLabelConfiguration
+name|isCentralizedNodeLabelConfiguration
 operator|=
 name|YarnConfiguration
 operator|.
-name|isDistributedNodeLabelConfiguration
+name|isCentralizedNodeLabelConfiguration
 argument_list|(
 name|conf
 argument_list|)
@@ -1384,7 +1384,8 @@ name|store
 operator|.
 name|recover
 argument_list|(
-name|isDistributedNodeLabelConfiguration
+operator|!
+name|isCentralizedNodeLabelConfiguration
 argument_list|)
 expr_stmt|;
 block|}
@@ -3320,13 +3321,16 @@ literal|null
 operator|!=
 name|dispatcher
 operator|&&
-operator|!
-name|isDistributedNodeLabelConfiguration
+name|isCentralizedNodeLabelConfiguration
 condition|)
 block|{
-comment|// In case of DistributedNodeLabelConfiguration, no need to save the the
+comment|// In case of DistributedNodeLabelConfiguration or
+comment|// DelegatedCentralizedNodeLabelConfiguration, no need to save the the
 comment|// NodeLabels Mapping to the back-end store, as on RM restart/failover
 comment|// NodeLabels are collected from NM through Register/Heartbeat again
+comment|// in case of DistributedNodeLabelConfiguration and collected from
+comment|// RMNodeLabelsMappingProvider in case of
+comment|// DelegatedCentralizedNodeLabelConfiguration
 name|dispatcher
 operator|.
 name|getEventHandler

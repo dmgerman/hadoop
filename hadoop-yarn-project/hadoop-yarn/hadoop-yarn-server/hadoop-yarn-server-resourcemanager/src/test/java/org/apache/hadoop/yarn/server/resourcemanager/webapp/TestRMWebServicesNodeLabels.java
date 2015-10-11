@@ -3464,12 +3464,12 @@ argument_list|(
 literal|"posted node nodelabel"
 argument_list|)
 expr_stmt|;
-comment|//setting rmWebService for Distributed NodeLabel Configuration
+comment|//setting rmWebService for non Centralized NodeLabel Configuration
 name|rmWebService
 operator|.
-name|isDistributedNodeLabelConfiguration
+name|isCentralizedNodeLabelConfiguration
 operator|=
-literal|true
+literal|false
 expr_stmt|;
 comment|// Case1 : Replace labels using node-to-labels
 name|ntli
