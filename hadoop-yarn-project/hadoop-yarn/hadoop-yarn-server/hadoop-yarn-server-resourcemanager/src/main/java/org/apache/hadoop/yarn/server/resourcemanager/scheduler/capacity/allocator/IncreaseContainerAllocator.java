@@ -1631,9 +1631,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// We already allocated something
+comment|// We may have allocated something
 if|if
 condition|(
+name|assigned
+operator|!=
+literal|null
+operator|&&
 operator|!
 name|assigned
 operator|.
