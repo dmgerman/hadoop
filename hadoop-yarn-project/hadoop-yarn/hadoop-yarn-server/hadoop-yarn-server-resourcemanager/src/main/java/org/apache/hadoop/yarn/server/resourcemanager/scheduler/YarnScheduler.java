@@ -1005,6 +1005,15 @@ name|Priority
 name|getMaxClusterLevelAppPriority
 parameter_list|()
 function_decl|;
+comment|/**    * Get SchedulerNode corresponds to nodeId.    *    * @param nodeId the node id of RMNode    *    * @return SchedulerNode corresponds to nodeId    */
+DECL|method|getSchedulerNode (NodeId nodeId)
+name|SchedulerNode
+name|getSchedulerNode
+parameter_list|(
+name|NodeId
+name|nodeId
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

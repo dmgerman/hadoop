@@ -3517,6 +3517,8 @@ name|SchedulerApplicationAttempt
 name|attempt
 parameter_list|)
 function_decl|;
+annotation|@
+name|Override
 DECL|method|getSchedulerNode (NodeId nodeId)
 specifier|public
 name|SchedulerNode
