@@ -1098,22 +1098,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|util
-operator|.
-name|LightWeightLinkedSet
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|ErasureCodingPolicy
@@ -1640,7 +1624,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|LightWeightLinkedSet
+name|LightWeightHashSet
 argument_list|<
 name|BlockInfo
 argument_list|>
@@ -7171,23 +7155,6 @@ name|blocksToRecover
 parameter_list|)
 block|{
 name|int
-name|requiredReplication
-decl_stmt|,
-name|numEffectiveReplicas
-decl_stmt|;
-name|List
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|containingNodes
-decl_stmt|;
-name|BlockCollection
-name|bc
-decl_stmt|;
-name|int
-name|additionalReplRequired
-decl_stmt|;
-name|int
 name|scheduledWork
 init|=
 literal|0
@@ -8945,7 +8912,7 @@ operator|.
 name|getDatanodeDescriptor
 argument_list|()
 decl_stmt|;
-name|LightWeightLinkedSet
+name|LightWeightHashSet
 argument_list|<
 name|BlockInfo
 argument_list|>
@@ -14622,7 +14589,7 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-name|LightWeightLinkedSet
+name|LightWeightHashSet
 argument_list|<
 name|BlockInfo
 argument_list|>
@@ -15683,7 +15650,7 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-name|LightWeightLinkedSet
+name|LightWeightHashSet
 argument_list|<
 name|BlockInfo
 argument_list|>
@@ -15709,7 +15676,7 @@ block|{
 name|excessBlocks
 operator|=
 operator|new
-name|LightWeightLinkedSet
+name|LightWeightHashSet
 argument_list|<>
 argument_list|()
 expr_stmt|;
@@ -16013,7 +15980,7 @@ comment|//
 comment|// We've removed a block from a node, so it's definitely no longer
 comment|// in "excess" there.
 comment|//
-name|LightWeightLinkedSet
+name|LightWeightHashSet
 argument_list|<
 name|BlockInfo
 argument_list|>
@@ -17160,7 +17127,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|LightWeightLinkedSet
+name|LightWeightHashSet
 argument_list|<
 name|BlockInfo
 argument_list|>
@@ -18995,7 +18962,7 @@ operator|.
 name|getDatanodeUuid
 argument_list|()
 decl_stmt|;
-name|LightWeightLinkedSet
+name|LightWeightHashSet
 argument_list|<
 name|BlockInfo
 argument_list|>

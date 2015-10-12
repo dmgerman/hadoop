@@ -838,7 +838,7 @@ name|hdfs
 operator|.
 name|util
 operator|.
-name|LightWeightLinkedSet
+name|LightWeightHashSet
 import|;
 end_import
 
@@ -4406,7 +4406,7 @@ condition|(
 name|showReplicaDetails
 condition|)
 block|{
-name|LightWeightLinkedSet
+name|LightWeightHashSet
 argument_list|<
 name|BlockInfo
 argument_list|>
