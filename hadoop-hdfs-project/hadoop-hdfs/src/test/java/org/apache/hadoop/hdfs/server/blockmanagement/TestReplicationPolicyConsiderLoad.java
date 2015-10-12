@@ -251,6 +251,15 @@ operator|.
 name|getName
 argument_list|()
 block|}
+block|,
+block|{
+name|BlockPlacementPolicyWithUpgradeDomain
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+block|}
 block|}
 argument_list|)
 return|;
@@ -626,9 +635,7 @@ name|targetSet
 init|=
 operator|new
 name|HashSet
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|(
 name|Arrays
 operator|.

@@ -601,9 +601,7 @@ argument_list|()
 else|:
 operator|new
 name|HashSet
-argument_list|<
-name|Node
-argument_list|>
+argument_list|<>
 argument_list|(
 name|excludedNodes
 argument_list|)
@@ -648,9 +646,7 @@ name|results
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|boolean
@@ -1000,9 +996,7 @@ name|excludedNodes
 operator|=
 operator|new
 name|HashSet
-argument_list|<
-name|Node
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
@@ -1044,9 +1038,7 @@ name|results
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
+argument_list|<>
 argument_list|(
 name|chosenStorage
 argument_list|)
@@ -1322,11 +1314,7 @@ name|map
 init|=
 operator|new
 name|EnumMap
-argument_list|<
-name|StorageType
-argument_list|,
-name|Integer
-argument_list|>
+argument_list|<>
 argument_list|(
 name|StorageType
 operator|.
@@ -1530,9 +1518,7 @@ name|oldExcludedNodes
 init|=
 operator|new
 name|HashSet
-argument_list|<
-name|Node
-argument_list|>
+argument_list|<>
 argument_list|(
 name|excludedNodes
 argument_list|)
@@ -4391,7 +4377,7 @@ name|storage
 return|;
 block|}
 comment|/**    * Pick up replica node set for deleting replica as over-replicated.     * First set contains replica nodes on rack with more than one    * replica while second set contains remaining replica nodes.    * So pick up first set if not empty. If first is empty, then pick second.    */
-DECL|method|pickupReplicaSet ( Collection<DatanodeStorageInfo> first, Collection<DatanodeStorageInfo> second)
+DECL|method|pickupReplicaSet ( Collection<DatanodeStorageInfo> moreThanOne, Collection<DatanodeStorageInfo> exactlyOne)
 specifier|protected
 name|Collection
 argument_list|<
@@ -4403,24 +4389,24 @@ name|Collection
 argument_list|<
 name|DatanodeStorageInfo
 argument_list|>
-name|first
+name|moreThanOne
 parameter_list|,
 name|Collection
 argument_list|<
 name|DatanodeStorageInfo
 argument_list|>
-name|second
+name|exactlyOne
 parameter_list|)
 block|{
 return|return
-name|first
+name|moreThanOne
 operator|.
 name|isEmpty
 argument_list|()
 condition|?
-name|second
+name|exactlyOne
 else|:
-name|first
+name|moreThanOne
 return|;
 block|}
 annotation|@

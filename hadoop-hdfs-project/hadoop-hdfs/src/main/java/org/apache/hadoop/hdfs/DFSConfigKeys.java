@@ -2265,6 +2265,24 @@ name|DFS_NAMENODE_MAX_XATTR_SIZE_HARD_LIMIT
 init|=
 literal|32768
 decl_stmt|;
+DECL|field|DFS_UPGRADE_DOMAIN_FACTOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_UPGRADE_DOMAIN_FACTOR
+init|=
+literal|"dfs.namenode.upgrade.domain.factor"
+decl_stmt|;
+DECL|field|DFS_UPGRADE_DOMAIN_FACTOR_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_UPGRADE_DOMAIN_FACTOR_DEFAULT
+init|=
+name|DFS_REPLICATION_DEFAULT
+decl_stmt|;
 comment|//Following keys have no defaults
 DECL|field|DFS_DATANODE_DATA_DIR_KEY
 specifier|public

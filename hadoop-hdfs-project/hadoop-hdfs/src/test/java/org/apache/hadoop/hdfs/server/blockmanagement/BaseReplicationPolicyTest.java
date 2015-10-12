@@ -665,7 +665,6 @@ name|i
 index|]
 argument_list|)
 expr_stmt|;
-comment|//bm.getDatanodeManager().getHost2DatanodeMap().add(dataNodes[i]);
 name|bm
 operator|.
 name|getDatanodeManager
