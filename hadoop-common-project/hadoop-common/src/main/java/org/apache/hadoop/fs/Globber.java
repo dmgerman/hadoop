@@ -254,10 +254,15 @@ name|this
 operator|.
 name|tracer
 operator|=
+name|FsTracer
+operator|.
+name|get
+argument_list|(
 name|fs
 operator|.
-name|getTracer
+name|getConf
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|Globber (FileContext fc, Path pathPattern, PathFilter filter)

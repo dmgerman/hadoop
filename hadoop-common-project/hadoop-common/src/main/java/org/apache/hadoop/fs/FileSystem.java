@@ -818,22 +818,6 @@ DECL|field|resolveSymlinks
 name|boolean
 name|resolveSymlinks
 decl_stmt|;
-DECL|field|tracer
-specifier|private
-name|Tracer
-name|tracer
-decl_stmt|;
-DECL|method|getTracer ()
-specifier|protected
-specifier|final
-name|Tracer
-name|getTracer
-parameter_list|()
-block|{
-return|return
-name|tracer
-return|;
-block|}
 comment|/**    * This method adds a file system for testing so that we can find it later. It    * is only for testing.    * @param uri the uri to store it under    * @param conf the configuration to store it under    * @param fs the file system to store    * @throws IOException    */
 DECL|method|addFileSystemForTesting (URI uri, Configuration conf, FileSystem fs)
 specifier|static
@@ -7905,12 +7889,6 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
-name|fs
-operator|.
-name|tracer
-operator|=
-name|tracer
-expr_stmt|;
 name|fs
 operator|.
 name|initialize
