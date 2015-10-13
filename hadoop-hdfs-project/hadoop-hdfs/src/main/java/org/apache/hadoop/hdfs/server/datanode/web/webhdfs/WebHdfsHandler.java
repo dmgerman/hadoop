@@ -1067,6 +1067,8 @@ operator|new
 name|DataNodeUGIProvider
 argument_list|(
 name|params
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|ugi
