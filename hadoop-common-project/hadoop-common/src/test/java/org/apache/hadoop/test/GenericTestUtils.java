@@ -1107,6 +1107,23 @@ name|appender
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|clearOutput ()
+specifier|public
+name|void
+name|clearOutput
+parameter_list|()
+block|{
+name|sw
+operator|.
+name|getBuffer
+argument_list|()
+operator|.
+name|setLength
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Mockito answer helper that triggers one latch as soon as the    * method is called, then waits on another before continuing.    */
 DECL|class|DelayAnswer
