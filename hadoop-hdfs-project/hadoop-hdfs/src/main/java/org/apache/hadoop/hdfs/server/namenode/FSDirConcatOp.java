@@ -863,12 +863,16 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|// TODO currently we do not support concatenating EC files
 if|if
 condition|(
 name|srcINodeFile
 operator|.
-name|isStriped
+name|getErasureCodingPolicyID
+argument_list|()
+operator|!=
+name|targetINode
+operator|.
+name|getErasureCodingPolicyID
 argument_list|()
 condition|)
 block|{
@@ -876,11 +880,18 @@ throw|throw
 operator|new
 name|HadoopIllegalArgumentException
 argument_list|(
-literal|"concat: the src file "
+literal|"Source file "
 operator|+
 name|src
 operator|+
-literal|" is with striped blocks"
+literal|" and target file "
+operator|+
+name|targetIIP
+operator|.
+name|getPath
+argument_list|()
+operator|+
+literal|" have different erasure coding policy"
 argument_list|)
 throw|;
 block|}
