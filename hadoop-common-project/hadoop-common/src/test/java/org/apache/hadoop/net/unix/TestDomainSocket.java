@@ -3993,11 +3993,16 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"/foo' is world-writable.  "
-operator|+
-literal|"Its permissions are 0707.  Please fix this or select a "
-operator|+
-literal|"different socket path."
+literal|"world-writable"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"/foo'"
 argument_list|,
 name|e
 argument_list|)
@@ -4040,7 +4045,7 @@ name|validateSocketPathSecurity0
 argument_list|(
 literal|"/foo"
 argument_list|,
-literal|1
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
