@@ -86,6 +86,16 @@ name|javax
 operator|.
 name|naming
 operator|.
+name|CommunicationException
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|naming
+operator|.
 name|NameNotFoundException
 import|;
 end_import
@@ -706,7 +716,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Local revers DNS hostname is "
+literal|"Local reverse DNS hostname is "
 operator|+
 name|s
 argument_list|)
@@ -715,6 +725,8 @@ block|}
 catch|catch
 parameter_list|(
 name|NameNotFoundException
+decl||
+name|CommunicationException
 name|e
 parameter_list|)
 block|{

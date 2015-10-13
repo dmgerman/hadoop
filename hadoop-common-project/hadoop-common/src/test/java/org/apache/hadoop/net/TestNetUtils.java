@@ -3191,6 +3191,39 @@ name|void
 name|testNormalizeHostName
 parameter_list|()
 block|{
+name|String
+name|oneHost
+init|=
+literal|"1.kanyezone.appspot.com"
+decl_stmt|;
+try|try
+block|{
+name|InetAddress
+operator|.
+name|getByName
+argument_list|(
+name|oneHost
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnknownHostException
+name|e
+parameter_list|)
+block|{
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+literal|"Network not resolving "
+operator|+
+name|oneHost
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 name|List
 argument_list|<
 name|String
@@ -3201,18 +3234,13 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-operator|new
-name|String
-index|[]
-block|{
 literal|"127.0.0.1"
-block|,
+argument_list|,
 literal|"localhost"
-block|,
-literal|"1.kanyezone.appspot.com"
-block|,
+argument_list|,
+name|oneHost
+argument_list|,
 literal|"UnknownHost123"
-block|}
 argument_list|)
 decl_stmt|;
 name|List
@@ -3228,17 +3256,48 @@ argument_list|(
 name|hosts
 argument_list|)
 decl_stmt|;
+name|String
+name|summary
+init|=
+literal|"original ["
+operator|+
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+name|hosts
+argument_list|,
+literal|", "
+argument_list|)
+operator|+
+literal|"]"
+operator|+
+literal|" normalized ["
+operator|+
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+name|normalizedHosts
+argument_list|,
+literal|", "
+argument_list|)
+operator|+
+literal|"]"
+decl_stmt|;
 comment|// when ipaddress is normalized, same address is expected in return
 name|assertEquals
 argument_list|(
-name|normalizedHosts
+name|summary
+argument_list|,
+name|hosts
 operator|.
 name|get
 argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-name|hosts
+name|normalizedHosts
 operator|.
 name|get
 argument_list|(
@@ -3249,6 +3308,10 @@ expr_stmt|;
 comment|// for normalizing a resolvable hostname, resolved ipaddress is expected in return
 name|assertFalse
 argument_list|(
+literal|"Element 1 equal "
+operator|+
+name|summary
+argument_list|,
 name|normalizedHosts
 operator|.
 name|get
@@ -3269,12 +3332,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|normalizedHosts
-operator|.
-name|get
-argument_list|(
-literal|1
-argument_list|)
+name|summary
 argument_list|,
 name|hosts
 operator|.
@@ -3282,12 +3340,23 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
+argument_list|,
+name|normalizedHosts
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// this address HADOOP-8372: when normalizing a valid resolvable hostname start with numeric,
 comment|// its ipaddress is expected to return
 name|assertFalse
 argument_list|(
+literal|"Element 2 equal "
+operator|+
+name|summary
+argument_list|,
 name|normalizedHosts
 operator|.
 name|get
@@ -3309,14 +3378,16 @@ expr_stmt|;
 comment|// return the same hostname after normalizing a irresolvable hostname.
 name|assertEquals
 argument_list|(
-name|normalizedHosts
+name|summary
+argument_list|,
+name|hosts
 operator|.
 name|get
 argument_list|(
 literal|3
 argument_list|)
 argument_list|,
-name|hosts
+name|normalizedHosts
 operator|.
 name|get
 argument_list|(
