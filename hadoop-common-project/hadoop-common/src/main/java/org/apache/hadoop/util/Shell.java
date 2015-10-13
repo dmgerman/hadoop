@@ -42,6 +42,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -144,29 +154,15 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|commons
+name|common
 operator|.
-name|logging
+name|annotations
 operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|VisibleForTesting
 import|;
 end_import
 
@@ -198,29 +194,42 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
-comment|/**   * A base class for running a Unix command.  *   *<code>Shell</code> can be used to run unix commands like<code>du</code> or  *<code>df</code>. It also offers facilities to gate commands by   * time-intervals.  */
+comment|/**  * A base class for running a Shell command.  *  *<code>Shell</code> can be used to run shell commands like<code>du</code> or  *<code>df</code>. It also offers facilities to gate commands by   * time-intervals.  */
 end_comment
 
 begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|LimitedPrivate
-argument_list|(
-block|{
-literal|"HDFS"
-block|,
-literal|"MapReduce"
-block|}
-argument_list|)
+name|Public
 annotation|@
 name|InterfaceStability
 operator|.
-name|Unstable
+name|Evolving
 DECL|class|Shell
-specifier|abstract
 specifier|public
+specifier|abstract
 class|class
 name|Shell
 block|{
@@ -228,45 +237,60 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|Shell
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|IS_JAVA7_OR_ABOVE
+comment|/**    * Text to include when there are windows-specific problems.    * {@value}    */
+DECL|field|WINDOWS_PROBLEMS
 specifier|private
 specifier|static
-name|boolean
-name|IS_JAVA7_OR_ABOVE
+specifier|final
+name|String
+name|WINDOWS_PROBLEMS
 init|=
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"java.version"
-argument_list|)
-operator|.
-name|substring
-argument_list|(
-literal|0
-argument_list|,
-literal|3
-argument_list|)
-operator|.
-name|compareTo
-argument_list|(
-literal|"1.7"
-argument_list|)
-operator|>=
-literal|0
+literal|"https://wiki.apache.org/hadoop/WindowsProblems"
 decl_stmt|;
+comment|/**    * Name of the windows utils binary: {@value}.    */
+DECL|field|WINUTILS_EXE
+specifier|static
+specifier|final
+name|String
+name|WINUTILS_EXE
+init|=
+literal|"winutils.exe"
+decl_stmt|;
+comment|/**    * System property for the Hadoop home directory: {@value}.    */
+DECL|field|SYSPROP_HADOOP_HOME_DIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SYSPROP_HADOOP_HOME_DIR
+init|=
+literal|"hadoop.home.dir"
+decl_stmt|;
+comment|/**    * Environment variable for Hadoop's home dir: {@value}.    */
+DECL|field|ENV_HADOOP_HOME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ENV_HADOOP_HOME
+init|=
+literal|"HADOOP_HOME"
+decl_stmt|;
+comment|/**    * query to see if system is Java 7 or later.    * Now that Hadoop requires Java 7 or later, this always returns true.    * @deprecated This call isn't needed any more: please remove uses of it.    * @return true, always.    */
+annotation|@
+name|Deprecated
 DECL|method|isJava7OrAbove ()
 specifier|public
 specifier|static
@@ -275,10 +299,22 @@ name|isJava7OrAbove
 parameter_list|()
 block|{
 return|return
-name|IS_JAVA7_OR_ABOVE
+literal|true
 return|;
 block|}
 comment|/**    * Maximum command line length in Windows    * KB830473 documents this as 8191    */
+DECL|field|WINDOWS_MAX_SHELL_LENGTH
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|WINDOWS_MAX_SHELL_LENGTH
+init|=
+literal|8191
+decl_stmt|;
+comment|/**    * mis-spelling of {@link #WINDOWS_MAX_SHELL_LENGTH}.    * @deprecated use the correctly spelled constant.    */
+annotation|@
+name|Deprecated
 DECL|field|WINDOWS_MAX_SHELL_LENGHT
 specifier|public
 specifier|static
@@ -286,9 +322,9 @@ specifier|final
 name|int
 name|WINDOWS_MAX_SHELL_LENGHT
 init|=
-literal|8191
+name|WINDOWS_MAX_SHELL_LENGTH
 decl_stmt|;
-comment|/**    * Checks if a given command (String[]) fits in the Windows maximum command line length    * Note that the input is expected to already include space delimiters, no extra count    * will be added for delimiters.    *    * @param commands command parts, including any space delimiters    */
+comment|/**    * Checks if a given command (String[]) fits in the Windows maximum command    * line length Note that the input is expected to already include space    * delimiters, no extra count will be added for delimiters.    *    * @param commands command parts, including any space delimiters    */
 DECL|method|checkWindowsCommandLineLength (String...commands)
 specifier|public
 specifier|static
@@ -327,7 +363,7 @@ if|if
 condition|(
 name|len
 operator|>
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 condition|)
 block|{
 throw|throw
@@ -338,13 +374,13 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"The command line has a length of %d exceeds maximum allowed length of %d. "
+literal|"The command line has a length of %d exceeds maximum allowed length"
 operator|+
-literal|"Command starts with: %s"
+literal|" of %d. Command starts with: %s"
 argument_list|,
 name|len
 argument_list|,
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 argument_list|,
 name|StringUtils
 operator|.
@@ -366,17 +402,17 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** a Unix command to get the current user's name */
+comment|/** a Unix command to get the current user's name: {@value}. */
 DECL|field|USER_NAME_COMMAND
 specifier|public
-specifier|final
 specifier|static
+specifier|final
 name|String
 name|USER_NAME_COMMAND
 init|=
 literal|"whoami"
 decl_stmt|;
-comment|/** Windows CreateProcess synchronization object */
+comment|/** Windows<code>CreateProcess</code> synchronization object. */
 DECL|field|WindowsProcessLaunchLock
 specifier|public
 specifier|static
@@ -412,6 +448,7 @@ block|,
 DECL|enumConstant|OS_TYPE_OTHER
 name|OS_TYPE_OTHER
 block|}
+comment|/**    * Get the type of the operating system, as determined from parsing    * the<code>os.name</code> property.    */
 DECL|field|osType
 specifier|public
 specifier|static
@@ -423,8 +460,8 @@ name|getOSType
 argument_list|()
 decl_stmt|;
 DECL|method|getOSType ()
-specifier|static
 specifier|private
+specifier|static
 name|OSType
 name|getOSType
 parameter_list|()
@@ -653,7 +690,7 @@ argument_list|(
 literal|"ppc64"
 argument_list|)
 decl_stmt|;
-comment|/** a Unix command to get the current user's groups list */
+comment|/** a Unix command to get the current user's groups list. */
 DECL|method|getGroupsCommand ()
 specifier|public
 specifier|static
@@ -690,7 +727,7 @@ literal|"groups"
 block|}
 return|;
 block|}
-comment|/**    * a Unix command to get a given user's groups list.    * If the OS is not WINDOWS, the command will get the user's primary group    * first and finally get the groups list which includes the primary group.    * i.e. the user's primary group will be included twice.    */
+comment|/**    * A command to get a given user's groups list.    * If the OS is not WINDOWS, the command will get the user's primary group    * first and finally get the groups list which includes the primary group.    * i.e. the user's primary group will be included twice.    */
 DECL|method|getGroupsForUserCommand (final String user)
 specifier|public
 specifier|static
@@ -703,17 +740,16 @@ name|String
 name|user
 parameter_list|)
 block|{
-comment|//'groups username' command return is non-consistent across different unixes
+comment|//'groups username' command return is inconsistent across different unixes
 return|return
-operator|(
 name|WINDOWS
-operator|)
 condition|?
 operator|new
 name|String
 index|[]
 block|{
-name|WINUTILS
+name|getWinutilsPath
+argument_list|()
 block|,
 literal|"groups"
 block|,
@@ -744,7 +780,7 @@ name|user
 block|}
 return|;
 block|}
-comment|/** a Unix command to get a given netgroup's user list */
+comment|/** A command to get a given netgroup's user list. */
 DECL|method|getUsersForNetgroupCommand (final String netgroup)
 specifier|public
 specifier|static
@@ -759,9 +795,7 @@ parameter_list|)
 block|{
 comment|//'groups username' command return is non-consistent across different unixes
 return|return
-operator|(
 name|WINDOWS
-operator|)
 condition|?
 operator|new
 name|String
@@ -808,7 +842,8 @@ operator|new
 name|String
 index|[]
 block|{
-name|WINUTILS
+name|getWinutilsPath
+argument_list|()
 block|,
 literal|"ls"
 block|,
@@ -825,7 +860,7 @@ literal|"-ld"
 block|}
 return|;
 block|}
-comment|/** Return a command to set permission */
+comment|/** Return a command to set permission. */
 DECL|method|getSetPermissionCommand (String perm, boolean recursive)
 specifier|public
 specifier|static
@@ -854,7 +889,8 @@ operator|new
 name|String
 index|[]
 block|{
-name|WINUTILS
+name|getWinutilsPath
+argument_list|()
 block|,
 literal|"chmod"
 block|,
@@ -886,7 +922,8 @@ operator|new
 name|String
 index|[]
 block|{
-name|WINUTILS
+name|getWinutilsPath
+argument_list|()
 block|,
 literal|"chmod"
 block|,
@@ -965,7 +1002,7 @@ return|return
 name|cmdWithFile
 return|;
 block|}
-comment|/** Return a command to set owner */
+comment|/** Return a command to set owner. */
 DECL|method|getSetOwnerCommand (String owner)
 specifier|public
 specifier|static
@@ -986,7 +1023,8 @@ operator|new
 name|String
 index|[]
 block|{
-name|WINUTILS
+name|getWinutilsPath
+argument_list|()
 block|,
 literal|"chown"
 block|,
@@ -1007,7 +1045,7 @@ name|owner
 block|}
 return|;
 block|}
-comment|/** Return a command to create symbolic links */
+comment|/** Return a command to create symbolic links. */
 DECL|method|getSymlinkCommand (String target, String link)
 specifier|public
 specifier|static
@@ -1029,7 +1067,8 @@ operator|new
 name|String
 index|[]
 block|{
-name|WINUTILS
+name|getWinutilsPath
+argument_list|()
 block|,
 literal|"symlink"
 block|,
@@ -1052,7 +1091,7 @@ name|link
 block|}
 return|;
 block|}
-comment|/** Return a command to read the target of the a symbolic link*/
+comment|/** Return a command to read the target of the a symbolic link. */
 DECL|method|getReadlinkCommand (String link)
 specifier|public
 specifier|static
@@ -1071,7 +1110,8 @@ operator|new
 name|String
 index|[]
 block|{
-name|WINUTILS
+name|getWinutilsPath
+argument_list|()
 block|,
 literal|"readlink"
 block|,
@@ -1088,7 +1128,7 @@ name|link
 block|}
 return|;
 block|}
-comment|/** Return a command for determining if process with specified pid is alive. */
+comment|/**    * Return a command for determining if process with specified pid is alive.    * @param pid process ID    * @return a<code>kill -0</code> command or equivalent    */
 DECL|method|getCheckProcessIsAliveCommand (String pid)
 specifier|public
 specifier|static
@@ -1109,7 +1149,7 @@ name|pid
 argument_list|)
 return|;
 block|}
-comment|/** Return a command to send a signal to a given pid */
+comment|/** Return a command to send a signal to a given pid. */
 DECL|method|getSignalKillCommand (int code, String pid)
 specifier|public
 specifier|static
@@ -1146,7 +1186,8 @@ index|[]
 block|{
 name|Shell
 operator|.
-name|WINUTILS
+name|getWinutilsPath
+argument_list|()
 block|,
 literal|"task"
 block|,
@@ -1165,7 +1206,8 @@ index|[]
 block|{
 name|Shell
 operator|.
-name|WINUTILS
+name|getWinutilsPath
+argument_list|()
 block|,
 literal|"task"
 block|,
@@ -1223,6 +1265,7 @@ block|}
 return|;
 block|}
 block|}
+comment|/** Regular expression for environment variables: {@value}. */
 DECL|field|ENV_NAME_REGEX
 specifier|public
 specifier|static
@@ -1232,7 +1275,7 @@ name|ENV_NAME_REGEX
 init|=
 literal|"[A-Za-z_][A-Za-z0-9_]*"
 decl_stmt|;
-comment|/** Return a regular expression string that match environment variables */
+comment|/** Return a regular expression string that match environment variables. */
 DECL|method|getEnvironmentVariableRegex ()
 specifier|public
 specifier|static
@@ -1258,7 +1301,7 @@ operator|+
 literal|")"
 return|;
 block|}
-comment|/**    * Returns a File referencing a script with the given basename, inside the    * given parent directory.  The file extension is inferred by platform: ".cmd"    * on Windows, or ".sh" otherwise.    *     * @param parent File parent directory    * @param basename String script file basename    * @return File referencing the script in the directory    */
+comment|/**    * Returns a File referencing a script with the given basename, inside the    * given parent directory.  The file extension is inferred by platform:    *<code>".cmd"</code> on Windows, or<code>".sh"</code> otherwise.    *     * @param parent File parent directory    * @param basename String script file basename    * @return File referencing the script in the directory    */
 DECL|method|appendScriptExtension (File parent, String basename)
 specifier|public
 specifier|static
@@ -1285,7 +1328,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns a script file name with the given basename.  The file extension is    * inferred by platform: ".cmd" on Windows, or ".sh" otherwise.    *     * @param basename String script file basename    * @return String script file name    */
+comment|/**    * Returns a script file name with the given basename.    *    * The file extension is inferred by platform:    *<code>".cmd"</code> on Windows, or<code>".sh"</code> otherwise.    *    * @param basename String script file basename    * @return String script file name    */
 DECL|method|appendScriptExtension (String basename)
 specifier|public
 specifier|static
@@ -1308,7 +1351,7 @@ literal|".sh"
 operator|)
 return|;
 block|}
-comment|/**    * Returns a command to run the given script.  The script interpreter is    * inferred by platform: cmd on Windows or bash otherwise.    *     * @param script File script to run    * @return String[] command to run the script    */
+comment|/**    * Returns a command to run the given script.  The script interpreter is    * inferred by platform: cmd on Windows or bash otherwise.    *    * @param script File script to run    * @return String[] command to run the script    */
 DECL|method|getRunScriptCommand (File script)
 specifier|public
 specifier|static
@@ -1352,7 +1395,7 @@ name|absolutePath
 block|}
 return|;
 block|}
-comment|/** a Unix command to set permission */
+comment|/** a Unix command to set permission: {@value}. */
 DECL|field|SET_PERMISSION_COMMAND
 specifier|public
 specifier|static
@@ -1362,7 +1405,7 @@ name|SET_PERMISSION_COMMAND
 init|=
 literal|"chmod"
 decl_stmt|;
-comment|/** a Unix command to set owner */
+comment|/** a Unix command to set owner: {@value}. */
 DECL|field|SET_OWNER_COMMAND
 specifier|public
 specifier|static
@@ -1372,7 +1415,7 @@ name|SET_OWNER_COMMAND
 init|=
 literal|"chown"
 decl_stmt|;
-comment|/** a Unix command to set the change user's groups list */
+comment|/** a Unix command to set the change user's groups list: {@value}. */
 DECL|field|SET_GROUP_COMMAND
 specifier|public
 specifier|static
@@ -1382,7 +1425,7 @@ name|SET_GROUP_COMMAND
 init|=
 literal|"chgrp"
 decl_stmt|;
-comment|/** a Unix command to create a link */
+comment|/** a Unix command to create a link: {@value}. */
 DECL|field|LINK_COMMAND
 specifier|public
 specifier|static
@@ -1392,7 +1435,7 @@ name|LINK_COMMAND
 init|=
 literal|"ln"
 decl_stmt|;
-comment|/** a Unix command to get a link target */
+comment|/** a Unix command to get a link target: {@value}. */
 DECL|field|READ_LINK_COMMAND
 specifier|public
 specifier|static
@@ -1402,7 +1445,7 @@ name|READ_LINK_COMMAND
 init|=
 literal|"readlink"
 decl_stmt|;
-comment|/**Time after which the executing script would be timedout*/
+comment|/**Time after which the executing script would be timedout. */
 DECL|field|timeOutInterval
 specifier|protected
 name|long
@@ -1413,16 +1456,25 @@ decl_stmt|;
 comment|/** If or not script timed out*/
 DECL|field|timedOut
 specifier|private
+specifier|final
 name|AtomicBoolean
 name|timedOut
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
 decl_stmt|;
-comment|/** Centralized logic to discover and validate the sanity of the Hadoop     *  home directory. Returns either NULL or a directory that exists and     *  was specified via either -Dhadoop.home.dir or the HADOOP_HOME ENV     *  variable.  This does a lot of work so it should only be called     *  privately for initialization once per process.    **/
+comment|/**    *  Centralized logic to discover and validate the sanity of the Hadoop    *  home directory.    *    *  This does a lot of work so it should only be called    *  privately for initialization once per process.    *    * @return A directory that exists and via was specified on the command line    * via<code>-Dhadoop.home.dir</code> or the<code>HADOOP_HOME</code>    * environment variable.    * @throws FileNotFoundException if the properties are absent or the specified    * path is not a reference to a valid directory.    */
 DECL|method|checkHadoopHome ()
 specifier|private
 specifier|static
-name|String
+name|File
 name|checkHadoopHome
 parameter_list|()
+throws|throws
+name|FileNotFoundException
 block|{
 comment|// first check the Dflag hadoop.home.dir with JVM scope
 name|String
@@ -1432,7 +1484,7 @@ name|System
 operator|.
 name|getProperty
 argument_list|(
-literal|"hadoop.home.dir"
+name|SYSPROP_HADOOP_HOME_DIR
 argument_list|)
 decl_stmt|;
 comment|// fall back to the system/user-global env variable
@@ -1449,11 +1501,107 @@ name|System
 operator|.
 name|getenv
 argument_list|(
-literal|"HADOOP_HOME"
+name|ENV_HADOOP_HOME
 argument_list|)
 expr_stmt|;
 block|}
-try|try
+return|return
+name|checkHadoopHomeInner
+argument_list|(
+name|home
+argument_list|)
+return|;
+block|}
+comment|/*   A set of exception strings used to construct error messages;   these are referred to in tests   */
+DECL|field|E_DOES_NOT_EXIST
+specifier|static
+specifier|final
+name|String
+name|E_DOES_NOT_EXIST
+init|=
+literal|"does not exist"
+decl_stmt|;
+DECL|field|E_IS_RELATIVE
+specifier|static
+specifier|final
+name|String
+name|E_IS_RELATIVE
+init|=
+literal|"is not an absolute path."
+decl_stmt|;
+DECL|field|E_NOT_DIRECTORY
+specifier|static
+specifier|final
+name|String
+name|E_NOT_DIRECTORY
+init|=
+literal|"is not a directory."
+decl_stmt|;
+DECL|field|E_NO_EXECUTABLE
+specifier|static
+specifier|final
+name|String
+name|E_NO_EXECUTABLE
+init|=
+literal|"Could not locate Hadoop executable"
+decl_stmt|;
+DECL|field|E_NOT_EXECUTABLE_FILE
+specifier|static
+specifier|final
+name|String
+name|E_NOT_EXECUTABLE_FILE
+init|=
+literal|"Not an executable file"
+decl_stmt|;
+DECL|field|E_HADOOP_PROPS_UNSET
+specifier|static
+specifier|final
+name|String
+name|E_HADOOP_PROPS_UNSET
+init|=
+name|ENV_HADOOP_HOME
+operator|+
+literal|" and "
+operator|+
+name|SYSPROP_HADOOP_HOME_DIR
+operator|+
+literal|" are unset."
+decl_stmt|;
+DECL|field|E_HADOOP_PROPS_EMPTY
+specifier|static
+specifier|final
+name|String
+name|E_HADOOP_PROPS_EMPTY
+init|=
+name|ENV_HADOOP_HOME
+operator|+
+literal|" or "
+operator|+
+name|SYSPROP_HADOOP_HOME_DIR
+operator|+
+literal|" set to an empty string"
+decl_stmt|;
+DECL|field|E_NOT_A_WINDOWS_SYSTEM
+specifier|static
+specifier|final
+name|String
+name|E_NOT_A_WINDOWS_SYSTEM
+init|=
+literal|"Not a Windows system"
+decl_stmt|;
+comment|/**    *  Validate the accessibility of the Hadoop home directory.    *    * @return A directory that is expected to be the hadoop home directory    * @throws FileNotFoundException if the specified    * path is not a reference to a valid directory.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|checkHadoopHomeInner (String home)
+specifier|static
+name|File
+name|checkHadoopHomeInner
+parameter_list|(
+name|String
+name|home
+parameter_list|)
+throws|throws
+name|FileNotFoundException
 block|{
 comment|// couldn't find either setting for hadoop's home directory
 if|if
@@ -1465,13 +1613,14 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileNotFoundException
 argument_list|(
-literal|"HADOOP_HOME or hadoop.home.dir are not set."
+name|E_HADOOP_PROPS_UNSET
 argument_list|)
 throw|;
 block|}
-if|if
+comment|// strip off leading and trailing double quotes
+while|while
 condition|(
 name|home
 operator|.
@@ -1479,7 +1628,20 @@ name|startsWith
 argument_list|(
 literal|"\""
 argument_list|)
-operator|&&
+condition|)
+block|{
+name|home
+operator|=
+name|home
+operator|.
+name|substring
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+while|while
+condition|(
 name|home
 operator|.
 name|endsWith
@@ -1494,7 +1656,7 @@ name|home
 operator|.
 name|substring
 argument_list|(
-literal|1
+literal|0
 argument_list|,
 name|home
 operator|.
@@ -1505,7 +1667,25 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-comment|// check that the home setting is actually a directory that exists
+comment|// after stripping any quotes, check for home dir being non-empty
+if|if
+condition|(
+name|home
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+name|E_HADOOP_PROPS_EMPTY
+argument_list|)
+throw|;
+block|}
+comment|// check that the hadoop home dir value
+comment|// is an absolute reference to a directory
 name|File
 name|homedir
 init|=
@@ -1522,13 +1702,47 @@ name|homedir
 operator|.
 name|isAbsolute
 argument_list|()
-operator|||
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"Hadoop home directory "
+operator|+
+name|homedir
+operator|+
+literal|" "
+operator|+
+name|E_IS_RELATIVE
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 operator|!
 name|homedir
 operator|.
 name|exists
 argument_list|()
-operator|||
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"Hadoop home directory "
+operator|+
+name|homedir
+operator|+
+literal|" "
+operator|+
+name|E_DOES_NOT_EXIST
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 operator|!
 name|homedir
 operator|.
@@ -1538,22 +1752,56 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileNotFoundException
 argument_list|(
 literal|"Hadoop home directory "
 operator|+
 name|homedir
 operator|+
-literal|" does not exist, is not a directory, or is not an absolute path."
+literal|" "
+operator|+
+name|E_NOT_DIRECTORY
 argument_list|)
 throw|;
 block|}
+return|return
+name|homedir
+return|;
+block|}
+comment|/**    * The Hadoop home directory.    */
+DECL|field|HADOOP_HOME_FILE
+specifier|private
+specifier|static
+specifier|final
+name|File
+name|HADOOP_HOME_FILE
+decl_stmt|;
+comment|/**    * Rethrowable cause for the failure to determine the hadoop    * home directory    */
+DECL|field|HADOOP_HOME_DIR_FAILURE_CAUSE
+specifier|private
+specifier|static
+specifier|final
+name|IOException
+name|HADOOP_HOME_DIR_FAILURE_CAUSE
+decl_stmt|;
+static|static
+block|{
+name|File
+name|home
+decl_stmt|;
+name|IOException
+name|ex
+decl_stmt|;
+try|try
+block|{
 name|home
 operator|=
-name|homedir
-operator|.
-name|getCanonicalPath
+name|checkHadoopHome
 argument_list|()
+expr_stmt|;
+name|ex
+operator|=
+literal|null
 expr_stmt|;
 block|}
 catch|catch
@@ -1580,94 +1828,249 @@ name|ioe
 argument_list|)
 expr_stmt|;
 block|}
+name|ex
+operator|=
+name|ioe
+expr_stmt|;
 name|home
 operator|=
 literal|null
 expr_stmt|;
 block|}
-return|return
+name|HADOOP_HOME_FILE
+operator|=
 name|home
-return|;
+expr_stmt|;
+name|HADOOP_HOME_DIR_FAILURE_CAUSE
+operator|=
+name|ex
+expr_stmt|;
 block|}
-DECL|field|HADOOP_HOME_DIR
+comment|/**    * Optionally extend an error message with some OS-specific text.    * @param message core error message    * @return error message, possibly with some extra text    */
+DECL|method|addOsText (String message)
 specifier|private
 specifier|static
 name|String
-name|HADOOP_HOME_DIR
-init|=
-name|checkHadoopHome
-argument_list|()
-decl_stmt|;
-comment|// Public getter, throws an exception if HADOOP_HOME failed validation
-comment|// checks and is being referenced downstream.
+name|addOsText
+parameter_list|(
+name|String
+name|message
+parameter_list|)
+block|{
+return|return
+name|WINDOWS
+condition|?
+operator|(
+name|message
+operator|+
+literal|" -see "
+operator|+
+name|WINDOWS_PROBLEMS
+operator|)
+else|:
+name|message
+return|;
+block|}
+comment|/**    * Create a {@code FileNotFoundException} with the inner nested cause set    * to the given exception. Compensates for the fact that FNFE doesn't    * have an initializer that takes an exception.    * @param text error text    * @param ex inner exception    * @return a new exception to throw.    */
+DECL|method|fileNotFoundException (String text, Exception ex)
+specifier|private
+specifier|static
+name|FileNotFoundException
+name|fileNotFoundException
+parameter_list|(
+name|String
+name|text
+parameter_list|,
+name|Exception
+name|ex
+parameter_list|)
+block|{
+return|return
+operator|(
+name|FileNotFoundException
+operator|)
+operator|new
+name|FileNotFoundException
+argument_list|(
+name|text
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|ex
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the Hadoop home directory. Raises an exception if not found    * @return the home dir    * @throws IOException if the home directory cannot be located.    */
 DECL|method|getHadoopHome ()
 specifier|public
 specifier|static
-specifier|final
 name|String
 name|getHadoopHome
 parameter_list|()
 throws|throws
 name|IOException
 block|{
+return|return
+name|getHadoopHomeDir
+argument_list|()
+operator|.
+name|getCanonicalPath
+argument_list|()
+return|;
+block|}
+comment|/**    * Get the Hadoop home directory. If it is invalid,    * throw an exception.    * @return a path referring to hadoop home.    * @throws FileNotFoundException if the directory doesn't exist.    */
+DECL|method|getHadoopHomeDir ()
+specifier|private
+specifier|static
+name|File
+name|getHadoopHomeDir
+parameter_list|()
+throws|throws
+name|FileNotFoundException
+block|{
 if|if
 condition|(
-name|HADOOP_HOME_DIR
-operator|==
+name|HADOOP_HOME_DIR_FAILURE_CAUSE
+operator|!=
 literal|null
 condition|)
 block|{
 throw|throw
-operator|new
-name|IOException
+name|fileNotFoundException
 argument_list|(
-literal|"Misconfigured HADOOP_HOME cannot be referenced."
+name|addOsText
+argument_list|(
+name|HADOOP_HOME_DIR_FAILURE_CAUSE
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|,
+name|HADOOP_HOME_DIR_FAILURE_CAUSE
 argument_list|)
 throw|;
 block|}
 return|return
-name|HADOOP_HOME_DIR
+name|HADOOP_HOME_FILE
 return|;
 block|}
-comment|/** fully qualify the path to a binary that should be in a known hadoop     *  bin location. This is primarily useful for disambiguating call-outs     *  to executable sub-components of Hadoop to avoid clashes with other     *  executables that may be in the path.  Caveat:  this call doesn't     *  just format the path to the bin directory.  It also checks for file     *  existence of the composed path. The output of this call should be     *  cached by callers.    * */
-DECL|method|getQualifiedBinPath (String executable)
+comment|/**    *  Fully qualify the path to a binary that should be in a known hadoop    *  bin location. This is primarily useful for disambiguating call-outs     *  to executable sub-components of Hadoop to avoid clashes with other     *  executables that may be in the path.  Caveat:  this call doesn't     *  just format the path to the bin directory.  It also checks for file     *  existence of the composed path. The output of this call should be     *  cached by callers.    *    * @param executable executable    * @return executable file reference    * @throws FileNotFoundException if the path does not exist    */
+DECL|method|getQualifiedBin (String executable)
 specifier|public
 specifier|static
-specifier|final
-name|String
-name|getQualifiedBinPath
+name|File
+name|getQualifiedBin
 parameter_list|(
 name|String
 name|executable
 parameter_list|)
 throws|throws
-name|IOException
+name|FileNotFoundException
 block|{
 comment|// construct hadoop bin path to the specified executable
-name|String
-name|fullExeName
-init|=
-name|HADOOP_HOME_DIR
-operator|+
-name|File
-operator|.
-name|separator
-operator|+
-literal|"bin"
-operator|+
-name|File
-operator|.
-name|separator
-operator|+
+return|return
+name|getQualifiedBinInner
+argument_list|(
+name|getHadoopHomeDir
+argument_list|()
+argument_list|,
 name|executable
+argument_list|)
+return|;
+block|}
+comment|/**    * Inner logic of {@link #getQualifiedBin(String)}, accessible    * for tests.    * @param hadoopHomeDir home directory (assumed to be valid)    * @param executable executable    * @return path to the binary    * @throws FileNotFoundException if the executable was not found/valid    */
+DECL|method|getQualifiedBinInner (File hadoopHomeDir, String executable)
+specifier|static
+name|File
+name|getQualifiedBinInner
+parameter_list|(
+name|File
+name|hadoopHomeDir
+parameter_list|,
+name|String
+name|executable
+parameter_list|)
+throws|throws
+name|FileNotFoundException
+block|{
+name|String
+name|binDirText
+init|=
+literal|"Hadoop bin directory "
 decl_stmt|;
+name|File
+name|bin
+init|=
+operator|new
+name|File
+argument_list|(
+name|hadoopHomeDir
+argument_list|,
+literal|"bin"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|bin
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+name|addOsText
+argument_list|(
+name|binDirText
+operator|+
+name|E_DOES_NOT_EXIST
+operator|+
+literal|": "
+operator|+
+name|bin
+argument_list|)
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+operator|!
+name|bin
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+name|addOsText
+argument_list|(
+name|binDirText
+operator|+
+name|E_NOT_DIRECTORY
+operator|+
+literal|": "
+operator|+
+name|bin
+argument_list|)
+argument_list|)
+throw|;
+block|}
 name|File
 name|exeFile
 init|=
 operator|new
 name|File
 argument_list|(
-name|fullExeName
+name|bin
+argument_list|,
+name|executable
 argument_list|)
 decl_stmt|;
 if|if
@@ -1681,82 +2084,334 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileNotFoundException
 argument_list|(
-literal|"Could not locate executable "
+name|addOsText
+argument_list|(
+name|E_NO_EXECUTABLE
 operator|+
-name|fullExeName
+literal|": "
 operator|+
-literal|" in the Hadoop binaries."
+name|exeFile
+argument_list|)
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+operator|!
+name|exeFile
+operator|.
+name|isFile
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+name|addOsText
+argument_list|(
+name|E_NOT_EXECUTABLE_FILE
+operator|+
+literal|": "
+operator|+
+name|exeFile
+argument_list|)
+argument_list|)
+throw|;
+block|}
+try|try
+block|{
 return|return
 name|exeFile
+operator|.
+name|getCanonicalFile
+argument_list|()
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// this isn't going to happen, because of all the upfront checks.
+comment|// so if it does, it gets converted to a FNFE and rethrown
+throw|throw
+name|fileNotFoundException
+argument_list|(
+name|e
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    *  Fully qualify the path to a binary that should be in a known hadoop    *  bin location. This is primarily useful for disambiguating call-outs    *  to executable sub-components of Hadoop to avoid clashes with other    *  executables that may be in the path.  Caveat:  this call doesn't    *  just format the path to the bin directory.  It also checks for file    *  existence of the composed path. The output of this call should be    *  cached by callers.    *    * @param executable executable    * @return executable file reference    * @throws FileNotFoundException if the path does not exist    * @throws IOException on path canonicalization failures    */
+DECL|method|getQualifiedBinPath (String executable)
+specifier|public
+specifier|static
+name|String
+name|getQualifiedBinPath
+parameter_list|(
+name|String
+name|executable
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getQualifiedBin
+argument_list|(
+name|executable
+argument_list|)
 operator|.
 name|getCanonicalPath
 argument_list|()
 return|;
 block|}
-comment|/** a Windows utility to emulate Unix commands */
+comment|/**    * Location of winutils as a string; null if not found.    *<p>    *<i>Important: caller must check for this value being null</i>.    * The lack of such checks has led to many support issues being raised.    *<p>    * @deprecated use one of the exception-raising getter methods,    * specifically {@link #getWinutilsPath()} or {@link #getWinutilsFile()}    */
+annotation|@
+name|Deprecated
 DECL|field|WINUTILS
 specifier|public
 specifier|static
 specifier|final
 name|String
 name|WINUTILS
-init|=
-name|getWinUtilsPath
-argument_list|()
 decl_stmt|;
-DECL|method|getWinUtilsPath ()
-specifier|public
+comment|/** Canonical path to winutils, private to Shell. */
+DECL|field|WINUTILS_PATH
+specifier|private
 specifier|static
 specifier|final
 name|String
-name|getWinUtilsPath
-parameter_list|()
+name|WINUTILS_PATH
+decl_stmt|;
+comment|/** file reference to winutils. */
+DECL|field|WINUTILS_FILE
+specifier|private
+specifier|static
+specifier|final
+name|File
+name|WINUTILS_FILE
+decl_stmt|;
+comment|/** the exception raised on a failure to init the WINUTILS fields. */
+DECL|field|WINUTILS_FAILURE
+specifier|private
+specifier|static
+specifier|final
+name|IOException
+name|WINUTILS_FAILURE
+decl_stmt|;
+comment|/*    * Static WINUTILS_* field initializer.    * On non-Windows systems sets the paths to null, and    * adds a specific exception to the failure cause, so    * that on any attempt to resolve the paths will raise    * a meaningful exception.    */
+static|static
 block|{
-name|String
-name|winUtilsPath
+name|IOException
+name|ioe
 init|=
 literal|null
 decl_stmt|;
-try|try
-block|{
+name|String
+name|path
+init|=
+literal|null
+decl_stmt|;
+name|File
+name|file
+init|=
+literal|null
+decl_stmt|;
+comment|// invariant: either there's a valid file and path,
+comment|// or there is a cached IO exception.
 if|if
 condition|(
 name|WINDOWS
 condition|)
 block|{
-name|winUtilsPath
+try|try
+block|{
+name|file
 operator|=
-name|getQualifiedBinPath
+name|getQualifiedBin
 argument_list|(
-literal|"winutils.exe"
+name|WINUTILS_EXE
 argument_list|)
 expr_stmt|;
-block|}
+name|path
+operator|=
+name|file
+operator|.
+name|getCanonicalPath
+argument_list|()
+expr_stmt|;
+name|ioe
+operator|=
+literal|null
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
 name|IOException
-name|ioe
+name|e
 parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
-literal|"Failed to locate the winutils binary in the hadoop binary path"
+literal|"Did not find {}: {}"
 argument_list|,
+name|WINUTILS_EXE
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+comment|// stack trace comes at debug level
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Failed to find "
+operator|+
+name|WINUTILS_EXE
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|file
+operator|=
+literal|null
+expr_stmt|;
+name|path
+operator|=
+literal|null
+expr_stmt|;
 name|ioe
+operator|=
+name|e
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+comment|// on a non-windows system, the invariant is kept
+comment|// by adding an explicit exception.
+name|ioe
+operator|=
+operator|new
+name|FileNotFoundException
+argument_list|(
+name|E_NOT_A_WINDOWS_SYSTEM
 argument_list|)
 expr_stmt|;
 block|}
+name|WINUTILS_PATH
+operator|=
+name|path
+expr_stmt|;
+name|WINUTILS_FILE
+operator|=
+name|file
+expr_stmt|;
+name|WINUTILS
+operator|=
+name|path
+expr_stmt|;
+name|WINUTILS_FAILURE
+operator|=
+name|ioe
+expr_stmt|;
+block|}
+comment|/**    * Predicate to indicate whether or not the path to winutils is known.    *    * If true, then {@link #WINUTILS} is non-null, and both    * {@link #getWinutilsPath()} and {@link #getWinutilsFile()}    * will successfully return this value. Always false on non-windows systems.    * @return true if there is a valid path to the binary    */
+DECL|method|hasWinutilsPath ()
+specifier|public
+specifier|static
+name|boolean
+name|hasWinutilsPath
+parameter_list|()
+block|{
 return|return
-name|winUtilsPath
+name|WINUTILS_PATH
+operator|!=
+literal|null
 return|;
+block|}
+comment|/**    * Locate the winutils binary, or fail with a meaningful    * exception and stack trace as an RTE.    * This method is for use in methods which don't explicitly throw    * an<code>IOException</code>.    * @return the path to {@link #WINUTILS_EXE}    * @throws RuntimeException if the path is not resolvable    */
+DECL|method|getWinutilsPath ()
+specifier|public
+specifier|static
+name|String
+name|getWinutilsPath
+parameter_list|()
+block|{
+if|if
+condition|(
+name|WINUTILS_FAILURE
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|WINUTILS_PATH
+return|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+name|WINUTILS_FAILURE
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|WINUTILS_FAILURE
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Get a file reference to winutils.    * Always raises an exception if there isn't one    * @return the file instance referring to the winutils bin.    * @throws FileNotFoundException on any failure to locate that file.    */
+DECL|method|getWinutilsFile ()
+specifier|public
+specifier|static
+name|File
+name|getWinutilsFile
+parameter_list|()
+throws|throws
+name|FileNotFoundException
+block|{
+if|if
+condition|(
+name|WINUTILS_FAILURE
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|WINUTILS_FILE
+return|;
+block|}
+else|else
+block|{
+comment|// raise a new exception to generate a new stack trace
+throw|throw
+name|fileNotFoundException
+argument_list|(
+name|WINUTILS_FAILURE
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|WINUTILS_FAILURE
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|field|isBashSupported
 specifier|public
@@ -1846,6 +2501,7 @@ return|return
 name|supported
 return|;
 block|}
+comment|/**    * Flag which is true if setsid exists.    */
 DECL|field|isSetsidAvailable
 specifier|public
 specifier|static
@@ -1856,6 +2512,7 @@ init|=
 name|isSetsidSupported
 argument_list|()
 decl_stmt|;
+comment|/**    * Look for<code>setsid</code>.    * @return true if<code>setsid</code> was present    */
 DECL|method|isSetsidSupported ()
 specifier|private
 specifier|static
@@ -1944,6 +2601,13 @@ name|err
 operator|.
 name|getMessage
 argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|err
+operator|.
+name|getMessage
+argument_list|()
 operator|.
 name|contains
 argument_list|(
@@ -2017,7 +2681,7 @@ return|return
 name|setsidSupported
 return|;
 block|}
-comment|/** Token separator regex used to parse Shell tool outputs */
+comment|/** Token separator regex used to parse Shell tool outputs. */
 DECL|field|TOKEN_SEPARATOR_REGEX
 specifier|public
 specifier|static
@@ -2044,8 +2708,8 @@ name|lastTime
 decl_stmt|;
 comment|// last time the command was performed
 DECL|field|redirectErrorStream
-specifier|final
 specifier|private
+specifier|final
 name|boolean
 name|redirectErrorStream
 decl_stmt|;
@@ -2077,15 +2741,22 @@ specifier|private
 name|int
 name|exitCode
 decl_stmt|;
-comment|/**If or not script finished executing*/
+comment|/** Flag to indicate whether or not the script has finished executing. */
 DECL|field|completed
 specifier|private
-specifier|volatile
+specifier|final
 name|AtomicBoolean
 name|completed
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
 decl_stmt|;
+comment|/**    * Create an instance with no minimum interval between runs; stderr is    * not merged with stdout.    */
 DECL|method|Shell ()
-specifier|public
+specifier|protected
 name|Shell
 parameter_list|()
 block|{
@@ -2095,8 +2766,9 @@ literal|0L
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Create an instance with a minimum interval between executions; stderr is    * not merged with stdout.    * @param interval interval in milliseconds between command executions.    */
 DECL|method|Shell (long interval)
-specifier|public
+specifier|protected
 name|Shell
 parameter_list|(
 name|long
@@ -2111,9 +2783,9 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @param interval the minimum duration to wait before re-executing the     *        command.    */
+comment|/**    * Create a shell instance which can be re-executed when the {@link #run()}    * method is invoked with a given elapsed time between calls.    *    * @param interval the minimum duration in milliseconds to wait before    *        re-executing the command. If set to 0, there is no minimum.    * @param redirectErrorStream should the error stream be merged with    *        the normal output stream?    */
 DECL|method|Shell (long interval, boolean redirectErrorStream)
-specifier|public
+specifier|protected
 name|Shell
 parameter_list|(
 name|long
@@ -2151,7 +2823,7 @@ operator|=
 name|redirectErrorStream
 expr_stmt|;
 block|}
-comment|/** set the environment for the command     * @param env Mapping of environment variables    */
+comment|/**    * Set the environment for the command.    * @param env Mapping of environment variables    */
 DECL|method|setEnvironment (Map<String, String> env)
 specifier|protected
 name|void
@@ -2173,7 +2845,7 @@ operator|=
 name|env
 expr_stmt|;
 block|}
-comment|/** set the working directory     * @param dir The directory where the command would be executed    */
+comment|/**    * Set the working directory.    * @param dir The directory where the command will be executed    */
 DECL|method|setWorkingDirectory (File dir)
 specifier|protected
 name|void
@@ -2190,7 +2862,7 @@ operator|=
 name|dir
 expr_stmt|;
 block|}
-comment|/** check to see if a command needs to be executed and execute if needed */
+comment|/** Check to see if a command needs to be executed and execute if needed. */
 DECL|method|run ()
 specifier|protected
 name|void
@@ -2210,7 +2882,9 @@ operator|.
 name|monotonicNow
 argument_list|()
 condition|)
+block|{
 return|return;
+block|}
 name|exitCode
 operator|=
 literal|0
@@ -2220,7 +2894,7 @@ name|runCommand
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** Run a command */
+comment|/** Run the command. */
 DECL|method|runCommand ()
 specifier|private
 name|void
@@ -2250,17 +2924,15 @@ init|=
 literal|null
 decl_stmt|;
 name|timedOut
-operator|=
-operator|new
-name|AtomicBoolean
+operator|.
+name|set
 argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
 name|completed
-operator|=
-operator|new
-name|AtomicBoolean
+operator|.
+name|set
 argument_list|(
 literal|false
 argument_list|)
@@ -2854,7 +3526,7 @@ comment|// propagate interrupt
 block|}
 block|}
 block|}
-comment|/** return an array containing the command name& its parameters */
+comment|/** return an array containing the command name and its parameters. */
 DECL|method|getExecString ()
 specifier|protected
 specifier|abstract
@@ -2876,7 +3548,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**     * Get the environment variable    */
+comment|/**    * Get an environment variable.    * @param env the environment var    * @return the value or null if it was unset.    */
 DECL|method|getEnvironment (String env)
 specifier|public
 name|String
@@ -2895,7 +3567,7 @@ name|env
 argument_list|)
 return|;
 block|}
-comment|/** get the current sub-process executing the given command     * @return process executing the command    */
+comment|/** get the current sub-process executing the given command.    * @return process executing the command    */
 DECL|method|getProcess ()
 specifier|public
 name|Process
@@ -2906,7 +3578,7 @@ return|return
 name|process
 return|;
 block|}
-comment|/** get the exit code     * @return the exit code of the process    */
+comment|/** get the exit code.    * @return the exit code of the process    */
 DECL|method|getExitCode ()
 specifier|public
 name|int
@@ -3050,7 +3722,7 @@ name|close
 parameter_list|()
 function_decl|;
 block|}
-comment|/**    * A simple shell command executor.    *     *<code>ShellCommandExecutor</code>should be used in cases where the output     * of the command needs no explicit parsing and where the command, working     * directory and the environment remains unchanged. The output of the command     * is stored as-is and is expected to be small.    */
+comment|/**    * A simple shell command executor.    *     *<code>ShellCommandExecutor</code>should be used in cases where the output    * of the command needs no explicit parsing and where the command, working    * directory and the environment remains unchanged. The output of the command    * is stored as-is and is expected to be small.    */
 DECL|class|ShellCommandExecutor
 specifier|public
 specifier|static
@@ -3143,7 +3815,7 @@ literal|0L
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Create a new instance of the ShellCommandExecutor to execute a command.      *       * @param execString The command to execute with arguments      * @param dir If not-null, specifies the directory which should be set      *            as the current working directory for the command.      *            If null, the current working directory is not modified.      * @param env If not-null, environment of the command will include the      *            key-value pairs specified in the map. If null, the current      *            environment is not modified.      * @param timeout Specifies the time in milliseconds, after which the      *                command will be killed and the status marked as timedout.      *                If 0, the command will not be timed out.       */
+comment|/**      * Create a new instance of the ShellCommandExecutor to execute a command.      *       * @param execString The command to execute with arguments      * @param dir If not-null, specifies the directory which should be set      *            as the current working directory for the command.      *            If null, the current working directory is not modified.      * @param env If not-null, environment of the command will include the      *            key-value pairs specified in the map. If null, the current      *            environment is not modified.      * @param timeout Specifies the time in milliseconds, after which the      *                command will be killed and the status marked as timed-out.      *                If 0, the command will not be timed out.       */
 DECL|method|ShellCommandExecutor (String[] execString, File dir, Map<String, String> env, long timeout)
 specifier|public
 name|ShellCommandExecutor
@@ -3205,7 +3877,7 @@ operator|=
 name|timeout
 expr_stmt|;
 block|}
-comment|/** Execute the shell command. */
+comment|/**      * Execute the shell command.      * @throws IOException if the command fails, or if the command is      * not well constructed.      */
 DECL|method|execute ()
 specifier|public
 name|void
@@ -3214,6 +3886,39 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+for|for
+control|(
+name|String
+name|s
+range|:
+name|command
+control|)
+block|{
+if|if
+condition|(
+name|s
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"(null) entry in command string: "
+operator|+
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+literal|" "
+argument_list|,
+name|command
+argument_list|)
+argument_list|)
+throw|;
+block|}
+block|}
 name|this
 operator|.
 name|run
@@ -3300,7 +4005,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** Get the output of the shell command.*/
+comment|/** Get the output of the shell command. */
 DECL|method|getOutput ()
 specifier|public
 name|String
@@ -3431,7 +4136,7 @@ name|get
 argument_list|()
 return|;
 block|}
-comment|/**    * Set if the command has timed out.    *     */
+comment|/**    * Declare that the command has timed out.    *     */
 DECL|method|setTimedOut ()
 specifier|private
 name|void
@@ -3473,7 +4178,7 @@ literal|0L
 argument_list|)
 return|;
 block|}
-comment|/**     * Static method to execute a shell command.     * Covers most of the simple cases without requiring the user to implement      * the<code>Shell</code> interface.    * @param env the map of environment key=value    * @param cmd shell command to execute.    * @param timeout time in milliseconds after which script should be marked timeout    * @return the output of the executed command.o    */
+comment|/**    * Static method to execute a shell command.    * Covers most of the simple cases without requiring the user to implement    * the<code>Shell</code> interface.    * @param env the map of environment key=value    * @param cmd shell command to execute.    * @param timeout time in milliseconds after which script should be marked timeout    * @return the output of the executed command.    * @throws IOException on any problem.    */
 DECL|method|execCommand (Map<String, String> env, String[] cmd, long timeout)
 specifier|public
 specifier|static
@@ -3525,7 +4230,7 @@ name|getOutput
 argument_list|()
 return|;
 block|}
-comment|/**     * Static method to execute a shell command.     * Covers most of the simple cases without requiring the user to implement      * the<code>Shell</code> interface.    * @param env the map of environment key=value    * @param cmd shell command to execute.    * @return the output of the executed command.    */
+comment|/**    * Static method to execute a shell command.    * Covers most of the simple cases without requiring the user to implement    * the<code>Shell</code> interface.    * @param env the map of environment key=value    * @param cmd shell command to execute.    * @return the output of the executed command.    * @throws IOException on any problem.    */
 DECL|method|execCommand (Map<String,String> env, String ... cmd)
 specifier|public
 specifier|static
@@ -3569,6 +4274,7 @@ name|TimerTask
 block|{
 DECL|field|shell
 specifier|private
+specifier|final
 name|Shell
 name|shell
 decl_stmt|;

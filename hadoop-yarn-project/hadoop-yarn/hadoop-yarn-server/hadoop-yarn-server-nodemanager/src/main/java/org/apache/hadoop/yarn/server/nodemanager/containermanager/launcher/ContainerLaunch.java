@@ -92,16 +92,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|OutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|PrintStream
 import|;
 end_import
@@ -4296,42 +4286,6 @@ operator|.
 name|getPath
 argument_list|()
 decl_stmt|;
-comment|// If not on Java7+ on Windows, then copy file instead of symlinking.
-comment|// See also FileUtil#symLink for full explanation.
-if|if
-condition|(
-operator|!
-name|Shell
-operator|.
-name|isJava7OrAbove
-argument_list|()
-operator|&&
-name|srcFile
-operator|.
-name|isFile
-argument_list|()
-condition|)
-block|{
-name|lineWithLenCheck
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"@copy \"%s\" \"%s\""
-argument_list|,
-name|srcFileStr
-argument_list|,
-name|dstFileStr
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|errorCheck
-argument_list|()
-expr_stmt|;
-block|}
-else|else
-block|{
 name|lineWithLenCheck
 argument_list|(
 name|String
@@ -4342,7 +4296,8 @@ literal|"@%s symlink \"%s\" \"%s\""
 argument_list|,
 name|Shell
 operator|.
-name|WINUTILS
+name|getWinutilsPath
+argument_list|()
 argument_list|,
 name|dstFileStr
 argument_list|,
@@ -4353,7 +4308,6 @@ expr_stmt|;
 name|errorCheck
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override

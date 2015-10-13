@@ -173,6 +173,11 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|class|TestContainerExecutor
 specifier|public
 class|class

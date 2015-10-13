@@ -283,33 +283,6 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|emulatingSymlinksOnWindows ()
-specifier|protected
-name|boolean
-name|emulatingSymlinksOnWindows
-parameter_list|()
-block|{
-comment|// Java 6 on Windows has very poor symlink support. Specifically
-comment|// Specifically File#length and File#renameTo do not work as expected.
-comment|// (see HADOOP-9061 for additional details)
-comment|// Hence some symlink tests will be skipped.
-comment|//
-return|return
-operator|(
-name|Shell
-operator|.
-name|WINDOWS
-operator|&&
-operator|!
-name|Shell
-operator|.
-name|isJava7OrAbove
-argument_list|()
-operator|)
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|testCreateDanglingLink ()
 specifier|public
 name|void
@@ -815,13 +788,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|assumeTrue
-argument_list|(
-operator|!
-name|emulatingSymlinksOnWindows
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|Path
 name|fileAbs
 init|=

@@ -5299,38 +5299,6 @@ name|exists
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|Shell
-operator|.
-name|WINDOWS
-operator|&&
-operator|!
-name|Shell
-operator|.
-name|isJava7OrAbove
-argument_list|()
-condition|)
-block|{
-comment|// On Java6 on Windows, we copied the file
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-name|data
-operator|.
-name|length
-argument_list|,
-name|link
-operator|.
-name|length
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// Otherwise, the target file size is zero
 name|Assert
 operator|.
 name|assertEquals
@@ -5343,7 +5311,6 @@ name|length
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|link
 operator|.
 name|delete

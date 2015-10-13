@@ -2824,7 +2824,8 @@ index|[]
 block|{
 name|Shell
 operator|.
-name|WINUTILS
+name|getWinutilsPath
+argument_list|()
 block|,
 literal|"task"
 block|,

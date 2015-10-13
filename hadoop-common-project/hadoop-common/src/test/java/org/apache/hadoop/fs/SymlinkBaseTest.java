@@ -254,19 +254,6 @@ name|URI
 name|testURI
 parameter_list|()
 function_decl|;
-comment|// Returns true if the filesystem is emulating symlink support. Certain
-comment|// checks will be bypassed if that is the case.
-comment|//
-DECL|method|emulatingSymlinksOnWindows ()
-specifier|protected
-name|boolean
-name|emulatingSymlinksOnWindows
-parameter_list|()
-block|{
-return|return
-literal|false
-return|;
-block|}
 DECL|method|unwrapException (IOException e)
 specifier|protected
 name|IOException
@@ -1306,13 +1293,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|assumeTrue
-argument_list|(
-operator|!
-name|emulatingSymlinksOnWindows
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|Path
 name|file
 init|=
@@ -2104,16 +2084,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// If we are emulating symlinks then many of these checks will fail
-comment|// so we skip them.
-comment|//
-name|assumeTrue
-argument_list|(
-operator|!
-name|emulatingSymlinksOnWindows
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|Path
 name|dir
 init|=
@@ -4052,13 +4022,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|assumeTrue
-argument_list|(
-operator|!
-name|emulatingSymlinksOnWindows
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|Path
 name|dir1
 init|=
@@ -4351,13 +4314,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|assumeTrue
-argument_list|(
-operator|!
-name|emulatingSymlinksOnWindows
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|Path
 name|file
 init|=
@@ -5679,9 +5635,6 @@ argument_list|)
 operator|.
 name|isSymlink
 argument_list|()
-operator|||
-name|emulatingSymlinksOnWindows
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|readFile
@@ -6642,9 +6595,6 @@ argument_list|)
 operator|.
 name|isSymlink
 argument_list|()
-operator|||
-name|emulatingSymlinksOnWindows
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|readFile
@@ -6799,13 +6749,6 @@ name|link
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|emulatingSymlinksOnWindows
-argument_list|()
-condition|)
-block|{
 name|assertTrue
 argument_list|(
 name|wrapper
@@ -6831,7 +6774,6 @@ name|file1
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Test
@@ -7179,13 +7121,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|assumeTrue
-argument_list|(
-operator|!
-name|emulatingSymlinksOnWindows
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|Path
 name|file
 init|=
@@ -7787,13 +7722,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|assumeTrue
-argument_list|(
-operator|!
-name|emulatingSymlinksOnWindows
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|Path
 name|file
 init|=

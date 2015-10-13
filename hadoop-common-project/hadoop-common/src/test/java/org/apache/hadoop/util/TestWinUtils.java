@@ -243,7 +243,13 @@ name|getProperty
 argument_list|(
 literal|"test.build.data"
 argument_list|,
-literal|"/tmp"
+literal|"target"
+operator|+
+name|File
+operator|.
+name|pathSeparator
+operator|+
+literal|"tmp"
 argument_list|)
 argument_list|,
 name|TestWinUtils
@@ -254,6 +260,10 @@ name|getSimpleName
 argument_list|()
 argument_list|)
 decl_stmt|;
+DECL|field|winutils
+name|String
+name|winutils
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -261,6 +271,8 @@ specifier|public
 name|void
 name|setUp
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 comment|// Not supported on non-Windows platforms
 name|assumeTrue
@@ -273,6 +285,25 @@ expr_stmt|;
 name|TEST_DIR
 operator|.
 name|mkdirs
+argument_list|()
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Failed to create Test directory "
+operator|+
+name|TEST_DIR
+argument_list|,
+name|TEST_DIR
+operator|.
+name|isDirectory
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|winutils
+operator|=
+name|Shell
+operator|.
+name|getWinutilsPath
 argument_list|()
 expr_stmt|;
 block|}
@@ -292,6 +323,20 @@ name|fullyDelete
 argument_list|(
 name|TEST_DIR
 argument_list|)
+expr_stmt|;
+block|}
+DECL|method|requireWinutils ()
+specifier|private
+name|void
+name|requireWinutils
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|Shell
+operator|.
+name|getWinutilsPath
+argument_list|()
 expr_stmt|;
 block|}
 comment|// Helper routine that writes the given content to the file.
@@ -318,6 +363,8 @@ operator|.
 name|getBytes
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|FileOutputStream
 name|os
 init|=
@@ -326,7 +373,8 @@ name|FileOutputStream
 argument_list|(
 name|file
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|os
 operator|.
 name|write
@@ -340,6 +388,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+block|}
 comment|// Helper routine that reads the first 100 bytes from the file.
 DECL|method|readFile (File file)
 specifier|private
@@ -352,6 +401,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|byte
+index|[]
+name|b
+decl_stmt|;
+try|try
+init|(
 name|FileInputStream
 name|fos
 init|=
@@ -360,29 +415,40 @@ name|FileInputStream
 argument_list|(
 name|file
 argument_list|)
-decl_stmt|;
-name|byte
-index|[]
+init|)
+block|{
 name|b
-init|=
+operator|=
 operator|new
 name|byte
 index|[
 literal|100
 index|]
-decl_stmt|;
+expr_stmt|;
+name|int
+name|count
+init|=
 name|fos
 operator|.
 name|read
 argument_list|(
 name|b
 argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|100
+argument_list|,
+name|count
+argument_list|)
 expr_stmt|;
+block|}
 return|return
+operator|new
+name|String
+argument_list|(
 name|b
-operator|.
-name|toString
-argument_list|()
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -400,6 +466,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 specifier|final
 name|String
 name|content
@@ -435,22 +504,25 @@ argument_list|)
 expr_stmt|;
 comment|// Verify permissions and file name return tokens
 name|String
+name|testPath
+init|=
+name|testFile
+operator|.
+name|getCanonicalPath
+argument_list|()
+decl_stmt|;
+name|String
 name|output
 init|=
 name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"ls"
 argument_list|,
-name|testFile
-operator|.
-name|getCanonicalPath
-argument_list|()
+name|testPath
 argument_list|)
 decl_stmt|;
 name|String
@@ -464,20 +536,17 @@ argument_list|(
 literal|"[ \r\n]"
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"-rwx------"
+argument_list|,
 name|outputArgs
 index|[
 literal|0
 index|]
-operator|.
-name|equals
-argument_list|(
-literal|"-rwx------"
-argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 name|outputArgs
 index|[
@@ -487,14 +556,8 @@ name|length
 operator|-
 literal|1
 index|]
-operator|.
-name|equals
-argument_list|(
-name|testFile
-operator|.
-name|getCanonicalPath
-argument_list|()
-argument_list|)
+argument_list|,
+name|testPath
 argument_list|)
 expr_stmt|;
 comment|// Verify most tokens when using a formatted output (other tokens
@@ -505,18 +568,13 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"ls"
 argument_list|,
 literal|"-F"
 argument_list|,
-name|testFile
-operator|.
-name|getCanonicalPath
-argument_list|()
+name|testPath
 argument_list|)
 expr_stmt|;
 name|outputArgs
@@ -537,17 +595,14 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"-rwx------"
+argument_list|,
 name|outputArgs
 index|[
 literal|0
 index|]
-operator|.
-name|equals
-argument_list|(
-literal|"-rwx------"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -565,20 +620,14 @@ index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 name|outputArgs
 index|[
 literal|8
 index|]
-operator|.
-name|equals
-argument_list|(
-name|testFile
-operator|.
-name|getCanonicalPath
-argument_list|()
-argument_list|)
+argument_list|,
+name|testPath
 argument_list|)
 expr_stmt|;
 name|testFile
@@ -610,6 +659,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 name|String
 name|currentUser
 init|=
@@ -629,9 +681,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"groups"
 argument_list|)
@@ -646,9 +696,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"groups"
 argument_list|,
@@ -673,9 +721,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"groups"
 argument_list|,
@@ -724,9 +770,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"chmod"
 argument_list|,
@@ -757,9 +801,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"chmod"
 argument_list|,
@@ -790,9 +832,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"ls"
 argument_list|,
@@ -819,9 +859,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"ls"
 argument_list|,
@@ -886,6 +924,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 name|File
 name|a
 init|=
@@ -954,6 +995,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 comment|// Create a new directory
 name|File
 name|dir
@@ -1046,6 +1090,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 comment|// Setup test folder hierarchy
 name|File
 name|a
@@ -1292,6 +1339,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 comment|// - Create a file.
 comment|// - Change mode to 377 so owner does not have read permission.
 comment|// - Verify the owner truly does not have the permissions to read.
@@ -1374,11 +1424,9 @@ argument_list|,
 literal|"test"
 argument_list|)
 expr_stmt|;
-name|assertFalse
+name|fail
 argument_list|(
 literal|"writeFile should have failed!"
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -1418,13 +1466,10 @@ comment|// - Verify the owner truly does not have the permissions to execute the
 name|File
 name|winutilsFile
 init|=
-operator|new
-name|File
-argument_list|(
 name|Shell
 operator|.
-name|WINUTILS
-argument_list|)
+name|getWinutilsFile
+argument_list|()
 decl_stmt|;
 name|File
 name|aExe
@@ -1467,15 +1512,13 @@ argument_list|,
 literal|"ls"
 argument_list|)
 expr_stmt|;
-name|assertFalse
+name|fail
 argument_list|(
 literal|"executing "
 operator|+
 name|aExe
 operator|+
 literal|" should have failed!"
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -1518,6 +1561,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 comment|// Validate that listing a directory with no read permission fails
 name|File
 name|a
@@ -1571,12 +1617,10 @@ operator|.
 name|list
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertNull
 argument_list|(
 literal|"Listing a directory without read permission should fail"
 argument_list|,
-literal|null
-operator|==
 name|files
 argument_list|)
 expr_stmt|;
@@ -1636,11 +1680,9 @@ operator|.
 name|createNewFile
 argument_list|()
 expr_stmt|;
-name|assertFalse
+name|fail
 argument_list|(
 literal|"writeFile should have failed!"
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -1835,6 +1877,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 name|testChmodInternal
 argument_list|(
 literal|"7"
@@ -1948,9 +1993,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"chown"
 argument_list|,
@@ -2053,6 +2096,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 name|File
 name|a
 init|=
@@ -2210,6 +2256,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 name|File
 name|newFile
 init|=
@@ -2264,9 +2313,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"symlink"
 argument_list|,
@@ -2322,6 +2369,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 name|File
 name|newFile
 init|=
@@ -2376,9 +2426,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"symlink"
 argument_list|,
@@ -2434,6 +2482,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 comment|// Create TEST_DIR\dir1\file1.txt
 comment|//
 name|File
@@ -2503,9 +2554,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"symlink"
 argument_list|,
@@ -2524,9 +2573,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"symlink"
 argument_list|,
@@ -2550,9 +2597,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"readlink"
 argument_list|,
@@ -2581,9 +2626,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"readlink"
 argument_list|,
@@ -2616,9 +2659,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"readlink"
 argument_list|,
@@ -2661,9 +2702,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"readlink"
 argument_list|,
@@ -2706,9 +2745,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"readlink"
 argument_list|,
@@ -2754,9 +2791,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"readlink"
 argument_list|,
@@ -2802,9 +2837,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"readlink"
 argument_list|,
@@ -2862,6 +2895,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 name|File
 name|batch
 init|=
@@ -2944,9 +2980,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"task"
 argument_list|,
@@ -3006,6 +3040,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|requireWinutils
+argument_list|()
+expr_stmt|;
 comment|// Generate a unique job id
 name|String
 name|jobId
@@ -3030,9 +3067,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"task"
 argument_list|,
@@ -3083,9 +3118,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"task"
 argument_list|,
@@ -3144,9 +3177,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"task"
 argument_list|,
@@ -3207,9 +3238,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"task"
 argument_list|,
@@ -3276,9 +3305,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"task"
 argument_list|,
@@ -3351,9 +3378,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"task"
 argument_list|,
@@ -3422,9 +3447,7 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-name|Shell
-operator|.
-name|WINUTILS
+name|winutils
 argument_list|,
 literal|"task"
 argument_list|,

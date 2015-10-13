@@ -421,6 +421,12 @@ name|HardLinkCGWin
 extends|extends
 name|HardLinkCommandGetter
 block|{
+comment|/**      * Build the windows link command. This must not      * use an exception-raising reference to WINUTILS, as      * some tests examine the command.      */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|field|getLinkCountCommand
 specifier|static
 name|String
@@ -453,6 +459,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// trigger the check for winutils
+name|Shell
+operator|.
+name|getWinutilsFile
+argument_list|()
+expr_stmt|;
 name|String
 index|[]
 name|buf

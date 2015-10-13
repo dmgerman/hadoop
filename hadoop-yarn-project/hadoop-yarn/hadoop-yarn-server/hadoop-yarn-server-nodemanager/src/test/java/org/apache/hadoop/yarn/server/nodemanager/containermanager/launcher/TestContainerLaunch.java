@@ -7011,7 +7011,7 @@ literal|8191
 argument_list|,
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 argument_list|)
 expr_stmt|;
 name|ShellScriptBuilder
@@ -7074,7 +7074,7 @@ literal|"E"
 argument_list|,
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 operator|-
 name|callCmd
 operator|.
@@ -7110,7 +7110,7 @@ literal|"X"
 argument_list|,
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 operator|-
 name|callCmd
 operator|.
@@ -7404,7 +7404,7 @@ literal|8191
 argument_list|,
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 argument_list|)
 expr_stmt|;
 name|ShellScriptBuilder
@@ -7462,7 +7462,7 @@ literal|"A"
 argument_list|,
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 operator|-
 operator|(
 literal|"@set somekey="
@@ -7497,7 +7497,7 @@ literal|"A"
 argument_list|,
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 operator|-
 operator|(
 literal|"@set somekey="
@@ -7574,7 +7574,7 @@ literal|8191
 argument_list|,
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 argument_list|)
 expr_stmt|;
 name|ShellScriptBuilder
@@ -7636,7 +7636,7 @@ argument_list|,
 operator|(
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 operator|-
 name|mkDirCmd
 operator|.
@@ -7675,7 +7675,7 @@ argument_list|,
 operator|(
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 operator|-
 name|mkDirCmd
 operator|.
@@ -7749,7 +7749,8 @@ literal|"@"
 operator|+
 name|Shell
 operator|.
-name|WINUTILS
+name|getWinutilsPath
+argument_list|()
 operator|+
 literal|" symlink \"\" \"\""
 decl_stmt|;
@@ -7760,7 +7761,7 @@ literal|8191
 argument_list|,
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 argument_list|)
 expr_stmt|;
 name|ShellScriptBuilder
@@ -7843,7 +7844,7 @@ argument_list|,
 operator|(
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 operator|-
 name|linkCmd
 operator|.
@@ -7875,7 +7876,7 @@ argument_list|,
 operator|(
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 operator|-
 name|linkCmd
 operator|.
@@ -7914,7 +7915,7 @@ argument_list|,
 operator|(
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 operator|-
 name|linkCmd
 operator|.
@@ -7948,7 +7949,7 @@ argument_list|,
 operator|(
 name|Shell
 operator|.
-name|WINDOWS_MAX_SHELL_LENGHT
+name|WINDOWS_MAX_SHELL_LENGTH
 operator|-
 name|linkCmd
 operator|.

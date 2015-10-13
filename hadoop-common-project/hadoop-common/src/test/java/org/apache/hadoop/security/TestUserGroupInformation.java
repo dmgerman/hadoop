@@ -1313,7 +1313,8 @@ name|WINDOWS
 condition|?
 name|Shell
 operator|.
-name|WINUTILS
+name|getWinutilsPath
+argument_list|()
 operator|+
 literal|" groups -F"
 else|:

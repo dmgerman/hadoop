@@ -342,17 +342,8 @@ name|newCrc32
 parameter_list|()
 block|{
 return|return
-name|Shell
-operator|.
-name|isJava7OrAbove
-argument_list|()
-condition|?
 operator|new
 name|CRC32
-argument_list|()
-else|:
-operator|new
-name|PureJavaCrc32
 argument_list|()
 return|;
 block|}
