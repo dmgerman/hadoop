@@ -1017,6 +1017,14 @@ name|bpid
 argument_list|)
 condition|)
 block|{
+name|getBPStorage
+argument_list|(
+name|bpid
+argument_list|)
+operator|.
+name|stopTrashCleaner
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info
