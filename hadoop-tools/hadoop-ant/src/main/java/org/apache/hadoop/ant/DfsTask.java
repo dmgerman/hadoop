@@ -174,20 +174,6 @@ name|InterfaceAudience
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|HdfsConfiguration
-import|;
-end_import
-
 begin_comment
 comment|/**  * {@link org.apache.hadoop.fs.FsShell FsShell} wrapper for ant Task.  */
 end_comment
@@ -204,6 +190,24 @@ name|DfsTask
 extends|extends
 name|Task
 block|{
+static|static
+block|{
+comment|// adds the default resources
+name|Configuration
+operator|.
+name|addDefaultResource
+argument_list|(
+literal|"hdfs-default.xml"
+argument_list|)
+expr_stmt|;
+name|Configuration
+operator|.
+name|addDefaultResource
+argument_list|(
+literal|"hdfs-site.xml"
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Default sink for {@link java.lang.System#out}    * and {@link java.lang.System#err}.    */
 DECL|field|nullOut
 specifier|private
@@ -768,7 +772,7 @@ name|Configuration
 name|conf
 init|=
 operator|new
-name|HdfsConfiguration
+name|Configuration
 argument_list|()
 decl_stmt|;
 name|conf

@@ -68,7 +68,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSUtilClient
 import|;
 end_import
 
@@ -818,7 +818,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|bytes2String
 argument_list|(
@@ -870,7 +870,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|bytes2String
 argument_list|(
@@ -888,7 +888,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|bytes2String
 argument_list|(
