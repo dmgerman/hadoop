@@ -1874,9 +1874,6 @@ name|x
 operator|++
 control|)
 block|{
-name|String
-name|s
-init|=
 name|DFSTestUtil
 operator|.
 name|readFile
@@ -1891,7 +1888,7 @@ operator|+
 name|x
 argument_list|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 block|}
 name|MetricsRecordBuilder
 name|rbNew
@@ -1927,6 +1924,14 @@ argument_list|,
 name|rbNew
 argument_list|)
 decl_stmt|;
+comment|// Lets Metric system update latest metrics
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|100
+argument_list|)
+expr_stmt|;
 name|assertTrue
 argument_list|(
 name|endReadValue

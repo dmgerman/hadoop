@@ -1513,6 +1513,34 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+name|clusterConf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_HTTPS_KEYSTORE_RESOURCE_KEY
+argument_list|,
+name|KeyStoreTestUtil
+operator|.
+name|getClientSSLConfigFileName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|clusterConf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_KEY
+argument_list|,
+name|KeyStoreTestUtil
+operator|.
+name|getServerSSLConfigFileName
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// trick the NN into thinking security is enabled w/o it trying
 comment|// to login from a keytab
 name|UserGroupInformation

@@ -1783,6 +1783,14 @@ operator|.
 name|await
 argument_list|()
 expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|10
+argument_list|)
+expr_stmt|;
+comment|// Lets all threads get BLOCKED
 name|Assert
 operator|.
 name|assertEquals

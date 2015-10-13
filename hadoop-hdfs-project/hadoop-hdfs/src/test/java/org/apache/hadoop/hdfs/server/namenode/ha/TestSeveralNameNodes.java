@@ -262,7 +262,7 @@ specifier|final
 name|int
 name|TIME_BETWEEN_FAILOVERS
 init|=
-literal|200
+literal|1000
 decl_stmt|;
 DECL|field|NUM_NAMENODES
 specifier|private
@@ -513,7 +513,7 @@ name|done
 operator|.
 name|await
 argument_list|(
-literal|10
+literal|100
 argument_list|,
 name|TimeUnit
 operator|.
