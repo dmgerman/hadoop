@@ -698,13 +698,15 @@ name|ExitCodeException
 name|e
 parameter_list|)
 block|{
-name|String
-name|logLine
+name|StringBuilder
+name|logBuilder
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|(
-literal|"Shell execution returned exit code: "
+literal|"Shell execution returned "
+operator|+
+literal|"exit code: "
 argument_list|)
 operator|.
 name|append
@@ -735,15 +737,42 @@ operator|.
 name|getOutput
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|logBuilder
+operator|.
+name|append
+argument_list|(
+literal|"Full command array for failed execution: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|logBuilder
+operator|.
+name|append
+argument_list|(
+name|Arrays
 operator|.
 name|toString
-argument_list|()
-decl_stmt|;
+argument_list|(
+name|fullCommandArray
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|warn
 argument_list|(
-name|logLine
+name|logBuilder
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|//stderr from shell executor seems to be stuffed into the exception
