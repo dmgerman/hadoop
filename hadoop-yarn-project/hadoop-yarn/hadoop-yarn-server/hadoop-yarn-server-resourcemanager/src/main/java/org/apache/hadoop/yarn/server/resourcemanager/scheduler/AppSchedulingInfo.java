@@ -2174,8 +2174,37 @@ operator|.
 name|getNodeLabelExpression
 argument_list|()
 decl_stmt|;
+comment|// First request label expression can be null and second request
+comment|// is not null then we have to consider it as changed.
+if|if
+condition|(
+operator|(
+literal|null
+operator|==
+name|requestOneLabelExp
+operator|)
+operator|&&
+operator|(
+literal|null
+operator|!=
+name|requestTwoLabelExp
+operator|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+comment|// If the label is not matching between both request when
+comment|// requestOneLabelExp is not null.
 return|return
 operator|(
+operator|(
+literal|null
+operator|!=
+name|requestOneLabelExp
+operator|)
+operator|&&
 operator|!
 operator|(
 name|requestOneLabelExp
