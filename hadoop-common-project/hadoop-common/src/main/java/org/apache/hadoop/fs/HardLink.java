@@ -462,7 +462,7 @@ block|{
 comment|// trigger the check for winutils
 name|Shell
 operator|.
-name|getWinutilsFile
+name|getWinUtilsFile
 argument_list|()
 expr_stmt|;
 name|String

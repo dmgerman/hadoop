@@ -7749,7 +7749,7 @@ literal|"@"
 operator|+
 name|Shell
 operator|.
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 operator|+
 literal|" symlink \"\" \"\""

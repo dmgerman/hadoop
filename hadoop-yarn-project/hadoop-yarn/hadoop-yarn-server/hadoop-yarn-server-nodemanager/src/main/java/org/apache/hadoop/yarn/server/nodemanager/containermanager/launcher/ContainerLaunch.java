@@ -4296,7 +4296,7 @@ literal|"@%s symlink \"%s\" \"%s\""
 argument_list|,
 name|Shell
 operator|.
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 argument_list|,
 name|dstFileStr

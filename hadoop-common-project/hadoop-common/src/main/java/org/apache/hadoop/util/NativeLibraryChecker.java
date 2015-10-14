@@ -556,7 +556,7 @@ name|winutilsPath
 operator|=
 name|Shell
 operator|.
-name|getWinutilsFile
+name|getWinUtilsFile
 argument_list|()
 operator|.
 name|getCanonicalPath

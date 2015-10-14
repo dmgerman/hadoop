@@ -270,7 +270,7 @@ index|[]
 block|{
 name|Shell
 operator|.
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 block|,
 literal|"help"
@@ -376,7 +376,7 @@ index|[]
 block|{
 name|Shell
 operator|.
-name|getWinutilsFile
+name|getWinUtilsFile
 argument_list|()
 operator|.
 name|getCanonicalPath

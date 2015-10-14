@@ -748,7 +748,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 block|,
 literal|"groups"
@@ -842,7 +842,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 block|,
 literal|"ls"
@@ -889,7 +889,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 block|,
 literal|"chmod"
@@ -922,7 +922,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 block|,
 literal|"chmod"
@@ -1023,7 +1023,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 block|,
 literal|"chown"
@@ -1067,7 +1067,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 block|,
 literal|"symlink"
@@ -1110,7 +1110,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 block|,
 literal|"readlink"
@@ -1186,7 +1186,7 @@ index|[]
 block|{
 name|Shell
 operator|.
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 block|,
 literal|"task"
@@ -1206,7 +1206,7 @@ index|[]
 block|{
 name|Shell
 operator|.
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 block|,
 literal|"task"
@@ -2174,7 +2174,7 @@ name|getCanonicalPath
 argument_list|()
 return|;
 block|}
-comment|/**    * Location of winutils as a string; null if not found.    *<p>    *<i>Important: caller must check for this value being null</i>.    * The lack of such checks has led to many support issues being raised.    *<p>    * @deprecated use one of the exception-raising getter methods,    * specifically {@link #getWinutilsPath()} or {@link #getWinutilsFile()}    */
+comment|/**    * Location of winutils as a string; null if not found.    *<p>    *<i>Important: caller must check for this value being null</i>.    * The lack of such checks has led to many support issues being raised.    *<p>    * @deprecated use one of the exception-raising getter methods,    * specifically {@link #getWinUtilsPath()} or {@link #getWinUtilsFile()}    */
 annotation|@
 name|Deprecated
 DECL|field|WINUTILS
@@ -2327,7 +2327,7 @@ operator|=
 name|ioe
 expr_stmt|;
 block|}
-comment|/**    * Predicate to indicate whether or not the path to winutils is known.    *    * If true, then {@link #WINUTILS} is non-null, and both    * {@link #getWinutilsPath()} and {@link #getWinutilsFile()}    * will successfully return this value. Always false on non-windows systems.    * @return true if there is a valid path to the binary    */
+comment|/**    * Predicate to indicate whether or not the path to winutils is known.    *    * If true, then {@link #WINUTILS} is non-null, and both    * {@link #getWinUtilsPath()} and {@link #getWinUtilsFile()}    * will successfully return this value. Always false on non-windows systems.    * @return true if there is a valid path to the binary    */
 DECL|method|hasWinutilsPath ()
 specifier|public
 specifier|static
@@ -2342,11 +2342,11 @@ literal|null
 return|;
 block|}
 comment|/**    * Locate the winutils binary, or fail with a meaningful    * exception and stack trace as an RTE.    * This method is for use in methods which don't explicitly throw    * an<code>IOException</code>.    * @return the path to {@link #WINUTILS_EXE}    * @throws RuntimeException if the path is not resolvable    */
-DECL|method|getWinutilsPath ()
+DECL|method|getWinUtilsPath ()
 specifier|public
 specifier|static
 name|String
-name|getWinutilsPath
+name|getWinUtilsPath
 parameter_list|()
 block|{
 if|if
@@ -2377,11 +2377,11 @@ throw|;
 block|}
 block|}
 comment|/**    * Get a file reference to winutils.    * Always raises an exception if there isn't one    * @return the file instance referring to the winutils bin.    * @throws FileNotFoundException on any failure to locate that file.    */
-DECL|method|getWinutilsFile ()
+DECL|method|getWinUtilsFile ()
 specifier|public
 specifier|static
 name|File
-name|getWinutilsFile
+name|getWinUtilsFile
 parameter_list|()
 throws|throws
 name|FileNotFoundException

@@ -972,7 +972,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 block|,
 literal|"task"
@@ -1083,7 +1083,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 block|,
 literal|"task"
@@ -1658,7 +1658,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|getWinutilsFile
+name|getWinUtilsFile
 argument_list|()
 expr_stmt|;
 block|}
@@ -1678,7 +1678,7 @@ expr_stmt|;
 block|}
 try|try
 block|{
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 expr_stmt|;
 block|}

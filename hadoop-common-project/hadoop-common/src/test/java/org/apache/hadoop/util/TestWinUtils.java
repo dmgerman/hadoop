@@ -303,7 +303,7 @@ name|winutils
 operator|=
 name|Shell
 operator|.
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 expr_stmt|;
 block|}
@@ -335,7 +335,7 @@ name|IOException
 block|{
 name|Shell
 operator|.
-name|getWinutilsPath
+name|getWinUtilsPath
 argument_list|()
 expr_stmt|;
 block|}
@@ -1468,7 +1468,7 @@ name|winutilsFile
 init|=
 name|Shell
 operator|.
-name|getWinutilsFile
+name|getWinUtilsFile
 argument_list|()
 decl_stmt|;
 name|File
