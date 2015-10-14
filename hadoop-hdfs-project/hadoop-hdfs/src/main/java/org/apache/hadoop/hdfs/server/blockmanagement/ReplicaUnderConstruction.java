@@ -199,6 +199,7 @@ name|getDatanodeDescriptor
 argument_list|()
 operator|.
 name|isAlive
+argument_list|()
 return|;
 block|}
 annotation|@

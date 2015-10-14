@@ -402,10 +402,12 @@ expr_stmt|;
 comment|// remove a non-existent block
 name|assertFalse
 argument_list|(
-name|dd
+name|BlocksMap
 operator|.
 name|removeBlock
 argument_list|(
+name|dd
+argument_list|,
 name|blk1
 argument_list|)
 argument_list|)
@@ -479,10 +481,12 @@ expr_stmt|;
 comment|// remove first block
 name|assertTrue
 argument_list|(
-name|dd
+name|BlocksMap
 operator|.
 name|removeBlock
 argument_list|(
+name|dd
+argument_list|,
 name|blk
 argument_list|)
 argument_list|)
@@ -500,10 +504,12 @@ expr_stmt|;
 comment|// remove second block
 name|assertTrue
 argument_list|(
-name|dd
+name|BlocksMap
 operator|.
 name|removeBlock
 argument_list|(
+name|dd
+argument_list|,
 name|blk1
 argument_list|)
 argument_list|)

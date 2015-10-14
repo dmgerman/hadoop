@@ -564,102 +564,33 @@ name|EMPTY_ARRAY
 init|=
 block|{}
 decl_stmt|;
-comment|// Stores status of decommissioning.
-comment|// If node is not decommissioning, do not use this object for anything.
-DECL|field|decommissioningStatus
-specifier|public
+DECL|field|BLOCKS_SCHEDULED_ROLL_INTERVAL
+specifier|private
+specifier|static
 specifier|final
-name|DecommissioningStatus
-name|decommissioningStatus
-init|=
-operator|new
-name|DecommissioningStatus
-argument_list|()
-decl_stmt|;
-DECL|field|curBlockReportId
-specifier|private
-name|long
-name|curBlockReportId
-init|=
-literal|0
-decl_stmt|;
-DECL|field|curBlockReportRpcsSeen
-specifier|private
-name|BitSet
-name|curBlockReportRpcsSeen
-init|=
-literal|null
-decl_stmt|;
-DECL|method|updateBlockReportContext (BlockReportContext context)
-specifier|public
 name|int
-name|updateBlockReportContext
-parameter_list|(
-name|BlockReportContext
-name|context
-parameter_list|)
-block|{
-if|if
-condition|(
-name|curBlockReportId
-operator|!=
-name|context
+name|BLOCKS_SCHEDULED_ROLL_INTERVAL
+init|=
+literal|600
+operator|*
+literal|1000
+decl_stmt|;
+comment|//10min
+DECL|field|EMPTY_STORAGE_INFO_LIST
+specifier|private
+specifier|static
+specifier|final
+name|List
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+name|EMPTY_STORAGE_INFO_LIST
+init|=
+name|ImmutableList
 operator|.
-name|getReportId
+name|of
 argument_list|()
-condition|)
-block|{
-name|curBlockReportId
-operator|=
-name|context
-operator|.
-name|getReportId
-argument_list|()
-expr_stmt|;
-name|curBlockReportRpcsSeen
-operator|=
-operator|new
-name|BitSet
-argument_list|(
-name|context
-operator|.
-name|getTotalRpcs
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-name|curBlockReportRpcsSeen
-operator|.
-name|set
-argument_list|(
-name|context
-operator|.
-name|getCurRpc
-argument_list|()
-argument_list|)
-expr_stmt|;
-return|return
-name|curBlockReportRpcsSeen
-operator|.
-name|cardinality
-argument_list|()
-return|;
-block|}
-DECL|method|clearBlockReportContext ()
-specifier|public
-name|void
-name|clearBlockReportContext
-parameter_list|()
-block|{
-name|curBlockReportId
-operator|=
-literal|0
-expr_stmt|;
-name|curBlockReportRpcsSeen
-operator|=
-literal|null
-expr_stmt|;
-block|}
+decl_stmt|;
 comment|/** Block and targets pair */
 annotation|@
 name|InterfaceAudience
@@ -734,9 +665,7 @@ name|blockq
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|E
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/** Size of the queue */
@@ -846,6 +775,7 @@ return|;
 block|}
 comment|/**      * Returns<tt>true</tt> if the queue contains the specified element.      */
 DECL|method|contains (E e)
+specifier|synchronized
 name|boolean
 name|contains
 parameter_list|(
@@ -875,22 +805,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|field|storageMap
-specifier|private
-specifier|final
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|DatanodeStorageInfo
-argument_list|>
-name|storageMap
-init|=
-operator|new
-name|HashMap
-argument_list|<>
-argument_list|()
-decl_stmt|;
 comment|/**    * A list of CachedBlock objects on this datanode.    */
 DECL|class|CachedBlocksList
 specifier|public
@@ -973,6 +887,48 @@ name|type
 return|;
 block|}
 block|}
+comment|// Stores status of decommissioning.
+comment|// If node is not decommissioning, do not use this object for anything.
+DECL|field|decommissioningStatus
+specifier|public
+specifier|final
+name|DecommissioningStatus
+name|decommissioningStatus
+init|=
+operator|new
+name|DecommissioningStatus
+argument_list|()
+decl_stmt|;
+DECL|field|curBlockReportId
+specifier|private
+name|long
+name|curBlockReportId
+init|=
+literal|0
+decl_stmt|;
+DECL|field|curBlockReportRpcsSeen
+specifier|private
+name|BitSet
+name|curBlockReportRpcsSeen
+init|=
+literal|null
+decl_stmt|;
+DECL|field|storageMap
+specifier|private
+specifier|final
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|DatanodeStorageInfo
+argument_list|>
+name|storageMap
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
 comment|/**    * The blocks which we want to cache on this DataNode.    */
 DECL|field|pendingCached
 specifier|private
@@ -1030,36 +986,6 @@ operator|.
 name|PENDING_UNCACHED
 argument_list|)
 decl_stmt|;
-DECL|method|getPendingCached ()
-specifier|public
-name|CachedBlocksList
-name|getPendingCached
-parameter_list|()
-block|{
-return|return
-name|pendingCached
-return|;
-block|}
-DECL|method|getCached ()
-specifier|public
-name|CachedBlocksList
-name|getCached
-parameter_list|()
-block|{
-return|return
-name|cached
-return|;
-block|}
-DECL|method|getPendingUncached ()
-specifier|public
-name|CachedBlocksList
-name|getPendingUncached
-parameter_list|()
-block|{
-return|return
-name|pendingUncached
-return|;
-block|}
 comment|/**    * The time when the last batch of caching directives was sent, in    * monotonic milliseconds.    */
 DECL|field|lastCachingDirectiveSentTimeMs
 specifier|private
@@ -1069,14 +995,14 @@ decl_stmt|;
 comment|// isAlive == heartbeats.contains(this)
 comment|// This is an optimization, because contains takes O(n) time on Arraylist
 DECL|field|isAlive
-specifier|public
+specifier|private
 name|boolean
 name|isAlive
 init|=
 literal|false
 decl_stmt|;
 DECL|field|needKeyUpdate
-specifier|public
+specifier|private
 name|boolean
 name|needKeyUpdate
 init|=
@@ -1195,18 +1121,6 @@ name|lastBlocksScheduledRollTime
 init|=
 literal|0
 decl_stmt|;
-DECL|field|BLOCKS_SCHEDULED_ROLL_INTERVAL
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|BLOCKS_SCHEDULED_ROLL_INTERVAL
-init|=
-literal|600
-operator|*
-literal|1000
-decl_stmt|;
-comment|//10min
 DECL|field|volumeFailures
 specifier|private
 name|int
@@ -1312,6 +1226,158 @@ literal|0
 argument_list|,
 literal|null
 argument_list|)
+expr_stmt|;
+block|}
+DECL|method|updateBlockReportContext (BlockReportContext context)
+specifier|public
+name|int
+name|updateBlockReportContext
+parameter_list|(
+name|BlockReportContext
+name|context
+parameter_list|)
+block|{
+if|if
+condition|(
+name|curBlockReportId
+operator|!=
+name|context
+operator|.
+name|getReportId
+argument_list|()
+condition|)
+block|{
+name|curBlockReportId
+operator|=
+name|context
+operator|.
+name|getReportId
+argument_list|()
+expr_stmt|;
+name|curBlockReportRpcsSeen
+operator|=
+operator|new
+name|BitSet
+argument_list|(
+name|context
+operator|.
+name|getTotalRpcs
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|curBlockReportRpcsSeen
+operator|.
+name|set
+argument_list|(
+name|context
+operator|.
+name|getCurRpc
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|curBlockReportRpcsSeen
+operator|.
+name|cardinality
+argument_list|()
+return|;
+block|}
+DECL|method|clearBlockReportContext ()
+specifier|public
+name|void
+name|clearBlockReportContext
+parameter_list|()
+block|{
+name|curBlockReportId
+operator|=
+literal|0
+expr_stmt|;
+name|curBlockReportRpcsSeen
+operator|=
+literal|null
+expr_stmt|;
+block|}
+DECL|method|getPendingCached ()
+specifier|public
+name|CachedBlocksList
+name|getPendingCached
+parameter_list|()
+block|{
+return|return
+name|pendingCached
+return|;
+block|}
+DECL|method|getCached ()
+specifier|public
+name|CachedBlocksList
+name|getCached
+parameter_list|()
+block|{
+return|return
+name|cached
+return|;
+block|}
+DECL|method|getPendingUncached ()
+specifier|public
+name|CachedBlocksList
+name|getPendingUncached
+parameter_list|()
+block|{
+return|return
+name|pendingUncached
+return|;
+block|}
+DECL|method|isAlive ()
+specifier|public
+name|boolean
+name|isAlive
+parameter_list|()
+block|{
+return|return
+name|isAlive
+return|;
+block|}
+DECL|method|setAlive (boolean isAlive)
+specifier|public
+name|void
+name|setAlive
+parameter_list|(
+name|boolean
+name|isAlive
+parameter_list|)
+block|{
+name|this
+operator|.
+name|isAlive
+operator|=
+name|isAlive
+expr_stmt|;
+block|}
+DECL|method|needKeyUpdate ()
+specifier|public
+name|boolean
+name|needKeyUpdate
+parameter_list|()
+block|{
+return|return
+name|needKeyUpdate
+return|;
+block|}
+DECL|method|setNeedKeyUpdate (boolean needKeyUpdate)
+specifier|public
+name|void
+name|setNeedKeyUpdate
+parameter_list|(
+name|boolean
+name|needKeyUpdate
+parameter_list|)
+block|{
+name|this
+operator|.
+name|needKeyUpdate
+operator|=
+name|needKeyUpdate
 expr_stmt|;
 block|}
 annotation|@
@@ -1485,21 +1551,6 @@ literal|false
 return|;
 block|}
 block|}
-DECL|field|EMPTY_STORAGE_INFO_LIST
-specifier|static
-specifier|final
-specifier|private
-name|List
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
-name|EMPTY_STORAGE_INFO_LIST
-init|=
-name|ImmutableList
-operator|.
-name|of
-argument_list|()
-decl_stmt|;
 DECL|method|removeZombieStorages ()
 name|List
 argument_list|<
@@ -1659,80 +1710,6 @@ else|:
 name|zombies
 return|;
 block|}
-comment|/**    * Remove block from the list of blocks belonging to the data-node. Remove    * data-node from the block.    */
-DECL|method|removeBlock (BlockInfo b)
-name|boolean
-name|removeBlock
-parameter_list|(
-name|BlockInfo
-name|b
-parameter_list|)
-block|{
-specifier|final
-name|DatanodeStorageInfo
-name|s
-init|=
-name|b
-operator|.
-name|findStorageInfo
-argument_list|(
-name|this
-argument_list|)
-decl_stmt|;
-comment|// if block exists on this datanode
-if|if
-condition|(
-name|s
-operator|!=
-literal|null
-condition|)
-block|{
-return|return
-name|s
-operator|.
-name|removeBlock
-argument_list|(
-name|b
-argument_list|)
-return|;
-block|}
-return|return
-literal|false
-return|;
-block|}
-comment|/**    * Remove block from the list of blocks belonging to the data-node. Remove    * data-node from the block.    */
-DECL|method|removeBlock (String storageID, BlockInfo b)
-name|boolean
-name|removeBlock
-parameter_list|(
-name|String
-name|storageID
-parameter_list|,
-name|BlockInfo
-name|b
-parameter_list|)
-block|{
-name|DatanodeStorageInfo
-name|s
-init|=
-name|getStorageInfo
-argument_list|(
-name|storageID
-argument_list|)
-decl_stmt|;
-return|return
-name|s
-operator|!=
-literal|null
-operator|&&
-name|s
-operator|.
-name|removeBlock
-argument_list|(
-name|b
-argument_list|)
-return|;
-block|}
 DECL|method|resetBlocks ()
 specifier|public
 name|void
@@ -1819,6 +1796,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|recoverBlocks
@@ -1840,7 +1818,6 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-block|}
 comment|// pendingCached, cached, and pendingUncached are protected by the
 comment|// FSN lock.
 name|this
@@ -2699,29 +2676,6 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|getBlockIterator (final String storageID)
-name|Iterator
-argument_list|<
-name|BlockInfo
-argument_list|>
-name|getBlockIterator
-parameter_list|(
-specifier|final
-name|String
-name|storageID
-parameter_list|)
-block|{
-return|return
-operator|new
-name|BlockIterator
-argument_list|(
-name|getStorageInfo
-argument_list|(
-name|storageID
-argument_list|)
-argument_list|)
-return|;
-block|}
 DECL|method|incrementPendingReplicationWithoutTargets ()
 name|void
 name|incrementPendingReplicationWithoutTargets
@@ -2994,25 +2948,6 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**    * The number of block invalidation items that are pending to     * be sent to the datanode    */
-DECL|method|getNumberOfBlocksToBeInvalidated ()
-name|int
-name|getNumberOfBlocksToBeInvalidated
-parameter_list|()
-block|{
-synchronized|synchronized
-init|(
-name|invalidateBlocks
-init|)
-block|{
-return|return
-name|invalidateBlocks
-operator|.
-name|size
-argument_list|()
-return|;
-block|}
-block|}
 DECL|method|getReplicationCommand (int maxTransfers)
 specifier|public
 name|List
@@ -3183,7 +3118,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Find whether the datanode contains good storage of given type to    * place block of size<code>blockSize</code>.    *    *<p>Currently datanode only cares about the storage type, in this    * method, the first storage of given type we see is returned.    *    * @param t requested storage type    * @param blockSize requested block size    * @return    */
+comment|/**    * Find whether the datanode contains good storage of given type to    * place block of size<code>blockSize</code>.    *    *<p>Currently datanode only cares about the storage type, in this    * method, the first storage of given type we see is returned.    *    * @param t requested storage type    * @param blockSize requested block size    */
 DECL|method|chooseStorage4Block (StorageType t, long blockSize)
 specifier|public
 name|DatanodeStorageInfo
@@ -3379,7 +3314,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-empty_stmt|;
 block|}
 comment|/** Decrement the number of blocks scheduled. */
 DECL|method|decrementBlocksScheduled (StorageType t)
@@ -3561,10 +3495,9 @@ parameter_list|)
 block|{
 if|if
 condition|(
+operator|!
 name|isDecommissionInProgress
 argument_list|()
-operator|==
-literal|false
 condition|)
 block|{
 return|return;
@@ -3592,10 +3525,9 @@ parameter_list|()
 block|{
 if|if
 condition|(
+operator|!
 name|isDecommissionInProgress
 argument_list|()
-operator|==
-literal|false
 condition|)
 block|{
 return|return
@@ -3616,10 +3548,9 @@ parameter_list|()
 block|{
 if|if
 condition|(
+operator|!
 name|isDecommissionInProgress
 argument_list|()
-operator|==
-literal|false
 condition|)
 block|{
 return|return
@@ -3640,10 +3571,9 @@ parameter_list|()
 block|{
 if|if
 condition|(
+operator|!
 name|isDecommissionInProgress
 argument_list|()
-operator|==
-literal|false
 condition|)
 block|{
 return|return
@@ -3680,10 +3610,9 @@ parameter_list|()
 block|{
 if|if
 condition|(
+operator|!
 name|isDecommissionInProgress
 argument_list|()
-operator|==
-literal|false
 condition|)
 block|{
 return|return
@@ -4128,7 +4057,7 @@ operator|=
 name|time
 expr_stmt|;
 block|}
-comment|/**    * checks whether atleast first block report has been received    * @return    */
+comment|/**    * @return whether at least first block report has been received    */
 DECL|method|checkBlockReportReceived ()
 specifier|public
 name|boolean

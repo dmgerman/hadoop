@@ -1523,9 +1523,7 @@ expr_stmt|;
 name|heartbeatManager
 operator|.
 name|activate
-argument_list|(
-name|conf
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|close ()
@@ -3031,6 +3029,7 @@ operator|&&
 name|node
 operator|.
 name|isAlive
+argument_list|()
 operator|&&
 operator|!
 name|isDatanodeDead
@@ -5613,6 +5612,7 @@ operator|!
 name|nodeinfo
 operator|.
 name|isAlive
+argument_list|()
 condition|)
 block|{
 return|return

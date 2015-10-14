@@ -902,6 +902,7 @@ condition|(
 name|node
 operator|.
 name|isAlive
+argument_list|()
 condition|)
 block|{
 name|blockManager

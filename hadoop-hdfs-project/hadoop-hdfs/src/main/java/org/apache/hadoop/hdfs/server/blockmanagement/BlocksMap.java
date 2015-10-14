@@ -525,10 +525,10 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|dn
-operator|.
 name|removeBlock
 argument_list|(
+name|dn
+argument_list|,
 name|blockInfo
 argument_list|)
 expr_stmt|;
@@ -750,10 +750,10 @@ comment|// remove block from the data-node list and the node from the block info
 name|boolean
 name|removed
 init|=
-name|node
-operator|.
 name|removeBlock
 argument_list|(
+name|node
+argument_list|,
 name|info
 argument_list|)
 decl_stmt|;
@@ -783,6 +783,44 @@ comment|// remove block from the map
 block|}
 return|return
 name|removed
+return|;
+block|}
+comment|/**    * Remove block from the list of blocks belonging to the data-node. Remove    * data-node from the block.    */
+DECL|method|removeBlock (DatanodeDescriptor dn, BlockInfo b)
+specifier|static
+name|boolean
+name|removeBlock
+parameter_list|(
+name|DatanodeDescriptor
+name|dn
+parameter_list|,
+name|BlockInfo
+name|b
+parameter_list|)
+block|{
+specifier|final
+name|DatanodeStorageInfo
+name|s
+init|=
+name|b
+operator|.
+name|findStorageInfo
+argument_list|(
+name|dn
+argument_list|)
+decl_stmt|;
+comment|// if block exists on this datanode
+return|return
+name|s
+operator|!=
+literal|null
+operator|&&
+name|s
+operator|.
+name|removeBlock
+argument_list|(
+name|b
+argument_list|)
 return|;
 block|}
 DECL|method|size ()

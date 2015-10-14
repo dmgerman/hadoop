@@ -11055,6 +11055,7 @@ operator|(
 name|dd
 operator|.
 name|isAlive
+argument_list|()
 operator|==
 name|alive
 operator|)

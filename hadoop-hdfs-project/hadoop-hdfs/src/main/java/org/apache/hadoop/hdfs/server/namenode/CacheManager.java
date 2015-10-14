@@ -5018,6 +5018,7 @@ operator|!
 name|datanode
 operator|.
 name|isAlive
+argument_list|()
 condition|)
 block|{
 throw|throw

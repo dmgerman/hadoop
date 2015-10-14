@@ -5534,6 +5534,7 @@ operator|&&
 name|nodeinfo
 operator|.
 name|needKeyUpdate
+argument_list|()
 condition|)
 block|{
 name|cmds
@@ -5552,9 +5553,10 @@ argument_list|)
 expr_stmt|;
 name|nodeinfo
 operator|.
-name|needKeyUpdate
-operator|=
+name|setNeedKeyUpdate
+argument_list|(
 literal|false
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -9764,6 +9766,7 @@ operator|!
 name|node
 operator|.
 name|isAlive
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -16914,6 +16917,7 @@ operator|!
 name|node
 operator|.
 name|isAlive
+argument_list|()
 condition|)
 block|{
 name|blockLog
@@ -17582,6 +17586,7 @@ condition|(
 name|node
 operator|.
 name|isAlive
+argument_list|()
 condition|)
 block|{
 return|return
