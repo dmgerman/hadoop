@@ -3739,21 +3739,18 @@ name|checksumLen
 operator|-
 name|skip
 decl_stmt|;
-comment|// If offset> end, there is no more checksum to write.
+comment|// If offset>= end, there is no more checksum to write.
 comment|// I.e. a partial chunk checksum rewrite happened and there is no
 comment|// more to write after that.
 if|if
 condition|(
 name|offset
-operator|>
+operator|>=
 name|end
+operator|&&
+name|doCrcRecalc
 condition|)
 block|{
-assert|assert
-name|crcBytes
-operator|!=
-literal|null
-assert|;
 name|lastCrc
 operator|=
 name|crcBytes
