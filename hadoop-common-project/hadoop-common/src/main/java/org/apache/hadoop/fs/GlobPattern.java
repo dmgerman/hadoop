@@ -18,11 +18,11 @@ end_package
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|util
 operator|.
-name|re2j
+name|regex
 operator|.
 name|Pattern
 import|;
@@ -30,11 +30,11 @@ end_import
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|util
 operator|.
-name|re2j
+name|regex
 operator|.
 name|PatternSyntaxException
 import|;
@@ -575,27 +575,15 @@ name|int
 name|pos
 parameter_list|)
 block|{
-name|String
-name|fullMessage
-init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"%s at pos %d"
-argument_list|,
-name|message
-argument_list|,
-name|pos
-argument_list|)
-decl_stmt|;
 throw|throw
 operator|new
 name|PatternSyntaxException
 argument_list|(
-name|fullMessage
+name|message
 argument_list|,
 name|pattern
+argument_list|,
+name|pos
 argument_list|)
 throw|;
 block|}
