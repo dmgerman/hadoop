@@ -135,7 +135,7 @@ operator|=
 name|mojo
 expr_stmt|;
 block|}
-comment|/**    * Runs the specified command and saves each line of the command's output to    * the given list.    *     * @param command List containing command and all arguments    * @param output List in/out parameter to receive command output    * @return int exit code of command    */
+comment|/**    * Runs the specified command and saves each line of the command's output to    * the given list.    *    * @param command List containing command and all arguments    * @param output List in/out parameter to receive command output    * @return int exit code of command    */
 DECL|method|run (List<String> command, List<String> output)
 specifier|public
 name|int
@@ -152,6 +152,44 @@ argument_list|<
 name|String
 argument_list|>
 name|output
+parameter_list|)
+block|{
+return|return
+name|this
+operator|.
+name|run
+argument_list|(
+name|command
+argument_list|,
+name|output
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Runs the specified command and saves each line of the command's output to    * the given list and each line of the command's stderr to the other list.    *    * @param command List containing command and all arguments    * @param output List in/out parameter to receive command output    * @param errors List in/out parameter to receive command stderr    * @return int exit code of command    */
+DECL|method|run (List<String> command, List<String> output, List<String> errors)
+specifier|public
+name|int
+name|run
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|command
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|output
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|errors
 parameter_list|)
 block|{
 name|int
@@ -283,6 +321,24 @@ name|getOutput
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|errors
+operator|!=
+literal|null
+condition|)
+block|{
+name|errors
+operator|.
+name|addAll
+argument_list|(
+name|stdErr
+operator|.
+name|getOutput
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
