@@ -62,6 +62,16 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
 begin_class
 DECL|class|DockerRunCommand
 specifier|public
@@ -258,6 +268,49 @@ operator|+
 name|parentPath
 argument_list|)
 expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setCapabilities (Set<String> capabilties)
+specifier|public
+name|DockerRunCommand
+name|setCapabilities
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|capabilties
+parameter_list|)
+block|{
+comment|//first, drop all capabilities
+name|super
+operator|.
+name|addCommandArguments
+argument_list|(
+literal|"--cap-drop=ALL"
+argument_list|)
+expr_stmt|;
+comment|//now, add the capabilities supplied
+for|for
+control|(
+name|String
+name|capability
+range|:
+name|capabilties
+control|)
+block|{
+name|super
+operator|.
+name|addCommandArguments
+argument_list|(
+literal|"--cap-add="
+operator|+
+name|capability
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|this
 return|;
