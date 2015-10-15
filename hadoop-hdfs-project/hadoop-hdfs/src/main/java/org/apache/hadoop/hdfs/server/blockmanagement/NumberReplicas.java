@@ -35,6 +35,11 @@ specifier|private
 name|int
 name|liveReplicas
 decl_stmt|;
+DECL|field|readOnlyReplicas
+specifier|private
+name|int
+name|readOnlyReplicas
+decl_stmt|;
 comment|// Tracks only the decommissioning replicas
 DECL|field|decommissioning
 specifier|private
@@ -66,8 +71,10 @@ DECL|method|NumberReplicas ()
 name|NumberReplicas
 parameter_list|()
 block|{
-name|initialize
+name|this
 argument_list|(
+literal|0
+argument_list|,
 literal|0
 argument_list|,
 literal|0
@@ -82,11 +89,14 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|NumberReplicas (int live, int decommissioned, int decommissioning, int corrupt, int excess, int stale)
+DECL|method|NumberReplicas (int live, int readonly, int decommissioned, int decommissioning, int corrupt, int excess, int stale)
 name|NumberReplicas
 parameter_list|(
 name|int
 name|live
+parameter_list|,
+name|int
+name|readonly
 parameter_list|,
 name|int
 name|decommissioned
@@ -104,9 +114,11 @@ name|int
 name|stale
 parameter_list|)
 block|{
-name|initialize
+name|set
 argument_list|(
 name|live
+argument_list|,
+name|readonly
 argument_list|,
 name|decommissioned
 argument_list|,
@@ -120,12 +132,15 @@ name|stale
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initialize (int live, int decommissioned, int decommissioning, int corrupt, int excess, int stale)
+DECL|method|set (int live, int readonly, int decommissioned, int decommissioning, int corrupt, int excess, int stale)
 name|void
-name|initialize
+name|set
 parameter_list|(
 name|int
 name|live
+parameter_list|,
+name|int
+name|readonly
 parameter_list|,
 name|int
 name|decommissioned
@@ -146,6 +161,10 @@ block|{
 name|liveReplicas
 operator|=
 name|live
+expr_stmt|;
+name|readOnlyReplicas
+operator|=
+name|readonly
 expr_stmt|;
 name|this
 operator|.
@@ -180,6 +199,16 @@ parameter_list|()
 block|{
 return|return
 name|liveReplicas
+return|;
+block|}
+DECL|method|readOnlyReplicas ()
+specifier|public
+name|int
+name|readOnlyReplicas
+parameter_list|()
+block|{
+return|return
+name|readOnlyReplicas
 return|;
 block|}
 comment|/**    *    * @return decommissioned replicas + decommissioning replicas    * It is deprecated by decommissionedAndDecommissioning    * due to its misleading name.    */

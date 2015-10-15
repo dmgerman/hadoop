@@ -2261,6 +2261,11 @@ name|liveReplicas
 argument_list|,
 name|num
 operator|.
+name|readOnlyReplicas
+argument_list|()
+argument_list|,
+name|num
+operator|.
 name|decommissionedAndDecommissioning
 argument_list|()
 argument_list|,

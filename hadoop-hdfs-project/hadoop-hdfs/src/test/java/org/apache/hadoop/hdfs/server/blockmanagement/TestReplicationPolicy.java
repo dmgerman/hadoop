@@ -5484,6 +5484,8 @@ literal|2
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|3
 argument_list|)
 expr_stmt|;
@@ -5514,6 +5516,8 @@ argument_list|()
 argument_list|)
 argument_list|,
 literal|1
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -5608,6 +5612,8 @@ literal|1
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|3
 argument_list|)
 expr_stmt|;
@@ -5628,6 +5634,8 @@ argument_list|()
 argument_list|)
 argument_list|,
 literal|2
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -5654,6 +5662,8 @@ literal|6
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|6
 argument_list|)
 expr_stmt|;
@@ -5677,6 +5687,8 @@ literal|5
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|6
 argument_list|)
 expr_stmt|;
@@ -5695,6 +5707,8 @@ operator|.
 name|nextLong
 argument_list|()
 argument_list|)
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -5781,6 +5795,8 @@ name|nextLong
 argument_list|()
 argument_list|)
 argument_list|,
+literal|0
+argument_list|,
 literal|1
 argument_list|,
 literal|0
@@ -5790,7 +5806,6 @@ argument_list|)
 expr_stmt|;
 comment|// Choose 10 blocks from UnderReplicatedBlocks. Then it should pick 1 block from
 comment|// QUEUE_HIGHEST_PRIORITY, 4 blocks from QUEUE_REPLICAS_BADLY_DISTRIBUTED
-comment|// and 5 blocks from QUEUE_WITH_CORRUPT_BLOCKS.
 name|chosenBlocks
 operator|=
 name|underReplicatedBlocks
@@ -5811,8 +5826,6 @@ argument_list|,
 literal|0
 argument_list|,
 literal|4
-argument_list|,
-literal|5
 argument_list|)
 expr_stmt|;
 comment|// Since it is reached to end of all lists,
@@ -5845,7 +5858,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** asserts the chosen blocks with expected priority blocks */
-DECL|method|assertTheChosenBlocks ( List<List<BlockInfo>> chosenBlocks, int firstPrioritySize, int secondPrioritySize, int thirdPrioritySize, int fourthPrioritySize, int fifthPrioritySize)
+DECL|method|assertTheChosenBlocks ( List<List<BlockInfo>> chosenBlocks, int... expectedSizes)
 specifier|private
 name|void
 name|assertTheChosenBlocks
@@ -5860,116 +5873,80 @@ argument_list|>
 name|chosenBlocks
 parameter_list|,
 name|int
-name|firstPrioritySize
-parameter_list|,
-name|int
-name|secondPrioritySize
-parameter_list|,
-name|int
-name|thirdPrioritySize
-parameter_list|,
-name|int
-name|fourthPrioritySize
-parameter_list|,
-name|int
-name|fifthPrioritySize
+modifier|...
+name|expectedSizes
 parameter_list|)
+block|{
+name|int
+name|i
+init|=
+literal|0
+decl_stmt|;
+for|for
+control|(
+init|;
+name|i
+operator|<
+name|chosenBlocks
+operator|.
+name|size
+argument_list|()
+condition|;
+name|i
+operator|++
+control|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"Not returned the expected number of QUEUE_HIGHEST_PRIORITY blocks"
+literal|"Not returned the expected number for i="
+operator|+
+name|i
 argument_list|,
-name|firstPrioritySize
+name|expectedSizes
+index|[
+name|i
+index|]
 argument_list|,
 name|chosenBlocks
 operator|.
 name|get
 argument_list|(
-name|UnderReplicatedBlocks
-operator|.
-name|QUEUE_HIGHEST_PRIORITY
+name|i
 argument_list|)
 operator|.
 name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+for|for
+control|(
+init|;
+name|i
+operator|<
+name|expectedSizes
+operator|.
+name|length
+condition|;
+name|i
+operator|++
+control|)
+block|{
 name|assertEquals
 argument_list|(
-literal|"Not returned the expected number of QUEUE_VERY_UNDER_REPLICATED blocks"
+literal|"Expected size is non-zero for i="
+operator|+
+name|i
 argument_list|,
-name|secondPrioritySize
+literal|0
 argument_list|,
-name|chosenBlocks
-operator|.
-name|get
-argument_list|(
-name|UnderReplicatedBlocks
-operator|.
-name|QUEUE_VERY_UNDER_REPLICATED
-argument_list|)
-operator|.
-name|size
-argument_list|()
+name|expectedSizes
+index|[
+name|i
+index|]
 argument_list|)
 expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|"Not returned the expected number of QUEUE_UNDER_REPLICATED blocks"
-argument_list|,
-name|thirdPrioritySize
-argument_list|,
-name|chosenBlocks
-operator|.
-name|get
-argument_list|(
-name|UnderReplicatedBlocks
-operator|.
-name|QUEUE_UNDER_REPLICATED
-argument_list|)
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|"Not returned the expected number of QUEUE_REPLICAS_BADLY_DISTRIBUTED blocks"
-argument_list|,
-name|fourthPrioritySize
-argument_list|,
-name|chosenBlocks
-operator|.
-name|get
-argument_list|(
-name|UnderReplicatedBlocks
-operator|.
-name|QUEUE_REPLICAS_BADLY_DISTRIBUTED
-argument_list|)
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|"Not returned the expected number of QUEUE_WITH_CORRUPT_BLOCKS blocks"
-argument_list|,
-name|fifthPrioritySize
-argument_list|,
-name|chosenBlocks
-operator|.
-name|get
-argument_list|(
-name|UnderReplicatedBlocks
-operator|.
-name|QUEUE_WITH_CORRUPT_BLOCKS
-argument_list|)
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
+block|}
 block|}
 comment|/**    * Test for the chooseReplicaToDelete are processed based on     * block locality and free space    */
 annotation|@
@@ -6792,6 +6769,8 @@ name|block1CurReplicas
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 name|block1ExpectedReplicas
 argument_list|)
 expr_stmt|;
@@ -6806,6 +6785,8 @@ literal|2
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|7
 argument_list|)
 expr_stmt|;
@@ -6817,6 +6798,8 @@ argument_list|(
 name|block3
 argument_list|,
 literal|2
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -6869,6 +6852,8 @@ argument_list|,
 name|block1CurReplicas
 operator|+
 literal|1
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -7041,6 +7026,8 @@ name|block1
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|1
 argument_list|,
 literal|1
@@ -7052,6 +7039,8 @@ operator|.
 name|add
 argument_list|(
 name|block2
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -7354,6 +7343,8 @@ name|block1
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|1
 argument_list|,
 literal|1
@@ -7365,6 +7356,8 @@ operator|.
 name|add
 argument_list|(
 name|block2
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -7854,6 +7847,8 @@ name|block1
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|1
 argument_list|,
 literal|1
@@ -7865,6 +7860,8 @@ operator|.
 name|add
 argument_list|(
 name|block2
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,

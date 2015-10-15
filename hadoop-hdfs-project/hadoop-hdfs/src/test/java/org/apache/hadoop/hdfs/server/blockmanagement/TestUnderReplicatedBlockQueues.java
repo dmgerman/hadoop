@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -325,6 +335,8 @@ literal|1
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|3
 argument_list|)
 argument_list|)
@@ -498,6 +510,8 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|3
 argument_list|,
 literal|0
@@ -520,6 +534,8 @@ operator|.
 name|update
 argument_list|(
 name|block_corrupt
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -548,6 +564,8 @@ operator|.
 name|update
 argument_list|(
 name|block_very_under_replicated
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -938,6 +956,8 @@ name|block
 argument_list|,
 name|curReplicas
 argument_list|,
+literal|0
+argument_list|,
 name|decomissionedReplicas
 argument_list|,
 name|expectedReplicas
@@ -961,9 +981,11 @@ name|int
 name|level
 parameter_list|)
 block|{
-name|UnderReplicatedBlocks
-operator|.
-name|BlockIterator
+specifier|final
+name|Iterator
+argument_list|<
+name|BlockInfo
+argument_list|>
 name|bi
 init|=
 name|queues
