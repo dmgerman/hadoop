@@ -272,7 +272,19 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|Callable
+name|ConcurrentHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentMap
 import|;
 end_import
 
@@ -409,34 +421,6 @@ operator|.
 name|sasl
 operator|.
 name|Sasl
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|cache
-operator|.
-name|Cache
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|cache
-operator|.
-name|CacheBuilder
 import|;
 end_import
 
@@ -1190,8 +1174,7 @@ expr_stmt|;
 block|}
 DECL|field|connections
 specifier|private
-specifier|final
-name|Cache
+name|ConcurrentMap
 argument_list|<
 name|ConnectionId
 argument_list|,
@@ -1199,12 +1182,9 @@ name|Connection
 argument_list|>
 name|connections
 init|=
-name|CacheBuilder
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|build
+operator|new
+name|ConcurrentHashMap
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|valueClass
@@ -5405,11 +5385,16 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+comment|// We have marked this connection as closed. Other thread could have
+comment|// already known it and replace this closedConnection with a new one.
+comment|// We should only remove this closedConnection.
 name|connections
 operator|.
-name|invalidate
+name|remove
 argument_list|(
 name|remoteId
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 comment|// close the streams and therefore the socket
@@ -5764,9 +5749,6 @@ name|conn
 range|:
 name|connections
 operator|.
-name|asMap
-argument_list|()
-operator|.
 name|values
 argument_list|()
 control|)
@@ -5780,12 +5762,11 @@ block|}
 comment|// wait until all connections are closed
 while|while
 condition|(
+operator|!
 name|connections
 operator|.
-name|size
+name|isEmpty
 argument_list|()
-operator|>
-literal|0
 condition|)
 block|{
 try|try
@@ -6461,27 +6442,22 @@ block|{
 return|return
 name|connections
 operator|.
-name|asMap
-argument_list|()
-operator|.
 name|keySet
 argument_list|()
 return|;
 block|}
 comment|/** Get a connection from the pool, or create a new one and add it to the    * pool.  Connections to a given ConnectionId are reused. */
-DECL|method|getConnection ( final ConnectionId remoteId, Call call, final int serviceClass, AtomicBoolean fallbackToSimpleAuth)
+DECL|method|getConnection (ConnectionId remoteId, Call call, int serviceClass, AtomicBoolean fallbackToSimpleAuth)
 specifier|private
 name|Connection
 name|getConnection
 parameter_list|(
-specifier|final
 name|ConnectionId
 name|remoteId
 parameter_list|,
 name|Call
 name|call
 parameter_list|,
-specifier|final
 name|int
 name|serviceClass
 parameter_list|,
@@ -6518,8 +6494,7 @@ condition|(
 literal|true
 condition|)
 block|{
-try|try
-block|{
+comment|// These lines below can be shorten with computeIfAbsent in Java8
 name|connection
 operator|=
 name|connections
@@ -6527,24 +6502,17 @@ operator|.
 name|get
 argument_list|(
 name|remoteId
-argument_list|,
-operator|new
-name|Callable
-argument_list|<
-name|Connection
-argument_list|>
-argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|connection
+operator|==
+literal|null
+condition|)
 block|{
-annotation|@
-name|Override
-specifier|public
-name|Connection
-name|call
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-return|return
+name|connection
+operator|=
 operator|new
 name|Connection
 argument_list|(
@@ -6552,50 +6520,30 @@ name|remoteId
 argument_list|,
 name|serviceClass
 argument_list|)
-return|;
-block|}
-block|}
-argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|ExecutionException
-name|e
-parameter_list|)
-block|{
-name|Throwable
-name|cause
+name|Connection
+name|existing
 init|=
-name|e
+name|connections
 operator|.
-name|getCause
-argument_list|()
+name|putIfAbsent
+argument_list|(
+name|remoteId
+argument_list|,
+name|connection
+argument_list|)
 decl_stmt|;
-comment|// the underlying exception should normally be IOException
 if|if
 condition|(
-name|cause
-operator|instanceof
-name|IOException
+name|existing
+operator|!=
+literal|null
 condition|)
 block|{
-throw|throw
-operator|(
-name|IOException
-operator|)
-name|cause
-throw|;
-block|}
-else|else
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|cause
-argument_list|)
-throw|;
+name|connection
+operator|=
+name|existing
+expr_stmt|;
 block|}
 block|}
 if|if
@@ -6612,19 +6560,23 @@ break|break;
 block|}
 else|else
 block|{
+comment|// This connection is closed, should be removed. But other thread could
+comment|// have already known this closedConnection, and replace it with a new
+comment|// connection. So we should call conditional remove to make sure we only
+comment|// remove this closedConnection.
 name|connections
 operator|.
-name|invalidate
+name|remove
 argument_list|(
 name|remoteId
+argument_list|,
+name|connection
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|//we don't invoke the method below inside "synchronized (connections)"
-comment|//block above. The reason for that is if the server happens to be slow,
-comment|//it will take longer to establish a connection and that will slow the
-comment|//entire system down.
+comment|// If the server happens to be slow, the method below will take longer to
+comment|// establish a connection.
 name|connection
 operator|.
 name|setupIOstreams
