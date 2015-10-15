@@ -200,6 +200,46 @@ return|return
 name|flowRunId
 return|;
 block|}
+comment|/**    * Constructs a row key prefix for the flow run table as follows: {    * clusterId!userI!flowId!}    *    * @param clusterId    * @param userId    * @param flowId    * @return byte array with the row key prefix    */
+DECL|method|getRowKeyPrefix (String clusterId, String userId, String flowId)
+specifier|public
+specifier|static
+name|byte
+index|[]
+name|getRowKeyPrefix
+parameter_list|(
+name|String
+name|clusterId
+parameter_list|,
+name|String
+name|userId
+parameter_list|,
+name|String
+name|flowId
+parameter_list|)
+block|{
+return|return
+name|Bytes
+operator|.
+name|toBytes
+argument_list|(
+name|Separator
+operator|.
+name|QUALIFIERS
+operator|.
+name|joinEncoded
+argument_list|(
+name|clusterId
+argument_list|,
+name|userId
+argument_list|,
+name|flowId
+argument_list|,
+literal|""
+argument_list|)
+argument_list|)
+return|;
+block|}
 comment|/**    * Constructs a row key for the entity table as follows: {    * clusterId!userI!flowId!Inverted Flow Run Id}    *    * @param clusterId    * @param userId    * @param flowId    * @param flowRunId    * @return byte array with the row key    */
 DECL|method|getRowKey (String clusterId, String userId, String flowId, Long flowRunId)
 specifier|public

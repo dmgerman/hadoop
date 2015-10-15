@@ -620,26 +620,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|DEFAULT_BEGIN_TIME
-specifier|protected
-specifier|static
-specifier|final
-name|long
-name|DEFAULT_BEGIN_TIME
-init|=
-literal|0L
-decl_stmt|;
-DECL|field|DEFAULT_END_TIME
-specifier|protected
-specifier|static
-specifier|final
-name|long
-name|DEFAULT_END_TIME
-init|=
-name|Long
-operator|.
-name|MAX_VALUE
-decl_stmt|;
 comment|/**    * Used to look up the flow context.    */
 DECL|field|appToFlowTable
 specifier|private
