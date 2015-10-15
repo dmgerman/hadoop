@@ -1197,8 +1197,6 @@ argument_list|,
 name|b
 argument_list|)
 decl_stmt|;
-name|assertTrue
-argument_list|(
 name|cluster
 operator|.
 name|corruptReplica
@@ -1206,7 +1204,6 @@ argument_list|(
 name|dnToCorrupt
 argument_list|,
 name|b
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Restart the datanode so blocks are re-scanned, and the corrupt

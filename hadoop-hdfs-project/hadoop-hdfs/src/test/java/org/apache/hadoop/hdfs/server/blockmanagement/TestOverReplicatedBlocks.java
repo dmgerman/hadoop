@@ -500,8 +500,6 @@ argument_list|,
 name|fileName
 argument_list|)
 decl_stmt|;
-name|assertTrue
-argument_list|(
 name|cluster
 operator|.
 name|corruptReplica
@@ -509,7 +507,6 @@ argument_list|(
 literal|0
 argument_list|,
 name|block
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|DataNodeProperties

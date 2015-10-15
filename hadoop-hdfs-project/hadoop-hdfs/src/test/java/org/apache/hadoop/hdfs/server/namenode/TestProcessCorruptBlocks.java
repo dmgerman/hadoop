@@ -1458,19 +1458,23 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// corrupt the block on datanode dnIndex
+comment|// Truncate the block on the first datanode that has not been corrupted,
+comment|// so that directory scanner can discover the corruption from file size
+comment|// change.
 comment|// the indexes change once the nodes are restarted.
 comment|// But the datadirectory will not change
-name|assertTrue
-argument_list|(
 name|cluster
 operator|.
-name|corruptReplica
+name|getMaterializedReplica
 argument_list|(
-name|dnIndex
+literal|0
 argument_list|,
 name|block
 argument_list|)
+operator|.
+name|truncateData
+argument_list|(
+literal|10
 argument_list|)
 expr_stmt|;
 comment|// Run directory scanner to update the DN's volume map

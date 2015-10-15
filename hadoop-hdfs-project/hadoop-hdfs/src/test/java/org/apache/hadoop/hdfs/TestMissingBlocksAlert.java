@@ -435,8 +435,6 @@ argument_list|,
 name|corruptFile
 argument_list|)
 decl_stmt|;
-name|assertTrue
-argument_list|(
 name|cluster
 operator|.
 name|corruptReplica
@@ -444,7 +442,6 @@ argument_list|(
 literal|0
 argument_list|,
 name|block
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// read the file so that the corrupt block is reported to NN
@@ -696,8 +693,6 @@ argument_list|,
 name|replOneFile
 argument_list|)
 decl_stmt|;
-name|assertTrue
-argument_list|(
 name|cluster
 operator|.
 name|corruptReplica
@@ -705,7 +700,6 @@ argument_list|(
 literal|0
 argument_list|,
 name|replOneBlock
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// read the file so that the corrupt block is reported to NN
