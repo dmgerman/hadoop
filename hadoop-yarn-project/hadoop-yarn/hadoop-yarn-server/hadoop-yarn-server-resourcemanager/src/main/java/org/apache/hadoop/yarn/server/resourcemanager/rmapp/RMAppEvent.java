@@ -73,6 +73,12 @@ specifier|final
 name|ApplicationId
 name|appId
 decl_stmt|;
+DECL|field|diagnosticMsg
+specifier|private
+specifier|final
+name|String
+name|diagnosticMsg
+decl_stmt|;
 DECL|method|RMAppEvent (ApplicationId appId, RMAppEventType type)
 specifier|public
 name|RMAppEvent
@@ -82,6 +88,30 @@ name|appId
 parameter_list|,
 name|RMAppEventType
 name|type
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|appId
+argument_list|,
+name|type
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|RMAppEvent (ApplicationId appId, RMAppEventType type, String diagnostic)
+specifier|public
+name|RMAppEvent
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|RMAppEventType
+name|type
+parameter_list|,
+name|String
+name|diagnostic
 parameter_list|)
 block|{
 name|super
@@ -95,6 +125,12 @@ name|appId
 operator|=
 name|appId
 expr_stmt|;
+name|this
+operator|.
+name|diagnosticMsg
+operator|=
+name|diagnostic
+expr_stmt|;
 block|}
 DECL|method|getApplicationId ()
 specifier|public
@@ -106,6 +142,18 @@ return|return
 name|this
 operator|.
 name|appId
+return|;
+block|}
+DECL|method|getDiagnosticMsg ()
+specifier|public
+name|String
+name|getDiagnosticMsg
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|diagnosticMsg
 return|;
 block|}
 block|}

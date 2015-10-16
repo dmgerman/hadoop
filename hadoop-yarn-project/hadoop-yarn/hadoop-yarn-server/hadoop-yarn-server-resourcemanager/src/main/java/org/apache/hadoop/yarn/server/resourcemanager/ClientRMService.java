@@ -2090,9 +2090,29 @@ name|rmapp
 operator|.
 name|attempt
 operator|.
-name|event
+name|RMAppAttemptEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|RMAppAttemptFailedEvent
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmapp
+operator|.
+name|attempt
+operator|.
+name|RMAppAttemptEventType
 import|;
 end_import
 
@@ -4961,9 +4981,13 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|RMAppAttemptFailedEvent
+name|RMAppAttemptEvent
 argument_list|(
 name|attemptId
+argument_list|,
+name|RMAppAttemptEventType
+operator|.
+name|FAIL
 argument_list|,
 literal|"Attempt failed by user."
 argument_list|)
@@ -5268,6 +5292,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 argument_list|)
 expr_stmt|;

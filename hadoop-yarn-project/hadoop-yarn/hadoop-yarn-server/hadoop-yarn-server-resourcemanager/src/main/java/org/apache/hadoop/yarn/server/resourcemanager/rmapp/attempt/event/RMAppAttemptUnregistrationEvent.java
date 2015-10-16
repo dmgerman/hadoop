@@ -126,12 +126,6 @@ specifier|final
 name|FinalApplicationStatus
 name|finalStatus
 decl_stmt|;
-DECL|field|diagnostics
-specifier|private
-specifier|final
-name|String
-name|diagnostics
-decl_stmt|;
 DECL|method|RMAppAttemptUnregistrationEvent (ApplicationAttemptId appAttemptId, String trackingUrl, FinalApplicationStatus finalStatus, String diagnostics)
 specifier|public
 name|RMAppAttemptUnregistrationEvent
@@ -156,6 +150,8 @@ argument_list|,
 name|RMAppAttemptEventType
 operator|.
 name|UNREGISTERED
+argument_list|,
+name|diagnostics
 argument_list|)
 expr_stmt|;
 name|this
@@ -169,12 +165,6 @@ operator|.
 name|finalStatus
 operator|=
 name|finalStatus
-expr_stmt|;
-name|this
-operator|.
-name|diagnostics
-operator|=
-name|diagnostics
 expr_stmt|;
 block|}
 DECL|method|getFinalTrackingUrl ()
@@ -199,18 +189,6 @@ return|return
 name|this
 operator|.
 name|finalStatus
-return|;
-block|}
-DECL|method|getDiagnostics ()
-specifier|public
-name|String
-name|getDiagnostics
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|diagnostics
 return|;
 block|}
 block|}

@@ -3245,12 +3245,16 @@ name|RMAppEvent
 name|finishedEvent
 init|=
 operator|new
-name|RMAppFinishedAttemptEvent
+name|RMAppEvent
 argument_list|(
 name|application
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+name|RMAppEventType
+operator|.
+name|ATTEMPT_FINISHED
 argument_list|,
 name|diagnostics
 argument_list|)
@@ -3683,6 +3687,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 decl_stmt|;
 name|application
@@ -3762,12 +3768,16 @@ name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppRejectedEvent
+name|RMAppEvent
 argument_list|(
 name|application
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+name|RMAppEventType
+operator|.
+name|APP_REJECTED
 argument_list|,
 name|rejectedText
 argument_list|)
@@ -3849,12 +3859,16 @@ name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppRejectedEvent
+name|RMAppEvent
 argument_list|(
 name|application
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+name|RMAppEventType
+operator|.
+name|APP_REJECTED
 argument_list|,
 name|rejectedText
 argument_list|)
@@ -3951,6 +3965,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 decl_stmt|;
 name|application
@@ -4030,12 +4046,16 @@ name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppRejectedEvent
+name|RMAppEvent
 argument_list|(
 name|application
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+name|RMAppEventType
+operator|.
+name|APP_REJECTED
 argument_list|,
 name|rejectedText
 argument_list|)
@@ -4117,12 +4137,16 @@ name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppRejectedEvent
+name|RMAppEvent
 argument_list|(
 name|application
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+name|RMAppEventType
+operator|.
+name|APP_REJECTED
 argument_list|,
 name|rejectedText
 argument_list|)
@@ -4206,6 +4230,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 decl_stmt|;
 name|application
@@ -4483,6 +4509,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 decl_stmt|;
 name|application
@@ -4520,6 +4548,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_KILLED
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 decl_stmt|;
 name|application
@@ -4612,6 +4642,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_KILLED
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 decl_stmt|;
 name|application
@@ -4705,6 +4737,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 decl_stmt|;
 name|application
@@ -5029,6 +5063,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 expr_stmt|;
 name|application
@@ -5103,6 +5139,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 decl_stmt|;
 name|application
@@ -5167,12 +5205,16 @@ name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppFinishedAttemptEvent
+name|RMAppEvent
 argument_list|(
 name|application
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+name|RMAppEventType
+operator|.
+name|ATTEMPT_FINISHED
 argument_list|,
 name|diagMsg
 argument_list|)
@@ -5303,6 +5345,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 decl_stmt|;
 name|application
@@ -5396,12 +5440,16 @@ name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppRejectedEvent
+name|RMAppEvent
 argument_list|(
 name|application
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+name|RMAppEventType
+operator|.
+name|APP_REJECTED
 argument_list|,
 literal|""
 argument_list|)
@@ -5451,6 +5499,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 expr_stmt|;
 name|application
@@ -5546,6 +5596,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 decl_stmt|;
 name|application
@@ -5588,12 +5640,16 @@ comment|// KILLED => KILLED event RMAppEventType.ATTEMPT_FINISHED
 name|event
 operator|=
 operator|new
-name|RMAppFinishedAttemptEvent
+name|RMAppEvent
 argument_list|(
 name|application
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+name|RMAppEventType
+operator|.
+name|ATTEMPT_FINISHED
 argument_list|,
 literal|""
 argument_list|)
@@ -5684,6 +5740,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+literal|"Application killed by user."
 argument_list|)
 expr_stmt|;
 name|application

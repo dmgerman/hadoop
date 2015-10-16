@@ -75,6 +75,12 @@ specifier|final
 name|ApplicationAttemptId
 name|appAttemptId
 decl_stmt|;
+DECL|field|diagnosticMsg
+specifier|private
+specifier|final
+name|String
+name|diagnosticMsg
+decl_stmt|;
 DECL|method|RMAppAttemptEvent (ApplicationAttemptId appAttemptId, RMAppAttemptEventType type)
 specifier|public
 name|RMAppAttemptEvent
@@ -84,6 +90,30 @@ name|appAttemptId
 parameter_list|,
 name|RMAppAttemptEventType
 name|type
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|appAttemptId
+argument_list|,
+name|type
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|RMAppAttemptEvent (ApplicationAttemptId appAttemptId, RMAppAttemptEventType type, String diagnostics)
+specifier|public
+name|RMAppAttemptEvent
+parameter_list|(
+name|ApplicationAttemptId
+name|appAttemptId
+parameter_list|,
+name|RMAppAttemptEventType
+name|type
+parameter_list|,
+name|String
+name|diagnostics
 parameter_list|)
 block|{
 name|super
@@ -97,6 +127,12 @@ name|appAttemptId
 operator|=
 name|appAttemptId
 expr_stmt|;
+name|this
+operator|.
+name|diagnosticMsg
+operator|=
+name|diagnostics
+expr_stmt|;
 block|}
 DECL|method|getApplicationAttemptId ()
 specifier|public
@@ -108,6 +144,16 @@ return|return
 name|this
 operator|.
 name|appAttemptId
+return|;
+block|}
+DECL|method|getDiagnosticMsg ()
+specifier|public
+name|String
+name|getDiagnosticMsg
+parameter_list|()
+block|{
+return|return
+name|diagnosticMsg
 return|;
 block|}
 block|}

@@ -48,12 +48,6 @@ name|RMAppFailedAttemptEvent
 extends|extends
 name|RMAppEvent
 block|{
-DECL|field|diagnostics
-specifier|private
-specifier|final
-name|String
-name|diagnostics
-decl_stmt|;
 DECL|field|transferStateFromPreviousAttempt
 specifier|private
 specifier|final
@@ -82,32 +76,16 @@ argument_list|(
 name|appId
 argument_list|,
 name|event
+argument_list|,
+name|diagnostics
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|diagnostics
-operator|=
-name|diagnostics
-expr_stmt|;
-name|this
-operator|.
 name|transferStateFromPreviousAttempt
 operator|=
 name|transferStateFromPreviousAttempt
 expr_stmt|;
-block|}
-DECL|method|getDiagnostics ()
-specifier|public
-name|String
-name|getDiagnostics
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|diagnostics
-return|;
 block|}
 DECL|method|getTransferStateFromPreviousAttempt ()
 specifier|public

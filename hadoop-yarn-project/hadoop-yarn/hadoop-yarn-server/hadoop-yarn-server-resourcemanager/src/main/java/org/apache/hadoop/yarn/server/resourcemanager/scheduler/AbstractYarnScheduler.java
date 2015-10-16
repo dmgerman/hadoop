@@ -3768,6 +3768,12 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+literal|"Application killed due to expiry of reservation queue "
+operator|+
+name|queueName
+operator|+
+literal|"."
 argument_list|)
 argument_list|)
 expr_stmt|;
