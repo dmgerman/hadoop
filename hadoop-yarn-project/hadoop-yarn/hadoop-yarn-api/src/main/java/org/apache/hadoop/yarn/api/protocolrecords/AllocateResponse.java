@@ -248,6 +248,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -988,6 +1006,32 @@ name|setAMRMToken
 parameter_list|(
 name|Token
 name|amRMToken
+parameter_list|)
+function_decl|;
+comment|/**    * Priority of the application    *    * @return get application priority    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getApplicationPriority ()
+specifier|public
+specifier|abstract
+name|Priority
+name|getApplicationPriority
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setApplicationPriority (Priority priority)
+specifier|public
+specifier|abstract
+name|void
+name|setApplicationPriority
+parameter_list|(
+name|Priority
+name|priority
 parameter_list|)
 function_decl|;
 block|}

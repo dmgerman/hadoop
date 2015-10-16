@@ -3670,6 +3670,20 @@ name|allocation
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Set application priority
+name|allocateResponse
+operator|.
+name|setApplicationPriority
+argument_list|(
+name|app
+operator|.
+name|getApplicationSubmissionContext
+argument_list|()
+operator|.
+name|getPriority
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// update AMRMToken if the token is rolled-up
 name|MasterKeyData
 name|nextMasterKey
