@@ -2394,7 +2394,11 @@ throw|throw
 operator|new
 name|AssertionError
 argument_list|(
-literal|"Absolute path required"
+literal|"Absolute path required, but got '"
+operator|+
+name|path
+operator|+
+literal|"'"
 argument_list|)
 throw|;
 block|}
