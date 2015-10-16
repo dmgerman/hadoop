@@ -116,7 +116,7 @@ argument_list|<
 name|NodeLabel
 argument_list|>
 block|{
-comment|/**    * Default node label partition.    */
+comment|/**    * Default node label partition used for displaying.    */
 annotation|@
 name|Private
 annotation|@

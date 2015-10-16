@@ -96,6 +96,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ResourceUsage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|capacity
 operator|.
 name|LeafQueue
@@ -202,21 +222,16 @@ name|CapacitySchedulerLeafQueueInfo
 parameter_list|()
 block|{   }
 empty_stmt|;
-DECL|method|CapacitySchedulerLeafQueueInfo (LeafQueue q, String nodeLabel)
+DECL|method|CapacitySchedulerLeafQueueInfo (LeafQueue q)
 name|CapacitySchedulerLeafQueueInfo
 parameter_list|(
 name|LeafQueue
 name|q
-parameter_list|,
-name|String
-name|nodeLabel
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|q
-argument_list|,
-name|nodeLabel
 argument_list|)
 expr_stmt|;
 name|numActiveApplications
@@ -348,6 +363,26 @@ argument_list|()
 operator|.
 name|getPriority
 argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|populateQueueResourceUsage (ResourceUsage queueResourceUsage)
+specifier|protected
+name|void
+name|populateQueueResourceUsage
+parameter_list|(
+name|ResourceUsage
+name|queueResourceUsage
+parameter_list|)
+block|{
+name|resources
+operator|=
+operator|new
+name|ResourceUsageInfo
+argument_list|(
+name|queueResourceUsage
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getNumActiveApplications ()

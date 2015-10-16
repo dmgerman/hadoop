@@ -2358,7 +2358,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|7
+literal|8
 argument_list|,
 name|info
 operator|.
@@ -2631,7 +2631,7 @@ block|{
 name|int
 name|numExpectedElements
 init|=
-literal|16
+literal|18
 decl_stmt|;
 name|boolean
 name|isParentQueue
@@ -2651,7 +2651,7 @@ condition|)
 block|{
 name|numExpectedElements
 operator|=
-literal|29
+literal|31
 expr_stmt|;
 name|isParentQueue
 operator|=

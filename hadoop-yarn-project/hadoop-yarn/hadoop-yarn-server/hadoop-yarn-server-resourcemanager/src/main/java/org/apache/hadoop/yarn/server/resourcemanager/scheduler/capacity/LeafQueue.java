@@ -644,7 +644,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApplicationAttempt
+name|SchedContainerChangeRequest
 import|;
 end_import
 
@@ -664,7 +664,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedContainerChangeRequest
+name|SchedulerApplicationAttempt
 import|;
 end_import
 
@@ -2366,6 +2366,11 @@ operator|.
 name|getUserResourceLimit
 argument_list|()
 argument_list|)
+argument_list|,
+name|user
+operator|.
+name|getResourceUsage
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

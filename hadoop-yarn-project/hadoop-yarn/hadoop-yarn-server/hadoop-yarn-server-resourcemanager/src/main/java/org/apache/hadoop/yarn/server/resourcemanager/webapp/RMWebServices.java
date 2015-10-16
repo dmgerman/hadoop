@@ -1290,22 +1290,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|nodelabels
-operator|.
-name|RMNodeLabel
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|security
 operator|.
 name|client
@@ -1405,26 +1389,6 @@ operator|.
 name|nodelabels
 operator|.
 name|NodeLabelsUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|nodelabels
-operator|.
-name|RMNodeLabelsManager
 import|;
 end_import
 
@@ -2122,7 +2086,7 @@ name|webapp
 operator|.
 name|dao
 operator|.
-name|NodeToLabelsInfo
+name|NodeToLabelsEntryList
 import|;
 end_import
 
@@ -2144,7 +2108,7 @@ name|webapp
 operator|.
 name|dao
 operator|.
-name|NodeToLabelsEntryList
+name|NodeToLabelsInfo
 import|;
 end_import
 
@@ -2870,14 +2834,6 @@ argument_list|(
 name|root
 argument_list|,
 name|cs
-argument_list|,
-operator|new
-name|RMNodeLabel
-argument_list|(
-name|RMNodeLabelsManager
-operator|.
-name|NO_LABEL
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
