@@ -68,6 +68,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -1753,7 +1763,12 @@ name|subDir
 operator|+
 literal|", baseDirs - "
 operator|+
+name|Arrays
+operator|.
+name|asList
+argument_list|(
 name|baseDirs
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
