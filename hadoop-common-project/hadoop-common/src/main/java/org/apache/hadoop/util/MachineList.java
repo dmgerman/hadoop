@@ -628,6 +628,21 @@ return|return
 literal|true
 return|;
 block|}
+if|if
+condition|(
+name|ipAddress
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"ipAddress is null."
+argument_list|)
+throw|;
+block|}
 comment|//check in the set of ipAddresses
 if|if
 condition|(

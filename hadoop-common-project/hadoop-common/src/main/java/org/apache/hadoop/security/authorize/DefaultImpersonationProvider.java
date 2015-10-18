@@ -560,6 +560,21 @@ parameter_list|)
 throws|throws
 name|AuthorizationException
 block|{
+if|if
+condition|(
+name|user
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"user is null."
+argument_list|)
+throw|;
+block|}
 name|UserGroupInformation
 name|realUser
 init|=

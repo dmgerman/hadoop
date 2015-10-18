@@ -1003,6 +1003,43 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|expected
+operator|=
+name|IllegalArgumentException
+operator|.
+name|class
+argument_list|)
+DECL|method|testNullIpAddress ()
+specifier|public
+name|void
+name|testNullIpAddress
+parameter_list|()
+block|{
+comment|//create MachineList with a list of of ip ranges specified in CIDR format
+name|MachineList
+name|ml
+init|=
+operator|new
+name|MachineList
+argument_list|(
+name|CIDR_LIST
+argument_list|)
+decl_stmt|;
+comment|//test for exclusion with a null IP
+name|assertFalse
+argument_list|(
+name|ml
+operator|.
+name|includes
+argument_list|(
+literal|null
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testCIDRWith16bitmask ()
 specifier|public
 name|void
