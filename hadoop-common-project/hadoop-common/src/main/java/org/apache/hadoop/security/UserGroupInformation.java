@@ -6845,9 +6845,17 @@ name|IOException
 name|ie
 parameter_list|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"No groups available for user "
 operator|+
@@ -6855,6 +6863,7 @@ name|getShortUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|String
