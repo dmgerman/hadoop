@@ -6285,11 +6285,6 @@ name|e
 argument_list|)
 throw|;
 block|}
-name|boolean
-name|interrupted
-init|=
-literal|false
-decl_stmt|;
 synchronized|synchronized
 init|(
 name|call
@@ -6318,19 +6313,6 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{
-comment|// save the fact that we were interrupted
-name|interrupted
-operator|=
-literal|true
-expr_stmt|;
-block|}
-block|}
-if|if
-condition|(
-name|interrupted
-condition|)
-block|{
-comment|// set the interrupt flag now that we are done waiting
 name|Thread
 operator|.
 name|currentThread
@@ -6339,6 +6321,14 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+throw|throw
+operator|new
+name|InterruptedIOException
+argument_list|(
+literal|"Call interrupted"
+argument_list|)
+throw|;
+block|}
 block|}
 if|if
 condition|(

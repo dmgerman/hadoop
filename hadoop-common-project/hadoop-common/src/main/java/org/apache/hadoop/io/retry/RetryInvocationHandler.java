@@ -605,6 +605,22 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
+argument_list|()
+condition|)
+block|{
+comment|// If interrupted, do not retry.
+throw|throw
+name|ex
+throw|;
+block|}
 name|boolean
 name|isIdempotentOrAtMostOnce
 init|=
