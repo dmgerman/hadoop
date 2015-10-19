@@ -40,6 +40,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -789,6 +803,32 @@ operator|.
 name|add
 argument_list|(
 name|loc
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|cachedLocs
+operator|!=
+name|EMPTY_LOCS
+argument_list|,
+literal|"Cached locations should only be added when having a backing"
+operator|+
+literal|" disk replica!"
+argument_list|,
+name|loc
+argument_list|,
+name|locs
+operator|.
+name|length
+argument_list|,
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|locs
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|cachedLocs
