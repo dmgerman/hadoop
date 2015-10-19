@@ -272,6 +272,24 @@ return|return
 name|this
 return|;
 block|}
+comment|/* Run a privileged container. Use with extreme care */
+DECL|method|setPrivileged ()
+specifier|public
+name|DockerRunCommand
+name|setPrivileged
+parameter_list|()
+block|{
+name|super
+operator|.
+name|addCommandArguments
+argument_list|(
+literal|"--privileged"
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|setCapabilities (Set<String> capabilties)
 specifier|public
 name|DockerRunCommand

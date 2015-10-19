@@ -4161,6 +4161,50 @@ block|,
 literal|"AUDIT_WRITE"
 block|}
 decl_stmt|;
+comment|/** Allow privileged containers. Use with extreme care. */
+DECL|field|NM_DOCKER_ALLOW_PRIVILEGED_CONTAINERS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_ALLOW_PRIVILEGED_CONTAINERS
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"privileged-containers.allowed"
+decl_stmt|;
+comment|/** Privileged containers are disabled by default. */
+DECL|field|DEFAULT_NM_DOCKER_ALLOW_PRIVILEGED_CONTAINERS
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_DOCKER_ALLOW_PRIVILEGED_CONTAINERS
+init|=
+literal|false
+decl_stmt|;
+comment|/** ACL list for users allowed to run privileged containers. */
+DECL|field|NM_DOCKER_PRIVILEGED_CONTAINERS_ACL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_PRIVILEGED_CONTAINERS_ACL
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"privileged-containers.acl"
+decl_stmt|;
+comment|/** Default list for users allowed to run privileged containers is empty. */
+DECL|field|DEFAULT_NM_DOCKER_PRIVILEGED_CONTAINERS_ACL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_NM_DOCKER_PRIVILEGED_CONTAINERS_ACL
+init|=
+literal|""
+decl_stmt|;
 comment|/** The path to the Linux container executor.*/
 DECL|field|NM_LINUX_CONTAINER_EXECUTOR_PATH
 specifier|public
