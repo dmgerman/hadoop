@@ -998,7 +998,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-p] [-ignoreCrc] [-crc]<src> ...<localdst>"
+literal|"[-f] [-p] [-ignoreCrc] [-crc]<src> ...<localdst>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -1012,6 +1012,8 @@ operator|+
 literal|"to the local name.<src> is kept.  When copying multiple "
 operator|+
 literal|"files, the destination must be a directory. Passing "
+operator|+
+literal|"-f overwrites the destination if it already exists and "
 operator|+
 literal|"-p preserves access and modification times, "
 operator|+
@@ -1050,6 +1052,8 @@ argument_list|,
 literal|"ignoreCrc"
 argument_list|,
 literal|"p"
+argument_list|,
+literal|"f"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -1087,6 +1091,16 @@ operator|.
 name|getOpt
 argument_list|(
 literal|"p"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|setOverwrite
+argument_list|(
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"f"
 argument_list|)
 argument_list|)
 expr_stmt|;
