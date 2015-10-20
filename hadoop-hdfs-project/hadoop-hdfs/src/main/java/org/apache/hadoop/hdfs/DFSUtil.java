@@ -5706,6 +5706,17 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Setting password to null since IOException is caught"
+operator|+
+literal|" when getting password"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
 name|password
 operator|=
 literal|null
@@ -5980,6 +5991,69 @@ name|DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
+specifier|final
+name|String
+index|[]
+name|reqSslProps
+init|=
+block|{
+name|DFSConfigKeys
+operator|.
+name|DFS_SERVER_HTTPS_TRUSTSTORE_LOCATION_KEY
+block|,
+name|DFSConfigKeys
+operator|.
+name|DFS_SERVER_HTTPS_KEYSTORE_LOCATION_KEY
+block|,
+name|DFSConfigKeys
+operator|.
+name|DFS_SERVER_HTTPS_KEYSTORE_PASSWORD_KEY
+block|,
+name|DFSConfigKeys
+operator|.
+name|DFS_SERVER_HTTPS_KEYPASSWORD_KEY
+block|}
+decl_stmt|;
+comment|// Check if the required properties are included
+for|for
+control|(
+name|String
+name|sslProp
+range|:
+name|reqSslProps
+control|)
+block|{
+if|if
+condition|(
+name|sslConf
+operator|.
+name|get
+argument_list|(
+name|sslProp
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"SSL config "
+operator|+
+name|sslProp
+operator|+
+literal|" is missing. If "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_KEY
+operator|+
+literal|" is specified, make sure it is a relative path"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 name|boolean
 name|requireClientAuth
 init|=

@@ -1066,6 +1066,11 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|sn
+operator|.
+name|startInfoServer
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
