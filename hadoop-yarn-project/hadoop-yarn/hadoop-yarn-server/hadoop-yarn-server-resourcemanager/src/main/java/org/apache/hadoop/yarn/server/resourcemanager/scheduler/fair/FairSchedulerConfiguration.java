@@ -720,6 +720,27 @@ name|DEFAULT_UPDATE_INTERVAL_MS
 init|=
 literal|500
 decl_stmt|;
+comment|/** Ratio of nodes available for an app to make an reservation on. */
+DECL|field|RESERVABLE_NODES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RESERVABLE_NODES
+init|=
+name|CONF_PREFIX
+operator|+
+literal|"reservable-nodes"
+decl_stmt|;
+DECL|field|RESERVABLE_NODES_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|float
+name|RESERVABLE_NODES_DEFAULT
+init|=
+literal|0.05f
+decl_stmt|;
 DECL|method|FairSchedulerConfiguration ()
 specifier|public
 name|FairSchedulerConfiguration
@@ -1146,6 +1167,21 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_RM_SCHEDULER_USE_PORT_FOR_NODE_NAME
+argument_list|)
+return|;
+block|}
+DECL|method|getReservableNodes ()
+specifier|public
+name|float
+name|getReservableNodes
+parameter_list|()
+block|{
+return|return
+name|getFloat
+argument_list|(
+name|RESERVABLE_NODES
+argument_list|,
+name|RESERVABLE_NODES_DEFAULT
 argument_list|)
 return|;
 block|}
