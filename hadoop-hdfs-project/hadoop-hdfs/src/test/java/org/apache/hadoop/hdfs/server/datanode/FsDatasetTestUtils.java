@@ -136,6 +136,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|FsVolumeSpi
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|ReflectionUtils
@@ -386,6 +406,120 @@ name|block
 parameter_list|)
 throws|throws
 name|ReplicaNotFoundException
+function_decl|;
+comment|/**    * Create a finalized replica and add it into the FsDataset.    */
+DECL|method|createFinalizedReplica (ExtendedBlock block)
+name|Replica
+name|createFinalizedReplica
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Create a finalized replica on a particular volume, and add it into    * the FsDataset.    */
+DECL|method|createFinalizedReplica (FsVolumeSpi volume, ExtendedBlock block)
+name|Replica
+name|createFinalizedReplica
+parameter_list|(
+name|FsVolumeSpi
+name|volume
+parameter_list|,
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Create a {@link ReplicaInPipeline} and add it into the FsDataset.    */
+DECL|method|createReplicaInPipeline (ExtendedBlock block)
+name|Replica
+name|createReplicaInPipeline
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Create a {@link ReplicaInPipeline} and add it into the FsDataset.    */
+DECL|method|createReplicaInPipeline (FsVolumeSpi volume, ExtendedBlock block)
+name|Replica
+name|createReplicaInPipeline
+parameter_list|(
+name|FsVolumeSpi
+name|volume
+parameter_list|,
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Create a {@link ReplicaBeingWritten} and add it into the FsDataset.    */
+DECL|method|createRBW (ExtendedBlock block)
+name|Replica
+name|createRBW
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Create a {@link ReplicaBeingWritten} on the particular volume, and add it    * into the FsDataset.    */
+DECL|method|createRBW (FsVolumeSpi volume, ExtendedBlock block)
+name|Replica
+name|createRBW
+parameter_list|(
+name|FsVolumeSpi
+name|volume
+parameter_list|,
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Create a {@link ReplicaWaitingToBeRecovered} object and add it into the    * FsDataset.    */
+DECL|method|createReplicaWaitingToBeRecovered (ExtendedBlock block)
+name|Replica
+name|createReplicaWaitingToBeRecovered
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Create a {@link ReplicaWaitingToBeRecovered} on the particular volume,    * and add it into the FsDataset.    */
+DECL|method|createReplicaWaitingToBeRecovered ( FsVolumeSpi volume, ExtendedBlock block)
+name|Replica
+name|createReplicaWaitingToBeRecovered
+parameter_list|(
+name|FsVolumeSpi
+name|volume
+parameter_list|,
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Create a {@link ReplicaUnderRecovery} object and add it into the FsDataset.    */
+DECL|method|createReplicaUnderRecovery (ExtendedBlock block, long recoveryId)
+name|Replica
+name|createReplicaUnderRecovery
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|,
+name|long
+name|recoveryId
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface
