@@ -360,22 +360,6 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_ACCESSTIME_PRECISION_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
 name|DFS_QUOTA_BY_STORAGETYPE_ENABLED_KEY
 import|;
 end_import
@@ -730,34 +714,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
-name|fsd
-operator|.
-name|isAccessTimeSupported
-argument_list|()
-operator|&&
-name|atime
-operator|!=
-operator|-
-literal|1
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Access time for hdfs is not configured. "
-operator|+
-literal|" Please set "
-operator|+
-name|DFS_NAMENODE_ACCESSTIME_PRECISION_KEY
-operator|+
-literal|" configuration parameter."
-argument_list|)
-throw|;
-block|}
 name|FSPermissionChecker
 name|pc
 init|=
