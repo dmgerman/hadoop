@@ -252,6 +252,24 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|RMContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|reservation
 operator|.
 name|exceptions
@@ -481,6 +499,11 @@ specifier|private
 name|Planner
 name|replanner
 decl_stmt|;
+DECL|field|context
+specifier|private
+name|RMContext
+name|context
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -583,6 +606,13 @@ argument_list|(
 literal|1L
 argument_list|)
 expr_stmt|;
+name|context
+operator|=
+name|ReservationSystemTestUtil
+operator|.
+name|createMockRMContext
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|After
@@ -660,6 +690,8 @@ argument_list|,
 name|replanner
 argument_list|,
 literal|true
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 name|ReservationId
@@ -949,6 +981,8 @@ argument_list|,
 name|replanner
 argument_list|,
 literal|true
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 name|ReservationId
@@ -1130,6 +1164,8 @@ argument_list|,
 name|replanner
 argument_list|,
 literal|true
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 name|ReservationId
@@ -1483,6 +1519,8 @@ argument_list|,
 name|replanner
 argument_list|,
 literal|true
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 name|ReservationId
@@ -2000,6 +2038,8 @@ argument_list|,
 name|replanner
 argument_list|,
 literal|true
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 name|ReservationId
@@ -2235,6 +2275,8 @@ argument_list|,
 name|replanner
 argument_list|,
 literal|true
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 name|ReservationId
@@ -2638,6 +2680,8 @@ argument_list|,
 name|replanner
 argument_list|,
 literal|true
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 name|ReservationId
@@ -2765,6 +2809,8 @@ argument_list|,
 name|replanner
 argument_list|,
 literal|true
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 name|ReservationId

@@ -1761,6 +1761,8 @@ name|getMoveOnExpiry
 argument_list|(
 name|planQueuePath
 argument_list|)
+argument_list|,
+name|rmContext
 argument_list|)
 decl_stmt|;
 name|LOG
