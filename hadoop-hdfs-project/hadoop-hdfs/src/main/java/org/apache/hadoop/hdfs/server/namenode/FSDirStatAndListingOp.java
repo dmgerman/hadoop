@@ -1480,6 +1480,23 @@ argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|FSDirectory
+operator|.
+name|isExactReservedName
+argument_list|(
+name|srcs
+argument_list|)
+condition|)
+block|{
+return|return
+name|getReservedListing
+argument_list|(
+name|fsd
+argument_list|)
+return|;
+block|}
 name|fsd
 operator|.
 name|readLock
@@ -2205,6 +2222,30 @@ name|numOfListing
 argument_list|)
 return|;
 block|}
+comment|/**    * Get a listing of the /.reserved directory.    * @param fsd FSDirectory    * @return listing containing child directories of /.reserved    */
+DECL|method|getReservedListing (FSDirectory fsd)
+specifier|private
+specifier|static
+name|DirectoryListing
+name|getReservedListing
+parameter_list|(
+name|FSDirectory
+name|fsd
+parameter_list|)
+block|{
+return|return
+operator|new
+name|DirectoryListing
+argument_list|(
+name|fsd
+operator|.
+name|getReservedStatuses
+argument_list|()
+argument_list|,
+literal|0
+argument_list|)
+return|;
+block|}
 comment|/** Get the file info for a specific file.    * @param fsd FSDirectory    * @param src The string representation of the path to the file    * @param isRawPath true if a /.reserved/raw pathname was passed by the user    * @param includeStoragePolicy whether to include storage policy    * @return object containing information regarding the file    *         or null if file not found    */
 DECL|method|getFileInfo ( FSDirectory fsd, String path, INodesInPath src, boolean isRawPath, boolean includeStoragePolicy)
 specifier|static
@@ -2362,6 +2403,22 @@ argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|FSDirectory
+operator|.
+name|isExactReservedName
+argument_list|(
+name|src
+argument_list|)
+condition|)
+block|{
+return|return
+name|FSDirectory
+operator|.
+name|DOT_RESERVED_STATUS
+return|;
+block|}
 if|if
 condition|(
 name|srcs

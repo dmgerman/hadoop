@@ -257,6 +257,13 @@ name|target
 operator|.
 name|isEmpty
 argument_list|()
+operator|||
+name|FSDirectory
+operator|.
+name|isExactReservedName
+argument_list|(
+name|target
+argument_list|)
 condition|)
 block|{
 throw|throw

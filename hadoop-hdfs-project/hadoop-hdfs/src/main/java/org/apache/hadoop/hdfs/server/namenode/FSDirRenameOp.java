@@ -2760,6 +2760,35 @@ name|error
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|FSDirectory
+operator|.
+name|isExactReservedName
+argument_list|(
+name|src
+argument_list|)
+operator|||
+name|FSDirectory
+operator|.
+name|isExactReservedName
+argument_list|(
+name|dst
+argument_list|)
+condition|)
+block|{
+name|error
+operator|=
+literal|"Cannot rename to or from /.reserved"
+expr_stmt|;
+throw|throw
+operator|new
+name|InvalidPathException
+argument_list|(
+name|error
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|validateOverwrite ( String src, String dst, boolean overwrite, INode srcInode, INode dstInode)
 specifier|private
