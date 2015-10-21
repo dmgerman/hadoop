@@ -1773,7 +1773,7 @@ argument_list|)
 operator|.
 name|o
 argument_list|(
-literal|"perferredBlockSize"
+literal|"preferredBlockSize"
 argument_list|,
 name|f
 operator|.
