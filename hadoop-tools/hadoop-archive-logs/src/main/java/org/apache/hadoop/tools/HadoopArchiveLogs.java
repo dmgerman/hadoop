@@ -1467,7 +1467,7 @@ name|formatter
 operator|.
 name|printHelp
 argument_list|(
-literal|"yarn archive-logs"
+literal|"mapred archive-logs"
 argument_list|,
 name|opts
 argument_list|)
@@ -1664,7 +1664,7 @@ name|formatter
 operator|.
 name|printHelp
 argument_list|(
-literal|"yarn archive-logs"
+literal|"mapred archive-logs"
 argument_list|,
 name|opts
 argument_list|)
