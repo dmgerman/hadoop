@@ -213,6 +213,26 @@ name|TASK_CLEANUP_NEEDED
 init|=
 literal|"mapreduce.job.committer.task.cleanup.needed"
 decl_stmt|;
+DECL|field|TASK_LOCAL_WRITE_LIMIT_BYTES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TASK_LOCAL_WRITE_LIMIT_BYTES
+init|=
+literal|"mapreduce.task.local-fs.write-limit.bytes"
+decl_stmt|;
+comment|// negative values disable the limit
+DECL|field|DEFAULT_TASK_LOCAL_WRITE_LIMIT_BYTES
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_TASK_LOCAL_WRITE_LIMIT_BYTES
+init|=
+operator|-
+literal|1
+decl_stmt|;
 DECL|field|TASK_PROGRESS_REPORT_INTERVAL
 specifier|public
 specifier|static
