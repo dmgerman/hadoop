@@ -2890,6 +2890,23 @@ operator|=
 literal|0
 expr_stmt|;
 comment|// reset for next run
+if|if
+condition|(
+name|Shell
+operator|.
+name|MAC
+condition|)
+block|{
+name|System
+operator|.
+name|setProperty
+argument_list|(
+literal|"jdk.lang.Process.launchMechanism"
+argument_list|,
+literal|"POSIX_SPAWN"
+argument_list|)
+expr_stmt|;
+block|}
 name|runCommand
 argument_list|()
 expr_stmt|;
