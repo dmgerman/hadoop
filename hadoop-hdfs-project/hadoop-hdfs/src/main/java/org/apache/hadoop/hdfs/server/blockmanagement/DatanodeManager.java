@@ -4788,16 +4788,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * @return true if this cluster has ever consisted of multiple racks, even if    *         it is not now a multi-rack cluster.    */
-DECL|method|hasClusterEverBeenMultiRack ()
-name|boolean
-name|hasClusterEverBeenMultiRack
-parameter_list|()
-block|{
-return|return
-name|hasClusterEverBeenMultiRack
-return|;
-block|}
 comment|/**    * Check if the cluster now consists of multiple racks. If it does, and this    * is the first time it's consisted of multiple racks, then process blocks    * that may now be misreplicated.    *     * @param node DN which caused cluster to become multi-rack. Used for logging.    */
 annotation|@
 name|VisibleForTesting

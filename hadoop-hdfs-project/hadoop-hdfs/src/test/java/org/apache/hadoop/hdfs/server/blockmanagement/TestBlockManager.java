@@ -5105,7 +5105,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|BlockManager
+name|BlockPlacementPolicyDefault
 operator|.
 name|useDelHint
 argument_list|(
@@ -5141,7 +5141,7 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|BlockManager
+name|BlockPlacementPolicyDefault
 operator|.
 name|useDelHint
 argument_list|(

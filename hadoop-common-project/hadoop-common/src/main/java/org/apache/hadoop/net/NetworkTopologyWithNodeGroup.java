@@ -754,8 +754,8 @@ literal|null
 condition|)
 block|{
 comment|// We only track rack number here
-name|numOfRacks
-operator|++
+name|incrementRacks
+argument_list|()
 expr_stmt|;
 block|}
 block|}

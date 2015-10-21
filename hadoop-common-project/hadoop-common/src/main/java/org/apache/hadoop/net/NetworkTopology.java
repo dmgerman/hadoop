@@ -1716,6 +1716,14 @@ name|numOfRacks
 init|=
 literal|0
 decl_stmt|;
+comment|/**    * Whether or not this cluster has ever consisted of more than 1 rack,    * according to the NetworkTopology.    */
+DECL|field|clusterEverBeenMultiRack
+specifier|private
+name|boolean
+name|clusterEverBeenMultiRack
+init|=
+literal|false
+decl_stmt|;
 comment|/** the lock used to manage access */
 DECL|field|netlock
 specifier|protected
@@ -1934,8 +1942,8 @@ operator|==
 literal|null
 condition|)
 block|{
-name|numOfRacks
-operator|++
+name|incrementRacks
+argument_list|()
 expr_stmt|;
 block|}
 if|if
@@ -1997,6 +2005,31 @@ argument_list|()
 operator|.
 name|unlock
 argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|incrementRacks ()
+specifier|protected
+name|void
+name|incrementRacks
+parameter_list|()
+block|{
+name|numOfRacks
+operator|++
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|clusterEverBeenMultiRack
+operator|&&
+name|numOfRacks
+operator|>
+literal|1
+condition|)
+block|{
+name|clusterEverBeenMultiRack
+operator|=
+literal|true
 expr_stmt|;
 block|}
 block|}
@@ -2423,7 +2456,18 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** Given a string representation of a rack for a specific network    *  location    *     * To be overridden in subclasses for specific NetworkTopology     * implementations, as alternative to overriding the full     * {@link #getRack(String)} method.    * @param loc    *          a path-like string representation of a network location    * @return a rack string    */
+comment|/**    * @return true if this cluster has ever consisted of multiple racks, even if    *         it is not now a multi-rack cluster.    */
+DECL|method|hasClusterEverBeenMultiRack ()
+specifier|public
+name|boolean
+name|hasClusterEverBeenMultiRack
+parameter_list|()
+block|{
+return|return
+name|clusterEverBeenMultiRack
+return|;
+block|}
+comment|/** Given a string representation of a rack for a specific network    *  location    *    * To be overridden in subclasses for specific NetworkTopology     * implementations, as alternative to overriding the full     * {@link #getRack(String)} method.    * @param loc    *          a path-like string representation of a network location    * @return a rack string    */
 DECL|method|getRack (String loc)
 specifier|public
 name|String

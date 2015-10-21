@@ -306,22 +306,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|Block
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|ExtendedBlock
 import|;
 end_import
@@ -339,24 +323,6 @@ operator|.
 name|protocolPB
 operator|.
 name|DatanodeProtocolClientSideTranslatorPB
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockCollection
 import|;
 end_import
 
@@ -3107,17 +3073,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseReplicaToDelete (BlockCollection inode, Block block, short replicationFactor, Collection<DatanodeStorageInfo> first, Collection<DatanodeStorageInfo> second, List<StorageType> excessTypes)
+DECL|method|chooseReplicaToDelete (short replicationFactor, Collection<DatanodeStorageInfo> first, Collection<DatanodeStorageInfo> second, List<StorageType> excessTypes)
 specifier|public
 name|DatanodeStorageInfo
 name|chooseReplicaToDelete
 parameter_list|(
-name|BlockCollection
-name|inode
-parameter_list|,
-name|Block
-name|block
-parameter_list|,
 name|short
 name|replicationFactor
 parameter_list|,

@@ -170,22 +170,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|LocatedBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|net
 operator|.
 name|NetworkTopology
@@ -658,16 +642,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|verifyBlockPlacement (String srcPath, LocatedBlock lBlk, int numberOfReplicas)
+DECL|method|verifyBlockPlacement (DatanodeInfo[] locs, int numberOfReplicas)
 specifier|public
 name|BlockPlacementStatus
 name|verifyBlockPlacement
 parameter_list|(
-name|String
-name|srcPath
-parameter_list|,
-name|LocatedBlock
-name|lBlk
+name|DatanodeInfo
+index|[]
+name|locs
 parameter_list|,
 name|int
 name|numberOfReplicas
@@ -680,9 +662,7 @@ name|super
 operator|.
 name|verifyBlockPlacement
 argument_list|(
-name|srcPath
-argument_list|,
-name|lBlk
+name|locs
 argument_list|,
 name|numberOfReplicas
 argument_list|)
@@ -697,10 +677,7 @@ name|defaultStatus
 argument_list|,
 name|getUpgradeDomainsFromNodes
 argument_list|(
-name|lBlk
-operator|.
-name|getLocations
-argument_list|()
+name|locs
 argument_list|)
 argument_list|,
 name|numberOfReplicas
