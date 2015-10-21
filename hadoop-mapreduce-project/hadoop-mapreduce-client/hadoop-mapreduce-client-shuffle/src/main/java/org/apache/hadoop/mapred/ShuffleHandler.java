@@ -3258,6 +3258,15 @@ throw|;
 block|}
 name|bootstrap
 operator|.
+name|setOption
+argument_list|(
+literal|"child.keepAlive"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|bootstrap
+operator|.
 name|setPipelineFactory
 argument_list|(
 name|pipelineFact
