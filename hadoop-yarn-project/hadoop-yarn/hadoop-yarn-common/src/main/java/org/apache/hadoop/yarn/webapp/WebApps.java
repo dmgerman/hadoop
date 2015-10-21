@@ -933,10 +933,10 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|start (WebApp webapp)
+DECL|method|build (WebApp webapp)
 specifier|public
 name|WebApp
-name|start
+name|build
 parameter_list|(
 name|WebApp
 name|webapp
@@ -1604,32 +1604,6 @@ argument_list|(
 name|server
 argument_list|)
 expr_stmt|;
-name|server
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Web app /"
-operator|+
-name|name
-operator|+
-literal|" started at "
-operator|+
-name|server
-operator|.
-name|getConnectorAddress
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|getPort
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -1769,6 +1743,80 @@ name|start
 argument_list|(
 literal|null
 argument_list|)
+return|;
+block|}
+DECL|method|start (WebApp webapp)
+specifier|public
+name|WebApp
+name|start
+parameter_list|(
+name|WebApp
+name|webapp
+parameter_list|)
+block|{
+name|WebApp
+name|webApp
+init|=
+name|build
+argument_list|(
+name|webapp
+argument_list|)
+decl_stmt|;
+name|HttpServer2
+name|httpServer
+init|=
+name|webApp
+operator|.
+name|httpServer
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+name|httpServer
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Web app "
+operator|+
+name|name
+operator|+
+literal|" started at "
+operator|+
+name|httpServer
+operator|.
+name|getConnectorAddress
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getPort
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|WebAppException
+argument_list|(
+literal|"Error starting http server"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+return|return
+name|webApp
 return|;
 block|}
 DECL|method|inferHostClass ()

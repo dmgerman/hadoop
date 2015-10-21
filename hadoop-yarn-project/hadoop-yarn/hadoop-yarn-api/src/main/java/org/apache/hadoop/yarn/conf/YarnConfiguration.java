@@ -5331,6 +5331,42 @@ name|YARN_PREFIX
 operator|+
 literal|"timeline-service."
 decl_stmt|;
+comment|/**    * Comma seperated list of names for UIs hosted in the timeline server    * (For pluggable UIs).    */
+DECL|field|TIMELINE_SERVICE_UI_NAMES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_UI_NAMES
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"ui-names"
+decl_stmt|;
+comment|/** Relative web path that will serve up this UI (For pluggable UIs). */
+DECL|field|TIMELINE_SERVICE_UI_WEB_PATH_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_UI_WEB_PATH_PREFIX
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"ui-web-path."
+decl_stmt|;
+comment|/**    * Path to war file or static content directory for this UI    * (For pluggable UIs).    */
+DECL|field|TIMELINE_SERVICE_UI_ON_DISK_PATH_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_UI_ON_DISK_PATH_PREFIX
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"ui-on-disk-path."
+decl_stmt|;
 comment|// mark app-history related configs @Private as application history is going
 comment|// to be integrated into the timeline service
 annotation|@
