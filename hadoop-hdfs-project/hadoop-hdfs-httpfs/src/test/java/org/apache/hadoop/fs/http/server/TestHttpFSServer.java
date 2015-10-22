@@ -3149,6 +3149,12 @@ literal|"user:foo:rw-"
 decl_stmt|;
 specifier|final
 name|String
+name|remAclUser1
+init|=
+literal|"user:foo:"
+decl_stmt|;
+specifier|final
+name|String
 name|aclUser2
 init|=
 literal|"user:bar:r--"
@@ -3187,7 +3193,7 @@ name|remAclSpec
 init|=
 literal|"aclspec="
 operator|+
-name|aclUser1
+name|remAclUser1
 decl_stmt|;
 specifier|final
 name|String
