@@ -168,18 +168,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|regex
-operator|.
-name|Pattern
-import|;
-end_import
-
-begin_import
-import|import
 name|javax
 operator|.
 name|security
@@ -747,6 +735,18 @@ operator|.
 name|protobuf
 operator|.
 name|ByteString
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|re2j
+operator|.
+name|Pattern
 import|;
 end_import
 

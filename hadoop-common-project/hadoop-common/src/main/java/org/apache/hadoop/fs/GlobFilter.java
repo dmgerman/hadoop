@@ -18,11 +18,11 @@ end_package
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|util
+name|google
 operator|.
-name|regex
+name|re2j
 operator|.
 name|PatternSyntaxException
 import|;
