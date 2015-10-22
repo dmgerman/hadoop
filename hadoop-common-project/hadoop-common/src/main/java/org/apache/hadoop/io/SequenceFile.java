@@ -7985,16 +7985,6 @@ operator|.
 name|length
 index|]
 decl_stmt|;
-name|String
-name|exceptionMsg
-init|=
-name|this
-operator|+
-literal|" not a SequenceFile"
-decl_stmt|;
-comment|// Try to read sequence file header.
-try|try
-block|{
 name|in
 operator|.
 name|readFully
@@ -8002,21 +7992,6 @@ argument_list|(
 name|versionBlock
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|EOFException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|EOFException
-argument_list|(
-name|exceptionMsg
-argument_list|)
-throw|;
-block|}
 if|if
 condition|(
 operator|(
@@ -8055,7 +8030,6 @@ literal|2
 index|]
 operator|)
 condition|)
-block|{
 throw|throw
 operator|new
 name|IOException
@@ -8065,7 +8039,6 @@ operator|+
 literal|" not a SequenceFile"
 argument_list|)
 throw|;
-block|}
 comment|// Set 'version'
 name|version
 operator|=
@@ -8083,7 +8056,6 @@ index|[
 literal|3
 index|]
 condition|)
-block|{
 throw|throw
 operator|new
 name|VersionMismatchException
@@ -8096,7 +8068,6 @@ argument_list|,
 name|version
 argument_list|)
 throw|;
-block|}
 if|if
 condition|(
 name|version
