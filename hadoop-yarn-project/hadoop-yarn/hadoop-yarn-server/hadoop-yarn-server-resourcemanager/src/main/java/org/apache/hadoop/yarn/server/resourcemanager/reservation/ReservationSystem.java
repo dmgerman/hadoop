@@ -134,6 +134,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|recovery
+operator|.
+name|Recoverable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|scheduler
 operator|.
 name|Queue
@@ -186,6 +206,8 @@ DECL|interface|ReservationSystem
 specifier|public
 interface|interface
 name|ReservationSystem
+extends|extends
+name|Recoverable
 block|{
 comment|/**    * Set RMContext for {@link ReservationSystem}. This method should be called    * immediately after instantiating a reservation system once.    *     * @param rmContext created by {@code ResourceManager}    */
 DECL|method|setRMContext (RMContext rmContext)
@@ -230,13 +252,16 @@ argument_list|>
 name|getAllPlans
 parameter_list|()
 function_decl|;
-comment|/**    * Invokes {@link PlanFollower} to synchronize the specified {@link Plan} with    * the {@link ResourceScheduler}    *     * @param planName the name of the {@link Plan} to be synchronized    */
-DECL|method|synchronizePlan (String planName)
+comment|/**    * Invokes {@link PlanFollower} to synchronize the specified {@link Plan} with    * the {@link ResourceScheduler}    *     * @param planName the name of the {@link Plan} to be synchronized    * @param shouldReplan replan on reduction of plan capacity if true or    *          proportionally scale down reservations if false    */
+DECL|method|synchronizePlan (String planName, boolean shouldReplan)
 name|void
 name|synchronizePlan
 parameter_list|(
 name|String
 name|planName
+parameter_list|,
+name|boolean
+name|shouldReplan
 parameter_list|)
 function_decl|;
 comment|/**    * Return the time step (ms) at which the {@link PlanFollower} is invoked    *     * @return the time step (ms) at which the {@link PlanFollower} is invoked    */

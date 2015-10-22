@@ -3397,18 +3397,10 @@ argument_list|,
 name|capacityCores
 argument_list|)
 decl_stmt|;
-comment|// Set configuration
-name|ReservationSystemTestUtil
-name|testUtil
-init|=
-operator|new
-name|ReservationSystemTestUtil
-argument_list|()
-decl_stmt|;
 name|String
 name|reservationQ
 init|=
-name|testUtil
+name|ReservationSystemTestUtil
 operator|.
 name|getFullReservationQueueName
 argument_list|()
@@ -3811,6 +3803,8 @@ name|res
 argument_list|,
 name|minAlloc
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;

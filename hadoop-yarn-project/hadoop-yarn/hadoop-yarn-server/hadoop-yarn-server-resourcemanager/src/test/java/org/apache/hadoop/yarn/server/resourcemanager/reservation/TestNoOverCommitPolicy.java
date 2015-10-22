@@ -393,17 +393,10 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|ReservationSystemTestUtil
-name|testUtil
-init|=
-operator|new
-name|ReservationSystemTestUtil
-argument_list|()
-decl_stmt|;
 name|String
 name|reservationQ
 init|=
-name|testUtil
+name|ReservationSystemTestUtil
 operator|.
 name|getFullReservationQueueName
 argument_list|()
@@ -421,7 +414,7 @@ decl_stmt|;
 name|Resource
 name|clusterResource
 init|=
-name|testUtil
+name|ReservationSystemTestUtil
 operator|.
 name|calculateClusterResource
 argument_list|(
@@ -647,6 +640,8 @@ name|res
 argument_list|,
 name|minAlloc
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -745,6 +740,8 @@ name|res
 argument_list|,
 name|minAlloc
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -828,6 +825,8 @@ name|res
 argument_list|,
 name|minAlloc
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -937,6 +936,8 @@ name|res
 argument_list|,
 name|minAlloc
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// trying to update a reservation with a mismatching user
@@ -1102,6 +1103,8 @@ name|res
 argument_list|,
 name|minAlloc
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1235,6 +1238,8 @@ name|res
 argument_list|,
 name|minAlloc
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;

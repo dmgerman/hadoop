@@ -6162,6 +6162,22 @@ argument_list|(
 name|state
 argument_list|)
 expr_stmt|;
+comment|// recover reservations
+if|if
+condition|(
+name|reservationSystem
+operator|!=
+literal|null
+condition|)
+block|{
+name|reservationSystem
+operator|.
+name|recover
+argument_list|(
+name|state
+argument_list|)
+expr_stmt|;
+block|}
 comment|// recover applications
 name|rmAppManager
 operator|.

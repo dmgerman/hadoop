@@ -94,14 +94,17 @@ name|PlanContext
 extends|,
 name|PlanView
 block|{
-comment|/**    * Add a new {@link ReservationAllocation} to the plan    *     * @param reservation the {@link ReservationAllocation} to be added to the    *          plan    * @return true if addition is successful, false otherwise    */
-DECL|method|addReservation (ReservationAllocation reservation)
+comment|/**    * Add a new {@link ReservationAllocation} to the plan    *     * @param reservation the {@link ReservationAllocation} to be added to the    *          plan    * @param isRecovering flag to indicate if reservation is being added as part    *          of failover or not    * @return true if addition is successful, false otherwise    */
+DECL|method|addReservation (ReservationAllocation reservation, boolean isRecovering)
 specifier|public
 name|boolean
 name|addReservation
 parameter_list|(
 name|ReservationAllocation
 name|reservation
+parameter_list|,
+name|boolean
+name|isRecovering
 parameter_list|)
 throws|throws
 name|PlanningException

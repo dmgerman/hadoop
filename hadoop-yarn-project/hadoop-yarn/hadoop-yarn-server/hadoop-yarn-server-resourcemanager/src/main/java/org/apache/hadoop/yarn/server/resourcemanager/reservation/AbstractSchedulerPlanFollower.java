@@ -226,6 +226,24 @@ name|util
 operator|.
 name|resource
 operator|.
+name|ResourceCalculator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|resource
+operator|.
 name|Resources
 import|;
 end_import
@@ -340,7 +358,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|CapacitySchedulerPlanFollower
+name|AbstractSchedulerPlanFollower
 operator|.
 name|class
 argument_list|)
@@ -432,6 +450,8 @@ block|{
 name|synchronizePlan
 argument_list|(
 name|plan
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -470,7 +490,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|synchronizePlan (Plan plan)
+DECL|method|synchronizePlan (Plan plan, boolean shouldReplan)
 specifier|public
 specifier|synchronized
 name|void
@@ -478,6 +498,9 @@ name|synchronizePlan
 parameter_list|(
 name|Plan
 name|plan
+parameter_list|,
+name|boolean
+name|shouldReplan
 parameter_list|)
 block|{
 name|String
@@ -671,16 +694,31 @@ name|defReservationId
 argument_list|)
 expr_stmt|;
 comment|// if the resources dedicated to this plan has shrunk invoke replanner
+name|boolean
+name|shouldResize
+init|=
+literal|false
+decl_stmt|;
 if|if
 condition|(
 name|arePlanResourcesLessThanReservations
 argument_list|(
+name|plan
+operator|.
+name|getResourceCalculator
+argument_list|()
+argument_list|,
 name|clusterResources
 argument_list|,
 name|planResources
 argument_list|,
 name|reservedResources
 argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|shouldReplan
 condition|)
 block|{
 try|try
@@ -714,6 +752,14 @@ name|planQueueName
 argument_list|,
 name|e
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|shouldResize
+operator|=
+literal|true
 expr_stmt|;
 block|}
 block|}
@@ -863,9 +909,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// sort allocations from the one giving up the most resources, to the
-comment|// one asking for the most
-comment|// avoid order-of-operation errors that temporarily violate 100%
-comment|// capacity bound
+comment|// one asking for the most avoid order-of-operation errors that
+comment|// temporarily violate 100% capacity bound
 name|List
 argument_list|<
 name|ReservationAllocation
@@ -959,10 +1004,37 @@ operator|>
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+name|shouldResize
+condition|)
+block|{
+name|capToAssign
+operator|=
+name|calculateReservationToPlanProportion
+argument_list|(
+name|plan
+operator|.
+name|getResourceCalculator
+argument_list|()
+argument_list|,
+name|planResources
+argument_list|,
+name|reservedResources
+argument_list|,
+name|capToAssign
+argument_list|)
+expr_stmt|;
+block|}
 name|targetCapacity
 operator|=
 name|calculateReservationToPlanRatio
 argument_list|(
+name|plan
+operator|.
+name|getResourceCalculator
+argument_list|()
+argument_list|,
 name|clusterResources
 argument_list|,
 name|planResources
@@ -1597,13 +1669,54 @@ name|String
 name|planQueueName
 parameter_list|)
 function_decl|;
+comment|/**    * Resizes reservations based on currently available resources    */
+DECL|method|calculateReservationToPlanProportion ( ResourceCalculator rescCalculator, Resource availablePlanResources, Resource totalReservationResources, Resource reservationResources)
+specifier|private
+name|Resource
+name|calculateReservationToPlanProportion
+parameter_list|(
+name|ResourceCalculator
+name|rescCalculator
+parameter_list|,
+name|Resource
+name|availablePlanResources
+parameter_list|,
+name|Resource
+name|totalReservationResources
+parameter_list|,
+name|Resource
+name|reservationResources
+parameter_list|)
+block|{
+return|return
+name|Resources
+operator|.
+name|multiply
+argument_list|(
+name|availablePlanResources
+argument_list|,
+name|Resources
+operator|.
+name|ratio
+argument_list|(
+name|rescCalculator
+argument_list|,
+name|reservationResources
+argument_list|,
+name|totalReservationResources
+argument_list|)
+argument_list|)
+return|;
+block|}
 comment|/**    * Calculates ratio of reservationResources to planResources    */
-DECL|method|calculateReservationToPlanRatio ( Resource clusterResources, Resource planResources, Resource reservationResources)
-specifier|protected
-specifier|abstract
+DECL|method|calculateReservationToPlanRatio ( ResourceCalculator rescCalculator, Resource clusterResources, Resource planResources, Resource reservationResources)
+specifier|private
 name|float
 name|calculateReservationToPlanRatio
 parameter_list|(
+name|ResourceCalculator
+name|rescCalculator
+parameter_list|,
 name|Resource
 name|clusterResources
 parameter_list|,
@@ -1613,14 +1726,31 @@ parameter_list|,
 name|Resource
 name|reservationResources
 parameter_list|)
-function_decl|;
+block|{
+return|return
+name|Resources
+operator|.
+name|divide
+argument_list|(
+name|rescCalculator
+argument_list|,
+name|clusterResources
+argument_list|,
+name|reservationResources
+argument_list|,
+name|planResources
+argument_list|)
+return|;
+block|}
 comment|/**    * Check if plan resources are less than expected reservation resources    */
-DECL|method|arePlanResourcesLessThanReservations ( Resource clusterResources, Resource planResources, Resource reservedResources)
-specifier|protected
-specifier|abstract
+DECL|method|arePlanResourcesLessThanReservations ( ResourceCalculator rescCalculator, Resource clusterResources, Resource planResources, Resource reservedResources)
+specifier|private
 name|boolean
 name|arePlanResourcesLessThanReservations
 parameter_list|(
+name|ResourceCalculator
+name|rescCalculator
+parameter_list|,
 name|Resource
 name|clusterResources
 parameter_list|,
@@ -1630,7 +1760,22 @@ parameter_list|,
 name|Resource
 name|reservedResources
 parameter_list|)
-function_decl|;
+block|{
+return|return
+name|Resources
+operator|.
+name|greaterThan
+argument_list|(
+name|rescCalculator
+argument_list|,
+name|clusterResources
+argument_list|,
+name|reservedResources
+argument_list|,
+name|planResources
+argument_list|)
+return|;
+block|}
 comment|/**    * Get a list of reservation queues for this planQueue    */
 DECL|method|getChildReservationQueues ( Queue planQueue)
 specifier|protected
@@ -1698,7 +1843,7 @@ name|Resource
 name|clusterResources
 parameter_list|)
 function_decl|;
-comment|/**    * Get reservation queue resources if it exists otherwise return null    */
+comment|/**    * Get reservation queue resources if it exists otherwise return null.    */
 DECL|method|getReservationQueueResourceIfExists (Plan plan, ReservationId reservationId)
 specifier|protected
 specifier|abstract

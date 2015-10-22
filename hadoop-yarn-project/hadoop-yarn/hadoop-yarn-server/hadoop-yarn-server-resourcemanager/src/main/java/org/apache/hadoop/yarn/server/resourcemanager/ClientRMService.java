@@ -8621,6 +8621,8 @@ operator|.
 name|synchronizePlan
 argument_list|(
 name|planName
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|LOG

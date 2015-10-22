@@ -99,14 +99,17 @@ argument_list|>
 name|plans
 parameter_list|)
 function_decl|;
-comment|/**    * The function performing the actual synchronization operation for a given    * Plan. This is normally invoked by the run method, but it can be invoked    * synchronously to avoid race conditions when a user's reservation request    * start time is imminent.    *     * @param plan the Plan to synchronize    */
-DECL|method|synchronizePlan (Plan plan)
+comment|/**    * The function performing the actual synchronization operation for a given    * Plan. This is normally invoked by the run method, but it can be invoked    * synchronously to avoid race conditions when a user's reservation request    * start time is imminent.    *     * @param plan the Plan to synchronize    * @param shouldReplan replan on reduction of plan capacity if true or    *          proportionally scale down reservations if false    */
+DECL|method|synchronizePlan (Plan plan, boolean shouldReplan)
 specifier|public
 name|void
 name|synchronizePlan
 parameter_list|(
 name|Plan
 name|plan
+parameter_list|,
+name|boolean
+name|shouldReplan
 parameter_list|)
 function_decl|;
 comment|/**    * Setter for the list of plans.    *     * @param plans the collection of Plans we operate on at every time tick.    */
