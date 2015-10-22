@@ -577,6 +577,14 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_HA_FC_ELECTOR_ZK_RETRIES_KEY
+argument_list|,
+name|conf
+operator|.
+name|getInt
+argument_list|(
 name|CommonConfigurationKeys
 operator|.
 name|HA_FC_ELECTOR_ZK_OP_RETRIES_KEY
@@ -584,6 +592,7 @@ argument_list|,
 name|CommonConfigurationKeys
 operator|.
 name|HA_FC_ELECTOR_ZK_OP_RETRIES_DEFAULT
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|elector
@@ -607,6 +616,8 @@ argument_list|,
 name|this
 argument_list|,
 name|maxRetryNum
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|elector

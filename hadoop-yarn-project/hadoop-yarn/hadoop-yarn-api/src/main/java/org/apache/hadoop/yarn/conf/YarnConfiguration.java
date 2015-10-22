@@ -2162,6 +2162,18 @@ name|DEFAULT_CLIENT_FAILOVER_RETRIES_ON_SOCKET_TIMEOUTS
 init|=
 literal|0
 decl_stmt|;
+comment|/** number of zookeeper operation retry times in ActiveStandbyElector */
+DECL|field|RM_HA_FC_ELECTOR_ZK_RETRIES_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_HA_FC_ELECTOR_ZK_RETRIES_KEY
+init|=
+name|RM_HA_PREFIX
+operator|+
+literal|"failover-controller.active-standby-elector.zk.retries"
+decl_stmt|;
 comment|////////////////////////////////
 comment|// RM state store configs
 comment|////////////////////////////////
