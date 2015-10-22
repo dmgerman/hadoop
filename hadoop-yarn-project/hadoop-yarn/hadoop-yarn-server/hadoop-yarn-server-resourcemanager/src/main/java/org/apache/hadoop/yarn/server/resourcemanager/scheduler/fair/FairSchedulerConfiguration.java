@@ -1304,7 +1304,7 @@ name|Pattern
 operator|.
 name|compile
 argument_list|(
-literal|"(\\d+)\\s*"
+literal|"(\\d+)(\\.\\d*)?\\s*"
 operator|+
 name|units
 argument_list|)
