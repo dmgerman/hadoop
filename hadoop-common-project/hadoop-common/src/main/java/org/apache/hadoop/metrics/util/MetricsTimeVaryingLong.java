@@ -75,10 +75,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The MetricsTimeVaryingLong class is for a metric that naturally  * varies over time (e.g. number of files created). The metrics is accumulated  * over an interval (set in the metrics config file); the metrics is  *  published at the end of each interval and then   * reset to zero. Hence the counter has the value in the current interval.   *   * Note if one wants a time associated with the metric then use  * @see org.apache.hadoop.metrics.util.MetricsTimeVaryingRate  *  */
+comment|/**  * The MetricsTimeVaryingLong class is for a metric that naturally  * varies over time (e.g. number of files created). The metrics is accumulated  * over an interval (set in the metrics config file); the metrics is  *  published at the end of each interval and then   * reset to zero. Hence the counter has the value in the current interval.   *   * Note if one wants a time associated with the metric then use  * @see org.apache.hadoop.metrics.util.MetricsTimeVaryingRate  * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

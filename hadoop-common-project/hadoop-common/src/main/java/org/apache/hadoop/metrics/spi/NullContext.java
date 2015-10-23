@@ -47,10 +47,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Null metrics context: a metrics context which does nothing.  Used as the  * default context, so that no performance data is emitted if no configuration  * data is found.  *   */
+comment|/**  * Null metrics context: a metrics context which does nothing.  Used as the  * default context, so that no performance data is emitted if no configuration  * data is found.  *   * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

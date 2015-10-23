@@ -75,10 +75,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The MetricsTimeVaryingRate class is for a rate based metric that  * naturally varies over time (e.g. time taken to create a file).  * The rate is averaged at each interval heart beat (the interval  * is set in the metrics config file).  * This class also keeps track of the min and max rates along with   * a method to reset the min-max.  *  */
+comment|/**  * The MetricsTimeVaryingRate class is for a rate based metric that  * naturally varies over time (e.g. time taken to create a file).  * The rate is averaged at each interval heart beat (the interval  * is set in the metrics config file).  * This class also keeps track of the min and max rates along with   * a method to reset the min-max.  *  * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

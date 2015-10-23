@@ -113,10 +113,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An implementation of MetricsRecord.  Keeps a back-pointer to the context  * from which it was created, and delegates back to it on<code>update</code>  * and<code>remove()</code>.  */
+comment|/**  * An implementation of MetricsRecord.  Keeps a back-pointer to the context  * from which it was created, and delegates back to it on<code>update</code>  * and<code>remove()</code>.  *  * @deprecated Use {@link org.apache.hadoop.metrics2.impl.MetricsRecordImpl}  * instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

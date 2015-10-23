@@ -249,10 +249,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The main class of the Service Provider Interface.  This class should be  * extended in order to integrate the Metrics API with a specific metrics  * client library.<p/>  *  * This class implements the internal table of metric data, and the timer  * on which data is to be sent to the metrics system.  Subclasses must  * override the abstract<code>emitRecord</code> method in order to transmit  * the data.<p/>  */
+comment|/**  * The main class of the Service Provider Interface.  This class should be  * extended in order to integrate the Metrics API with a specific metrics  * client library.<p/>  *  * This class implements the internal table of metric data, and the timer  * on which data is to be sent to the metrics system.  Subclasses must  * override the abstract<code>emitRecord</code> method in order to transmit  * the data.<p/>  *  * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

@@ -227,10 +227,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Singleton class which reports Java Virtual Machine metrics to the metrics API.    * Any application can create an instance of this class in order to emit  * Java VM metrics.    */
+comment|/**  * Singleton class which reports Java Virtual Machine metrics to the metrics API.    * Any application can create an instance of this class in order to emit  * Java VM metrics.    *  * @deprecated Use {@link org.apache.hadoop.metrics2.source.JvmMetrics} instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

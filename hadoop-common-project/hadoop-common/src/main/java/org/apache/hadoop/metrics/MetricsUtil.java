@@ -93,10 +93,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Utility class to simplify creation and reporting of hadoop metrics.  *  * For examples of usage, see NameNodeMetrics.  * @see org.apache.hadoop.metrics.MetricsRecord  * @see org.apache.hadoop.metrics.MetricsContext  * @see org.apache.hadoop.metrics.ContextFactory  */
+comment|/**  * Utility class to simplify creation and reporting of hadoop metrics.  *  * For examples of usage, see NameNodeMetrics.  * @see org.apache.hadoop.metrics.MetricsRecord  * @see org.apache.hadoop.metrics.MetricsContext  * @see org.apache.hadoop.metrics.ContextFactory  * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

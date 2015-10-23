@@ -3181,7 +3181,12 @@ name|adminsAcl
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add default servlets.    */
+comment|/**    * Add default servlets.    * Note: /metrics servlet will be removed in 3.X release.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|addDefaultServlets ()
 specifier|protected
 name|void

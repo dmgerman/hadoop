@@ -189,10 +189,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This abstract base class facilitates creating dynamic mbeans automatically from  * metrics.   * The metrics constructors registers metrics in a registry.   * Different categories of metrics should be in differnt classes with their own  * registry (as in NameNodeMetrics and DataNodeMetrics).  * Then the MBean can be created passing the registry to the constructor.  * The MBean should be then registered using a mbean name (example):  *  MetricsHolder myMetrics = new MetricsHolder(); // has metrics and registry  *  MetricsTestMBean theMBean = new MetricsTestMBean(myMetrics.mregistry);  *  ObjectName mbeanName = MBeanUtil.registerMBean("ServiceFoo",  *                "TestStatistics", theMBean);  *   *  */
+comment|/**  * This abstract base class facilitates creating dynamic mbeans automatically from  * metrics.   * The metrics constructors registers metrics in a registry.   * Different categories of metrics should be in differnt classes with their own  * registry (as in NameNodeMetrics and DataNodeMetrics).  * Then the MBean can be created passing the registry to the constructor.  * The MBean should be then registered using a mbean name (example):  *  MetricsHolder myMetrics = new MetricsHolder(); // has metrics and registry  *  MetricsTestMBean theMBean = new MetricsTestMBean(myMetrics.mregistry);  *  ObjectName mbeanName = MBeanUtil.registerMBean("ServiceFoo",  *                "TestStatistics", theMBean);  *   * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

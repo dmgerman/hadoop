@@ -45,10 +45,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * General-purpose, unchecked metrics exception.  */
+comment|/**  * General-purpose, unchecked metrics exception.  * @deprecated Use {@link org.apache.hadoop.metrics2.MetricsException} instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

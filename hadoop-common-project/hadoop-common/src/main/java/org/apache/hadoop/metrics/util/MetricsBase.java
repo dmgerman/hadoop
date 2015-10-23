@@ -47,10 +47,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *   * This is base class for all metrics  *  */
+comment|/**  *   * This is base class for all metrics  *  * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

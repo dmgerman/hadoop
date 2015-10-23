@@ -129,10 +129,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Context for sending metrics to Ganglia version 3.1.x.  *   * 3.1.1 has a slightly different wire portal compared to 3.0.x.  */
+comment|/**  * Context for sending metrics to Ganglia version 3.1.x.  *   * 3.1.1 has a slightly different wire portal compared to 3.0.x.  *  * @deprecated Use {@link org.apache.hadoop.metrics2.sink.ganglia.GangliaSink31}  * instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|GangliaContext31
 specifier|public
 class|class

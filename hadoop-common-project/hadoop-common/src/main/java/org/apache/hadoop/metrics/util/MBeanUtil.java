@@ -95,10 +95,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This util class provides a method to register an MBean using  * our standard naming convention as described in the doc  *  for {link {@link #registerMBean(String, String, Object)}  *  */
+comment|/**  * This util class provides a method to register an MBean using  * our standard naming convention as described in the doc  *  for {link {@link #registerMBean(String, String, Object)}  *  * @deprecated Use {@link org.apache.hadoop.metrics2.util.MBeans} instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

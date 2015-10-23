@@ -141,10 +141,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Factory class for creating MetricsContext objects.  To obtain an instance  * of this class, use the static<code>getFactory()</code> method.  */
+comment|/**  * Factory class for creating MetricsContext objects.  To obtain an instance  * of this class, use the static<code>getFactory()</code> method.  *  * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

@@ -257,10 +257,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A servlet to print out metrics data.  By default, the servlet returns a   * textual representation (no promises are made for parseability), and  * users can use "?format=json" for parseable output.  */
+comment|/**  * A servlet to print out metrics data.  By default, the servlet returns a   * textual representation (no promises are made for parseability), and  * users can use "?format=json" for parseable output.  *  * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

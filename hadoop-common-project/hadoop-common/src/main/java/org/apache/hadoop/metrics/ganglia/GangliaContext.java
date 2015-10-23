@@ -201,10 +201,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Context for sending metrics to Ganglia.  *   */
+comment|/**  * Context for sending metrics to Ganglia.  *  * @deprecated Use {@link org.apache.hadoop.metrics2.sink.ganglia.GangliaSink30}  * instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

@@ -45,10 +45,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Call-back interface.  See<code>MetricsContext.registerUpdater()</code>.  */
+comment|/**  * Call-back interface.  See<code>MetricsContext.registerUpdater()</code>.  *  * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_interface
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

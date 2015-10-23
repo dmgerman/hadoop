@@ -75,10 +75,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * A MetricsContext that does not emit data, but, unlike NullContextWithUpdate,  * does save it for retrieval with getAllRecords().  *   * This is useful if you want to support {@link MetricsServlet}, but  * not emit metrics in any other way.  */
+comment|/**   * A MetricsContext that does not emit data, but, unlike NullContextWithUpdate,  * does save it for retrieval with getAllRecords().  *   * This is useful if you want to support {@link MetricsServlet}, but  * not emit metrics in any other way.  *  * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

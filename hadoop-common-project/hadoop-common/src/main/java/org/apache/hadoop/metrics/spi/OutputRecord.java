@@ -103,10 +103,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Represents a record of metric data to be sent to a metrics system.  */
+comment|/**  * Represents a record of metric data to be sent to a metrics system.  *  * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

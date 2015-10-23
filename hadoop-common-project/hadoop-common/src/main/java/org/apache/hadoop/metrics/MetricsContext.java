@@ -91,10 +91,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The main interface to the metrics package.   */
+comment|/**  * The main interface to the metrics package.   *  * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_interface
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

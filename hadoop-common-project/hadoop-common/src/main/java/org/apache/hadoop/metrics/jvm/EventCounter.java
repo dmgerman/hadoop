@@ -19,10 +19,12 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * A log4J Appender that simply counts logging events in three levels:  * fatal, error and warn.  */
+comment|/**  * A log4J Appender that simply counts logging events in three levels:  * fatal, error and warn.  *  * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|EventCounter
 specifier|public
 class|class

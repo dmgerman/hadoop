@@ -61,10 +61,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A null context which has a thread calling   * periodically when monitoring is started. This keeps the data sampled   * correctly.  * In all other respects, this is like the NULL context: No data is emitted.  * This is suitable for Monitoring systems like JMX which reads the metrics  *  when someone reads the data from JMX.  *   * The default impl of start and stop monitoring:  *  is the AbstractMetricsContext is good enough.  *   */
+comment|/**  * A null context which has a thread calling   * periodically when monitoring is started. This keeps the data sampled   * correctly.  * In all other respects, this is like the NULL context: No data is emitted.  * This is suitable for Monitoring systems like JMX which reads the metrics  *  when someone reads the data from JMX.  *   * The default impl of start and stop monitoring:  *  is the AbstractMetricsContext is good enough.  *   * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

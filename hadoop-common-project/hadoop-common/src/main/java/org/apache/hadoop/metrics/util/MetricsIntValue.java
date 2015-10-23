@@ -75,10 +75,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The MetricsIntValue class is for a metric that is not time varied  * but changes only when it is set.   * Each time its value is set, it is published only *once* at the next update  * call.  *  */
+comment|/**  * The MetricsIntValue class is for a metric that is not time varied  * but changes only when it is set.   * Each time its value is set, it is published only *once* at the next update  * call.  *  * @deprecated Use org.apache.hadoop.metrics2 package instead.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.
