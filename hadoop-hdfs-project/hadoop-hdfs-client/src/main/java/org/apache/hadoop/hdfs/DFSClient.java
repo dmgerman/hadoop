@@ -4647,7 +4647,7 @@ static|static
 block|{
 comment|//Ensure that HDFS Configuration files are loaded before trying to use
 comment|// the renewer.
-name|HdfsConfigurationLoader
+name|HdfsConfiguration
 operator|.
 name|init
 argument_list|()

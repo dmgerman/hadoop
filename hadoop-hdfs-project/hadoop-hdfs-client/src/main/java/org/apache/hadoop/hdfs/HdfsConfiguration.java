@@ -60,6 +60,24 @@ name|HdfsClientConfigKeys
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DeprecatedKeys
+import|;
+end_import
+
 begin_comment
 comment|/**  * Adds deprecated keys into the configuration.  */
 end_comment
@@ -82,10 +100,19 @@ name|addDeprecatedKeys
 argument_list|()
 expr_stmt|;
 comment|// adds the default resources
-name|HdfsConfigurationLoader
+name|Configuration
 operator|.
-name|init
-argument_list|()
+name|addDefaultResource
+argument_list|(
+literal|"hdfs-default.xml"
+argument_list|)
+expr_stmt|;
+name|Configuration
+operator|.
+name|addDefaultResource
+argument_list|(
+literal|"hdfs-site.xml"
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|HdfsConfiguration ()
@@ -125,7 +152,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This method is here so that when invoked, HdfsConfiguration is class-loaded if    * it hasn't already been previously loaded.  Upon loading the class, the static     * initializer block above will be executed to add the deprecated keys and to add    * the default resources via {@link HdfsConfigurationLoader#init()}. It is    * safe for this method to be called multiple times as the static initializer    * block will only get invoked once.    *    * This replaces the previously, dangerous practice of other classes calling    * Configuration.addDefaultResource("hdfs-default.xml") directly without loading     * HdfsConfiguration class first, thereby skipping the key deprecation    */
+comment|/**    * This method is here so that when invoked, HdfsConfiguration is class-loaded    * if it hasn't already been previously loaded.  Upon loading the class, the    * static initializer block above will be executed to add the deprecated keys    * and to add the default resources. It is safe for this method to be called    * multiple times as the static initializer block will only get invoked once.    *    * This replaces the previously, dangerous practice of other classes calling    * Configuration.addDefaultResource("hdfs-default.xml") directly without    * loading this class first, thereby skipping the key deprecation.    */
 DECL|method|init ()
 specifier|public
 specifier|static
@@ -153,7 +180,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.backup.address"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_BACKUP_ADDRESS_KEY
 argument_list|)
@@ -163,7 +190,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.backup.http.address"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_BACKUP_HTTP_ADDRESS_KEY
 argument_list|)
@@ -173,7 +200,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.balance.bandwidthPerSec"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_DATANODE_BALANCE_BANDWIDTHPERSEC_KEY
 argument_list|)
@@ -183,7 +210,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.data.dir"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|)
@@ -193,7 +220,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.http.address"
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|)
@@ -203,7 +230,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.https.address"
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_NAMENODE_HTTPS_ADDRESS_KEY
 argument_list|)
@@ -213,7 +240,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.max.objects"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_MAX_OBJECTS_KEY
 argument_list|)
@@ -223,7 +250,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.name.dir"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_NAME_DIR_KEY
 argument_list|)
@@ -233,7 +260,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.name.dir.restore"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_NAME_DIR_RESTORE_KEY
 argument_list|)
@@ -243,7 +270,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.name.edits.dir"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_EDITS_DIR_KEY
 argument_list|)
@@ -265,7 +292,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.safemode.extension"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_SAFEMODE_EXTENSION_KEY
 argument_list|)
@@ -275,7 +302,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.safemode.threshold.pct"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_SAFEMODE_THRESHOLD_PCT_KEY
 argument_list|)
@@ -285,7 +312,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.secondary.http.address"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_KEY
 argument_list|)
@@ -305,7 +332,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"fs.checkpoint.dir"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_CHECKPOINT_DIR_KEY
 argument_list|)
@@ -315,7 +342,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"fs.checkpoint.edits.dir"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_CHECKPOINT_EDITS_DIR_KEY
 argument_list|)
@@ -325,7 +352,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"fs.checkpoint.period"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_CHECKPOINT_PERIOD_KEY
 argument_list|)
@@ -335,7 +362,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"heartbeat.recheck.interval"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_HEARTBEAT_RECHECK_INTERVAL_KEY
 argument_list|)
@@ -345,7 +372,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.https.client.keystore.resource"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_CLIENT_HTTPS_KEYSTORE_RESOURCE_KEY
 argument_list|)
@@ -355,7 +382,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.https.need.client.auth"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_CLIENT_HTTPS_NEED_AUTH_KEY
 argument_list|)
@@ -365,7 +392,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"slave.host.name"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_DATANODE_HOST_NAME_KEY
 argument_list|)
@@ -375,7 +402,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"session.id"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_METRICS_SESSION_ID_KEY
 argument_list|)
@@ -385,7 +412,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.access.time.precision"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_ACCESSTIME_PRECISION_KEY
 argument_list|)
@@ -395,7 +422,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.replication.considerLoad"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_REPLICATION_CONSIDERLOAD_KEY
 argument_list|)
@@ -405,7 +432,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.replication.interval"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
 argument_list|)
@@ -415,7 +442,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.replication.min"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_REPLICATION_MIN_KEY
 argument_list|)
@@ -425,7 +452,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.replication.pending.timeout.sec"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_REPLICATION_PENDING_TIMEOUT_SEC_KEY
 argument_list|)
@@ -435,7 +462,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.max-repl-streams"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY
 argument_list|)
@@ -445,7 +472,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.permissions"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_PERMISSIONS_ENABLED_KEY
 argument_list|)
@@ -455,7 +482,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.permissions.supergroup"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_PERMISSIONS_SUPERUSERGROUP_KEY
 argument_list|)
@@ -475,7 +502,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.block.size"
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_BLOCK_SIZE_KEY
 argument_list|)
@@ -485,7 +512,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.datanode.max.xcievers"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_DATANODE_MAX_RECEIVER_THREADS_KEY
 argument_list|)
@@ -505,7 +532,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.federation.nameservices"
 argument_list|,
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
 name|DFS_NAMESERVICES
 argument_list|)
@@ -515,7 +542,7 @@ name|DeprecationDelta
 argument_list|(
 literal|"dfs.federation.nameservice.id"
 argument_list|,
-name|DFSConfigKeys
+name|DeprecatedKeys
 operator|.
 name|DFS_NAMESERVICE_ID
 argument_list|)

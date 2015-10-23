@@ -1115,7 +1115,7 @@ literal|true
 decl_stmt|;
 static|static
 block|{
-name|HdfsConfigurationLoader
+name|HdfsConfiguration
 operator|.
 name|init
 argument_list|()
