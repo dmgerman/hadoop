@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timeline.webapp
+DECL|package|org.apache.hadoop.security.http
 package|package
 name|org
 operator|.
@@ -12,13 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|security
 operator|.
-name|server
-operator|.
-name|timeline
-operator|.
-name|webapp
+name|http
 package|;
 end_package
 
@@ -1278,8 +1274,8 @@ literal|true
 return|;
 block|}
 name|String
-name|headers
 index|[]
+name|headers
 init|=
 name|accessControlRequestHeaders
 operator|.

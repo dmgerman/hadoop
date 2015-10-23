@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timeline.webapp
+DECL|package|org.apache.hadoop.security.http
 package|package
 name|org
 operator|.
@@ -12,13 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|security
 operator|.
-name|server
-operator|.
-name|timeline
-operator|.
-name|webapp
+name|http
 package|;
 end_package
 
@@ -140,6 +136,22 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|http
+operator|.
+name|CrossOriginFilter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -157,14 +169,12 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|mockito
 operator|.
 name|Mockito
-operator|.
-name|when
 import|;
 end_import
 
@@ -189,18 +199,6 @@ operator|.
 name|Mockito
 operator|.
 name|verify
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|verifyZeroInteractions
 import|;
 end_import
 
@@ -264,6 +262,8 @@ comment|// Origin is not specified for same origin requests
 name|HttpServletRequest
 name|mockReq
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|HttpServletRequest
@@ -271,6 +271,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|Mockito
+operator|.
 name|when
 argument_list|(
 name|mockReq
@@ -292,6 +294,8 @@ comment|// Objects to verify interactions based on request
 name|HttpServletResponse
 name|mockRes
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|HttpServletResponse
@@ -302,6 +306,8 @@ decl_stmt|;
 name|FilterChain
 name|mockChain
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|FilterChain
@@ -335,11 +341,15 @@ argument_list|,
 name|mockChain
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|verifyZeroInteractions
 argument_list|(
 name|mockRes
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|verify
 argument_list|(
 name|mockChain
@@ -729,6 +739,8 @@ comment|// Origin is not specified for same origin requests
 name|HttpServletRequest
 name|mockReq
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|HttpServletRequest
@@ -736,6 +748,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|Mockito
+operator|.
 name|when
 argument_list|(
 name|mockReq
@@ -757,6 +771,8 @@ comment|// Objects to verify interactions based on request
 name|HttpServletResponse
 name|mockRes
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|HttpServletResponse
@@ -767,6 +783,8 @@ decl_stmt|;
 name|FilterChain
 name|mockChain
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|FilterChain
@@ -800,11 +818,15 @@ argument_list|,
 name|mockChain
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|verifyZeroInteractions
 argument_list|(
 name|mockRes
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|verify
 argument_list|(
 name|mockChain
@@ -872,6 +894,8 @@ comment|// Origin is not specified for same origin requests
 name|HttpServletRequest
 name|mockReq
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|HttpServletRequest
@@ -879,6 +903,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|Mockito
+operator|.
 name|when
 argument_list|(
 name|mockReq
@@ -896,6 +922,8 @@ argument_list|(
 literal|"example.com"
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|when
 argument_list|(
 name|mockReq
@@ -917,6 +945,8 @@ comment|// Objects to verify interactions based on request
 name|HttpServletResponse
 name|mockRes
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|HttpServletResponse
@@ -927,6 +957,8 @@ decl_stmt|;
 name|FilterChain
 name|mockChain
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|FilterChain
@@ -960,11 +992,15 @@ argument_list|,
 name|mockChain
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|verifyZeroInteractions
 argument_list|(
 name|mockRes
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|verify
 argument_list|(
 name|mockChain
@@ -1032,6 +1068,8 @@ comment|// Origin is not specified for same origin requests
 name|HttpServletRequest
 name|mockReq
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|HttpServletRequest
@@ -1039,6 +1077,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|Mockito
+operator|.
 name|when
 argument_list|(
 name|mockReq
@@ -1056,6 +1096,8 @@ argument_list|(
 literal|"example.com"
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|when
 argument_list|(
 name|mockReq
@@ -1073,6 +1115,8 @@ argument_list|(
 literal|"GET"
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|when
 argument_list|(
 name|mockReq
@@ -1094,6 +1138,8 @@ comment|// Objects to verify interactions based on request
 name|HttpServletResponse
 name|mockRes
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|HttpServletResponse
@@ -1104,6 +1150,8 @@ decl_stmt|;
 name|FilterChain
 name|mockChain
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|FilterChain
@@ -1137,11 +1185,15 @@ argument_list|,
 name|mockChain
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|verifyZeroInteractions
 argument_list|(
 name|mockRes
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|verify
 argument_list|(
 name|mockChain
@@ -1209,6 +1261,8 @@ comment|// Origin is not specified for same origin requests
 name|HttpServletRequest
 name|mockReq
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|HttpServletRequest
@@ -1216,6 +1270,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|Mockito
+operator|.
 name|when
 argument_list|(
 name|mockReq
@@ -1233,6 +1289,8 @@ argument_list|(
 literal|"example.com"
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|when
 argument_list|(
 name|mockReq
@@ -1250,6 +1308,8 @@ argument_list|(
 literal|"GET"
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|when
 argument_list|(
 name|mockReq
@@ -1271,6 +1331,8 @@ comment|// Objects to verify interactions based on request
 name|HttpServletResponse
 name|mockRes
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|HttpServletResponse
@@ -1281,6 +1343,8 @@ decl_stmt|;
 name|FilterChain
 name|mockChain
 init|=
+name|Mockito
+operator|.
 name|mock
 argument_list|(
 name|FilterChain
@@ -1314,6 +1378,8 @@ argument_list|,
 name|mockChain
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|verify
 argument_list|(
 name|mockRes
@@ -1328,6 +1394,8 @@ argument_list|,
 literal|"example.com"
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|verify
 argument_list|(
 name|mockRes
@@ -1347,6 +1415,8 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|verify
 argument_list|(
 name|mockRes
@@ -1364,6 +1434,8 @@ name|getAllowedMethodsHeader
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|verify
 argument_list|(
 name|mockRes
@@ -1381,6 +1453,8 @@ name|getAllowedHeadersHeader
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Mockito
+operator|.
 name|verify
 argument_list|(
 name|mockChain

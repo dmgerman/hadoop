@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timeline.webapp
+DECL|package|org.apache.hadoop.security
 package|package
 name|org
 operator|.
@@ -12,13 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|timeline
-operator|.
-name|webapp
+name|security
 package|;
 end_package
 
@@ -67,10 +61,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestCrossOriginFilterInitializer
+DECL|class|TestHttpCrossOriginFilterInitializer
 specifier|public
 class|class
-name|TestCrossOriginFilterInitializer
+name|TestHttpCrossOriginFilterInitializer
 block|{
 annotation|@
 name|Test
@@ -92,7 +86,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|CrossOriginFilterInitializer
+name|HttpCrossOriginFilterInitializer
 operator|.
 name|PREFIX
 operator|+
@@ -105,7 +99,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|CrossOriginFilterInitializer
+name|HttpCrossOriginFilterInitializer
 operator|.
 name|PREFIX
 operator|+
@@ -132,11 +126,15 @@ name|String
 argument_list|>
 name|filterParameters
 init|=
-name|CrossOriginFilterInitializer
+name|HttpCrossOriginFilterInitializer
 operator|.
 name|getFilterParameters
 argument_list|(
 name|conf
+argument_list|,
+name|HttpCrossOriginFilterInitializer
+operator|.
+name|PREFIX
 argument_list|)
 decl_stmt|;
 comment|// retrieve values

@@ -1296,6 +1296,27 @@ name|DEFAULT_RM_WEBAPP_DELEGATION_TOKEN_AUTH_FILTER
 init|=
 literal|true
 decl_stmt|;
+comment|/** Enable cross origin (CORS) support. **/
+DECL|field|RM_WEBAPP_ENABLE_CORS_FILTER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_WEBAPP_ENABLE_CORS_FILTER
+init|=
+name|RM_PREFIX
+operator|+
+literal|"webapp.cross-origin.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_RM_WEBAPP_ENABLE_CORS_FILTER
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_RM_WEBAPP_ENABLE_CORS_FILTER
+init|=
+literal|false
+decl_stmt|;
 comment|/** How long to wait until a container is considered dead.*/
 DECL|field|RM_CONTAINER_ALLOC_EXPIRY_INTERVAL_MS
 specifier|public
@@ -3669,6 +3690,27 @@ init|=
 literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_NM_WEBAPP_HTTPS_PORT
+decl_stmt|;
+comment|/** Enable/disable CORS filter. */
+DECL|field|NM_WEBAPP_ENABLE_CORS_FILTER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_WEBAPP_ENABLE_CORS_FILTER
+init|=
+name|NM_PREFIX
+operator|+
+literal|"webapp.cross-origin.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_NM_WEBAPP_ENABLE_CORS_FILTER
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_WEBAPP_ENABLE_CORS_FILTER
+init|=
+literal|false
 decl_stmt|;
 comment|/** How often to monitor resource in a node.*/
 DECL|field|NM_RESOURCE_MON_INTERVAL_MS
