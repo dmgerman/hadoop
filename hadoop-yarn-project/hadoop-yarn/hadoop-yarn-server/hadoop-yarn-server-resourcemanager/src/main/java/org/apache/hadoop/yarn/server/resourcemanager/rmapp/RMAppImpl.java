@@ -5787,7 +5787,7 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
-comment|// synchronously renew delegation token on recovery.
+comment|// asynchronously renew delegation token on recovery.
 try|try
 block|{
 name|app
@@ -5797,7 +5797,7 @@ operator|.
 name|getDelegationTokenRenewer
 argument_list|()
 operator|.
-name|addApplicationSync
+name|addApplicationAsyncDuringRecovery
 argument_list|(
 name|app
 operator|.
@@ -5832,13 +5832,7 @@ block|{
 name|String
 name|msg
 init|=
-literal|"Failed to renew token for "
-operator|+
-name|app
-operator|.
-name|applicationId
-operator|+
-literal|" on recovery : "
+literal|"Failed to fetch user credentials from application:"
 operator|+
 name|e
 operator|.
