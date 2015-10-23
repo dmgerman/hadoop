@@ -144,13 +144,22 @@ name|YarnApplicationState
 import|;
 end_import
 
-begin_interface
-DECL|interface|SystemMetricsPublisher
+begin_comment
+comment|/**  * This class does nothing when any of the methods are invoked on  * SystemMetricsPublisher  */
+end_comment
+
+begin_class
+DECL|class|NoOpSystemMetricPublisher
 specifier|public
-interface|interface
+class|class
+name|NoOpSystemMetricPublisher
+implements|implements
 name|SystemMetricsPublisher
 block|{
+annotation|@
+name|Override
 DECL|method|appCreated (RMApp app, long createdTime)
+specifier|public
 name|void
 name|appCreated
 parameter_list|(
@@ -160,47 +169,11 @@ parameter_list|,
 name|long
 name|createdTime
 parameter_list|)
-function_decl|;
-DECL|method|appACLsUpdated (RMApp app, String appViewACLs, long updatedTime)
-name|void
-name|appACLsUpdated
-parameter_list|(
-name|RMApp
-name|app
-parameter_list|,
-name|String
-name|appViewACLs
-parameter_list|,
-name|long
-name|updatedTime
-parameter_list|)
-function_decl|;
-DECL|method|appUpdated (RMApp app, long updatedTime)
-name|void
-name|appUpdated
-parameter_list|(
-name|RMApp
-name|app
-parameter_list|,
-name|long
-name|updatedTime
-parameter_list|)
-function_decl|;
-DECL|method|appStateUpdated (RMApp app, YarnApplicationState appState, long updatedTime)
-name|void
-name|appStateUpdated
-parameter_list|(
-name|RMApp
-name|app
-parameter_list|,
-name|YarnApplicationState
-name|appState
-parameter_list|,
-name|long
-name|updatedTime
-parameter_list|)
-function_decl|;
+block|{   }
+annotation|@
+name|Override
 DECL|method|appFinished (RMApp app, RMAppState state, long finishedTime)
+specifier|public
 name|void
 name|appFinished
 parameter_list|(
@@ -213,8 +186,28 @@ parameter_list|,
 name|long
 name|finishedTime
 parameter_list|)
-function_decl|;
+block|{   }
+annotation|@
+name|Override
+DECL|method|appACLsUpdated (RMApp app, String appViewACLs, long updatedTime)
+specifier|public
+name|void
+name|appACLsUpdated
+parameter_list|(
+name|RMApp
+name|app
+parameter_list|,
+name|String
+name|appViewACLs
+parameter_list|,
+name|long
+name|updatedTime
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
 DECL|method|appAttemptRegistered (RMAppAttempt appAttempt, long registeredTime)
+specifier|public
 name|void
 name|appAttemptRegistered
 parameter_list|(
@@ -224,8 +217,11 @@ parameter_list|,
 name|long
 name|registeredTime
 parameter_list|)
-function_decl|;
+block|{   }
+annotation|@
+name|Override
 DECL|method|appAttemptFinished (RMAppAttempt appAttempt, RMAppAttemptState appAttemtpState, RMApp app, long finishedTime)
+specifier|public
 name|void
 name|appAttemptFinished
 parameter_list|(
@@ -241,8 +237,11 @@ parameter_list|,
 name|long
 name|finishedTime
 parameter_list|)
-function_decl|;
+block|{   }
+annotation|@
+name|Override
 DECL|method|containerCreated (RMContainer container, long createdTime)
+specifier|public
 name|void
 name|containerCreated
 parameter_list|(
@@ -252,8 +251,11 @@ parameter_list|,
 name|long
 name|createdTime
 parameter_list|)
-function_decl|;
+block|{   }
+annotation|@
+name|Override
 DECL|method|containerFinished (RMContainer container, long finishedTime)
+specifier|public
 name|void
 name|containerFinished
 parameter_list|(
@@ -263,9 +265,40 @@ parameter_list|,
 name|long
 name|finishedTime
 parameter_list|)
-function_decl|;
+block|{   }
+annotation|@
+name|Override
+DECL|method|appUpdated (RMApp app, long currentTimeMillis)
+specifier|public
+name|void
+name|appUpdated
+parameter_list|(
+name|RMApp
+name|app
+parameter_list|,
+name|long
+name|currentTimeMillis
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
+DECL|method|appStateUpdated (RMApp app, YarnApplicationState appState, long updatedTime)
+specifier|public
+name|void
+name|appStateUpdated
+parameter_list|(
+name|RMApp
+name|app
+parameter_list|,
+name|YarnApplicationState
+name|appState
+parameter_list|,
+name|long
+name|updatedTime
+parameter_list|)
+block|{   }
 block|}
-end_interface
+end_class
 
 end_unit
 
