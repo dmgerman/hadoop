@@ -3231,6 +3231,13 @@ name|TraceScope
 name|traceScope
 decl_stmt|;
 comment|// the HTrace scope on the server side
+DECL|field|callerContext
+specifier|private
+specifier|final
+name|CallerContext
+name|callerContext
+decl_stmt|;
+comment|// the call context
 DECL|method|Call (Call call)
 specifier|private
 name|Call
@@ -3268,6 +3275,10 @@ argument_list|,
 name|call
 operator|.
 name|traceScope
+argument_list|,
+name|call
+operator|.
+name|callerContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -3351,10 +3362,12 @@ argument_list|,
 name|clientId
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Call (int id, int retryCount, Writable param, Connection connection, RPC.RpcKind kind, byte[] clientId, TraceScope traceScope)
+DECL|method|Call (int id, int retryCount, Writable param, Connection connection, RPC.RpcKind kind, byte[] clientId, TraceScope traceScope, CallerContext callerContext)
 specifier|public
 name|Call
 parameter_list|(
@@ -3381,6 +3394,9 @@ name|clientId
 parameter_list|,
 name|TraceScope
 name|traceScope
+parameter_list|,
+name|CallerContext
+name|callerContext
 parameter_list|)
 block|{
 name|this
@@ -3439,6 +3455,12 @@ operator|.
 name|traceScope
 operator|=
 name|traceScope
+expr_stmt|;
+name|this
+operator|.
+name|callerContext
+operator|=
+name|callerContext
 expr_stmt|;
 block|}
 annotation|@
@@ -9916,6 +9938,53 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+name|CallerContext
+name|callerContext
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|header
+operator|.
+name|hasCallerContext
+argument_list|()
+condition|)
+block|{
+name|callerContext
+operator|=
+operator|new
+name|CallerContext
+operator|.
+name|Builder
+argument_list|(
+name|header
+operator|.
+name|getCallerContext
+argument_list|()
+operator|.
+name|getContext
+argument_list|()
+argument_list|)
+operator|.
+name|setSignature
+argument_list|(
+name|header
+operator|.
+name|getCallerContext
+argument_list|()
+operator|.
+name|getSignature
+argument_list|()
+operator|.
+name|toByteArray
+argument_list|()
+argument_list|)
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
+block|}
 name|Call
 name|call
 init|=
@@ -9955,6 +10024,8 @@ name|toByteArray
 argument_list|()
 argument_list|,
 name|traceScope
+argument_list|,
+name|callerContext
 argument_list|)
 decl_stmt|;
 if|if
@@ -10761,6 +10832,16 @@ literal|"called"
 argument_list|)
 expr_stmt|;
 block|}
+comment|// always update the current call context
+name|CallerContext
+operator|.
+name|setCurrent
+argument_list|(
+name|call
+operator|.
+name|callerContext
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 comment|// Make the call as the user via Subject.doAs, thus associating

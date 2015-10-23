@@ -100,6 +100,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|CallerContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -173,13 +187,18 @@ argument_list|,
 name|status
 argument_list|,
 literal|null
+comment|/*callerContext*/
 argument_list|,
 literal|null
+comment|/*ugi*/
+argument_list|,
+literal|null
+comment|/*dtSecretManager*/
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Same as    * {@link #logAuditEvent(boolean, String, InetAddress, String, String, String, FileStatus)}    * with additional parameters related to logging delegation token tracking    * IDs.    *     * @param succeeded Whether authorization succeeded.    * @param userName Name of the user executing the request.    * @param addr Remote address of the request.    * @param cmd The requested command.    * @param src Path of affected source file.    * @param dst Path of affected destination file (if any).    * @param stat File information for operations that change the file's metadata    *          (permissions, owner, times, etc).    * @param ugi UserGroupInformation of the current user, or null if not logging    *          token tracking information    * @param dtSecretManager The token secret manager, or null if not logging    *          token tracking information    */
-DECL|method|logAuditEvent (boolean succeeded, String userName, InetAddress addr, String cmd, String src, String dst, FileStatus stat, UserGroupInformation ugi, DelegationTokenSecretManager dtSecretManager)
+DECL|method|logAuditEvent (boolean succeeded, String userName, InetAddress addr, String cmd, String src, String dst, FileStatus stat, CallerContext callerContext, UserGroupInformation ugi, DelegationTokenSecretManager dtSecretManager)
 specifier|public
 specifier|abstract
 name|void
@@ -205,6 +224,9 @@ name|dst
 parameter_list|,
 name|FileStatus
 name|stat
+parameter_list|,
+name|CallerContext
+name|callerContext
 parameter_list|,
 name|UserGroupInformation
 name|ugi
