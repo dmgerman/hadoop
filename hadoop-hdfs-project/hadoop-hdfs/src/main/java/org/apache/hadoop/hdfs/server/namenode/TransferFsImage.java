@@ -927,7 +927,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|downloadImageToStorage (URL fsName, long imageTxId, Storage dstStorage, boolean needDigest)
+DECL|method|downloadImageToStorage (URL fsName, long imageTxId, Storage dstStorage, boolean needDigest, boolean isBootstrapStandby)
 specifier|public
 specifier|static
 name|MD5Hash
@@ -944,6 +944,9 @@ name|dstStorage
 parameter_list|,
 name|boolean
 name|needDigest
+parameter_list|,
+name|boolean
+name|isBootstrapStandby
 parameter_list|)
 throws|throws
 name|IOException
@@ -960,6 +963,8 @@ argument_list|,
 name|imageTxId
 argument_list|,
 name|dstStorage
+argument_list|,
+name|isBootstrapStandby
 argument_list|)
 decl_stmt|;
 name|String

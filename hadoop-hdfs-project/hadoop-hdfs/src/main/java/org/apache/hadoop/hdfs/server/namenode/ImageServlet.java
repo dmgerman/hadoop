@@ -651,6 +651,15 @@ name|IMAGE_FILE_TYPE
 init|=
 literal|"imageFile"
 decl_stmt|;
+DECL|field|IS_BOOTSTRAP_STANDBY
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|IS_BOOTSTRAP_STANDBY
+init|=
+literal|"bootstrapstandby"
+decl_stmt|;
 DECL|field|currentlyDownloadingCheckpoints
 specifier|private
 name|SortedSet
@@ -1072,6 +1081,23 @@ comment|// It's also possible length could change, but this would be
 comment|// detected by the client side as an inaccurate length header.
 block|}
 comment|// send file
+name|DataTransferThrottler
+name|throttler
+init|=
+name|parsedParams
+operator|.
+name|isBootstrapStandby
+condition|?
+name|getThrottlerForBootstrapStandby
+argument_list|(
+name|conf
+argument_list|)
+else|:
+name|getThrottler
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 name|TransferFsImage
 operator|.
 name|copyFileToStream
@@ -1085,10 +1111,7 @@ name|file
 argument_list|,
 name|fis
 argument_list|,
-name|getThrottler
-argument_list|(
-name|conf
-argument_list|)
+name|throttler
 argument_list|)
 expr_stmt|;
 block|}
@@ -1365,7 +1388,6 @@ block|}
 comment|/**    * Construct a throttler from conf    * @param conf configuration    * @return a data transfer throttler    */
 DECL|method|getThrottler (Configuration conf)
 specifier|public
-specifier|final
 specifier|static
 name|DataTransferThrottler
 name|getThrottler
@@ -1388,6 +1410,57 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_IMAGE_TRANSFER_RATE_DEFAULT
+argument_list|)
+decl_stmt|;
+name|DataTransferThrottler
+name|throttler
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|transferBandwidth
+operator|>
+literal|0
+condition|)
+block|{
+name|throttler
+operator|=
+operator|new
+name|DataTransferThrottler
+argument_list|(
+name|transferBandwidth
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|throttler
+return|;
+block|}
+DECL|method|getThrottlerForBootstrapStandby ( Configuration conf)
+specifier|private
+specifier|static
+name|DataTransferThrottler
+name|getThrottlerForBootstrapStandby
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|long
+name|transferBandwidth
+init|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_IMAGE_TRANSFER_BOOTSTRAP_STANDBY_RATE_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_IMAGE_TRANSFER_BOOTSTRAP_STANDBY_RATE_DEFAULT
 argument_list|)
 decl_stmt|;
 name|DataTransferThrottler
@@ -1818,7 +1891,7 @@ operator|+
 name|LATEST_FSIMAGE_VALUE
 return|;
 block|}
-DECL|method|getParamStringForImage (NameNodeFile nnf, long txid, StorageInfo remoteStorageInfo)
+DECL|method|getParamStringForImage (NameNodeFile nnf, long txid, StorageInfo remoteStorageInfo, boolean isBootstrapStandby)
 specifier|static
 name|String
 name|getParamStringForImage
@@ -1831,6 +1904,9 @@ name|txid
 parameter_list|,
 name|StorageInfo
 name|remoteStorageInfo
+parameter_list|,
+name|boolean
+name|isBootstrapStandby
 parameter_list|)
 block|{
 specifier|final
@@ -1875,6 +1951,14 @@ name|remoteStorageInfo
 operator|.
 name|toColonSeparatedString
 argument_list|()
+operator|+
+literal|"&"
+operator|+
+name|IS_BOOTSTRAP_STANDBY
+operator|+
+literal|"="
+operator|+
+name|isBootstrapStandby
 return|;
 block|}
 DECL|method|getParamStringForLog (RemoteEditLog log, StorageInfo remoteStorageInfo)
@@ -1965,6 +2049,11 @@ specifier|private
 name|boolean
 name|fetchLatest
 decl_stmt|;
+DECL|field|isBootstrapStandby
+specifier|private
+name|boolean
+name|isBootstrapStandby
+decl_stmt|;
 comment|/**      * @param request the object from which this servlet reads the url contents      * @param response the object into which this servlet writes the url contents      * @throws IOException if the request is bad      */
 DECL|method|GetImageParams (HttpServletRequest request, HttpServletResponse response )
 specifier|public
@@ -2003,6 +2092,8 @@ operator|=
 name|isGetEdit
 operator|=
 name|fetchLatest
+operator|=
+name|isBootstrapStandby
 operator|=
 literal|false
 expr_stmt|;
@@ -2096,6 +2187,31 @@ operator|.
 name|valueOf
 argument_list|(
 name|imageType
+argument_list|)
+expr_stmt|;
+name|String
+name|bootstrapStandby
+init|=
+name|ServletUtil
+operator|.
+name|getParameter
+argument_list|(
+name|request
+argument_list|,
+name|IS_BOOTSTRAP_STANDBY
+argument_list|)
+decl_stmt|;
+name|isBootstrapStandby
+operator|=
+name|bootstrapStandby
+operator|!=
+literal|null
+operator|&&
+name|Boolean
+operator|.
+name|parseBoolean
+argument_list|(
+name|bootstrapStandby
 argument_list|)
 expr_stmt|;
 block|}
