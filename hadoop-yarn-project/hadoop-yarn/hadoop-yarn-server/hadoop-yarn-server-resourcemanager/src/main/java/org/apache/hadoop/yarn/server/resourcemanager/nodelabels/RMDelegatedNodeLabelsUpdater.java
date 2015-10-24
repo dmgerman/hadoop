@@ -243,7 +243,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Update nodes labels map for Resource Manager periodically. It collects  * nodes labels from {@link RMNodeLabelsMappingProvider} and updates the  * nodes -> labels map via {@link RMNodeLabelsManager}. This service is  * enabled when configuration "yarn.node-labels.configuration-type" is  * set to "delegated-centralized".  */
+comment|/**  * Update nodes labels map for ResourceManager periodically. It collects  * nodes labels from {@link RMNodeLabelsMappingProvider} and updates the  * nodes {@literal ->} labels map via {@link RMNodeLabelsManager}.  * This service is enabled when configuration  * "yarn.node-labels.configuration-type" is set to "delegated-centralized".  */
 end_comment
 
 begin_class

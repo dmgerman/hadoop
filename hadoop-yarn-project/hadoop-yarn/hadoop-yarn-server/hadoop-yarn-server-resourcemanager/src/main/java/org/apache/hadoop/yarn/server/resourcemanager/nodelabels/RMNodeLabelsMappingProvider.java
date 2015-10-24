@@ -93,7 +93,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Interface which is responsible for providing the node -> labels map.  */
+comment|/**  * Interface which is responsible for providing  * the node {@literal ->} labels map.  */
 end_comment
 
 begin_class
