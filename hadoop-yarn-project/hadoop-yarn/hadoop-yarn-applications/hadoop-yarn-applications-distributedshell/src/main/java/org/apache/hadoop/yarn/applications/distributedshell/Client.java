@@ -2668,21 +2668,21 @@ operator|.
 name|getNodeId
 argument_list|()
 operator|+
-literal|", nodeAddress"
+literal|", nodeAddress="
 operator|+
 name|node
 operator|.
 name|getHttpAddress
 argument_list|()
 operator|+
-literal|", nodeRackName"
+literal|", nodeRackName="
 operator|+
 name|node
 operator|.
 name|getRackName
 argument_list|()
 operator|+
-literal|", nodeNumContainers"
+literal|", nodeNumContainers="
 operator|+
 name|node
 operator|.
