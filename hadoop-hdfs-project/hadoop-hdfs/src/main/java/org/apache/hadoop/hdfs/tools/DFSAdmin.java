@@ -2624,6 +2624,14 @@ name|getRemaining
 argument_list|()
 decl_stmt|;
 name|long
+name|bytesInFuture
+init|=
+name|dfs
+operator|.
+name|getBytesWithFutureGenerationStamps
+argument_list|()
+decl_stmt|;
+name|long
 name|presentCapacity
 init|=
 name|used
@@ -2658,6 +2666,60 @@ argument_list|(
 literal|"Safe mode is ON"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|bytesInFuture
+operator|>
+literal|0
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"\nWARNING: "
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Name node has detected blocks with generation "
+operator|+
+literal|"stamps in future."
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Forcing exit from safemode will cause "
+operator|+
+name|bytesInFuture
+operator|+
+literal|" byte(s) to be deleted."
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"If you are sure that the NameNode was started with"
+operator|+
+literal|" the correct metadata files then you may proceed with "
+operator|+
+literal|"'-safemode forceExit'\n"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|System
 operator|.
@@ -3329,6 +3391,29 @@ expr_stmt|;
 name|waitExitSafe
 operator|=
 literal|true
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+literal|"forceExit"
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|argv
+index|[
+name|idx
+index|]
+argument_list|)
+condition|)
+block|{
+name|action
+operator|=
+name|HdfsConstants
+operator|.
+name|SafeModeAction
+operator|.
+name|SAFEMODE_FORCE_EXIT
 expr_stmt|;
 block|}
 else|else
@@ -5207,7 +5292,9 @@ decl_stmt|;
 name|String
 name|safemode
 init|=
-literal|"-safemode<enter|leave|get|wait>:  Safe mode maintenance command.\n"
+literal|"-safemode<enter|leave|get|wait|forceExit>:  Safe mode "
+operator|+
+literal|"maintenance command.\n"
 operator|+
 literal|"\t\tSafe mode is a Namenode state in which it\n"
 operator|+
@@ -8776,7 +8863,7 @@ name|println
 argument_list|(
 literal|"Usage: hdfs dfsadmin"
 operator|+
-literal|" [-safemode enter | leave | get | wait]"
+literal|" [-safemode enter | leave | get | wait | forceExit]"
 argument_list|)
 expr_stmt|;
 block|}

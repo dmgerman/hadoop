@@ -19252,6 +19252,18 @@ operator|=
 name|getMissingReplOneBlocksCount
 argument_list|()
 expr_stmt|;
+name|stats
+index|[
+name|ClientProtocol
+operator|.
+name|GET_STATS_BYTES_IN_FUTURE_BLOCKS_IDX
+index|]
+operator|=
+name|blockManager
+operator|.
+name|getBytesInFuture
+argument_list|()
+expr_stmt|;
 return|return
 name|stats
 return|;
@@ -20635,13 +20647,16 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|/**      * Leave safe mode.      *<p>      * Check for invalid, under-& over-replicated blocks in the end of startup.      */
-DECL|method|leave ()
+comment|/**      * Leave safe mode.      *<p>      * Check for invalid, under-& over-replicated blocks in the end of startup.      * @param force - true to force exit      */
+DECL|method|leave (boolean force)
 specifier|private
 specifier|synchronized
 name|void
 name|leave
-parameter_list|()
+parameter_list|(
+name|boolean
+name|force
+parameter_list|)
 block|{
 comment|// if not done yet, initialize replication queues.
 comment|// In the standby, do not populate repl queues
@@ -20664,6 +20679,43 @@ operator|.
 name|initializeReplQueues
 argument_list|()
 expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|force
+operator|&&
+operator|(
+name|blockManager
+operator|.
+name|getBytesInFuture
+argument_list|()
+operator|>
+literal|0
+operator|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Refusing to leave safe mode without a force flag. "
+operator|+
+literal|"Exiting safe mode will cause a deletion of "
+operator|+
+name|blockManager
+operator|.
+name|getBytesInFuture
+argument_list|()
+operator|+
+literal|" byte(s). Please use "
+operator|+
+literal|"-forceExit flag to exit safe mode forcefully if data loss is "
+operator|+
+literal|"acceptable."
+argument_list|)
+expr_stmt|;
+return|return;
 block|}
 name|long
 name|timeInSafemode
@@ -21038,7 +21090,9 @@ comment|// don't need to wait
 name|this
 operator|.
 name|leave
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 comment|// leave safe mode
 return|return;
@@ -21580,6 +21634,45 @@ name|datanodeThreshold
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|blockManager
+operator|.
+name|getBytesInFuture
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|msg
+operator|+=
+literal|"Name node detected blocks with generation stamps "
+operator|+
+literal|"in future. This means that Name node metadata is inconsistent."
+operator|+
+literal|"This can happen if Name node metadata files have been manually "
+operator|+
+literal|"replaced. Exiting safe mode will cause loss of "
+operator|+
+name|blockManager
+operator|.
+name|getBytesInFuture
+argument_list|()
+operator|+
+literal|" byte(s). Please restart name node with "
+operator|+
+literal|"right metadata or use \"hdfs dfsadmin -safemode forceExit"
+operator|+
+literal|"if you are certain that the NameNode was started with the"
+operator|+
+literal|"correct FsImage and edit logs. If you encountered this during"
+operator|+
+literal|"a rollback, it is safe to exit with -safemode forceExit."
+expr_stmt|;
+return|return
+name|msg
+return|;
+block|}
 name|msg
 operator|+=
 operator|(
@@ -22014,7 +22107,9 @@ comment|// Leave safe mode.
 name|safeMode
 operator|.
 name|leave
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 name|smmthread
 operator|=
@@ -22095,6 +22190,41 @@ case|case
 name|SAFEMODE_LEAVE
 case|:
 comment|// leave safe mode
+if|if
+condition|(
+name|blockManager
+operator|.
+name|getBytesInFuture
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Refusing to leave safe mode without a force flag. "
+operator|+
+literal|"Exiting safe mode will cause a deletion of "
+operator|+
+name|blockManager
+operator|.
+name|getBytesInFuture
+argument_list|()
+operator|+
+literal|" byte(s). Please use "
+operator|+
+literal|"-forceExit flag to exit safe mode forcefully and data loss is "
+operator|+
+literal|"acceptable."
+argument_list|)
+expr_stmt|;
+return|return
+name|isInSafeMode
+argument_list|()
+return|;
+block|}
 name|leaveSafeMode
 argument_list|()
 expr_stmt|;
@@ -22107,6 +22237,64 @@ name|enterSafeMode
 argument_list|(
 literal|false
 argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|SAFEMODE_FORCE_EXIT
+case|:
+if|if
+condition|(
+name|blockManager
+operator|.
+name|getBytesInFuture
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Leaving safe mode due to forceExit. This will cause a data "
+operator|+
+literal|"loss of "
+operator|+
+name|blockManager
+operator|.
+name|getBytesInFuture
+argument_list|()
+operator|+
+literal|" byte(s)."
+argument_list|)
+expr_stmt|;
+name|safeMode
+operator|.
+name|leave
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|blockManager
+operator|.
+name|clearBytesInFuture
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"forceExit used when normal exist would suffice. Treating "
+operator|+
+literal|"force exit as normal safe mode exit."
+argument_list|)
+expr_stmt|;
+block|}
+name|leaveSafeMode
+argument_list|()
 expr_stmt|;
 break|break;
 default|default:
@@ -22668,7 +22856,9 @@ block|}
 name|safeMode
 operator|.
 name|leave
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 finally|finally
@@ -34125,6 +34315,52 @@ argument_list|,
 name|src
 argument_list|)
 return|;
+block|}
+comment|/**    * Gets number of bytes in the blocks in future generation stamps.    *    * @return number of bytes that can be deleted if exited from safe mode.    */
+DECL|method|getBytesInFuture ()
+specifier|public
+name|long
+name|getBytesInFuture
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getBytesInFuture
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|enableSafeModeForTesting (Configuration conf)
+specifier|synchronized
+name|void
+name|enableSafeModeForTesting
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|SafeModeInfo
+name|newSafemode
+init|=
+operator|new
+name|SafeModeInfo
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|newSafemode
+operator|.
+name|enter
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|safeMode
+operator|=
+name|newSafemode
+expr_stmt|;
 block|}
 block|}
 end_class

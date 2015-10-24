@@ -101,6 +101,12 @@ name|long
 name|getLastHATransitionTime
 parameter_list|()
 function_decl|;
+comment|/**    * Gets number of bytes in blocks with future generation stamps.    * @return number of bytes that can be deleted if exited from safe mode.    */
+DECL|method|getBytesWithFutureGenerationStamps ()
+name|long
+name|getBytesWithFutureGenerationStamps
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

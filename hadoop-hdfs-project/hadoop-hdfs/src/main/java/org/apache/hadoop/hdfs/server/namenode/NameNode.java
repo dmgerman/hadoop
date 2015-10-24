@@ -7074,6 +7074,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getStartupOption (Configuration conf)
+specifier|public
 specifier|static
 name|StartupOption
 name|getStartupOption
@@ -8537,6 +8538,23 @@ return|return
 name|state
 operator|.
 name|getLastHATransitionTime
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|//NameNodeStatusMXBean
+DECL|method|getBytesWithFutureGenerationStamps ()
+specifier|public
+name|long
+name|getBytesWithFutureGenerationStamps
+parameter_list|()
+block|{
+return|return
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBytesInFuture
 argument_list|()
 return|;
 block|}

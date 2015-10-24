@@ -439,11 +439,14 @@ block|{
 DECL|enumConstant|SAFEMODE_LEAVE
 DECL|enumConstant|SAFEMODE_ENTER
 DECL|enumConstant|SAFEMODE_GET
+DECL|enumConstant|SAFEMODE_FORCE_EXIT
 name|SAFEMODE_LEAVE
 block|,
 name|SAFEMODE_ENTER
 block|,
 name|SAFEMODE_GET
+block|,
+name|SAFEMODE_FORCE_EXIT
 block|}
 DECL|enum|RollingUpgradeAction
 specifier|public

@@ -10050,6 +10050,25 @@ name|GET_STATS_CORRUPT_BLOCKS_IDX
 index|]
 return|;
 block|}
+comment|/**    * Returns number of bytes that reside in Blocks with future generation    * stamps.    * @return Bytes in Blocks with future generation stamps.    * @throws IOException    */
+DECL|method|getBytesInFutureBlocks ()
+specifier|public
+name|long
+name|getBytesInFutureBlocks
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|callGetStats
+argument_list|()
+index|[
+name|ClientProtocol
+operator|.
+name|GET_STATS_BYTES_IN_FUTURE_BLOCKS_IDX
+index|]
+return|;
+block|}
 comment|/**    * @return a list in which each entry describes a corrupt file/block    * @throws IOException    */
 DECL|method|listCorruptFileBlocks (String path, String cookie)
 specifier|public

@@ -3248,6 +3248,29 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns number of bytes within blocks with future generation stamp. These    * are bytes that will be potentially deleted if we forceExit from safe mode.    *    * @return number of bytes.    */
+DECL|method|getBytesWithFutureGenerationStamps ()
+specifier|public
+name|long
+name|getBytesWithFutureGenerationStamps
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|statistics
+operator|.
+name|incrementReadOps
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+return|return
+name|dfs
+operator|.
+name|getBytesInFutureBlocks
+argument_list|()
+return|;
+block|}
 comment|/**    * Deprecated. Prefer {@link FileSystem#getAllStoragePolicies()}    * @throws IOException    */
 annotation|@
 name|Deprecated
