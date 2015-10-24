@@ -400,10 +400,10 @@ argument_list|(
 literal|"Remove first block of file"
 argument_list|)
 expr_stmt|;
-name|corruptBlock
+name|dfs
+operator|.
+name|corruptBlockOnDataNodesByDeletingBlockFile
 argument_list|(
-name|file1
-argument_list|,
 name|locations
 operator|.
 name|get
@@ -660,56 +660,6 @@ argument_list|,
 name|gotException
 argument_list|)
 expr_stmt|;
-block|}
-comment|//
-comment|// Corrupt specified block of file
-comment|//
-DECL|method|corruptBlock (Path file, ExtendedBlock blk)
-name|void
-name|corruptBlock
-parameter_list|(
-name|Path
-name|file
-parameter_list|,
-name|ExtendedBlock
-name|blk
-parameter_list|)
-block|{
-comment|// Now deliberately remove/truncate data blocks from the file.
-name|File
-index|[]
-name|blockFiles
-init|=
-name|dfs
-operator|.
-name|getAllBlockFiles
-argument_list|(
-name|blk
-argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|File
-name|f
-range|:
-name|blockFiles
-control|)
-block|{
-name|f
-operator|.
-name|delete
-argument_list|()
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Deleted block "
-operator|+
-name|f
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 end_class
