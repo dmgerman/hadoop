@@ -682,15 +682,6 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|userId
-argument_list|,
-literal|"userId shouldn't be null"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
 name|clusterId
 argument_list|,
 literal|"clusterId shouldn't be null"
@@ -722,6 +713,15 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|userId
+argument_list|,
+literal|"userId shouldn't be null"
+argument_list|)
+expr_stmt|;
 name|Preconditions
 operator|.
 name|checkNotNull
@@ -763,6 +763,10 @@ operator|||
 name|flowRunId
 operator|==
 literal|null
+operator|||
+name|userId
+operator|==
+literal|null
 condition|)
 block|{
 name|FlowContext
@@ -790,6 +794,12 @@ operator|=
 name|context
 operator|.
 name|flowRunId
+expr_stmt|;
+name|userId
+operator|=
+name|context
+operator|.
+name|userId
 expr_stmt|;
 block|}
 block|}

@@ -1397,8 +1397,6 @@ name|userId
 argument_list|,
 name|flowName
 argument_list|,
-name|flowVersion
-argument_list|,
 name|flowRunId
 argument_list|,
 name|appId
@@ -1601,7 +1599,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|storeInAppToFlowTable (String clusterId, String userId, String flowName, String flowVersion, long flowRunId, String appId, TimelineEntity te)
+DECL|method|storeInAppToFlowTable (String clusterId, String userId, String flowName, long flowRunId, String appId, TimelineEntity te)
 specifier|private
 name|void
 name|storeInAppToFlowTable
@@ -1614,9 +1612,6 @@ name|userId
 parameter_list|,
 name|String
 name|flowName
-parameter_list|,
-name|String
-name|flowVersion
 parameter_list|,
 name|long
 name|flowRunId
@@ -1671,6 +1666,21 @@ argument_list|,
 literal|null
 argument_list|,
 name|flowRunId
+argument_list|)
+expr_stmt|;
+name|AppToFlowColumn
+operator|.
+name|USER_ID
+operator|.
+name|store
+argument_list|(
+name|rowKey
+argument_list|,
+name|appToFlowTable
+argument_list|,
+literal|null
+argument_list|,
+name|userId
 argument_list|)
 expr_stmt|;
 block|}

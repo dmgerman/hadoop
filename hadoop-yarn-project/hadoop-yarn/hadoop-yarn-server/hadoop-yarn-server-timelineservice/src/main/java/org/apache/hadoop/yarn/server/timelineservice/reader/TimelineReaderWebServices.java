@@ -1748,51 +1748,6 @@ name|trim
 argument_list|()
 return|;
 block|}
-DECL|method|parseUser (UserGroupInformation callerUGI, String user)
-specifier|private
-specifier|static
-name|String
-name|parseUser
-parameter_list|(
-name|UserGroupInformation
-name|callerUGI
-parameter_list|,
-name|String
-name|user
-parameter_list|)
-block|{
-return|return
-operator|(
-name|callerUGI
-operator|!=
-literal|null
-operator|&&
-operator|(
-name|user
-operator|==
-literal|null
-operator|||
-name|user
-operator|.
-name|isEmpty
-argument_list|()
-operator|)
-condition|?
-name|callerUGI
-operator|.
-name|getUserName
-argument_list|()
-operator|.
-name|trim
-argument_list|()
-else|:
-name|parseStr
-argument_list|(
-name|user
-argument_list|)
-operator|)
-return|;
-block|}
 DECL|method|getUser (HttpServletRequest req)
 specifier|private
 specifier|static
@@ -2526,10 +2481,8 @@ name|timelineReaderManager
 operator|.
 name|getEntities
 argument_list|(
-name|parseUser
+name|parseStr
 argument_list|(
-name|callerUGI
-argument_list|,
 name|userId
 argument_list|)
 argument_list|,
@@ -2995,10 +2948,8 @@ name|timelineReaderManager
 operator|.
 name|getEntity
 argument_list|(
-name|parseUser
+name|parseStr
 argument_list|(
-name|callerUGI
-argument_list|,
 name|userId
 argument_list|)
 argument_list|,
@@ -3140,13 +3091,13 @@ return|return
 name|entity
 return|;
 block|}
-comment|/**    * Return a single flow run for the given cluster, flow id and run id.    * Cluster ID is not provided by client so default cluster ID has to be taken.    */
+comment|/**    * Return a single flow run for the given user, flow id and run id.    * Cluster ID is not provided by client so default cluster ID has to be taken.    */
 annotation|@
 name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowrun/{flowid}/{flowrunid}/"
+literal|"/flowrun/{userid}/{flowid}/{flowrunid}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -3155,7 +3106,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String flowId, @PathParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String fields)
+DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowId, @PathParam(R) String flowRunId, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getFlowRun
@@ -3169,6 +3120,14 @@ annotation|@
 name|Context
 name|HttpServletResponse
 name|res
+parameter_list|,
+annotation|@
+name|PathParam
+argument_list|(
+literal|"userid"
+argument_list|)
+name|String
+name|userId
 parameter_list|,
 annotation|@
 name|PathParam
@@ -3189,14 +3148,6 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"userid"
-argument_list|)
-name|String
-name|userId
-parameter_list|,
-annotation|@
-name|QueryParam
-argument_list|(
 literal|"fields"
 argument_list|)
 name|String
@@ -3210,25 +3161,25 @@ name|req
 argument_list|,
 name|res
 argument_list|,
+name|userId
+argument_list|,
 literal|null
 argument_list|,
 name|flowId
 argument_list|,
 name|flowRunId
 argument_list|,
-name|userId
-argument_list|,
 name|fields
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a single flow run for the given cluster, flow id and run id.    */
+comment|/**    * Return a single flow run for the given user, cluster, flow id and run id.    */
 annotation|@
 name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowrun/{clusterid}/{flowid}/{flowrunid}/"
+literal|"/flowrun/{userid}/{clusterid}/{flowid}/{flowrunid}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -3237,7 +3188,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String flowId, @PathParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String fields)
+DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String clusterId, @PathParam(R) String flowId, @PathParam(R) String flowRunId, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getFlowRun
@@ -3251,6 +3202,14 @@ annotation|@
 name|Context
 name|HttpServletResponse
 name|res
+parameter_list|,
+annotation|@
+name|PathParam
+argument_list|(
+literal|"userid"
+argument_list|)
+name|String
+name|userId
 parameter_list|,
 annotation|@
 name|PathParam
@@ -3275,14 +3234,6 @@ literal|"flowrunid"
 argument_list|)
 name|String
 name|flowRunId
-parameter_list|,
-annotation|@
-name|QueryParam
-argument_list|(
-literal|"userid"
-argument_list|)
-name|String
-name|userId
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -3375,10 +3326,8 @@ name|timelineReaderManager
 operator|.
 name|getEntity
 argument_list|(
-name|parseUser
+name|parseStr
 argument_list|(
-name|callerUGI
-argument_list|,
 name|userId
 argument_list|)
 argument_list|,
@@ -3514,13 +3463,13 @@ return|return
 name|entity
 return|;
 block|}
-comment|/**    * Return a set of flows runs for the given flow id.    * Cluster ID is not provided by client so default cluster ID has to be taken.    */
+comment|/**    * Return a set of flows runs for the given user and flow id.    * Cluster ID is not provided by client so default cluster ID has to be taken.    */
 annotation|@
 name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowruns/{flowid}/"
+literal|"/flowruns/{userid}/{flowid}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -3529,7 +3478,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String flowId, @QueryParam(R) String userId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String fields)
+DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -3550,18 +3499,18 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"flowid"
-argument_list|)
-name|String
-name|flowId
-parameter_list|,
-annotation|@
-name|QueryParam
-argument_list|(
 literal|"userid"
 argument_list|)
 name|String
 name|userId
+parameter_list|,
+annotation|@
+name|PathParam
+argument_list|(
+literal|"flowid"
+argument_list|)
+name|String
+name|flowId
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -3603,11 +3552,11 @@ name|req
 argument_list|,
 name|res
 argument_list|,
+name|userId
+argument_list|,
 literal|null
 argument_list|,
 name|flowId
-argument_list|,
-name|userId
 argument_list|,
 name|limit
 argument_list|,
@@ -3619,13 +3568,13 @@ name|fields
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a set of flow runs for the given cluster and flow id.    */
+comment|/**    * Return a set of flow runs for the given user, cluster and flow id.    */
 annotation|@
 name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowruns/{clusterid}/{flowid}/"
+literal|"/flowruns/{userid}/{clusterid}/{flowid}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -3634,7 +3583,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String flowId, @QueryParam(R) String userId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String fields)
+DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String clusterId, @PathParam(R) String flowId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -3655,6 +3604,14 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
+literal|"userid"
+argument_list|)
+name|String
+name|userId
+parameter_list|,
+annotation|@
+name|PathParam
+argument_list|(
 literal|"clusterid"
 argument_list|)
 name|String
@@ -3667,14 +3624,6 @@ literal|"flowid"
 argument_list|)
 name|String
 name|flowId
-parameter_list|,
-annotation|@
-name|QueryParam
-argument_list|(
-literal|"userid"
-argument_list|)
-name|String
-name|userId
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -3794,10 +3743,8 @@ name|timelineReaderManager
 operator|.
 name|getEntities
 argument_list|(
-name|parseUser
+name|parseStr
 argument_list|(
-name|callerUGI
-argument_list|,
 name|userId
 argument_list|)
 argument_list|,
@@ -4535,10 +4482,8 @@ name|timelineReaderManager
 operator|.
 name|getEntity
 argument_list|(
-name|parseUser
+name|parseStr
 argument_list|(
-name|callerUGI
-argument_list|,
 name|userId
 argument_list|)
 argument_list|,
@@ -4669,13 +4614,13 @@ return|return
 name|entity
 return|;
 block|}
-comment|/**    * Return a list of apps for given flow id and flow run id. Cluster ID is not    * provided by client so default cluster ID has to be taken. If number of    * matching apps are more than the limit, most recent apps till the limit is    * reached, will be returned.    */
+comment|/**    * Return a list of apps for given user, flow id and flow run id. Cluster ID    * is not provided by client so default cluster ID has to be taken. If number    * of matching apps are more than the limit, most recent apps till the limit    * is reached, will be returned.    */
 annotation|@
 name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowrunapps/{flowid}/{flowrunid}/"
+literal|"/flowrunapps/{userid}/{flowid}/{flowrunid}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -4684,7 +4629,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String flowId, @PathParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowId, @PathParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -4705,6 +4650,14 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
+literal|"userid"
+argument_list|)
+name|String
+name|userId
+parameter_list|,
+annotation|@
+name|PathParam
+argument_list|(
 literal|"flowid"
 argument_list|)
 name|String
@@ -4717,14 +4670,6 @@ literal|"flowrunid"
 argument_list|)
 name|String
 name|flowRunId
-parameter_list|,
-annotation|@
-name|QueryParam
-argument_list|(
-literal|"userid"
-argument_list|)
-name|String
-name|userId
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -4873,13 +4818,13 @@ name|fields
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a list of apps for a given cluster id, flow id and flow run id. If    * number of matching apps are more than the limit, most recent apps till the    * limit is reached, will be returned.    */
+comment|/**    * Return a list of apps for a given user, cluster id, flow id and flow run    * id. If number of matching apps are more than the limit, most recent apps    * till the limit is reached, will be returned.    */
 annotation|@
 name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowrunapps/{clusterid}/{flowid}/{flowrunid}/"
+literal|"/flowrunapps/{userid}/{clusterid}/{flowid}/{flowrunid}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -4888,7 +4833,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String flowId, @PathParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String clusterId, @PathParam(R) String flowId, @PathParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -4905,6 +4850,14 @@ annotation|@
 name|Context
 name|HttpServletResponse
 name|res
+parameter_list|,
+annotation|@
+name|PathParam
+argument_list|(
+literal|"userid"
+argument_list|)
+name|String
+name|userId
 parameter_list|,
 annotation|@
 name|PathParam
@@ -4933,14 +4886,6 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"userid"
-argument_list|)
-name|String
-name|userId
-parameter_list|,
-annotation|@
-name|QueryParam
-argument_list|(
 literal|"limit"
 argument_list|)
 name|String
@@ -5085,13 +5030,13 @@ name|fields
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a list of apps for given flow id. Cluster ID is not provided by    * client so default cluster ID has to be taken. If number of matching apps    * are more than the limit, most recent apps till the limit is reached, will    * be returned.    */
+comment|/**    * Return a list of apps for given user and flow id. Cluster ID is not    * provided by client so default cluster ID has to be taken. If number of    * matching apps are more than the limit, most recent apps till the limit is    * reached, will be returned.    */
 annotation|@
 name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowapps/{flowid}/"
+literal|"/flowapps/{userid}/{flowid}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -5100,7 +5045,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String flowId, @QueryParam(R) String userId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -5121,18 +5066,18 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"flowid"
-argument_list|)
-name|String
-name|flowId
-parameter_list|,
-annotation|@
-name|QueryParam
-argument_list|(
 literal|"userid"
 argument_list|)
 name|String
 name|userId
+parameter_list|,
+annotation|@
+name|PathParam
+argument_list|(
+literal|"flowid"
+argument_list|)
+name|String
+name|flowId
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -5281,13 +5226,13 @@ name|fields
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a list of apps for a given cluster id and flow id. If number of    * matching apps are more than the limit, most recent apps till the limit is    * reached, will be returned.    */
+comment|/**    * Return a list of apps for a given user, cluster id and flow id. If number    * of matching apps are more than the limit, most recent apps till the limit    * is reached, will be returned.    */
 annotation|@
 name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowapps/{clusterid}/{flowid}/"
+literal|"/flowapps/{userid}/{clusterid}/{flowid}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -5296,7 +5241,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String flowId, @QueryParam(R) String userId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String clusterId, @PathParam(R) String flowId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -5317,6 +5262,14 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
+literal|"userid"
+argument_list|)
+name|String
+name|userId
+parameter_list|,
+annotation|@
+name|PathParam
+argument_list|(
 literal|"clusterid"
 argument_list|)
 name|String
@@ -5329,14 +5282,6 @@ literal|"flowid"
 argument_list|)
 name|String
 name|flowId
-parameter_list|,
-annotation|@
-name|QueryParam
-argument_list|(
-literal|"userid"
-argument_list|)
-name|String
-name|userId
 parameter_list|,
 annotation|@
 name|QueryParam

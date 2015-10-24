@@ -911,6 +911,18 @@ name|FlowContext
 argument_list|(
 name|AppToFlowColumn
 operator|.
+name|USER_ID
+operator|.
+name|readResult
+argument_list|(
+name|result
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|AppToFlowColumn
+operator|.
 name|FLOW_ID
 operator|.
 name|readResult
@@ -963,6 +975,12 @@ specifier|static
 class|class
 name|FlowContext
 block|{
+DECL|field|userId
+specifier|protected
+specifier|final
+name|String
+name|userId
+decl_stmt|;
 DECL|field|flowId
 specifier|protected
 specifier|final
@@ -975,10 +993,13 @@ specifier|final
 name|Long
 name|flowRunId
 decl_stmt|;
-DECL|method|FlowContext (String flowId, Long flowRunId)
+DECL|method|FlowContext (String user, String flowId, Long flowRunId)
 specifier|public
 name|FlowContext
 parameter_list|(
+name|String
+name|user
+parameter_list|,
 name|String
 name|flowId
 parameter_list|,
@@ -986,6 +1007,12 @@ name|Long
 name|flowRunId
 parameter_list|)
 block|{
+name|this
+operator|.
+name|userId
+operator|=
+name|user
+expr_stmt|;
 name|this
 operator|.
 name|flowId
@@ -1008,15 +1035,6 @@ name|void
 name|validateParams
 parameter_list|()
 block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|userId
-argument_list|,
-literal|"userId shouldn't be null"
-argument_list|)
-expr_stmt|;
 name|Preconditions
 operator|.
 name|checkNotNull
@@ -1076,7 +1094,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// In reality both should be null or neither should be null
+comment|// In reality all three should be null or neither should be null
 if|if
 condition|(
 name|flowId
@@ -1084,6 +1102,10 @@ operator|==
 literal|null
 operator|||
 name|flowRunId
+operator|==
+literal|null
+operator|||
+name|userId
 operator|==
 literal|null
 condition|)
@@ -1113,6 +1135,12 @@ operator|=
 name|context
 operator|.
 name|flowRunId
+expr_stmt|;
+name|userId
+operator|=
+name|context
+operator|.
+name|userId
 expr_stmt|;
 block|}
 if|if

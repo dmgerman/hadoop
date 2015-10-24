@@ -198,16 +198,6 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
 begin_comment
 comment|/**  * Identifies fully qualified columns for the {@link AppToFlowTable}.  */
 end_comment
@@ -243,6 +233,17 @@ operator|.
 name|MAPPING
 argument_list|,
 literal|"flow_run_id"
+argument_list|)
+block|,
+comment|/**    * The user    */
+DECL|enumConstant|USER_ID
+name|USER_ID
+argument_list|(
+name|AppToFlowColumnFamily
+operator|.
+name|MAPPING
+argument_list|,
+literal|"user_id"
 argument_list|)
 block|;
 DECL|field|column
