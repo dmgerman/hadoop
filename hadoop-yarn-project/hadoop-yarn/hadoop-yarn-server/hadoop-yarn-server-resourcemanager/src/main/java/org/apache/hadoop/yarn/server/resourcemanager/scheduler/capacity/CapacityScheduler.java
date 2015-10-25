@@ -7569,6 +7569,11 @@ name|appAddedEvent
 operator|.
 name|getReservationID
 argument_list|()
+argument_list|,
+name|appAddedEvent
+operator|.
+name|getIsAppRecovering
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -9207,7 +9212,24 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|resolveReservationQueueName (String queueName, ApplicationId applicationId, ReservationId reservationID)
+DECL|method|getDefaultReservationQueueName (String planQueueName)
+specifier|private
+name|String
+name|getDefaultReservationQueueName
+parameter_list|(
+name|String
+name|planQueueName
+parameter_list|)
+block|{
+return|return
+name|planQueueName
+operator|+
+name|ReservationConstants
+operator|.
+name|DEFAULT_QUEUE_SUFFIX
+return|;
+block|}
+DECL|method|resolveReservationQueueName (String queueName, ApplicationId applicationId, ReservationId reservationID, boolean isRecovering)
 specifier|private
 specifier|synchronized
 name|String
@@ -9221,6 +9243,9 @@ name|applicationId
 parameter_list|,
 name|ReservationId
 name|reservationID
+parameter_list|,
+name|boolean
+name|isRecovering
 parameter_list|)
 block|{
 name|CSQueue
@@ -9281,6 +9306,33 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// reservation has terminated during failover
+if|if
+condition|(
+name|isRecovering
+operator|&&
+name|conf
+operator|.
+name|getMoveOnExpiry
+argument_list|(
+name|getQueue
+argument_list|(
+name|queueName
+argument_list|)
+operator|.
+name|getQueuePath
+argument_list|()
+argument_list|)
+condition|)
+block|{
+comment|// move to the default child queue of the plan
+return|return
+name|getDefaultReservationQueueName
+argument_list|(
+name|queueName
+argument_list|)
+return|;
+block|}
 name|String
 name|message
 init|=
@@ -9288,7 +9340,7 @@ literal|"Application "
 operator|+
 name|applicationId
 operator|+
-literal|" submitted to a reservation which is not yet currently active: "
+literal|" submitted to a reservation which is not currently active: "
 operator|+
 name|resQName
 decl_stmt|;
@@ -9393,11 +9445,10 @@ block|{
 comment|// use the default child queue of the plan for unreserved apps
 name|queueName
 operator|=
+name|getDefaultReservationQueueName
+argument_list|(
 name|queueName
-operator|+
-name|ReservationConstants
-operator|.
-name|DEFAULT_QUEUE_SUFFIX
+argument_list|)
 expr_stmt|;
 block|}
 return|return

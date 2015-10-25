@@ -6588,6 +6588,11 @@ name|appAddedEvent
 operator|.
 name|getReservationID
 argument_list|()
+argument_list|,
+name|appAddedEvent
+operator|.
+name|getIsAppRecovering
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -6932,7 +6937,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|resolveReservationQueueName (String queueName, ApplicationId applicationId, ReservationId reservationID)
+DECL|method|resolveReservationQueueName (String queueName, ApplicationId applicationId, ReservationId reservationID, boolean isRecovering)
 specifier|private
 specifier|synchronized
 name|String
@@ -6946,6 +6951,9 @@ name|applicationId
 parameter_list|,
 name|ReservationId
 name|reservationID
+parameter_list|,
+name|boolean
+name|isRecovering
 parameter_list|)
 block|{
 name|FSQueue
@@ -7025,6 +7033,27 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// reservation has terminated during failover
+if|if
+condition|(
+name|isRecovering
+operator|&&
+name|allocConf
+operator|.
+name|getMoveOnExpiry
+argument_list|(
+name|queueName
+argument_list|)
+condition|)
+block|{
+comment|// move to the default child queue of the plan
+return|return
+name|getDefaultQueueForPlanQueue
+argument_list|(
+name|queueName
+argument_list|)
+return|;
+block|}
 name|String
 name|message
 init|=
