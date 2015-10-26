@@ -54,6 +54,22 @@ name|DFSConfigKeys
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+import|;
+end_import
+
 begin_comment
 comment|/**  * Unit test class to compare the following MR Configuration classes:  *<p></p>  * {@link org.apache.hadoop.hdfs.DFSConfigKeys}  *<p></p>  * against hdfs-default.xml for missing properties.  Currently only  * throws an error if the class is missing a property.  *<p></p>  * Refer to {@link org.apache.hadoop.conf.TestConfigurationFieldsBase}  * for how this class works.  */
 end_comment
@@ -88,6 +104,10 @@ operator|new
 name|Class
 index|[]
 block|{
+name|HdfsClientConfigKeys
+operator|.
+name|class
+block|,
 name|DFSConfigKeys
 operator|.
 name|class
