@@ -2594,6 +2594,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|scheduler
+operator|.
+name|scheduleNextHeartbeat
+argument_list|()
+expr_stmt|;
 name|StorageReport
 index|[]
 name|reports
@@ -3069,11 +3074,6 @@ argument_list|(
 name|startTime
 argument_list|)
 decl_stmt|;
-name|scheduler
-operator|.
-name|scheduleNextHeartbeat
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -4668,7 +4668,10 @@ parameter_list|()
 block|{
 comment|// Numerical overflow is possible here and is okay.
 name|nextHeartbeatTime
-operator|+=
+operator|=
+name|monotonicNow
+argument_list|()
+operator|+
 name|heartbeatIntervalMs
 expr_stmt|;
 return|return
