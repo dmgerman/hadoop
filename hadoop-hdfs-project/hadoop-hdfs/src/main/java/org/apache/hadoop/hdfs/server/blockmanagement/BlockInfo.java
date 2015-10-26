@@ -1609,14 +1609,18 @@ name|blockStateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* Removing stale replica "
+literal|"BLOCK* Removing stale replica {}"
 operator|+
-literal|"from location: {}"
+literal|" of {}"
 argument_list|,
 name|r
+argument_list|,
+name|Block
 operator|.
-name|getExpectedStorageLocation
-argument_list|()
+name|toString
+argument_list|(
+name|r
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

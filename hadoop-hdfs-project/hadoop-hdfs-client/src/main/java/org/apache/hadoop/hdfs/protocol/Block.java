@@ -716,6 +716,32 @@ operator|=
 name|stamp
 expr_stmt|;
 block|}
+comment|/**    * A helper method to output the string representation of the Block portion of    * a derived class' instance.    *    * @param b the target object    * @return the string representation of the block    */
+DECL|method|toString (final Block b)
+specifier|public
+specifier|static
+name|String
+name|toString
+parameter_list|(
+specifier|final
+name|Block
+name|b
+parameter_list|)
+block|{
+return|return
+name|b
+operator|.
+name|getBlockName
+argument_list|()
+operator|+
+literal|"_"
+operator|+
+name|b
+operator|.
+name|getGenerationStamp
+argument_list|()
+return|;
+block|}
 comment|/**    */
 annotation|@
 name|Override
@@ -726,13 +752,10 @@ name|toString
 parameter_list|()
 block|{
 return|return
-name|getBlockName
-argument_list|()
-operator|+
-literal|"_"
-operator|+
-name|getGenerationStamp
-argument_list|()
+name|toString
+argument_list|(
+name|this
+argument_list|)
 return|;
 block|}
 DECL|method|appendStringTo (StringBuilder sb)
