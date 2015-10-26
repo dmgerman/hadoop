@@ -238,6 +238,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|net
+operator|.
+name|ServerSocketUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -1172,12 +1186,26 @@ operator|new
 name|TestNodeManager
 argument_list|()
 expr_stmt|;
+name|int
+name|port
+init|=
+name|ServerSocketUtil
+operator|.
+name|getPort
+argument_list|(
+literal|49157
+argument_list|,
+literal|10
+argument_list|)
+decl_stmt|;
 name|nm
 operator|.
 name|init
 argument_list|(
 name|createNMConfig
-argument_list|()
+argument_list|(
+name|port
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|nm
@@ -1196,6 +1224,8 @@ argument_list|,
 name|tmpDir
 argument_list|,
 name|processStartFile
+argument_list|,
+name|port
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -1358,7 +1388,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|startContainer (NodeManager nm, ContainerId cId, FileContext localFS, File scriptFileDir, File processStartFile)
+DECL|method|startContainer (NodeManager nm, ContainerId cId, FileContext localFS, File scriptFileDir, File processStartFile, final int port)
 specifier|public
 specifier|static
 name|void
@@ -1378,6 +1408,10 @@ name|scriptFileDir
 parameter_list|,
 name|File
 name|processStartFile
+parameter_list|,
+specifier|final
+name|int
+name|port
 parameter_list|)
 throws|throws
 name|IOException
@@ -1425,7 +1459,7 @@ operator|.
 name|getCanonicalHostName
 argument_list|()
 argument_list|,
-literal|12345
+name|port
 argument_list|)
 decl_stmt|;
 name|URL
@@ -1578,7 +1612,7 @@ name|createSocketAddrForHost
 argument_list|(
 literal|"127.0.0.1"
 argument_list|,
-literal|12345
+name|port
 argument_list|)
 decl_stmt|;
 name|UserGroupInformation
@@ -1691,7 +1725,7 @@ name|createSocketAddrForHost
 argument_list|(
 literal|"127.0.0.1"
 argument_list|,
-literal|12345
+name|port
 argument_list|)
 decl_stmt|;
 return|return
@@ -1893,11 +1927,16 @@ return|return
 name|containerId
 return|;
 block|}
-DECL|method|createNMConfig ()
+DECL|method|createNMConfig (int port)
 specifier|private
 name|YarnConfiguration
 name|createNMConfig
-parameter_list|()
+parameter_list|(
+name|int
+name|port
+parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|YarnConfiguration
 name|conf
@@ -1928,7 +1967,9 @@ name|YarnConfiguration
 operator|.
 name|NM_ADDRESS
 argument_list|,
-literal|"127.0.0.1:12345"
+literal|"127.0.0.1:"
+operator|+
+name|port
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1939,7 +1980,16 @@ name|YarnConfiguration
 operator|.
 name|NM_LOCALIZER_ADDRESS
 argument_list|,
-literal|"127.0.0.1:12346"
+literal|"127.0.0.1:"
+operator|+
+name|ServerSocketUtil
+operator|.
+name|getPort
+argument_list|(
+literal|49158
+argument_list|,
+literal|10
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1997,6 +2047,28 @@ argument_list|)
 expr_stmt|;
 return|return
 name|conf
+return|;
+block|}
+DECL|method|createNMConfig ()
+specifier|private
+name|YarnConfiguration
+name|createNMConfig
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|createNMConfig
+argument_list|(
+name|ServerSocketUtil
+operator|.
+name|getPort
+argument_list|(
+literal|49157
+argument_list|,
+literal|10
+argument_list|)
+argument_list|)
 return|;
 block|}
 comment|/**    * Creates a script to run a container that will run forever unless    * stopped by external means.    */

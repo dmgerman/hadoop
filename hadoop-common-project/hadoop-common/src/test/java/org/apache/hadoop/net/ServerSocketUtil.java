@@ -171,15 +171,6 @@ condition|)
 block|{
 continue|continue;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Using port "
-operator|+
-name|tryPort
-argument_list|)
-expr_stmt|;
 try|try
 init|(
 name|ServerSocket
@@ -192,6 +183,15 @@ name|tryPort
 argument_list|)
 init|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Using port "
+operator|+
+name|tryPort
+argument_list|)
+expr_stmt|;
 return|return
 name|tryPort
 return|;

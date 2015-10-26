@@ -1531,11 +1531,6 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-name|int
-name|port
-init|=
-literal|12345
-decl_stmt|;
 name|URL
 name|resource_alpha
 init|=
