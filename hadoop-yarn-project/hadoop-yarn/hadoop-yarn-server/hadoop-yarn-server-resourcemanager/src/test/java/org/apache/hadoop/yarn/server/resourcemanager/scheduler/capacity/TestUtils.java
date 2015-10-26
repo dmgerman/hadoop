@@ -1698,7 +1698,7 @@ argument_list|(
 literal|"unchecked"
 argument_list|)
 DECL|method|toSet (E... elements)
-specifier|private
+specifier|public
 specifier|static
 parameter_list|<
 name|E

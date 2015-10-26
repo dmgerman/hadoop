@@ -2669,6 +2669,69 @@ name|exp
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getMaximumAMResourcePercentPerPartition (String queue, String label)
+specifier|public
+name|float
+name|getMaximumAMResourcePercentPerPartition
+parameter_list|(
+name|String
+name|queue
+parameter_list|,
+name|String
+name|label
+parameter_list|)
+block|{
+comment|// If per-partition max-am-resource-percent is not configured,
+comment|// use default value as max-am-resource-percent for this queue.
+return|return
+name|getFloat
+argument_list|(
+name|getNodeLabelPrefix
+argument_list|(
+name|queue
+argument_list|,
+name|label
+argument_list|)
+operator|+
+name|MAXIMUM_AM_RESOURCE_SUFFIX
+argument_list|,
+name|getMaximumApplicationMasterResourcePerQueuePercent
+argument_list|(
+name|queue
+argument_list|)
+argument_list|)
+return|;
+block|}
+DECL|method|setMaximumAMResourcePercentPerPartition (String queue, String label, float percent)
+specifier|public
+name|void
+name|setMaximumAMResourcePercentPerPartition
+parameter_list|(
+name|String
+name|queue
+parameter_list|,
+name|String
+name|label
+parameter_list|,
+name|float
+name|percent
+parameter_list|)
+block|{
+name|setFloat
+argument_list|(
+name|getNodeLabelPrefix
+argument_list|(
+name|queue
+argument_list|,
+name|label
+argument_list|)
+operator|+
+name|MAXIMUM_AM_RESOURCE_SUFFIX
+argument_list|,
+name|percent
+argument_list|)
+expr_stmt|;
+block|}
 comment|/*    * Returns whether we should continue to look at all heart beating nodes even    * after the reservation limit was hit. The node heart beating in could    * satisfy the request thus could be a better pick then waiting for the    * reservation to be fullfilled.  This config is refreshable.    */
 DECL|method|getReservationContinueLook ()
 specifier|public
