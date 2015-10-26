@@ -840,6 +840,31 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+DECL|field|E_NULL_THROWABLE
+specifier|protected
+specifier|static
+name|String
+name|E_NULL_THROWABLE
+init|=
+literal|"Null Throwable"
+decl_stmt|;
+DECL|field|E_NULL_THROWABLE_STRING
+specifier|protected
+specifier|static
+name|String
+name|E_NULL_THROWABLE_STRING
+init|=
+literal|"Null Throwable.toString() value"
+decl_stmt|;
+DECL|field|E_UNEXPECTED_EXCEPTION
+specifier|protected
+specifier|static
+name|String
+name|E_UNEXPECTED_EXCEPTION
+init|=
+literal|"but got unexpected exception"
+decl_stmt|;
+comment|/**    * Assert that an exception's<code>toString()</code> value    * contained the expected text.    * @param string expected string    * @param t thrown exception    * @throws AssertionError if the expected string is not found    */
 DECL|method|assertExceptionContains (String string, Throwable t)
 specifier|public
 specifier|static
@@ -853,23 +878,64 @@ name|Throwable
 name|t
 parameter_list|)
 block|{
+name|Assert
+operator|.
+name|assertNotNull
+argument_list|(
+name|E_NULL_THROWABLE
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
 name|String
 name|msg
 init|=
 name|t
 operator|.
-name|getMessage
+name|toString
 argument_list|()
 decl_stmt|;
-name|Assert
+if|if
+condition|(
+name|msg
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+name|E_NULL_THROWABLE_STRING
+argument_list|,
+name|t
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+operator|!
+name|msg
 operator|.
-name|assertTrue
+name|contains
+argument_list|(
+name|string
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|AssertionError
 argument_list|(
 literal|"Expected to find '"
 operator|+
 name|string
 operator|+
-literal|"' but got unexpected exception:"
+literal|"' "
+operator|+
+name|E_UNEXPECTED_EXCEPTION
+operator|+
+literal|":"
 operator|+
 name|StringUtils
 operator|.
@@ -878,14 +944,10 @@ argument_list|(
 name|t
 argument_list|)
 argument_list|,
-name|msg
-operator|.
-name|contains
-argument_list|(
-name|string
+name|t
 argument_list|)
-argument_list|)
-expr_stmt|;
+throw|;
+block|}
 block|}
 DECL|method|waitFor (Supplier<Boolean> check, int checkEveryMillis, int waitForMillis)
 specifier|public
