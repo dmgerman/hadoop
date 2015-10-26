@@ -320,20 +320,6 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|StringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
 name|Tool
 import|;
 end_import
@@ -1720,12 +1706,10 @@ name|println
 argument_list|(
 literal|"FileSystem is inaccessible due to:\n"
 operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
 name|ioe
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
