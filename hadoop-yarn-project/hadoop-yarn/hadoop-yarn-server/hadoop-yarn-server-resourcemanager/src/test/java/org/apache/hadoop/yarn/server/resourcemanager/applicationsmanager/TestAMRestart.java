@@ -2811,6 +2811,8 @@ argument_list|)
 expr_stmt|;
 name|testAMBlacklistPreventRestartOnSameNode
 argument_list|(
+literal|false
+argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
@@ -2861,15 +2863,76 @@ argument_list|)
 expr_stmt|;
 name|testAMBlacklistPreventRestartOnSameNode
 argument_list|(
+literal|false
+argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testAMBlacklistPreventRestartOnSameNode (YarnConfiguration conf)
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
+DECL|method|testAMBlacklistPreemption ()
+specifier|public
+name|void
+name|testAMBlacklistPreemption
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|YarnConfiguration
+name|conf
+init|=
+operator|new
+name|YarnConfiguration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|AM_BLACKLISTING_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+comment|// disable the float so it is possible to blacklist the entire cluster
+name|conf
+operator|.
+name|setFloat
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|AM_BLACKLISTING_DISABLE_THRESHOLD
+argument_list|,
+literal|1.5f
+argument_list|)
+expr_stmt|;
+comment|// since the exit status is PREEMPTED, it should not lead to the node being
+comment|// blacklisted
+name|testAMBlacklistPreventRestartOnSameNode
+argument_list|(
+literal|true
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Tests AM blacklisting. In the multi-node mode (i.e. singleNode = false),    * it tests the blacklisting behavior so that the AM container gets allocated    * on the node that is not blacklisted. In the single-node mode, it tests the    * PREEMPTED status to see if the AM container can continue to be scheduled.    */
+DECL|method|testAMBlacklistPreventRestartOnSameNode (boolean singleNode, YarnConfiguration conf)
 specifier|private
 name|void
 name|testAMBlacklistPreventRestartOnSameNode
 parameter_list|(
+name|boolean
+name|singleNode
+parameter_list|,
 name|YarnConfiguration
 name|conf
 parameter_list|)
@@ -2991,6 +3054,16 @@ expr_stmt|;
 name|MockNM
 name|nm2
 init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|singleNode
+condition|)
+block|{
+name|nm2
+operator|=
 operator|new
 name|MockNM
 argument_list|(
@@ -3003,12 +3076,13 @@ operator|.
 name|getResourceTrackerService
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|nm2
 operator|.
 name|registerNode
 argument_list|()
 expr_stmt|;
+block|}
 name|RMApp
 name|app1
 init|=
@@ -3085,6 +3159,35 @@ name|otherNode
 decl_stmt|;
 if|if
 condition|(
+name|singleNode
+condition|)
+block|{
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|nm1
+operator|.
+name|getNodeId
+argument_list|()
+argument_list|,
+name|nodeWhereAMRan
+argument_list|)
+expr_stmt|;
+name|currentNode
+operator|=
+name|nm1
+expr_stmt|;
+name|otherNode
+operator|=
+literal|null
+expr_stmt|;
+comment|// not applicable
+block|}
+else|else
+block|{
+if|if
+condition|(
 name|nodeWhereAMRan
 operator|==
 name|nm1
@@ -3113,6 +3216,23 @@ operator|=
 name|nm1
 expr_stmt|;
 block|}
+block|}
+comment|// set the exist status to test
+comment|// any status other than SUCCESS and PREEMPTED should cause the node to be
+comment|// blacklisted
+name|int
+name|exitStatus
+init|=
+name|singleNode
+condition|?
+name|ContainerExitStatus
+operator|.
+name|PREEMPTED
+else|:
+name|ContainerExitStatus
+operator|.
+name|INVALID
+decl_stmt|;
 name|ContainerStatus
 name|containerStatus
 init|=
@@ -3128,9 +3248,7 @@ name|COMPLETE
 argument_list|,
 literal|""
 argument_list|,
-name|ContainerExitStatus
-operator|.
-name|DISKS_FAILED
+name|exitStatus
 argument_list|,
 name|Resources
 operator|.
@@ -3174,7 +3292,7 @@ comment|// restart the am
 name|RMAppAttempt
 name|attempt
 init|=
-name|rm1
+name|MockRM
 operator|.
 name|waitForAttemptScheduled
 argument_list|(
@@ -3209,6 +3327,12 @@ operator|.
 name|await
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|singleNode
+condition|)
+block|{
 name|Assert
 operator|.
 name|assertEquals
@@ -3239,6 +3363,7 @@ operator|.
 name|await
 argument_list|()
 expr_stmt|;
+block|}
 name|MockAM
 name|am2
 init|=
@@ -3296,6 +3421,31 @@ operator|.
 name|getAllocatedNode
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|singleNode
+condition|)
+block|{
+comment|// with preemption, the node should not be blacklisted and should get the
+comment|// assignment (with a single node)
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"AM should still have been able to run on the same node"
+argument_list|,
+name|currentNode
+operator|.
+name|getNodeId
+argument_list|()
+argument_list|,
+name|nodeWhereAMRan
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// with a failed status, the other node should receive the assignment
 name|Assert
 operator|.
 name|assertEquals
@@ -3348,9 +3498,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Even though AM is blacklisted from the node, application can still "
+literal|"Even though AM is blacklisted from the node, application can "
 operator|+
-literal|"allocate containers there"
+literal|"still allocate containers there"
 argument_list|,
 name|currentNode
 operator|.
@@ -3368,6 +3518,7 @@ name|getNodeId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// AM container preempted, nm disk failure
 comment|// should not be counted towards AM max retry count.
