@@ -4162,6 +4162,11 @@ argument_list|)
 expr_stmt|;
 name|assertCollectionEquals
 argument_list|(
+name|toSet
+argument_list|(
+literal|"p1"
+argument_list|)
+argument_list|,
 name|mgr
 operator|.
 name|getNodeLabels
@@ -4173,11 +4178,6 @@ name|toNodeId
 argument_list|(
 literal|"n1:1"
 argument_list|)
-argument_list|)
-argument_list|,
-name|toSet
-argument_list|(
-literal|"p1"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4193,6 +4193,11 @@ argument_list|)
 expr_stmt|;
 name|assertCollectionEquals
 argument_list|(
+name|toSet
+argument_list|(
+literal|"p1"
+argument_list|)
+argument_list|,
 name|mgr
 operator|.
 name|getNodeLabels
@@ -4205,16 +4210,16 @@ argument_list|(
 literal|"n1:1"
 argument_list|)
 argument_list|)
-argument_list|,
-name|toSet
-argument_list|(
-literal|"p1"
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Host will not affected
 name|assertCollectionEquals
 argument_list|(
+name|toSet
+argument_list|(
+literal|"p2"
+argument_list|)
+argument_list|,
 name|mgr
 operator|.
 name|getNodeLabels
@@ -4226,11 +4231,6 @@ name|toNodeId
 argument_list|(
 literal|"n1"
 argument_list|)
-argument_list|)
-argument_list|,
-name|toSet
-argument_list|(
-literal|"p2"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4250,6 +4250,11 @@ argument_list|)
 expr_stmt|;
 name|assertCollectionEquals
 argument_list|(
+name|toSet
+argument_list|(
+literal|"p2"
+argument_list|)
+argument_list|,
 name|mgr
 operator|.
 name|getNodeLabels
@@ -4261,11 +4266,6 @@ name|toNodeId
 argument_list|(
 literal|"n1:2"
 argument_list|)
-argument_list|)
-argument_list|,
-name|toSet
-argument_list|(
-literal|"p2"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4300,6 +4300,11 @@ expr_stmt|;
 comment|// Host will not affected too
 name|assertCollectionEquals
 argument_list|(
+name|toSet
+argument_list|(
+literal|"p2"
+argument_list|)
+argument_list|,
 name|mgr
 operator|.
 name|getNodeLabels
@@ -4311,11 +4316,6 @@ name|toNodeId
 argument_list|(
 literal|"n1"
 argument_list|)
-argument_list|)
-argument_list|,
-name|toSet
-argument_list|(
-literal|"p2"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4357,6 +4357,11 @@ argument_list|)
 expr_stmt|;
 name|assertCollectionEquals
 argument_list|(
+name|toSet
+argument_list|(
+literal|"p3"
+argument_list|)
+argument_list|,
 name|mgr
 operator|.
 name|getNodeLabels
@@ -4368,11 +4373,6 @@ name|toNodeId
 argument_list|(
 literal|"n1:2"
 argument_list|)
-argument_list|)
-argument_list|,
-name|toSet
-argument_list|(
-literal|"p3"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4407,6 +4407,11 @@ expr_stmt|;
 comment|// Host will not affected too
 name|assertCollectionEquals
 argument_list|(
+name|toSet
+argument_list|(
+literal|"p3"
+argument_list|)
+argument_list|,
 name|mgr
 operator|.
 name|getNodeLabels
@@ -4418,11 +4423,6 @@ name|toNodeId
 argument_list|(
 literal|"n1"
 argument_list|)
-argument_list|)
-argument_list|,
-name|toSet
-argument_list|(
-literal|"p3"
 argument_list|)
 argument_list|)
 expr_stmt|;

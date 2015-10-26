@@ -3848,6 +3848,22 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getStatusUpdaterThreadState ()
+name|Thread
+operator|.
+name|State
+name|getStatusUpdaterThreadState
+parameter_list|()
+block|{
+return|return
+name|statusUpdater
+operator|.
+name|getState
+argument_list|()
+return|;
+block|}
 DECL|method|isContainerRecentlyStopped (ContainerId containerId)
 specifier|public
 name|boolean
