@@ -584,6 +584,16 @@ specifier|protected
 name|long
 name|vcoreSeconds
 decl_stmt|;
+DECL|field|queueUsagePercentage
+specifier|protected
+name|float
+name|queueUsagePercentage
+decl_stmt|;
+DECL|field|clusterUsagePercentage
+specifier|protected
+name|float
+name|clusterUsagePercentage
+decl_stmt|;
 comment|// preemption info fields
 DECL|field|preemptedResourceMB
 specifier|protected
@@ -1189,6 +1199,20 @@ operator|=
 name|resourceReport
 operator|.
 name|getNumUsedContainers
+argument_list|()
+expr_stmt|;
+name|queueUsagePercentage
+operator|=
+name|resourceReport
+operator|.
+name|getQueueUsagePercentage
+argument_list|()
+expr_stmt|;
+name|clusterUsagePercentage
+operator|=
+name|resourceReport
+operator|.
+name|getClusterUsagePercentage
 argument_list|()
 expr_stmt|;
 block|}

@@ -2327,6 +2327,10 @@ argument_list|,
 name|memorySeconds
 argument_list|,
 name|vcoreSeconds
+argument_list|,
+literal|0
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}

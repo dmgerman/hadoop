@@ -949,7 +949,6 @@ annotation|@
 name|Override
 DECL|method|getUsedCapacity ()
 specifier|public
-specifier|synchronized
 name|float
 name|getUsedCapacity
 parameter_list|()
@@ -1118,7 +1117,6 @@ annotation|@
 name|Override
 DECL|method|setUsedCapacity (float usedCapacity)
 specifier|public
-specifier|synchronized
 name|void
 name|setUsedCapacity
 parameter_list|(

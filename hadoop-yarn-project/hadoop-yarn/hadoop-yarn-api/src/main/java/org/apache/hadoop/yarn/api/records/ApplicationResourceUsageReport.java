@@ -119,7 +119,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources, long memorySeconds, long vcoreSeconds)
+DECL|method|newInstance ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources, long memorySeconds, long vcoreSeconds, float queueUsagePerc, float clusterUsagePerc)
 specifier|public
 specifier|static
 name|ApplicationResourceUsageReport
@@ -145,6 +145,12 @@ name|memorySeconds
 parameter_list|,
 name|long
 name|vcoreSeconds
+parameter_list|,
+name|float
+name|queueUsagePerc
+parameter_list|,
+name|float
+name|clusterUsagePerc
 parameter_list|)
 block|{
 name|ApplicationResourceUsageReport
@@ -206,6 +212,20 @@ operator|.
 name|setVcoreSeconds
 argument_list|(
 name|vcoreSeconds
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setQueueUsagePercentage
+argument_list|(
+name|queueUsagePerc
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setClusterUsagePercentage
+argument_list|(
+name|clusterUsagePerc
 argument_list|)
 expr_stmt|;
 return|return
@@ -397,6 +417,60 @@ specifier|abstract
 name|long
 name|getVcoreSeconds
 parameter_list|()
+function_decl|;
+comment|/**    * Get the percentage of resources of the queue that the app is using.    * @return the percentage of resources of the queue that the app is using.    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getQueueUsagePercentage ()
+specifier|public
+specifier|abstract
+name|float
+name|getQueueUsagePercentage
+parameter_list|()
+function_decl|;
+comment|/**    * Set the percentage of resources of the queue that the app is using.    * @param queueUsagePerc the percentage of resources of the queue that    *                       the app is using.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setQueueUsagePercentage (float queueUsagePerc)
+specifier|public
+specifier|abstract
+name|void
+name|setQueueUsagePercentage
+parameter_list|(
+name|float
+name|queueUsagePerc
+parameter_list|)
+function_decl|;
+comment|/**    * Get the percentage of resources of the cluster that the app is using.    * @return the percentage of resources of the cluster that the app is using.    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getClusterUsagePercentage ()
+specifier|public
+specifier|abstract
+name|float
+name|getClusterUsagePercentage
+parameter_list|()
+function_decl|;
+comment|/**    * Set the percentage of resources of the cluster that the app is using.    * @param clusterUsagePerc the percentage of resources of the cluster that    *                         the app is using.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setClusterUsagePercentage (float clusterUsagePerc)
+specifier|public
+specifier|abstract
+name|void
+name|setClusterUsagePercentage
+parameter_list|(
+name|float
+name|clusterUsagePerc
+parameter_list|)
 function_decl|;
 block|}
 end_class

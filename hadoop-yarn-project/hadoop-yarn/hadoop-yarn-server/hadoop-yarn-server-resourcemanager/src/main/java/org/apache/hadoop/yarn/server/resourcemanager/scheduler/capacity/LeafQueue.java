@@ -2017,7 +2017,6 @@ annotation|@
 name|Override
 DECL|method|getQueueInfo ( boolean includeChildQueues, boolean recursive)
 specifier|public
-specifier|synchronized
 name|QueueInfo
 name|getQueueInfo
 parameter_list|(

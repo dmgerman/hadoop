@@ -1009,6 +1009,10 @@ argument_list|,
 literal|123456
 argument_list|,
 literal|4567
+argument_list|,
+literal|0
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 name|ApplicationReport
