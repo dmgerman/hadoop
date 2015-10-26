@@ -1312,17 +1312,11 @@ block|{
 comment|// set if node labels enabled
 name|nodeLabelsEnabled
 operator|=
-name|conf
+name|YarnConfiguration
 operator|.
-name|getBoolean
+name|areNodeLabelsEnabled
 argument_list|(
-name|YarnConfiguration
-operator|.
-name|NODE_LABELS_ENABLED
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_NODE_LABELS_ENABLED
+name|conf
 argument_list|)
 expr_stmt|;
 name|isCentralizedNodeLabelConfiguration

@@ -1351,6 +1351,16 @@ operator|.
 name|DEFAULT_RM_NODEMANAGER_MINIMUM_VERSION
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|areNodeLabelsEnabled
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
 name|isDistributedNodeLabelsConf
 operator|=
 name|YarnConfiguration
@@ -1369,6 +1379,7 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
 name|super
 operator|.
 name|serviceInit

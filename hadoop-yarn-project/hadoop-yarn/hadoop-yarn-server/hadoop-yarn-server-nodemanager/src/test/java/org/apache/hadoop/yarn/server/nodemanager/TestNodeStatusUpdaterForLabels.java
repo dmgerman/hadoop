@@ -1138,7 +1138,7 @@ specifier|public
 specifier|static
 class|class
 name|DummyNodeLabelsProvider
-extends|extends
+implements|implements
 name|NodeLabelsProvider
 block|{
 DECL|field|nodeLabels
@@ -1153,22 +1153,6 @@ name|CommonNodeLabelsManager
 operator|.
 name|EMPTY_NODELABEL_SET
 decl_stmt|;
-DECL|method|DummyNodeLabelsProvider ()
-specifier|public
-name|DummyNodeLabelsProvider
-parameter_list|()
-block|{
-name|super
-argument_list|(
-name|DummyNodeLabelsProvider
-operator|.
-name|class
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 annotation|@
 name|Override
 DECL|method|getNodeLabels ()

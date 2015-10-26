@@ -126,6 +126,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|service
+operator|.
+name|AbstractService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -179,6 +193,8 @@ specifier|abstract
 class|class
 name|AbstractNodeLabelsProvider
 extends|extends
+name|AbstractService
+implements|implements
 name|NodeLabelsProvider
 block|{
 DECL|field|DISABLE_NODE_LABELS_PROVIDER_FETCH_TIMER
@@ -397,12 +413,25 @@ name|cancel
 argument_list|()
 expr_stmt|;
 block|}
+name|cleanUp
+argument_list|()
+expr_stmt|;
 name|super
 operator|.
 name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * method for subclasses to cleanup.    */
+DECL|method|cleanUp ()
+specifier|protected
+specifier|abstract
+name|void
+name|cleanUp
+parameter_list|()
+throws|throws
+name|Exception
+function_decl|;
 comment|/**    * @return Returns output from provider.    */
 annotation|@
 name|Override
@@ -468,17 +497,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Used only by tests to access the timer task directly    *    * @return the timer task    */
-DECL|method|getTimerTask ()
-name|TimerTask
-name|getTimerTask
-parameter_list|()
-block|{
-return|return
-name|timerTask
-return|;
-block|}
-DECL|method|convertToNodeLabelSet (Set<String> nodeLabels)
+DECL|method|convertToNodeLabelSet (String partitionNodeLabel)
 specifier|static
 name|Set
 argument_list|<
@@ -486,18 +505,15 @@ name|NodeLabel
 argument_list|>
 name|convertToNodeLabelSet
 parameter_list|(
-name|Set
-argument_list|<
 name|String
-argument_list|>
-name|nodeLabels
+name|partitionNodeLabel
 parameter_list|)
 block|{
 if|if
 condition|(
 literal|null
 operator|==
-name|nodeLabels
+name|partitionNodeLabel
 condition|)
 block|{
 return|return
@@ -517,14 +533,6 @@ name|NodeLabel
 argument_list|>
 argument_list|()
 decl_stmt|;
-for|for
-control|(
-name|String
-name|label
-range|:
-name|nodeLabels
-control|)
-block|{
 name|labels
 operator|.
 name|add
@@ -533,13 +541,22 @@ name|NodeLabel
 operator|.
 name|newInstance
 argument_list|(
-name|label
+name|partitionNodeLabel
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|labels
+return|;
+block|}
+comment|/**    * Used only by tests to access the timer task directly    *    * @return the timer task    */
+DECL|method|getTimerTask ()
+name|TimerTask
+name|getTimerTask
+parameter_list|()
+block|{
+return|return
+name|timerTask
 return|;
 block|}
 DECL|method|createTimerTask ()

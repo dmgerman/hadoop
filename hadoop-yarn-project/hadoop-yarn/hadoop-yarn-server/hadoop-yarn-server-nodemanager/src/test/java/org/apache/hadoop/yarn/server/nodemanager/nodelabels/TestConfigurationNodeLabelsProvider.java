@@ -297,6 +297,12 @@ specifier|private
 name|ConfigurationNodeLabelsProvider
 name|nodeLabelsProvider
 decl_stmt|;
+DECL|field|classContextClassLoader
+specifier|private
+specifier|static
+name|ClassLoader
+name|classContextClassLoader
+decl_stmt|;
 annotation|@
 name|BeforeClass
 DECL|method|create ()
@@ -306,6 +312,16 @@ name|void
 name|create
 parameter_list|()
 block|{
+name|classContextClassLoader
+operator|=
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getContextClassLoader
+argument_list|()
+expr_stmt|;
 name|loader
 operator|=
 operator|new
@@ -392,6 +408,26 @@ name|Exception
 block|{
 if|if
 condition|(
+name|classContextClassLoader
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// testcases will fail after testcases present in this class, as
+comment|// yarn-site.xml will be deleted
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|setContextClassLoader
+argument_list|(
+name|classContextClassLoader
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|testRootDir
 operator|.
 name|exists
@@ -440,7 +476,7 @@ argument_list|()
 decl_stmt|;
 name|modifyConf
 argument_list|(
-literal|"A,B,CX"
+literal|"A"
 argument_list|)
 expr_stmt|;
 name|nodeLabelsProvider
@@ -461,10 +497,6 @@ argument_list|(
 name|toNodeLabelSet
 argument_list|(
 literal|"A"
-argument_list|,
-literal|"B"
-argument_list|,
-literal|"CX"
 argument_list|)
 argument_list|,
 name|nodeLabelsProvider
@@ -484,7 +516,7 @@ argument_list|()
 decl_stmt|;
 name|modifyConf
 argument_list|(
-literal|"X,y,Z"
+literal|"X"
 argument_list|)
 expr_stmt|;
 name|timerTask
@@ -497,10 +529,6 @@ argument_list|(
 name|toNodeLabelSet
 argument_list|(
 literal|"X"
-argument_list|,
-literal|"y"
-argument_list|,
-literal|"Z"
 argument_list|)
 argument_list|,
 name|nodeLabelsProvider
@@ -529,7 +557,7 @@ argument_list|()
 decl_stmt|;
 name|modifyConf
 argument_list|(
-literal|"A,B,CX"
+literal|"A"
 argument_list|)
 expr_stmt|;
 name|conf
@@ -575,10 +603,6 @@ argument_list|(
 name|toNodeLabelSet
 argument_list|(
 literal|"A"
-argument_list|,
-literal|"B"
-argument_list|,
-literal|"CX"
 argument_list|)
 argument_list|,
 name|nodeLabelsProvider
@@ -607,7 +631,7 @@ argument_list|()
 decl_stmt|;
 name|modifyConf
 argument_list|(
-literal|"A,B,CX"
+literal|"A"
 argument_list|)
 expr_stmt|;
 name|conf
@@ -641,10 +665,6 @@ argument_list|(
 name|toNodeLabelSet
 argument_list|(
 literal|"A"
-argument_list|,
-literal|"B"
-argument_list|,
-literal|"CX"
 argument_list|)
 argument_list|,
 name|nodeLabelsProvider
@@ -655,7 +675,7 @@ argument_list|)
 expr_stmt|;
 name|modifyConf
 argument_list|(
-literal|"X,y,Z"
+literal|"X"
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -670,10 +690,6 @@ argument_list|(
 name|toNodeLabelSet
 argument_list|(
 literal|"X"
-argument_list|,
-literal|"y"
-argument_list|,
-literal|"Z"
 argument_list|)
 argument_list|,
 name|nodeLabelsProvider
@@ -710,7 +726,7 @@ name|set
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_PROVIDER_CONFIGURED_NODE_LABELS
+name|NM_PROVIDER_CONFIGURED_NODE_PARTITION
 argument_list|,
 name|nodeLabels
 argument_list|)

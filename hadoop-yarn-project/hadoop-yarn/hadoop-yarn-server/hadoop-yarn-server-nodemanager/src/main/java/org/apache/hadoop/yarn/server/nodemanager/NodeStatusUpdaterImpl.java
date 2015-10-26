@@ -5310,14 +5310,36 @@ block|}
 else|else
 block|{
 comment|// case where provider is set but RM did not accept the Node Labels
-name|LOG
-operator|.
-name|error
-argument_list|(
+name|String
+name|errorMsgFromRM
+init|=
 name|regNMResponse
 operator|.
 name|getDiagnosticsMessage
 argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"NodeLabels sent from NM while registration were rejected by RM. "
+operator|+
+operator|(
+operator|(
+name|errorMsgFromRM
+operator|==
+literal|null
+operator|)
+condition|?
+literal|"Seems like RM is configured with Centralized Labels."
+else|:
+literal|"And with message "
+operator|+
+name|regNMResponse
+operator|.
+name|getDiagnosticsMessage
+argument_list|()
+operator|)
 argument_list|)
 expr_stmt|;
 block|}

@@ -40,20 +40,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|service
-operator|.
-name|AbstractService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|api
@@ -68,29 +54,12 @@ begin_comment
 comment|/**  * Interface which will be responsible for fetching the labels  *   */
 end_comment
 
-begin_class
-DECL|class|NodeLabelsProvider
+begin_interface
+DECL|interface|NodeLabelsProvider
 specifier|public
-specifier|abstract
-class|class
+interface|interface
 name|NodeLabelsProvider
-extends|extends
-name|AbstractService
 block|{
-DECL|method|NodeLabelsProvider (String name)
-specifier|public
-name|NodeLabelsProvider
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Provides the labels. LabelProvider is expected to give same Labels    * continuously until there is a change in labels.     * If null is returned then Empty label set is assumed by the caller.    *     * @return Set of node label strings applicable for a node    */
 DECL|method|getNodeLabels ()
 specifier|public
@@ -103,7 +72,7 @@ name|getNodeLabels
 parameter_list|()
 function_decl|;
 block|}
-end_class
+end_interface
 
 end_unit
 
