@@ -2352,9 +2352,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|//check meta data before update
-name|FsDatasetImpl
+name|cluster
 operator|.
-name|checkReplicaFiles
+name|getFsDatasetTestUtils
+argument_list|(
+name|datanode
+argument_list|)
+operator|.
+name|checkStoredReplica
 argument_list|(
 name|replica
 argument_list|)

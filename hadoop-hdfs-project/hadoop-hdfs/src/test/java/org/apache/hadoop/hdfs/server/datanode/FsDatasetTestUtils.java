@@ -521,6 +521,18 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Check the stored files / data of a replica.    * @param replica a replica object.    * @throws IOException    */
+DECL|method|checkStoredReplica (final Replica replica)
+name|void
+name|checkStoredReplica
+parameter_list|(
+specifier|final
+name|Replica
+name|replica
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
