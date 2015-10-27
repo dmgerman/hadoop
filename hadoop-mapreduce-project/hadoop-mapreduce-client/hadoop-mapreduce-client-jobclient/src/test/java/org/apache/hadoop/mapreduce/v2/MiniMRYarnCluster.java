@@ -593,6 +593,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Deprecated
 DECL|method|MiniMRYarnCluster (String testName, int noOfNMs, boolean enableAHS)
 specifier|public
 name|MiniMRYarnCluster

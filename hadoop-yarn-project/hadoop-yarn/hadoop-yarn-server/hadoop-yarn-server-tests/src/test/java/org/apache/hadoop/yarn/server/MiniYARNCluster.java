@@ -1111,6 +1111,8 @@ name|boolean
 name|enableAHS
 decl_stmt|;
 comment|/**    * @param testName name of the test    * @param numResourceManagers the number of resource managers in the cluster    * @param numNodeManagers the number of node managers in the cluster    * @param numLocalDirs the number of nm-local-dirs per nodemanager    * @param numLogDirs the number of nm-log-dirs per nodemanager    * @param enableAHS enable ApplicationHistoryServer or not    */
+annotation|@
+name|Deprecated
 DECL|method|MiniYARNCluster ( String testName, int numResourceManagers, int numNodeManagers, int numLocalDirs, int numLogDirs, boolean enableAHS)
 specifier|public
 name|MiniYARNCluster
