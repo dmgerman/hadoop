@@ -658,6 +658,42 @@ name|client
 operator|.
 name|HdfsClientConfigKeys
 operator|.
+name|DFS_CLIENT_SOCKET_SEND_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_SOCKET_SEND_BUFFER_SIZE_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
 name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
 import|;
 end_import
@@ -1195,6 +1231,12 @@ specifier|final
 name|int
 name|socketTimeout
 decl_stmt|;
+DECL|field|socketSendBufferSize
+specifier|private
+specifier|final
+name|int
+name|socketSendBufferSize
+decl_stmt|;
 DECL|field|excludedNodesCacheExpiry
 specifier|private
 specifier|final
@@ -1510,6 +1552,17 @@ argument_list|,
 name|HdfsConstants
 operator|.
 name|READ_TIMEOUT
+argument_list|)
+expr_stmt|;
+name|socketSendBufferSize
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFS_CLIENT_SOCKET_SEND_BUFFER_SIZE_KEY
+argument_list|,
+name|DFS_CLIENT_SOCKET_SEND_BUFFER_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;
 comment|/** dfs.write.packet.size is an internal config variable */
@@ -2378,6 +2431,17 @@ parameter_list|()
 block|{
 return|return
 name|socketTimeout
+return|;
+block|}
+comment|/**    * @return the socketSendBufferSize    */
+DECL|method|getSocketSendBufferSize ()
+specifier|public
+name|int
+name|getSocketSendBufferSize
+parameter_list|()
+block|{
+return|return
+name|socketSendBufferSize
 return|;
 block|}
 comment|/**    * @return the excludedNodesCacheExpiry    */
