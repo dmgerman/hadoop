@@ -1191,7 +1191,7 @@ name|addToken
 argument_list|(
 name|token
 operator|.
-name|getKind
+name|getService
 argument_list|()
 argument_list|,
 name|token
