@@ -366,7 +366,7 @@ literal|"-skipTrash: option bypasses trash, if enabled, and immediately "
 operator|+
 literal|"deletes<src>.\n"
 operator|+
-literal|"-safely: option requires safety confirmationï¼if enabled, "
+literal|"-safely: option requires safety confirmation, if enabled, "
 operator|+
 literal|"requires confirmation before deleting large directory with more "
 operator|+

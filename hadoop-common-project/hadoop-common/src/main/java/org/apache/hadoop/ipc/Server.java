@@ -2538,7 +2538,7 @@ operator|=
 name|logSlowRPCFlag
 expr_stmt|;
 block|}
-comment|/**    * Logs a Slow RPC Request.    *    * @param methodName - RPC Request method name    * @param processingTime - Processing Time.    *    * if this request took too much time relative to other requests    * we consider that as a slow RPC. 3 is a magic number that comes    * from 3 sigma deviation. A very simple explanation can be found    * by searching for 68â95â99.7 rule. We flag an RPC as slow RPC    * if and only if it falls above 99.7% of requests. We start this logic    * only once we have enough sample size.    */
+comment|/**    * Logs a Slow RPC Request.    *    * @param methodName - RPC Request method name    * @param processingTime - Processing Time.    *    * if this request took too much time relative to other requests    * we consider that as a slow RPC. 3 is a magic number that comes    * from 3 sigma deviation. A very simple explanation can be found    * by searching for 68-95-99.7 rule. We flag an RPC as slow RPC    * if and only if it falls above 99.7% of requests. We start this logic    * only once we have enough sample size.    */
 DECL|method|logSlowRpcCalls (String methodName, int processingTime)
 name|void
 name|logSlowRpcCalls
