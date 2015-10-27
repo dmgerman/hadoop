@@ -3617,10 +3617,23 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IOException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+name|saslRpcClient
+operator|==
+literal|null
+condition|)
+block|{
+comment|// whatever happened -it can't be handled, so rethrow
+throw|throw
+name|ex
+throw|;
+block|}
+comment|// otherwise, assume a connection problem
 name|authMethod
 operator|=
 name|saslRpcClient
@@ -3904,7 +3917,9 @@ argument_list|(
 operator|new
 name|IOException
 argument_list|(
-literal|"Couldn't set up IO streams"
+literal|"Couldn't set up IO streams: "
+operator|+
+name|t
 argument_list|,
 name|t
 argument_list|)
