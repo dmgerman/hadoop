@@ -332,7 +332,7 @@ name|verifyConfiguredScript
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Method used to determine if or not node labels fetching script is    * configured and whether it is fit to run. Returns true if following    * conditions are met:    *    *<ol>    *<li>Path to Node Labels fetch script is not empty</li>    *<li>Node Labels fetch script file exists</li>    *</ol>    *    * @param conf    * @return true if node labels script can be run.    * @throws IOException    */
+comment|/**    * Method used to determine if or not node labels fetching script is    * configured and whether it is fit to run. Returns true if following    * conditions are met:    *    *<ol>    *<li>Path to Node Labels fetch script is not empty</li>    *<li>Node Labels fetch script file exists</li>    *</ol>    *    * @throws IOException    */
 DECL|method|verifyConfiguredScript ()
 specifier|private
 name|void
@@ -416,7 +416,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Method used to terminate the Node Labels Fetch script.    *    * @throws Exception    */
+comment|/**    * Method used to terminate the Node Labels Fetch script.    */
 annotation|@
 name|Override
 DECL|method|cleanUp ()
