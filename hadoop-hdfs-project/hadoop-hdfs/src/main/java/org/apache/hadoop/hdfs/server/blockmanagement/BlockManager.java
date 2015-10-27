@@ -2821,6 +2821,15 @@ name|this
 operator|.
 name|replicationThread
 operator|.
+name|setName
+argument_list|(
+literal|"ReplicationMonitor"
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|replicationThread
+operator|.
 name|start
 argument_list|()
 expr_stmt|;
