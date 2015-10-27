@@ -5458,7 +5458,10 @@ name|getClusterResource
 parameter_list|()
 block|{
 return|return
-literal|null
+name|super
+operator|.
+name|getClusterResource
+argument_list|()
 return|;
 block|}
 annotation|@
