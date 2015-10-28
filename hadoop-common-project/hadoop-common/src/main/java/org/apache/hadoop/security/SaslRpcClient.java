@@ -162,6 +162,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Locale
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -775,6 +785,7 @@ specifier|public
 class|class
 name|SaslRpcClient
 block|{
+comment|// This log is public as it is referenced in tests
 DECL|field|LOG
 specifier|public
 specifier|static
@@ -1158,6 +1169,10 @@ name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
+operator|&&
+name|selectedAuthType
+operator|!=
+literal|null
 condition|)
 block|{
 name|LOG
@@ -1346,10 +1361,18 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"tokens aren't supported for this protocol"
+operator|+
+literal|" or user doesn't have one"
+argument_list|)
+expr_stmt|;
 return|return
 literal|null
 return|;
-comment|// tokens aren't supported or user doesn't have one
 block|}
 name|saslCallback
 operator|=
@@ -1380,10 +1403,16 @@ operator|.
 name|KERBEROS
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"client isn't using kerberos"
+argument_list|)
+expr_stmt|;
 return|return
 literal|null
 return|;
-comment|// client isn't using kerberos
 block|}
 name|String
 name|serverPrincipal
@@ -1400,10 +1429,16 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"protocol doesn't use kerberos"
+argument_list|)
+expr_stmt|;
 return|return
 literal|null
 return|;
-comment|// protocol doesn't use kerberos
 block|}
 if|if
 condition|(
@@ -1503,7 +1538,7 @@ name|saslCallback
 argument_list|)
 return|;
 block|}
-comment|/**    * Try to locate the required token for the server.    *     * @param authType of the SASL client    * @return Token<?> for server, or null if no token available    * @throws IOException - token selector cannot be instantiated    */
+comment|/**    * Try to locate the required token for the server.    *     * @param authType of the SASL client    * @return Token for server, or null if no token available    * @throws IOException - token selector cannot be instantiated    */
 DECL|method|getServerToken (SaslAuth authType)
 specifier|private
 name|Token
@@ -1579,22 +1614,7 @@ block|}
 catch|catch
 parameter_list|(
 name|InstantiationException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-throw|;
-block|}
-catch|catch
-parameter_list|(
+decl||
 name|IllegalAccessException
 name|e
 parameter_list|)
@@ -1607,6 +1627,8 @@ name|e
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}
@@ -2661,7 +2683,14 @@ operator|&&
 operator|!
 literal|"auth"
 operator|.
-name|equalsIgnoreCase
+name|toLowerCase
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
+operator|.
+name|equals
 argument_list|(
 name|qop
 argument_list|)
@@ -2698,7 +2727,7 @@ return|return
 name|in
 return|;
 block|}
-comment|/**    * Get SASL wrapped OutputStream if SASL QoP requires wrapping,    * otherwise return original stream.  Can be called only after    * saslConnect() has been called.    *     * @param in - InputStream used to make the connection    * @return InputStream that may be using SASL unwrap    * @throws IOException    */
+comment|/**    * Get SASL wrapped OutputStream if SASL QoP requires wrapping,    * otherwise return original stream.  Can be called only after    * saslConnect() has been called.    *     * @param out - OutputStream used to make the connection    * @return OutputStream that may be using wrapping    * @throws IOException    */
 DECL|method|getOutputStream (OutputStream out)
 specifier|public
 name|OutputStream
