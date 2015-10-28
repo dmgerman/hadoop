@@ -2737,6 +2737,9 @@ argument_list|()
 decl_stmt|;
 name|dn
 operator|.
+name|getBlockRecoveryWorker
+argument_list|()
+operator|.
 name|recoverBlocks
 argument_list|(
 name|who
