@@ -227,6 +227,13 @@ name|long
 name|getNumberOfMissingBlocksWithReplicationFactorOne
 parameter_list|()
 function_decl|;
+comment|/**    * Gets the total number of snapshottable dirs in the system.    *    * @return the total number of snapshottable dirs in the system    */
+DECL|method|getNumberOfSnapshottableDirs ()
+specifier|public
+name|long
+name|getNumberOfSnapshottableDirs
+parameter_list|()
+function_decl|;
 comment|/**    * Gets the number of threads.    *     * @return the number of threads    */
 DECL|method|getThreads ()
 specifier|public

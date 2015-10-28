@@ -966,6 +966,21 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**      * Get the full path name of the root directory of this snapshot.      * @return full path to the root directory of the snapshot      */
+DECL|method|getRootFullPathName ()
+specifier|public
+name|String
+name|getRootFullPathName
+parameter_list|()
+block|{
+return|return
+name|getParent
+argument_list|()
+operator|.
+name|getFullPathName
+argument_list|()
+return|;
+block|}
 block|}
 comment|/** Snapshot ID. */
 DECL|field|id
