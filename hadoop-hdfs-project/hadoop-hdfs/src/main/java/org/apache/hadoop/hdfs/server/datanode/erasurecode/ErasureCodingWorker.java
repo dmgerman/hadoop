@@ -830,24 +830,6 @@ name|Preconditions
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|util
-operator|.
-name|StripedBlockUtil
-operator|.
-name|convertIndex4Decode
-import|;
-end_import
-
 begin_comment
 comment|/**  * ErasureCodingWorker handles the erasure coding recovery work commands. These  * commands would be issued from Namenode as part of Datanode's heart beat  * response. BPOfferService delegates the work to this class for handling EC  * commands.  */
 end_comment
@@ -3274,17 +3256,10 @@ name|m
 operator|++
 index|]
 operator|=
-name|convertIndex4Decode
-argument_list|(
 name|targetIndices
 index|[
 name|i
 index|]
-argument_list|,
-name|dataBlkNum
-argument_list|,
-name|parityBlkNum
-argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -3377,16 +3352,9 @@ argument_list|)
 expr_stmt|;
 name|inputs
 index|[
-name|convertIndex4Decode
-argument_list|(
 name|reader
 operator|.
 name|index
-argument_list|,
-name|dataBlkNum
-argument_list|,
-name|parityBlkNum
-argument_list|)
 index|]
 operator|=
 operator|(
@@ -3442,17 +3410,10 @@ expr_stmt|;
 name|int
 name|index
 init|=
-name|convertIndex4Decode
-argument_list|(
 name|zeroStripeIndices
 index|[
 name|i
 index|]
-argument_list|,
-name|dataBlkNum
-argument_list|,
-name|parityBlkNum
-argument_list|)
 decl_stmt|;
 name|inputs
 index|[

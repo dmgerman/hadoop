@@ -966,7 +966,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|erasedParityIndexes
+name|erasedDataIndexes
 operator|.
 name|length
 condition|;
@@ -976,9 +976,9 @@ control|)
 block|{
 name|block
 operator|=
-name|parityBlocks
+name|dataBlocks
 index|[
-name|erasedParityIndexes
+name|erasedDataIndexes
 index|[
 name|i
 index|]
@@ -1010,7 +1010,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|erasedDataIndexes
+name|erasedParityIndexes
 operator|.
 name|length
 condition|;
@@ -1020,9 +1020,9 @@ control|)
 block|{
 name|block
 operator|=
-name|dataBlocks
+name|parityBlocks
 index|[
-name|erasedDataIndexes
+name|erasedParityIndexes
 index|[
 name|i
 index|]

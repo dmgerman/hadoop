@@ -101,6 +101,12 @@ specifier|final
 name|int
 name|numParityUnits
 decl_stmt|;
+DECL|field|numAllUnits
+specifier|private
+specifier|final
+name|int
+name|numAllUnits
+decl_stmt|;
 DECL|method|AbstractRawErasureCoder (int numDataUnits, int numParityUnits)
 specifier|public
 name|AbstractRawErasureCoder
@@ -122,6 +128,14 @@ name|this
 operator|.
 name|numParityUnits
 operator|=
+name|numParityUnits
+expr_stmt|;
+name|this
+operator|.
+name|numAllUnits
+operator|=
+name|numDataUnits
+operator|+
 name|numParityUnits
 expr_stmt|;
 block|}
@@ -147,6 +161,16 @@ parameter_list|()
 block|{
 return|return
 name|numParityUnits
+return|;
+block|}
+DECL|method|getNumAllUnits ()
+specifier|protected
+name|int
+name|getNumAllUnits
+parameter_list|()
+block|{
+return|return
+name|numAllUnits
 return|;
 block|}
 annotation|@

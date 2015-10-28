@@ -124,18 +124,6 @@ name|class
 expr_stmt|;
 name|this
 operator|.
-name|numDataUnits
-operator|=
-literal|10
-expr_stmt|;
-name|this
-operator|.
-name|numParityUnits
-operator|=
-literal|1
-expr_stmt|;
-name|this
-operator|.
 name|numChunksInBlock
 operator|=
 literal|10
@@ -543,17 +531,17 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCodingDirectBuffer_3x3_erasing_d0_p0 ()
+DECL|method|testCodingDirectBuffer_6x3_erasing_d0_p0 ()
 specifier|public
 name|void
-name|testCodingDirectBuffer_3x3_erasing_d0_p0
+name|testCodingDirectBuffer_6x3_erasing_d0_p0
 parameter_list|()
 block|{
 name|prepare
 argument_list|(
 literal|null
 argument_list|,
-literal|3
+literal|6
 argument_list|,
 literal|3
 argument_list|,
