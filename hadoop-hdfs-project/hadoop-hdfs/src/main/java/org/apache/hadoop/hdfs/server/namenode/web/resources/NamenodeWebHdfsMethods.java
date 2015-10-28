@@ -5351,6 +5351,24 @@ case|case
 name|TRUNCATE
 case|:
 block|{
+if|if
+condition|(
+name|newLength
+operator|.
+name|getValue
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"newLength parameter is Missing"
+argument_list|)
+throw|;
+block|}
 comment|// We treat each rest request as a separate client.
 specifier|final
 name|boolean
