@@ -841,24 +841,24 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|field|E_NULL_THROWABLE
-specifier|protected
 specifier|static
+specifier|final
 name|String
 name|E_NULL_THROWABLE
 init|=
 literal|"Null Throwable"
 decl_stmt|;
 DECL|field|E_NULL_THROWABLE_STRING
-specifier|protected
 specifier|static
+specifier|final
 name|String
 name|E_NULL_THROWABLE_STRING
 init|=
 literal|"Null Throwable.toString() value"
 decl_stmt|;
 DECL|field|E_UNEXPECTED_EXCEPTION
-specifier|protected
 specifier|static
+specifier|final
 name|String
 name|E_UNEXPECTED_EXCEPTION
 init|=
