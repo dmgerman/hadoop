@@ -1745,7 +1745,7 @@ name|conf
 argument_list|)
 condition|)
 block|{
-name|setHARMConfiguration
+name|setHARMConfigurationWithEphemeralPorts
 argument_list|(
 name|i
 argument_list|,
@@ -1755,7 +1755,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|setNonHARMConfiguration
+name|setNonHARMConfigurationWithEphemeralPorts
 argument_list|(
 name|conf
 argument_list|)
@@ -1858,10 +1858,10 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setNonHARMConfiguration (Configuration conf)
+DECL|method|setNonHARMConfigurationWithEphemeralPorts (Configuration conf)
 specifier|private
 name|void
-name|setNonHARMConfiguration
+name|setNonHARMConfigurationWithEphemeralPorts
 parameter_list|(
 name|Configuration
 name|conf
@@ -1939,10 +1939,10 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setHARMConfiguration (final int index, Configuration conf)
+DECL|method|setHARMConfigurationWithEphemeralPorts (final int index, Configuration conf)
 specifier|private
 name|void
-name|setHARMConfiguration
+name|setHARMConfigurationWithEphemeralPorts
 parameter_list|(
 specifier|final
 name|int
@@ -3974,6 +3974,47 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|useFixedPorts
+condition|)
+block|{
+name|String
+name|hostname
+init|=
+name|MiniYARNCluster
+operator|.
+name|getHostname
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_ADDRESS
+argument_list|,
+name|hostname
+operator|+
+literal|":0"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_WEBAPP_ADDRESS
+argument_list|,
+name|hostname
+operator|+
+literal|":0"
+argument_list|)
+expr_stmt|;
+block|}
 name|appHistoryServer
 operator|.
 name|init
