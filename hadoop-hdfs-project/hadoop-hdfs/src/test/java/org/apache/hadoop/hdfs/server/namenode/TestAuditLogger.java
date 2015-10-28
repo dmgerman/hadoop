@@ -42,9 +42,9 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang3
+name|lang
 operator|.
-name|RandomStringUtils
+name|StringUtils
 import|;
 end_import
 
@@ -1669,11 +1669,13 @@ specifier|final
 name|String
 name|longContext
 init|=
-name|RandomStringUtils
+name|StringUtils
 operator|.
-name|randomAscii
+name|repeat
 argument_list|(
-literal|200
+literal|"foo"
+argument_list|,
+literal|100
 argument_list|)
 decl_stmt|;
 name|context
