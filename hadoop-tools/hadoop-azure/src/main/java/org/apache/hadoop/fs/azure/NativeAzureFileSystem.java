@@ -7555,8 +7555,9 @@ name|newPermission
 return|;
 block|}
 comment|/**    * Creates the PermissionStatus object to use for the given permission, based    * on the current user in context.    *     * @param permission    *          The permission for the file.    * @return The permission status object to use.    * @throws IOException    *           If login fails in getCurrentUser    */
+annotation|@
+name|VisibleForTesting
 DECL|method|createPermissionStatus (FsPermission permission)
-specifier|private
 name|PermissionStatus
 name|createPermissionStatus
 parameter_list|(
