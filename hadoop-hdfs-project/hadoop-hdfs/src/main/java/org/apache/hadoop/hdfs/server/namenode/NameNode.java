@@ -1568,6 +1568,38 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_NAMENODE_LIFELINE_RPC_ADDRESS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_LIFELINE_RPC_BIND_HOST_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_NAMENODE_METRICS_LOGGER_PERIOD_SECONDS_DEFAULT
 import|;
 end_import
@@ -1934,6 +1966,10 @@ block|,
 name|DFS_NAMENODE_CHECKPOINT_DIR_KEY
 block|,
 name|DFS_NAMENODE_CHECKPOINT_EDITS_DIR_KEY
+block|,
+name|DFS_NAMENODE_LIFELINE_RPC_ADDRESS_KEY
+block|,
+name|DFS_NAMENODE_LIFELINE_RPC_BIND_HOST_KEY
 block|,
 name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
 block|,
@@ -3005,6 +3041,45 @@ name|that
 argument_list|)
 return|;
 block|}
+comment|/**    * Given a configuration get the address of the lifeline RPC server.    * If the lifeline RPC is not configured returns null.    *    * @param conf configuration    * @return address or null    */
+DECL|method|getLifelineRpcServerAddress (Configuration conf)
+name|InetSocketAddress
+name|getLifelineRpcServerAddress
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|String
+name|addr
+init|=
+name|getTrimmedOrNull
+argument_list|(
+name|conf
+argument_list|,
+name|DFS_NAMENODE_LIFELINE_RPC_ADDRESS_KEY
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|addr
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+return|return
+name|NetUtils
+operator|.
+name|createSocketAddr
+argument_list|(
+name|addr
+argument_list|)
+return|;
+block|}
 comment|/**    * Given a configuration get the address of the service rpc server    * If the service rpc is not configured returns null    */
 DECL|method|getServiceRpcServerAddress (Configuration conf)
 specifier|protected
@@ -3044,6 +3119,24 @@ name|conf
 argument_list|)
 return|;
 block|}
+comment|/**    * Given a configuration get the bind host of the lifeline RPC server.    * If the bind host is not configured returns null.    *    * @param conf configuration    * @return bind host or null    */
+DECL|method|getLifelineRpcServerBindHost (Configuration conf)
+name|String
+name|getLifelineRpcServerBindHost
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|getTrimmedOrNull
+argument_list|(
+name|conf
+argument_list|,
+name|DFS_NAMENODE_LIFELINE_RPC_BIND_HOST_KEY
+argument_list|)
+return|;
+block|}
 comment|/** Given a configuration get the bind host of the service rpc server    *  If the bind host is not configured returns null.    */
 DECL|method|getServiceRpcServerBindHost (Configuration conf)
 specifier|protected
@@ -3054,34 +3147,13 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|String
-name|addr
-init|=
-name|conf
-operator|.
-name|getTrimmed
+return|return
+name|getTrimmedOrNull
 argument_list|(
+name|conf
+argument_list|,
 name|DFS_NAMENODE_SERVICE_RPC_BIND_HOST_KEY
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|addr
-operator|==
-literal|null
-operator|||
-name|addr
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-return|return
-name|addr
 return|;
 block|}
 comment|/** Given a configuration get the bind host of the client rpc server    *  If the bind host is not configured returns null.    */
@@ -3094,6 +3166,29 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+return|return
+name|getTrimmedOrNull
+argument_list|(
+name|conf
+argument_list|,
+name|DFS_NAMENODE_RPC_BIND_HOST_KEY
+argument_list|)
+return|;
+block|}
+comment|/**    * Gets a trimmed value from configuration, or null if no value is defined.    *    * @param conf configuration    * @param key configuration key to get    * @return trimmed value, or null if no value is defined    */
+DECL|method|getTrimmedOrNull (Configuration conf, String key)
+specifier|private
+specifier|static
+name|String
+name|getTrimmedOrNull
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|key
+parameter_list|)
+block|{
 name|String
 name|addr
 init|=
@@ -3101,7 +3196,7 @@ name|conf
 operator|.
 name|getTrimmed
 argument_list|(
-name|DFS_NAMENODE_RPC_BIND_HOST_KEY
+name|key
 argument_list|)
 decl_stmt|;
 if|if
@@ -3123,6 +3218,42 @@ block|}
 return|return
 name|addr
 return|;
+block|}
+comment|/**    * Modifies the configuration to contain the lifeline RPC address setting.    *    * @param conf configuration to modify    * @param lifelineRPCAddress lifeline RPC address    */
+DECL|method|setRpcLifelineServerAddress (Configuration conf, InetSocketAddress lifelineRPCAddress)
+name|void
+name|setRpcLifelineServerAddress
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|InetSocketAddress
+name|lifelineRPCAddress
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Setting lifeline RPC address {}"
+argument_list|,
+name|lifelineRPCAddress
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFS_NAMENODE_LIFELINE_RPC_ADDRESS_KEY
+argument_list|,
+name|NetUtils
+operator|.
+name|getHostPortString
+argument_list|(
+name|lifelineRPCAddress
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Modifies the configuration passed to contain the service rpc address setting    */
 DECL|method|setRpcServiceServerAddress (Configuration conf, InetSocketAddress serviceRPCAddress)

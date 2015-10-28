@@ -705,7 +705,7 @@ block|{
 return|return
 name|targetToMonitor
 operator|.
-name|getProxy
+name|getHealthMonitorProxy
 argument_list|(
 name|conf
 argument_list|,
