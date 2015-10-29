@@ -1717,6 +1717,14 @@ argument_list|(
 name|zkRootNodePath
 argument_list|)
 expr_stmt|;
+name|setRootNodeAcls
+argument_list|()
+expr_stmt|;
+name|delete
+argument_list|(
+name|fencingNodePath
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|HAUtil
@@ -1728,9 +1736,6 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|fence
-argument_list|()
-expr_stmt|;
 name|verifyActiveStatusThread
 operator|=
 operator|new
@@ -1862,11 +1867,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|fence ()
+DECL|method|setRootNodeAcls ()
 specifier|private
-specifier|synchronized
 name|void
-name|fence
+name|setRootNodeAcls
 parameter_list|()
 throws|throws
 name|Exception
@@ -1875,16 +1879,27 @@ if|if
 condition|(
 name|LOG
 operator|.
-name|isTraceEnabled
+name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
 name|logRootNodeAcls
 argument_list|(
-literal|"Before fencing\n"
+literal|"Before setting ACLs'\n"
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+condition|)
+block|{
 name|curatorFramework
 operator|.
 name|setACL
@@ -1900,22 +1915,36 @@ argument_list|(
 name|zkRootNodePath
 argument_list|)
 expr_stmt|;
-name|delete
+block|}
+else|else
+block|{
+name|curatorFramework
+operator|.
+name|setACL
+argument_list|()
+operator|.
+name|withACL
 argument_list|(
-name|fencingNodePath
+name|zkAcl
+argument_list|)
+operator|.
+name|forPath
+argument_list|(
+name|zkRootNodePath
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|LOG
 operator|.
-name|isTraceEnabled
+name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
 name|logRootNodeAcls
 argument_list|(
-literal|"After fencing\n"
+literal|"After setting ACLs'\n"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5091,8 +5120,9 @@ name|path
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getACL (final String path)
-specifier|private
 name|List
 argument_list|<
 name|ACL
