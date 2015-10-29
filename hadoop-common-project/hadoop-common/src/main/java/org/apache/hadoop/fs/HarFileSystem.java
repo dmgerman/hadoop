@@ -5189,6 +5189,29 @@ name|getUsed
 argument_list|()
 return|;
 block|}
+comment|/** Return the total size of all files from a specified path.*/
+annotation|@
+name|Override
+DECL|method|getUsed (Path path)
+specifier|public
+name|long
+name|getUsed
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|getUsed
+argument_list|(
+name|path
+argument_list|)
+return|;
+block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(

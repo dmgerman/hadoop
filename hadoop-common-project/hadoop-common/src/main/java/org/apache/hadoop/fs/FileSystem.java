@@ -6283,7 +6283,7 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Return the total size of all files in the filesystem.*/
+comment|/** Return the total size of all files in the filesystem. */
 DECL|method|getUsed ()
 specifier|public
 name|long
@@ -6292,49 +6292,42 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|long
-name|used
+name|Path
+name|path
 init|=
-literal|0
-decl_stmt|;
-name|RemoteIterator
-argument_list|<
-name|LocatedFileStatus
-argument_list|>
-name|files
-init|=
-name|listFiles
-argument_list|(
 operator|new
 name|Path
 argument_list|(
 literal|"/"
 argument_list|)
-argument_list|,
-literal|true
-argument_list|)
 decl_stmt|;
-while|while
-condition|(
-name|files
-operator|.
-name|hasNext
-argument_list|()
-condition|)
-block|{
-name|used
-operator|+=
-name|files
-operator|.
-name|next
-argument_list|()
-operator|.
-name|getLen
-argument_list|()
-expr_stmt|;
-block|}
 return|return
-name|used
+name|getUsed
+argument_list|(
+name|path
+argument_list|)
+return|;
+block|}
+comment|/** Return the total size of all files from a specified path. */
+DECL|method|getUsed (Path path)
+specifier|public
+name|long
+name|getUsed
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getContentSummary
+argument_list|(
+name|path
+argument_list|)
+operator|.
+name|getLength
+argument_list|()
 return|;
 block|}
 comment|/**    * Get the block size for a particular file.    * @param f the filename    * @return the number of bytes in a block    */
