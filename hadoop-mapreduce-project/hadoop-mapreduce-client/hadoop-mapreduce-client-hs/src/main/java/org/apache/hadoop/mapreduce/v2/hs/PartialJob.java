@@ -356,6 +356,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factory
 operator|.
 name|providers
@@ -932,6 +950,25 @@ operator|new
 name|UnsupportedOperationException
 argument_list|(
 literal|"Can't set job's queue name in history"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|setJobPriority (Priority priority)
+specifier|public
+name|void
+name|setJobPriority
+parameter_list|(
+name|Priority
+name|priority
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Can't set job's priority in history"
 argument_list|)
 throw|;
 block|}

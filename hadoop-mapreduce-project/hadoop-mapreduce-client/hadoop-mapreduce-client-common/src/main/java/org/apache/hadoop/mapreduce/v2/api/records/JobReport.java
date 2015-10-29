@@ -32,6 +32,24 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Priority
+import|;
+end_import
+
 begin_interface
 DECL|interface|JobReport
 specifier|public
@@ -151,6 +169,13 @@ specifier|public
 specifier|abstract
 name|boolean
 name|isUber
+parameter_list|()
+function_decl|;
+DECL|method|getJobPriority ()
+specifier|public
+specifier|abstract
+name|Priority
+name|getJobPriority
 parameter_list|()
 function_decl|;
 DECL|method|setJobId (JobId jobId)
@@ -314,6 +339,16 @@ name|setIsUber
 parameter_list|(
 name|boolean
 name|isUber
+parameter_list|)
+function_decl|;
+DECL|method|setJobPriority (Priority priority)
+specifier|public
+specifier|abstract
+name|void
+name|setJobPriority
+parameter_list|(
+name|Priority
+name|priority
 parameter_list|)
 function_decl|;
 block|}

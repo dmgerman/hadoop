@@ -19238,6 +19238,19 @@ name|emptyList
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// RM will always ensure that a default priority is sent to AM
+name|response
+operator|.
+name|setApplicationPriority
+argument_list|(
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|containersToComplete
 operator|.
 name|clear

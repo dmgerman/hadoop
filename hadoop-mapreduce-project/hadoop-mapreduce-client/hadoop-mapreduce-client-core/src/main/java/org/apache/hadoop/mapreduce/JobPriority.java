@@ -76,6 +76,12 @@ name|LOW
 block|,
 DECL|enumConstant|VERY_LOW
 name|VERY_LOW
+block|,
+DECL|enumConstant|DEFAULT
+name|DEFAULT
+block|,
+DECL|enumConstant|UNDEFINED_PRIORITY
+name|UNDEFINED_PRIORITY
 block|; }
 end_enum
 

@@ -778,6 +778,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
@@ -3797,6 +3815,18 @@ name|setQueueName
 parameter_list|(
 name|String
 name|queueName
+parameter_list|)
+block|{
+comment|// do nothing
+block|}
+annotation|@
+name|Override
+specifier|public
+name|void
+name|setJobPriority
+parameter_list|(
+name|Priority
+name|priority
 parameter_list|)
 block|{
 comment|// do nothing
