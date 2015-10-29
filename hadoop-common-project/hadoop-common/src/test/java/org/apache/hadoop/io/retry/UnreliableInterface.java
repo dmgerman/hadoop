@@ -159,6 +159,20 @@ parameter_list|()
 throws|throws
 name|RemoteException
 function_decl|;
+DECL|method|failsOnceWithIOException ()
+name|void
+name|failsOnceWithIOException
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|failsOnceWithRemoteException ()
+name|void
+name|failsOnceWithRemoteException
+parameter_list|()
+throws|throws
+name|RemoteException
+function_decl|;
 DECL|method|failsOnceThenSucceeds ()
 name|void
 name|failsOnceThenSucceeds

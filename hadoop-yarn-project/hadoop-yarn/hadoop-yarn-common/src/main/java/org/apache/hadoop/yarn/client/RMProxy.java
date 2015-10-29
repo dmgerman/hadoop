@@ -1313,10 +1313,23 @@ argument_list|,
 name|retryPolicy
 argument_list|)
 expr_stmt|;
+comment|// YARN-4288: local IOException is also possible.
+name|exceptionToPolicyMap
+operator|.
+name|put
+argument_list|(
+name|IOException
+operator|.
+name|class
+argument_list|,
+name|retryPolicy
+argument_list|)
+expr_stmt|;
+comment|// Not retry on remote IO exception.
 return|return
 name|RetryPolicies
 operator|.
-name|retryByException
+name|retryOtherThanRemoteException
 argument_list|(
 name|RetryPolicies
 operator|.
