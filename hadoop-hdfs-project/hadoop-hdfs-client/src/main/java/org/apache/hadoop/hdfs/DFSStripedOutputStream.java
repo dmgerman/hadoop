@@ -4582,6 +4582,17 @@ operator|.
 name|getBuffers
 argument_list|()
 decl_stmt|;
+comment|// Skips encoding and writing parity cells if there are no healthy parity
+comment|// data streamers
+if|if
+condition|(
+operator|!
+name|checkAnyParityStreamerIsHealthy
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 comment|//encode the data cells
 name|encode
 argument_list|(
@@ -4630,6 +4641,69 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|checkAnyParityStreamerIsHealthy ()
+specifier|private
+name|boolean
+name|checkAnyParityStreamerIsHealthy
+parameter_list|()
+block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+name|numDataBlocks
+init|;
+name|i
+operator|<
+name|numAllBlocks
+condition|;
+name|i
+operator|++
+control|)
+block|{
+if|if
+condition|(
+name|streamers
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|isHealthy
+argument_list|()
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skips encoding and writing parity cells as there are "
+operator|+
+literal|"no healthy parity data streamers: "
+operator|+
+name|streamers
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
 block|}
 DECL|method|writeParity (int index, ByteBuffer buffer, byte[] checksumBuf)
 name|void
