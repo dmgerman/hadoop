@@ -1047,6 +1047,8 @@ index|[
 name|outputIdx
 operator|++
 index|]
+argument_list|,
+name|dataLen
 argument_list|)
 expr_stmt|;
 block|}
@@ -1130,6 +1132,8 @@ operator|=
 name|resetBuffer
 argument_list|(
 name|buffer
+argument_list|,
+name|dataLen
 argument_list|)
 expr_stmt|;
 name|bufferIdx

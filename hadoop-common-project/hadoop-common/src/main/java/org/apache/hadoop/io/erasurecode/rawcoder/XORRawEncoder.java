@@ -101,11 +101,6 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-name|resetBuffer
-argument_list|(
-name|output
-argument_list|)
-expr_stmt|;
 comment|// Get the first buffer's data.
 name|int
 name|iIdx

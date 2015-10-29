@@ -107,11 +107,6 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-name|resetBuffer
-argument_list|(
-name|output
-argument_list|)
-expr_stmt|;
 name|int
 name|erasedIdx
 init|=
