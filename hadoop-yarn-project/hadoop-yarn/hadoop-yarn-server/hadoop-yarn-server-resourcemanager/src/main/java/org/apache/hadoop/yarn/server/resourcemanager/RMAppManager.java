@@ -1861,14 +1861,6 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
-name|ApplicationId
-name|appId
-init|=
-name|submissionContext
-operator|.
-name|getApplicationId
-argument_list|()
-decl_stmt|;
 name|Credentials
 name|credentials
 init|=
@@ -1900,7 +1892,7 @@ argument_list|()
 operator|.
 name|addApplicationAsync
 argument_list|(
-name|appId
+name|applicationId
 argument_list|,
 name|credentials
 argument_list|,
