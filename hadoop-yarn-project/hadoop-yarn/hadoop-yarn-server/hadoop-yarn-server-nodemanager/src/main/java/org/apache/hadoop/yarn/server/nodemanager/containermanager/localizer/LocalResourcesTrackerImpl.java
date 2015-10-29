@@ -1053,6 +1053,47 @@ argument_list|(
 name|event
 argument_list|)
 expr_stmt|;
+comment|// Remove the resource if its downloading and its reference count has
+comment|// become 0 after RELEASE. This maybe because a container was killed while
+comment|// localizing and no other container is referring to the resource.
+if|if
+condition|(
+name|event
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|ResourceEventType
+operator|.
+name|RELEASE
+condition|)
+block|{
+if|if
+condition|(
+name|rsrc
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|ResourceState
+operator|.
+name|DOWNLOADING
+operator|&&
+name|rsrc
+operator|.
+name|getRefCount
+argument_list|()
+operator|<=
+literal|0
+condition|)
+block|{
+name|removeResource
+argument_list|(
+name|req
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 if|if
 condition|(
 name|event

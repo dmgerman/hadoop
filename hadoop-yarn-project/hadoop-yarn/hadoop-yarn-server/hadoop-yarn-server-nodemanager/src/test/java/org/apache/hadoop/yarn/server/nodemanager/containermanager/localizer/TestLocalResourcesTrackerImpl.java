@@ -1304,7 +1304,7 @@ name|verifyTrackedResourceCount
 argument_list|(
 name|tracker
 argument_list|,
-literal|2
+literal|1
 argument_list|)
 expr_stmt|;
 comment|// Verify resource with non zero ref count is not removed.
@@ -1338,7 +1338,7 @@ name|verifyTrackedResourceCount
 argument_list|(
 name|tracker
 argument_list|,
-literal|2
+literal|1
 argument_list|)
 expr_stmt|;
 comment|// Localize resource1
@@ -1429,7 +1429,7 @@ name|verifyTrackedResourceCount
 argument_list|(
 name|tracker
 argument_list|,
-literal|1
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
