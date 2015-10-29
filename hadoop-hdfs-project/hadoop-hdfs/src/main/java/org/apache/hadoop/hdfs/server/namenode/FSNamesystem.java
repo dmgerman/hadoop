@@ -29489,6 +29489,26 @@ name|getVersion
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+comment|// NameNodeStatusMXBean
+DECL|method|getNameDirSize ()
+specifier|public
+name|String
+name|getNameDirSize
+parameter_list|()
+block|{
+return|return
+name|getFSImage
+argument_list|()
+operator|.
+name|getStorage
+argument_list|()
+operator|.
+name|getNNDirectorySize
+argument_list|()
+return|;
+block|}
 comment|/**    * Verifies that the given identifier and password are valid and match.    * @param identifier Token identifier.    * @param password Password in the token.    */
 DECL|method|verifyToken (DelegationTokenIdentifier identifier, byte[] password)
 specifier|public

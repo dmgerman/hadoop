@@ -5314,6 +5314,13 @@ name|imageTxId
 argument_list|)
 expr_stmt|;
 block|}
+comment|//Update NameDirSize Metric
+name|getStorage
+argument_list|()
+operator|.
+name|updateNameDirSize
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * @see #saveFSImageInAllDirs(FSNamesystem, NameNodeFile, long, Canceler)    */
 DECL|method|saveFSImageInAllDirs (FSNamesystem source, long txid)
@@ -6271,6 +6278,13 @@ operator|.
 name|getCurSegmentTxId
 argument_list|()
 argument_list|)
+expr_stmt|;
+comment|//Update NameDirSize Metric
+name|getStorage
+argument_list|()
+operator|.
+name|updateNameDirSize
+argument_list|()
 expr_stmt|;
 return|return
 operator|new

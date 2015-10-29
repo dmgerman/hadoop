@@ -343,6 +343,12 @@ argument_list|>
 name|getDistinctVersions
 parameter_list|()
 function_decl|;
+comment|/**    * Get namenode directory size.    */
+DECL|method|getNameDirSize ()
+name|String
+name|getNameDirSize
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

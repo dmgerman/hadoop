@@ -1645,6 +1645,18 @@ name|cpUnlock
 argument_list|()
 expr_stmt|;
 block|}
+comment|//Update NameDirSize Metric
+name|namesystem
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|getStorage
+argument_list|()
+operator|.
+name|updateNameDirSize
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
