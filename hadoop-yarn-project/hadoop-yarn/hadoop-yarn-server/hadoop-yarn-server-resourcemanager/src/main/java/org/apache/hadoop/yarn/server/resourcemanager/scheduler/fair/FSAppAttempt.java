@@ -2734,9 +2734,17 @@ argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Reservation Exceeds Allowed number of nodes:"
 operator|+
@@ -2770,6 +2778,7 @@ operator|+
 name|numAllowedReservations
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|true
 return|;
