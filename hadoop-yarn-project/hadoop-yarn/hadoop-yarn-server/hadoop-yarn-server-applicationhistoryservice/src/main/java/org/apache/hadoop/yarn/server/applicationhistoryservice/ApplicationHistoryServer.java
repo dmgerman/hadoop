@@ -982,6 +982,7 @@ name|Private
 annotation|@
 name|VisibleForTesting
 DECL|method|getPort ()
+specifier|public
 name|int
 name|getPort
 parameter_list|()
