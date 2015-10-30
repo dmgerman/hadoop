@@ -343,6 +343,27 @@ return|return
 name|reader
 return|;
 block|}
+DECL|method|setReader (RecordReader<Text, CopyListingFileStatus> reader)
+specifier|public
+name|void
+name|setReader
+parameter_list|(
+name|RecordReader
+argument_list|<
+name|Text
+argument_list|,
+name|CopyListingFileStatus
+argument_list|>
+name|reader
+parameter_list|)
+block|{
+name|this
+operator|.
+name|reader
+operator|=
+name|reader
+expr_stmt|;
+block|}
 DECL|method|getWriter ()
 specifier|public
 name|StubInMemoryWriter

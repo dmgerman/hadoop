@@ -225,6 +225,16 @@ name|isChunkDirAlreadyScanned
 init|=
 literal|false
 decl_stmt|;
+DECL|field|chunkContext
+specifier|private
+name|DynamicInputChunkContext
+argument_list|<
+name|K
+argument_list|,
+name|V
+argument_list|>
+name|chunkContext
+decl_stmt|;
 DECL|field|TIME_THRESHOLD_FOR_DIR_SCANS
 specifier|private
 specifier|static
@@ -240,6 +250,25 @@ argument_list|(
 literal|5
 argument_list|)
 decl_stmt|;
+DECL|method|DynamicRecordReader (DynamicInputChunkContext<K, V> chunkContext)
+name|DynamicRecordReader
+parameter_list|(
+name|DynamicInputChunkContext
+argument_list|<
+name|K
+argument_list|,
+name|V
+argument_list|>
+name|chunkContext
+parameter_list|)
+block|{
+name|this
+operator|.
+name|chunkContext
+operator|=
+name|chunkContext
+expr_stmt|;
+block|}
 comment|/**    * Implementation for RecordReader::initialize(). Initializes the internal    * RecordReader to read from chunks.    * @param inputSplit The InputSplit for the map. Ignored entirely.    * @param taskAttemptContext The AttemptContext.    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|Override
@@ -296,7 +325,7 @@ argument_list|()
 expr_stmt|;
 name|chunk
 operator|=
-name|DynamicInputChunk
+name|chunkContext
 operator|.
 name|acquire
 argument_list|(
@@ -435,7 +464,7 @@ literal|false
 expr_stmt|;
 name|chunk
 operator|=
-name|DynamicInputChunk
+name|chunkContext
 operator|.
 name|acquire
 argument_list|(
@@ -635,7 +664,7 @@ literal|2
 operator|)
 condition|)
 block|{
-name|DynamicInputChunk
+name|chunkContext
 operator|.
 name|getListOfChunkFiles
 argument_list|()
@@ -650,7 +679,7 @@ name|now
 expr_stmt|;
 block|}
 return|return
-name|DynamicInputChunk
+name|chunkContext
 operator|.
 name|getNumChunksLeft
 argument_list|()
