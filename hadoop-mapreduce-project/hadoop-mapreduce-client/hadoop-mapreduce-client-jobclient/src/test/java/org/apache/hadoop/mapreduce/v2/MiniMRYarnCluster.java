@@ -1260,6 +1260,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+DECL|field|jhsStarted
+specifier|private
+specifier|volatile
+name|boolean
+name|jhsStarted
+init|=
+literal|false
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|serviceStart ()
@@ -1369,6 +1377,10 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|jhsStarted
+operator|=
+literal|true
+expr_stmt|;
 block|}
 empty_stmt|;
 block|}
@@ -1378,14 +1390,8 @@ argument_list|()
 expr_stmt|;
 while|while
 condition|(
-name|historyServer
-operator|.
-name|getServiceState
-argument_list|()
-operator|==
-name|STATE
-operator|.
-name|INITED
+operator|!
+name|jhsStarted
 condition|)
 block|{
 name|LOG
