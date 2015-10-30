@@ -3197,6 +3197,11 @@ argument_list|,
 name|excludedNodes
 argument_list|)
 decl_stmt|;
+name|int
+name|refreshCounter
+init|=
+name|numOfAvailableNodes
+decl_stmt|;
 name|StringBuilder
 name|builder
 init|=
@@ -3482,6 +3487,42 @@ operator|==
 literal|null
 operator|)
 expr_stmt|;
+block|}
+comment|// Refresh the node count. If the live node count became smaller,
+comment|// but it is not reflected in this loop, it may loop forever in case
+comment|// the replicas/rack cannot be satisfied.
+if|if
+condition|(
+operator|--
+name|refreshCounter
+operator|==
+literal|0
+condition|)
+block|{
+name|refreshCounter
+operator|=
+name|clusterMap
+operator|.
+name|countNumOfAvailableNodes
+argument_list|(
+name|scope
+argument_list|,
+name|excludedNodes
+argument_list|)
+expr_stmt|;
+comment|// It has already gone through enough number of nodes.
+if|if
+condition|(
+name|refreshCounter
+operator|<=
+name|excludedNodes
+operator|.
+name|size
+argument_list|()
+condition|)
+block|{
+break|break;
+block|}
 block|}
 block|}
 if|if
