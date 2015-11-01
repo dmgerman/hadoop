@@ -936,7 +936,7 @@ literal|null
 operator|&&
 name|callerContext
 operator|.
-name|isValid
+name|isContextValid
 argument_list|()
 condition|)
 block|{

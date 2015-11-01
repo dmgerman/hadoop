@@ -194,18 +194,6 @@ operator|.
 name|signature
 expr_stmt|;
 block|}
-DECL|method|isValid ()
-specifier|public
-name|boolean
-name|isValid
-parameter_list|()
-block|{
-return|return
-name|context
-operator|!=
-literal|null
-return|;
-block|}
 DECL|method|getContext ()
 specifier|public
 name|String
@@ -240,6 +228,28 @@ name|signature
 operator|.
 name|length
 argument_list|)
+return|;
+block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|method|isContextValid ()
+specifier|public
+name|boolean
+name|isContextValid
+parameter_list|()
+block|{
+return|return
+name|context
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|context
+operator|.
+name|isEmpty
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -363,7 +373,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|isValid
+name|isContextValid
 argument_list|()
 condition|)
 block|{
