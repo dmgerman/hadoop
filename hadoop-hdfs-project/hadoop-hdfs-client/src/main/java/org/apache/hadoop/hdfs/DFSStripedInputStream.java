@@ -4658,7 +4658,6 @@ name|void
 name|decode
 parameter_list|()
 block|{
-comment|// TODO no copy for data chunks. this depends on HADOOP-12047
 specifier|final
 name|int
 name|span

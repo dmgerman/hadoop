@@ -76,6 +76,11 @@ name|XORRawDecoder
 operator|.
 name|class
 expr_stmt|;
+name|setAllowDump
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test

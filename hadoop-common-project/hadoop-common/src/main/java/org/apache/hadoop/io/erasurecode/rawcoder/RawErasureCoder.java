@@ -64,6 +64,29 @@ name|RawErasureCoder
 extends|extends
 name|Configurable
 block|{
+comment|/**    * Get a coder option value.    * @param option    * @return    */
+DECL|method|getCoderOption (CoderOption option)
+specifier|public
+name|Object
+name|getCoderOption
+parameter_list|(
+name|CoderOption
+name|option
+parameter_list|)
+function_decl|;
+comment|/**    * Set a coder option value.    * @param option    * @param value    */
+DECL|method|setCoderOption (CoderOption option, Object value)
+specifier|public
+name|void
+name|setCoderOption
+parameter_list|(
+name|CoderOption
+name|option
+parameter_list|,
+name|Object
+name|value
+parameter_list|)
+function_decl|;
 comment|/**    * The number of data input units for the coding. A unit can be a byte,    * chunk or buffer or even a block.    * @return count of data input units    */
 DECL|method|getNumDataUnits ()
 specifier|public
@@ -76,13 +99,6 @@ DECL|method|getNumParityUnits ()
 specifier|public
 name|int
 name|getNumParityUnits
-parameter_list|()
-function_decl|;
-comment|/**    * Tell if direct buffer is preferred or not. It's for callers to    * decide how to allocate coding chunk buffers, using DirectByteBuffer or    * bytes array. It will return false by default.    * @return true if native buffer is preferred for performance consideration,    * otherwise false.    */
-DECL|method|preferDirectBuffer ()
-specifier|public
-name|boolean
-name|preferDirectBuffer
 parameter_list|()
 function_decl|;
 comment|/**    * Should be called when release this coder. Good chance to release encoding    * or decoding buffers    */
