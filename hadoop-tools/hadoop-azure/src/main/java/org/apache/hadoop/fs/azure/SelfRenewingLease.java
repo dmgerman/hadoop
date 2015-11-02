@@ -68,6 +68,20 @@ begin_import
 import|import
 name|com
 operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
 name|microsoft
 operator|.
 name|azure
@@ -205,8 +219,9 @@ literal|0
 argument_list|)
 decl_stmt|;
 comment|// Time to wait to retry getting the lease in milliseconds
+annotation|@
+name|VisibleForTesting
 DECL|field|LEASE_ACQUIRE_RETRY_INTERVAL
-specifier|private
 specifier|static
 specifier|final
 name|int
