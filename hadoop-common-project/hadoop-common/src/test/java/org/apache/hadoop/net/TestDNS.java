@@ -138,6 +138,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Time
 import|;
 end_import
@@ -187,6 +201,18 @@ operator|.
 name|Assert
 operator|.
 name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
 import|;
 end_import
 
@@ -781,7 +807,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Test that when using an invalid DNS server with hosts file fallback,    * we are able to get the hostname from the hosts file.    *    * This test may fail on some misconfigured test machines that don't have    * an entry for "localhost" in their hosts file. This entry is correctly    * configured out of the box on common Linux distributions, OS X and    * Windows.    *    * @throws Exception    */
+comment|/**    * Test that when using an invalid DNS server with hosts file fallback,    * we are able to get the hostname from the hosts file.    *    * This test may fail on some misconfigured test machines that don't have    * an entry for "localhost" in their hosts file. This entry is correctly    * configured out of the box on common Linux distributions and OS X.    *    * Windows refuses to resolve 127.0.0.1 to "localhost" despite the presence of    * this entry in the hosts file.  We skip the test on Windows to avoid    * reporting a spurious failure.    *    * @throws Exception    */
 annotation|@
 name|Test
 argument_list|(
@@ -797,6 +823,14 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|assumeTrue
+argument_list|(
+operator|!
+name|Shell
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
 specifier|final
 name|String
 name|oldHostname
@@ -929,7 +963,7 @@ name|getLoopbackAddress
 argument_list|()
 argument_list|)
 operator|.
-name|getDisplayName
+name|getName
 argument_list|()
 return|;
 block|}
