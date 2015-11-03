@@ -8001,6 +8001,18 @@ name|isStriped
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|pendingNum
+operator|>
+literal|0
+condition|)
+block|{
+comment|// Wait the previous recovery to finish.
+return|return
+literal|null
+return|;
+block|}
 name|short
 index|[]
 name|indices
@@ -8326,6 +8338,13 @@ operator|.
 name|length
 operator|>
 literal|0
+assert|;
+assert|assert
+name|pendingNum
+operator|==
+literal|0
+operator|:
+literal|"Should wait the previous recovery to finish"
 assert|;
 name|String
 name|src

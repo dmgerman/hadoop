@@ -482,6 +482,7 @@ operator|*
 name|NUM_DATA_BLOCKS
 decl_stmt|;
 DECL|field|stripesPerBlock
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -490,6 +491,7 @@ init|=
 literal|4
 decl_stmt|;
 DECL|field|blockSize
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -500,6 +502,7 @@ operator|*
 name|stripesPerBlock
 decl_stmt|;
 DECL|field|numDNs
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -512,6 +515,7 @@ operator|+
 literal|2
 decl_stmt|;
 DECL|field|BLOCK_GROUP_SIZE
+specifier|public
 specifier|static
 specifier|final
 name|int

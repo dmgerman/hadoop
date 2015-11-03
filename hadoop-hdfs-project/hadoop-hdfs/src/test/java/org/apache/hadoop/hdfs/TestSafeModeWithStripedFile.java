@@ -299,12 +299,12 @@ operator|*
 literal|2
 decl_stmt|;
 DECL|field|cluster
-specifier|static
+specifier|private
 name|MiniDFSCluster
 name|cluster
 decl_stmt|;
 DECL|field|conf
-specifier|static
+specifier|private
 name|Configuration
 name|conf
 decl_stmt|;

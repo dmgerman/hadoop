@@ -227,13 +227,11 @@ literal|2
 decl_stmt|;
 DECL|field|cluster
 specifier|private
-specifier|static
 name|MiniDFSCluster
 name|cluster
 decl_stmt|;
 DECL|field|conf
 specifier|private
-specifier|static
 name|Configuration
 name|conf
 decl_stmt|;
