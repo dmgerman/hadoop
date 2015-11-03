@@ -7828,6 +7828,8 @@ argument_list|,
 name|hostname
 argument_list|,
 name|type
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -7868,10 +7870,12 @@ argument_list|,
 name|StorageType
 operator|.
 name|DEFAULT
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|createDatanodeStorageInfo ( String storageID, String ip, String rack, String hostname, StorageType type)
+DECL|method|createDatanodeStorageInfo ( String storageID, String ip, String rack, String hostname, StorageType type, String upgradeDomain)
 specifier|public
 specifier|static
 name|DatanodeStorageInfo
@@ -7891,6 +7895,9 @@ name|hostname
 parameter_list|,
 name|StorageType
 name|type
+parameter_list|,
+name|String
+name|upgradeDomain
 parameter_list|)
 block|{
 specifier|final
@@ -7928,6 +7935,21 @@ argument_list|,
 name|hostname
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|upgradeDomain
+operator|!=
+literal|null
+condition|)
+block|{
+name|dn
+operator|.
+name|setUpgradeDomain
+argument_list|(
+name|upgradeDomain
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|BlockManagerTestUtil
 operator|.

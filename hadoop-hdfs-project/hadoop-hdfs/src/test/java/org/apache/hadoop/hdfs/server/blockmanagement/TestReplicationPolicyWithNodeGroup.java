@@ -3177,11 +3177,6 @@ operator|)
 operator|.
 name|chooseReplicaToDelete
 argument_list|(
-operator|(
-name|short
-operator|)
-literal|3
-argument_list|,
 name|first
 argument_list|,
 name|second
@@ -3257,11 +3252,6 @@ operator|)
 operator|.
 name|chooseReplicaToDelete
 argument_list|(
-operator|(
-name|short
-operator|)
-literal|2
-argument_list|,
 name|first
 argument_list|,
 name|second
@@ -3333,11 +3323,6 @@ operator|)
 operator|.
 name|chooseReplicaToDelete
 argument_list|(
-operator|(
-name|short
-operator|)
-literal|1
-argument_list|,
 name|first
 argument_list|,
 name|second

@@ -4161,9 +4161,7 @@ name|racks
 init|=
 operator|new
 name|TreeSet
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -4196,22 +4194,19 @@ name|minRacks
 argument_list|)
 return|;
 block|}
-comment|/**    * Decide whether deleting the specified replica of the block still makes    * the block conform to the configured block placement policy.    * @param replicationFactor The required number of replicas for this block    * @param moreThanone The replica locations of this block that are present    *                    on more than one unique racks.    * @param exactlyOne Replica locations of this block that  are present    *                    on exactly one unique racks.    * @param excessTypes The excess {@link StorageType}s according to the    *                    {@link BlockStoragePolicy}.    *    * @return the replica that is the best candidate for deletion    */
+comment|/**    * Decide whether deleting the specified replica of the block still makes    * the block conform to the configured block placement policy.    * @param moreThanOne The replica locations of this block that are present    *                    on more than one unique racks.    * @param exactlyOne Replica locations of this block that  are present    *                    on exactly one unique racks.    * @param excessTypes The excess {@link StorageType}s according to the    *                    {@link BlockStoragePolicy}.    *    * @return the replica that is the best candidate for deletion    */
 annotation|@
 name|VisibleForTesting
-DECL|method|chooseReplicaToDelete (short replicationFactor, Collection<DatanodeStorageInfo> moreThanone, Collection<DatanodeStorageInfo> exactlyOne, final List<StorageType> excessTypes)
+DECL|method|chooseReplicaToDelete ( Collection<DatanodeStorageInfo> moreThanOne, Collection<DatanodeStorageInfo> exactlyOne, final List<StorageType> excessTypes)
 specifier|public
 name|DatanodeStorageInfo
 name|chooseReplicaToDelete
 parameter_list|(
-name|short
-name|replicationFactor
-parameter_list|,
 name|Collection
 argument_list|<
 name|DatanodeStorageInfo
 argument_list|>
-name|moreThanone
+name|moreThanOne
 parameter_list|,
 name|Collection
 argument_list|<
@@ -4263,7 +4258,7 @@ name|storage
 range|:
 name|pickupReplicaSet
 argument_list|(
-name|moreThanone
+name|moreThanOne
 argument_list|,
 name|exactlyOne
 argument_list|)
@@ -4545,15 +4540,17 @@ name|cur
 decl_stmt|;
 if|if
 condition|(
+name|firstOne
+operator|&&
 name|useDelHint
 argument_list|(
-name|firstOne
-argument_list|,
 name|delNodeHintStorage
 argument_list|,
 name|addedNodeStorage
 argument_list|,
 name|moreThanOne
+argument_list|,
+name|exactlyOne
 argument_list|,
 name|excessTypes
 argument_list|)
@@ -4571,11 +4568,6 @@ name|cur
 operator|=
 name|chooseReplicaToDelete
 argument_list|(
-operator|(
-name|short
-operator|)
-name|expectedNumOfReplicas
-argument_list|,
 name|moreThanOne
 argument_list|,
 name|exactlyOne
@@ -4639,14 +4631,10 @@ block|}
 comment|/** Check if we can use delHint. */
 annotation|@
 name|VisibleForTesting
-DECL|method|useDelHint (boolean isFirst, DatanodeStorageInfo delHint, DatanodeStorageInfo added, List<DatanodeStorageInfo> moreThan1Racks, List<StorageType> excessTypes)
-specifier|static
+DECL|method|useDelHint (DatanodeStorageInfo delHint, DatanodeStorageInfo added, List<DatanodeStorageInfo> moreThanOne, Collection<DatanodeStorageInfo> exactlyOne, List<StorageType> excessTypes)
 name|boolean
 name|useDelHint
 parameter_list|(
-name|boolean
-name|isFirst
-parameter_list|,
 name|DatanodeStorageInfo
 name|delHint
 parameter_list|,
@@ -4657,7 +4645,13 @@ name|List
 argument_list|<
 name|DatanodeStorageInfo
 argument_list|>
-name|moreThan1Racks
+name|moreThanOne
+parameter_list|,
+name|Collection
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+name|exactlyOne
 parameter_list|,
 name|List
 argument_list|<
@@ -4666,18 +4660,6 @@ argument_list|>
 name|excessTypes
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|isFirst
-condition|)
-block|{
-return|return
-literal|false
-return|;
-comment|// only consider delHint for the first case
-block|}
-elseif|else
 if|if
 condition|(
 name|delHint
@@ -4713,47 +4695,163 @@ block|}
 else|else
 block|{
 comment|// check if removing delHint reduces the number of racks
+return|return
+name|notReduceNumOfGroups
+argument_list|(
+name|moreThanOne
+argument_list|,
+name|delHint
+argument_list|,
+name|added
+argument_list|)
+return|;
+block|}
+block|}
+comment|// Check if moving from source to target will reduce the number of
+comment|// groups. The groups could be based on racks or upgrade domains.
+DECL|method|notReduceNumOfGroups (List<T> moreThanOne, T source, T target)
+parameter_list|<
+name|T
+parameter_list|>
+name|boolean
+name|notReduceNumOfGroups
+parameter_list|(
+name|List
+argument_list|<
+name|T
+argument_list|>
+name|moreThanOne
+parameter_list|,
+name|T
+name|source
+parameter_list|,
+name|T
+name|target
+parameter_list|)
+block|{
 if|if
 condition|(
-name|moreThan1Racks
+name|moreThanOne
 operator|.
 name|contains
 argument_list|(
-name|delHint
+name|source
 argument_list|)
 condition|)
 block|{
 return|return
 literal|true
 return|;
-comment|// delHint and some other nodes are under the same rack
+comment|// source and some other nodes are under the same group.
 block|}
 elseif|else
 if|if
 condition|(
-name|added
+name|target
 operator|!=
 literal|null
 operator|&&
 operator|!
-name|moreThan1Racks
+name|moreThanOne
 operator|.
 name|contains
 argument_list|(
-name|added
+name|target
 argument_list|)
 condition|)
 block|{
 return|return
 literal|true
 return|;
-comment|// the added node adds a new rack
+comment|// the added node adds a new group.
 block|}
 return|return
 literal|false
 return|;
-comment|// removing delHint reduces the number of racks;
+comment|// removing delHint reduces the number of groups.
 block|}
+annotation|@
+name|Override
+DECL|method|isMovable (Collection<DatanodeInfo> locs, DatanodeInfo source, DatanodeInfo target)
+specifier|public
+name|boolean
+name|isMovable
+parameter_list|(
+name|Collection
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+name|locs
+parameter_list|,
+name|DatanodeInfo
+name|source
+parameter_list|,
+name|DatanodeInfo
+name|target
+parameter_list|)
+block|{
+specifier|final
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+argument_list|>
+name|rackMap
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
+specifier|final
+name|List
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+name|moreThanOne
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+specifier|final
+name|List
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+name|exactlyOne
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|splitNodesWithRack
+argument_list|(
+name|locs
+argument_list|,
+name|rackMap
+argument_list|,
+name|moreThanOne
+argument_list|,
+name|exactlyOne
+argument_list|)
+expr_stmt|;
+return|return
+name|notReduceNumOfGroups
+argument_list|(
+name|moreThanOne
+argument_list|,
+name|source
+argument_list|,
+name|target
+argument_list|)
+return|;
 block|}
 comment|/**    * Pick up replica node set for deleting replica as over-replicated.     * First set contains replica nodes on rack with more than one    * replica while second set contains remaining replica nodes.    * So pick up first set if not empty. If first is empty, then pick second.    */
 DECL|method|pickupReplicaSet ( Collection<DatanodeStorageInfo> moreThanOne, Collection<DatanodeStorageInfo> exactlyOne)

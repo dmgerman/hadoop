@@ -72,6 +72,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -428,6 +442,26 @@ name|Host2NodesMap
 name|host2datanodeMap
 parameter_list|)
 function_decl|;
+comment|/**    * Check if the move is allowed. Used by balancer and other tools.    * @    *    * @param candidates all replicas including source and target    * @param source source replica of the move    * @param target target replica of the move    */
+DECL|method|isMovable (Collection<DatanodeInfo> candidates, DatanodeInfo source, DatanodeInfo target)
+specifier|abstract
+specifier|public
+name|boolean
+name|isMovable
+parameter_list|(
+name|Collection
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+name|candidates
+parameter_list|,
+name|DatanodeInfo
+name|source
+parameter_list|,
+name|DatanodeInfo
+name|target
+parameter_list|)
+function_decl|;
 comment|/**    * Adjust rackmap, moreThanOne, and exactlyOne after removing replica on cur.    *    * @param rackMap a map from rack to replica    * @param moreThanOne The List of replica nodes on rack which has more than     *        one replica    * @param exactlyOne The List of replica nodes on rack with only one replica    * @param cur current replica to remove    */
 DECL|method|adjustSetsWithChosenReplica ( final Map<String, List<DatanodeStorageInfo>> rackMap, final List<DatanodeStorageInfo> moreThanOne, final List<DatanodeStorageInfo> exactlyOne, final DatanodeStorageInfo cur)
 specifier|public
@@ -572,6 +606,86 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|getDatanodeInfo (T datanode)
+specifier|protected
+parameter_list|<
+name|T
+parameter_list|>
+name|DatanodeInfo
+name|getDatanodeInfo
+parameter_list|(
+name|T
+name|datanode
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|datanode
+operator|instanceof
+name|DatanodeInfo
+operator|||
+name|datanode
+operator|instanceof
+name|DatanodeStorageInfo
+argument_list|,
+literal|"class "
+operator|+
+name|datanode
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" not allowed"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|datanode
+operator|instanceof
+name|DatanodeInfo
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|DatanodeInfo
+operator|)
+name|datanode
+operator|)
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|datanode
+operator|instanceof
+name|DatanodeStorageInfo
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|DatanodeStorageInfo
+operator|)
+name|datanode
+operator|)
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|null
+return|;
+block|}
+block|}
 comment|/**    * Get rack string from a data node    * @return rack of data node    */
 DECL|method|getRack (final DatanodeInfo datanode)
 specifier|protected
@@ -590,18 +704,21 @@ name|getNetworkLocation
 argument_list|()
 return|;
 block|}
-comment|/**    * Split data nodes into two sets, one set includes nodes on rack with    * more than one  replica, the other set contains the remaining nodes.    *     * @param dataNodes datanodes to be split into two sets    * @param rackMap a map from rack to datanodes    * @param moreThanOne contains nodes on rack with more than one replica    * @param exactlyOne remains contains the remaining nodes    */
-DECL|method|splitNodesWithRack ( final Iterable<DatanodeStorageInfo> storages, final Map<String, List<DatanodeStorageInfo>> rackMap, final List<DatanodeStorageInfo> moreThanOne, final List<DatanodeStorageInfo> exactlyOne)
+comment|/**    * Split data nodes into two sets, one set includes nodes on rack with    * more than one  replica, the other set contains the remaining nodes.    *     * @param storagesOrDataNodes DatanodeStorageInfo/DatanodeInfo to be split    *        into two sets    * @param rackMap a map from rack to datanodes    * @param moreThanOne contains nodes on rack with more than one replica    * @param exactlyOne remains contains the remaining nodes    */
+DECL|method|splitNodesWithRack ( final Iterable<T> storagesOrDataNodes, final Map<String, List<T>> rackMap, final List<T> moreThanOne, final List<T> exactlyOne)
 specifier|public
+parameter_list|<
+name|T
+parameter_list|>
 name|void
 name|splitNodesWithRack
 parameter_list|(
 specifier|final
 name|Iterable
 argument_list|<
-name|DatanodeStorageInfo
+name|T
 argument_list|>
-name|storages
+name|storagesOrDataNodes
 parameter_list|,
 specifier|final
 name|Map
@@ -610,7 +727,7 @@ name|String
 argument_list|,
 name|List
 argument_list|<
-name|DatanodeStorageInfo
+name|T
 argument_list|>
 argument_list|>
 name|rackMap
@@ -618,24 +735,24 @@ parameter_list|,
 specifier|final
 name|List
 argument_list|<
-name|DatanodeStorageInfo
+name|T
 argument_list|>
 name|moreThanOne
 parameter_list|,
 specifier|final
 name|List
 argument_list|<
-name|DatanodeStorageInfo
+name|T
 argument_list|>
 name|exactlyOne
 parameter_list|)
 block|{
 for|for
 control|(
-name|DatanodeStorageInfo
+name|T
 name|s
 range|:
-name|storages
+name|storagesOrDataNodes
 control|)
 block|{
 specifier|final
@@ -644,15 +761,15 @@ name|rackName
 init|=
 name|getRack
 argument_list|(
+name|getDatanodeInfo
+argument_list|(
 name|s
-operator|.
-name|getDatanodeDescriptor
-argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeStorageInfo
+name|T
 argument_list|>
 name|storageList
 init|=
@@ -675,7 +792,7 @@ operator|=
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeStorageInfo
+name|T
 argument_list|>
 argument_list|()
 expr_stmt|;
@@ -702,7 +819,7 @@ for|for
 control|(
 name|List
 argument_list|<
-name|DatanodeStorageInfo
+name|T
 argument_list|>
 name|storageList
 range|:
