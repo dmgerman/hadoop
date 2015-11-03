@@ -9806,6 +9806,63 @@ name|corruptMeta
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Corrupt the metadata of a block by deleting it.    * @param i index of the datanode    * @param blk name of the block.    */
+DECL|method|deleteMeta (int i, ExtendedBlock blk)
+specifier|public
+name|void
+name|deleteMeta
+parameter_list|(
+name|int
+name|i
+parameter_list|,
+name|ExtendedBlock
+name|blk
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|getMaterializedReplica
+argument_list|(
+name|i
+argument_list|,
+name|blk
+argument_list|)
+operator|.
+name|deleteMeta
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Corrupt the metadata of a block by truncating it to a new size.    * @param i index of the datanode.    * @param blk name of the block.    * @param newSize the new size of the metadata file.    * @throws IOException if any I/O errors.    */
+DECL|method|truncateMeta (int i, ExtendedBlock blk, int newSize)
+specifier|public
+name|void
+name|truncateMeta
+parameter_list|(
+name|int
+name|i
+parameter_list|,
+name|ExtendedBlock
+name|blk
+parameter_list|,
+name|int
+name|newSize
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|getMaterializedReplica
+argument_list|(
+name|i
+argument_list|,
+name|blk
+argument_list|)
+operator|.
+name|truncateMeta
+argument_list|(
+name|newSize
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|changeGenStampOfBlock (int dnIndex, ExtendedBlock blk, long newGenStamp)
 specifier|public
 name|boolean
