@@ -533,6 +533,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Create dummy replicas for block data and metadata.    * @param block the block of which replica to be created.    * @throws IOException on I/O error.    */
+DECL|method|injectCorruptReplica (ExtendedBlock block)
+name|void
+name|injectCorruptReplica
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
