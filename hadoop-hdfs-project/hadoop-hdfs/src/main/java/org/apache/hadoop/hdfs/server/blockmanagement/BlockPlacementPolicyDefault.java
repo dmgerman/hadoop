@@ -4588,6 +4588,30 @@ name|firstOne
 operator|=
 literal|false
 expr_stmt|;
+if|if
+condition|(
+name|cur
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"No excess replica can be found. excessTypes: {}."
+operator|+
+literal|" moreThanOne: {}. exactlyOne: {}."
+argument_list|,
+name|excessTypes
+argument_list|,
+name|moreThanOne
+argument_list|,
+name|exactlyOne
+argument_list|)
+expr_stmt|;
+break|break;
+block|}
 comment|// adjust rackmap, moreThanOne, and exactlyOne
 name|adjustSetsWithChosenReplica
 argument_list|(
