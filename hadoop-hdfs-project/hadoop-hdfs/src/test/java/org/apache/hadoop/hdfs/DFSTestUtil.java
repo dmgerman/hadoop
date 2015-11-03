@@ -11772,8 +11772,10 @@ block|{
 name|Block
 name|newBlock
 init|=
-name|addStripedBlockToFile
+name|addBlockToFile
 argument_list|(
+literal|true
+argument_list|,
 name|cluster
 operator|.
 name|getDataNodes
@@ -11801,6 +11803,8 @@ argument_list|,
 name|previous
 argument_list|,
 name|numStripesPerBlk
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 name|previous
@@ -11861,13 +11865,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Adds a striped block group to a file. This method only manipulates NameNode    * states of the file and the block without injecting data to DataNode.    * It does mimic block reports.    * You should disable periodical heartbeat before use this.    * @param dataNodes List DataNodes to host the striped block group    * @param previous Previous block in the file    * @param numStripes Number of stripes in each block group    * @return The added block group    */
-DECL|method|addStripedBlockToFile (List<DataNode> dataNodes, DistributedFileSystem fs, FSNamesystem ns, String file, INodeFile fileNode, String clientName, ExtendedBlock previous, int numStripes)
+comment|/**    * Adds a block or a striped block group to a file.    * This method only manipulates NameNode    * states of the file and the block without injecting data to DataNode.    * It does mimic block reports.    * You should disable periodical heartbeat before use this.    * @param isStripedBlock a boolean tell if the block added a striped block    * @param dataNodes List DataNodes to host the striped block group    * @param previous Previous block in the file    * @param numStripes Number of stripes in each block group    * @param len block size for a non striped block added    * @return The added block or block group    */
+DECL|method|addBlockToFile (boolean isStripedBlock, List<DataNode> dataNodes, DistributedFileSystem fs, FSNamesystem ns, String file, INodeFile fileNode, String clientName, ExtendedBlock previous, int numStripes, int len)
 specifier|public
 specifier|static
 name|Block
-name|addStripedBlockToFile
+name|addBlockToFile
 parameter_list|(
+name|boolean
+name|isStripedBlock
+parameter_list|,
 name|List
 argument_list|<
 name|DataNode
@@ -11894,6 +11901,9 @@ name|previous
 parameter_list|,
 name|int
 name|numStripes
+parameter_list|,
+name|int
+name|len
 parameter_list|)
 throws|throws
 name|Exception
@@ -12054,6 +12064,17 @@ expr_stmt|;
 block|}
 block|}
 comment|// 2. RECEIVED_BLOCK IBR
+name|long
+name|blockSize
+init|=
+name|isStripedBlock
+condition|?
+name|numStripes
+operator|*
+name|BLOCK_STRIPED_CELL_SIZE
+else|:
+name|len
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -12093,9 +12114,7 @@ argument_list|()
 operator|+
 name|i
 argument_list|,
-name|numStripes
-operator|*
-name|BLOCK_STRIPED_CELL_SIZE
+name|blockSize
 argument_list|,
 name|lastBlock
 operator|.
@@ -12159,15 +12178,24 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|lastBlock
-operator|.
-name|setNumBytes
-argument_list|(
+name|long
+name|bytes
+init|=
+name|isStripedBlock
+condition|?
 name|numStripes
 operator|*
 name|BLOCK_STRIPED_CELL_SIZE
 operator|*
 name|NUM_DATA_BLOCKS
+else|:
+name|len
+decl_stmt|;
+name|lastBlock
+operator|.
+name|setNumBytes
+argument_list|(
+name|bytes
 argument_list|)
 expr_stmt|;
 return|return

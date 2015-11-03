@@ -1865,6 +1865,7 @@ literal|false
 decl_stmt|;
 DECL|field|block
 specifier|protected
+specifier|volatile
 name|ExtendedBlock
 name|block
 decl_stmt|;

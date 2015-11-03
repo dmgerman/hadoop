@@ -3576,6 +3576,33 @@ operator|.
 name|getNumBytes
 argument_list|()
 assert|;
+if|if
+condition|(
+name|block
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|!=
+name|commitBlock
+operator|.
+name|getGenerationStamp
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Commit block with mismatching GS. NN has "
+operator|+
+name|block
+operator|+
+literal|", client submits "
+operator|+
+name|commitBlock
+argument_list|)
+throw|;
+block|}
 name|block
 operator|.
 name|commitBlock
