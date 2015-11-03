@@ -960,6 +960,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -1064,6 +1074,34 @@ specifier|private
 name|MiniDFSCluster
 name|cluster
 decl_stmt|;
+annotation|@
+name|After
+DECL|method|shutdown ()
+specifier|public
+name|void
+name|shutdown
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
+block|}
+block|}
 DECL|field|client
 name|ClientProtocol
 name|client
@@ -2633,8 +2671,6 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|cluster
 operator|.
 name|waitActive
@@ -2870,15 +2906,6 @@ argument_list|,
 name|r
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Wait until balanced: each datanode gives utilization within     * BALANCE_ALLOWED_VARIANCE of average    * @throws IOException    * @throws TimeoutException    */
 DECL|method|waitForBalancer (long totalUsedSpace, long totalCapacity, ClientProtocol client, MiniDFSCluster cluster, BalancerParameters p, int expectedExcludedNodes)
@@ -5588,8 +5615,6 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|cluster
 operator|.
 name|waitActive
@@ -5792,15 +5817,6 @@ argument_list|,
 name|r
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Test parse method in Balancer#Cli class with threshold value out of    * boundaries.    */
 annotation|@
@@ -8114,8 +8130,6 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|cluster
 operator|.
 name|waitActive
@@ -8384,15 +8398,6 @@ name|RAM_DISK
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Check that the balancer exits when there is an unfinalized upgrade.    */
 annotation|@
 name|Test
@@ -8515,8 +8520,6 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|cluster
 operator|.
 name|waitActive
@@ -8760,15 +8763,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Test special case. Two replicas belong to same block should not in same node.    * We have 2 nodes.    * We have a block in (DN0,SSD) and (DN1,DISK).    * Replica in (DN0,SSD) should not be moved to (DN1,SSD).    * Otherwise DN1 has 2 replicas.    */
 annotation|@
 name|Test
@@ -8851,10 +8845,8 @@ name|numOfDatanodes
 init|=
 literal|2
 decl_stmt|;
-specifier|final
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -8945,9 +8937,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
-try|try
-block|{
+expr_stmt|;
 name|cluster
 operator|.
 name|waitActive
@@ -9093,15 +9083,6 @@ argument_list|,
 name|r
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Test running many balancer simultaneously.    *    * Case-1: First balancer is running. Now, running second one should get    * "Another balancer is running. Exiting.." IOException and fail immediately    *    * Case-2: When running second balancer 'balancer.id' file exists but the    * lease doesn't exists. Now, the second balancer should run successfully.    */
 annotation|@
@@ -9271,8 +9252,6 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|cluster
 operator|.
 name|waitActive
@@ -9526,15 +9505,6 @@ name|exitCode
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/** Balancer should not move blocks with size< minBlockSize. */
 annotation|@
 name|Test
@@ -9652,8 +9622,6 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|.
 name|waitActive
@@ -10361,15 +10329,6 @@ argument_list|()
 argument_list|,
 name|r
 argument_list|)
-expr_stmt|;
-block|}
-block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
 expr_stmt|;
 block|}
 block|}
