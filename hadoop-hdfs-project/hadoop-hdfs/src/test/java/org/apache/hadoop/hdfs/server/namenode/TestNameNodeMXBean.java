@@ -1095,7 +1095,7 @@ argument_list|(
 literal|"nonDfsUsedSpace"
 argument_list|)
 operator|)
-operator|>
+operator|>=
 literal|0
 argument_list|)
 expr_stmt|;
