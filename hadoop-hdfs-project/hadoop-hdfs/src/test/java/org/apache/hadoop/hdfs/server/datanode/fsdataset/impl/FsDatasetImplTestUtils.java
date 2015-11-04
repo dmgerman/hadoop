@@ -1907,6 +1907,34 @@ throw|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|fetchReplica (ExtendedBlock block)
+specifier|public
+name|Replica
+name|fetchReplica
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+block|{
+return|return
+name|dataset
+operator|.
+name|fetchReplicaInfo
+argument_list|(
+name|block
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|,
+name|block
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

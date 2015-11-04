@@ -544,6 +544,15 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get the replica of a block. Returns null if it does not exist.    * @param block the block whose replica will be returned.    * @return Replica for the block.    */
+DECL|method|fetchReplica (ExtendedBlock block)
+name|Replica
+name|fetchReplica
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 
