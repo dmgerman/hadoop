@@ -118,12 +118,12 @@ argument_list|>
 name|decoderClass
 decl_stmt|;
 DECL|field|encoder
-specifier|private
+specifier|protected
 name|RawErasureEncoder
 name|encoder
 decl_stmt|;
 DECL|field|decoder
-specifier|private
+specifier|protected
 name|RawErasureDecoder
 name|decoder
 decl_stmt|;
@@ -631,7 +631,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|setAllowChangeInputs (boolean allowChangeInputs)
-specifier|private
+specifier|protected
 name|void
 name|setAllowChangeInputs
 parameter_list|(
@@ -669,7 +669,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|prepareCoders ()
-specifier|private
+specifier|protected
 name|void
 name|prepareCoders
 parameter_list|()
@@ -702,7 +702,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|ensureOnlyLeastRequiredChunks (ECChunk[] inputChunks)
-specifier|private
+specifier|protected
 name|void
 name|ensureOnlyLeastRequiredChunks
 parameter_list|(

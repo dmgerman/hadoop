@@ -308,6 +308,17 @@ index|]
 expr_stmt|;
 comment|// With ZERO by default
 block|}
+DECL|method|getZeroChunkBytes ()
+specifier|protected
+name|byte
+index|[]
+name|getZeroChunkBytes
+parameter_list|()
+block|{
+return|return
+name|zeroChunkBytes
+return|;
+block|}
 DECL|method|prepareBufferAllocator (boolean usingSlicedBuffer)
 specifier|protected
 name|void
