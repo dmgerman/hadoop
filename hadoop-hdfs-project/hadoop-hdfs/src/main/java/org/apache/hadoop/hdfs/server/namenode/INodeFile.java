@@ -3178,6 +3178,14 @@ specifier|final
 name|BlockStoragePolicy
 name|bsp
 init|=
+operator|(
+name|blockStoragePolicyId
+operator|==
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
+operator|)
+condition|?
+literal|null
+else|:
 name|bsps
 operator|.
 name|getPolicy
