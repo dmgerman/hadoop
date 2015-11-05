@@ -87,6 +87,7 @@ operator|.
 name|Unstable
 DECL|class|NativeCodeLoader
 specifier|public
+specifier|final
 class|class
 name|NativeCodeLoader
 block|{
@@ -211,6 +212,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|NativeCodeLoader ()
+specifier|private
+name|NativeCodeLoader
+parameter_list|()
+block|{}
 comment|/**    * Check if native-hadoop code is loaded for this platform.    *     * @return<code>true</code> if native-hadoop is loaded,     *         else<code>false</code>    */
 DECL|method|isNativeCodeLoaded ()
 specifier|public
@@ -230,6 +236,15 @@ specifier|static
 specifier|native
 name|boolean
 name|buildSupportsSnappy
+parameter_list|()
+function_decl|;
+comment|/**    * Returns true only if this build was compiled with support for ISA-L.    */
+DECL|method|buildSupportsIsal ()
+specifier|public
+specifier|static
+specifier|native
+name|boolean
+name|buildSupportsIsal
 parameter_list|()
 function_decl|;
 comment|/**    * Returns true only if this build was compiled with support for openssl.    */
