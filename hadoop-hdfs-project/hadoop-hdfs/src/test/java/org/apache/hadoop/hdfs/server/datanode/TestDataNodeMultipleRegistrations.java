@@ -729,7 +729,15 @@ name|assertEquals
 argument_list|(
 literal|"number of volumes is wrong"
 argument_list|,
-literal|2
+name|cluster
+operator|.
+name|getFsDatasetTestUtils
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getDefaultNumOfDataDirs
+argument_list|()
 argument_list|,
 name|volInfos
 operator|.
@@ -1176,7 +1184,15 @@ name|assertEquals
 argument_list|(
 literal|"number of volumes is wrong"
 argument_list|,
-literal|2
+name|cluster
+operator|.
+name|getFsDatasetTestUtils
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getDefaultNumOfDataDirs
+argument_list|()
 argument_list|,
 name|volInfos
 operator|.

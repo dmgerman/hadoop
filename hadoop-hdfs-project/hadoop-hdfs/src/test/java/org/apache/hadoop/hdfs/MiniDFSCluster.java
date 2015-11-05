@@ -2049,6 +2049,22 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
+name|this
+operator|.
+name|storagesPerDatanode
+operator|=
+name|FsDatasetTestUtils
+operator|.
+name|Factory
+operator|.
+name|getFactory
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|getDefaultNumOfDataDirs
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**      * Default: 0      */
 DECL|method|nameNodePort (int val)

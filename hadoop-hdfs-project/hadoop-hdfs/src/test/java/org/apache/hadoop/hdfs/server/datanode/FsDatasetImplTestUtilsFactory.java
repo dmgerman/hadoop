@@ -79,6 +79,20 @@ name|datanode
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getDefaultNumOfDataDirs ()
+specifier|public
+name|int
+name|getDefaultNumOfDataDirs
+parameter_list|()
+block|{
+return|return
+name|FsDatasetImplTestUtils
+operator|.
+name|DEFAULT_NUM_OF_DATA_DIRS
+return|;
+block|}
 block|}
 end_class
 

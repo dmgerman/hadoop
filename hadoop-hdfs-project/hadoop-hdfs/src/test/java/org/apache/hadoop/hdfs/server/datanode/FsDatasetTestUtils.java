@@ -323,6 +323,14 @@ return|return
 literal|false
 return|;
 block|}
+comment|/**      * Get the default number of data directories for underlying storage per      * DataNode.      *      * @return The default number of data dirs per DataNode.      */
+DECL|method|getDefaultNumOfDataDirs ()
+specifier|abstract
+specifier|public
+name|int
+name|getDefaultNumOfDataDirs
+parameter_list|()
+function_decl|;
 block|}
 comment|/**    * A replica to be corrupted.    *    * It is safe to corrupt this replica even if the MiniDFSCluster is shutdown.    */
 DECL|interface|MaterializedReplica
@@ -552,6 +560,20 @@ parameter_list|(
 name|ExtendedBlock
 name|block
 parameter_list|)
+function_decl|;
+comment|/**    * @return The default value of number of data dirs per DataNode in    * MiniDFSCluster.    */
+DECL|method|getDefaultNumOfDataDirs ()
+name|int
+name|getDefaultNumOfDataDirs
+parameter_list|()
+function_decl|;
+comment|/**    * Obtain the raw capacity of underlying storage per DataNode.    */
+DECL|method|getRawCapacity ()
+name|long
+name|getRawCapacity
+parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface
