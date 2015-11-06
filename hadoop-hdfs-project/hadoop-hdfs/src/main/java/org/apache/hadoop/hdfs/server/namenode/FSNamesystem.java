@@ -13551,6 +13551,18 @@ argument_list|(
 name|existings
 argument_list|,
 name|storageIDs
+argument_list|,
+literal|"src=%s, fileId=%d, blk=%s, clientName=%s, clientMachine=%s"
+argument_list|,
+name|src
+argument_list|,
+name|fileId
+argument_list|,
+name|blk
+argument_list|,
+name|clientName
+argument_list|,
+name|clientMachine
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -16981,10 +16993,9 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
+specifier|final
 name|String
 name|src
-init|=
-literal|""
 decl_stmt|;
 name|waitForLoadingFSImage
 argument_list|()
@@ -17159,6 +17170,13 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
+name|src
+operator|=
+name|iFile
+operator|.
+name|getFullPathName
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|isFileDeleted
@@ -17173,14 +17191,9 @@ name|FileNotFoundException
 argument_list|(
 literal|"File not found: "
 operator|+
-name|iFile
-operator|.
-name|getFullPathName
-argument_list|()
+name|src
 operator|+
-literal|", likely due to delayed block"
-operator|+
-literal|" removal"
+literal|", likely due to delayed block removal"
 argument_list|)
 throw|;
 block|}
@@ -17617,6 +17630,16 @@ name|size
 argument_list|()
 index|]
 argument_list|)
+argument_list|,
+literal|"src=%s, oldBlock=%s, newgenerationstamp=%d, newlength=%d"
+argument_list|,
+name|src
+argument_list|,
+name|oldBlock
+argument_list|,
+name|newgenerationstamp
+argument_list|,
+name|newlength
 argument_list|)
 decl_stmt|;
 if|if
@@ -17681,10 +17704,10 @@ condition|(
 name|copyTruncate
 condition|)
 block|{
-name|src
-operator|=
 name|closeFileCommitBlocks
 argument_list|(
+name|src
+argument_list|,
 name|iFile
 argument_list|,
 name|truncatedBlock
@@ -17715,10 +17738,10 @@ block|}
 block|}
 else|else
 block|{
-name|src
-operator|=
 name|closeFileCommitBlocks
 argument_list|(
+name|src
+argument_list|,
 name|iFile
 argument_list|,
 name|storedBlock
@@ -17729,13 +17752,6 @@ block|}
 else|else
 block|{
 comment|// If this commit does not want to close the file, persist blocks
-name|src
-operator|=
-name|iFile
-operator|.
-name|getFullPathName
-argument_list|()
-expr_stmt|;
 name|FSDirWriteFileOp
 operator|.
 name|persistBlocks
@@ -17827,10 +17843,13 @@ block|}
 comment|/**    * @param pendingFile open file that needs to be closed    * @param storedBlock last block    * @return Path of the file that was closed.    * @throws IOException on error    */
 annotation|@
 name|VisibleForTesting
-DECL|method|closeFileCommitBlocks (INodeFile pendingFile, BlockInfo storedBlock)
-name|String
+DECL|method|closeFileCommitBlocks (String src, INodeFile pendingFile, BlockInfo storedBlock)
+name|void
 name|closeFileCommitBlocks
 parameter_list|(
+name|String
+name|src
+parameter_list|,
 name|INodeFile
 name|pendingFile
 parameter_list|,
@@ -17850,15 +17869,6 @@ name|fromINode
 argument_list|(
 name|pendingFile
 argument_list|)
-decl_stmt|;
-specifier|final
-name|String
-name|src
-init|=
-name|iip
-operator|.
-name|getPath
-argument_list|()
 decl_stmt|;
 comment|// commit the last block and complete it if it has minimum replicas
 name|commitOrCompleteLastBlock
@@ -17889,9 +17899,6 @@ name|CURRENT_STATE_ID
 argument_list|)
 argument_list|)
 expr_stmt|;
-return|return
-name|src
-return|;
 block|}
 comment|/**    * Renew the lease(s) held by the given client    */
 DECL|method|renewLease (String holder)
@@ -25125,6 +25132,15 @@ name|clientName
 argument_list|)
 decl_stmt|;
 specifier|final
+name|String
+name|src
+init|=
+name|pendingFile
+operator|.
+name|getFullPathName
+argument_list|()
+decl_stmt|;
+specifier|final
 name|BlockInfo
 name|lastBlock
 init|=
@@ -25278,6 +25294,16 @@ argument_list|(
 name|newNodes
 argument_list|,
 name|newStorageIDs
+argument_list|,
+literal|"src=%s, oldBlock=%s, newBlock=%s, clientName=%s"
+argument_list|,
+name|src
+argument_list|,
+name|oldBlock
+argument_list|,
+name|newBlock
+argument_list|,
+name|clientName
 argument_list|)
 decl_stmt|;
 name|lastBlock
@@ -25297,14 +25323,6 @@ name|isStriped
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|String
-name|src
-init|=
-name|pendingFile
-operator|.
-name|getFullPathName
-argument_list|()
-decl_stmt|;
 name|FSDirWriteFileOp
 operator|.
 name|persistBlocks

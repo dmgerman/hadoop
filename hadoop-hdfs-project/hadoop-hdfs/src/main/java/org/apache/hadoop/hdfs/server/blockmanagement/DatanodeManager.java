@@ -2271,7 +2271,7 @@ return|return
 name|node
 return|;
 block|}
-DECL|method|getDatanodeStorageInfos ( DatanodeID[] datanodeID, String[] storageIDs)
+DECL|method|getDatanodeStorageInfos ( DatanodeID[] datanodeID, String[] storageIDs, String format, Object... args)
 specifier|public
 name|DatanodeStorageInfo
 index|[]
@@ -2284,10 +2284,79 @@ parameter_list|,
 name|String
 index|[]
 name|storageIDs
+parameter_list|,
+name|String
+name|format
+parameter_list|,
+name|Object
+modifier|...
+name|args
 parameter_list|)
 throws|throws
 name|UnregisteredNodeException
 block|{
+if|if
+condition|(
+name|datanodeID
+operator|.
+name|length
+operator|!=
+name|storageIDs
+operator|.
+name|length
+condition|)
+block|{
+specifier|final
+name|String
+name|err
+init|=
+operator|(
+name|storageIDs
+operator|.
+name|length
+operator|==
+literal|0
+condition|?
+literal|"Missing storageIDs: It is likely that the HDFS client,"
+operator|+
+literal|" who made this call, is running in an older version of Hadoop"
+operator|+
+literal|" which does not support storageIDs."
+else|:
+literal|"Length mismatched: storageIDs.length="
+operator|+
+name|storageIDs
+operator|.
+name|length
+operator|+
+literal|" != "
+operator|)
+operator|+
+literal|" datanodeID.length="
+operator|+
+name|datanodeID
+operator|.
+name|length
+decl_stmt|;
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+name|err
+operator|+
+literal|", "
+operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+name|format
+argument_list|,
+name|args
+argument_list|)
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|datanodeID

@@ -574,10 +574,8 @@ operator|.
 name|getLastBlock
 argument_list|()
 expr_stmt|;
-name|doReturn
-argument_list|(
-literal|""
-argument_list|)
+name|doNothing
+argument_list|()
 operator|.
 name|when
 argument_list|(
@@ -586,6 +584,13 @@ argument_list|)
 operator|.
 name|closeFileCommitBlocks
 argument_list|(
+name|any
+argument_list|(
+name|String
+operator|.
+name|class
+argument_list|)
+argument_list|,
 name|any
 argument_list|(
 name|INodeFile
