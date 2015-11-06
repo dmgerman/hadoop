@@ -442,7 +442,7 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|ThreadPoolExecutor
+name|ExecutorService
 import|;
 end_import
 
@@ -562,7 +562,7 @@ name|int
 name|bufferLimit
 decl_stmt|;
 comment|/**    * Creates a fast OutputStream that uploads to S3 from memory.    * For MultiPartUploads, as soon as sufficient bytes have been written to    * the stream a part is uploaded immediately (by using the low-level    * multi-part upload API on the AmazonS3Client).    *    * @param client AmazonS3Client used for S3 calls    * @param fs S3AFilesystem    * @param bucket S3 bucket name    * @param key S3 key name    * @param progress report progress in order to prevent timeouts    * @param statistics track FileSystem.Statistics on the performed operations    * @param cannedACL used CannedAccessControlList    * @param serverSideEncryptionAlgorithm algorithm for server side encryption    * @param partSize size of a single part in a multi-part upload (except    * last part)    * @param multiPartThreshold files at least this size use multi-part upload    * @throws IOException    */
-DECL|method|S3AFastOutputStream (AmazonS3Client client, S3AFileSystem fs, String bucket, String key, Progressable progress, FileSystem.Statistics statistics, CannedAccessControlList cannedACL, String serverSideEncryptionAlgorithm, long partSize, long multiPartThreshold, ThreadPoolExecutor threadPoolExecutor)
+DECL|method|S3AFastOutputStream (AmazonS3Client client, S3AFileSystem fs, String bucket, String key, Progressable progress, FileSystem.Statistics statistics, CannedAccessControlList cannedACL, String serverSideEncryptionAlgorithm, long partSize, long multiPartThreshold, ExecutorService threadPoolExecutor)
 specifier|public
 name|S3AFastOutputStream
 parameter_list|(
@@ -598,7 +598,7 @@ parameter_list|,
 name|long
 name|multiPartThreshold
 parameter_list|,
-name|ThreadPoolExecutor
+name|ExecutorService
 name|threadPoolExecutor
 parameter_list|)
 throws|throws

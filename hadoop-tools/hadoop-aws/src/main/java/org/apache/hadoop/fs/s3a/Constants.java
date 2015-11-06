@@ -240,29 +240,9 @@ specifier|final
 name|int
 name|DEFAULT_MAX_THREADS
 init|=
-literal|256
+literal|10
 decl_stmt|;
-comment|// the number of threads to keep in the pool used by TransferManager
-DECL|field|CORE_THREADS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|CORE_THREADS
-init|=
-literal|"fs.s3a.threads.core"
-decl_stmt|;
-DECL|field|DEFAULT_CORE_THREADS
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_CORE_THREADS
-init|=
-name|DEFAULT_MAXIMUM_CONNECTIONS
-decl_stmt|;
-comment|// when the number of threads is greater than the core, this is the maximum time
-comment|// that excess idle threads will wait for new tasks before terminating.
+comment|// the time an idle thread waits before terminating
 DECL|field|KEEPALIVE_TIME
 specifier|public
 specifier|static
@@ -281,7 +261,7 @@ name|DEFAULT_KEEPALIVE_TIME
 init|=
 literal|60
 decl_stmt|;
-comment|// the maximum number of tasks that the LinkedBlockingQueue can hold
+comment|// the maximum number of tasks cached if all threads are already uploading
 DECL|field|MAX_TOTAL_TASKS
 specifier|public
 specifier|static
@@ -298,7 +278,7 @@ specifier|final
 name|int
 name|DEFAULT_MAX_TOTAL_TASKS
 init|=
-literal|1000
+literal|5
 decl_stmt|;
 comment|// size of each of or multipart pieces in bytes
 DECL|field|MULTIPART_SIZE
