@@ -248,7 +248,29 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
 import|;
 end_import
 
@@ -323,6 +345,19 @@ specifier|private
 specifier|static
 name|ExecutorService
 name|executor
+decl_stmt|;
+annotation|@
+name|Rule
+DECL|field|timeout
+specifier|public
+name|Timeout
+name|timeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|30000
+argument_list|)
 decl_stmt|;
 annotation|@
 name|BeforeClass
@@ -1104,6 +1139,24 @@ literal|1024
 index|]
 decl_stmt|;
 comment|// much bigger than request
+comment|// The second request can be sent with Transfer-Encoding: chunked.
+comment|// The Java HTTP client tends to split the headers and the chunked
+comment|// body into separate writes, so the first read likely only gets the
+comment|// headers.  We must fully consume the input to prevent a hang on the
+comment|// client side.
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+init|;
+condition|;
+control|)
+block|{
 name|int
 name|n
 init|=
@@ -1117,7 +1170,19 @@ argument_list|(
 name|buf
 argument_list|)
 decl_stmt|;
-return|return
+if|if
+condition|(
+name|n
+operator|<=
+literal|0
+condition|)
+block|{
+break|break;
+block|}
+name|sb
+operator|.
+name|append
+argument_list|(
 operator|new
 name|String
 argument_list|(
@@ -1126,7 +1191,17 @@ argument_list|,
 literal|0
 argument_list|,
 name|n
+argument_list|,
+literal|"UTF-8"
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 finally|finally
