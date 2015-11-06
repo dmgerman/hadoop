@@ -615,7 +615,16 @@ name|errorCount
 init|=
 literal|0
 decl_stmt|;
-comment|//check generation stamps
+name|int
+name|candidateReplicaCnt
+init|=
+literal|0
+decl_stmt|;
+comment|// Check generation stamps, replica size and state. Replica must satisfy
+comment|// the following criteria to be included in syncList for recovery:
+comment|// - Valid generation stamp
+comment|// - Non-zero length
+comment|// - Original state is RWR or better
 for|for
 control|(
 name|DatanodeID
@@ -701,6 +710,28 @@ operator|>
 literal|0
 condition|)
 block|{
+comment|// Count the number of candidate replicas received.
+operator|++
+name|candidateReplicaCnt
+expr_stmt|;
+if|if
+condition|(
+name|info
+operator|.
+name|getOriginalReplicaState
+argument_list|()
+operator|.
+name|getValue
+argument_list|()
+operator|<=
+name|ReplicaState
+operator|.
+name|RWR
+operator|.
+name|getValue
+argument_list|()
+condition|)
+block|{
 name|syncList
 operator|.
 name|add
@@ -716,6 +747,89 @@ name|info
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Block recovery: Ignored replica with invalid "
+operator|+
+literal|"original state: "
+operator|+
+name|info
+operator|+
+literal|" from DataNode: "
+operator|+
+name|id
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|info
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Block recovery: DataNode: "
+operator|+
+name|id
+operator|+
+literal|" does not have "
+operator|+
+literal|"replica for block: "
+operator|+
+name|block
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Block recovery: Ignored replica with invalid "
+operator|+
+literal|"generation stamp or length: "
+operator|+
+name|info
+operator|+
+literal|" from "
+operator|+
+literal|"DataNode: "
+operator|+
+name|id
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 catch|catch
@@ -800,6 +914,52 @@ operator|+
 name|block
 operator|+
 literal|", datanodeids="
+operator|+
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|locs
+argument_list|)
+argument_list|)
+throw|;
+block|}
+comment|// None of the replicas reported by DataNodes has the required original
+comment|// state, report the error.
+if|if
+condition|(
+name|candidateReplicaCnt
+operator|>
+literal|0
+operator|&&
+name|syncList
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Found "
+operator|+
+name|candidateReplicaCnt
+operator|+
+literal|" replica(s) for block "
+operator|+
+name|block
+operator|+
+literal|" but none is in "
+operator|+
+name|ReplicaState
+operator|.
+name|RWR
+operator|.
+name|name
+argument_list|()
+operator|+
+literal|" or better state. datanodeids="
 operator|+
 name|Arrays
 operator|.
@@ -911,6 +1071,30 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"syncBlock for block "
+operator|+
+name|block
+operator|+
+literal|", all datanodes don't "
+operator|+
+literal|"have the block or their replicas have 0 length. The block can "
+operator|+
+literal|"be deleted."
+argument_list|)
+expr_stmt|;
+block|}
 name|nn
 operator|.
 name|commitBlockSynchronization
@@ -1145,6 +1329,50 @@ name|r
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"syncBlock replicaInfo: block="
+operator|+
+name|block
+operator|+
+literal|", from datanode "
+operator|+
+name|r
+operator|.
+name|id
+operator|+
+literal|", receivedState="
+operator|+
+name|rState
+operator|.
+name|name
+argument_list|()
+operator|+
+literal|", receivedLength="
+operator|+
+name|r
+operator|.
+name|rInfo
+operator|.
+name|getNumBytes
+argument_list|()
+operator|+
+literal|", bestState=FINALIZED, finalizedLength="
+operator|+
+name|finalizedLength
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|newBlock
 operator|.
@@ -1216,7 +1444,65 @@ name|r
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"syncBlock replicaInfo: block="
+operator|+
+name|block
+operator|+
+literal|", from datanode "
+operator|+
+name|r
+operator|.
+name|id
+operator|+
+literal|", receivedState="
+operator|+
+name|rState
+operator|.
+name|name
+argument_list|()
+operator|+
+literal|", receivedLength="
+operator|+
+name|r
+operator|.
+name|rInfo
+operator|.
+name|getNumBytes
+argument_list|()
+operator|+
+literal|", bestState="
+operator|+
+name|bestState
+operator|.
+name|name
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
+block|}
+comment|// recover() guarantees syncList will have at least one replica with RWR
+comment|// or better state.
+assert|assert
+name|minLength
+operator|!=
+name|Long
+operator|.
+name|MAX_VALUE
+operator|:
+literal|"wrong minLength"
+assert|;
 name|newBlock
 operator|.
 name|setNumBytes
@@ -1489,6 +1775,38 @@ operator|=
 name|r
 operator|.
 name|storageID
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Datanode triggering commitBlockSynchronization, block="
+operator|+
+name|block
+operator|+
+literal|", newGs="
+operator|+
+name|newBlock
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|+
+literal|", newLength="
+operator|+
+name|newBlock
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 name|nn
