@@ -285,7 +285,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This ExecutorService blocks the submission of new tasks when its queue is  * already full by using a semaphore. Task submissions require permits, task  * completions release permits.  *<p>  * This is inspired by<a href = "https://github  * .com/apache/incubator-s4/blob/master/subprojects  * /s4-comm/src/main/java/org/apache/s4/comm/staging  * /BlockingThreadPoolExecutorService.java"> this s4 threadpool</a>  */
+comment|/**  * This ExecutorService blocks the submission of new tasks when its queue is  * already full by using a semaphore. Task submissions require permits, task  * completions release permits.  *<p>  * This is inspired by<a href="https://github.com/apache/incubator-s4/blob/master/subprojects/s4-comm/src/main/java/org/apache/s4/comm/staging/BlockingThreadPoolExecutorService.java">  * this s4 threadpool</a>  */
 end_comment
 
 begin_class
