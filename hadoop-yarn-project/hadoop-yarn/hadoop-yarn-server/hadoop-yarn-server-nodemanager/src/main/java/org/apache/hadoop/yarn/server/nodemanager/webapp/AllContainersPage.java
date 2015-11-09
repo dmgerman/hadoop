@@ -409,7 +409,48 @@ operator|.
 comment|// containerid, containerid, log-url
 name|append
 argument_list|(
-literal|", aoColumns:[null, null, {bSearchable:false}]} "
+literal|", aoColumns:["
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getContainersIdColumnDefs
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", null, {bSearchable:false}]} "
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+DECL|method|getContainersIdColumnDefs ()
+specifier|private
+name|String
+name|getContainersIdColumnDefs
+parameter_list|()
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+return|return
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"{'sType':'natural', 'aTargets': [0]"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", 'mRender': parseHadoopID }"
 argument_list|)
 operator|.
 name|toString
