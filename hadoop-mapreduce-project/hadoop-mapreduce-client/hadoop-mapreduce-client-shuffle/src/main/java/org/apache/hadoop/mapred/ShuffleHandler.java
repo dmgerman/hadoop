@@ -2615,7 +2615,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-literal|"httpshuffle"
+name|MAPREDUCE_SHUFFLE_SERVICEID
 argument_list|)
 expr_stmt|;
 name|metrics
