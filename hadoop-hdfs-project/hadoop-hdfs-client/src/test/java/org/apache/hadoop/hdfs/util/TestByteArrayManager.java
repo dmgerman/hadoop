@@ -1938,7 +1938,7 @@ specifier|final
 name|long
 name|countResetTimePeriodMs
 init|=
-literal|1000L
+literal|10000L
 decl_stmt|;
 specifier|final
 name|ByteArrayManager
