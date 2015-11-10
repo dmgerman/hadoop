@@ -1996,6 +1996,45 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// increaseContainerResource shouldn't be called before startContainer,
+comment|// otherwise, NodeManager cannot find the container
+try|try
+block|{
+name|nmClient
+operator|.
+name|increaseContainerResource
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Exception is expected"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnException
+name|e
+parameter_list|)
+block|{
+name|assertTrue
+argument_list|(
+literal|"The thrown exception is not expected"
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"is not handled by this NodeManager"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|// stopContainer shouldn't be called before startContainer,
 comment|// otherwise, an exception will be thrown
 try|try
@@ -2194,6 +2233,12 @@ operator|-
 literal|1000
 block|}
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Test increase container API and make sure requests can reach NM
+name|testIncreaseContainerResource
+argument_list|(
+name|container
 argument_list|)
 expr_stmt|;
 try|try
@@ -2502,6 +2547,73 @@ operator|.
 name|printStackTrace
 argument_list|()
 expr_stmt|;
+block|}
+block|}
+block|}
+DECL|method|testIncreaseContainerResource (Container container)
+specifier|private
+name|void
+name|testIncreaseContainerResource
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+try|try
+block|{
+name|nmClient
+operator|.
+name|increaseContainerResource
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnException
+name|e
+parameter_list|)
+block|{
+comment|// NM container will only be in LOCALIZED state, so expect the increase
+comment|// action to fail.
+if|if
+condition|(
+operator|!
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"can only be changed when a container is in RUNNING state"
+argument_list|)
+condition|)
+block|{
+throw|throw
+call|(
+name|AssertionError
+call|)
+argument_list|(
+operator|new
+name|AssertionError
+argument_list|(
+literal|"Exception is not expected: "
+operator|+
+name|e
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|e
+argument_list|)
+argument_list|)
+throw|;
 block|}
 block|}
 block|}

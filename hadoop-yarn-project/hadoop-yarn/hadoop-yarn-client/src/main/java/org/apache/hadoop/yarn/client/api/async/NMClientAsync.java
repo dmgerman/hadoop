@@ -220,6 +220,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Token
 import|;
 end_import
@@ -315,7 +333,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<code>NMClientAsync</code> handles communication with all the NodeManagers  * and provides asynchronous updates on getting responses from them. It  * maintains a thread pool to communicate with individual NMs where a number of  * worker threads process requests to NMs by using {@link NMClientImpl}. The max  * size of the thread pool is configurable through  * {@link YarnConfiguration#NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE}.  *  * It should be used in conjunction with a CallbackHandler. For example  *  *<pre>  * {@code  * class MyCallbackHandler implements NMClientAsync.CallbackHandler {  *   public void onContainerStarted(ContainerId containerId,  *       Map<String, ByteBuffer> allServiceResponse) {  *     [post process after the container is started, process the response]  *   }  *  *   public void onContainerStatusReceived(ContainerId containerId,  *       ContainerStatus containerStatus) {  *     [make use of the status of the container]  *   }  *  *   public void onContainerStopped(ContainerId containerId) {  *     [post process after the container is stopped]  *   }  *  *   public void onStartContainerError(  *       ContainerId containerId, Throwable t) {  *     [handle the raised exception]  *   }  *  *   public void onGetContainerStatusError(  *       ContainerId containerId, Throwable t) {  *     [handle the raised exception]  *   }  *  *   public void onStopContainerError(  *       ContainerId containerId, Throwable t) {  *     [handle the raised exception]  *   }  * }  * }  *</pre>  *  * The client's life-cycle should be managed like the following:  *  *<pre>  * {@code  * NMClientAsync asyncClient =   *     NMClientAsync.createNMClientAsync(new MyCallbackhandler());  * asyncClient.init(conf);  * asyncClient.start();  * asyncClient.startContainer(container, containerLaunchContext);  * [... wait for container being started]  * asyncClient.getContainerStatus(container.getId(), container.getNodeId(),  *     container.getContainerToken());  * [... handle the status in the callback instance]  * asyncClient.stopContainer(container.getId(), container.getNodeId(),  *     container.getContainerToken());  * [... wait for container being stopped]  * asyncClient.stop();  * }  *</pre>  */
+comment|/**  *<code>NMClientAsync</code> handles communication with all the NodeManagers  * and provides asynchronous updates on getting responses from them. It  * maintains a thread pool to communicate with individual NMs where a number of  * worker threads process requests to NMs by using {@link NMClientImpl}. The max  * size of the thread pool is configurable through  * {@link YarnConfiguration#NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE}.  *  * It should be used in conjunction with a CallbackHandler. For example  *  *<pre>  * {@code  * class MyCallbackHandler extends NMClientAsync.AbstractCallbackHandler {  *   public void onContainerStarted(ContainerId containerId,  *       Map<String, ByteBuffer> allServiceResponse) {  *     [post process after the container is started, process the response]  *   }   *   public void onContainerResourceIncreased(ContainerId containerId,  *       Resource resource) {  *     [post process after the container resource is increased]  *   }  *  *   public void onContainerStatusReceived(ContainerId containerId,  *       ContainerStatus containerStatus) {  *     [make use of the status of the container]  *   }  *  *   public void onContainerStopped(ContainerId containerId) {  *     [post process after the container is stopped]  *   }  *  *   public void onStartContainerError(  *       ContainerId containerId, Throwable t) {  *     [handle the raised exception]  *   }  *  *   public void onGetContainerStatusError(  *       ContainerId containerId, Throwable t) {  *     [handle the raised exception]  *   }  *  *   public void onStopContainerError(  *       ContainerId containerId, Throwable t) {  *     [handle the raised exception]  *   }  * }  * }  *</pre>  *  * The client's life-cycle should be managed like the following:  *  *<pre>  * {@code  * NMClientAsync asyncClient =   *     NMClientAsync.createNMClientAsync(new MyCallbackhandler());  * asyncClient.init(conf);  * asyncClient.start();  * asyncClient.startContainer(container, containerLaunchContext);  * [... wait for container being started]  * asyncClient.getContainerStatus(container.getId(), container.getNodeId(),  *     container.getContainerToken());  * [... handle the status in the callback instance]  * asyncClient.stopContainer(container.getId(), container.getNodeId(),  *     container.getContainerToken());  * [... wait for container being stopped]  * asyncClient.stop();  * }  *</pre>  */
 end_comment
 
 begin_class
@@ -341,6 +359,105 @@ specifier|protected
 name|CallbackHandler
 name|callbackHandler
 decl_stmt|;
+DECL|method|createNMClientAsync ( AbstractCallbackHandler callbackHandler)
+specifier|public
+specifier|static
+name|NMClientAsync
+name|createNMClientAsync
+parameter_list|(
+name|AbstractCallbackHandler
+name|callbackHandler
+parameter_list|)
+block|{
+return|return
+operator|new
+name|NMClientAsyncImpl
+argument_list|(
+name|callbackHandler
+argument_list|)
+return|;
+block|}
+DECL|method|NMClientAsync (AbstractCallbackHandler callbackHandler)
+specifier|protected
+name|NMClientAsync
+parameter_list|(
+name|AbstractCallbackHandler
+name|callbackHandler
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|NMClientAsync
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|callbackHandler
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|NMClientAsync ( String name, AbstractCallbackHandler callbackHandler)
+specifier|protected
+name|NMClientAsync
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|AbstractCallbackHandler
+name|callbackHandler
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|name
+argument_list|,
+operator|new
+name|NMClientImpl
+argument_list|()
+argument_list|,
+name|callbackHandler
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|NMClientAsync (String name, NMClient client, AbstractCallbackHandler callbackHandler)
+specifier|protected
+name|NMClientAsync
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|NMClient
+name|client
+parameter_list|,
+name|AbstractCallbackHandler
+name|callbackHandler
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|setClient
+argument_list|(
+name|client
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|setCallbackHandler
+argument_list|(
+name|callbackHandler
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * @deprecated Use {@link #createNMClientAsync(AbstractCallbackHandler)}    *             instead.    */
+annotation|@
+name|Deprecated
 DECL|method|createNMClientAsync ( CallbackHandler callbackHandler)
 specifier|public
 specifier|static
@@ -359,6 +476,9 @@ name|callbackHandler
 argument_list|)
 return|;
 block|}
+comment|/**    * @deprecated Use {@link #NMClientAsync(AbstractCallbackHandler)}    *             instead.    */
+annotation|@
+name|Deprecated
 DECL|method|NMClientAsync (CallbackHandler callbackHandler)
 specifier|protected
 name|NMClientAsync
@@ -380,6 +500,9 @@ name|callbackHandler
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @deprecated Use {@link #NMClientAsync(String, AbstractCallbackHandler)}    *             instead.    */
+annotation|@
+name|Deprecated
 DECL|method|NMClientAsync (String name, CallbackHandler callbackHandler)
 specifier|protected
 name|NMClientAsync
@@ -407,6 +530,8 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
+annotation|@
+name|Deprecated
 DECL|method|NMClientAsync (String name, NMClient client, CallbackHandler callbackHandler)
 specifier|protected
 name|NMClientAsync
@@ -452,6 +577,16 @@ name|container
 parameter_list|,
 name|ContainerLaunchContext
 name|containerLaunchContext
+parameter_list|)
+function_decl|;
+DECL|method|increaseContainerResourceAsync (Container container)
+specifier|public
+specifier|abstract
+name|void
+name|increaseContainerResourceAsync
+parameter_list|(
+name|Container
+name|container
 parameter_list|)
 function_decl|;
 DECL|method|stopContainerAsync ( ContainerId containerId, NodeId nodeId)
@@ -532,7 +667,134 @@ operator|=
 name|callbackHandler
 expr_stmt|;
 block|}
-comment|/**    *<p>    * The callback interface needs to be implemented by {@link NMClientAsync}    * users. The APIs are called when responses from<code>NodeManager</code> are    * available.    *</p>    *    *<p>    * Once a callback happens, the users can chose to act on it in blocking or    * non-blocking manner. If the action on callback is done in a blocking    * manner, some of the threads performing requests on NodeManagers may get    * blocked depending on how many threads in the pool are busy.    *</p>    *    *<p>    * The implementation of the callback function should not throw the    * unexpected exception. Otherwise, {@link NMClientAsync} will just    * catch, log and then ignore it.    *</p>    */
+comment|/**    *<p>    * The callback abstract class. The callback functions need to be implemented    * by {@link NMClientAsync} users. The APIs are called when responses from    *<code>NodeManager</code> are available.    *</p>    *    *<p>    * Once a callback happens, the users can chose to act on it in blocking or    * non-blocking manner. If the action on callback is done in a blocking    * manner, some of the threads performing requests on NodeManagers may get    * blocked depending on how many threads in the pool are busy.    *</p>    *    *<p>    * The implementation of the callback functions should not throw the    * unexpected exception. Otherwise, {@link NMClientAsync} will just    * catch, log and then ignore it.    *</p>    */
+DECL|class|AbstractCallbackHandler
+specifier|public
+specifier|abstract
+specifier|static
+class|class
+name|AbstractCallbackHandler
+implements|implements
+name|CallbackHandler
+block|{
+comment|/**      * The API is called when<code>NodeManager</code> responds to indicate its      * acceptance of the starting container request.      *      * @param containerId the Id of the container      * @param allServiceResponse a Map between the auxiliary service names and      *                           their outputs      */
+DECL|method|onContainerStarted (ContainerId containerId, Map<String, ByteBuffer> allServiceResponse)
+specifier|public
+specifier|abstract
+name|void
+name|onContainerStarted
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ByteBuffer
+argument_list|>
+name|allServiceResponse
+parameter_list|)
+function_decl|;
+comment|/**      * The API is called when<code>NodeManager</code> responds with the status      * of the container.      *      * @param containerId the Id of the container      * @param containerStatus the status of the container      */
+DECL|method|onContainerStatusReceived (ContainerId containerId, ContainerStatus containerStatus)
+specifier|public
+specifier|abstract
+name|void
+name|onContainerStatusReceived
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|ContainerStatus
+name|containerStatus
+parameter_list|)
+function_decl|;
+comment|/**      * The API is called when<code>NodeManager</code> responds to indicate the      * container is stopped.      *      * @param containerId the Id of the container      */
+DECL|method|onContainerStopped (ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|onContainerStopped
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+function_decl|;
+comment|/**      * The API is called when an exception is raised in the process of      * starting a container.      *      * @param containerId the Id of the container      * @param t the raised exception      */
+DECL|method|onStartContainerError ( ContainerId containerId, Throwable t)
+specifier|public
+specifier|abstract
+name|void
+name|onStartContainerError
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+function_decl|;
+comment|/**      * The API is called when<code>NodeManager</code> responds to indicate      * the container resource has been successfully increased.      *      * @param containerId the Id of the container      * @param resource the target resource of the container      */
+DECL|method|onContainerResourceIncreased ( ContainerId containerId, Resource resource)
+specifier|public
+specifier|abstract
+name|void
+name|onContainerResourceIncreased
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|)
+function_decl|;
+comment|/**      * The API is called when an exception is raised in the process of      * querying the status of a container.      *      * @param containerId the Id of the container      * @param t the raised exception      */
+DECL|method|onGetContainerStatusError ( ContainerId containerId, Throwable t)
+specifier|public
+specifier|abstract
+name|void
+name|onGetContainerStatusError
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+function_decl|;
+comment|/**      * The API is called when an exception is raised in the process of      * increasing container resource.      *      * @param containerId the Id of the container      * @param t the raised exception      */
+DECL|method|onIncreaseContainerResourceError ( ContainerId containerId, Throwable t)
+specifier|public
+specifier|abstract
+name|void
+name|onIncreaseContainerResourceError
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+function_decl|;
+comment|/**      * The API is called when an exception is raised in the process of      * stopping a container.      *      * @param containerId the Id of the container      * @param t the raised exception      */
+DECL|method|onStopContainerError ( ContainerId containerId, Throwable t)
+specifier|public
+specifier|abstract
+name|void
+name|onStopContainerError
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+function_decl|;
+block|}
+comment|/**    * @deprecated Use {@link NMClientAsync.AbstractCallbackHandler} instead.    *    *<p>    * The callback interface needs to be implemented by {@link NMClientAsync}    * users. The APIs are called when responses from<code>NodeManager</code> are    * available.    *</p>    *    *<p>    * Once a callback happens, the users can chose to act on it in blocking or    * non-blocking manner. If the action on callback is done in a blocking    * manner, some of the threads performing requests on NodeManagers may get    * blocked depending on how many threads in the pool are busy.    *</p>    *    *<p>    * The implementation of the callback function should not throw the    * unexpected exception. Otherwise, {@link NMClientAsync} will just    * catch, log and then ignore it.    *</p>    */
+annotation|@
+name|Deprecated
 DECL|interface|CallbackHandler
 specifier|public
 specifier|static

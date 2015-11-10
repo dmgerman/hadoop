@@ -363,6 +363,21 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    *<p>Increase the resource of a container.</p>    *    *<p>The<code>ApplicationMaster</code> or other applications that use the    * client must provide the details of the container, including the Id and    * the target resource encapsulated in the updated container token via    * {@link Container}.    *</p>    *    * @param container the container with updated token    * @throws YarnException    * @throws IOException    */
+DECL|method|increaseContainerResource (Container container)
+specifier|public
+specifier|abstract
+name|void
+name|increaseContainerResource
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    *<p>Stop an started container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    *     * @throws YarnException    * @throws IOException    */
 DECL|method|stopContainer (ContainerId containerId, NodeId nodeId)
 specifier|public
