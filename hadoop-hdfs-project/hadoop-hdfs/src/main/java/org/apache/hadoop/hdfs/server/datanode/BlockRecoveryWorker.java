@@ -638,6 +638,9 @@ block|{
 name|DatanodeID
 name|bpReg
 init|=
+operator|new
+name|DatanodeID
+argument_list|(
 name|datanode
 operator|.
 name|getBPOfferService
@@ -646,6 +649,7 @@ name|bpid
 argument_list|)
 operator|.
 name|bpRegistration
+argument_list|)
 decl_stmt|;
 name|InterDatanodeProtocol
 name|proxyDN
