@@ -397,6 +397,11 @@ name|MetricsRecordImpl
 argument_list|>
 name|lastRecs
 decl_stmt|;
+DECL|field|lastRecsCleared
+specifier|private
+name|boolean
+name|lastRecsCleared
+decl_stmt|;
 DECL|field|jmxCacheTS
 specifier|private
 name|long
@@ -547,6 +552,14 @@ operator|.
 name|startMBeans
 operator|=
 name|startMBeans
+expr_stmt|;
+comment|// Initialize to true so we always trigger update MBeanInfo cache the first
+comment|// time calling updateJmxCache
+name|this
+operator|.
+name|lastRecsCleared
+operator|=
+literal|true
 expr_stmt|;
 block|}
 DECL|method|MetricsSourceAdapter (String prefix, String name, String description, MetricsSource source, Iterable<MetricsTag> injectedTags, long period, MetricsConfig conf)
@@ -920,16 +933,21 @@ argument_list|()
 operator|+
 name|jmxCacheTTL
 expr_stmt|;
+comment|// lastRecs might have been set to an object already by another thread.
+comment|// Track the fact that lastRecs has been reset once to make sure refresh
+comment|// is correctly triggered.
 if|if
 condition|(
-name|lastRecs
-operator|==
-literal|null
+name|lastRecsCleared
 condition|)
 block|{
 name|getAllMetrics
 operator|=
 literal|true
+expr_stmt|;
+name|lastRecsCleared
+operator|=
+literal|false
 expr_stmt|;
 block|}
 block|}
@@ -981,6 +999,10 @@ operator|=
 literal|null
 expr_stmt|;
 comment|// in case regular interval update is not running
+name|lastRecsCleared
+operator|=
+literal|true
+expr_stmt|;
 block|}
 block|}
 DECL|method|getMetrics (MetricsCollectorImpl builder, boolean all)
