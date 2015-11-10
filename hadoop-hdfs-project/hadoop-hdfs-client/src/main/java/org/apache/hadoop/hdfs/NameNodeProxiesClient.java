@@ -1662,8 +1662,10 @@ name|dtService
 argument_list|,
 name|DFSUtilClient
 operator|.
-name|getNNAddress
+name|getNNAddressCheckLogical
 argument_list|(
+name|conf
+argument_list|,
 name|nameNodeUri
 argument_list|)
 argument_list|)
