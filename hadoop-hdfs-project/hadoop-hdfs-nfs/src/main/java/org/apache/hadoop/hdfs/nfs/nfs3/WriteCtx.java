@@ -261,6 +261,7 @@ name|trimDelta
 decl_stmt|;
 DECL|method|getOriginalCount ()
 specifier|public
+specifier|synchronized
 name|int
 name|getOriginalCount
 parameter_list|()
@@ -472,7 +473,8 @@ name|Preconditions
 operator|.
 name|checkState
 argument_list|(
-name|originalCount
+name|getOriginalCount
+argument_list|()
 operator|==
 name|INVALID_ORIGINAL_COUNT
 argument_list|)
@@ -598,6 +600,18 @@ operator|+
 name|trimDelta
 return|;
 block|}
+block|}
+comment|/**    * @return the offset field    */
+DECL|method|getPlainOffset ()
+specifier|private
+specifier|synchronized
+name|long
+name|getPlainOffset
+parameter_list|()
+block|{
+return|return
+name|offset
+return|;
 block|}
 DECL|method|getCount ()
 name|int
@@ -867,9 +881,12 @@ name|error
 argument_list|(
 literal|"Failed to get request data offset:"
 operator|+
-name|offset
+name|getPlainOffset
+argument_list|()
 operator|+
-literal|" count:"
+literal|" "
+operator|+
+literal|"count:"
 operator|+
 name|count
 operator|+
@@ -1147,15 +1164,19 @@ argument_list|()
 operator|+
 literal|" offset:"
 operator|+
-name|offset
+name|getPlainOffset
+argument_list|()
 operator|+
-literal|" count:"
+literal|" "
+operator|+
+literal|"count:"
 operator|+
 name|count
 operator|+
 literal|" originalCount:"
 operator|+
-name|originalCount
+name|getOriginalCount
+argument_list|()
 operator|+
 literal|" stableHow:"
 operator|+
