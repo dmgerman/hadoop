@@ -786,7 +786,7 @@ name|setBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|APPLICATION_HISTORY_ENABLED
+name|TIMELINE_SERVICE_ENABLED
 argument_list|,
 literal|true
 argument_list|)

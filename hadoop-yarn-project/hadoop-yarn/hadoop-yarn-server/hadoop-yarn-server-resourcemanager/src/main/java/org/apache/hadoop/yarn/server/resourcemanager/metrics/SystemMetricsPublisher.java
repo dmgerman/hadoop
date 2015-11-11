@@ -678,11 +678,11 @@ name|getBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|APPLICATION_HISTORY_ENABLED
+name|TIMELINE_SERVICE_ENABLED
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_APPLICATION_HISTORY_ENABLED
+name|DEFAULT_TIMELINE_SERVICE_ENABLED
 argument_list|)
 operator|&&
 name|conf
