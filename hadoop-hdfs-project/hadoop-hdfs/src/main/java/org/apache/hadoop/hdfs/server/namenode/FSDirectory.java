@@ -5891,30 +5891,10 @@ name|long
 name|totalInodes
 parameter_list|()
 block|{
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 return|return
-name|rootDir
-operator|.
-name|getDirectoryWithQuotaFeature
-argument_list|()
-operator|.
-name|getSpaceConsumed
-argument_list|()
-operator|.
-name|getNameSpace
+name|getInodeMapSize
 argument_list|()
 return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Reset the entire namespace tree.    */
 DECL|method|reset ()
