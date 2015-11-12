@@ -2947,6 +2947,10 @@ name|request
 operator|.
 name|getCapability
 argument_list|()
+operator|+
+literal|" type="
+operator|+
+name|type
 argument_list|)
 expr_stmt|;
 block|}
@@ -2964,6 +2968,15 @@ name|getCapability
 argument_list|()
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+name|metrics
+operator|.
+name|incrNodeTypeAggregations
+argument_list|(
+name|user
+argument_list|,
+name|type
 argument_list|)
 expr_stmt|;
 return|return

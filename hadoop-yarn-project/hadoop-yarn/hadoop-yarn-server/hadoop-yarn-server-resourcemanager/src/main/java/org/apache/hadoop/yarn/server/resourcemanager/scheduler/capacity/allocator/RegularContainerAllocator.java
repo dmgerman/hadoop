@@ -1344,13 +1344,29 @@ name|getNumClusterNodes
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// Cap the delay by the number of nodes in the cluster. Under most conditions
+comment|// this means we will consider each node in the cluster before
+comment|// accepting an off-switch assignment.
 return|return
 operator|(
+name|Math
+operator|.
+name|min
+argument_list|(
+name|rmContext
+operator|.
+name|getScheduler
+argument_list|()
+operator|.
+name|getNumClusterNodes
+argument_list|()
+argument_list|,
 operator|(
 name|requiredContainers
 operator|*
 name|localityWaitFactor
 operator|)
+argument_list|)
 operator|<
 name|missedOpportunities
 operator|)
@@ -3075,6 +3091,28 @@ literal|"Resetting scheduling opportunities"
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Only reset scheduling opportunities for RACK_LOCAL if configured
+comment|// to do so. Not resetting means we will continue to schedule
+comment|// RACK_LOCAL without delay.
+if|if
+condition|(
+name|allocationResult
+operator|.
+name|containerNodeType
+operator|==
+name|NodeType
+operator|.
+name|NODE_LOCAL
+operator|||
+name|application
+operator|.
+name|getCSLeafQueue
+argument_list|()
+operator|.
+name|getRackLocalityFullReset
+argument_list|()
+condition|)
+block|{
 name|application
 operator|.
 name|resetSchedulingOpportunities
@@ -3082,6 +3120,7 @@ argument_list|(
 name|priority
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// Non-exclusive scheduling opportunity is different: we need reset
 comment|// it every time to make sure non-labeled resource request will be

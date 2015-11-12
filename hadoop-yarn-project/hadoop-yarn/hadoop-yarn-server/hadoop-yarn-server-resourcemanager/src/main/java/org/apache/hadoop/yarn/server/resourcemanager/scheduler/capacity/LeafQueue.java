@@ -912,6 +912,12 @@ specifier|volatile
 name|int
 name|nodeLocalityDelay
 decl_stmt|;
+DECL|field|rackLocalityFullReset
+specifier|private
+specifier|volatile
+name|boolean
+name|rackLocalityFullReset
+decl_stmt|;
 DECL|field|applicationAttemptMap
 name|Map
 argument_list|<
@@ -1396,6 +1402,13 @@ operator|=
 name|conf
 operator|.
 name|getNodeLocalityDelay
+argument_list|()
+expr_stmt|;
+name|rackLocalityFullReset
+operator|=
+name|conf
+operator|.
+name|getRackLocalityFullReset
 argument_list|()
 expr_stmt|;
 comment|// re-init this since max allocation could have changed
@@ -4910,6 +4923,23 @@ parameter_list|()
 block|{
 return|return
 name|nodeLocalityDelay
+return|;
+block|}
+annotation|@
+name|Lock
+argument_list|(
+name|NoLock
+operator|.
+name|class
+argument_list|)
+DECL|method|getRackLocalityFullReset ()
+specifier|public
+name|boolean
+name|getRackLocalityFullReset
+parameter_list|()
+block|{
+return|return
+name|rackLocalityFullReset
 return|;
 block|}
 annotation|@

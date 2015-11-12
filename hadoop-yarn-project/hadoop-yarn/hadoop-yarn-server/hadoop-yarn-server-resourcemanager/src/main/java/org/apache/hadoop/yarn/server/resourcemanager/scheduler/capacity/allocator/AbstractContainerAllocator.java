@@ -592,6 +592,13 @@ operator|+
 literal|" clusterResource="
 operator|+
 name|clusterResource
+operator|+
+literal|" type="
+operator|+
+name|assignment
+operator|.
+name|getType
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|application
