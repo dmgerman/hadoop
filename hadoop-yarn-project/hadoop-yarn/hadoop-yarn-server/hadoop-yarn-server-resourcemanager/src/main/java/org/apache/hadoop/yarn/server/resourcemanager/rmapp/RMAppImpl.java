@@ -7858,7 +7858,7 @@ name|KILLED
 return|;
 block|}
 DECL|method|getRecoveredFinalState ()
-specifier|private
+specifier|public
 name|RMAppState
 name|getRecoveredFinalState
 parameter_list|()
