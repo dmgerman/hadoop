@@ -439,7 +439,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<code>AMRMClientAsync</code> handles communication with the ResourceManager  * and provides asynchronous updates on events such as container allocations and  * completions.  It contains a thread that sends periodic heartbeats to the  * ResourceManager.  *   * It should be used by implementing a CallbackHandler:  *<pre>  * {@code  * class MyCallbackHandler implements AMRMClientAsync.CallbackHandler {  *   public void onContainersAllocated(List<Container> containers) {  *     [run tasks on the containers]  *   }  *     *   public void onContainersCompleted(List<ContainerStatus> statuses) {  *     [update progress, check whether app is done]  *   }  *     *   public void onNodesUpdated(List<NodeReport> updated) {}  *     *   public void onReboot() {}  * }  * }  *</pre>  *   * The client's lifecycle should be managed similarly to the following:  *   *<pre>  * {@code  * AMRMClientAsync asyncClient =   *     createAMRMClientAsync(appAttId, 1000, new MyCallbackhandler());  * asyncClient.init(conf);  * asyncClient.start();  * RegisterApplicationMasterResponse response = asyncClient  *    .registerApplicationMaster(appMasterHostname, appMasterRpcPort,  *       appMasterTrackingUrl);  * asyncClient.addContainerRequest(containerRequest);  * [... wait for application to complete]  * asyncClient.unregisterApplicationMaster(status, appMsg, trackingUrl);  * asyncClient.stop();  * }  *</pre>  */
+comment|/**  *<code>AMRMClientAsync</code> handles communication with the ResourceManager  * and provides asynchronous updates on events such as container allocations and  * completions.  It contains a thread that sends periodic heartbeats to the  * ResourceManager.  *   * It should be used by implementing a CallbackHandler:  *<pre>  * {@code  * class MyCallbackHandler extends AMRMClientAsync.AbstractCallbackHandler {  *   public void onContainersAllocated(List<Container> containers) {  *     [run tasks on the containers]  *   }  *  *   public void onContainersResourceChanged(List<Container> containers) {  *     [determine if resource allocation of containers have been increased in  *      the ResourceManager, and if so, inform the NodeManagers to increase the  *      resource monitor/enforcement on the containers]  *   }  *  *   public void onContainersCompleted(List<ContainerStatus> statuses) {  *     [update progress, check whether app is done]  *   }  *     *   public void onNodesUpdated(List<NodeReport> updated) {}  *     *   public void onReboot() {}  * }  * }  *</pre>  *   * The client's lifecycle should be managed similarly to the following:  *   *<pre>  * {@code  * AMRMClientAsync asyncClient =   *     createAMRMClientAsync(appAttId, 1000, new MyCallbackhandler());  * asyncClient.init(conf);  * asyncClient.start();  * RegisterApplicationMasterResponse response = asyncClient  *    .registerApplicationMaster(appMasterHostname, appMasterRpcPort,  *       appMasterTrackingUrl);  * asyncClient.addContainerRequest(containerRequest);  * [... wait for application to complete]  * asyncClient.unregisterApplicationMaster(status, appMsg, trackingUrl);  * asyncClient.stop();  * }  *</pre>  */
 end_comment
 
 begin_class
@@ -501,6 +501,166 @@ operator|new
 name|AtomicInteger
 argument_list|()
 decl_stmt|;
+comment|/**    *<p>Create a new instance of AMRMClientAsync.</p>    *    * @param intervalMs heartbeat interval in milliseconds between AM and RM    * @param callbackHandler callback handler that processes responses from    *                        the<code>ResourceManager</code>    */
+specifier|public
+specifier|static
+parameter_list|<
+name|T
+extends|extends
+name|ContainerRequest
+parameter_list|>
+name|AMRMClientAsync
+argument_list|<
+name|T
+argument_list|>
+DECL|method|createAMRMClientAsync ( int intervalMs, AbstractCallbackHandler callbackHandler)
+name|createAMRMClientAsync
+parameter_list|(
+name|int
+name|intervalMs
+parameter_list|,
+name|AbstractCallbackHandler
+name|callbackHandler
+parameter_list|)
+block|{
+return|return
+operator|new
+name|AMRMClientAsyncImpl
+argument_list|<
+name|T
+argument_list|>
+argument_list|(
+name|intervalMs
+argument_list|,
+name|callbackHandler
+argument_list|)
+return|;
+block|}
+comment|/**    *<p>Create a new instance of AMRMClientAsync.</p>    *    * @param client the AMRMClient instance    * @param intervalMs heartbeat interval in milliseconds between AM and RM    * @param callbackHandler callback handler that processes responses from    *                        the<code>ResourceManager</code>    */
+specifier|public
+specifier|static
+parameter_list|<
+name|T
+extends|extends
+name|ContainerRequest
+parameter_list|>
+name|AMRMClientAsync
+argument_list|<
+name|T
+argument_list|>
+DECL|method|createAMRMClientAsync ( AMRMClient<T> client, int intervalMs, AbstractCallbackHandler callbackHandler)
+name|createAMRMClientAsync
+parameter_list|(
+name|AMRMClient
+argument_list|<
+name|T
+argument_list|>
+name|client
+parameter_list|,
+name|int
+name|intervalMs
+parameter_list|,
+name|AbstractCallbackHandler
+name|callbackHandler
+parameter_list|)
+block|{
+return|return
+operator|new
+name|AMRMClientAsyncImpl
+argument_list|<
+name|T
+argument_list|>
+argument_list|(
+name|client
+argument_list|,
+name|intervalMs
+argument_list|,
+name|callbackHandler
+argument_list|)
+return|;
+block|}
+DECL|method|AMRMClientAsync ( int intervalMs, AbstractCallbackHandler callbackHandler)
+specifier|protected
+name|AMRMClientAsync
+parameter_list|(
+name|int
+name|intervalMs
+parameter_list|,
+name|AbstractCallbackHandler
+name|callbackHandler
+parameter_list|)
+block|{
+name|this
+argument_list|(
+operator|new
+name|AMRMClientImpl
+argument_list|<
+name|T
+argument_list|>
+argument_list|()
+argument_list|,
+name|intervalMs
+argument_list|,
+name|callbackHandler
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|AMRMClientAsync (AMRMClient<T> client, int intervalMs, AbstractCallbackHandler callbackHandler)
+specifier|protected
+name|AMRMClientAsync
+parameter_list|(
+name|AMRMClient
+argument_list|<
+name|T
+argument_list|>
+name|client
+parameter_list|,
+name|int
+name|intervalMs
+parameter_list|,
+name|AbstractCallbackHandler
+name|callbackHandler
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|AMRMClientAsync
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|client
+operator|=
+name|client
+expr_stmt|;
+name|this
+operator|.
+name|heartbeatIntervalMs
+operator|.
+name|set
+argument_list|(
+name|intervalMs
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|handler
+operator|=
+name|callbackHandler
+expr_stmt|;
+block|}
+comment|/**    *    * @deprecated Use {@link #createAMRMClientAsync(int,    *             AMRMClientAsync.AbstractCallbackHandler)} instead.    */
+annotation|@
+name|Deprecated
 specifier|public
 specifier|static
 parameter_list|<
@@ -535,6 +695,9 @@ name|callbackHandler
 argument_list|)
 return|;
 block|}
+comment|/**    *    * @deprecated Use {@link #createAMRMClientAsync(AMRMClient,    *             int, AMRMClientAsync.AbstractCallbackHandler)} instead.    */
+annotation|@
+name|Deprecated
 specifier|public
 specifier|static
 parameter_list|<
@@ -577,6 +740,8 @@ name|callbackHandler
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Deprecated
 DECL|method|AMRMClientAsync (int intervalMs, CallbackHandler callbackHandler)
 specifier|protected
 name|AMRMClientAsync
@@ -607,6 +772,8 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
+annotation|@
+name|Deprecated
 DECL|method|AMRMClientAsync (AMRMClient<T> client, int intervalMs, CallbackHandler callbackHandler)
 specifier|protected
 name|AMRMClientAsync
@@ -759,6 +926,20 @@ name|removeContainerRequest
 parameter_list|(
 name|T
 name|req
+parameter_list|)
+function_decl|;
+comment|/**    * Request container resource change before calling<code>allocate</code>.    * Any previous pending resource change request of the same container will be    * removed.    *    * Application that calls this method is expected to maintain the    *<code>Container</code>s that are returned from previous successful    * allocations or resource changes. By passing in the existing container and a    * target resource capability to this method, the application requests the    * ResourceManager to change the existing resource allocation to the target    * resource allocation.    *    * @param container The container returned from the last successful resource    *                  allocation or resource change    * @param capability  The target resource capability of the container    */
+DECL|method|requestContainerResourceChange ( Container container, Resource capability)
+specifier|public
+specifier|abstract
+name|void
+name|requestContainerResourceChange
+parameter_list|(
+name|Container
+name|container
+parameter_list|,
+name|Resource
+name|capability
 parameter_list|)
 function_decl|;
 comment|/**    * Release containers assigned by the Resource Manager. If the app cannot use    * the container or wants to give up the container then it can release them.    * The app needs to make new requests for the released resource capability if    * it still needs it. eg. it released non-local resources    * @param containerId    */
@@ -991,14 +1172,20 @@ literal|true
 condition|)
 do|;
 block|}
-DECL|interface|CallbackHandler
+comment|/**    *<p>    * The callback abstract class. The callback functions need to be implemented    * by {@link AMRMClientAsync} users. The APIs are called when responses from    * the<code>ResourceManager</code> are available.    *</p>    */
+DECL|class|AbstractCallbackHandler
 specifier|public
-interface|interface
+specifier|abstract
+specifier|static
+class|class
+name|AbstractCallbackHandler
+implements|implements
 name|CallbackHandler
 block|{
 comment|/**      * Called when the ResourceManager responds to a heartbeat with completed      * containers. If the response contains both completed containers and      * allocated containers, this will be called before containersAllocated.      */
 DECL|method|onContainersCompleted (List<ContainerStatus> statuses)
 specifier|public
+specifier|abstract
 name|void
 name|onContainersCompleted
 parameter_list|(
@@ -1012,8 +1199,23 @@ function_decl|;
 comment|/**      * Called when the ResourceManager responds to a heartbeat with allocated      * containers. If the response containers both completed containers and      * allocated containers, this will be called after containersCompleted.      */
 DECL|method|onContainersAllocated (List<Container> containers)
 specifier|public
+specifier|abstract
 name|void
 name|onContainersAllocated
+parameter_list|(
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|containers
+parameter_list|)
+function_decl|;
+comment|/**      * Called when the ResourceManager responds to a heartbeat with containers      * whose resource allocation has been changed.      */
+DECL|method|onContainersResourceChanged ( List<Container> containers)
+specifier|public
+specifier|abstract
+name|void
+name|onContainersResourceChanged
 parameter_list|(
 name|List
 argument_list|<
@@ -1025,6 +1227,7 @@ function_decl|;
 comment|/**      * Called when the ResourceManager wants the ApplicationMaster to shutdown      * for being out of sync etc. The ApplicationMaster should not unregister      * with the RM unless the ApplicationMaster wants to be the last attempt.      */
 DECL|method|onShutdownRequest ()
 specifier|public
+specifier|abstract
 name|void
 name|onShutdownRequest
 parameter_list|()
@@ -1032,6 +1235,7 @@ function_decl|;
 comment|/**      * Called when nodes tracked by the ResourceManager have changed in health,      * availability etc.      */
 DECL|method|onNodesUpdated (List<NodeReport> updatedNodes)
 specifier|public
+specifier|abstract
 name|void
 name|onNodesUpdated
 parameter_list|(
@@ -1044,13 +1248,80 @@ parameter_list|)
 function_decl|;
 DECL|method|getProgress ()
 specifier|public
+specifier|abstract
+name|float
+name|getProgress
+parameter_list|()
+function_decl|;
+comment|/**      * Called when error comes from RM communications as well as from errors in      * the callback itself from the app. Calling      * stop() is the recommended action.      */
+DECL|method|onError (Throwable e)
+specifier|public
+specifier|abstract
+name|void
+name|onError
+parameter_list|(
+name|Throwable
+name|e
+parameter_list|)
+function_decl|;
+block|}
+comment|/**    * @deprecated Use {@link AMRMClientAsync.AbstractCallbackHandler} instead.    */
+annotation|@
+name|Deprecated
+DECL|interface|CallbackHandler
+specifier|public
+interface|interface
+name|CallbackHandler
+block|{
+comment|/**      * Called when the ResourceManager responds to a heartbeat with completed      * containers. If the response contains both completed containers and      * allocated containers, this will be called before containersAllocated.      */
+DECL|method|onContainersCompleted (List<ContainerStatus> statuses)
+name|void
+name|onContainersCompleted
+parameter_list|(
+name|List
+argument_list|<
+name|ContainerStatus
+argument_list|>
+name|statuses
+parameter_list|)
+function_decl|;
+comment|/**      * Called when the ResourceManager responds to a heartbeat with allocated      * containers. If the response containers both completed containers and      * allocated containers, this will be called after containersCompleted.      */
+DECL|method|onContainersAllocated (List<Container> containers)
+name|void
+name|onContainersAllocated
+parameter_list|(
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|containers
+parameter_list|)
+function_decl|;
+comment|/**      * Called when the ResourceManager wants the ApplicationMaster to shutdown      * for being out of sync etc. The ApplicationMaster should not unregister      * with the RM unless the ApplicationMaster wants to be the last attempt.      */
+DECL|method|onShutdownRequest ()
+name|void
+name|onShutdownRequest
+parameter_list|()
+function_decl|;
+comment|/**      * Called when nodes tracked by the ResourceManager have changed in health,      * availability etc.      */
+DECL|method|onNodesUpdated (List<NodeReport> updatedNodes)
+name|void
+name|onNodesUpdated
+parameter_list|(
+name|List
+argument_list|<
+name|NodeReport
+argument_list|>
+name|updatedNodes
+parameter_list|)
+function_decl|;
+DECL|method|getProgress ()
 name|float
 name|getProgress
 parameter_list|()
 function_decl|;
 comment|/**      * Called when error comes from RM communications as well as from errors in      * the callback itself from the app. Calling      * stop() is the recommended action.      *      * @param e      */
 DECL|method|onError (Throwable e)
-specifier|public
 name|void
 name|onError
 parameter_list|(

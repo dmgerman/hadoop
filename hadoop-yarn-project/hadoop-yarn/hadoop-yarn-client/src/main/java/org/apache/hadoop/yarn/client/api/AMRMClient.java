@@ -202,6 +202,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
 import|;
 end_import
@@ -910,6 +928,20 @@ name|removeContainerRequest
 parameter_list|(
 name|T
 name|req
+parameter_list|)
+function_decl|;
+comment|/**    * Request container resource change before calling<code>allocate</code>.    * Any previous pending resource change request of the same container will be    * removed.    *    * Application that calls this method is expected to maintain the    *<code>Container</code>s that are returned from previous successful    * allocations or resource changes. By passing in the existing container and a    * target resource capability to this method, the application requests the    * ResourceManager to change the existing resource allocation to the target    * resource allocation.    *    * @param container The container returned from the last successful resource    *                  allocation or resource change    * @param capability  The target resource capability of the container    */
+DECL|method|requestContainerResourceChange ( Container container, Resource capability)
+specifier|public
+specifier|abstract
+name|void
+name|requestContainerResourceChange
+parameter_list|(
+name|Container
+name|container
+parameter_list|,
+name|Resource
+name|capability
 parameter_list|)
 function_decl|;
 comment|/**    * Release containers assigned by the Resource Manager. If the app cannot use    * the container or wants to give up the container then it can release them.    * The app needs to make new requests for the released resource capability if    * it still needs it. eg. it released non-local resources    * @param containerId    */

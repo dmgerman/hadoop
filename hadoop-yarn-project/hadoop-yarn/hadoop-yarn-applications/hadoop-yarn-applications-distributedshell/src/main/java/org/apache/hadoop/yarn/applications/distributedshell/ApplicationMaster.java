@@ -3118,7 +3118,7 @@ argument_list|)
 expr_stmt|;
 name|AMRMClientAsync
 operator|.
-name|CallbackHandler
+name|AbstractCallbackHandler
 name|allocListener
 init|=
 operator|new
@@ -3868,10 +3868,10 @@ name|VisibleForTesting
 DECL|class|RMCallbackHandler
 class|class
 name|RMCallbackHandler
-implements|implements
+extends|extends
 name|AMRMClientAsync
 operator|.
-name|CallbackHandler
+name|AbstractCallbackHandler
 block|{
 annotation|@
 name|SuppressWarnings
@@ -4325,6 +4325,20 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|onContainersResourceChanged (List<Container> containers)
+specifier|public
+name|void
+name|onContainersResourceChanged
+parameter_list|(
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|containers
+parameter_list|)
+block|{}
 annotation|@
 name|Override
 DECL|method|onShutdownRequest ()

@@ -68,6 +68,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -1012,15 +1022,17 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Test does major 6 steps verification.
-comment|// Step-1 : AMRMClient send allocate request for 2 container requests
-comment|// Step-2 : 2 containers are allocated by RM.
-comment|// Step-3 : AM Send 1 containerRequest(cRequest3) and 1 releaseRequests to
+comment|// Step-1 : AMRMClient send allocate request for 3 container requests
+comment|// Step-2 : 3 containers are allocated by RM.
+comment|// Step-3 : AM Send 1 containerRequest(cRequest4) and 1 releaseRequests to
 comment|// RM
+comment|// Step-3.5 : AM Send 1 container resource increase request to RM
 comment|// Step-4 : On RM restart, AM(does not know RM is restarted) sends additional
-comment|// containerRequest(cRequest4) and blacklisted nodes.
+comment|// containerRequest(cRequest5) and blacklisted nodes.
 comment|// Intern RM send resync command
-comment|// Step-5 : Allocater after resync command& new containerRequest(cRequest5)
-comment|// Step-6 : RM allocates containers i.e cRequest3,cRequest4 and cRequest5
+comment|// Verify AM can recover increase request after resync
+comment|// Step-5 : Allocater after resync command& new containerRequest(cRequest6)
+comment|// Step-6 : RM allocates containers i.e cRequest4,cRequest5 and cRequest6
 annotation|@
 name|Test
 argument_list|(
@@ -1219,8 +1231,8 @@ name|decodeIdentifier
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Step-1 : AMRMClient send allocate request for 2 ContainerRequest
-comment|// cRequest1 = h1 and cRequest2 = h1,h2
+comment|// Step-1 : AMRMClient send allocate request for 3 ContainerRequest
+comment|// cRequest1 = h1, cRequest2 = h1,h2 and cRequest3 = h1
 comment|// blacklisted nodes = h2
 name|AMRMClient
 argument_list|<
@@ -1305,6 +1317,30 @@ operator|.
 name|addContainerRequest
 argument_list|(
 name|cRequest2
+argument_list|)
+expr_stmt|;
+name|ContainerRequest
+name|cRequest3
+init|=
+name|createReq
+argument_list|(
+literal|1
+argument_list|,
+literal|1024
+argument_list|,
+operator|new
+name|String
+index|[]
+block|{
+literal|"h1"
+block|}
+argument_list|)
+decl_stmt|;
+name|amClient
+operator|.
+name|addContainerRequest
+argument_list|(
+name|cRequest3
 argument_list|)
 expr_stmt|;
 name|List
@@ -1418,7 +1454,7 @@ name|rm1
 argument_list|)
 expr_stmt|;
 comment|// Step-2 : NM heart beat is sent.
-comment|// On 2nd AM allocate request, RM allocates 2 containers to AM
+comment|// On 2nd AM allocate request, RM allocates 3 containers to AM
 name|nm1
 operator|.
 name|nodeHeartbeat
@@ -1446,14 +1482,14 @@ operator|.
 name|await
 argument_list|()
 expr_stmt|;
-comment|// 2 containers are allocated i.e for cRequest1 and cRequest2.
+comment|// 3 containers are allocated i.e for cRequest1, cRequest2 and cRequest3.
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
 literal|"No of assignments must be 0"
 argument_list|,
-literal|2
+literal|3
 argument_list|,
 name|allocateResponse
 operator|.
@@ -1508,6 +1544,13 @@ argument_list|(
 name|cRequest2
 argument_list|)
 expr_stmt|;
+name|amClient
+operator|.
+name|removeContainerRequest
+argument_list|(
+name|cRequest3
+argument_list|)
+expr_stmt|;
 name|allocateResponse
 operator|=
 name|amClient
@@ -1559,7 +1602,7 @@ argument_list|)
 expr_stmt|;
 comment|// Step-3 : Send 1 containerRequest and 1 releaseRequests to RM
 name|ContainerRequest
-name|cRequest3
+name|cRequest4
 init|=
 name|createReq
 argument_list|(
@@ -1579,7 +1622,7 @@ name|amClient
 operator|.
 name|addContainerRequest
 argument_list|(
-name|cRequest3
+name|cRequest4
 argument_list|)
 expr_stmt|;
 name|int
@@ -1630,6 +1673,65 @@ expr_stmt|;
 break|break;
 comment|// remove one container
 block|}
+comment|// Step-3.5 : Send 1 container resource increase request to RM
+name|Container
+name|container
+init|=
+name|it
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+name|ContainerId
+name|containerId
+init|=
+name|container
+operator|.
+name|getId
+argument_list|()
+decl_stmt|;
+comment|// Make sure that container is in RUNNING state before sending increase
+comment|// request
+name|nm1
+operator|.
+name|nodeHeartbeat
+argument_list|(
+name|containerId
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
+name|containerId
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|ContainerState
+operator|.
+name|RUNNING
+argument_list|)
+expr_stmt|;
+name|amClient
+operator|.
+name|requestContainerResourceChange
+argument_list|(
+name|container
+argument_list|,
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+literal|2048
+argument_list|,
+literal|1
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|it
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
 name|allocateResponse
 operator|=
 name|amClient
@@ -1666,6 +1768,16 @@ argument_list|(
 literal|3
 argument_list|,
 name|pendingRelease
+argument_list|,
+name|rm1
+argument_list|)
+expr_stmt|;
+comment|// Verify there is one increase and zero decrease
+name|assertChanges
+argument_list|(
+literal|1
+argument_list|,
+literal|0
 argument_list|,
 name|rm1
 argument_list|)
@@ -1787,10 +1899,66 @@ name|getResourceTrackerService
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|NMContainerStatus
+name|containerReport
+init|=
+name|NMContainerStatus
+operator|.
+name|newInstance
+argument_list|(
+name|containerId
+argument_list|,
+name|ContainerState
+operator|.
+name|RUNNING
+argument_list|,
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+literal|1024
+argument_list|,
+literal|1
+argument_list|)
+argument_list|,
+literal|"recover container"
+argument_list|,
+literal|0
+argument_list|,
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
 name|nm1
 operator|.
 name|registerNode
+argument_list|(
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|containerReport
+argument_list|)
+argument_list|,
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|containerId
+operator|.
+name|getApplicationAttemptId
 argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+argument_list|)
 expr_stmt|;
 name|nm1
 operator|.
@@ -1865,7 +2033,7 @@ argument_list|()
 expr_stmt|;
 block|}
 name|ContainerRequest
-name|cRequest4
+name|cRequest5
 init|=
 name|createReq
 argument_list|(
@@ -1887,7 +2055,7 @@ name|amClient
 operator|.
 name|addContainerRequest
 argument_list|(
-name|cRequest4
+name|cRequest5
 argument_list|)
 expr_stmt|;
 comment|// Step-4 : On RM restart, AM(does not know RM is restarted) sends
@@ -1931,6 +2099,16 @@ argument_list|,
 name|rm2
 argument_list|)
 expr_stmt|;
+comment|// Verify there is one increase and zero decrease
+name|assertChanges
+argument_list|(
+literal|1
+argument_list|,
+literal|0
+argument_list|,
+name|rm2
+argument_list|)
+expr_stmt|;
 name|assertBlacklistAdditionsAndRemovals
 argument_list|(
 literal|2
@@ -1941,7 +2119,7 @@ name|rm2
 argument_list|)
 expr_stmt|;
 name|ContainerRequest
-name|cRequest5
+name|cRequest6
 init|=
 name|createReq
 argument_list|(
@@ -1965,7 +2143,7 @@ name|amClient
 operator|.
 name|addContainerRequest
 argument_list|(
-name|cRequest5
+name|cRequest6
 argument_list|)
 expr_stmt|;
 comment|// Step-5 : Allocater after resync command
@@ -2003,6 +2181,16 @@ expr_stmt|;
 name|assertAsksAndReleases
 argument_list|(
 literal|5
+argument_list|,
+literal|0
+argument_list|,
+name|rm2
+argument_list|)
+expr_stmt|;
+comment|// Verify there is no increase or decrease requests any more
+name|assertChanges
+argument_list|(
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -2089,7 +2277,7 @@ literal|1000
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Step-6 : RM allocates containers i.e cRequest3,cRequest4 and cRequest5
+comment|// Step-6 : RM allocates containers i.e cRequest4,cRequest5 and cRequest6
 name|Assert
 operator|.
 name|assertEquals
@@ -3420,6 +3608,24 @@ name|lastRelease
 init|=
 literal|null
 decl_stmt|;
+DECL|field|lastIncrease
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|lastIncrease
+init|=
+literal|null
+decl_stmt|;
+DECL|field|lastDecrease
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|lastDecrease
+init|=
+literal|null
+decl_stmt|;
 DECL|field|lastBlacklistAdditions
 name|List
 argument_list|<
@@ -3553,6 +3759,14 @@ expr_stmt|;
 name|lastRelease
 operator|=
 name|release
+expr_stmt|;
+name|lastIncrease
+operator|=
+name|increaseRequests
+expr_stmt|;
+name|lastDecrease
+operator|=
+name|decreaseRequests
 expr_stmt|;
 name|lastBlacklistAdditions
 operator|=
@@ -3989,6 +4203,57 @@ name|getMyFifoScheduler
 argument_list|()
 operator|.
 name|lastRelease
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|assertChanges ( int expectedIncrease, int expectedDecrease, MyResourceManager rm)
+specifier|private
+specifier|static
+name|void
+name|assertChanges
+parameter_list|(
+name|int
+name|expectedIncrease
+parameter_list|,
+name|int
+name|expectedDecrease
+parameter_list|,
+name|MyResourceManager
+name|rm
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|expectedIncrease
+argument_list|,
+name|rm
+operator|.
+name|getMyFifoScheduler
+argument_list|()
+operator|.
+name|lastIncrease
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|expectedDecrease
+argument_list|,
+name|rm
+operator|.
+name|getMyFifoScheduler
+argument_list|()
+operator|.
+name|lastDecrease
 operator|.
 name|size
 argument_list|()
