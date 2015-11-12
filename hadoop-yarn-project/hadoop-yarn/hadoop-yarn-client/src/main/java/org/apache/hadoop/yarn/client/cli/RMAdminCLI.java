@@ -2633,6 +2633,13 @@ name|overCommitTimeout
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|request
+operator|.
+name|setNodeResourceMap
+argument_list|(
+name|resourceMap
+argument_list|)
+expr_stmt|;
 name|adminProtocol
 operator|.
 name|updateNodeResource
