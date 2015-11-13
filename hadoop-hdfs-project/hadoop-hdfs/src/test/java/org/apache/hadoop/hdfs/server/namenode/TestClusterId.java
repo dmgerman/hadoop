@@ -1255,6 +1255,8 @@ argument_list|(
 name|stdErr
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|NameNode
 operator|.
 name|createNameNode
@@ -1280,6 +1282,9 @@ literal|"Usage: hdfs namenode"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|System
 operator|.
 name|setErr
@@ -1287,6 +1292,7 @@ argument_list|(
 name|origErr
 argument_list|)
 expr_stmt|;
+block|}
 comment|// check if the version file does not exists.
 name|File
 name|version
@@ -1361,6 +1367,8 @@ argument_list|(
 name|stdErr
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|NameNode
 operator|.
 name|createNameNode
@@ -1386,6 +1394,9 @@ literal|"Usage: hdfs namenode"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|System
 operator|.
 name|setErr
@@ -1393,6 +1404,7 @@ argument_list|(
 name|origErr
 argument_list|)
 expr_stmt|;
+block|}
 comment|// check if the version file does not exists.
 name|File
 name|version
@@ -1469,6 +1481,8 @@ argument_list|(
 name|stdErr
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|NameNode
 operator|.
 name|createNameNode
@@ -1494,6 +1508,9 @@ literal|"Usage: hdfs namenode"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|System
 operator|.
 name|setErr
@@ -1501,6 +1518,7 @@ argument_list|(
 name|origErr
 argument_list|)
 expr_stmt|;
+block|}
 comment|// check if the version file does not exists.
 name|File
 name|version

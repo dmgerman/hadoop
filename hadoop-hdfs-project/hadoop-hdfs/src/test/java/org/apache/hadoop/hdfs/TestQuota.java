@@ -6452,6 +6452,15 @@ operator|new
 name|ByteArrayOutputStream
 argument_list|()
 decl_stmt|;
+name|PrintStream
+name|oldErr
+init|=
+name|System
+operator|.
+name|err
+decl_stmt|;
+try|try
+block|{
 name|System
 operator|.
 name|setErr
@@ -6518,6 +6527,17 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|System
+operator|.
+name|setErr
+argument_list|(
+name|oldErr
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * File count on root , should return total value of files in Filesystem    * when one folder contains files more than "dfs.content-summary.limit".    */
 annotation|@

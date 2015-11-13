@@ -237,6 +237,8 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+try|try
+block|{
 name|System
 operator|.
 name|out
@@ -244,6 +246,9 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|System
 operator|.
 name|setOut
@@ -258,6 +263,7 @@ argument_list|(
 name|oldStderr
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 literal|"ret:"

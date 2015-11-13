@@ -7142,6 +7142,13 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+name|System
+operator|.
+name|setOut
+argument_list|(
+name|oldOut
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|in
@@ -7158,13 +7165,6 @@ operator|.
 name|closeStream
 argument_list|(
 name|out
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|setOut
-argument_list|(
-name|oldOut
 argument_list|)
 expr_stmt|;
 name|System
@@ -11574,13 +11574,6 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|IOUtils
-operator|.
-name|closeStream
-argument_list|(
-name|out
-argument_list|)
-expr_stmt|;
 name|System
 operator|.
 name|setOut
@@ -11593,6 +11586,13 @@ operator|.
 name|setErr
 argument_list|(
 name|oldErr
+argument_list|)
+expr_stmt|;
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|out
 argument_list|)
 expr_stmt|;
 block|}
@@ -20985,6 +20985,8 @@ argument_list|(
 name|ps
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|runCmd
 argument_list|(
 name|shell
@@ -21029,6 +21031,9 @@ literal|"No such file or directory"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|System
 operator|.
 name|setErr
@@ -21041,6 +21046,7 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -21461,6 +21467,8 @@ argument_list|(
 name|ps
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|FsShell
 name|shell
 init|=
@@ -21502,6 +21510,9 @@ literal|"Invalid path name /.reserved"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|System
 operator|.
 name|setErr
@@ -21514,6 +21525,7 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -21596,6 +21608,8 @@ argument_list|(
 name|ps
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|FsShell
 name|shell
 init|=
@@ -21634,6 +21648,9 @@ literal|"Invalid path name /.reserved"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|System
 operator|.
 name|setErr
@@ -21646,6 +21663,7 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -21728,6 +21746,8 @@ argument_list|(
 name|ps
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|FsShell
 name|shell
 init|=
@@ -21766,6 +21786,9 @@ literal|"Invalid path name /.reserved"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|System
 operator|.
 name|setErr
@@ -21778,6 +21801,7 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test

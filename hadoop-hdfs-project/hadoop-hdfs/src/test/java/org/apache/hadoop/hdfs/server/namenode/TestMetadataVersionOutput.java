@@ -408,6 +408,8 @@ argument_list|(
 name|baos
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|System
 operator|.
 name|setOut
@@ -491,6 +493,9 @@ name|verNumStr
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|System
 operator|.
 name|setOut
@@ -498,6 +503,7 @@ argument_list|(
 name|origOut
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class
