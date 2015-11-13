@@ -7,6 +7,13 @@ begin_comment
 comment|/**  * DistCp is a tool for replicating data using MapReduce jobs for concurrent  * copy operations.  *  * @version 2  */
 end_comment
 
+begin_annotation
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+end_annotation
+
 begin_package
 DECL|package|org.apache.hadoop.tools
 package|package
@@ -19,6 +26,20 @@ operator|.
 name|tools
 package|;
 end_package
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
 
 end_unit
 
