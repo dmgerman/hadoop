@@ -1046,6 +1046,33 @@ argument_list|)
 expr_stmt|;
 break|break;
 block|}
+if|if
+condition|(
+name|rsrc
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Received "
+operator|+
+name|event
+operator|.
+name|getType
+argument_list|()
+operator|+
+literal|" event for request "
+operator|+
+name|req
+operator|+
+literal|" but localized resource is missing"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|rsrc
 operator|.
 name|handle
@@ -1056,6 +1083,8 @@ expr_stmt|;
 comment|// Remove the resource if its downloading and its reference count has
 comment|// become 0 after RELEASE. This maybe because a container was killed while
 comment|// localizing and no other container is referring to the resource.
+comment|// NOTE: This should NOT be done for public resources since the
+comment|//       download is not associated with a container-specific localizer.
 if|if
 condition|(
 name|event
@@ -1085,6 +1114,18 @@ name|getRefCount
 argument_list|()
 operator|<=
 literal|0
+operator|&&
+name|rsrc
+operator|.
+name|getRequest
+argument_list|()
+operator|.
+name|getVisibility
+argument_list|()
+operator|!=
+name|LocalResourceVisibility
+operator|.
+name|PUBLIC
 condition|)
 block|{
 name|removeResource

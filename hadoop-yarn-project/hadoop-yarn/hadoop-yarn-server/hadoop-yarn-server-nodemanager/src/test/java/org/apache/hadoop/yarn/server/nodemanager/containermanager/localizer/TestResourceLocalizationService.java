@@ -4410,7 +4410,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|2
+literal|0
 argument_list|,
 name|pubRsrcs
 operator|.
@@ -4422,7 +4422,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|0
+literal|2
 argument_list|,
 name|pubRsrcCount
 argument_list|)
