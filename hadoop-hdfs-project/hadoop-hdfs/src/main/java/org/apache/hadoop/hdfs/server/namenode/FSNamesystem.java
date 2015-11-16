@@ -15338,6 +15338,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -15348,6 +15355,13 @@ literal|true
 decl_stmt|;
 try|try
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 return|return
 name|FSDirStatAndListingOp
 operator|.
