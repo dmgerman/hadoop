@@ -266,6 +266,20 @@ name|TaskAttemptID
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/** An {@link OutputCommitter} that commits files specified   * in job output directory i.e. ${mapreduce.output.fileoutputformat.outputdir}.  **/
 end_comment
@@ -397,6 +411,26 @@ DECL|field|FILEOUTPUTCOMMITTER_CLEANUP_FAILURES_IGNORED_DEFAULT
 name|FILEOUTPUTCOMMITTER_CLEANUP_FAILURES_IGNORED_DEFAULT
 init|=
 literal|false
+decl_stmt|;
+comment|// Number of attempts when failure happens in commit job
+DECL|field|FILEOUTPUTCOMMITTER_FAILURE_ATTEMPTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FILEOUTPUTCOMMITTER_FAILURE_ATTEMPTS
+init|=
+literal|"mapreduce.fileoutputcommitter.failures.attempts"
+decl_stmt|;
+comment|// default value to be 1 to keep consistent with previous behavior
+DECL|field|FILEOUTPUTCOMMITTER_FAILURE_ATTEMPTS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|FILEOUTPUTCOMMITTER_FAILURE_ATTEMPTS_DEFAULT
+init|=
+literal|1
 decl_stmt|;
 DECL|field|outputPath
 specifier|private
@@ -1206,11 +1240,111 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * The job has completed so move all committed tasks to the final output dir.    * Delete the temporary directory, including all of the work directories.    * Create a _SUCCESS file to make it as successful.    * @param context the job's context    */
+comment|/**    * The job has completed, so do works in commitJobInternal().    * Could retry on failure if using algorithm 2.    * @param context the job's context    */
 DECL|method|commitJob (JobContext context)
 specifier|public
 name|void
 name|commitJob
+parameter_list|(
+name|JobContext
+name|context
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|int
+name|maxAttemptsOnFailure
+init|=
+name|isCommitJobRepeatable
+argument_list|(
+name|context
+argument_list|)
+condition|?
+name|context
+operator|.
+name|getConfiguration
+argument_list|()
+operator|.
+name|getInt
+argument_list|(
+name|FILEOUTPUTCOMMITTER_FAILURE_ATTEMPTS
+argument_list|,
+name|FILEOUTPUTCOMMITTER_FAILURE_ATTEMPTS_DEFAULT
+argument_list|)
+else|:
+literal|1
+decl_stmt|;
+name|int
+name|attempt
+init|=
+literal|0
+decl_stmt|;
+name|boolean
+name|jobCommitNotFinished
+init|=
+literal|true
+decl_stmt|;
+while|while
+condition|(
+name|jobCommitNotFinished
+condition|)
+block|{
+try|try
+block|{
+name|commitJobInternal
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
+name|jobCommitNotFinished
+operator|=
+literal|false
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|++
+name|attempt
+operator|>=
+name|maxAttemptsOnFailure
+condition|)
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exception get thrown in job commit, retry ("
+operator|+
+name|attempt
+operator|+
+literal|") time."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+block|}
+comment|/**    * The job has completed, so do following commit job, include:    * Move all committed tasks to the final output dir (algorithm 1 only).    * Delete the temporary directory, including all of the work directories.    * Create a _SUCCESS file to make it as successful.    * @param context the job's context    */
+annotation|@
+name|VisibleForTesting
+DECL|method|commitJobInternal (JobContext context)
+specifier|protected
+name|void
+name|commitJobInternal
 parameter_list|(
 name|JobContext
 name|context
@@ -1359,6 +1493,32 @@ argument_list|,
 name|SUCCEEDED_FILE_NAME
 argument_list|)
 decl_stmt|;
+comment|// If job commit is repeatable and previous/another AM could write
+comment|// mark file already, we need to set overwritten to be true explicitly
+comment|// in case other FS implementations don't overwritten by default.
+if|if
+condition|(
+name|isCommitJobRepeatable
+argument_list|(
+name|context
+argument_list|)
+condition|)
+block|{
+name|fs
+operator|.
+name|create
+argument_list|(
+name|markerPath
+argument_list|,
+literal|true
+argument_list|)
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
 name|fs
 operator|.
 name|create
@@ -1369,6 +1529,7 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 else|else
@@ -1789,6 +1950,11 @@ name|getConfiguration
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// if job allow repeatable commit and pendingJobAttemptsPath could be
+comment|// deleted by previous AM, we should tolerate FileNotFoundException in
+comment|// this case.
+try|try
+block|{
 name|fs
 operator|.
 name|delete
@@ -1798,6 +1964,27 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|isCommitJobRepeatable
+argument_list|(
+name|context
+argument_list|)
+condition|)
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+block|}
 block|}
 else|else
 block|{
@@ -2323,6 +2510,25 @@ parameter_list|()
 block|{
 return|return
 literal|true
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isCommitJobRepeatable (JobContext context)
+specifier|public
+name|boolean
+name|isCommitJobRepeatable
+parameter_list|(
+name|JobContext
+name|context
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|algorithmVersion
+operator|==
+literal|2
 return|;
 block|}
 annotation|@

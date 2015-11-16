@@ -1581,13 +1581,19 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|touchz (Path p)
+comment|// If job commit is repeatable, then we should allow
+comment|// startCommitFile/endCommitSuccessFile/endCommitFailureFile to be written
+comment|// by other AM before.
+DECL|method|touchz (Path p, boolean overwrite)
 specifier|private
 name|void
 name|touchz
 parameter_list|(
 name|Path
 name|p
+parameter_list|,
+name|boolean
+name|overwrite
 parameter_list|)
 throws|throws
 name|IOException
@@ -1598,7 +1604,7 @@ name|create
 argument_list|(
 name|p
 argument_list|,
-literal|false
+name|overwrite
 argument_list|)
 operator|.
 name|close
@@ -1619,11 +1625,49 @@ name|CommitterJobCommitEvent
 name|event
 parameter_list|)
 block|{
+name|boolean
+name|commitJobIsRepeatable
+init|=
+literal|false
+decl_stmt|;
+try|try
+block|{
+name|commitJobIsRepeatable
+operator|=
+name|committer
+operator|.
+name|isCommitJobRepeatable
+argument_list|(
+name|event
+operator|.
+name|getJobContext
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exception in committer.isCommitJobRepeatable():"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 name|touchz
 argument_list|(
 name|startCommitFile
+argument_list|,
+name|commitJobIsRepeatable
 argument_list|)
 expr_stmt|;
 name|jobCommitStarted
@@ -1645,6 +1689,8 @@ expr_stmt|;
 name|touchz
 argument_list|(
 name|endCommitSuccessFile
+argument_list|,
+name|commitJobIsRepeatable
 argument_list|)
 expr_stmt|;
 name|context
@@ -1671,11 +1717,22 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Could not commit job"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|touchz
 argument_list|(
 name|endCommitFailureFile
+argument_list|,
+name|commitJobIsRepeatable
 argument_list|)
 expr_stmt|;
 block|}
@@ -1695,15 +1752,6 @@ name|e2
 argument_list|)
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Could not commit job"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
 name|context
 operator|.
 name|getEventHandler

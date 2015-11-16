@@ -216,7 +216,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Is task output recovery supported for restarting jobs?    *     * If task output recovery is supported, job restart can be done more    * efficiently.    *     * @param jobContext    *          Context of the job whose output is being written.    * @return<code>true</code> if task output recovery is supported,    *<code>false</code> otherwise    * @throws IOException    * @see #recoverTask(TaskAttemptContext)    */
+comment|/**    * Is task output recovery supported for restarting jobs?    *     * If task output recovery is supported, job restart can be done more    * efficiently.    *    * @param jobContext    *          Context of the job whose output is being written.    * @return<code>true</code> if task output recovery is supported,    *<code>false</code> otherwise    * @throws IOException    * @see #recoverTask(TaskAttemptContext)    */
 DECL|method|isRecoverySupported (JobContext jobContext)
 specifier|public
 name|boolean
@@ -231,6 +231,53 @@ block|{
 return|return
 name|isRecoverySupported
 argument_list|()
+return|;
+block|}
+comment|/**    * Returns true if an in-progress job commit can be retried. If the MR AM is    * re-run then it will check this value to determine if it can retry an    * in-progress commit that was started by a previous version.    * Note that in rare scenarios, the previous AM version might still be running    * at that time, due to system anomalies. Hence if this method returns true    * then the retry commit operation should be able to run concurrently with    * the previous operation.    *    * If repeatable job commit is supported, job restart can tolerate previous    * AM failures during job commit.    *    * By default, it is not supported. Extended classes (like:    * FileOutputCommitter) should explicitly override it if provide support.    *    * @param jobContext    *          Context of the job whose output is being written.    * @return<code>true</code> repeatable job commit is supported,    *<code>false</code> otherwise    * @throws IOException    */
+DECL|method|isCommitJobRepeatable (JobContext jobContext)
+specifier|public
+name|boolean
+name|isCommitJobRepeatable
+parameter_list|(
+name|JobContext
+name|jobContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isCommitJobRepeatable (org.apache.hadoop.mapreduce.JobContext jobContext)
+specifier|public
+name|boolean
+name|isCommitJobRepeatable
+parameter_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|JobContext
+name|jobContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|isCommitJobRepeatable
+argument_list|(
+operator|(
+name|JobContext
+operator|)
+name|jobContext
+argument_list|)
 return|;
 block|}
 comment|/**    * Recover the task output.     *     * The retry-count for the job will be passed via the     * {@link MRConstants#APPLICATION_ATTEMPT_ID} key in      * {@link TaskAttemptContext#getConfiguration()} for the     *<code>OutputCommitter</code>. This is called from the application master    * process, but it is called individually for each task.    *     * If an exception is thrown the task will be attempted again.     *     * @param taskContext Context of the task whose output is being recovered    * @throws IOException    */

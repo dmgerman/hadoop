@@ -1001,6 +1001,31 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|isCommitJobRepeatable (JobContext context)
+specifier|public
+name|boolean
+name|isCommitJobRepeatable
+parameter_list|(
+name|JobContext
+name|context
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getWrapped
+argument_list|(
+name|context
+argument_list|)
+operator|.
+name|isCommitJobRepeatable
+argument_list|(
+name|context
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|isRecoverySupported (JobContext context)
 specifier|public
 name|boolean
