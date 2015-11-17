@@ -2152,6 +2152,18 @@ name|ugrcIndex
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|args
+operator|.
+name|indexOf
+argument_list|(
+literal|"-namenode"
+argument_list|)
+operator|>=
+literal|0
+condition|)
+block|{
 try|try
 block|{
 name|namenodeUri
@@ -2175,6 +2187,7 @@ block|{
 name|printUsage
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 name|String
 name|type
