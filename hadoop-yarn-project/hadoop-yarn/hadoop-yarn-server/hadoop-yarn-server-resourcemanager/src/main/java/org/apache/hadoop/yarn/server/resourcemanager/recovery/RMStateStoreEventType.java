@@ -68,9 +68,6 @@ block|,
 DECL|enumConstant|STORE_RESERVATION
 name|STORE_RESERVATION
 block|,
-DECL|enumConstant|UPDATE_RESERVATION
-name|UPDATE_RESERVATION
-block|,
 DECL|enumConstant|REMOVE_RESERVATION
 name|REMOVE_RESERVATION
 block|, }

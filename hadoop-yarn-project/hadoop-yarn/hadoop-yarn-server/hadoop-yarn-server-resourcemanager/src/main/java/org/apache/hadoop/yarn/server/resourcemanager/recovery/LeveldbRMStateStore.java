@@ -3812,35 +3812,6 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|updateReservationState ( ReservationAllocationStateProto reservationAllocation, String planName, String reservationIdName)
-specifier|protected
-name|void
-name|updateReservationState
-parameter_list|(
-name|ReservationAllocationStateProto
-name|reservationAllocation
-parameter_list|,
-name|String
-name|planName
-parameter_list|,
-name|String
-name|reservationIdName
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|storeReservationState
-argument_list|(
-name|reservationAllocation
-argument_list|,
-name|planName
-argument_list|,
-name|reservationIdName
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
 DECL|method|removeReservationState (String planName, String reservationIdName)
 specifier|protected
 name|void

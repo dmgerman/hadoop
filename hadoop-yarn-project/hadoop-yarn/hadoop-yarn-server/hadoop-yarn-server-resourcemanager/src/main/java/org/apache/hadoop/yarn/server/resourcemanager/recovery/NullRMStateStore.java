@@ -466,27 +466,6 @@ comment|// Do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|updateReservationState ( ReservationAllocationStateProto reservationAllocation, String planName, String reservationIdName)
-specifier|protected
-name|void
-name|updateReservationState
-parameter_list|(
-name|ReservationAllocationStateProto
-name|reservationAllocation
-parameter_list|,
-name|String
-name|planName
-parameter_list|,
-name|String
-name|reservationIdName
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-comment|// Do nothing
-block|}
-annotation|@
-name|Override
 DECL|method|removeRMDTMasterKeyState (DelegationKey delegationKey)
 specifier|public
 name|void
