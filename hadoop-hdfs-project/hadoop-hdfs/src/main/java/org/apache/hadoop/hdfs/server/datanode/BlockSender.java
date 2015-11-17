@@ -2750,7 +2750,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|" Could not read or failed to veirfy checksum for data"
+literal|" Could not read or failed to verify checksum for data"
 operator|+
 literal|" at offset "
 operator|+
