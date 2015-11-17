@@ -575,6 +575,28 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get the persistently stored length of the block.    */
+DECL|method|getStoredDataLength (ExtendedBlock block)
+name|long
+name|getStoredDataLength
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get the persistently stored generation stamp.    */
+DECL|method|getStoredGenerationStamp (ExtendedBlock block)
+name|long
+name|getStoredGenerationStamp
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
