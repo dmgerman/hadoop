@@ -947,7 +947,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Main class for a series of name-node benchmarks.  *   * Each benchmark measures throughput and average execution time   * of a specific name-node operation, e.g. file creation or block reports.  *   * The benchmark does not involve any other hadoop components  * except for the name-node. Each operation is executed  * by calling directly the respective name-node method.  * The name-node here is real all other components are simulated.  *   * Command line arguments for the benchmark include:  *<ol>  *<li>total number of operations to be performed,</li>  *<li>number of threads to run these operations,</li>  *<li>followed by operation specific input parameters.</li>  *<li>-logLevel L specifies the logging level when the benchmark runs.  * The default logging level is {@link Level#ERROR}.</li>  *<li>-UGCacheRefreshCount G will cause the benchmark to call  * {@link NameNodeRpcServer#refreshUserToGroupsMappings} after  * every G operations, which purges the name-node's user group cache.  * By default the refresh is never called.</li>  *<li>-keepResults do not clean up the name-space after execution.</li>  *<li>-useExisting do not recreate the name-space, use existing data.</li>  *<li>-namenode will run the test against a namenode in another  * process or on another host. If you use this option, the namenode  * must have dfs.namenode.fs-limits.min-block-size set to 16.</li>  *</ol>  *   * The benchmark first generates inputs for each thread so that the  * input generation overhead does not effect the resulting statistics.  * The number of operations performed by threads is practically the same.   * Precisely, the difference between the number of operations   * performed by any two threads does not exceed 1.  *   * Then the benchmark executes the specified number of operations using   * the specified number of threads and outputs the resulting stats.  */
+comment|/**  * Main class for a series of name-node benchmarks.  *   * Each benchmark measures throughput and average execution time   * of a specific name-node operation, e.g. file creation or block reports.  *   * The benchmark does not involve any other hadoop components  * except for the name-node. Each operation is executed  * by calling directly the respective name-node method.  * The name-node here is real all other components are simulated.  *   * Command line arguments for the benchmark include:  *<ol>  *<li>total number of operations to be performed,</li>  *<li>number of threads to run these operations,</li>  *<li>followed by operation specific input parameters.</li>  *<li>-logLevel L specifies the logging level when the benchmark runs.  * The default logging level is {@link Level#ERROR}.</li>  *<li>-UGCacheRefreshCount G will cause the benchmark to call  * {@link NameNodeRpcServer#refreshUserToGroupsMappings} after  * every G operations, which purges the name-node's user group cache.  * By default the refresh is never called.</li>  *<li>-keepResults do not clean up the name-space after execution.</li>  *<li>-useExisting do not recreate the name-space, use existing data.</li>  *<li>-namenode will run the test (except {@link ReplicationStats}) against a  * namenode in another process or on another host. If you use this option,  * the namenode must have dfs.namenode.fs-limits.min-block-size set to 16.</li>  *</ol>  *   * The benchmark first generates inputs for each thread so that the  * input generation overhead does not effect the resulting statistics.  * The number of operations performed by threads is practically the same.   * Precisely, the difference between the number of operations   * performed by any two threads does not exceed 1.  *   * Then the benchmark executes the specified number of operations using   * the specified number of threads and outputs the resulting stats.  */
 end_comment
 
 begin_class
@@ -994,9 +994,11 @@ literal|"     [-keepResults] | [-logLevel L] | [-UGCacheRefreshCount G] |"
 operator|+
 literal|" [-namenode<namenode URI>]\n"
 operator|+
-literal|"     If using -namenode, set the namenode's"
+literal|"     If using -namenode, set the namenode's "
 operator|+
-literal|"         dfs.namenode.fs-limits.min-block-size to 16."
+literal|"dfs.namenode.fs-limits.min-block-size to 16. Replication test does not "
+operator|+
+literal|"support -namenode."
 decl_stmt|;
 DECL|field|config
 specifier|static
@@ -8155,6 +8157,34 @@ name|type
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|namenodeUri
+operator|!=
+literal|null
+operator|||
+name|args
+operator|.
+name|contains
+argument_list|(
+literal|"-namenode"
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The replication test is ignored as it does not support "
+operator|+
+literal|"standalone namenode in another process or on another host. "
+operator|+
+literal|"Please run replication test without -namenode argument."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|opStat
 operator|=
 operator|new
@@ -8170,6 +8200,7 @@ argument_list|(
 name|opStat
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -8199,6 +8230,18 @@ name|add
 argument_list|(
 name|opStat
 argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|ops
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|printUsage
+argument_list|()
 expr_stmt|;
 block|}
 if|if
@@ -8348,18 +8391,6 @@ name|dfs
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|ops
-operator|.
-name|size
-argument_list|()
-operator|==
-literal|0
-condition|)
-name|printUsage
-argument_list|()
-expr_stmt|;
 comment|// run each benchmark
 for|for
 control|(
