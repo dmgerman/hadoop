@@ -461,14 +461,6 @@ literal|"static/yarn.dt.plugins.js"
 argument_list|)
 argument_list|)
 operator|.
-name|script
-argument_list|(
-name|root_url
-argument_list|(
-literal|"static/dt-plugin-1.10.7/sorting/natural.js"
-argument_list|)
-argument_list|)
-operator|.
 name|style
 argument_list|(
 literal|"#jsnotice { padding: 0.2em; text-align: center; }"
