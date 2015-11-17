@@ -106,6 +106,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSTestUtil
 import|;
 end_import
@@ -229,7 +243,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test if live nodes count per node is correct   * so NN makes right decision for under/over-replicated blocks  *   * Two of the "while" loops below use "busy wait"  * because they are detecting transient states.  */
+comment|/**  * Test if live nodes count per node is correct   * so NN makes right decision for under/over-replicated blocks  */
 end_comment
 
 begin_class
@@ -281,6 +295,11 @@ literal|null
 decl_stmt|;
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testNodeCount ()
 specifier|public
 name|void
@@ -289,7 +308,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// start a mini dfs cluster of 2 nodes
 specifier|final
 name|Configuration
 name|conf
@@ -298,6 +316,42 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
+comment|// avoid invalidation by startup delay in order to make test non-transient
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_KEY
+argument_list|,
+literal|60
+argument_list|)
+expr_stmt|;
+comment|// reduce intervals to make test execution time shorter
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HEARTBEAT_INTERVAL_KEY
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+comment|// start a mini dfs cluster of 2 nodes
 specifier|final
 name|MiniDFSCluster
 name|cluster
@@ -503,7 +557,7 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
-comment|// check if excessive replica is detected (transient)
+comment|// check if excessive replica is detected
 name|initializeTimeout
 argument_list|(
 name|TIMEOUT
@@ -690,7 +744,7 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
-comment|// check if excessive replica is detected (transient)
+comment|// check if excessive replica is detected
 name|initializeTimeout
 argument_list|(
 name|TIMEOUT
@@ -768,7 +822,6 @@ name|timeout
 operator|)
 expr_stmt|;
 block|}
-comment|/* busy wait on transient conditions */
 DECL|method|checkTimeout (String testLabel)
 name|void
 name|checkTimeout
@@ -783,7 +836,7 @@ name|checkTimeout
 argument_list|(
 name|testLabel
 argument_list|,
-literal|0
+literal|10
 argument_list|)
 expr_stmt|;
 block|}
