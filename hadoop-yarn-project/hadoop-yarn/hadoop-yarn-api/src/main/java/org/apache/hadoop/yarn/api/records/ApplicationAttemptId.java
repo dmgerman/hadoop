@@ -144,7 +144,7 @@ init|=
 literal|"appattempt_"
 decl_stmt|;
 annotation|@
-name|Private
+name|Public
 annotation|@
 name|Unstable
 DECL|method|newInstance (ApplicationId appId, int attemptId)

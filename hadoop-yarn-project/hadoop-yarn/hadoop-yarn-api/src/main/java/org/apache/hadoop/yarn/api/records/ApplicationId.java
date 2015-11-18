@@ -144,7 +144,7 @@ init|=
 literal|"application_"
 decl_stmt|;
 annotation|@
-name|Private
+name|Public
 annotation|@
 name|Unstable
 DECL|method|newInstance (long clusterTimestamp, int id)
