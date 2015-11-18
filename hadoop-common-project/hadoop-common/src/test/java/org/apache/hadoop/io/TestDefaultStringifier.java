@@ -38,16 +38,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -88,13 +78,33 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
 begin_class
 DECL|class|TestDefaultStringifier
 specifier|public
 class|class
 name|TestDefaultStringifier
-extends|extends
-name|TestCase
 block|{
 DECL|field|conf
 specifier|private
@@ -133,6 +143,8 @@ operator|.
 name|toCharArray
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testWithWritable ()
 specifier|public
 name|void
@@ -309,6 +321,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testWithJavaSerialization ()
 specifier|public
 name|void
@@ -400,6 +414,8 @@ name|claimedInt
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testStoreLoad ()
 specifier|public
 name|void
@@ -475,6 +491,8 @@ name|claimedText
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testStoreLoadArray ()
 specifier|public
 name|void

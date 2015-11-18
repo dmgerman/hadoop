@@ -27,22 +27,60 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
 name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertArrayEquals
 import|;
 end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -55,8 +93,6 @@ DECL|class|TestArrayWritable
 specifier|public
 class|class
 name|TestArrayWritable
-extends|extends
-name|TestCase
 block|{
 DECL|class|TextArrayWritable
 specifier|static
@@ -79,21 +115,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|TestArrayWritable (String name)
-specifier|public
-name|TestArrayWritable
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * If valueClass is undefined, readFields should throw an exception indicating    * that the field is null. Otherwise, readFields should succeed.	    */
+annotation|@
+name|Test
 DECL|method|testThrowUndefinedValueException ()
 specifier|public
 name|void
@@ -247,6 +271,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**   * test {@link ArrayWritable} toArray() method    */
+annotation|@
+name|Test
 DECL|method|testArrayWritableToArray ()
 specifier|public
 name|void
@@ -352,6 +378,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * test {@link ArrayWritable} constructor with null    */
+annotation|@
+name|Test
 DECL|method|testNullArgument ()
 specifier|public
 name|void
@@ -409,6 +437,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testArrayWritableStringConstructor ()
 specifier|public
 name|void
@@ -450,8 +480,6 @@ name|getValueClass
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertArrayEquals
 argument_list|(
 literal|"testArrayWritableStringConstructor toString error!!!"

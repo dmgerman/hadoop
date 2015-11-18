@@ -46,17 +46,31 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|Test
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -197,8 +211,6 @@ DECL|class|TestTFileSplit
 specifier|public
 class|class
 name|TestTFileSplit
-extends|extends
-name|TestCase
 block|{
 DECL|field|ROOT
 specifier|private
@@ -576,8 +588,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|count
@@ -590,8 +600,6 @@ operator|+=
 name|count
 expr_stmt|;
 block|}
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|rowCount
@@ -802,8 +810,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|count
@@ -830,8 +836,6 @@ operator|-
 literal|1
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|scanner
@@ -1199,6 +1203,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSplit ()
 specifier|public
 name|void

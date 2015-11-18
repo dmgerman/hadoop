@@ -46,17 +46,17 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|After
 import|;
 end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Assert
 import|;
 end_import
 
@@ -130,13 +130,31 @@ name|Path
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestVLong
 specifier|public
 class|class
 name|TestVLong
-extends|extends
-name|TestCase
 block|{
 DECL|field|ROOT
 specifier|private
@@ -176,7 +194,7 @@ init|=
 literal|"TestVLong"
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -232,7 +250,7 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -262,6 +280,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testVLongByte ()
 specifier|public
 name|void
@@ -554,6 +574,8 @@ return|return
 name|ret
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testVLongShort ()
 specifier|public
 name|void
@@ -614,6 +636,8 @@ name|size
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testVLong3Bytes ()
 specifier|public
 name|void
@@ -676,6 +700,8 @@ name|size
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testVLong4Bytes ()
 specifier|public
 name|void
@@ -740,6 +766,8 @@ name|size
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testVLong5Bytes ()
 specifier|public
 name|void
@@ -843,6 +871,8 @@ name|size
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testVLong6Bytes ()
 specifier|public
 name|void
@@ -857,6 +887,8 @@ literal|6
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testVLong7Bytes ()
 specifier|public
 name|void
@@ -871,6 +903,8 @@ literal|7
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testVLong8Bytes ()
 specifier|public
 name|void
@@ -885,6 +919,8 @@ literal|8
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testVLongRandom ()
 specifier|public
 name|void

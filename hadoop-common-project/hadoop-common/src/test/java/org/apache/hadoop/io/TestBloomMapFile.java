@@ -90,16 +90,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -279,12 +269,82 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
 name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -293,8 +353,6 @@ DECL|class|TestBloomMapFile
 specifier|public
 class|class
 name|TestBloomMapFile
-extends|extends
-name|TestCase
 block|{
 DECL|field|conf
 specifier|private
@@ -364,7 +422,7 @@ literal|"testfile"
 argument_list|)
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -403,8 +461,6 @@ literal|true
 argument_list|)
 condition|)
 block|{
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Can't clean up test root dir"
@@ -424,6 +480,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testMembershipTest ()
 specifier|public
 name|void
@@ -724,14 +782,11 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
-DECL|method|checkMembershipVaryingSizedKeys (String name, List<Text> keys)
+DECL|method|checkMembershipVaryingSizedKeys (List<Text> keys)
 specifier|private
 name|void
 name|checkMembershipVaryingSizedKeys
 parameter_list|(
-name|String
-name|name
-parameter_list|,
 name|List
 argument_list|<
 name|Text
@@ -906,6 +961,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testMembershipVaryingSizedKeysTest1 ()
 specifier|public
 name|void
@@ -951,13 +1008,12 @@ argument_list|)
 expr_stmt|;
 name|checkMembershipVaryingSizedKeys
 argument_list|(
-name|getName
-argument_list|()
-argument_list|,
 name|list
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMembershipVaryingSizedKeysTest2 ()
 specifier|public
 name|void
@@ -1003,14 +1059,13 @@ argument_list|)
 expr_stmt|;
 name|checkMembershipVaryingSizedKeys
 argument_list|(
-name|getName
-argument_list|()
-argument_list|,
 name|list
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * test {@code BloomMapFile.delete()} method    */
+annotation|@
+name|Test
 DECL|method|testDeleteFile ()
 specifier|public
 name|void
@@ -1121,6 +1176,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * test {@link BloomMapFile.Reader} constructor with     * IOException    */
+annotation|@
+name|Test
 DECL|method|testIOExceptionInWriterConstructor ()
 specifier|public
 name|void
@@ -1289,7 +1346,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    *  test {@link BloomMapFile.Reader.get()} method     */
+comment|/**    *  test {@link BloomMapFile.Reader#get(WritableComparable, Writable)} method    */
+annotation|@
+name|Test
 DECL|method|testGetBloomMapFile ()
 specifier|public
 name|void
@@ -1506,6 +1565,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testBloomMapFileConstructors ()
 specifier|public
 name|void

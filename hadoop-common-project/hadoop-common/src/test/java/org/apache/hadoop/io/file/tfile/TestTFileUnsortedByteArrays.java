@@ -36,17 +36,17 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|After
 import|;
 end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Assert
 import|;
 end_import
 
@@ -168,13 +168,31 @@ name|Scanner
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestTFileUnsortedByteArrays
 specifier|public
 class|class
 name|TestTFileUnsortedByteArrays
-extends|extends
-name|TestCase
 block|{
 DECL|field|ROOT
 specifier|private
@@ -314,7 +332,7 @@ name|numRecords2ndBlock
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -438,7 +456,7 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -458,6 +476,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// we still can scan records in an unsorted TFile
+annotation|@
+name|Test
 DECL|method|testFailureScannerWithKeys ()
 specifier|public
 name|void
@@ -561,6 +581,8 @@ expr_stmt|;
 block|}
 block|}
 comment|// we still can scan records in an unsorted TFile
+annotation|@
+name|Test
 DECL|method|testScan ()
 specifier|public
 name|void
@@ -839,6 +861,8 @@ expr_stmt|;
 block|}
 block|}
 comment|// we still can scan records in an unsorted TFile
+annotation|@
+name|Test
 DECL|method|testScanRange ()
 specifier|public
 name|void
@@ -1116,6 +1140,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureSeek ()
 specifier|public
 name|void

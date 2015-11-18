@@ -52,11 +52,31 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -347,8 +367,6 @@ DECL|class|TestTFileSeek
 specifier|public
 class|class
 name|TestTFileSeek
-extends|extends
-name|TestCase
 block|{
 DECL|field|options
 specifier|private
@@ -391,7 +409,7 @@ name|KVGenerator
 name|kvGen
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -594,7 +612,7 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -1189,6 +1207,8 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSeeks ()
 specifier|public
 name|void

@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -67,12 +77,38 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
 import|;
 end_import
 
@@ -85,8 +121,6 @@ DECL|class|TestMapWritable
 specifier|public
 class|class
 name|TestMapWritable
-extends|extends
-name|TestCase
 block|{
 comment|/** the test */
 annotation|@
@@ -94,6 +128,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testMapWritable ()
 specifier|public
 name|void
@@ -482,6 +518,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testForeignClass ()
 specifier|public
 name|void
@@ -559,6 +597,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Assert MapWritable does not grow across calls to readFields.    * @throws Exception    * @see<a href="https://issues.apache.org/jira/browse/HADOOP-2244">HADOOP-2244</a>    */
+annotation|@
+name|Test
 DECL|method|testMultipleCallsToReadFieldsAreSafe ()
 specifier|public
 name|void
@@ -582,8 +622,7 @@ init|=
 operator|new
 name|Text
 argument_list|(
-name|getName
-argument_list|()
+literal|"testMultipleCallsToReadFieldsAreSafe"
 argument_list|)
 decl_stmt|;
 name|m
@@ -729,6 +768,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testEquality ()
 specifier|public
 name|void
@@ -874,6 +915,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Verify text command outputs a useful representation for MapWritable. */
+annotation|@
+name|Test
 DECL|method|testToString ()
 specifier|public
 name|void

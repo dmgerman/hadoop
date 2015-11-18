@@ -48,16 +48,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -84,6 +74,74 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
 begin_comment
 comment|/**  * TestCase for {@link GenericWritable} class.  * @see TestWritable#testWritable(Writable)  */
 end_comment
@@ -93,8 +151,6 @@ DECL|class|TestGenericWritable
 specifier|public
 class|class
 name|TestGenericWritable
-extends|extends
-name|TestCase
 block|{
 DECL|field|conf
 specifier|private
@@ -120,20 +176,15 @@ init|=
 literal|"dummy"
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|super
-operator|.
-name|setUp
-argument_list|()
-expr_stmt|;
 name|conf
 operator|=
 operator|new
@@ -549,6 +600,8 @@ argument_list|)
 return|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFooWritable ()
 specifier|public
 name|void
@@ -602,6 +655,8 @@ name|generic
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBarWritable ()
 specifier|public
 name|void
@@ -707,6 +762,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBazWritable ()
 specifier|public
 name|void
@@ -762,6 +819,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSet ()
 specifier|public
 name|void
@@ -827,6 +886,8 @@ block|{
 comment|//ignore
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGet ()
 specifier|public
 name|void

@@ -18,6 +18,52 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -58,16 +104,6 @@ name|Type
 import|;
 end_import
 
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
 begin_comment
 comment|/** Unit test for EnumSetWritable */
 end_comment
@@ -77,8 +113,6 @@ DECL|class|TestEnumSetWritable
 specifier|public
 class|class
 name|TestEnumSetWritable
-extends|extends
-name|TestCase
 block|{
 DECL|enum|TestEnumSet
 enum|enum
@@ -130,6 +164,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testSerializeAndDeserializeNonEmpty ()
 specifier|public
 name|void
@@ -238,6 +274,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testSerializeAndDeserializeEmpty ()
 specifier|public
 name|void
@@ -386,6 +424,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testSerializeAndDeserializeNull ()
 specifier|public
 name|void
@@ -537,6 +577,8 @@ name|TestEnumSet
 argument_list|>
 name|testField
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testAvroReflect ()
 specifier|public
 name|void
@@ -586,6 +628,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * test {@link EnumSetWritable} equals() method    */
+annotation|@
+name|Test
 DECL|method|testEnumSetWritableEquals ()
 specifier|public
 name|void
@@ -721,6 +765,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**     * test {@code EnumSetWritable.write(DataOutputBuffer out)}     *  and iteration by TestEnumSet through iterator().    */
+annotation|@
+name|Test
 DECL|method|testEnumSetWritableWriteRead ()
 specifier|public
 name|void

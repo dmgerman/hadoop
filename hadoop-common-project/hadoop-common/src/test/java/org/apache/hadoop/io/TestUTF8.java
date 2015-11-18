@@ -18,16 +18,6 @@ end_package
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -114,6 +104,40 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
 begin_comment
 comment|/** Unit tests for UTF8. */
 end_comment
@@ -128,23 +152,7 @@ DECL|class|TestUTF8
 specifier|public
 class|class
 name|TestUTF8
-extends|extends
-name|TestCase
 block|{
-DECL|method|TestUTF8 (String name)
-specifier|public
-name|TestUTF8
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-block|}
 DECL|field|RANDOM
 specifier|private
 specifier|static
@@ -224,6 +232,8 @@ name|toString
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testWritable ()
 specifier|public
 name|void
@@ -261,6 +271,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGetBytes ()
 specifier|public
 name|void
@@ -391,6 +403,8 @@ name|readUTF
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testIO ()
 specifier|public
 name|void
@@ -516,6 +530,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testNullEncoding ()
 specifier|public
 name|void
@@ -583,6 +599,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test encoding and decoding of UTF8 outside the basic multilingual plane.    *    * This is a regression test for HADOOP-9103.    */
+annotation|@
+name|Test
 DECL|method|testNonBasicMultilingualPlane ()
 specifier|public
 name|void
@@ -651,6 +669,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that decoding invalid UTF8 throws an appropriate error message.    */
+annotation|@
+name|Test
 DECL|method|testInvalidUTF8 ()
 specifier|public
 name|void
@@ -725,6 +745,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test for a 5-byte UTF8 sequence, which is now considered illegal.    */
+annotation|@
+name|Test
 DECL|method|test5ByteUtf8Sequence ()
 specifier|public
 name|void
@@ -808,6 +830,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test that decoding invalid UTF8 due to truncation yields the correct    * exception type.    */
+annotation|@
+name|Test
 DECL|method|testInvalidUTF8Truncated ()
 specifier|public
 name|void

@@ -56,17 +56,53 @@ name|org
 operator|.
 name|junit
 operator|.
-name|*
+name|Test
 import|;
 end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Before
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -79,8 +115,6 @@ DECL|class|TestArrayPrimitiveWritable
 specifier|public
 class|class
 name|TestArrayPrimitiveWritable
-extends|extends
-name|TestCase
 block|{
 DECL|field|b
 specifier|static

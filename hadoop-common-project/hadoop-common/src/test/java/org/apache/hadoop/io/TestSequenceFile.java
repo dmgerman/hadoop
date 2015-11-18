@@ -38,16 +38,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -188,6 +178,76 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|mockito
 operator|.
 name|Mockito
@@ -203,8 +263,6 @@ DECL|class|TestSequenceFile
 specifier|public
 class|class
 name|TestSequenceFile
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -231,26 +289,9 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-DECL|method|TestSequenceFile ()
-specifier|public
-name|TestSequenceFile
-parameter_list|()
-block|{ }
-DECL|method|TestSequenceFile (String name)
-specifier|public
-name|TestSequenceFile
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-block|}
 comment|/** Unit tests for SequenceFile. */
+annotation|@
+name|Test
 DECL|method|testZlibSequenceFile ()
 specifier|public
 name|void
@@ -2211,6 +2252,8 @@ name|sorter
 return|;
 block|}
 comment|/** Unit tests for SequenceFile metadata. */
+annotation|@
+name|Test
 DECL|method|testSequenceFileMetadata ()
 specifier|public
 name|void
@@ -3038,6 +3081,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testClose ()
 specifier|public
 name|void
@@ -3396,6 +3441,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that makes sure the FileSystem passed to createWriter    * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testCreateUsesFsArg ()
 specifier|public
 name|void
@@ -3546,6 +3593,8 @@ name|closed
 return|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testCloseForErroneousSequenceFile ()
 specifier|public
 name|void
@@ -3728,6 +3777,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test to makes sure zero length sequence file is handled properly while    * initializing.    */
+annotation|@
+name|Test
 DECL|method|testInitZeroLengthSequenceFile ()
 specifier|public
 name|void
@@ -3823,6 +3874,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test that makes sure createWriter succeeds on a file that was     * already created    * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testCreateWriterOnExistingFile ()
 specifier|public
 name|void
@@ -3920,6 +3973,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRecursiveSeqFileCreate ()
 specifier|public
 name|void
@@ -4069,6 +4124,8 @@ argument_list|)
 expr_stmt|;
 comment|// should succeed, fails if exception thrown
 block|}
+annotation|@
+name|Test
 DECL|method|testSerializationAvailability ()
 specifier|public
 name|void

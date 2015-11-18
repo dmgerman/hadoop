@@ -72,11 +72,23 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -89,23 +101,7 @@ DECL|class|TestWritableName
 specifier|public
 class|class
 name|TestWritableName
-extends|extends
-name|TestCase
 block|{
-DECL|method|TestWritableName (String name)
-specifier|public
-name|TestWritableName
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-block|}
 comment|/** Example class used in test cases below. */
 DECL|class|SimpleWritable
 specifier|public
@@ -261,6 +257,8 @@ name|testName
 init|=
 literal|"mystring"
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testGoodName ()
 specifier|public
 name|void
@@ -299,6 +297,8 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSetName ()
 specifier|public
 name|void
@@ -353,6 +353,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAddName ()
 specifier|public
 name|void
@@ -449,6 +451,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBadName ()
 specifier|public
 name|void

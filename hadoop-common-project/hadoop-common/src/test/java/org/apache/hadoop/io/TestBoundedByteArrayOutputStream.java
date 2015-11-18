@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -27,12 +37,14 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertTrue
 import|;
 end_import
 
@@ -65,8 +77,6 @@ DECL|class|TestBoundedByteArrayOutputStream
 specifier|public
 class|class
 name|TestBoundedByteArrayOutputStream
-extends|extends
-name|TestCase
 block|{
 DECL|field|SIZE
 specifier|private
@@ -103,6 +113,8 @@ name|INPUT
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBoundedStream ()
 specifier|public
 name|void
@@ -377,6 +389,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testResetBuffer ()
 specifier|public
 name|void

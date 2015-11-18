@@ -61,22 +61,56 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
 name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -221,8 +255,6 @@ DECL|class|TestTFileStreams
 specifier|public
 class|class
 name|TestTFileStreams
-extends|extends
-name|TestCase
 block|{
 DECL|field|ROOT
 specifier|private
@@ -358,7 +390,7 @@ name|comparator
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -419,7 +451,7 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -459,6 +491,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testNoEntry ()
 specifier|public
 name|void
@@ -489,6 +523,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testOneEntryKnownLength ()
 specifier|public
 name|void
@@ -525,6 +561,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testOneEntryUnknownLength ()
 specifier|public
 name|void
@@ -564,6 +602,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// known key length, unknown value length
+annotation|@
+name|Test
 DECL|method|testOneEntryMixedLengths1 ()
 specifier|public
 name|void
@@ -601,6 +641,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// unknown key length, known value length
+annotation|@
+name|Test
 DECL|method|testOneEntryMixedLengths2 ()
 specifier|public
 name|void
@@ -637,6 +679,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testTwoEntriesKnownLength ()
 specifier|public
 name|void
@@ -674,6 +718,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Negative test
+annotation|@
+name|Test
 DECL|method|testFailureAddKeyWithoutValue ()
 specifier|public
 name|void
@@ -728,6 +774,8 @@ block|{
 comment|// noop, expecting an exception
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureAddValueWithoutKey ()
 specifier|public
 name|void
@@ -798,6 +846,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureOneEntryKnownLength ()
 specifier|public
 name|void
@@ -883,6 +933,8 @@ block|{
 comment|// noop, expecting an exception
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureKeyTooLong ()
 specifier|public
 name|void
@@ -923,8 +975,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Key is longer than requested."
@@ -942,6 +992,8 @@ block|}
 finally|finally
 block|{     }
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureKeyTooShort ()
 specifier|public
 name|void
@@ -1007,8 +1059,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Value is shorter than expected."
@@ -1026,6 +1076,8 @@ block|}
 finally|finally
 block|{     }
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureValueTooLong ()
 specifier|public
 name|void
@@ -1091,8 +1143,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Value is longer than expected."
@@ -1126,8 +1176,6 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Second or more close() should have no effect."
@@ -1135,6 +1183,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureValueTooShort ()
 specifier|public
 name|void
@@ -1175,8 +1225,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Key is shorter than expected."
@@ -1194,6 +1242,8 @@ block|}
 finally|finally
 block|{     }
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureCloseKeyStreamManyTimesInWriter ()
 specifier|public
 name|void
@@ -1272,8 +1322,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 literal|"Multiple close should have no effect."
@@ -1282,6 +1330,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureKeyLongerThan64K ()
 specifier|public
 name|void
@@ -1311,8 +1361,6 @@ operator|+
 literal|1
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Failed to handle key longer than 64K."
@@ -1331,6 +1379,8 @@ name|closeOutput
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureKeyLongerThan64K_2 ()
 specifier|public
 name|void
@@ -1411,8 +1461,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Failed to handle key longer than 64K."
@@ -1445,6 +1493,8 @@ comment|// no-op
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureNegativeOffset ()
 specifier|public
 name|void
@@ -1526,8 +1576,6 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Failed to handle key negative offset."
@@ -1556,6 +1604,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Verify that the compressed data size is less than raw data size.    *     * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testFailureCompressionNotWorking ()
 specifier|public
 name|void
@@ -1601,8 +1651,6 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|out
@@ -1618,6 +1666,8 @@ name|closeOutput
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureCompressionNotWorking2 ()
 specifier|public
 name|void
@@ -1663,8 +1713,6 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|out

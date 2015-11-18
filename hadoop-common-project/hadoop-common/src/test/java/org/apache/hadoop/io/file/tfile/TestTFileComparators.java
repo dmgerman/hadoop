@@ -42,11 +42,31 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -135,8 +155,6 @@ DECL|class|TestTFileComparators
 specifier|public
 class|class
 name|TestTFileComparators
-extends|extends
-name|TestCase
 block|{
 DECL|field|ROOT
 specifier|private
@@ -226,7 +244,7 @@ init|=
 literal|4263
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -271,7 +289,7 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -291,6 +309,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// bad comparator format
+annotation|@
+name|Test
 DECL|method|testFailureBadComparatorNames ()
 specifier|public
 name|void
@@ -340,6 +360,8 @@ expr_stmt|;
 block|}
 block|}
 comment|// jclass that doesn't exist
+annotation|@
+name|Test
 DECL|method|testFailureBadJClassNames ()
 specifier|public
 name|void
@@ -389,6 +411,8 @@ expr_stmt|;
 block|}
 block|}
 comment|// class exists but not a RawComparator
+annotation|@
+name|Test
 DECL|method|testFailureBadJClasses ()
 specifier|public
 name|void

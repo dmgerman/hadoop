@@ -62,16 +62,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -202,6 +192,60 @@ name|Scanner
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
 begin_comment
 comment|/**  * test tfile features.  *   */
 end_comment
@@ -211,8 +255,6 @@ DECL|class|TestTFile
 specifier|public
 class|class
 name|TestTFile
-extends|extends
-name|TestCase
 block|{
 DECL|field|ROOT
 specifier|private
@@ -271,7 +313,7 @@ init|=
 literal|"%010d"
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -297,7 +339,7 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -2405,6 +2447,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testTFileFeatures ()
 specifier|public
 name|void
@@ -2425,6 +2469,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// test unsorted t files.
+annotation|@
+name|Test
 DECL|method|testUnsortedTFileFeatures ()
 specifier|public
 name|void
@@ -2773,6 +2819,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// test meta blocks for tfiles
+annotation|@
+name|Test
 DECL|method|testMetaBlocks ()
 specifier|public
 name|void

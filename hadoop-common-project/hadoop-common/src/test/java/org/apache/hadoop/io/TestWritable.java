@@ -100,11 +100,59 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -117,8 +165,6 @@ DECL|class|TestWritable
 specifier|public
 class|class
 name|TestWritable
-extends|extends
-name|TestCase
 block|{
 DECL|field|TEST_CONFIG_PARAM
 specifier|private
@@ -156,20 +202,6 @@ name|TEST_WRITABLE_CONFIG_VALUE
 init|=
 name|TEST_CONFIG_VALUE
 decl_stmt|;
-DECL|method|TestWritable (String name)
-specifier|public
-name|TestWritable
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-block|}
 comment|/** Example class used in test cases below. */
 DECL|class|SimpleWritable
 specifier|public
@@ -390,6 +422,8 @@ return|;
 block|}
 block|}
 comment|/** Test 1: Check that SimpleWritable. */
+annotation|@
+name|Test
 DECL|method|testSimpleWritable ()
 specifier|public
 name|void
@@ -406,6 +440,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testByteWritable ()
 specifier|public
 name|void
@@ -427,6 +463,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testShortWritable ()
 specifier|public
 name|void
@@ -448,6 +486,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDoubleWritable ()
 specifier|public
 name|void
@@ -893,6 +933,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test a user comparator that relies on deserializing both arguments for each    * compare.    */
+annotation|@
+name|Test
 DECL|method|testShortWritableComparator ()
 specifier|public
 name|void
@@ -1070,6 +1112,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that Writable's are configured by Comparator.    */
+annotation|@
+name|Test
 DECL|method|testConfigurableWritableComparator ()
 specifier|public
 name|void

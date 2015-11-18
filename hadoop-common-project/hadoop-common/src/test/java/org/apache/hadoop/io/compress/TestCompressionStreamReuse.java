@@ -236,11 +236,23 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -249,8 +261,6 @@ DECL|class|TestCompressionStreamReuse
 specifier|public
 class|class
 name|TestCompressionStreamReuse
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -296,6 +306,8 @@ operator|.
 name|nextInt
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testBZip2Codec ()
 specifier|public
 name|void
@@ -316,6 +328,8 @@ literal|"org.apache.hadoop.io.compress.BZip2Codec"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGzipCompressStreamReuse ()
 specifier|public
 name|void
@@ -336,6 +350,8 @@ literal|"org.apache.hadoop.io.compress.GzipCodec"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGzipCompressStreamReuseWithParam ()
 specifier|public
 name|void
@@ -391,7 +407,6 @@ expr_stmt|;
 block|}
 DECL|method|resetStateTest (Configuration conf, int seed, int count, String codecClass)
 specifier|private
-specifier|static
 name|void
 name|resetStateTest
 parameter_list|(

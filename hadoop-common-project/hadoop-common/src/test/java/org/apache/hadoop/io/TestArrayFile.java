@@ -28,16 +28,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -108,6 +98,88 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
 begin_comment
 comment|/** Support for flat files of binary key/value pairs. */
 end_comment
@@ -117,8 +189,6 @@ DECL|class|TestArrayFile
 specifier|public
 class|class
 name|TestArrayFile
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -180,20 +250,8 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-DECL|method|TestArrayFile (String name)
-specifier|public
-name|TestArrayFile
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-block|}
+annotation|@
+name|Test
 DECL|method|testArrayFile ()
 specifier|public
 name|void
@@ -249,6 +307,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testEmptyFile ()
 specifier|public
 name|void
@@ -737,6 +797,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**     * test on {@link ArrayFile.Reader} iteration methods    *<pre>     * {@code next(), seek()} in and out of range.    *</pre>    */
+annotation|@
+name|Test
 DECL|method|testArrayFileIteration ()
 specifier|public
 name|void

@@ -56,11 +56,35 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -69,8 +93,6 @@ DECL|class|TestWritableUtils
 specifier|public
 class|class
 name|TestWritableUtils
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -89,8 +111,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|method|testValue (int val, int vintlen)
-specifier|public
-specifier|static
+specifier|private
 name|void
 name|testValue
 parameter_list|(
@@ -248,8 +269,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|testReadInRange (long val, int lower, int upper, boolean expectSuccess)
-specifier|public
-specifier|static
+specifier|private
 name|void
 name|testReadInRange
 parameter_list|(
@@ -372,9 +392,10 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testVInt ()
 specifier|public
-specifier|static
 name|void
 name|testVInt
 parameter_list|()

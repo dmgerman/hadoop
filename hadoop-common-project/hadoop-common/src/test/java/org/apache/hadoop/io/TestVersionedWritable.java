@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -36,16 +46,6 @@ name|Random
 import|;
 end_import
 
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
 begin_comment
 comment|/** Unit tests for VersionedWritable. */
 end_comment
@@ -55,23 +55,7 @@ DECL|class|TestVersionedWritable
 specifier|public
 class|class
 name|TestVersionedWritable
-extends|extends
-name|TestCase
 block|{
-DECL|method|TestVersionedWritable (String name)
-specifier|public
-name|TestVersionedWritable
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-block|}
 comment|/** Example class used in test cases below. */
 DECL|class|SimpleVersionedWritable
 specifier|public
@@ -668,6 +652,8 @@ return|;
 block|}
 block|}
 comment|/** Test 1: Check that SimpleVersionedWritable. */
+annotation|@
+name|Test
 DECL|method|testSimpleVersionedWritable ()
 specifier|public
 name|void
@@ -687,6 +673,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Test 2: Check that AdvancedVersionedWritable Works (well, why wouldn't it!). */
+annotation|@
+name|Test
 DECL|method|testAdvancedVersionedWritable ()
 specifier|public
 name|void
@@ -706,6 +694,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Test 3: Check that SimpleVersionedWritable throws an Exception. */
+annotation|@
+name|Test
 DECL|method|testSimpleVersionedWritableMismatch ()
 specifier|public
 name|void

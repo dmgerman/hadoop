@@ -52,16 +52,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -118,6 +108,64 @@ name|CompressionType
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
 begin_comment
 comment|/** Support for flat files of binary key/value pairs. */
 end_comment
@@ -127,8 +175,6 @@ DECL|class|TestSetFile
 specifier|public
 class|class
 name|TestSetFile
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -173,20 +219,8 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-DECL|method|TestSetFile (String name)
-specifier|public
-name|TestSetFile
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-block|}
+annotation|@
+name|Test
 DECL|method|testSetFile ()
 specifier|public
 name|void
@@ -271,6 +305,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * test {@code SetFile.Reader} methods     * next(), get() in combination     */
+annotation|@
+name|Test
 DECL|method|testSetFileAccessMethods ()
 specifier|public
 name|void

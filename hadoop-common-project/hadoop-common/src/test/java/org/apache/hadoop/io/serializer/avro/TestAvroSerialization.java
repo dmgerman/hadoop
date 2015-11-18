@@ -21,12 +21,26 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
 import|;
 end_import
 
@@ -76,13 +90,21 @@ name|SerializationTestUtil
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestAvroSerialization
 specifier|public
 class|class
 name|TestAvroSerialization
-extends|extends
-name|TestCase
 block|{
 DECL|field|conf
 specifier|private
@@ -95,6 +117,8 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testSpecific ()
 specifier|public
 name|void
@@ -136,6 +160,8 @@ name|after
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testReflectPkg ()
 specifier|public
 name|void
@@ -197,6 +223,8 @@ name|after
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAcceptHandlingPrimitivesAndArrays ()
 specifier|public
 name|void
@@ -240,6 +268,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testReflectInnerClass ()
 specifier|public
 name|void
@@ -301,6 +331,8 @@ name|after
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testReflect ()
 specifier|public
 name|void

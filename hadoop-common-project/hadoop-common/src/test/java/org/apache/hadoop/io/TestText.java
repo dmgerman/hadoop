@@ -18,16 +18,6 @@ end_package
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -106,6 +96,52 @@ name|Bytes
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
 begin_comment
 comment|/** Unit tests for LargeUTF8. */
 end_comment
@@ -115,8 +151,6 @@ DECL|class|TestText
 specifier|public
 class|class
 name|TestText
-extends|extends
-name|TestCase
 block|{
 DECL|field|NUM_ITERATIONS
 specifier|private
@@ -127,20 +161,6 @@ name|NUM_ITERATIONS
 init|=
 literal|100
 decl_stmt|;
-DECL|method|TestText (String name)
-specifier|public
-name|TestText
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-block|}
 DECL|field|RANDOM
 specifier|private
 specifier|static
@@ -377,6 +397,8 @@ name|toString
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testWritable ()
 specifier|public
 name|void
@@ -433,6 +455,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testCoding ()
 specifier|public
 name|void
@@ -586,6 +610,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testIO ()
 specifier|public
 name|void
@@ -909,6 +935,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testLimitedIO ()
 specifier|public
 name|void
@@ -939,6 +967,8 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCompare ()
 specifier|public
 name|void
@@ -1207,6 +1237,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFind ()
 specifier|public
 name|void
@@ -1277,6 +1309,8 @@ literal|11
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFindAfterUpdatingContents ()
 specifier|public
 name|void
@@ -1340,6 +1374,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testValidate ()
 specifier|public
 name|void
@@ -1386,6 +1422,8 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testClear ()
 specifier|public
 name|void
@@ -1501,6 +1539,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testTextText ()
 specifier|public
 name|void
@@ -1761,6 +1801,8 @@ block|}
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testConcurrentEncodeDecode ()
 specifier|public
 name|void
@@ -1808,6 +1850,8 @@ name|join
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAvroReflect ()
 specifier|public
 name|void
@@ -1831,6 +1875,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    *     */
+annotation|@
+name|Test
 DECL|method|testCharAt ()
 specifier|public
 name|void
@@ -1922,6 +1968,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * test {@code Text} readFields/write operations    */
+annotation|@
+name|Test
 DECL|method|testReadWriteOperations ()
 specifier|public
 name|void
@@ -2046,6 +2094,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testReadWithKnownLength ()
 specifier|public
 name|void
@@ -2180,6 +2230,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * test {@code Text.bytesToCodePoint(bytes) }     * with {@code BufferUnderflowException}    *     */
+annotation|@
+name|Test
 DECL|method|testBytesToCodePoint ()
 specifier|public
 name|void
@@ -2259,6 +2311,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testbytesToCodePointWithInvalidUTF ()
 specifier|public
 name|void
@@ -2310,6 +2364,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testUtf8Length ()
 specifier|public
 name|void
@@ -2471,59 +2527,6 @@ block|}
 argument_list|)
 argument_list|)
 argument_list|)
-expr_stmt|;
-block|}
-DECL|method|main (String[] args)
-specifier|public
-specifier|static
-name|void
-name|main
-parameter_list|(
-name|String
-index|[]
-name|args
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|TestText
-name|test
-init|=
-operator|new
-name|TestText
-argument_list|(
-literal|"main"
-argument_list|)
-decl_stmt|;
-name|test
-operator|.
-name|testIO
-argument_list|()
-expr_stmt|;
-name|test
-operator|.
-name|testCompare
-argument_list|()
-expr_stmt|;
-name|test
-operator|.
-name|testCoding
-argument_list|()
-expr_stmt|;
-name|test
-operator|.
-name|testWritable
-argument_list|()
-expr_stmt|;
-name|test
-operator|.
-name|testFind
-argument_list|()
-expr_stmt|;
-name|test
-operator|.
-name|testValidate
-argument_list|()
 expr_stmt|;
 block|}
 block|}

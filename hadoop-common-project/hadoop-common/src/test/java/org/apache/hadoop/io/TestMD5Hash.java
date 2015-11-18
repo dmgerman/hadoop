@@ -20,23 +20,45 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|TestWritable
+name|Test
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -89,23 +111,7 @@ DECL|class|TestMD5Hash
 specifier|public
 class|class
 name|TestMD5Hash
-extends|extends
-name|TestCase
 block|{
-DECL|method|TestMD5Hash (String name)
-specifier|public
-name|TestMD5Hash
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-block|}
 DECL|field|RANDOM
 specifier|private
 specifier|static
@@ -275,6 +281,8 @@ operator|-
 literal|1
 block|}
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testMD5Hash ()
 specifier|public
 name|void
@@ -801,6 +809,8 @@ name|join
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFactoryReturnsClearedHashes ()
 specifier|public
 name|void

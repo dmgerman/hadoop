@@ -18,11 +18,35 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -57,9 +81,9 @@ DECL|class|TestTextNonUTF8
 specifier|public
 class|class
 name|TestTextNonUTF8
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testNonUTF8 ()
 specifier|public
 name|void
@@ -159,32 +183,6 @@ argument_list|,
 name|ret
 argument_list|)
 argument_list|)
-expr_stmt|;
-block|}
-DECL|method|main (String[] args)
-specifier|public
-specifier|static
-name|void
-name|main
-parameter_list|(
-name|String
-index|[]
-name|args
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|TestTextNonUTF8
-name|test
-init|=
-operator|new
-name|TestTextNonUTF8
-argument_list|()
-decl_stmt|;
-name|test
-operator|.
-name|testNonUTF8
-argument_list|()
 expr_stmt|;
 block|}
 block|}
