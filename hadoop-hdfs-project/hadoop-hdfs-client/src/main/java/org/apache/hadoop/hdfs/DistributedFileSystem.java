@@ -3427,7 +3427,7 @@ name|concat
 argument_list|(
 name|getPathName
 argument_list|(
-name|trg
+name|absF
 argument_list|)
 argument_list|,
 name|srcsStr
