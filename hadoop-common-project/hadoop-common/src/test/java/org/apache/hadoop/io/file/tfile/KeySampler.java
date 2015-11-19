@@ -259,7 +259,7 @@ name|nextBytes
 argument_list|(
 name|key
 operator|.
-name|get
+name|getBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -283,7 +283,7 @@ name|b
 init|=
 name|key
 operator|.
-name|get
+name|getBytes
 argument_list|()
 decl_stmt|;
 name|b
