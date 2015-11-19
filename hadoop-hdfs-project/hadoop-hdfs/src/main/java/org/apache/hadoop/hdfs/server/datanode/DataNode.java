@@ -11364,6 +11364,13 @@ name|asList
 argument_list|(
 name|targets
 argument_list|)
+operator|+
+literal|" status="
+operator|+
+name|closeAck
+operator|.
+name|getStatus
+argument_list|()
 argument_list|)
 throw|;
 block|}
