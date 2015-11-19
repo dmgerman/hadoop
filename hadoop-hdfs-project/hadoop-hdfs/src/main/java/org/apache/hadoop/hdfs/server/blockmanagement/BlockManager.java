@@ -14839,25 +14839,15 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|trace
 argument_list|(
-literal|"BLOCK* processOverReplicatedBlock: "
+literal|"BLOCK* processOverReplicatedBlock: Postponing {}"
 operator|+
-literal|"Postponing processing of over-replicated "
-operator|+
+literal|" since storage {} does not yet have up-to-date information."
+argument_list|,
 name|block
-operator|+
-literal|" since storage + "
-operator|+
+argument_list|,
 name|storage
-operator|+
-literal|"datanode "
-operator|+
-name|cur
-operator|+
-literal|" does not yet have up-to-date "
-operator|+
-literal|"block information."
 argument_list|)
 expr_stmt|;
 name|postponeBlock
