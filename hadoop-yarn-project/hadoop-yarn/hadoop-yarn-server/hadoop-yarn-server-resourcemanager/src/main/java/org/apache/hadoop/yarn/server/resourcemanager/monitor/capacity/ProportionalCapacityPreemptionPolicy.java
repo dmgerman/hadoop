@@ -4197,11 +4197,10 @@ name|pending
 init|=
 name|l
 operator|.
-name|getQueueResourceUsage
-argument_list|()
-operator|.
-name|getPending
+name|getTotalPendingResourcesConsideringUserLimit
 argument_list|(
+name|partitionResource
+argument_list|,
 name|partitionToLookAt
 argument_list|)
 decl_stmt|;
