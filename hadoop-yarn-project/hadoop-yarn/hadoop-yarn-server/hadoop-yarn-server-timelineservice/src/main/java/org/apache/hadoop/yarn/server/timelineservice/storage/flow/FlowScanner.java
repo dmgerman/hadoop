@@ -296,9 +296,35 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|timeline
+name|timelineservice
 operator|.
-name|GenericObjectMapper
+name|storage
+operator|.
+name|common
+operator|.
+name|GenericConverter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
+name|NumericValueConverter
 import|;
 end_import
 
@@ -321,6 +347,28 @@ operator|.
 name|common
 operator|.
 name|TimelineStorageUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
+name|ValueConverter
 import|;
 end_import
 
@@ -635,6 +683,141 @@ return|return
 name|appId
 return|;
 block|}
+comment|/**    * Get value converter associated with a column or a column prefix. If nothing    * matches, generic converter is returned.    * @param colQualifierBytes    * @return value converter implementation.    */
+DECL|method|getValueConverter (byte[] colQualifierBytes)
+specifier|private
+specifier|static
+name|ValueConverter
+name|getValueConverter
+parameter_list|(
+name|byte
+index|[]
+name|colQualifierBytes
+parameter_list|)
+block|{
+comment|// Iterate over all the column prefixes for flow run table and get the
+comment|// appropriate converter for the column qualifier passed if prefix matches.
+for|for
+control|(
+name|FlowRunColumnPrefix
+name|colPrefix
+range|:
+name|FlowRunColumnPrefix
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|byte
+index|[]
+name|colPrefixBytes
+init|=
+name|colPrefix
+operator|.
+name|getColumnPrefixBytes
+argument_list|(
+literal|""
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|Bytes
+operator|.
+name|compareTo
+argument_list|(
+name|colPrefixBytes
+argument_list|,
+literal|0
+argument_list|,
+name|colPrefixBytes
+operator|.
+name|length
+argument_list|,
+name|colQualifierBytes
+argument_list|,
+literal|0
+argument_list|,
+name|colPrefixBytes
+operator|.
+name|length
+argument_list|)
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+name|colPrefix
+operator|.
+name|getValueConverter
+argument_list|()
+return|;
+block|}
+block|}
+comment|// Iterate over all the columns for flow run table and get the
+comment|// appropriate converter for the column qualifier passed if match occurs.
+for|for
+control|(
+name|FlowRunColumn
+name|column
+range|:
+name|FlowRunColumn
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|Bytes
+operator|.
+name|compareTo
+argument_list|(
+name|column
+operator|.
+name|getColumnQualifierBytes
+argument_list|()
+argument_list|,
+name|colQualifierBytes
+argument_list|)
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+name|column
+operator|.
+name|getValueConverter
+argument_list|()
+return|;
+block|}
+block|}
+comment|// Return generic converter if nothing matches.
+return|return
+name|GenericConverter
+operator|.
+name|getInstance
+argument_list|()
+return|;
+block|}
+comment|/**    * Checks if the converter is a numeric converter or not. For a converter to    * be numeric, it must implement {@link NumericValueConverter} interface.    * @param converter    * @return true, if converter is of type NumericValueConverter, false    * otherwise.    */
+DECL|method|isNumericConverter (ValueConverter converter)
+specifier|private
+specifier|static
+name|boolean
+name|isNumericConverter
+parameter_list|(
+name|ValueConverter
+name|converter
+parameter_list|)
+block|{
+return|return
+operator|(
+name|converter
+operator|instanceof
+name|NumericValueConverter
+operator|)
+return|;
+block|}
 comment|/**    * This method loops through the cells in a given row of the    * {@link FlowRunTable}. It looks at the tags of each cell to figure out how    * to process the contents. It then calculates the sum or min or max for each    * column or returns the cell as is.    *    * @param cells    * @param limit    * @return true if next row is available for the scanner, false otherwise    * @throws IOException    */
 DECL|method|nextInternal (List<Cell> cells, int limit)
 specifier|private
@@ -720,6 +903,11 @@ name|addedCnt
 init|=
 literal|0
 decl_stmt|;
+name|ValueConverter
+name|converter
+init|=
+literal|null
+decl_stmt|;
 while|while
 condition|(
 operator|(
@@ -771,6 +959,18 @@ operator|!=
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+name|converter
+operator|!=
+literal|null
+operator|&&
+name|isNumericConverter
+argument_list|(
+name|converter
+argument_list|)
+condition|)
+block|{
 name|addedCnt
 operator|+=
 name|emitCells
@@ -780,8 +980,14 @@ argument_list|,
 name|currentColumnCells
 argument_list|,
 name|currentAggOp
+argument_list|,
+operator|(
+name|NumericValueConverter
+operator|)
+name|converter
 argument_list|)
 expr_stmt|;
+block|}
 name|resetState
 argument_list|(
 name|currentColumnCells
@@ -800,6 +1006,30 @@ argument_list|(
 name|cell
 argument_list|)
 expr_stmt|;
+name|converter
+operator|=
+name|getValueConverter
+argument_list|(
+name|newColumnQualifier
+argument_list|)
+expr_stmt|;
+block|}
+comment|// No operation needs to be performed on non numeric converters.
+if|if
+condition|(
+operator|!
+name|isNumericConverter
+argument_list|(
+name|converter
+argument_list|)
+condition|)
+block|{
+name|nextCell
+argument_list|(
+name|limit
+argument_list|)
+expr_stmt|;
+continue|continue;
 block|}
 name|collectCells
 argument_list|(
@@ -810,6 +1040,11 @@ argument_list|,
 name|cell
 argument_list|,
 name|alreadySeenAggDim
+argument_list|,
+operator|(
+name|NumericValueConverter
+operator|)
+name|converter
 argument_list|)
 expr_stmt|;
 name|nextCell
@@ -834,6 +1069,11 @@ argument_list|,
 name|currentColumnCells
 argument_list|,
 name|currentAggOp
+argument_list|,
+operator|(
+name|NumericValueConverter
+operator|)
+name|converter
 argument_list|)
 expr_stmt|;
 block|}
@@ -917,7 +1157,7 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|collectCells (SortedSet<Cell> currentColumnCells, AggregationOperation currentAggOp, Cell cell, Set<String> alreadySeenAggDim)
+DECL|method|collectCells (SortedSet<Cell> currentColumnCells, AggregationOperation currentAggOp, Cell cell, Set<String> alreadySeenAggDim, NumericValueConverter converter)
 specifier|private
 name|void
 name|collectCells
@@ -939,6 +1179,9 @@ argument_list|<
 name|String
 argument_list|>
 name|alreadySeenAggDim
+parameter_list|,
+name|NumericValueConverter
+name|converter
 parameter_list|)
 throws|throws
 name|IOException
@@ -1011,6 +1254,8 @@ argument_list|,
 name|cell
 argument_list|,
 name|currentAggOp
+argument_list|,
+name|converter
 argument_list|)
 decl_stmt|;
 if|if
@@ -1082,6 +1327,8 @@ argument_list|,
 name|cell
 argument_list|,
 name|currentAggOp
+argument_list|,
+name|converter
 argument_list|)
 decl_stmt|;
 if|if
@@ -1194,7 +1441,7 @@ block|}
 comment|// end of switch case
 block|}
 comment|/*    * Processes the cells in input param currentColumnCells and populates    * List<Cell> cells as the output based on the input AggregationOperation    * parameter.    */
-DECL|method|emitCells (List<Cell> cells, SortedSet<Cell> currentColumnCells, AggregationOperation currentAggOp)
+DECL|method|emitCells (List<Cell> cells, SortedSet<Cell> currentColumnCells, AggregationOperation currentAggOp, NumericValueConverter converter)
 specifier|private
 name|int
 name|emitCells
@@ -1213,6 +1460,9 @@ name|currentColumnCells
 parameter_list|,
 name|AggregationOperation
 name|currentAggOp
+parameter_list|,
+name|NumericValueConverter
+name|converter
 parameter_list|)
 throws|throws
 name|IOException
@@ -1296,6 +1546,8 @@ init|=
 name|processSummation
 argument_list|(
 name|currentColumnCells
+argument_list|,
+name|converter
 argument_list|)
 decl_stmt|;
 name|cells
@@ -1325,7 +1577,7 @@ return|;
 block|}
 block|}
 comment|/*    * Returns a cell whose value is the sum of all cell values in the input set.    * The new cell created has the timestamp of the most recent metric cell. The    * sum of a metric for a flow run is the summation at the point of the last    * metric update in that flow till that time.    */
-DECL|method|processSummation (SortedSet<Cell> currentColumnCells)
+DECL|method|processSummation (SortedSet<Cell> currentColumnCells, NumericValueConverter converter)
 specifier|private
 name|Cell
 name|processSummation
@@ -1335,6 +1587,9 @@ argument_list|<
 name|Cell
 argument_list|>
 name|currentColumnCells
+parameter_list|,
+name|NumericValueConverter
+name|converter
 parameter_list|)
 throws|throws
 name|IOException
@@ -1357,7 +1612,7 @@ decl_stmt|;
 name|long
 name|mostCurrentTimestamp
 init|=
-literal|0l
+literal|0L
 decl_stmt|;
 name|Cell
 name|mostRecentCell
@@ -1377,9 +1632,9 @@ operator|=
 operator|(
 name|Number
 operator|)
-name|GenericObjectMapper
+name|converter
 operator|.
-name|read
+name|decodeValue
 argument_list|(
 name|CellUtil
 operator|.
@@ -1414,17 +1669,27 @@ expr_stmt|;
 block|}
 name|sum
 operator|=
+name|converter
+operator|.
+name|add
+argument_list|(
 name|sum
-operator|.
-name|longValue
-argument_list|()
-operator|+
+argument_list|,
 name|currentValue
-operator|.
-name|longValue
-argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
+name|byte
+index|[]
+name|sumBytes
+init|=
+name|converter
+operator|.
+name|encodeValue
+argument_list|(
+name|sum
+argument_list|)
+decl_stmt|;
 name|Cell
 name|sumCell
 init|=
@@ -1432,7 +1697,7 @@ name|createNewCell
 argument_list|(
 name|mostRecentCell
 argument_list|,
-name|sum
+name|sumBytes
 argument_list|)
 decl_stmt|;
 return|return
@@ -1440,7 +1705,7 @@ name|sumCell
 return|;
 block|}
 comment|/**    * Determines which cell is to be returned based on the values in each cell    * and the comparison operation MIN or MAX.    *    * @param previouslyChosenCell    * @param currentCell    * @param currentAggOp    * @return the cell which is the min (or max) cell    * @throws IOException    */
-DECL|method|compareCellValues (Cell previouslyChosenCell, Cell currentCell, AggregationOperation currentAggOp)
+DECL|method|compareCellValues (Cell previouslyChosenCell, Cell currentCell, AggregationOperation currentAggOp, NumericValueConverter converter)
 specifier|private
 name|Cell
 name|compareCellValues
@@ -1453,6 +1718,9 @@ name|currentCell
 parameter_list|,
 name|AggregationOperation
 name|currentAggOp
+parameter_list|,
+name|NumericValueConverter
+name|converter
 parameter_list|)
 throws|throws
 name|IOException
@@ -1470,16 +1738,15 @@ return|;
 block|}
 try|try
 block|{
-name|long
+name|Number
 name|previouslyChosenCellValue
 init|=
 operator|(
-operator|(
 name|Number
 operator|)
-name|GenericObjectMapper
+name|converter
 operator|.
-name|read
+name|decodeValue
 argument_list|(
 name|CellUtil
 operator|.
@@ -1488,21 +1755,16 @@ argument_list|(
 name|previouslyChosenCell
 argument_list|)
 argument_list|)
-operator|)
-operator|.
-name|longValue
-argument_list|()
 decl_stmt|;
-name|long
+name|Number
 name|currentCellValue
 init|=
 operator|(
-operator|(
 name|Number
 operator|)
-name|GenericObjectMapper
+name|converter
 operator|.
-name|read
+name|decodeValue
 argument_list|(
 name|CellUtil
 operator|.
@@ -1511,10 +1773,6 @@ argument_list|(
 name|currentCell
 argument_list|)
 argument_list|)
-operator|)
-operator|.
-name|longValue
-argument_list|()
 decl_stmt|;
 switch|switch
 condition|(
@@ -1526,9 +1784,16 @@ name|MIN
 case|:
 if|if
 condition|(
+name|converter
+operator|.
+name|compare
+argument_list|(
 name|currentCellValue
-operator|<
+argument_list|,
 name|previouslyChosenCellValue
+argument_list|)
+operator|<
+literal|0
 condition|)
 block|{
 comment|// new value is minimum, hence return this cell
@@ -1548,9 +1813,16 @@ name|MAX
 case|:
 if|if
 condition|(
+name|converter
+operator|.
+name|compare
+argument_list|(
 name|currentCellValue
-operator|>
+argument_list|,
 name|previouslyChosenCellValue
+argument_list|)
+operator|>
+literal|0
 condition|)
 block|{
 comment|// new value is max, hence return this cell
@@ -1591,7 +1863,7 @@ name|currentCell
 return|;
 block|}
 block|}
-DECL|method|createNewCell (Cell origCell, Number number)
+DECL|method|createNewCell (Cell origCell, byte[] newValue)
 specifier|private
 name|Cell
 name|createNewCell
@@ -1599,23 +1871,13 @@ parameter_list|(
 name|Cell
 name|origCell
 parameter_list|,
-name|Number
-name|number
+name|byte
+index|[]
+name|newValue
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|byte
-index|[]
-name|newValue
-init|=
-name|GenericObjectMapper
-operator|.
-name|write
-argument_list|(
-name|number
-argument_list|)
-decl_stmt|;
 return|return
 name|CellUtil
 operator|.

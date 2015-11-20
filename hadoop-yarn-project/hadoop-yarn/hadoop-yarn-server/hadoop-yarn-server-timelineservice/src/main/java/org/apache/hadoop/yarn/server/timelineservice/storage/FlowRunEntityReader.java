@@ -919,11 +919,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// read the start time
-name|Number
+name|Long
 name|startTime
 init|=
 operator|(
-name|Number
+name|Long
 operator|)
 name|FlowRunColumn
 operator|.
@@ -979,11 +979,11 @@ literal|null
 return|;
 block|}
 comment|// read the end time if available
-name|Number
+name|Long
 name|endTime
 init|=
 operator|(
-name|Number
+name|Long
 operator|)
 name|FlowRunColumn
 operator|.

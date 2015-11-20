@@ -218,6 +218,50 @@ name|TypedBufferedMutator
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
+name|LongConverter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
+name|ValueConverter
+import|;
+end_import
+
 begin_comment
 comment|/**  * Identifies partially qualified columns for the {@link FlowRunTable}.  */
 end_comment
@@ -246,6 +290,11 @@ argument_list|,
 name|AggregationOperation
 operator|.
 name|SUM
+argument_list|,
+name|LongConverter
+operator|.
+name|getInstance
+argument_list|()
 argument_list|)
 block|;
 DECL|field|column
@@ -287,7 +336,7 @@ name|AggregationOperation
 name|aggOp
 decl_stmt|;
 comment|/**    * Private constructor, meant to be used by the enum definition.    *    * @param columnFamily    *          that this column is stored in.    * @param columnPrefix    *          for this column.    */
-DECL|method|FlowRunColumnPrefix (ColumnFamily<FlowRunTable> columnFamily, String columnPrefix, AggregationOperation fra)
+DECL|method|FlowRunColumnPrefix (ColumnFamily<FlowRunTable> columnFamily, String columnPrefix, AggregationOperation fra, ValueConverter converter)
 specifier|private
 name|FlowRunColumnPrefix
 parameter_list|(
@@ -302,6 +351,9 @@ name|columnPrefix
 parameter_list|,
 name|AggregationOperation
 name|fra
+parameter_list|,
+name|ValueConverter
+name|converter
 parameter_list|)
 block|{
 name|column
@@ -313,6 +365,8 @@ name|FlowRunTable
 argument_list|>
 argument_list|(
 name|columnFamily
+argument_list|,
+name|converter
 argument_list|)
 expr_stmt|;
 name|this
@@ -392,6 +446,43 @@ return|return
 name|columnPrefixBytes
 operator|.
 name|clone
+argument_list|()
+return|;
+block|}
+DECL|method|getColumnPrefixBytes (String qualifier)
+specifier|public
+name|byte
+index|[]
+name|getColumnPrefixBytes
+parameter_list|(
+name|String
+name|qualifier
+parameter_list|)
+block|{
+return|return
+name|ColumnHelper
+operator|.
+name|getColumnQualifier
+argument_list|(
+name|this
+operator|.
+name|columnPrefixBytes
+argument_list|,
+name|qualifier
+argument_list|)
+return|;
+block|}
+DECL|method|getColumnFamilyBytes ()
+specifier|public
+name|byte
+index|[]
+name|getColumnFamilyBytes
+parameter_list|()
+block|{
+return|return
+name|columnFamily
+operator|.
+name|getBytes
 argument_list|()
 return|;
 block|}
@@ -765,6 +856,19 @@ block|}
 comment|// Default to null
 return|return
 literal|null
+return|;
+block|}
+DECL|method|getValueConverter ()
+specifier|public
+name|ValueConverter
+name|getValueConverter
+parameter_list|()
+block|{
+return|return
+name|column
+operator|.
+name|getValueConverter
+argument_list|()
 return|;
 block|}
 comment|/**    * Retrieve an {@link FlowRunColumnPrefix} given a name, or null if there is    * no match. The following holds true:    * {@code columnFor(a,x) == columnFor(b,y)} if and only if    * {@code (x == y == null)} or {@code a.equals(b)& x.equals(y)}    *    * @param columnFamily    *          The columnFamily for which to retrieve the column.    * @param columnPrefix    *          Name of the column to retrieve    * @return the corresponding {@link FlowRunColumnPrefix} or null if both    *         arguments don't match.    */

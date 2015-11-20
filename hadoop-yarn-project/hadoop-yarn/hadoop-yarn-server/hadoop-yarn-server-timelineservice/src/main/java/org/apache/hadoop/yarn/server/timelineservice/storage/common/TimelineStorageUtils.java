@@ -2002,6 +2002,37 @@ return|return
 literal|true
 return|;
 block|}
+comment|/**    * Checks if passed object is of integral type(Short/Integer/Long).    * @param obj    * @return true if object passed is of type Short or Integer or Long, false    * otherwise.    */
+DECL|method|isIntegralValue (Object obj)
+specifier|public
+specifier|static
+name|boolean
+name|isIntegralValue
+parameter_list|(
+name|Object
+name|obj
+parameter_list|)
+block|{
+return|return
+operator|(
+name|obj
+operator|instanceof
+name|Short
+operator|)
+operator|||
+operator|(
+name|obj
+operator|instanceof
+name|Integer
+operator|)
+operator|||
+operator|(
+name|obj
+operator|instanceof
+name|Long
+operator|)
+return|;
+block|}
 block|}
 end_class
 
