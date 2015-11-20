@@ -1299,17 +1299,10 @@ name|_
 argument_list|(
 literal|"Configured User Limit Factor:"
 argument_list|,
-name|StringUtils
-operator|.
-name|format
-argument_list|(
-literal|"%.1f"
-argument_list|,
 name|lqinfo
 operator|.
 name|getUserLimitFactor
 argument_list|()
-argument_list|)
 argument_list|)
 operator|.
 name|_
