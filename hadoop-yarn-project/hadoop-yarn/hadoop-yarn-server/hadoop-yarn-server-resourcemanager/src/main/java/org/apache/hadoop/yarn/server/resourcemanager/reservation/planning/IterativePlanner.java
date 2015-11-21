@@ -432,11 +432,6 @@ name|plan
 operator|.
 name|getResourceCalculator
 argument_list|()
-argument_list|,
-name|plan
-operator|.
-name|getMinimumAllocation
-argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Get a reverse iterator for the set of stages
@@ -864,11 +859,6 @@ argument_list|(
 name|plan
 operator|.
 name|getResourceCalculator
-argument_list|()
-argument_list|,
-name|plan
-operator|.
-name|getMinimumAllocation
 argument_list|()
 argument_list|)
 expr_stmt|;

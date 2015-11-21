@@ -366,8 +366,6 @@ operator|new
 name|RLESparseResourceAllocation
 argument_list|(
 name|calculator
-argument_list|,
-name|minAlloc
 argument_list|)
 expr_stmt|;
 for|for

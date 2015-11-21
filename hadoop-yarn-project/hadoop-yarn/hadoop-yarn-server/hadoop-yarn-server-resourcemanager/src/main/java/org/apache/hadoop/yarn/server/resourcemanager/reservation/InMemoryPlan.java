@@ -779,8 +779,6 @@ operator|new
 name|RLESparseResourceAllocation
 argument_list|(
 name|resCalc
-argument_list|,
-name|minAlloc
 argument_list|)
 expr_stmt|;
 name|this
@@ -891,8 +889,6 @@ operator|new
 name|RLESparseResourceAllocation
 argument_list|(
 name|resCalc
-argument_list|,
-name|minAlloc
 argument_list|)
 expr_stmt|;
 name|userResourceAlloc
@@ -2551,7 +2547,7 @@ block|{
 return|return
 name|rleSparseVector
 operator|.
-name|getLatestEndTime
+name|getLatestNonNullTime
 argument_list|()
 return|;
 block|}
