@@ -743,6 +743,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|thrs
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|DummyZKFCThread
@@ -763,6 +770,7 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 if|if

@@ -232,6 +232,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Before
 import|;
 end_import
@@ -242,7 +252,29 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
 import|;
 end_import
 
@@ -273,6 +305,24 @@ DECL|field|cluster
 specifier|private
 name|MiniZKFCCluster
 name|cluster
+decl_stmt|;
+comment|/**    * Set the timeout for every test    */
+annotation|@
+name|Rule
+DECL|field|testTimeout
+specifier|public
+name|Timeout
+name|testTimeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|3
+operator|*
+literal|60
+operator|*
+literal|1000
+argument_list|)
 decl_stmt|;
 comment|// Set up ZK digest-based credentials for the purposes of the tests,
 comment|// to make sure all of our functionality works with auth and ACLs
@@ -431,14 +481,50 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|After
+DECL|method|teardown ()
+specifier|public
+name|void
+name|teardown
+parameter_list|()
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|cluster
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"When stopping the cluster"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 comment|/**    * Test that the various command lines for formatting the ZK directory    * function correctly.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testFormatZK ()
 specifier|public
 name|void
@@ -520,11 +606,6 @@ block|}
 comment|/**    * Test that if ZooKeeper is not running, the correct error    * code is returned.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testNoZK ()
 specifier|public
 name|void
@@ -694,11 +775,6 @@ block|}
 comment|/**    * Test that automatic failover won't run against a target that hasn't    * explicitly enabled the feature.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|10000
-argument_list|)
 DECL|method|testWontRunWhenAutoFailoverDisabled ()
 specifier|public
 name|void
@@ -771,11 +847,6 @@ block|}
 comment|/**    * Test that, if ACLs are specified in the configuration, that    * it sets the ACLs when formatting the parent node.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testFormatSetsAcls ()
 specifier|public
 name|void
@@ -856,11 +927,6 @@ block|}
 comment|/**    * Test that the ZKFC won't run if fencing is not configured for the    * local service.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testFencingMustBeConfigured ()
 specifier|public
 name|void
@@ -933,11 +999,6 @@ block|}
 comment|/**    * Test that, when the health monitor indicates bad health status,    * failover is triggered. Also ensures that graceful active->standby    * transition is used when possible, falling back to fencing when    * the graceful approach fails.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testAutoFailoverOnBadHealth ()
 specifier|public
 name|void
@@ -945,8 +1006,6 @@ name|testAutoFailoverOnBadHealth
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -1068,23 +1127,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Test that, when the health monitor indicates bad health status,    * failover is triggered. Also ensures that graceful active->standby    * transition is used when possible, falling back to fencing when    * the graceful approach fails.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testAutoFailoverOnBadState ()
 specifier|public
 name|void
@@ -1092,8 +1137,6 @@ name|testAutoFailoverOnBadState
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -1138,22 +1181,8 @@ name|ACTIVE
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testAutoFailoverOnLostZKSession ()
 specifier|public
 name|void
@@ -1161,8 +1190,6 @@ name|testAutoFailoverOnLostZKSession
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -1219,23 +1246,9 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Test that, if the standby node is unhealthy, it doesn't try to become    * active    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testDontFailoverToUnhealthyNode ()
 specifier|public
 name|void
@@ -1243,8 +1256,6 @@ name|testDontFailoverToUnhealthyNode
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -1348,23 +1359,9 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Test that the ZKFC successfully quits the election when it fails to    * become active. This allows the old node to successfully fail back.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testBecomingActiveFails ()
 specifier|public
 name|void
@@ -1372,8 +1369,6 @@ name|testBecomingActiveFails
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -1564,23 +1559,9 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Test that, when ZooKeeper fails, the system remains in its    * current state, without triggering any failovers, and without    * causing the active node to enter standby state.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testZooKeeperFailure ()
 specifier|public
 name|void
@@ -1588,8 +1569,6 @@ name|testZooKeeperFailure
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -1812,23 +1791,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Test that the ZKFC can gracefully cede its active status.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testCedeActive ()
 specifier|public
 name|void
@@ -1836,8 +1801,6 @@ name|testCedeActive
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -1993,22 +1956,8 @@ literal|2800
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|25000
-argument_list|)
 DECL|method|testGracefulFailover ()
 specifier|public
 name|void
@@ -2016,8 +1965,6 @@ name|testGracefulFailover
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -2144,22 +2091,8 @@ name|activeTransitionCount
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testGracefulFailoverToUnhealthy ()
 specifier|public
 name|void
@@ -2167,8 +2100,6 @@ name|testGracefulFailoverToUnhealthy
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -2258,22 +2189,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testGracefulFailoverFailBecomingActive ()
 specifier|public
 name|void
@@ -2281,8 +2198,6 @@ name|testGracefulFailoverFailBecomingActive
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -2405,22 +2320,8 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testGracefulFailoverFailBecomingStandby ()
 specifier|public
 name|void
@@ -2428,8 +2329,6 @@ name|testGracefulFailoverFailBecomingStandby
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -2488,22 +2387,8 @@ name|fenceCount
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|15000
-argument_list|)
 DECL|method|testGracefulFailoverFailBecomingStandbyAndFailFence ()
 specifier|public
 name|void
@@ -2511,8 +2396,6 @@ name|testGracefulFailoverFailBecomingStandbyAndFailFence
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -2596,23 +2479,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Test which exercises all of the inputs into ZKFC. This is particularly    * useful for running under jcarder to check for lock order violations.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|30000
-argument_list|)
 DECL|method|testOneOfEverything ()
 specifier|public
 name|void
@@ -2620,8 +2489,6 @@ name|testOneOfEverything
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -2796,22 +2663,8 @@ name|gracefulFailoverToYou
 argument_list|()
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|25000
-argument_list|)
 DECL|method|testGracefulFailoverMultipleZKfcs ()
 specifier|public
 name|void
@@ -2819,8 +2672,6 @@ name|testGracefulFailoverMultipleZKfcs
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-try|try
 block|{
 name|cluster
 operator|.
@@ -3003,15 +2854,6 @@ operator|.
 name|activeTransitionCount
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|runFC (DummyHAService target, String ... args)
 specifier|private
