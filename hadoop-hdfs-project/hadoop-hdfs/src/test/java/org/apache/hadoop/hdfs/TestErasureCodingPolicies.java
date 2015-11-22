@@ -154,6 +154,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|HdfsAdmin
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|ErasureCodingPolicy
@@ -203,6 +219,16 @@ operator|.
 name|junit
 operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FileNotFoundException
 import|;
 end_import
 
@@ -364,14 +390,27 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testBasicSetECPolicy ()
 specifier|public
 name|void
@@ -754,6 +793,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testMoveValidity ()
 specifier|public
 name|void
@@ -1003,6 +1047,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testReplication ()
 specifier|public
 name|void
@@ -1110,6 +1159,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testGetErasureCodingPolicyWithSystemDefaultECPolicy ()
 specifier|public
 name|void
@@ -1220,6 +1274,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testGetErasureCodingPolicy ()
 specifier|public
 name|void
@@ -1399,6 +1458,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testCreationErasureCodingZoneWithInvalidPolicy ()
 specifier|public
 name|void
@@ -1448,7 +1512,7 @@ decl_stmt|;
 name|String
 name|src
 init|=
-literal|"/ecZone4-2"
+literal|"/ecDir4-2"
 decl_stmt|;
 specifier|final
 name|Path
@@ -1513,6 +1577,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testGetAllErasureCodingPolicies ()
 specifier|public
 name|void
@@ -1582,6 +1651,111 @@ name|next
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
+DECL|method|testGetErasureCodingPolicyOnANonExistentFile ()
+specifier|public
+name|void
+name|testGetErasureCodingPolicyOnANonExistentFile
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Path
+name|path
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"/ecDir"
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|fs
+operator|.
+name|getErasureCodingPolicy
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"FileNotFoundException should be thrown for a non-existent"
+operator|+
+literal|" file path"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|assertExceptionContains
+argument_list|(
+literal|"Path not found: "
+operator|+
+name|path
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+name|HdfsAdmin
+name|dfsAdmin
+init|=
+operator|new
+name|HdfsAdmin
+argument_list|(
+name|cluster
+operator|.
+name|getURI
+argument_list|()
+argument_list|,
+name|conf
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|dfsAdmin
+operator|.
+name|getErasureCodingPolicy
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"FileNotFoundException should be thrown for a non-existent"
+operator|+
+literal|" file path"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|assertExceptionContains
+argument_list|(
+literal|"Path not found: "
+operator|+
+name|path
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

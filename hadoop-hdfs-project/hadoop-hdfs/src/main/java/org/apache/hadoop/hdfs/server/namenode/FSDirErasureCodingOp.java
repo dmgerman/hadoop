@@ -66,6 +66,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -789,7 +799,7 @@ return|return
 name|xattrs
 return|;
 block|}
-comment|/**    * Get the erasure coding policy information for specified path.    *    * @param fsn namespace    * @param src path    * @return {@link ErasureCodingPolicy}    * @throws IOException    */
+comment|/**    * Get the erasure coding policy information for specified path.    *    * @param fsn namespace    * @param src path    * @return {@link ErasureCodingPolicy}    * @throws IOException    * @throws FileNotFoundException if the path does not exist.    */
 DECL|method|getErasureCodingPolicy (final FSNamesystem fsn, final String src)
 specifier|static
 name|ErasureCodingPolicy
@@ -823,6 +833,29 @@ argument_list|,
 name|src
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|iip
+operator|.
+name|getLastINode
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"Path not found: "
+operator|+
+name|iip
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+throw|;
+block|}
 return|return
 name|getErasureCodingPolicyForPath
 argument_list|(
