@@ -40,20 +40,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -262,6 +248,16 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -328,7 +324,7 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
 name|DataNode

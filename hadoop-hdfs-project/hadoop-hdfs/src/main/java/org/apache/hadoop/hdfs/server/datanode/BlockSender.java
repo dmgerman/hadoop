@@ -492,6 +492,16 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
 begin_comment
 comment|/**  * Reads a block from the disk and sends it to a recipient.  *   * Data sent from the BlockeSender in the following format:  *<br><b>Data format:</b><pre>  *    +--------------------------------------------------+  *    | ChecksumHeader | Sequence of data PACKETS...     |  *    +--------------------------------------------------+   *</pre>     *<b>ChecksumHeader format:</b><pre>  *    +--------------------------------------------------+  *    | 1 byte CHECKSUM_TYPE | 4 byte BYTES_PER_CHECKSUM |  *    +--------------------------------------------------+   *</pre>     * An empty packet is sent to mark the end of block and read completion.  *   * PACKET Contains a packet header, checksum and data. Amount of data  * carried is set by BUFFER_SIZE.  *<pre>  *   +-----------------------------------------------------+  *   | Variable length header. See {@link PacketHeader}    |  *   +-----------------------------------------------------+  *   | x byte checksum data. x is defined below            |  *   +-----------------------------------------------------+  *   | actual data ......                                  |  *   +-----------------------------------------------------+  *   *   Data is made of Chunks. Each chunk is of length<= BYTES_PER_CHECKSUM.  *   A checksum is calculated for each chunk.  *    *   x = (length of data + BYTE_PER_CHECKSUM - 1)/BYTES_PER_CHECKSUM *  *       CHECKSUM_SIZE  *    *   CHECKSUM_SIZE depends on CHECKSUM_TYPE (usually, 4 for CRC32)   *</pre>  *    *  The client reads data until it receives a packet with   *  "LastPacketInBlock" set to true or with a zero length. If there is   *  no checksum error, it replies to DataNode with OP_STATUS_CHECKSUM_OK.  */
 end_comment
@@ -510,7 +520,7 @@ block|{
 DECL|field|LOG
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
 name|DataNode

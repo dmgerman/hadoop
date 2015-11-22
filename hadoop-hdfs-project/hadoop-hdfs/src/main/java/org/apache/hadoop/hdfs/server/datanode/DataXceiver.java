@@ -1112,6 +1112,16 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
 begin_comment
 comment|/**  * Thread for processing incoming/outgoing data stream.  */
 end_comment
@@ -1129,7 +1139,7 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
 name|DataNode
@@ -2727,7 +2737,7 @@ name|IOUtils
 operator|.
 name|cleanup
 argument_list|(
-name|LOG
+literal|null
 argument_list|,
 name|fis
 argument_list|)

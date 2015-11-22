@@ -620,6 +620,16 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
 begin_comment
 comment|/** A class that receives a block and writes to its own disk, meanwhile  * may copies it to another site. If a throttler is provided,  * streaming throttling is also supported.  **/
 end_comment
@@ -635,7 +645,7 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
 name|DataNode
@@ -4607,10 +4617,8 @@ finally|finally
 block|{
 name|IOUtils
 operator|.
-name|cleanup
+name|closeStream
 argument_list|(
-name|LOG
-argument_list|,
 name|out
 argument_list|)
 expr_stmt|;

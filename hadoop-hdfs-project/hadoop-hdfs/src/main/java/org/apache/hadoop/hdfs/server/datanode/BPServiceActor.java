@@ -172,20 +172,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -688,6 +674,16 @@ name|Maps
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
 begin_comment
 comment|/**  * A thread per active or standby namenode to perform:  *<ul>  *<li> Pre-registration handshake with namenode</li>  *<li> Registration with namenode</li>  *<li> Send periodic heartbeats to the namenode</li>  *<li> Handle commands received from the namenode</li>  *</ul>  */
 end_comment
@@ -706,7 +702,7 @@ block|{
 DECL|field|LOG
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
 name|DataNode
@@ -2866,7 +2862,7 @@ name|IOUtils
 operator|.
 name|cleanup
 argument_list|(
-name|LOG
+literal|null
 argument_list|,
 name|bpNamenode
 argument_list|)
@@ -3871,7 +3867,7 @@ name|FAILED
 expr_stmt|;
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Initialization failed for "
 operator|+

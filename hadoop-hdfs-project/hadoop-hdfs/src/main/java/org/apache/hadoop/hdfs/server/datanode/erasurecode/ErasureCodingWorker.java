@@ -308,20 +308,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -830,6 +816,16 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
 begin_comment
 comment|/**  * ErasureCodingWorker handles the erasure coding recovery work commands. These  * commands would be issued from Namenode as part of Datanode's heart beat  * response. BPOfferService delegates the work to this class for handling EC  * commands.  */
 end_comment
@@ -849,7 +845,7 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
 name|DataNode
@@ -4374,7 +4370,7 @@ name|IOUtils
 operator|.
 name|cleanup
 argument_list|(
-name|LOG
+literal|null
 argument_list|,
 name|peer
 argument_list|)

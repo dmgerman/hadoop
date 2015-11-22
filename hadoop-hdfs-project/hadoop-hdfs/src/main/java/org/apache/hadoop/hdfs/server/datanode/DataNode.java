@@ -2836,6 +2836,26 @@ name|BlockingService
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**********************************************************  * DataNode is a class (and program) that stores a set of  * blocks for a DFS deployment.  A single deployment can  * have one or many DataNodes.  Each DataNode communicates  * regularly with a single NameNode.  It also communicates  * with client code and other DataNodes from time to time.  *  * DataNodes store a series of named blocks.  The DataNode  * allows client code to read these blocks, or to write new  * block data.  The DataNode may also, in response to instructions  * from its NameNode, delete blocks or copy blocks to/from other  * DataNodes.  *  * The DataNode maintains just one critical table:  *   block-> stream of bytes (of BLOCK_SIZE or less)  *  * This info is stored on a local disk.  The DataNode  * reports the table's contents to the NameNode upon startup  * and every so often afterwards.  *  * DataNodes spend their lives in an endless loop of asking  * the NameNode for something to do.  A NameNode cannot connect  * to a DataNode directly; a NameNode simply returns values from  * functions invoked by a DataNode.  *  * DataNodes maintain an open server socket so that client code   * or other DataNodes can read/write data.  The host/port for  * this server is reported to the NameNode, which then sends that  * information to clients or other DataNodes that might be interested.  *  **********************************************************/
 end_comment
@@ -2864,12 +2884,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|DataNode
 operator|.
@@ -12867,7 +12887,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Exception in secureMain"
 argument_list|,

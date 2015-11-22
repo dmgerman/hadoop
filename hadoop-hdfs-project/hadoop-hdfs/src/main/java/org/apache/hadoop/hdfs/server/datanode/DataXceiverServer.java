@@ -68,20 +68,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|conf
@@ -194,6 +180,16 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
 begin_comment
 comment|/**  * Server used for receiving/sending a block of data.  * This is created to listen for requests from clients or   * other DataNodes.  This small server does not use the   * Hadoop IPC mechanism.  */
 end_comment
@@ -209,7 +205,7 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
 name|DataNode
@@ -1113,7 +1109,7 @@ name|IOUtils
 operator|.
 name|cleanup
 argument_list|(
-name|LOG
+literal|null
 argument_list|,
 name|p
 argument_list|)
