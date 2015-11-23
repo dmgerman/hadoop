@@ -1107,6 +1107,11 @@ name|j
 argument_list|)
 expr_stmt|;
 block|}
+name|DefaultMetricsSystem
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|journalNodeInfoBeanName
