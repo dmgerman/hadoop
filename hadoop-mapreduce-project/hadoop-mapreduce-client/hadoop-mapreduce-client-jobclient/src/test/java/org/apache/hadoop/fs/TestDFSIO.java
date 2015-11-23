@@ -120,6 +120,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|text
+operator|.
+name|DecimalFormat
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Date
@@ -5349,6 +5359,15 @@ name|med
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|DecimalFormat
+name|df
+init|=
+operator|new
+name|DecimalFormat
+argument_list|(
+literal|"#.##"
+argument_list|)
+decl_stmt|;
 name|String
 name|resultLines
 index|[]
@@ -5358,7 +5377,7 @@ literal|"----- TestDFSIO ----- : "
 operator|+
 name|testType
 block|,
-literal|"           Date& time: "
+literal|"            Date& time: "
 operator|+
 operator|new
 name|Date
@@ -5369,19 +5388,28 @@ name|currentTimeMillis
 argument_list|()
 argument_list|)
 block|,
-literal|"       Number of files: "
+literal|"        Number of files: "
 operator|+
 name|tasks
 block|,
-literal|"Total MBytes processed: "
+literal|" Total MBytes processed: "
 operator|+
+name|df
+operator|.
+name|format
+argument_list|(
 name|toMB
 argument_list|(
 name|size
 argument_list|)
+argument_list|)
 block|,
-literal|"     Throughput mb/sec: "
+literal|"      Throughput mb/sec: "
 operator|+
+name|df
+operator|.
+name|format
+argument_list|(
 name|size
 operator|*
 literal|1000.0
@@ -5391,23 +5419,58 @@ name|time
 operator|*
 name|MEGA
 operator|)
+argument_list|)
 block|,
-literal|"Average IO rate mb/sec: "
+literal|"Total Throughput mb/sec: "
 operator|+
+name|df
+operator|.
+name|format
+argument_list|(
+name|toMB
+argument_list|(
+name|size
+argument_list|)
+operator|/
+operator|(
+operator|(
+name|float
+operator|)
+name|execTime
+operator|)
+argument_list|)
+block|,
+literal|" Average IO rate mb/sec: "
+operator|+
+name|df
+operator|.
+name|format
+argument_list|(
 name|med
+argument_list|)
 block|,
-literal|" IO rate std deviation: "
+literal|"  IO rate std deviation: "
 operator|+
+name|df
+operator|.
+name|format
+argument_list|(
 name|stdDev
+argument_list|)
 block|,
-literal|"    Test exec time sec: "
+literal|"     Test exec time sec: "
 operator|+
+name|df
+operator|.
+name|format
+argument_list|(
 operator|(
 name|float
 operator|)
 name|execTime
 operator|/
 literal|1000
+argument_list|)
 block|,
 literal|""
 block|}
