@@ -5175,10 +5175,7 @@ name|clusterResource
 argument_list|,
 name|node
 operator|.
-name|getRMNode
-argument_list|()
-operator|.
-name|getTotalCapability
+name|getTotalResource
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5284,9 +5281,9 @@ name|addTo
 argument_list|(
 name|clusterResource
 argument_list|,
-name|nodeManager
+name|schedulerNode
 operator|.
-name|getTotalCapability
+name|getTotalResource
 argument_list|()
 argument_list|)
 expr_stmt|;
