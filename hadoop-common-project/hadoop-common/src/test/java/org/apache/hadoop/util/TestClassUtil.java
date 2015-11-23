@@ -111,7 +111,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"Containing jar does not exist on file system"
+literal|"Containing jar does not exist on file system "
 argument_list|,
 name|jarFile
 operator|.
@@ -123,7 +123,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"Incorrect jar file"
+literal|"Incorrect jar file "
 operator|+
 name|containingJar
 argument_list|,
@@ -134,7 +134,7 @@ argument_list|()
 operator|.
 name|matches
 argument_list|(
-literal|"log4j.+[.]jar"
+literal|"log4j.*[.]jar"
 argument_list|)
 argument_list|)
 expr_stmt|;
