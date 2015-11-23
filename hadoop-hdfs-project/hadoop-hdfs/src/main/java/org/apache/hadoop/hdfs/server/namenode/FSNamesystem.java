@@ -27178,6 +27178,9 @@ name|getBlocksTotal
 argument_list|()
 return|;
 block|}
+comment|/** @deprecated Use {@link #getFilesTotal()} instead. */
+annotation|@
+name|Deprecated
 annotation|@
 name|Override
 comment|// NameNodeMXBean

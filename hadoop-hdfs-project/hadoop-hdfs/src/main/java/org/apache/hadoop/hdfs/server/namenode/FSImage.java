@@ -1046,7 +1046,7 @@ name|fileCount
 init|=
 name|fsn
 operator|.
-name|getTotalFiles
+name|getFilesTotal
 argument_list|()
 decl_stmt|;
 comment|// Expect 1 file, which is the root inode

@@ -206,7 +206,9 @@ name|long
 name|getTotalBlocks
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the total number of files on the cluster    *     * @return the total number of files on the cluster    */
+comment|/**    * Gets the total number of files on the cluster    *    * @return the total number of files on the cluster    * @deprecated Use    * {@link org.apache.hadoop.hdfs.server.namenode.metrics.FSNamesystemMBean#getFilesTotal()} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|getTotalFiles ()
 specifier|public
 name|long
