@@ -130,6 +130,15 @@ name|OZONE_VERSION_HEADER
 init|=
 literal|"x-ozone-version"
 decl_stmt|;
+DECL|field|OZONE_V1_VERSION_HEADER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_V1_VERSION_HEADER
+init|=
+literal|"v1"
+decl_stmt|;
 DECL|field|OZONE_LIST_QUERY_SERVICE
 specifier|public
 specifier|static
