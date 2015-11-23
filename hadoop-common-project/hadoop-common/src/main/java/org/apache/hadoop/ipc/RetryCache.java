@@ -216,6 +216,15 @@ specifier|final
 name|RetryCacheMetrics
 name|retryCacheMetrics
 decl_stmt|;
+DECL|field|MAX_CAPACITY
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|MAX_CAPACITY
+init|=
+literal|16
+decl_stmt|;
 comment|/**    * CacheEntry is tracked using unique client ID and callId of the RPC request    */
 DECL|class|CacheEntry
 specifier|public
@@ -846,11 +855,11 @@ name|capacity
 operator|=
 name|capacity
 operator|>
-literal|16
+name|MAX_CAPACITY
 condition|?
 name|capacity
 else|:
-literal|16
+name|MAX_CAPACITY
 expr_stmt|;
 name|this
 operator|.
