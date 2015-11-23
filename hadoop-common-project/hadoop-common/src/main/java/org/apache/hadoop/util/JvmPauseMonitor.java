@@ -394,11 +394,27 @@ name|Monitor
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|shouldRun
+condition|)
+block|{
 name|monitorThread
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"stop() was called before start() completed"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|stop ()
 specifier|public
@@ -412,9 +428,8 @@ literal|false
 expr_stmt|;
 if|if
 condition|(
-name|monitorThread
-operator|!=
-literal|null
+name|isStarted
+argument_list|()
 condition|)
 block|{
 name|monitorThread
