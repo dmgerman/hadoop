@@ -433,6 +433,17 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HA_TAILEDITS_ALL_NAMESNODES_RETRY_KEY
+argument_list|,
+literal|100
+argument_list|)
+expr_stmt|;
 name|HAUtil
 operator|.
 name|setAllowStandbyReads
@@ -793,6 +804,17 @@ operator|.
 name|DFS_HA_TAILEDITS_PERIOD_KEY
 argument_list|,
 literal|1
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HA_TAILEDITS_ALL_NAMESNODES_RETRY_KEY
+argument_list|,
+literal|100
 argument_list|)
 expr_stmt|;
 comment|// Have to specify IPC ports so the NNs can talk to each other.
