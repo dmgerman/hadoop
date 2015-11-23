@@ -165,12 +165,22 @@ DECL|class|SortedMapWritable
 specifier|public
 class|class
 name|SortedMapWritable
+parameter_list|<
+name|K
+extends|extends
+name|WritableComparable
+parameter_list|<
+name|?
+super|super
+name|K
+parameter_list|>
+parameter_list|>
 extends|extends
 name|AbstractMapWritable
 implements|implements
 name|SortedMap
 argument_list|<
-name|WritableComparable
+name|K
 argument_list|,
 name|Writable
 argument_list|>
@@ -179,7 +189,7 @@ DECL|field|instance
 specifier|private
 name|SortedMap
 argument_list|<
-name|WritableComparable
+name|K
 argument_list|,
 name|Writable
 argument_list|>
@@ -201,7 +211,7 @@ operator|=
 operator|new
 name|TreeMap
 argument_list|<
-name|WritableComparable
+name|K
 argument_list|,
 name|Writable
 argument_list|>
@@ -209,11 +219,14 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Copy constructor.    *     * @param other the map to copy from    */
-DECL|method|SortedMapWritable (SortedMapWritable other)
+DECL|method|SortedMapWritable (SortedMapWritable<K> other)
 specifier|public
 name|SortedMapWritable
 parameter_list|(
 name|SortedMapWritable
+argument_list|<
+name|K
+argument_list|>
 name|other
 parameter_list|)
 block|{
@@ -234,7 +247,7 @@ name|Comparator
 argument_list|<
 name|?
 super|super
-name|WritableComparable
+name|K
 argument_list|>
 name|comparator
 parameter_list|()
@@ -248,7 +261,7 @@ annotation|@
 name|Override
 DECL|method|firstKey ()
 specifier|public
-name|WritableComparable
+name|K
 name|firstKey
 parameter_list|()
 block|{
@@ -261,17 +274,17 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|headMap (K toKey)
 specifier|public
 name|SortedMap
 argument_list|<
-name|WritableComparable
+name|K
 argument_list|,
 name|Writable
 argument_list|>
-DECL|method|headMap (WritableComparable toKey)
 name|headMap
 parameter_list|(
-name|WritableComparable
+name|K
 name|toKey
 parameter_list|)
 block|{
@@ -288,7 +301,7 @@ annotation|@
 name|Override
 DECL|method|lastKey ()
 specifier|public
-name|WritableComparable
+name|K
 name|lastKey
 parameter_list|()
 block|{
@@ -301,20 +314,20 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|subMap (K fromKey, K toKey)
 specifier|public
 name|SortedMap
 argument_list|<
-name|WritableComparable
+name|K
 argument_list|,
 name|Writable
 argument_list|>
-DECL|method|subMap (WritableComparable fromKey, WritableComparable toKey)
 name|subMap
 parameter_list|(
-name|WritableComparable
+name|K
 name|fromKey
 parameter_list|,
-name|WritableComparable
+name|K
 name|toKey
 parameter_list|)
 block|{
@@ -331,17 +344,17 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|tailMap (K fromKey)
 specifier|public
 name|SortedMap
 argument_list|<
-name|WritableComparable
+name|K
 argument_list|,
 name|Writable
 argument_list|>
-DECL|method|tailMap (WritableComparable fromKey)
 name|tailMap
 parameter_list|(
-name|WritableComparable
+name|K
 name|fromKey
 parameter_list|)
 block|{
@@ -414,15 +427,11 @@ DECL|method|entrySet ()
 specifier|public
 name|Set
 argument_list|<
-name|java
-operator|.
-name|util
-operator|.
 name|Map
 operator|.
 name|Entry
 argument_list|<
-name|WritableComparable
+name|K
 argument_list|,
 name|Writable
 argument_list|>
@@ -478,7 +487,7 @@ DECL|method|keySet ()
 specifier|public
 name|Set
 argument_list|<
-name|WritableComparable
+name|K
 argument_list|>
 name|keySet
 parameter_list|()
@@ -492,12 +501,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|put (WritableComparable key, Writable value)
+DECL|method|put (K key, Writable value)
 specifier|public
 name|Writable
 name|put
 parameter_list|(
-name|WritableComparable
+name|K
 name|key
 parameter_list|,
 name|Writable
@@ -533,7 +542,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|putAll (Map<? extends WritableComparable, ? extends Writable> t)
+DECL|method|putAll (Map<? extends K, ? extends Writable> t)
 specifier|public
 name|void
 name|putAll
@@ -542,7 +551,7 @@ name|Map
 argument_list|<
 name|?
 extends|extends
-name|WritableComparable
+name|K
 argument_list|,
 name|?
 extends|extends
@@ -559,7 +568,7 @@ name|Entry
 argument_list|<
 name|?
 extends|extends
-name|WritableComparable
+name|K
 argument_list|,
 name|?
 extends|extends
@@ -691,11 +700,11 @@ name|i
 operator|++
 control|)
 block|{
-name|WritableComparable
+name|K
 name|key
 init|=
 operator|(
-name|WritableComparable
+name|K
 operator|)
 name|ReflectionUtils
 operator|.
@@ -798,7 +807,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|WritableComparable
+name|K
 argument_list|,
 name|Writable
 argument_list|>
@@ -894,10 +903,20 @@ name|SortedMapWritable
 condition|)
 block|{
 name|Map
+argument_list|<
+name|?
+argument_list|,
+name|?
+argument_list|>
 name|map
 init|=
 operator|(
 name|Map
+argument_list|<
+name|?
+argument_list|,
+name|?
+argument_list|>
 operator|)
 name|obj
 decl_stmt|;

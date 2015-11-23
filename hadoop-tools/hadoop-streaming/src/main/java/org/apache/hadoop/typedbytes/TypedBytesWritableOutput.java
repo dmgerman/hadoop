@@ -716,6 +716,9 @@ name|writeSortedMap
 argument_list|(
 operator|(
 name|SortedMapWritable
+argument_list|<
+name|?
+argument_list|>
 operator|)
 name|w
 argument_list|)
@@ -1116,12 +1119,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|writeSortedMap (SortedMapWritable smw)
+DECL|method|writeSortedMap (SortedMapWritable<?> smw)
 specifier|public
 name|void
 name|writeSortedMap
 parameter_list|(
 name|SortedMapWritable
+argument_list|<
+name|?
+argument_list|>
 name|smw
 parameter_list|)
 throws|throws
@@ -1143,7 +1149,12 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
+name|?
+extends|extends
 name|WritableComparable
+argument_list|<
+name|?
+argument_list|>
 argument_list|,
 name|Writable
 argument_list|>

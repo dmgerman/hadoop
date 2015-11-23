@@ -1523,12 +1523,28 @@ literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|readSortedMap (SortedMapWritable mw)
 specifier|public
+parameter_list|<
+name|K
+extends|extends
+name|WritableComparable
+argument_list|<
+name|?
+super|super
+name|K
+argument_list|>
+parameter_list|>
+DECL|method|readSortedMap (SortedMapWritable<K> mw)
 name|SortedMapWritable
+argument_list|<
+name|K
+argument_list|>
 name|readSortedMap
 parameter_list|(
 name|SortedMapWritable
+argument_list|<
+name|K
+argument_list|>
 name|mw
 parameter_list|)
 throws|throws
@@ -1545,6 +1561,9 @@ name|mw
 operator|=
 operator|new
 name|SortedMapWritable
+argument_list|<
+name|K
+argument_list|>
 argument_list|()
 expr_stmt|;
 block|}
@@ -1571,11 +1590,16 @@ name|i
 operator|++
 control|)
 block|{
-name|WritableComparable
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+name|K
 name|key
 init|=
 operator|(
-name|WritableComparable
+name|K
 operator|)
 name|read
 argument_list|()
@@ -1600,9 +1624,22 @@ return|return
 name|mw
 return|;
 block|}
-DECL|method|readSortedMap ()
 specifier|public
+parameter_list|<
+name|K
+extends|extends
+name|WritableComparable
+argument_list|<
+name|?
+super|super
+name|K
+argument_list|>
+parameter_list|>
 name|SortedMapWritable
+argument_list|<
+name|K
+argument_list|>
+DECL|method|readSortedMap ()
 name|readSortedMap
 parameter_list|()
 throws|throws
@@ -1611,6 +1648,12 @@ block|{
 return|return
 name|readSortedMap
 argument_list|(
+operator|(
+name|SortedMapWritable
+argument_list|<
+name|K
+argument_list|>
+operator|)
 literal|null
 argument_list|)
 return|;
