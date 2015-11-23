@@ -15659,6 +15659,14 @@ operator|.
 name|getBytes
 argument_list|()
 decl_stmt|;
+name|int
+name|len
+init|=
+name|writable
+operator|.
+name|getLength
+argument_list|()
+decl_stmt|;
 name|Rename
 index|[]
 name|options
@@ -15666,9 +15674,7 @@ init|=
 operator|new
 name|Rename
 index|[
-name|bytes
-operator|.
-name|length
+name|len
 index|]
 decl_stmt|;
 for|for
@@ -15680,9 +15686,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|bytes
-operator|.
-name|length
+name|len
 condition|;
 name|i
 operator|++
