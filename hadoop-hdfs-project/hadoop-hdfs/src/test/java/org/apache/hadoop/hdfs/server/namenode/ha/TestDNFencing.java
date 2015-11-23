@@ -2349,6 +2349,11 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
+name|cluster
+operator|.
+name|triggerHeartbeats
+argument_list|()
+expr_stmt|;
 name|numQueued
 operator|+=
 name|numDN
