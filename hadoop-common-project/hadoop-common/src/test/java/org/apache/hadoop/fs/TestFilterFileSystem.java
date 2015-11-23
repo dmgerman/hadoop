@@ -172,22 +172,6 @@ name|fs
 operator|.
 name|Options
 operator|.
-name|ChecksumOpt
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Options
-operator|.
 name|CreateOpts
 import|;
 end_import
@@ -342,11 +326,12 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|class|DontCheck
+comment|/**    * FileSystem methods that must not be overwritten by    * {@link FilterFileSystem}. Either because there is a default implementation    * already available or because it is not relevant.    */
+DECL|interface|MustNotImplement
 specifier|public
 specifier|static
-class|class
-name|DontCheck
+interface|interface
+name|MustNotImplement
 block|{
 DECL|method|getFileBlockLocations (Path p, long start, long len)
 specifier|public
@@ -363,34 +348,7 @@ parameter_list|,
 name|long
 name|len
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|getServerDefaults ()
-specifier|public
-name|FsServerDefaults
-name|getServerDefaults
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|getLength (Path f)
-specifier|public
-name|long
-name|getLength
-parameter_list|(
-name|Path
-name|f
-parameter_list|)
-block|{
-return|return
-literal|0
-return|;
-block|}
+function_decl|;
 DECL|method|append (Path f)
 specifier|public
 name|FSDataOutputStream
@@ -399,11 +357,9 @@ parameter_list|(
 name|Path
 name|f
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+throws|throws
+name|IOException
+function_decl|;
 DECL|method|append (Path f, int bufferSize)
 specifier|public
 name|FSDataOutputStream
@@ -415,30 +371,34 @@ parameter_list|,
 name|int
 name|bufferSize
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|rename (final Path src, final Path dst, final Rename... options)
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|getLength (Path f)
+specifier|public
+name|long
+name|getLength
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+function_decl|;
+DECL|method|rename (Path src, Path dst, Rename... options)
 specifier|public
 name|void
 name|rename
 parameter_list|(
-specifier|final
 name|Path
 name|src
 parameter_list|,
-specifier|final
 name|Path
 name|dst
 parameter_list|,
-specifier|final
 name|Rename
 modifier|...
 name|options
 parameter_list|)
-block|{ }
+function_decl|;
 DECL|method|exists (Path f)
 specifier|public
 name|boolean
@@ -447,11 +407,7 @@ parameter_list|(
 name|Path
 name|f
 parameter_list|)
-block|{
-return|return
-literal|false
-return|;
-block|}
+function_decl|;
 DECL|method|isDirectory (Path f)
 specifier|public
 name|boolean
@@ -460,11 +416,7 @@ parameter_list|(
 name|Path
 name|f
 parameter_list|)
-block|{
-return|return
-literal|false
-return|;
-block|}
+function_decl|;
 DECL|method|isFile (Path f)
 specifier|public
 name|boolean
@@ -473,11 +425,7 @@ parameter_list|(
 name|Path
 name|f
 parameter_list|)
-block|{
-return|return
-literal|false
-return|;
-block|}
+function_decl|;
 DECL|method|createNewFile (Path f)
 specifier|public
 name|boolean
@@ -486,11 +434,7 @@ parameter_list|(
 name|Path
 name|f
 parameter_list|)
-block|{
-return|return
-literal|false
-return|;
-block|}
+function_decl|;
 DECL|method|createNonRecursive (Path f, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -516,11 +460,7 @@ name|progress
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|createNonRecursive (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -549,86 +489,7 @@ name|progress
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|createNonRecursive (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress)
-specifier|public
-name|FSDataOutputStream
-name|createNonRecursive
-parameter_list|(
-name|Path
-name|f
-parameter_list|,
-name|FsPermission
-name|permission
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|CreateFlag
-argument_list|>
-name|flags
-parameter_list|,
-name|int
-name|bufferSize
-parameter_list|,
-name|short
-name|replication
-parameter_list|,
-name|long
-name|blockSize
-parameter_list|,
-name|Progressable
-name|progress
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|createNonRecursive (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt)
-specifier|public
-name|FSDataOutputStream
-name|createNonRecursive
-parameter_list|(
-name|Path
-name|f
-parameter_list|,
-name|FsPermission
-name|permission
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|CreateFlag
-argument_list|>
-name|flags
-parameter_list|,
-name|int
-name|bufferSize
-parameter_list|,
-name|short
-name|replication
-parameter_list|,
-name|long
-name|blockSize
-parameter_list|,
-name|Progressable
-name|progress
-parameter_list|,
-name|ChecksumOpt
-name|checksumOpt
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|mkdirs (Path f)
 specifier|public
 name|boolean
@@ -637,11 +498,7 @@ parameter_list|(
 name|Path
 name|f
 parameter_list|)
-block|{
-return|return
-literal|false
-return|;
-block|}
+function_decl|;
 DECL|method|open (Path f)
 specifier|public
 name|FSDataInputStream
@@ -650,11 +507,7 @@ parameter_list|(
 name|Path
 name|f
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|create (Path f)
 specifier|public
 name|FSDataOutputStream
@@ -663,11 +516,7 @@ parameter_list|(
 name|Path
 name|f
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|create (Path f, boolean overwrite)
 specifier|public
 name|FSDataOutputStream
@@ -679,11 +528,7 @@ parameter_list|,
 name|boolean
 name|overwrite
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|create (Path f, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -695,11 +540,7 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|create (Path f, short replication)
 specifier|public
 name|FSDataOutputStream
@@ -711,11 +552,7 @@ parameter_list|,
 name|short
 name|replication
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|create (Path f, short replication, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -730,11 +567,7 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|create (Path f, boolean overwrite, int bufferSize)
 specifier|public
 name|FSDataOutputStream
@@ -749,11 +582,7 @@ parameter_list|,
 name|int
 name|bufferSize
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|create (Path f, boolean overwrite, int bufferSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -771,11 +600,7 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|create (Path f, boolean overwrite, int bufferSize, short replication, long blockSize)
 specifier|public
 name|FSDataOutputStream
@@ -796,11 +621,7 @@ parameter_list|,
 name|long
 name|blockSize
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|create (Path f, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -824,42 +645,7 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
-specifier|public
-name|FSDataOutputStream
-name|create
-parameter_list|(
-name|Path
-name|f
-parameter_list|,
-name|FsPermission
-name|permission
-parameter_list|,
-name|boolean
-name|overwrite
-parameter_list|,
-name|int
-name|bufferSize
-parameter_list|,
-name|short
-name|replication
-parameter_list|,
-name|long
-name|blockSize
-parameter_list|,
-name|Progressable
-name|progress
-parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -889,62 +675,13 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt)
-specifier|public
-name|FSDataOutputStream
-name|create
-parameter_list|(
-name|Path
-name|f
-parameter_list|,
-name|FsPermission
-name|permission
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|CreateFlag
-argument_list|>
-name|flags
-parameter_list|,
-name|int
-name|bufferSize
-parameter_list|,
-name|short
-name|replication
-parameter_list|,
-name|long
-name|blockSize
-parameter_list|,
-name|Progressable
-name|progress
-parameter_list|,
-name|ChecksumOpt
-name|checksumOpt
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|getName ()
 specifier|public
 name|String
 name|getName
 parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|delete (Path f)
 specifier|public
 name|boolean
@@ -953,11 +690,7 @@ parameter_list|(
 name|Path
 name|f
 parameter_list|)
-block|{
-return|return
-literal|false
-return|;
-block|}
+function_decl|;
 DECL|method|getReplication (Path src)
 specifier|public
 name|short
@@ -966,40 +699,19 @@ parameter_list|(
 name|Path
 name|src
 parameter_list|)
-block|{
-return|return
-literal|0
-return|;
-block|}
+function_decl|;
 DECL|method|processDeleteOnExit ()
 specifier|public
 name|void
 name|processDeleteOnExit
 parameter_list|()
-block|{ }
-DECL|method|getContentSummary (Path f)
-specifier|public
-name|ContentSummary
-name|getContentSummary
-parameter_list|(
-name|Path
-name|f
-parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|getStatus ()
 specifier|public
 name|FsStatus
 name|getStatus
 parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|listStatus (Path f, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -1012,11 +724,7 @@ parameter_list|,
 name|PathFilter
 name|filter
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|listStatus (Path[] files)
 specifier|public
 name|FileStatus
@@ -1027,11 +735,7 @@ name|Path
 index|[]
 name|files
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|listStatus (Path[] files, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -1045,11 +749,7 @@ parameter_list|,
 name|PathFilter
 name|filter
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|globStatus (Path pathPattern)
 specifier|public
 name|FileStatus
@@ -1059,11 +759,7 @@ parameter_list|(
 name|Path
 name|pathPattern
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|globStatus (Path pathPattern, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -1076,12 +772,8 @@ parameter_list|,
 name|PathFilter
 name|filter
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|listFiles ( final Path path, final boolean isRecursive)
+function_decl|;
+DECL|method|listFiles (Path path, boolean isRecursive)
 specifier|public
 name|Iterator
 argument_list|<
@@ -1089,55 +781,13 @@ name|LocatedFileStatus
 argument_list|>
 name|listFiles
 parameter_list|(
-specifier|final
 name|Path
 name|path
 parameter_list|,
-specifier|final
 name|boolean
 name|isRecursive
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|listLocatedStatus (Path f)
-specifier|public
-name|Iterator
-argument_list|<
-name|LocatedFileStatus
-argument_list|>
-name|listLocatedStatus
-parameter_list|(
-name|Path
-name|f
-parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|listLocatedStatus (Path f, final PathFilter filter)
-specifier|public
-name|Iterator
-argument_list|<
-name|LocatedFileStatus
-argument_list|>
-name|listLocatedStatus
-parameter_list|(
-name|Path
-name|f
-parameter_list|,
-specifier|final
-name|PathFilter
-name|filter
-parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|copyFromLocalFile (Path src, Path dst)
 specifier|public
 name|void
@@ -1149,7 +799,7 @@ parameter_list|,
 name|Path
 name|dst
 parameter_list|)
-block|{ }
+function_decl|;
 DECL|method|moveFromLocalFile (Path[] srcs, Path dst)
 specifier|public
 name|void
@@ -1162,7 +812,7 @@ parameter_list|,
 name|Path
 name|dst
 parameter_list|)
-block|{ }
+function_decl|;
 DECL|method|moveFromLocalFile (Path src, Path dst)
 specifier|public
 name|void
@@ -1174,7 +824,7 @@ parameter_list|,
 name|Path
 name|dst
 parameter_list|)
-block|{ }
+function_decl|;
 DECL|method|copyToLocalFile (Path src, Path dst)
 specifier|public
 name|void
@@ -1186,7 +836,7 @@ parameter_list|,
 name|Path
 name|dst
 parameter_list|)
-block|{ }
+function_decl|;
 DECL|method|copyToLocalFile (boolean delSrc, Path src, Path dst, boolean useRawLocalFileSystem)
 specifier|public
 name|void
@@ -1204,7 +854,7 @@ parameter_list|,
 name|boolean
 name|useRawLocalFileSystem
 parameter_list|)
-block|{ }
+function_decl|;
 DECL|method|moveToLocalFile (Path src, Path dst)
 specifier|public
 name|void
@@ -1216,7 +866,7 @@ parameter_list|,
 name|Path
 name|dst
 parameter_list|)
-block|{ }
+function_decl|;
 DECL|method|getBlockSize (Path f)
 specifier|public
 name|long
@@ -1225,21 +875,15 @@ parameter_list|(
 name|Path
 name|f
 parameter_list|)
-block|{
-return|return
-literal|0
-return|;
-block|}
-DECL|method|primitiveCreate (final Path f, final EnumSet<CreateFlag> createFlag, CreateOpts... opts)
+function_decl|;
+DECL|method|primitiveCreate (Path f, EnumSet<CreateFlag> createFlag, CreateOpts... opts)
 specifier|public
 name|FSDataOutputStream
 name|primitiveCreate
 parameter_list|(
-specifier|final
 name|Path
 name|f
 parameter_list|,
-specifier|final
 name|EnumSet
 argument_list|<
 name|CreateFlag
@@ -1250,11 +894,7 @@ name|CreateOpts
 modifier|...
 name|opts
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|primitiveMkdir (Path f, FsPermission absolutePermission, boolean createParent)
 specifier|public
 name|void
@@ -1269,27 +909,19 @@ parameter_list|,
 name|boolean
 name|createParent
 parameter_list|)
-block|{ }
+function_decl|;
 DECL|method|getDefaultPort ()
 specifier|public
 name|int
 name|getDefaultPort
 parameter_list|()
-block|{
-return|return
-literal|0
-return|;
-block|}
+function_decl|;
 DECL|method|getCanonicalServiceName ()
 specifier|public
 name|String
 name|getCanonicalServiceName
 parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|getDelegationToken (String renewer)
 specifier|public
 name|Token
@@ -1303,11 +935,7 @@ name|renewer
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|deleteOnExit (Path f)
 specifier|public
 name|boolean
@@ -1318,11 +946,7 @@ name|f
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-literal|false
-return|;
-block|}
+function_decl|;
 DECL|method|cancelDeleteOnExit (Path f)
 specifier|public
 name|boolean
@@ -1333,11 +957,7 @@ name|f
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-literal|false
-return|;
-block|}
+function_decl|;
 DECL|method|addDelegationTokens (String renewer, Credentials creds)
 specifier|public
 name|Token
@@ -1355,21 +975,13 @@ name|creds
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|getScheme ()
 specifier|public
 name|String
 name|getScheme
 parameter_list|()
-block|{
-return|return
-literal|"dontcheck"
-return|;
-block|}
+function_decl|;
 DECL|method|fixRelativePart (Path p)
 specifier|public
 name|Path
@@ -1378,11 +990,16 @@ parameter_list|(
 name|Path
 name|p
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
+DECL|method|getContentSummary (Path f)
+specifier|public
+name|ContentSummary
+name|getContentSummary
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+function_decl|;
 block|}
 annotation|@
 name|Test
@@ -1394,6 +1011,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|int
+name|errors
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|Method
@@ -1418,10 +1040,7 @@ operator|.
 name|getModifiers
 argument_list|()
 argument_list|)
-condition|)
-continue|continue;
-if|if
-condition|(
+operator|||
 name|Modifier
 operator|.
 name|isPrivate
@@ -1431,10 +1050,7 @@ operator|.
 name|getModifiers
 argument_list|()
 argument_list|)
-condition|)
-continue|continue;
-if|if
-condition|(
+operator|||
 name|Modifier
 operator|.
 name|isFinal
@@ -1445,10 +1061,12 @@ name|getModifiers
 argument_list|()
 argument_list|)
 condition|)
+block|{
 continue|continue;
+block|}
 try|try
 block|{
-name|DontCheck
+name|MustNotImplement
 operator|.
 name|class
 operator|.
@@ -1465,15 +1083,46 @@ name|getParameterTypes
 argument_list|()
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|FilterFileSystem
+operator|.
+name|class
+operator|.
+name|getDeclaredMethod
+argument_list|(
+name|m
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|m
+operator|.
+name|getParameterTypes
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
-literal|"Skipping "
+literal|"FilterFileSystem MUST NOT implement "
 operator|+
 name|m
 argument_list|)
 expr_stmt|;
+name|errors
+operator|++
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NoSuchMethodException
+name|ex
+parameter_list|)
+block|{
+comment|// Expected
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1481,15 +1130,6 @@ name|NoSuchMethodException
 name|exc
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Testing "
-operator|+
-name|m
-argument_list|)
-expr_stmt|;
 try|try
 block|{
 name|FilterFileSystem
@@ -1520,17 +1160,32 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"FilterFileSystem doesn't implement "
+literal|"FilterFileSystem MUST implement "
 operator|+
 name|m
 argument_list|)
 expr_stmt|;
-throw|throw
-name|exc2
-throw|;
+name|errors
+operator|++
+expr_stmt|;
 block|}
 block|}
 block|}
+name|assertTrue
+argument_list|(
+operator|(
+name|errors
+operator|+
+literal|" methods were not overridden correctly - see"
+operator|+
+literal|" log"
+operator|)
+argument_list|,
+name|errors
+operator|<=
+literal|0
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test
