@@ -1092,16 +1092,6 @@ argument_list|(
 name|error
 argument_list|)
 expr_stmt|;
-comment|// If oldUmask is not set, then throw the exception
-if|if
-condition|(
-name|oldUmask
-operator|==
-name|Integer
-operator|.
-name|MIN_VALUE
-condition|)
-block|{
 throw|throw
 operator|new
 name|IllegalArgumentException
@@ -1109,48 +1099,6 @@ argument_list|(
 name|error
 argument_list|)
 throw|;
-block|}
-block|}
-if|if
-condition|(
-name|oldUmask
-operator|!=
-name|Integer
-operator|.
-name|MIN_VALUE
-condition|)
-block|{
-comment|// Property was set with old key
-if|if
-condition|(
-name|umask
-operator|!=
-name|oldUmask
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|DEPRECATED_UMASK_LABEL
-operator|+
-literal|" configuration key is deprecated. "
-operator|+
-literal|"Convert to "
-operator|+
-name|UMASK_LABEL
-operator|+
-literal|", using octal or symbolic umask "
-operator|+
-literal|"specifications."
-argument_list|)
-expr_stmt|;
-comment|// Old and new umask values do not match - Use old umask
-name|umask
-operator|=
-name|oldUmask
-expr_stmt|;
-block|}
 block|}
 block|}
 return|return
