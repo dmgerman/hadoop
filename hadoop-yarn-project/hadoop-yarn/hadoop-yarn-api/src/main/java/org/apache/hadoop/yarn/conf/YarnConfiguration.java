@@ -6950,6 +6950,30 @@ operator|.
 name|name
 argument_list|()
 decl_stmt|;
+comment|/**    * Max time to wait for NM to connection to RM.    * When not set, proxy will fall back to use value of    * RESOURCEMANAGER_CONNECT_MAX_WAIT_MS.    */
+DECL|field|NM_RESOURCEMANAGER_CONNECT_MAX_WAIT_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_RESOURCEMANAGER_CONNECT_MAX_WAIT_MS
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"nodemanager.resourcemanager.connect.max-wait.ms"
+decl_stmt|;
+comment|/**    * Time interval between each NM attempt to connection to RM.    * When not set, proxy will fall back to use value of    * RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS.    */
+DECL|field|NM_RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"nodemanager.resourcemanager.connect.retry-interval.ms"
+decl_stmt|;
 comment|/**    * Node-labels configurations    */
 DECL|field|NODE_LABELS_PREFIX
 specifier|public
