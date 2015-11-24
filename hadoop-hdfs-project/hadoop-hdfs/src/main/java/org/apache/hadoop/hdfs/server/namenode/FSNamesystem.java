@@ -27178,25 +27178,6 @@ name|getBlocksTotal
 argument_list|()
 return|;
 block|}
-comment|/** @deprecated Use {@link #getFilesTotal()} instead. */
-annotation|@
-name|Deprecated
-annotation|@
-name|Override
-comment|// NameNodeMXBean
-annotation|@
-name|Metric
-DECL|method|getTotalFiles ()
-specifier|public
-name|long
-name|getTotalFiles
-parameter_list|()
-block|{
-return|return
-name|getFilesTotal
-argument_list|()
-return|;
-block|}
 annotation|@
 name|Override
 comment|// NameNodeMXBean
