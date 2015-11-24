@@ -329,7 +329,7 @@ argument_list|()
 expr_stmt|;
 name|builder
 operator|.
-name|setPmem
+name|setVmem
 argument_list|(
 name|vmem
 argument_list|)

@@ -184,6 +184,26 @@ name|NodeHeartbeatResponse
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceUtilization
+import|;
+end_import
+
 begin_comment
 comment|/**  * Node managers information on available resources   * and other static information.  *  */
 end_comment
@@ -262,6 +282,20 @@ DECL|method|getTotalCapability ()
 specifier|public
 name|Resource
 name|getTotalCapability
+parameter_list|()
+function_decl|;
+comment|/**    * the aggregated resource utilization of the containers.    * @return the aggregated resource utilization of the containers.    */
+DECL|method|getAggregatedContainersUtilization ()
+specifier|public
+name|ResourceUtilization
+name|getAggregatedContainersUtilization
+parameter_list|()
+function_decl|;
+comment|/**    * the total resource utilization of the node.    * @return the total resource utilization of the node.    */
+DECL|method|getNodeUtilization ()
+specifier|public
+name|ResourceUtilization
+name|getNodeUtilization
 parameter_list|()
 function_decl|;
 comment|/**    * The rack name for this node manager.    * @return the rack name.    */

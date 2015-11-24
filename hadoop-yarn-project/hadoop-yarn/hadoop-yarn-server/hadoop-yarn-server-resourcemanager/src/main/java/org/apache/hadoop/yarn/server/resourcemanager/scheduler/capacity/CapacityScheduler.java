@@ -6373,6 +6373,27 @@ argument_list|(
 name|releasedContainers
 argument_list|)
 expr_stmt|;
+comment|// Updating node resource utilization
+name|node
+operator|.
+name|setAggregatedContainersUtilization
+argument_list|(
+name|nm
+operator|.
+name|getAggregatedContainersUtilization
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|node
+operator|.
+name|setNodeUtilization
+argument_list|(
+name|nm
+operator|.
+name|getNodeUtilization
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Now node data structures are upto date and ready for scheduling.
 if|if
 condition|(

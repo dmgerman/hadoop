@@ -2706,8 +2706,10 @@ return|return
 name|appList
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getNodeStatus (int responseId)
-specifier|private
+specifier|protected
 name|NodeStatus
 name|getNodeStatus
 parameter_list|(

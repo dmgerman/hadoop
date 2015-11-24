@@ -290,6 +290,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceUtilization
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|resourcemanager
 operator|.
 name|nodelabels
@@ -908,6 +928,30 @@ name|pullNewlyIncreasedContainers
 parameter_list|()
 block|{
 comment|// TODO Auto-generated method stub
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getAggregatedContainersUtilization ()
+specifier|public
+name|ResourceUtilization
+name|getAggregatedContainersUtilization
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNodeUtilization ()
+specifier|public
+name|ResourceUtilization
+name|getNodeUtilization
+parameter_list|()
+block|{
 return|return
 literal|null
 return|;

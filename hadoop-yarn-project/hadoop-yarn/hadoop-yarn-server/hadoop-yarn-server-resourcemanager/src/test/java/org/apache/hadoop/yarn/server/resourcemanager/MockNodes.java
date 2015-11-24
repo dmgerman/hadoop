@@ -264,6 +264,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceUtilization
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|resourcemanager
 operator|.
 name|nodelabels
@@ -798,7 +818,17 @@ name|String
 argument_list|>
 name|labels
 decl_stmt|;
-DECL|method|MockRMNodeImpl (NodeId nodeId, String nodeAddr, String httpAddress, Resource perNode, String rackName, String healthReport, long lastHealthReportTime, int cmdPort, String hostName, NodeState state, Set<String> labels)
+DECL|field|containersUtilization
+specifier|private
+name|ResourceUtilization
+name|containersUtilization
+decl_stmt|;
+DECL|field|nodeUtilization
+specifier|private
+name|ResourceUtilization
+name|nodeUtilization
+decl_stmt|;
+DECL|method|MockRMNodeImpl (NodeId nodeId, String nodeAddr, String httpAddress, Resource perNode, String rackName, String healthReport, long lastHealthReportTime, int cmdPort, String hostName, NodeState state, Set<String> labels, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization)
 specifier|public
 name|MockRMNodeImpl
 parameter_list|(
@@ -837,6 +867,12 @@ argument_list|<
 name|String
 argument_list|>
 name|labels
+parameter_list|,
+name|ResourceUtilization
+name|containersUtilization
+parameter_list|,
+name|ResourceUtilization
+name|nodeUtilization
 parameter_list|)
 block|{
 name|this
@@ -904,6 +940,18 @@ operator|.
 name|labels
 operator|=
 name|labels
+expr_stmt|;
+name|this
+operator|.
+name|containersUtilization
+operator|=
+name|containersUtilization
+expr_stmt|;
+name|this
+operator|.
+name|nodeUtilization
+operator|=
+name|nodeUtilization
 expr_stmt|;
 block|}
 annotation|@
@@ -1235,6 +1283,34 @@ name|emptyList
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getAggregatedContainersUtilization ()
+specifier|public
+name|ResourceUtilization
+name|getAggregatedContainersUtilization
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|containersUtilization
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNodeUtilization ()
+specifier|public
+name|ResourceUtilization
+name|getNodeUtilization
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|nodeUtilization
+return|;
+block|}
 block|}
 empty_stmt|;
 DECL|method|buildRMNode (int rack, final Resource perNode, NodeState state, String httpAddr)
@@ -1317,6 +1393,10 @@ argument_list|,
 literal|123
 argument_list|,
 name|labels
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -1367,10 +1447,14 @@ argument_list|,
 name|port
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|buildRMNode (int rack, final Resource perNode, NodeState state, String httpAddr, int hostnum, String hostName, int port, Set<String> labels)
+DECL|method|buildRMNode (int rack, final Resource perNode, NodeState state, String httpAddr, int hostnum, String hostName, int port, Set<String> labels, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization)
 specifier|private
 specifier|static
 name|RMNode
@@ -1403,6 +1487,12 @@ argument_list|<
 name|String
 argument_list|>
 name|labels
+parameter_list|,
+name|ResourceUtilization
+name|containersUtilization
+parameter_list|,
+name|ResourceUtilization
+name|nodeUtilization
 parameter_list|)
 block|{
 specifier|final
@@ -1502,6 +1592,10 @@ argument_list|,
 name|state
 argument_list|,
 name|labels
+argument_list|,
+name|containersUtilization
+argument_list|,
+name|nodeUtilization
 argument_list|)
 return|;
 block|}
