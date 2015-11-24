@@ -3357,12 +3357,13 @@ argument_list|,
 name|exitCode
 argument_list|)
 expr_stmt|;
-comment|// because this method does not implemented still.
+comment|// set-priority is fired after job is completed in YARN, hence need not
+comment|// have to update the priority.
 name|verifyJobPriority
 argument_list|(
 name|jobId
 argument_list|,
-literal|"NORMAL"
+literal|"DEFAULT"
 argument_list|,
 name|conf
 argument_list|,

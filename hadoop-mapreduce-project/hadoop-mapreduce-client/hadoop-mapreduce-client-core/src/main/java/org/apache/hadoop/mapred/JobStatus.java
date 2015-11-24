@@ -659,7 +659,7 @@ name|runState
 argument_list|,
 name|JobPriority
 operator|.
-name|NORMAL
+name|DEFAULT
 argument_list|,
 name|user
 argument_list|,

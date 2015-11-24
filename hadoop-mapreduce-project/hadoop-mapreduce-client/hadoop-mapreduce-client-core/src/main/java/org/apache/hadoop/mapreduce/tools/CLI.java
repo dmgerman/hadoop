@@ -745,6 +745,11 @@ name|nEvents
 init|=
 literal|0
 decl_stmt|;
+name|int
+name|jpvalue
+init|=
+literal|0
+decl_stmt|;
 name|boolean
 name|getStatus
 init|=
@@ -1050,11 +1055,32 @@ name|IllegalArgumentException
 name|iae
 parameter_list|)
 block|{
+try|try
+block|{
+name|jpvalue
+operator|=
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|argv
+index|[
+literal|2
+index|]
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NumberFormatException
+name|ne
+parameter_list|)
+block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-name|iae
+name|ne
 argument_list|)
 expr_stmt|;
 name|displayUsage
@@ -1065,6 +1091,7 @@ expr_stmt|;
 return|return
 name|exitCode
 return|;
+block|}
 block|}
 name|setJobPriority
 operator|=
@@ -2160,6 +2187,13 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|jp
+operator|!=
+literal|null
+condition|)
+block|{
 name|job
 operator|.
 name|setPriority
@@ -2167,6 +2201,17 @@ argument_list|(
 name|jp
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|job
+operator|.
+name|setPriorityAsInteger
+argument_list|(
+name|jpvalue
+argument_list|)
+expr_stmt|;
+block|}
 name|System
 operator|.
 name|out
@@ -2728,6 +2773,18 @@ name|values
 argument_list|()
 control|)
 block|{
+comment|// UNDEFINED_PRIORITY need not to be displayed in usage
+if|if
+condition|(
+name|JobPriority
+operator|.
+name|UNDEFINED_PRIORITY
+operator|==
+name|p
+condition|)
+block|{
+continue|continue;
+block|}
 name|sb
 operator|.
 name|append
@@ -3033,6 +3090,8 @@ operator|+
 literal|"Valid values for priorities are: "
 operator|+
 name|jobPriorityValues
+operator|+
+literal|". In addition to this, integers also can be used."
 argument_list|)
 expr_stmt|;
 block|}
@@ -3217,6 +3276,8 @@ operator|+
 literal|"Valid values for priorities are: "
 operator|+
 name|jobPriorityValues
+operator|+
+literal|". In addition to this, integers also can be used."
 operator|+
 literal|"%n"
 argument_list|)

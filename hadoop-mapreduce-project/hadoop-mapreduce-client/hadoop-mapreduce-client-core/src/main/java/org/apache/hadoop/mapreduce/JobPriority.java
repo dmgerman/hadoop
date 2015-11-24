@@ -45,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Used to describe the priority of the running job.   *  */
+comment|/**  * Used to describe the priority of the running job.   * DEFAULT : While submitting a job, if the user is not specifying priority,  * YARN has the capability to pick the default priority as per its config.  * Hence MapReduce can indicate such cases with this new enum.  * UNDEFINED_PRIORITY : YARN supports priority as an integer. Hence other than  * the five defined enums, YARN can consider other integers also. To generalize  * such cases, this specific enum is used.  */
 end_comment
 
 begin_enum

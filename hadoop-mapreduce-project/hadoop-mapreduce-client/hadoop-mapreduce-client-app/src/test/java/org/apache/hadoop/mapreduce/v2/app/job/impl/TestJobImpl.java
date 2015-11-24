@@ -7010,7 +7010,7 @@ name|Priority
 operator|.
 name|newInstance
 argument_list|(
-literal|5
+literal|8
 argument_list|)
 decl_stmt|;
 name|job

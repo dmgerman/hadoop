@@ -258,7 +258,7 @@ name|FAILED
 argument_list|,
 name|JobPriority
 operator|.
-name|NORMAL
+name|DEFAULT
 argument_list|,
 literal|"root"
 argument_list|,
