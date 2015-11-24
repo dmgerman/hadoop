@@ -2977,7 +2977,7 @@ literal|"Killing container"
 operator|+
 name|container
 operator|+
-literal|" (after waiting for premption for "
+literal|" (after waiting for preemption for "
 operator|+
 operator|(
 name|getClock
