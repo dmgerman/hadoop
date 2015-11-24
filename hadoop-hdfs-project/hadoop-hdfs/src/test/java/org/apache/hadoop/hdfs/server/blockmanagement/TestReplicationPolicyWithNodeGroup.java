@@ -3182,6 +3182,8 @@ argument_list|,
 name|second
 argument_list|,
 name|excessTypes
+argument_list|,
+name|rackMap
 argument_list|)
 decl_stmt|;
 comment|// Within first set {dataNodes[0], dataNodes[1], dataNodes[2]},
@@ -3257,6 +3259,8 @@ argument_list|,
 name|second
 argument_list|,
 name|excessTypes
+argument_list|,
+name|rackMap
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3328,6 +3332,8 @@ argument_list|,
 name|second
 argument_list|,
 name|excessTypes
+argument_list|,
+name|rackMap
 argument_list|)
 expr_stmt|;
 name|assertEquals

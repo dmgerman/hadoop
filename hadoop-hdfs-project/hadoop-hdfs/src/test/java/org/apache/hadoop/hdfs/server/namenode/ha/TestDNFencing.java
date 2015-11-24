@@ -80,6 +80,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|CountDownLatch
@@ -3078,7 +3088,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseReplicaToDelete ( Collection<DatanodeStorageInfo> moreThanOne, Collection<DatanodeStorageInfo> exactlyOne, List<StorageType> excessTypes)
+DECL|method|chooseReplicaToDelete ( Collection<DatanodeStorageInfo> moreThanOne, Collection<DatanodeStorageInfo> exactlyOne, List<StorageType> excessTypes, Map<String, List<DatanodeStorageInfo>> rackMap)
 specifier|public
 name|DatanodeStorageInfo
 name|chooseReplicaToDelete
@@ -3100,6 +3110,17 @@ argument_list|<
 name|StorageType
 argument_list|>
 name|excessTypes
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+argument_list|>
+name|rackMap
 parameter_list|)
 block|{
 name|Collection

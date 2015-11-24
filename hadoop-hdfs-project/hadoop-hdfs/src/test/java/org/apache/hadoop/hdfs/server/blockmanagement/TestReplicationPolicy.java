@@ -6258,6 +6258,8 @@ argument_list|,
 name|second
 argument_list|,
 name|excessTypes
+argument_list|,
+name|rackMap
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -6288,16 +6290,18 @@ argument_list|,
 name|second
 argument_list|,
 name|excessTypes
+argument_list|,
+name|rackMap
 argument_list|)
 decl_stmt|;
-comment|// Within first set, storages[1] with less free space
+comment|// Within all storages, storages[5] with least free space
 name|assertEquals
 argument_list|(
 name|chosen
 argument_list|,
 name|storages
 index|[
-literal|1
+literal|5
 index|]
 argument_list|)
 expr_stmt|;
@@ -6316,7 +6320,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|0
+literal|2
 argument_list|,
 name|first
 operator|.
@@ -6326,7 +6330,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|3
+literal|1
 argument_list|,
 name|second
 operator|.
@@ -6334,7 +6338,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Within second set, storages[5] with less free space
+comment|// Within first set, storages[1] with less free space
 name|excessTypes
 operator|.
 name|add
@@ -6360,6 +6364,8 @@ argument_list|,
 name|second
 argument_list|,
 name|excessTypes
+argument_list|,
+name|rackMap
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -6368,7 +6374,7 @@ name|chosen
 argument_list|,
 name|storages
 index|[
-literal|5
+literal|1
 index|]
 argument_list|)
 expr_stmt|;
@@ -6691,14 +6697,13 @@ argument_list|)
 expr_stmt|;
 comment|// The block was initially created on excessSSD(rack r1),
 comment|// storages[4](rack r3) and storages[5](rack r3) with
-comment|// ONESSD_STORAGE_POLICY_NAME storage policy.
+comment|// ONESSD_STORAGE_POLICY_NAME storage policy. Replication factor = 3.
 comment|// Right after balancer moves the block from storages[5] to
 comment|// storages[3](rack r2), the application changes the storage policy from
 comment|// ONESSD_STORAGE_POLICY_NAME to HOT_STORAGE_POLICY_ID. In this case,
-comment|// no replica can be chosen as the excessive replica as
-comment|// chooseReplicasToDelete only considers storages[4] and storages[5] that
-comment|// are the same rack. But neither's storage type is SSD.
-comment|// TODO BlockPlacementPolicyDefault should be able to delete excessSSD.
+comment|// we should be able to delete excessSSD since the remaining
+comment|// storages ({storages[3]}, {storages[4], storages[5]})
+comment|// are on different racks (r2, r3).
 name|nonExcess
 operator|.
 name|clear
@@ -6789,14 +6794,314 @@ name|getDatanodeDescriptor
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|1
+argument_list|,
 name|excessReplicas
 operator|.
 name|size
 argument_list|()
-operator|==
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|excessReplicas
+operator|.
+name|contains
+argument_list|(
+name|excessSSD
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Similar to above, but after policy change and before deletion,
+comment|// the replicas are located on excessSSD(rack r1), storages[1](rack r1),
+comment|// storages[2](rack r2) and storages[3](rack r2). Replication factor = 3.
+comment|// In this case, we should be able to delete excessSSD since the remaining
+comment|// storages ({storages[1]} , {storages[2], storages[3]})
+comment|// are on different racks (r1, r2).
+name|nonExcess
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|nonExcess
+operator|.
+name|add
+argument_list|(
+name|excessSSD
+argument_list|)
+expr_stmt|;
+name|nonExcess
+operator|.
+name|add
+argument_list|(
+name|storages
+index|[
+literal|1
+index|]
+argument_list|)
+expr_stmt|;
+name|nonExcess
+operator|.
+name|add
+argument_list|(
+name|storages
+index|[
+literal|2
+index|]
+argument_list|)
+expr_stmt|;
+name|nonExcess
+operator|.
+name|add
+argument_list|(
+name|storages
+index|[
+literal|3
+index|]
+argument_list|)
+expr_stmt|;
+name|excessTypes
+operator|=
+name|storagePolicy
+operator|.
+name|chooseExcess
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|,
+name|DatanodeStorageInfo
+operator|.
+name|toStorageTypes
+argument_list|(
+name|nonExcess
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|excessReplicas
+operator|=
+name|replicator
+operator|.
+name|chooseReplicasToDelete
+argument_list|(
+name|nonExcess
+argument_list|,
+literal|3
+argument_list|,
+name|excessTypes
+argument_list|,
+name|storages
+index|[
+literal|1
+index|]
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+argument_list|,
+name|storages
+index|[
+literal|3
+index|]
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|excessReplicas
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|excessReplicas
+operator|.
+name|contains
+argument_list|(
+name|excessSSD
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Similar to above, but after policy change and before deletion,
+comment|// the replicas are located on excessSSD(rack r1), storages[2](rack r2)
+comment|// Replication factor = 1. We should be able to delete excessSSD.
+name|nonExcess
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|nonExcess
+operator|.
+name|add
+argument_list|(
+name|excessSSD
+argument_list|)
+expr_stmt|;
+name|nonExcess
+operator|.
+name|add
+argument_list|(
+name|storages
+index|[
+literal|2
+index|]
+argument_list|)
+expr_stmt|;
+name|excessTypes
+operator|=
+name|storagePolicy
+operator|.
+name|chooseExcess
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|,
+name|DatanodeStorageInfo
+operator|.
+name|toStorageTypes
+argument_list|(
+name|nonExcess
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|excessReplicas
+operator|=
+name|replicator
+operator|.
+name|chooseReplicasToDelete
+argument_list|(
+name|nonExcess
+argument_list|,
+literal|1
+argument_list|,
+name|excessTypes
+argument_list|,
+name|storages
+index|[
+literal|2
+index|]
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|excessReplicas
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|excessReplicas
+operator|.
+name|contains
+argument_list|(
+name|excessSSD
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// The block was initially created on excessSSD(rack r1),
+comment|// storages[4](rack r3) and storages[5](rack r3) with
+comment|// ONESSD_STORAGE_POLICY_NAME storage policy. Replication factor = 2.
+comment|// In this case, no replica can be chosen as the excessive replica by
+comment|// chooseReplicasToDelete because if the SSD storage is deleted,
+comment|// the remaining storages[4] and storages[5] are the same rack (r3),
+comment|// violating block placement policy (i.e. the number of racks>= 2).
+comment|// TODO BlockPlacementPolicyDefault should be able to rebalance the replicas
+comment|// and then delete excessSSD.
+name|nonExcess
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|nonExcess
+operator|.
+name|add
+argument_list|(
+name|excessSSD
+argument_list|)
+expr_stmt|;
+name|nonExcess
+operator|.
+name|add
+argument_list|(
+name|storages
+index|[
+literal|4
+index|]
+argument_list|)
+expr_stmt|;
+name|nonExcess
+operator|.
+name|add
+argument_list|(
+name|storages
+index|[
+literal|5
+index|]
+argument_list|)
+expr_stmt|;
+name|excessTypes
+operator|=
+name|storagePolicy
+operator|.
+name|chooseExcess
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|2
+argument_list|,
+name|DatanodeStorageInfo
+operator|.
+name|toStorageTypes
+argument_list|(
+name|nonExcess
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|excessReplicas
+operator|=
+name|replicator
+operator|.
+name|chooseReplicasToDelete
+argument_list|(
+name|nonExcess
+argument_list|,
+literal|2
+argument_list|,
+name|excessTypes
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
 literal|0
+argument_list|,
+name|excessReplicas
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

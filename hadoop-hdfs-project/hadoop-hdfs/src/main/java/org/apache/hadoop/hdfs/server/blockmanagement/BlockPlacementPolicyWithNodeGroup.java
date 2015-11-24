@@ -1411,7 +1411,7 @@ block|}
 comment|/**    * Pick up replica node set for deleting replica as over-replicated.     * First set contains replica nodes on rack with more than one    * replica while second set contains remaining replica nodes.    * If first is not empty, divide first set into two subsets:    *   moreThanOne contains nodes on nodegroup with more than one replica    *   exactlyOne contains the remaining nodes in first set    * then pickup priSet if not empty.    * If first is empty, then pick second.    */
 annotation|@
 name|Override
-DECL|method|pickupReplicaSet ( Collection<DatanodeStorageInfo> first, Collection<DatanodeStorageInfo> second)
+DECL|method|pickupReplicaSet ( Collection<DatanodeStorageInfo> first, Collection<DatanodeStorageInfo> second, Map<String, List<DatanodeStorageInfo>> rackMap)
 specifier|public
 name|Collection
 argument_list|<
@@ -1430,6 +1430,17 @@ argument_list|<
 name|DatanodeStorageInfo
 argument_list|>
 name|second
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+argument_list|>
+name|rackMap
 parameter_list|)
 block|{
 comment|// If no replica within same rack, return directly.
