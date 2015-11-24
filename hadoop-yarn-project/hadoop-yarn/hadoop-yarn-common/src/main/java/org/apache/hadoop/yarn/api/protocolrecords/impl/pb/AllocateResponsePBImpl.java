@@ -2157,6 +2157,7 @@ annotation|@
 name|Override
 DECL|method|getApplicationPriority ()
 specifier|public
+specifier|synchronized
 name|Priority
 name|getApplicationPriority
 parameter_list|()
@@ -2220,6 +2221,7 @@ annotation|@
 name|Override
 DECL|method|setApplicationPriority (Priority priority)
 specifier|public
+specifier|synchronized
 name|void
 name|setApplicationPriority
 parameter_list|(
