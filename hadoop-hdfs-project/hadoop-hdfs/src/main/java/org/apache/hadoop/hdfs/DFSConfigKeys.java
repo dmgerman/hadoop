@@ -365,6 +365,29 @@ name|DFS_WEBHDFS_NETTY_HIGH_WATERMARK_DEFAULT
 init|=
 literal|65535
 decl_stmt|;
+DECL|field|DFS_WEBHDFS_UGI_EXPIRE_AFTER_ACCESS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_WEBHDFS_UGI_EXPIRE_AFTER_ACCESS_KEY
+init|=
+literal|"dfs.webhdfs.ugi.expire.after.access"
+decl_stmt|;
+DECL|field|DFS_WEBHDFS_UGI_EXPIRE_AFTER_ACCESS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_WEBHDFS_UGI_EXPIRE_AFTER_ACCESS_DEFAULT
+init|=
+literal|10
+operator|*
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
+comment|//10 minutes
 comment|// HA related configuration
 DECL|field|DFS_DATANODE_RESTART_REPLICA_EXPIRY_KEY
 specifier|public
