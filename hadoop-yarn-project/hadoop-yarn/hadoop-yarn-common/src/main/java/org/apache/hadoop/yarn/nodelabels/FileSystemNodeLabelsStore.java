@@ -643,6 +643,17 @@ name|conf
 argument_list|)
 expr_stmt|;
 comment|// mkdir of root dir path
+if|if
+condition|(
+operator|!
+name|fs
+operator|.
+name|exists
+argument_list|(
+name|fsWorkingPath
+argument_list|)
+condition|)
+block|{
 name|fs
 operator|.
 name|mkdirs
@@ -650,6 +661,7 @@ argument_list|(
 name|fsWorkingPath
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -674,7 +686,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|setFileSystem (Configuration conf)
-specifier|private
 name|void
 name|setFileSystem
 parameter_list|(
