@@ -70,6 +70,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|CallerContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|MockApps
@@ -1353,6 +1367,20 @@ block|{
 return|return
 literal|null
 return|;
+block|}
+DECL|method|getCallerContext ()
+specifier|public
+name|CallerContext
+name|getCallerContext
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

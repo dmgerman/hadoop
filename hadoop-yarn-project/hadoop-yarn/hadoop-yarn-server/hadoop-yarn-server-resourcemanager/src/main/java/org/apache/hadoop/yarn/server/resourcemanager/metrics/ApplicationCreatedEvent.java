@@ -40,6 +40,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|CallerContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -134,7 +148,13 @@ specifier|private
 name|String
 name|amNodeLabelsExpression
 decl_stmt|;
-DECL|method|ApplicationCreatedEvent (ApplicationId appId, String name, String type, String user, String queue, long submittedTime, long createdTime, Set<String> appTags, boolean unmanagedApplication, Priority applicationPriority, String appNodeLabelsExpression, String amNodeLabelsExpression)
+DECL|field|callerContext
+specifier|private
+specifier|final
+name|CallerContext
+name|callerContext
+decl_stmt|;
+DECL|method|ApplicationCreatedEvent (ApplicationId appId, String name, String type, String user, String queue, long submittedTime, long createdTime, Set<String> appTags, boolean unmanagedApplication, Priority applicationPriority, String appNodeLabelsExpression, String amNodeLabelsExpression, CallerContext callerContext)
 specifier|public
 name|ApplicationCreatedEvent
 parameter_list|(
@@ -176,6 +196,9 @@ name|appNodeLabelsExpression
 parameter_list|,
 name|String
 name|amNodeLabelsExpression
+parameter_list|,
+name|CallerContext
+name|callerContext
 parameter_list|)
 block|{
 name|super
@@ -252,6 +275,12 @@ operator|.
 name|amNodeLabelsExpression
 operator|=
 name|amNodeLabelsExpression
+expr_stmt|;
+name|this
+operator|.
+name|callerContext
+operator|=
+name|callerContext
 expr_stmt|;
 block|}
 annotation|@
@@ -380,6 +409,16 @@ parameter_list|()
 block|{
 return|return
 name|amNodeLabelsExpression
+return|;
+block|}
+DECL|method|getCallerContext ()
+specifier|public
+name|CallerContext
+name|getCallerContext
+parameter_list|()
+block|{
+return|return
+name|callerContext
 return|;
 block|}
 block|}

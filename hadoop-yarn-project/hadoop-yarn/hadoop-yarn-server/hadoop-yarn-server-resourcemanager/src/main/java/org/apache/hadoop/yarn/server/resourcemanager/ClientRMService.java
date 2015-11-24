@@ -276,6 +276,20 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
+name|CallerContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
 name|Server
 import|;
 end_import
@@ -4329,6 +4343,14 @@ operator|.
 name|getApplicationId
 argument_list|()
 decl_stmt|;
+name|CallerContext
+name|callerContext
+init|=
+name|CallerContext
+operator|.
+name|getCurrent
+argument_list|()
+decl_stmt|;
 comment|// ApplicationSubmissionContext needs to be validated for safety - only
 comment|// those fields that are independent of the RM's configuration will be
 comment|// checked here, those that are dependent on RM configuration are validated
@@ -4387,6 +4409,8 @@ argument_list|,
 literal|"Exception in submitting application"
 argument_list|,
 name|applicationId
+argument_list|,
+name|callerContext
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -4575,6 +4599,8 @@ argument_list|,
 literal|"ClientRMService"
 argument_list|,
 name|applicationId
+argument_list|,
+name|callerContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -4618,6 +4644,8 @@ argument_list|,
 literal|"Exception in submitting application"
 argument_list|,
 name|applicationId
+argument_list|,
+name|callerContext
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -5043,6 +5071,14 @@ operator|.
 name|getApplicationId
 argument_list|()
 decl_stmt|;
+name|CallerContext
+name|callerContext
+init|=
+name|CallerContext
+operator|.
+name|getCurrent
+argument_list|()
+decl_stmt|;
 name|UserGroupInformation
 name|callerUGI
 decl_stmt|;
@@ -5088,6 +5124,8 @@ argument_list|,
 literal|"Error getting UGI"
 argument_list|,
 name|applicationId
+argument_list|,
+name|callerContext
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -5141,6 +5179,8 @@ argument_list|,
 literal|"Trying to kill an absent application"
 argument_list|,
 name|applicationId
+argument_list|,
+name|callerContext
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -5204,6 +5244,8 @@ operator|.
 name|UNAUTHORIZED_USER
 argument_list|,
 name|applicationId
+argument_list|,
+name|callerContext
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -5261,6 +5303,8 @@ argument_list|,
 literal|"ClientRMService"
 argument_list|,
 name|applicationId
+argument_list|,
+name|callerContext
 argument_list|)
 expr_stmt|;
 return|return

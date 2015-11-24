@@ -2320,6 +2320,8 @@ argument_list|,
 literal|"diagnostics"
 argument_list|,
 literal|333
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;

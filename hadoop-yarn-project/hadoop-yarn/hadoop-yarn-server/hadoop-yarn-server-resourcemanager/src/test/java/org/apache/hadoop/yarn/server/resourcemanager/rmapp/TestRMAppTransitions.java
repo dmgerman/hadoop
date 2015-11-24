@@ -2870,6 +2870,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|"user"
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|state
@@ -6107,6 +6109,8 @@ name|app
 operator|.
 name|getFinishTime
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|applicationState

@@ -84,6 +84,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|CallerContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|MockApps
@@ -1139,6 +1153,20 @@ DECL|method|getAppNodeLabelExpression ()
 specifier|public
 name|String
 name|getAppNodeLabelExpression
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+DECL|method|getCallerContext ()
+specifier|public
+name|CallerContext
+name|getCallerContext
 parameter_list|()
 block|{
 throw|throw

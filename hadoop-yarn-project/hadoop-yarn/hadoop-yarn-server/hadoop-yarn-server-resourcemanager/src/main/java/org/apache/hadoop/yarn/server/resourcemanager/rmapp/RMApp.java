@@ -60,6 +60,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|CallerContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -568,6 +582,11 @@ function_decl|;
 DECL|method|getAppNodeLabelExpression ()
 name|String
 name|getAppNodeLabelExpression
+parameter_list|()
+function_decl|;
+DECL|method|getCallerContext ()
+name|CallerContext
+name|getCallerContext
 parameter_list|()
 function_decl|;
 block|}
