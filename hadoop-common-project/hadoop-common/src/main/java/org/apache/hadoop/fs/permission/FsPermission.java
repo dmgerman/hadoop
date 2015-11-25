@@ -934,16 +934,6 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/** umask property label deprecated key and code in getUMask method    *  to accommodate it may be removed in version .23 */
-DECL|field|DEPRECATED_UMASK_LABEL
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEPRECATED_UMASK_LABEL
-init|=
-literal|"dfs.umask"
-decl_stmt|;
 DECL|field|UMASK_LABEL
 specifier|public
 specifier|static
@@ -979,7 +969,7 @@ operator|.
 name|values
 argument_list|()
 decl_stmt|;
-comment|/**     * Get the user file creation mask (umask)    *     * {@code UMASK_LABEL} config param has umask value that is either symbolic     * or octal.    *     * Symbolic umask is applied relative to file mode creation mask;     * the permission op characters '+' clears the corresponding bit in the mask,     * '-' sets bits in the mask.    *     * Octal umask, the specified bits are set in the file mode creation mask.    *     * {@code DEPRECATED_UMASK_LABEL} config param has umask value set to decimal.    */
+comment|/**     * Get the user file creation mask (umask)    *     * {@code UMASK_LABEL} config param has umask value that is either symbolic     * or octal.    *     * Symbolic umask is applied relative to file mode creation mask;     * the permission op characters '+' clears the corresponding bit in the mask,     * '-' sets bits in the mask.    *     * Octal umask, the specified bits are set in the file mode creation mask.    */
 DECL|method|getUMask (Configuration conf)
 specifier|public
 specifier|static
@@ -1012,20 +1002,6 @@ operator|.
 name|get
 argument_list|(
 name|UMASK_LABEL
-argument_list|)
-decl_stmt|;
-name|int
-name|oldUmask
-init|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|DEPRECATED_UMASK_LABEL
-argument_list|,
-name|Integer
-operator|.
-name|MIN_VALUE
 argument_list|)
 decl_stmt|;
 try|try
@@ -1176,18 +1152,6 @@ operator|.
 name|toShort
 argument_list|()
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|setInt
-argument_list|(
-name|DEPRECATED_UMASK_LABEL
-argument_list|,
-name|umask
-operator|.
-name|toShort
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

@@ -618,96 +618,7 @@ name|toShort
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Test 2 - old configuration key set with decimal
-comment|// umask value should be handled
-name|perm
-operator|=
-operator|new
-name|FsPermission
-argument_list|(
-operator|(
-name|short
-operator|)
-literal|18
-argument_list|)
-expr_stmt|;
-name|conf
-operator|=
-operator|new
-name|Configuration
-argument_list|()
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|FsPermission
-operator|.
-name|DEPRECATED_UMASK_LABEL
-argument_list|,
-literal|"18"
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|18
-argument_list|,
-name|FsPermission
-operator|.
-name|getUMask
-argument_list|(
-name|conf
-argument_list|)
-operator|.
-name|toShort
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// Test 3 - old configuration key overrides the new one
-name|conf
-operator|=
-operator|new
-name|Configuration
-argument_list|()
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|FsPermission
-operator|.
-name|DEPRECATED_UMASK_LABEL
-argument_list|,
-literal|"18"
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|FsPermission
-operator|.
-name|UMASK_LABEL
-argument_list|,
-literal|"000"
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|18
-argument_list|,
-name|FsPermission
-operator|.
-name|getUMask
-argument_list|(
-name|conf
-argument_list|)
-operator|.
-name|toShort
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// Test 4 - new configuration key is handled
+comment|// Test 2 - new configuration key is handled
 name|conf
 operator|=
 operator|new
@@ -740,7 +651,7 @@ name|toShort
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Test 5 - equivalent valid umask
+comment|// Test 3 - equivalent valid umask
 name|conf
 operator|=
 operator|new
@@ -773,7 +684,7 @@ name|toShort
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Test 6 - invalid umask
+comment|// Test 4 - invalid umask
 name|conf
 operator|=
 operator|new
@@ -814,7 +725,7 @@ parameter_list|)
 block|{
 comment|//pass, exception successfully trigger
 block|}
-comment|// Test 7 - invalid umask
+comment|// Test 5 - invalid umask
 name|conf
 operator|=
 operator|new

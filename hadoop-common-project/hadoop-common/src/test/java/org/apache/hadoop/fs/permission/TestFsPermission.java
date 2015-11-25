@@ -4203,54 +4203,6 @@ literal|"octal or symbolic"
 argument_list|)
 return|;
 block|}
-comment|// Ensure that when the deprecated decimal umask key is used, it is correctly
-comment|// parsed as such and converted correctly to an FsPermission value
-DECL|method|testDeprecatedUmask ()
-specifier|public
-name|void
-name|testDeprecatedUmask
-parameter_list|()
-block|{
-name|Configuration
-name|conf
-init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|FsPermission
-operator|.
-name|DEPRECATED_UMASK_LABEL
-argument_list|,
-literal|"302"
-argument_list|)
-expr_stmt|;
-comment|// 302 = 0456
-name|FsPermission
-name|umask
-init|=
-name|FsPermission
-operator|.
-name|getUMask
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
-name|assertEquals
-argument_list|(
-literal|0456
-argument_list|,
-name|umask
-operator|.
-name|toShort
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 end_class
 
