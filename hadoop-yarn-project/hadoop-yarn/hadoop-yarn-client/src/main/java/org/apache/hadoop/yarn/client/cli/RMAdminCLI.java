@@ -2559,6 +2559,35 @@ name|IOException
 throws|,
 name|YarnException
 block|{
+comment|// check resource value first
+if|if
+condition|(
+name|invalidResourceValue
+argument_list|(
+name|memSize
+argument_list|,
+name|cores
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid resource value: "
+operator|+
+literal|"("
+operator|+
+name|memSize
+operator|+
+literal|","
+operator|+
+name|cores
+operator|+
+literal|") for updateNodeResource."
+argument_list|)
+throw|;
+block|}
 comment|// Refresh the nodes
 name|ResourceManagerAdministrationProtocol
 name|adminProtocol
@@ -2649,6 +2678,33 @@ argument_list|)
 expr_stmt|;
 return|return
 literal|0
+return|;
+block|}
+comment|// complain negative value for cpu or memory.
+DECL|method|invalidResourceValue (int memValue, int coreValue)
+specifier|private
+name|boolean
+name|invalidResourceValue
+parameter_list|(
+name|int
+name|memValue
+parameter_list|,
+name|int
+name|coreValue
+parameter_list|)
+block|{
+return|return
+operator|(
+name|memValue
+operator|<
+literal|0
+operator|)
+operator|||
+operator|(
+name|coreValue
+operator|<
+literal|0
+operator|)
 return|;
 block|}
 DECL|method|getGroups (String[] usernames)
