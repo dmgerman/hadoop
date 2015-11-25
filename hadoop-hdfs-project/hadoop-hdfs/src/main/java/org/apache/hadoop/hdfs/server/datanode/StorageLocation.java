@@ -333,6 +333,9 @@ name|group
 argument_list|(
 literal|2
 argument_list|)
+operator|.
+name|trim
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
