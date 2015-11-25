@@ -569,6 +569,20 @@ operator|.
 name|util
 operator|.
 name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
 operator|.
 name|ShellCommandExecutor
 import|;
@@ -2246,6 +2260,31 @@ block|{
 comment|// The following section of code is to help debug HDFS-6694 about
 comment|// this test that fails from time to time due to "too many open files".
 comment|//
+comment|// Only collect debug data on these OSes.
+if|if
+condition|(
+name|Shell
+operator|.
+name|LINUX
+operator|||
+name|Shell
+operator|.
+name|SOLARIS
+operator|||
+name|Shell
+operator|.
+name|MAC
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"HDFS-6694 Debug Data BEGIN==="
+argument_list|)
+expr_stmt|;
 name|String
 index|[]
 name|scmd
@@ -2274,15 +2313,6 @@ name|sce
 operator|.
 name|execute
 argument_list|()
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"HDFS-6694 Debug Data BEGIN==="
-argument_list|)
 expr_stmt|;
 name|System
 operator|.
@@ -2341,6 +2371,8 @@ name|String
 index|[]
 block|{
 literal|"ifconfig"
+block|,
+literal|"-a"
 block|}
 expr_stmt|;
 name|sce
@@ -2370,42 +2402,6 @@ name|getOutput
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|scmd
-operator|=
-operator|new
-name|String
-index|[]
-block|{
-literal|"whoami"
-block|}
-expr_stmt|;
-name|sce
-operator|=
-operator|new
-name|ShellCommandExecutor
-argument_list|(
-name|scmd
-argument_list|)
-expr_stmt|;
-name|sce
-operator|.
-name|execute
-argument_list|()
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"'whoami' output:\n"
-operator|+
-name|sce
-operator|.
-name|getOutput
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|System
 operator|.
 name|out
@@ -2415,6 +2411,7 @@ argument_list|(
 literal|"===HDFS-6694 Debug Data END"
 argument_list|)
 expr_stmt|;
+block|}
 name|HAStressTestHarness
 name|harness
 init|=
