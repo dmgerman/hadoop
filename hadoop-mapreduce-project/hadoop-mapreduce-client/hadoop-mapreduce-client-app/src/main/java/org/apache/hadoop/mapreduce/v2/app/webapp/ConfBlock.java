@@ -585,12 +585,11 @@ operator|!
 name|first
 condition|)
 block|{
-comment|// \u2B05 is an arrow<--
 name|buffer
 operator|.
 name|append
 argument_list|(
-literal|" \u2B05 "
+literal|"<- "
 argument_list|)
 expr_stmt|;
 block|}
