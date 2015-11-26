@@ -1475,7 +1475,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|30000
 argument_list|)
 DECL|method|testFilterAppsByAggregatedStatus ()
 specifier|public
@@ -2155,6 +2155,28 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|_testGenerateScript
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|_testGenerateScript
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|_testGenerateScript (boolean proxy)
+specifier|private
+name|void
+name|_testGenerateScript
+parameter_list|(
+name|boolean
+name|proxy
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 name|Configuration
 name|conf
 init|=
@@ -2234,6 +2256,12 @@ argument_list|,
 name|USER
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|hal
+operator|.
+name|proxy
+operator|=
+name|proxy
 expr_stmt|;
 name|File
 name|localScript
@@ -2612,13 +2640,20 @@ literal|"export HADOOP_CLASSPATH="
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|proxy
+condition|)
+block|{
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
 literal|"\"$HADOOP_PREFIX\"/bin/hadoop org.apache.hadoop.tools."
 operator|+
-literal|"HadoopArchiveLogsRunner -appId \"$appId\" -user \"$user\" -workingDir "
+literal|"HadoopArchiveLogsRunner -appId \"$appId\" -user \"$user\" "
+operator|+
+literal|"-workingDir "
 operator|+
 name|workingDir
 operator|.
@@ -2642,6 +2677,44 @@ literal|15
 index|]
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"\"$HADOOP_PREFIX\"/bin/hadoop org.apache.hadoop.tools."
+operator|+
+literal|"HadoopArchiveLogsRunner -appId \"$appId\" -user \"$user\" "
+operator|+
+literal|"-workingDir "
+operator|+
+name|workingDir
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" -remoteRootLogDir "
+operator|+
+name|remoteRootLogDir
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" -suffix "
+operator|+
+name|suffix
+operator|+
+literal|" -noProxy"
+argument_list|,
+name|lines
+index|[
+literal|15
+index|]
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * If this test failes, then a new Log Aggregation Status was added.  Make    * sure that {@link HadoopArchiveLogs#filterAppsByAggregatedStatus()} and this test    * are updated as well, if necessary.    * @throws Exception    */
 annotation|@
@@ -2873,7 +2946,9 @@ name|ALL
 argument_list|,
 name|FsAction
 operator|.
-name|NONE
+name|ALL
+argument_list|,
+literal|true
 argument_list|)
 argument_list|,
 name|fs
@@ -2962,6 +3037,39 @@ name|dummyFile
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+operator|new
+name|FsPermission
+argument_list|(
+name|FsAction
+operator|.
+name|ALL
+argument_list|,
+name|FsAction
+operator|.
+name|ALL
+argument_list|,
+name|FsAction
+operator|.
+name|ALL
+argument_list|,
+literal|true
+argument_list|)
+argument_list|,
+name|fs
+operator|.
+name|getFileStatus
+argument_list|(
+name|workingDir
+argument_list|)
+operator|.
+name|getPermission
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// -force is true and the dir exists, so it will recreate it and the dummy
 comment|// won't exist anymore
 name|hal
@@ -3017,7 +3125,9 @@ name|ALL
 argument_list|,
 name|FsAction
 operator|.
-name|NONE
+name|ALL
+argument_list|,
+literal|true
 argument_list|)
 argument_list|,
 name|fs

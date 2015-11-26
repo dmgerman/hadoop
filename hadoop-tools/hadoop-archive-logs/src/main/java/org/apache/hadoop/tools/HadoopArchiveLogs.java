@@ -677,6 +677,15 @@ name|FORCE_OPTION
 init|=
 literal|"force"
 decl_stmt|;
+DECL|field|NO_PROXY_OPTION
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|NO_PROXY_OPTION
+init|=
+literal|"noProxy"
+decl_stmt|;
 DECL|field|DEFAULT_MAX_ELIGIBLE
 specifier|private
 specifier|static
@@ -764,6 +773,14 @@ name|boolean
 name|force
 init|=
 literal|false
+decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|proxy
+name|boolean
+name|proxy
+init|=
+literal|true
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
@@ -1376,6 +1393,27 @@ operator|+
 literal|"not currently running"
 argument_list|)
 decl_stmt|;
+name|Option
+name|noProxyOpt
+init|=
+operator|new
+name|Option
+argument_list|(
+name|NO_PROXY_OPTION
+argument_list|,
+literal|false
+argument_list|,
+literal|"When specified, all processing will be done as the user running this"
+operator|+
+literal|" command (or the Yarn user if DefaultContainerExecutor is in "
+operator|+
+literal|"use). When not specified, all processing will be done as the "
+operator|+
+literal|"user who owns that application; if the user running this command"
+operator|+
+literal|" is not allowed to impersonate that user, it will fail"
+argument_list|)
+decl_stmt|;
 name|opts
 operator|.
 name|addOption
@@ -1423,6 +1461,13 @@ operator|.
 name|addOption
 argument_list|(
 name|forceOpt
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+name|noProxyOpt
 argument_list|)
 expr_stmt|;
 try|try
@@ -1646,6 +1691,21 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|commandLine
+operator|.
+name|hasOption
+argument_list|(
+name|NO_PROXY_OPTION
+argument_list|)
+condition|)
+block|{
+name|proxy
+operator|=
+literal|false
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1769,7 +1829,9 @@ name|ALL
 argument_list|,
 name|FsAction
 operator|.
-name|NONE
+name|ALL
+argument_list|,
+literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2894,6 +2956,20 @@ argument_list|(
 name|suffix
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|proxy
+condition|)
+block|{
+name|fw
+operator|.
+name|write
+argument_list|(
+literal|" -noProxy\n"
+argument_list|)
+expr_stmt|;
+block|}
 name|fw
 operator|.
 name|write
