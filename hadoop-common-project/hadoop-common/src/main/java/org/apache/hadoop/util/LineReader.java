@@ -1037,6 +1037,12 @@ name|ambiguousByteCount
 operator|=
 literal|0
 expr_stmt|;
+comment|// since it is now certain that the split did not split a delimiter we
+comment|// should not read the next record: clear the flag otherwise duplicate
+comment|// records could be generated
+name|unsetNeedAdditionalRecordAfterSplit
+argument_list|()
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -1206,6 +1212,15 @@ block|{
 return|return
 name|bufferSize
 return|;
+block|}
+DECL|method|unsetNeedAdditionalRecordAfterSplit ()
+specifier|protected
+name|void
+name|unsetNeedAdditionalRecordAfterSplit
+parameter_list|()
+block|{
+comment|// needed for custom multi byte line delimiters only
+comment|// see MAPREDUCE-6549 for details
 block|}
 block|}
 end_class

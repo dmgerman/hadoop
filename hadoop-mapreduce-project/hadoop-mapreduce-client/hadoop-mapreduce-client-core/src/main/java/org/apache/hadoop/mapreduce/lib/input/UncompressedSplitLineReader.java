@@ -410,6 +410,19 @@ operator|&&
 name|needAdditionalRecord
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|unsetNeedAdditionalRecordAfterSplit ()
+specifier|protected
+name|void
+name|unsetNeedAdditionalRecordAfterSplit
+parameter_list|()
+block|{
+name|needAdditionalRecord
+operator|=
+literal|false
+expr_stmt|;
+block|}
 block|}
 end_class
 
