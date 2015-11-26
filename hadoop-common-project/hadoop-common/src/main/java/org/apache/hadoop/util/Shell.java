@@ -774,7 +774,60 @@ literal|"id -gn "
 operator|+
 name|user
 operator|+
-literal|"&& id -Gn "
+literal|"; id -Gn "
+operator|+
+name|user
+block|}
+return|;
+block|}
+comment|/**    * A command to get a given user's group id list.    * The command will get the user's primary group    * first and finally get the groups list which includes the primary group.    * i.e. the user's primary group will be included twice.    * This command does not support Windows and will only return group names.    */
+DECL|method|getGroupsIDForUserCommand (final String user)
+specifier|public
+specifier|static
+name|String
+index|[]
+name|getGroupsIDForUserCommand
+parameter_list|(
+specifier|final
+name|String
+name|user
+parameter_list|)
+block|{
+comment|//'groups username' command return is inconsistent across different unixes
+return|return
+name|WINDOWS
+condition|?
+operator|new
+name|String
+index|[]
+block|{
+name|getWinUtilsPath
+argument_list|()
+block|,
+literal|"groups"
+block|,
+literal|"-F"
+block|,
+literal|"\""
+operator|+
+name|user
+operator|+
+literal|"\""
+block|}
+else|:
+operator|new
+name|String
+index|[]
+block|{
+literal|"bash"
+block|,
+literal|"-c"
+block|,
+literal|"id -g "
+operator|+
+name|user
+operator|+
+literal|"; id -G "
 operator|+
 name|user
 block|}
