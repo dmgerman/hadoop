@@ -454,8 +454,7 @@ name|Public
 annotation|@
 name|InterfaceStability
 operator|.
-name|Evolving
-comment|/*Evolving for a release,to be changed to Stable */
+name|Stable
 DECL|class|AbstractFileSystem
 specifier|public
 specifier|abstract
