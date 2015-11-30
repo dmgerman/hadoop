@@ -3319,6 +3319,13 @@ name|f
 argument_list|)
 expr_stmt|;
 block|}
+name|dir
+operator|.
+name|addRootDirToEncryptionZone
+argument_list|(
+name|f
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|class|Saver

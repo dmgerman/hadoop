@@ -5670,13 +5670,40 @@ operator|.
 name|getXAttrFeature
 argument_list|()
 decl_stmt|;
+name|addEncryptionZone
+argument_list|(
+operator|(
+name|INodeWithAdditionalFields
+operator|)
+name|inode
+argument_list|,
+name|xaf
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+DECL|method|addEncryptionZone (INodeWithAdditionalFields inode, XAttrFeature xaf)
+specifier|private
+name|void
+name|addEncryptionZone
+parameter_list|(
+name|INodeWithAdditionalFields
+name|inode
+parameter_list|,
+name|XAttrFeature
+name|xaf
+parameter_list|)
+block|{
 if|if
 condition|(
 name|xaf
-operator|!=
+operator|==
 literal|null
 condition|)
 block|{
+return|return;
+block|}
 name|XAttr
 name|xattr
 init|=
@@ -5690,10 +5717,12 @@ decl_stmt|;
 if|if
 condition|(
 name|xattr
-operator|!=
+operator|==
 literal|null
 condition|)
 block|{
+return|return;
+block|}
 try|try
 block|{
 specifier|final
@@ -5770,13 +5799,35 @@ name|xattr
 operator|.
 name|getName
 argument_list|()
+operator|+
+literal|" dir:"
+operator|+
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-block|}
-block|}
+comment|/**    * This is to handle encryption zone for rootDir when loading from    * fsimage, and should only be called during NN restart.    */
+DECL|method|addRootDirToEncryptionZone (XAttrFeature xaf)
+specifier|public
+specifier|final
+name|void
+name|addRootDirToEncryptionZone
+parameter_list|(
+name|XAttrFeature
+name|xaf
+parameter_list|)
+block|{
+name|addEncryptionZone
+argument_list|(
+name|rootDir
+argument_list|,
+name|xaf
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * This method is always called with writeLock of FSDirectory held.    */
 DECL|method|removeFromInodeMap (List<? extends INode> inodes)
