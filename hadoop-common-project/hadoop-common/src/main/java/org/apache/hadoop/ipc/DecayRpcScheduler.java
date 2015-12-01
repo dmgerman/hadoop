@@ -630,10 +630,8 @@ name|scheduleAtFixedRate
 argument_list|(
 name|task
 argument_list|,
-literal|0
+name|decayPeriodMillis
 argument_list|,
-name|this
-operator|.
 name|decayPeriodMillis
 argument_list|)
 expr_stmt|;
