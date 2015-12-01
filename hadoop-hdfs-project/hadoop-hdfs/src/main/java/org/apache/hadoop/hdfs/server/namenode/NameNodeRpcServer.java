@@ -9605,6 +9605,26 @@ block|{
 name|checkNNStartup
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|snapshotName
+operator|==
+literal|null
+operator|||
+name|snapshotName
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"The snapshot name is null or empty."
+argument_list|)
+throw|;
+block|}
 name|namesystem
 operator|.
 name|checkOperation
