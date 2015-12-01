@@ -821,7 +821,7 @@ argument_list|()
 operator|.
 name|removeBlockFromMap
 argument_list|(
-name|block
+name|uc
 argument_list|)
 expr_stmt|;
 if|if

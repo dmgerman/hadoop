@@ -18761,12 +18761,12 @@ name|block
 argument_list|)
 return|;
 block|}
-DECL|method|removeBlockFromMap (Block block)
+DECL|method|removeBlockFromMap (BlockInfo block)
 specifier|public
 name|void
 name|removeBlockFromMap
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -18792,12 +18792,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * If a block is removed from blocksMap, remove it from excessReplicateMap.    */
-DECL|method|removeFromExcessReplicateMap (Block block)
+DECL|method|removeFromExcessReplicateMap (BlockInfo block)
 specifier|private
 name|void
 name|removeFromExcessReplicateMap
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
