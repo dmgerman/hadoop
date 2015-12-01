@@ -912,6 +912,16 @@ name|blockReportInterval
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getBpRegistration ()
+specifier|public
+name|DatanodeRegistration
+name|getBpRegistration
+parameter_list|()
+block|{
+return|return
+name|bpRegistration
+return|;
+block|}
 DECL|method|isAlive ()
 name|boolean
 name|isAlive
