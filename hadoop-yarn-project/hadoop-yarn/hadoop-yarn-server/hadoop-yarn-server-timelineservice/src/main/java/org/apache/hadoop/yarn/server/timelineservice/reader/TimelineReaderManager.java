@@ -437,6 +437,10 @@ name|metricFilters
 argument_list|,
 name|eventFilters
 argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
 name|fieldsToRetrieve
 argument_list|)
 return|;
@@ -506,6 +510,10 @@ argument_list|,
 name|entityType
 argument_list|,
 name|entityId
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 name|fields
 argument_list|)

@@ -86,6 +86,28 @@ name|server
 operator|.
 name|timelineservice
 operator|.
+name|reader
+operator|.
+name|filter
+operator|.
+name|TimelineFilterList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
 name|storage
 operator|.
 name|TimelineReader
@@ -104,7 +126,7 @@ class|class
 name|TimelineEntityReaderFactory
 block|{
 comment|/**    * Creates a timeline entity reader instance for reading a single entity with    * the specified input.    */
-DECL|method|createSingleEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, String entityId, EnumSet<Field> fieldsToRetrieve)
+DECL|method|createSingleEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, String entityId, TimelineFilterList confs, TimelineFilterList metrics, EnumSet<Field> fieldsToRetrieve)
 specifier|public
 specifier|static
 name|TimelineEntityReader
@@ -130,6 +152,12 @@ name|entityType
 parameter_list|,
 name|String
 name|entityId
+parameter_list|,
+name|TimelineFilterList
+name|confs
+parameter_list|,
+name|TimelineFilterList
+name|metrics
 parameter_list|,
 name|EnumSet
 argument_list|<
@@ -170,6 +198,10 @@ name|entityType
 argument_list|,
 name|entityId
 argument_list|,
+name|confs
+argument_list|,
+name|metrics
+argument_list|,
 name|fieldsToRetrieve
 argument_list|)
 return|;
@@ -204,6 +236,10 @@ argument_list|,
 name|entityType
 argument_list|,
 name|entityId
+argument_list|,
+name|confs
+argument_list|,
+name|metrics
 argument_list|,
 name|fieldsToRetrieve
 argument_list|)
@@ -265,13 +301,17 @@ name|entityType
 argument_list|,
 name|entityId
 argument_list|,
+name|confs
+argument_list|,
+name|metrics
+argument_list|,
 name|fieldsToRetrieve
 argument_list|)
 return|;
 block|}
 block|}
 comment|/**    * Creates a timeline entity reader instance for reading set of entities with    * the specified input and predicates.    */
-DECL|method|createMultipleEntitiesReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve)
+DECL|method|createMultipleEntitiesReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confs, TimelineFilterList metrics, EnumSet<Field> fieldsToRetrieve)
 specifier|public
 specifier|static
 name|TimelineEntityReader
@@ -360,6 +400,12 @@ name|String
 argument_list|>
 name|eventFilters
 parameter_list|,
+name|TimelineFilterList
+name|confs
+parameter_list|,
+name|TimelineFilterList
+name|metrics
+parameter_list|,
 name|EnumSet
 argument_list|<
 name|Field
@@ -418,6 +464,10 @@ argument_list|,
 name|metricFilters
 argument_list|,
 name|eventFilters
+argument_list|,
+name|confs
+argument_list|,
+name|metrics
 argument_list|,
 name|fieldsToRetrieve
 argument_list|)
@@ -529,6 +579,10 @@ name|metricFilters
 argument_list|,
 name|eventFilters
 argument_list|,
+name|confs
+argument_list|,
+name|metrics
+argument_list|,
 name|fieldsToRetrieve
 argument_list|)
 return|;
@@ -573,6 +627,10 @@ argument_list|,
 name|metricFilters
 argument_list|,
 name|eventFilters
+argument_list|,
+name|confs
+argument_list|,
+name|metrics
 argument_list|,
 name|fieldsToRetrieve
 argument_list|,

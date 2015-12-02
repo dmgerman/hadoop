@@ -152,6 +152,22 @@ name|hbase
 operator|.
 name|filter
 operator|.
+name|FilterList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hbase
+operator|.
+name|filter
+operator|.
 name|PageFilter
 import|;
 end_import
@@ -492,6 +508,10 @@ name|metricFilters
 argument_list|,
 name|eventFilters
 argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
 name|fieldsToRetrieve
 argument_list|,
 literal|true
@@ -545,6 +565,10 @@ argument_list|,
 name|entityType
 argument_list|,
 name|entityId
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 name|fieldsToRetrieve
 argument_list|)
@@ -645,7 +669,19 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getResult (Configuration hbaseConf, Connection conn)
+DECL|method|constructFilterListBasedOnFields ()
+specifier|protected
+name|FilterList
+name|constructFilterListBasedOnFields
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getResult (Configuration hbaseConf, Connection conn, FilterList filterList)
 specifier|protected
 name|Result
 name|getResult
@@ -655,6 +691,9 @@ name|hbaseConf
 parameter_list|,
 name|Connection
 name|conn
+parameter_list|,
+name|FilterList
+name|filterList
 parameter_list|)
 throws|throws
 name|IOException
@@ -669,7 +708,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getResults (Configuration hbaseConf, Connection conn)
+DECL|method|getResults (Configuration hbaseConf, Connection conn, FilterList filterList)
 specifier|protected
 name|ResultScanner
 name|getResults
@@ -679,6 +718,9 @@ name|hbaseConf
 parameter_list|,
 name|Connection
 name|conn
+parameter_list|,
+name|FilterList
+name|filterList
 parameter_list|)
 throws|throws
 name|IOException

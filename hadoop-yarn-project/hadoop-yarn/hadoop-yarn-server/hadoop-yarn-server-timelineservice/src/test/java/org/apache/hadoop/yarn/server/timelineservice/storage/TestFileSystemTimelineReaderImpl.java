@@ -1917,6 +1917,10 @@ argument_list|,
 literal|"id_1"
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -2033,6 +2037,10 @@ argument_list|,
 literal|"app"
 argument_list|,
 literal|"id_1"
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -2155,6 +2163,10 @@ argument_list|,
 literal|"id_5"
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -2241,6 +2253,10 @@ argument_list|,
 literal|"app"
 argument_list|,
 literal|"id_1"
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 name|EnumSet
 operator|.
@@ -2406,6 +2422,10 @@ literal|"app"
 argument_list|,
 literal|"id_1"
 argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
 name|EnumSet
 operator|.
 name|of
@@ -2570,6 +2590,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|// All 3 entities will be returned
@@ -2619,6 +2643,10 @@ argument_list|,
 literal|"app"
 argument_list|,
 literal|2L
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -2742,6 +2770,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Even though 2 entities out of 4 have same created time, one entity
@@ -2797,6 +2829,10 @@ argument_list|,
 literal|1425016502030L
 argument_list|,
 literal|1425016502060L
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -2903,6 +2939,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2969,6 +3009,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|1425016502010L
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -3062,6 +3106,10 @@ argument_list|,
 literal|1425016502090L
 argument_list|,
 literal|1425016503020L
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -3175,6 +3223,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -3255,6 +3307,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|1425016503005L
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -3399,6 +3455,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -3516,6 +3576,10 @@ argument_list|,
 literal|null
 argument_list|,
 name|configFilters
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -3647,6 +3711,10 @@ argument_list|,
 name|eventFilters
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -3750,6 +3818,10 @@ argument_list|,
 literal|null
 argument_list|,
 name|metricFilters
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -3920,6 +3992,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -4050,6 +4126,10 @@ argument_list|,
 literal|null
 argument_list|,
 name|isRelatedTo
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,

@@ -190,6 +190,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hbase
+operator|.
+name|filter
+operator|.
+name|FilterList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -219,6 +235,28 @@ operator|.
 name|timelineservice
 operator|.
 name|TimelineMetric
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|reader
+operator|.
+name|filter
+operator|.
+name|TimelineFilterList
 import|;
 end_import
 
@@ -472,6 +510,16 @@ name|String
 argument_list|>
 name|eventFilters
 decl_stmt|;
+DECL|field|confsToRetrieve
+specifier|protected
+name|TimelineFilterList
+name|confsToRetrieve
+decl_stmt|;
+DECL|field|metricsToRetrieve
+specifier|protected
+name|TimelineFilterList
+name|metricsToRetrieve
+decl_stmt|;
 comment|/**    * Main table the entity reader uses.    */
 DECL|field|table
 specifier|protected
@@ -490,7 +538,7 @@ init|=
 literal|false
 decl_stmt|;
 comment|/**    * Instantiates a reader for multiple-entity reads.    */
-DECL|method|TimelineEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve, boolean sortedKeys)
+DECL|method|TimelineEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve, boolean sortedKeys)
 specifier|protected
 name|TimelineEntityReader
 parameter_list|(
@@ -577,6 +625,12 @@ name|String
 argument_list|>
 name|eventFilters
 parameter_list|,
+name|TimelineFilterList
+name|confsToRetrieve
+parameter_list|,
+name|TimelineFilterList
+name|metricsToRetrieve
+parameter_list|,
 name|EnumSet
 argument_list|<
 name|Field
@@ -709,6 +763,18 @@ name|eventFilters
 expr_stmt|;
 name|this
 operator|.
+name|confsToRetrieve
+operator|=
+name|confsToRetrieve
+expr_stmt|;
+name|this
+operator|.
+name|metricsToRetrieve
+operator|=
+name|metricsToRetrieve
+expr_stmt|;
+name|this
+operator|.
 name|table
 operator|=
 name|getTable
@@ -716,7 +782,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Instantiates a reader for single-entity reads.    */
-DECL|method|TimelineEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, String entityId, EnumSet<Field> fieldsToRetrieve)
+DECL|method|TimelineEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, String entityId, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
 specifier|protected
 name|TimelineEntityReader
 parameter_list|(
@@ -740,6 +806,12 @@ name|entityType
 parameter_list|,
 name|String
 name|entityId
+parameter_list|,
+name|TimelineFilterList
+name|confsToRetrieve
+parameter_list|,
+name|TimelineFilterList
+name|metricsToRetrieve
 parameter_list|,
 name|EnumSet
 argument_list|<
@@ -804,12 +876,32 @@ name|entityId
 expr_stmt|;
 name|this
 operator|.
+name|confsToRetrieve
+operator|=
+name|confsToRetrieve
+expr_stmt|;
+name|this
+operator|.
+name|metricsToRetrieve
+operator|=
+name|metricsToRetrieve
+expr_stmt|;
+name|this
+operator|.
 name|table
 operator|=
 name|getTable
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Creates a {@link FilterList} based on fields, confs and metrics to    * retrieve. This filter list will be set in Scan/Get objects to trim down    * results fetched from HBase back-end storage.    * @return a {@link FilterList} object.    */
+DECL|method|constructFilterListBasedOnFields ()
+specifier|protected
+specifier|abstract
+name|FilterList
+name|constructFilterListBasedOnFields
+parameter_list|()
+function_decl|;
 comment|/**    * Reads and deserializes a single timeline entity from the HBase storage.    */
 DECL|method|readEntity (Configuration hbaseConf, Connection conn)
 specifier|public
@@ -835,6 +927,12 @@ argument_list|,
 name|conn
 argument_list|)
 expr_stmt|;
+name|FilterList
+name|filterList
+init|=
+name|constructFilterListBasedOnFields
+argument_list|()
+decl_stmt|;
 name|Result
 name|result
 init|=
@@ -843,6 +941,8 @@ argument_list|(
 name|hbaseConf
 argument_list|,
 name|conn
+argument_list|,
+name|filterList
 argument_list|)
 decl_stmt|;
 if|if
@@ -917,6 +1017,12 @@ name|TreeSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
+name|FilterList
+name|filterList
+init|=
+name|constructFilterListBasedOnFields
+argument_list|()
+decl_stmt|;
 name|ResultScanner
 name|results
 init|=
@@ -925,6 +1031,8 @@ argument_list|(
 name|hbaseConf
 argument_list|,
 name|conn
+argument_list|,
+name|filterList
 argument_list|)
 decl_stmt|;
 try|try
@@ -1049,7 +1157,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Fetches a {@link Result} instance for a single-entity read.    *    * @return the {@link Result} instance or null if no such record is found.    */
-DECL|method|getResult (Configuration hbaseConf, Connection conn)
+DECL|method|getResult (Configuration hbaseConf, Connection conn, FilterList filterList)
 specifier|protected
 specifier|abstract
 name|Result
@@ -1060,12 +1168,15 @@ name|hbaseConf
 parameter_list|,
 name|Connection
 name|conn
+parameter_list|,
+name|FilterList
+name|filterList
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Fetches a {@link ResultScanner} for a multi-entity read.    */
-DECL|method|getResults (Configuration hbaseConf, Connection conn)
+DECL|method|getResults (Configuration hbaseConf, Connection conn, FilterList filterList)
 specifier|protected
 specifier|abstract
 name|ResultScanner
@@ -1076,6 +1187,9 @@ name|hbaseConf
 parameter_list|,
 name|Connection
 name|conn
+parameter_list|,
+name|FilterList
+name|filterList
 parameter_list|)
 throws|throws
 name|IOException

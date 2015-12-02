@@ -354,6 +354,28 @@ name|server
 operator|.
 name|timelineservice
 operator|.
+name|reader
+operator|.
+name|filter
+operator|.
+name|TimelineFilterList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
 name|storage
 operator|.
 name|common
@@ -1556,7 +1578,7 @@ return|return
 name|entity
 return|;
 block|}
-DECL|method|getEntities (File dir, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve)
+DECL|method|getEntities (File dir, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
 specifier|private
 name|Set
 argument_list|<
@@ -1634,6 +1656,12 @@ argument_list|<
 name|String
 argument_list|>
 name|eventFilters
+parameter_list|,
+name|TimelineFilterList
+name|confsToRetrieve
+parameter_list|,
+name|TimelineFilterList
+name|metricsToRetrieve
 parameter_list|,
 name|EnumSet
 argument_list|<
@@ -2223,7 +2251,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getEntity (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, String entityId, EnumSet<Field> fieldsToRetrieve)
+DECL|method|getEntity (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, String entityId, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
 specifier|public
 name|TimelineEntity
 name|getEntity
@@ -2248,6 +2276,12 @@ name|entityType
 parameter_list|,
 name|String
 name|entityId
+parameter_list|,
+name|TimelineFilterList
+name|confsToRetrieve
+parameter_list|,
+name|TimelineFilterList
+name|metricsToRetrieve
 parameter_list|,
 name|EnumSet
 argument_list|<
@@ -2388,7 +2422,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getEntities (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve)
+DECL|method|getEntities (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
 specifier|public
 name|Set
 argument_list|<
@@ -2479,6 +2513,12 @@ name|String
 argument_list|>
 name|eventFilters
 parameter_list|,
+name|TimelineFilterList
+name|confsToRetrieve
+parameter_list|,
+name|TimelineFilterList
+name|metricsToRetrieve
+parameter_list|,
 name|EnumSet
 argument_list|<
 name|Field
@@ -2561,6 +2601,10 @@ argument_list|,
 name|metricFilters
 argument_list|,
 name|eventFilters
+argument_list|,
+name|confsToRetrieve
+argument_list|,
+name|metricsToRetrieve
 argument_list|,
 name|fieldsToRetrieve
 argument_list|)
