@@ -3916,7 +3916,6 @@ literal|"unchecked"
 argument_list|)
 DECL|method|storeNewApplication (RMApp app)
 specifier|public
-specifier|synchronized
 name|void
 name|storeNewApplication
 parameter_list|(
@@ -3989,7 +3988,6 @@ literal|"unchecked"
 argument_list|)
 DECL|method|updateApplicationState ( ApplicationStateData appState)
 specifier|public
-specifier|synchronized
 name|void
 name|updateApplicationState
 parameter_list|(
@@ -4093,7 +4091,6 @@ argument_list|)
 comment|/**    * Non-blocking API    * ResourceManager services call this to store state on an application attempt    * This does not block the dispatcher threads    * RMAppAttemptStoredEvent will be sent on completion to notify the RMAppAttempt    */
 DECL|method|storeNewApplicationAttempt (RMAppAttempt appAttempt)
 specifier|public
-specifier|synchronized
 name|void
 name|storeNewApplicationAttempt
 parameter_list|(
@@ -4177,7 +4174,6 @@ literal|"unchecked"
 argument_list|)
 DECL|method|updateApplicationAttemptState ( ApplicationAttemptStateData attemptState)
 specifier|public
-specifier|synchronized
 name|void
 name|updateApplicationAttemptState
 parameter_list|(
@@ -4586,7 +4582,6 @@ literal|"unchecked"
 argument_list|)
 DECL|method|removeApplication (RMApp app)
 specifier|public
-specifier|synchronized
 name|void
 name|removeApplication
 parameter_list|(
