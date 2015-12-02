@@ -578,6 +578,11 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+name|journalCluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
 name|URI
 name|journalURI
 init|=

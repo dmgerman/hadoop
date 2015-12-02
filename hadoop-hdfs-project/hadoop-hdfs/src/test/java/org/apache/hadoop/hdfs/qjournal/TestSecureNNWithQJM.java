@@ -1346,6 +1346,11 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+name|mjc
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
 name|conf
 operator|.
 name|set

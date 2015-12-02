@@ -1131,6 +1131,11 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+name|mjc
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
 name|setConf
 argument_list|(
 name|conf

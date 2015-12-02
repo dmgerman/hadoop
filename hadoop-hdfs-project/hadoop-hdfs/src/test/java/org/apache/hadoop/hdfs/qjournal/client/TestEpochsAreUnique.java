@@ -351,6 +351,11 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
 name|URI
 name|uri
 init|=

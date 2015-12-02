@@ -792,6 +792,11 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
 name|qjm
 operator|=
 name|createSpyingQJM

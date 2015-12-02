@@ -731,6 +731,11 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
 name|QuorumJournalManager
 name|qjm
 init|=
@@ -949,6 +954,11 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
 name|QuorumJournalManager
 name|qjm
 init|=
@@ -1238,6 +1248,11 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
 comment|// Format the cluster using a non-faulty QJM.
 name|QuorumJournalManager
 name|qjmForInitialFormat

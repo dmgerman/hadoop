@@ -167,6 +167,11 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+name|c
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|URI
