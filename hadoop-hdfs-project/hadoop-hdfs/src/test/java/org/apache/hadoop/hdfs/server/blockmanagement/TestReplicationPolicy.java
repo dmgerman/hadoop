@@ -8528,7 +8528,7 @@ name|when
 argument_list|(
 name|mockNS
 operator|.
-name|hasReadLock
+name|hasWriteLock
 argument_list|()
 argument_list|)
 operator|.

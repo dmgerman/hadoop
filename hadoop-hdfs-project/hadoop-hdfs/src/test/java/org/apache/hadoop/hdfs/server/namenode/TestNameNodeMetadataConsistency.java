@@ -591,13 +591,6 @@ name|getNamesystem
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|spyNameSystem
-operator|.
-name|enableSafeModeForTesting
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|Whitebox
 operator|.
 name|setInternalState

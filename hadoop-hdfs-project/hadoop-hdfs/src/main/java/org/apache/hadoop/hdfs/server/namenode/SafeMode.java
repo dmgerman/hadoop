@@ -34,24 +34,6 @@ name|InterfaceAudience
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfo
-import|;
-end_import
-
 begin_comment
 comment|/** SafeMode related operations. */
 end_comment
@@ -66,13 +48,6 @@ specifier|public
 interface|interface
 name|SafeMode
 block|{
-comment|/**    * Check safe mode conditions.    * If the corresponding conditions are satisfied,    * trigger the system to enter/leave safe mode.    */
-DECL|method|checkSafeMode ()
-specifier|public
-name|void
-name|checkSafeMode
-parameter_list|()
-function_decl|;
 comment|/** Is the system in safe mode? */
 DECL|method|isInSafeMode ()
 specifier|public
@@ -86,29 +61,6 @@ specifier|public
 name|boolean
 name|isInStartupSafeMode
 parameter_list|()
-function_decl|;
-comment|/**    * Increment number of blocks that reached minimal replication.    * @param replication current replication    * @param storedBlock current stored Block    */
-DECL|method|incrementSafeBlockCount (int replication, BlockInfo storedBlock)
-specifier|public
-name|void
-name|incrementSafeBlockCount
-parameter_list|(
-name|int
-name|replication
-parameter_list|,
-name|BlockInfo
-name|storedBlock
-parameter_list|)
-function_decl|;
-comment|/** Decrement number of blocks that reached minimal replication. */
-DECL|method|decrementSafeBlockCount (BlockInfo b)
-specifier|public
-name|void
-name|decrementSafeBlockCount
-parameter_list|(
-name|BlockInfo
-name|b
-parameter_list|)
 function_decl|;
 block|}
 end_interface

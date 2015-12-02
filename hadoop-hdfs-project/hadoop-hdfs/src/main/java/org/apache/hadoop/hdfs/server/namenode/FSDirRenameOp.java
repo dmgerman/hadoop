@@ -1824,6 +1824,9 @@ operator|.
 name|getFSNamesystem
 argument_list|()
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|removeBlocksAndUpdateSafemodeTotal
 argument_list|(
 name|collectedBlocks

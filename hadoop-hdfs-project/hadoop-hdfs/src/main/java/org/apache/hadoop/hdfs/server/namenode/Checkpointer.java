@@ -1257,6 +1257,9 @@ name|backupNode
 operator|.
 name|namesystem
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|setBlockTotal
 argument_list|(
 name|completeBlocksTotal

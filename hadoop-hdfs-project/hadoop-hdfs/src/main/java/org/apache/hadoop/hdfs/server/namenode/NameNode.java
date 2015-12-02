@@ -2713,6 +2713,7 @@ name|rpcServer
 return|;
 block|}
 DECL|method|initMetrics (Configuration conf, NamenodeRole role)
+specifier|public
 specifier|static
 name|void
 name|initMetrics
@@ -8478,20 +8479,11 @@ operator|.
 name|STANDBY
 condition|)
 block|{
-name|String
-name|safemodeTip
-init|=
-name|namesystem
-operator|.
-name|getSafeModeTip
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
-operator|!
-name|safemodeTip
+name|namesystem
 operator|.
-name|isEmpty
+name|isInSafeMode
 argument_list|()
 condition|)
 block|{
@@ -8501,7 +8493,10 @@ name|setNotReadyToBecomeActive
 argument_list|(
 literal|"The NameNode is in safemode. "
 operator|+
-name|safemodeTip
+name|namesystem
+operator|.
+name|getSafeModeTip
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

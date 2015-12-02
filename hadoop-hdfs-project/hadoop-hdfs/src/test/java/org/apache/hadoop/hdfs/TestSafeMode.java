@@ -1328,7 +1328,7 @@ literal|10000
 argument_list|)
 expr_stmt|;
 specifier|final
-name|int
+name|long
 name|safe
 init|=
 name|NameNodeAdapter

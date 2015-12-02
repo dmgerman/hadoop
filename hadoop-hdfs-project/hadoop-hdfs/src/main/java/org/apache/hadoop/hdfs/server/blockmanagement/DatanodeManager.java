@@ -598,7 +598,7 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|/** Cluster network topology */
+comment|/** Cluster network topology. */
 DECL|field|networktopology
 specifier|private
 specifier|final
@@ -652,7 +652,7 @@ specifier|final
 name|int
 name|defaultIpcPort
 decl_stmt|;
-comment|/** Read include/exclude files*/
+comment|/** Read include/exclude files. */
 DECL|field|hostFileManager
 specifier|private
 specifier|final
@@ -2595,7 +2595,7 @@ name|nodeInfo
 argument_list|)
 expr_stmt|;
 block|}
-name|namesystem
+name|blockManager
 operator|.
 name|checkSafeMode
 argument_list|()

@@ -5305,6 +5305,9 @@ argument_list|)
 expr_stmt|;
 name|fsNamesys
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|removeBlocksAndUpdateSafemodeTotal
 argument_list|(
 name|collectedBlocks

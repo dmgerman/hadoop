@@ -1035,6 +1035,9 @@ name|truncateBlock
 assert|;
 name|fsn
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|removeBlocksAndUpdateSafemodeTotal
 argument_list|(
 name|collectedBlocks

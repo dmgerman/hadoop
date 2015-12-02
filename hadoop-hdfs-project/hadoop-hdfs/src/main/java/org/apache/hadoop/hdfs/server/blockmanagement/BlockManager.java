@@ -786,6 +786,26 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INode
+operator|.
+name|BlocksMapUpdateInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|NameNode
 import|;
 end_import
@@ -1356,6 +1376,12 @@ specifier|private
 specifier|final
 name|Namesystem
 name|namesystem
+decl_stmt|;
+DECL|field|bmSafeMode
+specifier|private
+specifier|final
+name|BlockManagerSafeMode
+name|bmSafeMode
 decl_stmt|;
 DECL|field|datanodeManager
 specifier|private
@@ -2274,6 +2300,18 @@ name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|bmSafeMode
+operator|=
+operator|new
+name|BlockManagerSafeMode
+argument_list|(
+name|this
+argument_list|,
+name|namesystem
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -2796,13 +2834,16 @@ else|:
 literal|false
 return|;
 block|}
-DECL|method|activate (Configuration conf)
+DECL|method|activate (Configuration conf, long blockTotal)
 specifier|public
 name|void
 name|activate
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|long
+name|blockTotal
 parameter_list|)
 block|{
 name|pendingReplications
@@ -2846,6 +2887,13 @@ argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
+name|bmSafeMode
+operator|.
+name|activate
+argument_list|(
+name|blockTotal
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|close ()
 specifier|public
@@ -2853,6 +2901,11 @@ name|void
 name|close
 parameter_list|()
 block|{
+name|bmSafeMode
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|replicationThread
@@ -3916,9 +3969,9 @@ comment|// also count it as safe, if we have at least the minimum replica
 comment|// count. (We may not have the minimum replica count yet if this is
 comment|// a "forced" completion when a file is getting closed by an
 comment|// OP_CLOSE edit on the standby).
-name|namesystem
+name|bmSafeMode
 operator|.
-name|adjustSafeModeBlockTotals
+name|adjustBlockTotals
 argument_list|(
 literal|0
 argument_list|,
@@ -3946,7 +3999,7 @@ argument_list|()
 else|:
 name|minReplication
 decl_stmt|;
-name|namesystem
+name|bmSafeMode
 operator|.
 name|incrementSafeBlockCount
 argument_list|(
@@ -4153,9 +4206,9 @@ block|}
 block|}
 comment|// Adjust safe-mode totals, since under-construction blocks don't
 comment|// count in safe-mode.
-name|namesystem
+name|bmSafeMode
 operator|.
-name|adjustSafeModeBlockTotals
+name|adjustBlockTotals
 argument_list|(
 comment|// decrement safe if we had enough
 name|hasMinStorage
@@ -6324,8 +6377,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|namesystem
-operator|.
 name|checkSafeMode
 argument_list|()
 expr_stmt|;
@@ -9686,6 +9737,252 @@ return|return
 name|leaseId
 return|;
 block|}
+DECL|method|registerDatanode (DatanodeRegistration nodeReg)
+specifier|public
+name|void
+name|registerDatanode
+parameter_list|(
+name|DatanodeRegistration
+name|nodeReg
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+assert|assert
+name|namesystem
+operator|.
+name|hasWriteLock
+argument_list|()
+assert|;
+name|datanodeManager
+operator|.
+name|registerDatanode
+argument_list|(
+name|nodeReg
+argument_list|)
+expr_stmt|;
+name|bmSafeMode
+operator|.
+name|checkSafeMode
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Set the total number of blocks in the system.    * If safe mode is not currently on, this is a no-op.    */
+DECL|method|setBlockTotal (long total)
+specifier|public
+name|void
+name|setBlockTotal
+parameter_list|(
+name|long
+name|total
+parameter_list|)
+block|{
+if|if
+condition|(
+name|bmSafeMode
+operator|.
+name|isInSafeMode
+argument_list|()
+condition|)
+block|{
+name|bmSafeMode
+operator|.
+name|setBlockTotal
+argument_list|(
+name|total
+argument_list|)
+expr_stmt|;
+name|bmSafeMode
+operator|.
+name|checkSafeMode
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|isInSafeMode ()
+specifier|public
+name|boolean
+name|isInSafeMode
+parameter_list|()
+block|{
+return|return
+name|bmSafeMode
+operator|.
+name|isInSafeMode
+argument_list|()
+return|;
+block|}
+DECL|method|getSafeModeTip ()
+specifier|public
+name|String
+name|getSafeModeTip
+parameter_list|()
+block|{
+return|return
+name|bmSafeMode
+operator|.
+name|getSafeModeTip
+argument_list|()
+return|;
+block|}
+DECL|method|leaveSafeMode (boolean force)
+specifier|public
+name|void
+name|leaveSafeMode
+parameter_list|(
+name|boolean
+name|force
+parameter_list|)
+block|{
+name|bmSafeMode
+operator|.
+name|leaveSafeMode
+argument_list|(
+name|force
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|checkSafeMode ()
+name|void
+name|checkSafeMode
+parameter_list|()
+block|{
+name|bmSafeMode
+operator|.
+name|checkSafeMode
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Removes the blocks from blocksmap and updates the safemode blocks total.    * @param blocks An instance of {@link BlocksMapUpdateInfo} which contains a    *               list of blocks that need to be removed from blocksMap    */
+DECL|method|removeBlocksAndUpdateSafemodeTotal (BlocksMapUpdateInfo blocks)
+specifier|public
+name|void
+name|removeBlocksAndUpdateSafemodeTotal
+parameter_list|(
+name|BlocksMapUpdateInfo
+name|blocks
+parameter_list|)
+block|{
+assert|assert
+name|namesystem
+operator|.
+name|hasWriteLock
+argument_list|()
+assert|;
+comment|// In the case that we are a Standby tailing edits from the
+comment|// active while in safe-mode, we need to track the total number
+comment|// of blocks and safe blocks in the system.
+name|boolean
+name|trackBlockCounts
+init|=
+name|bmSafeMode
+operator|.
+name|isSafeModeTrackingBlocks
+argument_list|()
+decl_stmt|;
+name|int
+name|numRemovedComplete
+init|=
+literal|0
+decl_stmt|,
+name|numRemovedSafe
+init|=
+literal|0
+decl_stmt|;
+for|for
+control|(
+name|BlockInfo
+name|b
+range|:
+name|blocks
+operator|.
+name|getToDeleteList
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|trackBlockCounts
+condition|)
+block|{
+if|if
+condition|(
+name|b
+operator|.
+name|isComplete
+argument_list|()
+condition|)
+block|{
+name|numRemovedComplete
+operator|++
+expr_stmt|;
+if|if
+condition|(
+name|hasMinStorage
+argument_list|(
+name|b
+argument_list|,
+name|b
+operator|.
+name|numNodes
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|numRemovedSafe
+operator|++
+expr_stmt|;
+block|}
+block|}
+block|}
+name|removeBlock
+argument_list|(
+name|b
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|trackBlockCounts
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Adjusting safe-mode totals for deletion."
+operator|+
+literal|"decreasing safeBlocks by "
+operator|+
+name|numRemovedSafe
+operator|+
+literal|", totalBlocks by "
+operator|+
+name|numRemovedComplete
+argument_list|)
+expr_stmt|;
+block|}
+name|bmSafeMode
+operator|.
+name|adjustBlockTotals
+argument_list|(
+operator|-
+name|numRemovedSafe
+argument_list|,
+operator|-
+name|numRemovedComplete
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * StatefulBlockInfo is used to build the "toUC" list, which is a list of    * updates to the information about under-construction blocks.    * Besides the block in question, it provides the ReplicaState    * reported by the datanode in the block report.     */
 DECL|class|StatefulBlockInfo
 specifier|static
@@ -11543,7 +11840,7 @@ operator|.
 name|getNumExpectedLocations
 argument_list|()
 decl_stmt|;
-name|namesystem
+name|bmSafeMode
 operator|.
 name|incrementSafeBlockCount
 argument_list|(
@@ -13215,7 +13512,7 @@ comment|// check whether safe replication is reached for the block
 comment|// only complete blocks are counted towards that.
 comment|// In the case that the block just became complete above, completeBlock()
 comment|// handles the safe block count maintenance.
-name|namesystem
+name|bmSafeMode
 operator|.
 name|incrementSafeBlockCount
 argument_list|(
@@ -13543,7 +13840,7 @@ comment|// only complete blocks are counted towards that
 comment|// Is no-op if not in safe mode.
 comment|// In the case that the block just became complete above, completeBlock()
 comment|// handles the safe block count maintenance.
-name|namesystem
+name|bmSafeMode
 operator|.
 name|incrementSafeBlockCount
 argument_list|(
@@ -15961,7 +16258,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|namesystem
+name|bmSafeMode
 operator|.
 name|decrementSafeBlockCount
 argument_list|(

@@ -786,6 +786,9 @@ argument_list|)
 expr_stmt|;
 name|fsn
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|removeBlocksAndUpdateSafemodeTotal
 argument_list|(
 name|collectedBlocks

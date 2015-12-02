@@ -255,17 +255,6 @@ name|long
 name|id
 parameter_list|)
 function_decl|;
-DECL|method|adjustSafeModeBlockTotals (int deltaSafe, int deltaTotal)
-name|void
-name|adjustSafeModeBlockTotals
-parameter_list|(
-name|int
-name|deltaSafe
-parameter_list|,
-name|int
-name|deltaTotal
-parameter_list|)
-function_decl|;
 DECL|method|checkOperation (OperationCategory read)
 name|void
 name|checkOperation
@@ -275,6 +264,11 @@ name|read
 parameter_list|)
 throws|throws
 name|StandbyException
+function_decl|;
+DECL|method|startSecretManagerIfNecessary ()
+name|void
+name|startSecretManagerIfNecessary
+parameter_list|()
 function_decl|;
 comment|/**    * Gets the erasure coding policy for the path    * @param src    *          - path    * @return {@link ErasureCodingPolicy}    * @throws IOException    */
 DECL|method|getErasureCodingPolicyForPath (String src)
@@ -303,6 +297,18 @@ function_decl|;
 DECL|method|getHAContext ()
 name|HAContext
 name|getHAContext
+parameter_list|()
+function_decl|;
+comment|/**    * @return true if the HA is enabled else false    */
+DECL|method|isHaEnabled ()
+name|boolean
+name|isHaEnabled
+parameter_list|()
+function_decl|;
+comment|/**    * @return Whether the namenode is transitioning to active state and is in the    *         middle of the starting active services.    */
+DECL|method|inTransitionToActive ()
+name|boolean
+name|inTransitionToActive
 parameter_list|()
 function_decl|;
 block|}
