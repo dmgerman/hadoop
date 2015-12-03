@@ -5490,6 +5490,13 @@ name|ContainerEvent
 name|event
 parameter_list|)
 block|{
+if|if
+condition|(
+name|container
+operator|.
+name|wasLaunched
+condition|)
+block|{
 name|container
 operator|.
 name|metrics
@@ -5497,6 +5504,19 @@ operator|.
 name|endRunningContainer
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Container exited with success despite being killed and not"
+operator|+
+literal|"actually running"
+argument_list|)
+expr_stmt|;
+block|}
 name|container
 operator|.
 name|metrics
