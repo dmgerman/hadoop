@@ -4159,12 +4159,16 @@ block|}
 annotation|@
 name|Override
 DECL|method|abort ()
-specifier|synchronized
 name|void
 name|abort
 parameter_list|()
 throws|throws
 name|IOException
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
 block|{
 if|if
 condition|(
@@ -4216,6 +4220,7 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
 name|dfsClient
 operator|.
 name|endFileLease
@@ -5120,13 +5125,6 @@ name|currentBlockGroup
 argument_list|)
 expr_stmt|;
 block|}
-name|dfsClient
-operator|.
-name|endFileLease
-argument_list|(
-name|fileId
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(

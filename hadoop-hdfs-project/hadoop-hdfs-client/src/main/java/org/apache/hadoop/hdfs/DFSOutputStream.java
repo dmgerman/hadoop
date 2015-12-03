@@ -3600,12 +3600,16 @@ expr_stmt|;
 block|}
 comment|/**    * Aborts this output stream and releases any system    * resources associated with this stream.    */
 DECL|method|abort ()
-specifier|synchronized
 name|void
 name|abort
 parameter_list|()
 throws|throws
 name|IOException
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
 block|{
 if|if
 condition|(
@@ -3649,6 +3653,7 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
 name|dfsClient
 operator|.
 name|endFileLease
@@ -3756,12 +3761,16 @@ annotation|@
 name|Override
 DECL|method|close ()
 specifier|public
-specifier|synchronized
 name|void
 name|close
 parameter_list|()
 throws|throws
 name|IOException
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
 block|{
 try|try
 init|(
@@ -3782,6 +3791,14 @@ name|closeImpl
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+name|dfsClient
+operator|.
+name|endFileLease
+argument_list|(
+name|fileId
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|closeImpl ()
 specifier|protected
@@ -3884,13 +3901,6 @@ name|lastBlock
 argument_list|)
 expr_stmt|;
 block|}
-name|dfsClient
-operator|.
-name|endFileLease
-argument_list|(
-name|fileId
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
