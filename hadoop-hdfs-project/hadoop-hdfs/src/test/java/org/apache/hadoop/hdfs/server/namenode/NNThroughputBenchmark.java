@@ -5706,6 +5706,14 @@ block|{
 name|super
 argument_list|()
 expr_stmt|;
+name|numThreads
+operator|=
+literal|10
+expr_stmt|;
+name|numOpsRequired
+operator|=
+literal|30
+expr_stmt|;
 name|this
 operator|.
 name|blocksPerReport
@@ -6774,7 +6782,7 @@ literal|1
 expr_stmt|;
 name|numDatanodes
 operator|=
-literal|3
+literal|10
 expr_stmt|;
 name|nodesToDecommission
 operator|=
