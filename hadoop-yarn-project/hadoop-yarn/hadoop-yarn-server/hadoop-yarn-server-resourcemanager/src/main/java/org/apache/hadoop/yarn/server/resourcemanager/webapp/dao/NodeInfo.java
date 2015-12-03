@@ -292,6 +292,11 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|resourceUtilization
+specifier|protected
+name|ResourceUtilizationInfo
+name|resourceUtilization
+decl_stmt|;
 DECL|method|NodeInfo ()
 specifier|public
 name|NodeInfo
@@ -521,6 +526,17 @@ name|nodeLabels
 argument_list|)
 expr_stmt|;
 block|}
+comment|// update node and containers resource utilization
+name|this
+operator|.
+name|resourceUtilization
+operator|=
+operator|new
+name|ResourceUtilizationInfo
+argument_list|(
+name|ni
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getRack ()
 specifier|public
@@ -700,6 +716,18 @@ return|return
 name|this
 operator|.
 name|nodeLabels
+return|;
+block|}
+DECL|method|getResourceUtilization ()
+specifier|public
+name|ResourceUtilizationInfo
+name|getResourceUtilization
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|resourceUtilization
 return|;
 block|}
 block|}
