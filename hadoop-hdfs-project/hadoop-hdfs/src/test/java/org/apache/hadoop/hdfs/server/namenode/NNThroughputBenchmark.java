@@ -4821,7 +4821,7 @@ decl_stmt|;
 comment|//only one storage
 DECL|field|blocks
 specifier|final
-name|ArrayList
+name|List
 argument_list|<
 name|BlockReportReplica
 argument_list|>
@@ -4897,13 +4897,15 @@ name|this
 operator|.
 name|blocks
 operator|=
-operator|new
-name|ArrayList
-argument_list|<
-name|BlockReportReplica
-argument_list|>
+name|Arrays
+operator|.
+name|asList
 argument_list|(
+operator|new
+name|BlockReportReplica
+index|[
 name|blockCapacity
+index|]
 argument_list|)
 expr_stmt|;
 name|this
@@ -5319,7 +5321,10 @@ name|blockReportList
 operator|=
 name|BlockListAsLongs
 operator|.
-name|EMPTY
+name|encode
+argument_list|(
+name|blocks
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getBlockReportList ()
