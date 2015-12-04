@@ -5023,59 +5023,6 @@ operator|=
 name|flag
 expr_stmt|;
 block|}
-comment|/**    * Block until the object is imageLoaded to be used.    */
-DECL|method|waitForLoadingFSImage ()
-name|void
-name|waitForLoadingFSImage
-parameter_list|()
-block|{
-if|if
-condition|(
-operator|!
-name|imageLoaded
-condition|)
-block|{
-name|writeLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-while|while
-condition|(
-operator|!
-name|imageLoaded
-condition|)
-block|{
-try|try
-block|{
-name|cond
-operator|.
-name|await
-argument_list|(
-literal|5000
-argument_list|,
-name|TimeUnit
-operator|.
-name|MILLISECONDS
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|ignored
-parameter_list|)
-block|{           }
-block|}
-block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 comment|/**    * Clear all loaded data    */
 DECL|method|clear ()
 name|void
@@ -10267,9 +10214,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 name|HdfsFileStatus
 name|stat
 init|=
@@ -10717,9 +10661,6 @@ literal|"Symlinks not supported"
 argument_list|)
 throw|;
 block|}
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 name|HdfsFileStatus
 name|auditStat
 init|=
@@ -10834,9 +10775,6 @@ name|success
 init|=
 literal|false
 decl_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 name|checkOperation
 argument_list|(
 name|OperationCategory
@@ -10946,9 +10884,6 @@ block|{
 name|HdfsFileStatus
 name|auditStat
 decl_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 name|checkOperation
 argument_list|(
 name|OperationCategory
@@ -11054,9 +10989,6 @@ operator|.
 name|READ
 argument_list|)
 expr_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -11104,9 +11036,6 @@ name|OperationCategory
 operator|.
 name|READ
 argument_list|)
-expr_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
 expr_stmt|;
 name|readLock
 argument_list|()
@@ -11706,9 +11635,6 @@ init|=
 name|getPermissionChecker
 argument_list|()
 decl_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 comment|/**      * If the file is in an encryption zone, we optimistically create an      * EDEK for the file by calling out to the configured KeyProvider.      * Since this typically involves doing an RPC, we take the readLock      * initially, then drop it to do the RPC.      *       * Since the path can flip-flop between being in an encryption zone and not      * in the meantime, we need to recheck the preconditions when we retake the      * lock to do the create. If the preconditions are not met, we throw a      * special RetryStartFileException to ask the DFSClient to try the create      * again later.      */
 name|FSDirWriteFileOp
 operator|.
@@ -12884,9 +12810,6 @@ argument_list|,
 name|clientName
 argument_list|)
 expr_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 name|LocatedBlock
 index|[]
 name|onRetryBlock
@@ -13464,9 +13387,6 @@ argument_list|,
 name|src
 argument_list|)
 expr_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 name|checkOperation
 argument_list|(
 name|OperationCategory
@@ -13835,9 +13755,6 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 name|FSPermissionChecker
 name|pc
 init|=
@@ -14055,9 +13972,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 name|FSDirRenameOp
 operator|.
 name|RenameOldResult
@@ -14201,9 +14115,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 name|Map
 operator|.
 name|Entry
@@ -14376,9 +14287,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 name|BlocksMapUpdateInfo
 name|toRemovedBlocks
 init|=
@@ -15191,9 +15099,6 @@ init|=
 name|getPermissionChecker
 argument_list|()
 decl_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -16358,9 +16263,6 @@ name|now
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 comment|// close file and persist block allocations for this file
 name|closeFile
 argument_list|(
@@ -16625,9 +16527,6 @@ specifier|final
 name|String
 name|src
 decl_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -17930,9 +17829,6 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
-name|waitForLoadingFSImage
-argument_list|()
-expr_stmt|;
 comment|// file is closed
 name|getEditLog
 argument_list|()
@@ -22458,9 +22354,6 @@ name|clientName
 operator|+
 literal|")"
 argument_list|)
-expr_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
 expr_stmt|;
 name|writeLock
 argument_list|()
@@ -30655,9 +30548,6 @@ name|OperationCategory
 operator|.
 name|READ
 argument_list|)
-expr_stmt|;
-name|waitForLoadingFSImage
-argument_list|()
 expr_stmt|;
 name|readLock
 argument_list|()
