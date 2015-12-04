@@ -1625,6 +1625,31 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|getTrashRoot (Path path)
+specifier|public
+name|Path
+name|getTrashRoot
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|getTrashRoots (boolean allUsers)
+specifier|public
+name|Collection
+argument_list|<
+name|FileStatus
+argument_list|>
+name|getTrashRoots
+parameter_list|(
+name|boolean
+name|allUsers
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 annotation|@
 name|Test

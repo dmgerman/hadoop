@@ -610,6 +610,28 @@ name|getCurrentTrashDir
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns the current trash location for the path specified    * @param path to be deleted    * @return path to the trash    * @throws IOException    */
+DECL|method|getCurrentTrashDir (Path path)
+specifier|public
+name|Path
+name|getCurrentTrashDir
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getTrash
+argument_list|()
+operator|.
+name|getCurrentTrashDir
+argument_list|(
+name|path
+argument_list|)
+return|;
+block|}
 DECL|method|getUsagePrefix ()
 specifier|protected
 name|String
@@ -622,7 +644,7 @@ return|;
 block|}
 comment|// NOTE: Usage/Help are inner classes to allow access to outer methods
 comment|// that access commandFactory
-comment|/**    *  Display help for commands with their short usage and long description    */
+comment|/**    *  Display help for commands with their short usage and long description.    */
 DECL|class|Usage
 specifier|protected
 class|class

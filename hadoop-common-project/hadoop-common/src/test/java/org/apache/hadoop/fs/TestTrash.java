@@ -3712,6 +3712,20 @@ parameter_list|)
 block|{     }
 annotation|@
 name|Override
+DECL|method|initialize (Configuration conf, FileSystem fs)
+specifier|public
+name|void
+name|initialize
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|FileSystem
+name|fs
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
 DECL|method|isEnabled ()
 specifier|public
 name|boolean
@@ -3766,6 +3780,23 @@ specifier|public
 name|Path
 name|getCurrentTrashDir
 parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCurrentTrashDir (Path path)
+specifier|public
+name|Path
+name|getCurrentTrashDir
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
 block|{
 return|return
 literal|null
