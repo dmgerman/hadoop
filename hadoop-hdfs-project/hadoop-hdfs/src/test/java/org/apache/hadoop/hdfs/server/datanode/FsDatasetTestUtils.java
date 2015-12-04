@@ -597,6 +597,20 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Change the persistently stored generation stamp.    * @param block the block whose generation stamp will be changed    * @param newGenStamp the new generation stamp    * @throws IOException    */
+DECL|method|changeStoredGenerationStamp (ExtendedBlock block, long newGenStamp)
+name|void
+name|changeStoredGenerationStamp
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|,
+name|long
+name|newGenStamp
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

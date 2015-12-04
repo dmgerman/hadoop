@@ -451,8 +451,6 @@ argument_list|,
 name|filePath
 argument_list|)
 decl_stmt|;
-name|assertTrue
-argument_list|(
 name|cluster
 operator|.
 name|changeGenStampOfBlock
@@ -462,7 +460,6 @@ argument_list|,
 name|block
 argument_list|,
 literal|900
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Run directory dsscanner to update Datanode's volumeMap
