@@ -64,6 +64,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -295,8 +309,15 @@ name|numThreads
 decl_stmt|;
 DECL|field|maxThreads
 specifier|private
-name|int
+specifier|final
+name|AtomicInteger
 name|maxThreads
+init|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
 decl_stmt|;
 comment|/**Constructor     *      * @param bandwidth Total amount of bandwidth can be used for balancing      */
 DECL|method|BlockBalanceThrottler (long bandwidth, int maxThreads)
@@ -318,8 +339,11 @@ expr_stmt|;
 name|this
 operator|.
 name|maxThreads
-operator|=
+operator|.
+name|set
+argument_list|(
 name|maxThreads
+argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
@@ -342,6 +366,41 @@ name|maxThreads
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|setMaxConcurrentMovers (int movers)
+specifier|private
+name|void
+name|setMaxConcurrentMovers
+parameter_list|(
+name|int
+name|movers
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maxThreads
+operator|.
+name|set
+argument_list|(
+name|movers
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getMaxConcurrentMovers ()
+name|int
+name|getMaxConcurrentMovers
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|maxThreads
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
 comment|/** Check if the block move can start.      *      * Return true if the thread quota is not exceeded and      * the counter is incremented; False otherwise.     */
 DECL|method|acquire ()
 specifier|synchronized
@@ -354,6 +413,9 @@ condition|(
 name|numThreads
 operator|>=
 name|maxThreads
+operator|.
+name|get
+argument_list|()
 condition|)
 block|{
 return|return
@@ -1188,6 +1250,23 @@ operator|.
 name|remove
 argument_list|(
 name|peer
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|updateBalancerMaxConcurrentMovers (int movers)
+specifier|public
+name|void
+name|updateBalancerMaxConcurrentMovers
+parameter_list|(
+name|int
+name|movers
+parameter_list|)
+block|{
+name|balanceThrottler
+operator|.
+name|setMaxConcurrentMovers
+argument_list|(
+name|movers
 argument_list|)
 expr_stmt|;
 block|}
