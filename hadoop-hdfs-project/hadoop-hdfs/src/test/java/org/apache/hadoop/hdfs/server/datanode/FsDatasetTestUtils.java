@@ -182,6 +182,16 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
+import|;
+end_import
+
 begin_comment
 comment|/**  * Provide block access for FsDataset white box tests.  */
 end_comment
@@ -607,6 +617,20 @@ name|block
 parameter_list|,
 name|long
 name|newGenStamp
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/** Get all stored replicas in the specified block pool. */
+DECL|method|getStoredReplicas (String bpid)
+name|Iterator
+argument_list|<
+name|Replica
+argument_list|>
+name|getStoredReplicas
+parameter_list|(
+name|String
+name|bpid
 parameter_list|)
 throws|throws
 name|IOException
