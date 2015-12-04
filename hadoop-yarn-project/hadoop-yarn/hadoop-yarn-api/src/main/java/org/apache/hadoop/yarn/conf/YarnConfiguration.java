@@ -6986,6 +6986,27 @@ name|YARN_PREFIX
 operator|+
 literal|"node-labels."
 decl_stmt|;
+comment|/** Node label store implementation class */
+DECL|field|FS_NODE_LABELS_STORE_IMPL_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_NODE_LABELS_STORE_IMPL_CLASS
+init|=
+name|NODE_LABELS_PREFIX
+operator|+
+literal|"fs-store.impl.class"
+decl_stmt|;
+DECL|field|DEFAULT_FS_NODE_LABELS_STORE_IMPL_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_FS_NODE_LABELS_STORE_IMPL_CLASS
+init|=
+literal|"org.apache.hadoop.yarn.nodelabels.FileSystemNodeLabelsStore"
+decl_stmt|;
 comment|/** URI for NodeLabelManager */
 DECL|field|FS_NODE_LABELS_STORE_ROOT_DIR
 specifier|public

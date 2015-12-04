@@ -121,6 +121,15 @@ name|add
 argument_list|(
 name|YarnConfiguration
 operator|.
+name|DEFAULT_FS_NODE_LABELS_STORE_IMPL_CLASS
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
 name|DEFAULT_RM_CONFIGURATION_PROVIDER_CLASS
 argument_list|)
 expr_stmt|;

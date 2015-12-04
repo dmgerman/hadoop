@@ -191,19 +191,14 @@ name|store
 operator|=
 operator|new
 name|NodeLabelsStore
-argument_list|(
-name|this
-argument_list|)
+argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
 name|void
 name|recover
-parameter_list|(
-name|boolean
-name|ignoreNodeToLabelsMappings
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 block|{       }
@@ -284,6 +279,15 @@ block|{
 comment|// do nothing
 block|}
 block|}
+expr_stmt|;
+name|this
+operator|.
+name|store
+operator|.
+name|setNodeLabelsManager
+argument_list|(
+name|this
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@

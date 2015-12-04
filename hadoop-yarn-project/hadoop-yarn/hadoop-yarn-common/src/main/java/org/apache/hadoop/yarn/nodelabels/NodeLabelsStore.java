@@ -155,25 +155,9 @@ name|Closeable
 block|{
 DECL|field|mgr
 specifier|protected
-specifier|final
 name|CommonNodeLabelsManager
 name|mgr
 decl_stmt|;
-DECL|method|NodeLabelsStore (CommonNodeLabelsManager mgr)
-specifier|public
-name|NodeLabelsStore
-parameter_list|(
-name|CommonNodeLabelsManager
-name|mgr
-parameter_list|)
-block|{
-name|this
-operator|.
-name|mgr
-operator|=
-name|mgr
-expr_stmt|;
-block|}
 comment|/**    * Store node {@literal ->} label    */
 DECL|method|updateNodeToLabelsMappings ( Map<NodeId, Set<String>> nodeToLabels)
 specifier|public
@@ -227,16 +211,13 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Recover labels and node to labels mappings from store, but if    * ignoreNodeToLabelsMappings is true then node to labels mappings should not    * be recovered. In case of Distributed NodeLabels setup    * ignoreNodeToLabelsMappings will be set to true and recover will be invoked    * as RM will collect the node labels from NM through registration/HB    *    * @param ignoreNodeToLabelsMappings    * @throws IOException    * @throws YarnException    */
-DECL|method|recover (boolean ignoreNodeToLabelsMappings)
+comment|/**    * Recover labels and node to labels mappings from store, but if    * ignoreNodeToLabelsMappings is true then node to labels mappings should not    * be recovered. In case of Distributed NodeLabels setup    * ignoreNodeToLabelsMappings will be set to true and recover will be invoked    * as RM will collect the node labels from NM through registration/HB    *    * @throws IOException    * @throws YarnException    */
+DECL|method|recover ()
 specifier|public
 specifier|abstract
 name|void
 name|recover
-parameter_list|(
-name|boolean
-name|ignoreNodeToLabelsMappings
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 throws|,
@@ -253,15 +234,21 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{}
-DECL|method|getNodeLabelsManager ()
+DECL|method|setNodeLabelsManager (CommonNodeLabelsManager mgr)
 specifier|public
+name|void
+name|setNodeLabelsManager
+parameter_list|(
 name|CommonNodeLabelsManager
-name|getNodeLabelsManager
-parameter_list|()
-block|{
-return|return
 name|mgr
-return|;
+parameter_list|)
+block|{
+name|this
+operator|.
+name|mgr
+operator|=
+name|mgr
+expr_stmt|;
 block|}
 block|}
 end_class
