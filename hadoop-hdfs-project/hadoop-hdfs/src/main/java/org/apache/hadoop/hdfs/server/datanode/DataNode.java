@@ -518,6 +518,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ReconfigurationProtocolProtos
+operator|.
+name|ReconfigurationProtocolService
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -1420,6 +1440,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|ReconfigurationProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|datatransfer
 operator|.
 name|BlockConstructionStage
@@ -1747,6 +1783,38 @@ operator|.
 name|protocolPB
 operator|.
 name|PBHelperClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolPB
+operator|.
+name|ReconfigurationProtocolPB
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolPB
+operator|.
+name|ReconfigurationProtocolServerSideTranslatorPB
 import|;
 end_import
 
@@ -2911,6 +2979,8 @@ implements|,
 name|TraceAdminProtocol
 implements|,
 name|DataNodeMXBean
+implements|,
+name|ReconfigurationProtocol
 block|{
 DECL|field|LOG
 specifier|public
@@ -6031,6 +6101,39 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+expr_stmt|;
+name|ReconfigurationProtocolServerSideTranslatorPB
+name|reconfigurationProtocolXlator
+init|=
+operator|new
+name|ReconfigurationProtocolServerSideTranslatorPB
+argument_list|(
+name|this
+argument_list|)
+decl_stmt|;
+name|service
+operator|=
+name|ReconfigurationProtocolService
+operator|.
+name|newReflectiveBlockingService
+argument_list|(
+name|reconfigurationProtocolXlator
+argument_list|)
+expr_stmt|;
+name|DFSUtil
+operator|.
+name|addPBProtocol
+argument_list|(
+name|conf
+argument_list|,
+name|ReconfigurationProtocolPB
+operator|.
+name|class
+argument_list|,
+name|service
+argument_list|,
+name|ipcServer
+argument_list|)
 expr_stmt|;
 name|InterDatanodeProtocolServerSideTranslatorPB
 name|interDatanodeProtocolXlator
@@ -14224,7 +14327,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// ClientDatanodeProtocol
+comment|// ClientDatanodeProtocol& ReconfigurationProtocol
 DECL|method|startReconfiguration ()
 specifier|public
 name|void
@@ -14242,7 +14345,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// ClientDatanodeProtocol
+comment|// ClientDatanodeProtocol& ReconfigurationProtocol
 DECL|method|getReconfigurationStatus ()
 specifier|public
 name|ReconfigurationTaskStatus
@@ -14261,7 +14364,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// ClientDatanodeProtocol
+comment|// ClientDatanodeProtocol& ReconfigurationProtocol
 DECL|method|listReconfigurableProperties ()
 specifier|public
 name|List
