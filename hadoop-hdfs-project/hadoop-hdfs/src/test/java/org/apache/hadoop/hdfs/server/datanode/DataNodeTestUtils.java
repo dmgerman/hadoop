@@ -930,28 +930,6 @@ name|getFSDataset
 argument_list|()
 return|;
 block|}
-DECL|method|getPendingAsyncDeletions (DataNode dn)
-specifier|public
-specifier|static
-name|long
-name|getPendingAsyncDeletions
-parameter_list|(
-name|DataNode
-name|dn
-parameter_list|)
-block|{
-return|return
-name|FsDatasetTestUtil
-operator|.
-name|getPendingAsyncDeletions
-argument_list|(
-name|dn
-operator|.
-name|getFSDataset
-argument_list|()
-argument_list|)
-return|;
-block|}
 comment|/**    * Fetch a copy of ReplicaInfo from a datanode by block id    * @param dn datanode to retrieve a replicainfo object from    * @param bpid Block pool Id    * @param blkId id of the replica's block    * @return copy of ReplicaInfo object @link{FSDataset#fetchReplicaInfo}    */
 DECL|method|fetchReplicaInfo (final DataNode dn, final String bpid, final long blkId)
 specifier|public

@@ -435,33 +435,6 @@ name|blockId
 argument_list|)
 return|;
 block|}
-DECL|method|getPendingAsyncDeletions (FsDatasetSpi<?> fsd)
-specifier|public
-specifier|static
-name|long
-name|getPendingAsyncDeletions
-parameter_list|(
-name|FsDatasetSpi
-argument_list|<
-name|?
-argument_list|>
-name|fsd
-parameter_list|)
-block|{
-return|return
-operator|(
-operator|(
-name|FsDatasetImpl
-operator|)
-name|fsd
-operator|)
-operator|.
-name|asyncDiskService
-operator|.
-name|countPendingDeletions
-argument_list|()
-return|;
-block|}
 DECL|method|getReplicas (FsDatasetSpi<?> fsd, String bpid)
 specifier|public
 specifier|static

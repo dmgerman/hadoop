@@ -630,12 +630,15 @@ control|)
 block|{
 if|if
 condition|(
-name|DataNodeTestUtils
+name|cluster
 operator|.
-name|getPendingAsyncDeletions
+name|getFsDatasetTestUtils
 argument_list|(
 name|dn
 argument_list|)
+operator|.
+name|getPendingAsyncDeletions
+argument_list|()
 operator|>
 literal|0
 condition|)

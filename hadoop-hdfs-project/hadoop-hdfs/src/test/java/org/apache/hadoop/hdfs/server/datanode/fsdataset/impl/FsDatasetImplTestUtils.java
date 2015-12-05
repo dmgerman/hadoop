@@ -2434,6 +2434,23 @@ name|iterator
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getPendingAsyncDeletions ()
+specifier|public
+name|long
+name|getPendingAsyncDeletions
+parameter_list|()
+block|{
+return|return
+name|dataset
+operator|.
+name|asyncDiskService
+operator|.
+name|countPendingDeletions
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

@@ -635,6 +635,12 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get the number of pending async deletions.    */
+DECL|method|getPendingAsyncDeletions ()
+name|long
+name|getPendingAsyncDeletions
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
