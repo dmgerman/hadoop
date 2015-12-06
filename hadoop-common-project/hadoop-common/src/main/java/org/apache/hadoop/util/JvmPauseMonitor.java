@@ -140,6 +140,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|service
+operator|.
+name|AbstractService
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -221,6 +235,8 @@ DECL|class|JvmPauseMonitor
 specifier|public
 class|class
 name|JvmPauseMonitor
+extends|extends
+name|AbstractService
 block|{
 DECL|field|LOG
 specifier|private
@@ -251,7 +267,6 @@ decl_stmt|;
 comment|/** log WARN if we detect a pause longer than this threshold */
 DECL|field|warnThresholdMs
 specifier|private
-specifier|final
 name|long
 name|warnThresholdMs
 decl_stmt|;
@@ -276,7 +291,6 @@ decl_stmt|;
 comment|/** log INFO if we detect a pause longer than this threshold */
 DECL|field|infoThresholdMs
 specifier|private
-specifier|final
 name|long
 name|infoThresholdMs
 decl_stmt|;
@@ -332,13 +346,34 @@ name|shouldRun
 init|=
 literal|true
 decl_stmt|;
-DECL|method|JvmPauseMonitor (Configuration conf)
+DECL|method|JvmPauseMonitor ()
 specifier|public
 name|JvmPauseMonitor
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|JvmPauseMonitor
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
+name|void
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|this
 operator|.
@@ -366,24 +401,24 @@ argument_list|,
 name|INFO_THRESHOLD_DEFAULT
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|start ()
-specifier|public
-name|void
-name|start
-parameter_list|()
-block|{
-name|Preconditions
+name|super
 operator|.
-name|checkState
+name|serviceInit
 argument_list|(
-name|monitorThread
-operator|==
-literal|null
-argument_list|,
-literal|"Already started"
+name|conf
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|serviceStart ()
+specifier|protected
+name|void
+name|serviceStart
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 name|monitorThread
 operator|=
 operator|new
@@ -394,33 +429,26 @@ name|Monitor
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|shouldRun
-condition|)
-block|{
 name|monitorThread
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
-block|}
-else|else
-block|{
-name|LOG
+name|super
 operator|.
-name|warn
-argument_list|(
-literal|"stop() was called before start() completed"
-argument_list|)
+name|serviceStart
+argument_list|()
 expr_stmt|;
 block|}
-block|}
-DECL|method|stop ()
-specifier|public
+annotation|@
+name|Override
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|shouldRun
 operator|=
@@ -428,8 +456,9 @@ literal|false
 expr_stmt|;
 if|if
 condition|(
-name|isStarted
-argument_list|()
+name|monitorThread
+operator|!=
+literal|null
 condition|)
 block|{
 name|monitorThread
@@ -461,6 +490,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+name|super
+operator|.
+name|serviceStop
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|isStarted ()
 specifier|public
@@ -992,6 +1026,11 @@ block|}
 block|}
 block|}
 comment|/**    * Simple 'main' to facilitate manual testing of the pause monitor.    *     * This main function just leaks memory into a list. Running this class    * with a 1GB heap will very quickly go into "GC hell" and result in    * log messages about the GC pauses.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"resource"
+argument_list|)
 DECL|method|main (String []args)
 specifier|public
 specifier|static
@@ -1005,13 +1044,23 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|JvmPauseMonitor
+name|monitor
+init|=
 operator|new
 name|JvmPauseMonitor
+argument_list|()
+decl_stmt|;
+name|monitor
+operator|.
+name|init
 argument_list|(
 operator|new
 name|Configuration
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|monitor
 operator|.
 name|start
 argument_list|()

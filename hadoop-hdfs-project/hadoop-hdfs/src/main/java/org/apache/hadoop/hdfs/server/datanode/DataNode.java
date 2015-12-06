@@ -7533,6 +7533,11 @@ name|pauseMonitor
 operator|=
 operator|new
 name|JvmPauseMonitor
+argument_list|()
+expr_stmt|;
+name|pauseMonitor
+operator|.
+name|init
 argument_list|(
 name|conf
 argument_list|)

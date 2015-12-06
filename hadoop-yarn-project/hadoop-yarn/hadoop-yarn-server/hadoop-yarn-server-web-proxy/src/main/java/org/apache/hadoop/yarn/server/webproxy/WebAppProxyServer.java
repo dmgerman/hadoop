@@ -361,8 +361,11 @@ name|pauseMonitor
 operator|=
 operator|new
 name|JvmPauseMonitor
+argument_list|()
+expr_stmt|;
+name|addService
 argument_list|(
-name|conf
+name|pauseMonitor
 argument_list|)
 expr_stmt|;
 name|jm
@@ -390,19 +393,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-name|pauseMonitor
-operator|!=
-literal|null
-condition|)
-block|{
-name|pauseMonitor
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-block|}
 name|super
 operator|.
 name|serviceStart
@@ -429,19 +419,6 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|pauseMonitor
-operator|!=
-literal|null
-condition|)
-block|{
-name|pauseMonitor
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Log in as the Kerberose principal designated for the proxy    * @param conf the configuration holding this information in it.    * @throws IOException on any error.    */
 DECL|method|doSecureLogin (Configuration conf)
