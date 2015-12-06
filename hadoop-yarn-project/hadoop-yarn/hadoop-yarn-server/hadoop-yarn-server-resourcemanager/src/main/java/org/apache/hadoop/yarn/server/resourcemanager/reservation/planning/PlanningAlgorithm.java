@@ -40,7 +40,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|Map
+operator|.
+name|Entry
 import|;
 end_import
 
@@ -304,6 +306,8 @@ argument_list|,
 name|reservationId
 argument_list|,
 name|adjustedContract
+argument_list|,
+name|user
 argument_list|)
 decl_stmt|;
 comment|// If no job allocation was found, fail
@@ -401,18 +405,12 @@ comment|// Queue name
 name|findEarliestTime
 argument_list|(
 name|mapAllocations
-operator|.
-name|keySet
-argument_list|()
 argument_list|)
 argument_list|,
 comment|// Earliest start time
 name|findLatestTime
 argument_list|(
 name|mapAllocations
-operator|.
-name|keySet
-argument_list|()
 argument_list|)
 argument_list|,
 comment|// Latest end time
@@ -517,9 +515,6 @@ init|=
 name|findEarliestTime
 argument_list|(
 name|mapAllocations
-operator|.
-name|keySet
-argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -552,9 +547,6 @@ init|=
 name|findLatestTime
 argument_list|(
 name|mapAllocations
-operator|.
-name|keySet
-argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -584,7 +576,7 @@ return|return
 name|mapAllocations
 return|;
 block|}
-DECL|method|computeJobAllocation (Plan plan, ReservationId reservationId, ReservationDefinition reservation)
+DECL|method|computeJobAllocation (Plan plan, ReservationId reservationId, ReservationDefinition reservation, String user)
 specifier|public
 specifier|abstract
 name|RLESparseResourceAllocation
@@ -598,6 +590,9 @@ name|reservationId
 parameter_list|,
 name|ReservationDefinition
 name|reservation
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
 name|PlanningException
@@ -720,15 +715,17 @@ name|reservationId
 argument_list|)
 return|;
 block|}
-DECL|method|findEarliestTime (Set<ReservationInterval> sesInt)
+DECL|method|findEarliestTime ( Map<ReservationInterval, Resource> sesInt)
 specifier|protected
 specifier|static
 name|long
 name|findEarliestTime
 parameter_list|(
-name|Set
+name|Map
 argument_list|<
 name|ReservationInterval
+argument_list|,
+name|Resource
 argument_list|>
 name|sesInt
 parameter_list|)
@@ -742,25 +739,46 @@ name|MAX_VALUE
 decl_stmt|;
 for|for
 control|(
+name|Entry
+argument_list|<
 name|ReservationInterval
+argument_list|,
+name|Resource
+argument_list|>
 name|s
 range|:
 name|sesInt
+operator|.
+name|entrySet
+argument_list|()
 control|)
 block|{
 if|if
 condition|(
 name|s
 operator|.
+name|getKey
+argument_list|()
+operator|.
 name|getStartTime
 argument_list|()
 operator|<
 name|ret
+operator|&&
+name|s
+operator|.
+name|getValue
+argument_list|()
+operator|!=
+literal|null
 condition|)
 block|{
 name|ret
 operator|=
 name|s
+operator|.
+name|getKey
+argument_list|()
 operator|.
 name|getStartTime
 argument_list|()
@@ -771,15 +789,17 @@ return|return
 name|ret
 return|;
 block|}
-DECL|method|findLatestTime (Set<ReservationInterval> sesInt)
+DECL|method|findLatestTime (Map<ReservationInterval, Resource> sesInt)
 specifier|protected
 specifier|static
 name|long
 name|findLatestTime
 parameter_list|(
-name|Set
+name|Map
 argument_list|<
 name|ReservationInterval
+argument_list|,
+name|Resource
 argument_list|>
 name|sesInt
 parameter_list|)
@@ -793,25 +813,46 @@ name|MIN_VALUE
 decl_stmt|;
 for|for
 control|(
+name|Entry
+argument_list|<
 name|ReservationInterval
+argument_list|,
+name|Resource
+argument_list|>
 name|s
 range|:
 name|sesInt
+operator|.
+name|entrySet
+argument_list|()
 control|)
 block|{
 if|if
 condition|(
 name|s
 operator|.
+name|getKey
+argument_list|()
+operator|.
 name|getEndTime
 argument_list|()
 operator|>
 name|ret
+operator|&&
+name|s
+operator|.
+name|getValue
+argument_list|()
+operator|!=
+literal|null
 condition|)
 block|{
 name|ret
 operator|=
 name|s
+operator|.
+name|getKey
+argument_list|()
 operator|.
 name|getEndTime
 argument_list|()

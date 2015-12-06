@@ -115,21 +115,21 @@ name|ReservationDefinition
 name|getReservationDefinition
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the time at which the reservation is activated    *     * @return the time at which the reservation is activated    */
+comment|/**    * Returns the time at which the reservation is activated.    *     * @return the time at which the reservation is activated    */
 DECL|method|getStartTime ()
 specifier|public
 name|long
 name|getStartTime
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the time at which the reservation terminates    *     * @return the time at which the reservation terminates    */
+comment|/**    * Returns the time at which the reservation terminates.    *     * @return the time at which the reservation terminates    */
 DECL|method|getEndTime ()
 specifier|public
 name|long
 name|getEndTime
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the map of resources requested against the time interval for which    * they were    *     * @return the allocationRequests the map of resources requested against the    *         time interval for which they were    */
+comment|/**    * Returns the map of resources requested against the time interval for which    * they were.    *     * @return the allocationRequests the map of resources requested against the    *         time interval for which they were    */
 DECL|method|getAllocationRequests ()
 specifier|public
 name|Map
@@ -188,6 +188,13 @@ parameter_list|(
 name|long
 name|tick
 parameter_list|)
+function_decl|;
+comment|/**    * Return a RLE representation of used resources.    * @return a RLE encoding of resources allocated over time.    */
+DECL|method|getResourcesOverTime ()
+specifier|public
+name|RLESparseResourceAllocation
+name|getResourcesOverTime
+parameter_list|()
 function_decl|;
 block|}
 end_interface

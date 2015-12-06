@@ -48,6 +48,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ReservationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ReservationRequest
 import|;
 end_import
@@ -130,6 +148,28 @@ name|ReservationInterval
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|reservation
+operator|.
+name|exceptions
+operator|.
+name|PlanningException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Interface for allocating a single stage in IterativePlanner.  */
 end_comment
@@ -140,8 +180,8 @@ specifier|public
 interface|interface
 name|StageAllocator
 block|{
-comment|/**    * Computes the allocation of a stage inside a defined time interval.    *    * @param plan the Plan to which the reservation must be fitted    * @param planLoads a 'dirty' read of the plan loads at each time    * @param planModifications the allocations performed by the planning    *          algorithm which are not yet reflected by plan    * @param rr the stage    * @param stageEarliestStart the arrival time (earliest starting time) set for    *          the stage by the two phase planning algorithm    * @param stageDeadline the deadline of the stage set by the two phase    *          planning algorithm    *    * @return The computed allocation (or null if the stage could not be    *         allocated)    */
-DECL|method|computeStageAllocation (Plan plan, Map<Long, Resource> planLoads, RLESparseResourceAllocation planModifications, ReservationRequest rr, long stageEarliestStart, long stageDeadline)
+comment|/**    * Computes the allocation of a stage inside a defined time interval.    *    * @param plan the Plan to which the reservation must be fitted    * @param planLoads a 'dirty' read of the plan loads at each time    * @param planModifications the allocations performed by the planning    *          algorithm which are not yet reflected by plan    * @param rr the stage    * @param stageEarliestStart the arrival time (earliest starting time) set for    *          the stage by the two phase planning algorithm    * @param stageDeadline the deadline of the stage set by the two phase    *          planning algorithm    *    * @return The computed allocation (or null if the stage could not be    *         allocated)    * @throws PlanningException    */
+DECL|method|computeStageAllocation (Plan plan, Map<Long, Resource> planLoads, RLESparseResourceAllocation planModifications, ReservationRequest rr, long stageEarliestStart, long stageDeadline, String user, ReservationId oldId)
 name|Map
 argument_list|<
 name|ReservationInterval
@@ -172,7 +212,15 @@ name|stageEarliestStart
 parameter_list|,
 name|long
 name|stageDeadline
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|ReservationId
+name|oldId
 parameter_list|)
+throws|throws
+name|PlanningException
 function_decl|;
 block|}
 end_interface

@@ -60,6 +60,28 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|reservation
+operator|.
+name|exceptions
+operator|.
+name|PlanningException
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -88,6 +110,22 @@ name|getReservationById
 parameter_list|(
 name|ReservationId
 name|reservationID
+parameter_list|)
+function_decl|;
+comment|/**    * Return a set of {@link ReservationAllocation} that belongs to a certain    * user and overlaps time t.    *    * @param user the user being considered    * @param t the instant in time being considered    * @return {@link Set<ReservationAllocation>} for this user at this time    */
+DECL|method|getReservationByUserAtTime (String user, long t)
+specifier|public
+name|Set
+argument_list|<
+name|ReservationAllocation
+argument_list|>
+name|getReservationByUserAtTime
+parameter_list|(
+name|String
+name|user
+parameter_list|,
+name|long
+name|t
 parameter_list|)
 function_decl|;
 comment|/**    * Gets all the active reservations at the specified point of time    *     * @param tick the time (UTC in ms) for which the active reservations are    *          requested    * @return set of active reservations at the specified time    */
@@ -122,19 +160,6 @@ name|long
 name|tick
 parameter_list|)
 function_decl|;
-comment|/**    * Returns the total {@link Resource} reserved for a given user at the    * specified time    *     * @param user the user who made the reservation(s)    * @param tick the time (UTC in ms) for which the reserved resources are    *          requested    * @return the total {@link Resource} reserved for a given user at the    *         specified time    */
-DECL|method|getConsumptionForUser (String user, long tick)
-specifier|public
-name|Resource
-name|getConsumptionForUser
-parameter_list|(
-name|String
-name|user
-parameter_list|,
-name|long
-name|tick
-parameter_list|)
-function_decl|;
 comment|/**    * Returns the overall capacity in terms of {@link Resource} assigned to this    * plan (typically will correspond to the absolute capacity of the    * corresponding queue).    *     * @return the overall capacity in terms of {@link Resource} assigned to this    *         plan    */
 DECL|method|getTotalCapacity ()
 name|Resource
@@ -148,12 +173,65 @@ name|long
 name|getEarliestStartTime
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the time (UTC in ms) at which the last reservation terminates    *     * @return the time (UTC in ms) at which the last reservation terminates    */
+comment|/**    * Returns the time (UTC in ms) at which the last reservation terminates    *    * @return the time (UTC in ms) at which the last reservation terminates    */
 DECL|method|getLastEndTime ()
 specifier|public
 name|long
 name|getLastEndTime
 parameter_list|()
+function_decl|;
+comment|/**    * This method returns the amount of resources available to a given user    * (optionally if removing a certain reservation) over the start-end time    * range.    *    * @param user    * @param oldId    * @param start    * @param end    * @return a view of the plan as it is available to this user    * @throws PlanningException    */
+DECL|method|getAvailableResourceOverTime (String user, ReservationId oldId, long start, long end)
+specifier|public
+name|RLESparseResourceAllocation
+name|getAvailableResourceOverTime
+parameter_list|(
+name|String
+name|user
+parameter_list|,
+name|ReservationId
+name|oldId
+parameter_list|,
+name|long
+name|start
+parameter_list|,
+name|long
+name|end
+parameter_list|)
+throws|throws
+name|PlanningException
+function_decl|;
+comment|/**    * This method returns a RLE encoded view of the user reservation count    * utilization between start and end time.    *    * @param user    * @param start    * @param end    * @return RLE encoded view of reservation used over time    */
+DECL|method|getReservationCountForUserOverTime ( String user, long start, long end)
+specifier|public
+name|RLESparseResourceAllocation
+name|getReservationCountForUserOverTime
+parameter_list|(
+name|String
+name|user
+parameter_list|,
+name|long
+name|start
+parameter_list|,
+name|long
+name|end
+parameter_list|)
+function_decl|;
+comment|/**    * This method returns a RLE encoded view of the user reservation utilization    * between start and end time.    *    * @param user    * @param start    * @param end    * @return RLE encoded view of resources used over time    */
+DECL|method|getConsumptionForUserOverTime (String user, long start, long end)
+specifier|public
+name|RLESparseResourceAllocation
+name|getConsumptionForUserOverTime
+parameter_list|(
+name|String
+name|user
+parameter_list|,
+name|long
+name|start
+parameter_list|,
+name|long
+name|end
+parameter_list|)
 function_decl|;
 block|}
 end_interface

@@ -68,6 +68,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ReservationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ReservationRequest
 import|;
 end_import
@@ -231,7 +249,7 @@ block|}
 comment|// computeJobAllocation()
 annotation|@
 name|Override
-DECL|method|computeStageAllocation ( Plan plan, Map<Long, Resource> planLoads, RLESparseResourceAllocation planModifications, ReservationRequest rr, long stageEarliestStart, long stageDeadline)
+DECL|method|computeStageAllocation ( Plan plan, Map<Long, Resource> planLoads, RLESparseResourceAllocation planModifications, ReservationRequest rr, long stageEarliestStart, long stageDeadline, String user, ReservationId oldId)
 specifier|public
 name|Map
 argument_list|<
@@ -263,6 +281,12 @@ name|stageEarliestStart
 parameter_list|,
 name|long
 name|stageDeadline
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|ReservationId
+name|oldId
 parameter_list|)
 block|{
 comment|// Initialize
@@ -625,6 +649,26 @@ argument_list|,
 name|remainingGangs
 argument_list|)
 decl_stmt|;
+name|numGangsToAllocate
+operator|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|numGangsToAllocate
+argument_list|,
+name|bestDurationInterval
+operator|.
+name|numCanFit
+argument_list|(
+name|gang
+argument_list|,
+name|capacity
+argument_list|,
+name|resCalc
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Add it
 name|remainingGangs
 operator|-=
@@ -1489,6 +1533,56 @@ name|cost
 operator|=
 name|value
 expr_stmt|;
+block|}
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" start: "
+operator|+
+name|startTime
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" end: "
+operator|+
+name|endTime
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" cost: "
+operator|+
+name|cost
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" maxLoad: "
+operator|+
+name|maxLoad
+argument_list|)
+expr_stmt|;
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
+return|;
 block|}
 block|}
 block|}

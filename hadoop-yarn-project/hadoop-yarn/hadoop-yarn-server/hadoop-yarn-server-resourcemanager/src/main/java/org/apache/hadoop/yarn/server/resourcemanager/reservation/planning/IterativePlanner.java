@@ -268,6 +268,28 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|reservation
+operator|.
+name|exceptions
+operator|.
+name|PlanningException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|resource
@@ -372,7 +394,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeJobAllocation (Plan plan, ReservationId reservationId, ReservationDefinition reservation)
+DECL|method|computeJobAllocation (Plan plan, ReservationId reservationId, ReservationDefinition reservation, String user)
 specifier|public
 name|RLESparseResourceAllocation
 name|computeJobAllocation
@@ -385,9 +407,12 @@ name|reservationId
 parameter_list|,
 name|ReservationDefinition
 name|reservation
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
-name|ContractValidationException
+name|PlanningException
 block|{
 comment|// Initialize
 name|initialize
@@ -613,6 +638,10 @@ argument_list|,
 name|stageArrivalTime
 argument_list|,
 name|stageDeadline
+argument_list|,
+name|user
+argument_list|,
+name|reservationId
 argument_list|)
 decl_stmt|;
 comment|// If we did not find an allocation, return NULL
@@ -648,9 +677,6 @@ init|=
 name|findEarliestTime
 argument_list|(
 name|curAlloc
-operator|.
-name|keySet
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|Long
@@ -659,9 +685,6 @@ init|=
 name|findLatestTime
 argument_list|(
 name|curAlloc
-operator|.
-name|keySet
-argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// If we did find an allocation for the stage, add it
@@ -1180,7 +1203,7 @@ argument_list|)
 return|;
 block|}
 comment|// Call algStageAllocator
-DECL|method|computeStageAllocation ( Plan plan, ReservationRequest rr, long stageArrivalTime, long stageDeadline)
+DECL|method|computeStageAllocation ( Plan plan, ReservationRequest rr, long stageArrivalTime, long stageDeadline, String user, ReservationId oldId)
 specifier|protected
 name|Map
 argument_list|<
@@ -1201,7 +1224,15 @@ name|stageArrivalTime
 parameter_list|,
 name|long
 name|stageDeadline
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|ReservationId
+name|oldId
 parameter_list|)
+throws|throws
+name|PlanningException
 block|{
 return|return
 name|algStageAllocator
@@ -1219,6 +1250,10 @@ argument_list|,
 name|stageArrivalTime
 argument_list|,
 name|stageDeadline
+argument_list|,
+name|user
+argument_list|,
+name|oldId
 argument_list|)
 return|;
 block|}

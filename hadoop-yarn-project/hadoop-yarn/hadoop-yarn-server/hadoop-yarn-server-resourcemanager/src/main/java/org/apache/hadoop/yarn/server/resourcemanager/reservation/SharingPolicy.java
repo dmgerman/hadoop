@@ -64,6 +64,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ReservationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -93,7 +111,7 @@ specifier|public
 interface|interface
 name|SharingPolicy
 block|{
-comment|/**    * Initialize this policy    *     * @param planQueuePath the name of the queue for this plan    * @param conf the system configuration    */
+comment|/**    * Initialize this policy.    *     * @param planQueuePath the name of the queue for this plan    * @param conf the system configuration    */
 DECL|method|init (String planQueuePath, ReservationSchedulerConfiguration conf)
 specifier|public
 name|void
@@ -117,6 +135,33 @@ name|plan
 parameter_list|,
 name|ReservationAllocation
 name|newAllocation
+parameter_list|)
+throws|throws
+name|PlanningException
+function_decl|;
+comment|/**    * This method provide a (partial) instantaneous validation by applying    * business rules (such as max number of parallel containers allowed for a    * user). To provide the agent with more feedback the returned parameter is    * expressed in number of containers that can be fit in this time according to    * the business rules.    *    * @param available the amount of resources that would be offered if not    *          constrained by the policy    * @param plan reference the the current Plan    * @param user the username    * @param start the start time for the range we are querying    * @param end the end time for the range we are querying    * @param oldId (optional) the id of a reservation being updated    * @throws PlanningException throws if the request is not valid    */
+DECL|method|availableResources ( RLESparseResourceAllocation available, Plan plan, String user, ReservationId oldId, long start, long end)
+specifier|public
+name|RLESparseResourceAllocation
+name|availableResources
+parameter_list|(
+name|RLESparseResourceAllocation
+name|available
+parameter_list|,
+name|Plan
+name|plan
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|ReservationId
+name|oldId
+parameter_list|,
+name|long
+name|start
+parameter_list|,
+name|long
+name|end
 parameter_list|)
 throws|throws
 name|PlanningException
