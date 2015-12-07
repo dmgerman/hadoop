@@ -2062,7 +2062,16 @@ name|authUgi
 argument_list|,
 name|client
 argument_list|,
-name|resURI
+name|constructResURI
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|,
+name|getTimelineServiceAddress
+argument_list|()
+argument_list|,
+literal|false
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3482,7 +3491,16 @@ argument_list|()
 operator|+
 literal|" with timeline server "
 operator|+
-name|resURI
+name|constructResURI
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|,
+name|getTimelineServiceAddress
+argument_list|()
+argument_list|,
+literal|false
+argument_list|)
 operator|+
 literal|" and writer "
 operator|+
