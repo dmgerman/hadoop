@@ -691,6 +691,42 @@ block|}
 block|}
 annotation|@
 name|Test
+DECL|method|testPostIncompleteEntities ()
+specifier|public
+name|void
+name|testPostIncompleteEntities
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+try|try
+block|{
+name|client
+operator|.
+name|putEntities
+argument_list|(
+operator|new
+name|TimelineEntity
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Exception should have been thrown"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnException
+name|e
+parameter_list|)
+block|{     }
+block|}
+annotation|@
+name|Test
 DECL|method|testPostEntitiesNoResponse ()
 specifier|public
 name|void

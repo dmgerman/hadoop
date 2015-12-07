@@ -1485,6 +1485,16 @@ return|;
 block|}
 catch|catch
 parameter_list|(
+name|BadRequestException
+name|bre
+parameter_list|)
+block|{
+throw|throw
+name|bre
+throw|;
+block|}
+catch|catch
+parameter_list|(
 name|Exception
 name|e
 parameter_list|)

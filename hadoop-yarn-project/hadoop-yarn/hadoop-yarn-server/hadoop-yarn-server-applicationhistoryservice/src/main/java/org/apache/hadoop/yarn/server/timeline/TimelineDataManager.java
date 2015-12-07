@@ -370,6 +370,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|BadRequestException
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -1549,6 +1565,33 @@ argument_list|(
 name|DEFAULT_DOMAIN_ID
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|entity
+operator|.
+name|getEntityId
+argument_list|()
+operator|==
+literal|null
+operator|||
+name|entity
+operator|.
+name|getEntityType
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|BadRequestException
+argument_list|(
+literal|"Incomplete entity without entity"
+operator|+
+literal|" id/type"
+argument_list|)
+throw|;
 block|}
 comment|// check if there is existing entity
 name|TimelineEntity
