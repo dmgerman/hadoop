@@ -54,6 +54,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -114,7 +132,12 @@ specifier|private
 name|YarnApplicationAttemptState
 name|state
 decl_stmt|;
-DECL|method|AppAttemptFinishedEvent ( ApplicationAttemptId appAttemptId, String trackingUrl, String originalTrackingUrl, String diagnosticsInfo, FinalApplicationStatus appStatus, YarnApplicationAttemptState state, long finishedTime)
+DECL|field|masterContainerId
+specifier|private
+name|ContainerId
+name|masterContainerId
+decl_stmt|;
+DECL|method|AppAttemptFinishedEvent ( ApplicationAttemptId appAttemptId, String trackingUrl, String originalTrackingUrl, String diagnosticsInfo, FinalApplicationStatus appStatus, YarnApplicationAttemptState state, long finishedTime, ContainerId masterContainerId)
 specifier|public
 name|AppAttemptFinishedEvent
 parameter_list|(
@@ -138,6 +161,9 @@ name|state
 parameter_list|,
 name|long
 name|finishedTime
+parameter_list|,
+name|ContainerId
+name|masterContainerId
 parameter_list|)
 block|{
 name|super
@@ -185,6 +211,12 @@ operator|.
 name|state
 operator|=
 name|state
+expr_stmt|;
+name|this
+operator|.
+name|masterContainerId
+operator|=
+name|masterContainerId
 expr_stmt|;
 block|}
 annotation|@
@@ -263,6 +295,16 @@ parameter_list|()
 block|{
 return|return
 name|state
+return|;
+block|}
+DECL|method|getMasterContainerId ()
+specifier|public
+name|ContainerId
+name|getMasterContainerId
+parameter_list|()
+block|{
+return|return
+name|masterContainerId
 return|;
 block|}
 block|}
