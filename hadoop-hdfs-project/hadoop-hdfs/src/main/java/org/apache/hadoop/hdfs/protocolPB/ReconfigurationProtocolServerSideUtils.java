@@ -149,6 +149,7 @@ end_comment
 begin_class
 DECL|class|ReconfigurationProtocolServerSideUtils
 specifier|public
+specifier|final
 class|class
 name|ReconfigurationProtocolServerSideUtils
 block|{

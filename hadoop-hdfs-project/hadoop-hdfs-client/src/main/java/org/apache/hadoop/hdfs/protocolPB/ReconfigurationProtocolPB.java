@@ -108,6 +108,10 @@ name|ReconfigurationProtocolService
 import|;
 end_import
 
+begin_comment
+comment|/**  * Protocol that clients use to communicate with the NN/DN to do  * reconfiguration on the fly.  *  * Note: This extends the protocolbuffer service based interface to  * add annotations required for security.  */
+end_comment
+
 begin_interface
 annotation|@
 name|KerberosInfo
@@ -137,7 +141,6 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-comment|/**  * Protocol that clients use to communicate with the NN/DN to do  * reconfiguration on the fly.  *  * Note: This extends the protocolbuffer service based interface to  * add annotations required for security.  */
 DECL|interface|ReconfigurationProtocolPB
 specifier|public
 interface|interface

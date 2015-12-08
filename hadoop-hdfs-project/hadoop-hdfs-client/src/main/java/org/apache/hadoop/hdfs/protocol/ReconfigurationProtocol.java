@@ -98,9 +98,9 @@ specifier|public
 interface|interface
 name|ReconfigurationProtocol
 block|{
-DECL|field|versionID
+DECL|field|VERSIONID
 name|long
-name|versionID
+name|VERSIONID
 init|=
 literal|1L
 decl_stmt|;

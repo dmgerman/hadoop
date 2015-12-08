@@ -133,6 +133,7 @@ end_comment
 begin_class
 DECL|class|ReconfigurationProtocolUtils
 specifier|public
+specifier|final
 class|class
 name|ReconfigurationProtocolUtils
 block|{
