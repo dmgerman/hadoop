@@ -3671,15 +3671,6 @@ name|FinalApplicationStatus
 name|getFinalApplicationStatus
 parameter_list|()
 block|{
-name|this
-operator|.
-name|readLock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 comment|// finish state is obtained based on the state machine's current state
 comment|// as a fall-back in case the application has not been unregistered
 comment|// ( or if the app never unregistered itself )
@@ -3716,17 +3707,6 @@ name|getCurrentState
 argument_list|()
 argument_list|)
 return|;
-block|}
-finally|finally
-block|{
-name|this
-operator|.
-name|readLock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override
