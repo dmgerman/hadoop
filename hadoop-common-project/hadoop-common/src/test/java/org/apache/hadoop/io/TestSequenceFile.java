@@ -880,6 +880,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|writeTest (FileSystem fs, int count, int seed, Path file, CompressionType compressionType, CompressionCodec codec)
 specifier|private
 name|void
@@ -1023,6 +1028,11 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|readTest (FileSystem fs, int count, int seed, Path file)
 specifier|private
 name|void
@@ -1494,6 +1504,11 @@ literal|" debug"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|checkSort (FileSystem fs, int count, int seed, Path file)
 specifier|private
 name|void
@@ -1780,6 +1795,11 @@ literal|" records"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|mergeTest (FileSystem fs, int count, int seed, Path file, CompressionType compressionType, boolean fast, int factor, int megabytes)
 specifier|private
 name|void
@@ -2764,6 +2784,11 @@ literal|"Successfully tested SequenceFile with metadata"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|readMetadata (FileSystem fs, Path file)
 specifier|private
 name|SequenceFile
@@ -2828,6 +2853,11 @@ return|return
 name|meta
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|writeMetadataTest (FileSystem fs, int count, int seed, Path file, CompressionType compressionType, CompressionCodec codec, SequenceFile.Metadata metadata)
 specifier|private
 name|void
@@ -3081,6 +3111,11 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Test
 DECL|method|testClose ()
@@ -3442,6 +3477,11 @@ expr_stmt|;
 block|}
 comment|/**    * Test that makes sure the FileSystem passed to createWriter    * @throws Exception    */
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Test
 DECL|method|testCreateUsesFsArg ()
 specifier|public
@@ -3593,6 +3633,11 @@ name|closed
 return|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Test
 DECL|method|testCloseForErroneousSequenceFile ()
@@ -3875,6 +3920,11 @@ block|}
 block|}
 comment|/**    * Test that makes sure createWriter succeeds on a file that was     * already created    * @throws IOException    */
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Test
 DECL|method|testCreateWriterOnExistingFile ()
 specifier|public
@@ -3973,6 +4023,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Test
 DECL|method|testRecursiveSeqFileCreate ()
@@ -4494,7 +4549,7 @@ decl_stmt|;
 name|String
 name|usage
 init|=
-literal|"Usage: SequenceFile "
+literal|"Usage: testsequencefile "
 operator|+
 literal|"[-count N] "
 operator|+
@@ -5150,11 +5205,19 @@ block|}
 block|}
 finally|finally
 block|{
+if|if
+condition|(
+name|fs
+operator|!=
+literal|null
+condition|)
+block|{
 name|fs
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
