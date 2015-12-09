@@ -1291,6 +1291,13 @@ specifier|private
 name|Thread
 name|statusUpdater
 decl_stmt|;
+DECL|field|failedToConnect
+specifier|private
+name|boolean
+name|failedToConnect
+init|=
+literal|false
+decl_stmt|;
 DECL|field|rmIdentifier
 specifier|private
 name|long
@@ -1864,6 +1871,9 @@ name|context
 operator|.
 name|getDecommissioned
 argument_list|()
+operator|&&
+operator|!
+name|failedToConnect
 condition|)
 block|{
 name|unRegisterNM
@@ -4773,6 +4783,11 @@ operator|.
 name|SHUTDOWN
 argument_list|)
 argument_list|)
+expr_stmt|;
+comment|// failed to connect to RM.
+name|failedToConnect
+operator|=
+literal|true
 expr_stmt|;
 throw|throw
 operator|new
