@@ -2982,7 +2982,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// set up the context for "/logs/" if "hadoop.log.dir" property is defined.
+comment|// set up the context for "/logs/" if "hadoop.log.dir" property is defined
+comment|// and it's enabled.
 name|String
 name|logDir
 init|=
@@ -2993,11 +2994,29 @@ argument_list|(
 literal|"hadoop.log.dir"
 argument_list|)
 decl_stmt|;
+name|boolean
+name|logsEnabled
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_HTTP_LOGS_ENABLED
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_HTTP_LOGS_ENABLED_DEFAULT
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|logDir
 operator|!=
 literal|null
+operator|&&
+name|logsEnabled
 condition|)
 block|{
 name|Context
