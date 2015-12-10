@@ -5385,6 +5385,26 @@ name|YARN_PREFIX
 operator|+
 literal|"timeline-service."
 decl_stmt|;
+DECL|field|TIMELINE_SERVICE_VERSION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_VERSION
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"version"
+decl_stmt|;
+DECL|field|DEFAULT_TIMELINE_SERVICE_VERSION
+specifier|public
+specifier|static
+specifier|final
+name|float
+name|DEFAULT_TIMELINE_SERVICE_VERSION
+init|=
+literal|1.0f
+decl_stmt|;
 comment|/**    * Comma seperated list of names for UIs hosted in the timeline server    * (For pluggable UIs).    */
 DECL|field|TIMELINE_SERVICE_UI_NAMES
 specifier|public
