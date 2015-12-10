@@ -295,6 +295,37 @@ block|}
 annotation|@
 name|Override
 comment|//ReplicaInfo
+DECL|method|isUnlinked ()
+specifier|public
+name|boolean
+name|isUnlinked
+parameter_list|()
+block|{
+return|return
+name|original
+operator|.
+name|isUnlinked
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|//ReplicaInfo
+DECL|method|setUnlinked ()
+specifier|public
+name|void
+name|setUnlinked
+parameter_list|()
+block|{
+name|original
+operator|.
+name|setUnlinked
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+comment|//ReplicaInfo
 DECL|method|getState ()
 specifier|public
 name|ReplicaState

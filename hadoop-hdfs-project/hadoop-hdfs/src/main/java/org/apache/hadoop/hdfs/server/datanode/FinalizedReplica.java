@@ -98,6 +98,12 @@ name|FinalizedReplica
 extends|extends
 name|ReplicaInfo
 block|{
+DECL|field|unlinked
+specifier|private
+name|boolean
+name|unlinked
+decl_stmt|;
+comment|// copy-on-write done for block
 comment|/**    * Constructor    * @param blockId block id    * @param len replica length    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
 DECL|method|FinalizedReplica (long blockId, long len, long genStamp, FsVolumeSpi vol, File dir)
 specifier|public
@@ -172,6 +178,15 @@ argument_list|(
 name|from
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|unlinked
+operator|=
+name|from
+operator|.
+name|isUnlinked
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -187,6 +202,33 @@ name|ReplicaState
 operator|.
 name|FINALIZED
 return|;
+block|}
+annotation|@
+name|Override
+comment|// ReplicaInfo
+DECL|method|isUnlinked ()
+specifier|public
+name|boolean
+name|isUnlinked
+parameter_list|()
+block|{
+return|return
+name|unlinked
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ReplicaInfo
+DECL|method|setUnlinked ()
+specifier|public
+name|void
+name|setUnlinked
+parameter_list|()
+block|{
+name|unlinked
+operator|=
+literal|true
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -265,6 +307,10 @@ name|super
 operator|.
 name|toString
 argument_list|()
+operator|+
+literal|"\n  unlinked          ="
+operator|+
+name|unlinked
 return|;
 block|}
 block|}
