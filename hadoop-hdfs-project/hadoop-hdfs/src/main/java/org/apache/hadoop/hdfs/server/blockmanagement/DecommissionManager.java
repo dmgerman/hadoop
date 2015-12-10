@@ -2175,14 +2175,15 @@ block|{
 comment|// Orphan block, will be invalidated eventually. Skip.
 continue|continue;
 block|}
+specifier|final
 name|BlockCollection
 name|bc
 init|=
-name|namesystem
+name|blockManager
 operator|.
 name|getBlockCollection
 argument_list|(
-name|bcId
+name|block
 argument_list|)
 decl_stmt|;
 specifier|final

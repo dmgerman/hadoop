@@ -6645,7 +6645,7 @@ argument_list|)
 decl_stmt|;
 name|bc
 operator|=
-name|bm
+name|fsn
 operator|.
 name|getBlockCollection
 argument_list|(
@@ -10243,7 +10243,7 @@ argument_list|)
 decl_stmt|;
 name|bc
 operator|=
-name|bm
+name|fsn
 operator|.
 name|getBlockCollection
 argument_list|(
@@ -11681,7 +11681,7 @@ argument_list|)
 decl_stmt|;
 name|bc
 operator|=
-name|bm
+name|fsn
 operator|.
 name|getBlockCollection
 argument_list|(

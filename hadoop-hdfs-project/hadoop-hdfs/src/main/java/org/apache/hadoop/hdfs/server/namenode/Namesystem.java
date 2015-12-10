@@ -90,24 +90,6 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
 name|BlockCollection
 import|;
 end_import
@@ -281,12 +263,12 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|isInSnapshot (BlockInfo blockUC)
+DECL|method|isInSnapshot (long blockCollectionID)
 name|boolean
 name|isInSnapshot
 parameter_list|(
-name|BlockInfo
-name|blockUC
+name|long
+name|blockCollectionID
 parameter_list|)
 function_decl|;
 DECL|method|getCacheManager ()

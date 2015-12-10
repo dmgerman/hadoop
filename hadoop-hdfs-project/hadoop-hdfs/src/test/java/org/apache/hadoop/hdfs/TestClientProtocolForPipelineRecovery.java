@@ -156,6 +156,26 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
+name|BlockUCState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|datanode
 operator|.
 name|DataNode
@@ -428,7 +448,11 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"is not under Construction"
+literal|"not "
+operator|+
+name|BlockUCState
+operator|.
+name|UNDER_CONSTRUCTION
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -11826,6 +11826,9 @@ operator|.
 name|isInSnapshot
 argument_list|(
 name|storedBlock
+operator|.
+name|getBlockCollectionId
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -19020,7 +19023,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|getBlockCollection (BlockInfo b)
-specifier|public
 name|BlockCollection
 name|getBlockCollection
 parameter_list|(
