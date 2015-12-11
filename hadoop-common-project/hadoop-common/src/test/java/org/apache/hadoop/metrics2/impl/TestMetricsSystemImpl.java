@@ -2967,6 +2967,13 @@ argument_list|)
 operator|.
 name|add
 argument_list|(
+literal|"*.queue.capacity"
+argument_list|,
+literal|2
+argument_list|)
+operator|.
+name|add
+argument_list|(
 literal|"test.sink.test.class"
 argument_list|,
 name|TestSink
