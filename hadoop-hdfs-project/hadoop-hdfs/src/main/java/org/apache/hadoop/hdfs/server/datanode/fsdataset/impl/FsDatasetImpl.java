@@ -3337,12 +3337,11 @@ name|storageType
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Removes a set of volumes from FsDataset.    * @param volumesToRemove a set of absolute root path of each volume.    * @param clearFailure set true to clear failure information.    *    * DataNode should call this function before calling    * {@link DataStorage#removeVolumes(java.util.Collection)}.    */
+comment|/**    * Removes a set of volumes from FsDataset.    * @param volumesToRemove a set of absolute root path of each volume.    * @param clearFailure set true to clear failure information.    */
 annotation|@
 name|Override
-DECL|method|removeVolumes ( Set<File> volumesToRemove, boolean clearFailure)
+DECL|method|removeVolumes (Set<File> volumesToRemove, boolean clearFailure)
 specifier|public
-specifier|synchronized
 name|void
 name|removeVolumes
 parameter_list|(
@@ -3388,6 +3387,38 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|ReplicaInfo
+argument_list|>
+argument_list|>
+name|blkToInvalidate
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|storageToRemove
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 for|for
 control|(
 name|int
@@ -3471,9 +3502,9 @@ argument_list|,
 name|clearFailure
 argument_list|)
 expr_stmt|;
-comment|// Removed all replica information for the blocks on the volume. Unlike
-comment|// updating the volumeMap in addVolume(), this operation does not scan
-comment|// disks.
+comment|// Removed all replica information for the blocks on the volume.
+comment|// Unlike updating the volumeMap in addVolume(), this operation does
+comment|// not scan disks.
 for|for
 control|(
 name|String
@@ -3485,6 +3516,17 @@ name|getBlockPoolList
 argument_list|()
 control|)
 block|{
+name|List
+argument_list|<
+name|ReplicaInfo
+argument_list|>
+name|blocks
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|Iterator
@@ -3547,10 +3589,10 @@ name|absRoot
 argument_list|)
 condition|)
 block|{
-name|invalidate
+name|blocks
+operator|.
+name|add
 argument_list|(
-name|bpid
-argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
@@ -3561,10 +3603,19 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-block|}
-name|storageMap
+name|blkToInvalidate
 operator|.
-name|remove
+name|put
+argument_list|(
+name|bpid
+argument_list|,
+name|blocks
+argument_list|)
+expr_stmt|;
+block|}
+name|storageToRemove
+operator|.
+name|add
 argument_list|(
 name|sd
 operator|.
@@ -3577,6 +3628,87 @@ block|}
 name|setupAsyncLazyPersistThreads
 argument_list|()
 expr_stmt|;
+block|}
+comment|// Call this outside the lock.
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|ReplicaInfo
+argument_list|>
+argument_list|>
+name|entry
+range|:
+name|blkToInvalidate
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|String
+name|bpid
+init|=
+name|entry
+operator|.
+name|getKey
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|ReplicaInfo
+argument_list|>
+name|blocks
+init|=
+name|entry
+operator|.
+name|getValue
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|ReplicaInfo
+name|block
+range|:
+name|blocks
+control|)
+block|{
+name|invalidate
+argument_list|(
+name|bpid
+argument_list|,
+name|block
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+for|for
+control|(
+name|String
+name|storageUuid
+range|:
+name|storageToRemove
+control|)
+block|{
+name|storageMap
+operator|.
+name|remove
+argument_list|(
+name|storageUuid
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|getStorageTypeFromLocations ( Collection<StorageLocation> dataLocations, File dir)
 specifier|private
@@ -10578,18 +10710,6 @@ parameter_list|)
 block|{
 comment|// If a DFSClient has the replica in its cache of short-circuit file
 comment|// descriptors (and the client is using ShortCircuitShm), invalidate it.
-comment|// The short-circuit registry is null in the unit tests, because the
-comment|// datanode is mock object.
-if|if
-condition|(
-name|datanode
-operator|.
-name|getShortCircuitRegistry
-argument_list|()
-operator|!=
-literal|null
-condition|)
-block|{
 name|datanode
 operator|.
 name|getShortCircuitRegistry
@@ -10622,7 +10742,6 @@ name|getBlockId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|datanode
 operator|.
 name|notifyNamenodeDeletedBlock
