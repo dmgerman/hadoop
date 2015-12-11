@@ -1189,8 +1189,11 @@ block|{
 if|if
 condition|(
 name|nmAuxService
-operator|==
+operator|.
+name|equals
+argument_list|(
 name|TIMELINE_AUX_SERVICE_NAME
+argument_list|)
 condition|)
 block|{
 name|enableTimelineAuxService

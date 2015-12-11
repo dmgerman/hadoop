@@ -1229,6 +1229,18 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+comment|// enable new timeline service
+name|conf
+operator|.
+name|setFloat
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_VERSION
+argument_list|,
+literal|2.0f
+argument_list|)
+expr_stmt|;
 name|conf
 operator|.
 name|setBoolean
@@ -1236,18 +1248,6 @@ argument_list|(
 name|MRJobConfig
 operator|.
 name|MAPREDUCE_JOB_EMIT_TIMELINE_DATA
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-comment|// enable new timeline serivce in MR side
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|MRJobConfig
-operator|.
-name|MAPREDUCE_JOB_NEW_TIMELINE_SERVICE_ENABLED
 argument_list|,
 literal|true
 argument_list|)

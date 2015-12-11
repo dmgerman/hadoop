@@ -3191,14 +3191,32 @@ name|message
 argument_list|)
 return|;
 block|}
+name|boolean
+name|timelineV2Enabled
+init|=
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|timelineV2Enabled
+condition|)
+block|{
 comment|// Check& update collectors info from request.
-comment|// TODO make sure it won't have race condition issue for AM failed over case
-comment|// that the older registration could possible override the newer one.
+comment|// TODO make sure it won't have race condition issue for AM failed over
+comment|// case that the older registration could possible override the newer
+comment|// one.
 name|updateAppCollectorsMap
 argument_list|(
 name|request
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Heartbeat response
 name|NodeHeartbeatResponse
 name|nodeHeartBeatResponse
@@ -3280,9 +3298,6 @@ name|systemCredentials
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Return collectors' map that NM needs to know
-comment|// TODO we should optimize this to only include collector info that NM
-comment|// doesn't know yet.
 name|List
 argument_list|<
 name|ApplicationId
@@ -3296,11 +3311,16 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|timelineV2Enabled
+operator|&&
 name|keepAliveApps
 operator|!=
 literal|null
 condition|)
 block|{
+comment|// Return collectors' map that NM needs to know
+comment|// TODO we should optimize this to only include collector info that NM
+comment|// doesn't know yet.
 name|setAppCollectorsMapToResponse
 argument_list|(
 name|keepAliveApps

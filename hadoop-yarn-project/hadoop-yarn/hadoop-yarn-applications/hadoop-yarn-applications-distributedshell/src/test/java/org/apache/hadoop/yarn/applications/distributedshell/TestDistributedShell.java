@@ -1355,11 +1355,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// mark if we need to launch the v1 timeline server
-name|boolean
-name|enableATSServer
-init|=
-literal|true
-decl_stmt|;
 comment|// disable aux-service based timeline aggregators
 name|conf
 operator|.
@@ -1370,6 +1365,17 @@ operator|.
 name|NM_AUX_SERVICES
 argument_list|,
 literal|""
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|SYSTEM_METRICS_PUBLISHER_ENABLED
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1505,17 +1511,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|SYSTEM_METRICS_PUBLISHER_ENABLED
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 comment|// ATS version specific settings
 if|if
 condition|(
@@ -1639,10 +1634,6 @@ literal|2.0f
 condition|)
 block|{
 comment|// disable v1 timeline server since we no longer have a server here
-name|enableATSServer
-operator|=
-literal|false
-expr_stmt|;
 comment|// enable aux-service based timeline aggregators
 name|conf
 operator|.
@@ -2299,28 +2290,9 @@ operator|==
 literal|2.0f
 condition|)
 block|{
-name|String
-index|[]
-name|timelineArgs
-init|=
-block|{
-literal|"--timeline_service_version"
-block|,
-literal|"v2"
-block|}
-decl_stmt|;
 name|isTestingTimelineV2
 operator|=
 literal|true
-expr_stmt|;
-name|args
-operator|=
-name|mergeArgs
-argument_list|(
-name|args
-argument_list|,
-name|timelineArgs
-argument_list|)
 expr_stmt|;
 if|if
 condition|(

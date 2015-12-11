@@ -442,7 +442,7 @@ argument_list|>
 name|getSystemCredentialsForApps
 parameter_list|()
 function_decl|;
-comment|/**    * Get the registered collectors that located on this NM.    * @return registered    */
+comment|/**    * Get the registered collectors that located on this NM.    * @return registered collectors, or null if the timeline service v.2 is not    * enabled    */
 DECL|method|getRegisteredCollectors ()
 name|Map
 argument_list|<

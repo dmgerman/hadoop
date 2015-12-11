@@ -2583,12 +2583,23 @@ name|message
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
 comment|// Start timeline collector for the submitted app
 name|application
 operator|.
 name|startTimelineCollector
 argument_list|()
 expr_stmt|;
+block|}
 comment|// Inform the ACLs Manager
 name|this
 operator|.

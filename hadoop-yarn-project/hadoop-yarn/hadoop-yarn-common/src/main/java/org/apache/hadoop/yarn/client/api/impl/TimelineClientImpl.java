@@ -2325,6 +2325,20 @@ name|IOException
 throws|,
 name|YarnException
 block|{
+if|if
+condition|(
+operator|!
+name|timelineServiceV2
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"v.2 method is invoked on a v.1.x client"
+argument_list|)
+throw|;
+block|}
 name|org
 operator|.
 name|apache

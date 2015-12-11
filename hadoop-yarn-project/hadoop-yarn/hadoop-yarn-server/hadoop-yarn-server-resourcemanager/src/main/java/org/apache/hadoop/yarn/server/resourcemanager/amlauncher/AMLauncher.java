@@ -1553,6 +1553,16 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
 comment|// Set flow context info
 for|for
 control|(
@@ -1606,6 +1616,7 @@ argument_list|,
 name|tag
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|Credentials
 name|credentials

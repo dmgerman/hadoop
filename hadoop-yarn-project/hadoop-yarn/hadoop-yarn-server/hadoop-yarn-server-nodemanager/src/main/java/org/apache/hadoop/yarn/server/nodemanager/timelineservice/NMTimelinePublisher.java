@@ -356,22 +356,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|event
 operator|.
 name|AsyncDispatcher
@@ -684,6 +668,10 @@ name|TimelineUtils
 import|;
 end_import
 
+begin_comment
+comment|/**  * Metrics publisher service that publishes data to the timeline service v.2. It  * is used only if the timeline service v.2 is enabled and the system publishing  * of events and metrics is enabled.  */
+end_comment
+
 begin_class
 DECL|class|NMTimelinePublisher
 specifier|public
@@ -712,11 +700,6 @@ DECL|field|dispatcher
 specifier|private
 name|Dispatcher
 name|dispatcher
-decl_stmt|;
-DECL|field|publishSystemMetrics
-specifier|private
-name|boolean
-name|publishSystemMetrics
 decl_stmt|;
 DECL|field|context
 specifier|private
@@ -770,20 +753,6 @@ name|conf
 parameter_list|)
 throws|throws
 name|Exception
-block|{
-name|publishSystemMetrics
-operator|=
-name|YarnConfiguration
-operator|.
-name|systemMetricsPublisherEnabled
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|publishSystemMetrics
-condition|)
 block|{
 name|dispatcher
 operator|=
@@ -848,24 +817,6 @@ argument_list|(
 name|dispatcher
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"YARN system metrics publishing service is enabled"
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"YARN system metrics publishing service is not enabled"
-argument_list|)
-expr_stmt|;
-block|}
 name|super
 operator|.
 name|serviceInit
@@ -1004,9 +955,6 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|publishSystemMetrics
-operator|&&
-operator|(
 name|pmemUsage
 operator|!=
 name|ResourceCalculatorProcessTree
@@ -1018,7 +966,6 @@ operator|!=
 name|ResourceCalculatorProcessTree
 operator|.
 name|UNAVAILABLE
-operator|)
 condition|)
 block|{
 name|ContainerEntity
@@ -1635,14 +1582,6 @@ name|ApplicationEvent
 name|event
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|publishSystemMetrics
-condition|)
-block|{
-return|return;
-block|}
 comment|// publish only when the desired event is received
 switch|switch
 condition|(
@@ -1711,14 +1650,6 @@ name|ContainerEvent
 name|event
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|publishSystemMetrics
-condition|)
-block|{
-return|return;
-block|}
 comment|// publish only when the desired event is received
 switch|switch
 condition|(
@@ -1778,14 +1709,6 @@ name|LocalizationEvent
 name|event
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|publishSystemMetrics
-condition|)
-block|{
-return|return;
-block|}
 comment|// publish only when the desired event is received
 switch|switch
 condition|(

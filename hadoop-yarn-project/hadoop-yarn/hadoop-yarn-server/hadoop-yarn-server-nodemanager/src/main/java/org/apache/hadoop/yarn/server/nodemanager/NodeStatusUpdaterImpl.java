@@ -5302,7 +5302,7 @@ if|if
 condition|(
 name|YarnConfiguration
 operator|.
-name|systemMetricsPublisherEnabled
+name|timelineServiceV2Enabled
 argument_list|(
 name|context
 operator|.
@@ -5413,7 +5413,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**        * Caller should take care of sending non null nodelabels for both        * arguments        *         * @param nodeLabelsNew        * @param nodeLabelsOld        * @return if the New node labels are diff from the older one.        */
+comment|/**        * Caller should take care of sending non null nodelabels for both        * arguments        *        * @param nodeLabelsNew        * @param nodeLabelsOld        * @return if the New node labels are diff from the older one.        */
 specifier|private
 name|boolean
 name|areNodeLabelsUpdated
@@ -5468,6 +5468,36 @@ name|NodeHeartbeatResponse
 name|response
 parameter_list|)
 block|{
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|String
+argument_list|>
+name|knownCollectorsMap
+init|=
+name|response
+operator|.
+name|getAppCollectorsMap
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|knownCollectorsMap
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"the collectors map is null"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|Set
 argument_list|<
 name|Map
@@ -5481,10 +5511,7 @@ argument_list|>
 argument_list|>
 name|rmKnownCollectors
 init|=
-name|response
-operator|.
-name|getAppCollectorsMap
-argument_list|()
+name|knownCollectorsMap
 operator|.
 name|entrySet
 argument_list|()
@@ -5535,6 +5562,8 @@ argument_list|(
 name|appId
 argument_list|)
 decl_stmt|;
+comment|// TODO this logic could be problematic if the collector address
+comment|// gets updated due to NM restart or collector service failure
 if|if
 condition|(
 name|application
@@ -5585,6 +5614,13 @@ operator|.
 name|getTimelineClient
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|client
+operator|!=
+literal|null
+condition|)
+block|{
 name|client
 operator|.
 name|setTimelineServiceAddress
@@ -5592,6 +5628,8 @@ argument_list|(
 name|collectorAddr
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 block|}

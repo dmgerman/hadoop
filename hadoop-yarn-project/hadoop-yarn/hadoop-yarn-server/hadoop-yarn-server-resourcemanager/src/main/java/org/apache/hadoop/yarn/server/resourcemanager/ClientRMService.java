@@ -4648,6 +4648,17 @@ name|ie
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+condition|)
+block|{
 comment|// Sanity check for flow run
 name|String
 name|value
@@ -4770,6 +4781,7 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
+block|}
 block|}
 comment|// Check whether app has already been put into rmContext,
 comment|// If it is, simply return the response

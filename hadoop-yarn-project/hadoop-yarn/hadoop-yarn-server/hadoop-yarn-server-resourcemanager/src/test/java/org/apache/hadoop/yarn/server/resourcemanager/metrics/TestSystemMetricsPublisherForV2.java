@@ -1048,6 +1048,17 @@ argument_list|)
 expr_stmt|;
 name|conf
 operator|.
+name|setFloat
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_VERSION
+argument_list|,
+literal|2.0f
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
 name|setBoolean
 argument_list|(
 name|YarnConfiguration

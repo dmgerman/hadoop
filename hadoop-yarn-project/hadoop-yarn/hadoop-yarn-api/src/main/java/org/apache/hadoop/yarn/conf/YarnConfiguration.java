@@ -381,6 +381,24 @@ argument_list|)
 block|}
 argument_list|)
 expr_stmt|;
+name|Configuration
+operator|.
+name|addDeprecations
+argument_list|(
+operator|new
+name|DeprecationDelta
+index|[]
+block|{
+operator|new
+name|DeprecationDelta
+argument_list|(
+name|RM_SYSTEM_METRICS_PUBLISHER_ENABLED
+argument_list|,
+name|SYSTEM_METRICS_PUBLISHER_ENABLED
+argument_list|)
+block|}
+argument_list|)
+expr_stmt|;
 block|}
 comment|//Configurations
 DECL|field|YARN_PREFIX
@@ -1873,7 +1891,7 @@ name|DEFAULT_RM_HISTORY_WRITER_MULTI_THREADED_DISPATCHER_POOL_SIZE
 init|=
 literal|10
 decl_stmt|;
-comment|/**    *  The setting that controls whether yarn system metrics is published on the    *  timeline server or not by RM. This configuration setting is for ATS V1    */
+comment|/**    *  The setting that controls whether yarn system metrics is published on the    *  timeline server or not by RM. This configuration setting is for ATS V1.    *  This is now deprecated in favor of SYSTEM_METRICS_PUBLISHER_ENABLED.    */
 DECL|field|RM_SYSTEM_METRICS_PUBLISHER_ENABLED
 specifier|public
 specifier|static
@@ -9670,11 +9688,13 @@ return|return
 name|clusterId
 return|;
 block|}
-DECL|method|systemMetricsPublisherEnabled (Configuration conf)
+comment|// helper methods for timeline service configuration
+comment|/**    * Returns whether the timeline service is enabled via configuration.    *    * @param conf the configuration    * @return whether the timeline service is enabled.    */
+DECL|method|timelineServiceEnabled (Configuration conf)
 specifier|public
 specifier|static
 name|boolean
-name|systemMetricsPublisherEnabled
+name|timelineServiceEnabled
 parameter_list|(
 name|Configuration
 name|conf
@@ -9693,7 +9713,70 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_TIMELINE_SERVICE_ENABLED
 argument_list|)
+return|;
+block|}
+comment|/**    * Returns the timeline service version. It does not check whether the    * timeline service itself is enabled.    *    * @param conf the configuration    * @return the timeline service version as a float.    */
+DECL|method|getTimelineServiceVersion (Configuration conf)
+specifier|public
+specifier|static
+name|float
+name|getTimelineServiceVersion
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getFloat
+argument_list|(
+name|TIMELINE_SERVICE_VERSION
+argument_list|,
+name|DEFAULT_TIMELINE_SERVICE_VERSION
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns whether the timeline service v.2 is enabled via configuration.    *    * @param conf the configuration    * @return whether the timeline service v.2 is enabled. V.2 refers to a    * version greater than equal to 2 but smaller than 3.    */
+DECL|method|timelineServiceV2Enabled (Configuration conf)
+specifier|public
+specifier|static
+name|boolean
+name|timelineServiceV2Enabled
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|timelineServiceEnabled
+argument_list|(
+name|conf
+argument_list|)
 operator|&&
+operator|(
+name|int
+operator|)
+name|getTimelineServiceVersion
+argument_list|(
+name|conf
+argument_list|)
+operator|==
+literal|2
+return|;
+block|}
+comment|/**    * Returns whether the system publisher is enabled.    *    * @param conf the configuration    * @return whether the system publisher is enabled.    */
+DECL|method|systemMetricsPublisherEnabled (Configuration conf)
+specifier|public
+specifier|static
+name|boolean
+name|systemMetricsPublisherEnabled
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
 name|conf
 operator|.
 name|getBoolean

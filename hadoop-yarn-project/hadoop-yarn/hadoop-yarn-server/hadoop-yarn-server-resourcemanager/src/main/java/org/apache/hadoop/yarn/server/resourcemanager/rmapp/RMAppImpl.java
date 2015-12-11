@@ -5900,6 +5900,18 @@ name|RMAppEvent
 name|event
 parameter_list|)
 block|{
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|app
+operator|.
+name|conf
+argument_list|)
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -5933,6 +5945,7 @@ argument_list|)
 expr_stmt|;
 comment|// TODO persistent to RMStateStore for recover
 comment|// Save to RMStateStore
+block|}
 block|}
 empty_stmt|;
 block|}

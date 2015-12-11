@@ -402,6 +402,10 @@ name|Application
 import|;
 end_import
 
+begin_comment
+comment|/**  * Service that handles collector information. It is used only if the timeline  * service v.2 is enabled.  */
+end_comment
+
 begin_class
 DECL|class|NMCollectorService
 specifier|public
@@ -725,19 +729,6 @@ name|collectorAddr
 argument_list|)
 expr_stmt|;
 comment|// set registered collector address to TimelineClient.
-if|if
-condition|(
-name|YarnConfiguration
-operator|.
-name|systemMetricsPublisherEnabled
-argument_list|(
-name|context
-operator|.
-name|getConf
-argument_list|()
-argument_list|)
-condition|)
-block|{
 name|TimelineClient
 name|client
 init|=
@@ -754,6 +745,13 @@ operator|.
 name|getTimelineClient
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|client
+operator|!=
+literal|null
+condition|)
+block|{
 name|client
 operator|.
 name|setTimelineServiceAddress

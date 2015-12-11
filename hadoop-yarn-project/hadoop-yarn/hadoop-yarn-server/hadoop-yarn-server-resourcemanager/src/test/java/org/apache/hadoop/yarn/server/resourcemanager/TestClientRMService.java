@@ -5527,6 +5527,15 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+name|rmService
+operator|.
+name|init
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// without name and queue
 name|SubmitApplicationRequest
 name|submitRequest1
@@ -6094,6 +6103,15 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+name|rmService
+operator|.
+name|init
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Initialize appnames and queues
 name|String
 index|[]
@@ -7219,6 +7237,15 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+name|rmService
+operator|.
+name|init
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// submit an app and wait for it to block while in app submission
 name|Thread
 name|t

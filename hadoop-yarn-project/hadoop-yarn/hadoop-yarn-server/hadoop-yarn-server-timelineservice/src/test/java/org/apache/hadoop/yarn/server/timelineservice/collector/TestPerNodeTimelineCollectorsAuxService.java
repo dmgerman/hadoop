@@ -416,6 +416,11 @@ specifier|private
 name|PerNodeTimelineCollectorsAuxService
 name|auxService
 decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
 DECL|method|TestPerNodeTimelineCollectorsAuxService ()
 specifier|public
 name|TestPerNodeTimelineCollectorsAuxService
@@ -445,6 +450,35 @@ argument_list|(
 name|appId
 argument_list|,
 literal|1
+argument_list|)
+expr_stmt|;
+name|conf
+operator|=
+operator|new
+name|YarnConfiguration
+argument_list|()
+expr_stmt|;
+comment|// enable timeline service v.2
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setFloat
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_VERSION
+argument_list|,
+literal|2.0f
 argument_list|)
 expr_stmt|;
 block|}
@@ -842,6 +876,8 @@ index|]
 argument_list|,
 name|createCollectorManager
 argument_list|()
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -968,9 +1004,7 @@ name|auxService
 operator|.
 name|init
 argument_list|(
-operator|new
-name|YarnConfiguration
-argument_list|()
+name|conf
 argument_list|)
 expr_stmt|;
 name|auxService

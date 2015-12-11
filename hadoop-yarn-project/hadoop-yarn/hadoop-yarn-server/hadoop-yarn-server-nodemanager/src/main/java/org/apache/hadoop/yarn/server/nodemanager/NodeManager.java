@@ -1105,6 +1105,7 @@ specifier|private
 name|ContainerManagerImpl
 name|containerManager
 decl_stmt|;
+comment|// the NM collector service is set only if the timeline service v.2 is enabled
 DECL|field|nmCollectorService
 specifier|private
 name|NMCollectorService
@@ -2517,6 +2518,16 @@ argument_list|(
 literal|"NodeManager"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
 name|this
 operator|.
 name|nmCollectorService
@@ -2531,6 +2542,7 @@ argument_list|(
 name|nmCollectorService
 argument_list|)
 expr_stmt|;
+block|}
 comment|// StatusUpdater should be added last so that it get started last
 comment|// so that we make sure everything is up before registering with RM.
 name|addService
@@ -2918,15 +2930,6 @@ argument_list|,
 name|String
 argument_list|>
 name|registeredCollectors
-init|=
-operator|new
-name|ConcurrentHashMap
-argument_list|<
-name|ApplicationId
-argument_list|,
-name|String
-argument_list|>
-argument_list|()
 decl_stmt|;
 specifier|protected
 specifier|final
@@ -3090,6 +3093,26 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
+name|this
+operator|.
+name|registeredCollectors
+operator|=
+operator|new
+name|ConcurrentHashMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|containerTokenSecretManager
@@ -4037,7 +4060,9 @@ operator|.
 name|context
 return|;
 block|}
-comment|// For testing
+comment|/**    * Returns the NM collector service. It should be used only for testing    * purposes.    *    * @return the NM collector service, or null if the timeline service v.2 is    * not enabled    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getNMCollectorService ()
 name|NMCollectorService
 name|getNMCollectorService
@@ -4084,6 +4109,11 @@ argument_list|,
 name|LOG
 argument_list|)
 expr_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"resource"
+argument_list|)
 name|NodeManager
 name|nodeManager
 init|=
