@@ -1127,16 +1127,6 @@ init|=
 literal|"hadoop.security.dns.nameserver"
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
-DECL|field|HADOOP_TOKEN_FILES
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|HADOOP_TOKEN_FILES
-init|=
-literal|"hadoop.token.files"
-decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN
 specifier|public
 specifier|static
