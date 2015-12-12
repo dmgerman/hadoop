@@ -6145,48 +6145,52 @@ argument_list|()
 operator|-
 name|start
 decl_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-literal|"read timedout too soon"
-argument_list|,
+if|if
+condition|(
 name|delta
-operator|>=
+operator|<
 name|timeout
 operator|*
 literal|0.9
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
 argument_list|(
-literal|"read timedout too late"
-argument_list|,
+literal|"read timedout too soon in "
+operator|+
 name|delta
-operator|<=
+operator|+
+literal|" ms."
+argument_list|,
+name|ste
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|delta
+operator|>
 name|timeout
 operator|*
 literal|1.1
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Throwable
-name|t
-parameter_list|)
+condition|)
 block|{
-name|Assert
-operator|.
-name|fail
+throw|throw
+operator|new
+name|IOException
 argument_list|(
-literal|"wrong exception:"
+literal|"read timedout too late in "
 operator|+
-name|t
+name|delta
+operator|+
+literal|" ms."
+argument_list|,
+name|ste
 argument_list|)
-expr_stmt|;
+throw|;
+block|}
 block|}
 block|}
 finally|finally
@@ -6452,56 +6456,52 @@ argument_list|()
 operator|-
 name|start
 decl_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+if|if
+condition|(
+name|delta
+operator|<
+name|timeout
+operator|*
+literal|0.9
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
 argument_list|(
 literal|"write timedout too soon in "
 operator|+
 name|delta
 operator|+
-literal|" ms"
+literal|" ms."
 argument_list|,
+name|ste
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|delta
-operator|>=
+operator|>
 name|timeout
 operator|*
-literal|0.9
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+literal|1.2
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
 argument_list|(
 literal|"write timedout too late in "
 operator|+
 name|delta
 operator|+
-literal|" ms"
+literal|" ms."
 argument_list|,
-name|delta
-operator|<=
-name|timeout
-operator|*
-literal|1.2
+name|ste
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
-catch|catch
-parameter_list|(
-name|Throwable
-name|t
-parameter_list|)
-block|{
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"wrong exception:"
-operator|+
-name|t
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 finally|finally
