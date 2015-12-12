@@ -320,7 +320,9 @@ literal|"Failed to report bad block "
 operator|+
 name|block
 operator|+
-literal|" to namenode: "
+literal|" to namenode."
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}

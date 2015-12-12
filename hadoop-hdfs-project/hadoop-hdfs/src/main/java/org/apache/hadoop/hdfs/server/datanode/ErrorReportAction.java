@@ -192,7 +192,9 @@ name|BPServiceActorActionException
 argument_list|(
 literal|"Error reporting "
 operator|+
-literal|"an error to namenode: "
+literal|"an error to namenode."
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}
