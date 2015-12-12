@@ -1368,7 +1368,7 @@ operator|.
 name|getDecomManager
 argument_list|()
 operator|.
-name|runMonitor
+name|runMonitorForTest
 argument_list|()
 expr_stmt|;
 block|}

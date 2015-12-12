@@ -4159,59 +4159,32 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|auditBuffer
-specifier|private
-specifier|static
-specifier|final
-name|ThreadLocal
-argument_list|<
-name|StringBuilder
-argument_list|>
-name|auditBuffer
-init|=
-operator|new
-name|ThreadLocal
-argument_list|<
-name|StringBuilder
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|protected
-name|StringBuilder
-name|initialValue
-parameter_list|()
-block|{
-return|return
-operator|new
-name|StringBuilder
-argument_list|()
-return|;
-block|}
-block|}
-decl_stmt|;
 DECL|field|blockIdManager
 specifier|private
 specifier|final
 name|BlockIdManager
 name|blockIdManager
 decl_stmt|;
-annotation|@
-name|VisibleForTesting
 DECL|method|isAuditEnabled ()
-specifier|public
 name|boolean
 name|isAuditEnabled
 parameter_list|()
 block|{
 return|return
+operator|(
 operator|!
 name|isDefaultAuditLogger
 operator|||
 name|auditLog
 operator|.
 name|isInfoEnabled
+argument_list|()
+operator|)
+operator|&&
+operator|!
+name|auditLoggers
+operator|.
+name|isEmpty
 argument_list|()
 return|;
 block|}
@@ -4432,6 +4405,15 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
+specifier|final
+name|String
+name|ugiStr
+init|=
+name|ugi
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|AuditLogger
@@ -4461,10 +4443,7 @@ name|logAuditEvent
 argument_list|(
 name|succeeded
 argument_list|,
-name|ugi
-operator|.
-name|toString
-argument_list|()
+name|ugiStr
 argument_list|,
 name|addr
 argument_list|,
@@ -4495,10 +4474,7 @@ name|logAuditEvent
 argument_list|(
 name|succeeded
 argument_list|,
-name|ugi
-operator|.
-name|toString
-argument_list|()
+name|ugiStr
 argument_list|,
 name|addr
 argument_list|,
@@ -5222,17 +5198,8 @@ argument_list|(
 literal|"Required edits directory "
 operator|+
 name|u
-operator|.
-name|toString
-argument_list|()
 operator|+
-literal|" not present in "
-operator|+
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_EDITS_DIR_KEY
-operator|+
-literal|". "
+literal|" not found: "
 operator|+
 name|DFSConfigKeys
 operator|.
@@ -5241,9 +5208,6 @@ operator|+
 literal|"="
 operator|+
 name|editsDirs
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|"; "
 operator|+
@@ -5254,11 +5218,8 @@ operator|+
 literal|"="
 operator|+
 name|requiredEditsDirs
-operator|.
-name|toString
-argument_list|()
 operator|+
-literal|". "
+literal|"; "
 operator|+
 name|DFSConfigKeys
 operator|.
@@ -5267,11 +5228,6 @@ operator|+
 literal|"="
 operator|+
 name|sharedEditsDirs
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|"."
 argument_list|)
 throw|;
 block|}
@@ -5556,36 +5512,15 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|provider
-operator|==
-literal|null
-condition|)
-block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"No KeyProvider found."
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Found KeyProvider: "
+literal|"KeyProvider: "
 operator|+
 name|provider
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|conf
@@ -11474,9 +11409,6 @@ operator|.
 name|append
 argument_list|(
 name|flag
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 operator|.
 name|append
@@ -11496,12 +11428,6 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|supportedVersions
-operator|==
-literal|null
-condition|?
-literal|null
-else|:
 name|Arrays
 operator|.
 name|toString
@@ -13467,7 +13393,60 @@ name|logSync
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|checkLease ( String src, String holder, INode inode, long fileId)
+DECL|method|leaseExceptionString (String src, long fileId, String holder)
+specifier|private
+name|String
+name|leaseExceptionString
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|long
+name|fileId
+parameter_list|,
+name|String
+name|holder
+parameter_list|)
+block|{
+specifier|final
+name|Lease
+name|lease
+init|=
+name|leaseManager
+operator|.
+name|getLease
+argument_list|(
+name|holder
+argument_list|)
+decl_stmt|;
+return|return
+name|src
+operator|+
+literal|" (inode "
+operator|+
+name|fileId
+operator|+
+literal|") "
+operator|+
+operator|(
+name|lease
+operator|!=
+literal|null
+condition|?
+name|lease
+operator|.
+name|toString
+argument_list|()
+else|:
+literal|"Holder "
+operator|+
+name|holder
+operator|+
+literal|" does not have any open files."
+operator|)
+return|;
+block|}
+DECL|method|checkLease (String src, String holder, INode inode, long fileId)
 name|INodeFile
 name|checkLease
 parameter_list|(
@@ -13492,18 +13471,6 @@ assert|assert
 name|hasReadLock
 argument_list|()
 assert|;
-specifier|final
-name|String
-name|ident
-init|=
-name|src
-operator|+
-literal|" (inode "
-operator|+
-name|fileId
-operator|+
-literal|")"
-decl_stmt|;
 if|if
 condition|(
 name|inode
@@ -13511,42 +13478,20 @@ operator|==
 literal|null
 condition|)
 block|{
-name|Lease
-name|lease
-init|=
-name|leaseManager
-operator|.
-name|getLease
-argument_list|(
-name|holder
-argument_list|)
-decl_stmt|;
 throw|throw
 operator|new
 name|FileNotFoundException
 argument_list|(
-literal|"No lease on "
+literal|"File does not exist: "
 operator|+
-name|ident
-operator|+
-literal|": File does not exist. "
-operator|+
-operator|(
-name|lease
-operator|!=
-literal|null
-condition|?
-name|lease
-operator|.
-name|toString
-argument_list|()
-else|:
-literal|"Holder "
-operator|+
+name|leaseExceptionString
+argument_list|(
+name|src
+argument_list|,
+name|fileId
+argument_list|,
 name|holder
-operator|+
-literal|" does not have any open files."
-operator|)
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -13559,42 +13504,20 @@ name|isFile
 argument_list|()
 condition|)
 block|{
-name|Lease
-name|lease
-init|=
-name|leaseManager
-operator|.
-name|getLease
-argument_list|(
-name|holder
-argument_list|)
-decl_stmt|;
 throw|throw
 operator|new
 name|LeaseExpiredException
 argument_list|(
-literal|"No lease on "
+literal|"INode is not a regular file: "
 operator|+
-name|ident
-operator|+
-literal|": INode is not a regular file. "
-operator|+
-operator|(
-name|lease
-operator|!=
-literal|null
-condition|?
-name|lease
-operator|.
-name|toString
-argument_list|()
-else|:
-literal|"Holder "
-operator|+
+name|leaseExceptionString
+argument_list|(
+name|src
+argument_list|,
+name|fileId
+argument_list|,
 name|holder
-operator|+
-literal|" does not have any open files."
-operator|)
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -13616,42 +13539,20 @@ name|isUnderConstruction
 argument_list|()
 condition|)
 block|{
-name|Lease
-name|lease
-init|=
-name|leaseManager
-operator|.
-name|getLease
-argument_list|(
-name|holder
-argument_list|)
-decl_stmt|;
 throw|throw
 operator|new
 name|LeaseExpiredException
 argument_list|(
-literal|"No lease on "
+literal|"File is not open for writing: "
 operator|+
-name|ident
-operator|+
-literal|": File is not open for writing. "
-operator|+
-operator|(
-name|lease
-operator|!=
-literal|null
-condition|?
-name|lease
-operator|.
-name|toString
-argument_list|()
-else|:
-literal|"Holder "
-operator|+
+name|leaseExceptionString
+argument_list|(
+name|src
+argument_list|,
+name|fileId
+argument_list|,
 name|holder
-operator|+
-literal|" does not have any open files."
-operator|)
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -13670,12 +13571,22 @@ throw|throw
 operator|new
 name|FileNotFoundException
 argument_list|(
+literal|"File is deleted: "
+operator|+
+name|leaseExceptionString
+argument_list|(
 name|src
+argument_list|,
+name|fileId
+argument_list|,
+name|holder
+argument_list|)
 argument_list|)
 throw|;
 block|}
+specifier|final
 name|String
-name|clientName
+name|owner
 init|=
 name|file
 operator|.
@@ -13692,7 +13603,7 @@ operator|!=
 literal|null
 operator|&&
 operator|!
-name|clientName
+name|owner
 operator|.
 name|equals
 argument_list|(
@@ -13704,17 +13615,24 @@ throw|throw
 operator|new
 name|LeaseExpiredException
 argument_list|(
-literal|"Lease mismatch on "
-operator|+
-name|ident
-operator|+
-literal|" owned by "
-operator|+
-name|clientName
-operator|+
-literal|" but is accessed by "
+literal|"Client (="
 operator|+
 name|holder
+operator|+
+literal|") is not the lease owner (="
+operator|+
+name|owner
+operator|+
+literal|": "
+operator|+
+name|leaseExceptionString
+argument_list|(
+name|src
+argument_list|,
+name|fileId
+argument_list|,
+name|holder
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -28792,6 +28710,7 @@ name|logSync
 argument_list|()
 expr_stmt|;
 block|}
+specifier|final
 name|String
 name|idStr
 init|=
@@ -28800,9 +28719,6 @@ operator|+
 name|directive
 operator|.
 name|getId
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 operator|+
 literal|"}"
@@ -31075,6 +30991,38 @@ name|DefaultAuditLogger
 extends|extends
 name|HdfsAuditLogger
 block|{
+DECL|field|STRING_BUILDER
+specifier|private
+specifier|static
+specifier|final
+name|ThreadLocal
+argument_list|<
+name|StringBuilder
+argument_list|>
+name|STRING_BUILDER
+init|=
+operator|new
+name|ThreadLocal
+argument_list|<
+name|StringBuilder
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|protected
+name|StringBuilder
+name|initialValue
+parameter_list|()
+block|{
+return|return
+operator|new
+name|StringBuilder
+argument_list|()
+return|;
+block|}
+block|}
+decl_stmt|;
 DECL|field|isCallerContextEnabled
 specifier|private
 name|boolean
@@ -31254,7 +31202,7 @@ specifier|final
 name|StringBuilder
 name|sb
 init|=
-name|auditBuffer
+name|STRING_BUILDER
 operator|.
 name|get
 argument_list|()

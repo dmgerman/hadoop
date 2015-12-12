@@ -404,6 +404,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|namenode
+operator|.
+name|LeaseExpiredException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|NamenodeProtocols
@@ -1118,8 +1136,7 @@ argument_list|(
 literal|"Close finished."
 argument_list|)
 expr_stmt|;
-comment|// We expect that close will get a "File is not open"
-comment|// error.
+comment|// We expect that close will get a "File is not open" error.
 name|Throwable
 name|thrownByClose
 init|=
@@ -1137,25 +1154,18 @@ name|assertTrue
 argument_list|(
 name|thrownByClose
 operator|instanceof
-name|IOException
+name|LeaseExpiredException
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|thrownByClose
+name|GenericTestUtils
 operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
+name|assertExceptionContains
 argument_list|(
-literal|"No lease on /testRecoverFinalized"
-argument_list|)
-condition|)
-throw|throw
+literal|"File is not open for writing"
+argument_list|,
 name|thrownByClose
-throw|;
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -1519,25 +1529,18 @@ name|assertTrue
 argument_list|(
 name|thrownByClose
 operator|instanceof
-name|IOException
+name|LeaseExpiredException
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|thrownByClose
+name|GenericTestUtils
 operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
+name|assertExceptionContains
 argument_list|(
-literal|"Lease mismatch"
-argument_list|)
-condition|)
-throw|throw
+literal|"not the lease owner"
+argument_list|,
 name|thrownByClose
-throw|;
+argument_list|)
+expr_stmt|;
 comment|// The appender should be able to close properly
 name|appenderStream
 operator|.

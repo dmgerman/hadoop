@@ -21,6 +21,38 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+operator|.
+name|checkArgument
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+operator|.
+name|monotonicNow
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -122,18 +154,6 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|Future
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|ScheduledExecutorService
 import|;
 end_import
@@ -147,50 +167,6 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ThreadFactoryBuilder
 import|;
 end_import
 
@@ -339,7 +315,21 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -349,24 +339,22 @@ operator|.
 name|base
 operator|.
 name|Preconditions
-operator|.
-name|checkArgument
 import|;
 end_import
 
 begin_import
-import|import static
-name|org
+import|import
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
 name|util
 operator|.
-name|Time
+name|concurrent
 operator|.
-name|monotonicNow
+name|ThreadFactoryBuilder
 import|;
 end_import
 
@@ -1857,65 +1845,23 @@ expr_stmt|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|StringBuilder
-name|b
-init|=
-operator|new
-name|StringBuilder
-argument_list|(
-literal|"Node {} "
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|isHealthy
-condition|)
-block|{
-name|b
-operator|.
-name|append
-argument_list|(
-literal|"is "
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|b
-operator|.
-name|append
-argument_list|(
-literal|"isn't "
-argument_list|)
-expr_stmt|;
-block|}
-name|b
-operator|.
-name|append
-argument_list|(
-literal|"healthy and still needs to replicate {} more blocks,"
-operator|+
-literal|" decommissioning is still in progress."
-argument_list|)
-expr_stmt|;
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|b
-operator|.
-name|toString
-argument_list|()
+literal|"Node {} {} healthy."
+operator|+
+literal|" It needs to replicate {} more blocks."
+operator|+
+literal|" Decommissioning is still in progress."
 argument_list|,
 name|dn
+argument_list|,
+name|isHealthy
+condition|?
+literal|"is"
+else|:
+literal|"isn't"
 argument_list|,
 name|blocks
 operator|.
@@ -1923,7 +1869,6 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 else|else
@@ -2410,26 +2355,21 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|runMonitor ()
+DECL|method|runMonitorForTest ()
 name|void
-name|runMonitor
+name|runMonitorForTest
 parameter_list|()
 throws|throws
 name|ExecutionException
 throws|,
 name|InterruptedException
 block|{
-name|Future
-name|f
-init|=
 name|executor
 operator|.
 name|submit
 argument_list|(
 name|monitor
 argument_list|)
-decl_stmt|;
-name|f
 operator|.
 name|get
 argument_list|()

@@ -1453,7 +1453,13 @@ init|=
 name|fs
 operator|.
 name|getServerDefaults
-argument_list|()
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+argument_list|)
+argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
@@ -2687,16 +2693,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"No lease on /testfile"
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
-argument_list|(
-literal|"File does not exist."
+literal|"File does not exist"
 argument_list|,
 name|ioe
 argument_list|)
@@ -4702,11 +4699,6 @@ argument_list|()
 operator|+
 literal|"-testFileCreationNonRecursive"
 argument_list|)
-decl_stmt|;
-name|FSDataOutputStream
-name|out
-init|=
-literal|null
 decl_stmt|;
 name|IOException
 name|expectedException

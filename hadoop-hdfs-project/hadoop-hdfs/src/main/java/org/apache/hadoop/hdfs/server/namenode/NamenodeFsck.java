@@ -2280,9 +2280,6 @@ operator|.
 name|println
 argument_list|(
 name|sb
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|sb
@@ -2355,9 +2352,6 @@ operator|.
 name|info
 argument_list|(
 name|sb
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|namenode
@@ -2669,9 +2663,6 @@ operator|.
 name|print
 argument_list|(
 name|storageTypeSummary
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4583,10 +4574,7 @@ name|res
 operator|.
 name|addMissing
 argument_list|(
-name|block
-operator|.
-name|toString
-argument_list|()
+name|blkName
 argument_list|,
 name|block
 operator|.
@@ -5017,9 +5005,6 @@ operator|.
 name|print
 argument_list|(
 name|report
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|"\n"
 argument_list|)
