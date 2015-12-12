@@ -3460,6 +3460,9 @@ argument_list|,
 name|opts
 argument_list|)
 expr_stmt|;
+comment|// SecondaryNameNode can be started in 2 modes:
+comment|// 1. run a command (i.e. checkpoint or geteditsize) then terminate
+comment|// 2. run as a daemon when {@link #parseArgs} yields no commands
 if|if
 condition|(
 name|opts
@@ -3474,6 +3477,7 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// mode 1
 name|int
 name|ret
 init|=
@@ -3490,17 +3494,9 @@ name|ret
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|secondary
-operator|!=
-literal|null
-condition|)
+else|else
 block|{
-comment|// The web server is only needed when starting SNN as a daemon,
-comment|// and not needed if called from shell command. Starting the web server
-comment|// from shell may fail when getting credentials, if the environment
-comment|// is not set up for it, which is most of the case.
+comment|// mode 2
 name|secondary
 operator|.
 name|startInfoServer
