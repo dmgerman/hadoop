@@ -112,7 +112,7 @@ name|ReservationId
 name|reservationID
 parameter_list|)
 function_decl|;
-comment|/**    * Return a set of {@link ReservationAllocation} that belongs to a certain    * user and overlaps time t.    *    * @param user the user being considered    * @param t the instant in time being considered    * @return {@link Set<ReservationAllocation>} for this user at this time    */
+comment|/**    * Return a set of {@link ReservationAllocation} that belongs to a certain    * user and overlaps time t.    *    * @param user the user being considered    * @param t the instant in time being considered    * @return set of active {@link ReservationAllocation}s for this    *         user at this time    */
 DECL|method|getReservationByUserAtTime (String user, long t)
 specifier|public
 name|Set
