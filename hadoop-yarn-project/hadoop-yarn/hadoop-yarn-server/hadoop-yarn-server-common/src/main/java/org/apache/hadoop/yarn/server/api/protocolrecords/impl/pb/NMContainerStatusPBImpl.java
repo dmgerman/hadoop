@@ -330,18 +330,6 @@ name|NMContainerStatus
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|protobuf
-operator|.
-name|TextFormat
-import|;
-end_import
-
 begin_class
 DECL|class|NMContainerStatusPBImpl
 specifier|public
@@ -543,14 +531,143 @@ name|String
 name|toString
 parameter_list|()
 block|{
-return|return
-name|TextFormat
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|sb
 operator|.
-name|shortDebugString
+name|append
 argument_list|(
-name|getProto
+literal|"["
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getContainerId
 argument_list|()
 argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"CreateTime: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getCreationTime
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"State: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getContainerState
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"Capability: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getAllocatedResource
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"Diagnostics: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getDiagnostics
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"ExitStatus: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getContainerExitStatus
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"NodeLabelExpression: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getNodeLabelExpression
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"Priority: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getPriority
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"]"
+argument_list|)
+expr_stmt|;
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 annotation|@
