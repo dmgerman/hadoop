@@ -1161,11 +1161,6 @@ operator|.
 name|Token
 name|token
 decl_stmt|;
-DECL|field|resURI
-specifier|private
-name|URI
-name|resURI
-decl_stmt|;
 DECL|field|authUgi
 specifier|private
 name|UserGroupInformation
@@ -3153,8 +3148,8 @@ throws|throws
 name|Exception
 block|{
 comment|// If the timeline DT to renew is different than cached, replace it.
-comment|// Token to set every time for retry, because when exception happens,
-comment|// DelegationTokenAuthenticatedURL will reset it to null;
+comment|// Token to set every time for retry, because when exception
+comment|// happens, DelegationTokenAuthenticatedURL will reset it to null;
 if|if
 condition|(
 operator|!
@@ -3199,7 +3194,16 @@ name|serviceURI
 init|=
 name|isTokenServiceAddrEmpty
 condition|?
-name|resURI
+name|constructResURI
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|,
+name|getTimelineServiceAddress
+argument_list|()
+argument_list|,
+literal|false
+argument_list|)
 else|:
 operator|new
 name|URI
@@ -3353,9 +3357,10 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// If the timeline DT to cancel is different than cached, replace it.
-comment|// Token to set every time for retry, because when exception happens,
-comment|// DelegationTokenAuthenticatedURL will reset it to null;
+comment|// If the timeline DT to cancel is different than cached, replace
+comment|// it.
+comment|// Token to set every time for retry, because when exception
+comment|// happens, DelegationTokenAuthenticatedURL will reset it to null;
 if|if
 condition|(
 operator|!
@@ -3400,7 +3405,16 @@ name|serviceURI
 init|=
 name|isTokenServiceAddrEmpty
 condition|?
-name|resURI
+name|constructResURI
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|,
+name|getTimelineServiceAddress
+argument_list|()
+argument_list|,
+literal|false
+argument_list|)
 else|:
 operator|new
 name|URI
