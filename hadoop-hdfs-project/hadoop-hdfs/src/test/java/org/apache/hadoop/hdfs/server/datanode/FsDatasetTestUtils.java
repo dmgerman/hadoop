@@ -641,6 +641,28 @@ name|long
 name|getPendingAsyncDeletions
 parameter_list|()
 function_decl|;
+comment|/**    * Verify the existence of the block pool.    *    * @param bpid block pool ID    * @throws IOException if the block pool does not exist.    */
+DECL|method|verifyBlockPoolExists (String bpid)
+name|void
+name|verifyBlockPoolExists
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Verify that the block pool does not exist.    *    * @param bpid block pool ID    * @throws IOException if the block pool does exist.    */
+DECL|method|verifyBlockPoolMissing (String bpid)
+name|void
+name|verifyBlockPoolMissing
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
