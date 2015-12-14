@@ -6491,14 +6491,6 @@ name|getBlockId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// unlink the finalized replica
-name|replicaInfo
-operator|.
-name|unlinkBlock
-argument_list|(
-literal|1
-argument_list|)
-expr_stmt|;
 comment|// construct a RBW replica with the new GS
 name|File
 name|blkfile
@@ -13215,13 +13207,6 @@ operator|>
 name|newlength
 condition|)
 block|{
-name|rur
-operator|.
-name|unlinkBlock
-argument_list|(
-literal|1
-argument_list|)
-expr_stmt|;
 name|truncateBlock
 argument_list|(
 name|blockFile
