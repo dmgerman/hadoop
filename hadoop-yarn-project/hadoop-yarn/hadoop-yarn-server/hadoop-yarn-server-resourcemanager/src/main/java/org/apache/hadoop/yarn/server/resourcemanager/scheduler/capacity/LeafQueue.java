@@ -684,6 +684,28 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|SchedulerApplicationAttempt
+operator|.
+name|AMState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|SchedulerUtils
 import|;
 end_import
@@ -3249,7 +3271,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"application AMResource "
+literal|"application "
+operator|+
+name|application
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|" AMResource "
 operator|+
 name|application
 operator|.
@@ -3344,6 +3373,19 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|application
+operator|.
+name|updateAMContainerDiagnostics
+argument_list|(
+name|AMState
+operator|.
+name|INACTIVATED
+argument_list|,
+name|CSAMContainerLaunchDiagnosticsConstants
+operator|.
+name|QUEUE_AM_RESOURCE_LIMIT_EXCEED
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -3497,6 +3539,19 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|application
+operator|.
+name|updateAMContainerDiagnostics
+argument_list|(
+name|AMState
+operator|.
+name|INACTIVATED
+argument_list|,
+name|CSAMContainerLaunchDiagnosticsConstants
+operator|.
+name|USER_AM_RESOURCE_LIMIT_EXCEED
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -3531,6 +3586,17 @@ operator|.
 name|addSchedulableEntity
 argument_list|(
 name|application
+argument_list|)
+expr_stmt|;
+name|application
+operator|.
+name|updateAMContainerDiagnostics
+argument_list|(
+name|AMState
+operator|.
+name|ACTIVATED
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|queueUsage
@@ -4423,6 +4489,17 @@ name|currentResourceLimits
 argument_list|)
 condition|)
 block|{
+name|application
+operator|.
+name|updateAMContainerDiagnostics
+argument_list|(
+name|AMState
+operator|.
+name|ACTIVATED
+argument_list|,
+literal|"User capacity has reached its maximum limit."
+argument_list|)
+expr_stmt|;
 continue|continue;
 block|}
 comment|// Try to schedule
@@ -4557,12 +4634,21 @@ block|}
 elseif|else
 if|if
 condition|(
-operator|!
 name|assignment
 operator|.
 name|getSkipped
 argument_list|()
 condition|)
+block|{
+name|application
+operator|.
+name|updateNodeInfoForAMDiagnostics
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
+else|else
 block|{
 comment|// If we don't allocate anything, and it is not skipped by application,
 comment|// we will return to respect FIFO of applications

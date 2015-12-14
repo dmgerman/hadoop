@@ -575,6 +575,15 @@ name|long
 name|getFinishTime
 parameter_list|()
 function_decl|;
+comment|/**    * To capture Launch diagnostics of the app.    * @param amLaunchDiagnostics    */
+DECL|method|updateAMLaunchDiagnostics (String amLaunchDiagnostics)
+name|void
+name|updateAMLaunchDiagnostics
+parameter_list|(
+name|String
+name|amLaunchDiagnostics
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

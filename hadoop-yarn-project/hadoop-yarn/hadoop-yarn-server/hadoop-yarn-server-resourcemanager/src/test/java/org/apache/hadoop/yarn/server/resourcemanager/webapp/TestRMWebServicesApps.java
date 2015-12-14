@@ -11774,7 +11774,7 @@ argument_list|)
 expr_stmt|;
 name|WebServicesTestUtils
 operator|.
-name|checkStringMatch
+name|checkStringEqual
 argument_list|(
 literal|"diagnostics"
 argument_list|,

@@ -7082,6 +7082,11 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|String
+name|nodeIdStr
+init|=
+literal|"h1:1234"
+decl_stmt|;
 name|MockNM
 name|nm1
 init|=
@@ -7089,7 +7094,7 @@ name|rm1
 operator|.
 name|registerNode
 argument_list|(
-literal|"h1:1234"
+name|nodeIdStr
 argument_list|,
 literal|8
 operator|*
@@ -7098,6 +7103,9 @@ argument_list|)
 decl_stmt|;
 comment|// label = x
 comment|// launch an app to queue b1 (label = y), AM container should be launched in nm3
+name|RMApp
+name|app
+init|=
 name|rm1
 operator|.
 name|submitApp
@@ -7114,7 +7122,7 @@ literal|null
 argument_list|,
 literal|"b1"
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|CapacityScheduler
 name|cs
 init|=
@@ -7173,6 +7181,54 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Scheduler diagnostics should have reason for not assigning the node"
+argument_list|,
+name|app
+operator|.
+name|getDiagnostics
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|CSAMContainerLaunchDiagnosticsConstants
+operator|.
+name|SKIP_AM_ALLOCATION_IN_IGNORE_EXCLUSIVE_MODE
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Scheduler diagnostics should have last processed node information"
+argument_list|,
+name|app
+operator|.
+name|getDiagnostics
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|CSAMContainerLaunchDiagnosticsConstants
+operator|.
+name|LAST_NODE_PROCESSED_MSG
+operator|+
+name|nodeIdStr
+operator|+
+literal|" ( Partition : [x]"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals

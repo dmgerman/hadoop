@@ -2554,12 +2554,7 @@ condition|(
 name|application
 operator|.
 name|isWaitingForAMContainer
-argument_list|(
-name|application
-operator|.
-name|getApplicationId
 argument_list|()
-argument_list|)
 condition|)
 block|{
 comment|// Allocate is for AM and update AM blacklist for this
