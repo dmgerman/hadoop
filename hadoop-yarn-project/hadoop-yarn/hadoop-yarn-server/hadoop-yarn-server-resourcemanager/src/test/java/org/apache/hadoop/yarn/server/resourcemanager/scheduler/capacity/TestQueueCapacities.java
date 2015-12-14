@@ -228,6 +228,10 @@ block|,
 block|{
 literal|"AbsoluteMaximumCapacity"
 block|}
+block|,
+block|{
+literal|"MaxAMResourcePercentage"
+block|}
 block|}
 argument_list|)
 return|;

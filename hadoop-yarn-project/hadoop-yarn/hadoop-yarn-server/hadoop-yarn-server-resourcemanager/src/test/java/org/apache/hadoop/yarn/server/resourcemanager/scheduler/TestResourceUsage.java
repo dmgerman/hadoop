@@ -218,6 +218,18 @@ block|,
 block|{
 literal|"AMUsed"
 block|}
+block|,
+block|{
+literal|"AMLimit"
+block|}
+block|,
+block|{
+literal|"CachedUsed"
+block|}
+block|,
+block|{
+literal|"CachedPending"
+block|}
 block|}
 argument_list|)
 return|;
@@ -605,6 +617,8 @@ name|res
 argument_list|)
 expr_stmt|;
 comment|// Add 1,1 should returns 1,1
+try|try
+block|{
 name|inc
 argument_list|(
 name|usage
@@ -639,6 +653,16 @@ name|label
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NoSuchMethodException
+name|e
+parameter_list|)
+block|{
+comment|// Few operations need not have to be verified as some resources doesn't
+comment|// inc/dec apis exposed (For Eg: CachedUsed and CachedPending).
+block|}
 comment|// Set 2,2
 name|set
 argument_list|(
@@ -675,6 +699,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// dec 2,2
+try|try
+block|{
 name|dec
 argument_list|(
 name|usage
@@ -709,6 +735,16 @@ name|label
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NoSuchMethodException
+name|e
+parameter_list|)
+block|{
+comment|// Few operations need not have to be verified, as some resources doesn't
+comment|// inc/dec apis exposed (For Eg: CachedUsed and CachedPending).
+block|}
 block|}
 DECL|method|check (int mem, int cpu, Resource res)
 name|void

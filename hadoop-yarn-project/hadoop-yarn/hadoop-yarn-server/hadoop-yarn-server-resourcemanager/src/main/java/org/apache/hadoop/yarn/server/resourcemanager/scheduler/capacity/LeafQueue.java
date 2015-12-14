@@ -3108,6 +3108,15 @@ argument_list|(
 name|amResouceLimit
 argument_list|)
 expr_stmt|;
+name|queueUsage
+operator|.
+name|setAMLimit
+argument_list|(
+name|nodePartition
+argument_list|,
+name|amResouceLimit
+argument_list|)
+expr_stmt|;
 return|return
 name|amResouceLimit
 return|;

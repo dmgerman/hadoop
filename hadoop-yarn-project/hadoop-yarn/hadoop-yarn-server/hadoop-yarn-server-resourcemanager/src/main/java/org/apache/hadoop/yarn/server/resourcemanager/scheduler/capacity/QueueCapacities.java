@@ -1155,6 +1155,23 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/* Absolute Maximum AM resource percentage Getter and Setter */
+DECL|method|getMaxAMResourcePercentage ()
+specifier|public
+name|float
+name|getMaxAMResourcePercentage
+parameter_list|()
+block|{
+return|return
+name|_get
+argument_list|(
+name|NL
+argument_list|,
+name|CapacityType
+operator|.
+name|MAX_AM_PERC
+argument_list|)
+return|;
+block|}
 DECL|method|getMaxAMResourcePercentage (String label)
 specifier|public
 name|float
@@ -1190,6 +1207,27 @@ block|{
 name|_set
 argument_list|(
 name|label
+argument_list|,
+name|CapacityType
+operator|.
+name|MAX_AM_PERC
+argument_list|,
+name|value
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|setMaxAMResourcePercentage (float value)
+specifier|public
+name|void
+name|setMaxAMResourcePercentage
+parameter_list|(
+name|float
+name|value
+parameter_list|)
+block|{
+name|_set
+argument_list|(
+name|NL
 argument_list|,
 name|CapacityType
 operator|.
