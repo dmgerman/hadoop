@@ -249,6 +249,24 @@ operator|=
 name|clock
 expr_stmt|;
 block|}
+DECL|method|AbstractLivelinessMonitor (String name)
+specifier|public
+name|AbstractLivelinessMonitor
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|name
+argument_list|,
+operator|new
+name|MonotonicClock
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|serviceStart ()

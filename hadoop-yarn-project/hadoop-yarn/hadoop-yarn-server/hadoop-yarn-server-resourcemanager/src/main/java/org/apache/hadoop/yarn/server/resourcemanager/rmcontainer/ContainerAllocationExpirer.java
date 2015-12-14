@@ -140,22 +140,6 @@ name|AbstractLivelinessMonitor
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|SystemClock
-import|;
-end_import
-
 begin_class
 annotation|@
 name|SuppressWarnings
@@ -196,10 +180,6 @@ operator|.
 name|class
 operator|.
 name|getName
-argument_list|()
-argument_list|,
-operator|new
-name|SystemClock
 argument_list|()
 argument_list|)
 expr_stmt|;
