@@ -2046,6 +2046,17 @@ name|launchContext
 operator|.
 name|getCommands
 argument_list|()
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|containerLogDirs
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// /////////// End of writing out container-script
@@ -3759,6 +3770,35 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**      * Method to copy files that are useful for debugging container failures.      * This method will be called by ContainerExecutor when setting up the      * container launch script. The method should take care to make sure files      * are read-able by the yarn user if the files are to undergo      * log-aggregation.      * @param src path to the source file      * @param dst path to the destination file - should be absolute      * @throws IOException      */
+DECL|method|copyDebugInformation (Path src, Path dst)
+specifier|public
+specifier|abstract
+name|void
+name|copyDebugInformation
+parameter_list|(
+name|Path
+name|src
+parameter_list|,
+name|Path
+name|dst
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**      * Method to dump debug information to the a target file. This method will      * be called by ContainerExecutor when setting up the container launch      * script.      * @param output the file to which debug information is to be written      * @throws IOException      */
+DECL|method|listDebugInformation (Path output)
+specifier|public
+specifier|abstract
+name|void
+name|listDebugInformation
+parameter_list|(
+name|Path
+name|output
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -4075,6 +4115,174 @@ name|errorCheck
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|copyDebugInformation (Path src, Path dest)
+specifier|public
+name|void
+name|copyDebugInformation
+parameter_list|(
+name|Path
+name|src
+parameter_list|,
+name|Path
+name|dest
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|line
+argument_list|(
+literal|"# Creating copy of launch script"
+argument_list|)
+expr_stmt|;
+name|line
+argument_list|(
+literal|"cp \""
+argument_list|,
+name|src
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+literal|"\" \""
+argument_list|,
+name|dest
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+literal|"\""
+argument_list|)
+expr_stmt|;
+comment|// set permissions to 640 because we need to be able to run
+comment|// log aggregation in secure mode as well
+if|if
+condition|(
+name|dest
+operator|.
+name|isAbsolute
+argument_list|()
+condition|)
+block|{
+name|line
+argument_list|(
+literal|"chmod 640 \""
+argument_list|,
+name|dest
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+literal|"\""
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|listDebugInformation (Path output)
+specifier|public
+name|void
+name|listDebugInformation
+parameter_list|(
+name|Path
+name|output
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|line
+argument_list|(
+literal|"# Determining directory contents"
+argument_list|)
+expr_stmt|;
+name|line
+argument_list|(
+literal|"echo \"ls -l:\" 1>\""
+argument_list|,
+name|output
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"\""
+argument_list|)
+expr_stmt|;
+name|line
+argument_list|(
+literal|"ls -l 1>>\""
+argument_list|,
+name|output
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"\""
+argument_list|)
+expr_stmt|;
+comment|// don't run error check because if there are loops
+comment|// find will exit with an error causing container launch to fail
+comment|// find will follow symlinks outside the work dir if such sylimks exist
+comment|// (like public/app local resources)
+name|line
+argument_list|(
+literal|"echo \"find -L . -maxdepth 5 -ls:\" 1>>\""
+argument_list|,
+name|output
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"\""
+argument_list|)
+expr_stmt|;
+name|line
+argument_list|(
+literal|"find -L . -maxdepth 5 -ls 1>>\""
+argument_list|,
+name|output
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"\""
+argument_list|)
+expr_stmt|;
+name|line
+argument_list|(
+literal|"echo \"broken symlinks(find -L . -maxdepth 5 -type l -ls):\" 1>>\""
+argument_list|,
+name|output
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"\""
+argument_list|)
+expr_stmt|;
+name|line
+argument_list|(
+literal|"find -L . -maxdepth 5 -type l -ls 1>>\""
+argument_list|,
+name|output
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"\""
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|class|WindowsShellScriptBuilder
 specifier|private
@@ -4344,6 +4552,100 @@ argument_list|)
 expr_stmt|;
 name|errorCheck
 argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|copyDebugInformation (Path src, Path dest)
+specifier|public
+name|void
+name|copyDebugInformation
+parameter_list|(
+name|Path
+name|src
+parameter_list|,
+name|Path
+name|dest
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// no need to worry about permissions - in secure mode
+comment|// WindowsSecureContainerExecutor will set permissions
+comment|// to allow NM to read the file
+name|line
+argument_list|(
+literal|"rem Creating copy of launch script"
+argument_list|)
+expr_stmt|;
+name|lineWithLenCheck
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"copy \"%s\" \"%s\""
+argument_list|,
+name|src
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|dest
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|listDebugInformation (Path output)
+specifier|public
+name|void
+name|listDebugInformation
+parameter_list|(
+name|Path
+name|output
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|line
+argument_list|(
+literal|"rem Determining directory contents"
+argument_list|)
+expr_stmt|;
+name|lineWithLenCheck
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"@echo \"dir:\"> \"%s\""
+argument_list|,
+name|output
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|lineWithLenCheck
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"dir>> \"%s\""
+argument_list|,
+name|output
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 block|}
