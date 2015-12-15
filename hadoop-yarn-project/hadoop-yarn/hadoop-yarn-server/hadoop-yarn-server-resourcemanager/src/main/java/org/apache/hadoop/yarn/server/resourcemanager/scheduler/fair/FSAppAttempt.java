@@ -1705,6 +1705,39 @@ name|priority
 argument_list|)
 condition|)
 block|{
+comment|// add the initial time of priority to prevent comparing with FsApp
+comment|// startTime and allowedLocalityLevel degrade
+name|lastScheduledContainer
+operator|.
+name|put
+argument_list|(
+name|priority
+argument_list|,
+name|currentTimeMs
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Init the lastScheduledContainer time, priority: "
+operator|+
+name|priority
+operator|+
+literal|", time: "
+operator|+
+name|currentTimeMs
+argument_list|)
+expr_stmt|;
+block|}
 name|allowedLocalityLevel
 operator|.
 name|put
