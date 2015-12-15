@@ -4494,6 +4494,13 @@ argument_list|(
 name|timeoutValue
 argument_list|)
 expr_stmt|;
+name|mirrorSock
+operator|.
+name|setKeepAlive
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|dnConf
@@ -6830,6 +6837,13 @@ argument_list|(
 name|dnConf
 operator|.
 name|socketTimeout
+argument_list|)
+expr_stmt|;
+name|proxySock
+operator|.
+name|setKeepAlive
+argument_list|(
+literal|true
 argument_list|)
 expr_stmt|;
 name|OutputStream

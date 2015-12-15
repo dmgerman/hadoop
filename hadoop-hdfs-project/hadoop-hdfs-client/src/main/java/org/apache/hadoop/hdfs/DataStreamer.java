@@ -1066,6 +1066,13 @@ argument_list|(
 name|timeout
 argument_list|)
 expr_stmt|;
+name|sock
+operator|.
+name|setKeepAlive
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|conf
