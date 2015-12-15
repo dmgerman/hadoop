@@ -1675,7 +1675,7 @@ return|return
 name|values
 return|;
 block|}
-comment|/**    * Splits a comma separated value<code>String</code>, trimming leading and trailing whitespace on each value.    * Duplicate and empty values are removed.    * @param str a comma separated<String> with values    * @return a<code>Collection</code> of<code>String</code> values    */
+comment|/**    * Splits a comma separated value<code>String</code>, trimming leading and    * trailing whitespace on each value. Duplicate and empty values are removed.    *    * @param str a comma separated<String> with values, may be null    * @return a<code>Collection</code> of<code>String</code> values, empty    *         Collection if null String input    */
 DECL|method|getTrimmedStringCollection (String str)
 specifier|public
 specifier|static
@@ -1723,7 +1723,7 @@ return|return
 name|set
 return|;
 block|}
-comment|/**    * Splits a comma separated value<code>String</code>, trimming leading and trailing whitespace on each value.    * @param str a comma separated<String> with values    * @return an array of<code>String</code> values    */
+comment|/**    * Splits a comma separated value<code>String</code>, trimming leading and    * trailing whitespace on each value.    *    * @param str a comma separated<code>String</code> with values, may be null    * @return an array of<code>String</code> values, empty array if null String    *         input    */
 DECL|method|getTrimmedStrings (String str)
 specifier|public
 specifier|static
