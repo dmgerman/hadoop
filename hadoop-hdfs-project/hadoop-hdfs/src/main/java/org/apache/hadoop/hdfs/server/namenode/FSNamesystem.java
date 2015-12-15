@@ -4671,12 +4671,6 @@ specifier|volatile
 name|boolean
 name|needRollbackFsImage
 decl_stmt|;
-comment|// Block pool ID used by this namenode
-DECL|field|blockPoolId
-specifier|private
-name|String
-name|blockPoolId
-decl_stmt|;
 DECL|field|leaseManager
 specifier|final
 name|LeaseManager
@@ -12665,7 +12659,8 @@ return|return
 operator|new
 name|ExtendedBlock
 argument_list|(
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|,
 name|blk
 argument_list|)
@@ -12679,15 +12674,11 @@ name|String
 name|bpid
 parameter_list|)
 block|{
-name|blockPoolId
-operator|=
-name|bpid
-expr_stmt|;
 name|blockManager
 operator|.
 name|setBlockPoolId
 argument_list|(
-name|blockPoolId
+name|bpid
 argument_list|)
 expr_stmt|;
 block|}
@@ -17542,7 +17533,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * The given node has reported in.  This method should:    * 1) Record the heartbeat, so the datanode isn't timed out    * 2) Adjust usage stats for future block allocation    *     * If a substantial amount of time passed since the last datanode     * heartbeat then request an immediate block report.      *     * @return an array of datanode commands     * @throws IOException    */
+comment|/**    * The given node has reported in.  This method should:    * 1) Record the heartbeat, so the datanode isn't timed out    * 2) Adjust usage stats for future block allocation    *    * If a substantial amount of time passed since the last datanode    * heartbeat then request an immediate block report.    *    * @return an array of datanode commands    * @throws IOException    */
 DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int xmitsInProgress, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease)
 name|HeartbeatResponse
 name|handleHeartbeat
@@ -17610,7 +17601,8 @@ name|nodeReg
 argument_list|,
 name|reports
 argument_list|,
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|,
 name|cacheCapacity
 argument_list|,
@@ -25213,7 +25205,11 @@ name|getBlockPoolId
 parameter_list|()
 block|{
 return|return
-name|blockPoolId
+name|getBlockManager
+argument_list|()
+operator|.
+name|getBlockPoolId
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -27923,7 +27919,8 @@ operator|=
 operator|new
 name|RollingUpgradeInfo
 argument_list|(
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|,
 name|createdRollbackImages
 argument_list|,

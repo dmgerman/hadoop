@@ -1356,6 +1356,7 @@ expr_stmt|;
 block|}
 DECL|method|needKeyUpdate ()
 specifier|public
+specifier|synchronized
 name|boolean
 name|needKeyUpdate
 parameter_list|()
@@ -1366,6 +1367,7 @@ return|;
 block|}
 DECL|method|setNeedKeyUpdate (boolean needKeyUpdate)
 specifier|public
+specifier|synchronized
 name|void
 name|setNeedKeyUpdate
 parameter_list|(
@@ -3718,6 +3720,7 @@ block|}
 comment|/**    * @return balancer bandwidth in bytes per second for this datanode    */
 DECL|method|getBalancerBandwidth ()
 specifier|public
+specifier|synchronized
 name|long
 name|getBalancerBandwidth
 parameter_list|()
@@ -3731,6 +3734,7 @@ block|}
 comment|/**    * @param bandwidth balancer bandwidth in bytes per second for this datanode    */
 DECL|method|setBalancerBandwidth (long bandwidth)
 specifier|public
+specifier|synchronized
 name|void
 name|setBalancerBandwidth
 parameter_list|(

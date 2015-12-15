@@ -1401,6 +1401,12 @@ specifier|final
 name|BlockTokenSecretManager
 name|blockTokenSecretManager
 decl_stmt|;
+comment|// Block pool ID used by this namenode
+DECL|field|blockPoolId
+specifier|private
+name|String
+name|blockPoolId
+decl_stmt|;
 DECL|field|pendingDNMessages
 specifier|private
 specifier|final
@@ -2745,6 +2751,12 @@ name|String
 name|blockPoolId
 parameter_list|)
 block|{
+name|this
+operator|.
+name|blockPoolId
+operator|=
+name|blockPoolId
+expr_stmt|;
 if|if
 condition|(
 name|isBlockTokenEnabled
@@ -2759,6 +2771,16 @@ name|blockPoolId
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|getBlockPoolId ()
+specifier|public
+name|String
+name|getBlockPoolId
+parameter_list|()
+block|{
+return|return
+name|blockPoolId
+return|;
 block|}
 DECL|method|getStoragePolicySuite ()
 specifier|public
@@ -6526,33 +6548,6 @@ argument_list|)
 else|:
 name|storedBlock
 return|;
-block|}
-comment|/**    * Remove all block invalidation tasks under this datanode UUID;    * used when a datanode registers with a new UUID and the old one    * is wiped.    */
-DECL|method|removeFromInvalidates (final DatanodeInfo datanode)
-name|void
-name|removeFromInvalidates
-parameter_list|(
-specifier|final
-name|DatanodeInfo
-name|datanode
-parameter_list|)
-block|{
-if|if
-condition|(
-operator|!
-name|isPopulatingReplQueues
-argument_list|()
-condition|)
-block|{
-return|return;
-block|}
-name|invalidateBlocks
-operator|.
-name|remove
-argument_list|(
-name|datanode
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Mark the block belonging to datanode as corrupt    * @param blk Block to be marked as corrupt    * @param dn Datanode which holds the corrupt replica    * @param storageID if known, null otherwise.    * @param reason a textual reason why the block should be marked corrupt,    * for logging purposes    */
 DECL|method|findAndMarkBlockAsCorrupt (final ExtendedBlock blk, final DatanodeInfo dn, String storageID, String reason)
