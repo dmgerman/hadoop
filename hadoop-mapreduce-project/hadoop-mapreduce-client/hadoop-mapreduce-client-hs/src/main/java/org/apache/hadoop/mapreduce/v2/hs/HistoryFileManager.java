@@ -1406,6 +1406,28 @@ argument_list|()
 operator|-
 name|maxAge
 decl_stmt|;
+comment|// MAPREDUCE-6436: In order to reduce the number of logs written
+comment|// in case of a lot of move pending histories.
+name|JobId
+name|firstInIntermediateKey
+init|=
+literal|null
+decl_stmt|;
+name|int
+name|inIntermediateCount
+init|=
+literal|0
+decl_stmt|;
+name|JobId
+name|firstMoveFailedKey
+init|=
+literal|null
+decl_stmt|;
+name|int
+name|moveFailedCount
+init|=
+literal|0
+decl_stmt|;
 while|while
 condition|(
 name|cache
@@ -1513,17 +1535,50 @@ block|}
 block|}
 else|else
 block|{
-name|LOG
+if|if
+condition|(
+name|firstValue
 operator|.
-name|warn
-argument_list|(
-literal|"Waiting to remove "
-operator|+
+name|didMoveFail
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|moveFailedCount
+operator|==
+literal|0
+condition|)
+block|{
+name|firstMoveFailedKey
+operator|=
 name|key
-operator|+
-literal|" from JobListCache because it is not in done yet."
-argument_list|)
 expr_stmt|;
+block|}
+name|moveFailedCount
+operator|+=
+literal|1
+expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|inIntermediateCount
+operator|==
+literal|0
+condition|)
+block|{
+name|firstInIntermediateKey
+operator|=
+name|key
+expr_stmt|;
+block|}
+name|inIntermediateCount
+operator|+=
+literal|1
+expr_stmt|;
+block|}
 block|}
 block|}
 else|else
@@ -1538,6 +1593,62 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
+comment|// Log output only for first jobhisotry in pendings to restrict
+comment|// the total number of logs.
+if|if
+condition|(
+name|inIntermediateCount
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Waiting to remove IN_INTERMEDIATE state histories "
+operator|+
+literal|"(e.g. "
+operator|+
+name|firstInIntermediateKey
+operator|+
+literal|") from JobListCache "
+operator|+
+literal|"because it is not in done yet. Total count is "
+operator|+
+name|inIntermediateCount
+operator|+
+literal|"."
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|moveFailedCount
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Waiting to remove MOVE_FAILED state histories "
+operator|+
+literal|"(e.g. "
+operator|+
+name|firstMoveFailedKey
+operator|+
+literal|") from JobListCache "
+operator|+
+literal|"because it is not in done yet. Total count is "
+operator|+
+name|moveFailedCount
+operator|+
+literal|"."
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 return|return
