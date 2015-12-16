@@ -472,26 +472,6 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedContainerChangeRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|SchedulerUtils
 import|;
 end_import
@@ -918,7 +898,6 @@ annotation|@
 name|Override
 DECL|method|getAbsoluteUsedCapacity ()
 specifier|public
-specifier|synchronized
 name|float
 name|getAbsoluteUsedCapacity
 parameter_list|()
@@ -977,7 +956,6 @@ return|;
 block|}
 DECL|method|getNumContainers ()
 specifier|public
-specifier|synchronized
 name|int
 name|getNumContainers
 parameter_list|()
@@ -1136,7 +1114,6 @@ annotation|@
 name|Override
 DECL|method|setAbsoluteUsedCapacity (float absUsedCapacity)
 specifier|public
-specifier|synchronized
 name|void
 name|setAbsoluteUsedCapacity
 parameter_list|(

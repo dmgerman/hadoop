@@ -1015,17 +1015,6 @@ operator|.
 name|none
 argument_list|()
 decl_stmt|;
-comment|// absolute capacity as a resource (based on cluster resource)
-DECL|field|absoluteCapacityResource
-specifier|private
-name|Resource
-name|absoluteCapacityResource
-init|=
-name|Resources
-operator|.
-name|none
-argument_list|()
-decl_stmt|;
 DECL|field|queueResourceLimitsInfo
 specifier|private
 specifier|final
@@ -1178,11 +1167,6 @@ operator|.
 name|lastClusterResource
 operator|=
 name|clusterResource
-expr_stmt|;
-name|updateAbsoluteCapacityResource
-argument_list|(
-name|clusterResource
-argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -1978,17 +1962,6 @@ argument_list|)
 operator|.
 name|getActiveApplications
 argument_list|()
-return|;
-block|}
-DECL|method|getNumContainers ()
-specifier|public
-specifier|synchronized
-name|int
-name|getNumContainers
-parameter_list|()
-block|{
-return|return
-name|numContainers
 return|;
 block|}
 annotation|@
@@ -6378,43 +6351,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|updateAbsoluteCapacityResource (Resource clusterResource)
-specifier|private
-name|void
-name|updateAbsoluteCapacityResource
-parameter_list|(
-name|Resource
-name|clusterResource
-parameter_list|)
-block|{
-name|absoluteCapacityResource
-operator|=
-name|Resources
-operator|.
-name|multiplyAndNormalizeUp
-argument_list|(
-name|resourceCalculator
-argument_list|,
-name|labelManager
-operator|.
-name|getResourceByLabel
-argument_list|(
-name|RMNodeLabelsManager
-operator|.
-name|NO_LABEL
-argument_list|,
-name|clusterResource
-argument_list|)
-argument_list|,
-name|queueCapacities
-operator|.
-name|getAbsoluteCapacity
-argument_list|()
-argument_list|,
-name|minimumAllocation
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|updateCurrentResourceLimits ( ResourceLimits currentResourceLimits, Resource clusterResource)
 specifier|private
 name|void
@@ -6526,11 +6462,6 @@ expr_stmt|;
 name|lastClusterResource
 operator|=
 name|clusterResource
-expr_stmt|;
-name|updateAbsoluteCapacityResource
-argument_list|(
-name|clusterResource
-argument_list|)
 expr_stmt|;
 comment|// Update headroom info based on new cluster resource value
 comment|// absoluteMaxCapacity now,  will be replaced with absoluteMaxAvailCapacity
