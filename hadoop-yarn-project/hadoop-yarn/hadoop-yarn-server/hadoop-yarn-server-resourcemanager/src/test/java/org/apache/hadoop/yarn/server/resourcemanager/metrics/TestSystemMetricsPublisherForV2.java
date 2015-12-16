@@ -1173,7 +1173,9 @@ name|YarnConfiguration
 operator|.
 name|RM_PUBLISH_CONTAINER_METRICS_ENABLED
 argument_list|,
-literal|false
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_PUBLISH_CONTAINER_METRICS_ENABLED
 argument_list|)
 expr_stmt|;
 name|metricsPublisher
@@ -1221,6 +1223,18 @@ operator|.
 name|init
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Expected to have registered event handlers and set ready to "
+operator|+
+literal|"publish events after init"
+argument_list|,
+name|metricsPublisher
+operator|.
+name|isPublishContainerMetrics
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|metricsPublisher
