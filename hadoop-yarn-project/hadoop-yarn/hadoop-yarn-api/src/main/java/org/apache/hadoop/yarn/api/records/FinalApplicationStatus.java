@@ -81,6 +81,10 @@ block|,
 comment|/** Application which was terminated by a user or admin. */
 DECL|enumConstant|KILLED
 name|KILLED
+block|,
+comment|/** Application which has subtasks with multiple end states. */
+DECL|enumConstant|ENDED
+name|ENDED
 block|}
 end_enum
 
