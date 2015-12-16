@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.api.records.impl.pb
+DECL|package|org.apache.hadoop.yarn.api.records.impl.pb
 package|package
 name|org
 operator|.
@@ -13,8 +13,6 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
-operator|.
-name|server
 operator|.
 name|api
 operator|.
@@ -70,7 +68,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerCommonProtos
+name|YarnProtos
 operator|.
 name|ResourceUtilizationProto
 import|;
@@ -88,7 +86,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerCommonProtos
+name|YarnProtos
 operator|.
 name|ResourceUtilizationProtoOrBuilder
 import|;
@@ -103,8 +101,6 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
-operator|.
-name|server
 operator|.
 name|api
 operator|.

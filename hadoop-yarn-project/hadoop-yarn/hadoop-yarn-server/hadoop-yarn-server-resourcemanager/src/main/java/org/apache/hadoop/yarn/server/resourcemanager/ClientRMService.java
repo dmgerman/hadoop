@@ -6712,6 +6712,16 @@ name|rmNode
 operator|.
 name|getNodeLabels
 argument_list|()
+argument_list|,
+name|rmNode
+operator|.
+name|getAggregatedContainersUtilization
+argument_list|()
+argument_list|,
+name|rmNode
+operator|.
+name|getNodeUtilization
+argument_list|()
 argument_list|)
 decl_stmt|;
 return|return

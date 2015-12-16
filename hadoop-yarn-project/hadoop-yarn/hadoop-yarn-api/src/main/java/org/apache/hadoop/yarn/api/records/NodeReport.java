@@ -600,6 +600,58 @@ argument_list|>
 name|nodeLabels
 parameter_list|)
 function_decl|;
+comment|/**    * Get containers aggregated resource utilization in a node    * @return containers resource utilization    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getAggregatedContainersUtilization ()
+specifier|public
+specifier|abstract
+name|ResourceUtilization
+name|getAggregatedContainersUtilization
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setAggregatedContainersUtilization (ResourceUtilization containersUtilization)
+specifier|public
+specifier|abstract
+name|void
+name|setAggregatedContainersUtilization
+parameter_list|(
+name|ResourceUtilization
+name|containersUtilization
+parameter_list|)
+function_decl|;
+comment|/**    * Get node resource utilization    * @return node resource utilization    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getNodeUtilization ()
+specifier|public
+specifier|abstract
+name|ResourceUtilization
+name|getNodeUtilization
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNodeUtilization (ResourceUtilization nodeUtilization)
+specifier|public
+specifier|abstract
+name|void
+name|setNodeUtilization
+parameter_list|(
+name|ResourceUtilization
+name|nodeUtilization
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

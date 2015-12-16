@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.api.records
+DECL|package|org.apache.hadoop.yarn.api.records
 package|package
 name|org
 operator|.
@@ -13,8 +13,6 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
-operator|.
-name|server
 operator|.
 name|api
 operator|.
@@ -34,7 +32,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
+name|Public
 import|;
 end_import
 
@@ -50,7 +48,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Unstable
 import|;
 end_import
 
@@ -76,9 +74,9 @@ end_comment
 
 begin_class
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Evolving
+name|Unstable
 DECL|class|ResourceUtilization
 specifier|public
 specifier|abstract
@@ -90,6 +88,10 @@ argument_list|<
 name|ResourceUtilization
 argument_list|>
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Unstable
 DECL|method|newInstance (int pmem, int vmem, float cpu)
 specifier|public
 specifier|static
@@ -144,6 +146,10 @@ name|utilization
 return|;
 block|}
 comment|/**    * Get used<em>virtual memory</em>.    *    * @return<em>virtual memory</em> in MB    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
 DECL|method|getVirtualMemory ()
 specifier|public
 specifier|abstract
@@ -152,6 +158,10 @@ name|getVirtualMemory
 parameter_list|()
 function_decl|;
 comment|/**    * Set used<em>virtual memory</em>.    *    * @param vmem<em>virtual memory</em> in MB    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
 DECL|method|setVirtualMemory (int vmem)
 specifier|public
 specifier|abstract
@@ -163,6 +173,10 @@ name|vmem
 parameter_list|)
 function_decl|;
 comment|/**    * Get<em>physical memory</em>.    *    * @return<em>physical memory</em> in MB    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
 DECL|method|getPhysicalMemory ()
 specifier|public
 specifier|abstract
@@ -171,6 +185,10 @@ name|getPhysicalMemory
 parameter_list|()
 function_decl|;
 comment|/**    * Set<em>physical memory</em>.    *    * @param pmem<em>physical memory</em> in MB    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
 DECL|method|setPhysicalMemory (int pmem)
 specifier|public
 specifier|abstract
@@ -182,6 +200,10 @@ name|pmem
 parameter_list|)
 function_decl|;
 comment|/**    * Get<em>CPU</em> utilization.    *    * @return<em>CPU utilization</em> normalized to 1 CPU    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
 DECL|method|getCPU ()
 specifier|public
 specifier|abstract
@@ -190,6 +212,10 @@ name|getCPU
 parameter_list|()
 function_decl|;
 comment|/**    * Set<em>CPU</em> utilization.    *    * @param cpu<em>CPU utilization</em> normalized to 1 CPU    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
 DECL|method|setCPU (float cpu)
 specifier|public
 specifier|abstract
@@ -376,6 +402,10 @@ literal|">"
 return|;
 block|}
 comment|/**    * Add utilization to the current one.    * @param pmem Physical memory used to add.    * @param vmem Virtual memory used to add.    * @param cpu CPU utilization to add.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
 DECL|method|addTo (int pmem, int vmem, float cpu)
 specifier|public
 name|void

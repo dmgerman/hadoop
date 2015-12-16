@@ -184,13 +184,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
 name|api
 operator|.
-name|protocolrecords
+name|records
 operator|.
-name|NodeHeartbeatResponse
+name|ResourceUtilization
 import|;
 end_import
 
@@ -208,9 +206,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|ResourceUtilization
+name|NodeHeartbeatResponse
 import|;
 end_import
 
