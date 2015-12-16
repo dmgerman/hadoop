@@ -2402,9 +2402,9 @@ decl_stmt|;
 name|ByteString
 name|keyBytes
 init|=
-name|ByteString
+name|PBHelperClient
 operator|.
-name|copyFrom
+name|getByteString
 argument_list|(
 name|encodedKey
 operator|==

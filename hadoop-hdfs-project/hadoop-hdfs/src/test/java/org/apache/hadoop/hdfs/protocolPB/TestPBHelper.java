@@ -50,6 +50,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertSame
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertThat
 import|;
 end_import
@@ -1374,6 +1386,18 @@ name|Lists
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|ByteString
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests for {@link PBHelper}  */
 end_comment
@@ -1394,6 +1418,33 @@ name|DELTA
 init|=
 literal|0.000001
 decl_stmt|;
+annotation|@
+name|Test
+DECL|method|testGetByteString ()
+specifier|public
+name|void
+name|testGetByteString
+parameter_list|()
+block|{
+name|assertSame
+argument_list|(
+name|ByteString
+operator|.
+name|EMPTY
+argument_list|,
+name|PBHelperClient
+operator|.
+name|getByteString
+argument_list|(
+operator|new
+name|byte
+index|[
+literal|0
+index|]
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Test
 DECL|method|testConvertNamenodeRole ()
