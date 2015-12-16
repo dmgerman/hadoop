@@ -1638,6 +1638,13 @@ name|getQueueStatistics
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|queueInfo
+operator|.
+name|setPreemptionDisabled
+argument_list|(
+name|preemptionDisabled
+argument_list|)
+expr_stmt|;
 return|return
 name|queueInfo
 return|;

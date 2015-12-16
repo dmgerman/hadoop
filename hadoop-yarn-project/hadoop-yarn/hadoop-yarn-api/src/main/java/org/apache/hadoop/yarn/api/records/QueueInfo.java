@@ -155,7 +155,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (String queueName, float capacity, float maximumCapacity, float currentCapacity, List<QueueInfo> childQueues, List<ApplicationReport> applications, QueueState queueState, Set<String> accessibleNodeLabels, String defaultNodeLabelExpression, QueueStatistics queueStatistics)
+DECL|method|newInstance (String queueName, float capacity, float maximumCapacity, float currentCapacity, List<QueueInfo> childQueues, List<ApplicationReport> applications, QueueState queueState, Set<String> accessibleNodeLabels, String defaultNodeLabelExpression, QueueStatistics queueStatistics, boolean preemptionDisabled)
 specifier|public
 specifier|static
 name|QueueInfo
@@ -199,6 +199,9 @@ name|defaultNodeLabelExpression
 parameter_list|,
 name|QueueStatistics
 name|queueStatistics
+parameter_list|,
+name|boolean
+name|preemptionDisabled
 parameter_list|)
 block|{
 name|QueueInfo
@@ -281,6 +284,13 @@ operator|.
 name|setQueueStatistics
 argument_list|(
 name|queueStatistics
+argument_list|)
+expr_stmt|;
+name|queueInfo
+operator|.
+name|setPreemptionDisabled
+argument_list|(
+name|preemptionDisabled
 argument_list|)
 expr_stmt|;
 return|return
@@ -565,6 +575,32 @@ name|setQueueStatistics
 parameter_list|(
 name|QueueStatistics
 name|queueStatistics
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>preemption status</em> of the queue.    * @return if property is not in proto, return null;    *        otherwise, return<em>preemption status</em> of the queue    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getPreemptionDisabled ()
+specifier|public
+specifier|abstract
+name|Boolean
+name|getPreemptionDisabled
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setPreemptionDisabled (boolean preemptionDisabled)
+specifier|public
+specifier|abstract
+name|void
+name|setPreemptionDisabled
+parameter_list|(
+name|boolean
+name|preemptionDisabled
 parameter_list|)
 function_decl|;
 block|}
