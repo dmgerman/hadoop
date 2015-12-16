@@ -1699,12 +1699,6 @@ argument_list|()
 operator|+
 literal|"\n"
 operator|+
-literal|"nodeLocalityDelay = "
-operator|+
-name|nodeLocalityDelay
-operator|+
-literal|"\n"
-operator|+
 literal|"reservationsContinueLooking = "
 operator|+
 name|reservationsContinueLooking
