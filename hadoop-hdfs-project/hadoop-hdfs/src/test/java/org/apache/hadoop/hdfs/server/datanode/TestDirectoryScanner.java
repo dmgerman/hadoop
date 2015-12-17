@@ -3821,7 +3821,7 @@ operator|(
 operator|(
 name|ratio
 operator|<
-literal|3f
+literal|2.75f
 operator|)
 operator|||
 operator|(
@@ -3881,7 +3881,7 @@ literal|"Throttle is too permissive"
 argument_list|,
 name|ratio
 operator|>=
-literal|3.0f
+literal|2.75f
 argument_list|)
 expr_stmt|;
 comment|// Test with more than 1 thread
