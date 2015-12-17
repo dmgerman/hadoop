@@ -5161,6 +5161,22 @@ argument_list|,
 literal|0xADDED
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|waitForReplication
+argument_list|(
+name|fs
+argument_list|,
+name|testFile
+argument_list|,
+operator|(
+name|short
+operator|)
+name|repl
+argument_list|,
+literal|30000
+argument_list|)
+expr_stmt|;
 comment|// Get the listing
 name|RemoteIterator
 argument_list|<
