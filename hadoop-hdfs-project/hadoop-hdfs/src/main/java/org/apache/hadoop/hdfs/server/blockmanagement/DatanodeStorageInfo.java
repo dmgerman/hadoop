@@ -725,6 +725,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getBlockReportCount ()
+specifier|public
 name|int
 name|getBlockReportCount
 parameter_list|()

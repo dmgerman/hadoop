@@ -1008,6 +1008,13 @@ name|needKeyUpdate
 init|=
 literal|false
 decl_stmt|;
+DECL|field|forceRegistration
+specifier|private
+name|boolean
+name|forceRegistration
+init|=
+literal|false
+decl_stmt|;
 comment|// A system administrator can tune the balancer bandwidth parameter
 comment|// (dfs.balance.bandwidthPerSec) dynamically by calling
 comment|// "dfsadmin -setBalanacerBandwidth<newbandwidth>", at which point the
@@ -3716,6 +3723,10 @@ name|heartbeatedSinceRegistration
 operator|=
 literal|false
 expr_stmt|;
+name|forceRegistration
+operator|=
+literal|false
+expr_stmt|;
 block|}
 comment|/**    * @return balancer bandwidth in bytes per second for this datanode    */
 DECL|method|getBalancerBandwidth ()
@@ -4110,6 +4121,34 @@ return|;
 block|}
 return|return
 literal|true
+return|;
+block|}
+DECL|method|setForceRegistration (boolean force)
+specifier|public
+name|void
+name|setForceRegistration
+parameter_list|(
+name|boolean
+name|force
+parameter_list|)
+block|{
+name|forceRegistration
+operator|=
+name|force
+expr_stmt|;
+block|}
+DECL|method|isRegistered ()
+specifier|public
+name|boolean
+name|isRegistered
+parameter_list|()
+block|{
+return|return
+name|isAlive
+argument_list|()
+operator|&&
+operator|!
+name|forceRegistration
 return|;
 block|}
 block|}

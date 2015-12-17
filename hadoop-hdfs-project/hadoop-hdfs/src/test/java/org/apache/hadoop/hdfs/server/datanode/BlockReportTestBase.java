@@ -888,11 +888,26 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|fs
+operator|!=
+literal|null
+condition|)
+block|{
 name|fs
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
 name|cluster
 operator|.
 name|shutdownDataNodes
@@ -903,6 +918,7 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|resetConfiguration ()
 specifier|protected

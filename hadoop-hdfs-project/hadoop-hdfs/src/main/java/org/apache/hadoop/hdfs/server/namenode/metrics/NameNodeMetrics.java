@@ -477,6 +477,24 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
+literal|"Number of blockReports and blockReceivedAndDeleted queued"
+argument_list|)
+DECL|field|blockOpsQueued
+name|MutableGaugeInt
+name|blockOpsQueued
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of blockReports and blockReceivedAndDeleted batch processed"
+argument_list|)
+DECL|field|blockOpsBatched
+name|MutableCounterLong
+name|blockOpsBatched
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
 literal|"Number of file system operations"
 argument_list|)
 DECL|method|totalFileOps ()
@@ -1271,6 +1289,40 @@ name|storageBlockReportOps
 operator|.
 name|incr
 argument_list|()
+expr_stmt|;
+block|}
+DECL|method|setBlockOpsQueued (int size)
+specifier|public
+name|void
+name|setBlockOpsQueued
+parameter_list|(
+name|int
+name|size
+parameter_list|)
+block|{
+name|blockOpsQueued
+operator|.
+name|set
+argument_list|(
+name|size
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addBlockOpsBatched (int count)
+specifier|public
+name|void
+name|addBlockOpsBatched
+parameter_list|(
+name|int
+name|count
+parameter_list|)
+block|{
+name|blockOpsBatched
+operator|.
+name|incr
+argument_list|(
+name|count
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|addTransaction (long latency)

@@ -6122,7 +6122,7 @@ operator|||
 operator|!
 name|nodeinfo
 operator|.
-name|isAlive
+name|isRegistered
 argument_list|()
 condition|)
 block|{

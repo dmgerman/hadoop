@@ -745,9 +745,8 @@ name|blocks
 argument_list|)
 block|}
 decl_stmt|;
-comment|// Ensure blockReceived call from dead datanode is rejected with IOException
-try|try
-block|{
+comment|// Ensure blockReceived call from dead datanode is not rejected with
+comment|// IOException, since it's async, but the node remains unregistered.
 name|dnp
 operator|.
 name|blockReceivedAndDeleted
@@ -759,20 +758,39 @@ argument_list|,
 name|storageBlocks
 argument_list|)
 expr_stmt|;
-name|fail
+name|BlockManager
+name|bm
+init|=
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|()
+decl_stmt|;
+comment|// IBRs are async, make sure the NN processes all of them.
+name|bm
+operator|.
+name|flushBlockOps
+argument_list|()
+expr_stmt|;
+name|assertFalse
 argument_list|(
-literal|"Expected IOException is not thrown"
+name|bm
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getDatanode
+argument_list|(
+name|reg
+argument_list|)
+operator|.
+name|isRegistered
+argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ex
-parameter_list|)
-block|{
-comment|// Expected
-block|}
 comment|// Ensure blockReport from dead datanode is rejected with IOException
 name|StorageBlockReport
 index|[]

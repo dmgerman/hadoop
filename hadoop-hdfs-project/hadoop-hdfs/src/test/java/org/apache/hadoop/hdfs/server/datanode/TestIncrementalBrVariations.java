@@ -1137,7 +1137,19 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Make sure that the deleted block from each storage was picked up
-comment|// by the NameNode.
+comment|// by the NameNode.  IBRs are async, make sure the NN processes
+comment|// all of them.
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|flushBlockOps
+argument_list|()
+expr_stmt|;
 name|assertThat
 argument_list|(
 name|cluster
@@ -1381,6 +1393,18 @@ name|poolId
 argument_list|,
 name|reports
 argument_list|)
+expr_stmt|;
+comment|// IBRs are async, make sure the NN processes all of them.
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|flushBlockOps
+argument_list|()
 expr_stmt|;
 comment|// Make sure that the NN has learned of the new storage.
 name|DatanodeStorageInfo

@@ -1714,6 +1714,18 @@ operator|++
 expr_stmt|;
 block|}
 block|}
+comment|// IBRs are async, make sure the NN processes all of them.
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|flushBlockOps
+argument_list|()
+expr_stmt|;
 name|assertEquals
 argument_list|(
 name|DATANODE_COUNT
@@ -1838,6 +1850,17 @@ operator|++
 expr_stmt|;
 block|}
 block|}
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|flushBlockOps
+argument_list|()
+expr_stmt|;
 name|assertEquals
 argument_list|(
 name|DATANODE_COUNT

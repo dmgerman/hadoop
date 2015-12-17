@@ -5017,7 +5017,7 @@ operator|||
 operator|!
 name|datanode
 operator|.
-name|isAlive
+name|isRegistered
 argument_list|()
 condition|)
 block|{

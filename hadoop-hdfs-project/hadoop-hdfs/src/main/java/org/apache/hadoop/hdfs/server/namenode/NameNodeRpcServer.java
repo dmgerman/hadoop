@@ -264,6 +264,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|Callable
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -8202,21 +8214,24 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|blockReport (DatanodeRegistration nodeReg, String poolId, StorageBlockReport[] reports, BlockReportContext context)
+DECL|method|blockReport (final DatanodeRegistration nodeReg, String poolId, final StorageBlockReport[] reports, final BlockReportContext context)
 specifier|public
 name|DatanodeCommand
 name|blockReport
 parameter_list|(
+specifier|final
 name|DatanodeRegistration
 name|nodeReg
 parameter_list|,
 name|String
 name|poolId
 parameter_list|,
+specifier|final
 name|StorageBlockReport
 index|[]
 name|reports
 parameter_list|,
+specifier|final
 name|BlockReportContext
 name|context
 parameter_list|)
@@ -8305,8 +8320,35 @@ comment|// BlockManager.processReport accumulates information of prior calls
 comment|// for the same node and storage, so the value returned by the last
 comment|// call of this loop is the final updated value for noStaleStorage.
 comment|//
+specifier|final
+name|int
+name|index
+init|=
+name|r
+decl_stmt|;
 name|noStaleStorages
 operator|=
+name|bm
+operator|.
+name|runBlockOp
+argument_list|(
+operator|new
+name|Callable
+argument_list|<
+name|Boolean
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Boolean
+name|call
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
 name|bm
 operator|.
 name|processReport
@@ -8315,7 +8357,7 @@ name|nodeReg
 argument_list|,
 name|reports
 index|[
-name|r
+name|index
 index|]
 operator|.
 name|getStorage
@@ -8326,7 +8368,7 @@ argument_list|,
 name|context
 argument_list|,
 operator|(
-name|r
+name|index
 operator|==
 name|reports
 operator|.
@@ -8334,6 +8376,10 @@ name|length
 operator|-
 literal|1
 operator|)
+argument_list|)
+return|;
+block|}
+block|}
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -8469,11 +8515,12 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|blockReceivedAndDeleted (DatanodeRegistration nodeReg, String poolId, StorageReceivedDeletedBlocks[] receivedAndDeletedBlocks)
+DECL|method|blockReceivedAndDeleted (final DatanodeRegistration nodeReg, String poolId, StorageReceivedDeletedBlocks[] receivedAndDeletedBlocks)
 specifier|public
 name|void
 name|blockReceivedAndDeleted
 parameter_list|(
+specifier|final
 name|DatanodeRegistration
 name|nodeReg
 parameter_list|,
@@ -8528,13 +8575,40 @@ literal|" blocks."
 argument_list|)
 expr_stmt|;
 block|}
+specifier|final
+name|BlockManager
+name|bm
+init|=
+name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
+decl_stmt|;
 for|for
 control|(
+specifier|final
 name|StorageReceivedDeletedBlocks
 name|r
 range|:
 name|receivedAndDeletedBlocks
 control|)
+block|{
+name|bm
+operator|.
+name|enqueueBlockOp
+argument_list|(
+operator|new
+name|Runnable
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+try|try
 block|{
 name|namesystem
 operator|.
@@ -8543,6 +8617,38 @@ argument_list|(
 name|nodeReg
 argument_list|,
 name|r
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+comment|// usually because the node is unregistered/dead.  next heartbeat
+comment|// will correct the problem
+name|blockStateChangeLog
+operator|.
+name|error
+argument_list|(
+literal|"*BLOCK* NameNode.blockReceivedAndDeleted: "
+operator|+
+literal|"failed from "
+operator|+
+name|nodeReg
+operator|+
+literal|": "
+operator|+
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 argument_list|)
 expr_stmt|;
 block|}
