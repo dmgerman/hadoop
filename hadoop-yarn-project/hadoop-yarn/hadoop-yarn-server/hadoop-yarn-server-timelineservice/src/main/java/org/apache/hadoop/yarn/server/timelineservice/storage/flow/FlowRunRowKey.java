@@ -106,11 +106,11 @@ specifier|final
 name|String
 name|userId
 decl_stmt|;
-DECL|field|flowId
+DECL|field|flowName
 specifier|private
 specifier|final
 name|String
-name|flowId
+name|flowName
 decl_stmt|;
 DECL|field|flowRunId
 specifier|private
@@ -118,7 +118,7 @@ specifier|final
 name|long
 name|flowRunId
 decl_stmt|;
-DECL|method|FlowRunRowKey (String clusterId, String userId, String flowId, long flowRunId)
+DECL|method|FlowRunRowKey (String clusterId, String userId, String flowName, long flowRunId)
 specifier|public
 name|FlowRunRowKey
 parameter_list|(
@@ -129,7 +129,7 @@ name|String
 name|userId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|long
 name|flowRunId
@@ -149,9 +149,9 @@ name|userId
 expr_stmt|;
 name|this
 operator|.
-name|flowId
+name|flowName
 operator|=
-name|flowId
+name|flowName
 expr_stmt|;
 name|this
 operator|.
@@ -180,14 +180,14 @@ return|return
 name|userId
 return|;
 block|}
-DECL|method|getFlowId ()
+DECL|method|getFlowName ()
 specifier|public
 name|String
-name|getFlowId
+name|getFlowName
 parameter_list|()
 block|{
 return|return
-name|flowId
+name|flowName
 return|;
 block|}
 DECL|method|getFlowRunId ()
@@ -200,8 +200,8 @@ return|return
 name|flowRunId
 return|;
 block|}
-comment|/**    * Constructs a row key prefix for the flow run table as follows: {    * clusterId!userI!flowId!}    *    * @param clusterId    * @param userId    * @param flowId    * @return byte array with the row key prefix    */
-DECL|method|getRowKeyPrefix (String clusterId, String userId, String flowId)
+comment|/**    * Constructs a row key prefix for the flow run table as follows: {    * clusterId!userI!flowName!}    *    * @param clusterId    * @param userId    * @param flowName    * @return byte array with the row key prefix    */
+DECL|method|getRowKeyPrefix (String clusterId, String userId, String flowName)
 specifier|public
 specifier|static
 name|byte
@@ -215,7 +215,7 @@ name|String
 name|userId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|)
 block|{
 return|return
@@ -233,15 +233,15 @@ name|clusterId
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 literal|""
 argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructs a row key for the entity table as follows: {    * clusterId!userI!flowId!Inverted Flow Run Id}    *    * @param clusterId    * @param userId    * @param flowId    * @param flowRunId    * @return byte array with the row key    */
-DECL|method|getRowKey (String clusterId, String userId, String flowId, Long flowRunId)
+comment|/**    * Constructs a row key for the entity table as follows: {    * clusterId!userI!flowName!Inverted Flow Run Id}    *    * @param clusterId    * @param userId    * @param flowName    * @param flowRunId    * @return byte array with the row key    */
+DECL|method|getRowKey (String clusterId, String userId, String flowName, Long flowRunId)
 specifier|public
 specifier|static
 name|byte
@@ -255,7 +255,7 @@ name|String
 name|userId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -279,7 +279,7 @@ name|clusterId
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -400,7 +400,7 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 name|String
-name|flowId
+name|flowName
 init|=
 name|Separator
 operator|.
@@ -445,7 +445,7 @@ name|clusterId
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|)

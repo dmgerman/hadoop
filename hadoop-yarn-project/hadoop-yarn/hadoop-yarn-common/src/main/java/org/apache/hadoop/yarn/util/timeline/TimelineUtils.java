@@ -657,11 +657,11 @@ name|timelineServiceAddr
 argument_list|)
 return|;
 block|}
-DECL|method|generateDefaultFlowIdBasedOnAppId (ApplicationId appId)
+DECL|method|generateDefaultFlowNameBasedOnAppId (ApplicationId appId)
 specifier|public
 specifier|static
 name|String
-name|generateDefaultFlowIdBasedOnAppId
+name|generateDefaultFlowNameBasedOnAppId
 parameter_list|(
 name|ApplicationId
 name|appId

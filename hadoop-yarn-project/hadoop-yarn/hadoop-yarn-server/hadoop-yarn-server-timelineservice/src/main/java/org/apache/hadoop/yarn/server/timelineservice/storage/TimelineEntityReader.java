@@ -388,10 +388,10 @@ specifier|protected
 name|String
 name|clusterId
 decl_stmt|;
-DECL|field|flowId
+DECL|field|flowName
 specifier|protected
 name|String
-name|flowId
+name|flowName
 decl_stmt|;
 DECL|field|flowRunId
 specifier|protected
@@ -538,7 +538,7 @@ init|=
 literal|false
 decl_stmt|;
 comment|/**    * Instantiates a reader for multiple-entity reads.    */
-DECL|method|TimelineEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve, boolean sortedKeys)
+DECL|method|TimelineEntityReader (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve, boolean sortedKeys)
 specifier|protected
 name|TimelineEntityReader
 parameter_list|(
@@ -549,7 +549,7 @@ name|String
 name|clusterId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -667,9 +667,9 @@ name|clusterId
 expr_stmt|;
 name|this
 operator|.
-name|flowId
+name|flowName
 operator|=
-name|flowId
+name|flowName
 expr_stmt|;
 name|this
 operator|.
@@ -782,7 +782,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Instantiates a reader for single-entity reads.    */
-DECL|method|TimelineEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, String entityId, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
+DECL|method|TimelineEntityReader (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, String entityId, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
 specifier|protected
 name|TimelineEntityReader
 parameter_list|(
@@ -793,7 +793,7 @@ name|String
 name|clusterId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -840,9 +840,9 @@ name|clusterId
 expr_stmt|;
 name|this
 operator|.
-name|flowId
+name|flowName
 operator|=
-name|flowId
+name|flowName
 expr_stmt|;
 name|this
 operator|.

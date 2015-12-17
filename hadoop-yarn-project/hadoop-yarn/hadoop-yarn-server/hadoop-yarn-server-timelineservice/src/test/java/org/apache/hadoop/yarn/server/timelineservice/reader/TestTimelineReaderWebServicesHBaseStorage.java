@@ -4343,7 +4343,7 @@ literal|"/ws/v2/"
 operator|+
 literal|"timeline/app/cluster1/application_1111111111_1111?"
 operator|+
-literal|"userid=user1&fields=ALL&flowid=flow_name&flowrunid=1002345678919"
+literal|"userid=user1&fields=ALL&flowname=flow_name&flowrunid=1002345678919"
 argument_list|)
 decl_stmt|;
 name|ClientResponse
@@ -4496,7 +4496,7 @@ literal|"/ws/v2/"
 operator|+
 literal|"timeline/app/application_1111111111_2222?userid=user1"
 operator|+
-literal|"&fields=metrics&flowid=flow_name&flowrunid=1002345678919"
+literal|"&fields=metrics&flowname=flow_name&flowrunid=1002345678919"
 argument_list|)
 expr_stmt|;
 name|resp

@@ -584,7 +584,7 @@ operator|new
 name|ApplicationTable
 argument_list|()
 decl_stmt|;
-DECL|method|ApplicationEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
+DECL|method|ApplicationEntityReader (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
 specifier|public
 name|ApplicationEntityReader
 parameter_list|(
@@ -595,7 +595,7 @@ name|String
 name|clusterId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -690,7 +690,7 @@ name|userId
 argument_list|,
 name|clusterId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -730,7 +730,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ApplicationEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, String entityId, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
+DECL|method|ApplicationEntityReader (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, String entityId, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
 specifier|public
 name|ApplicationEntityReader
 parameter_list|(
@@ -741,7 +741,7 @@ name|String
 name|clusterId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -774,7 +774,7 @@ name|userId
 argument_list|,
 name|clusterId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -1369,7 +1369,7 @@ name|clusterId
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -1487,9 +1487,9 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|flowId
+name|flowName
 argument_list|,
-literal|"flowId shouldn't be null"
+literal|"flowName shouldn't be null"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1517,7 +1517,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|flowId
+name|flowName
 operator|==
 literal|null
 operator|||
@@ -1544,11 +1544,11 @@ argument_list|,
 name|conn
 argument_list|)
 decl_stmt|;
-name|flowId
+name|flowName
 operator|=
 name|context
 operator|.
-name|flowId
+name|flowName
 expr_stmt|;
 name|flowRunId
 operator|=
@@ -1774,7 +1774,7 @@ name|clusterId
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|)
@@ -1795,7 +1795,7 @@ name|clusterId
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|)
 argument_list|)
 expr_stmt|;

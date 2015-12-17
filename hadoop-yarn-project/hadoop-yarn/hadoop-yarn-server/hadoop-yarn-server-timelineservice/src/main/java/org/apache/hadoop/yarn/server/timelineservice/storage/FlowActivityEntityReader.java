@@ -378,7 +378,7 @@ operator|new
 name|FlowActivityTable
 argument_list|()
 decl_stmt|;
-DECL|method|FlowActivityEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve)
+DECL|method|FlowActivityEntityReader (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve)
 specifier|public
 name|FlowActivityEntityReader
 parameter_list|(
@@ -389,7 +389,7 @@ name|String
 name|clusterId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -478,7 +478,7 @@ name|userId
 argument_list|,
 name|clusterId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -518,7 +518,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FlowActivityEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, String entityId, EnumSet<Field> fieldsToRetrieve)
+DECL|method|FlowActivityEntityReader (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, String entityId, EnumSet<Field> fieldsToRetrieve)
 specifier|public
 name|FlowActivityEntityReader
 parameter_list|(
@@ -529,7 +529,7 @@ name|String
 name|clusterId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -556,7 +556,7 @@ name|userId
 argument_list|,
 name|clusterId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -873,7 +873,7 @@ name|flowName
 init|=
 name|rowKey
 operator|.
-name|getFlowId
+name|getFlowName
 argument_list|()
 decl_stmt|;
 name|FlowActivityEntity

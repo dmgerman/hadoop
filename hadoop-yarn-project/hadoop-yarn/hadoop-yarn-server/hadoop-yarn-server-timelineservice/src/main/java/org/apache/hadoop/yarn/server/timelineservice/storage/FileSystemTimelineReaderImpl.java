@@ -797,7 +797,7 @@ continue|continue;
 block|}
 block|}
 block|}
-DECL|method|getFlowRunPath (String userId, String clusterId, String flowId, Long flowRunId, String appId)
+DECL|method|getFlowRunPath (String userId, String clusterId, String flowName, Long flowRunId, String appId)
 specifier|private
 name|String
 name|getFlowRunPath
@@ -809,7 +809,7 @@ name|String
 name|clusterId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -826,7 +826,7 @@ name|userId
 operator|!=
 literal|null
 operator|&&
-name|flowId
+name|flowName
 operator|!=
 literal|null
 operator|&&
@@ -840,7 +840,7 @@ name|userId
 operator|+
 literal|"/"
 operator|+
-name|flowId
+name|flowName
 operator|+
 literal|"/"
 operator|+
@@ -2251,7 +2251,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getEntity (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, String entityId, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
+DECL|method|getEntity (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, String entityId, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
 specifier|public
 name|TimelineEntity
 name|getEntity
@@ -2263,7 +2263,7 @@ name|String
 name|clusterId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -2301,7 +2301,7 @@ name|userId
 argument_list|,
 name|clusterId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -2422,7 +2422,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getEntities (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
+DECL|method|getEntities (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
 specifier|public
 name|Set
 argument_list|<
@@ -2437,7 +2437,7 @@ name|String
 name|clusterId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -2537,7 +2537,7 @@ name|userId
 argument_list|,
 name|clusterId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,

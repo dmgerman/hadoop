@@ -813,7 +813,7 @@ operator|new
 name|AppToFlowTable
 argument_list|()
 decl_stmt|;
-DECL|method|GenericEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve, boolean sortedKeys)
+DECL|method|GenericEntityReader (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve, boolean sortedKeys)
 specifier|public
 name|GenericEntityReader
 parameter_list|(
@@ -824,7 +824,7 @@ name|String
 name|clusterId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -922,7 +922,7 @@ name|userId
 argument_list|,
 name|clusterId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -962,7 +962,7 @@ name|sortedKeys
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|GenericEntityReader (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, String entityId, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
+DECL|method|GenericEntityReader (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, String entityId, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve)
 specifier|public
 name|GenericEntityReader
 parameter_list|(
@@ -973,7 +973,7 @@ name|String
 name|clusterId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -1006,7 +1006,7 @@ name|userId
 argument_list|,
 name|clusterId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -1715,11 +1715,11 @@ specifier|final
 name|String
 name|userId
 decl_stmt|;
-DECL|field|flowId
+DECL|field|flowName
 specifier|protected
 specifier|final
 name|String
-name|flowId
+name|flowName
 decl_stmt|;
 DECL|field|flowRunId
 specifier|protected
@@ -1727,7 +1727,7 @@ specifier|final
 name|Long
 name|flowRunId
 decl_stmt|;
-DECL|method|FlowContext (String user, String flowId, Long flowRunId)
+DECL|method|FlowContext (String user, String flowName, Long flowRunId)
 specifier|public
 name|FlowContext
 parameter_list|(
@@ -1735,7 +1735,7 @@ name|String
 name|user
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -1749,9 +1749,9 @@ name|user
 expr_stmt|;
 name|this
 operator|.
-name|flowId
+name|flowName
 operator|=
-name|flowId
+name|flowName
 expr_stmt|;
 name|this
 operator|.
@@ -1831,7 +1831,7 @@ block|{
 comment|// In reality all three should be null or neither should be null
 if|if
 condition|(
-name|flowId
+name|flowName
 operator|==
 literal|null
 operator|||
@@ -1858,11 +1858,11 @@ argument_list|,
 name|conn
 argument_list|)
 decl_stmt|;
-name|flowId
+name|flowName
 operator|=
 name|context
 operator|.
-name|flowId
+name|flowName
 expr_stmt|;
 name|flowRunId
 operator|=
@@ -2073,7 +2073,7 @@ name|clusterId
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -2179,7 +2179,7 @@ name|clusterId
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,

@@ -189,7 +189,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The flow activity table has column family info  * Stores the daily activity record for flows  * Useful as a quick lookup of what flows were  * running on a given day  *  * Example flow activity table record:  *  *</pre>  * |-------------------------------------------|  * |  Row key   | Column Family                |  * |            | info                         |  * |-------------------------------------------|  * | clusterId! | r!runid1:version1            |  * | inv Top of |                              |  * | Day!       | r!runid2:version7            |  * | userName!  |                              |  * | flowId     |                              |  * |-------------------------------------------|  *</pre>  */
+comment|/**  * The flow activity table has column family info  * Stores the daily activity record for flows  * Useful as a quick lookup of what flows were  * running on a given day  *  * Example flow activity table record:  *  *</pre>  * |-------------------------------------------|  * |  Row key   | Column Family                |  * |            | info                         |  * |-------------------------------------------|  * | clusterId! | r!runid1:version1            |  * | inv Top of |                              |  * | Day!       | r!runid2:version7            |  * | userName!  |                              |  * | flowName   |                              |  * |-------------------------------------------|  *</pre>  */
 end_comment
 
 begin_class

@@ -1204,7 +1204,7 @@ literal|"/ws/v2/"
 operator|+
 literal|"timeline/entity/cluster1/app1/app/id_1?userid=user1&"
 operator|+
-literal|"flowid=flow1&flowrunid=1"
+literal|"flowname=flow1&flowrunid=1"
 argument_list|)
 decl_stmt|;
 name|ClientResponse

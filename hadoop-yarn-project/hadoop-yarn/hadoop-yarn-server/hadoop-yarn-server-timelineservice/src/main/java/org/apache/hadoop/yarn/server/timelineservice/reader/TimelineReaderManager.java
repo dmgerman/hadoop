@@ -288,7 +288,7 @@ name|clusterId
 return|;
 block|}
 comment|/**    * Get a set of entities matching given predicates. The meaning of each    * argument has been documented with {@link TimelineReader#getEntities}.    *    * @see TimelineReader#getEntities    */
-DECL|method|getEntities (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve)
+DECL|method|getEntities (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve)
 name|Set
 argument_list|<
 name|TimelineEntity
@@ -302,7 +302,7 @@ name|String
 name|clusterId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -407,7 +407,7 @@ name|userId
 argument_list|,
 name|cluster
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -446,7 +446,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get single timeline entity. The meaning of each argument has been    * documented with {@link TimelineReader#getEntity}.    *    * @see TimelineReader#getEntity    */
-DECL|method|getEntity (String userId, String clusterId, String flowId, Long flowRunId, String appId, String entityType, String entityId, EnumSet<Field> fields)
+DECL|method|getEntity (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, String entityId, EnumSet<Field> fields)
 specifier|public
 name|TimelineEntity
 name|getEntity
@@ -458,7 +458,7 @@ name|String
 name|clusterId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 name|Long
 name|flowRunId
@@ -501,7 +501,7 @@ name|userId
 argument_list|,
 name|cluster
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,

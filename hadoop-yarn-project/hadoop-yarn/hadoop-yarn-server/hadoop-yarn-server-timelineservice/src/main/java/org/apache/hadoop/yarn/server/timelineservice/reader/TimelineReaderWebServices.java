@@ -2018,7 +2018,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @PathParam(R) String entityType, @QueryParam(R) String userId, @QueryParam(R) String flowId, @QueryParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @PathParam(R) String entityType, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -2063,10 +2063,10 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -2188,7 +2188,7 @@ name|entityType
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -2233,7 +2233,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @PathParam(R) String entityType, @QueryParam(R) String userId, @QueryParam(R) String flowId, @QueryParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @PathParam(R) String entityType, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -2286,10 +2286,10 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -2493,7 +2493,7 @@ argument_list|)
 argument_list|,
 name|parseStr
 argument_list|(
-name|flowId
+name|flowName
 argument_list|)
 argument_list|,
 name|parseLongStr
@@ -2674,7 +2674,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @PathParam(R) String entityType, @PathParam(R) String entityId, @QueryParam(R) String userId, @QueryParam(R) String flowId, @QueryParam(R) String flowRunId, @QueryParam(R) String fields)
+DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @PathParam(R) String entityType, @PathParam(R) String entityId, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getEntity
@@ -2724,10 +2724,10 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -2763,7 +2763,7 @@ name|entityId
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -2786,7 +2786,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @PathParam(R) String entityType, @PathParam(R) String entityId, @QueryParam(R) String userId, @QueryParam(R) String flowId, @QueryParam(R) String flowRunId, @QueryParam(R) String fields)
+DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @PathParam(R) String entityType, @PathParam(R) String entityId, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getEntity
@@ -2844,10 +2844,10 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -2960,7 +2960,7 @@ argument_list|)
 argument_list|,
 name|parseStr
 argument_list|(
-name|flowId
+name|flowName
 argument_list|)
 argument_list|,
 name|parseLongStr
@@ -3097,7 +3097,7 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowrun/{userid}/{flowid}/{flowrunid}/"
+literal|"/flowrun/{userid}/{flowname}/{flowrunid}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -3106,7 +3106,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowId, @PathParam(R) String flowRunId, @QueryParam(R) String fields)
+DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getFlowRun
@@ -3132,10 +3132,10 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|PathParam
@@ -3165,7 +3165,7 @@ name|userId
 argument_list|,
 literal|null
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -3179,7 +3179,7 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowrun/{userid}/{clusterid}/{flowid}/{flowrunid}/"
+literal|"/flowrun/{userid}/{clusterid}/{flowname}/{flowrunid}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -3188,7 +3188,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String clusterId, @PathParam(R) String flowId, @PathParam(R) String flowRunId, @QueryParam(R) String fields)
+DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String clusterId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getFlowRun
@@ -3222,10 +3222,10 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|PathParam
@@ -3338,7 +3338,7 @@ argument_list|)
 argument_list|,
 name|parseStr
 argument_list|(
-name|flowId
+name|flowName
 argument_list|)
 argument_list|,
 name|parseLongStr
@@ -3426,7 +3426,7 @@ literal|"Flow run {flow id: "
 operator|+
 name|parseStr
 argument_list|(
-name|flowId
+name|flowName
 argument_list|)
 operator|+
 literal|", run id: "
@@ -3469,7 +3469,7 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowruns/{userid}/{flowid}/"
+literal|"/flowruns/{userid}/{flowname}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -3478,7 +3478,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String fields)
+DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -3507,10 +3507,10 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -3556,7 +3556,7 @@ name|userId
 argument_list|,
 literal|null
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|limit
 argument_list|,
@@ -3574,7 +3574,7 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowruns/{userid}/{clusterid}/{flowid}/"
+literal|"/flowruns/{userid}/{clusterid}/{flowname}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -3583,7 +3583,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String clusterId, @PathParam(R) String flowId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String fields)
+DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String clusterId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -3620,10 +3620,10 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -3755,7 +3755,7 @@ argument_list|)
 argument_list|,
 name|parseStr
 argument_list|(
-name|flowId
+name|flowName
 argument_list|)
 argument_list|,
 literal|null
@@ -4244,7 +4244,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getApp ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @QueryParam(R) String flowId, @QueryParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String fields)
+DECL|method|getApp ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getApp
@@ -4270,10 +4270,10 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -4311,7 +4311,7 @@ literal|null
 argument_list|,
 name|appId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -4336,7 +4336,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getApp ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @QueryParam(R) String flowId, @QueryParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String fields)
+DECL|method|getApp ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getApp
@@ -4370,10 +4370,10 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -4494,7 +4494,7 @@ argument_list|)
 argument_list|,
 name|parseStr
 argument_list|(
-name|flowId
+name|flowName
 argument_list|)
 argument_list|,
 name|parseLongStr
@@ -4620,7 +4620,7 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowrunapps/{userid}/{flowid}/{flowrunid}/"
+literal|"/flowrunapps/{userid}/{flowname}/{flowrunid}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -4629,7 +4629,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowId, @PathParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -4658,10 +4658,10 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|PathParam
@@ -4788,7 +4788,7 @@ argument_list|()
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -4824,7 +4824,7 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowrunapps/{userid}/{clusterid}/{flowid}/{flowrunid}/"
+literal|"/flowrunapps/{userid}/{clusterid}/{flowname}/{flowrunid}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -4833,7 +4833,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String clusterId, @PathParam(R) String flowId, @PathParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String clusterId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -4870,10 +4870,10 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|PathParam
@@ -5000,7 +5000,7 @@ argument_list|()
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
@@ -5036,7 +5036,7 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowapps/{userid}/{flowid}/"
+literal|"/flowapps/{userid}/{flowname}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -5045,7 +5045,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -5074,10 +5074,10 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -5196,7 +5196,7 @@ argument_list|()
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 literal|null
 argument_list|,
@@ -5232,7 +5232,7 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/flowapps/{userid}/{clusterid}/{flowid}/"
+literal|"/flowapps/{userid}/{clusterid}/{flowname}/"
 argument_list|)
 annotation|@
 name|Produces
@@ -5241,7 +5241,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String clusterId, @PathParam(R) String flowId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String clusterId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String modifiedTimeStart, @QueryParam(R) String modifiedTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -5278,10 +5278,10 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"flowid"
+literal|"flowname"
 argument_list|)
 name|String
-name|flowId
+name|flowName
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -5400,7 +5400,7 @@ argument_list|()
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|,
 literal|null
 argument_list|,

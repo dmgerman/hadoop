@@ -277,7 +277,7 @@ name|setFlowName
 argument_list|(
 name|TimelineUtils
 operator|.
-name|generateDefaultFlowIdBasedOnAppId
+name|generateDefaultFlowNameBasedOnAppId
 argument_list|(
 name|appId
 argument_list|)

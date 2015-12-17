@@ -112,13 +112,13 @@ specifier|final
 name|String
 name|userId
 decl_stmt|;
-DECL|field|flowId
+DECL|field|flowName
 specifier|private
 specifier|final
 name|String
-name|flowId
+name|flowName
 decl_stmt|;
-DECL|method|FlowActivityRowKey (String clusterId, long dayTs, String userId, String flowId)
+DECL|method|FlowActivityRowKey (String clusterId, long dayTs, String userId, String flowName)
 specifier|public
 name|FlowActivityRowKey
 parameter_list|(
@@ -132,7 +132,7 @@ name|String
 name|userId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|)
 block|{
 name|this
@@ -155,9 +155,9 @@ name|userId
 expr_stmt|;
 name|this
 operator|.
-name|flowId
+name|flowName
 operator|=
-name|flowId
+name|flowName
 expr_stmt|;
 block|}
 DECL|method|getClusterId ()
@@ -190,14 +190,14 @@ return|return
 name|userId
 return|;
 block|}
-DECL|method|getFlowId ()
+DECL|method|getFlowName ()
 specifier|public
 name|String
-name|getFlowId
+name|getFlowName
 parameter_list|()
 block|{
 return|return
-name|flowId
+name|flowName
 return|;
 block|}
 comment|/**    * Constructs a row key prefix for the flow activity table as follows:    * {@code clusterId!}    *    * @param clusterId    * @return byte array with the row key prefix    */
@@ -286,8 +286,8 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructs a row key for the flow activity table as follows:    * {@code clusterId!dayTimestamp!user!flowId}    *    * Will insert into current day's record in the table    * @param clusterId    * @param userId    * @param flowId    * @return byte array with the row key prefix    */
-DECL|method|getRowKey (String clusterId, String userId, String flowId)
+comment|/**    * Constructs a row key for the flow activity table as follows:    * {@code clusterId!dayTimestamp!user!flowName}    *    * Will insert into current day's record in the table    * @param clusterId    * @param userId    * @param flowName    * @return byte array with the row key prefix    */
+DECL|method|getRowKey (String clusterId, String userId, String flowName)
 specifier|public
 specifier|static
 name|byte
@@ -301,7 +301,7 @@ name|String
 name|userId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|)
 block|{
 name|long
@@ -326,12 +326,12 @@ name|dayTs
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructs a row key for the flow activity table as follows:    * {@code clusterId!dayTimestamp!user!flowId}    *    * @param clusterId    * @param dayTs    * @param userId    * @param flowId    * @return byte array for the row key    */
-DECL|method|getRowKey (String clusterId, long dayTs, String userId, String flowId)
+comment|/**    * Constructs a row key for the flow activity table as follows:    * {@code clusterId!dayTimestamp!user!flowName}    *    * @param clusterId    * @param dayTs    * @param userId    * @param flowName    * @return byte array for the row key    */
+DECL|method|getRowKey (String clusterId, long dayTs, String userId, String flowName)
 specifier|public
 specifier|static
 name|byte
@@ -348,7 +348,7 @@ name|String
 name|userId
 parameter_list|,
 name|String
-name|flowId
+name|flowName
 parameter_list|)
 block|{
 return|return
@@ -408,7 +408,7 @@ name|QUALIFIERS
 operator|.
 name|encode
 argument_list|(
-name|flowId
+name|flowName
 argument_list|)
 argument_list|)
 argument_list|)
@@ -518,7 +518,7 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 name|String
-name|flowId
+name|flowName
 init|=
 name|Separator
 operator|.
@@ -547,7 +547,7 @@ name|dayTs
 argument_list|,
 name|userId
 argument_list|,
-name|flowId
+name|flowName
 argument_list|)
 return|;
 block|}
