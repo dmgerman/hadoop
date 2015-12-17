@@ -517,6 +517,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Create a snapshot for /test/foo and create another snapshot for    * /test/foo/bar.  Files created before the snapshots should appear in both    * snapshots and the files created after the snapshots should not appear in    * any of the snapshots.      */

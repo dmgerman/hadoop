@@ -197,6 +197,13 @@ operator|.
 name|tearDown
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
 name|cluster
 operator|.
 name|shutdown
@@ -206,6 +213,7 @@ name|cluster
 operator|=
 literal|null
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

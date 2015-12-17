@@ -429,6 +429,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Test the DFS_DATANODE_FAILED_VOLUMES_TOLERATED_KEY configuration    * option, ie the DN tolerates a failed-to-use scenario during    * its start-up.    */

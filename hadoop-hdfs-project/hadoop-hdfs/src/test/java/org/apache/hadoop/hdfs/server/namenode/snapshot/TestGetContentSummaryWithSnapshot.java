@@ -397,6 +397,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Calculate against a snapshot path.    * 1. create dirs /foo/bar    * 2. take snapshot s1 on /foo    * 3. create a 10 byte file /foo/bar/baz    * Make sure for "/foo/bar" and "/foo/.snapshot/s1/bar" have correct results:    * the 1 byte file is not included in snapshot s1.    */

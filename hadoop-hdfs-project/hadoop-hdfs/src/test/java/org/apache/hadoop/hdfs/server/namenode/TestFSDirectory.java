@@ -745,6 +745,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/** Dump the tree, make some changes, and then dump the tree again. */

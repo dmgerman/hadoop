@@ -1134,6 +1134,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 DECL|method|writeConfigFile (Path name, List<String> nodes)

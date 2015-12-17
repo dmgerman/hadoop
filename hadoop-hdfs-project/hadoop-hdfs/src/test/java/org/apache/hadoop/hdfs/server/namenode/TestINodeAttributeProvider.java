@@ -995,6 +995,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|miniDFS
+operator|=
+literal|null
+expr_stmt|;
 block|}
 name|Assert
 operator|.

@@ -361,11 +361,19 @@ name|void
 name|tearDown
 parameter_list|()
 block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|testXAttr (boolean persistNamespace)
 specifier|private

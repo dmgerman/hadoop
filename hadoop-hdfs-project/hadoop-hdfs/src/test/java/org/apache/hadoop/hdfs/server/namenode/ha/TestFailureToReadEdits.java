@@ -916,6 +916,10 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|fs
+operator|=
+literal|null
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -938,6 +942,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 else|else
@@ -953,6 +961,10 @@ name|miniQjmHaCluster
 operator|.
 name|shutdown
 argument_list|()
+expr_stmt|;
+name|miniQjmHaCluster
+operator|=
+literal|null
 expr_stmt|;
 block|}
 block|}

@@ -760,6 +760,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Make sure the IDs of striped blocks do not conflict    */

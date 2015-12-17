@@ -359,6 +359,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Test adding new blocks. Restart the NameNode in the test to make sure the    * AddBlockOp in the editlog is applied correctly.     */

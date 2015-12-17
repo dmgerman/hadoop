@@ -421,15 +421,24 @@ block|{
 if|if
 condition|(
 name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|cluster
 operator|.
 name|isClusterUp
 argument_list|()
 condition|)
+block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 name|File
 name|data_dir
 init|=
@@ -469,6 +478,11 @@ operator|+
 literal|"'"
 argument_list|)
 throw|;
+block|}
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * test JMX connection to NameNode..    * @throws Exception     */

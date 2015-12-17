@@ -348,11 +348,19 @@ name|void
 name|tearDown
 parameter_list|()
 block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Comprehensive test for append     * @throws IOException an exception might be thrown    */
 annotation|@

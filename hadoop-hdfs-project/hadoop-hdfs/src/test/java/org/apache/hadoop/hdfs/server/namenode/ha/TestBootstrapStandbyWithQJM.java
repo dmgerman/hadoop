@@ -448,6 +448,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -460,6 +464,10 @@ name|jCluster
 operator|.
 name|shutdown
 argument_list|()
+expr_stmt|;
+name|jCluster
+operator|=
+literal|null
 expr_stmt|;
 block|}
 block|}

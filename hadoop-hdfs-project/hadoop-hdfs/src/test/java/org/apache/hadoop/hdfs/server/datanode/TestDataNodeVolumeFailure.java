@@ -1052,6 +1052,10 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|data_fail
+operator|=
+literal|null
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -1069,6 +1073,10 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|failedDir
+operator|=
+literal|null
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -1081,6 +1089,10 @@ name|cluster
 operator|.
 name|shutdown
 argument_list|()
+expr_stmt|;
+name|cluster
+operator|=
+literal|null
 expr_stmt|;
 block|}
 block|}

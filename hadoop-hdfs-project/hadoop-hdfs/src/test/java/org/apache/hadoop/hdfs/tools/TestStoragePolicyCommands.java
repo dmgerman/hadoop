@@ -291,6 +291,10 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|fs
+operator|=
+literal|null
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -303,6 +307,10 @@ name|cluster
 operator|.
 name|shutdown
 argument_list|()
+expr_stmt|;
+name|cluster
+operator|=
+literal|null
 expr_stmt|;
 block|}
 block|}

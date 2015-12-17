@@ -607,6 +607,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -628,6 +632,10 @@ name|f
 operator|.
 name|delete
 argument_list|()
+expr_stmt|;
+name|tempResource
+operator|=
+literal|null
 expr_stmt|;
 block|}
 block|}

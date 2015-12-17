@@ -580,6 +580,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Test that individual volume failures do not cause DNs to fail, that    * all volumes failed on a single datanode do cause it to fail, and    * that the capacities and liveliness is adjusted correctly in the NN.    */

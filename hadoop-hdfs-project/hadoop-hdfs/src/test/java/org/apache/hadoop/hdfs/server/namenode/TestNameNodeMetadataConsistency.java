@@ -396,6 +396,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * This test creates a file and modifies the block generation stamp to number    * that name node has not seen yet. It then asserts that name node moves into    * safe mode while it is in startup mode.    */

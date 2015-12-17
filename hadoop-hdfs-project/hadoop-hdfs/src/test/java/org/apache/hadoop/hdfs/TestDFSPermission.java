@@ -884,6 +884,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/** This tests if permission setting in create, mkdir, and     * setPermission works correctly    */

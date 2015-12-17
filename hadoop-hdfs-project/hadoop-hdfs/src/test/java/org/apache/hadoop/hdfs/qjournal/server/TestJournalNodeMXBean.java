@@ -321,6 +321,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|jCluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 annotation|@

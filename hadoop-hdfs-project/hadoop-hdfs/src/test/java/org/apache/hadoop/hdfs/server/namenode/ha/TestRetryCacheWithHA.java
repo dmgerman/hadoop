@@ -1314,6 +1314,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * 1. Run a set of operations    * 2. Trigger the NN failover    * 3. Check the retry cache on the original standby NN    */

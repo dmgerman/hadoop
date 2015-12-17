@@ -646,6 +646,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Create a temp fsimage file for testing.    * @param dir The directory where the fsimage file resides    * @param imageTxId The transaction id of the fsimage    * @return The file of the image file    */

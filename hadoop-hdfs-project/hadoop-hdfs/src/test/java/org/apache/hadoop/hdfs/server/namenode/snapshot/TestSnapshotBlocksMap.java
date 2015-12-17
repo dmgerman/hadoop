@@ -618,6 +618,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 DECL|method|assertBlockCollection (String path, int numBlocks, final FSDirectory dir, final BlockManager blkManager)

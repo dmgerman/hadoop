@@ -754,13 +754,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|IOUtils
-operator|.
-name|closeStream
-argument_list|(
-name|dfs
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|cluster
@@ -768,6 +761,13 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|dfs
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|.
 name|shutdown

@@ -648,6 +648,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Shutdown tolerable number of Datanode before reading.    * Verify the decoding works correctly.    */

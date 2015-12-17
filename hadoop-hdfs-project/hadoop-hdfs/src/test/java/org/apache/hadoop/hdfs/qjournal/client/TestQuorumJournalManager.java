@@ -889,6 +889,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Enqueue a QJM for closing during shutdown. This makes the code a little    * easier to follow, with fewer try..finally clauses necessary.    */

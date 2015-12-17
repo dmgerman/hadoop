@@ -758,6 +758,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
 name|client
 operator|.
 name|close
@@ -778,6 +785,11 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Incremental BRs from all storages combined in a single message.    */
 annotation|@

@@ -463,6 +463,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Check the replication of a given file.    *    * @param file The given file    * @param replication The expected replication number    * @param blockReplication The expected replication number for the block    * @throws Exception    */

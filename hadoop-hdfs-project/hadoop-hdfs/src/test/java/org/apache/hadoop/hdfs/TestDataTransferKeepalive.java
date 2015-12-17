@@ -493,11 +493,23 @@ name|void
 name|teardown
 parameter_list|()
 block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Regression test for HDFS-3357. Check that the datanode is respecting    * its configured keepalive timeout.    */
 annotation|@

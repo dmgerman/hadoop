@@ -671,6 +671,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Basic read/write tests of raw files.    * Create a non-encrypted file    * Create an encryption zone    * Verify that non-encrypted file contents and decrypted file in EZ are equal    * Compare the raw encrypted bytes of the file with the decrypted version to    *   ensure they're different    * Compare the raw and non-raw versions of the non-encrypted file to ensure    *   they're the same.    */

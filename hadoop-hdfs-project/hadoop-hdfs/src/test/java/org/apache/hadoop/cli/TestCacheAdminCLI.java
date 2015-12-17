@@ -510,6 +510,10 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|fs
+operator|=
+literal|null
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -522,6 +526,10 @@ name|dfsCluster
 operator|.
 name|shutdown
 argument_list|()
+expr_stmt|;
+name|dfsCluster
+operator|=
+literal|null
 expr_stmt|;
 block|}
 name|Thread

@@ -641,6 +641,10 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Test for the base success case. The primary NN    * hasn't made any checkpoints, and we copy the fsimage_0    * file over and start up.    */
