@@ -1835,54 +1835,34 @@ break|break;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|err
+name|EOFException
+decl||
+name|ClosedChannelException
+name|e
 parameter_list|)
 block|{
-comment|// Since we optimistically expect the next op, it's quite normal to get EOF here.
-if|if
-condition|(
-name|opsProcessed
-operator|>
-literal|0
-operator|&&
-operator|(
-name|err
-operator|instanceof
-name|EOFException
-operator|||
-name|err
-operator|instanceof
-name|ClosedChannelException
-operator|)
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
+comment|// Since we optimistically expect the next op, it's quite normal to
+comment|// get EOF here.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Cached "
+literal|"Cached {} closing after {} ops.  "
 operator|+
+literal|"This message is usually benign."
+argument_list|,
 name|peer
-operator|+
-literal|" closing after "
-operator|+
+argument_list|,
 name|opsProcessed
-operator|+
-literal|" ops"
 argument_list|)
 expr_stmt|;
+break|break;
 block|}
-block|}
-else|else
+catch|catch
+parameter_list|(
+name|IOException
+name|err
+parameter_list|)
 block|{
 name|incrDatanodeNetworkErrors
 argument_list|()
@@ -1890,8 +1870,6 @@ expr_stmt|;
 throw|throw
 name|err
 throw|;
-block|}
-break|break;
 block|}
 comment|// restore normal timeout
 if|if
