@@ -94,6 +94,12 @@ name|BLKIO
 argument_list|(
 literal|"blkio"
 argument_list|)
+block|,
+DECL|enumConstant|MEMORY
+name|MEMORY
+argument_list|(
+literal|"memory"
+argument_list|)
 block|;
 DECL|field|name
 specifier|private
@@ -151,6 +157,24 @@ name|String
 name|CGROUP_PARAM_BLKIO_WEIGHT
 init|=
 literal|"weight"
+decl_stmt|;
+DECL|field|CGROUP_PARAM_MEMORY_HARD_LIMIT_BYTES
+name|String
+name|CGROUP_PARAM_MEMORY_HARD_LIMIT_BYTES
+init|=
+literal|"limit_in_bytes"
+decl_stmt|;
+DECL|field|CGROUP_PARAM_MEMORY_SOFT_LIMIT_BYTES
+name|String
+name|CGROUP_PARAM_MEMORY_SOFT_LIMIT_BYTES
+init|=
+literal|"soft_limit_in_bytes"
+decl_stmt|;
+DECL|field|CGROUP_PARAM_MEMORY_SWAPPINESS
+name|String
+name|CGROUP_PARAM_MEMORY_SWAPPINESS
+init|=
+literal|"swappiness"
 decl_stmt|;
 comment|/**    * Mounts a cgroup controller    * @param controller - the controller being mounted    * @throws ResourceHandlerException    */
 DECL|method|mountCGroupController (CGroupController controller)
