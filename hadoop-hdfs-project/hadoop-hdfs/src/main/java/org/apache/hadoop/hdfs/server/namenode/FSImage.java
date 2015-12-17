@@ -3454,8 +3454,8 @@ break|break;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ioe
+name|Exception
+name|e
 parameter_list|)
 block|{
 name|LOG
@@ -3466,7 +3466,7 @@ literal|"Failed to load image from "
 operator|+
 name|imageFile
 argument_list|,
-name|ioe
+name|e
 argument_list|)
 expr_stmt|;
 name|target
@@ -3708,9 +3708,9 @@ name|IOException
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
-literal|"Planning to load image :\n"
+literal|"Planning to load image: "
 operator|+
 name|imageFile
 argument_list|)
