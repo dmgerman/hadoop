@@ -242,6 +242,15 @@ argument_list|)
 name|MutableGaugeInt
 name|numActiveNMs
 decl_stmt|;
+DECL|field|numDecommissioningNMs
+annotation|@
+name|Metric
+argument_list|(
+literal|"# of decommissioning NMs"
+argument_list|)
+name|MutableGaugeInt
+name|numDecommissioningNMs
+decl_stmt|;
 DECL|field|numDecommissionedNMs
 annotation|@
 name|Metric
@@ -473,6 +482,61 @@ operator|.
 name|value
 argument_list|()
 return|;
+block|}
+comment|// Decommissioning NMs
+DECL|method|getNumDecommissioningNMs ()
+specifier|public
+name|int
+name|getNumDecommissioningNMs
+parameter_list|()
+block|{
+return|return
+name|numDecommissioningNMs
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|incrDecommissioningNMs ()
+specifier|public
+name|void
+name|incrDecommissioningNMs
+parameter_list|()
+block|{
+name|numDecommissioningNMs
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|setDecommissioningNMs (int num)
+specifier|public
+name|void
+name|setDecommissioningNMs
+parameter_list|(
+name|int
+name|num
+parameter_list|)
+block|{
+name|numDecommissioningNMs
+operator|.
+name|set
+argument_list|(
+name|num
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|decrDecommissioningNMs ()
+specifier|public
+name|void
+name|decrDecommissioningNMs
+parameter_list|()
+block|{
+name|numDecommissioningNMs
+operator|.
+name|decr
+argument_list|()
+expr_stmt|;
 block|}
 comment|//Decommisioned NMs
 DECL|method|getNumDecommisionedNMs ()

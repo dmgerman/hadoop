@@ -3294,7 +3294,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|24
+literal|25
 argument_list|,
 name|clusterinfo
 operator|.

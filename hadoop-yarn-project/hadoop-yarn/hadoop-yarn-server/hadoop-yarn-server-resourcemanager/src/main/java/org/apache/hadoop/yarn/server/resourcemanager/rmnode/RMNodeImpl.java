@@ -3590,14 +3590,18 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Treats nodes in decommissioning as active nodes
-comment|// TODO we may want to differentiate active nodes and decommissioning node in
-comment|// metrics later.
-DECL|method|updateMetricsForGracefulDecommissionOnUnhealthyNode ()
+comment|// Update metrics when moving to Decommissioning state
+DECL|method|updateMetricsForGracefulDecommission (NodeState initialState, NodeState finalState)
 specifier|private
 name|void
-name|updateMetricsForGracefulDecommissionOnUnhealthyNode
-parameter_list|()
+name|updateMetricsForGracefulDecommission
+parameter_list|(
+name|NodeState
+name|initialState
+parameter_list|,
+name|NodeState
+name|finalState
+parameter_list|)
 block|{
 name|ClusterMetrics
 name|metrics
@@ -3607,16 +3611,79 @@ operator|.
 name|getMetrics
 argument_list|()
 decl_stmt|;
-name|metrics
-operator|.
-name|incrNumActiveNodes
-argument_list|()
-expr_stmt|;
+switch|switch
+condition|(
+name|initialState
+condition|)
+block|{
+case|case
+name|UNHEALTHY
+case|:
 name|metrics
 operator|.
 name|decrNumUnhealthyNMs
 argument_list|()
 expr_stmt|;
+break|break;
+case|case
+name|RUNNING
+case|:
+name|metrics
+operator|.
+name|decrNumActiveNodes
+argument_list|()
+expr_stmt|;
+break|break;
+case|case
+name|DECOMMISSIONING
+case|:
+name|metrics
+operator|.
+name|decrDecommissioningNMs
+argument_list|()
+expr_stmt|;
+break|break;
+default|default :
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unexpcted initial state"
+argument_list|)
+expr_stmt|;
+block|}
+switch|switch
+condition|(
+name|finalState
+condition|)
+block|{
+case|case
+name|DECOMMISSIONING
+case|:
+name|metrics
+operator|.
+name|incrDecommissioningNMs
+argument_list|()
+expr_stmt|;
+break|break;
+case|case
+name|RUNNING
+case|:
+name|metrics
+operator|.
+name|incrNumActiveNodes
+argument_list|()
+expr_stmt|;
+break|break;
+default|default :
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unexpected final state"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|updateMetricsForDeactivatedNode (NodeState initialState, NodeState finalState)
 specifier|private
@@ -3657,7 +3724,7 @@ name|DECOMMISSIONING
 case|:
 name|metrics
 operator|.
-name|decrNumActiveNodes
+name|decrDecommissioningNMs
 argument_list|()
 expr_stmt|;
 break|break;
@@ -3673,9 +3740,9 @@ break|break;
 default|default:
 name|LOG
 operator|.
-name|debug
+name|warn
 argument_list|(
-literal|"Unexpected inital state"
+literal|"Unexpected initial state"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3732,7 +3799,7 @@ break|break;
 default|default:
 name|LOG
 operator|.
-name|debug
+name|warn
 argument_list|(
 literal|"Unexpected final state"
 argument_list|)
@@ -5350,24 +5417,16 @@ operator|+
 literal|" in DECOMMISSIONING."
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|initState
-operator|.
-name|equals
-argument_list|(
-name|NodeState
-operator|.
-name|UNHEALTHY
-argument_list|)
-condition|)
-block|{
+comment|// Update NM metrics during graceful decommissioning.
 name|rmNode
 operator|.
-name|updateMetricsForGracefulDecommissionOnUnhealthyNode
-argument_list|()
+name|updateMetricsForGracefulDecommission
+argument_list|(
+name|initState
+argument_list|,
+name|finalState
+argument_list|)
 expr_stmt|;
-block|}
 comment|// TODO (in YARN-3223) Keep NM's available resource to be 0
 block|}
 block|}
@@ -5432,6 +5491,18 @@ operator|+
 literal|" in DECOMMISSIONING is "
 operator|+
 literal|"recommissioned back to RUNNING."
+argument_list|)
+expr_stmt|;
+name|rmNode
+operator|.
+name|updateMetricsForGracefulDecommission
+argument_list|(
+name|rmNode
+operator|.
+name|getState
+argument_list|()
+argument_list|,
+name|finalState
 argument_list|)
 expr_stmt|;
 comment|// TODO handle NM resource resume in YARN-3223.

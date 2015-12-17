@@ -764,6 +764,11 @@ operator|=
 literal|true
 expr_stmt|;
 break|break;
+case|case
+name|DECOMMISSIONING
+case|:
+comment|// Do nothing
+break|break;
 default|default:
 name|LOG
 operator|.

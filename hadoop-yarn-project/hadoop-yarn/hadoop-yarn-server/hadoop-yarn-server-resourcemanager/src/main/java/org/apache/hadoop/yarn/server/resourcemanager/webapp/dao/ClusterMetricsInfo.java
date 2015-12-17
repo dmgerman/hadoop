@@ -262,6 +262,11 @@ specifier|protected
 name|int
 name|unhealthyNodes
 decl_stmt|;
+DECL|field|decommissioningNodes
+specifier|protected
+name|int
+name|decommissioningNodes
+decl_stmt|;
 DECL|field|decommissionedNodes
 specifier|protected
 name|int
@@ -497,6 +502,15 @@ operator|=
 name|clusterMetrics
 operator|.
 name|getUnhealthyNMs
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|decommissioningNodes
+operator|=
+name|clusterMetrics
+operator|.
+name|getNumDecommissioningNMs
 argument_list|()
 expr_stmt|;
 name|this
@@ -795,6 +809,18 @@ return|return
 name|this
 operator|.
 name|unhealthyNodes
+return|;
+block|}
+DECL|method|getDecommissioningNodes ()
+specifier|public
+name|int
+name|getDecommissioningNodes
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|decommissioningNodes
 return|;
 block|}
 DECL|method|getDecommissionedNodes ()
