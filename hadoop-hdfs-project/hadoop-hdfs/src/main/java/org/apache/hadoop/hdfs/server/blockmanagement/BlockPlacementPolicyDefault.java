@@ -708,7 +708,8 @@ operator|<
 name|numOfReplicas
 condition|)
 block|{
-comment|// Not enough favored nodes, choose other nodes.
+comment|// Not enough favored nodes, choose other nodes, based on block
+comment|// placement policy (HDFS-9393).
 name|numOfReplicas
 operator|-=
 name|results
@@ -716,6 +717,26 @@ operator|.
 name|size
 argument_list|()
 expr_stmt|;
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storage
+range|:
+name|results
+control|)
+block|{
+comment|// add localMachine and related nodes to favoriteAndExcludedNodes
+name|addToExcludedNodes
+argument_list|(
+name|storage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+argument_list|,
+name|favoriteAndExcludedNodes
+argument_list|)
+expr_stmt|;
+block|}
 name|DatanodeStorageInfo
 index|[]
 name|remainingTargets
@@ -728,7 +749,14 @@ name|numOfReplicas
 argument_list|,
 name|writer
 argument_list|,
-name|results
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+argument_list|(
+name|numOfReplicas
+argument_list|)
 argument_list|,
 literal|false
 argument_list|,
