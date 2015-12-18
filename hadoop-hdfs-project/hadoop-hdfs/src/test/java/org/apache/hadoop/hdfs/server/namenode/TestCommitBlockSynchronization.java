@@ -1303,6 +1303,17 @@ literal|0
 argument_list|)
 block|}
 decl_stmt|;
+name|String
+index|[]
+name|storageIDs
+init|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"fake-storage-ID"
+block|}
+decl_stmt|;
 name|ExtendedBlock
 name|lastBlock
 init|=
@@ -1326,7 +1337,7 @@ literal|false
 argument_list|,
 name|newTargets
 argument_list|,
-literal|null
+name|storageIDs
 argument_list|)
 expr_stmt|;
 comment|// Repeat the call to make sure it returns true
@@ -1346,7 +1357,7 @@ literal|false
 argument_list|,
 name|newTargets
 argument_list|,
-literal|null
+name|storageIDs
 argument_list|)
 expr_stmt|;
 block|}

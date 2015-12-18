@@ -448,22 +448,6 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|StripedFileTestUtil
-operator|.
-name|blockSize
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -1215,6 +1199,8 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_SIZE_KEY
 argument_list|,
+name|StripedFileTestUtil
+operator|.
 name|blockSize
 argument_list|)
 expr_stmt|;
@@ -1281,6 +1267,8 @@ name|fileLen
 init|=
 name|NUM_DATA_BLOCKS
 operator|*
+name|StripedFileTestUtil
+operator|.
 name|blockSize
 decl_stmt|;
 name|Path
