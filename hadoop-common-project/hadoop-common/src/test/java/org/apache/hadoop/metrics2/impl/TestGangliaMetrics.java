@@ -124,6 +124,32 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|CopyOnWriteArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|io
+operator|.
+name|Charsets
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1061,6 +1087,10 @@ operator|new
 name|String
 argument_list|(
 name|bytes
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 decl_stmt|;
 for|for
@@ -1251,7 +1281,7 @@ name|DatagramSocket
 block|{
 DECL|field|capture
 specifier|private
-name|ArrayList
+name|List
 argument_list|<
 name|byte
 index|[]
@@ -1269,7 +1299,7 @@ block|{
 name|capture
 operator|=
 operator|new
-name|ArrayList
+name|CopyOnWriteArrayList
 argument_list|<
 name|byte
 index|[]
@@ -1339,7 +1369,7 @@ expr_stmt|;
 block|}
 comment|/**      * @return the captured byte arrays      */
 DECL|method|getCapturedSend ()
-name|ArrayList
+name|List
 argument_list|<
 name|byte
 index|[]
