@@ -78,6 +78,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
@@ -99,12 +117,15 @@ specifier|abstract
 class|class
 name|UpdateApplicationPriorityResponse
 block|{
-DECL|method|newInstance ()
+DECL|method|newInstance ( Priority priority)
 specifier|public
 specifier|static
 name|UpdateApplicationPriorityResponse
 name|newInstance
-parameter_list|()
+parameter_list|(
+name|Priority
+name|priority
+parameter_list|)
 block|{
 name|UpdateApplicationPriorityResponse
 name|response
@@ -118,10 +139,36 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|response
+operator|.
+name|setApplicationPriority
+argument_list|(
+name|priority
+argument_list|)
+expr_stmt|;
 return|return
 name|response
 return|;
 block|}
+comment|/**    * Get the<code>Priority</code> of the application to be set.    * @return Updated<code>Priority</code> of the application.    */
+DECL|method|getApplicationPriority ()
+specifier|public
+specifier|abstract
+name|Priority
+name|getApplicationPriority
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<code>Priority</code> of the application.    *    * @param priority<code>Priority</code> of the application    */
+DECL|method|setApplicationPriority (Priority priority)
+specifier|public
+specifier|abstract
+name|void
+name|setApplicationPriority
+parameter_list|(
+name|Priority
+name|priority
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

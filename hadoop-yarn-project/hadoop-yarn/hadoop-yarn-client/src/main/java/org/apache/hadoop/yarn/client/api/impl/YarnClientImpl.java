@@ -5008,7 +5008,7 @@ annotation|@
 name|Override
 DECL|method|updateApplicationPriority (ApplicationId applicationId, Priority priority)
 specifier|public
-name|void
+name|Priority
 name|updateApplicationPriority
 parameter_list|(
 name|ApplicationId
@@ -5034,13 +5034,17 @@ argument_list|,
 name|priority
 argument_list|)
 decl_stmt|;
+return|return
 name|rmClient
 operator|.
 name|updateApplicationPriority
 argument_list|(
 name|request
 argument_list|)
-expr_stmt|;
+operator|.
+name|getApplicationPriority
+argument_list|()
+return|;
 block|}
 annotation|@
 name|Override

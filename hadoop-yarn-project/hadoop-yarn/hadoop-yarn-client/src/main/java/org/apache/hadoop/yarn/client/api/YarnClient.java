@@ -1413,15 +1413,15 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * The interface used by client to set priority of an application    *</p>    * @param applicationId    * @param priority    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>    * The interface used by client to set priority of an application    *</p>    * @param applicationId    * @param priority    * @return updated priority of an application.    * @throws YarnException    * @throws IOException    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|updateApplicationPriority (ApplicationId applicationId, Priority priority)
+DECL|method|updateApplicationPriority ( ApplicationId applicationId, Priority priority)
 specifier|public
 specifier|abstract
-name|void
+name|Priority
 name|updateApplicationPriority
 parameter_list|(
 name|ApplicationId

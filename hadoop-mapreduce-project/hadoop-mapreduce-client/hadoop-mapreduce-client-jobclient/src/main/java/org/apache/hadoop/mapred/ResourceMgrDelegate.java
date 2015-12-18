@@ -2711,7 +2711,7 @@ annotation|@
 name|Override
 DECL|method|updateApplicationPriority (ApplicationId applicationId, Priority priority)
 specifier|public
-name|void
+name|Priority
 name|updateApplicationPriority
 parameter_list|(
 name|ApplicationId
@@ -2725,6 +2725,7 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+return|return
 name|client
 operator|.
 name|updateApplicationPriority
@@ -2733,7 +2734,7 @@ name|applicationId
 argument_list|,
 name|priority
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 annotation|@
 name|Override

@@ -4443,6 +4443,9 @@ operator|+
 name|applicationId
 argument_list|)
 expr_stmt|;
+name|Priority
+name|updateApplicationPriority
+init|=
 name|client
 operator|.
 name|updateApplicationPriority
@@ -4451,12 +4454,22 @@ name|appId
 argument_list|,
 name|newAppPriority
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+if|if
+condition|(
+name|newAppPriority
+operator|.
+name|equals
+argument_list|(
+name|updateApplicationPriority
+argument_list|)
+condition|)
+block|{
 name|sysout
 operator|.
 name|println
 argument_list|(
-literal|"Successfully updated the application with id "
+literal|"Successfully updated the application "
 operator|+
 name|applicationId
 operator|+
@@ -4467,6 +4480,23 @@ operator|+
 literal|"'"
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|sysout
+operator|.
+name|println
+argument_list|(
+literal|"Updated priority of an application  "
+operator|+
+name|applicationId
+operator|+
+literal|" to cluster max priority OR keeping old priority"
+operator|+
+literal|" as application is in final states"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class
