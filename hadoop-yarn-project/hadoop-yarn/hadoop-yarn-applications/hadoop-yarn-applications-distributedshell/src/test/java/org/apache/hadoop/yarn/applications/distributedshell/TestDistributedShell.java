@@ -1633,6 +1633,18 @@ operator|==
 literal|2.0f
 condition|)
 block|{
+comment|// set version to 2
+name|conf
+operator|.
+name|setFloat
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_VERSION
+argument_list|,
+literal|2.0f
+argument_list|)
+expr_stmt|;
 comment|// disable v1 timeline server since we no longer have a server here
 comment|// enable aux-service based timeline aggregators
 name|conf
