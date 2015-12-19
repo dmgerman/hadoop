@@ -284,6 +284,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -849,6 +861,10 @@ name|shutdown
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 name|IOUtils
 operator|.
@@ -870,11 +886,16 @@ argument_list|)
 expr_stmt|;
 comment|// Should not leak clients between tests -- this can cause flaky tests.
 comment|// (See HDFS-4643)
+comment|// Wait for IPC clients to terminate to avoid flaky tests
 name|GenericTestUtils
 operator|.
-name|assertNoThreadsMatching
+name|waitForThreadTermination
 argument_list|(
 literal|".*IPC Client.*"
+argument_list|,
+literal|100
+argument_list|,
+literal|1000
 argument_list|)
 expr_stmt|;
 if|if
