@@ -88,15 +88,13 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|directory
+name|common
 operator|.
-name|api
-operator|.
-name|util
+name|base
 operator|.
 name|Strings
 import|;
@@ -108,13 +106,9 @@ name|org
 operator|.
 name|apache
 operator|.
-name|directory
+name|commons
 operator|.
-name|api
-operator|.
-name|util
-operator|.
-name|exception
+name|lang
 operator|.
 name|NotImplementedException
 import|;
@@ -2175,7 +2169,7 @@ argument_list|(
 operator|!
 name|Strings
 operator|.
-name|isEmpty
+name|isNullOrEmpty
 argument_list|(
 name|rr
 operator|.
