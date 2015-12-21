@@ -136,6 +136,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|TreeMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|ConcurrentHashMap
@@ -5583,7 +5593,7 @@ argument_list|>
 name|newMap
 init|=
 operator|new
-name|HashMap
+name|TreeMap
 argument_list|<
 name|NodeId
 argument_list|,
