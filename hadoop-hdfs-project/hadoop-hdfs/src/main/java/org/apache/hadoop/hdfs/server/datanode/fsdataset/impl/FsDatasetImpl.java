@@ -6491,6 +6491,13 @@ name|getBlockId
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// If there are any hardlinks to the block, break them.  This ensures we are
+comment|// not appending to a file that is part of a previous/ directory.
+name|replicaInfo
+operator|.
+name|breakHardLinksIfNeeded
+argument_list|()
+expr_stmt|;
 comment|// construct a RBW replica with the new GS
 name|File
 name|blkfile
@@ -13207,6 +13214,11 @@ operator|>
 name|newlength
 condition|)
 block|{
+name|rur
+operator|.
+name|breakHardLinksIfNeeded
+argument_list|()
+expr_stmt|;
 name|truncateBlock
 argument_list|(
 name|blockFile
