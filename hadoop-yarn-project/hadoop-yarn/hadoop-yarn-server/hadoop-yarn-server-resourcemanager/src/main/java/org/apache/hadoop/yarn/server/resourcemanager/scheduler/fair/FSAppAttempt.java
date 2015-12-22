@@ -2518,10 +2518,10 @@ return|return
 name|container
 return|;
 block|}
-comment|/**    * Reserve a spot for {@code container} on this {@code node}. If    * the container is {@code alreadyReserved} on the node, simply    * update relevant bookeeping. This dispatches ro relevant handlers    * in {@link FSSchedulerNode}..    */
+comment|/**    * Reserve a spot for {@code container} on this {@code node}. If    * the container is {@code alreadyReserved} on the node, simply    * update relevant bookeeping. This dispatches ro relevant handlers    * in {@link FSSchedulerNode}..    * return whether reservation was possible with the current threshold limits    */
 DECL|method|reserve (Priority priority, FSSchedulerNode node, Container container, NodeType type, boolean alreadyReserved)
 specifier|private
-name|void
+name|boolean
 name|reserve
 parameter_list|(
 name|Priority
@@ -2661,7 +2661,13 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+literal|true
+return|;
 block|}
+return|return
+literal|false
+return|;
 block|}
 DECL|method|reservationExceedsThreshold (FSSchedulerNode node, NodeType type)
 specifier|private
@@ -3316,15 +3322,14 @@ name|getResource
 argument_list|()
 return|;
 block|}
+comment|// The desired container won't fit here, so reserve
 if|if
 condition|(
 name|isReservable
 argument_list|(
 name|container
 argument_list|)
-condition|)
-block|{
-comment|// The desired container won't fit here, so reserve
+operator|&&
 name|reserve
 argument_list|(
 name|request
@@ -3340,7 +3345,8 @@ name|type
 argument_list|,
 name|reserved
 argument_list|)
-expr_stmt|;
+condition|)
+block|{
 return|return
 name|FairScheduler
 operator|.
