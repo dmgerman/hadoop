@@ -236,7 +236,9 @@ name|hdfs
 operator|.
 name|web
 operator|.
-name|ByteRangeInputStream
+name|WebHdfsFileSystem
+operator|.
+name|WebHdfsInputStream
 import|;
 end_import
 
@@ -1337,7 +1339,7 @@ operator|.
 name|getWrappedStream
 argument_list|()
 operator|instanceof
-name|ByteRangeInputStream
+name|WebHdfsInputStream
 operator|)
 condition|)
 block|{

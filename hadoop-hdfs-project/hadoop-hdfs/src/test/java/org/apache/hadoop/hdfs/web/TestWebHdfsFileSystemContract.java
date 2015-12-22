@@ -1180,6 +1180,9 @@ name|open
 argument_list|(
 name|p
 argument_list|)
+operator|.
+name|read
+argument_list|()
 expr_stmt|;
 name|fail
 argument_list|(

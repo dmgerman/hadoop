@@ -7390,6 +7390,9 @@ name|open
 argument_list|(
 name|filePath
 argument_list|)
+operator|.
+name|read
+argument_list|()
 expr_stmt|;
 name|assertFalse
 argument_list|(

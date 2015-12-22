@@ -1671,6 +1671,9 @@ name|open
 argument_list|(
 name|file
 argument_list|)
+operator|.
+name|read
+argument_list|()
 expr_stmt|;
 name|verifyAuditLogsCheckPattern
 argument_list|(
