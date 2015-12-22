@@ -434,6 +434,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|net
+operator|.
+name|ServerSocketUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|SecurityUtil
@@ -1064,7 +1078,16 @@ name|DFSConfigKeys
 operator|.
 name|FS_DEFAULT_NAME_KEY
 argument_list|,
-literal|"hdfs://127.0.0.1:1234"
+literal|"hdfs://127.0.0.1:"
+operator|+
+name|ServerSocketUtil
+operator|.
+name|getPort
+argument_list|(
+literal|0
+argument_list|,
+literal|100
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|c
@@ -1073,9 +1096,9 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_BACKUP_HTTP_ADDRESS_KEY
+name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|,
-literal|"localhost:0"
+literal|"127.0.0.1:0"
 argument_list|)
 expr_stmt|;
 name|c
@@ -1295,9 +1318,22 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"IOException thrown as expected"
+literal|"IOException thrown."
 argument_list|,
 name|e
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Running in secure mode"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
