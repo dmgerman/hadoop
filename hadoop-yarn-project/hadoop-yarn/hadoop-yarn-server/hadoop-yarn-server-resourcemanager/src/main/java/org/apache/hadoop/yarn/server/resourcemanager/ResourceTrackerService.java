@@ -118,18 +118,6 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|ConcurrentHashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|ConcurrentMap
 import|;
 end_import
@@ -3298,6 +3286,24 @@ name|systemCredentials
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|timelineV2Enabled
+condition|)
+block|{
+comment|// Return collectors' map that NM needs to know
+name|setAppCollectorsMapToResponse
+argument_list|(
+name|rmNode
+operator|.
+name|getRunningApps
+argument_list|()
+argument_list|,
+name|nodeHeartBeatResponse
+argument_list|)
+expr_stmt|;
+block|}
+comment|// 4. Send status to RMNode, saving the latest response.
 name|List
 argument_list|<
 name|ApplicationId
@@ -3309,27 +3315,6 @@ operator|.
 name|getKeepAliveApplications
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|timelineV2Enabled
-operator|&&
-name|keepAliveApps
-operator|!=
-literal|null
-condition|)
-block|{
-comment|// Return collectors' map that NM needs to know
-comment|// TODO we should optimize this to only include collector info that NM
-comment|// doesn't know yet.
-name|setAppCollectorsMapToResponse
-argument_list|(
-name|keepAliveApps
-argument_list|,
-name|nodeHeartBeatResponse
-argument_list|)
-expr_stmt|;
-block|}
-comment|// 4. Send status to RMNode, saving the latest response.
 name|RMNodeStatusEvent
 name|nodeStatusEvent
 init|=
@@ -3520,7 +3505,7 @@ return|return
 name|nodeHeartBeatResponse
 return|;
 block|}
-DECL|method|setAppCollectorsMapToResponse ( List<ApplicationId> liveApps, NodeHeartbeatResponse response)
+DECL|method|setAppCollectorsMapToResponse ( List<ApplicationId> runningApps, NodeHeartbeatResponse response)
 specifier|private
 name|void
 name|setAppCollectorsMapToResponse
@@ -3529,7 +3514,7 @@ name|List
 argument_list|<
 name|ApplicationId
 argument_list|>
-name|liveApps
+name|runningApps
 parameter_list|,
 name|NodeHeartbeatResponse
 name|response
@@ -3544,7 +3529,7 @@ argument_list|>
 name|liveAppCollectorsMap
 init|=
 operator|new
-name|ConcurrentHashMap
+name|HashMap
 argument_list|<
 name|ApplicationId
 argument_list|,
@@ -3565,42 +3550,24 @@ operator|.
 name|getRMApps
 argument_list|()
 decl_stmt|;
-comment|// Set collectors for all apps now.
-comment|// TODO set collectors for only active apps running on NM (liveApps cannot be
-comment|// used for this case)
+comment|// Set collectors for all running apps on this node.
 for|for
 control|(
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|ApplicationId
-argument_list|,
-name|RMApp
-argument_list|>
-name|rmApp
-range|:
-name|rmApps
-operator|.
-name|entrySet
-argument_list|()
-control|)
-block|{
 name|ApplicationId
 name|appId
-init|=
-name|rmApp
-operator|.
-name|getKey
-argument_list|()
-decl_stmt|;
+range|:
+name|runningApps
+control|)
+block|{
 name|String
 name|appCollectorAddr
 init|=
-name|rmApp
+name|rmApps
 operator|.
-name|getValue
-argument_list|()
+name|get
+argument_list|(
+name|appId
+argument_list|)
 operator|.
 name|getCollectorAddr
 argument_list|()
@@ -3621,6 +3588,29 @@ argument_list|,
 name|appCollectorAddr
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Collector for applicaton: "
+operator|+
+name|appId
+operator|+
+literal|" hasn't registered yet!"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 name|response
