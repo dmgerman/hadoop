@@ -4261,6 +4261,13 @@ argument_list|(
 name|nodeDescr
 argument_list|)
 expr_stmt|;
+name|heartbeatManager
+operator|.
+name|updateDnStat
+argument_list|(
+name|nodeDescr
+argument_list|)
+expr_stmt|;
 name|incrementVersionCount
 argument_list|(
 name|nodeReg

@@ -872,6 +872,13 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
+name|stats
+operator|.
+name|add
+argument_list|(
+name|d
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|getDatanodes ()
@@ -908,13 +915,6 @@ name|d
 parameter_list|)
 block|{
 comment|// update in-service node count
-name|stats
-operator|.
-name|add
-argument_list|(
-name|d
-argument_list|)
-expr_stmt|;
 name|datanodes
 operator|.
 name|add
@@ -927,6 +927,23 @@ operator|.
 name|setAlive
 argument_list|(
 literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|updateDnStat (final DatanodeDescriptor d)
+name|void
+name|updateDnStat
+parameter_list|(
+specifier|final
+name|DatanodeDescriptor
+name|d
+parameter_list|)
+block|{
+name|stats
+operator|.
+name|add
+argument_list|(
+name|d
 argument_list|)
 expr_stmt|;
 block|}
