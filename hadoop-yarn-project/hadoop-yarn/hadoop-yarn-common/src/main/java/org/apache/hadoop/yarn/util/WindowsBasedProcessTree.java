@@ -32,6 +32,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|math
+operator|.
+name|BigInteger
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|HashMap
@@ -89,6 +99,20 @@ operator|.
 name|InterfaceAudience
 operator|.
 name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|CpuTimeTracker
 import|;
 end_import
 
@@ -231,6 +255,19 @@ name|ProcessInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/** Track CPU utilization. */
+DECL|field|cpuTimeTracker
+specifier|private
+specifier|final
+name|CpuTimeTracker
+name|cpuTimeTracker
+decl_stmt|;
+comment|/** Clock to account for CPU utilization. */
+DECL|field|clock
+specifier|private
+name|Clock
+name|clock
+decl_stmt|;
 DECL|method|isAvailable ()
 specifier|public
 specifier|static
@@ -338,12 +375,38 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|WindowsBasedProcessTree (String pid)
+comment|/**    * Create a monitor for a Windows process tree.    * @param pid Identifier of the job object.    */
+DECL|method|WindowsBasedProcessTree (final String pid)
 specifier|public
 name|WindowsBasedProcessTree
 parameter_list|(
+specifier|final
 name|String
 name|pid
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|pid
+argument_list|,
+operator|new
+name|SystemClock
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create a monitor for a Windows process tree.    * @param pid Identifier of the job object.    * @param pClock Clock to keep track of time for CPU utilization.    */
+DECL|method|WindowsBasedProcessTree (final String pid, final Clock pClock)
+specifier|public
+name|WindowsBasedProcessTree
+parameter_list|(
+specifier|final
+name|String
+name|pid
+parameter_list|,
+specifier|final
+name|Clock
+name|pClock
 parameter_list|)
 block|{
 name|super
@@ -351,9 +414,28 @@ argument_list|(
 name|pid
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
 name|taskProcessId
 operator|=
 name|pid
+expr_stmt|;
+name|this
+operator|.
+name|clock
+operator|=
+name|pClock
+expr_stmt|;
+comment|// Instead of jiffies, Windows uses milliseconds directly; 1ms = 1 jiffy
+name|this
+operator|.
+name|cpuTimeTracker
+operator|=
+operator|new
+name|CpuTimeTracker
+argument_list|(
+literal|1L
+argument_list|)
 expr_stmt|;
 block|}
 comment|// helper method to override while testing
@@ -1104,6 +1186,53 @@ return|return
 name|cpuTimeMs
 return|;
 block|}
+comment|/**    * Get the number of used ms for all the processes under the monitored job    * object.    * @return Total consumed milliseconds by all processes in the job object.    */
+DECL|method|getTotalProcessMs ()
+specifier|private
+name|BigInteger
+name|getTotalProcessMs
+parameter_list|()
+block|{
+name|long
+name|totalMs
+init|=
+literal|0
+decl_stmt|;
+for|for
+control|(
+name|ProcessInfo
+name|p
+range|:
+name|processTree
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|p
+operator|!=
+literal|null
+condition|)
+block|{
+name|totalMs
+operator|+=
+name|p
+operator|.
+name|cpuTimeMs
+expr_stmt|;
+block|}
+block|}
+return|return
+name|BigInteger
+operator|.
+name|valueOf
+argument_list|(
+name|totalMs
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getCpuUsagePercent ()
@@ -1112,8 +1241,29 @@ name|float
 name|getCpuUsagePercent
 parameter_list|()
 block|{
+name|BigInteger
+name|processTotalMs
+init|=
+name|getTotalProcessMs
+argument_list|()
+decl_stmt|;
+name|cpuTimeTracker
+operator|.
+name|updateElapsedJiffies
+argument_list|(
+name|processTotalMs
+argument_list|,
+name|clock
+operator|.
+name|getTime
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
-name|UNAVAILABLE
+name|cpuTimeTracker
+operator|.
+name|getCpuTrackerUsagePercent
+argument_list|()
 return|;
 block|}
 block|}
