@@ -316,7 +316,7 @@ decl_stmt|;
 DECL|field|liveBlockIndices
 specifier|private
 specifier|final
-name|short
+name|byte
 index|[]
 name|liveBlockIndices
 decl_stmt|;
@@ -326,7 +326,7 @@ specifier|final
 name|ErasureCodingPolicy
 name|ecPolicy
 decl_stmt|;
-DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeStorageInfo[] targetDnStorageInfo, short[] liveBlockIndices, ErasureCodingPolicy ecPolicy)
+DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeStorageInfo[] targetDnStorageInfo, byte[] liveBlockIndices, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|BlockECRecoveryInfo
 parameter_list|(
@@ -341,7 +341,7 @@ name|DatanodeStorageInfo
 index|[]
 name|targetDnStorageInfo
 parameter_list|,
-name|short
+name|byte
 index|[]
 name|liveBlockIndices
 parameter_list|,
@@ -382,7 +382,7 @@ name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeInfo[] targets, String[] targetStorageIDs, StorageType[] targetStorageTypes, short[] liveBlockIndices, ErasureCodingPolicy ecPolicy)
+DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeInfo[] targets, String[] targetStorageIDs, StorageType[] targetStorageTypes, byte[] liveBlockIndices, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|BlockECRecoveryInfo
 parameter_list|(
@@ -405,7 +405,7 @@ name|StorageType
 index|[]
 name|targetStorageTypes
 parameter_list|,
-name|short
+name|byte
 index|[]
 name|liveBlockIndices
 parameter_list|,
@@ -447,6 +447,15 @@ name|this
 operator|.
 name|liveBlockIndices
 operator|=
+name|liveBlockIndices
+operator|==
+literal|null
+condition|?
+operator|new
+name|byte
+index|[]
+block|{}
+else|:
 name|liveBlockIndices
 expr_stmt|;
 name|this
@@ -512,7 +521,7 @@ return|;
 block|}
 DECL|method|getLiveBlockIndices ()
 specifier|public
-name|short
+name|byte
 index|[]
 name|getLiveBlockIndices
 parameter_list|()

@@ -1384,7 +1384,7 @@ comment|// sources
 DECL|field|liveIndices
 specifier|private
 specifier|final
-name|short
+name|byte
 index|[]
 name|liveIndices
 decl_stmt|;

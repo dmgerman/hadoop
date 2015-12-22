@@ -4877,7 +4877,7 @@ argument_list|(
 name|rBlock
 argument_list|,
 operator|new
-name|int
+name|byte
 index|[
 literal|9
 index|]

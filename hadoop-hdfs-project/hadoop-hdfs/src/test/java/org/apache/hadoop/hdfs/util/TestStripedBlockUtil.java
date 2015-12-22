@@ -659,12 +659,12 @@ index|[
 name|BLK_GROUP_WIDTH
 index|]
 decl_stmt|;
-name|int
+name|byte
 index|[]
 name|indices
 init|=
 operator|new
-name|int
+name|byte
 index|[
 name|BLK_GROUP_WIDTH
 index|]
@@ -689,6 +689,10 @@ index|[
 name|i
 index|]
 operator|=
+call|(
+name|byte
+call|)
+argument_list|(
 operator|(
 name|i
 operator|+
@@ -696,6 +700,7 @@ literal|2
 operator|)
 operator|%
 name|DATA_BLK_NUM
+argument_list|)
 expr_stmt|;
 comment|// Location port always equal to logical index of a block,
 comment|// for easier verification

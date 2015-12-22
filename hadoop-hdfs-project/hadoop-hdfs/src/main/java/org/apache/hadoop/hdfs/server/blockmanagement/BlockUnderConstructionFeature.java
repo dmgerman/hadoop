@@ -427,7 +427,7 @@ block|}
 comment|/**    * @return the index array indicating the block index in each storage. Used    * only by striped blocks.    */
 DECL|method|getBlockIndices ()
 specifier|public
-name|int
+name|byte
 index|[]
 name|getBlockIndices
 parameter_list|()
@@ -438,12 +438,12 @@ init|=
 name|getNumExpectedLocations
 argument_list|()
 decl_stmt|;
-name|int
+name|byte
 index|[]
 name|indices
 init|=
 operator|new
-name|int
+name|byte
 index|[
 name|numLocations
 index|]

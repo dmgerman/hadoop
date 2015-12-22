@@ -64,11 +64,11 @@ block|{
 DECL|field|liveBlockIndicies
 specifier|private
 specifier|final
-name|short
+name|byte
 index|[]
 name|liveBlockIndicies
 decl_stmt|;
-DECL|method|ErasureCodingWork (BlockInfo block, BlockCollection bc, DatanodeDescriptor[] srcNodes, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> liveReplicaStorages, int additionalReplRequired, int priority, short[] liveBlockIndicies)
+DECL|method|ErasureCodingWork (BlockInfo block, BlockCollection bc, DatanodeDescriptor[] srcNodes, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> liveReplicaStorages, int additionalReplRequired, int priority, byte[] liveBlockIndicies)
 specifier|public
 name|ErasureCodingWork
 parameter_list|(
@@ -100,7 +100,7 @@ parameter_list|,
 name|int
 name|priority
 parameter_list|,
-name|short
+name|byte
 index|[]
 name|liveBlockIndicies
 parameter_list|)
@@ -141,7 +141,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getLiveBlockIndicies ()
-name|short
+name|byte
 index|[]
 name|getLiveBlockIndicies
 parameter_list|()

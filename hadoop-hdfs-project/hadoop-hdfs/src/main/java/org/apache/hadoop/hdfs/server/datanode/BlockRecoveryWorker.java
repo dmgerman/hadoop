@@ -1992,7 +1992,7 @@ decl_stmt|;
 DECL|field|blockIndices
 specifier|private
 specifier|final
-name|int
+name|byte
 index|[]
 name|blockIndices
 decl_stmt|;

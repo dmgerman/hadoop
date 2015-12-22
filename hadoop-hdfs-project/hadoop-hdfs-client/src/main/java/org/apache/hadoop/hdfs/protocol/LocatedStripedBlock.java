@@ -130,7 +130,7 @@ DECL|field|EMPTY_INDICES
 specifier|private
 specifier|static
 specifier|final
-name|int
+name|byte
 index|[]
 name|EMPTY_INDICES
 init|=
@@ -153,7 +153,8 @@ argument_list|()
 decl_stmt|;
 DECL|field|blockIndices
 specifier|private
-name|int
+specifier|final
+name|byte
 index|[]
 name|blockIndices
 decl_stmt|;
@@ -173,7 +174,7 @@ block|{
 literal|"unchecked"
 block|}
 argument_list|)
-DECL|method|LocatedStripedBlock (ExtendedBlock b, DatanodeInfo[] locs, String[] storageIDs, StorageType[] storageTypes, int[] indices, long startOffset, boolean corrupt, DatanodeInfo[] cachedLocs)
+DECL|method|LocatedStripedBlock (ExtendedBlock b, DatanodeInfo[] locs, String[] storageIDs, StorageType[] storageTypes, byte[] indices, long startOffset, boolean corrupt, DatanodeInfo[] cachedLocs)
 specifier|public
 name|LocatedStripedBlock
 parameter_list|(
@@ -192,7 +193,7 @@ name|StorageType
 index|[]
 name|storageTypes
 parameter_list|,
-name|int
+name|byte
 index|[]
 name|indices
 parameter_list|,
@@ -245,7 +246,7 @@ operator|.
 name|blockIndices
 operator|=
 operator|new
-name|int
+name|byte
 index|[
 name|indices
 operator|.
@@ -365,7 +366,7 @@ return|;
 block|}
 DECL|method|getBlockIndices ()
 specifier|public
-name|int
+name|byte
 index|[]
 name|getBlockIndices
 parameter_list|()

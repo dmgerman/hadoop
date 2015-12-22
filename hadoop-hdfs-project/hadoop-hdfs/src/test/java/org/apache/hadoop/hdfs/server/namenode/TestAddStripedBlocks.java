@@ -1584,7 +1584,7 @@ name|getExpectedStorageLocations
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|int
+name|byte
 index|[]
 name|indices
 init|=
@@ -1654,7 +1654,7 @@ operator|.
 name|getLocations
 argument_list|()
 decl_stmt|;
-name|int
+name|byte
 index|[]
 name|blockIndices
 init|=
@@ -1857,7 +1857,7 @@ operator|.
 name|getExpectedStorageLocations
 argument_list|()
 decl_stmt|;
-name|int
+name|byte
 index|[]
 name|indices
 init|=
@@ -2281,7 +2281,7 @@ operator|.
 name|getExpectedStorageLocations
 argument_list|()
 decl_stmt|;
-name|int
+name|byte
 index|[]
 name|indices
 init|=

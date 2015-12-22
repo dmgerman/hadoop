@@ -1359,7 +1359,7 @@ operator|.
 name|getLocations
 argument_list|()
 decl_stmt|;
-name|int
+name|byte
 index|[]
 name|indices
 init|=
@@ -2371,12 +2371,12 @@ operator|.
 name|size
 argument_list|()
 decl_stmt|;
-name|short
+name|byte
 index|[]
 name|liveIndices
 init|=
 operator|new
-name|short
+name|byte
 index|[
 name|size
 index|]

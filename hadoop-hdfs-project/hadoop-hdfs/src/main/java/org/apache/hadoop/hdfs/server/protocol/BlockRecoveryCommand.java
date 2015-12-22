@@ -378,7 +378,7 @@ block|{
 DECL|field|blockIndices
 specifier|private
 specifier|final
-name|int
+name|byte
 index|[]
 name|blockIndices
 decl_stmt|;
@@ -388,14 +388,14 @@ specifier|final
 name|ErasureCodingPolicy
 name|ecPolicy
 decl_stmt|;
-DECL|method|RecoveringStripedBlock (RecoveringBlock rBlock, int[] blockIndices, ErasureCodingPolicy ecPolicy)
+DECL|method|RecoveringStripedBlock (RecoveringBlock rBlock, byte[] blockIndices, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|RecoveringStripedBlock
 parameter_list|(
 name|RecoveringBlock
 name|rBlock
 parameter_list|,
-name|int
+name|byte
 index|[]
 name|blockIndices
 parameter_list|,
@@ -413,6 +413,15 @@ operator|.
 name|blockIndices
 operator|=
 name|blockIndices
+operator|==
+literal|null
+condition|?
+operator|new
+name|byte
+index|[]
+block|{}
+else|:
+name|blockIndices
 expr_stmt|;
 name|this
 operator|.
@@ -423,7 +432,7 @@ expr_stmt|;
 block|}
 DECL|method|getBlockIndices ()
 specifier|public
-name|int
+name|byte
 index|[]
 name|getBlockIndices
 parameter_list|()

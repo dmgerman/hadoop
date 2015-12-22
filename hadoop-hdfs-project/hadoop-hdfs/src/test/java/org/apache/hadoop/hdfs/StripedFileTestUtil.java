@@ -2184,7 +2184,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// verify that every internal blocks exists
-name|int
+name|byte
 index|[]
 name|blockIndices
 init|=

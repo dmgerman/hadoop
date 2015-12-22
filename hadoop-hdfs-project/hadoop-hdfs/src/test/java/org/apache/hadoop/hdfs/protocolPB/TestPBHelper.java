@@ -6017,12 +6017,12 @@ block|,
 name|targetDnInfos_1
 block|}
 decl_stmt|;
-name|short
+name|byte
 index|[]
 name|liveBlkIndices0
 init|=
 operator|new
-name|short
+name|byte
 index|[
 literal|2
 index|]
@@ -6123,12 +6123,12 @@ block|,
 name|targetDnInfos_3
 block|}
 decl_stmt|;
-name|short
+name|byte
 index|[]
 name|liveBlkIndices1
 init|=
 operator|new
-name|short
+name|byte
 index|[
 literal|2
 index|]
@@ -6388,7 +6388,7 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-name|short
+name|byte
 index|[]
 name|liveBlockIndices1
 init|=
@@ -6397,7 +6397,7 @@ operator|.
 name|getLiveBlockIndices
 argument_list|()
 decl_stmt|;
-name|short
+name|byte
 index|[]
 name|liveBlockIndices2
 init|=

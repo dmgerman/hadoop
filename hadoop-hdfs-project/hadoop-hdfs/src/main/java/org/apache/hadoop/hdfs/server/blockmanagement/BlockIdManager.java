@@ -691,7 +691,7 @@ block|}
 DECL|method|getBlockIndex (Block reportedBlock)
 specifier|public
 specifier|static
-name|int
+name|byte
 name|getBlockIndex
 parameter_list|(
 name|Block
@@ -700,7 +700,7 @@ parameter_list|)
 block|{
 return|return
 call|(
-name|int
+name|byte
 call|)
 argument_list|(
 name|reportedBlock

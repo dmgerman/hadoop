@@ -630,7 +630,7 @@ literal|1
 return|;
 block|}
 DECL|method|getStorageBlockIndex (DatanodeStorageInfo storage)
-name|int
+name|byte
 name|getStorageBlockIndex
 parameter_list|(
 name|DatanodeStorageInfo

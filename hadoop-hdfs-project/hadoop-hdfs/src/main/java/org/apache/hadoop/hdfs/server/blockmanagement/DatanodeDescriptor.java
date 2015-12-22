@@ -2748,7 +2748,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Store block erasure coding work.    */
-DECL|method|addBlockToBeErasureCoded (ExtendedBlock block, DatanodeDescriptor[] sources, DatanodeStorageInfo[] targets, short[] liveBlockIndices, ErasureCodingPolicy ecPolicy)
+DECL|method|addBlockToBeErasureCoded (ExtendedBlock block, DatanodeDescriptor[] sources, DatanodeStorageInfo[] targets, byte[] liveBlockIndices, ErasureCodingPolicy ecPolicy)
 name|void
 name|addBlockToBeErasureCoded
 parameter_list|(
@@ -2763,7 +2763,7 @@ name|DatanodeStorageInfo
 index|[]
 name|targets
 parameter_list|,
-name|short
+name|byte
 index|[]
 name|liveBlockIndices
 parameter_list|,

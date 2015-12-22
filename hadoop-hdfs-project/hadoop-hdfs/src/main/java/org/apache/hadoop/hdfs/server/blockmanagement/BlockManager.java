@@ -3326,7 +3326,7 @@ argument_list|,
 operator|new
 name|LinkedList
 argument_list|<
-name|Short
+name|Byte
 argument_list|>
 argument_list|()
 argument_list|,
@@ -5074,7 +5074,7 @@ name|numMachines
 index|]
 decl_stmt|;
 specifier|final
-name|int
+name|byte
 index|[]
 name|blockIndices
 init|=
@@ -5084,7 +5084,7 @@ name|isStriped
 argument_list|()
 condition|?
 operator|new
-name|int
+name|byte
 index|[
 name|numMachines
 index|]
@@ -5168,7 +5168,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|int
+name|byte
 name|index
 init|=
 operator|(
@@ -5607,7 +5607,7 @@ name|LocatedStripedBlock
 operator|)
 name|b
 decl_stmt|;
-name|int
+name|byte
 index|[]
 name|indices
 init|=
@@ -7972,7 +7972,7 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|Short
+name|Byte
 argument_list|>
 name|liveBlockIndices
 init|=
@@ -8147,12 +8147,12 @@ return|return
 literal|null
 return|;
 block|}
-name|short
+name|byte
 index|[]
 name|indices
 init|=
 operator|new
-name|short
+name|byte
 index|[
 name|liveBlockIndices
 operator|.
@@ -9095,7 +9095,7 @@ block|}
 comment|/**    * Parse the data-nodes the block belongs to and choose a certain number    * from them to be the recovery sources.    *    * We prefer nodes that are in DECOMMISSION_INPROGRESS state to other nodes    * since the former do not have write traffic and hence are less busy.    * We do not use already decommissioned nodes as a source.    * Otherwise we randomly choose nodes among those that did not reach their    * replication limits. However, if the recovery work is of the highest    * priority and all nodes have reached their replication limits, we will    * randomly choose the desired number of nodes despite the replication limit.    *    * In addition form a list of all nodes containing the block    * and calculate its replication numbers.    *    * @param block Block for which a replication source is needed    * @param containingNodes List to be populated with nodes found to contain    *                        the given block    * @param nodesContainingLiveReplicas List to be populated with nodes found    *                                    to contain live replicas of the given    *                                    block    * @param numReplicas NumberReplicas instance to be initialized with the    *                    counts of live, corrupt, excess, and decommissioned    *                    replicas of the given block.    * @param liveBlockIndices List to be populated with indices of healthy    *                         blocks in a striped block group    * @param priority integer representing replication priority of the given    *                 block    * @return the array of DatanodeDescriptor of the chosen nodes from which to    *         recover the given block    */
 annotation|@
 name|VisibleForTesting
-DECL|method|chooseSourceDatanodes (BlockInfo block, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> nodesContainingLiveReplicas, NumberReplicas numReplicas, List<Short> liveBlockIndices, int priority)
+DECL|method|chooseSourceDatanodes (BlockInfo block, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> nodesContainingLiveReplicas, NumberReplicas numReplicas, List<Byte> liveBlockIndices, int priority)
 name|DatanodeDescriptor
 index|[]
 name|chooseSourceDatanodes
@@ -9120,7 +9120,7 @@ name|numReplicas
 parameter_list|,
 name|List
 argument_list|<
-name|Short
+name|Byte
 argument_list|>
 name|liveBlockIndices
 parameter_list|,
@@ -9471,15 +9471,12 @@ name|liveBlockIndices
 operator|.
 name|add
 argument_list|(
-call|(
-name|short
-call|)
-argument_list|(
+operator|(
 operator|(
 name|BlockInfoStriped
 operator|)
 name|block
-argument_list|)
+operator|)
 operator|.
 name|getStorageBlockIndex
 argument_list|(
@@ -19664,7 +19661,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|newLocatedStripedBlock ( ExtendedBlock b, DatanodeStorageInfo[] storages, int[] indices, long startOffset, boolean corrupt)
+DECL|method|newLocatedStripedBlock ( ExtendedBlock b, DatanodeStorageInfo[] storages, byte[] indices, long startOffset, boolean corrupt)
 specifier|public
 specifier|static
 name|LocatedStripedBlock
@@ -19677,7 +19674,7 @@ name|DatanodeStorageInfo
 index|[]
 name|storages
 parameter_list|,
-name|int
+name|byte
 index|[]
 name|indices
 parameter_list|,
