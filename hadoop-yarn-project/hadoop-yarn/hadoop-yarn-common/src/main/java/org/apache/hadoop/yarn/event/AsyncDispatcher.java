@@ -308,6 +308,7 @@ literal|true
 decl_stmt|;
 DECL|field|waitForDrained
 specifier|private
+specifier|final
 name|Object
 name|waitForDrained
 init|=
