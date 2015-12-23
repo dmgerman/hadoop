@@ -3162,6 +3162,9 @@ argument_list|)
 operator|.
 name|_
 argument_list|()
+operator|.
+name|_
+argument_list|()
 expr_stmt|;
 comment|//for the queue hierarchy under label
 name|UL
