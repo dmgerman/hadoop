@@ -2125,7 +2125,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"\n, {'sType':'numeric', 'aTargets': [ 0 ]"
+literal|"\n, {'sType':'natural', 'aTargets': [ 0 ]"
 argument_list|)
 operator|.
 name|append
