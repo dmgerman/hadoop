@@ -64,6 +64,22 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
+name|Evolving
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
 name|Stable
 import|;
 end_import
@@ -101,7 +117,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * {@code ContainerStatus} represents the current status of a  * {@code Container}.  *<p>  * It provides details such as:  *<ul>  *<li>{@code ContainerId} of the container.</li>  *<li>{@code ContainerState} of the container.</li>  *<li><em>Exit status</em> of a completed container.</li>  *<li><em>Diagnostic</em> message for a failed container.</li>  *<li>{@link Resource} allocated to the container.</li>  *</ul>  */
+comment|/**  * {@code ContainerStatus} represents the current status of a  * {@code Container}.  *<p>  * It provides details such as:  *<ul>  *<li>{@code ContainerId} of the container.</li>  *<li>{@code ExecutionType} of the container.</li>  *<li>{@code ContainerState} of the container.</li>  *<li><em>Exit status</em> of a completed container.</li>  *<li><em>Diagnostic</em> message for a failed container.</li>  *<li>{@link Resource} allocated to the container.</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -138,6 +154,49 @@ name|int
 name|exitStatus
 parameter_list|)
 block|{
+return|return
+name|newInstance
+argument_list|(
+name|containerId
+argument_list|,
+name|ExecutionType
+operator|.
+name|GUARANTEED
+argument_list|,
+name|containerState
+argument_list|,
+name|diagnostics
+argument_list|,
+name|exitStatus
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|newInstance (ContainerId containerId, ExecutionType executionType, ContainerState containerState, String diagnostics, int exitStatus)
+specifier|public
+specifier|static
+name|ContainerStatus
+name|newInstance
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|ExecutionType
+name|executionType
+parameter_list|,
+name|ContainerState
+name|containerState
+parameter_list|,
+name|String
+name|diagnostics
+parameter_list|,
+name|int
+name|exitStatus
+parameter_list|)
+block|{
 name|ContainerStatus
 name|containerStatus
 init|=
@@ -150,6 +209,13 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|containerStatus
+operator|.
+name|setExecutionType
+argument_list|(
+name|executionType
+argument_list|)
+expr_stmt|;
 name|containerStatus
 operator|.
 name|setState
@@ -206,6 +272,32 @@ name|setContainerId
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<code>ExecutionType</code> of the container.    * @return<code>ExecutionType</code> of the container    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|getExecutionType ()
+specifier|public
+specifier|abstract
+name|ExecutionType
+name|getExecutionType
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setExecutionType (ExecutionType executionType)
+specifier|public
+specifier|abstract
+name|void
+name|setExecutionType
+parameter_list|(
+name|ExecutionType
+name|executionType
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<code>ContainerState</code> of the container.    * @return<code>ContainerState</code> of the container    */
