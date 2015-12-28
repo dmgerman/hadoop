@@ -242,6 +242,11 @@ specifier|protected
 name|long
 name|startTime
 decl_stmt|;
+DECL|field|finishedTime
+specifier|protected
+name|long
+name|finishedTime
+decl_stmt|;
 DECL|field|containerId
 specifier|protected
 name|String
@@ -266,6 +271,11 @@ DECL|field|blacklistedNodes
 specifier|protected
 name|String
 name|blacklistedNodes
+decl_stmt|;
+DECL|field|appAttemptId
+specifier|protected
+name|String
+name|appAttemptId
 decl_stmt|;
 DECL|method|AppAttemptInfo ()
 specifier|public
@@ -351,6 +361,15 @@ operator|=
 name|attempt
 operator|.
 name|getStartTime
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|finishedTime
+operator|=
+name|attempt
+operator|.
+name|getFinishTime
 argument_list|()
 expr_stmt|;
 name|Container
@@ -487,6 +506,18 @@ expr_stmt|;
 block|}
 block|}
 block|}
+name|this
+operator|.
+name|appAttemptId
+operator|=
+name|attempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|method|getAttemptId ()
@@ -511,6 +542,18 @@ return|return
 name|this
 operator|.
 name|startTime
+return|;
+block|}
+DECL|method|getFinishedTime ()
+specifier|public
+name|long
+name|getFinishedTime
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|finishedTime
 return|;
 block|}
 DECL|method|getNodeHttpAddress ()
