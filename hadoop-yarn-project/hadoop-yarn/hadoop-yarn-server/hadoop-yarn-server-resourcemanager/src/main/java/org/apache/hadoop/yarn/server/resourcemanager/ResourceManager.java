@@ -4578,6 +4578,138 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+elseif|else
+if|if
+condition|(
+name|rmApp
+operator|.
+name|getApplicationSubmissionContext
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|rmApp
+operator|.
+name|getApplicationSubmissionContext
+argument_list|()
+operator|.
+name|getKeepContainersAcrossApplicationAttempts
+argument_list|()
+operator|&&
+name|event
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|RMAppAttemptEventType
+operator|.
+name|CONTAINER_FINISHED
+condition|)
+block|{
+comment|// For work-preserving AM restart, failed attempts are still
+comment|// capturing CONTAINER_FINISHED events and record the finished
+comment|// containers which will be used by current attempt.
+comment|// We just keep 'yarn.resourcemanager.am.max-attempts' in
+comment|// RMStateStore. If the finished container's attempt is deleted, we
+comment|// use the first attempt in app.attempts to deal with these events.
+name|RMAppAttempt
+name|previousFailedAttempt
+init|=
+name|rmApp
+operator|.
+name|getAppAttempts
+argument_list|()
+operator|.
+name|values
+argument_list|()
+operator|.
+name|iterator
+argument_list|()
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|previousFailedAttempt
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Event "
+operator|+
+name|event
+operator|.
+name|getType
+argument_list|()
+operator|+
+literal|" handled by "
+operator|+
+name|previousFailedAttempt
+argument_list|)
+expr_stmt|;
+name|previousFailedAttempt
+operator|.
+name|handle
+argument_list|(
+name|event
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error in handling event type "
+operator|+
+name|event
+operator|.
+name|getType
+argument_list|()
+operator|+
+literal|" for applicationAttempt "
+operator|+
+name|appAttemptId
+operator|+
+literal|" with "
+operator|+
+name|previousFailedAttempt
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Event "
+operator|+
+name|event
+operator|.
+name|getType
+argument_list|()
+operator|+
+literal|" not handled, because previousFailedAttempt is null"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 block|}

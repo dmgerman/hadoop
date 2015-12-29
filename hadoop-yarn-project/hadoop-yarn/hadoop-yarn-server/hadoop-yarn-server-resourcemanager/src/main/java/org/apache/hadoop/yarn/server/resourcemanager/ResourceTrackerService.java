@@ -1698,6 +1698,24 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|rmAppAttempt
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Ignoring not found attempt "
+operator|+
+name|appAttemptId
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|Container
 name|masterContainer
 init|=

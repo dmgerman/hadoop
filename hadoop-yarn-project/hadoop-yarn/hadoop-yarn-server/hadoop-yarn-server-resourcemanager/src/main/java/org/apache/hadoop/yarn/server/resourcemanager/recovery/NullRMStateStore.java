@@ -515,6 +515,22 @@ name|Exception
 block|{   }
 annotation|@
 name|Override
+DECL|method|removeApplicationAttemptInternal ( ApplicationAttemptId attemptId)
+specifier|public
+specifier|synchronized
+name|void
+name|removeApplicationAttemptInternal
+parameter_list|(
+name|ApplicationAttemptId
+name|attemptId
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+comment|// Do nothing
+block|}
+annotation|@
+name|Override
 DECL|method|checkVersion ()
 specifier|public
 name|void
