@@ -1122,6 +1122,29 @@ return|return
 name|params
 return|;
 block|}
+comment|/**    * Joins the httpserver.    */
+DECL|method|join ()
+specifier|public
+name|void
+name|join
+parameter_list|()
+throws|throws
+name|InterruptedException
+block|{
+if|if
+condition|(
+name|httpServer
+operator|!=
+literal|null
+condition|)
+block|{
+name|httpServer
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|stop ()
 name|void
 name|stop

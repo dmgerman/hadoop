@@ -2915,6 +2915,11 @@ operator|.
 name|join
 argument_list|()
 expr_stmt|;
+name|namenode
+operator|.
+name|joinHttpServer
+argument_list|()
+expr_stmt|;
 comment|// compress image using default codec
 name|LOG
 operator|.
@@ -3070,6 +3075,11 @@ expr_stmt|;
 name|namenode
 operator|.
 name|join
+argument_list|()
+expr_stmt|;
+name|namenode
+operator|.
+name|joinHttpServer
 argument_list|()
 expr_stmt|;
 block|}

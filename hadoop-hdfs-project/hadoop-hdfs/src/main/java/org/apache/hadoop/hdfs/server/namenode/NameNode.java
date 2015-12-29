@@ -4981,6 +4981,56 @@ name|getHttpsAddress
 argument_list|()
 return|;
 block|}
+comment|/**    * @return NameNodeHttpServer, used by unit tests to ensure a full shutdown,    * so that no bind exception is thrown during restart.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|joinHttpServer ()
+specifier|public
+name|void
+name|joinHttpServer
+parameter_list|()
+block|{
+if|if
+condition|(
+name|httpServer
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|httpServer
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Caught InterruptedException joining NameNodeHttpServer"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
 comment|/**    * Verify that configured directories exist, then    * Interactively confirm that formatting is desired     * for each existing directory and format them.    *     * @param conf configuration to use    * @param force if true, format regardless of whether dirs exist    * @return true if formatting was aborted, false otherwise    * @throws IOException    */
 DECL|method|format (Configuration conf, boolean force, boolean isInteractive)
 specifier|private
