@@ -48,6 +48,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Comparator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -356,28 +366,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|rmapp
-operator|.
-name|attempt
-operator|.
-name|RMAppAttemptState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmcontainer
 operator|.
 name|RMContainer
@@ -452,60 +440,13 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|applicationAttemptId
+DECL|field|COMPARATOR
 specifier|private
+specifier|static
 specifier|final
-name|ApplicationAttemptId
-name|applicationAttemptId
-decl_stmt|;
-DECL|field|applicationId
-specifier|final
-name|ApplicationId
-name|applicationId
-decl_stmt|;
-DECL|field|queueName
-specifier|private
-name|String
-name|queueName
-decl_stmt|;
-DECL|field|queue
-name|Queue
-name|queue
-decl_stmt|;
-DECL|field|user
-specifier|final
-name|String
-name|user
-decl_stmt|;
-comment|// TODO making containerIdCounter long
-DECL|field|containerIdCounter
-specifier|private
-specifier|final
-name|AtomicLong
-name|containerIdCounter
-decl_stmt|;
-DECL|field|EPOCH_BIT_SHIFT
-specifier|private
-specifier|final
-name|int
-name|EPOCH_BIT_SHIFT
+name|Comparator
+name|COMPARATOR
 init|=
-literal|40
-decl_stmt|;
-DECL|field|priorities
-specifier|final
-name|Set
-argument_list|<
-name|Priority
-argument_list|>
-name|priorities
-init|=
-operator|new
-name|TreeSet
-argument_list|<
-name|Priority
-argument_list|>
-argument_list|(
 operator|new
 name|org
 operator|.
@@ -525,6 +466,103 @@ name|Priority
 operator|.
 name|Comparator
 argument_list|()
+decl_stmt|;
+DECL|field|EPOCH_BIT_SHIFT
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|EPOCH_BIT_SHIFT
+init|=
+literal|40
+decl_stmt|;
+DECL|field|applicationId
+specifier|private
+specifier|final
+name|ApplicationId
+name|applicationId
+decl_stmt|;
+DECL|field|applicationAttemptId
+specifier|private
+specifier|final
+name|ApplicationAttemptId
+name|applicationAttemptId
+decl_stmt|;
+DECL|field|containerIdCounter
+specifier|private
+specifier|final
+name|AtomicLong
+name|containerIdCounter
+decl_stmt|;
+DECL|field|user
+specifier|private
+specifier|final
+name|String
+name|user
+decl_stmt|;
+DECL|field|queue
+specifier|private
+name|Queue
+name|queue
+decl_stmt|;
+DECL|field|activeUsersManager
+specifier|private
+name|ActiveUsersManager
+name|activeUsersManager
+decl_stmt|;
+DECL|field|pending
+specifier|private
+name|boolean
+name|pending
+init|=
+literal|true
+decl_stmt|;
+comment|// whether accepted/allocated by scheduler
+DECL|field|appResourceUsage
+specifier|private
+name|ResourceUsage
+name|appResourceUsage
+decl_stmt|;
+DECL|field|amBlacklist
+specifier|private
+specifier|final
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|amBlacklist
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
+DECL|field|userBlacklist
+specifier|private
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|userBlacklist
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
+DECL|field|priorities
+specifier|final
+name|Set
+argument_list|<
+name|Priority
+argument_list|>
+name|priorities
+init|=
+operator|new
+name|TreeSet
+argument_list|<>
+argument_list|(
+name|COMPARATOR
 argument_list|)
 decl_stmt|;
 DECL|field|resourceRequestMap
@@ -544,16 +582,7 @@ name|resourceRequestMap
 init|=
 operator|new
 name|ConcurrentHashMap
-argument_list|<
-name|Priority
-argument_list|,
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|ResourceRequest
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -569,62 +598,17 @@ name|Map
 argument_list|<
 name|ContainerId
 argument_list|,
-DECL|field|increaseRequestMap
+DECL|field|containerIncreaseRequestMap
 name|SchedContainerChangeRequest
 argument_list|>
 argument_list|>
 argument_list|>
-name|increaseRequestMap
+name|containerIncreaseRequestMap
 init|=
 operator|new
 name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
-decl_stmt|;
-DECL|field|userBlacklist
-specifier|private
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|userBlacklist
-init|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|()
-decl_stmt|;
-DECL|field|amBlacklist
-specifier|private
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|amBlacklist
-init|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|()
-decl_stmt|;
-comment|//private final ApplicationStore store;
-DECL|field|activeUsersManager
-specifier|private
-name|ActiveUsersManager
-name|activeUsersManager
-decl_stmt|;
-comment|/* Allocated by scheduler */
-DECL|field|pending
-name|boolean
-name|pending
-init|=
-literal|true
-decl_stmt|;
-comment|// for app metrics
-DECL|field|appResourceUsage
-specifier|private
-name|ResourceUsage
-name|appResourceUsage
 decl_stmt|;
 DECL|method|AppSchedulingInfo (ApplicationAttemptId appAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, long epoch, ResourceUsage appResourceUsage)
 specifier|public
@@ -669,15 +653,6 @@ operator|.
 name|queue
 operator|=
 name|queue
-expr_stmt|;
-name|this
-operator|.
-name|queueName
-operator|=
-name|queue
-operator|.
-name|getQueueName
-argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -730,16 +705,6 @@ return|return
 name|applicationAttemptId
 return|;
 block|}
-DECL|method|getQueueName ()
-specifier|public
-name|String
-name|getQueueName
-parameter_list|()
-block|{
-return|return
-name|queueName
-return|;
-block|}
 DECL|method|getUser ()
 specifier|public
 name|String
@@ -748,6 +713,35 @@ parameter_list|()
 block|{
 return|return
 name|user
+return|;
+block|}
+DECL|method|getNewContainerId ()
+specifier|public
+name|long
+name|getNewContainerId
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|containerIdCounter
+operator|.
+name|incrementAndGet
+argument_list|()
+return|;
+block|}
+DECL|method|getQueueName ()
+specifier|public
+specifier|synchronized
+name|String
+name|getQueueName
+parameter_list|()
+block|{
+return|return
+name|queue
+operator|.
+name|getQueueName
+argument_list|()
 return|;
 block|}
 DECL|method|isPending ()
@@ -791,23 +785,9 @@ literal|" requests cleared"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getNewContainerId ()
-specifier|public
-name|long
-name|getNewContainerId
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|containerIdCounter
-operator|.
-name|incrementAndGet
-argument_list|()
-return|;
-block|}
 DECL|method|hasIncreaseRequest (NodeId nodeId)
 specifier|public
+specifier|synchronized
 name|boolean
 name|hasIncreaseRequest
 parameter_list|(
@@ -828,25 +808,20 @@ argument_list|>
 argument_list|>
 name|requestsOnNode
 init|=
-name|increaseRequestMap
+name|containerIncreaseRequestMap
 operator|.
 name|get
 argument_list|(
 name|nodeId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-literal|null
-operator|==
+return|return
 name|requestsOnNode
-condition|)
-block|{
-return|return
+operator|==
+literal|null
+condition|?
 literal|false
-return|;
-block|}
-return|return
+else|:
 name|requestsOnNode
 operator|.
 name|size
@@ -856,6 +831,7 @@ literal|0
 return|;
 block|}
 specifier|public
+specifier|synchronized
 name|Map
 argument_list|<
 name|ContainerId
@@ -885,25 +861,20 @@ argument_list|>
 argument_list|>
 name|requestsOnNode
 init|=
-name|increaseRequestMap
+name|containerIncreaseRequestMap
 operator|.
 name|get
 argument_list|(
 name|nodeId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-literal|null
-operator|==
+return|return
 name|requestsOnNode
-condition|)
-block|{
-return|return
+operator|==
 literal|null
-return|;
-block|}
-return|return
+condition|?
+literal|null
+else|:
 name|requestsOnNode
 operator|.
 name|get
@@ -912,6 +883,7 @@ name|priority
 argument_list|)
 return|;
 block|}
+comment|/**    * return true if any of the existing increase requests are updated,    *        false if none of them are updated    */
 DECL|method|updateIncreaseRequests ( List<SchedContainerChangeRequest> increaseRequests)
 specifier|public
 specifier|synchronized
@@ -962,7 +934,7 @@ argument_list|>
 argument_list|>
 name|requestsOnNode
 init|=
-name|increaseRequestMap
+name|containerIncreaseRequestMap
 operator|.
 name|get
 argument_list|(
@@ -983,7 +955,7 @@ name|TreeMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
-name|increaseRequestMap
+name|containerIncreaseRequestMap
 operator|.
 name|put
 argument_list|(
@@ -1036,11 +1008,10 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-comment|// New target capacity is as same as what we have, just ignore the new
-comment|// one
+comment|// increase request hasn't changed
 continue|continue;
 block|}
-comment|// remove the old one
+comment|// remove the old one, as we will use the new one going forward
 name|removeIncreaseRequest
 argument_list|(
 name|nodeId
@@ -1090,20 +1061,18 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Trying to increase/decrease container, "
-operator|+
-literal|"target capacity = previous capacity = "
-operator|+
-name|prevChangeRequest
-operator|+
-literal|" for container="
+literal|"Trying to increase container "
 operator|+
 name|r
 operator|.
 name|getContainerId
 argument_list|()
 operator|+
-literal|". Will ignore this increase request"
+literal|", target capacity = previous capacity = "
+operator|+
+name|prevChangeRequest
+operator|+
+literal|". Will ignore this increase request."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1124,7 +1093,7 @@ return|return
 name|resourceUpdated
 return|;
 block|}
-comment|// insert increase request and add missing hierarchy if missing
+comment|/**    * Insert increase request, adding any missing items in the data-structure    * hierarchy.    */
 DECL|method|insertIncreaseRequest (SchedContainerChangeRequest request)
 specifier|private
 name|void
@@ -1171,7 +1140,7 @@ argument_list|>
 argument_list|>
 name|requestsOnNode
 init|=
-name|increaseRequestMap
+name|containerIncreaseRequestMap
 operator|.
 name|get
 argument_list|(
@@ -1189,19 +1158,10 @@ name|requestsOnNode
 operator|=
 operator|new
 name|HashMap
-argument_list|<
-name|Priority
-argument_list|,
-name|Map
-argument_list|<
-name|ContainerId
-argument_list|,
-name|SchedContainerChangeRequest
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
-name|increaseRequestMap
+name|containerIncreaseRequestMap
 operator|.
 name|put
 argument_list|(
@@ -1237,11 +1197,7 @@ name|requestsOnNodeWithPriority
 operator|=
 operator|new
 name|TreeMap
-argument_list|<
-name|ContainerId
-argument_list|,
-name|SchedContainerChangeRequest
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|requestsOnNode
@@ -1367,7 +1323,7 @@ argument_list|>
 argument_list|>
 name|requestsOnNode
 init|=
-name|increaseRequestMap
+name|containerIncreaseRequestMap
 operator|.
 name|get
 argument_list|(
@@ -1446,7 +1402,7 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|increaseRequestMap
+name|containerIncreaseRequestMap
 operator|.
 name|remove
 argument_list|(
@@ -1553,7 +1509,7 @@ argument_list|>
 argument_list|>
 name|requestsOnNode
 init|=
-name|increaseRequestMap
+name|containerIncreaseRequestMap
 operator|.
 name|get
 argument_list|(
@@ -1586,18 +1542,13 @@ argument_list|(
 name|priority
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-literal|null
-operator|==
+return|return
 name|requestsOnNodeWithPriority
-condition|)
-block|{
-return|return
+operator|==
 literal|null
-return|;
-block|}
-return|return
+condition|?
+literal|null
+else|:
 name|requestsOnNodeWithPriority
 operator|.
 name|get
@@ -1606,10 +1557,10 @@ name|containerId
 argument_list|)
 return|;
 block|}
-comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *    * @param requests resources to be acquired    * @param recoverPreemptedRequest recover Resource Request on preemption    * @return true if any resource was updated, false else    */
+comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *    * @param requests resources to be acquired    * @param recoverPreemptedRequest recover ResourceRequest on preemption    * @return true if any resource was updated, false otherwise    */
 DECL|method|updateResourceRequests ( List<ResourceRequest> requests, boolean recoverPreemptedRequest)
-specifier|synchronized
 specifier|public
+specifier|synchronized
 name|boolean
 name|updateResourceRequests
 parameter_list|(
@@ -1623,14 +1574,7 @@ name|boolean
 name|recoverPreemptedRequest
 parameter_list|)
 block|{
-name|QueueMetrics
-name|metrics
-init|=
-name|queue
-operator|.
-name|getMetrics
-argument_list|()
-decl_stmt|;
+comment|// Flag to track if any incoming requests update "ANY" requests
 name|boolean
 name|anyResourcesUpdated
 init|=
@@ -1661,210 +1605,12 @@ operator|.
 name|getResourceName
 argument_list|()
 decl_stmt|;
-name|boolean
-name|updatePendingResources
-init|=
-literal|false
-decl_stmt|;
-name|ResourceRequest
-name|lastRequest
-init|=
-literal|null
-decl_stmt|;
-if|if
-condition|(
-name|resourceName
-operator|.
-name|equals
-argument_list|(
-name|ResourceRequest
-operator|.
-name|ANY
-argument_list|)
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"update:"
-operator|+
-literal|" application="
-operator|+
-name|applicationId
-operator|+
-literal|" request="
-operator|+
-name|request
-argument_list|)
-expr_stmt|;
-block|}
-name|updatePendingResources
-operator|=
-literal|true
-expr_stmt|;
-name|anyResourcesUpdated
-operator|=
-literal|true
-expr_stmt|;
-comment|// Premature optimization?
-comment|// Assumes that we won't see more than one priority request updated
-comment|// in one call, reasonable assumption... however, it's totally safe
-comment|// to activate same application more than once.
-comment|// Thus we don't need another loop ala the one in decrementOutstanding()
-comment|// which is needed during deactivate.
-if|if
-condition|(
-name|request
-operator|.
-name|getNumContainers
-argument_list|()
-operator|>
-literal|0
-condition|)
-block|{
-name|activeUsersManager
-operator|.
-name|activateApplication
-argument_list|(
-name|user
-argument_list|,
-name|applicationId
-argument_list|)
-expr_stmt|;
-block|}
-name|ResourceRequest
-name|previousAnyRequest
-init|=
-name|getResourceRequest
-argument_list|(
-name|priority
-argument_list|,
-name|resourceName
-argument_list|)
-decl_stmt|;
-comment|// When there is change in ANY request label expression, we should
-comment|// update label for all resource requests already added of same
-comment|// priority as ANY resource request.
-if|if
-condition|(
-operator|(
-literal|null
-operator|==
-name|previousAnyRequest
-operator|)
-operator|||
-name|isRequestLabelChanged
-argument_list|(
-name|previousAnyRequest
-argument_list|,
-name|request
-argument_list|)
-condition|)
-block|{
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|ResourceRequest
-argument_list|>
-name|resourceRequest
-init|=
-name|getResourceRequests
-argument_list|(
-name|priority
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|resourceRequest
-operator|!=
-literal|null
-condition|)
-block|{
-for|for
-control|(
-name|ResourceRequest
-name|r
-range|:
-name|resourceRequest
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-if|if
-condition|(
-operator|!
-name|r
-operator|.
-name|getResourceName
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|ResourceRequest
-operator|.
-name|ANY
-argument_list|)
-condition|)
-block|{
-name|r
-operator|.
-name|setNodeLabelExpression
+comment|// Update node labels if required
+name|updateNodeLabels
 argument_list|(
 name|request
-operator|.
-name|getNodeLabelExpression
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-block|}
-block|}
-block|}
-block|}
-else|else
-block|{
-name|ResourceRequest
-name|anyRequest
-init|=
-name|getResourceRequest
-argument_list|(
-name|priority
-argument_list|,
-name|ResourceRequest
-operator|.
-name|ANY
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|anyRequest
-operator|!=
-literal|null
-condition|)
-block|{
-name|request
-operator|.
-name|setNodeLabelExpression
-argument_list|(
-name|anyRequest
-operator|.
-name|getNodeLabelExpression
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 name|Map
 argument_list|<
 name|String
@@ -1893,11 +1639,7 @@ name|asks
 operator|=
 operator|new
 name|ConcurrentHashMap
-argument_list|<
-name|String
-argument_list|,
-name|ResourceRequest
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|this
@@ -1921,15 +1663,17 @@ name|priority
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Increment number of containers if recovering preempted resources
+name|ResourceRequest
 name|lastRequest
-operator|=
+init|=
 name|asks
 operator|.
 name|get
 argument_list|(
 name|resourceName
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|recoverPreemptedRequest
@@ -1939,8 +1683,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// Increment the number of containers to 1, as it is recovering a
-comment|// single container.
 name|request
 operator|.
 name|setNumContainers
@@ -1954,6 +1696,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Update asks
 name|asks
 operator|.
 name|put
@@ -1965,10 +1708,76 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|updatePendingResources
+name|resourceName
+operator|.
+name|equals
+argument_list|(
+name|ResourceRequest
+operator|.
+name|ANY
+argument_list|)
 condition|)
 block|{
-comment|// Similarly, deactivate application?
+name|anyResourcesUpdated
+operator|=
+literal|true
+expr_stmt|;
+comment|// Activate application. Metrics activation is done here.
+comment|// TODO: Shouldn't we activate even if numContainers = 0?
+if|if
+condition|(
+name|request
+operator|.
+name|getNumContainers
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|activeUsersManager
+operator|.
+name|activateApplication
+argument_list|(
+name|user
+argument_list|,
+name|applicationId
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Update pendingResources
+name|updatePendingResources
+argument_list|(
+name|lastRequest
+argument_list|,
+name|request
+argument_list|,
+name|queue
+operator|.
+name|getMetrics
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+name|anyResourcesUpdated
+return|;
+block|}
+DECL|method|updatePendingResources (ResourceRequest lastRequest, ResourceRequest request, QueueMetrics metrics)
+specifier|private
+name|void
+name|updatePendingResources
+parameter_list|(
+name|ResourceRequest
+name|lastRequest
+parameter_list|,
+name|ResourceRequest
+name|request
+parameter_list|,
+name|QueueMetrics
+name|metrics
+parameter_list|)
+block|{
 if|if
 condition|(
 name|request
@@ -1997,9 +1806,11 @@ block|}
 name|int
 name|lastRequestContainers
 init|=
+operator|(
 name|lastRequest
 operator|!=
 literal|null
+operator|)
 condition|?
 name|lastRequest
 operator|.
@@ -2141,15 +1952,172 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|updateNodeLabels (ResourceRequest request)
+specifier|private
+name|void
+name|updateNodeLabels
+parameter_list|(
+name|ResourceRequest
+name|request
+parameter_list|)
+block|{
+name|Priority
+name|priority
+init|=
+name|request
+operator|.
+name|getPriority
+argument_list|()
+decl_stmt|;
+name|String
+name|resourceName
+init|=
+name|request
+operator|.
+name|getResourceName
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|resourceName
+operator|.
+name|equals
+argument_list|(
+name|ResourceRequest
+operator|.
+name|ANY
+argument_list|)
+condition|)
+block|{
+name|ResourceRequest
+name|previousAnyRequest
+init|=
+name|getResourceRequest
+argument_list|(
+name|priority
+argument_list|,
+name|resourceName
+argument_list|)
+decl_stmt|;
+comment|// When there is change in ANY request label expression, we should
+comment|// update label for all resource requests already added of same
+comment|// priority as ANY resource request.
+if|if
+condition|(
+operator|(
+literal|null
+operator|==
+name|previousAnyRequest
+operator|)
+operator|||
+name|hasRequestLabelChanged
+argument_list|(
+name|previousAnyRequest
+argument_list|,
+name|request
+argument_list|)
+condition|)
+block|{
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ResourceRequest
+argument_list|>
+name|resourceRequest
+init|=
+name|getResourceRequests
+argument_list|(
+name|priority
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|resourceRequest
+operator|!=
+literal|null
+condition|)
+block|{
+for|for
+control|(
+name|ResourceRequest
+name|r
+range|:
+name|resourceRequest
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+operator|!
+name|r
+operator|.
+name|getResourceName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|ResourceRequest
+operator|.
+name|ANY
+argument_list|)
+condition|)
+block|{
+name|r
+operator|.
+name|setNodeLabelExpression
+argument_list|(
+name|request
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
-return|return
-name|anyResourcesUpdated
-return|;
 block|}
-DECL|method|isRequestLabelChanged (ResourceRequest requestOne, ResourceRequest requestTwo)
+block|}
+block|}
+block|}
+else|else
+block|{
+name|ResourceRequest
+name|anyRequest
+init|=
+name|getResourceRequest
+argument_list|(
+name|priority
+argument_list|,
+name|ResourceRequest
+operator|.
+name|ANY
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|anyRequest
+operator|!=
+literal|null
+condition|)
+block|{
+name|request
+operator|.
+name|setNodeLabelExpression
+argument_list|(
+name|anyRequest
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+DECL|method|hasRequestLabelChanged (ResourceRequest requestOne, ResourceRequest requestTwo)
 specifier|private
 name|boolean
-name|isRequestLabelChanged
+name|hasRequestLabelChanged
 parameter_list|(
 name|ResourceRequest
 name|requestOne
@@ -2336,8 +2304,8 @@ block|}
 block|}
 block|}
 DECL|method|getPriorities ()
-specifier|synchronized
 specifier|public
+specifier|synchronized
 name|Collection
 argument_list|<
 name|Priority
@@ -2350,8 +2318,8 @@ name|priorities
 return|;
 block|}
 DECL|method|getResourceRequests ( Priority priority)
-specifier|synchronized
 specifier|public
+specifier|synchronized
 name|Map
 argument_list|<
 name|String
@@ -2375,6 +2343,7 @@ return|;
 block|}
 DECL|method|getAllResourceRequests ()
 specifier|public
+specifier|synchronized
 name|List
 argument_list|<
 name|ResourceRequest
@@ -2390,9 +2359,7 @@ name|ret
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|ResourceRequest
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -2427,8 +2394,8 @@ name|ret
 return|;
 block|}
 DECL|method|getResourceRequest (Priority priority, String resourceName)
-specifier|synchronized
 specifier|public
+specifier|synchronized
 name|ResourceRequest
 name|getResourceRequest
 parameter_list|(
@@ -2773,10 +2740,10 @@ name|absDelta
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Resources have been allocated to this application by the resource    * scheduler. Track them.    *     * @param type    *          the type of the node    * @param node    *          the nodeinfo of the node    * @param priority    *          the priority of the request.    * @param request    *          the request    * @param container    *          the containers allocated.    */
-DECL|method|allocate (NodeType type, SchedulerNode node, Priority priority, ResourceRequest request, Container container)
-specifier|synchronized
+comment|/**    * Resources have been allocated to this application by the resource    * scheduler. Track them.    */
+DECL|method|allocate (NodeType type, SchedulerNode node, Priority priority, ResourceRequest request, Container containerAllocated)
 specifier|public
+specifier|synchronized
 name|List
 argument_list|<
 name|ResourceRequest
@@ -2796,7 +2763,7 @@ name|ResourceRequest
 name|request
 parameter_list|,
 name|Container
-name|container
+name|containerAllocated
 parameter_list|)
 block|{
 name|List
@@ -2807,9 +2774,7 @@ name|resourceRequests
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|ResourceRequest
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 if|if
@@ -2828,8 +2793,6 @@ argument_list|,
 name|priority
 argument_list|,
 name|request
-argument_list|,
-name|container
 argument_list|,
 name|resourceRequests
 argument_list|)
@@ -2853,8 +2816,6 @@ name|priority
 argument_list|,
 name|request
 argument_list|,
-name|container
-argument_list|,
 name|resourceRequests
 argument_list|)
 expr_stmt|;
@@ -2863,13 +2824,7 @@ else|else
 block|{
 name|allocateOffSwitch
 argument_list|(
-name|node
-argument_list|,
-name|priority
-argument_list|,
 name|request
-argument_list|,
-name|container
 argument_list|,
 name|resourceRequests
 argument_list|)
@@ -2922,14 +2877,14 @@ name|applicationId
 operator|+
 literal|" container="
 operator|+
-name|container
+name|containerAllocated
 operator|.
 name|getId
 argument_list|()
 operator|+
 literal|" host="
 operator|+
-name|container
+name|containerAllocated
 operator|.
 name|getNodeId
 argument_list|()
@@ -2983,10 +2938,10 @@ return|return
 name|resourceRequests
 return|;
 block|}
-comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    *     * @param allocatedContainers    *          resources allocated to the application    */
-DECL|method|allocateNodeLocal (SchedulerNode node, Priority priority, ResourceRequest nodeLocalRequest, Container container, List<ResourceRequest> resourceRequests)
-specifier|synchronized
+comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    */
+DECL|method|allocateNodeLocal (SchedulerNode node, Priority priority, ResourceRequest nodeLocalRequest, List<ResourceRequest> resourceRequests)
 specifier|private
+specifier|synchronized
 name|void
 name|allocateNodeLocal
 parameter_list|(
@@ -2998,9 +2953,6 @@ name|priority
 parameter_list|,
 name|ResourceRequest
 name|nodeLocalRequest
-parameter_list|,
-name|Container
-name|container
 parameter_list|,
 name|List
 argument_list|<
@@ -3157,10 +3109,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    *     * @param allocatedContainers    *          resources allocated to the application    */
-DECL|method|allocateRackLocal (SchedulerNode node, Priority priority, ResourceRequest rackLocalRequest, Container container, List<ResourceRequest> resourceRequests)
-specifier|synchronized
+comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    */
+DECL|method|allocateRackLocal (SchedulerNode node, Priority priority, ResourceRequest rackLocalRequest, List<ResourceRequest> resourceRequests)
 specifier|private
+specifier|synchronized
 name|void
 name|allocateRackLocal
 parameter_list|(
@@ -3172,9 +3124,6 @@ name|priority
 parameter_list|,
 name|ResourceRequest
 name|rackLocalRequest
-parameter_list|,
-name|Container
-name|container
 parameter_list|,
 name|List
 argument_list|<
@@ -3240,24 +3189,15 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    *     * @param allocatedContainers    *          resources allocated to the application    */
-DECL|method|allocateOffSwitch (SchedulerNode node, Priority priority, ResourceRequest offSwitchRequest, Container container, List<ResourceRequest> resourceRequests)
-specifier|synchronized
+comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    */
+DECL|method|allocateOffSwitch ( ResourceRequest offSwitchRequest, List<ResourceRequest> resourceRequests)
 specifier|private
+specifier|synchronized
 name|void
 name|allocateOffSwitch
 parameter_list|(
-name|SchedulerNode
-name|node
-parameter_list|,
-name|Priority
-name|priority
-parameter_list|,
 name|ResourceRequest
 name|offSwitchRequest
-parameter_list|,
-name|Container
-name|container
 parameter_list|,
 name|List
 argument_list|<
@@ -3285,8 +3225,8 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|decrementOutstanding ( ResourceRequest offSwitchRequest)
-specifier|synchronized
 specifier|private
+specifier|synchronized
 name|void
 name|decrementOutstanding
 parameter_list|(
@@ -3357,8 +3297,8 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|checkForDeactivation ()
-specifier|synchronized
 specifier|private
+specifier|synchronized
 name|void
 name|checkForDeactivation
 parameter_list|()
@@ -3423,7 +3363,7 @@ condition|)
 block|{
 name|deactivate
 operator|=
-name|increaseRequestMap
+name|containerIncreaseRequestMap
 operator|.
 name|isEmpty
 argument_list|()
@@ -3446,8 +3386,8 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|move (Queue newQueue)
-specifier|synchronized
 specifier|public
+specifier|synchronized
 name|void
 name|move
 parameter_list|(
@@ -3630,25 +3570,13 @@ name|queue
 operator|=
 name|newQueue
 expr_stmt|;
-name|this
-operator|.
-name|queueName
-operator|=
-name|newQueue
-operator|.
-name|getQueueName
-argument_list|()
-expr_stmt|;
 block|}
-DECL|method|stop (RMAppAttemptState rmAppAttemptFinalState)
-specifier|synchronized
+DECL|method|stop ()
 specifier|public
+specifier|synchronized
 name|void
 name|stop
-parameter_list|(
-name|RMAppAttemptState
-name|rmAppAttemptFinalState
-parameter_list|)
+parameter_list|()
 block|{
 comment|// clear pending resources metrics for the application
 name|QueueMetrics
@@ -3823,12 +3751,8 @@ name|AppSchedulingInfo
 name|appInfo
 parameter_list|)
 block|{
-comment|//    this.priorities = appInfo.getPriorities();
-comment|//    this.requests = appInfo.getRequests();
 comment|// This should not require locking the userBlacklist since it will not be
 comment|// used by this instance until after setCurrentAppAttempt.
-comment|// Should cleanup this to avoid sharing between instances and can
-comment|// then remove getBlacklist as well.
 name|this
 operator|.
 name|userBlacklist

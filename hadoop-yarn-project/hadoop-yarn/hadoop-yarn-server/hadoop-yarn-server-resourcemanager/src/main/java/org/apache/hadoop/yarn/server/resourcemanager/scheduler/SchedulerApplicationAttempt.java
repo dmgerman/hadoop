@@ -1983,9 +1983,7 @@ expr_stmt|;
 name|appSchedulingInfo
 operator|.
 name|stop
-argument_list|(
-name|rmAppAttemptFinalState
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|isStopped ()
