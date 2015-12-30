@@ -3066,9 +3066,11 @@ literal|" in account "
 operator|+
 name|accountName
 operator|+
-literal|" not found, and we can't create "
+literal|" not found, and we can't create"
 operator|+
-literal|" it using anoynomous credentials."
+literal|" it using anoynomous credentials, and no credentials found for them"
+operator|+
+literal|" in the configuration."
 argument_list|)
 throw|;
 block|}
