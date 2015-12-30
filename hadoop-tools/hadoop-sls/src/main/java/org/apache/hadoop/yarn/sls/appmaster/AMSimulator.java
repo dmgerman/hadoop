@@ -1756,6 +1756,8 @@ name|run
 parameter_list|()
 throws|throws
 name|YarnException
+throws|,
+name|IOException
 block|{
 name|rm
 operator|.

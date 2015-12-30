@@ -2584,57 +2584,6 @@ throws|throws
 name|AccessControlException
 block|{
 comment|// Careful! Locking order is important!
-comment|// Check queue ACLs
-name|UserGroupInformation
-name|userUgi
-init|=
-name|UserGroupInformation
-operator|.
-name|createRemoteUser
-argument_list|(
-name|userName
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|hasAccess
-argument_list|(
-name|QueueACL
-operator|.
-name|SUBMIT_APPLICATIONS
-argument_list|,
-name|userUgi
-argument_list|)
-operator|&&
-operator|!
-name|hasAccess
-argument_list|(
-name|QueueACL
-operator|.
-name|ADMINISTER_QUEUE
-argument_list|,
-name|userUgi
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|AccessControlException
-argument_list|(
-literal|"User "
-operator|+
-name|userName
-operator|+
-literal|" cannot submit"
-operator|+
-literal|" applications to queue "
-operator|+
-name|getQueuePath
-argument_list|()
-argument_list|)
-throw|;
-block|}
 name|User
 name|user
 init|=

@@ -4326,6 +4326,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnException
+throws|,
+name|IOException
 block|{
 name|ApplicationSubmissionContext
 name|submissionContext
