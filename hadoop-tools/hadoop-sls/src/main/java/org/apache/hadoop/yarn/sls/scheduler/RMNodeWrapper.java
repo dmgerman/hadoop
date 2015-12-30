@@ -746,6 +746,11 @@ block|{
 comment|// TODO Auto-generated method stub
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|pullNewlyIncreasedContainers ()
 specifier|public
@@ -758,7 +763,9 @@ parameter_list|()
 block|{
 comment|// TODO Auto-generated method stub
 return|return
-literal|null
+name|Collections
+operator|.
+name|EMPTY_LIST
 return|;
 block|}
 annotation|@
