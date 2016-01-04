@@ -309,7 +309,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * True only if we should validate the paths used in {@link DomainSocket#bind()}    */
+comment|/**    * True only if we should validate the paths used in    * {@link DomainSocket#bindAndListen(String)}    */
 DECL|field|validateBindPaths
 specifier|private
 specifier|static
@@ -668,7 +668,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Accept a new UNIX domain connection.    *    * This method can only be used on sockets that were bound with bind().    *    * @return                              The new connection.    * @throws IOException                  If there was an I/O error    *                                      performing the accept-- such as the    *                                      socket being closed from under us.    * @throws SocketTimeoutException       If the accept timed out.    */
+comment|/**    * Accept a new UNIX domain connection.    *    * This method can only be used on sockets that were bound with bind().    *    * @return                The new connection.    * @throws IOException    If there was an I/O error performing the accept--    *                        such as the socket being closed from under us.    *                        Particularly when the accept is timed out, it throws    *                        SocketTimeoutException.    */
 DECL|method|accept ()
 specifier|public
 name|DomainSocket
@@ -730,8 +730,10 @@ parameter_list|(
 name|String
 name|path
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
-comment|/**    * Create a new DomainSocket connected to the given path.    *    * @param path         The path to connect to.    * @return             The new DomainSocket.    */
+comment|/**    * Create a new DomainSocket connected to the given path.    *    * @param path              The path to connect to.    * @throws IOException      If there was an I/O error performing the connect.    *    * @return                  The new DomainSocket.    */
 DECL|method|connect (String path)
 specifier|public
 specifier|static
@@ -1320,7 +1322,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|receiveFileDescriptors0 (int fd, FileDescriptor[] descriptors, byte jbuf[], int offset, int length)
+DECL|method|receiveFileDescriptors0 (int fd, FileDescriptor[] descriptors, byte[] buf, int offset, int length)
 specifier|private
 specifier|static
 specifier|native
@@ -1335,8 +1337,8 @@ index|[]
 name|descriptors
 parameter_list|,
 name|byte
-name|jbuf
 index|[]
+name|buf
 parameter_list|,
 name|int
 name|offset
@@ -1347,75 +1349,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Receive some FileDescriptor objects from the process on the other side of    * this socket.    *    * @param descriptors       (output parameter) Array of FileDescriptors.    *                          We will fill as many slots as possible with file    *                          descriptors passed from the remote process.  The    *                          other slots will contain NULL.    * @param jbuf              (output parameter) Buffer to read into.    *                          The UNIX domain sockets API requires you to read    *                          at least one byte from the remote process, even    *                          if all you care about is the file descriptors    *                          you will receive.    * @param offset            Offset into the byte buffer to load data    * @param length            Length of the byte buffer to use for data    *    * @return                  The number of bytes read.  This will be -1 if we    *                          reached EOF (similar to SocketInputStream);    *                          otherwise, it will be positive.    * @throws                  IOException if there was an I/O error.    */
-DECL|method|receiveFileDescriptors (FileDescriptor[] descriptors, byte jbuf[], int offset, int length)
-specifier|public
-name|int
-name|receiveFileDescriptors
-parameter_list|(
-name|FileDescriptor
-index|[]
-name|descriptors
-parameter_list|,
-name|byte
-name|jbuf
-index|[]
-parameter_list|,
-name|int
-name|offset
-parameter_list|,
-name|int
-name|length
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|refCount
-operator|.
-name|reference
-argument_list|()
-expr_stmt|;
-name|boolean
-name|exc
-init|=
-literal|true
-decl_stmt|;
-try|try
-block|{
-name|int
-name|nBytes
-init|=
-name|receiveFileDescriptors0
-argument_list|(
-name|fd
-argument_list|,
-name|descriptors
-argument_list|,
-name|jbuf
-argument_list|,
-name|offset
-argument_list|,
-name|length
-argument_list|)
-decl_stmt|;
-name|exc
-operator|=
-literal|false
-expr_stmt|;
-return|return
-name|nBytes
-return|;
-block|}
-finally|finally
-block|{
-name|unreference
-argument_list|(
-name|exc
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Receive some FileDescriptor objects from the process on the other side of    * this socket, and wrap them in FileInputStream objects.    *    * See {@link DomainSocket#recvFileInputStreams(ByteBuffer)}    */
+comment|/**    * Receive some FileDescriptor objects from the process on the other side of    * this socket, and wrap them in FileInputStream objects.    */
 DECL|method|recvFileInputStreams (FileInputStream[] streams, byte buf[], int offset, int length)
 specifier|public
 name|int

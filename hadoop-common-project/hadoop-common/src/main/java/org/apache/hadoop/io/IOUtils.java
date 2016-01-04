@@ -734,7 +734,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Reads len bytes in a loop.    *    * @param in InputStream to read from    * @param buf The buffer to fill    * @param off offset from the buffer    * @param len the length of bytes to read    * @throws IOException if it could not read requested number of bytes     * for any reason (including EOF)    */
-DECL|method|readFully (InputStream in, byte buf[], int off, int len)
+DECL|method|readFully (InputStream in, byte[] buf, int off, int len)
 specifier|public
 specifier|static
 name|void
@@ -744,8 +744,8 @@ name|InputStream
 name|in
 parameter_list|,
 name|byte
-name|buf
 index|[]
+name|buf
 parameter_list|,
 name|int
 name|off

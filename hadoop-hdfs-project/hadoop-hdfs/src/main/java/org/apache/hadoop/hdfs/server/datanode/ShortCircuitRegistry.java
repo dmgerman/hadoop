@@ -796,8 +796,8 @@ argument_list|)
 throw|;
 block|}
 name|String
-name|shmPaths
 index|[]
+name|shmPaths
 init|=
 name|conf
 operator|.
@@ -1275,13 +1275,13 @@ implements|implements
 name|Closeable
 block|{
 DECL|field|shmId
-specifier|public
+specifier|private
 specifier|final
 name|ShmId
 name|shmId
 decl_stmt|;
 DECL|field|stream
-specifier|public
+specifier|private
 specifier|final
 name|FileInputStream
 name|stream
@@ -1308,6 +1308,26 @@ name|stream
 operator|=
 name|stream
 expr_stmt|;
+block|}
+DECL|method|getShmId ()
+specifier|public
+name|ShmId
+name|getShmId
+parameter_list|()
+block|{
+return|return
+name|shmId
+return|;
+block|}
+DECL|method|getFileStream ()
+specifier|public
+name|FileInputStream
+name|getFileStream
+parameter_list|()
+block|{
+return|return
+name|stream
+return|;
 block|}
 annotation|@
 name|Override

@@ -2599,8 +2599,8 @@ literal|1
 index|]
 decl_stmt|;
 name|FileInputStream
-name|fis
 index|[]
+name|fis
 init|=
 operator|new
 name|FileInputStream
