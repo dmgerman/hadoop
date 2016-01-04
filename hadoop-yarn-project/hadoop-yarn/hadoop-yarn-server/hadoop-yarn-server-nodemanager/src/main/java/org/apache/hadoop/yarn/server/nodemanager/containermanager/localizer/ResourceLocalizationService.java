@@ -5813,14 +5813,6 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|Path
-name|local
-init|=
-name|completed
-operator|.
-name|get
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 literal|null
@@ -5840,6 +5832,14 @@ expr_stmt|;
 comment|// TODO delete
 return|return;
 block|}
+name|Path
+name|local
+init|=
+name|completed
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
 name|LocalResourceRequest
 name|key
 init|=
