@@ -161,6 +161,26 @@ name|IPC_CLIENT_PING_DEFAULT
 init|=
 literal|true
 decl_stmt|;
+comment|/** Timeout value for RPC client on waiting for response. */
+DECL|field|IPC_CLIENT_RPC_TIMEOUT_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_CLIENT_RPC_TIMEOUT_KEY
+init|=
+literal|"ipc.client.rpc-timeout.ms"
+decl_stmt|;
+comment|/** Default value for IPC_CLIENT_RPC_TIMEOUT_KEY. */
+DECL|field|IPC_CLIENT_RPC_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IPC_CLIENT_RPC_TIMEOUT_DEFAULT
+init|=
+literal|0
+decl_stmt|;
 comment|/** Responses larger than this will be logged */
 DECL|field|IPC_SERVER_RPC_MAX_RESPONSE_SIZE_KEY
 specifier|public

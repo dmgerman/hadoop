@@ -220,6 +220,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|*
@@ -1457,7 +1471,10 @@ name|addr
 argument_list|,
 name|conf
 argument_list|,
-literal|0
+name|getRpcTimeout
+argument_list|(
+name|conf
+argument_list|)
 argument_list|,
 literal|null
 argument_list|,
@@ -1967,7 +1984,10 @@ name|conf
 argument_list|,
 name|factory
 argument_list|,
-literal|0
+name|getRpcTimeout
+argument_list|(
+name|conf
+argument_list|)
 argument_list|,
 literal|null
 argument_list|)
@@ -2496,6 +2516,32 @@ name|getClass
 argument_list|()
 argument_list|)
 throw|;
+block|}
+comment|/**    * Get the RPC time from configuration;    * If not set in the configuration, return the default value.    *    * @param conf Configuration    * @return the RPC timeout (ms)    */
+DECL|method|getRpcTimeout (Configuration conf)
+specifier|public
+specifier|static
+name|int
+name|getRpcTimeout
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|IPC_CLIENT_RPC_TIMEOUT_KEY
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|IPC_CLIENT_RPC_TIMEOUT_DEFAULT
+argument_list|)
+return|;
 block|}
 comment|/**    * Class to construct instances of RPC server with specific options.    */
 DECL|class|Builder
