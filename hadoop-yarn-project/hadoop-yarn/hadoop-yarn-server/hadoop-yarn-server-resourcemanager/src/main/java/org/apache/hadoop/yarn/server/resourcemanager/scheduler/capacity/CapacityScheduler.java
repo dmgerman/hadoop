@@ -4351,8 +4351,6 @@ condition|(
 name|queue
 operator|instanceof
 name|LeafQueue
-operator|==
-literal|true
 operator|&&
 name|queues
 operator|.
@@ -4369,8 +4367,6 @@ name|queueName
 argument_list|)
 operator|instanceof
 name|LeafQueue
-operator|==
-literal|true
 condition|)
 block|{
 throw|throw
