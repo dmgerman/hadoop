@@ -2859,6 +2859,34 @@ name|MR_AM_PREFIX
 operator|+
 literal|"admin.user.env"
 decl_stmt|;
+comment|// although the AM admin user env default should be the same as the task user
+comment|// env default, there are problems in making it work on Windows currently
+comment|// MAPREDUCE-6588 should address the issue and set it to a proper non-empty
+comment|// value
+DECL|field|DEFAULT_MR_AM_ADMIN_USER_ENV
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_MR_AM_ADMIN_USER_ENV
+init|=
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|""
+else|:
+literal|"LD_LIBRARY_PATH="
+operator|+
+name|Apps
+operator|.
+name|crossPlatformify
+argument_list|(
+literal|"HADOOP_COMMON_HOME"
+argument_list|)
+operator|+
+literal|"/lib/native"
+decl_stmt|;
 DECL|field|MR_AM_PROFILE
 specifier|public
 specifier|static
@@ -2946,8 +2974,11 @@ name|MAPRED_ADMIN_USER_ENV
 init|=
 literal|"mapreduce.admin.user.env"
 decl_stmt|;
+comment|// the "%...%" macros can be expanded prematurely and are probably not OK
+comment|// this should be addressed by MAPREDUCE-6588
 DECL|field|DEFAULT_MAPRED_ADMIN_USER_ENV
 specifier|public
+specifier|static
 specifier|final
 name|String
 name|DEFAULT_MAPRED_ADMIN_USER_ENV
@@ -2958,7 +2989,16 @@ name|WINDOWS
 condition|?
 literal|"PATH=%PATH%;%HADOOP_COMMON_HOME%\\bin"
 else|:
-literal|"LD_LIBRARY_PATH=$HADOOP_COMMON_HOME/lib/native"
+literal|"LD_LIBRARY_PATH="
+operator|+
+name|Apps
+operator|.
+name|crossPlatformify
+argument_list|(
+literal|"HADOOP_COMMON_HOME"
+argument_list|)
+operator|+
+literal|"/lib/native"
 decl_stmt|;
 DECL|field|WORKDIR
 specifier|public

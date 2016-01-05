@@ -2927,7 +2927,7 @@ name|DEFAULT_SHELL
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Add the container working directory at the front of LD_LIBRARY_PATH
+comment|// Add the container working directory in front of LD_LIBRARY_PATH
 name|MRApps
 operator|.
 name|addToEnvironment
@@ -2969,6 +2969,10 @@ argument_list|(
 name|MRJobConfig
 operator|.
 name|MR_AM_ADMIN_USER_ENV
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_ADMIN_USER_ENV
 argument_list|)
 argument_list|,
 name|conf

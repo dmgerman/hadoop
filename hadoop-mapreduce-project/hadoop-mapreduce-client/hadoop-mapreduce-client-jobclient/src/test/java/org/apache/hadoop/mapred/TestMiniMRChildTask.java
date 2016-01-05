@@ -2147,7 +2147,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * To test OS dependent setting of default execution path for a MapRed task.    * Mainly that we can use MRJobConfig.DEFAULT_MAPRED_ADMIN_USER_ENV to set -    * for WINDOWS: %HADOOP_COMMON_HOME%\bin is expected to be included in PATH - for    * Linux: $HADOOP_COMMON_HOME/lib/native is expected to be included in    * LD_LIBRARY_PATH    */
+comment|/**    * To test OS dependent setting of default execution path for a MapRed task.    * Mainly that we can use MRJobConfig.DEFAULT_MAPRED_ADMIN_USER_ENV to set -    * for WINDOWS: %HADOOP_COMMON_HOME%\bin is expected to be included in PATH -    * for Linux: $HADOOP_COMMON_HOME/lib/native is expected to be included in    * LD_LIBRARY_PATH    */
 annotation|@
 name|Test
 DECL|method|testMapRedExecutionEnv ()
@@ -2156,7 +2156,15 @@ name|void
 name|testMapRedExecutionEnv
 parameter_list|()
 block|{
-comment|// test if the env variable can be set
+comment|// for windows, test if the env variable can be set
+comment|// this may be removed as part of MAPREDUCE-6588
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
 try|try
 block|{
 comment|// Application environment
@@ -2180,13 +2188,7 @@ decl_stmt|;
 name|String
 name|setupHadoopHomeCommand
 init|=
-name|Shell
-operator|.
-name|WINDOWS
-condition|?
 literal|"HADOOP_COMMON_HOME=C:\\fake\\PATH\\to\\hadoop\\common\\home"
-else|:
-literal|"HADOOP_COMMON_HOME=/fake/path/to/hadoop/common/home"
 decl_stmt|;
 name|MRApps
 operator|.
@@ -2229,25 +2231,13 @@ name|environment
 operator|.
 name|get
 argument_list|(
-name|Shell
-operator|.
-name|WINDOWS
-condition|?
 literal|"PATH"
-else|:
-literal|"LD_LIBRARY_PATH"
 argument_list|)
 decl_stmt|;
 name|String
 name|toFind
 init|=
-name|Shell
-operator|.
-name|WINDOWS
-condition|?
 literal|"C:\\fake\\PATH\\to\\hadoop\\common\\home\\bin"
-else|:
-literal|"/fake/path/to/hadoop/common/home/lib/native"
 decl_stmt|;
 comment|// Ensure execution PATH/LD_LIBRARY_PATH set up pointing to hadoop lib
 name|assertTrue
@@ -2284,6 +2274,7 @@ expr_stmt|;
 name|tearDown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|// now launch a mapreduce job to ensure that the child
 comment|// also gets the configured setting for hadoop lib

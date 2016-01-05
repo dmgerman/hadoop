@@ -580,6 +580,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -4250,14 +4264,59 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testAMStandardEnv ()
+DECL|method|testAMStandardEnvWithDefaultLibPath ()
 specifier|public
 name|void
-name|testAMStandardEnv
+name|testAMStandardEnvWithDefaultLibPath
 parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|testAMStandardEnv
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testAMStandardEnvWithCustomLibPath ()
+specifier|public
+name|void
+name|testAMStandardEnvWithCustomLibPath
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testAMStandardEnv
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testAMStandardEnv (boolean customLibPath)
+specifier|private
+name|void
+name|testAMStandardEnv
+parameter_list|(
+name|boolean
+name|customLibPath
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+comment|// the Windows behavior is different and this test currently doesn't really
+comment|// apply
+comment|// MAPREDUCE-6588 should revisit this test
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+return|return;
+block|}
 specifier|final
 name|String
 name|ADMIN_LIB_PATH
@@ -4283,6 +4342,21 @@ operator|new
 name|JobConf
 argument_list|()
 decl_stmt|;
+name|String
+name|pathKey
+init|=
+name|Environment
+operator|.
+name|LD_LIBRARY_PATH
+operator|.
+name|name
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|customLibPath
+condition|)
+block|{
 name|jobConf
 operator|.
 name|set
@@ -4291,7 +4365,9 @@ name|MRJobConfig
 operator|.
 name|MR_AM_ADMIN_USER_ENV
 argument_list|,
-literal|"LD_LIBRARY_PATH="
+name|pathKey
+operator|+
+literal|"="
 operator|+
 name|ADMIN_LIB_PATH
 argument_list|)
@@ -4304,11 +4380,14 @@ name|MRJobConfig
 operator|.
 name|MR_AM_ENV
 argument_list|,
-literal|"LD_LIBRARY_PATH="
+name|pathKey
+operator|+
+literal|"="
 operator|+
 name|USER_LIB_PATH
 argument_list|)
 expr_stmt|;
+block|}
 name|jobConf
 operator|.
 name|set
@@ -4368,17 +4447,14 @@ name|env
 operator|.
 name|get
 argument_list|(
-name|Environment
-operator|.
-name|LD_LIBRARY_PATH
-operator|.
-name|name
-argument_list|()
+name|pathKey
 argument_list|)
 decl_stmt|;
 name|assertNotNull
 argument_list|(
-literal|"LD_LIBRARY_PATH not set"
+name|pathKey
+operator|+
+literal|" not set"
 argument_list|,
 name|libPath
 argument_list|)
@@ -4407,10 +4483,9 @@ name|File
 operator|.
 name|pathSeparator
 decl_stmt|;
-name|assertEquals
-argument_list|(
-literal|"Bad AM LD_LIBRARY_PATH setting"
-argument_list|,
+name|String
+name|expectedLibPath
+init|=
 name|MRApps
 operator|.
 name|crossPlatformifyMREnv
@@ -4421,7 +4496,15 @@ name|Environment
 operator|.
 name|PWD
 argument_list|)
-operator|+
+decl_stmt|;
+if|if
+condition|(
+name|customLibPath
+condition|)
+block|{
+comment|// append admin libpath and user libpath
+name|expectedLibPath
+operator|+=
 name|cps
 operator|+
 name|ADMIN_LIB_PATH
@@ -4429,6 +4512,38 @@ operator|+
 name|cps
 operator|+
 name|USER_LIB_PATH
+expr_stmt|;
+block|}
+else|else
+block|{
+name|expectedLibPath
+operator|+=
+name|cps
+operator|+
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_ADMIN_USER_ENV
+operator|.
+name|substring
+argument_list|(
+name|pathKey
+operator|.
+name|length
+argument_list|()
+operator|+
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+name|assertEquals
+argument_list|(
+literal|"Bad AM "
+operator|+
+name|pathKey
+operator|+
+literal|" setting"
+argument_list|,
+name|expectedLibPath
 argument_list|,
 name|libPath
 argument_list|)
