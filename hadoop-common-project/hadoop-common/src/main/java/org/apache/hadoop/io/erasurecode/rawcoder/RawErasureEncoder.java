@@ -76,7 +76,7 @@ name|RawErasureEncoder
 extends|extends
 name|RawErasureCoder
 block|{
-comment|/**    * Encode with inputs and generates outputs.    *    * Note, for both inputs and outputs, no mixing of on-heap buffers and direct    * buffers are allowed.    *    * If the coder option ALLOW_CHANGE_INPUTS is set true (false by default), the    * content of input buffers may change after the call, subject to concrete    * implementation. Anyway the positions of input buffers will move forward.    *    * @param inputs input buffers to read data from    * @param outputs output buffers to put the encoded data into, read to read    *                after the call    */
+comment|/**    * Encode with inputs and generates outputs.    *    * Note, for both inputs and outputs, no mixing of on-heap buffers and direct    * buffers are allowed.    *    * If the coder option ALLOW_CHANGE_INPUTS is set true (false by default), the    * content of input buffers may change after the call, subject to concrete    * implementation. Anyway the positions of input buffers will move forward.    *    * @param inputs input buffers to read data from. The buffers' remaining will    *               be 0 after encoding    * @param outputs output buffers to put the encoded data into, ready to read    *                after the call    */
 DECL|method|encode (ByteBuffer[] inputs, ByteBuffer[] outputs)
 name|void
 name|encode
