@@ -86,6 +86,64 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|BlockListAsLongs
+operator|.
+name|BlockReportReplica
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
+name|RollingUpgradeStartupOption
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
+name|StartupOption
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|namenode
@@ -601,6 +659,24 @@ specifier|private
 name|Counter
 name|awaitingReportedBlocksCounter
 decl_stmt|;
+comment|/** Keeps track of how many bytes are in Future Generation blocks. */
+DECL|field|numberOfBytesInFutureBlocks
+specifier|private
+specifier|final
+name|AtomicLong
+name|numberOfBytesInFutureBlocks
+init|=
+operator|new
+name|AtomicLong
+argument_list|()
+decl_stmt|;
+comment|/** Reports if Name node was started with Rollback option. */
+DECL|field|inRollBack
+specifier|private
+specifier|final
+name|boolean
+name|inRollBack
+decl_stmt|;
 DECL|method|BlockManagerSafeMode (BlockManager blockManager, Namesystem namesystem, Configuration conf)
 name|BlockManagerSafeMode
 parameter_list|(
@@ -744,6 +820,20 @@ argument_list|(
 name|DFS_NAMENODE_SAFEMODE_EXTENSION_KEY
 argument_list|,
 literal|0
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|inRollBack
+operator|=
+name|isInRollBackMode
+argument_list|(
+name|NameNode
+operator|.
+name|getStartupOption
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1313,8 +1403,6 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|blockManager
-operator|.
 name|getBytesInFuture
 argument_list|()
 operator|>
@@ -1325,24 +1413,22 @@ name|msg
 operator|+=
 literal|"Name node detected blocks with generation stamps "
 operator|+
-literal|"in future. This means that Name node metadata is inconsistent."
+literal|"in future. This means that Name node metadata is inconsistent. "
 operator|+
 literal|"This can happen if Name node metadata files have been manually "
 operator|+
 literal|"replaced. Exiting safe mode will cause loss of "
 operator|+
-name|blockManager
-operator|.
 name|getBytesInFuture
 argument_list|()
 operator|+
 literal|" byte(s). Please restart name node with "
 operator|+
-literal|"right metadata or use \"hdfs dfsadmin -safemode forceExit"
+literal|"right metadata or use \"hdfs dfsadmin -safemode forceExit\" "
 operator|+
-literal|"if you are certain that the NameNode was started with the"
+literal|"if you are certain that the NameNode was started with the "
 operator|+
-literal|"correct FsImage and edit logs. If you encountered this during"
+literal|"correct FsImage and edit logs. If you encountered this during "
 operator|+
 literal|"a rollback, it is safe to exit with -safemode forceExit."
 expr_stmt|;
@@ -1413,9 +1499,9 @@ return|return
 name|msg
 return|;
 block|}
-comment|/**    * Leave start up safe mode.    * @param force - true to force exit    */
+comment|/**    * Leave start up safe mode.    *    * @param force - true to force exit    * @return true if it leaves safe mode successfully else false    */
 DECL|method|leaveSafeMode (boolean force)
-name|void
+name|boolean
 name|leaveSafeMode
 parameter_list|(
 name|boolean
@@ -1430,6 +1516,84 @@ argument_list|()
 operator|:
 literal|"Leaving safe mode needs write lock!"
 assert|;
+specifier|final
+name|long
+name|bytesInFuture
+init|=
+name|numberOfBytesInFutureBlocks
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|bytesInFuture
+operator|>
+literal|0
+condition|)
+block|{
+if|if
+condition|(
+name|force
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Leaving safe mode due to forceExit. This will cause a data "
+operator|+
+literal|"loss of {} byte(s)."
+argument_list|,
+name|bytesInFuture
+argument_list|)
+expr_stmt|;
+name|numberOfBytesInFutureBlocks
+operator|.
+name|set
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Refusing to leave safe mode without a force flag. "
+operator|+
+literal|"Exiting safe mode will cause a deletion of {} byte(s). Please "
+operator|+
+literal|"use -forceExit flag to exit safe mode forcefully if data loss is"
+operator|+
+literal|" acceptable."
+argument_list|,
+name|bytesInFuture
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|force
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"forceExit used when normal exist would suffice. Treating "
+operator|+
+literal|"force exit as normal safe mode exit."
+argument_list|)
+expr_stmt|;
+block|}
 comment|// if not done yet, initialize replication queues.
 comment|// In the standby, do not populate repl queues
 if|if
@@ -1451,39 +1615,6 @@ operator|.
 name|initializeReplQueues
 argument_list|()
 expr_stmt|;
-block|}
-if|if
-condition|(
-operator|!
-name|force
-operator|&&
-name|blockManager
-operator|.
-name|getBytesInFuture
-argument_list|()
-operator|>
-literal|0
-condition|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Refusing to leave safe mode without a force flag. "
-operator|+
-literal|"Exiting safe mode will cause a deletion of {} byte(s). Please use "
-operator|+
-literal|"-forceExit flag to exit safe mode forcefully if data loss is "
-operator|+
-literal|"acceptable."
-argument_list|,
-name|blockManager
-operator|.
-name|getBytesInFuture
-argument_list|()
-argument_list|)
-expr_stmt|;
-return|return;
 block|}
 if|if
 condition|(
@@ -1642,6 +1773,9 @@ name|SAFEMODE
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+literal|true
+return|;
 block|}
 comment|/**    * Increment number of safe blocks if current block has reached minimal    * replication.    * If safe mode is not currently on, this is a no-op.    * @param storageNum  current number of replicas or number of internal blocks    *                    of a striped block group    * @param storedBlock current storedBlock which is either a    *                    BlockInfoContiguous or a BlockInfoStriped    */
 DECL|method|incrementSafeBlockCount (int storageNum, BlockInfo storedBlock)
@@ -1843,6 +1977,76 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Check if the block report replica has a generation stamp (GS) in future.    * If safe mode is not currently on, this is a no-op.    *    * @param brr block report replica which belongs to no file in BlockManager    */
+DECL|method|checkBlocksWithFutureGS (BlockReportReplica brr)
+name|void
+name|checkBlocksWithFutureGS
+parameter_list|(
+name|BlockReportReplica
+name|brr
+parameter_list|)
+block|{
+assert|assert
+name|namesystem
+operator|.
+name|hasWriteLock
+argument_list|()
+assert|;
+if|if
+condition|(
+name|status
+operator|==
+name|BMSafeModeStatus
+operator|.
+name|OFF
+condition|)
+block|{
+return|return;
+block|}
+if|if
+condition|(
+operator|!
+name|blockManager
+operator|.
+name|getShouldPostponeBlocksFromFuture
+argument_list|()
+operator|&&
+operator|!
+name|inRollBack
+operator|&&
+name|namesystem
+operator|.
+name|isGenStampInFuture
+argument_list|(
+name|brr
+argument_list|)
+condition|)
+block|{
+name|numberOfBytesInFutureBlocks
+operator|.
+name|addAndGet
+argument_list|(
+name|brr
+operator|.
+name|getBytesOnDisk
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Returns the number of bytes that reside in blocks with Generation Stamps    * greater than generation stamp known to Namenode.    *    * @return Bytes in future    */
+DECL|method|getBytesInFuture ()
+name|long
+name|getBytesInFuture
+parameter_list|()
+block|{
+return|return
+name|numberOfBytesInFutureBlocks
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
 DECL|method|close ()
 name|void
 name|close
@@ -1895,6 +2099,44 @@ name|extension
 operator|-
 name|monotonicNow
 argument_list|()
+return|;
+block|}
+comment|/**    * Returns true if Namenode was started with a RollBack option.    *    * @param option - StartupOption    * @return boolean    */
+DECL|method|isInRollBackMode (StartupOption option)
+specifier|private
+specifier|static
+name|boolean
+name|isInRollBackMode
+parameter_list|(
+name|StartupOption
+name|option
+parameter_list|)
+block|{
+return|return
+operator|(
+name|option
+operator|==
+name|StartupOption
+operator|.
+name|ROLLBACK
+operator|)
+operator|||
+operator|(
+name|option
+operator|==
+name|StartupOption
+operator|.
+name|ROLLINGUPGRADE
+operator|&&
+name|option
+operator|.
+name|getRollingUpgradeStartupOption
+argument_list|()
+operator|==
+name|RollingUpgradeStartupOption
+operator|.
+name|ROLLBACK
+operator|)
 return|;
 block|}
 comment|/** Check if we are ready to initialize replication queues. */

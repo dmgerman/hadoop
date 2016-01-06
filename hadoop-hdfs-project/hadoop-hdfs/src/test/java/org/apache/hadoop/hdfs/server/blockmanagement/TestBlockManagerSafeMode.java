@@ -102,6 +102,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|BlockListAsLongs
+operator|.
+name|BlockReportReplica
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -208,16 +226,6 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Mockito
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
 name|internal
 operator|.
 name|util
@@ -293,18 +301,6 @@ operator|.
 name|Assert
 operator|.
 name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
 import|;
 end_import
 
@@ -507,8 +503,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|Mockito
-operator|.
 name|doReturn
 argument_list|(
 literal|true
@@ -522,8 +516,6 @@ operator|.
 name|hasWriteLock
 argument_list|()
 expr_stmt|;
-name|Mockito
-operator|.
 name|doReturn
 argument_list|(
 literal|true
@@ -537,8 +529,6 @@ operator|.
 name|hasReadLock
 argument_list|()
 expr_stmt|;
-name|Mockito
-operator|.
 name|doReturn
 argument_list|(
 literal|true
@@ -551,6 +541,26 @@ argument_list|)
 operator|.
 name|isRunning
 argument_list|()
+expr_stmt|;
+name|doReturn
+argument_list|(
+literal|true
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|fsn
+argument_list|)
+operator|.
+name|isGenStampInFuture
+argument_list|(
+name|any
+argument_list|(
+name|Block
+operator|.
+name|class
+argument_list|)
+argument_list|)
 expr_stmt|;
 name|NameNode
 operator|.
@@ -624,7 +634,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test set block total.    *    * The block total is set which will call checkSafeMode for the first time    * and bmSafeMode transfers from INITIALIZED to PENDING_THRESHOLD status    */
+comment|/**    * Test set block total.    *    * The block total is set which will call checkSafeMode for the first time    * and bmSafeMode transfers from OFF to PENDING_THRESHOLD status    */
 annotation|@
 name|Test
 argument_list|(
@@ -898,7 +908,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test that the block safe increases up to block threshold.    *    * Once the block threshold is reached, the block manger leaves safe mode and    * increment will be a no-op.    * The safe mode status lifecycle: INITIALIZED -> PENDING_THRESHOLD -> OFF    */
+comment|/**    * Test that the block safe increases up to block threshold.    *    * Once the block threshold is reached, the block manger leaves safe mode and    * increment will be a no-op.    * The safe mode status lifecycle: OFF -> PENDING_THRESHOLD -> OFF    */
 annotation|@
 name|Test
 argument_list|(
@@ -1024,7 +1034,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Test that the block safe increases up to block threshold.    *    * Once the block threshold is reached, the block manger leaves safe mode and    * increment will be a no-op.    * The safe mode status lifecycle: INITIALIZED -> PENDING_THRESHOLD -> EXTENSION-> OFF    */
+comment|/**    * Test that the block safe increases up to block threshold.    *    * Once the block threshold is reached, the block manger leaves safe mode and    * increment will be a no-op.    * The safe mode status lifecycle: OFF -> PENDING_THRESHOLD -> EXTENSION-> OFF    */
 annotation|@
 name|Test
 argument_list|(
@@ -1123,7 +1133,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test that the block safe decreases the block safe.    *    * The block manager stays in safe mode.    * The safe mode status lifecycle: INITIALIZED -> PENDING_THRESHOLD    */
+comment|/**    * Test that the block safe decreases the block safe.    *    * The block manager stays in safe mode.    * The safe mode status lifecycle: OFF -> PENDING_THRESHOLD    */
 annotation|@
 name|Test
 argument_list|(
@@ -1215,7 +1225,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test when the block safe increment and decrement interleave.    *    * Both the increment and decrement will be a no-op if the safe mode is OFF.    * The safe mode status lifecycle: INITIALIZED -> PENDING_THRESHOLD -> OFF    */
+comment|/**    * Test when the block safe increment and decrement interleave.    *    * Both the increment and decrement will be a no-op if the safe mode is OFF.    * The safe mode status lifecycle: OFF -> PENDING_THRESHOLD -> OFF    */
 annotation|@
 name|Test
 argument_list|(
@@ -1499,7 +1509,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test block manager won't leave safe mode if there are orphan blocks.    */
+comment|/**    * Test block manager won't leave safe mode if there are blocks with    * generation stamp (GS) in future.    */
 annotation|@
 name|Test
 argument_list|(
@@ -1522,17 +1532,20 @@ argument_list|(
 name|BLOCK_TOTAL
 argument_list|)
 expr_stmt|;
-name|when
+comment|// Inject blocks with future GS
+name|injectBlocksWithFugureGS
 argument_list|(
-name|bm
+literal|100L
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|100L
+argument_list|,
+name|bmSafeMode
 operator|.
 name|getBytesInFuture
 argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-literal|1L
 argument_list|)
 expr_stmt|;
 comment|// safe blocks are enough
@@ -1547,34 +1560,60 @@ operator|.
 name|checkSafeMode
 argument_list|()
 expr_stmt|;
-try|try
-block|{
-name|waitForExtensionPeriod
-argument_list|()
-expr_stmt|;
-name|fail
+name|assertFalse
 argument_list|(
-literal|"Safe mode should not leave extension period with orphan blocks!"
+literal|"Shouldn't leave safe mode in case of blocks with future GS! "
+argument_list|,
+name|bmSafeMode
+operator|.
+name|leaveSafeMode
+argument_list|(
+literal|false
+argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|TimeoutException
-name|e
-parameter_list|)
-block|{
+name|assertTrue
+argument_list|(
+literal|"Leaving safe mode forcefully should succeed regardless of "
+operator|+
+literal|"blocks with future GS."
+argument_list|,
+name|bmSafeMode
+operator|.
+name|leaveSafeMode
+argument_list|(
+literal|true
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
-name|BMSafeModeStatus
-operator|.
-name|EXTENSION
+literal|"Number of blocks with future GS should have been cleared "
+operator|+
+literal|"after leaving safe mode"
 argument_list|,
-name|getSafeModeStatus
+literal|0L
+argument_list|,
+name|bmSafeMode
+operator|.
+name|getBytesInFuture
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
+name|assertTrue
+argument_list|(
+literal|"Leaving safe mode should succeed after blocks with future GS "
+operator|+
+literal|"are cleared."
+argument_list|,
+name|bmSafeMode
+operator|.
+name|leaveSafeMode
+argument_list|(
+literal|false
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Test get safe mode tip.    */
 annotation|@
@@ -1756,15 +1795,6 @@ operator|.
 name|getSafeModeTip
 argument_list|()
 expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-name|tip
-argument_list|)
-expr_stmt|;
 name|assertTrue
 argument_list|(
 name|tip
@@ -1824,7 +1854,182 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Mock block manager internal state for decrement safe block    */
+comment|/**    * Test get safe mode tip in case of blocks with future GS.    */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testGetSafeModeTipForBlocksWithFutureGS ()
+specifier|public
+name|void
+name|testGetSafeModeTipForBlocksWithFutureGS
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|bmSafeMode
+operator|.
+name|activate
+argument_list|(
+name|BLOCK_TOTAL
+argument_list|)
+expr_stmt|;
+name|injectBlocksWithFugureGS
+argument_list|(
+literal|40L
+argument_list|)
+expr_stmt|;
+name|String
+name|tip
+init|=
+name|bmSafeMode
+operator|.
+name|getSafeModeTip
+argument_list|()
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|tip
+operator|.
+name|contains
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"The reported blocks %d needs additional %d blocks to reach the "
+operator|+
+literal|"threshold %.4f of total blocks %d.%n"
+argument_list|,
+literal|0
+argument_list|,
+name|BLOCK_THRESHOLD
+argument_list|,
+name|THRESHOLD
+argument_list|,
+name|BLOCK_TOTAL
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|tip
+operator|.
+name|contains
+argument_list|(
+literal|"Name node detected blocks with generation stamps "
+operator|+
+literal|"in future. This means that Name node metadata is inconsistent. "
+operator|+
+literal|"This can happen if Name node metadata files have been manually "
+operator|+
+literal|"replaced. Exiting safe mode will cause loss of "
+operator|+
+literal|40
+operator|+
+literal|" byte(s). Please restart name node with "
+operator|+
+literal|"right metadata or use \"hdfs dfsadmin -safemode forceExit\" "
+operator|+
+literal|"if you are certain that the NameNode was started with the "
+operator|+
+literal|"correct FsImage and edit logs. If you encountered this during "
+operator|+
+literal|"a rollback, it is safe to exit with -safemode forceExit."
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|tip
+operator|.
+name|contains
+argument_list|(
+literal|"Safe mode will be turned off"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// blocks with future GS were already injected before.
+name|setBlockSafe
+argument_list|(
+name|BLOCK_THRESHOLD
+argument_list|)
+expr_stmt|;
+name|tip
+operator|=
+name|bmSafeMode
+operator|.
+name|getSafeModeTip
+argument_list|()
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|tip
+operator|.
+name|contains
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"The reported blocks %d has reached the threshold"
+operator|+
+literal|" %.4f of total blocks %d. "
+argument_list|,
+name|getblockSafe
+argument_list|()
+argument_list|,
+name|THRESHOLD
+argument_list|,
+name|BLOCK_TOTAL
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|tip
+operator|.
+name|contains
+argument_list|(
+literal|"Name node detected blocks with generation stamps "
+operator|+
+literal|"in future. This means that Name node metadata is inconsistent. "
+operator|+
+literal|"This can happen if Name node metadata files have been manually "
+operator|+
+literal|"replaced. Exiting safe mode will cause loss of "
+operator|+
+literal|40
+operator|+
+literal|" byte(s). Please restart name node with "
+operator|+
+literal|"right metadata or use \"hdfs dfsadmin -safemode forceExit\" "
+operator|+
+literal|"if you are certain that the NameNode was started with the "
+operator|+
+literal|"correct FsImage and edit logs. If you encountered this during "
+operator|+
+literal|"a rollback, it is safe to exit with -safemode forceExit."
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|tip
+operator|.
+name|contains
+argument_list|(
+literal|"Safe mode will be turned off"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Mock block manager internal state for decrement safe block.    */
 DECL|method|mockBlockManagerForBlockSafeDecrement ()
 specifier|private
 name|void
@@ -1973,6 +2178,46 @@ argument_list|,
 name|EXTENSION
 operator|*
 literal|2
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|injectBlocksWithFugureGS (long numBytesInFuture)
+specifier|private
+name|void
+name|injectBlocksWithFugureGS
+parameter_list|(
+name|long
+name|numBytesInFuture
+parameter_list|)
+block|{
+name|BlockReportReplica
+name|brr
+init|=
+name|mock
+argument_list|(
+name|BlockReportReplica
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|when
+argument_list|(
+name|brr
+operator|.
+name|getBytesOnDisk
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|numBytesInFuture
+argument_list|)
+expr_stmt|;
+name|bmSafeMode
+operator|.
+name|checkBlocksWithFutureGS
+argument_list|(
+name|brr
 argument_list|)
 expr_stmt|;
 block|}

@@ -2837,7 +2837,9 @@ expr_stmt|;
 name|fns
 operator|.
 name|leaveSafeMode
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 comment|// Add a striped block to the file
 name|BlockInfoStriped
@@ -3351,7 +3353,9 @@ expr_stmt|;
 name|fns
 operator|.
 name|leaveSafeMode
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 comment|//update the last block
 name|long

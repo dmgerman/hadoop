@@ -8371,7 +8371,9 @@ expr_stmt|;
 name|fsns
 operator|.
 name|leaveSafeMode
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 name|secondary
 operator|=

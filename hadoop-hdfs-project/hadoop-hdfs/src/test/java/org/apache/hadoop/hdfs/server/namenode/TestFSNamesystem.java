@@ -703,7 +703,9 @@ decl_stmt|;
 name|fsn
 operator|.
 name|leaveSafeMode
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
@@ -977,7 +979,9 @@ expr_stmt|;
 name|fsn
 operator|.
 name|leaveSafeMode
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(

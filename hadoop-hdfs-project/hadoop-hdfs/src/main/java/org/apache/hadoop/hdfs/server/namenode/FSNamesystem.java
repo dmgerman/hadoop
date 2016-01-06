@@ -7022,6 +7022,12 @@ name|void
 name|startSecretManagerIfNecessary
 parameter_list|()
 block|{
+assert|assert
+name|hasWriteLock
+argument_list|()
+operator|:
+literal|"Starting secret manager needs write lock"
+assert|;
 name|boolean
 name|shouldRun
 init|=
@@ -19560,43 +19566,11 @@ case|case
 name|SAFEMODE_LEAVE
 case|:
 comment|// leave safe mode
-if|if
-condition|(
-name|blockManager
-operator|.
-name|getBytesInFuture
-argument_list|()
-operator|>
-literal|0
-condition|)
-block|{
-name|LOG
-operator|.
-name|error
+name|leaveSafeMode
 argument_list|(
-literal|"Refusing to leave safe mode without a force flag. "
-operator|+
-literal|"Exiting safe mode will cause a deletion of "
-operator|+
-name|blockManager
-operator|.
-name|getBytesInFuture
-argument_list|()
-operator|+
-literal|" byte(s). Please use "
-operator|+
-literal|"-forceExit flag to exit safe mode forcefully and data loss is "
-operator|+
-literal|"acceptable."
+literal|false
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|leaveSafeMode
-argument_list|()
-expr_stmt|;
-block|}
 break|break;
 case|case
 name|SAFEMODE_ENTER
@@ -19611,52 +19585,10 @@ break|break;
 case|case
 name|SAFEMODE_FORCE_EXIT
 case|:
-if|if
-condition|(
-name|blockManager
-operator|.
-name|getBytesInFuture
-argument_list|()
-operator|>
-literal|0
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Leaving safe mode due to forceExit. This will cause a data "
-operator|+
-literal|"loss of "
-operator|+
-name|blockManager
-operator|.
-name|getBytesInFuture
-argument_list|()
-operator|+
-literal|" byte(s)."
-argument_list|)
-expr_stmt|;
-name|blockManager
-operator|.
-name|clearBytesInFuture
-argument_list|()
-expr_stmt|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"forceExit used when normal exist would suffice. Treating "
-operator|+
-literal|"force exit as normal safe mode exit."
-argument_list|)
-expr_stmt|;
-block|}
 name|leaveSafeMode
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 break|break;
 default|default:
@@ -19914,11 +19846,14 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Leave safe mode.    */
-DECL|method|leaveSafeMode ()
+comment|/**    * Leave safe mode.    * @param force true if to leave safe mode forcefully with -forceExit option    */
+DECL|method|leaveSafeMode (boolean force)
 name|void
 name|leaveSafeMode
-parameter_list|()
+parameter_list|(
+name|boolean
+name|force
+parameter_list|)
 block|{
 name|writeLock
 argument_list|()
@@ -19943,6 +19878,16 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+if|if
+condition|(
+name|blockManager
+operator|.
+name|leaveSafeMode
+argument_list|(
+name|force
+argument_list|)
+condition|)
+block|{
 name|setManualAndResourceLowSafeMode
 argument_list|(
 literal|false
@@ -19950,13 +19895,10 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|blockManager
-operator|.
-name|leaveSafeMode
-argument_list|(
-literal|true
-argument_list|)
+name|startSecretManagerIfNecessary
+argument_list|()
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{

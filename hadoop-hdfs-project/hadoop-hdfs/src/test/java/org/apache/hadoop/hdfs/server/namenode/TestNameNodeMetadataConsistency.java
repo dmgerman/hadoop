@@ -114,6 +114,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|MiniDFSCluster
+operator|.
+name|DataNodeProperties
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|ExtendedBlock
@@ -142,9 +158,17 @@ begin_import
 import|import
 name|org
 operator|.
-name|hamcrest
+name|apache
 operator|.
-name|CoreMatchers
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockManagerTestUtil
 import|;
 end_import
 
@@ -175,32 +199,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|internal
-operator|.
-name|util
-operator|.
-name|reflection
-operator|.
-name|Whitebox
 import|;
 end_import
 
@@ -256,19 +254,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertThat
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|*
+name|assertTrue
 import|;
 end_import
 
@@ -303,6 +289,15 @@ name|Path
 argument_list|(
 literal|"/testdata2.txt"
 argument_list|)
+decl_stmt|;
+DECL|field|TEST_DATA_IN_FUTURE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|TEST_DATA_IN_FUTURE
+init|=
+literal|"This is test data"
 decl_stmt|;
 DECL|field|SCAN_INTERVAL
 specifier|private
@@ -415,19 +410,6 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-name|String
-name|testData
-init|=
-literal|" This is test data"
-decl_stmt|;
-name|int
-name|datalen
-init|=
-name|testData
-operator|.
-name|length
-argument_list|()
-decl_stmt|;
 name|cluster
 operator|.
 name|waitActive
@@ -455,7 +437,7 @@ name|ostream
 operator|.
 name|write
 argument_list|(
-name|testData
+name|TEST_DATA_IN_FUTURE
 operator|.
 name|getBytes
 argument_list|()
@@ -466,6 +448,7 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+comment|// Re-write the Generation Stamp to a Generation Stamp in future.
 name|ExtendedBlock
 name|block
 init|=
@@ -478,6 +461,7 @@ argument_list|,
 name|filePath1
 argument_list|)
 decl_stmt|;
+specifier|final
 name|long
 name|genStamp
 init|=
@@ -486,12 +470,17 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 decl_stmt|;
-comment|// Re-write the Generation Stamp to a Generation Stamp in future.
+specifier|final
+name|int
+name|datanodeIndex
+init|=
+literal|0
+decl_stmt|;
 name|cluster
 operator|.
 name|changeGenStampOfBlock
 argument_list|(
-literal|0
+name|datanodeIndex
 argument_list|,
 name|block
 argument_list|,
@@ -500,8 +489,8 @@ operator|+
 literal|1
 argument_list|)
 expr_stmt|;
-name|MiniDFSCluster
-operator|.
+comment|// stop the data node so that it won't remove block
+specifier|final
 name|DataNodeProperties
 name|dnProps
 init|=
@@ -509,16 +498,27 @@ name|cluster
 operator|.
 name|stopDataNode
 argument_list|(
-literal|0
+name|datanodeIndex
 argument_list|)
 decl_stmt|;
-comment|// Simulate  Namenode forgetting a Block
+comment|// Simulate Namenode forgetting a Block
 name|cluster
 operator|.
 name|restartNameNode
 argument_list|(
 literal|true
 argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|getNameNode
+argument_list|()
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|writeLock
+argument_list|()
 expr_stmt|;
 name|BlockInfo
 name|bInfo
@@ -550,17 +550,6 @@ operator|.
 name|getNamesystem
 argument_list|()
 operator|.
-name|writeLock
-argument_list|()
-expr_stmt|;
-name|cluster
-operator|.
-name|getNameNode
-argument_list|()
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
 name|getBlockManager
 argument_list|()
 operator|.
@@ -581,23 +570,9 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 comment|// we also need to tell block manager that we are in the startup path
-name|FSNamesystem
-name|spyNameSystem
-init|=
-name|spy
-argument_list|(
-name|cluster
+name|BlockManagerTestUtil
 operator|.
-name|getNameNode
-argument_list|()
-operator|.
-name|getNamesystem
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|Whitebox
-operator|.
-name|setInternalState
+name|setStartupSafeModeForTest
 argument_list|(
 name|cluster
 operator|.
@@ -609,42 +584,8 @@ argument_list|()
 operator|.
 name|getBlockManager
 argument_list|()
-argument_list|,
-literal|"namesystem"
-argument_list|,
-name|spyNameSystem
 argument_list|)
 expr_stmt|;
-name|Whitebox
-operator|.
-name|setInternalState
-argument_list|(
-name|cluster
-operator|.
-name|getNameNode
-argument_list|()
-argument_list|,
-literal|"namesystem"
-argument_list|,
-name|spyNameSystem
-argument_list|)
-expr_stmt|;
-name|Mockito
-operator|.
-name|doReturn
-argument_list|(
-literal|true
-argument_list|)
-operator|.
-name|when
-argument_list|(
-name|spyNameSystem
-argument_list|)
-operator|.
-name|isInStartupSafeMode
-argument_list|()
-expr_stmt|;
-comment|// Since Data Node is already shutdown we didn't remove blocks
 name|cluster
 operator|.
 name|restartDataNode
@@ -669,7 +610,6 @@ operator|.
 name|triggerBlockReports
 argument_list|()
 expr_stmt|;
-comment|// Give some buffer to process the block reports
 name|waitTil
 argument_list|(
 name|TimeUnit
@@ -685,7 +625,10 @@ expr_stmt|;
 comment|// Make sure that we find all written bytes in future block
 name|assertEquals
 argument_list|(
-name|datalen
+name|TEST_DATA_IN_FUTURE
+operator|.
+name|length
+argument_list|()
 argument_list|,
 name|cluster
 operator|.
@@ -697,9 +640,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Assert safemode reason
-name|String
-name|safeModeMessage
-init|=
+name|assertTrue
+argument_list|(
 name|cluster
 operator|.
 name|getNameNode
@@ -710,18 +652,10 @@ argument_list|()
 operator|.
 name|getSafeModeTip
 argument_list|()
-decl_stmt|;
-name|assertThat
-argument_list|(
-name|safeModeMessage
-argument_list|,
-name|CoreMatchers
 operator|.
-name|containsString
+name|contains
 argument_list|(
-literal|"Name node "
-operator|+
-literal|"detected blocks with generation stamps in future"
+literal|"Name node detected blocks with generation stamps in future"
 argument_list|)
 argument_list|)
 expr_stmt|;

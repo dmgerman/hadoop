@@ -691,7 +691,9 @@ name|getNamesystem
 argument_list|()
 operator|.
 name|leaveSafeMode
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|abortEditLogs (NameNode nn)
