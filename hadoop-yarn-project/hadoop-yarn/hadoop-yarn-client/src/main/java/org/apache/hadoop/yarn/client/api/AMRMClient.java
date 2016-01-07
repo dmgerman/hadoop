@@ -238,6 +238,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ExecutionType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -502,6 +520,11 @@ specifier|final
 name|String
 name|nodeLabelsExpression
 decl_stmt|;
+DECL|field|executionType
+specifier|final
+name|ExecutionType
+name|executionType
+decl_stmt|;
 comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints and      * locality relaxation enabled.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      */
 DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority)
 specifier|public
@@ -577,7 +600,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param relaxLocality      *          If true, containers for this request may be assigned on hosts      *          and racks other than the ones explicitly requested.      * @param nodeLabelsExpression      *          Set node labels to allocate resource, now we only support      *          asking for only a single node label      */
+comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints.      *      * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param relaxLocality      *          If true, containers for this request may be assigned on hosts      *          and racks other than the ones explicitly requested.      * @param nodeLabelsExpression      *          Set node labels to allocate resource, now we only support      *          asking for only a single node label      */
 DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, boolean relaxLocality, String nodeLabelsExpression)
 specifier|public
 name|ContainerRequest
@@ -601,6 +624,55 @@ name|relaxLocality
 parameter_list|,
 name|String
 name|nodeLabelsExpression
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|capability
+argument_list|,
+name|nodes
+argument_list|,
+name|racks
+argument_list|,
+name|priority
+argument_list|,
+name|relaxLocality
+argument_list|,
+literal|null
+argument_list|,
+name|ExecutionType
+operator|.
+name|GUARANTEED
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param relaxLocality      *          If true, containers for this request may be assigned on hosts      *          and racks other than the ones explicitly requested.      * @param nodeLabelsExpression      *          Set node labels to allocate resource, now we only support      *          asking for only a single node label      * @param executionType      *          Set the execution type of the container request.      */
+DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, boolean relaxLocality, String nodeLabelsExpression, ExecutionType executionType)
+specifier|public
+name|ContainerRequest
+parameter_list|(
+name|Resource
+name|capability
+parameter_list|,
+name|String
+index|[]
+name|nodes
+parameter_list|,
+name|String
+index|[]
+name|racks
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|boolean
+name|relaxLocality
+parameter_list|,
+name|String
+name|nodeLabelsExpression
+parameter_list|,
+name|ExecutionType
+name|executionType
 parameter_list|)
 block|{
 comment|// Validate request
@@ -729,6 +801,12 @@ name|nodeLabelsExpression
 operator|=
 name|nodeLabelsExpression
 expr_stmt|;
+name|this
+operator|.
+name|executionType
+operator|=
+name|executionType
+expr_stmt|;
 block|}
 DECL|method|getCapability ()
 specifier|public
@@ -796,6 +874,16 @@ return|return
 name|nodeLabelsExpression
 return|;
 block|}
+DECL|method|getExecutionType ()
+specifier|public
+name|ExecutionType
+name|getExecutionType
+parameter_list|()
+block|{
+return|return
+name|executionType
+return|;
+block|}
 DECL|method|toString ()
 specifier|public
 name|String
@@ -836,6 +924,23 @@ operator|.
 name|append
 argument_list|(
 name|priority
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"]"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"ExecutionType["
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|executionType
 argument_list|)
 operator|.
 name|append
