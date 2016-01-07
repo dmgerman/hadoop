@@ -18429,6 +18429,12 @@ argument_list|(
 name|destroyApp
 argument_list|)
 expr_stmt|;
+comment|// Waits for APPLICATION_RESOURCES_CLEANEDUP event to be handled.
+name|dispatcher
+operator|.
+name|await
+argument_list|()
+expr_stmt|;
 name|verify
 argument_list|(
 name|applicationBus
