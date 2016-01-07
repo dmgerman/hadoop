@@ -2201,6 +2201,25 @@ argument_list|(
 name|host
 argument_list|)
 expr_stmt|;
+comment|// If multiple loopback addresses are present, a direct lookup
+comment|// will be helpful
+if|if
+condition|(
+name|addr
+operator|==
+literal|null
+condition|)
+block|{
+name|addr
+operator|=
+name|InetAddress
+operator|.
+name|getByName
+argument_list|(
+name|host
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
