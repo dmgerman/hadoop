@@ -4700,7 +4700,7 @@ name|contains
 argument_list|(
 name|INVALID_JAVA_HOME
 operator|+
-literal|"/bin/java: No such file or directory"
+literal|"/bin/java"
 argument_list|)
 argument_list|)
 expr_stmt|;
