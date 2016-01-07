@@ -1423,7 +1423,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
 literal|"rollingMonitorInterval is set as "
 operator|+
@@ -1431,7 +1431,7 @@ name|configuredRollingMonitorInterval
 operator|+
 literal|". "
 operator|+
-literal|"The log rolling mornitoring interval is disabled. "
+literal|"The log rolling monitoring interval is disabled. "
 operator|+
 literal|"The logs will be aggregated after this application is finished."
 argument_list|)
@@ -1441,7 +1441,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
 literal|"rollingMonitorInterval is set as "
 operator|+
