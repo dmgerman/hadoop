@@ -284,7 +284,29 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
 import|;
 end_import
 
@@ -304,6 +326,19 @@ specifier|public
 class|class
 name|TestFind
 block|{
+annotation|@
+name|Rule
+DECL|field|timeout
+specifier|public
+name|Timeout
+name|timeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|10000
+argument_list|)
+decl_stmt|;
 DECL|field|mockFs
 specifier|private
 specifier|static
@@ -344,11 +379,6 @@ block|}
 comment|// check follow link option is recognized
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsFollowLink ()
 specifier|public
 name|void
@@ -405,11 +435,6 @@ block|}
 comment|// check follow arg link option is recognized
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsFollowArgLink ()
 specifier|public
 name|void
@@ -466,11 +491,6 @@ block|}
 comment|// check follow arg link option is recognized
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsFollowLinkFollowArgLink ()
 specifier|public
 name|void
@@ -528,11 +548,6 @@ block|}
 comment|// check options and expressions are stripped from args leaving paths
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsExpression ()
 specifier|public
 name|void
@@ -609,11 +624,6 @@ block|}
 comment|// check print is used as the default expression
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsNoExpression ()
 specifier|public
 name|void
@@ -678,11 +688,6 @@ block|}
 comment|// check unknown options are rejected
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsUnknown ()
 specifier|public
 name|void
@@ -738,11 +743,6 @@ block|}
 comment|// check unknown options are rejected when mixed with known options
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsKnownUnknown ()
 specifier|public
 name|void
@@ -798,11 +798,6 @@ block|}
 comment|// check no path defaults to current working directory
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsNoPath ()
 specifier|public
 name|void
@@ -866,11 +861,6 @@ block|}
 comment|// check -name is handled correctly
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsName ()
 specifier|public
 name|void
@@ -935,11 +925,6 @@ block|}
 comment|// check -iname is handled correctly
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsIname ()
 specifier|public
 name|void
@@ -1004,11 +989,6 @@ block|}
 comment|// check -print is handled correctly
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsPrint ()
 specifier|public
 name|void
@@ -1073,11 +1053,6 @@ block|}
 comment|// check -print0 is handled correctly
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsPrint0 ()
 specifier|public
 name|void
@@ -1142,11 +1117,6 @@ block|}
 comment|// check an implicit and is handled correctly
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsNoop ()
 specifier|public
 name|void
@@ -1211,11 +1181,6 @@ block|}
 comment|// check -a is handled correctly
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsA ()
 specifier|public
 name|void
@@ -1280,11 +1245,6 @@ block|}
 comment|// check -and is handled correctly
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processOptionsAnd ()
 specifier|public
 name|void
@@ -1349,11 +1309,6 @@ block|}
 comment|// check expressions are called in the correct order
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processArguments ()
 specifier|public
 name|void
@@ -1961,11 +1916,6 @@ block|}
 comment|// check that directories are descended correctly when -depth is specified
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processArgumentsDepthFirst ()
 specifier|public
 name|void
@@ -2584,11 +2534,6 @@ comment|// check symlinks given as path arguments are processed correctly with t
 comment|// follow arg option set
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processArgumentsOptionFollowArg ()
 specifier|public
 name|void
@@ -3198,11 +3143,6 @@ comment|// check symlinks given as path arguments are processed correctly with t
 comment|// follow option
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processArgumentsOptionFollow ()
 specifier|public
 name|void
@@ -3854,11 +3794,6 @@ block|}
 comment|// check minimum depth is handledfollowLink
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processArgumentsMinDepth ()
 specifier|public
 name|void
@@ -4336,11 +4271,6 @@ block|}
 comment|// check maximum depth is handled
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processArgumentsMaxDepth ()
 specifier|public
 name|void
@@ -4902,11 +4832,6 @@ block|}
 comment|// check min depth is handled when -depth is specified
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processArgumentsDepthFirstMinDepth ()
 specifier|public
 name|void
@@ -5394,11 +5319,6 @@ block|}
 comment|// check max depth is handled when -depth is specified
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processArgumentsDepthFirstMaxDepth ()
 specifier|public
 name|void
@@ -5970,11 +5890,6 @@ block|}
 comment|// check expressions are called in the correct order
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|processArgumentsNoDescend ()
 specifier|public
 name|void
