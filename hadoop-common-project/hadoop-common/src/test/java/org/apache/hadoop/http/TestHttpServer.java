@@ -3589,17 +3589,6 @@ operator|>
 name|port
 argument_list|)
 expr_stmt|;
-comment|// allow a little wiggle room to prevent random test failures if
-comment|// some consecutive ports are already in use
-name|assertTrue
-argument_list|(
-name|boundPort
-operator|-
-name|port
-operator|<
-literal|8
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 catch|catch
