@@ -694,6 +694,22 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
 comment|/****************************************************************  * An abstract base class for a fairly generic filesystem.  It  * may be implemented as a distributed filesystem, or as a "local"  * one that reflects the locally-connected disk.  The local version  * exists for small Hadoop instances and for testing.  *  *<p>  *  * All user code that may potentially use the Hadoop Distributed  * File System should be written to use a FileSystem object.  The  * Hadoop DFS is a multi-machine system that appears as a single  * disk.  It's useful because of its fault tolerance and potentially  * very large capacity.  *   *<p>  * The local implementation is {@link LocalFileSystem} and distributed  * implementation is DistributedFileSystem.  *****************************************************************/
 end_comment
@@ -2752,15 +2768,13 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|,
 literal|false
 argument_list|,
-name|CommonConfigurationKeysPublic
-operator|.
 name|FS_TRASH_INTERVAL_DEFAULT
 argument_list|,
 name|DataChecksum
@@ -2854,9 +2868,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|)
 return|;
@@ -2909,9 +2923,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|,
 name|getDefaultReplication
@@ -2953,9 +2967,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|,
 name|getDefaultReplication
@@ -2999,9 +3013,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|,
 name|replication
@@ -3043,12 +3057,8 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-name|CommonConfigurationKeysPublic
-operator|.
 name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-name|CommonConfigurationKeysPublic
-operator|.
 name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|,
@@ -3855,9 +3865,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|)
 operator|.
@@ -3869,7 +3879,7 @@ literal|true
 return|;
 block|}
 block|}
-comment|/**    * Append to an existing file (optional operation).    * Same as append(f, getConf().getInt("io.file.buffer.size", 4096), null)    * @param f the existing file to be appended.    * @throws IOException    */
+comment|/**    * Append to an existing file (optional operation).    * Same as append(f, getConf().getInt(IO_FILE_BUFFER_SIZE_KEY,    *     IO_FILE_BUFFER_SIZE_DEFAULT), null)    * @param f the existing file to be appended.    * @throws IOException    */
 DECL|method|append (Path f)
 specifier|public
 name|FSDataOutputStream
@@ -3891,9 +3901,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|,
 literal|null
