@@ -651,6 +651,11 @@ specifier|private
 name|SystemMetricsPublisher
 name|systemMetricsPublisher
 decl_stmt|;
+DECL|field|elector
+specifier|private
+name|LeaderElectorService
+name|elector
+decl_stmt|;
 comment|/**    * Default constructor. To be used in conjunction with setter methods for    * individual fields.    */
 DECL|method|RMContextImpl ()
 specifier|public
@@ -816,6 +821,38 @@ return|return
 name|this
 operator|.
 name|rmDispatcher
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setLeaderElectorService (LeaderElectorService elector)
+specifier|public
+name|void
+name|setLeaderElectorService
+parameter_list|(
+name|LeaderElectorService
+name|elector
+parameter_list|)
+block|{
+name|this
+operator|.
+name|elector
+operator|=
+name|elector
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getLeaderElectorService ()
+specifier|public
+name|LeaderElectorService
+name|getLeaderElectorService
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|elector
 return|;
 block|}
 annotation|@

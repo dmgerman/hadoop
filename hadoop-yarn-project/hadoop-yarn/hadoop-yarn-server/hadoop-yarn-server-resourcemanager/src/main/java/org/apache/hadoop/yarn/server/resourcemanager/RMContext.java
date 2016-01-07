@@ -759,6 +759,19 @@ name|PlacementManager
 name|placementMgr
 parameter_list|)
 function_decl|;
+DECL|method|setLeaderElectorService (LeaderElectorService elector)
+name|void
+name|setLeaderElectorService
+parameter_list|(
+name|LeaderElectorService
+name|elector
+parameter_list|)
+function_decl|;
+DECL|method|getLeaderElectorService ()
+name|LeaderElectorService
+name|getLeaderElectorService
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
