@@ -192,7 +192,17 @@ specifier|public
 class|class
 name|DiskBalancerTestUtil
 block|{
-comment|// we modeling disks here, hence HDD style units
+DECL|field|MB
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|MB
+init|=
+literal|1024
+operator|*
+literal|1024L
+decl_stmt|;
 DECL|field|GB
 specifier|public
 specifier|static
@@ -200,7 +210,9 @@ specifier|final
 name|long
 name|GB
 init|=
-literal|1000000000L
+name|MB
+operator|*
+literal|1024L
 decl_stmt|;
 DECL|field|TB
 specifier|public
@@ -209,7 +221,9 @@ specifier|final
 name|long
 name|TB
 init|=
-literal|1000000000000L
+name|GB
+operator|*
+literal|1024L
 decl_stmt|;
 DECL|field|diskSizes
 specifier|private
