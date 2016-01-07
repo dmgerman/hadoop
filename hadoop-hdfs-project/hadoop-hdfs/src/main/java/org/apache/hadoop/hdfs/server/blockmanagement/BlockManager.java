@@ -18850,6 +18850,12 @@ name|storedBlock
 argument_list|)
 decl_stmt|;
 return|return
+name|storedBlock
+operator|.
+name|isComplete
+argument_list|()
+operator|&&
+operator|(
 name|current
 operator|<
 name|expected
@@ -18859,6 +18865,7 @@ name|isPlacementPolicySatisfied
 argument_list|(
 name|storedBlock
 argument_list|)
+operator|)
 return|;
 block|}
 DECL|method|getExpectedReplicaNum (BlockInfo block)

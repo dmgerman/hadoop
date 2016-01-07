@@ -997,18 +997,19 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-operator|!
+name|numLive
+operator|>=
+name|numExpected
+operator|&&
 name|blockManager
 operator|.
-name|isNeededReplication
+name|isPlacementPolicySatisfied
 argument_list|(
 name|block
-argument_list|,
-name|numLive
 argument_list|)
 condition|)
 block|{
-comment|// Block doesn't need replication. Skip.
+comment|// Block has enough replica, skip
 name|LOG
 operator|.
 name|trace
