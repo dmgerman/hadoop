@@ -1468,23 +1468,15 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// after cluster has time to resolve the over-replication,
-comment|// block locations should contain two proxies,
-comment|// and either source or newNode, but not both.
+comment|// block locations should contain any 3 of the blocks, since after the
+comment|// deletion the number of racks is still>=2 for sure.
+comment|// See HDFS-9314 for details, espacially the comment on 18/Nov/15 14:09.
 name|checkBlocks
-argument_list|(
-name|proxies
-operator|.
-name|toArray
 argument_list|(
 operator|new
 name|DatanodeInfo
-index|[
-name|proxies
-operator|.
-name|size
-argument_list|()
-index|]
-argument_list|)
+index|[]
+block|{}
 argument_list|,
 name|fileName
 operator|.
