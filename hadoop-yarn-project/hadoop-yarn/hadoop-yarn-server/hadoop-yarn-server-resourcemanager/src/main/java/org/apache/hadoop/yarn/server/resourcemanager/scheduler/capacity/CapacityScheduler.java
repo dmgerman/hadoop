@@ -5101,6 +5101,8 @@ name|application
 operator|.
 name|getPriority
 argument_list|()
+argument_list|,
+name|isAttemptRecovering
 argument_list|)
 decl_stmt|;
 if|if

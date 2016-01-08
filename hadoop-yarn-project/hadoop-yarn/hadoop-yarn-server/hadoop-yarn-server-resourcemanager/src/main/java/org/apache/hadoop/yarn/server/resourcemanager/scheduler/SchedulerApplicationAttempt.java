@@ -1111,6 +1111,11 @@ name|appPriority
 init|=
 literal|null
 decl_stmt|;
+DECL|field|isAttemptRecovering
+specifier|private
+name|boolean
+name|isAttemptRecovering
+decl_stmt|;
 DECL|field|attemptResourceUsage
 specifier|protected
 name|ResourceUsage
@@ -4965,6 +4970,32 @@ block|{
 comment|// Give the specific information which might be applicable for the
 comment|// respective scheduler
 comment|// queue's resource usage for specific partition
+block|}
+DECL|method|isAttemptRecovering ()
+specifier|public
+name|boolean
+name|isAttemptRecovering
+parameter_list|()
+block|{
+return|return
+name|isAttemptRecovering
+return|;
+block|}
+DECL|method|setAttemptRecovering (boolean isRecovering)
+specifier|protected
+name|void
+name|setAttemptRecovering
+parameter_list|(
+name|boolean
+name|isRecovering
+parameter_list|)
+block|{
+name|this
+operator|.
+name|isAttemptRecovering
+operator|=
+name|isRecovering
+expr_stmt|;
 block|}
 DECL|enum|AMState
 specifier|public

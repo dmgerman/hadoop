@@ -1034,10 +1034,12 @@ name|newInstance
 argument_list|(
 literal|0
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FiCaSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext, Priority appPriority)
+DECL|method|FiCaSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext, Priority appPriority, boolean isAttemptRecovering)
 specifier|public
 name|FiCaSchedulerApp
 parameter_list|(
@@ -1058,6 +1060,9 @@ name|rmContext
 parameter_list|,
 name|Priority
 name|appPriority
+parameter_list|,
+name|boolean
+name|isAttemptRecovering
 parameter_list|)
 block|{
 name|super
@@ -1181,6 +1186,11 @@ expr_stmt|;
 name|setPriority
 argument_list|(
 name|appPriority
+argument_list|)
+expr_stmt|;
+name|setAttemptRecovering
+argument_list|(
+name|isAttemptRecovering
 argument_list|)
 expr_stmt|;
 name|scheduler

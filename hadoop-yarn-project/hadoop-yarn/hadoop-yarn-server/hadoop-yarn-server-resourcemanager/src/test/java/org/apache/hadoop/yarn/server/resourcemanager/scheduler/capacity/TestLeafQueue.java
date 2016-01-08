@@ -16853,6 +16853,8 @@ name|newInstance
 argument_list|(
 literal|3
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -16907,6 +16909,8 @@ name|newInstance
 argument_list|(
 literal|5
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 decl_stmt|;
