@@ -142,6 +142,14 @@ return|return
 literal|false
 return|;
 block|}
+DECL|method|noRegistration ()
+specifier|public
+name|void
+name|noRegistration
+parameter_list|()
+throws|throws
+name|IOException
+block|{ }
 block|}
 end_class
 

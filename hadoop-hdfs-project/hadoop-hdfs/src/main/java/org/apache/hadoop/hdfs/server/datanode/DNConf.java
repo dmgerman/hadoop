@@ -569,6 +569,38 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_BP_READY_TIMEOUT_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_BP_READY_TIMEOUT_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -851,6 +883,12 @@ DECL|field|maxLockedMemory
 specifier|final
 name|long
 name|maxLockedMemory
+decl_stmt|;
+DECL|field|bpReadyTimeout
+specifier|private
+specifier|final
+name|long
+name|bpReadyTimeout
 decl_stmt|;
 comment|// Allow LAZY_PERSIST writes from non-local clients?
 DECL|field|allowNonLocalLazyPersist
@@ -1332,6 +1370,19 @@ argument_list|,
 name|DFS_DATANODE_NON_LOCAL_LAZY_PERSIST_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|bpReadyTimeout
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFS_DATANODE_BP_READY_TIMEOUT_KEY
+argument_list|,
+name|DFS_DATANODE_BP_READY_TIMEOUT_DEFAULT
+argument_list|)
+expr_stmt|;
 block|}
 comment|// We get minimumNameNodeVersion via a method so it can be mocked out in tests.
 DECL|method|getMinimumNameNodeVersion ()
@@ -1492,6 +1543,16 @@ parameter_list|()
 block|{
 return|return
 name|transferSocketSendBufferSize
+return|;
+block|}
+DECL|method|getBpReadyTimeout ()
+specifier|public
+name|long
+name|getBpReadyTimeout
+parameter_list|()
+block|{
+return|return
+name|bpReadyTimeout
 return|;
 block|}
 block|}
