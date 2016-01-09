@@ -170,6 +170,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -314,10 +328,12 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
-name|fail
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
 argument_list|(
 literal|"testCompressorDecompressor error !!!"
-operator|+
+argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
@@ -428,10 +444,12 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
-name|fail
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
 argument_list|(
 literal|"testCompressorDecompressorWithExeedBufferLimit error !!!"
-operator|+
+argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
