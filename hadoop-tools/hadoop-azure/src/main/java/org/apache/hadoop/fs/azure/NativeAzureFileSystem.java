@@ -1105,17 +1105,33 @@ decl_stmt|;
 if|if
 condition|(
 name|l
-operator|<
+operator|<=
 literal|0
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
+comment|// Jira HADOOP-12678 -Handle empty rename pending metadata file during
+comment|// atomic rename in redo path. If during renamepending file is created
+comment|// but not written yet, then this means that rename operation
+comment|// has not started yet. So we should delete rename pending metadata file.
+name|LOG
+operator|.
+name|error
 argument_list|(
-literal|"Error reading pending rename file contents -- no data available"
+literal|"Deleting empty rename pending file "
+operator|+
+name|redoFile
+operator|+
+literal|" -- no data available"
 argument_list|)
-throw|;
+expr_stmt|;
+name|deleteRenamePendingFile
+argument_list|(
+name|fs
+argument_list|,
+name|redoFile
+argument_list|)
+expr_stmt|;
+return|return;
 block|}
 if|if
 condition|(
@@ -1264,13 +1280,11 @@ name|contents
 argument_list|)
 expr_stmt|;
 comment|// delete the -RenamePending.json file
-name|fs
-operator|.
-name|delete
+name|deleteRenamePendingFile
 argument_list|(
-name|redoFile
+name|fs
 argument_list|,
-literal|false
+name|redoFile
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1461,6 +1475,96 @@ block|{
 return|return
 name|folderLease
 return|;
+block|}
+comment|/**      * Deletes rename pending metadata file      * @param fs -- the file system      * @param redoFile - rename pending metadata file path      * @throws IOException - If deletion fails      */
+annotation|@
+name|VisibleForTesting
+DECL|method|deleteRenamePendingFile (FileSystem fs, Path redoFile)
+name|void
+name|deleteRenamePendingFile
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
+name|Path
+name|redoFile
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+name|fs
+operator|.
+name|delete
+argument_list|(
+name|redoFile
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// If the rename metadata was not found then somebody probably
+comment|// raced with us and finished the delete first
+name|Throwable
+name|t
+init|=
+name|e
+operator|.
+name|getCause
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|t
+operator|!=
+literal|null
+operator|&&
+name|t
+operator|instanceof
+name|StorageException
+operator|&&
+literal|"BlobNotFound"
+operator|.
+name|equals
+argument_list|(
+operator|(
+operator|(
+name|StorageException
+operator|)
+name|t
+operator|)
+operator|.
+name|getErrorCode
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"rename pending file "
+operator|+
+name|redoFile
+operator|+
+literal|" is already deleted"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+block|}
 block|}
 comment|/**      * Write to disk the information needed to redo folder rename,      * in JSON format. The file name will be      * {@code wasb://<sourceFolderPrefix>/folderName-RenamePending.json}      * The file format will be:      *<pre>{@code      * {      *   FormatVersion: "1.0",      *   OperationTime: "<YYYY-MM-DD HH:MM:SS.MMM>",      *   OldFolderName: "<key>",      *   NewFolderName: "<key>",      *   FileList: [<string> ,<string> , ... ]      * }      *      * Here's a sample:      * {      *  FormatVersion: "1.0",      *  OperationUTCTime: "2014-07-01 23:50:35.572",      *  OldFolderName: "user/ehans/folderToRename",      *  NewFolderName: "user/ehans/renamedFolder",      *  FileList: [      *    "innerFile",      *    "innerFile2"      *  ]      * } }</pre>      * @throws IOException      */
 DECL|method|writeFile (FileSystem fs)
