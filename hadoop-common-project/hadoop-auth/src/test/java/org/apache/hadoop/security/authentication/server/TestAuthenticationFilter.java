@@ -6237,19 +6237,306 @@ name|authorized
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testTokenWithValidActivityInterval ()
+specifier|public
+name|void
+name|testTokenWithValidActivityInterval
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Provide token containing valid maxInactive value.
+comment|// The token is active.
+comment|// The server has maxInactiveInterval configured to -1.(disabled)
+comment|// The server shall authorize the access, but should not drop a new cookie
+name|long
+name|maxInactives
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|+
+name|TOKEN_MAX_INACTIVE_INTERVAL
+decl_stmt|;
+name|long
+name|expires
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|+
+name|TOKEN_VALIDITY_SEC
+decl_stmt|;
+name|_testDoFilterAuthenticationMaxInactiveInterval
+argument_list|(
+name|maxInactives
+argument_list|,
+operator|-
+literal|1
+argument_list|,
+name|expires
+argument_list|,
+literal|true
+argument_list|,
+comment|//authorized
+literal|false
+comment|//newCookie
+argument_list|)
+expr_stmt|;
+comment|// Provide token containing valid maxInactive value.
+comment|// The token is active.
+comment|// The server has maxInactiveInterval configured to value
+comment|// greater than 0.(enabled)
+comment|// The server shall authorize the access and drop a new cookie
+comment|// with renewed activity interval
+name|maxInactives
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|+
+name|TOKEN_MAX_INACTIVE_INTERVAL
+expr_stmt|;
+name|expires
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|+
+name|TOKEN_VALIDITY_SEC
+expr_stmt|;
+name|_testDoFilterAuthenticationMaxInactiveInterval
+argument_list|(
+name|maxInactives
+argument_list|,
+name|TOKEN_MAX_INACTIVE_INTERVAL
+argument_list|,
+name|expires
+argument_list|,
+literal|true
+argument_list|,
+comment|//authorized
+literal|true
+comment|//newCookie
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testTokenWithExpiredActivityIntervaln ()
+specifier|public
+name|void
+name|testTokenWithExpiredActivityIntervaln
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Provide token containing invalid maxInactive value.
+comment|// The token is inactive.
+comment|// The server has maxInactiveInterval configured to -1.(disabled)
+comment|// The server should deny access and expire the token.
+name|long
+name|maxInactives
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|-
+name|TOKEN_MAX_INACTIVE_INTERVAL
+decl_stmt|;
+name|long
+name|expires
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|+
+name|TOKEN_VALIDITY_SEC
+decl_stmt|;
+name|_testDoFilterAuthenticationMaxInactiveInterval
+argument_list|(
+name|maxInactives
+argument_list|,
+operator|-
+literal|1
+argument_list|,
+name|expires
+argument_list|,
+literal|false
+argument_list|,
+comment|//authorized
+literal|false
+comment|//newCookie
+argument_list|)
+expr_stmt|;
+comment|// Provide token containing invalid maxInactive value.
+comment|// The token is inactive.
+comment|// The server has maxInactiveInterval configured to value
+comment|// greater than 0.(enabled)
+comment|// The server should deny access and expire the token.
+name|maxInactives
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|+
+name|TOKEN_MAX_INACTIVE_INTERVAL
+expr_stmt|;
+name|expires
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|+
+name|TOKEN_VALIDITY_SEC
+expr_stmt|;
+name|_testDoFilterAuthenticationMaxInactiveInterval
+argument_list|(
+name|maxInactives
+argument_list|,
+operator|-
+literal|1
+argument_list|,
+name|expires
+argument_list|,
+literal|true
+argument_list|,
+comment|//authorized
+literal|false
+comment|//newCookie
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testTokenWithNoActivityIntervals ()
+specifier|public
+name|void
+name|testTokenWithNoActivityIntervals
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Provide token which does not contain maxInactive value.
+comment|// The server has maxInactiveInterval configured to -1.
+comment|// The server shall authorize the access, but should not drop a new cookie
+name|long
+name|expires
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|+
+name|TOKEN_VALIDITY_SEC
+decl_stmt|;
+name|_testDoFilterAuthenticationMaxInactiveInterval
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+operator|-
+literal|1
+argument_list|,
+name|expires
+argument_list|,
+literal|true
+argument_list|,
+comment|//authorized
+literal|false
+comment|//newCookie
+argument_list|)
+expr_stmt|;
+comment|// Provide token which does not contain  maxInactive value.
+comment|// The server has maxInactiveInterval to some value
+comment|// The server shall authorize the access and drop a new cookie
+comment|// with renewed activity interval
+name|expires
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|+
+name|TOKEN_VALIDITY_SEC
+expr_stmt|;
+name|_testDoFilterAuthenticationMaxInactiveInterval
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+name|TOKEN_MAX_INACTIVE_INTERVAL
+argument_list|,
+name|expires
+argument_list|,
+literal|true
+argument_list|,
+comment|//authorized
+literal|true
+comment|//newCookie
+argument_list|)
+expr_stmt|;
+block|}
 specifier|private
 name|void
-DECL|method|_testDoFilterAuthenticationMaxInactiveInterval (long maxInactives, long expires, boolean authorized)
+DECL|method|_testDoFilterAuthenticationMaxInactiveInterval (long maxInactivesInToken, long expires, boolean authorized)
 name|_testDoFilterAuthenticationMaxInactiveInterval
 parameter_list|(
 name|long
-name|maxInactives
+name|maxInactivesInToken
 parameter_list|,
 name|long
 name|expires
 parameter_list|,
 name|boolean
 name|authorized
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|_testDoFilterAuthenticationMaxInactiveInterval
+argument_list|(
+name|maxInactivesInToken
+argument_list|,
+name|TOKEN_MAX_INACTIVE_INTERVAL
+argument_list|,
+name|expires
+argument_list|,
+name|authorized
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+specifier|private
+name|void
+DECL|method|_testDoFilterAuthenticationMaxInactiveInterval (long maxInactivesInToken, long maxInactivesOnServer, long expires, boolean authorized, boolean newCookie)
+name|_testDoFilterAuthenticationMaxInactiveInterval
+parameter_list|(
+name|long
+name|maxInactivesInToken
+parameter_list|,
+name|long
+name|maxInactivesOnServer
+parameter_list|,
+name|long
+name|expires
+parameter_list|,
+name|boolean
+name|authorized
+parameter_list|,
+name|boolean
+name|newCookie
 parameter_list|)
 throws|throws
 name|Exception
@@ -6346,6 +6633,30 @@ name|when
 argument_list|(
 name|config
 operator|.
+name|getInitParameter
+argument_list|(
+name|AuthenticationFilter
+operator|.
+name|AUTH_TOKEN_MAX_INACTIVE_INTERVAL
+argument_list|)
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|Long
+operator|.
+name|toString
+argument_list|(
+name|maxInactivesOnServer
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Mockito
+operator|.
+name|when
+argument_list|(
+name|config
+operator|.
 name|getInitParameterNames
 argument_list|()
 argument_list|)
@@ -6369,6 +6680,10 @@ argument_list|,
 name|AuthenticationFilter
 operator|.
 name|SIGNATURE_SECRET
+argument_list|,
+name|AuthenticationFilter
+operator|.
+name|AUTH_TOKEN_MAX_INACTIVE_INTERVAL
 argument_list|,
 literal|"management.operation.return"
 argument_list|)
@@ -6440,7 +6755,7 @@ name|token
 operator|.
 name|setMaxInactives
 argument_list|(
-name|maxInactives
+name|maxInactivesInToken
 argument_list|)
 expr_stmt|;
 name|token
@@ -6597,6 +6912,8 @@ argument_list|,
 name|response
 argument_list|,
 name|chain
+argument_list|,
+name|newCookie
 argument_list|)
 expr_stmt|;
 block|}
@@ -6624,7 +6941,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyAuthorized (AuthenticationFilter filter, HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+DECL|method|verifyAuthorized (AuthenticationFilter filter, HttpServletRequest request, HttpServletResponse response, FilterChain chain, boolean newCookie)
 specifier|private
 specifier|static
 name|void
@@ -6641,6 +6958,9 @@ name|response
 parameter_list|,
 name|FilterChain
 name|chain
+parameter_list|,
+name|boolean
+name|newCookie
 parameter_list|)
 throws|throws
 name|Exception
@@ -6741,6 +7061,12 @@ argument_list|,
 name|chain
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|newCookie
+condition|)
+block|{
+comment|// a new cookie should be dropped when maxInactiveInterval is enabled
 name|String
 name|v
 init|=
@@ -6942,6 +7268,29 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+comment|//make sure that no auth cookie is dropped.
+comment|//For unauthorized response, auth cookie is dropped with empty value
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"cookie is present"
+argument_list|,
+operator|!
+name|cookieMap
+operator|.
+name|containsKey
+argument_list|(
+name|AuthenticatedURL
+operator|.
+name|AUTH_COOKIE
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|method|verifyUnauthorized (AuthenticationFilter filter, HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 specifier|private
 specifier|static
@@ -6965,6 +7314,7 @@ name|IOException
 throws|,
 name|ServletException
 block|{
+comment|//For unauthorized response, a cookie is dropped with empty string as value
 specifier|final
 name|Map
 argument_list|<

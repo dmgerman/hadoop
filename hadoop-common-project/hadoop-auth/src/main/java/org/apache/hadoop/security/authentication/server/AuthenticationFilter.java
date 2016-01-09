@@ -382,7 +382,7 @@ name|String
 DECL|field|AUTH_TOKEN_MAX_INACTIVE_INTERVAL
 name|AUTH_TOKEN_MAX_INACTIVE_INTERVAL
 init|=
-literal|"token.MaxInactiveInterval"
+literal|"token.max-inactive-interval"
 decl_stmt|;
 comment|/**    * Constant for the configuration property that indicates the validity of the generated token.    */
 DECL|field|AUTH_TOKEN_VALIDITY
@@ -661,13 +661,23 @@ name|getProperty
 argument_list|(
 name|AUTH_TOKEN_MAX_INACTIVE_INTERVAL
 argument_list|,
-literal|"1800"
+literal|"-1"
 argument_list|)
 argument_list|)
-operator|*
+expr_stmt|;
+comment|// By default, disable.
+if|if
+condition|(
+name|maxInactiveInterval
+operator|>
+literal|0
+condition|)
+block|{
+name|maxInactiveInterval
+operator|*=
 literal|1000
 expr_stmt|;
-comment|// 30 minutes;
+block|}
 name|validity
 operator|=
 name|Long
@@ -1822,7 +1832,7 @@ name|token
 operator|.
 name|getMaxInactives
 argument_list|()
-operator|!=
+operator|>
 literal|0
 condition|)
 block|{
@@ -2007,6 +2017,16 @@ name|getMaxInactiveInterval
 argument_list|()
 operator|*
 literal|1000
+argument_list|)
+expr_stmt|;
+name|token
+operator|.
+name|setExpires
+argument_list|(
+name|token
+operator|.
+name|getExpires
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|newToken
