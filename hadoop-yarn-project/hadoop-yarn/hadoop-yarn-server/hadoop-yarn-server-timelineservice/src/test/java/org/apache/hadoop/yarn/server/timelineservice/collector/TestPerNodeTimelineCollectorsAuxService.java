@@ -76,7 +76,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Mockito
+name|Matchers
 operator|.
 name|any
 import|;
@@ -127,6 +127,16 @@ operator|.
 name|Mockito
 operator|.
 name|when
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -387,16 +397,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
 import|;
 end_import
 
@@ -692,7 +692,21 @@ argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
-comment|// TODO Temporary Fix until solution for YARN-3995 is finalized
+comment|// auxService should have the app's collector and need to remove only after
+comment|// a configured period
+name|assertTrue
+argument_list|(
+name|auxService
+operator|.
+name|hasApplication
+argument_list|(
+name|appAttemptId
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|int

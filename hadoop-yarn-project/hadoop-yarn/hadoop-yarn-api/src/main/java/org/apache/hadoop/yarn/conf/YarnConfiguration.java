@@ -6860,6 +6860,26 @@ name|DEFAULT_TIMELINE_SERVICE_WRITER_FLUSH_INTERVAL_SECONDS
 init|=
 literal|60
 decl_stmt|;
+DECL|field|ATS_APP_COLLECTOR_LINGER_PERIOD_IN_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ATS_APP_COLLECTOR_LINGER_PERIOD_IN_MS
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"app-collector.linger-period.ms"
+decl_stmt|;
+DECL|field|DEFAULT_ATS_APP_COLLECTOR_LINGER_PERIOD_IN_MS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_ATS_APP_COLLECTOR_LINGER_PERIOD_IN_MS
+init|=
+literal|1000
+decl_stmt|;
 comment|// mark app-history related configs @Private as application history is going
 comment|// to be integrated into the timeline service
 annotation|@
