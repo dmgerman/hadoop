@@ -1363,11 +1363,6 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-operator|!
-name|iip
-operator|.
-name|isSnapshot
-operator|&&
 name|iip
 operator|.
 name|length
@@ -1501,7 +1496,9 @@ name|inodes
 argument_list|,
 name|path
 argument_list|,
-literal|false
+name|iip
+operator|.
+name|isSnapshot
 argument_list|,
 name|iip
 operator|.

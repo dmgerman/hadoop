@@ -7840,8 +7840,6 @@ parameter_list|)
 block|{
 name|INodeAttributes
 name|nodeAttrs
-init|=
-name|node
 decl_stmt|;
 if|if
 condition|(

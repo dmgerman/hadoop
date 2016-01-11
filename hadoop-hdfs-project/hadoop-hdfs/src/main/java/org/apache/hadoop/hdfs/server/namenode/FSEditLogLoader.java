@@ -3102,6 +3102,11 @@ operator|.
 name|storagePolicyId
 argument_list|)
 expr_stmt|;
+assert|assert
+name|newFile
+operator|!=
+literal|null
+assert|;
 name|iip
 operator|=
 name|INodesInPath
@@ -3158,8 +3163,6 @@ argument_list|,
 name|HdfsFileStatus
 operator|.
 name|EMPTY_NAME
-argument_list|,
-name|newFile
 argument_list|,
 name|HdfsConstants
 operator|.
@@ -3274,8 +3277,6 @@ argument_list|,
 name|HdfsFileStatus
 operator|.
 name|EMPTY_NAME
-argument_list|,
-name|newFile
 argument_list|,
 name|HdfsConstants
 operator|.
@@ -3751,8 +3752,6 @@ argument_list|,
 name|HdfsFileStatus
 operator|.
 name|EMPTY_NAME
-argument_list|,
-name|file
 argument_list|,
 name|HdfsConstants
 operator|.

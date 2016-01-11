@@ -1629,6 +1629,8 @@ name|isDirectory
 argument_list|()
 condition|)
 block|{
+comment|// return the file's status. note that the iip already includes the
+comment|// target INode
 name|INodeAttributes
 name|nodeAttrs
 init|=
@@ -1662,8 +1664,6 @@ argument_list|,
 name|HdfsFileStatus
 operator|.
 name|EMPTY_NAME
-argument_list|,
-name|targetNode
 argument_list|,
 name|nodeAttrs
 argument_list|,
@@ -1836,6 +1836,24 @@ argument_list|,
 name|snapshot
 argument_list|)
 decl_stmt|;
+specifier|final
+name|INodesInPath
+name|iipWithChild
+init|=
+name|INodesInPath
+operator|.
+name|append
+argument_list|(
+name|iip
+argument_list|,
+name|cur
+argument_list|,
+name|cur
+operator|.
+name|getLocalNameBytes
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|listing
 index|[
 name|i
@@ -1849,8 +1867,6 @@ name|cur
 operator|.
 name|getLocalNameBytes
 argument_list|()
-argument_list|,
-name|cur
 argument_list|,
 name|nodeAttrs
 argument_list|,
@@ -1867,7 +1883,7 @@ name|snapshot
 argument_list|,
 name|isRawPath
 argument_list|,
-name|iip
+name|iipWithChild
 argument_list|)
 expr_stmt|;
 name|listingCnt
@@ -2234,8 +2250,6 @@ operator|.
 name|getLocalNameBytes
 argument_list|()
 argument_list|,
-name|sRoot
-argument_list|,
 name|nodeAttrs
 argument_list|,
 name|HdfsConstants
@@ -2298,8 +2312,8 @@ literal|0
 argument_list|)
 return|;
 block|}
-comment|/** Get the file info for a specific file.    * @param fsd FSDirectory    * @param src The string representation of the path to the file    * @param isRawPath true if a /.reserved/raw pathname was passed by the user    * @param includeStoragePolicy whether to include storage policy    * @return object containing information regarding the file    *         or null if file not found    */
-DECL|method|getFileInfo ( FSDirectory fsd, String path, INodesInPath src, boolean isRawPath, boolean includeStoragePolicy)
+comment|/** Get the file info for a specific file.    * @param fsd FSDirectory    * @param iip The path to the file, the file is included    * @param isRawPath true if a /.reserved/raw pathname was passed by the user    * @param includeStoragePolicy whether to include storage policy    * @return object containing information regarding the file    *         or null if file not found    */
+DECL|method|getFileInfo ( FSDirectory fsd, String path, INodesInPath iip, boolean isRawPath, boolean includeStoragePolicy)
 specifier|static
 name|HdfsFileStatus
 name|getFileInfo
@@ -2311,7 +2325,7 @@ name|String
 name|path
 parameter_list|,
 name|INodesInPath
-name|src
+name|iip
 parameter_list|,
 name|boolean
 name|isRawPath
@@ -2331,16 +2345,16 @@ try|try
 block|{
 specifier|final
 name|INode
-name|i
+name|node
 init|=
-name|src
+name|iip
 operator|.
 name|getLastINode
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|i
+name|node
 operator|==
 literal|null
 condition|)
@@ -2355,12 +2369,12 @@ init|=
 name|includeStoragePolicy
 operator|&&
 operator|!
-name|i
+name|node
 operator|.
 name|isSymlink
 argument_list|()
 condition|?
-name|i
+name|node
 operator|.
 name|getStoragePolicyID
 argument_list|()
@@ -2382,9 +2396,9 @@ name|HdfsFileStatus
 operator|.
 name|EMPTY_NAME
 argument_list|,
-name|i
+name|node
 argument_list|,
-name|src
+name|iip
 operator|.
 name|getPathSnapshotId
 argument_list|()
@@ -2399,20 +2413,18 @@ name|HdfsFileStatus
 operator|.
 name|EMPTY_NAME
 argument_list|,
-name|i
-argument_list|,
 name|nodeAttrs
 argument_list|,
 name|policyId
 argument_list|,
-name|src
+name|iip
 operator|.
 name|getPathSnapshotId
 argument_list|()
 argument_list|,
 name|isRawPath
 argument_list|,
-name|src
+name|iip
 argument_list|)
 return|;
 block|}
@@ -2586,8 +2598,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * create an hdfs file status from an inode    *    * @param fsd FSDirectory    * @param path the local name    * @param node inode    * @param needLocation if block locations need to be included or not    * @param isRawPath true if this is being called on behalf of a path in    *                  /.reserved/raw    * @return a file status    * @throws java.io.IOException if any error occurs    */
-DECL|method|createFileStatus ( FSDirectory fsd, byte[] path, INode node, INodeAttributes nodeAttrs, boolean needLocation, byte storagePolicy, int snapshot, boolean isRawPath, INodesInPath iip)
+comment|/**    * create an hdfs file status from an inode    *    * @param fsd FSDirectory    * @param path the local name    * @param needLocation if block locations need to be included or not    * @param isRawPath true if this is being called on behalf of a path in    *                  /.reserved/raw    * @param iip the INodesInPath containing the target INode and its ancestors    * @return a file status    * @throws java.io.IOException if any error occurs    */
+DECL|method|createFileStatus ( FSDirectory fsd, byte[] path, INodeAttributes nodeAttrs, boolean needLocation, byte storagePolicy, int snapshot, boolean isRawPath, INodesInPath iip)
 specifier|private
 specifier|static
 name|HdfsFileStatus
@@ -2599,9 +2611,6 @@ parameter_list|,
 name|byte
 index|[]
 name|path
-parameter_list|,
-name|INode
-name|node
 parameter_list|,
 name|INodeAttributes
 name|nodeAttrs
@@ -2636,8 +2645,6 @@ name|fsd
 argument_list|,
 name|path
 argument_list|,
-name|node
-argument_list|,
 name|nodeAttrs
 argument_list|,
 name|storagePolicy
@@ -2659,8 +2666,6 @@ name|fsd
 argument_list|,
 name|path
 argument_list|,
-name|node
-argument_list|,
 name|nodeAttrs
 argument_list|,
 name|storagePolicy
@@ -2674,8 +2679,8 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Create FileStatus by file INode    */
-DECL|method|createFileStatusForEditLog ( FSDirectory fsd, String fullPath, byte[] path, INode node, byte storagePolicy, int snapshot, boolean isRawPath, INodesInPath iip)
+comment|/**    * Create FileStatus for an given INodeFile.    * @param iip The INodesInPath containing the INodeFile and its ancestors    */
+DECL|method|createFileStatusForEditLog ( FSDirectory fsd, String fullPath, byte[] path, byte storagePolicy, int snapshot, boolean isRawPath, INodesInPath iip)
 specifier|static
 name|HdfsFileStatus
 name|createFileStatusForEditLog
@@ -2689,9 +2694,6 @@ parameter_list|,
 name|byte
 index|[]
 name|path
-parameter_list|,
-name|INode
-name|node
 parameter_list|,
 name|byte
 name|storagePolicy
@@ -2719,7 +2721,10 @@ name|fullPath
 argument_list|,
 name|path
 argument_list|,
-name|node
+name|iip
+operator|.
+name|getLastINode
+argument_list|()
 argument_list|,
 name|snapshot
 argument_list|)
@@ -2730,8 +2735,6 @@ argument_list|(
 name|fsd
 argument_list|,
 name|path
-argument_list|,
-name|node
 argument_list|,
 name|nodeAttrs
 argument_list|,
@@ -2745,8 +2748,8 @@ name|iip
 argument_list|)
 return|;
 block|}
-comment|/**    * Create FileStatus by file INode    */
-DECL|method|createFileStatus ( FSDirectory fsd, byte[] path, INode node, INodeAttributes nodeAttrs, byte storagePolicy, int snapshot, boolean isRawPath, INodesInPath iip)
+comment|/**    * create file status for a given INode    * @param iip the INodesInPath containing the target INode and its ancestors    */
+DECL|method|createFileStatus ( FSDirectory fsd, byte[] path, INodeAttributes nodeAttrs, byte storagePolicy, int snapshot, boolean isRawPath, INodesInPath iip)
 specifier|static
 name|HdfsFileStatus
 name|createFileStatus
@@ -2757,9 +2760,6 @@ parameter_list|,
 name|byte
 index|[]
 name|path
-parameter_list|,
-name|INode
-name|node
 parameter_list|,
 name|INodeAttributes
 name|nodeAttrs
@@ -2798,6 +2798,15 @@ decl_stmt|;
 specifier|final
 name|boolean
 name|isEncrypted
+decl_stmt|;
+specifier|final
+name|INode
+name|node
+init|=
+name|iip
+operator|.
+name|getLastINode
+argument_list|()
 decl_stmt|;
 specifier|final
 name|FileEncryptionInfo
@@ -2895,12 +2904,7 @@ name|isInAnEZ
 argument_list|(
 name|fsd
 argument_list|,
-name|INodesInPath
-operator|.
-name|fromINode
-argument_list|(
-name|node
-argument_list|)
+name|iip
 argument_list|)
 operator|)
 expr_stmt|;
@@ -2915,12 +2919,7 @@ name|isInAnEZ
 argument_list|(
 name|fsd
 argument_list|,
-name|INodesInPath
-operator|.
-name|fromINode
-argument_list|(
-name|node
-argument_list|)
+name|iip
 argument_list|)
 expr_stmt|;
 block|}
@@ -3060,8 +3059,8 @@ name|snapshot
 argument_list|)
 return|;
 block|}
-comment|/**    * Create FileStatus with location info by file INode    */
-DECL|method|createLocatedFileStatus ( FSDirectory fsd, byte[] path, INode node, INodeAttributes nodeAttrs, byte storagePolicy, int snapshot, boolean isRawPath, INodesInPath iip)
+comment|/**    * Create FileStatus with location info by file INode    * @param iip the INodesInPath containing the target INode and its ancestors    */
+DECL|method|createLocatedFileStatus ( FSDirectory fsd, byte[] path, INodeAttributes nodeAttrs, byte storagePolicy, int snapshot, boolean isRawPath, INodesInPath iip)
 specifier|private
 specifier|static
 name|HdfsLocatedFileStatus
@@ -3073,9 +3072,6 @@ parameter_list|,
 name|byte
 index|[]
 name|path
-parameter_list|,
-name|INode
-name|node
 parameter_list|,
 name|INodeAttributes
 name|nodeAttrs
@@ -3125,6 +3121,15 @@ decl_stmt|;
 specifier|final
 name|boolean
 name|isEncrypted
+decl_stmt|;
+specifier|final
+name|INode
+name|node
+init|=
+name|iip
+operator|.
+name|getLastINode
+argument_list|()
 decl_stmt|;
 specifier|final
 name|FileEncryptionInfo
@@ -3307,12 +3312,7 @@ name|isInAnEZ
 argument_list|(
 name|fsd
 argument_list|,
-name|INodesInPath
-operator|.
-name|fromINode
-argument_list|(
-name|node
-argument_list|)
+name|iip
 argument_list|)
 operator|)
 expr_stmt|;
@@ -3327,12 +3327,7 @@ name|isInAnEZ
 argument_list|(
 name|fsd
 argument_list|,
-name|INodesInPath
-operator|.
-name|fromINode
-argument_list|(
-name|node
-argument_list|)
+name|iip
 argument_list|)
 expr_stmt|;
 block|}
