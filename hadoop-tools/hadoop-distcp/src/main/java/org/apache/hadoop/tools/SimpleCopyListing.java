@@ -304,7 +304,17 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -905,11 +915,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|doBuildListing (Path pathToListingFile, DistCpOptions options)
-specifier|public
+specifier|protected
 name|void
 name|doBuildListing
 parameter_list|(
@@ -1187,8 +1196,8 @@ block|}
 comment|/**    * Build a copy list based on the snapshot diff report.    *    * Any file/directory changed or created will be in the list. Deleted    * files/directories will not be in the list, since they are handled by    * {@link org.apache.hadoop.tools.DistCpSync#sync}. An item can be    * created/modified and renamed, in which case, the target path is put    * into the list.    * @throws IOException    */
 annotation|@
 name|VisibleForTesting
-DECL|method|doBuildListingWithSnapshotDiff (SequenceFile.Writer fileListWriter, DistCpOptions options)
-specifier|public
+DECL|method|doBuildListingWithSnapshotDiff ( SequenceFile.Writer fileListWriter, DistCpOptions options)
+specifier|protected
 name|void
 name|doBuildListingWithSnapshotDiff
 parameter_list|(
@@ -1456,7 +1465,7 @@ comment|/**    * Collect the list of     *   {@literal<sourceRelativePath, sourc
 annotation|@
 name|VisibleForTesting
 DECL|method|doBuildListing (SequenceFile.Writer fileListWriter, DistCpOptions options)
-specifier|public
+specifier|protected
 name|void
 name|doBuildListing
 parameter_list|(

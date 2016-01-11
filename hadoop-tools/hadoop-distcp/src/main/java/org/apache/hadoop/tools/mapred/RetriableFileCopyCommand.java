@@ -1264,7 +1264,9 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" (NOTE: By skipping checksums, one runs the risk of masking data-corruption during file-transfer.)"
+literal|" (NOTE: By skipping checksums, one runs the risk of "
+operator|+
+literal|"masking data-corruption during file-transfer.)"
 argument_list|)
 expr_stmt|;
 block|}
