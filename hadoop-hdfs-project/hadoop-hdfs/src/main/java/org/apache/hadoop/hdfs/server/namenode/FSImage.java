@@ -3405,6 +3405,11 @@ literal|"No edit log streams selected."
 argument_list|)
 expr_stmt|;
 block|}
+name|Exception
+name|le
+init|=
+literal|null
+decl_stmt|;
 name|FSImageFile
 name|imageFile
 init|=
@@ -3454,10 +3459,32 @@ break|break;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ioe
+name|IllegalReservedPathException
+name|ie
 parameter_list|)
 block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to load image from "
+operator|+
+name|imageFile
+argument_list|,
+name|ie
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|le
+operator|=
+name|e
+expr_stmt|;
 name|LOG
 operator|.
 name|error
@@ -3466,7 +3493,7 @@ literal|"Failed to load image from "
 operator|+
 name|imageFile
 argument_list|,
-name|ioe
+name|e
 argument_list|)
 expr_stmt|;
 name|target
@@ -3499,7 +3526,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Failed to load an FSImage file!"
+literal|"Failed to load FSImage file, see error(s) "
+operator|+
+literal|"above for more info."
 argument_list|)
 throw|;
 block|}
@@ -3708,9 +3737,9 @@ name|IOException
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
-literal|"Planning to load image :\n"
+literal|"Planning to load image: "
 operator|+
 name|imageFile
 argument_list|)
