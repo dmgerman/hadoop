@@ -1943,7 +1943,7 @@ expr_stmt|;
 block|}
 block|}
 comment|// This is to test the GuiceFilter should only be applied to webAppContext,
-comment|// not to staticContext  and logContext;
+comment|// not to logContext;
 DECL|method|testYARNWebAppContext ()
 annotation|@
 name|Test
@@ -2012,25 +2012,6 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-comment|// should not redirect to foo
-name|assertFalse
-argument_list|(
-literal|"foo"
-operator|.
-name|equals
-argument_list|(
-name|getContent
-argument_list|(
-name|baseUrl
-operator|+
-literal|"static"
-argument_list|)
-operator|.
-name|trim
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
 comment|// Not able to access a non-existing dir, should not redirect to foo.
 name|assertEquals
 argument_list|(
