@@ -2236,6 +2236,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|diskbalancer
+operator|.
+name|DiskbalancerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|BlockRecoveryCommand
@@ -15645,6 +15663,43 @@ block|{
 return|return
 name|tracer
 return|;
+block|}
+comment|/**    * Allows submission of a disk balancer Job.    * @param planID  - Hash value of the plan.    * @param planVersion - Plan version, reserved for future use. We have only    *                    version 1 now.    * @param bandwidth - Max disk bandwidth to use, 0 means use value defined    *                  in the configration.    * @param plan - Actual plan    * @return  success or throws an exception.    * @throws Exception    */
+annotation|@
+name|Override
+DECL|method|submitDiskBalancerPlan (String planID, long planVersion, long bandwidth, String plan)
+specifier|public
+name|void
+name|submitDiskBalancerPlan
+parameter_list|(
+name|String
+name|planID
+parameter_list|,
+name|long
+name|planVersion
+parameter_list|,
+name|long
+name|bandwidth
+parameter_list|,
+name|String
+name|plan
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// TODO : This will be replaced with actual code later.
+comment|// Right now throwing DiskbalancerException instead
+comment|// NotImplementedException to indicate the eventually disk balancer code
+comment|// will throw DiskbalancerException.
+throw|throw
+operator|new
+name|DiskbalancerException
+argument_list|(
+literal|"Not Implemented"
+argument_list|,
+literal|0
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

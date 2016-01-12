@@ -362,6 +362,26 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Submit a disk balancer plan for execution.    */
+DECL|method|submitDiskBalancerPlan (String planID, long planVersion, long bandwidth, String plan)
+name|void
+name|submitDiskBalancerPlan
+parameter_list|(
+name|String
+name|planID
+parameter_list|,
+name|long
+name|planVersion
+parameter_list|,
+name|long
+name|bandwidth
+parameter_list|,
+name|String
+name|plan
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
