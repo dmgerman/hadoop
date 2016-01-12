@@ -142,6 +142,23 @@ return|return
 name|isEmptyDirectory
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getOwner ()
+specifier|public
+name|String
+name|getOwner
+parameter_list|()
+block|{
+return|return
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"user.name"
+argument_list|)
+return|;
+block|}
 comment|/** Compare if this object is equal to another object    * @param   o the object to be compared.    * @return  true if two file status has the same path name; false if not.    */
 annotation|@
 name|Override
@@ -178,6 +195,38 @@ operator|.
 name|hashCode
 argument_list|()
 return|;
+block|}
+comment|/** Get the modification time of the file/directory.    *    * s3a uses objects as "fake" directories, which are not updated to    * reflect the accurate modification time. We choose to report the    * current time because some parts of the ecosystem (e.g. the    * HistoryServer) use modification time to ignore "old" directories.    *    * @return for files the modification time in milliseconds since January 1,    *         1970 UTC or for directories the current time.    */
+annotation|@
+name|Override
+DECL|method|getModificationTime ()
+specifier|public
+name|long
+name|getModificationTime
+parameter_list|()
+block|{
+if|if
+condition|(
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+return|return
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+name|super
+operator|.
+name|getModificationTime
+argument_list|()
+return|;
+block|}
 block|}
 block|}
 end_class

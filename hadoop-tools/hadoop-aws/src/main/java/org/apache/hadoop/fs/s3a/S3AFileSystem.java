@@ -1756,6 +1756,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Return the protocol scheme for the FileSystem.    *    * @return "s3a"    */
+annotation|@
+name|Override
 DECL|method|getScheme ()
 specifier|public
 name|String
@@ -1766,7 +1768,9 @@ return|return
 literal|"s3a"
 return|;
 block|}
-comment|/** Returns a URI whose scheme and authority identify this FileSystem.*/
+comment|/**    * Returns a URI whose scheme and authority identify this FileSystem.    */
+annotation|@
+name|Override
 DECL|method|getUri ()
 specifier|public
 name|URI
@@ -1775,6 +1779,20 @@ parameter_list|()
 block|{
 return|return
 name|uri
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDefaultPort ()
+specifier|public
+name|int
+name|getDefaultPort
+parameter_list|()
+block|{
+return|return
+name|Constants
+operator|.
+name|S3A_DEFAULT_PORT
 return|;
 block|}
 comment|/**    * Returns the S3 client used by this filesystem.    * @return AmazonS3Client    */
@@ -1979,6 +1997,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param permission    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+annotation|@
+name|Override
 DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream

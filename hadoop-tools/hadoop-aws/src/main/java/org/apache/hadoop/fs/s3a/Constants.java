@@ -475,6 +475,16 @@ name|FS_S3A
 init|=
 literal|"s3a"
 decl_stmt|;
+DECL|field|S3A_DEFAULT_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|S3A_DEFAULT_PORT
+init|=
+operator|-
+literal|1
+decl_stmt|;
 block|}
 end_class
 
