@@ -1049,9 +1049,14 @@ block|{
 name|assumeTrue
 argument_list|(
 operator|!
-name|Path
+name|Shell
 operator|.
 name|WINDOWS
+operator|&&
+operator|!
+name|Shell
+operator|.
+name|SOLARIS
 argument_list|)
 expr_stmt|;
 name|super
@@ -1076,6 +1081,11 @@ operator|!
 name|Path
 operator|.
 name|WINDOWS
+operator|&&
+operator|!
+name|Shell
+operator|.
+name|SOLARIS
 argument_list|)
 expr_stmt|;
 name|super
