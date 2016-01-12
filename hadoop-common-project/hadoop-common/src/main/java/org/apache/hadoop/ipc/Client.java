@@ -3060,6 +3060,15 @@ name|this
 operator|.
 name|socket
 operator|.
+name|setReuseAddress
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|socket
+operator|.
 name|bind
 argument_list|(
 operator|new
