@@ -5505,7 +5505,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Helper method to create and init {@link #activeServices}. This creates an    * instance of {@link RMActiveServices} and initializes it.    * @throws Exception    */
+comment|/**    * Helper method to create and init {@link #activeServices}. This creates an    * instance of {@link RMActiveServices} and initializes it.    */
 DECL|method|createAndInitActiveServices ()
 specifier|protected
 name|void
