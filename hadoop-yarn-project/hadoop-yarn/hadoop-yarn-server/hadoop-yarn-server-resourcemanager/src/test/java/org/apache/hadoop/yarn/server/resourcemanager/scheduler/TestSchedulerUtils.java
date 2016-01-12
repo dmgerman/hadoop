@@ -622,6 +622,22 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
+name|InvalidLabelResourceRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
 name|InvalidResourceBlacklistRequestException
 import|;
 end_import
@@ -2643,6 +2659,11 @@ literal|"Should be valid when request labels is empty"
 argument_list|)
 expr_stmt|;
 block|}
+name|boolean
+name|invalidlabelexception
+init|=
+literal|false
+decl_stmt|;
 comment|// queue doesn't have label, failed (when request any label)
 try|try
 block|{
@@ -2739,6 +2760,17 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
+name|InvalidLabelResourceRequestException
+name|e
+parameter_list|)
+block|{
+name|invalidlabelexception
+operator|=
+literal|true
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
 name|InvalidResourceRequestException
 name|e
 parameter_list|)
@@ -2761,6 +2793,15 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"InvalidLabelResourceRequestException excpeted"
+argument_list|,
+name|invalidlabelexception
+argument_list|)
+expr_stmt|;
 comment|// queue is "*", always succeeded
 try|try
 block|{
