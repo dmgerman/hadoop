@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.reader
 package|package
 name|org
 operator|.
@@ -19,6 +19,8 @@ operator|.
 name|timelineservice
 operator|.
 name|storage
+operator|.
+name|reader
 package|;
 end_package
 
@@ -417,6 +419,26 @@ operator|.
 name|filter
 operator|.
 name|TimelineFilterUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|TimelineReader
 import|;
 end_import
 
