@@ -518,6 +518,17 @@ name|exceptionToPolicyMap
 operator|.
 name|put
 argument_list|(
+name|ConnectTimeoutException
+operator|.
+name|class
+argument_list|,
+name|retryPolicy
+argument_list|)
+expr_stmt|;
+name|exceptionToPolicyMap
+operator|.
+name|put
+argument_list|(
 name|RetriableException
 operator|.
 name|class
