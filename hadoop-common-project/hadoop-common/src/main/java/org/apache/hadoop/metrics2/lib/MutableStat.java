@@ -184,6 +184,12 @@ specifier|final
 name|MetricsInfo
 name|maxInfo
 decl_stmt|;
+DECL|field|iNumInfo
+specifier|private
+specifier|final
+name|MetricsInfo
+name|iNumInfo
+decl_stmt|;
 DECL|field|intervalStat
 specifier|private
 specifier|final
@@ -324,6 +330,25 @@ operator|+
 name|usName
 argument_list|,
 literal|"Number of "
+operator|+
+name|lsName
+operator|+
+literal|" for "
+operator|+
+name|desc
+argument_list|)
+expr_stmt|;
+name|iNumInfo
+operator|=
+name|info
+argument_list|(
+name|ucName
+operator|+
+literal|"INum"
+operator|+
+name|usName
+argument_list|,
+literal|"Interval number of "
 operator|+
 name|lsName
 operator|+
@@ -666,6 +691,17 @@ argument_list|,
 name|minMax
 operator|.
 name|max
+argument_list|()
+argument_list|)
+operator|.
+name|addGauge
+argument_list|(
+name|iNumInfo
+argument_list|,
+name|lastStat
+argument_list|()
+operator|.
+name|numSamples
 argument_list|()
 argument_list|)
 expr_stmt|;
