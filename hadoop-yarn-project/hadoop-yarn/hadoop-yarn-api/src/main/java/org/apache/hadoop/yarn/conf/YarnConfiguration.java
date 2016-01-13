@@ -1131,6 +1131,27 @@ name|DEFAULT_YARN_ACL_ENABLE
 init|=
 literal|false
 decl_stmt|;
+DECL|method|isAclEnabled (Configuration conf)
+specifier|public
+specifier|static
+name|boolean
+name|isAclEnabled
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YARN_ACL_ENABLE
+argument_list|,
+name|DEFAULT_YARN_ACL_ENABLE
+argument_list|)
+return|;
+block|}
 comment|/** ACL of who can be admin of YARN cluster.*/
 DECL|field|YARN_ADMIN_ACL
 specifier|public

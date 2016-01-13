@@ -3090,6 +3090,16 @@ name|application
 operator|.
 name|getQueue
 argument_list|()
+argument_list|,
+name|application
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|,
+name|application
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -8769,6 +8779,10 @@ operator|.
 name|SUBMIT_APPLICATIONS
 argument_list|,
 name|queueName
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 condition|)
 block|{

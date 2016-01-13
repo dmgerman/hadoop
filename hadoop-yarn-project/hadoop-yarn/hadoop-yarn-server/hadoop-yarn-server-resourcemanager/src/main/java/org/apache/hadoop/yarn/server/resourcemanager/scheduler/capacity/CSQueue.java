@@ -232,6 +232,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|security
+operator|.
+name|PrivilegedEntity
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -469,6 +485,12 @@ DECL|method|getQueuePath ()
 specifier|public
 name|String
 name|getQueuePath
+parameter_list|()
+function_decl|;
+DECL|method|getPrivilegedEntity ()
+specifier|public
+name|PrivilegedEntity
+name|getPrivilegedEntity
 parameter_list|()
 function_decl|;
 comment|/**    * Get the configured<em>capacity</em> of the queue.    * @return configured queue capacity    */

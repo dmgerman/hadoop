@@ -3060,6 +3060,16 @@ name|app
 operator|.
 name|getQueue
 argument_list|()
+argument_list|,
+name|app
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|,
+name|app
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 operator|)
 condition|)

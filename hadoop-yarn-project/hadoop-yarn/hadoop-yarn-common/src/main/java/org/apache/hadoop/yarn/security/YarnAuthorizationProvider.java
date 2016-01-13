@@ -20,16 +20,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -159,6 +149,16 @@ operator|.
 name|conf
 operator|.
 name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -294,40 +294,29 @@ name|Configuration
 name|conf
 parameter_list|)
 function_decl|;
-comment|/**    * Check if user has the permission to access the target object.    *     * @param accessType    *          The type of accessing method.    * @param target    *          The target object being accessed, e.g. app/queue    * @param user    *          User who access the target    * @return true if user can access the object, otherwise false.    */
-DECL|method|checkPermission (AccessType accessType, PrivilegedEntity target, UserGroupInformation user)
+comment|/**    * Check if user has the permission to access the target object.    *     * @param accessRequest    *          the request object which contains all the access context info.    * @return true if user can access the object, otherwise false.    */
+DECL|method|checkPermission (AccessRequest accessRequest)
 specifier|public
 specifier|abstract
 name|boolean
 name|checkPermission
 parameter_list|(
-name|AccessType
-name|accessType
-parameter_list|,
-name|PrivilegedEntity
-name|target
-parameter_list|,
-name|UserGroupInformation
-name|user
+name|AccessRequest
+name|accessRequest
 parameter_list|)
 function_decl|;
-comment|/**    * Set ACLs for the target object. AccessControlList class encapsulate the    * users and groups who can access the target.    *    * @param target    *          The target object.    * @param acls    *          A map from access method to a list of users and/or groups who has    *          permission to do the access.    * @param ugi User who sets the permissions.    */
-DECL|method|setPermission (PrivilegedEntity target, Map<AccessType, AccessControlList> acls, UserGroupInformation ugi)
+comment|/**    * Set permissions for the target object.    *    * @param permissions    *        A list of permissions on the target object.    * @param ugi User who sets the permissions.    */
+DECL|method|setPermission (List<Permission> permissions, UserGroupInformation ugi)
 specifier|public
 specifier|abstract
 name|void
 name|setPermission
 parameter_list|(
-name|PrivilegedEntity
-name|target
-parameter_list|,
-name|Map
+name|List
 argument_list|<
-name|AccessType
-argument_list|,
-name|AccessControlList
+name|Permission
 argument_list|>
-name|acls
+name|permissions
 parameter_list|,
 name|UserGroupInformation
 name|ugi

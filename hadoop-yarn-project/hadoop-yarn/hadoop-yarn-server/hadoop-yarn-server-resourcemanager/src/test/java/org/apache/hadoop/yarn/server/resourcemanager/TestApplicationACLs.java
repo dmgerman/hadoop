@@ -1018,6 +1018,16 @@ argument_list|)
 argument_list|,
 name|anyString
 argument_list|()
+argument_list|,
+name|any
+argument_list|(
+name|ApplicationId
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|anyString
+argument_list|()
 argument_list|)
 argument_list|)
 operator|.
