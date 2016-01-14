@@ -3307,7 +3307,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Failed to load an FSImage file!"
+literal|"Failed to load FSImage file"
 argument_list|,
 name|ioe
 argument_list|)
