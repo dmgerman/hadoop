@@ -696,6 +696,8 @@ literal|"RBUGPCT"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testUnpackAttributes ()
 specifier|public
 name|void
