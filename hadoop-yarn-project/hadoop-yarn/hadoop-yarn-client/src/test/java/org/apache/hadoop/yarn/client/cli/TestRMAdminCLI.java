@@ -2717,7 +2717,7 @@ literal|"[-replaceLabelsOnNode "
 operator|+
 literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] "
 operator|+
-literal|"[-directlyAccessNodeLabelStore]] [-updateNodeResource "
+literal|"[-directlyAccessNodeLabelStore] [-updateNodeResource "
 operator|+
 literal|"[NodeID] [MemSize] [vCores] ([OvercommitTimeout]) "
 operator|+
@@ -3155,7 +3155,7 @@ literal|"label2(exclusive=false),label3\">]"
 operator|+
 literal|" [-removeFromClusterNodeLabels<label1,label2,label3>] [-replaceLabelsOnNode "
 operator|+
-literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] [-directlyAccessNodeLabelStore]] "
+literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] [-directlyAccessNodeLabelStore] "
 operator|+
 literal|"[-updateNodeResource [NodeID] [MemSize] [vCores] ([OvercommitTimeout]) "
 operator|+

@@ -1701,7 +1701,7 @@ literal|" [-removeFromClusterNodeLabels<label1,label2,label3>]"
 operator|+
 literal|" [-replaceLabelsOnNode<\"node1[:port]=label1,label2 node2[:port]=label1\">]"
 operator|+
-literal|" [-directlyAccessNodeLabelStore]]"
+literal|" [-directlyAccessNodeLabelStore]"
 operator|+
 literal|" [-updateNodeResource [NodeID] [MemSize] [vCores] ([OvercommitTimeout])"
 argument_list|)
