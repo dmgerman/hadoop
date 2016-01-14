@@ -150,6 +150,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -522,6 +536,17 @@ DECL|field|appResourceUsage
 specifier|private
 name|ResourceUsage
 name|appResourceUsage
+decl_stmt|;
+DECL|field|userBlacklistChanged
+specifier|private
+name|AtomicBoolean
+name|userBlacklistChanged
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
 decl_stmt|;
 DECL|field|amBlacklist
 specifier|private
@@ -2204,6 +2229,8 @@ argument_list|>
 name|blacklistRemovals
 parameter_list|)
 block|{
+if|if
+condition|(
 name|updateUserOrAMBlacklist
 argument_list|(
 name|userBlacklist
@@ -2212,7 +2239,16 @@ name|blacklistAdditions
 argument_list|,
 name|blacklistRemovals
 argument_list|)
+condition|)
+block|{
+name|userBlacklistChanged
+operator|.
+name|set
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * RM is updating blacklist for AM containers.    * @param blacklistAdditions resources to be added to the amBlacklist    * @param blacklistRemovals resources to be added to the amBlacklist    */
 DECL|method|updateAMBlacklist ( List<String> blacklistAdditions, List<String> blacklistRemovals)
@@ -2244,7 +2280,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|updateUserOrAMBlacklist (Set<String> blacklist, List<String> blacklistAdditions, List<String> blacklistRemovals)
-name|void
+name|boolean
 name|updateUserOrAMBlacklist
 parameter_list|(
 name|Set
@@ -2266,6 +2302,11 @@ argument_list|>
 name|blacklistRemovals
 parameter_list|)
 block|{
+name|boolean
+name|changed
+init|=
+literal|false
+decl_stmt|;
 synchronized|synchronized
 init|(
 name|blacklist
@@ -2278,6 +2319,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|changed
+operator|=
 name|blacklist
 operator|.
 name|addAll
@@ -2293,15 +2336,41 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
 name|blacklist
 operator|.
 name|removeAll
 argument_list|(
 name|blacklistRemovals
 argument_list|)
+condition|)
+block|{
+name|changed
+operator|=
+literal|true
 expr_stmt|;
 block|}
 block|}
+block|}
+return|return
+name|changed
+return|;
+block|}
+DECL|method|getAndResetBlacklistChanged ()
+specifier|public
+name|boolean
+name|getAndResetBlacklistChanged
+parameter_list|()
+block|{
+return|return
+name|userBlacklistChanged
+operator|.
+name|getAndSet
+argument_list|(
+literal|false
+argument_list|)
+return|;
 block|}
 DECL|method|getPriorities ()
 specifier|public
