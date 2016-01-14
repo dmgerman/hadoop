@@ -4001,7 +4001,7 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Default to the new APIs unless they are explicitly set or the old mapper or    * reduce attributes are used.    * @throws IOException if the configuration is inconsistant    */
+comment|/**    * Default to the new APIs unless they are explicitly set or the old mapper or    * reduce attributes are used.    * @throws IOException if the configuration is inconsistent    */
 DECL|method|setUseNewAPI ()
 specifier|private
 name|void
@@ -4102,7 +4102,7 @@ block|{
 name|String
 name|mode
 init|=
-literal|"map compatability"
+literal|"map compatibility"
 decl_stmt|;
 name|ensureNotSet
 argument_list|(
@@ -4200,7 +4200,7 @@ block|{
 name|String
 name|mode
 init|=
-literal|"reduce compatability"
+literal|"reduce compatibility"
 decl_stmt|;
 name|ensureNotSet
 argument_list|(
