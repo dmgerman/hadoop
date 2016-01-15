@@ -540,7 +540,7 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|Time
+name|Timer
 import|;
 end_import
 
@@ -649,8 +649,10 @@ specifier|final
 name|int
 name|ioFileBufferSize
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|DU_CACHE_FILE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -702,6 +704,18 @@ literal|60
 operator|*
 literal|1000
 decl_stmt|;
+DECL|field|cachedDfsUsedCheckTime
+specifier|private
+specifier|final
+name|long
+name|cachedDfsUsedCheckTime
+decl_stmt|;
+DECL|field|timer
+specifier|private
+specifier|final
+name|Timer
+name|timer
+decl_stmt|;
 comment|// TODO:FEDERATION scalability issue - a thread per DU is needed
 DECL|field|dfsUsage
 specifier|private
@@ -709,8 +723,8 @@ specifier|final
 name|DU
 name|dfsUsage
 decl_stmt|;
-comment|/**    * Create a blook pool slice     * @param bpid Block pool Id    * @param volume {@link FsVolumeImpl} to which this BlockPool belongs to    * @param bpDir directory corresponding to the BlockPool    * @param conf configuration    * @throws IOException    */
-DECL|method|BlockPoolSlice (String bpid, FsVolumeImpl volume, File bpDir, Configuration conf)
+comment|/**    * Create a blook pool slice     * @param bpid Block pool Id    * @param volume {@link FsVolumeImpl} to which this BlockPool belongs to    * @param bpDir directory corresponding to the BlockPool    * @param conf configuration    * @param timer include methods for getting time    * @throws IOException    */
+DECL|method|BlockPoolSlice (String bpid, FsVolumeImpl volume, File bpDir, Configuration conf, Timer timer)
 name|BlockPoolSlice
 parameter_list|(
 name|String
@@ -724,6 +738,9 @@ name|bpDir
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|Timer
+name|timer
 parameter_list|)
 throws|throws
 name|IOException
@@ -844,6 +861,29 @@ name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_DUPLICATE_REPLICA_DELETION_DEFAULT
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|cachedDfsUsedCheckTime
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DN_CACHED_DFSUSED_CHECK_INTERVAL_MS
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DN_CACHED_DFSUSED_CHECK_INTERVAL_DEFAULT_MS
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|timer
+operator|=
+name|timer
 expr_stmt|;
 comment|// Files that were being written when the datanode was last shutdown
 comment|// are now moved back to the data directory. It is possible that
@@ -1114,7 +1154,7 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Read in the cached DU value and return it if it is less than 600 seconds    * old (DU update interval). Slight imprecision of dfsUsed is not critical    * and skipping DU can significantly shorten the startup time.    * If the cached value is not available or too old, -1 is returned.    */
+comment|/**    * Read in the cached DU value and return it if it is less than    * cachedDfsUsedCheckTime which is set by    * dfs.datanode.cached-dfsused.check.interval.ms parameter. Slight imprecision    * of dfsUsed is not critical and skipping DU can significantly shorten the    * startup time. If the cached value is not available or too old, -1 is    * returned.    */
 DECL|method|loadDfsUsed ()
 name|long
 name|loadDfsUsed
@@ -1217,14 +1257,14 @@ operator|>
 literal|0
 operator|&&
 operator|(
-name|Time
+name|timer
 operator|.
 name|now
 argument_list|()
 operator|-
 name|mtime
 operator|<
-literal|600000L
+name|cachedDfsUsedCheckTime
 operator|)
 condition|)
 block|{
@@ -1351,7 +1391,7 @@ name|Long
 operator|.
 name|toString
 argument_list|(
-name|Time
+name|timer
 operator|.
 name|now
 argument_list|()
@@ -2318,7 +2358,7 @@ operator|.
 name|nextLong
 argument_list|()
 operator|>
-name|Time
+name|timer
 operator|.
 name|now
 argument_list|()
