@@ -523,7 +523,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * Returns every line consumed from the input.      *       * @return List<String> every line consumed from the input      */
+comment|/**      * Get every line consumed from the input.      *       * @return  Every line consumed from the input      */
 DECL|method|getOutput ()
 specifier|public
 name|List
@@ -538,7 +538,7 @@ name|output
 return|;
 block|}
 block|}
-comment|/**    * Add environment variables to a ProcessBuilder.    */
+comment|/**    * Add environment variables to a ProcessBuilder.    *    * @param pb      The ProcessBuilder    * @param env     A map of environment variable names to values.    */
 DECL|method|addEnvironment (ProcessBuilder pb, Map<String, String> env)
 specifier|public
 specifier|static
@@ -631,7 +631,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Pretty-print the environment to a StringBuilder.    */
+comment|/**    * Pretty-print the environment to a StringBuilder.    *    * @param env     A map of environment variable names to values to print.    *    * @return        The pretty-printed string.    */
 DECL|method|envToString (Map<String, String> env)
 specifier|public
 specifier|static

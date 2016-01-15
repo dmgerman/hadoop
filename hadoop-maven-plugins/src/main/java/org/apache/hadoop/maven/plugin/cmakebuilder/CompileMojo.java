@@ -140,16 +140,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|BufferedReader
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|File
 import|;
 end_import
@@ -161,26 +151,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|InputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|InputStreamReader
 import|;
 end_import
 
@@ -227,7 +197,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Goal which builds the native sources  */
+comment|/**  * Goal which builds the native sources.  */
 end_comment
 
 begin_class
@@ -992,8 +962,6 @@ argument_list|(
 literal|"make"
 argument_list|)
 expr_stmt|;
-comment|// TODO: it would be nice to determine the number of CPUs and set the
-comment|// parallelism to that.  It requires some platform-specific logic, though.
 name|cmd
 operator|.
 name|add
@@ -1343,11 +1311,13 @@ name|proc
 operator|!=
 literal|null
 condition|)
+block|{
 name|proc
 operator|.
 name|destroy
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

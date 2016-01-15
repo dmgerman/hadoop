@@ -286,7 +286,7 @@ specifier|private
 name|String
 name|testName
 decl_stmt|;
-comment|/**    * Environment variables to pass to the binary.    *    */
+comment|/**    * Environment variables to pass to the binary.    */
 annotation|@
 name|Parameter
 DECL|field|env
@@ -391,7 +391,7 @@ specifier|private
 name|String
 name|expectedResult
 decl_stmt|;
-comment|/**    * The Maven Session Object    */
+comment|/**    * The Maven Session Object.    */
 annotation|@
 name|Parameter
 argument_list|(
@@ -766,7 +766,7 @@ name|skipTests
 init|=
 name|session
 operator|.
-name|getExecutionProperties
+name|getSystemProperties
 argument_list|()
 operator|.
 name|getProperty
@@ -847,7 +847,7 @@ name|testProp
 init|=
 name|session
 operator|.
-name|getExecutionProperties
+name|getSystemProperties
 argument_list|()
 operator|.
 name|getProperty
