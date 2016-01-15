@@ -236,9 +236,23 @@ name|void
 name|shutdown
 parameter_list|()
 block|{
+if|if
+condition|(
+name|hasWork
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Shutdown() is called but there are still unprocessed work!"
+argument_list|)
+expr_stmt|;
+block|}
 name|executor
 operator|.
-name|shutdown
+name|shutdownNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -331,7 +345,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    *  Blocking take from ProducerConsumer output queue that can be interrupted.    *    *  @return  item returned by processor's processItem().    */
+comment|/**    *  Blocking take from ProducerConsumer output queue that can be interrupted.    *    *  @throws InterruptedException if interrupted before an element becomes    *  available.    *  @return  item returned by processor's processItem().    */
 DECL|method|take ()
 specifier|public
 name|WorkReport
@@ -416,6 +430,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Worker thread implementation.    *    */
 DECL|class|Worker
 specifier|private
 class|class
@@ -433,6 +448,7 @@ name|R
 argument_list|>
 name|processor
 decl_stmt|;
+comment|/**      * Constructor.      * @param processor is used to process an item from input queue.      */
 DECL|method|Worker (WorkRequestProcessor<T, R> processor)
 specifier|public
 name|Worker
@@ -453,6 +469,7 @@ operator|=
 name|processor
 expr_stmt|;
 block|}
+comment|/**      * The worker continuously gets an item from input queue, process it and      * then put the processed result into output queue. It waits to get an item      * from input queue if there's none.      */
 DECL|method|run ()
 specifier|public
 name|void
@@ -464,32 +481,40 @@ condition|(
 literal|true
 condition|)
 block|{
-try|try
-block|{
 name|WorkRequest
 argument_list|<
 name|T
 argument_list|>
 name|work
-init|=
+decl_stmt|;
+try|try
+block|{
+name|work
+operator|=
 name|inputQueue
 operator|.
 name|take
 argument_list|()
-decl_stmt|;
-name|WorkReport
-argument_list|<
-name|R
-argument_list|>
-name|result
-init|=
-name|processor
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+comment|// It is assumed that if an interrupt occurs while taking a work
+comment|// out from input queue, the interrupt is likely triggered by
+comment|// ProducerConsumer.shutdown(). Therefore, exit the thread.
+name|LOG
 operator|.
-name|processItem
+name|debug
 argument_list|(
-name|work
+literal|"Interrupted while waiting for requests from inputQueue."
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+return|return;
+block|}
 name|boolean
 name|isDone
 init|=
@@ -503,6 +528,21 @@ condition|)
 block|{
 try|try
 block|{
+comment|// if the interrupt happens while the work is being processed,
+comment|// go back to process the same work again.
+name|WorkReport
+argument_list|<
+name|R
+argument_list|>
+name|result
+init|=
+name|processor
+operator|.
+name|processItem
+argument_list|(
+name|work
+argument_list|)
+decl_stmt|;
 name|outputQueue
 operator|.
 name|put
@@ -525,25 +565,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Could not put report into outputQueue. Retrying..."
+literal|"Worker thread was interrupted while processing an item,"
+operator|+
+literal|" or putting into outputQueue. Retrying..."
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|ie
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Interrupted while waiting for request from inputQueue."
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 block|}

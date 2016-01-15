@@ -33,7 +33,7 @@ parameter_list|,
 name|R
 parameter_list|>
 block|{
-comment|/**    * Work processor.    *    * @param   workRequest  Input work item.    * @return  Outputs WorkReport after processing workRequest item.    *    */
+comment|/**    * Work processor.    * The processor should be stateless: that is, it can be repeated after    * being interrupted.    *    * @param   workRequest  Input work item.    * @return  Outputs WorkReport after processing workRequest item.    *    */
 DECL|method|processItem (WorkRequest<T> workRequest)
 specifier|public
 name|WorkReport
