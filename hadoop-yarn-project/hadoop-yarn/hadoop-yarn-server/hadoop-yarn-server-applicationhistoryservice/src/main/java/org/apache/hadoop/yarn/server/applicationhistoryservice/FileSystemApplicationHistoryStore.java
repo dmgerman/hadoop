@@ -4450,6 +4450,8 @@ name|historyFile
 argument_list|)
 expr_stmt|;
 block|}
+try|try
+block|{
 name|fs
 operator|.
 name|setPermission
@@ -4490,6 +4492,26 @@ name|getConfig
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|fsdos
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
 block|}
 DECL|method|close ()
 specifier|public
