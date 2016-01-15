@@ -330,6 +330,14 @@ specifier|private
 name|int
 name|timeout
 decl_stmt|;
+comment|/**    * The working directory to use.    */
+annotation|@
+name|Parameter
+DECL|field|workingDirectory
+specifier|private
+name|File
+name|workingDirectory
+decl_stmt|;
 comment|/**    * Path to results directory.    */
 annotation|@
 name|Parameter
@@ -1322,6 +1330,21 @@ argument_list|,
 name|env
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|workingDirectory
+operator|!=
+literal|null
+condition|)
+block|{
+name|pb
+operator|.
+name|directory
+argument_list|(
+name|workingDirectory
+argument_list|)
+expr_stmt|;
+block|}
 name|pb
 operator|.
 name|redirectError
