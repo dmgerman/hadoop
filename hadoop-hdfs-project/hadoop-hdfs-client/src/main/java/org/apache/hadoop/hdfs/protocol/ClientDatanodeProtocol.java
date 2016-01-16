@@ -382,6 +382,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Cancel an executing plan.    *    * @param planID - A SHA512 hash of the plan string.    */
+DECL|method|cancelDiskBalancePlan (String planID)
+name|void
+name|cancelDiskBalancePlan
+parameter_list|(
+name|String
+name|planID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
