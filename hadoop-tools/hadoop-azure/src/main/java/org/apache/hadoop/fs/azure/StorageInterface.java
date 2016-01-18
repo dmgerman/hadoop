@@ -84,6 +84,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|EnumSet
 import|;
 end_import
@@ -109,6 +119,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|microsoft
+operator|.
+name|azure
+operator|.
+name|storage
+operator|.
+name|AccessCondition
 import|;
 end_import
 
@@ -211,6 +235,38 @@ operator|.
 name|blob
 operator|.
 name|BlobProperties
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|microsoft
+operator|.
+name|azure
+operator|.
+name|storage
+operator|.
+name|blob
+operator|.
+name|BlockEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|microsoft
+operator|.
+name|azure
+operator|.
+name|storage
+operator|.
+name|blob
+operator|.
+name|BlockListingFilter
 import|;
 end_import
 
@@ -521,7 +577,7 @@ parameter_list|)
 throws|throws
 name|StorageException
 function_decl|;
-comment|/**      * Uploads the container's metadata using the specified operation context.      *       * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @throws StorageException      *           If a storage service error occurred.      */
+comment|/**      * Uploads the container's metadata using the specified operation context.      *      * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *      * @throws StorageException      *           If a storage service error occurred.      */
 DECL|method|uploadMetadata (OperationContext opContext)
 specifier|public
 specifier|abstract
@@ -760,6 +816,23 @@ parameter_list|)
 throws|throws
 name|StorageException
 function_decl|;
+comment|/**      * Uploads the blob's metadata to the storage service using the specified      * lease ID, request options, and operation context.      *      * @param accessCondition      *           A {@link AccessCondition} object that represents the access conditions for the blob.      *      * @param options      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying      *<code>null</code> will use the default request options from the associated service client (      *            {@link CloudBlobClient}).      *      * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *      * @throws StorageException      *           If a storage service error occurred.      */
+DECL|method|uploadMetadata (AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
+name|void
+name|uploadMetadata
+parameter_list|(
+name|AccessCondition
+name|accessCondition
+parameter_list|,
+name|BlobRequestOptions
+name|options
+parameter_list|,
+name|OperationContext
+name|opContext
+parameter_list|)
+throws|throws
+name|StorageException
+function_decl|;
 DECL|method|uploadProperties (OperationContext opContext, SelfRenewingLease lease)
 name|void
 name|uploadProperties
@@ -825,6 +898,78 @@ name|OperationContext
 name|opContext
 parameter_list|)
 throws|throws
+name|StorageException
+function_decl|;
+comment|/**      *      * @param filter    A {@link BlockListingFilter} value that specifies whether to download      *                  committed blocks, uncommitted blocks, or all blocks.      * @param options   A {@link BlobRequestOptions} object that specifies any additional options for      *                  the request. Specifying null will use the default request options from      *                  the associated service client ( CloudBlobClient).      * @param opContext An {@link OperationContext} object that represents the context for the current      *                  operation. This object is used to track requests to the storage service,      *                  and to provide additional runtime information about the operation.      * @return          An ArrayList object of {@link BlockEntry} objects that represent the list      *                  block items downloaded from the block blob.      * @throws IOException  If an I/O error occurred.      * @throws StorageException If a storage service error occurred.      */
+DECL|method|downloadBlockList (BlockListingFilter filter, BlobRequestOptions options, OperationContext opContext)
+name|List
+argument_list|<
+name|BlockEntry
+argument_list|>
+name|downloadBlockList
+parameter_list|(
+name|BlockListingFilter
+name|filter
+parameter_list|,
+name|BlobRequestOptions
+name|options
+parameter_list|,
+name|OperationContext
+name|opContext
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|StorageException
+function_decl|;
+comment|/**      *      * @param blockId      A String that represents the Base-64 encoded block ID. Note for a given blob      *                     the length of all Block IDs must be identical.      * @param sourceStream An {@link InputStream} object that represents the input stream to write to the      *                     block blob.      * @param length       A long which represents the length, in bytes, of the stream data,      *                     or -1 if unknown.      * @param options      A {@link BlobRequestOptions} object that specifies any additional options for the      *                     request. Specifying null will use the default request options from the      *                     associated service client ( CloudBlobClient).      * @param opContext    An {@link OperationContext} object that represents the context for the current operation.      *                     This object is used to track requests to the storage service, and to provide      *                     additional runtime information about the operation.      * @throws IOException  If an I/O error occurred.      * @throws StorageException If a storage service error occurred.      */
+DECL|method|uploadBlock (String blockId, InputStream sourceStream, long length, BlobRequestOptions options, OperationContext opContext)
+name|void
+name|uploadBlock
+parameter_list|(
+name|String
+name|blockId
+parameter_list|,
+name|InputStream
+name|sourceStream
+parameter_list|,
+name|long
+name|length
+parameter_list|,
+name|BlobRequestOptions
+name|options
+parameter_list|,
+name|OperationContext
+name|opContext
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|StorageException
+function_decl|;
+comment|/**      *      * @param blockList       An enumerable collection of {@link BlockEntry} objects that represents the list      *                        block items being committed. The size field is ignored.      * @param accessCondition An {@link AccessCondition} object that represents the access conditions for the blob.      * @param options         A {@link BlobRequestOptions} object that specifies any additional options for the      *                        request. Specifying null will use the default request options from the associated      *                        service client ( CloudBlobClient).      * @param opContext       An {@link OperationContext} object that represents the context for the current operation.      *                        This object is used to track requests to the storage service, and to provide additional      *                        runtime information about the operation.      * @throws IOException      If an I/O error occurred.      * @throws StorageException If a storage service error occurred.      */
+DECL|method|commitBlockList (List<BlockEntry> blockList, AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
+name|void
+name|commitBlockList
+parameter_list|(
+name|List
+argument_list|<
+name|BlockEntry
+argument_list|>
+name|blockList
+parameter_list|,
+name|AccessCondition
+name|accessCondition
+parameter_list|,
+name|BlobRequestOptions
+name|options
+parameter_list|,
+name|OperationContext
+name|opContext
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
 name|StorageException
 function_decl|;
 block|}

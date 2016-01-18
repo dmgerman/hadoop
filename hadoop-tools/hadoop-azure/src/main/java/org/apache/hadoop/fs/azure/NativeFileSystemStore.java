@@ -467,6 +467,19 @@ parameter_list|)
 throws|throws
 name|AzureException
 function_decl|;
+DECL|method|retrieveAppendStream (String key, int bufferSize)
+name|DataOutputStream
+name|retrieveAppendStream
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|int
+name|bufferSize
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
