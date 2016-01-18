@@ -120,15 +120,15 @@ name|XmlAccessType
 operator|.
 name|FIELD
 argument_list|)
-DECL|class|ResourceUsageInfo
+DECL|class|ResourcesInfo
 specifier|public
 class|class
-name|ResourceUsageInfo
+name|ResourcesInfo
 block|{
 DECL|field|resourceUsagesByPartition
 name|List
 argument_list|<
-name|PartitionResourceUsageInfo
+name|PartitionResourcesInfo
 argument_list|>
 name|resourceUsagesByPartition
 init|=
@@ -137,14 +137,14 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-DECL|method|ResourceUsageInfo ()
+DECL|method|ResourcesInfo ()
 specifier|public
-name|ResourceUsageInfo
+name|ResourcesInfo
 parameter_list|()
 block|{   }
-DECL|method|ResourceUsageInfo (ResourceUsage resourceUsage, boolean considerAMUsage)
+DECL|method|ResourcesInfo (ResourceUsage resourceUsage, boolean considerAMUsage)
 specifier|public
-name|ResourceUsageInfo
+name|ResourcesInfo
 parameter_list|(
 name|ResourceUsage
 name|resourceUsage
@@ -178,7 +178,7 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|PartitionResourceUsageInfo
+name|PartitionResourcesInfo
 argument_list|(
 name|partitionName
 argument_list|,
@@ -229,14 +229,29 @@ argument_list|)
 argument_list|)
 else|:
 literal|null
+argument_list|,
+name|considerAMUsage
+condition|?
+operator|new
+name|ResourceInfo
+argument_list|(
+name|resourceUsage
+operator|.
+name|getAMLimit
+argument_list|(
+name|partitionName
+argument_list|)
+argument_list|)
+else|:
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|ResourceUsageInfo (ResourceUsage resourceUsage)
+DECL|method|ResourcesInfo (ResourceUsage resourceUsage)
 specifier|public
-name|ResourceUsageInfo
+name|ResourcesInfo
 parameter_list|(
 name|ResourceUsage
 name|resourceUsage
@@ -254,7 +269,7 @@ DECL|method|getPartitionResourceUsages ()
 specifier|public
 name|List
 argument_list|<
-name|PartitionResourceUsageInfo
+name|PartitionResourcesInfo
 argument_list|>
 name|getPartitionResourceUsages
 parameter_list|()
@@ -263,14 +278,14 @@ return|return
 name|resourceUsagesByPartition
 return|;
 block|}
-DECL|method|setPartitionResourceUsages ( List<PartitionResourceUsageInfo> resources)
+DECL|method|setPartitionResourceUsages ( List<PartitionResourcesInfo> resources)
 specifier|public
 name|void
 name|setPartitionResourceUsages
 parameter_list|(
 name|List
 argument_list|<
-name|PartitionResourceUsageInfo
+name|PartitionResourcesInfo
 argument_list|>
 name|resources
 parameter_list|)
@@ -284,7 +299,7 @@ expr_stmt|;
 block|}
 DECL|method|getPartitionResourceUsageInfo ( String partitionName)
 specifier|public
-name|PartitionResourceUsageInfo
+name|PartitionResourcesInfo
 name|getPartitionResourceUsageInfo
 parameter_list|(
 name|String
@@ -293,7 +308,7 @@ parameter_list|)
 block|{
 for|for
 control|(
-name|PartitionResourceUsageInfo
+name|PartitionResourcesInfo
 name|partitionResourceUsageInfo
 range|:
 name|resourceUsagesByPartition
@@ -319,7 +334,7 @@ block|}
 block|}
 return|return
 operator|new
-name|PartitionResourceUsageInfo
+name|PartitionResourcesInfo
 argument_list|()
 return|;
 block|}

@@ -56,6 +56,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -886,6 +896,16 @@ parameter_list|,
 name|FiCaSchedulerApp
 name|app
 parameter_list|)
+function_decl|;
+comment|/**    * Get valid Node Labels for this queue    * @return valid node labels    */
+DECL|method|getNodeLabelsForQueue ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getNodeLabelsForQueue
+parameter_list|()
 function_decl|;
 block|}
 end_interface

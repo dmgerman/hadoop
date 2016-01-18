@@ -145,12 +145,15 @@ specifier|public
 name|QueueCapacitiesInfo
 parameter_list|()
 block|{   }
-DECL|method|QueueCapacitiesInfo (QueueCapacities capacities)
+DECL|method|QueueCapacitiesInfo (QueueCapacities capacities, boolean considerAMUsage)
 specifier|public
 name|QueueCapacitiesInfo
 parameter_list|(
 name|QueueCapacities
 name|capacities
+parameter_list|,
+name|boolean
+name|considerAMUsage
 parameter_list|)
 block|{
 if|if
@@ -179,6 +182,9 @@ name|absUsedCapacity
 decl_stmt|;
 name|float
 name|absMaxCapacity
+decl_stmt|;
+name|Float
+name|maxAMLimitPercentage
 decl_stmt|;
 for|for
 control|(
@@ -282,6 +288,17 @@ argument_list|)
 operator|*
 literal|100
 expr_stmt|;
+name|maxAMLimitPercentage
+operator|=
+name|capacities
+operator|.
+name|getMaxAMResourcePercentage
+argument_list|(
+name|partitionName
+argument_list|)
+operator|*
+literal|100
+expr_stmt|;
 if|if
 condition|(
 name|maxCapacity
@@ -324,10 +341,32 @@ argument_list|,
 name|absUsedCapacity
 argument_list|,
 name|absMaxCapacity
+argument_list|,
+name|considerAMUsage
+condition|?
+name|maxAMLimitPercentage
+else|:
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|QueueCapacitiesInfo (QueueCapacities capacities)
+specifier|public
+name|QueueCapacitiesInfo
+parameter_list|(
+name|QueueCapacities
+name|capacities
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|capacities
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|add (PartitionQueueCapacitiesInfo partitionQueueCapacitiesInfo)
 specifier|public

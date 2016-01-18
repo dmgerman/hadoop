@@ -368,7 +368,7 @@ name|capacities
 decl_stmt|;
 DECL|field|resources
 specifier|protected
-name|ResourceUsageInfo
+name|ResourcesInfo
 name|resources
 decl_stmt|;
 DECL|method|CapacitySchedulerQueueInfo ()
@@ -608,10 +608,7 @@ operator|.
 name|getQueueCapacities
 argument_list|()
 decl_stmt|;
-name|capacities
-operator|=
-operator|new
-name|QueueCapacitiesInfo
+name|populateQueueCapacities
 argument_list|(
 name|qCapacities
 argument_list|)
@@ -642,9 +639,29 @@ block|{
 name|resources
 operator|=
 operator|new
-name|ResourceUsageInfo
+name|ResourcesInfo
 argument_list|(
 name|queueResourceUsage
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|populateQueueCapacities (QueueCapacities qCapacities)
+specifier|protected
+name|void
+name|populateQueueCapacities
+parameter_list|(
+name|QueueCapacities
+name|qCapacities
+parameter_list|)
+block|{
+name|capacities
+operator|=
+operator|new
+name|QueueCapacitiesInfo
+argument_list|(
+name|qCapacities
 argument_list|,
 literal|false
 argument_list|)
@@ -889,7 +906,7 @@ return|;
 block|}
 DECL|method|getResources ()
 specifier|public
-name|ResourceUsageInfo
+name|ResourcesInfo
 name|getResources
 parameter_list|()
 block|{

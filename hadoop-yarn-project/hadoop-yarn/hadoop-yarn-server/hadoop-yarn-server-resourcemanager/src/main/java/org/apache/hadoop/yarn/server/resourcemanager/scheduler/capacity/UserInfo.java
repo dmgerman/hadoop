@@ -144,7 +144,7 @@ name|webapp
 operator|.
 name|dao
 operator|.
-name|ResourceUsageInfo
+name|ResourcesInfo
 import|;
 end_import
 
@@ -195,7 +195,7 @@ name|userResourceLimit
 decl_stmt|;
 DECL|field|resources
 specifier|protected
-name|ResourceUsageInfo
+name|ResourcesInfo
 name|resources
 decl_stmt|;
 DECL|method|UserInfo ()
@@ -280,7 +280,7 @@ operator|.
 name|resources
 operator|=
 operator|new
-name|ResourceUsageInfo
+name|ResourcesInfo
 argument_list|(
 name|resourceUsage
 argument_list|)
@@ -348,7 +348,7 @@ return|;
 block|}
 DECL|method|getResourceUsageInfo ()
 specifier|public
-name|ResourceUsageInfo
+name|ResourcesInfo
 name|getResourceUsageInfo
 parameter_list|()
 block|{

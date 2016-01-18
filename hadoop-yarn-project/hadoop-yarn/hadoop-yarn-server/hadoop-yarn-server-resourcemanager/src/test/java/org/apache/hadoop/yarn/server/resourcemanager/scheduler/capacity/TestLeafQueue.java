@@ -2413,7 +2413,7 @@ argument_list|,
 name|epsilon
 argument_list|)
 expr_stmt|;
-comment|//Verify the value for getAMResourceLimit for queues with< .1 maxcap
+comment|// Verify the value for getAMResourceLimit for queues with< .1 maxcap
 name|Resource
 name|clusterResource
 init|=
@@ -2456,7 +2456,7 @@ argument_list|)
 argument_list|,
 name|a
 operator|.
-name|getAMResourceLimit
+name|calculateAndGetAMResourceLimit
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2488,7 +2488,7 @@ argument_list|)
 argument_list|,
 name|b
 operator|.
-name|getAMResourceLimit
+name|calculateAndGetAMResourceLimit
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -16271,7 +16271,7 @@ name|assertEquals
 argument_list|(
 name|a
 operator|.
-name|getAMResourceLimit
+name|calculateAndGetAMResourceLimit
 argument_list|()
 argument_list|,
 name|Resources
@@ -16337,7 +16337,7 @@ name|assertEquals
 argument_list|(
 name|a
 operator|.
-name|getAMResourceLimit
+name|calculateAndGetAMResourceLimit
 argument_list|()
 argument_list|,
 name|Resources
@@ -16388,7 +16388,7 @@ name|assertEquals
 argument_list|(
 name|a
 operator|.
-name|getAMResourceLimit
+name|calculateAndGetAMResourceLimit
 argument_list|()
 argument_list|,
 name|Resources

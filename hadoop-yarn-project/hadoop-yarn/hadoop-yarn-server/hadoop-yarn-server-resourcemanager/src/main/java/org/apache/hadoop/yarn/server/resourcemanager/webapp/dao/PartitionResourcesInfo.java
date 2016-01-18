@@ -80,10 +80,10 @@ name|XmlAccessType
 operator|.
 name|FIELD
 argument_list|)
-DECL|class|PartitionResourceUsageInfo
+DECL|class|PartitionResourcesInfo
 specifier|public
 class|class
-name|PartitionResourceUsageInfo
+name|PartitionResourcesInfo
 block|{
 DECL|field|partitionName
 specifier|private
@@ -114,14 +114,23 @@ specifier|private
 name|ResourceInfo
 name|amUsed
 decl_stmt|;
-DECL|method|PartitionResourceUsageInfo ()
+DECL|field|amLimit
+specifier|private
+name|ResourceInfo
+name|amLimit
+init|=
+operator|new
+name|ResourceInfo
+argument_list|()
+decl_stmt|;
+DECL|method|PartitionResourcesInfo ()
 specifier|public
-name|PartitionResourceUsageInfo
+name|PartitionResourcesInfo
 parameter_list|()
 block|{   }
-DECL|method|PartitionResourceUsageInfo (String partitionName, ResourceInfo used, ResourceInfo reserved, ResourceInfo pending, ResourceInfo amResourceUsed)
+DECL|method|PartitionResourcesInfo (String partitionName, ResourceInfo used, ResourceInfo reserved, ResourceInfo pending, ResourceInfo amResourceUsed, ResourceInfo amResourceLimit)
 specifier|public
-name|PartitionResourceUsageInfo
+name|PartitionResourcesInfo
 parameter_list|(
 name|String
 name|partitionName
@@ -137,6 +146,9 @@ name|pending
 parameter_list|,
 name|ResourceInfo
 name|amResourceUsed
+parameter_list|,
+name|ResourceInfo
+name|amResourceLimit
 parameter_list|)
 block|{
 name|super
@@ -171,6 +183,12 @@ operator|.
 name|amUsed
 operator|=
 name|amResourceUsed
+expr_stmt|;
+name|this
+operator|.
+name|amLimit
+operator|=
+name|amResourceLimit
 expr_stmt|;
 block|}
 DECL|method|getPartitionName ()
@@ -301,6 +319,32 @@ operator|.
 name|amUsed
 operator|=
 name|amResourceUsed
+expr_stmt|;
+block|}
+DECL|method|getAMLimit ()
+specifier|public
+name|ResourceInfo
+name|getAMLimit
+parameter_list|()
+block|{
+return|return
+name|amLimit
+return|;
+block|}
+DECL|method|setAMLimit (ResourceInfo amLimit)
+specifier|public
+name|void
+name|setAMLimit
+parameter_list|(
+name|ResourceInfo
+name|amLimit
+parameter_list|)
+block|{
+name|this
+operator|.
+name|amLimit
+operator|=
+name|amLimit
 expr_stmt|;
 block|}
 block|}

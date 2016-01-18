@@ -1436,7 +1436,7 @@ argument_list|)
 argument_list|,
 name|queue
 operator|.
-name|getAMResourceLimit
+name|calculateAndGetAMResourceLimit
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2200,17 +2200,7 @@ name|assertEquals
 argument_list|(
 name|queue
 operator|.
-name|getAMResourceLimit
-argument_list|()
-argument_list|,
-name|amResourceLimit
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-name|queue
-operator|.
-name|getAMResourceLimit
+name|calculateAndGetAMResourceLimit
 argument_list|()
 argument_list|,
 name|amResourceLimit
@@ -2325,7 +2315,7 @@ name|assertEquals
 argument_list|(
 name|queue
 operator|.
-name|getAMResourceLimit
+name|calculateAndGetAMResourceLimit
 argument_list|()
 argument_list|,
 name|Resource
@@ -2593,7 +2583,7 @@ name|assertEquals
 argument_list|(
 name|queue
 operator|.
-name|getAMResourceLimit
+name|calculateAndGetAMResourceLimit
 argument_list|()
 argument_list|,
 name|Resource
@@ -2796,7 +2786,7 @@ argument_list|)
 argument_list|,
 name|queue
 operator|.
-name|getAMResourceLimit
+name|calculateAndGetAMResourceLimit
 argument_list|()
 argument_list|)
 expr_stmt|;

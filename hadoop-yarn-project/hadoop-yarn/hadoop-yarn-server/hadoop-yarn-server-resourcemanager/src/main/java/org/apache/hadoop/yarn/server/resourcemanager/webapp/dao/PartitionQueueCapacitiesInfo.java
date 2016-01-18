@@ -124,12 +124,17 @@ name|absoluteMaxCapacity
 init|=
 literal|100
 decl_stmt|;
+DECL|field|maxAMLimitPercentage
+specifier|private
+name|Float
+name|maxAMLimitPercentage
+decl_stmt|;
 DECL|method|PartitionQueueCapacitiesInfo ()
 specifier|public
 name|PartitionQueueCapacitiesInfo
 parameter_list|()
 block|{   }
-DECL|method|PartitionQueueCapacitiesInfo (String partitionName, float capacity, float usedCapacity, float maxCapacity, float absCapacity, float absUsedCapacity, float absMaxCapacity)
+DECL|method|PartitionQueueCapacitiesInfo (String partitionName, float capacity, float usedCapacity, float maxCapacity, float absCapacity, float absUsedCapacity, float absMaxCapacity, Float maxAMLimitPercentage)
 specifier|public
 name|PartitionQueueCapacitiesInfo
 parameter_list|(
@@ -153,6 +158,9 @@ name|absUsedCapacity
 parameter_list|,
 name|float
 name|absMaxCapacity
+parameter_list|,
+name|Float
+name|maxAMLimitPercentage
 parameter_list|)
 block|{
 name|super
@@ -199,6 +207,12 @@ operator|.
 name|absoluteMaxCapacity
 operator|=
 name|absMaxCapacity
+expr_stmt|;
+name|this
+operator|.
+name|maxAMLimitPercentage
+operator|=
+name|maxAMLimitPercentage
 expr_stmt|;
 block|}
 DECL|method|getCapacity ()
@@ -381,6 +395,32 @@ operator|.
 name|absoluteMaxCapacity
 operator|=
 name|absoluteMaxCapacity
+expr_stmt|;
+block|}
+DECL|method|getMaxAMLimitPercentage ()
+specifier|public
+name|float
+name|getMaxAMLimitPercentage
+parameter_list|()
+block|{
+return|return
+name|maxAMLimitPercentage
+return|;
+block|}
+DECL|method|setMaxAMLimitPercentage (float maxAMLimitPercentage)
+specifier|public
+name|void
+name|setMaxAMLimitPercentage
+parameter_list|(
+name|float
+name|maxAMLimitPercentage
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maxAMLimitPercentage
+operator|=
+name|maxAMLimitPercentage
 expr_stmt|;
 block|}
 block|}

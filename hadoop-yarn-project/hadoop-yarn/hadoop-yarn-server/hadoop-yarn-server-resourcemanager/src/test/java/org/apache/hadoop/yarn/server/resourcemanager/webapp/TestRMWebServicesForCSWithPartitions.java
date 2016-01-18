@@ -3698,7 +3698,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|5
+literal|6
 argument_list|,
 name|partitionsResourcesArray
 operator|.
@@ -3733,7 +3733,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|5
+literal|6
 argument_list|,
 name|partitionsResourcesArray
 operator|.
