@@ -345,6 +345,14 @@ name|value
 argument_list|()
 return|;
 block|}
+DECL|field|instance
+specifier|private
+specifier|static
+name|TimelineDataManagerMetrics
+name|instance
+init|=
+literal|null
+decl_stmt|;
 DECL|method|TimelineDataManagerMetrics ()
 name|TimelineDataManagerMetrics
 parameter_list|()
@@ -352,9 +360,17 @@ block|{   }
 DECL|method|create ()
 specifier|public
 specifier|static
+specifier|synchronized
 name|TimelineDataManagerMetrics
 name|create
 parameter_list|()
+block|{
+if|if
+condition|(
+name|instance
+operator|==
+literal|null
+condition|)
 block|{
 name|MetricsSystem
 name|ms
@@ -364,7 +380,8 @@ operator|.
 name|instance
 argument_list|()
 decl_stmt|;
-return|return
+name|instance
+operator|=
 name|ms
 operator|.
 name|register
@@ -373,6 +390,10 @@ operator|new
 name|TimelineDataManagerMetrics
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|instance
 return|;
 block|}
 DECL|method|incrGetEntitiesOps ()

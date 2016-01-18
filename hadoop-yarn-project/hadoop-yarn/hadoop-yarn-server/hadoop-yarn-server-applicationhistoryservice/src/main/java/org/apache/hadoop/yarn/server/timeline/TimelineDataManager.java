@@ -485,13 +485,6 @@ name|timelineACLsManager
 operator|=
 name|timelineACLsManager
 expr_stmt|;
-name|timelineACLsManager
-operator|.
-name|setTimelineStore
-argument_list|(
-name|store
-argument_list|)
-expr_stmt|;
 block|}
 annotation|@
 name|Override

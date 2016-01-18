@@ -894,6 +894,13 @@ name|YarnConfiguration
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|aclsManager
+operator|.
+name|setTimelineStore
+argument_list|(
+name|store
+argument_list|)
+expr_stmt|;
 name|TimelineDataManager
 name|dataManager
 init|=
