@@ -2465,11 +2465,7 @@ literal|"Waiting for container "
 operator|+
 name|containerId
 operator|+
-literal|" to be "
-operator|+
-name|containerState
-operator|+
-literal|", container is null right now."
+literal|" to be allocated."
 argument_list|)
 expr_stmt|;
 name|Thread

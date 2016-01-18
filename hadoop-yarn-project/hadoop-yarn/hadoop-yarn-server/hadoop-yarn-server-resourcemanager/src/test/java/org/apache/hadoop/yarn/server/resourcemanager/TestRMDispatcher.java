@@ -186,9 +186,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|capacity
-operator|.
-name|CapacityScheduler
+name|ContainerPreemptEvent
 import|;
 end_import
 
@@ -208,9 +206,9 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|event
+name|capacity
 operator|.
-name|ContainerPreemptEvent
+name|CapacityScheduler
 import|;
 end_import
 
@@ -404,7 +402,7 @@ name|container
 argument_list|,
 name|SchedulerEventType
 operator|.
-name|KILL_RESERVED_CONTAINER
+name|DROP_RESERVATION
 argument_list|)
 decl_stmt|;
 name|rmDispatcher
@@ -429,7 +427,7 @@ name|container
 argument_list|,
 name|SchedulerEventType
 operator|.
-name|KILL_PREEMPTED_CONTAINER
+name|KILL_CONTAINER
 argument_list|)
 decl_stmt|;
 name|rmDispatcher
@@ -500,7 +498,7 @@ argument_list|(
 name|sched
 argument_list|)
 operator|.
-name|killReservedContainer
+name|dropContainerReservation
 argument_list|(
 name|container
 argument_list|)
@@ -522,7 +520,7 @@ argument_list|(
 name|sched
 argument_list|)
 operator|.
-name|killPreemptedContainer
+name|killContainer
 argument_list|(
 name|container
 argument_list|)

@@ -1198,6 +1198,28 @@ name|scheduler
 operator|.
 name|event
 operator|.
+name|ContainerRescheduledEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|event
+operator|.
 name|NodeAddedSchedulerEvent
 import|;
 end_import
@@ -2936,8 +2958,6 @@ argument_list|)
 decl_stmt|;
 comment|// TODO: Not sure if this ever actually adds this to the list of cleanup
 comment|// containers on the RMNode (see SchedulerNode.releaseContainer()).
-name|super
-operator|.
 name|completedContainer
 argument_list|(
 name|container
@@ -4441,8 +4461,6 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
-name|super
-operator|.
 name|completedContainer
 argument_list|(
 name|rmContainer
@@ -4479,8 +4497,6 @@ name|getReservedContainers
 argument_list|()
 control|)
 block|{
-name|super
-operator|.
 name|completedContainer
 argument_list|(
 name|rmContainer
@@ -4579,11 +4595,11 @@ block|}
 comment|/**    * Clean up a completed container.    */
 annotation|@
 name|Override
-DECL|method|completedContainerInternal ( RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
+DECL|method|completedContainer (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
 specifier|protected
 specifier|synchronized
 name|void
-name|completedContainerInternal
+name|completedContainer
 parameter_list|(
 name|RMContainer
 name|rmContainer
@@ -4595,6 +4611,31 @@ name|RMContainerEventType
 name|event
 parameter_list|)
 block|{
+if|if
+condition|(
+name|rmContainer
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container "
+operator|+
+name|containerStatus
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|" completed with event "
+operator|+
+name|event
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|Container
 name|container
 init|=
@@ -4977,8 +5018,6 @@ range|:
 name|runningContainers
 control|)
 block|{
-name|super
-operator|.
 name|completedContainer
 argument_list|(
 name|container
@@ -5019,8 +5058,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|super
-operator|.
 name|completedContainer
 argument_list|(
 name|reservedContainer
@@ -5718,8 +5755,6 @@ operator|+
 name|containerId
 argument_list|)
 expr_stmt|;
-name|super
-operator|.
 name|completedContainer
 argument_list|(
 name|getRMContainer
@@ -6834,8 +6869,6 @@ operator|.
 name|getContainerId
 argument_list|()
 decl_stmt|;
-name|super
-operator|.
 name|completedContainer
 argument_list|(
 name|getRMContainer
@@ -6857,6 +6890,51 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|EXPIRE
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|CONTAINER_RESCHEDULED
+case|:
+if|if
+condition|(
+operator|!
+operator|(
+name|event
+operator|instanceof
+name|ContainerRescheduledEvent
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Unexpected event type: "
+operator|+
+name|event
+argument_list|)
+throw|;
+block|}
+name|ContainerRescheduledEvent
+name|containerRescheduledEvent
+init|=
+operator|(
+name|ContainerRescheduledEvent
+operator|)
+name|event
+decl_stmt|;
+name|RMContainer
+name|container
+init|=
+name|containerRescheduledEvent
+operator|.
+name|getContainer
+argument_list|()
+decl_stmt|;
+name|recoverResourceRequestForContainer
+argument_list|(
+name|container
 argument_list|)
 expr_stmt|;
 break|break;

@@ -1940,11 +1940,11 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|recoverResourceRequestsForContainer ( List<ResourceRequest> requests)
+DECL|method|recoverResourceRequests ( List<ResourceRequest> requests)
 specifier|public
 specifier|synchronized
 name|void
-name|recoverResourceRequestsForContainer
+name|recoverResourceRequests
 parameter_list|(
 name|List
 argument_list|<
