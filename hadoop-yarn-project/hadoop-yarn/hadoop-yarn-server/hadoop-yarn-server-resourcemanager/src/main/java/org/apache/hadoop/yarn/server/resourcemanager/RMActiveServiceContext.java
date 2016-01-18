@@ -813,8 +813,9 @@ specifier|private
 name|Clock
 name|systemClock
 init|=
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 decl_stmt|;
 DECL|field|schedulerRecoveryStartTime

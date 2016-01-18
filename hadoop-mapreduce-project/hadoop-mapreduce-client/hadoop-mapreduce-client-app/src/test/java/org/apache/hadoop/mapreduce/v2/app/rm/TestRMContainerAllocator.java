@@ -3760,8 +3760,9 @@ name|appAttemptId
 argument_list|,
 name|mockJob
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -4135,8 +4136,9 @@ name|appAttemptId
 argument_list|,
 name|mockJob
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -5410,8 +5412,9 @@ name|appAttemptId
 argument_list|,
 name|mockJob
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -5718,8 +5721,9 @@ name|appAttemptId
 argument_list|,
 name|mockJob
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|)
 block|{
@@ -6241,8 +6245,9 @@ name|appAttemptId
 argument_list|,
 name|mockJob
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -15219,11 +15224,7 @@ name|clock
 init|=
 operator|new
 name|ControlledClock
-argument_list|(
-operator|new
-name|SystemClock
 argument_list|()
-argument_list|)
 decl_stmt|;
 name|AppContext
 name|appContext
@@ -18115,8 +18116,9 @@ name|appAttemptId
 argument_list|,
 name|mockJob
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|)
 block|{

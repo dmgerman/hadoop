@@ -2312,11 +2312,7 @@ name|testClock
 init|=
 operator|new
 name|ControlledClock
-argument_list|(
-operator|new
-name|SystemClock
 argument_list|()
-argument_list|)
 decl_stmt|;
 name|testClock
 operator|.
@@ -3309,8 +3305,9 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -4205,8 +4202,9 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4674,8 +4672,9 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|)
 decl_stmt|;

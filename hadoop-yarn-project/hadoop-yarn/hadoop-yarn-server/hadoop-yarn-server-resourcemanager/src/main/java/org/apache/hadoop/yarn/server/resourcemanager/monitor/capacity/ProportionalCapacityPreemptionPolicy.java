@@ -847,8 +847,9 @@ parameter_list|()
 block|{
 name|clock
 operator|=
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 expr_stmt|;
 block|}
@@ -874,8 +875,9 @@ name|context
 argument_list|,
 name|scheduler
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|)
 expr_stmt|;

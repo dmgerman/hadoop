@@ -626,8 +626,9 @@ operator|=
 operator|new
 name|CachedResolver
 argument_list|(
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|,
 name|nodeIpCacheTimeout

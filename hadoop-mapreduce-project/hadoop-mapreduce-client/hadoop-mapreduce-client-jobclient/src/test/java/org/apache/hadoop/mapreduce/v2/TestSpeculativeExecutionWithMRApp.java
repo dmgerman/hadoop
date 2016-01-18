@@ -512,8 +512,9 @@ block|{
 name|Clock
 name|actualClock
 init|=
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -1009,8 +1010,9 @@ block|{
 name|Clock
 name|actualClock
 init|=
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 decl_stmt|;
 specifier|final

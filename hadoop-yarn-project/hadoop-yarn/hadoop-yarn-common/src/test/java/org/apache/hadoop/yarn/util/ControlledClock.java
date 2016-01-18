@@ -48,8 +48,9 @@ parameter_list|()
 block|{
 name|this
 argument_list|(
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|)
 expr_stmt|;

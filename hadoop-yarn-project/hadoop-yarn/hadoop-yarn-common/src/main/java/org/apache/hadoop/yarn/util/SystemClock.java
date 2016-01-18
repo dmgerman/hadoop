@@ -61,11 +61,41 @@ annotation|@
 name|Stable
 DECL|class|SystemClock
 specifier|public
+specifier|final
 class|class
 name|SystemClock
 implements|implements
 name|Clock
 block|{
+DECL|field|INSTANCE
+specifier|private
+specifier|static
+specifier|final
+name|SystemClock
+name|INSTANCE
+init|=
+operator|new
+name|SystemClock
+argument_list|()
+decl_stmt|;
+DECL|method|getInstance ()
+specifier|public
+specifier|static
+name|SystemClock
+name|getInstance
+parameter_list|()
+block|{
+return|return
+name|INSTANCE
+return|;
+block|}
+DECL|method|SystemClock ()
+specifier|private
+name|SystemClock
+parameter_list|()
+block|{
+comment|// do nothing
+block|}
 DECL|method|getTime ()
 specifier|public
 name|long

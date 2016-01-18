@@ -5514,11 +5514,7 @@ name|clock
 init|=
 operator|new
 name|ControlledClock
-argument_list|(
-operator|new
-name|SystemClock
 argument_list|()
-argument_list|)
 decl_stmt|;
 comment|// set window size to 10s
 name|RMAppImpl

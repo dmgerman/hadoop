@@ -3256,8 +3256,9 @@ name|this
 operator|.
 name|systemClock
 operator|=
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 expr_stmt|;
 name|this

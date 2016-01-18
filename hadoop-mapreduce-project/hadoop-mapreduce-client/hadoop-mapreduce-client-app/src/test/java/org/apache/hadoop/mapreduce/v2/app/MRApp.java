@@ -1713,8 +1713,9 @@ name|cleanOnStart
 argument_list|,
 literal|1
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|,
 name|assignedQueue
@@ -1898,8 +1899,9 @@ name|cleanOnStart
 argument_list|,
 name|startCount
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|,
 literal|null
@@ -1946,8 +1948,9 @@ name|cleanOnStart
 argument_list|,
 name|startCount
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|,
 name|unregistered
@@ -2134,8 +2137,9 @@ name|cleanOnStart
 argument_list|,
 name|startCount
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|,
 name|unregistered
@@ -2191,8 +2195,9 @@ name|cleanOnStart
 argument_list|,
 name|startCount
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|,
 literal|true

@@ -207,11 +207,7 @@ name|testClock
 init|=
 operator|new
 name|ControlledClock
-argument_list|(
-operator|new
-name|SystemClock
 argument_list|()
-argument_list|)
 decl_stmt|;
 name|long
 name|elapsedTimeBetweenUpdatesMsec

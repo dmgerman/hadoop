@@ -965,8 +965,9 @@ expr_stmt|;
 name|SystemClock
 name|clock
 init|=
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 decl_stmt|;
 name|AppContext

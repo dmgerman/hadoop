@@ -1172,8 +1172,9 @@ specifier|static
 name|Clock
 name|clock
 init|=
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 decl_stmt|;
 comment|/** The NM-wide configuration - not specific to this container */

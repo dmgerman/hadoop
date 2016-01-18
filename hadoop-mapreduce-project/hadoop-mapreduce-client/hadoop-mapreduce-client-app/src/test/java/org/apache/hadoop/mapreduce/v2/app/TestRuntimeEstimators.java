@@ -4204,8 +4204,9 @@ condition|)
 block|{
 name|clock
 operator|=
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 expr_stmt|;
 block|}

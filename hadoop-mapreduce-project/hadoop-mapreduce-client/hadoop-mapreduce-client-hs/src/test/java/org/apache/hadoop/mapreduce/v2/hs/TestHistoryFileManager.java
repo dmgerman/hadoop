@@ -1281,8 +1281,9 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1337,11 +1338,7 @@ name|clock
 init|=
 operator|new
 name|ControlledClock
-argument_list|(
-operator|new
-name|SystemClock
 argument_list|()
-argument_list|)
 decl_stmt|;
 name|clock
 operator|.

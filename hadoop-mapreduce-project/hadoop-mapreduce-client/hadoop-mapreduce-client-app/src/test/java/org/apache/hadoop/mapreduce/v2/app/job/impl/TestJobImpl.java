@@ -5596,8 +5596,9 @@ argument_list|)
 argument_list|,
 literal|null
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|,
 literal|null
@@ -5696,8 +5697,9 @@ argument_list|)
 argument_list|,
 literal|null
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|,
 literal|null
@@ -7075,8 +7077,9 @@ specifier|final
 name|SystemClock
 name|clock
 init|=
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 decl_stmt|;
 name|AppContext
@@ -8139,8 +8142,9 @@ operator|new
 name|Credentials
 argument_list|()
 argument_list|,
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|,
 name|Collections

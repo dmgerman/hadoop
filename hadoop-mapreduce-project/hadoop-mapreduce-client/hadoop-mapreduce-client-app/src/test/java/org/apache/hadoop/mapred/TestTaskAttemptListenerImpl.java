@@ -1867,8 +1867,9 @@ block|{
 name|SystemClock
 name|clock
 init|=
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 decl_stmt|;
 name|org
@@ -2269,8 +2270,9 @@ block|{
 name|SystemClock
 name|clock
 init|=
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 decl_stmt|;
 name|org

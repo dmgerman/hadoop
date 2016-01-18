@@ -2793,8 +2793,9 @@ argument_list|)
 decl_stmt|;
 name|createHistoryDirs
 argument_list|(
-operator|new
 name|SystemClock
+operator|.
+name|getInstance
 argument_list|()
 argument_list|,
 literal|10
