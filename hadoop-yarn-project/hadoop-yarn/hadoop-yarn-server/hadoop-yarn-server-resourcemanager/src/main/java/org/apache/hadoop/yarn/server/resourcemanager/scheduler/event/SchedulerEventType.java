@@ -64,19 +64,18 @@ comment|// Source: ContainerAllocationExpirer
 DECL|enumConstant|CONTAINER_EXPIRED
 name|CONTAINER_EXPIRED
 block|,
-comment|// Source: RMContainer
-DECL|enumConstant|CONTAINER_RESCHEDULED
-name|CONTAINER_RESCHEDULED
-block|,
 comment|// Source: SchedulingEditPolicy
-DECL|enumConstant|DROP_RESERVATION
-name|DROP_RESERVATION
+DECL|enumConstant|KILL_RESERVED_CONTAINER
+name|KILL_RESERVED_CONTAINER
 block|,
 DECL|enumConstant|PREEMPT_CONTAINER
 name|PREEMPT_CONTAINER
 block|,
-DECL|enumConstant|KILL_CONTAINER
-name|KILL_CONTAINER
+comment|// Mark a container for preemption in the near future
+DECL|enumConstant|KILL_PREEMPTED_CONTAINER
+name|KILL_PREEMPTED_CONTAINER
+comment|// Kill a container previously marked for
+comment|// preemption
 block|}
 end_enum
 

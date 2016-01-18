@@ -2001,11 +2001,11 @@ return|return
 name|ret
 return|;
 block|}
-DECL|method|addPreemptContainer (ContainerId cont)
+DECL|method|preemptContainer (ContainerId cont)
 specifier|public
 specifier|synchronized
 name|void
-name|addPreemptContainer
+name|preemptContainer
 parameter_list|(
 name|ContainerId
 name|cont
