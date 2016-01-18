@@ -2679,14 +2679,10 @@ name|allocateResources
 argument_list|(
 name|user
 argument_list|,
-literal|0
-argument_list|,
 name|increaseRequest
 operator|.
 name|getDeltaCapacity
 argument_list|()
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 comment|// remove the increase request from pending increase request map
@@ -2789,8 +2785,6 @@ operator|.
 name|releaseResources
 argument_list|(
 name|user
-argument_list|,
-literal|0
 argument_list|,
 name|absDelta
 argument_list|)
