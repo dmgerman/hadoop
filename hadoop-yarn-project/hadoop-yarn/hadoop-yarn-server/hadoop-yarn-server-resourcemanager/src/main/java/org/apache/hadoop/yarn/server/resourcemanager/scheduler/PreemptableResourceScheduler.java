@@ -73,18 +73,18 @@ extends|extends
 name|ResourceScheduler
 block|{
 comment|/**    * If the scheduler support container reservations, this method is used to    * ask the scheduler to drop the reservation for the given container.    * @param container Reference to reserved container allocation.    */
-DECL|method|dropContainerReservation (RMContainer container)
+DECL|method|killReservedContainer (RMContainer container)
 name|void
-name|dropContainerReservation
+name|killReservedContainer
 parameter_list|(
 name|RMContainer
 name|container
 parameter_list|)
 function_decl|;
 comment|/**    * Ask the scheduler to obtain back the container from a specific application    * by issuing a preemption request    * @param aid the application from which we want to get a container back    * @param container the container we want back    */
-DECL|method|preemptContainer (ApplicationAttemptId aid, RMContainer container)
+DECL|method|markContainerForPreemption (ApplicationAttemptId aid, RMContainer container)
 name|void
-name|preemptContainer
+name|markContainerForPreemption
 parameter_list|(
 name|ApplicationAttemptId
 name|aid
@@ -94,9 +94,9 @@ name|container
 parameter_list|)
 function_decl|;
 comment|/**    * Ask the scheduler to forcibly interrupt the container given as input    * @param container    */
-DECL|method|killContainer (RMContainer container)
+DECL|method|killPreemptedContainer (RMContainer container)
 name|void
-name|killContainer
+name|killPreemptedContainer
 parameter_list|(
 name|RMContainer
 name|container

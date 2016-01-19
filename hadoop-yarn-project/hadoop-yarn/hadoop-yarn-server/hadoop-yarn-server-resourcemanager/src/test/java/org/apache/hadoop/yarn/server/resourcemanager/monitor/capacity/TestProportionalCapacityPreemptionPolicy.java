@@ -188,7 +188,7 @@ name|event
 operator|.
 name|SchedulerEventType
 operator|.
-name|KILL_CONTAINER
+name|KILL_PREEMPTED_CONTAINER
 import|;
 end_import
 
@@ -212,7 +212,7 @@ name|event
 operator|.
 name|SchedulerEventType
 operator|.
-name|PREEMPT_CONTAINER
+name|MARK_CONTAINER_FOR_PREEMPTION
 import|;
 end_import
 
@@ -802,26 +802,6 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|ContainerPreemptEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|ResourceUsage
 import|;
 end_import
@@ -999,6 +979,28 @@ operator|.
 name|fica
 operator|.
 name|FiCaSchedulerApp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|event
+operator|.
+name|ContainerPreemptEvent
 import|;
 end_import
 
@@ -2734,7 +2736,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|KILL_CONTAINER
+name|KILL_PREEMPTED_CONTAINER
 argument_list|,
 name|e
 operator|.
@@ -7993,7 +7995,7 @@ name|this
 argument_list|(
 name|appAttId
 argument_list|,
-name|PREEMPT_CONTAINER
+name|MARK_CONTAINER_FOR_PREEMPTION
 argument_list|)
 expr_stmt|;
 block|}

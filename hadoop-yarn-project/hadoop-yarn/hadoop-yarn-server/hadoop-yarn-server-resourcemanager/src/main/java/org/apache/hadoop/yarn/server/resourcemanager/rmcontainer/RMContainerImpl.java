@@ -560,28 +560,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|event
-operator|.
-name|ContainerRescheduledEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|state
 operator|.
 name|InvalidStateTransitionException
@@ -964,7 +942,7 @@ operator|.
 name|KILL
 argument_list|,
 operator|new
-name|ContainerRescheduledTransition
+name|FinishedTransition
 argument_list|()
 argument_list|)
 comment|// Transitions from ACQUIRED state
@@ -2878,7 +2856,8 @@ name|RMContainerEvent
 name|event
 parameter_list|)
 block|{
-comment|// Clear ResourceRequest stored in RMContainer
+comment|// Clear ResourceRequest stored in RMContainer, we don't need to remember
+comment|// this anymore.
 name|container
 operator|.
 name|setResourceRequests
@@ -3138,54 +3117,6 @@ operator|.
 name|hasIncreaseReservation
 operator|=
 literal|false
-expr_stmt|;
-block|}
-block|}
-DECL|class|ContainerRescheduledTransition
-specifier|private
-specifier|static
-specifier|final
-class|class
-name|ContainerRescheduledTransition
-extends|extends
-name|FinishedTransition
-block|{
-annotation|@
-name|Override
-DECL|method|transition (RMContainerImpl container, RMContainerEvent event)
-specifier|public
-name|void
-name|transition
-parameter_list|(
-name|RMContainerImpl
-name|container
-parameter_list|,
-name|RMContainerEvent
-name|event
-parameter_list|)
-block|{
-comment|// Tell scheduler to recover request of this container to app
-name|container
-operator|.
-name|eventHandler
-operator|.
-name|handle
-argument_list|(
-operator|new
-name|ContainerRescheduledEvent
-argument_list|(
-name|container
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|super
-operator|.
-name|transition
-argument_list|(
-name|container
-argument_list|,
-name|event
-argument_list|)
 expr_stmt|;
 block|}
 block|}

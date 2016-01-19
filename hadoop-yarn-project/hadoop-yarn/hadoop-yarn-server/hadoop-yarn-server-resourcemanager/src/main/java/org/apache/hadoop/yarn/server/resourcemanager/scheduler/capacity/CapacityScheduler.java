@@ -1252,26 +1252,6 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|ContainerPreemptEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|NodeType
 import|;
 end_import
@@ -1716,7 +1696,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|ContainerRescheduledEvent
+name|ContainerPreemptEvent
 import|;
 end_import
 
@@ -1849,6 +1829,28 @@ operator|.
 name|event
 operator|.
 name|SchedulerEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|event
+operator|.
+name|SchedulerEventType
 import|;
 end_import
 
@@ -5505,6 +5507,8 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
+name|super
+operator|.
 name|completedContainer
 argument_list|(
 name|rmContainer
@@ -5541,6 +5545,8 @@ name|getReservedContainers
 argument_list|()
 control|)
 block|{
+name|super
+operator|.
 name|completedContainer
 argument_list|(
 name|rmContainer
@@ -6316,6 +6322,8 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
+name|super
+operator|.
 name|completedContainer
 argument_list|(
 name|container
@@ -6648,7 +6656,7 @@ operator|!=
 name|reservedContainer
 condition|)
 block|{
-name|dropContainerReservation
+name|killReservedContainer
 argument_list|(
 name|reservedContainer
 argument_list|)
@@ -7802,6 +7810,8 @@ operator|.
 name|getContainerId
 argument_list|()
 decl_stmt|;
+name|super
+operator|.
 name|completedContainer
 argument_list|(
 name|getRMContainer
@@ -7828,11 +7838,11 @@ expr_stmt|;
 block|}
 break|break;
 case|case
-name|DROP_RESERVATION
+name|KILL_RESERVED_CONTAINER
 case|:
 block|{
 name|ContainerPreemptEvent
-name|dropReservationEvent
+name|killReservedContainerEvent
 init|=
 operator|(
 name|ContainerPreemptEvent
@@ -7842,12 +7852,12 @@ decl_stmt|;
 name|RMContainer
 name|container
 init|=
-name|dropReservationEvent
+name|killReservedContainerEvent
 operator|.
 name|getContainer
 argument_list|()
 decl_stmt|;
-name|dropContainerReservation
+name|killReservedContainer
 argument_list|(
 name|container
 argument_list|)
@@ -7855,7 +7865,7 @@ expr_stmt|;
 block|}
 break|break;
 case|case
-name|PREEMPT_CONTAINER
+name|MARK_CONTAINER_FOR_PREEMPTION
 case|:
 block|{
 name|ContainerPreemptEvent
@@ -7882,7 +7892,7 @@ operator|.
 name|getContainer
 argument_list|()
 decl_stmt|;
-name|preemptContainer
+name|markContainerForPreemption
 argument_list|(
 name|aid
 argument_list|,
@@ -7892,7 +7902,7 @@ expr_stmt|;
 block|}
 break|break;
 case|case
-name|KILL_CONTAINER
+name|KILL_PREEMPTED_CONTAINER
 case|:
 block|{
 name|ContainerPreemptEvent
@@ -7911,36 +7921,9 @@ operator|.
 name|getContainer
 argument_list|()
 decl_stmt|;
-name|killContainer
+name|killPreemptedContainer
 argument_list|(
 name|containerToBeKilled
-argument_list|)
-expr_stmt|;
-block|}
-break|break;
-case|case
-name|CONTAINER_RESCHEDULED
-case|:
-block|{
-name|ContainerRescheduledEvent
-name|containerRescheduledEvent
-init|=
-operator|(
-name|ContainerRescheduledEvent
-operator|)
-name|event
-decl_stmt|;
-name|RMContainer
-name|container
-init|=
-name|containerRescheduledEvent
-operator|.
-name|getContainer
-argument_list|()
-decl_stmt|;
-name|recoverResourceRequestForContainer
-argument_list|(
-name|container
 argument_list|)
 expr_stmt|;
 block|}
@@ -8217,6 +8200,8 @@ range|:
 name|runningContainers
 control|)
 block|{
+name|super
+operator|.
 name|completedContainer
 argument_list|(
 name|container
@@ -8257,6 +8242,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|super
+operator|.
 name|completedContainer
 argument_list|(
 name|reservedContainer
@@ -8326,11 +8313,11 @@ name|class
 argument_list|)
 annotation|@
 name|Override
-DECL|method|completedContainer (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
+DECL|method|completedContainerInternal ( RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
 specifier|protected
 specifier|synchronized
 name|void
-name|completedContainer
+name|completedContainerInternal
 parameter_list|(
 name|RMContainer
 name|rmContainer
@@ -8342,31 +8329,6 @@ name|RMContainerEventType
 name|event
 parameter_list|)
 block|{
-if|if
-condition|(
-name|rmContainer
-operator|==
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Container "
-operator|+
-name|containerStatus
-operator|.
-name|getContainerId
-argument_list|()
-operator|+
-literal|" completed with event "
-operator|+
-name|event
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 name|Container
 name|container
 init|=
@@ -8872,10 +8834,10 @@ comment|// NOT IMPLEMENTED
 block|}
 annotation|@
 name|Override
-DECL|method|dropContainerReservation (RMContainer container)
+DECL|method|killReservedContainer (RMContainer container)
 specifier|public
 name|void
-name|dropContainerReservation
+name|killReservedContainer
 parameter_list|(
 name|RMContainer
 name|container
@@ -8893,7 +8855,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DROP_RESERVATION:"
+name|SchedulerEventType
+operator|.
+name|KILL_RESERVED_CONTAINER
+operator|+
+literal|":"
 operator|+
 name|container
 operator|.
@@ -8902,6 +8868,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// To think: What happens if this is no longer a reserved container, for
+comment|// e.g if the reservation became an allocation.
+name|super
+operator|.
 name|completedContainer
 argument_list|(
 name|container
@@ -8928,10 +8898,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|preemptContainer (ApplicationAttemptId aid, RMContainer cont)
+DECL|method|markContainerForPreemption (ApplicationAttemptId aid, RMContainer cont)
 specifier|public
 name|void
-name|preemptContainer
+name|markContainerForPreemption
 parameter_list|(
 name|ApplicationAttemptId
 name|aid
@@ -8952,7 +8922,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"PREEMPT_CONTAINER: application:"
+name|SchedulerEventType
+operator|.
+name|MARK_CONTAINER_FOR_PREEMPTION
+operator|+
+literal|": appAttempt:"
 operator|+
 name|aid
 operator|.
@@ -8985,7 +8959,7 @@ condition|)
 block|{
 name|app
 operator|.
-name|addPreemptContainer
+name|markContainerForPreemption
 argument_list|(
 name|cont
 operator|.
@@ -8997,10 +8971,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|killContainer (RMContainer cont)
+DECL|method|killPreemptedContainer (RMContainer cont)
 specifier|public
 name|void
-name|killContainer
+name|killPreemptedContainer
 parameter_list|(
 name|RMContainer
 name|cont
@@ -9018,7 +8992,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"KILL_CONTAINER: container"
+name|SchedulerEventType
+operator|.
+name|KILL_PREEMPTED_CONTAINER
+operator|+
+literal|": container"
 operator|+
 name|cont
 operator|.
@@ -9027,6 +9005,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|super
+operator|.
 name|completedContainer
 argument_list|(
 name|cont

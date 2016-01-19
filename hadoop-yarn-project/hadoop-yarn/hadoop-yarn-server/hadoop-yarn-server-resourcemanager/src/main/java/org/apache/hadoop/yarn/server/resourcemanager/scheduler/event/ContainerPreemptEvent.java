@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler.event
 package|package
 name|org
 operator|.
@@ -19,6 +19,8 @@ operator|.
 name|resourcemanager
 operator|.
 name|scheduler
+operator|.
+name|event
 package|;
 end_package
 
@@ -60,52 +62,8 @@ name|RMContainer
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|event
-operator|.
-name|SchedulerEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|event
-operator|.
-name|SchedulerEventType
-import|;
-end_import
-
 begin_comment
-comment|/**  * Simple event class used to communicate containers unreservations, preemption, killing  */
+comment|/**  * Simple event class used to communicate kill reserved containers, mark  * containers for preemption and kill already preemption-marked containers.  */
 end_comment
 
 begin_class
