@@ -4550,7 +4550,6 @@ annotation|@
 name|Override
 DECL|method|getSchedulingResourceUsage ()
 specifier|public
-specifier|synchronized
 name|ResourceUsage
 name|getSchedulingResourceUsage
 parameter_list|()

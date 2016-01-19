@@ -5969,6 +5969,12 @@ condition|(
 name|updateDemandForQueue
 operator|!=
 literal|null
+operator|&&
+operator|!
+name|application
+operator|.
+name|isWaitingForAMContainer
+argument_list|()
 condition|)
 block|{
 name|updateDemandForQueue
