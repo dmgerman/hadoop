@@ -25,6 +25,22 @@ package|;
 end_package
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|impl
+operator|.
+name|MetricsCollectorImpl
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -81,6 +97,18 @@ operator|.
 name|Assert
 operator|.
 name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertSame
 import|;
 end_import
 
@@ -345,22 +373,6 @@ operator|.
 name|fs
 operator|.
 name|CommonConfigurationKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics2
-operator|.
-name|impl
-operator|.
-name|MetricsCollectorImpl
 import|;
 end_import
 
@@ -1194,7 +1206,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|ContainerPreemptEvent
+name|ContainerRescheduledEvent
 import|;
 end_import
 
@@ -1261,28 +1273,6 @@ operator|.
 name|event
 operator|.
 name|NodeUpdateSchedulerEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|event
-operator|.
-name|SchedulerEventType
 import|;
 end_import
 
@@ -31263,7 +31253,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|SchedulerApplicationAttempt
+name|FSAppAttempt
 name|app
 init|=
 name|scheduler
@@ -31340,15 +31330,9 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|ContainerPreemptEvent
+name|ContainerRescheduledEvent
 argument_list|(
-name|appAttemptId
-argument_list|,
 name|rmContainer
-argument_list|,
-name|SchedulerEventType
-operator|.
-name|KILL_PREEMPTED_CONTAINER
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -31474,6 +31458,11 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"resource"
+argument_list|)
 annotation|@
 name|Test
 DECL|method|testBlacklistNodes ()

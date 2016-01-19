@@ -824,26 +824,6 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedContainerChangeRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|SchedulerAppReport
 import|;
 end_import
@@ -885,6 +865,26 @@ operator|.
 name|scheduler
 operator|.
 name|SchedulerApplicationAttempt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|SchedContainerChangeRequest
 import|;
 end_import
 
@@ -5554,10 +5554,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|completedContainerInternal (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
+DECL|method|completedContainer (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
 specifier|protected
 name|void
-name|completedContainerInternal
+name|completedContainer
 parameter_list|(
 name|RMContainer
 name|rmContainer

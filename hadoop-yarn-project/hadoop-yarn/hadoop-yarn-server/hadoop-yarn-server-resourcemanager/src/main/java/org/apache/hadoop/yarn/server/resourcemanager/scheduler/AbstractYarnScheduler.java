@@ -3117,9 +3117,9 @@ return|return
 name|rmContainer
 return|;
 block|}
-comment|/**    * Recover resource request back from RMContainer when a container is     * preempted before AM pulled the same. If container is pulled by    * AM, then RMContainer will not have resource request to recover.    * @param rmContainer rmContainer    */
+comment|/**    * Recover resource request back from RMContainer when a container is     * preempted before AM pulled the same. If container is pulled by    * AM, then RMContainer will not have resource request to recover.    * @param rmContainer    */
 DECL|method|recoverResourceRequestForContainer (RMContainer rmContainer)
-specifier|private
+specifier|protected
 name|void
 name|recoverResourceRequestForContainer
 parameter_list|(
@@ -3148,13 +3148,7 @@ condition|)
 block|{
 return|return;
 block|}
-comment|// Add resource request back to Scheduler ApplicationAttempt.
-comment|// We lookup the application-attempt here again using
-comment|// getCurrentApplicationAttempt() because there is only one app-attempt at
-comment|// any point in the scheduler. But in corner cases, AMs can crash,
-comment|// corresponding containers get killed and recovered to the same-attempt,
-comment|// but because the app-attempt is extinguished right after, the recovered
-comment|// requests don't serve any purpose, but that's okay.
+comment|// Add resource request back to Scheduler.
 name|SchedulerApplicationAttempt
 name|schedulerAttempt
 init|=
@@ -3175,7 +3169,7 @@ condition|)
 block|{
 name|schedulerAttempt
 operator|.
-name|recoverResourceRequestsForContainer
+name|recoverResourceRequests
 argument_list|(
 name|requests
 argument_list|)
@@ -3318,78 +3312,12 @@ block|}
 block|}
 block|}
 block|}
-annotation|@
-name|VisibleForTesting
-annotation|@
-name|Private
 comment|// clean up a completed container
 DECL|method|completedContainer (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
-specifier|public
-name|void
-name|completedContainer
-parameter_list|(
-name|RMContainer
-name|rmContainer
-parameter_list|,
-name|ContainerStatus
-name|containerStatus
-parameter_list|,
-name|RMContainerEventType
-name|event
-parameter_list|)
-block|{
-if|if
-condition|(
-name|rmContainer
-operator|==
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Container "
-operator|+
-name|containerStatus
-operator|.
-name|getContainerId
-argument_list|()
-operator|+
-literal|" completed with event "
-operator|+
-name|event
-operator|+
-literal|", but corresponding RMContainer doesn't exist."
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-name|completedContainerInternal
-argument_list|(
-name|rmContainer
-argument_list|,
-name|containerStatus
-argument_list|,
-name|event
-argument_list|)
-expr_stmt|;
-comment|// If the container is getting killed in ACQUIRED state, the requester (AM
-comment|// for regular containers and RM itself for AM container) will not know what
-comment|// happened. Simply add the ResourceRequest back again so that requester
-comment|// doesn't need to do anything conditionally.
-name|recoverResourceRequestForContainer
-argument_list|(
-name|rmContainer
-argument_list|)
-expr_stmt|;
-block|}
-comment|// clean up a completed container
-DECL|method|completedContainerInternal (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
 specifier|protected
 specifier|abstract
 name|void
-name|completedContainerInternal
+name|completedContainer
 parameter_list|(
 name|RMContainer
 name|rmContainer

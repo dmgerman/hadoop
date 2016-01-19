@@ -24,61 +24,73 @@ name|event
 package|;
 end_package
 
-begin_enum
-DECL|enum|SchedulerEventType
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmcontainer
+operator|.
+name|RMContainer
+import|;
+end_import
+
+begin_class
+DECL|class|ContainerRescheduledEvent
 specifier|public
-enum|enum
-name|SchedulerEventType
+class|class
+name|ContainerRescheduledEvent
+extends|extends
+name|SchedulerEvent
 block|{
-comment|// Source: Node
-DECL|enumConstant|NODE_ADDED
-name|NODE_ADDED
-block|,
-DECL|enumConstant|NODE_REMOVED
-name|NODE_REMOVED
-block|,
-DECL|enumConstant|NODE_UPDATE
-name|NODE_UPDATE
-block|,
-DECL|enumConstant|NODE_RESOURCE_UPDATE
-name|NODE_RESOURCE_UPDATE
-block|,
-DECL|enumConstant|NODE_LABELS_UPDATE
-name|NODE_LABELS_UPDATE
-block|,
-comment|// Source: RMApp
-DECL|enumConstant|APP_ADDED
-name|APP_ADDED
-block|,
-DECL|enumConstant|APP_REMOVED
-name|APP_REMOVED
-block|,
-comment|// Source: RMAppAttempt
-DECL|enumConstant|APP_ATTEMPT_ADDED
-name|APP_ATTEMPT_ADDED
-block|,
-DECL|enumConstant|APP_ATTEMPT_REMOVED
-name|APP_ATTEMPT_REMOVED
-block|,
-comment|// Source: ContainerAllocationExpirer
-DECL|enumConstant|CONTAINER_EXPIRED
-name|CONTAINER_EXPIRED
-block|,
-comment|// Source: RMContainer
-DECL|enumConstant|CONTAINER_RESCHEDULED
+DECL|field|container
+specifier|private
+name|RMContainer
+name|container
+decl_stmt|;
+DECL|method|ContainerRescheduledEvent (RMContainer container)
+specifier|public
+name|ContainerRescheduledEvent
+parameter_list|(
+name|RMContainer
+name|container
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|SchedulerEventType
+operator|.
 name|CONTAINER_RESCHEDULED
-block|,
-comment|// Source: SchedulingEditPolicy
-DECL|enumConstant|DROP_RESERVATION
-name|DROP_RESERVATION
-block|,
-DECL|enumConstant|PREEMPT_CONTAINER
-name|PREEMPT_CONTAINER
-block|,
-DECL|enumConstant|KILL_CONTAINER
-name|KILL_CONTAINER
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|container
+operator|=
+name|container
+expr_stmt|;
 block|}
-end_enum
+DECL|method|getContainer ()
+specifier|public
+name|RMContainer
+name|getContainer
+parameter_list|()
+block|{
+return|return
+name|container
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

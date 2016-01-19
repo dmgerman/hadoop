@@ -73,9 +73,9 @@ extends|extends
 name|ResourceScheduler
 block|{
 comment|/**    * If the scheduler support container reservations, this method is used to    * ask the scheduler to drop the reservation for the given container.    * @param container Reference to reserved container allocation.    */
-DECL|method|killReservedContainer (RMContainer container)
+DECL|method|dropContainerReservation (RMContainer container)
 name|void
-name|killReservedContainer
+name|dropContainerReservation
 parameter_list|(
 name|RMContainer
 name|container
@@ -94,9 +94,9 @@ name|container
 parameter_list|)
 function_decl|;
 comment|/**    * Ask the scheduler to forcibly interrupt the container given as input    * @param container    */
-DECL|method|killPreemptedContainer (RMContainer container)
+DECL|method|killContainer (RMContainer container)
 name|void
-name|killPreemptedContainer
+name|killContainer
 parameter_list|(
 name|RMContainer
 name|container

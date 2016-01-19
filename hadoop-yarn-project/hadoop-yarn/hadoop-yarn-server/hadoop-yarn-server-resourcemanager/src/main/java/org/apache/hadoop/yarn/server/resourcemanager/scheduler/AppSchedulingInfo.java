@@ -1582,8 +1582,8 @@ name|containerId
 argument_list|)
 return|;
 block|}
-comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *    * @param requests    *          resources to be acquired    * @param recoverPreemptedRequestForAContainer    *          recover ResourceRequest on preemption    * @return true if any resource was updated, false otherwise    */
-DECL|method|updateResourceRequests ( List<ResourceRequest> requests, boolean recoverPreemptedRequestForAContainer)
+comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *    * @param requests resources to be acquired    * @param recoverPreemptedRequest recover ResourceRequest on preemption    * @return true if any resource was updated, false otherwise    */
+DECL|method|updateResourceRequests ( List<ResourceRequest> requests, boolean recoverPreemptedRequest)
 specifier|public
 specifier|synchronized
 name|boolean
@@ -1596,7 +1596,7 @@ argument_list|>
 name|requests
 parameter_list|,
 name|boolean
-name|recoverPreemptedRequestForAContainer
+name|recoverPreemptedRequest
 parameter_list|)
 block|{
 comment|// Flag to track if any incoming requests update "ANY" requests
@@ -1701,7 +1701,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|recoverPreemptedRequestForAContainer
+name|recoverPreemptedRequest
 operator|&&
 name|lastRequest
 operator|!=

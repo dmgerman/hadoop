@@ -3729,7 +3729,7 @@ decl_stmt|;
 comment|// Preempt the first attempt;
 name|scheduler
 operator|.
-name|killPreemptedContainer
+name|killContainer
 argument_list|(
 name|scheduler
 operator|.
@@ -3851,7 +3851,7 @@ argument_list|)
 decl_stmt|;
 name|scheduler
 operator|.
-name|killPreemptedContainer
+name|killContainer
 argument_list|(
 name|scheduler
 operator|.
@@ -4528,7 +4528,7 @@ decl_stmt|;
 comment|// Forcibly preempt the am container;
 name|scheduler
 operator|.
-name|killPreemptedContainer
+name|killContainer
 argument_list|(
 name|scheduler
 operator|.
