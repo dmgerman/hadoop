@@ -60,6 +60,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|EOFException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -381,6 +391,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|message
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Cannot seek to %d"
+argument_list|,
+name|targetPos
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|targetPos
@@ -390,9 +412,28 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|EOFException
 argument_list|(
-literal|"Cannot seek after EOF"
+name|message
+operator|+
+literal|": after EOF"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|targetPos
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|EOFException
+argument_list|(
+name|message
+operator|+
+literal|": negative"
 argument_list|)
 throw|;
 block|}

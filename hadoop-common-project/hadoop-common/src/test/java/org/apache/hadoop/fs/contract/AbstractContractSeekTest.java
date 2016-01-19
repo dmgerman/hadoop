@@ -616,14 +616,6 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|boolean
-name|supportsSeekOnClosedFiles
-init|=
-name|isSupported
-argument_list|(
-name|SUPPORTS_SEEK_ON_CLOSED_FILE
-argument_list|)
-decl_stmt|;
 name|instream
 operator|=
 name|getFileSystem
@@ -667,7 +659,10 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|supportsSeekOnClosedFiles
+name|isSupported
+argument_list|(
+name|SUPPORTS_SEEK_ON_CLOSED_FILE
+argument_list|)
 condition|)
 block|{
 name|fail
@@ -695,13 +690,23 @@ operator|.
 name|available
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|isSupported
+argument_list|(
+name|SUPPORTS_AVAILABLE_ON_CLOSED_FILE
+argument_list|)
+condition|)
+block|{
 name|fail
 argument_list|(
-literal|"read() succeeded on a closed stream, got "
+literal|"available() succeeded on a closed stream, got "
 operator|+
 name|data
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

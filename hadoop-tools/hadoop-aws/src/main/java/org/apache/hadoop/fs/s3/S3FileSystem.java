@@ -222,6 +222,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|ParentNotDirectoryException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -796,11 +810,33 @@ literal|true
 decl_stmt|;
 for|for
 control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|paths
+operator|.
+name|size
+argument_list|()
+condition|;
+name|i
+operator|++
+control|)
+block|{
 name|Path
 name|p
-range|:
+init|=
 name|paths
-control|)
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+decl_stmt|;
+try|try
 block|{
 name|result
 operator|&=
@@ -809,6 +845,40 @@ argument_list|(
 name|p
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileAlreadyExistsException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|i
+operator|+
+literal|1
+operator|<
+name|paths
+operator|.
+name|size
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|ParentNotDirectoryException
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+throw|;
+block|}
+throw|throw
+name|e
+throw|;
+block|}
 block|}
 return|return
 name|result
@@ -873,7 +943,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileAlreadyExistsException
 argument_list|(
 name|String
 operator|.
@@ -958,6 +1028,21 @@ name|path
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|String
+name|message
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"No such file: '%s'"
+argument_list|,
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|inode
@@ -967,9 +1052,11 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileNotFoundException
 argument_list|(
-literal|"No such file."
+name|message
+operator|+
+literal|" does not exist"
 argument_list|)
 throw|;
 block|}
@@ -983,13 +1070,11 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileNotFoundException
 argument_list|(
-literal|"Path "
+name|message
 operator|+
-name|path
-operator|+
-literal|" is a directory."
+literal|" is a directory"
 argument_list|)
 throw|;
 block|}
@@ -1214,6 +1299,12 @@ block|{
 if|if
 condition|(
 name|overwrite
+operator|&&
+operator|!
+name|inode
+operator|.
+name|isDirectory
+argument_list|()
 condition|)
 block|{
 name|delete
@@ -1226,13 +1317,38 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|String
+name|message
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"File already exists: '%s'"
+argument_list|,
+name|file
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|inode
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+name|message
+operator|=
+name|message
+operator|+
+literal|" is a directory"
+expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|FileAlreadyExistsException
 argument_list|(
-literal|"File already exists: "
-operator|+
-name|file
+name|message
 argument_list|)
 throw|;
 block|}
@@ -2150,7 +2266,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * FileStatus for S3 file systems.     */
+comment|/**    * FileStatus for S3 file systems.    */
 annotation|@
 name|Override
 DECL|method|getFileStatus (Path f)

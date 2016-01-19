@@ -161,6 +161,13 @@ name|SUPPORTS_SEEK_ON_CLOSED_FILE
 init|=
 literal|"supports-seek-on-closed-file"
 decl_stmt|;
+comment|/**    * Is available() on a closed InputStream supported?    * @{value}    */
+DECL|field|SUPPORTS_AVAILABLE_ON_CLOSED_FILE
+name|String
+name|SUPPORTS_AVAILABLE_ON_CLOSED_FILE
+init|=
+literal|"supports-available-on-closed-file"
+decl_stmt|;
 comment|/**    * Flag to indicate that this FS expects to throw the strictest    * exceptions it can, not generic IOEs, which, if returned,    * must be rejected.    * @{value}    */
 DECL|field|SUPPORTS_STRICT_EXCEPTIONS
 name|String
