@@ -146,10 +146,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getCpuUsage ()
+DECL|method|getCpuUsagePercentage ()
 specifier|public
 name|float
-name|getCpuUsage
+name|getCpuUsagePercentage
 parameter_list|()
 block|{
 return|return

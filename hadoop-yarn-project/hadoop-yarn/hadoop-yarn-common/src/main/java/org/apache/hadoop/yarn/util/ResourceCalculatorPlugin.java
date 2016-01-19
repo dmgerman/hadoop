@@ -320,17 +320,31 @@ name|getCumulativeCpuTime
 argument_list|()
 return|;
 block|}
-comment|/**    * Obtain the CPU usage % of the machine. Return -1 if it is unavailable    *    * @return CPU usage in %    */
-DECL|method|getCpuUsage ()
+comment|/**    * Obtain the CPU usage % of the machine. Return -1 if it is unavailable.    *    * @return CPU usage in %    */
+DECL|method|getCpuUsagePercentage ()
 specifier|public
 name|float
-name|getCpuUsage
+name|getCpuUsagePercentage
 parameter_list|()
 block|{
 return|return
 name|sys
 operator|.
-name|getCpuUsage
+name|getCpuUsagePercentage
+argument_list|()
+return|;
+block|}
+comment|/**    * Obtain the number of VCores used. Return -1 if it is unavailable.    *    * @return Number of VCores used a percentage (from 0 to #VCores)    */
+DECL|method|getNumVCoresUsed ()
+specifier|public
+name|float
+name|getNumVCoresUsed
+parameter_list|()
+block|{
+return|return
+name|sys
+operator|.
+name|getNumVCoresUsed
 argument_list|()
 return|;
 block|}

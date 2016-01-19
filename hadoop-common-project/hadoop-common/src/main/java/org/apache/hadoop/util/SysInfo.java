@@ -169,12 +169,20 @@ name|long
 name|getCumulativeCpuTime
 parameter_list|()
 function_decl|;
-comment|/**    * Obtain the CPU usage % of the machine. Return -1 if it is unavailable    *    * @return CPU usage as a percentage of available cycles.    */
-DECL|method|getCpuUsage ()
+comment|/**    * Obtain the CPU usage % of the machine. Return -1 if it is unavailable    *    * @return CPU usage as a percentage (from 0 to 100) of available cycles.    */
+DECL|method|getCpuUsagePercentage ()
 specifier|public
 specifier|abstract
 name|float
-name|getCpuUsage
+name|getCpuUsagePercentage
+parameter_list|()
+function_decl|;
+comment|/**    * Obtain the number of VCores used. Return -1 if it is unavailable    *    * @return Number of VCores used a percentage (from 0 to #VCores).    */
+DECL|method|getNumVCoresUsed ()
+specifier|public
+specifier|abstract
+name|float
+name|getNumVCoresUsed
 parameter_list|()
 function_decl|;
 comment|/**    * Obtain the aggregated number of bytes read over the network.    * @return total number of bytes read.    */

@@ -486,11 +486,11 @@ name|getAvailableVirtualMemorySize
 argument_list|()
 decl_stmt|;
 name|float
-name|cpu
+name|vcores
 init|=
 name|resourceCalculatorPlugin
 operator|.
-name|getCpuUsage
+name|getNumVCoresUsed
 argument_list|()
 decl_stmt|;
 name|nodeUtilization
@@ -519,10 +519,10 @@ literal|20
 argument_list|)
 argument_list|,
 comment|// B -> MB
-name|cpu
+name|vcores
 argument_list|)
 expr_stmt|;
-comment|// 1 CPU at 100% is 1
+comment|// Used Virtual Cores
 try|try
 block|{
 name|Thread

@@ -2691,10 +2691,10 @@ block|}
 comment|/** {@inheritDoc} */
 annotation|@
 name|Override
-DECL|method|getCpuUsage ()
+DECL|method|getCpuUsagePercentage ()
 specifier|public
 name|float
-name|getCpuUsage
+name|getCpuUsagePercentage
 parameter_list|()
 block|{
 name|readProcStatFile
@@ -2727,6 +2727,46 @@ expr_stmt|;
 block|}
 return|return
 name|overallCpuUsage
+return|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+DECL|method|getNumVCoresUsed ()
+specifier|public
+name|float
+name|getNumVCoresUsed
+parameter_list|()
+block|{
+name|readProcStatFile
+argument_list|()
+expr_stmt|;
+name|float
+name|overallVCoresUsage
+init|=
+name|cpuTimeTracker
+operator|.
+name|getCpuTrackerUsagePercent
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|overallVCoresUsage
+operator|!=
+name|CpuTimeTracker
+operator|.
+name|UNAVAILABLE
+condition|)
+block|{
+name|overallVCoresUsage
+operator|=
+name|overallVCoresUsage
+operator|/
+literal|100F
+expr_stmt|;
+block|}
+return|return
+name|overallVCoresUsage
 return|;
 block|}
 comment|/** {@inheritDoc} */
@@ -2993,7 +3033,7 @@ literal|"CPU usage % : "
 operator|+
 name|plugin
 operator|.
-name|getCpuUsage
+name|getCpuUsagePercentage
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -522,6 +522,7 @@ operator|-
 literal|1
 condition|)
 block|{
+comment|/**                * This number will be the aggregated usage across all cores in                * [0.0, 100.0]. For example, it will be 400.0 if there are 8                * cores and each of them is running at 50% utilization.                */
 name|cpuUsage
 operator|=
 operator|(
@@ -529,12 +530,10 @@ name|cumulativeCpuTimeMs
 operator|-
 name|lastCumCpuTimeMs
 operator|)
-operator|/
-operator|(
-name|refreshInterval
 operator|*
-literal|1.0f
-operator|)
+literal|100F
+operator|/
+name|refreshInterval
 expr_stmt|;
 block|}
 block|}
@@ -705,17 +704,73 @@ block|}
 comment|/** {@inheritDoc} */
 annotation|@
 name|Override
-DECL|method|getCpuUsage ()
+DECL|method|getCpuUsagePercentage ()
 specifier|public
 name|float
-name|getCpuUsage
+name|getCpuUsagePercentage
 parameter_list|()
 block|{
 name|refreshIfNeeded
 argument_list|()
 expr_stmt|;
-return|return
+name|float
+name|ret
+init|=
 name|cpuUsage
+decl_stmt|;
+if|if
+condition|(
+name|ret
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+name|ret
+operator|=
+name|ret
+operator|/
+name|numProcessors
+expr_stmt|;
+block|}
+return|return
+name|ret
+return|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+DECL|method|getNumVCoresUsed ()
+specifier|public
+name|float
+name|getNumVCoresUsed
+parameter_list|()
+block|{
+name|refreshIfNeeded
+argument_list|()
+expr_stmt|;
+name|float
+name|ret
+init|=
+name|cpuUsage
+decl_stmt|;
+if|if
+condition|(
+name|ret
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+name|ret
+operator|=
+name|ret
+operator|/
+literal|100F
+expr_stmt|;
+block|}
+return|return
+name|ret
 return|;
 block|}
 comment|/** {@inheritDoc} */
