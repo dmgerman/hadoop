@@ -296,7 +296,7 @@ name|node1
 operator|.
 name|init
 argument_list|(
-literal|"rack1/node1"
+literal|"/rack1/node1"
 argument_list|,
 name|GB
 operator|*

@@ -188,6 +188,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|net
+operator|.
+name|NodeBase
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|tools
 operator|.
 name|rumen
@@ -280,6 +294,11 @@ specifier|public
 class|class
 name|SLSUtils
 block|{
+comment|// hostname includes the network path and the host name. for example
+comment|// "/default-rack/hostFoo" or "/coreSwitchA/TORSwitchB/hostBar".
+comment|// the function returns two Strings, the first element is the network
+comment|// location without "/", the second element is the host name. for example,
+comment|// {"default-rack", "hostFoo"} or "coreSwitchA/TORSwitchB", "hostBar"
 DECL|method|getRackHostName (String hostname)
 specifier|public
 specifier|static
@@ -291,22 +310,35 @@ name|String
 name|hostname
 parameter_list|)
 block|{
+name|NodeBase
+name|node
+init|=
+operator|new
+name|NodeBase
+argument_list|(
 name|hostname
-operator|=
-name|hostname
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|String
+index|[]
+block|{
+name|node
+operator|.
+name|getNetworkLocation
+argument_list|()
 operator|.
 name|substring
 argument_list|(
 literal|1
 argument_list|)
-expr_stmt|;
-return|return
-name|hostname
+block|,
+name|node
 operator|.
-name|split
-argument_list|(
-literal|"/"
-argument_list|)
+name|getName
+argument_list|()
+block|}
 return|;
 block|}
 comment|/**    * parse the rumen trace file, return each host name    */
