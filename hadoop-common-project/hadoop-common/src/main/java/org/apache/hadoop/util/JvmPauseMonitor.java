@@ -907,6 +907,13 @@ init|=
 name|getGcTimes
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting JVM pause monitor"
+argument_list|)
+expr_stmt|;
 while|while
 condition|(
 name|shouldRun
