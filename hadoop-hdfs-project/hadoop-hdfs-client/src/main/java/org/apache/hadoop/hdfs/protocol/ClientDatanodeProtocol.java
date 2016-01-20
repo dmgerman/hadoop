@@ -198,6 +198,24 @@ name|TokenInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|WorkStatus
+import|;
+end_import
+
 begin_comment
 comment|/** An client-datanode protocol for block recovery  */
 end_comment
@@ -390,6 +408,14 @@ parameter_list|(
 name|String
 name|planID
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Gets the status of an executing diskbalancer Plan.    */
+DECL|method|queryDiskBalancerPlan ()
+name|WorkStatus
+name|queryDiskBalancerPlan
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

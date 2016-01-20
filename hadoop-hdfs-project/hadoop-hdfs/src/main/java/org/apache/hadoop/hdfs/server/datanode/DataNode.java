@@ -15727,6 +15727,29 @@ literal|0
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|queryDiskBalancerPlan ()
+specifier|public
+name|WorkStatus
+name|queryDiskBalancerPlan
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+throw|throw
+operator|new
+name|DiskbalancerException
+argument_list|(
+literal|"Not Implemented"
+argument_list|,
+literal|0
+argument_list|)
+throw|;
+block|}
 block|}
 end_class
 
