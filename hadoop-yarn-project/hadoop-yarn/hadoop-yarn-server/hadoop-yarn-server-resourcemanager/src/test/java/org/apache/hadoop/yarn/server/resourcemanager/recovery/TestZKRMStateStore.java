@@ -955,6 +955,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|setResourceManager
+argument_list|(
+operator|new
+name|ResourceManager
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|init
 argument_list|(
 name|conf

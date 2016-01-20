@@ -957,7 +957,7 @@ init|=
 literal|"EpochNode"
 decl_stmt|;
 DECL|field|resourceManager
-specifier|private
+specifier|protected
 name|ResourceManager
 name|resourceManager
 decl_stmt|;
