@@ -2067,8 +2067,7 @@ argument_list|(
 name|getConfig
 argument_list|()
 argument_list|,
-name|getTimelineServiceAddress
-argument_list|()
+name|timelineServiceAddress
 argument_list|,
 literal|false
 argument_list|)
