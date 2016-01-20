@@ -278,13 +278,6 @@ operator|new
 name|Random
 argument_list|()
 decl_stmt|;
-DECL|field|basePort
-specifier|private
-name|int
-name|basePort
-init|=
-literal|10000
-decl_stmt|;
 DECL|class|Builder
 specifier|public
 specifier|static
@@ -539,6 +532,11 @@ name|retryCount
 init|=
 literal|0
 decl_stmt|;
+name|int
+name|basePort
+init|=
+literal|10000
+decl_stmt|;
 while|while
 condition|(
 literal|true
@@ -558,6 +556,15 @@ literal|1000
 argument_list|)
 operator|*
 literal|4
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Set MiniQJMHACluster basePort to "
+operator|+
+name|basePort
+argument_list|)
 expr_stmt|;
 comment|// start 3 journal nodes
 name|journalCluster
@@ -617,6 +624,8 @@ argument_list|,
 name|builder
 operator|.
 name|numNNs
+argument_list|,
+name|basePort
 argument_list|)
 expr_stmt|;
 comment|// First start up the NNs just to format the namespace. The MinIDFSCluster
@@ -699,9 +708,6 @@ operator|.
 name|restartNameNodes
 argument_list|()
 expr_stmt|;
-operator|++
-name|retryCount
-expr_stmt|;
 break|break;
 block|}
 catch|catch
@@ -710,6 +716,28 @@ name|BindException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
+block|}
+operator|++
+name|retryCount
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -724,7 +752,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|initHAConf (URI journalURI, Configuration conf, int numNNs)
+DECL|method|initHAConf (URI journalURI, Configuration conf, int numNNs, int basePort)
 specifier|private
 name|Configuration
 name|initHAConf
@@ -737,6 +765,9 @@ name|conf
 parameter_list|,
 name|int
 name|numNNs
+parameter_list|,
+name|int
+name|basePort
 parameter_list|)
 block|{
 name|conf
