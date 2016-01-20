@@ -682,7 +682,15 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"connect timed out"
+name|fs
+operator|.
+name|getUri
+argument_list|()
+operator|.
+name|getAuthority
+argument_list|()
+operator|+
+literal|": connect timed out"
 argument_list|,
 name|e
 operator|.
@@ -737,7 +745,15 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"Read timed out"
+name|fs
+operator|.
+name|getUri
+argument_list|()
+operator|.
+name|getAuthority
+argument_list|()
+operator|+
+literal|": Read timed out"
 argument_list|,
 name|e
 operator|.
@@ -789,7 +805,15 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"connect timed out"
+name|fs
+operator|.
+name|getUri
+argument_list|()
+operator|.
+name|getAuthority
+argument_list|()
+operator|+
+literal|": connect timed out"
 argument_list|,
 name|e
 operator|.
@@ -838,7 +862,15 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"Read timed out"
+name|fs
+operator|.
+name|getUri
+argument_list|()
+operator|.
+name|getAuthority
+argument_list|()
+operator|+
+literal|": Read timed out"
 argument_list|,
 name|e
 operator|.
@@ -896,7 +928,15 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"connect timed out"
+name|fs
+operator|.
+name|getUri
+argument_list|()
+operator|.
+name|getAuthority
+argument_list|()
+operator|+
+literal|": connect timed out"
 argument_list|,
 name|e
 operator|.
@@ -954,7 +994,15 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"Read timed out"
+name|fs
+operator|.
+name|getUri
+argument_list|()
+operator|.
+name|getAuthority
+argument_list|()
+operator|+
+literal|": Read timed out"
 argument_list|,
 name|e
 operator|.
@@ -1019,7 +1067,15 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"connect timed out"
+name|fs
+operator|.
+name|getUri
+argument_list|()
+operator|.
+name|getAuthority
+argument_list|()
+operator|+
+literal|": connect timed out"
 argument_list|,
 name|e
 operator|.
