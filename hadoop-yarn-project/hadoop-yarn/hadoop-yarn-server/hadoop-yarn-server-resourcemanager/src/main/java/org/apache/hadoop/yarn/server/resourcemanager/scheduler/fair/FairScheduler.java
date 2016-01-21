@@ -3706,6 +3706,12 @@ name|queue
 operator|.
 name|getName
 argument_list|()
+operator|+
+literal|"(requested queuename is "
+operator|+
+name|queueName
+operator|+
+literal|")"
 decl_stmt|;
 name|LOG
 operator|.
