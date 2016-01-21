@@ -1819,6 +1819,9 @@ name|blockIdManager
 init|=
 name|fsn
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|getBlockIdManager
 argument_list|()
 decl_stmt|;
@@ -3335,6 +3338,9 @@ name|BlockIdManager
 name|blockIdManager
 init|=
 name|fsn
+operator|.
+name|getBlockManager
+argument_list|()
 operator|.
 name|getBlockIdManager
 argument_list|()

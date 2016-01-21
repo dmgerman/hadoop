@@ -216,19 +216,6 @@ name|String
 name|getBlockPoolId
 parameter_list|()
 function_decl|;
-DECL|method|isInStandbyState ()
-name|boolean
-name|isInStandbyState
-parameter_list|()
-function_decl|;
-DECL|method|isGenStampInFuture (Block block)
-name|boolean
-name|isGenStampInFuture
-parameter_list|(
-name|Block
-name|block
-parameter_list|)
-function_decl|;
 DECL|method|getBlockCollection (long id)
 name|BlockCollection
 name|getBlockCollection
@@ -236,16 +223,6 @@ parameter_list|(
 name|long
 name|id
 parameter_list|)
-function_decl|;
-DECL|method|checkOperation (OperationCategory read)
-name|void
-name|checkOperation
-parameter_list|(
-name|OperationCategory
-name|read
-parameter_list|)
-throws|throws
-name|StandbyException
 function_decl|;
 DECL|method|startSecretManagerIfNecessary ()
 name|void
@@ -279,12 +256,6 @@ function_decl|;
 DECL|method|getHAContext ()
 name|HAContext
 name|getHAContext
-parameter_list|()
-function_decl|;
-comment|/**    * @return true if the HA is enabled else false    */
-DECL|method|isHaEnabled ()
-name|boolean
-name|isHaEnabled
 parameter_list|()
 function_decl|;
 comment|/**    * @return Whether the namenode is transitioning to active state and is in the    *         middle of the starting active services.    */

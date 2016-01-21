@@ -440,7 +440,6 @@ return|;
 block|}
 comment|/**    * Increments, logs and then returns the stamp    */
 DECL|method|nextGenerationStamp (boolean legacyBlock)
-specifier|public
 name|long
 name|nextGenerationStamp
 parameter_list|(
@@ -524,7 +523,6 @@ return|;
 block|}
 comment|/**    * Determine whether the block ID was randomly generated (legacy) or    * sequentially generated. The generation stamp value is used to    * make the distinction.    *    * @return true if the block ID was randomly generated, false otherwise.    */
 DECL|method|isLegacyBlock (Block block)
-specifier|public
 name|boolean
 name|isLegacyBlock
 parameter_list|(
@@ -543,34 +541,29 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Increments, logs and then returns the block ID    */
-DECL|method|nextContiguousBlockId ()
-specifier|public
+DECL|method|nextBlockId (boolean isStriped)
 name|long
-name|nextContiguousBlockId
-parameter_list|()
+name|nextBlockId
+parameter_list|(
+name|boolean
+name|isStriped
+parameter_list|)
 block|{
 return|return
+name|isStriped
+condition|?
+name|blockGroupIdGenerator
+operator|.
+name|nextValue
+argument_list|()
+else|:
 name|blockIdGenerator
 operator|.
 name|nextValue
 argument_list|()
 return|;
 block|}
-DECL|method|nextStripedBlockId ()
-specifier|public
-name|long
-name|nextStripedBlockId
-parameter_list|()
-block|{
-return|return
-name|blockGroupIdGenerator
-operator|.
-name|nextValue
-argument_list|()
-return|;
-block|}
 DECL|method|isGenStampInFuture (Block block)
-specifier|public
 name|boolean
 name|isGenStampInFuture
 parameter_list|(
@@ -610,7 +603,6 @@ return|;
 block|}
 block|}
 DECL|method|clear ()
-specifier|public
 name|void
 name|clear
 parameter_list|()
@@ -668,7 +660,6 @@ return|;
 block|}
 comment|/**    * The last 4 bits of HdfsConstants.BLOCK_GROUP_INDEX_MASK(15) is 1111,    * so the last 4 bits of (~HdfsConstants.BLOCK_GROUP_INDEX_MASK) is 0000    * and the other 60 bits are 1. Group ID is the first 60 bits of any    * data/parity block id in the same striped block group.    */
 DECL|method|convertToStripedID (long id)
-specifier|public
 specifier|static
 name|long
 name|convertToStripedID

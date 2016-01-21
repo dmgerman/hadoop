@@ -1213,7 +1213,7 @@ name|nextGenerationStamp
 argument_list|(
 name|fsn
 operator|.
-name|getBlockIdManager
+name|getBlockManager
 argument_list|()
 operator|.
 name|isLegacyBlock

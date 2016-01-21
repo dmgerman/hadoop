@@ -8318,6 +8318,8 @@ name|BlockManager
 argument_list|(
 name|mockNS
 argument_list|,
+literal|false
+argument_list|,
 operator|new
 name|HdfsConfiguration
 argument_list|()
@@ -8593,6 +8595,8 @@ operator|new
 name|BlockManager
 argument_list|(
 name|mockNS
+argument_list|,
+literal|false
 argument_list|,
 operator|new
 name|HdfsConfiguration
@@ -9133,6 +9137,8 @@ operator|new
 name|BlockManager
 argument_list|(
 name|mockNS
+argument_list|,
+literal|false
 argument_list|,
 operator|new
 name|HdfsConfiguration

@@ -618,6 +618,9 @@ operator|.
 name|getNamesystem
 argument_list|()
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|getBlockIdManager
 argument_list|()
 operator|.
@@ -1134,6 +1137,9 @@ name|spy
 argument_list|(
 name|fsn
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|getBlockIdManager
 argument_list|()
 operator|.
@@ -1146,6 +1152,9 @@ operator|.
 name|setInternalState
 argument_list|(
 name|fsn
+operator|.
+name|getBlockManager
+argument_list|()
 operator|.
 name|getBlockIdManager
 argument_list|()

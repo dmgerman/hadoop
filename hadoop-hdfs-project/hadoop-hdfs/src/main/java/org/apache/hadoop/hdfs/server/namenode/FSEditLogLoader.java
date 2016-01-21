@@ -456,6 +456,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|common
 operator|.
 name|HdfsServerConstants
@@ -1647,6 +1665,12 @@ specifier|final
 name|FSNamesystem
 name|fsNamesys
 decl_stmt|;
+DECL|field|blockManager
+specifier|private
+specifier|final
+name|BlockManager
+name|blockManager
+decl_stmt|;
 DECL|field|lastAppliedTxId
 specifier|private
 name|long
@@ -1676,6 +1700,15 @@ operator|.
 name|fsNamesys
 operator|=
 name|fsNamesys
+expr_stmt|;
+name|this
+operator|.
+name|blockManager
+operator|=
+name|fsNamesys
+operator|.
+name|getBlockManager
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -4460,7 +4493,7 @@ name|SetGenstampV1Op
 operator|)
 name|op
 decl_stmt|;
-name|fsNamesys
+name|blockManager
 operator|.
 name|getBlockIdManager
 argument_list|()
@@ -5516,7 +5549,7 @@ name|SetGenstampV2Op
 operator|)
 name|op
 decl_stmt|;
-name|fsNamesys
+name|blockManager
 operator|.
 name|getBlockIdManager
 argument_list|()
@@ -5556,7 +5589,7 @@ condition|)
 block|{
 comment|// ALLOCATE_BLOCK_ID is added for sequential block id, thus if the id
 comment|// is negative, it must belong to striped blocks
-name|fsNamesys
+name|blockManager
 operator|.
 name|getBlockIdManager
 argument_list|()
@@ -5571,7 +5604,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|fsNamesys
+name|blockManager
 operator|.
 name|getBlockIdManager
 argument_list|()

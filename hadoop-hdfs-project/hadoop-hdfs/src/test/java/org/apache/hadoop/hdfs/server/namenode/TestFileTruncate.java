@@ -6627,6 +6627,9 @@ name|is
 argument_list|(
 name|fsn
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|getBlockIdManager
 argument_list|()
 operator|.
@@ -6895,6 +6898,9 @@ argument_list|,
 name|is
 argument_list|(
 name|fsn
+operator|.
+name|getBlockManager
+argument_list|()
 operator|.
 name|getBlockIdManager
 argument_list|()

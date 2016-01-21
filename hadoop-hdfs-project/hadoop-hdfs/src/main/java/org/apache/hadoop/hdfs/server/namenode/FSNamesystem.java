@@ -2618,24 +2618,6 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockIdManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
 name|BlockInfo
 import|;
 end_import
@@ -3422,6 +3404,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|BlocksWithLocations
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|DatanodeCommand
 import|;
 end_import
@@ -4140,12 +4140,6 @@ name|FSNamesystem
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-DECL|field|blockIdManager
-specifier|private
-specifier|final
-name|BlockIdManager
-name|blockIdManager
 decl_stmt|;
 DECL|method|isAuditEnabled ()
 name|boolean
@@ -4991,11 +4985,6 @@ operator|.
 name|reset
 argument_list|()
 expr_stmt|;
-name|blockIdManager
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
 name|leaseManager
 operator|.
 name|removeAllLeases
@@ -5038,8 +5027,6 @@ return|return
 name|leaseManager
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|isHaEnabled ()
 specifier|public
 name|boolean
@@ -5744,6 +5731,8 @@ name|BlockManager
 argument_list|(
 name|this
 argument_list|,
+name|haEnabled
+argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
@@ -5758,16 +5747,6 @@ argument_list|()
 operator|.
 name|getDatanodeStatistics
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|blockIdManager
-operator|=
-operator|new
-name|BlockIdManager
-argument_list|(
-name|blockManager
-argument_list|)
 expr_stmt|;
 comment|// Get the checksum type from config
 name|String
@@ -8067,8 +8046,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Override
 DECL|method|checkOperation (OperationCategory op)
 specifier|public
 name|void
@@ -9154,8 +9131,6 @@ return|return
 name|fsRunning
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|isInStandbyState ()
 specifier|public
 name|boolean
@@ -9196,6 +9171,59 @@ operator|.
 name|getServiceState
 argument_list|()
 return|;
+block|}
+comment|/**    * return a list of blocks& their locations on<code>datanode</code> whose    * total size is<code>size</code>    *    * @param datanode on which blocks are located    * @param size total size of blocks    */
+DECL|method|getBlocks (DatanodeID datanode, long size)
+specifier|public
+name|BlocksWithLocations
+name|getBlocks
+parameter_list|(
+name|DatanodeID
+name|datanode
+parameter_list|,
+name|long
+name|size
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
+return|return
+name|getBlockManager
+argument_list|()
+operator|.
+name|getBlocksWithLocations
+argument_list|(
+name|datanode
+argument_list|,
+name|size
+argument_list|)
+return|;
+block|}
+finally|finally
+block|{
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Dump all metadata into specified file    */
 DECL|method|metaSave (String filename)
@@ -15669,7 +15697,7 @@ name|blockRecoveryId
 init|=
 name|nextGenerationStamp
 argument_list|(
-name|blockIdManager
+name|blockManager
 operator|.
 name|isLegacyBlock
 argument_list|(
@@ -21300,8 +21328,6 @@ name|legacyBlock
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|SafeModeException
 block|{
 assert|assert
 name|hasWriteLock
@@ -21315,7 +21341,7 @@ expr_stmt|;
 name|long
 name|gs
 init|=
-name|blockIdManager
+name|blockManager
 operator|.
 name|nextGenerationStamp
 argument_list|(
@@ -21377,17 +21403,12 @@ specifier|final
 name|long
 name|blockId
 init|=
+name|blockManager
+operator|.
+name|nextBlockId
+argument_list|(
 name|isStriped
-condition|?
-name|blockIdManager
-operator|.
-name|nextStripedBlockId
-argument_list|()
-else|:
-name|blockIdManager
-operator|.
-name|nextContiguousBlockId
-argument_list|()
+argument_list|)
 decl_stmt|;
 name|getEditLog
 argument_list|()
@@ -21919,7 +21940,7 @@ name|setGenerationStamp
 argument_list|(
 name|nextGenerationStamp
 argument_list|(
-name|blockIdManager
+name|blockManager
 operator|.
 name|isLegacyBlock
 argument_list|(
@@ -25937,16 +25958,6 @@ return|return
 name|blockManager
 return|;
 block|}
-DECL|method|getBlockIdManager ()
-specifier|public
-name|BlockIdManager
-name|getBlockIdManager
-parameter_list|()
-block|{
-return|return
-name|blockIdManager
-return|;
-block|}
 comment|/** @return the FSDirectory. */
 DECL|method|getFSDirectory ()
 specifier|public
@@ -26497,26 +26508,6 @@ throw|throw
 name|it
 throw|;
 block|}
-block|}
-annotation|@
-name|Override
-DECL|method|isGenStampInFuture (Block block)
-specifier|public
-name|boolean
-name|isGenStampInFuture
-parameter_list|(
-name|Block
-name|block
-parameter_list|)
-block|{
-return|return
-name|blockIdManager
-operator|.
-name|isGenStampInFuture
-argument_list|(
-name|block
-argument_list|)
-return|;
 block|}
 annotation|@
 name|VisibleForTesting

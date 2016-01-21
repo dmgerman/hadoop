@@ -2657,6 +2657,9 @@ name|spy
 argument_list|(
 name|spyFsn
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|getBlockIdManager
 argument_list|()
 argument_list|)
@@ -2666,6 +2669,9 @@ operator|.
 name|setInternalState
 argument_list|(
 name|finalFsn
+operator|.
+name|getBlockManager
+argument_list|()
 argument_list|,
 literal|"blockIdManager"
 argument_list|,

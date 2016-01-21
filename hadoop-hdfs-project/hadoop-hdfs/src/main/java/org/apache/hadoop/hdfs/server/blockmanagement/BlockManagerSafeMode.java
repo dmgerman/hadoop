@@ -677,7 +677,7 @@ specifier|final
 name|boolean
 name|inRollBack
 decl_stmt|;
-DECL|method|BlockManagerSafeMode (BlockManager blockManager, Namesystem namesystem, Configuration conf)
+DECL|method|BlockManagerSafeMode (BlockManager blockManager, Namesystem namesystem, boolean haEnabled, Configuration conf)
 name|BlockManagerSafeMode
 parameter_list|(
 name|BlockManager
@@ -685,6 +685,9 @@ name|blockManager
 parameter_list|,
 name|Namesystem
 name|namesystem
+parameter_list|,
+name|boolean
+name|haEnabled
 parameter_list|,
 name|Configuration
 name|conf
@@ -706,10 +709,7 @@ name|this
 operator|.
 name|haEnabled
 operator|=
-name|namesystem
-operator|.
-name|isHaEnabled
-argument_list|()
+name|haEnabled
 expr_stmt|;
 name|this
 operator|.
@@ -2014,7 +2014,7 @@ operator|&&
 operator|!
 name|inRollBack
 operator|&&
-name|namesystem
+name|blockManager
 operator|.
 name|isGenStampInFuture
 argument_list|(

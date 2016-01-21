@@ -4338,9 +4338,6 @@ expr_stmt|;
 return|return
 name|namesystem
 operator|.
-name|getBlockManager
-argument_list|()
-operator|.
 name|getBlocks
 argument_list|(
 name|datanode
