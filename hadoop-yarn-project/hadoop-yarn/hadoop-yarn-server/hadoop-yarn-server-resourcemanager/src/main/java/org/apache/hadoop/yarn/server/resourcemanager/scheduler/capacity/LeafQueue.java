@@ -5450,7 +5450,7 @@ return|;
 block|}
 annotation|@
 name|Private
-DECL|method|canAssignToUser (Resource clusterResource, String userName, Resource limit, FiCaSchedulerApp application, String nodePartition, ResourceLimits currentResoureLimits)
+DECL|method|canAssignToUser (Resource clusterResource, String userName, Resource limit, FiCaSchedulerApp application, String nodePartition, ResourceLimits currentResourceLimits)
 specifier|protected
 specifier|synchronized
 name|boolean
@@ -5472,7 +5472,7 @@ name|String
 name|nodePartition
 parameter_list|,
 name|ResourceLimits
-name|currentResoureLimits
+name|currentResourceLimits
 parameter_list|)
 block|{
 name|User
@@ -5483,6 +5483,16 @@ argument_list|(
 name|userName
 argument_list|)
 decl_stmt|;
+name|currentResourceLimits
+operator|.
+name|setAmountNeededUnreserve
+argument_list|(
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Note: We aren't considering the current request since there is a fixed
 comment|// overhead of the AM, but it's a> check, not a>= check, so...
 if|if
@@ -5615,7 +5625,7 @@ argument_list|)
 decl_stmt|;
 comment|// we can only acquire a new container if we unreserve first to
 comment|// respect user-limit
-name|currentResoureLimits
+name|currentResourceLimits
 operator|.
 name|setAmountNeededUnreserve
 argument_list|(
