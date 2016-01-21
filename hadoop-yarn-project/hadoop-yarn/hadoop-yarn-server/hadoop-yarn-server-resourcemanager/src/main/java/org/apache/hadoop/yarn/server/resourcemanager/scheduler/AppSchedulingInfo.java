@@ -459,6 +459,9 @@ specifier|private
 specifier|static
 specifier|final
 name|Comparator
+argument_list|<
+name|Priority
+argument_list|>
 name|COMPARATOR
 init|=
 operator|new
