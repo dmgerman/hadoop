@@ -407,9 +407,9 @@ argument_list|(
 name|REMOVAL_SCAN_INTERVAL
 argument_list|,
 name|REMOVAL_SCAN_INTERVAL_DEFAULT
+argument_list|)
 operator|*
 literal|1000
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|this

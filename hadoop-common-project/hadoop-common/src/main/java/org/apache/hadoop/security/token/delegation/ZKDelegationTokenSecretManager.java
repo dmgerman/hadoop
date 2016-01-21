@@ -1040,9 +1040,9 @@ argument_list|,
 name|DelegationTokenManager
 operator|.
 name|RENEW_INTERVAL_DEFAULT
+argument_list|)
 operator|*
 literal|1000
-argument_list|)
 argument_list|,
 name|conf
 operator|.
