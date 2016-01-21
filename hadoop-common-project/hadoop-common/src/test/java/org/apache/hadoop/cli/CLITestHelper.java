@@ -374,7 +374,7 @@ name|username
 init|=
 literal|null
 decl_stmt|;
-comment|/**    * Read the test config file - testConfig.xml    */
+comment|/**    * Read the test config file - testConf.xml    */
 DECL|method|readTestConfigFile ()
 specifier|protected
 name|void

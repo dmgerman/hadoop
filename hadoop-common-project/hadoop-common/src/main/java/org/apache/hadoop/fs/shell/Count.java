@@ -162,6 +162,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|QuotaUsage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|StorageType
 import|;
 end_import
@@ -245,6 +259,16 @@ name|OPTION_TYPE
 init|=
 literal|"t"
 decl_stmt|;
+comment|//return the quota, namespace count and disk space usage.
+DECL|field|OPTION_QUOTA_AND_USAGE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|OPTION_QUOTA_AND_USAGE
+init|=
+literal|"u"
+decl_stmt|;
 DECL|field|NAME
 specifier|public
 specifier|static
@@ -277,7 +301,11 @@ literal|"] [-"
 operator|+
 name|OPTION_TYPE
 operator|+
-literal|" [<storage type>]]<path> ..."
+literal|" [<storage type>]] [-"
+operator|+
+name|OPTION_QUOTA_AND_USAGE
+operator|+
+literal|"]<path> ..."
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -374,7 +402,15 @@ literal|"it displays the quota and usage for the specified types. \n"
 operator|+
 literal|"Otherwise, it displays the quota and usage for all the storage \n"
 operator|+
-literal|"types that support quota"
+literal|"types that support quota \n"
+operator|+
+literal|"The -"
+operator|+
+name|OPTION_QUOTA_AND_USAGE
+operator|+
+literal|" option shows the quota and \n"
+operator|+
+literal|"the usage against the quota without the detailed content summary."
 decl_stmt|;
 DECL|field|showQuotas
 specifier|private
@@ -400,6 +436,11 @@ argument_list|>
 name|storageTypes
 init|=
 literal|null
+decl_stmt|;
+DECL|field|showQuotasAndUsageOnly
+specifier|private
+name|boolean
+name|showQuotasAndUsageOnly
 decl_stmt|;
 comment|/** Constructor */
 DECL|method|Count ()
@@ -479,6 +520,8 @@ argument_list|,
 name|OPTION_HUMAN
 argument_list|,
 name|OPTION_HEADER
+argument_list|,
+name|OPTION_QUOTA_AND_USAGE
 argument_list|)
 decl_stmt|;
 name|cf
@@ -530,9 +573,20 @@ argument_list|(
 name|OPTION_HUMAN
 argument_list|)
 expr_stmt|;
+name|showQuotasAndUsageOnly
+operator|=
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+name|OPTION_QUOTA_AND_USAGE
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|showQuotas
+operator|||
+name|showQuotasAndUsageOnly
 condition|)
 block|{
 name|String
@@ -591,12 +645,32 @@ name|out
 operator|.
 name|println
 argument_list|(
-name|ContentSummary
+name|QuotaUsage
 operator|.
 name|getStorageTypeHeader
 argument_list|(
 name|storageTypes
 argument_list|)
+operator|+
+literal|"PATHNAME"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|showQuotasAndUsageOnly
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+name|QuotaUsage
+operator|.
+name|getHeader
+argument_list|()
 operator|+
 literal|"PATHNAME"
 argument_list|)
@@ -618,6 +692,7 @@ operator|+
 literal|"PATHNAME"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -719,6 +794,49 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|showQuotasAndUsageOnly
+operator|||
+name|showQuotabyType
+condition|)
+block|{
+name|QuotaUsage
+name|usage
+init|=
+name|src
+operator|.
+name|fs
+operator|.
+name|getQuotaUsage
+argument_list|(
+name|src
+operator|.
+name|path
+argument_list|)
+decl_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+name|usage
+operator|.
+name|toString
+argument_list|(
+name|isHumanReadable
+argument_list|()
+argument_list|,
+name|showQuotabyType
+argument_list|,
+name|storageTypes
+argument_list|)
+operator|+
+name|src
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|ContentSummary
 name|summary
 init|=
@@ -745,15 +863,12 @@ name|showQuotas
 argument_list|,
 name|isHumanReadable
 argument_list|()
-argument_list|,
-name|showQuotabyType
-argument_list|,
-name|storageTypes
 argument_list|)
 operator|+
 name|src
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Should quotas get shown as part of the report?    * @return if quotas should be shown then true otherwise false    */
 annotation|@

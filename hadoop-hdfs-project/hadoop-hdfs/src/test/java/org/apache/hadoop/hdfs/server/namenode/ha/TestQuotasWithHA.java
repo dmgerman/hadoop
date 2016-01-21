@@ -896,10 +896,10 @@ name|StandbyException
 operator|.
 name|class
 argument_list|)
-DECL|method|testgetContentSummaryOnStandby ()
+DECL|method|testGetContentSummaryOnStandby ()
 specifier|public
 name|void
-name|testgetContentSummaryOnStandby
+name|testGetContentSummaryOnStandby
 parameter_list|()
 throws|throws
 name|Exception
@@ -939,6 +939,64 @@ literal|1
 argument_list|)
 operator|.
 name|getContentSummary
+argument_list|(
+literal|"/"
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test that getQuotaUsage on Standby should should throw standby exception.    */
+annotation|@
+name|Test
+argument_list|(
+name|expected
+operator|=
+name|StandbyException
+operator|.
+name|class
+argument_list|)
+DECL|method|testGetQuotaUsageOnStandby ()
+specifier|public
+name|void
+name|testGetQuotaUsageOnStandby
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Configuration
+name|nn1conf
+init|=
+name|cluster
+operator|.
+name|getConfiguration
+argument_list|(
+literal|1
+argument_list|)
+decl_stmt|;
+comment|// just reset the standby reads to default i.e False on standby.
+name|HAUtil
+operator|.
+name|setAllowStandbyReads
+argument_list|(
+name|nn1conf
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|restartNameNode
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|getNameNodeRpc
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|getQuotaUsage
 argument_list|(
 literal|"/"
 argument_list|)

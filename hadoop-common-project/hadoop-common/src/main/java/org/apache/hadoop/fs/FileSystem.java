@@ -4924,6 +4924,25 @@ name|build
 argument_list|()
 return|;
 block|}
+comment|/** Return the {@link QuotaUsage} of a given {@link Path}.    * @param f path to use    */
+DECL|method|getQuotaUsage (Path f)
+specifier|public
+name|QuotaUsage
+name|getQuotaUsage
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getContentSummary
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
 DECL|field|DEFAULT_FILTER
 specifier|final
 specifier|private

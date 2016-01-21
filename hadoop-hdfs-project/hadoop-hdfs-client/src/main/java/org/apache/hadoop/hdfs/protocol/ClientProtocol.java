@@ -186,6 +186,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|QuotaUsage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|StorageType
 import|;
 end_import
@@ -2068,6 +2082,19 @@ name|getErasureCodingPolicy
 parameter_list|(
 name|String
 name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get {@link QuotaUsage} rooted at the specified directory.    * @param path The string representation of the path    *    * @throws AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>path</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>path</code>    *         contains a symlink.    * @throws IOException If an I/O error occurred    */
+annotation|@
+name|Idempotent
+DECL|method|getQuotaUsage (String path)
+name|QuotaUsage
+name|getQuotaUsage
+parameter_list|(
+name|String
+name|path
 parameter_list|)
 throws|throws
 name|IOException

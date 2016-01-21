@@ -820,6 +820,15 @@ name|Path
 name|f
 parameter_list|)
 function_decl|;
+DECL|method|getQuotaUsage (Path f)
+specifier|public
+name|QuotaUsage
+name|getQuotaUsage
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+function_decl|;
 DECL|method|getStatus ()
 specifier|public
 name|FsStatus
