@@ -162,7 +162,7 @@ name|ECBlockGroup
 name|blockGroup
 parameter_list|)
 function_decl|;
-comment|/**    * We have all the data blocks and parity blocks as input blocks for    * recovering by default. It's codec specific    * @param blockGroup    * @return    */
+comment|/**    * We have all the data blocks and parity blocks as input blocks for    * recovering by default. It's codec specific    * @param blockGroup    * @return input blocks    */
 DECL|method|getInputBlocks (ECBlockGroup blockGroup)
 specifier|protected
 name|ECBlock

@@ -156,7 +156,7 @@ extends|extends
 name|ECBlock
 block|{
 DECL|field|chunks
-specifier|private
+specifier|protected
 name|ECChunk
 index|[]
 name|chunks
@@ -357,7 +357,7 @@ expr_stmt|;
 block|}
 comment|/**    * This is typically how a coding step should be performed.    * @param codingStep    */
 DECL|method|performCodingStep (ErasureCodingStep codingStep)
-specifier|private
+specifier|protected
 name|void
 name|performCodingStep
 parameter_list|(
