@@ -157,6 +157,8 @@ argument_list|)
 decl_stmt|;
 static|static
 block|{
+try|try
+block|{
 name|Runtime
 operator|.
 name|getRuntime
@@ -239,6 +241,24 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalStateException
+name|ex
+parameter_list|)
+block|{
+comment|// JVM is being shut down. Ignore
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to add the ShutdownHook"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Return<code>ShutdownHookManager</code> singleton.    *    * @return<code>ShutdownHookManager</code> singleton.    */
 DECL|method|get ()
