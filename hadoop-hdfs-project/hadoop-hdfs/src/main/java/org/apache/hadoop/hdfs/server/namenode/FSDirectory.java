@@ -4084,6 +4084,18 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// empty file
+if|if
+condition|(
+name|dsDelta
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+name|typeSpaceDeltas
+return|;
+block|}
 comment|// Storage type and its quota are only available when storage policy is set
 if|if
 condition|(
