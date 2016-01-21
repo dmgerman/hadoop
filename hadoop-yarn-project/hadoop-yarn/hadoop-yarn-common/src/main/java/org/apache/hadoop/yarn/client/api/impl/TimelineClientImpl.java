@@ -2052,6 +2052,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+operator|!
+name|timelineServiceV2
+condition|)
+block|{
 name|timelineWriter
 operator|=
 name|createTimelineWriter
@@ -2073,6 +2079,7 @@ literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|createTimelineWriter (Configuration conf, UserGroupInformation ugi, Client webClient, URI uri)
 specifier|protected
