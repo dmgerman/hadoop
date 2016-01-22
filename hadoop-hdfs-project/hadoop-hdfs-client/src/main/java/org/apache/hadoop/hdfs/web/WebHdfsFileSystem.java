@@ -1628,8 +1628,6 @@ name|IOException
 block|{
 if|if
 condition|(
-name|canRefreshDelegationToken
-operator|&&
 name|delegationToken
 operator|==
 literal|null
@@ -1684,6 +1682,11 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|canRefreshDelegationToken
+condition|)
+block|{
 name|token
 operator|=
 name|getDelegationToken
@@ -1715,6 +1718,7 @@ name|canRefreshDelegationToken
 operator|=
 literal|false
 expr_stmt|;
+block|}
 block|}
 block|}
 name|setDelegationToken

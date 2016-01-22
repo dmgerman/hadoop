@@ -20,20 +20,6 @@ name|resources
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|UserGroupInformation
-import|;
-end_import
-
 begin_comment
 comment|/** Represents delegation token used for authentication. */
 end_comment
@@ -95,11 +81,6 @@ name|super
 argument_list|(
 name|DOMAIN
 argument_list|,
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-operator|&&
 name|str
 operator|!=
 literal|null
