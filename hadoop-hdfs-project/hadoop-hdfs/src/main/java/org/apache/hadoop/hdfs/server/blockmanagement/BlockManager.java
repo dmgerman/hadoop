@@ -7592,7 +7592,7 @@ if|if
 condition|(
 name|blockLog
 operator|.
-name|isInfoEnabled
+name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
@@ -7683,15 +7683,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-if|if
-condition|(
-name|blockLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|blockLog
 operator|.
 name|debug
