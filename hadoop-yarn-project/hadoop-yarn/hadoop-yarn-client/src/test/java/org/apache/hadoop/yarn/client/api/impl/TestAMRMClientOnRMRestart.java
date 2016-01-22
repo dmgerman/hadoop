@@ -1711,6 +1711,11 @@ operator|.
 name|RUNNING
 argument_list|)
 expr_stmt|;
+name|dispatcher
+operator|.
+name|await
+argument_list|()
+expr_stmt|;
 name|amClient
 operator|.
 name|requestContainerResourceChange
