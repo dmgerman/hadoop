@@ -13653,7 +13653,7 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                    aplication."
+literal|"                                    application."
 argument_list|)
 expr_stmt|;
 name|pw

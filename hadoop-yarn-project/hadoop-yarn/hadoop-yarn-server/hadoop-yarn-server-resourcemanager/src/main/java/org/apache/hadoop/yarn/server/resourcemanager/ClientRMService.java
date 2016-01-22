@@ -3798,7 +3798,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 operator|+
-literal|" does not have privilage to see this aplication "
+literal|" does not have privilage to see this application "
 operator|+
 name|appId
 argument_list|)
@@ -4042,7 +4042,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 operator|+
-literal|" does not have privilage to see this aplication "
+literal|" does not have privilage to see this application "
 operator|+
 name|appId
 argument_list|)
@@ -4314,7 +4314,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 operator|+
-literal|" does not have privilage to see this aplication "
+literal|" does not have privilage to see this application "
 operator|+
 name|appId
 argument_list|)

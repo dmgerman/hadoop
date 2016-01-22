@@ -10274,7 +10274,7 @@ operator|.
 name|getClientRMService
 argument_list|()
 decl_stmt|;
-name|testAplicationPriorityUpdation
+name|testApplicationPriorityUpdation
 argument_list|(
 name|rmService
 argument_list|,
@@ -10289,7 +10289,7 @@ name|appPriority
 operator|=
 literal|9
 expr_stmt|;
-name|testAplicationPriorityUpdation
+name|testApplicationPriorityUpdation
 argument_list|(
 name|rmService
 argument_list|,
@@ -10428,10 +10428,10 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|testAplicationPriorityUpdation (ClientRMService rmService, RMApp app1, int tobeUpdatedPriority, int expected)
+DECL|method|testApplicationPriorityUpdation (ClientRMService rmService, RMApp app1, int tobeUpdatedPriority, int expected)
 specifier|private
 name|void
-name|testAplicationPriorityUpdation
+name|testApplicationPriorityUpdation
 parameter_list|(
 name|ClientRMService
 name|rmService

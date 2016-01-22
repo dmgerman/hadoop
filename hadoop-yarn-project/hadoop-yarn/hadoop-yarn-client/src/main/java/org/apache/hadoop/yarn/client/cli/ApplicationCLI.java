@@ -1127,7 +1127,7 @@ name|LIST_CMD
 argument_list|,
 literal|true
 argument_list|,
-literal|"List application attempts for aplication."
+literal|"List application attempts for application."
 argument_list|)
 expr_stmt|;
 name|opts
@@ -4438,7 +4438,7 @@ name|sysout
 operator|.
 name|println
 argument_list|(
-literal|"Updating priority of an aplication "
+literal|"Updating priority of an application "
 operator|+
 name|applicationId
 argument_list|)
