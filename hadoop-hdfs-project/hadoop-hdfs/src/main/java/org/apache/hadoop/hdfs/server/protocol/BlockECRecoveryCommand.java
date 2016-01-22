@@ -612,7 +612,7 @@ name|append
 argument_list|(
 name|Arrays
 operator|.
-name|asList
+name|toString
 argument_list|(
 name|liveBlockIndices
 argument_list|)
