@@ -10144,6 +10144,32 @@ operator|=
 name|amLaunchDiagnostics
 expr_stmt|;
 block|}
+DECL|method|getRecoveredFinalState ()
+specifier|public
+name|RMAppAttemptState
+name|getRecoveredFinalState
+parameter_list|()
+block|{
+return|return
+name|recoveredFinalState
+return|;
+block|}
+DECL|method|setRecoveredFinalState (RMAppAttemptState finalState)
+specifier|public
+name|void
+name|setRecoveredFinalState
+parameter_list|(
+name|RMAppAttemptState
+name|finalState
+parameter_list|)
+block|{
+name|this
+operator|.
+name|recoveredFinalState
+operator|=
+name|finalState
+expr_stmt|;
+block|}
 block|}
 end_class
 
