@@ -2407,6 +2407,10 @@ name|KILL_CONTAINER
 argument_list|,
 name|ContainerEventType
 operator|.
+name|RESOURCE_FAILED
+argument_list|,
+name|ContainerEventType
+operator|.
 name|CONTAINER_EXITED_WITH_SUCCESS
 argument_list|,
 name|ContainerEventType
