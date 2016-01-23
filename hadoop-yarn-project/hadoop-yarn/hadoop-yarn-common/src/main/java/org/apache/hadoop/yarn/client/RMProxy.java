@@ -286,6 +286,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|StandbyException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|ConnectTimeoutException
@@ -486,7 +500,7 @@ literal|"from an instance of ClientRMProxy or ServerRMProxy"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Create a proxy for the specified protocol. For non-HA,    * this is a direct connection to the ResourceManager address. When HA is    * enabled, the proxy handles the failover between the ResourceManagers as    * well.    */
+comment|/**    * Currently, used by Client and AM only    * Create a proxy for the specified protocol. For non-HA,    * this is a direct connection to the ResourceManager address. When HA is    * enabled, the proxy handles the failover between the ResourceManagers as    * well.    */
 annotation|@
 name|Private
 DECL|method|createRMProxy (final Configuration configuration, final Class<T> protocol, RMProxy instance)
@@ -541,10 +555,17 @@ init|=
 name|createRetryPolicy
 argument_list|(
 name|conf
+argument_list|,
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
-name|createRMProxy
+name|newProxyInstance
 argument_list|(
 name|conf
 argument_list|,
@@ -556,7 +577,7 @@ name|retryPolicy
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a proxy for the specified protocol. For non-HA,    * this is a direct connection to the ResourceManager address. When HA is    * enabled, the proxy handles the failover between the ResourceManagers as    * well.    */
+comment|/**    * Currently, used by NodeManagers only.    * Create a proxy for the specified protocol. For non-HA,    * this is a direct connection to the ResourceManager address. When HA is    * enabled, the proxy handles the failover between the ResourceManagers as    * well.    */
 annotation|@
 name|Private
 DECL|method|createRMProxy (final Configuration configuration, final Class<T> protocol, RMProxy instance, final long retryTime, final long retryInterval)
@@ -623,10 +644,17 @@ argument_list|,
 name|retryTime
 argument_list|,
 name|retryInterval
+argument_list|,
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
-name|createRMProxy
+name|newProxyInstance
 argument_list|(
 name|conf
 argument_list|,
@@ -638,14 +666,14 @@ name|retryPolicy
 argument_list|)
 return|;
 block|}
-DECL|method|createRMProxy (final YarnConfiguration conf, final Class<T> protocol, RMProxy instance, RetryPolicy retryPolicy)
+DECL|method|newProxyInstance (final YarnConfiguration conf, final Class<T> protocol, RMProxy instance, RetryPolicy retryPolicy)
 specifier|private
 specifier|static
 parameter_list|<
 name|T
 parameter_list|>
 name|T
-name|createRMProxy
+name|newProxyInstance
 parameter_list|(
 specifier|final
 name|YarnConfiguration
@@ -800,6 +828,13 @@ init|=
 name|createRetryPolicy
 argument_list|(
 name|conf
+argument_list|,
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|T
@@ -1052,7 +1087,7 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
-DECL|method|createRetryPolicy (Configuration conf)
+DECL|method|createRetryPolicy (Configuration conf, boolean isHAEnabled)
 specifier|public
 specifier|static
 name|RetryPolicy
@@ -1060,6 +1095,9 @@ name|createRetryPolicy
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|boolean
+name|isHAEnabled
 parameter_list|)
 block|{
 name|long
@@ -1102,12 +1140,14 @@ argument_list|,
 name|rmConnectWaitMS
 argument_list|,
 name|rmConnectionRetryIntervalMS
+argument_list|,
+name|isHAEnabled
 argument_list|)
 return|;
 block|}
 comment|/**    * Fetch retry policy from Configuration and create the    * retry policy with specified retryTime and retry interval.    */
-DECL|method|createRetryPolicy (Configuration conf, long retryTime, long retryInterval)
-specifier|private
+DECL|method|createRetryPolicy (Configuration conf, long retryTime, long retryInterval, boolean isHAEnabled)
+specifier|protected
 specifier|static
 name|RetryPolicy
 name|createRetryPolicy
@@ -1120,6 +1160,9 @@ name|retryTime
 parameter_list|,
 name|long
 name|retryInterval
+parameter_list|,
+name|boolean
+name|isHAEnabled
 parameter_list|)
 block|{
 name|long
@@ -1203,12 +1246,7 @@ block|}
 comment|// Handle HA case first
 if|if
 condition|(
-name|HAUtil
-operator|.
 name|isHAEnabled
-argument_list|(
-name|conf
-argument_list|)
 condition|)
 block|{
 specifier|final
@@ -1469,6 +1507,17 @@ operator|.
 name|put
 argument_list|(
 name|SocketException
+operator|.
+name|class
+argument_list|,
+name|retryPolicy
+argument_list|)
+expr_stmt|;
+name|exceptionToPolicyMap
+operator|.
+name|put
+argument_list|(
+name|StandbyException
 operator|.
 name|class
 argument_list|,

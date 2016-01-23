@@ -2811,6 +2811,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"Starting resourcemanager "
+operator|+
+name|index
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
 literal|"MiniYARN ResourceManager address: "
 operator|+
 name|conf

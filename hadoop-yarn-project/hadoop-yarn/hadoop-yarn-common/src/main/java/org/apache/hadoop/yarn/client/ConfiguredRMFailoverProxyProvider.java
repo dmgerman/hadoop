@@ -272,7 +272,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|rmProxy
-specifier|private
+specifier|protected
 name|RMProxy
 argument_list|<
 name|T
@@ -280,7 +280,7 @@ argument_list|>
 name|rmProxy
 decl_stmt|;
 DECL|field|protocol
-specifier|private
+specifier|protected
 name|Class
 argument_list|<
 name|T
@@ -445,7 +445,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getProxyInternal ()
-specifier|private
+specifier|protected
 name|T
 name|getProxyInternal
 parameter_list|()
