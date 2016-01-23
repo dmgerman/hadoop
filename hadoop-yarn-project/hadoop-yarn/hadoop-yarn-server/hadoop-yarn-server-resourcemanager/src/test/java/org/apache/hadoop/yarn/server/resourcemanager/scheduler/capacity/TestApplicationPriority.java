@@ -3303,13 +3303,6 @@ name|appPriority2
 argument_list|)
 decl_stmt|;
 comment|// kick the scheduler, 1 GB which was free is given to AM of App2
-name|nm1
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
 name|MockAM
 name|am2
 init|=
