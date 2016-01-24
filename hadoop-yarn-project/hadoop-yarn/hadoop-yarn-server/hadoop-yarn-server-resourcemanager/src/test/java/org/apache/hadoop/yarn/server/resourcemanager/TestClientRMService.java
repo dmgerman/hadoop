@@ -2501,6 +2501,20 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+name|rm
+operator|.
+name|NMwaitForState
+argument_list|(
+name|node
+operator|.
+name|getNodeId
+argument_list|()
+argument_list|,
+name|NodeState
+operator|.
+name|UNHEALTHY
+argument_list|)
+expr_stmt|;
 comment|// Call again
 name|nodeReports
 operator|=
