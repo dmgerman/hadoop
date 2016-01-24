@@ -5939,6 +5939,22 @@ name|getMissingBlocksCount
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns count of blocks pending on deletion.    *    * @throws IOException    */
+DECL|method|getPendingDeletionBlocksCount ()
+specifier|public
+name|long
+name|getPendingDeletionBlocksCount
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|getPendingDeletionBlocksCount
+argument_list|()
+return|;
+block|}
 comment|/**    * Returns count of blocks with replication factor 1 and have    * lost the only replica.    *    * @throws IOException    */
 DECL|method|getMissingReplOneBlocksCount ()
 specifier|public

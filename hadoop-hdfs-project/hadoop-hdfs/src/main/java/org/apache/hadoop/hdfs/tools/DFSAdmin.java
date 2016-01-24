@@ -2894,6 +2894,20 @@ operator|.
 name|out
 operator|.
 name|println
+argument_list|(
+literal|"Pending deletion blocks: "
+operator|+
+name|dfs
+operator|.
+name|getPendingDeletionBlocksCount
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
 argument_list|()
 expr_stmt|;
 name|System
