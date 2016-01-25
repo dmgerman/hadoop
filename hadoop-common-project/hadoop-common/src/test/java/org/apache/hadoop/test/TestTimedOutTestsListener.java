@@ -639,7 +639,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|500
+literal|30000
 argument_list|)
 DECL|method|testThreadDumpAndDeadlocks ()
 specifier|public
