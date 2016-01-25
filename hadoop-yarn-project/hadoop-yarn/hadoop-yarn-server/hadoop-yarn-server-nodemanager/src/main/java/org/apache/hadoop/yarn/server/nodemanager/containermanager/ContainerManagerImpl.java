@@ -8075,6 +8075,43 @@ name|getAppsToCleanup
 argument_list|()
 control|)
 block|{
+name|Application
+name|app
+init|=
+name|this
+operator|.
+name|context
+operator|.
+name|getApplications
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|appID
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|app
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"couldn't find application "
+operator|+
+name|appID
+operator|+
+literal|" while processing"
+operator|+
+literal|" FINISH_APPS event"
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 name|String
 name|diagnostic
 init|=
