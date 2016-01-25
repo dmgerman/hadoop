@@ -65,6 +65,30 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|doNothing
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|spy
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -91,6 +115,20 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Supplier
 import|;
 end_import
 
@@ -352,6 +390,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|FSEditLog
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|FSNamesystem
 import|;
 end_import
@@ -452,7 +508,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|AfterClass
+name|After
 import|;
 end_import
 
@@ -472,7 +528,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|BeforeClass
+name|Before
 import|;
 end_import
 
@@ -483,6 +539,16 @@ operator|.
 name|junit
 operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
 import|;
 end_import
 
@@ -679,10 +745,9 @@ name|SHORT_LEASE_PERIOD
 decl_stmt|;
 comment|/** start a dfs cluster    *     * @throws IOException    */
 annotation|@
-name|BeforeClass
+name|Before
 DECL|method|startUp ()
 specifier|public
-specifier|static
 name|void
 name|startUp
 parameter_list|()
@@ -726,6 +791,11 @@ argument_list|(
 literal|5
 argument_list|)
 operator|.
+name|checkExitOnShutdown
+argument_list|(
+literal|false
+argument_list|)
+operator|.
 name|build
 argument_list|()
 expr_stmt|;
@@ -744,10 +814,9 @@ expr_stmt|;
 block|}
 comment|/**    * stop the cluster    * @throws IOException    */
 annotation|@
-name|AfterClass
+name|After
 DECL|method|tearDown ()
 specifier|public
-specifier|static
 name|void
 name|tearDown
 parameter_list|()
@@ -2389,6 +2458,11 @@ block|}
 comment|/**    * This test makes it so the client does not renew its lease and also    * set the hard lease expiration period to be short, thus triggering    * lease expiration to happen while the client is still alive. The test    * also causes the NN to restart after lease recovery has begun, but before    * the DNs have completed the blocks. This test verifies that when the NN    * comes back up, the client no longer holds the lease.    *     * The test makes sure that the lease recovery completes and the client    * fails if it continues to write to the file, even after NN restart.    *     * @throws Exception    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testHardLeaseRecoveryAfterNameNodeRestart ()
 specifier|public
 name|void
@@ -2408,6 +2482,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testHardLeaseRecoveryAfterNameNodeRestart2 ()
 specifier|public
 name|void
@@ -2426,6 +2505,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testHardLeaseRecoveryWithRenameAfterNameNodeRestart ()
 specifier|public
 name|void
@@ -2720,22 +2804,112 @@ name|SHORT_LEASE_PERIOD
 argument_list|)
 expr_stmt|;
 comment|// Make sure lease recovery begins.
-name|Thread
+specifier|final
+name|String
+name|path
+init|=
+name|fileStr
+decl_stmt|;
+name|GenericTestUtils
 operator|.
-name|sleep
+name|waitFor
 argument_list|(
+operator|new
+name|Supplier
+argument_list|<
+name|Boolean
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Boolean
+name|get
+parameter_list|()
+block|{
+return|return
 name|HdfsServerConstants
 operator|.
-name|NAMENODE_LEASE_RECHECK_INTERVAL
+name|NAMENODE_LEASE_HOLDER
+operator|.
+name|equals
+argument_list|(
+name|NameNodeAdapter
+operator|.
+name|getLeaseHolderForPath
+argument_list|(
+name|cluster
+operator|.
+name|getNameNode
+argument_list|()
+argument_list|,
+name|path
+argument_list|)
+argument_list|)
+return|;
+block|}
+block|}
+argument_list|,
+operator|(
+name|int
+operator|)
+name|SHORT_LEASE_PERIOD
+argument_list|,
+operator|(
+name|int
+operator|)
+name|SHORT_LEASE_PERIOD
 operator|*
-literal|2
+literal|10
 argument_list|)
 expr_stmt|;
-name|checkLease
+comment|// Normally, the in-progress edit log would be finalized by
+comment|// FSEditLog#endCurrentLogSegment.  For testing purposes, we
+comment|// disable that here.
+name|FSEditLog
+name|spyLog
+init|=
+name|spy
 argument_list|(
-name|fileStr
+name|cluster
+operator|.
+name|getNameNode
+argument_list|()
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|getEditLog
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|doNothing
+argument_list|()
+operator|.
+name|when
+argument_list|(
+name|spyLog
+argument_list|)
+operator|.
+name|endCurrentLogSegment
+argument_list|(
+name|Mockito
+operator|.
+name|anyBoolean
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|setEditLogForTesting
+argument_list|(
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
 argument_list|,
-name|size
+name|spyLog
 argument_list|)
 expr_stmt|;
 name|cluster
