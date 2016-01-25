@@ -46,6 +46,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ExecutionException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|LinkedBlockingQueue
 import|;
 end_import
@@ -59,6 +71,26 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -124,6 +156,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -148,6 +194,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Supplier
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|collect
 operator|.
 name|Sets
@@ -160,6 +220,19 @@ specifier|public
 class|class
 name|TestValueQueue
 block|{
+DECL|field|LOG
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|TestValueQueue
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|class|FillInfo
 specifier|private
 specifier|static
@@ -310,6 +383,11 @@ block|}
 comment|/**    * Verifies that Queue is initially filled to "numInitValues"    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testInitFill ()
 specifier|public
 name|void
@@ -389,6 +467,11 @@ block|}
 comment|/**    * Verifies that Queue is initialized (Warmed-up) for provided keys    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testWarmUp ()
 specifier|public
 name|void
@@ -556,6 +639,11 @@ block|}
 comment|/**    * Verifies that the refill task is executed after "checkInterval" if    * num values below "lowWatermark"    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testRefill ()
 specifier|public
 name|void
@@ -671,6 +759,11 @@ block|}
 comment|/**    * Verifies that the No refill Happens after "checkInterval" if    * num values above "lowWatermark"    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testNoRefill ()
 specifier|public
 name|void
@@ -762,6 +855,11 @@ block|}
 comment|/**    * Verify getAtMost when SyncGeneration Policy = ALL    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testgetAtMostPolicyALL ()
 specifier|public
 name|void
@@ -777,6 +875,7 @@ operator|new
 name|MockFiller
 argument_list|()
 decl_stmt|;
+specifier|final
 name|ValueQueue
 argument_list|<
 name|String
@@ -832,11 +931,15 @@ operator|.
 name|num
 argument_list|)
 expr_stmt|;
-comment|// Drain completely
+comment|// Synchronous call:
+comment|// 1. Synchronously fill returned list
+comment|// 2. Start another async task to fill the queue in the cache
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"Failed in sync call."
+argument_list|,
 literal|10
 argument_list|,
 name|vq
@@ -852,11 +955,12 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Synchronous call
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"Sync call filler got wrong number."
+argument_list|,
 literal|10
 argument_list|,
 name|filler
@@ -867,12 +971,112 @@ operator|.
 name|num
 argument_list|)
 expr_stmt|;
-comment|// Ask for more... return all
+comment|// Wait for the async task to finish
+name|GenericTestUtils
+operator|.
+name|waitFor
+argument_list|(
+operator|new
+name|Supplier
+argument_list|<
+name|Boolean
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Boolean
+name|get
+parameter_list|()
+block|{
+try|try
+block|{
+name|int
+name|size
+init|=
+name|vq
+operator|.
+name|getSize
+argument_list|(
+literal|"k1"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|size
+operator|!=
+literal|10
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Current ValueQueue size is "
+operator|+
+name|size
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+return|return
+literal|true
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|ExecutionException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Exception when getSize."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+block|}
+block|}
+argument_list|,
+literal|100
+argument_list|,
+literal|3000
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|19
+literal|"Failed in async call."
+argument_list|,
+literal|10
+argument_list|,
+name|filler
+operator|.
+name|getTop
+argument_list|()
+operator|.
+name|num
+argument_list|)
+expr_stmt|;
+comment|// Drain completely after filled by the async thread
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Failed to drain completely after async."
+argument_list|,
+literal|10
 argument_list|,
 name|vq
 operator|.
@@ -880,7 +1084,7 @@ name|getAtMost
 argument_list|(
 literal|"k1"
 argument_list|,
-literal|19
+literal|10
 argument_list|)
 operator|.
 name|size
@@ -892,6 +1096,29 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"Failed to get all 19."
+argument_list|,
+literal|19
+argument_list|,
+name|vq
+operator|.
+name|getAtMost
+argument_list|(
+literal|"k1"
+argument_list|,
+literal|19
+argument_list|)
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Failed in sync call."
+argument_list|,
 literal|19
 argument_list|,
 name|filler
@@ -911,6 +1138,11 @@ block|}
 comment|/**    * Verify getAtMost when SyncGeneration Policy = ALL    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testgetAtMostPolicyATLEAST_ONE ()
 specifier|public
 name|void
@@ -1025,6 +1257,11 @@ block|}
 comment|/**    * Verify getAtMost when SyncGeneration Policy = LOW_WATERMARK    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testgetAtMostPolicyLOW_WATERMARK ()
 specifier|public
 name|void
@@ -1153,6 +1390,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testDrain ()
 specifier|public
 name|void
