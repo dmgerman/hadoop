@@ -80,6 +80,22 @@ name|ReconfigurationTaskStatus
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|Idempotent
+import|;
+end_import
+
 begin_comment
 comment|/**********************************************************************  * ReconfigurationProtocol is used by HDFS admin to reload configuration  * for NN/DN without restarting them.  **********************************************************************/
 end_comment
@@ -105,6 +121,8 @@ init|=
 literal|1L
 decl_stmt|;
 comment|/**    * Asynchronously reload configuration on disk and apply changes.    */
+annotation|@
+name|Idempotent
 DECL|method|startReconfiguration ()
 name|void
 name|startReconfiguration
@@ -113,6 +131,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Get the status of the previously issued reconfig task.    * @see {@link org.apache.hadoop.conf.ReconfigurationTaskStatus}.    */
+annotation|@
+name|Idempotent
 DECL|method|getReconfigurationStatus ()
 name|ReconfigurationTaskStatus
 name|getReconfigurationStatus
@@ -121,6 +141,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Get a list of allowed properties for reconfiguration.    */
+annotation|@
+name|Idempotent
 DECL|method|listReconfigurableProperties ()
 name|List
 argument_list|<
