@@ -1100,7 +1100,7 @@ block|}
 block|}
 DECL|method|parseConfiggedPort (String portStr)
 specifier|private
-name|Integer
+name|int
 name|parseConfiggedPort
 parameter_list|(
 name|String
@@ -1114,7 +1114,7 @@ block|{
 return|return
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|portStr
 argument_list|)

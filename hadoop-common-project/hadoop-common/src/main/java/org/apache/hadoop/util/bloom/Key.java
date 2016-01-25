@@ -534,9 +534,9 @@ condition|)
 block|{
 name|result
 operator|=
-name|Double
-operator|.
-name|valueOf
+call|(
+name|int
+call|)
 argument_list|(
 name|this
 operator|.
@@ -546,9 +546,6 @@ name|other
 operator|.
 name|weight
 argument_list|)
-operator|.
-name|intValue
-argument_list|()
 expr_stmt|;
 block|}
 return|return

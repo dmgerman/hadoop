@@ -219,7 +219,7 @@ name|TEST_FENCING_HOST
 argument_list|,
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|TEST_FENCING_PORT
 argument_list|)

@@ -212,14 +212,9 @@ specifier|final
 name|long
 name|rolloverFrequency
 init|=
-name|Long
-operator|.
-name|valueOf
-argument_list|(
 name|timeout
 operator|/
 literal|2
-argument_list|)
 decl_stmt|;
 annotation|@
 name|Before

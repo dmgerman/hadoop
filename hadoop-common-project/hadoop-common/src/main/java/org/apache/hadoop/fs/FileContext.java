@@ -2028,10 +2028,6 @@ throws|,
 name|UnresolvedLinkException
 block|{
 return|return
-name|Boolean
-operator|.
-name|valueOf
-argument_list|(
 name|fs
 operator|.
 name|delete
@@ -2039,7 +2035,6 @@ argument_list|(
 name|p
 argument_list|,
 name|recursive
-argument_list|)
 argument_list|)
 return|;
 block|}
@@ -2345,10 +2340,6 @@ throws|,
 name|UnresolvedLinkException
 block|{
 return|return
-name|Boolean
-operator|.
-name|valueOf
-argument_list|(
 name|fs
 operator|.
 name|setReplication
@@ -2356,7 +2347,6 @@ argument_list|(
 name|p
 argument_list|,
 name|replication
-argument_list|)
 argument_list|)
 return|;
 block|}

@@ -1271,7 +1271,7 @@ literal|""
 operator|+
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|jobSeqNum
 argument_list|)

@@ -143,7 +143,7 @@ name|seconds
 operator|=
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|args
 index|[

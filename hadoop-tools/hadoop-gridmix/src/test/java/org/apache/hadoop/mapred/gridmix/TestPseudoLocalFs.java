@@ -387,7 +387,7 @@ name|expectedFileSize
 init|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|parts
 index|[
