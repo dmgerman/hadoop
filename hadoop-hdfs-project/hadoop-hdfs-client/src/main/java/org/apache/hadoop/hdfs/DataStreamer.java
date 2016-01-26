@@ -2556,7 +2556,7 @@ literal|" for last block "
 operator|+
 name|block
 operator|+
-literal|"of file "
+literal|" of file "
 operator|+
 name|src
 argument_list|)

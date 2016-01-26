@@ -3563,6 +3563,16 @@ name|defaultReplication
 return|;
 block|}
 block|}
+DECL|method|getMinReplication ()
+specifier|public
+name|short
+name|getMinReplication
+parameter_list|()
+block|{
+return|return
+name|minReplication
+return|;
+block|}
 DECL|method|getMinStorageNum (BlockInfo block)
 specifier|public
 name|short
@@ -3815,17 +3825,13 @@ block|{
 if|if
 condition|(
 name|b
-operator|&&
-operator|!
-name|bc
-operator|.
-name|isStriped
-argument_list|()
 condition|)
 block|{
 name|addExpectedReplicasToPending
 argument_list|(
 name|lastBlock
+argument_list|,
+name|bc
 argument_list|)
 expr_stmt|;
 block|}
@@ -3842,6 +3848,34 @@ name|b
 return|;
 block|}
 comment|/**    * If IBR is not sent from expected locations yet, add the datanodes to    * pendingReplications in order to keep ReplicationMonitor from scheduling    * the block.    */
+DECL|method|addExpectedReplicasToPending (BlockInfo blk, BlockCollection bc)
+specifier|public
+name|void
+name|addExpectedReplicasToPending
+parameter_list|(
+name|BlockInfo
+name|blk
+parameter_list|,
+name|BlockCollection
+name|bc
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|bc
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+name|addExpectedReplicasToPending
+argument_list|(
+name|blk
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|method|addExpectedReplicasToPending (BlockInfo lastBlock)
 specifier|private
 name|void
@@ -13741,21 +13775,13 @@ name|numLiveReplicas
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-operator|!
-name|bc
-operator|.
-name|isStriped
-argument_list|()
-condition|)
-block|{
 name|addExpectedReplicasToPending
 argument_list|(
 name|storedBlock
+argument_list|,
+name|bc
 argument_list|)
 expr_stmt|;
-block|}
 name|completeBlock
 argument_list|(
 name|storedBlock
@@ -18291,108 +18317,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-comment|/**    * Check that the indicated blocks are present and    * replicated.    */
-DECL|method|checkBlocksProperlyReplicated ( String src, BlockInfo[] blocks)
-specifier|public
-name|boolean
-name|checkBlocksProperlyReplicated
-parameter_list|(
-name|String
-name|src
-parameter_list|,
-name|BlockInfo
-index|[]
-name|blocks
-parameter_list|)
-block|{
-for|for
-control|(
-name|BlockInfo
-name|b
-range|:
-name|blocks
-control|)
-block|{
-if|if
-condition|(
-operator|!
-name|b
-operator|.
-name|isComplete
-argument_list|()
-condition|)
-block|{
-specifier|final
-name|int
-name|numNodes
-init|=
-name|b
-operator|.
-name|numNodes
-argument_list|()
-decl_stmt|;
-specifier|final
-name|int
-name|min
-init|=
-name|getMinStorageNum
-argument_list|(
-name|b
-argument_list|)
-decl_stmt|;
-specifier|final
-name|BlockUCState
-name|state
-init|=
-name|b
-operator|.
-name|getBlockUCState
-argument_list|()
-decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"BLOCK* "
-operator|+
-name|b
-operator|+
-literal|" is not COMPLETE (ucState = "
-operator|+
-name|state
-operator|+
-literal|", replication# = "
-operator|+
-name|numNodes
-operator|+
-operator|(
-name|numNodes
-operator|<
-name|min
-condition|?
-literal|"< "
-else|:
-literal|">= "
-operator|)
-operator|+
-literal|" minimum = "
-operator|+
-name|min
-operator|+
-literal|") in file "
-operator|+
-name|src
-argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
-block|}
-return|return
-literal|true
-return|;
 block|}
 comment|/**     * @return 0 if the block is not found;    *         otherwise, return the replication factor of the block.    */
 DECL|method|getReplication (BlockInfo block)

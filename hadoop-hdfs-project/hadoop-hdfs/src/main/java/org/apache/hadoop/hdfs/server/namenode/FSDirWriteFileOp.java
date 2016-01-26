@@ -4680,6 +4680,13 @@ return|;
 block|}
 name|fsn
 operator|.
+name|addCommittedBlocksToPending
+argument_list|(
+name|pendingFile
+argument_list|)
+expr_stmt|;
+name|fsn
+operator|.
 name|finalizeINodeFileUnderConstruction
 argument_list|(
 name|src
@@ -4689,6 +4696,8 @@ argument_list|,
 name|Snapshot
 operator|.
 name|CURRENT_STATE_ID
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 return|return
