@@ -101,6 +101,8 @@ import|;
 end_import
 
 begin_interface
+annotation|@
+name|Deprecated
 DECL|interface|LCEResourcesHandler
 specifier|public
 interface|interface

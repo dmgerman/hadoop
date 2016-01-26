@@ -176,6 +176,24 @@ name|CGROUP_PARAM_MEMORY_SWAPPINESS
 init|=
 literal|"swappiness"
 decl_stmt|;
+DECL|field|CGROUP_CPU_PERIOD_US
+name|String
+name|CGROUP_CPU_PERIOD_US
+init|=
+literal|"cfs_period_us"
+decl_stmt|;
+DECL|field|CGROUP_CPU_QUOTA_US
+name|String
+name|CGROUP_CPU_QUOTA_US
+init|=
+literal|"cfs_quota_us"
+decl_stmt|;
+DECL|field|CGROUP_CPU_SHARES
+name|String
+name|CGROUP_CPU_SHARES
+init|=
+literal|"shares"
+decl_stmt|;
 comment|/**    * Mounts a cgroup controller    * @param controller - the controller being mounted    * @throws ResourceHandlerException    */
 DECL|method|mountCGroupController (CGroupController controller)
 specifier|public

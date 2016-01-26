@@ -119,6 +119,8 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|DefaultLCEResourcesHandler
 specifier|public
 class|class

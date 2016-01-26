@@ -255,6 +255,8 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|TestCgroupsLCEResourcesHandler
 specifier|public
 class|class
