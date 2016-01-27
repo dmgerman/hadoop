@@ -774,6 +774,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|NotFoundException
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -1702,7 +1718,7 @@ else|else
 block|{
 throw|throw
 operator|new
-name|IOException
+name|NotFoundException
 argument_list|(
 literal|"Unable to find the context flow ID and flow run ID for clusterId="
 operator|+

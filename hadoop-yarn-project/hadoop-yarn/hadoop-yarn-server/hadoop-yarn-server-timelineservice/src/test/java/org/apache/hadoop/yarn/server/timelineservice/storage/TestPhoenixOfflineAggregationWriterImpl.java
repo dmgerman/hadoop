@@ -795,7 +795,7 @@ literal|"testFlow"
 argument_list|,
 literal|null
 argument_list|,
-literal|0
+literal|0L
 argument_list|,
 literal|null
 argument_list|)
