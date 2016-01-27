@@ -202,20 +202,6 @@ name|boolean
 name|isRunning
 parameter_list|()
 function_decl|;
-comment|/** Check if the user has superuser privilege. */
-DECL|method|checkSuperuserPrivilege ()
-name|void
-name|checkSuperuserPrivilege
-parameter_list|()
-throws|throws
-name|AccessControlException
-function_decl|;
-comment|/** @return the block pool ID */
-DECL|method|getBlockPoolId ()
-name|String
-name|getBlockPoolId
-parameter_list|()
-function_decl|;
 DECL|method|getBlockCollection (long id)
 name|BlockCollection
 name|getBlockCollection
@@ -229,7 +215,7 @@ name|void
 name|startSecretManagerIfNecessary
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the erasure coding policy for the path    * @param src    *          - path    * @return {@link ErasureCodingPolicy}    * @throws IOException    */
+comment|/**    * @param src file/directory path    * @return The {@link ErasureCodingPolicy} for the given file/directory path    */
 DECL|method|getErasureCodingPolicyForPath (String src)
 name|ErasureCodingPolicy
 name|getErasureCodingPolicyForPath

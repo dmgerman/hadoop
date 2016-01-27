@@ -59,7 +59,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This exception is thrown when the name node runs out of V1 generation  * stamps.  *  */
+comment|/**  * This exception is thrown when the name node runs out of V1 (legacy)  * generation stamps.  *  */
 end_comment
 
 begin_class
@@ -71,10 +71,10 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|class|OutOfV1GenerationStampsException
+DECL|class|OutOfLegacyGenerationStampsException
 specifier|public
 class|class
-name|OutOfV1GenerationStampsException
+name|OutOfLegacyGenerationStampsException
 extends|extends
 name|IOException
 block|{
@@ -87,9 +87,9 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|OutOfV1GenerationStampsException ()
+DECL|method|OutOfLegacyGenerationStampsException ()
 specifier|public
-name|OutOfV1GenerationStampsException
+name|OutOfLegacyGenerationStampsException
 parameter_list|()
 block|{
 name|super
