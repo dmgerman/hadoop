@@ -2134,7 +2134,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"application start time is not greater then 0"
+literal|"application start time is not greater than 0"
 argument_list|,
 name|application
 operator|.
@@ -2305,7 +2305,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"application start time is not greater then 0"
+literal|"application start time is not greater than 0"
 argument_list|,
 name|application
 operator|.
@@ -2412,7 +2412,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"application finish time is not greater then 0"
+literal|"application finish time is not greater than 0"
 argument_list|,
 operator|(
 name|application
@@ -2428,7 +2428,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"application finish time is not>= then start time"
+literal|"application finish time is not>= than start time"
 argument_list|,
 operator|(
 name|application
@@ -2690,6 +2690,11 @@ operator|.
 name|ATTEMPT_UPDATE_SAVED
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|rmDispatcher
+operator|.
+name|await
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|testCreateAppNewSaving ( ApplicationSubmissionContext submissionContext)
