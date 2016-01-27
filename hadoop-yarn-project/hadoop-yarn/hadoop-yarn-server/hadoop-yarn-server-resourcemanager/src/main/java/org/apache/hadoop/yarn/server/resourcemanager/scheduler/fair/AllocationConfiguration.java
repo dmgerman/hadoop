@@ -509,7 +509,16 @@ specifier|private
 name|ReservationQueueConfiguration
 name|globalReservationQueueConfig
 decl_stmt|;
-DECL|method|AllocationConfiguration (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, ResourceWeights> queueWeights, Map<String, Float> queueMaxAMShares, int userMaxAppsDefault, int queueMaxAppsDefault, Resource queueMaxResourcesDefault, float queueMaxAMShareDefault, Map<String, SchedulingPolicy> schedulingPolicies, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Long> fairSharePreemptionTimeouts, Map<String, Float> fairSharePreemptionThresholds, Map<String, Map<QueueACL, AccessControlList>> queueAcls, QueuePlacementPolicy placementPolicy, Map<FSQueueType, Set<String>> configuredQueues, ReservationQueueConfiguration globalReservationQueueConfig, Set<String> reservableQueues)
+DECL|field|nonPreemptableQueues
+specifier|private
+specifier|final
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|nonPreemptableQueues
+decl_stmt|;
+DECL|method|AllocationConfiguration (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, ResourceWeights> queueWeights, Map<String, Float> queueMaxAMShares, int userMaxAppsDefault, int queueMaxAppsDefault, Resource queueMaxResourcesDefault, float queueMaxAMShareDefault, Map<String, SchedulingPolicy> schedulingPolicies, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Long> fairSharePreemptionTimeouts, Map<String, Float> fairSharePreemptionThresholds, Map<String, Map<QueueACL, AccessControlList>> queueAcls, QueuePlacementPolicy placementPolicy, Map<FSQueueType, Set<String>> configuredQueues, ReservationQueueConfiguration globalReservationQueueConfig, Set<String> reservableQueues, Set<String> nonPreemptableQueues)
 specifier|public
 name|AllocationConfiguration
 parameter_list|(
@@ -643,6 +652,12 @@ argument_list|<
 name|String
 argument_list|>
 name|reservableQueues
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|nonPreemptableQueues
 parameter_list|)
 block|{
 name|this
@@ -764,6 +779,12 @@ operator|.
 name|configuredQueues
 operator|=
 name|configuredQueues
+expr_stmt|;
+name|this
+operator|.
+name|nonPreemptableQueues
+operator|=
+name|nonPreemptableQueues
 expr_stmt|;
 block|}
 DECL|method|AllocationConfiguration (Configuration conf)
@@ -987,6 +1008,15 @@ argument_list|,
 name|configuredQueues
 argument_list|)
 expr_stmt|;
+name|nonPreemptableQueues
+operator|=
+operator|new
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Get the ACLs associated with this queue. If a given ACL is not explicitly    * configured, include the default value for that ACL.  The default for the    * root queue is everybody ("*") and the default for all other queues is    * nobody ("")    */
 DECL|method|getQueueAcl (String queue, QueueACL operation)
@@ -1159,6 +1189,25 @@ operator|-
 literal|1f
 else|:
 name|fairSharePreemptionThreshold
+return|;
+block|}
+DECL|method|isPreemptable (String queueName)
+specifier|public
+name|boolean
+name|isPreemptable
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+block|{
+return|return
+operator|!
+name|nonPreemptableQueues
+operator|.
+name|contains
+argument_list|(
+name|queueName
+argument_list|)
 return|;
 block|}
 DECL|method|getQueueWeight (String queue)

@@ -1290,6 +1290,39 @@ range|:
 name|childQueues
 control|)
 block|{
+comment|// Skip selection for non-preemptable queue
+if|if
+condition|(
+operator|!
+name|queue
+operator|.
+name|isPreemptable
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"skipping from queue="
+operator|+
+name|getName
+argument_list|()
+operator|+
+literal|" because it's a non-preemptable queue"
+argument_list|)
+expr_stmt|;
+block|}
+continue|continue;
+block|}
 if|if
 condition|(
 name|candidateQueue

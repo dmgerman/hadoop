@@ -489,6 +489,13 @@ name|fairSharePreemptionThreshold
 init|=
 literal|0.5f
 decl_stmt|;
+DECL|field|preemptable
+specifier|private
+name|boolean
+name|preemptable
+init|=
+literal|true
+decl_stmt|;
 DECL|method|FSQueue (String name, FairScheduler scheduler, FSParentQueue parent)
 specifier|public
 name|FSQueue
@@ -1344,6 +1351,16 @@ operator|=
 name|fairSharePreemptionThreshold
 expr_stmt|;
 block|}
+DECL|method|isPreemptable ()
+specifier|public
+name|boolean
+name|isPreemptable
+parameter_list|()
+block|{
+return|return
+name|preemptable
+return|;
+block|}
 comment|/**    * Recomputes the shares for all child queues and applications based on this    * queue's current share    */
 DECL|method|recomputeShares ()
 specifier|public
@@ -1352,7 +1369,7 @@ name|void
 name|recomputeShares
 parameter_list|()
 function_decl|;
-comment|/**    * Update the min/fair share preemption timeouts and threshold for this queue.    */
+comment|/**    * Update the min/fair share preemption timeouts, threshold and preemption    * disabled flag for this queue.    */
 DECL|method|updatePreemptionVariables ()
 specifier|public
 name|void
@@ -1460,6 +1477,20 @@ name|getFairSharePreemptionThreshold
 argument_list|()
 expr_stmt|;
 block|}
+comment|// For option whether allow preemption from this queue
+name|preemptable
+operator|=
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
+operator|.
+name|isPreemptable
+argument_list|(
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Gets the children of this queue, if any.    */
 DECL|method|getChildQueues ()

@@ -339,6 +339,11 @@ specifier|private
 name|String
 name|schedulingPolicy
 decl_stmt|;
+DECL|field|preemptable
+specifier|private
+name|boolean
+name|preemptable
+decl_stmt|;
 DECL|field|childQueues
 specifier|private
 name|FairSchedulerQueueInfoList
@@ -606,6 +611,13 @@ condition|)
 block|{
 return|return;
 block|}
+name|preemptable
+operator|=
+name|queue
+operator|.
+name|isPreemptable
+argument_list|()
+expr_stmt|;
 name|childQueues
 operator|=
 name|getChildQueues
@@ -907,6 +919,16 @@ argument_list|<
 name|FairSchedulerQueueInfo
 argument_list|>
 argument_list|()
+return|;
+block|}
+DECL|method|isPreemptable ()
+specifier|public
+name|boolean
+name|isPreemptable
+parameter_list|()
+block|{
+return|return
+name|preemptable
 return|;
 block|}
 block|}
