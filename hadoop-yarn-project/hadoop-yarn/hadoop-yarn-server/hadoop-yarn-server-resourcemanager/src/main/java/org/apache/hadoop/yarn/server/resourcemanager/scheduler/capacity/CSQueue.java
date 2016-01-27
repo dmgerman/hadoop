@@ -242,6 +242,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|InvalidResourceRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|security
 operator|.
 name|PrivilegedEntity
@@ -896,6 +912,8 @@ parameter_list|,
 name|FiCaSchedulerApp
 name|app
 parameter_list|)
+throws|throws
+name|InvalidResourceRequestException
 function_decl|;
 comment|/**    * Get valid Node Labels for this queue    * @return valid node labels    */
 DECL|method|getNodeLabelsForQueue ()

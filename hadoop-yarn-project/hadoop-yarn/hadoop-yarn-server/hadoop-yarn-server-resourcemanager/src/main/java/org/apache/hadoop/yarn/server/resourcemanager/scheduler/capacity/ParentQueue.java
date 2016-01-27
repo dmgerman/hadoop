@@ -406,6 +406,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|InvalidResourceRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -3578,6 +3594,8 @@ parameter_list|,
 name|FiCaSchedulerApp
 name|app
 parameter_list|)
+throws|throws
+name|InvalidResourceRequestException
 block|{
 comment|// delta capacity is negative when it's a decrease request
 name|Resource

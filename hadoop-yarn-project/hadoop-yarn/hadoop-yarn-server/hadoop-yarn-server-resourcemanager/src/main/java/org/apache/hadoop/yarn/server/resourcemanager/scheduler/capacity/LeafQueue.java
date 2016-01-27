@@ -432,6 +432,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|InvalidResourceRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -485,6 +501,24 @@ operator|.
 name|security
 operator|.
 name|AccessType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|RMServerUtils
 import|;
 end_import
 
@@ -7932,6 +7966,7 @@ return|return
 name|defaultAppPriorityPerQueue
 return|;
 block|}
+comment|/**    *    * @param clusterResource Total cluster resource    * @param decreaseRequest The decrease request    * @param app The application of interest    */
 annotation|@
 name|Override
 DECL|method|decreaseContainer (Resource clusterResource, SchedContainerChangeRequest decreaseRequest, FiCaSchedulerApp app)
@@ -7948,6 +7983,8 @@ parameter_list|,
 name|FiCaSchedulerApp
 name|app
 parameter_list|)
+throws|throws
+name|InvalidResourceRequestException
 block|{
 comment|// If the container being decreased is reserved, we need to unreserve it
 comment|// first.
@@ -7985,6 +8022,100 @@ name|rmContainer
 argument_list|)
 expr_stmt|;
 block|}
+name|boolean
+name|resourceDecreased
+init|=
+literal|false
+decl_stmt|;
+name|Resource
+name|resourceBeforeDecrease
+decl_stmt|;
+comment|// Grab queue lock to avoid race condition when getting container resource
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+comment|// Make sure the decrease request is valid in terms of current resource
+comment|// and target resource. This must be done under the leaf queue lock.
+comment|// Throws exception if the check fails.
+name|RMServerUtils
+operator|.
+name|checkSchedContainerChangeRequest
+argument_list|(
+name|decreaseRequest
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+comment|// Save resource before decrease for debug log
+name|resourceBeforeDecrease
+operator|=
+name|Resources
+operator|.
+name|clone
+argument_list|(
+name|rmContainer
+operator|.
+name|getAllocatedResource
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Do we have increase request for the same container? If so, remove it
+name|boolean
+name|hasIncreaseRequest
+init|=
+name|app
+operator|.
+name|removeIncreaseRequest
+argument_list|(
+name|decreaseRequest
+operator|.
+name|getNodeId
+argument_list|()
+argument_list|,
+name|decreaseRequest
+operator|.
+name|getPriority
+argument_list|()
+argument_list|,
+name|decreaseRequest
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|hasIncreaseRequest
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"While processing decrease requests, found an increase"
+operator|+
+literal|" request for the same container "
+operator|+
+name|decreaseRequest
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|", removed the increase request"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|// Delta capacity is negative when it's a decrease request
 name|Resource
 name|absDelta
@@ -7999,12 +8130,53 @@ name|getDeltaCapacity
 argument_list|()
 argument_list|)
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|this
-init|)
+if|if
+condition|(
+name|Resources
+operator|.
+name|equals
+argument_list|(
+name|absDelta
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|)
+condition|)
 block|{
-comment|// Delta is negative when it's a decrease request
+comment|// If delta capacity of this decrease request is 0, this decrease
+comment|// request serves the purpose of cancelling an existing increase request
+comment|// if any
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Decrease target resource equals to existing resource for"
+operator|+
+literal|" container:"
+operator|+
+name|decreaseRequest
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|" ignore this decrease request."
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+comment|// Release the delta resource
 name|releaseResource
 argument_list|(
 name|clusterResource
@@ -8050,16 +8222,18 @@ argument_list|,
 name|absDelta
 argument_list|)
 expr_stmt|;
+name|resourceDecreased
+operator|=
+literal|true
+expr_stmt|;
 block|}
-comment|// Notify parent
+block|}
 if|if
 condition|(
-name|getParent
-argument_list|()
-operator|!=
-literal|null
+name|resourceDecreased
 condition|)
 block|{
+comment|// Notify parent queue outside of leaf queue lock
 name|getParent
 argument_list|()
 operator|.
@@ -8070,6 +8244,36 @@ argument_list|,
 name|decreaseRequest
 argument_list|,
 name|app
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Application attempt "
+operator|+
+name|app
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|+
+literal|" decreased container:"
+operator|+
+name|decreaseRequest
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|" from "
+operator|+
+name|resourceBeforeDecrease
+operator|+
+literal|" to "
+operator|+
+name|decreaseRequest
+operator|.
+name|getTargetCapacity
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

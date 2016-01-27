@@ -68,16 +68,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|EnumSet
 import|;
 end_import
@@ -552,6 +542,22 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
+name|InvalidResourceRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
 name|YarnException
 import|;
 end_import
@@ -647,24 +653,6 @@ operator|.
 name|resourcemanager
 operator|.
 name|RMContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|RMServerUtils
 import|;
 end_import
 
@@ -3535,14 +3523,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|decreaseContainers ( List<SchedContainerChangeRequest> decreaseRequests, SchedulerApplicationAttempt attempt)
+DECL|method|decreaseContainers ( List<ContainerResourceChangeRequest> decreaseRequests, SchedulerApplicationAttempt attempt)
 specifier|protected
 name|void
 name|decreaseContainers
 parameter_list|(
 name|List
 argument_list|<
-name|SchedContainerChangeRequest
+name|ContainerResourceChangeRequest
 argument_list|>
 name|decreaseRequests
 parameter_list|,
@@ -3550,12 +3538,40 @@ name|SchedulerApplicationAttempt
 name|attempt
 parameter_list|)
 block|{
+if|if
+condition|(
+literal|null
+operator|==
+name|decreaseRequests
+operator|||
+name|decreaseRequests
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
+comment|// Pre-process decrease requests
+name|List
+argument_list|<
+name|SchedContainerChangeRequest
+argument_list|>
+name|schedDecreaseRequests
+init|=
+name|createSchedContainerChangeRequests
+argument_list|(
+name|decreaseRequests
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|SchedContainerChangeRequest
 name|request
 range|:
-name|decreaseRequests
+name|schedDecreaseRequests
 control|)
 block|{
 if|if
@@ -3575,60 +3591,6 @@ operator|+
 name|request
 argument_list|)
 expr_stmt|;
-block|}
-name|boolean
-name|hasIncreaseRequest
-init|=
-name|attempt
-operator|.
-name|removeIncreaseRequest
-argument_list|(
-name|request
-operator|.
-name|getNodeId
-argument_list|()
-argument_list|,
-name|request
-operator|.
-name|getPriority
-argument_list|()
-argument_list|,
-name|request
-operator|.
-name|getContainerId
-argument_list|()
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|hasIncreaseRequest
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"While processing decrease request, found a increase request "
-operator|+
-literal|"for the same container "
-operator|+
-name|request
-operator|.
-name|getContainerId
-argument_list|()
-operator|+
-literal|", removed the increase request"
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|// handle decrease request
 name|decreaseContainer
@@ -4749,11 +4711,11 @@ name|maxClusterLevelAppPriority
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Normalize container increase/decrease request, and return    * SchedulerContainerResourceChangeRequest according to given    * ContainerResourceChangeRequest.    *     *<pre>    * - Returns non-null value means validation succeeded    * - Throw exception when any other error happens    *</pre>    */
+comment|/**    * Sanity check increase/decrease request, and return    * SchedulerContainerResourceChangeRequest according to given    * ContainerResourceChangeRequest.    *     *<pre>    * - Returns non-null value means validation succeeded    * - Throw exception when any other error happens    *</pre>    */
+DECL|method|createSchedContainerChangeRequest ( ContainerResourceChangeRequest request, boolean increase)
 specifier|private
 name|SchedContainerChangeRequest
-DECL|method|checkAndNormalizeContainerChangeRequest ( ContainerResourceChangeRequest request, boolean increase)
-name|checkAndNormalizeContainerChangeRequest
+name|createSchedContainerChangeRequest
 parameter_list|(
 name|ContainerResourceChangeRequest
 name|request
@@ -4764,19 +4726,6 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
-comment|// We have done a check in ApplicationMasterService, but RMContainer status
-comment|// / Node resource could change since AMS won't acquire lock of scheduler.
-name|RMServerUtils
-operator|.
-name|checkAndNormalizeContainerChangeRequest
-argument_list|(
-name|rmContext
-argument_list|,
-name|request
-argument_list|,
-name|increase
-argument_list|)
-expr_stmt|;
 name|ContainerId
 name|containerId
 init|=
@@ -4793,6 +4742,38 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|rmContainer
+condition|)
+block|{
+name|String
+name|msg
+init|=
+literal|"Failed to get rmContainer for "
+operator|+
+operator|(
+name|increase
+condition|?
+literal|"increase"
+else|:
+literal|"decrease"
+operator|)
+operator|+
+literal|" request, with container-id="
+operator|+
+name|containerId
+decl_stmt|;
+throw|throw
+operator|new
+name|InvalidResourceRequestException
+argument_list|(
+name|msg
+argument_list|)
+throw|;
+block|}
 name|SchedulerNode
 name|schedulerNode
 init|=
@@ -4808,6 +4789,10 @@ return|return
 operator|new
 name|SchedContainerChangeRequest
 argument_list|(
+name|this
+operator|.
+name|rmContext
+argument_list|,
 name|schedulerNode
 argument_list|,
 name|rmContainer
@@ -4824,8 +4809,8 @@ name|List
 argument_list|<
 name|SchedContainerChangeRequest
 argument_list|>
-DECL|method|checkAndNormalizeContainerChangeRequests ( List<ContainerResourceChangeRequest> changeRequests, boolean increase)
-name|checkAndNormalizeContainerChangeRequests
+DECL|method|createSchedContainerChangeRequests ( List<ContainerResourceChangeRequest> changeRequests, boolean increase)
+name|createSchedContainerChangeRequests
 parameter_list|(
 name|List
 argument_list|<
@@ -4837,24 +4822,6 @@ name|boolean
 name|increase
 parameter_list|)
 block|{
-if|if
-condition|(
-literal|null
-operator|==
-name|changeRequests
-operator|||
-name|changeRequests
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-return|return
-name|Collections
-operator|.
-name|EMPTY_LIST
-return|;
-block|}
 name|List
 argument_list|<
 name|SchedContainerChangeRequest
@@ -4885,7 +4852,7 @@ try|try
 block|{
 name|sr
 operator|=
-name|checkAndNormalizeContainerChangeRequest
+name|createSchedContainerChangeRequest
 argument_list|(
 name|r
 argument_list|,

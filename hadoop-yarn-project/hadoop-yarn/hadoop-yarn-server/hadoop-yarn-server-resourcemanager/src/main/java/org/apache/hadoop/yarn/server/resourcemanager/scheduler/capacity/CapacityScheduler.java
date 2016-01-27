@@ -60,7 +60,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
+name|Collection
 import|;
 end_import
 
@@ -70,7 +70,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
+name|Collections
 import|;
 end_import
 
@@ -681,6 +681,22 @@ operator|.
 name|conf
 operator|.
 name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|InvalidResourceRequestException
 import|;
 end_import
 
@@ -5637,10 +5653,108 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// It is crucial to acquire leaf queue lock first to prevent:
+comment|// 1. Race condition when calculating the delta resource in
+comment|//    SchedContainerChangeRequest
+comment|// 2. Deadlock with the scheduling thread.
+DECL|method|updateIncreaseRequests ( List<ContainerResourceChangeRequest> increaseRequests, FiCaSchedulerApp app)
+specifier|private
+name|LeafQueue
+name|updateIncreaseRequests
+parameter_list|(
+name|List
+argument_list|<
+name|ContainerResourceChangeRequest
+argument_list|>
+name|increaseRequests
+parameter_list|,
+name|FiCaSchedulerApp
+name|app
+parameter_list|)
+block|{
+if|if
+condition|(
+literal|null
+operator|==
+name|increaseRequests
+operator|||
+name|increaseRequests
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|// Pre-process increase requests
+name|List
+argument_list|<
+name|SchedContainerChangeRequest
+argument_list|>
+name|schedIncreaseRequests
+init|=
+name|createSchedContainerChangeRequests
+argument_list|(
+name|increaseRequests
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+name|LeafQueue
+name|leafQueue
+init|=
+operator|(
+name|LeafQueue
+operator|)
+name|app
+operator|.
+name|getQueue
+argument_list|()
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|leafQueue
+init|)
+block|{
+comment|// make sure we aren't stopping/removing the application
+comment|// when the allocate comes in
+if|if
+condition|(
+name|app
+operator|.
+name|isStopped
+argument_list|()
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|// Process increase resource requests
+if|if
+condition|(
+name|app
+operator|.
+name|updateIncreaseRequests
+argument_list|(
+name|schedIncreaseRequests
+argument_list|)
+condition|)
+block|{
+return|return
+name|leafQueue
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
+block|}
 annotation|@
 name|Override
-comment|// Note: when AM asks to decrease container or release container, we will
-comment|// acquire scheduler lock
+comment|// Note: when AM asks to release container, we will acquire scheduler lock
 annotation|@
 name|Lock
 argument_list|(
@@ -5714,7 +5828,34 @@ return|return
 name|EMPTY_ALLOCATION
 return|;
 block|}
-comment|// Sanity check
+comment|// Release containers
+name|releaseContainers
+argument_list|(
+name|release
+argument_list|,
+name|application
+argument_list|)
+expr_stmt|;
+comment|// update increase requests
+name|LeafQueue
+name|updateDemandForQueue
+init|=
+name|updateIncreaseRequests
+argument_list|(
+name|increaseRequests
+argument_list|,
+name|application
+argument_list|)
+decl_stmt|;
+comment|// Decrease containers
+name|decreaseContainers
+argument_list|(
+name|decreaseRequests
+argument_list|,
+name|application
+argument_list|)
+expr_stmt|;
+comment|// Sanity check for new allocation requests
 name|SchedulerUtils
 operator|.
 name|normalizeRequests
@@ -5734,49 +5875,8 @@ name|getMaximumResourceCapability
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Pre-process increase requests
-name|List
-argument_list|<
-name|SchedContainerChangeRequest
-argument_list|>
-name|normalizedIncreaseRequests
-init|=
-name|checkAndNormalizeContainerChangeRequests
-argument_list|(
-name|increaseRequests
-argument_list|,
-literal|true
-argument_list|)
-decl_stmt|;
-comment|// Pre-process decrease requests
-name|List
-argument_list|<
-name|SchedContainerChangeRequest
-argument_list|>
-name|normalizedDecreaseRequests
-init|=
-name|checkAndNormalizeContainerChangeRequests
-argument_list|(
-name|decreaseRequests
-argument_list|,
-literal|false
-argument_list|)
-decl_stmt|;
-comment|// Release containers
-name|releaseContainers
-argument_list|(
-name|release
-argument_list|,
-name|application
-argument_list|)
-expr_stmt|;
 name|Allocation
 name|allocation
-decl_stmt|;
-name|LeafQueue
-name|updateDemandForQueue
-init|=
-literal|null
 decl_stmt|;
 synchronized|synchronized
 init|(
@@ -5846,6 +5946,12 @@ name|updateResourceRequests
 argument_list|(
 name|ask
 argument_list|)
+operator|&&
+operator|(
+name|updateDemandForQueue
+operator|==
+literal|null
+operator|)
 condition|)
 block|{
 name|updateDemandForQueue
@@ -5881,34 +5987,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|// Process increase resource requests
-if|if
-condition|(
-name|application
-operator|.
-name|updateIncreaseRequests
-argument_list|(
-name|normalizedIncreaseRequests
-argument_list|)
-operator|&&
-operator|(
-name|updateDemandForQueue
-operator|==
-literal|null
-operator|)
-condition|)
-block|{
-name|updateDemandForQueue
-operator|=
-operator|(
-name|LeafQueue
-operator|)
-name|application
-operator|.
-name|getQueue
-argument_list|()
-expr_stmt|;
-block|}
 if|if
 condition|(
 name|application
@@ -5940,14 +6018,6 @@ name|blacklistRemovals
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Decrease containers
-name|decreaseContainers
-argument_list|(
-name|normalizedDecreaseRequests
-argument_list|,
-name|application
-argument_list|)
-expr_stmt|;
 name|allocation
 operator|=
 name|application
@@ -6896,8 +6966,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|allocateContainersToNode (FiCaSchedulerNode node)
-specifier|private
+specifier|protected
 specifier|synchronized
 name|void
 name|allocateContainersToNode
@@ -8514,17 +8586,9 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
-name|Lock
-argument_list|(
-name|CapacityScheduler
-operator|.
-name|class
-argument_list|)
-annotation|@
 name|Override
-DECL|method|decreaseContainer ( SchedContainerChangeRequest decreaseRequest, SchedulerApplicationAttempt attempt)
+DECL|method|decreaseContainer (SchedContainerChangeRequest decreaseRequest, SchedulerApplicationAttempt attempt)
 specifier|protected
-specifier|synchronized
 name|void
 name|decreaseContainer
 parameter_list|(
@@ -8577,68 +8641,6 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-comment|// Delta capacity of this decrease request is 0, this decrease request may
-comment|// just to cancel increase request
-if|if
-condition|(
-name|Resources
-operator|.
-name|equals
-argument_list|(
-name|decreaseRequest
-operator|.
-name|getDeltaCapacity
-argument_list|()
-argument_list|,
-name|Resources
-operator|.
-name|none
-argument_list|()
-argument_list|)
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Decrease target resource equals to existing resource for container:"
-operator|+
-name|decreaseRequest
-operator|.
-name|getContainerId
-argument_list|()
-operator|+
-literal|" ignore this decrease request."
-argument_list|)
-expr_stmt|;
-block|}
-return|return;
-block|}
-comment|// Save resource before decrease
-name|Resource
-name|resourceBeforeDecrease
-init|=
-name|Resources
-operator|.
-name|clone
-argument_list|(
-name|rmContainer
-operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getResource
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|FiCaSchedulerApp
 name|app
 init|=
@@ -8658,6 +8660,8 @@ operator|.
 name|getQueue
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|queue
 operator|.
 name|decreaseContainer
@@ -8669,7 +8673,8 @@ argument_list|,
 name|app
 argument_list|)
 expr_stmt|;
-comment|// Notify RMNode the container will be decreased
+comment|// Notify RMNode that the container can be pulled by NodeManager in the
+comment|// next heartbeat
 name|this
 operator|.
 name|rmContext
@@ -8690,9 +8695,9 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|Arrays
+name|Collections
 operator|.
-name|asList
+name|singletonList
 argument_list|(
 name|rmContainer
 operator|.
@@ -8702,36 +8707,25 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InvalidResourceRequestException
+name|e
+parameter_list|)
+block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
-literal|"Application attempt "
+literal|"Error happens when checking decrease request, Ignoring.."
 operator|+
-name|app
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-operator|+
-literal|" decreased container:"
-operator|+
-name|decreaseRequest
-operator|.
-name|getContainerId
-argument_list|()
-operator|+
-literal|" from "
-operator|+
-name|resourceBeforeDecrease
-operator|+
-literal|" to "
-operator|+
-name|decreaseRequest
-operator|.
-name|getTargetCapacity
-argument_list|()
+literal|" exception="
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Lock

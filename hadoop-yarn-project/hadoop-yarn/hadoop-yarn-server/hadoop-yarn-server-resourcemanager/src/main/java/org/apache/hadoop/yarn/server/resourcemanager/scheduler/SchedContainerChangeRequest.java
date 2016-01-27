@@ -108,6 +108,24 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|RMContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmcontainer
 operator|.
 name|RMContainer
@@ -147,26 +165,38 @@ argument_list|<
 name|SchedContainerChangeRequest
 argument_list|>
 block|{
+DECL|field|rmContext
+specifier|private
+name|RMContext
+name|rmContext
+decl_stmt|;
 DECL|field|rmContainer
+specifier|private
 name|RMContainer
 name|rmContainer
 decl_stmt|;
 DECL|field|targetCapacity
+specifier|private
 name|Resource
 name|targetCapacity
 decl_stmt|;
 DECL|field|schedulerNode
+specifier|private
 name|SchedulerNode
 name|schedulerNode
 decl_stmt|;
 DECL|field|deltaCapacity
+specifier|private
 name|Resource
 name|deltaCapacity
 decl_stmt|;
-DECL|method|SchedContainerChangeRequest (SchedulerNode schedulerNode, RMContainer rmContainer, Resource targetCapacity)
+DECL|method|SchedContainerChangeRequest ( RMContext rmContext, SchedulerNode schedulerNode, RMContainer rmContainer, Resource targetCapacity)
 specifier|public
 name|SchedContainerChangeRequest
 parameter_list|(
+name|RMContext
+name|rmContext
+parameter_list|,
 name|SchedulerNode
 name|schedulerNode
 parameter_list|,
@@ -179,6 +209,12 @@ parameter_list|)
 block|{
 name|this
 operator|.
+name|rmContext
+operator|=
+name|rmContext
+expr_stmt|;
+name|this
+operator|.
 name|rmContainer
 operator|=
 name|rmContainer
@@ -194,20 +230,6 @@ operator|.
 name|schedulerNode
 operator|=
 name|schedulerNode
-expr_stmt|;
-name|deltaCapacity
-operator|=
-name|Resources
-operator|.
-name|subtract
-argument_list|(
-name|targetCapacity
-argument_list|,
-name|rmContainer
-operator|.
-name|getAllocatedResource
-argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getNodeId ()
@@ -249,13 +271,49 @@ operator|.
 name|targetCapacity
 return|;
 block|}
-comment|/**    * Delta capacity = before - target, so if it is a decrease request, delta    * capacity will be negative    */
+DECL|method|getRmContext ()
+specifier|public
+name|RMContext
+name|getRmContext
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|rmContext
+return|;
+block|}
+comment|/**    * Delta capacity = target - before, so if it is a decrease request, delta    * capacity will be negative    */
 DECL|method|getDeltaCapacity ()
 specifier|public
+specifier|synchronized
 name|Resource
 name|getDeltaCapacity
 parameter_list|()
 block|{
+comment|// Only calculate deltaCapacity once
+if|if
+condition|(
+name|deltaCapacity
+operator|==
+literal|null
+condition|)
+block|{
+name|deltaCapacity
+operator|=
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|targetCapacity
+argument_list|,
+name|rmContainer
+operator|.
+name|getAllocatedResource
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|deltaCapacity
 return|;
@@ -452,10 +510,6 @@ operator|+
 literal|", targetCapacity="
 operator|+
 name|targetCapacity
-operator|+
-literal|", delta="
-operator|+
-name|deltaCapacity
 operator|+
 literal|", node="
 operator|+
