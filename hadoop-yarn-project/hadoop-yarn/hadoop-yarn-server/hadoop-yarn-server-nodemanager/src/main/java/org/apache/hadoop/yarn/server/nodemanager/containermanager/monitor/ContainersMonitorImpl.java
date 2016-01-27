@@ -2120,14 +2120,6 @@ operator|.
 name|getRssMemorySize
 argument_list|()
 decl_stmt|;
-name|long
-name|currentTime
-init|=
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
-decl_stmt|;
 comment|// if machine has 6 cores and 3 are used,
 comment|// cpuUsagePercentPerCore should be 300% and
 comment|// cpuUsageTotalCoresPercentage should be 50%
@@ -2600,8 +2592,6 @@ operator|.
 name|reportContainerResourceUsage
 argument_list|(
 name|container
-argument_list|,
-name|currentTime
 argument_list|,
 name|pId
 argument_list|,

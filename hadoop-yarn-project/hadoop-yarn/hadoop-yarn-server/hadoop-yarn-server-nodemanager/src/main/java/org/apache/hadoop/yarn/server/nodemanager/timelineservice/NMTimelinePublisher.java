@@ -932,16 +932,13 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|reportContainerResourceUsage (Container container, long createdTime, String pId, Long pmemUsage, Float cpuUsageTotalCoresPercentage)
+DECL|method|reportContainerResourceUsage (Container container, String pId, Long pmemUsage, Float cpuUsageTotalCoresPercentage)
 specifier|public
 name|void
 name|reportContainerResourceUsage
 parameter_list|(
 name|Container
 name|container
-parameter_list|,
-name|long
-name|createdTime
 parameter_list|,
 name|String
 name|pId
@@ -1262,6 +1259,13 @@ operator|.
 name|addEvent
 argument_list|(
 name|tEvent
+argument_list|)
+expr_stmt|;
+name|entity
+operator|.
+name|setCreatedTime
+argument_list|(
+name|timestamp
 argument_list|)
 expr_stmt|;
 name|putEntity

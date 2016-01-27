@@ -640,7 +640,7 @@ argument_list|,
 literal|","
 argument_list|)
 operator|+
-literal|", created_time, modified_time, metric_names) "
+literal|", created_time, metric_names) "
 operator|+
 literal|"VALUES ("
 operator|+
@@ -658,7 +658,7 @@ operator|.
 name|length
 argument_list|)
 operator|+
-literal|"?, ?, ?)"
+literal|"?, ?)"
 decl_stmt|;
 if|if
 condition|(
@@ -782,19 +782,6 @@ argument_list|,
 name|entity
 operator|.
 name|getCreatedTime
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|ps
-operator|.
-name|setLong
-argument_list|(
-name|idx
-operator|++
-argument_list|,
-name|entity
-operator|.
-name|getModifiedTime
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -943,7 +930,7 @@ literal|"(user VARCHAR NOT NULL, cluster VARCHAR NOT NULL, "
 operator|+
 literal|"flow_name VARCHAR NOT NULL, "
 operator|+
-literal|"created_time UNSIGNED_LONG, modified_time UNSIGNED_LONG, "
+literal|"created_time UNSIGNED_LONG, "
 operator|+
 name|METRIC_COLUMN_FAMILY
 operator|+
@@ -974,7 +961,7 @@ name|USER_AGGREGATION_TABLE_NAME
 operator|+
 literal|"(user VARCHAR NOT NULL, cluster VARCHAR NOT NULL, "
 operator|+
-literal|"created_time UNSIGNED_LONG, modified_time UNSIGNED_LONG, "
+literal|"created_time UNSIGNED_LONG, "
 operator|+
 name|METRIC_COLUMN_FAMILY
 operator|+

@@ -669,13 +669,6 @@ argument_list|(
 name|cTime
 argument_list|)
 expr_stmt|;
-name|entity
-operator|.
-name|setModifiedTime
-argument_list|(
-name|mTime
-argument_list|)
-expr_stmt|;
 comment|// add metrics
 name|Set
 argument_list|<

@@ -7295,7 +7295,7 @@ operator|.
 name|timelineservice
 operator|.
 name|TimelineEntity
-DECL|method|createJobEntity (HistoryEvent event, long timestamp, JobId jobId, String entityType)
+DECL|method|createJobEntity (HistoryEvent event, long timestamp, JobId jobId, String entityType, boolean setCreatedTime)
 name|createJobEntity
 parameter_list|(
 name|HistoryEvent
@@ -7309,6 +7309,9 @@ name|jobId
 parameter_list|,
 name|String
 name|entityType
+parameter_list|,
+name|boolean
+name|setCreatedTime
 parameter_list|)
 block|{
 name|org
@@ -7335,6 +7338,8 @@ argument_list|,
 name|timestamp
 argument_list|,
 name|entityType
+argument_list|,
+name|setCreatedTime
 argument_list|)
 decl_stmt|;
 name|entity
@@ -7369,7 +7374,7 @@ operator|.
 name|timelineservice
 operator|.
 name|TimelineEntity
-DECL|method|createBaseEntity (HistoryEvent event, long timestamp, String entityType)
+DECL|method|createBaseEntity (HistoryEvent event, long timestamp, String entityType, boolean setCreatedTime)
 name|createBaseEntity
 parameter_list|(
 name|HistoryEvent
@@ -7380,6 +7385,9 @@ name|timestamp
 parameter_list|,
 name|String
 name|entityType
+parameter_list|,
+name|boolean
+name|setCreatedTime
 parameter_list|)
 block|{
 name|org
@@ -7460,6 +7468,19 @@ argument_list|(
 name|entityType
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|setCreatedTime
+condition|)
+block|{
+name|entity
+operator|.
+name|setCreatedTime
+argument_list|(
+name|timestamp
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|entity
 return|;
@@ -7482,7 +7503,7 @@ operator|.
 name|timelineservice
 operator|.
 name|TimelineEntity
-DECL|method|createTaskEntity (HistoryEvent event, long timestamp, String taskId, String entityType, String relatedJobEntity, JobId jobId)
+DECL|method|createTaskEntity (HistoryEvent event, long timestamp, String taskId, String entityType, String relatedJobEntity, JobId jobId, boolean setCreatedTime)
 name|createTaskEntity
 parameter_list|(
 name|HistoryEvent
@@ -7502,6 +7523,9 @@ name|relatedJobEntity
 parameter_list|,
 name|JobId
 name|jobId
+parameter_list|,
+name|boolean
+name|setCreatedTime
 parameter_list|)
 block|{
 name|org
@@ -7528,6 +7552,8 @@ argument_list|,
 name|timestamp
 argument_list|,
 name|entityType
+argument_list|,
+name|setCreatedTime
 argument_list|)
 decl_stmt|;
 name|entity
@@ -7571,7 +7597,7 @@ operator|.
 name|timelineservice
 operator|.
 name|TimelineEntity
-DECL|method|createTaskAttemptEntity (HistoryEvent event, long timestamp, String taskAttemptId, String entityType, String relatedTaskEntity, String taskId)
+DECL|method|createTaskAttemptEntity (HistoryEvent event, long timestamp, String taskAttemptId, String entityType, String relatedTaskEntity, String taskId, boolean setCreatedTime)
 name|createTaskAttemptEntity
 parameter_list|(
 name|HistoryEvent
@@ -7591,6 +7617,9 @@ name|relatedTaskEntity
 parameter_list|,
 name|String
 name|taskId
+parameter_list|,
+name|boolean
+name|setCreatedTime
 parameter_list|)
 block|{
 name|org
@@ -7617,6 +7646,8 @@ argument_list|,
 name|timestamp
 argument_list|,
 name|entityType
+argument_list|,
+name|setCreatedTime
 argument_list|)
 decl_stmt|;
 name|entity
@@ -7683,6 +7714,11 @@ name|taskAttemptId
 init|=
 literal|null
 decl_stmt|;
+name|boolean
+name|setCreatedTime
+init|=
+literal|false
+decl_stmt|;
 switch|switch
 condition|(
 name|event
@@ -7695,6 +7731,11 @@ comment|// Handle job events
 case|case
 name|JOB_SUBMITTED
 case|:
+name|setCreatedTime
+operator|=
+literal|true
+expr_stmt|;
+break|break;
 case|case
 name|JOB_STATUS_CHANGED
 case|:
@@ -7733,6 +7774,10 @@ comment|// Handle task events
 case|case
 name|TASK_STARTED
 case|:
+name|setCreatedTime
+operator|=
+literal|true
+expr_stmt|;
 name|taskId
 operator|=
 operator|(
@@ -7810,10 +7855,45 @@ case|case
 name|MAP_ATTEMPT_STARTED
 case|:
 case|case
-name|CLEANUP_ATTEMPT_STARTED
-case|:
-case|case
 name|REDUCE_ATTEMPT_STARTED
+case|:
+name|setCreatedTime
+operator|=
+literal|true
+expr_stmt|;
+name|taskId
+operator|=
+operator|(
+operator|(
+name|TaskAttemptStartedEvent
+operator|)
+name|event
+operator|)
+operator|.
+name|getTaskId
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+name|taskAttemptId
+operator|=
+operator|(
+operator|(
+name|TaskAttemptStartedEvent
+operator|)
+name|event
+operator|)
+operator|.
+name|getTaskAttemptId
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+break|break;
+case|case
+name|CLEANUP_ATTEMPT_STARTED
 case|:
 case|case
 name|SETUP_ATTEMPT_STARTED
@@ -8047,6 +8127,8 @@ argument_list|,
 name|jobId
 argument_list|,
 name|MAPREDUCE_JOB_ENTITY_TYPE
+argument_list|,
+name|setCreatedTime
 argument_list|)
 expr_stmt|;
 block|}
@@ -8075,6 +8157,8 @@ argument_list|,
 name|MAPREDUCE_JOB_ENTITY_TYPE
 argument_list|,
 name|jobId
+argument_list|,
+name|setCreatedTime
 argument_list|)
 expr_stmt|;
 block|}
@@ -8096,6 +8180,8 @@ argument_list|,
 name|MAPREDUCE_TASK_ENTITY_TYPE
 argument_list|,
 name|taskId
+argument_list|,
+name|setCreatedTime
 argument_list|)
 expr_stmt|;
 block|}

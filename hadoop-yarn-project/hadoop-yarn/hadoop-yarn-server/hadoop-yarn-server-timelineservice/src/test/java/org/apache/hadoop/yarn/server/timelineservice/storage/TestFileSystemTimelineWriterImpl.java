@@ -274,13 +274,6 @@ argument_list|(
 literal|1425016501000L
 argument_list|)
 expr_stmt|;
-name|entity
-operator|.
-name|setModifiedTime
-argument_list|(
-literal|1425016502000L
-argument_list|)
-expr_stmt|;
 name|te
 operator|.
 name|addEntity
@@ -481,7 +474,7 @@ condition|)
 block|{
 name|fsi
 operator|.
-name|stop
+name|close
 argument_list|()
 expr_stmt|;
 name|FileUtils

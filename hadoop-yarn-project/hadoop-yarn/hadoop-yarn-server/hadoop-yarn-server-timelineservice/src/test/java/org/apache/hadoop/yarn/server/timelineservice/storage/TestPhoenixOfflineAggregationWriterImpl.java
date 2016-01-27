@@ -715,13 +715,6 @@ argument_list|(
 literal|1425016501000L
 argument_list|)
 expr_stmt|;
-name|entity
-operator|.
-name|setModifiedTime
-argument_list|(
-literal|1425016502000L
-argument_list|)
-expr_stmt|;
 name|TimelineMetric
 name|metric
 init|=

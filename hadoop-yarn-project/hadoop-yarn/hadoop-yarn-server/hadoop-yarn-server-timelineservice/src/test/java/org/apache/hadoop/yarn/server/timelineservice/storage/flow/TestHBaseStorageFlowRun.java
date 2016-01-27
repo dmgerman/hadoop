@@ -2412,10 +2412,6 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
 name|metricsToRetrieve
 argument_list|,
 literal|null
@@ -2817,10 +2813,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -2877,10 +2869,6 @@ name|YARN_FLOW_RUN
 operator|.
 name|toString
 argument_list|()
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|,

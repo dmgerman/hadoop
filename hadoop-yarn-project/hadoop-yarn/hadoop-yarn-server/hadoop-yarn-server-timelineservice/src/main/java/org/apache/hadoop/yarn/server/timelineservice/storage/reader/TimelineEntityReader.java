@@ -441,16 +441,6 @@ specifier|protected
 name|Long
 name|createdTimeEnd
 decl_stmt|;
-DECL|field|modifiedTimeBegin
-specifier|protected
-name|Long
-name|modifiedTimeBegin
-decl_stmt|;
-DECL|field|modifiedTimeEnd
-specifier|protected
-name|Long
-name|modifiedTimeEnd
-decl_stmt|;
 DECL|field|relatesTo
 specifier|protected
 name|Map
@@ -541,7 +531,7 @@ init|=
 literal|false
 decl_stmt|;
 comment|/**    * Instantiates a reader for multiple-entity reads.    */
-DECL|method|TimelineEntityReader (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve, boolean sortedKeys)
+DECL|method|TimelineEntityReader (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, TimelineFilterList confsToRetrieve, TimelineFilterList metricsToRetrieve, EnumSet<Field> fieldsToRetrieve, boolean sortedKeys)
 specifier|protected
 name|TimelineEntityReader
 parameter_list|(
@@ -571,12 +561,6 @@ name|createdTimeBegin
 parameter_list|,
 name|Long
 name|createdTimeEnd
-parameter_list|,
-name|Long
-name|modifiedTimeBegin
-parameter_list|,
-name|Long
-name|modifiedTimeEnd
 parameter_list|,
 name|Map
 argument_list|<
@@ -715,18 +699,6 @@ operator|.
 name|createdTimeEnd
 operator|=
 name|createdTimeEnd
-expr_stmt|;
-name|this
-operator|.
-name|modifiedTimeBegin
-operator|=
-name|modifiedTimeBegin
-expr_stmt|;
-name|this
-operator|.
-name|modifiedTimeEnd
-operator|=
-name|modifiedTimeEnd
 expr_stmt|;
 name|this
 operator|.

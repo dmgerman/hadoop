@@ -288,7 +288,7 @@ name|clusterId
 return|;
 block|}
 comment|/**    * Get a set of entities matching given predicates. The meaning of each    * argument has been documented with {@link TimelineReader#getEntities}.    *    * @see TimelineReader#getEntities    */
-DECL|method|getEntities (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Long modifiedTimeBegin, Long modifiedTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve)
+DECL|method|getEntities (String userId, String clusterId, String flowName, Long flowRunId, String appId, String entityType, Long limit, Long createdTimeBegin, Long createdTimeEnd, Map<String, Set<String>> relatesTo, Map<String, Set<String>> isRelatedTo, Map<String, Object> infoFilters, Map<String, String> configFilters, Set<String> metricFilters, Set<String> eventFilters, EnumSet<Field> fieldsToRetrieve)
 name|Set
 argument_list|<
 name|TimelineEntity
@@ -321,12 +321,6 @@ name|createdTimeBegin
 parameter_list|,
 name|Long
 name|createdTimeEnd
-parameter_list|,
-name|Long
-name|modifiedTimeBegin
-parameter_list|,
-name|Long
-name|modifiedTimeEnd
 parameter_list|,
 name|Map
 argument_list|<
@@ -420,10 +414,6 @@ argument_list|,
 name|createdTimeBegin
 argument_list|,
 name|createdTimeEnd
-argument_list|,
-name|modifiedTimeBegin
-argument_list|,
-name|modifiedTimeEnd
 argument_list|,
 name|relatesTo
 argument_list|,

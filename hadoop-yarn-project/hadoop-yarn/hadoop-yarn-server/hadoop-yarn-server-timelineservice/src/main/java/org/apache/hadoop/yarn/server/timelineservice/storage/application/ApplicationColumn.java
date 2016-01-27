@@ -235,17 +235,6 @@ argument_list|,
 literal|"created_time"
 argument_list|)
 block|,
-comment|/**    * When it was modified.    */
-DECL|enumConstant|MODIFIED_TIME
-name|MODIFIED_TIME
-argument_list|(
-name|ApplicationColumnFamily
-operator|.
-name|INFO
-argument_list|,
-literal|"modified_time"
-argument_list|)
-block|,
 comment|/**    * The version of the flow that this app belongs to.    */
 DECL|enumConstant|FLOW_VERSION
 name|FLOW_VERSION

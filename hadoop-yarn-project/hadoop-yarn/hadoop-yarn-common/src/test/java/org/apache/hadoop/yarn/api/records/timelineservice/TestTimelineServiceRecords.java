@@ -1018,13 +1018,6 @@ argument_list|)
 expr_stmt|;
 name|entity
 operator|.
-name|setModifiedTime
-argument_list|(
-literal|1L
-argument_list|)
-expr_stmt|;
-name|entity
-operator|.
 name|addRelatesToEntity
 argument_list|(
 literal|"test type 2"
