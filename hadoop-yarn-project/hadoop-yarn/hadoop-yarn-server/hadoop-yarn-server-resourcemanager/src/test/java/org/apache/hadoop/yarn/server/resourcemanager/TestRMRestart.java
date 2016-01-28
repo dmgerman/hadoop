@@ -15087,6 +15087,15 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|am0
+operator|.
+name|waitForState
+argument_list|(
+name|RMAppAttemptState
+operator|.
+name|FAILED
+argument_list|)
+expr_stmt|;
 block|}
 name|am0
 operator|=
