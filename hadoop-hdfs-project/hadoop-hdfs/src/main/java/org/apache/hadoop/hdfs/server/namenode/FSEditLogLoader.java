@@ -4490,7 +4490,7 @@ operator|.
 name|getBlockIdManager
 argument_list|()
 operator|.
-name|setGenerationStampV1
+name|setLegacyGenerationStamp
 argument_list|(
 name|setGenstampV1Op
 operator|.
@@ -5546,7 +5546,7 @@ operator|.
 name|getBlockIdManager
 argument_list|()
 operator|.
-name|setGenerationStampV2
+name|setGenerationStamp
 argument_list|(
 name|setGenstampV2Op
 operator|.

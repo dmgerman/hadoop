@@ -21761,7 +21761,7 @@ block|{
 name|getEditLog
 argument_list|()
 operator|.
-name|logGenerationStampV1
+name|logLegacyGenerationStamp
 argument_list|(
 name|gs
 argument_list|)
@@ -21772,7 +21772,7 @@ block|{
 name|getEditLog
 argument_list|()
 operator|.
-name|logGenerationStampV2
+name|logGenerationStamp
 argument_list|(
 name|gs
 argument_list|)

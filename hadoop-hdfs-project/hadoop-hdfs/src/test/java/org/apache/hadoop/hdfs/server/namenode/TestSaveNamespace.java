@@ -2688,7 +2688,7 @@ argument_list|(
 name|bid
 argument_list|)
 operator|.
-name|getGenerationStampV2
+name|getGenerationStamp
 argument_list|()
 expr_stmt|;
 name|ExecutorService

@@ -6633,7 +6633,7 @@ operator|.
 name|getBlockIdManager
 argument_list|()
 operator|.
-name|getGenerationStampV2
+name|getGenerationStamp
 argument_list|()
 argument_list|)
 argument_list|)
@@ -6905,7 +6905,7 @@ operator|.
 name|getBlockIdManager
 argument_list|()
 operator|.
-name|getGenerationStampV2
+name|getGenerationStamp
 argument_list|()
 argument_list|)
 argument_list|)

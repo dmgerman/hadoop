@@ -4781,9 +4781,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add legacy block generation stamp record to edit log    */
-DECL|method|logGenerationStampV1 (long genstamp)
+DECL|method|logLegacyGenerationStamp (long genstamp)
 name|void
-name|logGenerationStampV1
+name|logLegacyGenerationStamp
 parameter_list|(
 name|long
 name|genstamp
@@ -4814,9 +4814,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add generation stamp record to edit log    */
-DECL|method|logGenerationStampV2 (long genstamp)
+DECL|method|logGenerationStamp (long genstamp)
 name|void
-name|logGenerationStampV2
+name|logGenerationStamp
 parameter_list|(
 name|long
 name|genstamp

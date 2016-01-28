@@ -305,9 +305,9 @@ operator|-
 literal|12345
 decl_stmt|;
 comment|// Number of generation stamps reserved for legacy blocks.
-DECL|field|RESERVED_GENERATION_STAMPS_V1
+DECL|field|RESERVED_LEGACY_GENERATION_STAMPS
 name|long
-name|RESERVED_GENERATION_STAMPS_V1
+name|RESERVED_LEGACY_GENERATION_STAMPS
 init|=
 literal|1024L
 operator|*
