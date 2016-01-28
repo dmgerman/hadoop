@@ -487,6 +487,8 @@ class|class
 name|JobClient
 extends|extends
 name|CLI
+implements|implements
+name|AutoCloseable
 block|{
 annotation|@
 name|InterfaceAudience
@@ -1627,6 +1629,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Close the<code>JobClient</code>.    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized

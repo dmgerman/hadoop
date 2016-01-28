@@ -548,6 +548,42 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Asks the compiler to check if JobClient is AutoClosable.    */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+DECL|method|testAutoClosable ()
+specifier|public
+name|void
+name|testAutoClosable
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+try|try
+init|(
+name|JobClient
+name|jobClient
+init|=
+operator|new
+name|JobClient
+argument_list|(
+name|conf
+argument_list|)
+init|)
+block|{     }
+block|}
 block|}
 end_class
 
