@@ -1525,7 +1525,7 @@ argument_list|()
 decl_stmt|;
 name|blockIdManager
 operator|.
-name|setLegacyGenerationStamp
+name|setGenerationStampV1
 argument_list|(
 name|genstamp
 argument_list|)
@@ -1556,7 +1556,7 @@ argument_list|()
 expr_stmt|;
 name|blockIdManager
 operator|.
-name|setGenerationStamp
+name|setGenerationStampV2
 argument_list|(
 name|genstamp
 argument_list|)
@@ -1573,7 +1573,7 @@ argument_list|()
 decl_stmt|;
 name|blockIdManager
 operator|.
-name|setLegacyGenerationStampLimit
+name|setGenerationStampV1Limit
 argument_list|(
 name|stampAtIdSwitch
 argument_list|)
@@ -1602,7 +1602,7 @@ name|startingGenStamp
 init|=
 name|blockIdManager
 operator|.
-name|upgradeLegacyGenerationStamp
+name|upgradeGenerationStampToV2
 argument_list|()
 decl_stmt|;
 comment|// This is an upgrade.
@@ -6073,7 +6073,7 @@ name|writeLong
 argument_list|(
 name|blockIdManager
 operator|.
-name|getLegacyGenerationStamp
+name|getGenerationStampV1
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6083,7 +6083,7 @@ name|writeLong
 argument_list|(
 name|blockIdManager
 operator|.
-name|getGenerationStamp
+name|getGenerationStampV2
 argument_list|()
 argument_list|)
 expr_stmt|;

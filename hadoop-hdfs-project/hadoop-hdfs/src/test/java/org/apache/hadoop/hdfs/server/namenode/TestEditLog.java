@@ -5821,7 +5821,7 @@ control|)
 block|{
 name|editlog
 operator|.
-name|logGenerationStamp
+name|logGenerationStampV2
 argument_list|(
 operator|(
 name|long
@@ -5866,7 +5866,7 @@ argument_list|)
 expr_stmt|;
 name|editlog
 operator|.
-name|logGenerationStamp
+name|logGenerationStampV2
 argument_list|(
 operator|(
 name|long
@@ -5947,7 +5947,7 @@ control|)
 block|{
 name|editlog
 operator|.
-name|logGenerationStamp
+name|logGenerationStampV2
 argument_list|(
 operator|(
 name|long

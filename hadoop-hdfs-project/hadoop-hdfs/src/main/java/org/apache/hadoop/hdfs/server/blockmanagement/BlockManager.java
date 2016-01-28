@@ -4891,6 +4891,8 @@ init|=
 operator|new
 name|ExtendedBlock
 argument_list|(
+name|namesystem
+operator|.
 name|getBlockPoolId
 argument_list|()
 argument_list|,
@@ -4934,6 +4936,8 @@ init|=
 operator|new
 name|ExtendedBlock
 argument_list|(
+name|namesystem
+operator|.
 name|getBlockPoolId
 argument_list|()
 argument_list|,
@@ -5210,6 +5214,8 @@ init|=
 operator|new
 name|ExtendedBlock
 argument_list|(
+name|namesystem
+operator|.
 name|getBlockPoolId
 argument_list|()
 argument_list|,
@@ -8471,6 +8477,8 @@ argument_list|(
 operator|new
 name|ExtendedBlock
 argument_list|(
+name|namesystem
+operator|.
 name|getBlockPoolId
 argument_list|()
 argument_list|,

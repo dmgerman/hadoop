@@ -137,32 +137,32 @@ class|class
 name|BlockIdManager
 block|{
 comment|/**    * The global generation stamp for legacy blocks with randomly    * generated block IDs.    */
-DECL|field|legacyGenerationStamp
+DECL|field|generationStampV1
 specifier|private
 specifier|final
 name|GenerationStamp
-name|legacyGenerationStamp
+name|generationStampV1
 init|=
 operator|new
 name|GenerationStamp
 argument_list|()
 decl_stmt|;
 comment|/**    * The global generation stamp for this file system.    */
-DECL|field|generationStamp
+DECL|field|generationStampV2
 specifier|private
 specifier|final
 name|GenerationStamp
-name|generationStamp
+name|generationStampV2
 init|=
 operator|new
 name|GenerationStamp
 argument_list|()
 decl_stmt|;
 comment|/**    * The value of the generation stamp when the first switch to sequential    * block IDs was made. Blocks with generation stamps below this value    * have randomly allocated block IDs. Blocks with generation stamps above    * this value had sequentially allocated block IDs. Read from the fsImage    * (or initialized as an offset from the V1 (legacy) generation stamp on    * upgrade).    */
-DECL|field|legacyGenerationStampLimit
+DECL|field|generationStampV1Limit
 specifier|private
 name|long
-name|legacyGenerationStampLimit
+name|generationStampV1Limit
 decl_stmt|;
 comment|/**    * The global block ID space for this file system.    */
 DECL|field|blockIdGenerator
@@ -187,7 +187,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|legacyGenerationStampLimit
+name|generationStampV1Limit
 operator|=
 name|HdfsConstants
 operator|.
@@ -215,17 +215,17 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Upgrades the generation stamp for the filesystem    * by reserving a sufficient range for all existing blocks.    * Should be invoked only during the first upgrade to    * sequential block IDs.    */
-DECL|method|upgradeLegacyGenerationStamp ()
+DECL|method|upgradeGenerationStampToV2 ()
 specifier|public
 name|long
-name|upgradeLegacyGenerationStamp
+name|upgradeGenerationStampToV2
 parameter_list|()
 block|{
 name|Preconditions
 operator|.
 name|checkState
 argument_list|(
-name|generationStamp
+name|generationStampV2
 operator|.
 name|getCurrentValue
 argument_list|()
@@ -235,39 +235,39 @@ operator|.
 name|LAST_RESERVED_STAMP
 argument_list|)
 expr_stmt|;
-name|generationStamp
+name|generationStampV2
 operator|.
 name|skipTo
 argument_list|(
-name|legacyGenerationStamp
+name|generationStampV1
 operator|.
 name|getCurrentValue
 argument_list|()
 operator|+
 name|HdfsServerConstants
 operator|.
-name|RESERVED_LEGACY_GENERATION_STAMPS
+name|RESERVED_GENERATION_STAMPS_V1
 argument_list|)
 expr_stmt|;
-name|legacyGenerationStampLimit
+name|generationStampV1Limit
 operator|=
-name|generationStamp
+name|generationStampV2
 operator|.
 name|getCurrentValue
 argument_list|()
 expr_stmt|;
 return|return
-name|generationStamp
+name|generationStampV2
 operator|.
 name|getCurrentValue
 argument_list|()
 return|;
 block|}
 comment|/**    * Sets the generation stamp that delineates random and sequentially    * allocated block IDs.    *    * @param stamp set generation stamp limit to this value    */
-DECL|method|setLegacyGenerationStampLimit (long stamp)
+DECL|method|setGenerationStampV1Limit (long stamp)
 specifier|public
 name|void
-name|setLegacyGenerationStampLimit
+name|setGenerationStampV1Limit
 parameter_list|(
 name|long
 name|stamp
@@ -277,14 +277,14 @@ name|Preconditions
 operator|.
 name|checkState
 argument_list|(
-name|legacyGenerationStampLimit
+name|generationStampV1Limit
 operator|==
 name|HdfsConstants
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
 argument_list|)
 expr_stmt|;
-name|legacyGenerationStampLimit
+name|generationStampV1Limit
 operator|=
 name|stamp
 expr_stmt|;
@@ -297,7 +297,7 @@ name|getGenerationStampAtblockIdSwitch
 parameter_list|()
 block|{
 return|return
-name|legacyGenerationStampLimit
+name|generationStampV1Limit
 return|;
 block|}
 annotation|@
@@ -376,16 +376,16 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Sets the current generation stamp for legacy blocks    */
-DECL|method|setLegacyGenerationStamp (long stamp)
+DECL|method|setGenerationStampV1 (long stamp)
 specifier|public
 name|void
-name|setLegacyGenerationStamp
+name|setGenerationStampV1
 parameter_list|(
 name|long
 name|stamp
 parameter_list|)
 block|{
-name|legacyGenerationStamp
+name|generationStampV1
 operator|.
 name|setCurrentValue
 argument_list|(
@@ -394,30 +394,30 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Gets the current generation stamp for legacy blocks    */
-DECL|method|getLegacyGenerationStamp ()
+DECL|method|getGenerationStampV1 ()
 specifier|public
 name|long
-name|getLegacyGenerationStamp
+name|getGenerationStampV1
 parameter_list|()
 block|{
 return|return
-name|legacyGenerationStamp
+name|generationStampV1
 operator|.
 name|getCurrentValue
 argument_list|()
 return|;
 block|}
 comment|/**    * Gets the current generation stamp for this filesystem    */
-DECL|method|setGenerationStamp (long stamp)
+DECL|method|setGenerationStampV2 (long stamp)
 specifier|public
 name|void
-name|setGenerationStamp
+name|setGenerationStampV2
 parameter_list|(
 name|long
 name|stamp
 parameter_list|)
 block|{
-name|generationStamp
+name|generationStampV2
 operator|.
 name|setCurrentValue
 argument_list|(
@@ -425,14 +425,14 @@ name|stamp
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getGenerationStamp ()
+DECL|method|getGenerationStampV2 ()
 specifier|public
 name|long
-name|getGenerationStamp
+name|getGenerationStampV2
 parameter_list|()
 block|{
 return|return
-name|generationStamp
+name|generationStampV2
 operator|.
 name|getCurrentValue
 argument_list|()
@@ -452,73 +452,73 @@ block|{
 return|return
 name|legacyBlock
 condition|?
-name|getNextLegacyGenerationStamp
+name|getNextGenerationStampV1
 argument_list|()
 else|:
-name|getNextGenerationStamp
+name|getNextGenerationStampV2
 argument_list|()
 return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNextLegacyGenerationStamp ()
+DECL|method|getNextGenerationStampV1 ()
 name|long
-name|getNextLegacyGenerationStamp
+name|getNextGenerationStampV1
 parameter_list|()
 throws|throws
 name|IOException
 block|{
 name|long
-name|legacyGenStamp
+name|genStampV1
 init|=
-name|legacyGenerationStamp
+name|generationStampV1
 operator|.
 name|nextValue
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|legacyGenStamp
+name|genStampV1
 operator|>=
-name|legacyGenerationStampLimit
+name|generationStampV1Limit
 condition|)
 block|{
 comment|// We ran out of generation stamps for legacy blocks. In practice, it
-comment|// is extremely unlikely as we reserved 1T legacy generation stamps. The
+comment|// is extremely unlikely as we reserved 1T v1 generation stamps. The
 comment|// result is that we can no longer append to the legacy blocks that
 comment|// were created before the upgrade to sequential block IDs.
 throw|throw
 operator|new
-name|OutOfLegacyGenerationStampsException
+name|OutOfV1GenerationStampsException
 argument_list|()
 throw|;
 block|}
 return|return
-name|legacyGenStamp
+name|genStampV1
 return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNextGenerationStamp ()
+DECL|method|getNextGenerationStampV2 ()
 name|long
-name|getNextGenerationStamp
+name|getNextGenerationStampV2
 parameter_list|()
 block|{
 return|return
-name|generationStamp
+name|generationStampV2
 operator|.
 name|nextValue
 argument_list|()
 return|;
 block|}
-DECL|method|getLegacyGenerationStampLimit ()
+DECL|method|getGenerationStampV1Limit ()
 specifier|public
 name|long
-name|getLegacyGenerationStampLimit
+name|getGenerationStampV1Limit
 parameter_list|()
 block|{
 return|return
-name|legacyGenerationStampLimit
+name|generationStampV1Limit
 return|;
 block|}
 comment|/**    * Determine whether the block ID was randomly generated (legacy) or    * sequentially generated. The generation stamp value is used to    * make the distinction.    *    * @return true if the block ID was randomly generated, false otherwise.    */
@@ -536,7 +536,7 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 operator|<
-name|getLegacyGenerationStampLimit
+name|getGenerationStampV1Limit
 argument_list|()
 return|;
 block|}
@@ -585,7 +585,7 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 operator|>
-name|getLegacyGenerationStamp
+name|getGenerationStampV1
 argument_list|()
 return|;
 block|}
@@ -597,7 +597,7 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 operator|>
-name|getGenerationStamp
+name|getGenerationStampV2
 argument_list|()
 return|;
 block|}
@@ -607,7 +607,7 @@ name|void
 name|clear
 parameter_list|()
 block|{
-name|legacyGenerationStamp
+name|generationStampV1
 operator|.
 name|setCurrentValue
 argument_list|(
@@ -616,7 +616,7 @@ operator|.
 name|LAST_RESERVED_STAMP
 argument_list|)
 expr_stmt|;
-name|generationStamp
+name|generationStampV2
 operator|.
 name|setCurrentValue
 argument_list|(
@@ -635,7 +635,7 @@ operator|.
 name|LAST_RESERVED_BLOCK_ID
 argument_list|)
 expr_stmt|;
-name|legacyGenerationStampLimit
+name|generationStampV1Limit
 operator|=
 name|HdfsConstants
 operator|.
