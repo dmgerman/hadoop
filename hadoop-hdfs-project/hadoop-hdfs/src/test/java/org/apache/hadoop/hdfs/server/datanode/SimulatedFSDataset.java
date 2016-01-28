@@ -2598,7 +2598,7 @@ operator|++
 name|i
 control|)
 block|{
-name|storage
+name|DataStorage
 operator|.
 name|createStorageID
 argument_list|(

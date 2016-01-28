@@ -3176,6 +3176,11 @@ argument_list|(
 literal|3
 argument_list|)
 operator|.
+name|storagesPerDatanode
+argument_list|(
+literal|1
+argument_list|)
+operator|.
 name|build
 argument_list|()
 expr_stmt|;

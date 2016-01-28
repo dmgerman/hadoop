@@ -2454,7 +2454,7 @@ name|getParentFile
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|storage
+name|DataStorage
 operator|.
 name|createStorageID
 argument_list|(

@@ -2377,6 +2377,10 @@ argument_list|(
 literal|"Unexpected FS state: "
 operator|+
 name|curState
+operator|+
+literal|" for storage directory: "
+operator|+
+name|rootPath
 argument_list|)
 throw|;
 block|}

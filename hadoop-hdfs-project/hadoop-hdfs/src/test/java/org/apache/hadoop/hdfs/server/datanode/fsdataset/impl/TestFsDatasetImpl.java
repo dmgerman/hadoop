@@ -1102,7 +1102,7 @@ argument_list|(
 name|root
 argument_list|)
 decl_stmt|;
-name|dsForStorageUuid
+name|DataStorage
 operator|.
 name|createStorageID
 argument_list|(
