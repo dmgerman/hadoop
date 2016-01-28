@@ -597,6 +597,11 @@ operator|.
 name|Builder
 argument_list|()
 operator|.
+name|setContainer
+argument_list|(
+name|container
+argument_list|)
+operator|.
 name|setUser
 argument_list|(
 name|container
