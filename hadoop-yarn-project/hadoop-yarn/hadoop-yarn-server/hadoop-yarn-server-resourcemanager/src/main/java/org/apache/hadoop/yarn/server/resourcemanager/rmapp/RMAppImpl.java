@@ -5533,16 +5533,6 @@ operator|=
 name|firstAttemptIdInStateStore
 expr_stmt|;
 block|}
-comment|// send the ATS create Event
-name|sendATSCreateEvent
-argument_list|(
-name|this
-argument_list|,
-name|this
-operator|.
-name|startTime
-argument_list|)
-expr_stmt|;
 comment|//TODO recover collector address.
 comment|//this.collectorAddr = appState.getCollectorAddr();
 comment|// send the ATS create Event

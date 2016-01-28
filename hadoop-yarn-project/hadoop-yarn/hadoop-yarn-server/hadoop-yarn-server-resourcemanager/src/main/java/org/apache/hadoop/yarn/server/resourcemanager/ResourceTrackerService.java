@@ -3304,17 +3304,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// 4. Send status to RMNode, saving the latest response.
-name|List
-argument_list|<
-name|ApplicationId
-argument_list|>
-name|keepAliveApps
-init|=
-name|remoteNodeStatus
-operator|.
-name|getKeepAliveApplications
-argument_list|()
-decl_stmt|;
 name|RMNodeStatusEvent
 name|nodeStatusEvent
 init|=
