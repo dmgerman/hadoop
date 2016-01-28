@@ -30,6 +30,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|permission
+operator|.
+name|FsPermission
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|WritableComparator
@@ -832,6 +848,24 @@ operator|==
 literal|0
 return|;
 block|}
+comment|/**    * Default permission mask for the level db dir    */
+DECL|field|LEVELDB_DIR_UMASK
+specifier|public
+specifier|static
+specifier|final
+name|FsPermission
+name|LEVELDB_DIR_UMASK
+init|=
+name|FsPermission
+operator|.
+name|createImmutable
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|0700
+argument_list|)
+decl_stmt|;
 block|}
 end_class
 

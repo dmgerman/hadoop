@@ -1375,7 +1375,9 @@ name|store
 init|=
 operator|new
 name|MemoryTimelineStore
-argument_list|()
+argument_list|(
+literal|"MemoryStore.test"
+argument_list|)
 decl_stmt|;
 name|TimelineDataManager
 name|tdm
