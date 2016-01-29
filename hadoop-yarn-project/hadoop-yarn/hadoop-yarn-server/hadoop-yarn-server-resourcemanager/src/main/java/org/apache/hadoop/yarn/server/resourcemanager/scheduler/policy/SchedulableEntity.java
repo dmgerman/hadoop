@@ -26,16 +26,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -62,24 +52,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Resource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -91,7 +63,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A SchedulableEntity is a process to be scheduled,   * for example, an application / application attempt  */
+comment|/**  * A SchedulableEntity is a process to be scheduled.  * for example, an application / application attempt  */
 end_comment
 
 begin_interface
@@ -129,6 +101,13 @@ DECL|method|getPriority ()
 specifier|public
 name|Priority
 name|getPriority
+parameter_list|()
+function_decl|;
+comment|/**    * Whether application was running before RM restart.    */
+DECL|method|isRecovering ()
+specifier|public
+name|boolean
+name|isRecovering
 parameter_list|()
 function_decl|;
 block|}

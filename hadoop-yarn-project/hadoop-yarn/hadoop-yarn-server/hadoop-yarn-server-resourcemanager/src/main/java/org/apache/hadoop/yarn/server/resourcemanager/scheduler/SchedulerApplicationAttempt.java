@@ -4970,10 +4970,12 @@ comment|// Give the specific information which might be applicable for the
 comment|// respective scheduler
 comment|// queue's resource usage for specific partition
 block|}
-DECL|method|isAttemptRecovering ()
+annotation|@
+name|Override
+DECL|method|isRecovering ()
 specifier|public
 name|boolean
-name|isAttemptRecovering
+name|isRecovering
 parameter_list|()
 block|{
 return|return
