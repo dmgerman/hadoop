@@ -167,7 +167,7 @@ literal|true
 argument_list|,
 literal|"Configuration for ssl config file"
 operator|+
-literal|", to use with hftps://"
+literal|", to use with hftps://. Must be in the classpath."
 argument_list|)
 argument_list|)
 block|,
