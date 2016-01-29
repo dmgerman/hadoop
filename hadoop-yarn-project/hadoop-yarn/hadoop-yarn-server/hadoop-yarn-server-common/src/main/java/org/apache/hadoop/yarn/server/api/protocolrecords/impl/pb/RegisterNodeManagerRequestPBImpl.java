@@ -549,6 +549,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
+specifier|synchronized
 name|RegisterNodeManagerRequestProto
 name|getProto
 parameter_list|()
@@ -577,6 +578,7 @@ return|;
 block|}
 DECL|method|mergeLocalToBuilder ()
 specifier|private
+specifier|synchronized
 name|void
 name|mergeLocalToBuilder
 parameter_list|()
@@ -763,6 +765,7 @@ expr_stmt|;
 block|}
 DECL|method|mergeLocalToProto ()
 specifier|private
+specifier|synchronized
 name|void
 name|mergeLocalToProto
 parameter_list|()
@@ -771,9 +774,11 @@ if|if
 condition|(
 name|viaProto
 condition|)
+block|{
 name|maybeInitBuilder
 argument_list|()
 expr_stmt|;
+block|}
 name|mergeLocalToBuilder
 argument_list|()
 expr_stmt|;
@@ -791,6 +796,7 @@ expr_stmt|;
 block|}
 DECL|method|maybeInitBuilder ()
 specifier|private
+specifier|synchronized
 name|void
 name|maybeInitBuilder
 parameter_list|()
@@ -823,6 +829,7 @@ annotation|@
 name|Override
 DECL|method|getResource ()
 specifier|public
+specifier|synchronized
 name|Resource
 name|getResource
 parameter_list|()
@@ -886,6 +893,7 @@ annotation|@
 name|Override
 DECL|method|setResource (Resource resource)
 specifier|public
+specifier|synchronized
 name|void
 name|setResource
 parameter_list|(
@@ -918,6 +926,7 @@ annotation|@
 name|Override
 DECL|method|getNodeId ()
 specifier|public
+specifier|synchronized
 name|NodeId
 name|getNodeId
 parameter_list|()
@@ -981,6 +990,7 @@ annotation|@
 name|Override
 DECL|method|setNodeId (NodeId nodeId)
 specifier|public
+specifier|synchronized
 name|void
 name|setNodeId
 parameter_list|(
@@ -997,11 +1007,13 @@ name|nodeId
 operator|==
 literal|null
 condition|)
+block|{
 name|builder
 operator|.
 name|clearNodeId
 argument_list|()
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|nodeId
@@ -1013,6 +1025,7 @@ annotation|@
 name|Override
 DECL|method|getHttpPort ()
 specifier|public
+specifier|synchronized
 name|int
 name|getHttpPort
 parameter_list|()
@@ -1052,6 +1065,7 @@ annotation|@
 name|Override
 DECL|method|setHttpPort (int httpPort)
 specifier|public
+specifier|synchronized
 name|void
 name|setHttpPort
 parameter_list|(
@@ -1074,6 +1088,7 @@ annotation|@
 name|Override
 DECL|method|getRunningApplications ()
 specifier|public
+specifier|synchronized
 name|List
 argument_list|<
 name|ApplicationId
@@ -1090,6 +1105,7 @@ return|;
 block|}
 DECL|method|initRunningApplications ()
 specifier|private
+specifier|synchronized
 name|void
 name|initRunningApplications
 parameter_list|()
@@ -1162,6 +1178,7 @@ annotation|@
 name|Override
 DECL|method|setRunningApplications (List<ApplicationId> apps)
 specifier|public
+specifier|synchronized
 name|void
 name|setRunningApplications
 parameter_list|(
@@ -1196,6 +1213,7 @@ expr_stmt|;
 block|}
 DECL|method|addRunningApplicationsToProto ()
 specifier|private
+specifier|synchronized
 name|void
 name|addRunningApplicationsToProto
 parameter_list|()
@@ -1320,6 +1338,7 @@ annotation|@
 name|Override
 DECL|method|getNMContainerStatuses ()
 specifier|public
+specifier|synchronized
 name|List
 argument_list|<
 name|NMContainerStatus
@@ -1336,6 +1355,7 @@ return|;
 block|}
 DECL|method|initContainerRecoveryReports ()
 specifier|private
+specifier|synchronized
 name|void
 name|initContainerRecoveryReports
 parameter_list|()
@@ -1408,6 +1428,7 @@ annotation|@
 name|Override
 DECL|method|setContainerStatuses ( List<NMContainerStatus> containerReports)
 specifier|public
+specifier|synchronized
 name|void
 name|setContainerStatuses
 parameter_list|(
@@ -1523,6 +1544,7 @@ annotation|@
 name|Override
 DECL|method|getNMVersion ()
 specifier|public
+specifier|synchronized
 name|String
 name|getNMVersion
 parameter_list|()
@@ -1562,6 +1584,7 @@ annotation|@
 name|Override
 DECL|method|setNMVersion (String version)
 specifier|public
+specifier|synchronized
 name|void
 name|setNMVersion
 parameter_list|(
@@ -1584,6 +1607,7 @@ annotation|@
 name|Override
 DECL|method|getNodeLabels ()
 specifier|public
+specifier|synchronized
 name|Set
 argument_list|<
 name|NodeLabel
@@ -1604,6 +1628,7 @@ annotation|@
 name|Override
 DECL|method|setNodeLabels (Set<NodeLabel> nodeLabels)
 specifier|public
+specifier|synchronized
 name|void
 name|setNodeLabels
 parameter_list|(
@@ -1631,6 +1656,7 @@ expr_stmt|;
 block|}
 DECL|method|initNodeLabels ()
 specifier|private
+specifier|synchronized
 name|void
 name|initNodeLabels
 parameter_list|()
@@ -1712,6 +1738,7 @@ block|}
 block|}
 DECL|method|convertFromProtoFormat (NodeLabelProto p)
 specifier|private
+specifier|static
 name|NodeLabelPBImpl
 name|convertFromProtoFormat
 parameter_list|(
@@ -1729,6 +1756,7 @@ return|;
 block|}
 DECL|method|convertToProtoFormat (NodeLabel t)
 specifier|private
+specifier|static
 name|NodeLabelProto
 name|convertToProtoFormat
 parameter_list|(
@@ -1748,8 +1776,9 @@ name|getProto
 argument_list|()
 return|;
 block|}
-DECL|method|convertFromProtoFormat (ApplicationIdProto p)
+DECL|method|convertFromProtoFormat ( ApplicationIdProto p)
 specifier|private
+specifier|static
 name|ApplicationIdPBImpl
 name|convertFromProtoFormat
 parameter_list|(
@@ -1767,6 +1796,7 @@ return|;
 block|}
 DECL|method|convertToProtoFormat (ApplicationId t)
 specifier|private
+specifier|static
 name|ApplicationIdProto
 name|convertToProtoFormat
 parameter_list|(
@@ -1788,6 +1818,7 @@ return|;
 block|}
 DECL|method|convertFromProtoFormat (NodeIdProto p)
 specifier|private
+specifier|static
 name|NodeIdPBImpl
 name|convertFromProtoFormat
 parameter_list|(
@@ -1805,6 +1836,7 @@ return|;
 block|}
 DECL|method|convertToProtoFormat (NodeId t)
 specifier|private
+specifier|static
 name|NodeIdProto
 name|convertToProtoFormat
 parameter_list|(
@@ -1826,6 +1858,7 @@ return|;
 block|}
 DECL|method|convertFromProtoFormat (ResourceProto p)
 specifier|private
+specifier|static
 name|ResourcePBImpl
 name|convertFromProtoFormat
 parameter_list|(
@@ -1843,6 +1876,7 @@ return|;
 block|}
 DECL|method|convertToProtoFormat (Resource t)
 specifier|private
+specifier|static
 name|ResourceProto
 name|convertToProtoFormat
 parameter_list|(
@@ -1862,8 +1896,9 @@ name|getProto
 argument_list|()
 return|;
 block|}
-DECL|method|convertFromProtoFormat (NMContainerStatusProto c)
+DECL|method|convertFromProtoFormat ( NMContainerStatusProto c)
 specifier|private
+specifier|static
 name|NMContainerStatusPBImpl
 name|convertFromProtoFormat
 parameter_list|(
@@ -1879,8 +1914,9 @@ name|c
 argument_list|)
 return|;
 block|}
-DECL|method|convertToProtoFormat (NMContainerStatus c)
+DECL|method|convertToProtoFormat ( NMContainerStatus c)
 specifier|private
+specifier|static
 name|NMContainerStatusProto
 name|convertToProtoFormat
 parameter_list|(
