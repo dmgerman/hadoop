@@ -392,10 +392,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|TestSubmitTestRpc ()
+DECL|method|testSubmitTestRpc ()
 specifier|public
 name|void
-name|TestSubmitTestRpc
+name|testSubmitTestRpc
 parameter_list|()
 throws|throws
 name|Exception
@@ -606,10 +606,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestCancelTestRpc ()
+DECL|method|testCancelTestRpc ()
 specifier|public
 name|void
-name|TestCancelTestRpc
+name|testCancelTestRpc
 parameter_list|()
 throws|throws
 name|Exception
@@ -838,10 +838,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestQueryTestRpc ()
+DECL|method|testQueryTestRpc ()
 specifier|public
 name|void
-name|TestQueryTestRpc
+name|testQueryTestRpc
 parameter_list|()
 throws|throws
 name|Exception
@@ -1066,6 +1066,54 @@ name|dataNode
 operator|.
 name|queryDiskBalancerPlan
 argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testgetDiskBalancerSetting ()
+specifier|public
+name|void
+name|testgetDiskBalancerSetting
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+specifier|final
+name|int
+name|dnIndex
+init|=
+literal|0
+decl_stmt|;
+name|DataNode
+name|dataNode
+init|=
+name|cluster
+operator|.
+name|getDataNodes
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|dnIndex
+argument_list|)
+decl_stmt|;
+name|thrown
+operator|.
+name|expect
+argument_list|(
+name|DiskbalancerException
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|dataNode
+operator|.
+name|getDiskBalancerSetting
+argument_list|(
+name|DiskBalancerConstants
+operator|.
+name|DISKBALANCER_BANDWIDTH
+argument_list|)
 expr_stmt|;
 block|}
 block|}

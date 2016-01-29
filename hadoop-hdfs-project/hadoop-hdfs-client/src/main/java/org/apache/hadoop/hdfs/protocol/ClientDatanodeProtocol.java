@@ -419,6 +419,17 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Gets a run-time configuration value from running diskbalancer instance.    * For example : Disk Balancer bandwidth of a running instance.    *    * @param key runtime configuration key    * @return value of the key as a string.    * @throws IOException - Throws if there is no such key    */
+DECL|method|getDiskBalancerSetting (String key)
+name|String
+name|getDiskBalancerSetting
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

@@ -15750,6 +15750,33 @@ literal|0
 argument_list|)
 throw|;
 block|}
+comment|/**    * Gets a run-time configuration value from running diskbalancer instance. For    * example : Disk Balancer bandwidth of a running instance.    *    * @param key - String that represents the run time key value.    * @return value of the key as a string.    * @throws IOException - Throws if there is no such key    */
+annotation|@
+name|Override
+DECL|method|getDiskBalancerSetting (String key)
+specifier|public
+name|String
+name|getDiskBalancerSetting
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+throw|throw
+operator|new
+name|DiskbalancerException
+argument_list|(
+literal|"Not Implemented"
+argument_list|,
+literal|0
+argument_list|)
+throw|;
+block|}
 block|}
 end_class
 
