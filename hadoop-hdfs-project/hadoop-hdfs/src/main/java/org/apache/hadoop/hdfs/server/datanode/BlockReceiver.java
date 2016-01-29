@@ -1232,23 +1232,11 @@ literal|": "
 operator|+
 name|block
 operator|+
-literal|"\n  isClient  ="
+literal|"\n storageType="
 operator|+
-name|isClient
+name|storageType
 operator|+
-literal|", clientname="
-operator|+
-name|clientname
-operator|+
-literal|"\n  isDatanode="
-operator|+
-name|isDatanode
-operator|+
-literal|", srcDataNode="
-operator|+
-name|srcDataNode
-operator|+
-literal|"\n  inAddr="
+literal|", inAddr="
 operator|+
 name|inAddr
 operator|+
@@ -1256,13 +1244,64 @@ literal|", myAddr="
 operator|+
 name|myAddr
 operator|+
-literal|"\n  cachingStrategy = "
+literal|"\n stage="
+operator|+
+name|stage
+operator|+
+literal|", newGs="
+operator|+
+name|newGs
+operator|+
+literal|", minBytesRcvd="
+operator|+
+name|minBytesRcvd
+operator|+
+literal|", maxBytesRcvd="
+operator|+
+name|maxBytesRcvd
+operator|+
+literal|"\n clientname="
+operator|+
+name|clientname
+operator|+
+literal|", srcDataNode="
+operator|+
+name|srcDataNode
+operator|+
+literal|", datanode="
+operator|+
+name|datanode
+operator|.
+name|getDisplayName
+argument_list|()
+operator|+
+literal|"\n requestedChecksum="
+operator|+
+name|requestedChecksum
+operator|+
+literal|"\n cachingStrategy="
 operator|+
 name|cachingStrategy
 operator|+
-literal|"\n  pinning="
+literal|"\n allowLazyPersist="
+operator|+
+name|allowLazyPersist
+operator|+
+literal|", pinning="
 operator|+
 name|pinning
+operator|+
+literal|", isClient="
+operator|+
+name|isClient
+operator|+
+literal|", isDatanode="
+operator|+
+name|isDatanode
+operator|+
+literal|", responseInterval="
+operator|+
+name|responseInterval
 argument_list|)
 expr_stmt|;
 block|}
