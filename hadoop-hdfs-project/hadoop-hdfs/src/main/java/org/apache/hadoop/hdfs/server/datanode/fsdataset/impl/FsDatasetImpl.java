@@ -3525,6 +3525,15 @@ argument_list|,
 name|clearFailure
 argument_list|)
 expr_stmt|;
+name|volumes
+operator|.
+name|waitVolumeRemoved
+argument_list|(
+literal|5000
+argument_list|,
+name|this
+argument_list|)
+expr_stmt|;
 comment|// Removed all replica information for the blocks on the volume.
 comment|// Unlike updating the volumeMap in addVolume(), this operation does
 comment|// not scan disks.
@@ -9732,6 +9741,9 @@ name|finalized
 return|;
 block|}
 comment|/**    * Check if a block is valid.    *    * @param b           The block to check.    * @param minLength   The minimum length that the block must have.  May be 0.    * @param state       If this is null, it is ignored.  If it is non-null, we    *                        will check that the replica has this state.    *    * @throws ReplicaNotFoundException          If the replica is not found     *    * @throws UnexpectedReplicaStateException   If the replica is not in the     *                                             expected state.    * @throws FileNotFoundException             If the block file is not found or there    *                                              was an error locating it.    * @throws EOFException                      If the replica length is too short.    *     * @throws IOException                       May be thrown from the methods called.     */
+annotation|@
+name|Override
+comment|// FsDatasetSpi
 DECL|method|checkBlock (ExtendedBlock b, long minLength, ReplicaState state)
 specifier|public
 name|void

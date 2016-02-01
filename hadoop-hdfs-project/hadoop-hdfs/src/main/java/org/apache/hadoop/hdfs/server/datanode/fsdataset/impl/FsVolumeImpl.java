@@ -1387,10 +1387,10 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Close this volume and wait all other threads to release the reference count    * on this volume.    * @throws IOException if the volume is closed or the waiting is interrupted.    */
-DECL|method|closeAndWait ()
+comment|/**    * Close this volume.    * @throws IOException if the volume is closed.    */
+DECL|method|setClosed ()
 name|void
-name|closeAndWait
+name|setClosed
 parameter_list|()
 throws|throws
 name|IOException
@@ -1421,13 +1421,14 @@ name|e
 argument_list|)
 throw|;
 block|}
-specifier|final
-name|int
-name|SLEEP_MILLIS
-init|=
-literal|500
-decl_stmt|;
-while|while
+block|}
+comment|/**    * Check whether this volume has successfully been closed.    */
+DECL|method|checkClosed ()
+name|boolean
+name|checkClosed
+parameter_list|()
+block|{
+if|if
 condition|(
 name|this
 operator|.
@@ -1471,31 +1472,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|SLEEP_MILLIS
-argument_list|)
-expr_stmt|;
+return|return
+literal|false
+return|;
 block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
-block|}
+return|return
+literal|true
+return|;
 block|}
 DECL|method|getCurrentDir ()
 name|File
