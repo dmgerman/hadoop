@@ -905,21 +905,24 @@ name|p
 operator|.
 name|append
 argument_list|(
-literal|"Block scanner information for volume "
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Block scanner information for volume %s with base"
 operator|+
+literal|" path %s%n"
+argument_list|,
 name|volume
 operator|.
 name|getStorageID
 argument_list|()
-operator|+
-literal|" with base path "
-operator|+
+argument_list|,
 name|volume
 operator|.
 name|getBasePath
 argument_list|()
-operator|+
-literal|"%n"
+argument_list|)
 argument_list|)
 expr_stmt|;
 synchronized|synchronized
@@ -1127,7 +1130,10 @@ name|p
 operator|.
 name|append
 argument_list|(
-literal|"%n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
