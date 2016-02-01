@@ -6567,7 +6567,7 @@ name|alClasses
 init|=
 name|conf
 operator|.
-name|getStringCollection
+name|getTrimmedStringCollection
 argument_list|(
 name|DFS_NAMENODE_AUDIT_LOGGERS_KEY
 argument_list|)
