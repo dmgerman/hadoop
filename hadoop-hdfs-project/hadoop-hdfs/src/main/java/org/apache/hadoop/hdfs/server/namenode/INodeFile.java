@@ -2967,7 +2967,9 @@ parameter_list|()
 block|{
 name|setBlocks
 argument_list|(
-literal|null
+name|BlockInfo
+operator|.
+name|EMPTY_ARRAY
 argument_list|)
 expr_stmt|;
 block|}

@@ -76,18 +76,6 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertNull
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
 name|fail
 import|;
 end_import
@@ -7050,12 +7038,16 @@ operator|.
 name|clearBlocks
 argument_list|()
 expr_stmt|;
-name|assertNull
+name|assertTrue
 argument_list|(
 name|toBeCleared
 operator|.
 name|getBlocks
 argument_list|()
+operator|.
+name|length
+operator|==
+literal|0
 argument_list|)
 expr_stmt|;
 block|}

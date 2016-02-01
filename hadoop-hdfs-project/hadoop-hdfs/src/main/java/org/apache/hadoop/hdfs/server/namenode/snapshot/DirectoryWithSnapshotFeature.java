@@ -2568,6 +2568,54 @@ operator|>=
 name|post
 condition|)
 block|{
+name|INodeReference
+operator|.
+name|WithCount
+name|wc
+init|=
+operator|(
+name|INodeReference
+operator|.
+name|WithCount
+operator|)
+name|wn
+operator|.
+name|getReferredINode
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|wc
+operator|.
+name|getLastWithName
+argument_list|()
+operator|==
+name|wn
+operator|&&
+name|wc
+operator|.
+name|getParentReference
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+comment|// this wn is the last wn inside of the wc, also the dstRef node has
+comment|// been deleted. In this case, we should treat the referred file/dir
+comment|// as normal case
+name|queue
+operator|.
+name|add
+argument_list|(
+name|wc
+operator|.
+name|getReferredINode
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|wn
 operator|.
 name|cleanSubtree
@@ -2579,6 +2627,7 @@ argument_list|,
 name|prior
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// For DstReference node, since the node is not in the created list of
 comment|// prior, we should treat it as regular file/dir

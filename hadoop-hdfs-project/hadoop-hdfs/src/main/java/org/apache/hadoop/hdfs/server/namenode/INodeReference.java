@@ -1704,7 +1704,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/** Return the last WithName reference if there is any, null otherwise. */
 DECL|method|getLastWithName ()
+specifier|public
 name|WithName
 name|getLastWithName
 parameter_list|()
