@@ -184,7 +184,24 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// nothing to do
+if|if
+condition|(
+name|clientProtocol
+operator|instanceof
+name|YARNRunner
+condition|)
+block|{
+operator|(
+operator|(
+name|YARNRunner
+operator|)
+name|clientProtocol
+operator|)
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class
