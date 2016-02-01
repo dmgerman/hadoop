@@ -1972,6 +1972,17 @@ name|timestamp
 expr_stmt|;
 block|}
 annotation|@
+name|VisibleForTesting
+DECL|method|getRmDispatcher ()
+name|Dispatcher
+name|getRmDispatcher
+parameter_list|()
+block|{
+return|return
+name|rmDispatcher
+return|;
+block|}
+annotation|@
 name|Override
 DECL|method|serviceInit (Configuration conf)
 specifier|protected
