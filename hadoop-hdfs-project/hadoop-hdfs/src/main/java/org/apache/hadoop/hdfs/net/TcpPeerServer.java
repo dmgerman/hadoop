@@ -193,8 +193,8 @@ specifier|final
 name|ServerSocket
 name|serverSocket
 decl_stmt|;
-comment|/**    * Create a non-secure TcpPeerServer.    *    * @param socketWriteTimeout    The Socket write timeout in ms.    * @param bindAddr              The address to bind to.    * @throws IOException    */
-DECL|method|TcpPeerServer (int socketWriteTimeout, InetSocketAddress bindAddr)
+comment|/**    * Create a non-secure TcpPeerServer.    *    * @param socketWriteTimeout    The Socket write timeout in ms.    * @param bindAddr              The address to bind to.    * @param backlogLength         The length of the tcp accept backlog    * @throws IOException    */
+DECL|method|TcpPeerServer (int socketWriteTimeout, InetSocketAddress bindAddr, int backlogLength)
 specifier|public
 name|TcpPeerServer
 parameter_list|(
@@ -203,6 +203,9 @@ name|socketWriteTimeout
 parameter_list|,
 name|InetSocketAddress
 name|bindAddr
+parameter_list|,
+name|int
+name|backlogLength
 parameter_list|)
 throws|throws
 name|IOException
@@ -237,7 +240,7 @@ name|serverSocket
 argument_list|,
 name|bindAddr
 argument_list|,
-literal|0
+name|backlogLength
 argument_list|)
 expr_stmt|;
 block|}
