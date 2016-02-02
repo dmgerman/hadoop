@@ -576,7 +576,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerRecoveryProtos
+name|YarnProtos
 operator|.
 name|ReservationAllocationStateProto
 import|;
@@ -5755,12 +5755,12 @@ name|assertEquals
 argument_list|(
 name|expected
 operator|.
-name|getAcceptanceTimestamp
+name|getAcceptanceTime
 argument_list|()
 argument_list|,
 name|actual
 operator|.
-name|getAcceptanceTimestamp
+name|getAcceptanceTime
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5873,7 +5873,7 @@ argument_list|()
 argument_list|,
 name|actual
 operator|.
-name|getAcceptanceTimestamp
+name|getAcceptanceTime
 argument_list|()
 argument_list|)
 expr_stmt|;

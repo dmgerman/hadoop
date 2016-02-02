@@ -208,7 +208,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerRecoveryProtos
+name|YarnProtos
 operator|.
 name|ReservationAllocationStateProto
 import|;

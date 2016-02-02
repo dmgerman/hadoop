@@ -428,6 +428,17 @@ name|DELETE_RESERVATION_REQUEST
 init|=
 literal|"Delete Reservation Request"
 decl_stmt|;
+DECL|field|LIST_RESERVATION_REQUEST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LIST_RESERVATION_REQUEST
+init|=
+literal|"List "
+operator|+
+literal|"Reservation Request"
+decl_stmt|;
 block|}
 DECL|method|createSuccessLog (String user, String operation, String target, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId)
 specifier|static

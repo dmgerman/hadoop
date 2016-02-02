@@ -102,6 +102,24 @@ name|PlanView
 extends|extends
 name|PlanContext
 block|{
+comment|/**    * Return a set of {@link ReservationAllocation} identified by the user who    * made the reservation.    *    * @param reservationID the unqiue id to identify the    * {@link ReservationAllocation}    * @param interval the time interval used to retrieve the reservation    *                 allocations from. Only reservations with start time no    *                 greater than the interval end time, and end time no less    *                 than the interval start time will be selected.    * @param user the user to retrieve the reservation allocation from.    * @return {@link ReservationAllocation} identified by the user who    * made the reservation    */
+DECL|method|getReservations (ReservationId reservationID, ReservationInterval interval, String user)
+name|Set
+argument_list|<
+name|ReservationAllocation
+argument_list|>
+name|getReservations
+parameter_list|(
+name|ReservationId
+name|reservationID
+parameter_list|,
+name|ReservationInterval
+name|interval
+parameter_list|,
+name|String
+name|user
+parameter_list|)
+function_decl|;
 comment|/**    * Return a {@link ReservationAllocation} identified by its    * {@link ReservationId}    *     * @param reservationID the unique id to identify the    *          {@link ReservationAllocation}    * @return {@link ReservationAllocation} identified by the specified id    */
 DECL|method|getReservationById (ReservationId reservationID)
 specifier|public
