@@ -726,14 +726,10 @@ name|_
 argument_list|(
 literal|"Started:"
 argument_list|,
-operator|new
-name|Date
-argument_list|(
 name|job
 operator|.
-name|getStartTime
+name|getStartTimeStr
 argument_list|()
-argument_list|)
 argument_list|)
 operator|.
 name|_
