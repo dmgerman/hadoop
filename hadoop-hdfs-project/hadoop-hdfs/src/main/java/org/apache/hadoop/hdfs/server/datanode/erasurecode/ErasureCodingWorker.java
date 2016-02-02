@@ -674,9 +674,9 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlockECRecoveryCommand
+name|BlockECReconstructionCommand
 operator|.
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 import|;
 end_import
 
@@ -861,7 +861,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * ErasureCodingWorker handles the erasure coding recovery work commands. These  * commands would be issued from Namenode as part of Datanode's heart beat  * response. BPOfferService delegates the work to this class for handling EC  * commands.  */
+comment|/**  * ErasureCodingWorker handles the erasure coding reconstruction work commands.  * These commands would be issued from Namenode as part of Datanode's heart  * beat response. BPOfferService delegates the work to this class for handling  * EC commands.  */
 end_comment
 
 begin_class
@@ -898,27 +898,27 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|field|STRIPED_BLK_RECOVERY_THREAD_POOL
+DECL|field|EC_RECONSTRUCTION_STRIPED_BLK_THREAD_POOL
 specifier|private
 name|ThreadPoolExecutor
-name|STRIPED_BLK_RECOVERY_THREAD_POOL
+name|EC_RECONSTRUCTION_STRIPED_BLK_THREAD_POOL
 decl_stmt|;
-DECL|field|STRIPED_READ_THREAD_POOL
+DECL|field|EC_RECONSTRUCTION_STRIPED_READ_THREAD_POOL
 specifier|private
 name|ThreadPoolExecutor
-name|STRIPED_READ_THREAD_POOL
+name|EC_RECONSTRUCTION_STRIPED_READ_THREAD_POOL
 decl_stmt|;
-DECL|field|STRIPED_READ_TIMEOUT_MILLIS
+DECL|field|EC_RECONSTRUCTION_STRIPED_READ_TIMEOUT_MILLIS
 specifier|private
 specifier|final
 name|int
-name|STRIPED_READ_TIMEOUT_MILLIS
+name|EC_RECONSTRUCTION_STRIPED_READ_TIMEOUT_MILLIS
 decl_stmt|;
-DECL|field|STRIPED_READ_BUFFER_SIZE
+DECL|field|EC_RECONSTRUCTION_STRIPED_READ_BUFFER_SIZE
 specifier|private
 specifier|final
 name|int
-name|STRIPED_READ_BUFFER_SIZE
+name|EC_RECONSTRUCTION_STRIPED_READ_BUFFER_SIZE
 decl_stmt|;
 DECL|method|ErasureCodingWorker (Configuration conf, DataNode datanode)
 specifier|public
@@ -943,7 +943,7 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
-name|STRIPED_READ_TIMEOUT_MILLIS
+name|EC_RECONSTRUCTION_STRIPED_READ_TIMEOUT_MILLIS
 operator|=
 name|conf
 operator|.
@@ -951,11 +951,11 @@ name|getInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_STRIPED_READ_TIMEOUT_MILLIS_KEY
+name|DFS_DN_EC_RECONSTRUCTION_STRIPED_READ_TIMEOUT_MILLIS_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_STRIPED_READ_TIMEOUT_MILLIS_DEFAULT
+name|DFS_DN_EC_RECONSTRUCTION_STRIPED_READ_TIMEOUT_MILLIS_DEFAULT
 argument_list|)
 expr_stmt|;
 name|initializeStripedReadThreadPool
@@ -966,15 +966,15 @@ name|getInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_STRIPED_READ_THREADS_KEY
+name|DFS_DN_EC_RECONSTRUCTION_STRIPED_READ_THREADS_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_STRIPED_READ_THREADS_DEFAULT
+name|DFS_DN_EC_RECONSTRUCTION_STRIPED_READ_THREADS_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|STRIPED_READ_BUFFER_SIZE
+name|EC_RECONSTRUCTION_STRIPED_READ_BUFFER_SIZE
 operator|=
 name|conf
 operator|.
@@ -982,14 +982,14 @@ name|getInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_STRIPED_READ_BUFFER_SIZE_KEY
+name|DFS_DN_EC_RECONSTRUCTION_STRIPED_READ_BUFFER_SIZE_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_STRIPED_READ_BUFFER_SIZE_DEFAULT
+name|DFS_DN_EC_RECONSTRUCTION_STRIPED_READ_BUFFER_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;
-name|initializeStripedBlkRecoveryThreadPool
+name|initializeStripedBlkReconstructionThreadPool
 argument_list|(
 name|conf
 operator|.
@@ -997,11 +997,11 @@ name|getInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_STRIPED_BLK_RECOVERY_THREADS_KEY
+name|DFS_DN_EC_RECONSTRUCTION_STRIPED_BLK_THREADS_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_STRIPED_BLK_RECOVERY_THREADS_DEFAULT
+name|DFS_DN_EC_RECONSTRUCTION_STRIPED_BLK_THREADS_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1049,7 +1049,7 @@ operator|+
 name|num
 argument_list|)
 expr_stmt|;
-name|STRIPED_READ_THREAD_POOL
+name|EC_RECONSTRUCTION_STRIPED_READ_THREAD_POOL
 operator|=
 operator|new
 name|ThreadPoolExecutor
@@ -1168,7 +1168,7 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-name|STRIPED_READ_THREAD_POOL
+name|EC_RECONSTRUCTION_STRIPED_READ_THREAD_POOL
 operator|.
 name|allowCoreThreadTimeOut
 argument_list|(
@@ -1176,10 +1176,10 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initializeStripedBlkRecoveryThreadPool (int num)
+DECL|method|initializeStripedBlkReconstructionThreadPool (int num)
 specifier|private
 name|void
-name|initializeStripedBlkRecoveryThreadPool
+name|initializeStripedBlkReconstructionThreadPool
 parameter_list|(
 name|int
 name|num
@@ -1189,12 +1189,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Using striped block recovery; pool threads="
+literal|"Using striped block reconstruction; pool threads="
 operator|+
 name|num
 argument_list|)
 expr_stmt|;
-name|STRIPED_BLK_RECOVERY_THREAD_POOL
+name|EC_RECONSTRUCTION_STRIPED_BLK_THREAD_POOL
 operator|=
 operator|new
 name|ThreadPoolExecutor
@@ -1257,7 +1257,7 @@ name|t
 operator|.
 name|setName
 argument_list|(
-literal|"stripedBlockRecovery-"
+literal|"stripedBlockReconstruction-"
 operator|+
 name|threadIdx
 operator|.
@@ -1272,7 +1272,7 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-name|STRIPED_BLK_RECOVERY_THREAD_POOL
+name|EC_RECONSTRUCTION_STRIPED_BLK_THREAD_POOL
 operator|.
 name|allowCoreThreadTimeOut
 argument_list|(
@@ -1280,37 +1280,37 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Handles the Erasure Coding recovery work commands.    *     * @param ecTasks    *          BlockECRecoveryInfo    */
-DECL|method|processErasureCodingTasks (Collection<BlockECRecoveryInfo> ecTasks)
+comment|/**    * Handles the Erasure Coding reconstruction work commands.    *    * @param ecTasks    *          BlockECReconstructionInfo    */
+DECL|method|processErasureCodingTasks ( Collection<BlockECReconstructionInfo> ecTasks)
 specifier|public
 name|void
 name|processErasureCodingTasks
 parameter_list|(
 name|Collection
 argument_list|<
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|>
 name|ecTasks
 parameter_list|)
 block|{
 for|for
 control|(
-name|BlockECRecoveryInfo
-name|recoveryInfo
+name|BlockECReconstructionInfo
+name|reconstructionInfo
 range|:
 name|ecTasks
 control|)
 block|{
 try|try
 block|{
-name|STRIPED_BLK_RECOVERY_THREAD_POOL
+name|EC_RECONSTRUCTION_STRIPED_BLK_THREAD_POOL
 operator|.
 name|submit
 argument_list|(
 operator|new
 name|ReconstructAndTransferBlock
 argument_list|(
-name|recoveryInfo
+name|reconstructionInfo
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1325,9 +1325,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to recover striped block "
+literal|"Failed to reconstruct striped block "
 operator|+
-name|recoveryInfo
+name|reconstructionInfo
 operator|.
 name|getExtendedBlock
 argument_list|()
@@ -1341,7 +1341,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * ReconstructAndTransferBlock recover one or more missed striped block in the    * striped block group, the minimum number of live striped blocks should be    * no less than data block number.    *     * |<- Striped Block Group -> |    *  blk_0      blk_1       blk_2(*)   blk_3   ...<- A striped block group    *    |          |           |          |      *    v          v           v          v     * +------+   +------+   +------+   +------+    * |cell_0|   |cell_1|   |cell_2|   |cell_3|  ...        * +------+   +------+   +------+   +------+         * |cell_4|   |cell_5|   |cell_6|   |cell_7|  ...    * +------+   +------+   +------+   +------+    * |cell_8|   |cell_9|   |cell10|   |cell11|  ...    * +------+   +------+   +------+   +------+    *  ...         ...       ...         ...    *      *     * We use following steps to recover striped block group, in each round, we    * recover<code>bufferSize</code> data until finish, the     *<code>bufferSize</code> is configurable and may be less or larger than     * cell size:    * step1: read<code>bufferSize</code> data from minimum number of sources     *        required by recovery.    * step2: decode data for targets.    * step3: transfer data to targets.    *     * In step1, try to read<code>bufferSize</code> data from minimum number    * of sources , if there is corrupt or stale sources, read from new source    * will be scheduled. The best sources are remembered for next round and     * may be updated in each round.    *     * In step2, typically if source blocks we read are all data blocks, we     * need to call encode, and if there is one parity block, we need to call    * decode. Notice we only read once and recover all missed striped block     * if they are more than one.    *     * In step3, send the recovered data to targets by constructing packet     * and send them directly. Same as continuous block replication, we     * don't check the packet ack. Since the datanode doing the recovery work    * are one of the source datanodes, so the recovered data are sent     * remotely.    *     * There are some points we can do further improvements in next phase:    * 1. we can read the block file directly on the local datanode,     *    currently we use remote block reader. (Notice short-circuit is not    *    a good choice, see inline comments).    * 2. We need to check the packet ack for EC recovery? Since EC recovery    *    is more expensive than continuous block replication, it needs to     *    read from several other datanodes, should we make sure the     *    recovered result received by targets?     */
+comment|/**    * ReconstructAndTransferBlock reconstruct one or more missed striped block    * in the striped block group, the minimum number of live striped blocks    * should be no less than data block number.    *     * |<- Striped Block Group -> |    *  blk_0      blk_1       blk_2(*)   blk_3   ...<- A striped block group    *    |          |           |          |      *    v          v           v          v     * +------+   +------+   +------+   +------+    * |cell_0|   |cell_1|   |cell_2|   |cell_3|  ...        * +------+   +------+   +------+   +------+         * |cell_4|   |cell_5|   |cell_6|   |cell_7|  ...    * +------+   +------+   +------+   +------+    * |cell_8|   |cell_9|   |cell10|   |cell11|  ...    * +------+   +------+   +------+   +------+    *  ...         ...       ...         ...    *      *     * We use following steps to reconstruct striped block group, in each round,    * we reconstruct<code>bufferSize</code> data until finish, the    *<code>bufferSize</code> is configurable and may be less or larger than     * cell size:    * step1: read<code>bufferSize</code> data from minimum number of sources     *        required by reconstruction.    * step2: decode data for targets.    * step3: transfer data to targets.    *     * In step1, try to read<code>bufferSize</code> data from minimum number    * of sources , if there is corrupt or stale sources, read from new source    * will be scheduled. The best sources are remembered for next round and     * may be updated in each round.    *     * In step2, typically if source blocks we read are all data blocks, we    * need to call encode, and if there is one parity block, we need to call    * decode. Notice we only read once and reconstruct all missed striped block    * if they are more than one.    *     * In step3, send the reconstructed data to targets by constructing packet    * and send them directly. Same as continuous block replication, we    * don't check the packet ack. Since the datanode doing the reconstruction    * work are one of the source datanodes, so the reconstructed data are sent    * remotely.    *     * There are some points we can do further improvements in next phase:    * 1. we can read the block file directly on the local datanode,     *    currently we use remote block reader. (Notice short-circuit is not    *    a good choice, see inline comments).    * 2. We need to check the packet ack for EC reconstruction? Since EC    *    reconstruction is more expensive than continuous block replication,    *    it needs to read from several other datanodes, should we make sure    *    the reconstructed result received by targets?    */
 DECL|class|ReconstructAndTransferBlock
 specifier|private
 class|class
@@ -1578,20 +1578,20 @@ operator|new
 name|ExecutorCompletionService
 argument_list|<>
 argument_list|(
-name|STRIPED_READ_THREAD_POOL
+name|EC_RECONSTRUCTION_STRIPED_READ_THREAD_POOL
 argument_list|)
 decl_stmt|;
-DECL|method|ReconstructAndTransferBlock (BlockECRecoveryInfo recoveryInfo)
+DECL|method|ReconstructAndTransferBlock (BlockECReconstructionInfo reconstructionInfo)
 name|ReconstructAndTransferBlock
 parameter_list|(
-name|BlockECRecoveryInfo
-name|recoveryInfo
+name|BlockECReconstructionInfo
+name|reconstructionInfo
 parameter_list|)
 block|{
 name|ErasureCodingPolicy
 name|ecPolicy
 init|=
-name|recoveryInfo
+name|reconstructionInfo
 operator|.
 name|getErasureCodingPolicy
 argument_list|()
@@ -1619,7 +1619,7 @@ argument_list|()
 expr_stmt|;
 name|blockGroup
 operator|=
-name|recoveryInfo
+name|reconstructionInfo
 operator|.
 name|getExtendedBlock
 argument_list|()
@@ -1659,14 +1659,14 @@ argument_list|)
 expr_stmt|;
 name|liveIndices
 operator|=
-name|recoveryInfo
+name|reconstructionInfo
 operator|.
 name|getLiveBlockIndices
 argument_list|()
 expr_stmt|;
 name|sources
 operator|=
-name|recoveryInfo
+name|reconstructionInfo
 operator|.
 name|getSourceDnInfos
 argument_list|()
@@ -1740,14 +1740,14 @@ expr_stmt|;
 block|}
 name|targets
 operator|=
-name|recoveryInfo
+name|reconstructionInfo
 operator|.
 name|getTargetDnInfos
 argument_list|()
 expr_stmt|;
 name|targetStorageTypes
 operator|=
-name|recoveryInfo
+name|reconstructionInfo
 operator|.
 name|getTargetStorageTypes
 argument_list|()
@@ -2149,7 +2149,7 @@ name|error
 init|=
 literal|"Can't find minimum sources required by "
 operator|+
-literal|"recovery, block id: "
+literal|"reconstruction, block id: "
 operator|+
 name|blockGroup
 operator|.
@@ -2371,7 +2371,7 @@ condition|)
 block|{
 specifier|final
 name|int
-name|toRecover
+name|toReconstruct
 init|=
 operator|(
 name|int
@@ -2409,11 +2409,11 @@ try|try
 block|{
 name|success
 operator|=
-name|readMinimumStripedData4Recovery
+name|readMinimumStripedData4Reconstruction
 argument_list|(
 name|success
 argument_list|,
-name|toRecover
+name|toReconstruct
 argument_list|,
 name|corruptionMap
 argument_list|)
@@ -2429,13 +2429,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// step2: decode to reconstruct targets
-name|recoverTargets
+name|reconstructTargets
 argument_list|(
 name|success
 argument_list|,
 name|targetsStatus
 argument_list|,
-name|toRecover
+name|toReconstruct
 argument_list|)
 expr_stmt|;
 comment|// step3: transfer data
@@ -2467,7 +2467,7 @@ argument_list|()
 expr_stmt|;
 name|positionInBlock
 operator|+=
-name|toRecover
+name|toReconstruct
 expr_stmt|;
 block|}
 name|endTargetBlocks
@@ -2488,7 +2488,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to recover striped block: "
+literal|"Failed to reconstruct striped block: "
 operator|+
 name|blockGroup
 argument_list|,
@@ -2605,7 +2605,7 @@ comment|// The bufferSize is flat to divide bytesPerChecksum
 name|int
 name|readBufferSize
 init|=
-name|STRIPED_READ_BUFFER_SIZE
+name|EC_RECONSTRUCTION_STRIPED_READ_BUFFER_SIZE
 decl_stmt|;
 name|bufferSize
 operator|=
@@ -2771,8 +2771,8 @@ block|}
 block|}
 block|}
 block|}
-comment|/** the reading length should not exceed the length for recovery */
-DECL|method|getReadLength (int index, int recoverLength)
+comment|/** the reading length should not exceed the length for reconstruction. */
+DECL|method|getReadLength (int index, int reconstructLength)
 specifier|private
 name|int
 name|getReadLength
@@ -2781,7 +2781,7 @@ name|int
 name|index
 parameter_list|,
 name|int
-name|recoverLength
+name|reconstructLength
 parameter_list|)
 block|{
 name|long
@@ -2811,16 +2811,16 @@ name|min
 argument_list|(
 name|remaining
 argument_list|,
-name|recoverLength
+name|reconstructLength
 argument_list|)
 return|;
 block|}
-comment|/**      * Read from minimum source DNs required for reconstruction in the iteration.      * First try the success list which we think they are the best DNs      * If source DN is corrupt or slow, try to read some other source DN,       * and will update the success list.       *       * Remember the updated success list and return it for following       * operations and next iteration read.      *       * @param success the initial success list of source DNs we think best      * @param recoverLength the length to recover.      * @return updated success list of source DNs we do real read      * @throws IOException      */
-DECL|method|readMinimumStripedData4Recovery (final int[] success, int recoverLength, Map<ExtendedBlock, Set<DatanodeInfo>> corruptionMap)
+comment|/**      * Read from minimum source DNs required for reconstruction in the iteration.      * First try the success list which we think they are the best DNs      * If source DN is corrupt or slow, try to read some other source DN,       * and will update the success list.       *       * Remember the updated success list and return it for following       * operations and next iteration read.      *       * @param success the initial success list of source DNs we think best      * @param reconstructLength the length to reconstruct.      * @return updated success list of source DNs we do real read      * @throws IOException      */
+DECL|method|readMinimumStripedData4Reconstruction (final int[] success, int reconstructLength, Map<ExtendedBlock, Set<DatanodeInfo>> corruptionMap)
 specifier|private
 name|int
 index|[]
-name|readMinimumStripedData4Recovery
+name|readMinimumStripedData4Reconstruction
 parameter_list|(
 specifier|final
 name|int
@@ -2828,7 +2828,7 @@ index|[]
 name|success
 parameter_list|,
 name|int
-name|recoverLength
+name|reconstructLength
 parameter_list|,
 name|Map
 argument_list|<
@@ -2848,11 +2848,11 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|recoverLength
+name|reconstructLength
 operator|>=
 literal|0
 operator|&&
-name|recoverLength
+name|reconstructLength
 operator|<=
 name|bufferSize
 argument_list|)
@@ -2926,7 +2926,7 @@ name|i
 index|]
 index|]
 argument_list|,
-name|recoverLength
+name|reconstructLength
 argument_list|)
 decl_stmt|;
 if|if
@@ -3038,7 +3038,7 @@ name|readService
 argument_list|,
 name|futures
 argument_list|,
-name|STRIPED_READ_TIMEOUT_MILLIS
+name|EC_RECONSTRUCTION_STRIPED_READ_TIMEOUT_MILLIS
 argument_list|)
 decl_stmt|;
 name|int
@@ -3110,7 +3110,7 @@ name|scheduleNewRead
 argument_list|(
 name|used
 argument_list|,
-name|recoverLength
+name|reconstructLength
 argument_list|,
 name|corruptionMap
 argument_list|)
@@ -3135,7 +3135,7 @@ name|scheduleNewRead
 argument_list|(
 name|used
 argument_list|,
-name|recoverLength
+name|reconstructLength
 argument_list|,
 name|corruptionMap
 argument_list|)
@@ -3400,10 +3400,10 @@ name|m
 argument_list|)
 return|;
 block|}
-DECL|method|recoverTargets (int[] success, boolean[] targetsStatus, int toRecoverLen)
+DECL|method|reconstructTargets (int[] success, boolean[] targetsStatus, int toReconstructLen)
 specifier|private
 name|void
-name|recoverTargets
+name|reconstructTargets
 parameter_list|(
 name|int
 index|[]
@@ -3414,7 +3414,7 @@ index|[]
 name|targetsStatus
 parameter_list|,
 name|int
-name|toRecoverLen
+name|toReconstructLen
 parameter_list|)
 block|{
 name|initDecoderIfNecessary
@@ -3473,7 +3473,7 @@ name|paddingBufferToLen
 argument_list|(
 name|buffer
 argument_list|,
-name|toRecoverLen
+name|toReconstructLen
 argument_list|)
 expr_stmt|;
 name|inputs
@@ -3530,7 +3530,7 @@ name|paddingBufferToLen
 argument_list|(
 name|buffer
 argument_list|,
-name|toRecoverLen
+name|toReconstructLen
 argument_list|)
 expr_stmt|;
 name|int
@@ -3614,7 +3614,7 @@ index|]
 operator|.
 name|limit
 argument_list|(
-name|toRecoverLen
+name|toReconstructLen
 argument_list|)
 expr_stmt|;
 name|outputs
@@ -3709,7 +3709,7 @@ if|if
 condition|(
 name|remaining
 operator|<
-name|toRecoverLen
+name|toReconstructLen
 condition|)
 block|{
 name|targetBuffers
@@ -3730,7 +3730,7 @@ block|}
 block|}
 block|}
 comment|/**      * Schedule a read from some new source DN if some DN is corrupted      * or slow, this is called from the read iteration.      * Initially we may only have<code>minRequiredSources</code> number of       * StripedReader.      * If the position is at the end of target block, don't need to do       * real read, and return the array index of source DN, otherwise -1.      *       * @param used the used source DNs in this iteration.      * @return the array index of source DN if don't need to do real read.      */
-DECL|method|scheduleNewRead (BitSet used, int recoverLength, Map<ExtendedBlock, Set<DatanodeInfo>> corruptionMap)
+DECL|method|scheduleNewRead (BitSet used, int reconstructLen, Map<ExtendedBlock, Set<DatanodeInfo>> corruptionMap)
 specifier|private
 name|int
 name|scheduleNewRead
@@ -3739,7 +3739,7 @@ name|BitSet
 name|used
 parameter_list|,
 name|int
-name|recoverLength
+name|reconstructLen
 parameter_list|,
 name|Map
 argument_list|<
@@ -3806,7 +3806,7 @@ index|[
 name|m
 index|]
 argument_list|,
-name|recoverLength
+name|reconstructLen
 argument_list|)
 expr_stmt|;
 if|if
@@ -3905,7 +3905,7 @@ index|[
 name|i
 index|]
 argument_list|,
-name|recoverLength
+name|reconstructLen
 argument_list|)
 expr_stmt|;
 if|if

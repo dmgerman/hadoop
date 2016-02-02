@@ -134,8 +134,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Creating an ErasureCodingWork to recover "
-operator|+
+literal|"Creating an ErasureCodingWork to {} reconstruct "
+argument_list|,
 name|block
 argument_list|)
 expr_stmt|;

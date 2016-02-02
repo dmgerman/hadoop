@@ -354,9 +354,9 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlockECRecoveryCommand
+name|BlockECReconstructionCommand
 operator|.
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 import|;
 end_import
 
@@ -481,10 +481,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestRecoverStripedBlocks
+DECL|class|TestReconstructStripedBlocks
 specifier|public
 class|class
-name|TestRecoverStripedBlocks
+name|TestReconstructStripedBlocks
 block|{
 DECL|field|cellSize
 specifier|private
@@ -641,7 +641,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Start GROUP_SIZE + 1 datanodes.    * Inject striped blocks to first GROUP_SIZE datanodes.    * Then make numOfBusy datanodes busy, make numOfMissed datanodes missed.    * Then trigger BlockManager to compute recovery works. (so all recovery work    * will be scheduled to the last datanode)    * Finally, verify the recovery work of the last datanode.    */
+comment|/**    * Start GROUP_SIZE + 1 datanodes.    * Inject striped blocks to first GROUP_SIZE datanodes.    * Then make numOfBusy datanodes busy, make numOfMissed datanodes missed.    * Then trigger BlockManager to compute reconstruction works. (so all    * reconstruction work will be scheduled to the last datanode)    * Finally, verify the reconstruction work of the last datanode.    */
 DECL|method|doTestMissingStripedBlock (int numOfMissed, int numOfBusy)
 specifier|private
 name|void
@@ -991,7 +991,7 @@ argument_list|(
 name|bm
 argument_list|)
 expr_stmt|;
-comment|// all the recovery work will be scheduled on the last DN
+comment|// all the reconstruction work will be scheduled on the last DN
 name|DataNode
 name|lastDn
 init|=
@@ -1035,9 +1035,9 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|>
-name|recovery
+name|reconstruction
 init|=
 name|last
 operator|.
@@ -1048,10 +1048,10 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 name|info
 range|:
-name|recovery
+name|reconstruction
 control|)
 block|{
 name|assertEquals
@@ -1106,7 +1106,8 @@ name|NUM_DATA_BLOCKS
 condition|)
 block|{
 comment|// It's a QUEUE_HIGHEST_PRIORITY block, so the busy DNs will be chosen
-comment|// to make sure we have NUM_DATA_BLOCKS DNs to do recovery work.
+comment|// to make sure we have NUM_DATA_BLOCKS DNs to do reconstruction
+comment|// work.
 name|assertEquals
 argument_list|(
 name|NUM_DATA_BLOCKS

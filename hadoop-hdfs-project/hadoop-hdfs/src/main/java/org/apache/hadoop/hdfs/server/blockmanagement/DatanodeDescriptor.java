@@ -324,9 +324,9 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlockECRecoveryCommand
+name|BlockECReconstructionCommand
 operator|.
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 import|;
 end_import
 
@@ -1047,7 +1047,7 @@ specifier|private
 specifier|final
 name|BlockQueue
 argument_list|<
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|>
 name|erasurecodeBlocks
 init|=
@@ -2788,11 +2788,11 @@ operator|>
 literal|0
 operator|)
 assert|;
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 name|task
 init|=
 operator|new
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|(
 name|block
 argument_list|,
@@ -2978,11 +2978,11 @@ name|maxTransfers
 argument_list|)
 return|;
 block|}
-DECL|method|getErasureCodeCommand (int maxTransfers)
+DECL|method|getErasureCodeCommand ( int maxTransfers)
 specifier|public
 name|List
 argument_list|<
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|>
 name|getErasureCodeCommand
 parameter_list|(

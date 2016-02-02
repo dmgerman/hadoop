@@ -232,9 +232,9 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlockECRecoveryCommand
+name|BlockECReconstructionCommand
 operator|.
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 import|;
 end_import
 
@@ -2874,7 +2874,7 @@ break|break;
 case|case
 name|DatanodeProtocol
 operator|.
-name|DNA_ERASURE_CODING_RECOVERY
+name|DNA_ERASURE_CODING_RECONSTRUCTION
 case|:
 name|LOG
 operator|.
@@ -2885,13 +2885,13 @@ argument_list|)
 expr_stmt|;
 name|Collection
 argument_list|<
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|>
 name|ecTasks
 init|=
 operator|(
 operator|(
-name|BlockECRecoveryCommand
+name|BlockECReconstructionCommand
 operator|)
 name|cmd
 operator|)
@@ -3035,7 +3035,7 @@ case|:
 case|case
 name|DatanodeProtocol
 operator|.
-name|DNA_ERASURE_CODING_RECOVERY
+name|DNA_ERASURE_CODING_RECONSTRUCTION
 case|:
 name|LOG
 operator|.

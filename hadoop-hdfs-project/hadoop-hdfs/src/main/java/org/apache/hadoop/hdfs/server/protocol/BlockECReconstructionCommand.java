@@ -163,7 +163,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A BlockECRecoveryCommand is an instruction to a DataNode to reconstruct a  * striped block group with missing blocks.  *  * Upon receiving this command, the DataNode pulls data from other DataNodes  * hosting blocks in this group and reconstructs the lost blocks through codec  * calculation.  *  * After the reconstruction, the DataNode pushes the reconstructed blocks to  * their final destinations if necessary (e.g., the destination is different  * from the reconstruction node, or multiple blocks in a group are to be  * reconstructed).  */
+comment|/**  * A BlockECReconstructionCommand is an instruction to a DataNode to  * reconstruct a striped block group with missing blocks.  *  * Upon receiving this command, the DataNode pulls data from other DataNodes  * hosting blocks in this group and reconstructs the lost blocks through codec  * calculation.  *  * After the reconstruction, the DataNode pushes the reconstructed blocks to  * their final destinations if necessary (e.g., the destination is different  * from the reconstruction node, or multiple blocks in a group are to be  * reconstructed).  */
 end_comment
 
 begin_class
@@ -175,34 +175,35 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|class|BlockECRecoveryCommand
+DECL|class|BlockECReconstructionCommand
 specifier|public
 class|class
-name|BlockECRecoveryCommand
+name|BlockECReconstructionCommand
 extends|extends
 name|DatanodeCommand
 block|{
 DECL|field|ecTasks
+specifier|private
 specifier|final
 name|Collection
 argument_list|<
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|>
 name|ecTasks
 decl_stmt|;
-comment|/**    * Create BlockECRecoveryCommand from a collection of    * {@link BlockECRecoveryInfo}, each representing a recovery task    */
-DECL|method|BlockECRecoveryCommand (int action, Collection<BlockECRecoveryInfo> blockECRecoveryInfoList)
+comment|/**    * Create BlockECReconstructionCommand from a collection of    * {@link BlockECReconstructionInfo}, each representing a reconstruction    * task    */
+DECL|method|BlockECReconstructionCommand (int action, Collection<BlockECReconstructionInfo> blockECReconstructionInfoList)
 specifier|public
-name|BlockECRecoveryCommand
+name|BlockECReconstructionCommand
 parameter_list|(
 name|int
 name|action
 parameter_list|,
 name|Collection
 argument_list|<
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|>
-name|blockECRecoveryInfoList
+name|blockECReconstructionInfoList
 parameter_list|)
 block|{
 name|super
@@ -214,7 +215,7 @@ name|this
 operator|.
 name|ecTasks
 operator|=
-name|blockECRecoveryInfoList
+name|blockECReconstructionInfoList
 expr_stmt|;
 block|}
 annotation|@
@@ -236,7 +237,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"BlockECRecoveryCommand(\n  "
+literal|"BlockECReconstructionCommand(\n  "
 argument_list|)
 expr_stmt|;
 name|Joiner
@@ -276,11 +277,11 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|class|BlockECRecoveryInfo
+DECL|class|BlockECReconstructionInfo
 specifier|public
 specifier|static
 class|class
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 block|{
 DECL|field|block
 specifier|private
@@ -326,9 +327,9 @@ specifier|final
 name|ErasureCodingPolicy
 name|ecPolicy
 decl_stmt|;
-DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeStorageInfo[] targetDnStorageInfo, byte[] liveBlockIndices, ErasureCodingPolicy ecPolicy)
+DECL|method|BlockECReconstructionInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeStorageInfo[] targetDnStorageInfo, byte[] liveBlockIndices, ErasureCodingPolicy ecPolicy)
 specifier|public
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 parameter_list|(
 name|ExtendedBlock
 name|block
@@ -382,9 +383,9 @@ name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|BlockECRecoveryInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeInfo[] targets, String[] targetStorageIDs, StorageType[] targetStorageTypes, byte[] liveBlockIndices, ErasureCodingPolicy ecPolicy)
+DECL|method|BlockECReconstructionInfo (ExtendedBlock block, DatanodeInfo[] sources, DatanodeInfo[] targets, String[] targetStorageIDs, StorageType[] targetStorageTypes, byte[] liveBlockIndices, ErasureCodingPolicy ecPolicy)
 specifier|public
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 parameter_list|(
 name|ExtendedBlock
 name|block
@@ -555,7 +556,7 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|"BlockECRecoveryInfo(\n  "
+literal|"BlockECReconstructionInfo(\n  "
 argument_list|)
 operator|.
 name|append
@@ -627,7 +628,7 @@ DECL|method|getECTasks ()
 specifier|public
 name|Collection
 argument_list|<
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|>
 name|getECTasks
 parameter_list|()

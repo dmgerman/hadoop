@@ -374,7 +374,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockECRecoveryCommandProto
+name|BlockECReconstructionCommandProto
 import|;
 end_import
 
@@ -1000,9 +1000,9 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlockECRecoveryCommand
+name|BlockECReconstructionCommand
 operator|.
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 import|;
 end_import
 
@@ -1116,7 +1116,7 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlockECRecoveryCommand
+name|BlockECReconstructionCommand
 import|;
 end_import
 
@@ -6027,11 +6027,11 @@ index|[
 literal|2
 index|]
 decl_stmt|;
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 name|blkECRecoveryInfo0
 init|=
 operator|new
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|(
 operator|new
 name|ExtendedBlock
@@ -6133,11 +6133,11 @@ index|[
 literal|2
 index|]
 decl_stmt|;
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 name|blkECRecoveryInfo1
 init|=
 operator|new
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|(
 operator|new
 name|ExtendedBlock
@@ -6161,14 +6161,14 @@ argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|>
 name|blkRecoveryInfosList
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -6186,30 +6186,30 @@ argument_list|(
 name|blkECRecoveryInfo1
 argument_list|)
 expr_stmt|;
-name|BlockECRecoveryCommand
-name|blkECRecoveryCmd
+name|BlockECReconstructionCommand
+name|blkECReconstructionCmd
 init|=
 operator|new
-name|BlockECRecoveryCommand
+name|BlockECReconstructionCommand
 argument_list|(
 name|DatanodeProtocol
 operator|.
-name|DNA_ERASURE_CODING_RECOVERY
+name|DNA_ERASURE_CODING_RECONSTRUCTION
 argument_list|,
 name|blkRecoveryInfosList
 argument_list|)
 decl_stmt|;
-name|BlockECRecoveryCommandProto
+name|BlockECReconstructionCommandProto
 name|blkECRecoveryCmdProto
 init|=
 name|PBHelper
 operator|.
 name|convert
 argument_list|(
-name|blkECRecoveryCmd
+name|blkECReconstructionCmd
 argument_list|)
 decl_stmt|;
-name|blkECRecoveryCmd
+name|blkECReconstructionCmd
 operator|=
 name|PBHelper
 operator|.
@@ -6220,11 +6220,11 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|>
 name|iterator
 init|=
-name|blkECRecoveryCmd
+name|blkECReconstructionCmd
 operator|.
 name|getECTasks
 argument_list|()
@@ -6253,15 +6253,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|assertBlockECRecoveryInfoEquals ( BlockECRecoveryInfo blkECRecoveryInfo1, BlockECRecoveryInfo blkECRecoveryInfo2)
+DECL|method|assertBlockECRecoveryInfoEquals ( BlockECReconstructionInfo blkECRecoveryInfo1, BlockECReconstructionInfo blkECRecoveryInfo2)
 specifier|private
 name|void
 name|assertBlockECRecoveryInfoEquals
 parameter_list|(
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 name|blkECRecoveryInfo1
 parameter_list|,
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 name|blkECRecoveryInfo2
 parameter_list|)
 block|{

@@ -388,9 +388,9 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlockECRecoveryCommand
+name|BlockECReconstructionCommand
 operator|.
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 import|;
 end_import
 
@@ -477,10 +477,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestRecoverStripedFile
+DECL|class|TestReconstructStripedFile
 specifier|public
 class|class
-name|TestRecoverStripedFile
+name|TestReconstructStripedFile
 block|{
 DECL|field|LOG
 specifier|public
@@ -493,7 +493,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|TestRecoverStripedFile
+name|TestReconstructStripedFile
 operator|.
 name|class
 argument_list|)
@@ -606,9 +606,9 @@ name|ALL
 argument_list|)
 expr_stmt|;
 block|}
-DECL|enum|RecoveryType
+DECL|enum|ReconstructionType
 enum|enum
-name|RecoveryType
+name|ReconstructionType
 block|{
 DECL|enumConstant|DataOnly
 name|DataOnly
@@ -690,7 +690,7 @@ name|setInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_STRIPED_READ_BUFFER_SIZE_KEY
+name|DFS_DN_EC_RECONSTRUCTION_STRIPED_READ_BUFFER_SIZE_KEY
 argument_list|,
 name|cellSize
 operator|-
@@ -858,13 +858,13 @@ name|blockSize
 operator|/
 literal|10
 decl_stmt|;
-name|assertFileBlocksRecovery
+name|assertFileBlocksReconstruction
 argument_list|(
 literal|"/testRecoverOneParityBlock"
 argument_list|,
 name|fileLen
 argument_list|,
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|ParityOnly
 argument_list|,
@@ -896,13 +896,13 @@ name|cellSize
 operator|/
 literal|10
 decl_stmt|;
-name|assertFileBlocksRecovery
+name|assertFileBlocksReconstruction
 argument_list|(
 literal|"/testRecoverOneParityBlock1"
 argument_list|,
 name|fileLen
 argument_list|,
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|ParityOnly
 argument_list|,
@@ -930,13 +930,13 @@ name|fileLen
 init|=
 literal|1
 decl_stmt|;
-name|assertFileBlocksRecovery
+name|assertFileBlocksReconstruction
 argument_list|(
 literal|"/testRecoverOneParityBlock2"
 argument_list|,
 name|fileLen
 argument_list|,
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|ParityOnly
 argument_list|,
@@ -970,13 +970,13 @@ name|blockSize
 operator|/
 literal|10
 decl_stmt|;
-name|assertFileBlocksRecovery
+name|assertFileBlocksReconstruction
 argument_list|(
 literal|"/testRecoverOneParityBlock3"
 argument_list|,
 name|fileLen
 argument_list|,
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|ParityOnly
 argument_list|,
@@ -1010,13 +1010,13 @@ name|blockSize
 operator|/
 literal|10
 decl_stmt|;
-name|assertFileBlocksRecovery
+name|assertFileBlocksReconstruction
 argument_list|(
 literal|"/testRecoverThreeParityBlocks"
 argument_list|,
 name|fileLen
 argument_list|,
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|ParityOnly
 argument_list|,
@@ -1050,13 +1050,13 @@ name|blockSize
 operator|/
 literal|10
 decl_stmt|;
-name|assertFileBlocksRecovery
+name|assertFileBlocksReconstruction
 argument_list|(
 literal|"/testRecoverThreeDataBlocks"
 argument_list|,
 name|fileLen
 argument_list|,
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|DataOnly
 argument_list|,
@@ -1090,13 +1090,13 @@ name|blockSize
 operator|/
 literal|10
 decl_stmt|;
-name|assertFileBlocksRecovery
+name|assertFileBlocksReconstruction
 argument_list|(
 literal|"/testRecoverThreeDataBlocks1"
 argument_list|,
 name|fileLen
 argument_list|,
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|DataOnly
 argument_list|,
@@ -1130,13 +1130,13 @@ name|blockSize
 operator|/
 literal|10
 decl_stmt|;
-name|assertFileBlocksRecovery
+name|assertFileBlocksReconstruction
 argument_list|(
 literal|"/testRecoverOneDataBlock"
 argument_list|,
 name|fileLen
 argument_list|,
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|DataOnly
 argument_list|,
@@ -1168,13 +1168,13 @@ name|cellSize
 operator|/
 literal|10
 decl_stmt|;
-name|assertFileBlocksRecovery
+name|assertFileBlocksReconstruction
 argument_list|(
 literal|"/testRecoverOneDataBlock1"
 argument_list|,
 name|fileLen
 argument_list|,
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|DataOnly
 argument_list|,
@@ -1202,13 +1202,13 @@ name|fileLen
 init|=
 literal|1
 decl_stmt|;
-name|assertFileBlocksRecovery
+name|assertFileBlocksReconstruction
 argument_list|(
 literal|"/testRecoverOneDataBlock2"
 argument_list|,
 name|fileLen
 argument_list|,
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|DataOnly
 argument_list|,
@@ -1242,13 +1242,13 @@ name|blockSize
 operator|/
 literal|10
 decl_stmt|;
-name|assertFileBlocksRecovery
+name|assertFileBlocksReconstruction
 argument_list|(
 literal|"/testRecoverAnyBlocks"
 argument_list|,
 name|fileLen
 argument_list|,
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|Any
 argument_list|,
@@ -1282,13 +1282,13 @@ name|blockSize
 operator|/
 literal|10
 decl_stmt|;
-name|assertFileBlocksRecovery
+name|assertFileBlocksReconstruction
 argument_list|(
 literal|"/testRecoverAnyBlocks1"
 argument_list|,
 name|fileLen
 argument_list|,
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|Any
 argument_list|,
@@ -1296,13 +1296,13 @@ literal|3
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|generateDeadDnIndices (RecoveryType type, int deadNum, byte[] indices)
+DECL|method|generateDeadDnIndices (ReconstructionType type, int deadNum, byte[] indices)
 specifier|private
 name|int
 index|[]
 name|generateDeadDnIndices
 parameter_list|(
-name|RecoveryType
+name|ReconstructionType
 name|type
 parameter_list|,
 name|int
@@ -1357,7 +1357,7 @@ if|if
 condition|(
 name|type
 operator|==
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|DataOnly
 condition|)
@@ -1377,7 +1377,7 @@ if|if
 condition|(
 name|type
 operator|==
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|ParityOnly
 condition|)
@@ -1484,7 +1484,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|generateErrors (Map<ExtendedBlock, DataNode> corruptTargets, RecoveryType type)
+DECL|method|generateErrors (Map<ExtendedBlock, DataNode> corruptTargets, ReconstructionType type)
 specifier|private
 name|int
 name|generateErrors
@@ -1497,7 +1497,7 @@ name|DataNode
 argument_list|>
 name|corruptTargets
 parameter_list|,
-name|RecoveryType
+name|ReconstructionType
 name|type
 parameter_list|)
 throws|throws
@@ -1534,7 +1534,7 @@ literal|0
 operator|||
 name|type
 operator|!=
-name|RecoveryType
+name|ReconstructionType
 operator|.
 name|DataOnly
 operator|||
@@ -1544,7 +1544,7 @@ name|nextBoolean
 argument_list|()
 condition|)
 block|{
-comment|// stop at least one DN to trigger recovery
+comment|// stop at least one DN to trigger reconstruction
 name|LOG
 operator|.
 name|info
@@ -1625,11 +1625,11 @@ return|return
 name|stoppedDN
 return|;
 block|}
-comment|/**    * Test the file blocks recovery.    * 1. Check the replica is recovered in the target datanode,     *    and verify the block replica length, generationStamp and content.    * 2. Read the file and verify content.     */
-DECL|method|assertFileBlocksRecovery (String fileName, int fileLen, RecoveryType type, int toRecoverBlockNum)
+comment|/**    * Test the file blocks reconstruction.    * 1. Check the replica is reconstructed in the target datanode,    *    and verify the block replica length, generationStamp and content.    * 2. Read the file and verify content.    */
+DECL|method|assertFileBlocksReconstruction (String fileName, int fileLen, ReconstructionType type, int toRecoverBlockNum)
 specifier|private
 name|void
-name|assertFileBlocksRecovery
+name|assertFileBlocksReconstruction
 parameter_list|(
 name|String
 name|fileName
@@ -1637,7 +1637,7 @@ parameter_list|,
 name|int
 name|fileLen
 parameter_list|,
-name|RecoveryType
+name|ReconstructionType
 name|type
 parameter_list|,
 name|int
@@ -2263,7 +2263,7 @@ name|i
 expr_stmt|;
 block|}
 block|}
-name|waitForRecoveryFinished
+name|waitForReconstructionFinished
 argument_list|(
 name|file
 argument_list|,
@@ -2296,7 +2296,7 @@ operator|++
 control|)
 block|{
 name|File
-name|replicaAfterRecovery
+name|replicaAfterReconstruction
 init|=
 name|cluster
 operator|.
@@ -2317,13 +2317,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"replica after recovery "
+literal|"replica after reconstruction "
 operator|+
-name|replicaAfterRecovery
+name|replicaAfterReconstruction
 argument_list|)
 expr_stmt|;
 name|File
-name|metadataAfterRecovery
+name|metadataAfterReconstruction
 init|=
 name|cluster
 operator|.
@@ -2342,7 +2342,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|replicaAfterRecovery
+name|replicaAfterReconstruction
 operator|.
 name|length
 argument_list|()
@@ -2370,7 +2370,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|metadataAfterRecovery
+name|metadataAfterReconstruction
 operator|.
 name|getName
 argument_list|()
@@ -2391,13 +2391,13 @@ argument_list|)
 expr_stmt|;
 name|byte
 index|[]
-name|replicaContentAfterRecovery
+name|replicaContentAfterReconstruction
 init|=
 name|DFSTestUtil
 operator|.
 name|readFileAsBytes
 argument_list|(
-name|replicaAfterRecovery
+name|replicaAfterReconstruction
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -2409,7 +2409,7 @@ index|[
 name|i
 index|]
 argument_list|,
-name|replicaContentAfterRecovery
+name|replicaContentAfterReconstruction
 argument_list|)
 expr_stmt|;
 block|}
@@ -2556,7 +2556,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Failed to recover striped block: "
+literal|"Failed to reconstruct striped block: "
 operator|+
 name|blocks
 index|[
@@ -2573,10 +2573,10 @@ return|return
 name|result
 return|;
 block|}
-DECL|method|waitForRecoveryFinished (Path file, int groupSize)
+DECL|method|waitForReconstructionFinished (Path file, int groupSize)
 specifier|private
 name|LocatedBlocks
-name|waitForRecoveryFinished
+name|waitForReconstructionFinished
 parameter_list|(
 name|Path
 name|file
@@ -2661,7 +2661,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Time out waiting for EC block recovery."
+literal|"Time out waiting for EC block reconstruction."
 argument_list|)
 throw|;
 block|}
@@ -2787,11 +2787,11 @@ block|{
 name|targetDnInfos_1
 block|}
 decl_stmt|;
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 name|invalidECInfo
 init|=
 operator|new
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|(
 operator|new
 name|ExtendedBlock
@@ -2815,7 +2815,7 @@ argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|>
 name|ecTasks
 init|=

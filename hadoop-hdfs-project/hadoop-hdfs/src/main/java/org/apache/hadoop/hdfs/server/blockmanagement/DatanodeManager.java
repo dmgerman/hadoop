@@ -36,7 +36,7 @@ name|protocol
 operator|.
 name|DatanodeProtocol
 operator|.
-name|DNA_ERASURE_CODING_RECOVERY
+name|DNA_ERASURE_CODING_RECONSTRUCTION
 import|;
 end_import
 
@@ -382,9 +382,9 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlockECRecoveryCommand
+name|BlockECReconstructionCommand
 operator|.
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 import|;
 end_import
 
@@ -6337,7 +6337,7 @@ block|}
 comment|// check pending erasure coding tasks
 name|List
 argument_list|<
-name|BlockECRecoveryInfo
+name|BlockECReconstructionInfo
 argument_list|>
 name|pendingECList
 init|=
@@ -6360,9 +6360,9 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|BlockECRecoveryCommand
+name|BlockECReconstructionCommand
 argument_list|(
-name|DNA_ERASURE_CODING_RECOVERY
+name|DNA_ERASURE_CODING_RECONSTRUCTION
 argument_list|,
 name|pendingECList
 argument_list|)
