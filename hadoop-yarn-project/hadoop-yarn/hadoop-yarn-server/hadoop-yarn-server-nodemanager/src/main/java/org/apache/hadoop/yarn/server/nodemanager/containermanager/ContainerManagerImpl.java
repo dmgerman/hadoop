@@ -2911,6 +2911,27 @@ name|getApplications
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Recovering application with state: "
+operator|+
+name|proto
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|recoverApplication
 argument_list|(
 name|proto
@@ -2928,6 +2949,24 @@ name|loadContainersState
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Recovering container with state: "
+operator|+
+name|rcs
+argument_list|)
+expr_stmt|;
+block|}
 name|recoverContainer
 argument_list|(
 name|rcs
@@ -2950,6 +2989,24 @@ name|getFinishedApplications
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Application marked finished during recovery: "
+operator|+
+name|appId
+argument_list|)
+expr_stmt|;
+block|}
 name|dispatcher
 operator|.
 name|getEventHandler
@@ -2967,6 +3024,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Not a recoverable state store. Nothing to recover."
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|recoverApplication (ContainerManagerApplicationProto p)

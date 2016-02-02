@@ -550,6 +550,85 @@ return|return
 name|capability
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+operator|new
+name|StringBuffer
+argument_list|(
+literal|"Status: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getStatus
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", Exit code: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|exitCode
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", Killed: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getKilled
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", Diagnostics: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getDiagnostics
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", Capability: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getCapability
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", StartRequest: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getStartRequest
+argument_list|()
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 DECL|class|LocalResourceTrackerState
 specifier|public
