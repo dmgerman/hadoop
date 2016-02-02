@@ -8231,7 +8231,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Warning: fs.defaultFs is not set when running \"ls\" command."
+literal|"Warning: fs.defaultFS is not set when running \"ls\" command."
 argument_list|)
 argument_list|)
 expr_stmt|;

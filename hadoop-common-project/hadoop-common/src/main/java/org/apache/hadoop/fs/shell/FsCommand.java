@@ -555,7 +555,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"Warning: fs.defaultFs is not set when running \"%s\" command.%n"
+literal|"Warning: fs.defaultFS is not set when running \"%s\" command.%n"
 argument_list|,
 name|getCommandName
 argument_list|()
