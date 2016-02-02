@@ -99,7 +99,7 @@ name|size
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Ensure that there is enough  space to include num more triplets.    * @return first free triplet index.    */
+comment|/**    * Ensure that there is enough  space to include num more storages.    * @return first free storage index.    */
 DECL|method|ensureCapacity (int num)
 specifier|private
 name|int
@@ -112,7 +112,7 @@ block|{
 assert|assert
 name|this
 operator|.
-name|triplets
+name|storages
 operator|!=
 literal|null
 operator|:
@@ -126,7 +126,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|triplets
+name|storages
 operator|.
 name|length
 operator|>=
@@ -135,8 +135,6 @@ name|last
 operator|+
 name|num
 operator|)
-operator|*
-literal|3
 condition|)
 block|{
 return|return
@@ -144,24 +142,22 @@ name|last
 return|;
 block|}
 comment|/* Not enough space left. Create a new array. Should normally      * happen only when replication is manually increased by the user. */
-name|Object
+name|DatanodeStorageInfo
 index|[]
 name|old
 init|=
-name|triplets
+name|storages
 decl_stmt|;
-name|triplets
+name|storages
 operator|=
 operator|new
-name|Object
+name|DatanodeStorageInfo
 index|[
 operator|(
 name|last
 operator|+
 name|num
 operator|)
-operator|*
-literal|3
 index|]
 expr_stmt|;
 name|System
@@ -172,13 +168,11 @@ name|old
 argument_list|,
 literal|0
 argument_list|,
-name|triplets
+name|storages
 argument_list|,
 literal|0
 argument_list|,
 name|last
-operator|*
-literal|3
 argument_list|)
 expr_stmt|;
 return|return
@@ -212,20 +206,6 @@ argument_list|(
 name|lastNode
 argument_list|,
 name|storage
-argument_list|)
-expr_stmt|;
-name|setNext
-argument_list|(
-name|lastNode
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|setPrevious
-argument_list|(
-name|lastNode
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 return|return
@@ -262,23 +242,6 @@ return|return
 literal|false
 return|;
 block|}
-assert|assert
-name|getPrevious
-argument_list|(
-name|dnIndex
-argument_list|)
-operator|==
-literal|null
-operator|&&
-name|getNext
-argument_list|(
-name|dnIndex
-argument_list|)
-operator|==
-literal|null
-operator|:
-literal|"Block is still in the list and must be removed first."
-assert|;
 comment|// find the last not null node
 name|int
 name|lastNode
@@ -288,7 +251,7 @@ argument_list|()
 operator|-
 literal|1
 decl_stmt|;
-comment|// replace current node triplet by the lastNode one
+comment|// replace current node entry by the lastNode one
 name|setStorageInfo
 argument_list|(
 name|dnIndex
@@ -299,42 +262,8 @@ name|lastNode
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|setNext
-argument_list|(
-name|dnIndex
-argument_list|,
-name|getNext
-argument_list|(
-name|lastNode
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|setPrevious
-argument_list|(
-name|dnIndex
-argument_list|,
-name|getPrevious
-argument_list|(
-name|lastNode
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// set the last triplet to null
+comment|// set the last entry to null
 name|setStorageInfo
-argument_list|(
-name|lastNode
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|setNext
-argument_list|(
-name|lastNode
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|setPrevious
 argument_list|(
 name|lastNode
 argument_list|,
@@ -356,22 +285,11 @@ block|{
 assert|assert
 name|this
 operator|.
-name|triplets
+name|storages
 operator|!=
 literal|null
 operator|:
 literal|"BlockInfo is not initialized"
-assert|;
-assert|assert
-name|triplets
-operator|.
-name|length
-operator|%
-literal|3
-operator|==
-literal|0
-operator|:
-literal|"Malformed BlockInfo"
 assert|;
 for|for
 control|(

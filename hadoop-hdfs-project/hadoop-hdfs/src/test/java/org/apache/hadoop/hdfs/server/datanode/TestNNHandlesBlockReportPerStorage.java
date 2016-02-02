@@ -84,20 +84,6 @@ name|StorageBlockReport
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Time
-import|;
-end_import
-
 begin_comment
 comment|/**  * Runs all tests in BlockReportTestBase, sending one block per storage.  * This is the default DataNode behavior post HDFS-2832.  */
 end_comment
@@ -194,6 +180,8 @@ name|nanoTime
 argument_list|()
 argument_list|,
 literal|0L
+argument_list|,
+literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;

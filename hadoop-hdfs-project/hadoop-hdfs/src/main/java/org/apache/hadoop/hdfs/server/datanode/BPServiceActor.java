@@ -2134,6 +2134,8 @@ argument_list|,
 name|reportId
 argument_list|,
 name|fullBrLeaseId
+argument_list|,
+literal|true
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -2222,6 +2224,8 @@ argument_list|,
 name|reportId
 argument_list|,
 name|fullBrLeaseId
+argument_list|,
+literal|true
 argument_list|)
 argument_list|)
 decl_stmt|;

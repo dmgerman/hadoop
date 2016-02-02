@@ -76,7 +76,13 @@ specifier|final
 name|long
 name|leaseId
 decl_stmt|;
-DECL|method|BlockReportContext (int totalRpcs, int curRpc, long reportId, long leaseId)
+DECL|field|sorted
+specifier|private
+specifier|final
+name|boolean
+name|sorted
+decl_stmt|;
+DECL|method|BlockReportContext (int totalRpcs, int curRpc, long reportId, long leaseId, boolean sorted)
 specifier|public
 name|BlockReportContext
 parameter_list|(
@@ -91,6 +97,9 @@ name|reportId
 parameter_list|,
 name|long
 name|leaseId
+parameter_list|,
+name|boolean
+name|sorted
 parameter_list|)
 block|{
 name|this
@@ -116,6 +125,12 @@ operator|.
 name|leaseId
 operator|=
 name|leaseId
+expr_stmt|;
+name|this
+operator|.
+name|sorted
+operator|=
+name|sorted
 expr_stmt|;
 block|}
 DECL|method|getTotalRpcs ()
@@ -156,6 +171,16 @@ parameter_list|()
 block|{
 return|return
 name|leaseId
+return|;
+block|}
+DECL|method|isSorted ()
+specifier|public
+name|boolean
+name|isSorted
+parameter_list|()
+block|{
+return|return
+name|sorted
 return|;
 block|}
 block|}

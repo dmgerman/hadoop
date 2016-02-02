@@ -103,7 +103,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Subclass of {@link BlockInfo}, presenting a block group in erasure coding.  *  * We still use triplets to store DatanodeStorageInfo for each block in the  * block group, as well as the previous/next block in the corresponding  * DatanodeStorageInfo. For a (m+k) block group, the first (m+k) triplet units  * are sorted and strictly mapped to the corresponding block.  *  * Normally each block belonging to group is stored in only one DataNode.  * However, it is possible that some block is over-replicated. Thus the triplet  * array's size can be larger than (m+k). Thus currently we use an extra byte  * array to record the block index for each triplet.  */
+comment|/**  * Subclass of {@link BlockInfo}, presenting a block group in erasure coding.  *  * We still use a storage array to store DatanodeStorageInfo for each block in  * the block group. For a (m+k) block group, the first (m+k) storage units  * are sorted and strictly mapped to the corresponding block.  *  * Normally each block belonging to group is stored in only one DataNode.  * However, it is possible that some block is over-replicated. Thus the storage  * array's size can be larger than (m+k). Thus currently we use an extra byte  * array to record the block index for each entry.  */
 end_comment
 
 begin_class
@@ -124,7 +124,7 @@ specifier|final
 name|ErasureCodingPolicy
 name|ecPolicy
 decl_stmt|;
-comment|/**    * Always the same size with triplets. Record the block index for each triplet    * TODO: actually this is only necessary for over-replicated block. Thus can    * be further optimized to save memory usage.    */
+comment|/**    * Always the same size with storage. Record the block index for each entry    * TODO: actually this is only necessary for over-replicated block. Thus can    * be further optimized to save memory usage.    */
 DECL|field|indices
 specifier|private
 name|byte
@@ -412,7 +412,7 @@ name|i
 return|;
 block|}
 block|}
-comment|// need to expand the triplet size
+comment|// need to expand the storage size
 name|ensureCapacity
 argument_list|(
 name|i
@@ -541,20 +541,6 @@ argument_list|(
 name|index
 argument_list|,
 name|storage
-argument_list|)
-expr_stmt|;
-name|setNext
-argument_list|(
-name|index
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|setPrevious
-argument_list|(
-name|index
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|indices
@@ -748,39 +734,8 @@ return|return
 literal|false
 return|;
 block|}
-assert|assert
-name|getPrevious
-argument_list|(
-name|dnIndex
-argument_list|)
-operator|==
-literal|null
-operator|&&
-name|getNext
-argument_list|(
-name|dnIndex
-argument_list|)
-operator|==
-literal|null
-operator|:
-literal|"Block is still in the list and must be removed first."
-assert|;
-comment|// set the triplet to null
+comment|// set the entry to null
 name|setStorageInfo
-argument_list|(
-name|dnIndex
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|setNext
-argument_list|(
-name|dnIndex
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|setPrevious
 argument_list|(
 name|dnIndex
 argument_list|,
@@ -819,11 +774,11 @@ operator|<
 name|totalSize
 condition|)
 block|{
-name|Object
+name|DatanodeStorageInfo
 index|[]
 name|old
 init|=
-name|triplets
+name|storages
 decl_stmt|;
 name|byte
 index|[]
@@ -831,14 +786,12 @@ name|oldIndices
 init|=
 name|indices
 decl_stmt|;
-name|triplets
+name|storages
 operator|=
 operator|new
-name|Object
+name|DatanodeStorageInfo
 index|[
 name|totalSize
-operator|*
-literal|3
 index|]
 expr_stmt|;
 name|indices
@@ -865,7 +818,7 @@ name|old
 argument_list|,
 literal|0
 argument_list|,
-name|triplets
+name|storages
 argument_list|,
 literal|0
 argument_list|,
@@ -952,22 +905,11 @@ block|{
 assert|assert
 name|this
 operator|.
-name|triplets
+name|storages
 operator|!=
 literal|null
 operator|:
 literal|"BlockInfo is not initialized"
-assert|;
-assert|assert
-name|triplets
-operator|.
-name|length
-operator|%
-literal|3
-operator|==
-literal|0
-operator|:
-literal|"Malformed BlockInfo"
 assert|;
 name|int
 name|num

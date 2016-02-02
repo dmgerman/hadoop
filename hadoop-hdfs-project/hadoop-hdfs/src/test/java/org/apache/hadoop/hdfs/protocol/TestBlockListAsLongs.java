@@ -1636,6 +1636,8 @@ name|nanoTime
 argument_list|()
 argument_list|,
 literal|0L
+argument_list|,
+literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1727,6 +1729,8 @@ name|nanoTime
 argument_list|()
 argument_list|,
 literal|0L
+argument_list|,
+literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;

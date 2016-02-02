@@ -852,6 +852,18 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
+name|anyBoolean
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
 name|anyString
 import|;
 end_import

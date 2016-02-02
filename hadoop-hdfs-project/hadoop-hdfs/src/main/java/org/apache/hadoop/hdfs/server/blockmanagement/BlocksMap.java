@@ -26,6 +26,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -101,131 +111,6 @@ DECL|class|BlocksMap
 class|class
 name|BlocksMap
 block|{
-DECL|class|StorageIterator
-specifier|private
-specifier|static
-class|class
-name|StorageIterator
-implements|implements
-name|Iterator
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
-block|{
-DECL|field|blockInfo
-specifier|private
-specifier|final
-name|BlockInfo
-name|blockInfo
-decl_stmt|;
-DECL|field|nextIdx
-specifier|private
-name|int
-name|nextIdx
-init|=
-literal|0
-decl_stmt|;
-DECL|method|StorageIterator (BlockInfo blkInfo)
-name|StorageIterator
-parameter_list|(
-name|BlockInfo
-name|blkInfo
-parameter_list|)
-block|{
-name|this
-operator|.
-name|blockInfo
-operator|=
-name|blkInfo
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|hasNext ()
-specifier|public
-name|boolean
-name|hasNext
-parameter_list|()
-block|{
-if|if
-condition|(
-name|blockInfo
-operator|==
-literal|null
-condition|)
-block|{
-return|return
-literal|false
-return|;
-block|}
-while|while
-condition|(
-name|nextIdx
-operator|<
-name|blockInfo
-operator|.
-name|getCapacity
-argument_list|()
-operator|&&
-name|blockInfo
-operator|.
-name|getDatanode
-argument_list|(
-name|nextIdx
-argument_list|)
-operator|==
-literal|null
-condition|)
-block|{
-comment|// note that for striped blocks there may be null in the triplets
-name|nextIdx
-operator|++
-expr_stmt|;
-block|}
-return|return
-name|nextIdx
-operator|<
-name|blockInfo
-operator|.
-name|getCapacity
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|next ()
-specifier|public
-name|DatanodeStorageInfo
-name|next
-parameter_list|()
-block|{
-return|return
-name|blockInfo
-operator|.
-name|getStorageInfo
-argument_list|(
-name|nextIdx
-operator|++
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|remove ()
-specifier|public
-name|void
-name|remove
-parameter_list|()
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Sorry. can't remove."
-argument_list|)
-throw|;
-block|}
-block|}
 comment|/** Constant {@link LightWeightGSet} capacity. */
 DECL|field|capacity
 specifier|private
@@ -490,6 +375,24 @@ comment|// remove from the list and wipe the location
 block|}
 block|}
 block|}
+comment|/**    * Check if BlocksMap contains the block.    *    * @param b Block to check    * @return true if block is in the map, otherwise false    */
+DECL|method|containsBlock (Block b)
+name|boolean
+name|containsBlock
+parameter_list|(
+name|Block
+name|b
+parameter_list|)
+block|{
+return|return
+name|blocks
+operator|.
+name|contains
+argument_list|(
+name|b
+argument_list|)
+return|;
+block|}
 comment|/** Returns the block object if it exists in the map. */
 DECL|method|getStoredBlock (Block b)
 name|BlockInfo
@@ -520,16 +423,33 @@ name|Block
 name|b
 parameter_list|)
 block|{
-return|return
-name|getStorages
-argument_list|(
+name|BlockInfo
+name|block
+init|=
 name|blocks
 operator|.
 name|get
 argument_list|(
 name|b
 argument_list|)
+decl_stmt|;
+return|return
+name|block
+operator|!=
+literal|null
+condition|?
+name|getStorages
+argument_list|(
+name|block
 argument_list|)
+else|:
+name|Collections
+operator|.
+expr|<
+name|DatanodeStorageInfo
+operator|>
+name|emptyList
+argument_list|()
 return|;
 block|}
 comment|/**    * For a block that has already been retrieved from the BlocksMap    * returns {@link Iterable} of the storages the block belongs to.    */
@@ -544,6 +464,22 @@ specifier|final
 name|BlockInfo
 name|storedBlock
 parameter_list|)
+block|{
+if|if
+condition|(
+name|storedBlock
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|Collections
+operator|.
+name|emptyList
+argument_list|()
+return|;
+block|}
+else|else
 block|{
 return|return
 operator|new
@@ -564,15 +500,15 @@ name|iterator
 parameter_list|()
 block|{
 return|return
-operator|new
-name|StorageIterator
-argument_list|(
 name|storedBlock
-argument_list|)
+operator|.
+name|getStorageInfos
+argument_list|()
 return|;
 block|}
 block|}
 return|;
+block|}
 block|}
 comment|/** counts number of containing nodes. Better than using iterator. */
 DECL|method|numNodes (Block b)
@@ -637,7 +573,7 @@ condition|)
 return|return
 literal|false
 return|;
-comment|// remove block from the data-node list and the node from the block info
+comment|// remove block from the data-node set and the node from the block info
 name|boolean
 name|removed
 init|=
@@ -676,7 +612,7 @@ return|return
 name|removed
 return|;
 block|}
-comment|/**    * Remove block from the list of blocks belonging to the data-node. Remove    * data-node from the block.    */
+comment|/**    * Remove block from the set of blocks belonging to the data-node. Remove    * data-node from the block.    */
 DECL|method|removeBlock (DatanodeDescriptor dn, BlockInfo b)
 specifier|static
 name|boolean
