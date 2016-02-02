@@ -1833,6 +1833,11 @@ block|}
 block|}
 argument_list|)
 decl_stmt|;
+name|Cluster
+name|prev
+init|=
+name|cluster
+decl_stmt|;
 comment|// update our Cluster instance with the one created by Job for submission
 comment|// (we can't pass our Cluster instance to Job, since Job wraps the config
 comment|// instance, and the two configs would then diverge)
@@ -1843,6 +1848,21 @@ operator|.
 name|getCluster
 argument_list|()
 expr_stmt|;
+comment|// It is important to close the previous cluster instance
+comment|// to cleanup resources.
+if|if
+condition|(
+name|prev
+operator|!=
+literal|null
+condition|)
+block|{
+name|prev
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 return|return
 operator|new
 name|NetworkedJob
