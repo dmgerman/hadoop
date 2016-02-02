@@ -1412,7 +1412,6 @@ name|dirs
 return|;
 block|}
 DECL|method|loadINodeReferenceSection (InputStream in)
-specifier|private
 specifier|static
 name|ImmutableList
 argument_list|<

@@ -44,6 +44,20 @@ name|common
 operator|.
 name|collect
 operator|.
+name|ImmutableList
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
 name|Lists
 import|;
 end_import
@@ -1030,6 +1044,8 @@ name|dir
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getParentPath (long inode)
 specifier|public
 name|String
@@ -1064,19 +1080,23 @@ argument_list|(
 name|inode
 argument_list|)
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
+if|if
+condition|(
 name|parent
-operator|!=
+operator|==
 literal|null
-argument_list|,
-literal|"Can not find parent directory for INode: %s"
-argument_list|,
+condition|)
+block|{
+comment|// The inode is an INodeReference, which is generated from snapshot.
+comment|// For delimited oiv tool, no need to print out metadata in snapshots.
+name|PBImageTextWriter
+operator|.
+name|ignoreSnapshotName
+argument_list|(
 name|inode
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|parent
 operator|.
@@ -1827,27 +1847,44 @@ name|inode
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
+if|if
+condition|(
 name|bytes
-operator|!=
-literal|null
-operator|&&
-name|bytes
-operator|.
-name|length
 operator|==
-literal|8
-argument_list|,
-literal|"Can not find parent directory for inode %s, "
-operator|+
-literal|"fsimage might be corrupted"
-argument_list|,
+literal|null
+condition|)
+block|{
+comment|// The inode is an INodeReference, which is generated from snapshot.
+comment|// For delimited oiv tool, no need to print out metadata in snapshots.
+name|PBImageTextWriter
+operator|.
+name|ignoreSnapshotName
+argument_list|(
 name|inode
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|bytes
+operator|.
+name|length
+operator|!=
+literal|8
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"bytes array length error. Actual length is "
+operator|+
+name|bytes
+operator|.
+name|length
+argument_list|)
+throw|;
+block|}
 name|long
 name|parent
 init|=
@@ -1886,20 +1923,18 @@ operator|!=
 name|INodeId
 operator|.
 name|ROOT_INODE_ID
+operator|&&
+name|bytes
+operator|==
+literal|null
 condition|)
 block|{
-name|Preconditions
+comment|// The parent is an INodeReference, which is generated from snapshot.
+comment|// For delimited oiv tool, no need to print out metadata in snapshots.
+name|PBImageTextWriter
 operator|.
-name|checkState
+name|ignoreSnapshotName
 argument_list|(
-name|bytes
-operator|!=
-literal|null
-argument_list|,
-literal|"Can not find parent directory for inode %s, "
-operator|+
-literal|", the fsimage might be corrupted."
-argument_list|,
 name|parent
 argument_list|)
 expr_stmt|;
@@ -2051,6 +2086,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|out
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 name|IOUtils
 operator|.
 name|cleanup
@@ -2074,6 +2114,14 @@ parameter_list|,
 name|INode
 name|inode
 parameter_list|)
+function_decl|;
+comment|/**    * Get text output for the header line.    */
+DECL|method|getHeader ()
+specifier|abstract
+specifier|protected
+name|String
+name|getHeader
+parameter_list|()
 function_decl|;
 DECL|method|visit (RandomAccessFile file)
 specifier|public
@@ -2277,6 +2325,14 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
+name|ImmutableList
+argument_list|<
+name|Long
+argument_list|>
+name|refIdList
+init|=
+literal|null
+decl_stmt|;
 for|for
 control|(
 name|FileSummary
@@ -2345,11 +2401,40 @@ block|{
 case|case
 name|STRING_TABLE
 case|:
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Loading string table"
+argument_list|)
+expr_stmt|;
 name|stringTable
 operator|=
 name|FSImageLoader
 operator|.
 name|loadStringTable
+argument_list|(
+name|is
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|INODE_REFERENCE
+case|:
+comment|// Load INodeReference so that all INodes can be processed.
+comment|// Snapshots are not handled and will just be ignored for now.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Loading inode references"
+argument_list|)
+expr_stmt|;
+name|refIdList
+operator|=
+name|FSImageLoader
+operator|.
+name|loadINodeReferenceSection
 argument_list|(
 name|is
 argument_list|)
@@ -2379,6 +2464,8 @@ argument_list|,
 name|summary
 argument_list|,
 name|conf
+argument_list|,
+name|refIdList
 argument_list|)
 expr_stmt|;
 name|metadataMap
@@ -2435,6 +2522,14 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+name|getHeader
+argument_list|()
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|FileSummary
@@ -2691,7 +2786,7 @@ name|timeTaken
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|loadINodeDirSection ( FileInputStream fin, List<FileSummary.Section> sections, FileSummary summary, Configuration conf)
+DECL|method|loadINodeDirSection ( FileInputStream fin, List<FileSummary.Section> sections, FileSummary summary, Configuration conf, List<Long> refIdList)
 specifier|private
 name|void
 name|loadINodeDirSection
@@ -2712,6 +2807,12 @@ name|summary
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|refIdList
 parameter_list|)
 throws|throws
 name|IOException
@@ -2804,6 +2905,8 @@ decl_stmt|;
 name|buildNamespace
 argument_list|(
 name|is
+argument_list|,
+name|refIdList
 argument_list|)
 expr_stmt|;
 block|}
@@ -2945,13 +3048,19 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Scan the INodeDirectory section to construct the namespace.    */
-DECL|method|buildNamespace (InputStream in)
+DECL|method|buildNamespace (InputStream in, List<Long> refIdList)
 specifier|private
 name|void
 name|buildNamespace
 parameter_list|(
 name|InputStream
 name|in
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|refIdList
 parameter_list|)
 throws|throws
 name|IOException
@@ -3028,7 +3137,6 @@ operator|.
 name|getParent
 argument_list|()
 decl_stmt|;
-comment|// Referred INode is not support for now.
 for|for
 control|(
 name|int
@@ -3067,18 +3175,62 @@ name|childId
 argument_list|)
 expr_stmt|;
 block|}
-name|Preconditions
+for|for
+control|(
+name|int
+name|i
+init|=
+name|e
 operator|.
-name|checkState
-argument_list|(
+name|getChildrenCount
+argument_list|()
+init|;
+name|i
+operator|<
+name|e
+operator|.
+name|getChildrenCount
+argument_list|()
+operator|+
 name|e
 operator|.
 name|getRefChildrenCount
 argument_list|()
-operator|==
-literal|0
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|int
+name|refId
+init|=
+name|e
+operator|.
+name|getRefChildren
+argument_list|(
+name|i
+operator|-
+name|e
+operator|.
+name|getChildrenCount
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|metadataMap
+operator|.
+name|putDirChild
+argument_list|(
+name|parentId
+argument_list|,
+name|refIdList
+operator|.
+name|get
+argument_list|(
+name|refId
+argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|LOG
 operator|.
@@ -3123,6 +3275,16 @@ name|getNumInodes
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|long
+name|ignored
+init|=
+literal|0
+decl_stmt|;
+name|long
+name|ignoredSnapshots
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -3151,6 +3313,8 @@ argument_list|(
 name|in
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|String
 name|parentPath
 init|=
@@ -3176,6 +3340,71 @@ name|p
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|ignored
+operator|++
+expr_stmt|;
+if|if
+condition|(
+operator|!
+operator|(
+name|ioe
+operator|instanceof
+name|IgnoreSnapshotException
+operator|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exception caught, ignoring node:{}"
+argument_list|,
+name|p
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|ignoredSnapshots
+operator|++
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Exception caught, ignoring node:{}."
+argument_list|,
+name|p
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 if|if
 condition|(
 name|LOG
@@ -3201,6 +3430,27 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|ignored
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Ignored {} nodes, including {} in snapshots. Please turn on"
+operator|+
+literal|" debug log for details"
+argument_list|,
+name|ignored
+argument_list|,
+name|ignoredSnapshots
+argument_list|)
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -3213,6 +3463,42 @@ name|getNumInodes
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|ignoreSnapshotName (long inode)
+specifier|static
+name|void
+name|ignoreSnapshotName
+parameter_list|(
+name|long
+name|inode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Ignore snapshots - we want the output similar to -ls -R.
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No snapshot name found for inode {}"
+argument_list|,
+name|inode
+argument_list|)
+expr_stmt|;
+block|}
+throw|throw
+operator|new
+name|IgnoreSnapshotException
+argument_list|()
+throw|;
 block|}
 block|}
 end_class
