@@ -12376,9 +12376,7 @@ block|}
 argument_list|,
 literal|1000
 argument_list|,
-name|Integer
-operator|.
-name|MAX_VALUE
+literal|60000
 argument_list|)
 expr_stmt|;
 block|}
