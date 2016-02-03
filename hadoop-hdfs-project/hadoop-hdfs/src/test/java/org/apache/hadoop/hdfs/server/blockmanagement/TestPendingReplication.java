@@ -580,7 +580,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|//
-comment|// remove one item and reinsert it
+comment|// remove one item
 comment|//
 name|BlockInfo
 name|blk
@@ -610,6 +610,38 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// removes one replica
+name|assertEquals
+argument_list|(
+literal|"pendingReplications.getNumReplicas "
+argument_list|,
+literal|7
+argument_list|,
+name|pendingReplications
+operator|.
+name|getNumReplicas
+argument_list|(
+name|blk
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|//
+comment|// insert the same item twice should be counted as once
+comment|//
+name|pendingReplications
+operator|.
+name|increment
+argument_list|(
+name|blk
+argument_list|,
+name|storages
+index|[
+literal|0
+index|]
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"pendingReplications.getNumReplicas "

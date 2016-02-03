@@ -82,16 +82,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|HashMap
 import|;
 end_import
@@ -306,7 +296,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Add a block to the list of pending Replications    * @param block The corresponding block    * @param targets The DataNodes where replicas of the block should be placed    */
-DECL|method|increment (BlockInfo block, DatanodeDescriptor[] targets)
+DECL|method|increment (BlockInfo block, DatanodeDescriptor... targets)
 name|void
 name|increment
 parameter_list|(
@@ -314,7 +304,7 @@ name|BlockInfo
 name|block
 parameter_list|,
 name|DatanodeDescriptor
-index|[]
+modifier|...
 name|targets
 parameter_list|)
 block|{
@@ -706,15 +696,34 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|Collections
-operator|.
-name|addAll
-argument_list|(
-name|targets
-argument_list|,
+for|for
+control|(
+name|DatanodeDescriptor
+name|newTarget
+range|:
 name|newTargets
+control|)
+block|{
+if|if
+condition|(
+operator|!
+name|targets
+operator|.
+name|contains
+argument_list|(
+name|newTarget
+argument_list|)
+condition|)
+block|{
+name|targets
+operator|.
+name|add
+argument_list|(
+name|newTarget
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 DECL|method|decrementReplicas (DatanodeDescriptor dn)
