@@ -64,7 +64,7 @@ name|RawErasureCoder
 extends|extends
 name|Configurable
 block|{
-comment|/**    * Get a coder option value.    * @param option    * @return    */
+comment|/**    * Get a coder option value.    * @param option    * @return option value    */
 DECL|method|getCoderOption (CoderOption option)
 specifier|public
 name|Object

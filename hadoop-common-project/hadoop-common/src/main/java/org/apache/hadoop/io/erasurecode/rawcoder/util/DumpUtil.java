@@ -53,7 +53,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A dump utility class for debugging data erasure coding/decoding issues. Don't  * suggest they are used in runtime production codes.  */
+comment|/**  * A dump utility class for debugging data erasure coding/decoding issues.  * Don't suggest they are used in runtime production codes.  */
 end_comment
 
 begin_class
@@ -96,7 +96,7 @@ parameter_list|()
 block|{
 comment|// No called
 block|}
-comment|/**    * Convert bytes into format like 0x02 02 00 80.    */
+comment|/**    * Convert bytes into format like 0x02 02 00 80.    * If limit is negative or too large, then all bytes will be converted.    */
 DECL|method|bytesToHex (byte[] bytes, int limit)
 specifier|public
 specifier|static
@@ -113,6 +113,10 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|limit
+operator|<=
+literal|0
+operator|||
 name|limit
 operator|>
 name|bytes
@@ -244,6 +248,90 @@ argument_list|(
 name|hexChars
 argument_list|)
 return|;
+block|}
+DECL|method|dumpMatrix (byte[] matrix, int numDataUnits, int numAllUnits)
+specifier|public
+specifier|static
+name|void
+name|dumpMatrix
+parameter_list|(
+name|byte
+index|[]
+name|matrix
+parameter_list|,
+name|int
+name|numDataUnits
+parameter_list|,
+name|int
+name|numAllUnits
+parameter_list|)
+block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|numDataUnits
+condition|;
+name|i
+operator|++
+control|)
+block|{
+for|for
+control|(
+name|int
+name|j
+init|=
+literal|0
+init|;
+name|j
+operator|<
+name|numAllUnits
+condition|;
+name|j
+operator|++
+control|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|print
+argument_list|(
+literal|" "
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|print
+argument_list|(
+literal|0xff
+operator|&
+name|matrix
+index|[
+name|i
+operator|*
+name|numAllUnits
+operator|+
+name|j
+index|]
+argument_list|)
+expr_stmt|;
+block|}
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Print data in hex format in an array of chunks.    * @param header    * @param chunks    */
 DECL|method|dumpChunks (String header, ECChunk[] chunks)

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.io.erasurecode.rawcoder.util
+DECL|package|org.apache.hadoop.io.erasurecode.rawcoder
 package|package
 name|org
 operator|.
@@ -17,8 +17,6 @@ operator|.
 name|erasurecode
 operator|.
 name|rawcoder
-operator|.
-name|util
 package|;
 end_package
 
@@ -37,7 +35,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Utilities for implementing Reed-Solomon code, used by RS coder.  */
+comment|/**  * A raw coder factory for raw Reed-Solomon coder in Java.  */
 end_comment
 
 begin_class
@@ -45,39 +43,19 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|RSUtil
+DECL|class|RSRawErasureCoderFactory2
 specifier|public
 class|class
-name|RSUtil
+name|RSRawErasureCoderFactory2
+implements|implements
+name|RawErasureCoderFactory
 block|{
-comment|// We always use the byte system (with symbol size 8, field size 256,
-comment|// primitive polynomial 285, and primitive root 2).
-DECL|field|GF
+annotation|@
+name|Override
+DECL|method|createEncoder (int numDataUnits, int numParityUnits)
 specifier|public
-specifier|static
-name|GaloisField
-name|GF
-init|=
-name|GaloisField
-operator|.
-name|getInstance
-argument_list|()
-decl_stmt|;
-DECL|field|PRIMITIVE_ROOT
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|PRIMITIVE_ROOT
-init|=
-literal|2
-decl_stmt|;
-DECL|method|getPrimitivePower (int numDataUnits, int numParityUnits)
-specifier|public
-specifier|static
-name|int
-index|[]
-name|getPrimitivePower
+name|RawErasureEncoder
+name|createEncoder
 parameter_list|(
 name|int
 name|numDataUnits
@@ -86,53 +64,38 @@ name|int
 name|numParityUnits
 parameter_list|)
 block|{
-name|int
-index|[]
-name|primitivePower
-init|=
-operator|new
-name|int
-index|[
-name|numDataUnits
-operator|+
-name|numParityUnits
-index|]
-decl_stmt|;
-comment|// compute powers of the primitive root
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|numDataUnits
-operator|+
-name|numParityUnits
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|primitivePower
-index|[
-name|i
-index|]
-operator|=
-name|GF
-operator|.
-name|power
-argument_list|(
-name|PRIMITIVE_ROOT
-argument_list|,
-name|i
-argument_list|)
-expr_stmt|;
-block|}
 return|return
-name|primitivePower
+operator|new
+name|RSRawEncoder2
+argument_list|(
+name|numDataUnits
+argument_list|,
+name|numParityUnits
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|createDecoder (int numDataUnits, int numParityUnits)
+specifier|public
+name|RawErasureDecoder
+name|createDecoder
+parameter_list|(
+name|int
+name|numDataUnits
+parameter_list|,
+name|int
+name|numParityUnits
+parameter_list|)
+block|{
+return|return
+operator|new
+name|RSRawDecoder2
+argument_list|(
+name|numDataUnits
+argument_list|,
+name|numParityUnits
+argument_list|)
 return|;
 block|}
 block|}

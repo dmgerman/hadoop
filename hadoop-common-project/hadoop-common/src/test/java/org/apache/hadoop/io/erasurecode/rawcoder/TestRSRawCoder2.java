@@ -30,25 +30,15 @@ name|Before
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
 begin_comment
-comment|/**  * Test raw Reed-solomon coder implemented in Java.  */
+comment|/**  * Test the new raw Reed-solomon coder implemented in Java.  */
 end_comment
 
 begin_class
-DECL|class|TestRSRawCoder
+DECL|class|TestRSRawCoder2
 specifier|public
 class|class
-name|TestRSRawCoder
+name|TestRSRawCoder2
 extends|extends
 name|TestRSRawCoderBase
 block|{
@@ -64,7 +54,7 @@ name|this
 operator|.
 name|encoderClass
 operator|=
-name|RSRawEncoder
+name|RSRawEncoder2
 operator|.
 name|class
 expr_stmt|;
@@ -72,7 +62,7 @@ name|this
 operator|.
 name|decoderClass
 operator|=
-name|RSRawDecoder
+name|RSRawDecoder2
 operator|.
 name|class
 expr_stmt|;
@@ -81,7 +71,6 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// Change to true to allow verbose dump for debugging
 block|}
 block|}
 end_class
