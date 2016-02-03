@@ -232,6 +232,10 @@ specifier|static
 name|short
 name|GROUP_SIZE
 init|=
+call|(
+name|short
+call|)
+argument_list|(
 name|StripedFileTestUtil
 operator|.
 name|NUM_DATA_BLOCKS
@@ -239,6 +243,7 @@ operator|+
 name|StripedFileTestUtil
 operator|.
 name|NUM_PARITY_BLOCKS
+argument_list|)
 decl_stmt|;
 DECL|field|SUCCESS
 specifier|private
@@ -255,10 +260,9 @@ specifier|final
 name|ErasureCodingPolicy
 name|sysDefaultPolicy
 init|=
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
-argument_list|()
+name|TEST_EC_POLICY
 decl_stmt|;
 annotation|@
 name|Before
