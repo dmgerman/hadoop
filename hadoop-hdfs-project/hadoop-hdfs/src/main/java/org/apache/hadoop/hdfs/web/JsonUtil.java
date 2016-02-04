@@ -238,6 +238,21 @@ name|EMPTY_OBJECT_ARRAY
 init|=
 block|{}
 decl_stmt|;
+comment|// Reuse ObjectMapper instance for improving performance.
+comment|// ObjectMapper is thread safe as long as we always configure instance
+comment|// before use. We don't have a re-entrant call pattern in WebHDFS,
+comment|// so we just need to worry about thread-safety.
+DECL|field|MAPPER
+specifier|private
+specifier|static
+specifier|final
+name|ObjectMapper
+name|MAPPER
+init|=
+operator|new
+name|ObjectMapper
+argument_list|()
+decl_stmt|;
 comment|/** Convert a token object to a Json string. */
 DECL|method|toJsonString (final Token<? extends TokenIdentifier> token )
 specifier|public
@@ -495,17 +510,10 @@ argument_list|,
 name|value
 argument_list|)
 expr_stmt|;
-name|ObjectMapper
-name|mapper
-init|=
-operator|new
-name|ObjectMapper
-argument_list|()
-decl_stmt|;
 try|try
 block|{
 return|return
-name|mapper
+name|MAPPER
 operator|.
 name|writeValueAsString
 argument_list|(
@@ -818,13 +826,6 @@ name|getStoragePolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ObjectMapper
-name|mapper
-init|=
-operator|new
-name|ObjectMapper
-argument_list|()
-decl_stmt|;
 try|try
 block|{
 return|return
@@ -839,7 +840,7 @@ argument_list|,
 name|m
 argument_list|)
 else|:
-name|mapper
+name|MAPPER
 operator|.
 name|writeValueAsString
 argument_list|(
@@ -2397,17 +2398,10 @@ argument_list|,
 name|m
 argument_list|)
 expr_stmt|;
-name|ObjectMapper
-name|mapper
-init|=
-operator|new
-name|ObjectMapper
-argument_list|()
-decl_stmt|;
 try|try
 block|{
 return|return
-name|mapper
+name|MAPPER
 operator|.
 name|writeValueAsString
 argument_list|(
@@ -2678,15 +2672,8 @@ name|encoding
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ObjectMapper
-name|mapper
-init|=
-operator|new
-name|ObjectMapper
-argument_list|()
-decl_stmt|;
 return|return
-name|mapper
+name|MAPPER
 operator|.
 name|writeValueAsString
 argument_list|(
@@ -2748,17 +2735,10 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|ObjectMapper
-name|mapper
-init|=
-operator|new
-name|ObjectMapper
-argument_list|()
-decl_stmt|;
 name|String
 name|ret
 init|=
-name|mapper
+name|MAPPER
 operator|.
 name|writeValueAsString
 argument_list|(
@@ -2793,7 +2773,7 @@ name|ret
 argument_list|)
 expr_stmt|;
 return|return
-name|mapper
+name|MAPPER
 operator|.
 name|writeValueAsString
 argument_list|(
