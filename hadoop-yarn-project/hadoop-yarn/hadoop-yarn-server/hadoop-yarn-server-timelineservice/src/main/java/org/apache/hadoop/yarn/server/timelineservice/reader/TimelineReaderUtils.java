@@ -325,6 +325,9 @@ name|builder
 operator|.
 name|toString
 argument_list|()
+operator|.
+name|trim
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Reset the start offset as a delimiter has been encountered.
@@ -380,6 +383,9 @@ argument_list|(
 name|builder
 operator|.
 name|toString
+argument_list|()
+operator|.
+name|trim
 argument_list|()
 argument_list|)
 expr_stmt|;
