@@ -13569,7 +13569,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|9
+literal|10
 argument_list|,
 name|info
 operator|.

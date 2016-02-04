@@ -40,6 +40,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|ConcurrentMap
@@ -583,6 +593,15 @@ parameter_list|(
 name|String
 name|amLaunchDiagnostics
 parameter_list|)
+function_decl|;
+comment|/**    * @return Set of nodes which are blacklisted by the application    */
+DECL|method|getBlacklistedNodes ()
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getBlacklistedNodes
+parameter_list|()
 function_decl|;
 block|}
 end_interface

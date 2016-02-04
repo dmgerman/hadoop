@@ -310,25 +310,15 @@ expr_stmt|;
 block|}
 else|else
 block|{
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|warn
 argument_list|(
-literal|"blacklist size "
+literal|"Ignoring Blacklists, blacklist size "
 operator|+
 name|currentBlacklistSize
 operator|+
-literal|" is more than "
-operator|+
-literal|"failure threshold ratio "
+literal|" is more than failure threshold ratio "
 operator|+
 name|blacklistDisableFailureThreshold
 operator|+
@@ -337,7 +327,6 @@ operator|+
 name|numberOfNodeManagerHosts
 argument_list|)
 expr_stmt|;
-block|}
 name|ret
 operator|=
 operator|new
