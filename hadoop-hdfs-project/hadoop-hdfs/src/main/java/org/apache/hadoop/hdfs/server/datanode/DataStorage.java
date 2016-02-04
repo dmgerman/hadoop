@@ -2609,28 +2609,13 @@ argument_list|(
 name|datanodeUuid
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|sd
-operator|.
-name|getStorageUuid
-argument_list|()
-operator|==
-literal|null
-condition|)
-block|{
-comment|// Assign a new Storage UUID.
-name|sd
-operator|.
-name|setStorageUuid
+name|createStorageID
 argument_list|(
-name|DatanodeStorage
-operator|.
-name|generateUuid
-argument_list|()
+name|sd
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
-block|}
 name|writeProperties
 argument_list|(
 name|sd
@@ -3442,7 +3427,22 @@ operator|.
 name|DATANODE_LAYOUT_VERSION
 condition|)
 block|{
-name|doUpgrade
+if|if
+condition|(
+name|federationSupported
+condition|)
+block|{
+comment|// If the existing on-disk layout version supports federation,
+comment|// simply update the properties.
+name|upgradeProperties
+argument_list|(
+name|sd
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|doUpgradePreFederation
 argument_list|(
 name|sd
 argument_list|,
@@ -3451,7 +3451,7 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-comment|// upgrade
+block|}
 return|return
 literal|true
 return|;
@@ -3480,10 +3480,10 @@ name|DATANODE_LAYOUT_VERSION
 argument_list|)
 throw|;
 block|}
-comment|/**    * Upgrade -- Move current storage into a backup directory,    * and hardlink all its blocks into the new current directory.    *     * Upgrade from pre-0.22 to 0.22 or later release e.g. 0.19/0.20/ => 0.22/0.23    *<ul>    *<li> If<SD>/previous exists then delete it</li>    *<li> Rename<SD>/current to<SD>/previous.tmp</li>    *<li>Create new<SD>/current/<bpid>/current directory<li>    *<ul>    *<li> Hard links for block files are created from<SD>/previous.tmp     * to<SD>/current/<bpid>/current</li>    *<li> Saves new version file in<SD>/current/<bpid>/current directory</li>    *</ul>    *<li> Rename<SD>/previous.tmp to<SD>/previous</li>    *</ul>    *     * There should be only ONE namenode in the cluster for first     * time upgrade to 0.22    * @param sd  storage directory    * @throws IOException on error    */
-DECL|method|doUpgrade (final StorageDirectory sd, final NamespaceInfo nsInfo, final Configuration conf)
+comment|/**    * Upgrade from a pre-federation layout.    * Move current storage into a backup directory,    * and hardlink all its blocks into the new current directory.    *     * Upgrade from pre-0.22 to 0.22 or later release e.g. 0.19/0.20/ => 0.22/0.23    *<ul>    *<li> If<SD>/previous exists then delete it</li>    *<li> Rename<SD>/current to<SD>/previous.tmp</li>    *<li>Create new<SD>/current/<bpid>/current directory<li>    *<ul>    *<li> Hard links for block files are created from<SD>/previous.tmp     * to<SD>/current/<bpid>/current</li>    *<li> Saves new version file in<SD>/current/<bpid>/current directory</li>    *</ul>    *<li> Rename<SD>/previous.tmp to<SD>/previous</li>    *</ul>    *     * There should be only ONE namenode in the cluster for first     * time upgrade to 0.22    * @param sd  storage directory    */
+DECL|method|doUpgradePreFederation (final StorageDirectory sd, final NamespaceInfo nsInfo, final Configuration conf)
 name|void
-name|doUpgrade
+name|doUpgradePreFederation
 parameter_list|(
 specifier|final
 name|StorageDirectory
@@ -3500,62 +3500,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// If the existing on-disk layout version supportes federation, simply
-comment|// update its layout version.
-if|if
-condition|(
-name|DataNodeLayoutVersion
-operator|.
-name|supports
-argument_list|(
-name|LayoutVersion
-operator|.
-name|Feature
-operator|.
-name|FEDERATION
-argument_list|,
-name|layoutVersion
-argument_list|)
-condition|)
-block|{
-comment|// The VERSION file is already read in. Override the layoutVersion
-comment|// field and overwrite the file. The upgrade work is handled by
-comment|// {@link BlockPoolSliceStorage#doUpgrade}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Updating layout version from "
-operator|+
-name|layoutVersion
-operator|+
-literal|" to "
-operator|+
-name|HdfsServerConstants
-operator|.
-name|DATANODE_LAYOUT_VERSION
-operator|+
-literal|" for storage "
-operator|+
-name|sd
-operator|.
-name|getRoot
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|layoutVersion
-operator|=
-name|HdfsServerConstants
-operator|.
-name|DATANODE_LAYOUT_VERSION
-expr_stmt|;
-name|writeProperties
-argument_list|(
-name|sd
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 specifier|final
 name|int
 name|oldLV
@@ -3813,12 +3757,6 @@ name|conf
 argument_list|)
 expr_stmt|;
 comment|// 4. Write version file under<SD>/current
-name|layoutVersion
-operator|=
-name|HdfsServerConstants
-operator|.
-name|DATANODE_LAYOUT_VERSION
-expr_stmt|;
 name|clusterID
 operator|=
 name|nsInfo
@@ -3826,7 +3764,7 @@ operator|.
 name|getClusterID
 argument_list|()
 expr_stmt|;
-name|writeProperties
+name|upgradeProperties
 argument_list|(
 name|sd
 argument_list|)
@@ -3853,11 +3791,55 @@ operator|+
 literal|" is complete"
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|upgradeProperties (StorageDirectory sd)
+name|void
+name|upgradeProperties
+parameter_list|(
+name|StorageDirectory
+name|sd
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|createStorageID
 argument_list|(
 name|sd
 argument_list|,
 name|layoutVersion
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Updating layout version from "
+operator|+
+name|layoutVersion
+operator|+
+literal|" to "
+operator|+
+name|HdfsServerConstants
+operator|.
+name|DATANODE_LAYOUT_VERSION
+operator|+
+literal|" for storage "
+operator|+
+name|sd
+operator|.
+name|getRoot
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|layoutVersion
+operator|=
+name|HdfsServerConstants
+operator|.
+name|DATANODE_LAYOUT_VERSION
+expr_stmt|;
+name|writeProperties
+argument_list|(
+name|sd
 argument_list|)
 expr_stmt|;
 block|}
