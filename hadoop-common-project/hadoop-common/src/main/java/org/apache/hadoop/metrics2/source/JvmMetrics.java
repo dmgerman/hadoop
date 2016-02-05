@@ -888,7 +888,7 @@ name|GcNumWarnThresholdExceeded
 argument_list|,
 name|pauseMonitor
 operator|.
-name|getNumGcWarnThreadholdExceeded
+name|getNumGcWarnThresholdExceeded
 argument_list|()
 argument_list|)
 expr_stmt|;

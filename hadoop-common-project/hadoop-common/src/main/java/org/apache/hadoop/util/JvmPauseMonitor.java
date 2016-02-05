@@ -508,10 +508,10 @@ operator|!=
 literal|null
 return|;
 block|}
-DECL|method|getNumGcWarnThreadholdExceeded ()
+DECL|method|getNumGcWarnThresholdExceeded ()
 specifier|public
 name|long
-name|getNumGcWarnThreadholdExceeded
+name|getNumGcWarnThresholdExceeded
 parameter_list|()
 block|{
 return|return
