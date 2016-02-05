@@ -420,7 +420,18 @@ condition|(
 name|path
 operator|==
 literal|null
-operator|||
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Network Location is null "
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|path
 operator|.
 name|length
@@ -428,9 +439,11 @@ argument_list|()
 operator|==
 literal|0
 condition|)
+block|{
 return|return
 name|ROOT
 return|;
+block|}
 if|if
 condition|(
 name|path
