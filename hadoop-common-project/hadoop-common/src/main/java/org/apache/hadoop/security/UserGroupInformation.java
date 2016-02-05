@@ -4197,7 +4197,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"failure to login"
+literal|"failure to login: "
+operator|+
+name|le
 argument_list|,
 name|le
 argument_list|)
@@ -4929,6 +4931,10 @@ operator|+
 literal|" from keytab "
 operator|+
 name|keytabFile
+operator|+
+literal|": "
+operator|+
+name|le
 argument_list|,
 name|le
 argument_list|)
@@ -5276,6 +5282,10 @@ operator|+
 literal|" from keytab "
 operator|+
 name|keytabFile
+operator|+
+literal|": "
+operator|+
+name|le
 argument_list|,
 name|le
 argument_list|)
@@ -5458,6 +5468,10 @@ literal|"Login failure for "
 operator|+
 name|getUserName
 argument_list|()
+operator|+
+literal|": "
+operator|+
+name|le
 argument_list|,
 name|le
 argument_list|)
@@ -5643,6 +5657,10 @@ operator|+
 literal|" from keytab "
 operator|+
 name|path
+operator|+
+literal|": "
+operator|+
+name|le
 argument_list|,
 name|le
 argument_list|)
@@ -7644,6 +7662,10 @@ operator|+
 name|this
 operator|+
 literal|"]"
+operator|+
+literal|": "
+operator|+
+name|pae
 argument_list|,
 name|pae
 argument_list|)
