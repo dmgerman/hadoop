@@ -321,6 +321,16 @@ name|Integer
 operator|.
 name|MAX_VALUE
 decl_stmt|;
+comment|//enable multiobject-delete calls?
+DECL|field|ENABLE_MULTI_DELETE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ENABLE_MULTI_DELETE
+init|=
+literal|"fs.s3a.multiobjectdelete.enable"
+decl_stmt|;
 comment|// comma separated list of directories
 DECL|field|BUFFER_DIR
 specifier|public

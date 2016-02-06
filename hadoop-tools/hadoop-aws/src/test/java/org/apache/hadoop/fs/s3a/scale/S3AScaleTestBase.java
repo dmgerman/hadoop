@@ -169,7 +169,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Base class for scale tests; here is where the common scale configuration  * keys are defined  */
+comment|/**  * Base class for scale tests; here is where the common scale configuration  * keys are defined.  */
 end_comment
 
 begin_class
@@ -187,6 +187,7 @@ name|SCALE_TEST
 init|=
 literal|"scale.test."
 decl_stmt|;
+comment|/**    * The number of operations to perform: {@value}    */
 DECL|field|KEY_OPERATION_COUNT
 specifier|public
 specifier|static
@@ -198,6 +199,7 @@ name|SCALE_TEST
 operator|+
 literal|"operation.count"
 decl_stmt|;
+comment|/**    * The default number of operations to perform: {@value}    */
 DECL|field|DEFAULT_OPERATION_COUNT
 specifier|public
 specifier|static
@@ -271,6 +273,16 @@ name|conf
 operator|=
 name|createConfiguration
 argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Scale test operation count = {}"
+argument_list|,
+name|getOperationCount
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|fs
 operator|=

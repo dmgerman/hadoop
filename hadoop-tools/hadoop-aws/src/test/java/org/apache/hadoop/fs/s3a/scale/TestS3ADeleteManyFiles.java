@@ -351,9 +351,7 @@ name|completionService
 init|=
 operator|new
 name|ExecutorCompletionService
-argument_list|<
-name|Boolean
-argument_list|>
+argument_list|<>
 argument_list|(
 name|exec
 argument_list|)
