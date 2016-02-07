@@ -92,6 +92,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|UnknownHostException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|charset
@@ -1120,17 +1130,8 @@ specifier|final
 name|String
 name|logFile
 init|=
-literal|"testsrc-"
-operator|+
-name|InetAddress
-operator|.
-name|getLocalHost
+name|getLogFilename
 argument_list|()
-operator|.
-name|getHostName
-argument_list|()
-operator|+
-literal|".log"
 decl_stmt|;
 name|FileSystem
 name|fs
@@ -1339,7 +1340,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Return the path to the log file to use, based on the target path.    * @param fs the target FileSystem    * @param initial the path from which to start    * @return the path to use    * @throws IOException thrown if testing for file existence fails.    */
+comment|/**    * Return the path to the log file to use, based on the initial path. The    * initial path must be a valid log file path. This method will find the    * most recent version of the file.    *    * @param fs the target FileSystem    * @param initial the path from which to start    * @return the path to use    * @throws IOException thrown if testing for file existence fails.    */
 DECL|method|findMostRecentLogFile (FileSystem fs, Path initial)
 specifier|protected
 name|Path
@@ -1407,6 +1408,30 @@ condition|)
 do|;
 return|return
 name|logFile
+return|;
+block|}
+comment|/**    * Return the name of the log file for this host.    *    * @return the name of the log file for this host    */
+DECL|method|getLogFilename ()
+specifier|protected
+specifier|static
+name|String
+name|getLogFilename
+parameter_list|()
+throws|throws
+name|UnknownHostException
+block|{
+return|return
+literal|"testsrc-"
+operator|+
+name|InetAddress
+operator|.
+name|getLocalHost
+argument_list|()
+operator|.
+name|getHostName
+argument_list|()
+operator|+
+literal|".log"
 return|;
 block|}
 comment|/**    * Assert that the given contents match what is expected from the test    * metrics.    *    * @param contents the file contents to test    */
@@ -1674,17 +1699,8 @@ name|Path
 argument_list|(
 name|dir
 argument_list|,
-literal|"testsrc-"
-operator|+
-name|InetAddress
-operator|.
-name|getLocalHost
+name|getLogFilename
 argument_list|()
-operator|.
-name|getHostName
-argument_list|()
-operator|+
-literal|".log"
 argument_list|)
 decl_stmt|;
 comment|// Create the log file to force the sink to append
@@ -1743,17 +1759,10 @@ name|Path
 argument_list|(
 name|dir
 argument_list|,
-literal|"testsrc-"
-operator|+
-name|InetAddress
-operator|.
-name|getLocalHost
-argument_list|()
-operator|.
-name|getHostName
+name|getLogFilename
 argument_list|()
 operator|+
-literal|".log."
+literal|"."
 operator|+
 name|count
 argument_list|)
@@ -2033,8 +2042,6 @@ specifier|public
 name|void
 name|close
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 try|try
 block|{
