@@ -513,7 +513,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** Covert the given String to a RollingUpgradeAction. */
+comment|/** Convert the given String to a RollingUpgradeAction. */
 DECL|method|fromString (String s)
 specifier|public
 specifier|static

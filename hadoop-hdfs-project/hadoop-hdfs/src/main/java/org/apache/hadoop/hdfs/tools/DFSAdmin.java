@@ -2314,7 +2314,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Failed to covert \""
+literal|"Failed to convert \""
 operator|+
 name|argv
 index|[
