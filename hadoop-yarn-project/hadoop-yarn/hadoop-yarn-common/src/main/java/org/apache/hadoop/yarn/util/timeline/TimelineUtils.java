@@ -657,7 +657,7 @@ name|timelineServiceAddr
 argument_list|)
 return|;
 block|}
-DECL|method|generateDefaultFlowNameBasedOnAppId (ApplicationId appId)
+DECL|method|generateDefaultFlowNameBasedOnAppId ( ApplicationId appId)
 specifier|public
 specifier|static
 name|String
@@ -683,7 +683,7 @@ name|getId
 argument_list|()
 return|;
 block|}
-comment|/**    * Generate flow name tag    *    * @param flowName flow name that identifies a distinct flow application which    *                 can be run repeatedly over time    * @return    */
+comment|/**    * Generate flow name tag.    *    * @param flowName flow name that identifies a distinct flow application which    *                 can be run repeatedly over time    * @return flow name tag.    */
 DECL|method|generateFlowNameTag (String flowName)
 specifier|public
 specifier|static
@@ -702,7 +702,7 @@ operator|+
 name|flowName
 return|;
 block|}
-comment|/**    * Generate flow version tag    *    * @param flowVersion flow version that keeps track of the changes made to the    *                    flow    * @return    */
+comment|/**    * Generate flow version tag.    *    * @param flowVersion flow version that keeps track of the changes made to the    *                    flow    * @return flow version tag.    */
 DECL|method|generateFlowVersionTag (String flowVersion)
 specifier|public
 specifier|static
@@ -721,7 +721,7 @@ operator|+
 name|flowVersion
 return|;
 block|}
-comment|/**    * Generate flow run ID tag    *    * @param flowRunId flow run ID that identifies one instance (or specific    *                  execution) of that flow    * @return    */
+comment|/**    * Generate flow run ID tag.    *    * @param flowRunId flow run ID that identifies one instance (or specific    *                  execution) of that flow    * @return flow run id tag.    */
 DECL|method|generateFlowRunIdTag (long flowRunId)
 specifier|public
 specifier|static

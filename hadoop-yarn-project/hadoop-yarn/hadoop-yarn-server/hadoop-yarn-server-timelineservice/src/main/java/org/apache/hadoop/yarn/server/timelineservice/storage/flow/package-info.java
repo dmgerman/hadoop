@@ -3,8 +3,26 @@ begin_comment
 comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
+begin_comment
+comment|/**  * Package org.apache.hadoop.yarn.server.timelineservice.storage.flow  * contains classes related to implementation for flow related tables, viz. flow  * run table and flow activity table.  */
+end_comment
+
+begin_annotation
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+end_annotation
+
+begin_annotation
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+end_annotation
+
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records.timelineservice
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.flow
 package|package
 name|org
 operator|.
@@ -14,11 +32,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
+name|server
 operator|.
 name|timelineservice
+operator|.
+name|storage
+operator|.
+name|flow
 package|;
 end_package
 
@@ -49,89 +69,6 @@ operator|.
 name|InterfaceStability
 import|;
 end_import
-
-begin_comment
-comment|/**  * This entity represents a YARN cluster.  */
-end_comment
-
-begin_class
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Public
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
-DECL|class|ClusterEntity
-specifier|public
-class|class
-name|ClusterEntity
-extends|extends
-name|HierarchicalTimelineEntity
-block|{
-DECL|method|ClusterEntity ()
-specifier|public
-name|ClusterEntity
-parameter_list|()
-block|{
-name|super
-argument_list|(
-name|TimelineEntityType
-operator|.
-name|YARN_CLUSTER
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|ClusterEntity (TimelineEntity entity)
-specifier|public
-name|ClusterEntity
-parameter_list|(
-name|TimelineEntity
-name|entity
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|entity
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|entity
-operator|.
-name|getType
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|TimelineEntityType
-operator|.
-name|YARN_CLUSTER
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Incompatible entity type: "
-operator|+
-name|getId
-argument_list|()
-argument_list|)
-throw|;
-block|}
-block|}
-block|}
-end_class
 
 end_unit
 

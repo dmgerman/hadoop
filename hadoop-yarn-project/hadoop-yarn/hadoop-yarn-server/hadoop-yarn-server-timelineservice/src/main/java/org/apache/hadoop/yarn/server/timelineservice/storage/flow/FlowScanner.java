@@ -546,7 +546,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|nextRaw (List<Cell> cells, int limit)
+DECL|method|nextRaw (List<Cell> cells, int cellLimit)
 specifier|public
 name|boolean
 name|nextRaw
@@ -558,7 +558,7 @@ argument_list|>
 name|cells
 parameter_list|,
 name|int
-name|limit
+name|cellLimit
 parameter_list|)
 throws|throws
 name|IOException
@@ -568,7 +568,7 @@ name|nextInternal
 argument_list|(
 name|cells
 argument_list|,
-name|limit
+name|cellLimit
 argument_list|)
 return|;
 block|}
@@ -599,7 +599,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|next (List<Cell> cells, int limit)
+DECL|method|next (List<Cell> cells, int cellLimit)
 specifier|public
 name|boolean
 name|next
@@ -611,7 +611,7 @@ argument_list|>
 name|cells
 parameter_list|,
 name|int
-name|limit
+name|cellLimit
 parameter_list|)
 throws|throws
 name|IOException
@@ -621,7 +621,7 @@ name|nextInternal
 argument_list|(
 name|cells
 argument_list|,
-name|limit
+name|cellLimit
 argument_list|)
 return|;
 block|}
@@ -818,8 +818,8 @@ name|NumericValueConverter
 operator|)
 return|;
 block|}
-comment|/**    * This method loops through the cells in a given row of the    * {@link FlowRunTable}. It looks at the tags of each cell to figure out how    * to process the contents. It then calculates the sum or min or max for each    * column or returns the cell as is.    *    * @param cells    * @param limit    * @return true if next row is available for the scanner, false otherwise    * @throws IOException    */
-DECL|method|nextInternal (List<Cell> cells, int limit)
+comment|/**    * This method loops through the cells in a given row of the    * {@link FlowRunTable}. It looks at the tags of each cell to figure out how    * to process the contents. It then calculates the sum or min or max for each    * column or returns the cell as is.    *    * @param cells    * @param cellLimit    * @return true if next row is available for the scanner, false otherwise    * @throws IOException    */
+DECL|method|nextInternal (List<Cell> cells, int cellLimit)
 specifier|private
 name|boolean
 name|nextInternal
@@ -831,7 +831,7 @@ argument_list|>
 name|cells
 parameter_list|,
 name|int
-name|limit
+name|cellLimit
 parameter_list|)
 throws|throws
 name|IOException
@@ -916,7 +916,7 @@ name|cell
 operator|=
 name|peekAtNextCell
 argument_list|(
-name|limit
+name|cellLimit
 argument_list|)
 operator|)
 operator|!=
@@ -924,13 +924,13 @@ literal|null
 operator|)
 operator|&&
 operator|(
-name|limit
+name|cellLimit
 operator|<=
 literal|0
 operator|||
 name|addedCnt
 operator|<
-name|limit
+name|cellLimit
 operator|)
 condition|)
 block|{
@@ -1026,7 +1026,7 @@ condition|)
 block|{
 name|nextCell
 argument_list|(
-name|limit
+name|cellLimit
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -1049,7 +1049,7 @@ argument_list|)
 expr_stmt|;
 name|nextCell
 argument_list|(
-name|limit
+name|cellLimit
 argument_list|)
 expr_stmt|;
 block|}
@@ -1127,7 +1127,7 @@ name|tags
 argument_list|)
 return|;
 block|}
-comment|/**    * resets the parameters to an intialized state for next loop iteration    *    * @param cell    * @param currentAggOp    * @param currentColumnCells    * @param alreadySeenAggDim    * @param collectedButNotEmitted    */
+comment|/**    * resets the parameters to an intialized state for next loop iteration.    *    * @param cell    * @param currentAggOp    * @param currentColumnCells    * @param alreadySeenAggDim    * @param collectedButNotEmitted    */
 DECL|method|resetState (SortedSet<Cell> currentColumnCells, Set<String> alreadySeenAggDim)
 specifier|private
 name|void
@@ -1400,8 +1400,12 @@ argument_list|(
 name|tags
 argument_list|)
 decl_stmt|;
+comment|// If this agg dimension has already been seen, since they show up in
+comment|// sorted order, we drop the rest which are older. In other words, this
+comment|// cell is older than previously seen cells for that agg dim.
 if|if
 condition|(
+operator|!
 name|alreadySeenAggDim
 operator|.
 name|contains
@@ -1410,15 +1414,7 @@ name|aggDim
 argument_list|)
 condition|)
 block|{
-comment|// if this agg dimension has already been seen,
-comment|// since they show up in sorted order
-comment|// we drop the rest which are older
-comment|// in other words, this cell is older than previously seen cells
-comment|// for that agg dim
-block|}
-else|else
-block|{
-comment|// not seen this agg dim, hence consider this cell in our working set
+comment|// Not seen this agg dim, hence consider this cell in our working set
 name|currentColumnCells
 operator|.
 name|add
@@ -1950,7 +1946,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|/**    * Returns whether or not the underlying scanner has more rows.    */
+comment|/**    * Returns whether or not the underlying scanner has more rows.    *    * @return true, if there are more cells to return, false otherwise.    */
 DECL|method|hasMore ()
 specifier|public
 name|boolean
@@ -1970,14 +1966,14 @@ else|:
 name|hasMore
 return|;
 block|}
-comment|/**    * Returns the next available cell for the current row and advances the    * pointer to the next cell. This method can be called multiple times in a row    * to advance through all the available cells.    *    * @param limit    *          the limit of number of cells to return if the next batch must be    *          fetched by the wrapped scanner    * @return the next available cell or null if no more cells are available for    *         the current row    * @throws IOException    */
-DECL|method|nextCell (int limit)
+comment|/**    * Returns the next available cell for the current row and advances the    * pointer to the next cell. This method can be called multiple times in a row    * to advance through all the available cells.    *    * @param cellLimit    *          the limit of number of cells to return if the next batch must be    *          fetched by the wrapped scanner    * @return the next available cell or null if no more cells are available for    *         the current row    * @throws IOException if any problem is encountered while grabbing the next    *     cell.    */
+DECL|method|nextCell (int cellLimit)
 specifier|public
 name|Cell
 name|nextCell
 parameter_list|(
 name|int
-name|limit
+name|cellLimit
 parameter_list|)
 throws|throws
 name|IOException
@@ -1987,7 +1983,7 @@ name|cell
 init|=
 name|peekAtNextCell
 argument_list|(
-name|limit
+name|cellLimit
 argument_list|)
 decl_stmt|;
 if|if
@@ -2005,14 +2001,14 @@ return|return
 name|cell
 return|;
 block|}
-comment|/**    * Returns the next available cell for the current row, without advancing the    * pointer. Calling this method multiple times in a row will continue to    * return the same cell.    *    * @param limit    *          the limit of number of cells to return if the next batch must be    *          fetched by the wrapped scanner    * @return the next available cell or null if no more cells are available for    *         the current row    * @throws IOException    */
-DECL|method|peekAtNextCell (int limit)
+comment|/**    * Returns the next available cell for the current row, without advancing the    * pointer. Calling this method multiple times in a row will continue to    * return the same cell.    *    * @param cellLimit    *          the limit of number of cells to return if the next batch must be    *          fetched by the wrapped scanner    * @return the next available cell or null if no more cells are available for    *         the current row    * @throws IOException if any problem is encountered while grabbing the next    *     cell.    */
+DECL|method|peekAtNextCell (int cellLimit)
 specifier|public
 name|Cell
 name|peekAtNextCell
 parameter_list|(
 name|int
-name|limit
+name|cellLimit
 parameter_list|)
 throws|throws
 name|IOException
@@ -2045,7 +2041,7 @@ name|next
 argument_list|(
 name|availableCells
 argument_list|,
-name|limit
+name|cellLimit
 argument_list|)
 expr_stmt|;
 block|}

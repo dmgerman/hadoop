@@ -114,12 +114,22 @@ name|ObjectNode
 import|;
 end_import
 
+begin_comment
+comment|/**  * Class containing utility methods to be used by JobHistoryEventHandler.  */
+end_comment
+
 begin_class
 DECL|class|JobHistoryEventUtils
 specifier|public
+specifier|final
 class|class
 name|JobHistoryEventUtils
 block|{
+DECL|method|JobHistoryEventUtils ()
+specifier|private
+name|JobHistoryEventUtils
+parameter_list|()
+block|{   }
 DECL|method|countersToJSON (Counters counters)
 specifier|public
 specifier|static

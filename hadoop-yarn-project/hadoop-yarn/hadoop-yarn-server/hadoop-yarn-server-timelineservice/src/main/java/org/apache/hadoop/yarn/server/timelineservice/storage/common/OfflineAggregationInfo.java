@@ -89,7 +89,7 @@ specifier|final
 class|class
 name|OfflineAggregationInfo
 block|{
-comment|/**    * Default flow level aggregation table name    */
+comment|/**    * Default flow level aggregation table name.    */
 annotation|@
 name|VisibleForTesting
 DECL|field|FLOW_AGGREGATION_TABLE_NAME
@@ -101,7 +101,7 @@ name|FLOW_AGGREGATION_TABLE_NAME
 init|=
 literal|"yarn_timeline_flow_aggregation"
 decl_stmt|;
-comment|/**    * Default user level aggregation table name    */
+comment|/**    * Default user level aggregation table name.    */
 DECL|field|USER_AGGREGATION_TABLE_NAME
 specifier|public
 specifier|static

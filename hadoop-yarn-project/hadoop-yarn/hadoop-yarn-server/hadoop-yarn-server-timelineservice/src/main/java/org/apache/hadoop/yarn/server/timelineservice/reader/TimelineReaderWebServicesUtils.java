@@ -181,7 +181,7 @@ specifier|private
 name|TimelineReaderWebServicesUtils
 parameter_list|()
 block|{   }
-comment|/**    * Parse the passed context information represented as strings and convert    * into a {@link TimelineReaderContext} object.    * @param clusterId    * @param userId    * @param flowName    * @param flowRunId    * @param appId    * @param entityType    * @param entityId    * @return a {@link TimelineReaderContext} object.    * @throws Exception    */
+comment|/**    * Parse the passed context information represented as strings and convert    * into a {@link TimelineReaderContext} object.    * @param clusterId Cluster Id.    * @param userId User Id.    * @param flowName Flow Name.    * @param flowRunId Run id for the flow.    * @param appId App Id.    * @param entityType Entity Type.    * @param entityId Entity Id.    * @return a {@link TimelineReaderContext} object.    * @throws Exception if any problem occurs during parsing.    */
 DECL|method|createTimelineReaderContext (String clusterId, String userId, String flowName, String flowRunId, String appId, String entityType, String entityId)
 specifier|static
 name|TimelineReaderContext
@@ -252,7 +252,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Parse the passed filters represented as strings and convert them into a    * {@link TimelineEntityFilters} object.    * @param limit    * @param createdTimeStart    * @param createdTimeEnd    * @param relatesTo    * @param isRelatedTo    * @param infofilters    * @param conffilters    * @param metricfilters    * @param eventfilters    * @return a {@link TimelineEntityFilters} object.    * @throws Exception    */
+comment|/**    * Parse the passed filters represented as strings and convert them into a    * {@link TimelineEntityFilters} object.    * @param limit Limit to number of entities to return.    * @param createdTimeStart Created time start for the entities to return.    * @param createdTimeEnd Created time end for the entities to return.    * @param relatesTo Entities to return must match relatesTo.    * @param isRelatedTo Entities to return must match isRelatedTo.    * @param infofilters Entities to return must match these info filters.    * @param conffilters Entities to return must match these metric filters.    * @param metricfilters Entities to return must match these metric filters.    * @param eventfilters Entities to return must match these event filters.    * @return a {@link TimelineEntityFilters} object.    * @throws Exception if any problem occurs during parsing.    */
 DECL|method|createTimelineEntityFilters (String limit, String createdTimeStart, String createdTimeEnd, String relatesTo, String isRelatedTo, String infofilters, String conffilters, String metricfilters, String eventfilters)
 specifier|static
 name|TimelineEntityFilters
@@ -359,7 +359,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Parse the passed fields represented as strings and convert them into a    * {@link TimelineDataToRetrieve} object.    * @param confs    * @param metrics    * @param fields    * @return a {@link TimelineDataToRetrieve} object.    * @throws Exception    */
+comment|/**    * Parse the passed fields represented as strings and convert them into a    * {@link TimelineDataToRetrieve} object.    * @param confs confs to retrieve.    * @param metrics metrics to retrieve.    * @param fields fields to retrieve.    * @return a {@link TimelineDataToRetrieve} object.    * @throws Exception if any problem occurs during parsing.    */
 DECL|method|createTimelineDataToRetrieve (String confs, String metrics, String fields)
 specifier|static
 name|TimelineDataToRetrieve
@@ -822,7 +822,7 @@ return|return
 name|map
 return|;
 block|}
-comment|/**    * Parse a delimited string and convert it into a map of key-value pairs with    * both the key and value interpreted as strings.    * For instance, if pairsDelim is "," and keyValDelim is ":", then the string    * should be represented as "key1:value1,key2:value2,key3:value3".    * @param str delimited string represented as key-value pairs.    * @param pairsDelim key-value pairs are delimited by this delimiter.    * @param keyValuesDelim key and value are delimited by this delimiter.    * @return a map of key-value pairs with both key and value being strings.    */
+comment|/**    * Parse a delimited string and convert it into a map of key-value pairs with    * both the key and value interpreted as strings.    * For instance, if pairsDelim is "," and keyValDelim is ":", then the string    * should be represented as "key1:value1,key2:value2,key3:value3".    * @param str delimited string represented as key-value pairs.    * @param pairsDelim key-value pairs are delimited by this delimiter.    * @param keyValDelim key and value are delimited by this delimiter.    * @return a map of key-value pairs with both key and value being strings.    */
 DECL|method|parseKeyStrValueStr (String str, String pairsDelim, String keyValDelim)
 specifier|static
 name|Map
@@ -890,7 +890,7 @@ return|return
 name|map
 return|;
 block|}
-comment|/**    * Parse a delimited string and convert it into a map of key-value pairs with    * key being a string and value interpreted as any object.    * For instance, if pairsDelim is "," and keyValDelim is ":", then the string    * should be represented as "key1:value1,key2:value2,key3:value3".    * @param str delimited string represented as key-value pairs.    * @param pairsDelim key-value pairs are delimited by this delimiter.    * @param keyValuesDelim key and value are delimited by this delimiter.    * @return a map of key-value pairs with key being a string and value amy    *     object.    */
+comment|/**    * Parse a delimited string and convert it into a map of key-value pairs with    * key being a string and value interpreted as any object.    * For instance, if pairsDelim is "," and keyValDelim is ":", then the string    * should be represented as "key1:value1,key2:value2,key3:value3".    * @param str delimited string represented as key-value pairs.    * @param pairsDelim key-value pairs are delimited by this delimiter.    * @param keyValDelim key and value are delimited by this delimiter.    * @return a map of key-value pairs with key being a string and value, any    *     object.    */
 DECL|method|parseKeyStrValueObj (String str, String pairsDelim, String keyValDelim)
 specifier|static
 name|Map

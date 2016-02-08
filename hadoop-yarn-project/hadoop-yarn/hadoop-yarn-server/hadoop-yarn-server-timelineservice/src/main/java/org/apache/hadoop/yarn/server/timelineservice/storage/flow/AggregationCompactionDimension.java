@@ -50,7 +50,7 @@ specifier|public
 enum|enum
 name|AggregationCompactionDimension
 block|{
-comment|/**    * the application id    */
+comment|/**    * the application id.    */
 DECL|enumConstant|APPLICATION_ID
 name|APPLICATION_ID
 argument_list|(
@@ -153,10 +153,10 @@ name|clone
 argument_list|()
 return|;
 block|}
-DECL|method|getAggregationCompactionDimension ( String aggCompactDimStr)
 specifier|public
 specifier|static
 name|AggregationCompactionDimension
+DECL|method|getAggregationCompactionDimension (String aggCompactDimStr)
 name|getAggregationCompactionDimension
 parameter_list|(
 name|String

@@ -1044,7 +1044,7 @@ name|UID_ESCAPE_CHAR
 init|=
 literal|'*'
 decl_stmt|;
-comment|/**    * Split UID using {@link #UID_DELIMITER_CHAR} and {@link #UID_ESCAPE_CHAR}.    * @param uid    * @return a list of different parts of UID split across delimiter.    * @throws IllegalArgumentException if UID is not properly escaped.    */
+comment|/**    * Split UID using {@link #UID_DELIMITER_CHAR} and {@link #UID_ESCAPE_CHAR}.    * @param uid UID to be splitted.    * @return a list of different parts of UID split across delimiter.    * @throws IllegalArgumentException if UID is not properly escaped.    */
 DECL|method|splitUID (String uid)
 specifier|private
 specifier|static
@@ -1098,7 +1098,7 @@ name|UID_ESCAPE_CHAR
 argument_list|)
 return|;
 block|}
-comment|/**    * Encodes UID depending on UID implementation.    * @param context    * @return UID represented as a string.    */
+comment|/**    * Encodes UID depending on UID implementation.    *    * @param context Reader context.    * @return UID represented as a string.    */
 DECL|method|encodeUID (TimelineReaderContext context)
 specifier|abstract
 name|String
@@ -1108,7 +1108,7 @@ name|TimelineReaderContext
 name|context
 parameter_list|)
 function_decl|;
-comment|/**    * Decodes UID depending on UID implementation.    * @param uId    * @return a {@link TimelineReaderContext} object if UID passed can be    * decoded, null otherwise.    * @throws Exception    */
+comment|/**    * Decodes UID depending on UID implementation.    *    * @param uId UID to be decoded.    * @return a {@link TimelineReaderContext} object if UID passed can be    * decoded, null otherwise.    * @throws Exception if any problem occurs while decoding.    */
 DECL|method|decodeUID (String uId)
 specifier|abstract
 name|TimelineReaderContext

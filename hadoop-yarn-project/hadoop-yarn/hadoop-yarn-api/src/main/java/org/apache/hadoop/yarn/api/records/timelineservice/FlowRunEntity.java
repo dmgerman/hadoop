@@ -64,6 +64,10 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_comment
+comment|/**  * This entity represents a flow run.  */
+end_comment
+
 begin_class
 annotation|@
 name|InterfaceAudience

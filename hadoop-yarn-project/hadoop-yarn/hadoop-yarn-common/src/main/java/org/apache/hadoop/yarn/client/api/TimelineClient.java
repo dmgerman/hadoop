@@ -363,7 +363,7 @@ name|Flushable
 block|{
 comment|/**    * Create a timeline client. The current UGI when the user initialize the    * client will be used to do the put and the delegation token operations. The    * current user may use {@link UserGroupInformation#doAs} another user to    * construct and initialize a timeline client if the following operations are    * supposed to be conducted by that user.    */
 DECL|field|contextAppId
-specifier|protected
+specifier|private
 name|ApplicationId
 name|contextAppId
 decl_stmt|;
@@ -432,9 +432,10 @@ argument_list|(
 name|name
 argument_list|)
 expr_stmt|;
-name|contextAppId
-operator|=
+name|setContextAppId
+argument_list|(
 name|appId
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    *<p>    * Send the information of a number of conceptual entities to the timeline    * server. It is a blocking API. The method will not return until it gets the    * response from the timeline server.    *</p>    *     * @param entities    *          the collection of {@link TimelineEntity}    * @return the error information if the sent entities are not correctly stored    * @throws IOException    * @throws YarnException    */
@@ -640,7 +641,7 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
-comment|/**    *<p>    * Update the timeline service address where the request will be sent to    *</p>    * @param address    *          the timeline service address    */
+comment|/**    *<p>    * Update the timeline service address where the request will be sent to.    *</p>    * @param address    *          the timeline service address    */
 DECL|method|setTimelineServiceAddress (String address)
 specifier|public
 specifier|abstract
@@ -651,6 +652,32 @@ name|String
 name|address
 parameter_list|)
 function_decl|;
+DECL|method|getContextAppId ()
+specifier|protected
+name|ApplicationId
+name|getContextAppId
+parameter_list|()
+block|{
+return|return
+name|contextAppId
+return|;
+block|}
+DECL|method|setContextAppId (ApplicationId appId)
+specifier|protected
+name|void
+name|setContextAppId
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|contextAppId
+operator|=
+name|appId
+expr_stmt|;
+block|}
 block|}
 end_class
 

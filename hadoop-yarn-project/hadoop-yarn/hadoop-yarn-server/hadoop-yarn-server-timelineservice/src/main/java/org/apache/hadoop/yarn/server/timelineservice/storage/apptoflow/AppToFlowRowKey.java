@@ -150,7 +150,7 @@ return|return
 name|appId
 return|;
 block|}
-comment|/**    * Constructs a row key prefix for the app_flow table as follows:    * {@code clusterId!AppId}    *    * @param clusterId    * @param appId    * @return byte array with the row key    */
+comment|/**    * Constructs a row key prefix for the app_flow table as follows:    * {@code clusterId!AppId}.    *    * @param clusterId Cluster Id.    * @param appId Application Id.    * @return byte array with the row key    */
 DECL|method|getRowKey (String clusterId, String appId)
 specifier|public
 specifier|static
@@ -200,7 +200,7 @@ name|second
 argument_list|)
 return|;
 block|}
-comment|/**    * Given the raw row key as bytes, returns the row key as an object.    */
+comment|/**    * Given the raw row key as bytes, returns the row key as an object.    *    * @param rowKey a rowkey represented as a byte array.    * @return an<cite>AppToFlowRowKey</cite> object.    */
 DECL|method|parseRowKey (byte[] rowKey)
 specifier|public
 specifier|static

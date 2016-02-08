@@ -275,7 +275,7 @@ return|return
 name|entityId
 return|;
 block|}
-comment|/**    * Constructs a row key prefix for the entity table as follows:    * {@code userName!clusterId!flowName!flowRunId!AppId}    *    * @param clusterId    * @param userId    * @param flowName    * @param flowRunId    * @param appId    * @return byte array with the row key prefix    */
+comment|/**    * Constructs a row key prefix for the entity table as follows:    * {@code userName!clusterId!flowName!flowRunId!AppId}.    *    * @param clusterId Context cluster id.    * @param userId User name.    * @param flowName Flow name.    * @param flowRunId Run Id for the flow.    * @param appId Application Id.    * @return byte array with the row key prefix.    */
 DECL|method|getRowKeyPrefix (String clusterId, String userId, String flowName, Long flowRunId, String appId)
 specifier|public
 specifier|static
@@ -371,7 +371,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructs a row key prefix for the entity table as follows:    * {@code userName!clusterId!flowName!flowRunId!AppId!entityType!}    *    * @param clusterId    * @param userId    * @param flowName    * @param flowRunId    * @param appId    * @param entityType    * @return byte array with the row key prefix    */
+comment|/**    * Constructs a row key prefix for the entity table as follows:    * {@code userName!clusterId!flowName!flowRunId!AppId!entityType!}.    * Typically used while querying multiple entities of a particular entity    * type.    *    * @param clusterId Context cluster id.    * @param userId User name.    * @param flowName Flow name.    * @param flowRunId Run Id for the flow.    * @param appId Application Id.    * @param entityType Entity type.    * @return byte array with the row key prefix.    */
 DECL|method|getRowKeyPrefix (String clusterId, String userId, String flowName, Long flowRunId, String appId, String entityType)
 specifier|public
 specifier|static
@@ -486,7 +486,7 @@ name|fourth
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructs a row key for the entity table as follows:    * {@code userName!clusterId!flowName!flowRunId!AppId!entityType!entityId}    *    * @param clusterId    * @param userId    * @param flowName    * @param flowRunId    * @param appId    * @param entityType    * @param entityId    * @return byte array with the row key    */
+comment|/**    * Constructs a row key for the entity table as follows:    * {@code userName!clusterId!flowName!flowRunId!AppId!entityType!entityId}.    * Typically used while querying a specific entity.    *    * @param clusterId Context cluster id.    * @param userId User name.    * @param flowName Flow name.    * @param flowRunId Run Id for the flow.    * @param appId Application Id.    * @param entityType Entity type.    * @param entityId Entity Id.    * @return byte array with the row key.    */
 DECL|method|getRowKey (String clusterId, String userId, String flowName, Long flowRunId, String appId, String entityType, String entityId)
 specifier|public
 specifier|static
@@ -604,7 +604,7 @@ name|fourth
 argument_list|)
 return|;
 block|}
-comment|/**    * Given the raw row key as bytes, returns the row key as an object.    */
+comment|/**    * Given the raw row key as bytes, returns the row key as an object.    *    * @param rowKey byte representation of row key.    * @return An<cite>EntityRowKey</cite> object.    */
 DECL|method|parseRowKey (byte[] rowKey)
 specifier|public
 specifier|static

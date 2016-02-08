@@ -682,7 +682,8 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 condition|)
 block|{
 name|Preconditions
@@ -773,7 +774,8 @@ comment|// Metrics not required.
 if|if
 condition|(
 operator|!
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|&&
 operator|!
 name|dataToRetrieve
@@ -1018,7 +1020,8 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|table
+name|getTable
+argument_list|()
 operator|.
 name|getResult
 argument_list|(
@@ -1141,7 +1144,8 @@ name|newList
 argument_list|)
 expr_stmt|;
 return|return
-name|table
+name|getTable
+argument_list|()
 operator|.
 name|getResultScanner
 argument_list|(
@@ -1201,7 +1205,8 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 condition|)
 block|{
 name|flowRun
@@ -1278,7 +1283,8 @@ block|}
 if|if
 condition|(
 operator|!
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|&&
 operator|(
 name|flowRun
@@ -1377,7 +1383,8 @@ block|}
 comment|// read metrics
 if|if
 condition|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|||
 name|getDataToRetrieve
 argument_list|()

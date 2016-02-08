@@ -145,7 +145,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class does nothing when any of the methods are invoked on  * SystemMetricsPublisher  */
+comment|/**  * This class does nothing when any of the methods are invoked on  * SystemMetricsPublisher.  */
 end_comment
 
 begin_class

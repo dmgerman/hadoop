@@ -174,7 +174,7 @@ name|bytes
 argument_list|)
 return|;
 block|}
-comment|/**    * Compares two numbers as longs. If either number is null, it will be taken    * as 0.    * @param num1    * @param num2    * @return -1 if num1 is less than num2, 0 if num1 is equal to num2 and 1 if    * num1 is greater than num2.    */
+comment|/**    * Compares two numbers as longs. If either number is null, it will be taken    * as 0.    *    * @param num1 the first {@code Long} to compare.    * @param num2 the second {@code Long} to compare.    * @return -1 if num1 is less than num2, 0 if num1 is equal to num2 and 1 if    * num1 is greater than num2.    */
 annotation|@
 name|Override
 DECL|method|compare (Number num1, Number num2)

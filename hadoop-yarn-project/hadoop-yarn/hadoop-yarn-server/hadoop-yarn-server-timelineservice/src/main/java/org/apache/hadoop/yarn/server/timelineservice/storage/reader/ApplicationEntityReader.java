@@ -821,7 +821,8 @@ name|ALL
 argument_list|)
 operator|&&
 operator|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|||
 name|filters
 operator|.
@@ -889,7 +890,8 @@ name|ALL
 argument_list|)
 operator|&&
 operator|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|||
 name|filters
 operator|.
@@ -957,7 +959,8 @@ name|ALL
 argument_list|)
 operator|&&
 operator|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|||
 name|filters
 operator|.
@@ -1025,7 +1028,8 @@ name|ALL
 argument_list|)
 operator|&&
 operator|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|||
 name|filters
 operator|.
@@ -1087,7 +1091,8 @@ argument_list|)
 operator|||
 operator|(
 operator|!
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|&&
 name|filters
 operator|.
@@ -1213,7 +1218,8 @@ argument_list|)
 operator|||
 operator|(
 operator|!
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|&&
 name|filters
 operator|.
@@ -1428,7 +1434,8 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|table
+name|getTable
+argument_list|()
 operator|.
 name|getResult
 argument_list|(
@@ -1476,7 +1483,8 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 condition|)
 block|{
 name|Preconditions
@@ -1547,7 +1555,8 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 condition|)
 block|{
 if|if
@@ -1600,7 +1609,8 @@ name|setFlowName
 argument_list|(
 name|flowContext
 operator|.
-name|flowName
+name|getFlowName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|context
@@ -1609,7 +1619,8 @@ name|setFlowRunId
 argument_list|(
 name|flowContext
 operator|.
-name|flowRunId
+name|getFlowRunId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|context
@@ -1618,7 +1629,8 @@ name|setUserId
 argument_list|(
 name|flowContext
 operator|.
-name|userId
+name|getUserId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1785,7 +1797,8 @@ name|newList
 argument_list|)
 expr_stmt|;
 return|return
-name|table
+name|getTable
+argument_list|()
 operator|.
 name|getResultScanner
 argument_list|(
@@ -1902,7 +1915,8 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|&&
 operator|(
 name|entity

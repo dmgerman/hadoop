@@ -124,20 +124,6 @@ name|hadoop
 operator|.
 name|hbase
 operator|.
-name|Cell
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hbase
-operator|.
 name|client
 operator|.
 name|Put
@@ -348,7 +334,7 @@ name|converter
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey    *          identifying the row to write. Nothing gets written when null.    * @param tableMutator    *          used to modify the underlying HBase table    * @param columnQualifier    *          column qualifier. Nothing gets written when null.    * @param timestamp    *          version timestamp. When null the current timestamp multiplied with    *          TimestampGenerator.TS_MULTIPLIER and added with last 3 digits of    *          app id will be used    * @param inputValue    *          the value to write to the rowKey and column qualifier. Nothing    *          gets written when null.    * @throws IOException    */
+comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey    *          identifying the row to write. Nothing gets written when null.    * @param tableMutator    *          used to modify the underlying HBase table    * @param columnQualifier    *          column qualifier. Nothing gets written when null.    * @param timestamp    *          version timestamp. When null the current timestamp multiplied with    *          TimestampGenerator.TS_MULTIPLIER and added with last 3 digits of    *          app id will be used    * @param inputValue    *          the value to write to the rowKey and column qualifier. Nothing    *          gets written when null.    * @param attributes Attributes to be set for HBase Put.    * @throws IOException if any problem occurs during store operation(sending    *          mutation to table).    */
 DECL|method|store (byte[] rowKey, TypedBufferedMutator<?> tableMutator, byte[] columnQualifier, Long timestamp, Object inputValue, Attribute... attributes)
 specifier|public
 name|void
@@ -627,7 +613,7 @@ return|return
 name|columnFamily
 return|;
 block|}
-comment|/**    * Get the latest version of this specified column. Note: this call clones the    * value content of the hosting {@link Cell}.    *    * @param result from which to read the value. Cannot be null    * @param columnQualifierBytes referring to the column to be read.    * @return latest version of the specified column of whichever object was    *         written.    * @throws IOException    */
+comment|/**    * Get the latest version of this specified column. Note: this call clones the    * value content of the hosting {@link org.apache.hadoop.hbase.Cell Cell}.    *    * @param result from which to read the value. Cannot be null    * @param columnQualifierBytes referring to the column to be read.    * @return latest version of the specified column of whichever object was    *         written.    * @throws IOException if any problem occurs while reading result.    */
 DECL|method|readResult (Result result, byte[] columnQualifierBytes)
 specifier|public
 name|Object
@@ -683,7 +669,7 @@ name|value
 argument_list|)
 return|;
 block|}
-comment|/**    * @param result from which to reads data with timestamps    * @param columnPrefixBytes optional prefix to limit columns. If null all    *          columns are returned.    * @param<V> the type of the values. The values will be cast into that type.    * @return the cell values at each respective time in for form    *         {idA={timestamp1->value1}, idA={timestamp2->value2},    *         idB={timestamp3->value3}, idC={timestamp1->value4}}    * @throws IOException    */
+comment|/**    * @param result from which to reads data with timestamps    * @param columnPrefixBytes optional prefix to limit columns. If null all    *          columns are returned.    * @param<V> the type of the values. The values will be cast into that type.    * @return the cell values at each respective time in for form    *         {@literal {idA={timestamp1->value1}, idA={timestamp2->value2},    *         idB={timestamp3->value3}, idC={timestamp1->value4}}}    * @throws IOException if any problem occurs while reading results.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1050,7 +1036,7 @@ return|return
 name|results
 return|;
 block|}
-comment|/**    * @param result from which to read columns    * @param columnPrefixBytes optional prefix to limit columns. If null all    *        columns are returned.    * @return the latest values of columns in the column family. This assumes    *         that the column name parts are all Strings by default. If the    *         column name parts should be treated natively and not be converted    *         back and forth from Strings, you should use    *         {@link #readResultsHavingCompoundColumnQualifiers(Result, byte[])}    *         instead.    * @throws IOException    */
+comment|/**    * @param result from which to read columns    * @param columnPrefixBytes optional prefix to limit columns. If null all    *        columns are returned.    * @return the latest values of columns in the column family. This assumes    *         that the column name parts are all Strings by default. If the    *         column name parts should be treated natively and not be converted    *         back and forth from Strings, you should use    *         {@link #readResultsHavingCompoundColumnQualifiers(Result, byte[])}    *         instead.    * @throws IOException if any problem occurs while reading results.    */
 DECL|method|readResults (Result result, byte[] columnPrefixBytes)
 specifier|public
 name|Map
@@ -1291,7 +1277,7 @@ return|return
 name|results
 return|;
 block|}
-comment|/**    * @param result from which to read columns    * @param columnPrefixBytes optional prefix to limit columns. If null all    *        columns are returned.    * @return the latest values of columns in the column family. If the column    *         prefix is null, the column qualifier is returned as Strings. For a    *         non-null column prefix bytes, the column qualifier is returned as    *         a list of parts, each part a byte[]. This is to facilitate    *         returning byte arrays of values that were not Strings.    * @throws IOException    */
+comment|/**    * @param result from which to read columns    * @param columnPrefixBytes optional prefix to limit columns. If null all    *        columns are returned.    * @return the latest values of columns in the column family. If the column    *         prefix is null, the column qualifier is returned as Strings. For a    *         non-null column prefix bytes, the column qualifier is returned as    *         a list of parts, each part a byte[]. This is to facilitate    *         returning byte arrays of values that were not Strings.    * @throws IOException if any problem occurs while reading results.    */
 DECL|method|readResultsHavingCompoundColumnQualifiers (Result result, byte[] columnPrefixBytes)
 specifier|public
 name|Map

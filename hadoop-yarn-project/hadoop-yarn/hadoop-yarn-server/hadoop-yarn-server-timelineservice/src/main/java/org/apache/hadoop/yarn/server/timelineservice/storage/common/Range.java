@@ -52,6 +52,10 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_comment
+comment|/**  * Encapsulates a range with start and end indices.  */
+end_comment
+
 begin_class
 annotation|@
 name|InterfaceAudience

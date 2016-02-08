@@ -1965,11 +1965,11 @@ name|RM_PREFIX
 operator|+
 literal|"system-metrics-publisher.dispatcher.pool-size"
 decl_stmt|;
-DECL|field|DEFAULT_RM_SYSTEM_METRICS_PUBLISHER_DISPATCHER_POOL_SIZE
 specifier|public
 specifier|static
 specifier|final
 name|int
+DECL|field|DEFAULT_RM_SYSTEM_METRICS_PUBLISHER_DISPATCHER_POOL_SIZE
 name|DEFAULT_RM_SYSTEM_METRICS_PUBLISHER_DISPATCHER_POOL_SIZE
 init|=
 literal|10
@@ -6390,7 +6390,7 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"ui-web-path."
 decl_stmt|;
-comment|/** Timeline client settings */
+comment|/** Timeline client settings. */
 DECL|field|TIMELINE_SERVICE_CLIENT_PREFIX
 specifier|public
 specifier|static

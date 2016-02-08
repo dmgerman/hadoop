@@ -219,7 +219,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Identifies partially qualified columns for the {@link FlowActivityTable}  */
+comment|/**  * Identifies partially qualified columns for the {@link FlowActivityTable}.  */
 end_comment
 
 begin_enum
@@ -233,7 +233,7 @@ argument_list|<
 name|FlowActivityTable
 argument_list|>
 block|{
-comment|/**    * To store run ids of the flows    */
+comment|/**    * To store run ids of the flows.    */
 DECL|enumConstant|RUN_ID
 name|RUN_ID
 argument_list|(
@@ -625,7 +625,6 @@ argument_list|)
 return|;
 block|}
 comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.ColumnPrefix    * #readResultsWithTimestamps(org.apache.hadoop.hbase.client.Result)    */
-DECL|method|readResultsWithTimestamps ( Result result)
 specifier|public
 parameter_list|<
 name|T
@@ -641,6 +640,7 @@ argument_list|,
 name|T
 argument_list|>
 argument_list|>
+DECL|method|readResultsWithTimestamps (Result result)
 name|readResultsWithTimestamps
 parameter_list|(
 name|Result

@@ -653,7 +653,7 @@ name|mapper
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Deserialize a POJO object from a JSON string.    * @param clazz    *      class to be desirialized    *    * @param jsonString    *    json string to deserialize    * @return TimelineEntity object    * @throws IOException    * @throws JsonMappingException    * @throws JsonGenerationException    */
+comment|/**    * Deserialize a POJO object from a JSON string.    *    * @param<T> Describes the type of class to be returned.    * @param clazz class to be deserialized.    * @param jsonString JSON string to deserialize.    * @return An object based on class type. Used typically for    *<cite>TimelineEntity</cite> object.    * @throws IOException if the underlying input source has problems during    *     parsing.    * @throws JsonMappingException  if parser has problems parsing content.    * @throws JsonGenerationException if there is a problem in JSON writing.    */
 DECL|method|getTimelineRecordFromJSON ( String jsonString, Class<T> clazz)
 specifier|public
 specifier|static

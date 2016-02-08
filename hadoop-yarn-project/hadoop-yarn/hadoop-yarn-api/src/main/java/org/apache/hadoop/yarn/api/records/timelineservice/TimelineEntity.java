@@ -242,6 +242,7 @@ name|SYSTEM_INFO_KEY_PREFIX
 init|=
 literal|"SYSTEM_INFO_"
 decl_stmt|;
+comment|/**    * Identifier of timeline entity(entity id + entity type).    */
 annotation|@
 name|XmlRootElement
 argument_list|(
@@ -318,20 +319,20 @@ return|return
 name|type
 return|;
 block|}
-DECL|method|setType (String type)
+DECL|method|setType (String entityType)
 specifier|public
 name|void
 name|setType
 parameter_list|(
 name|String
-name|type
+name|entityType
 parameter_list|)
 block|{
 name|this
 operator|.
 name|type
 operator|=
-name|type
+name|entityType
 expr_stmt|;
 block|}
 annotation|@
@@ -351,20 +352,20 @@ return|return
 name|id
 return|;
 block|}
-DECL|method|setId (String id)
+DECL|method|setId (String entityId)
 specifier|public
 name|void
 name|setId
 parameter_list|(
 name|String
-name|id
+name|entityId
 parameter_list|)
 block|{
 name|this
 operator|.
 name|id
 operator|=
-name|id
+name|entityId
 expr_stmt|;
 block|}
 annotation|@
@@ -475,9 +476,11 @@ name|this
 operator|==
 name|obj
 condition|)
+block|{
 return|return
 literal|true
 return|;
+block|}
 if|if
 condition|(
 operator|!
@@ -909,13 +912,13 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|setIdentifier (Identifier identifier)
+DECL|method|setIdentifier (Identifier entityIdentifier)
 specifier|public
 name|void
 name|setIdentifier
 parameter_list|(
 name|Identifier
-name|identifier
+name|entityIdentifier
 parameter_list|)
 block|{
 if|if
@@ -929,7 +932,7 @@ name|this
 operator|.
 name|identifier
 operator|=
-name|identifier
+name|entityIdentifier
 expr_stmt|;
 block|}
 else|else
@@ -938,7 +941,7 @@ name|real
 operator|.
 name|setIdentifier
 argument_list|(
-name|identifier
+name|entityIdentifier
 argument_list|)
 expr_stmt|;
 block|}
@@ -1019,7 +1022,7 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|setInfo (Map<String, Object> info)
+DECL|method|setInfo (Map<String, Object> entityInfos)
 specifier|public
 name|void
 name|setInfo
@@ -1030,7 +1033,7 @@ name|String
 argument_list|,
 name|Object
 argument_list|>
-name|info
+name|entityInfos
 parameter_list|)
 block|{
 if|if
@@ -1048,7 +1051,7 @@ name|TimelineServiceHelper
 operator|.
 name|mapCastToHashMap
 argument_list|(
-name|info
+name|entityInfos
 argument_list|)
 expr_stmt|;
 block|}
@@ -1058,12 +1061,12 @@ name|real
 operator|.
 name|setInfo
 argument_list|(
-name|info
+name|entityInfos
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addInfo (Map<String, Object> info)
+DECL|method|addInfo (Map<String, Object> entityInfos)
 specifier|public
 name|void
 name|addInfo
@@ -1074,7 +1077,7 @@ name|String
 argument_list|,
 name|Object
 argument_list|>
-name|info
+name|entityInfos
 parameter_list|)
 block|{
 if|if
@@ -1090,7 +1093,7 @@ name|info
 operator|.
 name|putAll
 argument_list|(
-name|info
+name|entityInfos
 argument_list|)
 expr_stmt|;
 block|}
@@ -1100,7 +1103,7 @@ name|real
 operator|.
 name|addInfo
 argument_list|(
-name|info
+name|entityInfos
 argument_list|)
 expr_stmt|;
 block|}
@@ -1223,7 +1226,7 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|setConfigs (Map<String, String> configs)
+DECL|method|setConfigs (Map<String, String> entityConfigs)
 specifier|public
 name|void
 name|setConfigs
@@ -1234,7 +1237,7 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|configs
+name|entityConfigs
 parameter_list|)
 block|{
 if|if
@@ -1252,7 +1255,7 @@ name|TimelineServiceHelper
 operator|.
 name|mapCastToHashMap
 argument_list|(
-name|configs
+name|entityConfigs
 argument_list|)
 expr_stmt|;
 block|}
@@ -1262,12 +1265,12 @@ name|real
 operator|.
 name|setConfigs
 argument_list|(
-name|configs
+name|entityConfigs
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addConfigs (Map<String, String> configs)
+DECL|method|addConfigs (Map<String, String> entityConfigs)
 specifier|public
 name|void
 name|addConfigs
@@ -1278,7 +1281,7 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|configs
+name|entityConfigs
 parameter_list|)
 block|{
 if|if
@@ -1294,7 +1297,7 @@ name|configs
 operator|.
 name|putAll
 argument_list|(
-name|configs
+name|entityConfigs
 argument_list|)
 expr_stmt|;
 block|}
@@ -1304,7 +1307,7 @@ name|real
 operator|.
 name|addConfigs
 argument_list|(
-name|configs
+name|entityConfigs
 argument_list|)
 expr_stmt|;
 block|}
@@ -1388,7 +1391,7 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|setMetrics (Set<TimelineMetric> metrics)
+DECL|method|setMetrics (Set<TimelineMetric> entityMetrics)
 specifier|public
 name|void
 name|setMetrics
@@ -1397,7 +1400,7 @@ name|Set
 argument_list|<
 name|TimelineMetric
 argument_list|>
-name|metrics
+name|entityMetrics
 parameter_list|)
 block|{
 if|if
@@ -1411,7 +1414,7 @@ name|this
 operator|.
 name|metrics
 operator|=
-name|metrics
+name|entityMetrics
 expr_stmt|;
 block|}
 else|else
@@ -1420,12 +1423,12 @@ name|real
 operator|.
 name|setMetrics
 argument_list|(
-name|metrics
+name|entityMetrics
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addMetrics (Set<TimelineMetric> metrics)
+DECL|method|addMetrics (Set<TimelineMetric> entityMetrics)
 specifier|public
 name|void
 name|addMetrics
@@ -1434,7 +1437,7 @@ name|Set
 argument_list|<
 name|TimelineMetric
 argument_list|>
-name|metrics
+name|entityMetrics
 parameter_list|)
 block|{
 if|if
@@ -1450,7 +1453,7 @@ name|metrics
 operator|.
 name|addAll
 argument_list|(
-name|metrics
+name|entityMetrics
 argument_list|)
 expr_stmt|;
 block|}
@@ -1460,7 +1463,7 @@ name|real
 operator|.
 name|addMetrics
 argument_list|(
-name|metrics
+name|entityMetrics
 argument_list|)
 expr_stmt|;
 block|}
@@ -1537,7 +1540,7 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|setEvents (NavigableSet<TimelineEvent> events)
+DECL|method|setEvents (NavigableSet<TimelineEvent> entityEvents)
 specifier|public
 name|void
 name|setEvents
@@ -1546,7 +1549,7 @@ name|NavigableSet
 argument_list|<
 name|TimelineEvent
 argument_list|>
-name|events
+name|entityEvents
 parameter_list|)
 block|{
 if|if
@@ -1560,7 +1563,7 @@ name|this
 operator|.
 name|events
 operator|=
-name|events
+name|entityEvents
 expr_stmt|;
 block|}
 else|else
@@ -1569,12 +1572,12 @@ name|real
 operator|.
 name|setEvents
 argument_list|(
-name|events
+name|entityEvents
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addEvents (Set<TimelineEvent> events)
+DECL|method|addEvents (Set<TimelineEvent> entityEvents)
 specifier|public
 name|void
 name|addEvents
@@ -1583,7 +1586,7 @@ name|Set
 argument_list|<
 name|TimelineEvent
 argument_list|>
-name|events
+name|entityEvents
 parameter_list|)
 block|{
 if|if
@@ -1599,7 +1602,7 @@ name|events
 operator|.
 name|addAll
 argument_list|(
-name|events
+name|entityEvents
 argument_list|)
 expr_stmt|;
 block|}
@@ -1609,7 +1612,7 @@ name|real
 operator|.
 name|addEvents
 argument_list|(
-name|events
+name|entityEvents
 argument_list|)
 expr_stmt|;
 block|}
@@ -1736,7 +1739,7 @@ name|JsonSetter
 argument_list|(
 literal|"isrelatedto"
 argument_list|)
-DECL|method|setIsRelatedToEntities ( Map<String, Set<String>> isRelatedToEntities)
+DECL|method|setIsRelatedToEntities ( Map<String, Set<String>> isRelatedTo)
 specifier|public
 name|void
 name|setIsRelatedToEntities
@@ -1750,7 +1753,7 @@ argument_list|<
 name|String
 argument_list|>
 argument_list|>
-name|isRelatedToEntities
+name|isRelatedTo
 parameter_list|)
 block|{
 if|if
@@ -1768,7 +1771,7 @@ name|TimelineServiceHelper
 operator|.
 name|mapCastToHashMap
 argument_list|(
-name|isRelatedToEntities
+name|isRelatedTo
 argument_list|)
 expr_stmt|;
 block|}
@@ -1778,12 +1781,12 @@ name|real
 operator|.
 name|setIsRelatedToEntities
 argument_list|(
-name|isRelatedToEntities
+name|isRelatedTo
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addIsRelatedToEntities ( Map<String, Set<String>> isRelatedToEntities)
+DECL|method|addIsRelatedToEntities ( Map<String, Set<String>> isRelatedTo)
 specifier|public
 name|void
 name|addIsRelatedToEntities
@@ -1797,7 +1800,7 @@ argument_list|<
 name|String
 argument_list|>
 argument_list|>
-name|isRelatedToEntities
+name|isRelatedTo
 parameter_list|)
 block|{
 if|if
@@ -1822,7 +1825,7 @@ argument_list|>
 argument_list|>
 name|entry
 range|:
-name|isRelatedToEntities
+name|isRelatedTo
 operator|.
 name|entrySet
 argument_list|()
@@ -1893,7 +1896,7 @@ name|real
 operator|.
 name|addIsRelatedToEntities
 argument_list|(
-name|isRelatedToEntities
+name|isRelatedTo
 argument_list|)
 expr_stmt|;
 block|}
@@ -2057,7 +2060,7 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|addRelatesToEntities (Map<String, Set<String>> relatesToEntities)
+DECL|method|addRelatesToEntities (Map<String, Set<String>> relatesTo)
 specifier|public
 name|void
 name|addRelatesToEntities
@@ -2071,7 +2074,7 @@ argument_list|<
 name|String
 argument_list|>
 argument_list|>
-name|relatesToEntities
+name|relatesTo
 parameter_list|)
 block|{
 if|if
@@ -2096,7 +2099,7 @@ argument_list|>
 argument_list|>
 name|entry
 range|:
-name|relatesToEntities
+name|relatesTo
 operator|.
 name|entrySet
 argument_list|()
@@ -2167,7 +2170,7 @@ name|real
 operator|.
 name|addRelatesToEntities
 argument_list|(
-name|relatesToEntities
+name|relatesTo
 argument_list|)
 expr_stmt|;
 block|}
@@ -2254,7 +2257,7 @@ name|JsonSetter
 argument_list|(
 literal|"relatesto"
 argument_list|)
-DECL|method|setRelatesToEntities (Map<String, Set<String>> relatesToEntities)
+DECL|method|setRelatesToEntities (Map<String, Set<String>> relatesTo)
 specifier|public
 name|void
 name|setRelatesToEntities
@@ -2268,7 +2271,7 @@ argument_list|<
 name|String
 argument_list|>
 argument_list|>
-name|relatesToEntities
+name|relatesTo
 parameter_list|)
 block|{
 if|if
@@ -2286,7 +2289,7 @@ name|TimelineServiceHelper
 operator|.
 name|mapCastToHashMap
 argument_list|(
-name|relatesToEntities
+name|relatesTo
 argument_list|)
 expr_stmt|;
 block|}
@@ -2296,7 +2299,7 @@ name|real
 operator|.
 name|setRelatesToEntities
 argument_list|(
-name|relatesToEntities
+name|relatesTo
 argument_list|)
 expr_stmt|;
 block|}
@@ -2340,13 +2343,13 @@ name|JsonSetter
 argument_list|(
 literal|"createdtime"
 argument_list|)
-DECL|method|setCreatedTime (long createdTime)
+DECL|method|setCreatedTime (long createdTs)
 specifier|public
 name|void
 name|setCreatedTime
 parameter_list|(
 name|long
-name|createdTime
+name|createdTs
 parameter_list|)
 block|{
 if|if
@@ -2360,7 +2363,7 @@ name|this
 operator|.
 name|createdTime
 operator|=
-name|createdTime
+name|createdTs
 expr_stmt|;
 block|}
 else|else
@@ -2369,7 +2372,7 @@ name|real
 operator|.
 name|setCreatedTime
 argument_list|(
-name|createdTime
+name|createdTs
 argument_list|)
 expr_stmt|;
 block|}
@@ -2472,9 +2475,11 @@ name|this
 operator|==
 name|obj
 condition|)
+block|{
 return|return
 literal|true
 return|;
+block|}
 if|if
 condition|(
 operator|!
@@ -2484,9 +2489,11 @@ operator|instanceof
 name|TimelineEntity
 operator|)
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 name|TimelineEntity
 name|other
 init|=

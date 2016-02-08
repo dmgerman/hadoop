@@ -111,10 +111,16 @@ end_comment
 begin_class
 DECL|class|TimelineEntityReaderFactory
 specifier|public
+specifier|final
 class|class
 name|TimelineEntityReaderFactory
 block|{
-comment|/**    * Creates a timeline entity reader instance for reading a single entity with    * the specified input.    */
+DECL|method|TimelineEntityReaderFactory ()
+specifier|private
+name|TimelineEntityReaderFactory
+parameter_list|()
+block|{   }
+comment|/**    * Creates a timeline entity reader instance for reading a single entity with    * the specified input.    *    * @param context Reader context which defines the scope in which query has to    *     be made.    * @param dataToRetrieve Data to retrieve for each entity.    * @return An implementation of<cite>TimelineEntityReader</cite> object    *     depending on entity type.    */
 DECL|method|createSingleEntityReader ( TimelineReaderContext context, TimelineDataToRetrieve dataToRetrieve)
 specifier|public
 specifier|static
@@ -221,7 +227,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Creates a timeline entity reader instance for reading set of entities with    * the specified input and predicates.    */
+comment|/**    * Creates a timeline entity reader instance for reading set of entities with    * the specified input and predicates.    *    * @param context Reader context which defines the scope in which query has to    *     be made.    * @param filters Filters which limit the entities returned.    * @param dataToRetrieve Data to retrieve for each entity.    * @return An implementation of<cite>TimelineEntityReader</cite> object    *     depending on entity type.    */
 DECL|method|createMultipleEntitiesReader ( TimelineReaderContext context, TimelineEntityFilters filters, TimelineDataToRetrieve dataToRetrieve)
 specifier|public
 specifier|static

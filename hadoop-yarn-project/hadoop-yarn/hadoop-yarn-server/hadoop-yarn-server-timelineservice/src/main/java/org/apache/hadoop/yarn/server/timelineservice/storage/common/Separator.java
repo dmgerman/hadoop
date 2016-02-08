@@ -102,7 +102,7 @@ specifier|public
 enum|enum
 name|Separator
 block|{
-comment|/**    * separator in key or column qualifier fields    */
+comment|/**    * separator in key or column qualifier fields.    */
 DECL|enumConstant|QUALIFIERS
 name|QUALIFIERS
 argument_list|(
@@ -136,7 +136,7 @@ specifier|final
 name|String
 name|value
 decl_stmt|;
-comment|/**    * The URLEncoded version of this separator    */
+comment|/**    * The URLEncoded version of this separator.    */
 DECL|field|encodedValue
 specifier|private
 specifier|final
@@ -151,7 +151,7 @@ name|byte
 index|[]
 name|bytes
 decl_stmt|;
-comment|/**    * The value quoted so that it can be used as a safe regex    */
+comment|/**    * The value quoted so that it can be used as a safe regex.    */
 DECL|field|quotedValue
 specifier|private
 specifier|final
@@ -264,7 +264,7 @@ return|return
 name|value
 return|;
 block|}
-comment|/**    * Used to make token safe to be used with this separator without collisions.    *    * @param token    * @return the token with any occurrences of this separator URLEncoded.    */
+comment|/**    * Used to make token safe to be used with this separator without collisions.    *    * @param token Token to be encoded.    * @return the token with any occurrences of this separator URLEncoded.    */
 DECL|method|encode (String token)
 specifier|public
 name|String
@@ -304,7 +304,7 @@ name|encodedValue
 argument_list|)
 return|;
 block|}
-comment|/**    * @param token    * @return the token with any occurrences of the encoded separator replaced by    *         the separator itself.    */
+comment|/**    * Decode the token encoded using {@link #encode}.    *    * @param token Token to be decoded.    * @return the token with any occurrences of the encoded separator replaced by    *         the separator itself.    */
 DECL|method|decode (String token)
 specifier|public
 name|String
@@ -513,7 +513,7 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Returns a single byte array containing all of the individual arrays    * components separated by this separator.    *    * @param components    * @return byte array after joining the components    */
+comment|/**    * Returns a single byte array containing all of the individual arrays    * components separated by this separator.    *    * @param components Byte array components to be joined together.    * @return byte array after joining the components    */
 DECL|method|join (byte[]... components)
 specifier|public
 name|byte
@@ -954,7 +954,7 @@ block|{
 for|for
 control|(
 name|String
-name|value
+name|val
 range|:
 name|compoundValue
 operator|.
@@ -970,7 +970,7 @@ name|add
 argument_list|(
 name|decode
 argument_list|(
-name|value
+name|val
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -980,7 +980,7 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Splits the source array into multiple array segments using this separator,    * up to a maximum of count items. This will naturally produce copied byte    * arrays for each of the split segments.    * @param source to be split    * @param limit on how many segments are supposed to be returned. A    *          non-positive value indicates no limit on number of segments.    * @return source split by this separator.    */
+comment|/**    * Splits the source array into multiple array segments using this separator,    * up to a maximum of count items. This will naturally produce copied byte    * arrays for each of the split segments.    *    * @param source to be split    * @param limit on how many segments are supposed to be returned. A    *          non-positive value indicates no limit on number of segments.    * @return source split by this separator.    */
 DECL|method|split (byte[] source, int limit)
 specifier|public
 name|byte
@@ -1011,7 +1011,7 @@ name|limit
 argument_list|)
 return|;
 block|}
-comment|/**    * Splits the source array into multiple array segments using this separator,    * as many times as splits are found. This will naturally produce copied byte    * arrays for each of the split segments.    * @param source to be split    * @return source split by this separator.    */
+comment|/**    * Splits the source array into multiple array segments using this separator,    * as many times as splits are found. This will naturally produce copied byte    * arrays for each of the split segments.    *    * @param source to be split    * @return source split by this separator.    */
 DECL|method|split (byte[] source)
 specifier|public
 name|byte

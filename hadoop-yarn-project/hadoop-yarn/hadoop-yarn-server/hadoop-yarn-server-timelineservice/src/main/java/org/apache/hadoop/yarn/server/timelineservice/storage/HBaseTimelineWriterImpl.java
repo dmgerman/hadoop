@@ -993,7 +993,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * initializes the hbase connection to write to the entity table    */
+comment|/**    * initializes the hbase connection to write to the entity table.    */
 annotation|@
 name|Override
 DECL|method|serviceInit (Configuration conf)
@@ -2138,7 +2138,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Stores the Relations from the {@linkplain TimelineEntity} object    */
+comment|/**    * Stores the Relations from the {@linkplain TimelineEntity} object.    */
 DECL|method|storeRelations (byte[] rowKey, Map<String, Set<String>> connectedEntities, ColumnPrefix<T> columnPrefix, TypedBufferedMutator<T> table)
 specifier|private
 parameter_list|<
@@ -2234,7 +2234,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Stores information from the {@linkplain TimelineEntity} object    */
+comment|/**    * Stores information from the {@linkplain TimelineEntity} object.    */
 DECL|method|storeInfo (byte[] rowKey, TimelineEntity te, String flowVersion, boolean isApplication)
 specifier|private
 name|void
@@ -2512,7 +2512,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * stores the config information from {@linkplain TimelineEntity}    */
+comment|/**    * stores the config information from {@linkplain TimelineEntity}.    */
 DECL|method|storeConfig (byte[] rowKey, Map<String, String> config, boolean isApplication)
 specifier|private
 name|void
@@ -2620,7 +2620,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * stores the {@linkplain TimelineMetric} information from the    * {@linkplain TimelineEvent} object    */
+comment|/**    * stores the {@linkplain TimelineMetric} information from the    * {@linkplain TimelineEvent} object.    */
 DECL|method|storeMetrics (byte[] rowKey, Set<TimelineMetric> metrics, boolean isApplication)
 specifier|private
 name|void
@@ -2757,7 +2757,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Stores the events from the {@linkplain TimelineEvent} object    */
+comment|/**    * Stores the events from the {@linkplain TimelineEvent} object.    */
 DECL|method|storeEvents (byte[] rowKey, Set<TimelineEvent> events, boolean isApplication)
 specifier|private
 name|void
@@ -3150,7 +3150,7 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * close the hbase connections The close APIs perform flushing and release any    * resources held    */
+comment|/**    * close the hbase connections The close APIs perform flushing and release any    * resources held.    */
 annotation|@
 name|Override
 DECL|method|serviceStop ()

@@ -22,6 +22,10 @@ name|timelineservice
 package|;
 end_package
 
+begin_comment
+comment|/**  * Type of {@link NMTimelineEvent}.  */
+end_comment
+
 begin_enum
 DECL|enum|NMTimelineEventType
 specifier|public

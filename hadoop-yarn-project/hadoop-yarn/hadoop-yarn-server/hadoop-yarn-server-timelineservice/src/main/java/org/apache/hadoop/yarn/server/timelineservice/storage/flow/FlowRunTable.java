@@ -203,7 +203,7 @@ argument_list|<
 name|FlowRunTable
 argument_list|>
 block|{
-comment|/** entity prefix */
+comment|/** entity prefix. */
 DECL|field|PREFIX
 specifier|private
 specifier|static
@@ -217,7 +217,7 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|".flowrun"
 decl_stmt|;
-comment|/** config param name that specifies the flowrun table name */
+comment|/** config param name that specifies the flowrun table name. */
 DECL|field|TABLE_NAME_CONF_NAME
 specifier|public
 specifier|static
@@ -229,7 +229,7 @@ name|PREFIX
 operator|+
 literal|".table.name"
 decl_stmt|;
-comment|/** default value for flowrun table name */
+comment|/** default value for flowrun table name. */
 DECL|field|DEFAULT_TABLE_NAME
 specifier|public
 specifier|static
@@ -255,7 +255,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/** default max number of versions */
+comment|/** default max number of versions. */
 DECL|field|DEFAULT_METRICS_MAX_VERSIONS
 specifier|public
 specifier|static

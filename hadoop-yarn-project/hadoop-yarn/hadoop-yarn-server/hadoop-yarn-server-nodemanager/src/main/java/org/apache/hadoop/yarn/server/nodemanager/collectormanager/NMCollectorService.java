@@ -433,6 +433,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|context
+specifier|private
 specifier|final
 name|Context
 name|context

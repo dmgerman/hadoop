@@ -602,7 +602,7 @@ expr_stmt|;
 block|}
 comment|// these methods can be used as the basis for future service methods if the
 comment|// per-node collector runs separate from the node manager
-comment|/**    * Creates and adds an app level collector for the specified application id.    * The collector is also initialized and started. If the service already    * exists, no new service is created.    *    * @return whether it was added successfully    */
+comment|/**    * Creates and adds an app level collector for the specified application id.    * The collector is also initialized and started. If the service already    * exists, no new service is created.    *    * @param appId Application Id to be added.    * @return whether it was added successfully    */
 DECL|method|addApplication (ApplicationId appId)
 specifier|public
 name|boolean
@@ -636,7 +636,7 @@ name|collector
 operator|)
 return|;
 block|}
-comment|/**    * Removes the app level collector for the specified application id. The    * collector is also stopped as a result. If the collector does not exist, no    * change is made.    *    * @return whether it was removed successfully    */
+comment|/**    * Removes the app level collector for the specified application id. The    * collector is also stopped as a result. If the collector does not exist, no    * change is made.    *    * @param appId Application Id to be removed.    * @return whether it was removed successfully    */
 DECL|method|removeApplication (ApplicationId appId)
 specifier|public
 name|boolean

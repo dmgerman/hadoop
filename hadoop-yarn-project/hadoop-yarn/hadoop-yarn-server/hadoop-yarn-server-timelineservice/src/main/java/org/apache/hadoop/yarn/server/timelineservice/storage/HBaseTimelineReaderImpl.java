@@ -268,6 +268,10 @@ name|TimelineEntityReaderFactory
 import|;
 end_import
 
+begin_comment
+comment|/**  * HBase based implementation for {@link TimelineReader}.  */
+end_comment
+
 begin_class
 DECL|class|HBaseTimelineReaderImpl
 specifier|public

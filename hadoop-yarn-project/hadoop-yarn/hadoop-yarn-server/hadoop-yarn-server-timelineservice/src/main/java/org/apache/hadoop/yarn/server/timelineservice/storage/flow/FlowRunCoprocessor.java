@@ -418,6 +418,10 @@ name|TimestampGenerator
 import|;
 end_import
 
+begin_comment
+comment|/**  * Coprocessor for flow run table.  */
+end_comment
+
 begin_class
 DECL|class|FlowRunCoprocessor
 specifier|public
@@ -452,7 +456,7 @@ specifier|private
 name|HRegion
 name|region
 decl_stmt|;
-comment|/**    * generate a timestamp that is unique per row in a region this is per region    */
+comment|/**    * generate a timestamp that is unique per row in a region this is per region.    */
 DECL|field|timestampGenerator
 specifier|private
 specifier|final

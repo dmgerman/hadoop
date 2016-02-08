@@ -527,7 +527,7 @@ return|return
 name|writer
 return|;
 block|}
-comment|/**    * Put the collector into the collection if an collector mapped by id does    * not exist.    *    * @throws YarnRuntimeException if there  was any exception in initializing    *                              and starting the app level service    * @return the collector associated with id after the potential put.    */
+comment|/**    * Put the collector into the collection if an collector mapped by id does    * not exist.    *    * @param appId Application Id for which collector needs to be put.    * @param collector timeline collector to be put.    * @throws YarnRuntimeException if there  was any exception in initializing    *                              and starting the app level service    * @return the collector associated with id after the potential put.    */
 DECL|method|putIfAbsent (ApplicationId appId, TimelineCollector collector)
 specifier|public
 name|TimelineCollector
@@ -668,7 +668,7 @@ name|TimelineCollector
 name|collector
 parameter_list|)
 block|{    }
-comment|/**    * Removes the collector for the specified id. The collector is also stopped    * as a result. If the collector does not exist, no change is made.    *    * @return whether it was removed successfully    */
+comment|/**    * Removes the collector for the specified id. The collector is also stopped    * as a result. If the collector does not exist, no change is made.    *    * @param appId Application Id to remove.    * @return whether it was removed successfully    */
 DECL|method|remove (ApplicationId appId)
 specifier|public
 name|boolean
@@ -752,7 +752,7 @@ name|TimelineCollector
 name|collector
 parameter_list|)
 block|{    }
-comment|/**    * Returns the collector for the specified id.    *    * @return the collector or null if it does not exist    */
+comment|/**    * Returns the collector for the specified id.    *    * @param appId Application Id for which we need to get the collector.    * @return the collector or null if it does not exist    */
 DECL|method|get (ApplicationId appId)
 specifier|public
 name|TimelineCollector
@@ -771,7 +771,7 @@ name|appId
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns whether the collector for the specified id exists in this    * collection.    */
+comment|/**    * Returns whether the collector for the specified id exists in this    * collection.    * @param appId Application Id.    * @return true if collector for the app id is found, false otherwise.    */
 DECL|method|containsTimelineCollector (ApplicationId appId)
 specifier|public
 name|boolean

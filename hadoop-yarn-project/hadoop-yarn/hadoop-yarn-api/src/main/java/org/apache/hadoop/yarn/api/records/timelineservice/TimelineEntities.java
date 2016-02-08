@@ -126,6 +126,10 @@ name|Set
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class hosts a set of timeline entities.  */
+end_comment
+
 begin_class
 annotation|@
 name|XmlRootElement
@@ -192,7 +196,7 @@ return|return
 name|entities
 return|;
 block|}
-DECL|method|setEntities (Set<TimelineEntity> entities)
+DECL|method|setEntities (Set<TimelineEntity> timelineEntities)
 specifier|public
 name|void
 name|setEntities
@@ -201,17 +205,17 @@ name|Set
 argument_list|<
 name|TimelineEntity
 argument_list|>
-name|entities
+name|timelineEntities
 parameter_list|)
 block|{
 name|this
 operator|.
 name|entities
 operator|=
-name|entities
+name|timelineEntities
 expr_stmt|;
 block|}
-DECL|method|addEntities (Set<TimelineEntity> entities)
+DECL|method|addEntities (Set<TimelineEntity> timelineEntities)
 specifier|public
 name|void
 name|addEntities
@@ -220,7 +224,7 @@ name|Set
 argument_list|<
 name|TimelineEntity
 argument_list|>
-name|entities
+name|timelineEntities
 parameter_list|)
 block|{
 name|this
@@ -229,7 +233,7 @@ name|entities
 operator|.
 name|addAll
 argument_list|(
-name|entities
+name|timelineEntities
 argument_list|)
 expr_stmt|;
 block|}

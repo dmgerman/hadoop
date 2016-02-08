@@ -157,7 +157,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * YARN timeline service v2 offline aggregation storage interface  */
+comment|/**  * YARN timeline service v2 offline aggregation storage interface.  */
 end_comment
 
 begin_class
@@ -192,7 +192,7 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Persist aggregated timeline entities to the offline store based on which    * track this entity is to be rolled up to. The tracks along which aggregations    * are to be done are given by {@link OfflineAggregationInfo}.    *    * @param context a {@link TimelineCollectorContext} object that describes the    *                context information of the aggregated data. Depends on the    *                type of the aggregation, some fields of this context maybe    *                empty or null.    * @param entities {@link TimelineEntities} to be persisted.    * @param info an {@link OfflineAggregationInfo} object that describes the    *             detail of the aggregation. Current supported option is    *             {@link OfflineAggregationInfo#FLOW_AGGREGATION}.    * @return a {@link TimelineWriteResponse} object.    * @throws IOException    */
+comment|/**    * Persist aggregated timeline entities to the offline store based on which    * track this entity is to be rolled up to. The tracks along which    * aggregations are to be done are given by {@link OfflineAggregationInfo}.    *    * @param context a {@link TimelineCollectorContext} object that describes the    *                context information of the aggregated data. Depends on the    *                type of the aggregation, some fields of this context maybe    *                empty or null.    * @param entities {@link TimelineEntities} to be persisted.    * @param info an {@link OfflineAggregationInfo} object that describes the    *             detail of the aggregation. Current supported option is    *             {@link OfflineAggregationInfo#FLOW_AGGREGATION}.    * @return a {@link TimelineWriteResponse} object.    * @throws IOException if any problem occurs while writing aggregated    *     entities.    */
 DECL|method|writeAggregatedEntity ( TimelineCollectorContext context, TimelineEntities entities, OfflineAggregationInfo info)
 specifier|abstract
 name|TimelineWriteResponse

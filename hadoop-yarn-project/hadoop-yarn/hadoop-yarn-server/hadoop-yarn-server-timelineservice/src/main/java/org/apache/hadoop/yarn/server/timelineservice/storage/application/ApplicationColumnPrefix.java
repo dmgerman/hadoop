@@ -332,7 +332,7 @@ argument_list|,
 literal|"i"
 argument_list|)
 block|,
-comment|/**    * Lifecycle events for an application    */
+comment|/**    * Lifecycle events for an application.    */
 DECL|enumConstant|EVENT
 name|EVENT
 argument_list|(
@@ -808,7 +808,7 @@ name|columnPrefixBytes
 argument_list|)
 return|;
 block|}
-comment|/**    * @param result from which to read columns    * @return the latest values of columns in the column family. The column    *         qualifier is returned as a list of parts, each part a byte[]. This    *         is to facilitate returning byte arrays of values that were not    *         Strings. If they can be treated as Strings, you should use    *         {@link #readResults(Result)} instead.    * @throws IOException    */
+comment|/**    * @param result from which to read columns    * @return the latest values of columns in the column family. The column    *         qualifier is returned as a list of parts, each part a byte[]. This    *         is to facilitate returning byte arrays of values that were not    *         Strings. If they can be treated as Strings, you should use    *         {@link #readResults(Result)} instead.    * @throws IOException if any problem occurs while reading results.    */
 DECL|method|readResultsHavingCompoundColumnQualifiers (Result result)
 specifier|public
 name|Map

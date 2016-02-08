@@ -1423,7 +1423,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createContainerEntity (ContainerId containerId)
+DECL|method|createContainerEntity ( ContainerId containerId)
 specifier|private
 specifier|static
 name|ContainerEntity
@@ -1577,6 +1577,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|publishApplicationEvent (ApplicationEvent event)
 specifier|public
 name|void
@@ -1636,15 +1641,20 @@ operator|.
 name|getType
 argument_list|()
 operator|+
-literal|" is not a desired ApplicationEvent which needs to be published by"
+literal|" is not a desired ApplicationEvent which"
 operator|+
-literal|" NMTimelinePublisher"
+literal|" needs to be published by NMTimelinePublisher"
 argument_list|)
 expr_stmt|;
 block|}
 break|break;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|publishContainerEvent (ContainerEvent event)
 specifier|public
 name|void
@@ -1704,6 +1714,11 @@ block|}
 break|break;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|publishLocalizationEvent (LocalizationEvent event)
 specifier|public
 name|void

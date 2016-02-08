@@ -225,7 +225,7 @@ argument_list|<
 name|AppToFlowTable
 argument_list|>
 block|{
-comment|/** app_flow prefix */
+comment|/** app_flow prefix. */
 DECL|field|PREFIX
 specifier|private
 specifier|static
@@ -239,7 +239,7 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"app-flow"
 decl_stmt|;
-comment|/** config param name that specifies the app_flow table name */
+comment|/** config param name that specifies the app_flow table name. */
 DECL|field|TABLE_NAME_CONF_NAME
 specifier|public
 specifier|static
@@ -251,7 +251,7 @@ name|PREFIX
 operator|+
 literal|".table.name"
 decl_stmt|;
-comment|/** default value for app_flow table name */
+comment|/** default value for app_flow table name. */
 DECL|field|DEFAULT_TABLE_NAME
 specifier|private
 specifier|static

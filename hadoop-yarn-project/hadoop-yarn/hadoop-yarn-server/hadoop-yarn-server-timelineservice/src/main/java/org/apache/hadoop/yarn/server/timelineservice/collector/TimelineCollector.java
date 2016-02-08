@@ -315,7 +315,7 @@ operator|=
 name|w
 expr_stmt|;
 block|}
-comment|/**    * Handles entity writes. These writes are synchronous and are written to the    * backing storage without buffering/batching. If any entity already exists,    * it results in an update of the entity.    *    * This method should be reserved for selected critical entities and events.    * For normal voluminous writes one should use the async method    * {@link #putEntitiesAsync(TimelineEntities, UserGroupInformation)}.    *    * @param entities entities to post    * @param callerUgi the caller UGI    * @return the response that contains the result of the post.    */
+comment|/**    * Handles entity writes. These writes are synchronous and are written to the    * backing storage without buffering/batching. If any entity already exists,    * it results in an update of the entity.    *    * This method should be reserved for selected critical entities and events.    * For normal voluminous writes one should use the async method    * {@link #putEntitiesAsync(TimelineEntities, UserGroupInformation)}.    *    * @param entities entities to post    * @param callerUgi the caller UGI    * @return the response that contains the result of the post.    * @throws IOException if there is any exception encountered while putting    *     entities.    */
 DECL|method|putEntities (TimelineEntities entities, UserGroupInformation callerUgi)
 specifier|public
 name|TimelineWriteResponse

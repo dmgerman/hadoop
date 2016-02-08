@@ -64,20 +64,6 @@ name|hadoop
 operator|.
 name|hbase
 operator|.
-name|Cell
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hbase
-operator|.
 name|client
 operator|.
 name|Result
@@ -119,7 +105,7 @@ parameter_list|<
 name|T
 parameter_list|>
 block|{
-comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey identifying the row to write. Nothing gets written when null.    * @param tableMutator used to modify the underlying HBase table. Caller is    *          responsible to pass a mutator for the table that actually has this    *          column.    * @param qualifier column qualifier. Nothing gets written when null.    * @param timestamp version timestamp. When null the server timestamp will be    *          used.    * @param attributes attributes for the mutation that are used by the    *          coprocessor to set/read the cell tags.    * @param inputValue the value to write to the rowKey and column qualifier.    *          Nothing gets written when null.    * @throws IOException    */
+comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey identifying the row to write. Nothing gets written when null.    * @param tableMutator used to modify the underlying HBase table. Caller is    *          responsible to pass a mutator for the table that actually has this    *          column.    * @param qualifier column qualifier. Nothing gets written when null.    * @param timestamp version timestamp. When null the server timestamp will be    *          used.    * @param attributes attributes for the mutation that are used by the    *          coprocessor to set/read the cell tags.    * @param inputValue the value to write to the rowKey and column qualifier.    *          Nothing gets written when null.    * @throws IOException if there is any exception encountered while doing    *     store operation(sending mutation to the table).    */
 DECL|method|store (byte[] rowKey, TypedBufferedMutator<T> tableMutator, byte[] qualifier, Long timestamp, Object inputValue, Attribute... attributes)
 name|void
 name|store
@@ -151,7 +137,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey identifying the row to write. Nothing gets written when null.    * @param tableMutator used to modify the underlying HBase table. Caller is    *          responsible to pass a mutator for the table that actually has this    *          column.    * @param qualifier column qualifier. Nothing gets written when null.    * @param timestamp version timestamp. When null the server timestamp will be    *          used.    * @param attributes attributes for the mutation that are used by the    *          coprocessor to set/read the cell tags.    * @param inputValue the value to write to the rowKey and column qualifier.    *          Nothing gets written when null.    * @throws IOException    */
+comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey identifying the row to write. Nothing gets written when null.    * @param tableMutator used to modify the underlying HBase table. Caller is    *          responsible to pass a mutator for the table that actually has this    *          column.    * @param qualifier column qualifier. Nothing gets written when null.    * @param timestamp version timestamp. When null the server timestamp will be    *          used.    * @param attributes attributes for the mutation that are used by the    *          coprocessor to set/read the cell tags.    * @param inputValue the value to write to the rowKey and column qualifier.    *          Nothing gets written when null.    * @throws IOException if there is any exception encountered while doing    *     store operation(sending mutation to the table).    */
 DECL|method|store (byte[] rowKey, TypedBufferedMutator<T> tableMutator, String qualifier, Long timestamp, Object inputValue, Attribute... attributes)
 name|void
 name|store
@@ -182,7 +168,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the latest version of this specified column. Note: this call clones the    * value content of the hosting {@link Cell}.    *    * @param result Cannot be null    * @param qualifier column qualifier. Nothing gets read when null.    * @return result object (can be cast to whatever object was written to) or    *         null when specified column qualifier for this prefix doesn't exist    *         in the result.    * @throws IOException    */
+comment|/**    * Get the latest version of this specified column. Note: this call clones the    * value content of the hosting {@link org.apache.hadoop.hbase.Cell Cell}.    *    * @param result Cannot be null    * @param qualifier column qualifier. Nothing gets read when null.    * @return result object (can be cast to whatever object was written to) or    *         null when specified column qualifier for this prefix doesn't exist    *         in the result.    * @throws IOException if there is any exception encountered while reading    *     result.    */
 DECL|method|readResult (Result result, String qualifier)
 name|Object
 name|readResult
@@ -196,7 +182,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * @param result from which to read columns    * @return the latest values of columns in the column family with this prefix    *         (or all of them if the prefix value is null).    * @throws IOException    */
+comment|/**    * @param result from which to read columns    * @return the latest values of columns in the column family with this prefix    *         (or all of them if the prefix value is null).    * @throws IOException if there is any exception encountered while reading    *     results.    */
 DECL|method|readResults (Result result)
 name|Map
 argument_list|<
@@ -212,7 +198,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * @param result from which to reads data with timestamps    * @param<V> the type of the values. The values will be cast into that type.    * @return the cell values at each respective time in for form    *         {idA={timestamp1->value1}, idA={timestamp2->value2},    *         idB={timestamp3->value3}, idC={timestamp1->value4}}    * @throws IOException    */
+comment|/**    * @param result from which to reads data with timestamps    * @param<V> the type of the values. The values will be cast into that type.    * @return the cell values at each respective time in for form    *         {@literal {idA={timestamp1->value1}, idA={timestamp2->value2},    *         idB={timestamp3->value3}, idC={timestamp1->value4}}}    * @throws IOException if there is any exception encountered while reading    *     result.    */
 parameter_list|<
 name|V
 parameter_list|>

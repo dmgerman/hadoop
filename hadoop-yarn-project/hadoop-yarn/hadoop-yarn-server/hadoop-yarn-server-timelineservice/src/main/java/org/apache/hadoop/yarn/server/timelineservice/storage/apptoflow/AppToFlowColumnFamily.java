@@ -99,7 +99,7 @@ argument_list|<
 name|AppToFlowTable
 argument_list|>
 block|{
-comment|/**    * Mapping column family houses known columns such as flowName and flowRunId    */
+comment|/**    * Mapping column family houses known columns such as flowName and flowRunId.    */
 DECL|enumConstant|MAPPING
 name|MAPPING
 argument_list|(

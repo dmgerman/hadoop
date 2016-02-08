@@ -39,7 +39,6 @@ parameter_list|>
 block|{
 comment|/**    * Keep a local copy if you need to avoid overhead of repeated cloning.    *    * @return a clone of the byte representation of the column family.    */
 DECL|method|getBytes ()
-specifier|public
 name|byte
 index|[]
 name|getBytes

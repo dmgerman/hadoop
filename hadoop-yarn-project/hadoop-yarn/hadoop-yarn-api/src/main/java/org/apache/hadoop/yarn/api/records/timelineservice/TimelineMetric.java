@@ -136,6 +136,10 @@ name|TreeMap
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class contains the information of a metric that is related to some  * entity. Metric can either be a time series or single value.  */
+end_comment
+
 begin_class
 annotation|@
 name|XmlRootElement
@@ -164,6 +168,7 @@ specifier|public
 class|class
 name|TimelineMetric
 block|{
+comment|/**    * Type of metric.    */
 DECL|enum|Type
 specifier|public
 specifier|static
@@ -287,20 +292,20 @@ return|return
 name|type
 return|;
 block|}
-DECL|method|setType (Type type)
+DECL|method|setType (Type metricType)
 specifier|public
 name|void
 name|setType
 parameter_list|(
 name|Type
-name|type
+name|metricType
 parameter_list|)
 block|{
 name|this
 operator|.
 name|type
 operator|=
-name|type
+name|metricType
 expr_stmt|;
 block|}
 annotation|@
@@ -320,20 +325,20 @@ return|return
 name|id
 return|;
 block|}
-DECL|method|setId (String id)
+DECL|method|setId (String metricId)
 specifier|public
 name|void
 name|setId
 parameter_list|(
 name|String
-name|id
+name|metricId
 parameter_list|)
 block|{
 name|this
 operator|.
 name|id
 operator|=
-name|id
+name|metricId
 expr_stmt|;
 block|}
 comment|// required by JAXB
@@ -378,7 +383,7 @@ return|return
 name|values
 return|;
 block|}
-DECL|method|setValues (Map<Long, Number> values)
+DECL|method|setValues (Map<Long, Number> vals)
 specifier|public
 name|void
 name|setValues
@@ -389,7 +394,7 @@ name|Long
 argument_list|,
 name|Number
 argument_list|>
-name|values
+name|vals
 parameter_list|)
 block|{
 if|if
@@ -403,7 +408,7 @@ condition|)
 block|{
 name|overwrite
 argument_list|(
-name|values
+name|vals
 argument_list|)
 expr_stmt|;
 block|}
@@ -437,7 +442,7 @@ name|values
 operator|.
 name|putAll
 argument_list|(
-name|values
+name|vals
 argument_list|)
 expr_stmt|;
 block|}
@@ -452,7 +457,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|addValues (Map<Long, Number> values)
+DECL|method|addValues (Map<Long, Number> vals)
 specifier|public
 name|void
 name|addValues
@@ -463,7 +468,7 @@ name|Long
 argument_list|,
 name|Number
 argument_list|>
-name|values
+name|vals
 parameter_list|)
 block|{
 if|if
@@ -477,7 +482,7 @@ condition|)
 block|{
 name|overwrite
 argument_list|(
-name|values
+name|vals
 argument_list|)
 expr_stmt|;
 block|}
@@ -489,7 +494,7 @@ name|values
 operator|.
 name|putAll
 argument_list|(
-name|values
+name|vals
 argument_list|)
 expr_stmt|;
 block|}
@@ -531,7 +536,7 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|overwrite (Map<Long, Number> values)
+DECL|method|overwrite (Map<Long, Number> vals)
 specifier|private
 name|void
 name|overwrite
@@ -542,12 +547,12 @@ name|Long
 argument_list|,
 name|Number
 argument_list|>
-name|values
+name|vals
 parameter_list|)
 block|{
 if|if
 condition|(
-name|values
+name|vals
 operator|.
 name|size
 argument_list|()
@@ -582,7 +587,7 @@ name|values
 operator|.
 name|putAll
 argument_list|(
-name|values
+name|vals
 argument_list|)
 expr_stmt|;
 block|}
@@ -649,9 +654,11 @@ name|this
 operator|==
 name|o
 condition|)
+block|{
 return|return
 literal|true
 return|;
+block|}
 if|if
 condition|(
 operator|!
@@ -661,9 +668,11 @@ operator|instanceof
 name|TimelineMetric
 operator|)
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 name|TimelineMetric
 name|m
 init|=

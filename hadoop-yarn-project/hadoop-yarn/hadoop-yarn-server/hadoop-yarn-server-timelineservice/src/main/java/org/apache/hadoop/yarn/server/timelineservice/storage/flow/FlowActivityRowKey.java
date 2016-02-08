@@ -200,7 +200,7 @@ return|return
 name|flowName
 return|;
 block|}
-comment|/**    * Constructs a row key prefix for the flow activity table as follows:    * {@code clusterId!}    *    * @param clusterId    * @return byte array with the row key prefix    */
+comment|/**    * Constructs a row key prefix for the flow activity table as follows:    * {@code clusterId!}.    *    * @param clusterId Cluster Id.    * @return byte array with the row key prefix    */
 DECL|method|getRowKeyPrefix (String clusterId)
 specifier|public
 specifier|static
@@ -230,7 +230,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructs a row key prefix for the flow activity table as follows:    * {@code clusterId!dayTimestamp!}    *    * @param clusterId    * @param dayTs    * @return byte array with the row key prefix    */
+comment|/**    * Constructs a row key prefix for the flow activity table as follows:    * {@code clusterId!dayTimestamp!}.    *    * @param clusterId Cluster Id.    * @param dayTs Start of the day timestamp.    * @return byte array with the row key prefix    */
 DECL|method|getRowKeyPrefix (String clusterId, long dayTs)
 specifier|public
 specifier|static
@@ -286,7 +286,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructs a row key for the flow activity table as follows:    * {@code clusterId!dayTimestamp!user!flowName}    *    * Will insert into current day's record in the table    * @param clusterId    * @param userId    * @param flowName    * @return byte array with the row key prefix    */
+comment|/**    * Constructs a row key for the flow activity table as follows:    * {@code clusterId!dayTimestamp!user!flowName}.    * Will insert into current day's record in the table. Uses current time to    * store top of the day timestamp.    *    * @param clusterId Cluster Id.    * @param userId User Id.    * @param flowName Flow Name.    * @return byte array with the row key prefix    */
 DECL|method|getRowKey (String clusterId, String userId, String flowName)
 specifier|public
 specifier|static
@@ -330,7 +330,7 @@ name|flowName
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructs a row key for the flow activity table as follows:    * {@code clusterId!dayTimestamp!user!flowName}    *    * @param clusterId    * @param dayTs    * @param userId    * @param flowName    * @return byte array for the row key    */
+comment|/**    * Constructs a row key for the flow activity table as follows:    * {@code clusterId!dayTimestamp!user!flowName}.    *    * @param clusterId Cluster Id.    * @param dayTs Top of the day timestamp.    * @param userId User Id.    * @param flowName Flow Name.    * @return byte array for the row key    */
 DECL|method|getRowKey (String clusterId, long dayTs, String userId, String flowName)
 specifier|public
 specifier|static
@@ -414,7 +414,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Given the raw row key as bytes, returns the row key as an object.    */
+comment|/**    * Given the raw row key as bytes, returns the row key as an object.    *    * @param rowKey Byte representation of row key.    * @return A<cite>FlowActivityRowKey</cite> object.    */
 DECL|method|parseRowKey (byte[] rowKey)
 specifier|public
 specifier|static

@@ -650,6 +650,7 @@ name|Context
 name|ServletContext
 name|context
 decl_stmt|;
+comment|/**    * Gives information about timeline collector.    */
 annotation|@
 name|XmlRootElement
 argument_list|(
@@ -684,19 +685,19 @@ specifier|public
 name|AboutInfo
 parameter_list|()
 block|{      }
-DECL|method|AboutInfo (String about)
+DECL|method|AboutInfo (String abt)
 specifier|public
 name|AboutInfo
 parameter_list|(
 name|String
-name|about
+name|abt
 parameter_list|)
 block|{
 name|this
 operator|.
 name|about
 operator|=
-name|about
+name|abt
 expr_stmt|;
 block|}
 annotation|@
@@ -716,24 +717,24 @@ return|return
 name|about
 return|;
 block|}
-DECL|method|setAbout (String about)
+DECL|method|setAbout (String abt)
 specifier|public
 name|void
 name|setAbout
 parameter_list|(
 name|String
-name|about
+name|abt
 parameter_list|)
 block|{
 name|this
 operator|.
 name|about
 operator|=
-name|about
+name|abt
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Return the description of the timeline web services.    */
+comment|/**    * Return the description of the timeline web services.    *    * @param req Servlet request.    * @param res Servlet response.    * @return description of timeline web service.    */
 annotation|@
 name|GET
 annotation|@
@@ -775,7 +776,7 @@ literal|"Timeline Collector API"
 argument_list|)
 return|;
 block|}
-comment|/**    * Accepts writes to the collector, and returns a response. It simply routes    * the request to the app level collector. It expects an application as a    * context.    */
+comment|/**    * Accepts writes to the collector, and returns a response. It simply routes    * the request to the app level collector. It expects an application as a    * context.    *    * @param req Servlet request.    * @param res Servlet response.    * @param async flag indicating whether its an async put or not. "true"    *     indicates, its an async call. If null, its considered false.    * @param appId Application Id to which the entities to be put belong to. If    *     appId is not there or it cannot be parsed, HTTP 400 will be sent back.    * @param entities timeline entities to be put.    * @return a Response with appropriate HTTP status.    */
 annotation|@
 name|PUT
 annotation|@

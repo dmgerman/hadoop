@@ -225,7 +225,7 @@ argument_list|<
 name|ApplicationTable
 argument_list|>
 block|{
-comment|/** application prefix */
+comment|/** application prefix. */
 DECL|field|PREFIX
 specifier|private
 specifier|static
@@ -239,7 +239,7 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|".application"
 decl_stmt|;
-comment|/** config param name that specifies the application table name */
+comment|/** config param name that specifies the application table name. */
 DECL|field|TABLE_NAME_CONF_NAME
 specifier|public
 specifier|static
@@ -251,7 +251,7 @@ name|PREFIX
 operator|+
 literal|".table.name"
 decl_stmt|;
-comment|/**    * config param name that specifies the TTL for metrics column family in    * application table    */
+comment|/**    * config param name that specifies the TTL for metrics column family in    * application table.    */
 DECL|field|METRICS_TTL_CONF_NAME
 specifier|private
 specifier|static
@@ -263,7 +263,7 @@ name|PREFIX
 operator|+
 literal|".table.metrics.ttl"
 decl_stmt|;
-comment|/** default value for application table name */
+comment|/** default value for application table name. */
 DECL|field|DEFAULT_TABLE_NAME
 specifier|private
 specifier|static
@@ -273,7 +273,7 @@ name|DEFAULT_TABLE_NAME
 init|=
 literal|"timelineservice.application"
 decl_stmt|;
-comment|/** default TTL is 30 days for metrics timeseries */
+comment|/** default TTL is 30 days for metrics timeseries. */
 DECL|field|DEFAULT_METRICS_TTL
 specifier|private
 specifier|static
@@ -283,7 +283,7 @@ name|DEFAULT_METRICS_TTL
 init|=
 literal|2592000
 decl_stmt|;
-comment|/** default max number of versions */
+comment|/** default max number of versions. */
 DECL|field|DEFAULT_METRICS_MAX_VERSIONS
 specifier|private
 specifier|static

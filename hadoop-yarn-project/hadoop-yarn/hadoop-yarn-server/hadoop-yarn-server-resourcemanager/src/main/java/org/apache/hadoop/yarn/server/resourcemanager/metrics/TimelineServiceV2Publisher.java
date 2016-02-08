@@ -703,7 +703,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is responsible for posting application, appattempt&amp; Container  * lifecycle related events to timeline service V2  */
+comment|/**  * This class is responsible for posting application, appattempt&amp; Container  * lifecycle related events to timeline service v2.  */
 end_comment
 
 begin_class
@@ -735,7 +735,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|rmTimelineCollectorManager
-specifier|protected
+specifier|private
 name|RMTimelineCollectorManager
 name|rmTimelineCollectorManager
 decl_stmt|;
@@ -2654,7 +2654,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|createContainerEntity (ContainerId containerId)
+DECL|method|createContainerEntity ( ContainerId containerId)
 specifier|private
 specifier|static
 name|ContainerEntity

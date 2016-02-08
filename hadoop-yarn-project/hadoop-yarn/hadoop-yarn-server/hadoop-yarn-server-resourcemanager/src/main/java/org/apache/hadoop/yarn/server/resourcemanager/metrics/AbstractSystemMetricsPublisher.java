@@ -184,6 +184,10 @@ name|EventHandler
 import|;
 end_import
 
+begin_comment
+comment|/**  * Abstract implementation of SystemMetricsPublisher which is then extended by  * metrics publisher implementations depending on timeline service version.  */
+end_comment
+
 begin_class
 DECL|class|AbstractSystemMetricsPublisher
 specifier|public
@@ -275,6 +279,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Dispatches ATS related events using multiple threads.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -509,7 +514,7 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * EventType which is used while publishing the events    */
+comment|/**    * EventType which is used while publishing the events.    */
 DECL|enum|SystemMetricsEventType
 specifier|protected
 specifier|static
@@ -688,7 +693,8 @@ literal|false
 return|;
 block|}
 block|}
-elseif|else
+else|else
+block|{
 if|if
 condition|(
 operator|!
@@ -717,6 +723,7 @@ block|{
 return|return
 literal|false
 return|;
+block|}
 block|}
 return|return
 literal|true

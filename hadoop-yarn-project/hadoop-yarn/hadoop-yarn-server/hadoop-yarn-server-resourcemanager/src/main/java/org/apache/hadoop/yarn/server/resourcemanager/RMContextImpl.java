@@ -1662,20 +1662,20 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setSystemMetricsPublisher ( SystemMetricsPublisher systemMetricsPublisher)
+DECL|method|setSystemMetricsPublisher ( SystemMetricsPublisher metricsPublisher)
 specifier|public
 name|void
 name|setSystemMetricsPublisher
 parameter_list|(
 name|SystemMetricsPublisher
-name|systemMetricsPublisher
+name|metricsPublisher
 parameter_list|)
 block|{
 name|this
 operator|.
 name|systemMetricsPublisher
 operator|=
-name|systemMetricsPublisher
+name|metricsPublisher
 expr_stmt|;
 block|}
 annotation|@

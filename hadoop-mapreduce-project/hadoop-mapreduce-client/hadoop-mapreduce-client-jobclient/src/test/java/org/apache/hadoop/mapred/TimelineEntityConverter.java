@@ -742,7 +742,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|createTaskAndTaskAttemptEntities (JobInfo jobInfo)
+DECL|method|createTaskAndTaskAttemptEntities ( JobInfo jobInfo)
 specifier|private
 name|Set
 argument_list|<
@@ -1087,7 +1087,7 @@ return|return
 name|taskAttempts
 return|;
 block|}
-DECL|method|createTaskAttemptEntity (TaskAttemptInfo taskAttemptInfo)
+DECL|method|createTaskAttemptEntity ( TaskAttemptInfo taskAttemptInfo)
 specifier|private
 name|TimelineEntity
 name|createTaskAttemptEntity

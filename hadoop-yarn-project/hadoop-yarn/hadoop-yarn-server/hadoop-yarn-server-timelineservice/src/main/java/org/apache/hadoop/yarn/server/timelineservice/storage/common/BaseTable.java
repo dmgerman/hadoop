@@ -204,7 +204,7 @@ parameter_list|<
 name|T
 parameter_list|>
 block|{
-comment|/**    * Name of config variable that is used to point to this table    */
+comment|/**    * Name of config variable that is used to point to this table.    */
 DECL|field|tableNameConfName
 specifier|private
 specifier|final
@@ -218,7 +218,7 @@ specifier|final
 name|String
 name|defaultTableName
 decl_stmt|;
-comment|/**    * @param tableNameConfName name of config variable that is used to point to    *          this table.    */
+comment|/**    * @param tableNameConfName name of config variable that is used to point to    *          this table.    * @param defaultTableName Default table name if table from config is not    *          found.    */
 DECL|method|BaseTable (String tableNameConfName, String defaultTableName)
 specifier|protected
 name|BaseTable
@@ -243,7 +243,7 @@ operator|=
 name|defaultTableName
 expr_stmt|;
 block|}
-comment|/**    * Used to create a type-safe mutator for this table.    *    * @param hbaseConf used to read table name    * @param conn used to create a table from.    * @return a type safe {@link BufferedMutator} for the entity table.    * @throws IOException    */
+comment|/**    * Used to create a type-safe mutator for this table.    *    * @param hbaseConf used to read table name.    * @param conn used to create a table from.    * @return a type safe {@link BufferedMutator} for the entity table.    * @throws IOException if any exception occurs while creating mutator for the    *     table.    */
 DECL|method|getTableMutator (Configuration hbaseConf, Connection conn)
 specifier|public
 name|TypedBufferedMutator
@@ -304,7 +304,7 @@ return|return
 name|table
 return|;
 block|}
-comment|/**    * @param hbaseConf used to read settings that override defaults    * @param conn used to create table from    * @param scan that specifies what you want to read from this table.    * @return scanner for the table.    * @throws IOException    */
+comment|/**    * @param hbaseConf used to read settings that override defaults    * @param conn used to create table from    * @param scan that specifies what you want to read from this table.    * @return scanner for the table.    * @throws IOException if any exception occurs while getting the scanner.    */
 DECL|method|getResultScanner (Configuration hbaseConf, Connection conn, Scan scan)
 specifier|public
 name|ResultScanner
@@ -344,7 +344,7 @@ name|scan
 argument_list|)
 return|;
 block|}
-comment|/**    *    * @param hbaseConf used to read settings that override defaults    * @param conn used to create table from    * @param get that specifies what single row you want to get from this table    * @return result of get operation    * @throws IOException    */
+comment|/**    *    * @param hbaseConf used to read settings that override defaults    * @param conn used to create table from    * @param get that specifies what single row you want to get from this table    * @return result of get operation    * @throws IOException if any exception occurs while getting the result.    */
 DECL|method|getResult (Configuration hbaseConf, Connection conn, Get get)
 specifier|public
 name|Result
@@ -384,7 +384,7 @@ name|get
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the table name for this table.    *    * @param hbaseConf    */
+comment|/**    * Get the table name for this table.    *    * @param hbaseConf HBase configuration from which table name will be fetched.    * @return A {@link TableName} object.    */
 DECL|method|getTableName (Configuration hbaseConf)
 specifier|public
 name|TableName
@@ -415,7 +415,7 @@ return|return
 name|table
 return|;
 block|}
-comment|/**    * Used to create the table in HBase. Should be called only once (per HBase    * instance).    *    * @param admin    * @param hbaseConf    */
+comment|/**    * Used to create the table in HBase. Should be called only once (per HBase    * instance).    *    * @param admin Used for doing HBase table operations.    * @param hbaseConf Hbase configuration.    * @throws IOException if any exception occurs while creating the table.    */
 DECL|method|createTable (Admin admin, Configuration hbaseConf)
 specifier|public
 specifier|abstract

@@ -23,7 +23,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * specifies the tracks along which an entity  * info is to be aggregated on  *  */
+comment|/**  * specifies the tracks along which an entity  * info is to be aggregated on.  *  */
 end_comment
 
 begin_enum

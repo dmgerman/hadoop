@@ -571,6 +571,7 @@ annotation|@
 name|VisibleForTesting
 DECL|field|DATE_FORMAT
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|DateFormat
@@ -649,14 +650,17 @@ block|}
 DECL|class|DateRange
 specifier|private
 specifier|static
+specifier|final
 class|class
 name|DateRange
 block|{
 DECL|field|dateStart
+specifier|private
 name|Long
 name|dateStart
 decl_stmt|;
 DECL|field|dateEnd
+specifier|private
 name|Long
 name|dateEnd
 decl_stmt|;
@@ -1174,7 +1178,7 @@ literal|"Timeline Reader API"
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a single entity for a given entity type and UID which is a delimited    * string containing clusterid, userid, flow name, flowrun id and app id.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, flow name,    *     flowrun id and app id which are extracted from UID and then used to    *     query backend(Mandatory path param).    * @param limit Number of entities to return(Optional query param).    * @param createdTimeStart If specified, matched entities should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched entities should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched entities should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched entities should be related to    *     given entities associated with a entity type. relatesto is a comma    *     separated list in the format [entitytype]:[entityid1]:[entityid2]...    *     (Optional query param).    * @param infofilters If specified, matched entities should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched entities should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched entities should contain the    *     given metrics. This is represented as    *     metricfilters=metricid1, metricid2... (Optional query param).    * @param eventfilters If specified, matched entities should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id and created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances of the given entity type    *     is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a single entity for a given entity type and UID which is a delimited    * string containing clusterid, userid, flow name, flowrun id and app id.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, flow name,    *     flowrun id and app id which are extracted from UID and then used to    *     query backend(Mandatory path param).    * @param entityType Type of entities(Mandatory path param).    * @param limit Number of entities to return(Optional query param).    * @param createdTimeStart If specified, matched entities should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched entities should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched entities should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched entities should be related to    *     given entities associated with a entity type. relatesto is a comma    *     separated list in the format [entitytype]:[entityid1]:[entityid2]...    *     (Optional query param).    * @param infofilters If specified, matched entities should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched entities should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched entities should contain the    *     given metrics. This is represented as    *     metricfilters=metricid1, metricid2... (Optional query param).    * @param eventfilters If specified, matched entities should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id and created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances of the given entity type    *     is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@

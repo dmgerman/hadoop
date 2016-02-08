@@ -70,7 +70,7 @@ operator|)
 literal|73
 argument_list|)
 block|,
-comment|/**    * The metrics of the flow    */
+comment|/**    * The metrics of the flow.    */
 DECL|enumConstant|SUM
 name|SUM
 argument_list|(
@@ -80,7 +80,7 @@ operator|)
 literal|79
 argument_list|)
 block|,
-comment|/**    * application running    */
+comment|/**    * application running.    */
 DECL|enumConstant|SUM_FINAL
 name|SUM_FINAL
 argument_list|(
@@ -90,7 +90,7 @@ operator|)
 literal|83
 argument_list|)
 block|,
-comment|/**    * compact    */
+comment|/**    * compact.    */
 DECL|enumConstant|COMPACT
 name|COMPACT
 argument_list|(
@@ -187,7 +187,7 @@ name|clone
 argument_list|()
 return|;
 block|}
-comment|/**    * returns the AggregationOperation enum that represents that string    * @param aggOpStr    * @return the AggregationOperation enum that represents that string    */
+comment|/**    * returns the AggregationOperation enum that represents that string.    * @param aggOpStr Aggregation operation.    * @return the AggregationOperation enum that represents that string    */
 DECL|method|getAggregationOperation (String aggOpStr)
 specifier|public
 specifier|static

@@ -1729,40 +1729,40 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setRMTimelineCollectorManager ( RMTimelineCollectorManager timelineCollectorManager)
+DECL|method|setRMTimelineCollectorManager ( RMTimelineCollectorManager collectorManager)
 specifier|public
 name|void
 name|setRMTimelineCollectorManager
 parameter_list|(
 name|RMTimelineCollectorManager
-name|timelineCollectorManager
+name|collectorManager
 parameter_list|)
 block|{
 name|this
 operator|.
 name|timelineCollectorManager
 operator|=
-name|timelineCollectorManager
+name|collectorManager
 expr_stmt|;
 block|}
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setSystemMetricsPublisher ( SystemMetricsPublisher systemMetricsPublisher)
+DECL|method|setSystemMetricsPublisher ( SystemMetricsPublisher metricsPublisher)
 specifier|public
 name|void
 name|setSystemMetricsPublisher
 parameter_list|(
 name|SystemMetricsPublisher
-name|systemMetricsPublisher
+name|metricsPublisher
 parameter_list|)
 block|{
 name|this
 operator|.
 name|systemMetricsPublisher
 operator|=
-name|systemMetricsPublisher
+name|metricsPublisher
 expr_stmt|;
 block|}
 annotation|@

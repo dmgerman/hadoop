@@ -44,20 +44,6 @@ name|hadoop
 operator|.
 name|hbase
 operator|.
-name|Cell
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hbase
-operator|.
 name|client
 operator|.
 name|Result
@@ -99,9 +85,8 @@ parameter_list|<
 name|T
 parameter_list|>
 block|{
-comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey identifying the row to write. Nothing gets written when null.    * @param tableMutator used to modify the underlying HBase table. Caller is    *          responsible to pass a mutator for the table that actually has this    *          column.    * @param timestamp version timestamp. When null the server timestamp will be    *          used.    * @param attributes Map of attributes for this mutation. used in the coprocessor    *          to set/read the cell tags. Can be null.    * @param inputValue the value to write to the rowKey and column qualifier.    *          Nothing gets written when null.    * @throws IOException    */
+comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey identifying the row to write. Nothing gets written when null.    * @param tableMutator used to modify the underlying HBase table. Caller is    *          responsible to pass a mutator for the table that actually has this    *          column.    * @param timestamp version timestamp. When null the server timestamp will be    *          used.    * @param attributes Map of attributes for this mutation. used in the    *     coprocessor to set/read the cell tags. Can be null.    * @param inputValue the value to write to the rowKey and column qualifier.    *          Nothing gets written when null.    * @throws IOException if there is any exception encountered during store.    */
 DECL|method|store (byte[] rowKey, TypedBufferedMutator<T> tableMutator, Long timestamp, Object inputValue, Attribute... attributes)
-specifier|public
 name|void
 name|store
 parameter_list|(
@@ -128,9 +113,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the latest version of this specified column. Note: this call clones the    * value content of the hosting {@link Cell}.    *    * @param result Cannot be null    * @return result object (can be cast to whatever object was written to), or    *         null when result doesn't contain this column.    * @throws IOException    */
+comment|/**    * Get the latest version of this specified column. Note: this call clones the    * value content of the hosting {@link org.apache.hadoop.hbase.Cell Cell}.    *    * @param result Cannot be null    * @return result object (can be cast to whatever object was written to), or    *         null when result doesn't contain this column.    * @throws IOException if there is any exception encountered while reading    *     result.    */
 DECL|method|readResult (Result result)
-specifier|public
 name|Object
 name|readResult
 parameter_list|(

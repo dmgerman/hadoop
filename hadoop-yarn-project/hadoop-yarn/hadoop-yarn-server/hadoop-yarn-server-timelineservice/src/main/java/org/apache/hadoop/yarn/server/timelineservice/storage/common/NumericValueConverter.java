@@ -51,7 +51,7 @@ argument_list|<
 name|Number
 argument_list|>
 block|{
-comment|/**    * Adds two or more numbers. If either of the numbers are null, it is taken as    * 0.    * @param num1    * @param num2    * @param numbers    * @return result after adding up the numbers.    */
+comment|/**    * Adds two or more numbers. If either of the numbers are null, it is taken as    * 0.    *    * @param num1 the first number to add.    * @param num2 the second number to add.    * @param numbers Rest of the numbers to be added.    * @return result after adding up the numbers.    */
 DECL|method|add (Number num1, Number num2, Number...numbers)
 name|Number
 name|add

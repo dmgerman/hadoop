@@ -225,7 +225,7 @@ return|return
 name|appId
 return|;
 block|}
-comment|/**    * Constructs a row key prefix for the application table as follows:    * {@code clusterId!userName!flowName!}    *    * @param clusterId    * @param userId    * @param flowName    * @return byte array with the row key prefix    */
+comment|/**    * Constructs a row key prefix for the application table as follows:    * {@code clusterId!userName!flowName!}.    *    * @param clusterId Cluster Id.    * @param userId User Id.    * @param flowName Flow Name.    * @return byte array with the row key prefix    */
 DECL|method|getRowKeyPrefix (String clusterId, String userId, String flowName)
 specifier|public
 specifier|static
@@ -282,7 +282,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructs a row key prefix for the application table as follows:    * {@code clusterId!userName!flowName!flowRunId!}    *    * @param clusterId    * @param userId    * @param flowName    * @param flowRunId    * @return byte array with the row key prefix    */
+comment|/**    * Constructs a row key prefix for the application table as follows:    * {@code clusterId!userName!flowName!flowRunId!}.    *    * @param clusterId Cluster Id.    * @param userId User Id.    * @param flowName Flow Name.    * @param flowRunId Run Id for the flow.    * @return byte array with the row key prefix    */
 DECL|method|getRowKeyPrefix (String clusterId, String userId, String flowName, Long flowRunId)
 specifier|public
 specifier|static
@@ -360,7 +360,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructs a row key for the application table as follows:    * {@code clusterId!userName!flowName!flowRunId!AppId}    *    * @param clusterId    * @param userId    * @param flowName    * @param flowRunId    * @param appId    * @return byte array with the row key    */
+comment|/**    * Constructs a row key for the application table as follows:    * {@code clusterId!userName!flowName!flowRunId!AppId}.    *    * @param clusterId Cluster Id.    * @param userId User Id.    * @param flowName Flow Name.    * @param flowRunId Run Id for the flow.    * @param appId App Id.    * @return byte array with the row key    */
 DECL|method|getRowKey (String clusterId, String userId, String flowName, Long flowRunId, String appId)
 specifier|public
 specifier|static
@@ -450,7 +450,7 @@ name|third
 argument_list|)
 return|;
 block|}
-comment|/**    * Given the raw row key as bytes, returns the row key as an object.    */
+comment|/**    * Given the raw row key as bytes, returns the row key as an object.    *    * @param rowKey Byte representation  of row key.    * @return An<cite>ApplicationRowKey</cite> object.    */
 DECL|method|parseRowKey (byte[] rowKey)
 specifier|public
 specifier|static

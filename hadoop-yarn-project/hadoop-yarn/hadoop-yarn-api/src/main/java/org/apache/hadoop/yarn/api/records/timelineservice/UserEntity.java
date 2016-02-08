@@ -50,6 +50,10 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_comment
+comment|/**  * This entity represents a user.  */
+end_comment
+
 begin_class
 annotation|@
 name|InterfaceAudience

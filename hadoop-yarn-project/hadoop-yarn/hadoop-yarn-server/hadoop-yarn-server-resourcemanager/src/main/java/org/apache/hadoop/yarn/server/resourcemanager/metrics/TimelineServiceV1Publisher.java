@@ -444,6 +444,10 @@ name|TimelineUtils
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class is responsible for posting application, appattempt&amp; Container  * lifecycle related events to timeline service v1.  */
+end_comment
+
 begin_class
 DECL|class|TimelineServiceV1Publisher
 specifier|public
@@ -1076,13 +1080,13 @@ name|tEvent
 argument_list|)
 expr_stmt|;
 comment|// sync sending of finish event to avoid possibility of saving application
-comment|// finished state in RMStateStore save without publishing in ATS
+comment|// finished state in RMStateStore save without publishing in ATS.
 name|putEntity
 argument_list|(
 name|entity
 argument_list|)
 expr_stmt|;
-comment|// sync event so that ATS update is done without fail
+comment|// sync event so that ATS update is done without fail.
 block|}
 annotation|@
 name|SuppressWarnings

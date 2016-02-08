@@ -50,6 +50,10 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_comment
+comment|/**  * Defines type of entity.  */
+end_comment
+
 begin_enum
 annotation|@
 name|InterfaceAudience
@@ -88,7 +92,7 @@ block|,
 DECL|enumConstant|YARN_FLOW_ACTIVITY
 name|YARN_FLOW_ACTIVITY
 block|;
-comment|/**    * Whether the input type can be a parent of this entity.    */
+comment|/**    * Whether the input type can be a parent of this entity.    *    * @param type entity type.    * @return true, if this entity type is parent of passed entity type, false    *     otherwise.    */
 DECL|method|isParent (TimelineEntityType type)
 specifier|public
 name|boolean
@@ -163,7 +167,7 @@ literal|false
 return|;
 block|}
 block|}
-comment|/**    * Whether the input type can be a child of this entity.    */
+comment|/**    * Whether the input type can be a child of this entity.    *    * @param type entity type.    * @return true, if this entity type is child of passed entity type, false    *     otherwise.    */
 DECL|method|isChild (TimelineEntityType type)
 specifier|public
 name|boolean
@@ -238,7 +242,7 @@ literal|false
 return|;
 block|}
 block|}
-comment|/**    * Whether the type of this entity matches the type indicated by the input    * argument.    */
+comment|/**    * Whether the type of this entity matches the type indicated by the input    * argument.    *    * @param typeString entity type represented as a string.    * @return true, if string representation of this entity type matches the    *     entity type passed.    */
 DECL|method|matches (String typeString)
 specifier|public
 name|boolean

@@ -102,7 +102,7 @@ operator|new
 name|AtomicLong
 argument_list|()
 decl_stmt|;
-comment|/**    * Returns the current wall clock time in milliseconds, multiplied by the    * required precision.    */
+comment|/**    * Returns the current wall clock time in milliseconds, multiplied by the    * required precision.    *    * @return current timestamp.    */
 DECL|method|currentTime ()
 specifier|public
 name|long
@@ -121,7 +121,7 @@ operator|*
 name|TS_MULTIPLIER
 return|;
 block|}
-comment|/**    * Returns a timestamp value unique within the scope of this    * {@code TimestampGenerator} instance. For usage by HBase    * {@code RegionObserver} coprocessors, this normally means unique within a    * given region.    *    * Unlikely scenario of generating a non-unique timestamp: if there is a    * sustained rate of more than 1M hbase writes per second AND if region fails    * over within that time range of timestamps being generated then there may be    * collisions writing to a cell version of the same column.    */
+comment|/**    * Returns a timestamp value unique within the scope of this    * {@code TimestampGenerator} instance. For usage by HBase    * {@code RegionObserver} coprocessors, this normally means unique within a    * given region.    *    * Unlikely scenario of generating a non-unique timestamp: if there is a    * sustained rate of more than 1M hbase writes per second AND if region fails    * over within that time range of timestamps being generated then there may be    * collisions writing to a cell version of the same column.    *    * @return unique timestamp.    */
 DECL|method|getUniqueTimestamp ()
 specifier|public
 name|long
@@ -175,7 +175,7 @@ return|return
 name|nextTs
 return|;
 block|}
-comment|/**    * returns a timestamp multiplied with TS_MULTIPLIER and last few digits of    * application id    *    * Unlikely scenario of generating a timestamp that is a duplicate: If more    * than a 1000 concurrent apps are running in one flow run AND write to same    * column at the same time, then say appId of 1001 will overlap with appId of    * 001 and there may be collisions for that flow run's specific column.    *    * @param incomingTS    * @param appId    * @return a timestamp multiplied with TS_MULTIPLIER and last few digits of    *         application id    */
+comment|/**    * returns a timestamp multiplied with TS_MULTIPLIER and last few digits of    * application id    *    * Unlikely scenario of generating a timestamp that is a duplicate: If more    * than a 1000 concurrent apps are running in one flow run AND write to same    * column at the same time, then say appId of 1001 will overlap with appId of    * 001 and there may be collisions for that flow run's specific column.    *    * @param incomingTS Timestamp to be converted.    * @param appId Application Id.    * @return a timestamp multiplied with TS_MULTIPLIER and last few digits of    *         application id    */
 DECL|method|getSupplementedTimestamp (long incomingTS, String appId)
 specifier|public
 specifier|static
@@ -255,7 +255,7 @@ return|return
 name|id
 return|;
 block|}
-comment|/**    * truncates the last few digits of the timestamp which were supplemented by    * the TimestampGenerator#getSupplementedTimestamp function    *    * @param incomingTS    * @return a truncated timestamp value    */
+comment|/**    * truncates the last few digits of the timestamp which were supplemented by    * the TimestampGenerator#getSupplementedTimestamp function.    *    * @param incomingTS Timestamp to be truncated.    * @return a truncated timestamp value    */
 DECL|method|getTruncatedTimestamp (long incomingTS)
 specifier|public
 specifier|static

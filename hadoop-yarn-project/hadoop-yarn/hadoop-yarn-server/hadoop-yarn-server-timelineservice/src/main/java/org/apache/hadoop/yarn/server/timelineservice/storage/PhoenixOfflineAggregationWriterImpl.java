@@ -445,7 +445,7 @@ name|PHOENIX_COL_FAMILY_PLACE_HOLDER
 init|=
 literal|"timeline_cf_placeholder"
 decl_stmt|;
-comment|/** Default Phoenix JDBC driver name */
+comment|/** Default Phoenix JDBC driver name. */
 DECL|field|DRIVER_CLASS_NAME
 specifier|private
 specifier|static
@@ -455,7 +455,7 @@ name|DRIVER_CLASS_NAME
 init|=
 literal|"org.apache.phoenix.jdbc.PhoenixDriver"
 decl_stmt|;
-comment|/** Default Phoenix timeline config column family */
+comment|/** Default Phoenix timeline config column family. */
 DECL|field|METRIC_COLUMN_FAMILY
 specifier|private
 specifier|static
@@ -465,7 +465,7 @@ name|METRIC_COLUMN_FAMILY
 init|=
 literal|"m."
 decl_stmt|;
-comment|/** Default Phoenix timeline info column family */
+comment|/** Default Phoenix timeline info column family. */
 DECL|field|INFO_COLUMN_FAMILY
 specifier|private
 specifier|static
@@ -475,7 +475,7 @@ name|INFO_COLUMN_FAMILY
 init|=
 literal|"i."
 decl_stmt|;
-comment|/** Default separator for Phoenix storage */
+comment|/** Default separator for Phoenix storage. */
 DECL|field|AGGREGATION_STORAGE_SEPARATOR
 specifier|private
 specifier|static
@@ -485,7 +485,7 @@ name|AGGREGATION_STORAGE_SEPARATOR
 init|=
 literal|";"
 decl_stmt|;
-comment|/** Connection string to the deployed Phoenix cluster */
+comment|/** Connection string to the deployed Phoenix cluster. */
 DECL|field|connString
 specifier|private
 name|String
@@ -889,7 +889,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Create Phoenix tables for offline aggregation storage if the tables do not    * exist.    *    * @throws IOException    */
+comment|/**    * Create Phoenix tables for offline aggregation storage if the tables do not    * exist.    *    * @throws IOException if any problem happens while creating Phoenix tables.    */
 DECL|method|createPhoenixTables ()
 specifier|public
 name|void
@@ -1176,14 +1176,17 @@ init|=
 literal|" VARCHAR"
 decl_stmt|;
 DECL|field|columnFamilyPrefix
+specifier|private
 name|String
 name|columnFamilyPrefix
 decl_stmt|;
 DECL|field|type
+specifier|private
 name|String
 name|type
 decl_stmt|;
 DECL|field|columns
+specifier|private
 name|Set
 argument_list|<
 name|K

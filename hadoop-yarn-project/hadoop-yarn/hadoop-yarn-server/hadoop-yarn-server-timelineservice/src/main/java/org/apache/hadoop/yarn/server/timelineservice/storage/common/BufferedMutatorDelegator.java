@@ -105,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * To be used to wrap an actual {@link BufferedMutator} in a type safe manner  *  * @param<T> The class referring to the table to be written to.  */
+comment|/**  * To be used to wrap an actual {@link BufferedMutator} in a type safe manner.  *  * @param<T> The class referring to the table to be written to.  */
 end_comment
 
 begin_class

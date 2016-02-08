@@ -40,6 +40,10 @@ name|ApplicationId
 import|;
 end_import
 
+begin_comment
+comment|/**  * Event used for updating collector address in RMApp on node heartbeat.  */
+end_comment
+
 begin_class
 DECL|class|RMAppCollectorUpdateEvent
 specifier|public

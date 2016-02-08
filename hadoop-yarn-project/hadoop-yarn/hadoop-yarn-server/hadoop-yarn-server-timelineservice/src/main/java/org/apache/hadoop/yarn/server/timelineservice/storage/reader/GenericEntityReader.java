@@ -500,7 +500,7 @@ name|storage
 operator|.
 name|application
 operator|.
-name|ApplicationColumnPrefix
+name|ApplicationTable
 import|;
 end_import
 
@@ -522,7 +522,7 @@ name|storage
 operator|.
 name|application
 operator|.
-name|ApplicationTable
+name|ApplicationColumnPrefix
 import|;
 end_import
 
@@ -1089,7 +1089,8 @@ name|ALL
 argument_list|)
 operator|&&
 operator|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|||
 name|filters
 operator|.
@@ -1157,7 +1158,8 @@ name|ALL
 argument_list|)
 operator|&&
 operator|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|||
 name|filters
 operator|.
@@ -1225,7 +1227,8 @@ name|ALL
 argument_list|)
 operator|&&
 operator|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|||
 name|filters
 operator|.
@@ -1293,7 +1296,8 @@ name|ALL
 argument_list|)
 operator|&&
 operator|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|||
 name|filters
 operator|.
@@ -1355,7 +1359,8 @@ argument_list|)
 operator|||
 operator|(
 operator|!
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|&&
 name|filters
 operator|.
@@ -1481,7 +1486,8 @@ argument_list|)
 operator|||
 operator|(
 operator|!
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|&&
 name|filters
 operator|.
@@ -1734,19 +1740,19 @@ class|class
 name|FlowContext
 block|{
 DECL|field|userId
-specifier|protected
+specifier|private
 specifier|final
 name|String
 name|userId
 decl_stmt|;
 DECL|field|flowName
-specifier|protected
+specifier|private
 specifier|final
 name|String
 name|flowName
 decl_stmt|;
 DECL|field|flowRunId
-specifier|protected
+specifier|private
 specifier|final
 name|Long
 name|flowRunId
@@ -1783,6 +1789,36 @@ name|flowRunId
 operator|=
 name|flowRunId
 expr_stmt|;
+block|}
+DECL|method|getUserId ()
+specifier|protected
+name|String
+name|getUserId
+parameter_list|()
+block|{
+return|return
+name|userId
+return|;
+block|}
+DECL|method|getFlowName ()
+specifier|protected
+name|String
+name|getFlowName
+parameter_list|()
+block|{
+return|return
+name|flowName
+return|;
+block|}
+DECL|method|getFlowRunId ()
+specifier|protected
+name|Long
+name|getFlowRunId
+parameter_list|()
+block|{
+return|return
+name|flowRunId
+return|;
 block|}
 block|}
 annotation|@
@@ -1834,7 +1870,8 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 condition|)
 block|{
 name|Preconditions
@@ -2066,7 +2103,8 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|table
+name|getTable
+argument_list|()
 operator|.
 name|getResult
 argument_list|(
@@ -2186,7 +2224,8 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|table
+name|getTable
+argument_list|()
 operator|.
 name|getResultScanner
 argument_list|(
@@ -2313,7 +2352,8 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|singleEntityRead
+name|isSingleEntityRead
+argument_list|()
 operator|&&
 operator|(
 name|entity
@@ -3066,7 +3106,7 @@ return|return
 name|entity
 return|;
 block|}
-comment|/**    * Helper method for reading relationship.    */
+comment|/**    * Helper method for reading relationship.    *    * @param<T> Describes the type of column prefix.    * @param entity entity to fill.    * @param result result from HBase.    * @param prefix column prefix.    * @param isRelatedTo if true, means relationship is to be added to    *     isRelatedTo, otherwise its added to relatesTo.    * @throws IOException if any problem is encountered while reading result.    */
 DECL|method|readRelationship ( TimelineEntity entity, Result result, ColumnPrefix<T> prefix, boolean isRelatedTo)
 specifier|protected
 parameter_list|<
@@ -3184,7 +3224,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Helper method for reading key-value pairs for either info or config.    */
+comment|/**    * Helper method for reading key-value pairs for either info or config.    *    * @param<T> Describes the type of column prefix.    * @param entity entity to fill.    * @param result result from HBase.    * @param prefix column prefix.    * @param isConfig if true, means we are reading configs, otherwise info.    * @throws IOException if any problem is encountered while reading result.    */
 DECL|method|readKeyValuePairs ( TimelineEntity entity, Result result, ColumnPrefix<T> prefix, boolean isConfig)
 specifier|protected
 parameter_list|<
@@ -3281,7 +3321,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Read events from the entity table or the application table. The column name    * is of the form "eventId=timestamp=infoKey" where "infoKey" may be omitted    * if there is no info associated with the event.    *    * See {@link EntityTable} and {@link ApplicationTable} for a more detailed    * schema description.    */
+comment|/**    * Read events from the entity table or the application table. The column name    * is of the form "eventId=timestamp=infoKey" where "infoKey" may be omitted    * if there is no info associated with the event.    *    * @param entity entity to fill.    * @param result HBase Result.    * @param isApplication if true, event read is for application table,    *     otherwise its being read for entity table.    * @throws IOException if any problem is encountered while reading result.    *    * See {@link EntityTable} and {@link ApplicationTable} for a more detailed    * schema description.    */
 DECL|method|readEvents (TimelineEntity entity, Result result, boolean isApplication)
 specifier|protected
 name|void

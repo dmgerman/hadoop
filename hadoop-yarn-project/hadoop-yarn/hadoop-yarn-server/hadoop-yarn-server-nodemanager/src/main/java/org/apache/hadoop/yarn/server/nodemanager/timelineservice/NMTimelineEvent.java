@@ -38,6 +38,10 @@ name|AbstractEvent
 import|;
 end_import
 
+begin_comment
+comment|/**  * Event posted to NMTimelinePublisher which in turn publishes it to  * timelineservice v2.  */
+end_comment
+
 begin_class
 DECL|class|NMTimelineEvent
 specifier|public

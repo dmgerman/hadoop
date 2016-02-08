@@ -425,7 +425,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Main class for Timeline Reader */
+comment|/** Main class for Timeline Reader. */
 end_comment
 
 begin_class

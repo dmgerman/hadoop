@@ -680,7 +680,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
-name|table
+name|getTable
+argument_list|()
 operator|.
 name|getResultScanner
 argument_list|(

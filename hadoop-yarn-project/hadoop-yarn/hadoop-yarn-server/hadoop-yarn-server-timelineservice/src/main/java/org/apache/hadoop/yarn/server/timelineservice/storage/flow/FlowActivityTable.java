@@ -189,7 +189,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The flow activity table has column family info  * Stores the daily activity record for flows  * Useful as a quick lookup of what flows were  * running on a given day  *  * Example flow activity table record:  *  *</pre>  * |-------------------------------------------|  * |  Row key   | Column Family                |  * |            | info                         |  * |-------------------------------------------|  * | clusterId! | r!runid1:version1            |  * | inv Top of |                              |  * | Day!       | r!runid2:version7            |  * | userName!  |                              |  * | flowName   |                              |  * |-------------------------------------------|  *</pre>  */
+comment|/**  * The flow activity table has column family info  * Stores the daily activity record for flows  * Useful as a quick lookup of what flows were  * running on a given day  *  * Example flow activity table record:  *  *<pre>  * |-------------------------------------------|  * |  Row key   | Column Family                |  * |            | info                         |  * |-------------------------------------------|  * | clusterId! | r!runid1:version1            |  * | inv Top of |                              |  * | Day!       | r!runid2:version7            |  * | userName!  |                              |  * | flowName   |                              |  * |-------------------------------------------|  *</pre>  */
 end_comment
 
 begin_class
@@ -203,7 +203,7 @@ argument_list|<
 name|FlowActivityTable
 argument_list|>
 block|{
-comment|/** flow activity table prefix */
+comment|/** flow activity table prefix. */
 DECL|field|PREFIX
 specifier|private
 specifier|static
@@ -217,7 +217,7 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|".flowactivity"
 decl_stmt|;
-comment|/** config param name that specifies the flowactivity table name */
+comment|/** config param name that specifies the flowactivity table name. */
 DECL|field|TABLE_NAME_CONF_NAME
 specifier|public
 specifier|static
@@ -229,7 +229,7 @@ name|PREFIX
 operator|+
 literal|".table.name"
 decl_stmt|;
-comment|/** default value for flowactivity table name */
+comment|/** default value for flowactivity table name. */
 DECL|field|DEFAULT_TABLE_NAME
 specifier|public
 specifier|static
@@ -255,7 +255,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/** default max number of versions */
+comment|/** default max number of versions. */
 DECL|field|DEFAULT_METRICS_MAX_VERSIONS
 specifier|public
 specifier|static
@@ -332,7 +332,7 @@ argument_list|)
 throw|;
 block|}
 name|HTableDescriptor
-name|FlowActivityTableDescp
+name|flowActivityTableDescp
 init|=
 operator|new
 name|HTableDescriptor
@@ -363,7 +363,7 @@ operator|.
 name|ROWCOL
 argument_list|)
 expr_stmt|;
-name|FlowActivityTableDescp
+name|flowActivityTableDescp
 operator|.
 name|addFamily
 argument_list|(
@@ -389,7 +389,7 @@ name|admin
 operator|.
 name|createTable
 argument_list|(
-name|FlowActivityTableDescp
+name|flowActivityTableDescp
 argument_list|)
 expr_stmt|;
 name|LOG

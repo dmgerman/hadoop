@@ -1222,6 +1222,7 @@ decl_stmt|;
 DECL|field|MAPREDUCE_TASK_ATTEMPT_ENTITY_TYPE
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|MAPREDUCE_TASK_ATTEMPT_ENTITY_TYPE
 init|=
@@ -2755,6 +2756,7 @@ operator|.
 name|SECONDS
 argument_list|)
 condition|)
+block|{
 name|LOG
 operator|.
 name|error
@@ -2762,6 +2764,7 @@ argument_list|(
 literal|"ThreadPool did not terminate"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 catch|catch
@@ -7188,14 +7191,14 @@ return|return
 name|nodes
 return|;
 block|}
-DECL|method|putEntityWithoutBlocking (final TimelineClient timelineClient, final org.apache.hadoop.yarn.api.records.timelineservice.TimelineEntity entity)
+DECL|method|putEntityWithoutBlocking (final TimelineClient client, final org.apache.hadoop.yarn.api.records.timelineservice.TimelineEntity entity)
 specifier|private
 name|void
 name|putEntityWithoutBlocking
 parameter_list|(
 specifier|final
 name|TimelineClient
-name|timelineClient
+name|client
 parameter_list|,
 specifier|final
 name|org
@@ -7230,7 +7233,7 @@ parameter_list|()
 block|{
 try|try
 block|{
-name|timelineClient
+name|client
 operator|.
 name|putEntities
 argument_list|(

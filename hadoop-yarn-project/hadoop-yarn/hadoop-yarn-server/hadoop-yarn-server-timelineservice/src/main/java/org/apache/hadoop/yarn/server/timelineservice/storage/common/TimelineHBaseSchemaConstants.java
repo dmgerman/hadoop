@@ -69,7 +69,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * contains the constants used in the context of schema accesses for  * {@link org.apache.hadoop.yarn.api.records.timelineservice.TimelineEntity}  * information  */
+comment|/**  * contains the constants used in the context of schema accesses for  * {@link org.apache.hadoop.yarn.api.records.timelineservice.TimelineEntity}  * information.  */
 end_comment
 
 begin_class
@@ -83,9 +83,15 @@ operator|.
 name|Unstable
 DECL|class|TimelineHBaseSchemaConstants
 specifier|public
+specifier|final
 class|class
 name|TimelineHBaseSchemaConstants
 block|{
+DECL|method|TimelineHBaseSchemaConstants ()
+specifier|private
+name|TimelineHBaseSchemaConstants
+parameter_list|()
+block|{   }
 comment|/**    * Used to create a pre-split for tables starting with a username in the    * prefix. TODO: this may have to become a config variable (string with    * separators) so that different installations can presplit based on their own    * commonly occurring names.    */
 DECL|field|USERNAME_SPLITS
 specifier|private
@@ -301,7 +307,7 @@ literal|"z"
 argument_list|)
 block|}
 decl_stmt|;
-comment|/**    * The length at which keys auto-split    */
+comment|/**    * The length at which keys auto-split.    */
 DECL|field|USERNAME_SPLIT_KEY_PREFIX_LENGTH
 specifier|public
 specifier|static
@@ -314,7 +320,6 @@ decl_stmt|;
 comment|/**    * @return splits for splits where a user is a prefix.    */
 DECL|method|getUsernameSplits ()
 specifier|public
-specifier|final
 specifier|static
 name|byte
 index|[]

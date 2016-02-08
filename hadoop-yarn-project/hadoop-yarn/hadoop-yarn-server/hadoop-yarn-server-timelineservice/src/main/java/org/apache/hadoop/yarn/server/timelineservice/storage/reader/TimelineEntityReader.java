@@ -362,7 +362,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|singleEntityRead
-specifier|protected
+specifier|private
 specifier|final
 name|boolean
 name|singleEntityRead
@@ -385,7 +385,7 @@ name|filters
 decl_stmt|;
 comment|/**    * Main table the entity reader uses.    */
 DECL|field|table
-specifier|protected
+specifier|private
 name|BaseTable
 argument_list|<
 name|?
@@ -400,7 +400,7 @@ name|sortedKeys
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * Instantiates a reader for multiple-entity reads.    */
+comment|/**    * Instantiates a reader for multiple-entity reads.    *    * @param ctxt Reader context which defines the scope in which query has to be    *     made.    * @param entityFilters Filters which limit the entities returned.    * @param toRetrieve Data to retrieve for each entity.    * @param sortedKeys Specifies whether key for this table are sorted or not.    *     If sorted, entities can be retrieved by created time.    */
 DECL|method|TimelineEntityReader (TimelineReaderContext ctxt, TimelineEntityFilters entityFilters, TimelineDataToRetrieve toRetrieve, boolean sortedKeys)
 specifier|protected
 name|TimelineEntityReader
@@ -450,13 +450,14 @@ name|entityFilters
 expr_stmt|;
 name|this
 operator|.
-name|table
-operator|=
+name|setTable
+argument_list|(
 name|getTable
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Instantiates a reader for single-entity reads.    */
+comment|/**    * Instantiates a reader for single-entity reads.    *    * @param ctxt Reader context which defines the scope in which query has to be    *     made.    * @param toRetrieve Data to retrieve for each entity.    */
 DECL|method|TimelineEntityReader (TimelineReaderContext ctxt, TimelineDataToRetrieve toRetrieve)
 specifier|protected
 name|TimelineEntityReader
@@ -488,13 +489,14 @@ name|toRetrieve
 expr_stmt|;
 name|this
 operator|.
-name|table
-operator|=
+name|setTable
+argument_list|(
 name|getTable
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates a {@link FilterList} based on fields, confs and metrics to    * retrieve. This filter list will be set in Scan/Get objects to trim down    * results fetched from HBase back-end storage.    * @return a {@link FilterList} object.    */
+comment|/**    * Creates a {@link FilterList} based on fields, confs and metrics to    * retrieve. This filter list will be set in Scan/Get objects to trim down    * results fetched from HBase back-end storage.    *    * @return a {@link FilterList} object.    */
 DECL|method|constructFilterListBasedOnFields ()
 specifier|protected
 specifier|abstract
@@ -532,7 +534,7 @@ return|return
 name|filters
 return|;
 block|}
-comment|/**    * Reads and deserializes a single timeline entity from the HBase storage.    */
+comment|/**    * Reads and deserializes a single timeline entity from the HBase storage.    *    * @param hbaseConf HBase Configuration.    * @param conn HBase Connection.    * @return A<cite>TimelineEntity</cite> object.    * @throws IOException if there is any exception encountered while reading    *     entity.    */
 DECL|method|readEntity (Configuration hbaseConf, Connection conn)
 specifier|public
 name|TimelineEntity
@@ -611,7 +613,7 @@ name|result
 argument_list|)
 return|;
 block|}
-comment|/**    * Reads and deserializes a set of timeline entities from the HBase storage.    * It goes through all the results available, and returns the number of    * entries as specified in the limit in the entity's natural sort order.    */
+comment|/**    * Reads and deserializes a set of timeline entities from the HBase storage.    * It goes through all the results available, and returns the number of    * entries as specified in the limit in the entity's natural sort order.    *    * @param hbaseConf HBase Configuration.    * @param conn HBase Connection.    * @return a set of<cite>TimelineEntity</cite> objects.    * @throws IOException if any exception is encountered while reading entities.    */
 DECL|method|readEntities (Configuration hbaseConf, Connection conn)
 specifier|public
 name|Set
@@ -760,17 +762,20 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns the main table to be used by the entity reader.    */
+comment|/**    * Returns the main table to be used by the entity reader.    *    * @return A reference to the table.    */
 DECL|method|getTable ()
 specifier|protected
-specifier|abstract
 name|BaseTable
 argument_list|<
 name|?
 argument_list|>
 name|getTable
 parameter_list|()
-function_decl|;
+block|{
+return|return
+name|table
+return|;
+block|}
 comment|/**    * Validates the required parameters to read the entities.    */
 DECL|method|validateParams ()
 specifier|protected
@@ -779,7 +784,7 @@ name|void
 name|validateParams
 parameter_list|()
 function_decl|;
-comment|/**    * Sets certain parameters to defaults if the values are not provided.    */
+comment|/**    * Sets certain parameters to defaults if the values are not provided.    *    * @param hbaseConf HBase Configuration.    * @param conn HBase Connection.    * @throws IOException if any exception is encountered while setting params.    */
 DECL|method|augmentParams (Configuration hbaseConf, Connection conn)
 specifier|protected
 specifier|abstract
@@ -795,7 +800,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Fetches a {@link Result} instance for a single-entity read.    *    * @return the {@link Result} instance or null if no such record is found.    */
+comment|/**    * Fetches a {@link Result} instance for a single-entity read.    *    * @param hbaseConf HBase Configuration.    * @param conn HBase Connection.    * @param filterList filter list which will be applied to HBase Get.    * @return the {@link Result} instance or null if no such record is found.    * @throws IOException if any exception is encountered while getting result.    */
 DECL|method|getResult (Configuration hbaseConf, Connection conn, FilterList filterList)
 specifier|protected
 specifier|abstract
@@ -814,7 +819,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Fetches a {@link ResultScanner} for a multi-entity read.    */
+comment|/**    * Fetches a {@link ResultScanner} for a multi-entity read.    *    * @param hbaseConf HBase Configuration.    * @param conn HBase Connection.    * @param filterList filter list which will be applied to HBase Scan.    * @return the {@link ResultScanner} instance.    * @throws IOException if any exception is encountered while getting results.    */
 DECL|method|getResults (Configuration hbaseConf, Connection conn, FilterList filterList)
 specifier|protected
 specifier|abstract
@@ -833,7 +838,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Given a {@link Result} instance, deserializes and creates a    * {@link TimelineEntity}.    *    * @return the {@link TimelineEntity} instance, or null if the {@link Result}    * is null or empty.    */
+comment|/**    * Parses the result retrieved from HBase backend and convert it into a    * {@link TimelineEntity} object.    *    * @param result Single row result of a Get/Scan.    * @return the<cite>TimelineEntity</cite> instance or null if the entity is    *     filtered.    * @throws IOException if any exception is encountered while parsing entity.    */
 DECL|method|parseEntity (Result result)
 specifier|protected
 specifier|abstract
@@ -846,7 +851,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Helper method for reading and deserializing {@link TimelineMetric} objects    * using the specified column prefix. The timeline metrics then are added to    * the given timeline entity.    */
+comment|/**    * Helper method for reading and deserializing {@link TimelineMetric} objects    * using the specified column prefix. The timeline metrics then are added to    * the given timeline entity.    *    * @param entity {@link TimelineEntity} object.    * @param result {@link Result} object retrieved from backend.    * @param columnPrefix Metric column prefix    * @throws IOException if any exception is encountered while reading metrics.    */
 DECL|method|readMetrics (TimelineEntity entity, Result result, ColumnPrefix<?> columnPrefix)
 specifier|protected
 name|void
@@ -974,6 +979,36 @@ name|metric
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Checks whether the reader has been created to fetch single entity or    * multiple entities.    *    * @return true, if query is for single entity, false otherwise.    */
+DECL|method|isSingleEntityRead ()
+specifier|public
+name|boolean
+name|isSingleEntityRead
+parameter_list|()
+block|{
+return|return
+name|singleEntityRead
+return|;
+block|}
+DECL|method|setTable (BaseTable<?> baseTable)
+specifier|protected
+name|void
+name|setTable
+parameter_list|(
+name|BaseTable
+argument_list|<
+name|?
+argument_list|>
+name|baseTable
+parameter_list|)
+block|{
+name|this
+operator|.
+name|table
+operator|=
+name|baseTable
+expr_stmt|;
 block|}
 block|}
 end_class

@@ -44,7 +44,7 @@ specifier|public
 interface|interface
 name|ValueConverter
 block|{
-comment|/**    * Encode an object as a byte array depending on the converter implementation.    * @param value    * @return a byte array    * @throws IOException    */
+comment|/**    * Encode an object as a byte array depending on the converter implementation.    *    * @param value Value to be encoded.    * @return a byte array    * @throws IOException if any problem is encountered while encoding.    */
 DECL|method|encodeValue (Object value)
 name|byte
 index|[]
@@ -56,7 +56,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Decode a byte array and convert it into an object depending on the    * converter implementation.    * @param bytes    * @return an object    * @throws IOException    */
+comment|/**    * Decode a byte array and convert it into an object depending on the    * converter implementation.    *    * @param bytes Byte array to be decoded.    * @return an object    * @throws IOException if any problem is encountered while decoding.    */
 DECL|method|decodeValue (byte[] bytes)
 name|Object
 name|decodeValue

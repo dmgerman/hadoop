@@ -144,6 +144,10 @@ name|YarnApplicationState
 import|;
 end_import
 
+begin_comment
+comment|/**  * Interface used to publish app/container events to timelineservice.  */
+end_comment
+
 begin_interface
 DECL|interface|SystemMetricsPublisher
 specifier|public

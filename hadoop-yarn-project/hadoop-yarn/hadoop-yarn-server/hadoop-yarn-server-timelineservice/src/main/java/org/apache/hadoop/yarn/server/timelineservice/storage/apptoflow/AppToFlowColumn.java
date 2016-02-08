@@ -213,7 +213,7 @@ argument_list|<
 name|AppToFlowTable
 argument_list|>
 block|{
-comment|/**    * The flow ID    */
+comment|/**    * The flow ID.    */
 DECL|enumConstant|FLOW_ID
 name|FLOW_ID
 argument_list|(
@@ -224,7 +224,7 @@ argument_list|,
 literal|"flow_id"
 argument_list|)
 block|,
-comment|/**    * The flow run ID    */
+comment|/**    * The flow run ID.    */
 DECL|enumConstant|FLOW_RUN_ID
 name|FLOW_RUN_ID
 argument_list|(
@@ -235,7 +235,7 @@ argument_list|,
 literal|"flow_run_id"
 argument_list|)
 block|,
-comment|/**    * The user    */
+comment|/**    * The user.    */
 DECL|enumConstant|USER_ID
 name|USER_ID
 argument_list|(

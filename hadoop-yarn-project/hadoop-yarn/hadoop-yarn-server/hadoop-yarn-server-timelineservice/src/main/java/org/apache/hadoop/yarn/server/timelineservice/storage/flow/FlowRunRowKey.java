@@ -200,7 +200,7 @@ return|return
 name|flowRunId
 return|;
 block|}
-comment|/**    * Constructs a row key prefix for the flow run table as follows: {    * clusterId!userI!flowName!}    *    * @param clusterId    * @param userId    * @param flowName    * @return byte array with the row key prefix    */
+comment|/**    * Constructs a row key prefix for the flow run table as follows: {    * clusterId!userI!flowName!}.    *    * @param clusterId Cluster Id.    * @param userId User Id.    * @param flowName Flow Name.    * @return byte array with the row key prefix    */
 DECL|method|getRowKeyPrefix (String clusterId, String userId, String flowName)
 specifier|public
 specifier|static
@@ -240,7 +240,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructs a row key for the entity table as follows: {    * clusterId!userI!flowName!Inverted Flow Run Id}    *    * @param clusterId    * @param userId    * @param flowName    * @param flowRunId    * @return byte array with the row key    */
+comment|/**    * Constructs a row key for the entity table as follows: {    * clusterId!userI!flowName!Inverted Flow Run Id}.    *    * @param clusterId Cluster Id.    * @param userId User Id.    * @param flowName Flow Name.    * @param flowRunId Run Id for the flow name.    * @return byte array with the row key    */
 DECL|method|getRowKey (String clusterId, String userId, String flowName, Long flowRunId)
 specifier|public
 specifier|static
@@ -314,7 +314,7 @@ name|second
 argument_list|)
 return|;
 block|}
-comment|/**    * Given the raw row key as bytes, returns the row key as an object.    */
+comment|/**    * Given the raw row key as bytes, returns the row key as an object.    *    * @param rowKey Byte representation of row key.    * @return A<cite>FlowRunRowKey</cite> object.    */
 DECL|method|parseRowKey (byte[] rowKey)
 specifier|public
 specifier|static

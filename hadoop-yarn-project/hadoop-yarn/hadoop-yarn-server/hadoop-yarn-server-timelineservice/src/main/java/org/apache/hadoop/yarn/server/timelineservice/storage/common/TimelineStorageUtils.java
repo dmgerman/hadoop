@@ -367,10 +367,16 @@ annotation|@
 name|Unstable
 DECL|class|TimelineStorageUtils
 specifier|public
+specifier|final
 class|class
 name|TimelineStorageUtils
 block|{
-comment|/** empty bytes */
+DECL|method|TimelineStorageUtils ()
+specifier|private
+name|TimelineStorageUtils
+parameter_list|()
+block|{   }
+comment|/** empty bytes. */
 DECL|field|EMPTY_BYTES
 specifier|public
 specifier|static
@@ -385,7 +391,7 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-comment|/** indicator for no limits for splitting */
+comment|/** indicator for no limits for splitting. */
 DECL|field|NO_LIMIT_SPLIT
 specifier|public
 specifier|static
@@ -396,7 +402,7 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-comment|/** milliseconds in one day */
+comment|/** milliseconds in one day. */
 DECL|field|MILLIS_ONE_DAY
 specifier|public
 specifier|static
@@ -406,7 +412,7 @@ name|MILLIS_ONE_DAY
 init|=
 literal|86400000L
 decl_stmt|;
-comment|/**    * Splits the source array into multiple array segments using the given    * separator, up to a maximum of count items. This will naturally produce    * copied byte arrays for each of the split segments. To identify the split    * ranges without the array copies, see {@link #splitRanges(byte[], byte[])}.    *    * @param source    * @param separator    * @return byte[] array after splitting the source    */
+comment|/**    * Splits the source array into multiple array segments using the given    * separator, up to a maximum of count items. This will naturally produce    * copied byte arrays for each of the split segments. To identify the split    * ranges without the array copies, see {@link #splitRanges(byte[], byte[])}.    *    * @param source Source array.    * @param separator Separator represented as a byte array.    * @return byte[][] after splitting the source    */
 DECL|method|split (byte[] source, byte[] separator)
 specifier|public
 specifier|static
@@ -435,7 +441,7 @@ name|NO_LIMIT_SPLIT
 argument_list|)
 return|;
 block|}
-comment|/**    * Splits the source array into multiple array segments using the given    * separator, up to a maximum of count items. This will naturally produce    * copied byte arrays for each of the split segments. To identify the split    * ranges without the array copies, see {@link #splitRanges(byte[], byte[])}.    *    * @param source    * @param separator    * @param limit a non-positive value indicates no limit on number of segments.    * @return byte[][] after splitting the input source    */
+comment|/**    * Splits the source array into multiple array segments using the given    * separator, up to a maximum of count items. This will naturally produce    * copied byte arrays for each of the split segments. To identify the split    * ranges without the array copies, see {@link #splitRanges(byte[], byte[])}.    *    * @param source Source array.    * @param separator Separator represented as a byte array.    * @param limit a non-positive value indicates no limit on number of segments.    * @return byte[][] after splitting the input source.    */
 DECL|method|split (byte[] source, byte[] separator, int limit)
 specifier|public
 specifier|static
@@ -570,7 +576,7 @@ return|return
 name|splits
 return|;
 block|}
-comment|/**    * Returns a list of ranges identifying [start, end) -- closed, open --    * positions within the source byte array that would be split using the    * separator byte array.    */
+comment|/**    * Returns a list of ranges identifying [start, end) -- closed, open --    * positions within the source byte array that would be split using the    * separator byte array.    *    * @param source Source array.    * @param separator Separator represented as a byte array.    * @return a list of ranges.    */
 DECL|method|splitRanges (byte[] source, byte[] separator)
 specifier|public
 specifier|static
@@ -600,7 +606,7 @@ name|NO_LIMIT_SPLIT
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns a list of ranges identifying [start, end) -- closed, open --    * positions within the source byte array that would be split using the    * separator byte array.    *    * @param source the source data    * @param separator the separator pattern to look for    * @param limit the maximum number of splits to identify in the source    */
+comment|/**    * Returns a list of ranges identifying [start, end) -- closed, open --    * positions within the source byte array that would be split using the    * separator byte array.    *    * @param source the source data    * @param separator the separator pattern to look for    * @param limit the maximum number of splits to identify in the source    * @return a list of ranges.    */
 DECL|method|splitRanges (byte[] source, byte[] separator, int limit)
 specifier|public
 specifier|static
@@ -1039,7 +1045,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * returns the timestamp of that day's start (which is midnight 00:00:00 AM)    * for a given input timestamp    *    * @param ts    * @return timestamp of that day's beginning (midnight)    */
+comment|/**    * returns the timestamp of that day's start (which is midnight 00:00:00 AM)    * for a given input timestamp.    *    * @param ts Timestamp.    * @return timestamp of that day's beginning (midnight)    */
 DECL|method|getTopOfTheDayTimestamp (long ts)
 specifier|public
 specifier|static
@@ -1065,7 +1071,7 @@ return|return
 name|dayTimestamp
 return|;
 block|}
-comment|/**    * Combines the input array of attributes and the input aggregation operation    * into a new array of attributes.    *    * @param attributes    * @param aggOp    * @return array of combined attributes    */
+comment|/**    * Combines the input array of attributes and the input aggregation operation    * into a new array of attributes.    *    * @param attributes Attributes to be combined.    * @param aggOp Aggregation operation.    * @return array of combined attributes.    */
 DECL|method|combineAttributes (Attribute[] attributes, AggregationOperation aggOp)
 specifier|public
 specifier|static
@@ -1155,7 +1161,7 @@ return|return
 name|combinedAttributes
 return|;
 block|}
-comment|/**    * Returns a number for the new array size. The new array is the combination    * of input array of attributes and the input aggregation operation.    *    * @param attributes    * @param aggOp    * @return the size for the new array    */
+comment|/**    * Returns a number for the new array size. The new array is the combination    * of input array of attributes and the input aggregation operation.    *    * @param attributes Attributes.    * @param aggOp Aggregation operation.    * @return the size for the new array    */
 DECL|method|getNewLengthCombinedAttributes (Attribute[] attributes, AggregationOperation aggOp)
 specifier|private
 specifier|static
@@ -1245,7 +1251,7 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * checks if an application has finished    *    * @param te    * @return true if application has finished else false    */
+comment|/**    * checks if an application has finished.    *    * @param te TimlineEntity object.    * @return true if application has finished else false    */
 DECL|method|isApplicationFinished (TimelineEntity te)
 specifier|public
 specifier|static
@@ -1317,7 +1323,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * get the time at which an app finished    *    * @param te    * @return true if application has finished else false    */
+comment|/**    * get the time at which an app finished.    *    * @param te TimelineEntity object.    * @return true if application has finished else false    */
 DECL|method|getApplicationFinishedTime (TimelineEntity te)
 specifier|public
 specifier|static
@@ -1389,10 +1395,10 @@ return|;
 block|}
 block|}
 return|return
-literal|0l
+literal|0L
 return|;
 block|}
-comment|/**    * Checks if the input TimelineEntity object is an ApplicationEntity.    *    * @param te    * @return true if input is an ApplicationEntity, false otherwise    */
+comment|/**    * Checks if the input TimelineEntity object is an ApplicationEntity.    *    * @param te TimelineEntity object.    * @return true if input is an ApplicationEntity, false otherwise    */
 DECL|method|isApplicationEntity (TimelineEntity te)
 specifier|public
 specifier|static
@@ -1420,7 +1426,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Checks for the APPLICATION_CREATED event.    *    * @param te    * @return true is application event exists, false otherwise    */
+comment|/**    * Checks for the APPLICATION_CREATED event.    *    * @param te TimelineEntity object.    * @return true is application event exists, false otherwise    */
 DECL|method|isApplicationCreated (TimelineEntity te)
 specifier|public
 specifier|static
@@ -1475,7 +1481,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Returns the first seen aggregation operation as seen in the list of input    * tags or null otherwise    *    * @param tags    * @return AggregationOperation    */
+comment|/**    * Returns the first seen aggregation operation as seen in the list of input    * tags or null otherwise.    *    * @param tags list of HBase tags.    * @return AggregationOperation    */
 DECL|method|getAggregationOperationFromTagsList ( List<Tag> tags)
 specifier|public
 specifier|static
@@ -1531,7 +1537,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Creates a {@link Tag} from the input attribute.    *    * @param attribute    * @return Tag    */
+comment|/**    * Creates a {@link Tag} from the input attribute.    *    * @param attribute Attribute from which tag has to be fetched.    * @return a HBase Tag.    */
 DECL|method|getTagFromAttribute (Entry<String, byte[]> attribute)
 specifier|public
 specifier|static
@@ -2002,7 +2008,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Checks if passed object is of integral type(Short/Integer/Long).    * @param obj    * @return true if object passed is of type Short or Integer or Long, false    * otherwise.    */
+comment|/**    * Checks if passed object is of integral type(Short/Integer/Long).    *    * @param obj Object to be checked.    * @return true if object passed is of type Short or Integer or Long, false    * otherwise.    */
 DECL|method|isIntegralValue (Object obj)
 specifier|public
 specifier|static

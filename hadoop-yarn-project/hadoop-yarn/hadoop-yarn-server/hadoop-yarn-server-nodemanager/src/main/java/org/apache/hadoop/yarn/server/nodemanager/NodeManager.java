@@ -2922,7 +2922,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|registeredCollectors
-specifier|protected
+specifier|private
 name|Map
 argument_list|<
 name|ApplicationId

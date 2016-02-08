@@ -142,6 +142,10 @@ name|Map
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class contains the information of an event that belongs to an entity.  * Users are free to define what the event means, such as starting an  * application, container being allocated, etc.  */
+end_comment
+
 begin_class
 annotation|@
 name|XmlRootElement
@@ -231,20 +235,20 @@ return|return
 name|id
 return|;
 block|}
-DECL|method|setId (String id)
+DECL|method|setId (String eventId)
 specifier|public
 name|void
 name|setId
 parameter_list|(
 name|String
-name|id
+name|eventId
 parameter_list|)
 block|{
 name|this
 operator|.
 name|id
 operator|=
-name|id
+name|eventId
 expr_stmt|;
 block|}
 comment|// required by JAXB
@@ -289,7 +293,7 @@ return|return
 name|info
 return|;
 block|}
-DECL|method|setInfo (Map<String, Object> info)
+DECL|method|setInfo (Map<String, Object> infos)
 specifier|public
 name|void
 name|setInfo
@@ -300,7 +304,7 @@ name|String
 argument_list|,
 name|Object
 argument_list|>
-name|info
+name|infos
 parameter_list|)
 block|{
 name|this
@@ -311,11 +315,11 @@ name|TimelineServiceHelper
 operator|.
 name|mapCastToHashMap
 argument_list|(
-name|info
+name|infos
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addInfo (Map<String, Object> info)
+DECL|method|addInfo (Map<String, Object> infos)
 specifier|public
 name|void
 name|addInfo
@@ -326,7 +330,7 @@ name|String
 argument_list|,
 name|Object
 argument_list|>
-name|info
+name|infos
 parameter_list|)
 block|{
 name|this
@@ -335,7 +339,7 @@ name|info
 operator|.
 name|putAll
 argument_list|(
-name|info
+name|infos
 argument_list|)
 expr_stmt|;
 block|}
@@ -378,20 +382,20 @@ return|return
 name|timestamp
 return|;
 block|}
-DECL|method|setTimestamp (long timestamp)
+DECL|method|setTimestamp (long ts)
 specifier|public
 name|void
 name|setTimestamp
 parameter_list|(
 name|long
-name|timestamp
+name|ts
 parameter_list|)
 block|{
 name|this
 operator|.
 name|timestamp
 operator|=
-name|timestamp
+name|ts
 expr_stmt|;
 block|}
 DECL|method|isValid ()
@@ -468,9 +472,11 @@ name|this
 operator|==
 name|o
 condition|)
+block|{
 return|return
 literal|true
 return|;
+block|}
 if|if
 condition|(
 operator|!
@@ -480,9 +486,11 @@ operator|instanceof
 name|TimelineEvent
 operator|)
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 name|TimelineEvent
 name|event
 init|=
@@ -499,9 +507,11 @@ name|event
 operator|.
 name|timestamp
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 if|if
 condition|(
 operator|!

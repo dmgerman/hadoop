@@ -791,7 +791,6 @@ argument_list|)
 return|;
 block|}
 comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.ColumnPrefix    * #readResultsWithTimestamps(org.apache.hadoop.hbase.client.Result)    */
-DECL|method|readResultsWithTimestamps ( Result result)
 specifier|public
 parameter_list|<
 name|T
@@ -807,6 +806,7 @@ argument_list|,
 name|T
 argument_list|>
 argument_list|>
+DECL|method|readResultsWithTimestamps (Result result)
 name|readResultsWithTimestamps
 parameter_list|(
 name|Result

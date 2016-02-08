@@ -213,7 +213,7 @@ argument_list|<
 name|ApplicationTable
 argument_list|>
 block|{
-comment|/**    * App id    */
+comment|/**    * App id.    */
 DECL|enumConstant|ID
 name|ID
 argument_list|(
@@ -415,7 +415,7 @@ name|columnQualifierBytes
 argument_list|)
 return|;
 block|}
-comment|/**    * Retrieve an {@link ApplicationColumn} given a name, or null if there is no    * match. The following holds true: {@code columnFor(x) == columnFor(y)} if    * and only if {@code x.equals(y)} or {@code (x == y == null)}    *    * @param columnQualifier Name of the column to retrieve    * @return the corresponding {@link ApplicationColumn} or null    */
+comment|/**    * Retrieve an {@link ApplicationColumn} given a name, or null if there is no    * match. The following holds true: {@code columnFor(x) == columnFor(y)} if    * and only if {@code x.equals(y)} or {@code (x == y == null)}.    *    * @param columnQualifier Name of the column to retrieve    * @return the corresponding {@link ApplicationColumn} or null    */
 DECL|method|columnFor (String columnQualifier)
 specifier|public
 specifier|static

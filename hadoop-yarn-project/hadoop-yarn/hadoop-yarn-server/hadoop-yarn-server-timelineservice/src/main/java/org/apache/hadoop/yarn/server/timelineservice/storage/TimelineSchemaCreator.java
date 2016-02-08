@@ -449,9 +449,15 @@ operator|.
 name|Unstable
 DECL|class|TimelineSchemaCreator
 specifier|public
+specifier|final
 class|class
 name|TimelineSchemaCreator
 block|{
+DECL|method|TimelineSchemaCreator ()
+specifier|private
+name|TimelineSchemaCreator
+parameter_list|()
+block|{   }
 DECL|field|NAME
 specifier|final
 specifier|static

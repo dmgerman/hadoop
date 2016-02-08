@@ -180,6 +180,10 @@ name|TimelineUtils
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class extends TimelineCollectorManager to provide RM specific  * implementations.  */
+end_comment
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -264,7 +268,9 @@ throw|throw
 operator|new
 name|YarnRuntimeException
 argument_list|(
-literal|"Unable to get the timeline collector context info for a non-existing app "
+literal|"Unable to get the timeline collector context info for a "
+operator|+
+literal|"non-existing app "
 operator|+
 name|appId
 argument_list|)

@@ -224,7 +224,7 @@ argument_list|,
 literal|"id"
 argument_list|)
 block|,
-comment|/**    * The type of entity    */
+comment|/**    * The type of entity.    */
 DECL|enumConstant|TYPE
 name|TYPE
 argument_list|(

@@ -2428,7 +2428,8 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|contextAppId
+name|getContextAppId
+argument_list|()
 operator|!=
 literal|null
 condition|)
@@ -2439,7 +2440,8 @@ name|add
 argument_list|(
 literal|"appid"
 argument_list|,
-name|contextAppId
+name|getContextAppId
+argument_list|()
 operator|.
 name|toString
 argument_list|()
@@ -3548,7 +3550,7 @@ name|tokenRetryOp
 argument_list|)
 return|;
 block|}
-comment|/**    * Poll TimelineServiceAddress for maximum of retries times if it is null    * @param retries    * @return the left retry times    */
+comment|/**    * Poll TimelineServiceAddress for maximum of retries times if it is null.    * @param retries    * @return the left retry times    */
 DECL|method|pollTimelineServiceAddress (int retries)
 specifier|private
 name|int

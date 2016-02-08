@@ -422,6 +422,10 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_comment
+comment|/**  * Class on the NodeManager side that manages adding and removing collectors and  * their lifecycle. Also instantiates the per-node collector webapp.  */
+end_comment
+
 begin_class
 annotation|@
 name|Private
@@ -450,7 +454,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|// REST server for this collector manager
+comment|// REST server for this collector manager.
 DECL|field|timelineRestServer
 specifier|private
 name|HttpServer2
@@ -599,7 +603,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Launch the REST web server for this collector manager    */
+comment|/**    * Launch the REST web server for this collector manager.    */
 DECL|method|startWebApp ()
 specifier|private
 name|void
