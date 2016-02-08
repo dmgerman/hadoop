@@ -242,6 +242,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1972,17 +1986,10 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|/** The last ack sequence number before pipeline failure. */
-DECL|field|lastAckedSeqnoBeforeFailure
-specifier|private
-name|long
-name|lastAckedSeqnoBeforeFailure
-init|=
-operator|-
-literal|1
-decl_stmt|;
+comment|/** The times have retried to recover pipeline, for the same packet. */
 DECL|field|pipelineRecoveryCount
 specifier|private
+specifier|volatile
 name|int
 name|pipelineRecoveryCount
 init|=
@@ -4911,6 +4918,10 @@ name|lastAckedSeqno
 operator|=
 name|seqno
 expr_stmt|;
+name|pipelineRecoveryCount
+operator|=
+literal|0
+expr_stmt|;
 name|ackQueue
 operator|.
 name|removeFirst
@@ -5133,30 +5144,17 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-comment|// Record the new pipeline failure recovery.
-if|if
-condition|(
-name|lastAckedSeqnoBeforeFailure
-operator|!=
-name|lastAckedSeqno
-condition|)
-block|{
-name|lastAckedSeqnoBeforeFailure
-operator|=
-name|lastAckedSeqno
-expr_stmt|;
-name|pipelineRecoveryCount
-operator|=
-literal|1
-expr_stmt|;
-block|}
-else|else
-block|{
 comment|// If we had to recover the pipeline five times in a row for the
 comment|// same packet, this client likely has corrupt data or corrupting
 comment|// during transmission.
 if|if
 condition|(
+operator|!
+name|errorState
+operator|.
+name|isRestartingNode
+argument_list|()
+operator|&&
 operator|++
 name|pipelineRecoveryCount
 operator|>
@@ -5194,7 +5192,6 @@ expr_stmt|;
 return|return
 literal|false
 return|;
-block|}
 block|}
 name|setupPipelineForAppendOrRecovery
 argument_list|()
@@ -5296,6 +5293,10 @@ name|endOfBlockPacket
 operator|.
 name|getSeqno
 argument_list|()
+expr_stmt|;
+name|pipelineRecoveryCount
+operator|=
+literal|0
 expr_stmt|;
 name|dataQueue
 operator|.
@@ -8570,6 +8571,18 @@ parameter_list|()
 block|{
 return|return
 name|streamerClosed
+return|;
+block|}
+comment|/**    * @return The times have retried to recover pipeline, for the same packet.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getPipelineRecoveryCount ()
+name|int
+name|getPipelineRecoveryCount
+parameter_list|()
+block|{
+return|return
+name|pipelineRecoveryCount
 return|;
 block|}
 DECL|method|closeSocket ()

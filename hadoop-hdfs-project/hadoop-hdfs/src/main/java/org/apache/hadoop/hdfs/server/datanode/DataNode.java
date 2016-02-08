@@ -14303,7 +14303,9 @@ name|shutdownThread
 init|=
 operator|new
 name|Thread
-argument_list|()
+argument_list|(
+literal|"Async datanode shutdown thread"
+argument_list|)
 block|{
 annotation|@
 name|Override

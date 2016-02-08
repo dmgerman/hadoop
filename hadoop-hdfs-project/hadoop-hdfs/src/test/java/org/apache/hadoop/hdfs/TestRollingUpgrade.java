@@ -484,6 +484,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -2608,11 +2622,15 @@ name|args2
 argument_list|)
 expr_stmt|;
 comment|// the datanode should be down.
-name|Thread
+name|GenericTestUtils
 operator|.
-name|sleep
+name|waitForThreadTermination
 argument_list|(
-literal|2000
+literal|"Async datanode shutdown thread"
+argument_list|,
+literal|100
+argument_list|,
+literal|10000
 argument_list|)
 expr_stmt|;
 name|Assert
