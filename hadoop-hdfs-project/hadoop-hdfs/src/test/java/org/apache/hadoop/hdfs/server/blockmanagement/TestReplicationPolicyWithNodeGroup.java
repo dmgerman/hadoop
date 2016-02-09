@@ -491,9 +491,6 @@ specifier|static
 name|DatanodeDescriptor
 name|NODE
 init|=
-operator|new
-name|DatanodeDescriptor
-argument_list|(
 name|DFSTestUtil
 operator|.
 name|getDatanodeDescriptor
@@ -501,7 +498,6 @@ argument_list|(
 literal|"9.9.9.9"
 argument_list|,
 literal|"/d2/r4/n7"
-argument_list|)
 argument_list|)
 decl_stmt|;
 DECL|field|storagesForDependencies
