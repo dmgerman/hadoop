@@ -26,6 +26,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -779,7 +789,7 @@ name|getKeyName
 argument_list|()
 return|;
 block|}
-comment|/**    * Looks up the EncryptionZoneInt for a path within an encryption zone.    * Returns null if path is not within an EZ.    *<p/>    * Must be called while holding the manager lock.    */
+comment|/**    * Looks up the EncryptionZoneInt for a path within an encryption zone.    * Returns null if path is not within an EZ.    *<p/>    * Called while holding the FSDirectory lock.    */
 DECL|method|getEncryptionZoneForPath (INodesInPath iip)
 specifier|private
 name|EncryptionZoneInt
@@ -882,6 +892,50 @@ return|return
 literal|null
 return|;
 block|}
+comment|/**    * Looks up the nearest ancestor EncryptionZoneInt that contains the given    * path (excluding itself).    * Returns null if path is not within an EZ, or the path is the root dir '/'    *<p/>    * Called while holding the FSDirectory lock.    */
+DECL|method|getParentEncryptionZoneForPath (INodesInPath iip)
+specifier|private
+name|EncryptionZoneInt
+name|getParentEncryptionZoneForPath
+parameter_list|(
+name|INodesInPath
+name|iip
+parameter_list|)
+block|{
+assert|assert
+name|dir
+operator|.
+name|hasReadLock
+argument_list|()
+assert|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|iip
+argument_list|)
+expr_stmt|;
+name|INodesInPath
+name|parentIIP
+init|=
+name|iip
+operator|.
+name|getParentINodesInPath
+argument_list|()
+decl_stmt|;
+return|return
+name|parentIIP
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|getEncryptionZoneForPath
+argument_list|(
+name|parentIIP
+argument_list|)
+return|;
+block|}
 comment|/**    * Returns an EncryptionZone representing the ez for a given path.    * Returns an empty marker EncryptionZone if path is not in an ez.    *    * @param iip The INodesInPath of the path to check    * @return the EncryptionZone representing the ez for the path.    */
 DECL|method|getEZINodeForPath (INodesInPath iip)
 name|EncryptionZone
@@ -945,7 +999,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Throws an exception if the provided path cannot be renamed into the    * destination because of differing encryption zones.    *<p/>    * Called while holding the FSDirectory lock.    *    * @param srcIIP source IIP    * @param dstIIP destination IIP    * @param src    source path, used for debugging    * @throws IOException if the src cannot be renamed to the dst    */
+comment|/**    * Throws an exception if the provided path cannot be renamed into the    * destination because of differing parent encryption zones.    *<p/>    * Called while holding the FSDirectory lock.    *    * @param srcIIP source IIP    * @param dstIIP destination IIP    * @param src    source path, used for debugging    * @throws IOException if the src cannot be renamed to the dst    */
 DECL|method|checkMoveValidity (INodesInPath srcIIP, INodesInPath dstIIP, String src)
 name|void
 name|checkMoveValidity
@@ -970,18 +1024,18 @@ argument_list|()
 assert|;
 specifier|final
 name|EncryptionZoneInt
-name|srcEZI
+name|srcParentEZI
 init|=
-name|getEncryptionZoneForPath
+name|getParentEncryptionZoneForPath
 argument_list|(
 name|srcIIP
 argument_list|)
 decl_stmt|;
 specifier|final
 name|EncryptionZoneInt
-name|dstEZI
+name|dstParentEZI
 init|=
-name|getEncryptionZoneForPath
+name|getParentEncryptionZoneForPath
 argument_list|(
 name|dstIIP
 argument_list|)
@@ -991,7 +1045,7 @@ name|boolean
 name|srcInEZ
 init|=
 operator|(
-name|srcEZI
+name|srcParentEZI
 operator|!=
 literal|null
 operator|)
@@ -1001,7 +1055,7 @@ name|boolean
 name|dstInEZ
 init|=
 operator|(
-name|dstEZI
+name|dstParentEZI
 operator|!=
 literal|null
 operator|)
@@ -1009,33 +1063,11 @@ decl_stmt|;
 if|if
 condition|(
 name|srcInEZ
-condition|)
-block|{
-if|if
-condition|(
+operator|&&
 operator|!
 name|dstInEZ
 condition|)
 block|{
-if|if
-condition|(
-name|srcEZI
-operator|.
-name|getINodeId
-argument_list|()
-operator|==
-name|srcIIP
-operator|.
-name|getLastINode
-argument_list|()
-operator|.
-name|getId
-argument_list|()
-condition|)
-block|{
-comment|// src is ez root and dest is not in an ez. Allow the rename.
-return|return;
-block|}
 throw|throw
 operator|new
 name|IOException
@@ -1046,12 +1078,13 @@ literal|" can't be moved from an encryption zone."
 argument_list|)
 throw|;
 block|}
-block|}
-else|else
-block|{
+elseif|else
 if|if
 condition|(
 name|dstInEZ
+operator|&&
+operator|!
+name|srcInEZ
 condition|)
 block|{
 throw|throw
@@ -1064,7 +1097,6 @@ literal|" can't be moved into an encryption zone."
 argument_list|)
 throw|;
 block|}
-block|}
 if|if
 condition|(
 name|srcInEZ
@@ -1072,9 +1104,9 @@ condition|)
 block|{
 if|if
 condition|(
-name|srcEZI
+name|srcParentEZI
 operator|!=
-name|dstEZI
+name|dstParentEZI
 condition|)
 block|{
 specifier|final
@@ -1083,7 +1115,7 @@ name|srcEZPath
 init|=
 name|getFullPathName
 argument_list|(
-name|srcEZI
+name|srcParentEZI
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1092,7 +1124,7 @@ name|dstEZPath
 init|=
 name|getFullPathName
 argument_list|(
-name|dstEZI
+name|dstParentEZI
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1179,6 +1211,7 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
+comment|// Check if src is a valid path for new EZ creation
 specifier|final
 name|INodesInPath
 name|srcIIP
@@ -1192,6 +1225,30 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|srcIIP
+operator|==
+literal|null
+operator|||
+name|srcIIP
+operator|.
+name|getLastINode
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"cannot find "
+operator|+
+name|src
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|dir
@@ -1210,24 +1267,18 @@ literal|"Attempt to create an encryption zone for a non-empty directory."
 argument_list|)
 throw|;
 block|}
+name|INode
+name|srcINode
+init|=
+name|srcIIP
+operator|.
+name|getLastINode
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
-name|srcIIP
-operator|!=
-literal|null
-operator|&&
-name|srcIIP
-operator|.
-name|getLastINode
-argument_list|()
-operator|!=
-literal|null
-operator|&&
 operator|!
-name|srcIIP
-operator|.
-name|getLastINode
-argument_list|()
+name|srcINode
 operator|.
 name|isDirectory
 argument_list|()
@@ -1241,17 +1292,17 @@ literal|"Attempt to create an encryption zone for a file."
 argument_list|)
 throw|;
 block|}
-name|EncryptionZoneInt
-name|ezi
-init|=
-name|getEncryptionZoneForPath
-argument_list|(
-name|srcIIP
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|ezi
+name|encryptionZones
+operator|.
+name|get
+argument_list|(
+name|srcINode
+operator|.
+name|getId
+argument_list|()
+argument_list|)
 operator|!=
 literal|null
 condition|)
@@ -1264,16 +1315,9 @@ literal|"Directory "
 operator|+
 name|src
 operator|+
-literal|" is already in an "
+literal|" is already an encryption "
 operator|+
-literal|"encryption zone. ("
-operator|+
-name|getFullPathName
-argument_list|(
-name|ezi
-argument_list|)
-operator|+
-literal|")"
+literal|"zone."
 argument_list|)
 throw|;
 block|}
