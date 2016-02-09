@@ -6880,6 +6880,26 @@ name|DEFAULT_ATS_APP_COLLECTOR_LINGER_PERIOD_IN_MS
 init|=
 literal|1000
 decl_stmt|;
+DECL|field|NUMBER_OF_ASYNC_ENTITIES_TO_MERGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NUMBER_OF_ASYNC_ENTITIES_TO_MERGE
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"timeline-client.number-of-async-entities-to-merge"
+decl_stmt|;
+DECL|field|DEFAULT_NUMBER_OF_ASYNC_ENTITIES_TO_MERGE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NUMBER_OF_ASYNC_ENTITIES_TO_MERGE
+init|=
+literal|10
+decl_stmt|;
 comment|// mark app-history related configs @Private as application history is going
 comment|// to be integrated into the timeline service
 annotation|@

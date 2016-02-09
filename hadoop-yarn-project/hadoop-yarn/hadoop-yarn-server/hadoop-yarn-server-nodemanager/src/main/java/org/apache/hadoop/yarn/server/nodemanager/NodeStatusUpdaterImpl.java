@@ -5488,13 +5488,22 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"the collectors map is null"
+literal|"No collectors to update RM"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{

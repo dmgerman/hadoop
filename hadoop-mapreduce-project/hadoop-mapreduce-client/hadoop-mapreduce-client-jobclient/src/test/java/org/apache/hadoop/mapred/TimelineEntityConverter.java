@@ -22,7 +22,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -300,7 +320,7 @@ decl_stmt|;
 comment|/**    * Creates job, task, and task attempt entities based on the job history info    * and configuration.    *    * Note: currently these are plan timeline entities created for mapreduce    * types. These are not meant to be the complete and accurate entity set-up    * for mapreduce jobs. We do not leverage hierarchical timeline entities. If    * we create canonical mapreduce hierarchical timeline entities with proper    * parent-child relationship, we could modify this to use that instead.    *    * Note that we also do not add info to the YARN application entity, which    * would be needed for aggregation.    */
 DECL|method|createTimelineEntities (JobInfo jobInfo, Configuration conf)
 specifier|public
-name|Set
+name|List
 argument_list|<
 name|TimelineEntity
 argument_list|>
@@ -313,14 +333,14 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|Set
+name|List
 argument_list|<
 name|TimelineEntity
 argument_list|>
 name|entities
 init|=
 operator|new
-name|HashSet
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -343,7 +363,7 @@ name|job
 argument_list|)
 expr_stmt|;
 comment|// create the task and task attempt entities
-name|Set
+name|List
 argument_list|<
 name|TimelineEntity
 argument_list|>
@@ -744,7 +764,7 @@ block|}
 block|}
 DECL|method|createTaskAndTaskAttemptEntities ( JobInfo jobInfo)
 specifier|private
-name|Set
+name|List
 argument_list|<
 name|TimelineEntity
 argument_list|>
@@ -754,14 +774,14 @@ name|JobInfo
 name|jobInfo
 parameter_list|)
 block|{
-name|Set
+name|List
 argument_list|<
 name|TimelineEntity
 argument_list|>
 name|entities
 init|=
 operator|new
-name|HashSet
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;

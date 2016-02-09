@@ -52,7 +52,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
+name|List
 import|;
 end_import
 
@@ -62,7 +62,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|Map
 import|;
 end_import
 
@@ -1048,7 +1048,7 @@ name|totalTime
 init|=
 literal|0
 decl_stmt|;
-name|Set
+name|List
 argument_list|<
 name|TimelineEntity
 argument_list|>
@@ -1251,7 +1251,7 @@ comment|// move it along
 block|}
 block|}
 block|}
-DECL|method|writeAllEntities (AppLevelTimelineCollector collector, Set<TimelineEntity> entitySet, UserGroupInformation ugi)
+DECL|method|writeAllEntities (AppLevelTimelineCollector collector, List<TimelineEntity> entitySet, UserGroupInformation ugi)
 specifier|private
 name|void
 name|writeAllEntities
@@ -1259,7 +1259,7 @@ parameter_list|(
 name|AppLevelTimelineCollector
 name|collector
 parameter_list|,
-name|Set
+name|List
 argument_list|<
 name|TimelineEntity
 argument_list|>
@@ -1295,7 +1295,7 @@ name|ugi
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|writePerEntity (AppLevelTimelineCollector collector, Set<TimelineEntity> entitySet, UserGroupInformation ugi)
+DECL|method|writePerEntity (AppLevelTimelineCollector collector, List<TimelineEntity> entitySet, UserGroupInformation ugi)
 specifier|private
 name|void
 name|writePerEntity
@@ -1303,7 +1303,7 @@ parameter_list|(
 name|AppLevelTimelineCollector
 name|collector
 parameter_list|,
-name|Set
+name|List
 argument_list|<
 name|TimelineEntity
 argument_list|>

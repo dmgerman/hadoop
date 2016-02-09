@@ -24,29 +24,21 @@ end_package
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
+name|ArrayList
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
+name|List
 import|;
 end_import
 
@@ -108,21 +100,29 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|HashSet
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|Set
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
 import|;
 end_import
 
@@ -160,14 +160,14 @@ name|TimelineEntities
 block|{
 DECL|field|entities
 specifier|private
-name|Set
+name|List
 argument_list|<
 name|TimelineEntity
 argument_list|>
 name|entities
 init|=
 operator|new
-name|HashSet
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -185,7 +185,7 @@ literal|"entities"
 argument_list|)
 DECL|method|getEntities ()
 specifier|public
-name|Set
+name|List
 argument_list|<
 name|TimelineEntity
 argument_list|>
@@ -196,12 +196,12 @@ return|return
 name|entities
 return|;
 block|}
-DECL|method|setEntities (Set<TimelineEntity> timelineEntities)
+DECL|method|setEntities (List<TimelineEntity> timelineEntities)
 specifier|public
 name|void
 name|setEntities
 parameter_list|(
-name|Set
+name|List
 argument_list|<
 name|TimelineEntity
 argument_list|>
@@ -215,12 +215,12 @@ operator|=
 name|timelineEntities
 expr_stmt|;
 block|}
-DECL|method|addEntities (Set<TimelineEntity> timelineEntities)
+DECL|method|addEntities (List<TimelineEntity> timelineEntities)
 specifier|public
 name|void
 name|addEntities
 parameter_list|(
-name|Set
+name|List
 argument_list|<
 name|TimelineEntity
 argument_list|>
