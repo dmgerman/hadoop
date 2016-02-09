@@ -59,7 +59,7 @@ DECL|class|ErasureCodingWork
 class|class
 name|ErasureCodingWork
 extends|extends
-name|BlockRecoveryWork
+name|BlockReconstructionWork
 block|{
 DECL|field|liveBlockIndicies
 specifier|private

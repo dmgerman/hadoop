@@ -7500,10 +7500,10 @@ return|return
 name|blockCnt
 return|;
 block|}
-comment|/**    * Scan blocks in {@link #neededReplications} and assign recovery    * (replication or erasure coding) work to data-nodes they belong to.    *    * The number of process blocks equals either twice the number of live    * data-nodes or the number of under-replicated blocks whichever is less.    *    * @return number of blocks scheduled for replication during this iteration.    */
-DECL|method|computeBlockRecoveryWork (int blocksToProcess)
+comment|/**    * Scan blocks in {@link #neededReplications} and assign reconstruction    * (replication or erasure coding) work to data-nodes they belong to.    *    * The number of process blocks equals either twice the number of live    * data-nodes or the number of under-replicated blocks whichever is less.    *    * @return number of blocks scheduled for replication during this iteration.    */
+DECL|method|computeBlockReconstructionWork (int blocksToProcess)
 name|int
-name|computeBlockRecoveryWork
+name|computeBlockReconstructionWork
 parameter_list|(
 name|int
 name|blocksToProcess
@@ -7547,18 +7547,18 @@ argument_list|()
 expr_stmt|;
 block|}
 return|return
-name|computeRecoveryWorkForBlocks
+name|computeReconstructionWorkForBlocks
 argument_list|(
 name|blocksToReplicate
 argument_list|)
 return|;
 block|}
-comment|/**    * Recover a set of blocks to full strength through replication or    * erasure coding    *    * @param blocksToRecover blocks to be recovered, for each priority    * @return the number of blocks scheduled for replication    */
+comment|/**    * Reconstruct a set of blocks to full strength through replication or    * erasure coding    *    * @param blocksToReconstruct blocks to be reconstructed, for each priority    * @return the number of blocks scheduled for replication    */
 annotation|@
 name|VisibleForTesting
-DECL|method|computeRecoveryWorkForBlocks (List<List<BlockInfo>> blocksToRecover)
+DECL|method|computeReconstructionWorkForBlocks ( List<List<BlockInfo>> blocksToReconstruct)
 name|int
-name|computeRecoveryWorkForBlocks
+name|computeReconstructionWorkForBlocks
 parameter_list|(
 name|List
 argument_list|<
@@ -7567,7 +7567,7 @@ argument_list|<
 name|BlockInfo
 argument_list|>
 argument_list|>
-name|blocksToRecover
+name|blocksToReconstruct
 parameter_list|)
 block|{
 name|int
@@ -7577,9 +7577,9 @@ literal|0
 decl_stmt|;
 name|List
 argument_list|<
-name|BlockRecoveryWork
+name|BlockReconstructionWork
 argument_list|>
-name|recovWork
+name|reconWork
 init|=
 operator|new
 name|LinkedList
@@ -7608,7 +7608,7 @@ literal|0
 init|;
 name|priority
 operator|<
-name|blocksToRecover
+name|blocksToReconstruct
 operator|.
 name|size
 argument_list|()
@@ -7622,7 +7622,7 @@ control|(
 name|BlockInfo
 name|block
 range|:
-name|blocksToRecover
+name|blocksToReconstruct
 operator|.
 name|get
 argument_list|(
@@ -7630,10 +7630,10 @@ name|priority
 argument_list|)
 control|)
 block|{
-name|BlockRecoveryWork
+name|BlockReconstructionWork
 name|rw
 init|=
-name|scheduleRecovery
+name|scheduleReconstruction
 argument_list|(
 name|block
 argument_list|,
@@ -7647,7 +7647,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|recovWork
+name|reconWork
 operator|.
 name|add
 argument_list|(
@@ -7667,7 +7667,7 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-comment|// Step 2: choose target nodes for each recovery task
+comment|// Step 2: choose target nodes for each reconstruction task
 specifier|final
 name|Set
 argument_list|<
@@ -7682,10 +7682,10 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|BlockRecoveryWork
+name|BlockReconstructionWork
 name|rw
 range|:
-name|recovWork
+name|reconWork
 control|)
 block|{
 comment|// Exclude all of the containing nodes from being targets.
@@ -7756,10 +7756,10 @@ try|try
 block|{
 for|for
 control|(
-name|BlockRecoveryWork
+name|BlockReconstructionWork
 name|rw
 range|:
-name|recovWork
+name|reconWork
 control|)
 block|{
 specifier|final
@@ -7799,7 +7799,7 @@ init|)
 block|{
 if|if
 condition|(
-name|validateRecoveryWork
+name|validateReconstructionWork
 argument_list|(
 name|rw
 argument_list|)
@@ -7831,10 +7831,10 @@ block|{
 comment|// log which blocks have been scheduled for replication
 for|for
 control|(
-name|BlockRecoveryWork
+name|BlockReconstructionWork
 name|rw
 range|:
-name|recovWork
+name|reconWork
 control|)
 block|{
 name|DatanodeStorageInfo
@@ -7983,10 +7983,10 @@ argument_list|)
 operator|)
 return|;
 block|}
-DECL|method|scheduleRecovery (BlockInfo block, int priority)
+DECL|method|scheduleReconstruction (BlockInfo block, int priority)
 specifier|private
-name|BlockRecoveryWork
-name|scheduleRecovery
+name|BlockReconstructionWork
+name|scheduleReconstruction
 parameter_list|(
 name|BlockInfo
 name|block
@@ -8125,7 +8125,7 @@ operator|==
 literal|0
 condition|)
 block|{
-comment|// block can not be recovered from any node
+comment|// block can not be reconstructed from any node
 name|LOG
 operator|.
 name|debug
@@ -8134,7 +8134,7 @@ literal|"Block "
 operator|+
 name|block
 operator|+
-literal|" cannot be recovered "
+literal|" cannot be reconstructed "
 operator|+
 literal|"from any node"
 argument_list|)
@@ -8253,7 +8253,7 @@ operator|>
 literal|0
 condition|)
 block|{
-comment|// Wait the previous recovery to finish.
+comment|// Wait the previous reconstruction to finish.
 return|return
 literal|null
 return|;
@@ -8347,12 +8347,12 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|validateRecoveryWork (BlockRecoveryWork rw)
+DECL|method|validateReconstructionWork (BlockReconstructionWork rw)
 specifier|private
 name|boolean
-name|validateRecoveryWork
+name|validateReconstructionWork
 parameter_list|(
-name|BlockRecoveryWork
+name|BlockReconstructionWork
 name|rw
 parameter_list|)
 block|{
@@ -8560,7 +8560,7 @@ literal|false
 return|;
 block|}
 block|}
-comment|// Add block to the to be recovered list
+comment|// Add block to the to be reconstructed list
 if|if
 condition|(
 name|block
@@ -8589,7 +8589,9 @@ name|pendingNum
 operator|==
 literal|0
 operator|:
-literal|"Should wait the previous recovery to finish"
+literal|"Should wait the previous reconstruction"
+operator|+
+literal|" to finish"
 assert|;
 name|String
 name|src
@@ -8648,7 +8650,7 @@ name|warn
 argument_list|(
 literal|"No erasure coding policy found for the file {}. "
 operator|+
-literal|"So cannot proceed for recovery"
+literal|"So cannot proceed for reconstruction"
 argument_list|,
 name|src
 argument_list|)
@@ -20162,7 +20164,7 @@ name|workFound
 init|=
 name|this
 operator|.
-name|computeBlockRecoveryWork
+name|computeBlockReconstructionWork
 argument_list|(
 name|blocksToProcess
 argument_list|)

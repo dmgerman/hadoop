@@ -65,14 +65,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is used internally by  * {@link BlockManager#computeRecoveryWorkForBlocks} to represent a task to  * recover a block through replication or erasure coding. Recovery is done by  * transferring data from srcNodes to targets  */
+comment|/**  * This class is used internally by  * {@link BlockManager#computeReconstructionWorkForBlocks} to represent a  * task to reconstruct a block through replication or erasure coding.  * Reconstruction is done by transferring data from srcNodes to targets  */
 end_comment
 
 begin_class
-DECL|class|BlockRecoveryWork
+DECL|class|BlockReconstructionWork
 specifier|abstract
 class|class
-name|BlockRecoveryWork
+name|BlockReconstructionWork
 block|{
 DECL|field|block
 specifier|private
@@ -86,7 +86,7 @@ specifier|final
 name|BlockCollection
 name|bc
 decl_stmt|;
-comment|/**    * An erasure coding recovery task has multiple source nodes.    * A replication task only has 1 source node, stored on top of the array    */
+comment|/**    * An erasure coding reconstruction task has multiple source nodes.    * A replication task only has 1 source node, stored on top of the array    */
 DECL|field|srcNodes
 specifier|private
 specifier|final
@@ -132,9 +132,9 @@ specifier|final
 name|int
 name|priority
 decl_stmt|;
-DECL|method|BlockRecoveryWork (BlockInfo block, BlockCollection bc, DatanodeDescriptor[] srcNodes, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> liveReplicaStorages, int additionalReplRequired, int priority)
+DECL|method|BlockReconstructionWork (BlockInfo block, BlockCollection bc, DatanodeDescriptor[] srcNodes, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> liveReplicaStorages, int additionalReplRequired, int priority)
 specifier|public
-name|BlockRecoveryWork
+name|BlockReconstructionWork
 parameter_list|(
 name|BlockInfo
 name|block

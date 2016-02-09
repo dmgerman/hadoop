@@ -2818,7 +2818,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding block recovery task "
+literal|"Adding block reconstruction task "
 operator|+
 name|task
 operator|+

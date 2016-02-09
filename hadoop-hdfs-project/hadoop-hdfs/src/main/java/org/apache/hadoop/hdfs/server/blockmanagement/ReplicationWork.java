@@ -40,16 +40,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -69,7 +59,7 @@ DECL|class|ReplicationWork
 class|class
 name|ReplicationWork
 extends|extends
-name|BlockRecoveryWork
+name|BlockReconstructionWork
 block|{
 DECL|method|ReplicationWork (BlockInfo block, BlockCollection bc, DatanodeDescriptor[] srcNodes, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> liveReplicaStorages, int additionalReplRequired, int priority)
 specifier|public
@@ -146,7 +136,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Creating a ReplicationWork to recover "
+literal|"Creating a ReplicationWork to reconstruct "
 operator|+
 name|block
 argument_list|)

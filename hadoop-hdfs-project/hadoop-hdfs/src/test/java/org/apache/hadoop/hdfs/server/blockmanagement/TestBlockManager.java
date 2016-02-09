@@ -3634,13 +3634,13 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"computeBlockRecoveryWork should indicate replication is needed"
+literal|"computeBlockReconstructionWork should indicate replication is needed"
 argument_list|,
 literal|1
 argument_list|,
 name|bm
 operator|.
-name|computeRecoveryWorkForBlocks
+name|computeReconstructionWorkForBlocks
 argument_list|(
 name|list_all
 argument_list|)

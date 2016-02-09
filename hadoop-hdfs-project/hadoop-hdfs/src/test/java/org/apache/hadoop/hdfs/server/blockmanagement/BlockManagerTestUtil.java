@@ -749,7 +749,7 @@ name|work
 operator|+=
 name|bm
 operator|.
-name|computeBlockRecoveryWork
+name|computeBlockReconstructionWork
 argument_list|(
 name|Integer
 operator|.
