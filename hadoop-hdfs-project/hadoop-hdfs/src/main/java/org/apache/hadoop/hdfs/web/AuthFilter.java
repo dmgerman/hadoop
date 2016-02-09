@@ -285,7 +285,7 @@ extends|extends
 name|AuthenticationFilter
 block|{
 DECL|field|CONF_PREFIX
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -323,7 +323,19 @@ argument_list|,
 name|config
 argument_list|)
 decl_stmt|;
-comment|// set authentication type
+comment|// if not set, configure based on security enabled
+if|if
+condition|(
+name|p
+operator|.
+name|getProperty
+argument_list|(
+name|AUTH_TYPE
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
 name|p
 operator|.
 name|setProperty
@@ -344,6 +356,7 @@ operator|.
 name|TYPE
 argument_list|)
 expr_stmt|;
+block|}
 comment|// if not set, enable anonymous for pseudo authentication
 if|if
 condition|(
