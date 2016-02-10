@@ -320,6 +320,29 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Using "
+operator|+
+name|klass
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" as random number generator."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
