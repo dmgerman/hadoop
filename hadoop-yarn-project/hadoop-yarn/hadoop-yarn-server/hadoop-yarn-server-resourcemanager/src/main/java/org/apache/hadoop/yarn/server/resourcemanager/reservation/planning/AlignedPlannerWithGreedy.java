@@ -239,6 +239,8 @@ name|StageAllocatorLowCostAligned
 argument_list|(
 name|smoothnessFactor
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|listAlg
@@ -262,6 +264,8 @@ argument_list|,
 operator|new
 name|StageAllocatorGreedy
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|listAlg
