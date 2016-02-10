@@ -648,9 +648,7 @@ name|println
 argument_list|(
 literal|"Usage: ErasureCodeBenchmarkThroughput "
 operator|+
-literal|"<read|write|gen|clean><size in MB> "
-operator|+
-literal|"<ec|rep> [num clients] [stf|pos]\n"
+literal|"<read|write|gen|clean><size in MB><ec|rep> [num clients] [stf|pos]\n"
 operator|+
 literal|"Stateful and positional option is only available for read."
 argument_list|)
@@ -1352,7 +1350,7 @@ name|dataSizeMB
 operator|=
 name|Integer
 operator|.
-name|parseInt
+name|valueOf
 argument_list|(
 name|args
 index|[
@@ -1463,7 +1461,7 @@ name|numClients
 operator|=
 name|Integer
 operator|.
-name|parseInt
+name|valueOf
 argument_list|(
 name|args
 index|[

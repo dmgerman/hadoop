@@ -554,7 +554,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Resolves the host and port InetSocketAddress the    * web server is listening to.    *<p>    * This implementation looks for the following 2 properties:    *<ul>    *<li>#SERVER_NAME#.http.hostname</li>    *<li>#SERVER_NAME#.http.port</li>    *</ul>    *    * @return the host and port InetSocketAddress the    *         web server is listening to.    * @throws ServerException thrown    *         if any of the above 2 properties is not defined.    */
+comment|/**    * Resolves the host and port InetSocketAddress the web server is listening to.    *<p>    * This implementation looks for the following 2 properties:    *<ul>    *<li>#SERVER_NAME#.http.hostname</li>    *<li>#SERVER_NAME#.http.port</li>    *</ul>    *    * @return the host and port InetSocketAddress the web server is listening to.    * @throws ServerException thrown if any of the above 2 properties is not defined.    */
 DECL|method|resolveAuthority ()
 specifier|protected
 name|InetSocketAddress
@@ -776,7 +776,7 @@ block|{
 return|return
 name|Boolean
 operator|.
-name|parseBoolean
+name|valueOf
 argument_list|(
 name|System
 operator|.
