@@ -1342,7 +1342,9 @@ argument_list|()
 operator|+
 literal|" groups -F"
 else|:
-literal|"id -Gn"
+literal|"id -Gn "
+operator|+
+name|userName
 argument_list|)
 expr_stmt|;
 name|br
