@@ -673,7 +673,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test for short circuit read functionality using {@link BlockReaderLocal}.  * When a block is being read by a client is on the local datanode, instead of  * using {@link DataTransferProtocol} and connect to datanode, the short circuit  * read allows reading the file directly from the files on the local file  * system.  */
+comment|/**  * Test for short circuit read functionality using {@link BlockReaderLocal}.  * When a block is being read by a client is on the local datanode, instead of  * using {@link DataTransferProtocol} and connect to datanode,  * the short circuit read allows reading the file directly  * from the files on the local file system.  */
 end_comment
 
 begin_class
@@ -3465,7 +3465,7 @@ name|shortcircuit
 init|=
 name|Boolean
 operator|.
-name|valueOf
+name|parseBoolean
 argument_list|(
 name|args
 index|[
@@ -3478,7 +3478,7 @@ name|checksum
 init|=
 name|Boolean
 operator|.
-name|valueOf
+name|parseBoolean
 argument_list|(
 name|args
 index|[
@@ -3549,7 +3549,8 @@ argument_list|,
 name|checksum
 argument_list|)
 expr_stmt|;
-comment|// Override fileSize and DATA_TO_WRITE to much larger values for benchmark test
+comment|// Override fileSize and DATA_TO_WRITE to
+comment|// much larger values for benchmark test
 name|int
 name|fileSize
 init|=
@@ -3870,7 +3871,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that file data can be read by reading the block    * through RemoteBlockReader    * @throws IOException   */
-DECL|method|doTestShortCircuitReadWithRemoteBlockReader (boolean ignoreChecksum, int size, String shortCircuitUser, int readOffset, boolean shortCircuitFails)
+DECL|method|doTestShortCircuitReadWithRemoteBlockReader ( boolean ignoreChecksum, int size, String shortCircuitUser, int readOffset, boolean shortCircuitFails)
 specifier|public
 name|void
 name|doTestShortCircuitReadWithRemoteBlockReader

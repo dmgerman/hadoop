@@ -892,14 +892,9 @@ name|userEntry
 operator|.
 name|name
 argument_list|,
-name|Long
-operator|.
-name|valueOf
-argument_list|(
 name|userEntry
 operator|.
 name|value
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|op
