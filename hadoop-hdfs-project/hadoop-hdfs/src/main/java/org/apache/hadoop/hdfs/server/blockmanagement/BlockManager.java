@@ -3962,7 +3962,7 @@ return|;
 comment|// already completed (e.g. by syncBlock)
 specifier|final
 name|boolean
-name|b
+name|committed
 init|=
 name|commitBlock
 argument_list|(
@@ -3973,6 +3973,32 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|committed
+operator|&&
+name|lastBlock
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+comment|// update scheduled size for DatanodeStorages that do not store any
+comment|// internal blocks
+name|lastBlock
+operator|.
+name|getUnderConstructionFeature
+argument_list|()
+operator|.
+name|updateStorageScheduledSize
+argument_list|(
+operator|(
+name|BlockInfoStriped
+operator|)
+name|lastBlock
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|hasMinStorage
 argument_list|(
 name|lastBlock
@@ -3981,7 +4007,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|b
+name|committed
 condition|)
 block|{
 name|addExpectedReplicasToPending
@@ -4001,7 +4027,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|b
+name|committed
 return|;
 block|}
 comment|/**    * If IBR is not sent from expected locations yet, add the datanodes to    * pendingReplications in order to keep ReplicationMonitor from scheduling    * the block.    */
