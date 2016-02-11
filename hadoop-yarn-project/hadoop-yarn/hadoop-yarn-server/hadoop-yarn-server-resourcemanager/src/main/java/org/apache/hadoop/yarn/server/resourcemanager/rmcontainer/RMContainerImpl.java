@@ -28,6 +28,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|EnumSet
 import|;
 end_import
@@ -560,6 +570,26 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmnode
+operator|.
+name|RMNodeDecreaseContainerEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|state
 operator|.
 name|InvalidStateTransitionException
@@ -643,6 +673,24 @@ operator|.
 name|util
 operator|.
 name|ConverterUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|resource
+operator|.
+name|Resources
 import|;
 end_import
 
@@ -1123,25 +1171,6 @@ name|RUNNING
 argument_list|,
 name|RMContainerState
 operator|.
-name|EXPIRED
-argument_list|,
-name|RMContainerEventType
-operator|.
-name|EXPIRE
-argument_list|,
-operator|new
-name|ContainerExpiredWhileRunningTransition
-argument_list|()
-argument_list|)
-operator|.
-name|addTransition
-argument_list|(
-name|RMContainerState
-operator|.
-name|RUNNING
-argument_list|,
-name|RMContainerState
-operator|.
 name|RUNNING
 argument_list|,
 name|RMContainerEventType
@@ -1445,6 +1474,13 @@ name|hasIncreaseReservation
 init|=
 literal|false
 decl_stmt|;
+comment|// Only used for container resource increase and decrease. This is the
+comment|// resource to rollback to should container resource increase token expires.
+DECL|field|lastConfirmedResource
+specifier|private
+name|Resource
+name|lastConfirmedResource
+decl_stmt|;
 DECL|method|RMContainerImpl (Container container, ApplicationAttemptId appAttemptId, NodeId nodeId, String user, RMContext rmContext)
 specifier|public
 name|RMContainerImpl
@@ -1655,6 +1691,15 @@ operator|.
 name|nodeLabelExpression
 operator|=
 name|nodeLabelExpression
+expr_stmt|;
+name|this
+operator|.
+name|lastConfirmedResource
+operator|=
+name|container
+operator|.
+name|getResource
+argument_list|()
 expr_stmt|;
 name|ReentrantReadWriteLock
 name|lock
@@ -1869,6 +1914,36 @@ name|container
 operator|.
 name|getResource
 argument_list|()
+return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getLastConfirmedResource ()
+specifier|public
+name|Resource
+name|getLastConfirmedResource
+parameter_list|()
+block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+return|return
+name|this
+operator|.
+name|lastConfirmedResource
 return|;
 block|}
 finally|finally
@@ -2872,10 +2947,14 @@ name|containerAllocationExpirer
 operator|.
 name|register
 argument_list|(
+operator|new
+name|AllocationExpirationInfo
+argument_list|(
 name|container
 operator|.
 name|getContainerId
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Tell the app
@@ -2951,10 +3030,16 @@ name|containerAllocationExpirer
 operator|.
 name|register
 argument_list|(
+operator|new
+name|AllocationExpirationInfo
+argument_list|(
 name|event
 operator|.
 name|getContainerId
 argument_list|()
+argument_list|,
+literal|true
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2983,60 +3068,228 @@ name|RMContainerEvent
 name|event
 parameter_list|)
 block|{
-comment|// Unregister the allocation expirer, it is already increased..
+name|RMContainerNMDoneChangeResourceEvent
+name|nmDoneChangeResourceEvent
+init|=
+operator|(
+name|RMContainerNMDoneChangeResourceEvent
+operator|)
+name|event
+decl_stmt|;
+name|Resource
+name|rmContainerResource
+init|=
+name|container
+operator|.
+name|getAllocatedResource
+argument_list|()
+decl_stmt|;
+name|Resource
+name|nmContainerResource
+init|=
+name|nmDoneChangeResourceEvent
+operator|.
+name|getNMContainerResource
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|Resources
+operator|.
+name|equals
+argument_list|(
+name|rmContainerResource
+argument_list|,
+name|nmContainerResource
+argument_list|)
+condition|)
+block|{
+comment|// If rmContainerResource == nmContainerResource, the resource
+comment|// increase is confirmed.
+comment|// In this case:
+comment|//    - Set the lastConfirmedResource as nmContainerResource
+comment|//    - Unregister the allocation expirer
+name|container
+operator|.
+name|lastConfirmedResource
+operator|=
+name|nmContainerResource
+expr_stmt|;
 name|container
 operator|.
 name|containerAllocationExpirer
 operator|.
 name|unregister
 argument_list|(
+operator|new
+name|AllocationExpirationInfo
+argument_list|(
 name|event
 operator|.
 name|getContainerId
 argument_list|()
 argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|class|ContainerExpiredWhileRunningTransition
-specifier|private
-specifier|static
-specifier|final
-class|class
-name|ContainerExpiredWhileRunningTransition
-extends|extends
-name|BaseTransition
-block|{
-annotation|@
-name|Override
-DECL|method|transition (RMContainerImpl container, RMContainerEvent event)
-specifier|public
-name|void
-name|transition
-parameter_list|(
-name|RMContainerImpl
-name|container
-parameter_list|,
-name|RMContainerEvent
-name|event
-parameter_list|)
-block|{
-comment|// When the container expired, and it has a pending increased request, we
-comment|// will kill the container.
-comment|// TODO, we can do better for this: roll back container resource to the
-comment|// resource before increase, and notify scheduler about this decrease as
-comment|// well. Will do that in a separated JIRA.
-operator|new
-name|KillTransition
-argument_list|()
-operator|.
-name|transition
-argument_list|(
-name|container
-argument_list|,
-name|event
 argument_list|)
 expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|Resources
+operator|.
+name|fitsIn
+argument_list|(
+name|rmContainerResource
+argument_list|,
+name|nmContainerResource
+argument_list|)
+condition|)
+block|{
+comment|// If rmContainerResource< nmContainerResource, this is caused by the
+comment|// following sequence:
+comment|//   1. AM asks for increase from 1G to 5G, and RM approves it
+comment|//   2. AM acquires the increase token and increases on NM
+comment|//   3. Before NM reports 5G to RM to confirm the increase, AM sends
+comment|//      a decrease request to 4G, and RM approves it
+comment|//   4. When NM reports 5G to RM, RM now sees its own allocation as 4G
+comment|// In this cases:
+comment|//    - Set the lastConfirmedResource as rmContainerResource
+comment|//    - Unregister the allocation expirer
+comment|//    - Notify NM to reduce its resource to rmContainerResource
+name|container
+operator|.
+name|lastConfirmedResource
+operator|=
+name|rmContainerResource
+expr_stmt|;
+name|container
+operator|.
+name|containerAllocationExpirer
+operator|.
+name|unregister
+argument_list|(
+operator|new
+name|AllocationExpirationInfo
+argument_list|(
+name|event
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|eventHandler
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMNodeDecreaseContainerEvent
+argument_list|(
+name|container
+operator|.
+name|nodeId
+argument_list|,
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|container
+operator|.
+name|getContainer
+argument_list|()
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|Resources
+operator|.
+name|fitsIn
+argument_list|(
+name|nmContainerResource
+argument_list|,
+name|rmContainerResource
+argument_list|)
+condition|)
+block|{
+comment|// If nmContainerResource< rmContainerResource, this is caused by the
+comment|// following sequence:
+comment|//    1. AM asks for increase from 1G to 2G, and RM approves it
+comment|//    2. AM asks for increase from 2G to 4G, and RM approves it
+comment|//    3. AM only uses the 2G token to increase on NM, but never uses the
+comment|//       4G token
+comment|//    4. NM reports 2G to RM, but RM sees its own allocation as 4G
+comment|// In this case:
+comment|//    - Set the lastConfirmedResource as the maximum of
+comment|//      nmContainerResource and lastConfirmedResource
+comment|//    - Do NOT unregister the allocation expirer
+comment|// When the increase allocation expires, resource will be rolled back to
+comment|// the last confirmed resource.
+name|container
+operator|.
+name|lastConfirmedResource
+operator|=
+name|Resources
+operator|.
+name|componentwiseMax
+argument_list|(
+name|nmContainerResource
+argument_list|,
+name|container
+operator|.
+name|lastConfirmedResource
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Something wrong happened, kill the container
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Something wrong happened, container size reported by NM"
+operator|+
+literal|" is not expected, ContainerID="
+operator|+
+name|container
+operator|.
+name|containerId
+operator|+
+literal|" rm-size-resource:"
+operator|+
+name|rmContainerResource
+operator|+
+literal|" nm-size-reosurce:"
+operator|+
+name|nmContainerResource
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|eventHandler
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMNodeCleanContainerEvent
+argument_list|(
+name|container
+operator|.
+name|nodeId
+argument_list|,
+name|container
+operator|.
+name|containerId
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|class|ChangeResourceTransition
@@ -3070,9 +3323,21 @@ name|RMContainerChangeResourceEvent
 operator|)
 name|event
 decl_stmt|;
-comment|// Register with containerAllocationExpirer.
-comment|// For now, we assume timeout for increase is as same as container
-comment|// allocation.
+name|Resource
+name|targetResource
+init|=
+name|changeEvent
+operator|.
+name|getTargetResource
+argument_list|()
+decl_stmt|;
+name|Resource
+name|lastConfirmedResource
+init|=
+name|container
+operator|.
+name|lastConfirmedResource
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -3082,21 +3347,43 @@ name|isIncrease
 argument_list|()
 condition|)
 block|{
-comment|// if this is a decrease request, if container was increased but not
-comment|// told to NM, we can consider previous increase is cancelled,
-comment|// unregister from the containerAllocationExpirer
+comment|// Only unregister from the containerAllocationExpirer when target
+comment|// resource is less than or equal to the last confirmed resource.
+if|if
+condition|(
+name|Resources
+operator|.
+name|fitsIn
+argument_list|(
+name|targetResource
+argument_list|,
+name|lastConfirmedResource
+argument_list|)
+condition|)
+block|{
+name|container
+operator|.
+name|lastConfirmedResource
+operator|=
+name|targetResource
+expr_stmt|;
 name|container
 operator|.
 name|containerAllocationExpirer
 operator|.
 name|unregister
 argument_list|(
-name|container
+operator|new
+name|AllocationExpirationInfo
+argument_list|(
+name|event
 operator|.
 name|getContainerId
 argument_list|()
 argument_list|)
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|container
 operator|.
@@ -3104,10 +3391,7 @@ name|container
 operator|.
 name|setResource
 argument_list|(
-name|changeEvent
-operator|.
-name|getTargetResource
-argument_list|()
+name|targetResource
 argument_list|)
 expr_stmt|;
 comment|// We reach here means we either allocated increase reservation OR
@@ -3426,10 +3710,14 @@ name|containerAllocationExpirer
 operator|.
 name|unregister
 argument_list|(
+operator|new
+name|AllocationExpirationInfo
+argument_list|(
 name|container
 operator|.
 name|getContainerId
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Inform node

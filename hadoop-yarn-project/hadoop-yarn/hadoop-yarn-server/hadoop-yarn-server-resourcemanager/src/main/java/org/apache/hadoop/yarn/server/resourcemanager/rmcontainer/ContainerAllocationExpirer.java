@@ -46,24 +46,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ContainerId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -157,7 +139,7 @@ name|ContainerAllocationExpirer
 extends|extends
 name|AbstractLivelinessMonitor
 argument_list|<
-name|ContainerId
+name|AllocationExpirationInfo
 argument_list|>
 block|{
 DECL|field|dispatcher
@@ -242,13 +224,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|expire (ContainerId containerId)
+DECL|method|expire (AllocationExpirationInfo allocationExpirationInfo)
 specifier|protected
 name|void
 name|expire
 parameter_list|(
-name|ContainerId
-name|containerId
+name|AllocationExpirationInfo
+name|allocationExpirationInfo
 parameter_list|)
 block|{
 name|dispatcher
@@ -258,7 +240,15 @@ argument_list|(
 operator|new
 name|ContainerExpiredSchedulerEvent
 argument_list|(
-name|containerId
+name|allocationExpirationInfo
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|allocationExpirationInfo
+operator|.
+name|isIncrease
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

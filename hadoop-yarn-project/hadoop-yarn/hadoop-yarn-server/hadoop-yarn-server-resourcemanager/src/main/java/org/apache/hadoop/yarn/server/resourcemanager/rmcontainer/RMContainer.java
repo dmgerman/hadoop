@@ -265,6 +265,11 @@ name|Resource
 name|getAllocatedResource
 parameter_list|()
 function_decl|;
+DECL|method|getLastConfirmedResource ()
+name|Resource
+name|getLastConfirmedResource
+parameter_list|()
+function_decl|;
 DECL|method|getAllocatedNode ()
 name|NodeId
 name|getAllocatedNode
