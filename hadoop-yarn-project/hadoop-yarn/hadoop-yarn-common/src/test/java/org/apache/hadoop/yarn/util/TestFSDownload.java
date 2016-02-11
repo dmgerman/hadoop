@@ -276,18 +276,6 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|Executors
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|Future
 import|;
 end_import
@@ -401,6 +389,22 @@ operator|.
 name|zip
 operator|.
 name|ZipOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|HadoopExecutors
 import|;
 end_import
 
@@ -2203,7 +2207,7 @@ decl_stmt|;
 name|ExecutorService
 name|exec
 init|=
-name|Executors
+name|HadoopExecutors
 operator|.
 name|newSingleThreadExecutor
 argument_list|()
@@ -2863,7 +2867,7 @@ block|}
 name|ExecutorService
 name|exec
 init|=
-name|Executors
+name|HadoopExecutors
 operator|.
 name|newFixedThreadPool
 argument_list|(
@@ -3115,7 +3119,7 @@ decl_stmt|;
 name|ExecutorService
 name|exec
 init|=
-name|Executors
+name|HadoopExecutors
 operator|.
 name|newSingleThreadExecutor
 argument_list|()
@@ -3693,7 +3697,7 @@ decl_stmt|;
 name|ExecutorService
 name|exec
 init|=
-name|Executors
+name|HadoopExecutors
 operator|.
 name|newSingleThreadExecutor
 argument_list|()
@@ -4629,7 +4633,7 @@ decl_stmt|;
 name|ExecutorService
 name|exec
 init|=
-name|Executors
+name|HadoopExecutors
 operator|.
 name|newSingleThreadExecutor
 argument_list|()
@@ -5039,7 +5043,7 @@ expr_stmt|;
 name|ExecutorService
 name|singleThreadedExec
 init|=
-name|Executors
+name|HadoopExecutors
 operator|.
 name|newSingleThreadExecutor
 argument_list|()

@@ -196,19 +196,23 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|Executors
+name|TimeUnit
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
 operator|.
 name|util
 operator|.
 name|concurrent
 operator|.
-name|TimeUnit
+name|HadoopExecutors
 import|;
 end_import
 
@@ -2202,7 +2206,7 @@ specifier|final
 name|ExecutorService
 name|threadPool
 init|=
-name|Executors
+name|HadoopExecutors
 operator|.
 name|newFixedThreadPool
 argument_list|(

@@ -78,18 +78,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|Executors
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -169,6 +157,22 @@ operator|.
 name|service
 operator|.
 name|AbstractService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|HadoopExecutors
 import|;
 end_import
 
@@ -477,7 +481,7 @@ specifier|public
 name|ExecutorService
 name|containerLauncher
 init|=
-name|Executors
+name|HadoopExecutors
 operator|.
 name|newCachedThreadPool
 argument_list|(
