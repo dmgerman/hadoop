@@ -1021,6 +1021,8 @@ argument_list|,
 operator|new
 name|NMNullStateStoreService
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// Add an application and the corresponding containers
@@ -1359,6 +1361,8 @@ argument_list|,
 operator|new
 name|NMNullStateStoreService
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|nmContext
@@ -1554,6 +1558,8 @@ argument_list|,
 operator|new
 name|NMNullStateStoreService
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// Add an application and the corresponding containers

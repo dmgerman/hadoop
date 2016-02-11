@@ -272,6 +272,26 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|scheduler
+operator|.
+name|OpportunisticContainerAllocator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|security
 operator|.
 name|NMContainerTokenSecretManager
@@ -486,6 +506,16 @@ comment|/**    * Returns a<code>QueuingContext</code> that provides information 
 DECL|method|getQueuingContext ()
 name|QueuingContext
 name|getQueuingContext
+parameter_list|()
+function_decl|;
+DECL|method|isDistributedSchedulingEnabled ()
+name|boolean
+name|isDistributedSchedulingEnabled
+parameter_list|()
+function_decl|;
+DECL|method|getContainerAllocator ()
+name|OpportunisticContainerAllocator
+name|getContainerAllocator
 parameter_list|()
 function_decl|;
 block|}

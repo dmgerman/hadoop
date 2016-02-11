@@ -46,9 +46,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
 name|api
 operator|.
-name|ApplicationMasterProtocol
+name|DistributedSchedulerProtocol
 import|;
 end_import
 
@@ -62,7 +64,7 @@ specifier|public
 interface|interface
 name|RequestInterceptor
 extends|extends
-name|ApplicationMasterProtocol
+name|DistributedSchedulerProtocol
 extends|,
 name|Configurable
 block|{

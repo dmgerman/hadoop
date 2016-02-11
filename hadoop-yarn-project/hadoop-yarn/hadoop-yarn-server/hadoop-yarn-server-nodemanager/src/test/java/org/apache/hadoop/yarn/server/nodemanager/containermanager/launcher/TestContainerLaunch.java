@@ -1424,6 +1424,8 @@ argument_list|,
 operator|new
 name|NMNullStateStoreService
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 block|{
 specifier|public

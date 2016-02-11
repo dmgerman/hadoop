@@ -9395,6 +9395,9 @@ name|nmTokenSecretManager
 parameter_list|,
 name|NMStateStoreService
 name|store
+parameter_list|,
+name|boolean
+name|isDistributedSchedulingEnabled
 parameter_list|)
 block|{
 return|return
@@ -10631,6 +10634,8 @@ argument_list|,
 operator|new
 name|NMNullStateStoreService
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
