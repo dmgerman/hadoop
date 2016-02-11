@@ -456,8 +456,8 @@ init|=
 literal|1
 init|;
 name|dataDelNum
-operator|<
-literal|4
+operator|<=
+name|parityBlocks
 condition|;
 name|dataDelNum
 operator|++
@@ -475,8 +475,8 @@ name|dataDelNum
 operator|+
 name|parityDelNum
 operator|)
-operator|<
-literal|4
+operator|<=
+name|parityBlocks
 condition|;
 name|parityDelNum
 operator|++
