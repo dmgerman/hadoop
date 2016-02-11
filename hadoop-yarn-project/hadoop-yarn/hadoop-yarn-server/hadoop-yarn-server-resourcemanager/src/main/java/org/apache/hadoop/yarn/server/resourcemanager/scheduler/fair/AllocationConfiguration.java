@@ -140,6 +140,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ReservationACL
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -412,6 +430,24 @@ argument_list|>
 argument_list|>
 name|queueAcls
 decl_stmt|;
+comment|// Reservation ACL's for each queue. Only specifies non-default ACL's from
+comment|// configuration.
+DECL|field|resAcls
+specifier|private
+specifier|final
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Map
+argument_list|<
+name|ReservationACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+argument_list|>
+name|resAcls
+decl_stmt|;
 comment|// Min share preemption timeout for each queue in seconds. If a job in the queue
 comment|// waits this long without receiving its guaranteed share, it is allowed to
 comment|// preempt other jobs' tasks.
@@ -518,7 +554,7 @@ name|String
 argument_list|>
 name|nonPreemptableQueues
 decl_stmt|;
-DECL|method|AllocationConfiguration (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, ResourceWeights> queueWeights, Map<String, Float> queueMaxAMShares, int userMaxAppsDefault, int queueMaxAppsDefault, Resource queueMaxResourcesDefault, float queueMaxAMShareDefault, Map<String, SchedulingPolicy> schedulingPolicies, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Long> fairSharePreemptionTimeouts, Map<String, Float> fairSharePreemptionThresholds, Map<String, Map<QueueACL, AccessControlList>> queueAcls, QueuePlacementPolicy placementPolicy, Map<FSQueueType, Set<String>> configuredQueues, ReservationQueueConfiguration globalReservationQueueConfig, Set<String> reservableQueues, Set<String> nonPreemptableQueues)
+DECL|method|AllocationConfiguration (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, ResourceWeights> queueWeights, Map<String, Float> queueMaxAMShares, int userMaxAppsDefault, int queueMaxAppsDefault, Resource queueMaxResourcesDefault, float queueMaxAMShareDefault, Map<String, SchedulingPolicy> schedulingPolicies, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Long> fairSharePreemptionTimeouts, Map<String, Float> fairSharePreemptionThresholds, Map<String, Map<QueueACL, AccessControlList>> queueAcls, Map<String, Map<ReservationACL, AccessControlList>> resAcls, QueuePlacementPolicy placementPolicy, Map<FSQueueType, Set<String>> configuredQueues, ReservationQueueConfiguration globalReservationQueueConfig, Set<String> reservableQueues, Set<String> nonPreemptableQueues)
 specifier|public
 name|AllocationConfiguration
 parameter_list|(
@@ -629,6 +665,19 @@ name|AccessControlList
 argument_list|>
 argument_list|>
 name|queueAcls
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Map
+argument_list|<
+name|ReservationACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+argument_list|>
+name|resAcls
 parameter_list|,
 name|QueuePlacementPolicy
 name|placementPolicy
@@ -755,6 +804,12 @@ operator|.
 name|queueAcls
 operator|=
 name|queueAcls
+expr_stmt|;
+name|this
+operator|.
+name|resAcls
+operator|=
+name|resAcls
 expr_stmt|;
 name|this
 operator|.
@@ -894,6 +949,22 @@ argument_list|,
 name|Map
 argument_list|<
 name|QueueACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+argument_list|>
+argument_list|()
+expr_stmt|;
+name|resAcls
+operator|=
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|Map
+argument_list|<
+name|ReservationACL
 argument_list|,
 name|AccessControlList
 argument_list|>
@@ -1090,6 +1161,34 @@ condition|?
 name|EVERYBODY_ACL
 else|:
 name|NOBODY_ACL
+return|;
+block|}
+annotation|@
+name|Override
+comment|/**    * Get the map of reservation ACLs to {@link AccessControlList} for the    * specified queue.    */
+DECL|method|getReservationAcls (String queue)
+specifier|public
+name|Map
+argument_list|<
+name|ReservationACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+name|getReservationAcls
+parameter_list|(
+name|String
+name|queue
+parameter_list|)
+block|{
+return|return
+name|this
+operator|.
+name|resAcls
+operator|.
+name|get
+argument_list|(
+name|queue
+argument_list|)
 return|;
 block|}
 comment|/**    * Get a queue's min share preemption timeout configured in the allocation    * file, in milliseconds. Return -1 if not set.    */

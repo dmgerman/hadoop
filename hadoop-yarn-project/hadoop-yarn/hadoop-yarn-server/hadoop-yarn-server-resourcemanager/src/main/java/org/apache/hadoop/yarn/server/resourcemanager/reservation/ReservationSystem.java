@@ -182,6 +182,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|ReservationsACLsManager
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -296,6 +316,12 @@ parameter_list|,
 name|String
 name|queueName
 parameter_list|)
+function_decl|;
+comment|/**    * Get the {@link ReservationsACLsManager} to use to check for the reservation    * access on a user.    *    * @return the reservation ACL manager to use to check reservation ACLs.    *    */
+DECL|method|getReservationsACLsManager ()
+name|ReservationsACLsManager
+name|getReservationsACLsManager
+parameter_list|()
 function_decl|;
 block|}
 end_interface

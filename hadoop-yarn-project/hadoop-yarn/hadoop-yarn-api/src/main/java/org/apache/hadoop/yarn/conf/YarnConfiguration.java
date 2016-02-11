@@ -1131,6 +1131,27 @@ name|DEFAULT_YARN_ACL_ENABLE
 init|=
 literal|false
 decl_stmt|;
+comment|/** Are reservation acls enabled.*/
+DECL|field|YARN_RESERVATION_ACL_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_RESERVATION_ACL_ENABLE
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"acl.reservation-enable"
+decl_stmt|;
+DECL|field|DEFAULT_YARN_RESERVATION_ACL_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_YARN_RESERVATION_ACL_ENABLE
+init|=
+literal|false
+decl_stmt|;
 DECL|method|isAclEnabled (Configuration conf)
 specifier|public
 specifier|static

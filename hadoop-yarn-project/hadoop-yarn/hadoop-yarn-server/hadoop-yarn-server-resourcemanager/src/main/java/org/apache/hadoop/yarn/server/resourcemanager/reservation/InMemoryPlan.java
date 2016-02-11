@@ -2621,6 +2621,34 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|getReservations (ReservationId reservationID, ReservationInterval interval)
+specifier|public
+name|Set
+argument_list|<
+name|ReservationAllocation
+argument_list|>
+name|getReservations
+parameter_list|(
+name|ReservationId
+name|reservationID
+parameter_list|,
+name|ReservationInterval
+name|interval
+parameter_list|)
+block|{
+return|return
+name|getReservations
+argument_list|(
+name|reservationID
+argument_list|,
+name|interval
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getReservations (ReservationId reservationID, ReservationInterval interval, String user)
 specifier|public
 name|Set
