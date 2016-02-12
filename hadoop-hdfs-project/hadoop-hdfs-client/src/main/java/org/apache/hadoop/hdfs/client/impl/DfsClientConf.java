@@ -694,6 +694,42 @@ name|client
 operator|.
 name|HdfsClientConfigKeys
 operator|.
+name|DFS_DATA_TRANSFER_CLIENT_TCPNODELAY_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_DATA_TRANSFER_CLIENT_TCPNODELAY_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
 name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
 import|;
 end_import
@@ -1372,6 +1408,12 @@ specifier|final
 name|int
 name|stripedReadThreadpoolSize
 decl_stmt|;
+DECL|field|dataTransferTcpNoDelay
+specifier|private
+specifier|final
+name|boolean
+name|dataTransferTcpNoDelay
+decl_stmt|;
 DECL|method|DfsClientConf (Configuration conf)
 specifier|public
 name|DfsClientConf
@@ -1539,6 +1581,17 @@ operator|=
 name|getChecksumOptFromConf
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+name|dataTransferTcpNoDelay
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFS_DATA_TRANSFER_CLIENT_TCPNODELAY_KEY
+argument_list|,
+name|DFS_DATA_TRANSFER_CLIENT_TCPNODELAY_DEFAULT
 argument_list|)
 expr_stmt|;
 name|socketTimeout
@@ -2420,6 +2473,17 @@ parameter_list|()
 block|{
 return|return
 name|writeByteArrayManagerConf
+return|;
+block|}
+comment|/**    * @return whether TCP_NODELAY should be set on client sockets    */
+DECL|method|getDataTransferTcpNoDelay ()
+specifier|public
+name|boolean
+name|getDataTransferTcpNoDelay
+parameter_list|()
+block|{
+return|return
+name|dataTransferTcpNoDelay
 return|;
 block|}
 comment|/**    * @return the socketTimeout    */

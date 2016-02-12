@@ -626,6 +626,18 @@ name|DFS_USER_HOME_DIR_PREFIX_DEFAULT
 init|=
 literal|"/user"
 decl_stmt|;
+DECL|field|DFS_DATA_TRANSFER_CLIENT_TCPNODELAY_KEY
+name|String
+name|DFS_DATA_TRANSFER_CLIENT_TCPNODELAY_KEY
+init|=
+literal|"dfs.data.transfer.client.tcpnodelay"
+decl_stmt|;
+DECL|field|DFS_DATA_TRANSFER_CLIENT_TCPNODELAY_DEFAULT
+name|boolean
+name|DFS_DATA_TRANSFER_CLIENT_TCPNODELAY_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|/**    * These are deprecated config keys to client code.    */
 DECL|interface|DeprecatedKeys
 interface|interface

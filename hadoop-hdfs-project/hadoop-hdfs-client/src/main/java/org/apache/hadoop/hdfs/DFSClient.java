@@ -9661,6 +9661,16 @@ argument_list|)
 expr_stmt|;
 name|sock
 operator|.
+name|setTcpNoDelay
+argument_list|(
+name|dfsClientConf
+operator|.
+name|getDataTransferTcpNoDelay
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|sock
+operator|.
 name|setSoTimeout
 argument_list|(
 name|timeout

@@ -1075,6 +1075,16 @@ argument_list|)
 expr_stmt|;
 name|sock
 operator|.
+name|setTcpNoDelay
+argument_list|(
+name|conf
+operator|.
+name|getDataTransferTcpNoDelay
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|sock
+operator|.
 name|setSoTimeout
 argument_list|(
 name|timeout
