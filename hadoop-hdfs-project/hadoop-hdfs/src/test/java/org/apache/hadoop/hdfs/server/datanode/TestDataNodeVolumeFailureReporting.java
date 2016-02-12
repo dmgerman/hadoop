@@ -56,6 +56,20 @@ begin_import
 import|import static
 name|org
 operator|.
+name|hamcrest
+operator|.
+name|core
+operator|.
+name|Is
+operator|.
+name|is
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -85,6 +99,18 @@ operator|.
 name|Assert
 operator|.
 name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -3677,6 +3703,8 @@ expr_stmt|;
 block|}
 try|try
 block|{
+name|assertThat
+argument_list|(
 name|dn
 operator|.
 name|reconfigurePropertyImpl
@@ -3689,6 +3717,22 @@ name|dnNewDataDirs
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|dn
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

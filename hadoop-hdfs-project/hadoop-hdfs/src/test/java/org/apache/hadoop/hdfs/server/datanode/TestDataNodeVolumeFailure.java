@@ -24,6 +24,20 @@ begin_import
 import|import static
 name|org
 operator|.
+name|hamcrest
+operator|.
+name|core
+operator|.
+name|Is
+operator|.
+name|is
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -65,6 +79,18 @@ operator|.
 name|Assert
 operator|.
 name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -2219,6 +2245,8 @@ operator|.
 name|getPath
 argument_list|()
 decl_stmt|;
+name|assertThat
+argument_list|(
 name|dn0
 operator|.
 name|reconfigurePropertyImpl
@@ -2229,6 +2257,22 @@ name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|,
 name|dataDirs
 argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|dn0
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+argument_list|)
+argument_list|)
 expr_stmt|;
 comment|// Fix failure volume dn0Vol1 and remount it back.
 name|DataNodeTestUtils
@@ -2238,6 +2282,8 @@ argument_list|(
 name|dn0Vol1
 argument_list|)
 expr_stmt|;
+name|assertThat
+argument_list|(
 name|dn0
 operator|.
 name|reconfigurePropertyImpl
@@ -2247,6 +2293,22 @@ operator|.
 name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|,
 name|oldDataDirs
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|dn0
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Fail dn0Vol2. Now since dn0Vol1 has been fixed, DN0 has sufficient
@@ -2370,6 +2432,8 @@ name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|)
 decl_stmt|;
 comment|// Add a new volume to DN0
+name|assertThat
+argument_list|(
 name|dn0
 operator|.
 name|reconfigurePropertyImpl
@@ -2386,6 +2450,22 @@ name|dn0VolNew
 operator|.
 name|getAbsolutePath
 argument_list|()
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|dn0
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Fail dn0Vol1 first and hot swap it.

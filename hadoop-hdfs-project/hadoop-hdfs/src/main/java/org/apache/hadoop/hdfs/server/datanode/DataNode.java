@@ -4191,11 +4191,12 @@ name|HdfsConfiguration
 argument_list|()
 return|;
 block|}
+comment|/**    * {@inheritdoc}.    */
 annotation|@
 name|Override
 DECL|method|reconfigurePropertyImpl (String property, String newVal)
 specifier|public
-name|void
+name|String
 name|reconfigurePropertyImpl
 parameter_list|(
 name|String
@@ -4207,15 +4208,14 @@ parameter_list|)
 throws|throws
 name|ReconfigurationException
 block|{
-if|if
+switch|switch
 condition|(
 name|property
-operator|.
-name|equals
-argument_list|(
-name|DFS_DATANODE_DATA_DIR_KEY
-argument_list|)
 condition|)
+block|{
+case|case
+name|DFS_DATANODE_DATA_DIR_KEY
+case|:
 block|{
 name|IOException
 name|rootException
@@ -4244,6 +4244,14 @@ argument_list|(
 name|newVal
 argument_list|)
 expr_stmt|;
+return|return
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -4346,17 +4354,11 @@ throw|;
 block|}
 block|}
 block|}
+break|break;
 block|}
-elseif|else
-if|if
-condition|(
-name|property
-operator|.
-name|equals
-argument_list|(
+case|case
 name|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_KEY
-argument_list|)
-condition|)
+case|:
 block|{
 name|ReconfigurationException
 name|rootException
@@ -4445,6 +4447,14 @@ argument_list|(
 name|movers
 argument_list|)
 expr_stmt|;
+return|return
+name|Integer
+operator|.
+name|toString
+argument_list|(
+name|movers
+argument_list|)
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -4505,9 +4515,11 @@ name|rootException
 throw|;
 block|}
 block|}
+break|break;
 block|}
-else|else
-block|{
+default|default:
+break|break;
+block|}
 throw|throw
 operator|new
 name|ReconfigurationException
@@ -4525,7 +4537,6 @@ name|property
 argument_list|)
 argument_list|)
 throw|;
-block|}
 block|}
 comment|/**    * Get a list of the keys of the re-configurable properties in configuration.    */
 annotation|@

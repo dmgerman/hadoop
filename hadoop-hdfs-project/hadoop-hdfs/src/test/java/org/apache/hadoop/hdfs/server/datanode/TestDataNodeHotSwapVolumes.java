@@ -2083,6 +2083,10 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
+name|assertThat
+argument_list|(
+literal|"DN did not update its own config"
+argument_list|,
 name|dn
 operator|.
 name|reconfigurePropertyImpl
@@ -2090,6 +2094,17 @@ argument_list|(
 name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|,
 name|newDataDir
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Verify the configuration value is appropriately set.
@@ -3169,6 +3184,10 @@ name|next
 argument_list|()
 decl_stmt|;
 comment|// Keep the first volume.
+name|assertThat
+argument_list|(
+literal|"DN did not update its own config"
+argument_list|,
 name|dn
 operator|.
 name|reconfigurePropertyImpl
@@ -3178,6 +3197,20 @@ operator|.
 name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|,
 name|newDirs
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|dn
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFileLocksReleased
@@ -3527,6 +3560,10 @@ name|dir
 expr_stmt|;
 break|break;
 block|}
+name|assertThat
+argument_list|(
+literal|"DN did not update its own config"
+argument_list|,
 name|dn
 operator|.
 name|reconfigurePropertyImpl
@@ -3536,6 +3573,20 @@ operator|.
 name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|,
 name|newDirs
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|dn
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|oldDirs
@@ -4419,15 +4470,31 @@ operator|.
 name|await
 argument_list|()
 expr_stmt|;
+name|assertThat
+argument_list|(
+literal|"DN did not update its own config"
+argument_list|,
 name|dn
 operator|.
 name|reconfigurePropertyImpl
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|,
 name|newDirs
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|dn
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -4662,6 +4729,10 @@ index|[
 literal|1
 index|]
 decl_stmt|;
+name|assertThat
+argument_list|(
+literal|"DN did not update its own config"
+argument_list|,
 name|dn
 operator|.
 name|reconfigurePropertyImpl
@@ -4669,6 +4740,20 @@ argument_list|(
 name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|,
 name|keepDataDir
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|dn
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 for|for
@@ -4791,6 +4876,10 @@ expr_stmt|;
 block|}
 comment|// Bring the removed directory back. It only successes if all metadata about
 comment|// this directory were removed from the previous step.
+name|assertThat
+argument_list|(
+literal|"DN did not update its own config"
+argument_list|,
 name|dn
 operator|.
 name|reconfigurePropertyImpl
@@ -4798,6 +4887,20 @@ argument_list|(
 name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|,
 name|oldDataDir
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|dn
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -5066,6 +5169,10 @@ argument_list|(
 name|dirToFail
 argument_list|)
 expr_stmt|;
+name|assertThat
+argument_list|(
+literal|"DN did not update its own config"
+argument_list|,
 name|dn
 operator|.
 name|reconfigurePropertyImpl
@@ -5073,6 +5180,20 @@ argument_list|(
 name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|,
 name|oldDataDir
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|dn
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|createFile
@@ -5256,6 +5377,10 @@ argument_list|,
 literal|"data1"
 argument_list|)
 decl_stmt|;
+name|assertThat
+argument_list|(
+literal|"DN did not update its own config"
+argument_list|,
 name|dn
 operator|.
 name|reconfigurePropertyImpl
@@ -5266,6 +5391,20 @@ name|dataDirToKeep
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+argument_list|,
+name|is
+argument_list|(
+name|dn
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// We should get 1 full report

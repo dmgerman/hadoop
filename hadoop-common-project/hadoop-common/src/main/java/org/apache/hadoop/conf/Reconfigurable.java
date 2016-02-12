@@ -40,8 +40,7 @@ name|Configurable
 block|{
 comment|/**    * Change a configuration property on this object to the value specified.    *    * Change a configuration property on this object to the value specified     * and return the previous value that the configuration property was set to    * (or null if it was not previously set). If newVal is null, set the property    * to its default value;    *    * If the property cannot be changed, throw a     * {@link ReconfigurationException}.    */
 DECL|method|reconfigureProperty (String property, String newVal)
-specifier|public
-name|String
+name|void
 name|reconfigureProperty
 parameter_list|(
 name|String
@@ -55,7 +54,6 @@ name|ReconfigurationException
 function_decl|;
 comment|/**    * Return whether a given property is changeable at run time.    *    * If isPropertyReconfigurable returns true for a property,    * then changeConf should not throw an exception when changing    * this property.    */
 DECL|method|isPropertyReconfigurable (String property)
-specifier|public
 name|boolean
 name|isPropertyReconfigurable
 parameter_list|(
@@ -65,7 +63,6 @@ parameter_list|)
 function_decl|;
 comment|/**    * Return all the properties that can be changed at run time.    */
 DECL|method|getReconfigurableProperties ()
-specifier|public
 name|Collection
 argument_list|<
 name|String
