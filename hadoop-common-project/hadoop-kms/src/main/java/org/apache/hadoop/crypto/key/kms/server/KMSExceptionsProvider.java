@@ -469,6 +469,13 @@ name|Status
 operator|.
 name|INTERNAL_SERVER_ERROR
 expr_stmt|;
+name|log
+argument_list|(
+name|status
+argument_list|,
+name|throwable
+argument_list|)
+expr_stmt|;
 block|}
 elseif|else
 if|if
@@ -513,6 +520,13 @@ operator|.
 name|Status
 operator|.
 name|INTERNAL_SERVER_ERROR
+expr_stmt|;
+name|log
+argument_list|(
+name|status
+argument_list|,
+name|throwable
+argument_list|)
 expr_stmt|;
 block|}
 if|if
