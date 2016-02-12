@@ -4547,13 +4547,15 @@ parameter_list|)
 block|{
 try|try
 block|{
-name|handleCurrentStreamerFailure
+name|handleStreamerFailure
 argument_list|(
 literal|"force="
 operator|+
 name|force
 argument_list|,
 name|e
+argument_list|,
+name|streamer
 argument_list|)
 expr_stmt|;
 block|}
@@ -5219,6 +5221,8 @@ return|return;
 block|}
 try|try
 block|{
+try|try
+block|{
 comment|// flush from all upper layers
 name|flushBuffer
 argument_list|()
@@ -5311,11 +5315,19 @@ comment|// of failures may be good enough.
 block|}
 block|}
 block|}
+block|}
+finally|finally
+block|{
+comment|// Failures may happen when flushing data/parity data out. Exceptions
+comment|// may be thrown if more than 3 streamers fail, or updatePipeline RPC
+comment|// fails. Streamers may keep waiting for the new block/GS information.
+comment|// Thus need to force closing these threads.
 name|closeThreads
 argument_list|(
-literal|false
+literal|true
 argument_list|)
 expr_stmt|;
+block|}
 try|try
 init|(
 name|TraceScope
