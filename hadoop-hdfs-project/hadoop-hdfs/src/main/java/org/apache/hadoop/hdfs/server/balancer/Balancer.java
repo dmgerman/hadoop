@@ -2807,6 +2807,17 @@ name|isUpgrading
 argument_list|()
 condition|)
 block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Balancer exiting as upgrade is not finalized, "
+operator|+
+literal|"please finalize the HDFS upgrade before running the balancer."
+argument_list|)
+expr_stmt|;
 return|return
 name|newResult
 argument_list|(
