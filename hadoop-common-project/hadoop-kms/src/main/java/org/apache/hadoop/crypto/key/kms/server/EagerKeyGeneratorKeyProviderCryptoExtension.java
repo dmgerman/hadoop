@@ -645,6 +645,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Roll a new version of the given key generating the material for it.    *<p>    * Due to the caching on the ValueQueue, even after a rollNewVersion call,    * {@link #generateEncryptedKey(String)} may still return an old key - even    * when we drain the queue here, the async thread may later fill in old keys.    * This is acceptable since old version keys are still able to decrypt, and    * client shall make no assumptions that it will get a new versioned key    * after rollNewVersion.    */
 annotation|@
 name|Override
 DECL|method|rollNewVersion (String name)
