@@ -480,6 +480,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|explicitFileExists (String key)
+name|boolean
+name|explicitFileExists
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+throws|throws
+name|AzureException
+function_decl|;
 block|}
 end_interface
 
