@@ -2781,6 +2781,27 @@ name|finalMap
 argument_list|)
 return|;
 block|}
+DECL|method|toJsonString (Object obj)
+specifier|public
+specifier|static
+name|String
+name|toJsonString
+parameter_list|(
+name|Object
+name|obj
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|MAPPER
+operator|.
+name|writeValueAsString
+argument_list|(
+name|obj
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 
