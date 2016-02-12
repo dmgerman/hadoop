@@ -40,6 +40,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -156,16 +176,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
 import|;
 end_import
@@ -191,16 +201,6 @@ operator|.
 name|Assert
 operator|.
 name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
 import|;
 end_import
 
@@ -270,7 +270,7 @@ expr_stmt|;
 comment|// Also clear sink flags
 name|RollingFileSystemSink
 operator|.
-name|isTest
+name|flushQuickly
 operator|=
 literal|false
 expr_stmt|;
@@ -878,15 +878,9 @@ name|Exception
 block|{
 name|RollingFileSystemSink
 operator|.
-name|isTest
+name|flushQuickly
 operator|=
 literal|true
-expr_stmt|;
-name|RollingFileSystemSink
-operator|.
-name|hasFlushed
-operator|=
-literal|false
 expr_stmt|;
 name|String
 name|path

@@ -170,9 +170,9 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|io
+name|configuration
 operator|.
-name|FileUtils
+name|SubsetConfiguration
 import|;
 end_import
 
@@ -243,6 +243,20 @@ operator|.
 name|fs
 operator|.
 name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileUtil
 import|;
 end_import
 
@@ -534,6 +548,24 @@ specifier|public
 class|class
 name|RollingFileSystemSinkTestBase
 block|{
+DECL|field|SINK_PRINCIPAL_KEY
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|SINK_PRINCIPAL_KEY
+init|=
+literal|"rfssink.principal"
+decl_stmt|;
+DECL|field|SINK_KEYTAB_FILE_KEY
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|SINK_KEYTAB_FILE_KEY
+init|=
+literal|"rfssink.keytab"
+decl_stmt|;
 DECL|field|ROOT_TEST_DIR
 specifier|protected
 specifier|static
@@ -550,10 +582,10 @@ name|getProperty
 argument_list|(
 literal|"test.build.data"
 argument_list|,
-literal|"target/"
+literal|"target/test"
 argument_list|)
 argument_list|,
-literal|"FileSystemSinkTest"
+literal|"RollingFileSystemSinkTest"
 argument_list|)
 decl_stmt|;
 DECL|field|DATE_FORMAT
@@ -796,11 +828,11 @@ block|}
 comment|/**    * Set the date format's timezone to GMT.    */
 annotation|@
 name|BeforeClass
-DECL|method|setTZ ()
+DECL|method|setup ()
 specifier|public
 specifier|static
 name|void
-name|setTZ
+name|setup
 parameter_list|()
 block|{
 name|DATE_FORMAT
@@ -813,6 +845,13 @@ name|getTimeZone
 argument_list|(
 literal|"GMT"
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|FileUtil
+operator|.
+name|fullyDelete
+argument_list|(
+name|ROOT_TEST_DIR
 argument_list|)
 expr_stmt|;
 block|}
@@ -828,9 +867,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileUtils
+name|FileUtil
 operator|.
-name|deleteDirectory
+name|fullyDelete
 argument_list|(
 name|ROOT_TEST_DIR
 argument_list|)
@@ -860,13 +899,20 @@ name|getMethodName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Test directory already exists: "
+operator|+
+name|methodDir
+argument_list|,
 name|methodDir
 operator|.
 name|mkdirs
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set up the metrics system, start it, and return it.    * @param path the base path for the sink    * @param ignoreErrors whether the sink should ignore errors    * @param allowAppend whether the sink is allowed to append to existing files    * @return the metrics system    */
+comment|/**    * Set up the metrics system, start it, and return it. The principal and    * keytab properties will not be set.    *    * @param path the base path for the sink    * @param ignoreErrors whether the sink should ignore errors    * @param allowAppend whether the sink is allowed to append to existing files    * @return the metrics system    */
 DECL|method|initMetricsSystem (String path, boolean ignoreErrors, boolean allowAppend)
 specifier|protected
 name|MetricsSystem
@@ -882,9 +928,40 @@ name|boolean
 name|allowAppend
 parameter_list|)
 block|{
+return|return
+name|initMetricsSystem
+argument_list|(
+name|path
+argument_list|,
+name|ignoreErrors
+argument_list|,
+name|allowAppend
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/**    * Set up the metrics system, start it, and return it.    * @param path the base path for the sink    * @param ignoreErrors whether the sink should ignore errors    * @param allowAppend whether the sink is allowed to append to existing files    * @param useSecureParams whether to set the principal and keytab properties    * @return the org.apache.hadoop.metrics2.MetricsSystem    */
+DECL|method|initMetricsSystem (String path, boolean ignoreErrors, boolean allowAppend, boolean useSecureParams)
+specifier|protected
+name|MetricsSystem
+name|initMetricsSystem
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|boolean
+name|ignoreErrors
+parameter_list|,
+name|boolean
+name|allowAppend
+parameter_list|,
+name|boolean
+name|useSecureParams
+parameter_list|)
+block|{
 comment|// If the prefix is not lower case, the metrics system won't be able to
 comment|// read any of the properties.
-specifier|final
 name|String
 name|prefix
 init|=
@@ -896,6 +973,9 @@ operator|.
 name|toLowerCase
 argument_list|()
 decl_stmt|;
+name|ConfigBuilder
+name|builder
+init|=
 operator|new
 name|ConfigBuilder
 argument_list|()
@@ -965,6 +1045,34 @@ literal|".sink.mysink0.allow-append"
 argument_list|,
 name|allowAppend
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|useSecureParams
+condition|)
+block|{
+name|builder
+operator|.
+name|add
+argument_list|(
+name|prefix
+operator|+
+literal|".sink.mysink0.keytab-key"
+argument_list|,
+name|SINK_KEYTAB_FILE_KEY
+argument_list|)
+operator|.
+name|add
+argument_list|(
+name|prefix
+operator|+
+literal|".sink.mysink0.principal-key"
+argument_list|,
+name|SINK_PRINCIPAL_KEY
+argument_list|)
+expr_stmt|;
+block|}
+name|builder
 operator|.
 name|save
 argument_list|(
@@ -1995,6 +2103,46 @@ name|errored
 init|=
 literal|false
 decl_stmt|;
+annotation|@
+name|Override
+DECL|method|init (SubsetConfiguration conf)
+specifier|public
+name|void
+name|init
+parameter_list|(
+name|SubsetConfiguration
+name|conf
+parameter_list|)
+block|{
+try|try
+block|{
+name|super
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|MetricsException
+name|ex
+parameter_list|)
+block|{
+name|errored
+operator|=
+literal|true
+expr_stmt|;
+throw|throw
+operator|new
+name|MetricsException
+argument_list|(
+name|ex
+argument_list|)
+throw|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|putMetrics (MetricsRecord record)
