@@ -22,16 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -54,63 +44,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|Block
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|ErasureCodingPolicy
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|blockmanagement
 operator|.
 name|BlockCollection
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|NameNode
-operator|.
-name|OperationCategory
 import|;
 end_import
 
@@ -150,34 +88,6 @@ name|RwLock
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|StandbyException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|AccessControlException
-import|;
-end_import
-
 begin_comment
 comment|/** Namesystem operations. */
 end_comment
@@ -202,20 +112,6 @@ name|boolean
 name|isRunning
 parameter_list|()
 function_decl|;
-comment|/** Check if the user has superuser privilege. */
-DECL|method|checkSuperuserPrivilege ()
-name|void
-name|checkSuperuserPrivilege
-parameter_list|()
-throws|throws
-name|AccessControlException
-function_decl|;
-comment|/** @return the block pool ID */
-DECL|method|getBlockPoolId ()
-name|String
-name|getBlockPoolId
-parameter_list|()
-function_decl|;
 DECL|method|getBlockCollection (long id)
 name|BlockCollection
 name|getBlockCollection
@@ -228,17 +124,6 @@ DECL|method|startSecretManagerIfNecessary ()
 name|void
 name|startSecretManagerIfNecessary
 parameter_list|()
-function_decl|;
-comment|/**    * Gets the erasure coding policy for the path    * @param src    *          - path    * @return {@link ErasureCodingPolicy}    * @throws IOException    */
-DECL|method|getErasureCodingPolicyForPath (String src)
-name|ErasureCodingPolicy
-name|getErasureCodingPolicyForPath
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|IOException
 function_decl|;
 DECL|method|isInSnapshot (long blockCollectionID)
 name|boolean

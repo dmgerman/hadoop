@@ -16478,8 +16478,6 @@ operator|.
 name|addExpectedReplicasToPending
 argument_list|(
 name|b
-argument_list|,
-name|pendingFile
 argument_list|)
 expr_stmt|;
 block|}
@@ -20715,10 +20713,7 @@ name|permission
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|checkSuperuserPrivilege ()
-specifier|public
 name|void
 name|checkSuperuserPrivilege
 parameter_list|()
@@ -30598,8 +30593,12 @@ name|READ
 argument_list|)
 expr_stmt|;
 return|return
-name|getErasureCodingPolicyForPath
+name|FSDirErasureCodingOp
+operator|.
+name|getErasureCodingPolicy
 argument_list|(
+name|this
+argument_list|,
 name|src
 argument_list|)
 return|;
@@ -32021,30 +32020,6 @@ return|return
 literal|""
 return|;
 block|}
-block|}
-annotation|@
-name|Override
-DECL|method|getErasureCodingPolicyForPath (String src)
-specifier|public
-name|ErasureCodingPolicy
-name|getErasureCodingPolicyForPath
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|FSDirErasureCodingOp
-operator|.
-name|getErasureCodingPolicy
-argument_list|(
-name|this
-argument_list|,
-name|src
-argument_list|)
-return|;
 block|}
 comment|/**    * Gets number of bytes in the blocks in future generation stamps.    *    * @return number of bytes that can be deleted if exited from safe mode.    */
 DECL|method|getBytesInFuture ()

@@ -1231,6 +1231,8 @@ name|reclaimContext
 operator|.
 name|collectedBlocks
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 else|else

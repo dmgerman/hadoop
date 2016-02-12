@@ -542,6 +542,11 @@ name|getLocalBlock
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|bInfo
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
 name|cluster
 operator|.
 name|getNameNode
@@ -811,6 +816,11 @@ name|getNamesystem
 argument_list|()
 operator|.
 name|writeLock
+argument_list|()
+expr_stmt|;
+name|bInfo
+operator|.
+name|delete
 argument_list|()
 expr_stmt|;
 name|cluster

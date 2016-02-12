@@ -4013,8 +4013,6 @@ block|{
 name|addExpectedReplicasToPending
 argument_list|(
 name|lastBlock
-argument_list|,
-name|bc
 argument_list|)
 expr_stmt|;
 block|}
@@ -4031,48 +4029,29 @@ name|committed
 return|;
 block|}
 comment|/**    * If IBR is not sent from expected locations yet, add the datanodes to    * pendingReplications in order to keep ReplicationMonitor from scheduling    * the block.    */
-DECL|method|addExpectedReplicasToPending (BlockInfo blk, BlockCollection bc)
+DECL|method|addExpectedReplicasToPending (BlockInfo blk)
 specifier|public
 name|void
 name|addExpectedReplicasToPending
 parameter_list|(
 name|BlockInfo
 name|blk
-parameter_list|,
-name|BlockCollection
-name|bc
 parameter_list|)
 block|{
 if|if
 condition|(
 operator|!
-name|bc
+name|blk
 operator|.
 name|isStriped
 argument_list|()
 condition|)
 block|{
-name|addExpectedReplicasToPending
-argument_list|(
-name|blk
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|method|addExpectedReplicasToPending (BlockInfo lastBlock)
-specifier|private
-name|void
-name|addExpectedReplicasToPending
-parameter_list|(
-name|BlockInfo
-name|lastBlock
-parameter_list|)
-block|{
 name|DatanodeStorageInfo
 index|[]
 name|expectedStorages
 init|=
-name|lastBlock
+name|blk
 operator|.
 name|getUnderConstructionFeature
 argument_list|()
@@ -4086,7 +4065,7 @@ name|expectedStorages
 operator|.
 name|length
 operator|-
-name|lastBlock
+name|blk
 operator|.
 name|numNodes
 argument_list|()
@@ -4102,9 +4081,7 @@ name|pendingNodes
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -4125,7 +4102,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|lastBlock
+name|blk
 operator|.
 name|findStorageInfo
 argument_list|(
@@ -4148,7 +4125,7 @@ name|pendingReplications
 operator|.
 name|increment
 argument_list|(
-name|lastBlock
+name|blk
 argument_list|,
 name|pendingNodes
 operator|.
@@ -4165,6 +4142,7 @@ index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Convert a specified block of the file to a complete block.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
@@ -5074,8 +5052,6 @@ init|=
 operator|new
 name|ExtendedBlock
 argument_list|(
-name|namesystem
-operator|.
 name|getBlockPoolId
 argument_list|()
 argument_list|,
@@ -5119,8 +5095,6 @@ init|=
 operator|new
 name|ExtendedBlock
 argument_list|(
-name|namesystem
-operator|.
 name|getBlockPoolId
 argument_list|()
 argument_list|,
@@ -5397,8 +5371,6 @@ init|=
 operator|new
 name|ExtendedBlock
 argument_list|(
-name|namesystem
-operator|.
 name|getBlockPoolId
 argument_list|()
 argument_list|,
@@ -8021,38 +7993,19 @@ name|int
 name|priority
 parameter_list|)
 block|{
-comment|// block should belong to a file
-name|BlockCollection
-name|bc
-init|=
-name|getBlockCollection
-argument_list|(
-name|block
-argument_list|)
-decl_stmt|;
-comment|// abandoned block or block reopened for append
+comment|// skip abandoned block or block reopened for append
 if|if
 condition|(
-name|bc
-operator|==
-literal|null
-operator|||
-operator|(
-name|bc
-operator|.
-name|isUnderConstruction
-argument_list|()
-operator|&&
 name|block
 operator|.
-name|equals
-argument_list|(
-name|bc
-operator|.
-name|getLastBlock
+name|isDeleted
 argument_list|()
-argument_list|)
-operator|)
+operator|||
+operator|!
+name|block
+operator|.
+name|isCompleteOrCommitted
+argument_list|()
 condition|)
 block|{
 comment|// remove from neededReplications
@@ -8264,6 +8217,15 @@ literal|1
 expr_stmt|;
 comment|// Needed on a new rack
 block|}
+specifier|final
+name|BlockCollection
+name|bc
+init|=
+name|getBlockCollection
+argument_list|(
+name|block
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|block
@@ -8399,38 +8361,19 @@ name|getPriority
 argument_list|()
 decl_stmt|;
 comment|// Recheck since global lock was released
-comment|// block should belong to a file
-name|BlockCollection
-name|bc
-init|=
-name|getBlockCollection
-argument_list|(
-name|block
-argument_list|)
-decl_stmt|;
-comment|// abandoned block or block reopened for append
+comment|// skip abandoned block or block reopened for append
 if|if
 condition|(
-name|bc
-operator|==
-literal|null
-operator|||
-operator|(
-name|bc
-operator|.
-name|isUnderConstruction
-argument_list|()
-operator|&&
 name|block
 operator|.
-name|equals
-argument_list|(
-name|bc
-operator|.
-name|getLastBlock
+name|isDeleted
 argument_list|()
-argument_list|)
-operator|)
+operator|||
+operator|!
+name|block
+operator|.
+name|isCompleteOrCommitted
+argument_list|()
 condition|)
 block|{
 name|neededReplications
@@ -8619,74 +8562,25 @@ literal|"Should wait the previous reconstruction"
 operator|+
 literal|" to finish"
 assert|;
-name|String
-name|src
-init|=
-name|getBlockCollection
-argument_list|(
-name|block
-argument_list|)
-operator|.
-name|getName
-argument_list|()
-decl_stmt|;
+specifier|final
 name|ErasureCodingPolicy
 name|ecPolicy
 init|=
-literal|null
+operator|(
+operator|(
+name|BlockInfoStriped
+operator|)
+name|block
+operator|)
+operator|.
+name|getErasureCodingPolicy
+argument_list|()
 decl_stmt|;
-try|try
-block|{
+assert|assert
 name|ecPolicy
-operator|=
-name|namesystem
-operator|.
-name|getErasureCodingPolicyForPath
-argument_list|(
-name|src
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|blockLog
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to get EC policy for the file {} "
-argument_list|,
-name|src
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|ecPolicy
-operator|==
+operator|!=
 literal|null
-condition|)
-block|{
-name|blockLog
-operator|.
-name|warn
-argument_list|(
-literal|"No erasure coding policy found for the file {}. "
-operator|+
-literal|"So cannot proceed for reconstruction"
-argument_list|,
-name|src
-argument_list|)
-expr_stmt|;
-comment|// TODO: we may have to revisit later for what we can do better to
-comment|// handle this case.
-return|return
-literal|false
-return|;
-block|}
+assert|;
 name|rw
 operator|.
 name|getTargets
@@ -8703,8 +8597,6 @@ argument_list|(
 operator|new
 name|ExtendedBlock
 argument_list|(
-name|namesystem
-operator|.
 name|getBlockPoolId
 argument_list|()
 argument_list|,
@@ -13994,21 +13886,6 @@ return|return
 name|block
 return|;
 block|}
-name|BlockCollection
-name|bc
-init|=
-name|getBlockCollection
-argument_list|(
-name|storedBlock
-argument_list|)
-decl_stmt|;
-assert|assert
-name|bc
-operator|!=
-literal|null
-operator|:
-literal|"Block must belong to a file"
-assert|;
 comment|// add block to the datanode
 name|AddBlockResult
 name|result
@@ -14186,8 +14063,6 @@ block|{
 name|addExpectedReplicasToPending
 argument_list|(
 name|storedBlock
-argument_list|,
-name|bc
 argument_list|)
 expr_stmt|;
 name|completeBlock
@@ -14228,12 +14103,13 @@ name|storedBlock
 argument_list|)
 expr_stmt|;
 block|}
-comment|// if file is under construction, then done for now
+comment|// if block is still under construction, then done for now
 if|if
 condition|(
-name|bc
+operator|!
+name|storedBlock
 operator|.
-name|isUnderConstruction
+name|isCompleteOrCommitted
 argument_list|()
 condition|)
 block|{
@@ -16547,19 +16423,13 @@ comment|// failure. If the block is still valid, check if replication is
 comment|// necessary. In that case, put block on a possibly-will-
 comment|// be-replicated list.
 comment|//
-name|BlockCollection
-name|bc
-init|=
-name|getBlockCollection
-argument_list|(
-name|storedBlock
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|bc
-operator|!=
-literal|null
+operator|!
+name|storedBlock
+operator|.
+name|isDeleted
+argument_list|()
 condition|)
 block|{
 name|bmSafeMode

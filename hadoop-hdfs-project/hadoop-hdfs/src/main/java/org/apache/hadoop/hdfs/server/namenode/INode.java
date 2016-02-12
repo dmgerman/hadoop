@@ -3367,35 +3367,16 @@ literal|null
 operator|:
 literal|"toDelete is null"
 assert|;
+name|toDelete
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
 name|toDeleteList
 operator|.
 name|add
 argument_list|(
 name|toDelete
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|removeDeleteBlock (BlockInfo block)
-specifier|public
-name|void
-name|removeDeleteBlock
-parameter_list|(
-name|BlockInfo
-name|block
-parameter_list|)
-block|{
-assert|assert
-name|block
-operator|!=
-literal|null
-operator|:
-literal|"block is null"
-assert|;
-name|toDeleteList
-operator|.
-name|remove
-argument_list|(
-name|block
 argument_list|)
 expr_stmt|;
 block|}
