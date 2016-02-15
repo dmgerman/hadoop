@@ -766,13 +766,6 @@ name|blockSize
 init|=
 literal|5120
 decl_stmt|;
-DECL|field|simulatedStorage
-specifier|final
-name|boolean
-name|simulatedStorage
-init|=
-literal|false
-decl_stmt|;
 comment|// creates a file but does not close it
 DECL|method|createFile (FileSystem fileSys, Path name, int repl)
 specifier|static
@@ -1818,19 +1811,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|simulatedStorage
-condition|)
-block|{
-name|SimulatedFSDataset
-operator|.
-name|setFactory
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -2644,19 +2624,6 @@ operator|.
 name|disableBindPathValidation
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|simulatedStorage
-condition|)
-block|{
-name|SimulatedFSDataset
-operator|.
-name|setFactory
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
 name|MiniDFSCluster
 name|cluster
 init|=
