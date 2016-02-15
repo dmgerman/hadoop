@@ -1868,7 +1868,7 @@ literal|"The delete subcommand deletes all versions of the key\n"
 operator|+
 literal|"specified by the<keyname> argument from within the\n"
 operator|+
-literal|"provider specified -provider. The command asks for\n"
+literal|"provider specified by -provider. The command asks for\n"
 operator|+
 literal|"user confirmation unless -f is specified."
 decl_stmt|;
