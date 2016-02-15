@@ -26,6 +26,24 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|WebServicesTestUtils
+operator|.
+name|assertResponseStatusCode
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -298,6 +316,22 @@ name|yarn
 operator|.
 name|webapp
 operator|.
+name|GuiceServletConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
 name|WebApp
 import|;
 end_import
@@ -389,32 +423,6 @@ operator|.
 name|inject
 operator|.
 name|Guice
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|inject
-operator|.
-name|Injector
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|inject
-operator|.
-name|servlet
-operator|.
-name|GuiceServletContextListener
 import|;
 end_import
 
@@ -568,21 +576,17 @@ specifier|static
 name|HsWebApp
 name|webApp
 decl_stmt|;
-DECL|field|injector
+DECL|class|WebServletModule
 specifier|private
-name|Injector
-name|injector
-init|=
-name|Guice
-operator|.
-name|createInjector
-argument_list|(
-operator|new
+specifier|static
+class|class
+name|WebServletModule
+extends|extends
 name|ServletModule
-argument_list|()
 block|{
 annotation|@
 name|Override
+DECL|method|configureServlets ()
 specifier|protected
 name|void
 name|configureServlets
@@ -705,27 +709,22 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-argument_list|)
-decl_stmt|;
-DECL|class|GuiceServletConfig
-specifier|public
-class|class
+static|static
+block|{
 name|GuiceServletConfig
-extends|extends
-name|GuiceServletContextListener
-block|{
-annotation|@
-name|Override
-DECL|method|getInjector ()
-specifier|protected
-name|Injector
-name|getInjector
-parameter_list|()
-block|{
-return|return
-name|injector
-return|;
-block|}
+operator|.
+name|setInjector
+argument_list|(
+name|Guice
+operator|.
+name|createInjector
+argument_list|(
+operator|new
+name|WebServletModule
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Before
@@ -743,6 +742,20 @@ name|super
 operator|.
 name|setUp
 argument_list|()
+expr_stmt|;
+name|GuiceServletConfig
+operator|.
+name|setInjector
+argument_list|(
+name|Guice
+operator|.
+name|createInjector
+argument_list|(
+operator|new
+name|WebServletModule
+argument_list|()
+argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|TestHsWebServicesJobsQuery ()
@@ -998,11 +1011,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"jobs is not null"
+literal|"jobs is not empty"
 argument_list|,
+operator|new
 name|JSONObject
+argument_list|()
 operator|.
-name|NULL
+name|toString
+argument_list|()
 argument_list|,
 name|json
 operator|.
@@ -1010,6 +1026,9 @@ name|get
 argument_list|(
 literal|"jobs"
 argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1316,7 +1335,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -1324,7 +1343,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1545,11 +1564,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"jobs is not null"
+literal|"jobs is not empty"
 argument_list|,
+operator|new
 name|JSONObject
+argument_list|()
 operator|.
-name|NULL
+name|toString
+argument_list|()
 argument_list|,
 name|json
 operator|.
@@ -1557,6 +1579,9 @@ name|get
 argument_list|(
 literal|"jobs"
 argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1958,7 +1983,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -1966,7 +1991,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2325,11 +2350,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"jobs is not null"
+literal|"jobs is not empty"
 argument_list|,
+operator|new
 name|JSONObject
+argument_list|()
 operator|.
-name|NULL
+name|toString
+argument_list|()
 argument_list|,
 name|json
 operator|.
@@ -2337,6 +2365,9 @@ name|get
 argument_list|(
 literal|"jobs"
 argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2613,11 +2644,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"jobs is not null"
+literal|"jobs is not empty"
 argument_list|,
+operator|new
 name|JSONObject
+argument_list|()
 operator|.
-name|NULL
+name|toString
+argument_list|()
 argument_list|,
 name|json
 operator|.
@@ -2625,6 +2659,9 @@ name|get
 argument_list|(
 literal|"jobs"
 argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2979,7 +3016,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -2987,7 +3024,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3170,7 +3207,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3178,7 +3215,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3361,7 +3398,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3369,7 +3406,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3558,7 +3595,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3566,7 +3603,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3755,7 +3792,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3763,7 +3800,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3952,7 +3989,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3960,7 +3997,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4149,7 +4186,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -4157,7 +4194,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4365,7 +4402,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -4373,7 +4410,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4556,7 +4593,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -4564,7 +4601,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4747,7 +4784,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -4755,7 +4792,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5142,11 +5179,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"jobs is not null"
+literal|"jobs is not empty"
 argument_list|,
+operator|new
 name|JSONObject
+argument_list|()
 operator|.
-name|NULL
+name|toString
+argument_list|()
 argument_list|,
 name|json
 operator|.
@@ -5154,6 +5194,9 @@ name|get
 argument_list|(
 literal|"jobs"
 argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

@@ -23,6 +23,24 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|WebServicesTestUtils
+operator|.
+name|assertResponseStatusCode
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -520,6 +538,22 @@ name|yarn
 operator|.
 name|webapp
 operator|.
+name|GuiceServletConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
 name|JerseyTestBase
 import|;
 end_import
@@ -798,20 +832,6 @@ name|inject
 operator|.
 name|servlet
 operator|.
-name|GuiceServletContextListener
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|inject
-operator|.
-name|servlet
-operator|.
 name|ServletModule
 import|;
 end_import
@@ -962,11 +982,6 @@ specifier|private
 specifier|static
 name|MockRM
 name|rm
-decl_stmt|;
-DECL|field|injector
-specifier|private
-name|Injector
-name|injector
 decl_stmt|;
 DECL|field|isKerberosAuth
 specifier|private
@@ -1458,26 +1473,6 @@ block|}
 argument_list|)
 return|;
 block|}
-DECL|class|GuiceServletConfig
-specifier|public
-class|class
-name|GuiceServletConfig
-extends|extends
-name|GuiceServletContextListener
-block|{
-annotation|@
-name|Override
-DECL|method|getInjector ()
-specifier|protected
-name|Injector
-name|getInjector
-parameter_list|()
-block|{
-return|return
-name|injector
-return|;
-block|}
-block|}
 annotation|@
 name|Parameters
 DECL|method|guiceConfigs ()
@@ -1577,19 +1572,25 @@ case|case
 literal|0
 case|:
 default|default:
-name|injector
-operator|=
+name|GuiceServletConfig
+operator|.
+name|setInjector
+argument_list|(
 name|getKerberosAuthInjector
 argument_list|()
+argument_list|)
 expr_stmt|;
 break|break;
 case|case
 literal|1
 case|:
-name|injector
-operator|=
+name|GuiceServletConfig
+operator|.
+name|setInjector
+argument_list|(
 name|getSimpleAuthInjector
 argument_list|()
+argument_list|)
 expr_stmt|;
 break|break;
 block|}
@@ -2009,7 +2010,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -2017,7 +2018,7 @@ name|FORBIDDEN
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2131,7 +2132,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -2139,7 +2140,7 @@ name|OK
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2260,7 +2261,7 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -2268,7 +2269,7 @@ name|OK
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2527,7 +2528,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -2535,7 +2536,7 @@ name|OK
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2630,7 +2631,7 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -2638,7 +2639,7 @@ name|FORBIDDEN
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2762,7 +2763,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -2770,7 +2771,7 @@ name|OK
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2882,7 +2883,7 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -2890,7 +2891,7 @@ name|OK
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3029,7 +3030,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3037,7 +3038,7 @@ name|FORBIDDEN
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3163,7 +3164,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3171,7 +3172,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3307,7 +3308,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3315,7 +3316,7 @@ name|FORBIDDEN
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3483,7 +3484,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3491,7 +3492,7 @@ name|OK
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3550,7 +3551,7 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3558,7 +3559,7 @@ name|OK
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3647,7 +3648,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3655,7 +3656,7 @@ name|OK
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3744,7 +3745,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3752,7 +3753,7 @@ name|OK
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3841,7 +3842,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3849,7 +3850,7 @@ name|OK
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3938,7 +3939,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -3946,7 +3947,7 @@ name|FORBIDDEN
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4093,7 +4094,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -4101,7 +4102,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4171,7 +4172,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -4179,7 +4180,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4260,7 +4261,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -4268,7 +4269,7 @@ name|OK
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4357,7 +4358,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -4365,7 +4366,7 @@ name|OK
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4416,7 +4417,7 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -4424,7 +4425,7 @@ name|BAD_REQUEST
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4492,7 +4493,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
@@ -4500,7 +4501,7 @@ name|FORBIDDEN
 argument_list|,
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 expr_stmt|;

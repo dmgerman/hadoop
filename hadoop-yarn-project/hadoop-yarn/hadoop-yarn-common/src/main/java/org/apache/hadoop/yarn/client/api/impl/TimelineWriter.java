@@ -768,7 +768,10 @@ literal|null
 operator|||
 name|resp
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
+argument_list|()
+operator|.
+name|getStatusCode
 argument_list|()
 operator|!=
 name|ClientResponse
@@ -776,6 +779,9 @@ operator|.
 name|Status
 operator|.
 name|OK
+operator|.
+name|getStatusCode
+argument_list|()
 condition|)
 block|{
 name|String

@@ -1383,7 +1383,7 @@ name|when
 argument_list|(
 name|response
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 argument_list|)
 operator|.
