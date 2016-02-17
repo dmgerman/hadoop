@@ -518,6 +518,11 @@ specifier|private
 name|long
 name|lastCheckpointTime
 decl_stmt|;
+DECL|field|lastUploadTime
+specifier|private
+name|long
+name|lastUploadTime
+decl_stmt|;
 DECL|field|thread
 specifier|private
 specifier|final
@@ -1399,6 +1404,11 @@ expr_stmt|;
 break|break;
 block|}
 block|}
+name|lastUploadTime
+operator|=
+name|monotonicNow
+argument_list|()
+expr_stmt|;
 comment|// we are primary if we successfully updated the ANN
 name|this
 operator|.
@@ -1725,6 +1735,11 @@ operator|=
 name|monotonicNow
 argument_list|()
 expr_stmt|;
+name|lastUploadTime
+operator|=
+name|monotonicNow
+argument_list|()
+expr_stmt|;
 while|while
 condition|(
 name|shouldRun
@@ -1945,12 +1960,24 @@ expr_stmt|;
 block|}
 comment|// on all nodes, we build the checkpoint. However, we only ship the checkpoint if have a
 comment|// rollback request, are the checkpointer, are outside the quiet period.
+specifier|final
+name|long
+name|secsSinceLastUpload
+init|=
+operator|(
+name|now
+operator|-
+name|lastUploadTime
+operator|)
+operator|/
+literal|1000
+decl_stmt|;
 name|boolean
 name|sendRequest
 init|=
 name|isPrimaryCheckPointer
 operator|||
-name|secsSinceLast
+name|secsSinceLastUpload
 operator|>=
 name|checkpointConf
 operator|.
