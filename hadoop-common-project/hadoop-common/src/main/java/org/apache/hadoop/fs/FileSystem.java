@@ -5456,6 +5456,8 @@ name|i
 operator|++
 index|]
 decl_stmt|;
+comment|// for files, use getBlockLocations(FileStatus, int, int) to avoid
+comment|// calling getFileStatus(Path) to load the FileStatus again
 name|BlockLocation
 index|[]
 name|locs
@@ -5468,9 +5470,6 @@ condition|?
 name|getFileBlockLocations
 argument_list|(
 name|result
-operator|.
-name|getPath
-argument_list|()
 argument_list|,
 literal|0
 argument_list|,
