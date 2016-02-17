@@ -221,8 +221,6 @@ specifier|abstract
 name|Path
 name|getCurrentTrashDir
 parameter_list|()
-throws|throws
-name|IOException
 function_decl|;
 comment|/**    * Get the current trash directory for path specified based on the Trash    * Policy    * @param path path to be deleted    * @return current trash directory for the path to be deleted    * @throws IOException    */
 DECL|method|getCurrentTrashDir (Path path)

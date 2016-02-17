@@ -1081,8 +1081,6 @@ specifier|public
 name|Path
 name|getCurrentTrashDir
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 operator|new
@@ -1341,8 +1339,6 @@ name|FileStatus
 argument_list|>
 name|trashRoots
 decl_stmt|;
-try|try
-block|{
 name|trashRoots
 operator|=
 name|fs
@@ -1352,27 +1348,7 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-comment|// list all home dirs
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Trash can't list all trash roots: "
-operator|+
-name|e
-operator|+
-literal|" Sleeping."
-argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
+comment|// list all trash dirs
 for|for
 control|(
 name|FileStatus

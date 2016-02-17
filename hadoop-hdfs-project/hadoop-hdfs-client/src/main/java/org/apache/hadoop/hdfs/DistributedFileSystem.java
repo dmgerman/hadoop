@@ -11378,7 +11378,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the root directory of Trash for a path in HDFS.    * 1. File in encryption zone returns /ez1/.Trash/username    * 2. File not in encryption zone returns /users/username/.Trash    * Caller appends either Current or checkpoint timestamp for trash destination    * @param path the trash root of the path to be determined.    * @return trash root    * @throws IOException    */
+comment|/**    * Get the root directory of Trash for a path in HDFS.    * 1. File in encryption zone returns /ez1/.Trash/username    * 2. File not in encryption zone, or encountered exception when checking    *    the encryption zone of the path, returns /users/username/.Trash    * Caller appends either Current or checkpoint timestamp for trash destination    * @param path the trash root of the path to be determined.    * @return trash root    */
 annotation|@
 name|Override
 DECL|method|getTrashRoot (Path path)
@@ -11389,8 +11389,6 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -11435,6 +11433,8 @@ operator|.
 name|getPath
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|EncryptionZone
 name|ez
 init|=
@@ -11483,8 +11483,34 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-else|else
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
 block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exception in checking the encryption zone for the "
+operator|+
+literal|"path "
+operator|+
+name|parentSrc
+operator|+
+literal|". "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|super
 operator|.
@@ -11494,8 +11520,7 @@ name|path
 argument_list|)
 return|;
 block|}
-block|}
-comment|/**    * Get all the trash roots of HDFS for current user or for all the users.    * 1. File deleted from non-encryption zone /user/username/.Trash    * 2. File deleted from encryption zones    *    e.g., ez1 rooted at /ez1 has its trash root at /ez1/.Trash/$USER    * @allUsers return trashRoots of all users if true, used by emptier    * @return trash roots of HDFS    * @throws IOException    */
+comment|/**    * Get all the trash roots of HDFS for current user or for all the users.    * 1. File deleted from non-encryption zone /user/username/.Trash    * 2. File deleted from encryption zones    *    e.g., ez1 rooted at /ez1 has its trash root at /ez1/.Trash/$USER    * @param allUsers return trashRoots of all users if true, used by emptier    * @return trash roots of HDFS    */
 annotation|@
 name|Override
 DECL|method|getTrashRoots (boolean allUsers)
@@ -11509,8 +11534,6 @@ parameter_list|(
 name|boolean
 name|allUsers
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|List
 argument_list|<
@@ -11520,9 +11543,7 @@ name|ret
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|FileStatus
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|// Get normal trash roots
@@ -11538,6 +11559,8 @@ name|allUsers
 argument_list|)
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 comment|// Get EZ Trash roots
 specifier|final
 name|RemoteIterator
@@ -11653,6 +11676,25 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Cannot get all encrypted trash roots"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 return|return
 name|ret

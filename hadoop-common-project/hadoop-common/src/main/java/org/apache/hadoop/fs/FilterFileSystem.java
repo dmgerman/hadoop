@@ -2582,8 +2582,6 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|fs
@@ -2607,8 +2605,6 @@ parameter_list|(
 name|boolean
 name|allUsers
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|fs

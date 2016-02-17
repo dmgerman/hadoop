@@ -7647,7 +7647,7 @@ literal|" doesn't support getAllStoragePolicies"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get the root directory of Trash for current user when the path specified    * is deleted.    *    * @param path the trash root of the path to be determined.    * @return the default implementation returns "/user/$USER/.Trash".    * @throws IOException    */
+comment|/**    * Get the root directory of Trash for current user when the path specified    * is deleted.    *    * @param path the trash root of the path to be determined.    * @return the default implementation returns "/user/$USER/.Trash".    */
 DECL|method|getTrashRoot (Path path)
 specifier|public
 name|Path
@@ -7656,8 +7656,6 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|this
@@ -7681,7 +7679,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Get all the trash roots for current user or all users.    *    * @param allUsers return trash roots for all users if true.    * @return all the trash root directories.    *         Default FileSystem returns .Trash under users' home directories if    *         /user/$USER/.Trash exists.    * @throws IOException    */
+comment|/**    * Get all the trash roots for current user or all users.    *    * @param allUsers return trash roots for all users if true.    * @return all the trash root directories.    *         Default FileSystem returns .Trash under users' home directories if    *         /user/$USER/.Trash exists.    */
 DECL|method|getTrashRoots (boolean allUsers)
 specifier|public
 name|Collection
@@ -7693,8 +7691,6 @@ parameter_list|(
 name|boolean
 name|allUsers
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|Path
 name|userHome
@@ -7720,11 +7716,11 @@ name|ret
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|FileStatus
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 if|if
 condition|(
 operator|!
@@ -7836,6 +7832,23 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Cannot get all trash roots"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 return|return
 name|ret
