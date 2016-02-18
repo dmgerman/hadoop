@@ -4498,7 +4498,24 @@ parameter_list|()
 block|{
 comment|// Here the getPreemptedResources() always return zero, except in
 comment|// a preemption round
+comment|// In the common case where preempted resource is zero, return the
+comment|// current consumption Resource object directly without calling
+comment|// Resources.subtract which creates a new Resource object for each call.
 return|return
+name|getPreemptedResources
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|)
+condition|?
+name|getCurrentConsumption
+argument_list|()
+else|:
 name|Resources
 operator|.
 name|subtract
