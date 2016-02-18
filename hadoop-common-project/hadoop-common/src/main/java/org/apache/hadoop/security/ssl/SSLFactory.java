@@ -343,7 +343,7 @@ specifier|final
 name|String
 name|DEFAULT_SSL_ENABLED_PROTOCOLS
 init|=
-literal|"TLSv1"
+literal|"TLSv1,SSLv2Hello,TLSv1.1,TLSv1.2"
 decl_stmt|;
 DECL|field|conf
 specifier|private
