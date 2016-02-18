@@ -2219,8 +2219,6 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|" ] "
-operator|+
 literal|" ]"
 decl_stmt|;
 DECL|method|getProtocolVersion (String protocol, long clientVersion)
