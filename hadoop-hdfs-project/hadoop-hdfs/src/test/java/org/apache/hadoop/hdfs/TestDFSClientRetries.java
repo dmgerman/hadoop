@@ -412,6 +412,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|ChecksumException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|CommonConfigurationKeys
 import|;
 end_import
@@ -558,9 +572,7 @@ name|hdfs
 operator|.
 name|client
 operator|.
-name|impl
-operator|.
-name|LeaseRenewer
+name|HdfsUtils
 import|;
 end_import
 
@@ -576,7 +588,9 @@ name|hdfs
 operator|.
 name|client
 operator|.
-name|HdfsUtils
+name|impl
+operator|.
+name|LeaseRenewer
 import|;
 end_import
 
@@ -5667,7 +5681,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|ChecksumException
 name|ex
 parameter_list|)
 block|{
@@ -5675,13 +5689,18 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Checksum error"
+literal|"Checksum"
 argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|client
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 finally|finally
 block|{
