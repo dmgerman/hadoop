@@ -206,6 +206,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|HadoopThreadPoolExecutor
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -427,7 +443,7 @@ comment|// map method in parallel.
 name|executorService
 operator|=
 operator|new
-name|ThreadPoolExecutor
+name|HadoopThreadPoolExecutor
 argument_list|(
 name|numberOfThreads
 argument_list|,

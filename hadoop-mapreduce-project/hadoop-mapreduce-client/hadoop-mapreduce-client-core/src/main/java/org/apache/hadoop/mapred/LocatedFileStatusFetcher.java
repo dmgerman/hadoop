@@ -90,18 +90,6 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|Executors
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|LinkedBlockingQueue
 import|;
 end_import
@@ -390,6 +378,22 @@ name|ThreadFactoryBuilder
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|HadoopExecutors
+import|;
+end_import
+
 begin_comment
 comment|/**  * Utility class to fetch block locations for specified Input paths using a  * configured number of threads.  */
 end_comment
@@ -576,7 +580,7 @@ argument_list|)
 decl_stmt|;
 name|rawExec
 operator|=
-name|Executors
+name|HadoopExecutors
 operator|.
 name|newFixedThreadPool
 argument_list|(
