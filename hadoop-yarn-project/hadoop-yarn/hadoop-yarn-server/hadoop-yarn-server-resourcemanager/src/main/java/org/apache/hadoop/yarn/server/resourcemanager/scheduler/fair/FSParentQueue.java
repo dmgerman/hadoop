@@ -1321,8 +1321,8 @@ literal|" because it's a non-preemptable queue"
 argument_list|)
 expr_stmt|;
 block|}
-continue|continue;
 block|}
+elseif|else
 if|if
 condition|(
 name|candidateQueue
