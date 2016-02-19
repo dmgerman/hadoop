@@ -414,6 +414,23 @@ operator|+
 literal|"unique."
 argument_list|)
 decl_stmt|;
+DECL|field|BAD_PROPERTY
+specifier|public
+specifier|static
+specifier|final
+name|OzoneException
+name|BAD_PROPERTY
+init|=
+operator|new
+name|OzoneException
+argument_list|(
+name|HTTP_BAD_REQUEST
+argument_list|,
+literal|"unknownProperty"
+argument_list|,
+literal|"This property is not supported by this server."
+argument_list|)
+decl_stmt|;
 comment|/* Error 401 */
 DECL|field|UNAUTHORIZED
 specifier|public
