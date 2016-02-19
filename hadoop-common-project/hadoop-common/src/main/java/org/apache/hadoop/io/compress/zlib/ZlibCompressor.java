@@ -269,6 +269,55 @@ argument_list|(
 literal|1
 argument_list|)
 block|,
+comment|/**      * Compression level 2.      */
+DECL|enumConstant|TWO
+name|TWO
+argument_list|(
+literal|2
+argument_list|)
+block|,
+comment|/**      * Compression level 3.      */
+DECL|enumConstant|THREE
+name|THREE
+argument_list|(
+literal|3
+argument_list|)
+block|,
+comment|/**      * Compression level 4.      */
+DECL|enumConstant|FOUR
+name|FOUR
+argument_list|(
+literal|4
+argument_list|)
+block|,
+comment|/**      * Compression level 5.      */
+DECL|enumConstant|FIVE
+name|FIVE
+argument_list|(
+literal|5
+argument_list|)
+block|,
+comment|/**      * Compression level 6.      */
+DECL|enumConstant|SIX
+name|SIX
+argument_list|(
+literal|6
+argument_list|)
+block|,
+comment|/**      * Compression level 7.      */
+DECL|enumConstant|SEVEN
+name|SEVEN
+argument_list|(
+literal|7
+argument_list|)
+block|,
+comment|/**      * Compression level 8.      */
+DECL|enumConstant|EIGHT
+name|EIGHT
+argument_list|(
+literal|8
+argument_list|)
+block|,
 comment|/**      * Compression level for best compression.      */
 DECL|enumConstant|BEST_COMPRESSION
 name|BEST_COMPRESSION
