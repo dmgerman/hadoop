@@ -1044,8 +1044,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Using striped reads; pool threads="
-operator|+
+literal|"Using striped reads; pool threads={}"
+argument_list|,
 name|num
 argument_list|)
 expr_stmt|;
@@ -1189,7 +1189,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Using striped block reconstruction; pool threads="
+literal|"Using striped block reconstruction; pool threads={}"
 operator|+
 name|num
 argument_list|)
@@ -1325,8 +1325,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to reconstruct striped block "
-operator|+
+literal|"Failed to reconstruct striped block {}"
+argument_list|,
 name|reconstructionInfo
 operator|.
 name|getExtendedBlock
@@ -2488,8 +2488,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to reconstruct striped block: "
-operator|+
+literal|"Failed to reconstruct striped block: {}"
+argument_list|,
 name|blockGroup
 argument_list|,
 name|e
@@ -2512,7 +2512,9 @@ range|:
 name|stripedReaders
 control|)
 block|{
-name|closeBlockReader
+name|IOUtils
+operator|.
+name|closeStream
 argument_list|(
 name|stripedReader
 operator|.
@@ -3091,7 +3093,9 @@ operator|.
 name|index
 argument_list|)
 decl_stmt|;
-name|closeBlockReader
+name|IOUtils
+operator|.
+name|closeStream
 argument_list|(
 name|failedReader
 operator|.
@@ -3196,6 +3200,19 @@ literal|"Read data interrupted."
 argument_list|,
 name|e
 argument_list|)
+expr_stmt|;
+name|cancelReads
+argument_list|(
+name|futures
+operator|.
+name|keySet
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|futures
+operator|.
+name|clear
+argument_list|()
 expr_stmt|;
 break|break;
 block|}
@@ -3915,7 +3932,9 @@ operator|>
 literal|0
 condition|)
 block|{
-name|closeBlockReader
+name|IOUtils
+operator|.
+name|closeStream
 argument_list|(
 name|r
 operator|.
@@ -4178,20 +4197,16 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Found Checksum error for "
-operator|+
+literal|"Found Checksum error for {} from {} at {}"
+argument_list|,
 name|reader
 operator|.
 name|block
-operator|+
-literal|" from "
-operator|+
+argument_list|,
 name|reader
 operator|.
 name|source
-operator|+
-literal|" at "
-operator|+
+argument_list|,
 name|e
 operator|.
 name|getPos
@@ -4455,41 +4470,6 @@ name|nread
 expr_stmt|;
 block|}
 block|}
-comment|// close block reader
-DECL|method|closeBlockReader (BlockReader blockReader)
-specifier|private
-name|void
-name|closeBlockReader
-parameter_list|(
-name|BlockReader
-name|blockReader
-parameter_list|)
-block|{
-try|try
-block|{
-if|if
-condition|(
-name|blockReader
-operator|!=
-literal|null
-condition|)
-block|{
-name|blockReader
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// ignore
-block|}
-block|}
 DECL|method|getSocketAddress4Transfer (DatanodeInfo dnInfo)
 specifier|private
 name|InetSocketAddress
@@ -4583,7 +4563,7 @@ name|READ
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|/*          * This can be further improved if the replica is local, then we can          * read directly from DN and need to check the replica is FINALIZED          * state, notice we should not use short-circuit local read which          * requires config for domain-socket in UNIX or legacy config in Windows.          *          * TODO: add proper tracer          */
+comment|/*          * This can be further improved if the replica is local, then we can          * read directly from DN and need to check the replica is FINALIZED          * state, notice we should not use short-circuit local read which          * requires config for domain-socket in UNIX or legacy config in Windows.          */
 return|return
 name|RemoteBlockReader2
 operator|.
@@ -4638,6 +4618,17 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Exception while creating remote block reader, datanode {}"
+argument_list|,
+name|dnInfo
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 return|return
 literal|null
 return|;
