@@ -753,6 +753,20 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"  User: {}"
+argument_list|,
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"user.name"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
 literal|"  KMS Hadoop Version: "
 operator|+
 name|VersionInfo

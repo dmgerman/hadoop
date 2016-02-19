@@ -2924,6 +2924,15 @@ literal|"Starting "
 operator|+
 name|classname
 block|,
+literal|"  user = "
+operator|+
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"user.name"
+argument_list|)
+block|,
 literal|"  host = "
 operator|+
 name|hostname
