@@ -2006,9 +2006,29 @@ literal|", ignoreFailures="
 operator|+
 name|ignoreFailures
 operator|+
+literal|", overwrite="
+operator|+
+name|overwrite
+operator|+
+literal|", skipCRC="
+operator|+
+name|skipCRC
+operator|+
+literal|", blocking="
+operator|+
+name|blocking
+operator|+
+literal|", numListstatusThreads="
+operator|+
+name|numListstatusThreads
+operator|+
 literal|", maxMaps="
 operator|+
 name|maxMaps
+operator|+
+literal|", mapBandwidth="
+operator|+
+name|mapBandwidth
 operator|+
 literal|", sslConfigurationFile='"
 operator|+
@@ -2021,6 +2041,22 @@ operator|+
 name|copyStrategy
 operator|+
 literal|'\''
+operator|+
+literal|", preserveStatus="
+operator|+
+name|preserveStatus
+operator|+
+literal|", preserveRawXattrs="
+operator|+
+name|preserveRawXattrs
+operator|+
+literal|", atomicWorkPath="
+operator|+
+name|atomicWorkPath
+operator|+
+literal|", logPath="
+operator|+
+name|logPath
 operator|+
 literal|", sourceFileListing="
 operator|+
@@ -2037,10 +2073,6 @@ operator|+
 literal|", targetPathExists="
 operator|+
 name|targetPathExists
-operator|+
-literal|", preserveRawXattrs="
-operator|+
-name|preserveRawXattrs
 operator|+
 literal|", filtersFile='"
 operator|+

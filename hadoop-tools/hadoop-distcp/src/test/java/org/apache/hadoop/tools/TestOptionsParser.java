@@ -1752,13 +1752,29 @@ decl_stmt|;
 name|String
 name|val
 init|=
-literal|"DistCpOptions{atomicCommit=false, syncFolder=false, deleteMissing=false, "
+literal|"DistCpOptions{atomicCommit=false, syncFolder=false, "
 operator|+
-literal|"ignoreFailures=false, maxMaps=20, sslConfigurationFile='null', copyStrategy='uniformsize', "
+literal|"deleteMissing=false, ignoreFailures=false, overwrite=false, "
 operator|+
-literal|"sourceFileListing=abc, sourcePaths=null, targetPath=xyz, targetPathExists=true, "
+literal|"skipCRC=false, blocking=true, numListstatusThreads=0, maxMaps=20, "
 operator|+
-literal|"preserveRawXattrs=false, filtersFile='null'}"
+literal|"mapBandwidth=100.0, sslConfigurationFile='null', "
+operator|+
+literal|"copyStrategy='uniformsize', preserveStatus=[], "
+operator|+
+literal|"preserveRawXattrs=false, atomicWorkPath=null, logPath=null, "
+operator|+
+literal|"sourceFileListing=abc, sourcePaths=null, targetPath=xyz, "
+operator|+
+literal|"targetPathExists=true, filtersFile='null'}"
+decl_stmt|;
+name|String
+name|optionString
+init|=
+name|option
+operator|.
+name|toString
+argument_list|()
 decl_stmt|;
 name|Assert
 operator|.
@@ -1766,10 +1782,7 @@ name|assertEquals
 argument_list|(
 name|val
 argument_list|,
-name|option
-operator|.
-name|toString
-argument_list|()
+name|optionString
 argument_list|)
 expr_stmt|;
 name|Assert
