@@ -690,6 +690,10 @@ literal|"\n\t[-include [-f<hosts-file> |<comma-separated list of hosts>]]"
 operator|+
 literal|"\tIncludes only the specified datanodes."
 operator|+
+literal|"\n\t[-source [-f<hosts-file> |<comma-separated list of hosts>]]"
+operator|+
+literal|"\tPick only the specified datanodes as source nodes."
+operator|+
 literal|"\n\t[-blockpools<comma-separated list of blockpool ids>]"
 operator|+
 literal|"\tThe balancer will only run on blockpools included in this list."
