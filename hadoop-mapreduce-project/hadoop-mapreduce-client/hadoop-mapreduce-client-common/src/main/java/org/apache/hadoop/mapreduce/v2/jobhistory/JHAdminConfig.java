@@ -737,7 +737,7 @@ specifier|final
 name|String
 name|DEFAULT_MR_HS_JHIST_FORMAT
 init|=
-literal|"json"
+literal|"binary"
 decl_stmt|;
 block|}
 end_class
