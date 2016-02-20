@@ -1692,14 +1692,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getFileBlockLocations (Path p, long start, long len)
+DECL|method|getFileBlockLocations (FileStatus file, long start, long len)
 specifier|public
 name|BlockLocation
 index|[]
 name|getFileBlockLocations
 parameter_list|(
-name|Path
-name|p
+name|FileStatus
+name|file
 parameter_list|,
 name|long
 name|start
