@@ -754,6 +754,8 @@ argument_list|(
 literal|1
 argument_list|,
 literal|1
+argument_list|,
+literal|1
 argument_list|)
 return|;
 block|}
@@ -767,9 +769,7 @@ name|racks
 init|=
 operator|new
 name|TreeSet
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -779,6 +779,7 @@ name|dn
 range|:
 name|locs
 control|)
+block|{
 name|racks
 operator|.
 name|add
@@ -789,6 +790,7 @@ name|getNetworkLocation
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|BlockPlacementStatusDefault
@@ -799,6 +801,11 @@ name|size
 argument_list|()
 argument_list|,
 name|numberOfReplicas
+argument_list|,
+name|clusterMap
+operator|.
+name|getNumOfRacks
+argument_list|()
 argument_list|)
 return|;
 block|}

@@ -1280,7 +1280,32 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|//      IOUtils.cleanup(null, readerInfo.reader);
+if|if
+condition|(
+name|readerInfo
+operator|.
+name|reader
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|readerInfo
+operator|.
+name|reader
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|ignored
+parameter_list|)
+block|{         }
+block|}
 name|readerInfo
 operator|.
 name|skip

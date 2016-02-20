@@ -4229,6 +4229,8 @@ argument_list|(
 literal|1
 argument_list|,
 literal|1
+argument_list|,
+literal|1
 argument_list|)
 return|;
 block|}
@@ -4288,6 +4290,11 @@ name|size
 argument_list|()
 argument_list|,
 name|minRacks
+argument_list|,
+name|clusterMap
+operator|.
+name|getNumOfRacks
+argument_list|()
 argument_list|)
 return|;
 block|}

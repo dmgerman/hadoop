@@ -240,6 +240,29 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|addTaskToDatanode ()
+name|void
+name|addTaskToDatanode
+parameter_list|()
+block|{
+name|getSrcNodes
+argument_list|()
+index|[
+literal|0
+index|]
+operator|.
+name|addBlockToBeReplicated
+argument_list|(
+name|getBlock
+argument_list|()
+argument_list|,
+name|getTargets
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

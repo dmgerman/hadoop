@@ -349,6 +349,13 @@ argument_list|>
 name|excludedNodes
 parameter_list|)
 function_decl|;
+comment|/**    * add reconstruction task into a source datanode    */
+DECL|method|addTaskToDatanode ()
+specifier|abstract
+name|void
+name|addTaskToDatanode
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

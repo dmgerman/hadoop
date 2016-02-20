@@ -1593,7 +1593,7 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-comment|// Create a file with one block with a replication factor of 2
+comment|// Create a file with one block with a replication factor of 3
 specifier|final
 name|FileSystem
 name|fs
@@ -1767,7 +1767,8 @@ name|dnId
 argument_list|)
 expr_stmt|;
 comment|// Make sure we have enough live replicas even though we are
-comment|// short one rack and therefore need one replica
+comment|// short one rack. The cluster now has only 1 rack thus we just make sure
+comment|// we still have 3 replicas.
 name|DFSTestUtil
 operator|.
 name|waitForReplication
@@ -1780,7 +1781,7 @@ literal|1
 argument_list|,
 name|REPLICATION_FACTOR
 argument_list|,
-literal|1
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -1999,8 +2000,7 @@ argument_list|)
 expr_stmt|;
 comment|// The block gets re-replicated to another datanode so it has a
 comment|// sufficient # replicas, but not across racks, so there should
-comment|// be 1 rack, and 1 needed replica (even though there are 2 hosts
-comment|// available and only 2 replicas required).
+comment|// be 1 rack.
 name|DFSTestUtil
 operator|.
 name|waitForReplication
@@ -2013,7 +2013,7 @@ literal|1
 argument_list|,
 name|REPLICATION_FACTOR
 argument_list|,
-literal|1
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// Start the "failed" datanode, which has a replica so the block is

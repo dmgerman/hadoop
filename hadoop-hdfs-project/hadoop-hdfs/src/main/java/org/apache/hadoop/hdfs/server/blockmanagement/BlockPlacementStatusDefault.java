@@ -42,7 +42,13 @@ name|currentRacks
 init|=
 literal|0
 decl_stmt|;
-DECL|method|BlockPlacementStatusDefault (int currentRacks, int requiredRacks)
+DECL|field|totalRacks
+specifier|private
+specifier|final
+name|int
+name|totalRacks
+decl_stmt|;
+DECL|method|BlockPlacementStatusDefault (int currentRacks, int requiredRacks, int totalRacks)
 specifier|public
 name|BlockPlacementStatusDefault
 parameter_list|(
@@ -51,6 +57,9 @@ name|currentRacks
 parameter_list|,
 name|int
 name|requiredRacks
+parameter_list|,
+name|int
+name|totalRacks
 parameter_list|)
 block|{
 name|this
@@ -65,6 +74,12 @@ name|currentRacks
 operator|=
 name|currentRacks
 expr_stmt|;
+name|this
+operator|.
+name|totalRacks
+operator|=
+name|totalRacks
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -78,6 +93,10 @@ return|return
 name|requiredRacks
 operator|<=
 name|currentRacks
+operator|||
+name|currentRacks
+operator|>=
+name|totalRacks
 return|;
 block|}
 annotation|@
@@ -107,7 +126,9 @@ operator|-
 name|currentRacks
 operator|)
 operator|+
-literal|" more rack(s)."
+literal|" more rack(s). Total number of racks in the cluster: "
+operator|+
+name|totalRacks
 return|;
 block|}
 block|}

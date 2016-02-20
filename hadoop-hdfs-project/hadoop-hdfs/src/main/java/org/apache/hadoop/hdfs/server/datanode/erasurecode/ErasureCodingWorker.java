@@ -1303,17 +1303,43 @@ control|)
 block|{
 try|try
 block|{
-name|EC_RECONSTRUCTION_STRIPED_BLK_THREAD_POOL
-operator|.
-name|submit
-argument_list|(
+name|ReconstructAndTransferBlock
+name|task
+init|=
 operator|new
 name|ReconstructAndTransferBlock
 argument_list|(
 name|reconstructionInfo
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|task
+operator|.
+name|hasValidTargets
+argument_list|()
+condition|)
+block|{
+name|EC_RECONSTRUCTION_STRIPED_BLK_THREAD_POOL
+operator|.
+name|submit
+argument_list|(
+name|task
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"No missing internal block. Skip reconstruction for task:{}"
+argument_list|,
+name|reconstructionInfo
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1580,6 +1606,12 @@ argument_list|<>
 argument_list|(
 name|EC_RECONSTRUCTION_STRIPED_READ_THREAD_POOL
 argument_list|)
+decl_stmt|;
+DECL|field|hasValidTargets
+specifier|private
+specifier|final
+name|boolean
+name|hasValidTargets
 decl_stmt|;
 DECL|method|ReconstructAndTransferBlock (BlockECReconstructionInfo reconstructionInfo)
 name|ReconstructAndTransferBlock
@@ -1867,6 +1899,8 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+name|hasValidTargets
+operator|=
 name|getTargetIndices
 argument_list|()
 expr_stmt|;
@@ -1877,6 +1911,15 @@ operator|.
 name|newDefaultStrategy
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|hasValidTargets ()
+name|boolean
+name|hasValidTargets
+parameter_list|()
+block|{
+return|return
+name|hasValidTargets
+return|;
 block|}
 DECL|method|allocateBuffer (int length)
 specifier|private
@@ -2639,9 +2682,10 @@ argument_list|)
 assert|;
 block|}
 block|}
+comment|/**      * @return true if there is valid target for reconstruction      */
 DECL|method|getTargetIndices ()
 specifier|private
-name|void
+name|boolean
 name|getTargetIndices
 parameter_list|()
 block|{
@@ -2693,6 +2737,11 @@ name|int
 name|k
 init|=
 literal|0
+decl_stmt|;
+name|boolean
+name|hasValidTarget
+init|=
+literal|false
 decl_stmt|;
 for|for
 control|(
@@ -2754,6 +2803,10 @@ name|short
 operator|)
 name|i
 expr_stmt|;
+name|hasValidTarget
+operator|=
+literal|true
+expr_stmt|;
 block|}
 block|}
 else|else
@@ -2772,6 +2825,9 @@ expr_stmt|;
 block|}
 block|}
 block|}
+return|return
+name|hasValidTarget
+return|;
 block|}
 comment|/** the reading length should not exceed the length for reconstruction. */
 DECL|method|getReadLength (int index, int reconstructLength)
