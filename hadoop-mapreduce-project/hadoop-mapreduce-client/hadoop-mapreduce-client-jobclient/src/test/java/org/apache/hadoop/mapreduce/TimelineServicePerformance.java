@@ -255,7 +255,7 @@ literal|"     [-v] timeline service version\n"
 operator|+
 literal|"     [-mtype<mapper type in integer>]\n"
 operator|+
-literal|"          1. simple entity write mapper\n"
+literal|"          1. simple entity write mapper (default)\n"
 operator|+
 literal|"          2. jobhistory files replay mapper\n"
 operator|+
