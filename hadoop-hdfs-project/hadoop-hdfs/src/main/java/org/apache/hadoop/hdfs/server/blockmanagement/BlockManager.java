@@ -10173,7 +10173,10 @@ name|Block
 argument_list|>
 name|invalidatedBlocks
 init|=
-literal|null
+name|Collections
+operator|.
+name|emptyList
+argument_list|()
 decl_stmt|;
 try|try
 block|{
@@ -10557,13 +10560,6 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|invalidatedBlocks
-operator|!=
-literal|null
-condition|)
-block|{
 for|for
 control|(
 name|Block
@@ -10574,7 +10570,7 @@ control|)
 block|{
 name|blockLog
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"BLOCK* processReport: {} on node {} size {} does not "
 operator|+
@@ -10590,7 +10586,6 @@ name|getNumBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|// Log the block report processing stats from Namenode perspective
 specifier|final
@@ -10630,7 +10625,9 @@ name|info
 argument_list|(
 literal|"BLOCK* processReport: from storage {} node {}, "
 operator|+
-literal|"blocks: {}, hasStaleStorage: {}, processing time: {} msecs"
+literal|"blocks: {}, hasStaleStorage: {}, processing time: {} msecs, "
+operator|+
+literal|"invalidatedBlocks: {}"
 argument_list|,
 name|storage
 operator|.
@@ -10654,6 +10651,11 @@ name|endTime
 operator|-
 name|startTime
 operator|)
+argument_list|,
+name|invalidatedBlocks
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
