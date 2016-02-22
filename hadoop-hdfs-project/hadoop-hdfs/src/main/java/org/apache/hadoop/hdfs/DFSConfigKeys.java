@@ -5617,6 +5617,16 @@ name|DFS_DATANODE_SLOW_IO_WARNING_THRESHOLD_DEFAULT
 init|=
 literal|300
 decl_stmt|;
+comment|// Number of parallel threads to load multiple datanode volumes
+DECL|field|DFS_DATANODE_PARALLEL_VOLUME_LOAD_THREADS_NUM_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_PARALLEL_VOLUME_LOAD_THREADS_NUM_KEY
+init|=
+literal|"dfs.datanode.parallel.volumes.load.threads.num"
+decl_stmt|;
 DECL|field|DFS_DATANODE_BLOCK_ID_LAYOUT_UPGRADE_THREADS_KEY
 specifier|public
 specifier|static

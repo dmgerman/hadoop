@@ -118,6 +118,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|Callable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|ConcurrentHashMap
 import|;
 end_import
@@ -723,7 +735,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Load one storage directory. Recover from previous transitions if required.    *    * @param nsInfo namespace information    * @param dataDir the root path of the storage directory    * @param startOpt startup option    * @return the StorageDirectory successfully loaded.    * @throws IOException    */
-DECL|method|loadStorageDirectory (NamespaceInfo nsInfo, File dataDir, StartupOption startOpt, Configuration conf)
+DECL|method|loadStorageDirectory (NamespaceInfo nsInfo, File dataDir, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 specifier|private
 name|StorageDirectory
 name|loadStorageDirectory
@@ -736,6 +748,15 @@ name|dataDir
 parameter_list|,
 name|StartupOption
 name|startOpt
+parameter_list|,
+name|List
+argument_list|<
+name|Callable
+argument_list|<
+name|StorageDirectory
+argument_list|>
+argument_list|>
+name|callables
 parameter_list|,
 name|Configuration
 name|conf
@@ -851,6 +872,7 @@ comment|// During startup some of them can upgrade or roll back
 comment|// while others could be up-to-date for the regular startup.
 if|if
 condition|(
+operator|!
 name|doTransition
 argument_list|(
 name|sd
@@ -859,14 +881,13 @@ name|nsInfo
 argument_list|,
 name|startOpt
 argument_list|,
+name|callables
+argument_list|,
 name|conf
 argument_list|)
 condition|)
 block|{
-return|return
-name|sd
-return|;
-block|}
+comment|// 3. Check CTime and update successfully loaded storage.
 if|if
 condition|(
 name|getCTime
@@ -898,7 +919,6 @@ literal|")"
 argument_list|)
 throw|;
 block|}
-comment|// 3. Update successfully loaded storage.
 name|setServiceLayoutVersion
 argument_list|(
 name|getServiceLayoutVersion
@@ -910,6 +930,7 @@ argument_list|(
 name|sd
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|sd
 return|;
@@ -931,7 +952,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Analyze and load storage directories. Recover from previous transitions if    * required.    *    * The block pool storages are either all analyzed or none of them is loaded.    * Therefore, a failure on loading any block pool storage results a faulty    * data volume.    *    * @param nsInfo namespace information    * @param dataDirs storage directories of block pool    * @param startOpt startup option    * @return an array of loaded block pool directories.    * @throws IOException on error    */
-DECL|method|loadBpStorageDirectories (NamespaceInfo nsInfo, Collection<File> dataDirs, StartupOption startOpt, Configuration conf)
+DECL|method|loadBpStorageDirectories (NamespaceInfo nsInfo, Collection<File> dataDirs, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 name|List
 argument_list|<
 name|StorageDirectory
@@ -949,6 +970,15 @@ name|dataDirs
 parameter_list|,
 name|StartupOption
 name|startOpt
+parameter_list|,
+name|List
+argument_list|<
+name|Callable
+argument_list|<
+name|StorageDirectory
+argument_list|>
+argument_list|>
+name|callables
 parameter_list|,
 name|Configuration
 name|conf
@@ -1009,6 +1039,8 @@ name|dataDir
 argument_list|,
 name|startOpt
 argument_list|,
+name|callables
+argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
@@ -1050,7 +1082,7 @@ name|succeedDirs
 return|;
 block|}
 comment|/**    * Analyze storage directories. Recover from previous transitions if required.    *    * The block pool storages are either all analyzed or none of them is loaded.    * Therefore, a failure on loading any block pool storage results a faulty    * data volume.    *    * @param nsInfo namespace information    * @param dataDirs storage directories of block pool    * @param startOpt startup option    * @throws IOException on error    */
-DECL|method|recoverTransitionRead (NamespaceInfo nsInfo, Collection<File> dataDirs, StartupOption startOpt, Configuration conf)
+DECL|method|recoverTransitionRead (NamespaceInfo nsInfo, Collection<File> dataDirs, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 name|List
 argument_list|<
 name|StorageDirectory
@@ -1068,6 +1100,15 @@ name|dataDirs
 parameter_list|,
 name|StartupOption
 name|startOpt
+parameter_list|,
+name|List
+argument_list|<
+name|Callable
+argument_list|<
+name|StorageDirectory
+argument_list|>
+argument_list|>
+name|callables
 parameter_list|,
 name|Configuration
 name|conf
@@ -1101,6 +1142,8 @@ argument_list|,
 name|dataDirs
 argument_list|,
 name|startOpt
+argument_list|,
+name|callables
 argument_list|,
 name|conf
 argument_list|)
@@ -1539,7 +1582,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Analyze whether a transition of the BP state is required and    * perform it if necessary.    *<br>    * Rollback if previousLV>= LAYOUT_VERSION&& prevCTime<= namenode.cTime.    * Upgrade if this.LV> LAYOUT_VERSION || this.cTime< namenode.cTime Regular    * startup if this.LV = LAYOUT_VERSION&& this.cTime = namenode.cTime    *     * @param sd storage directory<SD>/current/<bpid>    * @param nsInfo namespace info    * @param startOpt startup option    * @return true if the new properties has been written.    */
-DECL|method|doTransition (StorageDirectory sd, NamespaceInfo nsInfo, StartupOption startOpt, Configuration conf)
+DECL|method|doTransition (StorageDirectory sd, NamespaceInfo nsInfo, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 specifier|private
 name|boolean
 name|doTransition
@@ -1552,6 +1595,15 @@ name|nsInfo
 parameter_list|,
 name|StartupOption
 name|startOpt
+parameter_list|,
+name|List
+argument_list|<
+name|Callable
+argument_list|<
+name|StorageDirectory
+argument_list|>
+argument_list|>
+name|callables
 parameter_list|,
 name|Configuration
 name|conf
@@ -1852,6 +1904,8 @@ name|sd
 argument_list|,
 name|nsInfo
 argument_list|,
+name|callables
+argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
@@ -1897,7 +1951,7 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * Upgrade to any release after 0.22 (0.22 included) release e.g. 0.22 => 0.23    * Upgrade procedure is as follows:    *<ol>    *<li>If<SD>/current/<bpid>/previous exists then delete it</li>    *<li>Rename<SD>/current/<bpid>/current to    *<SD>/current/bpid/current/previous.tmp</li>    *<li>Create new<SD>current/<bpid>/current directory</li>    *<ol>    *<li>Hard links for block files are created from previous.tmp to current</li>    *<li>Save new version file in current directory</li>    *</ol>    *<li>Rename previous.tmp to previous</li></ol>    *     * @param bpSd storage directory<SD>/current/<bpid>    * @param nsInfo Namespace Info from the namenode    * @throws IOException on error    */
-DECL|method|doUpgrade (final StorageDirectory bpSd, final NamespaceInfo nsInfo, final Configuration conf)
+DECL|method|doUpgrade (final StorageDirectory bpSd, final NamespaceInfo nsInfo, final List<Callable<StorageDirectory>> callables, final Configuration conf)
 specifier|private
 name|void
 name|doUpgrade
@@ -1909,6 +1963,16 @@ parameter_list|,
 specifier|final
 name|NamespaceInfo
 name|nsInfo
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|Callable
+argument_list|<
+name|StorageDirectory
+argument_list|>
+argument_list|>
+name|callables
 parameter_list|,
 specifier|final
 name|Configuration
@@ -2127,7 +2191,14 @@ operator|.
 name|getRoot
 argument_list|()
 decl_stmt|;
-name|doUgrade
+if|if
+condition|(
+name|callables
+operator|==
+literal|null
+condition|)
+block|{
+name|doUpgrade
 argument_list|(
 name|name
 argument_list|,
@@ -2147,10 +2218,60 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|doUgrade (String name, final StorageDirectory bpSd, NamespaceInfo nsInfo, final File bpPrevDir, final File bpTmpDir, final File bpCurDir, final int oldLV, Configuration conf)
+else|else
+block|{
+name|callables
+operator|.
+name|add
+argument_list|(
+operator|new
+name|Callable
+argument_list|<
+name|StorageDirectory
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|StorageDirectory
+name|call
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|doUpgrade
+argument_list|(
+name|name
+argument_list|,
+name|bpSd
+argument_list|,
+name|nsInfo
+argument_list|,
+name|bpPrevDir
+argument_list|,
+name|bpTmpDir
+argument_list|,
+name|bpCurDir
+argument_list|,
+name|oldLV
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+return|return
+name|bpSd
+return|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|doUpgrade (String name, final StorageDirectory bpSd, NamespaceInfo nsInfo, final File bpPrevDir, final File bpTmpDir, final File bpCurDir, final int oldLV, Configuration conf)
 specifier|private
 name|void
-name|doUgrade
+name|doUpgrade
 parameter_list|(
 name|String
 name|name
