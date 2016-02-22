@@ -212,7 +212,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|WorkStatus
+name|DiskBalancerWorkStatus
 import|;
 end_import
 
@@ -413,7 +413,7 @@ name|IOException
 function_decl|;
 comment|/**    * Gets the status of an executing diskbalancer Plan.    */
 DECL|method|queryDiskBalancerPlan ()
-name|WorkStatus
+name|DiskBalancerWorkStatus
 name|queryDiskBalancerPlan
 parameter_list|()
 throws|throws

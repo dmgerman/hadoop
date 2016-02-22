@@ -34,6 +34,20 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * Helper class that reports how much work has has been done by the node.  */
 end_comment
@@ -43,35 +57,43 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|WorkStatus
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|class|DiskBalancerWorkStatus
 specifier|public
 class|class
-name|WorkStatus
+name|DiskBalancerWorkStatus
 block|{
 DECL|field|result
 specifier|private
+specifier|final
 name|int
 name|result
 decl_stmt|;
 DECL|field|planID
 specifier|private
+specifier|final
 name|String
 name|planID
 decl_stmt|;
 DECL|field|status
 specifier|private
+specifier|final
 name|String
 name|status
 decl_stmt|;
 DECL|field|currentState
 specifier|private
+specifier|final
 name|String
 name|currentState
 decl_stmt|;
 comment|/**    * Constructs a workStatus Object.    *    * @param result       - int    * @param planID       - Plan ID    * @param status       - Current Status    * @param currentState - Current State    */
-DECL|method|WorkStatus (int result, String planID, String status, String currentState)
+DECL|method|DiskBalancerWorkStatus (int result, String planID, String status, String currentState)
 specifier|public
-name|WorkStatus
+name|DiskBalancerWorkStatus
 parameter_list|(
 name|int
 name|result

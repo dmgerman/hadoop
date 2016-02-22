@@ -6008,6 +6008,25 @@ name|HdfsConstants
 operator|.
 name|DEFAULT_DATA_SOCKET_SIZE
 decl_stmt|;
+comment|// Disk Balancer Keys
+DECL|field|DFS_DISK_BALANCER_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DISK_BALANCER_ENABLED
+init|=
+literal|"dfs.disk.balancer.enabled"
+decl_stmt|;
+DECL|field|DFS_DISK_BALANCER_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_DISK_BALANCER_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// dfs.client.retry confs are moved to HdfsClientConfigKeys.Retry
 annotation|@
 name|Deprecated

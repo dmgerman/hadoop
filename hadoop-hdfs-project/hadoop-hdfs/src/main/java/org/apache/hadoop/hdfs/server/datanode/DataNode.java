@@ -2238,7 +2238,7 @@ name|server
 operator|.
 name|diskbalancer
 operator|.
-name|DiskbalancerException
+name|DiskBalancerException
 import|;
 end_import
 
@@ -3594,6 +3594,11 @@ name|double
 name|CONGESTION_RATIO
 init|=
 literal|1.5
+decl_stmt|;
+DECL|field|diskBalancer
+specifier|private
+name|DiskBalancer
+name|diskBalancer
 decl_stmt|;
 DECL|method|createTracer (Configuration conf)
 specifier|private
@@ -6533,6 +6538,94 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Initilizes {@link DiskBalancer}.    * @param  data - FSDataSet    * @param conf - Config    */
+DECL|method|initDiskBalancer (FsDatasetSpi data, Configuration conf)
+specifier|private
+specifier|synchronized
+name|void
+name|initDiskBalancer
+parameter_list|(
+name|FsDatasetSpi
+name|data
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|diskBalancer
+operator|!=
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+name|DiskBalancer
+operator|.
+name|BlockMover
+name|mover
+init|=
+operator|new
+name|DiskBalancer
+operator|.
+name|DiskBalancerMover
+argument_list|(
+name|data
+argument_list|,
+name|conf
+argument_list|)
+decl_stmt|;
+name|this
+operator|.
+name|diskBalancer
+operator|=
+operator|new
+name|DiskBalancer
+argument_list|(
+name|getDatanodeUuid
+argument_list|()
+argument_list|,
+name|conf
+argument_list|,
+name|mover
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Shutdown disk balancer.    */
+DECL|method|shutdownDiskBalancer ()
+specifier|private
+specifier|synchronized
+name|void
+name|shutdownDiskBalancer
+parameter_list|()
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|diskBalancer
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|diskBalancer
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|diskBalancer
+operator|=
+literal|null
+expr_stmt|;
+block|}
+block|}
 DECL|method|initDataXceiver (Configuration conf)
 specifier|private
 name|void
@@ -8621,6 +8714,13 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|initDiskBalancer
+argument_list|(
+name|data
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getAllBpOs ()
 name|List
@@ -10044,6 +10144,9 @@ expr_stmt|;
 block|}
 comment|// Terminate directory scanner and block scanner
 name|shutdownPeriodicScanners
+argument_list|()
+expr_stmt|;
+name|shutdownDiskBalancer
 argument_list|()
 expr_stmt|;
 comment|// Stop the web server
@@ -15664,7 +15767,7 @@ return|return
 name|tracer
 return|;
 block|}
-comment|/**    * Allows submission of a disk balancer Job.    * @param planID  - Hash value of the plan.    * @param planVersion - Plan version, reserved for future use. We have only    *                    version 1 now.    * @param bandwidth - Max disk bandwidth to use, 0 means use value defined    *                  in the configration.    * @param plan - Actual plan    * @return  success or throws an exception.    * @throws Exception    */
+comment|/**    * Allows submission of a disk balancer Job.    * @param planID  - Hash value of the plan.    * @param planVersion - Plan version, reserved for future use. We have only    *                    version 1 now.    * @param bandwidth - Max disk bandwidth to use, 0 means use value defined    *                  in the configration.    * @param plan - Actual plan    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|submitDiskBalancerPlan (String planID, long planVersion, long bandwidth, String plan)
@@ -15687,19 +15790,27 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// TODO : This will be replaced with actual code later.
-comment|// Right now throwing DiskbalancerException instead
-comment|// NotImplementedException to indicate the eventually disk balancer code
-comment|// will throw DiskbalancerException.
-throw|throw
-operator|new
-name|DiskbalancerException
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+comment|// TODO : Support force option
+name|this
+operator|.
+name|diskBalancer
+operator|.
+name|submitPlan
 argument_list|(
-literal|"Not Implemented"
+name|planID
 argument_list|,
-literal|0
+name|planVersion
+argument_list|,
+name|plan
+argument_list|,
+name|bandwidth
+argument_list|,
+literal|false
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -15719,11 +15830,15 @@ argument_list|()
 expr_stmt|;
 throw|throw
 operator|new
-name|DiskbalancerException
+name|DiskBalancerException
 argument_list|(
 literal|"Not Implemented"
 argument_list|,
-literal|0
+name|DiskBalancerException
+operator|.
+name|Result
+operator|.
+name|INTERNAL_ERROR
 argument_list|)
 throw|;
 block|}
@@ -15731,7 +15846,7 @@ annotation|@
 name|Override
 DECL|method|queryDiskBalancerPlan ()
 specifier|public
-name|WorkStatus
+name|DiskBalancerWorkStatus
 name|queryDiskBalancerPlan
 parameter_list|()
 throws|throws
@@ -15742,11 +15857,15 @@ argument_list|()
 expr_stmt|;
 throw|throw
 operator|new
-name|DiskbalancerException
+name|DiskBalancerException
 argument_list|(
 literal|"Not Implemented"
 argument_list|,
-literal|0
+name|DiskBalancerException
+operator|.
+name|Result
+operator|.
+name|INTERNAL_ERROR
 argument_list|)
 throw|;
 block|}
@@ -15769,11 +15888,15 @@ argument_list|()
 expr_stmt|;
 throw|throw
 operator|new
-name|DiskbalancerException
+name|DiskBalancerException
 argument_list|(
 literal|"Not Implemented"
 argument_list|,
-literal|0
+name|DiskBalancerException
+operator|.
+name|Result
+operator|.
+name|INTERNAL_ERROR
 argument_list|)
 throw|;
 block|}

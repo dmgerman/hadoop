@@ -768,7 +768,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|WorkStatus
+name|DiskBalancerWorkStatus
 import|;
 end_import
 
@@ -1723,7 +1723,7 @@ name|ServiceException
 block|{
 try|try
 block|{
-name|WorkStatus
+name|DiskBalancerWorkStatus
 name|result
 init|=
 name|impl

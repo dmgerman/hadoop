@@ -724,7 +724,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|WorkStatus
+name|DiskBalancerWorkStatus
 import|;
 end_import
 
@@ -2146,7 +2146,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Submits a disk balancer plan to the datanode.    * @param planID - Plan ID is the hash512 string of the plan that is    *               submitted. This is used by clients when they want to find    *               local copies of these plans.    * @param planVersion - The data format of the plans - for future , not    *                    used now.    * @param bandwidth - Maximum disk bandwidth to consume, setting this value    *                  to zero allows datanode to use the value defined in    *                  configration.    * @param plan - Actual plan.    * @return Success or throws Exception.    * @throws Exception    */
+comment|/**    * Submits a disk balancer plan to the datanode.    * @param planID - Plan ID is the hash512 string of the plan that is    *               submitted. This is used by clients when they want to find    *               local copies of these plans.    * @param planVersion - The data format of the plans - for future , not    *                    used now.    * @param bandwidth - Maximum disk bandwidth to consume, setting this value    *                  to zero allows datanode to use the value defined in    *                  configration.    * @param plan - Actual plan.    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|submitDiskBalancerPlan (String planID, long planVersion, long bandwidth, String plan)
@@ -2291,7 +2291,7 @@ annotation|@
 name|Override
 DECL|method|queryDiskBalancerPlan ()
 specifier|public
-name|WorkStatus
+name|DiskBalancerWorkStatus
 name|queryDiskBalancerPlan
 parameter_list|()
 throws|throws
@@ -2324,7 +2324,7 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|new
-name|WorkStatus
+name|DiskBalancerWorkStatus
 argument_list|(
 name|response
 operator|.
