@@ -156,6 +156,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -703,6 +717,15 @@ operator|*
 literal|60
 operator|*
 literal|1000
+decl_stmt|;
+DECL|field|numOfBlocks
+specifier|private
+name|AtomicLong
+name|numOfBlocks
+init|=
+operator|new
+name|AtomicLong
+argument_list|()
 decl_stmt|;
 DECL|field|cachedDfsUsedCheckTime
 specifier|private
@@ -1453,7 +1476,9 @@ name|getBlockName
 argument_list|()
 argument_list|)
 decl_stmt|;
-return|return
+name|File
+name|tmpFile
+init|=
 name|DatanodeUtil
 operator|.
 name|createTmpFile
@@ -1462,6 +1487,14 @@ name|b
 argument_list|,
 name|f
 argument_list|)
+decl_stmt|;
+comment|// If any exception during creation, its expected that counter will not be
+comment|// incremented, So no need to decrement
+name|incrNumBlocks
+argument_list|()
+expr_stmt|;
+return|return
+name|tmpFile
 return|;
 block|}
 comment|/**    * RBW files. They get moved to the finalized block directory when    * the block is finalized.    */
@@ -1489,7 +1522,9 @@ name|getBlockName
 argument_list|()
 argument_list|)
 decl_stmt|;
-return|return
+name|File
+name|rbwFile
+init|=
 name|DatanodeUtil
 operator|.
 name|createTmpFile
@@ -1498,6 +1533,14 @@ name|b
 argument_list|,
 name|f
 argument_list|)
+decl_stmt|;
+comment|// If any exception during creation, its expected that counter will not be
+comment|// incremented, So no need to decrement
+name|incrNumBlocks
+argument_list|()
+expr_stmt|;
+return|return
+name|rbwFile
 return|;
 block|}
 DECL|method|addFinalizedBlock (Block b, File f)
@@ -2581,6 +2624,17 @@ name|blockId
 argument_list|,
 literal|false
 argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|oldReplica
+operator|==
+literal|null
+condition|)
+block|{
+name|incrNumBlocks
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -4087,6 +4141,41 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+DECL|method|incrNumBlocks ()
+name|void
+name|incrNumBlocks
+parameter_list|()
+block|{
+name|numOfBlocks
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|decrNumBlocks ()
+name|void
+name|decrNumBlocks
+parameter_list|()
+block|{
+name|numOfBlocks
+operator|.
+name|decrementAndGet
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|getNumOfBlocks ()
+specifier|public
+name|long
+name|getNumOfBlocks
+parameter_list|()
+block|{
+return|return
+name|numOfBlocks
+operator|.
+name|get
+argument_list|()
+return|;
 block|}
 block|}
 end_class

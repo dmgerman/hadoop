@@ -5686,6 +5686,37 @@ argument_list|,
 name|newReplicaInfo
 argument_list|)
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+comment|// Increment numBlocks here as this block moved without knowing to BPS
+name|FsVolumeImpl
+name|volume
+init|=
+operator|(
+name|FsVolumeImpl
+operator|)
+name|newReplicaInfo
+operator|.
+name|getVolume
+argument_list|()
+decl_stmt|;
+name|volume
+operator|.
+name|getBlockPoolSlice
+argument_list|(
+name|block
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+operator|.
+name|incrNumBlocks
+argument_list|()
+expr_stmt|;
+block|}
 name|removeOldReplica
 argument_list|(
 name|replicaInfo
@@ -13781,6 +13812,11 @@ name|reservedSpaceForReplicas
 decl_stmt|;
 comment|// size of space reserved RBW or
 comment|// re-replication
+DECL|field|numBlocks
+specifier|final
+name|long
+name|numBlocks
+decl_stmt|;
 DECL|method|VolumeInfo (FsVolumeImpl v, long usedSpace, long freeSpace)
 name|VolumeInfo
 parameter_list|(
@@ -13831,6 +13867,15 @@ operator|=
 name|v
 operator|.
 name|getReservedForReplicas
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|numBlocks
+operator|=
+name|v
+operator|.
+name|getNumBlocks
 argument_list|()
 expr_stmt|;
 block|}
@@ -14065,6 +14110,17 @@ argument_list|,
 name|v
 operator|.
 name|reservedSpaceForReplicas
+argument_list|)
+expr_stmt|;
+name|innerInfo
+operator|.
+name|put
+argument_list|(
+literal|"numBlocks"
+argument_list|,
+name|v
+operator|.
+name|numBlocks
 argument_list|)
 expr_stmt|;
 name|info
@@ -14513,7 +14569,7 @@ argument_list|)
 expr_stmt|;
 name|targetVolume
 operator|.
-name|incDfsUsed
+name|incDfsUsedAndNumBlocks
 argument_list|(
 name|bpId
 argument_list|,
