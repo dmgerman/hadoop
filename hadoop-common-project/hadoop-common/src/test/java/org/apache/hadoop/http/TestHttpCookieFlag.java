@@ -674,6 +674,16 @@ literal|"jks"
 argument_list|)
 argument_list|)
 operator|.
+name|excludeCiphers
+argument_list|(
+name|sslConf
+operator|.
+name|get
+argument_list|(
+literal|"ssl.server.exclude.cipher.list"
+argument_list|)
+argument_list|)
+operator|.
 name|build
 argument_list|()
 expr_stmt|;

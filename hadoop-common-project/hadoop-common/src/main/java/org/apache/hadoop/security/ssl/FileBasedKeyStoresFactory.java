@@ -320,6 +320,15 @@ name|SSL_TRUSTSTORE_TYPE_TPL_KEY
 init|=
 literal|"ssl.{0}.truststore.type"
 decl_stmt|;
+DECL|field|SSL_EXCLUDE_CIPHER_LIST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SSL_EXCLUDE_CIPHER_LIST
+init|=
+literal|"ssl.{0}.exclude.cipher.list"
+decl_stmt|;
 comment|/**    * Default format of the keystore files.    */
 DECL|field|DEFAULT_KEYSTORE_TYPE
 specifier|public

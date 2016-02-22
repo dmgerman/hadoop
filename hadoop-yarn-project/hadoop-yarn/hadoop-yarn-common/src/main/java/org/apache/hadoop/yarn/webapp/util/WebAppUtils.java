@@ -1775,6 +1775,16 @@ argument_list|,
 literal|"jks"
 argument_list|)
 argument_list|)
+operator|.
+name|excludeCiphers
+argument_list|(
+name|sslConf
+operator|.
+name|get
+argument_list|(
+literal|"ssl.server.exclude.cipher.list"
+argument_list|)
+argument_list|)
 return|;
 block|}
 comment|/**    * Leverages the Configuration.getPassword method to attempt to get    * passwords from the CredentialProvider API before falling back to    * clear text in config - if falling back is allowed.    * @param conf Configuration instance    * @param alias name of the credential to retreive    * @return String credential value or null    */

@@ -1120,7 +1120,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Performs complete setup of SSL configuration in preparation for testing an    * SSLFactory.  This includes keys, certs, keystores, truststores, the server    * SSL configuration file, the client SSL configuration file, and the master    * configuration file read by the SSLFactory.    *    * @param keystoresDir String directory to save keystores    * @param sslConfDir String directory to save SSL configuration files    * @param conf Configuration master configuration to be used by an SSLFactory,    * which will be mutated by this method    * @param useClientCert boolean true to make the client present a cert in the    * SSL handshake    * @param trustStore boolean true to create truststore, false not to create it    */
+comment|/**    * Performs complete setup of SSL configuration in preparation for testing an    * SSLFactory.  This includes keys, certs, keystores, truststores, the server    * SSL configuration file, the client SSL configuration file, and the master    * configuration file read by the SSLFactory.    *    * @param keystoresDir String directory to save keystores    * @param sslConfDir String directory to save SSL configuration files    * @param conf Configuration master configuration to be used by an SSLFactory,    * which will be mutated by this method    * @param useClientCert boolean true to make the client present a cert in the    * SSL handshake    * @param trustStore boolean true to create truststore, false not to create it    * @throws java.lang.Exception    */
 DECL|method|setupSSLConfig (String keystoresDir, String sslConfDir, Configuration conf, boolean useClientCert, boolean trustStore)
 specifier|public
 specifier|static
@@ -1141,6 +1141,50 @@ name|useClientCert
 parameter_list|,
 name|boolean
 name|trustStore
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|setupSSLConfig
+argument_list|(
+name|keystoresDir
+argument_list|,
+name|sslConfDir
+argument_list|,
+name|conf
+argument_list|,
+name|useClientCert
+argument_list|,
+literal|true
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Performs complete setup of SSL configuration in preparation for testing an      * SSLFactory.  This includes keys, certs, keystores, truststores, the server      * SSL configuration file, the client SSL configuration file, and the master      * configuration file read by the SSLFactory.      *      * @param keystoresDir      * @param sslConfDir      * @param conf      * @param useClientCert      * @param trustStore      * @param excludeCiphers      * @throws Exception      */
+DECL|method|setupSSLConfig (String keystoresDir, String sslConfDir, Configuration conf, boolean useClientCert, boolean trustStore, String excludeCiphers)
+specifier|public
+specifier|static
+name|void
+name|setupSSLConfig
+parameter_list|(
+name|String
+name|keystoresDir
+parameter_list|,
+name|String
+name|sslConfDir
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|boolean
+name|useClientCert
+parameter_list|,
+name|boolean
+name|trustStore
+parameter_list|,
+name|String
+name|excludeCiphers
 parameter_list|)
 throws|throws
 name|Exception
@@ -1367,6 +1411,8 @@ argument_list|,
 name|clientPassword
 argument_list|,
 name|trustKS
+argument_list|,
+name|excludeCiphers
 argument_list|)
 decl_stmt|;
 name|Configuration
@@ -1381,6 +1427,8 @@ argument_list|,
 name|serverPassword
 argument_list|,
 name|trustKS
+argument_list|,
+name|excludeCiphers
 argument_list|)
 decl_stmt|;
 name|saveConfig
@@ -1468,9 +1516,7 @@ name|String
 name|trustKS
 parameter_list|)
 block|{
-name|Configuration
-name|clientSSLConf
-init|=
+return|return
 name|createSSLConfig
 argument_list|(
 name|SSLFactory
@@ -1486,13 +1532,56 @@ argument_list|,
 name|keyPassword
 argument_list|,
 name|trustKS
+argument_list|,
+literal|""
 argument_list|)
-decl_stmt|;
-return|return
-name|clientSSLConf
 return|;
 block|}
-comment|/**    * Creates SSL configuration for a server.    *     * @param serverKS String server keystore file    * @param password String store password, or null to avoid setting store    *   password    * @param keyPassword String key password, or null to avoid setting key    *   password    * @param trustKS String truststore file    * @return Configuration for server SSL    */
+comment|/**    * Creates SSL configuration for a client.    *    * @param clientKS String client keystore file    * @param password String store password, or null to avoid setting store    *   password    * @param keyPassword String key password, or null to avoid setting key    *   password    * @param trustKS String truststore file    * @param excludeCiphers String comma separated ciphers to exclude    * @return Configuration for client SSL    */
+DECL|method|createClientSSLConfig (String clientKS, String password, String keyPassword, String trustKS, String excludeCiphers)
+specifier|public
+specifier|static
+name|Configuration
+name|createClientSSLConfig
+parameter_list|(
+name|String
+name|clientKS
+parameter_list|,
+name|String
+name|password
+parameter_list|,
+name|String
+name|keyPassword
+parameter_list|,
+name|String
+name|trustKS
+parameter_list|,
+name|String
+name|excludeCiphers
+parameter_list|)
+block|{
+return|return
+name|createSSLConfig
+argument_list|(
+name|SSLFactory
+operator|.
+name|Mode
+operator|.
+name|CLIENT
+argument_list|,
+name|clientKS
+argument_list|,
+name|password
+argument_list|,
+name|keyPassword
+argument_list|,
+name|trustKS
+argument_list|,
+name|excludeCiphers
+argument_list|)
+return|;
+block|}
+comment|/**    * Creates SSL configuration for a server.    *     * @param serverKS String server keystore file    * @param password String store password, or null to avoid setting store    *   password    * @param keyPassword String key password, or null to avoid setting key    *   password    * @param trustKS String truststore file    * @return Configuration for server SSL    * @throws java.io.IOException    */
 DECL|method|createServerSSLConfig (String serverKS, String password, String keyPassword, String trustKS)
 specifier|public
 specifier|static
@@ -1514,9 +1603,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Configuration
-name|serverSSLConf
-init|=
+return|return
 name|createSSLConfig
 argument_list|(
 name|SSLFactory
@@ -1532,10 +1619,55 @@ argument_list|,
 name|keyPassword
 argument_list|,
 name|trustKS
+argument_list|,
+literal|""
 argument_list|)
-decl_stmt|;
+return|;
+block|}
+comment|/**    * Creates SSL configuration for a server.    *    * @param serverKS String server keystore file    * @param password String store password, or null to avoid setting store    * password    * @param keyPassword String key password, or null to avoid setting key    * password    * @param trustKS String truststore file    * @param excludeCiphers String comma separated ciphers to exclude    * @return    * @throws IOException    */
+DECL|method|createServerSSLConfig (String serverKS, String password, String keyPassword, String trustKS, String excludeCiphers)
+specifier|public
+specifier|static
+name|Configuration
+name|createServerSSLConfig
+parameter_list|(
+name|String
+name|serverKS
+parameter_list|,
+name|String
+name|password
+parameter_list|,
+name|String
+name|keyPassword
+parameter_list|,
+name|String
+name|trustKS
+parameter_list|,
+name|String
+name|excludeCiphers
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 return|return
-name|serverSSLConf
+name|createSSLConfig
+argument_list|(
+name|SSLFactory
+operator|.
+name|Mode
+operator|.
+name|SERVER
+argument_list|,
+name|serverKS
+argument_list|,
+name|password
+argument_list|,
+name|keyPassword
+argument_list|,
+name|trustKS
+argument_list|,
+name|excludeCiphers
+argument_list|)
 return|;
 block|}
 comment|/**    * Returns the client SSL configuration file name.  Under parallel test    * execution, this file name is parameterized by a unique ID to ensure that    * concurrent tests don't collide on an SSL configuration file.    *    * @return client SSL configuration file name    */
@@ -1611,7 +1743,7 @@ literal|".xml"
 return|;
 block|}
 comment|/**    * Creates SSL configuration.    *    * @param mode SSLFactory.Mode mode to configure    * @param keystore String keystore file    * @param password String store password, or null to avoid setting store    *   password    * @param keyPassword String key password, or null to avoid setting key    *   password    * @param trustKS String truststore file    * @return Configuration for SSL    */
-DECL|method|createSSLConfig (SSLFactory.Mode mode, String keystore, String password, String keyPassword, String trustKS)
+DECL|method|createSSLConfig (SSLFactory.Mode mode, String keystore, String password, String keyPassword, String trustKS, String excludeCiphers)
 specifier|private
 specifier|static
 name|Configuration
@@ -1633,6 +1765,9 @@ name|keyPassword
 parameter_list|,
 name|String
 name|trustKS
+parameter_list|,
+name|String
+name|excludeCiphers
 parameter_list|)
 block|{
 name|String
@@ -1776,6 +1911,38 @@ name|SSL_TRUSTSTORE_PASSWORD_TPL_KEY
 argument_list|)
 argument_list|,
 name|trustPassword
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+literal|null
+operator|!=
+name|excludeCiphers
+operator|&&
+operator|!
+name|excludeCiphers
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|sslConf
+operator|.
+name|set
+argument_list|(
+name|FileBasedKeyStoresFactory
+operator|.
+name|resolvePropertyName
+argument_list|(
+name|mode
+argument_list|,
+name|FileBasedKeyStoresFactory
+operator|.
+name|SSL_EXCLUDE_CIPHER_LIST
+argument_list|)
+argument_list|,
+name|excludeCiphers
 argument_list|)
 expr_stmt|;
 block|}
