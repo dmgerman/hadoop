@@ -315,8 +315,6 @@ specifier|protected
 name|String
 name|exitStatus
 decl_stmt|;
-annotation|@
-name|XmlElementWrapper
 DECL|field|containerLogFiles
 specifier|protected
 name|List
