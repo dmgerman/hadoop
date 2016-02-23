@@ -1969,6 +1969,45 @@ name|xferPort
 argument_list|)
 return|;
 block|}
+comment|/** @return the datanode descriptors for all nodes. */
+DECL|method|getDatanodes ()
+specifier|public
+name|Set
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|getDatanodes
+parameter_list|()
+block|{
+specifier|final
+name|Set
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|datanodes
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|datanodes
+operator|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|(
+name|datanodeMap
+operator|.
+name|values
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|datanodes
+return|;
+block|}
 comment|/** @return the Host2NodesMap */
 DECL|method|getHost2DatanodeMap ()
 specifier|public
