@@ -607,39 +607,37 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testMissingStripedBlockWithBusyNode1 ()
+DECL|method|testMissingStripedBlockWithBusyNode ()
 specifier|public
 name|void
-name|testMissingStripedBlockWithBusyNode1
+name|testMissingStripedBlockWithBusyNode
 parameter_list|()
 throws|throws
 name|Exception
 block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|1
+init|;
+name|i
+operator|<=
+name|NUM_PARITY_BLOCKS
+condition|;
+name|i
+operator|++
+control|)
+block|{
 name|doTestMissingStripedBlock
 argument_list|(
-literal|2
+name|i
 argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-DECL|method|testMissingStripedBlockWithBusyNode2 ()
-specifier|public
-name|void
-name|testMissingStripedBlockWithBusyNode2
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|doTestMissingStripedBlock
-argument_list|(
-literal|3
-argument_list|,
-literal|1
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Start GROUP_SIZE + 1 datanodes.    * Inject striped blocks to first GROUP_SIZE datanodes.    * Then make numOfBusy datanodes busy, make numOfMissed datanodes missed.    * Then trigger BlockManager to compute reconstruction works. (so all    * reconstruction work will be scheduled to the last datanode)    * Finally, verify the reconstruction work of the last datanode.    */
 DECL|method|doTestMissingStripedBlock (int numOfMissed, int numOfBusy)

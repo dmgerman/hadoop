@@ -780,8 +780,6 @@ operator|.
 name|setBlockId
 argument_list|(
 name|groupId
-operator|+
-literal|2
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -827,7 +825,7 @@ name|setBlockId
 argument_list|(
 name|groupId
 operator|+
-literal|6
+name|DATA_BLK_NUM
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -1051,16 +1049,13 @@ name|getLocations
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// let a internal block be over replicated with 2 redundant blocks.
-comment|// Therefor number of internal blocks is over GROUP_SIZE. (5 data blocks +
-comment|// 3 parity blocks  + 2 redundant blocks> GROUP_SIZE)
+comment|// let a internal block be over replicated with (numDNs - GROUP_SIZE + 1)
+comment|// redundant blocks. Therefor number of internal blocks is over GROUP_SIZE.
 name|blk
 operator|.
 name|setBlockId
 argument_list|(
 name|groupId
-operator|+
-literal|2
 argument_list|)
 expr_stmt|;
 name|List

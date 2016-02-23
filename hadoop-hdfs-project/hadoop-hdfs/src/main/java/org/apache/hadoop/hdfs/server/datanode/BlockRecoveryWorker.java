@@ -308,6 +308,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|StripedBlockUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|RemoteException
@@ -2877,15 +2893,6 @@ parameter_list|)
 block|{
 specifier|final
 name|int
-name|cellSize
-init|=
-name|ecPolicy
-operator|.
-name|getCellSize
-argument_list|()
-decl_stmt|;
-specifier|final
-name|int
 name|dataBlkNum
 init|=
 name|ecPolicy
@@ -2905,14 +2912,6 @@ operator|>=
 name|dataBlkNum
 argument_list|)
 expr_stmt|;
-specifier|final
-name|int
-name|stripeSize
-init|=
-name|dataBlkNum
-operator|*
-name|cellSize
-decl_stmt|;
 name|long
 index|[]
 name|blockLengths
@@ -2962,42 +2961,16 @@ name|getNumBytes
 argument_list|()
 expr_stmt|;
 block|}
-name|Arrays
-operator|.
-name|sort
-argument_list|(
-name|blockLengths
-argument_list|)
-expr_stmt|;
-comment|// full stripe is a stripe has at least dataBlkNum full cells.
-comment|// lastFullStripeIdx is the index of the last full stripe.
-name|int
-name|lastFullStripeIdx
-init|=
-call|(
-name|int
-call|)
-argument_list|(
-name|blockLengths
-index|[
-name|blockLengths
-operator|.
-name|length
-operator|-
-name|dataBlkNum
-index|]
-operator|/
-name|cellSize
-argument_list|)
-decl_stmt|;
 return|return
-name|lastFullStripeIdx
-operator|*
-name|stripeSize
+name|StripedBlockUtil
+operator|.
+name|getSafeLength
+argument_list|(
+name|ecPolicy
+argument_list|,
+name|blockLengths
+argument_list|)
 return|;
-comment|// return the safeLength
-comment|// TODO: Include lastFullStripeIdx+1 stripe in safeLength, if there exists
-comment|// such a stripe (and it must be partial).
 block|}
 DECL|method|checkLocations (int locationCount)
 specifier|private

@@ -647,10 +647,9 @@ specifier|final
 name|ErasureCodingPolicy
 name|testECPolicy
 init|=
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
-argument_list|()
+name|TEST_EC_POLICY
 decl_stmt|;
 annotation|@
 name|Test
@@ -2759,7 +2758,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|testDir
 argument_list|,
-literal|null
+name|testECPolicy
 argument_list|)
 expr_stmt|;
 comment|// Create a file with striped block
@@ -3199,7 +3198,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|testDir
 argument_list|,
-literal|null
+name|testECPolicy
 argument_list|)
 expr_stmt|;
 comment|//create a file with striped blocks

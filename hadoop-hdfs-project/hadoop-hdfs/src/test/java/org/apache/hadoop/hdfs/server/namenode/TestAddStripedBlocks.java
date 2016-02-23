@@ -3453,7 +3453,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-literal|5
+literal|0
 argument_list|)
 operator|.
 name|getDatanodeId
