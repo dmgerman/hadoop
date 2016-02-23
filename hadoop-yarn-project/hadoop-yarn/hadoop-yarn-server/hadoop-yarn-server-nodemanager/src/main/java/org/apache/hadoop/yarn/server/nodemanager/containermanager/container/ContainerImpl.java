@@ -850,6 +850,24 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|Context
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|metrics
 operator|.
 name|NodeManagerMetrics
@@ -1358,7 +1376,12 @@ name|recoveredAsKilled
 init|=
 literal|false
 decl_stmt|;
-DECL|method|ContainerImpl (Configuration conf, Dispatcher dispatcher, NMStateStoreService stateStore, ContainerLaunchContext launchContext, Credentials creds, NodeManagerMetrics metrics, ContainerTokenIdentifier containerTokenIdentifier)
+DECL|field|context
+specifier|private
+name|Context
+name|context
+decl_stmt|;
+DECL|method|ContainerImpl (Configuration conf, Dispatcher dispatcher, ContainerLaunchContext launchContext, Credentials creds, NodeManagerMetrics metrics, ContainerTokenIdentifier containerTokenIdentifier, Context context)
 specifier|public
 name|ContainerImpl
 parameter_list|(
@@ -1367,9 +1390,6 @@ name|conf
 parameter_list|,
 name|Dispatcher
 name|dispatcher
-parameter_list|,
-name|NMStateStoreService
-name|stateStore
 parameter_list|,
 name|ContainerLaunchContext
 name|launchContext
@@ -1382,6 +1402,9 @@ name|metrics
 parameter_list|,
 name|ContainerTokenIdentifier
 name|containerTokenIdentifier
+parameter_list|,
+name|Context
+name|context
 parameter_list|)
 block|{
 name|this
@@ -1400,7 +1423,10 @@ name|this
 operator|.
 name|stateStore
 operator|=
-name|stateStore
+name|context
+operator|.
+name|getNMStateStore
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -1484,6 +1510,12 @@ operator|.
 name|writeLock
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|context
+operator|=
+name|context
+expr_stmt|;
 name|stateMachine
 operator|=
 name|stateMachineFactory
@@ -1495,7 +1527,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// constructor for a recovered container
-DECL|method|ContainerImpl (Configuration conf, Dispatcher dispatcher, NMStateStoreService stateStore, ContainerLaunchContext launchContext, Credentials creds, NodeManagerMetrics metrics, ContainerTokenIdentifier containerTokenIdentifier, RecoveredContainerStatus recoveredStatus, int exitCode, String diagnostics, boolean wasKilled, Resource recoveredCapability)
+DECL|method|ContainerImpl (Configuration conf, Dispatcher dispatcher, ContainerLaunchContext launchContext, Credentials creds, NodeManagerMetrics metrics, ContainerTokenIdentifier containerTokenIdentifier, RecoveredContainerStatus recoveredStatus, int exitCode, String diagnostics, boolean wasKilled, Resource recoveredCapability, Context context)
 specifier|public
 name|ContainerImpl
 parameter_list|(
@@ -1504,9 +1536,6 @@ name|conf
 parameter_list|,
 name|Dispatcher
 name|dispatcher
-parameter_list|,
-name|NMStateStoreService
-name|stateStore
 parameter_list|,
 name|ContainerLaunchContext
 name|launchContext
@@ -1534,6 +1563,9 @@ name|wasKilled
 parameter_list|,
 name|Resource
 name|recoveredCapability
+parameter_list|,
+name|Context
+name|context
 parameter_list|)
 block|{
 name|this
@@ -1542,8 +1574,6 @@ name|conf
 argument_list|,
 name|dispatcher
 argument_list|,
-name|stateStore
-argument_list|,
 name|launchContext
 argument_list|,
 name|creds
@@ -1551,6 +1581,8 @@ argument_list|,
 name|metrics
 argument_list|,
 name|containerTokenIdentifier
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|this
@@ -5290,6 +5322,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|container
+operator|.
+name|context
+operator|.
+name|getNodeStatusUpdater
+argument_list|()
+operator|.
+name|sendOutofBandHeartBeat
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Handle the following transition:    * - NEW -> DONE upon KILL_CONTAINER    */

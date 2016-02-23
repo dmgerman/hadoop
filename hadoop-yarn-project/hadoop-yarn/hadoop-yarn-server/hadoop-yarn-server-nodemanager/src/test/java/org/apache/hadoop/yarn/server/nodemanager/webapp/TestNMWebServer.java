@@ -1481,6 +1481,16 @@ argument_list|,
 name|currentTime
 argument_list|)
 decl_stmt|;
+name|Context
+name|context
+init|=
+name|mock
+argument_list|(
+name|Context
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 name|Container
 name|container
 init|=
@@ -1490,8 +1500,6 @@ argument_list|(
 name|conf
 argument_list|,
 name|dispatcher
-argument_list|,
-name|stateStore
 argument_list|,
 name|launchContext
 argument_list|,
@@ -1505,6 +1513,8 @@ name|newContainerTokenIdentifier
 argument_list|(
 name|containerToken
 argument_list|)
+argument_list|,
+name|context
 argument_list|)
 block|{
 annotation|@

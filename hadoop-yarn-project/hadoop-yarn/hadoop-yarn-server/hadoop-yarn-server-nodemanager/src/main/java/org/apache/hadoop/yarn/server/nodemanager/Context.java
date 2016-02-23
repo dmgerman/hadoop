@@ -435,6 +435,11 @@ DECL|method|getLogAggregationStatusForApps ()
 name|getLogAggregationStatusForApps
 parameter_list|()
 function_decl|;
+DECL|method|getNodeStatusUpdater ()
+name|NodeStatusUpdater
+name|getNodeStatusUpdater
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

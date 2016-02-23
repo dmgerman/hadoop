@@ -3350,11 +3350,6 @@ argument_list|()
 argument_list|,
 name|dispatcher
 argument_list|,
-name|context
-operator|.
-name|getNMStateStore
-argument_list|()
-argument_list|,
 name|req
 operator|.
 name|getContainerLaunchContext
@@ -3390,6 +3385,8 @@ name|rcs
 operator|.
 name|getCapability
 argument_list|()
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 name|context
@@ -6060,11 +6057,6 @@ name|this
 operator|.
 name|dispatcher
 argument_list|,
-name|context
-operator|.
-name|getNMStateStore
-argument_list|()
-argument_list|,
 name|launchContext
 argument_list|,
 name|credentials
@@ -6072,6 +6064,8 @@ argument_list|,
 name|metrics
 argument_list|,
 name|containerTokenIdentifier
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 name|ApplicationId
@@ -7499,13 +7493,6 @@ argument_list|()
 argument_list|,
 name|containerID
 argument_list|)
-expr_stmt|;
-comment|// TODO: Move this code to appropriate place once kill_container is
-comment|// implemented.
-name|nodeStatusUpdater
-operator|.
-name|sendOutofBandHeartBeat
-argument_list|()
 expr_stmt|;
 block|}
 block|}

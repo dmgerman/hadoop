@@ -125,6 +125,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|mock
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -507,6 +519,24 @@ operator|.
 name|api
 operator|.
 name|ContainerTerminationContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|Context
 import|;
 end_import
 
@@ -1451,6 +1481,16 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
+name|Context
+name|context
+init|=
+name|mock
+argument_list|(
+name|Context
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 name|Container
 name|container
 init|=
@@ -1467,9 +1507,9 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
 name|cti
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 name|ContainerId

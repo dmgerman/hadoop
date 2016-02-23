@@ -2276,6 +2276,18 @@ argument_list|(
 name|nodeStatusUpdater
 argument_list|)
 expr_stmt|;
+operator|(
+operator|(
+name|NMContext
+operator|)
+name|context
+operator|)
+operator|.
+name|setNodeStatusUpdater
+argument_list|(
+name|nodeStatusUpdater
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|serviceInit
@@ -2737,6 +2749,11 @@ argument_list|>
 DECL|field|logAggregationReportForApps
 name|logAggregationReportForApps
 decl_stmt|;
+DECL|field|nodeStatusUpdater
+specifier|private
+name|NodeStatusUpdater
+name|nodeStatusUpdater
+decl_stmt|;
 DECL|method|NMContext (NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager, LocalDirsHandlerService dirsHandler, ApplicationACLsManager aclsManager, NMStateStoreService stateStore)
 specifier|public
 name|NMContext
@@ -3184,6 +3201,34 @@ name|this
 operator|.
 name|logAggregationReportForApps
 return|;
+block|}
+DECL|method|getNodeStatusUpdater ()
+specifier|public
+name|NodeStatusUpdater
+name|getNodeStatusUpdater
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|nodeStatusUpdater
+return|;
+block|}
+DECL|method|setNodeStatusUpdater (NodeStatusUpdater nodeStatusUpdater)
+specifier|public
+name|void
+name|setNodeStatusUpdater
+parameter_list|(
+name|NodeStatusUpdater
+name|nodeStatusUpdater
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nodeStatusUpdater
+operator|=
+name|nodeStatusUpdater
+expr_stmt|;
 block|}
 block|}
 comment|/**    * @return the node health checker    */
