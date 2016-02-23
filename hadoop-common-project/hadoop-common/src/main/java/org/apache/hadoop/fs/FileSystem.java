@@ -9841,7 +9841,11 @@ parameter_list|()
 block|{
 while|while
 condition|(
-literal|true
+operator|!
+name|Thread
+operator|.
+name|interrupted
+argument_list|()
 condition|)
 block|{
 try|try
@@ -9865,17 +9869,39 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Throwable
-name|th
+name|InterruptedException
+name|ie
 parameter_list|)
 block|{
-comment|// the cleaner thread should continue to run even if there are
-comment|// exceptions, including InterruptedException
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"exception in the cleaner thread but it will continue to "
+literal|"Cleaner thread interrupted, will stop"
+argument_list|,
+name|ie
+argument_list|)
+expr_stmt|;
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|th
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exception in the cleaner thread but it will continue to "
 operator|+
 literal|"run"
 argument_list|,
