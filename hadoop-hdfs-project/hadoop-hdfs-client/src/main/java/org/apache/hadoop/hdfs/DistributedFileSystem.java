@@ -11466,9 +11466,7 @@ name|ez
 operator|.
 name|getPath
 argument_list|()
-operator|+
-literal|"/"
-operator|+
+argument_list|,
 name|FileSystem
 operator|.
 name|TRASH_PREFIX
