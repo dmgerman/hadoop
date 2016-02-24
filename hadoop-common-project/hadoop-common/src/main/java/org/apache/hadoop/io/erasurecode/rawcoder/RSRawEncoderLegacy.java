@@ -83,10 +83,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|RSRawEncoder
+DECL|class|RSRawEncoderLegacy
 specifier|public
 class|class
-name|RSRawEncoder
+name|RSRawEncoderLegacy
 extends|extends
 name|AbstractRawErasureEncoder
 block|{
@@ -96,9 +96,9 @@ name|int
 index|[]
 name|generatingPolynomial
 decl_stmt|;
-DECL|method|RSRawEncoder (int numDataUnits, int numParityUnits)
+DECL|method|RSRawEncoderLegacy (int numDataUnits, int numParityUnits)
 specifier|public
-name|RSRawEncoder
+name|RSRawEncoderLegacy
 parameter_list|(
 name|int
 name|numDataUnits

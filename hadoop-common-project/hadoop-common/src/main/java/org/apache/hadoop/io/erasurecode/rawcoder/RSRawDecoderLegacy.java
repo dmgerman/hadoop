@@ -105,10 +105,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|RSRawDecoder
+DECL|class|RSRawDecoderLegacy
 specifier|public
 class|class
-name|RSRawDecoder
+name|RSRawDecoderLegacy
 extends|extends
 name|AbstractRawErasureDecoder
 block|{
@@ -197,9 +197,9 @@ name|getNumParityUnits
 argument_list|()
 index|]
 decl_stmt|;
-DECL|method|RSRawDecoder (int numDataUnits, int numParityUnits)
+DECL|method|RSRawDecoderLegacy (int numDataUnits, int numParityUnits)
 specifier|public
-name|RSRawDecoder
+name|RSRawDecoderLegacy
 parameter_list|(
 name|int
 name|numDataUnits

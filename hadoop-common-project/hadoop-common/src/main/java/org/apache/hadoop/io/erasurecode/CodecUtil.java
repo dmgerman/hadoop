@@ -143,7 +143,7 @@ block|{
 name|rawCoder
 operator|=
 operator|new
-name|RSRawEncoder
+name|RSRawEncoderLegacy
 argument_list|(
 name|numDataUnits
 argument_list|,
@@ -203,7 +203,7 @@ block|{
 name|rawCoder
 operator|=
 operator|new
-name|RSRawDecoder
+name|RSRawDecoderLegacy
 argument_list|(
 name|numDataUnits
 argument_list|,

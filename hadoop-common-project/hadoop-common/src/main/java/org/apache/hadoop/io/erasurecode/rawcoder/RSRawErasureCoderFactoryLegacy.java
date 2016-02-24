@@ -35,7 +35,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A raw coder factory for raw Reed-Solomon coder in Java.  */
+comment|/**  * A raw coder factory for the legacy raw Reed-Solomon coder in Java.  */
 end_comment
 
 begin_class
@@ -43,10 +43,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|RSRawErasureCoderFactory
+DECL|class|RSRawErasureCoderFactoryLegacy
 specifier|public
 class|class
-name|RSRawErasureCoderFactory
+name|RSRawErasureCoderFactoryLegacy
 implements|implements
 name|RawErasureCoderFactory
 block|{
@@ -66,7 +66,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|RSRawEncoder
+name|RSRawEncoderLegacy
 argument_list|(
 name|numDataUnits
 argument_list|,
@@ -90,7 +90,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|RSRawDecoder
+name|RSRawDecoderLegacy
 argument_list|(
 name|numDataUnits
 argument_list|,
