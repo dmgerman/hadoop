@@ -2388,6 +2388,11 @@ name|jobreport
 operator|.
 name|isUber
 argument_list|()
+argument_list|,
+name|jobreport
+operator|.
+name|getHistoryFile
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|jobStatus

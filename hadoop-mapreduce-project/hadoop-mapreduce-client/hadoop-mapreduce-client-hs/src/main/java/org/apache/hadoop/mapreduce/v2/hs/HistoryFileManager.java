@@ -2452,8 +2452,9 @@ name|aclsMgr
 argument_list|)
 return|;
 block|}
-comment|/**      * Return the history file.  This should only be used for testing.      * @return the history file.      */
+comment|/**      * Return the history file.      * @return the history file.      */
 DECL|method|getHistoryFile ()
+specifier|public
 specifier|synchronized
 name|Path
 name|getHistoryFile

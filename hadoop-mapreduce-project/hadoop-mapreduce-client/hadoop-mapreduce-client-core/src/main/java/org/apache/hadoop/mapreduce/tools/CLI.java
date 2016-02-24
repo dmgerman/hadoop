@@ -774,7 +774,7 @@ init|=
 literal|null
 decl_stmt|;
 name|String
-name|historyFile
+name|historyFileOrJobId
 init|=
 literal|null
 decl_stmt|;
@@ -1285,15 +1285,15 @@ block|}
 comment|// Some arguments are optional while others are not, and some require
 comment|// second arguments.  Due to this, the indexing can vary depending on
 comment|// what's specified and what's left out, as summarized in the below table:
-comment|// [all]<jobHistoryFile> [-outfile<file>] [-format<human|json>]
-comment|//   1          2             3       4         5         6
-comment|//   1          2             3       4
-comment|//   1          2                               3         4
-comment|//   1          2
-comment|//              1             2       3         4         5
-comment|//              1             2       3
-comment|//              1                               2         3
-comment|//              1
+comment|// [all]<jobHistoryFile|jobId> [-outfile<file>] [-format<human|json>]
+comment|//   1                  2            3       4         5         6
+comment|//   1                  2            3       4
+comment|//   1                  2                              3         4
+comment|//   1                  2
+comment|//                      1            2       3         4         5
+comment|//                      1            2       3
+comment|//                      1                              2         3
+comment|//                      1
 comment|// "all" is optional, but comes first if specified
 name|int
 name|index
@@ -1339,8 +1339,8 @@ name|exitCode
 return|;
 block|}
 block|}
-comment|// Get the job history file argument
-name|historyFile
+comment|// Get the job history file or job id argument
+name|historyFileOrJobId
 operator|=
 name|argv
 index|[
@@ -2404,9 +2404,21 @@ condition|(
 name|viewHistory
 condition|)
 block|{
+comment|// If it ends with .jhist, assume it's a jhist file; otherwise, assume
+comment|// it's a Job ID
+if|if
+condition|(
+name|historyFileOrJobId
+operator|.
+name|endsWith
+argument_list|(
+literal|".jhist"
+argument_list|)
+condition|)
+block|{
 name|viewHistory
 argument_list|(
-name|historyFile
+name|historyFileOrJobId
 argument_list|,
 name|viewAllHistory
 argument_list|,
@@ -2419,6 +2431,97 @@ name|exitCode
 operator|=
 literal|0
 expr_stmt|;
+block|}
+else|else
+block|{
+name|Job
+name|job
+init|=
+name|getJob
+argument_list|(
+name|JobID
+operator|.
+name|forName
+argument_list|(
+name|historyFileOrJobId
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|job
+operator|==
+literal|null
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Could not find job "
+operator|+
+name|jobid
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|String
+name|historyUrl
+init|=
+name|job
+operator|.
+name|getHistoryUrl
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|historyUrl
+operator|==
+literal|null
+operator|||
+name|historyUrl
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"History file for job "
+operator|+
+name|historyFileOrJobId
+operator|+
+literal|" is currently unavailable."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|viewHistory
+argument_list|(
+name|historyUrl
+argument_list|,
+name|viewAllHistory
+argument_list|,
+name|historyOutFile
+argument_list|,
+name|historyOutFormat
+argument_list|)
+expr_stmt|;
+name|exitCode
+operator|=
+literal|0
+expr_stmt|;
+block|}
+block|}
+block|}
 block|}
 elseif|else
 if|if
@@ -3164,7 +3267,9 @@ literal|"["
 operator|+
 name|cmd
 operator|+
-literal|" [all]<jobHistoryFile> [-outfile<file>] [-format<human|json>]]"
+literal|" [all]<jobHistoryFile|jobId> "
+operator|+
+literal|"[-outfile<file>] [-format<human|json>]]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3464,9 +3569,9 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-history [all]<jobHistoryFile> [-outfile<file>]"
+literal|"\t[-history [all]<jobHistoryFile|jobId> "
 operator|+
-literal|" [-format<human|json>]]%n"
+literal|"[-outfile<file>] [-format<human|json>]]%n"
 argument_list|)
 expr_stmt|;
 name|System

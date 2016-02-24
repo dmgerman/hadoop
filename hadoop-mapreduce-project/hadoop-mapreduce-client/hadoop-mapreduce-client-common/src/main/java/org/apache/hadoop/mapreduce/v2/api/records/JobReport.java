@@ -178,6 +178,13 @@ name|Priority
 name|getJobPriority
 parameter_list|()
 function_decl|;
+DECL|method|getHistoryFile ()
+specifier|public
+specifier|abstract
+name|String
+name|getHistoryFile
+parameter_list|()
+function_decl|;
 DECL|method|setJobId (JobId jobId)
 specifier|public
 specifier|abstract
@@ -349,6 +356,16 @@ name|setJobPriority
 parameter_list|(
 name|Priority
 name|priority
+parameter_list|)
+function_decl|;
+DECL|method|setHistoryFile (String historyFile)
+specifier|public
+specifier|abstract
+name|void
+name|setHistoryFile
+parameter_list|(
+name|String
+name|historyFile
 parameter_list|)
 function_decl|;
 block|}

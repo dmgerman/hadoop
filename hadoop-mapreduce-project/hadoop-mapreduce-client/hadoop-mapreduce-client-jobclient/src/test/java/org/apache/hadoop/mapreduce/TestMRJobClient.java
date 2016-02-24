@@ -138,6 +138,44 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|LocatedFileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|RemoteIterator
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|codehaus
@@ -547,6 +585,20 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"args = "
+operator|+
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|PrintStream
 name|oldOut
 init|=
@@ -839,6 +891,8 @@ expr_stmt|;
 comment|// test job history
 name|testJobHistory
 argument_list|(
+name|jobId
+argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
@@ -2215,11 +2269,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * print job history from file     */
-DECL|method|testJobHistory (Configuration conf)
+DECL|method|testJobHistory (String jobId, Configuration conf)
 specifier|private
 name|void
 name|testJobHistory
 parameter_list|(
+name|String
+name|jobId
+parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
@@ -2239,58 +2296,106 @@ operator|new
 name|ByteArrayOutputStream
 argument_list|()
 decl_stmt|;
-name|File
-name|f
-init|=
-operator|new
-name|File
-argument_list|(
-literal|"src/test/resources/job_1329348432655_0001-10.jhist"
-argument_list|)
-decl_stmt|;
-name|FileSystem
-name|localFs
-init|=
-name|FileSystem
-operator|.
-name|getLocal
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
+comment|// Find jhist file
 name|String
 name|historyFileUri
 init|=
+literal|null
+decl_stmt|;
+name|RemoteIterator
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|it
+init|=
+name|getFileSystem
+argument_list|()
+operator|.
+name|listFiles
+argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|f
-operator|.
-name|getAbsolutePath
-argument_list|()
+literal|"/"
 argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|localFs
-operator|.
-name|getUri
-argument_list|()
 argument_list|,
-name|localFs
-operator|.
-name|getWorkingDirectory
-argument_list|()
+literal|true
 argument_list|)
+decl_stmt|;
+while|while
+condition|(
+name|it
+operator|.
+name|hasNext
+argument_list|()
+operator|&&
+name|historyFileUri
+operator|==
+literal|null
+condition|)
+block|{
+name|LocatedFileStatus
+name|file
+init|=
+name|it
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|file
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|endsWith
+argument_list|(
+literal|".jhist"
+argument_list|)
+condition|)
+block|{
+name|historyFileUri
+operator|=
+name|file
+operator|.
+name|getPath
+argument_list|()
 operator|.
 name|toUri
 argument_list|()
 operator|.
 name|toString
 argument_list|()
-decl_stmt|;
-comment|// Try a bunch of different valid combinations of the command to test
-comment|// argument parsing
+expr_stmt|;
+block|}
+block|}
+name|assertNotNull
+argument_list|(
+literal|"Could not find jhist file"
+argument_list|,
+name|historyFileUri
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|String
+name|historyFileOrJobId
+range|:
+operator|new
+name|String
+index|[]
+block|{
+name|historyFileUri
+block|,
+name|jobId
+block|}
+control|)
+block|{
+comment|// Try a bunch of different valid combinations of the command
 name|int
 name|exitCode
 init|=
@@ -2308,7 +2413,7 @@ literal|"-history"
 block|,
 literal|"all"
 block|,
-name|historyFileUri
+name|historyFileOrJobId
 block|,       }
 argument_list|,
 name|out
@@ -2325,6 +2430,8 @@ argument_list|)
 expr_stmt|;
 name|checkHistoryHumanOutput
 argument_list|(
+name|jobId
+argument_list|,
 name|out
 argument_list|)
 expr_stmt|;
@@ -2356,7 +2463,7 @@ literal|"-history"
 block|,
 literal|"all"
 block|,
-name|historyFileUri
+name|historyFileOrJobId
 block|,
 literal|"-outfile"
 block|,
@@ -2380,6 +2487,8 @@ argument_list|)
 expr_stmt|;
 name|checkHistoryHumanFileOutput
 argument_list|(
+name|jobId
+argument_list|,
 name|out
 argument_list|,
 name|outFile
@@ -2412,7 +2521,7 @@ literal|"-history"
 block|,
 literal|"all"
 block|,
-name|historyFileUri
+name|historyFileOrJobId
 block|,
 literal|"-outfile"
 block|,
@@ -2440,6 +2549,8 @@ argument_list|)
 expr_stmt|;
 name|checkHistoryHumanFileOutput
 argument_list|(
+name|jobId
+argument_list|,
 name|out
 argument_list|,
 name|outFile
@@ -2459,7 +2570,7 @@ index|[]
 block|{
 literal|"-history"
 block|,
-name|historyFileUri
+name|historyFileOrJobId
 block|,
 literal|"-format"
 block|,
@@ -2480,6 +2591,8 @@ argument_list|)
 expr_stmt|;
 name|checkHistoryHumanOutput
 argument_list|(
+name|jobId
+argument_list|,
 name|out
 argument_list|)
 expr_stmt|;
@@ -2499,7 +2612,7 @@ literal|"-history"
 block|,
 literal|"all"
 block|,
-name|historyFileUri
+name|historyFileOrJobId
 block|,
 literal|"-format"
 block|,
@@ -2520,6 +2633,8 @@ argument_list|)
 expr_stmt|;
 name|checkHistoryJSONOutput
 argument_list|(
+name|jobId
+argument_list|,
 name|out
 argument_list|)
 expr_stmt|;
@@ -2550,7 +2665,7 @@ literal|"-history"
 block|,
 literal|"all"
 block|,
-name|historyFileUri
+name|historyFileOrJobId
 block|,
 literal|"-outfile"
 block|,
@@ -2578,6 +2693,8 @@ argument_list|)
 expr_stmt|;
 name|checkHistoryJSONFileOutput
 argument_list|(
+name|jobId
+argument_list|,
 name|out
 argument_list|,
 name|outFile
@@ -2597,7 +2714,7 @@ index|[]
 block|{
 literal|"-history"
 block|,
-name|historyFileUri
+name|historyFileOrJobId
 block|,
 literal|"-format"
 block|,
@@ -2618,6 +2735,8 @@ argument_list|)
 expr_stmt|;
 name|checkHistoryJSONOutput
 argument_list|(
+name|jobId
+argument_list|,
 name|out
 argument_list|)
 expr_stmt|;
@@ -2636,7 +2755,7 @@ index|[]
 block|{
 literal|"-history"
 block|,
-name|historyFileUri
+name|historyFileOrJobId
 block|,
 literal|"foo"
 block|}
@@ -2668,7 +2787,7 @@ index|[]
 block|{
 literal|"-history"
 block|,
-name|historyFileUri
+name|historyFileOrJobId
 block|,
 literal|"-format"
 block|}
@@ -2686,6 +2805,8 @@ argument_list|,
 name|exitCode
 argument_list|)
 expr_stmt|;
+name|exitCode
+operator|=
 name|runTool
 argument_list|(
 name|conf
@@ -2698,10 +2819,10 @@ index|[]
 block|{
 literal|"-history"
 block|,
-name|historyFileUri
+name|historyFileOrJobId
 block|,
 literal|"-outfile"
-block|,     }
+block|,       }
 argument_list|,
 name|out
 argument_list|)
@@ -2730,7 +2851,7 @@ index|[]
 block|{
 literal|"-history"
 block|,
-name|historyFileUri
+name|historyFileOrJobId
 block|,
 literal|"-format"
 block|,
@@ -2753,11 +2874,47 @@ block|{
 comment|// Expected
 block|}
 block|}
-DECL|method|checkHistoryHumanOutput (ByteArrayOutputStream out)
+try|try
+block|{
+name|runTool
+argument_list|(
+name|conf
+argument_list|,
+name|jc
+argument_list|,
+operator|new
+name|String
+index|[]
+block|{
+literal|"-history"
+block|,
+literal|"not_a_valid_history_file_or_job_id"
+block|,       }
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+comment|// Expected
+block|}
+block|}
+DECL|method|checkHistoryHumanOutput (String jobId, ByteArrayOutputStream out)
 specifier|private
 name|void
 name|checkHistoryHumanOutput
 parameter_list|(
+name|String
+name|jobId
+parameter_list|,
 name|ByteArrayOutputStream
 name|out
 parameter_list|)
@@ -2806,7 +2963,9 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Hadoop job: job_1329348432655_0001"
+literal|"Hadoop job: "
+operator|+
+name|jobId
 argument_list|,
 name|line
 argument_list|)
@@ -2817,11 +2976,14 @@ name|reset
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|checkHistoryJSONOutput (ByteArrayOutputStream out)
+DECL|method|checkHistoryJSONOutput (String jobId, ByteArrayOutputStream out)
 specifier|private
 name|void
 name|checkHistoryJSONOutput
 parameter_list|(
+name|String
+name|jobId
+parameter_list|,
 name|ByteArrayOutputStream
 name|out
 parameter_list|)
@@ -2884,7 +3046,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"job_1329348432655_0001"
+name|jobId
 argument_list|,
 name|json
 operator|.
@@ -2900,11 +3062,14 @@ name|reset
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|checkHistoryHumanFileOutput (ByteArrayOutputStream out, File outFile)
+DECL|method|checkHistoryHumanFileOutput (String jobId, ByteArrayOutputStream out, File outFile)
 specifier|private
 name|void
 name|checkHistoryHumanFileOutput
 parameter_list|(
+name|String
+name|jobId
+parameter_list|,
 name|ByteArrayOutputStream
 name|out
 parameter_list|,
@@ -2949,7 +3114,9 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Hadoop job: job_1329348432655_0001"
+literal|"Hadoop job: "
+operator|+
+name|jobId
 argument_list|,
 name|line
 argument_list|)
@@ -2965,11 +3132,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkHistoryJSONFileOutput (ByteArrayOutputStream out, File outFile)
+DECL|method|checkHistoryJSONFileOutput (String jobId, ByteArrayOutputStream out, File outFile)
 specifier|private
 name|void
 name|checkHistoryJSONFileOutput
 parameter_list|(
+name|String
+name|jobId
+parameter_list|,
 name|ByteArrayOutputStream
 name|out
 parameter_list|,
@@ -3028,7 +3198,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"job_1329348432655_0001"
+name|jobId
 argument_list|,
 name|json
 operator|.
