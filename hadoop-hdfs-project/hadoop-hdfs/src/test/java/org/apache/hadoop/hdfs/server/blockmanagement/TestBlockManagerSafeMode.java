@@ -2122,7 +2122,7 @@ name|countNodes
 argument_list|(
 name|any
 argument_list|(
-name|Block
+name|BlockInfo
 operator|.
 name|class
 argument_list|)
