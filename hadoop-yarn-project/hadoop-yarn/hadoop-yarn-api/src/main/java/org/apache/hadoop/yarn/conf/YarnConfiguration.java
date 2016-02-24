@@ -6029,6 +6029,28 @@ literal|5
 operator|*
 literal|60
 decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|TIMELINE_SERVICE_CLIENT_INTERNAL_TIMERS_TTL_SECS
+name|TIMELINE_SERVICE_CLIENT_INTERNAL_TIMERS_TTL_SECS
+init|=
+name|TIMELINE_SERVICE_CLIENT_PREFIX
+operator|+
+literal|"internal-timers-ttl-secs"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|long
+DECL|field|TIMELINE_SERVICE_CLIENT_INTERNAL_TIMERS_TTL_SECS_DEFAULT
+name|TIMELINE_SERVICE_CLIENT_INTERNAL_TIMERS_TTL_SECS_DEFAULT
+init|=
+literal|7
+operator|*
+literal|60
+decl_stmt|;
 comment|// mark app-history related configs @Private as application history is going
 comment|// to be integrated into the timeline service
 annotation|@
