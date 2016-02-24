@@ -3022,6 +3022,27 @@ name|DEFAULT_NM_LOG_DIRS
 init|=
 literal|"/tmp/logs"
 decl_stmt|;
+comment|/** The number of threads to handle log aggregation in node manager. */
+DECL|field|NM_LOG_AGGREGATION_THREAD_POOL_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LOG_AGGREGATION_THREAD_POOL_SIZE
+init|=
+name|NM_PREFIX
+operator|+
+literal|"logaggregation.threadpool-size-max"
+decl_stmt|;
+DECL|field|DEFAULT_NM_LOG_AGGREGATION_THREAD_POOL_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_LOG_AGGREGATION_THREAD_POOL_SIZE
+init|=
+literal|100
+decl_stmt|;
 DECL|field|NM_RESOURCEMANAGER_MINIMUM_VERSION
 specifier|public
 specifier|static
