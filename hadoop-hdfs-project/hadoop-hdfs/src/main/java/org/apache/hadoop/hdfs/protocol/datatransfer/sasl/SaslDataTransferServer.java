@@ -50,6 +50,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|datatransfer
@@ -275,6 +293,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -942,6 +974,8 @@ decl_stmt|;
 return|return
 name|doSaslHandshake
 argument_list|(
+name|peer
+argument_list|,
 name|underlyingOut
 argument_list|,
 name|underlyingIn
@@ -1375,6 +1409,8 @@ decl_stmt|;
 return|return
 name|doSaslHandshake
 argument_list|(
+name|peer
+argument_list|,
 name|underlyingOut
 argument_list|,
 name|underlyingIn
@@ -1484,12 +1520,15 @@ return|return
 name|identifier
 return|;
 block|}
-comment|/**    * This method actually executes the server-side SASL handshake.    *    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param saslProps properties of SASL negotiation    * @param callbackHandler for responding to SASL callbacks    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
-DECL|method|doSaslHandshake (OutputStream underlyingOut, InputStream underlyingIn, Map<String, String> saslProps, CallbackHandler callbackHandler)
+comment|/**    * This method actually executes the server-side SASL handshake.    *    * @param peer connection peer    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param saslProps properties of SASL negotiation    * @param callbackHandler for responding to SASL callbacks    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
+DECL|method|doSaslHandshake (Peer peer, OutputStream underlyingOut, InputStream underlyingIn, Map<String, String> saslProps, CallbackHandler callbackHandler)
 specifier|private
 name|IOStreamPair
 name|doSaslHandshake
 parameter_list|(
+name|Peer
+name|peer
+parameter_list|,
 name|OutputStream
 name|underlyingOut
 parameter_list|,
@@ -1650,25 +1689,23 @@ argument_list|()
 condition|)
 block|{
 comment|// Negotiate a cipher option
-name|cipherOption
-operator|=
-name|negotiateCipherOption
-argument_list|(
+name|Configuration
+name|conf
+init|=
 name|dnConf
 operator|.
 name|getConf
 argument_list|()
+decl_stmt|;
+name|cipherOption
+operator|=
+name|negotiateCipherOption
+argument_list|(
+name|conf
 argument_list|,
 name|cipherOptions
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|cipherOption
-operator|!=
-literal|null
-condition|)
-block|{
 if|if
 condition|(
 name|LOG
@@ -1677,18 +1714,75 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|cipherOption
+operator|==
+literal|null
+condition|)
+block|{
+comment|// No cipher suite is negotiated
+name|String
+name|cipherSuites
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cipherSuites
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|cipherSuites
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// the server accepts some cipher suites, but the client does not.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Server using cipher suite "
+literal|"Server accepts cipher suites {}, "
 operator|+
+literal|"but client {} does not accept any of them"
+argument_list|,
+name|cipherSuites
+argument_list|,
+name|peer
+operator|.
+name|getRemoteAddressString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Server using cipher suite {} with client {}"
+argument_list|,
 name|cipherOption
 operator|.
 name|getCipherSuite
 argument_list|()
 operator|.
 name|getName
+argument_list|()
+argument_list|,
+name|peer
+operator|.
+name|getRemoteAddressString
 argument_list|()
 argument_list|)
 expr_stmt|;

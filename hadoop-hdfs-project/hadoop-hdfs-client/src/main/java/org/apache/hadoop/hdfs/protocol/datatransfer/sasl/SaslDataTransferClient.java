@@ -1051,6 +1051,8 @@ expr_stmt|;
 return|return
 name|getEncryptedStreams
 argument_list|(
+name|addr
+argument_list|,
 name|underlyingOut
 argument_list|,
 name|underlyingIn
@@ -1202,12 +1204,15 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Sends client SASL negotiation for specialized encrypted handshake.    *    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param encryptionKey for an encrypted SASL handshake    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
-DECL|method|getEncryptedStreams (OutputStream underlyingOut, InputStream underlyingIn, DataEncryptionKey encryptionKey)
+comment|/**    * Sends client SASL negotiation for specialized encrypted handshake.    *    * @param addr connection address    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param encryptionKey for an encrypted SASL handshake    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
+DECL|method|getEncryptedStreams (InetAddress addr, OutputStream underlyingOut, InputStream underlyingIn, DataEncryptionKey encryptionKey)
 specifier|private
 name|IOStreamPair
 name|getEncryptedStreams
 parameter_list|(
+name|InetAddress
+name|addr
+parameter_list|,
 name|OutputStream
 name|underlyingOut
 parameter_list|,
@@ -1279,6 +1284,8 @@ decl_stmt|;
 return|return
 name|doSaslHandshake
 argument_list|(
+name|addr
+argument_list|,
 name|underlyingOut
 argument_list|,
 name|underlyingIn
@@ -1612,6 +1619,8 @@ decl_stmt|;
 return|return
 name|doSaslHandshake
 argument_list|(
+name|addr
+argument_list|,
 name|underlyingOut
 argument_list|,
 name|underlyingIn
@@ -1699,12 +1708,15 @@ name|toCharArray
 argument_list|()
 return|;
 block|}
-comment|/**    * This method actually executes the client-side SASL handshake.    *    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param userName SASL user name    * @param saslProps properties of SASL negotiation    * @param callbackHandler for responding to SASL callbacks    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
-DECL|method|doSaslHandshake (OutputStream underlyingOut, InputStream underlyingIn, String userName, Map<String, String> saslProps, CallbackHandler callbackHandler)
+comment|/**    * This method actually executes the client-side SASL handshake.    *    * @param addr connection address    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param userName SASL user name    * @param saslProps properties of SASL negotiation    * @param callbackHandler for responding to SASL callbacks    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
+DECL|method|doSaslHandshake (InetAddress addr, OutputStream underlyingOut, InputStream underlyingIn, String userName, Map<String, String> saslProps, CallbackHandler callbackHandler)
 specifier|private
 name|IOStreamPair
 name|doSaslHandshake
 parameter_list|(
+name|InetAddress
+name|addr
+parameter_list|,
 name|OutputStream
 name|underlyingOut
 parameter_list|,
@@ -1815,6 +1827,16 @@ name|cipherOptions
 init|=
 literal|null
 decl_stmt|;
+name|String
+name|cipherSuites
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|requestedQopContainsPrivacy
@@ -1826,16 +1848,6 @@ block|{
 comment|// Negotiate cipher suites if configured.  Currently, the only supported
 comment|// cipher suite is AES/CTR/NoPadding, but the protocol allows multiple
 comment|// values for future expansion.
-name|String
-name|cipherSuites
-init|=
-name|conf
-operator|.
-name|get
-argument_list|(
-name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|cipherSuites
@@ -1978,6 +1990,78 @@ argument_list|,
 name|sasl
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|cipherOption
+operator|==
+literal|null
+condition|)
+block|{
+comment|// No cipher suite is negotiated
+if|if
+condition|(
+name|cipherSuites
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|cipherSuites
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// the client accepts some cipher suites, but the server does not.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Client accepts cipher suites {}, "
+operator|+
+literal|"but server {} does not accept any of them"
+argument_list|,
+name|cipherSuites
+argument_list|,
+name|addr
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Client using cipher suite {} with server {}"
+argument_list|,
+name|cipherOption
+operator|.
+name|getCipherSuite
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|addr
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|// If negotiated cipher option is not null, we will use it to create
 comment|// stream pair.
