@@ -402,6 +402,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileAlreadyExistsException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileStatus
 import|;
 end_import
@@ -3587,6 +3601,22 @@ throw|throw
 name|e
 throw|;
 block|}
+catch|catch
+parameter_list|(
+name|IndexOutOfBoundsException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|EOFException
+argument_list|(
+name|FSExceptionMessages
+operator|.
+name|CANNOT_SEEK_PAST_EOF
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -5987,6 +6017,8 @@ name|SelfRenewingLease
 name|parentFolderLease
 parameter_list|)
 throws|throws
+name|FileAlreadyExistsException
+throws|,
 name|IOException
 block|{
 name|LOG
@@ -6064,7 +6096,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileAlreadyExistsException
 argument_list|(
 literal|"Cannot create file "
 operator|+
@@ -6082,7 +6114,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileAlreadyExistsException
 argument_list|(
 literal|"File already exists:"
 operator|+
@@ -8849,7 +8881,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileAlreadyExistsException
 argument_list|(
 literal|"Cannot create directory "
 operator|+
