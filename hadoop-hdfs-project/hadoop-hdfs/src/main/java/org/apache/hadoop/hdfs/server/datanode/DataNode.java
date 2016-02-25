@@ -15842,6 +15842,7 @@ name|INTERNAL_ERROR
 argument_list|)
 throw|;
 block|}
+comment|/**    * Returns the status of current or last executed work plan.    * @return DiskBalancerWorkStatus.    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|queryDiskBalancerPlan ()
@@ -15855,19 +15856,14 @@ block|{
 name|checkSuperuserPrivilege
 argument_list|()
 expr_stmt|;
-throw|throw
-operator|new
-name|DiskBalancerException
-argument_list|(
-literal|"Not Implemented"
-argument_list|,
-name|DiskBalancerException
+return|return
+name|this
 operator|.
-name|Result
+name|diskBalancer
 operator|.
-name|INTERNAL_ERROR
-argument_list|)
-throw|;
+name|queryWorkStatus
+argument_list|()
+return|;
 block|}
 comment|/**    * Gets a run-time configuration value from running diskbalancer instance. For    * example : Disk Balancer bandwidth of a running instance.    *    * @param key - String that represents the run time key value.    * @return value of the key as a string.    * @throws IOException - Throws if there is no such key    */
 annotation|@
