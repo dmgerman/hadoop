@@ -1932,13 +1932,13 @@ argument_list|,
 name|rb
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|0L
+argument_list|,
 name|bm
 operator|.
-name|excessReplicateMap
-operator|.
-name|isEmpty
+name|getExcessBlocksCount
 argument_list|()
 argument_list|)
 expr_stmt|;
