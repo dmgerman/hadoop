@@ -1651,7 +1651,9 @@ name|Priority
 name|priority
 parameter_list|)
 block|{
-return|return
+name|ResourceRequest
+name|request
+init|=
 name|getResourceRequest
 argument_list|(
 name|priority
@@ -1660,6 +1662,15 @@ name|ResourceRequest
 operator|.
 name|ANY
 argument_list|)
+decl_stmt|;
+return|return
+name|request
+operator|==
+literal|null
+condition|?
+literal|0
+else|:
+name|request
 operator|.
 name|getNumContainers
 argument_list|()
