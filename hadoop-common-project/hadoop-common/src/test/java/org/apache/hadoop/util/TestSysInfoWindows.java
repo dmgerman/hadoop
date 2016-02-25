@@ -144,7 +144,9 @@ name|tester
 operator|.
 name|setSysinfoString
 argument_list|(
-literal|"17177038848,8589467648,15232745472,6400417792,1,2805000,6261812\r\n"
+literal|"17177038848,8589467648,15232745472,6400417792,1,2805000,6261812,"
+operator|+
+literal|"1234567,2345678,3456789,4567890\r\n"
 argument_list|)
 expr_stmt|;
 comment|// info str derived from windows shell command has \r\n termination
@@ -228,6 +230,46 @@ name|getCumulativeCpuTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|1234567L
+argument_list|,
+name|tester
+operator|.
+name|getStorageBytesRead
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|2345678L
+argument_list|,
+name|tester
+operator|.
+name|getStorageBytesWritten
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|3456789L
+argument_list|,
+name|tester
+operator|.
+name|getNetworkBytesRead
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|4567890L
+argument_list|,
+name|tester
+operator|.
+name|getNetworkBytesWritten
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// undef on first call
 name|assertEquals
 argument_list|(
@@ -290,7 +332,9 @@ name|tester
 operator|.
 name|setSysinfoString
 argument_list|(
-literal|"17177038848,8589467648,15232745472,6400417792,1,2805000,6261812\r\n"
+literal|"17177038848,8589467648,15232745472,6400417792,1,2805000,6261812,"
+operator|+
+literal|"1234567,2345678,3456789,4567890\r\n"
 argument_list|)
 expr_stmt|;
 comment|// info str derived from windows shell command has \r\n termination
@@ -348,7 +392,9 @@ name|tester
 operator|.
 name|setSysinfoString
 argument_list|(
-literal|"17177038848,8589467648,15232745472,5400417792,1,2805000,6263012\r\n"
+literal|"17177038848,8589467648,15232745472,5400417792,1,2805000,6263012,"
+operator|+
+literal|"1234567,2345678,3456789,4567890\r\n"
 argument_list|)
 expr_stmt|;
 name|tester
@@ -506,7 +552,9 @@ name|tester
 operator|.
 name|setSysinfoString
 argument_list|(
-literal|"17177038848,8589467648,15232745472,6400417792,12,2805000,6261812\r\n"
+literal|"17177038848,8589467648,15232745472,6400417792,12,2805000,6261812,"
+operator|+
+literal|"1234567,2345678,3456789,4567890\r\n"
 argument_list|)
 expr_stmt|;
 comment|// verify information has been refreshed
@@ -524,7 +572,9 @@ name|tester
 operator|.
 name|setSysinfoString
 argument_list|(
-literal|"17177038848,8589467648,15232745472,5400417792,12,2805000,6263012\r\n"
+literal|"17177038848,8589467648,15232745472,5400417792,12,2805000,6263012,"
+operator|+
+literal|"1234567,2345678,3456789,4567890\r\n"
 argument_list|)
 expr_stmt|;
 comment|// verify information has not been refreshed
