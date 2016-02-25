@@ -408,7 +408,7 @@ literal|"logs"
 argument_list|,
 name|this
 operator|.
-name|nodeId
+name|nodeHttpAddress
 argument_list|,
 name|this
 operator|.
@@ -430,7 +430,7 @@ literal|"logs"
 argument_list|,
 name|this
 operator|.
-name|nodeId
+name|nodeHttpAddress
 argument_list|,
 name|this
 operator|.

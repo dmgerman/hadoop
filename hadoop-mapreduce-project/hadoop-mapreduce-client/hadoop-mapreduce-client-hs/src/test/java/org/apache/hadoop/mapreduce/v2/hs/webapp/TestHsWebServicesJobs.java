@@ -6197,13 +6197,6 @@ argument_list|)
 argument_list|,
 name|attempt
 operator|.
-name|getString
-argument_list|(
-literal|"nodeId"
-argument_list|)
-argument_list|,
-name|attempt
-operator|.
 name|getInt
 argument_list|(
 literal|"id"
@@ -6303,15 +6296,6 @@ argument_list|)
 argument_list|,
 name|WebServicesTestUtils
 operator|.
-name|getXmlString
-argument_list|(
-name|element
-argument_list|,
-literal|"nodeId"
-argument_list|)
-argument_list|,
-name|WebServicesTestUtils
-operator|.
 name|getXmlInt
 argument_list|(
 name|element
@@ -6349,7 +6333,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyHsJobAttemptsGeneric (Job job, String nodeHttpAddress, String nodeId, int id, long startTime, String containerId, String logsLink)
+DECL|method|verifyHsJobAttemptsGeneric (Job job, String nodeHttpAddress, int id, long startTime, String containerId, String logsLink)
 specifier|public
 name|void
 name|verifyHsJobAttemptsGeneric
@@ -6359,9 +6343,6 @@ name|job
 parameter_list|,
 name|String
 name|nodeHttpAddress
-parameter_list|,
-name|String
-name|nodeId
 parameter_list|,
 name|int
 name|id
@@ -6448,27 +6429,6 @@ argument_list|,
 name|nodeHttpAddress
 argument_list|)
 expr_stmt|;
-name|WebServicesTestUtils
-operator|.
-name|checkStringMatch
-argument_list|(
-literal|"nodeId"
-argument_list|,
-name|NodeId
-operator|.
-name|newInstance
-argument_list|(
-name|nmHost
-argument_list|,
-name|nmPort
-argument_list|)
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-name|nodeId
-argument_list|)
-expr_stmt|;
 name|assertTrue
 argument_list|(
 literal|"startime not greater than 0"
@@ -6506,7 +6466,7 @@ name|ujoin
 argument_list|(
 literal|"logs"
 argument_list|,
-name|nodeId
+name|nodeHttpAddress
 argument_list|,
 name|containerId
 argument_list|,
