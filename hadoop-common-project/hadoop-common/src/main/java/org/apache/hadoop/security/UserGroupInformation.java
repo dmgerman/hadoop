@@ -5760,7 +5760,12 @@ operator|/
 literal|1000
 operator|)
 operator|+
-literal|" seconds before."
+literal|" seconds before. Last Login="
+operator|+
+name|user
+operator|.
+name|getLastLogin
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
