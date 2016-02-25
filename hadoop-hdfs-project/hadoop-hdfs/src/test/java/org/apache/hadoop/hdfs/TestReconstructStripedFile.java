@@ -1490,10 +1490,10 @@ return|return
 name|d
 return|;
 block|}
-DECL|method|shutdownDataNodes (DataNode dn)
+DECL|method|shutdownDataNode (DataNode dn)
 specifier|private
 name|void
-name|shutdownDataNodes
+name|shutdownDataNode
 parameter_list|(
 name|DataNode
 name|dn
@@ -1601,7 +1601,7 @@ name|getKey
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|shutdownDataNodes
+name|shutdownDataNode
 argument_list|(
 name|target
 operator|.

@@ -112,26 +112,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Iterator
 import|;
 end_import
@@ -477,6 +457,22 @@ operator|.
 name|fs
 operator|.
 name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtilClient
+operator|.
+name|CorruptedBlocks
 import|;
 end_import
 
@@ -4102,7 +4098,7 @@ return|;
 block|}
 block|}
 comment|/* This is a used by regular read() and handles ChecksumExceptions.    * name readBuffer() is chosen to imply similarity to readBuffer() in    * ChecksumFileSystem    */
-DECL|method|readBuffer (ReaderStrategy reader, int off, int len, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|readBuffer (ReaderStrategy reader, int off, int len, CorruptedBlocks corruptedBlocks)
 specifier|private
 specifier|synchronized
 name|int
@@ -4117,16 +4113,8 @@ parameter_list|,
 name|int
 name|len
 parameter_list|,
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 parameter_list|)
 throws|throws
 name|IOException
@@ -4199,14 +4187,14 @@ operator|=
 literal|false
 expr_stmt|;
 comment|// we want to remember which block replicas we have tried
-name|addIntoCorruptedBlockMap
+name|corruptedBlocks
+operator|.
+name|addCorruptedBlock
 argument_list|(
 name|getCurrentBlock
 argument_list|()
 argument_list|,
 name|currentNode
-argument_list|,
-name|corruptedBlockMap
 argument_list|)
 expr_stmt|;
 block|}
@@ -4337,20 +4325,11 @@ literal|"Stream closed"
 argument_list|)
 throw|;
 block|}
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 init|=
 operator|new
-name|HashMap
-argument_list|<>
+name|CorruptedBlocks
 argument_list|()
 decl_stmt|;
 name|failures
@@ -4466,7 +4445,7 @@ name|off
 argument_list|,
 name|realLen
 argument_list|,
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|)
 decl_stmt|;
 if|if
@@ -4587,7 +4566,7 @@ comment|// Check if need to report block replicas corruption either read
 comment|// was successful or ChecksumException occured.
 name|reportCheckSumFailure
 argument_list|(
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|,
 name|currentLocatedBlock
 operator|.
@@ -4779,97 +4758,6 @@ block|}
 return|return
 name|retLen
 return|;
-block|}
-block|}
-comment|/**    * Add corrupted block replica into map.    */
-DECL|method|addIntoCorruptedBlockMap (ExtendedBlock blk, DatanodeInfo node, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
-specifier|protected
-name|void
-name|addIntoCorruptedBlockMap
-parameter_list|(
-name|ExtendedBlock
-name|blk
-parameter_list|,
-name|DatanodeInfo
-name|node
-parameter_list|,
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
-parameter_list|)
-block|{
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-name|dnSet
-decl_stmt|;
-if|if
-condition|(
-operator|(
-name|corruptedBlockMap
-operator|.
-name|containsKey
-argument_list|(
-name|blk
-argument_list|)
-operator|)
-condition|)
-block|{
-name|dnSet
-operator|=
-name|corruptedBlockMap
-operator|.
-name|get
-argument_list|(
-name|blk
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|dnSet
-operator|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|()
-expr_stmt|;
-block|}
-if|if
-condition|(
-operator|!
-name|dnSet
-operator|.
-name|contains
-argument_list|(
-name|node
-argument_list|)
-condition|)
-block|{
-name|dnSet
-operator|.
-name|add
-argument_list|(
-name|node
-argument_list|)
-expr_stmt|;
-name|corruptedBlockMap
-operator|.
-name|put
-argument_list|(
-name|blk
-argument_list|,
-name|dnSet
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 DECL|method|chooseDataNode (LocatedBlock block, Collection<DatanodeInfo> ignoredNodes)
@@ -5561,7 +5449,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|fetchBlockByteRange (LocatedBlock block, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|fetchBlockByteRange (LocatedBlock block, long start, long end, byte[] buf, int offset, CorruptedBlocks corruptedBlocks)
 specifier|protected
 name|void
 name|fetchBlockByteRange
@@ -5582,16 +5470,8 @@ parameter_list|,
 name|int
 name|offset
 parameter_list|,
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 parameter_list|)
 throws|throws
 name|IOException
@@ -5634,7 +5514,7 @@ name|buf
 argument_list|,
 name|offset
 argument_list|,
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|)
 expr_stmt|;
 return|return;
@@ -5650,7 +5530,7 @@ comment|// Loop through to try the next node.
 block|}
 block|}
 block|}
-DECL|method|getFromOneDataNode (final DNAddrPair datanode, final LocatedBlock block, final long start, final long end, final ByteBuffer bb, final Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, final int hedgedReadId)
+DECL|method|getFromOneDataNode (final DNAddrPair datanode, final LocatedBlock block, final long start, final long end, final ByteBuffer bb, final CorruptedBlocks corruptedBlocks, final int hedgedReadId)
 specifier|private
 name|Callable
 argument_list|<
@@ -5679,16 +5559,8 @@ name|ByteBuffer
 name|bb
 parameter_list|,
 specifier|final
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 parameter_list|,
 specifier|final
 name|int
@@ -5772,7 +5644,7 @@ name|buf
 argument_list|,
 name|offset
 argument_list|,
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|)
 expr_stmt|;
 return|return
@@ -5783,8 +5655,8 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * Read data from one DataNode.    *    * @param datanode          the datanode from which to read data    * @param block             the located block containing the requested data    * @param startInBlk        the startInBlk offset of the block    * @param endInBlk          the endInBlk offset of the block    * @param buf               the given byte array into which the data is read    * @param offset            the offset in buf    * @param corruptedBlockMap map recording list of datanodes with corrupted    *                          block replica    */
-DECL|method|actualGetFromOneDataNode (final DNAddrPair datanode, LocatedBlock block, final long startInBlk, final long endInBlk, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+comment|/**    * Read data from one DataNode.    *    * @param datanode          the datanode from which to read data    * @param block             the located block containing the requested data    * @param startInBlk        the startInBlk offset of the block    * @param endInBlk          the endInBlk offset of the block    * @param buf               the given byte array into which the data is read    * @param offset            the offset in buf    * @param corruptedBlocks   map recording list of datanodes with corrupted    *                          block replica    */
+DECL|method|actualGetFromOneDataNode (final DNAddrPair datanode, LocatedBlock block, final long startInBlk, final long endInBlk, byte[] buf, int offset, CorruptedBlocks corruptedBlocks)
 name|void
 name|actualGetFromOneDataNode
 parameter_list|(
@@ -5810,16 +5682,8 @@ parameter_list|,
 name|int
 name|offset
 parameter_list|,
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 parameter_list|)
 throws|throws
 name|IOException
@@ -6011,7 +5875,9 @@ name|msg
 argument_list|)
 expr_stmt|;
 comment|// we want to remember what we have tried
-name|addIntoCorruptedBlockMap
+name|corruptedBlocks
+operator|.
+name|addCorruptedBlock
 argument_list|(
 name|block
 operator|.
@@ -6021,8 +5887,6 @@ argument_list|,
 name|datanode
 operator|.
 name|info
-argument_list|,
-name|corruptedBlockMap
 argument_list|)
 expr_stmt|;
 name|addToDeadNodes
@@ -6222,7 +6086,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Like {@link #fetchBlockByteRange}except we start up a second, parallel,    * 'hedged' read if the first read is taking longer than configured amount of    * time. We then wait on which ever read returns first.    */
-DECL|method|hedgedFetchBlockByteRange (LocatedBlock block, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|hedgedFetchBlockByteRange (LocatedBlock block, long start, long end, byte[] buf, int offset, CorruptedBlocks corruptedBlocks)
 specifier|private
 name|void
 name|hedgedFetchBlockByteRange
@@ -6243,16 +6107,8 @@ parameter_list|,
 name|int
 name|offset
 parameter_list|,
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 parameter_list|)
 throws|throws
 name|IOException
@@ -6401,7 +6257,7 @@ name|end
 argument_list|,
 name|bb
 argument_list|,
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|,
 name|hedgedReadId
 operator|++
@@ -6574,7 +6430,7 @@ name|end
 argument_list|,
 name|bb
 argument_list|,
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|,
 name|hedgedReadId
 operator|++
@@ -7133,20 +6989,11 @@ name|remaining
 init|=
 name|realLen
 decl_stmt|;
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 init|=
 operator|new
-name|HashMap
-argument_list|<>
+name|CorruptedBlocks
 argument_list|()
 decl_stmt|;
 for|for
@@ -7216,7 +7063,7 @@ name|buffer
 argument_list|,
 name|offset
 argument_list|,
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|)
 expr_stmt|;
 block|}
@@ -7238,7 +7085,7 @@ name|buffer
 argument_list|,
 name|offset
 argument_list|,
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|)
 expr_stmt|;
 block|}
@@ -7250,7 +7097,7 @@ comment|// BlockMissingException may be caught if all block replicas are
 comment|// corrupted.
 name|reportCheckSumFailure
 argument_list|(
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|,
 name|blk
 operator|.
@@ -7306,12 +7153,22 @@ return|return
 name|realLen
 return|;
 block|}
-comment|/**    * DFSInputStream reports checksum failure.    * For replicated blocks, we have the following logic:    * Case I : client has tried multiple data nodes and at least one of the    * attempts has succeeded. We report the other failures as corrupted block to    * namenode.    * Case II: client has tried out all data nodes, but all failed. We    * only report if the total number of replica is 1. We do not    * report otherwise since this maybe due to the client is a handicapped client    * (who can not read).    *    * For erasure-coded blocks, each block in corruptedBlockMap is an internal    * block in a block group, and there is usually only one DataNode    * corresponding to each internal block. For this case we simply report the    * corrupted blocks to NameNode and ignore the above logic.    *    * @param corruptedBlockMap map of corrupted blocks    * @param dataNodeCount number of data nodes who contains the block replicas    */
-DECL|method|reportCheckSumFailure ( Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, int dataNodeCount, boolean isStriped)
+comment|/**    * DFSInputStream reports checksum failure.    * For replicated blocks, we have the following logic:    * Case I : client has tried multiple data nodes and at least one of the    * attempts has succeeded. We report the other failures as corrupted block to    * namenode.    * Case II: client has tried out all data nodes, but all failed. We    * only report if the total number of replica is 1. We do not    * report otherwise since this maybe due to the client is a handicapped client    * (who can not read).    *    * For erasure-coded blocks, each block in corruptedBlockMap is an internal    * block in a block group, and there is usually only one DataNode    * corresponding to each internal block. For this case we simply report the    * corrupted blocks to NameNode and ignore the above logic.    *    * @param corruptedBlocks map of corrupted blocks    * @param dataNodeCount number of data nodes who contains the block replicas    */
+DECL|method|reportCheckSumFailure (CorruptedBlocks corruptedBlocks, int dataNodeCount, boolean isStriped)
 specifier|protected
 name|void
 name|reportCheckSumFailure
 parameter_list|(
+name|CorruptedBlocks
+name|corruptedBlocks
+parameter_list|,
+name|int
+name|dataNodeCount
+parameter_list|,
+name|boolean
+name|isStriped
+parameter_list|)
+block|{
 name|Map
 argument_list|<
 name|ExtendedBlock
@@ -7322,14 +7179,12 @@ name|DatanodeInfo
 argument_list|>
 argument_list|>
 name|corruptedBlockMap
-parameter_list|,
-name|int
-name|dataNodeCount
-parameter_list|,
-name|boolean
-name|isStriped
-parameter_list|)
-block|{
+init|=
+name|corruptedBlocks
+operator|.
+name|getCorruptionMap
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|corruptedBlockMap

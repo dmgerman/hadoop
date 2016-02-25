@@ -180,6 +180,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSUtilClient
+operator|.
+name|CorruptedBlocks
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|util
 operator|.
 name|StripedBlockUtil
@@ -1345,21 +1361,13 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Read a new stripe covering the current position, and store the data in the    * {@link #curStripeBuf}.    */
-DECL|method|readOneStripe ( Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|readOneStripe (CorruptedBlocks corruptedBlocks)
 specifier|private
 name|void
 name|readOneStripe
 parameter_list|(
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 parameter_list|)
 throws|throws
 name|IOException
@@ -1524,7 +1532,7 @@ name|blks
 argument_list|,
 name|blockReaders
 argument_list|,
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|)
 decl_stmt|;
 name|sreader
@@ -1552,7 +1560,7 @@ operator|=
 name|stripeRange
 expr_stmt|;
 block|}
-DECL|method|readCells (final BlockReader reader, final DatanodeInfo datanode, final long currentReaderOffset, final long targetReaderOffset, final ByteBufferStrategy[] strategies, final ExtendedBlock currentBlock, final Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|readCells (final BlockReader reader, final DatanodeInfo datanode, final long currentReaderOffset, final long targetReaderOffset, final ByteBufferStrategy[] strategies, final ExtendedBlock currentBlock, final CorruptedBlocks corruptedBlocks)
 specifier|private
 name|Callable
 argument_list|<
@@ -1586,16 +1594,8 @@ name|ExtendedBlock
 name|currentBlock
 parameter_list|,
 specifier|final
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 parameter_list|)
 block|{
 return|return
@@ -1699,7 +1699,7 @@ name|strategy
 argument_list|,
 name|currentBlock
 argument_list|,
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|)
 expr_stmt|;
 block|}
@@ -1710,7 +1710,7 @@ block|}
 block|}
 return|;
 block|}
-DECL|method|readToBuffer (BlockReader blockReader, DatanodeInfo currentNode, ByteBufferStrategy strategy, ExtendedBlock currentBlock, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|readToBuffer (BlockReader blockReader, DatanodeInfo currentNode, ByteBufferStrategy strategy, ExtendedBlock currentBlock, CorruptedBlocks corruptedBlocks)
 specifier|private
 name|int
 name|readToBuffer
@@ -1727,16 +1727,8 @@ parameter_list|,
 name|ExtendedBlock
 name|currentBlock
 parameter_list|,
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 parameter_list|)
 throws|throws
 name|IOException
@@ -1833,13 +1825,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// we want to remember which block replicas we have tried
-name|addIntoCorruptedBlockMap
+name|corruptedBlocks
+operator|.
+name|addCorruptedBlock
 argument_list|(
 name|currentBlock
 argument_list|,
 name|currentNode
-argument_list|,
-name|corruptedBlockMap
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2086,20 +2078,11 @@ literal|"Stream closed"
 argument_list|)
 throw|;
 block|}
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 init|=
 operator|new
-name|ConcurrentHashMap
-argument_list|<>
+name|CorruptedBlocks
 argument_list|()
 decl_stmt|;
 if|if
@@ -2207,7 +2190,7 @@ condition|)
 block|{
 name|readOneStripe
 argument_list|(
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|)
 expr_stmt|;
 block|}
@@ -2265,7 +2248,7 @@ comment|// Check if need to report block replicas corruption either read
 comment|// was successful or ChecksumException occured.
 name|reportCheckSumFailure
 argument_list|(
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|,
 name|currentLocatedBlock
 operator|.
@@ -2523,7 +2506,7 @@ block|}
 comment|/**    * Real implementation of pread.    */
 annotation|@
 name|Override
-DECL|method|fetchBlockByteRange (LocatedBlock block, long start, long end, byte[] buf, int offset, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|fetchBlockByteRange (LocatedBlock block, long start, long end, byte[] buf, int offset, CorruptedBlocks corruptedBlocks)
 specifier|protected
 name|void
 name|fetchBlockByteRange
@@ -2544,16 +2527,8 @@ parameter_list|,
 name|int
 name|offset
 parameter_list|,
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 parameter_list|)
 throws|throws
 name|IOException
@@ -2663,7 +2638,7 @@ name|blks
 argument_list|,
 name|preaderInfos
 argument_list|,
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|)
 decl_stmt|;
 name|preader
@@ -2859,18 +2834,10 @@ name|LocatedBlock
 index|[]
 name|targetBlocks
 decl_stmt|;
-DECL|field|corruptedBlockMap
+DECL|field|corruptedBlocks
 specifier|final
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 decl_stmt|;
 DECL|field|readerInfos
 specifier|final
@@ -2878,7 +2845,7 @@ name|BlockReaderInfo
 index|[]
 name|readerInfos
 decl_stmt|;
-DECL|method|StripeReader (CompletionService<Void> service, AlignedStripe alignedStripe, LocatedBlock[] targetBlocks, BlockReaderInfo[] readerInfos, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|StripeReader (CompletionService<Void> service, AlignedStripe alignedStripe, LocatedBlock[] targetBlocks, BlockReaderInfo[] readerInfos, CorruptedBlocks corruptedBlocks)
 name|StripeReader
 parameter_list|(
 name|CompletionService
@@ -2898,16 +2865,8 @@ name|BlockReaderInfo
 index|[]
 name|readerInfos
 parameter_list|,
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 parameter_list|)
 block|{
 name|this
@@ -2936,9 +2895,9 @@ name|readerInfos
 expr_stmt|;
 name|this
 operator|.
-name|corruptedBlockMap
+name|corruptedBlocks
 operator|=
-name|corruptedBlockMap
+name|corruptedBlocks
 expr_stmt|;
 block|}
 comment|/** prepare all the data chunks */
@@ -3767,7 +3726,7 @@ operator|.
 name|getBlock
 argument_list|()
 argument_list|,
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|)
 decl_stmt|;
 name|Future
@@ -4146,7 +4105,7 @@ name|decodeInputs
 init|=
 literal|null
 decl_stmt|;
-DECL|method|PositionStripeReader (CompletionService<Void> service, AlignedStripe alignedStripe, LocatedBlock[] targetBlocks, BlockReaderInfo[] readerInfos, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|PositionStripeReader (CompletionService<Void> service, AlignedStripe alignedStripe, LocatedBlock[] targetBlocks, BlockReaderInfo[] readerInfos, CorruptedBlocks corruptedBlocks)
 name|PositionStripeReader
 parameter_list|(
 name|CompletionService
@@ -4166,16 +4125,8 @@ name|BlockReaderInfo
 index|[]
 name|readerInfos
 parameter_list|,
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 parameter_list|)
 block|{
 name|super
@@ -4188,7 +4139,7 @@ name|targetBlocks
 argument_list|,
 name|readerInfos
 argument_list|,
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|)
 expr_stmt|;
 block|}
@@ -4333,7 +4284,7 @@ name|ByteBuffer
 index|[]
 name|decodeInputs
 decl_stmt|;
-DECL|method|StatefulStripeReader (CompletionService<Void> service, AlignedStripe alignedStripe, LocatedBlock[] targetBlocks, BlockReaderInfo[] readerInfos, Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap)
+DECL|method|StatefulStripeReader (CompletionService<Void> service, AlignedStripe alignedStripe, LocatedBlock[] targetBlocks, BlockReaderInfo[] readerInfos, CorruptedBlocks corruptedBlocks)
 name|StatefulStripeReader
 parameter_list|(
 name|CompletionService
@@ -4353,16 +4304,8 @@ name|BlockReaderInfo
 index|[]
 name|readerInfos
 parameter_list|,
-name|Map
-argument_list|<
-name|ExtendedBlock
-argument_list|,
-name|Set
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-argument_list|>
-name|corruptedBlockMap
+name|CorruptedBlocks
+name|corruptedBlocks
 parameter_list|)
 block|{
 name|super
@@ -4375,7 +4318,7 @@ name|targetBlocks
 argument_list|,
 name|readerInfos
 argument_list|,
-name|corruptedBlockMap
+name|corruptedBlocks
 argument_list|)
 expr_stmt|;
 block|}
