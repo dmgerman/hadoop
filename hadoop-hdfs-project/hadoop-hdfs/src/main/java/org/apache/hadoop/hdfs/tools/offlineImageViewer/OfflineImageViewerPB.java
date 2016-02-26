@@ -299,6 +299,10 @@ literal|"    the fsimage enumerated, suitable for further analysis by XML\n"
 operator|+
 literal|"    tools.\n"
 operator|+
+literal|"  * reverseXML: This processor takes an XML file and creates a\n"
+operator|+
+literal|"    binary fsimage containing the same elements.\n"
+operator|+
 literal|"  * FileDistribution: This processor analyzes the file size\n"
 operator|+
 literal|"    distribution in the image.\n"
@@ -325,7 +329,7 @@ literal|"\n"
 operator|+
 literal|"Required command line arguments:\n"
 operator|+
-literal|"-i,--inputFile<arg>   FSImage file to process.\n"
+literal|"-i,--inputFile<arg>   FSImage or XML file to process.\n"
 operator|+
 literal|"\n"
 operator|+
@@ -337,11 +341,17 @@ literal|"                       file exists, it will be overwritten.\n"
 operator|+
 literal|"                       (output to stdout by default)\n"
 operator|+
+literal|"                       If the input file was an XML file, we\n"
+operator|+
+literal|"                       will also create an<outputFile>.md5 file.\n"
+operator|+
 literal|"-p,--processor<arg>   Select which type of processor to apply\n"
 operator|+
-literal|"                       against image file. (XML|FileDistribution|Web|Delimited)\n"
+literal|"                       against image file. (XML|FileDistribution|\n"
 operator|+
-literal|"                       (Web by default)\n"
+literal|"                       ReverseXML|Web|Delimited)\n"
+operator|+
+literal|"                       The default is Web.\n"
 operator|+
 literal|"-delimiter<arg>       Delimiting string to use with Delimited processor.  \n"
 operator|+
@@ -838,6 +848,59 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
+literal|"ReverseXML"
+case|:
+try|try
+block|{
+name|OfflineImageReconstructor
+operator|.
+name|run
+argument_list|(
+name|inputFile
+argument_list|,
+name|outputFile
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"OfflineImageReconstructor failed: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|e
+operator|.
+name|printStackTrace
+argument_list|(
+name|System
+operator|.
+name|err
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|exit
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+break|break;
+case|case
 literal|"Web"
 case|:
 name|String
@@ -970,6 +1033,15 @@ name|e
 operator|.
 name|getMessage
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|e
+operator|.
+name|printStackTrace
+argument_list|(
+name|System
+operator|.
+name|err
 argument_list|)
 expr_stmt|;
 block|}

@@ -1001,7 +1001,7 @@ name|values
 argument_list|()
 decl_stmt|;
 DECL|field|XATTR_NAMESPACE_MASK
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -1010,7 +1010,7 @@ init|=
 literal|3
 decl_stmt|;
 DECL|field|XATTR_NAMESPACE_OFFSET
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -1019,7 +1019,7 @@ init|=
 literal|30
 decl_stmt|;
 DECL|field|XATTR_NAME_MASK
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -1034,7 +1034,7 @@ operator|-
 literal|1
 decl_stmt|;
 DECL|field|XATTR_NAME_OFFSET
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -1044,7 +1044,7 @@ literal|6
 decl_stmt|;
 comment|/* See the comments in fsimage.proto for an explanation of the following. */
 DECL|field|XATTR_NAMESPACE_EXT_OFFSET
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -1053,7 +1053,7 @@ init|=
 literal|5
 decl_stmt|;
 DECL|field|XATTR_NAMESPACE_EXT_MASK
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int
