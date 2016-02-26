@@ -695,6 +695,13 @@ specifier|final
 name|FileContext
 name|lfs
 decl_stmt|;
+DECL|field|logDirPermissions
+specifier|private
+name|String
+name|logDirPermissions
+init|=
+literal|null
+decl_stmt|;
 DECL|method|DefaultContainerExecutor ()
 specifier|public
 name|DefaultContainerExecutor
@@ -2967,18 +2974,6 @@ name|short
 operator|)
 literal|0710
 decl_stmt|;
-comment|/** Permissions for user log dir.    * $logdir/$user/$appId */
-DECL|field|LOGDIR_PERM
-specifier|static
-specifier|final
-name|short
-name|LOGDIR_PERM
-init|=
-operator|(
-name|short
-operator|)
-literal|0710
-decl_stmt|;
 DECL|method|getDiskFreeSpace (Path base)
 specifier|private
 name|long
@@ -3865,7 +3860,8 @@ init|=
 operator|new
 name|FsPermission
 argument_list|(
-name|LOGDIR_PERM
+name|getLogDirPermissions
+argument_list|()
 argument_list|)
 decl_stmt|;
 for|for
@@ -3979,7 +3975,8 @@ init|=
 operator|new
 name|FsPermission
 argument_list|(
-name|LOGDIR_PERM
+name|getLogDirPermissions
+argument_list|()
 argument_list|)
 decl_stmt|;
 for|for
@@ -4069,6 +4066,65 @@ name|containerId
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * Return default container log directory permissions.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getLogDirPermissions ()
+specifier|public
+name|String
+name|getLogDirPermissions
+parameter_list|()
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|logDirPermissions
+operator|==
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|logDirPermissions
+operator|=
+name|getConf
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_DEFAULT_CONTAINER_EXECUTOR_LOG_DIRS_PERMISSIONS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|NM_DEFAULT_CONTAINER_EXECUTOR_LOG_DIRS_PERMISSIONS_DEFAULT
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|this
+operator|.
+name|logDirPermissions
+return|;
+block|}
+comment|/**    * Clear the internal variable for repeatable testing.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|clearLogDirPermissions ()
+specifier|public
+name|void
+name|clearLogDirPermissions
+parameter_list|()
+block|{
+name|this
+operator|.
+name|logDirPermissions
+operator|=
+literal|null
+expr_stmt|;
 block|}
 comment|/**    * @return the list of paths of given local directories    */
 DECL|method|getPaths (List<String> dirs)
