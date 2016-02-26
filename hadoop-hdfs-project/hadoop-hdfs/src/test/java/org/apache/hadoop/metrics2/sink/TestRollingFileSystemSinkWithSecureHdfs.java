@@ -490,6 +490,18 @@ name|assertTrue
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test the {@link RollingFileSystemSink} class in the context of HDFS with  * Kerberos enabled.  */
 end_comment
@@ -839,7 +851,7 @@ literal|"secure cluster even though the principal and keytab properties "
 operator|+
 literal|"were missing"
 argument_list|,
-name|ErrorSink
+name|MockSink
 operator|.
 name|errored
 argument_list|)

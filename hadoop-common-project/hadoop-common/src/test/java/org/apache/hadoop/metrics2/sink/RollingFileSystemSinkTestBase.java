@@ -993,7 +993,7 @@ name|prefix
 operator|+
 literal|".sink.mysink0.class"
 argument_list|,
-name|ErrorSink
+name|MockSink
 operator|.
 name|class
 operator|.
@@ -2086,11 +2086,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This class is a {@link RollingFileSystemSink} wrapper that tracks whether    * an exception has been thrown during operations.    */
-DECL|class|ErrorSink
+DECL|class|MockSink
 specifier|public
 specifier|static
 class|class
-name|ErrorSink
+name|MockSink
 extends|extends
 name|RollingFileSystemSink
 block|{
@@ -2100,6 +2100,15 @@ specifier|static
 specifier|volatile
 name|boolean
 name|errored
+init|=
+literal|false
+decl_stmt|;
+DECL|field|initialized
+specifier|public
+specifier|static
+specifier|volatile
+name|boolean
+name|initialized
 init|=
 literal|false
 decl_stmt|;
@@ -2142,6 +2151,10 @@ name|ex
 argument_list|)
 throw|;
 block|}
+name|initialized
+operator|=
+literal|true
+expr_stmt|;
 block|}
 annotation|@
 name|Override

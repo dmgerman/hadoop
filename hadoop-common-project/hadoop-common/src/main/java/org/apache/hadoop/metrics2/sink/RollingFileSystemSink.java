@@ -519,6 +519,23 @@ operator|new
 name|Object
 argument_list|()
 decl_stmt|;
+DECL|field|initialized
+specifier|private
+name|boolean
+name|initialized
+init|=
+literal|false
+decl_stmt|;
+DECL|field|properties
+specifier|private
+name|SubsetConfiguration
+name|properties
+decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
 DECL|field|source
 specifier|private
 name|String
@@ -622,21 +639,25 @@ literal|null
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|init (SubsetConfiguration conf)
+DECL|method|init (SubsetConfiguration metrics2Properties)
 specifier|public
 name|void
 name|init
 parameter_list|(
 name|SubsetConfiguration
-name|conf
+name|metrics2Properties
 parameter_list|)
 block|{
+name|properties
+operator|=
+name|metrics2Properties
+expr_stmt|;
 name|basePath
 operator|=
 operator|new
 name|Path
 argument_list|(
-name|conf
+name|properties
 operator|.
 name|getString
 argument_list|(
@@ -648,7 +669,7 @@ argument_list|)
 expr_stmt|;
 name|source
 operator|=
-name|conf
+name|properties
 operator|.
 name|getString
 argument_list|(
@@ -659,7 +680,7 @@ argument_list|)
 expr_stmt|;
 name|ignoreError
 operator|=
-name|conf
+name|properties
 operator|.
 name|getBoolean
 argument_list|(
@@ -670,7 +691,7 @@ argument_list|)
 expr_stmt|;
 name|allowAppend
 operator|=
-name|conf
+name|properties
 operator|.
 name|getBoolean
 argument_list|(
@@ -679,17 +700,16 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|Configuration
-name|configuration
-init|=
+name|conf
+operator|=
 name|loadConf
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|UserGroupInformation
 operator|.
 name|setConfiguration
 argument_list|(
-name|configuration
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// Don't do secure setup if it's not needed.
@@ -704,14 +724,14 @@ block|{
 comment|// Validate config so that we don't get an NPE
 name|checkForProperty
 argument_list|(
-name|conf
+name|properties
 argument_list|,
 name|KEYTAB_PROPERTY_KEY
 argument_list|)
 expr_stmt|;
 name|checkForProperty
 argument_list|(
-name|conf
+name|properties
 argument_list|,
 name|USERNAME_PROPERTY_KEY
 argument_list|)
@@ -724,16 +744,16 @@ name|SecurityUtil
 operator|.
 name|login
 argument_list|(
-name|configuration
-argument_list|,
 name|conf
+argument_list|,
+name|properties
 operator|.
 name|getString
 argument_list|(
 name|KEYTAB_PROPERTY_KEY
 argument_list|)
 argument_list|,
-name|conf
+name|properties
 operator|.
 name|getString
 argument_list|(
@@ -766,12 +786,23 @@ argument_list|)
 throw|;
 block|}
 block|}
+block|}
+comment|/**    * Initialize the connection to HDFS and create the base directory. Also    * launch the flush thread.    */
+DECL|method|initFs ()
+specifier|private
+name|boolean
+name|initFs
+parameter_list|()
+block|{
+name|boolean
+name|success
+init|=
+literal|false
+decl_stmt|;
 name|fileSystem
 operator|=
 name|getFileSystem
-argument_list|(
-name|configuration
-argument_list|)
+argument_list|()
 expr_stmt|;
 comment|// This step isn't strictly necessary, but it makes debugging issues much
 comment|// easier. We try to create the base directory eagerly and fail with
@@ -785,12 +816,22 @@ argument_list|(
 name|basePath
 argument_list|)
 expr_stmt|;
+name|success
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
 name|Exception
 name|ex
 parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|ignoreError
+condition|)
 block|{
 throw|throw
 operator|new
@@ -810,14 +851,6 @@ name|source
 operator|+
 literal|", "
 operator|+
-name|IGNORE_ERROR_KEY
-operator|+
-literal|"="
-operator|+
-name|ignoreError
-operator|+
-literal|", "
-operator|+
 name|ALLOW_APPEND_KEY
 operator|+
 literal|"="
@@ -826,74 +859,16 @@ name|allowAppend
 operator|+
 literal|", "
 operator|+
-name|KEYTAB_PROPERTY_KEY
-operator|+
-literal|"="
-operator|+
-name|conf
-operator|.
-name|getString
+name|stringifySecurityProperty
 argument_list|(
 name|KEYTAB_PROPERTY_KEY
 argument_list|)
 operator|+
 literal|", "
 operator|+
-name|conf
-operator|.
-name|getString
-argument_list|(
-name|KEYTAB_PROPERTY_KEY
-argument_list|)
-operator|+
-literal|"="
-operator|+
-name|configuration
-operator|.
-name|get
-argument_list|(
-name|conf
-operator|.
-name|getString
-argument_list|(
-name|KEYTAB_PROPERTY_KEY
-argument_list|)
-argument_list|)
-operator|+
-literal|", "
-operator|+
-name|USERNAME_PROPERTY_KEY
-operator|+
-literal|"="
-operator|+
-name|conf
-operator|.
-name|getString
+name|stringifySecurityProperty
 argument_list|(
 name|USERNAME_PROPERTY_KEY
-argument_list|)
-operator|+
-literal|", "
-operator|+
-name|conf
-operator|.
-name|getString
-argument_list|(
-name|USERNAME_PROPERTY_KEY
-argument_list|)
-operator|+
-literal|"="
-operator|+
-name|configuration
-operator|.
-name|get
-argument_list|(
-name|conf
-operator|.
-name|getString
-argument_list|(
-name|USERNAME_PROPERTY_KEY
-argument_list|)
 argument_list|)
 operator|+
 literal|"] -- "
@@ -907,6 +882,12 @@ name|ex
 argument_list|)
 throw|;
 block|}
+block|}
+if|if
+condition|(
+name|success
+condition|)
+block|{
 comment|// If we're permitted to append, check if we actually can
 if|if
 condition|(
@@ -931,6 +912,123 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+return|return
+name|success
+return|;
+block|}
+comment|/**    * Turn a security property into a nicely formatted set of<i>name=value</i>    * strings, allowing for either the property or the configuration not to be    * set.    *    * @param properties the sink properties    * @param conf the conf    * @param property the property to stringify    * @return the stringified property    */
+DECL|method|stringifySecurityProperty (String property)
+specifier|private
+name|String
+name|stringifySecurityProperty
+parameter_list|(
+name|String
+name|property
+parameter_list|)
+block|{
+name|String
+name|securityProperty
+decl_stmt|;
+if|if
+condition|(
+name|properties
+operator|.
+name|containsKey
+argument_list|(
+name|property
+argument_list|)
+condition|)
+block|{
+name|String
+name|propertyValue
+init|=
+name|properties
+operator|.
+name|getString
+argument_list|(
+name|property
+argument_list|)
+decl_stmt|;
+name|String
+name|confValue
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|properties
+operator|.
+name|getString
+argument_list|(
+name|property
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|confValue
+operator|!=
+literal|null
+condition|)
+block|{
+name|securityProperty
+operator|=
+name|property
+operator|+
+literal|"="
+operator|+
+name|propertyValue
+operator|+
+literal|", "
+operator|+
+name|properties
+operator|.
+name|getString
+argument_list|(
+name|property
+argument_list|)
+operator|+
+literal|"="
+operator|+
+name|confValue
+expr_stmt|;
+block|}
+else|else
+block|{
+name|securityProperty
+operator|=
+name|property
+operator|+
+literal|"="
+operator|+
+name|propertyValue
+operator|+
+literal|", "
+operator|+
+name|properties
+operator|.
+name|getString
+argument_list|(
+name|property
+argument_list|)
+operator|+
+literal|"=<NOT SET>"
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|securityProperty
+operator|=
+name|property
+operator|+
+literal|"=<NOT SET>"
+expr_stmt|;
+block|}
+return|return
+name|securityProperty
+return|;
 block|}
 comment|/**    * Throw a {@link MetricsException} if the given property is not set.    *    * @param conf the configuration to test    * @param key the key to validate    */
 DECL|method|checkForProperty (SubsetConfiguration conf, String key)
@@ -978,7 +1076,7 @@ name|loadConf
 parameter_list|()
 block|{
 name|Configuration
-name|conf
+name|c
 decl_stmt|;
 if|if
 condition|(
@@ -987,7 +1085,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|conf
+name|c
 operator|=
 name|suppliedConf
 expr_stmt|;
@@ -996,7 +1094,7 @@ else|else
 block|{
 comment|// The config we're handed in init() isn't the one we want here, so we
 comment|// create a new one to pick up the full settings.
-name|conf
+name|c
 operator|=
 operator|new
 name|Configuration
@@ -1004,18 +1102,15 @@ argument_list|()
 expr_stmt|;
 block|}
 return|return
-name|conf
+name|c
 return|;
 block|}
 comment|/**    * Return the supplied file system for testing or otherwise get a new file    * system.    *    * @param conf the configuration    * @return the file system to use    * @throws MetricsException thrown if the file system could not be retrieved    */
-DECL|method|getFileSystem (Configuration conf)
+DECL|method|getFileSystem ()
 specifier|private
 name|FileSystem
 name|getFileSystem
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
+parameter_list|()
 throws|throws
 name|MetricsException
 block|{
@@ -1225,6 +1320,24 @@ name|currentDirPath
 argument_list|)
 condition|)
 block|{
+comment|// If we're not yet connected to HDFS, create the connection
+if|if
+condition|(
+operator|!
+name|initialized
+condition|)
+block|{
+name|initialized
+operator|=
+name|initFs
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|initialized
+condition|)
+block|{
 comment|// Close the stream. This step could have been handled already by the
 comment|// flusher thread, but if it has, the PrintStream will just swallow the
 comment|// exception, which is fine.
@@ -1270,6 +1383,7 @@ argument_list|(
 name|now
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Schedule the current hour's directory to be flushed at the top of the next    * hour. If this ends up running after the top of the next hour, it will    * execute immediately.    *    * @param now the current time    */

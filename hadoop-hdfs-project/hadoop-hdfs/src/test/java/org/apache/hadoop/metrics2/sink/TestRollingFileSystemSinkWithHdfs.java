@@ -570,7 +570,7 @@ expr_stmt|;
 name|shutdownHdfs
 argument_list|()
 expr_stmt|;
-name|ErrorSink
+name|MockSink
 operator|.
 name|errored
 operator|=
@@ -588,7 +588,7 @@ literal|"No exception was generated while writing metrics "
 operator|+
 literal|"even though HDFS was unavailable"
 argument_list|,
-name|ErrorSink
+name|MockSink
 operator|.
 name|errored
 argument_list|)
@@ -661,7 +661,7 @@ comment|// publish the metrics
 name|shutdownHdfs
 argument_list|()
 expr_stmt|;
-name|ErrorSink
+name|MockSink
 operator|.
 name|errored
 operator|=
@@ -678,7 +678,7 @@ literal|"No exception was generated while stopping sink "
 operator|+
 literal|"even though HDFS was unavailable"
 argument_list|,
-name|ErrorSink
+name|MockSink
 operator|.
 name|errored
 argument_list|)
@@ -742,7 +742,7 @@ expr_stmt|;
 name|shutdownHdfs
 argument_list|()
 expr_stmt|;
-name|ErrorSink
+name|MockSink
 operator|.
 name|errored
 operator|=
@@ -762,7 +762,7 @@ literal|"while HDFS was unavailable, even though the sink is set to "
 operator|+
 literal|"ignore errors"
 argument_list|,
-name|ErrorSink
+name|MockSink
 operator|.
 name|errored
 argument_list|)
@@ -835,7 +835,7 @@ comment|// publish the metrics
 name|shutdownHdfs
 argument_list|()
 expr_stmt|;
-name|ErrorSink
+name|MockSink
 operator|.
 name|errored
 operator|=
@@ -854,7 +854,7 @@ literal|"while HDFS was unavailable, even though the sink is set to "
 operator|+
 literal|"ignore errors"
 argument_list|,
-name|ErrorSink
+name|MockSink
 operator|.
 name|errored
 argument_list|)
@@ -1042,6 +1042,67 @@ name|ms
 operator|.
 name|stop
 argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Test that a failure to connect to HDFS does not cause the init() method    * to fail.    */
+annotation|@
+name|Test
+DECL|method|testInitWithNoHDFS ()
+specifier|public
+name|void
+name|testInitWithNoHDFS
+parameter_list|()
+block|{
+name|String
+name|path
+init|=
+literal|"hdfs://"
+operator|+
+name|cluster
+operator|.
+name|getNameNode
+argument_list|()
+operator|.
+name|getHostAndPort
+argument_list|()
+operator|+
+literal|"/tmp"
+decl_stmt|;
+name|shutdownHdfs
+argument_list|()
+expr_stmt|;
+name|MockSink
+operator|.
+name|errored
+operator|=
+literal|false
+expr_stmt|;
+name|initMetricsSystem
+argument_list|(
+name|path
+argument_list|,
+literal|true
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"The sink was not initialized as expected"
+argument_list|,
+name|MockSink
+operator|.
+name|initialized
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+literal|"The sink threw an unexpected error on initialization"
+argument_list|,
+name|MockSink
+operator|.
+name|errored
+argument_list|)
 expr_stmt|;
 block|}
 block|}

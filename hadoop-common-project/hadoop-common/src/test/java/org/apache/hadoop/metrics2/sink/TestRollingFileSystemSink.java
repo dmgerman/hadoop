@@ -66,6 +66,30 @@ name|assertTrue
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test the {@link RollingFileSystemSink} class in the context of the local file  * system.  */
 end_comment
@@ -330,7 +354,7 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
-name|ErrorSink
+name|MockSink
 operator|.
 name|errored
 operator|=
@@ -350,7 +374,7 @@ literal|"No exception was generated while writing metrics "
 operator|+
 literal|"even though the target directory was not writable"
 argument_list|,
-name|ErrorSink
+name|MockSink
 operator|.
 name|errored
 argument_list|)
@@ -423,7 +447,7 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
-name|ErrorSink
+name|MockSink
 operator|.
 name|errored
 operator|=
@@ -445,7 +469,7 @@ literal|"when the target directory was not writable, even though the "
 operator|+
 literal|"sink is set to ignore errors"
 argument_list|,
-name|ErrorSink
+name|MockSink
 operator|.
 name|errored
 argument_list|)
