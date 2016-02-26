@@ -2151,17 +2151,6 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
-name|String
-name|bpid
-init|=
-name|cluster
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getBlockPoolId
-argument_list|()
-decl_stmt|;
 comment|//create a file
 name|DistributedFileSystem
 name|dfs
@@ -2460,8 +2449,8 @@ block|}
 block|}
 comment|//update
 specifier|final
-name|String
-name|storageID
+name|Replica
+name|r
 init|=
 name|fsdataset
 operator|.
@@ -2490,7 +2479,17 @@ argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
-name|storageID
+name|r
+operator|!=
+literal|null
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|r
+operator|.
+name|getStorageUuid
+argument_list|()
 operator|!=
 literal|null
 argument_list|)

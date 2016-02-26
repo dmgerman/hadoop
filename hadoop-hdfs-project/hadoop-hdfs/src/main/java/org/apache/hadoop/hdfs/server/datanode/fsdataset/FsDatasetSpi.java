@@ -1379,7 +1379,7 @@ name|IOException
 function_decl|;
 comment|/**    * Recover a failed pipeline close.    * It bumps the replica's generation stamp and finalize it if RBW replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param expectedBlockLen the number of bytes the replica is expected to have    * @return the storage uuid of the replica.    * @throws IOException    */
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen )
-name|String
+name|Replica
 name|recoverClose
 parameter_list|(
 name|ExtendedBlock
@@ -1610,7 +1610,7 @@ name|IOException
 function_decl|;
 comment|/**    * Update replica's generation stamp and length and finalize it.    * @return the ID of storage that stores the block    */
 DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newBlockId, long newLength)
-name|String
+name|Replica
 name|updateReplicaUnderRecovery
 parameter_list|(
 name|ExtendedBlock

@@ -920,7 +920,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/*    * Informing the name node could take a long long time! Should we wait    * till namenode is informed before responding with success to the    * client? For now we don't.    */
-DECL|method|notifyNamenodeReceivedBlock ( ExtendedBlock block, String delHint, String storageUuid)
+DECL|method|notifyNamenodeReceivedBlock (ExtendedBlock block, String delHint, String storageUuid, boolean isOnTransientStorage)
 name|void
 name|notifyNamenodeReceivedBlock
 parameter_list|(
@@ -932,6 +932,9 @@ name|delHint
 parameter_list|,
 name|String
 name|storageUuid
+parameter_list|,
+name|boolean
+name|isOnTransientStorage
 parameter_list|)
 block|{
 name|notifyNamenodeBlock
@@ -945,6 +948,8 @@ argument_list|,
 name|delHint
 argument_list|,
 name|storageUuid
+argument_list|,
+name|isOnTransientStorage
 argument_list|)
 expr_stmt|;
 block|}
@@ -970,6 +975,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|storageUuid
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -995,10 +1002,12 @@ argument_list|,
 literal|null
 argument_list|,
 name|storageUuid
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|notifyNamenodeBlock (ExtendedBlock block, BlockStatus status, String delHint, String storageUuid)
+DECL|method|notifyNamenodeBlock (ExtendedBlock block, BlockStatus status, String delHint, String storageUuid, boolean isOnTransientStorage)
 specifier|private
 name|void
 name|notifyNamenodeBlock
@@ -1014,6 +1023,9 @@ name|delHint
 parameter_list|,
 name|String
 name|storageUuid
+parameter_list|,
+name|boolean
+name|isOnTransientStorage
 parameter_list|)
 block|{
 name|checkBlock
@@ -1070,6 +1082,8 @@ argument_list|(
 name|info
 argument_list|,
 name|storage
+argument_list|,
+name|isOnTransientStorage
 argument_list|)
 expr_stmt|;
 block|}

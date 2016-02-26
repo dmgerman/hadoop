@@ -4393,7 +4393,7 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
-name|String
+name|Replica
 name|recoverClose
 parameter_list|(
 name|ExtendedBlock
@@ -4514,9 +4514,6 @@ argument_list|)
 expr_stmt|;
 return|return
 name|binfo
-operator|.
-name|getStorageUuid
-argument_list|()
 return|;
 block|}
 annotation|@
@@ -5690,7 +5687,7 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newBlockId, long newlength)
 specifier|public
-name|String
+name|Replica
 name|updateReplicaUnderRecovery
 parameter_list|(
 name|ExtendedBlock
@@ -5705,10 +5702,25 @@ parameter_list|,
 name|long
 name|newlength
 parameter_list|)
+throws|throws
+name|IOException
 block|{
-comment|// Caller does not care about the exact Storage UUID returned.
 return|return
-name|datanodeUuid
+name|getMap
+argument_list|(
+name|oldBlock
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+operator|.
+name|get
+argument_list|(
+name|oldBlock
+operator|.
+name|getLocalBlock
+argument_list|()
+argument_list|)
 return|;
 block|}
 annotation|@

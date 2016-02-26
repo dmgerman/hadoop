@@ -20,6 +20,16 @@ name|protocol
 package|;
 end_package
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
 begin_comment
 comment|/**  * Report of block received and deleted per Datanode  * storage.  */
 end_comment
@@ -137,6 +147,25 @@ name|blocks
 operator|=
 name|blocks
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|storage
+operator|+
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|blocks
+argument_list|)
+return|;
 block|}
 block|}
 end_class

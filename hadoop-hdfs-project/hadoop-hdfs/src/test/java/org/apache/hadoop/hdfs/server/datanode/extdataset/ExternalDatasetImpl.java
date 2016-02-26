@@ -984,9 +984,9 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
+DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlkLen)
 specifier|public
-name|String
+name|Replica
 name|recoverClose
 parameter_list|(
 name|ExtendedBlock
@@ -996,7 +996,7 @@ name|long
 name|newGS
 parameter_list|,
 name|long
-name|expectedBlockLen
+name|expectedBlkLen
 parameter_list|)
 throws|throws
 name|IOException
@@ -1339,7 +1339,7 @@ annotation|@
 name|Override
 DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newBlockId, long newLength)
 specifier|public
-name|String
+name|Replica
 name|updateReplicaUnderRecovery
 parameter_list|(
 name|ExtendedBlock

@@ -1460,9 +1460,11 @@ name|notifyNamenodeReceivedBlock
 argument_list|(
 name|FAKE_BLOCK
 argument_list|,
-literal|""
+literal|null
 argument_list|,
 literal|""
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|ReceivedDeletedBlockInfo

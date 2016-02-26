@@ -7331,7 +7331,7 @@ comment|// FsDatasetSpi
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
 specifier|synchronized
-name|String
+name|Replica
 name|recoverClose
 parameter_list|(
 name|ExtendedBlock
@@ -7402,9 +7402,6 @@ expr_stmt|;
 block|}
 return|return
 name|replicaInfo
-operator|.
-name|getStorageUuid
-argument_list|()
 return|;
 block|}
 comment|/**    * Bump a replica's generation stamp to a new one.    * Its on-disk meta file name is renamed to be the new one too.    *     * @param replicaInfo a replica    * @param newGS new generation stamp    * @throws IOException if rename fails    */
@@ -12866,7 +12863,7 @@ comment|// FsDatasetSpi
 DECL|method|updateReplicaUnderRecovery ( final ExtendedBlock oldBlock, final long recoveryId, final long newBlockId, final long newlength)
 specifier|public
 specifier|synchronized
-name|String
+name|Replica
 name|updateReplicaUnderRecovery
 parameter_list|(
 specifier|final
@@ -13164,21 +13161,8 @@ argument_list|(
 name|finalized
 argument_list|)
 expr_stmt|;
-comment|//return storage ID
 return|return
-name|getVolume
-argument_list|(
-operator|new
-name|ExtendedBlock
-argument_list|(
-name|bpid
-argument_list|,
 name|finalized
-argument_list|)
-argument_list|)
-operator|.
-name|getStorageID
-argument_list|()
 return|;
 block|}
 DECL|method|updateReplicaUnderRecovery ( String bpid, ReplicaUnderRecovery rur, long recoveryId, long newBlockId, long newlength)
@@ -15005,6 +14989,11 @@ argument_list|,
 name|newReplicaInfo
 operator|.
 name|getStorageUuid
+argument_list|()
+argument_list|,
+name|newReplicaInfo
+operator|.
+name|isOnTransientStorage
 argument_list|()
 argument_list|)
 expr_stmt|;

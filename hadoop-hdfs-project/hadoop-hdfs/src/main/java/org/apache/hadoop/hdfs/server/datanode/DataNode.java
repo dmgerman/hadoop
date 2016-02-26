@@ -3218,15 +3218,6 @@ name|clusterId
 init|=
 literal|null
 decl_stmt|;
-DECL|field|EMPTY_DEL_HINT
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|EMPTY_DEL_HINT
-init|=
-literal|""
-decl_stmt|;
 DECL|field|xmitsInProgress
 specifier|final
 name|AtomicInteger
@@ -6935,7 +6926,7 @@ name|domainPeerServer
 return|;
 block|}
 comment|// calls specific to BP
-DECL|method|notifyNamenodeReceivedBlock ( ExtendedBlock block, String delHint, String storageUuid)
+DECL|method|notifyNamenodeReceivedBlock (ExtendedBlock block, String delHint, String storageUuid, boolean isOnTransientStorage)
 specifier|public
 name|void
 name|notifyNamenodeReceivedBlock
@@ -6948,6 +6939,9 @@ name|delHint
 parameter_list|,
 name|String
 name|storageUuid
+parameter_list|,
+name|boolean
+name|isOnTransientStorage
 parameter_list|)
 block|{
 name|BPOfferService
@@ -6979,6 +6973,8 @@ argument_list|,
 name|delHint
 argument_list|,
 name|storageUuid
+argument_list|,
+name|isOnTransientStorage
 argument_list|)
 expr_stmt|;
 block|}
@@ -11994,7 +11990,7 @@ block|}
 return|;
 block|}
 comment|/**    * After a block becomes finalized, a datanode increases metric counter,    * notifies namenode, and adds it to the block scanner    * @param block block to close    * @param delHint hint on which excess block to delete    * @param storageUuid UUID of the storage where block is stored    */
-DECL|method|closeBlock (ExtendedBlock block, String delHint, String storageUuid)
+DECL|method|closeBlock (ExtendedBlock block, String delHint, String storageUuid, boolean isTransientStorage)
 name|void
 name|closeBlock
 parameter_list|(
@@ -12006,6 +12002,9 @@ name|delHint
 parameter_list|,
 name|String
 name|storageUuid
+parameter_list|,
+name|boolean
+name|isTransientStorage
 parameter_list|)
 block|{
 name|metrics
@@ -12013,28 +12012,6 @@ operator|.
 name|incrBlocksWritten
 argument_list|()
 expr_stmt|;
-name|BPOfferService
-name|bpos
-init|=
-name|blockPoolManager
-operator|.
-name|get
-argument_list|(
-name|block
-operator|.
-name|getBlockPoolId
-argument_list|()
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|bpos
-operator|!=
-literal|null
-condition|)
-block|{
-name|bpos
-operator|.
 name|notifyNamenodeReceivedBlock
 argument_list|(
 name|block
@@ -12042,24 +12019,10 @@ argument_list|,
 name|delHint
 argument_list|,
 name|storageUuid
+argument_list|,
+name|isTransientStorage
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Cannot find BPOfferService for reporting block received for bpid="
-operator|+
-name|block
-operator|.
-name|getBlockPoolId
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/** Start a single datanode daemon and wait for it to finish.    *  If this thread is specifically interrupted, it will stop waiting.    */
 DECL|method|runDatanodeDaemon ()
@@ -13445,8 +13408,8 @@ throws|throws
 name|IOException
 block|{
 specifier|final
-name|String
-name|storageID
+name|Replica
+name|r
 init|=
 name|data
 operator|.
@@ -13494,13 +13457,27 @@ argument_list|(
 name|newLength
 argument_list|)
 expr_stmt|;
+specifier|final
+name|String
+name|storageID
+init|=
+name|r
+operator|.
+name|getStorageUuid
+argument_list|()
+decl_stmt|;
 name|notifyNamenodeReceivedBlock
 argument_list|(
 name|newBlock
 argument_list|,
-literal|""
+literal|null
 argument_list|,
 name|storageID
+argument_list|,
+name|r
+operator|.
+name|isOnTransientStorage
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

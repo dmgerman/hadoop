@@ -1856,16 +1856,13 @@ return|return
 name|datanode
 return|;
 block|}
-DECL|method|getStorageUuid ()
-name|String
-name|getStorageUuid
+DECL|method|getReplica ()
+name|Replica
+name|getReplica
 parameter_list|()
 block|{
 return|return
 name|replicaInfo
-operator|.
-name|getStorageUuid
-argument_list|()
 return|;
 block|}
 comment|/**    * close files and release volume reference.    */
@@ -6674,13 +6671,16 @@ name|closeBlock
 argument_list|(
 name|block
 argument_list|,
-name|DataNode
-operator|.
-name|EMPTY_DEL_HINT
+literal|null
 argument_list|,
 name|replicaInfo
 operator|.
 name|getStorageUuid
+argument_list|()
+argument_list|,
+name|replicaInfo
+operator|.
+name|isOnTransientStorage
 argument_list|()
 argument_list|)
 expr_stmt|;
