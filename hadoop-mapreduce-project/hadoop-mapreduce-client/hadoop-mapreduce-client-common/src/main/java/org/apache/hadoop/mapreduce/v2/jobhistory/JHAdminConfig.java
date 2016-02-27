@@ -384,6 +384,18 @@ name|DEFAULT_MR_HISTORY_LOADED_JOB_CACHE_SIZE
 init|=
 literal|5
 decl_stmt|;
+comment|/** Size of the loaded job cache (in tasks).*/
+DECL|field|MR_HISTORY_LOADED_TASKS_CACHE_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HISTORY_LOADED_TASKS_CACHE_SIZE
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"loadedtasks.cache.size"
+decl_stmt|;
 comment|/**    * The maximum age of a job history file before it is deleted from the history    * server.    */
 DECL|field|MR_HISTORY_MAX_AGE_MS
 specifier|public
