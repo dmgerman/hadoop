@@ -8896,9 +8896,9 @@ argument_list|,
 literal|3000L
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertTrue
 argument_list|(
-name|at
+literal|"The atime of symlink should not be lesser after setTimes()"
 argument_list|,
 name|wrapper
 operator|.
@@ -8909,6 +8909,8 @@ argument_list|)
 operator|.
 name|getAccessTime
 argument_list|()
+operator|>=
+name|at
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -9167,9 +9169,9 @@ parameter_list|)
 block|{
 comment|// Expected
 block|}
-name|assertEquals
+name|assertTrue
 argument_list|(
-name|at
+literal|"The atime of symlink should not be lesser after setTimes()"
 argument_list|,
 name|wrapper
 operator|.
@@ -9180,6 +9182,8 @@ argument_list|)
 operator|.
 name|getAccessTime
 argument_list|()
+operator|>=
+name|at
 argument_list|)
 expr_stmt|;
 block|}
