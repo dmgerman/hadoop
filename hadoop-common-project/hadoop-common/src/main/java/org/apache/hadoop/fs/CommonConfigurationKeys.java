@@ -631,6 +631,44 @@ name|HADOOP_SECURITY_TOKEN_SERVICE_USE_IP_DEFAULT
 init|=
 literal|true
 decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml .</a> */
+DECL|field|HADOOP_SECURITY_DNS_LOG_SLOW_LOOKUPS_ENABLED_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_DNS_LOG_SLOW_LOOKUPS_ENABLED_KEY
+init|=
+literal|"hadoop.security.dns.log-slow-lookups.enabled"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|HADOOP_SECURITY_DNS_LOG_SLOW_LOOKUPS_ENABLED_DEFAULT
+name|HADOOP_SECURITY_DNS_LOG_SLOW_LOOKUPS_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml .</a> */
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|HADOOP_SECURITY_DNS_LOG_SLOW_LOOKUPS_THRESHOLD_MS_KEY
+name|HADOOP_SECURITY_DNS_LOG_SLOW_LOOKUPS_THRESHOLD_MS_KEY
+init|=
+literal|"hadoop.security.dns.log-slow-lookups.threshold.ms"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|HADOOP_SECURITY_DNS_LOG_SLOW_LOOKUPS_THRESHOLD_MS_DEFAULT
+name|HADOOP_SECURITY_DNS_LOG_SLOW_LOOKUPS_THRESHOLD_MS_DEFAULT
+init|=
+literal|1000
+decl_stmt|;
 comment|/**    * HA health monitor and failover controller.    */
 comment|/** How often to retry connecting to the service. */
 DECL|field|HA_HM_CONNECT_RETRY_INTERVAL_KEY
