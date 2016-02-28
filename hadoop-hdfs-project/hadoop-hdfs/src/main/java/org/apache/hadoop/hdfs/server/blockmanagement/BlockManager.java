@@ -15490,6 +15490,8 @@ name|chooseReplicasToDelete
 argument_list|(
 name|nonExcess
 argument_list|,
+name|nonExcess
+argument_list|,
 name|replication
 argument_list|,
 name|excessTypes
@@ -15883,6 +15885,8 @@ name|placementPolicy
 operator|.
 name|chooseReplicasToDelete
 argument_list|(
+name|nonExcess
+argument_list|,
 name|candidates
 argument_list|,
 operator|(

@@ -3926,6 +3926,8 @@ name|splitNodesWithRack
 argument_list|(
 name|replicaList
 argument_list|,
+name|replicaList
+argument_list|,
 name|rackMap
 argument_list|,
 name|first

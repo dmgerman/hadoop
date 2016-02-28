@@ -4506,7 +4506,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseReplicasToDelete ( Collection<DatanodeStorageInfo> candidates, int expectedNumOfReplicas, List<StorageType> excessTypes, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
+DECL|method|chooseReplicasToDelete ( Collection<DatanodeStorageInfo> availableReplicas, Collection<DatanodeStorageInfo> delCandidates, int expectedNumOfReplicas, List<StorageType> excessTypes, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
 specifier|public
 name|List
 argument_list|<
@@ -4518,7 +4518,13 @@ name|Collection
 argument_list|<
 name|DatanodeStorageInfo
 argument_list|>
-name|candidates
+name|availableReplicas
+parameter_list|,
+name|Collection
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+name|delCandidates
 parameter_list|,
 name|int
 name|expectedNumOfReplicas
@@ -4588,12 +4594,14 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|// split nodes into two sets
+comment|// split candidate nodes for deletion into two sets
 comment|// moreThanOne contains nodes on rack with more than one replica
 comment|// exactlyOne contains the remaining nodes
 name|splitNodesWithRack
 argument_list|(
-name|candidates
+name|availableReplicas
+argument_list|,
+name|delCandidates
 argument_list|,
 name|rackMap
 argument_list|,
@@ -4618,7 +4626,7 @@ name|DatanodeStorageInfo
 operator|.
 name|getDatanodeStorageInfo
 argument_list|(
-name|candidates
+name|delCandidates
 argument_list|,
 name|delNodeHint
 argument_list|)
@@ -4631,14 +4639,14 @@ name|DatanodeStorageInfo
 operator|.
 name|getDatanodeStorageInfo
 argument_list|(
-name|candidates
+name|delCandidates
 argument_list|,
 name|addedNode
 argument_list|)
 decl_stmt|;
 while|while
 condition|(
-name|candidates
+name|delCandidates
 operator|.
 name|size
 argument_list|()
@@ -4952,6 +4960,8 @@ argument_list|()
 decl_stmt|;
 name|splitNodesWithRack
 argument_list|(
+name|locs
+argument_list|,
 name|locs
 argument_list|,
 name|rackMap

@@ -6245,6 +6245,8 @@ name|splitNodesWithRack
 argument_list|(
 name|replicaList
 argument_list|,
+name|replicaList
+argument_list|,
 name|rackMap
 argument_list|,
 name|first
@@ -6626,6 +6628,8 @@ name|chooseReplicasToDelete
 argument_list|(
 name|nonExcess
 argument_list|,
+name|nonExcess
+argument_list|,
 literal|3
 argument_list|,
 name|excessTypes
@@ -6722,6 +6726,8 @@ name|replicator
 operator|.
 name|chooseReplicasToDelete
 argument_list|(
+name|nonExcess
+argument_list|,
 name|nonExcess
 argument_list|,
 literal|3
@@ -6825,6 +6831,8 @@ name|replicator
 operator|.
 name|chooseReplicasToDelete
 argument_list|(
+name|nonExcess
+argument_list|,
 name|nonExcess
 argument_list|,
 literal|3
@@ -6943,6 +6951,8 @@ name|chooseReplicasToDelete
 argument_list|(
 name|nonExcess
 argument_list|,
+name|nonExcess
+argument_list|,
 literal|3
 argument_list|,
 name|excessTypes
@@ -7034,6 +7044,8 @@ name|replicator
 operator|.
 name|chooseReplicasToDelete
 argument_list|(
+name|nonExcess
+argument_list|,
 name|nonExcess
 argument_list|,
 literal|1
@@ -7137,6 +7149,8 @@ name|replicator
 operator|.
 name|chooseReplicasToDelete
 argument_list|(
+name|nonExcess
+argument_list|,
 name|nonExcess
 argument_list|,
 literal|2

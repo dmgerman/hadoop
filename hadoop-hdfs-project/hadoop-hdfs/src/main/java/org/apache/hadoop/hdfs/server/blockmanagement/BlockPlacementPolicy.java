@@ -310,7 +310,7 @@ name|BlockStoragePolicy
 name|storagePolicy
 parameter_list|)
 function_decl|;
-comment|/**    * Same as {@link #chooseTarget(String, int, Node, Set, long, List, StorageType)}    * with added parameter {@code favoredDatanodes}    * @param favoredNodes datanodes that should be favored as targets. This    *          is only a hint and due to cluster state, namenode may not be     *          able to place the blocks on these datanodes.    */
+comment|/**    * @param favoredNodes datanodes that should be favored as targets. This    *          is only a hint and due to cluster state, namenode may not be     *          able to place the blocks on these datanodes.    */
 DECL|method|chooseTarget (String src, int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes, BlockStoragePolicy storagePolicy)
 name|DatanodeStorageInfo
 index|[]
@@ -377,8 +377,8 @@ return|;
 block|}
 comment|/**    * Verify if the block's placement meets requirement of placement policy,    * i.e. replicas are placed on no less than minRacks racks in the system.    *     * @param locs block with locations    * @param numOfReplicas replica number of file to be verified    * @return the result of verification    */
 DECL|method|verifyBlockPlacement ( DatanodeInfo[] locs, int numOfReplicas)
-specifier|abstract
 specifier|public
+specifier|abstract
 name|BlockPlacementStatus
 name|verifyBlockPlacement
 parameter_list|(
@@ -390,10 +390,10 @@ name|int
 name|numOfReplicas
 parameter_list|)
 function_decl|;
-comment|/**    * Select the excess replica storages for deletion based on either    * delNodehint/Excess storage types.    *    * @param candidates    *          available replicas    * @param expectedNumOfReplicas    *          The required number of replicas for this block    * @param excessTypes    *          type of the storagepolicy    * @param addedNode    *          New replica reported    * @param delNodeHint    *          Hint for excess storage selection    * @return Returns the list of excess replicas chosen for deletion    */
-DECL|method|chooseReplicasToDelete ( Collection<DatanodeStorageInfo> candidates, int expectedNumOfReplicas, List<StorageType> excessTypes, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
-specifier|abstract
+comment|/**    * Select the excess replica storages for deletion based on either    * delNodehint/Excess storage types.    *    * @param availableReplicas    *          available replicas    * @param delCandidates    *          Candidates for deletion. For normal replication, this set is the    *          same with availableReplicas. For striped blocks, this set is a    *          subset of availableReplicas.    * @param expectedNumOfReplicas    *          The expected number of replicas remaining in the delCandidates    * @param excessTypes    *          type of the storagepolicy    * @param addedNode    *          New replica reported    * @param delNodeHint    *          Hint for excess storage selection    * @return Returns the list of excess replicas chosen for deletion    */
+DECL|method|chooseReplicasToDelete ( Collection<DatanodeStorageInfo> availableReplicas, Collection<DatanodeStorageInfo> delCandidates, int expectedNumOfReplicas, List<StorageType> excessTypes, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
 specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|DatanodeStorageInfo
@@ -404,7 +404,13 @@ name|Collection
 argument_list|<
 name|DatanodeStorageInfo
 argument_list|>
-name|candidates
+name|availableReplicas
+parameter_list|,
+name|Collection
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+name|delCandidates
 parameter_list|,
 name|int
 name|expectedNumOfReplicas
@@ -424,8 +430,8 @@ parameter_list|)
 function_decl|;
 comment|/**    * Used to setup a BlockPlacementPolicy object. This should be defined by     * all implementations of a BlockPlacementPolicy.    *     * @param conf the configuration object    * @param stats retrieve cluster status from here    * @param clusterMap cluster topology    */
 DECL|method|initialize (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap, Host2NodesMap host2datanodeMap)
-specifier|abstract
 specifier|protected
+specifier|abstract
 name|void
 name|initialize
 parameter_list|(
@@ -444,8 +450,8 @@ parameter_list|)
 function_decl|;
 comment|/**    * Check if the move is allowed. Used by balancer and other tools.    * @    *    * @param candidates all replicas including source and target    * @param source source replica of the move    * @param target target replica of the move    */
 DECL|method|isMovable (Collection<DatanodeInfo> candidates, DatanodeInfo source, DatanodeInfo target)
-specifier|abstract
 specifier|public
+specifier|abstract
 name|boolean
 name|isMovable
 parameter_list|(
@@ -659,13 +665,7 @@ name|datanode
 operator|)
 return|;
 block|}
-elseif|else
-if|if
-condition|(
-name|datanode
-operator|instanceof
-name|DatanodeStorageInfo
-condition|)
+else|else
 block|{
 return|return
 operator|(
@@ -677,12 +677,6 @@ operator|)
 operator|.
 name|getDatanodeDescriptor
 argument_list|()
-return|;
-block|}
-else|else
-block|{
-return|return
-literal|null
 return|;
 block|}
 block|}
@@ -704,8 +698,8 @@ name|getNetworkLocation
 argument_list|()
 return|;
 block|}
-comment|/**    * Split data nodes into two sets, one set includes nodes on rack with    * more than one  replica, the other set contains the remaining nodes.    *     * @param storagesOrDataNodes DatanodeStorageInfo/DatanodeInfo to be split    *        into two sets    * @param rackMap a map from rack to datanodes    * @param moreThanOne contains nodes on rack with more than one replica    * @param exactlyOne remains contains the remaining nodes    */
-DECL|method|splitNodesWithRack ( final Iterable<T> storagesOrDataNodes, final Map<String, List<T>> rackMap, final List<T> moreThanOne, final List<T> exactlyOne)
+comment|/**    * Split data nodes into two sets, one set includes nodes on rack with    * more than one  replica, the other set contains the remaining nodes.    *    * @param availableSet all the available DataNodes/storages of the block    * @param candidates DatanodeStorageInfo/DatanodeInfo to be split    *        into two sets    * @param rackMap a map from rack to datanodes    * @param moreThanOne contains nodes on rack with more than one replica    * @param exactlyOne remains contains the remaining nodes    */
+DECL|method|splitNodesWithRack ( final Iterable<T> availableSet, final Collection<T> candidates, final Map<String, List<T>> rackMap, final List<T> moreThanOne, final List<T> exactlyOne)
 specifier|public
 parameter_list|<
 name|T
@@ -718,7 +712,14 @@ name|Iterable
 argument_list|<
 name|T
 argument_list|>
-name|storagesOrDataNodes
+name|availableSet
+parameter_list|,
+specifier|final
+name|Collection
+argument_list|<
+name|T
+argument_list|>
+name|candidates
 parameter_list|,
 specifier|final
 name|Map
@@ -752,7 +753,7 @@ control|(
 name|T
 name|s
 range|:
-name|storagesOrDataNodes
+name|availableSet
 control|)
 block|{
 specifier|final
@@ -791,9 +792,7 @@ name|storageList
 operator|=
 operator|new
 name|ArrayList
-argument_list|<
-name|T
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|rackMap
@@ -814,24 +813,34 @@ name|s
 argument_list|)
 expr_stmt|;
 block|}
-comment|// split nodes into two sets
 for|for
 control|(
-name|List
-argument_list|<
 name|T
-argument_list|>
-name|storageList
+name|candidate
 range|:
-name|rackMap
-operator|.
-name|values
-argument_list|()
+name|candidates
 control|)
 block|{
+specifier|final
+name|String
+name|rackName
+init|=
+name|getRack
+argument_list|(
+name|getDatanodeInfo
+argument_list|(
+name|candidate
+argument_list|)
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
-name|storageList
+name|rackMap
+operator|.
+name|get
+argument_list|(
+name|rackName
+argument_list|)
 operator|.
 name|size
 argument_list|()
@@ -844,12 +853,7 @@ name|exactlyOne
 operator|.
 name|add
 argument_list|(
-name|storageList
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
+name|candidate
 argument_list|)
 expr_stmt|;
 block|}
@@ -858,9 +862,9 @@ block|{
 comment|// moreThanOne contains nodes on rack with more than one replica
 name|moreThanOne
 operator|.
-name|addAll
+name|add
 argument_list|(
-name|storageList
+name|candidate
 argument_list|)
 expr_stmt|;
 block|}
