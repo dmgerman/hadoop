@@ -84,6 +84,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|ProviderUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Key provider that simply returns the storage account key from the  * configuration as plaintext.  */
 end_comment
@@ -148,11 +162,25 @@ literal|null
 decl_stmt|;
 try|try
 block|{
+name|Configuration
+name|c
+init|=
+name|ProviderUtils
+operator|.
+name|excludeIncompatibleCredentialProviders
+argument_list|(
+name|conf
+argument_list|,
+name|NativeAzureFileSystem
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 name|char
 index|[]
 name|keyChars
 init|=
-name|conf
+name|c
 operator|.
 name|getPassword
 argument_list|(
