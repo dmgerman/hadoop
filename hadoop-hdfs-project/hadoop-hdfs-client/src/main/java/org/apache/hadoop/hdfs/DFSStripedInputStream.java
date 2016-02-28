@@ -3001,6 +3001,10 @@ operator|+
 literal|" missing blocks, the stripe is: "
 operator|+
 name|alignedStripe
+operator|+
+literal|"; locatedBlocks is: "
+operator|+
+name|locatedBlocks
 argument_list|)
 throw|;
 block|}
