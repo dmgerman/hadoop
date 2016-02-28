@@ -80,6 +80,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -297,6 +311,19 @@ argument_list|,
 name|LocalFileSystemConfigKeys
 operator|.
 name|LOCAL_FS_BYTES_PER_CHECKSUM_DEFAULT
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|bytesPerChecksum
+operator|>
+literal|0
+argument_list|,
+literal|"bytes per checksum should be positive but was %s"
+argument_list|,
+name|bytesPerChecksum
 argument_list|)
 expr_stmt|;
 block|}
