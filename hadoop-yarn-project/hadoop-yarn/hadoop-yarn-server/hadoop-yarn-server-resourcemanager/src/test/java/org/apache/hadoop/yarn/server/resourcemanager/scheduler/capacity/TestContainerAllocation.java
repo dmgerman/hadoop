@@ -2610,7 +2610,7 @@ name|getNodeId
 argument_list|()
 argument_list|)
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 operator|.
 name|getMemory
@@ -2725,7 +2725,7 @@ name|getNodeId
 argument_list|()
 argument_list|)
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 operator|.
 name|getMemory

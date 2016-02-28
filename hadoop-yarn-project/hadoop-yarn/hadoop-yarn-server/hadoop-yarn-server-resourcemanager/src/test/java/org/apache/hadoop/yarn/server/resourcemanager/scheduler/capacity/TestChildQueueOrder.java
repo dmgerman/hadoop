@@ -1257,7 +1257,7 @@ name|available
 init|=
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 decl_stmt|;
 name|doReturn
@@ -1277,7 +1277,7 @@ argument_list|(
 name|node
 argument_list|)
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 expr_stmt|;
 block|}

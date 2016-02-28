@@ -2026,7 +2026,7 @@ name|contains
 argument_list|(
 name|schedulerNode1
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 operator|.
 name|toString
@@ -2047,7 +2047,7 @@ name|contains
 argument_list|(
 name|schedulerNode1
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 operator|.
 name|toString
@@ -2150,7 +2150,7 @@ argument_list|)
 argument_list|,
 name|schedulerNode1
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2160,7 +2160,7 @@ name|usedResources
 argument_list|,
 name|schedulerNode1
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3012,7 +3012,7 @@ argument_list|)
 argument_list|,
 name|schedulerNode1
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3022,7 +3022,7 @@ name|usedResources
 argument_list|,
 name|schedulerNode1
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 argument_list|)
 expr_stmt|;

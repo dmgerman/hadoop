@@ -118,7 +118,7 @@ name|used
 operator|=
 name|node
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 expr_stmt|;
 name|this
@@ -127,7 +127,7 @@ name|avail
 operator|=
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 expr_stmt|;
 name|this

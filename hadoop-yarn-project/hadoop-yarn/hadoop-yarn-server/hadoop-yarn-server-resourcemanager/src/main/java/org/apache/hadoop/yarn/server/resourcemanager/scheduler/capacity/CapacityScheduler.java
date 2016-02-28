@@ -6579,7 +6579,7 @@ name|getNodeID
 argument_list|()
 argument_list|)
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 argument_list|,
 literal|0
@@ -6646,7 +6646,7 @@ literal|" availableResource: "
 operator|+
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7334,7 +7334,7 @@ name|computeAvailableContainers
 argument_list|(
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|,
 name|minimumAllocation
@@ -7366,7 +7366,7 @@ literal|", available: "
 operator|+
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|)
 expr_stmt|;

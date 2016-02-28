@@ -1990,7 +1990,7 @@ name|when
 argument_list|(
 name|mockNode1
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|)
 operator|.
@@ -2046,7 +2046,7 @@ name|when
 argument_list|(
 name|mockNode2
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|)
 operator|.

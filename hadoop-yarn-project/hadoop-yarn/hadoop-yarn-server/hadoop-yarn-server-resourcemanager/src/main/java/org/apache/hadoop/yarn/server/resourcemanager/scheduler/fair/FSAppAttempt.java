@@ -1303,7 +1303,7 @@ name|availableResources
 argument_list|,
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3284,7 +3284,7 @@ name|available
 init|=
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 decl_stmt|;
 name|Container
@@ -4325,7 +4325,7 @@ argument_list|()
 argument_list|,
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|)
 condition|)

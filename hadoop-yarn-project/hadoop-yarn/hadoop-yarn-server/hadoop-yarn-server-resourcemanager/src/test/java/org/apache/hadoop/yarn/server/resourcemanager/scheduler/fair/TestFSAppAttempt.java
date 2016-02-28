@@ -2241,7 +2241,7 @@ name|assertEquals
 argument_list|(
 name|n2
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|,
 name|spyApp
@@ -2314,7 +2314,7 @@ name|assertEquals
 argument_list|(
 name|n1
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|,
 name|spyApp

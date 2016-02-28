@@ -9746,7 +9746,7 @@ name|GB
 argument_list|,
 name|node_0
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 operator|.
 name|getMemory
@@ -9926,7 +9926,7 @@ name|GB
 argument_list|,
 name|node_0
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 operator|.
 name|getMemory
@@ -10105,7 +10105,7 @@ name|GB
 argument_list|,
 name|node_0
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 operator|.
 name|getMemory
@@ -10760,7 +10760,7 @@ name|GB
 argument_list|,
 name|node_0
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 operator|.
 name|getMemory
@@ -10910,7 +10910,7 @@ name|GB
 argument_list|,
 name|node_0
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 operator|.
 name|getMemory
@@ -11017,7 +11017,7 @@ name|GB
 argument_list|,
 name|node_0
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 operator|.
 name|getMemory
@@ -11124,7 +11124,7 @@ name|GB
 argument_list|,
 name|node_1
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 operator|.
 name|getMemory
@@ -11287,7 +11287,7 @@ name|GB
 argument_list|,
 name|node_0
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 operator|.
 name|getMemory

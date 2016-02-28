@@ -2979,7 +2979,7 @@ name|expectedMemory
 argument_list|,
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 operator|.
 name|getMemory

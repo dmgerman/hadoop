@@ -28964,7 +28964,7 @@ name|getNodeId
 argument_list|()
 argument_list|)
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 decl_stmt|;
 name|Assert
@@ -29054,7 +29054,7 @@ name|getNodeId
 argument_list|()
 argument_list|)
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 decl_stmt|;
 name|Assert

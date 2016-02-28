@@ -2157,7 +2157,7 @@ name|available
 init|=
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 decl_stmt|;
 name|Resource

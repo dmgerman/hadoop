@@ -3364,7 +3364,7 @@ name|clusterResource
 argument_list|,
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|,
 name|minimumAllocation
@@ -4096,12 +4096,13 @@ operator|.
 name|getCapability
 argument_list|()
 decl_stmt|;
+comment|// TODO: A buggy application with this zero would crash the scheduler.
 name|int
 name|availableContainers
 init|=
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 operator|.
 name|getMemory
@@ -4112,12 +4113,6 @@ operator|.
 name|getMemory
 argument_list|()
 decl_stmt|;
-comment|// TODO: A buggy
-comment|// application
-comment|// with this
-comment|// zero would
-comment|// crash the
-comment|// scheduler.
 name|int
 name|assignedContainers
 init|=
@@ -4466,7 +4461,7 @@ name|getNodeID
 argument_list|()
 argument_list|)
 operator|.
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 argument_list|,
 literal|0
@@ -4503,7 +4498,7 @@ name|clusterResource
 argument_list|,
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|,
 name|minimumAllocation
@@ -4525,7 +4520,7 @@ literal|" available resource = "
 operator|+
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4549,7 +4544,7 @@ literal|" resource = "
 operator|+
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|)
 expr_stmt|;

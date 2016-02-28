@@ -415,10 +415,10 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|availableResource
+DECL|field|unallocatedResource
 specifier|private
 name|Resource
-name|availableResource
+name|unallocatedResource
 init|=
 name|Resource
 operator|.
@@ -429,10 +429,10 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-DECL|field|usedResource
+DECL|field|allocatedResource
 specifier|private
 name|Resource
-name|usedResource
+name|allocatedResource
 init|=
 name|Resource
 operator|.
@@ -443,10 +443,10 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-DECL|field|totalResourceCapability
+DECL|field|totalResource
 specifier|private
 name|Resource
-name|totalResourceCapability
+name|totalResource
 decl_stmt|;
 DECL|field|reservedContainer
 specifier|private
@@ -493,7 +493,7 @@ argument_list|,
 literal|0f
 argument_list|)
 decl_stmt|;
-comment|/* set of containers that are allocated containers */
+comment|/** Set of containers that are allocated containers. */
 DECL|field|launchedContainers
 specifier|private
 specifier|final
@@ -507,11 +507,7 @@ name|launchedContainers
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|ContainerId
-argument_list|,
-name|RMContainer
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|rmNode
@@ -562,7 +558,7 @@ name|node
 expr_stmt|;
 name|this
 operator|.
-name|availableResource
+name|unallocatedResource
 operator|=
 name|Resources
 operator|.
@@ -576,7 +572,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|totalResourceCapability
+name|totalResource
 operator|=
 name|Resources
 operator|.
@@ -668,7 +664,7 @@ operator|.
 name|rmNode
 return|;
 block|}
-comment|/**    * Set total resources on the node.    * @param resource total resources on the node.    */
+comment|/**    * Set total resources on the node.    * @param resource Total resources on the node.    */
 DECL|method|setTotalResource (Resource resource)
 specifier|public
 specifier|synchronized
@@ -681,27 +677,27 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|totalResourceCapability
+name|totalResource
 operator|=
 name|resource
 expr_stmt|;
 name|this
 operator|.
-name|availableResource
+name|unallocatedResource
 operator|=
 name|Resources
 operator|.
 name|subtract
 argument_list|(
-name|totalResourceCapability
+name|totalResource
 argument_list|,
 name|this
 operator|.
-name|usedResource
+name|allocatedResource
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the ID of the node which contains both its hostname and port.    *     * @return the ID of the node    */
+comment|/**    * Get the ID of the node which contains both its hostname and port.    * @return The ID of the node.    */
 DECL|method|getNodeID ()
 specifier|public
 name|NodeId
@@ -717,6 +713,7 @@ name|getNodeID
 argument_list|()
 return|;
 block|}
+comment|/**    * Get HTTP address for the node.    * @return HTTP address for the node.    */
 DECL|method|getHttpAddress ()
 specifier|public
 name|String
@@ -732,7 +729,7 @@ name|getHttpAddress
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the name of the node for scheduling matching decisions.    *<p>    * Typically this is the 'hostname' reported by the node, but it could be    * configured to be 'hostname:port' reported by the node via the    * {@link YarnConfiguration#RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME} constant.    * The main usecase of this is Yarn minicluster to be able to differentiate    * node manager instances by their port number.    *     * @return name of the node for scheduling matching decisions.    */
+comment|/**    * Get the name of the node for scheduling matching decisions.    *<p>    * Typically this is the 'hostname' reported by the node, but it could be    * configured to be 'hostname:port' reported by the node via the    * {@link YarnConfiguration#RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME} constant.    * The main usecase of this is Yarn minicluster to be able to differentiate    * node manager instances by their port number.    * @return Name of the node for scheduling matching decisions.    */
 DECL|method|getNodeName ()
 specifier|public
 name|String
@@ -743,7 +740,7 @@ return|return
 name|nodeName
 return|;
 block|}
-comment|/**    * Get rackname.    *     * @return rackname    */
+comment|/**    * Get rackname.    * @return rackname    */
 DECL|method|getRackName ()
 specifier|public
 name|String
@@ -759,7 +756,7 @@ name|getRackName
 argument_list|()
 return|;
 block|}
-comment|/**    * The Scheduler has allocated containers on this node to the given    * application.    *     * @param rmContainer    *          allocated container    */
+comment|/**    * The Scheduler has allocated containers on this node to the given    * application.    * @param rmContainer Allocated container    */
 DECL|method|allocateContainer (RMContainer rmContainer)
 specifier|public
 specifier|synchronized
@@ -778,7 +775,7 @@ operator|.
 name|getContainer
 argument_list|()
 decl_stmt|;
-name|deductAvailableResource
+name|deductUnallocatedResource
 argument_list|(
 name|container
 operator|.
@@ -832,18 +829,19 @@ name|numContainers
 operator|+
 literal|" containers, "
 operator|+
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 operator|+
 literal|" used and "
 operator|+
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 operator|+
 literal|" available after allocation"
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Change the resources allocated for a container.    * @param containerId Identifier of the container to change.    * @param deltaResource Change in the resource allocation.    * @param increase True if the change is an increase of allocation.    */
 DECL|method|changeContainerResource (ContainerId containerId, Resource deltaResource, boolean increase)
 specifier|private
 specifier|synchronized
@@ -865,7 +863,7 @@ condition|(
 name|increase
 condition|)
 block|{
-name|deductAvailableResource
+name|deductUnallocatedResource
 argument_list|(
 name|deltaResource
 argument_list|)
@@ -873,7 +871,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|addAvailableResource
+name|addUnallocatedResource
 argument_list|(
 name|deltaResource
 argument_list|)
@@ -912,19 +910,19 @@ name|numContainers
 operator|+
 literal|" containers, "
 operator|+
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 operator|+
 literal|" used and "
 operator|+
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 operator|+
 literal|" available after allocation"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The Scheduler increased container    */
+comment|/**    * Increase the resources allocated to a container.    * @param containerId Identifier of the container to change.    * @param deltaResource Increase of resource allocation.    */
 DECL|method|increaseContainer (ContainerId containerId, Resource deltaResource)
 specifier|public
 specifier|synchronized
@@ -948,7 +946,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The Scheduler decreased container    */
+comment|/**    * Decrease the resources allocated to a container.    * @param containerId Identifier of the container to change.    * @param deltaResource Decrease of resource allocation.    */
 DECL|method|decreaseContainer (ContainerId containerId, Resource deltaResource)
 specifier|public
 specifier|synchronized
@@ -972,35 +970,35 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get available resources on the node.    *     * @return available resources on the node    */
-DECL|method|getAvailableResource ()
+comment|/**    * Get unallocated resources on the node.    * @return Unallocated resources on the node    */
+DECL|method|getUnallocatedResource ()
 specifier|public
 specifier|synchronized
 name|Resource
-name|getAvailableResource
+name|getUnallocatedResource
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|availableResource
+name|unallocatedResource
 return|;
 block|}
-comment|/**    * Get used resources on the node.    *     * @return used resources on the node    */
-DECL|method|getUsedResource ()
+comment|/**    * Get allocated resources on the node.    * @return Allocated resources on the node    */
+DECL|method|getAllocatedResource ()
 specifier|public
 specifier|synchronized
 name|Resource
-name|getUsedResource
+name|getAllocatedResource
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|usedResource
+name|allocatedResource
 return|;
 block|}
-comment|/**    * Get total resources on the node.    *     * @return total resources on the node.    */
+comment|/**    * Get total resources on the node.    * @return Total resources on the node.    */
 DECL|method|getTotalResource ()
 specifier|public
 specifier|synchronized
@@ -1011,9 +1009,10 @@ block|{
 return|return
 name|this
 operator|.
-name|totalResourceCapability
+name|totalResource
 return|;
 block|}
+comment|/**    * Check if a container is launched by this node.    * @return If the container is launched by the node.    */
 DECL|method|isValidContainer (ContainerId containerId)
 specifier|public
 specifier|synchronized
@@ -1042,6 +1041,7 @@ return|return
 literal|false
 return|;
 block|}
+comment|/**    * Update the resources of the node when allocating a new container.    * @param container Container to allocate.    */
 DECL|method|updateResource (Container container)
 specifier|private
 specifier|synchronized
@@ -1052,7 +1052,7 @@ name|Container
 name|container
 parameter_list|)
 block|{
-name|addAvailableResource
+name|addUnallocatedResource
 argument_list|(
 name|container
 operator|.
@@ -1064,7 +1064,7 @@ operator|--
 name|numContainers
 expr_stmt|;
 block|}
-comment|/**    * Release an allocated container on this node.    *     * @param container    *          container to be released    */
+comment|/**    * Release an allocated container on this node.    * @param container Container to be released.    */
 DECL|method|releaseContainer (Container container)
 specifier|public
 specifier|synchronized
@@ -1098,7 +1098,7 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-comment|/* remove the containers from the nodemanger */
+comment|// Remove the containers from the nodemanger
 if|if
 condition|(
 literal|null
@@ -1151,12 +1151,12 @@ name|numContainers
 operator|+
 literal|" containers, "
 operator|+
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 operator|+
 literal|" used and "
 operator|+
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 operator|+
 literal|" available"
@@ -1167,11 +1167,12 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addAvailableResource (Resource resource)
+comment|/**    * Add unallocated resources to the node. This is used when unallocating a    * container.    * @param resource Resources to add.    */
+DECL|method|addUnallocatedResource (Resource resource)
 specifier|private
 specifier|synchronized
 name|void
-name|addAvailableResource
+name|addUnallocatedResource
 parameter_list|(
 name|Resource
 name|resource
@@ -1202,7 +1203,7 @@ name|Resources
 operator|.
 name|addTo
 argument_list|(
-name|availableResource
+name|unallocatedResource
 argument_list|,
 name|resource
 argument_list|)
@@ -1211,17 +1212,18 @@ name|Resources
 operator|.
 name|subtractFrom
 argument_list|(
-name|usedResource
+name|allocatedResource
 argument_list|,
 name|resource
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|deductAvailableResource (Resource resource)
+comment|/**    * Deduct unallocated resources from the node. This is used when allocating a    * container.    * @param resource Resources to deduct.    */
+DECL|method|deductUnallocatedResource (Resource resource)
 specifier|private
 specifier|synchronized
 name|void
-name|deductAvailableResource
+name|deductUnallocatedResource
 parameter_list|(
 name|Resource
 name|resource
@@ -1252,7 +1254,7 @@ name|Resources
 operator|.
 name|subtractFrom
 argument_list|(
-name|availableResource
+name|unallocatedResource
 argument_list|,
 name|resource
 argument_list|)
@@ -1261,13 +1263,13 @@ name|Resources
 operator|.
 name|addTo
 argument_list|(
-name|usedResource
+name|allocatedResource
 argument_list|,
 name|resource
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Reserve container for the attempt on this node.    */
+comment|/**    * Reserve container for the attempt on this node.    * @param attempt Application attempt asking for the reservation.    * @param priority Priority of the reservation.    * @param container Container reserving resources for.    */
 DECL|method|reserveResource (SchedulerApplicationAttempt attempt, Priority priority, RMContainer container)
 specifier|public
 specifier|abstract
@@ -1284,7 +1286,7 @@ name|RMContainer
 name|container
 parameter_list|)
 function_decl|;
-comment|/**    * Unreserve resources on this node.    */
+comment|/**    * Unreserve resources on this node.    * @param attempt Application attempt that had done the reservation.    */
 DECL|method|unreserveResource (SchedulerApplicationAttempt attempt)
 specifier|public
 specifier|abstract
@@ -1318,16 +1320,16 @@ argument_list|()
 operator|+
 literal|" available="
 operator|+
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 operator|+
 literal|" used="
 operator|+
-name|getUsedResource
+name|getAllocatedResource
 argument_list|()
 return|;
 block|}
-comment|/**    * Get number of active containers on the node.    *     * @return number of active containers on the node    */
+comment|/**    * Get number of active containers on the node.    * @return Number of active containers on the node.    */
 DECL|method|getNumContainers ()
 specifier|public
 name|int
@@ -1338,6 +1340,7 @@ return|return
 name|numContainers
 return|;
 block|}
+comment|/**    * Get the running containers in the node.    * @return List of running containers in the node.    */
 DECL|method|getRunningContainers ()
 specifier|public
 specifier|synchronized
@@ -1362,6 +1365,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Get the reserved container in the node.    * @return Reserved container in the node.    */
 DECL|method|getReservedContainer ()
 specifier|public
 specifier|synchronized
@@ -1373,6 +1377,7 @@ return|return
 name|reservedContainer
 return|;
 block|}
+comment|/**    * Set the reserved container in the node.    * @param reservedContainer Reserved container in the node.    */
 specifier|protected
 specifier|synchronized
 name|void
@@ -1390,6 +1395,7 @@ operator|=
 name|reservedContainer
 expr_stmt|;
 block|}
+comment|/**    * Recover a container.    * @param rmContainer Container to recover.    */
 DECL|method|recoverContainer (RMContainer rmContainer)
 specifier|public
 specifier|synchronized
@@ -1423,6 +1429,7 @@ name|rmContainer
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Get the labels for the node.    * @return Set of labels for the node.    */
 DECL|method|getLabels ()
 specifier|public
 name|Set
@@ -1436,6 +1443,7 @@ return|return
 name|labels
 return|;
 block|}
+comment|/**    * Update the labels for the node.    * @param labels Set of labels for the node.    */
 DECL|method|updateLabels (Set<String> labels)
 specifier|public
 name|void
@@ -1455,7 +1463,7 @@ operator|=
 name|labels
 expr_stmt|;
 block|}
-comment|/**    * Get partition of which the node belongs to, if node-labels of this node is    * empty or null, it belongs to NO_LABEL partition. And since we only support    * one partition for each node (YARN-2694), first label will be its partition.    */
+comment|/**    * Get partition of which the node belongs to, if node-labels of this node is    * empty or null, it belongs to NO_LABEL partition. And since we only support    * one partition for each node (YARN-2694), first label will be its partition.    * @return Partition for the node.    */
 DECL|method|getPartition ()
 specifier|public
 name|String

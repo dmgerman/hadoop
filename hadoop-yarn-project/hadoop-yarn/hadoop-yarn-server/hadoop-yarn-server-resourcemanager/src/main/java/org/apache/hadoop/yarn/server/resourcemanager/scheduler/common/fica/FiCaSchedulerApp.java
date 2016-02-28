@@ -3439,7 +3439,7 @@ name|append
 argument_list|(
 name|node
 operator|.
-name|getAvailableResource
+name|getUnallocatedResource
 argument_list|()
 argument_list|)
 expr_stmt|;
