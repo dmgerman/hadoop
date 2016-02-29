@@ -1056,7 +1056,47 @@ name|namenode
 operator|.
 name|FSEditLogOp
 operator|.
+name|RollingUpgradeFinalizeOp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSEditLogOp
+operator|.
 name|RollingUpgradeOp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSEditLogOp
+operator|.
+name|RollingUpgradeStartOp
 import|;
 end_import
 
@@ -1563,6 +1603,7 @@ implements|implements
 name|LogsPurgeable
 block|{
 DECL|field|LOG
+specifier|public
 specifier|static
 specifier|final
 name|Log
@@ -1716,35 +1757,14 @@ argument_list|>
 name|editsDirs
 decl_stmt|;
 DECL|field|cache
-specifier|private
+specifier|protected
 specifier|final
-name|ThreadLocal
-argument_list|<
 name|OpInstanceCache
-argument_list|>
 name|cache
 init|=
 operator|new
-name|ThreadLocal
-argument_list|<
-name|OpInstanceCache
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|protected
-name|OpInstanceCache
-name|initialValue
-parameter_list|()
-block|{
-return|return
-operator|new
 name|OpInstanceCache
 argument_list|()
-return|;
-block|}
-block|}
 decl_stmt|;
 comment|/**    * The edit directories that are shared between primary and secondary.    */
 DECL|field|sharedEditsDirs
@@ -1831,6 +1851,73 @@ return|;
 block|}
 block|}
 decl_stmt|;
+DECL|method|newInstance (Configuration conf, NNStorage storage, List<URI> editsDirs)
+specifier|static
+name|FSEditLog
+name|newInstance
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|NNStorage
+name|storage
+parameter_list|,
+name|List
+argument_list|<
+name|URI
+argument_list|>
+name|editsDirs
+parameter_list|)
+block|{
+name|boolean
+name|asyncEditLogging
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EDITS_ASYNC_LOGGING
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EDITS_ASYNC_LOGGING_DEFAULT
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Edit logging is async:"
+operator|+
+name|asyncEditLogging
+argument_list|)
+expr_stmt|;
+return|return
+name|asyncEditLogging
+condition|?
+operator|new
+name|FSEditLogAsync
+argument_list|(
+name|conf
+argument_list|,
+name|storage
+argument_list|,
+name|editsDirs
+argument_list|)
+else|:
+operator|new
+name|FSEditLog
+argument_list|(
+name|conf
+argument_list|,
+name|storage
+argument_list|,
+name|editsDirs
+argument_list|)
+return|;
+block|}
 comment|/**    * Constructor for FSEditLog. Underlying journals are constructed, but     * no streams are opened until open() is called.    *     * @param conf The namenode configuration    * @param storage Storage object used by namenode    * @param editsDirs List of journals to use    */
 DECL|method|FSEditLog (Configuration conf, NNStorage storage, List<URI> editsDirs)
 name|FSEditLog
@@ -2635,6 +2722,46 @@ comment|// wait if an automatic sync is scheduled
 name|waitIfAutoSyncScheduled
 argument_list|()
 expr_stmt|;
+comment|// check if it is time to schedule an automatic sync
+name|needsSync
+operator|=
+name|doEditTransaction
+argument_list|(
+name|op
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|needsSync
+condition|)
+block|{
+name|isAutoSyncScheduled
+operator|=
+literal|true
+expr_stmt|;
+block|}
+block|}
+comment|// Sync the log if an automatic sync is required.
+if|if
+condition|(
+name|needsSync
+condition|)
+block|{
+name|logSync
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|doEditTransaction (final FSEditLogOp op)
+specifier|synchronized
+name|boolean
+name|doEditTransaction
+parameter_list|(
+specifier|final
+name|FSEditLogOp
+name|op
+parameter_list|)
+block|{
 name|long
 name|start
 init|=
@@ -2679,33 +2806,10 @@ argument_list|(
 name|start
 argument_list|)
 expr_stmt|;
-comment|// check if it is time to schedule an automatic sync
-name|needsSync
-operator|=
+return|return
 name|shouldForceSync
 argument_list|()
-expr_stmt|;
-if|if
-condition|(
-name|needsSync
-condition|)
-block|{
-name|isAutoSyncScheduled
-operator|=
-literal|true
-expr_stmt|;
-block|}
-block|}
-comment|// Sync the log if an automatic sync is required.
-if|if
-condition|(
-name|needsSync
-condition|)
-block|{
-name|logSync
-argument_list|()
-expr_stmt|;
-block|}
+return|;
 block|}
 comment|/**    * Wait if an automatic sync is scheduled    */
 DECL|method|waitIfAutoSyncScheduled ()
@@ -2945,30 +3049,12 @@ name|void
 name|logSyncAll
 parameter_list|()
 block|{
-comment|// Record the most recent transaction ID as our own id
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-name|TransactionId
-name|id
-init|=
-name|myTransactionId
-operator|.
-name|get
-argument_list|()
-decl_stmt|;
-name|id
-operator|.
-name|txid
-operator|=
-name|txid
-expr_stmt|;
-block|}
-comment|// Then make sure we're synced up to this point
+comment|// Make sure we're synced up to the most recent transaction ID.
 name|logSync
+argument_list|(
+name|getLastWrittenTxId
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Sync all modifications done by this thread.    *    * The internal concurrency design of this class is as follows:    *   - Log items are written synchronized into an in-memory buffer,    *     and each assigned a transaction ID.    *   - When a thread (client) would like to sync all of its edits, logSync()    *     uses a ThreadLocal transaction ID to determine what edit number must    *     be synced to.    *   - The isSyncRunning volatile boolean tracks whether a sync is currently    *     under progress.    *    * The data is double-buffered within each edit log implementation so that    * in-memory writing can occur in parallel with the on-disk writing.    *    * Each sync occurs in three steps:    *   1. synchronized, it swaps the double buffer and sets the isSyncRunning    *      flag.    *   2. unsynchronized, it flushes the data to storage    *   3. synchronized, it resets the flag and notifies anyone waiting on the    *      sync.    *    * The lack of synchronization on step 2 allows other threads to continue    * to write into the memory buffer while the sync is in progress.    * Because this step is unsynchronized, actions that need to avoid    * concurrency with sync() should be synchronized and also call    * waitForSyncToFinish() before assuming they are running alone.    */
@@ -2978,26 +3064,41 @@ name|void
 name|logSync
 parameter_list|()
 block|{
-name|long
-name|syncStart
-init|=
-literal|0
-decl_stmt|;
 comment|// Fetch the transactionId of this thread.
-name|long
-name|mytxid
-init|=
+name|logSync
+argument_list|(
 name|myTransactionId
 operator|.
 name|get
 argument_list|()
 operator|.
 name|txid
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|logSync (long mytxid)
+specifier|protected
+name|void
+name|logSync
+parameter_list|(
+name|long
+name|mytxid
+parameter_list|)
+block|{
+name|long
+name|syncStart
+init|=
+literal|0
 decl_stmt|;
 name|boolean
 name|sync
 init|=
 literal|false
+decl_stmt|;
+name|long
+name|editsBatchedInSync
+init|=
+literal|0
 decl_stmt|;
 try|try
 block|{
@@ -3053,26 +3154,19 @@ operator|<=
 name|synctxid
 condition|)
 block|{
-name|numTransactionsBatchedInSync
-operator|++
-expr_stmt|;
-if|if
-condition|(
-name|metrics
-operator|!=
-literal|null
-condition|)
-block|{
-comment|// Metrics is non-null only when used inside name node
-name|metrics
-operator|.
-name|incrTransactionsBatchedInSync
-argument_list|()
-expr_stmt|;
-block|}
 return|return;
 block|}
-comment|// now, this thread will do the sync
+comment|// now, this thread will do the sync.  track if other edits were
+comment|// included in the sync - ie. batched.  if this is the only edit
+comment|// synced then the batched count is 0
+name|editsBatchedInSync
+operator|=
+name|txid
+operator|-
+name|synctxid
+operator|-
+literal|1
+expr_stmt|;
 name|syncStart
 operator|=
 name|txid
@@ -3293,6 +3387,17 @@ name|addSync
 argument_list|(
 name|elapsed
 argument_list|)
+expr_stmt|;
+name|metrics
+operator|.
+name|incrTransactionsBatchedInSync
+argument_list|(
+name|editsBatchedInSync
+argument_list|)
+expr_stmt|;
+name|numTransactionsBatchedInSync
+operator|+=
+name|editsBatchedInSync
 expr_stmt|;
 block|}
 block|}
@@ -5690,12 +5795,12 @@ name|long
 name|startTime
 parameter_list|)
 block|{
-name|RollingUpgradeOp
+name|RollingUpgradeStartOp
 name|op
 init|=
-name|RollingUpgradeOp
+name|RollingUpgradeStartOp
 operator|.
-name|getStartInstance
+name|getInstance
 argument_list|(
 name|cache
 operator|.
@@ -5727,9 +5832,9 @@ block|{
 name|RollingUpgradeOp
 name|op
 init|=
-name|RollingUpgradeOp
+name|RollingUpgradeFinalizeOp
 operator|.
-name|getFinalizeInstance
+name|getInstance
 argument_list|(
 name|cache
 operator|.
@@ -6401,10 +6506,11 @@ name|OP_END_LOG_SEGMENT
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|logSync
+block|}
+comment|// always sync to ensure all edits are flushed.
+name|logSyncAll
 argument_list|()
 expr_stmt|;
-block|}
 name|printStatistics
 argument_list|(
 literal|true
@@ -7850,6 +7956,16 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
+comment|// needed by async impl to restart thread when edit log is replaced by a
+comment|// spy because a spy is a shallow copy
+DECL|method|restart ()
+specifier|public
+name|void
+name|restart
+parameter_list|()
+block|{   }
 comment|/**    * Return total number of syncs happened on this edit log.    * @return long - count    */
 DECL|method|getTotalSyncCount ()
 specifier|public

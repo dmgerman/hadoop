@@ -2599,6 +2599,13 @@ name|FSEditLog
 name|newLog
 parameter_list|)
 block|{
+comment|// spies are shallow copies, must allow async log to restart its thread
+comment|// so it has the new copy
+name|newLog
+operator|.
+name|restart
+argument_list|()
+expr_stmt|;
 name|Whitebox
 operator|.
 name|setInternalState

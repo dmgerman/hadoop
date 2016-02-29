@@ -6119,11 +6119,6 @@ condition|)
 block|{
 name|newSharedEditLog
 operator|.
-name|logSync
-argument_list|()
-expr_stmt|;
-name|newSharedEditLog
-operator|.
 name|endCurrentLogSegment
 argument_list|(
 literal|false

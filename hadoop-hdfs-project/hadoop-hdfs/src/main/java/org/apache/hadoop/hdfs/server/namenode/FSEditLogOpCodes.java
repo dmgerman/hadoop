@@ -48,6 +48,26 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSEditLogOp
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
 comment|/**  * Op codes for edits file  */
 end_comment
@@ -74,8 +94,13 @@ operator|(
 name|byte
 operator|)
 literal|0
+argument_list|,
+name|AddOp
+operator|.
+name|class
 argument_list|)
 block|,
+comment|// deprecated operation
 DECL|enumConstant|OP_RENAME_OLD
 name|OP_RENAME_OLD
 argument_list|(
@@ -83,9 +108,12 @@ operator|(
 name|byte
 operator|)
 literal|1
+argument_list|,
+name|RenameOldOp
+operator|.
+name|class
 argument_list|)
 block|,
-comment|// deprecated operation
 DECL|enumConstant|OP_DELETE
 name|OP_DELETE
 argument_list|(
@@ -93,6 +121,10 @@ operator|(
 name|byte
 operator|)
 literal|2
+argument_list|,
+name|DeleteOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_MKDIR
@@ -102,6 +134,10 @@ operator|(
 name|byte
 operator|)
 literal|3
+argument_list|,
+name|MkdirOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_SET_REPLICATION
@@ -111,6 +147,10 @@ operator|(
 name|byte
 operator|)
 literal|4
+argument_list|,
+name|SetReplicationOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|Deprecated
@@ -146,6 +186,10 @@ operator|(
 name|byte
 operator|)
 literal|7
+argument_list|,
+name|SetPermissionsOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_SET_OWNER
@@ -155,6 +199,10 @@ operator|(
 name|byte
 operator|)
 literal|8
+argument_list|,
+name|SetOwnerOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_CLOSE
@@ -164,6 +212,10 @@ operator|(
 name|byte
 operator|)
 literal|9
+argument_list|,
+name|CloseOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_SET_GENSTAMP_V1
@@ -173,6 +225,10 @@ operator|(
 name|byte
 operator|)
 literal|10
+argument_list|,
+name|SetGenstampV1Op
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_SET_NS_QUOTA
@@ -182,6 +238,10 @@ operator|(
 name|byte
 operator|)
 literal|11
+argument_list|,
+name|SetNSQuotaOp
+operator|.
+name|class
 argument_list|)
 block|,
 comment|// obsolete
@@ -192,6 +252,10 @@ operator|(
 name|byte
 operator|)
 literal|12
+argument_list|,
+name|ClearNSQuotaOp
+operator|.
+name|class
 argument_list|)
 block|,
 comment|// obsolete
@@ -202,6 +266,10 @@ operator|(
 name|byte
 operator|)
 literal|13
+argument_list|,
+name|TimesOp
+operator|.
+name|class
 argument_list|)
 block|,
 comment|// set atime, mtime
@@ -212,8 +280,13 @@ operator|(
 name|byte
 operator|)
 literal|14
+argument_list|,
+name|SetQuotaOp
+operator|.
+name|class
 argument_list|)
 block|,
+comment|// filecontext rename
 DECL|enumConstant|OP_RENAME
 name|OP_RENAME
 argument_list|(
@@ -221,9 +294,13 @@ operator|(
 name|byte
 operator|)
 literal|15
+argument_list|,
+name|RenameOp
+operator|.
+name|class
 argument_list|)
 block|,
-comment|// filecontext rename
+comment|// concat files
 DECL|enumConstant|OP_CONCAT_DELETE
 name|OP_CONCAT_DELETE
 argument_list|(
@@ -231,9 +308,12 @@ operator|(
 name|byte
 operator|)
 literal|16
+argument_list|,
+name|ConcatDeleteOp
+operator|.
+name|class
 argument_list|)
 block|,
-comment|// concat files
 DECL|enumConstant|OP_SYMLINK
 name|OP_SYMLINK
 argument_list|(
@@ -241,6 +321,10 @@ operator|(
 name|byte
 operator|)
 literal|17
+argument_list|,
+name|SymlinkOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_GET_DELEGATION_TOKEN
@@ -250,6 +334,10 @@ operator|(
 name|byte
 operator|)
 literal|18
+argument_list|,
+name|GetDelegationTokenOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_RENEW_DELEGATION_TOKEN
@@ -259,6 +347,10 @@ operator|(
 name|byte
 operator|)
 literal|19
+argument_list|,
+name|RenewDelegationTokenOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_CANCEL_DELEGATION_TOKEN
@@ -268,6 +360,10 @@ operator|(
 name|byte
 operator|)
 literal|20
+argument_list|,
+name|CancelDelegationTokenOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_UPDATE_MASTER_KEY
@@ -277,6 +373,10 @@ operator|(
 name|byte
 operator|)
 literal|21
+argument_list|,
+name|UpdateMasterKeyOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_REASSIGN_LEASE
@@ -286,6 +386,10 @@ operator|(
 name|byte
 operator|)
 literal|22
+argument_list|,
+name|ReassignLeaseOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_END_LOG_SEGMENT
@@ -295,6 +399,10 @@ operator|(
 name|byte
 operator|)
 literal|23
+argument_list|,
+name|EndLogSegmentOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_START_LOG_SEGMENT
@@ -304,6 +412,10 @@ operator|(
 name|byte
 operator|)
 literal|24
+argument_list|,
+name|StartLogSegmentOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_UPDATE_BLOCKS
@@ -313,6 +425,10 @@ operator|(
 name|byte
 operator|)
 literal|25
+argument_list|,
+name|UpdateBlocksOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_CREATE_SNAPSHOT
@@ -322,6 +438,10 @@ operator|(
 name|byte
 operator|)
 literal|26
+argument_list|,
+name|CreateSnapshotOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_DELETE_SNAPSHOT
@@ -331,6 +451,10 @@ operator|(
 name|byte
 operator|)
 literal|27
+argument_list|,
+name|DeleteSnapshotOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_RENAME_SNAPSHOT
@@ -340,6 +464,10 @@ operator|(
 name|byte
 operator|)
 literal|28
+argument_list|,
+name|RenameSnapshotOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_ALLOW_SNAPSHOT
@@ -349,6 +477,10 @@ operator|(
 name|byte
 operator|)
 literal|29
+argument_list|,
+name|AllowSnapshotOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_DISALLOW_SNAPSHOT
@@ -358,6 +490,10 @@ operator|(
 name|byte
 operator|)
 literal|30
+argument_list|,
+name|DisallowSnapshotOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_SET_GENSTAMP_V2
@@ -367,6 +503,10 @@ operator|(
 name|byte
 operator|)
 literal|31
+argument_list|,
+name|SetGenstampV2Op
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_ALLOCATE_BLOCK_ID
@@ -376,6 +516,10 @@ operator|(
 name|byte
 operator|)
 literal|32
+argument_list|,
+name|AllocateBlockIdOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_ADD_BLOCK
@@ -385,6 +529,10 @@ operator|(
 name|byte
 operator|)
 literal|33
+argument_list|,
+name|AddBlockOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_ADD_CACHE_DIRECTIVE
@@ -394,6 +542,10 @@ operator|(
 name|byte
 operator|)
 literal|34
+argument_list|,
+name|AddCacheDirectiveInfoOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_REMOVE_CACHE_DIRECTIVE
@@ -403,6 +555,10 @@ operator|(
 name|byte
 operator|)
 literal|35
+argument_list|,
+name|RemoveCacheDirectiveInfoOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_ADD_CACHE_POOL
@@ -412,6 +568,10 @@ operator|(
 name|byte
 operator|)
 literal|36
+argument_list|,
+name|AddCachePoolOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_MODIFY_CACHE_POOL
@@ -421,6 +581,10 @@ operator|(
 name|byte
 operator|)
 literal|37
+argument_list|,
+name|ModifyCachePoolOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_REMOVE_CACHE_POOL
@@ -430,6 +594,10 @@ operator|(
 name|byte
 operator|)
 literal|38
+argument_list|,
+name|RemoveCachePoolOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_MODIFY_CACHE_DIRECTIVE
@@ -439,6 +607,10 @@ operator|(
 name|byte
 operator|)
 literal|39
+argument_list|,
+name|ModifyCacheDirectiveInfoOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_SET_ACL
@@ -448,6 +620,10 @@ operator|(
 name|byte
 operator|)
 literal|40
+argument_list|,
+name|SetAclOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_ROLLING_UPGRADE_START
@@ -457,6 +633,10 @@ operator|(
 name|byte
 operator|)
 literal|41
+argument_list|,
+name|RollingUpgradeStartOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_ROLLING_UPGRADE_FINALIZE
@@ -466,6 +646,10 @@ operator|(
 name|byte
 operator|)
 literal|42
+argument_list|,
+name|RollingUpgradeFinalizeOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_SET_XATTR
@@ -475,6 +659,10 @@ operator|(
 name|byte
 operator|)
 literal|43
+argument_list|,
+name|SetXAttrOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_REMOVE_XATTR
@@ -484,6 +672,10 @@ operator|(
 name|byte
 operator|)
 literal|44
+argument_list|,
+name|RemoveXAttrOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_SET_STORAGE_POLICY
@@ -493,6 +685,10 @@ operator|(
 name|byte
 operator|)
 literal|45
+argument_list|,
+name|SetStoragePolicyOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_TRUNCATE
@@ -502,6 +698,10 @@ operator|(
 name|byte
 operator|)
 literal|46
+argument_list|,
+name|TruncateOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_APPEND
@@ -511,6 +711,10 @@ operator|(
 name|byte
 operator|)
 literal|47
+argument_list|,
+name|AppendOp
+operator|.
+name|class
 argument_list|)
 block|,
 DECL|enumConstant|OP_SET_QUOTA_BY_STORAGETYPE
@@ -520,6 +724,10 @@ operator|(
 name|byte
 operator|)
 literal|48
+argument_list|,
+name|SetQuotaByStorageTypeOp
+operator|.
+name|class
 argument_list|)
 block|,
 comment|// Note that the current range of the valid OP code is 0~127
@@ -539,6 +747,17 @@ specifier|final
 name|byte
 name|opCode
 decl_stmt|;
+DECL|field|opClass
+specifier|private
+specifier|final
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|FSEditLogOp
+argument_list|>
+name|opClass
+decl_stmt|;
 comment|/**    * Constructor    *    * @param opCode byte value of constructed enum    */
 DECL|method|FSEditLogOpCodes (byte opCode)
 name|FSEditLogOpCodes
@@ -548,10 +767,39 @@ name|opCode
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|opCode
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|FSEditLogOpCodes (byte opCode, Class<? extends FSEditLogOp> opClass)
+name|FSEditLogOpCodes
+parameter_list|(
+name|byte
+name|opCode
+parameter_list|,
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|FSEditLogOp
+argument_list|>
+name|opClass
+parameter_list|)
+block|{
+name|this
 operator|.
 name|opCode
 operator|=
 name|opCode
+expr_stmt|;
+name|this
+operator|.
+name|opClass
+operator|=
+name|opClass
 expr_stmt|;
 block|}
 comment|/**    * return the byte value of the enum    *    * @return the byte value of the enum    */
@@ -563,6 +811,21 @@ parameter_list|()
 block|{
 return|return
 name|opCode
+return|;
+block|}
+DECL|method|getOpClass ()
+specifier|public
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|FSEditLogOp
+argument_list|>
+name|getOpClass
+parameter_list|()
+block|{
+return|return
+name|opClass
 return|;
 block|}
 DECL|field|VALUES

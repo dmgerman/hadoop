@@ -951,6 +951,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// async edit logs are incompatible with backup node due to race
+comment|// conditions resulting from laxer synchronization
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EDITS_ASYNC_LOGGING
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 comment|// Trash is disabled in BackupNameNode,
 comment|// but should be turned back on if it ever becomes active.
 name|conf

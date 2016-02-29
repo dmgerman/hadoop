@@ -1342,16 +1342,21 @@ name|latency
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|incrTransactionsBatchedInSync ()
+DECL|method|incrTransactionsBatchedInSync (long count)
 specifier|public
 name|void
 name|incrTransactionsBatchedInSync
-parameter_list|()
+parameter_list|(
+name|long
+name|count
+parameter_list|)
 block|{
 name|transactionsBatchedInSync
 operator|.
 name|incr
-argument_list|()
+argument_list|(
+name|count
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|addSync (long elapsed)

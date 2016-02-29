@@ -1005,8 +1005,9 @@ name|this
 operator|.
 name|editLog
 operator|=
-operator|new
 name|FSEditLog
+operator|.
+name|newInstance
 argument_list|(
 name|conf
 argument_list|,
