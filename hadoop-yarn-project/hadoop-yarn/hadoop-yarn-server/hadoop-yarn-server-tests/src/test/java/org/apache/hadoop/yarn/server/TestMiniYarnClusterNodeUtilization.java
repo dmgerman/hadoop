@@ -1100,6 +1100,16 @@ name|ni
 operator|.
 name|getNodeUtilization
 argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|ni
+operator|.
+name|getNodeUtilization
+argument_list|()
 operator|.
 name|equals
 argument_list|(
@@ -1108,6 +1118,7 @@ argument_list|)
 condition|)
 block|{
 break|break;
+block|}
 block|}
 block|}
 name|Thread
