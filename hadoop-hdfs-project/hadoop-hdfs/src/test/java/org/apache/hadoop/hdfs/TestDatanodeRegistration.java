@@ -1920,11 +1920,6 @@ comment|// re-registration.  If a non-IPC exception does occur, the safety net i
 comment|// a forced re-registration on the next heartbeat.
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|10000
-argument_list|)
 DECL|method|testForcedRegistration ()
 specifier|public
 name|void
@@ -2660,7 +2655,7 @@ block|}
 argument_list|,
 literal|10
 argument_list|,
-literal|100
+literal|2000
 argument_list|)
 expr_stmt|;
 block|}
