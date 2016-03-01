@@ -285,6 +285,17 @@ literal|"The block ID of a finalized block uniquely determines its position "
 operator|+
 literal|"in the directory structure"
 argument_list|)
+block|,
+DECL|enumConstant|BLOCKID_BASED_LAYOUT_32_by_32
+name|BLOCKID_BASED_LAYOUT_32_by_32
+argument_list|(
+operator|-
+literal|57
+argument_list|,
+literal|"Identical to the block id based layout (-56) except it uses a smaller"
+operator|+
+literal|" directory structure (32x32)"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private

@@ -5403,8 +5403,10 @@ init|=
 literal|false
 decl_stmt|;
 comment|// If we are upgrading from a version older than the one where we introduced
-comment|// block ID-based layout AND we're working with the finalized directory,
-comment|// we'll need to upgrade from the old flat layout to the block ID-based one
+comment|// block ID-based layout (32x32) AND we're working with the finalized
+comment|// directory, we'll need to upgrade from the old layout to the new one. The
+comment|// upgrade path from pre-blockid based layouts (>-56) and blockid based
+comment|// 256x256 layouts (-56) is fortunately the same.
 if|if
 condition|(
 name|oldLV
@@ -5413,7 +5415,7 @@ name|DataNodeLayoutVersion
 operator|.
 name|Feature
 operator|.
-name|BLOCKID_BASED_LAYOUT
+name|BLOCKID_BASED_LAYOUT_32_by_32
 operator|.
 name|getInfo
 argument_list|()

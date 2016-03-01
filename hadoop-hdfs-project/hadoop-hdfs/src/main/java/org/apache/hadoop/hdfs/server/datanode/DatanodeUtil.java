@@ -500,7 +500,7 @@ operator|>>
 literal|16
 operator|)
 operator|&
-literal|0xff
+literal|0x1F
 argument_list|)
 decl_stmt|;
 name|int
@@ -516,7 +516,7 @@ operator|>>
 literal|8
 operator|)
 operator|&
-literal|0xff
+literal|0x1F
 argument_list|)
 decl_stmt|;
 name|String
