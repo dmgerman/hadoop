@@ -3899,6 +3899,54 @@ name|e
 parameter_list|)
 block|{
 comment|// AuthorizationException is thrown because the user doesn't have access
+if|if
+condition|(
+name|e
+operator|instanceof
+name|AuthorizationException
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to authorize when generating application report for "
+operator|+
+name|app
+operator|.
+name|appReport
+operator|.
+name|getApplicationId
+argument_list|()
+operator|+
+literal|". Use a placeholder for its latest attempt id. "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Attempt not found
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"No application attempt found for "
+operator|+
+name|app
+operator|.
+name|appReport
+operator|.
+name|getApplicationId
+argument_list|()
+operator|+
+literal|". Use a placeholder for its latest attempt id. "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 comment|// It's possible that the app is finished before the first attempt is created.
 name|app
 operator|.
