@@ -718,6 +718,7 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// fail.
 if|if
 condition|(
 name|failAction
@@ -811,10 +812,6 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|failOverAction
-operator|!=
-literal|null
-operator|&&
 name|worthLogging
 condition|)
 block|{
@@ -862,6 +859,14 @@ operator|+
 literal|" fail over attempts"
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|failOverAction
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// failover
 name|msg
 operator|+=
 literal|". Trying to fail over "
@@ -871,6 +876,20 @@ argument_list|(
 name|delay
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// retry
+name|msg
+operator|+=
+literal|". Retrying "
+operator|+
+name|formatSleepMessage
+argument_list|(
+name|delay
+argument_list|)
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -880,57 +899,6 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Exception while invoking "
-operator|+
-name|method
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" of class "
-operator|+
-name|currentProxy
-operator|.
-name|proxy
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getSimpleName
-argument_list|()
-operator|+
-literal|" over "
-operator|+
-name|currentProxy
-operator|.
-name|proxyInfo
-operator|+
-literal|". Retrying "
-operator|+
-name|formatSleepMessage
-argument_list|(
-name|delay
-argument_list|)
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 if|if
 condition|(

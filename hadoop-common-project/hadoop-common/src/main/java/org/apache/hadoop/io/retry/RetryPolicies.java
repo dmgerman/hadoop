@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -253,6 +253,20 @@ operator|.
 name|SecretManager
 operator|.
 name|InvalidToken
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -710,9 +724,21 @@ throws|throws
 name|Exception
 block|{
 return|return
+operator|new
+name|RetryAction
+argument_list|(
 name|RetryAction
 operator|.
+name|RetryDecision
+operator|.
 name|FAIL
+argument_list|,
+literal|0
+argument_list|,
+literal|"try once "
+operator|+
+literal|"and fail."
+argument_list|)
 return|;
 block|}
 block|}
@@ -881,9 +907,20 @@ name|maxRetries
 condition|)
 block|{
 return|return
+operator|new
+name|RetryAction
+argument_list|(
 name|RetryAction
 operator|.
+name|RetryDecision
+operator|.
 name|FAIL
+argument_list|,
+literal|0
+argument_list|,
+name|getReason
+argument_list|()
+argument_list|)
 return|;
 block|}
 return|return
@@ -905,7 +942,43 @@ argument_list|(
 name|retries
 argument_list|)
 argument_list|)
+argument_list|,
+name|getReason
+argument_list|()
 argument_list|)
+return|;
+block|}
+DECL|method|getReason ()
+specifier|protected
+name|String
+name|getReason
+parameter_list|()
+block|{
+return|return
+name|constructReasonString
+argument_list|(
+name|maxRetries
+argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|constructReasonString (int retries)
+specifier|public
+specifier|static
+name|String
+name|constructReasonString
+parameter_list|(
+name|int
+name|retries
+parameter_list|)
+block|{
+return|return
+literal|"retries get failed due to exceeded maximum allowed retries "
+operator|+
+literal|"number: "
+operator|+
+name|retries
 return|;
 block|}
 DECL|method|calculateSleepTime (int retries)
@@ -1091,6 +1164,18 @@ name|RetryUpToMaximumTimeWithFixedSleep
 extends|extends
 name|RetryUpToMaximumCountWithFixedSleep
 block|{
+DECL|field|maxTime
+specifier|private
+name|long
+name|maxTime
+init|=
+literal|0
+decl_stmt|;
+DECL|field|timeUnit
+specifier|private
+name|TimeUnit
+name|timeUnit
+decl_stmt|;
 DECL|method|RetryUpToMaximumTimeWithFixedSleep (long maxTime, long sleepTime, TimeUnit timeUnit)
 specifier|public
 name|RetryUpToMaximumTimeWithFixedSleep
@@ -1121,6 +1206,69 @@ argument_list|,
 name|timeUnit
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|maxTime
+operator|=
+name|maxTime
+expr_stmt|;
+name|this
+operator|.
+name|timeUnit
+operator|=
+name|timeUnit
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getReason ()
+specifier|protected
+name|String
+name|getReason
+parameter_list|()
+block|{
+return|return
+name|constructReasonString
+argument_list|(
+name|this
+operator|.
+name|maxTime
+argument_list|,
+name|this
+operator|.
+name|timeUnit
+argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|constructReasonString (long maxTime, TimeUnit timeUnit)
+specifier|public
+specifier|static
+name|String
+name|constructReasonString
+parameter_list|(
+name|long
+name|maxTime
+parameter_list|,
+name|TimeUnit
+name|timeUnit
+parameter_list|)
+block|{
+return|return
+literal|"retries get failed due to exceeded maximum allowed time ("
+operator|+
+literal|"in "
+operator|+
+name|timeUnit
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|"): "
+operator|+
+name|maxTime
+return|;
 block|}
 block|}
 DECL|class|RetryUpToMaximumCountWithProportionalSleep
@@ -1382,9 +1530,23 @@ condition|)
 block|{
 comment|//no more retries.
 return|return
+operator|new
+name|RetryAction
+argument_list|(
 name|RetryAction
 operator|.
+name|RetryDecision
+operator|.
 name|FAIL
+argument_list|,
+literal|0
+argument_list|,
+literal|"Retry "
+operator|+
+literal|"all pairs in MultipleLinearRandomRetry: "
+operator|+
+name|pairs
+argument_list|)
 return|;
 block|}
 comment|//calculate sleep time and return.
