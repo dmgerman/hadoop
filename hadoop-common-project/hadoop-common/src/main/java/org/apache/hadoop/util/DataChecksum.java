@@ -198,7 +198,6 @@ decl_stmt|;
 comment|/** The checksum types */
 DECL|enum|Type
 specifier|public
-specifier|static
 enum|enum
 name|Type
 block|{
@@ -257,7 +256,6 @@ name|int
 name|size
 decl_stmt|;
 DECL|method|Type (int id, int size)
-specifier|private
 name|Type
 parameter_list|(
 name|int

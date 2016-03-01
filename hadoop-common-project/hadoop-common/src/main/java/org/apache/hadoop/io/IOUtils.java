@@ -994,6 +994,13 @@ name|Closeable
 name|stream
 parameter_list|)
 block|{
+if|if
+condition|(
+name|stream
+operator|!=
+literal|null
+condition|)
+block|{
 name|cleanup
 argument_list|(
 literal|null
@@ -1001,6 +1008,7 @@ argument_list|,
 name|stream
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Closes the socket ignoring {@link IOException}    *    * @param sock the Socket to close    */
 DECL|method|closeSocket (Socket sock)
