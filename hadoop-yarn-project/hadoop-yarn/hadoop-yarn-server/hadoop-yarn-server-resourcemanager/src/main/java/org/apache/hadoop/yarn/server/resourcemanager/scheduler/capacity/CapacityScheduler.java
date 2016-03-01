@@ -2475,6 +2475,7 @@ name|SchedulerHealth
 argument_list|()
 decl_stmt|;
 DECL|field|lastNodeUpdateTime
+specifier|volatile
 name|long
 name|lastNodeUpdateTime
 decl_stmt|;
@@ -5812,7 +5813,6 @@ block|}
 block|}
 annotation|@
 name|Override
-comment|// Note: when AM asks to release container, we will acquire scheduler lock
 annotation|@
 name|Lock
 argument_list|(
@@ -8644,17 +8644,9 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
-name|Lock
-argument_list|(
-name|CapacityScheduler
-operator|.
-name|class
-argument_list|)
-annotation|@
 name|Override
 DECL|method|completedContainerInternal ( RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
 specifier|protected
-specifier|synchronized
 name|void
 name|completedContainerInternal
 parameter_list|(
@@ -10795,7 +10787,6 @@ return|;
 block|}
 DECL|method|setLastNodeUpdateTime (long time)
 specifier|private
-specifier|synchronized
 name|void
 name|setLastNodeUpdateTime
 parameter_list|(
