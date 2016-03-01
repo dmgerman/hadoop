@@ -596,6 +596,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|ProviderUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Progressable
@@ -1897,6 +1911,20 @@ name|userInfo
 expr_stmt|;
 block|}
 block|}
+name|Configuration
+name|c
+init|=
+name|ProviderUtils
+operator|.
+name|excludeIncompatibleCredentialProviders
+argument_list|(
+name|conf
+argument_list|,
+name|S3AFileSystem
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|accessKey
@@ -1911,7 +1939,7 @@ name|char
 index|[]
 name|key
 init|=
-name|conf
+name|c
 operator|.
 name|getPassword
 argument_list|(
@@ -1971,7 +1999,7 @@ name|char
 index|[]
 name|pass
 init|=
-name|conf
+name|c
 operator|.
 name|getPassword
 argument_list|(
@@ -2434,7 +2462,7 @@ literal|"Not supported"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Renames Path src to Path dst.  Can take place on local fs    * or remote DFS.    *    * Warning: S3 does not support renames. This method does a copy which can     * take S3 some time to execute with large files and directories. Since     * there is no Progressable passed in, this can time out jobs.    *    * Note: This implementation differs with other S3 drivers. Specifically:    *       Fails if src is a file and dst is a directory.    *       Fails if src is a directory and dst is a file.    *       Fails if the parent of dst does not exist or is a file.    *       Fails if dst is a directory that is not empty.    *    * @param src path to be renamed    * @param dst new path after rename    * @throws IOException on failure    * @return true if rename is successful    */
+comment|/**    * Renames Path src to Path dst.  Can take place on local fs    * or remote DFS.    *    * Warning: S3 does not support renames. This method does a copy which can    * take S3 some time to execute with large files and directories. Since    * there is no Progressable passed in, this can time out jobs.    *    * Note: This implementation differs with other S3 drivers. Specifically:    *       Fails if src is a file and dst is a directory.    *       Fails if src is a directory and dst is a file.    *       Fails if the parent of dst does not exist or is a file.    *       Fails if dst is a directory that is not empty.    *    * @param src path to be renamed    * @param dst new path after rename    * @throws IOException on failure    * @return true if rename is successful    */
 DECL|method|rename (Path src, Path dst)
 specifier|public
 name|boolean
