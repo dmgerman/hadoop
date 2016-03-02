@@ -70,6 +70,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|net
@@ -143,6 +155,22 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
 import|;
 end_import
 
@@ -370,6 +398,8 @@ argument_list|(
 name|conn
 argument_list|,
 name|DEFAULT_SOCKET_TIMEOUT
+argument_list|,
+name|DEFAULT_SOCKET_TIMEOUT
 argument_list|)
 expr_stmt|;
 return|return
@@ -550,7 +580,7 @@ name|connConfigurator
 expr_stmt|;
 block|}
 comment|/**    * Create a new ConnectionConfigurator for SSL connections    */
-DECL|method|newSslConnConfigurator ( final int timeout, Configuration conf)
+DECL|method|newSslConnConfigurator ( final int defaultTimeout, Configuration conf)
 specifier|private
 specifier|static
 name|ConnectionConfigurator
@@ -558,7 +588,7 @@ name|newSslConnConfigurator
 parameter_list|(
 specifier|final
 name|int
-name|timeout
+name|defaultTimeout
 parameter_list|,
 name|Configuration
 name|conf
@@ -579,6 +609,14 @@ decl_stmt|;
 specifier|final
 name|HostnameVerifier
 name|hv
+decl_stmt|;
+specifier|final
+name|int
+name|connectTimeout
+decl_stmt|;
+specifier|final
+name|int
+name|readTimeout
 decl_stmt|;
 name|factory
 operator|=
@@ -612,6 +650,46 @@ name|factory
 operator|.
 name|getHostnameVerifier
 argument_list|()
+expr_stmt|;
+name|connectTimeout
+operator|=
+operator|(
+name|int
+operator|)
+name|conf
+operator|.
+name|getTimeDuration
+argument_list|(
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_WEBHDFS_SOCKET_CONNECT_TIMEOUT_KEY
+argument_list|,
+name|defaultTimeout
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+expr_stmt|;
+name|readTimeout
+operator|=
+operator|(
+name|int
+operator|)
+name|conf
+operator|.
+name|getTimeDuration
+argument_list|(
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_WEBHDFS_SOCKET_READ_TIMEOUT_KEY
+argument_list|,
+name|defaultTimeout
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
 expr_stmt|;
 return|return
 operator|new
@@ -666,7 +744,9 @@ name|setTimeouts
 argument_list|(
 name|conn
 argument_list|,
-name|timeout
+name|connectTimeout
+argument_list|,
+name|readTimeout
 argument_list|)
 expr_stmt|;
 return|return
@@ -822,7 +902,7 @@ return|;
 block|}
 block|}
 comment|/**    * Sets timeout parameters on the given URLConnection.    *    * @param connection    *          URLConnection to set    * @param socketTimeout    *          the connection and read timeout of the connection.    */
-DECL|method|setTimeouts (URLConnection connection, int socketTimeout)
+DECL|method|setTimeouts (URLConnection connection, int connectTimeout, int readTimeout)
 specifier|private
 specifier|static
 name|void
@@ -832,21 +912,24 @@ name|URLConnection
 name|connection
 parameter_list|,
 name|int
-name|socketTimeout
+name|connectTimeout
+parameter_list|,
+name|int
+name|readTimeout
 parameter_list|)
 block|{
 name|connection
 operator|.
 name|setConnectTimeout
 argument_list|(
-name|socketTimeout
+name|connectTimeout
 argument_list|)
 expr_stmt|;
 name|connection
 operator|.
 name|setReadTimeout
 argument_list|(
-name|socketTimeout
+name|readTimeout
 argument_list|)
 expr_stmt|;
 block|}
