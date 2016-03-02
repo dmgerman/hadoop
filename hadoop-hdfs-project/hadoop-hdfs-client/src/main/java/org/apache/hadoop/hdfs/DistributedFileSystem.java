@@ -11462,6 +11462,9 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
+operator|new
+name|Path
+argument_list|(
 name|ez
 operator|.
 name|getPath
@@ -11470,7 +11473,8 @@ argument_list|,
 name|FileSystem
 operator|.
 name|TRASH_PREFIX
-operator|+
+argument_list|)
+argument_list|,
 name|dfs
 operator|.
 name|ugi
