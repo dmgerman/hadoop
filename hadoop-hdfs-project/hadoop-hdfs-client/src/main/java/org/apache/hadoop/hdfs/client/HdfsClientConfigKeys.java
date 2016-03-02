@@ -1538,6 +1538,16 @@ DECL|interface|HedgedRead
 interface|interface
 name|HedgedRead
 block|{
+DECL|field|PREFIX
+name|String
+name|PREFIX
+init|=
+name|HdfsClientConfigKeys
+operator|.
+name|PREFIX
+operator|+
+literal|"hedged.read."
+decl_stmt|;
 DECL|field|THRESHOLD_MILLIS_KEY
 name|String
 name|THRESHOLD_MILLIS_KEY
