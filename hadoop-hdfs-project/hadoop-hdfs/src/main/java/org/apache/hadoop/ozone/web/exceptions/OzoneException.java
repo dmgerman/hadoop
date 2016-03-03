@@ -162,6 +162,12 @@ specifier|private
 name|String
 name|hostID
 decl_stmt|;
+comment|/**    * Constructs a new exception with {@code null} as its detail message. The    * cause is not initialized, and may subsequently be initialized by a call    * to {@link #initCause}.    *    * This constructor is needed by Json Serializer.    */
+DECL|method|OzoneException ()
+specifier|public
+name|OzoneException
+parameter_list|()
+block|{   }
 comment|/**    * Constructor that allows a shortMessage and exception.    *    * @param httpCode Error Code    * @param shortMessage Short Message    * @param ex Exception    */
 DECL|method|OzoneException (long httpCode, String shortMessage, Exception ex)
 specifier|public

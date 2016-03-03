@@ -56,9 +56,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|conf
 operator|.
-name|OzoneConfigKeys
+name|Configuration
 import|;
 end_import
 
@@ -72,7 +72,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OzoneConfiguration
+name|OzoneConfigKeys
 import|;
 end_import
 
@@ -505,10 +505,13 @@ literal|"UTF-8"
 argument_list|)
 decl_stmt|;
 comment|/**    * Constructs OzoneMetadataManager.    */
-DECL|method|OzoneMetadataManager ()
+DECL|method|OzoneMetadataManager (Configuration conf)
 specifier|private
 name|OzoneMetadataManager
-parameter_list|()
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 block|{
 name|lock
 operator|=
@@ -516,13 +519,6 @@ operator|new
 name|ReentrantReadWriteLock
 argument_list|()
 expr_stmt|;
-name|OzoneConfiguration
-name|conf
-init|=
-operator|new
-name|OzoneConfiguration
-argument_list|()
-decl_stmt|;
 name|String
 name|storageRoot
 init|=
@@ -632,13 +628,16 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Gets Ozone Manager.    *    * @return OzoneMetadataManager    */
-DECL|method|getOzoneMetadataManager ()
 specifier|public
 specifier|static
 specifier|synchronized
 name|OzoneMetadataManager
+DECL|method|getOzoneMetadataManager (Configuration conf)
 name|getOzoneMetadataManager
-parameter_list|()
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 block|{
 if|if
 condition|(
@@ -651,7 +650,9 @@ name|bm
 operator|=
 operator|new
 name|OzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 block|}
 return|return

@@ -99,6 +99,24 @@ name|DFS_STORAGE_HANDLER_TYPE_DEFAULT
 init|=
 literal|"distributed"
 decl_stmt|;
+DECL|field|DFS_OBJECTSTORE_TRACE_ENABLED_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_OBJECTSTORE_TRACE_ENABLED_KEY
+init|=
+literal|"dfs.objectstore.trace.enabled"
+decl_stmt|;
+DECL|field|DFS_OBJECTSTORE_TRACE_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_OBJECTSTORE_TRACE_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * There is no need to instantiate this class.    */
 DECL|method|OzoneConfigKeys ()
 specifier|private

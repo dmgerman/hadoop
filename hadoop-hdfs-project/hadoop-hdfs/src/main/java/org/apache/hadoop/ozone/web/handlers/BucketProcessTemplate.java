@@ -791,8 +791,6 @@ parameter_list|,
 name|String
 name|tag
 parameter_list|)
-throws|throws
-name|OzoneException
 block|{
 name|List
 argument_list|<
@@ -1023,7 +1021,7 @@ name|getRequestHeader
 argument_list|(
 name|Header
 operator|.
-name|OZONE_STORAGE_CLASS
+name|OZONE_STORAGE_TYPE
 argument_list|)
 decl_stmt|;
 if|if

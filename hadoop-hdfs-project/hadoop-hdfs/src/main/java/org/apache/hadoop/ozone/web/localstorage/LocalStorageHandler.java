@@ -42,6 +42,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|web
@@ -240,12 +254,28 @@ name|LocalStorageHandler
 implements|implements
 name|StorageHandler
 block|{
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
 comment|/**    * Constructs LocalStorageHandler.    */
-DECL|method|LocalStorageHandler ()
+DECL|method|LocalStorageHandler (Configuration conf)
 specifier|public
 name|LocalStorageHandler
-parameter_list|()
-block|{   }
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
+block|}
 comment|/**    * Creates Storage Volume.    *    * @param args - volumeArgs    *    * @throws IOException    */
 annotation|@
 name|Override
@@ -268,7 +298,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 name|oz
 operator|.
@@ -300,7 +332,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 name|oz
 operator|.
@@ -341,7 +375,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -399,7 +435,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 return|return
 name|oz
@@ -432,7 +470,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 return|return
 name|oz
@@ -465,7 +505,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 name|oz
 operator|.
@@ -497,7 +539,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 return|return
 name|oz
@@ -546,7 +590,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 name|oz
 operator|.
@@ -578,7 +624,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 name|oz
 operator|.
@@ -616,7 +664,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 name|oz
 operator|.
@@ -654,7 +704,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 name|oz
 operator|.
@@ -692,7 +744,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 name|oz
 operator|.
@@ -724,7 +778,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 return|return
 name|oz
@@ -757,7 +813,9 @@ init|=
 name|OzoneMetadataManager
 operator|.
 name|getOzoneMetadataManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 return|return
 name|oz
