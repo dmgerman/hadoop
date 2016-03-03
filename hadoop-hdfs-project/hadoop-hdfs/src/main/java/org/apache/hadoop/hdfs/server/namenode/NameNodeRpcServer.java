@@ -5463,6 +5463,30 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|unsetStoragePolicy (String src)
+specifier|public
+name|void
+name|unsetStoragePolicy
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
+name|unsetStoragePolicy
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|setStoragePolicy (String src, String policyName)
 specifier|public
 name|void

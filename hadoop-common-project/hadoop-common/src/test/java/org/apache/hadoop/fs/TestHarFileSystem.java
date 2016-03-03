@@ -1609,6 +1609,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|unsetStoragePolicy (Path src)
+specifier|public
+name|void
+name|unsetStoragePolicy
+parameter_list|(
+name|Path
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 DECL|method|getStoragePolicy (final Path src)
 specifier|public
 name|BlockStoragePolicySpi

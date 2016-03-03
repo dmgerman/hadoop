@@ -720,6 +720,19 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Unset the storage policy set for a given file or directory.    * @param src Path of an existing file/directory.    * @throws SnapshotAccessControlException If access is denied    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>src</code>    *           contains a symlink    * @throws java.io.FileNotFoundException If file/dir<code>src</code> is not    *           found    * @throws QuotaExceededException If changes violate the quota restriction    */
+annotation|@
+name|Idempotent
+DECL|method|unsetStoragePolicy (String src)
+name|void
+name|unsetStoragePolicy
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Get the storage policy for a file/directory.    * @param path    *          Path of an existing file/directory.    * @throws AccessControlException    *           If access is denied    * @throws org.apache.hadoop.fs.UnresolvedLinkException    *           if<code>src</code> contains a symlink    * @throws java.io.FileNotFoundException    *           If file/dir<code>src</code> is not found    */
 annotation|@
 name|Idempotent

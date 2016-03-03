@@ -2529,6 +2529,27 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|unsetStoragePolicy (Path src)
+specifier|public
+name|void
+name|unsetStoragePolicy
+parameter_list|(
+name|Path
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|fs
+operator|.
+name|unsetStoragePolicy
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|getStoragePolicy (final Path src)
 specifier|public
 name|BlockStoragePolicySpi

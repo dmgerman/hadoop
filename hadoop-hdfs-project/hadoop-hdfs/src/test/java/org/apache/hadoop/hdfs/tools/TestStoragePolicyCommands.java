@@ -316,6 +316,408 @@ block|}
 block|}
 annotation|@
 name|Test
+DECL|method|testSetAndUnsetStoragePolicy ()
+specifier|public
+name|void
+name|testSetAndUnsetStoragePolicy
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+specifier|final
+name|Path
+name|foo
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"/foo"
+argument_list|)
+decl_stmt|;
+specifier|final
+name|Path
+name|bar
+init|=
+operator|new
+name|Path
+argument_list|(
+name|foo
+argument_list|,
+literal|"bar"
+argument_list|)
+decl_stmt|;
+specifier|final
+name|Path
+name|wow
+init|=
+operator|new
+name|Path
+argument_list|(
+name|bar
+argument_list|,
+literal|"wow"
+argument_list|)
+decl_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+name|wow
+argument_list|,
+name|SIZE
+argument_list|,
+name|REPL
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+comment|/*      * test: set storage policy      */
+specifier|final
+name|StoragePolicyAdmin
+name|admin
+init|=
+operator|new
+name|StoragePolicyAdmin
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-setStoragePolicy -path /foo -policy WARM"
+argument_list|,
+literal|0
+argument_list|,
+literal|"Set storage policy WARM on "
+operator|+
+name|foo
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-setStoragePolicy -path /foo/bar -policy COLD"
+argument_list|,
+literal|0
+argument_list|,
+literal|"Set storage policy COLD on "
+operator|+
+name|bar
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-setStoragePolicy -path /foo/bar/wow -policy HOT"
+argument_list|,
+literal|0
+argument_list|,
+literal|"Set storage policy HOT on "
+operator|+
+name|wow
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-setStoragePolicy -path /fooz -policy WARM"
+argument_list|,
+literal|2
+argument_list|,
+literal|"File/Directory does not exist: /fooz"
+argument_list|)
+expr_stmt|;
+comment|/*      * test: get storage policy after set      */
+specifier|final
+name|BlockStoragePolicySuite
+name|suite
+init|=
+name|BlockStoragePolicySuite
+operator|.
+name|createDefaultSuite
+argument_list|()
+decl_stmt|;
+specifier|final
+name|BlockStoragePolicy
+name|warm
+init|=
+name|suite
+operator|.
+name|getPolicy
+argument_list|(
+literal|"WARM"
+argument_list|)
+decl_stmt|;
+specifier|final
+name|BlockStoragePolicy
+name|cold
+init|=
+name|suite
+operator|.
+name|getPolicy
+argument_list|(
+literal|"COLD"
+argument_list|)
+decl_stmt|;
+specifier|final
+name|BlockStoragePolicy
+name|hot
+init|=
+name|suite
+operator|.
+name|getPolicy
+argument_list|(
+literal|"HOT"
+argument_list|)
+decl_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-getStoragePolicy -path /foo"
+argument_list|,
+literal|0
+argument_list|,
+literal|"The storage policy of "
+operator|+
+name|foo
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|":\n"
+operator|+
+name|warm
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-getStoragePolicy -path /foo/bar"
+argument_list|,
+literal|0
+argument_list|,
+literal|"The storage policy of "
+operator|+
+name|bar
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|":\n"
+operator|+
+name|cold
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-getStoragePolicy -path /foo/bar/wow"
+argument_list|,
+literal|0
+argument_list|,
+literal|"The storage policy of "
+operator|+
+name|wow
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|":\n"
+operator|+
+name|hot
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-getStoragePolicy -path /fooz"
+argument_list|,
+literal|2
+argument_list|,
+literal|"File/Directory does not exist: /fooz"
+argument_list|)
+expr_stmt|;
+comment|/*      * test: unset storage policy      */
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-unsetStoragePolicy -path /foo"
+argument_list|,
+literal|0
+argument_list|,
+literal|"Unset storage policy from "
+operator|+
+name|foo
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-unsetStoragePolicy -path /foo/bar"
+argument_list|,
+literal|0
+argument_list|,
+literal|"Unset storage policy from "
+operator|+
+name|bar
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-unsetStoragePolicy -path /foo/bar/wow"
+argument_list|,
+literal|0
+argument_list|,
+literal|"Unset storage policy from "
+operator|+
+name|wow
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-unsetStoragePolicy -path /fooz"
+argument_list|,
+literal|2
+argument_list|,
+literal|"File/Directory does not exist: /fooz"
+argument_list|)
+expr_stmt|;
+comment|/*      * test: get storage policy after unset      */
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-getStoragePolicy -path /foo"
+argument_list|,
+literal|0
+argument_list|,
+literal|"The storage policy of "
+operator|+
+name|foo
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" is unspecified"
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-getStoragePolicy -path /foo/bar"
+argument_list|,
+literal|0
+argument_list|,
+literal|"The storage policy of "
+operator|+
+name|bar
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" is unspecified"
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-getStoragePolicy -path /foo/bar/wow"
+argument_list|,
+literal|0
+argument_list|,
+literal|"The storage policy of "
+operator|+
+name|wow
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" is unspecified"
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|toolRun
+argument_list|(
+name|admin
+argument_list|,
+literal|"-getStoragePolicy -path /fooz"
+argument_list|,
+literal|2
+argument_list|,
+literal|"File/Directory does not exist: /fooz"
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testSetAndGetStoragePolicy ()
 specifier|public
 name|void
