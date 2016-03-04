@@ -1316,6 +1316,24 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|authentication
+operator|.
+name|util
+operator|.
+name|KerberosName
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|SecurityUtil
 import|;
 end_import
@@ -2073,6 +2091,11 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|KerberosName
+operator|.
+name|resetDefaultRealm
+argument_list|()
+expr_stmt|;
 name|assertTrue
 argument_list|(
 literal|"Expected configuration to enable security"
@@ -2436,7 +2459,7 @@ name|replicationFactor
 argument_list|)
 expr_stmt|;
 block|}
-comment|/* fill up a cluster with<code>numNodes</code> datanodes     * whose used space to be<code>size</code>    */
+comment|/* fill up a cluster with<code>numNodes</code> datanodes    * whose used space to be<code>size</code>    */
 DECL|method|generateBlocks (Configuration conf, long size, short numNodes)
 specifier|private
 name|ExtendedBlock
@@ -3196,7 +3219,7 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Wait until heartbeat gives expected results, within CAPACITY_ALLOWED_VARIANCE,     * summed over all nodes.  Times out after TIMEOUT msec.    * @param expectedUsedSpace    * @param expectedTotalSpace    * @throws IOException - if getStats() fails    * @throws TimeoutException    */
+comment|/**    * Wait until heartbeat gives expected results, within CAPACITY_ALLOWED_VARIANCE,    * summed over all nodes.  Times out after TIMEOUT msec.    * @param expectedUsedSpace    * @param expectedTotalSpace    * @throws IOException - if getStats() fails    * @throws TimeoutException    */
 DECL|method|waitForHeartBeat (long expectedUsedSpace, long expectedTotalSpace, ClientProtocol client, MiniDFSCluster cluster)
 specifier|static
 name|void
@@ -3416,7 +3439,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Make sure that balancer can't move pinned blocks.    * If specified favoredNodes when create file, blocks will be pinned use     * sticky bit.    * @throws Exception    */
+comment|/**    * Make sure that balancer can't move pinned blocks.    * If specified favoredNodes when create file, blocks will be pinned use    * sticky bit.    * @throws Exception    */
 annotation|@
 name|Test
 argument_list|(
@@ -4412,7 +4435,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Wait until balanced: each datanode gives utilization within     * BALANCE_ALLOWED_VARIANCE of average    * @throws IOException    * @throws TimeoutException    */
+comment|/**    * Wait until balanced: each datanode gives utilization within    * BALANCE_ALLOWED_VARIANCE of average    * @throws IOException    * @throws TimeoutException    */
 DECL|method|waitForBalancer (long totalUsedSpace, long totalCapacity, ClientProtocol client, MiniDFSCluster cluster, BalancerParameters p, int expectedExcludedNodes)
 specifier|static
 name|void
@@ -5167,7 +5190,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** This test start a cluster with specified number of nodes,    * and fills it to be 30% full (with a single file replicated identically    * to all datanodes);    * It then adds one new empty node and starts balancing.    *    * @param conf - configuration    * @param capacities - array of capacities of original nodes in cluster    * @param racks - array of racks for original nodes in cluster    * @param newCapacity - new node's capacity    * @param newRack - new node's rack    * @param nodes - information about new nodes to be started.    * @param useTool - if true run test via Cli with command-line argument     *   parsing, etc.   Otherwise invoke balancer API directly.    * @param useFile - if true, the hosts to included or excluded will be stored in a    *   file and then later read from the file.    * @throws Exception    */
+comment|/** This test start a cluster with specified number of nodes,    * and fills it to be 30% full (with a single file replicated identically    * to all datanodes);    * It then adds one new empty node and starts balancing.    *    * @param conf - configuration    * @param capacities - array of capacities of original nodes in cluster    * @param racks - array of racks for original nodes in cluster    * @param newCapacity - new node's capacity    * @param newRack - new node's rack    * @param nodes - information about new nodes to be started.    * @param useTool - if true run test via Cli with command-line argument    *   parsing, etc.   Otherwise invoke balancer API directly.    * @param useFile - if true, the hosts to included or excluded will be stored in a    *   file and then later read from the file.    * @throws Exception    */
 DECL|method|doTest (Configuration conf, long[] capacities, String[] racks, long newCapacity, String newRack, NewNodeInfo nodes, boolean useTool, boolean useFile)
 specifier|private
 name|void
@@ -12315,6 +12338,8 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|initSecureConf
 argument_list|(
 name|conf
@@ -12336,8 +12361,6 @@ name|getAbsolutePath
 argument_list|()
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 name|ugi
 operator|.
 name|doAs

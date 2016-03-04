@@ -86,6 +86,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -304,6 +318,44 @@ expr_stmt|;
 name|defaultRealm
 operator|=
 literal|""
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|resetDefaultRealm ()
+specifier|public
+specifier|static
+name|void
+name|resetDefaultRealm
+parameter_list|()
+block|{
+try|try
+block|{
+name|defaultRealm
+operator|=
+name|KerberosUtil
+operator|.
+name|getDefaultRealm
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ke
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"resetting default realm failed, "
+operator|+
+literal|"current default realm will still be used."
+argument_list|,
+name|ke
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -1733,7 +1785,7 @@ return|return
 name|ruleString
 return|;
 block|}
-comment|/**    * Indicates if the name rules have been set.    *     * @return if the name rules have been set.    */
+comment|/**    * Indicates if the name rules have been set.    *    * @return if the name rules have been set.    */
 DECL|method|hasRulesBeenSet ()
 specifier|public
 specifier|static
