@@ -749,18 +749,23 @@ decl_stmt|;
 name|long
 name|minStartTs
 init|=
-literal|10000000000000L
+literal|1424995200300L
 decl_stmt|;
 name|long
 name|greaterStartTs
 init|=
-literal|30000000000000L
+literal|1424995200300L
+operator|+
+literal|864000L
 decl_stmt|;
 name|long
 name|endTs
 init|=
-literal|1439750690000L
+literal|1424995200300L
+operator|+
+literal|86000000L
 decl_stmt|;
+empty_stmt|;
 name|TimelineEntity
 name|entityMinStartTime
 init|=
@@ -991,6 +996,8 @@ name|getRowKey
 argument_list|(
 name|cluster
 argument_list|,
+name|minStartTs
+argument_list|,
 name|user
 argument_list|,
 name|flow
@@ -1122,10 +1129,7 @@ name|TimelineStorageUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
+name|minStartTs
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -1388,13 +1392,20 @@ operator|new
 name|TimelineEntities
 argument_list|()
 decl_stmt|;
+name|long
+name|appCreatedTime
+init|=
+literal|1425016501000L
+decl_stmt|;
 name|TimelineEntity
 name|entityApp1
 init|=
 name|TestFlowDataGenerator
 operator|.
 name|getFlowApp1
-argument_list|()
+argument_list|(
+name|appCreatedTime
+argument_list|)
 decl_stmt|;
 name|te
 operator|.
@@ -1485,6 +1496,8 @@ argument_list|,
 name|runid
 argument_list|,
 name|c1
+argument_list|,
+name|appCreatedTime
 argument_list|)
 expr_stmt|;
 comment|// use the reader to verify the data
@@ -1660,7 +1673,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|checkFlowActivityTable (String cluster, String user, String flow, String flowVersion, long runid, Configuration c1)
+DECL|method|checkFlowActivityTable (String cluster, String user, String flow, String flowVersion, long runid, Configuration c1, long appCreatedTime)
 specifier|private
 name|void
 name|checkFlowActivityTable
@@ -1682,6 +1695,9 @@ name|runid
 parameter_list|,
 name|Configuration
 name|c1
+parameter_list|,
+name|long
+name|appCreatedTime
 parameter_list|)
 throws|throws
 name|IOException
@@ -1715,6 +1731,8 @@ name|getRowKey
 argument_list|(
 name|cluster
 argument_list|,
+name|appCreatedTime
+argument_list|,
 name|user
 argument_list|,
 name|flow
@@ -1743,6 +1761,8 @@ operator|.
 name|getRowKey
 argument_list|(
 name|clusterStop
+argument_list|,
+name|appCreatedTime
 argument_list|,
 name|user
 argument_list|,
@@ -1906,10 +1926,7 @@ name|TimelineStorageUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
+name|appCreatedTime
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -2013,13 +2030,20 @@ operator|new
 name|TimelineEntities
 argument_list|()
 decl_stmt|;
+name|long
+name|appCreatedTime
+init|=
+literal|1425016501000L
+decl_stmt|;
 name|TimelineEntity
 name|entityApp1
 init|=
 name|TestFlowDataGenerator
 operator|.
 name|getFlowApp1
-argument_list|()
+argument_list|(
+name|appCreatedTime
+argument_list|)
 decl_stmt|;
 name|te
 operator|.
@@ -2192,6 +2216,8 @@ argument_list|,
 name|flowVersion3
 argument_list|,
 name|runid3
+argument_list|,
+name|appCreatedTime
 argument_list|)
 expr_stmt|;
 comment|// use the timeline reader to verify data
@@ -2343,10 +2369,7 @@ name|TimelineStorageUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
+name|appCreatedTime
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -2476,7 +2499,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|checkFlowActivityTableSeveralRuns (String cluster, String user, String flow, Configuration c1, String flowVersion1, long runid1, String flowVersion2, long runid2, String flowVersion3, long runid3)
+DECL|method|checkFlowActivityTableSeveralRuns (String cluster, String user, String flow, Configuration c1, String flowVersion1, long runid1, String flowVersion2, long runid2, String flowVersion3, long runid3, long appCreatedTime)
 specifier|private
 name|void
 name|checkFlowActivityTableSeveralRuns
@@ -2510,6 +2533,9 @@ name|flowVersion3
 parameter_list|,
 name|long
 name|runid3
+parameter_list|,
+name|long
+name|appCreatedTime
 parameter_list|)
 throws|throws
 name|IOException
@@ -2543,6 +2569,8 @@ name|getRowKey
 argument_list|(
 name|cluster
 argument_list|,
+name|appCreatedTime
+argument_list|,
 name|user
 argument_list|,
 name|flow
@@ -2571,6 +2599,8 @@ operator|.
 name|getRowKey
 argument_list|(
 name|clusterStop
+argument_list|,
+name|appCreatedTime
 argument_list|,
 name|user
 argument_list|,
@@ -2709,10 +2739,7 @@ name|TimelineStorageUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
+name|appCreatedTime
 argument_list|)
 decl_stmt|;
 name|assertEquals

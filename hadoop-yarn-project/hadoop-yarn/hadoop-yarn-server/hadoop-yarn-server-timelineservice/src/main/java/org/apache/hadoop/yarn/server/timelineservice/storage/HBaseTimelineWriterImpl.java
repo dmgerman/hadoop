@@ -310,6 +310,24 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|metrics
+operator|.
+name|ApplicationMetricsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|timeline
 operator|.
 name|GenericObjectMapper
@@ -686,6 +704,28 @@ name|storage
 operator|.
 name|flow
 operator|.
+name|AggregationOperation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|flow
+operator|.
 name|Attribute
 import|;
 end_import
@@ -753,28 +793,6 @@ operator|.
 name|flow
 operator|.
 name|FlowActivityTable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|timelineservice
-operator|.
-name|storage
-operator|.
-name|flow
-operator|.
-name|AggregationOperation
 import|;
 end_import
 
@@ -1278,14 +1296,25 @@ condition|(
 name|isApplication
 condition|)
 block|{
-if|if
-condition|(
+name|TimelineEvent
+name|event
+init|=
 name|TimelineStorageUtils
 operator|.
-name|isApplicationCreated
+name|getApplicationEvent
 argument_list|(
 name|te
+argument_list|,
+name|ApplicationMetricsConstants
+operator|.
+name|CREATED_EVENT_TYPE
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|event
+operator|!=
+literal|null
 condition|)
 block|{
 name|onApplicationCreated
@@ -1303,6 +1332,11 @@ argument_list|,
 name|appId
 argument_list|,
 name|te
+argument_list|,
+name|event
+operator|.
+name|getTimestamp
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1323,16 +1357,25 @@ name|te
 argument_list|)
 expr_stmt|;
 comment|// if application has finished, store it's finish time and write final
-comment|// values
-comment|// of all metrics
-if|if
-condition|(
+comment|// values of all metrics
+name|event
+operator|=
 name|TimelineStorageUtils
 operator|.
-name|isApplicationFinished
+name|getApplicationEvent
 argument_list|(
 name|te
+argument_list|,
+name|ApplicationMetricsConstants
+operator|.
+name|FINISHED_EVENT_TYPE
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|event
+operator|!=
+literal|null
 condition|)
 block|{
 name|onApplicationFinished
@@ -1350,6 +1393,11 @@ argument_list|,
 name|appId
 argument_list|,
 name|te
+argument_list|,
+name|event
+operator|.
+name|getTimestamp
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1359,7 +1407,7 @@ return|return
 name|putStatus
 return|;
 block|}
-DECL|method|onApplicationCreated (String clusterId, String userId, String flowName, String flowVersion, long flowRunId, String appId, TimelineEntity te)
+DECL|method|onApplicationCreated (String clusterId, String userId, String flowName, String flowVersion, long flowRunId, String appId, TimelineEntity te, long appCreatedTimeStamp)
 specifier|private
 name|void
 name|onApplicationCreated
@@ -1384,6 +1432,9 @@ name|appId
 parameter_list|,
 name|TimelineEntity
 name|te
+parameter_list|,
+name|long
+name|appCreatedTimeStamp
 parameter_list|)
 throws|throws
 name|IOException
@@ -1437,12 +1488,12 @@ name|flowRunId
 argument_list|,
 name|appId
 argument_list|,
-name|te
+name|appCreatedTimeStamp
 argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * updates the {@link FlowActivityTable} with the Application TimelineEntity    * information    */
-DECL|method|storeInFlowActivityTable (String clusterId, String userId, String flowName, String flowVersion, long flowRunId, String appId, TimelineEntity te)
+DECL|method|storeInFlowActivityTable (String clusterId, String userId, String flowName, String flowVersion, long flowRunId, String appId, long activityTimeStamp)
 specifier|private
 name|void
 name|storeInFlowActivityTable
@@ -1465,8 +1516,8 @@ parameter_list|,
 name|String
 name|appId
 parameter_list|,
-name|TimelineEntity
-name|te
+name|long
+name|activityTimeStamp
 parameter_list|)
 throws|throws
 name|IOException
@@ -1480,6 +1531,8 @@ operator|.
 name|getRowKey
 argument_list|(
 name|clusterId
+argument_list|,
+name|activityTimeStamp
 argument_list|,
 name|userId
 argument_list|,
@@ -1685,7 +1738,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * updates the {@link FlowRunTable} and {@link FlowActivityTable} when an    * application has finished    */
-DECL|method|onApplicationFinished (String clusterId, String userId, String flowName, String flowVersion, long flowRunId, String appId, TimelineEntity te)
+DECL|method|onApplicationFinished (String clusterId, String userId, String flowName, String flowVersion, long flowRunId, String appId, TimelineEntity te, long appFinishedTimeStamp)
 specifier|private
 name|void
 name|onApplicationFinished
@@ -1710,6 +1763,9 @@ name|appId
 parameter_list|,
 name|TimelineEntity
 name|te
+parameter_list|,
+name|long
+name|appFinishedTimeStamp
 parameter_list|)
 throws|throws
 name|IOException
@@ -1728,6 +1784,8 @@ argument_list|,
 name|appId
 argument_list|,
 name|te
+argument_list|,
+name|appFinishedTimeStamp
 argument_list|)
 expr_stmt|;
 comment|// indicate in the flow activity table that the app has finished
@@ -1745,12 +1803,12 @@ name|flowRunId
 argument_list|,
 name|appId
 argument_list|,
-name|te
+name|appFinishedTimeStamp
 argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * Update the {@link FlowRunTable} with Application Finished information    */
-DECL|method|storeAppFinishedInFlowRunTable (String clusterId, String userId, String flowName, long flowRunId, String appId, TimelineEntity te)
+DECL|method|storeAppFinishedInFlowRunTable (String clusterId, String userId, String flowName, long flowRunId, String appId, TimelineEntity te, long appFinishedTimeStamp)
 specifier|private
 name|void
 name|storeAppFinishedInFlowRunTable
@@ -1772,6 +1830,9 @@ name|appId
 parameter_list|,
 name|TimelineEntity
 name|te
+parameter_list|,
+name|long
+name|appFinishedTimeStamp
 parameter_list|)
 throws|throws
 name|IOException
@@ -1817,12 +1878,7 @@ name|flowRunTable
 argument_list|,
 literal|null
 argument_list|,
-name|TimelineStorageUtils
-operator|.
-name|getApplicationFinishedTime
-argument_list|(
-name|te
-argument_list|)
+name|appFinishedTimeStamp
 argument_list|,
 name|attributeAppId
 argument_list|)

@@ -564,7 +564,9 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|TimelineSchemaCreator
+name|TimelineReader
+operator|.
+name|Field
 import|;
 end_import
 
@@ -584,9 +586,7 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|TimelineReader
-operator|.
-name|Field
+name|TimelineSchemaCreator
 import|;
 end_import
 
@@ -813,7 +813,7 @@ decl_stmt|;
 name|long
 name|minStartTs
 init|=
-literal|10000000000000L
+literal|1425026900000L
 decl_stmt|;
 name|long
 name|greaterStartTs

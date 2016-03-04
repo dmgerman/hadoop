@@ -286,8 +286,8 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructs a row key for the flow activity table as follows:    * {@code clusterId!dayTimestamp!user!flowName}.    * Will insert into current day's record in the table. Uses current time to    * store top of the day timestamp.    *    * @param clusterId Cluster Id.    * @param userId User Id.    * @param flowName Flow Name.    * @return byte array with the row key prefix    */
-DECL|method|getRowKey (String clusterId, String userId, String flowName)
+comment|/**    * Constructs a row key for the flow activity table as follows:    * {@code clusterId!dayTimestamp!user!flowName}.    *    * @param clusterId Cluster Id.    * @param eventTs event's TimeStamp.    * @param userId User Id.    * @param flowName Flow Name.    * @return byte array for the row key    */
+DECL|method|getRowKey (String clusterId, long eventTs, String userId, String flowName)
 specifier|public
 specifier|static
 name|byte
@@ -297,6 +297,9 @@ parameter_list|(
 name|String
 name|clusterId
 parameter_list|,
+name|long
+name|eventTs
+parameter_list|,
 name|String
 name|userId
 parameter_list|,
@@ -304,53 +307,16 @@ name|String
 name|flowName
 parameter_list|)
 block|{
-name|long
-name|dayTs
-init|=
+comment|// convert it to Day's time stamp
+name|eventTs
+operator|=
 name|TimelineStorageUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
+name|eventTs
 argument_list|)
-decl_stmt|;
-return|return
-name|getRowKey
-argument_list|(
-name|clusterId
-argument_list|,
-name|dayTs
-argument_list|,
-name|userId
-argument_list|,
-name|flowName
-argument_list|)
-return|;
-block|}
-comment|/**    * Constructs a row key for the flow activity table as follows:    * {@code clusterId!dayTimestamp!user!flowName}.    *    * @param clusterId Cluster Id.    * @param dayTs Top of the day timestamp.    * @param userId User Id.    * @param flowName Flow Name.    * @return byte array for the row key    */
-DECL|method|getRowKey (String clusterId, long dayTs, String userId, String flowName)
-specifier|public
-specifier|static
-name|byte
-index|[]
-name|getRowKey
-parameter_list|(
-name|String
-name|clusterId
-parameter_list|,
-name|long
-name|dayTs
-parameter_list|,
-name|String
-name|userId
-parameter_list|,
-name|String
-name|flowName
-parameter_list|)
-block|{
+expr_stmt|;
 return|return
 name|Separator
 operator|.
@@ -380,7 +346,7 @@ name|TimelineStorageUtils
 operator|.
 name|invertLong
 argument_list|(
-name|dayTs
+name|eventTs
 argument_list|)
 argument_list|)
 argument_list|,
