@@ -6532,6 +6532,117 @@ literal|0
 index|]
 return|;
 block|}
+comment|/**    * Handles a lifeline message sent by a DataNode.    *    * @param nodeReg registration info for DataNode sending the lifeline    * @param reports storage reports from DataNode    * @param blockPoolId block pool ID    * @param cacheCapacity cache capacity at DataNode    * @param cacheUsed cache used at DataNode    * @param xceiverCount estimated count of transfer threads running at DataNode    * @param maxTransfers count of transfers running at DataNode    * @param failedVolumes count of failed volumes at DataNode    * @param volumeFailureSummary info on failed volumes at DataNode    * @throws IOException if there is an error    */
+DECL|method|handleLifeline (DatanodeRegistration nodeReg, StorageReport[] reports, String blockPoolId, long cacheCapacity, long cacheUsed, int xceiverCount, int maxTransfers, int failedVolumes, VolumeFailureSummary volumeFailureSummary)
+specifier|public
+name|void
+name|handleLifeline
+parameter_list|(
+name|DatanodeRegistration
+name|nodeReg
+parameter_list|,
+name|StorageReport
+index|[]
+name|reports
+parameter_list|,
+name|String
+name|blockPoolId
+parameter_list|,
+name|long
+name|cacheCapacity
+parameter_list|,
+name|long
+name|cacheUsed
+parameter_list|,
+name|int
+name|xceiverCount
+parameter_list|,
+name|int
+name|maxTransfers
+parameter_list|,
+name|int
+name|failedVolumes
+parameter_list|,
+name|VolumeFailureSummary
+name|volumeFailureSummary
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Received handleLifeline from nodeReg = "
+operator|+
+name|nodeReg
+argument_list|)
+expr_stmt|;
+block|}
+name|DatanodeDescriptor
+name|nodeinfo
+init|=
+name|getDatanode
+argument_list|(
+name|nodeReg
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|nodeinfo
+operator|==
+literal|null
+condition|)
+block|{
+comment|// This is null if the DataNode has not yet registered.  We expect this
+comment|// will never happen, because the DataNode has logic to prevent sending
+comment|// lifeline messages until after initial registration is successful.
+comment|// Lifeline message handling can't send commands back to the DataNode to
+comment|// tell it to register, so simply exit.
+return|return;
+block|}
+if|if
+condition|(
+name|nodeinfo
+operator|.
+name|isDisallowed
+argument_list|()
+condition|)
+block|{
+comment|// This is highly unlikely, because heartbeat handling is much more
+comment|// frequent and likely would have already sent the disallowed error.
+comment|// Lifeline messages are not intended to send any kind of control response
+comment|// back to the DataNode, so simply exit.
+return|return;
+block|}
+name|heartbeatManager
+operator|.
+name|updateLifeline
+argument_list|(
+name|nodeinfo
+argument_list|,
+name|reports
+argument_list|,
+name|cacheCapacity
+argument_list|,
+name|cacheUsed
+argument_list|,
+name|xceiverCount
+argument_list|,
+name|failedVolumes
+argument_list|,
+name|volumeFailureSummary
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Convert a CachedBlockList into a DatanodeCommand with a list of blocks.    *    * @param list       The {@link CachedBlocksList}.  This function     *                   clears the list.    * @param action     The action to perform in the command.    * @param poolId     The block pool id.    * @return           A DatanodeCommand to be sent back to the DN, or null if    *                   there is nothing to be done.    */
 DECL|method|getCacheCommand (CachedBlocksList list, int action, String poolId)
 specifier|private

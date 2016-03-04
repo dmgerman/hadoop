@@ -1051,6 +1051,71 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|updateLifeline (final DatanodeDescriptor node, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary)
+specifier|synchronized
+name|void
+name|updateLifeline
+parameter_list|(
+specifier|final
+name|DatanodeDescriptor
+name|node
+parameter_list|,
+name|StorageReport
+index|[]
+name|reports
+parameter_list|,
+name|long
+name|cacheCapacity
+parameter_list|,
+name|long
+name|cacheUsed
+parameter_list|,
+name|int
+name|xceiverCount
+parameter_list|,
+name|int
+name|failedVolumes
+parameter_list|,
+name|VolumeFailureSummary
+name|volumeFailureSummary
+parameter_list|)
+block|{
+name|stats
+operator|.
+name|subtract
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+comment|// This intentionally calls updateHeartbeatState instead of
+comment|// updateHeartbeat, because we don't want to modify the
+comment|// heartbeatedSinceRegistration flag.  Arrival of a lifeline message does
+comment|// not count as arrival of the first heartbeat.
+name|node
+operator|.
+name|updateHeartbeatState
+argument_list|(
+name|reports
+argument_list|,
+name|cacheCapacity
+argument_list|,
+name|cacheUsed
+argument_list|,
+name|xceiverCount
+argument_list|,
+name|failedVolumes
+argument_list|,
+name|volumeFailureSummary
+argument_list|)
+expr_stmt|;
+name|stats
+operator|.
+name|add
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|startDecommission (final DatanodeDescriptor node)
 specifier|synchronized
 name|void

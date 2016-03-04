@@ -519,7 +519,7 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|BPOfferService (List<InetSocketAddress> nnAddrs, DataNode dn)
+DECL|method|BPOfferService (List<InetSocketAddress> nnAddrs, List<InetSocketAddress> lifelineNnAddrs, DataNode dn)
 name|BPOfferService
 parameter_list|(
 name|List
@@ -527,6 +527,12 @@ argument_list|<
 name|InetSocketAddress
 argument_list|>
 name|nnAddrs
+parameter_list|,
+name|List
+argument_list|<
+name|InetSocketAddress
+argument_list|>
+name|lifelineNnAddrs
 parameter_list|,
 name|DataNode
 name|dn
@@ -545,6 +551,23 @@ argument_list|,
 literal|"Must pass at least one NN."
 argument_list|)
 expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|nnAddrs
+operator|.
+name|size
+argument_list|()
+operator|==
+name|lifelineNnAddrs
+operator|.
+name|size
+argument_list|()
+argument_list|,
+literal|"Must pass same number of NN addresses and lifeline addresses."
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|dn
@@ -553,10 +576,20 @@ name|dn
 expr_stmt|;
 for|for
 control|(
-name|InetSocketAddress
-name|addr
-range|:
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
 name|nnAddrs
+operator|.
+name|size
+argument_list|()
+condition|;
+operator|++
+name|i
 control|)
 block|{
 name|this
@@ -568,7 +601,19 @@ argument_list|(
 operator|new
 name|BPServiceActor
 argument_list|(
-name|addr
+name|nnAddrs
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+argument_list|,
+name|lifelineNnAddrs
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
 argument_list|,
 name|this
 argument_list|)
@@ -576,7 +621,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|refreshNNList (ArrayList<InetSocketAddress> addrs)
+DECL|method|refreshNNList (ArrayList<InetSocketAddress> addrs, ArrayList<InetSocketAddress> lifelineAddrs)
 name|void
 name|refreshNNList
 parameter_list|(
@@ -585,6 +630,12 @@ argument_list|<
 name|InetSocketAddress
 argument_list|>
 name|addrs
+parameter_list|,
+name|ArrayList
+argument_list|<
+name|InetSocketAddress
+argument_list|>
+name|lifelineAddrs
 parameter_list|)
 throws|throws
 name|IOException

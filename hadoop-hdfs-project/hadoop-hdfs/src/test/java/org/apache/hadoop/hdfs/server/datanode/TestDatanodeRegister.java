@@ -398,6 +398,8 @@ name|BPServiceActor
 argument_list|(
 name|INVALID_ADDR
 argument_list|,
+literal|null
+argument_list|,
 name|mockBPOS
 argument_list|)
 expr_stmt|;
