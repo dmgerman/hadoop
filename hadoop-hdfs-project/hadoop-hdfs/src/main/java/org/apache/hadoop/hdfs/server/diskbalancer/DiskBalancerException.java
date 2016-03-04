@@ -80,6 +80,9 @@ name|INVALID_MOVE
 block|,
 DECL|enumConstant|INTERNAL_ERROR
 name|INTERNAL_ERROR
+block|,
+DECL|enumConstant|NO_SUCH_PLAN
+name|NO_SUCH_PLAN
 block|}
 DECL|field|result
 specifier|private

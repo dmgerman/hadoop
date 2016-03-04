@@ -15812,6 +15812,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Cancels a running plan.    * @param planID - Hash string that identifies a plan    */
 annotation|@
 name|Override
 DECL|method|cancelDiskBalancePlan (String planID)
@@ -15828,19 +15829,15 @@ block|{
 name|checkSuperuserPrivilege
 argument_list|()
 expr_stmt|;
-throw|throw
-operator|new
-name|DiskBalancerException
+name|this
+operator|.
+name|diskBalancer
+operator|.
+name|cancelPlan
 argument_list|(
-literal|"Not Implemented"
-argument_list|,
-name|DiskBalancerException
-operator|.
-name|Result
-operator|.
-name|INTERNAL_ERROR
+name|planID
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 comment|/**    * Returns the status of current or last executed work plan.    * @return DiskBalancerWorkStatus.    * @throws IOException    */
 annotation|@
