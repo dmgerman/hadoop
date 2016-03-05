@@ -2183,6 +2183,13 @@ literal|"hbase"
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|hbaseRoot
+operator|!=
+literal|null
+condition|)
+block|{
 name|atomicRenameDirs
 operator|.
 name|add
@@ -2190,6 +2197,7 @@ argument_list|(
 name|hbaseRoot
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
