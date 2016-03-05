@@ -54,13 +54,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -68,13 +64,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|LoggerFactory
 import|;
 end_import
 
@@ -362,14 +354,15 @@ class|class
 name|DiskBalancerCluster
 block|{
 DECL|field|LOG
+specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|DiskBalancerCluster
 operator|.
@@ -880,7 +873,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"An output directory already exists at this location. Path : "
 operator|+
@@ -926,7 +919,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Unable to create the output directory. Path : "
 operator|+

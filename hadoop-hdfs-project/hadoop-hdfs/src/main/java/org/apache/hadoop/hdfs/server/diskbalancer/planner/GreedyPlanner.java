@@ -40,13 +40,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -54,13 +50,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|LoggerFactory
 import|;
 end_import
 
@@ -214,14 +206,15 @@ operator|*
 literal|1024L
 decl_stmt|;
 DECL|field|LOG
+specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|GreedyPlanner
 operator|.
@@ -506,20 +499,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Skipping compute move. lowVolume :"
-operator|+
+literal|"Skipping compute move. lowVolume: {} highVolume: {}"
+argument_list|,
 name|lowVolume
 operator|.
 name|getPath
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Skipping compute move. highVolume :"
-operator|+
+argument_list|,
 name|highVolume
 operator|.
 name|getPath
@@ -549,8 +535,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Step : "
-operator|+
+literal|"Step : {} "
+argument_list|,
 name|nextStep
 operator|.
 name|toString
@@ -776,14 +762,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} Skipping disk from computation. Maximum data size "
+operator|+
+literal|"achieved."
+argument_list|,
 name|lowVolume
 operator|.
 name|getPath
 argument_list|()
-operator|+
-literal|" Skipping disk from computation. Maximum data size "
-operator|+
-literal|"achieved."
 argument_list|)
 expr_stmt|;
 name|lowVolume
@@ -830,14 +816,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|" {} Skipping disk from computation. Minimum data size "
+operator|+
+literal|"achieved."
+argument_list|,
 name|highVolume
 operator|.
 name|getPath
 argument_list|()
-operator|+
-literal|" Skipping disk from computation. Minimum data size "
-operator|+
-literal|"achieved."
 argument_list|)
 expr_stmt|;
 name|highVolume
