@@ -13854,7 +13854,7 @@ literal|0
 expr_stmt|;
 name|blockLog
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"BLOCK* addStoredBlock: Redundant addStoredBlock request"
 operator|+
