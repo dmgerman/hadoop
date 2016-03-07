@@ -287,11 +287,11 @@ DECL|field|cGroupsCpuResourceHandler
 name|cGroupsCpuResourceHandler
 decl_stmt|;
 comment|/**    * Returns an initialized, thread-safe CGroupsHandler instance.    */
-DECL|method|getCGroupsHandler (Configuration conf)
-specifier|public
+DECL|method|getInitializedCGroupsHandler (Configuration conf)
+specifier|private
 specifier|static
 name|CGroupsHandler
-name|getCGroupsHandler
+name|getInitializedCGroupsHandler
 parameter_list|(
 name|Configuration
 name|conf
@@ -342,11 +342,23 @@ return|return
 name|cGroupsHandler
 return|;
 block|}
-DECL|method|getcGroupsCpuResourceHandler ( Configuration conf)
+comment|/**    * Returns a (possibly null) reference to a cGroupsHandler. This handler is    * non-null only if one or more of the known cgroups-based resource    * handlers are in use and have been initialized.    */
+DECL|method|getCGroupsHandler ()
+specifier|public
+specifier|static
+name|CGroupsHandler
+name|getCGroupsHandler
+parameter_list|()
+block|{
+return|return
+name|cGroupsHandler
+return|;
+block|}
+DECL|method|getCGroupsCpuResourceHandler ( Configuration conf)
 specifier|private
 specifier|static
 name|CGroupsCpuResourceHandlerImpl
-name|getcGroupsCpuResourceHandler
+name|getCGroupsCpuResourceHandler
 parameter_list|(
 name|Configuration
 name|conf
@@ -433,7 +445,7 @@ operator|=
 operator|new
 name|CGroupsCpuResourceHandlerImpl
 argument_list|(
-name|getCGroupsHandler
+name|getInitializedCGroupsHandler
 argument_list|(
 name|conf
 argument_list|)
@@ -518,7 +530,7 @@ argument_list|(
 name|conf
 argument_list|)
 argument_list|,
-name|getCGroupsHandler
+name|getInitializedCGroupsHandler
 argument_list|(
 name|conf
 argument_list|)
@@ -654,7 +666,7 @@ operator|=
 operator|new
 name|CGroupsBlkioResourceHandlerImpl
 argument_list|(
-name|getCGroupsHandler
+name|getInitializedCGroupsHandler
 argument_list|(
 name|conf
 argument_list|)
@@ -744,7 +756,7 @@ operator|=
 operator|new
 name|CGroupsMemoryResourceHandlerImpl
 argument_list|(
-name|getCGroupsHandler
+name|getInitializedCGroupsHandler
 argument_list|(
 name|conf
 argument_list|)
@@ -846,7 +858,7 @@ name|addHandlerIfNotNull
 argument_list|(
 name|handlerList
 argument_list|,
-name|getcGroupsCpuResourceHandler
+name|getCGroupsCpuResourceHandler
 argument_list|(
 name|conf
 argument_list|)
