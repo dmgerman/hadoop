@@ -4892,9 +4892,9 @@ name|addTo
 argument_list|(
 name|clusterResource
 argument_list|,
-name|node
+name|schedulerNode
 operator|.
-name|getTotalCapability
+name|getTotalResource
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4990,9 +4990,9 @@ name|subtractFrom
 argument_list|(
 name|clusterResource
 argument_list|,
-name|rmNode
+name|node
 operator|.
-name|getTotalCapability
+name|getTotalResource
 argument_list|()
 argument_list|)
 expr_stmt|;
