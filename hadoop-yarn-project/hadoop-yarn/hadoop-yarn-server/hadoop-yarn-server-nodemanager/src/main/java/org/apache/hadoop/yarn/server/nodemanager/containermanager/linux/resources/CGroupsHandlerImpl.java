@@ -1420,11 +1420,6 @@ operator|new
 name|PrivilegedOperation
 argument_list|(
 name|opType
-argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
 argument_list|)
 decl_stmt|;
 name|op

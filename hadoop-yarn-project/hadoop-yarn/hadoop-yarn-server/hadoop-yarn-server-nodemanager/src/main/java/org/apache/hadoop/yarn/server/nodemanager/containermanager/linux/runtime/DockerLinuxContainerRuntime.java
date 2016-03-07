@@ -1556,11 +1556,6 @@ operator|.
 name|OperationType
 operator|.
 name|LAUNCH_DOCKER_CONTAINER
-argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
 argument_list|)
 decl_stmt|;
 name|launchOp
@@ -1782,11 +1777,6 @@ operator|.
 name|OperationType
 operator|.
 name|SIGNAL_CONTAINER
-argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
 argument_list|)
 decl_stmt|;
 name|signalOp

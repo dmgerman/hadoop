@@ -1318,11 +1318,6 @@ operator|.
 name|OperationType
 operator|.
 name|CHECK_SETUP
-argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
 argument_list|)
 decl_stmt|;
 name|PrivilegedOperationExecutor
@@ -1627,11 +1622,6 @@ operator|.
 name|OperationType
 operator|.
 name|INITIALIZE_CONTAINER
-argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
 argument_list|)
 decl_stmt|;
 name|List

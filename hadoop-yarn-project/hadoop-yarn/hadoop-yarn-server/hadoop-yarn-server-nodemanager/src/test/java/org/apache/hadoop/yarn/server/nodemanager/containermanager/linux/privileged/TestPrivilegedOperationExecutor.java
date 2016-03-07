@@ -334,11 +334,6 @@ operator|.
 name|OperationType
 operator|.
 name|DELETE_AS_USER
-argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
 argument_list|)
 expr_stmt|;
 name|opTasksNone
@@ -564,11 +559,6 @@ operator|.
 name|OperationType
 operator|.
 name|TC_MODIFY_STATE
-argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
 argument_list|)
 decl_stmt|;
 name|String

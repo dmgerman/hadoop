@@ -572,11 +572,6 @@ operator|.
 name|OperationType
 operator|.
 name|MOUNT_CGROUPS
-argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
 argument_list|)
 decl_stmt|;
 comment|//This is expected to be of the form :

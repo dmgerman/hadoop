@@ -409,11 +409,6 @@ operator|.
 name|OperationType
 operator|.
 name|LAUNCH_CONTAINER
-argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
 argument_list|)
 decl_stmt|;
 comment|//All of these arguments are expected to be available in the runtime context
@@ -695,11 +690,6 @@ operator|.
 name|OperationType
 operator|.
 name|SIGNAL_CONTAINER
-argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
 argument_list|)
 decl_stmt|;
 name|signalOp
@@ -757,6 +747,12 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|//Some failures here are acceptable. Let the calling executor decide.
+name|signalOp
+operator|.
+name|disableFailureLogging
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|PrivilegedOperationExecutor
@@ -797,15 +793,8 @@ name|PrivilegedOperationException
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Signal container failed. Exception: "
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
+comment|//Don't log the failure here. Some kinds of signaling failures are
+comment|// acceptable. Let the calling executor decide what to do.
 throw|throw
 operator|new
 name|ContainerExecutionException

@@ -698,6 +698,14 @@ name|ExitCodeException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|operation
+operator|.
+name|isFailureLoggingEnabled
+argument_list|()
+condition|)
+block|{
 name|StringBuilder
 name|logBuilder
 init|=
@@ -775,6 +783,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|//stderr from shell executor seems to be stuffed into the exception
 comment|//'message' - so, we have to extract it and set it as the error out
 throw|throw
