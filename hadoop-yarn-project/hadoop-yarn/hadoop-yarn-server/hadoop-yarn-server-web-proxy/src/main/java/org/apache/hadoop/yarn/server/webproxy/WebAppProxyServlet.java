@@ -973,7 +973,7 @@ argument_list|)
 argument_list|,
 literal|"applicationhistory"
 argument_list|,
-literal|"apps"
+literal|"app"
 argument_list|)
 expr_stmt|;
 block|}

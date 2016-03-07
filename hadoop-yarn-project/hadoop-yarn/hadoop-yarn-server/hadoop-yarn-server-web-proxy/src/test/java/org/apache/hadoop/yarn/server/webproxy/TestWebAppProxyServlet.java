@@ -1731,7 +1731,7 @@ argument_list|)
 operator|+
 literal|"/applicationhistory"
 operator|+
-literal|"/apps/"
+literal|"/app/"
 operator|+
 name|app
 operator|.
