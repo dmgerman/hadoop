@@ -1750,6 +1750,13 @@ name|TIMELINE_SERVICE_WEBAPP_ADDRESS
 argument_list|)
 argument_list|)
 operator|.
+name|withCSRFProtection
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_CSRF_PREFIX
+argument_list|)
+operator|.
 name|at
 argument_list|(
 name|bindAddress

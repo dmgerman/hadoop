@@ -1551,6 +1551,13 @@ operator|.
 name|MR_WEBAPP_SPNEGO_USER_NAME_KEY
 argument_list|)
 operator|.
+name|withCSRFProtection
+argument_list|(
+name|JHAdminConfig
+operator|.
+name|MR_HISTORY_CSRF_PREFIX
+argument_list|)
+operator|.
 name|at
 argument_list|(
 name|NetUtils

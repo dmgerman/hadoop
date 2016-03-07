@@ -5929,6 +5929,13 @@ operator|.
 name|RM_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
 argument_list|)
 operator|.
+name|withCSRFProtection
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_CSRF_PREFIX
+argument_list|)
+operator|.
 name|at
 argument_list|(
 name|webAppAddress
