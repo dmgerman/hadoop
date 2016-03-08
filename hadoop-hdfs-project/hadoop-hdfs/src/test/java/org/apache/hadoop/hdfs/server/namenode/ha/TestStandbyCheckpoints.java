@@ -2805,7 +2805,7 @@ name|waitForCheckpoint
 argument_list|(
 name|cluster
 argument_list|,
-literal|1
+name|i
 argument_list|,
 name|ImmutableList
 operator|.
