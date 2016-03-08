@@ -3840,11 +3840,6 @@ operator|.
 name|getBlock
 argument_list|()
 decl_stmt|;
-name|closeThreads
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
 try|try
 init|(
 name|TraceScope
@@ -3876,8 +3871,15 @@ parameter_list|)
 block|{     }
 finally|finally
 block|{
-name|setClosed
-argument_list|()
+comment|// Failures may happen when flushing data.
+comment|// Streamers may keep waiting for the new block information.
+comment|// Thus need to force closing these threads.
+comment|// Don't need to call setClosed() because closeThreads(true)
+comment|// calls setClosed() in the finally block.
+name|closeThreads
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 block|}

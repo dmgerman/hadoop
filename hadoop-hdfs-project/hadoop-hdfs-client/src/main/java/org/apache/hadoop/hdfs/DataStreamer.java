@@ -2713,8 +2713,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Closing old block "
-operator|+
+literal|"Closing old block {}"
+argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
@@ -3138,8 +3138,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Allocating new block: "
-operator|+
+literal|"Allocating new block: {}"
+argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
@@ -3374,10 +3374,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} sending {}"
+argument_list|,
 name|this
-operator|+
-literal|" sending "
-operator|+
+argument_list|,
 name|one
 argument_list|)
 expr_stmt|;
@@ -8203,12 +8203,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Queued "
-operator|+
+literal|"Queued {}, {}"
+argument_list|,
 name|packet
-operator|+
-literal|", "
-operator|+
+argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
