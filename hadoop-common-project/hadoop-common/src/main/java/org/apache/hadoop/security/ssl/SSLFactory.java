@@ -894,7 +894,12 @@ throw|throw
 operator|new
 name|IllegalStateException
 argument_list|(
-literal|"Factory is in CLIENT mode"
+literal|"Factory is not in SERVER mode. Actual mode is "
+operator|+
+name|mode
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -929,7 +934,12 @@ throw|throw
 operator|new
 name|IllegalStateException
 argument_list|(
-literal|"Factory is in CLIENT mode"
+literal|"Factory is not in CLIENT mode. Actual mode is "
+operator|+
+name|mode
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -960,7 +970,12 @@ throw|throw
 operator|new
 name|IllegalStateException
 argument_list|(
-literal|"Factory is in CLIENT mode"
+literal|"Factory is not in CLIENT mode. Actual mode is "
+operator|+
+name|mode
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 throw|;
 block|}
