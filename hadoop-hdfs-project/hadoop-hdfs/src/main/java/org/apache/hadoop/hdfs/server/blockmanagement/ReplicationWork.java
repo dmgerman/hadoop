@@ -242,10 +242,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|addTaskToDatanode ()
+DECL|method|addTaskToDatanode (NumberReplicas numberReplicas)
 name|void
 name|addTaskToDatanode
-parameter_list|()
+parameter_list|(
+name|NumberReplicas
+name|numberReplicas
+parameter_list|)
 block|{
 name|getSrcNodes
 argument_list|()

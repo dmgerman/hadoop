@@ -132,6 +132,13 @@ specifier|final
 name|int
 name|priority
 decl_stmt|;
+DECL|field|notEnoughRack
+specifier|private
+name|boolean
+name|notEnoughRack
+init|=
+literal|false
+decl_stmt|;
 DECL|method|BlockReconstructionWork (BlockInfo block, BlockCollection bc, DatanodeDescriptor[] srcNodes, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> liveReplicaStorages, int additionalReplRequired, int priority)
 specifier|public
 name|BlockReconstructionWork
@@ -331,6 +338,26 @@ return|return
 name|additionalReplRequired
 return|;
 block|}
+comment|/**    * Mark that the reconstruction work is to replicate internal block to a new    * rack.    */
+DECL|method|setNotEnoughRack ()
+name|void
+name|setNotEnoughRack
+parameter_list|()
+block|{
+name|notEnoughRack
+operator|=
+literal|true
+expr_stmt|;
+block|}
+DECL|method|hasNotEnoughRack ()
+name|boolean
+name|hasNotEnoughRack
+parameter_list|()
+block|{
+return|return
+name|notEnoughRack
+return|;
+block|}
 DECL|method|chooseTargets (BlockPlacementPolicy blockplacement, BlockStoragePolicySuite storagePolicySuite, Set<Node> excludedNodes)
 specifier|abstract
 name|void
@@ -349,12 +376,15 @@ argument_list|>
 name|excludedNodes
 parameter_list|)
 function_decl|;
-comment|/**    * add reconstruction task into a source datanode    */
-DECL|method|addTaskToDatanode ()
+comment|/**    * Add reconstruction task into a source datanode.    *    * @param numberReplicas replica details    */
+DECL|method|addTaskToDatanode (NumberReplicas numberReplicas)
 specifier|abstract
 name|void
 name|addTaskToDatanode
-parameter_list|()
+parameter_list|(
+name|NumberReplicas
+name|numberReplicas
+parameter_list|)
 function_decl|;
 block|}
 end_class

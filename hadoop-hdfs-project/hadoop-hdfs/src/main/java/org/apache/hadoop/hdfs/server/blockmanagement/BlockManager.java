@@ -8202,7 +8202,6 @@ return|return
 literal|null
 return|;
 block|}
-specifier|final
 name|int
 name|additionalReplRequired
 decl_stmt|;
@@ -8264,6 +8263,30 @@ comment|// Wait the previous reconstruction to finish.
 return|return
 literal|null
 return|;
+block|}
+comment|// should reconstruct all the internal blocks before scheduling
+comment|// replication task for decommissioning node(s).
+if|if
+condition|(
+name|additionalReplRequired
+operator|-
+name|numReplicas
+operator|.
+name|decommissioning
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|additionalReplRequired
+operator|=
+name|additionalReplRequired
+operator|-
+name|numReplicas
+operator|.
+name|decommissioning
+argument_list|()
+expr_stmt|;
 block|}
 name|byte
 index|[]
@@ -8588,12 +8611,21 @@ return|return
 literal|false
 return|;
 block|}
+comment|// mark that the reconstruction work is to replicate internal block to a
+comment|// new rack.
+name|rw
+operator|.
+name|setNotEnoughRack
+argument_list|()
+expr_stmt|;
 block|}
 comment|// Add block to the datanode's task list
 name|rw
 operator|.
 name|addTaskToDatanode
-argument_list|()
+argument_list|(
+name|numReplicas
+argument_list|)
 expr_stmt|;
 name|DatanodeStorageInfo
 operator|.
