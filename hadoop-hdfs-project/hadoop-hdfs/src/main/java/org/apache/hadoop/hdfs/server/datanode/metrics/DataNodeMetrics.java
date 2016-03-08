@@ -525,6 +525,12 @@ name|Metric
 name|MutableRate
 name|heartbeats
 decl_stmt|;
+DECL|field|heartbeatsTotal
+annotation|@
+name|Metric
+name|MutableRate
+name|heartbeatsTotal
+decl_stmt|;
 DECL|field|lifelines
 annotation|@
 name|Metric
@@ -1075,6 +1081,23 @@ name|latency
 parameter_list|)
 block|{
 name|heartbeats
+operator|.
+name|add
+argument_list|(
+name|latency
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addHeartbeatTotal (long latency)
+specifier|public
+name|void
+name|addHeartbeatTotal
+parameter_list|(
+name|long
+name|latency
+parameter_list|)
+block|{
+name|heartbeatsTotal
 operator|.
 name|add
 argument_list|(

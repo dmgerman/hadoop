@@ -3090,6 +3090,27 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|sendHeartbeat
+condition|)
+block|{
+name|dn
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|addHeartbeatTotal
+argument_list|(
+name|scheduler
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|startTime
+argument_list|)
+expr_stmt|;
+block|}
 comment|// There is no work to do;  sleep until hearbeat timer elapses,
 comment|// or work arrives, and then iterate again.
 name|ibrManager
