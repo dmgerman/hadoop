@@ -1485,6 +1485,7 @@ specifier|private
 name|Tracer
 name|tracer
 decl_stmt|;
+comment|/**    * Add exception classes for which server won't log stack traces.    *    * @param exceptionClass exception classes    */
 DECL|method|addTerseExceptions (Class<?>.... exceptionClass)
 specifier|public
 name|void
@@ -1500,7 +1501,29 @@ parameter_list|)
 block|{
 name|exceptionsHandler
 operator|.
-name|addTerseExceptions
+name|addTerseLoggingExceptions
+argument_list|(
+name|exceptionClass
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Add exception classes which server won't log at all.    *    * @param exceptionClass exception classes    */
+DECL|method|addSuppressedLoggingExceptions (Class<?>.... exceptionClass)
+specifier|public
+name|void
+name|addSuppressedLoggingExceptions
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+modifier|...
+name|exceptionClass
+parameter_list|)
+block|{
+name|exceptionsHandler
+operator|.
+name|addSuppressedLoggingExceptions
 argument_list|(
 name|exceptionClass
 argument_list|)
@@ -1523,15 +1546,27 @@ name|terseExceptions
 init|=
 operator|new
 name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
+DECL|field|suppressedExceptions
+specifier|private
+specifier|volatile
+name|Set
 argument_list|<
 name|String
 argument_list|>
+name|suppressedExceptions
+init|=
+operator|new
+name|HashSet
+argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|/**      * Add exception class so server won't log its stack trace.      * Modifying the terseException through this method is thread safe.      *      * @param exceptionClass exception classes       */
-DECL|method|addTerseExceptions (Class<?>.... exceptionClass)
+comment|/**      * Add exception classes for which server won't log stack traces.      * Optimized for infrequent invocation.      * @param exceptionClass exception classes       */
+DECL|method|addTerseLoggingExceptions (Class<?>.... exceptionClass)
 name|void
-name|addTerseExceptions
+name|addTerseLoggingExceptions
 parameter_list|(
 name|Class
 argument_list|<
@@ -1541,7 +1576,113 @@ modifier|...
 name|exceptionClass
 parameter_list|)
 block|{
-comment|// Make a copy of terseException for performing modification
+comment|// Thread-safe replacement of terseExceptions.
+name|terseExceptions
+operator|=
+name|addExceptions
+argument_list|(
+name|terseExceptions
+argument_list|,
+name|exceptionClass
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Add exception classes which server won't log at all.      * Optimized for infrequent invocation.      * @param exceptionClass exception classes      */
+DECL|method|addSuppressedLoggingExceptions (Class<?>.... exceptionClass)
+name|void
+name|addSuppressedLoggingExceptions
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+modifier|...
+name|exceptionClass
+parameter_list|)
+block|{
+comment|// Thread-safe replacement of suppressedExceptions.
+name|suppressedExceptions
+operator|=
+name|addExceptions
+argument_list|(
+name|suppressedExceptions
+argument_list|,
+name|exceptionClass
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|isTerseLog (Class<?> t)
+name|boolean
+name|isTerseLog
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|t
+parameter_list|)
+block|{
+return|return
+name|terseExceptions
+operator|.
+name|contains
+argument_list|(
+name|t
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|isSuppressedLog (Class<?> t)
+name|boolean
+name|isSuppressedLog
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|t
+parameter_list|)
+block|{
+return|return
+name|suppressedExceptions
+operator|.
+name|contains
+argument_list|(
+name|t
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**      * Return a new set containing all the exceptions in exceptionsSet      * and exceptionClass.      * @return      */
+DECL|method|addExceptions ( final Set<String> exceptionsSet, Class<?>[] exceptionClass)
+specifier|private
+specifier|static
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|addExceptions
+parameter_list|(
+specifier|final
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|exceptionsSet
+parameter_list|,
+name|Class
+argument_list|<
+name|?
+argument_list|>
+index|[]
+name|exceptionClass
+parameter_list|)
+block|{
+comment|// Make a copy of the exceptionSet for performing modification
 specifier|final
 name|HashSet
 argument_list|<
@@ -1551,11 +1692,9 @@ name|newSet
 init|=
 operator|new
 name|HashSet
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|(
-name|terseExceptions
+name|exceptionsSet
 argument_list|)
 decl_stmt|;
 comment|// Add all class names into the HashSet
@@ -1581,37 +1720,12 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Replace terseException set
-name|terseExceptions
-operator|=
+return|return
 name|Collections
 operator|.
 name|unmodifiableSet
 argument_list|(
 name|newSet
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|isTerse (Class<?> t)
-name|boolean
-name|isTerse
-parameter_list|(
-name|Class
-argument_list|<
-name|?
-argument_list|>
-name|t
-parameter_list|)
-block|{
-return|return
-name|terseExceptions
-operator|.
-name|contains
-argument_list|(
-name|t
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 return|;
 block|}
@@ -4750,8 +4864,6 @@ name|InterruptedException
 block|{
 name|int
 name|count
-init|=
-literal|0
 decl_stmt|;
 name|Connection
 name|c
@@ -4826,10 +4938,21 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-comment|// a WrappedRpcServerException is an exception that has been sent
+comment|// Do not log WrappedRpcServerExceptionSuppressed.
+if|if
+condition|(
+operator|!
+operator|(
+name|e
+operator|instanceof
+name|WrappedRpcServerExceptionSuppressed
+operator|)
+condition|)
+block|{
+comment|// A WrappedRpcServerException is an exception that has been sent
 comment|// to the client, so the stacktrace is unnecessary; any other
 comment|// exceptions are unexpected internal server errors and thus the
-comment|// stacktrace should be logged
+comment|// stacktrace should be logged.
 name|LOG
 operator|.
 name|info
@@ -4866,6 +4989,7 @@ else|:
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 name|count
 operator|=
 operator|-
@@ -6410,6 +6534,35 @@ operator|.
 name|toString
 argument_list|()
 return|;
+block|}
+block|}
+comment|/**    * A WrappedRpcServerException that is suppressed altogether    * for the purposes of logging.    */
+DECL|class|WrappedRpcServerExceptionSuppressed
+specifier|private
+specifier|static
+class|class
+name|WrappedRpcServerExceptionSuppressed
+extends|extends
+name|WrappedRpcServerException
+block|{
+DECL|method|WrappedRpcServerExceptionSuppressed ( RpcErrorCodeProto errCode, IOException ioe)
+specifier|public
+name|WrappedRpcServerExceptionSuppressed
+parameter_list|(
+name|RpcErrorCodeProto
+name|errCode
+parameter_list|,
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|errCode
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/** Reads calls from a connection and queues them for handling. */
@@ -10109,7 +10262,7 @@ argument_list|)
 decl_stmt|;
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|WrappedRpcServerExceptionSuppressed
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -10959,84 +11112,15 @@ name|getCause
 argument_list|()
 expr_stmt|;
 block|}
-name|String
-name|logMsg
-init|=
-name|Thread
-operator|.
-name|currentThread
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|", call "
-operator|+
+name|logException
+argument_list|(
+name|LOG
+argument_list|,
+name|e
+argument_list|,
 name|call
-decl_stmt|;
-if|if
-condition|(
-name|exceptionsHandler
-operator|.
-name|isTerse
-argument_list|(
-name|e
-operator|.
-name|getClass
-argument_list|()
-argument_list|)
-condition|)
-block|{
-comment|// Don't log the whole stack trace. Way too noisy!
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|logMsg
-operator|+
-literal|": "
-operator|+
-name|e
 argument_list|)
 expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|e
-operator|instanceof
-name|RuntimeException
-operator|||
-name|e
-operator|instanceof
-name|Error
-condition|)
-block|{
-comment|// These exception types indicate something is probably wrong
-comment|// on the server side, as opposed to just a normal exceptional
-comment|// result.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|logMsg
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|logMsg
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 if|if
 condition|(
 name|e
@@ -11346,6 +11430,118 @@ name|getName
 argument_list|()
 operator|+
 literal|": exiting"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|logException (Log logger, Throwable e, Call call)
+name|void
+name|logException
+parameter_list|(
+name|Log
+name|logger
+parameter_list|,
+name|Throwable
+name|e
+parameter_list|,
+name|Call
+name|call
+parameter_list|)
+block|{
+if|if
+condition|(
+name|exceptionsHandler
+operator|.
+name|isSuppressedLog
+argument_list|(
+name|e
+operator|.
+name|getClass
+argument_list|()
+argument_list|)
+condition|)
+block|{
+return|return;
+comment|// Log nothing.
+block|}
+specifier|final
+name|String
+name|logMsg
+init|=
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|", call "
+operator|+
+name|call
+decl_stmt|;
+if|if
+condition|(
+name|exceptionsHandler
+operator|.
+name|isTerseLog
+argument_list|(
+name|e
+operator|.
+name|getClass
+argument_list|()
+argument_list|)
+condition|)
+block|{
+comment|// Don't log the whole stack trace. Way too noisy!
+name|logger
+operator|.
+name|info
+argument_list|(
+name|logMsg
+operator|+
+literal|": "
+operator|+
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|e
+operator|instanceof
+name|RuntimeException
+operator|||
+name|e
+operator|instanceof
+name|Error
+condition|)
+block|{
+comment|// These exception types indicate something is probably wrong
+comment|// on the server side, as opposed to just a normal exceptional
+comment|// result.
+name|logger
+operator|.
+name|warn
+argument_list|(
+name|logMsg
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|logger
+operator|.
+name|info
+argument_list|(
+name|logMsg
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -11907,7 +12103,7 @@ name|this
 operator|.
 name|exceptionsHandler
 operator|.
-name|addTerseExceptions
+name|addTerseLoggingExceptions
 argument_list|(
 name|StandbyException
 operator|.
