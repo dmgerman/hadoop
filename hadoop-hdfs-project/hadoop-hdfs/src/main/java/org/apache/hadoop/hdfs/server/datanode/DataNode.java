@@ -2238,6 +2238,24 @@ name|server
 operator|.
 name|diskbalancer
 operator|.
+name|DiskBalancerConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|diskbalancer
+operator|.
 name|DiskBalancerException
 import|;
 end_import
@@ -15862,7 +15880,7 @@ name|queryWorkStatus
 argument_list|()
 return|;
 block|}
-comment|/**    * Gets a run-time configuration value from running diskbalancer instance. For    * example : Disk Balancer bandwidth of a running instance.    *    * @param key - String that represents the run time key value.    * @return value of the key as a string.    * @throws IOException - Throws if there is no such key    */
+comment|/**    * Gets a runtime configuration value from  diskbalancer instance. For    * example : DiskBalancer bandwidth.    *    * @param key - String that represents the run time key value.    * @return value of the key as a string.    * @throws IOException - Throws if there is no such key    */
 annotation|@
 name|Override
 DECL|method|getDiskBalancerSetting (String key)
@@ -15879,19 +15897,55 @@ block|{
 name|checkSuperuserPrivilege
 argument_list|()
 expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|key
+argument_list|)
+expr_stmt|;
+switch|switch
+condition|(
+name|key
+condition|)
+block|{
+case|case
+name|DiskBalancerConstants
+operator|.
+name|DISKBALANCER_VOLUME_NAME
+case|:
+return|return
+name|this
+operator|.
+name|diskBalancer
+operator|.
+name|getVolumeNames
+argument_list|()
+return|;
+default|default:
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Disk Balancer - Unknown key in get balancer setting. Key: "
+operator|+
+name|key
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|DiskBalancerException
 argument_list|(
-literal|"Not Implemented"
+literal|"Unknown key"
 argument_list|,
 name|DiskBalancerException
 operator|.
 name|Result
 operator|.
-name|INTERNAL_ERROR
+name|UNKNOWN_KEY
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 end_class

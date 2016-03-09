@@ -83,6 +83,9 @@ name|INTERNAL_ERROR
 block|,
 DECL|enumConstant|NO_SUCH_PLAN
 name|NO_SUCH_PLAN
+block|,
+DECL|enumConstant|UNKNOWN_KEY
+name|UNKNOWN_KEY
 block|}
 DECL|field|result
 specifier|private
