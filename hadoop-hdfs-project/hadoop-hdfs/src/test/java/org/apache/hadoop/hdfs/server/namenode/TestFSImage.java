@@ -1156,7 +1156,10 @@ decl_stmt|;
 name|short
 name|replication
 init|=
-literal|3
+name|testECPolicy
+operator|.
+name|getId
+argument_list|()
 decl_stmt|;
 name|long
 name|preferredBlockSize

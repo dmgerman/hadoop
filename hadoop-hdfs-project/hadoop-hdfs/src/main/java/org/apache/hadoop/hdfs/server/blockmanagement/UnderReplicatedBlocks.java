@@ -688,7 +688,7 @@ operator|+
 literal|1
 condition|)
 block|{
-comment|// can only afford one replica loss
+comment|// there is less than a third as many blocks as requested;
 comment|// this is considered very under-replicated
 return|return
 name|QUEUE_VERY_UNDER_REPLICATED

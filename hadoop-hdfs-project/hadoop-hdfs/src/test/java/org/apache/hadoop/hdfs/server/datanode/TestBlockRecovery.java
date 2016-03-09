@@ -5096,13 +5096,17 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// hard coded policy to work with hard coded test suite
 name|ErasureCodingPolicy
 name|ecPolicy
 init|=
 name|ErasureCodingPolicyManager
 operator|.
-name|getSystemDefaultPolicy
+name|getSystemPolicies
 argument_list|()
+index|[
+literal|0
+index|]
 decl_stmt|;
 name|RecoveringStripedBlock
 name|rBlockStriped

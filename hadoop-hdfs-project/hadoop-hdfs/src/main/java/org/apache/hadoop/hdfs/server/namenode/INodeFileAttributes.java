@@ -88,41 +88,35 @@ name|INodeAttributes
 block|{
 comment|/** @return the file replication. */
 DECL|method|getFileReplication ()
-specifier|public
 name|short
 name|getFileReplication
 parameter_list|()
 function_decl|;
 comment|/** @return whether the file is striped (instead of contiguous) */
 DECL|method|isStriped ()
-specifier|public
 name|boolean
 name|isStriped
 parameter_list|()
 function_decl|;
-comment|/** @return whether the file is striped (instead of contiguous) */
+comment|/** @return the ID of the ErasureCodingPolicy */
 DECL|method|getErasureCodingPolicyID ()
-specifier|public
 name|byte
 name|getErasureCodingPolicyID
 parameter_list|()
 function_decl|;
 comment|/** @return preferred block size in bytes */
 DECL|method|getPreferredBlockSize ()
-specifier|public
 name|long
 name|getPreferredBlockSize
 parameter_list|()
 function_decl|;
 comment|/** @return the header as a long. */
 DECL|method|getHeaderLong ()
-specifier|public
 name|long
 name|getHeaderLong
 parameter_list|()
 function_decl|;
 DECL|method|metadataEquals (INodeFileAttributes other)
-specifier|public
 name|boolean
 name|metadataEquals
 parameter_list|(
@@ -131,14 +125,12 @@ name|other
 parameter_list|)
 function_decl|;
 DECL|method|getLocalStoragePolicyID ()
-specifier|public
 name|byte
 name|getLocalStoragePolicyID
 parameter_list|()
 function_decl|;
 comment|/** A copy of the inode file attributes */
 DECL|class|SnapshotCopy
-specifier|public
 specifier|static
 class|class
 name|SnapshotCopy
@@ -299,19 +291,24 @@ name|byte
 name|getErasureCodingPolicyID
 parameter_list|()
 block|{
-return|return
+if|if
+condition|(
 name|isStriped
 argument_list|()
-condition|?
-operator|(
-name|byte
-operator|)
+condition|)
+block|{
+return|return
+name|HeaderFormat
+operator|.
+name|getECPolicyID
+argument_list|(
+name|header
+argument_list|)
+return|;
+block|}
+return|return
+operator|-
 literal|1
-else|:
-operator|(
-name|byte
-operator|)
-literal|0
 return|;
 block|}
 annotation|@

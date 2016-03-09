@@ -1183,7 +1183,6 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|/**          * TODO: lookup {@link ErasureCodingPolicyManager#getSystemPolices()}          */
 if|if
 condition|(
 name|inode
@@ -1192,7 +1191,9 @@ name|isFile
 argument_list|()
 condition|)
 block|{
-return|return
+name|byte
+name|id
+init|=
 name|inode
 operator|.
 name|asFile
@@ -1200,15 +1201,26 @@ argument_list|()
 operator|.
 name|getErasureCodingPolicyID
 argument_list|()
-operator|==
+decl_stmt|;
+return|return
+name|id
+operator|<
 literal|0
 condition|?
 literal|null
 else|:
-name|ErasureCodingPolicyManager
+name|fsd
 operator|.
-name|getSystemDefaultPolicy
+name|getFSNamesystem
 argument_list|()
+operator|.
+name|getErasureCodingPolicyManager
+argument_list|()
+operator|.
+name|getPolicyByID
+argument_list|(
+name|id
+argument_list|)
 return|;
 block|}
 comment|// We don't allow setting EC policies on paths with a symlink. Thus
@@ -1299,7 +1311,7 @@ operator|.
 name|getErasureCodingPolicyManager
 argument_list|()
 operator|.
-name|getPolicy
+name|getPolicyByName
 argument_list|(
 name|ecPolicyName
 argument_list|)
