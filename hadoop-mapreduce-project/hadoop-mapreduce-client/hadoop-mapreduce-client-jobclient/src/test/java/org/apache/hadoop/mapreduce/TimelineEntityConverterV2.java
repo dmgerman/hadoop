@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapred
+DECL|package|org.apache.hadoop.mapreduce
 package|package
 name|org
 operator|.
@@ -12,7 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|mapreduce
 package|;
 end_package
 
@@ -273,9 +273,9 @@ import|;
 end_import
 
 begin_class
-DECL|class|TimelineEntityConverter
+DECL|class|TimelineEntityConverterV2
 class|class
-name|TimelineEntityConverter
+name|TimelineEntityConverterV2
 block|{
 DECL|field|LOG
 specifier|private
@@ -288,7 +288,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|TimelineEntityConverter
+name|TimelineEntityConverterV2
 operator|.
 name|class
 argument_list|)

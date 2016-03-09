@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapred
+DECL|package|org.apache.hadoop.mapreduce
 package|package
 name|org
 operator|.
@@ -12,7 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|mapreduce
 package|;
 end_package
 
@@ -98,41 +98,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
-operator|.
-name|TimelineServicePerformanceV2
-operator|.
-name|EntityWriter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|TimelineServicePerformanceV2
-operator|.
-name|PerfCounters
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|mapreduce
 operator|.
-name|TaskAttemptID
+name|TimelineServicePerformance
+operator|.
+name|PerfCounters
 import|;
 end_import
 
@@ -309,15 +279,17 @@ import|;
 end_import
 
 begin_comment
-comment|/**    * Adds simple entities with random string payload, events, metrics, and    * configuration.    */
+comment|/**  * Adds simple entities with random string payload, events, metrics, and  * configuration.  */
 end_comment
 
 begin_class
-DECL|class|SimpleEntityWriter
+DECL|class|SimpleEntityWriterV2
 class|class
-name|SimpleEntityWriter
+name|SimpleEntityWriterV2
 extends|extends
-name|EntityWriter
+name|EntityWriterV2
+implements|implements
+name|SimpleEntityWriterConstants
 block|{
 DECL|field|LOG
 specifier|private
@@ -330,51 +302,10 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|SimpleEntityWriter
+name|SimpleEntityWriterV2
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-comment|// constants for mtype = 1
-DECL|field|KBS_SENT
-specifier|static
-specifier|final
-name|String
-name|KBS_SENT
-init|=
-literal|"kbs sent"
-decl_stmt|;
-DECL|field|KBS_SENT_DEFAULT
-specifier|static
-specifier|final
-name|int
-name|KBS_SENT_DEFAULT
-init|=
-literal|1
-decl_stmt|;
-DECL|field|TEST_TIMES
-specifier|static
-specifier|final
-name|String
-name|TEST_TIMES
-init|=
-literal|"testtimes"
-decl_stmt|;
-DECL|field|TEST_TIMES_DEFAULT
-specifier|static
-specifier|final
-name|int
-name|TEST_TIMES_DEFAULT
-init|=
-literal|100
-decl_stmt|;
-DECL|field|TIMELINE_SERVICE_PERFORMANCE_RUN_ID
-specifier|static
-specifier|final
-name|String
-name|TIMELINE_SERVICE_PERFORMANCE_RUN_ID
-init|=
-literal|"timeline.server.performance.run.id"
 decl_stmt|;
 DECL|method|writeEntities (Configuration tlConf, TimelineCollectorManager manager, Context context)
 specifier|protected
@@ -599,9 +530,7 @@ name|rand
 operator|.
 name|nextInt
 argument_list|(
-name|TimelineServicePerformanceV2
-operator|.
-name|alphaNums
+name|ALPHA_NUMS
 operator|.
 name|length
 argument_list|)
@@ -611,9 +540,7 @@ index|[
 name|xx
 index|]
 operator|=
-name|TimelineServicePerformanceV2
-operator|.
-name|alphaNums
+name|ALPHA_NUMS
 index|[
 name|alphaNumIdx
 index|]
