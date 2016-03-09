@@ -256,6 +256,15 @@ name|OZONE_QUOTA_QUERY_TAG
 init|=
 literal|"quota"
 decl_stmt|;
+DECL|field|CONTENT_MD5
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTENT_MD5
+init|=
+literal|"Content-MD5"
+decl_stmt|;
 DECL|method|Header ()
 specifier|private
 name|Header

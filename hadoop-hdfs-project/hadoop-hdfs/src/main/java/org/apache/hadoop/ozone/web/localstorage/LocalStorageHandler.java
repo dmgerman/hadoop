@@ -56,6 +56,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|LengthInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|web
@@ -81,6 +101,42 @@ operator|.
 name|handlers
 operator|.
 name|BucketArgs
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|web
+operator|.
+name|handlers
+operator|.
+name|KeyArgs
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|web
+operator|.
+name|handlers
+operator|.
+name|ListArgs
 import|;
 end_import
 
@@ -206,6 +262,24 @@ name|web
 operator|.
 name|response
 operator|.
+name|ListKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|web
+operator|.
+name|response
+operator|.
 name|ListVolumes
 import|;
 end_import
@@ -238,8 +312,18 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStream
+import|;
+end_import
+
 begin_comment
-comment|/**  * PLEASE NOTE : This file is a dummy backend for test purposes  * and prototyping effort only. It does not handle any Object semantics  * correctly, neither does it take care of security.  */
+comment|/**  * PLEASE NOTE : This file is a dummy backend for test purposes and prototyping  * effort only. It does not handle any Object semantics correctly, neither does  * it take care of security.  */
 end_comment
 
 begin_class
@@ -276,7 +360,7 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
-comment|/**    * Creates Storage Volume.    *    * @param args - volumeArgs    *    * @throws IOException    */
+comment|/**    * Creates Storage Volume.    *    * @param args - volumeArgs    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|createVolume (VolumeArgs args)
@@ -310,7 +394,7 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * setVolumeOwner - sets the owner of the volume.    *    * @param args volumeArgs    *    * @throws IOException    */
+comment|/**    * setVolumeOwner - sets the owner of the volume.    *    * @param args volumeArgs    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|setVolumeOwner (VolumeArgs args)
@@ -350,7 +434,7 @@ name|OWNER
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set Volume Quota Info.    *    * @param args - volumeArgs    * @param remove - true if the request is to remove the quota    *    * @throws IOException    */
+comment|/**    * Set Volume Quota Info.    *    * @param args   - volumeArgs    * @param remove - true if the request is to remove the quota    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|setVolumeQuota (VolumeArgs args, boolean remove)
@@ -413,7 +497,7 @@ name|QUOTA
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Checks if a Volume exists and the user specified has access to the    * volume.    *    * @param args - volumeArgs    *    * @return - Boolean - True if the user can modify the volume.    * This is possible for owners of the volume and admin users    *    * @throws IOException    */
+comment|/**    * Checks if a Volume exists and the user specified has access to the volume.    *    * @param args - volumeArgs    * @return - Boolean - True if the user can modify the volume. This is    * possible for owners of the volume and admin users    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|checkVolumeAccess (VolumeArgs args)
@@ -448,7 +532,7 @@ name|args
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns Info about the specified Volume.    *    * @param args - volumeArgs    *    * @return VolumeInfo    *    * @throws IOException    */
+comment|/**    * Returns Info about the specified Volume.    *    * @param args - volumeArgs    * @return VolumeInfo    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|getVolumeInfo (VolumeArgs args)
@@ -483,7 +567,7 @@ name|args
 argument_list|)
 return|;
 block|}
-comment|/**    * Deletes an Empty Volume.    *    * @param args - Volume Args    *    * @throws IOException    */
+comment|/**    * Deletes an Empty Volume.    *    * @param args - Volume Args    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|deleteVolume (VolumeArgs args)
@@ -517,7 +601,7 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns the List of Volumes owned by the specific user.    *    * @param args - UserArgs    *    * @return - List of Volumes    *    * @throws IOException    */
+comment|/**    * Returns the List of Volumes owned by the specific user.    *    * @param args - UserArgs    * @return - List of Volumes    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|listVolumes (UserArgs args)
@@ -552,7 +636,7 @@ name|args
 argument_list|)
 return|;
 block|}
-comment|/**    * true if the bucket exists and user has read access    * to the bucket else throws Exception.    *    * @param args Bucket args structure    *    * @throws IOException    */
+comment|/**    * true if the bucket exists and user has read access to the bucket else    * throws Exception.    *    * @param args Bucket args structure    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|checkBucketAccess (BucketArgs args)
@@ -568,7 +652,7 @@ name|IOException
 throws|,
 name|OzoneException
 block|{    }
-comment|/**    * Creates a Bucket in specified Volume.    *    * @param args BucketArgs- BucketName, UserName and Acls    *    * @throws IOException    */
+comment|/**    * Creates a Bucket in specified Volume.    *    * @param args BucketArgs- BucketName, UserName and Acls    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|createBucket (BucketArgs args)
@@ -602,7 +686,7 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Adds or Removes ACLs from a Bucket.    *    * @param args - BucketArgs    *    * @throws IOException    */
+comment|/**    * Adds or Removes ACLs from a Bucket.    *    * @param args - BucketArgs    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|setBucketAcls (BucketArgs args)
@@ -642,7 +726,7 @@ name|ACLS
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Enables or disables Bucket Versioning.    *    * @param args - BucketArgs    *    * @throws IOException    */
+comment|/**    * Enables or disables Bucket Versioning.    *    * @param args - BucketArgs    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|setBucketVersioning (BucketArgs args)
@@ -682,7 +766,7 @@ name|VERSIONING
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Sets the Storage Class of a Bucket.    *    * @param args - BucketArgs    *    * @throws IOException    */
+comment|/**    * Sets the Storage Class of a Bucket.    *    * @param args - BucketArgs    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|setBucketStorageClass (BucketArgs args)
@@ -722,7 +806,7 @@ name|STORAGETYPE
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Deletes a bucket if it is empty.    *    * @param args Bucket args structure    *    * @throws IOException    */
+comment|/**    * Deletes a bucket if it is empty.    *    * @param args Bucket args structure    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|deleteBucket (BucketArgs args)
@@ -756,7 +840,7 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns all Buckets of a specified Volume.    *    * @param args --User Args    *    * @return ListAllBuckets    *    * @throws OzoneException    */
+comment|/**    * Returns all Buckets of a specified Volume.    *    * @param args --User Args    * @return ListAllBuckets    * @throws OzoneException    */
 annotation|@
 name|Override
 DECL|method|listBuckets (VolumeArgs args)
@@ -791,7 +875,7 @@ name|args
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns Bucket's Metadata as a String.    *    * @param args Bucket args structure    *    * @return Info about the bucket    *    * @throws IOException    */
+comment|/**    * Returns Bucket's Metadata as a String.    *    * @param args Bucket args structure    * @return Info about the bucket    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|getBucketInfo (BucketArgs args)
@@ -824,6 +908,101 @@ name|getBucketInfo
 argument_list|(
 name|args
 argument_list|)
+return|;
+block|}
+comment|/**    * Writes a key in an existing bucket.    *    * @param args KeyArgs    * @return InputStream    * @throws OzoneException    */
+annotation|@
+name|Override
+DECL|method|newKeyWriter (KeyArgs args)
+specifier|public
+name|OutputStream
+name|newKeyWriter
+parameter_list|(
+name|KeyArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Tells the file system that the object has been written out completely and    * it can do any house keeping operation that needs to be done.    *    * @param args   Key Args    * @param stream    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|commitKey (KeyArgs args, OutputStream stream)
+specifier|public
+name|void
+name|commitKey
+parameter_list|(
+name|KeyArgs
+name|args
+parameter_list|,
+name|OutputStream
+name|stream
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+block|{    }
+comment|/**    * Reads a key from an existing bucket.    *    * @param args KeyArgs    * @return LengthInputStream    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|newKeyReader (KeyArgs args)
+specifier|public
+name|LengthInputStream
+name|newKeyReader
+parameter_list|(
+name|KeyArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Deletes an existing key.    *    * @param args KeyArgs    * @throws OzoneException    */
+annotation|@
+name|Override
+DECL|method|deleteKey (KeyArgs args)
+specifier|public
+name|void
+name|deleteKey
+parameter_list|(
+name|KeyArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+block|{    }
+comment|/**    * Returns a list of Key.    *    * @param args KeyArgs    * @return BucketList    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|listKeys (ListArgs args)
+specifier|public
+name|ListKeys
+name|listKeys
+parameter_list|(
+name|ListArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+block|{
+return|return
+literal|null
 return|;
 block|}
 block|}

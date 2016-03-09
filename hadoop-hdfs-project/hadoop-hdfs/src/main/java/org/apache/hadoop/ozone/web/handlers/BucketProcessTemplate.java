@@ -154,6 +154,24 @@ name|ozone
 operator|.
 name|web
 operator|.
+name|response
+operator|.
+name|ListKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|web
+operator|.
 name|utils
 operator|.
 name|OzoneConsts
@@ -777,7 +795,7 @@ name|OzoneException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Returns the ACL String if available.    * This function ignores all ACLs that are not prefixed with either    * ADD or Remove    *    * @param args - BucketArgs    * @param tag - Tag for different type of acls    *    * @return List of ACLs    *    * @throws OzoneException    */
+comment|/**    * Returns the ACL String if available.    * This function ignores all ACLs that are not prefixed with either    * ADD or Remove    *    * @param args - BucketArgs    * @param tag - Tag for different type of acls    *    * @return List of ACLs    *    */
 DECL|method|getAcls (BucketArgs args, String tag)
 name|List
 argument_list|<
@@ -1150,6 +1168,53 @@ argument_list|,
 name|HTTP_OK
 argument_list|,
 name|info
+operator|.
+name|toJsonString
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns list of objects in a bucket.    * @param args - ListArgs    * @return Response    * @throws IOException    * @throws OzoneException    */
+DECL|method|getBucketKeysList (ListArgs args)
+name|Response
+name|getBucketKeysList
+parameter_list|(
+name|ListArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+block|{
+name|StorageHandler
+name|fs
+init|=
+name|StorageHandlerBuilder
+operator|.
+name|getStorageHandler
+argument_list|()
+decl_stmt|;
+name|ListKeys
+name|objects
+init|=
+name|fs
+operator|.
+name|listKeys
+argument_list|(
+name|args
+argument_list|)
+decl_stmt|;
+return|return
+name|OzoneUtils
+operator|.
+name|getResponse
+argument_list|(
+name|args
+argument_list|,
+name|HTTP_OK
+argument_list|,
+name|objects
 operator|.
 name|toJsonString
 argument_list|()

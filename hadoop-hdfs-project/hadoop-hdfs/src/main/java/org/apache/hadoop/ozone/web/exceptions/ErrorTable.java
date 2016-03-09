@@ -781,6 +781,13 @@ argument_list|,
 name|ex
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|args
+operator|!=
+literal|null
+condition|)
+block|{
 name|err
 operator|.
 name|setRequestId
@@ -811,6 +818,7 @@ name|getHostName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|err
 operator|.
 name|setMessage

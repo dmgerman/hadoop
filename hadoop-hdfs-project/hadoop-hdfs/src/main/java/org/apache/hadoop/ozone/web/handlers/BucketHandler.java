@@ -697,11 +697,32 @@ condition|(
 name|info
 condition|)
 block|{
-comment|//TODO : Enable when Object support is enabled.
-comment|//          case Header.OZONE_LIST_QUERY_KEY:
-comment|//            ListArgs listArgs = new ListArgs(args, prefix,
-comment|// maxKeys, startPage);
-comment|//            return getBucketKeysList(listArgs);
+case|case
+name|Header
+operator|.
+name|OZONE_LIST_QUERY_KEY
+case|:
+name|ListArgs
+name|listArgs
+init|=
+operator|new
+name|ListArgs
+argument_list|(
+name|args
+argument_list|,
+name|prefix
+argument_list|,
+name|maxKeys
+argument_list|,
+name|startPage
+argument_list|)
+decl_stmt|;
+return|return
+name|getBucketKeysList
+argument_list|(
+name|listArgs
+argument_list|)
+return|;
 case|case
 name|Header
 operator|.
