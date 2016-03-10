@@ -299,7 +299,7 @@ literal|"    the fsimage enumerated, suitable for further analysis by XML\n"
 operator|+
 literal|"    tools.\n"
 operator|+
-literal|"  * reverseXML: This processor takes an XML file and creates a\n"
+literal|"  * ReverseXML: This processor takes an XML file and creates a\n"
 operator|+
 literal|"    binary fsimage containing the same elements.\n"
 operator|+
