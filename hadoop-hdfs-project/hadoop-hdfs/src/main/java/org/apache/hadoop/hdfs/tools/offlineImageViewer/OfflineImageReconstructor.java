@@ -756,6 +756,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNodeLayoutVersion
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|util
 operator|.
 name|MD5FileUtils
@@ -8591,6 +8609,46 @@ argument_list|(
 literal|"The<version> section doesn't contain "
 operator|+
 literal|"the layoutVersion."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|layoutVersion
+operator|.
+name|intValue
+argument_list|()
+operator|!=
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Layout version mismatch.  This oiv tool "
+operator|+
+literal|"handles layout version "
+operator|+
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+operator|+
+literal|", but the "
+operator|+
+literal|"XML file has<layoutVersion> "
+operator|+
+name|layoutVersion
+operator|+
+literal|".  Please "
+operator|+
+literal|"either re-generate the XML file with the proper layout version, "
+operator|+
+literal|"or manually edit the XML file to be usable with this version "
+operator|+
+literal|"of the oiv tool."
 argument_list|)
 throw|;
 block|}
