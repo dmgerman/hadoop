@@ -993,7 +993,9 @@ throw|throw
 operator|new
 name|BadRequestException
 argument_list|(
-literal|"windowStart, windowEnd or limit is not a numeric value."
+literal|"windowStart, windowEnd, fromTs or limit is not a numeric value: "
+operator|+
+name|e
 argument_list|)
 throw|;
 block|}
@@ -1007,7 +1009,9 @@ throw|throw
 operator|new
 name|BadRequestException
 argument_list|(
-literal|"requested invalid field."
+literal|"requested invalid field: "
+operator|+
+name|e
 argument_list|)
 throw|;
 block|}
@@ -1151,7 +1155,7 @@ throw|throw
 operator|new
 name|BadRequestException
 argument_list|(
-literal|"requested invalid field."
+name|e
 argument_list|)
 throw|;
 block|}
@@ -1361,10 +1365,18 @@ name|e
 parameter_list|)
 block|{
 throw|throw
+operator|(
+name|BadRequestException
+operator|)
 operator|new
 name|BadRequestException
 argument_list|(
 literal|"windowStart, windowEnd or limit is not a numeric value."
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|e
 argument_list|)
 throw|;
 block|}

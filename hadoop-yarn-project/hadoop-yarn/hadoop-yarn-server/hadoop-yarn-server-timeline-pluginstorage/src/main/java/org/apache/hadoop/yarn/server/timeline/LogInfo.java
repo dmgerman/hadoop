@@ -72,6 +72,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileSystem
 import|;
 end_import
@@ -647,14 +661,21 @@ argument_list|(
 name|appDirPath
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+name|FileStatus
+name|status
+init|=
 name|fs
 operator|.
-name|exists
+name|getFileStatus
 argument_list|(
 name|logPath
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|status
+operator|!=
+literal|null
 condition|)
 block|{
 name|long
@@ -721,6 +742,7 @@ name|RuntimeException
 name|e
 parameter_list|)
 block|{
+comment|// If AppLogs cannot parse this log, it may be corrupted or just empty
 if|if
 condition|(
 name|e
@@ -729,9 +751,23 @@ name|getCause
 argument_list|()
 operator|instanceof
 name|JsonParseException
+operator|&&
+operator|(
+name|status
+operator|.
+name|getLen
+argument_list|()
+operator|>
+literal|0
+operator|||
+name|offset
+operator|>
+literal|0
+operator|)
 condition|)
 block|{
-comment|// If AppLogs cannot parse this log, it may be corrupted
+comment|// log on parse problems if the file as been read in the past or
+comment|// is visibly non-empty
 name|LOG
 operator|.
 name|info

@@ -428,6 +428,19 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
+name|List
+argument_list|<
+name|LogInfo
+argument_list|>
+name|removeList
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+try|try
+init|(
 name|TimelineDataManager
 name|tdm
 init|=
@@ -438,7 +451,8 @@ name|store
 argument_list|,
 name|aclManager
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|tdm
 operator|.
 name|init
@@ -451,19 +465,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|List
-argument_list|<
-name|LogInfo
-argument_list|>
-name|removeList
-init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|LogInfo
-argument_list|>
-argument_list|()
-decl_stmt|;
 for|for
 control|(
 name|LogInfo
@@ -565,7 +566,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"File {} no longer exists, remove it from log list"
+literal|"File {} no longer exists, removing it from log list"
 argument_list|,
 name|log
 operator|.
@@ -578,6 +579,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
 name|appLogs
 operator|.
 name|getDetailLogs
@@ -587,11 +589,6 @@ name|removeAll
 argument_list|(
 name|removeList
 argument_list|)
-expr_stmt|;
-name|tdm
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 name|updateRefreshTimeToNow

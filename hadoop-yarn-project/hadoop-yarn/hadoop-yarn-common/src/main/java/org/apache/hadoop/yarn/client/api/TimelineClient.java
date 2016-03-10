@@ -26,6 +26,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Flushable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -290,6 +300,8 @@ class|class
 name|TimelineClient
 extends|extends
 name|AbstractService
+implements|implements
+name|Flushable
 block|{
 comment|/**    * Create a timeline client. The current UGI when the user initialize the    * client will be used to do the put and the delegation token operations. The    * current user may use {@link UserGroupInformation#doAs} another user to    * construct and initialize a timeline client if the following operations are    * supposed to be conducted by that user.    *    * @return a timeline client    */
 annotation|@

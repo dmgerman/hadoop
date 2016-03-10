@@ -6104,6 +6104,19 @@ literal|7
 operator|*
 literal|60
 decl_stmt|;
+comment|// This is temporary solution. The configuration will be deleted once we have
+comment|// the FileSystem API to check whether append operation is supported or not.
+DECL|field|TIMELINE_SERVICE_ENTITYFILE_FS_SUPPORT_APPEND
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_ENTITYFILE_FS_SUPPORT_APPEND
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"entity-file.fs-support-append"
+decl_stmt|;
 comment|// mark app-history related configs @Private as application history is going
 comment|// to be integrated into the timeline service
 annotation|@

@@ -2008,6 +2008,30 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|flush ()
+specifier|public
+name|void
+name|flush
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|timelineWriter
+operator|!=
+literal|null
+condition|)
+block|{
+name|timelineWriter
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
 DECL|method|putEntities ( TimelineEntity... entities)
 specifier|public
 name|TimelinePutResponse
@@ -2555,6 +2579,29 @@ argument_list|(
 name|cancelDTAction
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|super
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" with timeline server "
+operator|+
+name|resURI
+operator|+
+literal|" and writer "
+operator|+
+name|timelineWriter
+return|;
 block|}
 DECL|method|operateDelegationToken ( final PrivilegedExceptionAction<?> action)
 specifier|private

@@ -799,15 +799,15 @@ argument_list|)
 expr_stmt|;
 name|store
 operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|store
-operator|.
 name|setFs
 argument_list|(
 name|fs
 argument_list|)
+expr_stmt|;
+name|store
+operator|.
+name|start
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -820,6 +820,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|store
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 name|fs
 operator|.
 name|delete
@@ -828,11 +833,6 @@ name|TEST_APP_DIR_PATH
 argument_list|,
 literal|true
 argument_list|)
-expr_stmt|;
-name|store
-operator|.
-name|stop
-argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -1435,7 +1435,7 @@ name|dirPathEmpty
 argument_list|)
 expr_stmt|;
 comment|// Should retain all logs after this run
-name|EntityGroupFSTimelineStore
+name|store
 operator|.
 name|cleanLogs
 argument_list|(
@@ -1550,7 +1550,7 @@ literal|"holdByMe"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|EntityGroupFSTimelineStore
+name|store
 operator|.
 name|cleanLogs
 argument_list|(
