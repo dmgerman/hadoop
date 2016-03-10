@@ -44,6 +44,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -728,6 +738,37 @@ block|}
 block|}
 block|}
 block|}
+elseif|else
+if|if
+condition|(
+name|respCode
+operator|==
+name|HttpURLConnection
+operator|.
+name|HTTP_NOT_FOUND
+condition|)
+block|{
+name|token
+operator|.
+name|set
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+name|conn
+operator|.
+name|getURL
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+throw|;
+block|}
 else|else
 block|{
 name|token
@@ -741,7 +782,16 @@ throw|throw
 operator|new
 name|AuthenticationException
 argument_list|(
-literal|"Authentication failed, status: "
+literal|"Authentication failed"
+operator|+
+literal|", URL: "
+operator|+
+name|conn
+operator|.
+name|getURL
+argument_list|()
+operator|+
+literal|", status: "
 operator|+
 name|conn
 operator|.
