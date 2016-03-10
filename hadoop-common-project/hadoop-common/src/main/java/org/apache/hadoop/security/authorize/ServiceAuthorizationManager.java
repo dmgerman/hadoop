@@ -614,6 +614,19 @@ name|user
 argument_list|)
 condition|)
 block|{
+name|String
+name|cause
+init|=
+name|clientPrincipal
+operator|!=
+literal|null
+condition|?
+literal|": this service is only accessible by "
+operator|+
+name|clientPrincipal
+else|:
+literal|": denied by configured ACL"
+decl_stmt|;
 name|AUDITLOG
 operator|.
 name|warn
@@ -626,9 +639,7 @@ literal|" for protocol="
 operator|+
 name|protocol
 operator|+
-literal|", expected client Kerberos principal is "
-operator|+
-name|clientPrincipal
+name|cause
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -643,9 +654,7 @@ literal|" is not authorized for protocol "
 operator|+
 name|protocol
 operator|+
-literal|", expected client Kerberos principal is "
-operator|+
-name|clientPrincipal
+name|cause
 argument_list|)
 throw|;
 block|}
