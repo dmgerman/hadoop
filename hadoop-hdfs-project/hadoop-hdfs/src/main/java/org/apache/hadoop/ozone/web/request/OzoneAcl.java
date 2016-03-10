@@ -73,6 +73,12 @@ specifier|private
 name|OzoneACLRights
 name|rights
 decl_stmt|;
+comment|/**    * Constructor for OzoneAcl.    */
+DECL|method|OzoneAcl ()
+specifier|public
+name|OzoneAcl
+parameter_list|()
+block|{   }
 comment|/**    * Constructor for OzoneAcl.    *    * @param type - Type    * @param name - Name of user    * @param rights - Rights    */
 DECL|method|OzoneAcl (OzoneACLType type, String name, OzoneACLRights rights)
 specifier|public

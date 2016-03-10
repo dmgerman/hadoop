@@ -291,12 +291,7 @@ name|getBuckets
 parameter_list|()
 block|{
 return|return
-name|Collections
-operator|.
-name|unmodifiableList
-argument_list|(
 name|buckets
-argument_list|)
 return|;
 block|}
 comment|/**    * Sets the list of buckets owned by this user.    *    * @param buckets - List of Buckets    */

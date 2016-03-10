@@ -897,9 +897,13 @@ name|Header
 operator|.
 name|OZONE_LIST_QUERY_BUCKET
 case|:
-comment|// TODO : Resolve this dependency when we bring
-comment|// in bucket code.
-comment|// return getBucketsInVolume(args); // Return list of Buckets
+return|return
+name|getBucketsInVolume
+argument_list|(
+name|args
+argument_list|)
+return|;
+comment|// Return list of Buckets
 case|case
 name|Header
 operator|.
