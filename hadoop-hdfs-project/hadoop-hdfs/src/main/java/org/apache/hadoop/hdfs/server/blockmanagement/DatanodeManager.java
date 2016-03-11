@@ -621,6 +621,18 @@ specifier|final
 name|FSClusterStats
 name|fsClusterStats
 decl_stmt|;
+DECL|field|heartbeatIntervalSeconds
+specifier|private
+specifier|volatile
+name|long
+name|heartbeatIntervalSeconds
+decl_stmt|;
+DECL|field|heartbeatRecheckInterval
+specifier|private
+specifier|volatile
+name|int
+name|heartbeatRecheckInterval
+decl_stmt|;
 comment|/**    * Stores the datanode -> block map.      *<p>    * Done by storing a set of {@link DatanodeDescriptor} objects, sorted by     * storage id. In order to keep the storage map consistent it tracks     * all storages ever registered with the namenode.    * A descriptor corresponding to a specific storage id can be    *<ul>     *<li>added to the map if it is a new storage id;</li>    *<li>updated with a new datanode started as a replacement for the old one     * with the same storage id; and</li>    *<li>removed if and only if an existing datanode is restarted to serve a    * different storage id.</li>    *</ul><br>     *<p>    * Mapping: StorageID -> DatanodeDescriptor    */
 DECL|field|datanodeMap
 specifier|private
@@ -711,7 +723,8 @@ name|heartbeatExpireInterval
 decl_stmt|;
 comment|/** Ask Datanode only up to this many blocks to delete. */
 DECL|field|blockInvalidateLimit
-specifier|final
+specifier|private
+specifier|volatile
 name|int
 name|blockInvalidateLimit
 decl_stmt|;
@@ -1136,10 +1149,8 @@ name|locations
 argument_list|)
 expr_stmt|;
 block|}
-specifier|final
-name|long
 name|heartbeatIntervalSeconds
-init|=
+operator|=
 name|conf
 operator|.
 name|getLong
@@ -1152,11 +1163,9 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HEARTBEAT_INTERVAL_DEFAULT
 argument_list|)
-decl_stmt|;
-specifier|final
-name|int
+expr_stmt|;
 name|heartbeatRecheckInterval
-init|=
+operator|=
 name|conf
 operator|.
 name|getInt
@@ -1169,7 +1178,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_HEARTBEAT_RECHECK_INTERVAL_DEFAULT
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// 5 minutes
 name|this
 operator|.
@@ -1653,6 +1662,15 @@ parameter_list|()
 block|{
 return|return
 name|fsClusterStats
+return|;
+block|}
+DECL|method|getBlockInvalidateLimit ()
+name|int
+name|getBlockInvalidateLimit
+parameter_list|()
+block|{
+return|return
+name|blockInvalidateLimit
 return|;
 block|}
 comment|/** @return the datanode statistics. */
@@ -4744,6 +4762,30 @@ return|return
 name|staleInterval
 return|;
 block|}
+DECL|method|getHeartbeatInterval ()
+specifier|public
+name|long
+name|getHeartbeatInterval
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|heartbeatIntervalSeconds
+return|;
+block|}
+DECL|method|getHeartbeatRecheckInterval ()
+specifier|public
+name|long
+name|getHeartbeatRecheckInterval
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|heartbeatRecheckInterval
+return|;
+block|}
 comment|/**    * Set the number of current stale DataNodes. The HeartbeatManager got this    * number based on DataNodes' heartbeats.    *     * @param numStaleNodes    *          The number of stale DataNodes to be set.    */
 DECL|method|setNumStaleNodes (int numStaleNodes)
 name|void
@@ -7055,6 +7097,106 @@ return|;
 block|}
 block|}
 return|;
+block|}
+DECL|method|setHeartbeatInterval (long intervalSeconds)
+specifier|public
+name|void
+name|setHeartbeatInterval
+parameter_list|(
+name|long
+name|intervalSeconds
+parameter_list|)
+block|{
+name|setHeartbeatInterval
+argument_list|(
+name|intervalSeconds
+argument_list|,
+name|this
+operator|.
+name|heartbeatRecheckInterval
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|setHeartbeatRecheckInterval (int recheckInterval)
+specifier|public
+name|void
+name|setHeartbeatRecheckInterval
+parameter_list|(
+name|int
+name|recheckInterval
+parameter_list|)
+block|{
+name|setHeartbeatInterval
+argument_list|(
+name|this
+operator|.
+name|heartbeatIntervalSeconds
+argument_list|,
+name|recheckInterval
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Set parameters derived from heartbeat interval.    */
+DECL|method|setHeartbeatInterval (long intervalSeconds, int recheckInterval)
+specifier|private
+name|void
+name|setHeartbeatInterval
+parameter_list|(
+name|long
+name|intervalSeconds
+parameter_list|,
+name|int
+name|recheckInterval
+parameter_list|)
+block|{
+name|this
+operator|.
+name|heartbeatIntervalSeconds
+operator|=
+name|intervalSeconds
+expr_stmt|;
+name|this
+operator|.
+name|heartbeatRecheckInterval
+operator|=
+name|recheckInterval
+expr_stmt|;
+name|this
+operator|.
+name|heartbeatExpireInterval
+operator|=
+literal|2L
+operator|*
+name|recheckInterval
+operator|+
+literal|10
+operator|*
+literal|1000
+operator|*
+name|intervalSeconds
+expr_stmt|;
+name|this
+operator|.
+name|blockInvalidateLimit
+operator|=
+name|Math
+operator|.
+name|max
+argument_list|(
+literal|20
+operator|*
+call|(
+name|int
+call|)
+argument_list|(
+name|intervalSeconds
+argument_list|)
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_INVALIDATE_LIMIT_DEFAULT
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

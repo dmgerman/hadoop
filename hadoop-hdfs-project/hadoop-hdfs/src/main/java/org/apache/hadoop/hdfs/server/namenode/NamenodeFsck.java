@@ -5771,7 +5771,8 @@ name|setConfiguration
 argument_list|(
 name|namenode
 operator|.
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 operator|.
 name|setTracer

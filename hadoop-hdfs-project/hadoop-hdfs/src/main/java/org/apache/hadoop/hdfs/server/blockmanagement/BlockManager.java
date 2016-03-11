@@ -2053,7 +2053,8 @@ name|InvalidateBlocks
 argument_list|(
 name|datanodeManager
 operator|.
-name|blockInvalidateLimit
+name|getBlockInvalidateLimit
+argument_list|()
 argument_list|,
 name|startupDelayBlockDeletionInMs
 argument_list|)

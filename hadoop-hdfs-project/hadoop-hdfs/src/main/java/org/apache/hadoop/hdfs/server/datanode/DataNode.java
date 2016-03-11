@@ -14554,6 +14554,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 return|return
 name|RECONFIGURABLE_PROPERTIES
 return|;

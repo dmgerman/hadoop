@@ -519,7 +519,8 @@ operator|.
 name|getDatanodeManager
 argument_list|()
 operator|.
-name|blockInvalidateLimit
+name|getBlockInvalidateLimit
+argument_list|()
 decl_stmt|;
 name|namesystem
 operator|.
