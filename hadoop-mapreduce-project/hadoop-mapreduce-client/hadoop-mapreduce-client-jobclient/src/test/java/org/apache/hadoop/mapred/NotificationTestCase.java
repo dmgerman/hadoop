@@ -192,6 +192,60 @@ name|DataOutputStream
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * Base class to test Job end notification in local and cluster mode.  *  * Starts up hadoop on Local or Cluster mode (by extending of the  * HadoopTestCase class) and it starts a servlet engine that hosts  * a servlet that will receive the notification of job finalization.  *  * The notification servlet returns a HTTP 400 the first time is called  * and a HTTP 200 the second time, thus testing retry.  *  * In both cases local file system is used (this is irrelevant for  * the tested functionality)  *  *   */
 end_comment
@@ -610,8 +664,10 @@ return|return
 name|conf
 return|;
 block|}
+annotation|@
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
@@ -627,8 +683,10 @@ name|startHttpServer
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
@@ -644,6 +702,8 @@ name|tearDown
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMR ()
 specifier|public
 name|void

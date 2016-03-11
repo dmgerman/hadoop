@@ -182,6 +182,42 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class performs unit test for Job/JobControl classes.  *    */
 end_comment
@@ -662,6 +698,8 @@ parameter_list|)
 block|{}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testJobControlWithFailJob ()
 specifier|public
 name|void
@@ -782,6 +820,8 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testJobControlWithKillJob ()
 specifier|public
 name|void
@@ -975,6 +1015,8 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testJobControl ()
 specifier|public
 name|void

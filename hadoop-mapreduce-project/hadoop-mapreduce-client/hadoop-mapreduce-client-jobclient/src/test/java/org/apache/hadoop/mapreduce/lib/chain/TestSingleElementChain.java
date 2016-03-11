@@ -156,6 +156,40 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -215,6 +249,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// test chain mapper and reducer by adding single mapper and reducer to chain
+annotation|@
+name|Test
 DECL|method|testNoChain ()
 specifier|public
 name|void

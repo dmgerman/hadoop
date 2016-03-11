@@ -170,6 +170,40 @@ name|Reducer
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests error conditions in ChainMapper/ChainReducer.  */
 end_comment
@@ -254,6 +288,8 @@ init|=
 literal|"a\nb\nc\nd\n"
 decl_stmt|;
 comment|/**    * Tests errors during submission.    *     * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testChainSubmission ()
 specifier|public
 name|void
@@ -467,6 +503,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Tests one of the mappers throwing exception.    *     * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testChainFail ()
 specifier|public
 name|void
@@ -615,6 +653,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Tests Reducer throwing exception.    *     * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testReducerFail ()
 specifier|public
 name|void
@@ -763,6 +803,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Tests one of the maps consuming output.    *     * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testChainMapNoOuptut ()
 specifier|public
 name|void
@@ -902,6 +944,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Tests reducer consuming output.    *     * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testChainReduceNoOuptut ()
 specifier|public
 name|void
