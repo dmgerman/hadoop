@@ -178,6 +178,28 @@ name|Ignore
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_class
 annotation|@
 name|Ignore
@@ -504,6 +526,8 @@ return|return
 name|job
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testNoJobSetupCleanup ()
 specifier|public
 name|void

@@ -18,26 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -148,39 +128,95 @@ name|mapreduce
 operator|.
 name|checkpoint
 operator|.
-name|CheckpointID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|checkpoint
-operator|.
-name|FSCheckpointID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|checkpoint
-operator|.
 name|TaskCheckpointID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -359,7 +395,7 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -388,6 +424,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitFail ()
 specifier|public
 name|void
@@ -809,6 +847,8 @@ comment|// ignore
 block|}
 block|}
 comment|/**    * A test that mimics a failed task to ensure that it does    * not get into the COMMIT_PENDING state, by using a fake    * UmbilicalProtocol's implementation that fails if the commit.    * protocol is played.    *     * The test mocks the various steps in a failed task's     * life-cycle using a special OutputCommitter and UmbilicalProtocol    * implementation.    *     * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testTaskCleanupDoesNotCommit ()
 specifier|public
 name|void
@@ -1080,6 +1120,8 @@ name|taskDone
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitRequiredForMapTask ()
 specifier|public
 name|void
@@ -1109,6 +1151,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitRequiredForReduceTask ()
 specifier|public
 name|void
@@ -1138,6 +1182,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitNotRequiredForJobSetup ()
 specifier|public
 name|void
@@ -1172,6 +1218,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitNotRequiredForJobCleanup ()
 specifier|public
 name|void
@@ -1206,6 +1254,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitNotRequiredForTaskCleanup ()
 specifier|public
 name|void
