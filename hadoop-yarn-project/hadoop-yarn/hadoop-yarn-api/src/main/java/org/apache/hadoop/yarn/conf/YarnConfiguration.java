@@ -326,6 +326,17 @@ literal|"core-site.xml"
 decl_stmt|;
 annotation|@
 name|Private
+DECL|field|RESOURCE_TYPES_CONFIGURATION_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RESOURCE_TYPES_CONFIGURATION_FILE
+init|=
+literal|"resource-types.xml"
+decl_stmt|;
+annotation|@
+name|Private
 DECL|field|RM_CONFIGURATION_FILES
 specifier|public
 specifier|static
@@ -344,6 +355,8 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
+name|RESOURCE_TYPES_CONFIGURATION_FILE
+argument_list|,
 name|DR_CONFIGURATION_FILE
 argument_list|,
 name|CS_CONFIGURATION_FILE
@@ -511,6 +524,22 @@ name|String
 name|YARN_PREFIX
 init|=
 literal|"yarn."
+decl_stmt|;
+comment|/////////////////////////////
+comment|// Scheduler resource types configs
+comment|////////////////////////////
+DECL|field|RESOURCE_TYPES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RESOURCE_TYPES
+init|=
+name|YarnConfiguration
+operator|.
+name|YARN_PREFIX
+operator|+
+literal|"resource-types"
 decl_stmt|;
 comment|/** Delay before deleting resource to ease debugging of NM issues */
 DECL|field|DEBUG_NM_DELETE_DELAY_SEC

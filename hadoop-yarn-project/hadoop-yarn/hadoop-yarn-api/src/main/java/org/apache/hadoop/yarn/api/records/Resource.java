@@ -368,48 +368,6 @@ name|vCores
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|newInstance ( Map<String, ResourceInformation> resources)
-specifier|public
-specifier|static
-name|Resource
-name|newInstance
-parameter_list|(
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|ResourceInformation
-argument_list|>
-name|resources
-parameter_list|)
-block|{
-name|Resource
-name|resource
-init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
-name|Resource
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|resource
-operator|.
-name|setResources
-argument_list|(
-name|resources
-argument_list|)
-expr_stmt|;
-return|return
-name|resource
-return|;
-block|}
 comment|/**    * This method is DEPRECATED:    * Use {@link Resource#getMemorySize()} instead    *    * Get<em>memory</em> of the resource. Note - while memory has    * never had a unit specified, all YARN configurations have specified memory    * in MB. The assumption has been that the daemons and applications are always    * using the same units. With the introduction of the ResourceInformation    * class we have support for units - so this function will continue to return    * memory but in the units of MB    *    * @return<em>memory</em>(in MB) of the resource    */
 annotation|@
 name|Public
@@ -556,26 +514,6 @@ parameter_list|)
 throws|throws
 name|YarnException
 function_decl|;
-comment|/**    * Set the resources to the map specified.    *    * @param resources Desired resources    */
-annotation|@
-name|Public
-annotation|@
-name|Evolving
-DECL|method|setResources (Map<String, ResourceInformation> resources)
-specifier|public
-specifier|abstract
-name|void
-name|setResources
-parameter_list|(
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|ResourceInformation
-argument_list|>
-name|resources
-parameter_list|)
-function_decl|;
 comment|/**    * Set the ResourceInformation object for a particular resource.    *    * @param resource the resource for which the ResourceInformation is provided    * @param resourceInformation ResourceInformation object    * @throws ResourceNotFoundException if the resource is not found    */
 annotation|@
 name|Public
@@ -683,7 +621,7 @@ name|equals
 argument_list|(
 name|ResourceInformation
 operator|.
-name|MEMORY
+name|MEMORY_MB
 operator|.
 name|getName
 argument_list|()
@@ -951,7 +889,7 @@ name|equals
 argument_list|(
 name|ResourceInformation
 operator|.
-name|MEMORY
+name|MEMORY_MB
 operator|.
 name|getName
 argument_list|()

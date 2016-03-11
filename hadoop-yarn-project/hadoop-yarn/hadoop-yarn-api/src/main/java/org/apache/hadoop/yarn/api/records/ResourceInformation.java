@@ -96,7 +96,7 @@ specifier|final
 name|String
 name|MEMORY_URI
 init|=
-literal|"yarn.io/memory"
+literal|"memory-mb"
 decl_stmt|;
 DECL|field|VCORES_URI
 specifier|private
@@ -105,21 +105,7 @@ specifier|final
 name|String
 name|VCORES_URI
 init|=
-literal|"yarn.io/vcores"
-decl_stmt|;
-DECL|field|MEMORY
-specifier|public
-specifier|static
-specifier|final
-name|ResourceInformation
-name|MEMORY
-init|=
-name|ResourceInformation
-operator|.
-name|newInstance
-argument_list|(
-name|MEMORY_URI
-argument_list|)
+literal|"vcores"
 decl_stmt|;
 DECL|field|MEMORY_MB
 specifier|public
@@ -219,7 +205,7 @@ name|IllegalArgumentException
 argument_list|(
 literal|"Unknown unit '"
 operator|+
-name|units
+name|rUnits
 operator|+
 literal|"'. Known units are "
 operator|+

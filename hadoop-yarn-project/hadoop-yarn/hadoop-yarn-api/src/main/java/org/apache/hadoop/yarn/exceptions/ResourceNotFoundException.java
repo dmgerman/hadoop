@@ -64,7 +64,7 @@ specifier|public
 class|class
 name|ResourceNotFoundException
 extends|extends
-name|YarnException
+name|YarnRuntimeException
 block|{
 DECL|field|serialVersionUID
 specifier|private
