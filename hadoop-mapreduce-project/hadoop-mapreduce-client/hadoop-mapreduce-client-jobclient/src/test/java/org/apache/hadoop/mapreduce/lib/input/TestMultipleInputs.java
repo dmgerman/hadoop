@@ -280,30 +280,6 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
 begin_comment
 comment|/**  * @see TestDelegatingInputFormat  */
 end_comment
@@ -932,7 +908,10 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Test
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|testAddInputPathWithFormat ()
 specifier|public
 name|void
@@ -1044,7 +1023,10 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Test
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|testAddInputPathWithMapper ()
 specifier|public
 name|void

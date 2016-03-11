@@ -18,15 +18,11 @@ end_package
 
 begin_import
 import|import
-name|org
+name|junit
 operator|.
-name|apache
+name|framework
 operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileSystem
+name|TestCase
 import|;
 end_import
 
@@ -52,6 +48,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|MRConfig
@@ -60,21 +84,11 @@ end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|junit
+name|io
 operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
+name|File
 import|;
 end_import
 
@@ -98,6 +112,8 @@ specifier|public
 specifier|abstract
 class|class
 name|HadoopTestCase
+extends|extends
+name|TestCase
 block|{
 DECL|field|LOCAL_MR
 specifier|public
@@ -317,16 +333,19 @@ init|=
 literal|null
 decl_stmt|;
 comment|/**    * Creates Hadoop instance based on constructor configuration before    * a test case is run.    *    * @throws Exception    */
-annotation|@
-name|Before
 DECL|method|setUp ()
-specifier|public
+specifier|protected
 name|void
 name|setUp
 parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|super
+operator|.
+name|setUp
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|localFS
@@ -403,10 +422,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Destroys Hadoop instance based on constructor configuration after    * a test case is run.    *    * @throws Exception    */
-annotation|@
-name|After
 DECL|method|tearDown ()
-specifier|public
+specifier|protected
 name|void
 name|tearDown
 parameter_list|()
@@ -477,6 +494,11 @@ name|ex
 argument_list|)
 expr_stmt|;
 block|}
+name|super
+operator|.
+name|tearDown
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Returns the Filesystem in use.    *    * TestCases should use this Filesystem as it    * is properly configured with the workingDir for relative PATHs.    *    * @return the filesystem used by Hadoop.    */
 DECL|method|getFileSystem ()

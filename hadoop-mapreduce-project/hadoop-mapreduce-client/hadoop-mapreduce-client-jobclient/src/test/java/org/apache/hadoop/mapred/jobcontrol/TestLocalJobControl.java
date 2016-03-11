@@ -122,28 +122,6 @@ name|JobConf
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
 begin_comment
 comment|/**  * HadoopTestCase that tests the local job runner.  */
 end_comment
@@ -200,8 +178,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This is a main function for testing JobControl class. It first cleans all    * the dirs it will use. Then it generates some random text data in    * TestJobControlData/indir. Then it creates 4 jobs: Job 1: copy data from    * indir to outdir_1 Job 2: copy data from indir to outdir_2 Job 3: copy data    * from outdir_1 and outdir_2 to outdir_3 Job 4: copy data from outdir to    * outdir_4 The jobs 1 and 2 have no dependency. The job 3 depends on jobs 1    * and 2. The job 4 depends on job 3.    *     * Then it creates a JobControl object and add the 4 jobs to the JobControl    * object. Finally, it creates a thread to run the JobControl object and    * monitors/reports the job states.    */
-annotation|@
-name|Test
 DECL|method|testLocalJobControlDataCopy ()
 specifier|public
 name|void
