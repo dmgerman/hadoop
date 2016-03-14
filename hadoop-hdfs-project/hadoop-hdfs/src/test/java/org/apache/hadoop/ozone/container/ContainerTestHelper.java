@@ -428,6 +428,17 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|response
+operator|.
+name|setResult
+argument_list|(
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|SUCCESS
+argument_list|)
+expr_stmt|;
 return|return
 name|response
 operator|.
