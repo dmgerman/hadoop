@@ -128,26 +128,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
-name|rawcoder
-operator|.
-name|util
-operator|.
-name|RSUtil2
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|nio
@@ -175,10 +155,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|RSRawDecoder2
+DECL|class|RSRawDecoder
 specifier|public
 class|class
-name|RSRawDecoder2
+name|RSRawDecoder
 extends|extends
 name|AbstractRawErasureDecoder
 block|{
@@ -232,9 +212,9 @@ name|boolean
 index|[]
 name|erasureFlags
 decl_stmt|;
-DECL|method|RSRawDecoder2 (int numDataUnits, int numParityUnits)
+DECL|method|RSRawDecoder (int numDataUnits, int numParityUnits)
 specifier|public
-name|RSRawDecoder2
+name|RSRawDecoder
 parameter_list|(
 name|int
 name|numDataUnits
@@ -291,7 +271,7 @@ name|getNumDataUnits
 argument_list|()
 index|]
 expr_stmt|;
-name|RSUtil2
+name|RSUtil
 operator|.
 name|genCauchyMatrix
 argument_list|(
@@ -390,7 +370,7 @@ index|]
 index|]
 expr_stmt|;
 block|}
-name|RSUtil2
+name|RSUtil
 operator|.
 name|encodeData
 argument_list|(
@@ -509,7 +489,7 @@ index|]
 index|]
 expr_stmt|;
 block|}
-name|RSUtil2
+name|RSUtil
 operator|.
 name|encodeData
 argument_list|(
@@ -749,7 +729,7 @@ argument_list|(
 name|erasedIndexes
 argument_list|)
 expr_stmt|;
-name|RSUtil2
+name|RSUtil
 operator|.
 name|initTables
 argument_list|(
