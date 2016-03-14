@@ -256,20 +256,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|service
-operator|.
-name|ServiceStateException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|Shell
@@ -961,6 +947,24 @@ operator|.
 name|recovery
 operator|.
 name|TimelineStateStore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|timeline
+operator|.
+name|TimelineUtils
 import|;
 end_import
 
@@ -4115,6 +4119,19 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+comment|// Only set memory timeline store if timeline v1.5 is not enabled.
+comment|// Otherwise, caller has the freedom to choose storage impl.
+if|if
+condition|(
+operator|!
+name|TimelineUtils
+operator|.
+name|timelineServiceV1_5Enabled
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
 name|conf
 operator|.
 name|setClass
@@ -4132,6 +4149,7 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+block|}
 name|conf
 operator|.
 name|setClass
