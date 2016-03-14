@@ -6559,7 +6559,6 @@ block|}
 comment|/**    * Initilizes {@link DiskBalancer}.    * @param  data - FSDataSet    * @param conf - Config    */
 DECL|method|initDiskBalancer (FsDatasetSpi data, Configuration conf)
 specifier|private
-specifier|synchronized
 name|void
 name|initDiskBalancer
 parameter_list|(
@@ -6615,7 +6614,6 @@ block|}
 comment|/**    * Shutdown disk balancer.    */
 DECL|method|shutdownDiskBalancer ()
 specifier|private
-specifier|synchronized
 name|void
 name|shutdownDiskBalancer
 parameter_list|()
@@ -15921,6 +15919,24 @@ name|diskBalancer
 operator|.
 name|getVolumeNames
 argument_list|()
+return|;
+case|case
+name|DiskBalancerConstants
+operator|.
+name|DISKBALANCER_BANDWIDTH
+case|:
+return|return
+name|Long
+operator|.
+name|toString
+argument_list|(
+name|this
+operator|.
+name|diskBalancer
+operator|.
+name|getBandwidth
+argument_list|()
+argument_list|)
 return|;
 default|default:
 name|LOG

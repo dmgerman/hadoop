@@ -461,6 +461,11 @@ operator|.
 name|Result
 name|currentResult
 decl_stmt|;
+DECL|field|bandwidth
+specifier|private
+name|long
+name|bandwidth
+decl_stmt|;
 comment|/**    * Constructs a Disk Balancer object. This object takes care of reading a    * NodePlan and executing it against a set of volumes.    *    * @param dataNodeUUID - Data node UUID    * @param conf         - Hdfs Config    * @param blockMover   - Object that supports moving blocks.    */
 DECL|method|DiskBalancer (String dataNodeUUID, Configuration conf, BlockMover blockMover)
 specifier|public
@@ -805,6 +810,12 @@ operator|=
 name|Result
 operator|.
 name|PLAN_UNDER_PROGRESS
+expr_stmt|;
+name|this
+operator|.
+name|bandwidth
+operator|=
+name|bandwidth
 expr_stmt|;
 name|executePlan
 argument_list|()
@@ -1179,6 +1190,40 @@ operator|.
 name|INTERNAL_ERROR
 argument_list|)
 throw|;
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Returns the current bandwidth.    *    * @return string representation of bandwidth.    * @throws DiskBalancerException    */
+DECL|method|getBandwidth ()
+specifier|public
+name|long
+name|getBandwidth
+parameter_list|()
+throws|throws
+name|DiskBalancerException
+block|{
+name|lock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|checkDiskBalancerEnabled
+argument_list|()
+expr_stmt|;
+return|return
+name|this
+operator|.
+name|bandwidth
+return|;
 block|}
 finally|finally
 block|{
