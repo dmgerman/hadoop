@@ -1789,6 +1789,24 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// Set dfs.namenode.checkpoint.txns differently on the first NN to avoid it
+comment|// doing checkpoint when it becomes a standby
+name|cluster
+operator|.
+name|getConfiguration
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_CHECKPOINT_TXNS_KEY
+argument_list|,
+literal|1000
+argument_list|)
+expr_stmt|;
 comment|// don't compress, we want a big image
 for|for
 control|(
