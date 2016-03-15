@@ -89,8 +89,10 @@ return|return
 name|INSTANCE
 return|;
 block|}
+annotation|@
+name|Deprecated
 DECL|method|SystemClock ()
-specifier|private
+specifier|public
 name|SystemClock
 parameter_list|()
 block|{
