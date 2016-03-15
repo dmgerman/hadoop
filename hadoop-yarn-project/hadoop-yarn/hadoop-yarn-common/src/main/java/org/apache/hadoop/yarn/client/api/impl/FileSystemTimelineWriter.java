@@ -1802,9 +1802,17 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Writing domains for "
 operator|+
@@ -1818,6 +1826,7 @@ operator|+
 name|domainLogPath
 argument_list|)
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|logFDsCache
