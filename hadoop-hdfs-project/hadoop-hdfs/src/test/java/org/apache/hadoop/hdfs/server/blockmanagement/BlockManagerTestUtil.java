@@ -433,7 +433,7 @@ argument_list|()
 block|,
 name|bm
 operator|.
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|contains
 argument_list|(

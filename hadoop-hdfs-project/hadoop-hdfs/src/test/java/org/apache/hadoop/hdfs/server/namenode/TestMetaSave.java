@@ -942,7 +942,7 @@ name|line
 operator|.
 name|equals
 argument_list|(
-literal|"Metasave: Blocks waiting for replication: 0"
+literal|"Metasave: Blocks waiting for reconstruction: 0"
 argument_list|)
 argument_list|)
 expr_stmt|;

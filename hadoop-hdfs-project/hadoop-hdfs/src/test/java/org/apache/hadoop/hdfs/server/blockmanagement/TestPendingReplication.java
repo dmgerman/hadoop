@@ -1079,12 +1079,12 @@ name|blkManager
 operator|.
 name|pendingReplications
 decl_stmt|;
-name|UnderReplicatedBlocks
-name|neededReplications
+name|LowRedundancyBlocks
+name|neededReconstruction
 init|=
 name|blkManager
 operator|.
-name|neededReplications
+name|neededReconstruction
 decl_stmt|;
 name|BlocksMap
 name|blocksMap
@@ -1271,11 +1271,11 @@ parameter_list|)
 block|{         }
 block|}
 comment|//
-comment|// Verify that block moves to neededReplications
+comment|// Verify that block moves to neededReconstruction
 comment|//
 while|while
 condition|(
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|size
 argument_list|()
@@ -1307,7 +1307,7 @@ control|(
 name|Block
 name|b
 range|:
-name|neededReplications
+name|neededReconstruction
 control|)
 block|{
 name|assertEquals
@@ -1323,14 +1323,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Verify size of neededReplications is exactly 1.
+comment|// Verify size of neededReconstruction is exactly 1.
 name|assertEquals
 argument_list|(
-literal|"size of neededReplications is 1 "
+literal|"size of neededReconstruction is 1 "
 argument_list|,
 literal|1
 argument_list|,
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|size
 argument_list|()

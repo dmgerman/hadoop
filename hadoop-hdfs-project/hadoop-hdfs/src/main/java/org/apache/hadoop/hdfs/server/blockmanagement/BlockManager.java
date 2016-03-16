@@ -1557,11 +1557,11 @@ name|corruptReplicaBlocksCount
 init|=
 literal|0L
 decl_stmt|;
-DECL|field|underReplicatedBlocksCount
+DECL|field|lowRedundancyBlocksCount
 specifier|private
 specifier|volatile
 name|long
-name|underReplicatedBlocksCount
+name|lowRedundancyBlocksCount
 init|=
 literal|0L
 decl_stmt|;
@@ -1627,7 +1627,7 @@ name|getUnderReplicatedBlocksCount
 parameter_list|()
 block|{
 return|return
-name|underReplicatedBlocksCount
+name|lowRedundancyBlocksCount
 return|;
 block|}
 comment|/** Used by metrics */
@@ -1834,15 +1834,15 @@ operator|new
 name|ExcessReplicaMap
 argument_list|()
 decl_stmt|;
-comment|/**    * Store set of Blocks that need to be replicated 1 or more times.    * We also store pending replication-orders.    */
-DECL|field|neededReplications
+comment|/**    * Store set of Blocks that need to be replicated 1 or more times.    * We also store pending reconstruction-orders.    */
+DECL|field|neededReconstruction
 specifier|public
 specifier|final
-name|UnderReplicatedBlocks
-name|neededReplications
+name|LowRedundancyBlocks
+name|neededReconstruction
 init|=
 operator|new
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 argument_list|()
 decl_stmt|;
 annotation|@
@@ -1920,25 +1920,25 @@ name|shouldPostponeBlocksFromFuture
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * Process replication queues asynchronously to allow namenode safemode exit    * and failover to be faster. HDFS-5496    */
-DECL|field|replicationQueuesInitializer
+comment|/**    * Process reconstruction queues asynchronously to allow namenode safemode    * exit and failover to be faster. HDFS-5496.    */
+DECL|field|reconstructionQueuesInitializer
 specifier|private
 name|Daemon
-name|replicationQueuesInitializer
+name|reconstructionQueuesInitializer
 init|=
 literal|null
 decl_stmt|;
-comment|/**    * Number of blocks to process asychronously for replication queues    * initialization once aquired the namesystem lock. Remaining blocks will be    * processed again after aquiring lock again.    */
+comment|/**    * Number of blocks to process asychronously for reconstruction queues    * initialization once aquired the namesystem lock. Remaining blocks will be    * processed again after aquiring lock again.    */
 DECL|field|numBlocksPerIteration
 specifier|private
 name|int
 name|numBlocksPerIteration
 decl_stmt|;
-comment|/**    * Progress of the Replication queues initialisation.    */
-DECL|field|replicationQueuesInitProgress
+comment|/**    * Progress of the Reconstruction queues initialisation.    */
+DECL|field|reconstructionQueuesInitProgress
 specifier|private
 name|double
-name|replicationQueuesInitProgress
+name|reconstructionQueuesInitProgress
 init|=
 literal|0.0
 decl_stmt|;
@@ -3300,20 +3300,20 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|//
-comment|// Dump contents of neededReplication
+comment|// Dump contents of neededReconstruction
 comment|//
 synchronized|synchronized
 init|(
-name|neededReplications
+name|neededReconstruction
 init|)
 block|{
 name|out
 operator|.
 name|println
 argument_list|(
-literal|"Metasave: Blocks waiting for replication: "
+literal|"Metasave: Blocks waiting for reconstruction: "
 operator|+
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|size
 argument_list|()
@@ -3324,7 +3324,7 @@ control|(
 name|Block
 name|block
 range|:
-name|neededReplications
+name|neededReconstruction
 control|)
 block|{
 name|dumpBlockMeta
@@ -3453,7 +3453,7 @@ name|Byte
 argument_list|>
 argument_list|()
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
 name|LEVEL
 argument_list|)
@@ -4407,7 +4407,7 @@ argument_list|,
 name|targets
 argument_list|)
 expr_stmt|;
-comment|// Remove block from replication queue.
+comment|// Remove block from reconstruction queue.
 name|NumberReplicas
 name|replicas
 init|=
@@ -4416,7 +4416,7 @@ argument_list|(
 name|lastBlock
 argument_list|)
 decl_stmt|;
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|remove
 argument_list|(
@@ -7183,8 +7183,8 @@ name|isPopulatingReplQueues
 argument_list|()
 condition|)
 block|{
-comment|// add the block to neededReplication
-name|updateNeededReplications
+comment|// add the block to neededReconstruction
+name|updateNeededReconstructions
 argument_list|(
 name|b
 operator|.
@@ -7399,9 +7399,9 @@ operator|.
 name|size
 argument_list|()
 expr_stmt|;
-name|underReplicatedBlocksCount
+name|lowRedundancyBlocksCount
 operator|=
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|size
 argument_list|()
@@ -7414,7 +7414,7 @@ name|size
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** Return number of under-replicated but not missing blocks */
+comment|/** Return number of low redundancy blocks but not missing blocks. */
 DECL|method|getUnderReplicatedNotMissingBlocks ()
 specifier|public
 name|int
@@ -7422,9 +7422,9 @@ name|getUnderReplicatedNotMissingBlocks
 parameter_list|()
 block|{
 return|return
-name|neededReplications
+name|neededReconstruction
 operator|.
-name|getUnderReplicatedBlockCount
+name|getLowRedundancyBlockCount
 argument_list|()
 return|;
 block|}
@@ -7518,7 +7518,7 @@ return|return
 name|blockCnt
 return|;
 block|}
-comment|/**    * Scan blocks in {@link #neededReplications} and assign reconstruction    * (replication or erasure coding) work to data-nodes they belong to.    *    * The number of process blocks equals either twice the number of live    * data-nodes or the number of under-replicated blocks whichever is less.    *    * @return number of blocks scheduled for replication during this iteration.    */
+comment|/**    * Scan blocks in {@link #neededReconstruction} and assign reconstruction    * (replication or erasure coding) work to data-nodes they belong to.    *    * The number of process blocks equals either twice the number of live    * data-nodes or the number of low redundancy blocks whichever is less.    *    * @return number of blocks scheduled for reconstruction during this    *         iteration.    */
 DECL|method|computeBlockReconstructionWork (int blocksToProcess)
 name|int
 name|computeBlockReconstructionWork
@@ -7534,7 +7534,7 @@ argument_list|<
 name|BlockInfo
 argument_list|>
 argument_list|>
-name|blocksToReplicate
+name|blocksToReconstruct
 init|=
 literal|null
 decl_stmt|;
@@ -7545,12 +7545,12 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-comment|// Choose the blocks to be replicated
-name|blocksToReplicate
+comment|// Choose the blocks to be reconstructed
+name|blocksToReconstruct
 operator|=
-name|neededReplications
+name|neededReconstruction
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 name|blocksToProcess
 argument_list|)
@@ -7567,7 +7567,7 @@ block|}
 return|return
 name|computeReconstructionWorkForBlocks
 argument_list|(
-name|blocksToReplicate
+name|blocksToReconstruct
 argument_list|)
 return|;
 block|}
@@ -7614,7 +7614,7 @@ try|try
 block|{
 synchronized|synchronized
 init|(
-name|neededReplications
+name|neededReconstruction
 init|)
 block|{
 for|for
@@ -7812,7 +7812,7 @@ continue|continue;
 block|}
 synchronized|synchronized
 init|(
-name|neededReplications
+name|neededReconstruction
 init|)
 block|{
 if|if
@@ -7846,7 +7846,7 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-comment|// log which blocks have been scheduled for replication
+comment|// log which blocks have been scheduled for reconstruction
 for|for
 control|(
 name|BlockReconstructionWork
@@ -7937,9 +7937,9 @@ name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* neededReplications = {} pendingReplications = {}"
+literal|"BLOCK* neededReconstruction = {} pendingReplications = {}"
 argument_list|,
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|size
 argument_list|()
@@ -8028,8 +8028,8 @@ name|isCompleteOrCommitted
 argument_list|()
 condition|)
 block|{
-comment|// remove from neededReplications
-name|neededReplications
+comment|// remove from neededReconstruction
+name|neededReconstruction
 operator|.
 name|remove
 argument_list|(
@@ -8179,7 +8179,7 @@ name|requiredReplication
 argument_list|)
 condition|)
 block|{
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|remove
 argument_list|(
@@ -8192,7 +8192,7 @@ name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* Removing {} from neededReplications as"
+literal|"BLOCK* Removing {} from neededReconstruction as"
 operator|+
 literal|" it has enough replicas"
 argument_list|,
@@ -8468,7 +8468,7 @@ name|isCompleteOrCommitted
 argument_list|()
 condition|)
 block|{
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|remove
 argument_list|(
@@ -8529,7 +8529,7 @@ name|requiredReplication
 argument_list|)
 condition|)
 block|{
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|remove
 argument_list|(
@@ -8673,7 +8673,7 @@ argument_list|()
 operator|+
 name|pendingNum
 decl_stmt|;
-comment|// remove from neededReplications
+comment|// remove from neededReconstruction
 if|if
 condition|(
 name|numEffectiveReplicas
@@ -8685,7 +8685,7 @@ operator|>=
 name|requiredReplication
 condition|)
 block|{
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|remove
 argument_list|(
@@ -9304,7 +9304,7 @@ if|if
 condition|(
 name|priority
 operator|!=
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
 name|QUEUE_HIGHEST_PRIORITY
 operator|&&
@@ -9560,7 +9560,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|isNeededReplication
+name|isNeededReconstruction
 argument_list|(
 name|bi
 argument_list|,
@@ -9571,7 +9571,7 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|add
 argument_list|(
@@ -13533,7 +13533,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Faster version of {@link #addStoredBlock},    * intended for use with initial block report at startup. If not in startup    * safe mode, will call standard addStoredBlock(). Assumes this method is    * called "immediately" so there is no need to refresh the storedBlock from    * blocksMap. Doesn't handle underReplication/overReplication, or worry about    * pendingReplications or corruptReplicas, because it's in startup safe mode.    * Doesn't log every block, because there are typically millions of them.    *     * @throws IOException    */
+comment|/**    * Faster version of {@link #addStoredBlock},    * intended for use with initial block report at startup. If not in startup    * safe mode, will call standard addStoredBlock(). Assumes this method is    * called "immediately" so there is no need to refresh the storedBlock from    * blocksMap. Doesn't handle low redundancy/extra redundancy, or worry about    * pendingReplications or corruptReplicas, because it's in startup safe mode.    * Doesn't log every block, because there are typically millions of them.    *     * @throws IOException    */
 DECL|method|addStoredBlockImmediate (BlockInfo storedBlock, Block reported, DatanodeStorageInfo storageInfo)
 specifier|private
 name|void
@@ -13669,7 +13669,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Modify (block-->datanode) map. Remove block from set of    * needed replications if this takes care of the problem.    * @return the block that is stored in blocksMap.    */
+comment|/**    * Modify (block-->datanode) map. Remove block from set of    * needed reconstruction if this takes care of the problem.    * @return the block that is stored in blocksMap.    */
 DECL|method|addStoredBlock (final BlockInfo block, final Block reportedBlock, DatanodeStorageInfo storageInfo, DatanodeDescriptor delNodeHint, boolean logEveryBlock)
 specifier|private
 name|Block
@@ -14014,7 +14014,7 @@ return|return
 name|storedBlock
 return|;
 block|}
-comment|// do not try to handle over/under-replicated blocks during first safe mode
+comment|// do not try to handle extra/low redundancy blocks during first safe mode
 if|if
 condition|(
 operator|!
@@ -14026,7 +14026,7 @@ return|return
 name|storedBlock
 return|;
 block|}
-comment|// handle underReplication/overReplication
+comment|// handle low redundancy/extra redundancy
 name|short
 name|fileReplication
 init|=
@@ -14038,7 +14038,7 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|isNeededReplication
+name|isNeededReconstruction
 argument_list|(
 name|storedBlock
 argument_list|,
@@ -14046,7 +14046,7 @@ name|numCurrentReplica
 argument_list|)
 condition|)
 block|{
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|remove
 argument_list|(
@@ -14070,7 +14070,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|updateNeededReplications
+name|updateNeededReconstructions
 argument_list|(
 name|storedBlock
 argument_list|,
@@ -14082,7 +14082,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|shouldProcessOverReplicated
+name|shouldProcessExtraRedundancy
 argument_list|(
 name|num
 argument_list|,
@@ -14090,7 +14090,7 @@ name|fileReplication
 argument_list|)
 condition|)
 block|{
-name|processOverReplicatedBlock
+name|processExtraRedundancyBlock
 argument_list|(
 name|storedBlock
 argument_list|,
@@ -14102,7 +14102,7 @@ name|delNodeHint
 argument_list|)
 expr_stmt|;
 block|}
-comment|// If the file replication has reached desired value
+comment|// If the file redundancy has reached desired value
 comment|// we can remove any corrupt replicas the block may have
 name|int
 name|corruptReplicasCount
@@ -14176,10 +14176,10 @@ return|return
 name|storedBlock
 return|;
 block|}
-DECL|method|shouldProcessOverReplicated (NumberReplicas num, int expectedNum)
+DECL|method|shouldProcessExtraRedundancy (NumberReplicas num, int expectedNum)
 specifier|private
 name|boolean
-name|shouldProcessOverReplicated
+name|shouldProcessExtraRedundancy
 parameter_list|(
 name|NumberReplicas
 name|num
@@ -14360,7 +14360,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * For each block in the name-node verify whether it belongs to any file,    * over or under replicated. Place it into the respective queue.    */
+comment|/**    * For each block in the name-node verify whether it belongs to any file,    * extra or low redundancy. Place it into the respective queue.    */
 DECL|method|processMisReplicatedBlocks ()
 specifier|public
 name|void
@@ -14373,15 +14373,15 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-name|stopReplicationInitializer
+name|stopReconstructionInitializer
 argument_list|()
 expr_stmt|;
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|replicationQueuesInitializer
+name|reconstructionQueuesInitializer
 operator|=
 operator|new
 name|Daemon
@@ -14410,7 +14410,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Interrupted while processing replication queues."
+literal|"Interrupted while processing reconstruction queues."
 argument_list|)
 expr_stmt|;
 block|}
@@ -14424,7 +14424,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error while processing replication queues async"
+literal|"Error while processing reconstruction queues async"
 argument_list|,
 name|e
 argument_list|)
@@ -14433,41 +14433,41 @@ block|}
 block|}
 block|}
 expr_stmt|;
-name|replicationQueuesInitializer
+name|reconstructionQueuesInitializer
 operator|.
 name|setName
 argument_list|(
-literal|"Replication Queue Initializer"
+literal|"Reconstruction Queue Initializer"
 argument_list|)
 expr_stmt|;
-name|replicationQueuesInitializer
+name|reconstructionQueuesInitializer
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/*    * Stop the ongoing initialisation of replication queues    */
-DECL|method|stopReplicationInitializer ()
+comment|/*    * Stop the ongoing initialisation of reconstruction queues    */
+DECL|method|stopReconstructionInitializer ()
 specifier|private
 name|void
-name|stopReplicationInitializer
+name|stopReconstructionInitializer
 parameter_list|()
 block|{
 if|if
 condition|(
-name|replicationQueuesInitializer
+name|reconstructionQueuesInitializer
 operator|!=
 literal|null
 condition|)
 block|{
-name|replicationQueuesInitializer
+name|reconstructionQueuesInitializer
 operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|replicationQueuesInitializer
+name|reconstructionQueuesInitializer
 operator|.
 name|join
 argument_list|()
@@ -14484,14 +14484,16 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Interrupted while waiting for replicationQueueInitializer. Returning.."
+literal|"Interrupted while waiting for "
+operator|+
+literal|"reconstructionQueueInitializer. Returning.."
 argument_list|)
 expr_stmt|;
 return|return;
 block|}
 finally|finally
 block|{
-name|replicationQueuesInitializer
+name|reconstructionQueuesInitializer
 operator|=
 literal|null
 expr_stmt|;
@@ -14559,7 +14561,7 @@ operator|.
 name|size
 argument_list|()
 decl_stmt|;
-name|replicationQueuesInitProgress
+name|reconstructionQueuesInitProgress
 operator|=
 literal|0
 expr_stmt|;
@@ -14738,7 +14740,7 @@ name|processed
 expr_stmt|;
 comment|// there is a possibility that if any of the blocks deleted/added during
 comment|// initialisation, then progress might be different.
-name|replicationQueuesInitProgress
+name|reconstructionQueuesInitProgress
 operator|=
 name|Math
 operator|.
@@ -14893,15 +14895,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the progress of the Replication queues initialisation    *     * @return Returns values between 0 and 1 for the progress.    */
-DECL|method|getReplicationQueuesInitProgress ()
+comment|/**    * Get the progress of the reconstruction queues initialisation    *     * @return Returns values between 0 and 1 for the progress.    */
+DECL|method|getReconstructionQueuesInitProgress ()
 specifier|public
 name|double
-name|getReplicationQueuesInitProgress
+name|getReconstructionQueuesInitProgress
 parameter_list|()
 block|{
 return|return
-name|replicationQueuesInitProgress
+name|reconstructionQueuesInitProgress
 return|;
 block|}
 comment|/**    * Get the value of whether there are any non-EC blocks using StripedID.    *    * @return Returns the value of whether there are any non-EC blocks using StripedID.    */
@@ -14988,10 +14990,10 @@ operator|.
 name|liveReplicas
 argument_list|()
 decl_stmt|;
-comment|// add to under-replicated queue if need to be
+comment|// add to low redundancy queue if need to be
 if|if
 condition|(
-name|isNeededReplication
+name|isNeededReconstruction
 argument_list|(
 name|block
 argument_list|,
@@ -15001,7 +15003,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|add
 argument_list|(
@@ -15032,7 +15034,7 @@ block|}
 block|}
 if|if
 condition|(
-name|shouldProcessOverReplicated
+name|shouldProcessExtraRedundancy
 argument_list|(
 name|num
 argument_list|,
@@ -15061,8 +15063,8 @@ operator|.
 name|POSTPONE
 return|;
 block|}
-comment|// over-replicated block
-name|processOverReplicatedBlock
+comment|// extra redundancy block
+name|processExtraRedundancyBlock
 argument_list|(
 name|block
 argument_list|,
@@ -15113,7 +15115,7 @@ condition|)
 block|{
 return|return;
 block|}
-comment|// update needReplication priority queues
+comment|// update neededReconstruction priority queues
 name|b
 operator|.
 name|setReplication
@@ -15121,7 +15123,7 @@ argument_list|(
 name|newRepl
 argument_list|)
 expr_stmt|;
-name|updateNeededReplications
+name|updateNeededReconstructions
 argument_list|(
 name|b
 argument_list|,
@@ -15139,7 +15141,7 @@ operator|>
 name|newRepl
 condition|)
 block|{
-name|processOverReplicatedBlock
+name|processExtraRedundancyBlock
 argument_list|(
 name|b
 argument_list|,
@@ -15153,10 +15155,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Find how many of the containing nodes are "extra", if any.    * If there are any extras, call chooseExcessReplicates() to    * mark them in the excessReplicateMap.    */
-DECL|method|processOverReplicatedBlock (final BlockInfo block, final short replication, final DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
+DECL|method|processExtraRedundancyBlock (final BlockInfo block, final short replication, final DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
 specifier|private
 name|void
-name|processOverReplicatedBlock
+name|processExtraRedundancyBlock
 parameter_list|(
 specifier|final
 name|BlockInfo
@@ -16278,7 +16280,7 @@ argument_list|(
 name|storedBlock
 argument_list|)
 expr_stmt|;
-name|updateNeededReplications
+name|updateNeededReconstructions
 argument_list|(
 name|storedBlock
 argument_list|,
@@ -17886,10 +17888,10 @@ name|liveReplicas
 argument_list|()
 return|;
 block|}
-comment|/**    * On stopping decommission, check if the node has excess replicas.    * If there are any excess replicas, call processOverReplicatedBlock().    * Process over replicated blocks only when active NN is out of safe mode.    */
-DECL|method|processOverReplicatedBlocksOnReCommission ( final DatanodeDescriptor srcNode)
+comment|/**    * On stopping decommission, check if the node has excess replicas.    * If there are any excess replicas, call processExtraRedundancyBlock().    * Process extra redundancy blocks only when active NN is out of safe mode.    */
+DECL|method|processExtraRedundancyBlocksOnReCommission ( final DatanodeDescriptor srcNode)
 name|void
-name|processOverReplicatedBlocksOnReCommission
+name|processExtraRedundancyBlocksOnReCommission
 parameter_list|(
 specifier|final
 name|DatanodeDescriptor
@@ -17918,7 +17920,7 @@ name|getBlockIterator
 argument_list|()
 decl_stmt|;
 name|int
-name|numOverReplicated
+name|numExtraRedundancy
 init|=
 literal|0
 decl_stmt|;
@@ -17959,7 +17961,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|shouldProcessOverReplicated
+name|shouldProcessExtraRedundancy
 argument_list|(
 name|num
 argument_list|,
@@ -17967,8 +17969,8 @@ name|expectedReplication
 argument_list|)
 condition|)
 block|{
-comment|// over-replicated block
-name|processOverReplicatedBlock
+comment|// extra redundancy block
+name|processExtraRedundancyBlock
 argument_list|(
 name|block
 argument_list|,
@@ -17982,7 +17984,7 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|numOverReplicated
+name|numExtraRedundancy
 operator|++
 expr_stmt|;
 block|}
@@ -17993,9 +17995,9 @@ name|info
 argument_list|(
 literal|"Invalidated "
 operator|+
-name|numOverReplicated
+name|numExtraRedundancy
 operator|+
-literal|" over-replicated blocks on "
+literal|" extra redundancy blocks on "
 operator|+
 name|srcNode
 operator|+
@@ -18055,7 +18057,7 @@ name|pendingReplicationBlocksCount
 operator|==
 literal|0
 operator|&&
-name|underReplicatedBlocksCount
+name|lowRedundancyBlocksCount
 operator|==
 literal|0
 condition|)
@@ -18064,9 +18066,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Node {} is dead and there are no under-replicated"
+literal|"Node {} is dead and there are no low redundancy"
 operator|+
-literal|" blocks or blocks pending replication. Safe to decommission."
+literal|" blocks or blocks pending reconstruction. Safe to decommission."
 argument_list|,
 name|node
 argument_list|)
@@ -18239,7 +18241,7 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
-comment|// Remove the block from pendingReplications and neededReplications
+comment|// Remove the block from pendingReplications and neededReconstruction
 name|pendingReplications
 operator|.
 name|remove
@@ -18247,13 +18249,13 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|remove
 argument_list|(
 name|block
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
 name|LEVEL
 argument_list|)
@@ -18376,11 +18378,11 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/** updates a block in under replication queue */
-DECL|method|updateNeededReplications (final BlockInfo block, final int curReplicasDelta, int expectedReplicasDelta)
+comment|/** updates a block in needed reconstruction queue. */
+DECL|method|updateNeededReconstructions (final BlockInfo block, final int curReplicasDelta, int expectedReplicasDelta)
 specifier|private
 name|void
-name|updateNeededReplications
+name|updateNeededReconstructions
 parameter_list|(
 specifier|final
 name|BlockInfo
@@ -18428,7 +18430,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|isNeededReplication
+name|isNeededReconstruction
 argument_list|(
 name|block
 argument_list|,
@@ -18439,7 +18441,7 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|update
 argument_list|(
@@ -18487,7 +18489,7 @@ name|curExpectedReplicas
 operator|-
 name|expectedReplicasDelta
 decl_stmt|;
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|remove
 argument_list|(
@@ -18519,7 +18521,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Check replication of the blocks in the collection.    * If any block is needed replication, insert it into the replication queue.    * Otherwise, if the block is more than the expected replication factor,    * process it as an over replicated block.    */
+comment|/**    * Check sufficient redundancy of the blocks in the collection. If any block    * is needed reconstruction, insert it into the reconstruction queue.    * Otherwise, if the block is more than the expected replication factor,    * process it as an extra redundancy block.    */
 DECL|method|checkReplication (BlockCollection bc)
 specifier|public
 name|void
@@ -18583,7 +18585,7 @@ name|expected
 argument_list|)
 condition|)
 block|{
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|add
 argument_list|(
@@ -18613,7 +18615,7 @@ block|}
 elseif|else
 if|if
 condition|(
-name|shouldProcessOverReplicated
+name|shouldProcessExtraRedundancy
 argument_list|(
 name|n
 argument_list|,
@@ -18621,7 +18623,7 @@ name|expected
 argument_list|)
 condition|)
 block|{
-name|processOverReplicatedBlock
+name|processExtraRedundancyBlock
 argument_list|(
 name|block
 argument_list|,
@@ -18689,7 +18691,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"In safemode, not computing replication work"
+literal|"In safemode, not computing reconstruction work"
 argument_list|)
 expr_stmt|;
 return|return
@@ -18997,10 +18999,10 @@ name|isPlacementPolicySatisfied
 argument_list|()
 return|;
 block|}
-comment|/**    * A block needs replication if the number of replicas is less than expected    * or if it does not have enough racks.    */
-DECL|method|isNeededReplication (BlockInfo storedBlock, int current)
+comment|/**    * A block needs reconstruction if the number of replicas is less than    * expected or if it does not have enough racks.    */
+DECL|method|isNeededReconstruction (BlockInfo storedBlock, int current)
 name|boolean
-name|isNeededReplication
+name|isNeededReconstruction
 parameter_list|(
 name|BlockInfo
 name|storedBlock
@@ -19077,7 +19079,7 @@ comment|// not locking
 return|return
 name|this
 operator|.
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|getCorruptBlockSize
 argument_list|()
@@ -19093,7 +19095,7 @@ comment|// not locking
 return|return
 name|this
 operator|.
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|getCorruptReplOneBlockSize
 argument_list|()
@@ -19284,11 +19286,11 @@ name|getCorruptReplicaBlockIterator
 parameter_list|()
 block|{
 return|return
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|iterator
 argument_list|(
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
 name|QUEUE_WITH_CORRUPT_BLOCKS
 argument_list|)
@@ -19348,7 +19350,7 @@ name|numOfUnderReplicatedBlocks
 parameter_list|()
 block|{
 return|return
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|size
 argument_list|()
@@ -19996,7 +19998,7 @@ name|void
 name|clearQueues
 parameter_list|()
 block|{
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|clear
 argument_list|()
@@ -20264,7 +20266,7 @@ name|void
 name|shutdown
 parameter_list|()
 block|{
-name|stopReplicationInitializer
+name|stopReconstructionInitializer
 argument_list|()
 expr_stmt|;
 name|blocksMap

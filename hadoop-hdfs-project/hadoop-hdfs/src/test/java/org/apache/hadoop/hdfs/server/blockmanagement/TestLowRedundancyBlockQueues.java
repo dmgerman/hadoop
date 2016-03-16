@@ -139,10 +139,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestUnderReplicatedBlockQueues
+DECL|class|TestLowRedundancyBlockQueues
 specifier|public
 class|class
-name|TestUnderReplicatedBlockQueues
+name|TestLowRedundancyBlockQueues
 block|{
 DECL|field|ecPolicy
 specifier|private
@@ -230,11 +230,11 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 name|queues
 init|=
 operator|new
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 argument_list|()
 decl_stmt|;
 name|BlockInfo
@@ -254,7 +254,7 @@ literal|2
 argument_list|)
 decl_stmt|;
 name|BlockInfo
-name|block_very_under_replicated
+name|block_very_low_redundancy
 init|=
 name|genBlockInfo
 argument_list|(
@@ -297,7 +297,7 @@ literal|1
 argument_list|,
 name|queues
 operator|.
-name|getUnderReplicatedBlockCount
+name|getLowRedundancyBlockCount
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -317,7 +317,7 @@ name|queues
 argument_list|,
 name|block1
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
 name|QUEUE_HIGHEST_PRIORITY
 argument_list|)
@@ -361,7 +361,7 @@ literal|2
 argument_list|,
 name|queues
 operator|.
-name|getUnderReplicatedBlockCount
+name|getLowRedundancyBlockCount
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -381,9 +381,9 @@ name|queues
 argument_list|,
 name|block2
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
-name|QUEUE_UNDER_REPLICATED
+name|QUEUE_LOW_REDUNDANCY
 argument_list|)
 expr_stmt|;
 comment|//now try to add a block that is corrupt
@@ -416,7 +416,7 @@ literal|2
 argument_list|,
 name|queues
 operator|.
-name|getUnderReplicatedBlockCount
+name|getLowRedundancyBlockCount
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -436,17 +436,17 @@ name|queues
 argument_list|,
 name|block_corrupt
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
 name|QUEUE_WITH_CORRUPT_BLOCKS
 argument_list|)
 expr_stmt|;
-comment|//insert a very under-replicated block
+comment|//insert a very insufficiently redundancy block
 name|assertAdded
 argument_list|(
 name|queues
 argument_list|,
-name|block_very_under_replicated
+name|block_very_low_redundancy
 argument_list|,
 literal|4
 argument_list|,
@@ -459,11 +459,11 @@ name|assertInLevel
 argument_list|(
 name|queues
 argument_list|,
-name|block_very_under_replicated
+name|block_very_low_redundancy
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
-name|QUEUE_VERY_UNDER_REPLICATED
+name|QUEUE_VERY_LOW_REDUNDANCY
 argument_list|)
 expr_stmt|;
 comment|//insert a corrupt block with replication factor 1
@@ -563,7 +563,7 @@ name|queues
 operator|.
 name|update
 argument_list|(
-name|block_very_under_replicated
+name|block_very_low_redundancy
 argument_list|,
 literal|0
 argument_list|,
@@ -663,11 +663,11 @@ argument_list|()
 operator|*
 name|dataBlkNum
 decl_stmt|;
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 name|queues
 init|=
 operator|new
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 argument_list|()
 decl_stmt|;
 name|int
@@ -680,7 +680,7 @@ name|numCorrupt
 init|=
 literal|0
 decl_stmt|;
-comment|// add under replicated blocks
+comment|// add low redundancy blocks
 for|for
 control|(
 name|int
@@ -737,7 +737,7 @@ name|numUR
 argument_list|,
 name|queues
 operator|.
-name|getUnderReplicatedBlockCount
+name|getLowRedundancyBlockCount
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -766,7 +766,7 @@ name|queues
 argument_list|,
 name|block
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
 name|QUEUE_HIGHEST_PRIORITY
 argument_list|)
@@ -790,9 +790,9 @@ name|queues
 argument_list|,
 name|block
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
-name|QUEUE_VERY_UNDER_REPLICATED
+name|QUEUE_VERY_LOW_REDUNDANCY
 argument_list|)
 expr_stmt|;
 block|}
@@ -804,9 +804,9 @@ name|queues
 argument_list|,
 name|block
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
-name|QUEUE_UNDER_REPLICATED
+name|QUEUE_LOW_REDUNDANCY
 argument_list|)
 expr_stmt|;
 block|}
@@ -869,7 +869,7 @@ name|numUR
 argument_list|,
 name|queues
 operator|.
-name|getUnderReplicatedBlockCount
+name|getLowRedundancyBlockCount
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -889,18 +889,18 @@ name|queues
 argument_list|,
 name|block_corrupt
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
 name|QUEUE_WITH_CORRUPT_BLOCKS
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|assertAdded (UnderReplicatedBlocks queues, BlockInfo block, int curReplicas, int decomissionedReplicas, int expectedReplicas)
+DECL|method|assertAdded (LowRedundancyBlocks queues, BlockInfo block, int curReplicas, int decomissionedReplicas, int expectedReplicas)
 specifier|private
 name|void
 name|assertAdded
 parameter_list|(
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 name|queues
 parameter_list|,
 name|BlockInfo
@@ -940,12 +940,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Determine whether or not a block is in a level without changing the API.    * Instead get the per-level iterator and run though it looking for a match.    * If the block is not found, an assertion is thrown.    *    * This is inefficient, but this is only a test case.    * @param queues queues to scan    * @param block block to look for    * @param level level to select    */
-DECL|method|assertInLevel (UnderReplicatedBlocks queues, Block block, int level)
+DECL|method|assertInLevel (LowRedundancyBlocks queues, Block block, int level)
 specifier|private
 name|void
 name|assertInLevel
 parameter_list|(
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 name|queues
 parameter_list|,
 name|Block

@@ -901,7 +901,7 @@ argument_list|(
 name|node
 argument_list|)
 expr_stmt|;
-comment|// Over-replicated blocks will be detected and processed when
+comment|// extra redundancy blocks will be detected and processed when
 comment|// the dead node comes back and send in its full block report.
 if|if
 condition|(
@@ -913,7 +913,7 @@ condition|)
 block|{
 name|blockManager
 operator|.
-name|processOverReplicatedBlocksOnReCommission
+name|processExtraRedundancyBlocksOnReCommission
 argument_list|(
 name|node
 argument_list|)
@@ -2068,7 +2068,7 @@ init|=
 literal|true
 decl_stmt|;
 name|int
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 init|=
 literal|0
 decl_stmt|;
@@ -2078,7 +2078,7 @@ init|=
 literal|0
 decl_stmt|;
 name|int
-name|underReplicatedInOpenFiles
+name|lowRedundancyInOpenFiles
 init|=
 literal|0
 decl_stmt|;
@@ -2185,13 +2185,13 @@ operator|.
 name|liveReplicas
 argument_list|()
 decl_stmt|;
-comment|// Schedule under-replicated blocks for replication if not already
+comment|// Schedule low redundancy blocks for reconstruction if not already
 comment|// pending
 if|if
 condition|(
 name|blockManager
 operator|.
-name|isNeededReplication
+name|isNeededReconstruction
 argument_list|(
 name|block
 argument_list|,
@@ -2204,7 +2204,7 @@ condition|(
 operator|!
 name|blockManager
 operator|.
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|contains
 argument_list|(
@@ -2231,7 +2231,7 @@ block|{
 comment|// Process these blocks only when active NN is out of safe mode.
 name|blockManager
 operator|.
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|add
 argument_list|(
@@ -2259,8 +2259,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Even if the block is under-replicated,
-comment|// it doesn't block decommission if it's sufficiently replicated
+comment|// Even if the block is without sufficient redundancy,
+comment|// it doesn't block decommission if has sufficient redundancy
 if|if
 condition|(
 name|isSufficient
@@ -2286,7 +2286,7 @@ expr_stmt|;
 block|}
 continue|continue;
 block|}
-comment|// We've found an insufficiently replicated block.
+comment|// We've found a block without sufficient redundancy.
 if|if
 condition|(
 name|insufficientList
@@ -2334,7 +2334,7 @@ literal|false
 expr_stmt|;
 block|}
 comment|// Update various counts
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|++
 expr_stmt|;
 if|if
@@ -2345,7 +2345,7 @@ name|isUnderConstruction
 argument_list|()
 condition|)
 block|{
-name|underReplicatedInOpenFiles
+name|lowRedundancyInOpenFiles
 operator|++
 expr_stmt|;
 block|}
@@ -2378,11 +2378,11 @@ name|decommissioningStatus
 operator|.
 name|set
 argument_list|(
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 argument_list|,
 name|decommissionOnlyReplicas
 argument_list|,
-name|underReplicatedInOpenFiles
+name|lowRedundancyInOpenFiles
 argument_list|)
 expr_stmt|;
 block|}

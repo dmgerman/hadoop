@@ -5529,8 +5529,8 @@ name|waitActive
 argument_list|()
 expr_stmt|;
 specifier|final
-name|UnderReplicatedBlocks
-name|neededReplications
+name|LowRedundancyBlocks
+name|neededReconstruction
 init|=
 name|cluster
 operator|.
@@ -5543,7 +5543,7 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|neededReplications
+name|neededReconstruction
 decl_stmt|;
 for|for
 control|(
@@ -5561,7 +5561,7 @@ operator|++
 control|)
 block|{
 comment|// Adding the blocks directly to normal priority
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|add
 argument_list|(
@@ -5596,7 +5596,7 @@ name|DFS_NAMENODE_REPLICATION_INTERVAL
 argument_list|)
 expr_stmt|;
 comment|// Adding the block directly to high priority list
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|add
 argument_list|(
@@ -5634,7 +5634,7 @@ name|assertFalse
 argument_list|(
 literal|"Not able to clear the element from high priority list"
 argument_list|,
-name|neededReplications
+name|neededReconstruction
 operator|.
 name|iterator
 argument_list|(
@@ -5655,22 +5655,22 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test for the ChooseUnderReplicatedBlocks are processed based on priority    */
+comment|/**    * Test for the ChooseLowRedundancyBlocks are processed based on priority    */
 annotation|@
 name|Test
-DECL|method|testChooseUnderReplicatedBlocks ()
+DECL|method|testChooseLowRedundancyBlocks ()
 specifier|public
 name|void
-name|testChooseUnderReplicatedBlocks
+name|testChooseLowRedundancyBlocks
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|UnderReplicatedBlocks
-name|underReplicatedBlocks
+name|LowRedundancyBlocks
+name|lowRedundancyBlocks
 init|=
 operator|new
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 argument_list|()
 decl_stmt|;
 for|for
@@ -5689,7 +5689,7 @@ operator|++
 control|)
 block|{
 comment|// Adding QUEUE_HIGHEST_PRIORITY block
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -5713,8 +5713,8 @@ argument_list|,
 literal|3
 argument_list|)
 expr_stmt|;
-comment|// Adding QUEUE_VERY_UNDER_REPLICATED block
-name|underReplicatedBlocks
+comment|// Adding QUEUE_VERY_LOW_REDUNDANCY block
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -5739,7 +5739,7 @@ literal|7
 argument_list|)
 expr_stmt|;
 comment|// Adding QUEUE_REPLICAS_BADLY_DISTRIBUTED block
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -5763,8 +5763,8 @@ argument_list|,
 literal|6
 argument_list|)
 expr_stmt|;
-comment|// Adding QUEUE_UNDER_REPLICATED block
-name|underReplicatedBlocks
+comment|// Adding QUEUE_LOW_REDUNDANCY block
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -5789,7 +5789,7 @@ literal|6
 argument_list|)
 expr_stmt|;
 comment|// Adding QUEUE_WITH_CORRUPT_BLOCKS block
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -5814,9 +5814,8 @@ literal|3
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Choose 6 blocks from UnderReplicatedBlocks. Then it should pick 5 blocks
-comment|// from
-comment|// QUEUE_HIGHEST_PRIORITY and 1 block from QUEUE_VERY_UNDER_REPLICATED.
+comment|// Choose 6 blocks from lowRedundancyBlocks. Then it should pick 5 blocks
+comment|// from QUEUE_HIGHEST_PRIORITY and 1 block from QUEUE_VERY_LOW_REDUNDANCY.
 name|List
 argument_list|<
 name|List
@@ -5826,9 +5825,9 @@ argument_list|>
 argument_list|>
 name|chosenBlocks
 init|=
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 literal|6
 argument_list|)
@@ -5848,14 +5847,14 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-comment|// Choose 10 blocks from UnderReplicatedBlocks. Then it should pick 4 blocks from
-comment|// QUEUE_VERY_UNDER_REPLICATED, 5 blocks from QUEUE_UNDER_REPLICATED and 1
+comment|// Choose 10 blocks from lowRedundancyBlocks. Then it should pick 4 blocks
+comment|// from QUEUE_VERY_LOW_REDUNDANCY, 5 blocks from QUEUE_LOW_REDUNDANCY and 1
 comment|// block from QUEUE_REPLICAS_BADLY_DISTRIBUTED.
 name|chosenBlocks
 operator|=
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 literal|10
 argument_list|)
@@ -5876,7 +5875,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 comment|// Adding QUEUE_HIGHEST_PRIORITY
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -5900,13 +5899,14 @@ argument_list|,
 literal|3
 argument_list|)
 expr_stmt|;
-comment|// Choose 10 blocks from UnderReplicatedBlocks. Then it should pick 1 block from
-comment|// QUEUE_HIGHEST_PRIORITY, 4 blocks from QUEUE_REPLICAS_BADLY_DISTRIBUTED
+comment|// Choose 10 blocks from lowRedundancyBlocks. Then it should pick 1 block
+comment|// from QUEUE_HIGHEST_PRIORITY, 4 blocks from
+comment|// QUEUE_REPLICAS_BADLY_DISTRIBUTED
 name|chosenBlocks
 operator|=
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 literal|10
 argument_list|)
@@ -5926,13 +5926,13 @@ argument_list|)
 expr_stmt|;
 comment|// Since it is reached to end of all lists,
 comment|// should start picking the blocks from start.
-comment|// Choose 7 blocks from UnderReplicatedBlocks. Then it should pick 6 blocks from
-comment|// QUEUE_HIGHEST_PRIORITY, 1 block from QUEUE_VERY_UNDER_REPLICATED.
+comment|// Choose 7 blocks from lowRedundancyBlocks. Then it should pick 6 blocks
+comment|// from QUEUE_HIGHEST_PRIORITY, 1 block from QUEUE_VERY_LOW_REDUNDANCY.
 name|chosenBlocks
 operator|=
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 literal|7
 argument_list|)
@@ -8052,11 +8052,11 @@ name|void
 name|testUpdateDoesNotCauseSkippedReplication
 parameter_list|()
 block|{
-name|UnderReplicatedBlocks
-name|underReplicatedBlocks
+name|LowRedundancyBlocks
+name|lowRedundancyBlocks
 init|=
 operator|new
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 argument_list|()
 decl_stmt|;
 name|BlockInfo
@@ -8101,7 +8101,7 @@ name|nextLong
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Adding QUEUE_VERY_UNDER_REPLICATED block
+comment|// Adding QUEUE_VERY_LOW_REDUNDANCY block
 specifier|final
 name|int
 name|block1CurReplicas
@@ -8114,7 +8114,7 @@ name|block1ExpectedReplicas
 init|=
 literal|7
 decl_stmt|;
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -8129,8 +8129,8 @@ argument_list|,
 name|block1ExpectedReplicas
 argument_list|)
 expr_stmt|;
-comment|// Adding QUEUE_VERY_UNDER_REPLICATED block
-name|underReplicatedBlocks
+comment|// Adding QUEUE_VERY_LOW_REDUNDANCY block
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -8145,8 +8145,8 @@ argument_list|,
 literal|7
 argument_list|)
 expr_stmt|;
-comment|// Adding QUEUE_UNDER_REPLICATED block
-name|underReplicatedBlocks
+comment|// Adding QUEUE_LOW_REDUNDANCY block
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -8170,13 +8170,13 @@ argument_list|>
 argument_list|>
 name|chosenBlocks
 decl_stmt|;
-comment|// Choose 1 block from UnderReplicatedBlocks. Then it should pick 1 block
-comment|// from QUEUE_VERY_UNDER_REPLICATED.
+comment|// Choose 1 block from lowRedundancyBlocks. Then it should pick 1 block
+comment|// from QUEUE_VERY_LOW_REDUNDANCY.
 name|chosenBlocks
 operator|=
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 literal|1
 argument_list|)
@@ -8198,7 +8198,7 @@ argument_list|)
 expr_stmt|;
 comment|// Increasing the replications will move the block down a
 comment|// priority.  This simulates a replica being completed in between checks.
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
 name|update
 argument_list|(
@@ -8219,14 +8219,14 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-comment|// Choose 1 block from UnderReplicatedBlocks. Then it should pick 1 block
-comment|// from QUEUE_VERY_UNDER_REPLICATED.
+comment|// Choose 1 block from lowRedundancyBlocks. Then it should pick 1 block
+comment|// from QUEUE_VERY_LOW_REDUNDANCY.
 comment|// This block was moved up a priority and should not be skipped over.
 name|chosenBlocks
 operator|=
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 literal|1
 argument_list|)
@@ -8246,13 +8246,13 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-comment|// Choose 1 block from UnderReplicatedBlocks. Then it should pick 1 block
-comment|// from QUEUE_UNDER_REPLICATED.
+comment|// Choose 1 block from lowRedundancyBlocks. Then it should pick 1 block
+comment|// from QUEUE_LOW_REDUNDANCY.
 name|chosenBlocks
 operator|=
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 literal|1
 argument_list|)
@@ -8339,12 +8339,12 @@ name|HdfsConfiguration
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|UnderReplicatedBlocks
-name|underReplicatedBlocks
+name|LowRedundancyBlocks
+name|lowRedundancyBlocks
 init|=
 name|bm
 operator|.
-name|neededReplications
+name|neededReconstruction
 decl_stmt|;
 name|BlockInfo
 name|block1
@@ -8374,8 +8374,8 @@ name|nextLong
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Adding QUEUE_UNDER_REPLICATED block
-name|underReplicatedBlocks
+comment|// Adding QUEUE_LOW_REDUNDANCY block
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -8390,8 +8390,8 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-comment|// Adding QUEUE_UNDER_REPLICATED block
-name|underReplicatedBlocks
+comment|// Adding QUEUE_LOW_REDUNDANCY block
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -8415,13 +8415,13 @@ argument_list|>
 argument_list|>
 name|chosenBlocks
 decl_stmt|;
-comment|// Choose 1 block from UnderReplicatedBlocks. Then it should pick 1 block
-comment|// from QUEUE_VERY_UNDER_REPLICATED.
+comment|// Choose 1 block from lowRedundancyBlocks. Then it should pick 1 block
+comment|// from QUEUE_VERY_LOW_REDUNDANCY.
 name|chosenBlocks
 operator|=
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 literal|1
 argument_list|)
@@ -8441,9 +8441,9 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-comment|// Adding this block collection to the BlockManager, so that when we add the
+comment|// Adding this block collection to the BlockManager, so that when we add
 comment|// block under construction, the BlockManager will realize the expected
-comment|// replication has been achieved and remove it from the under-replicated
+comment|// replication has been achieved and remove it from the low redundancy
 comment|// queue.
 name|BlockInfoContiguous
 name|info
@@ -8537,13 +8537,13 @@ index|]
 argument_list|)
 expr_stmt|;
 comment|// Choose 1 block from UnderReplicatedBlocks. Then it should pick 1 block
-comment|// from QUEUE_VERY_UNDER_REPLICATED.
+comment|// from QUEUE_VERY_LOW_REDUNDANCY.
 comment|// This block remains and should not be skipped over.
 name|chosenBlocks
 operator|=
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 literal|1
 argument_list|)
@@ -8617,12 +8617,12 @@ name|HdfsConfiguration
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|UnderReplicatedBlocks
-name|underReplicatedBlocks
+name|LowRedundancyBlocks
+name|lowRedundancyBlocks
 init|=
 name|bm
 operator|.
-name|neededReplications
+name|neededReconstruction
 decl_stmt|;
 name|long
 name|blkID1
@@ -8688,8 +8688,8 @@ argument_list|(
 name|blkID2
 argument_list|)
 decl_stmt|;
-comment|// Adding QUEUE_UNDER_REPLICATED block
-name|underReplicatedBlocks
+comment|// Adding QUEUE_LOW_REDUNDANCY block
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -8704,8 +8704,8 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-comment|// Adding QUEUE_UNDER_REPLICATED block
-name|underReplicatedBlocks
+comment|// Adding QUEUE_LOW_REDUNDANCY block
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -8729,13 +8729,13 @@ argument_list|>
 argument_list|>
 name|chosenBlocks
 decl_stmt|;
-comment|// Choose 1 block from UnderReplicatedBlocks. Then it should pick 1 block
-comment|// from QUEUE_VERY_UNDER_REPLICATED.
+comment|// Choose 1 block from lowRedundancyBlocks. Then it should pick 1 block
+comment|// from QUEUE_VERY_LOW_REDUNDANCY.
 name|chosenBlocks
 operator|=
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 literal|1
 argument_list|)
@@ -9078,14 +9078,14 @@ argument_list|,
 literal|0L
 argument_list|)
 expr_stmt|;
-comment|// Choose 1 block from UnderReplicatedBlocks. Then it should pick 1 block
-comment|// from QUEUE_VERY_UNDER_REPLICATED.
+comment|// Choose 1 block from lowRedundancyBlocks. Then it should pick 1 block
+comment|// from QUEUE_VERY_LOW_REDUNDANCY.
 comment|// This block remains and should not be skipped over.
 name|chosenBlocks
 operator|=
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 literal|1
 argument_list|)
@@ -9159,12 +9159,12 @@ name|HdfsConfiguration
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|UnderReplicatedBlocks
-name|underReplicatedBlocks
+name|LowRedundancyBlocks
+name|lowRedundancyBlocks
 init|=
 name|bm
 operator|.
-name|neededReplications
+name|neededReconstruction
 decl_stmt|;
 name|BlockInfo
 name|block1
@@ -9194,8 +9194,8 @@ name|nextLong
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Adding QUEUE_UNDER_REPLICATED block
-name|underReplicatedBlocks
+comment|// Adding QUEUE_LOW_REDUNDANCY block
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -9210,8 +9210,8 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-comment|// Adding QUEUE_UNDER_REPLICATED block
-name|underReplicatedBlocks
+comment|// Adding QUEUE_LOW_REDUNDANCY block
+name|lowRedundancyBlocks
 operator|.
 name|add
 argument_list|(
@@ -9235,13 +9235,13 @@ argument_list|>
 argument_list|>
 name|chosenBlocks
 decl_stmt|;
-comment|// Choose 1 block from UnderReplicatedBlocks. Then it should pick 1 block
-comment|// from QUEUE_VERY_UNDER_REPLICATED.
+comment|// Choose 1 block from lowRedundancyBlocks. Then it should pick 1 block
+comment|// from QUEUE_VERY_LOW_REDUNDANCY.
 name|chosenBlocks
 operator|=
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 literal|1
 argument_list|)
@@ -9279,13 +9279,13 @@ name|block1
 argument_list|)
 expr_stmt|;
 comment|// Choose 1 block from UnderReplicatedBlocks. Then it should pick 1 block
-comment|// from QUEUE_VERY_UNDER_REPLICATED.
+comment|// from QUEUE_VERY_LOW_REDUNDANCY.
 comment|// This block remains and should not be skipped over.
 name|chosenBlocks
 operator|=
-name|underReplicatedBlocks
+name|lowRedundancyBlocks
 operator|.
-name|chooseUnderReplicatedBlocks
+name|chooseLowRedundancyBlocks
 argument_list|(
 literal|1
 argument_list|)

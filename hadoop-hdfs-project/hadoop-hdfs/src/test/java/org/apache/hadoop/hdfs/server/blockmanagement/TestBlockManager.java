@@ -2747,7 +2747,7 @@ name|i
 operator|++
 control|)
 block|{
-name|doTestSingleRackClusterIsSufficientlyReplicated
+name|doTestSingleRackClusterHasSufficientRedundancy
 argument_list|(
 name|i
 argument_list|,
@@ -2756,10 +2756,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|doTestSingleRackClusterIsSufficientlyReplicated (int testIndex, List<DatanodeDescriptor> origNodes)
+DECL|method|doTestSingleRackClusterHasSufficientRedundancy (int testIndex, List<DatanodeDescriptor> origNodes)
 specifier|private
 name|void
-name|doTestSingleRackClusterIsSufficientlyReplicated
+name|doTestSingleRackClusterHasSufficientRedundancy
 parameter_list|(
 name|int
 name|testIndex
@@ -2797,7 +2797,7 @@ name|assertFalse
 argument_list|(
 name|bm
 operator|.
-name|isNeededReplication
+name|isNeededReconstruction
 argument_list|(
 name|block
 argument_list|,
@@ -2818,10 +2818,10 @@ name|timeout
 operator|=
 literal|60000
 argument_list|)
-DECL|method|testNeededReplicationWhileAppending ()
+DECL|method|testNeededReconstructionWhileAppending ()
 specifier|public
 name|void
-name|testNeededReplicationWhileAppending
+name|testNeededReconstructionWhileAppending
 parameter_list|()
 throws|throws
 name|IOException
@@ -3104,7 +3104,7 @@ name|assertFalse
 argument_list|(
 name|bm
 operator|.
-name|isNeededReplication
+name|isNeededReconstruction
 argument_list|(
 name|bi
 argument_list|,
@@ -3967,7 +3967,7 @@ name|Byte
 argument_list|>
 argument_list|()
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
 name|QUEUE_HIGHEST_PRIORITY
 argument_list|)
@@ -4012,9 +4012,9 @@ name|Byte
 argument_list|>
 argument_list|()
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
-name|QUEUE_VERY_UNDER_REPLICATED
+name|QUEUE_VERY_LOW_REDUNDANCY
 argument_list|)
 operator|.
 name|length
@@ -4088,7 +4088,7 @@ name|Byte
 argument_list|>
 argument_list|()
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
 name|QUEUE_HIGHEST_PRIORITY
 argument_list|)
@@ -4236,9 +4236,9 @@ name|Byte
 argument_list|>
 argument_list|()
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
-name|QUEUE_UNDER_REPLICATED
+name|QUEUE_LOW_REDUNDANCY
 argument_list|)
 index|[
 literal|0
@@ -4313,9 +4313,9 @@ name|Byte
 argument_list|>
 argument_list|()
 argument_list|,
-name|UnderReplicatedBlocks
+name|LowRedundancyBlocks
 operator|.
-name|QUEUE_UNDER_REPLICATED
+name|QUEUE_LOW_REDUNDANCY
 argument_list|)
 operator|.
 name|length
