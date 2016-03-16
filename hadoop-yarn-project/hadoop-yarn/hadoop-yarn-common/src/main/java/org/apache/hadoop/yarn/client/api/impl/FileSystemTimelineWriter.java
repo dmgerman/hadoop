@@ -1631,17 +1631,6 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|mapper
-operator|.
-name|configure
-argument_list|(
-name|Feature
-operator|.
-name|FLUSH_AFTER_WRITE_VALUE
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 return|return
 name|mapper
 return|;
