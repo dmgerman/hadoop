@@ -1118,7 +1118,6 @@ annotation|@
 name|Override
 DECL|method|getConfig ()
 specifier|public
-specifier|synchronized
 name|Configuration
 name|getConfig
 parameter_list|()
