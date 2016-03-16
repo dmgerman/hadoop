@@ -1927,9 +1927,7 @@ name|YarnRuntimeException
 argument_list|(
 literal|"Invalid resource scheduler memory"
 operator|+
-literal|" allocation configuration"
-operator|+
-literal|", "
+literal|" allocation configuration: "
 operator|+
 name|YarnConfiguration
 operator|.
@@ -1949,9 +1947,11 @@ literal|"="
 operator|+
 name|maxMem
 operator|+
-literal|", min should equal greater than 0"
+literal|".  Both values must be greater than or equal to 0"
 operator|+
-literal|", max should be no smaller than min."
+literal|"and the maximum allocation value must be greater than or equal to"
+operator|+
+literal|"the minimum allocation value."
 argument_list|)
 throw|;
 block|}
@@ -2005,9 +2005,7 @@ name|YarnRuntimeException
 argument_list|(
 literal|"Invalid resource scheduler vcores"
 operator|+
-literal|" allocation configuration"
-operator|+
-literal|", "
+literal|" allocation configuration: "
 operator|+
 name|YarnConfiguration
 operator|.
@@ -2027,9 +2025,11 @@ literal|"="
 operator|+
 name|maxVcores
 operator|+
-literal|", min should equal greater than 0"
+literal|".  Both values must be greater than or equal to 0"
 operator|+
-literal|", max should be no smaller than min."
+literal|"and the maximum allocation value must be greater than or equal to"
+operator|+
+literal|"the minimum allocation value."
 argument_list|)
 throw|;
 block|}
