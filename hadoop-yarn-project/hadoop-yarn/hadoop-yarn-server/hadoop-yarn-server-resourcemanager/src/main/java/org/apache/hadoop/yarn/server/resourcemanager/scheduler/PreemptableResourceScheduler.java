@@ -94,9 +94,9 @@ name|container
 parameter_list|)
 function_decl|;
 comment|/**    * Ask the scheduler to forcibly interrupt the container given as input    * @param container    */
-DECL|method|killPreemptedContainer (RMContainer container)
+DECL|method|markContainerForKillable (RMContainer container)
 name|void
-name|killPreemptedContainer
+name|markContainerForKillable
 parameter_list|(
 name|RMContainer
 name|container

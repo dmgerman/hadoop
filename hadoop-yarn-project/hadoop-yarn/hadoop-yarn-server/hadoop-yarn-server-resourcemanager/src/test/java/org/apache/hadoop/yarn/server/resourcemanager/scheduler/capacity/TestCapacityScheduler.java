@@ -8973,7 +8973,7 @@ control|)
 block|{
 name|cs
 operator|.
-name|killPreemptedContainer
+name|markContainerForKillable
 argument_list|(
 name|schedulerAppAttempt
 operator|.
@@ -9026,7 +9026,7 @@ expr_stmt|;
 comment|// kill app0-attempt0 AM container
 name|cs
 operator|.
-name|killPreemptedContainer
+name|markContainerForKillable
 argument_list|(
 name|schedulerAppAttempt
 operator|.
@@ -9152,7 +9152,7 @@ control|)
 block|{
 name|cs
 operator|.
-name|killPreemptedContainer
+name|markContainerForKillable
 argument_list|(
 name|schedulerAppAttempt
 operator|.
@@ -9467,7 +9467,7 @@ block|}
 comment|// Call killContainer to preempt the container
 name|cs
 operator|.
-name|killPreemptedContainer
+name|markContainerForKillable
 argument_list|(
 name|rmContainer
 argument_list|)

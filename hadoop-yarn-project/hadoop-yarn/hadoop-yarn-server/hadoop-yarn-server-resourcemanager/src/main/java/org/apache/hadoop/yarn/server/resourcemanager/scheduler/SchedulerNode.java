@@ -493,9 +493,9 @@ argument_list|,
 literal|0f
 argument_list|)
 decl_stmt|;
-comment|/** Set of containers that are allocated containers. */
+comment|/* set of containers that are allocated containers */
 DECL|field|launchedContainers
-specifier|private
+specifier|protected
 specifier|final
 name|Map
 argument_list|<
@@ -843,7 +843,7 @@ expr_stmt|;
 block|}
 comment|/**    * Change the resources allocated for a container.    * @param containerId Identifier of the container to change.    * @param deltaResource Change in the resource allocation.    * @param increase True if the change is an increase of allocation.    */
 DECL|method|changeContainerResource (ContainerId containerId, Resource deltaResource, boolean increase)
-specifier|private
+specifier|protected
 specifier|synchronized
 name|void
 name|changeContainerResource
@@ -1043,7 +1043,7 @@ return|;
 block|}
 comment|/**    * Update the resources of the node when allocating a new container.    * @param container Container to allocate.    */
 DECL|method|updateResource (Container container)
-specifier|private
+specifier|protected
 specifier|synchronized
 name|void
 name|updateResource

@@ -429,7 +429,7 @@ name|container
 argument_list|,
 name|SchedulerEventType
 operator|.
-name|KILL_PREEMPTED_CONTAINER
+name|MARK_CONTAINER_FOR_KILLABLE
 argument_list|)
 decl_stmt|;
 name|rmDispatcher
@@ -522,7 +522,7 @@ argument_list|(
 name|sched
 argument_list|)
 operator|.
-name|killPreemptedContainer
+name|markContainerForKillable
 argument_list|(
 name|container
 argument_list|)

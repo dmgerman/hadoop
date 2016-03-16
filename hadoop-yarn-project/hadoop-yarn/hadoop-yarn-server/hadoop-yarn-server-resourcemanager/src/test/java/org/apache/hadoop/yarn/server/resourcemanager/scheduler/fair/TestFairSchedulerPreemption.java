@@ -9350,7 +9350,7 @@ name|rmContainer
 argument_list|,
 name|SchedulerEventType
 operator|.
-name|KILL_PREEMPTED_CONTAINER
+name|MARK_CONTAINER_FOR_KILLABLE
 argument_list|)
 argument_list|)
 expr_stmt|;

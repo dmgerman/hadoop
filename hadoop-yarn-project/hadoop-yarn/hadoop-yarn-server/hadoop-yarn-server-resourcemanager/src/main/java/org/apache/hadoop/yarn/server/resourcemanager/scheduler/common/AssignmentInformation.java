@@ -640,9 +640,7 @@ name|operationDetails
 operator|.
 name|get
 argument_list|(
-name|Operation
-operator|.
-name|ALLOCATION
+name|op
 argument_list|)
 condition|)
 block|{
@@ -656,9 +654,7 @@ name|operationDetails
 operator|.
 name|get
 argument_list|(
-name|Operation
-operator|.
-name|ALLOCATION
+name|op
 argument_list|)
 decl_stmt|;
 if|if
@@ -694,8 +690,6 @@ parameter_list|()
 block|{
 name|ContainerId
 name|containerId
-init|=
-literal|null
 decl_stmt|;
 name|containerId
 operator|=
