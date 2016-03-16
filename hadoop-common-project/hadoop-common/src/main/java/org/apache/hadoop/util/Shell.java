@@ -2550,6 +2550,26 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|SecurityException
+name|se
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Bash execution is not allowed by the JVM "
+operator|+
+literal|"security manager.Considering it not supported."
+argument_list|)
+expr_stmt|;
+name|supported
+operator|=
+literal|false
+expr_stmt|;
+block|}
 return|return
 name|supported
 return|;
@@ -2635,6 +2655,26 @@ operator|.
 name|debug
 argument_list|(
 literal|"setsid is not available on this machine. So not using it."
+argument_list|)
+expr_stmt|;
+name|setsidSupported
+operator|=
+literal|false
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|SecurityException
+name|se
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"setsid is not allowed to run by the JVM "
+operator|+
+literal|"security manager. So not using it."
 argument_list|)
 expr_stmt|;
 name|setsidSupported
