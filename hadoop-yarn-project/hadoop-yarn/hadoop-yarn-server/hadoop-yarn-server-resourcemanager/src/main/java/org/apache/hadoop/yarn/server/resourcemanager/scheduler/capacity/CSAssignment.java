@@ -178,6 +178,16 @@ name|Resources
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_class
 annotation|@
 name|Private
@@ -266,6 +276,14 @@ DECL|field|increaseAllocation
 specifier|private
 name|boolean
 name|increaseAllocation
+decl_stmt|;
+DECL|field|containersToKill
+specifier|private
+name|List
+argument_list|<
+name|RMContainer
+argument_list|>
+name|containersToKill
 decl_stmt|;
 DECL|method|CSAssignment (Resource resource, NodeType type)
 specifier|public
@@ -709,6 +727,38 @@ name|increaseAllocation
 operator|=
 name|flag
 expr_stmt|;
+block|}
+DECL|method|setContainersToKill (List<RMContainer> containersToKill)
+specifier|public
+name|void
+name|setContainersToKill
+parameter_list|(
+name|List
+argument_list|<
+name|RMContainer
+argument_list|>
+name|containersToKill
+parameter_list|)
+block|{
+name|this
+operator|.
+name|containersToKill
+operator|=
+name|containersToKill
+expr_stmt|;
+block|}
+DECL|method|getContainersToKill ()
+specifier|public
+name|List
+argument_list|<
+name|RMContainer
+argument_list|>
+name|getContainersToKill
+parameter_list|()
+block|{
+return|return
+name|containersToKill
+return|;
 block|}
 block|}
 end_class

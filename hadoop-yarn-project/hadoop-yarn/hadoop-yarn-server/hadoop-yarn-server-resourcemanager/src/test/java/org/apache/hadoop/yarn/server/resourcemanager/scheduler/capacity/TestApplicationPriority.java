@@ -1629,7 +1629,7 @@ break|break;
 block|}
 name|cs
 operator|.
-name|killPreemptedContainer
+name|markContainerForKillable
 argument_list|(
 name|schedulerAppAttempt
 operator|.
@@ -3450,7 +3450,7 @@ break|break;
 block|}
 name|cs
 operator|.
-name|killPreemptedContainer
+name|markContainerForKillable
 argument_list|(
 name|schedulerAppAttemptApp1
 operator|.
@@ -3669,7 +3669,7 @@ break|break;
 block|}
 name|cs
 operator|.
-name|killPreemptedContainer
+name|markContainerForKillable
 argument_list|(
 name|schedulerAppAttemptApp1
 operator|.

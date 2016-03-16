@@ -64,19 +64,21 @@ comment|// Source: ContainerAllocationExpirer
 DECL|enumConstant|CONTAINER_EXPIRED
 name|CONTAINER_EXPIRED
 block|,
-comment|// Source: SchedulingEditPolicy
+comment|/* Source: SchedulingEditPolicy */
 DECL|enumConstant|KILL_RESERVED_CONTAINER
 name|KILL_RESERVED_CONTAINER
 block|,
+comment|// Mark a container for preemption
 DECL|enumConstant|MARK_CONTAINER_FOR_PREEMPTION
 name|MARK_CONTAINER_FOR_PREEMPTION
 block|,
-comment|// Mark a container for preemption
-comment|// in the near future
-DECL|enumConstant|KILL_PREEMPTED_CONTAINER
-name|KILL_PREEMPTED_CONTAINER
-comment|// Kill a container previously marked for
-comment|// preemption
+comment|// Mark a for-preemption container killable
+DECL|enumConstant|MARK_CONTAINER_FOR_KILLABLE
+name|MARK_CONTAINER_FOR_KILLABLE
+block|,
+comment|// Cancel a killable container
+DECL|enumConstant|MARK_CONTAINER_FOR_NONKILLABLE
+name|MARK_CONTAINER_FOR_NONKILLABLE
 block|}
 end_enum
 

@@ -210,6 +210,26 @@ name|EventHandler
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|Queue
+import|;
+end_import
+
 begin_comment
 comment|/**  * Represents the ResourceManager's view of an application container. See   * {@link RMContainerImpl} for an implementation. Containers may be in one  * of several states, given in {@link RMContainerState}. An RMContainer  * instance may exist even if there is no actual running container, such as   * when resources are being reserved to fill space for a future container   * allocation.  */
 end_comment
