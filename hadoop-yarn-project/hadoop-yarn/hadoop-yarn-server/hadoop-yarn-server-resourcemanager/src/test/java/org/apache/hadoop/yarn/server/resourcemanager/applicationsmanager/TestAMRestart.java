@@ -818,6 +818,22 @@ name|yarn
 operator|.
 name|util
 operator|.
+name|SystemClock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
 name|resource
 operator|.
 name|Resources
@@ -3713,7 +3729,7 @@ decl_stmt|;
 comment|// Preempt the first attempt;
 name|scheduler
 operator|.
-name|markContainerForKillable
+name|killPreemptedContainer
 argument_list|(
 name|scheduler
 operator|.
@@ -3835,7 +3851,7 @@ argument_list|)
 decl_stmt|;
 name|scheduler
 operator|.
-name|markContainerForKillable
+name|killPreemptedContainer
 argument_list|(
 name|scheduler
 operator|.
@@ -4512,7 +4528,7 @@ decl_stmt|;
 comment|// Forcibly preempt the am container;
 name|scheduler
 operator|.
-name|markContainerForKillable
+name|killPreemptedContainer
 argument_list|(
 name|scheduler
 operator|.

@@ -26,15 +26,11 @@ end_package
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
+name|Comparator
 import|;
 end_import
 
@@ -46,13 +42,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|conf
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ApplicationAttemptId
+name|Configuration
 import|;
 end_import
 
@@ -107,50 +99,6 @@ operator|.
 name|resourcemanager
 operator|.
 name|RMContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|SchedulerHealth
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|capacity
-operator|.
-name|preemption
-operator|.
-name|PreemptionManager
 import|;
 end_import
 
@@ -240,16 +188,6 @@ name|ResourceCalculator
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Comparator
-import|;
-end_import
-
 begin_comment
 comment|/**  * Read-only interface to {@link CapacityScheduler} context.  */
 end_comment
@@ -334,29 +272,6 @@ parameter_list|(
 name|NodeId
 name|nodeId
 parameter_list|)
-function_decl|;
-DECL|method|getApplicationAttempt (ApplicationAttemptId attemptId)
-name|FiCaSchedulerApp
-name|getApplicationAttempt
-parameter_list|(
-name|ApplicationAttemptId
-name|attemptId
-parameter_list|)
-function_decl|;
-DECL|method|getPreemptionManager ()
-name|PreemptionManager
-name|getPreemptionManager
-parameter_list|()
-function_decl|;
-DECL|method|getSchedulerHealth ()
-name|SchedulerHealth
-name|getSchedulerHealth
-parameter_list|()
-function_decl|;
-DECL|method|getLastNodeUpdateTime ()
-name|long
-name|getLastNodeUpdateTime
-parameter_list|()
 function_decl|;
 block|}
 end_interface

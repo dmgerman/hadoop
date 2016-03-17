@@ -92,13 +92,6 @@ specifier|volatile
 name|Resource
 name|headroom
 decl_stmt|;
-DECL|field|allowPreempt
-specifier|private
-name|boolean
-name|allowPreempt
-init|=
-literal|false
-decl_stmt|;
 DECL|method|ResourceLimits (Resource limit)
 specifier|public
 name|ResourceLimits
@@ -224,32 +217,6 @@ operator|.
 name|amountNeededUnreserve
 operator|=
 name|amountNeededUnreserve
-expr_stmt|;
-block|}
-DECL|method|isAllowPreemption ()
-specifier|public
-name|boolean
-name|isAllowPreemption
-parameter_list|()
-block|{
-return|return
-name|allowPreempt
-return|;
-block|}
-DECL|method|setIsAllowPreemption (boolean allowPreempt)
-specifier|public
-name|void
-name|setIsAllowPreemption
-parameter_list|(
-name|boolean
-name|allowPreempt
-parameter_list|)
-block|{
-name|this
-operator|.
-name|allowPreempt
-operator|=
-name|allowPreempt
 expr_stmt|;
 block|}
 block|}

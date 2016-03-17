@@ -15052,7 +15052,7 @@ decl_stmt|;
 comment|// kill app0-attempt
 name|cs
 operator|.
-name|markContainerForKillable
+name|killPreemptedContainer
 argument_list|(
 name|schedulerAppAttempt
 operator|.

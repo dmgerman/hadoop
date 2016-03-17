@@ -684,16 +684,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|assignment
-operator|.
-name|setContainersToKill
-argument_list|(
-name|result
-operator|.
-name|getToKillContainers
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 return|return
 name|assignment
