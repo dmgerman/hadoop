@@ -349,7 +349,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Balancing bandwith is "
+literal|"Balancing bandwidth is "
 operator|+
 name|bandwidth
 operator|+
