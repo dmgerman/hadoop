@@ -2235,7 +2235,7 @@ name|cluster
 operator|.
 name|waitForNodeManagersToConnect
 argument_list|(
-literal|20000
+literal|5000
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2517,16 +2517,6 @@ name|cluster
 operator|.
 name|start
 argument_list|()
-expr_stmt|;
-name|getAdminService
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|transitionToActive
-argument_list|(
-name|req
-argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(

@@ -968,16 +968,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|getAdminService
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|transitionToActive
-argument_list|(
-name|req
-argument_list|)
-expr_stmt|;
 name|assertFalse
 argument_list|(
 literal|"RM never turned active"
@@ -1387,16 +1377,6 @@ name|cluster
 operator|.
 name|start
 argument_list|()
-expr_stmt|;
-name|getAdminService
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|transitionToActive
-argument_list|(
-name|req
-argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(

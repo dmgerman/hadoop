@@ -1127,6 +1127,16 @@ operator|new
 name|Object
 argument_list|()
 decl_stmt|;
+DECL|field|shutdownMonitor
+specifier|private
+specifier|final
+name|Object
+name|shutdownMonitor
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
 DECL|field|context
 specifier|private
 specifier|final
@@ -1849,6 +1859,11 @@ throws|throws
 name|Exception
 block|{
 comment|// the isStopped check is for avoiding multiple unregistrations.
+synchronized|synchronized
+init|(
+name|shutdownMonitor
+init|)
+block|{
 if|if
 condition|(
 name|this
@@ -1893,6 +1908,7 @@ operator|.
 name|serviceStop
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|isNMUnderSupervisionWithRecoveryEnabled ()
 specifier|private
@@ -2022,6 +2038,27 @@ name|rebootNodeStatusUpdaterAndRegisterWithRM
 parameter_list|()
 block|{
 comment|// Interrupt the updater.
+synchronized|synchronized
+init|(
+name|shutdownMonitor
+init|)
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|isStopped
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Currently being shutdown. Aborting reboot"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|this
 operator|.
 name|isStopped
@@ -2048,16 +2085,16 @@ argument_list|,
 literal|"Node Status Updater"
 argument_list|)
 expr_stmt|;
+name|statusUpdater
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|isStopped
 operator|=
 literal|false
-expr_stmt|;
-name|statusUpdater
-operator|.
-name|start
-argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
@@ -2094,6 +2131,7 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 annotation|@
