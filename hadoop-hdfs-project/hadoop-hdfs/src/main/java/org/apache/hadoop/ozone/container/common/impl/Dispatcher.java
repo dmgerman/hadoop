@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.ozoneimpl
+DECL|package|org.apache.hadoop.ozone.container.common.impl
 package|package
 name|org
 operator|.
@@ -16,7 +16,9 @@ name|ozone
 operator|.
 name|container
 operator|.
-name|ozoneimpl
+name|common
+operator|.
+name|impl
 package|;
 end_package
 
@@ -132,6 +134,8 @@ name|ozone
 operator|.
 name|container
 operator|.
+name|common
+operator|.
 name|helpers
 operator|.
 name|ContainerData
@@ -149,6 +153,8 @@ operator|.
 name|ozone
 operator|.
 name|container
+operator|.
+name|common
 operator|.
 name|helpers
 operator|.
@@ -168,6 +174,8 @@ name|ozone
 operator|.
 name|container
 operator|.
+name|common
+operator|.
 name|helpers
 operator|.
 name|Pipeline
@@ -186,6 +194,8 @@ name|ozone
 operator|.
 name|container
 operator|.
+name|common
+operator|.
 name|interfaces
 operator|.
 name|ContainerDispatcher
@@ -203,6 +213,8 @@ operator|.
 name|ozone
 operator|.
 name|container
+operator|.
+name|common
 operator|.
 name|interfaces
 operator|.
@@ -357,6 +369,14 @@ name|Type
 operator|.
 name|ListContainer
 operator|)
+operator|||
+operator|(
+name|cmdType
+operator|==
+name|Type
+operator|.
+name|UpdateContainer
+operator|)
 condition|)
 block|{
 return|return
@@ -464,6 +484,17 @@ argument_list|)
 return|;
 case|case
 name|ListContainer
+case|:
+return|return
+name|ContainerUtils
+operator|.
+name|unsupportedRequest
+argument_list|(
+name|msg
+argument_list|)
+return|;
+case|case
+name|UpdateContainer
 case|:
 return|return
 name|ContainerUtils

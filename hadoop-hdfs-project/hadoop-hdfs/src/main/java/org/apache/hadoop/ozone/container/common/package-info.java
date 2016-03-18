@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.helpers
+DECL|package|org.apache.hadoop.ozone.container.common
 package|package
 name|org
 operator|.
@@ -16,12 +16,12 @@ name|ozone
 operator|.
 name|container
 operator|.
-name|helpers
+name|common
 package|;
 end_package
 
 begin_comment
-comment|/**  Contains protocol buffer helper classes.  **/
+comment|/**   Common Container Layer. At this layer the abstractions are:   1. Containers - Both data and metadata containers.  2. Keys - Key/Value pairs that live inside a container.  3. Chunks - Keys can be composed of many chunks.   Ozone uses these abstractions to build Volumes, Buckets and Keys.   **/
 end_comment
 
 end_unit
