@@ -6860,6 +6860,36 @@ name|DEFAULT_TIMELINE_SERVICE_WRITER_FLUSH_INTERVAL_SECONDS
 init|=
 literal|60
 decl_stmt|;
+comment|/**    * The name for setting that controls how long the final value of    * a metric of a completed app is retained before merging    * into the flow sum.    */
+DECL|field|APP_FINAL_VALUE_RETENTION_THRESHOLD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|APP_FINAL_VALUE_RETENTION_THRESHOLD
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"coprocessor.app-final-value-retention-milliseconds"
+decl_stmt|;
+comment|/**    * The setting that controls how long the final value of a metric    * of a completed app is retained before merging into the flow sum.    */
+DECL|field|DEFAULT_APP_FINAL_VALUE_RETENTION_THRESHOLD
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_APP_FINAL_VALUE_RETENTION_THRESHOLD
+init|=
+literal|3
+operator|*
+literal|24
+operator|*
+literal|60
+operator|*
+literal|60
+operator|*
+literal|1000L
+decl_stmt|;
 DECL|field|ATS_APP_COLLECTOR_LINGER_PERIOD_IN_MS
 specifier|public
 specifier|static

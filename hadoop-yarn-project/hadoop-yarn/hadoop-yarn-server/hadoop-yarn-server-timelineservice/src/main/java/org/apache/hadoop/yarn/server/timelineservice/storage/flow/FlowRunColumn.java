@@ -291,7 +291,7 @@ literal|"min_start_time"
 argument_list|,
 name|AggregationOperation
 operator|.
-name|MIN
+name|GLOBAL_MIN
 argument_list|,
 name|LongConverter
 operator|.
@@ -311,7 +311,7 @@ literal|"max_end_time"
 argument_list|,
 name|AggregationOperation
 operator|.
-name|MAX
+name|GLOBAL_MAX
 argument_list|,
 name|LongConverter
 operator|.

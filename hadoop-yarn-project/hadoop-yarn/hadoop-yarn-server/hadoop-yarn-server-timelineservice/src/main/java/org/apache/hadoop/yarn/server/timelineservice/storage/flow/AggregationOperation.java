@@ -41,7 +41,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Identifies the attributes to be set for puts into the {@link FlowRunTable}.  * The numbers used for tagType are prime numbers  */
+comment|/**  * Identifies the attributes to be set for puts into the {@link FlowRunTable}.  * The numbers used for tagType are prime numbers.  */
 end_comment
 
 begin_enum
@@ -51,8 +51,8 @@ enum|enum
 name|AggregationOperation
 block|{
 comment|/**    * When the flow was started.    */
-DECL|enumConstant|MIN
-name|MIN
+DECL|enumConstant|GLOBAL_MIN
+name|GLOBAL_MIN
 argument_list|(
 operator|(
 name|byte
@@ -61,8 +61,8 @@ literal|71
 argument_list|)
 block|,
 comment|/**    * When it ended.    */
-DECL|enumConstant|MAX
-name|MAX
+DECL|enumConstant|GLOBAL_MAX
+name|GLOBAL_MAX
 argument_list|(
 operator|(
 name|byte
@@ -90,14 +90,24 @@ operator|)
 literal|83
 argument_list|)
 block|,
-comment|/**    * compact.    */
-DECL|enumConstant|COMPACT
-name|COMPACT
+comment|/**    * Min value as per the latest timestamp    * seen for a given app.    */
+DECL|enumConstant|LATEST_MIN
+name|LATEST_MIN
 argument_list|(
 operator|(
 name|byte
 operator|)
 literal|89
+argument_list|)
+block|,
+comment|/**    * Max value as per the latest timestamp    * seen for a given app.    */
+DECL|enumConstant|LATEST_MAX
+name|LATEST_MAX
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|97
 argument_list|)
 block|;
 DECL|field|tagType

@@ -90,7 +90,7 @@ specifier|final
 name|long
 name|TS_MULTIPLIER
 init|=
-literal|1000L
+literal|1000000L
 decl_stmt|;
 DECL|field|lastTimestamp
 specifier|private
@@ -175,7 +175,7 @@ return|return
 name|nextTs
 return|;
 block|}
-comment|/**    * returns a timestamp multiplied with TS_MULTIPLIER and last few digits of    * application id    *    * Unlikely scenario of generating a timestamp that is a duplicate: If more    * than a 1000 concurrent apps are running in one flow run AND write to same    * column at the same time, then say appId of 1001 will overlap with appId of    * 001 and there may be collisions for that flow run's specific column.    *    * @param incomingTS Timestamp to be converted.    * @param appId Application Id.    * @return a timestamp multiplied with TS_MULTIPLIER and last few digits of    *         application id    */
+comment|/**    * Returns a timestamp multiplied with TS_MULTIPLIER and last few digits of    * application id.    *    * Unlikely scenario of generating a timestamp that is a duplicate: If more    * than a 1M concurrent apps are running in one flow run AND write to same    * column at the same time, then say appId of 1M and 1 will overlap    * with appId of 001 and there may be collisions for that flow run's    * specific column.    *    * @param incomingTS Timestamp to be converted.    * @param appId Application Id.    * @return a timestamp multiplied with TS_MULTIPLIER and last few digits of    *         application id    */
 DECL|method|getSupplementedTimestamp (long incomingTS, String appId)
 specifier|public
 specifier|static

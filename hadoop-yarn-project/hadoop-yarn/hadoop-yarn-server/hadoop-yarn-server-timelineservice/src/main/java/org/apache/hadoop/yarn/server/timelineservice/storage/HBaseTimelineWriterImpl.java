@@ -1996,6 +1996,13 @@ name|getAttribute
 argument_list|(
 name|appId
 argument_list|)
+argument_list|,
+name|AggregationOperation
+operator|.
+name|SUM
+operator|.
+name|getAttribute
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

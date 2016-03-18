@@ -451,6 +451,77 @@ name|flowRunId
 argument_list|)
 return|;
 block|}
+comment|/**    * returns the Flow Key as a verbose String output.    * @return String    */
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+name|StringBuilder
+name|flowKeyStr
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|flowKeyStr
+operator|.
+name|append
+argument_list|(
+literal|"{clusterId="
+operator|+
+name|clusterId
+argument_list|)
+expr_stmt|;
+name|flowKeyStr
+operator|.
+name|append
+argument_list|(
+literal|" userId="
+operator|+
+name|userId
+argument_list|)
+expr_stmt|;
+name|flowKeyStr
+operator|.
+name|append
+argument_list|(
+literal|" flowName="
+operator|+
+name|flowName
+argument_list|)
+expr_stmt|;
+name|flowKeyStr
+operator|.
+name|append
+argument_list|(
+literal|" flowRunId="
+argument_list|)
+expr_stmt|;
+name|flowKeyStr
+operator|.
+name|append
+argument_list|(
+name|flowRunId
+argument_list|)
+expr_stmt|;
+name|flowKeyStr
+operator|.
+name|append
+argument_list|(
+literal|"}"
+argument_list|)
+expr_stmt|;
+return|return
+name|flowKeyStr
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

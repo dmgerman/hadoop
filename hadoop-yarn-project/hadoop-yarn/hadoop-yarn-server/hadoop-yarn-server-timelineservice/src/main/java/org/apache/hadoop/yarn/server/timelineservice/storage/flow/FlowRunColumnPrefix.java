@@ -287,9 +287,7 @@ name|INFO
 argument_list|,
 literal|"m"
 argument_list|,
-name|AggregationOperation
-operator|.
-name|SUM
+literal|null
 argument_list|,
 name|LongConverter
 operator|.
