@@ -1447,6 +1447,22 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getReferenceCount ()
+name|int
+name|getReferenceCount
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|reference
+operator|.
+name|getReferenceCount
+argument_list|()
+return|;
+block|}
 comment|/**    * Close this volume.    * @throws IOException if the volume is closed.    */
 DECL|method|setClosed ()
 name|void
@@ -1463,6 +1479,13 @@ name|reference
 operator|.
 name|setClosed
 argument_list|()
+expr_stmt|;
+name|dataset
+operator|.
+name|stopAllDataxceiverThreads
+argument_list|(
+name|this
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
