@@ -509,7 +509,7 @@ operator|.
 name|getUnits
 argument_list|()
 argument_list|,
-literal|"M"
+literal|"Mi"
 argument_list|,
 name|ri
 operator|.

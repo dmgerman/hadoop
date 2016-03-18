@@ -1246,7 +1246,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"M"
+literal|"Mi"
 argument_list|,
 name|memInfo
 operator|.

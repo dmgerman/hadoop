@@ -120,7 +120,7 @@ name|newInstance
 argument_list|(
 name|MEMORY_URI
 argument_list|,
-literal|"M"
+literal|"Mi"
 argument_list|)
 decl_stmt|;
 DECL|field|VCORES
