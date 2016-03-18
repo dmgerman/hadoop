@@ -932,7 +932,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|reportContainerResourceUsage (Container container, String pId, Long pmemUsage, Float cpuUsageTotalCoresPercentage)
+DECL|method|reportContainerResourceUsage (Container container, Long pmemUsage, Float cpuUsagePercentPerCore)
 specifier|public
 name|void
 name|reportContainerResourceUsage
@@ -940,14 +940,11 @@ parameter_list|(
 name|Container
 name|container
 parameter_list|,
-name|String
-name|pId
-parameter_list|,
 name|Long
 name|pmemUsage
 parameter_list|,
 name|Float
-name|cpuUsageTotalCoresPercentage
+name|cpuUsagePercentPerCore
 parameter_list|)
 block|{
 if|if
@@ -958,7 +955,7 @@ name|ResourceCalculatorProcessTree
 operator|.
 name|UNAVAILABLE
 operator|||
-name|cpuUsageTotalCoresPercentage
+name|cpuUsagePercentPerCore
 operator|!=
 name|ResourceCalculatorProcessTree
 operator|.
@@ -1010,8 +1007,6 @@ name|MEMORY
 operator|.
 name|toString
 argument_list|()
-operator|+
-name|pId
 argument_list|)
 expr_stmt|;
 name|memoryMetric
@@ -1033,7 +1028,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|cpuUsageTotalCoresPercentage
+name|cpuUsagePercentPerCore
 operator|!=
 name|ResourceCalculatorProcessTree
 operator|.
@@ -1057,8 +1052,6 @@ name|CPU
 operator|.
 name|toString
 argument_list|()
-operator|+
-name|pId
 argument_list|)
 expr_stmt|;
 name|cpuMetric
@@ -1067,7 +1060,12 @@ name|addValue
 argument_list|(
 name|currentTimeMillis
 argument_list|,
-name|cpuUsageTotalCoresPercentage
+name|Math
+operator|.
+name|round
+argument_list|(
+name|cpuUsagePercentPerCore
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|entity
