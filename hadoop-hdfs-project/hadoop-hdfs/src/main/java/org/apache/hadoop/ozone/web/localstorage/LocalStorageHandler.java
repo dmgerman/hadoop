@@ -344,7 +344,7 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
-comment|/**    * Constructs LocalStorageHandler.    */
+comment|/**    * Constructs LocalStorageHandler.    *    * @param conf ozone conf.    */
 DECL|method|LocalStorageHandler (Configuration conf)
 specifier|public
 name|LocalStorageHandler
@@ -926,8 +926,23 @@ name|IOException
 throws|,
 name|OzoneException
 block|{
+name|OzoneMetadataManager
+name|oz
+init|=
+name|OzoneMetadataManager
+operator|.
+name|getOzoneMetadataManager
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 return|return
-literal|null
+name|oz
+operator|.
+name|createKey
+argument_list|(
+name|args
+argument_list|)
 return|;
 block|}
 comment|/**    * Tells the file system that the object has been written out completely and    * it can do any house keeping operation that needs to be done.    *    * @param args   Key Args    * @param stream    * @throws IOException    */
@@ -948,7 +963,27 @@ throws|throws
 name|IOException
 throws|,
 name|OzoneException
-block|{    }
+block|{
+name|OzoneMetadataManager
+name|oz
+init|=
+name|OzoneMetadataManager
+operator|.
+name|getOzoneMetadataManager
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|oz
+operator|.
+name|commitKey
+argument_list|(
+name|args
+argument_list|,
+name|stream
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Reads a key from an existing bucket.    *    * @param args KeyArgs    * @return LengthInputStream    * @throws IOException    */
 annotation|@
 name|Override
@@ -965,8 +1000,23 @@ name|IOException
 throws|,
 name|OzoneException
 block|{
+name|OzoneMetadataManager
+name|oz
+init|=
+name|OzoneMetadataManager
+operator|.
+name|getOzoneMetadataManager
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 return|return
-literal|null
+name|oz
+operator|.
+name|newKeyReader
+argument_list|(
+name|args
+argument_list|)
 return|;
 block|}
 comment|/**    * Deletes an existing key.    *    * @param args KeyArgs    * @throws OzoneException    */
@@ -984,7 +1034,25 @@ throws|throws
 name|IOException
 throws|,
 name|OzoneException
-block|{    }
+block|{
+name|OzoneMetadataManager
+name|oz
+init|=
+name|OzoneMetadataManager
+operator|.
+name|getOzoneMetadataManager
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|oz
+operator|.
+name|deleteKey
+argument_list|(
+name|args
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Returns a list of Key.    *    * @param args KeyArgs    * @return BucketList    * @throws IOException    */
 annotation|@
 name|Override
@@ -1001,8 +1069,23 @@ name|IOException
 throws|,
 name|OzoneException
 block|{
+name|OzoneMetadataManager
+name|oz
+init|=
+name|OzoneMetadataManager
+operator|.
+name|getOzoneMetadataManager
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 return|return
-literal|null
+name|oz
+operator|.
+name|listKeys
+argument_list|(
+name|args
+argument_list|)
 return|;
 block|}
 block|}

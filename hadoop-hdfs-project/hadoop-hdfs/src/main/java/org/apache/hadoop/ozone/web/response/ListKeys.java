@@ -240,13 +240,13 @@ specifier|private
 name|boolean
 name|truncated
 decl_stmt|;
-DECL|field|objectList
+DECL|field|keyList
 specifier|private
 name|List
 argument_list|<
 name|KeyInfo
 argument_list|>
-name|objectList
+name|keyList
 decl_stmt|;
 comment|/**    * Default constructor needed for json serialization.    */
 DECL|method|ListKeys ()
@@ -256,7 +256,7 @@ parameter_list|()
 block|{
 name|this
 operator|.
-name|objectList
+name|keyList
 operator|=
 operator|new
 name|LinkedList
@@ -310,7 +310,7 @@ operator|=
 name|truncated
 expr_stmt|;
 block|}
-comment|/**    * Converts a Json string to POJO.    * @param jsonString    * @return ListObject    * @throws IOException    */
+comment|/**    * Converts a Json string to POJO.    * @param jsonString - json string.    * @return ListObject    * @throws IOException - Json conversion error.    */
 DECL|method|parse (String jsonString)
 specifier|public
 specifier|static
@@ -344,24 +344,24 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Returns a list of Objects.    *    * @return List of KeyInfo Objects.    */
-DECL|method|getObjectList ()
+DECL|method|getKeyList ()
 specifier|public
 name|List
 argument_list|<
 name|KeyInfo
 argument_list|>
-name|getObjectList
+name|getKeyList
 parameter_list|()
 block|{
 return|return
-name|objectList
+name|keyList
 return|;
 block|}
-comment|/**    * Sets the list of Objects.    *    * @param objectList    */
-DECL|method|setObjectList (List<KeyInfo> objectList)
+comment|/**    * Sets the list of Objects.    *    * @param objectList - List of Keys    */
+DECL|method|setKeyList (List<KeyInfo> objectList)
 specifier|public
 name|void
-name|setObjectList
+name|setKeyList
 parameter_list|(
 name|List
 argument_list|<
@@ -372,7 +372,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|objectList
+name|keyList
 operator|=
 name|objectList
 expr_stmt|;
@@ -438,7 +438,7 @@ operator|=
 name|value
 expr_stmt|;
 block|}
-comment|/**    * Returns a JSON string of this object. After stripping out bytesUsed and    * keyCount.    *    * @return String    */
+comment|/**    * Returns a JSON string of this object. After stripping out bytesUsed and    * keyCount.    *    * @return String    * @throws  IOException - On json Errors.    */
 DECL|method|toJsonString ()
 specifier|public
 name|String
@@ -529,7 +529,7 @@ name|this
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the Object as a Json String.    */
+comment|/**    * Returns the Object as a Json String.    *    * @return String    * @throws IOException - on json errors.    */
 DECL|method|toDBString ()
 specifier|public
 name|String
@@ -565,7 +565,7 @@ name|Collections
 operator|.
 name|sort
 argument_list|(
-name|objectList
+name|keyList
 argument_list|)
 expr_stmt|;
 block|}

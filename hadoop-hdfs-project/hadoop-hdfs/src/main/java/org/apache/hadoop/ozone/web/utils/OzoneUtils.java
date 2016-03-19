@@ -42,6 +42,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|LengthInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|web
@@ -150,11 +170,15 @@ end_import
 
 begin_import
 import|import
-name|java
+name|javax
 operator|.
-name|io
+name|ws
 operator|.
-name|InputStream
+name|rs
+operator|.
+name|core
+operator|.
+name|MediaType
 import|;
 end_import
 
@@ -275,6 +299,15 @@ specifier|final
 class|class
 name|OzoneUtils
 block|{
+DECL|field|ENCODING_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ENCODING_NAME
+init|=
+literal|"UTF-8"
+decl_stmt|;
 DECL|field|ENCODING
 specifier|public
 specifier|static
@@ -286,7 +319,7 @@ name|Charset
 operator|.
 name|forName
 argument_list|(
-literal|"UTF-8"
+name|ENCODING_NAME
 argument_list|)
 decl_stmt|;
 DECL|method|OzoneUtils ()
@@ -1057,7 +1090,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Returns a response with appropriate OZONE headers and payload.    *    * @param args - UserArgs or Inherited class    * @param statusCode - HttpStatus code    * @param stream InputStream    *    * @return JAX-RS Response    */
-DECL|method|getResponse (UserArgs args, int statusCode, InputStream stream)
+DECL|method|getResponse (UserArgs args, int statusCode, LengthInputStream stream)
 specifier|public
 specifier|static
 name|Response
@@ -1069,7 +1102,7 @@ parameter_list|,
 name|int
 name|statusCode
 parameter_list|,
-name|InputStream
+name|LengthInputStream
 name|stream
 parameter_list|)
 block|{
@@ -1125,6 +1158,10 @@ operator|.
 name|ok
 argument_list|(
 name|stream
+argument_list|,
+name|MediaType
+operator|.
+name|APPLICATION_OCTET_STREAM
 argument_list|)
 operator|.
 name|header
@@ -1169,9 +1206,12 @@ name|header
 argument_list|(
 name|HttpHeaders
 operator|.
-name|CONTENT_TYPE
+name|CONTENT_LENGTH
 argument_list|,
-literal|"application/octet-stream"
+name|stream
+operator|.
+name|getLength
+argument_list|()
 argument_list|)
 operator|.
 name|build
