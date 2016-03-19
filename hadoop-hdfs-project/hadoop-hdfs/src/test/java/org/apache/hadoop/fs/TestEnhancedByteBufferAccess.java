@@ -2646,11 +2646,7 @@ name|get
 argument_list|(
 name|CONTEXT
 argument_list|,
-operator|new
-name|DfsClientConf
-argument_list|(
 name|conf
-argument_list|)
 argument_list|)
 operator|.
 name|getShortCircuitCache
@@ -4532,11 +4528,7 @@ name|get
 argument_list|(
 name|CONTEXT
 argument_list|,
-operator|new
-name|DfsClientConf
-argument_list|(
 name|conf
-argument_list|)
 argument_list|)
 operator|.
 name|getShortCircuitCache

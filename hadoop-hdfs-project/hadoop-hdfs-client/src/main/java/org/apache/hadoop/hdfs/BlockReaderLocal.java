@@ -2815,18 +2815,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isLocal ()
-specifier|public
-name|boolean
-name|isLocal
-parameter_list|()
-block|{
-return|return
-literal|true
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|isShortCircuit ()
 specifier|public
 name|boolean
@@ -3008,6 +2996,18 @@ parameter_list|()
 block|{
 return|return
 name|checksum
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNetworkDistance ()
+specifier|public
+name|int
+name|getNetworkDistance
+parameter_list|()
+block|{
+return|return
+literal|0
 return|;
 block|}
 block|}

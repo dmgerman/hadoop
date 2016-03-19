@@ -218,12 +218,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * @return              true only if this is a local read.    */
-DECL|method|isLocal ()
-name|boolean
-name|isLocal
-parameter_list|()
-function_decl|;
 comment|/**    * @return              true only if this is a short-circuit read.    *                      All short-circuit reads are also local.    */
 DECL|method|isShortCircuit ()
 name|boolean
@@ -246,6 +240,12 @@ comment|/**    * @return              The DataChecksum used by the read block   
 DECL|method|getDataChecksum ()
 name|DataChecksum
 name|getDataChecksum
+parameter_list|()
+function_decl|;
+comment|/**    * Return the network distance between local machine and the remote machine.    */
+DECL|method|getNetworkDistance ()
+name|int
+name|getNetworkDistance
 parameter_list|()
 function_decl|;
 block|}

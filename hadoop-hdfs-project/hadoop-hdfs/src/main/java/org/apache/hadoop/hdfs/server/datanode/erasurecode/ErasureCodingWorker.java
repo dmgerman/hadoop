@@ -4428,7 +4428,7 @@ name|READ
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|/*          * This can be further improved if the replica is local, then we can          * read directly from DN and need to check the replica is FINALIZED          * state, notice we should not use short-circuit local read which          * requires config for domain-socket in UNIX or legacy config in Windows.          */
+comment|/*          * This can be further improved if the replica is local, then we can          * read directly from DN and need to check the replica is FINALIZED          * state, notice we should not use short-circuit local read which          * requires config for domain-socket in UNIX or legacy config in Windows.          * The network distance value isn't used for this scenario.          */
 return|return
 name|RemoteBlockReader2
 operator|.
@@ -4474,6 +4474,9 @@ name|datanode
 operator|.
 name|getTracer
 argument_list|()
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 return|;
 block|}

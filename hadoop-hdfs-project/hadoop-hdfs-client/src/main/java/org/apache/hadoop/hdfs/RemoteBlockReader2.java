@@ -424,20 +424,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|net
-operator|.
-name|NetUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|token
@@ -657,13 +643,6 @@ specifier|private
 name|long
 name|bytesNeededToFinish
 decl_stmt|;
-comment|/**    * True if we are reading from a local DataNode.    */
-DECL|field|isLocal
-specifier|private
-specifier|final
-name|boolean
-name|isLocal
-decl_stmt|;
 DECL|field|verifyChecksum
 specifier|private
 specifier|final
@@ -682,6 +661,12 @@ specifier|private
 specifier|final
 name|Tracer
 name|tracer
+decl_stmt|;
+DECL|field|networkDistance
+specifier|private
+specifier|final
+name|int
+name|networkDistance
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
@@ -1394,7 +1379,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|RemoteBlockReader2 (String file, long blockId, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache, Tracer tracer)
+DECL|method|RemoteBlockReader2 (String file, long blockId, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache, Tracer tracer, int networkDistance)
 specifier|protected
 name|RemoteBlockReader2
 parameter_list|(
@@ -1430,27 +1415,11 @@ name|peerCache
 parameter_list|,
 name|Tracer
 name|tracer
+parameter_list|,
+name|int
+name|networkDistance
 parameter_list|)
 block|{
-name|this
-operator|.
-name|isLocal
-operator|=
-name|DFSUtilClient
-operator|.
-name|isLocalAddress
-argument_list|(
-name|NetUtils
-operator|.
-name|createSocketAddr
-argument_list|(
-name|datanodeID
-operator|.
-name|getXferAddr
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
 comment|// Path is used only for printing block and file information in debug
 name|this
 operator|.
@@ -1555,6 +1524,12 @@ operator|.
 name|tracer
 operator|=
 name|tracer
+expr_stmt|;
+name|this
+operator|.
+name|networkDistance
+operator|=
+name|networkDistance
 expr_stmt|;
 block|}
 annotation|@
@@ -1821,7 +1796,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a new BlockReader specifically to satisfy a read.    * This method also sends the OP_READ_BLOCK request.    *    * @param file  File location    * @param block  The block object    * @param blockToken  The block token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @param peer  The Peer to use    * @param datanodeID  The DatanodeID this peer is connected to    * @return New BlockReader instance, or null on error.    */
-DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache, CachingStrategy cachingStrategy, Tracer tracer)
+DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache, CachingStrategy cachingStrategy, Tracer tracer, int networkDistance)
 specifier|public
 specifier|static
 name|BlockReader
@@ -1865,6 +1840,9 @@ name|cachingStrategy
 parameter_list|,
 name|Tracer
 name|tracer
+parameter_list|,
+name|int
+name|networkDistance
 parameter_list|)
 throws|throws
 name|IOException
@@ -2050,6 +2028,8 @@ argument_list|,
 name|peerCache
 argument_list|,
 name|tracer
+argument_list|,
+name|networkDistance
 argument_list|)
 return|;
 block|}
@@ -2143,18 +2123,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isLocal ()
-specifier|public
-name|boolean
-name|isLocal
-parameter_list|()
-block|{
-return|return
-name|isLocal
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|isShortCircuit ()
 specifier|public
 name|boolean
@@ -2193,6 +2161,18 @@ parameter_list|()
 block|{
 return|return
 name|checksum
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNetworkDistance ()
+specifier|public
+name|int
+name|getNetworkDistance
+parameter_list|()
+block|{
+return|return
+name|networkDistance
 return|;
 block|}
 block|}

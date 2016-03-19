@@ -2298,7 +2298,40 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Return hostname without throwing exception.    * @return hostname    */
+comment|/**    * Return hostname without throwing exception.    * The returned hostname String format is "hostname".    * @return hostname    */
+DECL|method|getLocalHostname ()
+specifier|public
+specifier|static
+name|String
+name|getLocalHostname
+parameter_list|()
+block|{
+try|try
+block|{
+return|return
+name|InetAddress
+operator|.
+name|getLocalHost
+argument_list|()
+operator|.
+name|getHostName
+argument_list|()
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|UnknownHostException
+name|uhe
+parameter_list|)
+block|{
+return|return
+literal|""
+operator|+
+name|uhe
+return|;
+block|}
+block|}
+comment|/**    * Return hostname without throwing exception.    * The returned hostname String format is "hostname/ip address".    * @return hostname    */
 DECL|method|getHostname ()
 specifier|public
 specifier|static

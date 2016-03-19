@@ -455,21 +455,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isLocal ()
-specifier|public
-name|boolean
-name|isLocal
-parameter_list|()
-block|{
-return|return
-name|accessor
-operator|.
-name|isLocal
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|isShortCircuit ()
 specifier|public
 name|boolean
@@ -512,6 +497,21 @@ parameter_list|()
 block|{
 return|return
 literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNetworkDistance ()
+specifier|public
+name|int
+name|getNetworkDistance
+parameter_list|()
+block|{
+return|return
+name|accessor
+operator|.
+name|getNetworkDistance
+argument_list|()
 return|;
 block|}
 block|}

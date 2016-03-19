@@ -148,6 +148,24 @@ name|boolean
 name|isShortCircuit
 parameter_list|()
 function_decl|;
+comment|/**    * Return the network distance between local machine and the remote machine.    */
+DECL|method|getNetworkDistance ()
+specifier|public
+name|int
+name|getNetworkDistance
+parameter_list|()
+block|{
+return|return
+name|isLocal
+argument_list|()
+condition|?
+literal|0
+else|:
+name|Integer
+operator|.
+name|MAX_VALUE
+return|;
+block|}
 block|}
 end_class
 

@@ -3662,6 +3662,16 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|int
+name|networkDistance
+init|=
+name|clientContext
+operator|.
+name|getNetworkDistance
+argument_list|(
+name|datanode
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|conf
@@ -3709,6 +3719,8 @@ argument_list|,
 name|cachingStrategy
 argument_list|,
 name|tracer
+argument_list|,
+name|networkDistance
 argument_list|)
 return|;
 block|}
@@ -3745,6 +3757,8 @@ argument_list|,
 name|cachingStrategy
 argument_list|,
 name|tracer
+argument_list|,
+name|networkDistance
 argument_list|)
 return|;
 block|}
