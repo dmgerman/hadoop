@@ -148,6 +148,16 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|MDC
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|ws
@@ -236,6 +246,26 @@ name|HTTP_OK
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|web
+operator|.
+name|utils
+operator|.
+name|OzoneConsts
+operator|.
+name|OZONE_FUNCTION
+import|;
+end_import
+
 begin_comment
 comment|/**  * Bucket Class handles all ozone Bucket related actions.  */
 end_comment
@@ -274,6 +304,15 @@ parameter_list|)
 throws|throws
 name|OzoneException
 block|{
+name|MDC
+operator|.
+name|put
+argument_list|(
+name|OZONE_FUNCTION
+argument_list|,
+literal|"createBucket"
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|BucketProcessTemplate
@@ -390,6 +429,15 @@ parameter_list|)
 throws|throws
 name|OzoneException
 block|{
+name|MDC
+operator|.
+name|put
+argument_list|(
+name|OZONE_FUNCTION
+argument_list|,
+literal|"updateBucket"
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|BucketProcessTemplate
@@ -568,6 +616,15 @@ parameter_list|)
 throws|throws
 name|OzoneException
 block|{
+name|MDC
+operator|.
+name|put
+argument_list|(
+name|OZONE_FUNCTION
+argument_list|,
+literal|"deleteBucket"
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|BucketProcessTemplate
@@ -673,6 +730,15 @@ parameter_list|)
 throws|throws
 name|OzoneException
 block|{
+name|MDC
+operator|.
+name|put
+argument_list|(
+name|OZONE_FUNCTION
+argument_list|,
+literal|"listBucket"
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|BucketProcessTemplate
