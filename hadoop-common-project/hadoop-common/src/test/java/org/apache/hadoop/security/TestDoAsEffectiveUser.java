@@ -304,7 +304,7 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|TestSaslRPC
+name|TestRpcBase
 operator|.
 name|TestTokenSecretManager
 import|;
@@ -320,7 +320,7 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|TestSaslRPC
+name|TestRpcBase
 operator|.
 name|TestTokenIdentifier
 import|;
@@ -336,7 +336,7 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|TestSaslRPC
+name|TestRpcBase
 operator|.
 name|TestTokenSelector
 import|;
