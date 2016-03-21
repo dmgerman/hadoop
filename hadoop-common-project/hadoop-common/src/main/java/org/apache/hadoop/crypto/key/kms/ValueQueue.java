@@ -36,6 +36,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashSet
 import|;
 end_import
@@ -57,6 +67,16 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -928,7 +948,7 @@ block|{
 comment|//NOP
 block|}
 block|}
-comment|/**    * Get size of the Queue for keyName    * @param keyName the key name    * @return int queue size    * @throws ExecutionException    */
+comment|/**    * Get size of the Queue for keyName. This is only used in unit tests.    * @param keyName the key name    * @return int queue size    */
 DECL|method|getSize (String keyName)
 specifier|public
 name|int
@@ -937,11 +957,50 @@ parameter_list|(
 name|String
 name|keyName
 parameter_list|)
-throws|throws
-name|ExecutionException
+block|{
+comment|// We can't do keyQueues.get(keyName).size() here,
+comment|// since that will have the side effect of populating the cache.
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|LinkedBlockingQueue
+argument_list|<
+name|E
+argument_list|>
+argument_list|>
+name|map
+init|=
+name|keyQueues
+operator|.
+name|getAllPresent
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|keyName
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|map
+operator|.
+name|get
+argument_list|(
+name|keyName
+argument_list|)
+operator|==
+literal|null
+condition|)
 block|{
 return|return
-name|keyQueues
+literal|0
+return|;
+block|}
+return|return
+name|map
 operator|.
 name|get
 argument_list|(

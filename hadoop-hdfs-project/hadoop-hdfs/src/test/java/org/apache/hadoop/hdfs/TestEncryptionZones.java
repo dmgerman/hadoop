@@ -1263,7 +1263,7 @@ class|class
 name|TestEncryptionZones
 block|{
 DECL|field|conf
-specifier|private
+specifier|protected
 name|Configuration
 name|conf
 decl_stmt|;
@@ -1273,7 +1273,7 @@ name|FileSystemTestHelper
 name|fsHelper
 decl_stmt|;
 DECL|field|cluster
-specifier|private
+specifier|protected
 name|MiniDFSCluster
 name|cluster
 decl_stmt|;
