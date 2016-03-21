@@ -121,6 +121,26 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|tools
+operator|.
+name|offlineImageViewer
+operator|.
+name|PBImageXmlWriter
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -2559,7 +2579,7 @@ name|node
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"namespaceId"
+name|NAME_SECTION_NAMESPACE_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -2591,7 +2611,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"genstampV1"
+name|NAME_SECTION_GENSTAMPV1
 argument_list|)
 decl_stmt|;
 if|if
@@ -2615,7 +2635,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"genstampV2"
+name|NAME_SECTION_GENSTAMPV2
 argument_list|)
 expr_stmt|;
 if|if
@@ -2639,7 +2659,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"genstampV1Limit"
+name|NAME_SECTION_GENSTAMPV1_LIMIT
 argument_list|)
 expr_stmt|;
 if|if
@@ -2663,7 +2683,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"lastAllocatedBlockId"
+name|NAME_SECTION_LAST_ALLOCATED_BLOCK_ID
 argument_list|)
 expr_stmt|;
 if|if
@@ -2687,7 +2707,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"txid"
+name|NAME_SECTION_TXID
 argument_list|)
 expr_stmt|;
 if|if
@@ -2711,7 +2731,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"rollingUpgradeStartTime"
+name|NAME_SECTION_ROLLING_UPGRADE_START_TIME
 argument_list|)
 expr_stmt|;
 if|if
@@ -2735,7 +2755,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"lastAllocatedStripedBlockId"
+name|NAME_SECTION_LAST_ALLOCATED_STRIPED_BLOCK_ID
 argument_list|)
 expr_stmt|;
 if|if
@@ -2877,7 +2897,7 @@ name|headerNode
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"lastInodeId"
+name|INODE_SECTION_LAST_INODE_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -2902,7 +2922,7 @@ name|headerNode
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"numInodes"
+name|INODE_SECTION_NUM_INODES
 argument_list|)
 decl_stmt|;
 if|if
@@ -2965,7 +2985,7 @@ try|try
 block|{
 name|expectTag
 argument_list|(
-literal|"inode"
+name|INODE_SECTION_INODE
 argument_list|,
 literal|false
 argument_list|)
@@ -3035,7 +3055,7 @@ expr_stmt|;
 block|}
 name|expectTagEnd
 argument_list|(
-literal|"INodeSection"
+name|INODE_SECTION_NAME
 argument_list|)
 expr_stmt|;
 name|recordSectionLength
@@ -3072,7 +3092,7 @@ name|node
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"type"
+name|INODE_SECTION_TYPE
 argument_list|)
 decl_stmt|;
 if|if
@@ -3111,7 +3131,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"id"
+name|SECTION_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -3143,7 +3163,7 @@ name|node
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"name"
+name|SECTION_NAME
 argument_list|)
 decl_stmt|;
 if|if
@@ -3282,7 +3302,7 @@ name|node
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"replication"
+name|SECTION_REPLICATION
 argument_list|)
 decl_stmt|;
 if|if
@@ -3307,7 +3327,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"mtime"
+name|INODE_SECTION_MTIME
 argument_list|)
 decl_stmt|;
 if|if
@@ -3331,7 +3351,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"atime"
+name|INODE_SECTION_ATIME
 argument_list|)
 expr_stmt|;
 if|if
@@ -3355,7 +3375,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"preferredBlockSize"
+name|INODE_SECTION_PREFERRED_BLOCK_SIZE
 argument_list|)
 expr_stmt|;
 if|if
@@ -3380,7 +3400,7 @@ name|node
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"permission"
+name|INODE_SECTION_PERMISSION
 argument_list|)
 decl_stmt|;
 if|if
@@ -3408,7 +3428,7 @@ name|node
 operator|.
 name|removeChild
 argument_list|(
-literal|"blocks"
+name|INODE_SECTION_BLOCKS
 argument_list|)
 decl_stmt|;
 if|if
@@ -3430,7 +3450,7 @@ name|blocks
 operator|.
 name|removeChild
 argument_list|(
-literal|"block"
+name|INODE_SECTION_BLOCK
 argument_list|)
 decl_stmt|;
 if|if
@@ -3463,7 +3483,7 @@ name|block
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"id"
+name|SECTION_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -3495,7 +3515,7 @@ name|block
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"genstamp"
+name|INODE_SECTION_GEMSTAMP
 argument_list|)
 decl_stmt|;
 if|if
@@ -3527,7 +3547,7 @@ name|block
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"numBytes"
+name|INODE_SECTION_NUM_BYTES
 argument_list|)
 decl_stmt|;
 if|if
@@ -3568,7 +3588,7 @@ name|node
 operator|.
 name|removeChild
 argument_list|(
-literal|"file-under-construction"
+name|INODE_SECTION_FILE_UNDER_CONSTRUCTION
 argument_list|)
 decl_stmt|;
 if|if
@@ -3599,7 +3619,7 @@ name|fileUnderConstruction
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"clientName"
+name|INODE_SECTION_CLIENT_NAME
 argument_list|)
 decl_stmt|;
 if|if
@@ -3633,7 +3653,7 @@ name|fileUnderConstruction
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"clientMachine"
+name|INODE_SECTION_CLIENT_MACHINE
 argument_list|)
 decl_stmt|;
 if|if
@@ -3675,7 +3695,7 @@ name|node
 operator|.
 name|removeChild
 argument_list|(
-literal|"acls"
+name|INODE_SECTION_ACLS
 argument_list|)
 decl_stmt|;
 if|if
@@ -3703,7 +3723,7 @@ name|node
 operator|.
 name|removeChild
 argument_list|(
-literal|"xattrs"
+name|INODE_SECTION_XATTRS
 argument_list|)
 decl_stmt|;
 if|if
@@ -3730,7 +3750,7 @@ name|node
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"storagePolicyId"
+name|INODE_SECTION_STORAGE_POLICY_ID
 argument_list|)
 expr_stmt|;
 if|if
@@ -3755,7 +3775,7 @@ name|node
 operator|.
 name|removeChildBool
 argument_list|(
-literal|"isStriped"
+name|INODE_SECTION_IS_STRIPED
 argument_list|)
 decl_stmt|;
 name|bld
@@ -3826,7 +3846,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"mtime"
+name|INODE_SECTION_MTIME
 argument_list|)
 decl_stmt|;
 if|if
@@ -3850,7 +3870,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"nsquota"
+name|INODE_SECTION_NS_QUOTA
 argument_list|)
 expr_stmt|;
 if|if
@@ -3874,7 +3894,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"dsquota"
+name|INODE_SECTION_DS_QUOTA
 argument_list|)
 expr_stmt|;
 if|if
@@ -3899,7 +3919,7 @@ name|node
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"permission"
+name|INODE_SECTION_PERMISSION
 argument_list|)
 decl_stmt|;
 if|if
@@ -3927,7 +3947,7 @@ name|node
 operator|.
 name|removeChild
 argument_list|(
-literal|"acls"
+name|INODE_SECTION_ACLS
 argument_list|)
 decl_stmt|;
 if|if
@@ -3955,7 +3975,7 @@ name|node
 operator|.
 name|removeChild
 argument_list|(
-literal|"xattrs"
+name|INODE_SECTION_XATTRS
 argument_list|)
 decl_stmt|;
 if|if
@@ -4002,7 +4022,7 @@ name|node
 operator|.
 name|removeChild
 argument_list|(
-literal|"typeQuota"
+name|INODE_SECTION_TYPE_QUOTA
 argument_list|)
 decl_stmt|;
 if|if
@@ -4035,7 +4055,7 @@ name|typeQuota
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"type"
+name|INODE_SECTION_TYPE
 argument_list|)
 decl_stmt|;
 if|if
@@ -4098,7 +4118,7 @@ name|typeQuota
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"quota"
+name|INODE_SECTION_QUOTA
 argument_list|)
 decl_stmt|;
 if|if
@@ -4199,7 +4219,7 @@ name|node
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"permission"
+name|INODE_SECTION_PERMISSION
 argument_list|)
 decl_stmt|;
 if|if
@@ -4227,7 +4247,7 @@ name|node
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"target"
+name|INODE_SECTION_TARGET
 argument_list|)
 decl_stmt|;
 if|if
@@ -4259,7 +4279,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"mtime"
+name|INODE_SECTION_MTIME
 argument_list|)
 decl_stmt|;
 if|if
@@ -4283,7 +4303,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"atime"
+name|INODE_SECTION_ATIME
 argument_list|)
 expr_stmt|;
 if|if
@@ -4375,7 +4395,7 @@ name|xattrs
 operator|.
 name|removeChild
 argument_list|(
-literal|"xattr"
+name|INODE_SECTION_XATTR
 argument_list|)
 decl_stmt|;
 if|if
@@ -4408,7 +4428,7 @@ name|xattr
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"ns"
+name|INODE_SECTION_NS
 argument_list|)
 decl_stmt|;
 if|if
@@ -4450,7 +4470,7 @@ name|xattr
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"name"
+name|SECTION_NAME
 argument_list|)
 decl_stmt|;
 name|String
@@ -4460,7 +4480,7 @@ name|xattr
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"val"
+name|INODE_SECTION_VAL
 argument_list|)
 decl_stmt|;
 name|byte
@@ -4483,7 +4503,7 @@ name|xattr
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"valHex"
+name|INODE_SECTION_VAL_HEX
 argument_list|)
 decl_stmt|;
 if|if
@@ -4674,7 +4694,7 @@ name|secretHeader
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"currentId"
+name|SECRET_MANAGER_SECTION_CURRENT_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -4706,7 +4726,7 @@ name|secretHeader
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"tokenSequenceNumber"
+name|SECRET_MANAGER_SECTION_TOKEN_SEQUENCE_NUMBER
 argument_list|)
 decl_stmt|;
 if|if
@@ -4740,7 +4760,7 @@ name|secretHeader
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"numDelegationKeys"
+name|SECRET_MANAGER_SECTION_NUM_DELEGATION_KEYS
 argument_list|)
 decl_stmt|;
 if|if
@@ -4774,7 +4794,7 @@ name|secretHeader
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"numTokens"
+name|SECRET_MANAGER_SECTION_NUM_TOKENS
 argument_list|)
 decl_stmt|;
 if|if
@@ -4837,7 +4857,7 @@ try|try
 block|{
 name|expectTag
 argument_list|(
-literal|"delegationKey"
+name|SECRET_MANAGER_SECTION_DELEGATION_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -4900,7 +4920,7 @@ name|dkey
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"id"
+name|SECTION_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -4934,7 +4954,7 @@ name|dkey
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"expiry"
+name|SECRET_MANAGER_SECTION_EXPIRY
 argument_list|)
 decl_stmt|;
 if|if
@@ -4971,7 +4991,7 @@ name|dkey
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"key"
+name|SECRET_MANAGER_SECTION_KEY
 argument_list|)
 decl_stmt|;
 if|if
@@ -5008,7 +5028,7 @@ name|dkey
 operator|.
 name|verifyNoRemainingKeys
 argument_list|(
-literal|"delegationKey"
+name|SECRET_MANAGER_SECTION_DELEGATION_KEY
 argument_list|)
 expr_stmt|;
 name|dbld
@@ -5053,7 +5073,7 @@ try|try
 block|{
 name|expectTag
 argument_list|(
-literal|"token"
+name|SECRET_MANAGER_SECTION_TOKEN
 argument_list|,
 literal|false
 argument_list|)
@@ -5116,7 +5136,7 @@ name|token
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"version"
+name|SECRET_MANAGER_SECTION_VERSION
 argument_list|)
 decl_stmt|;
 if|if
@@ -5141,7 +5161,7 @@ name|token
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"owner"
+name|SECRET_MANAGER_SECTION_OWNER
 argument_list|)
 decl_stmt|;
 if|if
@@ -5166,7 +5186,7 @@ name|token
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"renewer"
+name|SECRET_MANAGER_SECTION_RENEWER
 argument_list|)
 decl_stmt|;
 if|if
@@ -5191,7 +5211,7 @@ name|token
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"realUser"
+name|SECRET_MANAGER_SECTION_REAL_USER
 argument_list|)
 decl_stmt|;
 if|if
@@ -5216,7 +5236,7 @@ name|token
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"issueDate"
+name|SECRET_MANAGER_SECTION_ISSUE_DATE
 argument_list|)
 decl_stmt|;
 if|if
@@ -5244,7 +5264,7 @@ name|token
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"maxDate"
+name|SECRET_MANAGER_SECTION_MAX_DATE
 argument_list|)
 decl_stmt|;
 if|if
@@ -5272,7 +5292,7 @@ name|token
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"sequenceNumber"
+name|SECRET_MANAGER_SECTION_SEQUENCE_NUMBER
 argument_list|)
 decl_stmt|;
 if|if
@@ -5297,7 +5317,7 @@ name|token
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"masterKeyId"
+name|SECRET_MANAGER_SECTION_MASTER_KEY_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -5322,7 +5342,7 @@ name|token
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"expiryDate"
+name|SECRET_MANAGER_SECTION_EXPIRY_DATE
 argument_list|)
 decl_stmt|;
 if|if
@@ -5363,7 +5383,7 @@ expr_stmt|;
 block|}
 name|expectTagEnd
 argument_list|(
-literal|"SecretManagerSection"
+name|SECRET_MANAGER_SECTION_NAME
 argument_list|)
 expr_stmt|;
 name|recordSectionLength
@@ -5487,7 +5507,7 @@ name|node
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"nextDirectiveId"
+name|CACHE_MANAGER_SECTION_NEXT_DIRECTIVE_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -5519,7 +5539,7 @@ name|node
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"numPools"
+name|CACHE_MANAGER_SECTION_NUM_POOLS
 argument_list|)
 decl_stmt|;
 if|if
@@ -5551,7 +5571,7 @@ name|node
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"numDirectives"
+name|CACHE_MANAGER_SECTION_NUM_DIRECTIVES
 argument_list|)
 decl_stmt|;
 if|if
@@ -5602,7 +5622,7 @@ try|try
 block|{
 name|expectTag
 argument_list|(
-literal|"pool"
+name|CACHE_MANAGER_SECTION_POOL
 argument_list|,
 literal|false
 argument_list|)
@@ -5671,7 +5691,7 @@ try|try
 block|{
 name|expectTag
 argument_list|(
-literal|"directive"
+name|CACHE_MANAGER_SECTION_DIRECTIVE
 argument_list|,
 literal|false
 argument_list|)
@@ -5726,7 +5746,7 @@ expr_stmt|;
 block|}
 name|expectTagEnd
 argument_list|(
-literal|"CacheManagerSection"
+name|CACHE_MANAGER_SECTION_NAME
 argument_list|)
 expr_stmt|;
 name|recordSectionLength
@@ -5768,7 +5788,7 @@ name|pool
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"poolName"
+name|CACHE_MANAGER_SECTION_POOL_NAME
 argument_list|)
 decl_stmt|;
 if|if
@@ -5800,7 +5820,7 @@ name|pool
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"ownerName"
+name|CACHE_MANAGER_SECTION_OWNER_NAME
 argument_list|)
 decl_stmt|;
 if|if
@@ -5832,7 +5852,7 @@ name|pool
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"groupName"
+name|CACHE_MANAGER_SECTION_GROUP_NAME
 argument_list|)
 decl_stmt|;
 if|if
@@ -5864,7 +5884,7 @@ name|pool
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"mode"
+name|CACHE_MANAGER_SECTION_MODE
 argument_list|)
 decl_stmt|;
 if|if
@@ -5896,7 +5916,7 @@ name|pool
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"limit"
+name|CACHE_MANAGER_SECTION_LIMIT
 argument_list|)
 decl_stmt|;
 if|if
@@ -5928,7 +5948,7 @@ name|pool
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"maxRelativeExpiry"
+name|CACHE_MANAGER_SECTION_MAX_RELATIVE_EXPIRY
 argument_list|)
 decl_stmt|;
 if|if
@@ -5999,7 +6019,7 @@ name|directive
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"id"
+name|SECTION_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -6031,7 +6051,7 @@ name|directive
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"path"
+name|SECTION_PATH
 argument_list|)
 decl_stmt|;
 if|if
@@ -6063,7 +6083,7 @@ name|directive
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"replication"
+name|SECTION_REPLICATION
 argument_list|)
 decl_stmt|;
 if|if
@@ -6095,7 +6115,7 @@ name|directive
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"pool"
+name|CACHE_MANAGER_SECTION_POOL
 argument_list|)
 decl_stmt|;
 if|if
@@ -6127,7 +6147,7 @@ name|directive
 operator|.
 name|removeChild
 argument_list|(
-literal|"expiration"
+name|CACHE_MANAGER_SECTION_EXPIRATION
 argument_list|)
 decl_stmt|;
 if|if
@@ -6154,7 +6174,7 @@ name|expiration
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"millis"
+name|CACHE_MANAGER_SECTION_MILLIS
 argument_list|)
 decl_stmt|;
 if|if
@@ -6187,7 +6207,7 @@ name|expiration
 operator|.
 name|removeChildBool
 argument_list|(
-literal|"relative"
+name|CACHE_MANAGER_SECTION_RELATIVE
 argument_list|)
 condition|)
 block|{
@@ -6273,7 +6293,7 @@ name|ev
 init|=
 name|expectTag
 argument_list|(
-literal|"ref"
+name|INODE_REFERENCE_SECTION_REF
 argument_list|,
 literal|true
 argument_list|)
@@ -6327,7 +6347,7 @@ name|inodeRef
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"referredId"
+name|INODE_REFERENCE_SECTION_REFERRED_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -6384,7 +6404,7 @@ name|inodeRef
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"dstSnapshotId"
+name|INODE_REFERENCE_SECTION_DST_SNAPSHOT_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -6409,7 +6429,7 @@ name|inodeRef
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"lastSnapshotId"
+name|INODE_REFERENCE_SECTION_LAST_SNAPSHOT_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -6494,7 +6514,7 @@ name|ev
 init|=
 name|expectTag
 argument_list|(
-literal|"directory"
+name|INODE_DIRECTORY_SECTION_DIRECTORY
 argument_list|,
 literal|true
 argument_list|)
@@ -6548,7 +6568,7 @@ name|directory
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"parent"
+name|INODE_DIRECTORY_SECTION_PARENT
 argument_list|)
 decl_stmt|;
 if|if
@@ -6578,7 +6598,7 @@ name|directory
 operator|.
 name|removeChild
 argument_list|(
-literal|"child"
+name|INODE_DIRECTORY_SECTION_CHILD
 argument_list|)
 decl_stmt|;
 if|if
@@ -6618,7 +6638,7 @@ name|directory
 operator|.
 name|removeChild
 argument_list|(
-literal|"refChild"
+name|INODE_DIRECTORY_SECTION_REF_CHILD
 argument_list|)
 decl_stmt|;
 if|if
@@ -6713,7 +6733,7 @@ name|ev
 init|=
 name|expectTag
 argument_list|(
-literal|"inode"
+name|INODE_SECTION_INODE
 argument_list|,
 literal|true
 argument_list|)
@@ -6759,7 +6779,7 @@ name|fileUnderConstruction
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"id"
+name|SECTION_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -6784,7 +6804,7 @@ name|fileUnderConstruction
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"path"
+name|SECTION_PATH
 argument_list|)
 decl_stmt|;
 if|if
@@ -6894,7 +6914,7 @@ name|header
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"snapshotCounter"
+name|SNAPSHOT_SECTION_SNAPSHOT_COUNTER
 argument_list|)
 decl_stmt|;
 if|if
@@ -6928,7 +6948,7 @@ name|header
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"numSnapshots"
+name|SNAPSHOT_SECTION_NUM_SNAPSHOTS
 argument_list|)
 decl_stmt|;
 if|if
@@ -6967,7 +6987,7 @@ name|header
 operator|.
 name|removeChild
 argument_list|(
-literal|"snapshottableDir"
+name|SNAPSHOT_SECTION_SNAPSHOT_TABLE_DIR
 argument_list|)
 decl_stmt|;
 if|if
@@ -6986,7 +7006,7 @@ name|sd
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"dir"
+name|SNAPSHOT_SECTION_DIR
 argument_list|)
 decl_stmt|;
 name|sd
@@ -7037,7 +7057,7 @@ try|try
 block|{
 name|expectTag
 argument_list|(
-literal|"snapshot"
+name|SNAPSHOT_SECTION_SNAPSHOT
 argument_list|,
 literal|false
 argument_list|)
@@ -7107,7 +7127,7 @@ name|snapshot
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"id"
+name|SECTION_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -7139,7 +7159,7 @@ name|snapshot
 operator|.
 name|removeChild
 argument_list|(
-literal|"root"
+name|SNAPSHOT_SECTION_ROOT
 argument_list|)
 decl_stmt|;
 name|INodeSection
@@ -7174,7 +7194,7 @@ expr_stmt|;
 block|}
 name|expectTagEnd
 argument_list|(
-literal|"SnapshotSection"
+name|SNAPSHOT_SECTION_NAME
 argument_list|)
 expr_stmt|;
 name|recordSectionLength
@@ -7265,7 +7285,7 @@ name|name
 operator|.
 name|equals
 argument_list|(
-literal|"SnapshotDiffSection"
+name|SNAPSHOT_DIFF_SECTION_NAME
 argument_list|)
 condition|)
 block|{
@@ -7301,7 +7321,7 @@ name|tagName
 operator|.
 name|equals
 argument_list|(
-literal|"dirDiffEntry"
+name|SNAPSHOT_DIFF_SECTION_DIR_DIFF_ENTRY
 argument_list|)
 condition|)
 block|{
@@ -7316,7 +7336,7 @@ name|tagName
 operator|.
 name|equals
 argument_list|(
-literal|"fileDiffEntry"
+name|SNAPSHOT_DIFF_SECTION_FILE_DIFF_ENTRY
 argument_list|)
 condition|)
 block|{
@@ -7409,7 +7429,7 @@ name|dirDiffHeader
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"inodeId"
+name|SNAPSHOT_DIFF_SECTION_INODE_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -7441,7 +7461,7 @@ name|dirDiffHeader
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"count"
+name|SNAPSHOT_DIFF_SECTION_COUNT
 argument_list|)
 decl_stmt|;
 if|if
@@ -7502,7 +7522,7 @@ try|try
 block|{
 name|expectTag
 argument_list|(
-literal|"dirDiff"
+name|SNAPSHOT_DIFF_SECTION_DIR_DIFF
 argument_list|,
 literal|false
 argument_list|)
@@ -7573,7 +7593,7 @@ name|dirDiff
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"snapshotId"
+name|SNAPSHOT_DIFF_SECTION_SNAPSHOT_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -7598,7 +7618,7 @@ name|dirDiff
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"childrenSize"
+name|SNAPSHOT_DIFF_SECTION_CHILDREN_SIZE
 argument_list|)
 decl_stmt|;
 if|if
@@ -7626,7 +7646,7 @@ name|dirDiff
 operator|.
 name|removeChildBool
 argument_list|(
-literal|"isSnapshotRoot"
+name|SNAPSHOT_DIFF_SECTION_IS_SNAPSHOT_ROOT
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -7644,7 +7664,7 @@ name|dirDiff
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"name"
+name|SECTION_NAME
 argument_list|)
 decl_stmt|;
 if|if
@@ -7677,7 +7697,7 @@ name|dirDiff
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"createdListSize"
+name|SNAPSHOT_DIFF_SECTION_CREATED_LIST_SIZE
 argument_list|)
 decl_stmt|;
 if|if
@@ -7716,7 +7736,7 @@ name|dirDiff
 operator|.
 name|removeChild
 argument_list|(
-literal|"deletedInode"
+name|SNAPSHOT_DIFF_SECTION_DELETED_INODE
 argument_list|)
 decl_stmt|;
 if|if
@@ -7756,7 +7776,7 @@ name|dirDiff
 operator|.
 name|removeChild
 argument_list|(
-literal|"deletedInoderef"
+name|SNAPSHOT_DIFF_SECTION_DELETED_INODE_REF
 argument_list|)
 decl_stmt|;
 if|if
@@ -7812,7 +7832,7 @@ name|dirDiff
 operator|.
 name|removeChild
 argument_list|(
-literal|"created"
+name|SNAPSHOT_DIFF_SECTION_CREATED
 argument_list|)
 decl_stmt|;
 if|if
@@ -7831,7 +7851,7 @@ name|created
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"name"
+name|SECTION_NAME
 argument_list|)
 decl_stmt|;
 if|if
@@ -7924,7 +7944,7 @@ expr_stmt|;
 block|}
 name|expectTagEnd
 argument_list|(
-literal|"dirDiffEntry"
+name|SNAPSHOT_DIFF_SECTION_DIR_DIFF_ENTRY
 argument_list|)
 expr_stmt|;
 block|}
@@ -7987,7 +8007,7 @@ name|fileDiffHeader
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"inodeid"
+name|SNAPSHOT_DIFF_SECTION_INODE_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -8019,7 +8039,7 @@ name|fileDiffHeader
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"count"
+name|SNAPSHOT_DIFF_SECTION_COUNT
 argument_list|)
 decl_stmt|;
 if|if
@@ -8080,7 +8100,7 @@ try|try
 block|{
 name|expectTag
 argument_list|(
-literal|"fileDiff"
+name|SNAPSHOT_DIFF_SECTION_FILE_DIFF
 argument_list|,
 literal|false
 argument_list|)
@@ -8151,7 +8171,7 @@ name|fileDiff
 operator|.
 name|removeChildInt
 argument_list|(
-literal|"snapshotId"
+name|SNAPSHOT_DIFF_SECTION_SNAPSHOT_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -8176,7 +8196,7 @@ name|fileDiff
 operator|.
 name|removeChildLong
 argument_list|(
-literal|"size"
+name|SNAPSHOT_DIFF_SECTION_SIZE
 argument_list|)
 decl_stmt|;
 if|if
@@ -8201,7 +8221,7 @@ name|fileDiff
 operator|.
 name|removeChildStr
 argument_list|(
-literal|"name"
+name|SECTION_NAME
 argument_list|)
 decl_stmt|;
 if|if
@@ -8248,7 +8268,7 @@ expr_stmt|;
 block|}
 name|expectTagEnd
 argument_list|(
-literal|"fileDiffEntry"
+name|SNAPSHOT_DIFF_SECTION_FILE_DIFF_ENTRY
 argument_list|)
 expr_stmt|;
 block|}
