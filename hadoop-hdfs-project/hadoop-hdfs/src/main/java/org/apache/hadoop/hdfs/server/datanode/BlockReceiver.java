@@ -5502,7 +5502,7 @@ decl_stmt|;
 if|if
 condition|(
 name|type
-operator|!=
+operator|==
 name|PacketResponderType
 operator|.
 name|HAS_DOWNSTREAM_IN_PIPELINE
