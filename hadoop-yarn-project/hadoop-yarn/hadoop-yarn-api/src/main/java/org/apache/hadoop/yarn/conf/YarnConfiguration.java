@@ -6104,6 +6104,26 @@ literal|7
 operator|*
 literal|60
 decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|TIMELINE_SERVICE_CLIENT_INTERNAL_ATTEMPT_DIR_CACHE_SIZE
+name|TIMELINE_SERVICE_CLIENT_INTERNAL_ATTEMPT_DIR_CACHE_SIZE
+init|=
+name|TIMELINE_SERVICE_CLIENT_PREFIX
+operator|+
+literal|"internal-attempt-dir-cache-size"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DEFAULT_TIMELINE_SERVICE_CLIENT_INTERNAL_ATTEMPT_DIR_CACHE_SIZE
+name|DEFAULT_TIMELINE_SERVICE_CLIENT_INTERNAL_ATTEMPT_DIR_CACHE_SIZE
+init|=
+literal|1000
+decl_stmt|;
 comment|// This is temporary solution. The configuration will be deleted once we have
 comment|// the FileSystem API to check whether append operation is supported or not.
 DECL|field|TIMELINE_SERVICE_ENTITYFILE_FS_SUPPORT_APPEND
