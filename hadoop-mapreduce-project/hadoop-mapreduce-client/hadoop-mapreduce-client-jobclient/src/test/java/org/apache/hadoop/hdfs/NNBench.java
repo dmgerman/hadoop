@@ -3671,6 +3671,13 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 expr_stmt|;
+name|doDeleteOp
+argument_list|(
+name|fileName
+argument_list|,
+name|reporter
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
