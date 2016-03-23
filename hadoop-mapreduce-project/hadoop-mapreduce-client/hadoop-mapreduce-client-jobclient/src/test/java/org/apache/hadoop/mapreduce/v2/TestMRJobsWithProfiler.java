@@ -801,7 +801,7 @@ name|MRJobConfig
 operator|.
 name|TASK_MAP_PROFILE_PARAMS
 argument_list|,
-literal|"-agentlib:hprof=cpu=times,heap=sites,force=n,thread=y,verbose=n,"
+literal|"-agentlib:hprof=cpu=samples,heap=sites,force=n,thread=y,verbose=n,"
 operator|+
 literal|"file=%s"
 argument_list|)
