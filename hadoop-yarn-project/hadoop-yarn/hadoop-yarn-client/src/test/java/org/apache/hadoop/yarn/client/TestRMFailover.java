@@ -1597,16 +1597,16 @@ name|getRedirectURL
 argument_list|(
 name|rm2Url
 operator|+
-literal|"/jmx"
+literal|"/jmx?param1=value1+x&param2=y"
 argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|redirectURL
-argument_list|,
 name|rm1Url
 operator|+
-literal|"/jmx"
+literal|"/jmx?param1=value1+x&param2=y"
+argument_list|,
+name|redirectURL
 argument_list|)
 expr_stmt|;
 comment|// standby RM links /conf, /stacks, /logLevel, /static, /logs,
@@ -1842,6 +1842,7 @@ name|HttpServletResponse
 operator|.
 name|SC_TEMPORARY_REDIRECT
 condition|)
+block|{
 name|redirectUrl
 operator|=
 name|conn
@@ -1851,6 +1852,7 @@ argument_list|(
 literal|"Location"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
