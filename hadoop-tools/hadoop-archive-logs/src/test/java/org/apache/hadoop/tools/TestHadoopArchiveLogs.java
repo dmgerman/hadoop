@@ -2649,7 +2649,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"\"$HADOOP_PREFIX\"/bin/hadoop org.apache.hadoop.tools."
+literal|"\"$HADOOP_HOME\"/bin/hadoop org.apache.hadoop.tools."
 operator|+
 literal|"HadoopArchiveLogsRunner -appId \"$appId\" -user \"$user\" "
 operator|+
@@ -2684,7 +2684,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"\"$HADOOP_PREFIX\"/bin/hadoop org.apache.hadoop.tools."
+literal|"\"$HADOOP_HOME\"/bin/hadoop org.apache.hadoop.tools."
 operator|+
 literal|"HadoopArchiveLogsRunner -appId \"$appId\" -user \"$user\" "
 operator|+

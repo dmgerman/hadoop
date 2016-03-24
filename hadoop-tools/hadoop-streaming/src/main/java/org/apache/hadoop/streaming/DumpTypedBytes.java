@@ -507,7 +507,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Usage: $HADOOP_PREFIX/bin/hadoop jar hadoop-streaming.jar"
+literal|"Usage: $HADOOP_HOME/bin/hadoop jar hadoop-streaming.jar"
 operator|+
 literal|" dumptb<glob-pattern>"
 argument_list|)

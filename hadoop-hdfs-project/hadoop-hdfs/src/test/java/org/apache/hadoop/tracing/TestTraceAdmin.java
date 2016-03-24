@@ -325,7 +325,7 @@ name|set
 argument_list|(
 name|TraceUtils
 operator|.
-name|DEFAULT_HADOOP_PREFIX
+name|DEFAULT_HADOOP_TRACE_PREFIX
 operator|+
 name|Tracer
 operator|.

@@ -1448,7 +1448,7 @@ comment|// set default gdb commands for map and reduce task
 name|String
 name|defScript
 init|=
-literal|"$HADOOP_PREFIX/src/c++/pipes/debug/pipes-default-script"
+literal|"$HADOOP_HOME/src/c++/pipes/debug/pipes-default-script"
 decl_stmt|;
 name|setIfUnset
 argument_list|(

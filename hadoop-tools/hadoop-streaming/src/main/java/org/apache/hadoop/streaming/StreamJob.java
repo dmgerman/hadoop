@@ -2953,7 +2953,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Usage: $HADOOP_PREFIX/bin/hadoop jar hadoop-streaming.jar"
+literal|"Usage: $HADOOP_HOME/bin/hadoop jar hadoop-streaming.jar"
 operator|+
 literal|" [options]"
 argument_list|)
@@ -3238,7 +3238,7 @@ name|println
 argument_list|(
 literal|"Use "
 operator|+
-literal|"$HADOOP_PREFIX/bin/hadoop jar hadoop-streaming.jar -info"
+literal|"$HADOOP_HOME/bin/hadoop jar hadoop-streaming.jar -info"
 argument_list|)
 expr_stmt|;
 return|return;
@@ -3700,7 +3700,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"  $HADOOP_PREFIX/bin/hadoop jar "
+literal|"  $HADOOP_HOME/bin/hadoop jar "
 operator|+
 literal|"/path/my-hadoop-streaming.jar [...]\\"
 argument_list|)
@@ -3796,7 +3796,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"   setenv HSTREAMING \"$HADOOP_PREFIX/bin/hadoop jar "
+literal|"   setenv HSTREAMING \"$HADOOP_HOME/bin/hadoop jar "
 operator|+
 literal|"hadoop-streaming.jar\""
 argument_list|)
@@ -3911,7 +3911,7 @@ name|env_
 operator|.
 name|getProperty
 argument_list|(
-literal|"HADOOP_PREFIX"
+literal|"HADOOP_HOME"
 argument_list|)
 decl_stmt|;
 comment|// standard Hadoop
@@ -3922,7 +3922,7 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|//fail("Missing required environment variable: HADOOP_PREFIX");
+comment|//fail("Missing required environment variable: HADOOP_HOME");
 name|h
 operator|=
 literal|"UNDEF"
@@ -3984,8 +3984,8 @@ decl_stmt|;
 comment|// Runtime code: ship same version of code as self (job submitter code)
 comment|// usually found in: build/contrib or build/hadoop-<version>-dev-streaming.jar
 comment|// First try an explicit spec: it's too hard to find our own location in this case:
-comment|// $HADOOP_PREFIX/bin/hadoop jar /not/first/on/classpath/custom-hadoop-streaming.jar
-comment|// where findInClasspath() would find the version of hadoop-streaming.jar in $HADOOP_PREFIX
+comment|// $HADOOP_HOME/bin/hadoop jar /not/first/on/classpath/custom-hadoop-streaming.jar
+comment|// where findInClasspath() would find the version of hadoop-streaming.jar in $HADOOP_HOME
 name|String
 name|runtimeClasses
 init|=

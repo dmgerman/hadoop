@@ -1113,7 +1113,7 @@ decl_stmt|;
 name|String
 name|testImage
 init|=
-literal|"testrepo.com/test-image rm -rf $HADOOP_PREFIX/*"
+literal|"testrepo.com/test-image rm -rf $HADOOP_HOME/*"
 decl_stmt|;
 name|Container
 name|container

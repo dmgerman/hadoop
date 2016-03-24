@@ -2484,7 +2484,7 @@ name|System
 operator|.
 name|getenv
 argument_list|(
-literal|"HADOOP_PREFIX"
+literal|"HADOOP_HOME"
 argument_list|)
 decl_stmt|;
 name|fs

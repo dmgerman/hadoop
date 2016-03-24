@@ -132,11 +132,11 @@ operator|.
 name|emptyList
 argument_list|()
 decl_stmt|;
-DECL|field|DEFAULT_HADOOP_PREFIX
+DECL|field|DEFAULT_HADOOP_TRACE_PREFIX
 specifier|static
 specifier|final
 name|String
-name|DEFAULT_HADOOP_PREFIX
+name|DEFAULT_HADOOP_TRACE_PREFIX
 init|=
 literal|"hadoop.htrace."
 decl_stmt|;
@@ -268,7 +268,7 @@ block|}
 return|return
 name|getInternal
 argument_list|(
-name|DEFAULT_HADOOP_PREFIX
+name|DEFAULT_HADOOP_TRACE_PREFIX
 operator|+
 name|key
 argument_list|)
