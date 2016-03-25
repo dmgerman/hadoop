@@ -221,7 +221,7 @@ literal|"reservation-id"
 argument_list|)
 DECL|field|reservationId
 specifier|private
-name|ReservationIdInfo
+name|String
 name|reservationId
 decl_stmt|;
 annotation|@
@@ -253,12 +253,6 @@ name|reservationDefinition
 operator|=
 operator|new
 name|ReservationDefinitionInfo
-argument_list|()
-expr_stmt|;
-name|reservationId
-operator|=
-operator|new
-name|ReservationIdInfo
 argument_list|()
 expr_stmt|;
 block|}
@@ -345,14 +339,13 @@ block|}
 block|}
 name|reservationId
 operator|=
-operator|new
-name|ReservationIdInfo
-argument_list|(
 name|allocation
 operator|.
 name|getReservationId
 argument_list|()
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 expr_stmt|;
 name|reservationDefinition
 operator|=
@@ -415,7 +408,7 @@ return|;
 block|}
 DECL|method|getReservationId ()
 specifier|public
-name|ReservationIdInfo
+name|String
 name|getReservationId
 parameter_list|()
 block|{
