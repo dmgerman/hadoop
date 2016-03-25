@@ -259,7 +259,7 @@ specifier|private
 name|TaskType
 name|type
 decl_stmt|;
-comment|/**    * Constructs a TaskID object from given {@link JobID}.      * @param jobId JobID that this tip belongs to     * @param type the {@link TaskType} of the task     * @param id the tip number    */
+comment|/**    * Constructs a TaskID object from given {@link JobID}.    *    * @param jobId JobID that this tip belongs to     * @param type the {@link TaskType} of the task     * @param id the tip number    */
 DECL|method|TaskID (JobID jobId, TaskType type, int id)
 specifier|public
 name|TaskID
@@ -307,7 +307,7 @@ operator|=
 name|type
 expr_stmt|;
 block|}
-comment|/**    * Constructs a TaskInProgressId object from given parts.    * @param jtIdentifier jobTracker identifier    * @param jobId job number     * @param type the TaskType     * @param id the tip number    */
+comment|/**    * Constructs a TaskInProgressId object from given parts.    *    * @param jtIdentifier jobTracker identifier    * @param jobId job number     * @param type the TaskType     * @param id the tip number    */
 DECL|method|TaskID (String jtIdentifier, int jobId, TaskType type, int id)
 specifier|public
 name|TaskID
@@ -341,7 +341,7 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructs a TaskID object from given {@link JobID}.    * @param jobId JobID that this tip belongs to    * @param isMap whether the tip is a map    * @param id the tip number    */
+comment|/**    * Constructs a TaskID object from given {@link JobID}.    *    * @param jobId JobID that this tip belongs to    * @param isMap whether the tip is a map    * @param id the tip number    */
 annotation|@
 name|Deprecated
 DECL|method|TaskID (JobID jobId, boolean isMap, int id)
@@ -376,7 +376,7 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructs a TaskInProgressId object from given parts.    * @param jtIdentifier jobTracker identifier    * @param jobId job number    * @param isMap whether the tip is a map    * @param id the tip number    */
+comment|/**    * Constructs a TaskInProgressId object from given parts.    *    * @param jtIdentifier jobTracker identifier    * @param jobId job number    * @param isMap whether the tip is a map    * @param id the tip number    */
 annotation|@
 name|Deprecated
 DECL|method|TaskID (String jtIdentifier, int jobId, boolean isMap, int id)
@@ -412,19 +412,27 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Default constructor for Writable. Sets the task type to    * {@link TaskType#REDUCE}, the ID to 0, and the job ID to an empty job ID.    */
 DECL|method|TaskID ()
 specifier|public
 name|TaskID
 parameter_list|()
 block|{
-name|jobId
-operator|=
+name|this
+argument_list|(
 operator|new
 name|JobID
 argument_list|()
+argument_list|,
+name|TaskType
+operator|.
+name|REDUCE
+argument_list|,
+literal|0
+argument_list|)
 expr_stmt|;
 block|}
-comment|/** Returns the {@link JobID} object that this tip belongs to */
+comment|/**    * Returns the {@link JobID} object that this tip belongs to.    *    * @return the JobID object    */
 DECL|method|getJobID ()
 specifier|public
 name|JobID
@@ -435,7 +443,7 @@ return|return
 name|jobId
 return|;
 block|}
-comment|/**Returns whether this TaskID is a map ID */
+comment|/**    * Returns whether this TaskID is a map ID.    *    * @return whether this TaskID is a map ID    */
 annotation|@
 name|Deprecated
 DECL|method|isMap ()
@@ -452,7 +460,7 @@ operator|.
 name|MAP
 return|;
 block|}
-comment|/**    * Get the type of the task    */
+comment|/**    * Get the type of the task.    *    * @return the type of the task    */
 DECL|method|getTaskType ()
 specifier|public
 name|TaskType
@@ -516,7 +524,7 @@ name|jobId
 argument_list|)
 return|;
 block|}
-comment|/**Compare TaskInProgressIds by first jobIds, then by tip numbers. Reduces are     * defined as greater then maps.*/
+comment|/**    * Compare TaskInProgressIds by first jobIds, then by tip numbers.    * Reducers are defined as greater than mappers.    *    * @param o the TaskID against which to compare    * @return 0 if equal, positive if this TaskID is greater, and negative if    * this TaskID is less    */
 annotation|@
 name|Override
 DECL|method|compareTo (ID o)
@@ -621,7 +629,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Add the unique string to the given builder.    * @param builder the builder to append to    * @return the builder that was passed in    */
+comment|/**    * Add the unique string to the given builder.    *    * @param builder the builder to append to    * @return the builder that was passed in    */
 DECL|method|appendTo (StringBuilder builder)
 specifier|protected
 name|StringBuilder
@@ -767,7 +775,7 @@ name|type
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Construct a TaskID object from given string     * @return constructed TaskID object or null if the given String is null    * @throws IllegalArgumentException if the given string is malformed    */
+comment|/**    * Construct a TaskID object from given string.    *    * @param str the target string    * @return constructed TaskID object or null if the given String is null    * @throws IllegalArgumentException if the given string is malformed    */
 DECL|method|forName (String str)
 specifier|public
 specifier|static
@@ -893,7 +901,7 @@ name|exceptionMsg
 argument_list|)
 throw|;
 block|}
-comment|/**    * Gets the character representing the {@link TaskType}    * @param type the TaskType    * @return the character    */
+comment|/**    * Gets the character representing the {@link TaskType}.    *    * @param type the TaskType    * @return the character    */
 DECL|method|getRepresentingCharacter (TaskType type)
 specifier|public
 specifier|static
@@ -913,7 +921,7 @@ name|type
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets the {@link TaskType} corresponding to the character    * @param c the character    * @return the TaskType    */
+comment|/**    * Gets the {@link TaskType} corresponding to the character.    *    * @param c the character    * @return the TaskType    */
 DECL|method|getTaskType (char c)
 specifier|public
 specifier|static
@@ -933,6 +941,7 @@ name|c
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns a string of characters describing all possible {@link TaskType}    * values    *    * @return a string of all task type characters    */
 DECL|method|getAllTaskTypes ()
 specifier|public
 specifier|static
