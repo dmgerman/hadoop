@@ -17,84 +17,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|any
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|mock
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|when
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|DataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|TimeoutException
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -220,6 +142,118 @@ name|Text
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|DataOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
+import|;
+end_import
+
 begin_class
 annotation|@
 name|SuppressWarnings
@@ -230,8 +264,6 @@ DECL|class|TestMRCJCFileInputFormat
 specifier|public
 class|class
 name|TestMRCJCFileInputFormat
-extends|extends
-name|TestCase
 block|{
 DECL|field|conf
 name|Configuration
@@ -308,6 +340,8 @@ name|build
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testLocality ()
 specifier|public
 name|void
@@ -796,6 +830,8 @@ name|replication
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testNumInputs ()
 specifier|public
 name|void
@@ -1114,6 +1150,8 @@ literal|null
 return|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testMultiLevelInput ()
 specifier|public
 name|void
@@ -1358,6 +1396,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"rawtypes"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testLastInputSplitAtSplitBoundary ()
 specifier|public
 name|void
@@ -1463,6 +1503,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"rawtypes"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testLastInputSplitExceedingSplitBoundary ()
 specifier|public
 name|void
@@ -1568,6 +1610,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"rawtypes"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testLastInputSplitSingleSplit ()
 specifier|public
 name|void
@@ -2160,7 +2204,7 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void

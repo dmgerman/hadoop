@@ -108,16 +108,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -144,6 +134,40 @@ name|IOUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_comment
 comment|/**  *   * test MultiFileSplit class  */
 end_comment
@@ -153,9 +177,9 @@ DECL|class|TestMultiFileSplit
 specifier|public
 class|class
 name|TestMultiFileSplit
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testReadWrite ()
 specifier|public
 name|void
@@ -366,6 +390,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * test method getLocations      * @throws IOException      */
+annotation|@
+name|Test
 DECL|method|testgetLocations ()
 specifier|public
 name|void

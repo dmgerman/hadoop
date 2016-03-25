@@ -78,16 +78,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -316,6 +306,28 @@ name|TextOutputFormat
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_comment
 comment|/**  * A JUnit test to test the Map-Reduce framework's feature to create part  * files only if there is an explicit output.collect. This helps in preventing  * 0 byte files  */
 end_comment
@@ -325,8 +337,6 @@ DECL|class|TestMapReduceLazyOutput
 specifier|public
 class|class
 name|TestMapReduceLazyOutput
-extends|extends
-name|TestCase
 block|{
 DECL|field|NUM_HADOOP_SLAVES
 specifier|private
@@ -773,6 +783,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testLazyOutput ()
 specifier|public
 name|void

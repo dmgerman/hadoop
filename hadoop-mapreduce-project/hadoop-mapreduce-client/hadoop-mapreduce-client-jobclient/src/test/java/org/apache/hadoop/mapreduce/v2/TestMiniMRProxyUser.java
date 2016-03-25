@@ -20,16 +20,6 @@ end_package
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -188,41 +178,31 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|net
+name|junit
 operator|.
-name|InetAddress
+name|After
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|junit
 operator|.
-name|File
+name|Before
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|junit
 operator|.
-name|FileOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|OutputStream
+name|Test
 import|;
 end_import
 
@@ -250,9 +230,43 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|InetAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|security
 operator|.
 name|PrivilegedExceptionAction
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -261,8 +275,6 @@ DECL|class|TestMiniMRProxyUser
 specifier|public
 class|class
 name|TestMiniMRProxyUser
-extends|extends
-name|TestCase
 block|{
 DECL|field|dfsCluster
 specifier|private
@@ -278,19 +290,16 @@ name|mrCluster
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|super
-operator|.
-name|setUp
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|System
@@ -680,9 +689,9 @@ argument_list|()
 return|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
@@ -715,11 +724,6 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
-name|super
-operator|.
-name|tearDown
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|mrRun ()
 specifier|private
@@ -901,6 +905,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|__testCurrentUser ()
 specifier|public
 name|void
@@ -913,6 +919,8 @@ name|mrRun
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testValidProxyUser ()
 specifier|public
 name|void
@@ -965,6 +973,8 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|___testInvalidProxyUser ()
 specifier|public
 name|void

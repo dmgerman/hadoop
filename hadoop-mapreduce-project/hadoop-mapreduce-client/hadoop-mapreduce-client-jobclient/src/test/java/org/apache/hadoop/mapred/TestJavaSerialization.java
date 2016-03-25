@@ -98,16 +98,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -220,13 +210,45 @@ name|MRConfig
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
 begin_class
 DECL|class|TestJavaSerialization
 specifier|public
 class|class
 name|TestJavaSerialization
-extends|extends
-name|TestCase
 block|{
 DECL|field|TEST_ROOT_DIR
 specifier|private
@@ -548,6 +570,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMapReduceJob ()
 specifier|public
 name|void
@@ -862,6 +886,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * HADOOP-4466:    * This test verifies the JavSerialization impl can write to    * SequenceFiles. by virtue other SequenceFileOutputFormat is not     * coupled to Writable types, if so, the job will fail.    *    */
+annotation|@
+name|Test
 DECL|method|testWriteToSequencefile ()
 specifier|public
 name|void

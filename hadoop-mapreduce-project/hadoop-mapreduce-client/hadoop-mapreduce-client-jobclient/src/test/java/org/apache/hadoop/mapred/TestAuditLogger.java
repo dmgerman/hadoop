@@ -156,11 +156,23 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
 import|;
 end_import
 
@@ -173,8 +185,6 @@ DECL|class|TestAuditLogger
 specifier|public
 class|class
 name|TestAuditLogger
-extends|extends
-name|TestCase
 block|{
 DECL|field|USER
 specifier|private
@@ -222,6 +232,8 @@ init|=
 literal|"description of an audit log"
 decl_stmt|;
 comment|/**    * Test the AuditLog format with key-val pair.    */
+annotation|@
+name|Test
 DECL|method|testKeyValLogFormat ()
 specifier|public
 name|void
@@ -614,6 +626,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test {@link AuditLogger} without IP set.    */
+annotation|@
+name|Test
 DECL|method|testAuditLoggerWithoutIP ()
 specifier|public
 name|void
@@ -671,6 +685,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test {@link AuditLogger} with IP set.    */
+annotation|@
+name|Test
 DECL|method|testAuditLoggerWithIP ()
 specifier|public
 name|void

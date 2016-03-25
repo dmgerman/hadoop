@@ -148,6 +148,40 @@ name|IdentityMapper
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
 begin_class
 DECL|class|TestJobName
 specifier|public
@@ -156,6 +190,8 @@ name|TestJobName
 extends|extends
 name|ClusterMapReduceTestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testComplexName ()
 specifier|public
 name|void
@@ -365,6 +401,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testComplexNameWithRegex ()
 specifier|public
 name|void

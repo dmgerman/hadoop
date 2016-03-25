@@ -184,16 +184,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -206,13 +196,33 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
 begin_class
 DECL|class|TestSequenceFileMergeProgress
 specifier|public
 class|class
 name|TestSequenceFileMergeProgress
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -234,6 +244,8 @@ name|RECORDS
 init|=
 literal|10000
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testMergeProgressWithNoCompression ()
 specifier|public
 name|void
@@ -252,6 +264,8 @@ name|NONE
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMergeProgressWithRecordCompression ()
 specifier|public
 name|void
@@ -270,6 +284,8 @@ name|RECORD
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMergeProgressWithBlockCompression ()
 specifier|public
 name|void
@@ -593,6 +609,8 @@ argument_list|()
 operator|.
 name|get
 argument_list|()
+argument_list|,
+literal|0.0000
 argument_list|)
 expr_stmt|;
 block|}

@@ -108,16 +108,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -328,6 +318,28 @@ name|TextOutputFormat
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_comment
 comment|/**  * A JUnit test to test the Map-Reduce framework's support for the  * "mark-reset" functionality in Reduce Values Iterator  */
 end_comment
@@ -337,8 +349,6 @@ DECL|class|TestValueIterReset
 specifier|public
 class|class
 name|TestValueIterReset
-extends|extends
-name|TestCase
 block|{
 DECL|field|NUM_MAPS
 specifier|private
@@ -2380,6 +2390,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testValueIterReset ()
 specifier|public
 name|void

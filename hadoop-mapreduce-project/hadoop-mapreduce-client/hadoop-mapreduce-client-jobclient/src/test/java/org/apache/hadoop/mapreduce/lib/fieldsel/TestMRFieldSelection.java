@@ -44,7 +44,21 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|*
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
 import|;
 end_import
 
@@ -58,7 +72,7 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|*
+name|Text
 import|;
 end_import
 
@@ -92,11 +106,11 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -110,13 +124,35 @@ name|NumberFormat
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_class
 DECL|class|TestMRFieldSelection
 specifier|public
 class|class
 name|TestMRFieldSelection
-extends|extends
-name|TestCase
 block|{
 DECL|field|idFormat
 specifier|private
@@ -146,6 +182,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFieldSelection ()
 specifier|public
 name|void
@@ -941,24 +979,6 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Launches all the tasks in order.    */
-DECL|method|main (String[] argv)
-specifier|public
-specifier|static
-name|void
-name|main
-parameter_list|(
-name|String
-index|[]
-name|argv
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|launch
-argument_list|()
 expr_stmt|;
 block|}
 block|}
