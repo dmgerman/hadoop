@@ -54,7 +54,7 @@ name|lang
 operator|.
 name|ref
 operator|.
-name|PhantomReference
+name|WeakReference
 import|;
 end_import
 
@@ -9691,7 +9691,7 @@ name|StatisticsData
 argument_list|>
 name|threadData
 decl_stmt|;
-comment|/**      * Set of all thread-local data areas.  Protected by the Statistics lock.      * The references to the statistics data are kept using phantom references      * to the associated threads. Proper clean-up is performed by the cleaner      * thread when the threads are garbage collected.      */
+comment|/**      * Set of all thread-local data areas.  Protected by the Statistics lock.      * The references to the statistics data are kept using weak references      * to the associated threads. Proper clean-up is performed by the cleaner      * thread when the threads are garbage collected.      */
 DECL|field|allData
 specifier|private
 specifier|final
@@ -9900,13 +9900,13 @@ argument_list|>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**      * A phantom reference to a thread that also includes the data associated      * with that thread. On the thread being garbage collected, it is enqueued      * to the reference queue for clean-up.      */
+comment|/**      * A weak reference to a thread that also includes the data associated      * with that thread. On the thread being garbage collected, it is enqueued      * to the reference queue for clean-up.      */
 DECL|class|StatisticsDataReference
 specifier|private
 class|class
 name|StatisticsDataReference
 extends|extends
-name|PhantomReference
+name|WeakReference
 argument_list|<
 name|Thread
 argument_list|>
