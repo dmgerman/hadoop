@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.web.ozShell.bucket
+DECL|package|org.apache.hadoop.ozone.web.ozShell.keys
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|web
 operator|.
 name|ozShell
 operator|.
-name|bucket
+name|keys
 package|;
 end_package
 
@@ -69,6 +69,24 @@ operator|.
 name|client
 operator|.
 name|OzoneClientException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|web
+operator|.
+name|client
+operator|.
+name|OzoneKey
 import|;
 end_import
 
@@ -212,18 +230,33 @@ name|Paths
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
-comment|/**  * Executes Info bucket.  */
+comment|/**  * Executes List Keys.  */
 end_comment
 
 begin_class
-DECL|class|InfoBucketHandler
+DECL|class|ListKeyHandler
 specifier|public
 class|class
-name|InfoBucketHandler
+name|ListKeyHandler
 extends|extends
 name|Handler
 block|{
+DECL|field|userName
+specifier|private
+name|String
+name|userName
+decl_stmt|;
 DECL|field|volumeName
 specifier|private
 name|String
@@ -234,12 +267,7 @@ specifier|private
 name|String
 name|bucketName
 decl_stmt|;
-DECL|field|rootName
-specifier|private
-name|String
-name|rootName
-decl_stmt|;
-comment|/**    * Executes the Client Calls.    *    * @param cmd - CommandLine    *    * @throws IOException    * @throws OzoneException    * @throws URISyntaxException    */
+comment|/**    * Executes the Client Calls.    *    * @param cmd - CommandLine    * @throws IOException    * @throws OzoneException    * @throws URISyntaxException    */
 annotation|@
 name|Override
 DECL|method|execute (CommandLine cmd)
@@ -266,7 +294,7 @@ name|hasOption
 argument_list|(
 name|Shell
 operator|.
-name|INFO_BUCKET
+name|LIST_KEY
 argument_list|)
 condition|)
 block|{
@@ -274,7 +302,7 @@ throw|throw
 operator|new
 name|OzoneClientException
 argument_list|(
-literal|"Incorrect call : infoBucket is missing"
+literal|"Incorrect call : listKey is missing"
 argument_list|)
 throw|;
 block|}
@@ -287,7 +315,7 @@ name|getOptionValue
 argument_list|(
 name|Shell
 operator|.
-name|INFO_BUCKET
+name|LIST_KEY
 argument_list|)
 decl_stmt|;
 name|URI
@@ -325,7 +353,7 @@ throw|throw
 operator|new
 name|OzoneClientException
 argument_list|(
-literal|"volume and bucket name required in info Bucket"
+literal|"volume/bucket is required in listKey"
 argument_list|)
 throw|;
 block|}
@@ -382,7 +410,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"Bucket Name : %s%n"
+literal|"bucket Name : %s%n"
 argument_list|,
 name|bucketName
 argument_list|)
@@ -396,18 +424,25 @@ name|hasOption
 argument_list|(
 name|Shell
 operator|.
-name|RUNAS
+name|USER
 argument_list|)
 condition|)
 block|{
-name|rootName
+name|userName
 operator|=
-literal|"hdfs"
+name|cmd
+operator|.
+name|getOptionValue
+argument_list|(
+name|Shell
+operator|.
+name|USER
+argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
-name|rootName
+name|userName
 operator|=
 name|System
 operator|.
@@ -428,7 +463,7 @@ name|client
 operator|.
 name|setUserAuth
 argument_list|(
-name|rootName
+name|userName
 argument_list|)
 expr_stmt|;
 name|OzoneVolume
@@ -451,6 +486,17 @@ argument_list|(
 name|bucketName
 argument_list|)
 decl_stmt|;
+name|List
+argument_list|<
+name|OzoneKey
+argument_list|>
+name|keys
+init|=
+name|bucket
+operator|.
+name|listKeys
+argument_list|()
+decl_stmt|;
 name|ObjectMapper
 name|mapper
 init|=
@@ -458,6 +504,14 @@ operator|new
 name|ObjectMapper
 argument_list|()
 decl_stmt|;
+for|for
+control|(
+name|OzoneKey
+name|key
+range|:
+name|keys
+control|)
+block|{
 name|Object
 name|json
 init|=
@@ -465,9 +519,9 @@ name|mapper
 operator|.
 name|readValue
 argument_list|(
-name|bucket
+name|key
 operator|.
-name|getBucketInfo
+name|getObjectInfo
 argument_list|()
 operator|.
 name|toJsonString
@@ -497,6 +551,7 @@ name|json
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class

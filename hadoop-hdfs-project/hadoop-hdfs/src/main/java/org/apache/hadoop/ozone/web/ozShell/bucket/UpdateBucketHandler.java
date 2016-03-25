@@ -213,14 +213,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Executes Info bucket.  */
+comment|/**  * Allows users to add and remove acls and from a bucket.  */
 end_comment
 
 begin_class
-DECL|class|InfoBucketHandler
+DECL|class|UpdateBucketHandler
 specifier|public
 class|class
-name|InfoBucketHandler
+name|UpdateBucketHandler
 extends|extends
 name|Handler
 block|{
@@ -239,7 +239,6 @@ specifier|private
 name|String
 name|rootName
 decl_stmt|;
-comment|/**    * Executes the Client Calls.    *    * @param cmd - CommandLine    *    * @throws IOException    * @throws OzoneException    * @throws URISyntaxException    */
 annotation|@
 name|Override
 DECL|method|execute (CommandLine cmd)
@@ -266,7 +265,7 @@ name|hasOption
 argument_list|(
 name|Shell
 operator|.
-name|INFO_BUCKET
+name|UPDATE_BUCKET
 argument_list|)
 condition|)
 block|{
@@ -274,7 +273,7 @@ throw|throw
 operator|new
 name|OzoneClientException
 argument_list|(
-literal|"Incorrect call : infoBucket is missing"
+literal|"Incorrect call : updateBucket is missing"
 argument_list|)
 throw|;
 block|}
@@ -287,7 +286,7 @@ name|getOptionValue
 argument_list|(
 name|Shell
 operator|.
-name|INFO_BUCKET
+name|UPDATE_BUCKET
 argument_list|)
 decl_stmt|;
 name|URI
@@ -325,7 +324,7 @@ throw|throw
 operator|new
 name|OzoneClientException
 argument_list|(
-literal|"volume and bucket name required in info Bucket"
+literal|"volume and bucket name required in update bucket"
 argument_list|)
 throw|;
 block|}
@@ -441,6 +440,96 @@ argument_list|(
 name|volumeName
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|Shell
+operator|.
+name|ADD_ACLS
+argument_list|)
+condition|)
+block|{
+name|String
+name|aclString
+init|=
+name|cmd
+operator|.
+name|getOptionValue
+argument_list|(
+name|Shell
+operator|.
+name|ADD_ACLS
+argument_list|)
+decl_stmt|;
+name|String
+index|[]
+name|aclArray
+init|=
+name|aclString
+operator|.
+name|split
+argument_list|(
+literal|","
+argument_list|)
+decl_stmt|;
+name|vol
+operator|.
+name|addAcls
+argument_list|(
+name|bucketName
+argument_list|,
+name|aclArray
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|Shell
+operator|.
+name|REMOVE_ACLS
+argument_list|)
+condition|)
+block|{
+name|String
+name|aclString
+init|=
+name|cmd
+operator|.
+name|getOptionValue
+argument_list|(
+name|Shell
+operator|.
+name|REMOVE_ACLS
+argument_list|)
+decl_stmt|;
+name|String
+index|[]
+name|aclArray
+init|=
+name|aclString
+operator|.
+name|split
+argument_list|(
+literal|","
+argument_list|)
+decl_stmt|;
+name|vol
+operator|.
+name|removeAcls
+argument_list|(
+name|bucketName
+argument_list|,
+name|aclArray
+argument_list|)
+expr_stmt|;
+block|}
 name|OzoneBucket
 name|bucket
 init|=
