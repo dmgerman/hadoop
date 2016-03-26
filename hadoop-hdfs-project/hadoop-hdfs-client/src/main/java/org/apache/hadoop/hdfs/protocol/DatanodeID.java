@@ -60,6 +60,16 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class represents the primary identifier for a Datanode.  * Datanodes are identified by how they can be contacted (hostname  * and ports) and their storage ID, a unique number that associates  * the Datanodes blocks with a particular Datanode.  *  * {@link DatanodeInfo#getName()} should be used to get the network  * location (for topology) of a datanode, instead of using  * {@link DatanodeID#getXferAddr()} here. Helpers are defined below  * for each context in which a DatanodeID is used.  */
 end_comment
@@ -795,6 +805,28 @@ argument_list|(
 name|that
 operator|.
 name|getXferAddr
+argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|getResolvedAddress ()
+specifier|public
+name|InetSocketAddress
+name|getResolvedAddress
+parameter_list|()
+block|{
+return|return
+operator|new
+name|InetSocketAddress
+argument_list|(
+name|this
+operator|.
+name|getIpAddr
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|getXferPort
 argument_list|()
 argument_list|)
 return|;
