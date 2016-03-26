@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.web.localstorage
+DECL|package|org.apache.hadoop.ozone.container.common.utils
 package|package
 name|org
 operator|.
@@ -14,9 +14,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
+name|container
 operator|.
-name|localstorage
+name|common
+operator|.
+name|utils
 package|;
 end_package
 
@@ -41,6 +43,18 @@ operator|.
 name|leveldb
 operator|.
 name|DB
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|iq80
+operator|.
+name|leveldb
+operator|.
+name|DBIterator
 import|;
 end_import
 
@@ -77,22 +91,30 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * OzoneLevelDBStore is used by the local  * OzoneStore which is used in testing.  */
+comment|/**  * LevelDB interface.  */
 end_comment
 
 begin_class
-DECL|class|OzoneLevelDBStore
+DECL|class|LevelDBStore
+specifier|public
 class|class
-name|OzoneLevelDBStore
+name|LevelDBStore
 block|{
 DECL|field|db
 specifier|private
 name|DB
 name|db
 decl_stmt|;
-comment|/**    * Opens a DB file.    *    * @param dbPath - DB File path    * @param createIfMissing - Create if missing    *    * @throws IOException    */
-DECL|method|OzoneLevelDBStore (File dbPath, boolean createIfMissing)
-name|OzoneLevelDBStore
+DECL|field|dbFile
+specifier|private
+specifier|final
+name|File
+name|dbFile
+decl_stmt|;
+comment|/**    * Opens a DB file.    *    * @param dbPath          - DB File path    * @param createIfMissing - Create if missing    * @throws IOException    */
+DECL|method|LevelDBStore (File dbPath, boolean createIfMissing)
+specifier|public
+name|LevelDBStore
 parameter_list|(
 name|File
 name|dbPath
@@ -145,8 +167,14 @@ literal|"Db is null"
 argument_list|)
 throw|;
 block|}
+name|this
+operator|.
+name|dbFile
+operator|=
+name|dbPath
+expr_stmt|;
 block|}
-comment|/**    * Puts a Key into file.    *    * @param key - key    * @param value - value    */
+comment|/**    * Puts a Key into file.    *    * @param key   - key    * @param value - value    */
 DECL|method|put (byte[] key, byte[] value)
 specifier|public
 name|void
@@ -171,7 +199,7 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get Key.    *    * @param key key    *    * @return value    */
+comment|/**    * Get Key.    *    * @param key key    * @return value    */
 DECL|method|get (byte[] key)
 specifier|public
 name|byte
@@ -225,6 +253,68 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Returns true if the DB is empty.    *    * @return boolean    * @throws IOException    */
+DECL|method|isEmpty ()
+specifier|public
+name|boolean
+name|isEmpty
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|DBIterator
+name|iter
+init|=
+name|db
+operator|.
+name|iterator
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+name|iter
+operator|.
+name|seekToFirst
+argument_list|()
+expr_stmt|;
+return|return
+name|iter
+operator|.
+name|hasNext
+argument_list|()
+return|;
+block|}
+finally|finally
+block|{
+name|iter
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Returns Java File Object that points to the DB.    * @return File    */
+DECL|method|getDbFile ()
+specifier|public
+name|File
+name|getDbFile
+parameter_list|()
+block|{
+return|return
+name|dbFile
+return|;
+block|}
+comment|/**    * Returns the actual levelDB object.    * @return DB handle.    */
+DECL|method|getDB ()
+specifier|public
+name|DB
+name|getDB
+parameter_list|()
+block|{
+return|return
+name|db
+return|;
 block|}
 block|}
 end_class

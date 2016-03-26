@@ -140,9 +140,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|conf
 operator|.
-name|OzoneConfigKeys
+name|Configuration
 import|;
 end_import
 
@@ -156,7 +156,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OzoneConfiguration
+name|OzoneConfigKeys
 import|;
 end_import
 
@@ -219,11 +219,11 @@ name|Channel
 name|channel
 decl_stmt|;
 comment|/**    * Constructs a netty server class.    *    * @param conf - Configuration    */
-DECL|method|XceiverServer (OzoneConfiguration conf, ContainerDispatcher dispatcher)
+DECL|method|XceiverServer (Configuration conf, ContainerDispatcher dispatcher)
 specifier|public
 name|XceiverServer
 parameter_list|(
-name|OzoneConfiguration
+name|Configuration
 name|conf
 parameter_list|,
 name|ContainerDispatcher

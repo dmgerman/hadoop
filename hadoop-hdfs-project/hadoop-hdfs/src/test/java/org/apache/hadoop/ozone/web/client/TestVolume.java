@@ -126,10 +126,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
-operator|.
-name|utils
-operator|.
 name|OzoneConsts
 import|;
 end_import
@@ -183,16 +179,6 @@ operator|.
 name|junit
 operator|.
 name|AfterClass
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
 import|;
 end_import
 

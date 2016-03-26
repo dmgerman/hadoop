@@ -170,10 +170,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
-operator|.
-name|utils
-operator|.
 name|OzoneConsts
 import|;
 end_import
@@ -370,10 +366,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
-operator|.
-name|utils
-operator|.
 name|OzoneConsts
 operator|.
 name|OZONE_COMPONENT
@@ -389,10 +381,6 @@ operator|.
 name|hadoop
 operator|.
 name|ozone
-operator|.
-name|web
-operator|.
-name|utils
 operator|.
 name|OzoneConsts
 operator|.
@@ -410,10 +398,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
-operator|.
-name|utils
-operator|.
 name|OzoneConsts
 operator|.
 name|OZONE_REQUEST
@@ -429,10 +413,6 @@ operator|.
 name|hadoop
 operator|.
 name|ozone
-operator|.
-name|web
-operator|.
-name|utils
 operator|.
 name|OzoneConsts
 operator|.

@@ -58,6 +58,56 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|FsDatasetSpi
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|RwLock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|container
@@ -104,6 +154,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -127,7 +189,29 @@ DECL|interface|ContainerManager
 specifier|public
 interface|interface
 name|ContainerManager
+extends|extends
+name|RwLock
 block|{
+comment|/**    * Init call that sets up a container Manager.    *    * @param config  - Configuration.    * @param containerDirs - List of Metadata Container locations.    * @param dataset - FSDataset.    * @throws IOException    */
+DECL|method|init (Configuration config, List<Path> containerDirs, FsDatasetSpi dataset)
+name|void
+name|init
+parameter_list|(
+name|Configuration
+name|config
+parameter_list|,
+name|List
+argument_list|<
+name|Path
+argument_list|>
+name|containerDirs
+parameter_list|,
+name|FsDatasetSpi
+name|dataset
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Creates a container with the given name.    *    * @param pipeline      -- Nodes which make up this container.    * @param containerData - Container Name and metadata.    * @throws IOException    */
 DECL|method|createContainer (Pipeline pipeline, ContainerData containerData)
 name|void
@@ -156,13 +240,13 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * As simple interface for container Iterations.    *    * @param start - Starting index    * @param count - how many to return    * @param data  - Actual containerData    * @throws IOException    */
-DECL|method|listContainer (long start, long count, List<ContainerData> data)
+comment|/**    * As simple interface for container Iterations.    *    * @param prevKey - Starting KeyValue    * @param count - how many to return    * @param data  - Actual containerData    * @throws IOException    */
+DECL|method|listContainer (String prevKey, long count, List<ContainerData> data)
 name|void
 name|listContainer
 parameter_list|(
-name|long
-name|start
+name|String
+name|prevKey
 parameter_list|,
 name|long
 name|count
@@ -176,7 +260,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get metadata about a specific container.    *    * @param containerName - Name of the container    * @return ContainerData    * @throws IOException    */
+comment|/**    * Get metadata about a specific container.    *    * @param containerName - Name of the container    * @return ContainerData - Container Data.    * @throws IOException    */
 DECL|method|readContainer (String containerName)
 name|ContainerData
 name|readContainer
@@ -184,6 +268,14 @@ parameter_list|(
 name|String
 name|containerName
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Supports clean shutdown of container.    *    * @throws IOException    */
+DECL|method|shutdown ()
+name|void
+name|shutdown
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

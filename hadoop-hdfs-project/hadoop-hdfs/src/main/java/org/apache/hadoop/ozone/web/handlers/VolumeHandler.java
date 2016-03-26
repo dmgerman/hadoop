@@ -290,10 +290,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
-operator|.
-name|utils
-operator|.
 name|OzoneConsts
 operator|.
 name|OZONE_FUNCTION

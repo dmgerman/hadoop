@@ -135,6 +135,15 @@ name|DFS_OBJECTSTORE_TRACE_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|DFS_OZONE_METADATA_DIRS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_OZONE_METADATA_DIRS
+init|=
+literal|"dfs.ozone.metadata.dirs"
+decl_stmt|;
 comment|/**    * There is no need to instantiate this class.    */
 DECL|method|OzoneConfigKeys ()
 specifier|private

@@ -140,6 +140,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|ozone
@@ -179,20 +193,6 @@ operator|.
 name|ozone
 operator|.
 name|OzoneConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConfiguration
 import|;
 end_import
 
@@ -280,7 +280,7 @@ decl_stmt|;
 DECL|field|config
 specifier|private
 specifier|final
-name|OzoneConfiguration
+name|Configuration
 name|config
 decl_stmt|;
 DECL|field|channelFuture
@@ -299,14 +299,14 @@ name|EventLoopGroup
 name|group
 decl_stmt|;
 comment|/**    * Constructs a client that can communicate with the Container framework on    * data nodes.    * @param pipeline - Pipeline that defines the machines.    * @param config -- Ozone Config    */
-DECL|method|XceiverClient (Pipeline pipeline, OzoneConfiguration config)
+DECL|method|XceiverClient (Pipeline pipeline, Configuration config)
 specifier|public
 name|XceiverClient
 parameter_list|(
 name|Pipeline
 name|pipeline
 parameter_list|,
-name|OzoneConfiguration
+name|Configuration
 name|config
 parameter_list|)
 block|{

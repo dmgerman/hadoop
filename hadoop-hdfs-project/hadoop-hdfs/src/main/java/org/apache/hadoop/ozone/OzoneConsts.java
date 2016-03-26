@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.web.utils
+DECL|package|org.apache.hadoop.ozone
 package|package
 name|org
 operator|.
@@ -13,10 +13,6 @@ operator|.
 name|hadoop
 operator|.
 name|ozone
-operator|.
-name|web
-operator|.
-name|utils
 package|;
 end_package
 
@@ -211,6 +207,72 @@ name|String
 name|OZONE_REQUEST
 init|=
 literal|"request"
+decl_stmt|;
+DECL|field|CONTAINER_EXTENSION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_EXTENSION
+init|=
+literal|".container"
+decl_stmt|;
+DECL|field|CONTAINER_META
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_META
+init|=
+literal|".meta"
+decl_stmt|;
+comment|//  container storage is in the following format.
+comment|//  Data Volume basePath/containers/<containerName>/metadata and
+comment|//  Data Volume basePath/containers/<containerName>/data/...
+DECL|field|CONTAINER_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_PREFIX
+init|=
+literal|"containers"
+decl_stmt|;
+DECL|field|CONTAINER_META_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_META_PATH
+init|=
+literal|"metadata"
+decl_stmt|;
+DECL|field|CONTAINER_DATA_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_DATA_PATH
+init|=
+literal|"data"
+decl_stmt|;
+DECL|field|CONTAINER_ROOT_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_ROOT_PREFIX
+init|=
+literal|"repository"
+decl_stmt|;
+DECL|field|CONTAINER_DB
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_DB
+init|=
+literal|"container.db"
 decl_stmt|;
 comment|/**    * Supports Bucket Versioning.    */
 DECL|enum|Versioning

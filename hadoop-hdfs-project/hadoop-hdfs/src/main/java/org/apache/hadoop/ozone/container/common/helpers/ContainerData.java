@@ -109,10 +109,17 @@ name|String
 argument_list|>
 name|metadata
 decl_stmt|;
-DECL|field|path
+DECL|field|dbPath
 specifier|private
 name|String
-name|path
+name|dbPath
+decl_stmt|;
+comment|// Path to Level DB Store.
+comment|// Path to Physical file system where container and checksum are stored.
+DECL|field|containerFilePath
+specifier|private
+name|String
+name|containerFilePath
 decl_stmt|;
 comment|/**    * Constructs a  ContainerData Object.    *    * @param containerName - Name    */
 DECL|method|ContainerData (String containerName)
@@ -220,11 +227,30 @@ condition|)
 block|{
 name|data
 operator|.
-name|setPath
+name|setContainerPath
 argument_list|(
 name|protoData
 operator|.
 name|getContainerPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|protoData
+operator|.
+name|hasDbPath
+argument_list|()
+condition|)
+block|{
+name|data
+operator|.
+name|setDBPath
+argument_list|(
+name|protoData
+operator|.
+name|getDbPath
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -270,7 +296,28 @@ if|if
 condition|(
 name|this
 operator|.
-name|getPath
+name|getDBPath
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|builder
+operator|.
+name|setDbPath
+argument_list|(
+name|this
+operator|.
+name|getDBPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|getContainerPath
 argument_list|()
 operator|!=
 literal|null
@@ -282,7 +329,7 @@ name|setContainerPath
 argument_list|(
 name|this
 operator|.
-name|getPath
+name|getContainerPath
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -504,21 +551,21 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Returns path.    *    * @return - path    */
-DECL|method|getPath ()
+DECL|method|getDBPath ()
 specifier|public
 name|String
-name|getPath
+name|getDBPath
 parameter_list|()
 block|{
 return|return
-name|path
+name|dbPath
 return|;
 block|}
 comment|/**    * Sets path.    *    * @param path - String.    */
-DECL|method|setPath (String path)
+DECL|method|setDBPath (String path)
 specifier|public
 name|void
-name|setPath
+name|setDBPath
 parameter_list|(
 name|String
 name|path
@@ -526,7 +573,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|path
+name|dbPath
 operator|=
 name|path
 expr_stmt|;
@@ -542,6 +589,34 @@ return|return
 name|getContainerName
 argument_list|()
 return|;
+block|}
+comment|/**    * Get container file path.    * @return - Physical path where container file and checksum is stored.    */
+DECL|method|getContainerPath ()
+specifier|public
+name|String
+name|getContainerPath
+parameter_list|()
+block|{
+return|return
+name|containerFilePath
+return|;
+block|}
+comment|/**    * Set container Path.    * @param containerFilePath - File path.    */
+DECL|method|setContainerPath (String containerFilePath)
+specifier|public
+name|void
+name|setContainerPath
+parameter_list|(
+name|String
+name|containerFilePath
+parameter_list|)
+block|{
+name|this
+operator|.
+name|containerFilePath
+operator|=
+name|containerFilePath
+expr_stmt|;
 block|}
 block|}
 end_class
