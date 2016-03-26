@@ -186,6 +186,15 @@ operator|)
 literal|89
 argument_list|)
 block|,
+DECL|enumConstant|BLOCK_GROUP_CHECKSUM
+name|BLOCK_GROUP_CHECKSUM
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|90
+argument_list|)
+block|,
 DECL|enumConstant|CUSTOM
 name|CUSTOM
 argument_list|(

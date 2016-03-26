@@ -378,6 +378,43 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * Parses a striped block group into individual blocks.    * @param bg The striped block group    * @param ecPolicy The erasure coding policy    * @return An array of the blocks in the group    */
+DECL|method|parseStripedBlockGroup (LocatedStripedBlock bg, ErasureCodingPolicy ecPolicy)
+specifier|public
+specifier|static
+name|LocatedBlock
+index|[]
+name|parseStripedBlockGroup
+parameter_list|(
+name|LocatedStripedBlock
+name|bg
+parameter_list|,
+name|ErasureCodingPolicy
+name|ecPolicy
+parameter_list|)
+block|{
+return|return
+name|parseStripedBlockGroup
+argument_list|(
+name|bg
+argument_list|,
+name|ecPolicy
+operator|.
+name|getCellSize
+argument_list|()
+argument_list|,
+name|ecPolicy
+operator|.
+name|getNumDataUnits
+argument_list|()
+argument_list|,
+name|ecPolicy
+operator|.
+name|getNumParityUnits
+argument_list|()
+argument_list|)
+return|;
+block|}
 comment|/**    * This method parses a striped block group into individual blocks.    *    * @param bg The striped block group    * @param cellSize The size of a striping cell    * @param dataBlkNum The number of data blocks    * @return An array containing the blocks in the group    */
 DECL|method|parseStripedBlockGroup (LocatedStripedBlock bg, int cellSize, int dataBlkNum, int parityBlkNum)
 specifier|public
