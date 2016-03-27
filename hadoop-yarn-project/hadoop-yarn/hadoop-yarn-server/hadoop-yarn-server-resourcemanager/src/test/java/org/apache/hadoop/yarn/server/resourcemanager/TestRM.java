@@ -1032,20 +1032,6 @@ specifier|private
 name|YarnConfiguration
 name|conf
 decl_stmt|;
-DECL|method|TestRM (SchedulerType type)
-specifier|public
-name|TestRM
-parameter_list|(
-name|SchedulerType
-name|type
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|type
-argument_list|)
-expr_stmt|;
-block|}
 annotation|@
 name|Before
 DECL|method|setup ()

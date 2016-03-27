@@ -1045,20 +1045,6 @@ name|TestAbstractYarnScheduler
 extends|extends
 name|ParameterizedSchedulerTestBase
 block|{
-DECL|method|TestAbstractYarnScheduler (SchedulerType type)
-specifier|public
-name|TestAbstractYarnScheduler
-parameter_list|(
-name|SchedulerType
-name|type
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|type
-argument_list|)
-expr_stmt|;
-block|}
 annotation|@
 name|Test
 DECL|method|testMaximimumAllocationMemory ()
@@ -2241,9 +2227,6 @@ argument_list|,
 name|configuredMaxVCores
 argument_list|)
 decl_stmt|;
-name|configureScheduler
-argument_list|()
-expr_stmt|;
 name|YarnConfiguration
 name|conf
 init|=
@@ -2581,9 +2564,6 @@ argument_list|,
 name|configuredMaxVCores
 argument_list|)
 decl_stmt|;
-name|configureScheduler
-argument_list|()
-expr_stmt|;
 name|YarnConfiguration
 name|conf
 init|=

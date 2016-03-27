@@ -1734,20 +1734,6 @@ name|MockRM
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|TestRMRestart (SchedulerType type)
-specifier|public
-name|TestRMRestart
-parameter_list|(
-name|SchedulerType
-name|type
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|type
-argument_list|)
-expr_stmt|;
-block|}
 annotation|@
 name|Before
 DECL|method|setup ()

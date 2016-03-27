@@ -427,20 +427,6 @@ specifier|private
 name|RMContext
 name|mockRMContext
 decl_stmt|;
-DECL|method|TestReservationSystem (SchedulerType type)
-specifier|public
-name|TestReservationSystem
-parameter_list|(
-name|SchedulerType
-name|type
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|type
-argument_list|)
-expr_stmt|;
-block|}
 annotation|@
 name|Before
 DECL|method|setUp ()
