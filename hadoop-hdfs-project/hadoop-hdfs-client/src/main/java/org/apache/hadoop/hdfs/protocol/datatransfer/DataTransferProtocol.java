@@ -114,6 +114,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|StripedBlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|security
 operator|.
 name|token
@@ -505,15 +521,30 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Get block checksum (MD5 of CRC32).    *    * @param blk a block.    * @param blockToken security token for accessing the block.    * @throws IOException    */
-DECL|method|blockChecksum (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken)
+DECL|method|blockChecksum (ExtendedBlock blk, Token<BlockTokenIdentifier> blockToken)
 name|void
 name|blockChecksum
 parameter_list|(
-specifier|final
 name|ExtendedBlock
 name|blk
 parameter_list|,
-specifier|final
+name|Token
+argument_list|<
+name|BlockTokenIdentifier
+argument_list|>
+name|blockToken
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get striped block group checksum (MD5 of CRC32).    *    * @param stripedBlockInfo a striped block info.    * @param blockToken security token for accessing the block.    * @throws IOException    */
+DECL|method|blockGroupChecksum (StripedBlockInfo stripedBlockInfo, Token<BlockTokenIdentifier> blockToken)
+name|void
+name|blockGroupChecksum
+parameter_list|(
+name|StripedBlockInfo
+name|stripedBlockInfo
+parameter_list|,
 name|Token
 argument_list|<
 name|BlockTokenIdentifier

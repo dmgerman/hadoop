@@ -8592,7 +8592,7 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Get the checksum of the whole file or a range of the file. Note that the    * range always starts from the beginning of the file.    * @param src The file path    * @param length the length of the range, i.e., the range is [0, length]    * @return The checksum    * @see DistributedFileSystem#getFileChecksum(Path)    */
+comment|/**    * Get the checksum of the whole file or a range of the file. Note that the    * range always starts from the beginning of the file. The file can be    * in replicated form, or striped mode. It can be used to checksum and compare    * two replicated files, or two striped files, but not applicable for two    * files of different block layout forms.    * @param src The file path    * @param length the length of the range, i.e., the range is [0, length]    * @return The checksum    * @see DistributedFileSystem#getFileChecksum(Path)    */
 DECL|method|getFileChecksum (String src, long length)
 specifier|public
 name|MD5MD5CRC32FileChecksum
@@ -8633,7 +8633,39 @@ name|FileChecksumHelper
 operator|.
 name|FileChecksumComputer
 name|maker
+decl_stmt|;
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
+name|blockLocations
+operator|.
+name|getErasureCodingPolicy
+argument_list|()
+decl_stmt|;
+name|maker
+operator|=
+name|ecPolicy
+operator|!=
+literal|null
+condition|?
+operator|new
+name|FileChecksumHelper
+operator|.
+name|StripedFileNonStripedChecksumComputer
+argument_list|(
+name|src
+argument_list|,
+name|length
+argument_list|,
+name|blockLocations
+argument_list|,
+name|namenode
+argument_list|,
+name|this
+argument_list|,
+name|ecPolicy
+argument_list|)
+else|:
 operator|new
 name|FileChecksumHelper
 operator|.
@@ -8649,7 +8681,7 @@ name|namenode
 argument_list|,
 name|this
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|maker
 operator|.
 name|compute
