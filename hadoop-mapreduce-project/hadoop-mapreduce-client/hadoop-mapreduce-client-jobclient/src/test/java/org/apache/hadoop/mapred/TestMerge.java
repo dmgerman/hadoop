@@ -294,23 +294,11 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
 name|junit
 operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
+name|framework
 operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
+name|TestCase
 import|;
 end_import
 
@@ -331,6 +319,8 @@ DECL|class|TestMerge
 specifier|public
 class|class
 name|TestMerge
+extends|extends
+name|TestCase
 block|{
 DECL|field|NUM_HADOOP_DATA_NODES
 specifier|private
@@ -399,8 +389,6 @@ argument_list|(
 literal|"/testplugin/output"
 argument_list|)
 decl_stmt|;
-annotation|@
-name|Test
 DECL|method|testMerge ()
 specifier|public
 name|void

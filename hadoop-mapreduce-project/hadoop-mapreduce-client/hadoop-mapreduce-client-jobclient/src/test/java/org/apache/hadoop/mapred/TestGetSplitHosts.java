@@ -46,23 +46,11 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
 name|junit
 operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
+name|framework
 operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
+name|TestCase
 import|;
 end_import
 
@@ -71,9 +59,9 @@ DECL|class|TestGetSplitHosts
 specifier|public
 class|class
 name|TestGetSplitHosts
+extends|extends
+name|TestCase
 block|{
-annotation|@
-name|Test
 DECL|method|testGetSplitHosts ()
 specifier|public
 name|void

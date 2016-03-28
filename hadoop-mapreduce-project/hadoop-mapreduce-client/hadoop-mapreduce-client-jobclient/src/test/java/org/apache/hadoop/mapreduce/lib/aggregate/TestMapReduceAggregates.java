@@ -44,7 +44,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FSDataOutputStream
+name|*
 import|;
 end_import
 
@@ -70,9 +70,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|io
 operator|.
-name|Path
+name|*
 import|;
 end_import
 
@@ -84,9 +84,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|mapred
 operator|.
-name|Text
+name|Utils
 import|;
 end_import
 
@@ -192,11 +192,21 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
 name|junit
 operator|.
-name|Test
+name|framework
+operator|.
+name|TestCase
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|*
 import|;
 end_import
 
@@ -210,35 +220,13 @@ name|NumberFormat
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
 begin_class
 DECL|class|TestMapReduceAggregates
 specifier|public
 class|class
 name|TestMapReduceAggregates
+extends|extends
+name|TestCase
 block|{
 DECL|field|idFormat
 specifier|private
@@ -268,8 +256,6 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testAggregates ()
 specifier|public
 name|void
@@ -817,6 +803,24 @@ name|INPUT_DIR
 argument_list|,
 literal|true
 argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Launches all the tasks in order.    */
+DECL|method|main (String[] argv)
+specifier|public
+specifier|static
+name|void
+name|main
+parameter_list|(
+name|String
+index|[]
+name|argv
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|launch
+argument_list|()
 expr_stmt|;
 block|}
 block|}

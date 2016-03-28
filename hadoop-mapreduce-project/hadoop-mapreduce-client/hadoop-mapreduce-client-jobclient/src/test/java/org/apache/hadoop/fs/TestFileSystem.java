@@ -168,6 +168,16 @@ end_import
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|TestCase
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -370,81 +380,13 @@ name|StringUtils
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertNotSame
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertFalse
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
-import|;
-end_import
-
 begin_class
 DECL|class|TestFileSystem
 specifier|public
 class|class
 name|TestFileSystem
+extends|extends
+name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -573,8 +515,6 @@ argument_list|,
 literal|"fs_data"
 argument_list|)
 decl_stmt|;
-annotation|@
-name|Test
 DECL|method|testFs ()
 specifier|public
 name|void
@@ -716,8 +656,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testCommandFormat ()
 specifier|public
 specifier|static
@@ -3104,8 +3042,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
 DECL|method|testFsCache ()
 specifier|public
 name|void
@@ -3607,8 +3543,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testFsClose ()
 specifier|public
 name|void
@@ -3643,8 +3577,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
 DECL|method|testFsShutdownHook ()
 specifier|public
 name|void
@@ -3845,8 +3777,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testCacheKeysAreCaseInsensitive ()
 specifier|public
 name|void

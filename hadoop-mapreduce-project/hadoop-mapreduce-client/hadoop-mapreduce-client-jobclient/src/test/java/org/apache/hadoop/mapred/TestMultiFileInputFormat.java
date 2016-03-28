@@ -58,6 +58,16 @@ end_import
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|TestCase
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -140,45 +150,13 @@ name|Text
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertFalse
-import|;
-end_import
-
 begin_class
 DECL|class|TestMultiFileInputFormat
 specifier|public
 class|class
 name|TestMultiFileInputFormat
+extends|extends
+name|TestCase
 block|{
 DECL|field|job
 specifier|private
@@ -540,8 +518,6 @@ return|return
 name|multiFileDir
 return|;
 block|}
-annotation|@
-name|Test
 DECL|method|testFormat ()
 specifier|public
 name|void
@@ -880,8 +856,6 @@ literal|"Test Finished"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testFormatWithLessPathsThanSplits ()
 specifier|public
 name|void
@@ -964,6 +938,32 @@ argument_list|)
 operator|.
 name|length
 argument_list|)
+expr_stmt|;
+block|}
+DECL|method|main (String[] args)
+specifier|public
+specifier|static
+name|void
+name|main
+parameter_list|(
+name|String
+index|[]
+name|args
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|TestMultiFileInputFormat
+name|test
+init|=
+operator|new
+name|TestMultiFileInputFormat
+argument_list|()
+decl_stmt|;
+name|test
+operator|.
+name|testFormat
+argument_list|()
 expr_stmt|;
 block|}
 block|}

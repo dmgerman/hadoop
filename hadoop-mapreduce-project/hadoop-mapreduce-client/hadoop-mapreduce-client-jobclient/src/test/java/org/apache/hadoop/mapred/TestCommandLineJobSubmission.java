@@ -48,6 +48,16 @@ end_import
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|TestCase
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -126,28 +136,6 @@ name|Ignore
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
 begin_comment
 comment|/**  * check for the job submission  options of   * -libjars -files -archives  */
 end_comment
@@ -159,6 +147,8 @@ DECL|class|TestCommandLineJobSubmission
 specifier|public
 class|class
 name|TestCommandLineJobSubmission
+extends|extends
+name|TestCase
 block|{
 comment|// Input output paths for this..
 comment|// these are all dummy and does not test
@@ -205,8 +195,6 @@ literal|"/tmp"
 argument_list|)
 argument_list|)
 decl_stmt|;
-annotation|@
-name|Test
 DECL|method|testJobShell ()
 specifier|public
 name|void

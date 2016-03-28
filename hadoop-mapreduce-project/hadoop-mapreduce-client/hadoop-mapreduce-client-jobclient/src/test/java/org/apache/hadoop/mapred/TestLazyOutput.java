@@ -230,23 +230,11 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
 name|junit
 operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
+name|framework
 operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
+name|TestCase
 import|;
 end_import
 
@@ -259,6 +247,8 @@ DECL|class|TestLazyOutput
 specifier|public
 class|class
 name|TestLazyOutput
+extends|extends
+name|TestCase
 block|{
 DECL|field|NUM_HADOOP_SLAVES
 specifier|private
@@ -768,8 +758,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
 DECL|method|testLazyOutput ()
 specifier|public
 name|void

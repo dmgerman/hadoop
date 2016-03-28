@@ -20,18 +20,6 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|mockito
 operator|.
 name|Matchers
@@ -105,6 +93,16 @@ operator|.
 name|nio
 operator|.
 name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|TestCase
 import|;
 end_import
 
@@ -347,6 +345,8 @@ DECL|class|TestYarnClientProtocolProvider
 specifier|public
 class|class
 name|TestYarnClientProtocolProvider
+extends|extends
+name|TestCase
 block|{
 DECL|field|recordFactory
 specifier|private

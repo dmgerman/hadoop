@@ -18,15 +18,21 @@ end_package
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|io
 operator|.
-name|hadoop
+name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|junit
 operator|.
-name|fs
+name|framework
 operator|.
-name|FileSystem
+name|TestCase
 import|;
 end_import
 
@@ -40,7 +46,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|*
 import|;
 end_import
 
@@ -54,7 +60,7 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|Text
+name|*
 import|;
 end_import
 
@@ -70,61 +76,7 @@ name|mapred
 operator|.
 name|lib
 operator|.
-name|MultipleTextOutputFormat
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
+name|*
 import|;
 end_import
 
@@ -133,6 +85,8 @@ DECL|class|TestMultipleTextOutputFormat
 specifier|public
 class|class
 name|TestMultipleTextOutputFormat
+extends|extends
+name|TestCase
 block|{
 DECL|field|defaultConf
 specifier|private
@@ -508,8 +462,6 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testFormat ()
 specifier|public
 name|void
@@ -971,6 +923,27 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+DECL|method|main (String[] args)
+specifier|public
+specifier|static
+name|void
+name|main
+parameter_list|(
+name|String
+index|[]
+name|args
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+operator|new
+name|TestMultipleTextOutputFormat
+argument_list|()
+operator|.
+name|testFormat
+argument_list|()
 expr_stmt|;
 block|}
 block|}

@@ -62,6 +62,16 @@ end_import
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|TestCase
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -294,33 +304,13 @@ name|MRJobConfig
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
 begin_class
 DECL|class|TestTotalOrderPartitioner
 specifier|public
 class|class
 name|TestTotalOrderPartitioner
+extends|extends
+name|TestCase
 block|{
 DECL|field|splitStrings
 specifier|private
@@ -1228,8 +1218,6 @@ return|return
 name|p
 return|;
 block|}
-annotation|@
-name|Test
 DECL|method|testTotalOrderWithCustomSerialization ()
 specifier|public
 name|void
@@ -1415,8 +1403,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
 DECL|method|testTotalOrderMemCmp ()
 specifier|public
 name|void
@@ -1562,8 +1548,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
 DECL|method|testTotalOrderBinarySearch ()
 specifier|public
 name|void
@@ -1836,8 +1820,6 @@ argument_list|)
 return|;
 block|}
 block|}
-annotation|@
-name|Test
 DECL|method|testTotalOrderCustomComparator ()
 specifier|public
 name|void

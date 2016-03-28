@@ -22,11 +22,21 @@ end_package
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|junit
+name|io
 operator|.
-name|Test
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|math
+operator|.
+name|BigDecimal
 import|;
 end_import
 
@@ -46,31 +56,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
+import|import
 name|junit
 operator|.
-name|Assert
+name|framework
 operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
+name|TestCase
 import|;
 end_import
 
@@ -79,6 +85,8 @@ DECL|class|TestIntegerSplitter
 specifier|public
 class|class
 name|TestIntegerSplitter
+extends|extends
+name|TestCase
 block|{
 DECL|method|toLongArray (List<Long> in)
 specifier|private
@@ -363,8 +371,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
 DECL|method|testEvenSplits ()
 specifier|public
 name|void
@@ -431,8 +437,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testOddSplits ()
 specifier|public
 name|void
@@ -501,8 +505,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testSingletonSplit ()
 specifier|public
 name|void
@@ -551,8 +553,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testSingletonSplit2 ()
 specifier|public
 name|void
@@ -602,8 +602,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testTooManySplits ()
 specifier|public
 name|void

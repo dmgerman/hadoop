@@ -82,6 +82,16 @@ end_import
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|TestCase
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -178,57 +188,13 @@ name|Writable
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertFalse
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
 begin_class
 DECL|class|TestJoinTupleWritable
 specifier|public
 class|class
 name|TestJoinTupleWritable
+extends|extends
+name|TestCase
 block|{
 DECL|method|makeTuple (Writable[] writs)
 specifier|private
@@ -707,8 +673,6 @@ return|return
 name|i
 return|;
 block|}
-annotation|@
-name|Test
 DECL|method|testIterable ()
 specifier|public
 name|void
@@ -862,8 +826,6 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testNestedIterable ()
 specifier|public
 name|void
@@ -1002,8 +964,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testWritable ()
 specifier|public
 name|void
@@ -1184,8 +1144,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testWideWritable ()
 specifier|public
 name|void
@@ -1321,8 +1279,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testWideWritable2 ()
 specifier|public
 name|void
@@ -1449,8 +1405,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Tests a tuple writable with more than 64 values and the values set written    * spread far apart.    */
-annotation|@
-name|Test
 DECL|method|testSparseWideWritable ()
 specifier|public
 name|void
@@ -1586,8 +1540,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testWideTuple ()
 specifier|public
 name|void
@@ -1706,8 +1658,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-annotation|@
-name|Test
 DECL|method|testWideTuple2 ()
 specifier|public
 name|void
@@ -1827,8 +1777,6 @@ block|}
 block|}
 block|}
 comment|/**    * Tests that we can write more than 64 values.    */
-annotation|@
-name|Test
 DECL|method|testWideTupleBoundary ()
 specifier|public
 name|void

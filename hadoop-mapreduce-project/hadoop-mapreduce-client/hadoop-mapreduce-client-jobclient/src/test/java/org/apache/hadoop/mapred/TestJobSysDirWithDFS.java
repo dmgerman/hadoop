@@ -38,6 +38,16 @@ end_import
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|TestCase
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -166,52 +176,6 @@ name|JTConfig
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertFalse
-import|;
-end_import
-
 begin_comment
 comment|/**  * A JUnit test to test Job System Directory with Mini-DFS.  */
 end_comment
@@ -221,6 +185,8 @@ DECL|class|TestJobSysDirWithDFS
 specifier|public
 class|class
 name|TestJobSysDirWithDFS
+extends|extends
+name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -700,8 +666,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testWithDFS ()
 specifier|public
 name|void

@@ -76,11 +76,11 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
 name|junit
 operator|.
-name|Test
+name|framework
+operator|.
+name|TestCase
 import|;
 end_import
 
@@ -113,6 +113,8 @@ DECL|class|TestCollect
 specifier|public
 class|class
 name|TestCollect
+extends|extends
+name|TestCase
 block|{
 DECL|field|OUTPUT_DIR
 specifier|final
@@ -594,8 +596,6 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testCollect ()
 specifier|public
 name|void
@@ -680,6 +680,27 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|main (String[] args)
+specifier|public
+specifier|static
+name|void
+name|main
+parameter_list|(
+name|String
+index|[]
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+operator|new
+name|TestCollect
+argument_list|()
+operator|.
+name|testCollect
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

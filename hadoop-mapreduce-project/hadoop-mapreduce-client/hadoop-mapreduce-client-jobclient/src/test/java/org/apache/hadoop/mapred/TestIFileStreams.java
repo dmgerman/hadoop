@@ -74,35 +74,11 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
 name|junit
 operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
+name|framework
 operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
+name|TestCase
 import|;
 end_import
 
@@ -111,9 +87,9 @@ DECL|class|TestIFileStreams
 specifier|public
 class|class
 name|TestIFileStreams
+extends|extends
+name|TestCase
 block|{
-annotation|@
-name|Test
 DECL|method|testIFileStream ()
 specifier|public
 name|void
@@ -244,8 +220,6 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testBadIFileStream ()
 specifier|public
 name|void
@@ -437,8 +411,6 @@ literal|"Did not detect bad data in checksum"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testBadLength ()
 specifier|public
 name|void

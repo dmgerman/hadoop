@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|TestCase
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -72,36 +82,14 @@ name|StringUtils
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
 begin_class
 DECL|class|TestInputPath
 specifier|public
 class|class
 name|TestInputPath
+extends|extends
+name|TestCase
 block|{
-annotation|@
-name|Test
 DECL|method|testInputPath ()
 specifier|public
 name|void

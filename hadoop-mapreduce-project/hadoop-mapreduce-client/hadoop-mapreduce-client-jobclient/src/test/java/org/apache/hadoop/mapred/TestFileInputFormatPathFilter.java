@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|TestCase
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -69,48 +79,6 @@ operator|.
 name|fs
 operator|.
 name|PathFilter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
 import|;
 end_import
 
@@ -169,6 +137,8 @@ DECL|class|TestFileInputFormatPathFilter
 specifier|public
 class|class
 name|TestFileInputFormatPathFilter
+extends|extends
+name|TestCase
 block|{
 DECL|class|DummyFileInputFormat
 specifier|public
@@ -268,8 +238,6 @@ argument_list|,
 literal|"TestFileInputFormatPathFilter"
 argument_list|)
 decl_stmt|;
-annotation|@
-name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -289,8 +257,6 @@ name|workDir
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -765,8 +731,6 @@ name|computedFiles
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testWithoutPathFilterWithoutGlob ()
 specifier|public
 name|void
@@ -783,8 +747,6 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testWithoutPathFilterWithGlob ()
 specifier|public
 name|void
@@ -801,8 +763,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testWithPathFilterWithoutGlob ()
 specifier|public
 name|void
@@ -819,8 +779,6 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testWithPathFilterWithGlob ()
 specifier|public
 name|void

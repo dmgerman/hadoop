@@ -356,47 +356,11 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
 name|junit
 operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
+name|framework
 operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertFalse
+name|TestCase
 import|;
 end_import
 
@@ -407,6 +371,8 @@ DECL|class|TestPipes
 specifier|public
 class|class
 name|TestPipes
+extends|extends
+name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -524,8 +490,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testPipes ()
 specifier|public
 name|void

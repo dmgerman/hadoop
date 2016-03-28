@@ -294,50 +294,6 @@ name|JTConfig
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
 begin_class
 DECL|class|TestStreamingBadRecords
 specifier|public
@@ -486,10 +442,8 @@ name|redirectIfAntJunit
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Before
 DECL|method|setUp ()
-specifier|public
+specifier|protected
 name|void
 name|setUp
 parameter_list|()
@@ -1094,8 +1048,6 @@ comment|/*    * Disable test as skipping bad records not supported in 0.23    */
 comment|/*   public void testSkip() throws Exception {     JobConf clusterConf = createJobConf();     createInput();     int attSkip =0;     SkipBadRecords.setAttemptsToStartSkipping(clusterConf,attSkip);     //the no of attempts to successfully complete the task depends      //on the no of bad records.     int mapperAttempts = attSkip+1+MAPPER_BAD_RECORDS.size();     int reducerAttempts = attSkip+1+REDUCER_BAD_RECORDS.size();          String[] args =  new String[] {       "-input", (new Path(getInputDir(), "text.txt")).toString(),       "-output", getOutputDir().toString(),       "-mapper", badMapper,       "-reducer", badReducer,       "-verbose",       "-inputformat", "org.apache.hadoop.mapred.KeyValueTextInputFormat",       "-jobconf", "mapreduce.task.skip.start.attempts="+attSkip,       "-jobconf", "mapreduce.job.skip.outdir=none",       "-jobconf", "mapreduce.map.maxattempts="+mapperAttempts,       "-jobconf", "mapreduce.reduce.maxattempts="+reducerAttempts,       "-jobconf", "mapreduce.map.skip.maxrecords="+Long.MAX_VALUE,       "-jobconf", "mapreduce.reduce.skip.maxgroups="+Long.MAX_VALUE,       "-jobconf", "mapreduce.job.maps=1",       "-jobconf", "mapreduce.job.reduces=1",       "-jobconf", "fs.default.name="+clusterConf.get("fs.default.name"),       "-jobconf", "mapreduce.jobtracker.address=" +                     clusterConf.get(JTConfig.JT_IPC_ADDRESS),       "-jobconf", "mapreduce.jobtracker.http.address="                     +clusterConf.get(JTConfig.JT_HTTP_ADDRESS),       "-jobconf", "mapreduce.task.files.preserve.failedtasks=true",       "-jobconf", "stream.tmpdir="+System.getProperty("test.build.data","/tmp"),       "-jobconf", "mapred.jar=" + TestStreaming.STREAMING_JAR,       "-jobconf", "mapreduce.framework.name=yarn"     };     StreamJob job = new StreamJob(args, false);           job.go();     validateOutput(job.running_, false);     //validate that there is no skip directory as it has been set to "none"     assertTrue(SkipBadRecords.getSkipOutputPath(job.jobConf_)==null);   }   */
 comment|/*    * Disable test as skipping bad records not supported in 0.23    */
 comment|/*   public void testNarrowDown() throws Exception {     createInput();     JobConf clusterConf = createJobConf();     String[] args =  new String[] {       "-input", (new Path(getInputDir(), "text.txt")).toString(),       "-output", getOutputDir().toString(),       "-mapper", badMapper,       "-reducer", badReducer,       "-verbose",       "-inputformat", "org.apache.hadoop.mapred.KeyValueTextInputFormat",       "-jobconf", "mapreduce.task.skip.start.attempts=1",       //actually fewer attempts are required than specified       //but to cater to the case of slow processed counter update, need to        //have more attempts       "-jobconf", "mapreduce.map.maxattempts=20",       "-jobconf", "mapreduce.reduce.maxattempts=15",       "-jobconf", "mapreduce.map.skip.maxrecords=1",       "-jobconf", "mapreduce.reduce.skip.maxgroups=1",       "-jobconf", "mapreduce.job.maps=1",       "-jobconf", "mapreduce.job.reduces=1",       "-jobconf", "fs.default.name="+clusterConf.get("fs.default.name"),       "-jobconf", "mapreduce.jobtracker.address="+clusterConf.get(JTConfig.JT_IPC_ADDRESS),       "-jobconf", "mapreduce.jobtracker.http.address="                     +clusterConf.get(JTConfig.JT_HTTP_ADDRESS),       "-jobconf", "mapreduce.task.files.preserve.failedtasks=true",       "-jobconf", "stream.tmpdir="+System.getProperty("test.build.data","/tmp"),       "-jobconf", "mapred.jar=" + TestStreaming.STREAMING_JAR,       "-jobconf", "mapreduce.framework.name=yarn"     };     StreamJob job = new StreamJob(args, false);           job.go();          validateOutput(job.running_, true);     assertTrue(SkipBadRecords.getSkipOutputPath(job.jobConf_)!=null);   }   */
-annotation|@
-name|Test
 DECL|method|testNoOp ()
 specifier|public
 name|void

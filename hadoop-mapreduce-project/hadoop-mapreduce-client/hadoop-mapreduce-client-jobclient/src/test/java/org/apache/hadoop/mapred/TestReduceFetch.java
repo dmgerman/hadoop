@@ -30,40 +30,6 @@ name|TaskCounter
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
 begin_class
 DECL|class|TestReduceFetch
 specifier|public
@@ -72,9 +38,17 @@ name|TestReduceFetch
 extends|extends
 name|TestReduceFetchFromPartialMem
 block|{
+static|static
+block|{
+name|setSuite
+argument_list|(
+name|TestReduceFetch
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Verify that all segments are read from disk    * @throws Exception might be thrown    */
-annotation|@
-name|Test
 DECL|method|testReduceFromDisk ()
 specifier|public
 name|void
@@ -252,8 +226,6 @@ expr_stmt|;
 comment|// some records hit twice
 block|}
 comment|/**    * Verify that no segment hits disk.    * @throws Exception might be thrown    */
-annotation|@
-name|Test
 DECL|method|testReduceFromMem ()
 specifier|public
 name|void

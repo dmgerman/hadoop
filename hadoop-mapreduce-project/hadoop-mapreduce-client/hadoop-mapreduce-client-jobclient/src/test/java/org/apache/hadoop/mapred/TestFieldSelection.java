@@ -112,23 +112,11 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
 name|junit
 operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
+name|framework
 operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
+name|TestCase
 import|;
 end_import
 
@@ -147,6 +135,8 @@ DECL|class|TestFieldSelection
 specifier|public
 class|class
 name|TestFieldSelection
+extends|extends
+name|TestCase
 block|{
 DECL|field|idFormat
 specifier|private
@@ -176,8 +166,6 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testFieldSelection ()
 specifier|public
 name|void

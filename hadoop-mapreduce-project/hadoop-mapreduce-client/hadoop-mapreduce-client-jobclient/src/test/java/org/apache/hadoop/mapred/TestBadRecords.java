@@ -272,52 +272,6 @@ name|Ignore
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertNotNull
-import|;
-end_import
-
 begin_class
 annotation|@
 name|Ignore
@@ -1505,8 +1459,6 @@ return|return
 name|processed
 return|;
 block|}
-annotation|@
-name|Test
 DECL|method|testBadMapRed ()
 specifier|public
 name|void

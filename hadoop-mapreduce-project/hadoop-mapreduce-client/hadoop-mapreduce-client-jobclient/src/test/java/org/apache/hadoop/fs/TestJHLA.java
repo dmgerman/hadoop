@@ -58,6 +58,16 @@ end_import
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|TestCase
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -104,16 +114,6 @@ name|Before
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
 begin_comment
 comment|/**  * Test Job History Log Analyzer.  *  * @see JHLogAnalyzer  */
 end_comment
@@ -123,6 +123,8 @@ DECL|class|TestJHLA
 specifier|public
 class|class
 name|TestJHLA
+extends|extends
+name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -1120,8 +1122,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Run log analyzer in test mode for file test.log.    */
-annotation|@
-name|Test
 DECL|method|testJHLA ()
 specifier|public
 name|void

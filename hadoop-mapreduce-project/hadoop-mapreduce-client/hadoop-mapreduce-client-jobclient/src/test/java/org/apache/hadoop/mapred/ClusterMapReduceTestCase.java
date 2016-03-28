@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|TestCase
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -55,26 +65,6 @@ operator|.
 name|fs
 operator|.
 name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
 import|;
 end_import
 
@@ -118,6 +108,8 @@ specifier|public
 specifier|abstract
 class|class
 name|ClusterMapReduceTestCase
+extends|extends
+name|TestCase
 block|{
 DECL|field|dfsCluster
 specifier|private
@@ -134,16 +126,19 @@ init|=
 literal|null
 decl_stmt|;
 comment|/**    * Creates Hadoop Cluster and DFS before a test case is run.    *    * @throws Exception    */
-annotation|@
-name|Before
 DECL|method|setUp ()
-specifier|public
+specifier|protected
 name|void
 name|setUp
 parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|super
+operator|.
+name|setUp
+argument_list|()
+expr_stmt|;
 name|startCluster
 argument_list|(
 literal|true
@@ -461,10 +456,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Destroys Hadoop Cluster and DFS after a test case is run.    *    * @throws Exception    */
-annotation|@
-name|After
 DECL|method|tearDown ()
-specifier|public
+specifier|protected
 name|void
 name|tearDown
 parameter_list|()
@@ -472,6 +465,11 @@ throws|throws
 name|Exception
 block|{
 name|stopCluster
+argument_list|()
+expr_stmt|;
+name|super
+operator|.
+name|tearDown
 argument_list|()
 expr_stmt|;
 block|}

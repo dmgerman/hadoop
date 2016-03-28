@@ -50,23 +50,11 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
 name|junit
 operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
+name|framework
 operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
+name|TestCase
 import|;
 end_import
 
@@ -75,10 +63,10 @@ DECL|class|TestMRKeyFieldBasedPartitioner
 specifier|public
 class|class
 name|TestMRKeyFieldBasedPartitioner
+extends|extends
+name|TestCase
 block|{
 comment|/**    * Test is key-field-based partitioned works with empty key.    */
-annotation|@
-name|Test
 DECL|method|testEmptyKey ()
 specifier|public
 name|void
