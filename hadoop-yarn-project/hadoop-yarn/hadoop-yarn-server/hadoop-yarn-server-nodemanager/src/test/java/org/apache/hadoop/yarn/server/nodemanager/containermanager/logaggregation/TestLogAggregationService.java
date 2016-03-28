@@ -14106,6 +14106,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|2
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -14182,10 +14184,12 @@ argument_list|,
 literal|1
 argument_list|,
 literal|4
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifySkipUnnecessaryNNOperations ( LogAggregationContext logAggregationContext, int expectedLogAggregationTimes, int expectedAggregationReportNum)
+DECL|method|verifySkipUnnecessaryNNOperations ( LogAggregationContext logAggregationContext, int expectedLogAggregationTimes, int expectedAggregationReportNum, int expectedCleanupOldLogsTimes)
 specifier|private
 name|void
 name|verifySkipUnnecessaryNNOperations
@@ -14198,6 +14202,9 @@ name|expectedLogAggregationTimes
 parameter_list|,
 name|int
 name|expectedAggregationReportNum
+parameter_list|,
+name|int
+name|expectedCleanupOldLogsTimes
 parameter_list|)
 throws|throws
 name|Exception
@@ -14275,7 +14282,7 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"stdout"
+literal|"sysout"
 block|}
 decl_stmt|;
 name|finishContainer
@@ -14374,6 +14381,16 @@ name|getLogAggregationStatusForApps
 argument_list|()
 operator|.
 name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|expectedCleanupOldLogsTimes
+argument_list|,
+name|aggregator
+operator|.
+name|getCleanupOldLogTimes
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -1108,7 +1108,7 @@ specifier|final
 name|NodeId
 name|nodeId
 decl_stmt|;
-comment|// This variable is only for testing
+comment|// These variables are only for testing
 DECL|field|waiting
 specifier|private
 specifier|final
@@ -1121,11 +1121,17 @@ argument_list|(
 literal|false
 argument_list|)
 decl_stmt|;
-comment|// This variable is only for testing
 DECL|field|logAggregationTimes
 specifier|private
 name|int
 name|logAggregationTimes
+init|=
+literal|0
+decl_stmt|;
+DECL|field|cleanupOldLogTimes
+specifier|private
+name|int
+name|cleanupOldLogTimes
 init|=
 literal|0
 decl_stmt|;
@@ -2262,10 +2268,15 @@ comment|// is smaller than the configured NM log aggregation retention size.
 if|if
 condition|(
 name|uploadedLogsInThisCycle
+operator|&&
+name|logAggregationInRolling
 condition|)
 block|{
 name|cleanOldLogs
 argument_list|()
+expr_stmt|;
+name|cleanupOldLogTimes
+operator|++
 expr_stmt|;
 block|}
 if|if
@@ -3828,6 +3839,19 @@ return|return
 name|this
 operator|.
 name|logAggregationTimes
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getCleanupOldLogTimes ()
+name|int
+name|getCleanupOldLogTimes
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|cleanupOldLogTimes
 return|;
 block|}
 block|}
