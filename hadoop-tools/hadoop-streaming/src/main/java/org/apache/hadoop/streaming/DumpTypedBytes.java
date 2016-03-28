@@ -507,9 +507,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Usage: $HADOOP_HOME/bin/hadoop jar hadoop-streaming.jar"
-operator|+
-literal|" dumptb<glob-pattern>"
+literal|"Usage: mapred streaming dumptb<glob-pattern>"
 argument_list|)
 expr_stmt|;
 name|System

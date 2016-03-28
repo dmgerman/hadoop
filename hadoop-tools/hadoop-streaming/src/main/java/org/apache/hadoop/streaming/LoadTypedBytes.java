@@ -442,9 +442,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Usage: $HADOOP_HOME/bin/hadoop jar hadoop-streaming.jar"
-operator|+
-literal|" loadtb<path>"
+literal|"Usage: mapred streaming loadtb<path>"
 argument_list|)
 expr_stmt|;
 name|System

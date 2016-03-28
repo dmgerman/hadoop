@@ -271,9 +271,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Usage: $HADOOP_HOME/bin/hadoop jar hadoop-streaming.jar"
-operator|+
-literal|" [options]"
+literal|"Usage: mapred streaming [options]"
 argument_list|)
 expr_stmt|;
 name|System
