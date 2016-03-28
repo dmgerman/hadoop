@@ -310,6 +310,20 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Extends the AbstractRequestInterceptor class and provides an implementation  * that simply forwards the AM requests to the cluster resource manager.  *  */
 end_comment
@@ -768,6 +782,24 @@ name|getConf
 argument_list|()
 argument_list|)
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setRMClient (ApplicationMasterProtocol rmClient)
+specifier|public
+name|void
+name|setRMClient
+parameter_list|(
+name|ApplicationMasterProtocol
+name|rmClient
+parameter_list|)
+block|{
+name|this
+operator|.
+name|rmClient
+operator|=
+name|rmClient
 expr_stmt|;
 block|}
 block|}

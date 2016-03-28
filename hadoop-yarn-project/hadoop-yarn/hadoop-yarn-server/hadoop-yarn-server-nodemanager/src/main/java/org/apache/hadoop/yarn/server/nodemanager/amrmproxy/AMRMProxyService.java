@@ -122,6 +122,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -2523,6 +2539,34 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Private
+DECL|method|getBindAddress ()
+specifier|public
+name|InetSocketAddress
+name|getBindAddress
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|listenerEndpoint
+return|;
+block|}
+annotation|@
+name|Private
+DECL|method|getSecretManager ()
+specifier|public
+name|AMRMProxyTokenSecretManager
+name|getSecretManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|secretManager
+return|;
+block|}
 comment|/**    * Private class for handling application stop events.    *    */
 DECL|class|ApplicationEventHandler
 class|class
@@ -2648,8 +2692,10 @@ block|}
 block|}
 block|}
 comment|/**    * Private structure for encapsulating RequestInterceptor and    * ApplicationAttemptId instances.    *    */
+annotation|@
+name|Private
 DECL|class|RequestInterceptorChainWrapper
-specifier|private
+specifier|public
 specifier|static
 class|class
 name|RequestInterceptorChainWrapper
