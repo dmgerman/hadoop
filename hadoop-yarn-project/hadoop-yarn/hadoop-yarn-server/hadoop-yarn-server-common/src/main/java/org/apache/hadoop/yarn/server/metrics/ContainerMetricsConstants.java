@@ -201,6 +201,26 @@ name|ALLOCATED_HOST_HTTP_ADDRESS_ENTITY_INFO
 init|=
 literal|"YARN_CONTAINER_ALLOCATED_HOST_HTTP_ADDRESS"
 decl_stmt|;
+comment|// Event of this type will be emitted by NM.
+DECL|field|LOCALIZATION_START_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LOCALIZATION_START_EVENT_TYPE
+init|=
+literal|"YARN_NM_CONTAINER_LOCALIZATION_STARTED"
+decl_stmt|;
+comment|// Event of this type will be emitted by NM.
+DECL|field|LOCALIZATION_FINISHED_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LOCALIZATION_FINISHED_EVENT_TYPE
+init|=
+literal|"YARN_NM_CONTAINER_LOCALIZATION_FINISHED"
+decl_stmt|;
 block|}
 end_class
 

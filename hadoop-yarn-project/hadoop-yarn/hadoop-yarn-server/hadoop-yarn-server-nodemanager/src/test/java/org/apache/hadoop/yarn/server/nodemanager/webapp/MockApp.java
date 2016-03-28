@@ -539,18 +539,6 @@ return|return
 name|flowRunId
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|getTimelineClient ()
-specifier|public
-name|TimelineClient
-name|getTimelineClient
-parameter_list|()
-block|{
-return|return
-name|timelineClient
-return|;
-block|}
 block|}
 end_class
 

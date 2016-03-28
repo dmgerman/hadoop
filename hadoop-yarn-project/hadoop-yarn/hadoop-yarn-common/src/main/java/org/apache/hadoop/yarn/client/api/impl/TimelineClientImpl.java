@@ -2563,12 +2563,11 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// TODO only handle exception for timelineServiceAddress being updated.
-comment|// skip retry for other exceptions.
+comment|// handle exception for timelineServiceAddress being updated.
 name|checkRetryWithSleep
 argument_list|(
 name|retries
@@ -2642,7 +2641,7 @@ name|retries
 return|;
 block|}
 comment|/**    * Check if reaching to maximum of retries.    * @param retries    * @param e    */
-DECL|method|checkRetryWithSleep (int retries, Exception e)
+DECL|method|checkRetryWithSleep (int retries, IOException e)
 specifier|private
 name|void
 name|checkRetryWithSleep
@@ -2650,7 +2649,7 @@ parameter_list|(
 name|int
 name|retries
 parameter_list|,
-name|Exception
+name|IOException
 name|e
 parameter_list|)
 throws|throws
@@ -2691,68 +2690,75 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
-block|}
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"TimelineClient has reached to max retry times :"
-operator|+
-name|this
-operator|.
-name|maxServiceRetries
-operator|+
-literal|" for service address: "
-operator|+
-name|timelineServiceAddress
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|e
-operator|instanceof
-name|YarnException
-condition|)
-block|{
-throw|throw
-operator|(
-name|YarnException
-operator|)
-name|e
-throw|;
-block|}
-elseif|else
-if|if
-condition|(
-name|e
-operator|instanceof
-name|IOException
-condition|)
-block|{
-throw|throw
-operator|(
-name|IOException
-operator|)
-name|e
-throw|;
-block|}
-else|else
-block|{
 throw|throw
 operator|new
 name|YarnException
 argument_list|(
+literal|"Interrupted while retrying to connect to ATS"
+argument_list|)
+throw|;
+block|}
+block|}
+else|else
+block|{
+name|StringBuilder
+name|msg
+init|=
+operator|new
+name|StringBuilder
+argument_list|(
+literal|"TimelineClient has reached to max retry times : "
+argument_list|)
+decl_stmt|;
+name|msg
+operator|.
+name|append
+argument_list|(
+name|this
+operator|.
+name|maxServiceRetries
+argument_list|)
+expr_stmt|;
+name|msg
+operator|.
+name|append
+argument_list|(
+literal|" for service address: "
+argument_list|)
+expr_stmt|;
+name|msg
+operator|.
+name|append
+argument_list|(
+name|timelineServiceAddress
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|msg
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|msg
+operator|.
+name|toString
+argument_list|()
+argument_list|,
 name|e
 argument_list|)
 throw|;
 block|}
 block|}
-block|}
 DECL|method|putObjects ( URI base, String path, MultivaluedMap<String, String> params, Object obj)
-specifier|private
+specifier|protected
 name|void
 name|putObjects
 parameter_list|(
@@ -3553,7 +3559,7 @@ name|tokenRetryOp
 argument_list|)
 return|;
 block|}
-comment|/**    * Poll TimelineServiceAddress for maximum of retries times if it is null.    * @param retries    * @return the left retry times    */
+comment|/**    * Poll TimelineServiceAddress for maximum of retries times if it is null.    *    * @param retries    * @return the left retry times    * @throws IOException    */
 DECL|method|pollTimelineServiceAddress (int retries)
 specifier|private
 name|int
@@ -3562,6 +3568,8 @@ parameter_list|(
 name|int
 name|retries
 parameter_list|)
+throws|throws
+name|YarnException
 block|{
 while|while
 condition|(
@@ -3600,8 +3608,14 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"Interrupted while trying to connect ATS"
+argument_list|)
+throw|;
 block|}
-comment|// timelineServiceAddress = getTimelineServiceAddress();
 name|retries
 operator|--
 expr_stmt|;
