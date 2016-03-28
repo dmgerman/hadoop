@@ -1109,74 +1109,6 @@ block|{ }
 block|}
 annotation|@
 name|Test
-DECL|method|testParseSSLConf ()
-specifier|public
-name|void
-name|testParseSSLConf
-parameter_list|()
-block|{
-name|DistCpOptions
-name|options
-init|=
-name|OptionsParser
-operator|.
-name|parse
-argument_list|(
-operator|new
-name|String
-index|[]
-block|{
-literal|"hdfs://localhost:8020/source/first"
-block|,
-literal|"hdfs://localhost:8020/target/"
-block|}
-argument_list|)
-decl_stmt|;
-name|Assert
-operator|.
-name|assertNull
-argument_list|(
-name|options
-operator|.
-name|getSslConfigurationFile
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|options
-operator|=
-name|OptionsParser
-operator|.
-name|parse
-argument_list|(
-operator|new
-name|String
-index|[]
-block|{
-literal|"-mapredSslConf"
-block|,
-literal|"/tmp/ssl-client.xml"
-block|,
-literal|"hdfs://localhost:8020/source/first"
-block|,
-literal|"hdfs://localhost:8020/target/"
-block|}
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-name|options
-operator|.
-name|getSslConfigurationFile
-argument_list|()
-argument_list|,
-literal|"/tmp/ssl-client.xml"
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
 DECL|method|testParseMaps ()
 specifier|public
 name|void
@@ -1758,7 +1690,7 @@ literal|"deleteMissing=false, ignoreFailures=false, overwrite=false, "
 operator|+
 literal|"skipCRC=false, blocking=true, numListstatusThreads=0, maxMaps=20, "
 operator|+
-literal|"mapBandwidth=100.0, sslConfigurationFile='null', "
+literal|"mapBandwidth=100.0, "
 operator|+
 literal|"copyStrategy='uniformsize', preserveStatus=[], "
 operator|+

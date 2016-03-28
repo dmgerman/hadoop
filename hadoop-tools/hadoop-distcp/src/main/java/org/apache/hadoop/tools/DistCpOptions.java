@@ -208,11 +208,6 @@ name|DistCpConstants
 operator|.
 name|DEFAULT_BANDWIDTH_MB
 decl_stmt|;
-DECL|field|sslConfigurationFile
-specifier|private
-name|String
-name|sslConfigurationFile
-decl_stmt|;
 DECL|field|copyStrategy
 specifier|private
 name|String
@@ -571,15 +566,6 @@ operator|=
 name|that
 operator|.
 name|mapBandwidth
-expr_stmt|;
-name|this
-operator|.
-name|sslConfigurationFile
-operator|=
-name|that
-operator|.
-name|getSslConfigurationFile
-argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -1172,34 +1158,6 @@ operator|.
 name|mapBandwidth
 operator|=
 name|mapBandwidth
-expr_stmt|;
-block|}
-comment|/**    * Get path where the ssl configuration file is present to use for hftps://    *    * @return Path on local file system    */
-DECL|method|getSslConfigurationFile ()
-specifier|public
-name|String
-name|getSslConfigurationFile
-parameter_list|()
-block|{
-return|return
-name|sslConfigurationFile
-return|;
-block|}
-comment|/**    * Set the SSL configuration file path to use with hftps:// (local path)    *    * @param sslConfigurationFile - Local ssl config file path    */
-DECL|method|setSslConfigurationFile (String sslConfigurationFile)
-specifier|public
-name|void
-name|setSslConfigurationFile
-parameter_list|(
-name|String
-name|sslConfigurationFile
-parameter_list|)
-block|{
-name|this
-operator|.
-name|sslConfigurationFile
-operator|=
-name|sslConfigurationFile
 expr_stmt|;
 block|}
 comment|/**    * Returns an iterator with the list of file attributes to preserve    *    * @return iterator of file attributes to preserve    */
@@ -2029,12 +1987,6 @@ operator|+
 literal|", mapBandwidth="
 operator|+
 name|mapBandwidth
-operator|+
-literal|", sslConfigurationFile='"
-operator|+
-name|sslConfigurationFile
-operator|+
-literal|'\''
 operator|+
 literal|", copyStrategy='"
 operator|+

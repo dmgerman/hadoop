@@ -139,15 +139,6 @@ name|CONF_LABEL_DELETE_MISSING
 init|=
 literal|"distcp.delete.missing.source"
 decl_stmt|;
-DECL|field|CONF_LABEL_SSL_CONF
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|CONF_LABEL_SSL_CONF
-init|=
-literal|"distcp.keystore.resource"
-decl_stmt|;
 DECL|field|CONF_LABEL_LISTSTATUS_THREADS
 specifier|public
 specifier|static
@@ -294,16 +285,6 @@ name|CONF_LABEL_TOTAL_NUMBER_OF_RECORDS
 init|=
 literal|"mapred.number.of.records"
 decl_stmt|;
-comment|/* SSL keystore resource */
-DECL|field|CONF_LABEL_SSL_KEYSTORE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|CONF_LABEL_SSL_KEYSTORE
-init|=
-literal|"dfs.https.client.keystore.resource"
-decl_stmt|;
 comment|/* If input is based -f<<source listing>>, file containing the src paths */
 DECL|field|CONF_LABEL_LISTING_FILE_PATH
 specifier|public
@@ -373,26 +354,6 @@ name|String
 name|CONF_LABEL_COPY_LISTING_CLASS
 init|=
 literal|"distcp.copy.listing.class"
-decl_stmt|;
-comment|/**    * Conf label for SSL Trust-store location.    */
-DECL|field|CONF_LABEL_SSL_TRUST_STORE_LOCATION
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|CONF_LABEL_SSL_TRUST_STORE_LOCATION
-init|=
-literal|"ssl.client.truststore.location"
-decl_stmt|;
-comment|/**    * Conf label for SSL Key-store location.    */
-DECL|field|CONF_LABEL_SSL_KEY_STORE_LOCATION
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|CONF_LABEL_SSL_KEY_STORE_LOCATION
-init|=
-literal|"ssl.client.keystore.location"
 decl_stmt|;
 comment|/**    * Constants for DistCp return code to shell / consumer of ToolRunner's run    */
 DECL|field|SUCCESS

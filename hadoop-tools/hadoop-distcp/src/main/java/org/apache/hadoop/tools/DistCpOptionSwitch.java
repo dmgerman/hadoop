@@ -150,27 +150,6 @@ literal|"files missing in source"
 argument_list|)
 argument_list|)
 block|,
-comment|/**    * Configuration file to use with hftps:// for securely copying    * files across clusters. Typically the configuration file contains    * truststore/keystore information such as location, password and type    */
-DECL|enumConstant|SSL_CONF
-name|SSL_CONF
-argument_list|(
-name|DistCpConstants
-operator|.
-name|CONF_LABEL_SSL_CONF
-argument_list|,
-operator|new
-name|Option
-argument_list|(
-literal|"mapredSslConf"
-argument_list|,
-literal|true
-argument_list|,
-literal|"Configuration for ssl config file"
-operator|+
-literal|", to use with hftps://. Must be in the classpath."
-argument_list|)
-argument_list|)
-block|,
 comment|/**    * Number of threads for building source file listing (before map-reduce    * phase, max one listStatus per thread at a time).    */
 DECL|enumConstant|NUM_LISTSTATUS_THREADS
 name|NUM_LISTSTATUS_THREADS
