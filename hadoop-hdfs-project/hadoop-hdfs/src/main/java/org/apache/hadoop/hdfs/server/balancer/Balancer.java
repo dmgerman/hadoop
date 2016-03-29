@@ -2826,8 +2826,7 @@ name|SUCCESS
 argument_list|,
 name|bytesLeftToMove
 argument_list|,
-operator|-
-literal|1
+literal|0
 argument_list|)
 return|;
 block|}
