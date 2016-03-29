@@ -207,7 +207,14 @@ init|=
 operator|new
 name|File
 argument_list|(
-literal|"build"
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"test.build.data"
+argument_list|,
+literal|"build/test/data"
+argument_list|)
 argument_list|,
 name|UUID
 operator|.

@@ -594,6 +594,11 @@ argument_list|(
 name|MiniDFSCluster
 operator|.
 name|HDFS_MINIDFS_BASEDIR
+argument_list|,
+name|MiniDFSCluster
+operator|.
+name|getBaseDirectory
+argument_list|()
 argument_list|)
 operator|+
 literal|"_2"

@@ -13282,12 +13282,26 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// add a local file
+name|String
+name|localPathRoot
+init|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"test.build.data"
+argument_list|,
+literal|"build/test/data"
+argument_list|)
+decl_stmt|;
 name|Path
 name|localPath
 init|=
 operator|new
 name|Path
 argument_list|(
+name|localPathRoot
+argument_list|,
 literal|"testFile1"
 argument_list|)
 decl_stmt|;
