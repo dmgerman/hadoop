@@ -996,6 +996,22 @@ name|Ints
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_FSDATASETCACHE_MAX_THREADS_PER_VOLUME_KEY
+import|;
+end_import
+
 begin_class
 DECL|class|TestFsDatasetCache
 specifier|public
@@ -1215,6 +1231,15 @@ operator|.
 name|DFS_HEARTBEAT_INTERVAL_KEY
 argument_list|,
 literal|1
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFS_DATANODE_FSDATASETCACHE_MAX_THREADS_PER_VOLUME_KEY
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 name|prevCacheManipulator
@@ -3184,7 +3209,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|60000
+literal|600000
 argument_list|)
 DECL|method|testPageRounder ()
 specifier|public
