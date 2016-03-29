@@ -744,7 +744,32 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-comment|// init timeline services first
+comment|// do security login first.
+try|try
+block|{
+name|doSecureLogin
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+literal|"Failed to login"
+argument_list|,
+name|ie
+argument_list|)
+throw|;
+block|}
+comment|// init timeline services
 name|timelineStore
 operator|=
 name|createTimelineStore
@@ -871,31 +896,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-try|try
-block|{
-name|doSecureLogin
-argument_list|(
-name|getConfig
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ie
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|YarnRuntimeException
-argument_list|(
-literal|"Failed to login"
-argument_list|,
-name|ie
-argument_list|)
-throw|;
-block|}
 name|super
 operator|.
 name|serviceStart
