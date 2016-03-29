@@ -22,11 +22,11 @@ end_package
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|junit
 operator|.
-name|IOException
+name|Test
 import|;
 end_import
 
@@ -56,27 +56,31 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -85,8 +89,6 @@ DECL|class|TestTextSplitter
 specifier|public
 class|class
 name|TestTextSplitter
-extends|extends
-name|TestCase
 block|{
 DECL|method|formatArray (Object [] ar)
 specifier|public
@@ -305,6 +307,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testStringConvertEmpty ()
 specifier|public
 name|void
@@ -338,6 +342,8 @@ name|emptyBigDec
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBigDecConvertEmpty ()
 specifier|public
 name|void
@@ -371,6 +377,8 @@ name|emptyStr
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testConvertA ()
 specifier|public
 name|void
@@ -407,6 +415,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testConvertZ ()
 specifier|public
 name|void
@@ -443,6 +453,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testConvertThreeChars ()
 specifier|public
 name|void
@@ -479,6 +491,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testConvertStr ()
 specifier|public
 name|void
@@ -515,6 +529,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testConvertChomped ()
 specifier|public
 name|void
@@ -551,6 +567,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAlphabetSplit ()
 specifier|public
 name|void
@@ -661,6 +679,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommonPrefix ()
 specifier|public
 name|void

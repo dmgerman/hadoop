@@ -40,16 +40,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -90,13 +80,33 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
 begin_class
 DECL|class|TestLineInputFormat
 specifier|public
 class|class
 name|TestLineInputFormat
-extends|extends
-name|TestCase
 block|{
 DECL|field|MAX_LENGTH
 specifier|private
@@ -182,6 +192,8 @@ argument_list|,
 literal|"TestLineInputFormat"
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testFormat ()
 specifier|public
 name|void

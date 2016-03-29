@@ -58,16 +58,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -312,6 +302,28 @@ name|ReflectionUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_comment
 comment|/**  *  Validates map phase progress.  *  Testcase uses newApi.  *  We extend Task.TaskReporter class and override setProgress()  *  to validate the map phase progress being set.  *  We extend MapTask and override startReporter() method that creates  *  TestTaskReporter instead of TaskReporter and call mapTask.run().  *  Similar to LocalJobRunner, we set up splits and call mapTask.run()  *  directly. No job is run, only map task is run.  *  As the reporter's setProgress() validates progress after  *  every record is read, we are done with the validation of map phase progress  *  once mapTask.run() is finished. Sort phase progress in map task is not  *  validated here.  */
 end_comment
@@ -321,8 +333,6 @@ DECL|class|TestMapProgress
 specifier|public
 class|class
 name|TestMapProgress
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|public
@@ -1167,6 +1177,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    *  Validates map phase progress after each record is processed by map task    *  using custom task reporter.    */
+annotation|@
+name|Test
 DECL|method|testMapProgress ()
 specifier|public
 name|void

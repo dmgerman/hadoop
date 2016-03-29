@@ -18,21 +18,21 @@ end_package
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|junit
 operator|.
-name|IOException
+name|Test
 import|;
 end_import
 
 begin_import
 import|import
-name|junit
+name|java
 operator|.
-name|framework
+name|io
 operator|.
-name|TestCase
+name|IOException
 import|;
 end_import
 
@@ -45,9 +45,9 @@ DECL|class|TestMiniMRBringup
 specifier|public
 class|class
 name|TestMiniMRBringup
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testBringUp ()
 specifier|public
 name|void

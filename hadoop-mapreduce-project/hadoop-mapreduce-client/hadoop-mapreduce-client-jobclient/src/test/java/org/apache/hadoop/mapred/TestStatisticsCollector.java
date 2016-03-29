@@ -28,16 +28,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -68,19 +58,65 @@ name|Stat
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
 begin_class
 DECL|class|TestStatisticsCollector
 specifier|public
 class|class
 name|TestStatisticsCollector
-extends|extends
-name|TestCase
 block|{
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"rawtypes"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testMovingWindow ()
 specifier|public
 name|void

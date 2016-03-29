@@ -50,16 +50,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -226,15 +216,37 @@ name|ReflectionUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_class
 DECL|class|TestWrappedRecordReaderClassloader
 specifier|public
 class|class
 name|TestWrappedRecordReaderClassloader
-extends|extends
-name|TestCase
 block|{
 comment|/**    * Tests the class loader set by {@link JobConf#setClassLoader(ClassLoader)}    * is inherited by any {@link WrappedRecordReader}s created by    * {@link CompositeRecordReader}    */
+annotation|@
+name|Test
 DECL|method|testClassLoader ()
 specifier|public
 name|void

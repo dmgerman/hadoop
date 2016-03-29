@@ -18,26 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -166,6 +146,50 @@ name|Progressable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_comment
 comment|/**  * This test exercises the ValueIterator.  */
 end_comment
@@ -175,8 +199,6 @@ DECL|class|TestReduceTask
 specifier|public
 class|class
 name|TestReduceTask
-extends|extends
-name|TestCase
 block|{
 DECL|class|NullProgress
 specifier|static
@@ -764,9 +786,13 @@ argument_list|()
 operator|.
 name|get
 argument_list|()
+argument_list|,
+literal|0.0000
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testValueIterator ()
 specifier|public
 name|void
@@ -813,6 +839,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testValueIteratorWithCompression ()
 specifier|public
 name|void

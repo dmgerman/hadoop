@@ -42,46 +42,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestSuite
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|extensions
-operator|.
-name|TestSetup
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -240,13 +200,65 @@ name|MapContextImpl
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|AfterClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|BeforeClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_class
 DECL|class|TestJoinProperties
 specifier|public
 class|class
 name|TestJoinProperties
-extends|extends
-name|TestCase
 block|{
 DECL|field|cluster
 specifier|private
@@ -307,29 +319,11 @@ specifier|static
 name|Path
 name|base
 decl_stmt|;
-DECL|method|suite ()
+annotation|@
+name|BeforeClass
+DECL|method|setUp ()
 specifier|public
 specifier|static
-name|Test
-name|suite
-parameter_list|()
-block|{
-name|TestSetup
-name|setup
-init|=
-operator|new
-name|TestSetup
-argument_list|(
-operator|new
-name|TestSuite
-argument_list|(
-name|TestJoinProperties
-operator|.
-name|class
-argument_list|)
-argument_list|)
-block|{
-specifier|protected
 name|void
 name|setUp
 parameter_list|()
@@ -385,7 +379,11 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-specifier|protected
+annotation|@
+name|AfterClass
+DECL|method|tearDown ()
+specifier|public
+specifier|static
 name|void
 name|tearDown
 parameter_list|()
@@ -405,12 +403,6 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-block|}
-decl_stmt|;
-return|return
-name|setup
-return|;
 block|}
 comment|// Sources from 0 to srcs-2 have IntWritable key and IntWritable value
 comment|// src-1 source has IntWritable key and LongWritable value.
@@ -1657,6 +1649,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// outer(outer(A, B), C) == outer(A,outer(B, C)) == outer(A, B, C)
+annotation|@
+name|Test
 DECL|method|testOuterAssociativity ()
 specifier|public
 name|void
@@ -1713,6 +1707,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// inner(inner(A, B), C) == inner(A,inner(B, C)) == inner(A, B, C)
+annotation|@
+name|Test
 DECL|method|testInnerAssociativity ()
 specifier|public
 name|void
@@ -1769,6 +1765,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// override(inner(A, B), A) == A
+annotation|@
+name|Test
 DECL|method|testIdentity ()
 specifier|public
 name|void

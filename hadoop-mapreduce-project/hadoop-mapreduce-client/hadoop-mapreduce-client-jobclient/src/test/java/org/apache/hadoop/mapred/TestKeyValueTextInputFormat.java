@@ -38,16 +38,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -132,13 +122,45 @@ name|ReflectionUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
 begin_class
 DECL|class|TestKeyValueTextInputFormat
 specifier|public
 class|class
 name|TestKeyValueTextInputFormat
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -243,6 +265,8 @@ argument_list|,
 literal|"TestKeyValueTextInputFormat"
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testFormat ()
 specifier|public
 name|void
@@ -825,6 +849,8 @@ name|defaultConf
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testUTF8 ()
 specifier|public
 name|void
@@ -917,6 +943,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testNewLines ()
 specifier|public
 name|void
@@ -1304,9 +1332,10 @@ name|result
 return|;
 block|}
 comment|/**    * Test using the gzip codec for reading    */
+annotation|@
+name|Test
 DECL|method|testGzip ()
 specifier|public
-specifier|static
 name|void
 name|testGzip
 parameter_list|()

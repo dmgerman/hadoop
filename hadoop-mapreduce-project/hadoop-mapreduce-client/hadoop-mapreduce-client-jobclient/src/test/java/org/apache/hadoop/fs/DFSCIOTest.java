@@ -108,16 +108,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -240,6 +230,16 @@ name|Ignore
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * Distributed i/o benchmark.  *<p>  * This test writes into or reads from a specified number of files.  * File size is specified as a parameter to the test.   * Each file is accessed in a separate map task.  *<p>  * The reducer collects the following statistics:  *<ul>  *<li>number of tasks completed</li>  *<li>number of bytes written/read</li>  *<li>execution time</li>  *<li>io rate</li>  *<li>io rate squared</li>  *</ul>  *      * Finally, the following information is appended to a local file  *<ul>  *<li>read or write test</li>  *<li>date and time the test finished</li>     *<li>number of files</li>  *<li>total number of bytes processed</li>  *<li>throughput in mb/sec (total number of bytes / sum of processing times)</li>  *<li>average i/o rate in mb/sec per file</li>  *<li>standard i/o rate deviation</li>  *</ul>  */
 end_comment
@@ -251,8 +251,6 @@ DECL|class|DFSCIOTest
 specifier|public
 class|class
 name|DFSCIOTest
-extends|extends
-name|TestCase
 block|{
 comment|// Constants
 DECL|field|LOG
@@ -499,6 +497,8 @@ literal|"/hdfs_write"
 argument_list|)
 decl_stmt|;
 comment|/**    * Run the test with default parameters.    *     * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testIOs ()
 specifier|public
 name|void

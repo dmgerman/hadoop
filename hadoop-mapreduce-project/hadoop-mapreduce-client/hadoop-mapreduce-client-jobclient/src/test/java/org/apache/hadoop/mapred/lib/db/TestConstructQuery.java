@@ -32,16 +32,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -68,13 +58,45 @@ name|JobConf
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
 begin_class
 DECL|class|TestConstructQuery
 specifier|public
 class|class
 name|TestConstructQuery
-extends|extends
-name|TestCase
 block|{
 DECL|field|fieldNames
 specifier|private
@@ -143,6 +165,8 @@ name|NullWritable
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testConstructQuery ()
 specifier|public
 name|void
@@ -187,6 +211,8 @@ name|actual
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSetOutput ()
 specifier|public
 name|void

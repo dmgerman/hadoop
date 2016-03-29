@@ -18,26 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -198,6 +178,38 @@ name|Ignore
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
 begin_comment
 comment|/**  * This test checks whether the task caches are created and used properly.  */
 end_comment
@@ -209,8 +221,6 @@ DECL|class|TestMultipleLevelCaching
 specifier|public
 class|class
 name|TestMultipleLevelCaching
-extends|extends
-name|TestCase
 block|{
 DECL|field|MAX_LEVEL
 specifier|private
@@ -346,6 +356,8 @@ name|toString
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMultiLevelCaching ()
 specifier|public
 name|void
