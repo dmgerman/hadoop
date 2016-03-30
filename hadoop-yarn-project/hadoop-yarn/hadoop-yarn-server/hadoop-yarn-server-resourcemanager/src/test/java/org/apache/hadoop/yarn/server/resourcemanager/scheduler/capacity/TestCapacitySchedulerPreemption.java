@@ -550,6 +550,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -748,9 +758,9 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|ProportionalCapacityPreemptionPolicy
+name|CapacitySchedulerConfiguration
 operator|.
-name|WAIT_TIME_BEFORE_KILL
+name|PREEMPTION_WAIT_TIME_BEFORE_KILL
 argument_list|,
 literal|0
 argument_list|)
@@ -770,7 +780,7 @@ name|conf
 operator|.
 name|setFloat
 argument_list|(
-name|ProportionalCapacityPreemptionPolicy
+name|CapacitySchedulerConfiguration
 operator|.
 name|TOTAL_PREEMPTION_PER_ROUND
 argument_list|,
@@ -781,9 +791,9 @@ name|conf
 operator|.
 name|setFloat
 argument_list|(
-name|ProportionalCapacityPreemptionPolicy
+name|CapacitySchedulerConfiguration
 operator|.
-name|NATURAL_TERMINATION_FACTOR
+name|PREEMPTION_NATURAL_TERMINATION_FACTOR
 argument_list|,
 literal|1.0f
 argument_list|)
@@ -3123,6 +3133,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/*    * Ignore this test now because it could be a premature optimization    */
+annotation|@
+name|Ignore
 annotation|@
 name|Test
 argument_list|(

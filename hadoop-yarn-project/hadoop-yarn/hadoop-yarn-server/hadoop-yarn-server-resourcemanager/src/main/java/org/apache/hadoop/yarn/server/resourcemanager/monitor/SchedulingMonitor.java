@@ -219,16 +219,6 @@ operator|=
 name|rmContext
 expr_stmt|;
 block|}
-DECL|method|getMonitorInterval ()
-specifier|public
-name|long
-name|getMonitorInterval
-parameter_list|()
-block|{
-return|return
-name|monitorInterval
-return|;
-block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getSchedulingEditPolicy ()

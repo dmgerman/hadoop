@@ -81,7 +81,6 @@ interface|interface
 name|SchedulingEditPolicy
 block|{
 DECL|method|init (Configuration config, RMContext context, PreemptableResourceScheduler scheduler)
-specifier|public
 name|void
 name|init
 parameter_list|(
@@ -97,19 +96,16 @@ parameter_list|)
 function_decl|;
 comment|/**    * This method is invoked at regular intervals. Internally the policy is    * allowed to track containers and affect the scheduler. The "actions"    * performed are passed back through an EventHandler.    */
 DECL|method|editSchedule ()
-specifier|public
 name|void
 name|editSchedule
 parameter_list|()
 function_decl|;
 DECL|method|getMonitoringInterval ()
-specifier|public
 name|long
 name|getMonitoringInterval
 parameter_list|()
 function_decl|;
 DECL|method|getPolicyName ()
-specifier|public
 name|String
 name|getPolicyName
 parameter_list|()

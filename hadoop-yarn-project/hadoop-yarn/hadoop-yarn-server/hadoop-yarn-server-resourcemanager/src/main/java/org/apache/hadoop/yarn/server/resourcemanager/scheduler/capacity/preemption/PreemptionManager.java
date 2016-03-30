@@ -724,7 +724,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getShallowCopyOfPreemptableEntities ()
+DECL|method|getShallowCopyOfPreemptableQueues ()
 specifier|public
 name|Map
 argument_list|<
@@ -732,7 +732,7 @@ name|String
 argument_list|,
 name|PreemptableQueue
 argument_list|>
-name|getShallowCopyOfPreemptableEntities
+name|getShallowCopyOfPreemptableQueues
 parameter_list|()
 block|{
 try|try
