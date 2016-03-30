@@ -1244,6 +1244,41 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Decrement the number of blocks scheduled for each given storage. This will    * be called during abandon block or delete of UC block.    */
+DECL|method|decrementBlocksScheduled (DatanodeStorageInfo... storages)
+specifier|public
+specifier|static
+name|void
+name|decrementBlocksScheduled
+parameter_list|(
+name|DatanodeStorageInfo
+modifier|...
+name|storages
+parameter_list|)
+block|{
+for|for
+control|(
+name|DatanodeStorageInfo
+name|s
+range|:
+name|storages
+control|)
+block|{
+name|s
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+operator|.
+name|decrementBlocksScheduled
+argument_list|(
+name|s
+operator|.
+name|getStorageType
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|equals (Object obj)
