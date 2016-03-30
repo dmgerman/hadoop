@@ -3257,7 +3257,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|peerFromSocketAndKey ( SaslDataTransferClient saslClient, Socket s, DataEncryptionKeyFactory keyFactory, Token<BlockTokenIdentifier> blockToken, DatanodeID datanodeId)
+DECL|method|peerFromSocketAndKey ( SaslDataTransferClient saslClient, Socket s, DataEncryptionKeyFactory keyFactory, Token<BlockTokenIdentifier> blockToken, DatanodeID datanodeId, int socketTimeoutMs)
 specifier|public
 specifier|static
 name|Peer
@@ -3280,6 +3280,9 @@ name|blockToken
 parameter_list|,
 name|DatanodeID
 name|datanodeId
+parameter_list|,
+name|int
+name|socketTimeoutMs
 parameter_list|)
 throws|throws
 name|IOException
@@ -3301,6 +3304,20 @@ operator|=
 name|peerFromSocket
 argument_list|(
 name|s
+argument_list|)
+expr_stmt|;
+name|peer
+operator|.
+name|setReadTimeout
+argument_list|(
+name|socketTimeoutMs
+argument_list|)
+expr_stmt|;
+name|peer
+operator|.
+name|setWriteTimeout
+argument_list|(
+name|socketTimeoutMs
 argument_list|)
 expr_stmt|;
 name|peer

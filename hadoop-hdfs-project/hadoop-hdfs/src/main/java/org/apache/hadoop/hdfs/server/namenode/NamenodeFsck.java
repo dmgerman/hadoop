@@ -5867,6 +5867,10 @@ argument_list|,
 name|blockToken
 argument_list|,
 name|datanodeId
+argument_list|,
+name|HdfsConstants
+operator|.
+name|READ_TIMEOUT
 argument_list|)
 expr_stmt|;
 block|}

@@ -4600,12 +4600,7 @@ argument_list|,
 name|blockToken
 argument_list|,
 name|datanodeId
-argument_list|)
-expr_stmt|;
-name|peer
-operator|.
-name|setReadTimeout
-argument_list|(
+argument_list|,
 name|socketTimeout
 argument_list|)
 expr_stmt|;
