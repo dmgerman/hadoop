@@ -330,6 +330,32 @@ name|Priority
 name|getDefaultApplicationPriority
 parameter_list|()
 function_decl|;
+comment|/**    * Increment Reserved Capacity    *    * @param partition    *          asked by application    * @param reservedRes    *          reserved resource asked    */
+DECL|method|incReservedResource (String partition, Resource reservedRes)
+specifier|public
+name|void
+name|incReservedResource
+parameter_list|(
+name|String
+name|partition
+parameter_list|,
+name|Resource
+name|reservedRes
+parameter_list|)
+function_decl|;
+comment|/**    * Decrement Reserved Capacity    *    * @param partition    *          asked by application    * @param reservedRes    *          reserved resource asked    */
+DECL|method|decReservedResource (String partition, Resource reservedRes)
+specifier|public
+name|void
+name|decReservedResource
+parameter_list|(
+name|String
+name|partition
+parameter_list|,
+name|Resource
+name|reservedRes
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

@@ -232,6 +232,14 @@ block|,
 block|{
 literal|"MaxAMResourcePercentage"
 block|}
+block|,
+block|{
+literal|"ReservedCapacity"
+block|}
+block|,
+block|{
+literal|"AbsoluteReservedCapacity"
+block|}
 block|}
 argument_list|)
 return|;

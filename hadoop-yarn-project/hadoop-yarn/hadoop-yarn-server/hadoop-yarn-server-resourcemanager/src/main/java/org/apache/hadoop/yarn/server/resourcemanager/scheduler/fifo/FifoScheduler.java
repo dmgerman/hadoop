@@ -1995,6 +1995,36 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+specifier|public
+name|void
+name|incReservedResource
+parameter_list|(
+name|String
+name|partition
+parameter_list|,
+name|Resource
+name|reservedRes
+parameter_list|)
+block|{
+comment|// TODO add implementation for FIFO scheduler
+block|}
+annotation|@
+name|Override
+specifier|public
+name|void
+name|decReservedResource
+parameter_list|(
+name|String
+name|partition
+parameter_list|,
+name|Resource
+name|reservedRes
+parameter_list|)
+block|{
+comment|// TODO add implementation for FIFO scheduler
+block|}
 block|}
 decl_stmt|;
 DECL|method|FifoScheduler ()

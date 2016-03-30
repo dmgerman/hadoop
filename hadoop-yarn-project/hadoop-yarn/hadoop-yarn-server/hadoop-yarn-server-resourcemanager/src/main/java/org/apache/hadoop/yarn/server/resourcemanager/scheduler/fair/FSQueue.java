@@ -1678,6 +1678,34 @@ parameter_list|)
 block|{   }
 annotation|@
 name|Override
+DECL|method|incReservedResource (String nodeLabel, Resource resourceToInc)
+specifier|public
+name|void
+name|incReservedResource
+parameter_list|(
+name|String
+name|nodeLabel
+parameter_list|,
+name|Resource
+name|resourceToInc
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
+DECL|method|decReservedResource (String nodeLabel, Resource resourceToDec)
+specifier|public
+name|void
+name|decReservedResource
+parameter_list|(
+name|String
+name|nodeLabel
+parameter_list|,
+name|Resource
+name|resourceToDec
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
 DECL|method|getDefaultApplicationPriority ()
 specifier|public
 name|Priority
