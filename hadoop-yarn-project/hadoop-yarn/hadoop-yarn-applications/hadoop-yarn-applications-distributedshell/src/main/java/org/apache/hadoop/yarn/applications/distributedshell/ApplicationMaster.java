@@ -1582,12 +1582,12 @@ init|=
 literal|null
 decl_stmt|;
 comment|// Hardcoded path to shell script in launch container's local env
-DECL|field|ExecShellStringPath
+DECL|field|EXEC_SHELL_STRING_PATH
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|ExecShellStringPath
+name|EXEC_SHELL_STRING_PATH
 init|=
 name|Client
 operator|.
@@ -1595,12 +1595,12 @@ name|SCRIPT_PATH
 operator|+
 literal|".sh"
 decl_stmt|;
-DECL|field|ExecBatScripStringtPath
+DECL|field|EXEC_BAT_SCRIPT_STRING_PATH
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|ExecBatScripStringtPath
+name|EXEC_BAT_SCRIPT_STRING_PATH
 init|=
 name|Client
 operator|.
@@ -5127,9 +5127,9 @@ name|Shell
 operator|.
 name|WINDOWS
 condition|?
-name|ExecBatScripStringtPath
+name|EXEC_BAT_SCRIPT_STRING_PATH
 else|:
-name|ExecShellStringPath
+name|EXEC_SHELL_STRING_PATH
 argument_list|,
 name|shellRsrc
 argument_list|)
@@ -5187,9 +5187,9 @@ name|Shell
 operator|.
 name|WINDOWS
 condition|?
-name|ExecBatScripStringtPath
+name|EXEC_BAT_SCRIPT_STRING_PATH
 else|:
-name|ExecShellStringPath
+name|EXEC_SHELL_STRING_PATH
 argument_list|)
 expr_stmt|;
 block|}
