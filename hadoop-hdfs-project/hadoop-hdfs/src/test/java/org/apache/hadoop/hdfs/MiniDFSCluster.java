@@ -5377,20 +5377,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|nnTopology
-operator|.
-name|countNameNodes
-argument_list|()
-operator|>
-literal|0
-argument_list|,
-literal|"empty NN topology: no namenodes specified!"
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 operator|!
