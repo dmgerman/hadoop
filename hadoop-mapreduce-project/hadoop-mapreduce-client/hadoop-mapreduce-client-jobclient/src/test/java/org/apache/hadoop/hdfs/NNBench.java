@@ -90,16 +90,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|InetAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|text
 operator|.
 name|SimpleDateFormat
@@ -161,6 +151,18 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|HadoopIllegalArgumentException
 import|;
 end_import
 
@@ -303,6 +305,22 @@ operator|.
 name|SequenceFile
 operator|.
 name|CompressionType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|SequenceFile
+operator|.
+name|Writer
 import|;
 end_import
 
@@ -460,6 +478,34 @@ name|SequenceFileInputFormat
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Tool
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ToolRunner
+import|;
+end_import
+
 begin_comment
 comment|/**  * This program executes a specified operation that applies load to   * the NameNode.  *   * When run simultaneously on multiple nodes, this program functions   * as a stress-test and benchmark for namenode, especially when   * the number of bytes written to each file is small.  *   * Valid operations are:  *   create_write  *   open_read  *   rename  *   delete  *   * NOTE: The open_read, rename and delete operations assume that the files  *       they operate on are already available. The create_write operation   *       must be run before running the other operations.  */
 end_comment
@@ -469,6 +515,10 @@ DECL|class|NNBench
 specifier|public
 class|class
 name|NNBench
+extends|extends
+name|Configured
+implements|implements
+name|Tool
 block|{
 DECL|field|LOG
 specifier|private
@@ -485,7 +535,7 @@ literal|"org.apache.hadoop.hdfs.NNBench"
 argument_list|)
 decl_stmt|;
 DECL|field|CONTROL_DIR_NAME
-specifier|protected
+specifier|private
 specifier|static
 name|String
 name|CONTROL_DIR_NAME
@@ -493,7 +543,7 @@ init|=
 literal|"control"
 decl_stmt|;
 DECL|field|OUTPUT_DIR_NAME
-specifier|protected
+specifier|private
 specifier|static
 name|String
 name|OUTPUT_DIR_NAME
@@ -501,7 +551,7 @@ init|=
 literal|"output"
 decl_stmt|;
 DECL|field|DATA_DIR_NAME
-specifier|protected
+specifier|private
 specifier|static
 name|String
 name|DATA_DIR_NAME
@@ -509,7 +559,6 @@ init|=
 literal|"data"
 decl_stmt|;
 DECL|field|DEFAULT_RES_FILE_NAME
-specifier|protected
 specifier|static
 specifier|final
 name|String
@@ -518,7 +567,7 @@ init|=
 literal|"NNBench_results.log"
 decl_stmt|;
 DECL|field|NNBENCH_VERSION
-specifier|protected
+specifier|private
 specifier|static
 specifier|final
 name|String
@@ -527,16 +576,14 @@ init|=
 literal|"NameNode Benchmark 0.4"
 decl_stmt|;
 DECL|field|operation
-specifier|public
-specifier|static
+specifier|private
 name|String
 name|operation
 init|=
 literal|"none"
 decl_stmt|;
 DECL|field|numberOfMaps
-specifier|public
-specifier|static
+specifier|private
 name|long
 name|numberOfMaps
 init|=
@@ -544,8 +591,7 @@ literal|1l
 decl_stmt|;
 comment|// default is 1
 DECL|field|numberOfReduces
-specifier|public
-specifier|static
+specifier|private
 name|long
 name|numberOfReduces
 init|=
@@ -553,8 +599,7 @@ literal|1l
 decl_stmt|;
 comment|// default is 1
 DECL|field|startTime
-specifier|public
-specifier|static
+specifier|private
 name|long
 name|startTime
 init|=
@@ -571,8 +616,7 @@ operator|)
 decl_stmt|;
 comment|// default is 'now' + 2min
 DECL|field|blockSize
-specifier|public
-specifier|static
+specifier|private
 name|long
 name|blockSize
 init|=
@@ -580,8 +624,7 @@ literal|1l
 decl_stmt|;
 comment|// default is 1
 DECL|field|bytesToWrite
-specifier|public
-specifier|static
+specifier|private
 name|int
 name|bytesToWrite
 init|=
@@ -589,8 +632,7 @@ literal|0
 decl_stmt|;
 comment|// default is 0
 DECL|field|bytesPerChecksum
-specifier|public
-specifier|static
+specifier|private
 name|long
 name|bytesPerChecksum
 init|=
@@ -598,8 +640,7 @@ literal|1l
 decl_stmt|;
 comment|// default is 1
 DECL|field|numberOfFiles
-specifier|public
-specifier|static
+specifier|private
 name|long
 name|numberOfFiles
 init|=
@@ -607,8 +648,7 @@ literal|1l
 decl_stmt|;
 comment|// default is 1
 DECL|field|replicationFactorPerFile
-specifier|public
-specifier|static
+specifier|private
 name|short
 name|replicationFactorPerFile
 init|=
@@ -616,8 +656,7 @@ literal|1
 decl_stmt|;
 comment|// default is 1
 DECL|field|baseDir
-specifier|public
-specifier|static
+specifier|private
 name|String
 name|baseDir
 init|=
@@ -625,14 +664,20 @@ literal|"/benchmarks/NNBench"
 decl_stmt|;
 comment|// default
 DECL|field|readFileAfterOpen
-specifier|public
-specifier|static
+specifier|private
 name|boolean
 name|readFileAfterOpen
 init|=
 literal|false
 decl_stmt|;
 comment|// default is to not read
+DECL|field|isHelpMessage
+specifier|private
+name|boolean
+name|isHelpMessage
+init|=
+literal|false
+decl_stmt|;
 comment|// Supported operations
 DECL|field|OP_CREATE_WRITE
 specifier|private
@@ -670,6 +715,15 @@ name|OP_DELETE
 init|=
 literal|"delete"
 decl_stmt|;
+DECL|field|MAX_OPERATION_EXCEPTIONS
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|MAX_OPERATION_EXCEPTIONS
+init|=
+literal|1000
+decl_stmt|;
 comment|// To display in the format that matches the NN and DN log format
 comment|// Example: 2007-10-26 00:01:19,853
 DECL|field|sdf
@@ -683,20 +737,9 @@ argument_list|(
 literal|"yyyy-MM-dd' 'HH:mm:ss','S"
 argument_list|)
 decl_stmt|;
-DECL|field|config
-specifier|private
-specifier|static
-name|Configuration
-name|config
-init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
 comment|/**    * Clean up the files before a test run    *     * @throws IOException on error    */
 DECL|method|cleanupBeforeTestrun ()
 specifier|private
-specifier|static
 name|void
 name|cleanupBeforeTestrun
 parameter_list|()
@@ -710,7 +753,8 @@ name|FileSystem
 operator|.
 name|get
 argument_list|(
-name|config
+name|getConf
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Delete the data directory only if it is the create/write operation
@@ -781,23 +825,12 @@ block|}
 comment|/**    * Create control files before a test run.    * Number of files created is equal to the number of maps specified    *     * @throws IOException on error    */
 DECL|method|createControlFiles ()
 specifier|private
-specifier|static
 name|void
 name|createControlFiles
 parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileSystem
-name|tempFS
-init|=
-name|FileSystem
-operator|.
-name|get
-argument_list|(
-name|config
-argument_list|)
-decl_stmt|;
 name|LOG
 operator|.
 name|info
@@ -863,23 +896,42 @@ name|SequenceFile
 operator|.
 name|createWriter
 argument_list|(
-name|tempFS
+name|getConf
+argument_list|()
 argument_list|,
-name|config
-argument_list|,
+name|Writer
+operator|.
+name|file
+argument_list|(
 name|filePath
+argument_list|)
 argument_list|,
+name|Writer
+operator|.
+name|keyClass
+argument_list|(
 name|Text
 operator|.
 name|class
+argument_list|)
 argument_list|,
+name|Writer
+operator|.
+name|valueClass
+argument_list|(
 name|LongWritable
 operator|.
 name|class
+argument_list|)
 argument_list|,
+name|Writer
+operator|.
+name|compression
+argument_list|(
 name|CompressionType
 operator|.
 name|NONE
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|writer
@@ -1035,7 +1087,7 @@ expr_stmt|;
 block|}
 comment|/**    * check for arguments and fail if the values are not specified    * @param index  positional number of an argument in the list of command    *   line's arguments    * @param length total number of arguments    */
 DECL|method|checkArgs (final int index, final int length)
-specifier|public
+specifier|private
 specifier|static
 name|void
 name|checkArgs
@@ -1059,20 +1111,18 @@ block|{
 name|displayUsage
 argument_list|()
 expr_stmt|;
-name|System
-operator|.
-name|exit
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
 argument_list|(
-operator|-
-literal|1
+literal|"Not enough arguments"
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 block|}
-comment|/**    * Parse input arguments    *    * @param args array of command line's parameters to be parsed    */
+comment|/**    * Parse input arguments    *  @param args array of command line's parameters to be parsed    *    */
 DECL|method|parseInputs (final String[] args)
-specifier|public
-specifier|static
+specifier|private
 name|void
 name|parseInputs
 parameter_list|(
@@ -1095,14 +1145,13 @@ block|{
 name|displayUsage
 argument_list|()
 expr_stmt|;
-name|System
-operator|.
-name|exit
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
 argument_list|(
-operator|-
-literal|1
+literal|"Give valid inputs"
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 comment|// Parse command line args
 for|for
@@ -1548,13 +1597,9 @@ block|{
 name|displayUsage
 argument_list|()
 expr_stmt|;
-name|System
-operator|.
-name|exit
-argument_list|(
-operator|-
-literal|1
-argument_list|)
+name|isHelpMessage
+operator|=
+literal|true
 expr_stmt|;
 block|}
 block|}
@@ -1674,7 +1719,8 @@ name|readFileAfterOpen
 argument_list|)
 expr_stmt|;
 comment|// Set user-defined parameters, so the map method can access the values
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|set
 argument_list|(
@@ -1683,7 +1729,8 @@ argument_list|,
 name|operation
 argument_list|)
 expr_stmt|;
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|setLong
 argument_list|(
@@ -1692,7 +1739,8 @@ argument_list|,
 name|numberOfMaps
 argument_list|)
 expr_stmt|;
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|setLong
 argument_list|(
@@ -1701,7 +1749,8 @@ argument_list|,
 name|numberOfReduces
 argument_list|)
 expr_stmt|;
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|setLong
 argument_list|(
@@ -1710,7 +1759,8 @@ argument_list|,
 name|startTime
 argument_list|)
 expr_stmt|;
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|setLong
 argument_list|(
@@ -1719,7 +1769,8 @@ argument_list|,
 name|blockSize
 argument_list|)
 expr_stmt|;
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|setInt
 argument_list|(
@@ -1728,7 +1779,8 @@ argument_list|,
 name|bytesToWrite
 argument_list|)
 expr_stmt|;
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|setLong
 argument_list|(
@@ -1737,7 +1789,8 @@ argument_list|,
 name|bytesPerChecksum
 argument_list|)
 expr_stmt|;
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|setLong
 argument_list|(
@@ -1746,7 +1799,8 @@ argument_list|,
 name|numberOfFiles
 argument_list|)
 expr_stmt|;
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|setInt
 argument_list|(
@@ -1758,7 +1812,8 @@ operator|)
 name|replicationFactorPerFile
 argument_list|)
 expr_stmt|;
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|set
 argument_list|(
@@ -1767,7 +1822,8 @@ argument_list|,
 name|baseDir
 argument_list|)
 expr_stmt|;
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|setBoolean
 argument_list|(
@@ -1776,7 +1832,8 @@ argument_list|,
 name|readFileAfterOpen
 argument_list|)
 expr_stmt|;
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|set
 argument_list|(
@@ -1785,7 +1842,8 @@ argument_list|,
 name|DATA_DIR_NAME
 argument_list|)
 expr_stmt|;
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|set
 argument_list|(
@@ -1794,7 +1852,8 @@ argument_list|,
 name|OUTPUT_DIR_NAME
 argument_list|)
 expr_stmt|;
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|set
 argument_list|(
@@ -1804,11 +1863,10 @@ name|CONTROL_DIR_NAME
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Analyze the results    *     * @throws IOException on error    */
+comment|/**    * Analyze the results    * @throws IOException on error    */
 DECL|method|analyzeResults ()
 specifier|private
-specifier|static
-name|void
+name|int
 name|analyzeResults
 parameter_list|()
 throws|throws
@@ -1822,7 +1880,8 @@ name|FileSystem
 operator|.
 name|get
 argument_list|(
-name|config
+name|getConf
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|Path
@@ -1903,11 +1962,11 @@ operator|.
 name|getPath
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|DataInputStream
 name|in
-decl_stmt|;
-name|in
-operator|=
+init|=
 operator|new
 name|DataInputStream
 argument_list|(
@@ -1918,10 +1977,8 @@ argument_list|(
 name|reduceFile
 argument_list|)
 argument_list|)
-expr_stmt|;
+init|;
 name|BufferedReader
-name|lines
-decl_stmt|;
 name|lines
 operator|=
 operator|new
@@ -1933,7 +1990,8 @@ argument_list|(
 name|in
 argument_list|)
 argument_list|)
-expr_stmt|;
+init|)
+block|{
 name|String
 name|line
 decl_stmt|;
@@ -2160,6 +2218,7 @@ name|nextToken
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -2553,6 +2612,8 @@ block|,
 literal|""
 block|}
 decl_stmt|;
+try|try
+init|(
 name|PrintStream
 name|res
 init|=
@@ -2571,58 +2632,60 @@ argument_list|,
 literal|true
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 comment|// Write to a file and also dump to log
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|String
+name|resultLine
+range|:
 name|resultLines
-operator|.
-name|length
-condition|;
-name|i
-operator|++
 control|)
 block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-name|resultLines
-index|[
-name|i
-index|]
+name|resultLine
 argument_list|)
 expr_stmt|;
 name|res
 operator|.
 name|println
 argument_list|(
-name|resultLines
-index|[
-name|i
-index|]
+name|resultLine
 argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|numOfExceptions
+operator|>=
+name|MAX_OPERATION_EXCEPTIONS
+condition|)
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
+return|return
+literal|0
+return|;
+block|}
 comment|/**    * Run the test    *     * @throws IOException on error    */
 DECL|method|runTests ()
-specifier|public
-specifier|static
+specifier|private
 name|void
 name|runTests
 parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|config
+name|getConf
+argument_list|()
 operator|.
 name|setLong
 argument_list|(
@@ -2637,7 +2700,8 @@ init|=
 operator|new
 name|JobConf
 argument_list|(
-name|config
+name|getConf
+argument_list|()
 argument_list|,
 name|NNBench
 operator|.
@@ -2764,8 +2828,7 @@ expr_stmt|;
 block|}
 comment|/**    * Validate the inputs    */
 DECL|method|validateInputs ()
-specifier|public
-specifier|static
+specifier|private
 name|void
 name|validateInputs
 parameter_list|()
@@ -2820,14 +2883,15 @@ expr_stmt|;
 name|displayUsage
 argument_list|()
 expr_stmt|;
-name|System
-operator|.
-name|exit
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
 argument_list|(
-operator|-
-literal|1
+literal|"Error: Unknown operation: "
+operator|+
+name|operation
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 comment|// If number of maps is a negative number, then fail
 comment|// Hadoop allows the number of maps to be 0
@@ -2850,14 +2914,13 @@ expr_stmt|;
 name|displayUsage
 argument_list|()
 expr_stmt|;
-name|System
-operator|.
-name|exit
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
 argument_list|(
-operator|-
-literal|1
+literal|"Error: Number of maps must be a positive number"
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 comment|// If number of reduces is a negative number or 0, then fail
 if|if
@@ -2879,14 +2942,13 @@ expr_stmt|;
 name|displayUsage
 argument_list|()
 expr_stmt|;
-name|System
-operator|.
-name|exit
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
 argument_list|(
-operator|-
-literal|1
+literal|"Error: Number of reduces must be a positive number"
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 comment|// If blocksize is a negative number or 0, then fail
 if|if
@@ -2908,14 +2970,13 @@ expr_stmt|;
 name|displayUsage
 argument_list|()
 expr_stmt|;
-name|System
-operator|.
-name|exit
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
 argument_list|(
-operator|-
-literal|1
+literal|"Error: Block size must be a positive number"
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 comment|// If bytes to write is a negative number, then fail
 if|if
@@ -2937,14 +2998,13 @@ expr_stmt|;
 name|displayUsage
 argument_list|()
 expr_stmt|;
-name|System
-operator|.
-name|exit
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
 argument_list|(
-operator|-
-literal|1
+literal|"Error: Bytes to write must be a positive number"
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 comment|// If bytes per checksum is a negative number, then fail
 if|if
@@ -2966,14 +3026,13 @@ expr_stmt|;
 name|displayUsage
 argument_list|()
 expr_stmt|;
-name|System
-operator|.
-name|exit
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
 argument_list|(
-operator|-
-literal|1
+literal|"Error: Bytes per checksum must be a positive number"
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 comment|// If number of files is a negative number, then fail
 if|if
@@ -2995,14 +3054,13 @@ expr_stmt|;
 name|displayUsage
 argument_list|()
 expr_stmt|;
-name|System
-operator|.
-name|exit
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
 argument_list|(
-operator|-
-literal|1
+literal|"Error: Number of files must be a positive number"
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 comment|// If replication factor is a negative number, then fail
 if|if
@@ -3024,14 +3082,13 @@ expr_stmt|;
 name|displayUsage
 argument_list|()
 expr_stmt|;
-name|System
-operator|.
-name|exit
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
 argument_list|(
-operator|-
-literal|1
+literal|"Error: Replication factor must be a positive number"
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 comment|// If block size is not a multiple of bytesperchecksum, fail
 if|if
@@ -3057,14 +3114,15 @@ expr_stmt|;
 name|displayUsage
 argument_list|()
 expr_stmt|;
-name|System
-operator|.
-name|exit
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
 argument_list|(
-operator|-
-literal|1
+literal|"Error: Block Size in bytes must be a multiple of "
+operator|+
+literal|"bytes per checksum:"
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 block|}
 comment|/**   * Main method for running the NNBench benchmarks   *   * @param args array of command line arguments   * @throws IOException indicates a problem with test startup   */
@@ -3079,7 +3137,43 @@ index|[]
 name|args
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
+block|{
+name|int
+name|res
+init|=
+name|ToolRunner
+operator|.
+name|run
+argument_list|(
+operator|new
+name|NNBench
+argument_list|()
+argument_list|,
+name|args
+argument_list|)
+decl_stmt|;
+name|System
+operator|.
+name|exit
+argument_list|(
+name|res
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|run (String[] args)
+specifier|public
+name|int
+name|run
+parameter_list|(
+name|String
+index|[]
+name|args
+parameter_list|)
+throws|throws
+name|Exception
 block|{
 comment|// Display the application version string
 name|displayVersion
@@ -3091,6 +3185,15 @@ argument_list|(
 name|args
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|isHelpMessage
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
 comment|// Validate inputs
 name|validateInputs
 argument_list|()
@@ -3108,9 +3211,10 @@ name|runTests
 argument_list|()
 expr_stmt|;
 comment|// Analyze results
+return|return
 name|analyzeResults
 argument_list|()
-expr_stmt|;
+return|;
 block|}
 comment|/**    * Mapper class    */
 DECL|class|NNBenchMapper
@@ -3134,13 +3238,6 @@ block|{
 DECL|field|filesystem
 name|FileSystem
 name|filesystem
-init|=
-literal|null
-decl_stmt|;
-DECL|field|hostName
-specifier|private
-name|String
-name|hostName
 init|=
 literal|null
 decl_stmt|;
@@ -3191,13 +3288,6 @@ name|boolean
 name|readFile
 init|=
 literal|false
-decl_stmt|;
-DECL|field|MAX_OPERATION_EXCEPTIONS
-specifier|final
-name|int
-name|MAX_OPERATION_EXCEPTIONS
-init|=
-literal|1000
 decl_stmt|;
 comment|// Data to collect from the operation
 DECL|field|numOfExceptions
@@ -3274,35 +3364,6 @@ operator|new
 name|RuntimeException
 argument_list|(
 literal|"Cannot get file system."
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
-try|try
-block|{
-name|hostName
-operator|=
-name|InetAddress
-operator|.
-name|getLocalHost
-argument_list|()
-operator|.
-name|getHostName
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"Error getting hostname"
 argument_list|,
 name|e
 argument_list|)
@@ -3436,8 +3497,6 @@ block|{
 name|Configuration
 name|conf
 init|=
-name|filesystem
-operator|.
 name|getConf
 argument_list|()
 decl_stmt|;
