@@ -6699,8 +6699,6 @@ operator|.
 name|registerNode
 argument_list|()
 expr_stmt|;
-comment|//MyFS fs = (MyFS)FileSystem.get(conf);
-comment|//MyToken token1 = fs.getDelegationToken("user123");
 comment|// create Token1:
 name|Text
 name|userText1
