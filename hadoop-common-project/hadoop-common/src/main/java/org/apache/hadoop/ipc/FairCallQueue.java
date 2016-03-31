@@ -267,7 +267,8 @@ argument_list|<
 name|E
 argument_list|>
 block|{
-comment|// Configuration Keys
+annotation|@
+name|Deprecated
 DECL|field|IPC_CALLQUEUE_PRIORITY_LEVELS_DEFAULT
 specifier|public
 specifier|static
@@ -277,6 +278,8 @@ name|IPC_CALLQUEUE_PRIORITY_LEVELS_DEFAULT
 init|=
 literal|4
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|IPC_CALLQUEUE_PRIORITY_LEVELS_KEY
 specifier|public
 specifier|static
@@ -365,12 +368,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/* Scheduler picks which queue to place in */
-DECL|field|scheduler
-specifier|private
-name|RpcScheduler
-name|scheduler
-decl_stmt|;
 comment|/* Multiplexer picks which queue to draw from */
 DECL|field|multiplexer
 specifier|private
@@ -388,10 +385,13 @@ argument_list|>
 name|overflowedCalls
 decl_stmt|;
 comment|/**    * Create a FairCallQueue.    * @param capacity the maximum size of each sub-queue    * @param ns the prefix to use for configuration    * @param conf the configuration to read from    * Notes: the FairCallQueue has no fixed capacity. Rather, it has a minimum    * capacity of `capacity` and a maximum capacity of `capacity * number_queues`    */
-DECL|method|FairCallQueue (int capacity, String ns, Configuration conf)
+DECL|method|FairCallQueue (int priorityLevels, int capacity, String ns, Configuration conf)
 specifier|public
 name|FairCallQueue
 parameter_list|(
+name|int
+name|priorityLevels
+parameter_list|,
 name|int
 name|capacity
 parameter_list|,
@@ -402,15 +402,27 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+if|if
+condition|(
+name|priorityLevels
+operator|<
+literal|1
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Number of Priority Levels must be "
+operator|+
+literal|"at least 1"
+argument_list|)
+throw|;
+block|}
 name|int
 name|numQueues
 init|=
-name|parseNumQueues
-argument_list|(
-name|ns
-argument_list|,
-name|conf
-argument_list|)
+name|priorityLevels
 decl_stmt|;
 name|LOG
 operator|.
@@ -499,20 +511,6 @@ expr_stmt|;
 block|}
 name|this
 operator|.
-name|scheduler
-operator|=
-operator|new
-name|DecayRpcScheduler
-argument_list|(
-name|numQueues
-argument_list|,
-name|ns
-argument_list|,
-name|conf
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
 name|multiplexer
 operator|=
 operator|new
@@ -543,55 +541,6 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**    * Read the number of queues from the configuration.    * This will affect the FairCallQueue's overall capacity.    * @throws IllegalArgumentException on invalid queue count    */
-DECL|method|parseNumQueues (String ns, Configuration conf)
-specifier|private
-specifier|static
-name|int
-name|parseNumQueues
-parameter_list|(
-name|String
-name|ns
-parameter_list|,
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-name|int
-name|retval
-init|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|ns
-operator|+
-literal|"."
-operator|+
-name|IPC_CALLQUEUE_PRIORITY_LEVELS_KEY
-argument_list|,
-name|IPC_CALLQUEUE_PRIORITY_LEVELS_DEFAULT
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|retval
-operator|<
-literal|1
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"numQueues must be at least 1"
-argument_list|)
-throw|;
-block|}
-return|return
-name|retval
-return|;
 block|}
 comment|/**    * Returns the first non-empty queue with equal or lesser priority    * than<i>startIdx</i>. Wraps around, searching a maximum of N    * queues, where N is this.queues.size().    *    * @param startIdx the queue number to start searching at    * @return the first non-empty queue with less priority, or null if    * everything was empty    */
 DECL|method|getFirstNonEmptyQueue (int startIdx)
@@ -680,7 +629,7 @@ literal|null
 return|;
 block|}
 comment|/* AbstractQueue and BlockingQueue methods */
-comment|/**    * Put and offer follow the same pattern:    * 1. Get a priorityLevel from the scheduler    * 2. Get the nth sub-queue matching this priorityLevel    * 3. delegate the call to this sub-queue.    *    * But differ in how they handle overflow:    * - Put will move on to the next queue until it lands on the last queue    * - Offer does not attempt other queues on overflow    */
+comment|/**    * Put and offer follow the same pattern:    * 1. Get the assigned priorityLevel from the call by scheduler    * 2. Get the nth sub-queue matching this priorityLevel    * 3. delegate the call to this sub-queue.    *    * But differ in how they handle overflow:    * - Put will move on to the next queue until it lands on the last queue    * - Offer does not attempt other queues on overflow    */
 annotation|@
 name|Override
 DECL|method|put (E e)
@@ -697,12 +646,10 @@ block|{
 name|int
 name|priorityLevel
 init|=
-name|scheduler
+name|e
 operator|.
 name|getPriorityLevel
-argument_list|(
-name|e
-argument_list|)
+argument_list|()
 decl_stmt|;
 specifier|final
 name|int
@@ -827,12 +774,10 @@ block|{
 name|int
 name|priorityLevel
 init|=
-name|scheduler
+name|e
 operator|.
 name|getPriorityLevel
-argument_list|(
-name|e
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|BlockingQueue
 argument_list|<
@@ -884,12 +829,10 @@ block|{
 name|int
 name|priorityLevel
 init|=
-name|scheduler
+name|e
 operator|.
 name|getPriorityLevel
-argument_list|(
-name|e
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|BlockingQueue
 argument_list|<
@@ -1805,25 +1748,6 @@ block|}
 return|return
 name|calls
 return|;
-block|}
-comment|// For testing
-annotation|@
-name|VisibleForTesting
-DECL|method|setScheduler (RpcScheduler newScheduler)
-specifier|public
-name|void
-name|setScheduler
-parameter_list|(
-name|RpcScheduler
-name|newScheduler
-parameter_list|)
-block|{
-name|this
-operator|.
-name|scheduler
-operator|=
-name|newScheduler
-expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting

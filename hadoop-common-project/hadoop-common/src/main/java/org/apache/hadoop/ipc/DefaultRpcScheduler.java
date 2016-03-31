@@ -16,34 +16,66 @@ name|ipc
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
 begin_comment
-comment|/**  * Implement this interface to be used for RPC scheduling and backoff.  *  */
+comment|/**  * No op default RPC scheduler.  */
 end_comment
 
-begin_interface
-DECL|interface|RpcScheduler
+begin_class
+DECL|class|DefaultRpcScheduler
 specifier|public
-interface|interface
+class|class
+name|DefaultRpcScheduler
+implements|implements
 name|RpcScheduler
 block|{
-comment|/**    * Returns priority level greater than zero as a hint for scheduling.    */
+annotation|@
+name|Override
 DECL|method|getPriorityLevel (Schedulable obj)
+specifier|public
 name|int
 name|getPriorityLevel
 parameter_list|(
 name|Schedulable
 name|obj
 parameter_list|)
-function_decl|;
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|shouldBackOff (Schedulable obj)
+specifier|public
 name|boolean
 name|shouldBackOff
 parameter_list|(
 name|Schedulable
 name|obj
 parameter_list|)
-function_decl|;
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|addResponseTime (String name, int priorityLevel, int queueTime, int processingTime)
+specifier|public
 name|void
 name|addResponseTime
 parameter_list|(
@@ -59,9 +91,23 @@ parameter_list|,
 name|int
 name|processingTime
 parameter_list|)
-function_decl|;
+block|{   }
+DECL|method|DefaultRpcScheduler (int priorityLevels, String namespace, Configuration conf)
+specifier|public
+name|DefaultRpcScheduler
+parameter_list|(
+name|int
+name|priorityLevels
+parameter_list|,
+name|String
+name|namespace
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+block|{   }
 block|}
-end_interface
+end_class
 
 end_unit
 

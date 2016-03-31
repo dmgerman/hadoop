@@ -18,6 +18,18 @@ end_package
 
 begin_import
 import|import static
+name|java
+operator|.
+name|lang
+operator|.
+name|Thread
+operator|.
+name|sleep
+import|;
+end_import
+
+begin_import
+import|import static
 name|org
 operator|.
 name|junit
@@ -49,30 +61,6 @@ operator|.
 name|Assert
 operator|.
 name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicInteger
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Arrays
 import|;
 end_import
 
@@ -135,20 +123,6 @@ operator|.
 name|conf
 operator|.
 name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeys
 import|;
 end_import
 
@@ -285,6 +259,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testParsePeriod ()
 specifier|public
 name|void
@@ -310,7 +289,7 @@ name|assertEquals
 argument_list|(
 name|DecayRpcScheduler
 operator|.
-name|IPC_CALLQUEUE_DECAYSCHEDULER_PERIOD_DEFAULT
+name|IPC_SCHEDULER_DECAYSCHEDULER_PERIOD_DEFAULT
 argument_list|,
 name|scheduler
 operator|.
@@ -334,7 +313,7 @@ literal|"ns."
 operator|+
 name|DecayRpcScheduler
 operator|.
-name|IPC_CALLQUEUE_DECAYSCHEDULER_PERIOD_KEY
+name|IPC_FCQ_DECAYSCHEDULER_PERIOD_KEY
 argument_list|,
 literal|1058
 argument_list|)
@@ -364,6 +343,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testParseFactor ()
 specifier|public
 name|void
@@ -389,7 +373,7 @@ name|assertEquals
 argument_list|(
 name|DecayRpcScheduler
 operator|.
-name|IPC_CALLQUEUE_DECAYSCHEDULER_FACTOR_DEFAULT
+name|IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_DEFAULT
 argument_list|,
 name|scheduler
 operator|.
@@ -415,7 +399,7 @@ literal|"prefix."
 operator|+
 name|DecayRpcScheduler
 operator|.
-name|IPC_CALLQUEUE_DECAYSCHEDULER_FACTOR_KEY
+name|IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY
 argument_list|,
 literal|"0.125"
 argument_list|)
@@ -506,6 +490,11 @@ block|}
 block|}
 annotation|@
 name|Test
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testParseThresholds ()
 specifier|public
 name|void
@@ -647,7 +636,7 @@ literal|"ns."
 operator|+
 name|DecayRpcScheduler
 operator|.
-name|IPC_CALLQUEUE_DECAYSCHEDULER_THRESHOLDS_KEY
+name|IPC_FCQ_DECAYSCHEDULER_THRESHOLDS_KEY
 argument_list|,
 literal|"1, 10, 20, 50, 85"
 argument_list|)
@@ -690,6 +679,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testAccumulate ()
 specifier|public
 name|void
@@ -711,7 +705,7 @@ literal|"ns."
 operator|+
 name|DecayRpcScheduler
 operator|.
-name|IPC_CALLQUEUE_DECAYSCHEDULER_PERIOD_KEY
+name|IPC_FCQ_DECAYSCHEDULER_PERIOD_KEY
 argument_list|,
 literal|"99999999"
 argument_list|)
@@ -858,11 +852,18 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testDecay ()
 specifier|public
 name|void
 name|testDecay
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|Configuration
 name|conf
@@ -879,7 +880,7 @@ literal|"ns."
 operator|+
 name|DecayRpcScheduler
 operator|.
-name|IPC_CALLQUEUE_DECAYSCHEDULER_PERIOD_KEY
+name|IPC_FCQ_DECAYSCHEDULER_PERIOD_KEY
 argument_list|,
 literal|"999999999"
 argument_list|)
@@ -893,7 +894,7 @@ literal|"ns."
 operator|+
 name|DecayRpcScheduler
 operator|.
-name|IPC_CALLQUEUE_DECAYSCHEDULER_FACTOR_KEY
+name|IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY
 argument_list|,
 literal|"0.5"
 argument_list|)
@@ -946,6 +947,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|sleep
+argument_list|(
+literal|1000
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|int
@@ -1216,6 +1222,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testPriority ()
 specifier|public
 name|void
@@ -1237,7 +1248,7 @@ literal|"ns."
 operator|+
 name|DecayRpcScheduler
 operator|.
-name|IPC_CALLQUEUE_DECAYSCHEDULER_PERIOD_KEY
+name|IPC_FCQ_DECAYSCHEDULER_PERIOD_KEY
 argument_list|,
 literal|"99999999"
 argument_list|)
@@ -1251,7 +1262,7 @@ literal|"ns."
 operator|+
 name|DecayRpcScheduler
 operator|.
-name|IPC_CALLQUEUE_DECAYSCHEDULER_THRESHOLDS_KEY
+name|IPC_FCQ_DECAYSCHEDULER_THRESHOLDS_KEY
 argument_list|,
 literal|"25, 50, 75"
 argument_list|)
@@ -1426,6 +1437,11 @@ name|timeout
 operator|=
 literal|2000
 argument_list|)
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testPeriodic ()
 specifier|public
 name|void
@@ -1449,7 +1465,7 @@ literal|"ns."
 operator|+
 name|DecayRpcScheduler
 operator|.
-name|IPC_CALLQUEUE_DECAYSCHEDULER_PERIOD_KEY
+name|IPC_FCQ_DECAYSCHEDULER_PERIOD_KEY
 argument_list|,
 literal|"10"
 argument_list|)
@@ -1462,7 +1478,7 @@ literal|"ns."
 operator|+
 name|DecayRpcScheduler
 operator|.
-name|IPC_CALLQUEUE_DECAYSCHEDULER_FACTOR_KEY
+name|IPC_FCQ_DECAYSCHEDULER_FACTOR_KEY
 argument_list|,
 literal|"0.5"
 argument_list|)
@@ -1536,8 +1552,6 @@ operator|>
 literal|0
 condition|)
 block|{
-name|Thread
-operator|.
 name|sleep
 argument_list|(
 literal|10

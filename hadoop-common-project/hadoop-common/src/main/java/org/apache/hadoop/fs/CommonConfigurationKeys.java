@@ -285,13 +285,13 @@ name|IPC_SERVER_HANDLER_QUEUE_SIZE_DEFAULT
 init|=
 literal|100
 decl_stmt|;
-comment|/**    * CallQueue related settings. These are not used directly, but rather    * combined with a namespace and port. For instance:    * IPC_CALLQUEUE_NAMESPACE + ".8020." + IPC_CALLQUEUE_IMPL_KEY    */
-DECL|field|IPC_CALLQUEUE_NAMESPACE
+comment|/**    * CallQueue related settings. These are not used directly, but rather    * combined with a namespace and port. For instance:    * IPC_NAMESPACE + ".8020." + IPC_CALLQUEUE_IMPL_KEY    */
+DECL|field|IPC_NAMESPACE
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|IPC_CALLQUEUE_NAMESPACE
+name|IPC_NAMESPACE
 init|=
 literal|"ipc"
 decl_stmt|;
@@ -304,12 +304,21 @@ name|IPC_CALLQUEUE_IMPL_KEY
 init|=
 literal|"callqueue.impl"
 decl_stmt|;
-DECL|field|IPC_CALLQUEUE_IDENTITY_PROVIDER_KEY
+DECL|field|IPC_SCHEDULER_IMPL_KEY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|IPC_CALLQUEUE_IDENTITY_PROVIDER_KEY
+name|IPC_SCHEDULER_IMPL_KEY
+init|=
+literal|"scheduler.impl"
+decl_stmt|;
+DECL|field|IPC_IDENTITY_PROVIDER_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_IDENTITY_PROVIDER_KEY
 init|=
 literal|"identity-provider.impl"
 decl_stmt|;
@@ -330,6 +339,25 @@ name|boolean
 name|IPC_BACKOFF_ENABLE_DEFAULT
 init|=
 literal|false
+decl_stmt|;
+comment|/**    * IPC scheduler priority levels.    */
+DECL|field|IPC_SCHEDULER_PRIORITY_LEVELS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_SCHEDULER_PRIORITY_LEVELS_KEY
+init|=
+literal|"scheduler.priority.levels"
+decl_stmt|;
+DECL|field|IPC_SCHEDULER_PRIORITY_LEVELS_DEFAULT_KEY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IPC_SCHEDULER_PRIORITY_LEVELS_DEFAULT_KEY
+init|=
+literal|4
 decl_stmt|;
 comment|/** This is for specifying the implementation for the mappings from    * hostnames to the racks they belong to    */
 DECL|field|NET_TOPOLOGY_CONFIGURED_NODE_MAPPING_KEY

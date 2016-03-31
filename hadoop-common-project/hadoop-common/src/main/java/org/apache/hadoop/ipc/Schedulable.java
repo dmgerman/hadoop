@@ -18,16 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|ByteBuffer
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -54,20 +44,6 @@ name|UserGroupInformation
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|Writable
-import|;
-end_import
-
 begin_comment
 comment|/**  * Interface which allows extracting information necessary to  * create schedulable identity strings.  */
 end_comment
@@ -86,6 +62,11 @@ DECL|method|getUserGroupInformation ()
 specifier|public
 name|UserGroupInformation
 name|getUserGroupInformation
+parameter_list|()
+function_decl|;
+DECL|method|getPriorityLevel ()
+name|int
+name|getPriorityLevel
 parameter_list|()
 function_decl|;
 block|}

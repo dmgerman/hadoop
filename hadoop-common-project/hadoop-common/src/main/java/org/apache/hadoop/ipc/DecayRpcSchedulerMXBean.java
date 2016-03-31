@@ -47,6 +47,18 @@ name|long
 name|getTotalCallVolume
 parameter_list|()
 function_decl|;
+DECL|method|getAverageResponseTime ()
+name|double
+index|[]
+name|getAverageResponseTime
+parameter_list|()
+function_decl|;
+DECL|method|getResponseTimeCountInLastWindow ()
+name|long
+index|[]
+name|getResponseTimeCountInLastWindow
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
