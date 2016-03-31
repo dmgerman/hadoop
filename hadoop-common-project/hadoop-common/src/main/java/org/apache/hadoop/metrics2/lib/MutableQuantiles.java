@@ -180,6 +180,22 @@ name|metrics2
 operator|.
 name|util
 operator|.
+name|QuantileEstimator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|util
+operator|.
 name|SampleQuantiles
 import|;
 end_import
@@ -307,7 +323,7 @@ name|interval
 decl_stmt|;
 DECL|field|estimator
 specifier|private
-name|SampleQuantiles
+name|QuantileEstimator
 name|estimator
 decl_stmt|;
 DECL|field|previousCount
@@ -724,6 +740,23 @@ block|{
 return|return
 name|interval
 return|;
+block|}
+DECL|method|setEstimator (QuantileEstimator quantileEstimator)
+specifier|public
+specifier|synchronized
+name|void
+name|setEstimator
+parameter_list|(
+name|QuantileEstimator
+name|quantileEstimator
+parameter_list|)
+block|{
+name|this
+operator|.
+name|estimator
+operator|=
+name|quantileEstimator
+expr_stmt|;
 block|}
 comment|/**    * Runnable used to periodically roll over the internal    * {@link SampleQuantiles} every interval.    */
 DECL|class|RolloverSample

@@ -137,6 +137,8 @@ DECL|class|SampleQuantiles
 specifier|public
 class|class
 name|SampleQuantiles
+implements|implements
+name|QuantileEstimator
 block|{
 comment|/**    * Total number of items in stream    */
 DECL|field|count
