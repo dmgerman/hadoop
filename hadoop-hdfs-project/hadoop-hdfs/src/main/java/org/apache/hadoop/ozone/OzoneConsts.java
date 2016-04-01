@@ -274,6 +274,24 @@ name|CONTAINER_DB
 init|=
 literal|"container.db"
 decl_stmt|;
+DECL|field|FILE_HASH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FILE_HASH
+init|=
+literal|"SHA-256"
+decl_stmt|;
+DECL|field|CHUNK_OVERWRITE
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|CHUNK_OVERWRITE
+init|=
+literal|"OverWriteRequested"
+decl_stmt|;
 comment|/**    * Supports Bucket Versioning.    */
 DECL|enum|Versioning
 DECL|enumConstant|NOT_DEFINED

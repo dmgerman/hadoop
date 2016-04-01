@@ -23,7 +23,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  Contains protocol buffer helper classes.  **/
+comment|/**  Contains protocol buffer helper classes and utilites used in  impl.  **/
 end_comment
 
 end_unit
