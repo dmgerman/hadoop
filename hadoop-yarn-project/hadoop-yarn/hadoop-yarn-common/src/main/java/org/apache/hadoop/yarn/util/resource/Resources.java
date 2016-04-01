@@ -692,7 +692,7 @@ name|by
 argument_list|)
 return|;
 block|}
-comment|/**    * Multiply @param rhs by @param by, and add the result to @param lhs    * without creating any new {@link Resource} object    */
+comment|/**    * Multiply {@code rhs} by {@code by}, and add the result to {@code lhs}    * without creating any new {@link Resource} object    */
 DECL|method|multiplyAndAddTo ( Resource lhs, Resource rhs, double by)
 specifier|public
 specifier|static
