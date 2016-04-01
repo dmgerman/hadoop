@@ -2781,6 +2781,11 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Calls FileUtil.copyMerge using the specified source and destination paths.    * Both source and destination are assumed to be on the local file system.    * The call will not delete source on completion and will not add an    * additional string between files.    * @param src String non-null source path.    * @param dst String non-null destination path.    * @return boolean true if the call to FileUtil.copyMerge was successful.    * @throws IOException if an I/O error occurs.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|copyMerge (String src, String dst)
 specifier|private
 name|boolean

@@ -1731,6 +1731,8 @@ literal|true
 return|;
 block|}
 block|}
+annotation|@
+name|Deprecated
 comment|/** Copy all files in a directory to one output file (merge). */
 DECL|method|copyMerge (FileSystem srcFS, Path srcDir, FileSystem dstFS, Path dstFile, boolean deleteSource, Configuration conf, String addString)
 specifier|public
