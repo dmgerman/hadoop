@@ -472,10 +472,13 @@ argument_list|<
 name|E
 argument_list|>
 block|{
-DECL|method|MockCallQueue (int cap, String ns, Configuration conf)
+DECL|method|MockCallQueue (int levels, int cap, String ns, Configuration conf)
 specifier|public
 name|MockCallQueue
 parameter_list|(
+name|int
+name|levels
+parameter_list|,
 name|int
 name|cap
 parameter_list|,
