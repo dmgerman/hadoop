@@ -2767,6 +2767,46 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+elseif|else
+if|if
+condition|(
+name|exception
+operator|instanceof
+name|SocketException
+condition|)
+block|{
+comment|// Many of the predecessor exceptions are subclasses of SocketException,
+comment|// so must be handled before this
+return|return
+name|wrapWithMessage
+argument_list|(
+name|exception
+argument_list|,
+literal|"Call From "
+operator|+
+name|localHost
+operator|+
+literal|" to "
+operator|+
+name|destHost
+operator|+
+literal|":"
+operator|+
+name|destPort
+operator|+
+literal|" failed on socket exception: "
+operator|+
+name|exception
+operator|+
+literal|";"
+operator|+
+name|see
+argument_list|(
+literal|"SocketException"
+argument_list|)
+argument_list|)
+return|;
+block|}
 else|else
 block|{
 return|return
