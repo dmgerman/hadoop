@@ -4530,7 +4530,11 @@ name|checkStringMatch
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"For input string: \"foo\""
+literal|"java.lang.IllegalArgumentException: Invalid ApplicationId prefix: "
+operator|+
+literal|"app_foo_0000. The valid ApplicationId should start with prefix"
+operator|+
+literal|" application"
 argument_list|,
 name|message
 argument_list|)
@@ -4541,7 +4545,7 @@ name|checkStringMatch
 argument_list|(
 literal|"exception type"
 argument_list|,
-literal|"NumberFormatException"
+literal|"BadRequestException"
 argument_list|,
 name|type
 argument_list|)
@@ -4552,7 +4556,7 @@ name|checkStringMatch
 argument_list|(
 literal|"exception classname"
 argument_list|,
-literal|"java.lang.NumberFormatException"
+literal|"org.apache.hadoop.yarn.webapp.BadRequestException"
 argument_list|,
 name|classname
 argument_list|)

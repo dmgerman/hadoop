@@ -741,12 +741,36 @@ operator|.
 name|iterator
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+operator|!
 name|it
 operator|.
 name|next
 argument_list|()
-expr_stmt|;
-comment|// prefix. TODO: Validate application prefix
+operator|.
+name|equals
+argument_list|(
+name|APPLICATION_PREFIX
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid ApplicationId prefix: "
+operator|+
+name|appIdStr
+operator|+
+literal|". The valid ApplicationId should start with prefix "
+operator|+
+name|APPLICATION_PREFIX
+argument_list|)
+throw|;
+block|}
+try|try
+block|{
 return|return
 name|toApplicationId
 argument_list|(
@@ -755,6 +779,43 @@ argument_list|,
 name|it
 argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|NumberFormatException
+name|n
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid ApplicationId: "
+operator|+
+name|appIdStr
+argument_list|,
+name|n
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|NoSuchElementException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid ApplicationId: "
+operator|+
+name|appIdStr
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|toApplicationId (RecordFactory recordFactory, Iterator<String> it)
 specifier|private

@@ -10288,7 +10288,9 @@ name|checkStringMatch
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"For input string: \"invalid\""
+literal|"java.lang.IllegalArgumentException: Invalid ApplicationId:"
+operator|+
+literal|" application_invalid_12"
 argument_list|,
 name|message
 argument_list|)
@@ -10299,7 +10301,7 @@ name|checkStringMatch
 argument_list|(
 literal|"exception type"
 argument_list|,
-literal|"NumberFormatException"
+literal|"BadRequestException"
 argument_list|,
 name|type
 argument_list|)
@@ -10310,7 +10312,7 @@ name|checkStringMatch
 argument_list|(
 literal|"exception classname"
 argument_list|,
-literal|"java.lang.NumberFormatException"
+literal|"org.apache.hadoop.yarn.webapp.BadRequestException"
 argument_list|,
 name|classname
 argument_list|)
@@ -12521,13 +12523,16 @@ argument_list|,
 literal|2048
 argument_list|)
 decl_stmt|;
+name|RMApp
+name|app
+init|=
 name|rm
 operator|.
 name|submitApp
 argument_list|(
 name|CONTAINER_MB
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|amNodeManager
 operator|.
 name|nodeHeartbeat
@@ -12567,7 +12572,23 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"application_invalid_12"
+name|app
+operator|.
+name|getApplicationId
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|path
+argument_list|(
+literal|"appattempts"
+argument_list|)
+operator|.
+name|path
+argument_list|(
+literal|"appattempt_invalid_12_000001"
 argument_list|)
 operator|.
 name|accept
@@ -12586,7 +12607,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"should have thrown exception on invalid appid"
+literal|"should have thrown exception on invalid appAttempt"
 argument_list|)
 expr_stmt|;
 block|}
@@ -12698,7 +12719,9 @@ name|checkStringMatch
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"For input string: \"invalid\""
+literal|"java.lang.IllegalArgumentException: Invalid AppAttemptId:"
+operator|+
+literal|" appattempt_invalid_12_000001"
 argument_list|,
 name|message
 argument_list|)
@@ -12709,7 +12732,7 @@ name|checkStringMatch
 argument_list|(
 literal|"exception type"
 argument_list|,
-literal|"NumberFormatException"
+literal|"BadRequestException"
 argument_list|,
 name|type
 argument_list|)
@@ -12720,7 +12743,7 @@ name|checkStringMatch
 argument_list|(
 literal|"exception classname"
 argument_list|,
-literal|"java.lang.NumberFormatException"
+literal|"org.apache.hadoop.yarn.webapp.BadRequestException"
 argument_list|,
 name|classname
 argument_list|)
