@@ -419,6 +419,36 @@ name|toString
 argument_list|()
 return|;
 block|}
+DECL|method|resourceRequestsTableInit ()
+specifier|public
+specifier|static
+name|String
+name|resourceRequestsTableInit
+parameter_list|()
+block|{
+return|return
+name|tableInit
+argument_list|()
+operator|.
+name|append
+argument_list|(
+literal|", 'aaData': resourceRequestsTableData"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", bDeferRender: true"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", bProcessing: true}"
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

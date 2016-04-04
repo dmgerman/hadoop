@@ -217,7 +217,7 @@ name|set
 argument_list|(
 name|DATATABLES_ID
 argument_list|,
-literal|"containers"
+literal|"containers resourceRequests"
 argument_list|)
 expr_stmt|;
 name|set
@@ -232,6 +232,21 @@ argument_list|,
 name|WebPageUtils
 operator|.
 name|containersTableInit
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|set
+argument_list|(
+name|initID
+argument_list|(
+name|DATATABLES
+argument_list|,
+literal|"resourceRequests"
+argument_list|)
+argument_list|,
+name|WebPageUtils
+operator|.
+name|resourceRequestsTableInit
 argument_list|()
 argument_list|)
 expr_stmt|;
