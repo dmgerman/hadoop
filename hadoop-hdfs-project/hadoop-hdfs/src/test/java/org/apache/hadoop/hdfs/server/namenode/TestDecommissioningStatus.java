@@ -556,7 +556,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|AfterClass
+name|After
 import|;
 end_import
 
@@ -566,7 +566,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|BeforeClass
+name|Before
 import|;
 end_import
 
@@ -680,10 +680,9 @@ name|numDatanodes
 argument_list|)
 decl_stmt|;
 annotation|@
-name|BeforeClass
+name|Before
 DECL|method|setUp ()
 specifier|public
-specifier|static
 name|void
 name|setUp
 parameter_list|()
@@ -948,10 +947,9 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|AfterClass
+name|After
 DECL|method|tearDown ()
 specifier|public
-specifier|static
 name|void
 name|tearDown
 parameter_list|()
