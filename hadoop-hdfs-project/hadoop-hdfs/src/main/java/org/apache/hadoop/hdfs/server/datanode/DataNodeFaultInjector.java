@@ -142,6 +142,14 @@ return|return
 literal|false
 return|;
 block|}
+DECL|method|stopSendingPacketDownstream ()
+specifier|public
+name|void
+name|stopSendingPacketDownstream
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
 DECL|method|noRegistration ()
 specifier|public
 name|void

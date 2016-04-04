@@ -3028,6 +3028,15 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+comment|// For testing. Normally no-op.
+name|DataNodeFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|stopSendingPacketDownstream
+argument_list|()
+expr_stmt|;
 name|packetReceiver
 operator|.
 name|mirrorPacketTo

@@ -1277,17 +1277,26 @@ throw|;
 block|}
 comment|// The meta file will contain only the header if the NULL checksum
 comment|// type was used, or if the replica was written to transient storage.
+comment|// Also, when only header portion of a data packet was transferred
+comment|// and then pipeline breaks, the meta file can contain only the
+comment|// header and 0 byte in the block data file.
 comment|// Checksum verification is not performed for replicas on transient
 comment|// storage.  The header is important for determining the checksum
 comment|// type later when lazy persistence copies the block to non-transient
 comment|// storage and computes the checksum.
 if|if
 condition|(
+operator|!
+name|replica
+operator|.
+name|isOnTransientStorage
+argument_list|()
+operator|&&
 name|metaIn
 operator|.
 name|getLength
 argument_list|()
-operator|>
+operator|>=
 name|BlockMetadataHeader
 operator|.
 name|getHeaderSize
