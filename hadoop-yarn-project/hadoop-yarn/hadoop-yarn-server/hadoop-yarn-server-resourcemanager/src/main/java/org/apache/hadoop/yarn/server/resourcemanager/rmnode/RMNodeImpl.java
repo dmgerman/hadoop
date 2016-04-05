@@ -276,6 +276,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -1202,6 +1216,11 @@ specifier|private
 name|String
 name|nodeManagerVersion
 decl_stmt|;
+DECL|field|timeStamp
+specifier|private
+name|long
+name|timeStamp
+decl_stmt|;
 comment|/* Aggregated resource utilization for the containers. */
 DECL|field|containersUtilization
 specifier|private
@@ -1997,6 +2016,29 @@ operator|new
 name|CleanUpAppTransition
 argument_list|()
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|NodeState
+operator|.
+name|DECOMMISSIONING
+argument_list|,
+name|NodeState
+operator|.
+name|SHUTDOWN
+argument_list|,
+name|RMNodeEventType
+operator|.
+name|SHUTDOWN
+argument_list|,
+operator|new
+name|DeactivateNodeTransition
+argument_list|(
+name|NodeState
+operator|.
+name|SHUTDOWN
+argument_list|)
+argument_list|)
 comment|// TODO (in YARN-3223) update resource when container finished.
 operator|.
 name|addTransition
@@ -2558,6 +2600,12 @@ operator|.
 name|nodeManagerVersion
 operator|=
 name|nodeManagerVersion
+expr_stmt|;
+name|this
+operator|.
+name|timeStamp
+operator|=
+literal|0
 expr_stmt|;
 name|this
 operator|.
@@ -5381,7 +5429,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Put a node in deactivated (decommissioned) status.    * @param rmNode    * @param finalState    */
+comment|/**    * Put a node in deactivated (decommissioned or shutdown) status.    * @param rmNode    * @param finalState    */
 DECL|method|deactivateNode (RMNodeImpl rmNode, NodeState finalState)
 specifier|public
 specifier|static
@@ -5476,6 +5524,40 @@ argument_list|,
 name|rmNode
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|finalState
+operator|==
+name|NodeState
+operator|.
+name|SHUTDOWN
+operator|&&
+name|rmNode
+operator|.
+name|context
+operator|.
+name|getNodesListManager
+argument_list|()
+operator|.
+name|isUntrackedNode
+argument_list|(
+name|rmNode
+operator|.
+name|hostName
+argument_list|)
+condition|)
+block|{
+name|rmNode
+operator|.
+name|setUntrackedTimeStamp
+argument_list|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Report node is UNUSABLE and update metrics.    * @param rmNode    * @param finalState    */
 DECL|method|reportNodeUnusable (RMNodeImpl rmNode, NodeState finalState)
@@ -7014,6 +7096,38 @@ name|this
 operator|.
 name|originalTotalCapability
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getUntrackedTimeStamp ()
+specifier|public
+name|long
+name|getUntrackedTimeStamp
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|timeStamp
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setUntrackedTimeStamp (long ts)
+specifier|public
+name|void
+name|setUntrackedTimeStamp
+parameter_list|(
+name|long
+name|ts
+parameter_list|)
+block|{
+name|this
+operator|.
+name|timeStamp
+operator|=
+name|ts
+expr_stmt|;
 block|}
 block|}
 end_class

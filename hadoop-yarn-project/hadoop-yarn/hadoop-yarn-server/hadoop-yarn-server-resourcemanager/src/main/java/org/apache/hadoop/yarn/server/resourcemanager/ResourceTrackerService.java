@@ -2133,6 +2133,15 @@ name|isValidNode
 argument_list|(
 name|host
 argument_list|)
+operator|||
+name|this
+operator|.
+name|nodesListManager
+operator|.
+name|isUntrackedNode
+argument_list|(
+name|host
+argument_list|)
 condition|)
 block|{
 name|String
@@ -2823,6 +2832,7 @@ comment|// 1. Check if it's a valid (i.e. not excluded) node, if not, see if it 
 comment|// in decommissioning.
 if|if
 condition|(
+operator|(
 operator|!
 name|this
 operator|.
@@ -2840,6 +2850,19 @@ operator|!
 name|isNodeInDecommissioning
 argument_list|(
 name|nodeId
+argument_list|)
+operator|)
+operator|||
+name|this
+operator|.
+name|nodesListManager
+operator|.
+name|isUntrackedNode
+argument_list|(
+name|nodeId
+operator|.
+name|getHost
+argument_list|()
 argument_list|)
 condition|)
 block|{

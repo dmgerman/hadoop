@@ -403,6 +403,19 @@ argument_list|>
 name|pullNewlyIncreasedContainers
 parameter_list|()
 function_decl|;
+DECL|method|getUntrackedTimeStamp ()
+name|long
+name|getUntrackedTimeStamp
+parameter_list|()
+function_decl|;
+DECL|method|setUntrackedTimeStamp (long timer)
+name|void
+name|setUntrackedTimeStamp
+parameter_list|(
+name|long
+name|timer
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 
