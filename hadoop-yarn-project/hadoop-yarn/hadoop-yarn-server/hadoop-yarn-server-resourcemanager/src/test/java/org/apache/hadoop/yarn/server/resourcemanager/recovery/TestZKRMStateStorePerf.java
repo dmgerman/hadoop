@@ -635,11 +635,19 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|curatorTestingServer
+operator|!=
+literal|null
+condition|)
+block|{
 name|curatorTestingServer
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|initStore (String hostPort)
 specifier|private
@@ -691,6 +699,14 @@ name|optHostPort
 operator|.
 name|or
 argument_list|(
+operator|(
+name|curatorTestingServer
+operator|==
+literal|null
+operator|)
+condition|?
+literal|""
+else|:
 name|curatorTestingServer
 operator|.
 name|getConnectString
