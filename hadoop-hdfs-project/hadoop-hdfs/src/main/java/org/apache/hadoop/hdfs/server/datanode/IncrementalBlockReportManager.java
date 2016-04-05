@@ -1168,6 +1168,31 @@ return|return;
 block|}
 block|}
 block|}
+DECL|method|clearIBRs ()
+name|void
+name|clearIBRs
+parameter_list|()
+block|{
+name|pendingIBRs
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getPendingIBRSize ()
+name|int
+name|getPendingIBRSize
+parameter_list|()
+block|{
+return|return
+name|pendingIBRs
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

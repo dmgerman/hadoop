@@ -3838,6 +3838,23 @@ operator|.
 name|scheduleHeartbeat
 argument_list|()
 expr_stmt|;
+comment|// HDFS-9917,Standby NN IBR can be very huge if standby namenode is down
+comment|// for sometime.
+if|if
+condition|(
+name|state
+operator|==
+name|HAServiceState
+operator|.
+name|STANDBY
+condition|)
+block|{
+name|ibrManager
+operator|.
+name|clearIBRs
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|triggerBlockReport (BlockReportOptions options)
