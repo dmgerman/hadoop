@@ -166,7 +166,7 @@ name|yarn
 operator|.
 name|event
 operator|.
-name|AsyncDispatcher
+name|Dispatcher
 import|;
 end_import
 
@@ -182,7 +182,7 @@ name|yarn
 operator|.
 name|event
 operator|.
-name|Dispatcher
+name|DrainDispatcher
 import|;
 end_import
 
@@ -405,22 +405,6 @@ operator|.
 name|util
 operator|.
 name|ControlledClock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|SystemClock
 import|;
 end_import
 
@@ -1553,7 +1537,7 @@ name|Dispatcher
 name|dispatcher
 init|=
 operator|new
-name|AsyncDispatcher
+name|DrainDispatcher
 argument_list|()
 block|{
 annotation|@
