@@ -1477,7 +1477,9 @@ name|IPC_PING_INTERVAL_DEFAULT
 argument_list|)
 return|;
 block|}
-comment|/**    * The time after which a RPC will timeout.    * If ping is not enabled (via ipc.client.ping), then the timeout value is the     * same as the pingInterval.    * If ping is enabled, then there is no timeout value.    *     * @param conf Configuration    * @return the timeout period in milliseconds. -1 if no timeout value is set    */
+comment|/**    * The time after which a RPC will timeout.    * If ping is not enabled (via ipc.client.ping), then the timeout value is the     * same as the pingInterval.    * If ping is enabled, then there is no timeout value.    *     * @param conf Configuration    * @return the timeout period in milliseconds. -1 if no timeout value is set    * @deprecated use {@link #getRpcTimeout(Configuration)} instead    */
+annotation|@
+name|Deprecated
 DECL|method|getTimeout (Configuration conf)
 specifier|final
 specifier|public
@@ -1489,6 +1491,25 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|int
+name|timeout
+init|=
+name|getRpcTimeout
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|timeout
+operator|>
+literal|0
+condition|)
+block|{
+return|return
+name|timeout
+return|;
+block|}
 if|if
 condition|(
 operator|!
@@ -1516,6 +1537,46 @@ block|}
 return|return
 operator|-
 literal|1
+return|;
+block|}
+comment|/**    * The time after which a RPC will timeout.    *    * @param conf Configuration    * @return the timeout period in milliseconds.    */
+DECL|method|getRpcTimeout (Configuration conf)
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|getRpcTimeout
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|int
+name|timeout
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|IPC_CLIENT_RPC_TIMEOUT_KEY
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|IPC_CLIENT_RPC_TIMEOUT_DEFAULT
+argument_list|)
+decl_stmt|;
+return|return
+operator|(
+name|timeout
+operator|<
+literal|0
+operator|)
+condition|?
+literal|0
+else|:
+name|timeout
 return|;
 block|}
 comment|/**    * set the connection timeout value in configuration    *     * @param conf Configuration    * @param timeout the socket connect timeout value    */
@@ -2010,6 +2071,7 @@ name|out
 decl_stmt|;
 DECL|field|rpcTimeout
 specifier|private
+specifier|final
 name|int
 name|rpcTimeout
 decl_stmt|;
@@ -2053,16 +2115,25 @@ decl_stmt|;
 comment|// if T then use low-delay QoS
 DECL|field|doPing
 specifier|private
+specifier|final
 name|boolean
 name|doPing
 decl_stmt|;
 comment|//do we need to send ping message
 DECL|field|pingInterval
 specifier|private
+specifier|final
 name|int
 name|pingInterval
 decl_stmt|;
-comment|// how often sends ping to the server in msecs
+comment|// how often sends ping to the server
+DECL|field|soTimeout
+specifier|private
+specifier|final
+name|int
+name|soTimeout
+decl_stmt|;
+comment|// used by ipc ping and rpc timeout
 DECL|field|pingRequest
 specifier|private
 name|ByteArrayOutputStream
@@ -2310,6 +2381,41 @@ operator|.
 name|getPingInterval
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|rpcTimeout
+operator|>
+literal|0
+condition|)
+block|{
+comment|// effective rpc timeout is rounded up to multiple of pingInterval
+comment|// if pingInterval< rpcTimeout.
+name|this
+operator|.
+name|soTimeout
+operator|=
+operator|(
+name|doPing
+operator|&&
+name|pingInterval
+operator|<
+name|rpcTimeout
+operator|)
+condition|?
+name|pingInterval
+else|:
+name|rpcTimeout
+expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|soTimeout
+operator|=
+name|pingInterval
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|serviceClass
@@ -2509,14 +2615,17 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
-comment|/* Process timeout exception        * if the connection is not going to be closed or         * is not configured to have a RPC timeout, send a ping.        * (if rpcTimeout is not set to be 0, then RPC should timeout.        * otherwise, throw the timeout exception.        */
-DECL|method|handleTimeout (SocketTimeoutException e)
+comment|/* Process timeout exception        * if the connection is not going to be closed or         * the RPC is not timed out yet, send a ping.        */
+DECL|method|handleTimeout (SocketTimeoutException e, int waiting)
 specifier|private
 name|void
 name|handleTimeout
 parameter_list|(
 name|SocketTimeoutException
 name|e
+parameter_list|,
+name|int
+name|waiting
 parameter_list|)
 throws|throws
 name|IOException
@@ -2534,9 +2643,15 @@ operator|.
 name|get
 argument_list|()
 operator|||
-name|rpcTimeout
-operator|>
+operator|(
 literal|0
+operator|<
+name|rpcTimeout
+operator|&&
+name|rpcTimeout
+operator|<=
+name|waiting
+operator|)
 condition|)
 block|{
 throw|throw
@@ -2561,6 +2676,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|int
+name|waiting
+init|=
+literal|0
+decl_stmt|;
 do|do
 block|{
 try|try
@@ -2578,9 +2698,15 @@ name|SocketTimeoutException
 name|e
 parameter_list|)
 block|{
+name|waiting
+operator|+=
+name|soTimeout
+expr_stmt|;
 name|handleTimeout
 argument_list|(
 name|e
+argument_list|,
+name|waiting
 argument_list|)
 expr_stmt|;
 block|}
@@ -2612,6 +2738,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|int
+name|waiting
+init|=
+literal|0
+decl_stmt|;
 do|do
 block|{
 try|try
@@ -2635,9 +2766,15 @@ name|SocketTimeoutException
 name|e
 parameter_list|)
 block|{
+name|waiting
+operator|+=
+name|soTimeout
+expr_stmt|;
 name|handleTimeout
 argument_list|(
 name|e
+argument_list|,
+name|waiting
 argument_list|)
 expr_stmt|;
 block|}
@@ -3096,26 +3233,13 @@ argument_list|,
 name|connectionTimeout
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|rpcTimeout
-operator|>
-literal|0
-condition|)
-block|{
-name|pingInterval
-operator|=
-name|rpcTimeout
-expr_stmt|;
-comment|// rpcTimeout overwrites pingInterval
-block|}
 name|this
 operator|.
 name|socket
 operator|.
 name|setSoTimeout
 argument_list|(
-name|pingInterval
+name|soTimeout
 argument_list|)
 expr_stmt|;
 return|return;

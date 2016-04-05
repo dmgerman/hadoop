@@ -1427,7 +1427,7 @@ name|hdfsTimeout
 operator|=
 name|Client
 operator|.
-name|getTimeout
+name|getRpcTimeout
 argument_list|(
 name|conf
 argument_list|)
