@@ -192,7 +192,7 @@ name|ContainerManager
 extends|extends
 name|RwLock
 block|{
-comment|/**    * Init call that sets up a container Manager.    *    * @param config  - Configuration.    * @param containerDirs - List of Metadata Container locations.    * @param dataset - FSDataset.    * @throws IOException    */
+comment|/**    * Init call that sets up a container Manager.    *    * @param config        - Configuration.    * @param containerDirs - List of Metadata Container locations.    * @param dataset       - FSDataset.    * @throws IOException    */
 DECL|method|init (Configuration config, List<Path> containerDirs, FsDatasetSpi dataset)
 name|void
 name|init
@@ -240,7 +240,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * As simple interface for container Iterations.    *    * @param prevKey - Starting KeyValue    * @param count - how many to return    * @param data  - Actual containerData    * @throws IOException    */
+comment|/**    * As simple interface for container Iterations.    *    * @param prevKey - Starting KeyValue    * @param count   - how many to return    * @param data    - Actual containerData    * @throws IOException    */
 DECL|method|listContainer (String prevKey, long count, List<ContainerData> data)
 name|void
 name|listContainer
@@ -279,7 +279,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Sets the Chunk Manager.    * @param chunkManager - ChunkManager.    */
+comment|/**    * Sets the Chunk Manager.    *    * @param chunkManager - ChunkManager.    */
 DECL|method|setChunkManager (ChunkManager chunkManager)
 name|void
 name|setChunkManager
@@ -288,10 +288,25 @@ name|ChunkManager
 name|chunkManager
 parameter_list|)
 function_decl|;
-comment|/**    * Gets the Chunk Manager.    * @return  ChunkManager.    */
+comment|/**    * Gets the Chunk Manager.    *    * @return ChunkManager.    */
 DECL|method|getChunkManager ()
 name|ChunkManager
 name|getChunkManager
+parameter_list|()
+function_decl|;
+comment|/**    * Sets the Key Manager.    *    * @param keyManager - Key Manager.    */
+DECL|method|setKeyManager (KeyManager keyManager)
+name|void
+name|setKeyManager
+parameter_list|(
+name|KeyManager
+name|keyManager
+parameter_list|)
+function_decl|;
+comment|/**    * Gets the Key Manager.    *    * @return KeyManager.    */
+DECL|method|getKeyManager ()
+name|KeyManager
+name|getKeyManager
 parameter_list|()
 function_decl|;
 block|}

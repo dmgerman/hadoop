@@ -200,6 +200,24 @@ name|DFS_OZONE_METADATA_DIRS
 init|=
 literal|"dfs.ozone.metadata.dirs"
 decl_stmt|;
+DECL|field|DFS_OZONE_KEY_CACHE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_OZONE_KEY_CACHE
+init|=
+literal|"dfs.ozone.key.cache.size"
+decl_stmt|;
+DECL|field|DFS_OZONE_KEY_CACHE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_OZONE_KEY_CACHE_DEFAULT
+init|=
+literal|1024
+decl_stmt|;
 comment|/**    * There is no need to instantiate this class.    */
 DECL|method|OzoneConfigKeys ()
 specifier|private

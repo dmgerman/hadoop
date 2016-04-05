@@ -963,7 +963,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Reads data from an existing chunk file.    *    * @param chunkFile - file where data lives.    * @param data      - chunk defintion.    * @return ByteBuffer    * @throws IOException    * @throws ExecutionException    * @throws InterruptedException    */
+comment|/**    * Reads data from an existing chunk file.    *    * @param chunkFile - file where data lives.    * @param data      - chunk definition.    * @return ByteBuffer    * @throws IOException    * @throws ExecutionException    * @throws InterruptedException    */
 DECL|method|readData (File chunkFile, ChunkInfo data)
 specifier|public
 specifier|static
@@ -1235,14 +1235,14 @@ argument_list|)
 expr_stmt|;
 name|ContainerProtos
 operator|.
-name|ReadChunkReponseProto
+name|ReadChunkResponseProto
 operator|.
 name|Builder
 name|response
 init|=
 name|ContainerProtos
 operator|.
-name|ReadChunkReponseProto
+name|ReadChunkResponseProto
 operator|.
 name|newBuilder
 argument_list|()

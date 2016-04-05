@@ -286,6 +286,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|interfaces
+operator|.
+name|KeyManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -562,6 +582,11 @@ DECL|field|chunkManager
 specifier|private
 name|ChunkManager
 name|chunkManager
+decl_stmt|;
+DECL|field|keyManager
+specifier|private
+name|KeyManager
+name|keyManager
 decl_stmt|;
 comment|/**    * Init call that sets up a container Manager.    *    * @param config        - Configuration.    * @param containerDirs - List of Metadata Container locations.    * @throws IOException    */
 annotation|@
@@ -1889,6 +1914,40 @@ return|return
 name|this
 operator|.
 name|chunkManager
+return|;
+block|}
+comment|/**    * Sets the Key Manager.    *    * @param keyManager - Key Manager.    */
+annotation|@
+name|Override
+DECL|method|setKeyManager (KeyManager keyManager)
+specifier|public
+name|void
+name|setKeyManager
+parameter_list|(
+name|KeyManager
+name|keyManager
+parameter_list|)
+block|{
+name|this
+operator|.
+name|keyManager
+operator|=
+name|keyManager
+expr_stmt|;
+block|}
+comment|/**    * Gets the Key Manager.    *    * @return KeyManager.    */
+annotation|@
+name|Override
+DECL|method|getKeyManager ()
+specifier|public
+name|KeyManager
+name|getKeyManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|keyManager
 return|;
 block|}
 comment|/**    * Filter out only container files from the container metadata dir.    */

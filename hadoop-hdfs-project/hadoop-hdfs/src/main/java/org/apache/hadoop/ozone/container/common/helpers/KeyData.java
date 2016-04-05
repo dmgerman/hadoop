@@ -68,6 +68,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -83,20 +93,26 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class maintains the information about a container in the ozone world.  *<p>  * A container is a name, along with metadata- which is a set of key value  * pair.  */
+comment|/**  * Helper class to convert Protobuf to Java classes.  */
 end_comment
 
 begin_class
-DECL|class|ContainerData
+DECL|class|KeyData
 specifier|public
 class|class
-name|ContainerData
+name|KeyData
 block|{
 DECL|field|containerName
 specifier|private
 specifier|final
 name|String
 name|containerName
+decl_stmt|;
+DECL|field|keyName
+specifier|private
+specifier|final
+name|String
+name|keyName
 decl_stmt|;
 DECL|field|metadata
 specifier|private
@@ -109,27 +125,41 @@ name|String
 argument_list|>
 name|metadata
 decl_stmt|;
-DECL|field|dbPath
+comment|/**    * Please note : when we are working with keys, we don't care what they point    * to. So we We don't read chunkinfo nor validate them. It is responsibility    * of higher layer like ozone. We just read and write data from network.    */
+DECL|field|chunks
 specifier|private
-name|String
-name|dbPath
+name|List
+argument_list|<
+name|ContainerProtos
+operator|.
+name|ChunkInfo
+argument_list|>
+name|chunks
 decl_stmt|;
-comment|// Path to Level DB Store.
-comment|// Path to Physical file system where container and checksum are stored.
-DECL|field|containerFilePath
-specifier|private
-name|String
-name|containerFilePath
-decl_stmt|;
-comment|/**    * Constructs a  ContainerData Object.    *    * @param containerName - Name    */
-DECL|method|ContainerData (String containerName)
+comment|/**    * Constructs a KeyData Object.    *    * @param containerName    * @param keyName    */
+DECL|method|KeyData (String containerName, String keyName)
 specifier|public
-name|ContainerData
+name|KeyData
 parameter_list|(
 name|String
 name|containerName
+parameter_list|,
+name|String
+name|keyName
 parameter_list|)
 block|{
+name|this
+operator|.
+name|containerName
+operator|=
+name|containerName
+expr_stmt|;
+name|this
+operator|.
+name|keyName
+operator|=
+name|keyName
+expr_stmt|;
 name|this
 operator|.
 name|metadata
@@ -139,35 +169,34 @@ name|TreeMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
-name|containerName
-operator|=
-name|containerName
-expr_stmt|;
 block|}
-comment|/**    * Constructs a ContainerData object from ProtoBuf classes.    *    * @param protoData - ProtoBuf Message    * @throws IOException    */
-DECL|method|getFromProtBuf ( ContainerProtos.ContainerData protoData)
+comment|/**    * Returns a keyData object from the protobuf data.    *    * @param data - Protobuf data.    * @return - KeyData    * @throws IOException    */
+DECL|method|getFromProtoBuf (ContainerProtos.KeyData data)
 specifier|public
 specifier|static
-name|ContainerData
-name|getFromProtBuf
+name|KeyData
+name|getFromProtoBuf
 parameter_list|(
 name|ContainerProtos
 operator|.
-name|ContainerData
-name|protoData
+name|KeyData
+name|data
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|ContainerData
-name|data
+name|KeyData
+name|keyData
 init|=
 operator|new
-name|ContainerData
+name|KeyData
 argument_list|(
-name|protoData
+name|data
+operator|.
+name|getContainerName
+argument_list|()
+argument_list|,
+name|data
 operator|.
 name|getName
 argument_list|()
@@ -182,7 +211,7 @@ literal|0
 init|;
 name|x
 operator|<
-name|protoData
+name|data
 operator|.
 name|getMetadataCount
 argument_list|()
@@ -191,11 +220,11 @@ name|x
 operator|++
 control|)
 block|{
-name|data
+name|keyData
 operator|.
 name|addMetadata
 argument_list|(
-name|protoData
+name|data
 operator|.
 name|getMetadata
 argument_list|(
@@ -205,7 +234,7 @@ operator|.
 name|getKey
 argument_list|()
 argument_list|,
-name|protoData
+name|data
 operator|.
 name|getMetadata
 argument_list|(
@@ -217,123 +246,71 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|protoData
+name|keyData
 operator|.
-name|hasContainerPath
-argument_list|()
-condition|)
-block|{
+name|setChunks
+argument_list|(
 name|data
 operator|.
-name|setContainerPath
-argument_list|(
-name|protoData
-operator|.
-name|getContainerPath
+name|getChunksList
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-if|if
-condition|(
-name|protoData
-operator|.
-name|hasDbPath
-argument_list|()
-condition|)
-block|{
-name|data
-operator|.
-name|setDBPath
-argument_list|(
-name|protoData
-operator|.
-name|getDbPath
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 return|return
-name|data
+name|keyData
 return|;
 block|}
-comment|/**    * Returns a ProtoBuf Message from ContainerData.    *    * @return Protocol Buffer Message    */
+comment|/**    * Returns a Protobuf message from KeyData.    * @return Proto Buf Message.    */
 DECL|method|getProtoBufMessage ()
 specifier|public
 name|ContainerProtos
 operator|.
-name|ContainerData
+name|KeyData
 name|getProtoBufMessage
 parameter_list|()
 block|{
 name|ContainerProtos
 operator|.
-name|ContainerData
+name|KeyData
 operator|.
 name|Builder
 name|builder
 init|=
 name|ContainerProtos
 operator|.
-name|ContainerData
+name|KeyData
 operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
 name|builder
 operator|.
+name|setContainerName
+argument_list|(
+name|this
+operator|.
+name|containerName
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
 name|setName
 argument_list|(
 name|this
 operator|.
-name|getContainerName
+name|getKeyName
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|this
-operator|.
-name|getDBPath
-argument_list|()
-operator|!=
-literal|null
-condition|)
-block|{
 name|builder
 operator|.
-name|setDbPath
+name|addAllChunks
 argument_list|(
 name|this
 operator|.
-name|getDBPath
-argument_list|()
+name|chunks
 argument_list|)
 expr_stmt|;
-block|}
-if|if
-condition|(
-name|this
-operator|.
-name|getContainerPath
-argument_list|()
-operator|!=
-literal|null
-condition|)
-block|{
-name|builder
-operator|.
-name|setContainerPath
-argument_list|(
-name|this
-operator|.
-name|getContainerPath
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 for|for
 control|(
 name|Map
@@ -400,20 +377,10 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns the name of the container.    *    * @return - name    */
-DECL|method|getContainerName ()
-specifier|public
-name|String
-name|getContainerName
-parameter_list|()
-block|{
-return|return
-name|containerName
-return|;
-block|}
-comment|/**    * Adds metadata.    */
+comment|/**    * Adds metadata.    *    * @param key   - Key    * @param value - Value    * @throws IOException    */
 DECL|method|addMetadata (String key, String value)
 specifier|public
+specifier|synchronized
 name|void
 name|addMetadata
 parameter_list|(
@@ -425,13 +392,6 @@ name|value
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-synchronized|synchronized
-init|(
-name|this
-operator|.
-name|metadata
-init|)
 block|{
 if|if
 condition|(
@@ -465,25 +425,17 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-comment|/**    * Returns all metadata.    */
-DECL|method|getAllMetadata ()
+DECL|method|getMetadata ()
 specifier|public
+specifier|synchronized
 name|Map
 argument_list|<
 name|String
 argument_list|,
 name|String
 argument_list|>
-name|getAllMetadata
+name|getMetadata
 parameter_list|()
-block|{
-synchronized|synchronized
-init|(
-name|this
-operator|.
-name|metadata
-init|)
 block|{
 return|return
 name|Collections
@@ -496,23 +448,16 @@ name|metadata
 argument_list|)
 return|;
 block|}
-block|}
 comment|/**    * Returns value of a key.    */
 DECL|method|getValue (String key)
 specifier|public
+specifier|synchronized
 name|String
 name|getValue
 parameter_list|(
 name|String
 name|key
 parameter_list|)
-block|{
-synchronized|synchronized
-init|(
-name|this
-operator|.
-name|metadata
-init|)
 block|{
 return|return
 name|metadata
@@ -523,23 +468,16 @@ name|key
 argument_list|)
 return|;
 block|}
-block|}
 comment|/**    * Deletes a metadata entry from the map.    *    * @param key - Key    */
 DECL|method|deleteKey (String key)
 specifier|public
+specifier|synchronized
 name|void
 name|deleteKey
 parameter_list|(
 name|String
 name|key
 parameter_list|)
-block|{
-synchronized|synchronized
-init|(
-name|this
-operator|.
-name|metadata
-init|)
 block|{
 name|metadata
 operator|.
@@ -549,73 +487,64 @@ name|key
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-comment|/**    * Returns path.    *    * @return - path    */
-DECL|method|getDBPath ()
+comment|/**    * Returns chunks list.    *    * @return list of chunkinfo.    */
+DECL|method|getChunks ()
 specifier|public
-name|String
-name|getDBPath
+name|List
+argument_list|<
+name|ContainerProtos
+operator|.
+name|ChunkInfo
+argument_list|>
+name|getChunks
 parameter_list|()
 block|{
 return|return
-name|dbPath
+name|chunks
 return|;
 block|}
-comment|/**    * Sets path.    *    * @param path - String.    */
-DECL|method|setDBPath (String path)
-specifier|public
-name|void
-name|setDBPath
-parameter_list|(
-name|String
-name|path
-parameter_list|)
-block|{
-name|this
-operator|.
-name|dbPath
-operator|=
-name|path
-expr_stmt|;
-block|}
-comment|/**    * This function serves as the generic key for ContainerCache class. Both    * ContainerData and ContainerKeyData overrides this function to appropriately    * return the right name that can  be used in ContainerCache.    *    * @return String Name.    */
-DECL|method|getName ()
+comment|/**    * Returns container Name.    * @return String.    */
+DECL|method|getContainerName ()
 specifier|public
 name|String
-name|getName
-parameter_list|()
-block|{
-return|return
 name|getContainerName
-argument_list|()
-return|;
-block|}
-comment|/**    * Get container file path.    * @return - Physical path where container file and checksum is stored.    */
-DECL|method|getContainerPath ()
-specifier|public
-name|String
-name|getContainerPath
 parameter_list|()
 block|{
 return|return
-name|containerFilePath
+name|containerName
 return|;
 block|}
-comment|/**    * Set container Path.    * @param containerFilePath - File path.    */
-DECL|method|setContainerPath (String containerFilePath)
+comment|/**    * Returns KeyName.    * @return String.    */
+DECL|method|getKeyName ()
+specifier|public
+name|String
+name|getKeyName
+parameter_list|()
+block|{
+return|return
+name|keyName
+return|;
+block|}
+comment|/**    * Sets Chunk list.    *    * @param chunks - List of chunks.    */
+DECL|method|setChunks (List<ContainerProtos.ChunkInfo> chunks)
 specifier|public
 name|void
-name|setContainerPath
+name|setChunks
 parameter_list|(
-name|String
-name|containerFilePath
+name|List
+argument_list|<
+name|ContainerProtos
+operator|.
+name|ChunkInfo
+argument_list|>
+name|chunks
 parameter_list|)
 block|{
 name|this
 operator|.
-name|containerFilePath
+name|chunks
 operator|=
-name|containerFilePath
+name|chunks
 expr_stmt|;
 block|}
 block|}
