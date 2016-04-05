@@ -54,26 +54,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|slf4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|apache
 operator|.
 name|hadoop
@@ -298,6 +278,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -395,6 +395,20 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
 import|;
 end_import
 
@@ -597,6 +611,23 @@ operator|.
 name|DFS_DISK_BALANCER_ENABLED_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|bandwidth
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DISK_BALANCER_MAX_DISK_THRUPUT
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DISK_BALANCER_MAX_DISK_THRUPUT_DEFAULT
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Shutdown  disk balancer services.    */
 DECL|method|shutdown ()
@@ -756,8 +787,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Takes a client submitted plan and converts into a set of work items that    * can be executed by the blockMover.    *    * @param planID      - A SHA512 of the plan string    * @param planVersion - version of the plan string - for future use.    * @param plan        - Actual Plan    * @param bandwidth   - BytesPerSec to copy    * @param force       - Skip some validations and execute the plan file.    * @throws DiskBalancerException    */
-DECL|method|submitPlan (String planID, long planVersion, String plan, long bandwidth, boolean force)
+comment|/**    * Takes a client submitted plan and converts into a set of work items that    * can be executed by the blockMover.    *    * @param planID      - A SHA512 of the plan string    * @param planVersion - version of the plan string - for future use.    * @param plan        - Actual Plan    * @param force       - Skip some validations and execute the plan file.    * @throws DiskBalancerException    */
+DECL|method|submitPlan (String planID, long planVersion, String plan, boolean force)
 specifier|public
 name|void
 name|submitPlan
@@ -770,9 +801,6 @@ name|planVersion
 parameter_list|,
 name|String
 name|plan
-parameter_list|,
-name|long
-name|bandwidth
 parameter_list|,
 name|boolean
 name|force
@@ -843,8 +871,6 @@ name|planVersion
 argument_list|,
 name|plan
 argument_list|,
-name|bandwidth
-argument_list|,
 name|force
 argument_list|)
 decl_stmt|;
@@ -866,12 +892,6 @@ operator|=
 name|Result
 operator|.
 name|PLAN_UNDER_PROGRESS
-expr_stmt|;
-name|this
-operator|.
-name|bandwidth
-operator|=
-name|bandwidth
 expr_stmt|;
 name|executePlan
 argument_list|()
@@ -1335,8 +1355,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Verifies that user provided plan is valid.    *    * @param planID      - SHA 512 of the plan.    * @param planVersion - Version of the plan, for future use.    * @param plan        - Plan String in Json.    * @param bandwidth   - Max disk bandwidth to use per second.    * @param force       - Skip verifying when the plan was generated.    * @return a NodePlan Object.    * @throws DiskBalancerException    */
-DECL|method|verifyPlan (String planID, long planVersion, String plan, long bandwidth, boolean force)
+comment|/**    * Verifies that user provided plan is valid.    *    * @param planID      - SHA 512 of the plan.    * @param planVersion - Version of the plan, for future use.    * @param plan        - Plan String in Json.    * @param force       - Skip verifying when the plan was generated.    * @return a NodePlan Object.    * @throws DiskBalancerException    */
+DECL|method|verifyPlan (String planID, long planVersion, String plan, boolean force)
 specifier|private
 name|NodePlan
 name|verifyPlan
@@ -1349,9 +1369,6 @@ name|planVersion
 parameter_list|,
 name|String
 name|plan
-parameter_list|,
-name|long
-name|bandwidth
 parameter_list|,
 name|boolean
 name|force
@@ -1919,9 +1936,6 @@ argument_list|,
 name|destVol
 argument_list|,
 name|step
-operator|.
-name|getBytesToMove
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2180,8 +2194,8 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Insert work items to work map.    *    * @param source      - Source vol    * @param dest        - destination volume    * @param bytesToMove - number of bytes to move    */
-DECL|method|createWorkPlan (FsVolumeSpi source, FsVolumeSpi dest, long bytesToMove)
+comment|/**    * Insert work items to work map.    *    * @param source      - Source vol    * @param dest        - destination volume    * @param step        - Move Step    */
+DECL|method|createWorkPlan (FsVolumeSpi source, FsVolumeSpi dest, Step step)
 specifier|private
 name|void
 name|createWorkPlan
@@ -2192,8 +2206,8 @@ parameter_list|,
 name|FsVolumeSpi
 name|dest
 parameter_list|,
-name|long
-name|bytesToMove
+name|Step
+name|step
 parameter_list|)
 throws|throws
 name|DiskBalancerException
@@ -2214,11 +2228,20 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Disk Balancer - source& destination volumes are same."
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|DiskBalancerException
 argument_list|(
-literal|"Same source and destination"
+literal|"source and destination volumes are "
+operator|+
+literal|"same."
 argument_list|,
 name|DiskBalancerException
 operator|.
@@ -2238,6 +2261,14 @@ name|source
 argument_list|,
 name|dest
 argument_list|)
+decl_stmt|;
+name|long
+name|bytesToMove
+init|=
+name|step
+operator|.
+name|getBytesToMove
+argument_list|()
 decl_stmt|;
 comment|// In case we have a plan with more than
 comment|// one line of same<source, dest>
@@ -2276,6 +2307,38 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
+comment|// all these values can be zero, if so we will use
+comment|// values from configuration.
+name|work
+operator|.
+name|setBandwidth
+argument_list|(
+name|step
+operator|.
+name|getBandwidth
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|work
+operator|.
+name|setTolerancePercent
+argument_list|(
+name|step
+operator|.
+name|getTolerancePercent
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|work
+operator|.
+name|setMaxDiskErrors
+argument_list|(
+name|step
+operator|.
+name|getMaxDiskErrors
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|workMap
 operator|.
 name|put
@@ -2496,7 +2559,7 @@ name|result
 return|;
 block|}
 block|}
-comment|/**    * Actual DataMover class for DiskBalancer.    *<p/>    * TODO : Add implementation for this class. This is here as a place holder so    * that Datanode can make calls into this class.    */
+comment|/**    * Actual DataMover class for DiskBalancer.    *<p/>    */
 DECL|class|DiskBalancerMover
 specifier|public
 specifier|static
@@ -2510,6 +2573,21 @@ specifier|private
 specifier|final
 name|FsDatasetSpi
 name|dataset
+decl_stmt|;
+DECL|field|diskBandwidth
+specifier|private
+name|long
+name|diskBandwidth
+decl_stmt|;
+DECL|field|blockTolerance
+specifier|private
+name|long
+name|blockTolerance
+decl_stmt|;
+DECL|field|maxDiskErrors
+specifier|private
+name|long
+name|maxDiskErrors
 decl_stmt|;
 comment|/**      * Constructs diskBalancerMover.      *      * @param dataset Dataset      * @param conf    Configuration      */
 DECL|method|DiskBalancerMover (FsDatasetSpi dataset, Configuration conf)
@@ -2529,7 +2607,140 @@ name|dataset
 operator|=
 name|dataset
 expr_stmt|;
-comment|// TODO : Read Config values.
+name|this
+operator|.
+name|diskBandwidth
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DISK_BALANCER_MAX_DISK_THRUPUT
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DISK_BALANCER_MAX_DISK_THRUPUT_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|blockTolerance
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DISK_BALANCER_BLOCK_TOLERANCE
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DISK_BALANCER_BLOCK_TOLERANCE_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxDiskErrors
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DISK_BALANCER_MAX_DISK_ERRORS
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DISK_BALANCER_MAX_DISK_ERRORS_DEFAULT
+argument_list|)
+expr_stmt|;
+comment|// Since these are user provided values make sure it is sane
+comment|// or ignore faulty values.
+if|if
+condition|(
+name|this
+operator|.
+name|diskBandwidth
+operator|<=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Found 0 or less as max disk throughput, ignoring config "
+operator|+
+literal|"value. value : "
+operator|+
+name|diskBandwidth
+argument_list|)
+expr_stmt|;
+name|diskBandwidth
+operator|=
+name|DFSConfigKeys
+operator|.
+name|DFS_DISK_BALANCER_MAX_DISK_THRUPUT_DEFAULT
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|blockTolerance
+operator|<=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Found 0 or less for block tolerance value, ignoring config"
+operator|+
+literal|"value. value : "
+operator|+
+name|blockTolerance
+argument_list|)
+expr_stmt|;
+name|blockTolerance
+operator|=
+name|DFSConfigKeys
+operator|.
+name|DFS_DISK_BALANCER_BLOCK_TOLERANCE_DEFAULT
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|maxDiskErrors
+operator|<
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Found  less than 0 for maxDiskErrors value, ignoring "
+operator|+
+literal|"config value. value : "
+operator|+
+name|maxDiskErrors
+argument_list|)
+expr_stmt|;
+name|maxDiskErrors
+operator|=
+name|DFSConfigKeys
+operator|.
+name|DFS_DISK_BALANCER_MAX_DISK_ERRORS_DEFAULT
+expr_stmt|;
+block|}
 block|}
 comment|/**      * Copies blocks from a set of volumes.      *      * @param pair - Source and Destination Volumes.      * @param item - Number of bytes to move from volumes.      */
 annotation|@

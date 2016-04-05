@@ -91,6 +91,24 @@ name|long
 name|size
 parameter_list|)
 function_decl|;
+comment|/**    * Returns maximum number of disk erros tolerated.    * @return long.    */
+DECL|method|getMaxDiskErrors ()
+name|long
+name|getMaxDiskErrors
+parameter_list|()
+function_decl|;
+comment|/**    * Returns tolerance percentage, the good enough value    * when we move data from one to disk to another.    * @return long.    */
+DECL|method|getTolerancePercent ()
+name|long
+name|getTolerancePercent
+parameter_list|()
+function_decl|;
+comment|/**    * Returns max disk bandwidth that disk balancer will use.    * Expressed in MB/sec. For example, a value like 10    * indicates that disk balancer will only move 10 MB / sec    * while it is running.    * @return long.    */
+DECL|method|getBandwidth ()
+name|long
+name|getBandwidth
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

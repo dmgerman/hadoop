@@ -15786,7 +15786,7 @@ block|}
 comment|/**    * Allows submission of a disk balancer Job.    * @param planID  - Hash value of the plan.    * @param planVersion - Plan version, reserved for future use. We have only    *                    version 1 now.    * @param bandwidth - Max disk bandwidth to use, 0 means use value defined    *                  in the configration.    * @param plan - Actual plan    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|submitDiskBalancerPlan (String planID, long planVersion, long bandwidth, String plan)
+DECL|method|submitDiskBalancerPlan (String planID, long planVersion, String plan, boolean skipDateCheck)
 specifier|public
 name|void
 name|submitDiskBalancerPlan
@@ -15797,11 +15797,11 @@ parameter_list|,
 name|long
 name|planVersion
 parameter_list|,
-name|long
-name|bandwidth
-parameter_list|,
 name|String
 name|plan
+parameter_list|,
+name|boolean
+name|skipDateCheck
 parameter_list|)
 throws|throws
 name|IOException
@@ -15822,9 +15822,7 @@ name|planVersion
 argument_list|,
 name|plan
 argument_list|,
-name|bandwidth
-argument_list|,
-literal|false
+name|skipDateCheck
 argument_list|)
 expr_stmt|;
 block|}

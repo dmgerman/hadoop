@@ -381,7 +381,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Submit a disk balancer plan for execution.    */
-DECL|method|submitDiskBalancerPlan (String planID, long planVersion, long bandwidth, String plan)
+DECL|method|submitDiskBalancerPlan (String planID, long planVersion, String plan, boolean skipDateCheck)
 name|void
 name|submitDiskBalancerPlan
 parameter_list|(
@@ -391,11 +391,11 @@ parameter_list|,
 name|long
 name|planVersion
 parameter_list|,
-name|long
-name|bandwidth
-parameter_list|,
 name|String
 name|plan
+parameter_list|,
+name|boolean
+name|skipDateCheck
 parameter_list|)
 throws|throws
 name|IOException

@@ -66,6 +66,24 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|fasterxml
+operator|.
+name|jackson
+operator|.
+name|annotation
+operator|.
+name|JsonInclude
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|codehaus
 operator|.
 name|jackson
@@ -99,6 +117,15 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
+annotation|@
+name|JsonInclude
+argument_list|(
+name|JsonInclude
+operator|.
+name|Include
+operator|.
+name|NON_DEFAULT
+argument_list|)
 DECL|class|DiskBalancerWorkItem
 specifier|public
 class|class
@@ -129,6 +156,21 @@ DECL|field|blocksCopied
 specifier|private
 name|long
 name|blocksCopied
+decl_stmt|;
+DECL|field|maxDiskErrors
+specifier|private
+name|long
+name|maxDiskErrors
+decl_stmt|;
+DECL|field|tolerancePercent
+specifier|private
+name|long
+name|tolerancePercent
+decl_stmt|;
+DECL|field|bandwidth
+specifier|private
+name|long
+name|bandwidth
 decl_stmt|;
 comment|/**    * Constructs a DiskBalancerWorkItem.    *    * @param bytesToCopy - Total bytes to copy from a disk    * @param bytesCopied - Copied So far.    */
 DECL|method|DiskBalancerWorkItem (long bytesToCopy, long bytesCopied)
@@ -349,6 +391,124 @@ argument_list|(
 name|this
 argument_list|)
 return|;
+block|}
+comment|/**    * Sets the Error counts for this step.    *    * @param errorCount long.    */
+DECL|method|setErrorCount (long errorCount)
+specifier|public
+name|void
+name|setErrorCount
+parameter_list|(
+name|long
+name|errorCount
+parameter_list|)
+block|{
+name|this
+operator|.
+name|errorCount
+operator|=
+name|errorCount
+expr_stmt|;
+block|}
+comment|/**    * Number of blocks copied so far.    *    * @param blocksCopied Blocks copied.    */
+DECL|method|setBlocksCopied (long blocksCopied)
+specifier|public
+name|void
+name|setBlocksCopied
+parameter_list|(
+name|long
+name|blocksCopied
+parameter_list|)
+block|{
+name|this
+operator|.
+name|blocksCopied
+operator|=
+name|blocksCopied
+expr_stmt|;
+block|}
+comment|/**    * Gets maximum disk errors to tolerate before we fail this copy step.    *    * @return long.    */
+DECL|method|getMaxDiskErrors ()
+specifier|public
+name|long
+name|getMaxDiskErrors
+parameter_list|()
+block|{
+return|return
+name|maxDiskErrors
+return|;
+block|}
+comment|/**    * Sets maximum disk errors to tolerate before we fail this copy step.    *    * @param maxDiskErrors long    */
+DECL|method|setMaxDiskErrors (long maxDiskErrors)
+specifier|public
+name|void
+name|setMaxDiskErrors
+parameter_list|(
+name|long
+name|maxDiskErrors
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maxDiskErrors
+operator|=
+name|maxDiskErrors
+expr_stmt|;
+block|}
+comment|/**    * Allowed deviation from ideal storage in percentage.    *    * @return long    */
+DECL|method|getTolerancePercent ()
+specifier|public
+name|long
+name|getTolerancePercent
+parameter_list|()
+block|{
+return|return
+name|tolerancePercent
+return|;
+block|}
+comment|/**    * Sets the tolerance percentage.    *    * @param tolerancePercent - tolerance.    */
+DECL|method|setTolerancePercent (long tolerancePercent)
+specifier|public
+name|void
+name|setTolerancePercent
+parameter_list|(
+name|long
+name|tolerancePercent
+parameter_list|)
+block|{
+name|this
+operator|.
+name|tolerancePercent
+operator|=
+name|tolerancePercent
+expr_stmt|;
+block|}
+comment|/**    * Max disk bandwidth to use. MB per second.    *    * @return - long.    */
+DECL|method|getBandwidth ()
+specifier|public
+name|long
+name|getBandwidth
+parameter_list|()
+block|{
+return|return
+name|bandwidth
+return|;
+block|}
+comment|/**    * Sets max disk bandwidth to use, in MBs per second.    *    * @param bandwidth - long.    */
+DECL|method|setBandwidth (long bandwidth)
+specifier|public
+name|void
+name|setBandwidth
+parameter_list|(
+name|long
+name|bandwidth
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bandwidth
+operator|=
+name|bandwidth
+expr_stmt|;
 block|}
 block|}
 end_class

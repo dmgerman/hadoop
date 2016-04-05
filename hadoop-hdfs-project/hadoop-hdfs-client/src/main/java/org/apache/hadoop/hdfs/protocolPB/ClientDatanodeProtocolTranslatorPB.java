@@ -2166,10 +2166,10 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Submits a disk balancer plan to the datanode.    * @param planID - Plan ID is the hash512 string of the plan that is    *               submitted. This is used by clients when they want to find    *               local copies of these plans.    * @param planVersion - The data format of the plans - for future , not    *                    used now.    * @param bandwidth - Maximum disk bandwidth to consume, setting this value    *                  to zero allows datanode to use the value defined in    *                  configration.    * @param plan - Actual plan.    * @throws IOException    */
+comment|/**    * Submits a disk balancer plan to the datanode.    * @param planID - Plan ID is the hash512 string of the plan that is    *               submitted. This is used by clients when they want to find    *               local copies of these plans.    * @param planVersion - The data format of the plans - for future , not    *                    used now.    * @param plan - Actual plan.    * @param skipDateCheck - Skips the date check.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|submitDiskBalancerPlan (String planID, long planVersion, long bandwidth, String plan)
+DECL|method|submitDiskBalancerPlan (String planID, long planVersion, String plan, boolean skipDateCheck)
 specifier|public
 name|void
 name|submitDiskBalancerPlan
@@ -2180,11 +2180,11 @@ parameter_list|,
 name|long
 name|planVersion
 parameter_list|,
-name|long
-name|bandwidth
-parameter_list|,
 name|String
 name|plan
+parameter_list|,
+name|boolean
+name|skipDateCheck
 parameter_list|)
 throws|throws
 name|IOException
@@ -2209,14 +2209,14 @@ argument_list|(
 name|planVersion
 argument_list|)
 operator|.
-name|setMaxDiskBandwidth
-argument_list|(
-name|bandwidth
-argument_list|)
-operator|.
 name|setPlan
 argument_list|(
 name|plan
+argument_list|)
+operator|.
+name|setIgnoreDateCheck
+argument_list|(
+name|skipDateCheck
 argument_list|)
 operator|.
 name|build

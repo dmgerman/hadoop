@@ -210,26 +210,6 @@ name|diskbalancer
 operator|.
 name|planner
 operator|.
-name|MoveStep
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|diskbalancer
-operator|.
-name|planner
-operator|.
 name|NodePlan
 import|;
 end_import
@@ -383,10 +363,10 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Test
-DECL|method|TestGreedyPlannerBalanceVolumeSet ()
+DECL|method|testGreedyPlannerBalanceVolumeSet ()
 specifier|public
 name|void
-name|TestGreedyPlannerBalanceVolumeSet
+name|testGreedyPlannerBalanceVolumeSet
 parameter_list|()
 throws|throws
 name|Exception
@@ -519,10 +499,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestGreedyPlannerComputePlan ()
+DECL|method|testGreedyPlannerComputePlan ()
 specifier|public
 name|void
-name|TestGreedyPlannerComputePlan
+name|testGreedyPlannerComputePlan
 parameter_list|()
 throws|throws
 name|Exception
@@ -689,10 +669,10 @@ return|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestGreedyPlannerNoNodeCluster ()
+DECL|method|testGreedyPlannerNoNodeCluster ()
 specifier|public
 name|void
-name|TestGreedyPlannerNoNodeCluster
+name|testGreedyPlannerNoNodeCluster
 parameter_list|()
 throws|throws
 name|Exception
@@ -716,10 +696,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestGreedyPlannerNoVolumeTest ()
+DECL|method|testGreedyPlannerNoVolumeTest ()
 specifier|public
 name|void
-name|TestGreedyPlannerNoVolumeTest
+name|testGreedyPlannerNoVolumeTest
 parameter_list|()
 throws|throws
 name|Exception
@@ -761,10 +741,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestGreedyPlannerOneVolumeNoPlanTest ()
+DECL|method|testGreedyPlannerOneVolumeNoPlanTest ()
 specifier|public
 name|void
-name|TestGreedyPlannerOneVolumeNoPlanTest
+name|testGreedyPlannerOneVolumeNoPlanTest
 parameter_list|()
 throws|throws
 name|Exception
@@ -910,10 +890,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestGreedyPlannerTwoVolume ()
+DECL|method|testGreedyPlannerTwoVolume ()
 specifier|public
 name|void
-name|TestGreedyPlannerTwoVolume
+name|testGreedyPlannerTwoVolume
 parameter_list|()
 throws|throws
 name|Exception
@@ -1134,10 +1114,10 @@ block|}
 comment|/**    * In this test we pass 3 volumes with 30, 20 and 10 GB of data used. We    * expect the planner to print out 20 GB on each volume.    *<p/>    * That is the plan should say move 10 GB from volume30 to volume10.    */
 annotation|@
 name|Test
-DECL|method|TestGreedyPlannerEqualizeData ()
+DECL|method|testGreedyPlannerEqualizeData ()
 specifier|public
 name|void
-name|TestGreedyPlannerEqualizeData
+name|testGreedyPlannerEqualizeData
 parameter_list|()
 throws|throws
 name|Exception
@@ -1376,10 +1356,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestGreedyPlannerEqualDisksNoMoves ()
+DECL|method|testGreedyPlannerEqualDisksNoMoves ()
 specifier|public
 name|void
-name|TestGreedyPlannerEqualDisksNoMoves
+name|testGreedyPlannerEqualDisksNoMoves
 parameter_list|()
 throws|throws
 name|Exception
@@ -1565,10 +1545,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestGreedyPlannerMoveFromSingleDisk ()
+DECL|method|testGreedyPlannerMoveFromSingleDisk ()
 specifier|public
 name|void
-name|TestGreedyPlannerMoveFromSingleDisk
+name|testGreedyPlannerMoveFromSingleDisk
 parameter_list|()
 throws|throws
 name|Exception
@@ -1835,10 +1815,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestGreedyPlannerThresholdTest ()
+DECL|method|testGreedyPlannerThresholdTest ()
 specifier|public
 name|void
-name|TestGreedyPlannerThresholdTest
+name|testGreedyPlannerThresholdTest
 parameter_list|()
 throws|throws
 name|Exception
@@ -2174,10 +2154,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestGreedyPlannerPlanWithDifferentDiskSizes ()
+DECL|method|testGreedyPlannerPlanWithDifferentDiskSizes ()
 specifier|public
 name|void
-name|TestGreedyPlannerPlanWithDifferentDiskSizes
+name|testGreedyPlannerPlanWithDifferentDiskSizes
 parameter_list|()
 throws|throws
 name|Exception
@@ -2494,10 +2474,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestLoadsCorrectClusterConnector ()
+DECL|method|testLoadsCorrectClusterConnector ()
 specifier|public
 name|void
-name|TestLoadsCorrectClusterConnector
+name|testLoadsCorrectClusterConnector
 parameter_list|()
 throws|throws
 name|Exception
@@ -2541,10 +2521,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestPlannerScale ()
+DECL|method|testPlannerScale ()
 specifier|public
 name|void
-name|TestPlannerScale
+name|testPlannerScale
 parameter_list|()
 throws|throws
 name|Exception
@@ -2750,10 +2730,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestNodePlanSerialize ()
+DECL|method|testNodePlanSerialize ()
 specifier|public
 name|void
-name|TestNodePlanSerialize
+name|testNodePlanSerialize
 parameter_list|()
 throws|throws
 name|Exception

@@ -56,11 +56,39 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|htrace
+operator|.
+name|fasterxml
+operator|.
+name|jackson
+operator|.
+name|annotation
+operator|.
+name|JsonInclude
+import|;
+end_import
+
 begin_comment
-comment|/**  * Move step is a step that planner can execute that will move data from one  * volume to another.  */
+comment|/**  * Ignore fields with default values. In most cases Throughtput, diskErrors  * tolerancePercent and bandwidth will be the system defaults.  * So we will avoid serializing them into JSON.  */
 end_comment
 
 begin_class
+annotation|@
+name|JsonInclude
+argument_list|(
+name|JsonInclude
+operator|.
+name|Include
+operator|.
+name|NON_DEFAULT
+argument_list|)
+comment|/**  * Move step is a step that planner can execute that will move data from one  * volume to another.  */
 DECL|class|MoveStep
 specifier|public
 class|class
@@ -92,6 +120,21 @@ DECL|field|volumeSetID
 specifier|private
 name|String
 name|volumeSetID
+decl_stmt|;
+DECL|field|maxDiskErrors
+specifier|private
+name|long
+name|maxDiskErrors
+decl_stmt|;
+DECL|field|tolerancePercent
+specifier|private
+name|long
+name|tolerancePercent
+decl_stmt|;
+DECL|field|bandwidth
+specifier|private
+name|long
+name|bandwidth
 decl_stmt|;
 comment|/**    * Constructs a MoveStep for the volume set.    *    * @param sourceVolume      - Source Disk    * @param idealStorage      - Ideal Storage Value for this disk set    * @param destinationVolume - Destination dis    * @param bytesToMove       - number of bytes to move    * @param volumeSetID       - a diskBalancer generated id.    */
 DECL|method|MoveStep (DiskBalancerVolume sourceVolume, float idealStorage, DiskBalancerVolume destinationVolume, long bytesToMove, String volumeSetID)
@@ -377,6 +420,90 @@ argument_list|,
 literal|1
 argument_list|)
 return|;
+block|}
+comment|/**    * Gets Maximum numbers of errors to be tolerated before this    * move operation is aborted.    * @return  long.    */
+DECL|method|getMaxDiskErrors ()
+specifier|public
+name|long
+name|getMaxDiskErrors
+parameter_list|()
+block|{
+return|return
+name|maxDiskErrors
+return|;
+block|}
+comment|/**    * Sets the maximum numbers of Errors to be tolerated before this    * step is aborted.    * @param maxDiskErrors - long    */
+DECL|method|setMaxDiskErrors (long maxDiskErrors)
+specifier|public
+name|void
+name|setMaxDiskErrors
+parameter_list|(
+name|long
+name|maxDiskErrors
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maxDiskErrors
+operator|=
+name|maxDiskErrors
+expr_stmt|;
+block|}
+comment|/**    * Tolerance Percentage indicates when a move operation is considered good    * enough. This is a percentage of deviation from ideal that is considered    * fine.    *    * For example : if the ideal amount on each disk was 1 TB and the    * tolerance was 10%, then getting to 900 GB on the destination disk is    * considerd good enough.    *    * @return tolerance percentage.    */
+DECL|method|getTolerancePercent ()
+specifier|public
+name|long
+name|getTolerancePercent
+parameter_list|()
+block|{
+return|return
+name|tolerancePercent
+return|;
+block|}
+comment|/**    * Sets the tolerance percentage.    * @param tolerancePercent  - long    */
+DECL|method|setTolerancePercent (long tolerancePercent)
+specifier|public
+name|void
+name|setTolerancePercent
+parameter_list|(
+name|long
+name|tolerancePercent
+parameter_list|)
+block|{
+name|this
+operator|.
+name|tolerancePercent
+operator|=
+name|tolerancePercent
+expr_stmt|;
+block|}
+comment|/**    * Gets the disk Bandwidth. That is the MB/Sec to copied. We will max out    * on this amount of throughput. This is useful to prevent too much I/O on    * datanode while data node is in use.    * @return  long.    */
+DECL|method|getBandwidth ()
+specifier|public
+name|long
+name|getBandwidth
+parameter_list|()
+block|{
+return|return
+name|bandwidth
+return|;
+block|}
+comment|/**    * Sets the maximum disk bandwidth per sec to use for this step.    * @param bandwidth  - Long, MB / Sec of data to be moved between    *                   source and destinatin volume.    */
+DECL|method|setBandwidth (long bandwidth)
+specifier|public
+name|void
+name|setBandwidth
+parameter_list|(
+name|long
+name|bandwidth
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bandwidth
+operator|=
+name|bandwidth
+expr_stmt|;
 block|}
 block|}
 end_class
