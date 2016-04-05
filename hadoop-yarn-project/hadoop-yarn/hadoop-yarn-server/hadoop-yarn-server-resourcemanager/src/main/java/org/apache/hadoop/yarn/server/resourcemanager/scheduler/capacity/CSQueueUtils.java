@@ -819,7 +819,7 @@ block|}
 block|}
 comment|/**    * Update partitioned resource usage, if nodePartition == null, will update    * used resource for all partitions of this queue.    */
 DECL|method|updateUsedCapacity (final ResourceCalculator rc, final Resource totalPartitionResource, final Resource minimumAllocation, ResourceUsage queueResourceUsage, QueueCapacities queueCapacities, String nodePartition)
-specifier|private
+specifier|public
 specifier|static
 name|void
 name|updateUsedCapacity
