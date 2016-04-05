@@ -1122,14 +1122,12 @@ operator|.
 name|assertTrue
 argument_list|(
 name|e
+operator|instanceof
+name|java
 operator|.
-name|toString
-argument_list|()
+name|net
 operator|.
-name|contains
-argument_list|(
-literal|"Failed on local exception: java.net.SocketException"
-argument_list|)
+name|SocketException
 argument_list|)
 expr_stmt|;
 block|}
