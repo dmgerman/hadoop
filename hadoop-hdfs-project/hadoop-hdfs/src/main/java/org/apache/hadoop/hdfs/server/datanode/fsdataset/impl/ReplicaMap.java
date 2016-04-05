@@ -858,9 +858,9 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Give access to mutex used for synchronizing ReplicasMap    * @return object used as lock    */
-DECL|method|getMutext ()
+DECL|method|getMutex ()
 name|Object
-name|getMutext
+name|getMutex
 parameter_list|()
 block|{
 return|return

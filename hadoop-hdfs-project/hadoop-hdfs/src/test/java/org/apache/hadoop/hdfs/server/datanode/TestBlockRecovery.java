@@ -286,6 +286,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|Semaphore
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|ThreadLocalRandom
 import|;
 end_import
@@ -313,6 +325,20 @@ operator|.
 name|atomic
 operator|.
 name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Iterators
 import|;
 end_import
 
@@ -1046,7 +1072,29 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|TestName
 import|;
 end_import
 
@@ -1268,6 +1316,17 @@ name|BLOCK_LEN
 argument_list|,
 name|GEN_STAMP
 argument_list|)
+decl_stmt|;
+annotation|@
+name|Rule
+DECL|field|currentTestName
+specifier|public
+name|TestName
+name|currentTestName
+init|=
+operator|new
+name|TestName
+argument_list|()
 decl_stmt|;
 DECL|field|CELL_SIZE
 specifier|private
@@ -1534,6 +1593,14 @@ name|ALL
 argument_list|)
 expr_stmt|;
 block|}
+specifier|private
+specifier|final
+name|long
+DECL|field|TEST_LOCK_HOG_DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS
+name|TEST_LOCK_HOG_DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS
+init|=
+literal|1000000000L
+decl_stmt|;
 comment|/**    * Starts an instance of DataNode    * @throws IOException    */
 annotation|@
 name|Before
@@ -1601,6 +1668,32 @@ argument_list|,
 literal|"0.0.0.0:0"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|currentTestName
+operator|.
+name|getMethodName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|"testInitReplicaRecoveryDoesNotHogLock"
+argument_list|)
+condition|)
+block|{
+comment|// This test requires a very long value for the xceiver stop timeout.
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_KEY
+argument_list|,
+name|TEST_LOCK_HOG_DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS
+argument_list|)
+expr_stmt|;
+block|}
 name|conf
 operator|.
 name|setInt
@@ -2356,6 +2449,11 @@ block|}
 comment|/**    * BlockRecovery_02.8.    * Two replicas are in Finalized state    * @throws IOException in case of an error    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testFinalizedReplicas ()
 specifier|public
 name|void
@@ -2574,6 +2672,11 @@ block|}
 comment|/**    * BlockRecovery_02.9.    * One replica is Finalized and another is RBW.     * @throws IOException in case of an error    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testFinalizedRbwReplicas ()
 specifier|public
 name|void
@@ -2814,6 +2917,11 @@ block|}
 comment|/**    * BlockRecovery_02.10.    * One replica is Finalized and another is RWR.     * @throws IOException in case of an error    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testFinalizedRwrReplicas ()
 specifier|public
 name|void
@@ -3057,6 +3165,11 @@ block|}
 comment|/**    * BlockRecovery_02.11.    * Two replicas are RBW.    * @throws IOException in case of an error    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRBWReplicas ()
 specifier|public
 name|void
@@ -3205,6 +3318,11 @@ block|}
 comment|/**    * BlockRecovery_02.12.    * One replica is RBW and another is RWR.     * @throws IOException in case of an error    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRBW_RWRReplicas ()
 specifier|public
 name|void
@@ -3344,6 +3462,11 @@ block|}
 comment|/**    * BlockRecovery_02.13.     * Two replicas are RWR.    * @throws IOException in case of an error    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRWRReplicas ()
 specifier|public
 name|void
@@ -3575,6 +3698,11 @@ block|}
 comment|/**    * BlockRecoveryFI_05. One DN throws RecoveryInProgressException.    *    * @throws IOException    *           in case of an error    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRecoveryInProgressException ()
 specifier|public
 name|void
@@ -3690,6 +3818,11 @@ block|}
 comment|/**    * BlockRecoveryFI_06. all datanodes throws an exception.    *    * @throws IOException    *           in case of an error    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testErrorReplicas ()
 specifier|public
 name|void
@@ -3825,6 +3958,11 @@ block|}
 comment|/**    * BlockRecoveryFI_07. max replica length from all DNs is zero.    *    * @throws IOException in case of an error    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testZeroLenReplicas ()
 specifier|public
 name|void
@@ -4078,6 +4216,11 @@ decl_stmt|;
 comment|/**    * BlockRecoveryFI_09. some/all DNs failed to update replicas.    *    * @throws IOException in case of an error    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testFailedReplicaUpdate ()
 specifier|public
 name|void
@@ -4185,6 +4328,11 @@ block|}
 comment|/**    * BlockRecoveryFI_10. DN has no ReplicaUnderRecovery.    *    * @throws IOException in case of an error    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testNoReplicaUnderRecovery ()
 specifier|public
 name|void
@@ -4337,6 +4485,11 @@ block|}
 comment|/**    * BlockRecoveryFI_11. a replica's recovery id does not match new GS.    *    * @throws IOException in case of an error    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testNotMatchedReplicaID ()
 specifier|public
 name|void
@@ -4920,6 +5073,11 @@ block|}
 comment|/**    * DNs report RUR instead of RBW, RWR or FINALIZED. Primary DN expected to    * throw an exception.    * @throws Exception    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRURReplicas ()
 specifier|public
 name|void
@@ -5088,6 +5246,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testSafeLength ()
 specifier|public
 name|void
@@ -5280,6 +5443,401 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Test that initReplicaRecovery does not hold the lock for an unreasonable    * amount of time if a writer is taking a long time to stop.    */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
+DECL|method|testInitReplicaRecoveryDoesNotHogLock ()
+specifier|public
+name|void
+name|testInitReplicaRecoveryDoesNotHogLock
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Running "
+operator|+
+name|GenericTestUtils
+operator|.
+name|getMethodName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|// We need a long value for the data xceiver stop timeout.
+comment|// Otherwise the timeout will trigger, and we will not have tested that
+comment|// thread join was done locklessly.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|TEST_LOCK_HOG_DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS
+argument_list|,
+name|dn
+operator|.
+name|getDnConf
+argument_list|()
+operator|.
+name|getXceiverStopTimeout
+argument_list|()
+argument_list|)
+expr_stmt|;
+specifier|final
+name|Semaphore
+name|progressParent
+init|=
+operator|new
+name|Semaphore
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+specifier|final
+name|Semaphore
+name|terminateSlowWorker
+init|=
+operator|new
+name|Semaphore
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+specifier|final
+name|AtomicBoolean
+name|failure
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
+decl_stmt|;
+name|Collection
+argument_list|<
+name|RecoveringBlock
+argument_list|>
+name|recoveringBlocks
+init|=
+name|initRecoveringBlocks
+argument_list|()
+decl_stmt|;
+specifier|final
+name|RecoveringBlock
+name|recoveringBlock
+init|=
+name|Iterators
+operator|.
+name|get
+argument_list|(
+name|recoveringBlocks
+operator|.
+name|iterator
+argument_list|()
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
+specifier|final
+name|ExtendedBlock
+name|block
+init|=
+name|recoveringBlock
+operator|.
+name|getBlock
+argument_list|()
+decl_stmt|;
+name|Thread
+name|slowWorker
+init|=
+operator|new
+name|Thread
+argument_list|(
+operator|new
+name|Runnable
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+try|try
+block|{
+comment|// Register this thread as the writer for the recoveringBlock.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"slowWorker creating rbw"
+argument_list|)
+expr_stmt|;
+name|ReplicaHandler
+name|replicaHandler
+init|=
+name|spyDN
+operator|.
+name|data
+operator|.
+name|createRbw
+argument_list|(
+name|StorageType
+operator|.
+name|DISK
+argument_list|,
+name|block
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+name|replicaHandler
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"slowWorker created rbw"
+argument_list|)
+expr_stmt|;
+comment|// Tell the parent thread to start progressing.
+name|progressParent
+operator|.
+name|release
+argument_list|()
+expr_stmt|;
+while|while
+condition|(
+literal|true
+condition|)
+block|{
+try|try
+block|{
+name|terminateSlowWorker
+operator|.
+name|acquire
+argument_list|()
+expr_stmt|;
+break|break;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+comment|// Ignore interrupted exceptions so that the waitingWorker thread
+comment|// will have to wait for us.
+block|}
+block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"slowWorker exiting"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"slowWorker got exception"
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+name|failure
+operator|.
+name|set
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+argument_list|)
+decl_stmt|;
+comment|// Start the slow worker thread and wait for it to take ownership of the
+comment|// ReplicaInPipeline
+name|slowWorker
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+while|while
+condition|(
+literal|true
+condition|)
+block|{
+try|try
+block|{
+name|progressParent
+operator|.
+name|acquire
+argument_list|()
+expr_stmt|;
+break|break;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+comment|// Ignore interrupted exceptions
+block|}
+block|}
+comment|// Start a worker thread which will wait for the slow worker thread.
+name|Thread
+name|waitingWorker
+init|=
+operator|new
+name|Thread
+argument_list|(
+operator|new
+name|Runnable
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+try|try
+block|{
+comment|// Attempt to terminate the other worker thread and take ownership
+comment|// of the ReplicaInPipeline.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"waitingWorker initiating recovery"
+argument_list|)
+expr_stmt|;
+name|spyDN
+operator|.
+name|initReplicaRecovery
+argument_list|(
+name|recoveringBlock
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"waitingWorker initiated recovery"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"meta does not exist"
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+argument_list|)
+decl_stmt|;
+name|waitingWorker
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+comment|// Do an operation that requires the lock.  This should not be blocked
+comment|// by the replica recovery in progress.
+name|spyDN
+operator|.
+name|getFSDataset
+argument_list|()
+operator|.
+name|getReplicaString
+argument_list|(
+name|recoveringBlock
+operator|.
+name|getBlock
+argument_list|()
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|,
+name|recoveringBlock
+operator|.
+name|getBlock
+argument_list|()
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Wait for the two worker threads to exit normally.
+name|terminateSlowWorker
+operator|.
+name|release
+argument_list|()
+expr_stmt|;
+name|slowWorker
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+name|waitingWorker
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+literal|"The slowWriter thread failed."
+argument_list|,
+name|failure
+operator|.
+name|get
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
