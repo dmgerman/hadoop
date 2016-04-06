@@ -7228,7 +7228,6 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|recoverAppend ( ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
-specifier|synchronized
 name|ReplicaHandler
 name|recoverAppend
 parameter_list|(
@@ -7408,7 +7407,6 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
-specifier|synchronized
 name|Replica
 name|recoverClose
 parameter_list|(
