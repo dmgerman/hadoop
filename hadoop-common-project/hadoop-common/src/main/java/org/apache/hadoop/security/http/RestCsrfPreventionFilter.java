@@ -319,6 +319,7 @@ init|=
 literal|"^Mozilla.*,^Opera.*"
 decl_stmt|;
 DECL|field|HEADER_DEFAULT
+specifier|public
 specifier|static
 specifier|final
 name|String
