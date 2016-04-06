@@ -5727,8 +5727,10 @@ argument_list|)
 operator|.
 name|setLength
 argument_list|(
-operator|-
-literal|1
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
 argument_list|)
 operator|.
 name|setVerifyChecksum

@@ -901,7 +901,7 @@ specifier|private
 name|ClientContext
 name|clientContext
 decl_stmt|;
-comment|/**    * Number of bytes to read.  -1 indicates no limit.    */
+comment|/**    * Number of bytes to read. Must be set to a non-negative value.    */
 DECL|field|length
 specifier|private
 name|long
@@ -1341,6 +1341,17 @@ operator|.
 name|checkNotNull
 argument_list|(
 name|configuration
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|length
+operator|>=
+literal|0
+argument_list|,
+literal|"Length must be set to a non-negative value"
 argument_list|)
 expr_stmt|;
 name|BlockReader

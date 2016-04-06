@@ -1262,8 +1262,7 @@ argument_list|)
 operator|.
 name|setLength
 argument_list|(
-operator|-
-literal|1
+literal|0
 argument_list|)
 operator|.
 name|setVerifyChecksum
