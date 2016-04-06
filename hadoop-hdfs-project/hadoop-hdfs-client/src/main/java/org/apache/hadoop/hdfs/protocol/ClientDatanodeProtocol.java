@@ -300,6 +300,14 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Evict clients that are writing to a datanode.    *    * @throws IOException    */
+DECL|method|evictWriters ()
+name|void
+name|evictWriters
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Obtains datanode info    *    * @return software/config version and uptime of the datanode    */
 DECL|method|getDatanodeInfo ()
 name|DatanodeLocalInfo

@@ -1320,6 +1320,13 @@ specifier|final
 name|int
 name|smallBufferSize
 decl_stmt|;
+DECL|field|xceiver
+specifier|private
+name|Thread
+name|xceiver
+init|=
+literal|null
+decl_stmt|;
 comment|/**    * Client Name used in previous operation. Not available on first request    * on the socket.    */
 DECL|field|previousOpClientName
 specifier|private
@@ -1650,6 +1657,24 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+name|BlockReceiver
+name|br
+init|=
+name|getCurrentBlockReceiver
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|br
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+comment|// This doesn't need to be in a critical section. Althogh the client
+comment|// can resue the connection to issue a different request, trying sending
+comment|// an OOB through the recently closed block receiver is harmless.
 name|LOG
 operator|.
 name|info
@@ -1659,17 +1684,76 @@ operator|+
 name|peer
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|blockReceiver
-operator|!=
-literal|null
-condition|)
-name|blockReceiver
+name|br
 operator|.
 name|sendOOB
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|stopWriter ()
+specifier|public
+name|void
+name|stopWriter
+parameter_list|()
+block|{
+comment|// We want to interrupt the xceiver only when it is serving writes.
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+if|if
+condition|(
+name|getCurrentBlockReceiver
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+name|xceiver
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Stopped the writer: "
+operator|+
+name|peer
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * blockReceiver is updated at multiple places. Use the synchronized setter    * and getter.    */
+DECL|method|setCurrentBlockReceiver (BlockReceiver br)
+specifier|private
+specifier|synchronized
+name|void
+name|setCurrentBlockReceiver
+parameter_list|(
+name|BlockReceiver
+name|br
+parameter_list|)
+block|{
+name|blockReceiver
+operator|=
+name|br
+expr_stmt|;
+block|}
+DECL|method|getCurrentBlockReceiver ()
+specifier|private
+specifier|synchronized
+name|BlockReceiver
+name|getCurrentBlockReceiver
+parameter_list|()
+block|{
+return|return
+name|blockReceiver
+return|;
 block|}
 comment|/**    * Read/write data from/to the DataXceiverServer.    */
 annotation|@
@@ -1692,6 +1776,19 @@ literal|null
 decl_stmt|;
 try|try
 block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|xceiver
+operator|=
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+expr_stmt|;
+block|}
 name|dataXceiverServer
 operator|.
 name|addPeer
@@ -4370,8 +4467,8 @@ name|PIPELINE_CLOSE_RECOVERY
 condition|)
 block|{
 comment|// open a block receiver
-name|blockReceiver
-operator|=
+name|setCurrentBlockReceiver
+argument_list|(
 name|getBlockReceiver
 argument_list|(
 name|block
@@ -4411,6 +4508,7 @@ argument_list|,
 name|allowLazyPersist
 argument_list|,
 name|pinning
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|replica
@@ -5313,9 +5411,10 @@ argument_list|(
 name|blockReceiver
 argument_list|)
 expr_stmt|;
-name|blockReceiver
-operator|=
+name|setCurrentBlockReceiver
+argument_list|(
 literal|null
+argument_list|)
 expr_stmt|;
 block|}
 comment|//update metrics
@@ -6424,11 +6523,6 @@ name|errMsg
 init|=
 literal|null
 decl_stmt|;
-name|BlockReceiver
-name|blockReceiver
-init|=
-literal|null
-decl_stmt|;
 name|DataInputStream
 name|proxyReply
 init|=
@@ -6768,8 +6862,8 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// open a block receiver and check if the block does not exist
-name|blockReceiver
-operator|=
+name|setCurrentBlockReceiver
+argument_list|(
 name|getBlockReceiver
 argument_list|(
 name|block
@@ -6818,6 +6912,7 @@ argument_list|,
 literal|false
 argument_list|,
 literal|false
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// receive a block

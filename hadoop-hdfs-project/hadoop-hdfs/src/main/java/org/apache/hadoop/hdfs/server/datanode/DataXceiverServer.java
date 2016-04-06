@@ -1101,6 +1101,36 @@ expr_stmt|;
 block|}
 block|}
 block|}
+DECL|method|stopWriters ()
+specifier|public
+specifier|synchronized
+name|void
+name|stopWriters
+parameter_list|()
+block|{
+for|for
+control|(
+name|Peer
+name|p
+range|:
+name|peers
+operator|.
+name|keySet
+argument_list|()
+control|)
+block|{
+name|peersXceiver
+operator|.
+name|get
+argument_list|(
+name|p
+argument_list|)
+operator|.
+name|stopWriter
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|// Notify all peers of the shutdown and restart.
 comment|// datanode.shouldRun should still be true and datanode.restarting should
 comment|// be set true before calling this method.

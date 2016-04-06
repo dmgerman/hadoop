@@ -4352,6 +4352,13 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+if|if
+condition|(
+name|isDatanode
+condition|)
+block|{
+return|return;
+block|}
 operator|(
 operator|(
 name|PacketResponder

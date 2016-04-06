@@ -14469,6 +14469,33 @@ block|}
 annotation|@
 name|Override
 comment|//ClientDatanodeProtocol
+DECL|method|evictWriters ()
+specifier|public
+name|void
+name|evictWriters
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Evicting all writers."
+argument_list|)
+expr_stmt|;
+name|xserver
+operator|.
+name|stopWriters
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+comment|//ClientDatanodeProtocol
 DECL|method|getDatanodeInfo ()
 specifier|public
 name|DatanodeLocalInfo
