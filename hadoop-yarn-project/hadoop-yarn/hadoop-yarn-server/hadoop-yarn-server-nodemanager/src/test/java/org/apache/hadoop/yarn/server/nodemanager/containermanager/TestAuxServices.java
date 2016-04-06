@@ -1497,7 +1497,9 @@ init|=
 operator|new
 name|ContainerImpl
 argument_list|(
-literal|null
+operator|new
+name|YarnConfiguration
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
