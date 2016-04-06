@@ -7744,6 +7744,11 @@ name|startingActiveService
 operator|=
 literal|false
 expr_stmt|;
+name|blockManager
+operator|.
+name|checkSafeMode
+argument_list|()
+expr_stmt|;
 name|writeUnlock
 argument_list|()
 expr_stmt|;

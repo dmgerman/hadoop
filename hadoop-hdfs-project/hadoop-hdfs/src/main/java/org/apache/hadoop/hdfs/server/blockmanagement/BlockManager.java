@@ -9818,6 +9818,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|checkSafeMode ()
+specifier|public
 name|void
 name|checkSafeMode
 parameter_list|()
