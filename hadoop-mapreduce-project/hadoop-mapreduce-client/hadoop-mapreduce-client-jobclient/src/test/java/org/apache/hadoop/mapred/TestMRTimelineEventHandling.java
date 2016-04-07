@@ -58,16 +58,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -262,6 +252,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|YarnApplicationState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|timeline
 operator|.
 name|TimelineEntities
@@ -285,24 +293,6 @@ operator|.
 name|timeline
 operator|.
 name|TimelineEntity
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|YarnApplicationState
 import|;
 end_import
 
@@ -1495,6 +1485,8 @@ expr_stmt|;
 name|checkNewTimelineEvent
 argument_list|(
 name|firstAppId
+argument_list|,
+name|appReport
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1562,12 +1554,7 @@ argument_list|,
 literal|2
 argument_list|)
 expr_stmt|;
-name|ApplicationId
-name|secAppId
-init|=
-literal|null
-decl_stmt|;
-name|secAppId
+name|appReport
 operator|=
 name|apps
 operator|.
@@ -1578,32 +1565,31 @@ argument_list|)
 operator|.
 name|getApplicationId
 argument_list|()
-operator|==
-name|firstAppId
-condition|?
-name|apps
 operator|.
-name|get
+name|equals
 argument_list|(
-literal|1
+name|firstAppId
 argument_list|)
-operator|.
-name|getApplicationId
-argument_list|()
-else|:
+condition|?
 name|apps
 operator|.
 name|get
 argument_list|(
 literal|0
 argument_list|)
+else|:
+name|apps
 operator|.
-name|getApplicationId
-argument_list|()
+name|get
+argument_list|(
+literal|1
+argument_list|)
 expr_stmt|;
 name|checkNewTimelineEvent
 argument_list|(
 name|firstAppId
+argument_list|,
+name|appReport
 argument_list|)
 expr_stmt|;
 block|}
@@ -1657,13 +1643,16 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|checkNewTimelineEvent (ApplicationId appId)
+DECL|method|checkNewTimelineEvent (ApplicationId appId, ApplicationReport appReport)
 specifier|private
 name|void
 name|checkNewTimelineEvent
 parameter_list|(
 name|ApplicationId
 name|appId
+parameter_list|,
+name|ApplicationReport
+name|appReport
 parameter_list|)
 throws|throws
 name|IOException
@@ -1717,14 +1706,25 @@ argument_list|()
 operator|+
 literal|"/"
 operator|+
+name|appReport
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"/"
+operator|+
 name|TimelineUtils
 operator|.
-name|generateDefaultFlowNameBasedOnAppId
-argument_list|(
-name|appId
-argument_list|)
+name|DEFAULT_FLOW_VERSION
 operator|+
-literal|"/1/1/"
+literal|"/"
+operator|+
+name|appReport
+operator|.
+name|getStartTime
+argument_list|()
+operator|+
+literal|"/"
 operator|+
 name|appId
 operator|.
@@ -1756,7 +1756,7 @@ literal|"Job output directory: "
 operator|+
 name|outputDirJob
 operator|+
-literal|" is not exist."
+literal|" does not exist."
 argument_list|,
 name|entityFolder
 operator|.
@@ -1808,7 +1808,7 @@ literal|"jobEventFilePath: "
 operator|+
 name|jobEventFilePath
 operator|+
-literal|" is not exist."
+literal|" does not exist."
 argument_list|,
 name|jobEventFile
 operator|.
@@ -1841,7 +1841,7 @@ literal|"Task output directory: "
 operator|+
 name|outputDirTask
 operator|+
-literal|" is not exist."
+literal|" does not exist."
 argument_list|,
 name|taskFolder
 operator|.
@@ -1894,7 +1894,7 @@ literal|"taskEventFileName: "
 operator|+
 name|taskEventFilePath
 operator|+
-literal|" is not exist."
+literal|" does not exist."
 argument_list|,
 name|taskEventFile
 operator|.
@@ -1927,7 +1927,7 @@ literal|"TaskAttempt output directory: "
 operator|+
 name|outputDirTaskAttempt
 operator|+
-literal|" is not exist."
+literal|" does not exist."
 argument_list|,
 name|taskAttemptFolder
 operator|.
@@ -1980,7 +1980,7 @@ literal|"taskAttemptEventFileName: "
 operator|+
 name|taskAttemptEventFilePath
 operator|+
-literal|" is not exist."
+literal|" does not exist."
 argument_list|,
 name|taskAttemptEventFile
 operator|.

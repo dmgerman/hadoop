@@ -24,20 +24,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -132,19 +118,15 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
-name|yarn
+name|base
 operator|.
-name|util
-operator|.
-name|timeline
-operator|.
-name|TimelineUtils
+name|Preconditions
 import|;
 end_import
 
@@ -268,35 +250,6 @@ argument_list|()
 operator|.
 name|getShortUserName
 argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// Use app ID to generate a default flow name for orphan app
-name|context
-operator|.
-name|setFlowName
-argument_list|(
-name|TimelineUtils
-operator|.
-name|generateDefaultFlowNameBasedOnAppId
-argument_list|(
-name|appId
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Set the flow version to string 1 if it's an orphan app
-name|context
-operator|.
-name|setFlowVersion
-argument_list|(
-literal|"1"
-argument_list|)
-expr_stmt|;
-comment|// Set the flow run ID to 1 if it's an orphan app
-name|context
-operator|.
-name|setFlowRunId
-argument_list|(
-literal|1L
 argument_list|)
 expr_stmt|;
 name|context

@@ -40,6 +40,24 @@ name|TimelineContext
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|timeline
+operator|.
+name|TimelineUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Encapsulates context information required by collector during a put.  */
 end_comment
@@ -118,6 +136,14 @@ name|this
 operator|.
 name|flowVersion
 operator|=
+name|flowVersion
+operator|==
+literal|null
+condition|?
+name|TimelineUtils
+operator|.
+name|DEFAULT_FLOW_VERSION
+else|:
 name|flowVersion
 expr_stmt|;
 block|}

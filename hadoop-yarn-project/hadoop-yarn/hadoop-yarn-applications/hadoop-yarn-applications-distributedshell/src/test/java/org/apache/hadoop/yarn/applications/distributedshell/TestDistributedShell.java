@@ -2503,6 +2503,11 @@ name|appId
 init|=
 literal|null
 decl_stmt|;
+name|ApplicationReport
+name|appReport
+init|=
+literal|null
+decl_stmt|;
 while|while
 condition|(
 operator|!
@@ -2539,16 +2544,15 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
-name|ApplicationReport
 name|appReport
-init|=
+operator|=
 name|apps
 operator|.
 name|get
 argument_list|(
 literal|0
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|appId
 operator|=
 name|appReport
@@ -2784,6 +2788,8 @@ argument_list|,
 name|appId
 argument_list|,
 name|defaultFlow
+argument_list|,
+name|appReport
 argument_list|)
 expr_stmt|;
 block|}
@@ -3215,7 +3221,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|checkTimelineV2 (boolean haveDomain, ApplicationId appId, boolean defaultFlow)
+DECL|method|checkTimelineV2 (boolean haveDomain, ApplicationId appId, boolean defaultFlow, ApplicationReport appReport)
 specifier|private
 name|void
 name|checkTimelineV2
@@ -3228,6 +3234,9 @@ name|appId
 parameter_list|,
 name|boolean
 name|defaultFlow
+parameter_list|,
+name|ApplicationReport
+name|appReport
 parameter_list|)
 throws|throws
 name|Exception
@@ -3294,14 +3303,25 @@ name|defaultFlow
 condition|?
 literal|"/"
 operator|+
+name|appReport
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"/"
+operator|+
 name|TimelineUtils
 operator|.
-name|generateDefaultFlowNameBasedOnAppId
-argument_list|(
-name|appId
-argument_list|)
+name|DEFAULT_FLOW_VERSION
 operator|+
-literal|"/1/1/"
+literal|"/"
+operator|+
+name|appReport
+operator|.
+name|getStartTime
+argument_list|()
+operator|+
+literal|"/"
 else|:
 literal|"/test_flow_name/test_flow_version/12345678/"
 operator|)
@@ -3311,6 +3331,15 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"basePath: "
+operator|+
+name|basePath
+argument_list|)
+expr_stmt|;
 comment|// for this test, we expect DS_APP_ATTEMPT AND DS_CONTAINER dirs
 comment|// Verify DS_APP_ATTEMPT entities posted by the client
 comment|// there will be at least one attempt, look for that file
