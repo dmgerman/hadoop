@@ -11813,6 +11813,26 @@ name|JobCounterUpdateEvent
 operator|)
 name|current
 decl_stmt|;
+name|boolean
+name|containsUpdates
+init|=
+name|jcue
+operator|.
+name|getCounterUpdates
+argument_list|()
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+decl_stmt|;
+comment|// there is no updates in a JobCounterUpdateEvent emitted on
+comment|// TaskAttempt recovery. Check that first.
+if|if
+condition|(
+name|containsUpdates
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -11920,6 +11940,7 @@ operator|.
 name|getIncrementValue
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 elseif|else
