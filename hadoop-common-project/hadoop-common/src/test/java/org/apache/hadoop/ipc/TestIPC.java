@@ -941,7 +941,6 @@ decl_stmt|;
 DECL|field|PING_INTERVAL
 specifier|final
 specifier|static
-specifier|private
 name|int
 name|PING_INTERVAL
 init|=
@@ -996,7 +995,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|field|RANDOM
-specifier|private
 specifier|static
 specifier|final
 name|Random
@@ -1234,7 +1232,6 @@ argument_list|)
 return|;
 block|}
 DECL|class|TestServer
-specifier|private
 specifier|static
 class|class
 name|TestServer
@@ -1245,7 +1242,6 @@ comment|// Tests can set callListener to run a piece of code each time the serve
 comment|// receives a call.  This code executes on the server thread, so it has
 comment|// visibility of that thread's thread-local storage.
 DECL|field|callListener
-specifier|private
 name|Runnable
 name|callListener
 decl_stmt|;
@@ -1291,6 +1287,38 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|TestServer (int handlerCount, boolean sleep, Configuration conf)
+specifier|public
+name|TestServer
+parameter_list|(
+name|int
+name|handlerCount
+parameter_list|,
+name|boolean
+name|sleep
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+argument_list|(
+name|handlerCount
+argument_list|,
+name|sleep
+argument_list|,
+name|LongWritable
+operator|.
+name|class
+argument_list|,
+literal|null
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|TestServer (int handlerCount, boolean sleep, Class<? extends Writable> paramClass, Class<? extends Writable> responseClass)
 specifier|public
 name|TestServer
@@ -1316,6 +1344,52 @@ extends|extends
 name|Writable
 argument_list|>
 name|responseClass
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+argument_list|(
+name|handlerCount
+argument_list|,
+name|sleep
+argument_list|,
+name|paramClass
+argument_list|,
+name|responseClass
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|TestServer (int handlerCount, boolean sleep, Class<? extends Writable> paramClass, Class<? extends Writable> responseClass, Configuration conf)
+specifier|public
+name|TestServer
+parameter_list|(
+name|int
+name|handlerCount
+parameter_list|,
+name|boolean
+name|sleep
+parameter_list|,
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|Writable
+argument_list|>
+name|paramClass
+parameter_list|,
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|Writable
+argument_list|>
+name|responseClass
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -5888,7 +5962,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|class|CallInfo
-specifier|private
 specifier|static
 class|class
 name|CallInfo
@@ -6162,7 +6235,6 @@ block|}
 block|}
 comment|/** A dummy protocol */
 DECL|interface|DummyProtocol
-specifier|private
 interface|interface
 name|DummyProtocol
 block|{
