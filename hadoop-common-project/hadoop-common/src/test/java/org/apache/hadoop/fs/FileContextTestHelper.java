@@ -122,6 +122,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -170,7 +184,7 @@ name|absTestRootDir
 init|=
 literal|null
 decl_stmt|;
-comment|/**    * Create a context with test root relative to the<wd>/build/test/data    */
+comment|/**    * Create a context with test root relative to the test directory    */
 DECL|method|FileContextTestHelper ()
 specifier|public
 name|FileContextTestHelper
@@ -178,23 +192,13 @@ parameter_list|()
 block|{
 name|this
 argument_list|(
-name|System
+name|GenericTestUtils
 operator|.
-name|getProperty
-argument_list|(
-literal|"test.build.data"
-argument_list|,
-literal|"target/test/data"
-argument_list|)
-operator|+
-literal|"/"
-operator|+
-name|RandomStringUtils
+name|getRandomizedTestDir
+argument_list|()
 operator|.
-name|randomAlphanumeric
-argument_list|(
-literal|10
-argument_list|)
+name|getAbsolutePath
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

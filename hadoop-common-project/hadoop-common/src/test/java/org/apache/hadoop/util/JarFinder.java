@@ -190,6 +190,20 @@ name|ZipOutputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Finds the Jar for a class. If the class is in a directory in the  * classpath, it creates a Jar on the fly with the contents of the directory  * and returns the path to that Jar. If a Jar is created, it is created in  * the system temporary directory.  */
 end_comment
@@ -947,18 +961,10 @@ decl_stmt|;
 name|File
 name|testDir
 init|=
-operator|new
-name|File
-argument_list|(
-name|System
+name|GenericTestUtils
 operator|.
-name|getProperty
-argument_list|(
-literal|"test.build.dir"
-argument_list|,
-literal|"target/test-dir"
-argument_list|)
-argument_list|)
+name|getTestDir
+argument_list|()
 decl_stmt|;
 name|testDir
 operator|=

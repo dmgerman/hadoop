@@ -60,6 +60,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * test for the input truncation bug when mark/reset is used.  * HADOOP-1489  */
 end_comment
@@ -78,28 +92,13 @@ specifier|static
 name|String
 name|TEST_ROOT_DIR
 init|=
-operator|new
-name|Path
-argument_list|(
-name|System
+name|GenericTestUtils
 operator|.
-name|getProperty
-argument_list|(
-literal|"test.build.data"
-argument_list|,
-literal|"/tmp"
-argument_list|)
-argument_list|)
-operator|.
-name|toString
+name|getTestDir
 argument_list|()
 operator|.
-name|replace
-argument_list|(
-literal|' '
-argument_list|,
-literal|'+'
-argument_list|)
+name|getAbsolutePath
+argument_list|()
 decl_stmt|;
 DECL|method|writeFile (FileSystem fileSys, Path name, int nBytesToWrite)
 specifier|private

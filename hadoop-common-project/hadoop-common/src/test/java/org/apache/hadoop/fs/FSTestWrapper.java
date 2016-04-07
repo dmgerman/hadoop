@@ -56,6 +56,20 @@ name|CreateOpts
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Abstraction of filesystem functionality with additional helper methods  * commonly used in tests. This allows generic tests to be written which apply  * to the two filesystem abstractions in Hadoop: {@link FileSystem} and  * {@link FileContext}.  */
 end_comment
@@ -127,14 +141,13 @@ condition|)
 block|{
 name|testRootDir
 operator|=
-name|System
+name|GenericTestUtils
 operator|.
-name|getProperty
-argument_list|(
-literal|"test.build.data"
-argument_list|,
-literal|"build/test/data"
-argument_list|)
+name|getTestDir
+argument_list|()
+operator|.
+name|getAbsolutePath
+argument_list|()
 expr_stmt|;
 block|}
 comment|// salt test dir with some random digits for safe parallel runs

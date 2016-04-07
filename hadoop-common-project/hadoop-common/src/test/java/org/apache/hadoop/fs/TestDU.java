@@ -94,6 +94,20 @@ name|CommonConfigurationKeys
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
 begin_comment
 comment|/** This test makes sure that "DU" does not get to run on each call to getUsed */
 end_comment
@@ -113,18 +127,10 @@ specifier|private
 name|File
 name|DU_DIR
 init|=
-operator|new
-name|File
-argument_list|(
-name|System
+name|GenericTestUtils
 operator|.
-name|getProperty
+name|getTestDir
 argument_list|(
-literal|"test.build.data"
-argument_list|,
-literal|"/tmp"
-argument_list|)
-argument_list|,
 literal|"dutmp"
 argument_list|)
 decl_stmt|;

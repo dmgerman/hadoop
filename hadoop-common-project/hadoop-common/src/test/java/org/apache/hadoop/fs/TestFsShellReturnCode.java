@@ -286,6 +286,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Shell
@@ -409,13 +423,11 @@ specifier|static
 name|String
 name|TEST_ROOT_DIR
 init|=
-name|System
+name|GenericTestUtils
 operator|.
-name|getProperty
+name|getTempPath
 argument_list|(
-literal|"test.build.data"
-argument_list|,
-literal|"build/test/data/testCHReturnCode"
+literal|"testCHReturnCode"
 argument_list|)
 decl_stmt|;
 DECL|method|writeFile (FileSystem fs, Path name)

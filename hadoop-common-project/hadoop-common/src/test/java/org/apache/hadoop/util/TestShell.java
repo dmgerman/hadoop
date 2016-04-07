@@ -151,6 +151,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -268,18 +282,10 @@ specifier|private
 name|File
 name|rootTestDir
 init|=
-operator|new
-name|File
-argument_list|(
-name|System
+name|GenericTestUtils
 operator|.
-name|getProperty
-argument_list|(
-literal|"test.build.data"
-argument_list|,
-literal|"target/"
-argument_list|)
-argument_list|)
+name|getTestDir
+argument_list|()
 decl_stmt|;
 comment|/**    * A filename generated uniquely for each test method. The file    * itself is neither created nor deleted during test setup/teardown.    */
 DECL|field|methodDir

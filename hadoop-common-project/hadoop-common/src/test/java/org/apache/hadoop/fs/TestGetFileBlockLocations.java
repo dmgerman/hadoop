@@ -80,6 +80,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Testing the correctness of FileSystem.getFileBlockLocations.  */
 end_comment
@@ -98,13 +112,11 @@ specifier|static
 name|String
 name|TEST_ROOT_DIR
 init|=
-name|System
+name|GenericTestUtils
 operator|.
-name|getProperty
+name|getTempPath
 argument_list|(
-literal|"test.build.data"
-argument_list|,
-literal|"/tmp/testGetFileBlockLocations"
+literal|"testGetFileBlockLocations"
 argument_list|)
 decl_stmt|;
 DECL|field|FileLength

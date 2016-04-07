@@ -246,6 +246,20 @@ name|Scanner
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  *   * Streaming interfaces test case class using GZ compression codec, base class  * of none and LZO compression classes.  *   */
 end_comment
@@ -262,14 +276,13 @@ specifier|static
 name|String
 name|ROOT
 init|=
-name|System
+name|GenericTestUtils
 operator|.
-name|getProperty
-argument_list|(
-literal|"test.build.data"
-argument_list|,
-literal|"/tmp/tfile-test"
-argument_list|)
+name|getTestDir
+argument_list|()
+operator|.
+name|getAbsolutePath
+argument_list|()
 decl_stmt|;
 DECL|field|BLOCK_SIZE
 specifier|private
