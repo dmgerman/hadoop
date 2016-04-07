@@ -3684,9 +3684,6 @@ block|}
 name|verifyFileLocation
 argument_list|(
 name|blockFile
-operator|.
-name|getParentFile
-argument_list|()
 argument_list|,
 name|bpFinalizedDir
 argument_list|,
@@ -3716,13 +3713,13 @@ name|report
 return|;
 block|}
 comment|/**      * Verify whether the actual directory location of block file has the      * expected directory path computed using its block ID.      */
-DECL|method|verifyFileLocation (File actualBlockDir, File bpFinalizedDir, long blockId)
+DECL|method|verifyFileLocation (File actualBlockFile, File bpFinalizedDir, long blockId)
 specifier|private
 name|void
 name|verifyFileLocation
 parameter_list|(
 name|File
-name|actualBlockDir
+name|actualBlockFile
 parameter_list|,
 name|File
 name|bpFinalizedDir
@@ -3745,7 +3742,10 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|actualBlockDir
+name|actualBlockFile
+operator|.
+name|getParentFile
+argument_list|()
 operator|.
 name|compareTo
 argument_list|(
@@ -3755,6 +3755,20 @@ operator|!=
 literal|0
 condition|)
 block|{
+name|File
+name|expBlockFile
+init|=
+operator|new
+name|File
+argument_list|(
+name|blockDir
+argument_list|,
+name|actualBlockFile
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|LOG
 operator|.
 name|warn
@@ -3763,7 +3777,15 @@ literal|"Block: "
 operator|+
 name|blockId
 operator|+
-literal|" has to be upgraded to block ID-based layout"
+literal|" has to be upgraded to block ID-based layout. "
+operator|+
+literal|"Actual block file path: "
+operator|+
+name|actualBlockFile
+operator|+
+literal|", expected block file path: "
+operator|+
+name|expBlockFile
 argument_list|)
 expr_stmt|;
 block|}
