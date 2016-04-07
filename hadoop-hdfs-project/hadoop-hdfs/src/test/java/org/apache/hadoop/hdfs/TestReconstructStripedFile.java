@@ -1538,7 +1538,7 @@ throws|throws
 name|IOException
 block|{
 name|int
-name|stoppedDN
+name|stoppedDNs
 init|=
 literal|0
 decl_stmt|;
@@ -1562,7 +1562,7 @@ control|)
 block|{
 if|if
 condition|(
-name|stoppedDN
+name|stoppedDNs
 operator|==
 literal|0
 operator|||
@@ -1609,7 +1609,7 @@ name|getValue
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|stoppedDN
+name|stoppedDNs
 operator|++
 expr_stmt|;
 block|}
@@ -1656,7 +1656,7 @@ expr_stmt|;
 block|}
 block|}
 return|return
-name|stoppedDN
+name|stoppedDNs
 return|;
 block|}
 comment|/**    * Test the file blocks reconstruction.    * 1. Check the replica is reconstructed in the target datanode,    *    and verify the block replica length, generationStamp and content.    * 2. Read the file and verify content.    */

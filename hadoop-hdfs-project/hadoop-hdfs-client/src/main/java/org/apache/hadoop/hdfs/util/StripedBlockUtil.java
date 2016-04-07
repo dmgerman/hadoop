@@ -710,6 +710,41 @@ return|return
 name|locatedBlock
 return|;
 block|}
+DECL|method|constructInternalBlock ( ExtendedBlock blockGroup, ErasureCodingPolicy ecPolicy, int idxInBlockGroup)
+specifier|public
+specifier|static
+name|ExtendedBlock
+name|constructInternalBlock
+parameter_list|(
+name|ExtendedBlock
+name|blockGroup
+parameter_list|,
+name|ErasureCodingPolicy
+name|ecPolicy
+parameter_list|,
+name|int
+name|idxInBlockGroup
+parameter_list|)
+block|{
+return|return
+name|constructInternalBlock
+argument_list|(
+name|blockGroup
+argument_list|,
+name|ecPolicy
+operator|.
+name|getCellSize
+argument_list|()
+argument_list|,
+name|ecPolicy
+operator|.
+name|getNumDataUnits
+argument_list|()
+argument_list|,
+name|idxInBlockGroup
+argument_list|)
+return|;
+block|}
 comment|/**    * This method creates an internal {@link ExtendedBlock} at the given index    * of a block group.    */
 DECL|method|constructInternalBlock (ExtendedBlock blockGroup, int cellSize, int dataBlkNum, int idxInBlockGroup)
 specifier|public
@@ -774,8 +809,43 @@ return|return
 name|block
 return|;
 block|}
-comment|/**    * Get the size of an internal block at the given index of a block group    *    * @param dataSize Size of the block group only counting data blocks    * @param cellSize The size of a striping cell    * @param numDataBlocks The number of data blocks    * @param i The logical index in the striped block group    * @return The size of the internal block at the specified index    */
-DECL|method|getInternalBlockLength (long dataSize, int cellSize, int numDataBlocks, int i)
+DECL|method|getInternalBlockLength (long dataSize, ErasureCodingPolicy ecPolicy, int idxInBlockGroup)
+specifier|public
+specifier|static
+name|long
+name|getInternalBlockLength
+parameter_list|(
+name|long
+name|dataSize
+parameter_list|,
+name|ErasureCodingPolicy
+name|ecPolicy
+parameter_list|,
+name|int
+name|idxInBlockGroup
+parameter_list|)
+block|{
+return|return
+name|getInternalBlockLength
+argument_list|(
+name|dataSize
+argument_list|,
+name|ecPolicy
+operator|.
+name|getCellSize
+argument_list|()
+argument_list|,
+name|ecPolicy
+operator|.
+name|getNumDataUnits
+argument_list|()
+argument_list|,
+name|idxInBlockGroup
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the size of an internal block at the given index of a block group    *    * @param dataSize Size of the block group only counting data blocks    * @param cellSize The size of a striping cell    * @param numDataBlocks The number of data blocks    * @param idxInBlockGroup The logical index in the striped block group    * @return The size of the internal block at the specified index    */
+DECL|method|getInternalBlockLength (long dataSize, int cellSize, int numDataBlocks, int idxInBlockGroup)
 specifier|public
 specifier|static
 name|long
@@ -791,7 +861,7 @@ name|int
 name|numDataBlocks
 parameter_list|,
 name|int
-name|i
+name|idxInBlockGroup
 parameter_list|)
 block|{
 name|Preconditions
@@ -825,7 +895,7 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|i
+name|idxInBlockGroup
 operator|>=
 literal|0
 argument_list|)
@@ -903,7 +973,7 @@ name|cellSize
 argument_list|,
 name|numDataBlocks
 argument_list|,
-name|i
+name|idxInBlockGroup
 argument_list|)
 return|;
 block|}
