@@ -206,6 +206,32 @@ operator|=
 name|unit
 expr_stmt|;
 block|}
+comment|/**    * Formats a quota as a string.    *    * @param quota the quota to format    * @return string representation of quota    */
+DECL|method|formatQuota (OzoneQuota quota)
+specifier|public
+specifier|static
+name|String
+name|formatQuota
+parameter_list|(
+name|OzoneQuota
+name|quota
+parameter_list|)
+block|{
+return|return
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|quota
+operator|.
+name|size
+argument_list|)
+operator|+
+name|quota
+operator|.
+name|unit
+return|;
+block|}
 comment|/**    * Parses a user provided string and returns the    * Quota Object.    *    * @param quotaString Quota String    *    * @return OzoneQuota object    *    * @throws IllegalArgumentException    */
 DECL|method|parseQuota (String quotaString)
 specifier|public

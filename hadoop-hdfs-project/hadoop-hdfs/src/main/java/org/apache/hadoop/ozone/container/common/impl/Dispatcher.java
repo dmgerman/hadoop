@@ -677,6 +677,8 @@ name|ex
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 comment|// TODO : Replace with finer error codes.
@@ -817,6 +819,8 @@ name|ex
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 comment|// TODO : Replace with finer error codes.
@@ -957,6 +961,8 @@ name|ex
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 comment|// TODO : Replace with finer error codes.

@@ -738,6 +738,13 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
+name|chunkInfo
+operator|.
+name|getChecksum
+argument_list|()
+operator|!=
+literal|null
+operator|&&
 operator|!
 name|chunkInfo
 operator|.

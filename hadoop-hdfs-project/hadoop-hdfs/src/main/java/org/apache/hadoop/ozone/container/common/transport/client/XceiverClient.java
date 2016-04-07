@@ -242,6 +242,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -255,6 +265,8 @@ DECL|class|XceiverClient
 specifier|public
 class|class
 name|XceiverClient
+implements|implements
+name|Closeable
 block|{
 DECL|field|LOG
 specifier|static
@@ -495,6 +507,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Close the client.    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -530,6 +544,17 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Returns the pipeline of machines that host the container used by this    * client.    *    * @return pipeline of machines that host the container    */
+DECL|method|getPipeline ()
+specifier|public
+name|Pipeline
+name|getPipeline
+parameter_list|()
+block|{
+return|return
+name|pipeline
+return|;
 block|}
 comment|/**    * Sends a given command to server and gets the reply back.    * @param request Request    * @return Response to the command    * @throws IOException    */
 DECL|method|sendCommand ( ContainerProtos.ContainerCommandRequestProto request)

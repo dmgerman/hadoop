@@ -258,7 +258,7 @@ name|shortMessage
 expr_stmt|;
 name|this
 operator|.
-name|resource
+name|message
 operator|=
 name|message
 expr_stmt|;

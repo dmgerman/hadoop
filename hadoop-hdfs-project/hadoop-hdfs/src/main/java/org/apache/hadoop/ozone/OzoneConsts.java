@@ -292,6 +292,20 @@ name|CHUNK_OVERWRITE
 init|=
 literal|"OverWriteRequested"
 decl_stmt|;
+DECL|field|CHUNK_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|CHUNK_SIZE
+init|=
+literal|1
+operator|*
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
+comment|// 1 MB
 comment|/**    * Supports Bucket Versioning.    */
 DECL|enum|Versioning
 DECL|enumConstant|NOT_DEFINED
