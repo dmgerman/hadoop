@@ -144,7 +144,7 @@ name|concurrent
 operator|.
 name|atomic
 operator|.
-name|AtomicLong
+name|AtomicBoolean
 import|;
 end_import
 
@@ -158,7 +158,7 @@ name|concurrent
 operator|.
 name|atomic
 operator|.
-name|AtomicBoolean
+name|AtomicLong
 import|;
 end_import
 
@@ -414,6 +414,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|nodelabels
+operator|.
+name|RMNodeLabelsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmcontainer
 operator|.
 name|RMContainer
@@ -606,6 +626,19 @@ argument_list|<
 name|String
 argument_list|>
 name|userBlacklist
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
+DECL|field|requestedPartitions
+specifier|private
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|requestedPartitions
 init|=
 operator|new
 name|HashSet
@@ -815,6 +848,19 @@ parameter_list|()
 block|{
 return|return
 name|pending
+return|;
+block|}
+DECL|method|getRequestedPartitions ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getRequestedPartitions
+parameter_list|()
+block|{
+return|return
+name|requestedPartitions
 return|;
 block|}
 comment|/**    * Clear any pending requests from this application.    */
@@ -1839,6 +1885,28 @@ name|ANY
 argument_list|)
 condition|)
 block|{
+comment|//update the applications requested labels set
+name|requestedPartitions
+operator|.
+name|add
+argument_list|(
+name|request
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+operator|==
+literal|null
+condition|?
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+else|:
+name|request
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|anyResourcesUpdated
 operator|=
 literal|true

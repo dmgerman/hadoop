@@ -26,6 +26,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Comparator
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -107,6 +117,26 @@ operator|.
 name|resourcemanager
 operator|.
 name|RMContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|ResourceUsage
 import|;
 end_import
 
@@ -240,16 +270,6 @@ name|ResourceCalculator
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Comparator
-import|;
-end_import
-
 begin_comment
 comment|/**  * Read-only interface to {@link CapacityScheduler} context.  */
 end_comment
@@ -356,6 +376,12 @@ function_decl|;
 DECL|method|getLastNodeUpdateTime ()
 name|long
 name|getLastNodeUpdateTime
+parameter_list|()
+function_decl|;
+comment|/**    * @return QueueCapacities root queue of the Capacity Scheduler Queue, root    *         queue used capacities for different labels are same as that of the    *         cluster.    */
+DECL|method|getClusterResourceUsage ()
+name|ResourceUsage
+name|getClusterResourceUsage
 parameter_list|()
 function_decl|;
 block|}

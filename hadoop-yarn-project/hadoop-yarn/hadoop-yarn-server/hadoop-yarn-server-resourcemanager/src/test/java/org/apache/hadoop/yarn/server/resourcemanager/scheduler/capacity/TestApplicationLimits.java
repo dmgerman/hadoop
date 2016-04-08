@@ -526,6 +526,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ResourceUsage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|capacity
 operator|.
 name|preemption
@@ -4415,6 +4435,9 @@ name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
+name|CSQueue
+name|rootQueue
+init|=
 name|CapacityScheduler
 operator|.
 name|parseQueue
@@ -4434,6 +4457,27 @@ argument_list|,
 name|TestUtils
 operator|.
 name|spyHook
+argument_list|)
+decl_stmt|;
+name|ResourceUsage
+name|queueCapacities
+init|=
+name|rootQueue
+operator|.
+name|getQueueResourceUsage
+argument_list|()
+decl_stmt|;
+name|when
+argument_list|(
+name|csContext
+operator|.
+name|getClusterResourceUsage
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|queueCapacities
 argument_list|)
 expr_stmt|;
 comment|// Manipulate queue 'a'
@@ -5004,8 +5048,17 @@ name|getHeadroom
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// TODO, need fix headroom in future patch
-comment|//  assertEquals(expectedHeadroom, app_0_1.getHeadroom());// no change
+name|assertEquals
+argument_list|(
+name|expectedHeadroom
+argument_list|,
+name|app_0_1
+operator|.
+name|getHeadroom
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// no change
 comment|// Submit first application from user_1, check  for new headroom
 specifier|final
 name|ApplicationAttemptId
@@ -5144,9 +5197,26 @@ name|getHeadroom
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// TODO, need fix headroom in future patch
-comment|//    assertEquals(expectedHeadroom, app_0_1.getHeadroom());
-comment|//    assertEquals(expectedHeadroom, app_1_0.getHeadroom());
+name|assertEquals
+argument_list|(
+name|expectedHeadroom
+argument_list|,
+name|app_0_1
+operator|.
+name|getHeadroom
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|expectedHeadroom
+argument_list|,
+name|app_1_0
+operator|.
+name|getHeadroom
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Now reduce cluster size and check for the smaller headroom
 name|clusterResource
 operator|=
@@ -5209,9 +5279,26 @@ name|getHeadroom
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// TODO, need fix headroom in future patch
-comment|//    assertEquals(expectedHeadroom, app_0_1.getHeadroom());
-comment|//    assertEquals(expectedHeadroom, app_1_0.getHeadroom());
+name|assertEquals
+argument_list|(
+name|expectedHeadroom
+argument_list|,
+name|app_0_1
+operator|.
+name|getHeadroom
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|expectedHeadroom
+argument_list|,
+name|app_1_0
+operator|.
+name|getHeadroom
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|After
