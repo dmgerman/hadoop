@@ -1493,6 +1493,8 @@ block|{
 comment|// expected
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testListStatusThrowsExceptionForNonExistentFile ()
 specifier|public
 name|void
