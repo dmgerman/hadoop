@@ -22,6 +22,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|EOFException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -139,6 +149,20 @@ operator|.
 name|fs
 operator|.
 name|FSDataOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FSExceptionMessages
 import|;
 end_import
 
@@ -2039,7 +2063,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|EOFException
 name|e
 parameter_list|)
 block|{     }
@@ -2144,7 +2168,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IllegalArgumentException
+name|EOFException
 name|e
 parameter_list|)
 block|{
@@ -2152,9 +2176,9 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Cannot seek to negative "
-operator|+
-literal|"offset"
+name|FSExceptionMessages
+operator|.
+name|NEGATIVE_SEEK
 argument_list|,
 name|e
 argument_list|)

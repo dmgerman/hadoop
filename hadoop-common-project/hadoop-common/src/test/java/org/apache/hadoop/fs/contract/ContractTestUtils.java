@@ -92,6 +92,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -1628,24 +1642,14 @@ name|Throwable
 name|thrown
 parameter_list|)
 block|{
-name|AssertionError
-name|e
-init|=
+throw|throw
 operator|new
 name|AssertionError
 argument_list|(
 name|text
-argument_list|)
-decl_stmt|;
-name|e
-operator|.
-name|initCause
-argument_list|(
+argument_list|,
 name|thrown
 argument_list|)
-expr_stmt|;
-throw|throw
-name|e
 throw|;
 block|}
 comment|/**    * Make an assertion about the length of a file    * @param fs filesystem    * @param path path of the file    * @param expected expected length    * @throws IOException on File IO problems    */
@@ -1850,6 +1854,8 @@ argument_list|,
 name|overwrite
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 if|if
 condition|(
 name|data
@@ -1876,6 +1882,17 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|stream
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Touch a file    * @param fs filesystem    * @param path path    * @throws IOException IO problems    */
 DECL|method|touch (FileSystem fs, Path path)
@@ -2041,6 +2058,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|FSDataInputStream
 name|in
 init|=
@@ -2050,8 +2069,7 @@ name|open
 argument_list|(
 name|path
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|byte
 index|[]
@@ -2078,14 +2096,6 @@ argument_list|(
 name|buf
 argument_list|)
 return|;
-block|}
-finally|finally
-block|{
-name|in
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Take an array of filestats and convert to a string (prefixed w/ a [01] counter    * @param stats array of stats    * @param separator separator after every entry    * @return a stringified set    */
@@ -2799,7 +2809,8 @@ name|nextExpectedNumber
 init|=
 literal|0
 decl_stmt|;
-specifier|final
+try|try
+init|(
 name|InputStream
 name|inputStream
 init|=
@@ -2809,8 +2820,7 @@ name|open
 argument_list|(
 name|path
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 while|while
 condition|(
@@ -2921,14 +2931,6 @@ name|totalBytesRead
 argument_list|)
 throw|;
 block|}
-block|}
-finally|finally
-block|{
-name|inputStream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Generates test data of the given size according to some specific pattern    * and writes it to the provided output file.    *    * @param fs FileSystem    * @param path Test file to be generated    * @param size The size of the test data to be generated in bytes    * @param bufferLen Pattern length    * @param modulus   Pattern modulus    * @throws IOException    *         thrown if an error occurs while writing the data    */

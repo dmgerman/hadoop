@@ -56,147 +56,154 @@ name|IS_BLOBSTORE
 init|=
 literal|"is-blobstore"
 decl_stmt|;
-comment|/**    * Flag to indicate that the FS can rename into directories that    * don't exist, creating them as needed.    * @{value}    */
+comment|/**    * Flag to indicate that the FS can rename into directories that    * don't exist, creating them as needed.    * {@value}    */
 DECL|field|RENAME_CREATES_DEST_DIRS
 name|String
 name|RENAME_CREATES_DEST_DIRS
 init|=
 literal|"rename-creates-dest-dirs"
 decl_stmt|;
-comment|/**    * Flag to indicate that the FS does not follow the rename contract -and    * instead only returns false on a failure.    * @{value}    */
+comment|/**    * Flag to indicate that the FS does not follow the rename contract -and    * instead only returns false on a failure.    * {@value}    */
 DECL|field|RENAME_OVERWRITES_DEST
 name|String
 name|RENAME_OVERWRITES_DEST
 init|=
 literal|"rename-overwrites-dest"
 decl_stmt|;
-comment|/**    * Flag to indicate that the FS returns false if the destination exists    * @{value}    */
+comment|/**    * Flag to indicate that the FS returns false if the destination exists    * {@value}    */
 DECL|field|RENAME_RETURNS_FALSE_IF_DEST_EXISTS
 name|String
 name|RENAME_RETURNS_FALSE_IF_DEST_EXISTS
 init|=
 literal|"rename-returns-false-if-dest-exists"
 decl_stmt|;
-comment|/**    * Flag to indicate that the FS returns false on a rename    * if the source is missing    * @{value}    */
+comment|/**    * Flag to indicate that the FS returns false on a rename    * if the source is missing    * {@value}    */
 DECL|field|RENAME_RETURNS_FALSE_IF_SOURCE_MISSING
 name|String
 name|RENAME_RETURNS_FALSE_IF_SOURCE_MISSING
 init|=
 literal|"rename-returns-false-if-source-missing"
 decl_stmt|;
-comment|/**    * Flag to indicate that the FS remove dest first if it is an empty directory    * mean the FS honors POSIX rename behavior.    * @{value}    */
+comment|/**    * Flag to indicate that the FS remove dest first if it is an empty directory    * mean the FS honors POSIX rename behavior.    * {@value}    */
 DECL|field|RENAME_REMOVE_DEST_IF_EMPTY_DIR
 name|String
 name|RENAME_REMOVE_DEST_IF_EMPTY_DIR
 init|=
 literal|"rename-remove-dest-if-empty-dir"
 decl_stmt|;
-comment|/**    * Flag to indicate that append is supported    * @{value}    */
+comment|/**    * Flag to indicate that append is supported    * {@value}    */
 DECL|field|SUPPORTS_APPEND
 name|String
 name|SUPPORTS_APPEND
 init|=
 literal|"supports-append"
 decl_stmt|;
-comment|/**    * Flag to indicate that setTimes is supported.    * @{value}    */
+comment|/**    * Flag to indicate that setTimes is supported.    * {@value}    */
 DECL|field|SUPPORTS_SETTIMES
 name|String
 name|SUPPORTS_SETTIMES
 init|=
 literal|"supports-settimes"
 decl_stmt|;
-comment|/**    * Flag to indicate that getFileStatus is supported.    * @{value}    */
+comment|/**    * Flag to indicate that getFileStatus is supported.    * {@value}    */
 DECL|field|SUPPORTS_GETFILESTATUS
 name|String
 name|SUPPORTS_GETFILESTATUS
 init|=
 literal|"supports-getfilestatus"
 decl_stmt|;
-comment|/**    * Flag to indicate that renames are atomic    * @{value}    */
+comment|/**    * Flag to indicate that renames are atomic    * {@value}    */
 DECL|field|SUPPORTS_ATOMIC_RENAME
 name|String
 name|SUPPORTS_ATOMIC_RENAME
 init|=
 literal|"supports-atomic-rename"
 decl_stmt|;
-comment|/**    * Flag to indicate that directory deletes are atomic    * @{value}    */
+comment|/**    * Flag to indicate that directory deletes are atomic    * {@value}    */
 DECL|field|SUPPORTS_ATOMIC_DIRECTORY_DELETE
 name|String
 name|SUPPORTS_ATOMIC_DIRECTORY_DELETE
 init|=
 literal|"supports-atomic-directory-delete"
 decl_stmt|;
-comment|/**    * Does the FS support multiple block locations?    * @{value}    */
+comment|/**    * Does the FS support multiple block locations?    * {@value}    */
 DECL|field|SUPPORTS_BLOCK_LOCALITY
 name|String
 name|SUPPORTS_BLOCK_LOCALITY
 init|=
 literal|"supports-block-locality"
 decl_stmt|;
-comment|/**    * Does the FS support the concat() operation?    * @{value}    */
+comment|/**    * Does the FS support the concat() operation?    * {@value}    */
 DECL|field|SUPPORTS_CONCAT
 name|String
 name|SUPPORTS_CONCAT
 init|=
 literal|"supports-concat"
 decl_stmt|;
-comment|/**    * Is seeking supported at all?    * @{value}    */
+comment|/**    * Is seeking supported at all?    * {@value}    */
 DECL|field|SUPPORTS_SEEK
 name|String
 name|SUPPORTS_SEEK
 init|=
 literal|"supports-seek"
 decl_stmt|;
-comment|/**    * Is seeking past the EOF allowed?    * @{value}    */
+comment|/**    * Is seeking past the EOF allowed?    * {@value}    */
 DECL|field|REJECTS_SEEK_PAST_EOF
 name|String
 name|REJECTS_SEEK_PAST_EOF
 init|=
 literal|"rejects-seek-past-eof"
 decl_stmt|;
-comment|/**    * Is seeking on a closed file supported? Some filesystems only raise an    * exception later, when trying to read.    * @{value}    */
+comment|/**    * Is seeking on a closed file supported? Some filesystems only raise an    * exception later, when trying to read.    * {@value}    */
 DECL|field|SUPPORTS_SEEK_ON_CLOSED_FILE
 name|String
 name|SUPPORTS_SEEK_ON_CLOSED_FILE
 init|=
 literal|"supports-seek-on-closed-file"
 decl_stmt|;
-comment|/**    * Is available() on a closed InputStream supported?    * @{value}    */
+comment|/**    * Is available() on a closed InputStream supported?    * {@value}    */
 DECL|field|SUPPORTS_AVAILABLE_ON_CLOSED_FILE
 name|String
 name|SUPPORTS_AVAILABLE_ON_CLOSED_FILE
 init|=
 literal|"supports-available-on-closed-file"
 decl_stmt|;
-comment|/**    * Flag to indicate that this FS expects to throw the strictest    * exceptions it can, not generic IOEs, which, if returned,    * must be rejected.    * @{value}    */
+comment|/**    * Flag to indicate that this FS expects to throw the strictest    * exceptions it can, not generic IOEs, which, if returned,    * must be rejected.    * {@value}    */
 DECL|field|SUPPORTS_STRICT_EXCEPTIONS
 name|String
 name|SUPPORTS_STRICT_EXCEPTIONS
 init|=
 literal|"supports-strict-exceptions"
 decl_stmt|;
-comment|/**    * Are unix permissions    * @{value}    */
+comment|/**    * Are unix permissions    * {@value}    */
 DECL|field|SUPPORTS_UNIX_PERMISSIONS
 name|String
 name|SUPPORTS_UNIX_PERMISSIONS
 init|=
 literal|"supports-unix-permissions"
 decl_stmt|;
-comment|/**    * Maximum path length    * @{value}    */
+comment|/**    * Is positioned readable supported? Supporting seek should be sufficient    * for this.    * {@value}    */
+DECL|field|SUPPORTS_POSITIONED_READABLE
+name|String
+name|SUPPORTS_POSITIONED_READABLE
+init|=
+literal|"supports-positioned-readable"
+decl_stmt|;
+comment|/**    * Maximum path length    * {@value}    */
 DECL|field|MAX_PATH_
 name|String
 name|MAX_PATH_
 init|=
 literal|"max-path"
 decl_stmt|;
-comment|/**    * Maximum filesize: 0 or -1 for no limit    * @{value}    */
+comment|/**    * Maximum filesize: 0 or -1 for no limit    * {@value}    */
 DECL|field|MAX_FILESIZE
 name|String
 name|MAX_FILESIZE
 init|=
 literal|"max-filesize"
 decl_stmt|;
-comment|/**    * Flag to indicate that tests on the root directories of a filesystem/    * object store are permitted    * @{value}    */
+comment|/**    * Flag to indicate that tests on the root directories of a filesystem/    * object store are permitted    * {@value}    */
 DECL|field|TEST_ROOT_TESTS_ENABLED
 name|String
 name|TEST_ROOT_TESTS_ENABLED

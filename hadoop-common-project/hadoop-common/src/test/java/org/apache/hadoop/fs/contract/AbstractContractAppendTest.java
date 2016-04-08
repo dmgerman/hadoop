@@ -239,6 +239,8 @@ argument_list|,
 literal|'z'
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|FSDataOutputStream
 name|outputStream
 init|=
@@ -249,8 +251,7 @@ name|append
 argument_list|(
 name|target
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|outputStream
 operator|.
@@ -258,14 +259,6 @@ name|write
 argument_list|(
 name|dataset
 argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|outputStream
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 name|byte

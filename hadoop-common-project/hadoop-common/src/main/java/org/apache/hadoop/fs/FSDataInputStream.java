@@ -22,7 +22,47 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|DataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FileDescriptor
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FileInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|InputStream
 import|;
 end_import
 
@@ -96,20 +136,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|ByteBufferUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|IdentityHashStore
@@ -117,7 +143,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Utility that wraps a {@link FSInputStream} in a {@link DataInputStream}  * and buffers input through a {@link BufferedInputStream}. */
+comment|/** Utility that wraps a {@link FSInputStream} in a {@link DataInputStream}  * and buffers input through a {@link java.io.BufferedInputStream}. */
 end_comment
 
 begin_class
@@ -308,7 +334,7 @@ name|length
 argument_list|)
 return|;
 block|}
-comment|/**    * Read bytes from the given position in the stream to the given buffer.    * Continues to read until<code>length</code> bytes have been read.    *    * @param position  position in the input stream to seek    * @param buffer    buffer into which data is read    * @param offset    offset into the buffer in which data is written    * @param length    the number of bytes to read    * @throws EOFException If the end of stream is reached while reading.    *                      If an exception is thrown an undetermined number    *                      of bytes in the buffer may have been written.     */
+comment|/**    * Read bytes from the given position in the stream to the given buffer.    * Continues to read until<code>length</code> bytes have been read.    *    * @param position  position in the input stream to seek    * @param buffer    buffer into which data is read    * @param offset    offset into the buffer in which data is written    * @param length    the number of bytes to read    * @throws IOException IO problems    * @throws EOFException If the end of stream is reached while reading.    *                      If an exception is thrown an undetermined number    *                      of bytes in the buffer may have been written.     */
 annotation|@
 name|Override
 DECL|method|readFully (long position, byte[] buffer, int offset, int length)

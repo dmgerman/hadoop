@@ -56,6 +56,24 @@ name|CANNOT_SEEK_PAST_EOF
 init|=
 literal|"Attempted to seek or read past the end of the file"
 decl_stmt|;
+DECL|field|EOF_IN_READ_FULLY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EOF_IN_READ_FULLY
+init|=
+literal|"End of file reached before reading fully."
+decl_stmt|;
+DECL|field|TOO_MANY_BYTES_FOR_DEST_BUFFER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TOO_MANY_BYTES_FOR_DEST_BUFFER
+init|=
+literal|"Requested more bytes than destination buffer size"
+decl_stmt|;
 block|}
 end_class
 

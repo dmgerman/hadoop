@@ -338,6 +338,8 @@ block|}
 catch|catch
 parameter_list|(
 name|ParentNotDirectoryException
+decl||
+name|FileAlreadyExistsException
 name|e
 parameter_list|)
 block|{
@@ -347,20 +349,6 @@ argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileAlreadyExistsException
-name|e
-parameter_list|)
-block|{
-comment|//also allowed as an exception (HDFS)
-name|handleExpectedException
-argument_list|(
-name|e
-argument_list|)
-expr_stmt|;
-empty_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -525,22 +513,12 @@ block|}
 catch|catch
 parameter_list|(
 name|ParentNotDirectoryException
-name|e
-parameter_list|)
-block|{
-comment|//parent is a directory
-name|handleExpectedException
-argument_list|(
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
+decl||
 name|FileAlreadyExistsException
 name|e
 parameter_list|)
 block|{
+comment|//parent is a directory
 name|handleExpectedException
 argument_list|(
 name|e

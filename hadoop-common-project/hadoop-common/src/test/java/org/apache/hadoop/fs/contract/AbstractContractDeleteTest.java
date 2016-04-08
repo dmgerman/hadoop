@@ -159,13 +159,8 @@ argument_list|(
 literal|"testDeleteNonexistentPathRecursive"
 argument_list|)
 decl_stmt|;
-name|ContractTestUtils
-operator|.
 name|assertPathDoesNotExist
 argument_list|(
-name|getFileSystem
-argument_list|()
-argument_list|,
 literal|"leftover"
 argument_list|,
 name|path
@@ -216,13 +211,8 @@ argument_list|(
 literal|"testDeleteNonexistentPathNonRecursive"
 argument_list|)
 decl_stmt|;
-name|ContractTestUtils
-operator|.
 name|assertPathDoesNotExist
 argument_list|(
-name|getFileSystem
-argument_list|()
-argument_list|,
 literal|"leftover"
 argument_list|,
 name|path
@@ -348,13 +338,8 @@ name|expected
 argument_list|)
 expr_stmt|;
 block|}
-name|ContractTestUtils
-operator|.
 name|assertIsDirectory
 argument_list|(
-name|getFileSystem
-argument_list|()
-argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
@@ -414,13 +399,8 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|assertPathDoesNotExist
 argument_list|(
-name|getFileSystem
-argument_list|()
-argument_list|,
 literal|"not deleted"
 argument_list|,
 name|file
@@ -455,18 +435,8 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|FileSystem
-name|fs
-init|=
-name|getFileSystem
-argument_list|()
-decl_stmt|;
-name|ContractTestUtils
-operator|.
 name|assertPathDoesNotExist
 argument_list|(
-name|fs
-argument_list|,
 literal|"not deleted"
 argument_list|,
 name|path
@@ -475,12 +445,8 @@ literal|"testDeleteDeepEmptyDir/d1/d2/d3/d4"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|assertPathDoesNotExist
 argument_list|(
-name|fs
-argument_list|,
 literal|"not deleted"
 argument_list|,
 name|path
@@ -489,12 +455,8 @@ literal|"testDeleteDeepEmptyDir/d1/d2/d3"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|assertPathExists
 argument_list|(
-name|fs
-argument_list|,
 literal|"parent dir is deleted"
 argument_list|,
 name|path
@@ -553,13 +515,8 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|assertPathExists
 argument_list|(
-name|getFileSystem
-argument_list|()
-argument_list|,
 literal|"single file not created"
 argument_list|,
 name|file

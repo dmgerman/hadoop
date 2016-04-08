@@ -104,25 +104,7 @@ name|contract
 operator|.
 name|ContractTestUtils
 operator|.
-name|dataset
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|contract
-operator|.
-name|ContractTestUtils
-operator|.
-name|writeDataset
+name|*
 import|;
 end_import
 
@@ -228,8 +210,6 @@ argument_list|,
 name|rename
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|assertListStatusFinds
 argument_list|(
 name|getFileSystem
@@ -243,8 +223,6 @@ argument_list|,
 name|renameTarget
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|verifyFileContents
 argument_list|(
 name|getFileSystem
@@ -647,8 +625,6 @@ expr_stmt|;
 block|}
 comment|// verify that the destination file is as expected based on the expected
 comment|// outcome
-name|ContractTestUtils
-operator|.
 name|verifyFileContents
 argument_list|(
 name|getFileSystem
@@ -826,8 +802,6 @@ argument_list|(
 name|renamedSrc
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|verifyFileContents
 argument_list|(
 name|fs
@@ -939,8 +913,6 @@ argument_list|(
 name|rename
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|verifyFileContents
 argument_list|(
 name|getFileSystem
@@ -959,8 +931,6 @@ argument_list|(
 name|rename
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|verifyFileContents
 argument_list|(
 name|getFileSystem
@@ -1056,8 +1026,6 @@ argument_list|(
 name|RENAME_REMOVE_DEST_IF_EMPTY_DIR
 argument_list|)
 decl_stmt|;
-name|ContractTestUtils
-operator|.
 name|rm
 argument_list|(
 name|fs
@@ -1083,8 +1051,6 @@ argument_list|(
 name|finalDir
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|writeTextFile
 argument_list|(
 name|fs
@@ -1102,8 +1068,6 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|writeTextFile
 argument_list|(
 name|fs
@@ -1121,12 +1085,8 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|assertPathExists
 argument_list|(
-name|fs
-argument_list|,
 literal|"not created in src dir"
 argument_list|,
 operator|new
@@ -1138,12 +1098,8 @@ literal|"source.txt"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|assertPathExists
 argument_list|(
-name|fs
-argument_list|,
 literal|"not created in src/sub dir"
 argument_list|,
 operator|new
@@ -1171,12 +1127,8 @@ name|renameRemoveEmptyDest
 condition|)
 block|{
 comment|// POSIX rename behavior
-name|ContractTestUtils
-operator|.
 name|assertPathExists
 argument_list|(
-name|fs
-argument_list|,
 literal|"not renamed into dest dir"
 argument_list|,
 operator|new
@@ -1188,12 +1140,8 @@ literal|"source.txt"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|assertPathExists
 argument_list|(
-name|fs
-argument_list|,
 literal|"not renamed into dest/sub dir"
 argument_list|,
 operator|new
@@ -1209,12 +1157,8 @@ block|}
 else|else
 block|{
 comment|// CLI rename behavior
-name|ContractTestUtils
-operator|.
 name|assertPathExists
 argument_list|(
-name|fs
-argument_list|,
 literal|"not renamed into dest dir"
 argument_list|,
 operator|new
@@ -1226,12 +1170,8 @@ literal|"src1/source.txt"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
 name|assertPathExists
 argument_list|(
-name|fs
-argument_list|,
 literal|"not renamed into dest/sub dir"
 argument_list|,
 operator|new
@@ -1244,12 +1184,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|ContractTestUtils
-operator|.
 name|assertPathDoesNotExist
 argument_list|(
-name|fs
-argument_list|,
 literal|"not deleted"
 argument_list|,
 operator|new

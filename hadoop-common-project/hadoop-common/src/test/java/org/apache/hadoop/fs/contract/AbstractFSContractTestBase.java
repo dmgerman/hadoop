@@ -267,7 +267,7 @@ literal|180
 operator|*
 literal|1000
 decl_stmt|;
-comment|/**    * The FS contract used for these tets    */
+comment|/**    * The FS contract used for these tests    */
 DECL|field|contract
 specifier|private
 name|AbstractFSContract
