@@ -2065,6 +2065,9 @@ name|isStopped
 operator|=
 literal|true
 expr_stmt|;
+name|sendOutofBandHeartBeat
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|statusUpdater
