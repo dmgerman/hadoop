@@ -3980,8 +3980,10 @@ return|return
 name|conf
 return|;
 block|}
+comment|/*    * Visibility could be private for test its made as default    */
+annotation|@
+name|VisibleForTesting
 DECL|method|refreshAll ()
-specifier|private
 name|void
 name|refreshAll
 parameter_list|()
