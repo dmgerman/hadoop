@@ -2798,6 +2798,8 @@ operator|.
 name|lang
 operator|.
 name|InternalError
+decl||
+name|Exception
 name|e
 parameter_list|)
 block|{
