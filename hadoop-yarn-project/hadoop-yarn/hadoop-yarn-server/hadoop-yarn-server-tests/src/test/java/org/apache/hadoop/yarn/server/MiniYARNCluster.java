@@ -2980,6 +2980,17 @@ condition|(
 name|index
 operator|==
 literal|0
+operator|&&
+name|resourceManagers
+index|[
+name|index
+index|]
+operator|.
+name|getRMContext
+argument_list|()
+operator|.
+name|isHAEnabled
+argument_list|()
 condition|)
 block|{
 name|resourceManagers
