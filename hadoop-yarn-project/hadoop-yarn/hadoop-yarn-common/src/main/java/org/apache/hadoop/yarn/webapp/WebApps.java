@@ -1535,6 +1535,8 @@ operator|.
 name|loadSslConfiguration
 argument_list|(
 name|builder
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
