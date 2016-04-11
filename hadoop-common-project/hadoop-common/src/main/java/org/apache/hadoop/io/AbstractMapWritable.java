@@ -940,6 +940,21 @@ operator|.
 name|readByte
 argument_list|()
 expr_stmt|;
+comment|// Use the classloader of the current thread to load classes instead of the
+comment|// system-classloader so as to support both client-only and inside-a-MR-job
+comment|// use-cases. The context-loader by default eventually falls back to the
+comment|// system one, so there should be no cases where changing this is an issue.
+name|ClassLoader
+name|classLoader
+init|=
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getContextClassLoader
+argument_list|()
+decl_stmt|;
 comment|// Then read in the class names and add them to our tables
 for|for
 control|(
@@ -976,9 +991,9 @@ try|try
 block|{
 name|addToMap
 argument_list|(
-name|Class
+name|classLoader
 operator|.
-name|forName
+name|loadClass
 argument_list|(
 name|className
 argument_list|)
@@ -997,16 +1012,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"can't find class: "
-operator|+
-name|className
-operator|+
-literal|" because "
-operator|+
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 throw|;
 block|}
