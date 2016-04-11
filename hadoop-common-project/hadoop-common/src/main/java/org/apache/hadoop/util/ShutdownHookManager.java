@@ -466,7 +466,7 @@ expr_stmt|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"ShutdownHookManger complete shutdown."
 argument_list|)
