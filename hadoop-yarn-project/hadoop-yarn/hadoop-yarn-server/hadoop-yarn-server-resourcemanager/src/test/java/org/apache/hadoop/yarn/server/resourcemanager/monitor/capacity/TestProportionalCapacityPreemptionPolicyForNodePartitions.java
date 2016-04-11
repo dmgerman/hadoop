@@ -4642,7 +4642,7 @@ name|newInstance
 argument_list|(
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|values
 index|[
@@ -4690,7 +4690,7 @@ name|repeat
 init|=
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|values
 index|[
@@ -4703,7 +4703,7 @@ name|reserved
 init|=
 name|Boolean
 operator|.
-name|valueOf
+name|parseBoolean
 argument_list|(
 name|values
 index|[
@@ -5555,7 +5555,7 @@ name|exclusivity
 init|=
 name|Boolean
 operator|.
-name|valueOf
+name|parseBoolean
 argument_list|(
 name|p
 operator|.
@@ -5721,7 +5721,7 @@ name|createResource
 argument_list|(
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|resource
 index|[
@@ -5741,7 +5741,7 @@ name|createResource
 argument_list|(
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|resource
 index|[
@@ -5751,7 +5751,7 @@ argument_list|)
 argument_list|,
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|resource
 index|[

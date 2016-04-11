@@ -2669,7 +2669,7 @@ block|{
 return|return
 name|Boolean
 operator|.
-name|valueOf
+name|parseBoolean
 argument_list|(
 name|System
 operator|.
@@ -3054,7 +3054,7 @@ name|saslEnabled
 init|=
 name|Boolean
 operator|.
-name|valueOf
+name|parseBoolean
 argument_list|(
 name|sasl
 argument_list|)

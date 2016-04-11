@@ -1861,7 +1861,7 @@ name|userApproved
 init|=
 name|Boolean
 operator|.
-name|valueOf
+name|parseBoolean
 argument_list|(
 name|userApprovedParamS
 argument_list|)
@@ -2072,7 +2072,7 @@ name|userApproved
 operator|||
 name|Boolean
 operator|.
-name|valueOf
+name|parseBoolean
 argument_list|(
 name|c
 operator|.

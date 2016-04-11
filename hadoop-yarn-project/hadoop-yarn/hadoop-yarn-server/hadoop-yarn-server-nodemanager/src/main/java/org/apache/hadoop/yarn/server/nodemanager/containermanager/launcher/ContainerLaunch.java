@@ -5728,7 +5728,7 @@ name|preferLocalizedJars
 init|=
 name|Boolean
 operator|.
-name|valueOf
+name|parseBoolean
 argument_list|(
 name|environment
 operator|.

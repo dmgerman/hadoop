@@ -244,7 +244,7 @@ literal|24543
 argument_list|,
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|parts
 index|[
@@ -255,9 +255,6 @@ operator|-
 literal|1
 index|]
 argument_list|)
-operator|.
-name|intValue
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -765,7 +762,7 @@ index|]
 argument_list|,
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|YarnConfiguration
 operator|.
@@ -863,7 +860,7 @@ index|]
 argument_list|,
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|YarnConfiguration
 operator|.
@@ -983,7 +980,7 @@ index|]
 argument_list|,
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|YarnConfiguration
 operator|.

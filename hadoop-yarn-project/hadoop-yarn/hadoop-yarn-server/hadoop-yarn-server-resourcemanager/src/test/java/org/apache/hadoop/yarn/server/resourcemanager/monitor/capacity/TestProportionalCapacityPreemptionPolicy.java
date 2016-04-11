@@ -8555,7 +8555,7 @@ name|newInstance
 argument_list|(
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|resource
 index|[
@@ -8580,7 +8580,7 @@ name|newInstance
 argument_list|(
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|resource
 index|[
@@ -8590,7 +8590,7 @@ argument_list|)
 argument_list|,
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|resource
 index|[

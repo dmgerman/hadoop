@@ -339,12 +339,12 @@ block|{
 comment|// Otherwise, find first line containing a numeric pid.
 try|try
 block|{
-name|Long
+name|long
 name|pid
 init|=
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|temp
 argument_list|)
