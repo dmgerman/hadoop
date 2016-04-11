@@ -2575,27 +2575,6 @@ name|DEFAULT_RM_NODEMANAGER_MINIMUM_VERSION
 init|=
 literal|"NONE"
 decl_stmt|;
-comment|/**    * Timeout(msec) for an untracked node to remain in shutdown or decommissioned    * state.    */
-DECL|field|RM_NODEMANAGER_UNTRACKED_REMOVAL_TIMEOUT_MSEC
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RM_NODEMANAGER_UNTRACKED_REMOVAL_TIMEOUT_MSEC
-init|=
-name|RM_PREFIX
-operator|+
-literal|"node-removal-untracked.timeout-ms"
-decl_stmt|;
-specifier|public
-specifier|static
-specifier|final
-name|int
-DECL|field|DEFAULT_RM_NODEMANAGER_UNTRACKED_REMOVAL_TIMEOUT_MSEC
-name|DEFAULT_RM_NODEMANAGER_UNTRACKED_REMOVAL_TIMEOUT_MSEC
-init|=
-literal|60000
-decl_stmt|;
 comment|/**    * RM proxy users' prefix    */
 DECL|field|RM_PROXY_USER_PREFIX
 specifier|public
