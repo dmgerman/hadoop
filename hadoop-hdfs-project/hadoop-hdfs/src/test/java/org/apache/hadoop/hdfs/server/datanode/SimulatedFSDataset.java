@@ -6438,6 +6438,26 @@ name|UnsupportedOperationException
 argument_list|()
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|moveBlockAcrossVolumes (ExtendedBlock block, FsVolumeSpi destination)
+specifier|public
+name|ReplicaInfo
+name|moveBlockAcrossVolumes
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|,
+name|FsVolumeSpi
+name|destination
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 
