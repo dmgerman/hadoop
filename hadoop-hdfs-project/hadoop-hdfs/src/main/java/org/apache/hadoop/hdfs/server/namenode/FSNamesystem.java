@@ -2408,22 +2408,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|LocatedStripedBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|RecoveryInProgressException
 import|;
 end_import
@@ -10232,6 +10216,29 @@ name|res
 operator|.
 name|blocks
 decl_stmt|;
+name|sortLocatedBlocks
+argument_list|(
+name|clientMachine
+argument_list|,
+name|blocks
+argument_list|)
+expr_stmt|;
+return|return
+name|blocks
+return|;
+block|}
+DECL|method|sortLocatedBlocks (String clientMachine, LocatedBlocks blocks)
+specifier|private
+name|void
+name|sortLocatedBlocks
+parameter_list|(
+name|String
+name|clientMachine
+parameter_list|,
+name|LocatedBlocks
+name|blocks
+parameter_list|)
+block|{
 if|if
 condition|(
 name|blocks
@@ -10262,21 +10269,10 @@ name|size
 argument_list|()
 operator|==
 literal|0
-operator|||
-name|blkList
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-operator|instanceof
-name|LocatedStripedBlock
 condition|)
 block|{
-comment|// no need to sort locations for striped blocks
-return|return
-name|blocks
-return|;
+comment|// simply return, block list is empty
+return|return;
 block|}
 name|blockManager
 operator|.
@@ -10333,9 +10329,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-return|return
-name|blocks
-return|;
 block|}
 comment|/**    * Moves all the blocks from {@code srcs} and appends them to {@code target}    * To avoid rollbacks we will verify validity of ALL of the args    * before we start actual move.    *     * This does not support ".inodes" relative path    * @param target target to concat into    * @param srcs file that will be concatenated    * @throws IOException on error    */
 DECL|method|concat (String target, String [] srcs, boolean logRetryCache)
