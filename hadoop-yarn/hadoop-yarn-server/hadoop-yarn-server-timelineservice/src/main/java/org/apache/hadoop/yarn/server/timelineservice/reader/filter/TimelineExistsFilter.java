@@ -57,7 +57,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Abstract base class extended to implement timeline filters.  */
+comment|/**  * Filter class which represents filter to be applied based on existence of a  * value.  */
 end_comment
 
 begin_class
@@ -65,53 +65,110 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|TimelineFilter
+DECL|class|TimelineExistsFilter
 specifier|public
-specifier|abstract
 class|class
+name|TimelineExistsFilter
+extends|extends
 name|TimelineFilter
 block|{
-comment|/**    * Lists the different filter types.    */
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|enum|TimelineFilterType
+DECL|field|compareOp
+specifier|private
+specifier|final
+name|TimelineCompareOp
+name|compareOp
+decl_stmt|;
+DECL|field|value
+specifier|private
+specifier|final
+name|String
+name|value
+decl_stmt|;
+DECL|method|TimelineExistsFilter (TimelineCompareOp op, String value)
 specifier|public
-enum|enum
-name|TimelineFilterType
+name|TimelineExistsFilter
+parameter_list|(
+name|TimelineCompareOp
+name|op
+parameter_list|,
+name|String
+name|value
+parameter_list|)
 block|{
-comment|/**      * Combines multiple filters.      */
-DECL|enumConstant|LIST
-name|LIST
-block|,
-comment|/**      * Filter which is used for key-value comparison.      */
-DECL|enumConstant|COMPARE
-name|COMPARE
-block|,
-comment|/**      * Filter which is used for checking key-value equality.      */
-DECL|enumConstant|KEY_VALUE
-name|KEY_VALUE
-block|,
-comment|/**      * Filter which is used for checking key-multiple values equality.      */
-DECL|enumConstant|KEY_VALUES
-name|KEY_VALUES
-block|,
-comment|/**      * Filter which matches prefix for a config or a metric.      */
-DECL|enumConstant|PREFIX
-name|PREFIX
-block|,
-comment|/**      * Filter which checks existence of a value.      */
-DECL|enumConstant|EXISTS
-name|EXISTS
+name|this
+operator|.
+name|value
+operator|=
+name|value
+expr_stmt|;
+if|if
+condition|(
+name|op
+operator|!=
+name|TimelineCompareOp
+operator|.
+name|EQUAL
+operator|&&
+name|op
+operator|!=
+name|TimelineCompareOp
+operator|.
+name|NOT_EQUAL
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"CompareOp for exists filter should "
+operator|+
+literal|"be EQUAL or NOT_EQUAL"
+argument_list|)
+throw|;
 block|}
+name|this
+operator|.
+name|compareOp
+operator|=
+name|op
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|getFilterType ()
 specifier|public
-specifier|abstract
 name|TimelineFilterType
 name|getFilterType
 parameter_list|()
-function_decl|;
+block|{
+return|return
+name|TimelineFilterType
+operator|.
+name|EXISTS
+return|;
+block|}
+DECL|method|getValue ()
+specifier|public
+name|String
+name|getValue
+parameter_list|()
+block|{
+return|return
+name|value
+return|;
+block|}
+DECL|method|getCompareOp ()
+specifier|public
+name|TimelineCompareOp
+name|getCompareOp
+parameter_list|()
+block|{
+return|return
+name|compareOp
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -119,6 +176,12 @@ name|toString
 parameter_list|()
 block|{
 return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%s (%s %s)"
+argument_list|,
 name|this
 operator|.
 name|getClass
@@ -126,6 +189,18 @@ argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
+argument_list|,
+name|this
+operator|.
+name|compareOp
+operator|.
+name|name
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|value
+argument_list|)
 return|;
 block|}
 block|}

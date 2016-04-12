@@ -222,6 +222,22 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * @param result from which to read columns    * @return the latest values of columns in the column family. The column    *         qualifier is returned as a list of parts, each part a byte[]. This    *         is to facilitate returning byte arrays of values that were not    *         Strings. If they can be treated as Strings, you should use    *         {@link #readResults(Result)} instead.    * @throws IOException if any problem occurs while reading results.    */
+DECL|method|readResultsHavingCompoundColumnQualifiers (Result result)
+name|Map
+argument_list|<
+name|?
+argument_list|,
+name|Object
+argument_list|>
+name|readResultsHavingCompoundColumnQualifiers
+parameter_list|(
+name|Result
+name|result
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * @param qualifierPrefix Column qualifier or prefix of qualifier.    * @return a byte array encoding column prefix and qualifier/prefix passed.    */
 DECL|method|getColumnPrefixBytes (String qualifierPrefix)
 name|byte
@@ -241,6 +257,34 @@ parameter_list|(
 name|byte
 index|[]
 name|qualifierPrefix
+parameter_list|)
+function_decl|;
+comment|/**    * Returns column family name(as bytes) associated with this column prefix.    * @return a byte array encoding column family for this prefix.    */
+DECL|method|getColumnFamilyBytes ()
+name|byte
+index|[]
+name|getColumnFamilyBytes
+parameter_list|()
+function_decl|;
+comment|/**    * Returns value converter implementation associated with this column prefix.    * @return a {@link ValueConverter} implementation.    */
+DECL|method|getValueConverter ()
+name|ValueConverter
+name|getValueConverter
+parameter_list|()
+function_decl|;
+comment|/**    * Get compound column qualifier bytes if the column qualifier is a compound    * qualifier. Returns the qualifier passed as bytes if the column is not a    * compound column qualifier.    *    * @param qualifier Column Qualifier.    * @param components Other components.    * @return byte array representing compound column qualifier.    */
+DECL|method|getCompoundColQualBytes (String qualifier, byte[]...components)
+name|byte
+index|[]
+name|getCompoundColQualBytes
+parameter_list|(
+name|String
+name|qualifier
+parameter_list|,
+name|byte
+index|[]
+modifier|...
+name|components
 parameter_list|)
 function_decl|;
 block|}

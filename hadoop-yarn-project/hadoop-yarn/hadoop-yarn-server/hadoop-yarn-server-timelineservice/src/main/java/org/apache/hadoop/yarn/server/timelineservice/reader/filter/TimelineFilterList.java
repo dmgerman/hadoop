@@ -158,6 +158,34 @@ name|filters
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|TimelineFilterList ()
+specifier|public
+name|TimelineFilterList
+parameter_list|()
+block|{
+name|this
+argument_list|(
+name|Operator
+operator|.
+name|AND
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|TimelineFilterList (Operator op)
+specifier|public
+name|TimelineFilterList
+parameter_list|(
+name|Operator
+name|op
+parameter_list|)
+block|{
+name|this
+operator|.
+name|operator
+operator|=
+name|op
+expr_stmt|;
+block|}
 DECL|method|TimelineFilterList (Operator op, TimelineFilter...filters)
 specifier|public
 name|TimelineFilterList
@@ -264,6 +292,41 @@ argument_list|(
 name|filter
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"TimelineFilterList %s (%d): %s"
+argument_list|,
+name|this
+operator|.
+name|operator
+argument_list|,
+name|this
+operator|.
+name|filterList
+operator|.
+name|size
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|filterList
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+return|;
 block|}
 block|}
 end_class

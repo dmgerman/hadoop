@@ -341,6 +341,8 @@ operator|.
 name|INFO
 argument_list|,
 literal|"e"
+argument_list|,
+literal|true
 argument_list|)
 block|,
 comment|/**    * Config column stores configuration with config key as the column name.    */
@@ -402,6 +404,12 @@ name|byte
 index|[]
 name|columnPrefixBytes
 decl_stmt|;
+DECL|field|compoundColQual
+specifier|private
+specifier|final
+name|boolean
+name|compoundColQual
+decl_stmt|;
 comment|/**    * Private constructor, meant to be used by the enum definition.    *    * @param columnFamily that this column is stored in.    * @param columnPrefix for this column.    */
 DECL|method|EntityColumnPrefix (ColumnFamily<EntityTable> columnFamily, String columnPrefix)
 name|EntityColumnPrefix
@@ -422,6 +430,8 @@ name|columnFamily
 argument_list|,
 name|columnPrefix
 argument_list|,
+literal|false
+argument_list|,
 name|GenericConverter
 operator|.
 name|getInstance
@@ -429,7 +439,37 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Private constructor, meant to be used by the enum definition.    *    * @param columnFamily that this column is stored in.    * @param columnPrefix for this column.    * @param converter used to encode/decode values to be stored in HBase for    * this column prefix.    */
+DECL|method|EntityColumnPrefix (ColumnFamily<EntityTable> columnFamily, String columnPrefix, boolean compondColQual)
+name|EntityColumnPrefix
+parameter_list|(
+name|ColumnFamily
+argument_list|<
+name|EntityTable
+argument_list|>
+name|columnFamily
+parameter_list|,
+name|String
+name|columnPrefix
+parameter_list|,
+name|boolean
+name|compondColQual
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|columnFamily
+argument_list|,
+name|columnPrefix
+argument_list|,
+name|compondColQual
+argument_list|,
+name|GenericConverter
+operator|.
+name|getInstance
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|EntityColumnPrefix (ColumnFamily<EntityTable> columnFamily, String columnPrefix, ValueConverter converter)
 name|EntityColumnPrefix
 parameter_list|(
@@ -441,6 +481,38 @@ name|columnFamily
 parameter_list|,
 name|String
 name|columnPrefix
+parameter_list|,
+name|ValueConverter
+name|converter
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|columnFamily
+argument_list|,
+name|columnPrefix
+argument_list|,
+literal|false
+argument_list|,
+name|converter
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Private constructor, meant to be used by the enum definition.    *    * @param columnFamily that this column is stored in.    * @param columnPrefix for this column.    * @param converter used to encode/decode values to be stored in HBase for    * this column prefix.    */
+DECL|method|EntityColumnPrefix (ColumnFamily<EntityTable> columnFamily, String columnPrefix, boolean compondColQual, ValueConverter converter)
+name|EntityColumnPrefix
+parameter_list|(
+name|ColumnFamily
+argument_list|<
+name|EntityTable
+argument_list|>
+name|columnFamily
+parameter_list|,
+name|String
+name|columnPrefix
+parameter_list|,
+name|boolean
+name|compondColQual
 parameter_list|,
 name|ValueConverter
 name|converter
@@ -507,6 +579,12 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|compoundColQual
+operator|=
+name|compondColQual
+expr_stmt|;
 block|}
 comment|/**    * @return the column name value    */
 DECL|method|getColumnPrefix ()
@@ -567,6 +645,80 @@ operator|.
 name|columnPrefixBytes
 argument_list|,
 name|qualifierPrefix
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getColumnFamilyBytes ()
+specifier|public
+name|byte
+index|[]
+name|getColumnFamilyBytes
+parameter_list|()
+block|{
+return|return
+name|columnFamily
+operator|.
+name|getBytes
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getValueConverter ()
+specifier|public
+name|ValueConverter
+name|getValueConverter
+parameter_list|()
+block|{
+return|return
+name|column
+operator|.
+name|getValueConverter
+argument_list|()
+return|;
+block|}
+DECL|method|getCompoundColQualBytes (String qualifier, byte[]...components)
+specifier|public
+name|byte
+index|[]
+name|getCompoundColQualBytes
+parameter_list|(
+name|String
+name|qualifier
+parameter_list|,
+name|byte
+index|[]
+modifier|...
+name|components
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|compoundColQual
+condition|)
+block|{
+return|return
+name|ColumnHelper
+operator|.
+name|getColumnQualifier
+argument_list|(
+literal|null
+argument_list|,
+name|qualifier
+argument_list|)
+return|;
+block|}
+return|return
+name|ColumnHelper
+operator|.
+name|getCompoundColumnQualifierBytes
+argument_list|(
+name|qualifier
+argument_list|,
+name|components
 argument_list|)
 return|;
 block|}

@@ -165,6 +165,42 @@ return|return
 name|compareOp
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%s (%s %s)"
+argument_list|,
+name|this
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|compareOp
+operator|.
+name|name
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|prefix
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

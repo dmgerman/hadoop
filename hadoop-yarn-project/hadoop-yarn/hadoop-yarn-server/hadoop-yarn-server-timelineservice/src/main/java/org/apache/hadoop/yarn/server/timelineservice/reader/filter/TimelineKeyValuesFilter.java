@@ -26,6 +26,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -57,7 +67,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Filter class which represents filter to be applied based on key-value pair  * and the relation between them represented by different relational operators.  */
+comment|/**  * Filter class which represents filter to be applied based on multiple values  * for a key and these values being equal or not equal to values in back-end  * store.  */
 end_comment
 
 begin_class
@@ -65,10 +75,10 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|TimelineCompareFilter
+DECL|class|TimelineKeyValuesFilter
 specifier|public
 class|class
-name|TimelineCompareFilter
+name|TimelineKeyValuesFilter
 extends|extends
 name|TimelineFilter
 block|{
@@ -84,23 +94,18 @@ specifier|final
 name|String
 name|key
 decl_stmt|;
-DECL|field|value
+DECL|field|values
 specifier|private
 specifier|final
+name|Set
+argument_list|<
 name|Object
-name|value
+argument_list|>
+name|values
 decl_stmt|;
-comment|// If comparison operator is NOT_EQUAL, this flag decides if we should return
-comment|// the entity if key does not exist.
-DECL|field|keyMustExist
-specifier|private
-specifier|final
-name|boolean
-name|keyMustExist
-decl_stmt|;
-DECL|method|TimelineCompareFilter (TimelineCompareOp op, String key, Object val, boolean keyMustExistFlag)
+DECL|method|TimelineKeyValuesFilter (TimelineCompareOp op, String key, Set<Object> values)
 specifier|public
-name|TimelineCompareFilter
+name|TimelineKeyValuesFilter
 parameter_list|(
 name|TimelineCompareOp
 name|op
@@ -108,13 +113,38 @@ parameter_list|,
 name|String
 name|key
 parameter_list|,
+name|Set
+argument_list|<
 name|Object
-name|val
-parameter_list|,
-name|boolean
-name|keyMustExistFlag
+argument_list|>
+name|values
 parameter_list|)
 block|{
+if|if
+condition|(
+name|op
+operator|!=
+name|TimelineCompareOp
+operator|.
+name|EQUAL
+operator|&&
+name|op
+operator|!=
+name|TimelineCompareOp
+operator|.
+name|NOT_EQUAL
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"TimelineCompareOp for multi value "
+operator|+
+literal|"equality filter should be EQUAL or NOT_EQUAL"
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|compareOp
@@ -129,60 +159,9 @@ name|key
 expr_stmt|;
 name|this
 operator|.
-name|value
+name|values
 operator|=
-name|val
-expr_stmt|;
-if|if
-condition|(
-name|op
-operator|==
-name|TimelineCompareOp
-operator|.
-name|NOT_EQUAL
-condition|)
-block|{
-name|this
-operator|.
-name|keyMustExist
-operator|=
-name|keyMustExistFlag
-expr_stmt|;
-block|}
-else|else
-block|{
-name|this
-operator|.
-name|keyMustExist
-operator|=
-literal|true
-expr_stmt|;
-block|}
-block|}
-DECL|method|TimelineCompareFilter (TimelineCompareOp op, String key, Object val)
-specifier|public
-name|TimelineCompareFilter
-parameter_list|(
-name|TimelineCompareOp
-name|op
-parameter_list|,
-name|String
-name|key
-parameter_list|,
-name|Object
-name|val
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|op
-argument_list|,
-name|key
-argument_list|,
-name|val
-argument_list|,
-literal|true
-argument_list|)
+name|values
 expr_stmt|;
 block|}
 annotation|@
@@ -196,17 +175,7 @@ block|{
 return|return
 name|TimelineFilterType
 operator|.
-name|COMPARE
-return|;
-block|}
-DECL|method|getCompareOp ()
-specifier|public
-name|TimelineCompareOp
-name|getCompareOp
-parameter_list|()
-block|{
-return|return
-name|compareOp
+name|KEY_VALUES
 return|;
 block|}
 DECL|method|getKey ()
@@ -219,24 +188,27 @@ return|return
 name|key
 return|;
 block|}
-DECL|method|getValue ()
+DECL|method|getValues ()
 specifier|public
+name|Set
+argument_list|<
 name|Object
-name|getValue
+argument_list|>
+name|getValues
 parameter_list|()
 block|{
 return|return
-name|value
+name|values
 return|;
 block|}
-DECL|method|getKeyMustExist ()
+DECL|method|getCompareOp ()
 specifier|public
-name|boolean
-name|getKeyMustExist
+name|TimelineCompareOp
+name|getCompareOp
 parameter_list|()
 block|{
 return|return
-name|keyMustExist
+name|compareOp
 return|;
 block|}
 annotation|@
@@ -252,7 +224,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%s (%s, %s:%s:%b)"
+literal|"%s (%s, %s:%s)"
 argument_list|,
 name|this
 operator|.
@@ -273,13 +245,18 @@ name|this
 operator|.
 name|key
 argument_list|,
-name|this
+operator|(
+name|values
+operator|==
+literal|null
+operator|)
+condition|?
+literal|""
+else|:
+name|values
 operator|.
-name|value
-argument_list|,
-name|this
-operator|.
-name|keyMustExist
+name|toString
+argument_list|()
 argument_list|)
 return|;
 block|}

@@ -124,6 +124,26 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Returns column family name(as bytes) associated with this column.    * @return a byte array encoding column family for this column qualifier.    */
+DECL|method|getColumnFamilyBytes ()
+name|byte
+index|[]
+name|getColumnFamilyBytes
+parameter_list|()
+function_decl|;
+comment|/**    * Get byte representation for this column qualifier.    * @return a byte array representing column qualifier.    */
+DECL|method|getColumnQualifierBytes ()
+name|byte
+index|[]
+name|getColumnQualifierBytes
+parameter_list|()
+function_decl|;
+comment|/**    * Returns value converter implementation associated with this column.    * @return a {@link ValueConverter} implementation.    */
+DECL|method|getValueConverter ()
+name|ValueConverter
+name|getValueConverter
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

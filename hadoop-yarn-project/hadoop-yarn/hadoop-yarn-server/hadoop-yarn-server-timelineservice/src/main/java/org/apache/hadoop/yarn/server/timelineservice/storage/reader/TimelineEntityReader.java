@@ -496,14 +496,142 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates a {@link FilterList} based on fields, confs and metrics to    * retrieve. This filter list will be set in Scan/Get objects to trim down    * results fetched from HBase back-end storage.    *    * @return a {@link FilterList} object.    */
+comment|/**    * Creates a {@link FilterList} based on fields, confs and metrics to    * retrieve. This filter list will be set in Scan/Get objects to trim down    * results fetched from HBase back-end storage. This is called only for    * multiple entity reads.    *    * @return a {@link FilterList} object.    * @throws IOException if any problem occurs while creating filter list.    */
 DECL|method|constructFilterListBasedOnFields ()
 specifier|protected
 specifier|abstract
 name|FilterList
 name|constructFilterListBasedOnFields
 parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
+comment|/**    * Creates a {@link FilterList} based on info, config and metric filters. This    * filter list will be set in HBase Get to trim down results fetched from    * HBase back-end storage.    *    * @return a {@link FilterList} object.    * @throws IOException if any problem occurs while creating filter list.    */
+DECL|method|constructFilterListBasedOnFilters ()
+specifier|protected
+specifier|abstract
+name|FilterList
+name|constructFilterListBasedOnFilters
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Combines filter lists created based on fields and based on filters.    *    * @return a {@link FilterList} object if it can be constructed. Returns null,    * if filter list cannot be created either on the basis of filters or on the    * basis of fields.    * @throws IOException if any problem occurs while creating filter list.    */
+DECL|method|createFilterList ()
+specifier|private
+name|FilterList
+name|createFilterList
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|FilterList
+name|listBasedOnFilters
+init|=
+name|constructFilterListBasedOnFilters
+argument_list|()
+decl_stmt|;
+name|boolean
+name|hasListBasedOnFilters
+init|=
+name|listBasedOnFilters
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|listBasedOnFilters
+operator|.
+name|getFilters
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+decl_stmt|;
+name|FilterList
+name|listBasedOnFields
+init|=
+name|constructFilterListBasedOnFields
+argument_list|()
+decl_stmt|;
+name|boolean
+name|hasListBasedOnFields
+init|=
+name|listBasedOnFields
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|listBasedOnFields
+operator|.
+name|getFilters
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+decl_stmt|;
+comment|// If filter lists based on both filters and fields can be created,
+comment|// combine them in a new filter list and return it.
+comment|// If either one of them has been created, return that filter list.
+comment|// Return null, if none of the filter lists can be created. This indicates
+comment|// that no filter list needs to be added to HBase Scan as filters are not
+comment|// specified for the query or only the default view of entity needs to be
+comment|// returned.
+if|if
+condition|(
+name|hasListBasedOnFilters
+operator|&&
+name|hasListBasedOnFields
+condition|)
+block|{
+name|FilterList
+name|list
+init|=
+operator|new
+name|FilterList
+argument_list|()
+decl_stmt|;
+name|list
+operator|.
+name|addFilter
+argument_list|(
+name|listBasedOnFilters
+argument_list|)
+expr_stmt|;
+name|list
+operator|.
+name|addFilter
+argument_list|(
+name|listBasedOnFields
+argument_list|)
+expr_stmt|;
+return|return
+name|list
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|hasListBasedOnFilters
+condition|)
+block|{
+return|return
+name|listBasedOnFilters
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|hasListBasedOnFields
+condition|)
+block|{
+return|return
+name|listBasedOnFields
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
 DECL|method|getContext ()
 specifier|protected
 name|TimelineReaderContext
@@ -533,6 +661,28 @@ block|{
 return|return
 name|filters
 return|;
+block|}
+comment|/**    * Create a {@link TimelineEntityFilters} object with default values for    * filters.    */
+DECL|method|createFiltersIfNull ()
+specifier|protected
+name|void
+name|createFiltersIfNull
+parameter_list|()
+block|{
+if|if
+condition|(
+name|filters
+operator|==
+literal|null
+condition|)
+block|{
+name|filters
+operator|=
+operator|new
+name|TimelineEntityFilters
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Reads and deserializes a single timeline entity from the HBase storage.    *    * @param hbaseConf HBase Configuration.    * @param conn HBase Connection.    * @return A<cite>TimelineEntity</cite> object.    * @throws IOException if there is any exception encountered while reading    *     entity.    */
 DECL|method|readEntity (Configuration hbaseConf, Connection conn)
@@ -565,6 +715,28 @@ init|=
 name|constructFilterListBasedOnFields
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+operator|&&
+name|filterList
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"FilterList created for get is - "
+operator|+
+name|filterList
+argument_list|)
+expr_stmt|;
+block|}
 name|Result
 name|result
 init|=
@@ -655,9 +827,31 @@ decl_stmt|;
 name|FilterList
 name|filterList
 init|=
-name|constructFilterListBasedOnFields
+name|createFilterList
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+operator|&&
+name|filterList
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"FilterList created for scan is - "
+operator|+
+name|filterList
+argument_list|)
+expr_stmt|;
+block|}
 name|ResultScanner
 name|results
 init|=

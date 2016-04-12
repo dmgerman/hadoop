@@ -485,6 +485,8 @@ return|return
 name|columnQualifier
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getColumnQualifierBytes ()
 specifier|public
 name|byte
@@ -499,6 +501,8 @@ name|clone
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getColumnFamilyBytes ()
 specifier|public
 name|byte
@@ -653,6 +657,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getValueConverter ()
 specifier|public
 name|ValueConverter

@@ -57,7 +57,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Abstract base class extended to implement timeline filters.  */
+comment|/**  * Filter class which represents filter to be applied based on key-value pair  * being equal or not to the values in back-end store.  */
 end_comment
 
 begin_class
@@ -65,67 +65,105 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|TimelineFilter
+DECL|class|TimelineKeyValueFilter
 specifier|public
-specifier|abstract
 class|class
-name|TimelineFilter
+name|TimelineKeyValueFilter
+extends|extends
+name|TimelineCompareFilter
 block|{
-comment|/**    * Lists the different filter types.    */
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|enum|TimelineFilterType
+DECL|method|TimelineKeyValueFilter (TimelineCompareOp op, String key, Object val, boolean keyMustExistFlag)
 specifier|public
-enum|enum
-name|TimelineFilterType
+name|TimelineKeyValueFilter
+parameter_list|(
+name|TimelineCompareOp
+name|op
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|Object
+name|val
+parameter_list|,
+name|boolean
+name|keyMustExistFlag
+parameter_list|)
 block|{
-comment|/**      * Combines multiple filters.      */
-DECL|enumConstant|LIST
-name|LIST
-block|,
-comment|/**      * Filter which is used for key-value comparison.      */
-DECL|enumConstant|COMPARE
-name|COMPARE
-block|,
-comment|/**      * Filter which is used for checking key-value equality.      */
-DECL|enumConstant|KEY_VALUE
-name|KEY_VALUE
-block|,
-comment|/**      * Filter which is used for checking key-multiple values equality.      */
-DECL|enumConstant|KEY_VALUES
-name|KEY_VALUES
-block|,
-comment|/**      * Filter which matches prefix for a config or a metric.      */
-DECL|enumConstant|PREFIX
-name|PREFIX
-block|,
-comment|/**      * Filter which checks existence of a value.      */
-DECL|enumConstant|EXISTS
-name|EXISTS
+name|super
+argument_list|(
+name|op
+argument_list|,
+name|key
+argument_list|,
+name|val
+argument_list|,
+name|keyMustExistFlag
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|op
+operator|!=
+name|TimelineCompareOp
+operator|.
+name|EQUAL
+operator|&&
+name|op
+operator|!=
+name|TimelineCompareOp
+operator|.
+name|NOT_EQUAL
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"TimelineCompareOp for equality"
+operator|+
+literal|" filter should be EQUAL or NOT_EQUAL"
+argument_list|)
+throw|;
 block|}
+block|}
+DECL|method|TimelineKeyValueFilter (TimelineCompareOp op, String key, Object val)
+specifier|public
+name|TimelineKeyValueFilter
+parameter_list|(
+name|TimelineCompareOp
+name|op
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|Object
+name|val
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|op
+argument_list|,
+name|key
+argument_list|,
+name|val
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|getFilterType ()
 specifier|public
-specifier|abstract
 name|TimelineFilterType
 name|getFilterType
 parameter_list|()
-function_decl|;
-DECL|method|toString ()
-specifier|public
-name|String
-name|toString
-parameter_list|()
 block|{
 return|return
-name|this
+name|TimelineFilterType
 operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getSimpleName
-argument_list|()
+name|KEY_VALUE
 return|;
 block|}
 block|}

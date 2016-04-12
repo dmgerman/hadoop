@@ -1418,7 +1418,7 @@ expr_stmt|;
 comment|// Includes UID.
 name|assertEquals
 argument_list|(
-literal|2
+literal|3
 argument_list|,
 name|entity
 operator|.
@@ -1594,7 +1594,7 @@ expr_stmt|;
 comment|// Includes UID.
 name|assertEquals
 argument_list|(
-literal|2
+literal|3
 argument_list|,
 name|entity
 operator|.
@@ -2906,7 +2906,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|2
+literal|1
 argument_list|,
 name|entities
 operator|.
@@ -2916,22 +2916,8 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"Entities with id_1 and id_3 should have been present"
-operator|+
-literal|" in response."
+literal|"Entity with id_3 should have been present in response."
 argument_list|,
-name|entities
-operator|.
-name|contains
-argument_list|(
-name|newEntity
-argument_list|(
-literal|"app"
-argument_list|,
-literal|"id_1"
-argument_list|)
-argument_list|)
-operator|&&
 name|entities
 operator|.
 name|contains
