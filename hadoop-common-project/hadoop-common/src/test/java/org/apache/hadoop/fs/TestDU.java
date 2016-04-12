@@ -253,7 +253,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Verify that du returns expected used space for a file.    * We assume here that if a file system crates a file of size     * that is a multiple of the block size in this file system,    * then the used size for the file will be exactly that size.    * This is true for most file systems.    *     * @throws IOException    * @throws InterruptedException    */
+comment|/**    * Verify that du returns expected used space for a file.    * We assume here that if a file system crates a file of size    * that is a multiple of the block size in this file system,    * then the used size for the file will be exactly that size.    * This is true for most file systems.    *    * @throws IOException    * @throws InterruptedException    */
 DECL|method|testDU ()
 specifier|public
 name|void
@@ -318,11 +318,14 @@ argument_list|(
 name|file
 argument_list|,
 literal|10000
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 name|du
 operator|.
-name|start
+name|init
 argument_list|()
 expr_stmt|;
 name|long
@@ -335,7 +338,7 @@ argument_list|()
 decl_stmt|;
 name|du
 operator|.
-name|shutdown
+name|close
 argument_list|()
 expr_stmt|;
 name|assertTrue
@@ -364,11 +367,14 @@ argument_list|(
 name|file
 argument_list|,
 literal|0
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 expr_stmt|;
 name|du
 operator|.
-name|start
+name|init
 argument_list|()
 expr_stmt|;
 name|duSize
@@ -380,7 +386,7 @@ argument_list|()
 expr_stmt|;
 name|du
 operator|.
-name|shutdown
+name|close
 argument_list|()
 expr_stmt|;
 name|assertTrue
@@ -409,7 +415,15 @@ argument_list|(
 name|file
 argument_list|,
 literal|10000
+argument_list|,
+operator|-
+literal|1
 argument_list|)
+expr_stmt|;
+name|du
+operator|.
+name|init
+argument_list|()
 expr_stmt|;
 name|duSize
 operator|=
@@ -489,13 +503,17 @@ name|DU
 argument_list|(
 name|file
 argument_list|,
-name|conf
+literal|10000L
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 name|du
 operator|.
-name|decDfsUsed
+name|incDfsUsed
 argument_list|(
+operator|-
 name|Long
 operator|.
 name|MAX_VALUE
@@ -565,7 +583,7 @@ argument_list|)
 decl_stmt|;
 name|du
 operator|.
-name|start
+name|init
 argument_list|()
 expr_stmt|;
 name|assertTrue

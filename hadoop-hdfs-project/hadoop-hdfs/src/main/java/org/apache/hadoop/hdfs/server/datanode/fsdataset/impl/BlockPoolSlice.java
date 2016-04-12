@@ -234,7 +234,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|DU
+name|CachingGetSpaceUsed
 import|;
 end_import
 
@@ -249,6 +249,20 @@ operator|.
 name|fs
 operator|.
 name|FileUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|GetSpaceUsed
 import|;
 end_import
 
@@ -587,7 +601,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A block pool slice represents a portion of a block pool stored on a volume.    * Taken together, all BlockPoolSlices sharing a block pool ID across a   * cluster represent a single block pool.  *   * This class is synchronized by {@link FsVolumeImpl}.  */
+comment|/**  * A block pool slice represents a portion of a block pool stored on a volume.  * Taken together, all BlockPoolSlices sharing a block pool ID across a  * cluster represent a single block pool.  *  * This class is synchronized by {@link FsVolumeImpl}.  */
 end_comment
 
 begin_class
@@ -743,10 +757,10 @@ comment|// TODO:FEDERATION scalability issue - a thread per DU is needed
 DECL|field|dfsUsage
 specifier|private
 specifier|final
-name|DU
+name|GetSpaceUsed
 name|dfsUsage
 decl_stmt|;
-comment|/**    * Create a blook pool slice     * @param bpid Block pool Id    * @param volume {@link FsVolumeImpl} to which this BlockPool belongs to    * @param bpDir directory corresponding to the BlockPool    * @param conf configuration    * @param timer include methods for getting time    * @throws IOException    */
+comment|/**    * Create a blook pool slice    * @param bpid Block pool Id    * @param volume {@link FsVolumeImpl} to which this BlockPool belongs to    * @param bpDir directory corresponding to the BlockPool    * @param conf configuration    * @param timer include methods for getting time    * @throws IOException    */
 DECL|method|BlockPoolSlice (String bpid, FsVolumeImpl volume, File bpDir, Configuration conf, Timer timer)
 name|BlockPoolSlice
 parameter_list|(
@@ -1029,21 +1043,28 @@ operator|.
 name|dfsUsage
 operator|=
 operator|new
-name|DU
+name|CachingGetSpaceUsed
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|setPath
 argument_list|(
 name|bpDir
-argument_list|,
+argument_list|)
+operator|.
+name|setConf
+argument_list|(
 name|conf
-argument_list|,
+argument_list|)
+operator|.
+name|setInitialUsed
+argument_list|(
 name|loadDfsUsed
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|this
 operator|.
-name|dfsUsage
-operator|.
-name|start
+name|build
 argument_list|()
 expr_stmt|;
 comment|// Make the dfs usage to be saved during shutdown.
@@ -1139,13 +1160,27 @@ name|long
 name|value
 parameter_list|)
 block|{
+if|if
+condition|(
 name|dfsUsage
+operator|instanceof
+name|CachingGetSpaceUsed
+condition|)
+block|{
+operator|(
+operator|(
+name|CachingGetSpaceUsed
+operator|)
+name|dfsUsage
+operator|)
 operator|.
-name|decDfsUsed
+name|incDfsUsed
 argument_list|(
+operator|-
 name|value
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|getDfsUsed ()
 name|long
@@ -1169,13 +1204,26 @@ name|long
 name|value
 parameter_list|)
 block|{
+if|if
+condition|(
 name|dfsUsage
+operator|instanceof
+name|CachingGetSpaceUsed
+condition|)
+block|{
+operator|(
+operator|(
+name|CachingGetSpaceUsed
+operator|)
+name|dfsUsage
+operator|)
 operator|.
 name|incDfsUsed
 argument_list|(
 name|value
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Read in the cached DU value and return it if it is less than    * cachedDfsUsedCheckTime which is set by    * dfs.datanode.cached-dfsused.check.interval.ms parameter. Slight imprecision    * of dfsUsed is not critical and skipping DU can significantly shorten the    * startup time. If the cached value is not available or too old, -1 is    * returned.    */
 DECL|method|loadDfsUsed ()
@@ -1629,7 +1677,19 @@ name|getGenerationStamp
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
 name|dfsUsage
+operator|instanceof
+name|CachingGetSpaceUsed
+condition|)
+block|{
+operator|(
+operator|(
+name|CachingGetSpaceUsed
+operator|)
+name|dfsUsage
+operator|)
 operator|.
 name|incDfsUsed
 argument_list|(
@@ -1644,6 +1704,7 @@ name|length
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|blockFile
 return|;
@@ -3121,7 +3182,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Find out the number of bytes in the block that match its crc.    *     * This algorithm assumes that data corruption caused by unexpected     * datanode shutdown occurs only in the last crc chunk. So it checks    * only the last chunk.    *     * @param blockFile the block file    * @param genStamp generation stamp of the block    * @return the number of valid bytes    */
+comment|/**    * Find out the number of bytes in the block that match its crc.    *    * This algorithm assumes that data corruption caused by unexpected    * datanode shutdown occurs only in the last crc chunk. So it checks    * only the last chunk.    *    * @param blockFile the block file    * @param genStamp generation stamp of the block    * @return the number of valid bytes    */
 DECL|method|validateIntegrityAndSetLength (File blockFile, long genStamp)
 specifier|private
 name|long
@@ -3551,11 +3612,28 @@ name|dfsUsedSaved
 operator|=
 literal|true
 expr_stmt|;
+if|if
+condition|(
 name|dfsUsage
+operator|instanceof
+name|CachingGetSpaceUsed
+condition|)
+block|{
+name|IOUtils
 operator|.
-name|shutdown
-argument_list|()
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+operator|(
+operator|(
+name|CachingGetSpaceUsed
+operator|)
+name|dfsUsage
+operator|)
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|readReplicasFromCache (ReplicaMap volumeMap, final RamDiskReplicaTracker lazyWriteReplicaMap)
 specifier|private
