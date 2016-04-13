@@ -386,7 +386,7 @@ parameter_list|)
 throws|throws
 name|OzoneException
 function_decl|;
-comment|/**    * List Buckets lists the contents of a bucket.    *    * @param volume - Storage Volume Name    * @param bucket - Bucket Name    * @param info - Information type needed    * @param prefix - Prefix for the keys to be fetched    * @param maxKeys - MaxNumber of Keys to Return    * @param startPage - Continuation Token    * @param req - Http request    * @param headers - Http headers    *    * @return - Json Body    *    * @throws OzoneException    */
+comment|/**    * List Buckets lists the contents of a bucket.    *    * @param volume - Storage Volume Name    * @param bucket - Bucket Name    * @param info - Information type needed    * @param prefix - Prefix for the keys to be fetched    * @param maxKeys - MaxNumber of Keys to Return    * @param prevKey - Continuation Token    * @param req - Http request    * @param headers - Http headers    *    * @return - Json Body    *    * @throws OzoneException    */
 annotation|@
 name|GET
 annotation|@
@@ -396,7 +396,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|listBucket (@athParamR) String volume, @PathParam(R) String bucket, @DefaultValue(Header.OZONE_LIST_QUERY_KEY) @QueryParam(R) String info, @QueryParam(R) String prefix, @DefaultValue(R) @QueryParam(R) int maxKeys, @QueryParam(R) String startPage, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
+DECL|method|listBucket (@athParamR) String volume, @PathParam(R) String bucket, @DefaultValue(Header.OZONE_LIST_QUERY_KEY) @QueryParam(Header.OZONE_LIST_QUERY_TAG) String info, @QueryParam(Header.OZONE_LIST_QUERY_PREFIX) String prefix, @QueryParam(Header.OZONE_LIST_QUERY_MAXKEYS) int maxKeys, @QueryParam(Header.OZONE_LIST_QUERY_PREVKEY) String prevKey, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 name|Response
 name|listBucket
 parameter_list|(
@@ -426,7 +426,9 @@ argument_list|)
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"info"
+name|Header
+operator|.
+name|OZONE_LIST_QUERY_TAG
 argument_list|)
 name|String
 name|info
@@ -434,20 +436,19 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"prefix"
+name|Header
+operator|.
+name|OZONE_LIST_QUERY_PREFIX
 argument_list|)
 name|String
 name|prefix
 parameter_list|,
 annotation|@
-name|DefaultValue
-argument_list|(
-literal|"1000"
-argument_list|)
-annotation|@
 name|QueryParam
 argument_list|(
-literal|"max-keys"
+name|Header
+operator|.
+name|OZONE_LIST_QUERY_MAXKEYS
 argument_list|)
 name|int
 name|maxKeys
@@ -455,10 +456,12 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"start-page"
+name|Header
+operator|.
+name|OZONE_LIST_QUERY_PREVKEY
 argument_list|)
 name|String
-name|startPage
+name|prevKey
 parameter_list|,
 annotation|@
 name|Context

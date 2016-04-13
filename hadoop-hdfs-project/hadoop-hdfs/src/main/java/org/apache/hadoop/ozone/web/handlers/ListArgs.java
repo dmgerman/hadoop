@@ -29,13 +29,16 @@ DECL|class|ListArgs
 specifier|public
 class|class
 name|ListArgs
+parameter_list|<
+name|T
 extends|extends
-name|BucketArgs
+name|UserArgs
+parameter_list|>
 block|{
-DECL|field|startPage
+DECL|field|prevKey
 specifier|private
 name|String
-name|startPage
+name|prevKey
 decl_stmt|;
 DECL|field|prefix
 specifier|private
@@ -47,12 +50,22 @@ specifier|private
 name|int
 name|maxKeys
 decl_stmt|;
-comment|/**    * Constructor for ListArgs.    *    * @param args      - BucketArgs    * @param prefix    Prefix to start Query from    * @param maxKeys   Max result set    * @param startPage - Page token    */
-DECL|method|ListArgs (BucketArgs args, String prefix, int maxKeys, String startPage)
+DECL|field|rootScan
+specifier|private
+name|boolean
+name|rootScan
+decl_stmt|;
+DECL|field|args
+specifier|private
+name|T
+name|args
+decl_stmt|;
+comment|/**    * Constructor for ListArgs.    *    * @param args      - BucketArgs    * @param prefix    Prefix to start Query from    * @param maxKeys   Max result set    * @param prevKey - Page token    */
+DECL|method|ListArgs (T args, String prefix, int maxKeys, String prevKey)
 specifier|public
 name|ListArgs
 parameter_list|(
-name|BucketArgs
+name|T
 name|args
 parameter_list|,
 name|String
@@ -62,10 +75,10 @@ name|int
 name|maxKeys
 parameter_list|,
 name|String
-name|startPage
+name|prevKey
 parameter_list|)
 block|{
-name|super
+name|setArgs
 argument_list|(
 name|args
 argument_list|)
@@ -80,68 +93,71 @@ argument_list|(
 name|maxKeys
 argument_list|)
 expr_stmt|;
-name|setStartPage
+name|setPrevKey
 argument_list|(
-name|startPage
+name|prevKey
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Copy Constructor for ListArgs.    *    * @param args - List Args    */
-DECL|method|ListArgs (ListArgs args)
+DECL|method|ListArgs (T args, ListArgs listArgs)
 specifier|public
 name|ListArgs
 parameter_list|(
-name|ListArgs
+name|T
 name|args
+parameter_list|,
+name|ListArgs
+name|listArgs
 parameter_list|)
 block|{
 name|this
 argument_list|(
 name|args
 argument_list|,
-name|args
+name|listArgs
 operator|.
 name|getPrefix
 argument_list|()
 argument_list|,
-name|args
+name|listArgs
 operator|.
 name|getMaxKeys
 argument_list|()
 argument_list|,
-name|args
+name|listArgs
 operator|.
-name|getStartPage
+name|getPrevKey
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Returns page token.    *    * @return String    */
-DECL|method|getStartPage ()
+DECL|method|getPrevKey ()
 specifier|public
 name|String
-name|getStartPage
+name|getPrevKey
 parameter_list|()
 block|{
 return|return
-name|startPage
+name|prevKey
 return|;
 block|}
-comment|/**    * Sets page token.    *    * @param startPage - Page token    */
-DECL|method|setStartPage (String startPage)
+comment|/**    * Sets page token.    *    * @param prevKey - Page token    */
+DECL|method|setPrevKey (String prevKey)
 specifier|public
 name|void
-name|setStartPage
+name|setPrevKey
 parameter_list|(
 name|String
-name|startPage
+name|prevKey
 parameter_list|)
 block|{
 name|this
 operator|.
-name|startPage
+name|prevKey
 operator|=
-name|startPage
+name|prevKey
 expr_stmt|;
 block|}
 comment|/**    * Gets max keys.    *    * @return int    */
@@ -198,6 +214,62 @@ operator|.
 name|prefix
 operator|=
 name|prefix
+expr_stmt|;
+block|}
+comment|/**    * Gets args.    * @return  T    */
+DECL|method|getArgs ()
+specifier|public
+name|T
+name|getArgs
+parameter_list|()
+block|{
+return|return
+name|args
+return|;
+block|}
+comment|/**    * Sets  args.    * @param args T    */
+DECL|method|setArgs (T args)
+specifier|public
+name|void
+name|setArgs
+parameter_list|(
+name|T
+name|args
+parameter_list|)
+block|{
+name|this
+operator|.
+name|args
+operator|=
+name|args
+expr_stmt|;
+block|}
+comment|/**    * Checks if we are doing a rootScan.    * @return - RootScan.    */
+DECL|method|isRootScan ()
+specifier|public
+name|boolean
+name|isRootScan
+parameter_list|()
+block|{
+return|return
+name|rootScan
+return|;
+block|}
+comment|/**    * Sets the RootScan property.    * @param rootScan - Boolean.    */
+DECL|method|setRootScan (boolean rootScan)
+specifier|public
+name|void
+name|setRootScan
+parameter_list|(
+name|boolean
+name|rootScan
+parameter_list|)
+block|{
+name|this
+operator|.
+name|rootScan
+operator|=
+name|rootScan
 expr_stmt|;
 block|}
 block|}

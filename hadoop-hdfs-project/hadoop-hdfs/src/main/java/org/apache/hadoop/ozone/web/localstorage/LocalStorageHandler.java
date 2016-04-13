@@ -154,24 +154,6 @@ name|web
 operator|.
 name|handlers
 operator|.
-name|UserArgs
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|web
-operator|.
-name|handlers
-operator|.
 name|VolumeArgs
 import|;
 end_import
@@ -601,15 +583,15 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns the List of Volumes owned by the specific user.    *    * @param args - UserArgs    * @return - List of Volumes    * @throws IOException    */
+comment|/**    * Returns the List of Volumes owned by the specific user.    *    * @param args - ListArgs    * @return - List of Volumes    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|listVolumes (UserArgs args)
+DECL|method|listVolumes (ListArgs args)
 specifier|public
 name|ListVolumes
 name|listVolumes
 parameter_list|(
-name|UserArgs
+name|ListArgs
 name|args
 parameter_list|)
 throws|throws
@@ -843,12 +825,12 @@ block|}
 comment|/**    * Returns all Buckets of a specified Volume.    *    * @param args --User Args    * @return ListAllBuckets    * @throws OzoneException    */
 annotation|@
 name|Override
-DECL|method|listBuckets (VolumeArgs args)
+DECL|method|listBuckets (ListArgs args)
 specifier|public
 name|ListBuckets
 name|listBuckets
 parameter_list|(
-name|VolumeArgs
+name|ListArgs
 name|args
 parameter_list|)
 throws|throws

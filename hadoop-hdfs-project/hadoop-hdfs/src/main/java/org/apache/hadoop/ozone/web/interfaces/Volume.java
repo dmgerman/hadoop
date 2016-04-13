@@ -258,7 +258,7 @@ block|{
 comment|/**    * Creates a Volume owned by the user.    *    * Params :    * Quota - Specifies the Maximum usable size by the user    * the valid parameters for quota are<int>(<BYTES| MB|GB|TB>) | remove.    * For example 10GB or "remove".    *    * @param volume Volume Name, this has to be unique at Ozone Level    * @param quota Quota for this Storage Volume -<int>(<MB|GB|TB>) | remove    * @param req - Request Object - Request Object    * @param uriInfo - Http UriInfo    * @param headers Http Headers HttpHeaders    *    * @return Response    *    * @throws OzoneException    */
 annotation|@
 name|POST
-DECL|method|createVolume (@athParamR) String volume, @DefaultValue(Header.OZONE_QUOTA_UNDEFINED) @QueryParam(R) String quota, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
+DECL|method|createVolume (@athParamR) String volume, @DefaultValue(Header.OZONE_QUOTA_UNDEFINED) @QueryParam(Header.OZONE_QUOTA_QUERY_TAG) String quota, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 name|Response
 name|createVolume
 parameter_list|(
@@ -280,7 +280,9 @@ argument_list|)
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"quota"
+name|Header
+operator|.
+name|OZONE_QUOTA_QUERY_TAG
 argument_list|)
 name|String
 name|quota
@@ -306,7 +308,7 @@ function_decl|;
 comment|/**    * Updates a Volume owned by the user.    *    * Params :    * Owner - Specifies the name of the owner    * Quota - Specifies the Maximum usable size by the user    * the valid parameters for quota are<int>(<MB|GB|TB>) | remove.    * For example 10GB or "remove".    *    * @param volume Volume Name, this has to be unique at Ozone Level    * @param quota Quota for this Storage Volume -<int>(<MB|GB|TB>) | remove    * @param req - Request Object - Request Object    * @param headers Http Headers HttpHeaders    *    * @return Response    *    * @throws OzoneException    */
 annotation|@
 name|PUT
-DECL|method|updateVolume (@athParamR) String volume, @DefaultValue(Header.OZONE_QUOTA_UNDEFINED) @QueryParam(R) String quota, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
+DECL|method|updateVolume (@athParamR) String volume, @DefaultValue(Header.OZONE_QUOTA_UNDEFINED) @QueryParam(Header.OZONE_QUOTA_QUERY_TAG) String quota, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 name|Response
 name|updateVolume
 parameter_list|(
@@ -328,7 +330,9 @@ argument_list|)
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"quota"
+name|Header
+operator|.
+name|OZONE_QUOTA_QUERY_TAG
 argument_list|)
 name|String
 name|quota
@@ -387,7 +391,7 @@ function_decl|;
 comment|/**    * Returns Volume info. This API can be invoked either    * by admin or the owner    *    * @param volume - Storage Volume Name    * @param req - Http Req    * @param headers - Http headers    *    * @return - Response    *    * @throws OzoneException    */
 annotation|@
 name|GET
-DECL|method|getVolumeInfo (@athParamR) String volume, @DefaultValue(Header.OZONE_LIST_QUERY_BUCKET) @QueryParam(R) String info, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
+DECL|method|getVolumeInfo (@athParamR) String volume, @DefaultValue(Header.OZONE_LIST_QUERY_BUCKET) @QueryParam(Header.OZONE_LIST_QUERY_TAG) String info, @QueryParam(Header.OZONE_LIST_QUERY_PREFIX) String prefix, @QueryParam(Header.OZONE_LIST_QUERY_MAXKEYS) int keys, @QueryParam(Header.OZONE_LIST_QUERY_PREVKEY) String prevKey, @QueryParam(Header.OZONE_LIST_QUERY_ROOTSCAN) boolean rootScan, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 name|Response
 name|getVolumeInfo
 parameter_list|(
@@ -409,10 +413,52 @@ argument_list|)
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"info"
+name|Header
+operator|.
+name|OZONE_LIST_QUERY_TAG
 argument_list|)
 name|String
 name|info
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|Header
+operator|.
+name|OZONE_LIST_QUERY_PREFIX
+argument_list|)
+name|String
+name|prefix
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|Header
+operator|.
+name|OZONE_LIST_QUERY_MAXKEYS
+argument_list|)
+name|int
+name|keys
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|Header
+operator|.
+name|OZONE_LIST_QUERY_PREVKEY
+argument_list|)
+name|String
+name|prevKey
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|Header
+operator|.
+name|OZONE_LIST_QUERY_ROOTSCAN
+argument_list|)
+name|boolean
+name|rootScan
 parameter_list|,
 annotation|@
 name|Context

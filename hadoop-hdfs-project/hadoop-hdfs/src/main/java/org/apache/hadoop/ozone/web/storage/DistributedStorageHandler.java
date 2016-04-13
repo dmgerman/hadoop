@@ -472,24 +472,6 @@ name|web
 operator|.
 name|handlers
 operator|.
-name|UserArgs
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|web
-operator|.
-name|handlers
-operator|.
 name|VolumeArgs
 import|;
 end_import
@@ -918,12 +900,12 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|listVolumes (UserArgs args)
+DECL|method|listVolumes (ListArgs args)
 specifier|public
 name|ListVolumes
 name|listVolumes
 parameter_list|(
-name|UserArgs
+name|ListArgs
 name|args
 parameter_list|)
 throws|throws
@@ -1305,12 +1287,12 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|listBuckets (VolumeArgs args)
+DECL|method|listBuckets (ListArgs args)
 specifier|public
 name|ListBuckets
 name|listBuckets
 parameter_list|(
-name|VolumeArgs
+name|ListArgs
 name|args
 parameter_list|)
 throws|throws

@@ -1716,9 +1716,11 @@ name|containerManager
 operator|.
 name|listContainer
 argument_list|(
-name|prevKey
+literal|null
 argument_list|,
 name|step
+argument_list|,
+name|prevKey
 argument_list|,
 name|results
 argument_list|)

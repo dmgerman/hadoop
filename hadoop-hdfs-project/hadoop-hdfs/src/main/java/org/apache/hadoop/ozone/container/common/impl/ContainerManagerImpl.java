@@ -1535,19 +1535,22 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * A simple interface for container Iterations.    *<p/>    * This call make no guarantees about consistency of the data between    * different list calls. It just returns the best known data at that point of    * time. It is possible that using this iteration you can miss certain    * container from the listing.    *    * @param prevKey - Previous Key Value or empty String.    * @param count   - how many to return    * @param data    - Actual containerData    * @throws IOException    */
+comment|/**    * A simple interface for container Iterations.    *<p/>    * This call make no guarantees about consistency of the data between    * different list calls. It just returns the best known data at that point of    * time. It is possible that using this iteration you can miss certain    * container from the listing.    *    * @param prefix  -  Return keys that match this prefix.    * @param count   - how many to return    * @param prevKey - Previous Key Value or empty String.    * @param data    - Actual containerData    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|listContainer (String prevKey, long count, List<ContainerData> data)
+DECL|method|listContainer (String prefix, long count, String prevKey, List<ContainerData> data)
 specifier|public
 name|void
 name|listContainer
 parameter_list|(
 name|String
-name|prevKey
+name|prefix
 parameter_list|,
 name|long
 name|count
+parameter_list|,
+name|String
+name|prevKey
 parameter_list|,
 name|List
 argument_list|<
@@ -1558,6 +1561,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// TODO : Support list with Prefix and PrevKey
 name|Preconditions
 operator|.
 name|checkNotNull
@@ -1583,11 +1587,13 @@ decl_stmt|;
 if|if
 condition|(
 name|prevKey
-operator|.
-name|length
-argument_list|()
 operator|==
-literal|0
+literal|null
+operator|||
+name|prevKey
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 name|map

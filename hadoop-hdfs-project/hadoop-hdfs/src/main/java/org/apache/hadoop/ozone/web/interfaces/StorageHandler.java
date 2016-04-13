@@ -140,24 +140,6 @@ name|web
 operator|.
 name|handlers
 operator|.
-name|UserArgs
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|web
-operator|.
-name|handlers
-operator|.
 name|VolumeArgs
 import|;
 end_import
@@ -341,12 +323,12 @@ name|IOException
 throws|,
 name|OzoneException
 function_decl|;
-comment|/**    * Returns the List of Volumes owned by the specific user.    *    * @param args - UserArgs    *    * @return - List of Volumes    *    * @throws IOException    * @throws OzoneException    */
-DECL|method|listVolumes (UserArgs args)
+comment|/**    * Returns the List of Volumes owned by the specific user.    *    * @param args - ListArgs    *    * @return - List of Volumes    *    * @throws IOException    * @throws OzoneException    */
+DECL|method|listVolumes (ListArgs args)
 name|ListVolumes
 name|listVolumes
 parameter_list|(
-name|UserArgs
+name|ListArgs
 name|args
 parameter_list|)
 throws|throws
@@ -458,13 +440,13 @@ name|IOException
 throws|,
 name|OzoneException
 function_decl|;
-comment|/**    * Returns all Buckets of a specified Volume.    *    * @param args --User Args    *    * @return ListAllBuckets    *    * @throws OzoneException    */
-DECL|method|listBuckets (VolumeArgs args)
+comment|/**    * Returns all Buckets of a specified Volume.    *    * @param listArgs -- List Args.    *    * @return ListAllBuckets    *    * @throws OzoneException    */
+DECL|method|listBuckets (ListArgs listArgs)
 name|ListBuckets
 name|listBuckets
 parameter_list|(
-name|VolumeArgs
-name|args
+name|ListArgs
+name|listArgs
 parameter_list|)
 throws|throws
 name|IOException

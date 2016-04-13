@@ -240,16 +240,19 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * As simple interface for container Iterations.    *    * @param prevKey - Starting KeyValue    * @param count   - how many to return    * @param data    - Actual containerData    * @throws IOException    */
-DECL|method|listContainer (String prevKey, long count, List<ContainerData> data)
+comment|/**    * As simple interface for container Iterations.    *    * @param prefix - Return only values matching this prefix    * @param count   - how many to return    * @param prevKey - Previous key - Server returns results from this point.    * @param data    - Actual containerData    * @throws IOException    */
+DECL|method|listContainer (String prefix, long count, String prevKey, List<ContainerData> data)
 name|void
 name|listContainer
 parameter_list|(
 name|String
-name|prevKey
+name|prefix
 parameter_list|,
 name|long
 name|count
+parameter_list|,
+name|String
+name|prevKey
 parameter_list|,
 name|List
 argument_list|<

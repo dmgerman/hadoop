@@ -1419,6 +1419,9 @@ operator|.
 name|getResponse
 argument_list|(
 name|args
+operator|.
+name|getArgs
+argument_list|()
 argument_list|,
 name|HTTP_OK
 argument_list|,
