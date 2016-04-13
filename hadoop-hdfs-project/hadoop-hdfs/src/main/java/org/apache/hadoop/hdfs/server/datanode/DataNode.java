@@ -7648,6 +7648,53 @@ operator|.
 name|maxLockedMemory
 argument_list|)
 expr_stmt|;
+name|int
+name|volFailuresTolerated
+init|=
+name|dnConf
+operator|.
+name|getVolFailuresTolerated
+argument_list|()
+decl_stmt|;
+name|int
+name|volsConfigured
+init|=
+name|dnConf
+operator|.
+name|getVolsConfigured
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|volFailuresTolerated
+operator|<
+literal|0
+operator|||
+name|volFailuresTolerated
+operator|>=
+name|volsConfigured
+condition|)
+block|{
+throw|throw
+operator|new
+name|DiskErrorException
+argument_list|(
+literal|"Invalid value configured for "
+operator|+
+literal|"dfs.datanode.failed.volumes.tolerated - "
+operator|+
+name|volFailuresTolerated
+operator|+
+literal|". Value configured is either less than 0 or>= "
+operator|+
+literal|"to the number of configured volumes ("
+operator|+
+name|volsConfigured
+operator|+
+literal|")."
+argument_list|)
+throw|;
+block|}
 name|storage
 operator|=
 operator|new
