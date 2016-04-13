@@ -730,11 +730,6 @@ name|bandwidthPerSec
 argument_list|)
 decl_stmt|;
 name|long
-name|totalBytes
-init|=
-literal|0L
-decl_stmt|;
-name|long
 name|bytesSent
 init|=
 literal|1024
@@ -804,7 +799,7 @@ argument_list|()
 decl_stmt|;
 name|assertTrue
 argument_list|(
-name|totalBytes
+name|TOTAL_BYTES
 operator|*
 literal|1000
 operator|/
