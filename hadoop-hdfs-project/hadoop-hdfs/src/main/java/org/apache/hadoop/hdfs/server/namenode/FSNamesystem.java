@@ -6626,85 +6626,6 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Locate DefaultAuditLogger, if any, to enable/disable CallerContext.    *    * @param value    *          true, enable CallerContext, otherwise false to disable it.    */
-DECL|method|setCallerContextEnabled (final boolean value)
-name|void
-name|setCallerContextEnabled
-parameter_list|(
-specifier|final
-name|boolean
-name|value
-parameter_list|)
-block|{
-for|for
-control|(
-name|AuditLogger
-name|logger
-range|:
-name|auditLoggers
-control|)
-block|{
-if|if
-condition|(
-name|logger
-operator|instanceof
-name|DefaultAuditLogger
-condition|)
-block|{
-operator|(
-operator|(
-name|DefaultAuditLogger
-operator|)
-name|logger
-operator|)
-operator|.
-name|setCallerContextEnabled
-argument_list|(
-name|value
-argument_list|)
-expr_stmt|;
-break|break;
-block|}
-block|}
-block|}
-comment|/**    * Get the value indicating if CallerContext is enabled.    *    * @return true, if CallerContext is enabled, otherwise false, if it's    *         disabled.    */
-DECL|method|getCallerContextEnabled ()
-name|boolean
-name|getCallerContextEnabled
-parameter_list|()
-block|{
-for|for
-control|(
-name|AuditLogger
-name|logger
-range|:
-name|auditLoggers
-control|)
-block|{
-if|if
-condition|(
-name|logger
-operator|instanceof
-name|DefaultAuditLogger
-condition|)
-block|{
-return|return
-operator|(
-operator|(
-name|DefaultAuditLogger
-operator|)
-name|logger
-operator|)
-operator|.
-name|getCallerContextEnabled
-argument_list|()
-return|;
-block|}
-block|}
-return|return
-literal|false
-return|;
-block|}
 DECL|method|initAuditLoggers (Configuration conf)
 specifier|private
 name|List
@@ -32077,7 +31998,6 @@ block|}
 decl_stmt|;
 DECL|field|isCallerContextEnabled
 specifier|private
-specifier|volatile
 name|boolean
 name|isCallerContextEnabled
 decl_stmt|;
@@ -32111,31 +32031,6 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**      * Enable or disable CallerContext.      *      * @param value      *          true, enable CallerContext, otherwise false to disable it.      */
-DECL|method|setCallerContextEnabled (final boolean value)
-name|void
-name|setCallerContextEnabled
-parameter_list|(
-specifier|final
-name|boolean
-name|value
-parameter_list|)
-block|{
-name|isCallerContextEnabled
-operator|=
-name|value
-expr_stmt|;
-block|}
-comment|/**      * Get the value indicating if CallerContext is enabled.      *      * @return true, if CallerContext is enabled, otherwise false, if it's      *         disabled.      */
-DECL|method|getCallerContextEnabled ()
-name|boolean
-name|getCallerContextEnabled
-parameter_list|()
-block|{
-return|return
-name|isCallerContextEnabled
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|initialize (Configuration conf)
