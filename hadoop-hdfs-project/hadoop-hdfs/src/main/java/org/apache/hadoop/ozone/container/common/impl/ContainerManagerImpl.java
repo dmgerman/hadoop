@@ -1724,9 +1724,25 @@ specifier|public
 name|void
 name|shutdown
 parameter_list|()
-throws|throws
-name|IOException
-block|{    }
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|this
+operator|.
+name|hasWriteLock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|containerMap
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getContainerMap ()

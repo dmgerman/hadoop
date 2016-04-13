@@ -92,7 +92,7 @@ specifier|public
 interface|interface
 name|KeyManager
 block|{
-comment|/**    * Puts or overwrites a key.    * @param pipeline - Pipeline.    * @param data - Key Data.    */
+comment|/**    * Puts or overwrites a key.    *    * @param pipeline - Pipeline.    * @param data     - Key Data.    */
 DECL|method|putKey (Pipeline pipeline, KeyData data)
 name|void
 name|putKey
@@ -106,7 +106,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets an existing key.    * @param data - Key Data.    * @return Key Data.    */
+comment|/**    * Gets an existing key.    *    * @param data - Key Data.    * @return Key Data.    */
 DECL|method|getKey (KeyData data)
 name|KeyData
 name|getKey
@@ -117,7 +117,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes an existing Key.    * @param pipeline  - Pipeline.    * @param keyName Key Data.    */
+comment|/**    * Deletes an existing Key.    *    * @param pipeline - Pipeline.    * @param keyName  Key Data.    */
 DECL|method|deleteKey (Pipeline pipeline, String keyName)
 name|void
 name|deleteKey
@@ -131,7 +131,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List keys in a container.    * @param pipeline - pipeline.    * @param prefix - Prefix in needed.    * @param prevKey - Key to Start from, EMPTY_STRING to begin.    * @param count - Number of keys to return.    * @return List of Keys that match the criteria.    */
+comment|/**    * List keys in a container.    *    * @param pipeline - pipeline.    * @param prefix   - Prefix in needed.    * @param prevKey  - Key to Start from, EMPTY_STRING to begin.    * @param count    - Number of keys to return.    * @return List of Keys that match the criteria.    */
 DECL|method|listKey (Pipeline pipeline, String prefix, String prevKey, int count)
 name|List
 argument_list|<
@@ -151,6 +151,12 @@ parameter_list|,
 name|int
 name|count
 parameter_list|)
+function_decl|;
+comment|/**    * Shutdown keyManager.    */
+DECL|method|shutdown ()
+name|void
+name|shutdown
+parameter_list|()
 function_decl|;
 block|}
 end_interface

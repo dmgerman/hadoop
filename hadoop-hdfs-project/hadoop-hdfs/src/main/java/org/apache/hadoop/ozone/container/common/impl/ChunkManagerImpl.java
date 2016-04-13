@@ -669,6 +669,28 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Shutdown the chunkManager.    *    * In the chunkManager we haven't acquired any resources, so nothing to do    * here. This call is made with containerManager Writelock held.    */
+annotation|@
+name|Override
+DECL|method|shutdown ()
+specifier|public
+name|void
+name|shutdown
+parameter_list|()
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|this
+operator|.
+name|containerManager
+operator|.
+name|hasWriteLock
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

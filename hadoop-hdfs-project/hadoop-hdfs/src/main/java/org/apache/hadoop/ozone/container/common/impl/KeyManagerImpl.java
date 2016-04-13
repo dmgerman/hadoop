@@ -769,6 +769,35 @@ return|return
 literal|null
 return|;
 block|}
+comment|/**    * Shutdown keyManager.    */
+annotation|@
+name|Override
+DECL|method|shutdown ()
+specifier|public
+name|void
+name|shutdown
+parameter_list|()
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|this
+operator|.
+name|containerManager
+operator|.
+name|hasWriteLock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|KeyUtils
+operator|.
+name|shutdownCache
+argument_list|(
+name|containerCache
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

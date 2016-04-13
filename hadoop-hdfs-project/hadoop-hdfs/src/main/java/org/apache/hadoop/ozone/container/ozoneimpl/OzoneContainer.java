@@ -608,20 +608,73 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Stops the ozone container.    * @throws Exception    */
+comment|/**    * Stops the ozone container.    *    * Shutdown logic is not very obvious from the following code.    * if you need to  modify the logic, please keep these comments in mind.    * Here is the shutdown sequence.    *    * 1. We shutdown the network ports.    *    * 2. Now we need to wait for all requests in-flight to finish.    *    * 3. The container manager lock is a read-write lock with "Fairness" enabled.    *    * 4. This means that the waiting threads are served in a "first-come-first    * -served" manner. Please note that this applies to waiting threads only.    *    * 5. Since write locks are exclusive, if we are waiting to get a lock it    * implies that we are waiting for in-flight operations to complete.    *    * 6. if there are other write operations waiting on the reader-writer lock,    * fairness guarantees that they will proceed before the shutdown lock    * request.    *    * 7. Since all operations either take a reader or writer lock of container    * manager, we are guaranteed that we are the last operation since we have    * closed the network port, and we wait until close is successful.    *    * 8. We take the writer lock and call shutdown on each of the managers in    * reverse order. That is chunkManager, keyManager and containerManager is    * shutdown.    *    */
 DECL|method|stop ()
 specifier|public
 name|void
 name|stop
 parameter_list|()
-throws|throws
-name|Exception
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Attempting to stop container services."
+argument_list|)
+expr_stmt|;
 name|server
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+try|try
+block|{
+name|this
+operator|.
+name|manager
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|chunkManager
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|keyManager
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|manager
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"container services shutdown complete."
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|this
+operator|.
+name|manager
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Returns a paths to data dirs.    * @param dataset - FSDataset.    * @param pathList - List of paths.    * @throws IOException    */
 DECL|method|getDataDir (FsDatasetSpi dataset, List<Path> pathList)

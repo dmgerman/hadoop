@@ -139,6 +139,12 @@ throws|throws
 name|IOException
 function_decl|;
 comment|// TODO : Support list operations.
+comment|/**    * Shutdown the chunkManager.    */
+DECL|method|shutdown ()
+name|void
+name|shutdown
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -276,8 +276,6 @@ DECL|method|shutdown ()
 name|void
 name|shutdown
 parameter_list|()
-throws|throws
-name|IOException
 function_decl|;
 comment|/**    * Sets the Chunk Manager.    *    * @param chunkManager - ChunkManager.    */
 DECL|method|setChunkManager (ChunkManager chunkManager)
