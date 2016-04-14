@@ -4044,6 +4044,8 @@ name|IOException
 argument_list|(
 literal|"Unable to close file because the last block"
 operator|+
+name|last
+operator|+
 literal|" does not have enough number of replicas."
 argument_list|)
 throw|;
