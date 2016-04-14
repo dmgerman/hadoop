@@ -3729,7 +3729,7 @@ name|blockId
 parameter_list|)
 block|{
 name|File
-name|blockDir
+name|expectedBlockDir
 init|=
 name|DatanodeUtil
 operator|.
@@ -3740,35 +3740,26 @@ argument_list|,
 name|blockId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+name|File
+name|actualBlockDir
+init|=
 name|actualBlockFile
 operator|.
 name|getParentFile
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|actualBlockDir
 operator|.
 name|compareTo
 argument_list|(
-name|blockDir
+name|expectedBlockDir
 argument_list|)
 operator|!=
 literal|0
 condition|)
 block|{
-name|File
-name|expBlockFile
-init|=
-operator|new
-name|File
-argument_list|(
-name|blockDir
-argument_list|,
-name|actualBlockFile
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|LOG
 operator|.
 name|warn
@@ -3777,15 +3768,13 @@ literal|"Block: "
 operator|+
 name|blockId
 operator|+
-literal|" has to be upgraded to block ID-based layout. "
+literal|" found in invalid directory.  Expected directory: "
 operator|+
-literal|"Actual block file path: "
+name|expectedBlockDir
 operator|+
-name|actualBlockFile
+literal|".  Actual directory: "
 operator|+
-literal|", expected block file path: "
-operator|+
-name|expBlockFile
+name|actualBlockDir
 argument_list|)
 expr_stmt|;
 block|}

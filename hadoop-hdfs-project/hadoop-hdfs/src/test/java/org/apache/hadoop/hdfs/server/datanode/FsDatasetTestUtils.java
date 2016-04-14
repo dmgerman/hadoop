@@ -413,6 +413,14 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**      * Make the replica unreachable, perhaps by renaming it to an      * invalid file name.      * @throws IOException On I/O error.      */
+DECL|method|makeUnreachable ()
+name|void
+name|makeUnreachable
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 comment|/**    * Get a materialized replica to corrupt its block / crc later.    * @param block the block of this replica begone to.    * @return a replica to corrupt. Return null if the replica does not exist    * in this dataset.    * @throws ReplicaNotFoundException if the replica does not exists on the    *         dataset.    */
 DECL|method|getMaterializedReplica (ExtendedBlock block)

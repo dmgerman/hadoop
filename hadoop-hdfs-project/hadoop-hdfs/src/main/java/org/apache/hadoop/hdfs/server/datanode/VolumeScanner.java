@@ -1899,7 +1899,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"FileNotFound while finding block {} on volume {}"
+literal|"Replica {} was not found in the VolumeMap for volume {}"
 argument_list|,
 name|cblock
 argument_list|,
