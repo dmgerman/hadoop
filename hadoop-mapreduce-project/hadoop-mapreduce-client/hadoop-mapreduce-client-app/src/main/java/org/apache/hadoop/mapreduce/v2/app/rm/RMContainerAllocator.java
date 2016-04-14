@@ -5143,6 +5143,20 @@ operator|+
 name|taskAttemptNodeId
 argument_list|)
 expr_stmt|;
+comment|// If map, reschedule next task attempt.
+name|boolean
+name|rescheduleNextAttempt
+init|=
+operator|(
+name|i
+operator|==
+literal|0
+operator|)
+condition|?
+literal|true
+else|:
+literal|false
+decl_stmt|;
 name|eventHandler
 operator|.
 name|handle
@@ -5155,6 +5169,8 @@ argument_list|,
 literal|"TaskAttempt killed because it ran on unusable node"
 operator|+
 name|taskAttemptNodeId
+argument_list|,
+name|rescheduleNextAttempt
 argument_list|)
 argument_list|)
 expr_stmt|;

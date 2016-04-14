@@ -44,37 +44,32 @@ name|TaskAttemptId
 import|;
 end_import
 
+begin_comment
+comment|/**  * Task Attempt killed event.  */
+end_comment
+
 begin_class
-DECL|class|TaskAttemptKillEvent
+DECL|class|TaskTAttemptKilledEvent
 specifier|public
 class|class
-name|TaskAttemptKillEvent
+name|TaskTAttemptKilledEvent
 extends|extends
-name|TaskAttemptEvent
+name|TaskTAttemptEvent
 block|{
-DECL|field|message
-specifier|private
-specifier|final
-name|String
-name|message
-decl_stmt|;
-comment|// Next map attempt will be rescheduled(i.e. updated in ask with higher
-comment|// priority equivalent to that of a fast fail map)
+comment|// Next map attempt will be rescheduled(i.e. updated in ask with
+comment|// higher priority equivalent to that of a fast fail map)
 DECL|field|rescheduleAttempt
 specifier|private
 specifier|final
 name|boolean
 name|rescheduleAttempt
 decl_stmt|;
-DECL|method|TaskAttemptKillEvent (TaskAttemptId attemptID, String message, boolean rescheduleAttempt)
+DECL|method|TaskTAttemptKilledEvent (TaskAttemptId id, boolean rescheduleAttempt)
 specifier|public
-name|TaskAttemptKillEvent
+name|TaskTAttemptKilledEvent
 parameter_list|(
 name|TaskAttemptId
-name|attemptID
-parameter_list|,
-name|String
-name|message
+name|id
 parameter_list|,
 name|boolean
 name|rescheduleAttempt
@@ -82,18 +77,12 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|attemptID
+name|id
 argument_list|,
-name|TaskAttemptEventType
+name|TaskEventType
 operator|.
-name|TA_KILL
+name|T_ATTEMPT_KILLED
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|message
-operator|=
-name|message
 expr_stmt|;
 name|this
 operator|.
@@ -101,37 +90,6 @@ name|rescheduleAttempt
 operator|=
 name|rescheduleAttempt
 expr_stmt|;
-block|}
-DECL|method|TaskAttemptKillEvent (TaskAttemptId attemptID, String message)
-specifier|public
-name|TaskAttemptKillEvent
-parameter_list|(
-name|TaskAttemptId
-name|attemptID
-parameter_list|,
-name|String
-name|message
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|attemptID
-argument_list|,
-name|message
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|getMessage ()
-specifier|public
-name|String
-name|getMessage
-parameter_list|()
-block|{
-return|return
-name|message
-return|;
 block|}
 DECL|method|getRescheduleAttempt ()
 specifier|public

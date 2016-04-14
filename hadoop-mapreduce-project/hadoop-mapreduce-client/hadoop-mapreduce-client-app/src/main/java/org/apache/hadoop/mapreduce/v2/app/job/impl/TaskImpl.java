@@ -1014,6 +1014,28 @@ name|v2
 operator|.
 name|app
 operator|.
+name|job
+operator|.
+name|event
+operator|.
+name|TaskTAttemptKilledEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
 name|metrics
 operator|.
 name|MRAppMetrics
@@ -3578,6 +3600,27 @@ name|Avataar
 name|avataar
 parameter_list|)
 block|{
+name|addAndScheduleAttempt
+argument_list|(
+name|avataar
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|// This is always called in the Write Lock
+DECL|method|addAndScheduleAttempt (Avataar avataar, boolean reschedule)
+specifier|private
+name|void
+name|addAndScheduleAttempt
+parameter_list|(
+name|Avataar
+name|avataar
+parameter_list|,
+name|boolean
+name|reschedule
+parameter_list|)
+block|{
 name|TaskAttempt
 name|attempt
 init|=
@@ -3605,6 +3648,8 @@ name|size
 argument_list|()
 operator|>
 literal|0
+operator|||
+name|reschedule
 condition|)
 block|{
 name|eventHandler
@@ -5542,6 +5587,31 @@ operator|==
 literal|null
 condition|)
 block|{
+name|boolean
+name|rescheduleNewAttempt
+init|=
+literal|false
+decl_stmt|;
+if|if
+condition|(
+name|event
+operator|instanceof
+name|TaskTAttemptKilledEvent
+condition|)
+block|{
+name|rescheduleNewAttempt
+operator|=
+operator|(
+operator|(
+name|TaskTAttemptKilledEvent
+operator|)
+name|event
+operator|)
+operator|.
+name|getRescheduleAttempt
+argument_list|()
+expr_stmt|;
+block|}
 name|task
 operator|.
 name|addAndScheduleAttempt
@@ -5549,6 +5619,8 @@ argument_list|(
 name|Avataar
 operator|.
 name|VIRGIN
+argument_list|,
+name|rescheduleNewAttempt
 argument_list|)
 expr_stmt|;
 block|}
@@ -6629,6 +6701,34 @@ comment|// SCHEDULE's then the dataLocal hosts of this taskAttempt will be used
 comment|// from the map splitInfo. So the bad node might be sent as a location
 comment|// to the RM. But the RM would ignore that just like it would ignore
 comment|// currently pending container requests affinitized to bad nodes.
+name|boolean
+name|rescheduleNextTaskAttempt
+init|=
+literal|false
+decl_stmt|;
+if|if
+condition|(
+name|event
+operator|instanceof
+name|TaskTAttemptKilledEvent
+condition|)
+block|{
+comment|// Decide whether to reschedule next task attempt. If true, this
+comment|// typically indicates that a successful map attempt was killed on an
+comment|// unusable node being reported.
+name|rescheduleNextTaskAttempt
+operator|=
+operator|(
+operator|(
+name|TaskTAttemptKilledEvent
+operator|)
+name|event
+operator|)
+operator|.
+name|getRescheduleAttempt
+argument_list|()
+expr_stmt|;
+block|}
 name|task
 operator|.
 name|addAndScheduleAttempt
@@ -6636,6 +6736,8 @@ argument_list|(
 name|Avataar
 operator|.
 name|VIRGIN
+argument_list|,
+name|rescheduleNextTaskAttempt
 argument_list|)
 expr_stmt|;
 return|return

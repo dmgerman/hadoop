@@ -7819,6 +7819,8 @@ operator|+
 name|id
 argument_list|)
 expr_stmt|;
+comment|// Kill the attempt and indicate that next map attempt should be
+comment|// rescheduled (i.e. considered as a fast fail map).
 name|eventHandler
 operator|.
 name|handle
@@ -7829,6 +7831,8 @@ argument_list|(
 name|id
 argument_list|,
 name|mesg
+argument_list|,
+literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
