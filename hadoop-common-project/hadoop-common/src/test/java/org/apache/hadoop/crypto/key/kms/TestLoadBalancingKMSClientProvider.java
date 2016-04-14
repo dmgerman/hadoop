@@ -362,7 +362,7 @@ argument_list|(
 operator|new
 name|URI
 argument_list|(
-literal|"kms://http@host1;host2;host3:16000/kms/foo"
+literal|"kms://http@host1;host2;host3:9600/kms/foo"
 argument_list|)
 argument_list|,
 name|conf
@@ -402,11 +402,11 @@ name|Sets
 operator|.
 name|newHashSet
 argument_list|(
-literal|"http://host1:16000/kms/foo/v1/"
+literal|"http://host1:9600/kms/foo/v1/"
 argument_list|,
-literal|"http://host2:16000/kms/foo/v1/"
+literal|"http://host2:9600/kms/foo/v1/"
 argument_list|,
-literal|"http://host3:16000/kms/foo/v1/"
+literal|"http://host3:9600/kms/foo/v1/"
 argument_list|)
 argument_list|,
 name|Sets
