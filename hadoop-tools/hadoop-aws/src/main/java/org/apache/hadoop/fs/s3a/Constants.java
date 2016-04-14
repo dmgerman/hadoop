@@ -92,6 +92,16 @@ name|ENDPOINT
 init|=
 literal|"fs.s3a.endpoint"
 decl_stmt|;
+comment|//Enable path style access? Overrides default virtual hosting
+DECL|field|PATH_STYLE_ACCESS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PATH_STYLE_ACCESS
+init|=
+literal|"fs.s3a.path.style.access"
+decl_stmt|;
 comment|//connect to s3 through a proxy server?
 DECL|field|PROXY_HOST
 specifier|public
