@@ -404,13 +404,6 @@ name|ContainerManagerApplicationProto
 argument_list|>
 name|applications
 decl_stmt|;
-DECL|field|finishedApplications
-name|List
-argument_list|<
-name|ApplicationId
-argument_list|>
-name|finishedApplications
-decl_stmt|;
 DECL|method|getApplications ()
 specifier|public
 name|List
@@ -422,19 +415,6 @@ parameter_list|()
 block|{
 return|return
 name|applications
-return|;
-block|}
-DECL|method|getFinishedApplications ()
-specifier|public
-name|List
-argument_list|<
-name|ApplicationId
-argument_list|>
-name|getFinishedApplications
-parameter_list|()
-block|{
-return|return
-name|finishedApplications
 return|;
 block|}
 block|}
@@ -1099,19 +1079,6 @@ name|appId
 parameter_list|,
 name|ContainerManagerApplicationProto
 name|p
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Record that an application has finished    * @param appId the application ID    * @throws IOException    */
-DECL|method|storeFinishedApplication (ApplicationId appId)
-specifier|public
-specifier|abstract
-name|void
-name|storeFinishedApplication
-parameter_list|(
-name|ApplicationId
-name|appId
 parameter_list|)
 throws|throws
 name|IOException

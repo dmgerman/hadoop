@@ -2539,6 +2539,25 @@ argument_list|(
 name|app
 argument_list|)
 expr_stmt|;
+comment|// no longer saving FINISH_APP event in NM stateStore,
+comment|// simulate by resending FINISH_APP event
+name|cm
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|CMgrCompletedAppsEvent
+argument_list|(
+name|finishedApps
+argument_list|,
+name|CMgrCompletedAppsEvent
+operator|.
+name|Reason
+operator|.
+name|BY_RESOURCEMANAGER
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|waitForAppState
 argument_list|(
 name|app

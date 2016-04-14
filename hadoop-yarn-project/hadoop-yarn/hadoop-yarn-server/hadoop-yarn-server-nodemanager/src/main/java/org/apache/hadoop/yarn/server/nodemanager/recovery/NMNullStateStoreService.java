@@ -346,17 +346,6 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|storeFinishedApplication (ApplicationId appId)
-specifier|public
-name|void
-name|storeFinishedApplication
-parameter_list|(
-name|ApplicationId
-name|appId
-parameter_list|)
-block|{   }
-annotation|@
-name|Override
 DECL|method|removeApplication (ApplicationId appId)
 specifier|public
 name|void
