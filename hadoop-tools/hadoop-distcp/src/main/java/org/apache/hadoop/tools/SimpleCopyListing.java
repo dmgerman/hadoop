@@ -1053,7 +1053,10 @@ name|scheme
 argument_list|,
 name|authority
 argument_list|,
+name|makeQualified
+argument_list|(
 name|path
+argument_list|)
 operator|.
 name|toUri
 argument_list|()
