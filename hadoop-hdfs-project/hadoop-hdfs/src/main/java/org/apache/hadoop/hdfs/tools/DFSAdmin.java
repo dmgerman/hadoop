@@ -2504,6 +2504,8 @@ literal|"\t[-disallowSnapshot<snapshotDir>]\n"
 operator|+
 literal|"\t[-shutdownDatanode<datanode_host:ipc_port> [upgrade]]\n"
 operator|+
+literal|"\t[-evictWriters<datanode_host:ipc_port>]\n"
+operator|+
 literal|"\t[-getDatanodeInfo<datanode_host:ipc_port>]\n"
 operator|+
 literal|"\t[-metasave filename]\n"
@@ -10001,6 +10003,29 @@ argument_list|(
 literal|"Usage: hdfs dfsadmin"
 operator|+
 literal|" [-shutdownDatanode<datanode_host:ipc_port> [upgrade]]"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+literal|"-evictWriters"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Usage: hdfs dfsadmin"
+operator|+
+literal|" [-evictWriters<datanode_host:ipc_port>]"
 argument_list|)
 expr_stmt|;
 block|}
