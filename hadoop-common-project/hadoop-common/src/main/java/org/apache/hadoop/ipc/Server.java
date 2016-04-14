@@ -644,6 +644,22 @@ name|hadoop
 operator|.
 name|classification
 operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
 name|InterfaceStability
 import|;
 end_import
@@ -1426,22 +1442,7 @@ end_comment
 
 begin_class
 annotation|@
-name|InterfaceAudience
-operator|.
-name|LimitedPrivate
-argument_list|(
-name|value
-operator|=
-block|{
-literal|"Common"
-block|,
-literal|"HDFS"
-block|,
-literal|"MapReduce"
-block|,
-literal|"Yarn"
-block|}
-argument_list|)
+name|Public
 annotation|@
 name|InterfaceStability
 operator|.
@@ -2651,7 +2652,7 @@ name|logSlowRPC
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * Checks if LogSlowRPC is set true.    * @return    */
+comment|/**    * Checks if LogSlowRPC is set true.    * @return true, if LogSlowRPC is set true, false, otherwise.    */
 DECL|method|isLogSlowRPC ()
 specifier|protected
 name|boolean
