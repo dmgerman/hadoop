@@ -108,6 +108,28 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -127,6 +149,19 @@ DECL|field|name
 specifier|private
 name|Name
 name|name
+decl_stmt|;
+annotation|@
+name|Rule
+DECL|field|globalTimeout
+specifier|public
+name|Timeout
+name|globalTimeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|10000
+argument_list|)
 decl_stmt|;
 annotation|@
 name|Before
@@ -188,11 +223,6 @@ block|}
 comment|// test a matching name
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|applyMatch ()
 specifier|public
 name|void
@@ -241,11 +271,6 @@ block|}
 comment|// test a non-matching name
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|applyNotMatch ()
 specifier|public
 name|void
@@ -294,11 +319,6 @@ block|}
 comment|// test a different case name
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|applyMixedCase ()
 specifier|public
 name|void
@@ -347,11 +367,6 @@ block|}
 comment|// test a matching glob pattern
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|applyGlob ()
 specifier|public
 name|void
@@ -400,11 +415,6 @@ block|}
 comment|// test a glob pattern with different case
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|applyGlobMixedCase ()
 specifier|public
 name|void
@@ -453,11 +463,6 @@ block|}
 comment|// test a non-matching glob pattern
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|applyGlobNotMatch ()
 specifier|public
 name|void

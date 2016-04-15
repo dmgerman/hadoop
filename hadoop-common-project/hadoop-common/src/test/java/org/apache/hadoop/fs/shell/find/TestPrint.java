@@ -72,16 +72,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -114,6 +104,38 @@ name|Before
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestPrint
 specifier|public
@@ -124,6 +146,19 @@ DECL|field|mockFs
 specifier|private
 name|FileSystem
 name|mockFs
+decl_stmt|;
+annotation|@
+name|Rule
+DECL|field|globalTimeout
+specifier|public
+name|Timeout
+name|globalTimeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|10000
+argument_list|)
 decl_stmt|;
 annotation|@
 name|Before
@@ -146,11 +181,6 @@ block|}
 comment|// test the full path is printed to stdout
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testPrint ()
 specifier|public
 name|void

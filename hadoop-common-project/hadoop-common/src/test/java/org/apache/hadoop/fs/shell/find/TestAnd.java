@@ -96,6 +96,28 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -106,14 +128,22 @@ specifier|public
 class|class
 name|TestAnd
 block|{
+annotation|@
+name|Rule
+DECL|field|globalTimeout
+specifier|public
+name|Timeout
+name|globalTimeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|10000
+argument_list|)
+decl_stmt|;
 comment|// test all expressions passing
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testPass ()
 specifier|public
 name|void
@@ -290,11 +320,6 @@ block|}
 comment|// test the first expression failing
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testFailFirst ()
 specifier|public
 name|void
@@ -458,11 +483,6 @@ block|}
 comment|// test the second expression failing
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testFailSecond ()
 specifier|public
 name|void
@@ -639,11 +659,6 @@ block|}
 comment|// test both expressions failing
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testFailBoth ()
 specifier|public
 name|void
@@ -807,11 +822,6 @@ block|}
 comment|// test the first expression stopping
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testStopFirst ()
 specifier|public
 name|void
@@ -988,11 +998,6 @@ block|}
 comment|// test the second expression stopping
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testStopSecond ()
 specifier|public
 name|void
@@ -1169,11 +1174,6 @@ block|}
 comment|// test first expression stopping and second failing
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testStopFail ()
 specifier|public
 name|void
@@ -1357,11 +1357,6 @@ block|}
 comment|// test setOptions is called on child
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testSetOptions ()
 specifier|public
 name|void
@@ -1482,11 +1477,6 @@ block|}
 comment|// test prepare is called on child
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testPrepare ()
 specifier|public
 name|void
@@ -1591,11 +1581,6 @@ block|}
 comment|// test finish is called on child
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testFinish ()
 specifier|public
 name|void

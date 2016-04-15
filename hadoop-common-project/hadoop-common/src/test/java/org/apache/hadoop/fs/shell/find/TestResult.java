@@ -38,6 +38,28 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -48,14 +70,22 @@ specifier|public
 class|class
 name|TestResult
 block|{
+annotation|@
+name|Rule
+DECL|field|globalTimeout
+specifier|public
+name|Timeout
+name|globalTimeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|10000
+argument_list|)
+decl_stmt|;
 comment|// test the PASS value
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testPass ()
 specifier|public
 name|void
@@ -89,11 +119,6 @@ block|}
 comment|// test the FAIL value
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testFail ()
 specifier|public
 name|void
@@ -127,11 +152,6 @@ block|}
 comment|// test the STOP value
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testStop ()
 specifier|public
 name|void
@@ -165,11 +185,6 @@ block|}
 comment|// test combine method with two PASSes
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|combinePassPass ()
 specifier|public
 name|void
@@ -210,11 +225,6 @@ block|}
 comment|// test the combine method with a PASS and a FAIL
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|combinePassFail ()
 specifier|public
 name|void
@@ -255,11 +265,6 @@ block|}
 comment|// test the combine method with a FAIL and a PASS
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|combineFailPass ()
 specifier|public
 name|void
@@ -300,11 +305,6 @@ block|}
 comment|// test the combine method with two FAILs
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|combineFailFail ()
 specifier|public
 name|void
@@ -345,11 +345,6 @@ block|}
 comment|// test the combine method with a PASS and STOP
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|combinePassStop ()
 specifier|public
 name|void
@@ -390,11 +385,6 @@ block|}
 comment|// test the combine method with a STOP and FAIL
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|combineStopFail ()
 specifier|public
 name|void
@@ -435,11 +425,6 @@ block|}
 comment|// test the combine method with a STOP and a PASS
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|combineStopPass ()
 specifier|public
 name|void
@@ -480,11 +465,6 @@ block|}
 comment|// test the combine method with a FAIL and a STOP
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|combineFailStop ()
 specifier|public
 name|void
@@ -525,11 +505,6 @@ block|}
 comment|// test the negation of PASS
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|negatePass ()
 specifier|public
 name|void
@@ -566,11 +541,6 @@ block|}
 comment|// test the negation of FAIL
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|negateFail ()
 specifier|public
 name|void
@@ -607,11 +577,6 @@ block|}
 comment|// test the negation of STOP
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|negateStop ()
 specifier|public
 name|void
@@ -648,11 +613,6 @@ block|}
 comment|// test equals with two PASSes
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|equalsPass ()
 specifier|public
 name|void
@@ -691,11 +651,6 @@ block|}
 comment|// test equals with two FAILs
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|equalsFail ()
 specifier|public
 name|void
@@ -734,11 +689,6 @@ block|}
 comment|// test equals with two STOPS
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|equalsStop ()
 specifier|public
 name|void
@@ -777,11 +727,6 @@ block|}
 comment|// test all combinations of not equals
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|notEquals ()
 specifier|public
 name|void

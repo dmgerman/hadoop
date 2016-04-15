@@ -96,6 +96,28 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -115,6 +137,19 @@ DECL|field|test
 specifier|private
 name|FilterExpression
 name|test
+decl_stmt|;
+annotation|@
+name|Rule
+DECL|field|globalTimeout
+specifier|public
+name|Timeout
+name|globalTimeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|10000
+argument_list|)
 decl_stmt|;
 annotation|@
 name|Before
@@ -146,11 +181,6 @@ block|}
 comment|// test that the child expression is correctly set
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|expression ()
 specifier|public
 name|void
@@ -172,11 +202,6 @@ block|}
 comment|// test that setOptions method is called
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|setOptions ()
 specifier|public
 name|void
@@ -221,11 +246,6 @@ block|}
 comment|// test the apply method is called and the result returned
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|apply ()
 specifier|public
 name|void
@@ -332,11 +352,6 @@ block|}
 comment|// test that the finish method is called
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|finish ()
 specifier|public
 name|void
@@ -367,11 +382,6 @@ block|}
 comment|// test that the getUsage method is called
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|getUsage ()
 specifier|public
 name|void
@@ -433,11 +443,6 @@ block|}
 comment|// test that the getHelp method is called
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|getHelp ()
 specifier|public
 name|void
@@ -499,11 +504,6 @@ block|}
 comment|// test that the isAction method is called
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|isAction ()
 specifier|public
 name|void
@@ -566,11 +566,6 @@ block|}
 comment|// test that the isOperator method is called
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|isOperator ()
 specifier|public
 name|void
@@ -633,11 +628,6 @@ block|}
 comment|// test that the getPrecedence method is called
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|getPrecedence ()
 specifier|public
 name|void
@@ -689,11 +679,6 @@ block|}
 comment|// test that the addChildren method is called
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|addChildren ()
 specifier|public
 name|void
@@ -744,11 +729,6 @@ block|}
 comment|// test that the addArguments method is called
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|addArguments ()
 specifier|public
 name|void

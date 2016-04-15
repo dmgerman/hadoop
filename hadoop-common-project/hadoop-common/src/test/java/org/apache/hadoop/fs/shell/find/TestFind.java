@@ -294,7 +294,9 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|rules
+operator|.
+name|Timeout
 import|;
 end_import
 
@@ -304,9 +306,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|rules
-operator|.
-name|Timeout
+name|Test
 import|;
 end_import
 
