@@ -1083,11 +1083,10 @@ range|:
 name|excludeList
 control|)
 block|{
-name|UnknownNodeId
+name|NodeId
 name|nodeId
 init|=
-operator|new
-name|UnknownNodeId
+name|createUnknownNodeId
 argument_list|(
 name|host
 argument_list|)
@@ -2447,91 +2446,27 @@ block|}
 block|}
 block|}
 comment|/**    * A NodeId instance needed upon startup for populating inactive nodes Map.    * It only knows the hostname/ip and marks the port to -1 or invalid.    */
-DECL|class|UnknownNodeId
+DECL|method|createUnknownNodeId (String host)
 specifier|public
 specifier|static
-class|class
-name|UnknownNodeId
-extends|extends
 name|NodeId
-block|{
-DECL|field|host
-specifier|private
-name|String
-name|host
-decl_stmt|;
-DECL|method|UnknownNodeId (String host)
-specifier|public
-name|UnknownNodeId
+name|createUnknownNodeId
 parameter_list|(
 name|String
 name|host
 parameter_list|)
 block|{
-name|this
-operator|.
-name|host
-operator|=
-name|host
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|getHost ()
-specifier|public
-name|String
-name|getHost
-parameter_list|()
-block|{
 return|return
-name|this
+name|NodeId
 operator|.
+name|newInstance
+argument_list|(
 name|host
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|setHost (String hst)
-specifier|protected
-name|void
-name|setHost
-parameter_list|(
-name|String
-name|hst
-parameter_list|)
-block|{      }
-annotation|@
-name|Override
-DECL|method|getPort ()
-specifier|public
-name|int
-name|getPort
-parameter_list|()
-block|{
-return|return
+argument_list|,
 operator|-
 literal|1
+argument_list|)
 return|;
-block|}
-annotation|@
-name|Override
-DECL|method|setPort (int port)
-specifier|protected
-name|void
-name|setPort
-parameter_list|(
-name|int
-name|port
-parameter_list|)
-block|{      }
-annotation|@
-name|Override
-DECL|method|build ()
-specifier|protected
-name|void
-name|build
-parameter_list|()
-block|{      }
 block|}
 comment|/**    * A Node instance needed upon startup for populating inactive nodes Map.    * It only knows its hostname/ip.    */
 DECL|class|UnknownNode

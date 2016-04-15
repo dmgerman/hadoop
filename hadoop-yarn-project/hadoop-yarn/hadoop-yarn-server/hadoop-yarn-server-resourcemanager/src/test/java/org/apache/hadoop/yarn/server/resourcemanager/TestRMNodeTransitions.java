@@ -5444,15 +5444,12 @@ name|void
 name|testUnknownNodeId
 parameter_list|()
 block|{
-name|NodesListManager
-operator|.
-name|UnknownNodeId
+name|NodeId
 name|nodeId
 init|=
-operator|new
 name|NodesListManager
 operator|.
-name|UnknownNodeId
+name|createUnknownNodeId
 argument_list|(
 literal|"host1"
 argument_list|)

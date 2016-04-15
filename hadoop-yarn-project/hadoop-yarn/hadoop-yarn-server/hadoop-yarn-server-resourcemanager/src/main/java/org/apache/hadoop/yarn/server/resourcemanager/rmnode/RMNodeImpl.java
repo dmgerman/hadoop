@@ -4211,15 +4211,12 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|NodesListManager
-operator|.
-name|UnknownNodeId
+name|NodeId
 name|unknownNodeId
 init|=
-operator|new
 name|NodesListManager
 operator|.
-name|UnknownNodeId
+name|createUnknownNodeId
 argument_list|(
 name|nodeId
 operator|.
