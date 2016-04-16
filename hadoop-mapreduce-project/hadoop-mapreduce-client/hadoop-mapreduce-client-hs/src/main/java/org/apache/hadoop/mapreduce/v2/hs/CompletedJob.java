@@ -1191,6 +1191,16 @@ name|getUsername
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|report
+operator|.
+name|setDiagnostics
+argument_list|(
+name|jobInfo
+operator|.
+name|getErrorInfo
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|getTotalMaps
@@ -2310,6 +2320,32 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|createJobHistoryParser (Path historyFileAbsolute)
+specifier|protected
+name|JobHistoryParser
+name|createJobHistoryParser
+parameter_list|(
+name|Path
+name|historyFileAbsolute
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|JobHistoryParser
+argument_list|(
+name|historyFileAbsolute
+operator|.
+name|getFileSystem
+argument_list|(
+name|conf
+argument_list|)
+argument_list|,
+name|historyFileAbsolute
+argument_list|)
+return|;
+block|}
 comment|//History data is leisurely loaded when task level data is requested
 DECL|method|loadFullHistoryData (boolean loadTasks, Path historyFileAbsolute)
 specifier|protected
@@ -2375,11 +2411,8 @@ argument_list|)
 decl_stmt|;
 name|parser
 operator|=
-operator|new
-name|JobHistoryParser
+name|createJobHistoryParser
 argument_list|(
-name|fs
-argument_list|,
 name|historyFileAbsolute
 argument_list|)
 expr_stmt|;
