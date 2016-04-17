@@ -6522,45 +6522,6 @@ condition|(
 name|removed
 condition|)
 block|{
-comment|// track reserved resource for metrics, for normal container
-comment|// getReservedResource will be null.
-name|Resource
-name|reservedRes
-init|=
-name|rmContainer
-operator|.
-name|getReservedResource
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|reservedRes
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|reservedRes
-operator|.
-name|equals
-argument_list|(
-name|Resources
-operator|.
-name|none
-argument_list|()
-argument_list|)
-condition|)
-block|{
-name|decReservedResource
-argument_list|(
-name|node
-operator|.
-name|getPartition
-argument_list|()
-argument_list|,
-name|reservedRes
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Inform the ordering policy
 name|orderingPolicy
 operator|.
