@@ -1280,6 +1280,22 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|sun
+operator|.
+name|jersey
+operator|.
+name|api
+operator|.
+name|client
+operator|.
+name|ClientHandlerException
+import|;
+end_import
+
 begin_comment
 comment|/**  * An ApplicationMaster for executing shell commands on a set of launched  * containers using the YARN framework.  *   *<p>  * This class is meant to act as an example on how to write yarn-based  * application masters.  *</p>  *   *<p>  * The ApplicationMaster is started on a container by the  *<code>ResourceManager</code>'s launcher. The first thing that the  *<code>ApplicationMaster</code> needs to do is to connect and register itself  * with the<code>ResourceManager</code>. The registration sets up information  * within the<code>ResourceManager</code> regarding what host:port the  * ApplicationMaster is listening on to provide any form of functionality to a  * client as well as a tracking url that a client can use to keep track of  * status/job history if needed. However, in the distributedshell, trackingurl  * and appMasterHost:appMasterRpcPort are not supported.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> needs to send a heartbeat to the  *<code>ResourceManager</code> at regular intervals to inform the  *<code>ResourceManager</code> that it is up and alive. The  * {@link ApplicationMasterProtocol#allocate} to the<code>ResourceManager</code> from the  *<code>ApplicationMaster</code> acts as a heartbeat.  *   *<p>  * For the actual handling of the job, the<code>ApplicationMaster</code> has to  * request the<code>ResourceManager</code> via {@link AllocateRequest} for the  * required no. of containers using {@link ResourceRequest} with the necessary  * resource specifications such as node location, computational  * (memory/disk/cpu) resource requirements. The<code>ResourceManager</code>  * responds with an {@link AllocateResponse} that informs the  *<code>ApplicationMaster</code> of the set of newly allocated containers,  * completed containers as well as current state of available resources.  *</p>  *   *<p>  * For each allocated container, the<code>ApplicationMaster</code> can then set  * up the necessary launch context via {@link ContainerLaunchContext} to specify  * the allocated container id, local resources required by the executable, the  * environment to be setup for the executable, commands to execute, etc. and  * submit a {@link StartContainerRequest} to the {@link ContainerManagementProtocol} to  * launch and execute the defined commands on the given allocated container.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> can monitor the launched container by  * either querying the<code>ResourceManager</code> using  * {@link ApplicationMasterProtocol#allocate} to get updates on completed containers or via  * the {@link ContainerManagementProtocol} by querying for the status of the allocated  * container's {@link ContainerId}.  *  *<p>  * After the job has been completed, the<code>ApplicationMaster</code> has to  * send a {@link FinishApplicationMasterRequest} to the  *<code>ResourceManager</code> to inform it that the  *<code>ApplicationMaster</code> has been completed.  */
 end_comment
@@ -5770,6 +5786,8 @@ parameter_list|(
 name|YarnException
 decl||
 name|IOException
+decl||
+name|ClientHandlerException
 name|e
 parameter_list|)
 block|{
@@ -5792,8 +5810,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|publishContainerEndEvent ( final TimelineClient timelineClient, ContainerStatus container, String domainId, UserGroupInformation ugi)
-specifier|private
 name|void
 name|publishContainerEndEvent
 parameter_list|(
@@ -5973,6 +5992,8 @@ parameter_list|(
 name|YarnException
 decl||
 name|IOException
+decl||
+name|ClientHandlerException
 name|e
 parameter_list|)
 block|{
@@ -6189,6 +6210,8 @@ parameter_list|(
 name|YarnException
 decl||
 name|IOException
+decl||
+name|ClientHandlerException
 name|e
 parameter_list|)
 block|{

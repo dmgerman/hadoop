@@ -1716,7 +1716,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|mockEntityClientResponse ( TimelineWriter spyTimelineWriter, ClientResponse.Status status, boolean hasError, boolean hasRuntimeError)
-specifier|private
+specifier|public
 specifier|static
 name|ClientResponse
 name|mockEntityClientResponse

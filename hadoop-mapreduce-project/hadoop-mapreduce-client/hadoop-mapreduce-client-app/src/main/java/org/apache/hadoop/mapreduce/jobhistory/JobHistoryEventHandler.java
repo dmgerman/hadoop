@@ -866,6 +866,22 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|sun
+operator|.
+name|jersey
+operator|.
+name|api
+operator|.
+name|client
+operator|.
+name|ClientHandlerException
+import|;
+end_import
+
 begin_comment
 comment|/**  * The job history events get routed to this class. This class writes the Job  * history events to the DFS directly into a staging dir and then moved to a  * done-dir. JobHistory implementation is in this package to access package  * private classes.  */
 end_comment
@@ -6718,32 +6734,11 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ex
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Error putting entity "
-operator|+
-name|tEntity
-operator|.
-name|getEntityId
-argument_list|()
-operator|+
-literal|" to Timeline"
-operator|+
-literal|"Server"
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
 name|YarnException
+decl||
+name|IOException
+decl||
+name|ClientHandlerException
 name|ex
 parameter_list|)
 block|{
