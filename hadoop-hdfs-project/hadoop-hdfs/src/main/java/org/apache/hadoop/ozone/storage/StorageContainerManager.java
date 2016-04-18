@@ -174,7 +174,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_HANDLER_COUNT_DEFAULT
+name|DFS_CONTAINER_HANDLER_COUNT_DEFAULT
 import|;
 end_import
 
@@ -190,7 +190,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_HANDLER_COUNT_KEY
+name|DFS_CONTAINER_LOCATION_HANDLER_COUNT_KEY
 import|;
 end_import
 
@@ -206,7 +206,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_RPC_ADDRESS_DEFAULT
+name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_DEFAULT
 import|;
 end_import
 
@@ -222,7 +222,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_RPC_ADDRESS_KEY
+name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_KEY
 import|;
 end_import
 
@@ -238,7 +238,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_RPC_BIND_HOST_KEY
+name|DFS_CONTAINER_LOCATION_RPC_BIND_HOST_KEY
 import|;
 end_import
 
@@ -1564,15 +1564,15 @@ name|conf
 operator|.
 name|getTrimmed
 argument_list|(
-name|DFS_STORAGE_RPC_ADDRESS_KEY
+name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_KEY
 argument_list|,
-name|DFS_STORAGE_RPC_ADDRESS_DEFAULT
+name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_DEFAULT
 argument_list|)
 argument_list|,
 operator|-
 literal|1
 argument_list|,
-name|DFS_STORAGE_RPC_ADDRESS_KEY
+name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_KEY
 argument_list|)
 decl_stmt|;
 name|storageRpcServer
@@ -1589,11 +1589,11 @@ name|class
 argument_list|,
 name|storageProtoPbService
 argument_list|,
-name|DFS_STORAGE_RPC_BIND_HOST_KEY
+name|DFS_CONTAINER_LOCATION_RPC_BIND_HOST_KEY
 argument_list|,
-name|DFS_STORAGE_HANDLER_COUNT_KEY
+name|DFS_CONTAINER_LOCATION_HANDLER_COUNT_KEY
 argument_list|,
-name|DFS_STORAGE_HANDLER_COUNT_DEFAULT
+name|DFS_CONTAINER_HANDLER_COUNT_DEFAULT
 argument_list|)
 expr_stmt|;
 name|storageRpcAddress
@@ -1602,7 +1602,7 @@ name|updateListenAddress
 argument_list|(
 name|conf
 argument_list|,
-name|DFS_STORAGE_RPC_ADDRESS_KEY
+name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_KEY
 argument_list|,
 name|storageRpcAddr
 argument_list|,

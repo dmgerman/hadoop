@@ -727,11 +727,11 @@ name|getTrimmed
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_LOCAL_ROOT
+name|OZONE_LOCALSTORAGE_ROOT
 argument_list|,
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_LOCAL_ROOT_DEFAULT
+name|OZONE_LOCALSTORAGE_ROOT_DEFAULT
 argument_list|)
 expr_stmt|;
 name|conf
@@ -740,7 +740,7 @@ name|set
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_LOCAL_ROOT
+name|OZONE_LOCALSTORAGE_ROOT
 argument_list|,
 name|path
 argument_list|)
@@ -751,7 +751,7 @@ name|setBoolean
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_OBJECTSTORE_ENABLED_KEY
+name|OZONE_ENABLED
 argument_list|,
 literal|true
 argument_list|)
@@ -762,7 +762,7 @@ name|set
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_HANDLER_TYPE_KEY
+name|OZONE_HANDLER_TYPE_KEY
 argument_list|,
 literal|"local"
 argument_list|)

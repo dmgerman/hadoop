@@ -519,7 +519,7 @@ name|setInt
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_OZONE_CONTAINER_IPC_PORT
+name|DFS_CONTAINER_IPC_PORT
 argument_list|,
 name|pipeline
 operator|.
@@ -684,7 +684,7 @@ name|setInt
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_OZONE_CONTAINER_IPC_PORT
+name|DFS_CONTAINER_IPC_PORT
 argument_list|,
 name|pipeline
 operator|.

@@ -32,7 +32,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_OBJECTSTORE_TRACE_ENABLED_KEY
+name|OZONE_TRACE_ENABLED_KEY
 import|;
 end_import
 
@@ -48,7 +48,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_OBJECTSTORE_TRACE_ENABLED_DEFAULT
+name|OZONE_TRACE_ENABLED_DEFAULT
 import|;
 end_import
 
@@ -64,7 +64,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_HANDLER_TYPE_DEFAULT
+name|OZONE_HANDLER_TYPE_DEFAULT
 import|;
 end_import
 
@@ -80,7 +80,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_HANDLER_TYPE_KEY
+name|OZONE_HANDLER_TYPE_KEY
 import|;
 end_import
 
@@ -96,7 +96,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_RPC_ADDRESS_DEFAULT
+name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_DEFAULT
 import|;
 end_import
 
@@ -112,7 +112,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_RPC_ADDRESS_KEY
+name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_KEY
 import|;
 end_import
 
@@ -128,7 +128,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_RPC_BIND_HOST_KEY
+name|DFS_CONTAINER_LOCATION_RPC_BIND_HOST_KEY
 import|;
 end_import
 
@@ -144,7 +144,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_RPC_DEFAULT_PORT
+name|DFS_CONTAINER_LOCATION_RPC_DEFAULT_PORT
 import|;
 end_import
 
@@ -581,9 +581,9 @@ name|conf
 operator|.
 name|getTrimmed
 argument_list|(
-name|DFS_STORAGE_HANDLER_TYPE_KEY
+name|OZONE_HANDLER_TYPE_KEY
 argument_list|,
-name|DFS_STORAGE_HANDLER_TYPE_DEFAULT
+name|OZONE_HANDLER_TYPE_DEFAULT
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -592,7 +592,7 @@ name|info
 argument_list|(
 literal|"ObjectStoreHandler initializing with {}: {}"
 argument_list|,
-name|DFS_STORAGE_HANDLER_TYPE_KEY
+name|OZONE_HANDLER_TYPE_KEY
 argument_list|,
 name|shType
 argument_list|)
@@ -604,9 +604,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|DFS_OBJECTSTORE_TRACE_ENABLED_KEY
+name|OZONE_TRACE_ENABLED_KEY
 argument_list|,
-name|DFS_OBJECTSTORE_TRACE_ENABLED_DEFAULT
+name|OZONE_TRACE_ENABLED_DEFAULT
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -658,13 +658,13 @@ name|conf
 operator|.
 name|getSocketAddr
 argument_list|(
-name|DFS_STORAGE_RPC_BIND_HOST_KEY
+name|DFS_CONTAINER_LOCATION_RPC_BIND_HOST_KEY
 argument_list|,
-name|DFS_STORAGE_RPC_ADDRESS_KEY
+name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_KEY
 argument_list|,
-name|DFS_STORAGE_RPC_ADDRESS_DEFAULT
+name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_DEFAULT
 argument_list|,
-name|DFS_STORAGE_RPC_DEFAULT_PORT
+name|DFS_CONTAINER_LOCATION_RPC_DEFAULT_PORT
 argument_list|)
 decl_stmt|;
 name|this
@@ -763,7 +763,7 @@ name|format
 argument_list|(
 literal|"Unrecognized value for %s: %s"
 argument_list|,
-name|DFS_STORAGE_HANDLER_TYPE_KEY
+name|OZONE_HANDLER_TYPE_KEY
 argument_list|,
 name|shType
 argument_list|)

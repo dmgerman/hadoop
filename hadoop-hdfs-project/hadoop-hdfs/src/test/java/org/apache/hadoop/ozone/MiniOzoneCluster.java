@@ -44,7 +44,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_RPC_ADDRESS_KEY
+name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_KEY
 import|;
 end_import
 
@@ -539,7 +539,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_STORAGE_RPC_ADDRESS_KEY
+name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)

@@ -225,7 +225,7 @@ name|setBoolean
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_OBJECTSTORE_ENABLED_KEY
+name|OZONE_ENABLED
 argument_list|,
 literal|true
 argument_list|)
@@ -236,7 +236,7 @@ name|set
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_HANDLER_TYPE_KEY
+name|OZONE_HANDLER_TYPE_KEY
 argument_list|,
 literal|"distributed"
 argument_list|)
@@ -247,7 +247,7 @@ name|setBoolean
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_OBJECTSTORE_TRACE_ENABLED_KEY
+name|OZONE_TRACE_ENABLED_KEY
 argument_list|,
 literal|true
 argument_list|)

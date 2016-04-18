@@ -332,11 +332,11 @@ name|getInt
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_OZONE_KEY_CACHE
+name|OZONE_KEY_CACHE
 argument_list|,
 name|OzoneConfigKeys
 operator|.
-name|DFS_OZONE_KEY_CACHE_DEFAULT
+name|OZONE_KEY_CACHE_DEFAULT
 argument_list|)
 decl_stmt|;
 name|this

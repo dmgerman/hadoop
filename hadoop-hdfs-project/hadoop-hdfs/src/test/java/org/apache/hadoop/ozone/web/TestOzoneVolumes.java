@@ -408,7 +408,7 @@ name|port
 init|=
 literal|0
 decl_stmt|;
-comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting DFS_OBJECTSTORE_ENABLED_KEY = true and    * DFS_STORAGE_HANDLER_TYPE_KEY = "local" , which uses a local directory to    * emulate Ozone backend.    *    * @throws IOException    */
+comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true and    * OZONE_HANDLER_TYPE_KEY = "local" , which uses a local directory to    * emulate Ozone backend.    *    * @throws IOException    */
 annotation|@
 name|BeforeClass
 DECL|method|init ()
@@ -466,11 +466,11 @@ name|getTrimmed
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_LOCAL_ROOT
+name|OZONE_LOCALSTORAGE_ROOT
 argument_list|,
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_LOCAL_ROOT_DEFAULT
+name|OZONE_LOCALSTORAGE_ROOT_DEFAULT
 argument_list|)
 expr_stmt|;
 name|conf
@@ -479,7 +479,7 @@ name|set
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_LOCAL_ROOT
+name|OZONE_LOCALSTORAGE_ROOT
 argument_list|,
 name|path
 argument_list|)
@@ -490,7 +490,7 @@ name|setBoolean
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_OBJECTSTORE_ENABLED_KEY
+name|OZONE_ENABLED
 argument_list|,
 literal|true
 argument_list|)
@@ -501,7 +501,7 @@ name|set
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_HANDLER_TYPE_KEY
+name|OZONE_HANDLER_TYPE_KEY
 argument_list|,
 literal|"local"
 argument_list|)
@@ -512,7 +512,7 @@ name|setBoolean
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_OBJECTSTORE_TRACE_ENABLED_KEY
+name|OZONE_TRACE_ENABLED_KEY
 argument_list|,
 literal|true
 argument_list|)

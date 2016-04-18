@@ -739,11 +739,11 @@ name|getTrimmed
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_LOCAL_ROOT
+name|OZONE_LOCALSTORAGE_ROOT
 argument_list|,
 name|OzoneConfigKeys
 operator|.
-name|DFS_STORAGE_LOCAL_ROOT_DEFAULT
+name|OZONE_LOCALSTORAGE_ROOT_DEFAULT
 argument_list|)
 expr_stmt|;
 name|File

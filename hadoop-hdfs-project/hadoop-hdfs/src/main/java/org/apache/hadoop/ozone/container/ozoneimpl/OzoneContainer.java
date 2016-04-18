@@ -447,7 +447,7 @@ name|getStrings
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|DFS_OZONE_METADATA_DIRS
+name|OZONE_METADATA_DIRS
 argument_list|)
 decl_stmt|;
 if|if
