@@ -1740,7 +1740,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|60000
+literal|120000
 argument_list|)
 DECL|method|testDataNodeTimeSpend ()
 specifier|public
@@ -1757,13 +1757,6 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
-name|SimulatedFSDataset
-operator|.
-name|setFactory
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -1951,6 +1944,24 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|fs
+operator|.
+name|delete
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/time.txt."
+operator|+
+name|x
+operator|.
+name|get
+argument_list|()
+argument_list|)
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -2021,7 +2032,7 @@ block|}
 argument_list|,
 literal|30
 argument_list|,
-literal|30000
+literal|60000
 argument_list|)
 expr_stmt|;
 block|}
