@@ -1169,6 +1169,22 @@ argument_list|,
 literal|2
 argument_list|)
 expr_stmt|;
+name|int
+name|len
+init|=
+literal|517
+decl_stmt|;
+if|if
+condition|(
+name|actual
+operator|.
+name|length
+operator|-
+name|nread
+operator|>=
+name|len
+condition|)
+block|{
 comment|//Read across chunk boundary
 name|nread
 operator|+=
@@ -1180,9 +1196,10 @@ name|actual
 argument_list|,
 name|nread
 argument_list|,
-literal|517
+name|len
 argument_list|)
 expr_stmt|;
+block|}
 name|checkData
 argument_list|(
 name|actual
