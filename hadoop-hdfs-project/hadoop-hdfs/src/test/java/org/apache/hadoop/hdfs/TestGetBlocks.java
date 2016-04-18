@@ -1156,6 +1156,17 @@ argument_list|,
 name|DEFAULT_BLOCK_SIZE
 argument_list|)
 expr_stmt|;
+name|CONF
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_BALANCER_GETBLOCKS_MIN_BLOCK_SIZE_KEY
+argument_list|,
+name|DEFAULT_BLOCK_SIZE
+argument_list|)
+expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -1182,12 +1193,15 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
+comment|// the third block will not be visible to getBlocks
 name|long
 name|fileLen
 init|=
 literal|2
 operator|*
 name|DEFAULT_BLOCK_SIZE
+operator|+
+literal|1
 decl_stmt|;
 name|DFSTestUtil
 operator|.
@@ -1267,7 +1281,7 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|2
+literal|3
 argument_list|,
 name|locatedBlocks
 operator|.
