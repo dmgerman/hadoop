@@ -339,7 +339,9 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_REPLICATION_CONSIDERLOAD_KEY
 argument_list|,
-literal|true
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_CONSIDERLOAD_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
