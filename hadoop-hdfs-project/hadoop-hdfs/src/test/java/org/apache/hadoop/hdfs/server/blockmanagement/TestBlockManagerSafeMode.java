@@ -692,20 +692,21 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test the state machine transition.    */
+comment|/**    * Test the state machine transition.    *    * We use separate test methods instead of a single one because the mocked    * {@link #fsn} is accessed concurrently by the current thread and the    *<code>smmthread</code> thread in the {@link BlockManagerSafeMode}. Stubbing    * or verification of a shared mock from different threads is NOT the proper    * way of testing, which leads to intermittent behavior. Meanwhile, previous    * state transition may have side effects that should be reset before next    * test case. For example, in {@link BlockManagerSafeMode}, there is a safe    * mode monitor thread, which is created when BlockManagerSafeMode is    * constructed. It will start the first time the safe mode enters extension    * stage and will stop if the safe mode leaves to OFF state. Across different    * test cases, this thread should be reset.    */
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|30000
+literal|10000
 argument_list|)
-DECL|method|testCheckSafeMode ()
+DECL|method|testCheckSafeMode1 ()
 specifier|public
 name|void
-name|testCheckSafeMode
+name|testCheckSafeMode1
 parameter_list|()
 block|{
+comment|// stays in PENDING_THRESHOLD: pending block threshold
 name|bmSafeMode
 operator|.
 name|activate
@@ -713,7 +714,6 @@ argument_list|(
 name|BLOCK_TOTAL
 argument_list|)
 expr_stmt|;
-comment|// stays in PENDING_THRESHOLD: pending block threshold
 name|setSafeModeStatus
 argument_list|(
 name|BMSafeModeStatus
@@ -757,7 +757,28 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// PENDING_THRESHOLD -> EXTENSION
+block|}
+comment|/** Check safe mode transition from PENDING_THRESHOLD to EXTENSION. */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+DECL|method|testCheckSafeMode2 ()
+specifier|public
+name|void
+name|testCheckSafeMode2
+parameter_list|()
+block|{
+name|bmSafeMode
+operator|.
+name|activate
+argument_list|(
+name|BLOCK_TOTAL
+argument_list|)
+expr_stmt|;
 name|Whitebox
 operator|.
 name|setInternalState
@@ -798,7 +819,28 @@ name|getSafeModeStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// PENDING_THRESHOLD -> OFF
+block|}
+comment|/** Check safe mode transition from PENDING_THRESHOLD to OFF. */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+DECL|method|testCheckSafeMode3 ()
+specifier|public
+name|void
+name|testCheckSafeMode3
+parameter_list|()
+block|{
+name|bmSafeMode
+operator|.
+name|activate
+argument_list|(
+name|BLOCK_TOTAL
+argument_list|)
+expr_stmt|;
 name|Whitebox
 operator|.
 name|setInternalState
@@ -837,7 +879,28 @@ name|getSafeModeStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// stays in EXTENSION
+block|}
+comment|/** Check safe mode stays in EXTENSION pending threshold. */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+DECL|method|testCheckSafeMode4 ()
+specifier|public
+name|void
+name|testCheckSafeMode4
+parameter_list|()
+block|{
+name|bmSafeMode
+operator|.
+name|activate
+argument_list|(
+name|BLOCK_TOTAL
+argument_list|)
+expr_stmt|;
 name|setBlockSafe
 argument_list|(
 literal|0
@@ -876,7 +939,28 @@ name|getSafeModeStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// stays in EXTENSION: pending extension period
+block|}
+comment|/** Check safe mode stays in EXTENSION pending extension period. */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+DECL|method|testCheckSafeMode5 ()
+specifier|public
+name|void
+name|testCheckSafeMode5
+parameter_list|()
+block|{
+name|bmSafeMode
+operator|.
+name|activate
+argument_list|(
+name|BLOCK_TOTAL
+argument_list|)
+expr_stmt|;
 name|Whitebox
 operator|.
 name|setInternalState
@@ -917,7 +1001,21 @@ name|getSafeModeStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// should stay in PENDING_THRESHOLD during transitionToActive
+block|}
+comment|/** Check it will not leave safe mode during NN transitionToActive. */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+DECL|method|testCheckSafeMode6 ()
+specifier|public
+name|void
+name|testCheckSafeMode6
+parameter_list|()
+block|{
 name|doReturn
 argument_list|(
 literal|true
@@ -930,6 +1028,13 @@ argument_list|)
 operator|.
 name|inTransitionToActive
 argument_list|()
+expr_stmt|;
+name|bmSafeMode
+operator|.
+name|activate
+argument_list|(
+name|BLOCK_TOTAL
+argument_list|)
 expr_stmt|;
 name|Whitebox
 operator|.
@@ -969,6 +1074,23 @@ name|getSafeModeStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+comment|/** Check smmthread will leave safe mode if NN is not in transitionToActive.*/
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+DECL|method|testCheckSafeMode7 ()
+specifier|public
+name|void
+name|testCheckSafeMode7
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 name|doReturn
 argument_list|(
 literal|false
@@ -984,17 +1106,64 @@ argument_list|()
 expr_stmt|;
 name|bmSafeMode
 operator|.
+name|activate
+argument_list|(
+name|BLOCK_TOTAL
+argument_list|)
+expr_stmt|;
+name|Whitebox
+operator|.
+name|setInternalState
+argument_list|(
+name|bmSafeMode
+argument_list|,
+literal|"extension"
+argument_list|,
+literal|5
+argument_list|)
+expr_stmt|;
+name|setBlockSafe
+argument_list|(
+name|BLOCK_THRESHOLD
+argument_list|)
+expr_stmt|;
+name|bmSafeMode
+operator|.
 name|checkSafeMode
 argument_list|()
 expr_stmt|;
-name|assertEquals
+name|GenericTestUtils
+operator|.
+name|waitFor
 argument_list|(
+operator|new
+name|Supplier
+argument_list|<
+name|Boolean
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Boolean
+name|get
+parameter_list|()
+block|{
+return|return
+name|getSafeModeStatus
+argument_list|()
+operator|==
 name|BMSafeModeStatus
 operator|.
 name|OFF
+return|;
+block|}
+block|}
 argument_list|,
-name|getSafeModeStatus
-argument_list|()
+literal|100
+argument_list|,
+literal|10000
 argument_list|)
 expr_stmt|;
 block|}
