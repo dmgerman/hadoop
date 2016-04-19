@@ -3630,7 +3630,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|300000
+literal|600000
 argument_list|)
 DECL|method|testThrottling ()
 specifier|public
