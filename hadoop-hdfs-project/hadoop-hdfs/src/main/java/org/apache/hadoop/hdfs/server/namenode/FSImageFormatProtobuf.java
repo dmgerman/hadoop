@@ -21,6 +21,22 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+operator|.
+name|monotonicNow
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -218,13 +234,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -232,13 +244,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|LoggerFactory
 import|;
 end_import
 
@@ -737,12 +745,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|FSImageFormatProtobuf
 operator|.
@@ -1208,8 +1216,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Loaded FSImage in "
-operator|+
+literal|"Loaded FSImage in {} seconds."
+argument_list|,
 operator|(
 name|end
 operator|-
@@ -1217,8 +1225,6 @@ name|start
 operator|)
 operator|/
 literal|1000
-operator|+
-literal|" seconds."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1784,8 +1790,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unrecognized section "
-operator|+
+literal|"Unrecognized section {}"
+argument_list|,
 name|n
 argument_list|)
 expr_stmt|;
@@ -2629,6 +2635,23 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Saving image file {} using {}"
+argument_list|,
+name|file
+argument_list|,
+name|compression
+argument_list|)
+expr_stmt|;
+name|long
+name|startTime
+init|=
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 name|saveInternal
 argument_list|(
 name|fout
@@ -2639,6 +2662,29 @@ name|file
 operator|.
 name|getAbsolutePath
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Image file {} of size {} bytes saved in {} seconds."
+argument_list|,
+name|file
+argument_list|,
+name|file
+operator|.
+name|length
+argument_list|()
+argument_list|,
+operator|(
+name|monotonicNow
+argument_list|()
+operator|-
+name|startTime
+operator|)
+operator|/
+literal|1000
 argument_list|)
 expr_stmt|;
 block|}
