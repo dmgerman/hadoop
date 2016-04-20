@@ -286,6 +286,19 @@ name|getNumParityUnits
 argument_list|()
 return|;
 block|}
+DECL|method|getCodecName ()
+specifier|public
+name|String
+name|getCodecName
+parameter_list|()
+block|{
+return|return
+name|schema
+operator|.
+name|getCodecName
+argument_list|()
+return|;
+block|}
 DECL|method|getId ()
 specifier|public
 name|byte

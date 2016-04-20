@@ -418,6 +418,14 @@ operator|.
 name|conf
 operator|=
 name|conf
+operator|!=
+literal|null
+condition|?
+name|conf
+else|:
+operator|new
+name|Configuration
+argument_list|()
 expr_stmt|;
 name|this
 operator|.

@@ -236,6 +236,7 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// TODO: we should create the raw coder according to codec.
 name|rsRawDecoder
 operator|=
 name|CodecUtil

@@ -3345,6 +3345,11 @@ argument_list|,
 name|parityBytes
 operator|.
 name|length
+argument_list|,
+name|TEST_EC_POLICY
+operator|.
+name|getCodecName
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|encoder

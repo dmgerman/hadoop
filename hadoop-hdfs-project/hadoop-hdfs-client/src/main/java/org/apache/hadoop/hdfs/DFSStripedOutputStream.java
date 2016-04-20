@@ -1804,6 +1804,11 @@ argument_list|,
 name|numDataBlocks
 argument_list|,
 name|numParityBlocks
+argument_list|,
+name|ecPolicy
+operator|.
+name|getCodecName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|coordinator

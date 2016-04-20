@@ -817,6 +817,11 @@ name|ecPolicy
 operator|.
 name|getNumParityUnits
 argument_list|()
+argument_list|,
+name|ecPolicy
+operator|.
+name|getCodecName
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

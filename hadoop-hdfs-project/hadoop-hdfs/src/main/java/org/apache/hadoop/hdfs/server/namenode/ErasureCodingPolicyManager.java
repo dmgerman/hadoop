@@ -68,6 +68,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ErasureCodeConstants
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -128,7 +144,7 @@ init|=
 operator|new
 name|ErasureCodingPolicy
 argument_list|(
-name|HdfsConstants
+name|ErasureCodeConstants
 operator|.
 name|RS_6_3_SCHEMA
 argument_list|,
@@ -149,7 +165,7 @@ init|=
 operator|new
 name|ErasureCodingPolicy
 argument_list|(
-name|HdfsConstants
+name|ErasureCodeConstants
 operator|.
 name|RS_3_2_SCHEMA
 argument_list|,
@@ -158,6 +174,27 @@ argument_list|,
 name|HdfsConstants
 operator|.
 name|RS_3_2_POLICY_ID
+argument_list|)
+decl_stmt|;
+DECL|field|SYS_POLICY3
+specifier|private
+specifier|static
+specifier|final
+name|ErasureCodingPolicy
+name|SYS_POLICY3
+init|=
+operator|new
+name|ErasureCodingPolicy
+argument_list|(
+name|ErasureCodeConstants
+operator|.
+name|RS_6_3_LEGACY_SCHEMA
+argument_list|,
+name|DEFAULT_CELLSIZE
+argument_list|,
+name|HdfsConstants
+operator|.
+name|RS_6_3_LEGACY_POLICY_ID
 argument_list|)
 decl_stmt|;
 comment|//We may add more later.
@@ -176,6 +213,8 @@ block|{
 name|SYS_POLICY1
 block|,
 name|SYS_POLICY2
+block|,
+name|SYS_POLICY3
 block|}
 decl_stmt|;
 comment|/**    * All active policies maintained in NN memory for fast querying,    * identified and sorted by its name.    */

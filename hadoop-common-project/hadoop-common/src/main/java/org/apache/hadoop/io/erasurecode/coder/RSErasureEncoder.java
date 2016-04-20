@@ -225,6 +225,7 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// TODO: we should create the raw coder according to codec.
 name|rawEncoder
 operator|=
 name|CodecUtil

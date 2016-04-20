@@ -991,6 +991,11 @@ argument_list|,
 name|dataBlkNum
 argument_list|,
 name|parityBlkNum
+argument_list|,
+name|ecPolicy
+operator|.
+name|getCodecName
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if

@@ -1755,6 +1755,11 @@ argument_list|,
 name|DATA_BLK_NUM
 argument_list|,
 name|PARITY_BLK_NUM
+argument_list|,
+name|ecPolicy
+operator|.
+name|getCodecName
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Update the expected content for decoded data
