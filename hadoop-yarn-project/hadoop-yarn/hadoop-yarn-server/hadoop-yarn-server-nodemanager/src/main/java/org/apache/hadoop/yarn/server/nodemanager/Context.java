@@ -148,6 +148,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|security
+operator|.
+name|ContainerTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
@@ -310,6 +326,32 @@ specifier|public
 interface|interface
 name|Context
 block|{
+comment|/**    * Interface exposing methods related to the queuing of containers in the NM.    */
+DECL|interface|QueuingContext
+interface|interface
+name|QueuingContext
+block|{
+DECL|method|getQueuedContainers ()
+name|ConcurrentMap
+argument_list|<
+name|ContainerId
+argument_list|,
+name|ContainerTokenIdentifier
+argument_list|>
+name|getQueuedContainers
+parameter_list|()
+function_decl|;
+DECL|method|getKilledQueuedContainers ()
+name|ConcurrentMap
+argument_list|<
+name|ContainerTokenIdentifier
+argument_list|,
+name|String
+argument_list|>
+name|getKilledQueuedContainers
+parameter_list|()
+function_decl|;
+block|}
 comment|/**    * Return the nodeId. Usable only when the ContainerManager is started.    *     * @return the NodeId    */
 DECL|method|getNodeId ()
 name|NodeId
@@ -438,6 +480,12 @@ function_decl|;
 DECL|method|getNodeStatusUpdater ()
 name|NodeStatusUpdater
 name|getNodeStatusUpdater
+parameter_list|()
+function_decl|;
+comment|/**    * Returns a<code>QueuingContext</code> that provides information about the    * number of Containers Queued as well as the number of Containers that were    * queued and killed.    */
+DECL|method|getQueuingContext ()
+name|QueuingContext
+name|getQueuingContext
 parameter_list|()
 function_decl|;
 block|}

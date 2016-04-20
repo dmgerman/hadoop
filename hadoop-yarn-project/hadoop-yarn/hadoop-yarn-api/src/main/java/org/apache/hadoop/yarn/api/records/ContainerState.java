@@ -77,6 +77,10 @@ block|,
 comment|/** Completed container */
 DECL|enumConstant|COMPLETE
 name|COMPLETE
+block|,
+comment|/** Queued at the NM. */
+DECL|enumConstant|QUEUED
+name|QUEUED
 block|}
 end_enum
 

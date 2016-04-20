@@ -3272,6 +3272,18 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getQueuingContext ()
+specifier|public
+name|QueuingContext
+name|getQueuingContext
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 block|}
 end_class

@@ -2975,6 +2975,13 @@ name|exitCode
 argument_list|,
 name|getResource
 argument_list|()
+argument_list|,
+name|this
+operator|.
+name|containerTokenIdentifier
+operator|.
+name|getExecutionType
+argument_list|()
 argument_list|)
 return|;
 block|}

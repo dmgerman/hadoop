@@ -90,6 +90,30 @@ name|ResourceView
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|monitor
+operator|.
+name|ContainersMonitorImpl
+operator|.
+name|ProcessTreeInfo
+import|;
+end_import
+
 begin_interface
 DECL|interface|ContainersMonitor
 specifier|public
@@ -110,6 +134,65 @@ specifier|public
 name|ResourceUtilization
 name|getContainersUtilization
 parameter_list|()
+function_decl|;
+DECL|method|getContainersAllocation ()
+name|ResourceUtilization
+name|getContainersAllocation
+parameter_list|()
+function_decl|;
+DECL|method|hasResourcesAvailable (ProcessTreeInfo pti)
+name|boolean
+name|hasResourcesAvailable
+parameter_list|(
+name|ProcessTreeInfo
+name|pti
+parameter_list|)
+function_decl|;
+DECL|method|increaseContainersAllocation (ProcessTreeInfo pti)
+name|void
+name|increaseContainersAllocation
+parameter_list|(
+name|ProcessTreeInfo
+name|pti
+parameter_list|)
+function_decl|;
+DECL|method|decreaseContainersAllocation (ProcessTreeInfo pti)
+name|void
+name|decreaseContainersAllocation
+parameter_list|(
+name|ProcessTreeInfo
+name|pti
+parameter_list|)
+function_decl|;
+DECL|method|increaseResourceUtilization (ResourceUtilization resourceUtil, ProcessTreeInfo pti)
+name|void
+name|increaseResourceUtilization
+parameter_list|(
+name|ResourceUtilization
+name|resourceUtil
+parameter_list|,
+name|ProcessTreeInfo
+name|pti
+parameter_list|)
+function_decl|;
+DECL|method|decreaseResourceUtilization (ResourceUtilization resourceUtil, ProcessTreeInfo pti)
+name|void
+name|decreaseResourceUtilization
+parameter_list|(
+name|ResourceUtilization
+name|resourceUtil
+parameter_list|,
+name|ProcessTreeInfo
+name|pti
+parameter_list|)
+function_decl|;
+DECL|method|subtractNodeResourcesFromResourceUtilization ( ResourceUtilization resourceUtil)
+name|void
+name|subtractNodeResourcesFromResourceUtilization
+parameter_list|(
+name|ResourceUtilization
+name|resourceUtil
+parameter_list|)
 function_decl|;
 block|}
 end_interface

@@ -2600,6 +2600,27 @@ name|NM_PREFIX
 init|=
 literal|"yarn.nodemanager."
 decl_stmt|;
+comment|/** Enable Queuing of<code>OPPORTUNISTIC</code> containers. */
+DECL|field|NM_CONTAINER_QUEUING_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_QUEUING_ENABLED
+init|=
+name|NM_PREFIX
+operator|+
+literal|"container-queuing-enabled"
+decl_stmt|;
+DECL|field|NM_CONTAINER_QUEUING_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|NM_CONTAINER_QUEUING_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|/** Environment variables that will be sent to containers.*/
 DECL|field|NM_ADMIN_USER_ENV
 specifier|public

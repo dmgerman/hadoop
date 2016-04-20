@@ -48,6 +48,17 @@ name|MockResourceCalculatorPlugin
 extends|extends
 name|ResourceCalculatorPlugin
 block|{
+DECL|method|MockResourceCalculatorPlugin ()
+specifier|public
+name|MockResourceCalculatorPlugin
+parameter_list|()
+block|{
+name|super
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getVirtualMemorySize ()
