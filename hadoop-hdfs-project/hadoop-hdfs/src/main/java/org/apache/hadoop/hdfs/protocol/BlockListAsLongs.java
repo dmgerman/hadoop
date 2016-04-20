@@ -19,6 +19,22 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
+name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -179,6 +195,20 @@ operator|.
 name|datanode
 operator|.
 name|Replica
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -357,8 +387,8 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/**    * Prepare an instance to in-place decode the given ByteString buffer    * @param numBlocks - blocks in the buffer    * @param blocksBuf - ByteString encoded varints    * @return BlockListAsLongs    */
-DECL|method|decodeBuffer (final int numBlocks, final ByteString blocksBuf)
+comment|/**    * Prepare an instance to in-place decode the given ByteString buffer.    * @param numBlocks - blocks in the buffer    * @param blocksBuf - ByteString encoded varints    * @param maxDataLength - maximum allowable data size in protobuf message    * @return BlockListAsLongs    */
+DECL|method|decodeBuffer (final int numBlocks, final ByteString blocksBuf, final int maxDataLength)
 specifier|public
 specifier|static
 name|BlockListAsLongs
@@ -371,6 +401,10 @@ parameter_list|,
 specifier|final
 name|ByteString
 name|blocksBuf
+parameter_list|,
+specifier|final
+name|int
+name|maxDataLength
 parameter_list|)
 block|{
 return|return
@@ -380,10 +414,14 @@ argument_list|(
 name|numBlocks
 argument_list|,
 name|blocksBuf
+argument_list|,
+name|maxDataLength
 argument_list|)
 return|;
 block|}
-comment|/**    * Prepare an instance to in-place decode the given ByteString buffers    * @param numBlocks - blocks in the buffers    * @param blocksBufs - list of ByteString encoded varints    * @return BlockListAsLongs    */
+comment|/**    * Prepare an instance to in-place decode the given ByteString buffers.    * @param numBlocks - blocks in the buffers    * @param blocksBufs - list of ByteString encoded varints    * @return BlockListAsLongs    */
+annotation|@
+name|VisibleForTesting
 DECL|method|decodeBuffers (final int numBlocks, final List<ByteString> blocksBufs)
 specifier|public
 specifier|static
@@ -402,6 +440,40 @@ argument_list|>
 name|blocksBufs
 parameter_list|)
 block|{
+return|return
+name|decodeBuffers
+argument_list|(
+name|numBlocks
+argument_list|,
+name|blocksBufs
+argument_list|,
+name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
+argument_list|)
+return|;
+block|}
+comment|/**    * Prepare an instance to in-place decode the given ByteString buffers.    * @param numBlocks - blocks in the buffers    * @param blocksBufs - list of ByteString encoded varints    * @param maxDataLength - maximum allowable data size in protobuf message    * @return BlockListAsLongs    */
+DECL|method|decodeBuffers (final int numBlocks, final List<ByteString> blocksBufs, final int maxDataLength)
+specifier|public
+specifier|static
+name|BlockListAsLongs
+name|decodeBuffers
+parameter_list|(
+specifier|final
+name|int
+name|numBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|ByteString
+argument_list|>
+name|blocksBufs
+parameter_list|,
+specifier|final
+name|int
+name|maxDataLength
+parameter_list|)
+block|{
 comment|// this doesn't actually copy the data
 return|return
 name|decodeBuffer
@@ -414,6 +486,8 @@ name|copyFrom
 argument_list|(
 name|blocksBufs
 argument_list|)
+argument_list|,
+name|maxDataLength
 argument_list|)
 return|;
 block|}
@@ -432,6 +506,32 @@ name|blocksList
 parameter_list|)
 block|{
 return|return
+name|decodeLongs
+argument_list|(
+name|blocksList
+argument_list|,
+name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
+argument_list|)
+return|;
+block|}
+comment|/**    * Prepare an instance to in-place decode the given list of Longs.  Note    * it's much more efficient to decode ByteString buffers and only exists    * for compatibility.    * @param blocksList - list of longs    * @param maxDataLength - maximum allowable data size in protobuf message    * @return BlockListAsLongs    */
+DECL|method|decodeLongs (List<Long> blocksList, int maxDataLength)
+specifier|public
+specifier|static
+name|BlockListAsLongs
+name|decodeLongs
+parameter_list|(
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|blocksList
+parameter_list|,
+name|int
+name|maxDataLength
+parameter_list|)
+block|{
+return|return
 name|blocksList
 operator|.
 name|isEmpty
@@ -443,10 +543,14 @@ operator|new
 name|LongsDecoder
 argument_list|(
 name|blocksList
+argument_list|,
+name|maxDataLength
 argument_list|)
 return|;
 block|}
 comment|/**    * Prepare an instance to encode the collection of replicas into an    * efficient ByteString.    * @param replicas - replicas to encode    * @return BlockListAsLongs    */
+annotation|@
+name|VisibleForTesting
 DECL|method|encode ( final Collection<? extends Replica> replicas)
 specifier|public
 specifier|static
@@ -469,7 +573,9 @@ name|Builder
 name|builder
 init|=
 name|builder
-argument_list|()
+argument_list|(
+name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
+argument_list|)
 decl_stmt|;
 for|for
 control|(
@@ -494,7 +600,7 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|readFrom (InputStream is)
+DECL|method|readFrom (InputStream is, int maxDataLength)
 specifier|public
 specifier|static
 name|BlockListAsLongs
@@ -502,6 +608,9 @@ name|readFrom
 parameter_list|(
 name|InputStream
 name|is
+parameter_list|,
+name|int
+name|maxDataLength
 parameter_list|)
 throws|throws
 name|IOException
@@ -516,6 +625,21 @@ argument_list|(
 name|is
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|maxDataLength
+operator|!=
+name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
+condition|)
+block|{
+name|cis
+operator|.
+name|setSizeLimit
+argument_list|(
+name|maxDataLength
+argument_list|)
+expr_stmt|;
+block|}
 name|int
 name|numBlocks
 init|=
@@ -617,6 +741,8 @@ argument_list|(
 name|numBlocks
 argument_list|,
 name|blocksBuf
+argument_list|,
+name|maxDataLength
 argument_list|)
 return|;
 block|}
@@ -671,6 +797,8 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|builder ()
 specifier|public
 specifier|static
@@ -679,11 +807,30 @@ name|builder
 parameter_list|()
 block|{
 return|return
+name|builder
+argument_list|(
+name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
+argument_list|)
+return|;
+block|}
+DECL|method|builder (int maxDataLength)
+specifier|public
+specifier|static
+name|Builder
+name|builder
+parameter_list|(
+name|int
+name|maxDataLength
+parameter_list|)
+block|{
+return|return
 operator|new
 name|BlockListAsLongs
 operator|.
 name|Builder
-argument_list|()
+argument_list|(
+name|maxDataLength
+argument_list|)
 return|;
 block|}
 comment|/**    * The number of blocks    * @return - the number of blocks    */
@@ -863,9 +1010,18 @@ name|numFinalized
 init|=
 literal|0
 decl_stmt|;
-DECL|method|Builder ()
+DECL|field|maxDataLength
+specifier|private
+specifier|final
+name|int
+name|maxDataLength
+decl_stmt|;
+DECL|method|Builder (int maxDataLength)
 name|Builder
-parameter_list|()
+parameter_list|(
+name|int
+name|maxDataLength
+parameter_list|)
 block|{
 name|out
 operator|=
@@ -886,6 +1042,12 @@ name|newInstance
 argument_list|(
 name|out
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxDataLength
+operator|=
+name|maxDataLength
 expr_stmt|;
 block|}
 DECL|method|add (Replica replica)
@@ -1034,6 +1196,8 @@ name|out
 operator|.
 name|toByteString
 argument_list|()
+argument_list|,
+name|maxDataLength
 argument_list|)
 return|;
 block|}
@@ -1101,7 +1265,13 @@ specifier|private
 name|int
 name|numFinalized
 decl_stmt|;
-DECL|method|BufferDecoder (final int numBlocks, final ByteString buf)
+DECL|field|maxDataLength
+specifier|private
+specifier|final
+name|int
+name|maxDataLength
+decl_stmt|;
+DECL|method|BufferDecoder (final int numBlocks, final ByteString buf, final int maxDataLength)
 name|BufferDecoder
 parameter_list|(
 specifier|final
@@ -1111,6 +1281,10 @@ parameter_list|,
 specifier|final
 name|ByteString
 name|buf
+parameter_list|,
+specifier|final
+name|int
+name|maxDataLength
 parameter_list|)
 block|{
 name|this
@@ -1121,10 +1295,12 @@ operator|-
 literal|1
 argument_list|,
 name|buf
+argument_list|,
+name|maxDataLength
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|BufferDecoder (final int numBlocks, final int numFinalized, final ByteString buf)
+DECL|method|BufferDecoder (final int numBlocks, final int numFinalized, final ByteString buf, final int maxDataLength)
 name|BufferDecoder
 parameter_list|(
 specifier|final
@@ -1138,6 +1314,10 @@ parameter_list|,
 specifier|final
 name|ByteString
 name|buf
+parameter_list|,
+specifier|final
+name|int
+name|maxDataLength
 parameter_list|)
 block|{
 name|this
@@ -1157,6 +1337,12 @@ operator|.
 name|buffer
 operator|=
 name|buf
+expr_stmt|;
+name|this
+operator|.
+name|maxDataLength
+operator|=
+name|maxDataLength
 expr_stmt|;
 block|}
 annotation|@
@@ -1484,6 +1670,23 @@ name|currentBlockIndex
 init|=
 literal|0
 decl_stmt|;
+block|{
+if|if
+condition|(
+name|maxDataLength
+operator|!=
+name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
+condition|)
+block|{
+name|cis
+operator|.
+name|setSizeLimit
+argument_list|(
+name|maxDataLength
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 specifier|public
@@ -1634,8 +1837,14 @@ specifier|final
 name|int
 name|numBlocks
 decl_stmt|;
+DECL|field|maxDataLength
+specifier|private
+specifier|final
+name|int
+name|maxDataLength
+decl_stmt|;
 comment|// set the header
-DECL|method|LongsDecoder (List<Long> values)
+DECL|method|LongsDecoder (List<Long> values, int maxDataLength)
 name|LongsDecoder
 parameter_list|(
 name|List
@@ -1643,6 +1852,9 @@ argument_list|<
 name|Long
 argument_list|>
 name|values
+parameter_list|,
+name|int
+name|maxDataLength
 parameter_list|)
 block|{
 name|this
@@ -1691,6 +1903,12 @@ operator|.
 name|intValue
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|maxDataLength
+operator|=
+name|maxDataLength
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1716,7 +1934,9 @@ name|Builder
 name|builder
 init|=
 name|builder
-argument_list|()
+argument_list|(
+name|maxDataLength
+argument_list|)
 decl_stmt|;
 for|for
 control|(

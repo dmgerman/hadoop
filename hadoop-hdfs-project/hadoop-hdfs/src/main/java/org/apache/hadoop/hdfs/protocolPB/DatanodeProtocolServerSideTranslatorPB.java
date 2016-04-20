@@ -814,6 +814,12 @@ specifier|final
 name|DatanodeProtocol
 name|impl
 decl_stmt|;
+DECL|field|maxDataLength
+specifier|private
+specifier|final
+name|int
+name|maxDataLength
+decl_stmt|;
 specifier|private
 specifier|static
 specifier|final
@@ -874,12 +880,15 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-DECL|method|DatanodeProtocolServerSideTranslatorPB (DatanodeProtocol impl)
+DECL|method|DatanodeProtocolServerSideTranslatorPB (DatanodeProtocol impl, int maxDataLength)
 specifier|public
 name|DatanodeProtocolServerSideTranslatorPB
 parameter_list|(
 name|DatanodeProtocol
 name|impl
+parameter_list|,
+name|int
+name|maxDataLength
 parameter_list|)
 block|{
 name|this
@@ -887,6 +896,12 @@ operator|.
 name|impl
 operator|=
 name|impl
+expr_stmt|;
+name|this
+operator|.
+name|maxDataLength
+operator|=
+name|maxDataLength
 expr_stmt|;
 block|}
 annotation|@
@@ -1345,6 +1360,8 @@ name|s
 operator|.
 name|getBlocksBuffersList
 argument_list|()
+argument_list|,
+name|maxDataLength
 argument_list|)
 expr_stmt|;
 block|}
@@ -1360,6 +1377,8 @@ name|s
 operator|.
 name|getBlocksList
 argument_list|()
+argument_list|,
+name|maxDataLength
 argument_list|)
 expr_stmt|;
 block|}

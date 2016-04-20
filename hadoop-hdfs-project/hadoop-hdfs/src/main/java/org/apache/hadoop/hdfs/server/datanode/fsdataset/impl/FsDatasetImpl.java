@@ -372,6 +372,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileStatus
 import|;
 end_import
@@ -2199,6 +2213,12 @@ specifier|private
 name|boolean
 name|blockPinningEnabled
 decl_stmt|;
+DECL|field|maxDataLength
+specifier|private
+specifier|final
+name|int
+name|maxDataLength
+decl_stmt|;
 comment|/**    * An FSDataset has a directory where it loads its data files.    */
 DECL|method|FsDatasetImpl (DataNode datanode, DataStorage storage, Configuration conf )
 name|FsDatasetImpl
@@ -2600,6 +2620,21 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_BLOCK_PINNING_ENABLED_DEFAULT
+argument_list|)
+expr_stmt|;
+name|maxDataLength
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|IPC_MAXIMUM_DATA_LENGTH
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -9634,7 +9669,9 @@ argument_list|,
 name|BlockListAsLongs
 operator|.
 name|builder
-argument_list|()
+argument_list|(
+name|maxDataLength
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
