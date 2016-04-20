@@ -2381,7 +2381,9 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|25
+literal|"Retry cache size is wrong"
+argument_list|,
+literal|26
 argument_list|,
 name|cacheSet
 operator|.
@@ -2490,7 +2492,9 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|25
+literal|"Retry cache size is wrong"
+argument_list|,
+literal|26
 argument_list|,
 name|cacheSet
 operator|.
