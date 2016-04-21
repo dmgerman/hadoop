@@ -1778,6 +1778,13 @@ name|modTime
 init|=
 literal|0
 decl_stmt|;
+DECL|field|scanTime
+specifier|private
+name|long
+name|scanTime
+init|=
+literal|0
+decl_stmt|;
 DECL|method|scanIfNeeded (FileStatus fs)
 specifier|public
 specifier|synchronized
@@ -1796,13 +1803,53 @@ operator|.
 name|getModificationTime
 argument_list|()
 decl_stmt|;
+comment|// MAPREDUCE-6680: In some Cloud FileSystem, like Azure FS or S3, file's
+comment|// modification time is truncated into seconds. In that case,
+comment|// modTime == newModTime doesn't means no file update in the directory,
+comment|// so we need to have additional check.
+comment|// Note: modTime (X second Y millisecond) could be casted to X second or
+comment|// X+1 second.
 if|if
 condition|(
 name|modTime
 operator|!=
 name|newModTime
+operator|||
+operator|(
+name|scanTime
+operator|/
+literal|1000
+operator|)
+operator|==
+operator|(
+name|modTime
+operator|/
+literal|1000
+operator|)
+operator|||
+operator|(
+name|scanTime
+operator|/
+literal|1000
+operator|+
+literal|1
+operator|)
+operator|==
+operator|(
+name|modTime
+operator|/
+literal|1000
+operator|)
 condition|)
 block|{
+comment|// reset scanTime before scanning happens
+name|scanTime
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+expr_stmt|;
 name|Path
 name|p
 init|=
@@ -1867,6 +1914,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// reset scanTime
+name|scanTime
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}
