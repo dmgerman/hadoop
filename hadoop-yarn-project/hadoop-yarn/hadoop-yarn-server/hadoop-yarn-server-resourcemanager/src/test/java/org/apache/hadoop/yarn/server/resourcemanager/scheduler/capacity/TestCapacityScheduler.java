@@ -6517,6 +6517,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|int
+name|waitCount
+decl_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -6957,7 +6960,18 @@ argument_list|(
 name|request
 argument_list|)
 expr_stmt|;
-comment|// Now, the used resource is still 4 GB, and available resource is minus value.
+name|waitCount
+operator|=
+literal|0
+expr_stmt|;
+while|while
+condition|(
+name|waitCount
+operator|++
+operator|!=
+literal|20
+condition|)
+block|{
 name|report_nm1
 operator|=
 name|rm
@@ -6973,6 +6987,41 @@ name|getNodeId
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|report_nm1
+operator|.
+name|getAvailableResource
+argument_list|()
+operator|.
+name|getMemory
+argument_list|()
+operator|!=
+literal|0
+condition|)
+block|{
+break|break;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Waiting for RMNodeResourceUpdateEvent to be handled... Tried "
+operator|+
+name|waitCount
+operator|+
+literal|" times already.."
+argument_list|)
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1000
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Now, the used resource is still 4 GB, and available resource is minus value.
 name|Assert
 operator|.
 name|assertEquals
@@ -7042,11 +7091,10 @@ argument_list|(
 name|containerStatus
 argument_list|)
 expr_stmt|;
-name|int
 name|waitCount
-init|=
+operator|=
 literal|0
-decl_stmt|;
+expr_stmt|;
 while|while
 condition|(
 name|attempt1
