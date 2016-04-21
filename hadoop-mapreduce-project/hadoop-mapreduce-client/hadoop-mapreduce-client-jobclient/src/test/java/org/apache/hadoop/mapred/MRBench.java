@@ -236,6 +236,24 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|DEFAULT_INPUT_SUB
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_INPUT_SUB
+init|=
+literal|"mr_input"
+decl_stmt|;
+DECL|field|DEFAULT_OUTPUT_SUB
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_OUTPUT_SUB
+init|=
+literal|"mr_output"
+decl_stmt|;
 DECL|field|BASE_DIR
 specifier|private
 specifier|static
@@ -266,7 +284,7 @@ name|Path
 argument_list|(
 name|BASE_DIR
 argument_list|,
-literal|"mr_input"
+name|DEFAULT_INPUT_SUB
 argument_list|)
 decl_stmt|;
 DECL|field|OUTPUT_DIR
@@ -280,7 +298,7 @@ name|Path
 argument_list|(
 name|BASE_DIR
 argument_list|,
-literal|"mr_output"
+name|DEFAULT_OUTPUT_SUB
 argument_list|)
 decl_stmt|;
 DECL|enum|Order
@@ -1268,6 +1286,26 @@ name|i
 index|]
 argument_list|)
 expr_stmt|;
+name|INPUT_DIR
+operator|=
+operator|new
+name|Path
+argument_list|(
+name|BASE_DIR
+argument_list|,
+name|DEFAULT_INPUT_SUB
+argument_list|)
+expr_stmt|;
+name|OUTPUT_DIR
+operator|=
+operator|new
+name|Path
+argument_list|(
+name|BASE_DIR
+argument_list|,
+name|DEFAULT_OUTPUT_SUB
+argument_list|)
+expr_stmt|;
 block|}
 elseif|else
 if|if
@@ -1570,14 +1608,6 @@ argument_list|,
 name|inputSortOrder
 argument_list|)
 expr_stmt|;
-comment|// setup test output directory
-name|fs
-operator|.
-name|mkdirs
-argument_list|(
-name|BASE_DIR
-argument_list|)
-expr_stmt|;
 name|ArrayList
 argument_list|<
 name|Long
@@ -1605,12 +1635,23 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-comment|// delete output -- should we really do this?
+comment|// delete all generated data -- should we really do this?
+comment|// we don't know how much of the path was created for the run but this
+comment|// cleans up as much as we can
 name|fs
 operator|.
 name|delete
 argument_list|(
-name|BASE_DIR
+name|OUTPUT_DIR
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|delete
+argument_list|(
+name|INPUT_DIR
 argument_list|,
 literal|true
 argument_list|)
