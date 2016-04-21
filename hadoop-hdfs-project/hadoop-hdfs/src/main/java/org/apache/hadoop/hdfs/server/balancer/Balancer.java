@@ -1004,6 +1004,78 @@ return|return
 name|v
 return|;
 block|}
+DECL|method|getLongBytes (Configuration conf, String key, long defaultValue)
+specifier|static
+name|long
+name|getLongBytes
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|long
+name|defaultValue
+parameter_list|)
+block|{
+specifier|final
+name|long
+name|v
+init|=
+name|conf
+operator|.
+name|getLongBytes
+argument_list|(
+name|key
+argument_list|,
+name|defaultValue
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|key
+operator|+
+literal|" = "
+operator|+
+name|v
+operator|+
+literal|" (default="
+operator|+
+name|defaultValue
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|v
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+name|key
+operator|+
+literal|" = "
+operator|+
+name|v
+operator|+
+literal|"<= "
+operator|+
+literal|0
+argument_list|)
+throw|;
+block|}
+return|return
+name|v
+return|;
+block|}
 DECL|method|getInt (Configuration conf, String key, int defaultValue)
 specifier|static
 name|int
@@ -1162,7 +1234,7 @@ specifier|final
 name|long
 name|getBlocksSize
 init|=
-name|getLong
+name|getLongBytes
 argument_list|(
 name|conf
 argument_list|,
@@ -1179,7 +1251,7 @@ specifier|final
 name|long
 name|getBlocksMinBlockSize
 init|=
-name|getLong
+name|getLongBytes
 argument_list|(
 name|conf
 argument_list|,
@@ -1272,7 +1344,7 @@ name|this
 operator|.
 name|maxSizeToMove
 operator|=
-name|getLong
+name|getLongBytes
 argument_list|(
 name|conf
 argument_list|,
@@ -1289,7 +1361,7 @@ name|this
 operator|.
 name|defaultBlockSize
 operator|=
-name|getLong
+name|getLongBytes
 argument_list|(
 name|conf
 argument_list|,
