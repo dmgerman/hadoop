@@ -1648,7 +1648,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|5
+literal|6
 argument_list|,
 name|outs
 operator|.

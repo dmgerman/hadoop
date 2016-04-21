@@ -268,7 +268,7 @@ return|;
 block|}
 DECL|field|clientBackOffEnabled
 specifier|private
-specifier|final
+specifier|volatile
 name|boolean
 name|clientBackOffEnabled
 decl_stmt|;
@@ -1017,6 +1017,19 @@ argument_list|(
 name|e
 argument_list|)
 return|;
+block|}
+DECL|method|setClientBackoffEnabled (boolean value)
+name|void
+name|setClientBackoffEnabled
+parameter_list|(
+name|boolean
+name|value
+parameter_list|)
+block|{
+name|clientBackOffEnabled
+operator|=
+name|value
+expr_stmt|;
 block|}
 comment|/**    * Insert e into the backing queue or block until we can.    * If we block and the queue changes on us, we will insert while the    * queue is drained.    */
 DECL|method|put (E e)

@@ -12611,9 +12611,15 @@ name|checkSuperuserPrivilege
 argument_list|()
 expr_stmt|;
 return|return
-name|NameNode
+name|Lists
 operator|.
-name|RECONFIGURABLE_PROPERTIES
+name|newArrayList
+argument_list|(
+name|nn
+operator|.
+name|getReconfigurableProperties
+argument_list|()
+argument_list|)
 return|;
 block|}
 block|}

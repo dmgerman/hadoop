@@ -13826,6 +13826,36 @@ name|size
 argument_list|()
 return|;
 block|}
+DECL|method|isClientBackoffEnabled ()
+specifier|public
+name|boolean
+name|isClientBackoffEnabled
+parameter_list|()
+block|{
+return|return
+name|callQueue
+operator|.
+name|isClientBackoffEnabled
+argument_list|()
+return|;
+block|}
+DECL|method|setClientBackoffEnabled (boolean value)
+specifier|public
+name|void
+name|setClientBackoffEnabled
+parameter_list|(
+name|boolean
+name|value
+parameter_list|)
+block|{
+name|callQueue
+operator|.
+name|setClientBackoffEnabled
+argument_list|(
+name|value
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * The maximum size of the rpc call queue of this server.    * @return The maximum size of the rpc call queue.    */
 DECL|method|getMaxQueueSize ()
 specifier|public
