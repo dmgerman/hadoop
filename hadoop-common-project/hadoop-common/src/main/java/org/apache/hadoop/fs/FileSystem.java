@@ -7593,11 +7593,12 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * Unset the storage policy set for a given file or directory.    * @param src file or directory path.    * @throws IOException    */
-DECL|method|unsetStoragePolicy (Path src)
+DECL|method|unsetStoragePolicy (final Path src)
 specifier|public
 name|void
 name|unsetStoragePolicy
 parameter_list|(
+specifier|final
 name|Path
 name|src
 parameter_list|)

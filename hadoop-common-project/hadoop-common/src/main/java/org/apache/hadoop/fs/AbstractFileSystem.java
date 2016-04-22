@@ -4416,6 +4416,33 @@ literal|" doesn't support setStoragePolicy"
 argument_list|)
 throw|;
 block|}
+comment|/**    * Unset the storage policy set for a given file or directory.    * @param src file or directory path.    * @throws IOException    */
+DECL|method|unsetStoragePolicy (final Path src)
+specifier|public
+name|void
+name|unsetStoragePolicy
+parameter_list|(
+specifier|final
+name|Path
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support unsetStoragePolicy"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Retrieve the storage policy for a given file or directory.    *    * @param src file or directory path.    * @return storage policy for give file.    * @throws IOException    */
 DECL|method|getStoragePolicy (final Path src)
 specifier|public
