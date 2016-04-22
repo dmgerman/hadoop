@@ -18,18 +18,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|protobuf
-operator|.
-name|ByteString
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -95,16 +83,6 @@ operator|.
 name|io
 operator|.
 name|FileInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileOutputStream
 import|;
 end_import
 
@@ -382,44 +360,8 @@ name|TokenIdentifier
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|proto
-operator|.
-name|SecurityProtos
-operator|.
-name|CredentialsKVProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|proto
-operator|.
-name|SecurityProtos
-operator|.
-name|CredentialsProto
-import|;
-end_import
-
 begin_comment
-comment|/**  * A class that provides the facilities of reading and writing  * secret keys and Tokens.  */
+comment|/**  * A class that provides the facilities of reading and writing   * secret keys and Tokens.  */
 end_comment
 
 begin_class
@@ -511,13 +453,13 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Create an empty credentials instance.    */
+comment|/**    * Create an empty credentials instance    */
 DECL|method|Credentials ()
 specifier|public
 name|Credentials
 parameter_list|()
 block|{   }
-comment|/**    * Create a copy of the given credentials.    * @param credentials to copy    */
+comment|/**    * Create a copy of the given credentials    * @param credentials to copy    */
 DECL|method|Credentials (Credentials credentials)
 specifier|public
 name|Credentials
@@ -534,7 +476,7 @@ name|credentials
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns the Token object for the alias.    * @param alias the alias for the Token    * @return token for this alias    */
+comment|/**    * Returns the Token object for the alias    * @param alias the alias for the Token    * @return token for this alias    */
 DECL|method|getToken (Text alias)
 specifier|public
 name|Token
@@ -558,7 +500,7 @@ name|alias
 argument_list|)
 return|;
 block|}
-comment|/**    * Add a token in the storage (in memory).    * @param alias the alias for the key    * @param t the token object    */
+comment|/**    * Add a token in the storage (in memory)    * @param alias the alias for the key    * @param t the token object    */
 DECL|method|addToken (Text alias, Token<? extends TokenIdentifier> t)
 specifier|public
 name|void
@@ -606,7 +548,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Return all the tokens in the in-memory map.    */
+comment|/**    * Return all the tokens in the in-memory map    */
 DECL|method|getAllTokens ()
 specifier|public
 name|Collection
@@ -642,7 +584,7 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns the key bytes for the alias.    * @param alias the alias for the key    * @return key for this alias    */
+comment|/**    * Returns the key bytes for the alias    * @param alias the alias for the key    * @return key for this alias    */
 DECL|method|getSecretKey (Text alias)
 specifier|public
 name|byte
@@ -676,7 +618,7 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**    * Set the key for an alias.    * @param alias the alias for the key    * @param key the key bytes    */
+comment|/**    * Set the key for an alias    * @param alias the alias for the key    * @param key the key bytes    */
 DECL|method|addSecretKey (Text alias, byte[] key)
 specifier|public
 name|void
@@ -718,7 +660,7 @@ name|alias
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return all the secret key entries in the in-memory map.    */
+comment|/**    * Return all the secret key entries in the in-memory map    */
 DECL|method|getAllSecretKeys ()
 specifier|public
 name|List
@@ -759,7 +701,7 @@ return|return
 name|list
 return|;
 block|}
-comment|/**    * Convenience method for reading a token storage file and loading its Tokens.    * @param filename    * @param conf    * @throws IOException    */
+comment|/**    * Convenience method for reading a token storage file, and loading the Tokens    * therein in the passed UGI    * @param filename    * @param conf    * @throws IOException    */
 DECL|method|readTokenStorageFile (Path filename, Configuration conf)
 specifier|public
 specifier|static
@@ -850,7 +792,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Convenience method for reading a token storage file and loading its Tokens.    * @param filename    * @param conf    * @throws IOException    */
+comment|/**    * Convenience method for reading a token storage file, and loading the Tokens    * therein in the passed UGI    * @param filename    * @param conf    * @throws IOException    */
 DECL|method|readTokenStorageFile (File filename, Configuration conf)
 specifier|public
 specifier|static
@@ -938,7 +880,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Convenience method for reading a token from a DataInputStream.    */
+comment|/**    * Convenience method for reading a token storage file directly from a     * datainputstream    */
 DECL|method|readTokenStorageStream (DataInputStream in)
 specifier|public
 name|void
@@ -1003,10 +945,6 @@ condition|(
 name|version
 operator|!=
 name|TOKEN_STORAGE_VERSION
-operator|&&
-name|version
-operator|!=
-name|OLD_TOKEN_STORAGE_VERSION
 condition|)
 block|{
 throw|throw
@@ -1021,33 +959,11 @@ literal|" in token storage."
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|version
-operator|==
-name|OLD_TOKEN_STORAGE_VERSION
-condition|)
-block|{
 name|readFields
 argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|version
-operator|==
-name|TOKEN_STORAGE_VERSION
-condition|)
-block|{
-name|readProtos
-argument_list|(
-name|in
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 DECL|field|TOKEN_STORAGE_MAGIC
 specifier|private
@@ -1072,16 +988,6 @@ specifier|static
 specifier|final
 name|byte
 name|TOKEN_STORAGE_VERSION
-init|=
-literal|1
-decl_stmt|;
-comment|/**    *  For backward compatibility.    */
-DECL|field|OLD_TOKEN_STORAGE_VERSION
-specifier|private
-specifier|static
-specifier|final
-name|byte
-name|OLD_TOKEN_STORAGE_VERSION
 init|=
 literal|0
 decl_stmt|;
@@ -1110,7 +1016,7 @@ argument_list|(
 name|TOKEN_STORAGE_VERSION
 argument_list|)
 expr_stmt|;
-name|writeProto
+name|write
 argument_list|(
 name|os
 argument_list|)
@@ -1156,100 +1062,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    *  For backward compatibility.    */
-DECL|method|writeLegacyTokenStorageLocalFile (File f)
-specifier|public
-name|void
-name|writeLegacyTokenStorageLocalFile
-parameter_list|(
-name|File
-name|f
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|writeLegacyOutputStream
-argument_list|(
-operator|new
-name|DataOutputStream
-argument_list|(
-operator|new
-name|FileOutputStream
-argument_list|(
-name|f
-argument_list|)
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    *  For backward compatibility.    */
-DECL|method|writeLegacyTokenStorageFile (Path filename, Configuration conf)
-specifier|public
-name|void
-name|writeLegacyTokenStorageFile
-parameter_list|(
-name|Path
-name|filename
-parameter_list|,
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|writeLegacyOutputStream
-argument_list|(
-name|filename
-operator|.
-name|getFileSystem
-argument_list|(
-name|conf
-argument_list|)
-operator|.
-name|create
-argument_list|(
-name|filename
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|writeLegacyOutputStream (DataOutputStream os)
-specifier|private
-name|void
-name|writeLegacyOutputStream
-parameter_list|(
-name|DataOutputStream
-name|os
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|os
-operator|.
-name|write
-argument_list|(
-name|TOKEN_STORAGE_MAGIC
-argument_list|)
-expr_stmt|;
-name|os
-operator|.
-name|write
-argument_list|(
-name|OLD_TOKEN_STORAGE_VERSION
-argument_list|)
-expr_stmt|;
-name|write
-argument_list|(
-name|os
-argument_list|)
-expr_stmt|;
-name|os
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-comment|/**    * Stores all the keys to DataOutput.    * @param out    * @throws IOException    */
+comment|/**    * Stores all the keys to DataOutput    * @param out    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|write (DataOutput out)
@@ -1388,308 +1201,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Write contents of this instance as CredentialsProto message to DataOutput.    * @param out    * @throws IOException    */
-DECL|method|writeProto (DataOutput out)
-specifier|public
-name|void
-name|writeProto
-parameter_list|(
-name|DataOutput
-name|out
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|CredentialsProto
-operator|.
-name|Builder
-name|storage
-init|=
-name|CredentialsProto
-operator|.
-name|newBuilder
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|Text
-argument_list|,
-name|Token
-argument_list|<
-name|?
-extends|extends
-name|TokenIdentifier
-argument_list|>
-argument_list|>
-name|e
-range|:
-name|tokenMap
-operator|.
-name|entrySet
-argument_list|()
-control|)
-block|{
-name|CredentialsKVProto
-operator|.
-name|Builder
-name|kv
-init|=
-name|CredentialsKVProto
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|setAliasBytes
-argument_list|(
-name|ByteString
-operator|.
-name|copyFrom
-argument_list|(
-name|e
-operator|.
-name|getKey
-argument_list|()
-operator|.
-name|getBytes
-argument_list|()
-argument_list|,
-literal|0
-argument_list|,
-name|e
-operator|.
-name|getKey
-argument_list|()
-operator|.
-name|getLength
-argument_list|()
-argument_list|)
-argument_list|)
-operator|.
-name|setToken
-argument_list|(
-name|e
-operator|.
-name|getValue
-argument_list|()
-operator|.
-name|toTokenProto
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|storage
-operator|.
-name|addTokens
-argument_list|(
-name|kv
-operator|.
-name|build
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-for|for
-control|(
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|Text
-argument_list|,
-name|byte
-index|[]
-argument_list|>
-name|e
-range|:
-name|secretKeysMap
-operator|.
-name|entrySet
-argument_list|()
-control|)
-block|{
-name|CredentialsKVProto
-operator|.
-name|Builder
-name|kv
-init|=
-name|CredentialsKVProto
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|setAliasBytes
-argument_list|(
-name|ByteString
-operator|.
-name|copyFrom
-argument_list|(
-name|e
-operator|.
-name|getKey
-argument_list|()
-operator|.
-name|getBytes
-argument_list|()
-argument_list|,
-literal|0
-argument_list|,
-name|e
-operator|.
-name|getKey
-argument_list|()
-operator|.
-name|getLength
-argument_list|()
-argument_list|)
-argument_list|)
-operator|.
-name|setSecret
-argument_list|(
-name|ByteString
-operator|.
-name|copyFrom
-argument_list|(
-name|e
-operator|.
-name|getValue
-argument_list|()
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|storage
-operator|.
-name|addSecrets
-argument_list|(
-name|kv
-operator|.
-name|build
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-name|storage
-operator|.
-name|build
-argument_list|()
-operator|.
-name|writeTo
-argument_list|(
-operator|(
-name|DataOutputStream
-operator|)
-name|out
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Populates keys/values from proto buffer storage.    * @param in - stream ready to read a serialized proto buffer message    */
-DECL|method|readProtos (DataInput in)
-specifier|public
-name|void
-name|readProtos
-parameter_list|(
-name|DataInput
-name|in
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|CredentialsProto
-name|storage
-init|=
-name|CredentialsProto
-operator|.
-name|parseFrom
-argument_list|(
-operator|(
-name|DataInputStream
-operator|)
-name|in
-argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|CredentialsKVProto
-name|kv
-range|:
-name|storage
-operator|.
-name|getTokensList
-argument_list|()
-control|)
-block|{
-name|addToken
-argument_list|(
-operator|new
-name|Text
-argument_list|(
-name|kv
-operator|.
-name|getAliasBytes
-argument_list|()
-operator|.
-name|toByteArray
-argument_list|()
-argument_list|)
-argument_list|,
-operator|(
-name|Token
-argument_list|<
-name|?
-extends|extends
-name|TokenIdentifier
-argument_list|>
-operator|)
-operator|new
-name|Token
-argument_list|(
-name|kv
-operator|.
-name|getToken
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-for|for
-control|(
-name|CredentialsKVProto
-name|kv
-range|:
-name|storage
-operator|.
-name|getSecretsList
-argument_list|()
-control|)
-block|{
-name|addSecretKey
-argument_list|(
-operator|new
-name|Text
-argument_list|(
-name|kv
-operator|.
-name|getAliasBytes
-argument_list|()
-operator|.
-name|toByteArray
-argument_list|()
-argument_list|)
-argument_list|,
-name|kv
-operator|.
-name|getSecret
-argument_list|()
-operator|.
-name|toByteArray
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Loads all the keys.    * @param in    * @throws IOException    */
+comment|/**    * Loads all the keys    * @param in    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|readFields (DataInput in)

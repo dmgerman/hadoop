@@ -1197,10 +1197,9 @@ argument_list|,
 name|token
 argument_list|)
 expr_stmt|;
-comment|// dtutil is replacing this tool; preserve legacy functionality
 name|cred
 operator|.
-name|writeLegacyTokenStorageFile
+name|writeTokenStorageFile
 argument_list|(
 name|tokenFile
 argument_list|,
