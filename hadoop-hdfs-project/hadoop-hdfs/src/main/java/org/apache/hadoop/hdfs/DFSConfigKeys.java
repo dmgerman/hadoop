@@ -1000,7 +1000,7 @@ specifier|final
 name|String
 name|DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_DEFAULT
 init|=
-literal|"0.0.0.0:50090"
+literal|"0.0.0.0:9868"
 decl_stmt|;
 DECL|field|DFS_NAMENODE_SECONDARY_HTTPS_ADDRESS_KEY
 specifier|public
@@ -1018,7 +1018,7 @@ specifier|final
 name|String
 name|DFS_NAMENODE_SECONDARY_HTTPS_ADDRESS_DEFAULT
 init|=
-literal|"0.0.0.0:50091"
+literal|"0.0.0.0:9869"
 decl_stmt|;
 DECL|field|DFS_NAMENODE_CHECKPOINT_QUIET_MULTIPLIER_KEY
 specifier|public
@@ -3103,7 +3103,7 @@ specifier|final
 name|int
 name|DFS_DATANODE_DEFAULT_PORT
 init|=
-literal|50010
+literal|9866
 decl_stmt|;
 DECL|field|DFS_DATANODE_ADDRESS_DEFAULT
 specifier|public
@@ -3351,7 +3351,7 @@ specifier|final
 name|int
 name|DFS_DATANODE_HTTP_DEFAULT_PORT
 init|=
-literal|50075
+literal|9864
 decl_stmt|;
 DECL|field|DFS_DATANODE_HTTP_ADDRESS_DEFAULT
 specifier|public
@@ -3675,7 +3675,7 @@ specifier|final
 name|int
 name|DFS_DATANODE_HTTPS_DEFAULT_PORT
 init|=
-literal|50475
+literal|9865
 decl_stmt|;
 DECL|field|DFS_DATANODE_HTTPS_ADDRESS_DEFAULT
 specifier|public
@@ -3704,7 +3704,7 @@ specifier|final
 name|int
 name|DFS_DATANODE_IPC_DEFAULT_PORT
 init|=
-literal|50020
+literal|9867
 decl_stmt|;
 DECL|field|DFS_DATANODE_IPC_ADDRESS_DEFAULT
 specifier|public

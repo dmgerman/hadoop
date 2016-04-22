@@ -574,7 +574,7 @@ name|DFSConfigKeys
 operator|.
 name|FS_DEFAULT_NAME_KEY
 argument_list|,
-literal|"hdfs://mock1:8020"
+literal|"hdfs://mock1:9820"
 argument_list|)
 expr_stmt|;
 name|bpm
@@ -629,7 +629,7 @@ name|conf
 argument_list|,
 literal|"ns1"
 argument_list|,
-literal|"mock1:8020"
+literal|"mock1:9820"
 argument_list|)
 expr_stmt|;
 name|addNN
@@ -638,7 +638,7 @@ name|conf
 argument_list|,
 literal|"ns2"
 argument_list|,
-literal|"mock1:8020"
+literal|"mock1:9820"
 argument_list|)
 expr_stmt|;
 name|bpm
@@ -772,7 +772,7 @@ name|conf
 argument_list|,
 literal|"ns1"
 argument_list|,
-literal|"mock1:8020"
+literal|"mock1:9820"
 argument_list|)
 expr_stmt|;
 name|addNN
@@ -781,7 +781,7 @@ name|conf
 argument_list|,
 literal|"ns2"
 argument_list|,
-literal|"mock1:8020"
+literal|"mock1:9820"
 argument_list|)
 expr_stmt|;
 name|addNN
@@ -790,7 +790,7 @@ name|conf
 argument_list|,
 literal|"ns3"
 argument_list|,
-literal|"mock1:8020"
+literal|"mock1:9820"
 argument_list|)
 expr_stmt|;
 name|conf

@@ -857,7 +857,7 @@ name|addr
 operator|.
 name|contains
 argument_list|(
-literal|":8020"
+literal|":9820"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1496,7 +1496,7 @@ literal|"http"
 argument_list|,
 name|hostname
 operator|+
-literal|":8020"
+literal|":9820"
 argument_list|,
 literal|"/"
 argument_list|)

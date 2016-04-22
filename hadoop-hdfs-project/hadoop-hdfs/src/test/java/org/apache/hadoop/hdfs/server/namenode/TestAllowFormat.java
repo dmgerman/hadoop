@@ -917,7 +917,7 @@ name|InetSocketAddress
 argument_list|(
 name|localhost
 argument_list|,
-literal|8020
+literal|9820
 argument_list|)
 decl_stmt|;
 name|InetSocketAddress
@@ -928,7 +928,7 @@ name|InetSocketAddress
 argument_list|(
 name|localhost
 argument_list|,
-literal|9020
+literal|9820
 argument_list|)
 decl_stmt|;
 name|HATestUtil

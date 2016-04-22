@@ -66,7 +66,7 @@ specifier|public
 interface|interface
 name|AddressTypes
 block|{
-comment|/**    * hostname/FQDN and port pair: {@value}.    * The host/domain name and port are set as separate strings in the address    * list, e.g.    *<pre>    *   ["namenode.example.org", "50070"]    *</pre>    */
+comment|/**    * hostname/FQDN and port pair: {@value}.    * The host/domain name and port are set as separate strings in the address    * list, e.g.    *<pre>    *   ["namenode.example.org", "9870"]    *</pre>    */
 DECL|field|ADDRESS_HOSTNAME_AND_PORT
 specifier|public
 specifier|static

@@ -207,7 +207,7 @@ name|Exception
 block|{
 name|testDefaultUriInternal
 argument_list|(
-literal|"hdfs://dummyhost:8020"
+literal|"hdfs://dummyhost:9820"
 argument_list|)
 expr_stmt|;
 block|}

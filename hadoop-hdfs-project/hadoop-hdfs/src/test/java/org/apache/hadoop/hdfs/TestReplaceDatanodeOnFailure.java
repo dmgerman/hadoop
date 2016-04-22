@@ -484,7 +484,7 @@ name|DFSTestUtil
 operator|.
 name|getLocalDatanodeInfo
 argument_list|(
-literal|50020
+literal|9867
 operator|+
 name|i
 argument_list|)

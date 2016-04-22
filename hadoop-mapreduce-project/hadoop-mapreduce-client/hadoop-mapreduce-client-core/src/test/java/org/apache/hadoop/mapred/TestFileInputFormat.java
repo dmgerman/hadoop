@@ -1722,9 +1722,9 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"localhost:50010"
+literal|"localhost:9866"
 block|,
-literal|"otherhost:50010"
+literal|"otherhost:9866"
 block|}
 argument_list|,
 operator|new

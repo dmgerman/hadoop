@@ -319,7 +319,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * tool to get data from NameNode or DataNode using MBeans currently the  * following MBeans are available (under hadoop domain):  * hadoop:service=NameNode,name=FSNamesystemState (static)  * hadoop:service=NameNode,name=NameNodeActivity (dynamic)  * hadoop:service=NameNode,name=RpcActivityForPort9000 (dynamic)  * hadoop:service=DataNode,name=RpcActivityForPort50020 (dynamic)  * hadoop:name=service=DataNode,FSDatasetState-UndefinedStorageId663800459  * (static)  * hadoop:service=DataNode,name=DataNodeActivity-UndefinedStorageId-520845215  * (dynamic)  *   *   * implementation note: all logging is sent to System.err (since it is a command  * line tool)  */
+comment|/**  * tool to get data from NameNode or DataNode using MBeans currently the  * following MBeans are available (under hadoop domain):  * hadoop:service=NameNode,name=FSNamesystemState (static)  * hadoop:service=NameNode,name=NameNodeActivity (dynamic)  * hadoop:service=NameNode,name=RpcActivityForPort9000 (dynamic)  * hadoop:service=DataNode,name=RpcActivityForPort9867 (dynamic)  * hadoop:name=service=DataNode,FSDatasetState-UndefinedStorageId663800459  * (static)  * hadoop:service=DataNode,name=DataNodeActivity-UndefinedStorageId-520845215  * (dynamic)  *   *   * implementation note: all logging is sent to System.err (since it is a command  * line tool)  */
 end_comment
 
 begin_class
