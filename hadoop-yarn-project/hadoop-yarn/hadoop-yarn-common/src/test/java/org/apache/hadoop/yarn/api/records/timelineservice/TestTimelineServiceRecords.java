@@ -452,11 +452,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-operator|new
-name|Double
-argument_list|(
 literal|3.0D
-argument_list|)
 argument_list|,
 name|entry
 operator|.
@@ -491,11 +487,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-operator|new
-name|Integer
-argument_list|(
 literal|2
-argument_list|)
 argument_list|,
 name|entry
 operator|.
@@ -530,11 +522,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-operator|new
-name|Float
-argument_list|(
 literal|1.0F
-argument_list|)
 argument_list|,
 name|entry
 operator|.

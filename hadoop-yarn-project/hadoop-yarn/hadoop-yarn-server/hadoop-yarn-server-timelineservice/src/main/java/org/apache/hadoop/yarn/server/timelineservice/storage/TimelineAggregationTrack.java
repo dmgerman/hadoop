@@ -32,9 +32,12 @@ specifier|public
 enum|enum
 name|TimelineAggregationTrack
 block|{
+DECL|enumConstant|APP
 DECL|enumConstant|FLOW
 DECL|enumConstant|USER
 DECL|enumConstant|QUEUE
+name|APP
+block|,
 name|FLOW
 block|,
 name|USER
