@@ -115,7 +115,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Helpers to create interned metrics info  */
+comment|/**  * Helpers to create interned metrics info.  */
 end_comment
 
 begin_class
@@ -576,7 +576,7 @@ block|}
 block|}
 decl_stmt|;
 block|}
-comment|/**    * Get a metric info object    * @param name    * @param description    * @return an interned metric info object    */
+comment|/**    * Get a metric info object.    * @param name Name of metric info object    * @param description Description of metric info object    * @return an interned metric info object    */
 DECL|method|info (String name, String description)
 specifier|public
 specifier|static
@@ -711,7 +711,7 @@ block|}
 block|}
 decl_stmt|;
 block|}
-comment|/**    * Get a metrics tag    * @param info  of the tag    * @param value of the tag    * @return an interned metrics tag    */
+comment|/**    * Get a metrics tag.    * @param info  of the tag    * @param value of the tag    * @return an interned metrics tag    */
 DECL|method|tag (MetricsInfo info, String value)
 specifier|public
 specifier|static
@@ -740,7 +740,7 @@ name|value
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a metrics tag    * @param name  of the tag    * @param description of the tag    * @param value of the tag    * @return an interned metrics tag    */
+comment|/**    * Get a metrics tag.    * @param name  of the tag    * @param description of the tag    * @param value of the tag    * @return an interned metrics tag    */
 DECL|method|tag (String name, String description, String value)
 specifier|public
 specifier|static
