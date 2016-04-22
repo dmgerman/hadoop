@@ -1122,6 +1122,7 @@ annotation|@
 name|Override
 DECL|method|editSchedule ()
 specifier|public
+specifier|synchronized
 name|void
 name|editSchedule
 parameter_list|()
@@ -1160,7 +1161,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|preemptOrkillSelectedContainerAfterWait ( Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates)
+DECL|method|preemptOrkillSelectedContainerAfterWait ( Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates, long currentTime)
 specifier|private
 name|void
 name|preemptOrkillSelectedContainerAfterWait
@@ -1175,6 +1176,9 @@ name|RMContainer
 argument_list|>
 argument_list|>
 name|selectedCandidates
+parameter_list|,
+name|long
+name|currentTime
 parameter_list|)
 block|{
 comment|// preempt (or kill) the selected containers
@@ -1266,11 +1270,8 @@ name|container
 argument_list|)
 operator|+
 name|maxWaitTime
-operator|<
-name|clock
-operator|.
-name|getTime
-argument_list|()
+operator|<=
+name|currentTime
 condition|)
 block|{
 comment|// kill it
@@ -1353,10 +1354,7 @@ name|put
 argument_list|(
 name|container
 argument_list|,
-name|clock
-operator|.
-name|getTime
-argument_list|()
+name|currentTime
 argument_list|)
 expr_stmt|;
 block|}
@@ -1445,11 +1443,14 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|cleanupStaledPreemptionCandidates ()
+DECL|method|cleanupStaledPreemptionCandidates (long currentTime)
 specifier|private
 name|void
 name|cleanupStaledPreemptionCandidates
-parameter_list|()
+parameter_list|(
+name|long
+name|currentTime
+parameter_list|)
 block|{
 comment|// Keep the preemptionCandidates list clean
 for|for
@@ -1484,6 +1485,8 @@ name|next
 argument_list|()
 decl_stmt|;
 comment|// garbage collect containers that are irrelevant for preemption
+comment|// And avoid preempt selected containers for *this execution*
+comment|// or within 1 ms
 if|if
 condition|(
 name|preemptionCandidates
@@ -1497,10 +1500,7 @@ literal|2
 operator|*
 name|maxWaitTime
 operator|<
-name|clock
-operator|.
-name|getTime
-argument_list|()
+name|currentTime
 condition|)
 block|{
 name|i
@@ -1806,15 +1806,27 @@ comment|//
 comment|// We may need to "score" killable containers and revert the most preferred
 comment|// containers. The bottom line is, we shouldn't preempt a queue which is already
 comment|// below its guaranteed resource.
+name|long
+name|currentTime
+init|=
+name|clock
+operator|.
+name|getTime
+argument_list|()
+decl_stmt|;
 comment|// preempt (or kill) the selected containers
 name|preemptOrkillSelectedContainerAfterWait
 argument_list|(
 name|toPreempt
+argument_list|,
+name|currentTime
 argument_list|)
 expr_stmt|;
 comment|// cleanup staled preemption candidates
 name|cleanupStaledPreemptionCandidates
-argument_list|()
+argument_list|(
+name|currentTime
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
