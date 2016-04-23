@@ -26,18 +26,6 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
 name|fail
 import|;
 end_import
@@ -323,6 +311,20 @@ operator|.
 name|client
 operator|.
 name|ConnectionConfigurator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
 import|;
 end_import
 
@@ -892,7 +894,9 @@ name|SocketTimeoutException
 name|e
 parameter_list|)
 block|{
-name|assertEquals
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
 argument_list|(
 name|fs
 operator|.
@@ -905,9 +909,6 @@ operator|+
 literal|": connect timed out"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -955,7 +956,9 @@ name|SocketTimeoutException
 name|e
 parameter_list|)
 block|{
-name|assertEquals
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
 argument_list|(
 name|fs
 operator|.
@@ -968,9 +971,6 @@ operator|+
 literal|": Read timed out"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1015,7 +1015,9 @@ name|SocketTimeoutException
 name|e
 parameter_list|)
 block|{
-name|assertEquals
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
 argument_list|(
 name|fs
 operator|.
@@ -1028,9 +1030,6 @@ operator|+
 literal|": connect timed out"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1072,7 +1071,9 @@ name|SocketTimeoutException
 name|e
 parameter_list|)
 block|{
-name|assertEquals
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
 argument_list|(
 name|fs
 operator|.
@@ -1085,9 +1086,6 @@ operator|+
 literal|": Read timed out"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1138,7 +1136,9 @@ name|SocketTimeoutException
 name|e
 parameter_list|)
 block|{
-name|assertEquals
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
 argument_list|(
 name|fs
 operator|.
@@ -1151,9 +1151,6 @@ operator|+
 literal|": connect timed out"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1204,7 +1201,9 @@ name|SocketTimeoutException
 name|e
 parameter_list|)
 block|{
-name|assertEquals
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
 argument_list|(
 name|fs
 operator|.
@@ -1217,9 +1216,6 @@ operator|+
 literal|": Read timed out"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1277,7 +1273,9 @@ name|SocketTimeoutException
 name|e
 parameter_list|)
 block|{
-name|assertEquals
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
 argument_list|(
 name|fs
 operator|.
@@ -1290,9 +1288,6 @@ operator|+
 literal|": connect timed out"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1372,14 +1367,13 @@ name|SocketTimeoutException
 name|e
 parameter_list|)
 block|{
-name|assertEquals
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
 argument_list|(
 literal|"Read timed out"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
