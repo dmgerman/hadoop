@@ -260,6 +260,10 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|impl
+operator|.
 name|BlockReaderTestUtil
 import|;
 end_import
@@ -391,24 +395,6 @@ operator|.
 name|client
 operator|.
 name|HdfsDataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|impl
-operator|.
-name|DfsClientConf
 import|;
 end_import
 

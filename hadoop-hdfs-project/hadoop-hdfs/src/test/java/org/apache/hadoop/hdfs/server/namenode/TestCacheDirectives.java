@@ -506,6 +506,10 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|impl
+operator|.
 name|BlockReaderTestUtil
 import|;
 end_import

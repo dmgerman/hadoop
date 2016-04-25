@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.client.impl
 package|package
 name|org
 operator|.
@@ -13,6 +13,10 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|client
+operator|.
+name|impl
 package|;
 end_package
 
@@ -192,9 +196,21 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|client
+name|BlockReader
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|HdfsClientConfigKeys
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtilClient
 import|;
 end_import
 
@@ -210,9 +226,7 @@ name|hdfs
 operator|.
 name|client
 operator|.
-name|impl
-operator|.
-name|DfsClientConf
+name|HdfsClientConfigKeys
 import|;
 end_import
 

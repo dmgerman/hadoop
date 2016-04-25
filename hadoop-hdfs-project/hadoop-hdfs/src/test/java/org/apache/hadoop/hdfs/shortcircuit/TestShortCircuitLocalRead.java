@@ -352,6 +352,10 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|impl
+operator|.
 name|TestBlockReaderLocal
 import|;
 end_import
@@ -487,24 +491,6 @@ operator|.
 name|block
 operator|.
 name|BlockTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|SimulatedFSDataset
 import|;
 end_import
 
@@ -3854,7 +3840,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test that file data can be read by reading the block    * through RemoteBlockReader    * @throws IOException   */
+comment|/**    * Test that file data can be read by reading the block    * through BlockReaderRemote    * @throws IOException   */
 DECL|method|doTestShortCircuitReadWithRemoteBlockReader ( boolean ignoreChecksum, int size, String shortCircuitUser, int readOffset, boolean shortCircuitFails)
 specifier|public
 name|void
@@ -4043,10 +4029,10 @@ argument_list|,
 name|shortCircuitFails
 argument_list|)
 expr_stmt|;
-comment|//RemoteBlockReader have unsupported method read(ByteBuffer bf)
+comment|//BlockReaderRemote have unsupported method read(ByteBuffer bf)
 name|assertTrue
 argument_list|(
-literal|"RemoteBlockReader unsupported method read(ByteBuffer bf) error"
+literal|"BlockReaderRemote unsupported method read(ByteBuffer bf) error"
 argument_list|,
 name|checkUnsupportedMethod
 argument_list|(

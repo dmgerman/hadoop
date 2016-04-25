@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.client.impl
 package|package
 name|org
 operator|.
@@ -13,6 +13,10 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|client
+operator|.
+name|impl
 package|;
 end_package
 
@@ -26,17 +30,15 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|client
-operator|.
-name|HdfsClientConfigKeys
+name|HdfsConfiguration
 import|;
 end_import
 
 begin_class
-DECL|class|TestRemoteBlockReader
+DECL|class|TestBlockReaderRemote2
 specifier|public
 class|class
-name|TestRemoteBlockReader
+name|TestBlockReaderRemote2
 extends|extends
 name|TestBlockReaderBase
 block|{
@@ -52,17 +54,6 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|HdfsClientConfigKeys
-operator|.
-name|DFS_CLIENT_USE_LEGACY_BLOCKREADER
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 return|return
 name|conf
 return|;

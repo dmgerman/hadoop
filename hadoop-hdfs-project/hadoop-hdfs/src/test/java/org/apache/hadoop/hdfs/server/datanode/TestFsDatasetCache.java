@@ -332,6 +332,10 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|impl
+operator|.
 name|BlockReaderTestUtil
 import|;
 end_import
@@ -579,24 +583,6 @@ operator|.
 name|FsDatasetCache
 operator|.
 name|PageRounder
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|EditLogFileOutputStream
 import|;
 end_import
 

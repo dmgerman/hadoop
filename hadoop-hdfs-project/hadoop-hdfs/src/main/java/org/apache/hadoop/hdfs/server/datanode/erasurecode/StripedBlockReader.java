@@ -118,7 +118,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|RemoteBlockReader2
+name|client
+operator|.
+name|impl
+operator|.
+name|BlockReaderRemote2
 import|;
 end_import
 
@@ -599,7 +603,7 @@ argument_list|)
 decl_stmt|;
 comment|/*          * This can be further improved if the replica is local, then we can          * read directly from DN and need to check the replica is FINALIZED          * state, notice we should not use short-circuit local read which          * requires config for domain-socket in UNIX or legacy config in          * Windows. The network distance value isn't used for this scenario.          *          * TODO: add proper tracer          */
 return|return
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 operator|.
 name|newBlockReader
 argument_list|(

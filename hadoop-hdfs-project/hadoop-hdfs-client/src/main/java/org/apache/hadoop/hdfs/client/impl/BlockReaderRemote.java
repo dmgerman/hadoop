@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.client.impl
 package|package
 name|org
 operator|.
@@ -13,6 +13,10 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|client
+operator|.
+name|impl
 package|;
 end_package
 
@@ -139,6 +143,34 @@ operator|.
 name|fs
 operator|.
 name|ReadOption
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|BlockReader
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|PeerCache
 import|;
 end_import
 
@@ -483,7 +515,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * @deprecated this is an old implementation that is being left around  * in case any issues spring up with the new {@link RemoteBlockReader2}  * implementation.  * It will be removed in the next release.  */
+comment|/**  * @deprecated this is an old implementation that is being left around  * in case any issues spring up with the new {@link BlockReaderRemote2}  * implementation.  * It will be removed in the next release.  */
 end_comment
 
 begin_class
@@ -493,10 +525,10 @@ operator|.
 name|Private
 annotation|@
 name|Deprecated
-DECL|class|RemoteBlockReader
+DECL|class|BlockReaderRemote
 specifier|public
 class|class
-name|RemoteBlockReader
+name|BlockReaderRemote
 extends|extends
 name|FSInputChecker
 implements|implements
@@ -1052,7 +1084,7 @@ name|tracer
 operator|.
 name|newScope
 argument_list|(
-literal|"RemoteBlockReader#readChunk("
+literal|"BlockReaderRemote#readChunk("
 operator|+
 name|blockId
 operator|+
@@ -1549,9 +1581,9 @@ return|return
 name|bytesToRead
 return|;
 block|}
-DECL|method|RemoteBlockReader (String file, String bpid, long blockId, DataInputStream in, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache, Tracer tracer, int networkDistance)
+DECL|method|BlockReaderRemote (String file, String bpid, long blockId, DataInputStream in, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache, Tracer tracer, int networkDistance)
 specifier|private
-name|RemoteBlockReader
+name|BlockReaderRemote
 parameter_list|(
 name|String
 name|file
@@ -1761,7 +1793,7 @@ comment|/**    * Create a new BlockReader specifically to satisfy a read.    * T
 DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, int bufferSize, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache, CachingStrategy cachingStrategy, Tracer tracer, int networkDistance)
 specifier|public
 specifier|static
-name|RemoteBlockReader
+name|BlockReaderRemote
 name|newBlockReader
 parameter_list|(
 name|String
@@ -1889,7 +1921,7 @@ name|in
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 operator|.
 name|checkSuccess
 argument_list|(
@@ -1975,7 +2007,7 @@ throw|;
 block|}
 return|return
 operator|new
-name|RemoteBlockReader
+name|BlockReaderRemote
 argument_list|(
 name|file
 argument_list|,
@@ -2151,7 +2183,7 @@ name|peer
 assert|;
 try|try
 block|{
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 operator|.
 name|writeReadResult
 argument_list|(
@@ -2217,7 +2249,7 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"readDirect unsupported in RemoteBlockReader"
+literal|"readDirect unsupported in BlockReaderRemote"
 argument_list|)
 throw|;
 block|}
@@ -2232,7 +2264,7 @@ block|{
 comment|// An optimistic estimate of how much data is available
 comment|// to us without doing network I/O.
 return|return
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 operator|.
 name|TCP_WINDOW_SIZE
 return|;

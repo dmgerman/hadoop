@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.client.impl
 package|package
 name|org
 operator|.
@@ -13,6 +13,10 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|client
+operator|.
+name|impl
 package|;
 end_package
 
@@ -73,6 +77,20 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSClient
 import|;
 end_import
 
@@ -214,7 +232,7 @@ name|GenericTestUtils
 operator|.
 name|setLogLevel
 argument_list|(
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 operator|.
 name|LOG
 argument_list|,
@@ -295,11 +313,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 name|reader
 init|=
 operator|(
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 operator|)
 name|spy
 argument_list|(
@@ -359,11 +377,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 name|reader
 init|=
 operator|(
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 operator|)
 name|spy
 argument_list|(
@@ -431,11 +449,11 @@ throws|throws
 name|Exception
 block|{
 comment|// Ask for half the file
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 name|reader
 init|=
 operator|(
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 operator|)
 name|spy
 argument_list|(
@@ -567,11 +585,11 @@ operator|+
 name|length
 argument_list|)
 expr_stmt|;
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 name|reader
 init|=
 operator|(
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 operator|)
 name|spy
 argument_list|(

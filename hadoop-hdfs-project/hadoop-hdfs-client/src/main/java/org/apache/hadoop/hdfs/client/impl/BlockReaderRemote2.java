@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.client.impl
 package|package
 name|org
 operator|.
@@ -13,6 +13,10 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|client
+operator|.
+name|impl
 package|;
 end_package
 
@@ -143,6 +147,34 @@ operator|.
 name|fs
 operator|.
 name|ReadOption
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|BlockReader
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|PeerCache
 import|;
 end_import
 
@@ -509,7 +541,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is a wrapper around connection to datanode  * and understands checksum, offset etc.  *  * Terminology:  *<dl>  *<dt>block</dt>  *<dd>The hdfs block, typically large (~64MB).  *</dd>  *<dt>chunk</dt>  *<dd>A block is divided into chunks, each comes with a checksum.  *       We want transfers to be chunk-aligned, to be able to  *       verify checksums.  *</dd>  *<dt>packet</dt>  *<dd>A grouping of chunks used for transport. It contains a  *       header, followed by checksum data, followed by real data.  *</dd>  *</dl>  * Please see DataNode for the RPC specification.  *  * This is a new implementation introduced in Hadoop 0.23 which  * is more efficient and simpler than the older BlockReader  * implementation. It should be renamed to RemoteBlockReader  * once we are confident in it.  */
+comment|/**  * This is a wrapper around connection to datanode  * and understands checksum, offset etc.  *  * Terminology:  *<dl>  *<dt>block</dt>  *<dd>The hdfs block, typically large (~64MB).  *</dd>  *<dt>chunk</dt>  *<dd>A block is divided into chunks, each comes with a checksum.  *       We want transfers to be chunk-aligned, to be able to  *       verify checksums.  *</dd>  *<dt>packet</dt>  *<dd>A grouping of chunks used for transport. It contains a  *       header, followed by checksum data, followed by real data.  *</dd>  *</dl>  * Please see DataNode for the RPC specification.  *  * This is a new implementation introduced in Hadoop 0.23 which  * is more efficient and simpler than the older BlockReader  * implementation. It should be renamed to BlockReaderRemote  * once we are confident in it.  */
 end_comment
 
 begin_class
@@ -517,10 +549,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|RemoteBlockReader2
+DECL|class|BlockReaderRemote2
 specifier|public
 class|class
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 implements|implements
 name|BlockReader
 block|{
@@ -534,7 +566,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 operator|.
 name|class
 argument_list|)
@@ -761,7 +793,7 @@ name|tracer
 operator|.
 name|newScope
 argument_list|(
-literal|"RemoteBlockReader2#readNextPacket("
+literal|"BlockReaderRemote2#readNextPacket("
 operator|+
 name|blockId
 operator|+
@@ -872,7 +904,7 @@ name|tracer
 operator|.
 name|newScope
 argument_list|(
-literal|"RemoteBlockReader2#readNextPacket("
+literal|"BlockReaderRemote2#readNextPacket("
 operator|+
 name|blockId
 operator|+
@@ -1379,9 +1411,9 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|RemoteBlockReader2 (String file, long blockId, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache, Tracer tracer, int networkDistance)
+DECL|method|BlockReaderRemote2 (String file, long blockId, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache, Tracer tracer, int networkDistance)
 specifier|protected
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 parameter_list|(
 name|String
 name|file
@@ -2002,7 +2034,7 @@ throw|;
 block|}
 return|return
 operator|new
-name|RemoteBlockReader2
+name|BlockReaderRemote2
 argument_list|(
 name|file
 argument_list|,
