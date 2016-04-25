@@ -4277,7 +4277,9 @@ argument_list|)
 operator|.
 name|nameNodePort
 argument_list|(
-literal|8020
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 argument_list|)
 operator|.
 name|waitSafeMode
