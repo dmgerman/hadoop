@@ -480,6 +480,8 @@ specifier|final
 name|long
 name|DFS_DATANODE_BALANCE_BANDWIDTHPERSEC_DEFAULT
 init|=
+literal|10
+operator|*
 literal|1024
 operator|*
 literal|1024
@@ -493,14 +495,14 @@ name|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_KEY
 init|=
 literal|"dfs.datanode.balance.max.concurrent.moves"
 decl_stmt|;
-DECL|field|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|int
+DECL|field|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT
 name|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT
 init|=
-literal|5
+literal|50
 decl_stmt|;
 annotation|@
 name|Deprecated
