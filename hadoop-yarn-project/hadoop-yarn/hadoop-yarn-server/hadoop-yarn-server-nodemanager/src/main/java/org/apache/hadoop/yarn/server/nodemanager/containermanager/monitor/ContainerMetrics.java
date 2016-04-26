@@ -632,8 +632,15 @@ decl_stmt|;
 comment|// Metrics publishing status
 DECL|field|flushPeriodMs
 specifier|private
+specifier|final
 name|long
 name|flushPeriodMs
+decl_stmt|;
+DECL|field|unregisterDelayMs
+specifier|private
+specifier|final
+name|long
+name|unregisterDelayMs
 decl_stmt|;
 DECL|field|flushOnPeriod
 specifier|private
@@ -651,19 +658,6 @@ init|=
 literal|false
 decl_stmt|;
 comment|// true if container finished
-DECL|field|unregister
-specifier|private
-name|boolean
-name|unregister
-init|=
-literal|false
-decl_stmt|;
-comment|// unregister
-DECL|field|unregisterDelayMs
-specifier|private
-name|long
-name|unregisterDelayMs
-decl_stmt|;
 DECL|field|timer
 specifier|private
 name|Timer
@@ -1220,13 +1214,6 @@ block|{
 comment|//Container goes through registered -> finished -> unregistered.
 if|if
 condition|(
-name|unregister
-condition|)
-block|{
-return|return;
-block|}
-if|if
-condition|(
 name|finished
 operator|||
 name|flushOnPeriod
@@ -1252,19 +1239,9 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+operator|!
 name|finished
-condition|)
-block|{
-name|this
-operator|.
-name|unregister
-operator|=
-literal|true
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
+operator|&&
 name|flushOnPeriod
 condition|)
 block|{

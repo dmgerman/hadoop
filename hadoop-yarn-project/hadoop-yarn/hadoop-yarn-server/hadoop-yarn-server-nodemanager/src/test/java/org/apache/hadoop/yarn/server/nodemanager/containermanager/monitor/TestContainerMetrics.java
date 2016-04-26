@@ -536,7 +536,7 @@ name|assertEquals
 argument_list|(
 name|ERR
 argument_list|,
-literal|0
+literal|1
 argument_list|,
 name|collector
 operator|.
@@ -546,6 +546,11 @@ operator|.
 name|size
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|collector
+operator|.
+name|clear
+argument_list|()
 expr_stmt|;
 name|Thread
 operator|.
@@ -567,7 +572,7 @@ name|assertEquals
 argument_list|(
 name|ERR
 argument_list|,
-literal|0
+literal|1
 argument_list|,
 name|collector
 operator|.
@@ -870,13 +875,6 @@ argument_list|(
 literal|"test"
 argument_list|)
 expr_stmt|;
-name|MetricsCollectorImpl
-name|collector
-init|=
-operator|new
-name|MetricsCollectorImpl
-argument_list|()
-decl_stmt|;
 name|ApplicationId
 name|appId
 init|=
