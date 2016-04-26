@@ -638,7 +638,7 @@ name|priority
 argument_list|,
 name|relaxLocality
 argument_list|,
-literal|null
+name|nodeLabelsExpression
 argument_list|,
 name|ExecutionType
 operator|.
