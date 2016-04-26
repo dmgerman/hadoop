@@ -2934,9 +2934,17 @@ operator|.
 name|KILL
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Killing container"
 operator|+
@@ -2957,6 +2965,7 @@ operator|+
 literal|"ms)"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 else|else
@@ -4715,9 +4724,17 @@ name|updateRootQueueMetrics
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Application attempt "
 operator|+
@@ -4742,6 +4759,7 @@ operator|+
 name|event
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|addNode (List<NMContainerStatus> containerReports, RMNode node)
 specifier|private

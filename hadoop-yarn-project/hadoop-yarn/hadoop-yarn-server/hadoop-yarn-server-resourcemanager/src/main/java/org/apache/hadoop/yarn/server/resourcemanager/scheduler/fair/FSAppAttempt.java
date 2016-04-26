@@ -1008,9 +1008,17 @@ name|event
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Completed container: "
 operator|+
@@ -1031,6 +1039,7 @@ operator|+
 name|event
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Remove from the list of containers
 name|liveContainers
 operator|.

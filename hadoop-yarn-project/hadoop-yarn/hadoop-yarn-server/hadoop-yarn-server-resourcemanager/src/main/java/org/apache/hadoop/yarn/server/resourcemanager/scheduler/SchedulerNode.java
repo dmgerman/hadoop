@@ -798,9 +798,17 @@ argument_list|,
 name|rmContainer
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Assigned container "
 operator|+
@@ -841,6 +849,7 @@ literal|" available after allocation"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 comment|/**    * Change the resources allocated for a container.    * @param containerId Identifier of the container to change.    * @param deltaResource Change in the resource allocation.    * @param increase True if the change is an increase of allocation.    */
 DECL|method|changeContainerResource (ContainerId containerId, Resource deltaResource, boolean increase)
 specifier|protected
@@ -877,9 +886,17 @@ name|deltaResource
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 operator|(
 name|increase
@@ -921,6 +938,7 @@ operator|+
 literal|" available after allocation"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Increase the resources allocated to a container.    * @param containerId Identifier of the container to change.    * @param deltaResource Increase of resource allocation.    */
 DECL|method|increaseContainer (ContainerId containerId, Resource deltaResource)
@@ -1120,9 +1138,17 @@ name|container
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Released container "
 operator|+
@@ -1166,6 +1192,7 @@ operator|+
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Add unallocated resources to the node. This is used when unallocating a    * container.    * @param resource Resources to add.    */
 DECL|method|addUnallocatedResource (Resource resource)
