@@ -3618,13 +3618,13 @@ expr_stmt|;
 comment|// for priority 1
 name|assertEquals
 argument_list|(
-literal|"Block not initially pending replication"
+literal|"Block not initially pending reconstruction"
 argument_list|,
 literal|0
 argument_list|,
 name|bm
 operator|.
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|getNumReplicas
 argument_list|(
@@ -3634,7 +3634,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"computeBlockReconstructionWork should indicate replication is needed"
+literal|"computeBlockReconstructionWork should indicate reconstruction is needed"
 argument_list|,
 literal|1
 argument_list|,
@@ -3648,11 +3648,11 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"replication is pending after work is computed"
+literal|"reconstruction is pending after work is computed"
 argument_list|,
 name|bm
 operator|.
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|getNumReplicas
 argument_list|(
@@ -3670,7 +3670,7 @@ name|BlockTargetPair
 argument_list|>
 name|repls
 init|=
-name|getAllPendingReplications
+name|getAllPendingReconstruction
 argument_list|()
 decl_stmt|;
 name|assertEquals
@@ -3758,7 +3758,7 @@ return|return
 name|pipeline
 return|;
 block|}
-DECL|method|getAllPendingReplications ()
+DECL|method|getAllPendingReconstruction ()
 specifier|private
 name|LinkedListMultimap
 argument_list|<
@@ -3766,7 +3766,7 @@ name|DatanodeStorageInfo
 argument_list|,
 name|BlockTargetPair
 argument_list|>
-name|getAllPendingReplications
+name|getAllPendingReconstruction
 parameter_list|()
 block|{
 name|LinkedListMultimap
@@ -3837,7 +3837,7 @@ return|return
 name|repls
 return|;
 block|}
-comment|/**    * Test that a source node for a highest-priority replication is chosen even if all available    * source nodes have reached their replication limits.    */
+comment|/**    * Test that a source node for a highest-priority reconstruction is chosen    * even if all available source nodes have reached their replication limits.    */
 annotation|@
 name|Test
 DECL|method|testHighestPriReplSrcChosenDespiteMaxReplLimit ()

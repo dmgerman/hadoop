@@ -2213,7 +2213,7 @@ argument_list|)
 operator|&&
 name|blockManager
 operator|.
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|getNumReplicas
 argument_list|(

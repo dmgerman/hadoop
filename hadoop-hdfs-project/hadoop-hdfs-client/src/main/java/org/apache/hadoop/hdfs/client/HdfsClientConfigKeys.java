@@ -812,11 +812,11 @@ name|DFS_NAMENODE_REPLICATION_MIN_KEY
 init|=
 literal|"dfs.namenode.replication.min"
 decl_stmt|;
-DECL|field|DFS_NAMENODE_REPLICATION_PENDING_TIMEOUT_SEC_KEY
+DECL|field|DFS_NAMENODE_RECONSTRUCTION_PENDING_TIMEOUT_SEC_KEY
 name|String
-name|DFS_NAMENODE_REPLICATION_PENDING_TIMEOUT_SEC_KEY
+name|DFS_NAMENODE_RECONSTRUCTION_PENDING_TIMEOUT_SEC_KEY
 init|=
-literal|"dfs.namenode.replication.pending.timeout-sec"
+literal|"dfs.namenode.reconstruction.pending.timeout-sec"
 decl_stmt|;
 DECL|field|DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY
 name|String

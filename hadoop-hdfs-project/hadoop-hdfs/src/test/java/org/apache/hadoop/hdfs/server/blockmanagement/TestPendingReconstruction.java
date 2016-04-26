@@ -385,14 +385,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class tests the internals of PendingReplicationBlocks.java,  * as well as how PendingReplicationBlocks acts in BlockManager  */
+comment|/**  * This class tests the internals of PendingReconstructionBlocks.java, as well  * as how PendingReconstructionBlocks acts in BlockManager  */
 end_comment
 
 begin_class
-DECL|class|TestPendingReplication
+DECL|class|TestPendingReconstruction
 specifier|public
 class|class
-name|TestPendingReplication
+name|TestPendingReconstruction
 block|{
 DECL|field|TIMEOUT
 specifier|final
@@ -460,32 +460,32 @@ return|;
 block|}
 annotation|@
 name|Test
-DECL|method|testPendingReplication ()
+DECL|method|testPendingReconstruction ()
 specifier|public
 name|void
-name|testPendingReplication
+name|testPendingReconstruction
 parameter_list|()
 block|{
-name|PendingReplicationBlocks
-name|pendingReplications
+name|PendingReconstructionBlocks
+name|pendingReconstructions
 decl_stmt|;
-name|pendingReplications
+name|pendingReconstructions
 operator|=
 operator|new
-name|PendingReplicationBlocks
+name|PendingReconstructionBlocks
 argument_list|(
 name|TIMEOUT
 operator|*
 literal|1000
 argument_list|)
 expr_stmt|;
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
 comment|//
-comment|// Add 10 blocks to pendingReplications.
+comment|// Add 10 blocks to pendingReconstruction.
 comment|//
 name|DatanodeStorageInfo
 index|[]
@@ -552,7 +552,7 @@ argument_list|,
 name|i
 argument_list|)
 expr_stmt|;
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|increment
 argument_list|(
@@ -569,11 +569,11 @@ expr_stmt|;
 block|}
 name|assertEquals
 argument_list|(
-literal|"Size of pendingReplications "
+literal|"Size of pendingReconstruction "
 argument_list|,
 literal|10
 argument_list|,
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|size
 argument_list|()
@@ -594,7 +594,7 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|decrement
 argument_list|(
@@ -612,11 +612,11 @@ expr_stmt|;
 comment|// removes one replica
 name|assertEquals
 argument_list|(
-literal|"pendingReplications.getNumReplicas "
+literal|"pendingReconstructions.getNumReplicas "
 argument_list|,
 literal|7
 argument_list|,
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|getNumReplicas
 argument_list|(
@@ -627,7 +627,7 @@ expr_stmt|;
 comment|//
 comment|// insert the same item twice should be counted as once
 comment|//
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|increment
 argument_list|(
@@ -644,11 +644,11 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"pendingReplications.getNumReplicas "
+literal|"pendingReconstructions.getNumReplicas "
 argument_list|,
 literal|7
 argument_list|,
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|getNumReplicas
 argument_list|(
@@ -672,7 +672,7 @@ operator|++
 control|)
 block|{
 comment|// removes all replicas
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|decrement
 argument_list|(
@@ -690,7 +690,7 @@ expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|size
 argument_list|()
@@ -698,7 +698,7 @@ operator|==
 literal|9
 argument_list|)
 expr_stmt|;
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|increment
 argument_list|(
@@ -719,7 +719,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|size
 argument_list|()
@@ -761,7 +761,7 @@ decl_stmt|;
 name|int
 name|numReplicas
 init|=
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|getNumReplicas
 argument_list|(
@@ -781,7 +781,7 @@ comment|// verify that nothing has timed out so far
 comment|//
 name|assertTrue
 argument_list|(
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|getTimedOutBlocks
 argument_list|()
@@ -835,7 +835,7 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|increment
 argument_list|(
@@ -857,7 +857,7 @@ expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|size
 argument_list|()
@@ -875,7 +875,7 @@ literal|0
 decl_stmt|;
 while|while
 condition|(
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|size
 argument_list|()
@@ -921,11 +921,11 @@ comment|// Verify that everything has timed out.
 comment|//
 name|assertEquals
 argument_list|(
-literal|"Size of pendingReplications "
+literal|"Size of pendingReconstructions "
 argument_list|,
 literal|0
 argument_list|,
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|size
 argument_list|()
@@ -935,7 +935,7 @@ name|Block
 index|[]
 name|timedOut
 init|=
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|getTimedOutBlocks
 argument_list|()
@@ -984,19 +984,19 @@ literal|15
 argument_list|)
 expr_stmt|;
 block|}
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
 block|}
-comment|/* Test that processPendingReplications will use the most recent  * blockinfo from the blocksmap by placing a larger genstamp into  * the blocksmap.  */
+comment|/* Test that processpendingReconstructions will use the most recent  * blockinfo from the blocksmap by placing a larger genstamp into  * the blocksmap.  */
 annotation|@
 name|Test
-DECL|method|testProcessPendingReplications ()
+DECL|method|testProcessPendingReconstructions ()
 specifier|public
 name|void
-name|testProcessPendingReplications
+name|testProcessPendingReconstructions
 parameter_list|()
 throws|throws
 name|Exception
@@ -1015,7 +1015,7 @@ name|setLong
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_PENDING_TIMEOUT_SEC_KEY
+name|DFS_NAMENODE_RECONSTRUCTION_PENDING_TIMEOUT_SEC_KEY
 argument_list|,
 name|TIMEOUT
 argument_list|)
@@ -1072,12 +1072,12 @@ operator|.
 name|getBlockManager
 argument_list|()
 decl_stmt|;
-name|PendingReplicationBlocks
-name|pendingReplications
+name|PendingReconstructionBlocks
+name|pendingReconstruction
 init|=
 name|blkManager
 operator|.
-name|pendingReplications
+name|pendingReconstruction
 decl_stmt|;
 name|LowRedundancyBlocks
 name|neededReconstruction
@@ -1094,7 +1094,7 @@ operator|.
 name|blocksMap
 decl_stmt|;
 comment|//
-comment|// Add 1 block to pendingReplications with GenerationStamp = 0.
+comment|// Add 1 block to pendingReconstructions with GenerationStamp = 0.
 comment|//
 name|block
 operator|=
@@ -1121,7 +1121,7 @@ operator|)
 literal|3
 argument_list|)
 expr_stmt|;
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|increment
 argument_list|(
@@ -1171,17 +1171,17 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Size of pendingReplications "
+literal|"Size of pendingReconstructions "
 argument_list|,
 literal|1
 argument_list|,
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Add a second block to pendingReplications that has no
+comment|// Add a second block to pendingReconstructions that has no
 comment|// corresponding entry in blocksmap
 name|block
 operator|=
@@ -1208,7 +1208,7 @@ operator|)
 literal|3
 argument_list|)
 expr_stmt|;
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|increment
 argument_list|(
@@ -1227,14 +1227,14 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// verify 2 blocks in pendingReplications
+comment|// verify 2 blocks in pendingReconstructions
 name|assertEquals
 argument_list|(
-literal|"Size of pendingReplications "
+literal|"Size of pendingReconstructions "
 argument_list|,
 literal|2
 argument_list|,
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|size
 argument_list|()
@@ -1245,7 +1245,7 @@ comment|// Wait for everything to timeout.
 comment|//
 while|while
 condition|(
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|size
 argument_list|()
@@ -1354,7 +1354,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Test if DatanodeProtocol#blockReceivedAndDeleted can correctly update the    * pending replications. Also make sure the blockReceivedAndDeleted call is    * idempotent to the pending replications.     */
+comment|/**    * Test if DatanodeProtocol#blockReceivedAndDeleted can correctly update the    * pending reconstruction. Also make sure the blockReceivedAndDeleted call is    * idempotent to the pending reconstruction.    */
 annotation|@
 name|Test
 DECL|method|testBlockReceived ()
@@ -1541,7 +1541,7 @@ literal|1
 argument_list|,
 name|blkManager
 operator|.
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|size
 argument_list|()
@@ -1580,7 +1580,7 @@ literal|1
 argument_list|,
 name|blkManager
 operator|.
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|getNumReplicas
 argument_list|(
@@ -1766,7 +1766,7 @@ literal|3
 argument_list|,
 name|blkManager
 operator|.
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|getNumReplicas
 argument_list|(
@@ -1901,7 +1901,7 @@ literal|3
 argument_list|,
 name|blkManager
 operator|.
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|getNumReplicas
 argument_list|(
@@ -1968,7 +1968,7 @@ literal|0
 argument_list|,
 name|blkManager
 operator|.
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|size
 argument_list|()
@@ -1992,7 +1992,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Test if BlockManager can correctly remove corresponding pending records    * when a file is deleted    *     * @throws Exception    */
+comment|/**    * Test if BlockManager can correctly remove corresponding pending records    * when a file is deleted    *    * @throws Exception    */
 annotation|@
 name|Test
 DECL|method|testPendingAndInvalidate ()
@@ -2256,7 +2256,7 @@ name|assertEquals
 argument_list|(
 name|bm
 operator|.
-name|getPendingReplicationBlocksCount
+name|getPendingReconstructionBlocksCount
 argument_list|()
 argument_list|,
 literal|1L
@@ -2282,7 +2282,7 @@ name|assertEquals
 argument_list|(
 name|bm
 operator|.
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|getNumReplicas
 argument_list|(
@@ -2314,7 +2314,7 @@ name|pendingNum
 init|=
 name|bm
 operator|.
-name|getPendingReplicationBlocksCount
+name|getPendingReconstructionBlocksCount
 argument_list|()
 decl_stmt|;
 while|while
@@ -2348,7 +2348,7 @@ name|pendingNum
 operator|=
 name|bm
 operator|.
-name|getPendingReplicationBlocksCount
+name|getPendingReconstructionBlocksCount
 argument_list|()
 expr_stmt|;
 block|}

@@ -1541,11 +1541,11 @@ operator|new
 name|PendingDataNodeMessages
 argument_list|()
 decl_stmt|;
-DECL|field|pendingReplicationBlocksCount
+DECL|field|pendingReconstructionBlocksCount
 specifier|private
 specifier|volatile
 name|long
-name|pendingReplicationBlocksCount
+name|pendingReconstructionBlocksCount
 init|=
 literal|0L
 decl_stmt|;
@@ -1609,14 +1609,14 @@ name|ObjectName
 name|mxBeanName
 decl_stmt|;
 comment|/** Used by metrics */
-DECL|method|getPendingReplicationBlocksCount ()
+DECL|method|getPendingReconstructionBlocksCount ()
 specifier|public
 name|long
-name|getPendingReplicationBlocksCount
+name|getPendingReconstructionBlocksCount
 parameter_list|()
 block|{
 return|return
-name|pendingReplicationBlocksCount
+name|pendingReconstructionBlocksCount
 return|;
 block|}
 comment|/** Used by metrics */
@@ -1685,7 +1685,7 @@ name|getExcessBlocksCount
 parameter_list|()
 block|{
 return|return
-name|excessReplicas
+name|excessRedundancyMap
 operator|.
 name|size
 argument_list|()
@@ -1824,14 +1824,14 @@ argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * Maps a StorageID to the set of blocks that are "extra" for this    * DataNode. We'll eventually remove these extras.    */
-DECL|field|excessReplicas
+DECL|field|excessRedundancyMap
 specifier|private
 specifier|final
-name|ExcessReplicaMap
-name|excessReplicas
+name|ExcessRedundancyMap
+name|excessRedundancyMap
 init|=
 operator|new
-name|ExcessReplicaMap
+name|ExcessRedundancyMap
 argument_list|()
 decl_stmt|;
 comment|/**    * Store set of Blocks that need to be replicated 1 or more times.    * We also store pending reconstruction-orders.    */
@@ -1847,10 +1847,10 @@ argument_list|()
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
-DECL|field|pendingReplications
+DECL|field|pendingReconstruction
 specifier|final
-name|PendingReplicationBlocks
-name|pendingReplications
+name|PendingReconstructionBlocks
+name|pendingReconstruction
 decl_stmt|;
 comment|/** The maximum number of replicas allowed for a block */
 DECL|field|maxReplication
@@ -2114,10 +2114,10 @@ operator|.
 name|createDefaultSuite
 argument_list|()
 expr_stmt|;
-name|pendingReplications
+name|pendingReconstruction
 operator|=
 operator|new
-name|PendingReplicationBlocks
+name|PendingReconstructionBlocks
 argument_list|(
 name|conf
 operator|.
@@ -2125,11 +2125,11 @@ name|getInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_PENDING_TIMEOUT_SEC_KEY
+name|DFS_NAMENODE_RECONSTRUCTION_PENDING_TIMEOUT_SEC_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_PENDING_TIMEOUT_SEC_DEFAULT
+name|DFS_NAMENODE_RECONSTRUCTION_PENDING_TIMEOUT_SEC_DEFAULT
 argument_list|)
 operator|*
 literal|1000L
@@ -3077,7 +3077,7 @@ name|long
 name|blockTotal
 parameter_list|)
 block|{
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|start
 argument_list|()
@@ -3206,7 +3206,7 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|stop
 argument_list|()
@@ -3386,8 +3386,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Dump blocks from pendingReplication
-name|pendingReplications
+comment|// Dump blocks from pendingReconstruction
+name|pendingReconstruction
 operator|.
 name|metaSave
 argument_list|(
@@ -4074,7 +4074,7 @@ return|return
 name|committed
 return|;
 block|}
-comment|/**    * If IBR is not sent from expected locations yet, add the datanodes to    * pendingReplications in order to keep ReplicationMonitor from scheduling    * the block.    */
+comment|/**    * If IBR is not sent from expected locations yet, add the datanodes to    * pendingReconstruction in order to keep ReplicationMonitor from scheduling    * the block.    */
 DECL|method|addExpectedReplicasToPending (BlockInfo blk)
 specifier|public
 name|void
@@ -4167,7 +4167,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|increment
 argument_list|(
@@ -4469,7 +4469,7 @@ name|lastBlock
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|remove
 argument_list|(
@@ -7442,9 +7442,9 @@ name|void
 name|updateState
 parameter_list|()
 block|{
-name|pendingReplicationBlocksCount
+name|pendingReconstructionBlocksCount
 operator|=
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|size
 argument_list|()
@@ -7987,14 +7987,14 @@ name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* neededReconstruction = {} pendingReplications = {}"
+literal|"BLOCK* neededReconstruction = {} pendingReconstruction = {}"
 argument_list|,
 name|neededReconstruction
 operator|.
 name|size
 argument_list|()
 argument_list|,
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|size
 argument_list|()
@@ -8208,7 +8208,7 @@ assert|;
 name|int
 name|pendingNum
 init|=
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|getNumReplicas
 argument_list|(
@@ -8558,7 +8558,7 @@ specifier|final
 name|int
 name|pendingNum
 init|=
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|getNumReplicas
 argument_list|(
@@ -8687,8 +8687,8 @@ argument_list|)
 expr_stmt|;
 comment|// Move the block-replication into a "pending" state.
 comment|// The reason we use 'pending' is so we can retry
-comment|// replications that fail after an appropriate amount of time.
-name|pendingReplications
+comment|// reconstructions that fail after an appropriate amount of time.
+name|pendingReconstruction
 operator|.
 name|increment
 argument_list|(
@@ -9527,18 +9527,18 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * If there were any replication requests that timed out, reap them    * and put them back into the neededReplication queue    */
-DECL|method|processPendingReplications ()
+comment|/**    * If there were any reconstruction requests that timed out, reap them    * and put them back into the neededReconstruction queue    */
+DECL|method|processPendingReconstructions ()
 specifier|private
 name|void
-name|processPendingReplications
+name|processPendingReconstructions
 parameter_list|()
 block|{
 name|BlockInfo
 index|[]
 name|timedOutItems
 init|=
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|getTimedOutBlocks
 argument_list|()
@@ -13975,7 +13975,7 @@ decl_stmt|;
 name|int
 name|pendingNum
 init|=
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|getNumReplicas
 argument_list|(
@@ -15205,7 +15205,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Find how many of the containing nodes are "extra", if any.    * If there are any extras, call chooseExcessReplicates() to    * mark them in the excessReplicateMap.    */
+comment|/**    * Find how many of the containing nodes are "extra", if any.    * If there are any extras, call chooseExcessRedundancies() to    * mark them in the excessRedundancyMap.    */
 DECL|method|processExtraRedundancyBlock (final BlockInfo block, final short replication, final DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
 specifier|private
 name|void
@@ -15386,7 +15386,7 @@ block|}
 block|}
 block|}
 block|}
-name|chooseExcessReplicates
+name|chooseExcessRedundancies
 argument_list|(
 name|nonExcess
 argument_list|,
@@ -15400,10 +15400,10 @@ name|delNodeHint
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|chooseExcessReplicates ( final Collection<DatanodeStorageInfo> nonExcess, BlockInfo storedBlock, short replication, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
+DECL|method|chooseExcessRedundancies ( final Collection<DatanodeStorageInfo> nonExcess, BlockInfo storedBlock, short replication, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
 specifier|private
 name|void
-name|chooseExcessReplicates
+name|chooseExcessRedundancies
 parameter_list|(
 specifier|final
 name|Collection
@@ -15448,7 +15448,7 @@ name|isStriped
 argument_list|()
 condition|)
 block|{
-name|chooseExcessReplicasStriped
+name|chooseExcessRedundancyStriped
 argument_list|(
 name|bc
 argument_list|,
@@ -15497,7 +15497,7 @@ name|nonExcess
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|chooseExcessReplicasContiguous
+name|chooseExcessRedundancyContiguous
 argument_list|(
 name|nonExcess
 argument_list|,
@@ -15514,11 +15514,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * We want "replication" replicates for the block, but we now have too many.      * In this method, copy enough nodes from 'srcNodes' into 'dstNodes' such that:    *    * srcNodes.size() - dstNodes.size() == replication    *    * We pick node that make sure that replicas are spread across racks and    * also try hard to pick one with least free space.    * The algorithm is first to pick a node with least free space from nodes    * that are on a rack holding more than one replicas of the block.    * So removing such a replica won't remove a rack.     * If no such a node is available,    * then pick a node with least free space    */
-DECL|method|chooseExcessReplicasContiguous ( final Collection<DatanodeStorageInfo> nonExcess, BlockInfo storedBlock, short replication, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint, List<StorageType> excessTypes)
+comment|/**    * We want sufficient redundancy for the block, but we now have too many.    * In this method, copy enough nodes from 'srcNodes' into 'dstNodes' such that:    *    * srcNodes.size() - dstNodes.size() == replication    *    * We pick node that make sure that replicas are spread across racks and    * also try hard to pick one with least free space.    * The algorithm is first to pick a node with least free space from nodes    * that are on a rack holding more than one replicas of the block.    * So removing such a replica won't remove a rack.     * If no such a node is available,    * then pick a node with least free space    */
+DECL|method|chooseExcessRedundancyContiguous ( final Collection<DatanodeStorageInfo> nonExcess, BlockInfo storedBlock, short replication, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint, List<StorageType> excessTypes)
 specifier|private
 name|void
-name|chooseExcessReplicasContiguous
+name|chooseExcessRedundancyContiguous
 parameter_list|(
 specifier|final
 name|Collection
@@ -15587,7 +15587,7 @@ range|:
 name|replicasToDelete
 control|)
 block|{
-name|processChosenExcessReplica
+name|processChosenExcessRedundancy
 argument_list|(
 name|nonExcess
 argument_list|,
@@ -15599,10 +15599,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * We want block group has every internal block, but we have redundant    * internal blocks (which have the same index).    * In this method, we delete the redundant internal blocks until only one    * left for each index.    *    * The block placement policy will make sure that the left internal blocks are    * spread across racks and also try hard to pick one with least free space.    */
-DECL|method|chooseExcessReplicasStriped (BlockCollection bc, final Collection<DatanodeStorageInfo> nonExcess, BlockInfo storedBlock, DatanodeDescriptor delNodeHint)
+DECL|method|chooseExcessRedundancyStriped (BlockCollection bc, final Collection<DatanodeStorageInfo> nonExcess, BlockInfo storedBlock, DatanodeDescriptor delNodeHint)
 specifier|private
 name|void
-name|chooseExcessReplicasStriped
+name|chooseExcessRedundancyStriped
 parameter_list|(
 name|BlockCollection
 name|bc
@@ -15779,7 +15779,7 @@ name|index
 argument_list|)
 condition|)
 block|{
-name|processChosenExcessReplica
+name|processChosenExcessRedundancy
 argument_list|(
 name|nonExcess
 argument_list|,
@@ -15987,7 +15987,7 @@ range|:
 name|replicasToDelete
 control|)
 block|{
-name|processChosenExcessReplica
+name|processChosenExcessRedundancy
 argument_list|(
 name|nonExcess
 argument_list|,
@@ -16014,10 +16014,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|processChosenExcessReplica ( final Collection<DatanodeStorageInfo> nonExcess, final DatanodeStorageInfo chosen, BlockInfo storedBlock)
+DECL|method|processChosenExcessRedundancy ( final Collection<DatanodeStorageInfo> nonExcess, final DatanodeStorageInfo chosen, BlockInfo storedBlock)
 specifier|private
 name|void
-name|processChosenExcessReplica
+name|processChosenExcessRedundancy
 parameter_list|(
 specifier|final
 name|Collection
@@ -16041,7 +16041,7 @@ argument_list|(
 name|chosen
 argument_list|)
 expr_stmt|;
-name|excessReplicas
+name|excessRedundancyMap
 operator|.
 name|add
 argument_list|(
@@ -16087,7 +16087,7 @@ name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* chooseExcessReplicates: "
+literal|"BLOCK* chooseExcessRedundancies: "
 operator|+
 literal|"({}, {}) is added to invalidated blocks set"
 argument_list|,
@@ -16342,7 +16342,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-name|excessReplicas
+name|excessRedundancyMap
 operator|.
 name|remove
 argument_list|(
@@ -16755,7 +16755,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|decrement
 argument_list|(
@@ -17878,7 +17878,7 @@ name|dnUuid
 parameter_list|)
 block|{
 return|return
-name|excessReplicas
+name|excessRedundancyMap
 operator|.
 name|getSize4Testing
 argument_list|(
@@ -17899,7 +17899,7 @@ name|blk
 parameter_list|)
 block|{
 return|return
-name|excessReplicas
+name|excessRedundancyMap
 operator|.
 name|contains
 argument_list|(
@@ -18104,7 +18104,7 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|pendingReplicationBlocksCount
+name|pendingReconstructionBlocksCount
 operator|==
 literal|0
 operator|&&
@@ -18292,8 +18292,8 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
-comment|// Remove the block from pendingReplications and neededReconstruction
-name|pendingReplications
+comment|// Remove the block from pendingReconstruction and neededReconstruction
+name|pendingReconstruction
 operator|.
 name|remove
 argument_list|(
@@ -18614,7 +18614,7 @@ specifier|final
 name|int
 name|pending
 init|=
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|getNumReplicas
 argument_list|(
@@ -19284,7 +19284,7 @@ name|block
 argument_list|)
 control|)
 block|{
-name|excessReplicas
+name|excessRedundancyMap
 operator|.
 name|remove
 argument_list|(
@@ -19443,7 +19443,7 @@ block|{
 name|computeDatanodeWork
 argument_list|()
 expr_stmt|;
-name|processPendingReplications
+name|processPendingReconstructions
 argument_list|()
 expr_stmt|;
 name|rescanPostponedMisreplicatedBlocks
@@ -20054,12 +20054,12 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|pendingReplications
+name|pendingReconstruction
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|excessReplicas
+name|excessRedundancyMap
 operator|.
 name|clear
 argument_list|()

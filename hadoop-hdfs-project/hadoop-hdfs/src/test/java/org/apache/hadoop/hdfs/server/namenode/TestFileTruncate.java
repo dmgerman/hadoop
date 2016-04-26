@@ -865,7 +865,7 @@ name|setLong
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_PENDING_TIMEOUT_SEC_KEY
+name|DFS_NAMENODE_RECONSTRUCTION_PENDING_TIMEOUT_SEC_KEY
 argument_list|,
 literal|1
 argument_list|)

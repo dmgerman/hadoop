@@ -21277,7 +21277,7 @@ block|{
 return|return
 name|blockManager
 operator|.
-name|getPendingReplicationBlocksCount
+name|getPendingReconstructionBlocksCount
 argument_list|()
 return|;
 block|}

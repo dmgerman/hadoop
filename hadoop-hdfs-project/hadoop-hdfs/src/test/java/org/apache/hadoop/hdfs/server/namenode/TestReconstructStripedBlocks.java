@@ -1468,7 +1468,7 @@ literal|0
 argument_list|,
 name|bm
 operator|.
-name|getPendingReplicationBlocksCount
+name|getPendingReconstructionBlocksCount
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1527,7 +1527,7 @@ literal|1
 argument_list|,
 name|bm
 operator|.
-name|getPendingReplicationBlocksCount
+name|getPendingReconstructionBlocksCount
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1587,7 +1587,7 @@ literal|1
 argument_list|,
 name|bm
 operator|.
-name|getPendingReplicationBlocksCount
+name|getPendingReconstructionBlocksCount
 argument_list|()
 argument_list|)
 expr_stmt|;

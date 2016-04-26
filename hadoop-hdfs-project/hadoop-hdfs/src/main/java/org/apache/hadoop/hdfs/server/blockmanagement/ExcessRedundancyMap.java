@@ -113,13 +113,13 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Maps a datnode to the set of excess replicas.  *  * This class is thread safe.  */
+comment|/**  * Maps a datnode to the set of excess redundancy details.  *  * This class is thread safe.  */
 end_comment
 
 begin_class
-DECL|class|ExcessReplicaMap
+DECL|class|ExcessRedundancyMap
 class|class
-name|ExcessReplicaMap
+name|ExcessRedundancyMap
 block|{
 DECL|field|blockLog
 specifier|public
@@ -163,7 +163,7 @@ argument_list|(
 literal|0L
 argument_list|)
 decl_stmt|;
-comment|/** @return the number of replicas in this map. */
+comment|/**    * @return the number of redundancies in this map.    */
 DECL|method|size ()
 name|long
 name|size
@@ -176,7 +176,7 @@ name|get
 argument_list|()
 return|;
 block|}
-comment|/** @return the number of replicas corresponding to the given datanode. */
+comment|/**    * @return the number of redundancies corresponding to the given datanode.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getSize4Testing (String dnUuid)
@@ -234,7 +234,7 @@ literal|0L
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @return does this map contains a replica corresponding to the given    *         datanode and the given block?    */
+comment|/**    * @return does this map contains a redundancy corresponding to the given    *         datanode and the given block?    */
 DECL|method|contains (DatanodeDescriptor dn, BlockInfo blk)
 specifier|synchronized
 name|boolean
@@ -277,7 +277,7 @@ name|blk
 argument_list|)
 return|;
 block|}
-comment|/**    * Add the replica of the given block stored in the given datanode to the map.    * @return true if the block is added.    */
+comment|/**    * Add the redundancy of the given block stored in the given datanode to the    * map.    *    * @return true if the block is added.    */
 DECL|method|add (DatanodeDescriptor dn, BlockInfo blk)
 specifier|synchronized
 name|boolean
@@ -358,7 +358,7 @@ name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* ExcessReplicaMap.add({}, {})"
+literal|"BLOCK* ExcessRedundancyMap.add({}, {})"
 argument_list|,
 name|dn
 argument_list|,
@@ -370,7 +370,7 @@ return|return
 name|added
 return|;
 block|}
-comment|/**    * Remove the replica corresponding to the given datanode and the given block.    * @return true if the block is removed.    */
+comment|/**    * Remove the redundancy corresponding to the given datanode and the given    * block.    *    * @return true if the block is removed.    */
 DECL|method|remove (DatanodeDescriptor dn, BlockInfo blk)
 specifier|synchronized
 name|boolean
@@ -436,7 +436,7 @@ name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* ExcessReplicaMap.remove({}, {})"
+literal|"BLOCK* ExcessRedundancyMap.remove({}, {})"
 argument_list|,
 name|dn
 argument_list|,

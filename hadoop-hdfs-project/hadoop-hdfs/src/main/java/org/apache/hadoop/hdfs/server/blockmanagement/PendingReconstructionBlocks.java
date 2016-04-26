@@ -157,13 +157,13 @@ import|;
 end_import
 
 begin_comment
-comment|/***************************************************  * PendingReplicationBlocks does the bookkeeping of all  * blocks that are getting replicated.  *  * It does the following:  * 1)  record blocks that are getting replicated at this instant.  * 2)  a coarse grain timer to track age of replication request  * 3)  a thread that periodically identifies replication-requests  *     that never made it.  *  ***************************************************/
+comment|/***************************************************  * PendingReconstructionBlocks does the bookkeeping of all  * blocks that gains stronger redundancy.  *  * It does the following:  * 1)  record blocks that gains stronger redundancy at this instant.  * 2)  a coarse grain timer to track age of reconstruction request  * 3)  a thread that periodically identifies reconstruction-requests  *     that never made it.  *  ***************************************************/
 end_comment
 
 begin_class
-DECL|class|PendingReplicationBlocks
+DECL|class|PendingReconstructionBlocks
 class|class
-name|PendingReplicationBlocks
+name|PendingReconstructionBlocks
 block|{
 DECL|field|LOG
 specifier|private
@@ -176,7 +176,7 @@ name|BlockManager
 operator|.
 name|LOG
 decl_stmt|;
-DECL|field|pendingReplications
+DECL|field|pendingReconstructions
 specifier|private
 specifier|final
 name|Map
@@ -185,7 +185,7 @@ name|BlockInfo
 argument_list|,
 name|PendingBlockInfo
 argument_list|>
-name|pendingReplications
+name|pendingReconstructions
 decl_stmt|;
 DECL|field|timedOutItems
 specifier|private
@@ -238,8 +238,8 @@ literal|60
 operator|*
 literal|1000
 decl_stmt|;
-DECL|method|PendingReplicationBlocks (long timeoutPeriod)
-name|PendingReplicationBlocks
+DECL|method|PendingReconstructionBlocks (long timeoutPeriod)
+name|PendingReconstructionBlocks
 parameter_list|(
 name|long
 name|timeoutPeriod
@@ -259,7 +259,7 @@ operator|=
 name|timeoutPeriod
 expr_stmt|;
 block|}
-name|pendingReplications
+name|pendingReconstructions
 operator|=
 operator|new
 name|HashMap
@@ -285,7 +285,7 @@ operator|new
 name|Daemon
 argument_list|(
 operator|new
-name|PendingReplicationMonitor
+name|PendingReconstructionMonitor
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -295,7 +295,7 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Add a block to the list of pending Replications    * @param block The corresponding block    * @param targets The DataNodes where replicas of the block should be placed    */
+comment|/**    * Add a block to the list of pending reconstructions    * @param block The corresponding block    * @param targets The DataNodes where replicas of the block should be placed    */
 DECL|method|increment (BlockInfo block, DatanodeDescriptor... targets)
 name|void
 name|increment
@@ -310,13 +310,13 @@ parameter_list|)
 block|{
 synchronized|synchronized
 init|(
-name|pendingReplications
+name|pendingReconstructions
 init|)
 block|{
 name|PendingBlockInfo
 name|found
 init|=
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|get
 argument_list|(
@@ -330,7 +330,7 @@ operator|==
 literal|null
 condition|)
 block|{
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|put
 argument_list|(
@@ -361,7 +361,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * One replication request for this block has finished.    * Decrement the number of pending replication requests    * for this block.    *     * @param dn The DataNode that finishes the replication    */
+comment|/**    * One reconstruction request for this block has finished.    * Decrement the number of pending reconstruction requests    * for this block.    *    * @param dn The DataNode that finishes the reconstruction    */
 DECL|method|decrement (BlockInfo block, DatanodeDescriptor dn)
 name|void
 name|decrement
@@ -375,13 +375,13 @@ parameter_list|)
 block|{
 synchronized|synchronized
 init|(
-name|pendingReplications
+name|pendingReconstructions
 init|)
 block|{
 name|PendingBlockInfo
 name|found
 init|=
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|get
 argument_list|(
@@ -395,24 +395,15 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removing pending replication for "
-operator|+
+literal|"Removing pending reconstruction for {}"
+argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
-block|}
 name|found
 operator|.
 name|decrementReplicas
@@ -430,7 +421,7 @@ operator|<=
 literal|0
 condition|)
 block|{
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|remove
 argument_list|(
@@ -441,7 +432,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Remove the record about the given block from pendingReplications.    * @param block The given block whose pending replication requests need to be    *              removed    */
+comment|/**    * Remove the record about the given block from pending reconstructions.    *    * @param block    *          The given block whose pending reconstruction requests need to be    *          removed    */
 DECL|method|remove (BlockInfo block)
 name|void
 name|remove
@@ -452,10 +443,10 @@ parameter_list|)
 block|{
 synchronized|synchronized
 init|(
-name|pendingReplications
+name|pendingReconstructions
 init|)
 block|{
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|remove
 argument_list|(
@@ -472,10 +463,10 @@ parameter_list|()
 block|{
 synchronized|synchronized
 init|(
-name|pendingReplications
+name|pendingReconstructions
 init|)
 block|{
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|clear
 argument_list|()
@@ -487,20 +478,20 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * The total number of blocks that are undergoing replication    */
+comment|/**    * The total number of blocks that are undergoing reconstruction.    */
 DECL|method|size ()
 name|int
 name|size
 parameter_list|()
 block|{
 return|return
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|size
 argument_list|()
 return|;
 block|}
-comment|/**    * How many copies of this block is pending replication?    */
+comment|/**    * How many copies of this block is pending reconstruction?.    */
 DECL|method|getNumReplicas (BlockInfo block)
 name|int
 name|getNumReplicas
@@ -511,13 +502,13 @@ parameter_list|)
 block|{
 synchronized|synchronized
 init|(
-name|pendingReplications
+name|pendingReconstructions
 init|)
 block|{
 name|PendingBlockInfo
 name|found
 init|=
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|get
 argument_list|(
@@ -543,7 +534,7 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * Returns a list of blocks that have timed out their     * replication requests. Returns null if no blocks have    * timed out.    */
+comment|/**    * Returns a list of blocks that have timed out their    * reconstruction requests. Returns null if no blocks have    * timed out.    */
 DECL|method|getTimedOutBlocks ()
 name|BlockInfo
 index|[]
@@ -597,7 +588,7 @@ name|blockList
 return|;
 block|}
 block|}
-comment|/**    * An object that contains information about a block that     * is being replicated. It records the timestamp when the     * system started replicating the most recent copy of this    * block. It also records the list of Datanodes where the     * replication requests are in progress.    */
+comment|/**    * An object that contains information about a block that    * is being reconstructed. It records the timestamp when the    * system started reconstructing the most recent copy of this    * block. It also records the list of Datanodes where the    * reconstruction requests are in progress.    */
 DECL|class|PendingBlockInfo
 specifier|static
 class|class
@@ -755,10 +746,10 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/*    * A periodic thread that scans for blocks that never finished    * their replication request.    */
-DECL|class|PendingReplicationMonitor
+comment|/*    * A periodic thread that scans for blocks that never finished    * their reconstruction request.    */
+DECL|class|PendingReconstructionMonitor
 class|class
-name|PendingReplicationMonitor
+name|PendingReconstructionMonitor
 implements|implements
 name|Runnable
 block|{
@@ -789,7 +780,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|pendingReplicationCheck
+name|pendingReconstructionCheck
 argument_list|()
 expr_stmt|;
 name|Thread
@@ -806,19 +797,11 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"PendingReplicationMonitor thread is interrupted."
+literal|"PendingReconstructionMonitor thread is interrupted."
 argument_list|,
 name|ie
 argument_list|)
@@ -826,16 +809,15 @@ expr_stmt|;
 block|}
 block|}
 block|}
-block|}
 comment|/**      * Iterate through all items and detect timed-out items      */
-DECL|method|pendingReplicationCheck ()
+DECL|method|pendingReconstructionCheck ()
 name|void
-name|pendingReplicationCheck
+name|pendingReconstructionCheck
 parameter_list|()
 block|{
 synchronized|synchronized
 init|(
-name|pendingReplications
+name|pendingReconstructions
 init|)
 block|{
 name|Iterator
@@ -851,7 +833,7 @@ argument_list|>
 argument_list|>
 name|iter
 init|=
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|entrySet
 argument_list|()
@@ -865,22 +847,13 @@ init|=
 name|monotonicNow
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"PendingReplicationMonitor checking Q"
+literal|"PendingReconstructionMonitor checking Q"
 argument_list|)
 expr_stmt|;
-block|}
 while|while
 condition|(
 name|iter
@@ -949,7 +922,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"PendingReplicationMonitor timed out "
+literal|"PendingReconstructionMonitor timed out "
 operator|+
 name|block
 argument_list|)
@@ -964,7 +937,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/*    * Shuts down the pending replication monitor thread.    * Waits for the thread to exit.    */
+comment|/*    * Shuts down the pending reconstruction monitor thread.    * Waits for the thread to exit.    */
 DECL|method|stop ()
 name|void
 name|stop
@@ -1014,16 +987,16 @@ parameter_list|)
 block|{
 synchronized|synchronized
 init|(
-name|pendingReplications
+name|pendingReconstructions
 init|)
 block|{
 name|out
 operator|.
 name|println
 argument_list|(
-literal|"Metasave: Blocks being replicated: "
+literal|"Metasave: Blocks being reconstructed: "
 operator|+
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|size
 argument_list|()
@@ -1041,7 +1014,7 @@ name|PendingBlockInfo
 argument_list|>
 name|entry
 range|:
-name|pendingReplications
+name|pendingReconstructions
 operator|.
 name|entrySet
 argument_list|()
@@ -1079,7 +1052,7 @@ operator|.
 name|timeStamp
 argument_list|)
 operator|+
-literal|" NumReplicaInProgress: "
+literal|" NumReconstructInProgress: "
 operator|+
 name|pendingBlock
 operator|.

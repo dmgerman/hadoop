@@ -1723,7 +1723,7 @@ while|while
 condition|(
 name|bm1
 operator|.
-name|getPendingReplicationBlocksCount
+name|getPendingReconstructionBlocksCount
 argument_list|()
 operator|>
 literal|0
