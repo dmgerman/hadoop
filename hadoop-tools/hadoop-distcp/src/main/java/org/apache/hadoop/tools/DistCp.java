@@ -852,11 +852,15 @@ expr_stmt|;
 block|}
 else|else
 block|{
+throw|throw
+operator|new
+name|Exception
+argument_list|(
+literal|"DistCp sync failed, input options: "
+operator|+
 name|inputOptions
-operator|.
-name|disableUsingDiff
-argument_list|()
-expr_stmt|;
+argument_list|)
+throw|;
 block|}
 block|}
 comment|// Fallback to default DistCp if without "diff" option or sync failed.
