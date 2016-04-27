@@ -423,6 +423,7 @@ annotation|@
 name|Override
 DECL|method|serviceInit (Configuration conf)
 specifier|protected
+specifier|synchronized
 name|void
 name|serviceInit
 parameter_list|(
