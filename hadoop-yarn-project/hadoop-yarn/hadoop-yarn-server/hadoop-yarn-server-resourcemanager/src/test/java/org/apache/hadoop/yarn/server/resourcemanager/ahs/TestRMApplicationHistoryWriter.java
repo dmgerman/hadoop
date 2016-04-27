@@ -3089,6 +3089,15 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
+comment|//Wait to make sure the attempt has the right state
+comment|//TODO explore a better way than sleeping for a while (YARN-4929)
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1000
+argument_list|)
+expr_stmt|;
 name|nm
 operator|.
 name|nodeHeartbeat
@@ -3265,10 +3274,15 @@ operator|.
 name|unregisterAppAttempt
 argument_list|()
 expr_stmt|;
-name|am
+name|rm
 operator|.
 name|waitForState
 argument_list|(
+name|am
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
 name|RMAppAttemptState
 operator|.
 name|FINISHING
@@ -3290,10 +3304,15 @@ operator|.
 name|COMPLETE
 argument_list|)
 expr_stmt|;
-name|am
+name|rm
 operator|.
 name|waitForState
 argument_list|(
+name|am
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
 name|RMAppAttemptState
 operator|.
 name|FINISHED

@@ -1052,7 +1052,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm1
 operator|.
@@ -1066,7 +1066,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm2
 operator|.
@@ -1092,7 +1092,7 @@ argument_list|)
 decl_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm3
 operator|.
@@ -1113,7 +1113,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm3
 operator|.
@@ -1216,7 +1216,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm3
 operator|.
@@ -1400,7 +1400,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm1
 operator|.
@@ -1414,7 +1414,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm2
 operator|.
@@ -2005,7 +2005,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm1
 operator|.
@@ -2019,7 +2019,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm2
 operator|.
@@ -2348,7 +2348,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm1
 operator|.
@@ -2362,7 +2362,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm2
 operator|.
@@ -2606,7 +2606,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm1
 operator|.
@@ -2620,7 +2620,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm2
 operator|.
@@ -2810,7 +2810,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm1
 operator|.
@@ -2824,7 +2824,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm2
 operator|.
@@ -2997,7 +2997,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm1
 operator|.
@@ -3011,7 +3011,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm2
 operator|.
@@ -5074,7 +5074,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm1
 operator|.
@@ -5088,7 +5088,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm2
 operator|.
@@ -5278,7 +5278,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm1
 operator|.
@@ -5415,7 +5415,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|nm1
 operator|.

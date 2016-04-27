@@ -12249,10 +12249,15 @@ operator|.
 name|COMPLETE
 argument_list|)
 expr_stmt|;
-name|am
+name|rm
 operator|.
 name|waitForState
 argument_list|(
+name|am
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
 name|RMAppAttemptState
 operator|.
 name|FAILED

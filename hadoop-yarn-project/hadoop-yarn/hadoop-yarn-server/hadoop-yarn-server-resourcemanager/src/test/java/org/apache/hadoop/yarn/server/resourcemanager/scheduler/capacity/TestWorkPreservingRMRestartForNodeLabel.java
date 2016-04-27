@@ -1248,10 +1248,6 @@ argument_list|,
 name|RMContainerState
 operator|.
 name|ALLOCATED
-argument_list|,
-literal|10
-operator|*
-literal|1000
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1375,10 +1371,6 @@ argument_list|,
 name|RMContainerState
 operator|.
 name|ALLOCATED
-argument_list|,
-literal|10
-operator|*
-literal|1000
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1502,10 +1494,6 @@ argument_list|,
 name|RMContainerState
 operator|.
 name|ALLOCATED
-argument_list|,
-literal|10
-operator|*
-literal|1000
 argument_list|)
 argument_list|)
 expr_stmt|;

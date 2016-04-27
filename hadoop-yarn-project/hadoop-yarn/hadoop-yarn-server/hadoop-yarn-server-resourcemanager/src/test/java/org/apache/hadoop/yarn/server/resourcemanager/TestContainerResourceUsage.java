@@ -1943,10 +1943,15 @@ operator|.
 name|COMPLETE
 argument_list|)
 expr_stmt|;
-name|am0
+name|rm
 operator|.
 name|waitForState
 argument_list|(
+name|am0
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
 name|RMAppAttemptState
 operator|.
 name|FAILED
@@ -2119,6 +2124,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// launch the new AM
+comment|//TODO explore a better way than sleeping for a while (YARN-4929)
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1000
+argument_list|)
+expr_stmt|;
 name|nm
 operator|.
 name|nodeHeartbeat

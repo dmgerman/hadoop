@@ -2403,7 +2403,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|lostNode
 operator|.
@@ -2577,7 +2577,7 @@ argument_list|)
 expr_stmt|;
 name|rm
 operator|.
-name|NMwaitForState
+name|waitForState
 argument_list|(
 name|node
 operator|.
