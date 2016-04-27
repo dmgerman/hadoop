@@ -114,6 +114,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|AddBlockFlag
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|CacheFlag
@@ -803,10 +817,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * A client that wants to write an additional block to the    * indicated filename (which must currently be open for writing)    * should call addBlock().    *    * addBlock() allocates a new block and datanodes the block data    * should be replicated to.    *    * addBlock() also commits the previous block by reporting    * to the name-node the actual generation stamp and the length    * of the block that the client has transmitted to data-nodes.    *    * @param src the file being created    * @param clientName the name of the client that adds the block    * @param previous  previous block    * @param excludeNodes a list of nodes that should not be    * allocated for the current block    * @param fileId the id uniquely identifying a file    * @param favoredNodes the list of nodes where the client wants the blocks.    *          Nodes are identified by either host name or address.    *    * @return LocatedBlock allocated block information.    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws org.apache.hadoop.hdfs.server.namenode.NotReplicatedYetException    *           previous blocks of the file are not replicated yet.    *           Blocks cannot be added until replication completes.    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException create not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * A client that wants to write an additional block to the    * indicated filename (which must currently be open for writing)    * should call addBlock().    *    * addBlock() allocates a new block and datanodes the block data    * should be replicated to.    *    * addBlock() also commits the previous block by reporting    * to the name-node the actual generation stamp and the length    * of the block that the client has transmitted to data-nodes.    *    * @param src the file being created    * @param clientName the name of the client that adds the block    * @param previous  previous block    * @param excludeNodes a list of nodes that should not be    * allocated for the current block    * @param fileId the id uniquely identifying a file    * @param favoredNodes the list of nodes where the client wants the blocks.    *          Nodes are identified by either host name or address.    * @param addBlockFlags flags to advise the behavior of allocating and placing    *                      a new block.    *    * @return LocatedBlock allocated block information.    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws org.apache.hadoop.hdfs.server.namenode.NotReplicatedYetException    *           previous blocks of the file are not replicated yet.    *           Blocks cannot be added until replication completes.    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException create not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
-DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludeNodes, long fileId, String[] favoredNodes)
+DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludeNodes, long fileId, String[] favoredNodes, EnumSet<AddBlockFlag> addBlockFlags)
 name|LocatedBlock
 name|addBlock
 parameter_list|(
@@ -829,6 +843,12 @@ parameter_list|,
 name|String
 index|[]
 name|favoredNodes
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|addBlockFlags
 parameter_list|)
 throws|throws
 name|IOException

@@ -32,6 +32,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|atomic
@@ -236,7 +246,7 @@ specifier|final
 name|int
 name|index
 decl_stmt|;
-DECL|method|StripedDataStreamer (HdfsFileStatus stat, DFSClient dfsClient, String src, Progressable progress, DataChecksum checksum, AtomicReference<CachingStrategy> cachingStrategy, ByteArrayManager byteArrayManage, String[] favoredNodes, short index, Coordinator coordinator)
+DECL|method|StripedDataStreamer (HdfsFileStatus stat, DFSClient dfsClient, String src, Progressable progress, DataChecksum checksum, AtomicReference<CachingStrategy> cachingStrategy, ByteArrayManager byteArrayManage, String[] favoredNodes, short index, Coordinator coordinator, final EnumSet<AddBlockFlag> flags)
 name|StripedDataStreamer
 parameter_list|(
 name|HdfsFileStatus
@@ -272,6 +282,13 @@ name|index
 parameter_list|,
 name|Coordinator
 name|coordinator
+parameter_list|,
+specifier|final
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|flags
 parameter_list|)
 block|{
 name|super
@@ -293,6 +310,8 @@ argument_list|,
 name|byteArrayManage
 argument_list|,
 name|favoredNodes
+argument_list|,
+name|flags
 argument_list|)
 expr_stmt|;
 name|this

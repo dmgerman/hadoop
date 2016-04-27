@@ -8941,6 +8941,8 @@ argument_list|,
 literal|0
 argument_list|,
 name|policy1
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|System
@@ -9003,6 +9005,8 @@ argument_list|,
 literal|0
 argument_list|,
 name|policy2
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|System
@@ -9355,6 +9359,8 @@ argument_list|,
 literal|0
 argument_list|,
 name|policy
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|System

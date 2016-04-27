@@ -1672,6 +1672,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|AddBlockFlag
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|BatchedRemoteIterator
@@ -13094,7 +13108,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The client would like to obtain an additional block for the indicated    * filename (which is being written-to).  Return an array that consists    * of the block, plus a set of machines.  The first on this list should    * be where the client writes data.  Subsequent items in the list must    * be provided in the connection to the first datanode.    *    * Make sure the previous blocks have been reported by datanodes and    * are replicated.  Will return an empty 2-elt array if we want the    * client to "try again later".    */
-DECL|method|getAdditionalBlock ( String src, long fileId, String clientName, ExtendedBlock previous, DatanodeInfo[] excludedNodes, String[] favoredNodes)
+DECL|method|getAdditionalBlock ( String src, long fileId, String clientName, ExtendedBlock previous, DatanodeInfo[] excludedNodes, String[] favoredNodes, EnumSet<AddBlockFlag> flags)
 name|LocatedBlock
 name|getAdditionalBlock
 parameter_list|(
@@ -13117,6 +13131,12 @@ parameter_list|,
 name|String
 index|[]
 name|favoredNodes
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -13246,6 +13266,8 @@ argument_list|,
 name|excludedNodes
 argument_list|,
 name|favoredNodes
+argument_list|,
+name|flags
 argument_list|,
 name|r
 argument_list|)

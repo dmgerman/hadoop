@@ -1018,6 +1018,8 @@ argument_list|,
 name|TestBlockStoragePolicy
 operator|.
 name|DEFAULT_STORAGE_POLICY
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}

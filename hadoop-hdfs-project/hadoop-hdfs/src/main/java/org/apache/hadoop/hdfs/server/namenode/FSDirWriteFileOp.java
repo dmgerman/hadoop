@@ -112,6 +112,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|AddBlockFlag
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|CreateFlag
@@ -1903,7 +1917,7 @@ name|offset
 argument_list|)
 return|;
 block|}
-DECL|method|chooseTargetForNewBlock ( BlockManager bm, String src, DatanodeInfo[] excludedNodes, String[] favoredNodes, ValidateAddBlockResult r)
+DECL|method|chooseTargetForNewBlock ( BlockManager bm, String src, DatanodeInfo[] excludedNodes, String[] favoredNodes, EnumSet<AddBlockFlag> flags, ValidateAddBlockResult r)
 specifier|static
 name|DatanodeStorageInfo
 index|[]
@@ -1922,6 +1936,12 @@ parameter_list|,
 name|String
 index|[]
 name|favoredNodes
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|flags
 parameter_list|,
 name|ValidateAddBlockResult
 name|r
@@ -2049,6 +2069,8 @@ argument_list|,
 name|r
 operator|.
 name|isStriped
+argument_list|,
+name|flags
 argument_list|)
 return|;
 block|}

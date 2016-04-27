@@ -340,6 +340,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|AddBlockFlag
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileEncryptionInfo
@@ -9089,6 +9103,8 @@ name|storagePolicySuite
 operator|.
 name|getDefaultPolicy
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -9172,11 +9188,13 @@ argument_list|,
 name|blocksize
 argument_list|,
 name|storagePolicy
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
 comment|/**    * Choose target datanodes for creating a new block.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      Set, long, List, BlockStoragePolicy)    */
-DECL|method|chooseTarget4NewBlock (final String src, final int numOfReplicas, final Node client, final Set<Node> excludedNodes, final long blocksize, final List<String> favoredNodes, final byte storagePolicyID, final boolean isStriped)
+DECL|method|chooseTarget4NewBlock (final String src, final int numOfReplicas, final Node client, final Set<Node> excludedNodes, final long blocksize, final List<String> favoredNodes, final byte storagePolicyID, final boolean isStriped, final EnumSet<AddBlockFlag> flags)
 specifier|public
 name|DatanodeStorageInfo
 index|[]
@@ -9219,6 +9237,13 @@ parameter_list|,
 specifier|final
 name|boolean
 name|isStriped
+parameter_list|,
+specifier|final
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -9278,6 +9303,8 @@ argument_list|,
 name|favoredDatanodeDescriptors
 argument_list|,
 name|storagePolicy
+argument_list|,
+name|flags
 argument_list|)
 decl_stmt|;
 if|if

@@ -1896,6 +1896,9 @@ argument_list|,
 name|i
 argument_list|,
 name|coordinator
+argument_list|,
+name|getAddBlockFlags
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|streamers
@@ -2464,6 +2467,9 @@ argument_list|,
 name|i
 argument_list|,
 name|coordinator
+argument_list|,
+name|getAddBlockFlags
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|streamers
@@ -2731,6 +2737,9 @@ argument_list|,
 name|fileId
 argument_list|,
 name|favoredNodes
+argument_list|,
+name|getAddBlockFlags
+argument_list|()
 argument_list|)
 decl_stmt|;
 assert|assert

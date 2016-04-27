@@ -46,6 +46,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -109,6 +119,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|AddBlockFlag
 import|;
 end_import
 
@@ -271,8 +295,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * choose<i>numOfReplicas</i> data nodes for<i>writer</i>     * to re-replicate a block with size<i>blocksize</i>     * If not, return as many as we can.    *    * @param srcPath the file to which this chooseTargets is being invoked.    * @param numOfReplicas additional number of replicas wanted.    * @param writer the writer's machine, null if not in the cluster.    * @param chosen datanodes that have been chosen as targets.    * @param returnChosenNodes decide if the chosenNodes are returned.    * @param excludedNodes datanodes that should not be considered as targets.    * @param blocksize size of the data to be written.    * @return array of DatanodeDescriptor instances chosen as target    * and sorted as a pipeline.    */
-DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeStorageInfo> chosen, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize, BlockStoragePolicy storagePolicy)
+comment|/**    * choose<i>numOfReplicas</i> data nodes for<i>writer</i>     * to re-replicate a block with size<i>blocksize</i>     * If not, return as many as we can.    *    * @param srcPath the file to which this chooseTargets is being invoked.    * @param numOfReplicas additional number of replicas wanted.    * @param writer the writer's machine, null if not in the cluster.    * @param chosen datanodes that have been chosen as targets.    * @param returnChosenNodes decide if the chosenNodes are returned.    * @param excludedNodes datanodes that should not be considered as targets.    * @param blocksize size of the data to be written.    * @param flags Block placement flags.    * @return array of DatanodeDescriptor instances chosen as target    * and sorted as a pipeline.    */
+DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeStorageInfo> chosen, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize, BlockStoragePolicy storagePolicy, EnumSet<AddBlockFlag> flags)
 specifier|public
 specifier|abstract
 name|DatanodeStorageInfo
@@ -308,10 +332,16 @@ name|blocksize
 parameter_list|,
 name|BlockStoragePolicy
 name|storagePolicy
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|flags
 parameter_list|)
 function_decl|;
 comment|/**    * @param favoredNodes datanodes that should be favored as targets. This    *          is only a hint and due to cluster state, namenode may not be     *          able to place the blocks on these datanodes.    */
-DECL|method|chooseTarget (String src, int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes, BlockStoragePolicy storagePolicy)
+DECL|method|chooseTarget (String src, int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes, BlockStoragePolicy storagePolicy, EnumSet<AddBlockFlag> flags)
 name|DatanodeStorageInfo
 index|[]
 name|chooseTarget
@@ -342,6 +372,12 @@ name|favoredNodes
 parameter_list|,
 name|BlockStoragePolicy
 name|storagePolicy
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|flags
 parameter_list|)
 block|{
 comment|// This class does not provide the functionality of placing
@@ -372,6 +408,8 @@ argument_list|,
 name|blocksize
 argument_list|,
 name|storagePolicy
+argument_list|,
+name|flags
 argument_list|)
 return|;
 block|}

@@ -414,6 +414,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|AddBlockFlag
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|CacheFlag
@@ -5822,7 +5836,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludedNodes, long fileId, String[] favoredNodes)
+DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludedNodes, long fileId, String[] favoredNodes, EnumSet<AddBlockFlag> addBlockFlags)
 specifier|public
 name|LocatedBlock
 name|addBlock
@@ -5846,6 +5860,12 @@ parameter_list|,
 name|String
 index|[]
 name|favoredNodes
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|addBlockFlags
 parameter_list|)
 throws|throws
 name|IOException
@@ -5871,6 +5891,8 @@ argument_list|,
 name|excludedNodes
 argument_list|,
 name|favoredNodes
+argument_list|,
+name|addBlockFlags
 argument_list|)
 decl_stmt|;
 if|if

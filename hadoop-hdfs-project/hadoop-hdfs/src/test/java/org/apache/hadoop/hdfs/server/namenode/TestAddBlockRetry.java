@@ -586,6 +586,8 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
+literal|null
+argument_list|,
 name|r
 argument_list|)
 decl_stmt|;
@@ -621,6 +623,8 @@ argument_list|,
 name|HdfsConstants
 operator|.
 name|GRANDFATHER_INODE_ID
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -977,6 +981,8 @@ operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|assertTrue
@@ -1023,6 +1029,8 @@ argument_list|,
 name|HdfsConstants
 operator|.
 name|GRANDFATHER_INODE_ID
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)

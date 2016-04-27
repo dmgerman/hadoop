@@ -4278,7 +4278,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludeNodes, long fileId, String[] favoredNodes)
+DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludeNodes, long fileId, String[] favoredNodes, EnumSet<AddBlockFlag> addBlockFlags)
 specifier|public
 name|LocatedBlock
 name|addBlock
@@ -4302,6 +4302,12 @@ parameter_list|,
 name|String
 index|[]
 name|favoredNodes
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|addBlockFlags
 parameter_list|)
 throws|throws
 name|IOException
@@ -4383,6 +4389,26 @@ operator|.
 name|asList
 argument_list|(
 name|favoredNodes
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|addBlockFlags
+operator|!=
+literal|null
+condition|)
+block|{
+name|req
+operator|.
+name|addAllFlags
+argument_list|(
+name|PBHelperClient
+operator|.
+name|convertAddBlockFlags
+argument_list|(
+name|addBlockFlags
 argument_list|)
 argument_list|)
 expr_stmt|;

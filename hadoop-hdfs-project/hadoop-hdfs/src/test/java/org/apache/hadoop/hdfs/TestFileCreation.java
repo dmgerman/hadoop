@@ -3262,6 +3262,8 @@ operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|System
@@ -3546,6 +3548,8 @@ argument_list|,
 name|HdfsConstants
 operator|.
 name|GRANDFATHER_INODE_ID
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)

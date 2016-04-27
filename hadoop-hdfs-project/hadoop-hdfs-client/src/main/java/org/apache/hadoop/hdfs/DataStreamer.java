@@ -176,6 +176,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashSet
 import|;
 end_import
@@ -2240,7 +2250,16 @@ name|String
 index|[]
 name|favoredNodes
 decl_stmt|;
-DECL|method|DataStreamer (HdfsFileStatus stat, ExtendedBlock block, DFSClient dfsClient, String src, Progressable progress, DataChecksum checksum, AtomicReference<CachingStrategy> cachingStrategy, ByteArrayManager byteArrayManage, boolean isAppend, String[] favoredNodes)
+DECL|field|addBlockFlags
+specifier|private
+specifier|final
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|addBlockFlags
+decl_stmt|;
+DECL|method|DataStreamer (HdfsFileStatus stat, ExtendedBlock block, DFSClient dfsClient, String src, Progressable progress, DataChecksum checksum, AtomicReference<CachingStrategy> cachingStrategy, ByteArrayManager byteArrayManage, boolean isAppend, String[] favoredNodes, EnumSet<AddBlockFlag> flags)
 specifier|private
 name|DataStreamer
 parameter_list|(
@@ -2277,6 +2296,12 @@ parameter_list|,
 name|String
 index|[]
 name|favoredNodes
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|flags
 parameter_list|)
 block|{
 name|this
@@ -2391,9 +2416,15 @@ name|getDatanodeRestartTimeout
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|addBlockFlags
+operator|=
+name|flags
+expr_stmt|;
 block|}
 comment|/**    * construction with tracing info    */
-DECL|method|DataStreamer (HdfsFileStatus stat, ExtendedBlock block, DFSClient dfsClient, String src, Progressable progress, DataChecksum checksum, AtomicReference<CachingStrategy> cachingStrategy, ByteArrayManager byteArrayManage, String[] favoredNodes)
+DECL|method|DataStreamer (HdfsFileStatus stat, ExtendedBlock block, DFSClient dfsClient, String src, Progressable progress, DataChecksum checksum, AtomicReference<CachingStrategy> cachingStrategy, ByteArrayManager byteArrayManage, String[] favoredNodes, EnumSet<AddBlockFlag> flags)
 name|DataStreamer
 parameter_list|(
 name|HdfsFileStatus
@@ -2426,6 +2457,12 @@ parameter_list|,
 name|String
 index|[]
 name|favoredNodes
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|flags
 parameter_list|)
 block|{
 name|this
@@ -2449,6 +2486,8 @@ argument_list|,
 literal|false
 argument_list|,
 name|favoredNodes
+argument_list|,
+name|flags
 argument_list|)
 expr_stmt|;
 name|stage
@@ -2512,6 +2551,8 @@ argument_list|,
 name|byteArrayManage
 argument_list|,
 literal|true
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -7926,6 +7967,8 @@ name|getFileId
 argument_list|()
 argument_list|,
 name|favoredNodes
+argument_list|,
+name|addBlockFlags
 argument_list|)
 return|;
 block|}

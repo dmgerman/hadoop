@@ -56,6 +56,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -129,6 +139,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|AddBlockFlag
 import|;
 end_import
 
@@ -835,7 +859,7 @@ name|BlockPlacementPolicyDefault
 block|{
 annotation|@
 name|Override
-DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeStorageInfo> chosenNodes, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize, final BlockStoragePolicy storagePolicy)
+DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeStorageInfo> chosenNodes, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize, final BlockStoragePolicy storagePolicy, EnumSet<AddBlockFlag> flags)
 specifier|public
 name|DatanodeStorageInfo
 index|[]
@@ -871,6 +895,12 @@ parameter_list|,
 specifier|final
 name|BlockStoragePolicy
 name|storagePolicy
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|flags
 parameter_list|)
 block|{
 name|DatanodeStorageInfo
@@ -896,6 +926,8 @@ argument_list|,
 name|blocksize
 argument_list|,
 name|storagePolicy
+argument_list|,
+name|flags
 argument_list|)
 decl_stmt|;
 try|try

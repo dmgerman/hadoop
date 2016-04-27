@@ -833,6 +833,8 @@ name|getFileId
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|doTestLocatedBlock
@@ -974,6 +976,8 @@ name|fileStatus
 operator|.
 name|getFileId
 argument_list|()
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)

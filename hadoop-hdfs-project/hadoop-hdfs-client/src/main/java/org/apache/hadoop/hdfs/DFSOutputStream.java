@@ -914,6 +914,15 @@ init|=
 literal|false
 decl_stmt|;
 comment|// force blocks to disk upon close
+DECL|field|addBlockFlags
+specifier|private
+specifier|final
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|addBlockFlags
+decl_stmt|;
 DECL|field|cachingStrategy
 specifier|protected
 specifier|final
@@ -1186,7 +1195,7 @@ return|return
 name|checksum
 return|;
 block|}
-DECL|method|DFSOutputStream (DFSClient dfsClient, String src, Progressable progress, HdfsFileStatus stat, DataChecksum checksum)
+DECL|method|DFSOutputStream (DFSClient dfsClient, String src, EnumSet<CreateFlag> flag, Progressable progress, HdfsFileStatus stat, DataChecksum checksum)
 specifier|private
 name|DFSOutputStream
 parameter_list|(
@@ -1195,6 +1204,12 @@ name|dfsClient
 parameter_list|,
 name|String
 name|src
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flag
 parameter_list|,
 name|Progressable
 name|progress
@@ -1278,6 +1293,43 @@ name|getDefaultWriteCachingStrategy
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|addBlockFlags
+operator|=
+name|EnumSet
+operator|.
+name|noneOf
+argument_list|(
+name|AddBlockFlag
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|flag
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|NO_LOCAL_WRITE
+argument_list|)
+condition|)
+block|{
+name|this
+operator|.
+name|addBlockFlags
+operator|.
+name|add
+argument_list|(
+name|AddBlockFlag
+operator|.
+name|NO_LOCAL_WRITE
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|progress
@@ -1411,6 +1463,8 @@ name|dfsClient
 argument_list|,
 name|src
 argument_list|,
+name|flag
+argument_list|,
 name|progress
 argument_list|,
 name|stat
@@ -1471,6 +1525,8 @@ argument_list|,
 name|byteArrayManager
 argument_list|,
 name|favoredNodes
+argument_list|,
+name|addBlockFlags
 argument_list|)
 expr_stmt|;
 block|}
@@ -1822,6 +1878,8 @@ name|dfsClient
 argument_list|,
 name|src
 argument_list|,
+name|flags
+argument_list|,
 name|progress
 argument_list|,
 name|stat
@@ -1976,6 +2034,8 @@ argument_list|,
 name|byteArrayManager
 argument_list|,
 name|favoredNodes
+argument_list|,
+name|addBlockFlags
 argument_list|)
 expr_stmt|;
 block|}
@@ -4178,6 +4238,19 @@ return|return
 name|initialFileSize
 return|;
 block|}
+DECL|method|getAddBlockFlags ()
+specifier|protected
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|getAddBlockFlags
+parameter_list|()
+block|{
+return|return
+name|addBlockFlags
+return|;
+block|}
 comment|/**    * @return the FileEncryptionInfo for this stream, or null if not encrypted.    */
 DECL|method|getFileEncryptionInfo ()
 specifier|public
@@ -4393,7 +4466,7 @@ operator|+
 name|streamer
 return|;
 block|}
-DECL|method|addBlock (DatanodeInfo[] excludedNodes, DFSClient dfsClient, String src, ExtendedBlock prevBlock, long fileId, String[] favoredNodes)
+DECL|method|addBlock (DatanodeInfo[] excludedNodes, DFSClient dfsClient, String src, ExtendedBlock prevBlock, long fileId, String[] favoredNodes, EnumSet<AddBlockFlag> allocFlags)
 specifier|static
 name|LocatedBlock
 name|addBlock
@@ -4417,6 +4490,12 @@ parameter_list|,
 name|String
 index|[]
 name|favoredNodes
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|AddBlockFlag
+argument_list|>
+name|allocFlags
 parameter_list|)
 throws|throws
 name|IOException
@@ -4481,6 +4560,8 @@ argument_list|,
 name|fileId
 argument_list|,
 name|favoredNodes
+argument_list|,
+name|allocFlags
 argument_list|)
 return|;
 block|}

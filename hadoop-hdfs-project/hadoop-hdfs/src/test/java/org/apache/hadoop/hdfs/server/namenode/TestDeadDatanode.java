@@ -1173,6 +1173,8 @@ operator|)
 literal|7
 argument_list|,
 literal|false
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 for|for
