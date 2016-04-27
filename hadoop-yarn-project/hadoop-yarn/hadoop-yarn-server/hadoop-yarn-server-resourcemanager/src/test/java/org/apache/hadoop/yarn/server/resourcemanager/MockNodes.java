@@ -282,11 +282,11 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|resourcemanager
+name|api
 operator|.
-name|nodelabels
+name|records
 operator|.
-name|RMNodeLabelsManager
+name|QueuedContainersStatus
 import|;
 end_import
 
@@ -1307,6 +1307,16 @@ return|return
 name|this
 operator|.
 name|nodeUtilization
+return|;
+block|}
+DECL|method|getQueuedContainersStatus ()
+specifier|public
+name|QueuedContainersStatus
+name|getQueuedContainersStatus
+parameter_list|()
+block|{
+return|return
+literal|null
 return|;
 block|}
 block|}

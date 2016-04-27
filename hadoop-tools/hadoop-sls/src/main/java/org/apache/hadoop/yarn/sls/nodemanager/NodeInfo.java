@@ -308,6 +308,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|QueuedContainersStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|resourcemanager
 operator|.
 name|nodelabels
@@ -926,6 +946,16 @@ name|pullNewlyIncreasedContainers
 parameter_list|()
 block|{
 comment|// TODO Auto-generated method stub
+return|return
+literal|null
+return|;
+block|}
+DECL|method|getQueuedContainersStatus ()
+specifier|public
+name|QueuedContainersStatus
+name|getQueuedContainersStatus
+parameter_list|()
+block|{
 return|return
 literal|null
 return|;

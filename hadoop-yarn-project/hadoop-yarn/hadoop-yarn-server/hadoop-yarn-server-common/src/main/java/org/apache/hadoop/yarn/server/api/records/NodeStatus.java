@@ -506,6 +506,31 @@ argument_list|>
 name|increasedContainers
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getQueuedContainersStatus ()
+specifier|public
+specifier|abstract
+name|QueuedContainersStatus
+name|getQueuedContainersStatus
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setQueuedContainersStatus ( QueuedContainersStatus queuedContainersStatus)
+specifier|public
+specifier|abstract
+name|void
+name|setQueuedContainersStatus
+parameter_list|(
+name|QueuedContainersStatus
+name|queuedContainersStatus
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

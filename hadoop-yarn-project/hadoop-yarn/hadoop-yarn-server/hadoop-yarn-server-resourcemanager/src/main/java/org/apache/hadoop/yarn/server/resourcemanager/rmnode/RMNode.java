@@ -202,6 +202,26 @@ name|NodeHeartbeatResponse
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|QueuedContainersStatus
+import|;
+end_import
+
 begin_comment
 comment|/**  * Node managers information on available resources   * and other static information.  *  */
 end_comment
@@ -401,6 +421,12 @@ argument_list|<
 name|Container
 argument_list|>
 name|pullNewlyIncreasedContainers
+parameter_list|()
+function_decl|;
+DECL|method|getQueuedContainersStatus ()
+specifier|public
+name|QueuedContainersStatus
+name|getQueuedContainersStatus
 parameter_list|()
 function_decl|;
 block|}
