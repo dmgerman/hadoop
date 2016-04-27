@@ -1012,6 +1012,14 @@ operator|.
 name|readLine
 argument_list|()
 expr_stmt|;
+comment|// skip 1 line for Corrupt Blocks section.
+name|line
+operator|=
+name|reader
+operator|.
+name|readLine
+argument_list|()
+expr_stmt|;
 name|line
 operator|=
 name|reader

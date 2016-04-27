@@ -56,6 +56,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -67,6 +77,16 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -885,6 +905,42 @@ expr_stmt|;
 block|}
 return|return
 name|ret
+return|;
+block|}
+comment|/**    * method to get the set of corrupt blocks in corruptReplicasMap.    * @return Set of Block objects    */
+DECL|method|getCorruptBlocks ()
+name|Set
+argument_list|<
+name|Block
+argument_list|>
+name|getCorruptBlocks
+parameter_list|()
+block|{
+name|Set
+argument_list|<
+name|Block
+argument_list|>
+name|corruptBlocks
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|Block
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|corruptBlocks
+operator|.
+name|addAll
+argument_list|(
+name|corruptReplicasMap
+operator|.
+name|keySet
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|corruptBlocks
 return|;
 block|}
 comment|/**    * return the reason about corrupted replica for a given block    * on a given dn    * @param block block that has corrupted replica    * @param node datanode that contains this corrupted replica    * @return reason    */
