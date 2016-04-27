@@ -896,6 +896,20 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+DECL|method|reattach ()
+specifier|static
+name|void
+name|reattach
+parameter_list|()
+block|{
+name|metrics
+operator|=
+name|UgiMetrics
+operator|.
+name|create
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|addGetGroups (long latency)
 name|void
 name|addGetGroups
@@ -1440,6 +1454,20 @@ return|return
 literal|true
 return|;
 block|}
+block|}
+comment|/**    * Reattach the class's metrics to a new metric system.    */
+DECL|method|reattachMetrics ()
+specifier|public
+specifier|static
+name|void
+name|reattachMetrics
+parameter_list|()
+block|{
+name|UgiMetrics
+operator|.
+name|reattach
+argument_list|()
+expr_stmt|;
 block|}
 comment|/** Metrics to track UGI activity */
 DECL|field|metrics

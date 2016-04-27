@@ -530,6 +530,37 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+DECL|method|reattach (MetricsSystem ms, JvmMetrics jvmMetrics)
+specifier|public
+specifier|static
+name|void
+name|reattach
+parameter_list|(
+name|MetricsSystem
+name|ms
+parameter_list|,
+name|JvmMetrics
+name|jvmMetrics
+parameter_list|)
+block|{
+name|ms
+operator|.
+name|register
+argument_list|(
+name|JvmMetrics
+operator|.
+name|name
+argument_list|()
+argument_list|,
+name|JvmMetrics
+operator|.
+name|description
+argument_list|()
+argument_list|,
+name|jvmMetrics
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|initSingleton (String processName, String sessionId)
 specifier|public
 specifier|static
