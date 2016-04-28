@@ -73,7 +73,7 @@ argument_list|>
 block|{
 DECL|field|nodeDataDensity
 specifier|private
-name|float
+name|double
 name|nodeDataDensity
 decl_stmt|;
 DECL|field|volumeSets
@@ -344,7 +344,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|Float
+name|Double
 operator|.
 name|compare
 argument_list|(
@@ -370,7 +370,7 @@ return|;
 block|}
 if|if
 condition|(
-name|Float
+name|Double
 operator|.
 name|compare
 argument_list|(
@@ -395,7 +395,7 @@ return|;
 block|}
 if|if
 condition|(
-name|Float
+name|Double
 operator|.
 name|compare
 argument_list|(
@@ -441,7 +441,7 @@ block|}
 comment|/**    * returns NodeDataDensity Metric.    *    * @return float    */
 DECL|method|getNodeDataDensity ()
 specifier|public
-name|float
+name|double
 name|getNodeDataDensity
 parameter_list|()
 block|{
@@ -456,7 +456,7 @@ name|void
 name|computeNodeDensity
 parameter_list|()
 block|{
-name|float
+name|double
 name|sum
 init|=
 literal|0
@@ -641,6 +641,13 @@ name|volume
 operator|.
 name|isTransient
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|vSet
+operator|.
+name|setStorageType
+argument_list|(
+name|volumeSetKey
 argument_list|)
 expr_stmt|;
 name|volumeSets

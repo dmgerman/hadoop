@@ -66,7 +66,7 @@ parameter_list|()
 function_decl|;
 comment|/**    * Gets the IdealStorage.    *    * @return idealStorage    */
 DECL|method|getIdealStorage ()
-name|float
+name|double
 name|getIdealStorage
 parameter_list|()
 function_decl|;
@@ -108,6 +108,33 @@ DECL|method|getBandwidth ()
 name|long
 name|getBandwidth
 parameter_list|()
+function_decl|;
+comment|/**    * Sets Tolerance percent on a specific step.    * @param tolerancePercent - tolerance in percentage.    */
+DECL|method|setTolerancePercent (long tolerancePercent)
+name|void
+name|setTolerancePercent
+parameter_list|(
+name|long
+name|tolerancePercent
+parameter_list|)
+function_decl|;
+comment|/**    * Set Bandwidth on a specific step.    * @param bandwidth - in MB/s    */
+DECL|method|setBandwidth (long bandwidth)
+name|void
+name|setBandwidth
+parameter_list|(
+name|long
+name|bandwidth
+parameter_list|)
+function_decl|;
+comment|/**    * Set maximum errors to tolerate before disk balancer step fails.    * @param maxDiskErrors - error count.    */
+DECL|method|setMaxDiskErrors (long maxDiskErrors)
+name|void
+name|setMaxDiskErrors
+parameter_list|(
+name|long
+name|maxDiskErrors
+parameter_list|)
 function_decl|;
 block|}
 end_interface

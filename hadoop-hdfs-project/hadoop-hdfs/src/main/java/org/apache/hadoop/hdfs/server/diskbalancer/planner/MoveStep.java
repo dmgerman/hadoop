@@ -108,7 +108,7 @@ name|destinationVolume
 decl_stmt|;
 DECL|field|idealStorage
 specifier|private
-name|float
+name|double
 name|idealStorage
 decl_stmt|;
 DECL|field|bytesToMove
@@ -137,14 +137,14 @@ name|long
 name|bandwidth
 decl_stmt|;
 comment|/**    * Constructs a MoveStep for the volume set.    *    * @param sourceVolume      - Source Disk    * @param idealStorage      - Ideal Storage Value for this disk set    * @param destinationVolume - Destination dis    * @param bytesToMove       - number of bytes to move    * @param volumeSetID       - a diskBalancer generated id.    */
-DECL|method|MoveStep (DiskBalancerVolume sourceVolume, float idealStorage, DiskBalancerVolume destinationVolume, long bytesToMove, String volumeSetID)
+DECL|method|MoveStep (DiskBalancerVolume sourceVolume, double idealStorage, DiskBalancerVolume destinationVolume, long bytesToMove, String volumeSetID)
 specifier|public
 name|MoveStep
 parameter_list|(
 name|DiskBalancerVolume
 name|sourceVolume
 parameter_list|,
-name|float
+name|double
 name|idealStorage
 parameter_list|,
 name|DiskBalancerVolume
@@ -225,7 +225,7 @@ annotation|@
 name|Override
 DECL|method|getIdealStorage ()
 specifier|public
-name|float
+name|double
 name|getIdealStorage
 parameter_list|()
 block|{
@@ -294,12 +294,12 @@ name|destinationVolume
 expr_stmt|;
 block|}
 comment|/**    * Sets Ideal Storage.    *    * @param idealStorage - ideal Storage    */
-DECL|method|setIdealStorage (float idealStorage)
+DECL|method|setIdealStorage (double idealStorage)
 specifier|public
 name|void
 name|setIdealStorage
 parameter_list|(
-name|float
+name|double
 name|idealStorage
 parameter_list|)
 block|{
@@ -422,6 +422,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Gets Maximum numbers of errors to be tolerated before this    * move operation is aborted.    * @return  long.    */
+annotation|@
+name|Override
 DECL|method|getMaxDiskErrors ()
 specifier|public
 name|long
@@ -433,6 +435,8 @@ name|maxDiskErrors
 return|;
 block|}
 comment|/**    * Sets the maximum numbers of Errors to be tolerated before this    * step is aborted.    * @param maxDiskErrors - long    */
+annotation|@
+name|Override
 DECL|method|setMaxDiskErrors (long maxDiskErrors)
 specifier|public
 name|void
@@ -450,6 +454,8 @@ name|maxDiskErrors
 expr_stmt|;
 block|}
 comment|/**    * Tolerance Percentage indicates when a move operation is considered good    * enough. This is a percentage of deviation from ideal that is considered    * fine.    *    * For example : if the ideal amount on each disk was 1 TB and the    * tolerance was 10%, then getting to 900 GB on the destination disk is    * considerd good enough.    *    * @return tolerance percentage.    */
+annotation|@
+name|Override
 DECL|method|getTolerancePercent ()
 specifier|public
 name|long
@@ -461,6 +467,8 @@ name|tolerancePercent
 return|;
 block|}
 comment|/**    * Sets the tolerance percentage.    * @param tolerancePercent  - long    */
+annotation|@
+name|Override
 DECL|method|setTolerancePercent (long tolerancePercent)
 specifier|public
 name|void
@@ -478,6 +486,8 @@ name|tolerancePercent
 expr_stmt|;
 block|}
 comment|/**    * Gets the disk Bandwidth. That is the MB/Sec to copied. We will max out    * on this amount of throughput. This is useful to prevent too much I/O on    * datanode while data node is in use.    * @return  long.    */
+annotation|@
+name|Override
 DECL|method|getBandwidth ()
 specifier|public
 name|long
@@ -489,6 +499,8 @@ name|bandwidth
 return|;
 block|}
 comment|/**    * Sets the maximum disk bandwidth per sec to use for this step.    * @param bandwidth  - Long, MB / Sec of data to be moved between    *                   source and destinatin volume.    */
+annotation|@
+name|Override
 DECL|method|setBandwidth (long bandwidth)
 specifier|public
 name|void

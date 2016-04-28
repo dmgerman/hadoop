@@ -1000,7 +1000,7 @@ init|=
 operator|new
 name|GreedyPlanner
 argument_list|(
-literal|10.0f
+literal|5.0f
 argument_list|,
 name|node
 argument_list|)
@@ -1013,7 +1013,7 @@ name|NodePlan
 argument_list|(
 name|node
 operator|.
-name|getDataNodeName
+name|getDataNodeUUID
 argument_list|()
 argument_list|,
 name|node
@@ -1243,7 +1243,7 @@ init|=
 operator|new
 name|GreedyPlanner
 argument_list|(
-literal|10.0f
+literal|5.0f
 argument_list|,
 name|node
 argument_list|)
@@ -1256,7 +1256,7 @@ name|NodePlan
 argument_list|(
 name|node
 operator|.
-name|getDataNodeName
+name|getDataNodeUUID
 argument_list|()
 argument_list|,
 name|node
@@ -1757,10 +1757,8 @@ name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|"33.3 G"
-argument_list|,
 name|step
 operator|.
 name|getSizeString
@@ -1769,6 +1767,11 @@ name|step
 operator|.
 name|getBytesToMove
 argument_list|()
+argument_list|)
+operator|.
+name|matches
+argument_list|(
+literal|"33.[2|3|4] G"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1797,10 +1800,8 @@ name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|"33.3 G"
-argument_list|,
 name|step
 operator|.
 name|getSizeString
@@ -1809,6 +1810,11 @@ name|step
 operator|.
 name|getBytesToMove
 argument_list|()
+argument_list|)
+operator|.
+name|matches
+argument_list|(
+literal|"33.[2|3|4] G"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2096,10 +2102,8 @@ name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|"18.8 G"
-argument_list|,
 name|step
 operator|.
 name|getSizeString
@@ -2108,6 +2112,11 @@ name|step
 operator|.
 name|getBytesToMove
 argument_list|()
+argument_list|)
+operator|.
+name|matches
+argument_list|(
+literal|"18.[6|7|8] G"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2136,10 +2145,8 @@ name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|"18.8 G"
-argument_list|,
 name|step
 operator|.
 name|getSizeString
@@ -2148,6 +2155,11 @@ name|step
 operator|.
 name|getBytesToMove
 argument_list|()
+argument_list|)
+operator|.
+name|matches
+argument_list|(
+literal|"18.[6|7|8] G"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2386,7 +2398,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"28.6 G"
+literal|"28.5 G"
 argument_list|,
 name|step
 operator|.

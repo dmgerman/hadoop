@@ -147,7 +147,7 @@ name|isTransient
 decl_stmt|;
 DECL|field|volumeDataDensity
 specifier|private
-name|float
+name|double
 name|volumeDataDensity
 decl_stmt|;
 DECL|field|skip
@@ -204,7 +204,7 @@ block|}
 comment|/**    * Get this volume Data Density    * Please see DiskBalancerVolumeSet#computeVolumeDataDensity to see how    * this is computed.    *    * @return float.    */
 DECL|method|getVolumeDataDensity ()
 specifier|public
-name|float
+name|double
 name|getVolumeDataDensity
 parameter_list|()
 block|{
@@ -213,12 +213,12 @@ name|volumeDataDensity
 return|;
 block|}
 comment|/**    * Sets this volume's data density.    *    * @param volDataDensity - density    */
-DECL|method|setVolumeDataDensity (float volDataDensity)
+DECL|method|setVolumeDataDensity (double volDataDensity)
 specifier|public
 name|void
 name|setVolumeDataDensity
 parameter_list|(
-name|float
+name|double
 name|volDataDensity
 parameter_list|)
 block|{

@@ -2385,6 +2385,7 @@ expr_stmt|;
 block|}
 comment|/* create a file with a length of<code>fileLen</code> */
 DECL|method|createFile (MiniDFSCluster cluster, Path filePath, long fileLen, short replicationFactor, int nnIndex)
+specifier|public
 specifier|static
 name|void
 name|createFile
