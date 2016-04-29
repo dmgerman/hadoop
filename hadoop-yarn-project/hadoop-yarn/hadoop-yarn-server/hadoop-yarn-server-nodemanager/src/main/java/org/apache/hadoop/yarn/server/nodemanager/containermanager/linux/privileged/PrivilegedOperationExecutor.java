@@ -583,8 +583,8 @@ return|return
 name|fullCommandArray
 return|;
 block|}
-comment|/**    * Executes a privileged operation. It is up to the callers to ensure that    * each privileged operation's parameters are constructed correctly. The    * parameters are passed verbatim to the container-executor binary.    *    * @param prefixCommands in some cases ( e.g priorities using nice ),    *                       prefix commands are necessary    * @param operation      the type and arguments for the operation to be executed    * @param workingDir     (optional) working directory for execution    * @param env            (optional) env of the command will include specified vars    * @param grabOutput     return (possibly large) shell command output    * @return stdout contents from shell executor - useful for some privileged    * operations - e.g --tc_read    * @throws org.apache.hadoop.yarn.server.nodemanager.containermanager.linux.privileged.PrivilegedOperationException    */
-DECL|method|executePrivilegedOperation (List<String> prefixCommands, PrivilegedOperation operation, File workingDir, Map<String, String> env, boolean grabOutput)
+comment|/**    * Executes a privileged operation. It is up to the callers to ensure that    * each privileged operation's parameters are constructed correctly. The    * parameters are passed verbatim to the container-executor binary.    *    * @param prefixCommands in some cases ( e.g priorities using nice ),    *                       prefix commands are necessary    * @param operation      the type and arguments for the operation to be executed    * @param workingDir     (optional) working directory for execution    * @param env            (optional) env of the command will include specified vars    * @param grabOutput     return (possibly large) shell command output    * @param inheritParentEnv inherit the env vars from the parent process    * @return stdout contents from shell executor - useful for some privileged    * operations - e.g --tc_read    * @throws org.apache.hadoop.yarn.server.nodemanager.containermanager.linux.privileged.PrivilegedOperationException    */
+DECL|method|executePrivilegedOperation (List<String> prefixCommands, PrivilegedOperation operation, File workingDir, Map<String, String> env, boolean grabOutput, boolean inheritParentEnv)
 specifier|public
 name|String
 name|executePrivilegedOperation
@@ -611,6 +611,9 @@ name|env
 parameter_list|,
 name|boolean
 name|grabOutput
+parameter_list|,
+name|boolean
+name|inheritParentEnv
 parameter_list|)
 throws|throws
 name|PrivilegedOperationException
@@ -637,6 +640,10 @@ argument_list|,
 name|workingDir
 argument_list|,
 name|env
+argument_list|,
+literal|0L
+argument_list|,
+name|inheritParentEnv
 argument_list|)
 decl_stmt|;
 try|try
@@ -875,6 +882,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|grabOutput
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}

@@ -1885,9 +1885,13 @@ argument_list|()
 operator|.
 name|getEnvironment
 argument_list|()
+argument_list|,
+comment|// sanitized env
+literal|0L
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
-comment|// sanitized env
 if|if
 condition|(
 name|isContainerActive

@@ -616,6 +616,8 @@ name|getEnvironment
 argument_list|()
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -784,6 +786,8 @@ name|getEnvironment
 argument_list|()
 argument_list|,
 literal|false
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

@@ -1916,6 +1916,10 @@ argument_list|,
 name|wordDir
 argument_list|,
 name|environment
+argument_list|,
+literal|0L
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}

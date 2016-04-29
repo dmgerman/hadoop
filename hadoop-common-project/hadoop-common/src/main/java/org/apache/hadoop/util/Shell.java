@@ -198,6 +198,22 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|alias
+operator|.
+name|AbstractJavaKeyStoreProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -1518,6 +1534,14 @@ name|AtomicBoolean
 argument_list|(
 literal|false
 argument_list|)
+decl_stmt|;
+comment|/** Indicates if the parent env vars should be inherited or not*/
+DECL|field|inheritParentEnv
+specifier|protected
+name|boolean
+name|inheritParentEnv
+init|=
+literal|true
 decl_stmt|;
 comment|/**    *  Centralized logic to discover and validate the sanity of the Hadoop    *  home directory.    *    *  This does a lot of work so it should only be called    *  privately for initialization once per process.    *    * @return A directory that exists and via was specified on the command line    * via<code>-Dhadoop.home.dir</code> or the<code>HADOOP_HOME</code>    * environment variable.    * @throws FileNotFoundException if the properties are absent or the specified    * path is not a reference to a valid directory.    */
 DECL|method|checkHadoopHome ()
@@ -3047,6 +3071,23 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+comment|// Remove all env vars from the Builder to prevent leaking of env vars from
+comment|// the parent process.
+if|if
+condition|(
+operator|!
+name|inheritParentEnv
+condition|)
+block|{
+name|builder
+operator|.
+name|environment
+argument_list|()
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|environment
@@ -3925,7 +3966,6 @@ literal|0L
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Create a new instance of the ShellCommandExecutor to execute a command.      *       * @param execString The command to execute with arguments      * @param dir If not-null, specifies the directory which should be set      *            as the current working directory for the command.      *            If null, the current working directory is not modified.      * @param env If not-null, environment of the command will include the      *            key-value pairs specified in the map. If null, the current      *            environment is not modified.      * @param timeout Specifies the time in milliseconds, after which the      *                command will be killed and the status marked as timed-out.      *                If 0, the command will not be timed out.       */
 DECL|method|ShellCommandExecutor (String[] execString, File dir, Map<String, String> env, long timeout)
 specifier|public
 name|ShellCommandExecutor
@@ -3947,6 +3987,47 @@ name|env
 parameter_list|,
 name|long
 name|timeout
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|execString
+argument_list|,
+name|dir
+argument_list|,
+name|env
+argument_list|,
+name|timeout
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Create a new instance of the ShellCommandExecutor to execute a command.      *       * @param execString The command to execute with arguments      * @param dir If not-null, specifies the directory which should be set      *            as the current working directory for the command.      *            If null, the current working directory is not modified.      * @param env If not-null, environment of the command will include the      *            key-value pairs specified in the map. If null, the current      *            environment is not modified.      * @param timeout Specifies the time in milliseconds, after which the      *                command will be killed and the status marked as timed-out.      *                If 0, the command will not be timed out.      * @param inheritParentEnv Indicates if the process should inherit the env      *                         vars from the parent process or not.      */
+DECL|method|ShellCommandExecutor (String[] execString, File dir, Map<String, String> env, long timeout, boolean inheritParentEnv)
+specifier|public
+name|ShellCommandExecutor
+parameter_list|(
+name|String
+index|[]
+name|execString
+parameter_list|,
+name|File
+name|dir
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|env
+parameter_list|,
+name|long
+name|timeout
+parameter_list|,
+name|boolean
+name|inheritParentEnv
 parameter_list|)
 block|{
 name|command
@@ -3985,6 +4066,12 @@ block|}
 name|timeOutInterval
 operator|=
 name|timeout
+expr_stmt|;
+name|this
+operator|.
+name|inheritParentEnv
+operator|=
+name|inheritParentEnv
 expr_stmt|;
 block|}
 comment|/**      * Execute the shell command.      * @throws IOException if the command fails, or if the command is      * not well constructed.      */
