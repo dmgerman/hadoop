@@ -50,6 +50,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|UnsupportedEncodingException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|security
 operator|.
 name|AccessController
@@ -553,6 +563,8 @@ name|System
 operator|.
 name|err
 expr_stmt|;
+try|try
+block|{
 name|System
 operator|.
 name|setOut
@@ -561,6 +573,10 @@ operator|new
 name|PrintStream
 argument_list|(
 name|out
+argument_list|,
+literal|false
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -580,9 +596,20 @@ operator|new
 name|PrintStream
 argument_list|(
 name|err
+argument_list|,
+literal|false
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnsupportedEncodingException
+name|ignored
+parameter_list|)
+block|{     }
 block|}
 comment|/**    * Create the appropriate output properties with their respective output,    * restore System.out, System.err and release any resources from created    * ClassLoaders to aid garbage collection.    */
 DECL|method|popContext ()

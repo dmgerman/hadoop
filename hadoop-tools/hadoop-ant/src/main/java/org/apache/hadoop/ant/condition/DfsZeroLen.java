@@ -28,6 +28,7 @@ name|DfsBaseConditional
 block|{
 DECL|field|flag
 specifier|protected
+specifier|static
 specifier|final
 name|char
 name|flag
