@@ -22627,15 +22627,6 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|info
-argument_list|(
-literal|"*DIR* reportBadBlocks"
-argument_list|)
-expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -22717,6 +22708,27 @@ name|j
 operator|++
 control|)
 block|{
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|info
+argument_list|(
+literal|"*DIR* reportBadBlocks for block: {} on"
+operator|+
+literal|" datanode: {}"
+argument_list|,
+name|blk
+argument_list|,
+name|nodes
+index|[
+name|j
+index|]
+operator|.
+name|getXferAddr
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|blockManager
 operator|.
 name|findAndMarkBlockAsCorrupt
