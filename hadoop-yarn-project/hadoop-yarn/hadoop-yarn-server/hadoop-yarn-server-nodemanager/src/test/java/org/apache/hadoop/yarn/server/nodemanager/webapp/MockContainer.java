@@ -814,6 +814,79 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isRetryContextSet ()
+specifier|public
+name|boolean
+name|isRetryContextSet
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|shouldRetry (int errorCode)
+specifier|public
+name|boolean
+name|shouldRetry
+parameter_list|(
+name|int
+name|errorCode
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getWorkDir ()
+specifier|public
+name|String
+name|getWorkDir
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setWorkDir (String workDir)
+specifier|public
+name|void
+name|setWorkDir
+parameter_list|(
+name|String
+name|workDir
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
+DECL|method|getLogDir ()
+specifier|public
+name|String
+name|getLogDir
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setLogDir (String logDir)
+specifier|public
+name|void
+name|setLogDir
+parameter_list|(
+name|String
+name|logDir
+parameter_list|)
+block|{   }
 block|}
 end_class
 

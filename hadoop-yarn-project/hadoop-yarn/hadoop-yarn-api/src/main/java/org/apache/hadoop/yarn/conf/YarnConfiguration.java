@@ -3368,6 +3368,27 @@ name|DEFAULT_NM_RESOURCEMANAGER_MINIMUM_VERSION
 init|=
 literal|"NONE"
 decl_stmt|;
+comment|/**    * Maximum size of contain's diagnostics to keep for relaunching container    * case.    **/
+DECL|field|NM_CONTAINER_DIAGNOSTICS_MAXIMUM_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_DIAGNOSTICS_MAXIMUM_SIZE
+init|=
+name|NM_PREFIX
+operator|+
+literal|"container-diagnostics-maximum-size"
+decl_stmt|;
+DECL|field|DEFAULT_NM_CONTAINER_DIAGNOSTICS_MAXIMUM_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_CONTAINER_DIAGNOSTICS_MAXIMUM_SIZE
+init|=
+literal|10000
+decl_stmt|;
 comment|/** Interval at which the delayed token removal thread runs */
 DECL|field|RM_DELAYED_DELEGATION_TOKEN_REMOVAL_INTERVAL_MS
 specifier|public

@@ -470,6 +470,54 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
+DECL|method|storeContainerRemainingRetryAttempts (ContainerId containerId, int remainingRetryAttempts)
+specifier|public
+name|void
+name|storeContainerRemainingRetryAttempts
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|int
+name|remainingRetryAttempts
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeContainerWorkDir (ContainerId containerId, String workDir)
+specifier|public
+name|void
+name|storeContainerWorkDir
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|String
+name|workDir
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeContainerLogDir (ContainerId containerId, String logDir)
+specifier|public
+name|void
+name|storeContainerLogDir
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|String
+name|logDir
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
 DECL|method|removeContainer (ContainerId containerId)
 specifier|public
 name|void

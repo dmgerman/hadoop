@@ -1629,6 +1629,12 @@ specifier|public
 enum|enum
 name|ExitCode
 block|{
+DECL|enumConstant|SUCCESS
+name|SUCCESS
+argument_list|(
+literal|0
+argument_list|)
+block|,
 DECL|enumConstant|FORCE_KILLED
 name|FORCE_KILLED
 argument_list|(

@@ -1184,6 +1184,21 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+DECL|field|containerRetryOptions
+specifier|private
+name|Vector
+argument_list|<
+name|CharSequence
+argument_list|>
+name|containerRetryOptions
+init|=
+operator|new
+name|Vector
+argument_list|<>
+argument_list|(
+literal|5
+argument_list|)
+decl_stmt|;
 comment|// Debug flag
 DECL|field|debugFlag
 name|boolean
@@ -1819,6 +1834,58 @@ operator|+
 literal|" can be allocated anywhere, if you don't specify the option,"
 operator|+
 literal|" default node_label_expression of queue will be used."
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"container_retry_policy"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Retry policy when container fails to run, "
+operator|+
+literal|"0: NEVER_RETRY, 1: RETRY_ON_ALL_ERRORS, "
+operator|+
+literal|"2: RETRY_ON_SPECIFIC_ERROR_CODES"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"container_retry_error_codes"
+argument_list|,
+literal|true
+argument_list|,
+literal|"When retry policy is set to RETRY_ON_SPECIFIC_ERROR_CODES, error "
+operator|+
+literal|"codes is specified with this option, "
+operator|+
+literal|"e.g. --container_retry_error_codes 1,2,3"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"container_max_retries"
+argument_list|,
+literal|true
+argument_list|,
+literal|"If container could retry, it specifies max retires"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"container_retry_interval"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Interval between each retry, unit is milliseconds"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2593,6 +2660,107 @@ literal|"modify_acls"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|// Get container retry options
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"container_retry_policy"
+argument_list|)
+condition|)
+block|{
+name|containerRetryOptions
+operator|.
+name|add
+argument_list|(
+literal|"--container_retry_policy "
+operator|+
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"container_retry_policy"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"container_retry_error_codes"
+argument_list|)
+condition|)
+block|{
+name|containerRetryOptions
+operator|.
+name|add
+argument_list|(
+literal|"--container_retry_error_codes "
+operator|+
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"container_retry_error_codes"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"container_max_retries"
+argument_list|)
+condition|)
+block|{
+name|containerRetryOptions
+operator|.
+name|add
+argument_list|(
+literal|"--container_max_retries "
+operator|+
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"container_max_retries"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"container_retry_interval"
+argument_list|)
+condition|)
+block|{
+name|containerRetryOptions
+operator|.
+name|add
+argument_list|(
+literal|"--container_retry_interval "
+operator|+
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"container_retry_interval"
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 return|return
 literal|true
@@ -3685,6 +3853,13 @@ literal|"--debug"
 argument_list|)
 expr_stmt|;
 block|}
+name|vargs
+operator|.
+name|addAll
+argument_list|(
+name|containerRetryOptions
+argument_list|)
+expr_stmt|;
 name|vargs
 operator|.
 name|add

@@ -273,6 +273,45 @@ name|NMContainerStatus
 name|getNMContainerStatus
 parameter_list|()
 function_decl|;
+DECL|method|isRetryContextSet ()
+name|boolean
+name|isRetryContextSet
+parameter_list|()
+function_decl|;
+DECL|method|shouldRetry (int errorCode)
+name|boolean
+name|shouldRetry
+parameter_list|(
+name|int
+name|errorCode
+parameter_list|)
+function_decl|;
+DECL|method|getWorkDir ()
+name|String
+name|getWorkDir
+parameter_list|()
+function_decl|;
+DECL|method|setWorkDir (String workDir)
+name|void
+name|setWorkDir
+parameter_list|(
+name|String
+name|workDir
+parameter_list|)
+function_decl|;
+DECL|method|getLogDir ()
+name|String
+name|getLogDir
+parameter_list|()
+function_decl|;
+DECL|method|setLogDir (String logDir)
+name|void
+name|setLogDir
+parameter_list|(
+name|String
+name|logDir
+parameter_list|)
+function_decl|;
 DECL|method|toString ()
 name|String
 name|toString
