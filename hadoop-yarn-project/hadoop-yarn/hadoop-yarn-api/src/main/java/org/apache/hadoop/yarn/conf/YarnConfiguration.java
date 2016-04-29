@@ -5228,6 +5228,27 @@ name|NM_RECOVERY_PREFIX
 operator|+
 literal|"dir"
 decl_stmt|;
+comment|/** The time in seconds between full compactions of the NM state database.    *  Setting the interval to zero disables the full compaction cycles.    */
+DECL|field|NM_RECOVERY_COMPACTION_INTERVAL_SECS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_RECOVERY_COMPACTION_INTERVAL_SECS
+init|=
+name|NM_RECOVERY_PREFIX
+operator|+
+literal|"compaction-interval-secs"
+decl_stmt|;
+DECL|field|DEFAULT_NM_RECOVERY_COMPACTION_INTERVAL_SECS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_RECOVERY_COMPACTION_INTERVAL_SECS
+init|=
+literal|3600
+decl_stmt|;
 DECL|field|NM_RECOVERY_SUPERVISED
 specifier|public
 specifier|static
