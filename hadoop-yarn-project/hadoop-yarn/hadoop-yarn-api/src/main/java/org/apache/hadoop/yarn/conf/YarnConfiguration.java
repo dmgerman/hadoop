@@ -2610,6 +2610,27 @@ name|RM_PREFIX
 operator|+
 literal|"leveldb-state-store.path"
 decl_stmt|;
+comment|/** The time in seconds between full compactions of the leveldb database.    *  Setting the interval to zero disables the full compaction cycles.    */
+DECL|field|RM_LEVELDB_COMPACTION_INTERVAL_SECS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_LEVELDB_COMPACTION_INTERVAL_SECS
+init|=
+name|RM_PREFIX
+operator|+
+literal|"leveldb-state-store.compaction-interval-secs"
+decl_stmt|;
+DECL|field|DEFAULT_RM_LEVELDB_COMPACTION_INTERVAL_SECS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_RM_LEVELDB_COMPACTION_INTERVAL_SECS
+init|=
+literal|3600
+decl_stmt|;
 comment|/** The maximum number of completed applications RM keeps. */
 DECL|field|RM_MAX_COMPLETED_APPLICATIONS
 specifier|public
