@@ -1105,9 +1105,6 @@ name|currentColumnCells
 argument_list|,
 name|currentAggOp
 argument_list|,
-operator|(
-name|NumericValueConverter
-operator|)
 name|converter
 argument_list|,
 name|currentTimestamp
@@ -1150,6 +1147,13 @@ name|converter
 argument_list|)
 condition|)
 block|{
+name|currentColumnCells
+operator|.
+name|add
+argument_list|(
+name|cell
+argument_list|)
+expr_stmt|;
 name|nextCell
 argument_list|(
 name|cellLimit
@@ -1198,9 +1202,6 @@ name|currentColumnCells
 argument_list|,
 name|currentAggOp
 argument_list|,
-operator|(
-name|NumericValueConverter
-operator|)
 name|converter
 argument_list|,
 name|currentTimestamp
@@ -1702,7 +1703,7 @@ block|}
 comment|// end of switch case
 block|}
 comment|/*    * Processes the cells in input param currentColumnCells and populates    * List<Cell> cells as the output based on the input AggregationOperation    * parameter.    */
-DECL|method|emitCells (List<Cell> cells, SortedSet<Cell> currentColumnCells, AggregationOperation currentAggOp, NumericValueConverter converter, long currentTimestamp)
+DECL|method|emitCells (List<Cell> cells, SortedSet<Cell> currentColumnCells, AggregationOperation currentAggOp, ValueConverter converter, long currentTimestamp)
 specifier|private
 name|int
 name|emitCells
@@ -1722,7 +1723,7 @@ parameter_list|,
 name|AggregationOperation
 name|currentAggOp
 parameter_list|,
-name|NumericValueConverter
+name|ValueConverter
 name|converter
 parameter_list|,
 name|long
@@ -1869,6 +1870,9 @@ name|processSummation
 argument_list|(
 name|currentColumnCells
 argument_list|,
+operator|(
+name|NumericValueConverter
+operator|)
 name|converter
 argument_list|)
 decl_stmt|;
@@ -1895,6 +1899,9 @@ name|processSummationMajorCompaction
 argument_list|(
 name|currentColumnCells
 argument_list|,
+operator|(
+name|NumericValueConverter
+operator|)
 name|converter
 argument_list|,
 name|currentTimestamp

@@ -265,7 +265,7 @@ literal|".table.metrics.ttl"
 decl_stmt|;
 comment|/** default value for entity table name. */
 DECL|field|DEFAULT_TABLE_NAME
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
