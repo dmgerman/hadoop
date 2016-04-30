@@ -38,6 +38,18 @@ name|com
 operator|.
 name|google
 operator|.
+name|protobuf
+operator|.
+name|ByteString
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
 name|common
 operator|.
 name|primitives
@@ -143,6 +155,24 @@ operator|.
 name|io
 operator|.
 name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|proto
+operator|.
+name|SecurityProtos
+operator|.
+name|TokenProto
 import|;
 end_import
 
@@ -428,7 +458,7 @@ else|:
 name|service
 expr_stmt|;
 block|}
-comment|/**    * Default constructor    */
+comment|/**    * Default constructor.    */
 DECL|method|Token ()
 specifier|public
 name|Token
@@ -508,7 +538,188 @@ operator|.
 name|service
 expr_stmt|;
 block|}
-comment|/**    * Get the token identifier's byte representation    * @return the token identifier's byte representation    */
+DECL|method|copyToken ()
+specifier|public
+name|Token
+argument_list|<
+name|T
+argument_list|>
+name|copyToken
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Token
+argument_list|<
+name|T
+argument_list|>
+argument_list|(
+name|this
+argument_list|)
+return|;
+block|}
+comment|/**    * Construct a Token from a TokenProto.    * @param tokenPB the TokenProto object    */
+DECL|method|Token (TokenProto tokenPB)
+specifier|public
+name|Token
+parameter_list|(
+name|TokenProto
+name|tokenPB
+parameter_list|)
+block|{
+name|this
+operator|.
+name|identifier
+operator|=
+name|tokenPB
+operator|.
+name|getIdentifier
+argument_list|()
+operator|.
+name|toByteArray
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|password
+operator|=
+name|tokenPB
+operator|.
+name|getPassword
+argument_list|()
+operator|.
+name|toByteArray
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|kind
+operator|=
+operator|new
+name|Text
+argument_list|(
+name|tokenPB
+operator|.
+name|getKindBytes
+argument_list|()
+operator|.
+name|toByteArray
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|service
+operator|=
+operator|new
+name|Text
+argument_list|(
+name|tokenPB
+operator|.
+name|getServiceBytes
+argument_list|()
+operator|.
+name|toByteArray
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Construct a TokenProto from this Token instance.    * @return a new TokenProto object holding copies of data in this instance    */
+DECL|method|toTokenProto ()
+specifier|public
+name|TokenProto
+name|toTokenProto
+parameter_list|()
+block|{
+return|return
+name|TokenProto
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|setIdentifier
+argument_list|(
+name|ByteString
+operator|.
+name|copyFrom
+argument_list|(
+name|this
+operator|.
+name|getIdentifier
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|setPassword
+argument_list|(
+name|ByteString
+operator|.
+name|copyFrom
+argument_list|(
+name|this
+operator|.
+name|getPassword
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|setKindBytes
+argument_list|(
+name|ByteString
+operator|.
+name|copyFrom
+argument_list|(
+name|this
+operator|.
+name|getKind
+argument_list|()
+operator|.
+name|getBytes
+argument_list|()
+argument_list|,
+literal|0
+argument_list|,
+name|this
+operator|.
+name|getKind
+argument_list|()
+operator|.
+name|getLength
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|setServiceBytes
+argument_list|(
+name|ByteString
+operator|.
+name|copyFrom
+argument_list|(
+name|this
+operator|.
+name|getService
+argument_list|()
+operator|.
+name|getBytes
+argument_list|()
+argument_list|,
+literal|0
+argument_list|,
+name|this
+operator|.
+name|getService
+argument_list|()
+operator|.
+name|getLength
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|build
+argument_list|()
+return|;
+block|}
+comment|/**    * Get the token identifier's byte representation.    * @return the token identifier's byte representation    */
 DECL|method|getIdentifier ()
 specifier|public
 name|byte
@@ -632,7 +843,7 @@ return|return
 name|cls
 return|;
 block|}
-comment|/**    * Get the token identifier object, or null if it could not be constructed    * (because the class could not be loaded, for example).    * @return the token identifier, or null    * @throws IOException     */
+comment|/**    * Get the token identifier object, or null if it could not be constructed    * (because the class could not be loaded, for example).    * @return the token identifier, or null    * @throws IOException    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -720,7 +931,7 @@ operator|)
 name|tokenIdentifier
 return|;
 block|}
-comment|/**    * Get the token password/secret    * @return the token password/secret    */
+comment|/**    * Get the token password/secret.    * @return the token password/secret    */
 DECL|method|getPassword ()
 specifier|public
 name|byte
@@ -732,7 +943,7 @@ return|return
 name|password
 return|;
 block|}
-comment|/**    * Get the token kind    * @return the kind of the token    */
+comment|/**    * Get the token kind.    * @return the kind of the token    */
 DECL|method|getKind ()
 specifier|public
 specifier|synchronized
@@ -768,7 +979,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|/**    * Get the service on which the token is supposed to be used    * @return the service name    */
+comment|/**    * Get the service on which the token is supposed to be used.    * @return the service name    */
 DECL|method|getService ()
 specifier|public
 name|Text
@@ -779,7 +990,7 @@ return|return
 name|service
 return|;
 block|}
-comment|/**    * Set the service on which the token is supposed to be used    * @param newService the service name    */
+comment|/**    * Set the service on which the token is supposed to be used.    * @param newService the service name    */
 DECL|method|setService (Text newService)
 specifier|public
 name|void
@@ -1089,7 +1300,7 @@ name|raw
 argument_list|)
 return|;
 block|}
-comment|/**    * Modify the writable to the value from the newValue    * @param obj the object to read into    * @param newValue the string with the url-safe base64 encoded bytes    * @throws IOException    */
+comment|/**    * Modify the writable to the value from the newValue.    * @param obj the object to read into    * @param newValue the string with the url-safe base64 encoded bytes    * @throws IOException    */
 DECL|method|decodeWritable (Writable obj, String newValue)
 specifier|private
 specifier|static
@@ -1155,7 +1366,7 @@ name|buf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Encode this token as a url safe string    * @return the encoded string    * @throws IOException    */
+comment|/**    * Encode this token as a url safe string.    * @return the encoded string    * @throws IOException    */
 DECL|method|encodeToUrlString ()
 specifier|public
 name|String
@@ -1686,7 +1897,7 @@ name|this
 argument_list|)
 return|;
 block|}
-comment|/**    * Renew this delegation token    * @return the new expiration time    * @throws IOException    * @throws InterruptedException    */
+comment|/**    * Renew this delegation token.    * @return the new expiration time    * @throws IOException    * @throws InterruptedException    */
 DECL|method|renew (Configuration conf )
 specifier|public
 name|long
@@ -1712,7 +1923,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Cancel this delegation token    * @throws IOException    * @throws InterruptedException    */
+comment|/**    * Cancel this delegation token.    * @throws IOException    * @throws InterruptedException    */
 DECL|method|cancel (Configuration conf )
 specifier|public
 name|void
