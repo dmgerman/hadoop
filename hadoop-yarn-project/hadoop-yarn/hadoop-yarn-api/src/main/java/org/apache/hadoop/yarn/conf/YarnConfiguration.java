@@ -1933,24 +1933,24 @@ name|DEFAULT_SYSTEM_METRICS_PUBLISHER_ENABLED
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * The setting that controls whether yarn container metrics is published to    * the timeline server or not by RM. This configuration setting is for ATS    * V2    */
-DECL|field|RM_PUBLISH_CONTAINER_METRICS_ENABLED
+comment|/**    * The setting that controls whether yarn container events are published to    * the timeline service or not by RM. This configuration setting is for ATS    * V2    */
+DECL|field|RM_PUBLISH_CONTAINER_EVENTS_ENABLED
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RM_PUBLISH_CONTAINER_METRICS_ENABLED
+name|RM_PUBLISH_CONTAINER_EVENTS_ENABLED
 init|=
 name|YARN_PREFIX
 operator|+
 literal|"rm.system-metrics-publisher.emit-container-events"
 decl_stmt|;
-DECL|field|DEFAULT_RM_PUBLISH_CONTAINER_METRICS_ENABLED
+DECL|field|DEFAULT_RM_PUBLISH_CONTAINER_EVENTS_ENABLED
 specifier|public
 specifier|static
 specifier|final
 name|boolean
-name|DEFAULT_RM_PUBLISH_CONTAINER_METRICS_ENABLED
+name|DEFAULT_RM_PUBLISH_CONTAINER_EVENTS_ENABLED
 init|=
 literal|false
 decl_stmt|;

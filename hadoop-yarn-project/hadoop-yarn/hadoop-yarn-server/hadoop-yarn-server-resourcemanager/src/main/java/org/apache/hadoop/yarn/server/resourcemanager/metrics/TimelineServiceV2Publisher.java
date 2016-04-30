@@ -739,10 +739,10 @@ specifier|private
 name|RMTimelineCollectorManager
 name|rmTimelineCollectorManager
 decl_stmt|;
-DECL|field|publishContainerMetrics
+DECL|field|publishContainerEvents
 specifier|private
 name|boolean
-name|publishContainerMetrics
+name|publishContainerEvents
 decl_stmt|;
 DECL|method|TimelineServiceV2Publisher (RMContext rmContext)
 specifier|public
@@ -799,7 +799,7 @@ name|TimelineV2EventHandler
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|publishContainerMetrics
+name|publishContainerEvents
 operator|=
 name|getConfig
 argument_list|()
@@ -808,23 +808,23 @@ name|getBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_PUBLISH_CONTAINER_METRICS_ENABLED
+name|RM_PUBLISH_CONTAINER_EVENTS_ENABLED
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_RM_PUBLISH_CONTAINER_METRICS_ENABLED
+name|DEFAULT_RM_PUBLISH_CONTAINER_EVENTS_ENABLED
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|isPublishContainerMetrics ()
+DECL|method|isPublishContainerEvents ()
 name|boolean
-name|isPublishContainerMetrics
+name|isPublishContainerEvents
 parameter_list|()
 block|{
 return|return
-name|publishContainerMetrics
+name|publishContainerEvents
 return|;
 block|}
 annotation|@
@@ -2280,7 +2280,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|publishContainerMetrics
+name|publishContainerEvents
 condition|)
 block|{
 name|TimelineEntity
@@ -2509,7 +2509,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|publishContainerMetrics
+name|publishContainerEvents
 condition|)
 block|{
 name|TimelineEntity

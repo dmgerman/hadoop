@@ -1193,7 +1193,7 @@ name|setBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_PUBLISH_CONTAINER_METRICS_ENABLED
+name|RM_PUBLISH_CONTAINER_EVENTS_ENABLED
 argument_list|,
 literal|true
 argument_list|)
@@ -1279,11 +1279,11 @@ name|setBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_PUBLISH_CONTAINER_METRICS_ENABLED
+name|RM_PUBLISH_CONTAINER_EVENTS_ENABLED
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_RM_PUBLISH_CONTAINER_METRICS_ENABLED
+name|DEFAULT_RM_PUBLISH_CONTAINER_EVENTS_ENABLED
 argument_list|)
 expr_stmt|;
 name|metricsPublisher
@@ -1295,11 +1295,11 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-literal|"Default configuration should not publish container Metrics from RM"
+literal|"Default configuration should not publish container events from RM"
 argument_list|,
 name|metricsPublisher
 operator|.
-name|isPublishContainerMetrics
+name|isPublishContainerEvents
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1341,7 +1341,7 @@ literal|"publish events after init"
 argument_list|,
 name|metricsPublisher
 operator|.
-name|isPublishContainerMetrics
+name|isPublishContainerEvents
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1352,11 +1352,11 @@ argument_list|()
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"Expected to publish container Metrics from RM"
+literal|"Expected to publish container events from RM"
 argument_list|,
 name|metricsPublisher
 operator|.
-name|isPublishContainerMetrics
+name|isPublishContainerEvents
 argument_list|()
 argument_list|)
 expr_stmt|;
