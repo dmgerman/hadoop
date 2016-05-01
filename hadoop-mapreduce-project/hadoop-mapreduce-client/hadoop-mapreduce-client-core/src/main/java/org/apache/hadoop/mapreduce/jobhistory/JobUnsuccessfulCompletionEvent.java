@@ -20,15 +20,21 @@ end_package
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|util
 operator|.
-name|common
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|base
+name|util
 operator|.
-name|Joiner
+name|Set
 import|;
 end_import
 
@@ -124,11 +130,35 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|Collections
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timelineservice
+operator|.
+name|TimelineMetric
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Joiner
 import|;
 end_import
 
@@ -629,6 +659,21 @@ argument_list|)
 expr_stmt|;
 return|return
 name|tEvent
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getTimelineMetrics ()
+specifier|public
+name|Set
+argument_list|<
+name|TimelineMetric
+argument_list|>
+name|getTimelineMetrics
+parameter_list|()
+block|{
+return|return
+literal|null
 return|;
 block|}
 block|}

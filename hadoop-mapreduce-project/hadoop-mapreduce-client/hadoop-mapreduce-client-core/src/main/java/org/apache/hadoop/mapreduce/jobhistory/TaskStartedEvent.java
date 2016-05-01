@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -119,6 +129,26 @@ operator|.
 name|timelineservice
 operator|.
 name|TimelineEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timelineservice
+operator|.
+name|TimelineMetric
 import|;
 end_import
 
@@ -403,6 +433,21 @@ argument_list|)
 expr_stmt|;
 return|return
 name|tEvent
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getTimelineMetrics ()
+specifier|public
+name|Set
+argument_list|<
+name|TimelineMetric
+argument_list|>
+name|getTimelineMetrics
+parameter_list|()
+block|{
+return|return
+literal|null
 return|;
 block|}
 block|}

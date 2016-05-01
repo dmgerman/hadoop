@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -66,6 +76,26 @@ name|TimelineEvent
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timelineservice
+operator|.
+name|TimelineMetric
+import|;
+end_import
+
 begin_comment
 comment|/**  * Interface for event wrapper classes.  Implementations each wrap an  * Avro-generated class, adding constructors and accessor methods.  */
 end_comment
@@ -109,6 +139,15 @@ comment|/** Map HistoryEvent to TimelineEvent */
 DECL|method|toTimelineEvent ()
 name|TimelineEvent
 name|toTimelineEvent
+parameter_list|()
+function_decl|;
+comment|/** Counters or Metrics if any else return null. */
+DECL|method|getTimelineMetrics ()
+name|Set
+argument_list|<
+name|TimelineMetric
+argument_list|>
+name|getTimelineMetrics
 parameter_list|()
 function_decl|;
 block|}
