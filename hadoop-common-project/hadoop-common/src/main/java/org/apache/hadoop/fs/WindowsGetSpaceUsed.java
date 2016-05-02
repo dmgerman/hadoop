@@ -82,6 +82,7 @@ extends|extends
 name|CachingGetSpaceUsed
 block|{
 DECL|method|WindowsGetSpaceUsed (CachingGetSpaceUsed.Builder builder)
+specifier|public
 name|WindowsGetSpaceUsed
 parameter_list|(
 name|CachingGetSpaceUsed
