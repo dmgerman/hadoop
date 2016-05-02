@@ -72,6 +72,11 @@ name|TimelineKeyValueFilter
 extends|extends
 name|TimelineCompareFilter
 block|{
+DECL|method|TimelineKeyValueFilter ()
+specifier|public
+name|TimelineKeyValueFilter
+parameter_list|()
+block|{   }
 DECL|method|TimelineKeyValueFilter (TimelineCompareOp op, String key, Object val, boolean keyMustExistFlag)
 specifier|public
 name|TimelineKeyValueFilter
@@ -165,6 +170,53 @@ name|TimelineFilterType
 operator|.
 name|KEY_VALUE
 return|;
+block|}
+DECL|method|setCompareOp (TimelineCompareOp timelineCompareOp, boolean keyExistFlag)
+specifier|public
+name|void
+name|setCompareOp
+parameter_list|(
+name|TimelineCompareOp
+name|timelineCompareOp
+parameter_list|,
+name|boolean
+name|keyExistFlag
+parameter_list|)
+block|{
+if|if
+condition|(
+name|timelineCompareOp
+operator|!=
+name|TimelineCompareOp
+operator|.
+name|EQUAL
+operator|&&
+name|timelineCompareOp
+operator|!=
+name|TimelineCompareOp
+operator|.
+name|NOT_EQUAL
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"TimelineCompareOp for equality"
+operator|+
+literal|" filter should be EQUAL or NOT_EQUAL"
+argument_list|)
+throw|;
+block|}
+name|super
+operator|.
+name|setCompareOp
+argument_list|(
+name|timelineCompareOp
+argument_list|,
+name|keyExistFlag
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

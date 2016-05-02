@@ -2852,7 +2852,7 @@ literal|"/ws/v2/"
 operator|+
 literal|"timeline/clusters/cluster1/apps/app1/entities/app?"
 operator|+
-literal|"conffilters=config_1:123,config_3:abc"
+literal|"conffilters=config_1%20eq%20123%20AND%20config_3%20eq%20abc"
 argument_list|)
 decl_stmt|;
 name|ClientResponse
@@ -2974,7 +2974,7 @@ literal|"/ws/v2/"
 operator|+
 literal|"timeline/clusters/cluster1/apps/app1/entities/app?"
 operator|+
-literal|"infofilters=info2:3.5"
+literal|"infofilters=info2%20eq%203.5"
 argument_list|)
 decl_stmt|;
 name|ClientResponse
@@ -3096,7 +3096,7 @@ literal|"/ws/v2/"
 operator|+
 literal|"timeline/clusters/cluster1/apps/app1/entities/app?"
 operator|+
-literal|"metricfilters=metric3"
+literal|"metricfilters=metric3%20ge%200"
 argument_list|)
 decl_stmt|;
 name|ClientResponse
@@ -3354,13 +3354,13 @@ literal|"/ws/v2/"
 operator|+
 literal|"timeline/clusters/cluster1/apps/app1/entities/app?"
 operator|+
-literal|"metricfilters=metric7&isrelatedto=type1:tid1_1;tid1_2,type2:tid2_1"
+literal|"metricfilters=metric7%20ge%200&isrelatedto=type1:tid1_1:tid1_2,"
 operator|+
-literal|"%60&relatesto=flow:flow1&eventfilters=event_2,event_4&infofilters="
+literal|"type2:tid2_1%60&relatesto=flow:flow1&eventfilters=event_2,event_4"
 operator|+
-literal|"info2:3.5&createdtimestart=1425016502030&createdtimeend="
+literal|"&infofilters=info2%20eq%203.5&createdtimestart=1425016502030&"
 operator|+
-literal|"1425016502060"
+literal|"createdtimeend=1425016502060"
 argument_list|)
 decl_stmt|;
 name|ClientResponse

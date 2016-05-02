@@ -1102,6 +1102,34 @@ if|if
 condition|(
 name|e
 operator|instanceof
+name|TimelineParseException
+condition|)
+block|{
+throw|throw
+operator|new
+name|BadRequestException
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|==
+literal|null
+condition|?
+literal|"Filter Parsing failed."
+else|:
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|e
+operator|instanceof
 name|BadRequestException
 condition|)
 block|{
@@ -1178,7 +1206,7 @@ literal|"Timeline Reader API"
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a single entity for a given entity type and UID which is a delimited    * string containing clusterid, userid, flow name, flowrun id and app id.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, flow name,    *     flowrun id and app id which are extracted from UID and then used to    *     query backend(Mandatory path param).    * @param entityType Type of entities(Mandatory path param).    * @param limit Number of entities to return(Optional query param).    * @param createdTimeStart If specified, matched entities should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched entities should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched entities should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched entities should be related to    *     given entities associated with a entity type. relatesto is a comma    *     separated list in the format [entitytype]:[entityid1]:[entityid2]...    *     (Optional query param).    * @param infofilters If specified, matched entities should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched entities should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched entities should contain the    *     given metrics. This is represented as    *     metricfilters=metricid1, metricid2... (Optional query param).    * @param eventfilters If specified, matched entities should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id and created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances of the given entity type    *     is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a single entity for a given entity type and UID which is a delimited    * string containing clusterid, userid, flow name, flowrun id and app id.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, flow name,    *     flowrun id and app id which are extracted from UID and then used to    *     query backend(Mandatory path param).    * @param entityType Type of entities(Mandatory path param).    * @param limit Number of entities to return(Optional query param).    * @param createdTimeStart If specified, matched entities should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched entities should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched entities should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched entities should be related to    *     given entities associated with a entity type. relatesto is a comma    *     separated list in the format [entitytype]:[entityid1]:[entityid2]...    *     (Optional query param).    * @param infofilters If specified, matched entities should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched entities should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched entities should contain the    *     given metrics. This is represented as    *     metricfilters=metricid1, metricid2... (Optional query param).    * @param eventfilters If specified, matched entities should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id and created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances of the given entity type    *     is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -1193,7 +1221,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @PathParam(R) String entityType, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @PathParam(R) String entityType, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -1298,6 +1326,22 @@ literal|"eventfilters"
 argument_list|)
 name|String
 name|eventfilters
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -1467,9 +1511,9 @@ name|TimelineReaderWebServicesUtils
 operator|.
 name|createTimelineDataToRetrieve
 argument_list|(
-literal|null
+name|confsToRetrieve
 argument_list|,
-literal|null
+name|metricsToRetrieve
 argument_list|,
 name|fields
 argument_list|)
@@ -1540,7 +1584,7 @@ return|return
 name|entities
 return|;
 block|}
-comment|/**    * Return a set of entities that match the given parameters. Cluster ID is not    * provided by client so default cluster ID has to be taken. If userid, flow    * name and flowrun id which are optional query parameters are not specified,    * they will be queried based on app id and default cluster id from the flow    * context information stored in underlying storage implementation. If number    * of matching entities are more than the limit, most recent entities till the    * limit is reached, will be returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param appId Application id to which the entities to be queried belong to(    *     Mandatory path param).    * @param entityType Type of entities(Mandatory path param).    * @param userId User id which should match for the entities(Optional query    *     param)    * @param flowName Flow name which should match for the entities(Optional    *     query param).    * @param flowRunId Run id which should match for the entities(Optional query    *     param).    * @param limit Number of entities to return(Optional query param).    * @param createdTimeStart If specified, matched entities should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched entities should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched entities should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched entities should be related to    *     given entities associated with a entity type. relatesto is a comma    *     separated list in the format [entitytype]:[entityid1]:[entityid2]...    *     (Optional query param).    * @param infofilters If specified, matched entities should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched entities should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched entities should contain the    *     given metrics. This is represented as    *     metricfilters=metricid1, metricid2... (Optional query param).    * @param eventfilters If specified, matched entities should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id, created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances of the given entity type    *     is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow context information cannot be retrieved, HTTP 404(Not Found)    *     is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a set of entities that match the given parameters. Cluster ID is not    * provided by client so default cluster ID has to be taken. If userid, flow    * name and flowrun id which are optional query parameters are not specified,    * they will be queried based on app id and default cluster id from the flow    * context information stored in underlying storage implementation. If number    * of matching entities are more than the limit, most recent entities till the    * limit is reached, will be returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param appId Application id to which the entities to be queried belong to(    *     Mandatory path param).    * @param entityType Type of entities(Mandatory path param).    * @param userId User id which should match for the entities(Optional query    *     param)    * @param flowName Flow name which should match for the entities(Optional    *     query param).    * @param flowRunId Run id which should match for the entities(Optional query    *     param).    * @param limit Number of entities to return(Optional query param).    * @param createdTimeStart If specified, matched entities should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched entities should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched entities should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched entities should be related to    *     given entities associated with a entity type. relatesto is a comma    *     separated list in the format [entitytype]:[entityid1]:[entityid2]...    *     (Optional query param).    * @param infofilters If specified, matched entities should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched entities should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched entities should contain the    *     given metrics. This is represented as    *     metricfilters=metricid1, metricid2... (Optional query param).    * @param eventfilters If specified, matched entities should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id, created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances of the given entity type    *     is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow context information cannot be retrieved, HTTP 404(Not Found)    *     is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -1555,7 +1599,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @PathParam(R) String entityType, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @PathParam(R) String entityType, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -1688,6 +1732,22 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
 literal|"fields"
 argument_list|)
 name|String
@@ -1731,11 +1791,15 @@ name|metricfilters
 argument_list|,
 name|eventfilters
 argument_list|,
+name|confsToRetrieve
+argument_list|,
+name|metricsToRetrieve
+argument_list|,
 name|fields
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a set of entities that match the given parameters. If userid, flow    * name and flowrun id which are optional query parameters are not specified,    * they will be queried based on app id and cluster id from the flow context    * information stored in underlying storage implementation. If number of    * matching entities are more than the limit, most recent entities till the    * limit is reached, will be returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the entities to be queried belong to(    *     Mandatory path param).    * @param appId Application id to which the entities to be queried belong to(    *     Mandatory path param).    * @param entityType Type of entities(Mandatory path param).    * @param userId User id which should match for the entities(Optional query    *     param)    * @param flowName Flow name which should match for the entities(Optional    *     query param).    * @param flowRunId Run id which should match for the entities(Optional query    *     param).    * @param limit Number of entities to return(Optional query param).    * @param createdTimeStart If specified, matched entities should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched entities should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched entities should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched entities should be related to    *     given entities associated with a entity type. relatesto is a comma    *     separated list in the format [entitytype]:[entityid1]:[entityid2]...    *     (Optional query param).    * @param infofilters If specified, matched entities should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched entities should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched entities should contain the    *     given metrics. This is represented as    *     metricfilters=metricid1, metricid2... (Optional query param).    * @param eventfilters If specified, matched entities should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id, created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances of the given entity type    *     is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow context information cannot be retrieved, HTTP 404(Not Found)    *     is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a set of entities that match the given parameters. If userid, flow    * name and flowrun id which are optional query parameters are not specified,    * they will be queried based on app id and cluster id from the flow context    * information stored in underlying storage implementation. If number of    * matching entities are more than the limit, most recent entities till the    * limit is reached, will be returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the entities to be queried belong to(    *     Mandatory path param).    * @param appId Application id to which the entities to be queried belong to(    *     Mandatory path param).    * @param entityType Type of entities(Mandatory path param).    * @param userId User id which should match for the entities(Optional query    *     param)    * @param flowName Flow name which should match for the entities(Optional    *     query param).    * @param flowRunId Run id which should match for the entities(Optional query    *     param).    * @param limit Number of entities to return(Optional query param).    * @param createdTimeStart If specified, matched entities should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched entities should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched entities should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched entities should be related to    *     given entities associated with a entity type. relatesto is a comma    *     separated list in the format [entitytype]:[entityid1]:[entityid2]...    *     (Optional query param).    * @param infofilters If specified, matched entities should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched entities should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched entities should contain the    *     given metrics. This is represented as    *     metricfilters=metricid1, metricid2... (Optional query param).    * @param eventfilters If specified, matched entities should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id, created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances of the given entity type    *     is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow context information cannot be retrieved, HTTP 404(Not Found)    *     is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -1750,7 +1814,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @PathParam(R) String entityType, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @PathParam(R) String entityType, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -1887,6 +1951,22 @@ literal|"eventfilters"
 argument_list|)
 name|String
 name|eventfilters
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -2032,9 +2112,9 @@ name|TimelineReaderWebServicesUtils
 operator|.
 name|createTimelineDataToRetrieve
 argument_list|(
-literal|null
+name|confsToRetrieve
 argument_list|,
-literal|null
+name|metricsToRetrieve
 argument_list|,
 name|fields
 argument_list|)
@@ -2105,7 +2185,7 @@ return|return
 name|entities
 return|;
 block|}
-comment|/**    * Return a single entity for given UID which is a delimited string containing    * clusterid, userid, flow name, flowrun id, app id, entity type and entityid.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, flow name,    *     flowrun id, app id, entity type and entity id which are extracted from    *     UID and then used to query backend(Mandatory path param).    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id, created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>TimelineEntity</cite> instance is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     If entity for the given entity id cannot be found, HTTP 404(Not Found)    *     is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a single entity for given UID which is a delimited string containing    * clusterid, userid, flow name, flowrun id, app id, entity type and entityid.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, flow name,    *     flowrun id, app id, entity type and entity id which are extracted from    *     UID and then used to query backend(Mandatory path param).    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id, created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>TimelineEntity</cite> instance is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     If entity for the given entity id cannot be found, HTTP 404(Not Found)    *     is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -2120,7 +2200,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String fields)
+DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getEntity
@@ -2142,6 +2222,22 @@ literal|"uid"
 argument_list|)
 name|String
 name|uId
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -2273,9 +2369,9 @@ name|TimelineReaderWebServicesUtils
 operator|.
 name|createTimelineDataToRetrieve
 argument_list|(
-literal|null
+name|confsToRetrieve
 argument_list|,
-literal|null
+name|metricsToRetrieve
 argument_list|,
 name|fields
 argument_list|)
@@ -2371,7 +2467,7 @@ return|return
 name|entity
 return|;
 block|}
-comment|/**    * Return a single entity of the given entity type and Id. Cluster ID is not    * provided by client so default cluster ID has to be taken. If userid, flow    * name and flowrun id which are optional query parameters are not specified,    * they will be queried based on app id and default cluster id from the flow    * context information stored in underlying storage implementation.    *    * @param req Servlet request.    * @param res Servlet response.    * @param appId Application id to which the entity to be queried belongs to(    *     Mandatory path param).    * @param entityType Type of entity(Mandatory path param).    * @param entityId Id of the entity to be fetched(Mandatory path param).    * @param userId User id which should match for the entity(Optional query    *     param).    * @param flowName Flow name which should match for the entity(Optional query    *     param).    * @param flowRunId Run id which should match for the entity(Optional query    *     param).    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id, created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>TimelineEntity</cite> instance is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow context information cannot be retrieved or entity for the given    *     entity id cannot be found, HTTP 404(Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a single entity of the given entity type and Id. Cluster ID is not    * provided by client so default cluster ID has to be taken. If userid, flow    * name and flowrun id which are optional query parameters are not specified,    * they will be queried based on app id and default cluster id from the flow    * context information stored in underlying storage implementation.    *    * @param req Servlet request.    * @param res Servlet response.    * @param appId Application id to which the entity to be queried belongs to(    *     Mandatory path param).    * @param entityType Type of entity(Mandatory path param).    * @param entityId Id of the entity to be fetched(Mandatory path param).    * @param userId User id which should match for the entity(Optional query    *     param).    * @param flowName Flow name which should match for the entity(Optional query    *     param).    * @param flowRunId Run id which should match for the entity(Optional query    *     param).    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id, created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>TimelineEntity</cite> instance is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow context information cannot be retrieved or entity for the given    *     entity id cannot be found, HTTP 404(Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -2386,7 +2482,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @PathParam(R) String entityType, @PathParam(R) String entityId, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String fields)
+DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @PathParam(R) String entityType, @PathParam(R) String entityId, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getEntity
@@ -2452,6 +2548,22 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
 literal|"fields"
 argument_list|)
 name|String
@@ -2479,11 +2591,15 @@ name|flowName
 argument_list|,
 name|flowRunId
 argument_list|,
+name|confsToRetrieve
+argument_list|,
+name|metricsToRetrieve
+argument_list|,
 name|fields
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a single entity of the given entity type and Id. If userid, flowname    * and flowrun id which are optional query parameters are not specified, they    * will be queried based on app id and cluster id from the flow context    * information stored in underlying storage implementation.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the entity to be queried belongs to(    *     Mandatory path param).    * @param appId Application id to which the entity to be queried belongs to(    *     Mandatory path param).    * @param entityType Type of entity(Mandatory path param).    * @param entityId Id of the entity to be fetched(Mandatory path param).    * @param userId User id which should match for the entity(Optional query    *     param).    * @param flowName Flow name which should match for the entity(Optional query    *     param).    * @param flowRunId Run id which should match for the entity(Optional query    *     param).    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id and created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>TimelineEntity</cite> instance is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow context information cannot be retrieved or entity for the given    *     entity id cannot be found, HTTP 404(Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a single entity of the given entity type and Id. If userid, flowname    * and flowrun id which are optional query parameters are not specified, they    * will be queried based on app id and cluster id from the flow context    * information stored in underlying storage implementation.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the entity to be queried belongs to(    *     Mandatory path param).    * @param appId Application id to which the entity to be queried belongs to(    *     Mandatory path param).    * @param entityType Type of entity(Mandatory path param).    * @param entityId Id of the entity to be fetched(Mandatory path param).    * @param userId User id which should match for the entity(Optional query    *     param).    * @param flowName Flow name which should match for the entity(Optional query    *     param).    * @param flowRunId Run id which should match for the entity(Optional query    *     param).    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the entity object to retrieve, see    *     {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type, id and created time is returned    *     (Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>TimelineEntity</cite> instance is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow context information cannot be retrieved or entity for the given    *     entity id cannot be found, HTTP 404(Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -2498,7 +2614,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @PathParam(R) String entityType, @PathParam(R) String entityId, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String fields)
+DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @PathParam(R) String entityType, @PathParam(R) String entityId, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getEntity
@@ -2568,6 +2684,22 @@ literal|"flowrunid"
 argument_list|)
 name|String
 name|flowRunId
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -2687,9 +2819,9 @@ name|TimelineReaderWebServicesUtils
 operator|.
 name|createTimelineDataToRetrieve
 argument_list|(
-literal|null
+name|confsToRetrieve
 argument_list|,
-literal|null
+name|metricsToRetrieve
 argument_list|,
 name|fields
 argument_list|)
@@ -2789,7 +2921,7 @@ return|return
 name|entity
 return|;
 block|}
-comment|/**    * Return a single flow run for given UID which is a delimited string    * containing clusterid, userid, flow name and flowrun id.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, flow name and    *     flowrun id which are extracted from UID and then used to query backend    *     (Mandatory path param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>FlowRunEntity</cite> instance is returned. By default, all    *     metrics for the flow run will be returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     If flow run for the given flow run id cannot be found, HTTP 404    *     (Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a single flow run for given UID which is a delimited string    * containing clusterid, userid, flow name and flowrun id.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, flow name and    *     flowrun id which are extracted from UID and then used to query backend    *     (Mandatory path param).    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response.    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>FlowRunEntity</cite> instance is returned. By default, all    *     metrics for the flow run will be returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     If flow run for the given flow run id cannot be found, HTTP 404    *     (Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -2804,7 +2936,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId)
+DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String metricsToRetrieve)
 specifier|public
 name|TimelineEntity
 name|getFlowRun
@@ -2826,6 +2958,14 @@ literal|"uid"
 argument_list|)
 name|String
 name|uId
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
 parameter_list|)
 block|{
 name|String
@@ -2957,9 +3097,16 @@ name|getEntity
 argument_list|(
 name|context
 argument_list|,
-operator|new
-name|TimelineDataToRetrieve
-argument_list|()
+name|TimelineReaderWebServicesUtils
+operator|.
+name|createTimelineDataToRetrieve
+argument_list|(
+literal|null
+argument_list|,
+name|metricsToRetrieve
+argument_list|,
+literal|null
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3050,7 +3197,7 @@ return|return
 name|entity
 return|;
 block|}
-comment|/**    * Return a single flow run for the given user, flow name and run id.    * Cluster ID is not provided by client so default cluster ID has to be taken.    *    * @param req Servlet request.    * @param res Servlet response.    * @param userId User id representing the user who ran the flow run(Mandatory    *     path param).    * @param flowName Flow name to which the flow run to be queried belongs to(    *     Mandatory path param).    * @param flowRunId Id of the flow run to be queried(Mandatory path param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>FlowRunEntity</cite> instance is returned. By default, all    *     metrics for the flow run will be returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow run for the given flow run id cannot be found, HTTP 404    *     (Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a single flow run for the given user, flow name and run id.    * Cluster ID is not provided by client so default cluster ID has to be taken.    *    * @param req Servlet request.    * @param res Servlet response.    * @param userId User id representing the user who ran the flow run(Mandatory    *     path param).    * @param flowName Flow name to which the flow run to be queried belongs to(    *     Mandatory path param).    * @param flowRunId Id of the flow run to be queried(Mandatory path param).    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response.    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>FlowRunEntity</cite> instance is returned. By default, all    *     metrics for the flow run will be returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow run for the given flow run id cannot be found, HTTP 404    *     (Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -3065,7 +3212,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId)
+DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String metricsToRetrieve)
 specifier|public
 name|TimelineEntity
 name|getFlowRun
@@ -3103,6 +3250,14 @@ literal|"flowrunid"
 argument_list|)
 name|String
 name|flowRunId
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
 parameter_list|)
 block|{
 return|return
@@ -3119,10 +3274,12 @@ argument_list|,
 name|flowName
 argument_list|,
 name|flowRunId
+argument_list|,
+name|metricsToRetrieve
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a single flow run for the given user, cluster, flow name and run id.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the flow run to be queried belong to(    *     Mandatory path param).    * @param userId User id representing the user who ran the flow run(Mandatory    *     path param).    * @param flowName Flow name to which the flow run to be queried belongs to(    *     Mandatory path param).    * @param flowRunId Id of the flow run to be queried(Mandatory path param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>FlowRunEntity</cite> instance is returned. By default, all    *     metrics for the flow run will be returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow run for the given flow run id cannot be found, HTTP 404    *     (Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a single flow run for the given user, cluster, flow name and run id.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the flow run to be queried belong to(    *     Mandatory path param).    * @param userId User id representing the user who ran the flow run(Mandatory    *     path param).    * @param flowName Flow name to which the flow run to be queried belongs to(    *     Mandatory path param).    * @param flowRunId Id of the flow run to be queried(Mandatory path param).    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response.    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>FlowRunEntity</cite> instance is returned. By default, all    *     metrics for the flow run will be returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow run for the given flow run id cannot be found, HTTP 404    *     (Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -3139,7 +3296,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId)
+DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String metricsToRetrieve)
 specifier|public
 name|TimelineEntity
 name|getFlowRun
@@ -3185,6 +3342,14 @@ literal|"flowrunid"
 argument_list|)
 name|String
 name|flowRunId
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
 parameter_list|)
 block|{
 name|String
@@ -3297,9 +3462,16 @@ argument_list|,
 literal|null
 argument_list|)
 argument_list|,
-operator|new
-name|TimelineDataToRetrieve
-argument_list|()
+name|TimelineReaderWebServicesUtils
+operator|.
+name|createTimelineDataToRetrieve
+argument_list|(
+literal|null
+argument_list|,
+name|metricsToRetrieve
+argument_list|,
+literal|null
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3404,7 +3576,7 @@ return|return
 name|entity
 return|;
 block|}
-comment|/**    * Return a list of flow runs for given UID which is a delimited string    * containing clusterid, userid and flow name.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, and flow name    *     which are extracted from UID and then used to query backend(Mandatory    *     path param).    * @param limit Number of flow runs to return(Optional query param).    * @param createdTimeStart If specified, matched flow runs should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched flow runs should not be created    *     after this timestamp(Optional query param).    * @param fields Specifies which fields to retrieve, see {@link Field}.    *     All fields will be retrieved if fields=ALL. Fields other than METRICS    *     have no meaning for this REST endpoint. If not specified, all fields    *     other than metrics are returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *     set of<cite>FlowRunEntity</cite> instances for the given flow are    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a list of flow runs for given UID which is a delimited string    * containing clusterid, userid and flow name.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, and flow name    *     which are extracted from UID and then used to query backend(Mandatory    *     path param).    * @param limit Number of flow runs to return(Optional query param).    * @param createdTimeStart If specified, matched flow runs should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched flow runs should not be created    *     after this timestamp(Optional query param).    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields to retrieve, see {@link Field}.    *     All fields will be retrieved if fields=ALL. Fields other than METRICS    *     have no meaning for this REST endpoint. If not specified, all fields    *     other than metrics are returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *     set of<cite>FlowRunEntity</cite> instances for the given flow are    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -3419,7 +3591,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String fields)
+DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -3468,6 +3640,14 @@ literal|"createdtimeend"
 argument_list|)
 name|String
 name|createdTimeEnd
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -3639,7 +3819,7 @@ name|createTimelineDataToRetrieve
 argument_list|(
 literal|null
 argument_list|,
-literal|null
+name|metricsToRetrieve
 argument_list|,
 name|fields
 argument_list|)
@@ -3710,7 +3890,7 @@ return|return
 name|entities
 return|;
 block|}
-comment|/**    * Return a set of flows runs for the given user and flow name.    * Cluster ID is not provided by client so default cluster ID has to be taken.    *    * @param req Servlet request.    * @param res Servlet response.    * @param userId User id representing the user who ran the flow runs(    *     Mandatory path param)    * @param flowName Flow name to which the flow runs to be queried belongs to(    *     Mandatory path param).    * @param limit Number of flow runs to return(Optional query param).    * @param createdTimeStart If specified, matched flow runs should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched flow runs should not be created    *     after this timestamp(Optional query param).    * @param fields Specifies which fields to retrieve, see {@link Field}.    *     All fields will be retrieved if fields=ALL. Fields other than METRICS    *     have no meaning for this REST endpoint. If not specified, all fields    *     other than metrics are returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *     set of<cite>FlowRunEntity</cite> instances for the given flow are    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a set of flows runs for the given user and flow name.    * Cluster ID is not provided by client so default cluster ID has to be taken.    *    * @param req Servlet request.    * @param res Servlet response.    * @param userId User id representing the user who ran the flow runs(    *     Mandatory path param)    * @param flowName Flow name to which the flow runs to be queried belongs to(    *     Mandatory path param).    * @param limit Number of flow runs to return(Optional query param).    * @param createdTimeStart If specified, matched flow runs should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched flow runs should not be created    *     after this timestamp(Optional query param).    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields to retrieve, see {@link Field}.    *     All fields will be retrieved if fields=ALL. Fields other than METRICS    *     have no meaning for this REST endpoint. If not specified, all fields    *     other than metrics are returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *     set of<cite>FlowRunEntity</cite> instances for the given flow are    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -3725,7 +3905,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String fields)
+DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -3786,6 +3966,14 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
 literal|"fields"
 argument_list|)
 name|String
@@ -3811,11 +3999,13 @@ name|createdTimeStart
 argument_list|,
 name|createdTimeEnd
 argument_list|,
+name|metricsToRetrieve
+argument_list|,
 name|fields
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a set of flows runs for the given cluster, user and flow name.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the flow runs to be queried belong to(    *     Mandatory path param).    * @param userId User id representing the user who ran the flow runs(    *     Mandatory path param)    * @param flowName Flow name to which the flow runs to be queried belongs to(    *     Mandatory path param).    * @param limit Number of flow runs to return(Optional query param).    * @param createdTimeStart If specified, matched flow runs should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched flow runs should not be created    *     after this timestamp(Optional query param).    * @param fields Specifies which fields to retrieve, see {@link Field}.    *     All fields will be retrieved if fields=ALL. Fields other than METRICS    *     have no meaning for this REST endpoint. If not specified, all fields    *     other than metrics are returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *     set of<cite>FlowRunEntity</cite> instances for the given flow are    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a set of flows runs for the given cluster, user and flow name.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the flow runs to be queried belong to(    *     Mandatory path param).    * @param userId User id representing the user who ran the flow runs(    *     Mandatory path param)    * @param flowName Flow name to which the flow runs to be queried belongs to(    *     Mandatory path param).    * @param limit Number of flow runs to return(Optional query param).    * @param createdTimeStart If specified, matched flow runs should not be    *     created before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched flow runs should not be created    *     after this timestamp(Optional query param).    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields to retrieve, see {@link Field}.    *     All fields will be retrieved if fields=ALL. Fields other than METRICS    *     have no meaning for this REST endpoint. If not specified, all fields    *     other than metrics are returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *     set of<cite>FlowRunEntity</cite> instances for the given flow are    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -3830,7 +4020,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String fields)
+DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -3895,6 +4085,14 @@ literal|"createdtimeend"
 argument_list|)
 name|String
 name|createdTimeEnd
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -4047,7 +4245,7 @@ name|createTimelineDataToRetrieve
 argument_list|(
 literal|null
 argument_list|,
-literal|null
+name|metricsToRetrieve
 argument_list|,
 name|fields
 argument_list|)
@@ -4485,7 +4683,7 @@ return|return
 name|entities
 return|;
 block|}
-comment|/**    * Return a single app for given UID which is a delimited string containing    * clusterid, userid, flow name, flowrun id and app id.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, flow name, flow    *     run id and app id which are extracted from UID and then used to query    *     backend(Mandatory path param).    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>TimelineEntity</cite> instance is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     If app for the given app id cannot be found, HTTP 404(Not Found) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a single app for given UID which is a delimited string containing    * clusterid, userid, flow name, flowrun id and app id.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, flow name, flow    *     run id and app id which are extracted from UID and then used to query    *     backend(Mandatory path param).    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>TimelineEntity</cite> instance is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     If app for the given app id cannot be found, HTTP 404(Not Found) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -4500,7 +4698,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getApp ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String fields)
+DECL|method|getApp ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getApp
@@ -4522,6 +4720,22 @@ literal|"uid"
 argument_list|)
 name|String
 name|uId
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -4665,9 +4879,9 @@ name|TimelineReaderWebServicesUtils
 operator|.
 name|createTimelineDataToRetrieve
 argument_list|(
-literal|null
+name|confsToRetrieve
 argument_list|,
-literal|null
+name|metricsToRetrieve
 argument_list|,
 name|fields
 argument_list|)
@@ -4763,7 +4977,7 @@ return|return
 name|entity
 return|;
 block|}
-comment|/**    * Return a single app for given app id. Cluster ID is not provided by client    * client so default cluster ID has to be taken. If userid, flow name and flow    * run id which are optional query parameters are not specified, they will be    * queried based on app id and cluster id from the flow context information    * stored in underlying storage implementation.    *    * @param req Servlet request.    * @param res Servlet response.    * @param appId Application id to be queried(Mandatory path param).    * @param flowName Flow name which should match for the app(Optional query    *     param).    * @param flowRunId Run id which should match for the app(Optional query    *     param).    * @param userId User id which should match for the app(Optional query param).    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>TimelineEntity</cite> instance is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow context information cannot be retrieved or app for the given    *     app id cannot be found, HTTP 404(Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a single app for given app id. Cluster ID is not provided by client    * client so default cluster ID has to be taken. If userid, flow name and flow    * run id which are optional query parameters are not specified, they will be    * queried based on app id and cluster id from the flow context information    * stored in underlying storage implementation.    *    * @param req Servlet request.    * @param res Servlet response.    * @param appId Application id to be queried(Mandatory path param).    * @param flowName Flow name which should match for the app(Optional query    *     param).    * @param flowRunId Run id which should match for the app(Optional query    *     param).    * @param userId User id which should match for the app(Optional query param).    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>TimelineEntity</cite> instance is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow context information cannot be retrieved or app for the given    *     app id cannot be found, HTTP 404(Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -4778,7 +4992,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getApp ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String fields)
+DECL|method|getApp ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getApp
@@ -4828,6 +5042,22 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
 literal|"fields"
 argument_list|)
 name|String
@@ -4851,11 +5081,15 @@ name|flowRunId
 argument_list|,
 name|userId
 argument_list|,
+name|confsToRetrieve
+argument_list|,
+name|metricsToRetrieve
+argument_list|,
 name|fields
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a single app for given cluster id and app id. If userid, flow name    * and flowrun id which are optional query parameters are not specified, they    * will be queried based on app id and cluster id from the flow context    * information stored in underlying storage implementation.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the app to be queried belong to(    *     Mandatory path param).    * @param appId Application id to be queried(Mandatory path param).    * @param flowName Flow name which should match for the app(Optional query    *     param).    * @param flowRunId Run id which should match for the app(Optional query    *     param).    * @param userId User id which should match for the app(Optional query param).    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>TimelineEntity</cite> instance is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow context information cannot be retrieved or app for the given    *     app id cannot be found, HTTP 404(Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a single app for given cluster id and app id. If userid, flow name    * and flowrun id which are optional query parameters are not specified, they    * will be queried based on app id and cluster id from the flow context    * information stored in underlying storage implementation.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the app to be queried belong to(    *     Mandatory path param).    * @param appId Application id to be queried(Mandatory path param).    * @param flowName Flow name which should match for the app(Optional query    *     param).    * @param flowRunId Run id which should match for the app(Optional query    *     param).    * @param userId User id which should match for the app(Optional query param).    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *<cite>TimelineEntity</cite> instance is returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     If flow context information cannot be retrieved or app for the given    *     app id cannot be found, HTTP 404(Not Found) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -4870,7 +5104,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getApp ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String fields)
+DECL|method|getApp ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|TimelineEntity
 name|getApp
@@ -4924,6 +5158,22 @@ literal|"userid"
 argument_list|)
 name|String
 name|userId
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -5048,9 +5298,9 @@ name|TimelineReaderWebServicesUtils
 operator|.
 name|createTimelineDataToRetrieve
 argument_list|(
-literal|null
+name|confsToRetrieve
 argument_list|,
-literal|null
+name|metricsToRetrieve
 argument_list|,
 name|fields
 argument_list|)
@@ -5146,7 +5396,7 @@ return|return
 name|entity
 return|;
 block|}
-comment|/**    * Return a list of apps for given UID which is a delimited string containing    * clusterid, userid, flow name and flowrun id. If number of matching apps are    * more than the limit, most recent apps till the limit is reached, will be    * returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, flow name and    *     flowrun id which are extracted from UID and then used to query backend.    *     (Mandatory path param).    * @param limit Number of apps to return(Optional query param).    * @param createdTimeStart If specified, matched apps should not be created    *     before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched apps should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched apps should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched apps should be related to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param infofilters If specified, matched apps should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched apps should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched apps should contain the given    *     metrics. This is represented as metricfilters=metricid1, metricid2...    *     (Optional query param).    * @param eventfilters If specified, matched apps should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances representing apps is    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a list of apps for given UID which is a delimited string containing    * clusterid, userid, flow name and flowrun id. If number of matching apps are    * more than the limit, most recent apps till the limit is reached, will be    * returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param uId a delimited string containing clusterid, userid, flow name and    *     flowrun id which are extracted from UID and then used to query backend.    *     (Mandatory path param).    * @param limit Number of apps to return(Optional query param).    * @param createdTimeStart If specified, matched apps should not be created    *     before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched apps should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched apps should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched apps should be related to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param infofilters If specified, matched apps should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched apps should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched apps should contain the given    *     metrics. This is represented as metricfilters=metricid1, metricid2...    *     (Optional query param).    * @param eventfilters If specified, matched apps should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances representing apps is    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request or UID is incorrect,    *     HTTP 400(Bad Request) is returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -5161,7 +5411,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -5258,6 +5508,22 @@ literal|"eventfilters"
 argument_list|)
 name|String
 name|eventfilters
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -5427,9 +5693,9 @@ name|TimelineReaderWebServicesUtils
 operator|.
 name|createTimelineDataToRetrieve
 argument_list|(
-literal|null
+name|confsToRetrieve
 argument_list|,
-literal|null
+name|metricsToRetrieve
 argument_list|,
 name|fields
 argument_list|)
@@ -5500,7 +5766,7 @@ return|return
 name|entities
 return|;
 block|}
-comment|/**    * Return a list of apps for given user, flow name and flow run id. Cluster ID    * is not provided by client so default cluster ID has to be taken. If number    * of matching apps are more than the limit, most recent apps till the limit    * is reached, will be returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param userId User id which should match for the apps(Mandatory path param)    * @param flowName Flow name which should match for the apps(Mandatory path    *     param).    * @param flowRunId Run id which should match for the apps(Mandatory path    *     param).    * @param limit Number of apps to return(Optional query param).    * @param createdTimeStart If specified, matched apps should not be created    *     before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched apps should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched apps should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched apps should be related to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param infofilters If specified, matched apps should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched apps should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched apps should contain the given    *     metrics. This is represented as metricfilters=metricid1, metricid2...    *     (Optional query param).    * @param eventfilters If specified, matched apps should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances representing apps is    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a list of apps for given user, flow name and flow run id. Cluster ID    * is not provided by client so default cluster ID has to be taken. If number    * of matching apps are more than the limit, most recent apps till the limit    * is reached, will be returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param userId User id which should match for the apps(Mandatory path param)    * @param flowName Flow name which should match for the apps(Mandatory path    *     param).    * @param flowRunId Run id which should match for the apps(Mandatory path    *     param).    * @param limit Number of apps to return(Optional query param).    * @param createdTimeStart If specified, matched apps should not be created    *     before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched apps should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched apps should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched apps should be related to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param infofilters If specified, matched apps should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched apps should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched apps should contain the given    *     metrics. This is represented as metricfilters=metricid1, metricid2...    *     (Optional query param).    * @param eventfilters If specified, matched apps should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances representing apps is    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -5515,7 +5781,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -5632,6 +5898,22 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
 literal|"fields"
 argument_list|)
 name|String
@@ -5680,11 +5962,15 @@ name|metricfilters
 argument_list|,
 name|eventfilters
 argument_list|,
+name|confsToRetrieve
+argument_list|,
+name|metricsToRetrieve
+argument_list|,
 name|fields
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a list of apps for a given user, cluster id, flow name and flow run    * id. If number of matching apps are more than the limit, most recent apps    * till the limit is reached, will be returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the apps to be queried belong to    *     (Mandatory path param).    * @param userId User id which should match for the apps(Mandatory path param)    * @param flowName Flow name which should match for the apps(Mandatory path    *     param).    * @param flowRunId Run id which should match for the apps(Mandatory path    *     param).    * @param limit Number of apps to return(Optional query param).    * @param createdTimeStart If specified, matched apps should not be created    *     before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched apps should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched apps should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched apps should be related to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param infofilters If specified, matched apps should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched apps should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched apps should contain the given    *     metrics. This is represented as metricfilters=metricid1, metricid2...    *     (Optional query param).    * @param eventfilters If specified, matched apps should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances representing apps is    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a list of apps for a given user, cluster id, flow name and flow run    * id. If number of matching apps are more than the limit, most recent apps    * till the limit is reached, will be returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the apps to be queried belong to    *     (Mandatory path param).    * @param userId User id which should match for the apps(Mandatory path param)    * @param flowName Flow name which should match for the apps(Mandatory path    *     param).    * @param flowRunId Run id which should match for the apps(Mandatory path    *     param).    * @param limit Number of apps to return(Optional query param).    * @param createdTimeStart If specified, matched apps should not be created    *     before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched apps should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched apps should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched apps should be related to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param infofilters If specified, matched apps should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched apps should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched apps should contain the given    *     metrics. This is represented as metricfilters=metricid1, metricid2...    *     (Optional query param).    * @param eventfilters If specified, matched apps should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances representing apps is    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -5701,7 +5987,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -5826,6 +6112,22 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
 literal|"fields"
 argument_list|)
 name|String
@@ -5874,11 +6176,15 @@ name|metricfilters
 argument_list|,
 name|eventfilters
 argument_list|,
+name|confsToRetrieve
+argument_list|,
+name|metricsToRetrieve
+argument_list|,
 name|fields
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a list of apps for given user and flow name. Cluster ID is not    * provided by client so default cluster ID has to be taken. If number of    * matching apps are more than the limit, most recent apps till the limit is    * reached, will be returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param userId User id which should match for the apps(Mandatory path param)    * @param flowName Flow name which should match for the apps(Mandatory path    *     param).    * @param limit Number of apps to return(Optional query param).    * @param createdTimeStart If specified, matched apps should not be created    *     before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched apps should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched apps should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched apps should be related to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param infofilters If specified, matched apps should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched apps should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched apps should contain the given    *     metrics. This is represented as metricfilters=metricid1, metricid2...    *     (Optional query param).    * @param eventfilters If specified, matched apps should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances representing apps is    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a list of apps for given user and flow name. Cluster ID is not    * provided by client so default cluster ID has to be taken. If number of    * matching apps are more than the limit, most recent apps till the limit is    * reached, will be returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param userId User id which should match for the apps(Mandatory path param)    * @param flowName Flow name which should match for the apps(Mandatory path    *     param).    * @param limit Number of apps to return(Optional query param).    * @param createdTimeStart If specified, matched apps should not be created    *     before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched apps should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched apps should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched apps should be related to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param infofilters If specified, matched apps should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched apps should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched apps should contain the given    *     metrics. This is represented as metricfilters=metricid1, metricid2...    *     (Optional query param).    * @param eventfilters If specified, matched apps should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances representing apps is    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -5893,7 +6199,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -6002,6 +6308,22 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
 literal|"fields"
 argument_list|)
 name|String
@@ -6050,11 +6372,15 @@ name|metricfilters
 argument_list|,
 name|eventfilters
 argument_list|,
+name|confsToRetrieve
+argument_list|,
+name|metricsToRetrieve
+argument_list|,
 name|fields
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a list of apps for a given user, cluster id and flow name. If number    * of matching apps are more than the limit, most recent apps till the limit    * is reached, will be returned. If number of matching apps are more than the    * limit, most recent apps till the limit is reached, will be returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the apps to be queried belong to    *     (Mandatory path param).    * @param userId User id which should match for the apps(Mandatory path param)    * @param flowName Flow name which should match for the apps(Mandatory path    *     param).    * @param limit Number of apps to return(Optional query param).    * @param createdTimeStart If specified, matched apps should not be created    *     before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched apps should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched apps should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched apps should be related to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param infofilters If specified, matched apps should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched apps should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched apps should contain the given    *     metrics. This is represented as metricfilters=metricid1, metricid2...    *     (Optional query param).    * @param eventfilters If specified, matched apps should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances representing apps is    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a list of apps for a given user, cluster id and flow name. If number    * of matching apps are more than the limit, most recent apps till the limit    * is reached, will be returned. If number of matching apps are more than the    * limit, most recent apps till the limit is reached, will be returned.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the apps to be queried belong to    *     (Mandatory path param).    * @param userId User id which should match for the apps(Mandatory path param)    * @param flowName Flow name which should match for the apps(Mandatory path    *     param).    * @param limit Number of apps to return(Optional query param).    * @param createdTimeStart If specified, matched apps should not be created    *     before this timestamp(Optional query param).    * @param createdTimeEnd If specified, matched apps should not be created    *     after this timestamp(Optional query param).    * @param relatesTo If specified, matched apps should relate to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param isRelatedTo If specified, matched apps should be related to given    *     entities associated with a entity type. relatesto is a comma separated    *     list in the format [entitytype]:[entityid1]:[entityid2]... (Optional    *     query param).    * @param infofilters If specified, matched apps should have exact matches    *     to the given info represented as key-value pairs. This is represented    *     as infofilters=info1:value1,info2:value2... (Optional query param).    * @param conffilters If specified, matched apps should have exact matches    *     to the given configs represented as key-value pairs. This is    *     represented as conffilters=conf1:value1,conf2:value2... (Optional query    *     param).    * @param metricfilters If specified, matched apps should contain the given    *     metrics. This is represented as metricfilters=metricid1, metricid2...    *     (Optional query param).    * @param eventfilters If specified, matched apps should contain the given    *     events. This is represented as eventfilters=eventid1, eventid2...    * @param confsToRetrieve If specified, defines which configurations to    *     retrieve and send back in response. These configs will be retrieved    *     irrespective of whether configs are specified in fields to retrieve or    *     not.    * @param metricsToRetrieve If specified, defines which metrics to retrieve    *     and send back in response. These metrics will be retrieved    *     irrespective of whether metrics are specified in fields to retrieve or    *     not.    * @param fields Specifies which fields of the app entity object to retrieve,    *     see {@link Field}. All fields will be retrieved if fields=ALL. If not    *     specified, 3 fields i.e. entity type(equivalent to YARN_APPLICATION),    *     app id and app created time is returned(Optional query param).    *    * @return If successful, a HTTP 200(OK) response having a JSON representing    *     a set of<cite>TimelineEntity</cite> instances representing apps is    *     returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -6069,7 +6395,7 @@ name|MediaType
 operator|.
 name|APPLICATION_JSON
 argument_list|)
-DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String fields)
+DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
 name|Set
 argument_list|<
@@ -6186,6 +6512,22 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
+literal|"confstoretrieve"
+argument_list|)
+name|String
+name|confsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"metricstoretrieve"
+argument_list|)
+name|String
+name|metricsToRetrieve
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
 literal|"fields"
 argument_list|)
 name|String
@@ -6233,6 +6575,10 @@ argument_list|,
 name|metricfilters
 argument_list|,
 name|eventfilters
+argument_list|,
+name|confsToRetrieve
+argument_list|,
+name|metricsToRetrieve
 argument_list|,
 name|fields
 argument_list|)
