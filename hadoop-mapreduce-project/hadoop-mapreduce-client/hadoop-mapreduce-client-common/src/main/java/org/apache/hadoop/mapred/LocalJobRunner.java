@@ -4158,15 +4158,10 @@ name|conf
 expr_stmt|;
 name|myMetrics
 operator|=
-operator|new
 name|LocalJobRunnerMetrics
-argument_list|(
-operator|new
-name|JobConf
-argument_list|(
-name|conf
-argument_list|)
-argument_list|)
+operator|.
+name|create
+argument_list|()
 expr_stmt|;
 block|}
 comment|// JobSubmissionProtocol methods

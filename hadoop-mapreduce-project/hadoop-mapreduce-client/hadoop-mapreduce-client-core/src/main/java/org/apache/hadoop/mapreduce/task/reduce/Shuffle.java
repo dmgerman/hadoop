@@ -451,13 +451,10 @@ name|this
 operator|.
 name|metrics
 operator|=
-operator|new
 name|ShuffleClientMetrics
-argument_list|(
-name|reduceId
-argument_list|,
-name|jobConf
-argument_list|)
+operator|.
+name|create
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
