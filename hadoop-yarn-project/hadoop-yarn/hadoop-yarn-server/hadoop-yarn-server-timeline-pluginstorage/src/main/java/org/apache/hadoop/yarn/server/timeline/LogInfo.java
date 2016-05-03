@@ -618,7 +618,7 @@ return|;
 block|}
 DECL|method|parseForStore (TimelineDataManager tdm, Path appDirPath, boolean appCompleted, JsonFactory jsonFactory, ObjectMapper objMapper, FileSystem fs)
 specifier|public
-name|void
+name|long
 name|parseForStore
 parameter_list|(
 name|TimelineDataManager
@@ -670,6 +670,11 @@ name|getFileStatus
 argument_list|(
 name|logPath
 argument_list|)
+decl_stmt|;
+name|long
+name|numParsed
+init|=
+literal|0
 decl_stmt|;
 if|if
 condition|(
@@ -735,6 +740,10 @@ operator|-
 name|startTime
 argument_list|)
 expr_stmt|;
+name|numParsed
+operator|+=
+name|count
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -792,6 +801,9 @@ name|logPath
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|numParsed
+return|;
 block|}
 DECL|method|parsePath (TimelineDataManager tdm, Path logPath, boolean appCompleted, JsonFactory jsonFactory, ObjectMapper objMapper, FileSystem fs)
 specifier|private

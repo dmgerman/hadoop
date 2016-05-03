@@ -285,7 +285,7 @@ operator|.
 name|appLogs
 return|;
 block|}
-comment|/**    * Set the application logs to this cache item. The entity group should be    * associated with this application.    *    * @param incomingAppLogs    */
+comment|/**    * Set the application logs to this cache item. The entity group should be    * associated with this application.    *    * @param incomingAppLogs Application logs this cache item mapped to    */
 DECL|method|setAppLogs ( EntityGroupFSTimelineStore.AppLogs incomingAppLogs)
 specifier|public
 specifier|synchronized
@@ -317,8 +317,8 @@ return|return
 name|store
 return|;
 block|}
-comment|/**    * Refresh this cache item if it needs refresh. This will enforce an appLogs    * rescan and then load new data. The refresh process is synchronized with    * other operations on the same cache item.    *    * @param groupId    * @param aclManager    * @param jsonFactory    * @param objMapper    * @return a {@link org.apache.hadoop.yarn.server.timeline.TimelineStore}    *         object filled with all entities in the group.    * @throws IOException    */
-DECL|method|refreshCache (TimelineEntityGroupId groupId, TimelineACLsManager aclManager, JsonFactory jsonFactory, ObjectMapper objMapper)
+comment|/**    * Refresh this cache item if it needs refresh. This will enforce an appLogs    * rescan and then load new data. The refresh process is synchronized with    * other operations on the same cache item.    *    * @param groupId Group id of the cache    * @param aclManager ACL manager for the timeline storage    * @param jsonFactory JSON factory for the storage    * @param objMapper Object mapper for the storage    * @param metrics Metrics to trace the status of the entity group store    * @return a {@link org.apache.hadoop.yarn.server.timeline.TimelineStore}    *         object filled with all entities in the group.    * @throws IOException    */
+DECL|method|refreshCache (TimelineEntityGroupId groupId, TimelineACLsManager aclManager, JsonFactory jsonFactory, ObjectMapper objMapper, EntityGroupFSTimelineStoreMetrics metrics)
 specifier|public
 specifier|synchronized
 name|TimelineStore
@@ -335,6 +335,9 @@ name|jsonFactory
 parameter_list|,
 name|ObjectMapper
 name|objMapper
+parameter_list|,
+name|EntityGroupFSTimelineStoreMetrics
+name|metrics
 parameter_list|)
 throws|throws
 name|IOException
@@ -345,6 +348,14 @@ name|needRefresh
 argument_list|()
 condition|)
 block|{
+name|long
+name|startTime
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 comment|// If an application is not finished, we only update summary logs (and put
 comment|// new entities into summary storage).
 comment|// Otherwise, since the application is done, we can update detail logs.
@@ -425,6 +436,15 @@ expr_stmt|;
 name|store
 operator|.
 name|start
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Store is not null, the refresh is triggered by stale storage.
+name|metrics
+operator|.
+name|incrCacheStaleRefreshes
 argument_list|()
 expr_stmt|;
 block|}
@@ -594,6 +614,18 @@ block|}
 name|updateRefreshTimeToNow
 argument_list|()
 expr_stmt|;
+name|metrics
+operator|.
+name|addCacheRefreshTime
+argument_list|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|startTime
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -604,12 +636,17 @@ argument_list|(
 literal|"Cache new enough, skip refreshing"
 argument_list|)
 expr_stmt|;
+name|metrics
+operator|.
+name|incrNoRefreshCacheRead
+argument_list|()
+expr_stmt|;
 block|}
 return|return
 name|store
 return|;
 block|}
-comment|/**    * Release the cache item for the given group id.    *    * @param groupId    */
+comment|/**    * Release the cache item for the given group id.    *    * @param groupId the group id that the cache should release    */
 DECL|method|releaseCache (TimelineEntityGroupId groupId)
 specifier|public
 specifier|synchronized
