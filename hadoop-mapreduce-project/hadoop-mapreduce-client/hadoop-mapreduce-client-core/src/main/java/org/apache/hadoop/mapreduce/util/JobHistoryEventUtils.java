@@ -170,6 +170,18 @@ specifier|private
 name|JobHistoryEventUtils
 parameter_list|()
 block|{   }
+comment|// Number of bytes of config which can be published in one shot to ATSv2.
+DECL|field|ATS_CONFIG_PUBLISH_SIZE_BYTES
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|ATS_CONFIG_PUBLISH_SIZE_BYTES
+init|=
+literal|10
+operator|*
+literal|1024
+decl_stmt|;
 DECL|method|countersToJSON (Counters counters)
 specifier|public
 specifier|static
