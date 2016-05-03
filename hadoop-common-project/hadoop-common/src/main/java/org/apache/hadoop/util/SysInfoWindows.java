@@ -242,9 +242,9 @@ name|now
 parameter_list|()
 block|{
 return|return
-name|System
+name|Time
 operator|.
-name|nanoTime
+name|monotonicNow
 argument_list|()
 return|;
 block|}
