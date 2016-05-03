@@ -11742,6 +11742,17 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+operator|!
+name|exists
+argument_list|(
+name|ezTrashRoot
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
+if|if
+condition|(
 name|allUsers
 condition|)
 block|{
