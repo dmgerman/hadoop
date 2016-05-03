@@ -150,6 +150,24 @@ name|ContainerId
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
 begin_comment
 comment|/**   * Manages ResourceManager audit logs.   *  * Audit log format is written as key=value pairs. Tab separated.  */
 end_comment
@@ -213,9 +231,12 @@ name|CONTAINERID
 block|,
 DECL|enumConstant|CALLERCONTEXT
 DECL|enumConstant|CALLERSIGNATURE
+DECL|enumConstant|RESOURCE
 name|CALLERCONTEXT
 block|,
 name|CALLERSIGNATURE
+block|,
+name|RESOURCE
 block|}
 DECL|class|AuditConstants
 specifier|public
@@ -440,7 +461,7 @@ operator|+
 literal|"Reservation Request"
 decl_stmt|;
 block|}
-DECL|method|createSuccessLog (String user, String operation, String target, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId)
+DECL|method|createSuccessLog (String user, String operation, String target, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId, Resource resource)
 specifier|static
 name|String
 name|createSuccessLog
@@ -462,6 +483,9 @@ name|attemptId
 parameter_list|,
 name|ContainerId
 name|containerId
+parameter_list|,
+name|Resource
+name|resource
 parameter_list|)
 block|{
 return|return
@@ -479,12 +503,14 @@ name|attemptId
 argument_list|,
 name|containerId
 argument_list|,
+name|resource
+argument_list|,
 literal|null
 argument_list|)
 return|;
 block|}
 comment|/**    * A helper api for creating an audit log for a successful event.    */
-DECL|method|createSuccessLog (String user, String operation, String target, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId, CallerContext callerContext)
+DECL|method|createSuccessLog (String user, String operation, String target, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId, Resource resource, CallerContext callerContext)
 specifier|static
 name|String
 name|createSuccessLog
@@ -506,6 +532,9 @@ name|attemptId
 parameter_list|,
 name|ContainerId
 name|containerId
+parameter_list|,
+name|Resource
+name|resource
 parameter_list|,
 name|CallerContext
 name|callerContext
@@ -635,6 +664,28 @@ name|b
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|resource
+operator|!=
+literal|null
+condition|)
+block|{
+name|add
+argument_list|(
+name|Keys
+operator|.
+name|RESOURCE
+argument_list|,
+name|resource
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|b
+argument_list|)
+expr_stmt|;
+block|}
 name|appendCallerContext
 argument_list|(
 name|b
@@ -756,8 +807,8 @@ comment|// ignore this signature
 block|}
 block|}
 block|}
-comment|/**    * Create a readable and parseable audit log string for a successful event.    *    * @param user User who made the service request to the ResourceManager    * @param operation Operation requested by the user.    * @param target The target on which the operation is being performed.     * @param appId Application Id in which operation was performed.    * @param containerId Container Id in which operation was performed.    *    *<br><br>    * Note that the {@link RMAuditLogger} uses tabs ('\t') as a key-val delimiter    * and hence the value fields should not contains tabs ('\t').    */
-DECL|method|logSuccess (String user, String operation, String target, ApplicationId appId, ContainerId containerId)
+comment|/**    * Create a readable and parseable audit log string for a successful event.    *    * @param user User who made the service request to the ResourceManager    * @param operation Operation requested by the user.    * @param target The target on which the operation is being performed.     * @param appId Application Id in which operation was performed.    * @param containerId Container Id in which operation was performed.    * @param resource Resource associated with container.    *    *<br><br>    * Note that the {@link RMAuditLogger} uses tabs ('\t') as a key-val delimiter    * and hence the value fields should not contains tabs ('\t').    */
+DECL|method|logSuccess (String user, String operation, String target, ApplicationId appId, ContainerId containerId, Resource resource)
 specifier|public
 specifier|static
 name|void
@@ -777,6 +828,9 @@ name|appId
 parameter_list|,
 name|ContainerId
 name|containerId
+parameter_list|,
+name|Resource
+name|resource
 parameter_list|)
 block|{
 if|if
@@ -804,6 +858,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|containerId
+argument_list|,
+name|resource
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -857,6 +913,8 @@ argument_list|,
 name|attemptId
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -905,6 +963,8 @@ argument_list|,
 name|target
 argument_list|,
 name|appId
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -961,6 +1021,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1008,12 +1070,14 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|createFailureLog (String user, String operation, String perm, String target, String description, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId, CallerContext callerContext)
+DECL|method|createFailureLog (String user, String operation, String perm, String target, String description, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId, Resource resource, CallerContext callerContext)
 specifier|static
 name|String
 name|createFailureLog
@@ -1041,6 +1105,9 @@ name|attemptId
 parameter_list|,
 name|ContainerId
 name|containerId
+parameter_list|,
+name|Resource
+name|resource
 parameter_list|,
 name|CallerContext
 name|callerContext
@@ -1192,6 +1259,28 @@ name|b
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|resource
+operator|!=
+literal|null
+condition|)
+block|{
+name|add
+argument_list|(
+name|Keys
+operator|.
+name|RESOURCE
+argument_list|,
+name|resource
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|b
+argument_list|)
+expr_stmt|;
+block|}
 name|appendCallerContext
 argument_list|(
 name|b
@@ -1207,7 +1296,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * A helper api for creating an audit log for a failure event.    */
-DECL|method|createFailureLog (String user, String operation, String perm, String target, String description, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId)
+DECL|method|createFailureLog (String user, String operation, String perm, String target, String description, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId, Resource resource)
 specifier|static
 name|String
 name|createFailureLog
@@ -1235,6 +1324,9 @@ name|attemptId
 parameter_list|,
 name|ContainerId
 name|containerId
+parameter_list|,
+name|Resource
+name|resource
 parameter_list|)
 block|{
 return|return
@@ -1256,12 +1348,14 @@ name|attemptId
 argument_list|,
 name|containerId
 argument_list|,
+name|resource
+argument_list|,
 literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a readable and parseable audit log string for a failed event.    *    * @param user User who made the service request.     * @param operation Operation requested by the user.    * @param perm Target permissions.     * @param target The target on which the operation is being performed.     * @param description Some additional information as to why the operation    *                    failed.    * @param appId Application Id in which operation was performed.    * @param containerId Container Id in which operation was performed.    *    *<br><br>    * Note that the {@link RMAuditLogger} uses tabs ('\t') as a key-val delimiter    * and hence the value fields should not contains tabs ('\t').    */
-DECL|method|logFailure (String user, String operation, String perm, String target, String description, ApplicationId appId, ContainerId containerId)
+comment|/**    * Create a readable and parseable audit log string for a failed event.    *    * @param user User who made the service request.     * @param operation Operation requested by the user.    * @param perm Target permissions.     * @param target The target on which the operation is being performed.     * @param description Some additional information as to why the operation    *                    failed.    * @param appId Application Id in which operation was performed.    * @param containerId Container Id in which operation was performed.    * @param resource Resources associated with container.    *    *<br><br>    * Note that the {@link RMAuditLogger} uses tabs ('\t') as a key-val delimiter    * and hence the value fields should not contains tabs ('\t').    */
+DECL|method|logFailure (String user, String operation, String perm, String target, String description, ApplicationId appId, ContainerId containerId, Resource resource)
 specifier|public
 specifier|static
 name|void
@@ -1287,6 +1381,9 @@ name|appId
 parameter_list|,
 name|ContainerId
 name|containerId
+parameter_list|,
+name|Resource
+name|resource
 parameter_list|)
 block|{
 if|if
@@ -1318,6 +1415,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|containerId
+argument_list|,
+name|resource
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1381,6 +1480,8 @@ argument_list|,
 name|attemptId
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1439,6 +1540,8 @@ argument_list|,
 name|description
 argument_list|,
 name|appId
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -1505,6 +1608,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1556,6 +1661,8 @@ argument_list|,
 name|target
 argument_list|,
 name|description
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,

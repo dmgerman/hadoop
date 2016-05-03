@@ -368,6 +368,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -505,6 +523,20 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|RESOURCE
+specifier|private
+specifier|static
+specifier|final
+name|Resource
+name|RESOURCE
+init|=
+name|mock
+argument_list|(
+name|Resource
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|CALLER_CONTEXT
 specifier|private
 specifier|static
@@ -574,6 +606,19 @@ operator|.
 name|thenReturn
 argument_list|(
 literal|"container_1"
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|RESOURCE
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|"<memory:1536, vcores:1>"
 argument_list|)
 expr_stmt|;
 block|}
@@ -771,11 +816,13 @@ argument_list|,
 name|containerId
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test the AuditLog format for successful events.    */
-DECL|method|testSuccessLogFormatHelper (boolean checkIP, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId, CallerContext callerContext)
+DECL|method|testSuccessLogFormatHelper (boolean checkIP, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId, CallerContext callerContext, Resource resource)
 specifier|private
 name|void
 name|testSuccessLogFormatHelper
@@ -794,6 +841,9 @@ name|containerId
 parameter_list|,
 name|CallerContext
 name|callerContext
+parameter_list|,
+name|Resource
+name|resource
 parameter_list|)
 block|{
 name|String
@@ -814,6 +864,8 @@ argument_list|,
 name|attemptId
 argument_list|,
 name|containerId
+argument_list|,
+name|resource
 argument_list|,
 name|callerContext
 argument_list|)
@@ -921,6 +973,21 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|resource
+operator|!=
+literal|null
+condition|)
+block|{
+name|expLog
+operator|.
+name|append
+argument_list|(
+literal|"\tRESOURCE=<memory:1536, vcores:1>"
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|callerContext
 operator|!=
 literal|null
@@ -991,6 +1058,8 @@ name|RMAuditLogger
 operator|.
 name|createSuccessLog
 argument_list|(
+literal|null
+argument_list|,
 literal|null
 argument_list|,
 literal|null
@@ -1180,6 +1249,8 @@ argument_list|,
 name|CONTAINERID
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|testSuccessLogFormatHelper
@@ -1207,6 +1278,8 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|RESOURCE
 argument_list|)
 expr_stmt|;
 name|testSuccessLogFormatHelper
@@ -1234,6 +1307,8 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|RESOURCE
 argument_list|)
 expr_stmt|;
 name|testSuccessLogFormatHelper
@@ -1261,6 +1336,8 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|RESOURCE
 argument_list|)
 expr_stmt|;
 name|testSuccessLogFormatHelper
@@ -1288,6 +1365,8 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|RESOURCE
 argument_list|)
 expr_stmt|;
 name|testSuccessLogNulls
@@ -1325,11 +1404,13 @@ argument_list|,
 name|containerId
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test the AuditLog format for failure events.    */
-DECL|method|testFailureLogFormatHelper (boolean checkIP, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId, CallerContext callerContext)
+DECL|method|testFailureLogFormatHelper (boolean checkIP, ApplicationId appId, ApplicationAttemptId attemptId, ContainerId containerId, CallerContext callerContext, Resource resource)
 specifier|private
 name|void
 name|testFailureLogFormatHelper
@@ -1348,6 +1429,9 @@ name|containerId
 parameter_list|,
 name|CallerContext
 name|callerContext
+parameter_list|,
+name|Resource
+name|resource
 parameter_list|)
 block|{
 name|String
@@ -1372,6 +1456,8 @@ argument_list|,
 name|attemptId
 argument_list|,
 name|containerId
+argument_list|,
+name|resource
 argument_list|,
 name|callerContext
 argument_list|)
@@ -1488,6 +1574,21 @@ operator|.
 name|append
 argument_list|(
 literal|"\tCONTAINERID=container_1"
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|resource
+operator|!=
+literal|null
+condition|)
+block|{
+name|expLog
+operator|.
+name|append
+argument_list|(
+literal|"\tRESOURCE=<memory:1536, vcores:1>"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1669,6 +1770,8 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|RESOURCE
 argument_list|)
 expr_stmt|;
 name|testFailureLogFormatHelper
@@ -1696,6 +1799,8 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|RESOURCE
 argument_list|)
 expr_stmt|;
 name|testFailureLogFormatHelper
@@ -1723,6 +1828,8 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|RESOURCE
 argument_list|)
 expr_stmt|;
 name|testFailureLogFormatHelper
@@ -1750,6 +1857,8 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|RESOURCE
 argument_list|)
 expr_stmt|;
 block|}
