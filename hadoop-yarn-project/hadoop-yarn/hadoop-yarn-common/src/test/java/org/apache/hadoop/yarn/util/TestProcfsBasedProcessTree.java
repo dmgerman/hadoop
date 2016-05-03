@@ -210,6 +210,20 @@ name|apache
 operator|.
 name|commons
 operator|.
+name|io
+operator|.
+name|FileUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
 name|logging
 operator|.
 name|Log
@@ -502,11 +516,14 @@ literal|null
 decl_stmt|;
 DECL|field|pidFile
 DECL|field|lowestDescendant
+DECL|field|lostDescendant
 specifier|private
 name|String
 name|pidFile
 decl_stmt|,
 name|lowestDescendant
+decl_stmt|,
+name|lostDescendant
 decl_stmt|;
 DECL|field|shellScript
 specifier|private
@@ -926,22 +943,32 @@ name|separator
 operator|+
 literal|"lowestDescendantPidFile"
 expr_stmt|;
+name|lostDescendant
+operator|=
+name|TEST_ROOT_DIR
+operator|+
+name|File
+operator|.
+name|separator
+operator|+
+literal|"lostDescendantPidFile"
+expr_stmt|;
 comment|// write to shell-script
-try|try
-block|{
-name|FileWriter
-name|fWriter
+name|File
+name|file
 init|=
 operator|new
-name|FileWriter
+name|File
 argument_list|(
 name|shellScript
 argument_list|)
 decl_stmt|;
-name|fWriter
+name|FileUtils
 operator|.
-name|write
+name|writeStringToFile
 argument_list|(
+name|file
+argument_list|,
 literal|"# rogue task\n"
 operator|+
 literal|"sleep 1\n"
@@ -966,6 +993,14 @@ name|lowestDescendant
 operator|+
 literal|"\n"
 operator|+
+literal|"(sleep 300&\n"
+operator|+
+literal|"echo $!> "
+operator|+
+name|lostDescendant
+operator|+
+literal|")\n"
+operator|+
 literal|" while true\n do\n"
 operator|+
 literal|"  sleep 5\n"
@@ -975,29 +1010,6 @@ operator|+
 literal|"fi"
 argument_list|)
 expr_stmt|;
-name|fWriter
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Error: "
-operator|+
-name|ioe
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 name|Thread
 name|t
 init|=
@@ -1105,6 +1117,38 @@ name|p
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Verify the orphaned pid is In process tree
+name|String
+name|lostpid
+init|=
+name|getPidFromPidFile
+argument_list|(
+name|lostDescendant
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Orphaned pid: "
+operator|+
+name|lostpid
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Child process owned by init escaped process tree."
+argument_list|,
+name|p
+operator|.
+name|contains
+argument_list|(
+name|lostpid
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Get the process-tree dump
@@ -1348,14 +1392,14 @@ operator|.
 name|getVirtualMemorySize
 argument_list|()
 operator|+
-literal|" . It should be zero."
+literal|" . It should be UNAVAILABLE(-1)."
 argument_list|,
 name|p
 operator|.
 name|getVirtualMemorySize
 argument_list|()
 operator|==
-literal|0
+name|UNAVAILABLE
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1369,14 +1413,14 @@ operator|.
 name|getCumulativeVmem
 argument_list|()
 operator|+
-literal|" . It should be zero."
+literal|" . It should be UNAVAILABLE(-1)."
 argument_list|,
 name|p
 operator|.
 name|getCumulativeVmem
 argument_list|()
 operator|==
-literal|0
+name|UNAVAILABLE
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1452,6 +1496,8 @@ name|IOException
 block|{
 name|sendSignal
 argument_list|(
+literal|"-"
+operator|+
 name|pid
 argument_list|,
 literal|9
@@ -5088,6 +5134,8 @@ block|,
 literal|"-"
 operator|+
 name|signal
+block|,
+literal|"--"
 block|,
 name|pid
 block|}
