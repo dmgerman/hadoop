@@ -492,20 +492,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|metrics
-operator|.
-name|MetricsServlet
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|SecurityUtil
@@ -3330,12 +3316,7 @@ name|adminsAcl
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add default servlets.    * Note: /metrics servlet will be removed in 3.X release.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
+comment|/**    * Add default servlets.    */
 DECL|method|addDefaultServlets ()
 specifier|protected
 name|void
@@ -3363,17 +3344,6 @@ argument_list|,
 name|LogLevel
 operator|.
 name|Servlet
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
-name|addServlet
-argument_list|(
-literal|"metrics"
-argument_list|,
-literal|"/metrics"
-argument_list|,
-name|MetricsServlet
 operator|.
 name|class
 argument_list|)

@@ -1936,7 +1936,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Verify the access for /logs, /stacks, /conf, /logLevel and /metrics    * servlets, when authentication filters are set, but authorization is not    * enabled.    * @throws Exception     */
+comment|/**    * Verify the access for /logs, /stacks, /conf, and /logLevel    * servlets, when authentication filters are set, but authorization is not    * enabled.    * @throws Exception     */
 annotation|@
 name|Test
 DECL|method|testDisabledAuthorizationOfDefaultServlets ()
@@ -2113,8 +2113,6 @@ block|,
 literal|"stacks"
 block|,
 literal|"logLevel"
-block|,
-literal|"metrics"
 block|}
 control|)
 block|{
@@ -2157,7 +2155,7 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Verify the administrator access for /logs, /stacks, /conf, /logLevel and    * /metrics servlets.    *     * @throws Exception    */
+comment|/**    * Verify the administrator access for /logs, /stacks, /conf, and /logLevel    * servlets.    *     * @throws Exception    */
 annotation|@
 name|Test
 DECL|method|testAuthorizationOfDefaultServlets ()
@@ -2417,8 +2415,6 @@ block|,
 literal|"stacks"
 block|,
 literal|"logLevel"
-block|,
-literal|"metrics"
 block|}
 control|)
 block|{
