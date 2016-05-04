@@ -2340,6 +2340,21 @@ operator|)
 name|e
 expr_stmt|;
 block|}
+name|appLogAggregators
+operator|.
+name|remove
+argument_list|(
+name|appId
+argument_list|)
+expr_stmt|;
+name|closeFileSystems
+argument_list|(
+name|userUgi
+argument_list|)
+expr_stmt|;
+throw|throw
+name|appDirException
+throw|;
 block|}
 comment|// TODO Get the user configuration for the list of containers that need log
 comment|// aggregation.
@@ -2391,17 +2406,6 @@ argument_list|(
 name|aggregatorWrapper
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|appDirException
-operator|!=
-literal|null
-condition|)
-block|{
-throw|throw
-name|appDirException
-throw|;
-block|}
 block|}
 DECL|method|closeFileSystems (final UserGroupInformation userUgi)
 specifier|protected

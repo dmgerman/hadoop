@@ -5735,9 +5735,14 @@ name|getNumAggregators
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// local log dir shouldn't be deleted given log aggregation cannot
+comment|// continue due to aggregated log dir creation failure on remoteFS.
 name|verify
 argument_list|(
 name|spyDelSrvc
+argument_list|,
+name|never
+argument_list|()
 argument_list|)
 operator|.
 name|delete
@@ -5776,6 +5781,16 @@ name|UserGroupInformation
 operator|.
 name|class
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// make sure local log dir is not deleted in case log aggregation
+comment|// service cannot be initiated.
+name|assertTrue
+argument_list|(
+name|appLogDir
+operator|.
+name|exists
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
