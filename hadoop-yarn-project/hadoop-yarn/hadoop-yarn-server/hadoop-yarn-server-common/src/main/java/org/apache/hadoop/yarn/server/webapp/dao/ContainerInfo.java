@@ -237,6 +237,11 @@ specifier|protected
 name|String
 name|nodeHttpAddress
 decl_stmt|;
+DECL|field|nodeId
+specifier|protected
+name|String
+name|nodeId
+decl_stmt|;
 DECL|method|ContainerInfo ()
 specifier|public
 name|ContainerInfo
@@ -384,6 +389,16 @@ operator|.
 name|getNodeHttpAddress
 argument_list|()
 expr_stmt|;
+name|nodeId
+operator|=
+name|container
+operator|.
+name|getAssignedNode
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getContainerId ()
 specifier|public
@@ -513,6 +528,16 @@ parameter_list|()
 block|{
 return|return
 name|nodeHttpAddress
+return|;
+block|}
+DECL|method|getNodeId ()
+specifier|public
+name|String
+name|getNodeId
+parameter_list|()
+block|{
+return|return
+name|nodeId
 return|;
 block|}
 block|}
