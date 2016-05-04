@@ -20,6 +20,42 @@ begin_import
 import|import static
 name|org
 operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|Mockito
@@ -128,16 +164,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -199,9 +225,34 @@ DECL|class|TestRunJar
 specifier|public
 class|class
 name|TestRunJar
-extends|extends
-name|TestCase
 block|{
+DECL|field|FOOBAR_TXT
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|FOOBAR_TXT
+init|=
+literal|"foobar.txt"
+decl_stmt|;
+DECL|field|FOOBAZ_TXT
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|FOOBAZ_TXT
+init|=
+literal|"foobaz.txt"
+decl_stmt|;
+DECL|field|BUFF_SIZE
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|BUFF_SIZE
+init|=
+literal|2048
+decl_stmt|;
 DECL|field|TEST_ROOT_DIR
 specifier|private
 name|File
@@ -246,11 +297,9 @@ operator|+
 literal|2_000
 decl_stmt|;
 annotation|@
-name|Override
-annotation|@
 name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
@@ -290,11 +339,9 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
-name|Override
-annotation|@
 name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
@@ -346,7 +393,7 @@ init|=
 operator|new
 name|ZipEntry
 argument_list|(
-literal|"foobar.txt"
+name|FOOBAR_TXT
 argument_list|)
 decl_stmt|;
 name|zipEntry1
@@ -374,7 +421,7 @@ init|=
 operator|new
 name|ZipEntry
 argument_list|(
-literal|"foobaz.txt"
+name|FOOBAZ_TXT
 argument_list|)
 decl_stmt|;
 name|zipEntry2
@@ -416,30 +463,11 @@ block|{
 name|File
 name|unjarDir
 init|=
-operator|new
-name|File
+name|getUnjarDir
 argument_list|(
-name|TEST_ROOT_DIR
-argument_list|,
 literal|"unjar-all"
 argument_list|)
 decl_stmt|;
-name|assertFalse
-argument_list|(
-literal|"unjar dir shouldn't exist at test start"
-argument_list|,
-operator|new
-name|File
-argument_list|(
-name|unjarDir
-argument_list|,
-literal|"foobar.txt"
-argument_list|)
-operator|.
-name|exists
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// Unjar everything
 name|RunJar
 operator|.
@@ -465,7 +493,9 @@ name|File
 argument_list|(
 name|unjarDir
 argument_list|,
-literal|"foobar.txt"
+name|TestRunJar
+operator|.
+name|FOOBAR_TXT
 argument_list|)
 operator|.
 name|exists
@@ -481,7 +511,7 @@ name|File
 argument_list|(
 name|unjarDir
 argument_list|,
-literal|"foobaz.txt"
+name|FOOBAZ_TXT
 argument_list|)
 operator|.
 name|exists
@@ -490,6 +520,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test unjarring a specific regex    */
+annotation|@
+name|Test
 DECL|method|testUnJarWithPattern ()
 specifier|public
 name|void
@@ -501,30 +533,11 @@ block|{
 name|File
 name|unjarDir
 init|=
-operator|new
-name|File
+name|getUnjarDir
 argument_list|(
-name|TEST_ROOT_DIR
-argument_list|,
 literal|"unjar-pattern"
 argument_list|)
 decl_stmt|;
-name|assertFalse
-argument_list|(
-literal|"unjar dir shouldn't exist at test start"
-argument_list|,
-operator|new
-name|File
-argument_list|(
-name|unjarDir
-argument_list|,
-literal|"foobar.txt"
-argument_list|)
-operator|.
-name|exists
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// Unjar only a regex
 name|RunJar
 operator|.
@@ -557,7 +570,9 @@ name|File
 argument_list|(
 name|unjarDir
 argument_list|,
-literal|"foobar.txt"
+name|TestRunJar
+operator|.
+name|FOOBAR_TXT
 argument_list|)
 operator|.
 name|exists
@@ -573,7 +588,7 @@ name|File
 argument_list|(
 name|unjarDir
 argument_list|,
-literal|"foobaz.txt"
+name|FOOBAZ_TXT
 argument_list|)
 operator|.
 name|exists
@@ -581,6 +596,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testUnJarDoesNotLooseLastModify ()
 specifier|public
 name|void
@@ -592,30 +609,11 @@ block|{
 name|File
 name|unjarDir
 init|=
-operator|new
-name|File
+name|getUnjarDir
 argument_list|(
-name|TEST_ROOT_DIR
-argument_list|,
 literal|"unjar-lastmod"
 argument_list|)
 decl_stmt|;
-name|assertFalse
-argument_list|(
-literal|"unjar dir shouldn't exist at test start"
-argument_list|,
-operator|new
-name|File
-argument_list|(
-name|unjarDir
-argument_list|,
-literal|"foobar.txt"
-argument_list|)
-operator|.
-name|exists
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// Unjar everything
 name|RunJar
 operator|.
@@ -632,9 +630,14 @@ argument_list|,
 name|unjarDir
 argument_list|)
 expr_stmt|;
+name|String
+name|failureMessage
+init|=
+literal|"Last modify time was lost during unJar"
+decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Last modify time was lost during unJar"
+name|failureMessage
 argument_list|,
 name|MOCKED_NOW
 argument_list|,
@@ -643,7 +646,9 @@ name|File
 argument_list|(
 name|unjarDir
 argument_list|,
-literal|"foobar.txt"
+name|TestRunJar
+operator|.
+name|FOOBAR_TXT
 argument_list|)
 operator|.
 name|lastModified
@@ -652,7 +657,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Last modify time was lost during unJar"
+name|failureMessage
 argument_list|,
 name|MOCKED_NOW_PLUS_TWO_SEC
 argument_list|,
@@ -661,13 +666,55 @@ name|File
 argument_list|(
 name|unjarDir
 argument_list|,
-literal|"foobaz.txt"
+name|FOOBAZ_TXT
 argument_list|)
 operator|.
 name|lastModified
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getUnjarDir (String dirName)
+specifier|private
+name|File
+name|getUnjarDir
+parameter_list|(
+name|String
+name|dirName
+parameter_list|)
+block|{
+name|File
+name|unjarDir
+init|=
+operator|new
+name|File
+argument_list|(
+name|TEST_ROOT_DIR
+argument_list|,
+name|dirName
+argument_list|)
+decl_stmt|;
+name|assertFalse
+argument_list|(
+literal|"unjar dir shouldn't exist at test start"
+argument_list|,
+operator|new
+name|File
+argument_list|(
+name|unjarDir
+argument_list|,
+name|TestRunJar
+operator|.
+name|FOOBAR_TXT
+argument_list|)
+operator|.
+name|exists
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|unjarDir
+return|;
 block|}
 comment|/**    * Tests the client classloader to verify the main class and its dependent    * class are loaded correctly by the application classloader, and others are    * loaded by the system classloader.    */
 annotation|@
@@ -904,7 +951,7 @@ name|BufferedInputStream
 argument_list|(
 name|entryInputStream
 argument_list|,
-literal|2048
+name|BUFF_SIZE
 argument_list|)
 decl_stmt|;
 name|int
@@ -917,7 +964,7 @@ init|=
 operator|new
 name|byte
 index|[
-literal|2048
+name|BUFF_SIZE
 index|]
 decl_stmt|;
 while|while
@@ -933,7 +980,7 @@ name|data
 argument_list|,
 literal|0
 argument_list|,
-literal|2048
+name|BUFF_SIZE
 argument_list|)
 operator|)
 operator|!=

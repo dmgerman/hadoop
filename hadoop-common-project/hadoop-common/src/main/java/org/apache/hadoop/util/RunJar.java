@@ -74,18 +74,6 @@ name|lang
 operator|.
 name|reflect
 operator|.
-name|Array
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|lang
-operator|.
-name|reflect
-operator|.
 name|InvocationTargetException
 import|;
 end_import
@@ -256,20 +244,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|FileUtil
@@ -344,7 +318,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/** Pattern that matches any string */
+comment|/** Pattern that matches any string. */
 DECL|field|MATCH_ANY
 specifier|public
 specifier|static
@@ -399,7 +373,17 @@ name|HADOOP_CLIENT_CLASSLOADER_SYSTEM_CLASSES
 init|=
 literal|"HADOOP_CLIENT_CLASSLOADER_SYSTEM_CLASSES"
 decl_stmt|;
-comment|/**    * Unpack a jar file into a directory.    *    * This version unpacks all files inside the jar regardless of filename.    */
+comment|/**    * Buffer size for copy the content of compressed file to new file.    */
+DECL|field|BUFFER_SIZE
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|BUFFER_SIZE
+init|=
+literal|8_192
+decl_stmt|;
+comment|/**    * Unpack a jar file into a directory.    *    * This version unpacks all files inside the jar regardless of filename.    *    * @param jarFile the .jar file to unpack    * @param toDir the destination directory into which to unpack the jar    *    * @throws IOException if an I/O error has occurred or toDir    * cannot be created and does not already exist    */
 DECL|method|unJar (File jarFile, File toDir)
 specifier|public
 specifier|static
@@ -425,7 +409,7 @@ name|MATCH_ANY
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Unpack matching files from a jar. Entries inside the jar that do    * not match the given pattern will be skipped.    *    * @param jarFile the .jar file to unpack    * @param toDir the destination directory into which to unpack the jar    * @param unpackRegex the pattern to match jar entries against    */
+comment|/**    * Unpack matching files from a jar. Entries inside the jar that do    * not match the given pattern will be skipped.    *    * @param jarFile the .jar file to unpack    * @param toDir the destination directory into which to unpack the jar    * @param unpackRegex the pattern to match jar entries against    *    * @throws IOException if an I/O error has occurred or toDir    * cannot be created and does not already exist    */
 DECL|method|unJar (File jarFile, File toDir, Pattern unpackRegex)
 specifier|public
 specifier|static
@@ -444,6 +428,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|JarFile
 name|jar
 init|=
@@ -452,8 +438,7 @@ name|JarFile
 argument_list|(
 name|jarFile
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|int
 name|numOfFailedLastModifiedSet
@@ -510,6 +495,8 @@ name|matches
 argument_list|()
 condition|)
 block|{
+try|try
+init|(
 name|InputStream
 name|in
 init|=
@@ -519,8 +506,7 @@ name|getInputStream
 argument_list|(
 name|entry
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|File
 name|file
@@ -544,6 +530,8 @@ name|getParentFile
 argument_list|()
 argument_list|)
 expr_stmt|;
+try|try
+init|(
 name|OutputStream
 name|out
 init|=
@@ -552,8 +540,7 @@ name|FileOutputStream
 argument_list|(
 name|file
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|IOUtils
 operator|.
@@ -563,16 +550,8 @@ name|in
 argument_list|,
 name|out
 argument_list|,
-literal|8192
+name|BUFFER_SIZE
 argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|out
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 if|if
@@ -594,14 +573,6 @@ operator|++
 expr_stmt|;
 block|}
 block|}
-finally|finally
-block|{
-name|in
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 block|}
 if|if
@@ -622,16 +593,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-finally|finally
-block|{
-name|jar
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/**    * Ensure the existence of a given directory.    *    * @throws IOException if it cannot be created and does not already exist    */
+comment|/**    * Ensure the existence of a given directory.    *    * @param dir Directory to check    *    * @throws IOException if it cannot be created and does not already exist    */
 DECL|method|ensureDirectory (File dir)
 specifier|private
 specifier|static
@@ -1122,29 +1085,17 @@ name|getMethod
 argument_list|(
 literal|"main"
 argument_list|,
-operator|new
-name|Class
-index|[]
-block|{
-name|Array
-operator|.
-name|newInstance
-argument_list|(
 name|String
+index|[]
 operator|.
-name|class
-argument_list|,
-literal|0
-argument_list|)
-operator|.
-name|getClass
-argument_list|()
-block|}
+expr|class
 argument_list|)
 decl_stmt|;
+name|List
+argument_list|<
 name|String
-index|[]
-name|newArgs
+argument_list|>
+name|newArgsSubList
 init|=
 name|Arrays
 operator|.
@@ -1161,13 +1112,22 @@ name|args
 operator|.
 name|length
 argument_list|)
+decl_stmt|;
+name|String
+index|[]
+name|newArgs
+init|=
+name|newArgsSubList
 operator|.
 name|toArray
 argument_list|(
 operator|new
 name|String
 index|[
-literal|0
+name|newArgsSubList
+operator|.
+name|size
+argument_list|()
 index|]
 argument_list|)
 decl_stmt|;
@@ -1240,7 +1200,10 @@ operator|.
 name|append
 argument_list|(
 name|workDir
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"/"
 argument_list|)
 operator|.
@@ -1266,7 +1229,10 @@ operator|.
 name|append
 argument_list|(
 name|workDir
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"/classes/"
 argument_list|)
 operator|.
@@ -1280,7 +1246,10 @@ operator|.
 name|append
 argument_list|(
 name|workDir
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"/lib/*"
 argument_list|)
 expr_stmt|;
@@ -1386,9 +1355,7 @@ name|classPath
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|URL
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|classPath
@@ -1466,29 +1433,17 @@ condition|)
 block|{
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|File
+name|lib
+range|:
 name|libs
-operator|.
-name|length
-condition|;
-name|i
-operator|++
 control|)
 block|{
 name|classPath
 operator|.
 name|add
 argument_list|(
-name|libs
-index|[
-name|i
-index|]
+name|lib
 operator|.
 name|toURI
 argument_list|()
@@ -1512,7 +1467,10 @@ argument_list|(
 operator|new
 name|URL
 index|[
-literal|0
+name|classPath
+operator|.
+name|size
+argument_list|()
 index|]
 argument_list|)
 argument_list|)
