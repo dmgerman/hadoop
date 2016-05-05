@@ -4164,11 +4164,11 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|AsyncDispatcher
+name|DrainDispatcher
 name|dispatcher
 init|=
 operator|new
-name|AsyncDispatcher
+name|DrainDispatcher
 argument_list|()
 decl_stmt|;
 name|dispatcher
@@ -4709,6 +4709,11 @@ name|firstMapperNodeReport
 argument_list|)
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|dispatcher
+operator|.
+name|await
+argument_list|()
 expr_stmt|;
 comment|// complete the reducer
 for|for
