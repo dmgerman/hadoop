@@ -322,16 +322,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|HashSet
 import|;
 end_import
@@ -433,6 +423,8 @@ operator|new
 name|PreemptableResourceCalculator
 argument_list|(
 name|preemptionContext
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -479,22 +471,18 @@ argument_list|,
 name|totalPreemptionAllowed
 argument_list|)
 expr_stmt|;
-name|Map
-argument_list|<
-name|ApplicationAttemptId
+comment|// Previous selectors (with higher priority) could have already
+comment|// selected containers. We need to deduct preemptable resources
+comment|// based on already selected candidates.
+name|CapacitySchedulerPreemptionUtils
+operator|.
+name|deductPreemptableResourcesBasedSelectedCandidates
+argument_list|(
+name|preemptionContext
 argument_list|,
-name|Set
-argument_list|<
-name|RMContainer
-argument_list|>
-argument_list|>
-name|preemptMap
-init|=
-operator|new
-name|HashMap
-argument_list|<>
-argument_list|()
-decl_stmt|;
+name|selectedCandidates
+argument_list|)
+expr_stmt|;
 name|List
 argument_list|<
 name|RMContainer
@@ -689,7 +677,7 @@ name|c
 argument_list|,
 name|clusterResource
 argument_list|,
-name|preemptMap
+name|selectedCandidates
 argument_list|,
 name|totalPreemptionAllowed
 argument_list|)
@@ -773,7 +761,7 @@ name|skippedAMContainerlist
 argument_list|,
 name|skippedAMSize
 argument_list|,
-name|preemptMap
+name|selectedCandidates
 argument_list|,
 name|totalPreemptionAllowed
 argument_list|)
@@ -811,7 +799,7 @@ name|preemptAMContainers
 argument_list|(
 name|clusterResource
 argument_list|,
-name|preemptMap
+name|selectedCandidates
 argument_list|,
 name|skippedAMContainerlist
 argument_list|,
@@ -827,7 +815,7 @@ expr_stmt|;
 block|}
 block|}
 return|return
-name|preemptMap
+name|selectedCandidates
 return|;
 block|}
 comment|/**    * As more resources are needed for preemption, saved AMContainers has to be    * rescanned. Such AMContainers can be preemptionCandidates based on resToObtain, but    * maxAMCapacityForThisQueue resources will be still retained.    *    * @param clusterResource    * @param preemptMap    * @param skippedAMContainerlist    * @param skippedAMSize    * @param maxAMCapacityForThisQueue    */
@@ -1196,16 +1184,31 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Marked container="
+name|this
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" Marked container="
 operator|+
 name|rmContainer
 operator|.
 name|getContainerId
 argument_list|()
 operator|+
-literal|" in partition="
+literal|" from partition="
 operator|+
 name|nodePartition
+operator|+
+literal|" queue="
+operator|+
+name|rmContainer
+operator|.
+name|getQueueName
+argument_list|()
 operator|+
 literal|" to be preemption candidates"
 argument_list|)

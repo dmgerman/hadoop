@@ -5225,7 +5225,7 @@ name|container
 range|:
 name|node
 operator|.
-name|getRunningContainers
+name|getCopiedListOfRunningContainers
 argument_list|()
 control|)
 block|{

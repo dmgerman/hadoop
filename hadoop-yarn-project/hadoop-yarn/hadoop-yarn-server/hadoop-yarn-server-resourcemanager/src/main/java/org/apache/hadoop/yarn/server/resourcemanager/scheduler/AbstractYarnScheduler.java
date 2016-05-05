@@ -3614,7 +3614,7 @@ expr_stmt|;
 comment|// update resource to node
 name|node
 operator|.
-name|setTotalResource
+name|updateTotalResource
 argument_list|(
 name|newResource
 argument_list|)

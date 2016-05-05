@@ -229,7 +229,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Calculate how much resources need to be preempted for each queue,  * will be used by {@link FifoCandidatesSelector}  */
+comment|/**  * Calculate how much resources need to be preempted for each queue,  * will be used by {@link PreemptionCandidatesSelector}  */
 end_comment
 
 begin_class
@@ -265,6 +265,11 @@ specifier|private
 specifier|final
 name|ResourceCalculator
 name|rc
+decl_stmt|;
+DECL|field|isReservedPreemptionCandidatesSelector
+specifier|private
+name|boolean
+name|isReservedPreemptionCandidatesSelector
 decl_stmt|;
 DECL|class|TQComparator
 specifier|static
@@ -397,7 +402,8 @@ name|clusterRes
 argument_list|,
 name|q
 operator|.
-name|guaranteed
+name|getGuaranteed
+argument_list|()
 argument_list|,
 name|Resources
 operator|.
@@ -422,7 +428,8 @@ name|idealAssigned
 argument_list|,
 name|q
 operator|.
-name|guaranteed
+name|getGuaranteed
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -433,12 +440,16 @@ operator|)
 return|;
 block|}
 block|}
-DECL|method|PreemptableResourceCalculator (CapacitySchedulerPreemptionContext preemptionContext)
+comment|/**    * PreemptableResourceCalculator constructor    *    * @param preemptionContext    * @param isReservedPreemptionCandidatesSelector this will be set by    * different implementation of candidate selectors, please refer to    * TempQueuePerPartition#offer for details.    */
+DECL|method|PreemptableResourceCalculator ( CapacitySchedulerPreemptionContext preemptionContext, boolean isReservedPreemptionCandidatesSelector)
 specifier|public
 name|PreemptableResourceCalculator
 parameter_list|(
 name|CapacitySchedulerPreemptionContext
 name|preemptionContext
+parameter_list|,
+name|boolean
+name|isReservedPreemptionCandidatesSelector
 parameter_list|)
 block|{
 name|context
@@ -451,6 +462,12 @@ name|preemptionContext
 operator|.
 name|getResourceCalculator
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|isReservedPreemptionCandidatesSelector
+operator|=
+name|isReservedPreemptionCandidatesSelector
 expr_stmt|;
 block|}
 comment|/**    * Computes a normalizedGuaranteed capacity based on active queues    * @param rc resource calculator    * @param clusterResource the total amount of resources in the cluster    * @param queues the list of queues to consider    */
@@ -531,7 +548,8 @@ name|activeCap
 argument_list|,
 name|q
 operator|.
-name|guaranteed
+name|getGuaranteed
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -557,7 +575,8 @@ name|clusterResource
 argument_list|,
 name|q
 operator|.
-name|guaranteed
+name|getGuaranteed
+argument_list|()
 argument_list|,
 name|activeCap
 argument_list|)
@@ -746,6 +765,14 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+name|Resource
+name|used
+init|=
+name|q
+operator|.
+name|getUsed
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|Resources
@@ -756,13 +783,12 @@ name|rc
 argument_list|,
 name|tot_guarant
 argument_list|,
-name|q
-operator|.
-name|current
+name|used
 argument_list|,
 name|q
 operator|.
-name|guaranteed
+name|getGuaranteed
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -776,7 +802,8 @@ name|add
 argument_list|(
 name|q
 operator|.
-name|guaranteed
+name|getGuaranteed
+argument_list|()
 argument_list|,
 name|q
 operator|.
@@ -794,9 +821,7 @@ name|Resources
 operator|.
 name|clone
 argument_list|(
-name|q
-operator|.
-name|current
+name|used
 argument_list|)
 expr_stmt|;
 block|}
@@ -811,7 +836,7 @@ operator|.
 name|idealAssigned
 argument_list|)
 expr_stmt|;
-comment|// If idealAssigned< (current + pending), q needs more resources, so
+comment|// If idealAssigned< (allocated + used + pending), q needs more resources, so
 comment|// add it to the list of underserved queues, ordered by need.
 name|Resource
 name|curPlusPend
@@ -822,7 +847,8 @@ name|add
 argument_list|(
 name|q
 operator|.
-name|current
+name|getUsed
+argument_list|()
 argument_list|,
 name|q
 operator|.
@@ -991,6 +1017,8 @@ argument_list|,
 name|rc
 argument_list|,
 name|tot_guarant
+argument_list|,
+name|isReservedPreemptionCandidatesSelector
 argument_list|)
 decl_stmt|;
 name|Resource
@@ -1147,7 +1175,8 @@ name|tot_guarant
 argument_list|,
 name|q
 operator|.
-name|guaranteed
+name|getGuaranteed
+argument_list|()
 argument_list|,
 name|Resources
 operator|.
@@ -1264,7 +1293,8 @@ name|tot_guarant
 argument_list|,
 name|t
 operator|.
-name|current
+name|getUsed
+argument_list|()
 argument_list|,
 name|t
 operator|.
@@ -1284,7 +1314,8 @@ name|subtract
 argument_list|(
 name|t
 operator|.
-name|current
+name|getUsed
+argument_list|()
 argument_list|,
 name|t
 operator|.
@@ -1294,8 +1325,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// if we need to preempt more than is allowed, compute a factor (0<f<1)
-comment|// that is used to scale down how much we ask back from each queue
+comment|/**      * if we need to preempt more than is allowed, compute a factor (0<f<1)      * that is used to scale down how much we ask back from each queue      */
 name|float
 name|scalingFactor
 init|=
@@ -1354,31 +1384,6 @@ argument_list|,
 name|tot_guarant
 argument_list|)
 expr_stmt|;
-block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-for|for
-control|(
-name|TempQueuePerPartition
-name|t
-range|:
-name|queues
-control|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-name|t
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**    * This method recursively computes the ideal assignment of resources to each    * level of the hierarchy. This ensures that leafs that are over-capacity but    * with parents within capacity will not be preemptionCandidates. Preemptions are allowed    * within each subtree according to local over/under capacity.    *    * @param root the root of the cloned queue hierachy    * @param totalPreemptionAllowed maximum amount of preemption allowed    * @return a list of leaf queues updated with preemption targets    */
@@ -1544,7 +1549,8 @@ name|clusterResource
 argument_list|,
 name|qT
 operator|.
-name|current
+name|getUsed
+argument_list|()
 argument_list|,
 name|Resources
 operator|.
@@ -1552,7 +1558,8 @@ name|multiply
 argument_list|(
 name|qT
 operator|.
-name|guaranteed
+name|getGuaranteed
+argument_list|()
 argument_list|,
 literal|1.0
 operator|+
@@ -1564,11 +1571,22 @@ argument_list|)
 argument_list|)
 condition|)
 block|{
-comment|// we introduce a dampening factor naturalTerminationFactor that
-comment|// accounts for natural termination of containers
+comment|/*            * We introduce a dampening factor naturalTerminationFactor that            * accounts for natural termination of containers.            *            * This is added to control pace of preemption, let's say:            * If preemption policy calculated a queue *should be* preempted 20 GB            * And the nature_termination_factor set to 0.1. As a result, preemption            * policy will select 20 GB * 0.1 = 2GB containers to be preempted.            *            * However, it doesn't work for YARN-4390:            * For example, if a queue needs to be preempted 20GB for *one single*            * large container, preempt 10% of such resource isn't useful.            * So to make it simple, only apply nature_termination_factor when            * selector is not reservedPreemptionCandidatesSelector.            */
 name|Resource
 name|resToObtain
 init|=
+name|qT
+operator|.
+name|toBePreempted
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|isReservedPreemptionCandidatesSelector
+condition|)
+block|{
+name|resToObtain
+operator|=
 name|Resources
 operator|.
 name|multiply
@@ -1582,7 +1600,8 @@ operator|.
 name|getNaturalTerminationFactor
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 comment|// Only add resToObtain when it>= 0
 if|if
 condition|(
@@ -1634,13 +1653,14 @@ block|}
 block|}
 name|qT
 operator|.
-name|actuallyToBePreempted
-operator|=
+name|setActuallyToBePreempted
+argument_list|(
 name|Resources
 operator|.
 name|clone
 argument_list|(
 name|resToObtain
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1648,15 +1668,92 @@ else|else
 block|{
 name|qT
 operator|.
-name|actuallyToBePreempted
-operator|=
+name|setActuallyToBePreempted
+argument_list|(
 name|Resources
 operator|.
 name|none
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|qT
+argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+block|}
+DECL|method|updatePreemptableExtras (TempQueuePerPartition cur)
+specifier|private
+name|void
+name|updatePreemptableExtras
+parameter_list|(
+name|TempQueuePerPartition
+name|cur
+parameter_list|)
+block|{
+if|if
+condition|(
+name|cur
+operator|.
+name|children
+operator|==
+literal|null
+operator|||
+name|cur
+operator|.
+name|children
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|cur
+operator|.
+name|updatePreemptableExtras
+argument_list|(
+name|rc
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+for|for
+control|(
+name|TempQueuePerPartition
+name|child
+range|:
+name|cur
+operator|.
+name|children
+control|)
+block|{
+name|updatePreemptableExtras
+argument_list|(
+name|child
+argument_list|)
+expr_stmt|;
+block|}
+name|cur
+operator|.
+name|updatePreemptableExtras
+argument_list|(
+name|rc
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|computeIdealAllocation (Resource clusterResource, Resource totalPreemptionAllowed)
@@ -1696,6 +1793,11 @@ argument_list|,
 name|partition
 argument_list|)
 decl_stmt|;
+name|updatePreemptableExtras
+argument_list|(
+name|tRoot
+argument_list|)
+expr_stmt|;
 comment|// compute the ideal distribution of resources among queues
 comment|// updates cloned queues state accordingly
 name|tRoot
@@ -1704,7 +1806,8 @@ name|idealAssigned
 operator|=
 name|tRoot
 operator|.
-name|guaranteed
+name|getGuaranteed
+argument_list|()
 expr_stmt|;
 name|recursivelyComputeIdealAssignment
 argument_list|(

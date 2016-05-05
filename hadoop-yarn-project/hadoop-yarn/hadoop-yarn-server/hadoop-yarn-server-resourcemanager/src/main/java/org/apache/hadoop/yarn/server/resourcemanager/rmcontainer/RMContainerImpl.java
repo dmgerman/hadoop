@@ -1481,6 +1481,12 @@ specifier|private
 name|Resource
 name|lastConfirmedResource
 decl_stmt|;
+DECL|field|queueName
+specifier|private
+specifier|volatile
+name|String
+name|queueName
+decl_stmt|;
 DECL|method|RMContainerImpl (Container container, ApplicationAttemptId appAttemptId, NodeId nodeId, String user, RMContext rmContext)
 specifier|public
 name|RMContainerImpl
@@ -4111,6 +4117,34 @@ name|hasIncreaseReservation
 operator|=
 literal|false
 expr_stmt|;
+block|}
+DECL|method|setQueueName (String queueName)
+specifier|public
+name|void
+name|setQueueName
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+block|{
+name|this
+operator|.
+name|queueName
+operator|=
+name|queueName
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getQueueName ()
+specifier|public
+name|String
+name|getQueueName
+parameter_list|()
+block|{
+return|return
+name|queueName
+return|;
 block|}
 block|}
 end_class

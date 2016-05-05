@@ -4904,7 +4904,7 @@ name|runningContainers
 init|=
 name|node
 operator|.
-name|getRunningContainers
+name|getCopiedListOfRunningContainers
 argument_list|()
 decl_stmt|;
 for|for

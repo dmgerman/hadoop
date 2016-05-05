@@ -21900,7 +21900,7 @@ name|getNodeId
 argument_list|()
 argument_list|)
 operator|.
-name|setTotalResource
+name|updateTotalResource
 argument_list|(
 name|resourceEvent
 operator|.

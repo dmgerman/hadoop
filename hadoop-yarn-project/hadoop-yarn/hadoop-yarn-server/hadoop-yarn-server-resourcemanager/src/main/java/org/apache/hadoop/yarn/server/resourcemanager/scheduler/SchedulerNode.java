@@ -665,11 +665,11 @@ name|rmNode
 return|;
 block|}
 comment|/**    * Set total resources on the node.    * @param resource Total resources on the node.    */
-DECL|method|setTotalResource (Resource resource)
+DECL|method|updateTotalResource (Resource resource)
 specifier|public
 specifier|synchronized
 name|void
-name|setTotalResource
+name|updateTotalResource
 parameter_list|(
 name|Resource
 name|resource
@@ -1059,12 +1059,12 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Update the resources of the node when allocating a new container.    * @param container Container to allocate.    */
-DECL|method|updateResource (Container container)
+comment|/**    * Update the resources of the node when releasing a container.    * @param container Container to release.    */
+DECL|method|updateResourceForReleasedContainer ( Container container)
 specifier|protected
 specifier|synchronized
 name|void
-name|updateResource
+name|updateResourceForReleasedContainer
 parameter_list|(
 name|Container
 name|container
@@ -1132,7 +1132,7 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|updateResource
+name|updateResourceForReleasedContainer
 argument_list|(
 name|container
 argument_list|)
@@ -1368,14 +1368,14 @@ name|numContainers
 return|;
 block|}
 comment|/**    * Get the running containers in the node.    * @return List of running containers in the node.    */
-DECL|method|getRunningContainers ()
+DECL|method|getCopiedListOfRunningContainers ()
 specifier|public
 specifier|synchronized
 name|List
 argument_list|<
 name|RMContainer
 argument_list|>
-name|getRunningContainers
+name|getCopiedListOfRunningContainers
 parameter_list|()
 block|{
 return|return

@@ -88,6 +88,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|YarnRuntimeException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -399,12 +415,34 @@ name|isInterrupted
 argument_list|()
 condition|)
 block|{
+try|try
+block|{
 comment|//invoke the preemption policy at a regular pace
 comment|//the policy will generate preemption or kill events
 comment|//managed by the dispatcher
 name|invokePolicy
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnRuntimeException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"YarnRuntimeException raised while executing preemption"
+operator|+
+literal|" checker, skip this run..., exception="
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Wait before next run
 try|try
 block|{
 name|Thread

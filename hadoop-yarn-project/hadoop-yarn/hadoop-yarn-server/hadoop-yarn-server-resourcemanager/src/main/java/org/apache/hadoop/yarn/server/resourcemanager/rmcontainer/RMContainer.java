@@ -368,6 +368,11 @@ name|void
 name|cancelIncreaseReservation
 parameter_list|()
 function_decl|;
+DECL|method|getQueueName ()
+name|String
+name|getQueueName
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

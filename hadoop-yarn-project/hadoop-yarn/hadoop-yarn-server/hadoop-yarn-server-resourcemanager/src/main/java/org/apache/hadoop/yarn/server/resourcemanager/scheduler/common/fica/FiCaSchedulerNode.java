@@ -264,6 +264,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -851,11 +861,11 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|updateResource ( Container container)
+DECL|method|updateResourceForReleasedContainer ( Container container)
 specifier|protected
 specifier|synchronized
 name|void
-name|updateResource
+name|updateResourceForReleasedContainer
 parameter_list|(
 name|Container
 name|container
@@ -863,7 +873,7 @@ parameter_list|)
 block|{
 name|super
 operator|.
-name|updateResource
+name|updateResourceForReleasedContainer
 argument_list|(
 name|container
 argument_list|)
@@ -997,7 +1007,12 @@ name|getKillableContainers
 parameter_list|()
 block|{
 return|return
+name|Collections
+operator|.
+name|unmodifiableMap
+argument_list|(
 name|killableContainers
+argument_list|)
 return|;
 block|}
 block|}

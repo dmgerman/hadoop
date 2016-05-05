@@ -2202,6 +2202,21 @@ argument_list|,
 name|rmContext
 argument_list|)
 decl_stmt|;
+operator|(
+operator|(
+name|RMContainerImpl
+operator|)
+name|rmContainer
+operator|)
+operator|.
+name|setQueueName
+argument_list|(
+name|this
+operator|.
+name|getQueueName
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Add it to allContainers list.
 name|newlyAllocatedContainers
 operator|.
