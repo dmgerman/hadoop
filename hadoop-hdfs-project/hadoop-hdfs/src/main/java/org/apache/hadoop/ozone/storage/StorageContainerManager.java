@@ -275,6 +275,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|terminate
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -3346,6 +3362,8 @@ argument_list|,
 name|LOG
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|StorageContainerManager
 name|scm
 init|=
@@ -3367,6 +3385,30 @@ operator|.
 name|join
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to start the StorageContainerManager."
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+name|terminate
+argument_list|(
+literal|1
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class
