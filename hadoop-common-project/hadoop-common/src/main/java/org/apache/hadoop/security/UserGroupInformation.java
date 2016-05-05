@@ -7220,19 +7220,30 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"No groups available for user "
+literal|"Failed to get groups for user "
 operator|+
 name|getShortUserName
 argument_list|()
+operator|+
+literal|" by "
+operator|+
+name|ie
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"TRACE"
+argument_list|,
+name|ie
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-operator|new
-name|String
-index|[
-literal|0
-index|]
+name|StringUtils
+operator|.
+name|emptyStringArray
 return|;
 block|}
 block|}

@@ -539,14 +539,11 @@ index|[]
 block|{}
 argument_list|)
 argument_list|,
-literal|1
-operator|+
 name|LdapGroupsMapping
 operator|.
 name|RECONNECT_RETRY_COUNT
 argument_list|)
 expr_stmt|;
-comment|// 1 is the first normal call
 block|}
 DECL|method|doTestGetGroups (List<String> expectedGroups, int searchTimes)
 specifier|private
