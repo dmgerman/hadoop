@@ -58,6 +58,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Random
 import|;
 end_import
@@ -129,6 +139,20 @@ operator|.
 name|net
 operator|.
 name|NetworkTopology
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|Node
 import|;
 end_import
 
@@ -299,13 +323,21 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseDataNode (String scope)
+DECL|method|chooseDataNode (final String scope, final Collection<Node> excludedNode)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseDataNode
 parameter_list|(
+specifier|final
 name|String
 name|scope
+parameter_list|,
+specifier|final
+name|Collection
+argument_list|<
+name|Node
+argument_list|>
+name|excludedNode
 parameter_list|)
 block|{
 name|DatanodeDescriptor
@@ -319,6 +351,8 @@ operator|.
 name|chooseRandom
 argument_list|(
 name|scope
+argument_list|,
+name|excludedNode
 argument_list|)
 decl_stmt|;
 name|DatanodeDescriptor
@@ -332,6 +366,8 @@ operator|.
 name|chooseRandom
 argument_list|(
 name|scope
+argument_list|,
+name|excludedNode
 argument_list|)
 decl_stmt|;
 name|int

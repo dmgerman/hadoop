@@ -890,22 +890,6 @@ name|hadoop
 operator|.
 name|net
 operator|.
-name|NetworkTopology
-operator|.
-name|InvalidTopologyException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|net
-operator|.
 name|Node
 import|;
 end_import
@@ -1847,6 +1831,8 @@ argument_list|(
 name|NodeBase
 operator|.
 name|ROOT
+argument_list|,
+name|excludes
 argument_list|)
 return|;
 block|}
@@ -2088,8 +2074,6 @@ specifier|final
 name|DatanodeInfo
 name|dn
 decl_stmt|;
-try|try
-block|{
 name|dn
 operator|=
 name|chooseDatanode
@@ -2107,20 +2091,22 @@ argument_list|,
 name|excludeDatanodes
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InvalidTopologyException
-name|ite
-parameter_list|)
+if|if
+condition|(
+name|dn
+operator|==
+literal|null
+condition|)
 block|{
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Failed to find datanode, suggest to check cluster health."
-argument_list|,
-name|ite
+literal|"Failed to find datanode, suggest to check cluster"
+operator|+
+literal|" health. excludeDatanodes="
+operator|+
+name|excludeDatanodes
 argument_list|)
 throw|;
 block|}

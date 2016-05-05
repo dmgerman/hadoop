@@ -48,6 +48,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -3175,7 +3189,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**     * Choose<i>numOfReplicas</i> nodes from the racks     * that<i>localMachine</i> is NOT on.    * if not enough nodes are available, choose the remaining ones     * from the local rack    */
+comment|/**     * Choose<i>numOfReplicas</i> nodes from the racks     * that<i>localMachine</i> is NOT on.    * If not enough nodes are available, choose the remaining ones    * from the local rack    */
 DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, Set<Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, EnumMap<StorageType, Integer> storageTypes)
 specifier|protected
 name|void
@@ -3425,23 +3439,6 @@ parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
 block|{
-name|int
-name|numOfAvailableNodes
-init|=
-name|clusterMap
-operator|.
-name|countNumOfAvailableNodes
-argument_list|(
-name|scope
-argument_list|,
-name|excludedNodes
-argument_list|)
-decl_stmt|;
-name|int
-name|refreshCounter
-init|=
-name|numOfAvailableNodes
-decl_stmt|;
 name|StringBuilder
 name|builder
 init|=
@@ -3492,10 +3489,6 @@ condition|(
 name|numOfReplicas
 operator|>
 literal|0
-operator|&&
-name|numOfAvailableNodes
-operator|>
-literal|0
 condition|)
 block|{
 name|DatanodeDescriptor
@@ -3504,19 +3497,39 @@ init|=
 name|chooseDataNode
 argument_list|(
 name|scope
+argument_list|,
+name|excludedNodes
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|chosenNode
+operator|==
+literal|null
+condition|)
+block|{
+break|break;
+block|}
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
 name|excludedNodes
 operator|.
 name|add
 argument_list|(
 name|chosenNode
 argument_list|)
-condition|)
-block|{
-comment|//was not in the excluded list
+argument_list|,
+literal|"chosenNode "
+operator|+
+name|chosenNode
+operator|+
+literal|" is already in excludedNodes "
+operator|+
+name|excludedNodes
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -3548,9 +3561,6 @@ literal|" ["
 argument_list|)
 expr_stmt|;
 block|}
-name|numOfAvailableNodes
-operator|--
-expr_stmt|;
 name|DatanodeStorageInfo
 name|storage
 init|=
@@ -3655,9 +3665,7 @@ operator|=
 name|storage
 expr_stmt|;
 block|}
-comment|// add node and related nodes to excludedNode
-name|numOfAvailableNodes
-operator|-=
+comment|// add node (subclasses may also add related nodes) to excludedNode
 name|addToExcludedNodes
 argument_list|(
 name|chosenNode
@@ -3701,7 +3709,6 @@ block|}
 break|break;
 block|}
 block|}
-block|}
 if|if
 condition|(
 name|LOG
@@ -3726,33 +3733,6 @@ name|storage
 operator|==
 literal|null
 operator|)
-expr_stmt|;
-block|}
-comment|// Refresh the node count. If the live node count became smaller,
-comment|// but it is not reflected in this loop, it may loop forever in case
-comment|// the replicas/rack cannot be satisfied.
-if|if
-condition|(
-operator|--
-name|refreshCounter
-operator|==
-literal|0
-condition|)
-block|{
-name|numOfAvailableNodes
-operator|=
-name|clusterMap
-operator|.
-name|countNumOfAvailableNodes
-argument_list|(
-name|scope
-argument_list|,
-name|excludedNodes
-argument_list|)
-expr_stmt|;
-name|refreshCounter
-operator|=
-name|numOfAvailableNodes
 expr_stmt|;
 block|}
 block|}
@@ -3821,7 +3801,7 @@ name|firstChosen
 return|;
 block|}
 comment|/**    * Choose a datanode from the given<i>scope</i>.    * @return the chosen node, if there is any.    */
-DECL|method|chooseDataNode (final String scope)
+DECL|method|chooseDataNode (final String scope, final Collection<Node> excludedNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseDataNode
@@ -3829,6 +3809,13 @@ parameter_list|(
 specifier|final
 name|String
 name|scope
+parameter_list|,
+specifier|final
+name|Collection
+argument_list|<
+name|Node
+argument_list|>
+name|excludedNodes
 parameter_list|)
 block|{
 return|return
@@ -3840,6 +3827,8 @@ operator|.
 name|chooseRandom
 argument_list|(
 name|scope
+argument_list|,
+name|excludedNodes
 argument_list|)
 return|;
 block|}
