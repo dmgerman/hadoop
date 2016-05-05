@@ -2393,6 +2393,13 @@ literal|"nodeHTTPAddress"
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|rmNode
+operator|!=
+literal|null
+condition|)
+block|{
 name|WebServicesTestUtils
 operator|.
 name|checkStringMatch
@@ -2415,6 +2422,7 @@ literal|"state"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@
@@ -2596,6 +2604,13 @@ literal|"nodeHTTPAddress"
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|rmNode
+operator|!=
+literal|null
+condition|)
+block|{
 name|WebServicesTestUtils
 operator|.
 name|checkStringMatch
@@ -2618,6 +2633,7 @@ literal|"state"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test

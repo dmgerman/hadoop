@@ -429,6 +429,19 @@ name|QueuedContainersStatus
 name|getQueuedContainersStatus
 parameter_list|()
 function_decl|;
+DECL|method|getUntrackedTimeStamp ()
+name|long
+name|getUntrackedTimeStamp
+parameter_list|()
+function_decl|;
+DECL|method|setUntrackedTimeStamp (long timeStamp)
+name|void
+name|setUntrackedTimeStamp
+parameter_list|(
+name|long
+name|timeStamp
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

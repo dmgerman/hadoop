@@ -855,6 +855,12 @@ control|)
 block|{
 if|if
 condition|(
+operator|(
+name|rmNode
+operator|!=
+literal|null
+operator|)
+operator|&&
 name|acceptedStates
 operator|.
 name|contains

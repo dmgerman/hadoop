@@ -828,6 +828,29 @@ name|getNodeUtilization
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getUntrackedTimeStamp ()
+specifier|public
+name|long
+name|getUntrackedTimeStamp
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setUntrackedTimeStamp (long timeStamp)
+specifier|public
+name|void
+name|setUntrackedTimeStamp
+parameter_list|(
+name|long
+name|timeStamp
+parameter_list|)
+block|{   }
 block|}
 end_class
 
