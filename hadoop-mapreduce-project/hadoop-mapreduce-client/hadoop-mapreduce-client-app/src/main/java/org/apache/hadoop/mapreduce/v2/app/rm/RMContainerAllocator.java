@@ -1997,9 +1997,20 @@ condition|(
 name|recalculateReduceSchedule
 condition|)
 block|{
+name|boolean
+name|reducerPreempted
+init|=
 name|preemptReducesIfNeeded
 argument_list|()
-expr_stmt|;
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|reducerPreempted
+condition|)
+block|{
+comment|// Only schedule new reducers if no reducer preemption happens for
+comment|// this heartbeat
 name|scheduleReduces
 argument_list|(
 name|getJob
@@ -2052,6 +2063,7 @@ argument_list|,
 name|reduceSlowStart
 argument_list|)
 expr_stmt|;
+block|}
 name|recalculateReduceSchedule
 operator|=
 literal|false
@@ -2988,7 +3000,7 @@ name|Private
 annotation|@
 name|VisibleForTesting
 DECL|method|preemptReducesIfNeeded ()
-name|void
+name|boolean
 name|preemptReducesIfNeeded
 parameter_list|()
 block|{
@@ -3005,7 +3017,9 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-return|return;
+return|return
+literal|false
+return|;
 comment|// no reduces
 block|}
 if|if
@@ -3021,7 +3035,9 @@ literal|0
 condition|)
 block|{
 comment|// there are assigned mappers
-return|return;
+return|return
+literal|false
+return|;
 block|}
 if|if
 condition|(
@@ -3036,7 +3052,9 @@ literal|0
 condition|)
 block|{
 comment|// there are no pending requests for mappers
-return|return;
+return|return
+literal|false
+return|;
 block|}
 comment|// At this point:
 comment|// we have pending mappers and all assigned resources are taken by reducers
@@ -3058,7 +3076,9 @@ name|reducerUnconditionalPreemptionDelayMs
 argument_list|)
 condition|)
 block|{
-return|return;
+return|return
+literal|true
+return|;
 block|}
 block|}
 comment|// The pending mappers haven't been waiting for too long. Let us see if
@@ -3087,15 +3107,18 @@ literal|0
 condition|)
 block|{
 comment|// the available headroom is enough to run a mapper
-return|return;
+return|return
+literal|false
+return|;
 block|}
 comment|// Available headroom is not enough to run mapper. See if we should hold
 comment|// off before preempting reducers and preempt if okay.
+return|return
 name|preemptReducersForHangingMapRequests
 argument_list|(
 name|reducerNoHeadroomPreemptionDelayMs
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|preemptReducersForHangingMapRequests (long pendingThreshold)
 specifier|private
