@@ -796,7 +796,7 @@ condition|(
 operator|!
 name|level
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
 name|org
 operator|.
@@ -822,7 +822,7 @@ name|println
 argument_list|(
 name|MARKER
 operator|+
-literal|"Bad level :<b>"
+literal|"Bad Level :<b>"
 operator|+
 name|level
 operator|+
@@ -871,7 +871,7 @@ name|println
 argument_list|(
 name|MARKER
 operator|+
-literal|"Effective level:<b>"
+literal|"Effective Level:<b>"
 operator|+
 name|log
 operator|.
@@ -913,6 +913,16 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|String
+name|levelToUpperCase
+init|=
+name|level
+operator|.
+name|toUpperCase
+argument_list|()
+decl_stmt|;
+try|try
+block|{
 name|log
 operator|.
 name|setLevel
@@ -927,10 +937,31 @@ name|Level
 operator|.
 name|parse
 argument_list|(
-name|level
+name|levelToUpperCase
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+name|MARKER
+operator|+
+literal|"Bad Level :<b>"
+operator|+
+name|level
+operator|+
+literal|"</b><br />"
+argument_list|)
+expr_stmt|;
+block|}
 name|out
 operator|.
 name|println
@@ -982,7 +1013,7 @@ name|println
 argument_list|(
 name|MARKER
 operator|+
-literal|"Effective level:<b>"
+literal|"Effective Level:<b>"
 operator|+
 name|lev
 operator|+
