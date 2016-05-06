@@ -3387,6 +3387,22 @@ return|return
 name|blacklistedNodes
 return|;
 block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|getAsk ()
+name|Set
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|getAsk
+parameter_list|()
+block|{
+return|return
+name|ask
+return|;
+block|}
 block|}
 end_class
 
