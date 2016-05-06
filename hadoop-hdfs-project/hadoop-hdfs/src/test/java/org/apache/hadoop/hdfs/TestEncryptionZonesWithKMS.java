@@ -442,6 +442,8 @@ argument_list|(
 name|zonePath
 argument_list|,
 name|TEST_KEY
+argument_list|,
+name|NO_TRASH
 argument_list|)
 expr_stmt|;
 annotation|@
@@ -655,6 +657,8 @@ argument_list|(
 name|zonePath
 argument_list|,
 name|TEST_KEY
+argument_list|,
+name|NO_TRASH
 argument_list|)
 expr_stmt|;
 annotation|@
