@@ -2760,12 +2760,33 @@ name|interrupted
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Do the try-catch in the second stm.close() avoid that streamer was already
+comment|// closed in other places.
+try|try
+block|{
 comment|// Now do a successful close.
 name|stm
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Got expected exception during second close"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// verify that entire file is good
 name|AppendTestUtil
