@@ -58,6 +58,24 @@ name|ContainerState
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeId
+import|;
+end_import
+
 begin_class
 DECL|class|ContainerFinishedEvent
 specifier|public
@@ -86,7 +104,12 @@ specifier|private
 name|ContainerState
 name|state
 decl_stmt|;
-DECL|method|ContainerFinishedEvent ( ContainerId containerId, String diagnosticsInfo, int containerExitStatus, ContainerState state, long finishedTime)
+DECL|field|allocatedNode
+specifier|private
+name|NodeId
+name|allocatedNode
+decl_stmt|;
+DECL|method|ContainerFinishedEvent ( ContainerId containerId, String diagnosticsInfo, int containerExitStatus, ContainerState state, long finishedTime, NodeId allocatedNode)
 specifier|public
 name|ContainerFinishedEvent
 parameter_list|(
@@ -104,6 +127,9 @@ name|state
 parameter_list|,
 name|long
 name|finishedTime
+parameter_list|,
+name|NodeId
+name|allocatedNode
 parameter_list|)
 block|{
 name|super
@@ -132,6 +158,12 @@ operator|.
 name|containerExitStatus
 operator|=
 name|containerExitStatus
+expr_stmt|;
+name|this
+operator|.
+name|allocatedNode
+operator|=
+name|allocatedNode
 expr_stmt|;
 name|this
 operator|.
@@ -199,6 +231,16 @@ parameter_list|()
 block|{
 return|return
 name|state
+return|;
+block|}
+DECL|method|getAllocatedNode ()
+specifier|public
+name|NodeId
+name|getAllocatedNode
+parameter_list|()
+block|{
+return|return
+name|allocatedNode
 return|;
 block|}
 block|}
