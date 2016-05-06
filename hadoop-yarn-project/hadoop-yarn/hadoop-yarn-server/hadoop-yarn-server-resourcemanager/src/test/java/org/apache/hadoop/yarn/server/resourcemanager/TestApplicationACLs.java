@@ -57,18 +57,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|anyString
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -125,6 +113,26 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmapp
+operator|.
+name|RMApp
 import|;
 end_import
 
@@ -1034,18 +1042,12 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyString
-argument_list|()
-argument_list|,
 name|any
 argument_list|(
-name|ApplicationId
+name|RMApp
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyString
-argument_list|()
 argument_list|)
 argument_list|)
 operator|.
