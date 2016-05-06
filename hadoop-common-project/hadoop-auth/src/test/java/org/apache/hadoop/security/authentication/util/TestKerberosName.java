@@ -326,61 +326,6 @@ block|{
 comment|// PASS
 block|}
 block|}
-DECL|method|checkBadTranslation (String from)
-specifier|private
-name|void
-name|checkBadTranslation
-parameter_list|(
-name|String
-name|from
-parameter_list|)
-block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"Checking bad translation for "
-operator|+
-name|from
-argument_list|)
-expr_stmt|;
-name|KerberosName
-name|nm
-init|=
-operator|new
-name|KerberosName
-argument_list|(
-name|from
-argument_list|)
-decl_stmt|;
-try|try
-block|{
-name|nm
-operator|.
-name|getShortName
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"didn't get exception for "
-operator|+
-name|from
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ie
-parameter_list|)
-block|{
-comment|// PASS
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testAntiPatterns ()
@@ -401,13 +346,18 @@ argument_list|(
 literal|"owen@foo/bar.com"
 argument_list|)
 expr_stmt|;
-name|checkBadTranslation
+comment|// no rules applied, these should pass
+name|checkTranslation
 argument_list|(
+literal|"foo@ACME.COM"
+argument_list|,
 literal|"foo@ACME.COM"
 argument_list|)
 expr_stmt|;
-name|checkBadTranslation
+name|checkTranslation
 argument_list|(
+literal|"root/joe@FOO.COM"
+argument_list|,
 literal|"root/joe@FOO.COM"
 argument_list|)
 expr_stmt|;
