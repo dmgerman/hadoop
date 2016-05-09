@@ -900,12 +900,12 @@ name|sortedQueue
 return|;
 block|}
 comment|/**    * Computes whether we need to do any balancing on this volume Set at all.    * It checks if any disks are out of threshold value    *    * @param thresholdPercentage - threshold - in percentage    *    * @return true if balancing is needed false otherwise.    */
-DECL|method|isBalancingNeeded (float thresholdPercentage)
+DECL|method|isBalancingNeeded (double thresholdPercentage)
 specifier|public
 name|boolean
 name|isBalancingNeeded
 parameter_list|(
-name|float
+name|double
 name|thresholdPercentage
 parameter_list|)
 block|{

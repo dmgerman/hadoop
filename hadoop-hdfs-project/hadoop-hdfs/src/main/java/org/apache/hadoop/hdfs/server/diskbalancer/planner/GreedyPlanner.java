@@ -224,15 +224,15 @@ decl_stmt|;
 DECL|field|threshold
 specifier|private
 specifier|final
-name|float
+name|double
 name|threshold
 decl_stmt|;
 comment|/**    * Constructs a greedy planner.    *    * @param threshold - Disk tolerance that we are ok with    * @param node      - node on which this planner is operating upon    */
-DECL|method|GreedyPlanner (float threshold, DiskBalancerDataNode node)
+DECL|method|GreedyPlanner (double threshold, DiskBalancerDataNode node)
 specifier|public
 name|GreedyPlanner
 parameter_list|(
-name|float
+name|double
 name|threshold
 parameter_list|,
 name|DiskBalancerDataNode

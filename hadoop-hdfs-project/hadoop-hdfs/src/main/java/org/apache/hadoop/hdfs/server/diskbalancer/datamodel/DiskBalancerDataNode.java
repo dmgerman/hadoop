@@ -517,12 +517,12 @@ name|volcount
 expr_stmt|;
 block|}
 comment|/**    * Computes if this node needs balancing at all.    *    * @param threshold - Percentage    * @return true or false    */
-DECL|method|isBalancingNeeded (float threshold)
+DECL|method|isBalancingNeeded (double threshold)
 specifier|public
 name|boolean
 name|isBalancingNeeded
 parameter_list|(
-name|float
+name|double
 name|threshold
 parameter_list|)
 block|{
