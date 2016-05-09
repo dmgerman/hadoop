@@ -5019,7 +5019,7 @@ name|assertExceptionContains
 argument_list|(
 name|info
 operator|.
-name|toString
+name|getXferAddr
 argument_list|()
 argument_list|,
 name|ioe
