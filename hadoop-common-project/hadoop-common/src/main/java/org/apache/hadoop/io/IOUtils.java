@@ -899,7 +899,7 @@ name|ret
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Close the Closeable objects and<b>ignore</b> any {@link IOException} or     * null pointers. Must only be used for cleanup in exception handlers.    *    * @param log the log to record problems to at debug level. Can be null.    * @param closeables the objects to close    */
+comment|/**    * Close the Closeable objects and<b>ignore</b> any {@link Throwable} or    * null pointers. Must only be used for cleanup in exception handlers.    *    * @param log the log to record problems to at debug level. Can be null.    * @param closeables the objects to close    */
 DECL|method|cleanup (Log log, java.io.Closeable... closeables)
 specifier|public
 specifier|static
@@ -979,7 +979,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Closes the stream ignoring {@link IOException}.    * Must only be called in cleaning up from exception handlers.    *    * @param stream the Stream to close    */
+comment|/**    * Closes the stream ignoring {@link Throwable}.    * Must only be called in cleaning up from exception handlers.    *    * @param stream the Stream to close    */
 DECL|method|closeStream (java.io.Closeable stream)
 specifier|public
 specifier|static
