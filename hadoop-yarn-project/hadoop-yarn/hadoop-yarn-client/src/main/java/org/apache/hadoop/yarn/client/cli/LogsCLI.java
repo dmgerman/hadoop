@@ -1170,29 +1170,6 @@ name|getConf
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|appOwner
-operator|==
-literal|null
-operator|||
-name|appOwner
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|appOwner
-operator|=
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
-operator|.
-name|getShortUserName
-argument_list|()
-expr_stmt|;
-block|}
 name|boolean
 name|appStateObtainedSuccessfully
 init|=
@@ -1205,14 +1182,26 @@ name|YarnApplicationState
 operator|.
 name|NEW
 decl_stmt|;
+name|ApplicationReport
+name|appReport
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
-name|appState
+name|appReport
 operator|=
-name|getApplicationState
+name|getApplicationReport
 argument_list|(
 name|appId
 argument_list|)
+expr_stmt|;
+name|appState
+operator|=
+name|appReport
+operator|.
+name|getYarnApplicationState
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -1273,6 +1262,62 @@ operator|+
 literal|" Attempting to fetch logs directly from the filesystem."
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|appOwner
+operator|==
+literal|null
+operator|||
+name|appOwner
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|appOwner
+operator|=
+name|guessAppOwner
+argument_list|(
+name|appReport
+argument_list|,
+name|appId
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|appOwner
+operator|==
+literal|null
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Can not find the appOwner. "
+operator|+
+literal|"Please specify the correct appOwner"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Could not locate application logs for "
+operator|+
+name|appId
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
 block|}
 if|if
 condition|(
@@ -1443,6 +1488,30 @@ operator|.
 name|out
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|resultCode
+operator|==
+operator|-
+literal|1
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Can not find the logs for the application: "
+operator|+
+name|appId
+operator|+
+literal|" with the appOwner: "
+operator|+
+name|appOwner
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -1471,10 +1540,10 @@ return|return
 name|resultCode
 return|;
 block|}
-DECL|method|getApplicationState (ApplicationId appId)
+DECL|method|getApplicationReport (ApplicationId appId)
 specifier|private
-name|YarnApplicationState
-name|getApplicationState
+name|ApplicationReport
+name|getApplicationReport
 parameter_list|(
 name|ApplicationId
 name|appId
@@ -1492,21 +1561,13 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-name|ApplicationReport
-name|appReport
-init|=
+return|return
 name|yarnClient
 operator|.
 name|getApplicationReport
 argument_list|(
 name|appId
 argument_list|)
-decl_stmt|;
-return|return
-name|appReport
-operator|.
-name|getYarnApplicationState
-argument_list|()
 return|;
 block|}
 finally|finally
@@ -4514,6 +4575,10 @@ operator|+
 literal|"the application:"
 operator|+
 name|appId
+operator|+
+literal|" with the appOwner:"
+operator|+
+name|appOwner
 argument_list|)
 expr_stmt|;
 name|System
@@ -4526,13 +4591,15 @@ literal|"This application:"
 operator|+
 name|appId
 operator|+
-literal|" is finished."
+literal|" has finished."
 operator|+
-literal|" Please enable the application history service. Or Using "
+literal|" Please enable the application-history service or explicitly"
 operator|+
-literal|"yarn logs -applicationId<appId> -containerId<containerId> "
+literal|" use 'yarn logs -applicationId<appId> "
 operator|+
-literal|"--nodeAddress<nodeHttpAddress> to get the container logs"
+literal|"-containerId<containerId> --nodeAddress<nodeHttpAddress>' "
+operator|+
+literal|"to get the container logs."
 argument_list|)
 expr_stmt|;
 return|return
@@ -4811,6 +4878,10 @@ operator|+
 literal|"for the application:"
 operator|+
 name|appIdStr
+operator|+
+literal|" with the appOwner: "
+operator|+
+name|appOwner
 argument_list|)
 expr_stmt|;
 name|System
@@ -5087,6 +5158,72 @@ return|return
 name|isAppFinished
 return|;
 block|}
+block|}
+DECL|method|guessAppOwner (ApplicationReport appReport, ApplicationId appId)
+specifier|private
+name|String
+name|guessAppOwner
+parameter_list|(
+name|ApplicationReport
+name|appReport
+parameter_list|,
+name|ApplicationId
+name|appId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|String
+name|appOwner
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|appReport
+operator|!=
+literal|null
+condition|)
+block|{
+comment|//always use the app owner from the app report if possible
+name|appOwner
+operator|=
+name|appReport
+operator|.
+name|getUser
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|appOwner
+operator|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getShortUserName
+argument_list|()
+expr_stmt|;
+name|appOwner
+operator|=
+name|LogCLIHelpers
+operator|.
+name|getOwnerForAppIdOrNull
+argument_list|(
+name|appId
+argument_list|,
+name|appOwner
+argument_list|,
+name|getConf
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|appOwner
+return|;
 block|}
 block|}
 end_class
