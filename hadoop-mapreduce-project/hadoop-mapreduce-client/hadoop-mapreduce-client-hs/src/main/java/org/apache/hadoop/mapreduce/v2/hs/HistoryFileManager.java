@@ -1952,6 +1952,7 @@ name|jobIndexInfo
 decl_stmt|;
 DECL|field|state
 specifier|private
+specifier|volatile
 name|HistoryInfoState
 name|state
 decl_stmt|;
@@ -2017,7 +2018,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|isMovePending ()
-specifier|synchronized
 name|boolean
 name|isMovePending
 parameter_list|()
@@ -2039,7 +2039,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|didMoveFail ()
-specifier|synchronized
 name|boolean
 name|didMoveFail
 parameter_list|()
@@ -2055,7 +2054,6 @@ block|}
 comment|/**      * @return true if the files backed by this were deleted.      */
 DECL|method|isDeleted ()
 specifier|public
-specifier|synchronized
 name|boolean
 name|isDeleted
 parameter_list|()
@@ -2942,6 +2940,30 @@ operator|.
 name|DEFAULT_MR_HISTORY_MOVE_THREAD_COUNT
 argument_list|)
 decl_stmt|;
+name|moveToDoneExecutor
+operator|=
+name|createMoveToDoneThreadPool
+argument_list|(
+name|numMoveThreads
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|serviceInit
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|createMoveToDoneThreadPool (int numMoveThreads)
+specifier|protected
+name|ThreadPoolExecutor
+name|createMoveToDoneThreadPool
+parameter_list|(
+name|int
+name|numMoveThreads
+parameter_list|)
+block|{
 name|ThreadFactory
 name|tf
 init|=
@@ -2957,8 +2979,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|moveToDoneExecutor
-operator|=
+return|return
 operator|new
 name|HadoopThreadPoolExecutor
 argument_list|(
@@ -2981,14 +3002,7 @@ argument_list|()
 argument_list|,
 name|tf
 argument_list|)
-expr_stmt|;
-name|super
-operator|.
-name|serviceInit
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
+return|;
 block|}
 annotation|@
 name|VisibleForTesting
@@ -3666,6 +3680,43 @@ expr_stmt|;
 block|}
 block|}
 block|}
+DECL|method|createHistoryFileInfo (Path historyFile, Path confFile, Path summaryFile, JobIndexInfo jobIndexInfo, boolean isInDone)
+specifier|protected
+name|HistoryFileInfo
+name|createHistoryFileInfo
+parameter_list|(
+name|Path
+name|historyFile
+parameter_list|,
+name|Path
+name|confFile
+parameter_list|,
+name|Path
+name|summaryFile
+parameter_list|,
+name|JobIndexInfo
+name|jobIndexInfo
+parameter_list|,
+name|boolean
+name|isInDone
+parameter_list|)
+block|{
+return|return
+operator|new
+name|HistoryFileInfo
+argument_list|(
+name|historyFile
+argument_list|,
+name|confFile
+argument_list|,
+name|summaryFile
+argument_list|,
+name|jobIndexInfo
+argument_list|,
+name|isInDone
+argument_list|)
+return|;
+block|}
 comment|/**    * Populates index data structures. Should only be called at initialization    * times.    */
 annotation|@
 name|SuppressWarnings
@@ -4076,8 +4127,7 @@ decl_stmt|;
 name|HistoryFileInfo
 name|fileInfo
 init|=
-operator|new
-name|HistoryFileInfo
+name|createHistoryFileInfo
 argument_list|(
 name|fs
 operator|.
@@ -4572,8 +4622,7 @@ decl_stmt|;
 name|HistoryFileInfo
 name|fileInfo
 init|=
-operator|new
-name|HistoryFileInfo
+name|createHistoryFileInfo
 argument_list|(
 name|fs
 operator|.
@@ -4887,8 +4936,7 @@ decl_stmt|;
 name|HistoryFileInfo
 name|fileInfo
 init|=
-operator|new
-name|HistoryFileInfo
+name|createHistoryFileInfo
 argument_list|(
 name|fs
 operator|.
@@ -5721,8 +5769,7 @@ argument_list|)
 decl_stmt|;
 name|fileInfo
 operator|=
-operator|new
-name|HistoryFileInfo
+name|createHistoryFileInfo
 argument_list|(
 name|historyFile
 operator|.
