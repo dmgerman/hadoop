@@ -120,6 +120,18 @@ name|assertEquals
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
 begin_comment
 comment|/**  * A JUnit test to test {@link SysInfoLinux}  * Create the fake /proc/ information and verify the parsing and calculation  */
 end_comment
@@ -453,13 +465,105 @@ literal|"VmallocUsed:      1632 kB\n"
 operator|+
 literal|"VmallocChunk: 34359736375 kB\n"
 operator|+
-literal|"HugePages_Total:     0\n"
+literal|"HugePages_Total:     %d\n"
 operator|+
 literal|"HugePages_Free:      0\n"
 operator|+
 literal|"HugePages_Rsvd:      0\n"
 operator|+
 literal|"Hugepagesize:     2048 kB"
+decl_stmt|;
+DECL|field|MEMINFO_FORMAT_2
+specifier|static
+specifier|final
+name|String
+name|MEMINFO_FORMAT_2
+init|=
+literal|"MemTotal:       %d kB\n"
+operator|+
+literal|"MemFree:        %d kB\n"
+operator|+
+literal|"Buffers:          129976 kB\n"
+operator|+
+literal|"Cached:         32317676 kB\n"
+operator|+
+literal|"SwapCached:            0 kB\n"
+operator|+
+literal|"Active:         88938588 kB\n"
+operator|+
+literal|"Inactive:       %d kB\n"
+operator|+
+literal|"Active(anon):   77502200 kB\n"
+operator|+
+literal|"Inactive(anon):  6385336 kB\n"
+operator|+
+literal|"Active(file):   11436388 kB\n"
+operator|+
+literal|"Inactive(file): %d kB\n"
+operator|+
+literal|"Unevictable:           0 kB\n"
+operator|+
+literal|"Mlocked:               0 kB\n"
+operator|+
+literal|"SwapTotal:      %d kB\n"
+operator|+
+literal|"SwapFree:       %d kB\n"
+operator|+
+literal|"Dirty:            575864 kB\n"
+operator|+
+literal|"Writeback:            16 kB\n"
+operator|+
+literal|"AnonPages:      83886180 kB\n"
+operator|+
+literal|"Mapped:           108640 kB\n"
+operator|+
+literal|"Shmem:              1880 kB\n"
+operator|+
+literal|"Slab:            2413448 kB\n"
+operator|+
+literal|"SReclaimable:    2194488 kB\n"
+operator|+
+literal|"SUnreclaim:       218960 kB\n"
+operator|+
+literal|"KernelStack:       31496 kB\n"
+operator|+
+literal|"PageTables:       195176 kB\n"
+operator|+
+literal|"NFS_Unstable:          0 kB\n"
+operator|+
+literal|"Bounce:                0 kB\n"
+operator|+
+literal|"WritebackTmp:          0 kB\n"
+operator|+
+literal|"CommitLimit:    97683468 kB\n"
+operator|+
+literal|"Committed_AS:   94553560 kB\n"
+operator|+
+literal|"VmallocTotal:   34359738367 kB\n"
+operator|+
+literal|"VmallocUsed:      498580 kB\n"
+operator|+
+literal|"VmallocChunk:   34256922296 kB\n"
+operator|+
+literal|"HardwareCorrupted: %d kB\n"
+operator|+
+literal|"AnonHugePages:         0 kB\n"
+operator|+
+literal|"HugePages_Total:       %d\n"
+operator|+
+literal|"HugePages_Free:        0\n"
+operator|+
+literal|"HugePages_Rsvd:        0\n"
+operator|+
+literal|"HugePages_Surp:        0\n"
+operator|+
+literal|"Hugepagesize:       2048 kB\n"
+operator|+
+literal|"DirectMap4k:        4096 kB\n"
+operator|+
+literal|"DirectMap2M:     2027520 kB\n"
+operator|+
+literal|"DirectMap1G:    132120576 kB\n"
 decl_stmt|;
 DECL|field|CPUINFO_FORMAT
 specifier|static
@@ -1110,6 +1214,11 @@ name|swapFree
 init|=
 literal|1818480L
 decl_stmt|;
+name|int
+name|nrHugePages
+init|=
+literal|10
+decl_stmt|;
 name|File
 name|tempFile
 init|=
@@ -1152,6 +1261,8 @@ argument_list|,
 name|swapTotal
 argument_list|,
 name|swapFree
+argument_list|,
+name|nrHugePages
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1203,7 +1314,15 @@ argument_list|()
 argument_list|,
 literal|1024L
 operator|*
+operator|(
 name|memTotal
+operator|-
+operator|(
+name|nrHugePages
+operator|*
+literal|2048
+operator|)
+operator|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1217,6 +1336,216 @@ literal|1024L
 operator|*
 operator|(
 name|memTotal
+operator|-
+operator|(
+name|nrHugePages
+operator|*
+literal|2048
+operator|)
+operator|+
+name|swapTotal
+operator|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test parsing /proc/meminfo with Inactive(file) present    * @throws IOException    */
+annotation|@
+name|Test
+DECL|method|parsingProcMemFile2 ()
+specifier|public
+name|void
+name|parsingProcMemFile2
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|long
+name|memTotal
+init|=
+literal|131403836L
+decl_stmt|;
+name|long
+name|memFree
+init|=
+literal|11257036L
+decl_stmt|;
+name|long
+name|inactive
+init|=
+literal|27396032L
+decl_stmt|;
+name|long
+name|inactiveFile
+init|=
+literal|21010696L
+decl_stmt|;
+name|long
+name|swapTotal
+init|=
+literal|31981552L
+decl_stmt|;
+name|long
+name|swapFree
+init|=
+literal|1818480L
+decl_stmt|;
+name|long
+name|hardwareCorrupt
+init|=
+literal|31960904L
+decl_stmt|;
+name|int
+name|nrHugePages
+init|=
+literal|10
+decl_stmt|;
+name|File
+name|tempFile
+init|=
+operator|new
+name|File
+argument_list|(
+name|FAKE_MEMFILE
+argument_list|)
+decl_stmt|;
+name|tempFile
+operator|.
+name|deleteOnExit
+argument_list|()
+expr_stmt|;
+name|FileWriter
+name|fWriter
+init|=
+operator|new
+name|FileWriter
+argument_list|(
+name|FAKE_MEMFILE
+argument_list|)
+decl_stmt|;
+name|fWriter
+operator|.
+name|write
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+name|MEMINFO_FORMAT_2
+argument_list|,
+name|memTotal
+argument_list|,
+name|memFree
+argument_list|,
+name|inactive
+argument_list|,
+name|inactiveFile
+argument_list|,
+name|swapTotal
+argument_list|,
+name|swapFree
+argument_list|,
+name|hardwareCorrupt
+argument_list|,
+name|nrHugePages
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|fWriter
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|plugin
+operator|.
+name|getAvailablePhysicalMemorySize
+argument_list|()
+argument_list|,
+literal|1024L
+operator|*
+operator|(
+name|memFree
+operator|+
+name|inactiveFile
+operator|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|plugin
+operator|.
+name|getAvailablePhysicalMemorySize
+argument_list|()
+operator|==
+literal|1024L
+operator|*
+operator|(
+name|memFree
+operator|+
+name|inactive
+operator|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|plugin
+operator|.
+name|getAvailableVirtualMemorySize
+argument_list|()
+argument_list|,
+literal|1024L
+operator|*
+operator|(
+name|memFree
+operator|+
+name|inactiveFile
+operator|+
+name|swapFree
+operator|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|plugin
+operator|.
+name|getPhysicalMemorySize
+argument_list|()
+argument_list|,
+literal|1024L
+operator|*
+operator|(
+name|memTotal
+operator|-
+name|hardwareCorrupt
+operator|-
+operator|(
+name|nrHugePages
+operator|*
+literal|2048
+operator|)
+operator|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|plugin
+operator|.
+name|getVirtualMemorySize
+argument_list|()
+argument_list|,
+literal|1024L
+operator|*
+operator|(
+name|memTotal
+operator|-
+name|hardwareCorrupt
+operator|-
+operator|(
+name|nrHugePages
+operator|*
+literal|2048
+operator|)
 operator|+
 name|swapTotal
 operator|)
