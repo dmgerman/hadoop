@@ -422,11 +422,13 @@ name|IOException
 block|{
 if|if
 condition|(
-name|manageOsCache
-operator|&&
 name|readaheadPool
 operator|!=
 literal|null
+operator|&&
+name|readaheadLength
+operator|>
+literal|0
 condition|)
 block|{
 name|readaheadRequest
