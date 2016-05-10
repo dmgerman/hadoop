@@ -82,6 +82,26 @@ name|ContractTestUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestS3ContractSeek
 specifier|public
@@ -109,6 +129,18 @@ name|conf
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+annotation|@
+name|Test
+annotation|@
+name|Ignore
+DECL|method|testReadFullyZeroByteFile ()
+specifier|public
+name|void
+name|testReadFullyZeroByteFile
+parameter_list|()
+block|{   }
 block|}
 end_class
 

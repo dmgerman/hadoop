@@ -66,6 +66,26 @@ name|AbstractFSContract
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * root dir operations against an S3 bucket  */
 end_comment
@@ -97,6 +117,30 @@ name|conf
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+annotation|@
+name|Test
+annotation|@
+name|Ignore
+DECL|method|testRmEmptyRootDirNonRecursive ()
+specifier|public
+name|void
+name|testRmEmptyRootDirNonRecursive
+parameter_list|()
+block|{   }
+annotation|@
+name|Override
+annotation|@
+name|Test
+annotation|@
+name|Ignore
+DECL|method|testRmRootRecursive ()
+specifier|public
+name|void
+name|testRmRootRecursive
+parameter_list|()
+block|{   }
 block|}
 end_class
 

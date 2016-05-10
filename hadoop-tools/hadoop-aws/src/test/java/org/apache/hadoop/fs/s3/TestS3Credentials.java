@@ -142,6 +142,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Rule
 import|;
 end_import
@@ -671,6 +681,8 @@ name|IllegalArgumentException
 operator|.
 name|class
 argument_list|)
+annotation|@
+name|Ignore
 DECL|method|noSecretShouldThrow ()
 specifier|public
 name|void
@@ -725,6 +737,8 @@ name|IllegalArgumentException
 operator|.
 name|class
 argument_list|)
+annotation|@
+name|Ignore
 DECL|method|noAccessIdShouldThrow ()
 specifier|public
 name|void
