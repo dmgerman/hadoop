@@ -1670,6 +1670,11 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|getStorageStatistics ()
+name|StorageStatistics
+name|getStorageStatistics
+parameter_list|()
+function_decl|;
 block|}
 annotation|@
 name|Test

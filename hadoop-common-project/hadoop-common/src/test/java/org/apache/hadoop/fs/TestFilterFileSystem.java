@@ -1009,6 +1009,11 @@ name|Path
 name|f
 parameter_list|)
 function_decl|;
+DECL|method|getStorageStatistics ()
+name|StorageStatistics
+name|getStorageStatistics
+parameter_list|()
+function_decl|;
 block|}
 annotation|@
 name|Test

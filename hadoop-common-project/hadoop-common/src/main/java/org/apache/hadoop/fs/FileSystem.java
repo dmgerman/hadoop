@@ -368,6 +368,22 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|GlobalStorageStatistics
+operator|.
+name|StorageStatisticsProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Options
 operator|.
 name|ChecksumOpt
@@ -10912,7 +10928,7 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Get the Map of Statistics object indexed by URI Scheme.    * @return a Map having a key as URI scheme and value as Statistics object    * @deprecated use {@link #getAllStatistics} instead    */
+comment|/**    * Get the Map of Statistics object indexed by URI Scheme.    * @return a Map having a key as URI scheme and value as Statistics object    * @deprecated use {@link #getGlobalStorageStatistics()}    */
 annotation|@
 name|Deprecated
 DECL|method|getStatistics ()
@@ -10973,7 +10989,9 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Return the FileSystem classes that have Statistics    */
+comment|/**    * Return the FileSystem classes that have Statistics.    * @deprecated use {@link #getGlobalStorageStatistics()}    */
+annotation|@
+name|Deprecated
 DECL|method|getAllStatistics ()
 specifier|public
 specifier|static
@@ -10999,14 +11017,17 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the statistics for a particular file system    * @param cls the class to lookup    * @return a statistics object    */
+comment|/**    * Get the statistics for a particular file system    * @param cls the class to lookup    * @return a statistics object    * @deprecated use {@link #getGlobalStorageStatistics()}    */
+annotation|@
+name|Deprecated
+DECL|method|getStatistics (final String scheme, Class<? extends FileSystem> cls)
 specifier|public
 specifier|static
 specifier|synchronized
-DECL|method|getStatistics (String scheme, Class<? extends FileSystem> cls)
 name|Statistics
 name|getStatistics
 parameter_list|(
+specifier|final
 name|String
 name|scheme
 parameter_list|,
@@ -11036,21 +11057,59 @@ operator|==
 literal|null
 condition|)
 block|{
-name|result
-operator|=
+specifier|final
+name|Statistics
+name|newStats
+init|=
 operator|new
 name|Statistics
 argument_list|(
 name|scheme
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|statisticsTable
 operator|.
 name|put
 argument_list|(
 name|cls
 argument_list|,
+name|newStats
+argument_list|)
+expr_stmt|;
 name|result
+operator|=
+name|newStats
+expr_stmt|;
+name|GlobalStorageStatistics
+operator|.
+name|INSTANCE
+operator|.
+name|put
+argument_list|(
+name|scheme
+argument_list|,
+operator|new
+name|StorageStatisticsProvider
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|StorageStatistics
+name|provide
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FileSystemStorageStatistics
+argument_list|(
+name|scheme
+argument_list|,
+name|newStats
+argument_list|)
+return|;
+block|}
+block|}
 argument_list|)
 expr_stmt|;
 block|}
@@ -11188,6 +11247,39 @@ name|symlinksEnabled
 operator|=
 literal|true
 expr_stmt|;
+block|}
+comment|/**    * Get the StorageStatistics for this FileSystem object.  These statistics are    * per-instance.  They are not shared with any other FileSystem object.    *    *<p>This is a default method which is intended to be overridden by    * subclasses. The default implementation returns an empty storage statistics    * object.</p>    *    * @return    The StorageStatistics for this FileSystem instance.    *            Will never be null.    */
+DECL|method|getStorageStatistics ()
+specifier|public
+name|StorageStatistics
+name|getStorageStatistics
+parameter_list|()
+block|{
+return|return
+operator|new
+name|EmptyStorageStatistics
+argument_list|(
+name|getUri
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the global storage statistics.    */
+DECL|method|getGlobalStorageStatistics ()
+specifier|public
+specifier|static
+name|GlobalStorageStatistics
+name|getGlobalStorageStatistics
+parameter_list|()
+block|{
+return|return
+name|GlobalStorageStatistics
+operator|.
+name|INSTANCE
+return|;
 block|}
 block|}
 end_class
