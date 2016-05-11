@@ -275,9 +275,13 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Invalid URI "
+literal|"Unable to initialize filesystem "
 operator|+
 name|fsName
+operator|+
+literal|": "
+operator|+
+name|e
 argument_list|,
 name|e
 argument_list|)
