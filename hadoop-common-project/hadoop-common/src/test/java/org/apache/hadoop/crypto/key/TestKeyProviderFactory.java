@@ -1918,7 +1918,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-literal|"rwx------"
+literal|"rw-------"
 argument_list|)
 argument_list|)
 expr_stmt|;

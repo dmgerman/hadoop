@@ -310,6 +310,16 @@ name|java
 operator|.
 name|security
 operator|.
+name|GeneralSecurityException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|security
+operator|.
 name|Key
 import|;
 end_import
@@ -496,6 +506,7 @@ decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static
+specifier|final
 name|Logger
 name|LOG
 init|=
@@ -568,13 +579,11 @@ name|fs
 decl_stmt|;
 DECL|field|permissions
 specifier|private
-specifier|final
 name|FsPermission
 name|permissions
 decl_stmt|;
 DECL|field|keyStore
 specifier|private
-specifier|final
 name|KeyStore
 name|keyStore
 decl_stmt|;
@@ -734,6 +743,49 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|locateKeystore
+argument_list|()
+expr_stmt|;
+name|ReadWriteLock
+name|lock
+init|=
+operator|new
+name|ReentrantReadWriteLock
+argument_list|(
+literal|true
+argument_list|)
+decl_stmt|;
+name|readLock
+operator|=
+name|lock
+operator|.
+name|readLock
+argument_list|()
+expr_stmt|;
+name|writeLock
+operator|=
+name|lock
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * The password is either found in the environment or in a file. This    * routine implements the logic for locating the password in these    * locations.    * @return The password as a char []; null if not found.    * @throws IOException    */
+DECL|method|locatePassword ()
+specifier|private
+name|char
+index|[]
+name|locatePassword
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|char
+index|[]
+name|pass
+init|=
+literal|null
+decl_stmt|;
 comment|// Get the password file from the conf, if not present from the user's
 comment|// environment var
 if|if
@@ -749,7 +801,7 @@ name|KEYSTORE_PASSWORD_ENV_VAR
 argument_list|)
 condition|)
 block|{
-name|password
+name|pass
 operator|=
 name|System
 operator|.
@@ -764,7 +816,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|password
+name|pass
 operator|==
 literal|null
 condition|)
@@ -772,7 +824,8 @@ block|{
 name|String
 name|pwFile
 init|=
-name|conf
+name|getConf
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -834,7 +887,7 @@ name|openStream
 argument_list|()
 init|)
 block|{
-name|password
+name|pass
 operator|=
 name|IOUtils
 operator|.
@@ -852,6 +905,26 @@ expr_stmt|;
 block|}
 block|}
 block|}
+return|return
+name|pass
+return|;
+block|}
+comment|/**    * Open up and initialize the keyStore.    * @throws IOException    */
+DECL|method|locateKeystore ()
+specifier|private
+name|void
+name|locateKeystore
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+name|password
+operator|=
+name|locatePassword
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|password
@@ -864,8 +937,6 @@ operator|=
 name|KEYSTORE_PASSWORD_DEFAULT
 expr_stmt|;
 block|}
-try|try
-block|{
 name|Path
 name|oldPath
 init|=
@@ -984,7 +1055,7 @@ throw|;
 block|}
 catch|catch
 parameter_list|(
-name|NoSuchAlgorithmException
+name|GeneralSecurityException
 name|e
 parameter_list|)
 block|{
@@ -1000,49 +1071,8 @@ name|e
 argument_list|)
 throw|;
 block|}
-catch|catch
-parameter_list|(
-name|CertificateException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Can't load keystore "
-operator|+
-name|path
-argument_list|,
-name|e
-argument_list|)
-throw|;
 block|}
-name|ReadWriteLock
-name|lock
-init|=
-operator|new
-name|ReentrantReadWriteLock
-argument_list|(
-literal|true
-argument_list|)
-decl_stmt|;
-name|readLock
-operator|=
-name|lock
-operator|.
-name|readLock
-argument_list|()
-expr_stmt|;
-name|writeLock
-operator|=
-name|lock
-operator|.
-name|writeLock
-argument_list|()
-expr_stmt|;
-block|}
-comment|/**    * Try loading from the user specified path, else load from the backup    * path in case Exception is not due to bad/wrong password    * @param path Actual path to load from    * @param backupPath Backup path (_OLD)    * @return The permissions of the loaded file    * @throws NoSuchAlgorithmException    * @throws CertificateException    * @throws IOException    */
+comment|/**    * Try loading from the user specified path, else load from the backup    * path in case Exception is not due to bad/wrong password.    * @param path Actual path to load from    * @param backupPath Backup path (_OLD)    * @return The permissions of the loaded file    * @throws NoSuchAlgorithmException    * @throws CertificateException    * @throws IOException    */
 DECL|method|tryLoadFromPath (Path path, Path backupPath)
 specifier|private
 name|FsPermission
@@ -1304,7 +1334,7 @@ operator|=
 operator|new
 name|FsPermission
 argument_list|(
-literal|"700"
+literal|"600"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1615,6 +1645,121 @@ argument_list|)
 decl_stmt|;
 return|return
 name|oldPath
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|needsPassword ()
+specifier|public
+name|boolean
+name|needsPassword
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+operator|(
+literal|null
+operator|==
+name|locatePassword
+argument_list|()
+operator|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|field|NO_PASSWORD_WARN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NO_PASSWORD_WARN
+init|=
+literal|"WARNING: You have accepted the use of the default provider password\n"
+operator|+
+literal|"by not configuring a password in one of the two following locations:\n"
+decl_stmt|;
+DECL|field|NO_PASSWORD_ERROR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NO_PASSWORD_ERROR
+init|=
+literal|"ERROR: The provider cannot find a password in the expected "
+operator|+
+literal|"locations.\nPlease supply a password using one of the "
+operator|+
+literal|"following two mechanisms:\n"
+decl_stmt|;
+DECL|field|NO_PASSWORD_INSTRUCTIONS
+annotation|@
+name|VisibleForTesting
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NO_PASSWORD_INSTRUCTIONS
+init|=
+literal|"    o In the environment variable "
+operator|+
+name|KEYSTORE_PASSWORD_ENV_VAR
+operator|+
+literal|"\n"
+operator|+
+literal|"    o In a file referred to by the configuration entry\n"
+operator|+
+literal|"      "
+operator|+
+name|KEYSTORE_PASSWORD_FILE_KEY
+operator|+
+literal|".\n"
+operator|+
+literal|"Please review the documentation regarding provider passwords at\n"
+operator|+
+literal|"http://hadoop.apache.org/docs/current/hadoop-project-dist/"
+operator|+
+literal|"hadoop-common/CredentialProviderAPI.html#Keystore_Passwords\n"
+decl_stmt|;
+DECL|field|NO_PASSWORD_CONT
+annotation|@
+name|VisibleForTesting
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NO_PASSWORD_CONT
+init|=
+literal|"Continuing with the default provider password.\n"
+decl_stmt|;
+annotation|@
+name|Override
+DECL|method|noPasswordWarning ()
+specifier|public
+name|String
+name|noPasswordWarning
+parameter_list|()
+block|{
+return|return
+name|NO_PASSWORD_WARN
+operator|+
+name|NO_PASSWORD_INSTRUCTIONS
+operator|+
+name|NO_PASSWORD_CONT
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|noPasswordError ()
+specifier|public
+name|String
+name|noPasswordError
+parameter_list|()
+block|{
+return|return
+name|NO_PASSWORD_ERROR
+operator|+
+name|NO_PASSWORD_INSTRUCTIONS
 return|;
 block|}
 annotation|@

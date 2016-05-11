@@ -2429,6 +2429,41 @@ name|keyName
 argument_list|)
 throw|;
 block|}
+comment|/**    * Does this provider require a password? This means that a password is    * required for normal operation, and it has not been found through normal    * means. If true, the password should be provided by the caller using    * setPassword().    * @return Whether or not the provider requires a password    * @throws IOException    */
+DECL|method|needsPassword ()
+specifier|public
+name|boolean
+name|needsPassword
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|/**    * If a password for the provider is needed, but is not provided, this will    * return a warning and instructions for supplying said password to the    * provider.    * @return A warning and instructions for supplying the password    */
+DECL|method|noPasswordWarning ()
+specifier|public
+name|String
+name|noPasswordWarning
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * If a password for the provider is needed, but is not provided, this will    * return an error message and instructions for supplying said password to    * the provider.    * @return An error message and instructions for supplying the password    */
+DECL|method|noPasswordError ()
+specifier|public
+name|String
+name|noPasswordError
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 

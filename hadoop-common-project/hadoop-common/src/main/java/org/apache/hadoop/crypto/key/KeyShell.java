@@ -90,6 +90,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -255,6 +269,23 @@ name|LIST_METADATA
 init|=
 literal|"keyShell.list.metadata"
 decl_stmt|;
+DECL|field|NO_VALID_PROVIDERS
+annotation|@
+name|VisibleForTesting
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NO_VALID_PROVIDERS
+init|=
+literal|"There are no valid (non-transient) providers configured.\n"
+operator|+
+literal|"No action has been taken. Use the -provider option to specify\n"
+operator|+
+literal|"a provider. If you want to use a transient provider then you\n"
+operator|+
+literal|"MUST use the -provider argument."
+decl_stmt|;
 DECL|field|interactive
 specifier|private
 name|boolean
@@ -269,8 +300,18 @@ name|command
 init|=
 literal|null
 decl_stmt|;
-comment|/** allows stdout to be captured if necessary */
+comment|/** If true, fail if the provider requires a password and none is given. */
+DECL|field|strict
+specifier|private
+name|boolean
+name|strict
+init|=
+literal|false
+decl_stmt|;
+comment|/** allows stdout to be captured if necessary. */
 DECL|field|out
+annotation|@
+name|VisibleForTesting
 specifier|public
 name|PrintStream
 name|out
@@ -279,8 +320,10 @@ name|System
 operator|.
 name|out
 decl_stmt|;
-comment|/** allows stderr to be captured if necessary */
+comment|/** allows stderr to be captured if necessary. */
 DECL|field|err
+annotation|@
+name|VisibleForTesting
 specifier|public
 name|PrintStream
 name|err
@@ -379,7 +422,7 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Parse the command line arguments and initialize the data    *<pre>    * % hadoop key create keyName [-size size] [-cipher algorithm]    *    [-provider providerPath]    * % hadoop key roll keyName [-provider providerPath]    * % hadoop key list [-provider providerPath]    * % hadoop key delete keyName [-provider providerPath] [-i]    *</pre>    * @param args Command line arguments.    * @return 0 on success, 1 on failure.    * @throws IOException    */
+comment|/**    * Parse the command line arguments and initialize the data.    *<pre>    * % hadoop key create keyName [-size size] [-cipher algorithm]    *    [-provider providerPath]    * % hadoop key roll keyName [-provider providerPath]    * % hadoop key list [-provider providerPath]    * % hadoop key delete keyName [-provider providerPath] [-i]    *</pre>    * @param args Command line arguments.    * @return 0 on success, 1 on failure.    * @throws IOException    */
 DECL|method|init (String[] args)
 specifier|private
 name|int
@@ -964,6 +1007,25 @@ block|}
 elseif|else
 if|if
 condition|(
+name|args
+index|[
+name|i
+index|]
+operator|.
+name|equals
+argument_list|(
+literal|"-strict"
+argument_list|)
+condition|)
+block|{
+name|strict
+operator|=
+literal|true
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 literal|"-help"
 operator|.
 name|equals
@@ -1199,7 +1261,7 @@ name|getKeyProvider
 parameter_list|()
 block|{
 name|KeyProvider
-name|provider
+name|prov
 init|=
 literal|null
 decl_stmt|;
@@ -1226,7 +1288,7 @@ condition|(
 name|userSuppliedProvider
 condition|)
 block|{
-name|provider
+name|prov
 operator|=
 name|providers
 operator|.
@@ -1255,7 +1317,7 @@ name|isTransient
 argument_list|()
 condition|)
 block|{
-name|provider
+name|prov
 operator|=
 name|p
 expr_stmt|;
@@ -1278,8 +1340,23 @@ name|err
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|prov
+operator|==
+literal|null
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+name|NO_VALID_PROVIDERS
+argument_list|)
+expr_stmt|;
+block|}
 return|return
-name|provider
+name|prov
 return|;
 block|}
 DECL|method|printProviderWritten ()
@@ -1352,7 +1429,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"list [-provider<provider>] [-metadata] [-help]"
+literal|"list [-provider<provider>] [-strict] [-metadata] [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1367,7 +1444,9 @@ literal|"a particular provider as configured in core-site.xml or\n"
 operator|+
 literal|"specified with the -provider argument. -metadata displays\n"
 operator|+
-literal|"the metadata."
+literal|"the metadata. If -strict is supplied, fail immediately if\n"
+operator|+
+literal|"the provider requires a password and none is given."
 decl_stmt|;
 DECL|field|metadata
 specifier|private
@@ -1399,19 +1478,6 @@ operator|==
 literal|null
 condition|)
 block|{
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"There are no non-transient KeyProviders configured.\n"
-operator|+
-literal|"Use the -provider option to specify a provider. If you\n"
-operator|+
-literal|"want to list a transient provider then you must use the\n"
-operator|+
-literal|"-provider argument."
-argument_list|)
-expr_stmt|;
 name|rc
 operator|=
 literal|false
@@ -1609,7 +1675,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"roll<keyname> [-provider<provider>] [-help]"
+literal|"roll<keyname> [-provider<provider>] [-strict] [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1620,9 +1686,14 @@ name|DESC
 init|=
 literal|"The roll subcommand creates a new version for the specified key\n"
 operator|+
-literal|"within the provider indicated using the -provider argument\n"
+literal|"within the provider indicated using the -provider argument.\n"
+operator|+
+literal|"If -strict is supplied, fail immediately if the provider requires\n"
+operator|+
+literal|"a password and none is given."
 decl_stmt|;
 DECL|field|keyName
+specifier|private
 name|String
 name|keyName
 init|=
@@ -1666,17 +1737,6 @@ operator|==
 literal|null
 condition|)
 block|{
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"There are no valid KeyProviders configured. The key\n"
-operator|+
-literal|"has not been rolled. Use the -provider option to specify\n"
-operator|+
-literal|"a provider."
-argument_list|)
-expr_stmt|;
 name|rc
 operator|=
 literal|false
@@ -1855,7 +1915,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"delete<keyname> [-provider<provider>] [-f] [-help]"
+literal|"delete<keyname> [-provider<provider>] [-strict] [-f] [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1870,15 +1930,21 @@ literal|"specified by the<keyname> argument from within the\n"
 operator|+
 literal|"provider specified by -provider. The command asks for\n"
 operator|+
-literal|"user confirmation unless -f is specified."
+literal|"user confirmation unless -f is specified. If -strict is\n"
+operator|+
+literal|"supplied, fail immediately if the provider requires a\n"
+operator|+
+literal|"password and none is given."
 decl_stmt|;
 DECL|field|keyName
+specifier|private
 name|String
 name|keyName
 init|=
 literal|null
 decl_stmt|;
 DECL|field|cont
+specifier|private
 name|boolean
 name|cont
 init|=
@@ -1919,15 +1985,6 @@ operator|==
 literal|null
 condition|)
 block|{
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"There are no valid KeyProviders configured. Nothing\n"
-operator|+
-literal|"was deleted. Use the -provider option to specify a provider."
-argument_list|)
-expr_stmt|;
 return|return
 literal|false
 return|;
@@ -2145,7 +2202,9 @@ literal|"                     [-description<description>]\n"
 operator|+
 literal|"                     [-attr<attribute=value>]\n"
 operator|+
-literal|"                     [-provider<provider>] [-help]"
+literal|"                     [-provider<provider>] [-strict]\n"
+operator|+
+literal|"                     [-help]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -2171,11 +2230,13 @@ operator|+
 literal|"-attr may be specified multiple times, once per attribute.\n"
 decl_stmt|;
 DECL|field|keyName
+specifier|private
 specifier|final
 name|String
 name|keyName
 decl_stmt|;
 DECL|field|options
+specifier|private
 specifier|final
 name|Options
 name|options
@@ -2215,6 +2276,8 @@ name|rc
 init|=
 literal|true
 decl_stmt|;
+try|try
+block|{
 name|provider
 operator|=
 name|getKeyProvider
@@ -2227,20 +2290,67 @@ operator|==
 literal|null
 condition|)
 block|{
+name|rc
+operator|=
+literal|false
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|provider
+operator|.
+name|needsPassword
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|strict
+condition|)
+block|{
 name|out
 operator|.
 name|println
 argument_list|(
-literal|"There are no valid KeyProviders configured. No key\n"
-operator|+
-literal|" was created. You can use the -provider option to specify\n"
-operator|+
-literal|" a provider to use."
+name|provider
+operator|.
+name|noPasswordError
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|rc
 operator|=
 literal|false
+expr_stmt|;
+block|}
+else|else
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+name|provider
+operator|.
+name|noPasswordWarning
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|e
+operator|.
+name|printStackTrace
+argument_list|(
+name|err
+argument_list|)
 expr_stmt|;
 block|}
 if|if

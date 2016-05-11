@@ -332,16 +332,13 @@ name|getPermission
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|initFileSystem (URI uri, Configuration conf)
+DECL|method|initFileSystem (URI uri)
 specifier|protected
 name|void
 name|initFileSystem
 parameter_list|(
 name|URI
 name|uri
-parameter_list|,
-name|Configuration
-name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -351,8 +348,6 @@ operator|.
 name|initFileSystem
 argument_list|(
 name|uri
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 name|fs
@@ -362,7 +357,8 @@ argument_list|()
 operator|.
 name|getFileSystem
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

@@ -638,16 +638,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|initFileSystem (URI uri, Configuration conf)
+DECL|method|initFileSystem (URI uri)
 specifier|protected
 name|void
 name|initFileSystem
 parameter_list|(
 name|URI
 name|uri
-parameter_list|,
-name|Configuration
-name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -657,8 +654,6 @@ operator|.
 name|initFileSystem
 argument_list|(
 name|uri
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 try|try

@@ -90,6 +90,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -176,7 +190,7 @@ specifier|private
 name|String
 name|COMMANDS
 init|=
-literal|"   [--help]\n"
+literal|"   [-help]\n"
 operator|+
 literal|"   ["
 operator|+
@@ -202,6 +216,23 @@ name|USAGE
 operator|+
 literal|"]\n"
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|NO_VALID_PROVIDERS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NO_VALID_PROVIDERS
+init|=
+literal|"There are no valid (non-transient) providers configured.\n"
+operator|+
+literal|"No action has been taken. Use the -provider option to specify\n"
+operator|+
+literal|"a provider. If you want to use a transient provider then you\n"
+operator|+
+literal|"MUST use the -provider argument."
+decl_stmt|;
 DECL|field|interactive
 specifier|private
 name|boolean
@@ -216,8 +247,18 @@ name|command
 init|=
 literal|null
 decl_stmt|;
-comment|/** allows stdout to be captured if necessary */
+comment|/** If true, fail if the provider requires a password and none is given. */
+DECL|field|strict
+specifier|private
+name|boolean
+name|strict
+init|=
+literal|false
+decl_stmt|;
+comment|/** Allows stdout to be captured if necessary. */
 DECL|field|out
+annotation|@
+name|VisibleForTesting
 specifier|public
 name|PrintStream
 name|out
@@ -226,8 +267,10 @@ name|System
 operator|.
 name|out
 decl_stmt|;
-comment|/** allows stderr to be captured if necessary */
+comment|/** Allows stderr to be captured if necessary. */
 DECL|field|err
+annotation|@
+name|VisibleForTesting
 specifier|public
 name|PrintStream
 name|err
@@ -254,6 +297,13 @@ DECL|field|passwordReader
 specifier|private
 name|PasswordReader
 name|passwordReader
+decl_stmt|;
+DECL|field|isHelp
+specifier|private
+name|boolean
+name|isHelp
+init|=
+literal|false
 decl_stmt|;
 annotation|@
 name|Override
@@ -296,6 +346,12 @@ return|;
 block|}
 if|if
 condition|(
+operator|!
+name|isHelp
+condition|)
+block|{
+if|if
+condition|(
 name|command
 operator|.
 name|validate
@@ -314,6 +370,7 @@ name|exitCode
 operator|=
 literal|1
 expr_stmt|;
+block|}
 block|}
 block|}
 catch|catch
@@ -337,7 +394,7 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Parse the command line arguments and initialize the data    *<pre>    * % hadoop credential create alias [-provider providerPath]    * % hadoop credential list [-provider providerPath]    * % hadoop credential delete alias [-provider providerPath] [-f]    *</pre>    * @param args    * @return 0 if the argument(s) were recognized, 1 otherwise    * @throws IOException    */
+comment|/**    * Parse the command line arguments and initialize the data.    *<pre>    * % hadoop credential create alias [-provider providerPath]    * % hadoop credential list [-provider providerPath]    * % hadoop credential delete alias [-provider providerPath] [-f]    *</pre>    * @param args    * @return 0 if the argument(s) were recognized, 1 otherwise    * @throws IOException    */
 DECL|method|init (String[] args)
 specifier|protected
 name|int
@@ -642,6 +699,25 @@ index|]
 operator|.
 name|equals
 argument_list|(
+literal|"-strict"
+argument_list|)
+condition|)
+block|{
+name|strict
+operator|=
+literal|true
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|args
+index|[
+name|i
+index|]
+operator|.
+name|equals
+argument_list|(
 literal|"-v"
 argument_list|)
 operator|||
@@ -717,6 +793,10 @@ name|void
 name|printCredShellUsage
 parameter_list|()
 block|{
+name|isHelp
+operator|=
+literal|true
+expr_stmt|;
 name|out
 operator|.
 name|println
@@ -850,7 +930,7 @@ name|getCredentialProvider
 parameter_list|()
 block|{
 name|CredentialProvider
-name|provider
+name|prov
 init|=
 literal|null
 decl_stmt|;
@@ -877,7 +957,7 @@ condition|(
 name|userSuppliedProvider
 condition|)
 block|{
-name|provider
+name|prov
 operator|=
 name|providers
 operator|.
@@ -906,7 +986,7 @@ name|isTransient
 argument_list|()
 condition|)
 block|{
-name|provider
+name|prov
 operator|=
 name|p
 expr_stmt|;
@@ -929,8 +1009,23 @@ name|err
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|prov
+operator|==
+literal|null
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+name|NO_VALID_PROVIDERS
+argument_list|)
+expr_stmt|;
+block|}
 return|return
-name|provider
+name|prov
 return|;
 block|}
 DECL|method|printProviderWritten ()
@@ -943,12 +1038,11 @@ name|out
 operator|.
 name|println
 argument_list|(
+literal|"Provider "
+operator|+
 name|provider
 operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getName
+name|toString
 argument_list|()
 operator|+
 literal|" has been updated."
@@ -1009,7 +1103,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"list [-provider provider-path]"
+literal|"list [-provider provider-path] [-strict]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1020,9 +1114,13 @@ name|DESC
 init|=
 literal|"The list subcommand displays the aliases contained within \n"
 operator|+
-literal|"a particular provider - as configured in core-site.xml or "
+literal|"a particular provider - as configured in core-site.xml or\n"
 operator|+
-literal|"indicated\nthrough the -provider argument."
+literal|"indicated through the -provider argument. If -strict is supplied,\n"
+operator|+
+literal|"fail immediately if the provider requires a password and none is\n"
+operator|+
+literal|"provided."
 decl_stmt|;
 DECL|method|validate ()
 specifier|public
@@ -1030,43 +1128,17 @@ name|boolean
 name|validate
 parameter_list|()
 block|{
-name|boolean
-name|rc
-init|=
-literal|true
-decl_stmt|;
 name|provider
 operator|=
 name|getCredentialProvider
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|provider
-operator|==
-literal|null
-condition|)
-block|{
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"There are no non-transient CredentialProviders configured.\n"
-operator|+
-literal|"Consider using the -provider option to indicate the provider\n"
-operator|+
-literal|"to use. If you want to list a transient provider then you\n"
-operator|+
-literal|"you MUST use the -provider argument."
-argument_list|)
-expr_stmt|;
-name|rc
-operator|=
-literal|false
-expr_stmt|;
-block|}
 return|return
-name|rc
+operator|(
+name|provider
+operator|!=
+literal|null
+operator|)
 return|;
 block|}
 DECL|method|execute ()
@@ -1182,7 +1254,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"delete<alias> [-f] [-provider provider-path]"
+literal|"delete<alias> [-f] [-provider provider-path] [-strict]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1197,15 +1269,21 @@ literal|"specified as the<alias> argument from within the provider\n"
 operator|+
 literal|"indicated through the -provider argument. The command asks for\n"
 operator|+
-literal|"confirmation unless the -f option is specified."
+literal|"confirmation unless the -f option is specified. If -strict is\n"
+operator|+
+literal|"supplied, fail immediately if the provider requires a password\n"
+operator|+
+literal|"and none is given."
 decl_stmt|;
 DECL|field|alias
+specifier|private
 name|String
 name|alias
 init|=
 literal|null
 decl_stmt|;
 DECL|field|cont
+specifier|private
 name|boolean
 name|cont
 init|=
@@ -1246,19 +1324,6 @@ operator|==
 literal|null
 condition|)
 block|{
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"There are no valid CredentialProviders configured.\n"
-operator|+
-literal|"Nothing will be deleted.\n"
-operator|+
-literal|"Consider using the -provider option to indicate the provider"
-operator|+
-literal|" to use."
-argument_list|)
-expr_stmt|;
 return|return
 literal|false
 return|;
@@ -1401,6 +1466,8 @@ name|out
 operator|.
 name|println
 argument_list|(
+literal|"Credential "
+operator|+
 name|alias
 operator|+
 literal|" has been successfully deleted."
@@ -1425,6 +1492,8 @@ name|out
 operator|.
 name|println
 argument_list|(
+literal|"Credential "
+operator|+
 name|alias
 operator|+
 literal|" has NOT been deleted."
@@ -1467,7 +1536,9 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"create<alias> [-provider provider-path]"
+literal|"create<alias> [-value alias-value] "
+operator|+
+literal|"[-provider provider-path] [-strict]"
 decl_stmt|;
 DECL|field|DESC
 specifier|public
@@ -1476,13 +1547,20 @@ specifier|final
 name|String
 name|DESC
 init|=
-literal|"The create subcommand creates a new credential for the name specified\n"
+literal|"The create subcommand creates a new credential for the name\n"
 operator|+
-literal|"as the<alias> argument within the provider indicated through\n"
+literal|"specified as the<alias> argument within the provider indicated\n"
 operator|+
-literal|"the -provider argument."
+literal|"through the -provider argument. If -strict is supplied, fail\n"
+operator|+
+literal|"immediately if the provider requires a password and none is given.\n"
+operator|+
+literal|"If -value is provided, use that for the value of the credential\n"
+operator|+
+literal|"instead of prompting the user."
 decl_stmt|;
 DECL|field|alias
+specifier|private
 name|String
 name|alias
 init|=
@@ -1514,6 +1592,8 @@ name|rc
 init|=
 literal|true
 decl_stmt|;
+try|try
+block|{
 name|provider
 operator|=
 name|getCredentialProvider
@@ -1526,22 +1606,67 @@ operator|==
 literal|null
 condition|)
 block|{
+name|rc
+operator|=
+literal|false
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|provider
+operator|.
+name|needsPassword
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|strict
+condition|)
+block|{
 name|out
 operator|.
 name|println
 argument_list|(
-literal|"There are no valid CredentialProviders configured."
-operator|+
-literal|"\nCredential will not be created.\n"
-operator|+
-literal|"Consider using the -provider option to indicate the provider"
-operator|+
-literal|" to use."
+name|provider
+operator|.
+name|noPasswordError
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|rc
 operator|=
 literal|false
+expr_stmt|;
+block|}
+else|else
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+name|provider
+operator|.
+name|noPasswordWarning
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|e
+operator|.
+name|printStackTrace
+argument_list|(
+name|err
+argument_list|)
 expr_stmt|;
 block|}
 if|if
@@ -1623,6 +1748,11 @@ argument_list|,
 name|credential
 argument_list|)
 expr_stmt|;
+name|provider
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 name|out
 operator|.
 name|println
@@ -1631,11 +1761,6 @@ name|alias
 operator|+
 literal|" has been successfully created."
 argument_list|)
-expr_stmt|;
-name|provider
-operator|.
-name|flush
-argument_list|()
 expr_stmt|;
 name|printProviderWritten
 argument_list|()
@@ -1651,6 +1776,8 @@ name|out
 operator|.
 name|println
 argument_list|(
+literal|"Credential "
+operator|+
 name|alias
 operator|+
 literal|" has NOT been created. "
@@ -1675,6 +1802,8 @@ name|out
 operator|.
 name|println
 argument_list|(
+literal|"Credential "
+operator|+
 name|alias
 operator|+
 literal|" has NOT been created. "
@@ -1756,7 +1885,7 @@ name|c
 operator|.
 name|readPassword
 argument_list|(
-literal|"Enter password: "
+literal|"Enter alias password: "
 argument_list|)
 decl_stmt|;
 name|char
@@ -1767,7 +1896,7 @@ name|c
 operator|.
 name|readPassword
 argument_list|(
-literal|"Enter password again: "
+literal|"Enter alias password again: "
 argument_list|)
 decl_stmt|;
 name|noMatch
@@ -1793,6 +1922,7 @@ name|newPassword1
 operator|!=
 literal|null
 condition|)
+block|{
 name|Arrays
 operator|.
 name|fill
@@ -1802,6 +1932,7 @@ argument_list|,
 literal|' '
 argument_list|)
 expr_stmt|;
+block|}
 name|c
 operator|.
 name|format
@@ -1823,6 +1954,7 @@ name|newPassword2
 operator|!=
 literal|null
 condition|)
+block|{
 name|Arrays
 operator|.
 name|fill
@@ -1832,6 +1964,7 @@ argument_list|,
 literal|' '
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 do|while
 condition|(
@@ -1880,7 +2013,7 @@ operator|=
 name|reader
 expr_stmt|;
 block|}
-comment|// to facilitate testing since Console is a final class...
+comment|/** To facilitate testing since Console is a final class. */
 DECL|class|PasswordReader
 specifier|public
 specifier|static
