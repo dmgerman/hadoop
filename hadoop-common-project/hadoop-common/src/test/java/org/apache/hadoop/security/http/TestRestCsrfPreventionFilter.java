@@ -126,6 +126,10 @@ name|Mockito
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class tests the behavior of the RestCsrfPreventionFilter.  *  */
+end_comment
+
 begin_class
 DECL|class|TestRestCsrfPreventionFilter
 specifier|public
@@ -172,10 +176,10 @@ literal|"X-CUSTOM_HEADER"
 decl_stmt|;
 annotation|@
 name|Test
-DECL|method|testNoHeaderDefaultConfig_badRequest ()
+DECL|method|testNoHeaderDefaultConfigBadRequest ()
 specifier|public
 name|void
-name|testNoHeaderDefaultConfig_badRequest
+name|testNoHeaderDefaultConfigBadRequest
 parameter_list|()
 throws|throws
 name|ServletException
@@ -362,10 +366,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testNoHeaderCustomAgentConfig_badRequest ()
+DECL|method|testNoHeaderCustomAgentConfigBadRequest ()
 specifier|public
 name|void
-name|testNoHeaderCustomAgentConfig_badRequest
+name|testNoHeaderCustomAgentConfigBadRequest
 parameter_list|()
 throws|throws
 name|ServletException
@@ -571,10 +575,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testNoHeaderDefaultConfigNonBrowser_goodRequest ()
+DECL|method|testNoHeaderDefaultConfigNonBrowserGoodRequest ()
 specifier|public
 name|void
-name|testNoHeaderDefaultConfigNonBrowser_goodRequest
+name|testNoHeaderDefaultConfigNonBrowserGoodRequest
 parameter_list|()
 throws|throws
 name|ServletException
@@ -751,10 +755,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testHeaderPresentDefaultConfig_goodRequest ()
+DECL|method|testHeaderPresentDefaultConfigGoodRequest ()
 specifier|public
 name|void
-name|testHeaderPresentDefaultConfig_goodRequest
+name|testHeaderPresentDefaultConfigGoodRequest
 parameter_list|()
 throws|throws
 name|ServletException
@@ -912,10 +916,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testHeaderPresentCustomHeaderConfig_goodRequest ()
+DECL|method|testHeaderPresentCustomHeaderConfigGoodRequest ()
 specifier|public
 name|void
-name|testHeaderPresentCustomHeaderConfig_goodRequest
+name|testHeaderPresentCustomHeaderConfigGoodRequest
 parameter_list|()
 throws|throws
 name|ServletException
@@ -1071,10 +1075,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testMissingHeaderWithCustomHeaderConfig_badRequest ()
+DECL|method|testMissingHeaderWithCustomHeaderConfigBadRequest ()
 specifier|public
 name|void
-name|testMissingHeaderWithCustomHeaderConfig_badRequest
+name|testMissingHeaderWithCustomHeaderConfigBadRequest
 parameter_list|()
 throws|throws
 name|ServletException
@@ -1244,10 +1248,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testMissingHeaderNoMethodsToIgnoreConfig_badRequest ()
+DECL|method|testMissingHeaderNoMethodsToIgnoreConfigBadRequest ()
 specifier|public
 name|void
-name|testMissingHeaderNoMethodsToIgnoreConfig_badRequest
+name|testMissingHeaderNoMethodsToIgnoreConfigBadRequest
 parameter_list|()
 throws|throws
 name|ServletException
@@ -1432,10 +1436,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testMissingHeaderIgnoreGETMethodConfig_goodRequest ()
+DECL|method|testMissingHeaderIgnoreGETMethodConfigGoodRequest ()
 specifier|public
 name|void
-name|testMissingHeaderIgnoreGETMethodConfig_goodRequest
+name|testMissingHeaderIgnoreGETMethodConfigGoodRequest
 parameter_list|()
 throws|throws
 name|ServletException
@@ -1627,10 +1631,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testMissingHeaderMultipleIgnoreMethodsConfig_goodRequest ()
+DECL|method|testMissingHeaderMultipleIgnoreMethodsConfigGoodRequest ()
 specifier|public
 name|void
-name|testMissingHeaderMultipleIgnoreMethodsConfig_goodRequest
+name|testMissingHeaderMultipleIgnoreMethodsConfigGoodRequest
 parameter_list|()
 throws|throws
 name|ServletException
@@ -1822,10 +1826,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testMissingHeaderMultipleIgnoreMethodsConfig_badRequest ()
+DECL|method|testMissingHeaderMultipleIgnoreMethodsConfigBadRequest ()
 specifier|public
 name|void
-name|testMissingHeaderMultipleIgnoreMethodsConfig_badRequest
+name|testMissingHeaderMultipleIgnoreMethodsConfigBadRequest
 parameter_list|()
 throws|throws
 name|ServletException
