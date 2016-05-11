@@ -851,14 +851,11 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|startContainerInternal (NMTokenIdentifier nmTokenIdentifier, ContainerTokenIdentifier containerTokenIdentifier, StartContainerRequest request)
+DECL|method|startContainerInternal ( ContainerTokenIdentifier containerTokenIdentifier, StartContainerRequest request)
 specifier|protected
 name|void
 name|startContainerInternal
 parameter_list|(
-name|NMTokenIdentifier
-name|nmTokenIdentifier
-parameter_list|,
 name|ContainerTokenIdentifier
 name|containerTokenIdentifier
 parameter_list|,
@@ -897,8 +894,6 @@ operator|new
 name|AllocatedContainerInfo
 argument_list|(
 name|containerTokenIdentifier
-argument_list|,
-name|nmTokenIdentifier
 argument_list|,
 name|request
 argument_list|,
@@ -1241,11 +1236,6 @@ name|super
 operator|.
 name|startContainerInternal
 argument_list|(
-name|allocatedContainerInfo
-operator|.
-name|getNMTokenIdentifier
-argument_list|()
-argument_list|,
 name|allocatedContainerInfo
 operator|.
 name|getContainerTokenIdentifier
@@ -2223,11 +2213,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|handle (ApplicationEvent event)
 specifier|public
 name|void
@@ -2325,12 +2310,6 @@ specifier|final
 name|ContainerTokenIdentifier
 name|containerTokenIdentifier
 decl_stmt|;
-DECL|field|nmTokenIdentifier
-specifier|private
-specifier|final
-name|NMTokenIdentifier
-name|nmTokenIdentifier
-decl_stmt|;
 DECL|field|startRequest
 specifier|private
 specifier|final
@@ -2349,14 +2328,11 @@ specifier|final
 name|ProcessTreeInfo
 name|pti
 decl_stmt|;
-DECL|method|AllocatedContainerInfo (ContainerTokenIdentifier containerTokenIdentifier, NMTokenIdentifier nmTokenIdentifier, StartContainerRequest startRequest, ExecutionType executionType, Resource resource, Configuration conf)
+DECL|method|AllocatedContainerInfo (ContainerTokenIdentifier containerTokenIdentifier, StartContainerRequest startRequest, ExecutionType executionType, Resource resource, Configuration conf)
 name|AllocatedContainerInfo
 parameter_list|(
 name|ContainerTokenIdentifier
 name|containerTokenIdentifier
-parameter_list|,
-name|NMTokenIdentifier
-name|nmTokenIdentifier
 parameter_list|,
 name|StartContainerRequest
 name|startRequest
@@ -2376,12 +2352,6 @@ operator|.
 name|containerTokenIdentifier
 operator|=
 name|containerTokenIdentifier
-expr_stmt|;
-name|this
-operator|.
-name|nmTokenIdentifier
-operator|=
-name|nmTokenIdentifier
 expr_stmt|;
 name|this
 operator|.
@@ -2422,18 +2392,6 @@ return|return
 name|this
 operator|.
 name|containerTokenIdentifier
-return|;
-block|}
-DECL|method|getNMTokenIdentifier ()
-specifier|private
-name|NMTokenIdentifier
-name|getNMTokenIdentifier
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|nmTokenIdentifier
 return|;
 block|}
 DECL|method|getStartRequest ()

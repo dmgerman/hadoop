@@ -5530,8 +5530,6 @@ argument_list|)
 expr_stmt|;
 name|startContainerInternal
 argument_list|(
-name|nmTokenIdentifier
-argument_list|,
 name|containerTokenIdentifier
 argument_list|,
 name|request
@@ -5972,14 +5970,11 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|startContainerInternal (NMTokenIdentifier nmTokenIdentifier, ContainerTokenIdentifier containerTokenIdentifier, StartContainerRequest request)
+DECL|method|startContainerInternal ( ContainerTokenIdentifier containerTokenIdentifier, StartContainerRequest request)
 specifier|protected
 name|void
 name|startContainerInternal
 parameter_list|(
-name|NMTokenIdentifier
-name|nmTokenIdentifier
-parameter_list|,
 name|ContainerTokenIdentifier
 name|containerTokenIdentifier
 parameter_list|,
