@@ -107,6 +107,15 @@ name|UPDATED_EVENT_TYPE
 init|=
 literal|"YARN_APPLICATION_UPDATED"
 decl_stmt|;
+DECL|field|STATE_UPDATED_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STATE_UPDATED_EVENT_TYPE
+init|=
+literal|"YARN_APPLICATION_STATE_UPDATED"
+decl_stmt|;
 DECL|field|NAME_ENTITY_INFO
 specifier|public
 specifier|static

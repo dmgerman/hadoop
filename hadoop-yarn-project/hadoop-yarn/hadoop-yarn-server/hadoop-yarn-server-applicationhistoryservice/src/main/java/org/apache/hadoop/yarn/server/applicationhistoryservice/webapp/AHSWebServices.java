@@ -2014,9 +2014,6 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|// TODO: YARN-5029. RM would send the update event. We could get
-comment|// the consistent YarnApplicationState.
-comment|// Will remove YarnApplicationState.ACCEPTED.
 DECL|method|isRunningState (YarnApplicationState appState)
 specifier|private
 name|boolean
@@ -2027,12 +2024,6 @@ name|appState
 parameter_list|)
 block|{
 return|return
-name|appState
-operator|==
-name|YarnApplicationState
-operator|.
-name|ACCEPTED
-operator|||
 name|appState
 operator|==
 name|YarnApplicationState
