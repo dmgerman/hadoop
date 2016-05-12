@@ -5506,6 +5506,37 @@ literal|true
 argument_list|)
 return|;
 block|}
+name|String
+name|message
+init|=
+literal|"Kill application "
+operator|+
+name|applicationId
+operator|+
+literal|" received from "
+operator|+
+name|callerUGI
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|!=
+name|Server
+operator|.
+name|getRemoteAddress
+argument_list|()
+condition|)
+block|{
+name|message
+operator|+=
+literal|" at "
+operator|+
+name|Server
+operator|.
+name|getRemoteAddress
+argument_list|()
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|rmContext
@@ -5527,7 +5558,7 @@ name|RMAppEventType
 operator|.
 name|KILL
 argument_list|,
-literal|"Application killed by user."
+name|message
 argument_list|)
 argument_list|)
 expr_stmt|;
