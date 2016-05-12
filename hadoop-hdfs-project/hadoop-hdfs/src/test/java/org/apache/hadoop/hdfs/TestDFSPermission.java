@@ -1260,7 +1260,6 @@ name|toShort
 argument_list|()
 return|;
 block|}
-comment|/* create a file/directory with the default umask and permission */
 DECL|method|create (OpType op, Path name)
 specifier|private
 name|void
@@ -1277,6 +1276,45 @@ name|IOException
 block|{
 name|create
 argument_list|(
+name|fs
+argument_list|,
+name|conf
+argument_list|,
+name|op
+argument_list|,
+name|name
+argument_list|)
+expr_stmt|;
+block|}
+comment|/* create a file/directory with the default umask and permission */
+DECL|method|create (final FileSystem fs, final Configuration fsConf, OpType op, Path name)
+specifier|static
+name|void
+name|create
+parameter_list|(
+specifier|final
+name|FileSystem
+name|fs
+parameter_list|,
+specifier|final
+name|Configuration
+name|fsConf
+parameter_list|,
+name|OpType
+name|op
+parameter_list|,
+name|Path
+name|name
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|create
+argument_list|(
+name|fs
+argument_list|,
+name|fsConf
+argument_list|,
 name|op
 argument_list|,
 name|name
@@ -1291,7 +1329,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/* create a file/directory with the given umask and permission */
 DECL|method|create (OpType op, Path name, short umask, FsPermission permission)
 specifier|private
 name|void
@@ -1312,8 +1349,53 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// set umask in configuration, converting to padded octal
+name|create
+argument_list|(
+name|fs
+argument_list|,
 name|conf
+argument_list|,
+name|op
+argument_list|,
+name|name
+argument_list|,
+name|umask
+argument_list|,
+name|permission
+argument_list|)
+expr_stmt|;
+block|}
+comment|/* create a file/directory with the given umask and permission */
+DECL|method|create (final FileSystem fs, final Configuration fsConf, OpType op, Path name, short umask, FsPermission permission)
+specifier|static
+name|void
+name|create
+parameter_list|(
+specifier|final
+name|FileSystem
+name|fs
+parameter_list|,
+specifier|final
+name|Configuration
+name|fsConf
+parameter_list|,
+name|OpType
+name|op
+parameter_list|,
+name|Path
+name|name
+parameter_list|,
+name|short
+name|umask
+parameter_list|,
+name|FsPermission
+name|permission
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// set umask in configuration, converting to padded octal
+name|fsConf
 operator|.
 name|set
 argument_list|(
@@ -1353,7 +1435,7 @@ name|permission
 argument_list|,
 literal|true
 argument_list|,
-name|conf
+name|fsConf
 operator|.
 name|getInt
 argument_list|(
@@ -2040,7 +2122,6 @@ DECL|enumConstant|CREATE
 DECL|enumConstant|MKDIRS
 DECL|enumConstant|OPEN
 DECL|enumConstant|SET_REPLICATION
-specifier|private
 enum|enum
 name|OpType
 block|{
@@ -3762,7 +3843,6 @@ block|}
 comment|/* A random permission generator that guarantees that each permission    * value is generated only once.    */
 DECL|class|PermissionGenerator
 specifier|static
-specifier|private
 class|class
 name|PermissionGenerator
 block|{
