@@ -701,7 +701,7 @@ literal|"However when NFS gateway talks to HDFS, HDFS accepts only user and grou
 operator|+
 literal|"Therefore, same name means the same user or same group. To find the duplicated names/ids, one can do:\n"
 operator|+
-literal|"<getent passwd | cut -d: -f1,3> and<getent group | cut -d: -f1,3> on Linux systems,\n"
+literal|"<getent passwd | cut -d: -f1,3> and<getent group | cut -d: -f1,3> on Linux, BSD and Solaris systems,\n"
 operator|+
 literal|"<dscl . -list /Users UniqueID> and<dscl . -list /Groups PrimaryGroupID> on MacOS."
 decl_stmt|;
@@ -1199,6 +1199,22 @@ name|startsWith
 argument_list|(
 literal|"Mac"
 argument_list|)
+operator|&&
+operator|!
+name|OS
+operator|.
+name|equals
+argument_list|(
+literal|"SunOS"
+argument_list|)
+operator|&&
+operator|!
+name|OS
+operator|.
+name|contains
+argument_list|(
+literal|"BSD"
+argument_list|)
 condition|)
 block|{
 name|LOG
@@ -1626,10 +1642,10 @@ comment|//     getent group<name> | cut -d: -f1,3
 comment|// OR
 comment|//     id -u<name> | awk '{print "<name>:"$1 }'
 comment|//
-DECL|method|getName2IdCmdLinux (final String name, final boolean isGrp)
+DECL|method|getName2IdCmdNIX (final String name, final boolean isGrp)
 specifier|private
 name|String
-name|getName2IdCmdLinux
+name|getName2IdCmdNIX
 parameter_list|(
 specifier|final
 name|String
@@ -1677,10 +1693,10 @@ name|cmd
 return|;
 block|}
 comment|// search for name with given id, return "<name>:<id>"
-DECL|method|getId2NameCmdLinux (final int id, final boolean isGrp)
+DECL|method|getId2NameCmdNIX (final int id, final boolean isGrp)
 specifier|private
 name|String
-name|getId2NameCmdLinux
+name|getId2NameCmdNIX
 parameter_list|(
 specifier|final
 name|int
@@ -1920,6 +1936,20 @@ name|startsWith
 argument_list|(
 literal|"Linux"
 argument_list|)
+operator|||
+name|OS
+operator|.
+name|equals
+argument_list|(
+literal|"SunOS"
+argument_list|)
+operator|||
+name|OS
+operator|.
+name|contains
+argument_list|(
+literal|"BSD"
+argument_list|)
 condition|)
 block|{
 if|if
@@ -1935,7 +1965,7 @@ name|gidNameMap
 argument_list|,
 literal|"group"
 argument_list|,
-name|getName2IdCmdLinux
+name|getName2IdCmdNIX
 argument_list|(
 name|name
 argument_list|,
@@ -1960,7 +1990,7 @@ name|uidNameMap
 argument_list|,
 literal|"user"
 argument_list|,
-name|getName2IdCmdLinux
+name|getName2IdCmdNIX
 argument_list|(
 name|name
 argument_list|,
@@ -2089,6 +2119,20 @@ name|startsWith
 argument_list|(
 literal|"Linux"
 argument_list|)
+operator|||
+name|OS
+operator|.
+name|equals
+argument_list|(
+literal|"SunOS"
+argument_list|)
+operator|||
+name|OS
+operator|.
+name|contains
+argument_list|(
+literal|"BSD"
+argument_list|)
 condition|)
 block|{
 if|if
@@ -2104,7 +2148,7 @@ name|gidNameMap
 argument_list|,
 literal|"group"
 argument_list|,
-name|getId2NameCmdLinux
+name|getId2NameCmdNIX
 argument_list|(
 name|id
 argument_list|,
@@ -2129,7 +2173,7 @@ name|uidNameMap
 argument_list|,
 literal|"user"
 argument_list|,
-name|getId2NameCmdLinux
+name|getId2NameCmdNIX
 argument_list|(
 name|id
 argument_list|,
