@@ -976,7 +976,7 @@ block|{
 if|if
 condition|(
 name|unknownError
-operator|!=
+operator|==
 literal|null
 condition|)
 block|{
