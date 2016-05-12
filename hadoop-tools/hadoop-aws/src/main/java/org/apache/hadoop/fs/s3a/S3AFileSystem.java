@@ -641,6 +641,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|VersionInfo
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -1028,6 +1042,13 @@ argument_list|,
 name|awsConf
 argument_list|,
 name|secureConnections
+argument_list|)
+expr_stmt|;
+name|initUserAgent
+argument_list|(
+name|conf
+argument_list|,
+name|awsConf
 argument_list|)
 expr_stmt|;
 name|initAmazonS3Client
@@ -1593,6 +1614,76 @@ name|msg
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * Initializes the User-Agent header to send in HTTP requests to the S3    * back-end.  We always include the Hadoop version number.  The user also may    * set an optional custom prefix to put in front of the Hadoop version number.    * The AWS SDK interally appends its own information, which seems to include    * the AWS SDK version, OS and JVM version.    *    * @param conf Hadoop configuration    * @param awsConf AWS SDK configuration    */
+DECL|method|initUserAgent (Configuration conf, ClientConfiguration awsConf)
+specifier|private
+name|void
+name|initUserAgent
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|ClientConfiguration
+name|awsConf
+parameter_list|)
+block|{
+name|String
+name|userAgent
+init|=
+literal|"Hadoop "
+operator|+
+name|VersionInfo
+operator|.
+name|getVersion
+argument_list|()
+decl_stmt|;
+name|String
+name|userAgentPrefix
+init|=
+name|conf
+operator|.
+name|getTrimmed
+argument_list|(
+name|USER_AGENT_PREFIX
+argument_list|,
+literal|""
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|userAgentPrefix
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|userAgent
+operator|=
+name|userAgentPrefix
+operator|+
+literal|", "
+operator|+
+name|userAgent
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Using User-Agent: {}"
+argument_list|,
+name|userAgent
+argument_list|)
+expr_stmt|;
+name|awsConf
+operator|.
+name|setUserAgent
+argument_list|(
+name|userAgent
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|initAmazonS3Client (Configuration conf, AWSCredentialsProviderChain credentials, ClientConfiguration awsConf)
 specifier|private

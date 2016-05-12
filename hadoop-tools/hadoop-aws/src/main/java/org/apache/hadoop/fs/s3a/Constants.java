@@ -505,6 +505,15 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+DECL|field|USER_AGENT_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|USER_AGENT_PREFIX
+init|=
+literal|"fs.s3a.user.agent.prefix"
+decl_stmt|;
 block|}
 end_class
 
