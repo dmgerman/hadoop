@@ -64,20 +64,6 @@ name|services
 operator|.
 name|s3
 operator|.
-name|AmazonS3Client
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|amazonaws
-operator|.
-name|services
-operator|.
-name|s3
-operator|.
 name|model
 operator|.
 name|CannedAccessControlList
@@ -144,22 +130,6 @@ name|s3
 operator|.
 name|transfer
 operator|.
-name|TransferManagerConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|amazonaws
-operator|.
-name|services
-operator|.
-name|s3
-operator|.
-name|transfer
-operator|.
 name|Upload
 import|;
 end_import
@@ -175,6 +145,34 @@ operator|.
 name|lang
 operator|.
 name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
 import|;
 end_import
 
@@ -340,7 +338,19 @@ name|*
 import|;
 end_import
 
+begin_comment
+comment|/**  * Output stream to save data to S3.  */
+end_comment
+
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|S3AOutputStream
 specifier|public
 class|class
@@ -517,25 +527,17 @@ name|serverSideEncryptionAlgorithm
 expr_stmt|;
 name|partSize
 operator|=
-name|conf
+name|fs
 operator|.
-name|getLong
-argument_list|(
-name|MULTIPART_SIZE
-argument_list|,
-name|DEFAULT_MULTIPART_SIZE
-argument_list|)
+name|getPartitionSize
+argument_list|()
 expr_stmt|;
 name|partSizeThreshold
 operator|=
-name|conf
+name|fs
 operator|.
-name|getLong
-argument_list|(
-name|MIN_MULTIPART_THRESHOLD
-argument_list|,
-name|DEFAULT_MIN_MULTIPART_THRESHOLD
-argument_list|)
+name|getMultiPartThreshold
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -590,30 +592,17 @@ name|closed
 operator|=
 literal|false
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"OutputStream for key '"
-operator|+
+literal|"OutputStream for key '{}' writing to tempfile: {}"
+argument_list|,
 name|key
-operator|+
-literal|"' writing to tempfile: "
-operator|+
-name|this
-operator|.
+argument_list|,
 name|backupFile
 argument_list|)
 expr_stmt|;
-block|}
 name|this
 operator|.
 name|backupStream
@@ -668,39 +657,26 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"OutputStream for key '"
-operator|+
+literal|"OutputStream for key '{}' closed. Now beginning upload"
+argument_list|,
 name|key
-operator|+
-literal|"' closed. Now beginning upload"
 argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Minimum upload part size: "
-operator|+
+literal|"Minimum upload part size: {} threshold {}"
+argument_list|,
 name|partSize
-operator|+
-literal|" threshold "
-operator|+
+argument_list|,
 name|partSizeThreshold
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 specifier|final
@@ -974,6 +950,7 @@ name|len
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Listener to progress from AWS regarding transfers.    */
 DECL|class|ProgressableProgressListener
 specifier|public
 specifier|static

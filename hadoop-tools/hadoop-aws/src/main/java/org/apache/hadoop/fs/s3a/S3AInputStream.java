@@ -66,6 +66,76 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CanSetReadahead
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -136,41 +206,38 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|SocketTimeoutException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|SocketException
-import|;
-end_import
+begin_comment
+comment|/**  * The input stream for an S3A object.  *  * As this stream seeks withing an object, it may close then re-open the stream.  * When this happens, any updated stream data may be retrieved, and, given  * the consistency model of Amazon S3, outdated data may in fact be picked up.  *  * As a result, the outcome of reading from a stream of an object which is  * actively manipulated during the read process is "undefined".  *  * The class is marked as private as code should not be creating instances  * themselves. Any extra feature (e.g instrumentation) should be considered  * unstable.  *  * Because it prints some of the state of the instrumentation,  * the output of {@link #toString()} must also be considered unstable.  */
+end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|S3AInputStream
 specifier|public
 class|class
 name|S3AInputStream
 extends|extends
 name|FSInputStream
+implements|implements
+name|CanSetReadahead
 block|{
+comment|/**    * This is the public position; the one set in {@link #seek(long)}    * and returned in {@link #getPos()}.    */
 DECL|field|pos
 specifier|private
 name|long
 name|pos
 decl_stmt|;
+comment|/**    * Closed bit. Volatile so reads are non-blocking.    * Updates must be in a synchronized block to guarantee an atomic check and    * set    */
 DECL|field|closed
 specifier|private
+specifier|volatile
 name|boolean
 name|closed
 decl_stmt|;
@@ -237,19 +304,32 @@ name|CLOSE_THRESHOLD
 init|=
 literal|4096
 decl_stmt|;
-comment|// Used by lazy seek
+DECL|field|streamStatistics
+specifier|private
+specifier|final
+name|S3AInstrumentation
+operator|.
+name|InputStreamStatistics
+name|streamStatistics
+decl_stmt|;
+DECL|field|readahead
+specifier|private
+name|long
+name|readahead
+decl_stmt|;
+comment|/**    * This is the actual position within the object, used by    * lazy seek to decide whether to seek on the next read or not.    */
 DECL|field|nextReadPos
 specifier|private
 name|long
 name|nextReadPos
 decl_stmt|;
-comment|//Amount of data requested from the request
+comment|/* Amount of data desired from the request */
 DECL|field|requestedStreamLen
 specifier|private
 name|long
 name|requestedStreamLen
 decl_stmt|;
-DECL|method|S3AInputStream (String bucket, String key, long contentLength, AmazonS3Client client, FileSystem.Statistics stats)
+DECL|method|S3AInputStream (String bucket, String key, long contentLength, AmazonS3Client client, FileSystem.Statistics stats, S3AInstrumentation instrumentation, long readahead)
 specifier|public
 name|S3AInputStream
 parameter_list|(
@@ -269,8 +349,53 @@ name|FileSystem
 operator|.
 name|Statistics
 name|stats
+parameter_list|,
+name|S3AInstrumentation
+name|instrumentation
+parameter_list|,
+name|long
+name|readahead
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|StringUtils
+operator|.
+name|isNotEmpty
+argument_list|(
+name|bucket
+argument_list|)
+argument_list|,
+literal|"No Bucket"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|StringUtils
+operator|.
+name|isNotEmpty
+argument_list|(
+name|key
+argument_list|)
+argument_list|,
+literal|"No Key"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|contentLength
+operator|>=
+literal|0
+argument_list|,
+literal|"Negative content length"
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|bucket
@@ -300,30 +425,6 @@ operator|.
 name|stats
 operator|=
 name|stats
-expr_stmt|;
-name|this
-operator|.
-name|pos
-operator|=
-literal|0
-expr_stmt|;
-name|this
-operator|.
-name|nextReadPos
-operator|=
-literal|0
-expr_stmt|;
-name|this
-operator|.
-name|closed
-operator|=
-literal|false
-expr_stmt|;
-name|this
-operator|.
-name|wrappedStream
-operator|=
-literal|null
 expr_stmt|;
 name|this
 operator|.
@@ -341,14 +442,31 @@ name|this
 operator|.
 name|key
 expr_stmt|;
+name|this
+operator|.
+name|streamStatistics
+operator|=
+name|instrumentation
+operator|.
+name|newInputStreamStatistics
+argument_list|()
+expr_stmt|;
+name|setReadahead
+argument_list|(
+name|readahead
+argument_list|)
+expr_stmt|;
 block|}
-comment|/**    * Opens up the stream at specified target position and for given length.    *    * @param targetPos target position    * @param length length requested    * @throws IOException    */
-DECL|method|reopen (long targetPos, long length)
+comment|/**    * Opens up the stream at specified target position and for given length.    *    * @param reason reason for reopen    * @param targetPos target position    * @param length length requested    * @throws IOException    */
+DECL|method|reopen (String reason, long targetPos, long length)
 specifier|private
 specifier|synchronized
 name|void
 name|reopen
 parameter_list|(
+name|String
+name|reason
+parameter_list|,
 name|long
 name|targetPos
 parameter_list|,
@@ -360,34 +478,9 @@ name|IOException
 block|{
 name|requestedStreamLen
 operator|=
-operator|(
-name|length
-operator|<
-literal|0
-operator|)
-condition|?
 name|this
 operator|.
 name|contentLength
-else|:
-name|Math
-operator|.
-name|max
-argument_list|(
-name|this
-operator|.
-name|contentLength
-argument_list|,
-operator|(
-name|CLOSE_THRESHOLD
-operator|+
-operator|(
-name|targetPos
-operator|+
-name|length
-operator|)
-operator|)
-argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -396,64 +489,46 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Closing the previous stream"
-argument_list|)
-expr_stmt|;
-block|}
 name|closeStream
 argument_list|(
+literal|"reopen("
+operator|+
+name|reason
+operator|+
+literal|")"
+argument_list|,
 name|requestedStreamLen
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Requesting for "
+literal|"reopen({}) for {} at targetPos={}, length={},"
 operator|+
-literal|"targetPos="
-operator|+
+literal|" requestedStreamLen={}, streamPosition={}, nextReadPosition={}"
+argument_list|,
+name|uri
+argument_list|,
+name|reason
+argument_list|,
 name|targetPos
-operator|+
-literal|", length="
-operator|+
+argument_list|,
 name|length
-operator|+
-literal|", requestedStreamLen="
-operator|+
+argument_list|,
 name|requestedStreamLen
-operator|+
-literal|", streamPosition="
-operator|+
+argument_list|,
 name|pos
-operator|+
-literal|", nextReadPosition="
-operator|+
+argument_list|,
 name|nextReadPos
 argument_list|)
 expr_stmt|;
-block|}
+name|streamStatistics
+operator|.
+name|streamOpened
+argument_list|()
+expr_stmt|;
 name|GetObjectRequest
 name|request
 init|=
@@ -495,7 +570,13 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Null IO stream"
+literal|"Null IO stream from reopen of ("
+operator|+
+name|reason
+operator|+
+literal|") "
+operator|+
+name|uri
 argument_list|)
 throw|;
 block|}
@@ -585,6 +666,45 @@ operator|=
 name|targetPos
 expr_stmt|;
 block|}
+comment|/**    * Seek without raising any exception. This is for use in    * {@code finally} clauses    * @param positiveTargetPos a target position which must be positive.    */
+DECL|method|seekQuietly (long positiveTargetPos)
+specifier|private
+name|void
+name|seekQuietly
+parameter_list|(
+name|long
+name|positiveTargetPos
+parameter_list|)
+block|{
+try|try
+block|{
+name|seek
+argument_list|(
+name|positiveTargetPos
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Ignoring IOE on seek of {} to {}"
+argument_list|,
+name|uri
+argument_list|,
+name|positiveTargetPos
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Adjust the stream to a specific position.    *    * @param targetPos target seek position    * @param length length of content that needs to be read from targetPos    * @throws IOException    */
 DECL|method|seekInStream (long targetPos, long length)
 specifier|private
@@ -622,62 +742,170 @@ name|pos
 decl_stmt|;
 if|if
 condition|(
-name|targetPos
+name|diff
 operator|>
-name|pos
+literal|0
 condition|)
 block|{
-if|if
-condition|(
-operator|(
-name|diff
-operator|+
-name|length
-operator|)
-operator|<=
+comment|// forward seek -this is where data can be skipped
+name|int
+name|available
+init|=
 name|wrappedStream
 operator|.
 name|available
 argument_list|()
+decl_stmt|;
+comment|// always seek at least as far as what is available
+name|long
+name|forwardSeekRange
+init|=
+name|Math
+operator|.
+name|max
+argument_list|(
+name|readahead
+argument_list|,
+name|available
+argument_list|)
+decl_stmt|;
+comment|// work out how much is actually left in the stream
+comment|// then choose whichever comes first: the range or the EOF
+name|long
+name|forwardSeekLimit
+init|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|remaining
+argument_list|()
+argument_list|,
+name|forwardSeekRange
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|diff
+operator|<=
+name|forwardSeekLimit
 condition|)
 block|{
-comment|// already available in buffer
-name|pos
-operator|+=
+comment|// the forward seek range is within the limits
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Forward seek on {}, of {} bytes"
+argument_list|,
+name|uri
+argument_list|,
+name|diff
+argument_list|)
+expr_stmt|;
+name|streamStatistics
+operator|.
+name|seekForwards
+argument_list|(
+name|diff
+argument_list|)
+expr_stmt|;
+name|long
+name|skipped
+init|=
 name|wrappedStream
 operator|.
 name|skip
 argument_list|(
 name|diff
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|skipped
+operator|>
+literal|0
+condition|)
+block|{
+name|pos
+operator|+=
+name|skipped
 expr_stmt|;
+comment|// as these bytes have been read, they are included in the counter
+name|incrementBytesRead
+argument_list|(
+name|diff
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|pos
-operator|!=
+operator|==
 name|targetPos
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Failed to seek to "
-operator|+
-name|targetPos
-operator|+
-literal|". Current position "
-operator|+
-name|pos
-argument_list|)
-throw|;
-block|}
+comment|// all is well
 return|return;
 block|}
+else|else
+block|{
+comment|// log a warning; continue to attempt to re-open
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to seek on {} to {}. Current position {}"
+argument_list|,
+name|uri
+argument_list|,
+name|targetPos
+argument_list|,
+name|pos
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|diff
+operator|<
+literal|0
+condition|)
+block|{
+comment|// backwards seek
+name|streamStatistics
+operator|.
+name|seekBackwards
+argument_list|(
+name|diff
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// targetPos == pos
+comment|// this should never happen as the caller filters it out.
+comment|// Retained just in case
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Ignoring seek {} to {} as target position == current"
+argument_list|,
+name|uri
+argument_list|,
+name|targetPos
+argument_list|)
+expr_stmt|;
 block|}
 comment|// close the stream; if read the object will be opened at the new pos
 name|closeStream
 argument_list|(
+literal|"seekInStream()"
+argument_list|,
 name|this
 operator|.
 name|requestedStreamLen
@@ -748,9 +976,48 @@ condition|)
 block|{
 name|reopen
 argument_list|(
+literal|"read from new offset"
+argument_list|,
 name|targetPos
 argument_list|,
 name|len
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Increment the bytes read counter if there is a stats instance    * and the number of bytes read is more than zero.    * @param bytesRead number of bytes read    */
+DECL|method|incrementBytesRead (long bytesRead)
+specifier|private
+name|void
+name|incrementBytesRead
+parameter_list|(
+name|long
+name|bytesRead
+parameter_list|)
+block|{
+name|streamStatistics
+operator|.
+name|bytesRead
+argument_list|(
+name|bytesRead
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|stats
+operator|!=
+literal|null
+operator|&&
+name|bytesRead
+operator|>
+literal|0
+condition|)
+block|{
+name|stats
+operator|.
+name|incrementBytesRead
+argument_list|(
+name|bytesRead
 argument_list|)
 expr_stmt|;
 block|}
@@ -811,26 +1078,24 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|SocketTimeoutException
-decl||
-name|SocketException
+name|EOFException
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Got exception while trying to read from stream,"
-operator|+
-literal|" trying to recover "
-operator|+
+return|return
+operator|-
+literal|1
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
 name|e
-argument_list|)
-expr_stmt|;
-name|reopen
+parameter_list|)
+block|{
+name|onReadFailure
 argument_list|(
-name|pos
+name|e
 argument_list|,
 literal|1
 argument_list|)
@@ -842,17 +1107,6 @@ operator|.
 name|read
 argument_list|()
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|EOFException
-name|e
-parameter_list|)
-block|{
-return|return
-operator|-
-literal|1
-return|;
 block|}
 if|if
 condition|(
@@ -870,17 +1124,11 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|stats
-operator|!=
-literal|null
-operator|&&
 name|byteRead
 operator|>=
 literal|0
 condition|)
 block|{
-name|stats
-operator|.
 name|incrementBytesRead
 argument_list|(
 literal|1
@@ -891,6 +1139,61 @@ return|return
 name|byteRead
 return|;
 block|}
+comment|/**    * Handle an IOE on a read by attempting to re-open the stream.    * The filesystem's readException count will be incremented.    * @param ioe exception caught.    * @param length length of data being attempted to read    * @throws IOException any exception thrown on the re-open attempt.    */
+DECL|method|onReadFailure (IOException ioe, int length)
+specifier|private
+name|void
+name|onReadFailure
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|,
+name|int
+name|length
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Got exception while trying to read from stream {}"
+operator|+
+literal|" trying to recover: "
+operator|+
+name|ioe
+argument_list|,
+name|uri
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"While trying to read from stream {}"
+argument_list|,
+name|uri
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+name|streamStatistics
+operator|.
+name|readException
+argument_list|()
+expr_stmt|;
+name|reopen
+argument_list|(
+literal|"failure recovery"
+argument_list|,
+name|pos
+argument_list|,
+name|length
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * {@inheritDoc}    *    * This updates the statistics on read operations started and whether    * or not the read operation "completed", that is: returned the exact    * number of bytes requested.    * @throws EOFException if there is no more data    * @throws IOException if there are other problems    */
 annotation|@
 name|Override
 DECL|method|read (byte[] buf, int off, int len)
@@ -964,12 +1267,21 @@ argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
+name|streamStatistics
+operator|.
+name|readOperationStarted
+argument_list|(
+name|nextReadPos
+argument_list|,
+name|len
+argument_list|)
+expr_stmt|;
 name|int
-name|byteRead
+name|bytesRead
 decl_stmt|;
 try|try
 block|{
-name|byteRead
+name|bytesRead
 operator|=
 name|wrappedStream
 operator|.
@@ -985,31 +1297,28 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|SocketTimeoutException
-decl||
-name|SocketException
+name|EOFException
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Got exception while trying to read from stream,"
-operator|+
-literal|" trying to recover "
-operator|+
+throw|throw
 name|e
-argument_list|)
-expr_stmt|;
-name|reopen
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|onReadFailure
 argument_list|(
-name|pos
+name|e
 argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
-name|byteRead
+name|bytesRead
 operator|=
 name|wrappedStream
 operator|.
@@ -1025,43 +1334,39 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|byteRead
+name|bytesRead
 operator|>
 literal|0
 condition|)
 block|{
 name|pos
 operator|+=
-name|byteRead
+name|bytesRead
 expr_stmt|;
 name|nextReadPos
 operator|+=
-name|byteRead
+name|bytesRead
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|stats
-operator|!=
-literal|null
-operator|&&
-name|byteRead
-operator|>
-literal|0
-condition|)
-block|{
-name|stats
-operator|.
 name|incrementBytesRead
 argument_list|(
-name|byteRead
+name|bytesRead
 argument_list|)
 expr_stmt|;
-block|}
+name|streamStatistics
+operator|.
+name|readOperationCompleted
+argument_list|(
+name|len
+argument_list|,
+name|bytesRead
+argument_list|)
+expr_stmt|;
 return|return
-name|byteRead
+name|bytesRead
 return|;
 block|}
+comment|/**    * Verify that the input stream is open. Non blocking; this gives    * the last state of the volatile {@link #closed} field.    * @throws IOException if the connection is closed.    */
 DECL|method|checkNotClosed ()
 specifier|private
 name|void
@@ -1079,6 +1384,10 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
+name|uri
+operator|+
+literal|": "
+operator|+
 name|FSExceptionMessages
 operator|.
 name|STREAM_IS_CLOSED
@@ -1086,6 +1395,7 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Close the stream.    * This triggers publishing of the stream statistics back to the filesystem    * statistics.    * This operation is synchronized, so that only one thread can attempt to    * close the connection; all later/blocked calls are no-ops.    * @throws IOException on any problem    */
 annotation|@
 name|Override
 DECL|method|close ()
@@ -1097,34 +1407,58 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|super
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+if|if
+condition|(
+operator|!
+name|closed
+condition|)
+block|{
 name|closed
 operator|=
 literal|true
 expr_stmt|;
+try|try
+block|{
+comment|// close or abort the stream
 name|closeStream
 argument_list|(
+literal|"close() operation"
+argument_list|,
 name|this
 operator|.
 name|contentLength
 argument_list|)
 expr_stmt|;
+comment|// this is actually a no-op
+name|super
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
-comment|/**    * Close a stream: decide whether to abort or close, based on    * the length of the stream and the current position.    *    * This does not set the {@link #closed} flag.    * @param length length of the stream.    * @throws IOException    */
-DECL|method|closeStream (long length)
+finally|finally
+block|{
+comment|// merge the statistics back into the FS statistics.
+name|streamStatistics
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**    * Close a stream: decide whether to abort or close, based on    * the length of the stream and the current position.    * If a close() is attempted and fails, the operation escalates to    * an abort.    *    * This does not set the {@link #closed} flag.    *    * @param reason reason for stream being closed; used in messages    * @param length length of the stream.    */
+DECL|method|closeStream (String reason, long length)
 specifier|private
 name|void
 name|closeStream
 parameter_list|(
+name|String
+name|reason
+parameter_list|,
 name|long
 name|length
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -1133,11 +1467,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|String
-name|reason
-init|=
-literal|null
-decl_stmt|;
 name|boolean
 name|shouldAbort
 init|=
@@ -1155,14 +1484,19 @@ condition|)
 block|{
 try|try
 block|{
-name|reason
-operator|=
-literal|"Closed stream"
-expr_stmt|;
+comment|// clean close. This will read to the end of the stream,
+comment|// so, while cleaner, can be pathological on a multi-GB object
 name|wrappedStream
 operator|.
 name|close
 argument_list|()
+expr_stmt|;
+name|streamStatistics
+operator|.
+name|streamClose
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -1176,7 +1510,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"When closing stream"
+literal|"When closing {} stream for {}"
+argument_list|,
+name|uri
+argument_list|,
+name|reason
 argument_list|,
 name|e
 argument_list|)
@@ -1199,39 +1537,41 @@ operator|.
 name|abort
 argument_list|()
 expr_stmt|;
-name|reason
-operator|=
-literal|"Closed stream with abort"
+name|streamStatistics
+operator|.
+name|streamClose
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"Stream {} {}: {}; streamPos={}, nextReadPos={},"
+operator|+
+literal|" length={}"
+argument_list|,
+name|uri
+argument_list|,
+operator|(
+name|shouldAbort
+condition|?
+literal|"aborted"
+else|:
+literal|"closed"
+operator|)
+argument_list|,
 name|reason
-operator|+
-literal|"; streamPos="
-operator|+
+argument_list|,
 name|pos
-operator|+
-literal|", nextReadPos="
-operator|+
+argument_list|,
 name|nextReadPos
-operator|+
-literal|", contentLength="
-operator|+
+argument_list|,
 name|length
 argument_list|)
 expr_stmt|;
-block|}
 name|wrappedStream
 operator|=
 literal|null
@@ -1255,13 +1595,8 @@ expr_stmt|;
 name|long
 name|remaining
 init|=
-name|this
-operator|.
-name|contentLength
-operator|-
-name|this
-operator|.
-name|pos
+name|remaining
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -1285,6 +1620,23 @@ operator|)
 name|remaining
 return|;
 block|}
+comment|/**    * Bytes left in stream.    * @return how many bytes are left to read    */
+DECL|method|remaining ()
+specifier|protected
+name|long
+name|remaining
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|contentLength
+operator|-
+name|this
+operator|.
+name|pos
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|markSupported ()
@@ -1297,8 +1649,13 @@ return|return
 literal|false
 return|;
 block|}
+comment|/**    * String value includes statistics as well as stream state.    *<b>Important: there are no guarantees as to the stability    * of this value.</b>    * @return a string value for printing in logs/diagnostics    */
 annotation|@
 name|Override
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|toString ()
 specifier|public
 name|String
@@ -1362,6 +1719,21 @@ name|sb
 operator|.
 name|append
 argument_list|(
+literal|" "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|streamStatistics
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
 literal|'}'
 argument_list|)
 expr_stmt|;
@@ -1406,6 +1778,15 @@ argument_list|,
 name|buffer
 argument_list|,
 name|offset
+argument_list|,
+name|length
+argument_list|)
+expr_stmt|;
+name|streamStatistics
+operator|.
+name|readFullyOperationStarted
+argument_list|(
+name|position
 argument_list|,
 name|length
 argument_list|)
@@ -1490,13 +1871,93 @@ block|}
 block|}
 finally|finally
 block|{
-name|seek
+name|seekQuietly
 argument_list|(
 name|oldPos
 argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**    * Access the input stream statistics.    * This is for internal testing and may be removed without warning.    * @return the statistics for this input stream    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|getS3AStreamStatistics ()
+specifier|public
+name|S3AInstrumentation
+operator|.
+name|InputStreamStatistics
+name|getS3AStreamStatistics
+parameter_list|()
+block|{
+return|return
+name|streamStatistics
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setReadahead (Long readahead)
+specifier|public
+name|void
+name|setReadahead
+parameter_list|(
+name|Long
+name|readahead
+parameter_list|)
+block|{
+if|if
+condition|(
+name|readahead
+operator|==
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|readahead
+operator|=
+name|Constants
+operator|.
+name|DEFAULT_READAHEAD_RANGE
+expr_stmt|;
+block|}
+else|else
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|readahead
+operator|>=
+literal|0
+argument_list|,
+literal|"Negative readahead value"
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|readahead
+operator|=
+name|readahead
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Get the current readahead value.    * @return a non-negative readahead value    */
+DECL|method|getReadahead ()
+specifier|public
+name|long
+name|getReadahead
+parameter_list|()
+block|{
+return|return
+name|readahead
+return|;
 block|}
 block|}
 end_class

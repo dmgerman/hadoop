@@ -267,7 +267,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delete everything. Used for testing.    * @throws IOException    */
+comment|/**    * Delete everything. Used for testing.    * @throws IOException on any problem    */
 DECL|method|purge ()
 name|void
 name|purge
@@ -275,7 +275,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Diagnostic method to dump all INodes to the console.    * @throws IOException    */
+comment|/**    * Diagnostic method to dump all INodes to the console.    * @throws IOException on any problem    */
 DECL|method|dump ()
 name|void
 name|dump

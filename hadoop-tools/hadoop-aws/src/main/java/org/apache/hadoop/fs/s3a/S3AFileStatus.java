@@ -26,6 +26,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileStatus
@@ -46,7 +74,19 @@ name|Path
 import|;
 end_import
 
+begin_comment
+comment|/**  * File status for an S3A "file".  * Modification time is trouble, see {@link #getModificationTime()}.  *  * The subclass is private as it should not be created directly.  */
+end_comment
+
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|S3AFileStatus
 specifier|public
 class|class
@@ -159,7 +199,7 @@ literal|"user.name"
 argument_list|)
 return|;
 block|}
-comment|/** Compare if this object is equal to another object    * @param   o the object to be compared.    * @return  true if two file status has the same path name; false if not.    */
+comment|/** Compare if this object is equal to another object.    * @param   o the object to be compared.    * @return  true if two file status has the same path name; false if not.    */
 annotation|@
 name|Override
 DECL|method|equals (Object o)

@@ -18,12 +18,58 @@ name|s3a
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_comment
+comment|/**  * All the constants used with the {@link S3AFileSystem}.  */
+end_comment
+
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|Constants
 specifier|public
+specifier|final
 class|class
 name|Constants
 block|{
+DECL|method|Constants ()
+specifier|private
+name|Constants
+parameter_list|()
+block|{   }
 comment|// s3 access key
 DECL|field|ACCESS_KEY
 specifier|public
@@ -513,6 +559,27 @@ name|String
 name|USER_AGENT_PREFIX
 init|=
 literal|"fs.s3a.user.agent.prefix"
+decl_stmt|;
+comment|/** read ahead buffer size to prevent connection re-establishments. */
+DECL|field|READAHEAD_RANGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|READAHEAD_RANGE
+init|=
+literal|"fs.s3a.readahead.range"
+decl_stmt|;
+DECL|field|DEFAULT_READAHEAD_RANGE
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_READAHEAD_RANGE
+init|=
+literal|64
+operator|*
+literal|1024
 decl_stmt|;
 block|}
 end_class

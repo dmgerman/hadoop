@@ -62,6 +62,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|InterruptedIOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|URI
@@ -472,6 +482,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -481,6 +505,34 @@ operator|.
 name|lang
 operator|.
 name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
 import|;
 end_import
 
@@ -692,7 +744,19 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_comment
+comment|/**  * The core S3A Filesystem implementation.  *  * This subclass is marked as private as code should not be creating it  * directly; use {@link FileSystem#get(Configuration)} and variants to  * create one.  *  * If cast to {@code S3AFileSystem}, extra methods and features may be accessed.  * Consider those private and unstable.  *  * Because it prints some of the state of the instrumentation,  * the output of {@link #toString()} must also be considered unstable.  */
+end_comment
+
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|S3AFileSystem
 specifier|public
 class|class
@@ -700,7 +764,7 @@ name|S3AFileSystem
 extends|extends
 name|FileSystem
 block|{
-comment|/**    * Default blocksize as used in blocksize and FS status queries    */
+comment|/**    * Default blocksize as used in blocksize and FS status queries.    */
 DECL|field|DEFAULT_BLOCKSIZE
 specifier|public
 specifier|static
@@ -790,6 +854,16 @@ specifier|private
 name|String
 name|serverSideEncryptionAlgorithm
 decl_stmt|;
+DECL|field|instrumentation
+specifier|private
+name|S3AInstrumentation
+name|instrumentation
+decl_stmt|;
+DECL|field|readAhead
+specifier|private
+name|long
+name|readAhead
+decl_stmt|;
 comment|// The maximum number of entries that can be deleted in any call to s3
 DECL|field|MAX_ENTRIES_TO_DELETE
 specifier|private
@@ -822,6 +896,19 @@ argument_list|(
 name|name
 argument_list|,
 name|conf
+argument_list|)
+expr_stmt|;
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|instrumentation
+operator|=
+operator|new
+name|S3AInstrumentation
+argument_list|(
+name|name
 argument_list|)
 expr_stmt|;
 name|uri
@@ -927,13 +1014,15 @@ name|awsConf
 operator|.
 name|setMaxConnections
 argument_list|(
-name|conf
-operator|.
-name|getInt
+name|intOption
 argument_list|(
+name|conf
+argument_list|,
 name|MAXIMUM_CONNECTIONS
 argument_list|,
 name|DEFAULT_MAXIMUM_CONNECTIONS
+argument_list|,
+literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -968,13 +1057,15 @@ name|awsConf
 operator|.
 name|setMaxErrorRetry
 argument_list|(
-name|conf
-operator|.
-name|getInt
+name|intOption
 argument_list|(
+name|conf
+argument_list|,
 name|MAX_ERROR_RETRIES
 argument_list|,
 name|DEFAULT_MAX_ERROR_RETRIES
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -982,13 +1073,15 @@ name|awsConf
 operator|.
 name|setConnectionTimeout
 argument_list|(
-name|conf
-operator|.
-name|getInt
+name|intOption
 argument_list|(
+name|conf
+argument_list|,
 name|ESTABLISH_TIMEOUT
 argument_list|,
 name|DEFAULT_ESTABLISH_TIMEOUT
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -996,13 +1089,15 @@ name|awsConf
 operator|.
 name|setSocketTimeout
 argument_list|(
-name|conf
-operator|.
-name|getInt
+name|intOption
 argument_list|(
+name|conf
+argument_list|,
 name|SOCKET_TIMEOUT
 argument_list|,
 name|DEFAULT_SOCKET_TIMEOUT
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1027,6 +1122,15 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Signer override = {}"
+argument_list|,
+name|signerOverride
+argument_list|)
+expr_stmt|;
 name|awsConf
 operator|.
 name|setSignerOverride
@@ -1062,13 +1166,15 @@ argument_list|)
 expr_stmt|;
 name|maxKeys
 operator|=
-name|conf
-operator|.
-name|getInt
+name|intOption
 argument_list|(
+name|conf
+argument_list|,
 name|MAX_PAGING_KEYS
 argument_list|,
 name|DEFAULT_MAX_PAGING_KEYS
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 name|partSize
@@ -1082,28 +1188,6 @@ argument_list|,
 name|DEFAULT_MULTIPART_SIZE
 argument_list|)
 expr_stmt|;
-name|multiPartThreshold
-operator|=
-name|conf
-operator|.
-name|getLong
-argument_list|(
-name|MIN_MULTIPART_THRESHOLD
-argument_list|,
-name|DEFAULT_MIN_MULTIPART_THRESHOLD
-argument_list|)
-expr_stmt|;
-name|enableMultiObjectsDelete
-operator|=
-name|conf
-operator|.
-name|getBoolean
-argument_list|(
-name|ENABLE_MULTI_DELETE
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|partSize
@@ -1133,6 +1217,17 @@ operator|*
 literal|1024
 expr_stmt|;
 block|}
+name|multiPartThreshold
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|MIN_MULTIPART_THRESHOLD
+argument_list|,
+name|DEFAULT_MIN_MULTIPART_THRESHOLD
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|multiPartThreshold
@@ -1162,6 +1257,42 @@ operator|*
 literal|1024
 expr_stmt|;
 block|}
+comment|//check but do not store the block size
+name|longOption
+argument_list|(
+name|conf
+argument_list|,
+name|FS_S3A_BLOCK_SIZE
+argument_list|,
+name|DEFAULT_BLOCKSIZE
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+name|enableMultiObjectsDelete
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|ENABLE_MULTI_DELETE
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|readAhead
+operator|=
+name|longOption
+argument_list|(
+name|conf
+argument_list|,
+name|READAHEAD_RANGE
+argument_list|,
+name|DEFAULT_READAHEAD_RANGE
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 name|int
 name|maxThreads
 init|=
@@ -1281,7 +1412,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileNotFoundException
 argument_list|(
 literal|"Bucket "
 operator|+
@@ -1305,11 +1436,6 @@ argument_list|(
 name|SERVER_SIDE_ENCRYPTION_ALGORITHM
 argument_list|)
 expr_stmt|;
-name|setConf
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|initProxySupport (Configuration conf, ClientConfiguration awsConf, boolean secureConnections)
 name|void
@@ -1325,8 +1451,6 @@ name|boolean
 name|secureConnections
 parameter_list|)
 throws|throws
-name|IllegalArgumentException
-throws|,
 name|IllegalArgumentException
 block|{
 name|String
@@ -1964,13 +2088,15 @@ decl_stmt|;
 name|long
 name|purgeExistingMultipartAge
 init|=
-name|conf
-operator|.
-name|getLong
+name|longOption
 argument_list|(
+name|conf
+argument_list|,
 name|PURGE_EXISTING_MULTIPART_AGE
 argument_list|,
 name|DEFAULT_PURGE_EXISTING_MULTIPART_AGE
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 if|if
@@ -1996,6 +2122,8 @@ operator|*
 literal|1000
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|transfers
 operator|.
 name|abortMultipartUploads
@@ -2005,6 +2133,49 @@ argument_list|,
 name|purgeBefore
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AmazonServiceException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|e
+operator|.
+name|getStatusCode
+argument_list|()
+operator|==
+literal|403
+condition|)
+block|{
+name|instrumentation
+operator|.
+name|errorIgnored
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Failed to abort multipart uploads against {},"
+operator|+
+literal|" FS may be read only"
+argument_list|,
+name|bucket
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+block|}
 block|}
 block|}
 comment|/**    * Return the access key and secret for S3 API use.    * Credentials may exist in configuration, within credential providers    * or indicated in the UserInfo of the name URI param.    * @param name the URI for which we need the access keys.    * @param conf the Configuration object to interogate for keys.    * @return AWSAccessKeys    */
@@ -2407,14 +2578,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -2424,7 +2587,6 @@ argument_list|,
 name|f
 argument_list|)
 expr_stmt|;
-block|}
 specifier|final
 name|FileStatus
 name|fileStatus
@@ -2476,6 +2638,10 @@ argument_list|,
 name|s3
 argument_list|,
 name|statistics
+argument_list|,
+name|instrumentation
+argument_list|,
+name|readAhead
 argument_list|)
 argument_list|)
 return|;
@@ -2541,6 +2707,11 @@ literal|" already exists"
 argument_list|)
 throw|;
 block|}
+name|instrumentation
+operator|.
+name|fileCreated
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|getConf
@@ -2588,7 +2759,8 @@ name|statistics
 argument_list|)
 return|;
 block|}
-comment|// We pass null to FSDataOutputStream so it won't count writes that are being buffered to a file
+comment|// We pass null to FSDataOutputStream so it won't count writes that
+comment|// are being buffered to a file
 return|return
 operator|new
 name|FSDataOutputStream
@@ -2661,14 +2833,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -2680,7 +2844,6 @@ argument_list|,
 name|dst
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|srcKey
 init|=
@@ -2710,22 +2873,17 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"rename: src or dst are empty"
+literal|"rename: source {} or dest {}, is empty"
+argument_list|,
+name|srcKey
+argument_list|,
+name|dstKey
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -2772,22 +2930,15 @@ name|dstKey
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"rename: src and dst refer to the same file or directory"
+literal|"rename: src and dst refer to the same file or directory: {}"
+argument_list|,
+name|dst
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|srcStatus
 operator|.
@@ -2822,22 +2973,17 @@ name|isFile
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"rename: src is a directory and dst is a file"
+literal|"rename: src {} is a directory and dst {} is a file"
+argument_list|,
+name|src
+argument_list|,
+name|dst
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -2867,6 +3013,15 @@ name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"rename: destination path {} not found"
+argument_list|,
+name|dst
+argument_list|)
+expr_stmt|;
 comment|// Parent must exist
 name|Path
 name|parent
@@ -2921,6 +3076,17 @@ name|FileNotFoundException
 name|e2
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"rename: destination path {} has no parent {}"
+argument_list|,
+name|dst
+argument_list|,
+name|parent
+argument_list|)
+expr_stmt|;
 return|return
 literal|false
 return|;
@@ -2936,28 +3102,17 @@ name|isFile
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"rename: renaming file "
-operator|+
+literal|"rename: renaming file {} to {}"
+argument_list|,
 name|src
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|dst
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|dstStatus
@@ -3025,6 +3180,11 @@ argument_list|(
 name|srcKey
 argument_list|,
 name|newDstKey
+argument_list|,
+name|srcStatus
+operator|.
+name|getLen
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -3035,6 +3195,11 @@ argument_list|(
 name|srcKey
 argument_list|,
 name|dstKey
+argument_list|,
+name|srcStatus
+operator|.
+name|getLen
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -3048,28 +3213,17 @@ expr_stmt|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"rename: renaming directory "
-operator|+
+literal|"rename: renaming directory {} to {}"
+argument_list|,
 name|src
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|dst
 argument_list|)
 expr_stmt|;
-block|}
 comment|// This is a directory to directory copy
 if|if
 condition|(
@@ -3118,22 +3272,19 @@ name|srcKey
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"cannot rename a directory to a subdirectory of self"
+literal|"cannot rename a directory {}"
+operator|+
+literal|" to a subdirectory of self: {}"
+argument_list|,
+name|srcKey
+argument_list|,
+name|dstKey
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -3281,6 +3432,11 @@ name|getKey
 argument_list|()
 argument_list|,
 name|newDstKey
+argument_list|,
+name|summary
+operator|.
+name|getSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -3428,6 +3584,16 @@ argument_list|(
 name|deleteRequest
 argument_list|)
 expr_stmt|;
+name|instrumentation
+operator|.
+name|fileDeleted
+argument_list|(
+name|keysToDelete
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|statistics
 operator|.
 name|incrementWriteOps
@@ -3473,6 +3639,16 @@ name|writeops
 operator|++
 expr_stmt|;
 block|}
+name|instrumentation
+operator|.
+name|fileDeleted
+argument_list|(
+name|keysToDelete
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|statistics
 operator|.
 name|incrementWriteOps
@@ -3508,28 +3684,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Delete path "
-operator|+
+literal|"Delete path {} - recursive {}"
+argument_list|,
 name|f
-operator|+
-literal|" - recursive "
-operator|+
+argument_list|,
 name|recursive
 argument_list|)
 expr_stmt|;
-block|}
 name|S3AFileStatus
 name|status
 decl_stmt|;
@@ -3549,26 +3714,20 @@ name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Couldn't delete "
-operator|+
+literal|"Couldn't delete {} - does not exist"
+argument_list|,
 name|f
-operator|+
-literal|" - does not exist"
 argument_list|)
 expr_stmt|;
-block|}
+name|instrumentation
+operator|.
+name|errorIgnored
+argument_list|()
+expr_stmt|;
 return|return
 literal|false
 return|;
@@ -3589,22 +3748,15 @@ name|isDirectory
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"delete: Path is a directory"
+literal|"delete: Path is a directory: {}"
+argument_list|,
+name|f
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
@@ -3676,22 +3828,15 @@ name|isEmptyDirectory
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleting fake empty directory"
+literal|"Deleting fake empty directory {}"
+argument_list|,
+name|key
 argument_list|)
 expr_stmt|;
-block|}
 name|s3
 operator|.
 name|deleteObject
@@ -3700,6 +3845,11 @@ name|bucket
 argument_list|,
 name|key
 argument_list|)
+expr_stmt|;
+name|instrumentation
+operator|.
+name|directoryDeleted
+argument_list|()
 expr_stmt|;
 name|statistics
 operator|.
@@ -3711,26 +3861,15 @@ expr_stmt|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Getting objects for directory prefix "
-operator|+
+literal|"Getting objects for directory prefix {} to delete"
+argument_list|,
 name|key
-operator|+
-literal|" to delete"
 argument_list|)
 expr_stmt|;
-block|}
 name|ListObjectsRequest
 name|request
 init|=
@@ -3823,27 +3962,18 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Got object to delete "
-operator|+
+literal|"Got object to delete {}"
+argument_list|,
 name|summary
 operator|.
 name|getKey
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|keys
@@ -3914,14 +4044,6 @@ block|}
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -3929,7 +4051,6 @@ argument_list|(
 literal|"delete: Path is a file"
 argument_list|)
 expr_stmt|;
-block|}
 name|s3
 operator|.
 name|deleteObject
@@ -3937,6 +4058,13 @@ argument_list|(
 name|bucket
 argument_list|,
 name|key
+argument_list|)
+expr_stmt|;
+name|instrumentation
+operator|.
+name|fileDeleted
+argument_list|(
+literal|1
 argument_list|)
 expr_stmt|;
 name|statistics
@@ -3993,24 +4121,15 @@ name|f
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Creating new fake directory at "
-operator|+
+literal|"Creating new fake directory at {}"
+argument_list|,
 name|f
 argument_list|)
 expr_stmt|;
-block|}
 name|createFakeDirectory
 argument_list|(
 name|bucket
@@ -4043,24 +4162,15 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"List status for path: "
-operator|+
+literal|"List status for path: {}"
+argument_list|,
 name|f
 argument_list|)
 expr_stmt|;
-block|}
 specifier|final
 name|List
 argument_list|<
@@ -4143,24 +4253,15 @@ argument_list|(
 name|maxKeys
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"listStatus: doing listObjects for directory "
-operator|+
+literal|"listStatus: doing listObjects for directory {}"
+argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
-block|}
 name|ObjectListing
 name|objects
 init|=
@@ -4245,24 +4346,15 @@ name|S3N_FOLDER_SUFFIX
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Ignoring: "
-operator|+
+literal|"Ignoring: {}"
+argument_list|,
 name|keyPath
 argument_list|)
 expr_stmt|;
-block|}
 continue|continue;
 block|}
 if|if
@@ -4296,24 +4388,15 @@ name|keyPath
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding: fd: "
-operator|+
+literal|"Adding: fd: {}"
+argument_list|,
 name|keyPath
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -4346,24 +4429,15 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding: fi: "
-operator|+
+literal|"Adding: fi: {}"
+argument_list|,
 name|keyPath
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 for|for
@@ -4419,38 +4493,21 @@ name|keyPath
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding: rd: "
-operator|+
+literal|"Adding: rd: {}"
+argument_list|,
 name|keyPath
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 if|if
 condition|(
 name|objects
 operator|.
 name|isTruncated
-argument_list|()
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
@@ -4461,7 +4518,6 @@ argument_list|(
 literal|"listStatus: list truncated - getting next batch"
 argument_list|)
 expr_stmt|;
-block|}
 name|objects
 operator|=
 name|s3
@@ -4487,24 +4543,15 @@ block|}
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding: rd (not a dir): "
-operator|+
+literal|"Adding: rd (not a dir): {}"
+argument_list|,
 name|f
 argument_list|)
 expr_stmt|;
-block|}
 name|result
 operator|.
 name|add
@@ -4529,22 +4576,22 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Set the current working directory for the given file system. All relative    * paths will be resolved relative to it.    *    * @param new_dir the current working directory.    */
-DECL|method|setWorkingDirectory (Path new_dir)
+comment|/**    * Set the current working directory for the given file system. All relative    * paths will be resolved relative to it.    *    * @param newDir the current working directory.    */
+DECL|method|setWorkingDirectory (Path newDir)
 specifier|public
 name|void
 name|setWorkingDirectory
 parameter_list|(
 name|Path
-name|new_dir
+name|newDir
 parameter_list|)
 block|{
 name|workingDir
 operator|=
-name|new_dir
+name|newDir
 expr_stmt|;
 block|}
-comment|/**    * Get the current working directory for the given file system    * @return the directory pathname    */
+comment|/**    * Get the current working directory for the given file system.    * @return the directory pathname    */
 DECL|method|getWorkingDirectory ()
 specifier|public
 name|Path
@@ -4572,24 +4619,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Making directory: "
-operator|+
+literal|"Making directory: {}"
+argument_list|,
 name|f
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|FileStatus
@@ -4677,7 +4715,13 @@ parameter_list|(
 name|FileNotFoundException
 name|fnfe
 parameter_list|)
-block|{         }
+block|{
+name|instrumentation
+operator|.
+name|errorIgnored
+argument_list|()
+expr_stmt|;
+block|}
 name|fPart
 operator|=
 name|fPart
@@ -4733,30 +4777,17 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Getting path status for "
-operator|+
+literal|"Getting path status for {}  ({})"
+argument_list|,
 name|f
-operator|+
-literal|" ("
-operator|+
+argument_list|,
 name|key
-operator|+
-literal|")"
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
@@ -4800,14 +4831,6 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -4815,7 +4838,6 @@ argument_list|(
 literal|"Found exact file: fake directory"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|S3AFileStatus
@@ -4837,14 +4859,6 @@ return|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -4852,7 +4866,6 @@ argument_list|(
 literal|"Found exact file: normal file"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|S3AFileStatus
@@ -4912,6 +4925,11 @@ condition|)
 block|{
 name|printAmazonServiceException
 argument_list|(
+name|f
+operator|.
+name|toString
+argument_list|()
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -4928,6 +4946,11 @@ parameter_list|)
 block|{
 name|printAmazonClientException
 argument_list|(
+name|f
+operator|.
+name|toString
+argument_list|()
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -4947,8 +4970,6 @@ literal|"/"
 argument_list|)
 condition|)
 block|{
-try|try
-block|{
 name|String
 name|newKey
 init|=
@@ -4956,6 +4977,8 @@ name|key
 operator|+
 literal|"/"
 decl_stmt|;
+try|try
+block|{
 name|ObjectMetadata
 name|meta
 init|=
@@ -4988,14 +5011,6 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -5003,7 +5018,6 @@ argument_list|(
 literal|"Found file (with /): fake directory"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|S3AFileStatus
@@ -5093,6 +5107,8 @@ condition|)
 block|{
 name|printAmazonServiceException
 argument_list|(
+name|newKey
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -5109,6 +5125,8 @@ parameter_list|)
 block|{
 name|printAmazonClientException
 argument_list|(
+name|newKey
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -5207,15 +5225,14 @@ operator|.
 name|isEmpty
 argument_list|()
 operator|||
+operator|!
 name|objects
 operator|.
 name|getObjectSummaries
 argument_list|()
 operator|.
-name|size
+name|isEmpty
 argument_list|()
-operator|>
-literal|0
 condition|)
 block|{
 if|if
@@ -5230,8 +5247,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Found path as directory (with /): "
-operator|+
+literal|"Found path as directory (with /): {}/{}"
+argument_list|,
 name|objects
 operator|.
 name|getCommonPrefixes
@@ -5239,9 +5256,7 @@ argument_list|()
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|"/"
-operator|+
+argument_list|,
 name|objects
 operator|.
 name|getObjectSummaries
@@ -5266,15 +5281,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Summary: "
-operator|+
+literal|"Summary: {} {}"
+argument_list|,
 name|summary
 operator|.
 name|getKey
 argument_list|()
-operator|+
-literal|" "
-operator|+
+argument_list|,
 name|summary
 operator|.
 name|getSize
@@ -5297,8 +5310,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Prefix: "
-operator|+
+literal|"Prefix: {}"
+argument_list|,
 name|prefix
 argument_list|)
 expr_stmt|;
@@ -5377,6 +5390,8 @@ condition|)
 block|{
 name|printAmazonServiceException
 argument_list|(
+name|key
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -5393,6 +5408,8 @@ parameter_list|)
 block|{
 name|printAmazonClientException
 argument_list|(
+name|key
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -5400,24 +5417,15 @@ throw|throw
 name|e
 throw|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Not Found: "
-operator|+
+literal|"Not Found: {}"
+argument_list|,
 name|f
 argument_list|)
 expr_stmt|;
-block|}
 throw|throw
 operator|new
 name|FileNotFoundException
@@ -5472,7 +5480,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileAlreadyExistsException
 argument_list|(
 name|dst
 operator|+
@@ -5480,28 +5488,17 @@ literal|" already exists"
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Copying local file from "
-operator|+
+literal|"Copying local file from {} to {}"
+argument_list|,
 name|src
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|dst
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Since we have a local file, we don't need to stream into a temporary file
 name|LocalFileSystem
 name|local
@@ -5615,6 +5612,13 @@ block|}
 block|}
 block|}
 decl_stmt|;
+name|statistics
+operator|.
+name|incrementWriteOps
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
 name|Upload
 name|up
 init|=
@@ -5639,13 +5643,6 @@ operator|.
 name|waitForUploadResult
 argument_list|()
 expr_stmt|;
-name|statistics
-operator|.
-name|incrementWriteOps
-argument_list|(
-literal|1
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -5655,9 +5652,17 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|InterruptedIOException
 argument_list|(
-literal|"Got interrupted, cancelling"
+literal|"Interrupted copying "
+operator|+
+name|src
+operator|+
+literal|" to "
+operator|+
+name|dst
+operator|+
+literal|", cancelling"
 argument_list|)
 throw|;
 block|}
@@ -5724,7 +5729,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**   * Override getCononicalServiceName because we don't support token in S3A   */
+comment|/**   * Override getCanonicalServiceName because we don't support token in S3A.   */
 annotation|@
 name|Override
 DECL|method|getCanonicalServiceName ()
@@ -5738,7 +5743,7 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|copyFile (String srcKey, String dstKey)
+DECL|method|copyFile (String srcKey, String dstKey, long size)
 specifier|private
 name|void
 name|copyFile
@@ -5748,32 +5753,24 @@ name|srcKey
 parameter_list|,
 name|String
 name|dstKey
+parameter_list|,
+name|long
+name|size
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"copyFile "
-operator|+
+literal|"copyFile {} -> {} "
+argument_list|,
 name|srcKey
-operator|+
-literal|" -> "
-operator|+
+argument_list|,
 name|dstKey
 argument_list|)
 expr_stmt|;
-block|}
 name|ObjectMetadata
 name|srcom
 init|=
@@ -5912,6 +5909,15 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
+name|instrumentation
+operator|.
+name|filesCopied
+argument_list|(
+literal|1
+argument_list|,
+name|size
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -5921,9 +5927,17 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|InterruptedIOException
 argument_list|(
-literal|"Got interrupted, cancelling"
+literal|"Interrupted copying "
+operator|+
+name|srcKey
+operator|+
+literal|" to "
+operator|+
+name|dstKey
+operator|+
+literal|", cancelling"
 argument_list|)
 throw|;
 block|}
@@ -6037,16 +6051,20 @@ condition|(
 literal|true
 condition|)
 block|{
-try|try
-block|{
 name|String
 name|key
 init|=
+literal|""
+decl_stmt|;
+try|try
+block|{
+name|key
+operator|=
 name|pathToKey
 argument_list|(
 name|f
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|key
@@ -6078,26 +6096,15 @@ name|isEmptyDirectory
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleting fake directory "
-operator|+
+literal|"Deleting fake directory {}/"
+argument_list|,
 name|key
-operator|+
-literal|"/"
 argument_list|)
 expr_stmt|;
-block|}
 name|s3
 operator|.
 name|deleteObject
@@ -6125,7 +6132,24 @@ decl||
 name|AmazonServiceException
 name|e
 parameter_list|)
-block|{       }
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"While deleting key {} "
+argument_list|,
+name|key
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|instrumentation
+operator|.
+name|errorIgnored
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|f
@@ -6306,6 +6330,11 @@ name|incrementWriteOps
 argument_list|(
 literal|1
 argument_list|)
+expr_stmt|;
+name|instrumentation
+operator|.
+name|directoryCreated
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Creates a copy of the passed {@link ObjectMetadata}.    * Does so without using the {@link ObjectMetadata#clone()} method,    * to avoid copying unnecessary headers.    * @param source the {@link ObjectMetadata} to copy    * @return a copy of {@link ObjectMetadata} with only relevant attributes    */
@@ -6676,7 +6705,7 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * Return the number of bytes that large input files should be optimally    * be split into to minimize i/o time.    * @deprecated use {@link #getDefaultBlockSize(Path)} instead    */
+comment|/**    * Return the number of bytes that large input files should be optimally    * be split into to minimize I/O time.    * @deprecated use {@link #getDefaultBlockSize(Path)} instead    */
 annotation|@
 name|Deprecated
 DECL|method|getDefaultBlockSize ()
@@ -6685,7 +6714,6 @@ name|long
 name|getDefaultBlockSize
 parameter_list|()
 block|{
-comment|// default to 32MB: large enough to minimize the impact of seeks
 return|return
 name|getConf
 argument_list|()
@@ -6698,11 +6726,14 @@ name|DEFAULT_BLOCKSIZE
 argument_list|)
 return|;
 block|}
-DECL|method|printAmazonServiceException (AmazonServiceException ase)
+DECL|method|printAmazonServiceException (String target, AmazonServiceException ase)
 specifier|private
 name|void
 name|printAmazonServiceException
 parameter_list|(
+name|String
+name|target
+parameter_list|,
 name|AmazonServiceException
 name|ase
 parameter_list|)
@@ -6711,17 +6742,28 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Caught an AmazonServiceException, which means your request made it "
-operator|+
-literal|"to Amazon S3, but was rejected with an error response for some reason."
+literal|"{}: caught an AmazonServiceException {}"
+argument_list|,
+name|target
+argument_list|,
+name|ase
 argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Error Message: "
+literal|"This means your request made it to Amazon S3,"
 operator|+
+literal|" but was rejected with an error response for some reason."
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Error Message: {}"
+argument_list|,
 name|ase
 operator|.
 name|getMessage
@@ -6732,8 +6774,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"HTTP Status Code: "
-operator|+
+literal|"HTTP Status Code: {}"
+argument_list|,
 name|ase
 operator|.
 name|getStatusCode
@@ -6744,8 +6786,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"AWS Error Code: "
-operator|+
+literal|"AWS Error Code: {}"
+argument_list|,
 name|ase
 operator|.
 name|getErrorCode
@@ -6756,8 +6798,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Error Type: "
-operator|+
+literal|"Error Type: {}"
+argument_list|,
 name|ase
 operator|.
 name|getErrorType
@@ -6768,8 +6810,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Request ID: "
-operator|+
+literal|"Request ID: {}"
+argument_list|,
 name|ase
 operator|.
 name|getRequestId
@@ -6780,8 +6822,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Class Name: "
-operator|+
+literal|"Class Name: {}"
+argument_list|,
 name|ase
 operator|.
 name|getClass
@@ -6791,12 +6833,24 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Exception"
+argument_list|,
+name|ase
+argument_list|)
+expr_stmt|;
 block|}
-DECL|method|printAmazonClientException (AmazonClientException ace)
+DECL|method|printAmazonClientException (String target, AmazonClientException ace)
 specifier|private
 name|void
 name|printAmazonClientException
 parameter_list|(
+name|String
+name|target
+parameter_list|,
 name|AmazonClientException
 name|ace
 parameter_list|)
@@ -6805,24 +6859,379 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Caught an AmazonClientException, which means the client encountered "
-operator|+
-literal|"a serious internal problem while trying to communicate with S3, "
-operator|+
-literal|"such as not being able to access the network."
+literal|"{}: caught an AmazonClientException {}"
+argument_list|,
+name|target
+argument_list|,
+name|ace
 argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Error Message: {}"
+literal|"This means the client encountered "
 operator|+
-name|ace
+literal|"a problem while trying to communicate with S3, "
+operator|+
+literal|"such as not being able to access the network."
 argument_list|,
 name|ace
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+specifier|final
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|(
+literal|"S3AFileSystem{"
+argument_list|)
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"uri="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|uri
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", workingDir="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|workingDir
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", partSize="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|partSize
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", enableMultiObjectsDelete="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|enableMultiObjectsDelete
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", maxKeys="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|maxKeys
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", cannedACL="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|cannedACL
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", readAhead="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|readAhead
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", blockSize="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getDefaultBlockSize
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", multiPartThreshold="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|multiPartThreshold
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|serverSideEncryptionAlgorithm
+operator|!=
+literal|null
+condition|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", serverSideEncryptionAlgorithm='"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|serverSideEncryptionAlgorithm
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|'\''
+argument_list|)
+expr_stmt|;
+block|}
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", statistics {"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|statistics
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"}"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", metrics {"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|instrumentation
+operator|.
+name|dump
+argument_list|(
+literal|"{"
+argument_list|,
+literal|"="
+argument_list|,
+literal|"} "
+argument_list|,
+literal|true
+argument_list|)
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"}"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|'}'
+argument_list|)
+expr_stmt|;
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+comment|/**    * Get the partition size for multipart operations.    * @return the value as set during initialization    */
+DECL|method|getPartitionSize ()
+specifier|public
+name|long
+name|getPartitionSize
+parameter_list|()
+block|{
+return|return
+name|partSize
+return|;
+block|}
+comment|/**    * Get the threshold for multipart files    * @return the value as set during initialization    */
+DECL|method|getMultiPartThreshold ()
+specifier|public
+name|long
+name|getMultiPartThreshold
+parameter_list|()
+block|{
+return|return
+name|multiPartThreshold
+return|;
+block|}
+comment|/**    * Get a integer option>= the minimum allowed value.    * @param conf configuration    * @param key key to look up    * @param defVal default value    * @param min minimum value    * @return the value    * @throws IllegalArgumentException if the value is below the minimum    */
+DECL|method|intOption (Configuration conf, String key, int defVal, int min)
+specifier|static
+name|int
+name|intOption
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|int
+name|defVal
+parameter_list|,
+name|int
+name|min
+parameter_list|)
+block|{
+name|int
+name|v
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|key
+argument_list|,
+name|defVal
+argument_list|)
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|v
+operator|>=
+name|min
+argument_list|,
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Value of %s: %d is below the minimum value %d"
+argument_list|,
+name|key
+argument_list|,
+name|v
+argument_list|,
+name|min
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|v
+return|;
+block|}
+comment|/**    * Get a long option>= the minimum allowed value.    * @param conf configuration    * @param key key to look up    * @param defVal default value    * @param min minimum value    * @return the value    * @throws IllegalArgumentException if the value is below the minimum    */
+DECL|method|longOption (Configuration conf, String key, long defVal, long min)
+specifier|static
+name|long
+name|longOption
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|long
+name|defVal
+parameter_list|,
+name|long
+name|min
+parameter_list|)
+block|{
+name|long
+name|v
+init|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|key
+argument_list|,
+name|defVal
+argument_list|)
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|v
+operator|>=
+name|min
+argument_list|,
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Value of %s: %d is below the minimum value %d"
+argument_list|,
+name|key
+argument_list|,
+name|v
+argument_list|,
+name|min
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|v
+return|;
 block|}
 comment|/**    * This is a simple encapsulation of the    * S3 access key and secret.    */
 DECL|class|AWSAccessKeys

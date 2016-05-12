@@ -108,7 +108,7 @@ specifier|private
 name|String
 name|secretAccessKey
 decl_stmt|;
-comment|/**    * @throws IllegalArgumentException if credentials for S3 cannot be    * determined.    * @throws IOException if credential providers are misconfigured and we have    *                     to talk to them.    */
+comment|/**    * @param uri bucket URI optionally containing username and password.    * @param conf configuration    * @throws IllegalArgumentException if credentials for S3 cannot be    * determined.    * @throws IOException if credential providers are misconfigured and we have    *                     to talk to them.    */
 DECL|method|initialize (URI uri, Configuration conf)
 specifier|public
 name|void

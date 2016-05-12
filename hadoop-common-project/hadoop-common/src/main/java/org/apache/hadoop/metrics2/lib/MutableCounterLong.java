@@ -118,6 +118,7 @@ name|AtomicLong
 argument_list|()
 decl_stmt|;
 DECL|method|MutableCounterLong (MetricsInfo info, long initValue)
+specifier|public
 name|MutableCounterLong
 parameter_list|(
 name|MetricsInfo

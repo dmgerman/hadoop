@@ -308,6 +308,20 @@ name|hadoop
 operator|.
 name|classification
 operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
 name|InterfaceStability
 import|;
 end_import
@@ -452,6 +466,10 @@ end_comment
 
 begin_class
 annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
@@ -561,7 +579,7 @@ specifier|private
 name|int
 name|bufferLimit
 decl_stmt|;
-comment|/**    * Creates a fast OutputStream that uploads to S3 from memory.    * For MultiPartUploads, as soon as sufficient bytes have been written to    * the stream a part is uploaded immediately (by using the low-level    * multi-part upload API on the AmazonS3Client).    *    * @param client AmazonS3Client used for S3 calls    * @param fs S3AFilesystem    * @param bucket S3 bucket name    * @param key S3 key name    * @param progress report progress in order to prevent timeouts    * @param statistics track FileSystem.Statistics on the performed operations    * @param cannedACL used CannedAccessControlList    * @param serverSideEncryptionAlgorithm algorithm for server side encryption    * @param partSize size of a single part in a multi-part upload (except    * last part)    * @param multiPartThreshold files at least this size use multi-part upload    * @throws IOException    */
+comment|/**    * Creates a fast OutputStream that uploads to S3 from memory.    * For MultiPartUploads, as soon as sufficient bytes have been written to    * the stream a part is uploaded immediately (by using the low-level    * multi-part upload API on the AmazonS3Client).    *    * @param client AmazonS3Client used for S3 calls    * @param fs S3AFilesystem    * @param bucket S3 bucket name    * @param key S3 key name    * @param progress report progress in order to prevent timeouts    * @param statistics track FileSystem.Statistics on the performed operations    * @param cannedACL used CannedAccessControlList    * @param serverSideEncryptionAlgorithm algorithm for server side encryption    * @param partSize size of a single part in a multi-part upload (except    * last part)    * @param multiPartThreshold files at least this size use multi-part upload    * @param threadPoolExecutor thread factory    * @throws IOException on any problem    */
 DECL|method|S3AFastOutputStream (AmazonS3Client client, S3AFileSystem fs, String bucket, String key, Progressable progress, FileSystem.Statistics statistics, CannedAccessControlList cannedACL, String serverSideEncryptionAlgorithm, long partSize, long multiPartThreshold, ExecutorService threadPoolExecutor)
 specifier|public
 name|S3AFastOutputStream
@@ -867,7 +885,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Writes a byte to the memory buffer. If this causes the buffer to reach    * its limit, the actual upload is submitted to the threadpool.    * @param b the int of which the lowest byte is written    * @throws IOException    */
+comment|/**    * Writes a byte to the memory buffer. If this causes the buffer to reach    * its limit, the actual upload is submitted to the threadpool.    * @param b the int of which the lowest byte is written    * @throws IOException on any problem    */
 annotation|@
 name|Override
 DECL|method|write (int b)
@@ -904,18 +922,18 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Writes a range of bytes from to the memory buffer. If this causes the    * buffer to reach its limit, the actual upload is submitted to the    * threadpool and the remainder of the array is written to memory    * (recursively).    * @param b byte array containing    * @param off offset in array where to start    * @param len number of bytes to be written    * @throws IOException    */
+comment|/**    * Writes a range of bytes from to the memory buffer. If this causes the    * buffer to reach its limit, the actual upload is submitted to the    * threadpool and the remainder of the array is written to memory    * (recursively).    * @param b byte array containing    * @param off offset in array where to start    * @param len number of bytes to be written    * @throws IOException on any problem    */
 annotation|@
 name|Override
-DECL|method|write (byte b[], int off, int len)
+DECL|method|write (byte[] b, int off, int len)
 specifier|public
 specifier|synchronized
 name|void
 name|write
 parameter_list|(
 name|byte
-name|b
 index|[]
+name|b
 parameter_list|,
 name|int
 name|off

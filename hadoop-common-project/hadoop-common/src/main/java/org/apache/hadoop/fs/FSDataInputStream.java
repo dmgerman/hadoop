@@ -895,6 +895,26 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * String value. Includes the string value of the inner stream    * @return the stream    */
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|super
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|": "
+operator|+
+name|in
+return|;
+block|}
 block|}
 end_class
 
