@@ -29,10 +29,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|Jets3tNativeS3FileSystemContractTest
+DECL|class|TestJets3tNativeS3FileSystemContract
 specifier|public
 class|class
-name|Jets3tNativeS3FileSystemContractTest
+name|TestJets3tNativeS3FileSystemContract
 extends|extends
 name|NativeS3FileSystemContractBaseTest
 block|{
