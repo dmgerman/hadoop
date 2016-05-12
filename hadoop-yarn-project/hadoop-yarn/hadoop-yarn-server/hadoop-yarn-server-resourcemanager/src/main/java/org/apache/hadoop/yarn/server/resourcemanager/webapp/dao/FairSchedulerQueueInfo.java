@@ -299,6 +299,11 @@ specifier|private
 name|ResourceInfo
 name|usedResources
 decl_stmt|;
+DECL|field|demandResources
+specifier|private
+name|ResourceInfo
+name|demandResources
+decl_stmt|;
 DECL|field|steadyFairResources
 specifier|private
 name|ResourceInfo
@@ -409,6 +414,17 @@ argument_list|(
 name|queue
 operator|.
 name|getResourceUsage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|demandResources
+operator|=
+operator|new
+name|ResourceInfo
+argument_list|(
+name|queue
+operator|.
+name|getDemand
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -848,6 +864,17 @@ parameter_list|()
 block|{
 return|return
 name|usedResources
+return|;
+block|}
+comment|/**    * @return the demand resource of this queue.      */
+DECL|method|getDemandResources ()
+specifier|public
+name|ResourceInfo
+name|getDemandResources
+parameter_list|()
+block|{
+return|return
+name|demandResources
 return|;
 block|}
 comment|/**    * Returns the queue's min share in as a fraction of the entire    * cluster capacity.    */

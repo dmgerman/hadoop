@@ -542,6 +542,19 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"Demand Resources:"
+argument_list|,
+name|qinfo
+operator|.
+name|getDemandResources
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"Num Active Applications:"
 argument_list|,
 name|qinfo
