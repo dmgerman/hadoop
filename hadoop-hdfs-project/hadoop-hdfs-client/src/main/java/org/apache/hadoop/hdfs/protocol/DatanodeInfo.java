@@ -312,6 +312,18 @@ name|DECOMMISSIONED
 argument_list|(
 literal|"Decommissioned"
 argument_list|)
+block|,
+DECL|enumConstant|ENTERING_MAINTENANCE
+name|ENTERING_MAINTENANCE
+argument_list|(
+literal|"Entering Maintenance"
+argument_list|)
+block|,
+DECL|enumConstant|IN_MAINTENANCE
+name|IN_MAINTENANCE
+argument_list|(
+literal|"In Maintenance"
+argument_list|)
 block|;
 DECL|field|value
 specifier|final
@@ -1780,6 +1792,36 @@ literal|"Decommission in progress\n"
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|isInMaintenance
+argument_list|()
+condition|)
+block|{
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"In maintenance\n"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|isEnteringMaintenance
+argument_list|()
+condition|)
+block|{
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"Entering maintenance\n"
+argument_list|)
+expr_stmt|;
+block|}
 else|else
 block|{
 name|buffer
@@ -2320,6 +2362,36 @@ literal|" DP"
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|isInMaintenance
+argument_list|()
+condition|)
+block|{
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|" IM"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|isEnteringMaintenance
+argument_list|()
+condition|)
+block|{
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|" EM"
+argument_list|)
+expr_stmt|;
+block|}
 else|else
 block|{
 name|buffer
@@ -2644,6 +2716,114 @@ name|AdminStates
 operator|.
 name|DECOMMISSIONED
 expr_stmt|;
+block|}
+comment|/**    * Put a node to maintenance mode.    */
+DECL|method|startMaintenance ()
+specifier|public
+name|void
+name|startMaintenance
+parameter_list|()
+block|{
+name|adminState
+operator|=
+name|AdminStates
+operator|.
+name|ENTERING_MAINTENANCE
+expr_stmt|;
+block|}
+comment|/**    * Put a node to maintenance mode.    */
+DECL|method|setInMaintenance ()
+specifier|public
+name|void
+name|setInMaintenance
+parameter_list|()
+block|{
+name|adminState
+operator|=
+name|AdminStates
+operator|.
+name|IN_MAINTENANCE
+expr_stmt|;
+block|}
+comment|/**    * Take the node out of maintenance mode.    */
+DECL|method|stopMaintenance ()
+specifier|public
+name|void
+name|stopMaintenance
+parameter_list|()
+block|{
+name|adminState
+operator|=
+literal|null
+expr_stmt|;
+block|}
+comment|/**    * Returns true if the node is is entering_maintenance    */
+DECL|method|isEnteringMaintenance ()
+specifier|public
+name|boolean
+name|isEnteringMaintenance
+parameter_list|()
+block|{
+return|return
+name|adminState
+operator|==
+name|AdminStates
+operator|.
+name|ENTERING_MAINTENANCE
+return|;
+block|}
+comment|/**    * Returns true if the node is in maintenance    */
+DECL|method|isInMaintenance ()
+specifier|public
+name|boolean
+name|isInMaintenance
+parameter_list|()
+block|{
+return|return
+name|adminState
+operator|==
+name|AdminStates
+operator|.
+name|IN_MAINTENANCE
+return|;
+block|}
+comment|/**    * Returns true if the node is entering or in maintenance    */
+DECL|method|isMaintenance ()
+specifier|public
+name|boolean
+name|isMaintenance
+parameter_list|()
+block|{
+return|return
+operator|(
+name|adminState
+operator|==
+name|AdminStates
+operator|.
+name|ENTERING_MAINTENANCE
+operator|||
+name|adminState
+operator|==
+name|AdminStates
+operator|.
+name|IN_MAINTENANCE
+operator|)
+return|;
+block|}
+DECL|method|isInService ()
+specifier|public
+name|boolean
+name|isInService
+parameter_list|()
+block|{
+return|return
+name|getAdminState
+argument_list|()
+operator|==
+name|AdminStates
+operator|.
+name|NORMAL
+return|;
 block|}
 comment|/**    * Retrieves the admin state of this node.    */
 DECL|method|getAdminState ()
