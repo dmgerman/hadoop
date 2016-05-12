@@ -396,6 +396,19 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
+DECL|method|storeContainerQueued (ContainerId containerId)
+specifier|public
+name|void
+name|storeContainerQueued
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
 DECL|method|storeContainerDiagnostics (ContainerId containerId, StringBuilder diagnostics)
 specifier|public
 name|void

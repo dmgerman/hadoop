@@ -444,6 +444,9 @@ block|{
 DECL|enumConstant|REQUESTED
 name|REQUESTED
 block|,
+DECL|enumConstant|QUEUED
+name|QUEUED
+block|,
 DECL|enumConstant|LAUNCHED
 name|LAUNCHED
 block|,
@@ -1266,6 +1269,19 @@ name|containerId
 parameter_list|,
 name|StartContainerRequest
 name|startRequest
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Record that a container has been queued at the NM    * @param containerId the container ID    * @throws IOException    */
+DECL|method|storeContainerQueued (ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|storeContainerQueued
+parameter_list|(
+name|ContainerId
+name|containerId
 parameter_list|)
 throws|throws
 name|IOException

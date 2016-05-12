@@ -850,6 +850,36 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|storeContainerQueued (ContainerId containerId)
+specifier|public
+name|void
+name|storeContainerQueued
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|RecoveredContainerState
+name|rcs
+init|=
+name|getRecoveredContainerState
+argument_list|(
+name|containerId
+argument_list|)
+decl_stmt|;
+name|rcs
+operator|.
+name|status
+operator|=
+name|RecoveredContainerStatus
+operator|.
+name|QUEUED
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|storeContainerDiagnostics (ContainerId containerId, StringBuilder diagnostics)
 specifier|public
 specifier|synchronized
