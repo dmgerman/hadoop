@@ -44,6 +44,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|contract
 operator|.
 name|AbstractBondedFSContract
@@ -51,7 +65,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The contract of S3N: only enabled if the test bucket is provided  */
+comment|/**  * The contract of S3N: only enabled if the test bucket is provided.  */
 end_comment
 
 begin_class
@@ -101,6 +115,45 @@ parameter_list|()
 block|{
 return|return
 literal|"s3n"
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getTestPath ()
+specifier|public
+name|Path
+name|getTestPath
+parameter_list|()
+block|{
+name|String
+name|testUniqueForkId
+init|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"test.unique.fork.id"
+argument_list|)
+decl_stmt|;
+return|return
+name|testUniqueForkId
+operator|==
+literal|null
+condition|?
+name|super
+operator|.
+name|getTestPath
+argument_list|()
+else|:
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+operator|+
+name|testUniqueForkId
+argument_list|,
+literal|"test"
+argument_list|)
 return|;
 block|}
 block|}
