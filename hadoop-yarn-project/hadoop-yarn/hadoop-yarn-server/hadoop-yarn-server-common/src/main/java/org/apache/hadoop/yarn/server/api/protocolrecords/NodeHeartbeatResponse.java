@@ -150,6 +150,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerQueuingLimit
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|MasterKey
 import|;
 end_import
@@ -392,6 +412,19 @@ argument_list|<
 name|Container
 argument_list|>
 name|containersToDecrease
+parameter_list|)
+function_decl|;
+DECL|method|getContainerQueuingLimit ()
+name|ContainerQueuingLimit
+name|getContainerQueuingLimit
+parameter_list|()
+function_decl|;
+DECL|method|setContainerQueuingLimit (ContainerQueuingLimit containerQueuingLimit)
+name|void
+name|setContainerQueuingLimit
+parameter_list|(
+name|ContainerQueuingLimit
+name|containerQueuingLimit
 parameter_list|)
 function_decl|;
 block|}

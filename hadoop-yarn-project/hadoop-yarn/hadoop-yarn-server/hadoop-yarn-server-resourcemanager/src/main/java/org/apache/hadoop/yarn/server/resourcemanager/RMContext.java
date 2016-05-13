@@ -396,6 +396,28 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|scheduler
+operator|.
+name|distributed
+operator|.
+name|QueueLimitCalculator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|security
 operator|.
 name|AMRMTokenSecretManager
@@ -770,6 +792,11 @@ function_decl|;
 DECL|method|getLeaderElectorService ()
 name|LeaderElectorService
 name|getLeaderElectorService
+parameter_list|()
+function_decl|;
+DECL|method|getNodeManagerQueueLimitCalculator ()
+name|QueueLimitCalculator
+name|getNodeManagerQueueLimitCalculator
 parameter_list|()
 function_decl|;
 block|}

@@ -216,7 +216,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|List
 import|;
 end_import
 
@@ -226,7 +226,19 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -266,11 +278,15 @@ name|TimeUnit
 import|;
 end_import
 
+begin_comment
+comment|/**  * The NodeQueueLoadMonitor keeps track of load metrics (such as queue length  * and total wait time) associated with Container Queues on the Node Manager.  * It uses this information to periodically sort the Nodes from least to most  * loaded.  */
+end_comment
+
 begin_class
-DECL|class|TopKNodeSelector
+DECL|class|NodeQueueLoadMonitor
 specifier|public
 class|class
-name|TopKNodeSelector
+name|NodeQueueLoadMonitor
 implements|implements
 name|ClusterMonitor
 block|{
@@ -284,26 +300,27 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|TopKNodeSelector
+name|NodeQueueLoadMonitor
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|enum|TopKComparator
+comment|/**    * The comparator used to specify the metric against which the load    * of two Nodes are compared.    */
+DECL|enum|LoadComparator
 specifier|public
 enum|enum
-name|TopKComparator
+name|LoadComparator
 implements|implements
 name|Comparator
 argument_list|<
 name|ClusterNode
 argument_list|>
 block|{
-DECL|enumConstant|WAIT_TIME
-name|WAIT_TIME
-block|,
 DECL|enumConstant|QUEUE_LENGTH
 name|QUEUE_LENGTH
+block|,
+DECL|enumConstant|QUEUE_WAIT_TIME
+name|QUEUE_WAIT_TIME
 block|;
 annotation|@
 name|Override
@@ -321,12 +338,12 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|getQuant
+name|getMetric
 argument_list|(
 name|o1
 argument_list|)
 operator|==
-name|getQuant
+name|getMetric
 argument_list|(
 name|o2
 argument_list|)
@@ -349,12 +366,12 @@ literal|1
 return|;
 block|}
 return|return
-name|getQuant
+name|getMetric
 argument_list|(
 name|o1
 argument_list|)
 operator|>
-name|getQuant
+name|getMetric
 argument_list|(
 name|o2
 argument_list|)
@@ -366,10 +383,10 @@ operator|-
 literal|1
 return|;
 block|}
-DECL|method|getQuant (ClusterNode c)
-specifier|private
+DECL|method|getMetric (ClusterNode c)
+specifier|public
 name|int
-name|getQuant
+name|getMetric
 parameter_list|(
 name|ClusterNode
 name|c
@@ -379,16 +396,16 @@ return|return
 operator|(
 name|this
 operator|==
-name|WAIT_TIME
+name|QUEUE_LENGTH
 operator|)
 condition|?
 name|c
 operator|.
-name|queueTime
+name|queueLength
 else|:
 name|c
 operator|.
-name|waitQueueLength
+name|queueWaitTime
 return|;
 block|}
 block|}
@@ -397,18 +414,18 @@ specifier|static
 class|class
 name|ClusterNode
 block|{
-DECL|field|queueTime
+DECL|field|queueLength
 name|int
-name|queueTime
+name|queueLength
+init|=
+literal|0
+decl_stmt|;
+DECL|field|queueWaitTime
+name|int
+name|queueWaitTime
 init|=
 operator|-
 literal|1
-decl_stmt|;
-DECL|field|waitQueueLength
-name|int
-name|waitQueueLength
-init|=
-literal|0
 decl_stmt|;
 DECL|field|timestamp
 name|double
@@ -437,39 +454,39 @@ name|updateTimestamp
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|setQueueTime (int queueTime)
+DECL|method|setQueueLength (int qLength)
 specifier|public
 name|ClusterNode
-name|setQueueTime
+name|setQueueLength
 parameter_list|(
 name|int
-name|queueTime
+name|qLength
 parameter_list|)
 block|{
 name|this
 operator|.
-name|queueTime
+name|queueLength
 operator|=
-name|queueTime
+name|qLength
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setWaitQueueLength (int queueLength)
+DECL|method|setQueueWaitTime (int wTime)
 specifier|public
 name|ClusterNode
-name|setWaitQueueLength
+name|setQueueWaitTime
 parameter_list|(
 name|int
-name|queueLength
+name|wTime
 parameter_list|)
 block|{
 name|this
 operator|.
-name|waitQueueLength
+name|queueWaitTime
 operator|=
-name|queueLength
+name|wTime
 expr_stmt|;
 return|return
 name|this
@@ -495,31 +512,25 @@ name|this
 return|;
 block|}
 block|}
-DECL|field|k
-specifier|private
-specifier|final
-name|int
-name|k
-decl_stmt|;
-DECL|field|topKNodes
-specifier|private
-specifier|final
-name|List
-argument_list|<
-name|NodeId
-argument_list|>
-name|topKNodes
-decl_stmt|;
 DECL|field|scheduledExecutor
 specifier|private
 specifier|final
 name|ScheduledExecutorService
 name|scheduledExecutor
 decl_stmt|;
+DECL|field|sortedNodes
+specifier|private
+specifier|final
+name|List
+argument_list|<
+name|NodeId
+argument_list|>
+name|sortedNodes
+decl_stmt|;
 DECL|field|clusterNodes
 specifier|private
 specifier|final
-name|HashMap
+name|Map
 argument_list|<
 name|NodeId
 argument_list|,
@@ -528,18 +539,20 @@ argument_list|>
 name|clusterNodes
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|comparator
 specifier|private
 specifier|final
-name|Comparator
-argument_list|<
-name|ClusterNode
-argument_list|>
+name|LoadComparator
 name|comparator
+decl_stmt|;
+DECL|field|thresholdCalculator
+specifier|private
+name|QueueLimitCalculator
+name|thresholdCalculator
 decl_stmt|;
 DECL|field|computeTask
 name|Runnable
@@ -558,47 +571,51 @@ parameter_list|()
 block|{
 synchronized|synchronized
 init|(
-name|topKNodes
+name|sortedNodes
 init|)
 block|{
-name|topKNodes
+name|sortedNodes
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|topKNodes
+name|sortedNodes
 operator|.
 name|addAll
 argument_list|(
-name|computeTopKNodes
+name|sortNodes
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|thresholdCalculator
+operator|!=
+literal|null
+condition|)
+block|{
+name|thresholdCalculator
+operator|.
+name|update
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
-DECL|method|TopKNodeSelector (int k, TopKComparator comparator)
-name|TopKNodeSelector
+DECL|method|NodeQueueLoadMonitor (LoadComparator comparator)
+name|NodeQueueLoadMonitor
 parameter_list|(
-name|int
-name|k
-parameter_list|,
-name|TopKComparator
+name|LoadComparator
 name|comparator
 parameter_list|)
 block|{
 name|this
 operator|.
-name|k
-operator|=
-name|k
-expr_stmt|;
-name|this
-operator|.
-name|topKNodes
+name|sortedNodes
 operator|=
 operator|new
 name|ArrayList
@@ -618,29 +635,20 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|TopKNodeSelector (int k, long nodeComputationInterval, TopKComparator comparator)
+DECL|method|NodeQueueLoadMonitor (long nodeComputationInterval, LoadComparator comparator)
 specifier|public
-name|TopKNodeSelector
+name|NodeQueueLoadMonitor
 parameter_list|(
-name|int
-name|k
-parameter_list|,
 name|long
 name|nodeComputationInterval
 parameter_list|,
-name|TopKComparator
+name|LoadComparator
 name|comparator
 parameter_list|)
 block|{
 name|this
 operator|.
-name|k
-operator|=
-name|k
-expr_stmt|;
-name|this
-operator|.
-name|topKNodes
+name|sortedNodes
 operator|=
 operator|new
 name|ArrayList
@@ -682,6 +690,86 @@ name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getSortedNodes ()
+name|List
+argument_list|<
+name|NodeId
+argument_list|>
+name|getSortedNodes
+parameter_list|()
+block|{
+return|return
+name|sortedNodes
+return|;
+block|}
+DECL|method|getThresholdCalculator ()
+specifier|public
+name|QueueLimitCalculator
+name|getThresholdCalculator
+parameter_list|()
+block|{
+return|return
+name|thresholdCalculator
+return|;
+block|}
+DECL|method|getClusterNodes ()
+name|Map
+argument_list|<
+name|NodeId
+argument_list|,
+name|ClusterNode
+argument_list|>
+name|getClusterNodes
+parameter_list|()
+block|{
+return|return
+name|clusterNodes
+return|;
+block|}
+DECL|method|getComparator ()
+name|Comparator
+argument_list|<
+name|ClusterNode
+argument_list|>
+name|getComparator
+parameter_list|()
+block|{
+return|return
+name|comparator
+return|;
+block|}
+DECL|method|initThresholdCalculator (float sigma, int limitMin, int limitMax)
+specifier|public
+name|void
+name|initThresholdCalculator
+parameter_list|(
+name|float
+name|sigma
+parameter_list|,
+name|int
+name|limitMin
+parameter_list|,
+name|int
+name|limitMax
+parameter_list|)
+block|{
+name|this
+operator|.
+name|thresholdCalculator
+operator|=
+operator|new
+name|QueueLimitCalculator
+argument_list|(
+name|this
+argument_list|,
+name|sigma
+argument_list|,
+name|limitMin
+argument_list|,
+name|limitMax
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|addNode (List<NMContainerStatus> containerStatuses, RMNode rmNode)
@@ -714,7 +802,7 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Ignoring this currently : atleast one NODE_UPDATE heartbeat is
+comment|// Ignoring this currently : at least one NODE_UPDATE heartbeat is
 comment|// required to ensure node eligibility.
 block|}
 annotation|@
@@ -804,10 +892,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|nodeUpdate (RMNode rmNode)
+DECL|method|updateNode (RMNode rmNode)
 specifier|public
 name|void
-name|nodeUpdate
+name|updateNode
 parameter_list|(
 name|RMNode
 name|rmNode
@@ -849,8 +937,8 @@ operator|.
 name|getWaitQueueLength
 argument_list|()
 decl_stmt|;
-comment|// Add nodes to clusterNodes.. if estimatedQueueTime is -1, Ignore node
-comment|// UNLESS comparator is based on queue length, in which case, we should add
+comment|// Add nodes to clusterNodes. If estimatedQueueTime is -1, ignore node
+comment|// UNLESS comparator is based on queue length.
 synchronized|synchronized
 init|(
 name|this
@@ -889,7 +977,7 @@ literal|1
 operator|||
 name|comparator
 operator|==
-name|TopKComparator
+name|LoadComparator
 operator|.
 name|QUEUE_LENGTH
 condition|)
@@ -914,12 +1002,12 @@ name|getNodeID
 argument_list|()
 argument_list|)
 operator|.
-name|setQueueTime
+name|setQueueWaitTime
 argument_list|(
 name|estimatedQueueWaitTime
 argument_list|)
 operator|.
-name|setWaitQueueLength
+name|setQueueLength
 argument_list|(
 name|waitQueueLength
 argument_list|)
@@ -993,19 +1081,19 @@ literal|1
 operator|||
 name|comparator
 operator|==
-name|TopKComparator
+name|LoadComparator
 operator|.
 name|QUEUE_LENGTH
 condition|)
 block|{
 name|currentNode
 operator|.
-name|setQueueTime
+name|setQueueWaitTime
 argument_list|(
 name|estimatedQueueWaitTime
 argument_list|)
 operator|.
-name|setWaitQueueLength
+name|setQueueLength
 argument_list|(
 name|waitQueueLength
 argument_list|)
@@ -1071,7 +1159,7 @@ literal|"with queue wait time ["
 operator|+
 name|currentNode
 operator|.
-name|queueTime
+name|queueWaitTime
 operator|+
 literal|"] and "
 operator|+
@@ -1079,7 +1167,7 @@ literal|"wait queue length ["
 operator|+
 name|currentNode
 operator|.
-name|waitQueueLength
+name|queueLength
 operator|+
 literal|"]"
 argument_list|)
@@ -1114,8 +1202,9 @@ name|getNodeID
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Ignoring this currently...
+comment|// Ignoring this currently.
 block|}
+comment|/**    * Returns all Node Ids as ordered list from Least to Most Loaded.    * @return ordered list of nodes    */
 DECL|method|selectNodes ()
 specifier|public
 name|List
@@ -1125,24 +1214,53 @@ argument_list|>
 name|selectNodes
 parameter_list|()
 block|{
+return|return
+name|selectLeastLoadedNodes
+argument_list|(
+operator|-
+literal|1
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns 'K' of the least Loaded Node Ids as ordered list.    * @param k max number of nodes to return    * @return ordered list of nodes    */
+DECL|method|selectLeastLoadedNodes (int k)
+specifier|public
+name|List
+argument_list|<
+name|NodeId
+argument_list|>
+name|selectLeastLoadedNodes
+parameter_list|(
+name|int
+name|k
+parameter_list|)
+block|{
 synchronized|synchronized
 init|(
 name|this
 operator|.
-name|topKNodes
+name|sortedNodes
 init|)
 block|{
 return|return
-name|this
-operator|.
+operator|(
+operator|(
 name|k
 operator|<
 name|this
 operator|.
-name|topKNodes
+name|sortedNodes
 operator|.
 name|size
 argument_list|()
+operator|)
+operator|&&
+operator|(
+name|k
+operator|>=
+literal|0
+operator|)
+operator|)
 condition|?
 operator|new
 name|ArrayList
@@ -1150,15 +1268,13 @@ argument_list|<>
 argument_list|(
 name|this
 operator|.
-name|topKNodes
+name|sortedNodes
 argument_list|)
 operator|.
 name|subList
 argument_list|(
 literal|0
 argument_list|,
-name|this
-operator|.
 name|k
 argument_list|)
 else|:
@@ -1168,18 +1284,18 @@ argument_list|<>
 argument_list|(
 name|this
 operator|.
-name|topKNodes
+name|sortedNodes
 argument_list|)
 return|;
 block|}
 block|}
-DECL|method|computeTopKNodes ()
+DECL|method|sortNodes ()
 specifier|private
 name|List
 argument_list|<
 name|NodeId
 argument_list|>
-name|computeTopKNodes
+name|sortNodes
 parameter_list|()
 block|{
 synchronized|synchronized
@@ -1226,7 +1342,7 @@ argument_list|()
 decl_stmt|;
 comment|// Collections.sort would do something similar by calling Arrays.sort
 comment|// internally but would finally iterate through the input list (aList)
-comment|// to reset the value of each element.. Since we don't really care about
+comment|// to reset the value of each element. Since we don't really care about
 comment|// 'aList', we can use the iteration to create the list of nodeIds which
 comment|// is what we ultimately care about.
 name|Arrays

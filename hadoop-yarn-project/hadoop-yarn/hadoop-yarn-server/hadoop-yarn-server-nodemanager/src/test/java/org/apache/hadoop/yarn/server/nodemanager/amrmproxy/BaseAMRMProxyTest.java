@@ -718,6 +718,26 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
+name|ContainerManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
 name|application
 operator|.
 name|Application
@@ -3186,7 +3206,7 @@ annotation|@
 name|Override
 DECL|method|getContainerManager ()
 specifier|public
-name|ContainerManagementProtocol
+name|ContainerManager
 name|getContainerManager
 parameter_list|()
 block|{

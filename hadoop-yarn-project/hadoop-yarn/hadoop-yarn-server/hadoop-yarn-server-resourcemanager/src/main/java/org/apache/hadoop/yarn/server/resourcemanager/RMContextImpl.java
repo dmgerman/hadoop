@@ -456,6 +456,28 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|scheduler
+operator|.
+name|distributed
+operator|.
+name|QueueLimitCalculator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|security
 operator|.
 name|AMRMTokenSecretManager
@@ -655,6 +677,11 @@ DECL|field|elector
 specifier|private
 name|LeaderElectorService
 name|elector
+decl_stmt|;
+DECL|field|queueLimitCalculator
+specifier|private
+name|QueueLimitCalculator
+name|queueLimitCalculator
 decl_stmt|;
 comment|/**    * Default constructor. To be used in conjunction with setter methods for    * individual fields.    */
 DECL|method|RMContextImpl ()
@@ -1926,6 +1953,36 @@ name|setQueuePlacementManager
 argument_list|(
 name|placementMgr
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNodeManagerQueueLimitCalculator ()
+specifier|public
+name|QueueLimitCalculator
+name|getNodeManagerQueueLimitCalculator
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|queueLimitCalculator
+return|;
+block|}
+DECL|method|setContainerQueueLimitCalculator ( QueueLimitCalculator limitCalculator)
+specifier|public
+name|void
+name|setContainerQueueLimitCalculator
+parameter_list|(
+name|QueueLimitCalculator
+name|limitCalculator
+parameter_list|)
+block|{
+name|this
+operator|.
+name|queueLimitCalculator
+operator|=
+name|limitCalculator
 expr_stmt|;
 block|}
 block|}

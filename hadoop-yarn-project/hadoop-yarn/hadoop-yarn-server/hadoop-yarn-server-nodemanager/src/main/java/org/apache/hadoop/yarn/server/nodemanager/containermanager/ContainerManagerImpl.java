@@ -464,20 +464,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|service
-operator|.
-name|ServiceStateChangeListener
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|StringUtils
@@ -1187,6 +1173,26 @@ operator|.
 name|api
 operator|.
 name|ContainerType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerQueuingLimit
 import|;
 end_import
 
@@ -2264,14 +2270,7 @@ name|ContainerManagerImpl
 extends|extends
 name|CompositeService
 implements|implements
-name|ServiceStateChangeListener
-implements|,
-name|ContainerManagementProtocol
-implements|,
-name|EventHandler
-argument_list|<
-name|ContainerManagerEvent
-argument_list|>
+name|ContainerManager
 block|{
 comment|/**    * Extra duration to wait for applications to be killed on shutdown.    */
 DECL|field|SHUTDOWN_CLEANUP_SLOP_MS
@@ -3651,6 +3650,8 @@ argument_list|)
 return|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|getContainersMonitor ()
 specifier|public
 name|ContainersMonitor
@@ -8512,6 +8513,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|setBlockNewContainerRequests (boolean blockNewContainerRequests)
 specifier|public
 name|void
@@ -8636,6 +8639,25 @@ block|{
 return|return
 name|serviceStopped
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|updateQueuingLimit (ContainerQueuingLimit queuingLimit)
+specifier|public
+name|void
+name|updateQueuingLimit
+parameter_list|(
+name|ContainerQueuingLimit
+name|queuingLimit
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Implementation does not support queuing of Containers !!"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

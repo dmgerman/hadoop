@@ -3269,6 +3269,36 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// 6. Send Container Queuing Limits back to the Node. This will be used by
+comment|//    the node to truncate the number of Containers queued for execution.
+if|if
+condition|(
+name|this
+operator|.
+name|rmContext
+operator|.
+name|getNodeManagerQueueLimitCalculator
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|nodeHeartBeatResponse
+operator|.
+name|setContainerQueuingLimit
+argument_list|(
+name|this
+operator|.
+name|rmContext
+operator|.
+name|getNodeManagerQueueLimitCalculator
+argument_list|()
+operator|.
+name|createContainerQueuingLimit
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|nodeHeartBeatResponse
 return|;

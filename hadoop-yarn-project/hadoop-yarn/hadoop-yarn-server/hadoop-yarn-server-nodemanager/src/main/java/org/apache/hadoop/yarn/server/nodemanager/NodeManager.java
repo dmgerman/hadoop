@@ -410,22 +410,6 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManagementProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
 name|records
 operator|.
 name|ApplicationId
@@ -619,6 +603,26 @@ operator|.
 name|records
 operator|.
 name|NodeHealthStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|ContainerManager
 import|;
 end_import
 
@@ -2824,7 +2828,7 @@ name|nmTokenSecretManager
 decl_stmt|;
 DECL|field|containerManager
 specifier|private
-name|ContainerManagementProtocol
+name|ContainerManager
 name|containerManager
 decl_stmt|;
 DECL|field|nodeResourceMonitor
@@ -3199,7 +3203,7 @@ annotation|@
 name|Override
 DECL|method|getContainerManager ()
 specifier|public
-name|ContainerManagementProtocol
+name|ContainerManager
 name|getContainerManager
 parameter_list|()
 block|{
@@ -3209,12 +3213,12 @@ operator|.
 name|containerManager
 return|;
 block|}
-DECL|method|setContainerManager (ContainerManagementProtocol containerManager)
+DECL|method|setContainerManager (ContainerManager containerManager)
 specifier|public
 name|void
 name|setContainerManager
 parameter_list|(
-name|ContainerManagementProtocol
+name|ContainerManager
 name|containerManager
 parameter_list|)
 block|{

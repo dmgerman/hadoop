@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager
+DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager
 package|package
 name|org
 operator|.
@@ -16,7 +16,9 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|resourcemanager
+name|nodemanager
+operator|.
+name|containermanager
 package|;
 end_package
 
@@ -28,13 +30,61 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|service
+operator|.
+name|ServiceStateChangeListener
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
+operator|.
+name|api
+operator|.
+name|ContainerManagementProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|event
+operator|.
+name|EventHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
 operator|.
 name|api
 operator|.
 name|records
 operator|.
-name|ResourceOption
+name|ContainerQueuingLimit
 import|;
 end_import
 
@@ -50,11 +100,9 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|api
+name|nodemanager
 operator|.
-name|protocolrecords
-operator|.
-name|NMContainerStatus
+name|ContainerManagerEvent
 import|;
 end_import
 
@@ -70,73 +118,54 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|resourcemanager
+name|nodemanager
 operator|.
-name|rmnode
+name|containermanager
 operator|.
-name|RMNode
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|monitor
 operator|.
-name|util
-operator|.
-name|List
+name|ContainersMonitor
 import|;
 end_import
 
 begin_comment
-comment|/**  * Implementations of this class are notified of changes to the cluster's state,  * such as node addition, removal and updates.  */
+comment|/**  * The ContainerManager is an entity that manages the life cycle of Containers.  */
 end_comment
 
 begin_interface
-DECL|interface|ClusterMonitor
+DECL|interface|ContainerManager
 specifier|public
 interface|interface
-name|ClusterMonitor
-block|{
-DECL|method|addNode (List<NMContainerStatus> containerStatuses, RMNode rmNode)
-name|void
-name|addNode
-parameter_list|(
-name|List
+name|ContainerManager
+extends|extends
+name|ServiceStateChangeListener
+extends|,
+name|ContainerManagementProtocol
+extends|,
+name|EventHandler
 argument_list|<
-name|NMContainerStatus
+name|ContainerManagerEvent
 argument_list|>
-name|containerStatuses
-parameter_list|,
-name|RMNode
-name|rmNode
+block|{
+DECL|method|getContainersMonitor ()
+name|ContainersMonitor
+name|getContainersMonitor
+parameter_list|()
+function_decl|;
+DECL|method|updateQueuingLimit (ContainerQueuingLimit queuingLimit)
+name|void
+name|updateQueuingLimit
+parameter_list|(
+name|ContainerQueuingLimit
+name|queuingLimit
 parameter_list|)
 function_decl|;
-DECL|method|removeNode (RMNode removedRMNode)
+DECL|method|setBlockNewContainerRequests (boolean blockNewContainerRequests)
 name|void
-name|removeNode
+name|setBlockNewContainerRequests
 parameter_list|(
-name|RMNode
-name|removedRMNode
-parameter_list|)
-function_decl|;
-DECL|method|updateNode (RMNode rmNode)
-name|void
-name|updateNode
-parameter_list|(
-name|RMNode
-name|rmNode
-parameter_list|)
-function_decl|;
-DECL|method|updateNodeResource (RMNode rmNode, ResourceOption resourceOption)
-name|void
-name|updateNodeResource
-parameter_list|(
-name|RMNode
-name|rmNode
-parameter_list|,
-name|ResourceOption
-name|resourceOption
+name|boolean
+name|blockNewContainerRequests
 parameter_list|)
 function_decl|;
 block|}
