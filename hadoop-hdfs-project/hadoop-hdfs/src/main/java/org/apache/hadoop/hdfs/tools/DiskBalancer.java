@@ -166,6 +166,26 @@ name|diskbalancer
 operator|.
 name|command
 operator|.
+name|ExecuteCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|diskbalancer
+operator|.
+name|command
+operator|.
 name|PlanCommand
 import|;
 end_import
@@ -252,21 +272,6 @@ name|Configured
 implements|implements
 name|Tool
 block|{
-comment|/**    * Construct a DiskBalancer.    *    * @param conf    */
-DECL|method|DiskBalancer (Configuration conf)
-specifier|public
-name|DiskBalancer
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * NameNodeURI can point to either a real namenode, or a json file that    * contains the diskBalancer data in json form, that jsonNodeConnector knows    * how to deserialize.    *<p>    * Expected formats are :    *<p>    * hdfs://namenode.uri or file:///data/myCluster.json    */
 DECL|field|NAMENODEURI
 specifier|public
@@ -337,7 +342,17 @@ name|MAXERROR
 init|=
 literal|"maxerror"
 decl_stmt|;
-comment|/**    * Node name or IP against which Disk Balancer is being run.    */
+comment|/**    * Executes a given plan file on the target datanode.    */
+DECL|field|EXECUTE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EXECUTE
+init|=
+literal|"execute"
+decl_stmt|;
+comment|/**    * Name or address of the node to execute against.    */
 DECL|field|NODE
 specifier|public
 specifier|static
@@ -356,6 +371,15 @@ name|String
 name|VERBOSE
 init|=
 literal|"v"
+decl_stmt|;
+DECL|field|PLAN_VERSION
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|PLAN_VERSION
+init|=
+literal|1
 decl_stmt|;
 comment|/**    * Template for the Before File. It is node.before.json.    */
 DECL|field|BEFORE_TEMPLATE
@@ -393,6 +417,21 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * Construct a DiskBalancer.    *    * @param conf    */
+DECL|method|DiskBalancer (Configuration conf)
+specifier|public
+name|DiskBalancer
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Main for the  DiskBalancer Command handling.    *    * @param argv - System Args Strings[]    * @throws Exception    */
 DECL|method|main (String[] argv)
 specifier|public
@@ -523,7 +562,7 @@ operator|new
 name|Options
 argument_list|()
 decl_stmt|;
-name|addCommands
+name|addPlanCommands
 argument_list|(
 name|opts
 argument_list|)
@@ -532,11 +571,11 @@ return|return
 name|opts
 return|;
 block|}
-comment|/**    * Adds commands that we handle to opts.    *    * @param opt - Optins    */
-DECL|method|addCommands (Options opt)
+comment|/**    * Adds commands for plan command.    *    * @param opt - Options    */
+DECL|method|addPlanCommands (Options opt)
 specifier|private
 name|void
-name|addCommands
+name|addPlanCommands
 parameter_list|(
 name|Options
 name|opt
@@ -598,9 +637,11 @@ name|Option
 argument_list|(
 name|PLAN
 argument_list|,
-literal|false
+literal|true
 argument_list|,
-literal|"write plan to the default file"
+literal|"create a plan for the given node. "
+operator|+
+literal|"e.g -plan<nodename> |<nodeIP> |<nodeUUID>"
 argument_list|)
 decl_stmt|;
 name|opt
@@ -681,26 +722,6 @@ name|maxErrors
 argument_list|)
 expr_stmt|;
 name|Option
-name|node
-init|=
-operator|new
-name|Option
-argument_list|(
-name|NODE
-argument_list|,
-literal|true
-argument_list|,
-literal|"Node Name or IP"
-argument_list|)
-decl_stmt|;
-name|opt
-operator|.
-name|addOption
-argument_list|(
-name|node
-argument_list|)
-expr_stmt|;
-name|Option
 name|help
 init|=
 operator|new
@@ -718,6 +739,39 @@ operator|.
 name|addOption
 argument_list|(
 name|help
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Adds execute command options.    * @param opt Options    */
+DECL|method|addExecuteCommands (Options opt)
+specifier|private
+name|void
+name|addExecuteCommands
+parameter_list|(
+name|Options
+name|opt
+parameter_list|)
+block|{
+name|Option
+name|execute
+init|=
+operator|new
+name|Option
+argument_list|(
+name|EXECUTE
+argument_list|,
+literal|true
+argument_list|,
+literal|"Takes a plan file and "
+operator|+
+literal|"submits it for execution to the datanode. e.g -execute<planfile>"
+argument_list|)
+decl_stmt|;
+name|opt
+operator|.
+name|addOption
+argument_list|(
+name|execute
 argument_list|)
 expr_stmt|;
 block|}
@@ -809,7 +863,34 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-else|else
+if|if
+condition|(
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|DiskBalancer
+operator|.
+name|EXECUTE
+argument_list|)
+condition|)
+block|{
+name|currentCommand
+operator|=
+operator|new
+name|ExecuteCommand
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|currentCommand
+operator|==
+literal|null
+condition|)
 block|{
 name|HelpFormatter
 name|helpFormatter

@@ -291,6 +291,17 @@ name|addValidCommandParameters
 argument_list|(
 name|DiskBalancer
 operator|.
+name|NAMENODEURI
+argument_list|,
+literal|"Name Node URI or "
+operator|+
+literal|"file URI for cluster"
+argument_list|)
+expr_stmt|;
+name|addValidCommandParameters
+argument_list|(
+name|DiskBalancer
+operator|.
 name|OUTFILE
 argument_list|,
 literal|"Output file"
@@ -327,15 +338,6 @@ argument_list|,
 literal|"Max errors to tolerate "
 operator|+
 literal|"between 2 disks"
-argument_list|)
-expr_stmt|;
-name|addValidCommandParameters
-argument_list|(
-name|DiskBalancer
-operator|.
-name|NODE
-argument_list|,
-literal|"Name / Address of the node."
 argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
@@ -396,15 +398,16 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-operator|!
 name|cmd
 operator|.
-name|hasOption
+name|getOptionValue
 argument_list|(
 name|DiskBalancer
 operator|.
-name|NODE
+name|PLAN
 argument_list|)
+operator|==
+literal|null
 condition|)
 block|{
 throw|throw
@@ -518,6 +521,7 @@ argument_list|(
 name|output
 argument_list|)
 expr_stmt|;
+comment|// -plan nodename is the command line argument.
 name|DiskBalancerDataNode
 name|node
 init|=
@@ -529,7 +533,7 @@ name|getOptionValue
 argument_list|(
 name|DiskBalancer
 operator|.
-name|NODE
+name|PLAN
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -552,7 +556,7 @@ name|getOptionValue
 argument_list|(
 name|DiskBalancer
 operator|.
-name|NODE
+name|PLAN
 argument_list|)
 argument_list|)
 throw|;
@@ -635,7 +639,7 @@ name|getOptionValue
 argument_list|(
 name|DiskBalancer
 operator|.
-name|NODE
+name|PLAN
 argument_list|)
 argument_list|)
 argument_list|)
@@ -681,7 +685,7 @@ name|getOptionValue
 argument_list|(
 name|DiskBalancer
 operator|.
-name|NODE
+name|PLAN
 argument_list|)
 argument_list|)
 argument_list|)
