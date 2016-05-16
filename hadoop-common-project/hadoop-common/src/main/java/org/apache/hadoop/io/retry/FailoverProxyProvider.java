@@ -108,6 +108,55 @@ operator|=
 name|proxyInfo
 expr_stmt|;
 block|}
+DECL|method|getString (String methodName)
+specifier|public
+name|String
+name|getString
+parameter_list|(
+name|String
+name|methodName
+parameter_list|)
+block|{
+return|return
+name|proxy
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|"."
+operator|+
+name|methodName
+operator|+
+literal|" over "
+operator|+
+name|proxyInfo
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|proxy
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" over "
+operator|+
+name|proxyInfo
+return|;
+block|}
 block|}
 comment|/**    * Get the proxy object which should be used until the next failover event    * occurs.    *     * @return the proxy object to invoke methods upon    */
 DECL|method|getProxy ()
