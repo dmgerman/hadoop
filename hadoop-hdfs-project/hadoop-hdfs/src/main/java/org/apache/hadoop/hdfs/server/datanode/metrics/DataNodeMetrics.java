@@ -615,6 +615,24 @@ name|MutableQuantiles
 index|[]
 name|sendDataPacketTransferNanosQuantiles
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Count of erasure coding reconstruction tasks"
+argument_list|)
+DECL|field|ecReconstructionTasks
+name|MutableCounterLong
+name|ecReconstructionTasks
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Count of erasure coding failed reconstruction tasks"
+argument_list|)
+DECL|field|ecFailedReconstructionTasks
+name|MutableCounterLong
+name|ecFailedReconstructionTasks
+decl_stmt|;
 DECL|field|registry
 specifier|final
 name|MetricsRegistry
@@ -1924,6 +1942,30 @@ name|latencyMs
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|incrECReconstructionTasks ()
+specifier|public
+name|void
+name|incrECReconstructionTasks
+parameter_list|()
+block|{
+name|ecReconstructionTasks
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrECFailedReconstructionTasks ()
+specifier|public
+name|void
+name|incrECFailedReconstructionTasks
+parameter_list|()
+block|{
+name|ecFailedReconstructionTasks
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class
