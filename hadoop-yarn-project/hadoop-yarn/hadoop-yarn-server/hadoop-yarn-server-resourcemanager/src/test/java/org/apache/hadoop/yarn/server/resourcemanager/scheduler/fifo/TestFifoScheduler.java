@@ -8350,6 +8350,10 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+literal|null
+operator|!=
+name|report_nm1
+operator|&&
 name|report_nm1
 operator|.
 name|getAvailableResource
