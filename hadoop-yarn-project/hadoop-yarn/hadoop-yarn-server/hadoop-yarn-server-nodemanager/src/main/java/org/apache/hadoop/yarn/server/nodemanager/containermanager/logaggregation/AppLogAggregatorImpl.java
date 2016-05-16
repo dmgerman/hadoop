@@ -2970,6 +2970,11 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|run ()
 specifier|public
@@ -3025,6 +3030,28 @@ argument_list|(
 literal|"Aggregation did not complete for application "
 operator|+
 name|appId
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ApplicationEvent
+argument_list|(
+name|this
+operator|.
+name|appId
+argument_list|,
+name|ApplicationEventType
+operator|.
+name|APPLICATION_LOG_HANDLING_FAILED
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

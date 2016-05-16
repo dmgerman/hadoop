@@ -2573,6 +2573,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|stopApp (ApplicationId appId)
 specifier|private
 name|void
@@ -2612,6 +2617,26 @@ operator|+
 name|appId
 operator|+
 literal|", did it fail to start?"
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ApplicationEvent
+argument_list|(
+name|appId
+argument_list|,
+name|ApplicationEventType
+operator|.
+name|APPLICATION_LOG_HANDLING_FAILED
+argument_list|)
 argument_list|)
 expr_stmt|;
 return|return;
