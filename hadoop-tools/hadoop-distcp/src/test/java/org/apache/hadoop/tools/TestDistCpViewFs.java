@@ -465,6 +465,8 @@ specifier|public
 name|void
 name|testSingleFileMissingTarget
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|caseSingleFileMissingTarget
 argument_list|(
@@ -485,6 +487,8 @@ parameter_list|(
 name|boolean
 name|sync
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -519,29 +523,6 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -562,6 +543,8 @@ specifier|public
 name|void
 name|testSingleFileTargetFile
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|caseSingleFileTargetFile
 argument_list|(
@@ -582,6 +565,8 @@ parameter_list|(
 name|boolean
 name|sync
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -621,29 +606,6 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -664,6 +626,8 @@ specifier|public
 name|void
 name|testSingleFileTargetDir
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|caseSingleFileTargetDir
 argument_list|(
@@ -684,6 +648,8 @@ parameter_list|(
 name|boolean
 name|sync
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -728,29 +694,6 @@ literal|"file2"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -771,6 +714,8 @@ specifier|public
 name|void
 name|testSingleDirTargetMissing
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|caseSingleDirTargetMissing
 argument_list|(
@@ -791,6 +736,8 @@ parameter_list|(
 name|boolean
 name|sync
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -829,29 +776,6 @@ literal|"dir1"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -872,6 +796,8 @@ specifier|public
 name|void
 name|testSingleDirTargetPresent
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -918,29 +844,6 @@ literal|"singledir/dir1"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -961,6 +864,8 @@ specifier|public
 name|void
 name|testUpdateSingleDirTargetPresent
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -1007,29 +912,6 @@ literal|"Udir1"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -1050,6 +932,8 @@ specifier|public
 name|void
 name|testMultiFileTargetPresent
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|caseMultiFileTargetPresent
 argument_list|(
@@ -1070,6 +954,8 @@ parameter_list|(
 name|boolean
 name|sync
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -1126,29 +1012,6 @@ literal|"file5"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -1169,6 +1032,8 @@ specifier|public
 name|void
 name|testMultiFileTargetMissing
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|caseMultiFileTargetMissing
 argument_list|(
@@ -1189,6 +1054,8 @@ parameter_list|(
 name|boolean
 name|sync
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -1237,29 +1104,6 @@ literal|"file5"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -1280,6 +1124,8 @@ specifier|public
 name|void
 name|testMultiDirTargetPresent
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -1340,29 +1186,6 @@ literal|"singledir/dir1"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -1383,6 +1206,8 @@ specifier|public
 name|void
 name|testUpdateMultiDirTargetPresent
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -1443,29 +1268,6 @@ literal|"Udir1"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -1486,6 +1288,8 @@ specifier|public
 name|void
 name|testMultiDirTargetMissing
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -1541,29 +1345,6 @@ literal|"singledir/dir1"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -1584,6 +1365,8 @@ specifier|public
 name|void
 name|testUpdateMultiDirTargetMissing
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -1639,29 +1422,6 @@ literal|"dir1"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -1682,6 +1442,8 @@ specifier|public
 name|void
 name|testGlobTargetMissingSingleLevel
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -1755,29 +1517,6 @@ literal|"singledir/dir2/file6"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -1807,6 +1546,8 @@ specifier|public
 name|void
 name|testUpdateGlobTargetMissingSingleLevel
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -1880,29 +1621,6 @@ literal|"dir2/file6"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while running distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -1932,6 +1650,8 @@ specifier|public
 name|void
 name|testGlobTargetMissingMultiLevel
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -2013,29 +1733,6 @@ literal|"dir3/file9"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while running distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
-argument_list|)
-expr_stmt|;
-block|}
 finally|finally
 block|{
 name|TestDistCpUtils
@@ -2065,6 +1762,8 @@ specifier|public
 name|void
 name|testUpdateGlobTargetMissingMultiLevel
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -2143,29 +1842,6 @@ argument_list|,
 literal|"file8"
 argument_list|,
 literal|"file9"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while running distcp"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"distcp failure"
 argument_list|)
 expr_stmt|;
 block|}
