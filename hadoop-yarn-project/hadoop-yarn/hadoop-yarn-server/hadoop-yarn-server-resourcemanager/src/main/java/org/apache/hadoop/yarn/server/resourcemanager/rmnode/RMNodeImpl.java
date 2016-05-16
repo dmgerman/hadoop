@@ -404,6 +404,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ExecutionType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeId
 import|;
 end_import
@@ -6874,6 +6892,19 @@ operator|.
 name|RUNNING
 condition|)
 block|{
+comment|// Process only GUARANTEED containers in the RM.
+if|if
+condition|(
+name|remoteContainer
+operator|.
+name|getExecutionType
+argument_list|()
+operator|==
+name|ExecutionType
+operator|.
+name|GUARANTEED
+condition|)
+block|{
 if|if
 condition|(
 operator|!
@@ -6914,7 +6945,20 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
 else|else
+block|{
+if|if
+condition|(
+name|remoteContainer
+operator|.
+name|getExecutionType
+argument_list|()
+operator|==
+name|ExecutionType
+operator|.
+name|GUARANTEED
+condition|)
 block|{
 comment|// A finished container
 name|launchedContainers
@@ -6922,13 +6966,6 @@ operator|.
 name|remove
 argument_list|(
 name|containerId
-argument_list|)
-expr_stmt|;
-name|completedContainers
-operator|.
-name|add
-argument_list|(
-name|remoteContainer
 argument_list|)
 expr_stmt|;
 comment|// Unregister from containerAllocationExpirer.
@@ -6941,6 +6978,16 @@ name|AllocationExpirationInfo
 argument_list|(
 name|containerId
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Completed containers should also include the OPPORTUNISTIC containers
+comment|// so that the AM gets properly notified.
+name|completedContainers
+operator|.
+name|add
+argument_list|(
+name|remoteContainer
 argument_list|)
 expr_stmt|;
 block|}

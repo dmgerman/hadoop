@@ -2737,7 +2737,7 @@ operator|.
 name|getContainerTokenIdentifier
 argument_list|()
 argument_list|,
-literal|"Container De-queued to meet global queuing limits. "
+literal|"Container de-queued to meet NM queuing limits. "
 operator|+
 literal|"Max Queue length["
 operator|+
