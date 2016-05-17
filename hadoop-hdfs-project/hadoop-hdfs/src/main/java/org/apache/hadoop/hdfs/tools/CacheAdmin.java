@@ -2468,7 +2468,9 @@ operator|+
 name|getName
 argument_list|()
 operator|+
-literal|" [-stats] [-path<path>] [-pool<pool>] [-id<id>]\n"
+literal|" [-stats] [-path<path>] [-pool<pool>] [-id<id>]"
+operator|+
+literal|"]\n"
 return|;
 block|}
 annotation|@
@@ -3184,7 +3186,9 @@ literal|"<name> [-owner<owner>] "
 operator|+
 literal|"[-group<group>] [-mode<mode>] [-limit<limit>] "
 operator|+
-literal|"[-maxTtl<maxTtl>]\n"
+literal|"[-maxTtl<maxTtl>]"
+operator|+
+literal|"]\n"
 return|;
 block|}
 annotation|@
