@@ -144,6 +144,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
@@ -393,6 +411,19 @@ name|setAreNodeLabelsAcceptedByRM
 parameter_list|(
 name|boolean
 name|areNodeLabelsAcceptedByRM
+parameter_list|)
+function_decl|;
+DECL|method|getResource ()
+name|Resource
+name|getResource
+parameter_list|()
+function_decl|;
+DECL|method|setResource (Resource resource)
+name|void
+name|setResource
+parameter_list|(
+name|Resource
+name|resource
 parameter_list|)
 function_decl|;
 DECL|method|getContainersToDecrease ()
