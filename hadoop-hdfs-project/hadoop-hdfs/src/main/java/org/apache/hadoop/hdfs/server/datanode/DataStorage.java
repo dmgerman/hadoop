@@ -1509,6 +1509,8 @@ argument_list|(
 name|startOpt
 argument_list|,
 name|this
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 comment|// sd is locked but not opened
