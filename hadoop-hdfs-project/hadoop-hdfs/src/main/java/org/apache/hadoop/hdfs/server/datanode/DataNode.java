@@ -9330,11 +9330,7 @@ literal|"authorization. The user "
 operator|+
 name|currentUser
 operator|+
-literal|" is not configured in "
-operator|+
-name|DFSConfigKeys
-operator|.
-name|DFS_BLOCK_LOCAL_PATH_ACCESS_USER_KEY
+literal|" is not allowed to call getBlockLocalPathInfo"
 argument_list|)
 throw|;
 block|}
