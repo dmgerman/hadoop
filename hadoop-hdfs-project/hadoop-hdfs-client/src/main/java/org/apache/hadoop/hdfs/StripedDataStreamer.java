@@ -521,7 +521,7 @@ index|]
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Excluding datanode "
 operator|+
