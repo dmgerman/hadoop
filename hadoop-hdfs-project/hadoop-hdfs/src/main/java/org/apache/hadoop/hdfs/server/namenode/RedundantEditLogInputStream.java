@@ -170,7 +170,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|EditLogInputStream
+name|RedundantEditLogInputStream
 operator|.
 name|class
 operator|.
