@@ -62,6 +62,10 @@ name|QueuedContainersStatus
 import|;
 end_import
 
+begin_comment
+comment|/**  * Protocol Buffer implementation of QueuedContainersStatus.  */
+end_comment
+
 begin_class
 DECL|class|QueuedContainersStatusPBImpl
 specifier|public

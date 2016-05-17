@@ -357,22 +357,6 @@ operator|.
 name|proto
 operator|.
 name|YarnServerCommonProtos
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|proto
-operator|.
-name|YarnServerCommonProtos
 operator|.
 name|NodeHealthStatusProto
 import|;
@@ -411,6 +395,24 @@ operator|.
 name|YarnServerCommonProtos
 operator|.
 name|NodeStatusProtoOrBuilder
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|YarnServerCommonProtos
+operator|.
+name|QueuedContainersStatusProto
 import|;
 end_import
 
@@ -2000,6 +2002,7 @@ annotation|@
 name|Override
 DECL|method|getQueuedContainersStatus ()
 specifier|public
+specifier|synchronized
 name|QueuedContainersStatus
 name|getQueuedContainersStatus
 parameter_list|()
@@ -2044,8 +2047,9 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setQueuedContainersStatus (QueuedContainersStatus queuedContainersStatus)
+DECL|method|setQueuedContainersStatus ( QueuedContainersStatus queuedContainersStatus)
 specifier|public
+specifier|synchronized
 name|void
 name|setQueuedContainersStatus
 parameter_list|(
@@ -2237,7 +2241,7 @@ name|getProto
 argument_list|()
 return|;
 block|}
-DECL|method|convertToProtoFormat (ResourceUtilization r)
+DECL|method|convertToProtoFormat ( ResourceUtilization r)
 specifier|private
 name|YarnProtos
 operator|.
@@ -2281,8 +2285,6 @@ return|;
 block|}
 DECL|method|convertToProtoFormat ( QueuedContainersStatus r)
 specifier|private
-name|YarnServerCommonProtos
-operator|.
 name|QueuedContainersStatusProto
 name|convertToProtoFormat
 parameter_list|(
@@ -2302,13 +2304,11 @@ name|getProto
 argument_list|()
 return|;
 block|}
-DECL|method|convertFromProtoFormat ( YarnServerCommonProtos.QueuedContainersStatusProto p)
+DECL|method|convertFromProtoFormat ( QueuedContainersStatusProto p)
 specifier|private
 name|QueuedContainersStatus
 name|convertFromProtoFormat
 parameter_list|(
-name|YarnServerCommonProtos
-operator|.
 name|QueuedContainersStatusProto
 name|p
 parameter_list|)

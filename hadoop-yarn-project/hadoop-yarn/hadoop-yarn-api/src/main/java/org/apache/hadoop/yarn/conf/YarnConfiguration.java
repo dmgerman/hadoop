@@ -1372,7 +1372,7 @@ name|DIST_SCHEDULING_CONTAINER_TOKEN_EXPIRY_MS_DEFAULT
 init|=
 literal|600000
 decl_stmt|;
-comment|/** K least loaded nodes to be provided to the LocalScheduler of a    * NodeManager for Distributed Scheduling */
+comment|/** K least loaded nodes to be provided to the LocalScheduler of a    * NodeManager for Distributed Scheduling. */
 DECL|field|DIST_SCHEDULING_TOP_K
 specifier|public
 specifier|static

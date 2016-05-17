@@ -424,7 +424,6 @@ name|pullNewlyIncreasedContainers
 parameter_list|()
 function_decl|;
 DECL|method|getQueuedContainersStatus ()
-specifier|public
 name|QueuedContainersStatus
 name|getQueuedContainersStatus
 parameter_list|()
