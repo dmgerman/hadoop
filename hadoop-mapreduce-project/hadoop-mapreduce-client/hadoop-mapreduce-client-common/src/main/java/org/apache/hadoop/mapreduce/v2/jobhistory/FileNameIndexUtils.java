@@ -1370,7 +1370,7 @@ name|encodedString
 operator|.
 name|length
 argument_list|()
-operator|<
+operator|<=
 name|limitLength
 condition|)
 block|{
