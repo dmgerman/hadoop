@@ -3299,6 +3299,22 @@ name|that
 argument_list|)
 return|;
 block|}
+DECL|method|composeNotStartedMessage (NamenodeRole role)
+specifier|public
+specifier|static
+name|String
+name|composeNotStartedMessage
+parameter_list|(
+name|NamenodeRole
+name|role
+parameter_list|)
+block|{
+return|return
+name|role
+operator|+
+literal|" still not started"
+return|;
+block|}
 comment|/**    * Given a configuration get the address of the lifeline RPC server.    * If the lifeline RPC is not configured returns null.    *    * @param conf configuration    * @return address or null    */
 DECL|method|getLifelineRpcServerAddress (Configuration conf)
 name|InetSocketAddress

@@ -11868,9 +11868,12 @@ name|isStarted
 argument_list|()
 condition|)
 block|{
-throw|throw
-operator|new
-name|RetriableException
+name|String
+name|message
+init|=
+name|NameNode
+operator|.
+name|composeNotStartedMessage
 argument_list|(
 name|this
 operator|.
@@ -11878,8 +11881,13 @@ name|nn
 operator|.
 name|getRole
 argument_list|()
-operator|+
-literal|" still not started"
+argument_list|)
+decl_stmt|;
+throw|throw
+operator|new
+name|RetriableException
+argument_list|(
+name|message
 argument_list|)
 throw|;
 block|}
