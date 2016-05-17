@@ -2102,7 +2102,7 @@ literal|" for SomeUser with renewer JobTracker"
 argument_list|,
 name|dtId
 operator|.
-name|toString
+name|toStringStable
 argument_list|()
 argument_list|)
 expr_stmt|;

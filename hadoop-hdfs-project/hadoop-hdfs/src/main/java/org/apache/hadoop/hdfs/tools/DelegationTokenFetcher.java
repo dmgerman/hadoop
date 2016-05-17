@@ -459,6 +459,15 @@ name|RENEWER
 init|=
 literal|"renewer"
 decl_stmt|;
+DECL|field|VERBOSE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|VERBOSE
+init|=
+literal|"verbose"
+decl_stmt|;
 comment|/**    * Command-line interface    */
 DECL|method|main (final String[] args)
 specifier|public
@@ -534,6 +543,15 @@ argument_list|,
 literal|false
 argument_list|,
 literal|"print the token"
+argument_list|)
+operator|.
+name|addOption
+argument_list|(
+name|VERBOSE
+argument_list|,
+literal|false
+argument_list|,
+literal|"print verbose output"
 argument_list|)
 operator|.
 name|addOption
@@ -639,6 +657,17 @@ operator|.
 name|hasOption
 argument_list|(
 name|PRINT
+argument_list|)
+decl_stmt|;
+specifier|final
+name|boolean
+name|verbose
+init|=
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|VERBOSE
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -834,6 +863,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|tokenFile
+argument_list|,
+name|verbose
 argument_list|)
 expr_stmt|;
 block|}
@@ -1258,11 +1289,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|printTokens (final Configuration conf, final Path tokenFile)
-specifier|private
+annotation|@
+name|VisibleForTesting
+DECL|method|printTokensToString ( final Configuration conf, final Path tokenFile, final boolean verbose)
 specifier|static
-name|void
-name|printTokens
+name|String
+name|printTokensToString
 parameter_list|(
 specifier|final
 name|Configuration
@@ -1271,10 +1303,32 @@ parameter_list|,
 specifier|final
 name|Path
 name|tokenFile
+parameter_list|,
+specifier|final
+name|boolean
+name|verbose
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|StringBuilder
+name|sbld
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+specifier|final
+name|String
+name|nl
+init|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"line.separator"
+argument_list|)
+decl_stmt|;
 name|DelegationTokenIdentifier
 name|id
 init|=
@@ -1334,25 +1388,98 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-name|System
+name|String
+name|idStr
+init|=
+operator|(
+name|verbose
+condition|?
+name|id
 operator|.
-name|out
+name|toString
+argument_list|()
+else|:
+name|id
 operator|.
-name|println
+name|toStringStable
+argument_list|()
+operator|)
+decl_stmt|;
+name|sbld
+operator|.
+name|append
 argument_list|(
 literal|"Token ("
-operator|+
-name|id
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|idStr
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|") for "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|token
 operator|.
 name|getService
 argument_list|()
 argument_list|)
+operator|.
+name|append
+argument_list|(
+name|nl
+argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|sbld
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+comment|// Be sure to call printTokensToString which is verified in unit test.
+DECL|method|printTokens (final Configuration conf, final Path tokenFile, final boolean verbose)
+specifier|static
+name|void
+name|printTokens
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|,
+specifier|final
+name|Path
+name|tokenFile
+parameter_list|,
+specifier|final
+name|boolean
+name|verbose
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|print
+argument_list|(
+name|printTokensToString
+argument_list|(
+name|conf
+argument_list|,
+name|tokenFile
+argument_list|,
+name|verbose
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|printUsage (PrintStream err)
 specifier|private
@@ -1430,7 +1557,9 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"  --print             Print the delegation token"
+literal|"  --print [--verbose] Print the delegation token, when "
+operator|+
+literal|"--verbose is passed, print more information about the token"
 argument_list|)
 expr_stmt|;
 name|err
