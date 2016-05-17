@@ -6958,6 +6958,13 @@ argument_list|(
 name|maxKeys
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|cannedACL
+operator|!=
+literal|null
+condition|)
+block|{
 name|sb
 operator|.
 name|append
@@ -6973,6 +6980,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|sb
 operator|.
 name|append
