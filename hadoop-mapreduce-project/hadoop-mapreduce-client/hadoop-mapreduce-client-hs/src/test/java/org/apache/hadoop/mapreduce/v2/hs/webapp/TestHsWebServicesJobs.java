@@ -6197,6 +6197,13 @@ argument_list|)
 argument_list|,
 name|attempt
 operator|.
+name|getString
+argument_list|(
+literal|"nodeId"
+argument_list|)
+argument_list|,
+name|attempt
+operator|.
 name|getInt
 argument_list|(
 literal|"id"
@@ -6296,6 +6303,15 @@ argument_list|)
 argument_list|,
 name|WebServicesTestUtils
 operator|.
+name|getXmlString
+argument_list|(
+name|element
+argument_list|,
+literal|"nodeId"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
 name|getXmlInt
 argument_list|(
 name|element
@@ -6333,7 +6349,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyHsJobAttemptsGeneric (Job job, String nodeHttpAddress, int id, long startTime, String containerId, String logsLink)
+DECL|method|verifyHsJobAttemptsGeneric (Job job, String nodeHttpAddress, String nodeId, int id, long startTime, String containerId, String logsLink)
 specifier|public
 name|void
 name|verifyHsJobAttemptsGeneric
@@ -6343,6 +6359,9 @@ name|job
 parameter_list|,
 name|String
 name|nodeHttpAddress
+parameter_list|,
+name|String
+name|nodeId
 parameter_list|,
 name|int
 name|id
@@ -6466,7 +6485,7 @@ name|ujoin
 argument_list|(
 literal|"logs"
 argument_list|,
-name|nodeHttpAddress
+name|nodeId
 argument_list|,
 name|containerId
 argument_list|,

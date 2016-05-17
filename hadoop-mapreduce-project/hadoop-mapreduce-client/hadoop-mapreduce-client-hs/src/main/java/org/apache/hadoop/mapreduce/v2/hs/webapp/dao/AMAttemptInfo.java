@@ -408,7 +408,7 @@ literal|"logs"
 argument_list|,
 name|this
 operator|.
-name|nodeHttpAddress
+name|nodeId
 argument_list|,
 name|this
 operator|.

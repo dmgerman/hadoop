@@ -1176,7 +1176,7 @@ name|url
 argument_list|(
 name|attempt
 operator|.
-name|getShortLogsLink
+name|getLogsLink
 argument_list|()
 argument_list|)
 argument_list|,
