@@ -2035,6 +2035,13 @@ name|skipFsyncForTesting
 init|=
 literal|true
 decl_stmt|;
+DECL|field|useConfiguredTopologyMappingClass
+specifier|private
+name|boolean
+name|useConfiguredTopologyMappingClass
+init|=
+literal|false
+decl_stmt|;
 DECL|method|Builder (Configuration conf)
 specifier|public
 name|Builder
@@ -2616,6 +2623,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|useConfiguredTopologyMappingClass ( boolean useConfiguredTopologyMappingClass)
+specifier|public
+name|Builder
+name|useConfiguredTopologyMappingClass
+parameter_list|(
+name|boolean
+name|useConfiguredTopologyMappingClass
+parameter_list|)
+block|{
+name|this
+operator|.
+name|useConfiguredTopologyMappingClass
+operator|=
+name|useConfiguredTopologyMappingClass
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**      * Construct the actual MiniDFSCluster      */
 DECL|method|build ()
 specifier|public
@@ -2957,6 +2983,10 @@ argument_list|,
 name|builder
 operator|.
 name|skipFsyncForTesting
+argument_list|,
+name|builder
+operator|.
+name|useConfiguredTopologyMappingClass
 argument_list|)
 expr_stmt|;
 block|}
@@ -3645,10 +3675,12 @@ argument_list|,
 literal|null
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initMiniDFSCluster ( Configuration conf, int numDataNodes, StorageType[][] storageTypes, boolean format, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean enableManagedDfsDirsRedundancy, boolean manageDataDfsDirs, StartupOption startOpt, StartupOption dnStartOpt, String[] racks, String[] hosts, long[][] storageCapacities, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, MiniDFSNNTopology nnTopology, boolean checkExitOnShutdown, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig, Configuration[] dnConfOverlays, boolean skipFsyncForTesting)
+DECL|method|initMiniDFSCluster ( Configuration conf, int numDataNodes, StorageType[][] storageTypes, boolean format, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean enableManagedDfsDirsRedundancy, boolean manageDataDfsDirs, StartupOption startOpt, StartupOption dnStartOpt, String[] racks, String[] hosts, long[][] storageCapacities, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, MiniDFSNNTopology nnTopology, boolean checkExitOnShutdown, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig, Configuration[] dnConfOverlays, boolean skipFsyncForTesting, boolean useConfiguredTopologyMappingClass)
 specifier|private
 name|void
 name|initMiniDFSCluster
@@ -3729,6 +3761,9 @@ name|dnConfOverlays
 parameter_list|,
 name|boolean
 name|skipFsyncForTesting
+parameter_list|,
+name|boolean
+name|useConfiguredTopologyMappingClass
 parameter_list|)
 throws|throws
 name|IOException
@@ -3860,6 +3895,12 @@ literal|3
 argument_list|)
 expr_stmt|;
 comment|// 3 second
+if|if
+condition|(
+operator|!
+name|useConfiguredTopologyMappingClass
+condition|)
+block|{
 name|conf
 operator|.
 name|setClass
@@ -3875,6 +3916,7 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+block|}
 comment|// In an HA cluster, in order for the StandbyNode to perform checkpoints,
 comment|// it needs to know the HTTP port of the Active. So, if ephemeral ports
 comment|// are chosen, disable checkpoints for the test.

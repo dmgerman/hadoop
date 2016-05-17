@@ -388,6 +388,30 @@ name|getName
 argument_list|()
 return|;
 block|}
+comment|/**    * Get the path components of a node.    * @param node a non-null node    * @return the path of a node    */
+DECL|method|getPathComponents (Node node)
+specifier|public
+specifier|static
+name|String
+index|[]
+name|getPathComponents
+parameter_list|(
+name|Node
+name|node
+parameter_list|)
+block|{
+return|return
+name|getPath
+argument_list|(
+name|node
+argument_list|)
+operator|.
+name|split
+argument_list|(
+name|PATH_SEPARATOR_STR
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|equals (Object to)

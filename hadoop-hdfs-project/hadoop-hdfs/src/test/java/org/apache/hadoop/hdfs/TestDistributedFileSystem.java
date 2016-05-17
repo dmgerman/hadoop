@@ -20,6 +20,40 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
+name|FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_CONTEXT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -836,7 +870,49 @@ name|hadoop
 operator|.
 name|net
 operator|.
+name|DNSToSwitchMapping
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
 name|NetUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|ScriptBasedMapping
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|StaticMapping
 import|;
 end_import
 
@@ -5263,6 +5339,10 @@ block|{
 name|testReadFileSystemStatistics
 argument_list|(
 literal|0
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -5279,6 +5359,10 @@ block|{
 name|testReadFileSystemStatistics
 argument_list|(
 literal|2
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -5295,17 +5379,75 @@ block|{
 name|testReadFileSystemStatistics
 argument_list|(
 literal|4
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** expectedDistance is the expected distance between client and dn.    * 0 means local host.    * 2 means same rack.    * 4 means remote rack of first degree.    */
-DECL|method|testReadFileSystemStatistics (int expectedDistance)
+annotation|@
+name|Test
+DECL|method|testInvalidScriptMappingFileReadStatistics ()
+specifier|public
+name|void
+name|testInvalidScriptMappingFileReadStatistics
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Even though network location of the client machine is unknown,
+comment|// MiniDFSCluster's datanode is on the local host and thus the network
+comment|// distance is 0.
+name|testReadFileSystemStatistics
+argument_list|(
+literal|0
+argument_list|,
+literal|true
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testEmptyScriptMappingFileReadStatistics ()
+specifier|public
+name|void
+name|testEmptyScriptMappingFileReadStatistics
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Network location of the client machine is resolved to
+comment|// {@link NetworkTopology#DEFAULT_RACK} when there is no script file
+comment|// defined. This is equivalent to unknown network location.
+comment|// MiniDFSCluster's datanode is on the local host and thus the network
+comment|// distance is 0.
+name|testReadFileSystemStatistics
+argument_list|(
+literal|0
+argument_list|,
+literal|true
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** expectedDistance is the expected distance between client and dn.    * 0 means local host.    * 2 means same rack.    * 4 means remote rack of first degree.    * invalidScriptMappingConfig is used to test    */
+DECL|method|testReadFileSystemStatistics (int expectedDistance, boolean useScriptMapping, boolean invalidScriptMappingFile)
 specifier|private
 name|void
 name|testReadFileSystemStatistics
 parameter_list|(
 name|int
 name|expectedDistance
+parameter_list|,
+name|boolean
+name|useScriptMapping
+parameter_list|,
+name|boolean
+name|invalidScriptMappingFile
 parameter_list|)
 throws|throws
 name|IOException
@@ -5315,6 +5457,18 @@ name|cluster
 init|=
 literal|null
 decl_stmt|;
+name|StaticMapping
+operator|.
+name|addNodeToRack
+argument_list|(
+name|NetUtils
+operator|.
+name|getLocalHostname
+argument_list|()
+argument_list|,
+literal|"/rackClient"
+argument_list|)
+expr_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -5322,7 +5476,92 @@ init|=
 name|getTestConfiguration
 argument_list|()
 decl_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+comment|// ClientContext is cached globally by default thus we will end up using
+comment|// the network distance computed by other test cases.
+comment|// Use different value for DFS_CLIENT_CONTEXT in each test case so that it
+comment|// can compute network distance independently.
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFS_CLIENT_CONTEXT
+argument_list|,
+literal|"testContext_"
+operator|+
+name|expectedDistance
+argument_list|)
+expr_stmt|;
 comment|// create a cluster with a dn with the expected distance.
+comment|// MiniDFSCluster by default uses StaticMapping unless the test
+comment|// overrides it.
+if|if
+condition|(
+name|useScriptMapping
+condition|)
+block|{
+name|conf
+operator|.
+name|setClass
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|NET_TOPOLOGY_NODE_SWITCH_MAPPING_IMPL_KEY
+argument_list|,
+name|ScriptBasedMapping
+operator|.
+name|class
+argument_list|,
+name|DNSToSwitchMapping
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|invalidScriptMappingFile
+condition|)
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY
+argument_list|,
+literal|"invalidScriptFile.txt"
+argument_list|)
+expr_stmt|;
+block|}
+name|cluster
+operator|=
+operator|new
+name|MiniDFSCluster
+operator|.
+name|Builder
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|useConfiguredTopologyMappingClass
+argument_list|(
+literal|true
+argument_list|)
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
+block|}
+elseif|else
 if|if
 condition|(
 name|expectedDistance
@@ -5375,13 +5614,13 @@ argument_list|(
 name|conf
 argument_list|)
 operator|.
-name|hosts
+name|racks
 argument_list|(
 operator|new
 name|String
 index|[]
 block|{
-literal|"hostFoo"
+literal|"/rackClient"
 block|}
 argument_list|)
 operator|.

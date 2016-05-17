@@ -355,6 +355,26 @@ name|FS_TRASH_INTERVAL_DEFAULT
 init|=
 literal|0
 decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a>. */
+DECL|field|FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED
+init|=
+literal|"fs.client.resolve.topology.enabled"
+decl_stmt|;
+comment|/** Default value for FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED. */
+DECL|field|FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|IO_MAPFILE_BLOOM_SIZE_KEY
 specifier|public
