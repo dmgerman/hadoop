@@ -1244,7 +1244,7 @@ block|}
 if|if
 condition|(
 name|spaceQuota
-operator|>
+operator|>=
 literal|0
 condition|)
 block|{
@@ -1347,7 +1347,7 @@ decl_stmt|;
 if|if
 condition|(
 name|typeQuota
-operator|>
+operator|>=
 literal|0
 condition|)
 block|{

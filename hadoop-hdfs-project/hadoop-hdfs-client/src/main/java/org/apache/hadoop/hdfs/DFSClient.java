@@ -10996,7 +10996,7 @@ operator|)
 operator|||
 operator|(
 name|storagespaceQuota
-operator|<=
+operator|<
 literal|0
 operator|&&
 name|storagespaceQuota

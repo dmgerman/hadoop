@@ -493,10 +493,10 @@ condition|)
 block|{
 name|assertEquals
 argument_list|(
-name|val
-argument_list|,
 operator|-
 literal|1
+argument_list|,
+name|val
 argument_list|)
 expr_stmt|;
 block|}
@@ -1692,7 +1692,7 @@ name|runCommand
 argument_list|(
 name|admin
 argument_list|,
-literal|true
+literal|false
 argument_list|,
 literal|"-setSpaceQuota"
 argument_list|,
