@@ -1981,7 +1981,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|createAMRMProtocol (YarnClient rmClient, ApplicationId appId, MiniYARNCluster cluster, final Configuration yarnConf)
-specifier|private
+specifier|protected
 name|ApplicationMasterProtocol
 name|createAMRMProtocol
 parameter_list|(
@@ -2159,7 +2159,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|createAllocateRequest (List<NodeReport> listNode)
-specifier|private
+specifier|protected
 name|AllocateRequest
 name|createAllocateRequest
 parameter_list|(
@@ -2351,7 +2351,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|createApp (YarnClient yarnClient, MiniYARNCluster yarnCluster)
-specifier|private
+specifier|protected
 name|ApplicationId
 name|createApp
 parameter_list|(

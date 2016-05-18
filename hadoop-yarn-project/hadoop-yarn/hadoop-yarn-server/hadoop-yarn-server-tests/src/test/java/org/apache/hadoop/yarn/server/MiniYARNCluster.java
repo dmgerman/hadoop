@@ -4822,6 +4822,26 @@ operator|.
 name|getRootInterceptor
 argument_list|()
 decl_stmt|;
+comment|// The DefaultRequestInterceptor will generally be the last
+comment|// interceptor
+while|while
+condition|(
+name|rt
+operator|.
+name|getNextInterceptor
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|rt
+operator|=
+name|rt
+operator|.
+name|getNextInterceptor
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|rt
