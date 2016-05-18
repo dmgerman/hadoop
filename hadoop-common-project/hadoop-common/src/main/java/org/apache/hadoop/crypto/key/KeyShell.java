@@ -269,9 +269,9 @@ name|LIST_METADATA
 init|=
 literal|"keyShell.list.metadata"
 decl_stmt|;
-DECL|field|NO_VALID_PROVIDERS
 annotation|@
 name|VisibleForTesting
+DECL|field|NO_VALID_PROVIDERS
 specifier|public
 specifier|static
 specifier|final
@@ -309,9 +309,9 @@ init|=
 literal|false
 decl_stmt|;
 comment|/** allows stdout to be captured if necessary. */
-DECL|field|out
 annotation|@
 name|VisibleForTesting
+DECL|field|out
 specifier|public
 name|PrintStream
 name|out
@@ -321,9 +321,9 @@ operator|.
 name|out
 decl_stmt|;
 comment|/** allows stderr to be captured if necessary. */
-DECL|field|err
 annotation|@
 name|VisibleForTesting
+DECL|field|err
 specifier|public
 name|PrintStream
 name|err

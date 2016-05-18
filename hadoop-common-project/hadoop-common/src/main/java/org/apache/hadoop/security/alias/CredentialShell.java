@@ -256,9 +256,9 @@ init|=
 literal|false
 decl_stmt|;
 comment|/** Allows stdout to be captured if necessary. */
-DECL|field|out
 annotation|@
 name|VisibleForTesting
+DECL|field|out
 specifier|public
 name|PrintStream
 name|out
@@ -268,9 +268,9 @@ operator|.
 name|out
 decl_stmt|;
 comment|/** Allows stderr to be captured if necessary. */
-DECL|field|err
 annotation|@
 name|VisibleForTesting
+DECL|field|err
 specifier|public
 name|PrintStream
 name|err
