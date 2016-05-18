@@ -70,6 +70,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -141,6 +155,12 @@ name|name
 parameter_list|)
 block|{
 return|return
+name|name
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 name|map
 operator|.
 name|get
@@ -163,6 +183,15 @@ name|StorageStatisticsProvider
 name|provider
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|name
+argument_list|,
+literal|"Storage statistics can not have a null name!"
+argument_list|)
+expr_stmt|;
 name|StorageStatistics
 name|stats
 init|=
