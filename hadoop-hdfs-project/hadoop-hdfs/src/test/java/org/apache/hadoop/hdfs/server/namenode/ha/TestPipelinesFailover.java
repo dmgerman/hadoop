@@ -412,7 +412,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 import|;
 end_import
 
@@ -1973,7 +1973,7 @@ decl_stmt|;
 name|DatanodeProtocolClientSideTranslatorPB
 name|nnSpy
 init|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|spyOnBposToNN
 argument_list|(

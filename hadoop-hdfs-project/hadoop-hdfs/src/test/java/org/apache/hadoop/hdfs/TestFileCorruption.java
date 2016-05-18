@@ -374,7 +374,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 import|;
 end_import
 
@@ -1121,7 +1121,7 @@ comment|// report corrupted block by the third datanode
 name|DatanodeRegistration
 name|dnR
 init|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|getDNRegistrationForBP
 argument_list|(

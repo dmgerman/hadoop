@@ -292,7 +292,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 import|;
 end_import
 
@@ -653,7 +653,7 @@ decl_stmt|;
 name|DatanodeRegistration
 name|reg
 init|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|getDNRegistrationForBP
 argument_list|(
@@ -1050,7 +1050,7 @@ decl_stmt|;
 name|DatanodeRegistration
 name|reg
 init|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|getDNRegistrationForBP
 argument_list|(

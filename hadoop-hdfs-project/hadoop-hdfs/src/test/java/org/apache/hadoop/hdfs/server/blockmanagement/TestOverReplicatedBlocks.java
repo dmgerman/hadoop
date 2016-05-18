@@ -276,7 +276,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 import|;
 end_import
 
@@ -639,7 +639,7 @@ specifier|final
 name|DatanodeID
 name|corruptDataNode
 init|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|getDNRegistrationForBP
 argument_list|(
@@ -987,7 +987,7 @@ decl_stmt|;
 name|DatanodeRegistration
 name|dnReg
 init|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|getDNRegistrationForBP
 argument_list|(

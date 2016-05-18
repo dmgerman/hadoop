@@ -607,7 +607,7 @@ expr_stmt|;
 comment|// If enabled, log early and log often
 name|dn
 operator|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|startDNWithMockNN
 argument_list|(

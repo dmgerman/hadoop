@@ -615,7 +615,7 @@ index|[
 name|i
 index|]
 operator|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|startDNWithMockNN
 argument_list|(

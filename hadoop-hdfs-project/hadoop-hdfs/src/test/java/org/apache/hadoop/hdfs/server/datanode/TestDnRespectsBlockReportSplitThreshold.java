@@ -710,7 +710,7 @@ comment|// Insert a spy object for the NN RPC.
 name|DatanodeProtocolClientSideTranslatorPB
 name|nnSpy
 init|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|spyOnBposToNN
 argument_list|(
@@ -857,7 +857,7 @@ comment|// Insert a spy object for the NN RPC.
 name|DatanodeProtocolClientSideTranslatorPB
 name|nnSpy
 init|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|spyOnBposToNN
 argument_list|(
@@ -1002,7 +1002,7 @@ comment|// Insert a spy object for the NN RPC.
 name|DatanodeProtocolClientSideTranslatorPB
 name|nnSpy
 init|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|spyOnBposToNN
 argument_list|(

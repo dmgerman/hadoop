@@ -485,7 +485,7 @@ decl_stmt|;
 name|DatanodeProtocolClientSideTranslatorPB
 name|spy
 init|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|spyOnBposToNN
 argument_list|(

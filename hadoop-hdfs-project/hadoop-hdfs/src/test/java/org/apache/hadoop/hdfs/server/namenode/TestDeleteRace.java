@@ -450,7 +450,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 import|;
 end_import
 
@@ -1841,7 +1841,7 @@ condition|)
 block|{
 name|nnSpy
 operator|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|spyOnBposToNN
 argument_list|(

@@ -1313,7 +1313,7 @@ argument_list|()
 expr_stmt|;
 name|spyNN
 operator|=
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|spyOnBposToNN
 argument_list|(

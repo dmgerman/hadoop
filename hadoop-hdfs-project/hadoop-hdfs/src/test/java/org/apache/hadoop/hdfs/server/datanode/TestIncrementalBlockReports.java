@@ -670,7 +670,7 @@ name|spyOnDnCallsToNn
 parameter_list|()
 block|{
 return|return
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|spyOnBposToNN
 argument_list|(
