@@ -46,9 +46,57 @@ name|org
 operator|.
 name|mockito
 operator|.
+name|Matchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|anyString
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
 name|Mockito
 operator|.
-name|*
+name|times
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|verify
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
 import|;
 end_import
 
@@ -141,18 +189,6 @@ operator|.
 name|directory
 operator|.
 name|SearchControls
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|naming
-operator|.
-name|directory
-operator|.
-name|SearchResult
 import|;
 end_import
 
@@ -299,32 +335,10 @@ parameter_list|()
 throws|throws
 name|NamingException
 block|{
-name|SearchResult
-name|mockUserResult
-init|=
-name|mock
-argument_list|(
-name|SearchResult
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 name|when
 argument_list|(
-name|mockUserNamingEnum
-operator|.
-name|nextElement
+name|getUserSearchResult
 argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-name|mockUserResult
-argument_list|)
-expr_stmt|;
-name|when
-argument_list|(
-name|mockUserResult
 operator|.
 name|getNameInNamespace
 argument_list|()
@@ -352,7 +366,8 @@ comment|// The search functionality of the mock context is reused, so we will
 comment|// return the user NamingEnumeration first, and then the group
 name|when
 argument_list|(
-name|mockContext
+name|getContext
+argument_list|()
 operator|.
 name|search
 argument_list|(
@@ -381,9 +396,11 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|mockUserNamingEnum
+name|getUserNames
+argument_list|()
 argument_list|,
-name|mockGroupNamingEnum
+name|getGroupNames
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|doTestGetGroups
@@ -415,7 +432,8 @@ comment|// The case mocks connection is closed/gc-ed, so the first search call t
 comment|// then after reconnected return the user NamingEnumeration first, and then the group
 name|when
 argument_list|(
-name|mockContext
+name|getContext
+argument_list|()
 operator|.
 name|search
 argument_list|(
@@ -453,9 +471,11 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|mockUserNamingEnum
+name|getUserNames
+argument_list|()
 argument_list|,
-name|mockGroupNamingEnum
+name|getGroupNames
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Although connection is down but after reconnected it still should retrieve the result groups
@@ -490,7 +510,8 @@ block|{
 comment|// This mocks the case where Ldap server is down, and always throws CommunicationException
 name|when
 argument_list|(
-name|mockContext
+name|getContext
+argument_list|()
 operator|.
 name|search
 argument_list|(
@@ -583,7 +604,13 @@ argument_list|,
 literal|"ldap://test"
 argument_list|)
 expr_stmt|;
-name|mappingSpy
+name|LdapGroupsMapping
+name|groupsMapping
+init|=
+name|getGroupsMapping
+argument_list|()
+decl_stmt|;
+name|groupsMapping
 operator|.
 name|setConf
 argument_list|(
@@ -598,7 +625,7 @@ name|String
 argument_list|>
 name|groups
 init|=
-name|mappingSpy
+name|groupsMapping
 operator|.
 name|getGroups
 argument_list|(
@@ -617,7 +644,8 @@ expr_stmt|;
 comment|// We should have searched for a user, and then two groups
 name|verify
 argument_list|(
-name|mockContext
+name|getContext
+argument_list|()
 argument_list|,
 name|times
 argument_list|(
