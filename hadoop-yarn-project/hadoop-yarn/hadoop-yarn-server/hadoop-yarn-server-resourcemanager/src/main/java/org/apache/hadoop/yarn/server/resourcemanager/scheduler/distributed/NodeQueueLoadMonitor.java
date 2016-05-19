@@ -1024,7 +1024,7 @@ operator|.
 name|getNodeID
 argument_list|()
 operator|+
-literal|"]"
+literal|"] "
 operator|+
 literal|"with queue wait time ["
 operator|+
@@ -1053,7 +1053,7 @@ operator|.
 name|getNodeID
 argument_list|()
 operator|+
-literal|"]"
+literal|"] "
 operator|+
 literal|"with queue wait time ["
 operator|+
@@ -1101,9 +1101,17 @@ operator|.
 name|updateTimestamp
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Updating ClusterNode ["
 operator|+
@@ -1112,7 +1120,7 @@ operator|.
 name|getNodeID
 argument_list|()
 operator|+
-literal|"]"
+literal|"] "
 operator|+
 literal|"with queue wait time ["
 operator|+
@@ -1127,6 +1135,7 @@ operator|+
 literal|"]"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -1153,7 +1162,7 @@ operator|.
 name|getNodeID
 argument_list|()
 operator|+
-literal|"]"
+literal|"] "
 operator|+
 literal|"with queue wait time ["
 operator|+

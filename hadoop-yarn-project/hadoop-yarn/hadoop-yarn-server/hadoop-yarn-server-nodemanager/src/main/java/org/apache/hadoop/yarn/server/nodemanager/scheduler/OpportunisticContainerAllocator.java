@@ -537,14 +537,6 @@ name|HashSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
-name|int
-name|numAsks
-init|=
-name|resourceAsks
-operator|.
-name|size
-argument_list|()
-decl_stmt|;
 for|for
 control|(
 name|ResourceRequest
@@ -574,25 +566,46 @@ argument_list|,
 name|anyAsk
 argument_list|)
 expr_stmt|;
-block|}
-if|if
-condition|(
-name|numAsks
-operator|>
-literal|0
-condition|)
-block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Opportunistic allocation requested for: "
+literal|"Opportunistic allocation requested for ["
 operator|+
-name|numAsks
+literal|"priority="
 operator|+
-literal|" containers; allocated = "
+name|anyAsk
+operator|.
+name|getPriority
+argument_list|()
+operator|+
+literal|", num_containers="
+operator|+
+name|anyAsk
+operator|.
+name|getNumContainers
+argument_list|()
+operator|+
+literal|", capability="
+operator|+
+name|anyAsk
+operator|.
+name|getCapability
+argument_list|()
+operator|+
+literal|"]"
+operator|+
+literal|" allocated = "
 operator|+
 name|containers
+operator|.
+name|get
+argument_list|(
+name|anyAsk
+operator|.
+name|getCapability
+argument_list|()
+argument_list|)
 operator|.
 name|size
 argument_list|()
@@ -867,6 +880,21 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"Allocated ["
+operator|+
+name|container
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|"] as opportunistic."
+argument_list|)
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
 literal|"Allocated "
 operator|+
 name|numAllocated
@@ -874,7 +902,6 @@ operator|+
 literal|" opportunistic containers."
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|buildContainer (DistSchedulerParams appParams, ContainerIdCounter idCounter, ResourceRequest rr, ApplicationAttemptId id, String userName, NodeId nodeId)
 specifier|private
@@ -948,6 +975,13 @@ argument_list|,
 name|nodeId
 operator|.
 name|getHost
+argument_list|()
+operator|+
+literal|":"
+operator|+
+name|nodeId
+operator|.
+name|getPort
 argument_list|()
 argument_list|,
 name|userName

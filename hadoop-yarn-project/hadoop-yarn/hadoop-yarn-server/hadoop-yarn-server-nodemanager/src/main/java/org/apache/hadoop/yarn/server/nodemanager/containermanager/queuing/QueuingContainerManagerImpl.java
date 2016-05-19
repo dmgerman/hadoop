@@ -1373,6 +1373,17 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting container ["
+operator|+
+name|containerId
+operator|+
+literal|"]"
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|startContainerInternal

@@ -1655,15 +1655,24 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Forwarding allocate request to the"
 operator|+
 literal|"Distributed Scheduler Service on YARN RM"
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Partition requests into GUARANTEED and OPPORTUNISTIC reqs
 name|PartitionedResourceRequests
 name|partitionedAsks

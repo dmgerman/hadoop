@@ -127,14 +127,14 @@ name|int
 name|getWaitQueueLength
 parameter_list|()
 function_decl|;
-DECL|method|setWaitQueueLength (int queueWaitTime)
+DECL|method|setWaitQueueLength (int waitQueueLength)
 specifier|public
 specifier|abstract
 name|void
 name|setWaitQueueLength
 parameter_list|(
 name|int
-name|queueWaitTime
+name|waitQueueLength
 parameter_list|)
 function_decl|;
 block|}
