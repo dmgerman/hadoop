@@ -1159,13 +1159,22 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"null prefix was specified; returning all columns"
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Decode the spaces we encoded in the column name.
 name|columnName
 operator|=
