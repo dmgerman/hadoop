@@ -2487,6 +2487,9 @@ name|UPDATED_EVENT_TYPE
 argument_list|)
 condition|)
 block|{
+comment|// TODO: YARN-5101. This type of events are parsed in
+comment|// time-stamp descending order which means the previous event
+comment|// could override the information from the later same type of event.
 name|Map
 argument_list|<
 name|String
@@ -2593,6 +2596,15 @@ name|STATE_EVENT_INFO
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|isFinalState
+argument_list|(
+name|state
+argument_list|)
+condition|)
+block|{
 name|state
 operator|=
 name|YarnApplicationState
@@ -2612,6 +2624,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 elseif|else
@@ -2870,7 +2883,40 @@ end_return
 
 begin_function
 unit|}    private
+DECL|method|isFinalState (YarnApplicationState state)
+specifier|static
+name|boolean
+name|isFinalState
+parameter_list|(
+name|YarnApplicationState
+name|state
+parameter_list|)
+block|{
+return|return
+name|state
+operator|==
+name|YarnApplicationState
+operator|.
+name|FINISHED
+operator|||
+name|state
+operator|==
+name|YarnApplicationState
+operator|.
+name|FAILED
+operator|||
+name|state
+operator|==
+name|YarnApplicationState
+operator|.
+name|KILLED
+return|;
+block|}
+end_function
+
+begin_function
 DECL|method|convertToApplicationAttemptReport ( TimelineEntity entity)
+specifier|private
 specifier|static
 name|ApplicationAttemptReport
 name|convertToApplicationAttemptReport
