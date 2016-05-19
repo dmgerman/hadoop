@@ -2501,7 +2501,11 @@ name|fail
 argument_list|(
 literal|"The call should have failed as this user "
 operator|+
-literal|" is not allowed to call getBlockLocalPathInfo"
+literal|" is not configured in "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_LOCAL_PATH_ACCESS_USER_KEY
 argument_list|)
 expr_stmt|;
 block|}
@@ -2522,7 +2526,11 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"not allowed to call getBlockLocalPathInfo"
+literal|"not configured in "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_LOCAL_PATH_ACCESS_USER_KEY
 argument_list|)
 argument_list|)
 expr_stmt|;
