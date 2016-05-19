@@ -17,38 +17,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeysPublic
-operator|.
-name|FS_DEFAULT_NAME_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
-operator|.
-name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_KEY
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -523,23 +491,24 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// Even though this won't start a NameNode, some of the logic in
-comment|// MiniDFSCluster expects to find the default file system configured with
-comment|// an HDFS URI.
 name|conf
 operator|.
 name|set
 argument_list|(
-name|FS_DEFAULT_NAME_KEY
+name|OzoneConfigKeys
+operator|.
+name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
-literal|"hdfs://127.0.0.1:0"
+literal|"127.0.0.1:0"
 argument_list|)
 expr_stmt|;
 name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_CONTAINER_LOCATION_RPC_ADDRESS_KEY
+name|OzoneConfigKeys
+operator|.
+name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
@@ -758,7 +727,7 @@ name|address
 init|=
 name|scm
 operator|.
-name|getStorageContainerLocationRpcAddress
+name|getClientRpcAddress
 argument_list|()
 decl_stmt|;
 name|LOG
