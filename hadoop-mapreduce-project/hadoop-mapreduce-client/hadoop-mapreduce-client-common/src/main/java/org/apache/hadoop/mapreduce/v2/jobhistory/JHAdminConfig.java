@@ -775,6 +775,29 @@ name|MR_HISTORY_CSRF_PREFIX
 operator|+
 literal|"methods-to-ignore"
 decl_stmt|;
+comment|/**    * XFS settings.    */
+DECL|field|MR_HISTORY_XFS_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HISTORY_XFS_PREFIX
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"webapp.xfs-filter."
+decl_stmt|;
+DECL|field|MR_HISTORY_XFS_OPTIONS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HISTORY_XFS_OPTIONS
+init|=
+name|MR_HISTORY_XFS_PREFIX
+operator|+
+literal|"xframe-options"
+decl_stmt|;
 comment|/**    * Settings for .jhist file format.    */
 DECL|field|MR_HS_JHIST_FORMAT
 specifier|public

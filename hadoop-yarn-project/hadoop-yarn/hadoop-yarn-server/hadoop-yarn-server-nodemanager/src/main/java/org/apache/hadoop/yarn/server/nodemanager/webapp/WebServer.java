@@ -532,6 +532,13 @@ operator|.
 name|NM_CSRF_PREFIX
 argument_list|)
 operator|.
+name|withXFSProtection
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_XFS_PREFIX
+argument_list|)
+operator|.
 name|start
 argument_list|(
 name|this

@@ -1558,6 +1558,13 @@ operator|.
 name|MR_HISTORY_CSRF_PREFIX
 argument_list|)
 operator|.
+name|withXFSProtection
+argument_list|(
+name|JHAdminConfig
+operator|.
+name|MR_HISTORY_XFS_PREFIX
+argument_list|)
+operator|.
 name|at
 argument_list|(
 name|NetUtils

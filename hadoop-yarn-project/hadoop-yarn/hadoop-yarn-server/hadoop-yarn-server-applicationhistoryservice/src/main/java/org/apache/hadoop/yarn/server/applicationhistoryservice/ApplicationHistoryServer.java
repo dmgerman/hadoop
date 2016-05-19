@@ -1757,6 +1757,13 @@ operator|.
 name|TIMELINE_CSRF_PREFIX
 argument_list|)
 operator|.
+name|withXFSProtection
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_XFS_PREFIX
+argument_list|)
+operator|.
 name|at
 argument_list|(
 name|bindAddress
