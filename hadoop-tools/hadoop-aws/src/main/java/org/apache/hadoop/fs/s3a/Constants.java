@@ -90,6 +90,16 @@ name|SECRET_KEY
 init|=
 literal|"fs.s3a.secret.key"
 decl_stmt|;
+comment|// aws credentials provider
+DECL|field|AWS_CREDENTIALS_PROVIDER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AWS_CREDENTIALS_PROVIDER
+init|=
+literal|"fs.s3a.aws.credentials.provider"
+decl_stmt|;
 comment|// number of simultaneous connections to s3
 DECL|field|MAXIMUM_CONNECTIONS
 specifier|public
