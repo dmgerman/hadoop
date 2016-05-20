@@ -1334,6 +1334,18 @@ argument_list|,
 literal|128
 argument_list|)
 expr_stmt|;
+comment|// reduce the teardown waiting time
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|DISPATCHER_DRAIN_EVENTS_TIMEOUT
+argument_list|,
+literal|1000
+argument_list|)
+expr_stmt|;
 name|conf
 operator|.
 name|set
@@ -1678,28 +1690,6 @@ name|class
 operator|.
 name|getName
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|SYSTEM_METRICS_PUBLISHER_ENABLED
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|RM_SYSTEM_METRICS_PUBLISHER_ENABLED
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -2109,11 +2099,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|90000
-argument_list|)
 annotation|@
 name|TimelineVersion
 argument_list|(
@@ -2154,10 +2139,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+annotation|@
+name|TimelineVersion
 argument_list|(
-name|timeout
-operator|=
-literal|90000
+literal|2.0f
 argument_list|)
 DECL|method|testDSShellWithoutDomainV2DefaultFlow ()
 specifier|public
@@ -2177,10 +2162,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+annotation|@
+name|TimelineVersion
 argument_list|(
-name|timeout
-operator|=
-literal|90000
+literal|2.0f
 argument_list|)
 DECL|method|testDSShellWithoutDomainV2CustomizedFlow ()
 specifier|public
