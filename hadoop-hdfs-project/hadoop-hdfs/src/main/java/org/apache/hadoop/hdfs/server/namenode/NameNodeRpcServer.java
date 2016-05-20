@@ -356,6 +356,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -2893,7 +2907,14 @@ comment|/**  * This class is responsible for handling all of the RPC calls to th
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|VisibleForTesting
 DECL|class|NameNodeRpcServer
+specifier|public
 class|class
 name|NameNodeRpcServer
 implements|implements
