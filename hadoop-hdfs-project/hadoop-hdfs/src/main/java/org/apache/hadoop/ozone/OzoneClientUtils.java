@@ -366,7 +366,9 @@ argument_list|,
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|)
 decl_stmt|;
-return|return
+name|InetSocketAddress
+name|addr
+init|=
 name|NetUtils
 operator|.
 name|createSocketAddr
@@ -385,6 +387,9 @@ argument_list|(
 name|OZONE_SCM_DATANODE_PORT_DEFAULT
 argument_list|)
 argument_list|)
+decl_stmt|;
+return|return
+name|addr
 return|;
 block|}
 comment|/**    * Retrieve the socket address that should be used by clients to connect    * to the SCM.    *    * @param conf    * @return Target InetSocketAddress for the SCM client endpoint.    */

@@ -1274,7 +1274,7 @@ name|info
 argument_list|(
 name|buildRpcServerStartMessage
 argument_list|(
-literal|"Service RPC server"
+literal|"RPC server for DataNodes"
 argument_list|,
 name|datanodeRpcAddress
 argument_list|)
@@ -2893,7 +2893,7 @@ argument_list|()
 operator|+
 literal|":"
 operator|+
-name|listenAddr
+name|updatedAddr
 operator|.
 name|getPort
 argument_list|()

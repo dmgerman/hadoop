@@ -236,6 +236,11 @@ DECL|field|dataset
 specifier|private
 specifier|final
 name|FsDatasetSpi
+argument_list|<
+name|?
+extends|extends
+name|FsVolumeSpi
+argument_list|>
 name|dataset
 decl_stmt|;
 DECL|field|volumePaths
@@ -260,7 +265,7 @@ argument_list|>
 name|locations
 decl_stmt|;
 comment|/**    * Constructs a Location Manager.    * @param conf - Configuration.    */
-DECL|method|ContainerLocationManagerImpl (Configuration conf, List<Path> locations, FsDatasetSpi dataset)
+DECL|method|ContainerLocationManagerImpl ( Configuration conf, List<Path> locations, FsDatasetSpi<? extends FsVolumeSpi> dataset)
 specifier|public
 name|ContainerLocationManagerImpl
 parameter_list|(
@@ -274,6 +279,11 @@ argument_list|>
 name|locations
 parameter_list|,
 name|FsDatasetSpi
+argument_list|<
+name|?
+extends|extends
+name|FsVolumeSpi
+argument_list|>
 name|dataset
 parameter_list|)
 throws|throws

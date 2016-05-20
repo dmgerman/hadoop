@@ -142,6 +142,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|FsVolumeSpi
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
@@ -591,7 +611,7 @@ decl_stmt|;
 comment|/**    * Init call that sets up a container Manager.    *    * @param config        - Configuration.    * @param containerDirs - List of Metadata Container locations.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|init (Configuration config, List<Path> containerDirs, FsDatasetSpi dataset)
+DECL|method|init ( Configuration config, List<Path> containerDirs, FsDatasetSpi<? extends FsVolumeSpi> dataset)
 specifier|public
 name|void
 name|init
@@ -606,6 +626,11 @@ argument_list|>
 name|containerDirs
 parameter_list|,
 name|FsDatasetSpi
+argument_list|<
+name|?
+extends|extends
+name|FsVolumeSpi
+argument_list|>
 name|dataset
 parameter_list|)
 throws|throws

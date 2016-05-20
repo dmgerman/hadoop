@@ -380,6 +380,11 @@ DECL|field|dataSet
 specifier|private
 specifier|final
 name|FsDatasetSpi
+argument_list|<
+name|?
+extends|extends
+name|FsVolumeSpi
+argument_list|>
 name|dataSet
 decl_stmt|;
 DECL|field|dispatcher
@@ -413,7 +418,7 @@ name|KeyManager
 name|keyManager
 decl_stmt|;
 comment|/**    * Creates a network endpoint and enables Ozone container.    *    * @param ozoneConfig - Config    * @param dataSet     - FsDataset.    * @throws IOException    */
-DECL|method|OzoneContainer (Configuration ozoneConfig, FsDatasetSpi dataSet)
+DECL|method|OzoneContainer ( Configuration ozoneConfig, FsDatasetSpi<? extends FsVolumeSpi> dataSet)
 specifier|public
 name|OzoneContainer
 parameter_list|(
@@ -421,6 +426,11 @@ name|Configuration
 name|ozoneConfig
 parameter_list|,
 name|FsDatasetSpi
+argument_list|<
+name|?
+extends|extends
+name|FsVolumeSpi
+argument_list|>
 name|dataSet
 parameter_list|)
 throws|throws
@@ -677,12 +687,17 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Returns a paths to data dirs.    * @param dataset - FSDataset.    * @param pathList - List of paths.    * @throws IOException    */
-DECL|method|getDataDir (FsDatasetSpi dataset, List<Path> pathList)
+DECL|method|getDataDir ( FsDatasetSpi<? extends FsVolumeSpi> dataset, List<Path> pathList)
 specifier|private
 name|void
 name|getDataDir
 parameter_list|(
 name|FsDatasetSpi
+argument_list|<
+name|?
+extends|extends
+name|FsVolumeSpi
+argument_list|>
 name|dataset
 parameter_list|,
 name|List
