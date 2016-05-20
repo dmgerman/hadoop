@@ -3515,6 +3515,27 @@ name|DEFAULT_NM_CONTAINER_DIAGNOSTICS_MAXIMUM_SIZE
 init|=
 literal|10000
 decl_stmt|;
+comment|/** Minimum container restart interval. */
+DECL|field|NM_CONTAINER_RETRY_MINIMUM_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_RETRY_MINIMUM_INTERVAL_MS
+init|=
+name|NM_PREFIX
+operator|+
+literal|"container-retry-minimum-interval-ms"
+decl_stmt|;
+DECL|field|DEFAULT_NM_CONTAINER_RETRY_MINIMUM_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_CONTAINER_RETRY_MINIMUM_INTERVAL_MS
+init|=
+literal|1000
+decl_stmt|;
 comment|/** Interval at which the delayed token removal thread runs */
 DECL|field|RM_DELAYED_DELEGATION_TOKEN_REMOVAL_INTERVAL_MS
 specifier|public
