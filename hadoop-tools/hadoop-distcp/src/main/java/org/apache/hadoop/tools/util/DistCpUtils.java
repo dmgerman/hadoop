@@ -880,9 +880,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// If not preserving anything from FileStatus, don't bother fetching it.
 name|FileStatus
 name|targetFileStatus
 init|=
+name|attributes
+operator|.
+name|isEmpty
+argument_list|()
+condition|?
+literal|null
+else|:
 name|targetFS
 operator|.
 name|getFileStatus
@@ -894,6 +902,12 @@ name|String
 name|group
 init|=
 name|targetFileStatus
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|targetFileStatus
 operator|.
 name|getGroup
 argument_list|()
@@ -901,6 +915,12 @@ decl_stmt|;
 name|String
 name|user
 init|=
+name|targetFileStatus
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 name|targetFileStatus
 operator|.
 name|getOwner
