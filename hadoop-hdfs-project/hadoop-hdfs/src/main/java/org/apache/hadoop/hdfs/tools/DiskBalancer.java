@@ -198,6 +198,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|diskbalancer
+operator|.
+name|command
+operator|.
+name|QueryCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Tool
@@ -381,6 +401,16 @@ name|PLAN_VERSION
 init|=
 literal|1
 decl_stmt|;
+comment|/**    * Reports the status of disk balancer operation.    */
+DECL|field|QUERY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|QUERY
+init|=
+literal|"query"
+decl_stmt|;
 comment|/**    * Template for the Before File. It is node.before.json.    */
 DECL|field|BEFORE_TEMPLATE
 specifier|public
@@ -563,6 +593,16 @@ name|Options
 argument_list|()
 decl_stmt|;
 name|addPlanCommands
+argument_list|(
+name|opts
+argument_list|)
+expr_stmt|;
+name|addExecuteCommands
+argument_list|(
+name|opts
+argument_list|)
+expr_stmt|;
+name|addQueryCommands
 argument_list|(
 name|opts
 argument_list|)
@@ -775,6 +815,39 @@ name|execute
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Adds query command options.    * @param opt Options    */
+DECL|method|addQueryCommands (Options opt)
+specifier|private
+name|void
+name|addQueryCommands
+parameter_list|(
+name|Options
+name|opt
+parameter_list|)
+block|{
+name|Option
+name|query
+init|=
+operator|new
+name|Option
+argument_list|(
+name|QUERY
+argument_list|,
+literal|true
+argument_list|,
+literal|"Queries the disk balancer "
+operator|+
+literal|"status of a given datanode. e.g. -query<nodename>"
+argument_list|)
+decl_stmt|;
+name|opt
+operator|.
+name|addOption
+argument_list|(
+name|query
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * This function parses all command line arguments and returns the appropriate    * values.    *    * @param argv - Argv from main    * @return CommandLine    */
 DECL|method|parseArgs (String[] argv, Options opts)
 specifier|private
@@ -879,6 +952,28 @@ name|currentCommand
 operator|=
 operator|new
 name|ExecuteCommand
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|DiskBalancer
+operator|.
+name|QUERY
+argument_list|)
+condition|)
+block|{
+name|currentCommand
+operator|=
+operator|new
+name|QueryCommand
 argument_list|(
 name|getConf
 argument_list|()
