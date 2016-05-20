@@ -764,7 +764,15 @@ block|{
 return|return
 literal|"NameNode at "
 operator|+
+operator|(
+name|lifelineAddr
+operator|!=
+literal|null
+condition|?
+name|lifelineAddr
+else|:
 name|addr
+operator|)
 return|;
 block|}
 DECL|method|getNameServiceId ()
