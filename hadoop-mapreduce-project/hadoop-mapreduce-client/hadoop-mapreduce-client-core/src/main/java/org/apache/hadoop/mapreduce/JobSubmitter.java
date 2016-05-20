@@ -1150,6 +1150,47 @@ operator|+
 name|maps
 argument_list|)
 expr_stmt|;
+name|int
+name|maxMaps
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|JOB_MAX_MAP
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_JOB_MAX_MAP
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|maxMaps
+operator|>=
+literal|0
+operator|&&
+name|maxMaps
+operator|<
+name|maps
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"The number of map tasks "
+operator|+
+name|maps
+operator|+
+literal|" exceeded limit "
+operator|+
+name|maxMaps
+argument_list|)
+throw|;
+block|}
 comment|// write "queue admins of the queue to which job is being submitted"
 comment|// to job file.
 name|String

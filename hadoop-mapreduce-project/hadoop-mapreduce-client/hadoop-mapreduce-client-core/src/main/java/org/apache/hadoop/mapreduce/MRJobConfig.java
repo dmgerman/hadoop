@@ -1816,6 +1816,26 @@ name|DEFAULT_JOB_RUNNING_REDUCE_LIMIT
 init|=
 literal|0
 decl_stmt|;
+comment|/* Config for Limit on the number of map tasks allowed per job    * There is no limit if this value is negative.    */
+DECL|field|JOB_MAX_MAP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|JOB_MAX_MAP
+init|=
+literal|"mapreduce.job.max.map"
+decl_stmt|;
+DECL|field|DEFAULT_JOB_MAX_MAP
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_JOB_MAX_MAP
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/* config for tracking the local file where all the credentials for the job    * credentials.    */
 DECL|field|MAPREDUCE_JOB_CREDENTIALS_BINARY
 specifier|public
