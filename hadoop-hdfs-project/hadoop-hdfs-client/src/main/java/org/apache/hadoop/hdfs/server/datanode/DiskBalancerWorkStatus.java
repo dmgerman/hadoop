@@ -341,10 +341,10 @@ name|currentState
 return|;
 block|}
 comment|/**    * Return current state as a string.    *    * @throws IOException    **/
-DECL|method|getCurrentStateString ()
+DECL|method|currentStateString ()
 specifier|public
 name|String
-name|getCurrentStateString
+name|currentStateString
 parameter_list|()
 throws|throws
 name|IOException
@@ -362,6 +362,63 @@ operator|.
 name|writeValueAsString
 argument_list|(
 name|currentState
+argument_list|)
+return|;
+block|}
+DECL|method|toJsonString ()
+specifier|public
+name|String
+name|toJsonString
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|ObjectMapper
+name|mapper
+init|=
+operator|new
+name|ObjectMapper
+argument_list|()
+decl_stmt|;
+return|return
+name|mapper
+operator|.
+name|writeValueAsString
+argument_list|(
+name|this
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns a DiskBalancerWorkStatus object from the Json .    * @param json - json String    * @return DiskBalancerWorkStatus    * @throws IOException    */
+DECL|method|parseJson (String json)
+specifier|public
+specifier|static
+name|DiskBalancerWorkStatus
+name|parseJson
+parameter_list|(
+name|String
+name|json
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|ObjectMapper
+name|mapper
+init|=
+operator|new
+name|ObjectMapper
+argument_list|()
+decl_stmt|;
+return|return
+name|mapper
+operator|.
+name|readValue
+argument_list|(
+name|json
+argument_list|,
+name|DiskBalancerWorkStatus
+operator|.
+name|class
 argument_list|)
 return|;
 block|}
@@ -474,6 +531,34 @@ specifier|private
 name|DiskBalancerWorkItem
 name|workItem
 decl_stmt|;
+comment|/**      * Constructor needed for json serialization.      */
+DECL|method|DiskBalancerWorkEntry ()
+specifier|public
+name|DiskBalancerWorkEntry
+parameter_list|()
+block|{     }
+DECL|method|DiskBalancerWorkEntry (String workItem)
+specifier|public
+name|DiskBalancerWorkEntry
+parameter_list|(
+name|String
+name|workItem
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+operator|.
+name|workItem
+operator|=
+name|DiskBalancerWorkItem
+operator|.
+name|parseJson
+argument_list|(
+name|workItem
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**      * Constructs a Work Entry class.      *      * @param sourcePath - Source Path where we are moving data from.      * @param destPath   - Destination path to where we are moving data to.      * @param workItem   - Current work status of this move.      */
 DECL|method|DiskBalancerWorkEntry (String sourcePath, String destPath, DiskBalancerWorkItem workItem)
 specifier|public

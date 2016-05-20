@@ -14436,6 +14436,49 @@ return|return
 name|clusterId
 return|;
 block|}
+annotation|@
+name|Override
+comment|// DataNodeMXBean
+DECL|method|getDiskBalancerStatus ()
+specifier|public
+name|String
+name|getDiskBalancerStatus
+parameter_list|()
+block|{
+try|try
+block|{
+return|return
+name|this
+operator|.
+name|diskBalancer
+operator|.
+name|queryWorkStatus
+argument_list|()
+operator|.
+name|toJsonString
+argument_list|()
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Reading diskbalancer Status failed. ex:{}"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+return|return
+literal|""
+return|;
+block|}
+block|}
 DECL|method|refreshNamenodes (Configuration conf)
 specifier|public
 name|void

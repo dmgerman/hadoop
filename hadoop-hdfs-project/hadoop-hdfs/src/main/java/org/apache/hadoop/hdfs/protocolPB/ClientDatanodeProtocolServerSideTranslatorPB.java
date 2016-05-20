@@ -1760,7 +1760,7 @@ name|setCurrentStatus
 argument_list|(
 name|result
 operator|.
-name|getCurrentStateString
+name|currentStateString
 argument_list|()
 argument_list|)
 operator|.

@@ -133,7 +133,6 @@ name|DiskBalancerWorkItem
 block|{
 DECL|field|bytesToCopy
 specifier|private
-specifier|final
 name|long
 name|bytesToCopy
 decl_stmt|;
@@ -172,6 +171,12 @@ specifier|private
 name|long
 name|bandwidth
 decl_stmt|;
+comment|/**    * Empty constructor for Json serialization.    */
+DECL|method|DiskBalancerWorkItem ()
+specifier|public
+name|DiskBalancerWorkItem
+parameter_list|()
+block|{    }
 comment|/**    * Constructs a DiskBalancerWorkItem.    *    * @param bytesToCopy - Total bytes to copy from a disk    * @param bytesCopied - Copied So far.    */
 DECL|method|DiskBalancerWorkItem (long bytesToCopy, long bytesCopied)
 specifier|public
