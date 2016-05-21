@@ -378,7 +378,7 @@ name|Pattern
 operator|.
 name|compile
 argument_list|(
-literal|"^(uid|gid)\\s+(\\d+)\\s+(\\d+)\\s*(#.*)?$"
+literal|"^(uid|gid)\\s+(\\d+)\\s+(0|-?[1-9]\\d*)\\s*(#.*)?$"
 argument_list|)
 decl_stmt|;
 DECL|field|timeout
