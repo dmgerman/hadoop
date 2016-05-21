@@ -3,8 +3,26 @@ begin_comment
 comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
+begin_comment
+comment|/**  * S3A Filesystem. Except for the exceptions, it should  * all be hidden as implementation details.  */
+end_comment
+
+begin_annotation
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+end_annotation
+
+begin_annotation
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
+end_annotation
+
 begin_package
-DECL|package|org.apache.hadoop.fs
+DECL|package|org.apache.hadoop.fs.s3a
 package|package
 name|org
 operator|.
@@ -13,74 +31,38 @@ operator|.
 name|hadoop
 operator|.
 name|fs
+operator|.
+name|s3a
 package|;
 end_package
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
 import|;
 end_import
 
-begin_comment
-comment|/**  * Thrown when the user makes a malformed request, for example missing required  * parameters or parameters that are not valid.  */
-end_comment
-
-begin_class
-DECL|class|InvalidRequestException
-specifier|public
-class|class
-name|InvalidRequestException
-extends|extends
-name|IOException
-block|{
-DECL|field|serialVersionUID
-specifier|static
-specifier|final
-name|long
-name|serialVersionUID
-init|=
-literal|0L
-decl_stmt|;
-DECL|method|InvalidRequestException (String str)
-specifier|public
-name|InvalidRequestException
-parameter_list|(
-name|String
-name|str
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|str
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|InvalidRequestException (String message, Throwable cause)
-specifier|public
-name|InvalidRequestException
-parameter_list|(
-name|String
-name|message
-parameter_list|,
-name|Throwable
-name|cause
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|message
-argument_list|,
-name|cause
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-end_class
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
 
 end_unit
 

@@ -58,22 +58,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|amazonaws
-operator|.
-name|services
-operator|.
-name|s3
-operator|.
-name|model
-operator|.
-name|AmazonS3Exception
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -99,16 +83,6 @@ operator|.
 name|reflect
 operator|.
 name|FieldUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|amazonaws
-operator|.
-name|AmazonClientException
 import|;
 end_import
 
@@ -285,18 +259,6 @@ operator|.
 name|net
 operator|.
 name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|lang
-operator|.
-name|reflect
-operator|.
-name|Field
 import|;
 end_import
 
@@ -735,7 +697,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|AmazonClientException
+name|AWSClientIOException
 name|e
 parameter_list|)
 block|{
@@ -926,7 +888,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|AmazonClientException
+name|AWSClientIOException
 name|e
 parameter_list|)
 block|{
@@ -962,7 +924,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|AmazonClientException
+name|AWSClientIOException
 name|e
 parameter_list|)
 block|{
@@ -2284,7 +2246,7 @@ block|}
 catch|catch
 parameter_list|(
 specifier|final
-name|AmazonS3Exception
+name|AWSS3IOException
 name|e
 parameter_list|)
 block|{

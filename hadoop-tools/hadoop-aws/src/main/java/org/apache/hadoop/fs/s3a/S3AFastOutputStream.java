@@ -34,16 +34,6 @@ name|com
 operator|.
 name|amazonaws
 operator|.
-name|AmazonServiceException
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|amazonaws
-operator|.
 name|event
 operator|.
 name|ProgressEvent
@@ -460,6 +450,24 @@ name|ExecutorService
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3AUtils
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
 comment|/**  * Upload files/parts asap directly from a memory buffer (instead of buffering  * to a file).  *<p>  * Uploads are managed low-level rather than through the AWS TransferManager.  * This allows for uploading each part of a multi-part upload as soon as  * the bytes are in memory, rather than waiting until the file is closed.  *<p>  * Unstable: statistics and error handling might evolve  */
 end_comment
@@ -864,14 +872,6 @@ argument_list|(
 name|progress
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -883,7 +883,6 @@ argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Writes a byte to the memory buffer. If this causes the buffer to reach    * its limit, the actual upload is submitted to the threadpool.    * @param b the int of which the lowest byte is written    * @throws IOException on any problem    */
 annotation|@
@@ -1123,14 +1122,6 @@ operator|=
 literal|null
 expr_stmt|;
 comment|//earlier gc?
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1142,7 +1133,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-block|}
 name|int
 name|processedPos
 init|=
@@ -1157,14 +1147,6 @@ name|processedPos
 operator|)
 operator|>=
 name|partSize
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
 condition|)
 block|{
 name|LOG
@@ -1184,7 +1166,6 @@ literal|1
 operator|)
 argument_list|)
 expr_stmt|;
-block|}
 name|multiPartUpload
 operator|.
 name|uploadPartAsync
@@ -1260,6 +1241,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Close the stream. This will not return until the upload is complete    * or the attempt to perform the upload has failed.    * Exceptions raised in this method are indicative that the write has    * failed and data is at risk of being lost.    * @throws IOException on any failure.    */
 annotation|@
 name|Override
 DECL|method|close ()
@@ -1363,14 +1345,6 @@ argument_list|(
 name|key
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1382,7 +1356,6 @@ argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 finally|finally
 block|{
@@ -1488,39 +1461,16 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|AmazonServiceException
-name|ase
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Unable to initiate MultiPartUpload (server side)"
-operator|+
-literal|": "
-operator|+
-name|ase
-argument_list|,
-name|ase
-argument_list|)
-throw|;
-block|}
-catch|catch
-parameter_list|(
 name|AmazonClientException
 name|ace
 parameter_list|)
 block|{
 throw|throw
-operator|new
-name|IOException
+name|translateException
 argument_list|(
-literal|"Unable to initiate MultiPartUpload (client side)"
-operator|+
-literal|": "
-operator|+
-name|ace
+literal|"initiate MultiPartUpload"
+argument_list|,
+name|key
 argument_list|,
 name|ace
 argument_list|)
@@ -1535,14 +1485,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1554,7 +1496,6 @@ argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
-block|}
 specifier|final
 name|ObjectMetadata
 name|om
@@ -1689,15 +1630,13 @@ name|ee
 parameter_list|)
 block|{
 throw|throw
-operator|new
-name|IOException
+name|extractException
 argument_list|(
-literal|"Regular upload failed"
+literal|"regular upload"
+argument_list|,
+name|key
 argument_list|,
 name|ee
-operator|.
-name|getCause
-argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -1753,14 +1692,6 @@ argument_list|>
 argument_list|>
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1777,9 +1708,8 @@ name|uploadId
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 DECL|method|uploadPartAsync (ByteArrayInputStream inputStream, int partSize)
-specifier|public
+specifier|private
 name|void
 name|uploadPartAsync
 parameter_list|(
@@ -1872,14 +1802,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1891,7 +1813,6 @@ argument_list|,
 name|uploadId
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|client
 operator|.
@@ -1916,7 +1837,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|waitForAllPartUploads ()
-specifier|public
+specifier|private
 name|List
 argument_list|<
 name|PartETag
@@ -1965,6 +1886,9 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -2000,30 +1924,23 @@ name|abort
 argument_list|()
 expr_stmt|;
 throw|throw
-operator|new
-name|IOException
+name|extractException
 argument_list|(
-literal|"Part upload failed in multi-part upload with "
-operator|+
-literal|"id '"
+literal|"Multi-part upload with id '"
 operator|+
 name|uploadId
 operator|+
-literal|"':"
-operator|+
-name|ee
+literal|"'"
+argument_list|,
+name|key
 argument_list|,
 name|ee
 argument_list|)
 throw|;
 block|}
-comment|//should not happen?
-return|return
-literal|null
-return|;
 block|}
 DECL|method|complete (List<PartETag> partETags)
-specifier|public
+specifier|private
 name|void
 name|complete
 parameter_list|(
@@ -2033,14 +1950,10 @@ name|PartETag
 argument_list|>
 name|partETags
 parameter_list|)
+throws|throws
+name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
+try|try
 block|{
 name|LOG
 operator|.
@@ -2053,11 +1966,10 @@ argument_list|,
 name|uploadId
 argument_list|)
 expr_stmt|;
-block|}
-specifier|final
-name|CompleteMultipartUploadRequest
-name|completeRequest
-init|=
+name|client
+operator|.
+name|completeMultipartUpload
+argument_list|(
 operator|new
 name|CompleteMultipartUploadRequest
 argument_list|(
@@ -2069,14 +1981,26 @@ name|uploadId
 argument_list|,
 name|partETags
 argument_list|)
-decl_stmt|;
-name|client
-operator|.
-name|completeMultipartUpload
-argument_list|(
-name|completeRequest
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AmazonClientException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|translateException
+argument_list|(
+literal|"Completing multi-part upload"
+argument_list|,
+name|key
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|abort ()
 specifier|public

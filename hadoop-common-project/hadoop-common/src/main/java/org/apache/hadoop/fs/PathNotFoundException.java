@@ -17,7 +17,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * Exception corresponding to Permission denied - ENOENT  */
+comment|/**  * Exception corresponding to path not found: ENOENT/ENOFILE  */
 end_comment
 
 begin_class
@@ -50,6 +50,68 @@ argument_list|(
 name|path
 argument_list|,
 literal|"No such file or directory"
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|PathNotFoundException (String path, Throwable cause)
+specifier|public
+name|PathNotFoundException
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|Throwable
+name|cause
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|path
+argument_list|,
+name|cause
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|PathNotFoundException (String path, String error)
+specifier|public
+name|PathNotFoundException
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|String
+name|error
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|path
+argument_list|,
+name|error
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|PathNotFoundException (String path, String error, Throwable cause)
+specifier|public
+name|PathNotFoundException
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|String
+name|error
+parameter_list|,
+name|Throwable
+name|cause
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|path
+argument_list|,
+name|error
+argument_list|,
+name|cause
 argument_list|)
 expr_stmt|;
 block|}

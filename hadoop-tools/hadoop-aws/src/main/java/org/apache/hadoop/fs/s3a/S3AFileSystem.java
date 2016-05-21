@@ -258,6 +258,22 @@ name|s3
 operator|.
 name|model
 operator|.
+name|AmazonS3Exception
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|services
+operator|.
+name|s3
+operator|.
+name|model
+operator|.
 name|CannedAccessControlList
 import|;
 end_import
@@ -737,6 +753,24 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3AUtils
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -915,6 +949,8 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|instrumentation
 operator|=
 operator|new
@@ -1382,6 +1418,59 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|verifyBucketExists
+argument_list|()
+expr_stmt|;
+name|initMultipartUploads
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|serverSideEncryptionAlgorithm
+operator|=
+name|conf
+operator|.
+name|getTrimmed
+argument_list|(
+name|SERVER_SIDE_ENCRYPTION_ALGORITHM
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AmazonClientException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|translateException
+argument_list|(
+literal|"initializing "
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|name
+argument_list|)
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Verify that the bucket exists. This does not check permissions,    * not even read access.    * @throws FileNotFoundException the bucket is absent    * @throws IOException any other problem talking to S3    */
+DECL|method|verifyBucketExists ()
+specifier|protected
+name|void
+name|verifyBucketExists
+parameter_list|()
+throws|throws
+name|FileNotFoundException
+throws|,
+name|IOException
+block|{
+try|try
+block|{
 if|if
 condition|(
 operator|!
@@ -1405,20 +1494,84 @@ literal|" does not exist"
 argument_list|)
 throw|;
 block|}
-name|initMultipartUploads
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|serverSideEncryptionAlgorithm
-operator|=
-name|conf
+block|}
+catch|catch
+parameter_list|(
+name|AmazonS3Exception
+name|e
+parameter_list|)
+block|{
+comment|// this is a sign of a serious startup problem so do dump everything
+name|LOG
 operator|.
-name|get
+name|warn
 argument_list|(
-name|SERVER_SIDE_ENCRYPTION_ALGORITHM
+name|stringify
+argument_list|(
+name|e
+argument_list|)
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
+throw|throw
+name|translateException
+argument_list|(
+literal|"doesBucketExist"
+argument_list|,
+name|bucket
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|AmazonServiceException
+name|e
+parameter_list|)
+block|{
+comment|// this is a sign of a serious startup problem so do dump everything
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|stringify
+argument_list|(
+name|e
+argument_list|)
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+name|translateException
+argument_list|(
+literal|"doesBucketExist"
+argument_list|,
+name|bucket
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|AmazonClientException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|translateException
+argument_list|(
+literal|"doesBucketExist"
+argument_list|,
+name|bucket
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|initProxySupport (Configuration conf, ClientConfiguration awsConf, boolean secureConnections)
 name|void
@@ -2055,6 +2208,8 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|boolean
 name|purgeExistingMultipart
@@ -2142,7 +2297,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to abort multipart uploads against {},"
+literal|"Failed to purging multipart uploads against {},"
 operator|+
 literal|" FS may be read only"
 argument_list|,
@@ -2155,7 +2310,14 @@ block|}
 else|else
 block|{
 throw|throw
+name|translateException
+argument_list|(
+literal|"purging multipart uploads"
+argument_list|,
+name|bucket
+argument_list|,
 name|e
+argument_list|)
 throw|;
 block|}
 block|}
@@ -3000,7 +3162,7 @@ literal|"Not supported"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Renames Path src to Path dst.  Can take place on local fs    * or remote DFS.    *    * Warning: S3 does not support renames. This method does a copy which can    * take S3 some time to execute with large files and directories. Since    * there is no Progressable passed in, this can time out jobs.    *    * Note: This implementation differs with other S3 drivers. Specifically:    *       Fails if src is a file and dst is a directory.    *       Fails if src is a directory and dst is a file.    *       Fails if the parent of dst does not exist or is a file.    *       Fails if dst is a directory that is not empty.    *    * @param src path to be renamed    * @param dst new path after rename    * @throws IOException on failure    * @return true if rename is successful    */
+comment|/**    * Renames Path src to Path dst.  Can take place on local fs    * or remote DFS.    *    * Warning: S3 does not support renames. This method does a copy which can    * take S3 some time to execute with large files and directories. Since    * there is no Progressable passed in, this can time out jobs.    *    * Note: This implementation differs with other S3 drivers. Specifically:    *       Fails if src is a file and dst is a directory.    *       Fails if src is a directory and dst is a file.    *       Fails if the parent of dst does not exist or is a file.    *       Fails if dst is a directory that is not empty.    *    * @param src path to be renamed    * @param dst new path after rename    * @throws IOException on IO failure    * @return true if rename is successful    */
 DECL|method|rename (Path src, Path dst)
 specifier|public
 name|boolean
@@ -3014,6 +3176,60 @@ name|dst
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+block|{
+return|return
+name|innerRename
+argument_list|(
+name|src
+argument_list|,
+name|dst
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|AmazonClientException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|translateException
+argument_list|(
+literal|"rename("
+operator|+
+name|src
+operator|+
+literal|", "
+operator|+
+name|dst
+operator|+
+literal|")"
+argument_list|,
+name|src
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * The inner rename operation. See {@link #rename(Path, Path)} for    * the description of the operation.    * @param src path to be renamed    * @param dst new path after rename    * @return true if rename is successful    * @throws IOException on IO failure.    * @throws AmazonClientException on failures inside the AWS SDK    */
+DECL|method|innerRename (Path src, Path dst)
+specifier|private
+name|boolean
+name|innerRename
+parameter_list|(
+name|Path
+name|src
+parameter_list|,
+name|Path
+name|dst
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|AmazonClientException
 block|{
 name|LOG
 operator|.
@@ -3739,6 +3955,8 @@ parameter_list|,
 name|boolean
 name|clearKeys
 parameter_list|)
+throws|throws
+name|AmazonClientException
 block|{
 if|if
 condition|(
@@ -3851,7 +4069,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** Delete a file.    *    * @param f the path to delete.    * @param recursive if path is a directory and set to    * true, the directory is deleted else throws an exception. In    * case of a file the recursive can be set to either true or false.    * @return  true if delete is successful else false.    * @throws IOException due to inability to delete a directory or file.    */
+comment|/**    * Delete a Path. This operation is at least {@code O(files)}, with    * added overheads to enumerate the path. It is also not atomic.    *    * @param f the path to delete.    * @param recursive if path is a directory and set to    * true, the directory is deleted else throws an exception. In    * case of a file the recursive can be set to either true or false.    * @return  true if delete is successful else false.    * @throws IOException due to inability to delete a directory or file.    */
 DECL|method|delete (Path f, boolean recursive)
 specifier|public
 name|boolean
@@ -3865,6 +4083,52 @@ name|recursive
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+block|{
+return|return
+name|innerDelete
+argument_list|(
+name|f
+argument_list|,
+name|recursive
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|AmazonClientException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|translateException
+argument_list|(
+literal|"delete"
+argument_list|,
+name|f
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Delete a path. See {@link #delete(Path, boolean)}.    *    * @param f the path to delete.    * @param recursive if path is a directory and set to    * true, the directory is deleted else throws an exception. In    * case of a file the recursive can be set to either true or false.    * @return  true if delete is successful else false.    * @throws IOException due to inability to delete a directory or file.    * @throws AmazonClientException on failures inside the AWS SDK    */
+DECL|method|innerDelete (Path f, boolean recursive)
+specifier|private
+name|boolean
+name|innerDelete
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|boolean
+name|recursive
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|AmazonClientException
 block|{
 name|LOG
 operator|.
@@ -4279,6 +4543,8 @@ name|f
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|AmazonClientException
 block|{
 name|String
 name|key
@@ -4335,6 +4601,50 @@ throws|throws
 name|FileNotFoundException
 throws|,
 name|IOException
+block|{
+try|try
+block|{
+return|return
+name|innerListStatus
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|AmazonClientException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|translateException
+argument_list|(
+literal|"listStatus"
+argument_list|,
+name|f
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *    * @param f given path    * @return the statuses of the files/directories in the given patch    * @throws FileNotFoundException when the path does not exist;    * @throws IOException due to an IO problem.    * @throws AmazonClientException on failures inside the AWS SDK    */
+DECL|method|innerListStatus (Path f)
+specifier|public
+name|FileStatus
+index|[]
+name|innerListStatus
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|FileNotFoundException
+throws|,
+name|IOException
+throws|,
+name|AmazonClientException
 block|{
 name|String
 name|key
@@ -4784,13 +5094,61 @@ return|return
 name|workingDir
 return|;
 block|}
-comment|/**    * Make the given file and all non-existent parents into    * directories. Has the semantics of Unix 'mkdir -p'.    * Existence of the directory hierarchy is not an error.    * @param f path to create    * @param permission to apply to f    */
+comment|/**    *    * Make the given path and all non-existent parents into    * directories. Has the semantics of Unix @{code 'mkdir -p'}.    * Existence of the directory hierarchy is not an error.    * @param path path to create    * @param permission to apply to f    * @return true if a directory was created    * @throws FileAlreadyExistsException there is a file at the path specified    * @throws IOException other IO problems    */
 comment|// TODO: If we have created an empty file at /foo/bar and we then call
 comment|// mkdirs for /foo/bar/baz/roo what happens to the empty file /foo/bar/?
-DECL|method|mkdirs (Path f, FsPermission permission)
+DECL|method|mkdirs (Path path, FsPermission permission)
 specifier|public
 name|boolean
 name|mkdirs
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|FsPermission
+name|permission
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|FileAlreadyExistsException
+block|{
+try|try
+block|{
+return|return
+name|innerMkdirs
+argument_list|(
+name|path
+argument_list|,
+name|permission
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|AmazonClientException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|translateException
+argument_list|(
+literal|"innerMkdirs"
+argument_list|,
+name|path
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    *    * Make the given path and all non-existent parents into    * directories.    * See {@link #mkdirs(Path, FsPermission)}    * @param f path to create    * @param permission to apply to f    * @return true if a directory was created    * @throws FileAlreadyExistsException there is a file at the path specified    * @throws IOException other IO problems    * @throws AmazonClientException on failures inside the AWS SDK    */
+comment|// TODO: If we have created an empty file at /foo/bar and we then call
+comment|// mkdirs for /foo/bar/baz/roo what happens to the empty file /foo/bar/?
+DECL|method|innerMkdirs (Path f, FsPermission permission)
+specifier|private
+name|boolean
+name|innerMkdirs
 parameter_list|(
 name|Path
 name|f
@@ -4800,6 +5158,10 @@ name|permission
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|AmazonClientException
 block|{
 name|LOG
 operator|.
@@ -4939,7 +5301,7 @@ literal|true
 return|;
 block|}
 block|}
-comment|/**    * Return a file status object that represents the path.    * @param f The path we want information from    * @return a FileStatus object    * @throws java.io.FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * Return a file status object that represents the path.    * @param f The path we want information from    * @return a FileStatus object    * @throws java.io.FileNotFoundException when the path does not exist;    * @throws IOException on other problems.    */
 DECL|method|getFileStatus (Path f)
 specifier|public
 name|S3AFileStatus
@@ -5105,18 +5467,15 @@ operator|!=
 literal|404
 condition|)
 block|{
-name|printAmazonServiceException
+throw|throw
+name|translateException
 argument_list|(
+literal|"getFileStatus"
+argument_list|,
 name|f
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|e
 argument_list|)
-expr_stmt|;
-throw|throw
-name|e
 throw|;
 block|}
 block|}
@@ -5126,18 +5485,15 @@ name|AmazonClientException
 name|e
 parameter_list|)
 block|{
-name|printAmazonClientException
+throw|throw
+name|translateException
 argument_list|(
+literal|"getFileStatus"
+argument_list|,
 name|f
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|e
 argument_list|)
-expr_stmt|;
-throw|throw
-name|e
 throw|;
 block|}
 comment|// Necessary?
@@ -5287,15 +5643,15 @@ operator|!=
 literal|404
 condition|)
 block|{
-name|printAmazonServiceException
+throw|throw
+name|translateException
 argument_list|(
+literal|"getFileStatus"
+argument_list|,
 name|newKey
 argument_list|,
 name|e
 argument_list|)
-expr_stmt|;
-throw|throw
-name|e
 throw|;
 block|}
 block|}
@@ -5305,15 +5661,15 @@ name|AmazonClientException
 name|e
 parameter_list|)
 block|{
-name|printAmazonClientException
+throw|throw
+name|translateException
 argument_list|(
+literal|"getFileStatus"
+argument_list|,
 name|newKey
 argument_list|,
 name|e
 argument_list|)
-expr_stmt|;
-throw|throw
-name|e
 throw|;
 block|}
 block|}
@@ -5570,15 +5926,15 @@ operator|!=
 literal|404
 condition|)
 block|{
-name|printAmazonServiceException
+throw|throw
+name|translateException
 argument_list|(
+literal|"getFileStatus"
+argument_list|,
 name|key
 argument_list|,
 name|e
 argument_list|)
-expr_stmt|;
-throw|throw
-name|e
 throw|;
 block|}
 block|}
@@ -5588,15 +5944,15 @@ name|AmazonClientException
 name|e
 parameter_list|)
 block|{
-name|printAmazonClientException
+throw|throw
+name|translateException
 argument_list|(
+literal|"getFileStatus"
+argument_list|,
 name|key
 argument_list|,
 name|e
 argument_list|)
-expr_stmt|;
-throw|throw
-name|e
 throw|;
 block|}
 name|LOG
@@ -5618,7 +5974,7 @@ name|f
 argument_list|)
 throw|;
 block|}
-comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    *    * This version doesn't need to create a temporary file to calculate the md5.    * Sadly this doesn't seem to be used by the shell cp :(    *    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param overwrite whether to overwrite an existing file    * @param src path    * @param dst path    */
+comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    *    * This version doesn't need to create a temporary file to calculate the md5.    * Sadly this doesn't seem to be used by the shell cp :(    *    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param overwrite whether to overwrite an existing file    * @param src path    * @param dst path    * @throws IOException IO problem    * @throws FileAlreadyExistsException the destination file exists and    * overwrite==false    * @throws AmazonClientException failure in the AWS SDK    */
 annotation|@
 name|Override
 DECL|method|copyFromLocalFile (boolean delSrc, boolean overwrite, Path src, Path dst)
@@ -5640,6 +5996,71 @@ name|dst
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+block|{
+name|innerCopyFromLocalFile
+argument_list|(
+name|delSrc
+argument_list|,
+name|overwrite
+argument_list|,
+name|src
+argument_list|,
+name|dst
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AmazonClientException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|translateException
+argument_list|(
+literal|"copyFromLocalFile("
+operator|+
+name|src
+operator|+
+literal|", "
+operator|+
+name|dst
+operator|+
+literal|")"
+argument_list|,
+name|src
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    *    * This version doesn't need to create a temporary file to calculate the md5.    * Sadly this doesn't seem to be used by the shell cp :(    *    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param overwrite whether to overwrite an existing file    * @param src path    * @param dst path    * @throws IOException IO problem    * @throws FileAlreadyExistsException the destination file exists and    * overwrite==false    * @throws AmazonClientException failure in the AWS SDK    */
+DECL|method|innerCopyFromLocalFile (boolean delSrc, boolean overwrite, Path src, Path dst)
+specifier|private
+name|void
+name|innerCopyFromLocalFile
+parameter_list|(
+name|boolean
+name|delSrc
+parameter_list|,
+name|boolean
+name|overwrite
+parameter_list|,
+name|Path
+name|src
+parameter_list|,
+name|Path
+name|dst
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|AmazonClientException
 block|{
 name|String
 name|key
@@ -5870,10 +6291,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Close the filesystem. This shuts down all transfers.    * @throws IOException IO problem    */
 annotation|@
 name|Override
 DECL|method|close ()
 specifier|public
+specifier|synchronized
 name|void
 name|close
 parameter_list|()
@@ -5911,7 +6334,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**   * Override getCanonicalServiceName because we don't support token in S3A.   */
+comment|/**    * Override getCanonicalServiceName because we don't support token in S3A.    */
 annotation|@
 name|Override
 DECL|method|getCanonicalServiceName ()
@@ -5925,6 +6348,7 @@ return|return
 literal|null
 return|;
 block|}
+comment|/**    * Copy a single object in the bucket via a COPY operation.    * @param srcKey source object path    * @param dstKey destination object path    * @param size object size    * @throws AmazonClientException on failures inside the AWS SDK    * @throws InterruptedIOException the operation was interrupted    * @throws IOException Other IO problems    */
 DECL|method|copyFile (String srcKey, String dstKey, long size)
 specifier|private
 name|void
@@ -5941,6 +6365,10 @@ name|size
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedIOException
+throws|,
+name|AmazonClientException
 block|{
 name|LOG
 operator|.
@@ -5953,6 +6381,8 @@ argument_list|,
 name|dstKey
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|ObjectMetadata
 name|srcom
 init|=
@@ -6124,6 +6554,32 @@ argument_list|)
 throw|;
 block|}
 block|}
+catch|catch
+parameter_list|(
+name|AmazonClientException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|translateException
+argument_list|(
+literal|"copyFile("
+operator|+
+name|srcKey
+operator|+
+literal|", "
+operator|+
+name|dstKey
+operator|+
+literal|")"
+argument_list|,
+name|srcKey
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
 DECL|method|objectRepresentsDirectory (final String name, final long size)
 specifier|private
 name|boolean
@@ -6194,6 +6650,7 @@ name|getTime
 argument_list|()
 return|;
 block|}
+comment|/**    * Perform post-write actions.    * @param key key written to    */
 DECL|method|finishedWrite (String key)
 specifier|public
 name|void
@@ -6202,8 +6659,6 @@ parameter_list|(
 name|String
 name|key
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|deleteUnnecessaryFakeDirectories
 argument_list|(
@@ -6217,6 +6672,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Delete mock parent directories which are no longer needed.    * This code swallows IO exceptions encountered    * @param f path    */
 DECL|method|deleteUnnecessaryFakeDirectories (Path f)
 specifier|private
 name|void
@@ -6225,8 +6681,6 @@ parameter_list|(
 name|Path
 name|f
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 while|while
 condition|(
@@ -6309,9 +6763,9 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|FileNotFoundException
+name|IOException
 decl||
-name|AmazonServiceException
+name|AmazonClientException
 name|e
 parameter_list|)
 block|{
@@ -6907,160 +7361,6 @@ argument_list|,
 name|DEFAULT_BLOCKSIZE
 argument_list|)
 return|;
-block|}
-DECL|method|printAmazonServiceException (String target, AmazonServiceException ase)
-specifier|private
-name|void
-name|printAmazonServiceException
-parameter_list|(
-name|String
-name|target
-parameter_list|,
-name|AmazonServiceException
-name|ase
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"{}: caught an AmazonServiceException {}"
-argument_list|,
-name|target
-argument_list|,
-name|ase
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"This means your request made it to Amazon S3,"
-operator|+
-literal|" but was rejected with an error response for some reason."
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Error Message: {}"
-argument_list|,
-name|ase
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"HTTP Status Code: {}"
-argument_list|,
-name|ase
-operator|.
-name|getStatusCode
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"AWS Error Code: {}"
-argument_list|,
-name|ase
-operator|.
-name|getErrorCode
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Error Type: {}"
-argument_list|,
-name|ase
-operator|.
-name|getErrorType
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Request ID: {}"
-argument_list|,
-name|ase
-operator|.
-name|getRequestId
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Class Name: {}"
-argument_list|,
-name|ase
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Exception"
-argument_list|,
-name|ase
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|printAmazonClientException (String target, AmazonClientException ace)
-specifier|private
-name|void
-name|printAmazonClientException
-parameter_list|(
-name|String
-name|target
-parameter_list|,
-name|AmazonClientException
-name|ace
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"{}: caught an AmazonClientException {}"
-argument_list|,
-name|target
-argument_list|,
-name|ace
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"This means the client encountered "
-operator|+
-literal|"a problem while trying to communicate with S3, "
-operator|+
-literal|"such as not being able to access the network."
-argument_list|,
-name|ace
-argument_list|)
-expr_stmt|;
 block|}
 annotation|@
 name|Override

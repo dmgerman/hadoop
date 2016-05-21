@@ -24,6 +24,16 @@ name|com
 operator|.
 name|amazonaws
 operator|.
+name|AmazonClientException
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
 name|services
 operator|.
 name|s3
@@ -203,6 +213,24 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3AUtils
+operator|.
+name|*
 import|;
 end_import
 
@@ -457,7 +485,7 @@ name|readahead
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Opens up the stream at specified target position and for given length.    *    * @param reason reason for reopen    * @param targetPos target position    * @param length length requested    * @throws IOException    */
+comment|/**    * Opens up the stream at specified target position and for given length.    *    * @param reason reason for reopen    * @param targetPos target position    * @param length length requested    * @throws IOException on any failure to open the object    */
 DECL|method|reopen (String reason, long targetPos, long length)
 specifier|private
 specifier|synchronized
@@ -529,6 +557,8 @@ operator|.
 name|streamOpened
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|GetObjectRequest
 name|request
 init|=
@@ -577,6 +607,26 @@ operator|+
 literal|") "
 operator|+
 name|uri
+argument_list|)
+throw|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|AmazonClientException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|translateException
+argument_list|(
+literal|"Reopen at position "
+operator|+
+name|targetPos
+argument_list|,
+name|uri
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}
@@ -1056,6 +1106,11 @@ operator|-
 literal|1
 return|;
 block|}
+name|int
+name|byteRead
+decl_stmt|;
+try|try
+block|{
 name|lazySeek
 argument_list|(
 name|nextReadPos
@@ -1063,11 +1118,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|int
-name|byteRead
-decl_stmt|;
-try|try
-block|{
 name|byteRead
 operator|=
 name|wrappedStream
@@ -1260,6 +1310,8 @@ operator|-
 literal|1
 return|;
 block|}
+try|try
+block|{
 name|lazySeek
 argument_list|(
 name|nextReadPos
@@ -1267,6 +1319,24 @@ argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|EOFException
+name|e
+parameter_list|)
+block|{
+comment|// the end of the file has moved
+return|return
+operator|-
+literal|1
+return|;
+block|}
+name|int
+name|bytesRead
+decl_stmt|;
+try|try
+block|{
 name|streamStatistics
 operator|.
 name|readOperationStarted
@@ -1276,11 +1346,6 @@ argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
-name|int
-name|bytesRead
-decl_stmt|;
-try|try
-block|{
 name|bytesRead
 operator|=
 name|wrappedStream
