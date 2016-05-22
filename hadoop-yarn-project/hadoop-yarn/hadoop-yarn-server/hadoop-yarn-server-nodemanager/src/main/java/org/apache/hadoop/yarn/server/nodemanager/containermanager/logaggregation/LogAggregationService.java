@@ -784,6 +784,36 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|MIN_LOG_ROLLING_INTERVAL
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|MIN_LOG_ROLLING_INTERVAL
+init|=
+literal|3600
+decl_stmt|;
+comment|// This configuration is for debug and test purpose. By setting
+comment|// this configuration as true. We can break the lower bound of
+comment|// NM_LOG_AGGREGATION_ROLL_MONITORING_INTERVAL_SECONDS.
+DECL|field|NM_LOG_AGGREGATION_DEBUG_ENABLED
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|NM_LOG_AGGREGATION_DEBUG_ENABLED
+init|=
+name|YarnConfiguration
+operator|.
+name|NM_PREFIX
+operator|+
+literal|"log-aggregation.debug-enabled"
+decl_stmt|;
+DECL|field|rollingMonitorInterval
+specifier|private
+name|long
+name|rollingMonitorInterval
+decl_stmt|;
 comment|/*    * Expected deployment TLD will be 1777, owner=<NMOwner>, group=<NMGroup -    * Group to which NMOwner belongs> App dirs will be created as 770,    * owner=<AppOwner>, group=<NMGroup>: so that the owner and<NMOwner> can    * access / modify the files.    *<NMGroup> should obviously be a limited access group.    */
 comment|/**    * Permissions for the top level directory under which app directories will be    * created.    */
 DECL|field|TLDIR_PERMISSIONS
@@ -867,6 +897,13 @@ argument_list|,
 name|AppLogAggregator
 argument_list|>
 name|appLogAggregators
+decl_stmt|;
+DECL|field|logPermError
+specifier|private
+name|boolean
+name|logPermError
+init|=
+literal|true
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
@@ -1019,6 +1056,124 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|rollingMonitorInterval
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_LOG_AGGREGATION_ROLL_MONITORING_INTERVAL_SECONDS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_LOG_AGGREGATION_ROLL_MONITORING_INTERVAL_SECONDS
+argument_list|)
+expr_stmt|;
+name|boolean
+name|logAggregationDebugMode
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|NM_LOG_AGGREGATION_DEBUG_ENABLED
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|rollingMonitorInterval
+operator|>
+literal|0
+operator|&&
+name|rollingMonitorInterval
+operator|<
+name|MIN_LOG_ROLLING_INTERVAL
+condition|)
+block|{
+if|if
+condition|(
+name|logAggregationDebugMode
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Log aggregation debug mode enabled. rollingMonitorInterval = "
+operator|+
+name|rollingMonitorInterval
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"rollingMonitorIntervall should be more than or equal to "
+operator|+
+name|MIN_LOG_ROLLING_INTERVAL
+operator|+
+literal|" seconds. Using "
+operator|+
+name|MIN_LOG_ROLLING_INTERVAL
+operator|+
+literal|" seconds instead."
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|rollingMonitorInterval
+operator|=
+name|MIN_LOG_ROLLING_INTERVAL
+expr_stmt|;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|rollingMonitorInterval
+operator|<=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"rollingMonitorInterval is set as "
+operator|+
+name|rollingMonitorInterval
+operator|+
+literal|". The log rolling monitoring interval is disabled. "
+operator|+
+literal|"The logs will be aggregated after this application is finished."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"rollingMonitorInterval is set as "
+operator|+
+name|rollingMonitorInterval
+operator|+
+literal|". The logs will be aggregated every "
+operator|+
+name|rollingMonitorInterval
+operator|+
+literal|" seconds"
+argument_list|)
+expr_stmt|;
+block|}
 name|super
 operator|.
 name|serviceInit
@@ -1355,6 +1510,8 @@ name|equals
 argument_list|(
 name|TLDIR_PERMISSIONS
 argument_list|)
+operator|&&
+name|logPermError
 condition|)
 block|{
 name|LOG
@@ -1381,6 +1538,17 @@ literal|"]."
 operator|+
 literal|" The cluster may have problems with multiple users."
 argument_list|)
+expr_stmt|;
+name|logPermError
+operator|=
+literal|false
+expr_stmt|;
+block|}
+else|else
+block|{
+name|logPermError
+operator|=
+literal|true
 expr_stmt|;
 block|}
 block|}
@@ -2253,6 +2421,10 @@ argument_list|(
 name|getConfig
 argument_list|()
 argument_list|)
+argument_list|,
+name|this
+operator|.
+name|rollingMonitorInterval
 argument_list|)
 decl_stmt|;
 if|if
