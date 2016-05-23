@@ -189,21 +189,21 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * executes a given plan.  */
+comment|/**  * Cancels a running plan.  */
 end_comment
 
 begin_class
-DECL|class|ExecuteCommand
+DECL|class|CancelCommand
 specifier|public
 class|class
-name|ExecuteCommand
+name|CancelCommand
 extends|extends
 name|Command
 block|{
-comment|/**    * Constructs ExecuteCommand.    *    * @param conf - Configuration.    */
-DECL|method|ExecuteCommand (Configuration conf)
+comment|/**    * Contructs a cancel Command.    *    * @param conf - Conf    */
+DECL|method|CancelCommand (Configuration conf)
 specifier|public
-name|ExecuteCommand
+name|CancelCommand
 parameter_list|(
 name|Configuration
 name|conf
@@ -218,9 +218,9 @@ name|addValidCommandParameters
 argument_list|(
 name|DiskBalancer
 operator|.
-name|EXECUTE
+name|CANCEL
 argument_list|,
-literal|"Executes a given plan."
+literal|"Cancels a running plan."
 argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
@@ -229,7 +229,9 @@ name|DiskBalancer
 operator|.
 name|NODE
 argument_list|,
-literal|"Name of the target node."
+literal|"Node to run the command "
+operator|+
+literal|"against in node:port format."
 argument_list|)
 expr_stmt|;
 block|}
@@ -251,7 +253,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Executing \"execute plan\" command"
+literal|"Executing \"Cancel plan\" command."
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -264,7 +266,7 @@ name|hasOption
 argument_list|(
 name|DiskBalancer
 operator|.
-name|EXECUTE
+name|CANCEL
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -272,11 +274,62 @@ name|verifyCommandOptions
 argument_list|(
 name|DiskBalancer
 operator|.
-name|EXECUTE
+name|CANCEL
 argument_list|,
 name|cmd
 argument_list|)
 expr_stmt|;
+comment|// We can cancel a plan using datanode address and plan ID
+comment|// that you can read from a datanode using queryStatus
+if|if
+condition|(
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|DiskBalancer
+operator|.
+name|NODE
+argument_list|)
+condition|)
+block|{
+name|String
+name|nodeAddress
+init|=
+name|cmd
+operator|.
+name|getOptionValue
+argument_list|(
+name|DiskBalancer
+operator|.
+name|NODE
+argument_list|)
+decl_stmt|;
+name|String
+name|planHash
+init|=
+name|cmd
+operator|.
+name|getOptionValue
+argument_list|(
+name|DiskBalancer
+operator|.
+name|CANCEL
+argument_list|)
+decl_stmt|;
+name|cancelPlanUsingHash
+argument_list|(
+name|nodeAddress
+argument_list|,
+name|planHash
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Or you can cancel a plan using the plan file. If the user
+comment|// points us to the plan file, we can compute the hash as well as read
+comment|// the address of the datanode from the plan file.
 name|String
 name|planFile
 init|=
@@ -286,7 +339,7 @@ name|getOptionValue
 argument_list|(
 name|DiskBalancer
 operator|.
-name|EXECUTE
+name|CANCEL
 argument_list|)
 decl_stmt|;
 name|Preconditions
@@ -331,17 +384,18 @@ name|plan
 argument_list|)
 expr_stmt|;
 block|}
-name|submitPlan
+name|cancelPlan
 argument_list|(
 name|planData
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Submits plan to a given data node.    *    * @param planData - PlanData Json String.    * @throws IOException    */
-DECL|method|submitPlan (String planData)
+block|}
+comment|/**    * Cancels a running plan.    *    * @param planData - Plan data.    * @throws IOException    */
+DECL|method|cancelPlan (String planData)
 specifier|private
 name|void
-name|submitPlan
+name|cancelPlan
 parameter_list|(
 name|String
 name|planData
@@ -408,20 +462,11 @@ try|try
 block|{
 name|dataNode
 operator|.
-name|submitDiskBalancerPlan
+name|cancelDiskBalancePlan
 argument_list|(
 name|planHash
-argument_list|,
-name|DiskBalancer
-operator|.
-name|PLAN_VERSION
-argument_list|,
-name|planData
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
-comment|// TODO : Support skipping date check.
 block|}
 catch|catch
 parameter_list|(
@@ -433,12 +478,92 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Submitting plan on  {} failed. Result: {}, Message: {}"
+literal|"Cancelling plan on  {} failed. Result: {}, Message: {}"
 argument_list|,
 name|plan
 operator|.
 name|getNodeName
 argument_list|()
+argument_list|,
+name|ex
+operator|.
+name|getResult
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ex
+throw|;
+block|}
+block|}
+comment|/**    * Cancels a running plan.    * @param nodeAddress - Address of the data node.    * @param hash - Sha512 hash of the plan, which can be read from datanode    *             using query status command.    * @throws IOException    */
+DECL|method|cancelPlanUsingHash (String nodeAddress, String hash)
+specifier|private
+name|void
+name|cancelPlanUsingHash
+parameter_list|(
+name|String
+name|nodeAddress
+parameter_list|,
+name|String
+name|hash
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|nodeAddress
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|hash
+argument_list|)
+expr_stmt|;
+name|ClientDatanodeProtocol
+name|dataNode
+init|=
+name|getDataNodeProxy
+argument_list|(
+name|nodeAddress
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|dataNode
+operator|.
+name|cancelDiskBalancePlan
+argument_list|(
+name|hash
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|DiskBalancerException
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Cancelling plan on  {} failed. Result: {}, Message: {}"
+argument_list|,
+name|nodeAddress
 argument_list|,
 name|ex
 operator|.
@@ -469,9 +594,9 @@ name|getHelp
 parameter_list|()
 block|{
 return|return
-literal|"Execute command takes a plan and runs it against the node. e.g. "
+literal|"Cancels a running command. e.g -cancel<PlanFile> or -cancel "
 operator|+
-literal|"hdfs diskbalancer -execute<nodename.plan.json> "
+literal|"<planID> -node<datanode>"
 return|;
 block|}
 block|}

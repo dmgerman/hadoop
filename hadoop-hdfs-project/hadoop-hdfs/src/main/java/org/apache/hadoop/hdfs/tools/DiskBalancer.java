@@ -146,6 +146,26 @@ name|diskbalancer
 operator|.
 name|command
 operator|.
+name|CancelCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|diskbalancer
+operator|.
+name|command
+operator|.
 name|Command
 import|;
 end_import
@@ -411,6 +431,16 @@ name|QUERY
 init|=
 literal|"query"
 decl_stmt|;
+comment|/**    * Cancels a running plan.    */
+DECL|field|CANCEL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CANCEL
+init|=
+literal|"cancel"
+decl_stmt|;
 comment|/**    * Template for the Before File. It is node.before.json.    */
 DECL|field|BEFORE_TEMPLATE
 specifier|public
@@ -603,6 +633,11 @@ name|opts
 argument_list|)
 expr_stmt|;
 name|addQueryCommands
+argument_list|(
+name|opts
+argument_list|)
+expr_stmt|;
+name|addCancelCommands
 argument_list|(
 name|opts
 argument_list|)
@@ -848,6 +883,61 @@ name|query
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Adds cancel command options.    * @param opt Options    */
+DECL|method|addCancelCommands (Options opt)
+specifier|private
+name|void
+name|addCancelCommands
+parameter_list|(
+name|Options
+name|opt
+parameter_list|)
+block|{
+name|Option
+name|cancel
+init|=
+operator|new
+name|Option
+argument_list|(
+name|CANCEL
+argument_list|,
+literal|true
+argument_list|,
+literal|"Cancels a running plan. -cancel"
+operator|+
+literal|"<planFile> or -cancel<planID> -node<datanode:port>"
+argument_list|)
+decl_stmt|;
+name|opt
+operator|.
+name|addOption
+argument_list|(
+name|cancel
+argument_list|)
+expr_stmt|;
+name|Option
+name|node
+init|=
+operator|new
+name|Option
+argument_list|(
+name|NODE
+argument_list|,
+literal|true
+argument_list|,
+literal|"Name of the datanode in name:port "
+operator|+
+literal|"format"
+argument_list|)
+decl_stmt|;
+name|opt
+operator|.
+name|addOption
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * This function parses all command line arguments and returns the appropriate    * values.    *    * @param argv - Argv from main    * @return CommandLine    */
 DECL|method|parseArgs (String[] argv, Options opts)
 specifier|private
@@ -974,6 +1064,28 @@ name|currentCommand
 operator|=
 operator|new
 name|QueryCommand
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|DiskBalancer
+operator|.
+name|CANCEL
+argument_list|)
+condition|)
+block|{
+name|currentCommand
+operator|=
+operator|new
+name|CancelCommand
 argument_list|(
 name|getConf
 argument_list|()
