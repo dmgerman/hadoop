@@ -1422,6 +1422,12 @@ expr_stmt|;
 block|}
 name|maxApplicationsPerUser
 operator|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|maxApplications
+argument_list|,
 call|(
 name|int
 call|)
@@ -1435,6 +1441,7 @@ literal|100.0f
 operator|)
 operator|*
 name|userLimitFactor
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|maxAMResourcePerQueuePercent

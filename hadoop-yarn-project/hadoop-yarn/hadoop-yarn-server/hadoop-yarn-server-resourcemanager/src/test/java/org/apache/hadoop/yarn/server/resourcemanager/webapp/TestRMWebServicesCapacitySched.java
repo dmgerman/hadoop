@@ -3340,6 +3340,12 @@ decl_stmt|;
 name|int
 name|expectedMaxAppsPerUser
 init|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|expectedMaxApps
+argument_list|,
 call|(
 name|int
 call|)
@@ -3357,6 +3363,7 @@ operator|*
 name|info
 operator|.
 name|userLimitFactor
+argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// TODO: would like to use integer comparisons here but can't due to

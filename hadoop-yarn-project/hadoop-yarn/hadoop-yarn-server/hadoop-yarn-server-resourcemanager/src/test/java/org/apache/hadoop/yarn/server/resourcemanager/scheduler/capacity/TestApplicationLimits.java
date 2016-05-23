@@ -2485,6 +2485,12 @@ expr_stmt|;
 name|int
 name|expectedMaxAppsPerUser
 init|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|expectedMaxApps
+argument_list|,
 call|(
 name|int
 call|)
@@ -2504,6 +2510,7 @@ name|queue
 operator|.
 name|getUserLimitFactor
 argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -2770,6 +2777,12 @@ argument_list|)
 expr_stmt|;
 name|expectedMaxAppsPerUser
 operator|=
+name|Math
+operator|.
+name|min
+argument_list|(
+literal|9999
+argument_list|,
 call|(
 name|int
 call|)
@@ -2789,6 +2802,7 @@ name|queue
 operator|.
 name|getUserLimitFactor
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
