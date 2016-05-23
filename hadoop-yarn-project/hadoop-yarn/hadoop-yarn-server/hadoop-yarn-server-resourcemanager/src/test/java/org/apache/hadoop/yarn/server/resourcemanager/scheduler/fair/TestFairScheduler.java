@@ -11742,7 +11742,7 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-comment|// Second ask, queue2 requests 1 large + (2 * minReqSize)
+comment|// Second ask, queue2 requests 1 large.
 name|List
 argument_list|<
 name|ResourceRequest
@@ -11779,13 +11779,17 @@ name|request3
 init|=
 name|createResourceRequest
 argument_list|(
+literal|2
+operator|*
 name|minReqSize
 argument_list|,
-literal|"bar"
+name|ResourceRequest
+operator|.
+name|ANY
 argument_list|,
 literal|1
 argument_list|,
-literal|2
+literal|1
 argument_list|,
 literal|false
 argument_list|)
@@ -11828,7 +11832,7 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-comment|// Third ask, queue2 requests 1 large
+comment|// Third ask, queue2 requests 2 small (minReqSize).
 name|List
 argument_list|<
 name|ResourceRequest
@@ -11847,17 +11851,31 @@ name|request4
 init|=
 name|createResourceRequest
 argument_list|(
+name|minReqSize
+argument_list|,
+literal|"bar"
+argument_list|,
 literal|2
-operator|*
+argument_list|,
+literal|2
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+name|ResourceRequest
+name|request5
+init|=
+name|createResourceRequest
+argument_list|(
 name|minReqSize
 argument_list|,
 name|ResourceRequest
 operator|.
 name|ANY
 argument_list|,
-literal|1
+literal|2
 argument_list|,
-literal|1
+literal|2
 argument_list|,
 literal|true
 argument_list|)
@@ -11867,6 +11885,13 @@ operator|.
 name|add
 argument_list|(
 name|request4
+argument_list|)
+expr_stmt|;
+name|ask3
+operator|.
+name|add
+argument_list|(
+name|request5
 argument_list|)
 expr_stmt|;
 name|scheduler
@@ -11930,12 +11955,6 @@ operator|+
 literal|2
 operator|*
 name|minReqSize
-operator|+
-operator|(
-literal|2
-operator|*
-name|minReqSize
-operator|)
 argument_list|,
 name|scheduler
 operator|.
