@@ -5663,12 +5663,6 @@ name|numClients
 init|=
 literal|1
 decl_stmt|;
-specifier|final
-name|int
-name|queueSizePerHandler
-init|=
-literal|3
-decl_stmt|;
 name|GenericTestUtils
 operator|.
 name|setLogLevel
@@ -5823,7 +5817,20 @@ argument_list|)
 decl_stmt|;
 specifier|final
 name|long
-name|beginCallVolume
+name|beginDecayedCallVolume
+init|=
+name|MetricsAsserts
+operator|.
+name|getLongCounter
+argument_list|(
+literal|"DecayedCallVolume"
+argument_list|,
+name|rb1
+argument_list|)
+decl_stmt|;
+specifier|final
+name|long
+name|beginRawCallVolume
 init|=
 name|MetricsAsserts
 operator|.
@@ -6039,7 +6046,19 @@ name|ns
 argument_list|)
 decl_stmt|;
 name|long
-name|callVolume1
+name|decayedCallVolume1
+init|=
+name|MetricsAsserts
+operator|.
+name|getLongCounter
+argument_list|(
+literal|"DecayedCallVolume"
+argument_list|,
+name|rb2
+argument_list|)
+decl_stmt|;
+name|long
+name|rawCallVolume1
 init|=
 name|MetricsAsserts
 operator|.
@@ -6069,7 +6088,7 @@ name|MetricsAsserts
 operator|.
 name|getLongGauge
 argument_list|(
-literal|"Priority.0.CallVolume"
+literal|"Priority.0.CompletedCallVolume"
 argument_list|,
 name|rb2
 argument_list|)
@@ -6081,7 +6100,7 @@ name|MetricsAsserts
 operator|.
 name|getLongGauge
 argument_list|(
-literal|"Priority.1.CallVolume"
+literal|"Priority.1.CompletedCallVolume"
 argument_list|,
 name|rb2
 argument_list|)
@@ -6114,9 +6133,18 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"CallVolume1: "
+literal|"DecayedCallVolume: "
 operator|+
-name|callVolume1
+name|decayedCallVolume1
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"CallVolume: "
+operator|+
+name|rawCallVolume1
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -6132,7 +6160,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Priority.0.CallVolume: "
+literal|"Priority.0.CompletedCallVolume: "
 operator|+
 name|callVolumePriority0
 argument_list|)
@@ -6141,7 +6169,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Priority.1.CallVolume: "
+literal|"Priority.1.CompletedCallVolume: "
 operator|+
 name|callVolumePriority1
 argument_list|)
@@ -6165,9 +6193,13 @@ name|avgRespTimePriority1
 argument_list|)
 expr_stmt|;
 return|return
-name|callVolume1
+name|decayedCallVolume1
 operator|>
-name|beginCallVolume
+name|beginDecayedCallVolume
+operator|&&
+name|rawCallVolume1
+operator|>
+name|beginRawCallVolume
 operator|&&
 name|uniqueCaller1
 operator|>

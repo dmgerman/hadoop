@@ -34,6 +34,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Collections
 import|;
 end_import
@@ -585,7 +595,9 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|// Track the number of calls for each schedulable identity
+comment|// Track the decayed and raw (no decay) number of calls for each schedulable
+comment|// identity from all previous decay windows: idx 0 for decayed call count and
+comment|// idx 1 for the raw call count
 DECL|field|callCounts
 specifier|private
 specifier|final
@@ -593,7 +605,10 @@ name|ConcurrentHashMap
 argument_list|<
 name|Object
 argument_list|,
+name|List
+argument_list|<
 name|AtomicLong
+argument_list|>
 argument_list|>
 name|callCounts
 init|=
@@ -602,16 +617,30 @@ name|ConcurrentHashMap
 argument_list|<
 name|Object
 argument_list|,
+name|List
+argument_list|<
 name|AtomicLong
+argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|// Should be the sum of all AtomicLongs in callCounts
-DECL|field|totalCalls
+comment|// Should be the sum of all AtomicLongs in decayed callCounts
+DECL|field|totalDecayedCallCount
 specifier|private
 specifier|final
 name|AtomicLong
-name|totalCalls
+name|totalDecayedCallCount
+init|=
+operator|new
+name|AtomicLong
+argument_list|()
+decl_stmt|;
+comment|// The sum of all AtomicLongs in raw callCounts
+DECL|field|totalRawCallCount
+specifier|private
+specifier|final
+name|AtomicLong
+name|totalRawCallCount
 init|=
 operator|new
 name|AtomicLong
@@ -731,6 +760,15 @@ name|int
 name|topUsersCount
 decl_stmt|;
 comment|// e.g., report top 10 users' metrics
+DECL|field|PRECISION
+specifier|private
+specifier|static
+specifier|final
+name|double
+name|PRECISION
+init|=
+literal|0.0001
+decl_stmt|;
 comment|/**    * This TimerTask will call decayCurrentCounts until    * the scheduler has been garbage collected.    */
 DECL|class|DecayTask
 specifier|public
@@ -1765,7 +1803,12 @@ block|{
 try|try
 block|{
 name|long
-name|total
+name|totalDecayedCount
+init|=
+literal|0
+decl_stmt|;
+name|long
+name|totalRawCount
 init|=
 literal|0
 decl_stmt|;
@@ -1777,7 +1820,10 @@ name|Entry
 argument_list|<
 name|Object
 argument_list|,
+name|List
+argument_list|<
 name|AtomicLong
+argument_list|>
 argument_list|>
 argument_list|>
 name|it
@@ -1804,7 +1850,10 @@ name|Entry
 argument_list|<
 name|Object
 argument_list|,
+name|List
+argument_list|<
 name|AtomicLong
+argument_list|>
 argument_list|>
 name|entry
 init|=
@@ -1814,18 +1863,43 @@ name|next
 argument_list|()
 decl_stmt|;
 name|AtomicLong
-name|count
+name|decayedCount
 init|=
 name|entry
 operator|.
 name|getValue
 argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+name|AtomicLong
+name|rawCount
+init|=
+name|entry
+operator|.
+name|getValue
+argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
 decl_stmt|;
 comment|// Compute the next value by reducing it by the decayFactor
+name|totalRawCount
+operator|+=
+name|rawCount
+operator|.
+name|get
+argument_list|()
+expr_stmt|;
 name|long
 name|currentValue
 init|=
-name|count
+name|decayedCount
 operator|.
 name|get
 argument_list|()
@@ -1842,11 +1916,11 @@ operator|*
 name|decayFactor
 argument_list|)
 decl_stmt|;
-name|total
+name|totalDecayedCount
 operator|+=
 name|nextValue
 expr_stmt|;
-name|count
+name|decayedCount
 operator|.
 name|set
 argument_list|(
@@ -1871,11 +1945,18 @@ expr_stmt|;
 block|}
 block|}
 comment|// Update the total so that we remain in sync
-name|totalCalls
+name|totalDecayedCallCount
 operator|.
 name|set
 argument_list|(
-name|total
+name|totalDecayedCount
+argument_list|)
+expr_stmt|;
+name|totalRawCallCount
+operator|.
+name|set
+argument_list|(
+name|totalRawCount
 argument_list|)
 expr_stmt|;
 comment|// Now refresh the cache of scheduling decisions
@@ -1946,7 +2027,10 @@ name|Entry
 argument_list|<
 name|Object
 argument_list|,
+name|List
+argument_list|<
 name|AtomicLong
+argument_list|>
 argument_list|>
 name|entry
 range|:
@@ -1971,6 +2055,11 @@ name|entry
 operator|.
 name|getValue
 argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
 decl_stmt|;
 name|long
 name|snapshot
@@ -2013,10 +2102,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get the number of occurrences and increment atomically.    * @param identity the identity of the user to increment    * @return the value before incrementation    */
-DECL|method|getAndIncrement (Object identity)
+DECL|method|getAndIncrementCallCounts (Object identity)
 specifier|private
 name|long
-name|getAndIncrement
+name|getAndIncrementCallCounts
 parameter_list|(
 name|Object
 name|identity
@@ -2025,7 +2114,10 @@ throws|throws
 name|InterruptedException
 block|{
 comment|// We will increment the count, or create it if no such count exists
+name|List
+argument_list|<
 name|AtomicLong
+argument_list|>
 name|count
 init|=
 name|this
@@ -2044,17 +2136,47 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|// Create the count since no such count exists.
+comment|// Create the counts since no such count exists.
+comment|// idx 0 for decayed call count
+comment|// idx 1 for the raw call count
 name|count
 operator|=
+operator|new
+name|ArrayList
+argument_list|<
+name|AtomicLong
+argument_list|>
+argument_list|(
+literal|2
+argument_list|)
+expr_stmt|;
+name|count
+operator|.
+name|add
+argument_list|(
 operator|new
 name|AtomicLong
 argument_list|(
 literal|0
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|count
+operator|.
+name|add
+argument_list|(
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
 expr_stmt|;
 comment|// Put it in, or get the AtomicInteger that was put in by another thread
+name|List
+argument_list|<
 name|AtomicLong
+argument_list|>
 name|otherCount
 init|=
 name|callCounts
@@ -2080,7 +2202,12 @@ expr_stmt|;
 block|}
 block|}
 comment|// Update the total
-name|totalCalls
+name|totalDecayedCallCount
+operator|.
+name|getAndIncrement
+argument_list|()
+expr_stmt|;
+name|totalRawCallCount
 operator|.
 name|getAndIncrement
 argument_list|()
@@ -2088,8 +2215,23 @@ expr_stmt|;
 comment|// At this point value is guaranteed to be not null. It may however have
 comment|// been clobbered from callCounts. Nonetheless, we return what
 comment|// we have.
+name|count
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|getAndIncrement
+argument_list|()
+expr_stmt|;
 return|return
 name|count
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
 operator|.
 name|getAndIncrement
 argument_list|()
@@ -2108,7 +2250,7 @@ block|{
 name|long
 name|totalCallSnapshot
 init|=
-name|totalCalls
+name|totalDecayedCallCount
 operator|.
 name|get
 argument_list|()
@@ -2197,7 +2339,7 @@ name|occurrences
 init|=
 name|this
 operator|.
-name|getAndIncrement
+name|getAndIncrementCallCounts
 argument_list|(
 name|identity
 argument_list|)
@@ -2570,7 +2712,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Update the cached average response time at the end of decay window
+comment|// Update the cached average response time at the end of the decay window
 DECL|method|updateAverageResponseTime (boolean enableDecay)
 name|void
 name|updateAverageResponseTime
@@ -2649,11 +2791,18 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|enableDecay
-operator|&&
 name|lastAvg
 operator|>
-literal|0.0
+name|PRECISION
+operator|||
+name|averageResponseTime
+operator|>
+name|PRECISION
+condition|)
+block|{
+if|if
+condition|(
+name|enableDecay
 condition|)
 block|{
 specifier|final
@@ -2687,6 +2836,7 @@ argument_list|,
 name|averageResponseTime
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|responseTimeCountInLastWindow
 operator|.
@@ -2828,7 +2978,10 @@ name|Entry
 argument_list|<
 name|Object
 argument_list|,
+name|List
+argument_list|<
 name|AtomicLong
+argument_list|>
 argument_list|>
 name|entry
 range|:
@@ -2853,6 +3006,11 @@ name|getValue
 argument_list|()
 operator|.
 name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2875,7 +3033,7 @@ name|getTotalCallSnapshot
 parameter_list|()
 block|{
 return|return
-name|totalCalls
+name|totalDecayedCallCount
 operator|.
 name|get
 argument_list|()
@@ -3370,7 +3528,20 @@ name|getTotalCallVolume
 parameter_list|()
 block|{
 return|return
-name|totalCalls
+name|totalDecayedCallCount
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+DECL|method|getTotalRawCallVolume ()
+specifier|public
+name|long
+name|getTotalRawCallVolume
+parameter_list|()
+block|{
+return|return
+name|totalRawCallCount
 operator|.
 name|get
 argument_list|()
@@ -3524,7 +3695,7 @@ argument_list|(
 name|namespace
 argument_list|)
 decl_stmt|;
-name|addTotalCallVolume
+name|addDecayedCallVolume
 argument_list|(
 name|rb
 argument_list|)
@@ -3545,6 +3716,11 @@ name|rb
 argument_list|)
 expr_stmt|;
 name|addCallVolumePerPriority
+argument_list|(
+name|rb
+argument_list|)
+expr_stmt|;
+name|addRawCallVolume
 argument_list|(
 name|rb
 argument_list|)
@@ -3598,11 +3774,40 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Key: CallVolume
-DECL|method|addTotalCallVolume (MetricsRecordBuilder rb)
+comment|// Key: DecayedCallVolume
+DECL|method|addDecayedCallVolume (MetricsRecordBuilder rb)
 specifier|private
 name|void
-name|addTotalCallVolume
+name|addDecayedCallVolume
+parameter_list|(
+name|MetricsRecordBuilder
+name|rb
+parameter_list|)
+block|{
+name|rb
+operator|.
+name|addCounter
+argument_list|(
+name|Interns
+operator|.
+name|info
+argument_list|(
+literal|"DecayedCallVolume"
+argument_list|,
+literal|"Decayed Total "
+operator|+
+literal|"incoming Call Volume"
+argument_list|)
+argument_list|,
+name|getTotalCallVolume
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addRawCallVolume (MetricsRecordBuilder rb)
+specifier|private
+name|void
+name|addRawCallVolume
 parameter_list|(
 name|MetricsRecordBuilder
 name|rb
@@ -3618,15 +3823,17 @@ name|info
 argument_list|(
 literal|"CallVolume"
 argument_list|,
-literal|"Total Call Volume"
+literal|"Raw Total "
+operator|+
+literal|"incoming Call Volume"
 argument_list|)
 argument_list|,
-name|getTotalCallVolume
+name|getTotalRawCallVolume
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Key: Priority.0.CallVolume
+comment|// Key: Priority.0.CompletedCallVolume
 DECL|method|addCallVolumePerPriority (MetricsRecordBuilder rb)
 specifier|private
 name|void
@@ -3666,9 +3873,9 @@ literal|"Priority."
 operator|+
 name|i
 operator|+
-literal|".CallVolume"
+literal|".CompletedCallVolume"
 argument_list|,
-literal|"Call volume "
+literal|"Completed Call volume "
 operator|+
 literal|"of priority "
 operator|+
@@ -3744,7 +3951,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Key: Top.0.Caller(xyz).Volume and Top.0.Caller(xyz).Priority
+comment|// Key: Caller(xyz).Volume and Caller(xyz).Priority
 DECL|method|addTopNCallerSummary (MetricsRecordBuilder rb)
 specifier|private
 name|void
@@ -3754,18 +3961,12 @@ name|MetricsRecordBuilder
 name|rb
 parameter_list|)
 block|{
-specifier|final
-name|int
-name|topCallerCount
-init|=
-literal|10
-decl_stmt|;
 name|TopN
 name|topNCallers
 init|=
 name|getTopCallers
 argument_list|(
-name|topCallerCount
+name|topUsersCount
 argument_list|)
 decl_stmt|;
 name|Map
@@ -3816,16 +4017,6 @@ decl_stmt|;
 name|String
 name|topCaller
 init|=
-literal|"Top."
-operator|+
-operator|(
-name|actualCallerCount
-operator|-
-name|i
-operator|)
-operator|+
-literal|"."
-operator|+
 literal|"Caller("
 operator|+
 name|entry
@@ -3907,7 +4098,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|// Get the top N callers' call count and scheduler decision
+comment|// Get the top N callers' raw call count and scheduler decision
 DECL|method|getTopCallers (int n)
 specifier|private
 name|TopN
@@ -3934,7 +4125,10 @@ name|Entry
 argument_list|<
 name|Object
 argument_list|,
+name|List
+argument_list|<
 name|AtomicLong
+argument_list|>
 argument_list|>
 argument_list|>
 name|it
@@ -3961,7 +4155,10 @@ name|Entry
 argument_list|<
 name|Object
 argument_list|,
+name|List
+argument_list|<
 name|AtomicLong
+argument_list|>
 argument_list|>
 name|entry
 init|=
@@ -3988,6 +4185,11 @@ name|entry
 operator|.
 name|getValue
 argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
 operator|.
 name|get
 argument_list|()
