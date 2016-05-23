@@ -198,6 +198,10 @@ condition|(
 name|exitCode
 operator|!=
 literal|0
+operator|||
+name|subcommand
+operator|==
+literal|null
 condition|)
 block|{
 name|printShellUsage
@@ -271,7 +275,8 @@ throws|throws
 name|Exception
 function_decl|;
 DECL|method|printShellUsage ()
-specifier|private
+specifier|protected
+specifier|final
 name|void
 name|printShellUsage
 parameter_list|()
