@@ -724,6 +724,14 @@ name|WILDCARD_PORT
 init|=
 literal|0
 decl_stmt|;
+comment|// Flag to identify startup for removelabel
+DECL|field|initNodeLabelStoreInProgress
+specifier|private
+name|boolean
+name|initNodeLabelStoreInProgress
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Error messages    */
 annotation|@
 name|VisibleForTesting
@@ -1366,6 +1374,17 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @return the isStartup    */
+DECL|method|isInitNodeLabelStoreInProgress ()
+specifier|protected
+name|boolean
+name|isInitNodeLabelStoreInProgress
+parameter_list|()
+block|{
+return|return
+name|initNodeLabelStoreInProgress
+return|;
+block|}
 DECL|method|isCentralizedConfiguration ()
 name|boolean
 name|isCentralizedConfiguration
@@ -1477,10 +1496,20 @@ condition|(
 name|nodeLabelsEnabled
 condition|)
 block|{
+name|setInitNodeLabelStoreInProgress
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|initNodeLabelStore
 argument_list|(
 name|getConfig
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|setInitNodeLabelStoreInProgress
+argument_list|(
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -5658,6 +5687,22 @@ block|}
 return|return
 name|newMap
 return|;
+block|}
+DECL|method|setInitNodeLabelStoreInProgress ( boolean initNodeLabelStoreInProgress)
+specifier|public
+name|void
+name|setInitNodeLabelStoreInProgress
+parameter_list|(
+name|boolean
+name|initNodeLabelStoreInProgress
+parameter_list|)
+block|{
+name|this
+operator|.
+name|initNodeLabelStoreInProgress
+operator|=
+name|initNodeLabelStoreInProgress
+expr_stmt|;
 block|}
 block|}
 end_class
