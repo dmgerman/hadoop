@@ -156,6 +156,54 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadLocalRandom
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|regex
+operator|.
+name|Matcher
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|regex
+operator|.
+name|Pattern
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -395,7 +443,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>This class is a metrics sink that uses  * {@link org.apache.hadoop.fs.FileSystem} to write the metrics logs.  Every  * hour a new directory will be created under the path specified by the  *<code>basepath</code> property. All metrics will be logged to a file in the  * current hour's directory in a file named&lt;hostname&gt;.log, where  *&lt;hostname&gt; is the name of the host on which the metrics logging  * process is running. The base path is set by the  *<code>&lt;prefix&gt;.sink.&lt;instance&gt;.basepath</code> property.  The  * time zone used to create the current hour's directory name is GMT.  If the  *<code>basepath</code> property isn't specified, it will default to  *&quot;/tmp&quot;, which is the temp directory on whatever default file  * system is configured for the cluster.</p>  *  *<p>The<code>&lt;prefix&gt;.sink.&lt;instance&gt;.ignore-error</code>  * property controls whether an exception is thrown when an error is encountered  * writing a log file.  The default value is<code>true</code>.  When set to  *<code>false</code>, file errors are quietly swallowed.</p>  *  *<p>The primary use of this class is for logging to HDFS.  As it uses  * {@link org.apache.hadoop.fs.FileSystem} to access the target file system,  * however, it can be used to write to the local file system, Amazon S3, or any  * other supported file system.  The base path for the sink will determine the  * file system used.  An unqualified path will write to the default file system  * set by the configuration.</p>  *  *<p>Not all file systems support the ability to append to files.  In file  * systems without the ability to append to files, only one writer can write to  * a file at a time.  To allow for concurrent writes from multiple daemons on a  * single host, the<code>source</code> property should be set to the name of  * the source daemon, e.g.<i>namenode</i>.  The value of the  *<code>source</code> property should typically be the same as the property's  * prefix.  If this property is not set, the source is taken to be  *<i>unknown</i>.</p>  *  *<p>Instead of appending to an existing file, by default the sink  * will create a new file with a suffix of&quot;.&lt;n&gt;&quet;, where  *<i>n</i> is the next lowest integer that isn't already used in a file name,  * similar to the Hadoop daemon logs.  NOTE: the file with the<b>highest</b>  * sequence number is the<b>newest</b> file, unlike the Hadoop daemon logs.</p>  *  *<p>For file systems that allow append, the sink supports appending to the  * existing file instead. If the<code>allow-append</code> property is set to  * true, the sink will instead append to the existing file on file systems that  * support appends. By default, the<code>allow-append</code> property is  * false.</p>  *  *<p>Note that when writing to HDFS with<code>allow-append</code> set to true,  * there is a minimum acceptable number of data nodes.  If the number of data  * nodes drops below that minimum, the append will succeed, but reading the  * data will fail with an IOException in the DataStreamer class.  The minimum  * number of data nodes required for a successful append is generally 2 or  * 3.</p>  *  *<p>Note also that when writing to HDFS, the file size information is not  * updated until the file is closed (e.g. at the top of the hour) even though  * the data is being written successfully. This is a known HDFS limitation that  * exists because of the performance cost of updating the metadata.  See  *<a href="https://issues.apache.org/jira/browse/HDFS-5478">HDFS-5478</a>.</p>  *  *<p>When using this sink in a secure (Kerberos) environment, two additional  * properties must be set:<code>keytab-key</code> and  *<code>principal-key</code>.<code>keytab-key</code> should contain the key by  * which the keytab file can be found in the configuration, for example,  *<code>yarn.nodemanager.keytab</code>.<code>principal-key</code> should  * contain the key by which the principal can be found in the configuration,  * for example,<code>yarn.nodemanager.principal</code>.  */
+comment|/**  *<p>This class is a metrics sink that uses  * {@link org.apache.hadoop.fs.FileSystem} to write the metrics logs.  Every  * roll interval a new directory will be created under the path specified by the  *<code>basepath</code> property. All metrics will be logged to a file in the  * current interval's directory in a file named&lt;hostname&gt;.log, where  *&lt;hostname&gt; is the name of the host on which the metrics logging  * process is running. The base path is set by the  *<code>&lt;prefix&gt;.sink.&lt;instance&gt;.basepath</code> property.  The  * time zone used to create the current interval's directory name is GMT.  If  * the<code>basepath</code> property isn't specified, it will default to  *&quot;/tmp&quot;, which is the temp directory on whatever default file  * system is configured for the cluster.</p>  *  *<p>The<code>&lt;prefix&gt;.sink.&lt;instance&gt;.ignore-error</code>  * property controls whether an exception is thrown when an error is encountered  * writing a log file.  The default value is<code>true</code>.  When set to  *<code>false</code>, file errors are quietly swallowed.</p>  *  *<p>The<code>roll-interval</code> property sets the amount of time before  * rolling the directory. The default value is 1 hour. The roll interval may  * not be less than 1 minute. The property's value should be given as  *<i>number unit</i>, where<i>number</i> is an integer value, and  *<i>unit</i> is a valid unit.  Valid units are<i>minute</i>,<i>hour</i>,  * and<i>day</i>.  The units are case insensitive and may be abbreviated or  * plural. If no units are specified, hours are assumed. For example,  *&quot;2&quot;,&quot;2h&quot;,&quot;2 hour&quot;, and  *&quot;2 hours&quot; are all valid ways to specify two hours.</p>  *  *<p>The<code>roll-offset-interval-millis</code> property sets the upper  * bound on a random time interval (in milliseconds) that is used to delay  * before the initial roll.  All subsequent rolls will happen an integer  * number of roll intervals after the initial roll, hence retaining the original  * offset. The purpose of this property is to insert some variance in the roll  * times so that large clusters using this sink on every node don't cause a  * performance impact on HDFS by rolling simultaneously.  The default value is  * 30000 (30s).  When writing to HDFS, as a rule of thumb, the roll offset in  * millis should be no less than the number of sink instances times 5.  *  *<p>The primary use of this class is for logging to HDFS.  As it uses  * {@link org.apache.hadoop.fs.FileSystem} to access the target file system,  * however, it can be used to write to the local file system, Amazon S3, or any  * other supported file system.  The base path for the sink will determine the  * file system used.  An unqualified path will write to the default file system  * set by the configuration.</p>  *  *<p>Not all file systems support the ability to append to files.  In file  * systems without the ability to append to files, only one writer can write to  * a file at a time.  To allow for concurrent writes from multiple daemons on a  * single host, the<code>source</code> property is used to set unique headers  * for the log files.  The property should be set to the name of  * the source daemon, e.g.<i>namenode</i>.  The value of the  *<code>source</code> property should typically be the same as the property's  * prefix.  If this property is not set, the source is taken to be  *<i>unknown</i>.</p>  *  *<p>Instead of appending to an existing file, by default the sink  * will create a new file with a suffix of&quot;.&lt;n&gt;&quet;, where  *<i>n</i> is the next lowest integer that isn't already used in a file name,  * similar to the Hadoop daemon logs.  NOTE: the file with the<b>highest</b>  * sequence number is the<b>newest</b> file, unlike the Hadoop daemon logs.</p>  *  *<p>For file systems that allow append, the sink supports appending to the  * existing file instead. If the<code>allow-append</code> property is set to  * true, the sink will instead append to the existing file on file systems that  * support appends. By default, the<code>allow-append</code> property is  * false.</p>  *  *<p>Note that when writing to HDFS with<code>allow-append</code> set to true,  * there is a minimum acceptable number of data nodes.  If the number of data  * nodes drops below that minimum, the append will succeed, but reading the  * data will fail with an IOException in the DataStreamer class.  The minimum  * number of data nodes required for a successful append is generally 2 or  * 3.</p>  *  *<p>Note also that when writing to HDFS, the file size information is not  * updated until the file is closed (at the end of the interval) even though  * the data is being written successfully. This is a known HDFS limitation that  * exists because of the performance cost of updating the metadata.  See  *<a href="https://issues.apache.org/jira/browse/HDFS-5478">HDFS-5478</a>.</p>  *  *<p>When using this sink in a secure (Kerberos) environment, two additional  * properties must be set:<code>keytab-key</code> and  *<code>principal-key</code>.<code>keytab-key</code> should contain the key by  * which the keytab file can be found in the configuration, for example,  *<code>yarn.nodemanager.keytab</code>.<code>principal-key</code> should  * contain the key by which the principal can be found in the configuration,  * for example,<code>yarn.nodemanager.principal</code>.  */
 end_comment
 
 begin_class
@@ -443,6 +491,15 @@ name|IGNORE_ERROR_KEY
 init|=
 literal|"ignore-error"
 decl_stmt|;
+DECL|field|DEFAULT_IGNORE_ERROR
+specifier|private
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_IGNORE_ERROR
+init|=
+literal|false
+decl_stmt|;
 DECL|field|ALLOW_APPEND_KEY
 specifier|private
 specifier|static
@@ -451,6 +508,15 @@ name|String
 name|ALLOW_APPEND_KEY
 init|=
 literal|"allow-append"
+decl_stmt|;
+DECL|field|DEFAULT_ALLOW_APPEND
+specifier|private
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_ALLOW_APPEND
+init|=
+literal|false
 decl_stmt|;
 DECL|field|KEYTAB_PROPERTY_KEY
 specifier|private
@@ -469,6 +535,42 @@ name|String
 name|USERNAME_PROPERTY_KEY
 init|=
 literal|"principal-key"
+decl_stmt|;
+DECL|field|ROLL_INTERVAL_KEY
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|ROLL_INTERVAL_KEY
+init|=
+literal|"roll-interval"
+decl_stmt|;
+DECL|field|DEFAULT_ROLL_INTERVAL
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_ROLL_INTERVAL
+init|=
+literal|"1h"
+decl_stmt|;
+DECL|field|ROLL_OFFSET_INTERVAL_MILLIS_KEY
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|ROLL_OFFSET_INTERVAL_MILLIS_KEY
+init|=
+literal|"roll-offset-interval-millis"
+decl_stmt|;
+DECL|field|DEFAULT_ROLL_OFFSET_INTERVAL_MILLIS
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_ROLL_OFFSET_INTERVAL_MILLIS
+init|=
+literal|30000
 decl_stmt|;
 DECL|field|SOURCE_DEFAULT
 specifier|private
@@ -499,7 +601,7 @@ name|FastDateFormat
 operator|.
 name|getInstance
 argument_list|(
-literal|"yyyyMMddHH"
+literal|"yyyyMMddHHmm"
 argument_list|,
 name|TimeZone
 operator|.
@@ -536,23 +638,31 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|source
-specifier|private
+specifier|protected
 name|String
 name|source
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|ignoreError
-specifier|private
+specifier|protected
 name|boolean
 name|ignoreError
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|allowAppend
-specifier|private
+specifier|protected
 name|boolean
 name|allowAppend
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|basePath
-specifier|private
+specifier|protected
 name|Path
 name|basePath
 decl_stmt|;
@@ -590,15 +700,43 @@ specifier|private
 name|Timer
 name|flushTimer
 decl_stmt|;
-comment|// This flag is used during testing to make the flusher thread run after only
-comment|// a short pause instead of waiting for the top of the hour.
+comment|// The amount of time between rolls
 annotation|@
 name|VisibleForTesting
-DECL|field|flushQuickly
+DECL|field|rollIntervalMillis
+specifier|protected
+name|long
+name|rollIntervalMillis
+decl_stmt|;
+comment|// The maximum amount of random time to add to the initial roll
+annotation|@
+name|VisibleForTesting
+DECL|field|rollOffsetIntervalMillis
+specifier|protected
+name|long
+name|rollOffsetIntervalMillis
+decl_stmt|;
+comment|// The time for the nextFlush
+annotation|@
+name|VisibleForTesting
+DECL|field|nextFlush
+specifier|protected
+name|Calendar
+name|nextFlush
+init|=
+literal|null
+decl_stmt|;
+comment|// This flag when true causes a metrics write to schedule a flush thread to
+comment|// run immediately, but only if a flush thread is already scheduled. (It's a
+comment|// timing thing.  If the first write forces the flush, it will strand the
+comment|// second write.)
+annotation|@
+name|VisibleForTesting
+DECL|field|forceFlush
 specifier|protected
 specifier|static
 name|boolean
-name|flushQuickly
+name|forceFlush
 init|=
 literal|false
 decl_stmt|;
@@ -637,6 +775,39 @@ name|suppliedFilesystem
 init|=
 literal|null
 decl_stmt|;
+comment|/**    * Create an empty instance.  Required for reflection.    */
+DECL|method|RollingFileSystemSink ()
+specifier|public
+name|RollingFileSystemSink
+parameter_list|()
+block|{   }
+comment|/**    * Create an instance for testing.    *    * @param flushIntervalMillis the roll interval in millis    * @param flushOffsetIntervalMillis the roll offset interval in millis    */
+annotation|@
+name|VisibleForTesting
+DECL|method|RollingFileSystemSink (long flushIntervalMillis, long flushOffsetIntervalMillis)
+specifier|protected
+name|RollingFileSystemSink
+parameter_list|(
+name|long
+name|flushIntervalMillis
+parameter_list|,
+name|long
+name|flushOffsetIntervalMillis
+parameter_list|)
+block|{
+name|this
+operator|.
+name|rollIntervalMillis
+operator|=
+name|flushIntervalMillis
+expr_stmt|;
+name|this
+operator|.
+name|rollOffsetIntervalMillis
+operator|=
+name|flushOffsetIntervalMillis
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|init (SubsetConfiguration metrics2Properties)
@@ -686,7 +857,7 @@ name|getBoolean
 argument_list|(
 name|IGNORE_ERROR_KEY
 argument_list|,
-literal|false
+name|DEFAULT_IGNORE_ERROR
 argument_list|)
 expr_stmt|;
 name|allowAppend
@@ -697,8 +868,22 @@ name|getBoolean
 argument_list|(
 name|ALLOW_APPEND_KEY
 argument_list|,
-literal|false
+name|DEFAULT_ALLOW_APPEND
 argument_list|)
+expr_stmt|;
+name|rollOffsetIntervalMillis
+operator|=
+name|getNonNegative
+argument_list|(
+name|ROLL_OFFSET_INTERVAL_MILLIS_KEY
+argument_list|,
+name|DEFAULT_ROLL_OFFSET_INTERVAL_MILLIS
+argument_list|)
+expr_stmt|;
+name|rollIntervalMillis
+operator|=
+name|getRollInterval
+argument_list|()
 expr_stmt|;
 name|conf
 operator|=
@@ -722,17 +907,13 @@ argument_list|()
 condition|)
 block|{
 comment|// Validate config so that we don't get an NPE
-name|checkForProperty
+name|checkIfPropertyExists
 argument_list|(
-name|properties
-argument_list|,
 name|KEYTAB_PROPERTY_KEY
 argument_list|)
 expr_stmt|;
-name|checkForProperty
+name|checkIfPropertyExists
 argument_list|(
-name|properties
-argument_list|,
 name|USERNAME_PROPERTY_KEY
 argument_list|)
 expr_stmt|;
@@ -912,12 +1093,19 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|setInitialFlushTime
+argument_list|(
+operator|new
+name|Date
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 return|return
 name|success
 return|;
 block|}
-comment|/**    * Turn a security property into a nicely formatted set of<i>name=value</i>    * strings, allowing for either the property or the configuration not to be    * set.    *    * @param properties the sink properties    * @param conf the conf    * @param property the property to stringify    * @return the stringified property    */
+comment|/**    * Turn a security property into a nicely formatted set of<i>name=value</i>    * strings, allowing for either the property or the configuration not to be    * set.    *    * @param property the property to stringify    * @return the stringified property    */
 DECL|method|stringifySecurityProperty (String property)
 specifier|private
 name|String
@@ -1030,16 +1218,323 @@ return|return
 name|securityProperty
 return|;
 block|}
-comment|/**    * Throw a {@link MetricsException} if the given property is not set.    *    * @param conf the configuration to test    * @param key the key to validate    */
-DECL|method|checkForProperty (SubsetConfiguration conf, String key)
-specifier|private
-specifier|static
-name|void
-name|checkForProperty
+comment|/**    * Extract the roll interval from the configuration and return it in    * milliseconds.    *    * @return the roll interval in millis    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getRollInterval ()
+specifier|protected
+name|long
+name|getRollInterval
+parameter_list|()
+block|{
+name|String
+name|rollInterval
+init|=
+name|properties
+operator|.
+name|getString
+argument_list|(
+name|ROLL_INTERVAL_KEY
+argument_list|,
+name|DEFAULT_ROLL_INTERVAL
+argument_list|)
+decl_stmt|;
+name|Pattern
+name|pattern
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"^\\s*(\\d+)\\s*([A-Za-z]*)\\s*$"
+argument_list|)
+decl_stmt|;
+name|Matcher
+name|match
+init|=
+name|pattern
+operator|.
+name|matcher
+argument_list|(
+name|rollInterval
+argument_list|)
+decl_stmt|;
+name|long
+name|millis
+decl_stmt|;
+if|if
+condition|(
+name|match
+operator|.
+name|matches
+argument_list|()
+condition|)
+block|{
+name|String
+name|flushUnit
+init|=
+name|match
+operator|.
+name|group
+argument_list|(
+literal|2
+argument_list|)
+decl_stmt|;
+name|int
+name|rollIntervalInt
+decl_stmt|;
+try|try
+block|{
+name|rollIntervalInt
+operator|=
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|match
+operator|.
+name|group
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
 parameter_list|(
-name|SubsetConfiguration
-name|conf
+name|NumberFormatException
+name|ex
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|MetricsException
+argument_list|(
+literal|"Unrecognized flush interval: "
+operator|+
+name|rollInterval
+operator|+
+literal|". Must be a number followed by an optional "
+operator|+
+literal|"unit. The unit must be one of: minute, hour, day"
+argument_list|,
+name|ex
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+literal|""
+operator|.
+name|equals
+argument_list|(
+name|flushUnit
+argument_list|)
+condition|)
+block|{
+name|millis
+operator|=
+name|TimeUnit
+operator|.
+name|HOURS
+operator|.
+name|toMillis
+argument_list|(
+name|rollIntervalInt
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+switch|switch
+condition|(
+name|flushUnit
+operator|.
+name|toLowerCase
+argument_list|()
+condition|)
+block|{
+case|case
+literal|"m"
+case|:
+case|case
+literal|"min"
+case|:
+case|case
+literal|"minute"
+case|:
+case|case
+literal|"minutes"
+case|:
+name|millis
+operator|=
+name|TimeUnit
+operator|.
+name|MINUTES
+operator|.
+name|toMillis
+argument_list|(
+name|rollIntervalInt
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+literal|"h"
+case|:
+case|case
+literal|"hr"
+case|:
+case|case
+literal|"hour"
+case|:
+case|case
+literal|"hours"
+case|:
+name|millis
+operator|=
+name|TimeUnit
+operator|.
+name|HOURS
+operator|.
+name|toMillis
+argument_list|(
+name|rollIntervalInt
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+literal|"d"
+case|:
+case|case
+literal|"day"
+case|:
+case|case
+literal|"days"
+case|:
+name|millis
+operator|=
+name|TimeUnit
+operator|.
+name|DAYS
+operator|.
+name|toMillis
+argument_list|(
+name|rollIntervalInt
+argument_list|)
+expr_stmt|;
+break|break;
+default|default:
+throw|throw
+operator|new
+name|MetricsException
+argument_list|(
+literal|"Unrecognized unit for flush interval: "
+operator|+
+name|flushUnit
+operator|+
+literal|". Must be one of: minute, hour, day"
+argument_list|)
+throw|;
+block|}
+block|}
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|MetricsException
+argument_list|(
+literal|"Unrecognized flush interval: "
+operator|+
+name|rollInterval
+operator|+
+literal|". Must be a number followed by an optional unit."
+operator|+
+literal|" The unit must be one of: minute, hour, day"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|millis
+operator|<
+literal|60000
+condition|)
+block|{
+throw|throw
+operator|new
+name|MetricsException
+argument_list|(
+literal|"The flush interval property must be "
+operator|+
+literal|"at least 1 minute. Value was "
+operator|+
+name|rollInterval
+argument_list|)
+throw|;
+block|}
+return|return
+name|millis
+return|;
+block|}
+comment|/**    * Return the property value if it's non-negative and throw an exception if    * it's not.    *    * @param key the property key    * @param defaultValue the default value    */
+DECL|method|getNonNegative (String key, int defaultValue)
+specifier|private
+name|long
+name|getNonNegative
+parameter_list|(
+name|String
+name|key
 parameter_list|,
+name|int
+name|defaultValue
+parameter_list|)
+block|{
+name|int
+name|flushOffsetIntervalMillis
+init|=
+name|properties
+operator|.
+name|getInt
+argument_list|(
+name|key
+argument_list|,
+name|defaultValue
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|flushOffsetIntervalMillis
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|MetricsException
+argument_list|(
+literal|"The "
+operator|+
+name|key
+operator|+
+literal|" property must be "
+operator|+
+literal|"non-negative. Value was "
+operator|+
+name|flushOffsetIntervalMillis
+argument_list|)
+throw|;
+block|}
+return|return
+name|flushOffsetIntervalMillis
+return|;
+block|}
+comment|/**    * Throw a {@link MetricsException} if the given property is not set.    *    * @param key the key to validate    */
+DECL|method|checkIfPropertyExists (String key)
+specifier|private
+name|void
+name|checkIfPropertyExists
+parameter_list|(
 name|String
 name|key
 parameter_list|)
@@ -1047,7 +1542,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|conf
+name|properties
 operator|.
 name|containsKey
 argument_list|(
@@ -1059,7 +1554,7 @@ throw|throw
 operator|new
 name|MetricsException
 argument_list|(
-literal|"Configuration is missing "
+literal|"Metrics2 configuration is missing "
 operator|+
 name|key
 operator|+
@@ -1105,7 +1600,7 @@ return|return
 name|c
 return|;
 block|}
-comment|/**    * Return the supplied file system for testing or otherwise get a new file    * system.    *    * @param conf the configuration    * @return the file system to use    * @throws MetricsException thrown if the file system could not be retrieved    */
+comment|/**    * Return the supplied file system for testing or otherwise get a new file    * system.    *    * @return the file system to use    * @throws MetricsException thrown if the file system could not be retrieved    */
 DECL|method|getFileSystem ()
 specifier|private
 name|FileSystem
@@ -1209,7 +1704,7 @@ return|return
 name|fs
 return|;
 block|}
-comment|/**    * Test whether the file system supports append and return the answer.    * @param fs the target file system    */
+comment|/**    * Test whether the file system supports append and return the answer.    *    * @param fs the target file system    */
 DECL|method|checkAppend (FileSystem fs)
 specifier|private
 name|boolean
@@ -1272,6 +1767,8 @@ parameter_list|()
 throws|throws
 name|MetricsException
 block|{
+comment|// Because we're working relative to the clock, we use a Date instead
+comment|// of Time.monotonicNow().
 name|Date
 name|now
 init|=
@@ -1279,30 +1776,9 @@ operator|new
 name|Date
 argument_list|()
 decl_stmt|;
-name|String
-name|currentDir
-init|=
-name|DATE_FORMAT
-operator|.
-name|format
-argument_list|(
-name|now
-argument_list|)
-decl_stmt|;
-name|Path
-name|path
-init|=
-operator|new
-name|Path
-argument_list|(
-name|basePath
-argument_list|,
-name|currentDir
-argument_list|)
-decl_stmt|;
 comment|// We check whether currentOutStream is null instead of currentDirPath,
 comment|// because if currentDirPath is null, then currentOutStream is null, but
-comment|// currentOutStream can be null for other reasons.
+comment|// currentOutStream can be null for other reasons.  Same for nextFlush.
 if|if
 condition|(
 operator|(
@@ -1311,12 +1787,14 @@ operator|==
 literal|null
 operator|)
 operator|||
-operator|!
-name|path
+name|now
 operator|.
-name|equals
+name|after
 argument_list|(
-name|currentDirPath
+name|nextFlush
+operator|.
+name|getTime
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -1356,7 +1834,10 @@ expr_stmt|;
 block|}
 name|currentDirPath
 operator|=
-name|path
+name|findCurrentDirectory
+argument_list|(
+name|now
+argument_list|)
 expr_stmt|;
 try|try
 block|{
@@ -1378,22 +1859,106 @@ name|ex
 argument_list|)
 expr_stmt|;
 block|}
-name|scheduleFlush
+comment|// Update the time of the next flush
+name|updateFlushTime
 argument_list|(
 name|now
 argument_list|)
 expr_stmt|;
+comment|// Schedule the next flush at that time
+name|scheduleFlush
+argument_list|(
+name|nextFlush
+operator|.
+name|getTime
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
+elseif|else
+if|if
+condition|(
+name|forceFlush
+condition|)
+block|{
+name|scheduleFlush
+argument_list|(
+operator|new
+name|Date
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
-comment|/**    * Schedule the current hour's directory to be flushed at the top of the next    * hour. If this ends up running after the top of the next hour, it will    * execute immediately.    *    * @param now the current time    */
-DECL|method|scheduleFlush (Date now)
+block|}
+comment|/**    * Use the given time to determine the current directory. The current    * directory will be based on the {@link #rollIntervalMinutes}.    *    * @param now the current time    * @return the current directory    */
+DECL|method|findCurrentDirectory (Date now)
+specifier|private
+name|Path
+name|findCurrentDirectory
+parameter_list|(
+name|Date
+name|now
+parameter_list|)
+block|{
+name|long
+name|offset
+init|=
+operator|(
+operator|(
+name|now
+operator|.
+name|getTime
+argument_list|()
+operator|-
+name|nextFlush
+operator|.
+name|getTimeInMillis
+argument_list|()
+operator|)
+operator|/
+name|rollIntervalMillis
+operator|)
+operator|*
+name|rollIntervalMillis
+decl_stmt|;
+name|String
+name|currentDir
+init|=
+name|DATE_FORMAT
+operator|.
+name|format
+argument_list|(
+operator|new
+name|Date
+argument_list|(
+name|nextFlush
+operator|.
+name|getTimeInMillis
+argument_list|()
+operator|+
+name|offset
+argument_list|)
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|Path
+argument_list|(
+name|basePath
+argument_list|,
+name|currentDir
+argument_list|)
+return|;
+block|}
+comment|/**    * Schedule the current interval's directory to be flushed. If this ends up    * running after the top of the next interval, it will execute immediately.    *    * @param when the time the thread should run    */
+DECL|method|scheduleFlush (Date when)
 specifier|private
 name|void
 name|scheduleFlush
 parameter_list|(
 name|Date
-name|now
+name|when
 parameter_list|)
 block|{
 comment|// Store the current currentDirPath to close later
@@ -1403,76 +1968,6 @@ name|toClose
 init|=
 name|currentOutStream
 decl_stmt|;
-name|Calendar
-name|next
-init|=
-name|Calendar
-operator|.
-name|getInstance
-argument_list|()
-decl_stmt|;
-name|next
-operator|.
-name|setTime
-argument_list|(
-name|now
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|flushQuickly
-condition|)
-block|{
-comment|// If we're running unit tests, flush after a short pause
-name|next
-operator|.
-name|add
-argument_list|(
-name|Calendar
-operator|.
-name|MILLISECOND
-argument_list|,
-literal|400
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// Otherwise flush at the top of the hour
-name|next
-operator|.
-name|set
-argument_list|(
-name|Calendar
-operator|.
-name|SECOND
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-name|next
-operator|.
-name|set
-argument_list|(
-name|Calendar
-operator|.
-name|MINUTE
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-name|next
-operator|.
-name|add
-argument_list|(
-name|Calendar
-operator|.
-name|HOUR
-argument_list|,
-literal|1
-argument_list|)
-expr_stmt|;
-block|}
 name|flushTimer
 operator|.
 name|schedule
@@ -1508,14 +2003,224 @@ expr_stmt|;
 block|}
 block|}
 argument_list|,
-name|next
-operator|.
-name|getTime
-argument_list|()
+name|when
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a new directory based on the current hour and a new log file in    * that directory.    *    * @throws IOException thrown if an error occurs while creating the    * new directory or new log file    */
+comment|/**    * Update the {@link #nextFlush} variable to the next flush time. Add    * an integer number of flush intervals, preserving the initial random offset.    *    * @param now the current time    */
+annotation|@
+name|VisibleForTesting
+DECL|method|updateFlushTime (Date now)
+specifier|protected
+name|void
+name|updateFlushTime
+parameter_list|(
+name|Date
+name|now
+parameter_list|)
+block|{
+comment|// In non-initial rounds, add an integer number of intervals to the last
+comment|// flush until a time in the future is achieved, thus preserving the
+comment|// original random offset.
+name|int
+name|millis
+init|=
+call|(
+name|int
+call|)
+argument_list|(
+operator|(
+operator|(
+name|now
+operator|.
+name|getTime
+argument_list|()
+operator|-
+name|nextFlush
+operator|.
+name|getTimeInMillis
+argument_list|()
+operator|)
+operator|/
+name|rollIntervalMillis
+operator|+
+literal|1
+operator|)
+operator|*
+name|rollIntervalMillis
+argument_list|)
+decl_stmt|;
+name|nextFlush
+operator|.
+name|add
+argument_list|(
+name|Calendar
+operator|.
+name|MILLISECOND
+argument_list|,
+name|millis
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Set the {@link #nextFlush} variable to the initial flush time. The initial    * flush will be an integer number of flush intervals past the beginning of    * the current hour and will have a random offset added, up to    * {@link #rollOffsetIntervalMillis}. The initial flush will be a time in    * past that can be used from which to calculate future flush times.    *    * @param now the current time    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setInitialFlushTime (Date now)
+specifier|protected
+name|void
+name|setInitialFlushTime
+parameter_list|(
+name|Date
+name|now
+parameter_list|)
+block|{
+comment|// Start with the beginning of the current hour
+name|nextFlush
+operator|=
+name|Calendar
+operator|.
+name|getInstance
+argument_list|()
+expr_stmt|;
+name|nextFlush
+operator|.
+name|setTime
+argument_list|(
+name|now
+argument_list|)
+expr_stmt|;
+name|nextFlush
+operator|.
+name|set
+argument_list|(
+name|Calendar
+operator|.
+name|MILLISECOND
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|nextFlush
+operator|.
+name|set
+argument_list|(
+name|Calendar
+operator|.
+name|SECOND
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|nextFlush
+operator|.
+name|set
+argument_list|(
+name|Calendar
+operator|.
+name|MINUTE
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+comment|// In the first round, calculate the first flush as the largest number of
+comment|// intervals from the beginning of the current hour that's not in the
+comment|// future by:
+comment|// 1. Subtract the beginning of the hour from the current time
+comment|// 2. Divide by the roll interval and round down to get the number of whole
+comment|//    intervals that have passed since the beginning of the hour
+comment|// 3. Multiply by the roll interval to get the number of millis between
+comment|//    the beginning of the current hour and the beginning of the current
+comment|//    interval.
+name|int
+name|millis
+init|=
+call|(
+name|int
+call|)
+argument_list|(
+operator|(
+operator|(
+name|now
+operator|.
+name|getTime
+argument_list|()
+operator|-
+name|nextFlush
+operator|.
+name|getTimeInMillis
+argument_list|()
+operator|)
+operator|/
+name|rollIntervalMillis
+operator|)
+operator|*
+name|rollIntervalMillis
+argument_list|)
+decl_stmt|;
+comment|// Then add some noise to help prevent all the nodes from
+comment|// closing their files at the same time.
+if|if
+condition|(
+name|rollOffsetIntervalMillis
+operator|>
+literal|0
+condition|)
+block|{
+name|millis
+operator|+=
+name|ThreadLocalRandom
+operator|.
+name|current
+argument_list|()
+operator|.
+name|nextLong
+argument_list|(
+name|rollOffsetIntervalMillis
+argument_list|)
+expr_stmt|;
+comment|// If the added time puts us into the future, step back one roll interval
+comment|// because the code to increment nextFlush to the next flush expects that
+comment|// nextFlush is the next flush from the previous interval.  There wasn't
+comment|// a previous interval, so we just fake it with the time in the past that
+comment|// would have been the previous interval if there had been one.
+comment|//
+comment|// It's OK if millis comes out negative.
+while|while
+condition|(
+name|nextFlush
+operator|.
+name|getTimeInMillis
+argument_list|()
+operator|+
+name|millis
+operator|>
+name|now
+operator|.
+name|getTime
+argument_list|()
+condition|)
+block|{
+name|millis
+operator|-=
+name|rollIntervalMillis
+expr_stmt|;
+block|}
+block|}
+comment|// Adjust the next flush time by millis to get the time of our ficticious
+comment|// previous next flush
+name|nextFlush
+operator|.
+name|add
+argument_list|(
+name|Calendar
+operator|.
+name|MILLISECOND
+argument_list|,
+name|millis
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create a new directory based on the current interval and a new log file in    * that directory.    *    * @throws IOException thrown if an error occurs while creating the    * new directory or new log file    */
 DECL|method|rollLogDir ()
 specifier|private
 name|void
@@ -1579,7 +2284,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create a new log file and return the {@link FSDataOutputStream}. If a    * file with the specified path already exists, add a suffix, starting with 1    * and try again. Keep incrementing the suffix until a nonexistent target    * path is found.    *    * Once the file is open, update {@link #currentFSOutStream},    * {@link #currentOutStream}, and {@#link #currentFile} are set appropriately.    *    * @param initial the target path    * @throws IOException thrown if the call to see if the exists fails    */
+comment|/**    * Create a new log file and return the {@link FSDataOutputStream}. If a    * file with the specified path already exists, add a suffix, starting with 1    * and try again. Keep incrementing the suffix until a nonexistent target    * path is found.    *    * Once the file is open, update {@link #currentFSOutStream},    * {@link #currentOutStream}, and {@#link #currentFilePath} are set    * appropriately.    *    * @param initial the target path    * @throws IOException thrown if the call to see if the exists fails    */
 DECL|method|createLogFile (Path initial)
 specifier|private
 name|void
@@ -1872,7 +2577,7 @@ return|return
 name|id
 return|;
 block|}
-comment|/**    * Create a new log file and return the {@link FSDataOutputStream}. If a    * file with the specified path already exists, open the file for append    * instead.    *    * Once the file is open, update {@link #currentFSOutStream},    * {@link #currentOutStream}, and {@#link #currentFile} are set appropriately.    *    * @param initial the target path    * @throws IOException thrown if the call to see the append operation fails.    */
+comment|/**    * Create a new log file and return the {@link FSDataOutputStream}. If a    * file with the specified path already exists, open the file for append    * instead.    *    * Once the file is open, update {@link #currentFSOutStream},    * {@link #currentOutStream}, and {@#link #currentFilePath}.    *    * @param initial the target path    * @throws IOException thrown if the call to see the append operation fails.    */
 DECL|method|createOrAppendLogFile (Path targetFile)
 specifier|private
 name|void
@@ -2111,9 +2816,9 @@ name|println
 argument_list|()
 expr_stmt|;
 comment|// If we don't hflush(), the data may not be written until the file is
-comment|// closed. The file won't be closed until the top of the hour *AND*
+comment|// closed. The file won't be closed until the end of the interval *AND*
 comment|// another record is received. Calling hflush() makes sure that the data
-comment|// is complete at the top of the hour.
+comment|// is complete at the end of the interval.
 try|try
 block|{
 name|currentFSOutStream
@@ -2251,7 +2956,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * If the sink isn't set to ignore errors, throw a {@link MetricsException}    * if the stream encountered an exception.  The message parameter will be used    * as the new exception's message with the current file name    * ({@link #currentFilePath}) appended to it.    *    * @param message the exception message. The message will have the current    * file name ({@link #currentFilePath}) appended to it.    * @throws MetricsException thrown if there was an error and the sink isn't    * ignoring errors    */
+comment|/**    * If the sink isn't set to ignore errors, throw a {@link MetricsException}    * if the stream encountered an exception.  The message parameter will be used    * as the new exception's message with the current file name    * ({@link #currentFilePath}) appended to it.    *    * @param message the exception message. The message will have a colon and    * the current file name ({@link #currentFilePath}) appended to it.    * @throws MetricsException thrown if there was an error and the sink isn't    * ignoring errors    */
 DECL|method|checkForErrors (String message)
 specifier|private
 name|void
@@ -2287,7 +2992,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * If the sink isn't set to ignore errors, wrap the Throwable in a    * {@link MetricsException} and throw it.  The message parameter will be used    * as the new exception's message with the current file name    * ({@link #currentFilePath}) and the Throwable's string representation    * appended to it.    *    * @param message the exception message. The message will have the current    * file name ({@link #currentFilePath}) and the Throwable's string    * representation appended to it.    * @param t the Throwable to wrap    */
+comment|/**    * If the sink isn't set to ignore errors, wrap the Throwable in a    * {@link MetricsException} and throw it.  The message parameter will be used    * as the new exception's message with the current file name    * ({@link #currentFilePath}) and the Throwable's string representation    * appended to it.    *    * @param message the exception message. The message will have a colon, the    * current file name ({@link #currentFilePath}), and the Throwable's string    * representation (wrapped in square brackets) appended to it.    * @param t the Throwable to wrap    */
 DECL|method|throwMetricsException (String message, Throwable t)
 specifier|private
 name|void
@@ -2330,7 +3035,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * If the sink isn't set to ignore errors, throw a new    * {@link MetricsException}.  The message parameter will be used  as the    * new exception's message with the current file name    * ({@link #currentFilePath}) appended to it.    *    * @param message the exception message. The message will have the current    * file name ({@link #currentFilePath}) appended to it.    */
+comment|/**    * If the sink isn't set to ignore errors, throw a new    * {@link MetricsException}.  The message parameter will be used  as the    * new exception's message with the current file name    * ({@link #currentFilePath}) appended to it.    *    * @param message the exception message. The message will have a colon and    * the current file name ({@link #currentFilePath}) appended to it.    */
 DECL|method|throwMetricsException (String message)
 specifier|private
 name|void

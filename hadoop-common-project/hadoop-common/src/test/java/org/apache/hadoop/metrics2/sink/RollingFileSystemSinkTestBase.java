@@ -1051,6 +1051,24 @@ literal|".sink.mysink0.allow-append"
 argument_list|,
 name|allowAppend
 argument_list|)
+operator|.
+name|add
+argument_list|(
+name|prefix
+operator|+
+literal|".sink.mysink0.roll-offset-interval-millis"
+argument_list|,
+literal|0
+argument_list|)
+operator|.
+name|add
+argument_list|(
+name|prefix
+operator|+
+literal|".sink.mysink0.roll-interval"
+argument_list|,
+literal|"1h"
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -1142,6 +1160,8 @@ operator|new
 name|Date
 argument_list|()
 argument_list|)
+operator|+
+literal|"00"
 decl_stmt|;
 name|MyMetrics1
 name|mm1
@@ -1239,6 +1259,8 @@ operator|new
 name|Date
 argument_list|()
 argument_list|)
+operator|+
+literal|"00"
 decl_stmt|;
 specifier|final
 name|String
@@ -1796,6 +1818,8 @@ operator|.
 name|getTime
 argument_list|()
 argument_list|)
+operator|+
+literal|"00"
 argument_list|)
 decl_stmt|;
 name|fs
@@ -2068,7 +2092,7 @@ literal|"The sink created additional unexpected log files. "
 operator|+
 name|count
 operator|+
-literal|"files were created"
+literal|" files were created"
 argument_list|,
 name|expected
 operator|>=
@@ -2081,7 +2105,7 @@ literal|"The sink created too few log files. "
 operator|+
 name|count
 operator|+
-literal|"files were "
+literal|" files were "
 operator|+
 literal|"created"
 argument_list|,
