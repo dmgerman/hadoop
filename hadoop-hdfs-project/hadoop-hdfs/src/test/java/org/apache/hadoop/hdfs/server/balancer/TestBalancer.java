@@ -3765,7 +3765,7 @@ name|namenodes
 init|=
 name|DFSUtil
 operator|.
-name|getNsServiceRpcUris
+name|getInternalNsRpcUris
 argument_list|(
 name|conf
 argument_list|)
@@ -4341,7 +4341,7 @@ name|namenodes
 init|=
 name|DFSUtil
 operator|.
-name|getNsServiceRpcUris
+name|getInternalNsRpcUris
 argument_list|(
 name|conf
 argument_list|)
@@ -6006,7 +6006,7 @@ name|namenodes
 init|=
 name|DFSUtil
 operator|.
-name|getNsServiceRpcUris
+name|getInternalNsRpcUris
 argument_list|(
 name|conf
 argument_list|)
@@ -7272,7 +7272,7 @@ name|namenodes
 init|=
 name|DFSUtil
 operator|.
-name|getNsServiceRpcUris
+name|getInternalNsRpcUris
 argument_list|(
 name|conf
 argument_list|)
@@ -9877,7 +9877,7 @@ name|namenodes
 init|=
 name|DFSUtil
 operator|.
-name|getNsServiceRpcUris
+name|getInternalNsRpcUris
 argument_list|(
 name|conf
 argument_list|)
@@ -10159,7 +10159,7 @@ name|namenodes
 init|=
 name|DFSUtil
 operator|.
-name|getNsServiceRpcUris
+name|getInternalNsRpcUris
 argument_list|(
 name|conf
 argument_list|)
@@ -10597,7 +10597,7 @@ name|namenodes
 init|=
 name|DFSUtil
 operator|.
-name|getNsServiceRpcUris
+name|getInternalNsRpcUris
 argument_list|(
 name|conf
 argument_list|)
@@ -11371,7 +11371,7 @@ name|namenodes
 init|=
 name|DFSUtil
 operator|.
-name|getNsServiceRpcUris
+name|getInternalNsRpcUris
 argument_list|(
 name|conf
 argument_list|)
@@ -12254,19 +12254,6 @@ init|=
 name|BalancerParameters
 operator|.
 name|DEFAULT
-decl_stmt|;
-name|Collection
-argument_list|<
-name|URI
-argument_list|>
-name|namenodes
-init|=
-name|DFSUtil
-operator|.
-name|getNsServiceRpcUris
-argument_list|(
-name|conf
-argument_list|)
 decl_stmt|;
 name|runBalancer
 argument_list|(

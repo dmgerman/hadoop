@@ -3797,7 +3797,7 @@ name|namenodes
 init|=
 name|DFSUtil
 operator|.
-name|getNsServiceRpcUris
+name|getInternalNsRpcUris
 argument_list|(
 name|conf
 argument_list|)

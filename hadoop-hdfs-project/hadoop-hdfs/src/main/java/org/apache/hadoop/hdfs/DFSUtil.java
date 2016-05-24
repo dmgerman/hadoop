@@ -3539,15 +3539,61 @@ literal|"]"
 return|;
 block|}
 block|}
-comment|/**    * Get a URI for each configured nameservice. If a nameservice is    * HA-enabled, then the logical URI of the nameservice is returned. If the    * nameservice is not HA-enabled, then a URI corresponding to an RPC address    * of the single NN for that nameservice is returned, preferring the service    * RPC address over the client RPC address.    *     * @param conf configuration    * @return a collection of all configured NN URIs, preferring service    *         addresses    */
-DECL|method|getNsServiceRpcUris (Configuration conf)
+comment|/** @return Internal name services specified in the conf. */
+DECL|method|getInternalNameServices (Configuration conf)
+specifier|static
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|getInternalNameServices
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+specifier|final
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|ids
+init|=
+name|conf
+operator|.
+name|getTrimmedStringCollection
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_INTERNAL_NAMESERVICES_KEY
+argument_list|)
+decl_stmt|;
+return|return
+operator|!
+name|ids
+operator|.
+name|isEmpty
+argument_list|()
+condition|?
+name|ids
+else|:
+name|DFSUtilClient
+operator|.
+name|getNameServiceIds
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
+comment|/**    * Get a URI for each internal nameservice. If a nameservice is    * HA-enabled, then the logical URI of the nameservice is returned. If the    * nameservice is not HA-enabled, then a URI corresponding to an RPC address    * of the single NN for that nameservice is returned, preferring the service    * RPC address over the client RPC address.    *     * @param conf configuration    * @return a collection of all configured NN URIs, preferring service    *         addresses    */
+DECL|method|getInternalNsRpcUris (Configuration conf)
 specifier|public
 specifier|static
 name|Collection
 argument_list|<
 name|URI
 argument_list|>
-name|getNsServiceRpcUris
+name|getInternalNsRpcUris
 parameter_list|(
 name|Configuration
 name|conf
@@ -3557,6 +3603,11 @@ return|return
 name|getNameServiceUris
 argument_list|(
 name|conf
+argument_list|,
+name|getInternalNameServices
+argument_list|(
+name|conf
+argument_list|)
 argument_list|,
 name|DFSConfigKeys
 operator|.
@@ -3569,8 +3620,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get a URI for each configured nameservice. If a nameservice is    * HA-enabled, then the logical URI of the nameservice is returned. If the    * nameservice is not HA-enabled, then a URI corresponding to the address of    * the single NN for that nameservice is returned.    *     * @param conf configuration    * @param keys configuration keys to try in order to get the URI for non-HA    *        nameservices    * @return a collection of all configured NN URIs    */
-DECL|method|getNameServiceUris (Configuration conf, String... keys)
-specifier|public
+DECL|method|getNameServiceUris (Configuration conf, Collection<String> nameServices, String... keys)
 specifier|static
 name|Collection
 argument_list|<
@@ -3580,6 +3630,12 @@ name|getNameServiceUris
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|nameServices
 parameter_list|,
 name|String
 modifier|...
@@ -3622,12 +3678,7 @@ control|(
 name|String
 name|nsId
 range|:
-name|DFSUtilClient
-operator|.
-name|getNameServiceIds
-argument_list|(
-name|conf
-argument_list|)
+name|nameServices
 control|)
 block|{
 if|if
