@@ -261,6 +261,20 @@ argument_list|)
 name|MutableGaugeInt
 name|maxShareVCores
 decl_stmt|;
+DECL|field|maxApps
+annotation|@
+name|Metric
+argument_list|(
+literal|"Maximum number of applications"
+argument_list|)
+name|MutableGaugeInt
+name|maxApps
+decl_stmt|;
+DECL|field|schedulingPolicy
+specifier|private
+name|String
+name|schedulingPolicy
+decl_stmt|;
 DECL|method|FSQueueMetrics (MetricsSystem ms, String queueName, Queue parent, boolean enableUserMetrics, Configuration conf)
 name|FSQueueMetrics
 parameter_list|(
@@ -517,6 +531,60 @@ operator|.
 name|value
 argument_list|()
 return|;
+block|}
+DECL|method|getMaxApps ()
+specifier|public
+name|int
+name|getMaxApps
+parameter_list|()
+block|{
+return|return
+name|maxApps
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|setMaxApps (int max)
+specifier|public
+name|void
+name|setMaxApps
+parameter_list|(
+name|int
+name|max
+parameter_list|)
+block|{
+name|maxApps
+operator|.
+name|set
+argument_list|(
+name|max
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getSchedulingPolicy ()
+specifier|public
+name|String
+name|getSchedulingPolicy
+parameter_list|()
+block|{
+return|return
+name|schedulingPolicy
+return|;
+block|}
+DECL|method|setSchedulingPolicy (String policy)
+specifier|public
+name|void
+name|setSchedulingPolicy
+parameter_list|(
+name|String
+name|policy
+parameter_list|)
+block|{
+name|schedulingPolicy
+operator|=
+name|policy
+expr_stmt|;
 block|}
 specifier|public
 specifier|synchronized

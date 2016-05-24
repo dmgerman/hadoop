@@ -1774,7 +1774,7 @@ name|getMaxShare
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Set scheduling policies
+comment|// Set scheduling policies and update queue metrics
 try|try
 block|{
 name|SchedulingPolicy
@@ -1805,6 +1805,31 @@ operator|.
 name|setPolicy
 argument_list|(
 name|policy
+argument_list|)
+expr_stmt|;
+name|queueMetrics
+operator|.
+name|setMaxApps
+argument_list|(
+name|queueConf
+operator|.
+name|getQueueMaxApps
+argument_list|(
+name|queue
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|queueMetrics
+operator|.
+name|setSchedulingPolicy
+argument_list|(
+name|policy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
