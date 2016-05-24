@@ -2165,6 +2165,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+operator|(
+name|Long
+operator|)
 literal|1425016502000L
 argument_list|,
 name|result
@@ -2283,6 +2286,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+operator|(
+name|Long
+operator|)
 literal|1425016502000L
 argument_list|,
 name|result
@@ -2403,6 +2409,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+operator|(
+name|Long
+operator|)
 literal|1425016502050L
 argument_list|,
 name|result
@@ -2506,6 +2515,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+operator|(
+name|Long
+operator|)
 literal|1425016502000L
 argument_list|,
 name|result
@@ -2662,6 +2674,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+operator|(
+name|Long
+operator|)
 literal|1425016502000L
 argument_list|,
 name|result

@@ -2267,11 +2267,11 @@ name|getFilters
 argument_list|()
 decl_stmt|;
 comment|// fetch created time
-name|Number
+name|Long
 name|createdTime
 init|=
 operator|(
-name|Number
+name|Long
 operator|)
 name|ApplicationColumn
 operator|.
@@ -2287,9 +2287,6 @@ operator|.
 name|setCreatedTime
 argument_list|(
 name|createdTime
-operator|.
-name|longValue
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|EnumSet

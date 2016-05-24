@@ -1185,6 +1185,13 @@ name|entity2
 operator|.
 name|getCreatedTime
 argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|entity2
+operator|.
+name|getCreatedTime
+argument_list|()
 operator|>
 literal|0
 condition|)
