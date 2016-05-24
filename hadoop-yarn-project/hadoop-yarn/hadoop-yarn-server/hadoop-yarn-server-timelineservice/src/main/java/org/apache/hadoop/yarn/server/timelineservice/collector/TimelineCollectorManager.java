@@ -656,8 +656,9 @@ return|return
 name|collectorInTable
 return|;
 block|}
+comment|/**    * Callback handler for the timeline collector manager when a collector has    * been added into the collector map.    * @param appId Application id of the collector.    * @param collector The actual timeline collector that has been added.    */
 DECL|method|postPut (ApplicationId appId, TimelineCollector collector)
-specifier|protected
+specifier|public
 name|void
 name|postPut
 parameter_list|(
@@ -667,7 +668,33 @@ parameter_list|,
 name|TimelineCollector
 name|collector
 parameter_list|)
-block|{    }
+block|{
+name|doPostPut
+argument_list|(
+name|appId
+argument_list|,
+name|collector
+argument_list|)
+expr_stmt|;
+name|collector
+operator|.
+name|setReadyToAggregate
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * A template method that will be called by    * {@link  #postPut(ApplicationId, TimelineCollector)}.    * @param appId Application id of the collector.    * @param collector The actual timeline collector that has been added.    */
+DECL|method|doPostPut (ApplicationId appId, TimelineCollector collector)
+specifier|protected
+name|void
+name|doPostPut
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|TimelineCollector
+name|collector
+parameter_list|)
+block|{   }
 comment|/**    * Removes the collector for the specified id. The collector is also stopped    * as a result. If the collector does not exist, no change is made.    *    * @param appId Application Id to remove.    * @return whether it was removed successfully    */
 DECL|method|remove (ApplicationId appId)
 specifier|public

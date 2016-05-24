@@ -296,10 +296,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|postPut (ApplicationId appId, TimelineCollector collector)
-specifier|public
+DECL|method|doPostPut (ApplicationId appId, TimelineCollector collector)
+specifier|protected
 name|void
-name|postPut
+name|doPostPut
 parameter_list|(
 name|ApplicationId
 name|appId

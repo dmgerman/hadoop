@@ -394,6 +394,14 @@ name|HashSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
+DECL|field|readyToAggregate
+specifier|private
+specifier|volatile
+name|boolean
+name|readyToAggregate
+init|=
+literal|false
+decl_stmt|;
 DECL|method|TimelineCollector (String name)
 specifier|public
 name|TimelineCollector
@@ -500,6 +508,27 @@ parameter_list|()
 block|{
 return|return
 name|aggregationGroups
+return|;
+block|}
+DECL|method|setReadyToAggregate ()
+specifier|protected
+name|void
+name|setReadyToAggregate
+parameter_list|()
+block|{
+name|readyToAggregate
+operator|=
+literal|true
+expr_stmt|;
+block|}
+DECL|method|isReadyToAggregate ()
+specifier|protected
+name|boolean
+name|isReadyToAggregate
+parameter_list|()
+block|{
+return|return
+name|readyToAggregate
 return|;
 block|}
 comment|/**    * Method to decide the set of timeline entity types the collector should    * skip on aggregations. Subclasses may want to override this method to    * customize their own behaviors.    *    * @return A set of strings consists of all types the collector should skip.    */
@@ -1023,7 +1052,7 @@ block|}
 comment|// Note: In memory aggregation is performed in an eventually consistent
 comment|// fashion.
 DECL|class|AggregationStatusTable
-specifier|private
+specifier|protected
 specifier|static
 class|class
 name|AggregationStatusTable
