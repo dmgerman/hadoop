@@ -12747,13 +12747,42 @@ name|expectAclFeature
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Asserts whether or not the inode for a specific path has an AclFeature.    *    * @param pathToCheck Path inode to check    * @param expectAclFeature boolean true if an AclFeature must be present,    *   false if an AclFeature must not be present    * @throws IOException thrown if there is an I/O error    */
 DECL|method|assertAclFeature (Path pathToCheck, boolean expectAclFeature)
 specifier|private
 specifier|static
 name|void
 name|assertAclFeature
 parameter_list|(
+name|Path
+name|pathToCheck
+parameter_list|,
+name|boolean
+name|expectAclFeature
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|assertAclFeature
+argument_list|(
+name|cluster
+argument_list|,
+name|pathToCheck
+argument_list|,
+name|expectAclFeature
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Asserts whether or not the inode for a specific path has an AclFeature.    *    * @param miniCluster the cluster into which the path resides    * @param pathToCheck Path inode to check    * @param expectAclFeature boolean true if an AclFeature must be present,    *   false if an AclFeature must not be present    * @throws IOException thrown if there is an I/O error    */
+DECL|method|assertAclFeature (final MiniDFSCluster miniCluster, Path pathToCheck, boolean expectAclFeature)
+specifier|public
+specifier|static
+name|void
+name|assertAclFeature
+parameter_list|(
+specifier|final
+name|MiniDFSCluster
+name|miniCluster
+parameter_list|,
 name|Path
 name|pathToCheck
 parameter_list|,
@@ -12770,7 +12799,7 @@ name|getAclFeature
 argument_list|(
 name|pathToCheck
 argument_list|,
-name|cluster
+name|miniCluster
 argument_list|)
 decl_stmt|;
 if|if
