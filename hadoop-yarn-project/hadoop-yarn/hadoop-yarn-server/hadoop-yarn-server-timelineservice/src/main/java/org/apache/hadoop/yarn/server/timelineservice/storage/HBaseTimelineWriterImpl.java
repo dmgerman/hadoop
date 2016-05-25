@@ -1156,6 +1156,61 @@ operator|new
 name|TimelineWriteResponse
 argument_list|()
 decl_stmt|;
+comment|// defensive coding to avoid NPE during row key construction
+if|if
+condition|(
+operator|(
+name|flowName
+operator|==
+literal|null
+operator|)
+operator|||
+operator|(
+name|appId
+operator|==
+literal|null
+operator|)
+operator|||
+operator|(
+name|clusterId
+operator|==
+literal|null
+operator|)
+operator|||
+operator|(
+name|userId
+operator|==
+literal|null
+operator|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Found null for one of: flowName="
+operator|+
+name|flowName
+operator|+
+literal|" appId="
+operator|+
+name|appId
+operator|+
+literal|" userId="
+operator|+
+name|userId
+operator|+
+literal|" clusterId="
+operator|+
+name|clusterId
+operator|+
+literal|" . Not proceeding with writing to hbase"
+argument_list|)
+expr_stmt|;
+return|return
+name|putStatus
+return|;
+block|}
 for|for
 control|(
 name|TimelineEntity
