@@ -1737,20 +1737,6 @@ argument_list|,
 literal|"application/octet-stream"
 argument_list|)
 expr_stmt|;
-name|resp
-operator|.
-name|header
-argument_list|(
-literal|"Content-Disposition"
-argument_list|,
-literal|"attachment; filename="
-operator|+
-name|logFile
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 return|return
 name|resp

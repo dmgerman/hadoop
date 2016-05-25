@@ -2235,17 +2235,6 @@ argument_list|,
 literal|"application/octet-stream"
 argument_list|)
 expr_stmt|;
-name|response
-operator|.
-name|header
-argument_list|(
-literal|"Content-Disposition"
-argument_list|,
-literal|"attachment; filename="
-operator|+
-name|fileName
-argument_list|)
-expr_stmt|;
 block|}
 return|return
 name|response
