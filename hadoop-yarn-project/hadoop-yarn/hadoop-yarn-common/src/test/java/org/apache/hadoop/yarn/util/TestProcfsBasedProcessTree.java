@@ -2451,7 +2451,7 @@ index|[]
 block|{
 literal|"200"
 block|,
-literal|"proc2"
+literal|"process two"
 block|,
 literal|"100"
 block|,
@@ -2851,7 +2851,7 @@ index|[]
 block|{
 literal|"200"
 block|,
-literal|"proc2"
+literal|"process two"
 block|,
 literal|"100"
 block|,
@@ -3197,7 +3197,7 @@ index|[]
 block|{
 literal|"200"
 block|,
-literal|"proc2"
+literal|"process two"
 block|,
 literal|"100"
 block|,
@@ -4407,7 +4407,7 @@ index|[]
 block|{
 literal|"200"
 block|,
-literal|"proc2"
+literal|"process two"
 block|,
 literal|"100"
 block|,
@@ -4651,7 +4651,7 @@ index|[
 literal|1
 index|]
 operator|=
-literal|"proc2 arg3 arg4"
+literal|"process two arg3 arg4"
 expr_stmt|;
 name|cmdLines
 index|[

@@ -371,11 +371,11 @@ name|Pattern
 operator|.
 name|compile
 argument_list|(
-literal|"^([0-9-]+)\\s([^\\s]+)\\s[^\\s]\\s([0-9-]+)\\s([0-9-]+)\\s([0-9-]+)\\s"
+literal|"^([\\d-]+)\\s\\(([^)]+)\\)\\s[^\\s]\\s([\\d-]+)\\s([\\d-]+)\\s"
 operator|+
-literal|"([0-9-]+\\s){7}([0-9]+)\\s([0-9]+)\\s([0-9-]+\\s){7}([0-9]+)\\s([0-9]+)"
+literal|"([\\d-]+)\\s([\\d-]+\\s){7}(\\d+)\\s(\\d+)\\s([\\d-]+\\s){7}(\\d+)\\s"
 operator|+
-literal|"(\\s[0-9-]+){15}"
+literal|"(\\d+)(\\s[\\d-]+){15}"
 argument_list|)
 decl_stmt|;
 DECL|field|PROCFS_STAT_FILE
@@ -2637,17 +2637,26 @@ condition|(
 name|mat
 condition|)
 block|{
-comment|// Set (name) (ppid) (pgrpId) (session) (utime) (stime) (vsize) (rss)
-name|pinfo
-operator|.
-name|updateProcessInfo
-argument_list|(
+name|String
+name|processName
+init|=
+literal|"("
+operator|+
 name|m
 operator|.
 name|group
 argument_list|(
 literal|2
 argument_list|)
+operator|+
+literal|")"
+decl_stmt|;
+comment|// Set (name) (ppid) (pgrpId) (session) (utime) (stime) (vsize) (rss)
+name|pinfo
+operator|.
+name|updateProcessInfo
+argument_list|(
+name|processName
 argument_list|,
 name|m
 operator|.
