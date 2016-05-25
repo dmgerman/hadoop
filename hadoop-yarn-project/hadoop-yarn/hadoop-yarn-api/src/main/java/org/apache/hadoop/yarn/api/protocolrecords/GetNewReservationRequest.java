@@ -32,22 +32,6 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
 name|Public
 import|;
 end_import
@@ -85,7 +69,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client on  * reservation submission.</p>  *  *<p>Currently, this is empty.</p>  *  * {@code ApplicationClientProtocol#submitReservation(  * ReservationSubmissionRequest)}  *  */
+comment|/**  *<p>The request sent by clients to get a new {@code ReservationId} for  * submitting an reservation.</p>  *  * {@code ApplicationClientProtocol#getNewReservation(GetNewReservationRequest)}  */
 end_comment
 
 begin_class
@@ -93,37 +77,37 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|class|ReservationSubmissionResponse
+DECL|class|GetNewReservationRequest
 specifier|public
 specifier|abstract
 class|class
-name|ReservationSubmissionResponse
+name|GetNewReservationRequest
 block|{
 annotation|@
-name|Private
+name|Public
 annotation|@
 name|Unstable
 DECL|method|newInstance ()
 specifier|public
 specifier|static
-name|ReservationSubmissionResponse
+name|GetNewReservationRequest
 name|newInstance
 parameter_list|()
 block|{
-name|ReservationSubmissionResponse
-name|response
+name|GetNewReservationRequest
+name|request
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|ReservationSubmissionResponse
+name|GetNewReservationRequest
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
 return|return
-name|response
+name|request
 return|;
 block|}
 block|}

@@ -1513,12 +1513,15 @@ return|return
 name|rDef
 return|;
 block|}
-DECL|method|createSimpleReservationRequest ( int numContainers, long arrival, long deadline, long duration)
+DECL|method|createSimpleReservationRequest ( ReservationId reservationId, int numContainers, long arrival, long deadline, long duration)
 specifier|public
 specifier|static
 name|ReservationSubmissionRequest
 name|createSimpleReservationRequest
 parameter_list|(
+name|ReservationId
+name|reservationId
+parameter_list|,
 name|int
 name|numContainers
 parameter_list|,
@@ -1601,6 +1604,8 @@ argument_list|(
 name|rDef
 argument_list|,
 name|reservationQ
+argument_list|,
+name|reservationId
 argument_list|)
 decl_stmt|;
 return|return

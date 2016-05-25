@@ -98,6 +98,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ReservationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
@@ -123,7 +141,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|newInstance ( ReservationDefinition reservationDefinition, String queueName)
+DECL|method|newInstance ( ReservationDefinition reservationDefinition, String queueName, ReservationId reservationId)
 specifier|public
 specifier|static
 name|ReservationSubmissionRequest
@@ -134,6 +152,9 @@ name|reservationDefinition
 parameter_list|,
 name|String
 name|queueName
+parameter_list|,
+name|ReservationId
+name|reservationId
 parameter_list|)
 block|{
 name|ReservationSubmissionRequest
@@ -160,6 +181,13 @@ operator|.
 name|setQueue
 argument_list|(
 name|queueName
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setReservationId
+argument_list|(
+name|reservationId
 argument_list|)
 expr_stmt|;
 return|return
@@ -218,6 +246,33 @@ name|setQueue
 parameter_list|(
 name|String
 name|queueName
+parameter_list|)
+function_decl|;
+comment|/**    * Get the reservation id that corresponds to the reservation submission.    *    * @return reservation id that will be used to identify the reservation    * submission.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getReservationId ()
+specifier|public
+specifier|abstract
+name|ReservationId
+name|getReservationId
+parameter_list|()
+function_decl|;
+comment|/**    * Set the reservation id that corresponds to the reservation submission.    *    * @param reservationId reservation id that will be used to identify the    *                      reservation submission.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setReservationId (ReservationId reservationId)
+specifier|public
+specifier|abstract
+name|void
+name|setReservationId
+parameter_list|(
+name|ReservationId
+name|reservationId
 parameter_list|)
 function_decl|;
 block|}

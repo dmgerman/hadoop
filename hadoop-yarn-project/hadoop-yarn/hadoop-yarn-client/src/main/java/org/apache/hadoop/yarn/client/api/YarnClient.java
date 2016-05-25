@@ -204,6 +204,24 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
+name|GetNewReservationResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
 name|ReservationDeleteRequest
 import|;
 end_import
@@ -1295,6 +1313,18 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    *<p>    * Obtain a {@link GetNewReservationResponse} for a new reservation,    * which contains the {@link ReservationId} object.    *</p>    *    * @return The {@link GetNewReservationResponse} containing a new    *         {@link ReservationId} object.    * @throws YarnException if reservation cannot be created.    * @throws IOException if reservation cannot be created.    */
+DECL|method|createReservation ()
+specifier|public
+specifier|abstract
+name|GetNewReservationResponse
+name|createReservation
+parameter_list|()
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    *<p>    * The interface used by clients to submit a new reservation to the    * {@code ResourceManager}.    *</p>    *     *<p>    * The client packages all details of its request in a    * {@link ReservationSubmissionRequest} object. This contains information    * about the amount of capacity, temporal constraints, and gang needs.    * Furthermore, the reservation might be composed of multiple stages, with    * ordering dependencies among them.    *</p>    *     *<p>    * In order to respond, a new admission control component in the    * {@code ResourceManager} performs an analysis of the resources that have    * been committed over the period of time the user is requesting, verify that    * the user requests can be fulfilled, and that it respect a sharing policy    * (e.g., {@code CapacityOverTimePolicy}). Once it has positively determined    * that the ReservationRequest is satisfiable the {@code ResourceManager}    * answers with a {@link ReservationSubmissionResponse} that includes a    * {@link ReservationId}. Upon failure to find a valid allocation the response    * is an exception with the message detailing the reason of failure.    *</p>    *     *<p>    * The semantics guarantees that the {@link ReservationId} returned,    * corresponds to a valid reservation existing in the time-range request by    * the user. The amount of capacity dedicated to such reservation can vary    * overtime, depending of the allocation that has been determined. But it is    * guaranteed to satisfy all the constraint expressed by the user in the    * {@link ReservationDefinition}    *</p>    *     * @param request request to submit a new Reservation    * @return response contains the {@link ReservationId} on accepting the    *         submission    * @throws YarnException if the reservation cannot be created successfully    * @throws IOException    *     */
 annotation|@
 name|Public
@@ -1352,7 +1382,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * The interface used by clients to get the list of reservations in a plan.    * The reservationId will be used to search for reservations to list if it is    * provided. Otherwise, it will select active reservations within the    * startTime and endTime (inclusive).    *</p>    *    * @param request to list reservations in a plan. Contains fields to select    *                String queue, ReservationId reservationId, long startTime,    *                long endTime, and a bool includeReservationAllocations.    *    *                queue: Required. Cannot be null or empty. Refers to the    *                reservable queue in the scheduler that was selected when    *                creating a reservation submission    *                {@link ReservationSubmissionRequest}.    *    *                reservationId: Optional. If provided, other fields will    *                be ignored.    *    *                startTime: Optional. If provided, only reservations that    *                end after the startTime will be selected. This defaults    *                to 0 if an invalid number is used.    *    *                endTime: Optional. If provided, only reservations that    *                start on or before endTime will be selected. This defaults    *                to Long.MAX_VALUE if an invalid number is used.    *    *                includeReservationAllocations: Optional. Flag that    *                determines whether the entire reservation allocations are    *                to be returned. Reservation allocations are subject to    *                change in the event of re-planning as described by    *                {@link ReservationDefinition}.    *    * @return response that contains information about reservations that are    *                being searched for.    * @throws YarnException if the request is invalid    * @throws IOException    *    */
+comment|/**    *<p>    * The interface used by clients to get the list of reservations in a plan.    * The reservationId will be used to search for reservations to list if it is    * provided. Otherwise, it will select active reservations within the    * startTime and endTime (inclusive).    *</p>    *    * @param request to list reservations in a plan. Contains fields to select    *                String queue, ReservationId reservationId, long startTime,    *                long endTime, and a bool includeReservationAllocations.    *    *                queue: Required. Cannot be null or empty. Refers to the    *                reservable queue in the scheduler that was selected when    *                creating a reservation submission    *                {@link ReservationSubmissionRequest}.    *    *                reservationId: Optional. If provided, other fields will    *                be ignored.    *    *                startTime: Optional. If provided, only reservations that    *                end after the startTime will be selected. This defaults    *                to 0 if an invalid number is used.    *    *                endTime: Optional. If provided, only reservations that    *                start on or before endTime will be selected. This defaults    *                to Long.MAX_VALUE if an invalid number is used.    *    *                includeReservationAllocations: Optional. Flag that    *                determines whether the entire reservation allocations are    *                to be returned. Reservation allocations are subject to    *                change in the event of re-planning as described by    *                {@link ReservationDefinition}.    *    * @return response that contains information about reservations that are    *                being searched for.    * @throws YarnException if the request is invalid    * @throws IOException if the request failed otherwise    *    */
 annotation|@
 name|Public
 annotation|@
@@ -1449,7 +1479,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * The interface used by client to get node labels in the cluster    *</p>    *    * @return cluster node labels collection    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>    * The interface used by client to get node labels in the cluster    *</p>    *    * @return cluster node labels collection    * @throws YarnException when there is a failure in    *           {@see ApplicationClientProtocol}    * @throws IOException when there is a failure in    *           {@see ApplicationClientProtocol}    */
 annotation|@
 name|Public
 annotation|@

@@ -128,6 +128,18 @@ specifier|private
 name|ReservationDefinitionInfo
 name|reservationDefinition
 decl_stmt|;
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"reservation-id"
+argument_list|)
+DECL|field|reservationId
+specifier|private
+name|String
+name|reservationId
+decl_stmt|;
 DECL|method|ReservationSubmissionRequestInfo ()
 specifier|public
 name|ReservationSubmissionRequestInfo
@@ -157,6 +169,32 @@ operator|.
 name|queue
 operator|=
 name|queue
+expr_stmt|;
+block|}
+DECL|method|getReservationId ()
+specifier|public
+name|String
+name|getReservationId
+parameter_list|()
+block|{
+return|return
+name|reservationId
+return|;
+block|}
+DECL|method|setReservationId (String reservationId)
+specifier|public
+name|void
+name|setReservationId
+parameter_list|(
+name|String
+name|reservationId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|reservationId
+operator|=
+name|reservationId
 expr_stmt|;
 block|}
 DECL|method|getReservationDefinition ()

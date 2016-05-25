@@ -1119,6 +1119,31 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
+name|String
+name|message
+decl_stmt|;
+if|if
+condition|(
+name|reservationId
+operator|==
+literal|null
+condition|)
+block|{
+name|message
+operator|=
+literal|"Reservation id cannot be null. Please try again "
+operator|+
+literal|"specifying a valid reservation id by creating a new reservation id."
+expr_stmt|;
+throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+name|message
+argument_list|)
+throw|;
+block|}
 comment|// Check if it is a managed queue
 name|String
 name|queue

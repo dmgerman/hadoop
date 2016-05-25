@@ -64,7 +64,41 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
 name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ReservationId
 import|;
 end_import
 
@@ -85,7 +119,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client on  * reservation submission.</p>  *  *<p>Currently, this is empty.</p>  *  * {@code ApplicationClientProtocol#submitReservation(  * ReservationSubmissionRequest)}  *  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to the client for  * a request to get a new {@link ReservationId} for submitting reservations.</p>  *  *<p>Clients can submit an reservation with the returned  * {@link ReservationId}.</p>  *  * {@code ApplicationClientProtocol#getNewReservation(GetNewReservationRequest)}  */
 end_comment
 
 begin_class
@@ -93,39 +127,76 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|class|ReservationSubmissionResponse
+DECL|class|GetNewReservationResponse
 specifier|public
 specifier|abstract
 class|class
-name|ReservationSubmissionResponse
+name|GetNewReservationResponse
 block|{
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ()
+DECL|method|newInstance ( ReservationId reservationId)
 specifier|public
 specifier|static
-name|ReservationSubmissionResponse
+name|GetNewReservationResponse
 name|newInstance
-parameter_list|()
+parameter_list|(
+name|ReservationId
+name|reservationId
+parameter_list|)
 block|{
-name|ReservationSubmissionResponse
+name|GetNewReservationResponse
 name|response
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|ReservationSubmissionResponse
+name|GetNewReservationResponse
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|response
+operator|.
+name|setReservationId
+argument_list|(
+name|reservationId
+argument_list|)
+expr_stmt|;
 return|return
 name|response
 return|;
 block|}
+comment|/**    * Get a new {@link ReservationId} to be used to submit a reservation.    *    * @return a {@link ReservationId} representing the unique id to identify    * a reservation with which it was submitted.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getReservationId ()
+specifier|public
+specifier|abstract
+name|ReservationId
+name|getReservationId
+parameter_list|()
+function_decl|;
+comment|/**    * Set a new {@link ReservationId} to be used to submit a reservation.    *    * @param reservationId a {@link ReservationId} representing the unique id to    *          identify a reservation with which it was submitted.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setReservationId (ReservationId reservationId)
+specifier|public
+specifier|abstract
+name|void
+name|setReservationId
+parameter_list|(
+name|ReservationId
+name|reservationId
+parameter_list|)
+function_decl|;
 block|}
 end_class
 
