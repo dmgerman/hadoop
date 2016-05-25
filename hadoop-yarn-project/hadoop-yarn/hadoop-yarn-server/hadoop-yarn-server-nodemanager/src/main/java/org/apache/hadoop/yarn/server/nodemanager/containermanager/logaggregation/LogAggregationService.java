@@ -2179,7 +2179,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|initApp (final ApplicationId appId, String user, Credentials credentials, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext)
+DECL|method|initApp (final ApplicationId appId, String user, Credentials credentials, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext, long recoveredLogInitedTime)
 specifier|private
 name|void
 name|initApp
@@ -2204,6 +2204,9 @@ name|appAcls
 parameter_list|,
 name|LogAggregationContext
 name|logAggregationContext
+parameter_list|,
+name|long
+name|recoveredLogInitedTime
 parameter_list|)
 block|{
 name|ApplicationEvent
@@ -2228,6 +2231,8 @@ argument_list|,
 name|appAcls
 argument_list|,
 name|logAggregationContext
+argument_list|,
+name|recoveredLogInitedTime
 argument_list|)
 expr_stmt|;
 name|eventResponse
@@ -2318,7 +2323,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|initAppAggregator (final ApplicationId appId, String user, Credentials credentials, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext)
+DECL|method|initAppAggregator (final ApplicationId appId, String user, Credentials credentials, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext, long recoveredLogInitedTime)
 specifier|protected
 name|void
 name|initAppAggregator
@@ -2343,6 +2348,9 @@ name|appAcls
 parameter_list|,
 name|LogAggregationContext
 name|logAggregationContext
+parameter_list|,
+name|long
+name|recoveredLogInitedTime
 parameter_list|)
 block|{
 comment|// Get user's FileSystem credentials
@@ -2425,6 +2433,8 @@ argument_list|,
 name|this
 operator|.
 name|rollingMonitorInterval
+argument_list|,
+name|recoveredLogInitedTime
 argument_list|)
 decl_stmt|;
 if|if
@@ -2874,6 +2884,11 @@ argument_list|,
 name|appStartEvent
 operator|.
 name|getLogAggregationContext
+argument_list|()
+argument_list|,
+name|appStartEvent
+operator|.
+name|getRecoveredAppLogInitedTime
 argument_list|()
 argument_list|)
 expr_stmt|;

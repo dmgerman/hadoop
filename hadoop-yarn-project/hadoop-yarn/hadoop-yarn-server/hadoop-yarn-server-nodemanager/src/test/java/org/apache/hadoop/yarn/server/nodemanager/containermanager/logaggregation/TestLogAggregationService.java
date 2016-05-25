@@ -56,43 +56,7 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
-name|any
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|anyMap
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|eq
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|isA
+name|*
 import|;
 end_import
 
@@ -5239,6 +5203,9 @@ name|LogAggregationContext
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|anyLong
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LogAggregationContext

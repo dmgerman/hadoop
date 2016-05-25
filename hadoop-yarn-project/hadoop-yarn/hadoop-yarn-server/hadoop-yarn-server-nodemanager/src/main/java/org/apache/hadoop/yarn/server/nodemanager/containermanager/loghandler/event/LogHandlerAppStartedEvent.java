@@ -147,6 +147,13 @@ specifier|final
 name|LogAggregationContext
 name|logAggregationContext
 decl_stmt|;
+comment|/**    * The value will be set when the application is recovered from state store.    * We use this value in AppLogAggregatorImpl to determine, if log retention    * policy is enabled, if we need to upload old application log files. Files    * older than retention policy will not be uploaded but scheduled for    * deletion.    */
+DECL|field|recoveredAppLogInitedTime
+specifier|private
+specifier|final
+name|long
+name|recoveredAppLogInitedTime
+decl_stmt|;
 DECL|method|LogHandlerAppStartedEvent (ApplicationId appId, String user, Credentials credentials, Map<ApplicationAccessType, String> appAcls)
 specifier|public
 name|LogHandlerAppStartedEvent
@@ -180,6 +187,9 @@ argument_list|,
 name|appAcls
 argument_list|,
 literal|null
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -206,6 +216,51 @@ name|appAcls
 parameter_list|,
 name|LogAggregationContext
 name|logAggregationContext
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|appId
+argument_list|,
+name|user
+argument_list|,
+name|credentials
+argument_list|,
+name|appAcls
+argument_list|,
+name|logAggregationContext
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|LogHandlerAppStartedEvent (ApplicationId appId, String user, Credentials credentials, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext, long appLogInitedTime)
+specifier|public
+name|LogHandlerAppStartedEvent
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|Credentials
+name|credentials
+parameter_list|,
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|appAcls
+parameter_list|,
+name|LogAggregationContext
+name|logAggregationContext
+parameter_list|,
+name|long
+name|appLogInitedTime
 parameter_list|)
 block|{
 name|super
@@ -244,6 +299,12 @@ operator|.
 name|logAggregationContext
 operator|=
 name|logAggregationContext
+expr_stmt|;
+name|this
+operator|.
+name|recoveredAppLogInitedTime
+operator|=
+name|appLogInitedTime
 expr_stmt|;
 block|}
 DECL|method|getApplicationId ()
@@ -309,6 +370,18 @@ return|return
 name|this
 operator|.
 name|logAggregationContext
+return|;
+block|}
+DECL|method|getRecoveredAppLogInitedTime ()
+specifier|public
+name|long
+name|getRecoveredAppLogInitedTime
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|recoveredAppLogInitedTime
 return|;
 block|}
 block|}

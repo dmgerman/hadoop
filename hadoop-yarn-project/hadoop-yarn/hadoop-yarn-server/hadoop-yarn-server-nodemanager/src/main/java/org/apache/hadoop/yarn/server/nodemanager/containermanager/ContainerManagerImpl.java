@@ -3173,6 +3173,11 @@ argument_list|,
 name|creds
 argument_list|,
 name|context
+argument_list|,
+name|p
+operator|.
+name|getAppLogAggregationInitedTime
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|context
