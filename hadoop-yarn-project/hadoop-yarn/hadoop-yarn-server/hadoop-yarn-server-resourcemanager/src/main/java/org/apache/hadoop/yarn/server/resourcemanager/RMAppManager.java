@@ -1987,6 +1987,8 @@ operator|.
 name|getApplicationId
 argument_list|()
 decl_stmt|;
+comment|// Passing start time as -1. It will be eventually set in RMAppImpl
+comment|// constructor.
 name|RMAppImpl
 name|application
 init|=
@@ -1999,6 +2001,9 @@ argument_list|,
 name|user
 argument_list|,
 literal|false
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 name|Credentials
@@ -2193,6 +2198,11 @@ name|getUser
 argument_list|()
 argument_list|,
 literal|true
+argument_list|,
+name|appState
+operator|.
+name|getStartTime
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|application
@@ -2209,7 +2219,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createAndPopulateNewRMApp ( ApplicationSubmissionContext submissionContext, long submitTime, String user, boolean isRecovery)
+DECL|method|createAndPopulateNewRMApp ( ApplicationSubmissionContext submissionContext, long submitTime, String user, boolean isRecovery, long startTime)
 specifier|private
 name|RMAppImpl
 name|createAndPopulateNewRMApp
@@ -2225,6 +2235,9 @@ name|user
 parameter_list|,
 name|boolean
 name|isRecovery
+parameter_list|,
+name|long
+name|startTime
 parameter_list|)
 throws|throws
 name|YarnException
@@ -2537,6 +2550,8 @@ name|getApplicationTags
 argument_list|()
 argument_list|,
 name|amReq
+argument_list|,
+name|startTime
 argument_list|)
 decl_stmt|;
 comment|// Concurrent app submissions with same applicationId will fail here
