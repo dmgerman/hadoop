@@ -306,7 +306,10 @@ argument_list|(
 literal|"os.arch"
 argument_list|)
 operator|.
-name|equals
+name|toLowerCase
+argument_list|()
+operator|.
+name|startsWith
 argument_list|(
 literal|"sparc"
 argument_list|)

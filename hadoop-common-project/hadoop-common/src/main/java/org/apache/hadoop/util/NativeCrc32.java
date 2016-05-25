@@ -71,12 +71,37 @@ name|boolean
 name|isAvailable
 parameter_list|()
 block|{
+if|if
+condition|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"os.arch"
+argument_list|)
+operator|.
+name|toLowerCase
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"sparc"
+argument_list|)
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+else|else
+block|{
 return|return
 name|NativeCodeLoader
 operator|.
 name|isNativeCodeLoaded
 argument_list|()
 return|;
+block|}
 block|}
 comment|/**    * Verify the given buffers of data and checksums, and throw an exception    * if any checksum is invalid. The buffers given to this function should    * have their position initially at the start of the data, and their limit    * set at the end of the data. The position, limit, and mark are not    * modified.    *     * @param bytesPerSum the chunk size (eg 512 bytes)    * @param checksumType the DataChecksum type constant (NULL is not supported)    * @param sums the DirectByteBuffer pointing at the beginning of the    *             stored checksums    * @param data the DirectByteBuffer pointing at the beginning of the    *             data to check    * @param basePos the position in the file where the data buffer starts     * @param fileName the name of the file being verified    * @throws ChecksumException if there is an invalid checksum    */
 DECL|method|verifyChunkedSums (int bytesPerSum, int checksumType, ByteBuffer sums, ByteBuffer data, String fileName, long basePos)
