@@ -266,6 +266,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -772,6 +788,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|util
 operator|.
 name|concurrent
@@ -1086,7 +1116,12 @@ argument_list|>
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
 DECL|method|getProxy (final InetSocketAddress nmAddr)
+specifier|public
 name|LocalizationProtocol
 name|getProxy
 parameter_list|(
@@ -1130,7 +1165,7 @@ literal|"deprecation"
 argument_list|)
 DECL|method|runLocalization (final InetSocketAddress nmAddr)
 specifier|public
-name|int
+name|void
 name|runLocalization
 parameter_list|(
 specifier|final
@@ -1356,9 +1391,7 @@ argument_list|,
 name|ugi
 argument_list|)
 expr_stmt|;
-return|return
-literal|0
-return|;
+return|return;
 block|}
 catch|catch
 parameter_list|(
@@ -1366,21 +1399,13 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
-comment|// Print traces to stdout so that they can be logged by the NM address
-comment|// space.
-name|e
-operator|.
-name|printStackTrace
+throw|throw
+operator|new
+name|IOException
 argument_list|(
-name|System
-operator|.
-name|out
+name|e
 argument_list|)
-expr_stmt|;
-return|return
-operator|-
-literal|1
-return|;
+throw|;
 block|}
 finally|finally
 block|{
@@ -1648,6 +1673,8 @@ name|ugi
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnException
 block|{
 while|while
 condition|(
@@ -1787,7 +1814,7 @@ operator|=
 name|createStatus
 argument_list|()
 expr_stmt|;
-comment|// ignore response
+comment|// ignore response while dying.
 try|try
 block|{
 name|nodemanager
@@ -1803,7 +1830,28 @@ parameter_list|(
 name|YarnException
 name|e
 parameter_list|)
-block|{ }
+block|{
+comment|// Cannot do anything about this during death stage, let's just log
+comment|// it.
+name|e
+operator|.
+name|printStackTrace
+argument_list|(
+name|System
+operator|.
+name|out
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Heartbeat failed while dying: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 return|return;
 block|}
 name|cs
@@ -1833,7 +1881,9 @@ name|e
 parameter_list|)
 block|{
 comment|// TODO cleanup
-return|return;
+throw|throw
+name|e
+throw|;
 block|}
 block|}
 block|}
@@ -2448,46 +2498,14 @@ literal|null
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|int
-name|nRet
-init|=
 name|localizer
 operator|.
 name|runLocalization
 argument_list|(
 name|nmAddr
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"nRet: %d"
-argument_list|,
-name|nRet
-argument_list|)
-argument_list|)
 expr_stmt|;
-block|}
-name|System
-operator|.
-name|exit
-argument_list|(
-name|nRet
-argument_list|)
-expr_stmt|;
+return|return;
 block|}
 catch|catch
 parameter_list|(
@@ -2495,7 +2513,8 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
-comment|// Print error to stdout so that LCE can use it.
+comment|// Print traces to stdout so that they can be logged by the NM address
+comment|// space in both DefaultCE and LCE cases
 name|e
 operator|.
 name|printStackTrace
@@ -2514,9 +2533,14 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-throw|throw
-name|e
-throw|;
+name|System
+operator|.
+name|exit
+argument_list|(
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|initDirs (Configuration conf, String user, String appId, FileContext lfs, List<Path> localDirs)

@@ -30,16 +30,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -127,21 +117,8 @@ name|ResourceLocalizationSpec
 argument_list|>
 name|resourceSpecs
 decl_stmt|;
-DECL|method|MockLocalizerHeartbeatResponse ()
-name|MockLocalizerHeartbeatResponse
-parameter_list|()
-block|{
-name|resourceSpecs
-operator|=
-operator|new
-name|ArrayList
-argument_list|<
-name|ResourceLocalizationSpec
-argument_list|>
-argument_list|()
-expr_stmt|;
-block|}
 DECL|method|MockLocalizerHeartbeatResponse ( LocalizerAction action, List<ResourceLocalizationSpec> resources)
+specifier|public
 name|MockLocalizerHeartbeatResponse
 parameter_list|(
 name|LocalizerAction
