@@ -1206,16 +1206,22 @@ name|publishMetricsNow
 argument_list|()
 expr_stmt|;
 comment|// publish the metrics
+try|try
+block|{
 name|ms
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|ms
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 return|return
 name|readLogFile
 argument_list|(

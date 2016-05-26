@@ -128,6 +128,20 @@ name|hadoop
 operator|.
 name|metrics2
 operator|.
+name|MetricsException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
 name|MetricsSystem
 import|;
 end_import
@@ -434,7 +448,7 @@ name|doAppendTest
 argument_list|(
 name|path
 argument_list|,
-literal|false
+literal|true
 argument_list|,
 literal|true
 argument_list|,
@@ -599,16 +613,22 @@ operator|.
 name|errored
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|ms
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|ms
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Test that closing a file in HDFS fails when HDFS is unavailable.    *    * @throws IOException thrown when reading or writing log files    */
 annotation|@
@@ -673,6 +693,8 @@ name|errored
 operator|=
 literal|false
 expr_stmt|;
+try|try
+block|{
 name|ms
 operator|.
 name|stop
@@ -689,11 +711,23 @@ operator|.
 name|errored
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|MetricsException
+name|ex
+parameter_list|)
+block|{
+comment|// Expected
+block|}
+finally|finally
+block|{
 name|ms
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Test that writing to HDFS fails silently when HDFS is unavailable.    *    * @throws IOException thrown when reading or writing log files    * @throws java.lang.InterruptedException thrown if interrupted    */
 annotation|@
@@ -773,16 +807,22 @@ operator|.
 name|errored
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|ms
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|ms
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Test that closing a file in HDFS silently fails when HDFS is unavailable.    *    * @throws IOException thrown when reading or writing log files    */
 annotation|@
@@ -847,6 +887,8 @@ name|errored
 operator|=
 literal|false
 expr_stmt|;
+try|try
+block|{
 name|ms
 operator|.
 name|stop
@@ -865,11 +907,15 @@ operator|.
 name|errored
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|ms
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * This test specifically checks whether the flusher thread is automatically    * flushing the files.  It unfortunately can only test with the alternative    * flushing schedule (because of test timing), but it's better than nothing.    *    * @throws Exception thrown if something breaks    */
 annotation|@
@@ -946,6 +992,8 @@ name|count
 init|=
 literal|0
 decl_stmt|;
+try|try
+block|{
 comment|// Sleep until the flusher has run. This should never actually need to
 comment|// sleep, but the sleep is here to make sure this test isn't flakey.
 while|while
@@ -1072,11 +1120,32 @@ operator|>=
 literal|236
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|RollingFileSystemSink
+operator|.
+name|forceFlush
+operator|=
+literal|false
+expr_stmt|;
+try|try
+block|{
 name|ms
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|ms
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|/**    * Test that a failure to connect to HDFS does not cause the init() method    * to fail.    */
 annotation|@
