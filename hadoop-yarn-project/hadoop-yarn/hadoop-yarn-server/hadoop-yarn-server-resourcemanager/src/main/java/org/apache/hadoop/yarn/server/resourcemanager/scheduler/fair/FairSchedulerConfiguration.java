@@ -678,6 +678,27 @@ init|=
 literal|false
 decl_stmt|;
 comment|/** Maximum number of containers to assign on each check-in. */
+DECL|field|DYNAMIC_MAX_ASSIGN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DYNAMIC_MAX_ASSIGN
+init|=
+name|CONF_PREFIX
+operator|+
+literal|"dynamic.max.assign"
+decl_stmt|;
+DECL|field|DEFAULT_DYNAMIC_MAX_ASSIGN
+specifier|private
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_DYNAMIC_MAX_ASSIGN
+init|=
+literal|true
+decl_stmt|;
+comment|/**    * Specify exact number of containers to assign on each heartbeat, if dynamic    * max assign is turned off.    */
 DECL|field|MAX_ASSIGN
 specifier|protected
 specifier|static
@@ -1038,6 +1059,21 @@ argument_list|(
 name|ASSIGN_MULTIPLE
 argument_list|,
 name|DEFAULT_ASSIGN_MULTIPLE
+argument_list|)
+return|;
+block|}
+DECL|method|isMaxAssignDynamic ()
+specifier|public
+name|boolean
+name|isMaxAssignDynamic
+parameter_list|()
+block|{
+return|return
+name|getBoolean
+argument_list|(
+name|DYNAMIC_MAX_ASSIGN
+argument_list|,
+name|DEFAULT_DYNAMIC_MAX_ASSIGN
 argument_list|)
 return|;
 block|}
