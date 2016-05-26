@@ -396,6 +396,30 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|fair
+operator|.
+name|policies
+operator|.
+name|DominantResourceFairnessPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|resource
@@ -2211,7 +2235,7 @@ return|return
 name|activeUsersManager
 return|;
 block|}
-comment|/**    * Check whether this queue can run this application master under the    * maxAMShare limit    *    * @param amResource    * @return true if this queue can run    */
+comment|/**    * Check whether this queue can run this application master under the    * maxAMShare limit. For FIFO and FAIR policies, check if the VCore usage    * takes up the entire cluster or maxResources for the queue.    * @param amResource    * @return true if this queue can run    */
 DECL|method|canRunAppAM (Resource amResource)
 specifier|public
 name|boolean
@@ -2279,8 +2303,9 @@ argument_list|,
 name|amResource
 argument_list|)
 decl_stmt|;
-return|return
-operator|!
+name|boolean
+name|overMaxAMShareLimit
+init|=
 name|policy
 operator|.
 name|checkIfAMResourceUsageOverLimit
@@ -2289,6 +2314,58 @@ name|ifRunAMResource
 argument_list|,
 name|maxAMResource
 argument_list|)
+decl_stmt|;
+comment|// For fair policy and fifo policy which doesn't check VCore usages,
+comment|// additionally check if the AM takes all available VCores or
+comment|// over maxResource to avoid deadlock.
+if|if
+condition|(
+operator|!
+name|overMaxAMShareLimit
+operator|&&
+operator|!
+name|policy
+operator|.
+name|equals
+argument_list|(
+name|SchedulingPolicy
+operator|.
+name|getInstance
+argument_list|(
+name|DominantResourceFairnessPolicy
+operator|.
+name|class
+argument_list|)
+argument_list|)
+condition|)
+block|{
+name|overMaxAMShareLimit
+operator|=
+name|isVCoresOverMaxResource
+argument_list|(
+name|ifRunAMResource
+operator|.
+name|getVirtualCores
+argument_list|()
+argument_list|)
+operator|||
+name|ifRunAMResource
+operator|.
+name|getVirtualCores
+argument_list|()
+operator|>=
+name|scheduler
+operator|.
+name|getRootQueueMetrics
+argument_list|()
+operator|.
+name|getAvailableVirtualCores
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+operator|!
+name|overMaxAMShareLimit
 return|;
 block|}
 DECL|method|addAMResourceUsage (Resource amResource)
