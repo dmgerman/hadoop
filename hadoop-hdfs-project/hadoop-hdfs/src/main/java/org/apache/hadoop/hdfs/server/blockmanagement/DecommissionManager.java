@@ -999,7 +999,7 @@ name|numExpected
 init|=
 name|blockManager
 operator|.
-name|getExpectedReplicaNum
+name|getExpectedRedundancyNum
 argument_list|(
 name|block
 argument_list|)
@@ -1212,11 +1212,11 @@ name|liveReplicas
 argument_list|()
 decl_stmt|;
 name|int
-name|curExpectedReplicas
+name|curExpectedRedundancy
 init|=
 name|blockManager
 operator|.
-name|getExpectedReplicaNum
+name|getExpectedRedundancyNum
 argument_list|(
 name|block
 argument_list|)
@@ -1272,7 +1272,7 @@ name|block
 operator|+
 literal|", Expected Replicas: "
 operator|+
-name|curExpectedReplicas
+name|curExpectedRedundancy
 operator|+
 literal|", live replicas: "
 operator|+
@@ -2251,7 +2251,7 @@ argument_list|()
 argument_list|,
 name|blockManager
 operator|.
-name|getExpectedReplicaNum
+name|getExpectedRedundancyNum
 argument_list|(
 name|block
 argument_list|)

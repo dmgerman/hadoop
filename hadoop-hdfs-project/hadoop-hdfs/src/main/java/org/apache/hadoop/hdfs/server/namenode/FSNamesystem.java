@@ -17007,7 +17007,7 @@ argument_list|)
 expr_stmt|;
 name|blockManager
 operator|.
-name|checkReplication
+name|checkRedundancy
 argument_list|(
 name|pendingFile
 argument_list|)

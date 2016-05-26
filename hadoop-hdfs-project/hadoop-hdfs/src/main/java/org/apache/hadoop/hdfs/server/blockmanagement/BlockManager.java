@@ -4249,7 +4249,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Commit the last block of the file and mark it as complete if it has    * meets the minimum replication requirement    *     * @param bc block collection    * @param commitBlock - contains client reported block length and generation    * @return true if the last block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
+comment|/**    * Commit the last block of the file and mark it as complete if it has    * meets the minimum redundancy requirement    *     * @param bc block collection    * @param commitBlock - contains client reported block length and generation    * @return true if the last block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
 DECL|method|commitOrCompleteLastBlock (BlockCollection bc, Block commitBlock)
 specifier|public
 name|boolean
@@ -4760,7 +4760,7 @@ operator|.
 name|decommissionedAndDecommissioning
 argument_list|()
 argument_list|,
-name|getReplication
+name|getRedundancy
 argument_list|(
 name|lastBlock
 argument_list|)
@@ -7387,9 +7387,9 @@ expr_stmt|;
 return|return;
 block|}
 name|short
-name|expectedReplicas
+name|expectedRedundancies
 init|=
-name|getExpectedReplicaNum
+name|getExpectedRedundancyNum
 argument_list|(
 name|b
 operator|.
@@ -7498,7 +7498,7 @@ operator|.
 name|liveReplicas
 argument_list|()
 operator|>=
-name|expectedReplicas
+name|expectedRedundancies
 decl_stmt|;
 name|boolean
 name|minReplicationSatisfied
@@ -7533,7 +7533,7 @@ name|corruptReplicas
 argument_list|()
 operator|)
 operator|>
-name|expectedReplicas
+name|expectedRedundancies
 decl_stmt|;
 name|boolean
 name|corruptedDuringWrite
@@ -8438,9 +8438,9 @@ literal|null
 return|;
 block|}
 name|short
-name|requiredReplication
+name|requiredRedundancy
 init|=
-name|getExpectedReplicaNum
+name|getExpectedRedundancyNum
 argument_list|(
 name|block
 argument_list|)
@@ -8570,7 +8570,7 @@ name|numReplicas
 argument_list|,
 name|pendingNum
 argument_list|,
-name|requiredReplication
+name|requiredRedundancy
 argument_list|)
 condition|)
 block|{
@@ -8608,12 +8608,12 @@ operator|.
 name|liveReplicas
 argument_list|()
 operator|<
-name|requiredReplication
+name|requiredRedundancy
 condition|)
 block|{
 name|additionalReplRequired
 operator|=
-name|requiredReplication
+name|requiredRedundancy
 operator|-
 name|numReplicas
 operator|.
@@ -8884,9 +8884,9 @@ block|}
 comment|// do not schedule more if enough replicas is already pending
 specifier|final
 name|short
-name|requiredReplication
+name|requiredRedundancy
 init|=
-name|getExpectedReplicaNum
+name|getExpectedRedundancyNum
 argument_list|(
 name|block
 argument_list|)
@@ -8920,7 +8920,7 @@ name|numReplicas
 argument_list|,
 name|pendingNum
 argument_list|,
-name|requiredReplication
+name|requiredRedundancy
 argument_list|)
 condition|)
 block|{
@@ -8970,7 +8970,7 @@ operator|.
 name|liveReplicas
 argument_list|()
 operator|>=
-name|requiredReplication
+name|requiredRedundancy
 operator|)
 operator|&&
 operator|(
@@ -9077,7 +9077,7 @@ name|targets
 operator|.
 name|length
 operator|>=
-name|requiredReplication
+name|requiredRedundancy
 condition|)
 block|{
 name|neededReconstruction
@@ -10000,7 +10000,7 @@ operator|.
 name|decommissionedAndDecommissioning
 argument_list|()
 argument_list|,
-name|getReplication
+name|getRedundancy
 argument_list|(
 name|bi
 argument_list|)
@@ -14437,9 +14437,9 @@ return|;
 block|}
 comment|// handle low redundancy/extra redundancy
 name|short
-name|fileReplication
+name|fileRedundancy
 init|=
-name|getExpectedReplicaNum
+name|getExpectedRedundancyNum
 argument_list|(
 name|storedBlock
 argument_list|)
@@ -14473,7 +14473,7 @@ operator|.
 name|decommissionedAndDecommissioning
 argument_list|()
 argument_list|,
-name|fileReplication
+name|fileRedundancy
 argument_list|)
 expr_stmt|;
 block|}
@@ -14495,7 +14495,7 @@ name|shouldProcessExtraRedundancy
 argument_list|(
 name|num
 argument_list|,
-name|fileReplication
+name|fileRedundancy
 argument_list|)
 condition|)
 block|{
@@ -14503,7 +14503,7 @@ name|processExtraRedundancyBlock
 argument_list|(
 name|storedBlock
 argument_list|,
-name|fileReplication
+name|fileRedundancy
 argument_list|,
 name|node
 argument_list|,
@@ -14567,7 +14567,7 @@ operator|&&
 operator|(
 name|numLiveReplicas
 operator|>=
-name|fileReplication
+name|fileRedundancy
 operator|)
 condition|)
 block|{
@@ -15373,11 +15373,11 @@ operator|.
 name|UNDER_CONSTRUCTION
 return|;
 block|}
-comment|// calculate current replication
+comment|// calculate current redundancy
 name|short
-name|expectedReplication
+name|expectedRedundancy
 init|=
-name|getExpectedReplicaNum
+name|getExpectedRedundancyNum
 argument_list|(
 name|block
 argument_list|)
@@ -15430,7 +15430,7 @@ operator|.
 name|decommissionedAndDecommissioning
 argument_list|()
 argument_list|,
-name|expectedReplication
+name|expectedRedundancy
 argument_list|)
 condition|)
 block|{
@@ -15447,7 +15447,7 @@ name|shouldProcessExtraRedundancy
 argument_list|(
 name|num
 argument_list|,
-name|expectedReplication
+name|expectedRedundancy
 argument_list|)
 condition|)
 block|{
@@ -15477,7 +15477,7 @@ name|processExtraRedundancyBlock
 argument_list|(
 name|block
 argument_list|,
-name|expectedReplication
+name|expectedRedundancy
 argument_list|,
 literal|null
 argument_list|,
@@ -18355,7 +18355,7 @@ name|expectedReplication
 init|=
 name|this
 operator|.
-name|getReplication
+name|getRedundancy
 argument_list|(
 name|block
 argument_list|)
@@ -18832,7 +18832,7 @@ decl_stmt|;
 name|int
 name|curExpectedReplicas
 init|=
-name|getReplication
+name|getRedundancy
 argument_list|(
 name|block
 argument_list|)
@@ -18931,10 +18931,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Check sufficient redundancy of the blocks in the collection. If any block    * is needed reconstruction, insert it into the reconstruction queue.    * Otherwise, if the block is more than the expected replication factor,    * process it as an extra redundancy block.    */
-DECL|method|checkReplication (BlockCollection bc)
+DECL|method|checkRedundancy (BlockCollection bc)
 specifier|public
 name|void
-name|checkReplication
+name|checkRedundancy
 parameter_list|(
 name|BlockCollection
 name|bc
@@ -18954,7 +18954,7 @@ block|{
 name|short
 name|expected
 init|=
-name|getExpectedReplicaNum
+name|getExpectedRedundancyNum
 argument_list|(
 name|block
 argument_list|)
@@ -19047,17 +19047,17 @@ block|}
 block|}
 block|}
 comment|/**     * @return 0 if the block is not found;    *         otherwise, return the replication factor of the block.    */
-DECL|method|getReplication (BlockInfo block)
+DECL|method|getRedundancy (BlockInfo block)
 specifier|private
 name|int
-name|getReplication
+name|getRedundancy
 parameter_list|(
 name|BlockInfo
 name|block
 parameter_list|)
 block|{
 return|return
-name|getExpectedReplicaNum
+name|getExpectedRedundancyNum
 argument_list|(
 name|block
 argument_list|)
@@ -19408,7 +19408,7 @@ name|isPlacementPolicySatisfied
 argument_list|()
 return|;
 block|}
-comment|/**    * A block needs reconstruction if the number of replicas is less than    * expected or if it does not have enough racks.    */
+comment|/**    * A block needs reconstruction if the number of redundancies is less than    * expected or if it does not have enough racks.    */
 DECL|method|isNeededReconstruction (BlockInfo storedBlock, int current)
 name|boolean
 name|isNeededReconstruction
@@ -19423,7 +19423,7 @@ block|{
 name|int
 name|expected
 init|=
-name|getExpectedReplicaNum
+name|getExpectedRedundancyNum
 argument_list|(
 name|storedBlock
 argument_list|)
@@ -19447,10 +19447,10 @@ argument_list|)
 operator|)
 return|;
 block|}
-DECL|method|getExpectedReplicaNum (BlockInfo block)
+DECL|method|getExpectedRedundancyNum (BlockInfo block)
 specifier|public
 name|short
-name|getExpectedReplicaNum
+name|getExpectedRedundancyNum
 parameter_list|(
 name|BlockInfo
 name|block

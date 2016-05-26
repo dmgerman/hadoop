@@ -1899,7 +1899,7 @@ literal|"No. of Expected Replica: "
 operator|+
 name|blockManager
 operator|.
-name|getExpectedReplicaNum
+name|getExpectedRedundancyNum
 argument_list|(
 name|blockInfo
 argument_list|)
