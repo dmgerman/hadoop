@@ -76,6 +76,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|ApplicationMasterProtocolPB
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|proto
 operator|.
 name|ApplicationMasterProtocol
@@ -97,6 +113,8 @@ operator|.
 name|proto
 operator|.
 name|DistributedSchedulerProtocol
+operator|.
+name|DistributedSchedulerProtocolService
 import|;
 end_import
 
@@ -121,8 +139,6 @@ specifier|public
 interface|interface
 name|DistributedSchedulerProtocolPB
 extends|extends
-name|DistributedSchedulerProtocol
-operator|.
 name|DistributedSchedulerProtocolService
 operator|.
 name|BlockingInterface
@@ -130,6 +146,8 @@ extends|,
 name|ApplicationMasterProtocolService
 operator|.
 name|BlockingInterface
+extends|,
+name|ApplicationMasterProtocolPB
 block|{ }
 end_interface
 

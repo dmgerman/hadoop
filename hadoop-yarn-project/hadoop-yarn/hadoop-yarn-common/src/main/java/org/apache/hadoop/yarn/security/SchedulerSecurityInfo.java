@@ -221,13 +221,13 @@ block|{
 if|if
 condition|(
 operator|!
-name|protocol
-operator|.
-name|equals
-argument_list|(
 name|ApplicationMasterProtocolPB
 operator|.
 name|class
+operator|.
+name|isAssignableFrom
+argument_list|(
+name|protocol
 argument_list|)
 condition|)
 block|{
