@@ -22,6 +22,34 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -192,6 +220,20 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
+import|;
+end_import
+
 begin_comment
 comment|/**  * Cache item for timeline server v1.5 reader cache. Each cache item has a  * TimelineStore that can be filled with data within one entity group.  */
 end_comment
@@ -223,6 +265,11 @@ specifier|private
 name|TimelineStore
 name|store
 decl_stmt|;
+DECL|field|groupId
+specifier|private
+name|TimelineEntityGroupId
+name|groupId
+decl_stmt|;
 DECL|field|appLogs
 specifier|private
 name|EntityGroupFSTimelineStore
@@ -245,10 +292,32 @@ specifier|private
 name|FileSystem
 name|fs
 decl_stmt|;
-DECL|method|EntityCacheItem (Configuration config, FileSystem fs)
+DECL|field|refCount
+specifier|private
+name|int
+name|refCount
+init|=
+literal|0
+decl_stmt|;
+DECL|field|activeStores
+specifier|private
+specifier|static
+name|AtomicInteger
+name|activeStores
+init|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+DECL|method|EntityCacheItem (TimelineEntityGroupId gId, Configuration config, FileSystem fs)
 specifier|public
 name|EntityCacheItem
 parameter_list|(
+name|TimelineEntityGroupId
+name|gId
+parameter_list|,
 name|Configuration
 name|config
 parameter_list|,
@@ -256,6 +325,12 @@ name|FileSystem
 name|fs
 parameter_list|)
 block|{
+name|this
+operator|.
+name|groupId
+operator|=
+name|gId
+expr_stmt|;
 name|this
 operator|.
 name|config
@@ -305,7 +380,7 @@ operator|=
 name|incomingAppLogs
 expr_stmt|;
 block|}
-comment|/**    * @return The timeline store, either loaded or unloaded, of this cache item.    */
+comment|/**    * @return The timeline store, either loaded or unloaded, of this cache item.    * This method will not hold the storage from being reclaimed.    */
 DECL|method|getStore ()
 specifier|public
 specifier|synchronized
@@ -317,16 +392,28 @@ return|return
 name|store
 return|;
 block|}
-comment|/**    * Refresh this cache item if it needs refresh. This will enforce an appLogs    * rescan and then load new data. The refresh process is synchronized with    * other operations on the same cache item.    *    * @param groupId Group id of the cache    * @param aclManager ACL manager for the timeline storage    * @param jsonFactory JSON factory for the storage    * @param objMapper Object mapper for the storage    * @param metrics Metrics to trace the status of the entity group store    * @return a {@link org.apache.hadoop.yarn.server.timeline.TimelineStore}    *         object filled with all entities in the group.    * @throws IOException    */
-DECL|method|refreshCache (TimelineEntityGroupId groupId, TimelineACLsManager aclManager, JsonFactory jsonFactory, ObjectMapper objMapper, EntityGroupFSTimelineStoreMetrics metrics)
+comment|/**    * @return The number of currently active stores in all CacheItems.    */
+DECL|method|getActiveStores ()
+specifier|public
+specifier|static
+name|int
+name|getActiveStores
+parameter_list|()
+block|{
+return|return
+name|activeStores
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+comment|/**    * Refresh this cache item if it needs refresh. This will enforce an appLogs    * rescan and then load new data. The refresh process is synchronized with    * other operations on the same cache item.    *    * @param aclManager ACL manager for the timeline storage    * @param jsonFactory JSON factory for the storage    * @param objMapper Object mapper for the storage    * @param metrics Metrics to trace the status of the entity group store    * @return a {@link org.apache.hadoop.yarn.server.timeline.TimelineStore}    *         object filled with all entities in the group.    * @throws IOException    */
+DECL|method|refreshCache (TimelineACLsManager aclManager, JsonFactory jsonFactory, ObjectMapper objMapper, EntityGroupFSTimelineStoreMetrics metrics)
 specifier|public
 specifier|synchronized
 name|TimelineStore
 name|refreshCache
 parameter_list|(
-name|TimelineEntityGroupId
-name|groupId
-parameter_list|,
 name|TimelineACLsManager
 name|aclManager
 parameter_list|,
@@ -411,6 +498,11 @@ operator|==
 literal|null
 condition|)
 block|{
+name|activeStores
+operator|.
+name|getAndIncrement
+argument_list|()
+expr_stmt|;
 name|store
 operator|=
 operator|new
@@ -646,16 +738,66 @@ return|return
 name|store
 return|;
 block|}
-comment|/**    * Release the cache item for the given group id.    *    * @param groupId the group id that the cache should release    */
-DECL|method|releaseCache (TimelineEntityGroupId groupId)
+comment|/**    * Increase the number of references to this cache item by 1.    */
+DECL|method|incrRefs ()
 specifier|public
 specifier|synchronized
 name|void
-name|releaseCache
-parameter_list|(
-name|TimelineEntityGroupId
+name|incrRefs
+parameter_list|()
+block|{
+name|refCount
+operator|++
+expr_stmt|;
+block|}
+comment|/**    * Unregister a reader. Try to release the cache if the reader to current    * cache reaches 0.    *    * @return true if the cache has been released, otherwise false    */
+DECL|method|tryRelease ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|tryRelease
+parameter_list|()
+block|{
+name|refCount
+operator|--
+expr_stmt|;
+comment|// Only reclaim the storage if there is no reader.
+if|if
+condition|(
+name|refCount
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"{} references left for cached group {}, skipping the release"
+argument_list|,
+name|refCount
+argument_list|,
 name|groupId
-parameter_list|)
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+name|forceRelease
+argument_list|()
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+comment|/**    * Force releasing the cache item for the given group id, even though there    * may be active references.    */
+DECL|method|forceRelease ()
+specifier|public
+specifier|synchronized
+name|void
+name|forceRelease
+parameter_list|()
 block|{
 try|try
 block|{
@@ -692,6 +834,15 @@ block|}
 name|store
 operator|=
 literal|null
+expr_stmt|;
+name|activeStores
+operator|.
+name|getAndDecrement
+argument_list|()
+expr_stmt|;
+name|refCount
+operator|=
+literal|0
 expr_stmt|;
 comment|// reset offsets so next time logs are re-parsed
 for|for
@@ -730,6 +881,31 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Cache for group {} released. "
+argument_list|,
+name|groupId
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|getRefCount ()
+specifier|synchronized
+name|int
+name|getRefCount
+parameter_list|()
+block|{
+return|return
+name|refCount
+return|;
 block|}
 DECL|method|needRefresh ()
 specifier|private

@@ -990,6 +990,18 @@ operator|.
 name|SEPARATOR
 decl_stmt|;
 comment|// full app id
+comment|// Indicates when to force release a cache item even if there are active
+comment|// readers. Enlarge this factor may increase memory usage for the reader since
+comment|// there may be more cache items "hanging" in memory but not in cache.
+DECL|field|CACHE_ITEM_OVERFLOW_FACTOR
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|CACHE_ITEM_OVERFLOW_FACTOR
+init|=
+literal|2
+decl_stmt|;
 DECL|field|yarnClient
 specifier|private
 name|YarnClient
@@ -1322,13 +1334,57 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
+name|int
+name|activeStores
+init|=
+name|EntityCacheItem
+operator|.
+name|getActiveStores
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|activeStores
+operator|>
+name|appCacheMaxSize
+operator|*
+name|CACHE_ITEM_OVERFLOW_FACTOR
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Force release cache {} since {} stores are active"
+argument_list|,
+name|groupId
+argument_list|,
+name|activeStores
+argument_list|)
+expr_stmt|;
 name|cacheItem
 operator|.
-name|releaseCache
+name|forceRelease
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
+literal|"Try release cache {}"
+argument_list|,
 name|groupId
 argument_list|)
 expr_stmt|;
+name|cacheItem
+operator|.
+name|tryRelease
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|cacheItem
@@ -4481,6 +4537,11 @@ name|EntityCacheItem
 name|cacheItem
 parameter_list|)
 block|{
+name|cacheItem
+operator|.
+name|incrRefs
+argument_list|()
+expr_stmt|;
 name|cachedLogs
 operator|.
 name|put
@@ -4491,7 +4552,7 @@ name|cacheItem
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getTimelineStoresFromCacheIds ( Set<TimelineEntityGroupId> groupIds, String entityType)
+DECL|method|getTimelineStoresFromCacheIds ( Set<TimelineEntityGroupId> groupIds, String entityType, List<EntityCacheItem> cacheItems)
 specifier|private
 name|List
 argument_list|<
@@ -4507,6 +4568,12 @@ name|groupIds
 parameter_list|,
 name|String
 name|entityType
+parameter_list|,
+name|List
+argument_list|<
+name|EntityCacheItem
+argument_list|>
+name|cacheItems
 parameter_list|)
 throws|throws
 name|IOException
@@ -4540,6 +4607,8 @@ init|=
 name|getCachedStore
 argument_list|(
 name|groupId
+argument_list|,
+name|cacheItems
 argument_list|)
 decl_stmt|;
 if|if
@@ -4613,8 +4682,8 @@ return|return
 name|stores
 return|;
 block|}
-DECL|method|getTimelineStoresForRead (String entityId, String entityType)
-specifier|private
+DECL|method|getTimelineStoresForRead (String entityId, String entityType, List<EntityCacheItem> cacheItems)
+specifier|protected
 name|List
 argument_list|<
 name|TimelineStore
@@ -4626,6 +4695,12 @@ name|entityId
 parameter_list|,
 name|String
 name|entityType
+parameter_list|,
+name|List
+argument_list|<
+name|EntityCacheItem
+argument_list|>
+name|cacheItems
 parameter_list|)
 throws|throws
 name|IOException
@@ -4757,10 +4832,12 @@ argument_list|(
 name|groupIds
 argument_list|,
 name|entityType
+argument_list|,
+name|cacheItems
 argument_list|)
 return|;
 block|}
-DECL|method|getTimelineStoresForRead (String entityType, NameValuePair primaryFilter, Collection<NameValuePair> secondaryFilters)
+DECL|method|getTimelineStoresForRead (String entityType, NameValuePair primaryFilter, Collection<NameValuePair> secondaryFilters, List<EntityCacheItem> cacheItems)
 specifier|private
 name|List
 argument_list|<
@@ -4779,6 +4856,12 @@ argument_list|<
 name|NameValuePair
 argument_list|>
 name|secondaryFilters
+parameter_list|,
+name|List
+argument_list|<
+name|EntityCacheItem
+argument_list|>
+name|cacheItems
 parameter_list|)
 throws|throws
 name|IOException
@@ -4860,17 +4943,25 @@ argument_list|(
 name|groupIds
 argument_list|,
 name|entityType
+argument_list|,
+name|cacheItems
 argument_list|)
 return|;
 block|}
 comment|// find a cached timeline store or null if it cannot be located
-DECL|method|getCachedStore (TimelineEntityGroupId groupId)
+DECL|method|getCachedStore (TimelineEntityGroupId groupId, List<EntityCacheItem> cacheItems)
 specifier|private
 name|TimelineStore
 name|getCachedStore
 parameter_list|(
 name|TimelineEntityGroupId
 name|groupId
+parameter_list|,
+name|List
+argument_list|<
+name|EntityCacheItem
+argument_list|>
+name|cacheItems
 parameter_list|)
 throws|throws
 name|IOException
@@ -4918,6 +5009,8 @@ operator|=
 operator|new
 name|EntityCacheItem
 argument_list|(
+name|groupId
+argument_list|,
 name|getConfig
 argument_list|()
 argument_list|,
@@ -4971,6 +5064,12 @@ argument_list|,
 name|cacheItem
 argument_list|)
 expr_stmt|;
+comment|// Add the reference by the cache
+name|cacheItem
+operator|.
+name|incrRefs
+argument_list|()
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -5023,14 +5122,25 @@ name|getAppId
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Add the reference by the store
+name|cacheItem
+operator|.
+name|incrRefs
+argument_list|()
+expr_stmt|;
+name|cacheItems
+operator|.
+name|add
+argument_list|(
+name|cacheItem
+argument_list|)
+expr_stmt|;
 name|store
 operator|=
 name|cacheItem
 operator|.
 name|refreshCache
 argument_list|(
-name|groupId
-argument_list|,
 name|aclManager
 argument_list|,
 name|jsonFactory
@@ -5056,6 +5166,33 @@ block|}
 return|return
 name|store
 return|;
+block|}
+DECL|method|tryReleaseCacheItems (List<EntityCacheItem> relatedCacheItems)
+specifier|protected
+name|void
+name|tryReleaseCacheItems
+parameter_list|(
+name|List
+argument_list|<
+name|EntityCacheItem
+argument_list|>
+name|relatedCacheItems
+parameter_list|)
+block|{
+for|for
+control|(
+name|EntityCacheItem
+name|item
+range|:
+name|relatedCacheItems
+control|)
+block|{
+name|item
+operator|.
+name|tryRelease
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -5116,6 +5253,17 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
+name|EntityCacheItem
+argument_list|>
+name|relatedCacheItems
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
 name|TimelineStore
 argument_list|>
 name|stores
@@ -5127,6 +5275,8 @@ argument_list|,
 name|primaryFilter
 argument_list|,
 name|secondaryFilters
+argument_list|,
+name|relatedCacheItems
 argument_list|)
 decl_stmt|;
 name|TimelineEntities
@@ -5156,10 +5306,9 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|returnEntities
-operator|.
-name|addEntities
-argument_list|(
+name|TimelineEntities
+name|entities
+init|=
 name|store
 operator|.
 name|getEntities
@@ -5184,12 +5333,31 @@ name|fieldsToRetrieve
 argument_list|,
 name|checkAcl
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|entities
+operator|!=
+literal|null
+condition|)
+block|{
+name|returnEntities
+operator|.
+name|addEntities
+argument_list|(
+name|entities
 operator|.
 name|getEntities
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+name|tryReleaseCacheItems
+argument_list|(
+name|relatedCacheItems
+argument_list|)
+expr_stmt|;
 return|return
 name|returnEntities
 return|;
@@ -5229,6 +5397,17 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
+name|EntityCacheItem
+argument_list|>
+name|relatedCacheItems
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
 name|TimelineStore
 argument_list|>
 name|stores
@@ -5238,6 +5417,8 @@ argument_list|(
 name|entityId
 argument_list|,
 name|entityType
+argument_list|,
+name|relatedCacheItems
 argument_list|)
 decl_stmt|;
 for|for
@@ -5286,6 +5467,11 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|tryReleaseCacheItems
+argument_list|(
+name|relatedCacheItems
+argument_list|)
+expr_stmt|;
 return|return
 name|e
 return|;
@@ -5296,6 +5482,11 @@ operator|.
 name|debug
 argument_list|(
 literal|"getEntity: Found nothing"
+argument_list|)
+expr_stmt|;
+name|tryReleaseCacheItems
+argument_list|(
+name|relatedCacheItems
 argument_list|)
 expr_stmt|;
 return|return
@@ -5354,6 +5545,17 @@ operator|new
 name|TimelineEvents
 argument_list|()
 decl_stmt|;
+name|List
+argument_list|<
+name|EntityCacheItem
+argument_list|>
+name|relatedCacheItems
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|String
@@ -5384,6 +5586,8 @@ argument_list|(
 name|entityId
 argument_list|,
 name|entityType
+argument_list|,
+name|relatedCacheItems
 argument_list|)
 decl_stmt|;
 for|for
@@ -5449,6 +5653,13 @@ argument_list|,
 name|eventTypes
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|events
+operator|!=
+literal|null
+condition|)
+block|{
 name|returnEvents
 operator|.
 name|addEvents
@@ -5461,6 +5672,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+name|tryReleaseCacheItems
+argument_list|(
+name|relatedCacheItems
+argument_list|)
+expr_stmt|;
 return|return
 name|returnEvents
 return|;
