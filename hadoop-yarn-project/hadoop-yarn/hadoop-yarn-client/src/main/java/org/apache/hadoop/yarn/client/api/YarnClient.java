@@ -1479,7 +1479,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * The interface used by client to get node labels in the cluster    *</p>    *    * @return cluster node labels collection    * @throws YarnException when there is a failure in    *           {@see ApplicationClientProtocol}    * @throws IOException when there is a failure in    *           {@see ApplicationClientProtocol}    */
+comment|/**    *<p>    * The interface used by client to get node labels in the cluster    *</p>    *    * @return cluster node labels collection    * @throws YarnException when there is a failure in    *           {@link ApplicationClientProtocol}    * @throws IOException when there is a failure in    *           {@link ApplicationClientProtocol}    */
 annotation|@
 name|Public
 annotation|@
