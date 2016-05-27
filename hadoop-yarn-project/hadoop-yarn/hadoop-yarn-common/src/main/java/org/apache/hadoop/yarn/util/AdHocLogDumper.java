@@ -120,6 +120,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -215,6 +229,7 @@ decl_stmt|;
 DECL|field|logFlag
 specifier|private
 specifier|static
+specifier|volatile
 name|boolean
 name|logFlag
 init|=
@@ -584,6 +599,19 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getState ()
+specifier|public
+specifier|static
+name|boolean
+name|getState
+parameter_list|()
+block|{
+return|return
+name|logFlag
+return|;
 block|}
 DECL|class|RestoreLogLevel
 class|class
