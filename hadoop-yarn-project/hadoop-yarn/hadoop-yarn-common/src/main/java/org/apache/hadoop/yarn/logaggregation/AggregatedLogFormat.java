@@ -4428,7 +4428,7 @@ name|Private
 DECL|method|readContainerMetaDataAndSkipData ( DataInputStream valueStream, PrintStream out)
 specifier|public
 specifier|static
-name|void
+name|String
 name|readContainerMetaDataAndSkipData
 parameter_list|(
 name|DataInputStream
@@ -4466,6 +4466,13 @@ argument_list|(
 name|fileLengthStr
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|out
+operator|!=
+literal|null
+condition|)
+block|{
 name|out
 operator|.
 name|print
@@ -4494,6 +4501,7 @@ argument_list|(
 name|fileLengthStr
 argument_list|)
 expr_stmt|;
+block|}
 name|long
 name|totalSkipped
 init|=
@@ -4532,6 +4540,9 @@ operator|+=
 name|currSkipped
 expr_stmt|;
 block|}
+return|return
+name|fileType
+return|;
 block|}
 DECL|method|close ()
 specifier|public
