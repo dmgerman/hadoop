@@ -1122,7 +1122,7 @@ name|getFlowName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|long
+name|Long
 name|dayTs
 init|=
 name|TimelineStorageUtils
@@ -1308,6 +1308,10 @@ name|assertEquals
 argument_list|(
 name|dayTs
 argument_list|,
+name|Long
+operator|.
+name|valueOf
+argument_list|(
 name|flowActivity
 operator|.
 name|getDate
@@ -1315,6 +1319,7 @@ argument_list|()
 operator|.
 name|getTime
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|Set
@@ -1919,7 +1924,7 @@ name|getFlowName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|long
+name|Long
 name|dayTs
 init|=
 name|TimelineStorageUtils
@@ -2732,7 +2737,7 @@ name|getFlowName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|long
+name|Long
 name|dayTs
 init|=
 name|TimelineStorageUtils

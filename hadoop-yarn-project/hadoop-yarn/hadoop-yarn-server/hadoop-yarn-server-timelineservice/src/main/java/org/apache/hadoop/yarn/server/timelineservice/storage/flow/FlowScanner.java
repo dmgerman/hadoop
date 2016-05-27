@@ -392,6 +392,28 @@ name|storage
 operator|.
 name|common
 operator|.
+name|Separator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
 name|TimelineStorageUtils
 import|;
 end_import
@@ -414,7 +436,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|ValueConverter
+name|TimestampGenerator
 import|;
 end_import
 
@@ -436,7 +458,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimestampGenerator
+name|ValueConverter
 import|;
 end_import
 
@@ -978,7 +1000,7 @@ name|byte
 index|[]
 name|currentColumnQualifier
 init|=
-name|TimelineStorageUtils
+name|Separator
 operator|.
 name|EMPTY_BYTES
 decl_stmt|;
@@ -1602,9 +1624,6 @@ argument_list|)
 operator|+
 literal|" cell value= "
 operator|+
-operator|(
-name|Number
-operator|)
 name|converter
 operator|.
 name|decodeValue
@@ -2375,9 +2394,6 @@ argument_list|)
 operator|+
 literal|" value="
 operator|+
-operator|(
-name|Number
-operator|)
 name|converter
 operator|.
 name|decodeValue

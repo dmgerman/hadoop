@@ -170,6 +170,50 @@ name|storage
 operator|.
 name|common
 operator|.
+name|KeyConverter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
+name|LongConverter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
 name|Separator
 import|;
 end_import
@@ -215,28 +259,6 @@ operator|.
 name|common
 operator|.
 name|TypedBufferedMutator
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|timelineservice
-operator|.
-name|storage
-operator|.
-name|common
-operator|.
-name|LongConverter
 import|;
 end_import
 
@@ -327,19 +349,13 @@ name|byte
 index|[]
 name|columnPrefixBytes
 decl_stmt|;
-DECL|field|compoundColQual
-specifier|private
-specifier|final
-name|boolean
-name|compoundColQual
-decl_stmt|;
 DECL|field|aggOp
 specifier|private
 specifier|final
 name|AggregationOperation
 name|aggOp
 decl_stmt|;
-comment|/**    * Private constructor, meant to be used by the enum definition.    *    * @param columnFamily    *          that this column is stored in.    * @param columnPrefix    *          for this column.    */
+comment|/**    * Private constructor, meant to be used by the enum definition.    *    * @param columnFamily that this column is stored in.    * @param columnPrefix for this column.    */
 DECL|method|FlowRunColumnPrefix (ColumnFamily<FlowRunTable> columnFamily, String columnPrefix, AggregationOperation fra, ValueConverter converter)
 specifier|private
 name|FlowRunColumnPrefix
@@ -463,12 +479,6 @@ operator|.
 name|aggOp
 operator|=
 name|fra
-expr_stmt|;
-name|this
-operator|.
-name|compoundColQual
-operator|=
-name|compoundColQual
 expr_stmt|;
 block|}
 comment|/**    * @return the column name value    */
@@ -811,12 +821,15 @@ name|columnQualifier
 argument_list|)
 return|;
 block|}
-comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.ColumnPrefix    * #readResults(org.apache.hadoop.hbase.client.Result)    */
-DECL|method|readResults (Result result)
+comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.ColumnPrefix    * #readResults(org.apache.hadoop.hbase.client.Result,    * org.apache.hadoop.yarn.server.timelineservice.storage.common.KeyConverter)    */
+DECL|method|readResults (Result result, KeyConverter<K> keyConverter)
 specifier|public
+parameter_list|<
+name|K
+parameter_list|>
 name|Map
 argument_list|<
-name|String
+name|K
 argument_list|,
 name|Object
 argument_list|>
@@ -824,6 +837,12 @@ name|readResults
 parameter_list|(
 name|Result
 name|result
+parameter_list|,
+name|KeyConverter
+argument_list|<
+name|K
+argument_list|>
+name|keyConverter
 parameter_list|)
 throws|throws
 name|IOException
@@ -836,30 +855,40 @@ argument_list|(
 name|result
 argument_list|,
 name|columnPrefixBytes
+argument_list|,
+name|keyConverter
 argument_list|)
 return|;
 block|}
-comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.ColumnPrefix    * #readResultsWithTimestamps(org.apache.hadoop.hbase.client.Result)    */
+comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.ColumnPrefix    * #readResultsWithTimestamps(org.apache.hadoop.hbase.client.Result,    * org.apache.hadoop.yarn.server.timelineservice.storage.common.KeyConverter)    */
 specifier|public
 parameter_list|<
-name|T
+name|K
+parameter_list|,
+name|V
 parameter_list|>
 name|NavigableMap
 argument_list|<
-name|String
+name|K
 argument_list|,
 name|NavigableMap
 argument_list|<
 name|Long
 argument_list|,
-name|T
+name|V
 argument_list|>
 argument_list|>
-DECL|method|readResultsWithTimestamps (Result result)
+DECL|method|readResultsWithTimestamps (Result result, KeyConverter<K> keyConverter)
 name|readResultsWithTimestamps
 parameter_list|(
 name|Result
 name|result
+parameter_list|,
+name|KeyConverter
+argument_list|<
+name|K
+argument_list|>
+name|keyConverter
 parameter_list|)
 throws|throws
 name|IOException
@@ -872,10 +901,12 @@ argument_list|(
 name|result
 argument_list|,
 name|columnPrefixBytes
+argument_list|,
+name|keyConverter
 argument_list|)
 return|;
 block|}
-comment|/**    * Retrieve an {@link FlowRunColumnPrefix} given a name, or null if there is    * no match. The following holds true: {@code columnFor(x) == columnFor(y)} if    * and only if {@code x.equals(y)} or {@code (x == y == null)}    *    * @param columnPrefix    *          Name of the column to retrieve    * @return the corresponding {@link FlowRunColumnPrefix} or null    */
+comment|/**    * Retrieve an {@link FlowRunColumnPrefix} given a name, or null if there is    * no match. The following holds true: {@code columnFor(x) == columnFor(y)} if    * and only if {@code x.equals(y)} or {@code (x == y == null)}    *    * @param columnPrefix Name of the column to retrieve    * @return the corresponding {@link FlowRunColumnPrefix} or null    */
 DECL|method|columnFor (String columnPrefix)
 specifier|public
 specifier|static
@@ -938,7 +969,7 @@ name|getValueConverter
 argument_list|()
 return|;
 block|}
-comment|/**    * Retrieve an {@link FlowRunColumnPrefix} given a name, or null if there is    * no match. The following holds true:    * {@code columnFor(a,x) == columnFor(b,y)} if and only if    * {@code (x == y == null)} or {@code a.equals(b)& x.equals(y)}    *    * @param columnFamily    *          The columnFamily for which to retrieve the column.    * @param columnPrefix    *          Name of the column to retrieve    * @return the corresponding {@link FlowRunColumnPrefix} or null if both    *         arguments don't match.    */
+comment|/**    * Retrieve an {@link FlowRunColumnPrefix} given a name, or null if there is    * no match. The following holds true:    * {@code columnFor(a,x) == columnFor(b,y)} if and only if    * {@code (x == y == null)} or {@code a.equals(b)& x.equals(y)}    *    * @param columnFamily The columnFamily for which to retrieve the column.    * @param columnPrefix Name of the column to retrieve    * @return the corresponding {@link FlowRunColumnPrefix} or null if both    *         arguments don't match.    */
 DECL|method|columnFor ( FlowRunColumnFamily columnFamily, String columnPrefix)
 specifier|public
 specifier|static
@@ -1016,74 +1047,6 @@ return|;
 block|}
 block|}
 comment|// Default to null
-return|return
-literal|null
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getCompoundColQualBytes (String qualifier, byte[]...components)
-specifier|public
-name|byte
-index|[]
-name|getCompoundColQualBytes
-parameter_list|(
-name|String
-name|qualifier
-parameter_list|,
-name|byte
-index|[]
-modifier|...
-name|components
-parameter_list|)
-block|{
-if|if
-condition|(
-operator|!
-name|compoundColQual
-condition|)
-block|{
-return|return
-name|ColumnHelper
-operator|.
-name|getColumnQualifier
-argument_list|(
-literal|null
-argument_list|,
-name|qualifier
-argument_list|)
-return|;
-block|}
-return|return
-name|ColumnHelper
-operator|.
-name|getCompoundColumnQualifierBytes
-argument_list|(
-name|qualifier
-argument_list|,
-name|components
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|readResultsHavingCompoundColumnQualifiers (Result result)
-specifier|public
-name|Map
-argument_list|<
-name|?
-argument_list|,
-name|Object
-argument_list|>
-name|readResultsHavingCompoundColumnQualifiers
-parameter_list|(
-name|Result
-name|result
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-comment|// There are no compound column qualifiers for flow run table.
 return|return
 literal|null
 return|;

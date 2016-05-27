@@ -334,6 +334,28 @@ name|ColumnPrefix
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
+name|StringKeyConverter
+import|;
+end_import
+
 begin_comment
 comment|/**  * The base class for reading and deserializing timeline entities from the  * HBase storage. Different types can be defined for different types of the  * entities that are being requested.  */
 end_comment
@@ -1084,6 +1106,11 @@ operator|.
 name|readResultsWithTimestamps
 argument_list|(
 name|result
+argument_list|,
+name|StringKeyConverter
+operator|.
+name|getInstance
+argument_list|()
 argument_list|)
 decl_stmt|;
 for|for
