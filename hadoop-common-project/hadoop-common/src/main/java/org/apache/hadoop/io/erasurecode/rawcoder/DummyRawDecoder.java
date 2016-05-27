@@ -36,11 +36,17 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|nio
+name|apache
 operator|.
-name|ByteBuffer
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ErasureCoderOptions
 import|;
 end_import
 
@@ -58,80 +64,44 @@ specifier|public
 class|class
 name|DummyRawDecoder
 extends|extends
-name|AbstractRawErasureDecoder
+name|RawErasureDecoder
 block|{
-DECL|method|DummyRawDecoder (int numDataUnits, int numParityUnits)
+DECL|method|DummyRawDecoder (ErasureCoderOptions coderOptions)
 specifier|public
 name|DummyRawDecoder
 parameter_list|(
-name|int
-name|numDataUnits
-parameter_list|,
-name|int
-name|numParityUnits
+name|ErasureCoderOptions
+name|coderOptions
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|numDataUnits
-argument_list|,
-name|numParityUnits
+name|coderOptions
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|doDecode (ByteBuffer[] inputs, int[] erasedIndexes, ByteBuffer[] outputs)
+DECL|method|doDecode (ByteBufferDecodingState decodingState)
 specifier|protected
 name|void
 name|doDecode
 parameter_list|(
-name|ByteBuffer
-index|[]
-name|inputs
-parameter_list|,
-name|int
-index|[]
-name|erasedIndexes
-parameter_list|,
-name|ByteBuffer
-index|[]
-name|outputs
+name|ByteBufferDecodingState
+name|decodingState
 parameter_list|)
 block|{
 comment|// Nothing to do. Output buffers have already been reset
 block|}
 annotation|@
 name|Override
-DECL|method|doDecode (byte[][] inputs, int[] inputOffsets, int dataLen, int[] erasedIndexes, byte[][] outputs, int[] outputOffsets)
+DECL|method|doDecode (ByteArrayDecodingState decodingState)
 specifier|protected
 name|void
 name|doDecode
 parameter_list|(
-name|byte
-index|[]
-index|[]
-name|inputs
-parameter_list|,
-name|int
-index|[]
-name|inputOffsets
-parameter_list|,
-name|int
-name|dataLen
-parameter_list|,
-name|int
-index|[]
-name|erasedIndexes
-parameter_list|,
-name|byte
-index|[]
-index|[]
-name|outputs
-parameter_list|,
-name|int
-index|[]
-name|outputOffsets
+name|ByteArrayDecodingState
+name|decodingState
 parameter_list|)
 block|{
 comment|// Nothing to do. Output buffers have already been reset

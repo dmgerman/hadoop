@@ -36,11 +36,17 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|nio
+name|apache
 operator|.
-name|ByteBuffer
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ErasureCoderOptions
 import|;
 end_import
 
@@ -58,72 +64,44 @@ specifier|public
 class|class
 name|DummyRawEncoder
 extends|extends
-name|AbstractRawErasureEncoder
+name|RawErasureEncoder
 block|{
-DECL|method|DummyRawEncoder (int numDataUnits, int numParityUnits)
+DECL|method|DummyRawEncoder (ErasureCoderOptions coderOptions)
 specifier|public
 name|DummyRawEncoder
 parameter_list|(
-name|int
-name|numDataUnits
-parameter_list|,
-name|int
-name|numParityUnits
+name|ErasureCoderOptions
+name|coderOptions
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|numDataUnits
-argument_list|,
-name|numParityUnits
+name|coderOptions
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|doEncode (ByteBuffer[] inputs, ByteBuffer[] outputs)
+DECL|method|doEncode (ByteArrayEncodingState encodingState)
 specifier|protected
 name|void
 name|doEncode
 parameter_list|(
-name|ByteBuffer
-index|[]
-name|inputs
-parameter_list|,
-name|ByteBuffer
-index|[]
-name|outputs
+name|ByteArrayEncodingState
+name|encodingState
 parameter_list|)
 block|{
 comment|// Nothing to do. Output buffers have already been reset
 block|}
 annotation|@
 name|Override
-DECL|method|doEncode (byte[][] inputs, int[] inputOffsets, int dataLen, byte[][] outputs, int[] outputOffsets)
+DECL|method|doEncode (ByteBufferEncodingState encodingState)
 specifier|protected
 name|void
 name|doEncode
 parameter_list|(
-name|byte
-index|[]
-index|[]
-name|inputs
-parameter_list|,
-name|int
-index|[]
-name|inputOffsets
-parameter_list|,
-name|int
-name|dataLen
-parameter_list|,
-name|byte
-index|[]
-index|[]
-name|outputs
-parameter_list|,
-name|int
-index|[]
-name|outputOffsets
+name|ByteBufferEncodingState
+name|encodingState
 parameter_list|)
 block|{
 comment|// Nothing to do. Output buffers have already been reset

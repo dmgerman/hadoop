@@ -59,38 +59,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeysPublic
-operator|.
-name|IO_FILE_BUFFER_SIZE_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeysPublic
-operator|.
-name|IO_FILE_BUFFER_SIZE_KEY
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -117,6 +85,22 @@ operator|.
 name|protocol
 operator|.
 name|Block
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -165,42 +149,6 @@ operator|.
 name|protocol
 operator|.
 name|LocatedStripedBlock
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertArrayEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
 import|;
 end_import
 
@@ -316,11 +264,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|io
 operator|.
-name|protocol
+name|erasurecode
 operator|.
-name|ErasureCodingPolicy
+name|ErasureCoderOptions
 import|;
 end_import
 
@@ -378,7 +326,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|Rule
 import|;
 end_import
 
@@ -388,7 +336,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Rule
+name|Test
 import|;
 end_import
 
@@ -441,6 +389,74 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertArrayEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -1743,23 +1759,32 @@ expr_stmt|;
 block|}
 block|}
 block|}
+name|ErasureCoderOptions
+name|coderOptions
+init|=
+operator|new
+name|ErasureCoderOptions
+argument_list|(
+name|DATA_BLK_NUM
+argument_list|,
+name|PARITY_BLK_NUM
+argument_list|)
+decl_stmt|;
 name|RawErasureDecoder
 name|rawDecoder
 init|=
 name|CodecUtil
 operator|.
-name|createRSRawDecoder
+name|createRawDecoder
 argument_list|(
 name|conf
-argument_list|,
-name|DATA_BLK_NUM
-argument_list|,
-name|PARITY_BLK_NUM
 argument_list|,
 name|ecPolicy
 operator|.
 name|getCodecName
 argument_list|()
+argument_list|,
+name|coderOptions
 argument_list|)
 decl_stmt|;
 comment|// Update the expected content for decoded data

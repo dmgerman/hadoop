@@ -152,7 +152,7 @@ name|Random
 argument_list|()
 decl_stmt|;
 DECL|field|allowDump
-specifier|private
+specifier|protected
 name|boolean
 name|allowDump
 init|=
@@ -369,22 +369,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set true during setup if want to dump test settings and coding data,    * useful in debugging.    * @param allowDump    */
-DECL|method|setAllowDump (boolean allowDump)
+DECL|method|isAllowDump ()
 specifier|protected
-name|void
-name|setAllowDump
-parameter_list|(
 name|boolean
-name|allowDump
-parameter_list|)
+name|isAllowDump
+parameter_list|()
 block|{
-name|this
-operator|.
+return|return
 name|allowDump
-operator|=
-name|allowDump
-expr_stmt|;
+return|;
 block|}
 comment|/**    * Prepare before running the case.    * @param conf    * @param numDataUnits    * @param numParityUnits    * @param erasedDataIndexes    * @param erasedParityIndexes    * @param usingFixedData Using fixed or pre-generated data to test instead of    *                       generating data    */
 DECL|method|prepare (Configuration conf, int numDataUnits, int numParityUnits, int[] erasedDataIndexes, int[] erasedParityIndexes, boolean usingFixedData)
@@ -2063,12 +2056,24 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|" isAllowingChangeInputs="
+literal|" allowChangeInputs="
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|allowChangeInputs
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" allowVerboseDump="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|allowDump
 argument_list|)
 expr_stmt|;
 name|sb

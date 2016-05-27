@@ -202,7 +202,9 @@ operator|=
 name|usingDirectBuffer
 expr_stmt|;
 name|prepareCoders
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 name|prepareBufferAllocator
 argument_list|(

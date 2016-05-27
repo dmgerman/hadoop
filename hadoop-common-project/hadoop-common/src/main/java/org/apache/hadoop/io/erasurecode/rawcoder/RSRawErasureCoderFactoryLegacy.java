@@ -34,6 +34,22 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ErasureCoderOptions
+import|;
+end_import
+
 begin_comment
 comment|/**  * A raw coder factory for the legacy raw Reed-Solomon coder in Java.  */
 end_comment
@@ -52,49 +68,39 @@ name|RawErasureCoderFactory
 block|{
 annotation|@
 name|Override
-DECL|method|createEncoder (int numDataUnits, int numParityUnits)
+DECL|method|createEncoder (ErasureCoderOptions coderOptions)
 specifier|public
 name|RawErasureEncoder
 name|createEncoder
 parameter_list|(
-name|int
-name|numDataUnits
-parameter_list|,
-name|int
-name|numParityUnits
+name|ErasureCoderOptions
+name|coderOptions
 parameter_list|)
 block|{
 return|return
 operator|new
 name|RSRawEncoderLegacy
 argument_list|(
-name|numDataUnits
-argument_list|,
-name|numParityUnits
+name|coderOptions
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createDecoder (int numDataUnits, int numParityUnits)
+DECL|method|createDecoder (ErasureCoderOptions coderOptions)
 specifier|public
 name|RawErasureDecoder
 name|createDecoder
 parameter_list|(
-name|int
-name|numDataUnits
-parameter_list|,
-name|int
-name|numParityUnits
+name|ErasureCoderOptions
+name|coderOptions
 parameter_list|)
 block|{
 return|return
 operator|new
 name|RSRawDecoderLegacy
 argument_list|(
-name|numDataUnits
-argument_list|,
-name|numParityUnits
+name|coderOptions
 argument_list|)
 return|;
 block|}

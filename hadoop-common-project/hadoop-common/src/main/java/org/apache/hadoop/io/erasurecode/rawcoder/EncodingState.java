@@ -28,9 +28,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
+name|HadoopIllegalArgumentException
 import|;
 end_import
 
@@ -42,16 +40,14 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|classification
 operator|.
-name|erasurecode
-operator|.
-name|ErasureCoderOptions
+name|InterfaceAudience
 import|;
 end_import
 
 begin_comment
-comment|/**  * A raw coder factory for the new raw Reed-Solomon coder in Java.  */
+comment|/**  * A utility class that maintains encoding state during an encode call.  */
 end_comment
 
 begin_class
@@ -59,50 +55,76 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|RSRawErasureCoderFactory
-specifier|public
+DECL|class|EncodingState
+specifier|abstract
 class|class
-name|RSRawErasureCoderFactory
-implements|implements
-name|RawErasureCoderFactory
+name|EncodingState
 block|{
-annotation|@
-name|Override
-DECL|method|createEncoder (ErasureCoderOptions coderOptions)
-specifier|public
+DECL|field|encoder
 name|RawErasureEncoder
-name|createEncoder
+name|encoder
+decl_stmt|;
+DECL|field|encodeLength
+name|int
+name|encodeLength
+decl_stmt|;
+comment|/**    * Check and validate decoding parameters, throw exception accordingly.    * @param inputs input buffers to check    * @param outputs output buffers to check    */
+DECL|method|checkParameters (T[] inputs, T[] outputs)
+parameter_list|<
+name|T
+parameter_list|>
+name|void
+name|checkParameters
 parameter_list|(
-name|ErasureCoderOptions
-name|coderOptions
+name|T
+index|[]
+name|inputs
+parameter_list|,
+name|T
+index|[]
+name|outputs
 parameter_list|)
 block|{
-return|return
+if|if
+condition|(
+name|inputs
+operator|.
+name|length
+operator|!=
+name|encoder
+operator|.
+name|getNumDataUnits
+argument_list|()
+condition|)
+block|{
+throw|throw
 operator|new
-name|RSRawEncoder
+name|HadoopIllegalArgumentException
 argument_list|(
-name|coderOptions
+literal|"Invalid inputs length"
 argument_list|)
-return|;
+throw|;
 block|}
-annotation|@
-name|Override
-DECL|method|createDecoder (ErasureCoderOptions coderOptions)
-specifier|public
-name|RawErasureDecoder
-name|createDecoder
-parameter_list|(
-name|ErasureCoderOptions
-name|coderOptions
-parameter_list|)
+if|if
+condition|(
+name|outputs
+operator|.
+name|length
+operator|!=
+name|encoder
+operator|.
+name|getNumParityUnits
+argument_list|()
+condition|)
 block|{
-return|return
+throw|throw
 operator|new
-name|RSRawDecoder
+name|HadoopIllegalArgumentException
 argument_list|(
-name|coderOptions
+literal|"Invalid outputs length"
 argument_list|)
-return|;
+throw|;
+block|}
 block|}
 block|}
 end_class

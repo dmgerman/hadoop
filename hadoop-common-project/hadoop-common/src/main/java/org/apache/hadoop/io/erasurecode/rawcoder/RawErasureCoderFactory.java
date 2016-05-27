@@ -34,6 +34,22 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ErasureCoderOptions
+import|;
+end_import
+
 begin_comment
 comment|/**  * Raw erasure coder factory that can be used to create raw encoder and decoder.  * It helps in configuration since only one factory class is needed to be  * configured.  */
 end_comment
@@ -48,30 +64,22 @@ specifier|public
 interface|interface
 name|RawErasureCoderFactory
 block|{
-comment|/**    * Create raw erasure encoder.    * @param numDataUnits number of data units in a coding group    * @param numParityUnits number of parity units in a coding group    * @return raw erasure encoder    */
-DECL|method|createEncoder (int numDataUnits, int numParityUnits)
-specifier|public
+comment|/**    * Create raw erasure encoder.    * @param conf the configuration used to create the encoder    * @return raw erasure encoder    */
+DECL|method|createEncoder (ErasureCoderOptions coderOptions)
 name|RawErasureEncoder
 name|createEncoder
 parameter_list|(
-name|int
-name|numDataUnits
-parameter_list|,
-name|int
-name|numParityUnits
+name|ErasureCoderOptions
+name|coderOptions
 parameter_list|)
 function_decl|;
-comment|/**    * Create raw erasure decoder.    * @param numDataUnits number of data units in a coding group    * @param numParityUnits number of parity units in a coding group    * @return raw erasure decoder    */
-DECL|method|createDecoder (int numDataUnits, int numParityUnits)
-specifier|public
+comment|/**    * Create raw erasure decoder.    * @param conf the configuration used to create the encoder    * @return raw erasure decoder    */
+DECL|method|createDecoder (ErasureCoderOptions coderOptions)
 name|RawErasureDecoder
 name|createDecoder
 parameter_list|(
-name|int
-name|numDataUnits
-parameter_list|,
-name|int
-name|numParityUnits
+name|ErasureCoderOptions
+name|coderOptions
 parameter_list|)
 function_decl|;
 block|}
