@@ -3360,6 +3360,78 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|rootFs
+operator|.
+name|setPermission
+argument_list|(
+name|p4
+argument_list|,
+operator|new
+name|FsPermission
+argument_list|(
+literal|"600"
+argument_list|)
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|fs
+operator|.
+name|exists
+argument_list|(
+name|nfpath
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"The exists call should have failed."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+name|e
+parameter_list|)
+block|{
+name|assertTrue
+argument_list|(
+literal|"Permission denied messages must carry file path"
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|fpath
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+literal|"Permission denied messages should not specify existing_file"
+operator|+
+literal|" is not a directory, since the user does not have permission"
+operator|+
+literal|" on /p4"
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"is not a directory"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/* Check if namenode performs permission checking correctly    * for the given user for operations mkdir, open, setReplication,    * getFileInfo, isDirectory, exists, getContentLength, list, rename,    * and delete */
 DECL|method|testPermissionCheckingPerUser (UserGroupInformation ugi, short[] ancestorPermission, short[] parentPermission, short[] filePermission, Path[] parentDirs, Path[] files, Path[] dirs)

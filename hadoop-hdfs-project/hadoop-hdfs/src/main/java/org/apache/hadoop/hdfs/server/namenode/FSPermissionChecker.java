@@ -925,7 +925,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Check whether exception e is due to an ancestor inode's not being    * directory.    */
-DECL|method|checkAncestorType (INode[] inodes, int ancestorIndex, AccessControlException e)
+DECL|method|checkAncestorType (INode[] inodes, int checkedAncestorIndex, AccessControlException e)
 specifier|private
 name|void
 name|checkAncestorType
@@ -935,7 +935,7 @@ index|[]
 name|inodes
 parameter_list|,
 name|int
-name|ancestorIndex
+name|checkedAncestorIndex
 parameter_list|,
 name|AccessControlException
 name|e
@@ -952,7 +952,7 @@ literal|0
 init|;
 name|i
 operator|<=
-name|ancestorIndex
+name|checkedAncestorIndex
 condition|;
 name|i
 operator|++
@@ -1087,34 +1087,17 @@ name|ancestorIndex
 operator|--
 control|)
 empty_stmt|;
-try|try
-block|{
 name|checkTraverse
 argument_list|(
 name|inodeAttrs
+argument_list|,
+name|inodes
 argument_list|,
 name|path
 argument_list|,
 name|ancestorIndex
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|AccessControlException
-name|e
-parameter_list|)
-block|{
-name|checkAncestorType
-argument_list|(
-name|inodes
-argument_list|,
-name|ancestorIndex
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 specifier|final
 name|INodeAttributes
 name|last
@@ -1437,12 +1420,16 @@ argument_list|)
 throw|;
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|checkTraverse (INodeAttributes[] inodes, String path, int last )
+DECL|method|checkTraverse (INodeAttributes[] inodeAttrs, INode[] inodes, String path, int last)
 specifier|private
 name|void
 name|checkTraverse
 parameter_list|(
 name|INodeAttributes
+index|[]
+name|inodeAttrs
+parameter_list|,
+name|INode
 index|[]
 name|inodes
 parameter_list|,
@@ -1455,12 +1442,15 @@ parameter_list|)
 throws|throws
 name|AccessControlException
 block|{
-for|for
-control|(
 name|int
 name|j
 init|=
 literal|0
+decl_stmt|;
+try|try
+block|{
+for|for
+control|(
 init|;
 name|j
 operator|<=
@@ -1472,7 +1462,7 @@ control|)
 block|{
 name|check
 argument_list|(
-name|inodes
+name|inodeAttrs
 index|[
 name|j
 index|]
@@ -1482,6 +1472,23 @@ argument_list|,
 name|FsAction
 operator|.
 name|EXECUTE
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+name|e
+parameter_list|)
+block|{
+name|checkAncestorType
+argument_list|(
+name|inodes
+argument_list|,
+name|j
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
