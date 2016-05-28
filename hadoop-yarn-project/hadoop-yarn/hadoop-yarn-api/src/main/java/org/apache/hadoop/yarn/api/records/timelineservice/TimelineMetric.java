@@ -24,45 +24,31 @@ end_package
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
+name|Collections
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
+name|Map
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
-name|YarnRuntimeException
+name|TreeMap
 import|;
 end_import
 
@@ -124,31 +110,45 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|Collections
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|Map
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|TreeMap
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -333,6 +333,14 @@ name|metricId
 expr_stmt|;
 block|}
 comment|/**    * Get the real time aggregation operation of this metric.    *    * @return Real time aggregation operation    */
+comment|// required by JAXB
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"aggregationOp"
+argument_list|)
 DECL|method|getRealtimeAggregationOp ()
 specifier|public
 name|TimelineMetricOperation
