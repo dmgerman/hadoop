@@ -10188,17 +10188,6 @@ argument_list|,
 literal|128
 argument_list|)
 expr_stmt|;
-name|conf
-operator|.
-name|setInt
-argument_list|(
-name|KeyProvider
-operator|.
-name|DEFAULT_BITLENGTH_NAME
-argument_list|,
-literal|64
-argument_list|)
-expr_stmt|;
 specifier|final
 name|URI
 name|uri
@@ -10890,7 +10879,7 @@ name|KeyProvider
 operator|.
 name|DEFAULT_BITLENGTH_NAME
 argument_list|,
-literal|64
+literal|128
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -11967,7 +11956,7 @@ name|KeyProvider
 operator|.
 name|DEFAULT_BITLENGTH_NAME
 argument_list|,
-literal|64
+literal|128
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -12532,7 +12521,7 @@ name|KeyProvider
 operator|.
 name|DEFAULT_BITLENGTH_NAME
 argument_list|,
-literal|64
+literal|128
 argument_list|)
 expr_stmt|;
 specifier|final
