@@ -1043,6 +1043,14 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|ContainerId
+name|cIdToStart
+init|=
+name|containerTokenIdentifier
+operator|.
+name|getContainerID
+argument_list|()
+decl_stmt|;
 name|this
 operator|.
 name|context
@@ -1052,10 +1060,7 @@ argument_list|()
 operator|.
 name|storeContainer
 argument_list|(
-name|containerTokenIdentifier
-operator|.
-name|getContainerID
-argument_list|()
+name|cIdToStart
 argument_list|,
 name|request
 argument_list|)
@@ -1069,10 +1074,18 @@ argument_list|()
 operator|.
 name|storeContainerQueued
 argument_list|(
-name|containerTokenIdentifier
+name|cIdToStart
+argument_list|)
+expr_stmt|;
+name|LOG
 operator|.
-name|getContainerID
-argument_list|()
+name|info
+argument_list|(
+literal|"No available resources for container {} to start its execution "
+operator|+
+literal|"immediately."
+argument_list|,
+name|cIdToStart
 argument_list|)
 expr_stmt|;
 if|if
@@ -1104,6 +1117,15 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Opportunistic container {} will be queued at the NM."
+argument_list|,
+name|cIdToStart
+argument_list|)
+expr_stmt|;
 name|queuedOpportunisticContainers
 operator|.
 name|add
