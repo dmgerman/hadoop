@@ -4962,6 +4962,57 @@ name|DEFAULT_NM_DOCKER_PRIVILEGED_CONTAINERS_ACL
 init|=
 literal|""
 decl_stmt|;
+comment|/** The set of networks allowed when launching containers using the    * DockerContainerRuntime. */
+DECL|field|NM_DOCKER_ALLOWED_CONTAINER_NETWORKS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_ALLOWED_CONTAINER_NETWORKS
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"allowed-container-networks"
+decl_stmt|;
+comment|/** The set of networks allowed when launching containers using the    * DockerContainerRuntime. */
+DECL|field|DEFAULT_NM_DOCKER_ALLOWED_CONTAINER_NETWORKS
+specifier|public
+specifier|static
+specifier|final
+name|String
+index|[]
+name|DEFAULT_NM_DOCKER_ALLOWED_CONTAINER_NETWORKS
+init|=
+block|{
+literal|"host"
+block|,
+literal|"none"
+block|,
+literal|"bridge"
+block|}
+decl_stmt|;
+comment|/** The network used when launching containers using the    * DockerContainerRuntime when no network is specified in the request. This    *  network must be one of the (configurable) set of allowed container    *  networks. */
+DECL|field|NM_DOCKER_DEFAULT_CONTAINER_NETWORK
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_DEFAULT_CONTAINER_NETWORK
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"default-container-network"
+decl_stmt|;
+comment|/** The network used when launching containers using the    * DockerContainerRuntime when no network is specified in the request and    * no default network is configured.    * . */
+DECL|field|DEFAULT_NM_DOCKER_DEFAULT_CONTAINER_NETWORK
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_NM_DOCKER_DEFAULT_CONTAINER_NETWORK
+init|=
+literal|"host"
+decl_stmt|;
 comment|/** The path to the Linux container executor.*/
 DECL|field|NM_LINUX_CONTAINER_EXECUTOR_PATH
 specifier|public
