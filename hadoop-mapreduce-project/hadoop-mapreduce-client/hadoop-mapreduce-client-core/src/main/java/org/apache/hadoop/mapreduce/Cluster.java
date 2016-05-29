@@ -613,6 +613,22 @@ block|{
 name|initProviderList
 argument_list|()
 expr_stmt|;
+specifier|final
+name|IOException
+name|initEx
+init|=
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot initialize Cluster. Please check your configuration for "
+operator|+
+name|MRConfig
+operator|.
+name|FRAMEWORK_NAME
+operator|+
+literal|" and the correspond server addresses."
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|ClientProtocolProvider
@@ -735,10 +751,10 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
+specifier|final
+name|String
+name|errMsg
+init|=
 literal|"Failed to use "
 operator|+
 name|provider
@@ -750,6 +766,25 @@ name|getName
 argument_list|()
 operator|+
 literal|" due to error: "
+decl_stmt|;
+name|initEx
+operator|.
+name|addSuppressed
+argument_list|(
+operator|new
+name|IOException
+argument_list|(
+name|errMsg
+argument_list|,
+name|e
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|errMsg
 argument_list|,
 name|e
 argument_list|)
@@ -768,17 +803,7 @@ name|client
 condition|)
 block|{
 throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Cannot initialize Cluster. Please check your configuration for "
-operator|+
-name|MRConfig
-operator|.
-name|FRAMEWORK_NAME
-operator|+
-literal|" and the correspond server addresses."
-argument_list|)
+name|initEx
 throw|;
 block|}
 block|}
