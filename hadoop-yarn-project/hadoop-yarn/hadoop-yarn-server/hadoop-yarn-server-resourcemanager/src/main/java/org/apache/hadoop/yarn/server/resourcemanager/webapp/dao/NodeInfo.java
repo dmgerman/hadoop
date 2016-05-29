@@ -375,7 +375,7 @@ operator|.
 name|getUsedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|this
@@ -387,7 +387,7 @@ operator|.
 name|getAvailableResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|this

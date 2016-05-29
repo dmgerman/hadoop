@@ -559,7 +559,7 @@ operator|.
 name|getResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|*
 name|this
@@ -575,7 +575,7 @@ operator|.
 name|getResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 decl_stmt|;
 name|cGroupsHandler

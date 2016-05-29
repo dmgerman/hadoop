@@ -124,6 +124,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|metrics2
+operator|.
+name|lib
+operator|.
+name|MutableGaugeLong
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -195,7 +211,7 @@ name|Metric
 argument_list|(
 literal|"Fair share of memory in MB"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|fairShareMB
 decl_stmt|;
 DECL|field|fairShareVCores
@@ -204,7 +220,7 @@ name|Metric
 argument_list|(
 literal|"Fair share of CPU in vcores"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|fairShareVCores
 decl_stmt|;
 DECL|field|steadyFairShareMB
@@ -213,7 +229,7 @@ name|Metric
 argument_list|(
 literal|"Steady fair share of memory in MB"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|steadyFairShareMB
 decl_stmt|;
 DECL|field|steadyFairShareVCores
@@ -222,7 +238,7 @@ name|Metric
 argument_list|(
 literal|"Steady fair share of CPU in vcores"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|steadyFairShareVCores
 decl_stmt|;
 DECL|field|minShareMB
@@ -231,7 +247,7 @@ name|Metric
 argument_list|(
 literal|"Minimum share of memory in MB"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|minShareMB
 decl_stmt|;
 DECL|field|minShareVCores
@@ -240,7 +256,7 @@ name|Metric
 argument_list|(
 literal|"Minimum share of CPU in vcores"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|minShareVCores
 decl_stmt|;
 DECL|field|maxShareMB
@@ -249,7 +265,7 @@ name|Metric
 argument_list|(
 literal|"Maximum share of memory in MB"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|maxShareMB
 decl_stmt|;
 DECL|field|maxShareVCores
@@ -258,7 +274,7 @@ name|Metric
 argument_list|(
 literal|"Maximum share of CPU in vcores"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|maxShareVCores
 decl_stmt|;
 DECL|field|maxApps
@@ -323,7 +339,7 @@ name|set
 argument_list|(
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -340,7 +356,7 @@ expr_stmt|;
 block|}
 DECL|method|getFairShareMB ()
 specifier|public
-name|int
+name|long
 name|getFairShareMB
 parameter_list|()
 block|{
@@ -353,7 +369,7 @@ return|;
 block|}
 DECL|method|getFairShareVirtualCores ()
 specifier|public
-name|int
+name|long
 name|getFairShareVirtualCores
 parameter_list|()
 block|{
@@ -379,7 +395,7 @@ name|set
 argument_list|(
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -396,7 +412,7 @@ expr_stmt|;
 block|}
 DECL|method|getSteadyFairShareMB ()
 specifier|public
-name|int
+name|long
 name|getSteadyFairShareMB
 parameter_list|()
 block|{
@@ -409,7 +425,7 @@ return|;
 block|}
 DECL|method|getSteadyFairShareVCores ()
 specifier|public
-name|int
+name|long
 name|getSteadyFairShareVCores
 parameter_list|()
 block|{
@@ -435,7 +451,7 @@ name|set
 argument_list|(
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -452,7 +468,7 @@ expr_stmt|;
 block|}
 DECL|method|getMinShareMB ()
 specifier|public
-name|int
+name|long
 name|getMinShareMB
 parameter_list|()
 block|{
@@ -465,7 +481,7 @@ return|;
 block|}
 DECL|method|getMinShareVirtualCores ()
 specifier|public
-name|int
+name|long
 name|getMinShareVirtualCores
 parameter_list|()
 block|{
@@ -491,7 +507,7 @@ name|set
 argument_list|(
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -508,7 +524,7 @@ expr_stmt|;
 block|}
 DECL|method|getMaxShareMB ()
 specifier|public
-name|int
+name|long
 name|getMaxShareMB
 parameter_list|()
 block|{
@@ -521,7 +537,7 @@ return|;
 block|}
 DECL|method|getMaxShareVirtualCores ()
 specifier|public
-name|int
+name|long
 name|getMaxShareVirtualCores
 parameter_list|()
 block|{

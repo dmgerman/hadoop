@@ -12417,13 +12417,13 @@ name|when
 argument_list|(
 name|mockR
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-literal|2048
+literal|2048L
 argument_list|)
 expr_stmt|;
 name|when

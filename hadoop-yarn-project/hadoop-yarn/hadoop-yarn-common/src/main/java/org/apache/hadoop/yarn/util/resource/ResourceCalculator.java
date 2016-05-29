@@ -101,16 +101,16 @@ name|Resource
 name|rhs
 parameter_list|)
 function_decl|;
-DECL|method|divideAndCeil (int a, int b)
+DECL|method|divideAndCeil (long a, long b)
 specifier|public
 specifier|static
-name|int
+name|long
 name|divideAndCeil
 parameter_list|(
-name|int
+name|long
 name|a
 parameter_list|,
-name|int
+name|long
 name|b
 parameter_list|)
 block|{
@@ -139,16 +139,16 @@ operator|/
 name|b
 return|;
 block|}
-DECL|method|roundUp (int a, int b)
+DECL|method|roundUp (long a, long b)
 specifier|public
 specifier|static
-name|int
+name|long
 name|roundUp
 parameter_list|(
-name|int
+name|long
 name|a
 parameter_list|,
-name|int
+name|long
 name|b
 parameter_list|)
 block|{
@@ -163,16 +163,16 @@ operator|*
 name|b
 return|;
 block|}
-DECL|method|roundDown (int a, int b)
+DECL|method|roundDown (long a, long b)
 specifier|public
 specifier|static
-name|int
+name|long
 name|roundDown
 parameter_list|(
-name|int
+name|long
 name|a
 parameter_list|,
-name|int
+name|long
 name|b
 parameter_list|)
 block|{
@@ -190,7 +190,7 @@ comment|/**    * Compute the number of containers which can be allocated given  
 DECL|method|computeAvailableContainers ( Resource available, Resource required)
 specifier|public
 specifier|abstract
-name|int
+name|long
 name|computeAvailableContainers
 parameter_list|(
 name|Resource
@@ -354,7 +354,7 @@ name|b
 parameter_list|)
 function_decl|;
 comment|/**    * Divide-and-ceil<code>numerator</code> by<code>denominator</code>.    *     * @param numerator numerator resource    * @param denominator denominator    * @return resultant resource    */
-DECL|method|divideAndCeil (Resource numerator, int denominator)
+DECL|method|divideAndCeil (Resource numerator, long denominator)
 specifier|public
 specifier|abstract
 name|Resource
@@ -363,7 +363,7 @@ parameter_list|(
 name|Resource
 name|numerator
 parameter_list|,
-name|int
+name|long
 name|denominator
 parameter_list|)
 function_decl|;

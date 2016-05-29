@@ -2446,7 +2446,7 @@ name|MAP
 argument_list|,
 name|mapResourceRequest
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 argument_list|)
@@ -2465,12 +2465,12 @@ if|if
 condition|(
 name|mapResourceRequest
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|>
 name|supportedMaxContainerCapability
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|||
 name|mapResourceRequest
@@ -2544,7 +2544,7 @@ name|setMemory
 argument_list|(
 name|mapResourceRequest
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2618,7 +2618,7 @@ name|REDUCE
 argument_list|,
 name|reduceResourceRequest
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 argument_list|)
@@ -2637,12 +2637,12 @@ if|if
 condition|(
 name|reduceResourceRequest
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|>
 name|supportedMaxContainerCapability
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|||
 name|reduceResourceRequest
@@ -2718,7 +2718,7 @@ name|setMemory
 argument_list|(
 name|reduceResourceRequest
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

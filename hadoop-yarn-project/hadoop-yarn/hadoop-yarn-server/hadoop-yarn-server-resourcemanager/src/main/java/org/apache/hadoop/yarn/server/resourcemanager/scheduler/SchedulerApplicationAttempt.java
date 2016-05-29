@@ -2494,7 +2494,7 @@ if|if
 condition|(
 name|resourceLimit
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|<
 literal|0
@@ -2693,7 +2693,7 @@ operator|.
 name|getUsed
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3667,7 +3667,7 @@ name|memorySeconds
 operator|+=
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|*
 name|usedMillis

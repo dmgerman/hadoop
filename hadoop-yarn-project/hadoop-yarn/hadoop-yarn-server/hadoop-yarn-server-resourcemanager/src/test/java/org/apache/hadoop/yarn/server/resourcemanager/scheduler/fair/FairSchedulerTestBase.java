@@ -2248,7 +2248,7 @@ name|assertEquals
 argument_list|(
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|app
@@ -2256,7 +2256,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

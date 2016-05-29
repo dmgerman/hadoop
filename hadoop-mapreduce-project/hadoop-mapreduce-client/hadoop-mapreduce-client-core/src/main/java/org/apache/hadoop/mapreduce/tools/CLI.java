@@ -4959,7 +4959,7 @@ operator|.
 name|getNumReservedSlots
 argument_list|()
 decl_stmt|;
-name|int
+name|long
 name|usedMem
 init|=
 name|job
@@ -4967,7 +4967,7 @@ operator|.
 name|getUsedMem
 argument_list|()
 decl_stmt|;
-name|int
+name|long
 name|rsvdMem
 init|=
 name|job
@@ -4975,7 +4975,7 @@ operator|.
 name|getReservedMem
 argument_list|()
 decl_stmt|;
-name|int
+name|long
 name|neededMem
 init|=
 name|job

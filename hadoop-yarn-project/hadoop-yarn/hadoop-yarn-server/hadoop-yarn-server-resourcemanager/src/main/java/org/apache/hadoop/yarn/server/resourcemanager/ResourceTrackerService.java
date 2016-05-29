@@ -2346,7 +2346,7 @@ if|if
 condition|(
 name|capability
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|<
 name|minAllocMb

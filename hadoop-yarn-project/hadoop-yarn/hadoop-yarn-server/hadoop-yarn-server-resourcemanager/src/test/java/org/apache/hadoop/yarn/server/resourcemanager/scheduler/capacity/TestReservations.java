@@ -2151,7 +2151,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2166,7 +2166,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2226,7 +2226,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2241,7 +2241,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2256,7 +2256,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2291,7 +2291,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2306,7 +2306,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2366,7 +2366,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2381,7 +2381,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2396,7 +2396,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2431,7 +2431,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2446,7 +2446,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2506,7 +2506,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2531,7 +2531,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2546,7 +2546,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2561,7 +2561,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2608,7 +2608,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2623,7 +2623,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2683,7 +2683,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2701,7 +2701,7 @@ operator|.
 name|getReservedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2716,7 +2716,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2731,7 +2731,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2746,7 +2746,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2793,7 +2793,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2808,7 +2808,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2868,7 +2868,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2886,7 +2886,7 @@ operator|.
 name|getReservedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2901,7 +2901,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2916,7 +2916,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2931,7 +2931,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2979,7 +2979,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2994,7 +2994,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3054,7 +3054,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3079,7 +3079,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3094,7 +3094,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3109,7 +3109,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3698,7 +3698,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3713,7 +3713,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3728,7 +3728,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3788,7 +3788,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3803,7 +3803,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3818,7 +3818,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3852,7 +3852,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3867,7 +3867,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3882,7 +3882,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3942,7 +3942,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3957,7 +3957,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3972,7 +3972,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4070,7 +4070,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4085,7 +4085,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4100,7 +4100,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4160,7 +4160,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4175,7 +4175,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4190,7 +4190,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4226,7 +4226,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4241,7 +4241,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4256,7 +4256,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4316,7 +4316,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4331,7 +4331,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4346,7 +4346,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4912,7 +4912,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4927,7 +4927,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4987,7 +4987,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5002,7 +5002,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5017,7 +5017,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5052,7 +5052,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5067,7 +5067,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5127,7 +5127,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5142,7 +5142,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5157,7 +5157,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5192,7 +5192,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5207,7 +5207,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5267,7 +5267,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5292,7 +5292,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5307,7 +5307,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5322,7 +5322,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5369,7 +5369,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5384,7 +5384,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5444,7 +5444,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5462,7 +5462,7 @@ operator|.
 name|getReservedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5477,7 +5477,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5492,7 +5492,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5507,7 +5507,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5554,7 +5554,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5569,7 +5569,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5629,7 +5629,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5647,7 +5647,7 @@ operator|.
 name|getReservedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5662,7 +5662,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5677,7 +5677,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5692,7 +5692,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5740,7 +5740,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5755,7 +5755,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5815,7 +5815,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5833,7 +5833,7 @@ operator|.
 name|getReservedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5848,7 +5848,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5863,7 +5863,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5878,7 +5878,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6435,7 +6435,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6450,7 +6450,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6510,7 +6510,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6525,7 +6525,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6560,7 +6560,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6575,7 +6575,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6635,7 +6635,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6650,7 +6650,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6685,7 +6685,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6700,7 +6700,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6760,7 +6760,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6785,7 +6785,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6800,7 +6800,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6847,7 +6847,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6862,7 +6862,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6922,7 +6922,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6940,7 +6940,7 @@ operator|.
 name|getReservedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6955,7 +6955,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6970,7 +6970,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7017,7 +7017,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7032,7 +7032,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7092,7 +7092,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7117,7 +7117,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7132,7 +7132,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8635,7 +8635,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8650,7 +8650,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8710,7 +8710,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8725,7 +8725,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8760,7 +8760,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8775,7 +8775,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8835,7 +8835,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8850,7 +8850,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8885,7 +8885,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8900,7 +8900,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8970,7 +8970,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8985,7 +8985,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9022,7 +9022,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9037,7 +9037,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9097,7 +9097,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9112,7 +9112,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9127,7 +9127,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9200,7 +9200,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9996,7 +9996,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10011,7 +10011,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10071,7 +10071,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10086,7 +10086,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10121,7 +10121,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10136,7 +10136,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10196,7 +10196,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10211,7 +10211,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10246,7 +10246,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10261,7 +10261,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10331,7 +10331,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10346,7 +10346,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10383,7 +10383,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10398,7 +10398,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10413,7 +10413,7 @@ operator|.
 name|getCurrentReservation
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10473,7 +10473,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10488,7 +10488,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10503,7 +10503,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11271,7 +11271,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11286,7 +11286,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11346,7 +11346,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11361,7 +11361,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11376,7 +11376,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11411,7 +11411,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11426,7 +11426,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11486,7 +11486,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11501,7 +11501,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11516,7 +11516,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11551,7 +11551,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11566,7 +11566,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11626,7 +11626,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11641,7 +11641,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11656,7 +11656,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11671,7 +11671,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11716,7 +11716,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11731,7 +11731,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11792,7 +11792,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11807,7 +11807,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11822,7 +11822,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11837,7 +11837,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11881,7 +11881,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11896,7 +11896,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11957,7 +11957,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11972,7 +11972,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11987,7 +11987,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12002,7 +12002,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12037,7 +12037,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12052,7 +12052,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12112,7 +12112,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12127,7 +12127,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12142,7 +12142,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12157,7 +12157,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12192,7 +12192,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12207,7 +12207,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12267,7 +12267,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12282,7 +12282,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12297,7 +12297,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12312,7 +12312,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12349,7 +12349,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12364,7 +12364,7 @@ operator|.
 name|getCurrentConsumption
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12424,7 +12424,7 @@ operator|.
 name|getHeadroom
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12439,7 +12439,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12454,7 +12454,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12469,7 +12469,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

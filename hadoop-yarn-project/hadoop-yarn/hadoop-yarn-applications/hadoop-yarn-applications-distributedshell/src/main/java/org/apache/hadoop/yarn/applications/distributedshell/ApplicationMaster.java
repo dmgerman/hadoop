@@ -1508,7 +1508,7 @@ decl_stmt|;
 comment|// Memory to request for the container on which the shell command will run
 DECL|field|containerMemory
 specifier|private
-name|int
+name|long
 name|containerMemory
 init|=
 literal|10
@@ -3547,7 +3547,7 @@ argument_list|)
 decl_stmt|;
 comment|// Dump out information about cluster capability as seen by the
 comment|// resource manager
-name|int
+name|long
 name|maxMem
 init|=
 name|response
@@ -3555,7 +3555,7 @@ operator|.
 name|getMaximumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 decl_stmt|;
 name|LOG
@@ -4583,7 +4583,7 @@ operator|.
 name|getResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|+
 literal|", containerResourceVirtualCores"

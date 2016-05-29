@@ -1713,7 +1713,7 @@ operator|.
 name|getUsed
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|+
 literal|"MB"
@@ -1736,7 +1736,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|+
 literal|"MB"

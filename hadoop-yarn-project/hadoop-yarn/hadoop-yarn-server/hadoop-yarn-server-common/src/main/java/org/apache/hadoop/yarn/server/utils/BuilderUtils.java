@@ -3126,16 +3126,16 @@ return|return
 name|report
 return|;
 block|}
-DECL|method|newResource (int memory, int vCores)
+DECL|method|newResource (long memory, long vCores)
 specifier|public
 specifier|static
 name|Resource
 name|newResource
 parameter_list|(
-name|int
+name|long
 name|memory
 parameter_list|,
-name|int
+name|long
 name|vCores
 parameter_list|)
 block|{

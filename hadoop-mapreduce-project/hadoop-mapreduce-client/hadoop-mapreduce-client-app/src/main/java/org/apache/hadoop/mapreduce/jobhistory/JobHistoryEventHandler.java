@@ -3934,6 +3934,9 @@ name|summary
 operator|.
 name|setResourcesPerMap
 argument_list|(
+operator|(
+name|int
+operator|)
 name|normalizedResourceEvent
 operator|.
 name|getMemory
@@ -3958,6 +3961,9 @@ name|summary
 operator|.
 name|setResourcesPerReduce
 argument_list|(
+operator|(
+name|int
+operator|)
 name|normalizedResourceEvent
 operator|.
 name|getMemory

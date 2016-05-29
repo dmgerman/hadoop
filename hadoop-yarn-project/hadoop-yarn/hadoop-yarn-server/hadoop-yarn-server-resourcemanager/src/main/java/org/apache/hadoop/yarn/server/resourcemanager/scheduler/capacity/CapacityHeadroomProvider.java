@@ -332,7 +332,7 @@ if|if
 condition|(
 name|headroom
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|<
 literal|0

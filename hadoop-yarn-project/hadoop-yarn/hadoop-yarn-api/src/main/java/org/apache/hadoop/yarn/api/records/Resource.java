@@ -32,7 +32,39 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
 name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
 import|;
 end_import
 
@@ -124,16 +156,16 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|newInstance (int memory, int vCores)
+DECL|method|newInstance (long memory, long vCores)
 specifier|public
 specifier|static
 name|Resource
 name|newInstance
 parameter_list|(
-name|int
+name|long
 name|memory
 parameter_list|,
-name|int
+name|long
 name|vCores
 parameter_list|)
 block|{
@@ -167,11 +199,11 @@ return|return
 name|resource
 return|;
 block|}
-comment|/**    * Get<em>memory</em> of the resource.    * @return<em>memory</em> of the resource    */
+comment|/**    * This method is DEPRECATED:    * Use {@link Resource#getMemorySize()} instead    *    * Get<em>memory</em> of the resource.    * @return<em>memory</em> of the resource    */
 annotation|@
 name|Public
 annotation|@
-name|Stable
+name|Deprecated
 DECL|method|getMemory ()
 specifier|public
 specifier|abstract
@@ -179,18 +211,30 @@ name|int
 name|getMemory
 parameter_list|()
 function_decl|;
+comment|/**    * Get<em>memory</em> of the resource.    * @return<em>memory</em> of the resource    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getMemorySize ()
+specifier|public
+specifier|abstract
+name|long
+name|getMemorySize
+parameter_list|()
+function_decl|;
 comment|/**    * Set<em>memory</em> of the resource.    * @param memory<em>memory</em> of the resource    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|setMemory (int memory)
+DECL|method|setMemory (long memory)
 specifier|public
 specifier|abstract
 name|void
 name|setMemory
 parameter_list|(
-name|int
+name|long
 name|memory
 parameter_list|)
 function_decl|;
@@ -206,18 +250,29 @@ name|int
 name|getVirtualCores
 parameter_list|()
 function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getVirtualCoresSize ()
+specifier|public
+specifier|abstract
+name|long
+name|getVirtualCoresSize
+parameter_list|()
+function_decl|;
 comment|/**    * Set<em>number of virtual cpu cores</em> of the resource.    *     * Virtual cores are a unit for expressing CPU parallelism. A node's capacity    * should be configured with virtual cores equal to its number of physical cores.    * A container should be requested with the number of cores it can saturate, i.e.    * the average number of threads it expects to have runnable at a time.    *        * @param vCores<em>number of virtual cpu cores</em> of the resource    */
 annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|method|setVirtualCores (int vCores)
+DECL|method|setVirtualCores (long vCores)
 specifier|public
 specifier|abstract
 name|void
 name|setVirtualCores
 parameter_list|(
-name|int
+name|long
 name|vCores
 parameter_list|)
 function_decl|;
@@ -238,15 +293,16 @@ decl_stmt|;
 name|int
 name|result
 init|=
-literal|3571
-decl_stmt|;
-name|result
-operator|=
+call|(
+name|int
+call|)
+argument_list|(
 literal|939769357
 operator|+
-name|getMemory
+name|getMemorySize
 argument_list|()
-expr_stmt|;
+argument_list|)
+decl_stmt|;
 comment|// prime * result = 939769357 initially
 name|result
 operator|=
@@ -312,12 +368,12 @@ name|obj
 decl_stmt|;
 if|if
 condition|(
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|!=
 name|other
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|||
 name|getVirtualCores
@@ -348,7 +404,7 @@ block|{
 return|return
 literal|"<memory:"
 operator|+
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|+
 literal|", vCores:"

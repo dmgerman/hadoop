@@ -7959,9 +7959,12 @@ decl_stmt|;
 name|int
 name|mbAllocated
 init|=
+operator|(
+name|int
+operator|)
 name|allocatedResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 decl_stmt|;
 name|int

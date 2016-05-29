@@ -1226,7 +1226,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 literal|1024
@@ -1288,7 +1288,7 @@ operator|.
 name|getReservedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 literal|1024

@@ -979,7 +979,7 @@ operator|.
 name|getAppAttemptId
 argument_list|()
 decl_stmt|;
-name|int
+name|long
 name|fairShare
 init|=
 name|fsinfo

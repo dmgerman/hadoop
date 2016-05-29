@@ -82,7 +82,7 @@ name|HistoryEvent
 block|{
 DECL|field|memory
 specifier|private
-name|int
+name|long
 name|memory
 decl_stmt|;
 DECL|field|taskType
@@ -91,14 +91,14 @@ name|TaskType
 name|taskType
 decl_stmt|;
 comment|/**    * Normalized request when sent to the Resource Manager.    * @param taskType the tasktype of the request.    * @param memory the normalized memory requirements.    */
-DECL|method|NormalizedResourceEvent (TaskType taskType, int memory)
+DECL|method|NormalizedResourceEvent (TaskType taskType, long memory)
 specifier|public
 name|NormalizedResourceEvent
 parameter_list|(
 name|TaskType
 name|taskType
 parameter_list|,
-name|int
+name|long
 name|memory
 parameter_list|)
 block|{
@@ -131,7 +131,7 @@ block|}
 comment|/**    * the normalized memory    * @return the normalized memory    */
 DECL|method|getMemory ()
 specifier|public
-name|int
+name|long
 name|getMemory
 parameter_list|()
 block|{

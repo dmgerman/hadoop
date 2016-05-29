@@ -1017,7 +1017,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-literal|1024
+literal|1024L
 argument_list|)
 expr_stmt|;
 name|when
@@ -1030,7 +1030,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-literal|512
+literal|512L
 argument_list|)
 expr_stmt|;
 name|when
@@ -1043,7 +1043,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-literal|2048
+literal|2048L
 argument_list|)
 expr_stmt|;
 name|when

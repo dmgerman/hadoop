@@ -386,7 +386,7 @@ name|_
 argument_list|(
 literal|"Minimum Queue Memory Capacity:"
 argument_list|,
-name|Integer
+name|Long
 operator|.
 name|toString
 argument_list|(
@@ -401,7 +401,7 @@ name|_
 argument_list|(
 literal|"Maximum Queue Memory Capacity:"
 argument_list|,
-name|Integer
+name|Long
 operator|.
 name|toString
 argument_list|(

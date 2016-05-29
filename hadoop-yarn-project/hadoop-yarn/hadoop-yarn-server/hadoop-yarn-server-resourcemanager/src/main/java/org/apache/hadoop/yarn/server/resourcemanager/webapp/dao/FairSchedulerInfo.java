@@ -245,7 +245,7 @@ block|}
 comment|/**    * Get the fair share assigned to the appAttemptId.    * @param appAttemptId    * @return The fair share assigned to the appAttemptId,    *<code>FairSchedulerInfo#INVALID_FAIR_SHARE</code> if the scheduler does    * not know about this application attempt.    */
 DECL|method|getAppFairShare (ApplicationAttemptId appAttemptId)
 specifier|public
-name|int
+name|long
 name|getAppFairShare
 parameter_list|(
 name|ApplicationAttemptId
@@ -274,7 +274,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 return|;
 block|}

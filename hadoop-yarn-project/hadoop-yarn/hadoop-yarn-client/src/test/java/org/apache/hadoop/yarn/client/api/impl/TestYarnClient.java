@@ -8479,7 +8479,7 @@ operator|.
 name|getTotalCapacity
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|>
 literal|6000

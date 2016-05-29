@@ -1994,7 +1994,7 @@ name|newInstance
 argument_list|(
 name|recoveredCapability
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|recoveredCapability
@@ -3797,7 +3797,7 @@ init|=
 name|getResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|*
 literal|1024

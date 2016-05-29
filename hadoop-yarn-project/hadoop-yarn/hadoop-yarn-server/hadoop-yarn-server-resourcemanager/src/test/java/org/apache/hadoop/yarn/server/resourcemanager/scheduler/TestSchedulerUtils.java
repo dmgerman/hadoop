@@ -1297,7 +1297,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1338,7 +1338,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1383,7 +1383,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1428,7 +1428,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1469,7 +1469,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1512,7 +1512,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1564,7 +1564,7 @@ name|assertEquals
 argument_list|(
 name|maxResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|ask
@@ -1572,7 +1572,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1621,7 +1621,7 @@ name|assertEquals
 argument_list|(
 name|maxResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|ask
@@ -1629,7 +1629,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1803,7 +1803,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1876,7 +1876,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

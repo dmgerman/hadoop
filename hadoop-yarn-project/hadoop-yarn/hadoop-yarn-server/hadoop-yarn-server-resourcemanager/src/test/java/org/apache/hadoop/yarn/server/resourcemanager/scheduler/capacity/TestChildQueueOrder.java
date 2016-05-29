@@ -1412,7 +1412,7 @@ name|float
 operator|)
 name|clusterResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|)
 operator|)
@@ -1440,7 +1440,7 @@ operator|/
 operator|(
 name|clusterResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|*
 name|queue

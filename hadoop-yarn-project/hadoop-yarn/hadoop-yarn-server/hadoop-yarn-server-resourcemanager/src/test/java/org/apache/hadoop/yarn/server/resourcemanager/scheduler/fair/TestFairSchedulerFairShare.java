@@ -694,7 +694,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeCapacity
@@ -729,7 +729,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeCapacity
@@ -813,7 +813,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeCapacity
@@ -845,7 +845,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeCapacity
@@ -970,7 +970,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeCapacity
@@ -1112,7 +1112,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeCapacity
@@ -1147,7 +1147,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeCapacity
@@ -1270,7 +1270,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeCapacity
@@ -1334,7 +1334,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeCapacity
@@ -1366,7 +1366,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeCapacity
@@ -1514,7 +1514,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeMem
@@ -1582,7 +1582,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeMem
@@ -1671,7 +1671,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeMem
@@ -1726,7 +1726,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeMem
@@ -1806,7 +1806,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeCapacity
@@ -1841,7 +1841,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|nodeCapacity

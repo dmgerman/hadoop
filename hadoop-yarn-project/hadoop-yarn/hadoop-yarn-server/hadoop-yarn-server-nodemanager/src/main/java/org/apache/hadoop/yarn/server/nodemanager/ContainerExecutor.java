@@ -2037,9 +2037,12 @@ condition|)
 block|{
 name|memory
 operator|=
+operator|(
+name|int
+operator|)
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 block|}

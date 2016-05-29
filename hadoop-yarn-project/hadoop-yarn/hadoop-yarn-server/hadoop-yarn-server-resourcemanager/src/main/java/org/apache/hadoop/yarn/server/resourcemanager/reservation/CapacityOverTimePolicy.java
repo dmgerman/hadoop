@@ -1067,7 +1067,7 @@ name|memory
 operator|=
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|this
@@ -1117,7 +1117,7 @@ name|memory
 operator|+=
 name|r
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|vcores
@@ -1141,7 +1141,7 @@ name|memory
 operator|-=
 name|r
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|vcores

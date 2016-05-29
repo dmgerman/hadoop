@@ -8020,7 +8020,7 @@ argument_list|)
 operator|.
 name|preemptableExtra
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8052,11 +8052,11 @@ name|tempQueueAPartition
 operator|.
 name|untouchableExtra
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|extraForQueueA
 init|=
 name|tempQueueAPartition
@@ -8064,7 +8064,7 @@ operator|.
 name|getUsed
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|-
 name|tempQueueAPartition
@@ -8072,7 +8072,7 @@ operator|.
 name|getGuaranteed
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 decl_stmt|;
 name|assertEquals
@@ -8083,7 +8083,7 @@ name|tempQueueAPartition
 operator|.
 name|preemptableExtra
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8389,7 +8389,7 @@ argument_list|)
 operator|.
 name|preemptableExtra
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8421,11 +8421,11 @@ name|tempQueueAPartition
 operator|.
 name|untouchableExtra
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|extraForQueueA
 init|=
 name|tempQueueAPartition
@@ -8433,7 +8433,7 @@ operator|.
 name|getUsed
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|-
 name|tempQueueAPartition
@@ -8441,7 +8441,7 @@ operator|.
 name|getGuaranteed
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 decl_stmt|;
 name|assertEquals
@@ -8452,7 +8452,7 @@ name|tempQueueAPartition
 operator|.
 name|preemptableExtra
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9497,7 +9497,7 @@ name|float
 operator|)
 name|tot
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9579,7 +9579,7 @@ name|float
 operator|)
 name|tot
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9872,7 +9872,7 @@ name|float
 operator|)
 name|tot
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9942,7 +9942,7 @@ name|float
 operator|)
 name|tot
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

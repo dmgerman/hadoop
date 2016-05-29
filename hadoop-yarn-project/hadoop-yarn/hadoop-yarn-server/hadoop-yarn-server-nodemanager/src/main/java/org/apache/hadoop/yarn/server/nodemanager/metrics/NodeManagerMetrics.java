@@ -532,7 +532,7 @@ name|allocatedMB
 operator|+
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|allocatedGB
@@ -558,7 +558,7 @@ name|availableMB
 operator|-
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|availableGB
@@ -619,7 +619,7 @@ name|allocatedMB
 operator|-
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|allocatedGB
@@ -645,7 +645,7 @@ name|availableMB
 operator|+
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|availableGB
@@ -698,17 +698,17 @@ name|Resource
 name|now
 parameter_list|)
 block|{
-name|int
+name|long
 name|deltaMB
 init|=
 name|now
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|-
 name|before
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 decl_stmt|;
 name|int
@@ -800,7 +800,7 @@ name|availableMB
 operator|+
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|availableGB

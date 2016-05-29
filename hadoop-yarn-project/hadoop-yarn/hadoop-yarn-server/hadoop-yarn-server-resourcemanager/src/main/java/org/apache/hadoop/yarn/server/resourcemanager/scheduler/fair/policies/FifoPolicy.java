@@ -577,12 +577,12 @@ block|{
 return|return
 name|usage
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|>
 name|maxAMResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 return|;
 block|}
@@ -603,7 +603,7 @@ name|Resource
 name|maxAvailable
 parameter_list|)
 block|{
-name|int
+name|long
 name|queueAvailableMemory
 init|=
 name|Math
@@ -612,12 +612,12 @@ name|max
 argument_list|(
 name|queueFairShare
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|-
 name|queueUsage
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 literal|0
@@ -636,7 +636,7 @@ name|min
 argument_list|(
 name|maxAvailable
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|queueAvailableMemory

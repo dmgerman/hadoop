@@ -961,7 +961,7 @@ name|pendingPreemptionRam
 operator|+=
 name|r
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|pendingPreemptionCores
@@ -1025,7 +1025,7 @@ operator|.
 name|getNumContainers
 argument_list|()
 decl_stmt|;
-name|int
+name|long
 name|reqMem
 init|=
 name|reqRsrc
@@ -1033,10 +1033,10 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 decl_stmt|;
-name|int
+name|long
 name|totalMemoryToRelease
 init|=
 name|reqCont
@@ -1197,12 +1197,15 @@ decl_stmt|;
 name|int
 name|cMem
 init|=
+operator|(
+name|int
+operator|)
 name|cont
 operator|.
 name|getResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 decl_stmt|;
 name|int

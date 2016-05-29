@@ -638,7 +638,7 @@ name|mem
 argument_list|,
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

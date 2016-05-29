@@ -112,7 +112,7 @@ name|metrics2
 operator|.
 name|lib
 operator|.
-name|MutableGaugeInt
+name|MutableGaugeLong
 import|;
 end_import
 
@@ -195,7 +195,7 @@ argument_list|(
 literal|"AM memory limit in MB"
 argument_list|)
 DECL|field|AMResourceLimitMB
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|AMResourceLimitMB
 decl_stmt|;
 annotation|@
@@ -204,7 +204,7 @@ argument_list|(
 literal|"AM CPU limit in virtual cores"
 argument_list|)
 DECL|field|AMResourceLimitVCores
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|AMResourceLimitVCores
 decl_stmt|;
 annotation|@
@@ -213,7 +213,7 @@ argument_list|(
 literal|"Used AM memory limit in MB"
 argument_list|)
 DECL|field|usedAMResourceMB
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|usedAMResourceMB
 decl_stmt|;
 annotation|@
@@ -222,7 +222,7 @@ argument_list|(
 literal|"Used AM CPU limit in virtual cores"
 argument_list|)
 DECL|field|usedAMResourceVCores
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|usedAMResourceVCores
 decl_stmt|;
 DECL|method|CSQueueMetrics (MetricsSystem ms, String queueName, Queue parent, boolean enableUserMetrics, Configuration conf)
@@ -260,7 +260,7 @@ expr_stmt|;
 block|}
 DECL|method|getAMResourceLimitMB ()
 specifier|public
-name|int
+name|long
 name|getAMResourceLimitMB
 parameter_list|()
 block|{
@@ -273,7 +273,7 @@ return|;
 block|}
 DECL|method|getAMResourceLimitVCores ()
 specifier|public
-name|int
+name|long
 name|getAMResourceLimitVCores
 parameter_list|()
 block|{
@@ -286,7 +286,7 @@ return|;
 block|}
 DECL|method|getUsedAMResourceMB ()
 specifier|public
-name|int
+name|long
 name|getUsedAMResourceMB
 parameter_list|()
 block|{
@@ -299,7 +299,7 @@ return|;
 block|}
 DECL|method|getUsedAMResourceVCores ()
 specifier|public
-name|int
+name|long
 name|getUsedAMResourceVCores
 parameter_list|()
 block|{
@@ -325,7 +325,7 @@ name|set
 argument_list|(
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -397,7 +397,7 @@ name|incr
 argument_list|(
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -458,7 +458,7 @@ name|decr
 argument_list|(
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

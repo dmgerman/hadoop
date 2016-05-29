@@ -867,7 +867,7 @@ operator|.
 name|getClusterResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 literal|16

@@ -930,7 +930,7 @@ argument_list|(
 name|partition
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -990,7 +990,7 @@ argument_list|(
 name|partition
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

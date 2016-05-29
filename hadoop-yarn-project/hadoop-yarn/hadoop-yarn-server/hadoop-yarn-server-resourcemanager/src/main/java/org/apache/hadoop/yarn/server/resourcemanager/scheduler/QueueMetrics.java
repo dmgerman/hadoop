@@ -294,6 +294,22 @@ name|metrics2
 operator|.
 name|lib
 operator|.
+name|MutableGaugeLong
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|lib
+operator|.
 name|MutableRate
 import|;
 end_import
@@ -501,7 +517,7 @@ name|Metric
 argument_list|(
 literal|"Allocated memory in MB"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|allocatedMB
 decl_stmt|;
 DECL|field|allocatedVCores
@@ -510,7 +526,7 @@ name|Metric
 argument_list|(
 literal|"Allocated CPU in virtual cores"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|allocatedVCores
 decl_stmt|;
 DECL|field|allocatedContainers
@@ -573,7 +589,7 @@ name|Metric
 argument_list|(
 literal|"Available memory in MB"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|availableMB
 decl_stmt|;
 DECL|field|availableVCores
@@ -582,7 +598,7 @@ name|Metric
 argument_list|(
 literal|"Available CPU in virtual cores"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|availableVCores
 decl_stmt|;
 DECL|field|pendingMB
@@ -591,7 +607,7 @@ name|Metric
 argument_list|(
 literal|"Pending memory allocation in MB"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|pendingMB
 decl_stmt|;
 DECL|field|pendingVCores
@@ -600,7 +616,7 @@ name|Metric
 argument_list|(
 literal|"Pending CPU allocation in virtual cores"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|pendingVCores
 decl_stmt|;
 DECL|field|pendingContainers
@@ -618,7 +634,7 @@ name|Metric
 argument_list|(
 literal|"# of reserved memory in MB"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|reservedMB
 decl_stmt|;
 DECL|field|reservedVCores
@@ -627,7 +643,7 @@ name|Metric
 argument_list|(
 literal|"Reserved CPU in virtual cores"
 argument_list|)
-name|MutableGaugeInt
+name|MutableGaugeLong
 name|reservedVCores
 decl_stmt|;
 DECL|field|reservedContainers
@@ -2091,7 +2107,7 @@ name|set
 argument_list|(
 name|limit
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2238,7 +2254,7 @@ name|incr
 argument_list|(
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|*
 name|containers
@@ -2250,7 +2266,7 @@ name|incr
 argument_list|(
 name|res
 operator|.
-name|getVirtualCores
+name|getVirtualCoresSize
 argument_list|()
 operator|*
 name|containers
@@ -2351,7 +2367,7 @@ name|decr
 argument_list|(
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|*
 name|containers
@@ -2363,7 +2379,7 @@ name|decr
 argument_list|(
 name|res
 operator|.
-name|getVirtualCores
+name|getVirtualCoresSize
 argument_list|()
 operator|*
 name|containers
@@ -2514,7 +2530,7 @@ name|incr
 argument_list|(
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|*
 name|containers
@@ -2526,7 +2542,7 @@ name|incr
 argument_list|(
 name|res
 operator|.
-name|getVirtualCores
+name|getVirtualCoresSize
 argument_list|()
 operator|*
 name|containers
@@ -2615,7 +2631,7 @@ name|incr
 argument_list|(
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2635,7 +2651,7 @@ name|decr
 argument_list|(
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2727,7 +2743,7 @@ name|decr
 argument_list|(
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|*
 name|containers
@@ -2739,7 +2755,7 @@ name|decr
 argument_list|(
 name|res
 operator|.
-name|getVirtualCores
+name|getVirtualCoresSize
 argument_list|()
 operator|*
 name|containers
@@ -2811,7 +2827,7 @@ name|decr
 argument_list|(
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2891,7 +2907,7 @@ name|incr
 argument_list|(
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2971,7 +2987,7 @@ name|decr
 argument_list|(
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3278,7 +3294,7 @@ return|;
 block|}
 DECL|method|getAllocatedMB ()
 specifier|public
-name|int
+name|long
 name|getAllocatedMB
 parameter_list|()
 block|{
@@ -3291,7 +3307,7 @@ return|;
 block|}
 DECL|method|getAllocatedVirtualCores ()
 specifier|public
-name|int
+name|long
 name|getAllocatedVirtualCores
 parameter_list|()
 block|{
@@ -3317,7 +3333,7 @@ return|;
 block|}
 DECL|method|getAvailableMB ()
 specifier|public
-name|int
+name|long
 name|getAvailableMB
 parameter_list|()
 block|{
@@ -3330,7 +3346,7 @@ return|;
 block|}
 DECL|method|getAvailableVirtualCores ()
 specifier|public
-name|int
+name|long
 name|getAvailableVirtualCores
 parameter_list|()
 block|{
@@ -3343,7 +3359,7 @@ return|;
 block|}
 DECL|method|getPendingMB ()
 specifier|public
-name|int
+name|long
 name|getPendingMB
 parameter_list|()
 block|{
@@ -3356,7 +3372,7 @@ return|;
 block|}
 DECL|method|getPendingVirtualCores ()
 specifier|public
-name|int
+name|long
 name|getPendingVirtualCores
 parameter_list|()
 block|{
@@ -3382,7 +3398,7 @@ return|;
 block|}
 DECL|method|getReservedMB ()
 specifier|public
-name|int
+name|long
 name|getReservedMB
 parameter_list|()
 block|{
@@ -3395,7 +3411,7 @@ return|;
 block|}
 DECL|method|getReservedVirtualCores ()
 specifier|public
-name|int
+name|long
 name|getReservedVirtualCores
 parameter_list|()
 block|{

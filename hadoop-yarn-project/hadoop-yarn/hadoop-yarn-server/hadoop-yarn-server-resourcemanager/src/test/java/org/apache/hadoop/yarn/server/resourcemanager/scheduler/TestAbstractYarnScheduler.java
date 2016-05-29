@@ -1284,7 +1284,7 @@ name|getNumClusterNodes
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|maxMemory
 init|=
 name|scheduler
@@ -1292,7 +1292,7 @@ operator|.
 name|getMaximumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 decl_stmt|;
 name|Assert
@@ -1358,7 +1358,7 @@ operator|.
 name|getMaximumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -1403,7 +1403,7 @@ operator|.
 name|getMaximumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -1469,7 +1469,7 @@ operator|.
 name|getMaximumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -1535,7 +1535,7 @@ operator|.
 name|getMaximumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -1580,7 +1580,7 @@ operator|.
 name|getMaximumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -4253,12 +4253,12 @@ name|assertEquals
 argument_list|(
 name|expectedMaximumResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|schedulerMaximumResourceCapability
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -998,7 +998,7 @@ name|getKey
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|+
 literal|"MB"
@@ -1464,6 +1464,9 @@ expr_stmt|;
 name|int
 name|supposedMemPreemption
 init|=
+operator|(
+name|int
+operator|)
 name|pM
 operator|.
 name|getContract
@@ -1483,7 +1486,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|*
 name|pM
@@ -1850,7 +1853,7 @@ assert|assert
 operator|(
 name|effectivelyPreempted
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|>=
 name|supposedMemPreemption
@@ -1860,14 +1863,14 @@ literal|" preempted: "
 operator|+
 name|effectivelyPreempted
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 assert|;
 comment|// preempt not too much enough
 assert|assert
 name|effectivelyPreempted
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|<=
 name|supposedMemPreemption
@@ -1976,7 +1979,7 @@ name|ceil
 argument_list|(
 name|tot
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 operator|(
@@ -1984,7 +1987,7 @@ name|double
 operator|)
 name|minimumAllocation
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 decl_stmt|;

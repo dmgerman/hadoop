@@ -1240,16 +1240,6 @@ name|java
 operator|.
 name|security
 operator|.
-name|PrivilegedAction
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|security
-operator|.
 name|PrivilegedExceptionAction
 import|;
 end_import
@@ -3231,7 +3221,7 @@ literal|2
 argument_list|,
 name|availableResources
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|availableResources
@@ -3241,7 +3231,7 @@ argument_list|()
 argument_list|,
 name|usedResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|usedResource
@@ -3280,7 +3270,7 @@ literal|2
 argument_list|,
 name|availableResources
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|availableResources
@@ -3290,7 +3280,7 @@ argument_list|()
 argument_list|,
 name|usedResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|usedResource
@@ -3641,7 +3631,7 @@ literal|2
 argument_list|,
 name|availableResources
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|availableResources
@@ -3651,7 +3641,7 @@ argument_list|()
 argument_list|,
 name|usedResources
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|usedResources
@@ -5087,7 +5077,7 @@ literal|4
 argument_list|,
 name|q1availableResources
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|q1availableResources
@@ -5097,7 +5087,7 @@ argument_list|()
 argument_list|,
 name|q1UsedResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|q1UsedResource
@@ -5162,7 +5152,7 @@ literal|2
 argument_list|,
 name|q2availableResources
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|q2availableResources
@@ -5172,7 +5162,7 @@ argument_list|()
 argument_list|,
 name|q2UsedResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|q2UsedResource
@@ -5246,7 +5236,7 @@ literal|6
 argument_list|,
 name|totalAvailableResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|totalAvailableResource
@@ -5256,7 +5246,7 @@ argument_list|()
 argument_list|,
 name|totalUsedResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|totalUsedResource
@@ -7720,7 +7710,7 @@ literal|20000
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|assertMetrics (QueueMetrics qm, int appsSubmitted, int appsPending, int appsRunning, int appsCompleted, int allocatedContainers, int availableMB, int availableVirtualCores, int allocatedMB, int allocatedVirtualCores)
+DECL|method|assertMetrics (QueueMetrics qm, int appsSubmitted, int appsPending, int appsRunning, int appsCompleted, int allocatedContainers, long availableMB, long availableVirtualCores, long allocatedMB, long allocatedVirtualCores)
 specifier|private
 name|void
 name|assertMetrics
@@ -7743,16 +7733,16 @@ parameter_list|,
 name|int
 name|allocatedContainers
 parameter_list|,
-name|int
+name|long
 name|availableMB
 parameter_list|,
-name|int
+name|long
 name|availableVirtualCores
 parameter_list|,
-name|int
+name|long
 name|allocatedMB
 parameter_list|,
-name|int
+name|long
 name|allocatedVirtualCores
 parameter_list|)
 block|{

@@ -60,22 +60,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|Records
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|util
@@ -90,16 +74,16 @@ specifier|public
 class|class
 name|ResourceCalculatorUtils
 block|{
-DECL|method|divideAndCeil (int a, int b)
+DECL|method|divideAndCeil (long a, long b)
 specifier|public
 specifier|static
 name|int
 name|divideAndCeil
 parameter_list|(
-name|int
+name|long
 name|a
 parameter_list|,
-name|int
+name|long
 name|b
 parameter_list|)
 block|{
@@ -115,6 +99,10 @@ literal|0
 return|;
 block|}
 return|return
+call|(
+name|int
+call|)
+argument_list|(
 operator|(
 name|a
 operator|+
@@ -126,6 +114,7 @@ operator|)
 operator|)
 operator|/
 name|b
+argument_list|)
 return|;
 block|}
 DECL|method|computeAvailableContainers (Resource available, Resource required, EnumSet<SchedulerResourceTypes> resourceTypes)
@@ -168,12 +157,12 @@ name|calculateRatioOrMaxValue
 argument_list|(
 name|available
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|required
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 argument_list|,
@@ -197,12 +186,12 @@ name|calculateRatioOrMaxValue
 argument_list|(
 name|available
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|required
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 return|;
@@ -247,12 +236,12 @@ name|divideAndCeil
 argument_list|(
 name|required
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|factor
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 argument_list|,
@@ -276,26 +265,26 @@ name|divideAndCeil
 argument_list|(
 name|required
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|factor
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|calculateRatioOrMaxValue (int numerator, int denominator)
+DECL|method|calculateRatioOrMaxValue (long numerator, long denominator)
 specifier|private
 specifier|static
 name|int
 name|calculateRatioOrMaxValue
 parameter_list|(
-name|int
+name|long
 name|numerator
 parameter_list|,
-name|int
+name|long
 name|denominator
 parameter_list|)
 block|{
@@ -313,9 +302,14 @@ name|MAX_VALUE
 return|;
 block|}
 return|return
+call|(
+name|int
+call|)
+argument_list|(
 name|numerator
 operator|/
 name|denominator
+argument_list|)
 return|;
 block|}
 block|}

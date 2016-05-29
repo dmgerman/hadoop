@@ -1263,7 +1263,7 @@ name|append
 argument_list|(
 name|current
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 operator|.
@@ -1289,7 +1289,7 @@ name|append
 argument_list|(
 name|pending
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 operator|.
@@ -1316,7 +1316,7 @@ argument_list|(
 name|getGuaranteed
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 operator|.
@@ -1343,7 +1343,7 @@ name|append
 argument_list|(
 name|idealAssigned
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 operator|.
@@ -1369,7 +1369,7 @@ name|append
 argument_list|(
 name|toBePreempted
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 operator|.
@@ -1395,7 +1395,7 @@ name|append
 argument_list|(
 name|actuallyToBePreempted
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 operator|.

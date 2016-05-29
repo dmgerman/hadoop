@@ -1368,7 +1368,7 @@ name|i
 operator|++
 control|)
 block|{
-name|int
+name|long
 name|tot
 init|=
 literal|0
@@ -1395,7 +1395,7 @@ argument_list|(
 name|i
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 block|}

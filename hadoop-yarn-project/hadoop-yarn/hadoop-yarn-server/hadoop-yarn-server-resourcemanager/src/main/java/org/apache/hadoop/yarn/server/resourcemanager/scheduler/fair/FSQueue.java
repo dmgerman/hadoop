@@ -828,7 +828,7 @@ operator|.
 name|getClusterResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|==
 literal|0
@@ -854,7 +854,7 @@ operator|)
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|scheduler
@@ -862,7 +862,7 @@ operator|.
 name|getClusterResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -872,7 +872,7 @@ condition|(
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|==
 literal|0
@@ -898,13 +898,13 @@ operator|)
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

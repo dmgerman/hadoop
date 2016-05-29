@@ -100,11 +100,11 @@ class|class
 name|ResourceInfo
 block|{
 DECL|field|memory
-name|int
+name|long
 name|memory
 decl_stmt|;
 DECL|field|vCores
-name|int
+name|long
 name|vCores
 decl_stmt|;
 DECL|method|ResourceInfo ()
@@ -124,7 +124,7 @@ name|memory
 operator|=
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|vCores
@@ -135,10 +135,10 @@ name|getVirtualCores
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|getMemory ()
+DECL|method|getMemorySize ()
 specifier|public
-name|int
-name|getMemory
+name|long
+name|getMemorySize
 parameter_list|()
 block|{
 return|return
@@ -147,7 +147,7 @@ return|;
 block|}
 DECL|method|getvCores ()
 specifier|public
-name|int
+name|long
 name|getvCores
 parameter_list|()
 block|{

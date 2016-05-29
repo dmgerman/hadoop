@@ -66,15 +66,15 @@ specifier|public
 class|class
 name|TestResources
 block|{
-DECL|method|createResource (int memory, int vCores)
+DECL|method|createResource (long memory, long vCores)
 specifier|public
 name|Resource
 name|createResource
 parameter_list|(
-name|int
+name|long
 name|memory
 parameter_list|,
-name|int
+name|long
 name|vCores
 parameter_list|)
 block|{
@@ -113,11 +113,11 @@ name|compareTo
 argument_list|(
 name|createResource
 argument_list|(
-name|Integer
+name|Long
 operator|.
 name|MAX_VALUE
 argument_list|,
-name|Integer
+name|Long
 operator|.
 name|MAX_VALUE
 argument_list|)
@@ -137,7 +137,7 @@ name|compareTo
 argument_list|(
 name|createResource
 argument_list|(
-name|Integer
+name|Long
 operator|.
 name|MAX_VALUE
 argument_list|,
@@ -161,7 +161,7 @@ name|createResource
 argument_list|(
 literal|0
 argument_list|,
-name|Integer
+name|Long
 operator|.
 name|MAX_VALUE
 argument_list|)

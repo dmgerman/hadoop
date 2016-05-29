@@ -359,7 +359,7 @@ decl_stmt|;
 comment|// Max allocation
 DECL|field|maxNodeMemory
 specifier|private
-name|int
+name|long
 name|maxNodeMemory
 init|=
 operator|-
@@ -367,7 +367,7 @@ literal|1
 decl_stmt|;
 DECL|field|maxNodeVCores
 specifier|private
-name|int
+name|long
 name|maxNodeVCores
 init|=
 operator|-
@@ -1006,7 +1006,7 @@ name|min
 argument_list|(
 name|configuredMaxAllocation
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|maxNodeMemory
@@ -1068,12 +1068,12 @@ name|add
 condition|)
 block|{
 comment|// added node
-name|int
+name|long
 name|nodeMemory
 init|=
 name|totalResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 decl_stmt|;
 if|if
@@ -1118,7 +1118,7 @@ name|maxNodeMemory
 operator|==
 name|totalResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 condition|)
 block|{

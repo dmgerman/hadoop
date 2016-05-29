@@ -3126,9 +3126,15 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
+comment|// KeyValueBasedTimelineStore could cast long to integer, need make sure
+comment|// variables for compare have same type.
+operator|(
+operator|(
+name|Integer
+operator|)
 name|entity
 operator|.
 name|getOtherInfo
@@ -3140,6 +3146,10 @@ name|ContainerMetricsConstants
 operator|.
 name|ALLOCATED_MEMORY_ENTITY_INFO
 argument_list|)
+operator|)
+operator|.
+name|longValue
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert

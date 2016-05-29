@@ -454,17 +454,17 @@ name|numReservedSlots
 decl_stmt|;
 DECL|field|usedMem
 specifier|private
-name|int
+name|long
 name|usedMem
 decl_stmt|;
 DECL|field|reservedMem
 specifier|private
-name|int
+name|long
 name|reservedMem
 decl_stmt|;
 DECL|field|neededMem
 specifier|private
-name|int
+name|long
 name|neededMem
 decl_stmt|;
 DECL|field|isUber
@@ -2071,7 +2071,7 @@ block|}
 comment|/**    * @return the used memory    */
 DECL|method|getUsedMem ()
 specifier|public
-name|int
+name|long
 name|getUsedMem
 parameter_list|()
 block|{
@@ -2080,12 +2080,12 @@ name|usedMem
 return|;
 block|}
 comment|/**    * @param m the used memory    */
-DECL|method|setUsedMem (int m)
+DECL|method|setUsedMem (long m)
 specifier|public
 name|void
 name|setUsedMem
 parameter_list|(
-name|int
+name|long
 name|m
 parameter_list|)
 block|{
@@ -2099,7 +2099,7 @@ block|}
 comment|/**    * @return the reserved memory    */
 DECL|method|getReservedMem ()
 specifier|public
-name|int
+name|long
 name|getReservedMem
 parameter_list|()
 block|{
@@ -2108,12 +2108,12 @@ name|reservedMem
 return|;
 block|}
 comment|/**    * @param r the reserved memory    */
-DECL|method|setReservedMem (int r)
+DECL|method|setReservedMem (long r)
 specifier|public
 name|void
 name|setReservedMem
 parameter_list|(
-name|int
+name|long
 name|r
 parameter_list|)
 block|{
@@ -2127,7 +2127,7 @@ block|}
 comment|/**    * @return the needed memory    */
 DECL|method|getNeededMem ()
 specifier|public
-name|int
+name|long
 name|getNeededMem
 parameter_list|()
 block|{
@@ -2136,12 +2136,12 @@ name|neededMem
 return|;
 block|}
 comment|/**    * @param n the needed memory    */
-DECL|method|setNeededMem (int n)
+DECL|method|setNeededMem (long n)
 specifier|public
 name|void
 name|setNeededMem
 parameter_list|(
-name|int
+name|long
 name|n
 parameter_list|)
 block|{

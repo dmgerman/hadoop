@@ -2905,9 +2905,12 @@ argument_list|()
 decl_stmt|;
 name|pmemLimitMBs
 operator|=
+operator|(
+name|int
+operator|)
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|vmemLimitMBs
@@ -3583,7 +3586,7 @@ operator|.
 name|getResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|*
 literal|1024L

@@ -10410,7 +10410,7 @@ operator|.
 name|getResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|>
 name|rm
@@ -10455,7 +10455,7 @@ operator|.
 name|getResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|newApp
@@ -13014,7 +13014,7 @@ name|newInstance
 argument_list|(
 name|rInfo
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|rInfo
@@ -13554,7 +13554,7 @@ name|newInstance
 argument_list|(
 name|rInfo
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|rInfo

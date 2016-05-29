@@ -186,7 +186,7 @@ name|newInstance
 argument_list|(
 name|nonZeroResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 literal|0

@@ -2795,7 +2795,7 @@ return|return
 operator|(
 name|toPreempt
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|>
 literal|0
@@ -3288,7 +3288,7 @@ operator|.
 name|getDemand
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 operator|/
@@ -6287,7 +6287,7 @@ argument_list|()
 operator|/
 name|clusterResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 operator|(

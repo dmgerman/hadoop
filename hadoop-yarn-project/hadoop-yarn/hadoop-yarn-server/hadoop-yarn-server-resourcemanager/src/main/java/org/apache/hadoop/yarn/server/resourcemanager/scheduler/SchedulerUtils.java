@@ -1250,7 +1250,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|<
 literal|0
@@ -1260,12 +1260,12 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|>
 name|maximumResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 condition|)
 block|{
@@ -1286,14 +1286,14 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|+
 literal|", maxMemory="
 operator|+
 name|maximumResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 throw|;

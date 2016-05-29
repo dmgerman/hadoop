@@ -4000,7 +4000,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyClusterMetrics (int activeNodes, int appsSubmitted, int appsPending, int containersPending, int availableMB, int activeApplications)
+DECL|method|verifyClusterMetrics (int activeNodes, int appsSubmitted, int appsPending, int containersPending, long availableMB, int activeApplications)
 specifier|private
 name|void
 name|verifyClusterMetrics
@@ -4017,7 +4017,7 @@ parameter_list|,
 name|int
 name|containersPending
 parameter_list|,
-name|int
+name|long
 name|availableMB
 parameter_list|,
 name|int
@@ -4189,7 +4189,7 @@ name|isAllMetricAssertionDone
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|assertMetric (String metricName, int expected, int actual)
+DECL|method|assertMetric (String metricName, long expected, long actual)
 specifier|private
 name|void
 name|assertMetric
@@ -4197,10 +4197,10 @@ parameter_list|(
 name|String
 name|metricName
 parameter_list|,
-name|int
+name|long
 name|expected
 parameter_list|,
-name|int
+name|long
 name|actual
 parameter_list|)
 block|{

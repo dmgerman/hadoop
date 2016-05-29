@@ -315,12 +315,12 @@ name|priority
 decl_stmt|;
 DECL|field|allocatedCpuVcores
 specifier|private
-name|int
+name|long
 name|allocatedCpuVcores
 decl_stmt|;
 DECL|field|allocatedMemoryMB
 specifier|private
-name|int
+name|long
 name|allocatedMemoryMB
 decl_stmt|;
 DECL|field|unmanagedApplication
@@ -574,7 +574,7 @@ operator|.
 name|getUsedResources
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 block|}
@@ -747,7 +747,7 @@ return|;
 block|}
 DECL|method|getAllocatedCpuVcores ()
 specifier|public
-name|int
+name|long
 name|getAllocatedCpuVcores
 parameter_list|()
 block|{
@@ -757,7 +757,7 @@ return|;
 block|}
 DECL|method|getAllocatedMemoryMB ()
 specifier|public
-name|int
+name|long
 name|getAllocatedMemoryMB
 parameter_list|()
 block|{

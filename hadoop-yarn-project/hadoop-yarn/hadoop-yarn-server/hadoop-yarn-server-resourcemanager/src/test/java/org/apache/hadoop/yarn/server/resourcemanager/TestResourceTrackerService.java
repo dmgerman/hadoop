@@ -6811,7 +6811,7 @@ operator|.
 name|getTotalCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

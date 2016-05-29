@@ -2590,7 +2590,7 @@ name|memorySeconds
 init|=
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|*
 name|usedMillis

@@ -1977,7 +1977,7 @@ literal|1024
 argument_list|,
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5855,7 +5855,7 @@ literal|1024
 argument_list|,
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -1592,7 +1592,7 @@ name|assertEquals
 argument_list|(
 name|containerResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 literal|0

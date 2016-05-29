@@ -561,12 +561,12 @@ name|amHostHttpAddress
 decl_stmt|;
 DECL|field|allocatedMB
 specifier|protected
-name|int
+name|long
 name|allocatedMB
 decl_stmt|;
 DECL|field|allocatedVCores
 specifier|protected
-name|int
+name|long
 name|allocatedVCores
 decl_stmt|;
 DECL|field|runningContainers
@@ -597,12 +597,12 @@ decl_stmt|;
 comment|// preemption info fields
 DECL|field|preemptedResourceMB
 specifier|protected
-name|int
+name|long
 name|preemptedResourceMB
 decl_stmt|;
 DECL|field|preemptedResourceVCores
 specifier|protected
-name|int
+name|long
 name|preemptedResourceVCores
 decl_stmt|;
 DECL|field|numNonAMContainerPreempted
@@ -1184,7 +1184,7 @@ name|allocatedMB
 operator|=
 name|usedResources
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|allocatedVCores
@@ -1259,7 +1259,7 @@ operator|.
 name|getResourcePreempted
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|numNonAMContainerPreempted
@@ -1619,7 +1619,7 @@ return|;
 block|}
 DECL|method|getAllocatedMB ()
 specifier|public
-name|int
+name|long
 name|getAllocatedMB
 parameter_list|()
 block|{
@@ -1631,7 +1631,7 @@ return|;
 block|}
 DECL|method|getAllocatedVCores ()
 specifier|public
-name|int
+name|long
 name|getAllocatedVCores
 parameter_list|()
 block|{
@@ -1643,7 +1643,7 @@ return|;
 block|}
 DECL|method|getPreemptedMB ()
 specifier|public
-name|int
+name|long
 name|getPreemptedMB
 parameter_list|()
 block|{
@@ -1653,7 +1653,7 @@ return|;
 block|}
 DECL|method|getPreemptedVCores ()
 specifier|public
-name|int
+name|long
 name|getPreemptedVCores
 parameter_list|()
 block|{

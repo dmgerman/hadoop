@@ -474,7 +474,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|Resources
@@ -490,7 +490,7 @@ argument_list|,
 name|ONE
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|minShareRatio2
@@ -503,7 +503,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|Resources
@@ -519,7 +519,7 @@ argument_list|,
 name|ONE
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|useToWeightRatio1
@@ -529,7 +529,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|s1
@@ -551,7 +551,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|/
 name|s2
@@ -732,7 +732,7 @@ name|Resource
 name|maxAvailable
 parameter_list|)
 block|{
-name|int
+name|long
 name|queueAvailableMemory
 init|=
 name|Math
@@ -741,12 +741,12 @@ name|max
 argument_list|(
 name|queueFairShare
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|-
 name|queueUsage
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 literal|0
@@ -765,7 +765,7 @@ name|min
 argument_list|(
 name|maxAvailable
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|queueAvailableMemory
@@ -893,12 +893,12 @@ block|{
 return|return
 name|usage
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|>
 name|maxAMResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 return|;
 block|}

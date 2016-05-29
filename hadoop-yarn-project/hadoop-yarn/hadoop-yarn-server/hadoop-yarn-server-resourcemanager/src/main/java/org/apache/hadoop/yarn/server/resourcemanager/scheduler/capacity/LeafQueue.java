@@ -2591,12 +2591,12 @@ if|if
 condition|(
 name|newMax
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|<
 name|oldMax
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|||
 name|newMax

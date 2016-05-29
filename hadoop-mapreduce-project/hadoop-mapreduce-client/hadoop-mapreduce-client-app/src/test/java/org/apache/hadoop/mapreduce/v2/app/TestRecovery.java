@@ -12148,13 +12148,13 @@ name|when
 argument_list|(
 name|minContainerRequirements
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-literal|1000
+literal|1000L
 argument_list|)
 expr_stmt|;
 name|ClusterInfo

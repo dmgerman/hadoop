@@ -1554,7 +1554,7 @@ name|assertEquals
 argument_list|(
 name|available
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|resourceManager
@@ -1572,7 +1572,7 @@ operator|.
 name|getAvailableResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1582,7 +1582,7 @@ name|assertEquals
 argument_list|(
 name|used
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|resourceManager
@@ -1600,7 +1600,7 @@ operator|.
 name|getUsedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

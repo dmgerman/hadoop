@@ -3578,7 +3578,7 @@ argument_list|(
 name|queue
 argument_list|)
 decl_stmt|;
-name|int
+name|long
 name|maxAllocationMbPerQueue
 init|=
 name|getInt
@@ -3674,7 +3674,7 @@ name|maxAllocationMbPerQueue
 operator|=
 name|clusterMax
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 block|}
@@ -3725,7 +3725,7 @@ name|maxAllocationMbPerQueue
 operator|>
 name|clusterMax
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|||
 name|maxAllocationVcoresPerQueue

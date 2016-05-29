@@ -2942,7 +2942,7 @@ name|pmemBytes
 init|=
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|*
 literal|1024

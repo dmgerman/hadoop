@@ -462,7 +462,7 @@ name|nodeId
 decl_stmt|;
 DECL|field|memory
 specifier|private
-name|int
+name|long
 name|memory
 decl_stmt|;
 DECL|field|vCores
@@ -1046,9 +1046,12 @@ condition|)
 block|{
 name|memory
 operator|=
+operator|(
+name|int
+operator|)
 name|newResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|vCores
@@ -1580,7 +1583,7 @@ name|memory
 operator|=
 name|newResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|vCores
@@ -1597,7 +1600,7 @@ return|;
 block|}
 DECL|method|getMemory ()
 specifier|public
-name|int
+name|long
 name|getMemory
 parameter_list|()
 block|{

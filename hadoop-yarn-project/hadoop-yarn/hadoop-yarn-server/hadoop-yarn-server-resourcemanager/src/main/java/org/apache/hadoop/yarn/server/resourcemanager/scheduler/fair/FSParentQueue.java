@@ -737,7 +737,7 @@ name|newInstance
 argument_list|(
 name|demand
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 name|demand

@@ -1690,13 +1690,9 @@ name|BuilderUtils
 operator|.
 name|newResource
 argument_list|(
-literal|8
-operator|*
-literal|1024
-operator|*
-literal|1024
+literal|0
 argument_list|,
-literal|1
+literal|0
 argument_list|)
 decl_stmt|;
 name|ContainerTokenIdentifier

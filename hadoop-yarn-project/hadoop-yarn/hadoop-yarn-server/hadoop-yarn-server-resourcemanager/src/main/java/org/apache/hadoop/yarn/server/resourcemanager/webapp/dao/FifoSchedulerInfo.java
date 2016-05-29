@@ -274,12 +274,12 @@ name|qstate
 decl_stmt|;
 DECL|field|minQueueMemoryCapacity
 specifier|protected
-name|int
+name|long
 name|minQueueMemoryCapacity
 decl_stmt|;
 DECL|field|maxQueueMemoryCapacity
 specifier|protected
-name|int
+name|long
 name|maxQueueMemoryCapacity
 decl_stmt|;
 DECL|field|numNodes
@@ -412,7 +412,7 @@ operator|.
 name|getMinimumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|this
@@ -424,7 +424,7 @@ operator|.
 name|getMaximumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|this
@@ -508,7 +508,7 @@ operator|.
 name|getUsedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|this
@@ -520,7 +520,7 @@ operator|.
 name|getAvailableResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|this
@@ -532,7 +532,7 @@ operator|.
 name|getTotalCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|this
@@ -643,7 +643,7 @@ return|;
 block|}
 DECL|method|getMinQueueMemoryCapacity ()
 specifier|public
-name|int
+name|long
 name|getMinQueueMemoryCapacity
 parameter_list|()
 block|{
@@ -655,7 +655,7 @@ return|;
 block|}
 DECL|method|getMaxQueueMemoryCapacity ()
 specifier|public
-name|int
+name|long
 name|getMaxQueueMemoryCapacity
 parameter_list|()
 block|{

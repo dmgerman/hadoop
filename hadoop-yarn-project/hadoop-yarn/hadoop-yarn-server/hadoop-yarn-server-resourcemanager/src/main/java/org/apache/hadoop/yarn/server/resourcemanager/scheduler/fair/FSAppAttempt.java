@@ -1307,7 +1307,7 @@ if|if
 condition|(
 name|availableResources
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|<
 literal|0

@@ -516,7 +516,7 @@ name|totalMemoryNeededMB
 operator|=
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|this

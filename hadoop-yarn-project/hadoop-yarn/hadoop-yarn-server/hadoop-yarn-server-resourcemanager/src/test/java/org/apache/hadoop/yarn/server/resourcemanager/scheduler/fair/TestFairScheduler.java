@@ -2132,7 +2132,7 @@ operator|.
 name|getMaximumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2147,7 +2147,7 @@ operator|.
 name|getMinimumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2162,7 +2162,7 @@ operator|.
 name|getIncrementResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2261,7 +2261,7 @@ operator|.
 name|getMinimumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2291,7 +2291,7 @@ operator|.
 name|getIncrementResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2405,7 +2405,7 @@ operator|.
 name|getMinimumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2435,7 +2435,7 @@ operator|.
 name|getIncrementResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2536,7 +2536,7 @@ operator|.
 name|getClusterResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2587,7 +2587,7 @@ operator|.
 name|getClusterResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2617,7 +2617,7 @@ operator|.
 name|getClusterResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2804,7 +2804,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2830,7 +2830,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3090,7 +3090,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3120,7 +3120,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3348,7 +3348,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3376,7 +3376,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3620,7 +3620,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3649,7 +3649,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3893,7 +3893,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3922,7 +3922,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4541,7 +4541,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4571,7 +4571,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4601,7 +4601,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4631,7 +4631,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4661,7 +4661,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4691,7 +4691,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5309,7 +5309,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5346,7 +5346,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5589,7 +5589,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5638,7 +5638,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5656,7 +5656,7 @@ operator|.
 name|getCurrentReservation
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5732,7 +5732,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5751,7 +5751,7 @@ operator|.
 name|getCurrentReservation
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5777,7 +5777,7 @@ operator|.
 name|getCurrentReservation
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6044,7 +6044,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6242,7 +6242,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6632,7 +6632,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6936,7 +6936,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7227,7 +7227,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7488,7 +7488,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7534,7 +7534,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7580,7 +7580,7 @@ operator|.
 name|getCurrentReservation
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7821,7 +7821,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7867,7 +7867,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7912,7 +7912,7 @@ operator|.
 name|getCurrentReservation
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7940,7 +7940,7 @@ operator|.
 name|getCurrentReservation
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8087,7 +8087,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8106,7 +8106,7 @@ operator|.
 name|getCurrentReservation
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8127,7 +8127,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8333,7 +8333,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8382,7 +8382,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8446,7 +8446,7 @@ operator|.
 name|getResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10092,7 +10092,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10120,7 +10120,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10684,7 +10684,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10700,7 +10700,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10906,7 +10906,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10926,7 +10926,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10977,7 +10977,7 @@ operator|.
 name|getClusterResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10998,7 +10998,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11018,7 +11018,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11181,7 +11181,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11201,7 +11201,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11221,7 +11221,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11251,7 +11251,7 @@ operator|.
 name|getClusterResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11271,7 +11271,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11291,7 +11291,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11405,7 +11405,7 @@ operator|.
 name|getClusterResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11424,7 +11424,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11447,7 +11447,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11492,7 +11492,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11515,7 +11515,7 @@ operator|.
 name|getSteadyFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11953,7 +11953,7 @@ operator|.
 name|getDemand
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -11980,7 +11980,7 @@ operator|.
 name|getDemand
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12704,7 +12704,7 @@ operator|.
 name|getCurrentReservation
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12722,7 +12722,7 @@ operator|.
 name|getCurrentReservation
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -20706,7 +20706,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -20845,7 +20845,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -20875,7 +20875,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -20945,7 +20945,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -20975,7 +20975,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21045,7 +21045,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21075,7 +21075,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21127,7 +21127,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21207,7 +21207,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21222,7 +21222,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21292,7 +21292,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21322,7 +21322,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21392,7 +21392,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21422,7 +21422,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21487,7 +21487,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21604,7 +21604,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21619,7 +21619,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21712,7 +21712,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21758,7 +21758,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21843,7 +21843,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21858,7 +21858,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21923,7 +21923,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22193,7 +22193,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22223,7 +22223,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22253,7 +22253,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22283,7 +22283,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22313,7 +22313,7 @@ operator|.
 name|getFairShare
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22455,7 +22455,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22485,7 +22485,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22556,7 +22556,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22586,7 +22586,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22685,7 +22685,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22715,7 +22715,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22787,7 +22787,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22817,7 +22817,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23275,7 +23275,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23305,7 +23305,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23375,7 +23375,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23405,7 +23405,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23484,7 +23484,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23514,7 +23514,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23585,7 +23585,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23615,7 +23615,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23643,7 +23643,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23673,7 +23673,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23711,7 +23711,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23783,7 +23783,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23813,7 +23813,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23851,7 +23851,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23922,7 +23922,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -23952,7 +23952,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24023,7 +24023,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24053,7 +24053,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24091,7 +24091,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24129,7 +24129,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24223,7 +24223,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24253,7 +24253,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24282,7 +24282,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24312,7 +24312,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24350,7 +24350,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24378,7 +24378,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24408,7 +24408,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24438,7 +24438,7 @@ operator|.
 name|getAMResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24468,7 +24468,7 @@ operator|.
 name|getAmResourceUsage
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -28868,7 +28868,7 @@ name|assertEquals
 argument_list|(
 name|usedResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 literal|0
@@ -28912,7 +28912,7 @@ name|assertEquals
 argument_list|(
 name|totalResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 literal|0
@@ -28958,7 +28958,7 @@ name|assertEquals
 argument_list|(
 name|availableResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|,
 literal|0

@@ -736,7 +736,7 @@ name|setMemory
 argument_list|(
 name|e
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 operator|.

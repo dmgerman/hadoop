@@ -1024,7 +1024,7 @@ decl_stmt|;
 comment|// Amt. of memory resource to request for to run the App Master
 DECL|field|amMemory
 specifier|private
-name|int
+name|long
 name|amMemory
 init|=
 literal|10
@@ -3032,7 +3032,7 @@ comment|// If we do not have min/max, we may not be able to correctly request
 comment|// the required resources from the RM for the app master
 comment|// Memory ask has to be a multiple of min and less than max.
 comment|// Dump out information about cluster capability as seen by the resource manager
-name|int
+name|long
 name|maxMem
 init|=
 name|appResponse
@@ -3040,7 +3040,7 @@ operator|.
 name|getMaximumResourceCapability
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 decl_stmt|;
 name|LOG

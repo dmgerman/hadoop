@@ -697,7 +697,7 @@ argument_list|()
 operator|*
 name|total
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 argument_list|)
@@ -737,12 +737,12 @@ name|setMemory
 argument_list|(
 name|total
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 operator|-
 name|used
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

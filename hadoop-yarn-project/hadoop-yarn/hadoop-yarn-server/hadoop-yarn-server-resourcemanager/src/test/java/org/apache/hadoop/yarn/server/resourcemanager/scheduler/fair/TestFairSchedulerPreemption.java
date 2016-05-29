@@ -654,7 +654,7 @@ name|FairScheduler
 block|{
 DECL|field|lastPreemptMemory
 specifier|public
-name|int
+name|long
 name|lastPreemptMemory
 init|=
 operator|-
@@ -675,7 +675,7 @@ name|lastPreemptMemory
 operator|=
 name|toPreempt
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 block|}
@@ -3219,7 +3219,7 @@ literal|3277
 argument_list|,
 name|toPreempt
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4037,7 +4037,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4057,7 +4057,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4091,7 +4091,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4111,7 +4111,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4912,7 +4912,7 @@ literal|1024
 argument_list|,
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4947,7 +4947,7 @@ literal|1024
 argument_list|,
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4996,7 +4996,7 @@ literal|1536
 argument_list|,
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5030,7 +5030,7 @@ literal|1536
 argument_list|,
 name|res
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5945,7 +5945,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5965,7 +5965,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5985,7 +5985,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6018,7 +6018,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6038,7 +6038,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6058,7 +6058,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6091,7 +6091,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6111,7 +6111,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6131,7 +6131,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6164,7 +6164,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6184,7 +6184,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6204,7 +6204,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6237,7 +6237,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6257,7 +6257,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6277,7 +6277,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6310,7 +6310,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6330,7 +6330,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6350,7 +6350,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7067,7 +7067,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8092,7 +8092,7 @@ name|getTime
 argument_list|()
 argument_list|)
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

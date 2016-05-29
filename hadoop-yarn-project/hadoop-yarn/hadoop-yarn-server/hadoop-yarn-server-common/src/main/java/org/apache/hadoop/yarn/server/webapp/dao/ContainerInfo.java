@@ -179,12 +179,12 @@ name|containerId
 decl_stmt|;
 DECL|field|allocatedMB
 specifier|protected
-name|int
+name|long
 name|allocatedMB
 decl_stmt|;
 DECL|field|allocatedVCores
 specifier|protected
-name|int
+name|long
 name|allocatedVCores
 decl_stmt|;
 DECL|field|assignedNodeId
@@ -284,7 +284,7 @@ operator|.
 name|getAllocatedResource
 argument_list|()
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 expr_stmt|;
 name|allocatedVCores
@@ -412,7 +412,7 @@ return|;
 block|}
 DECL|method|getAllocatedMB ()
 specifier|public
-name|int
+name|long
 name|getAllocatedMB
 parameter_list|()
 block|{
@@ -422,7 +422,7 @@ return|;
 block|}
 DECL|method|getAllocatedVCores ()
 specifier|public
-name|int
+name|long
 name|getAllocatedVCores
 parameter_list|()
 block|{

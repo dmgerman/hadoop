@@ -293,7 +293,7 @@ range|:
 name|schedulables
 control|)
 block|{
-name|int
+name|long
 name|maxShare
 init|=
 name|getResourceValue
@@ -315,9 +315,6 @@ name|Math
 operator|.
 name|min
 argument_list|(
-operator|(
-name|long
-operator|)
 name|maxShare
 operator|+
 operator|(
@@ -342,7 +339,7 @@ block|{
 break|break;
 block|}
 block|}
-name|int
+name|long
 name|totalResource
 init|=
 name|Math
@@ -718,7 +715,7 @@ range|:
 name|schedulables
 control|)
 block|{
-name|int
+name|long
 name|fixedShare
 init|=
 name|getFairShareIfFixed
@@ -805,7 +802,7 @@ comment|/**    * Get the fairshare for the {@link Schedulable} if it is fixed, -
 DECL|method|getFairShareIfFixed (Schedulable sched, boolean isSteadyShare, ResourceType type)
 specifier|private
 specifier|static
-name|int
+name|long
 name|getFairShareIfFixed
 parameter_list|(
 name|Schedulable
@@ -882,7 +879,7 @@ operator|<=
 literal|0
 condition|)
 block|{
-name|int
+name|long
 name|minShare
 init|=
 name|getResourceValue
@@ -915,7 +912,7 @@ block|}
 DECL|method|getResourceValue (Resource resource, ResourceType type)
 specifier|private
 specifier|static
-name|int
+name|long
 name|getResourceValue
 parameter_list|(
 name|Resource
@@ -936,7 +933,7 @@ case|:
 return|return
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 return|;
 case|case
@@ -958,13 +955,13 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|setResourceValue (int val, Resource resource, ResourceType type)
+DECL|method|setResourceValue (long val, Resource resource, ResourceType type)
 specifier|private
 specifier|static
 name|void
 name|setResourceValue
 parameter_list|(
-name|int
+name|long
 name|val
 parameter_list|,
 name|Resource

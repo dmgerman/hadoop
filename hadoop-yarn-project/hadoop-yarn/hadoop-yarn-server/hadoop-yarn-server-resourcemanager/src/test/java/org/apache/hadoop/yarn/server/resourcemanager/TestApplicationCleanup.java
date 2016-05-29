@@ -3451,7 +3451,7 @@ operator|.
 name|getScheduler
 argument_list|()
 decl_stmt|;
-name|int
+name|long
 name|allocatedMB
 init|=
 name|rs

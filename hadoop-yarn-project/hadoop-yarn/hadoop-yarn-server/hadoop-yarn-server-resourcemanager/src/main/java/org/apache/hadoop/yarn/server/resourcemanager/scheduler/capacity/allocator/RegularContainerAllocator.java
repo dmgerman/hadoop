@@ -2246,7 +2246,7 @@ name|capability
 argument_list|)
 decl_stmt|;
 comment|// Can we allocate a container on this node?
-name|int
+name|long
 name|availableContainers
 init|=
 name|rc

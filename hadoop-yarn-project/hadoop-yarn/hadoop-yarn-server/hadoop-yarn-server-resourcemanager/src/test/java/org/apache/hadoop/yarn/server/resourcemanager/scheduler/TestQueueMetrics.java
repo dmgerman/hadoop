@@ -3986,7 +3986,7 @@ name|rb
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkResources (MetricsSource source, int allocatedMB, int allocatedCores, int allocCtnrs, long aggreAllocCtnrs, long aggreReleasedCtnrs, int availableMB, int availableCores, int pendingMB, int pendingCores, int pendingCtnrs, int reservedMB, int reservedCores, int reservedCtnrs)
+DECL|method|checkResources (MetricsSource source, long allocatedMB, long allocatedCores, int allocCtnrs, long aggreAllocCtnrs, long aggreReleasedCtnrs, long availableMB, long availableCores, long pendingMB, long pendingCores, int pendingCtnrs, long reservedMB, long reservedCores, int reservedCtnrs)
 specifier|public
 specifier|static
 name|void
@@ -3995,10 +3995,10 @@ parameter_list|(
 name|MetricsSource
 name|source
 parameter_list|,
-name|int
+name|long
 name|allocatedMB
 parameter_list|,
-name|int
+name|long
 name|allocatedCores
 parameter_list|,
 name|int
@@ -4010,25 +4010,25 @@ parameter_list|,
 name|long
 name|aggreReleasedCtnrs
 parameter_list|,
-name|int
+name|long
 name|availableMB
 parameter_list|,
-name|int
+name|long
 name|availableCores
 parameter_list|,
-name|int
+name|long
 name|pendingMB
 parameter_list|,
-name|int
+name|long
 name|pendingCores
 parameter_list|,
 name|int
 name|pendingCtnrs
 parameter_list|,
-name|int
+name|long
 name|reservedMB
 parameter_list|,
-name|int
+name|long
 name|reservedCores
 parameter_list|,
 name|int
