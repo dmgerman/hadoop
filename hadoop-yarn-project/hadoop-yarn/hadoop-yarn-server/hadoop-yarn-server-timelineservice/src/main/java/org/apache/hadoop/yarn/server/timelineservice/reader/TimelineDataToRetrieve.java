@@ -131,7 +131,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Encapsulates information regarding which data to retrieve for each entity  * while querying.<br>  * Data to retrieve contains the following :<br>  *<ul>  *<li><b>confsToRetrieve</b> - Used for deciding which configs to return  * in response. This is represented as a {@link TimelineFilterList} object  * containing {@link TimelinePrefixFilter} objects. These can either be  * exact config keys' or prefixes which are then compared against config  * keys' to decide configs(inside entities) to return in response. If null  * or empty, all configurations will be fetched if fieldsToRetrieve  * contains {@link Field#CONFIGS} or {@link Field#ALL}. This should not be  * confused with configFilters which is used to decide which entities to  * return instead.</li>  *<li><b>metricsToRetrieve</b> - Used for deciding which metrics to return  * in response. This is represented as a {@link TimelineFilterList} object  * containing {@link TimelinePrefixFilter} objects. These can either be  * exact metric ids' or prefixes which are then compared against metric  * ids' to decide metrics(inside entities) to return in response. If null  * or empty, all metrics will be fetched if fieldsToRetrieve contains  * {@link Field#METRICS} or {@link Field#ALL}. This should not be confused  * with metricFilters which is used to decide which entities to return  * instead.</li>  *<li><b>fieldsToRetrieve</b> - Specifies which fields of the entity  * object to retrieve, see {@link Field}. If null, retrieves 3 fields,  * namely entity id, entity type and entity created time. All fields will  * be returned if {@link Field#ALL} is specified.</li>  *</ul>  */
+comment|/**  * Encapsulates information regarding which data to retrieve for each entity  * while querying.<br>  * Data to retrieve contains the following :<br>  *<ul>  *<li><b>confsToRetrieve</b> - Used for deciding which configs to return  * in response. This is represented as a {@link TimelineFilterList} object  * containing {@link TimelinePrefixFilter} objects. These can either be  * exact config keys' or prefixes which are then compared against config  * keys' to decide configs(inside entities) to return in response. If null  * or empty, all configurations will be fetched if fieldsToRetrieve  * contains {@link Field#CONFIGS} or {@link Field#ALL}. This should not be  * confused with configFilters which is used to decide which entities to  * return instead.</li>  *<li><b>metricsToRetrieve</b> - Used for deciding which metrics to return  * in response. This is represented as a {@link TimelineFilterList} object  * containing {@link TimelinePrefixFilter} objects. These can either be  * exact metric ids' or prefixes which are then compared against metric  * ids' to decide metrics(inside entities) to return in response. If null  * or empty, all metrics will be fetched if fieldsToRetrieve contains  * {@link Field#METRICS} or {@link Field#ALL}. This should not be confused  * with metricFilters which is used to decide which entities to return  * instead.</li>  *<li><b>fieldsToRetrieve</b> - Specifies which fields of the entity  * object to retrieve, see {@link Field}. If null, retrieves 3 fields,  * namely entity id, entity type and entity created time. All fields will  * be returned if {@link Field#ALL} is specified.</li>  *<li><b>metricsLimit</b> - If fieldsToRetrieve contains METRICS/ALL or  * metricsToRetrieve is specified, this limit defines an upper limit to the  * number of metrics to return. This parameter is ignored if METRICS are not to  * be fetched.</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -162,6 +162,21 @@ name|Field
 argument_list|>
 name|fieldsToRetrieve
 decl_stmt|;
+DECL|field|metricsLimit
+specifier|private
+name|Integer
+name|metricsLimit
+decl_stmt|;
+comment|/**    * Default limit of number of metrics to return.    */
+DECL|field|DEFAULT_METRICS_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|Integer
+name|DEFAULT_METRICS_LIMIT
+init|=
+literal|1
+decl_stmt|;
 DECL|method|TimelineDataToRetrieve ()
 specifier|public
 name|TimelineDataToRetrieve
@@ -174,10 +189,12 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|TimelineDataToRetrieve (TimelineFilterList confs, TimelineFilterList metrics, EnumSet<Field> fields)
+DECL|method|TimelineDataToRetrieve (TimelineFilterList confs, TimelineFilterList metrics, EnumSet<Field> fields, Integer limitForMetrics)
 specifier|public
 name|TimelineDataToRetrieve
 parameter_list|(
@@ -192,6 +209,9 @@ argument_list|<
 name|Field
 argument_list|>
 name|fields
+parameter_list|,
+name|Integer
+name|limitForMetrics
 parameter_list|)
 block|{
 name|this
@@ -212,6 +232,33 @@ name|fieldsToRetrieve
 operator|=
 name|fields
 expr_stmt|;
+if|if
+condition|(
+name|limitForMetrics
+operator|==
+literal|null
+operator|||
+name|limitForMetrics
+operator|<
+literal|1
+condition|)
+block|{
+name|this
+operator|.
+name|metricsLimit
+operator|=
+name|DEFAULT_METRICS_LIMIT
+expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|metricsLimit
+operator|=
+name|limitForMetrics
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|this
@@ -397,6 +444,53 @@ name|Field
 operator|.
 name|METRICS
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|getMetricsLimit ()
+specifier|public
+name|Integer
+name|getMetricsLimit
+parameter_list|()
+block|{
+return|return
+name|metricsLimit
+return|;
+block|}
+DECL|method|setMetricsLimit (Integer limit)
+specifier|public
+name|void
+name|setMetricsLimit
+parameter_list|(
+name|Integer
+name|limit
+parameter_list|)
+block|{
+if|if
+condition|(
+name|limit
+operator|==
+literal|null
+operator|||
+name|limit
+operator|<
+literal|1
+condition|)
+block|{
+name|this
+operator|.
+name|metricsLimit
+operator|=
+name|DEFAULT_METRICS_LIMIT
+expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|metricsLimit
+operator|=
+name|limit
 expr_stmt|;
 block|}
 block|}

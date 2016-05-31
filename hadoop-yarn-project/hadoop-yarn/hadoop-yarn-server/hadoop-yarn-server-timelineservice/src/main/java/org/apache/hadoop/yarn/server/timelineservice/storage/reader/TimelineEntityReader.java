@@ -1155,10 +1155,11 @@ argument_list|)
 expr_stmt|;
 comment|// Simply assume that if the value set contains more than 1 elements, the
 comment|// metric is a TIME_SERIES metric, otherwise, it's a SINGLE_VALUE metric
-name|metric
+name|TimelineMetric
 operator|.
-name|setType
-argument_list|(
+name|Type
+name|metricType
+init|=
 name|metricResult
 operator|.
 name|getValue
@@ -1180,6 +1181,12 @@ operator|.
 name|Type
 operator|.
 name|SINGLE_VALUE
+decl_stmt|;
+name|metric
+operator|.
+name|setType
+argument_list|(
+name|metricType
 argument_list|)
 expr_stmt|;
 name|metric

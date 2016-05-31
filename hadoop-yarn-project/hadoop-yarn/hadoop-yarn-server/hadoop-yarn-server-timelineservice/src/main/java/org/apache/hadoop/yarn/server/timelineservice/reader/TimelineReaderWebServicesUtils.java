@@ -291,8 +291,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Parse the passed fields represented as strings and convert them into a    * {@link TimelineDataToRetrieve} object.    * @param confs confs to retrieve.    * @param metrics metrics to retrieve.    * @param fields fields to retrieve.    * @return a {@link TimelineDataToRetrieve} object.    * @throws TimelineParseException if any problem occurs during parsing.    */
-DECL|method|createTimelineDataToRetrieve (String confs, String metrics, String fields)
+comment|/**    * Parse the passed fields represented as strings and convert them into a    * {@link TimelineDataToRetrieve} object.    * @param confs confs to retrieve.    * @param metrics metrics to retrieve.    * @param fields fields to retrieve.    * @param metricsLimit upper limit on number of metrics to return.    * @return a {@link TimelineDataToRetrieve} object.    * @throws TimelineParseException if any problem occurs during parsing.    */
+DECL|method|createTimelineDataToRetrieve (String confs, String metrics, String fields, String metricsLimit)
 specifier|static
 name|TimelineDataToRetrieve
 name|createTimelineDataToRetrieve
@@ -305,6 +305,9 @@ name|metrics
 parameter_list|,
 name|String
 name|fields
+parameter_list|,
+name|String
+name|metricsLimit
 parameter_list|)
 throws|throws
 name|TimelineParseException
@@ -330,6 +333,11 @@ argument_list|,
 name|TimelineParseConstants
 operator|.
 name|COMMA_DELIMITER
+argument_list|)
+argument_list|,
+name|parseIntStr
+argument_list|(
+name|metricsLimit
 argument_list|)
 argument_list|)
 return|;
@@ -579,6 +587,34 @@ else|:
 name|Long
 operator|.
 name|parseLong
+argument_list|(
+name|str
+operator|.
+name|trim
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Interpret passed string as a integer.    * @param str Passed string.    * @return integer representation if string is not null, null otherwise.    */
+DECL|method|parseIntStr (String str)
+specifier|static
+name|Integer
+name|parseIntStr
+parameter_list|(
+name|String
+name|str
+parameter_list|)
+block|{
+return|return
+name|str
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|Integer
+operator|.
+name|parseInt
 argument_list|(
 name|str
 operator|.

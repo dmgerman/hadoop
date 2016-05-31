@@ -2603,9 +2603,11 @@ name|get
 operator|.
 name|setMaxVersions
 argument_list|(
-name|Integer
+name|getDataToRetrieve
+argument_list|()
 operator|.
-name|MAX_VALUE
+name|getMetricsLimit
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -2724,9 +2726,11 @@ name|scan
 operator|.
 name|setMaxVersions
 argument_list|(
-name|Integer
+name|getDataToRetrieve
+argument_list|()
 operator|.
-name|MAX_VALUE
+name|getMetricsLimit
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
