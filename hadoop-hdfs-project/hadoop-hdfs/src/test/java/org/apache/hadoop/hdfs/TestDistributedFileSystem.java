@@ -2455,17 +2455,6 @@ DECL|method|MyDistributedFileSystem ()
 name|MyDistributedFileSystem
 parameter_list|()
 block|{
-name|statistics
-operator|=
-operator|new
-name|FileSystem
-operator|.
-name|Statistics
-argument_list|(
-literal|"myhdfs"
-argument_list|)
-expr_stmt|;
-comment|// can't mock finals
 name|dfs
 operator|=
 name|mock
