@@ -511,6 +511,15 @@ argument_list|(
 name|logs
 argument_list|)
 expr_stmt|;
+name|options
+operator|.
+name|setBytes
+argument_list|(
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|)
+expr_stmt|;
 return|return
 name|dumpAContainersLogsForALogType
 argument_list|(
@@ -1078,6 +1087,11 @@ name|thisNodeFile
 operator|.
 name|getModificationTime
 argument_list|()
+argument_list|,
+name|options
+operator|.
+name|getBytes
+argument_list|()
 argument_list|)
 operator|>
 operator|-
@@ -1108,6 +1122,11 @@ name|getModificationTime
 argument_list|()
 argument_list|,
 name|logType
+argument_list|,
+name|options
+operator|.
+name|getBytes
+argument_list|()
 argument_list|)
 operator|>
 operator|-
@@ -1420,6 +1439,11 @@ name|thisNodeFile
 operator|.
 name|getModificationTime
 argument_list|()
+argument_list|,
+name|options
+operator|.
+name|getBytes
+argument_list|()
 argument_list|)
 operator|>
 operator|-
@@ -1450,6 +1474,11 @@ name|getModificationTime
 argument_list|()
 argument_list|,
 name|logType
+argument_list|,
+name|options
+operator|.
+name|getBytes
+argument_list|()
 argument_list|)
 operator|>
 operator|-
@@ -1508,7 +1537,7 @@ return|;
 block|}
 annotation|@
 name|Private
-DECL|method|dumpAContainerLogs (String containerIdStr, AggregatedLogFormat.LogReader reader, PrintStream out, long logUploadedTime)
+DECL|method|dumpAContainerLogs (String containerIdStr, AggregatedLogFormat.LogReader reader, PrintStream out, long logUploadedTime, long bytes)
 specifier|public
 name|int
 name|dumpAContainerLogs
@@ -1526,6 +1555,9 @@ name|out
 parameter_list|,
 name|long
 name|logUploadedTime
+parameter_list|,
+name|long
+name|bytes
 parameter_list|)
 throws|throws
 name|IOException
@@ -1573,6 +1605,8 @@ argument_list|,
 name|out
 argument_list|,
 name|logUploadedTime
+argument_list|,
+name|bytes
 argument_list|)
 expr_stmt|;
 name|foundContainerLogs
@@ -1679,7 +1713,7 @@ return|;
 block|}
 annotation|@
 name|Private
-DECL|method|dumpAContainerLogsForALogType (String containerIdStr, AggregatedLogFormat.LogReader reader, PrintStream out, long logUploadedTime, List<String> logType)
+DECL|method|dumpAContainerLogsForALogType (String containerIdStr, AggregatedLogFormat.LogReader reader, PrintStream out, long logUploadedTime, List<String> logType, long bytes)
 specifier|public
 name|int
 name|dumpAContainerLogsForALogType
@@ -1703,6 +1737,9 @@ argument_list|<
 name|String
 argument_list|>
 name|logType
+parameter_list|,
+name|long
+name|bytes
 parameter_list|)
 throws|throws
 name|IOException
@@ -1755,6 +1792,8 @@ argument_list|,
 name|logUploadedTime
 argument_list|,
 name|logType
+argument_list|,
+name|bytes
 argument_list|)
 decl_stmt|;
 if|if
@@ -2107,6 +2146,11 @@ name|thisNodeFile
 operator|.
 name|getModificationTime
 argument_list|()
+argument_list|,
+name|options
+operator|.
+name|getBytes
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|foundAnyLogs
@@ -2133,6 +2177,11 @@ name|getModificationTime
 argument_list|()
 argument_list|,
 name|logTypes
+argument_list|,
+name|options
+operator|.
+name|getBytes
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if

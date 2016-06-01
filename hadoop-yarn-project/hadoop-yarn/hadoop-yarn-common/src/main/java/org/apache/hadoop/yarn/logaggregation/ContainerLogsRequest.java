@@ -95,6 +95,11 @@ name|String
 argument_list|>
 name|logTypes
 decl_stmt|;
+DECL|field|bytes
+specifier|private
+name|long
+name|bytes
+decl_stmt|;
 DECL|method|ContainerLogsRequest ()
 specifier|public
 name|ContainerLogsRequest
@@ -188,8 +193,18 @@ name|getLogTypes
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|setBytes
+argument_list|(
+name|request
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
-DECL|method|ContainerLogsRequest (ApplicationId applicationId, boolean isAppFinished, String owner, String address, String httpAddress, String container, String localDir, List<String> logs)
+DECL|method|ContainerLogsRequest (ApplicationId applicationId, boolean isAppFinished, String owner, String address, String httpAddress, String container, String localDir, List<String> logs, long bytes)
 specifier|public
 name|ContainerLogsRequest
 parameter_list|(
@@ -219,6 +234,9 @@ argument_list|<
 name|String
 argument_list|>
 name|logs
+parameter_list|,
+name|long
+name|bytes
 parameter_list|)
 block|{
 name|this
@@ -275,6 +293,13 @@ operator|.
 name|setLogTypes
 argument_list|(
 name|logs
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|setBytes
+argument_list|(
+name|bytes
 argument_list|)
 expr_stmt|;
 block|}
@@ -490,6 +515,32 @@ operator|.
 name|logTypes
 operator|=
 name|logTypes
+expr_stmt|;
+block|}
+DECL|method|getBytes ()
+specifier|public
+name|long
+name|getBytes
+parameter_list|()
+block|{
+return|return
+name|bytes
+return|;
+block|}
+DECL|method|setBytes (long bytes)
+specifier|public
+name|void
+name|setBytes
+parameter_list|(
+name|long
+name|bytes
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bytes
+operator|=
+name|bytes
 expr_stmt|;
 block|}
 block|}
