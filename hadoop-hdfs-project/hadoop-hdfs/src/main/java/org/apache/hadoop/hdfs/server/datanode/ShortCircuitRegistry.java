@@ -1865,7 +1865,7 @@ interface|interface
 name|Visitor
 block|{
 DECL|method|accept (HashMap<ShmId, RegisteredShm> segments, HashMultimap<ExtendedBlockId, Slot> slots)
-name|void
+name|boolean
 name|accept
 parameter_list|(
 name|HashMap
@@ -1891,13 +1891,14 @@ name|VisibleForTesting
 DECL|method|visit (Visitor visitor)
 specifier|public
 specifier|synchronized
-name|void
+name|boolean
 name|visit
 parameter_list|(
 name|Visitor
 name|visitor
 parameter_list|)
 block|{
+return|return
 name|visitor
 operator|.
 name|accept
@@ -1906,7 +1907,7 @@ name|segments
 argument_list|,
 name|slots
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 block|}
 end_class
