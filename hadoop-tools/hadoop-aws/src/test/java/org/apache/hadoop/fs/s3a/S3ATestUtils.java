@@ -104,12 +104,71 @@ name|Callable
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|contract
+operator|.
+name|ContractTestUtils
+operator|.
+name|skip
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestConstants
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Constants
+operator|.
+name|*
+import|;
+end_import
+
+begin_comment
+comment|/**  * Utilities for the S3A tests.  */
+end_comment
+
 begin_class
 DECL|class|S3ATestUtils
 specifier|public
 class|class
 name|S3ATestUtils
 block|{
+comment|/**    * Create the test filesystem.    *    * If the test.fs.s3a.name property is not set, this will    * trigger a JUnit failure.    *    * Multipart purging is enabled.    * @param conf configuration    * @return the FS    * @throws IOException IO Problems    * @throws AssumptionViolatedException if the FS is not named    */
 DECL|method|createTestFileSystem (Configuration conf)
 specifier|public
 specifier|static
@@ -129,8 +188,6 @@ name|conf
 operator|.
 name|getTrimmed
 argument_list|(
-name|TestS3AFileSystemContract
-operator|.
 name|TEST_FS_S3A_NAME
 argument_list|,
 literal|""
@@ -195,8 +252,6 @@ name|AssumptionViolatedException
 argument_list|(
 literal|"No test filesystem in "
 operator|+
-name|TestS3AFileSystemContract
-operator|.
 name|TEST_FS_S3A_NAME
 argument_list|)
 throw|;
@@ -213,8 +268,6 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|Constants
-operator|.
 name|PURGE_EXISTING_MULTIPART
 argument_list|,
 literal|true
@@ -224,8 +277,6 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|Constants
-operator|.
 name|PURGE_EXISTING_MULTIPART_AGE
 argument_list|,
 literal|0
@@ -244,6 +295,7 @@ return|return
 name|fs1
 return|;
 block|}
+comment|/**    * Create a file context for tests.    *    * If the test.fs.s3a.name property is not set, this will    * trigger a JUnit failure.    *    * Multipart purging is enabled.    * @param conf configuration    * @return the FS    * @throws IOException IO Problems    * @throws AssumptionViolatedException if the FS is not named    */
 DECL|method|createTestFileContext (Configuration conf)
 specifier|public
 specifier|static
@@ -263,8 +315,6 @@ name|conf
 operator|.
 name|getTrimmed
 argument_list|(
-name|TestS3AFileSystemContract
-operator|.
 name|TEST_FS_S3A_NAME
 argument_list|,
 literal|""
@@ -329,8 +379,6 @@ name|AssumptionViolatedException
 argument_list|(
 literal|"No test filesystem in "
 operator|+
-name|TestS3AFileSystemContract
-operator|.
 name|TEST_FS_S3A_NAME
 argument_list|)
 throw|;
@@ -538,6 +586,58 @@ block|}
 return|return
 name|ex
 return|;
+block|}
+comment|/**    * Turn off FS Caching: use if a filesystem with different options from    * the default is required.    * @param conf configuration to patch    */
+DECL|method|disableFilesystemCaching (Configuration conf)
+specifier|public
+specifier|static
+name|void
+name|disableFilesystemCaching
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+literal|"fs.s3a.impl.disable.cache"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Skip a test if encryption tests are disabled.    * @param configuration configuration to probe    */
+DECL|method|skipIfEncryptionTestsDisabled ( Configuration configuration)
+specifier|public
+specifier|static
+name|void
+name|skipIfEncryptionTestsDisabled
+parameter_list|(
+name|Configuration
+name|configuration
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|configuration
+operator|.
+name|getBoolean
+argument_list|(
+name|KEY_ENCRYPTION_TESTS
+argument_list|,
+literal|true
+argument_list|)
+condition|)
+block|{
+name|skip
+argument_list|(
+literal|"Skipping encryption tests"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

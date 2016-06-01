@@ -108,15 +108,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|TEST_FS_S3A_NAME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|TEST_FS_S3A_NAME
-init|=
-literal|"test.fs.s3a.name"
-decl_stmt|;
 annotation|@
 name|Override
 DECL|method|setUp ()

@@ -3938,6 +3938,63 @@ return|return
 literal|true
 return|;
 block|}
+comment|/**    * Low-level call to get at the object metadata.    * @param path path to the object    * @return metadata    * @throws IOException IO and object access problems.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getObjectMetadata (Path path)
+specifier|public
+name|ObjectMetadata
+name|getObjectMetadata
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getObjectMetadata
+argument_list|(
+name|pathToKey
+argument_list|(
+name|path
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Request object metadata; increments counters in the process.    * @param key key    * @return the metadata    */
+DECL|method|getObjectMetadata (String key)
+specifier|private
+name|ObjectMetadata
+name|getObjectMetadata
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+block|{
+name|ObjectMetadata
+name|meta
+init|=
+name|s3
+operator|.
+name|getObjectMetadata
+argument_list|(
+name|bucket
+argument_list|,
+name|key
+argument_list|)
+decl_stmt|;
+name|statistics
+operator|.
+name|incrementReadOps
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+return|return
+name|meta
+return|;
+block|}
 comment|/**    * A helper method to delete a list of keys on a s3-backend.    *    * @param keysToDelete collection of keys to delete on the s3-backend    * @param clearKeys clears the keysToDelete-list after processing the list    *            when set to true    */
 DECL|method|removeKeys (List<DeleteObjectsRequest.KeyVersion> keysToDelete, boolean clearKeys)
 specifier|private
@@ -7605,7 +7662,7 @@ return|return
 name|partSize
 return|;
 block|}
-comment|/**    * Get the threshold for multipart files    * @return the value as set during initialization    */
+comment|/**    * Get the threshold for multipart files.    * @return the value as set during initialization    */
 DECL|method|getMultiPartThreshold ()
 specifier|public
 name|long

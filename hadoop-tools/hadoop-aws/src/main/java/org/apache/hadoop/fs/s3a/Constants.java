@@ -514,6 +514,16 @@ name|SERVER_SIDE_ENCRYPTION_ALGORITHM
 init|=
 literal|"fs.s3a.server-side-encryption-algorithm"
 decl_stmt|;
+comment|/**    * The standard encryption algorithm AWS supports.    * Different implementations may support others (or none).    */
+DECL|field|SERVER_SIDE_ENCRYPTION_AES256
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SERVER_SIDE_ENCRYPTION_AES256
+init|=
+literal|"AES256"
+decl_stmt|;
 comment|//override signature algorithm used for signing requests
 DECL|field|SIGNING_ALGORITHM
 specifier|public
