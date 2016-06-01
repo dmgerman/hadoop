@@ -5234,6 +5234,16 @@ if|if
 condition|(
 name|fileStatus
 operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+break|break;
+block|}
+if|if
+condition|(
+name|fileStatus
+operator|.
 name|isFile
 argument_list|()
 condition|)
