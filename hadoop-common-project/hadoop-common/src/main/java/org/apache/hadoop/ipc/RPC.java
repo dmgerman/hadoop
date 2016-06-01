@@ -20,26 +20,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|InterruptedIOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|lang
 operator|.
 name|reflect
@@ -109,6 +89,16 @@ operator|.
 name|net
 operator|.
 name|SocketTimeoutException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|*
 import|;
 end_import
 
@@ -206,21 +196,7 @@ name|commons
 operator|.
 name|logging
 operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|*
 import|;
 end_import
 
@@ -233,20 +209,6 @@ operator|.
 name|hadoop
 operator|.
 name|HadoopIllegalArgumentException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
 import|;
 end_import
 
@@ -274,7 +236,7 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|Writable
+name|*
 import|;
 end_import
 
@@ -478,6 +440,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|ReflectionUtils
@@ -564,7 +540,16 @@ literal|1
 argument_list|)
 block|,
 comment|// Used for built in calls by tests
-comment|// 2 for WritableRpcEngine, obsolete and removed
+DECL|enumConstant|RPC_WRITABLE
+name|RPC_WRITABLE
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|2
+argument_list|)
+block|,
+comment|// Use WritableRpcEngine
 DECL|enumConstant|RPC_PROTOCOL_BUFFER
 name|RPC_PROTOCOL_BUFFER
 argument_list|(
@@ -587,11 +572,12 @@ name|value
 decl_stmt|;
 comment|// used for array size
 DECL|field|value
-specifier|private
+specifier|public
 specifier|final
 name|short
 name|value
 decl_stmt|;
+comment|//TODO make it private
 DECL|method|RpcKind (short val)
 name|RpcKind
 parameter_list|(
@@ -1122,7 +1108,7 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-name|ProtobufRpcEngine
+name|WritableRpcEngine
 operator|.
 name|class
 argument_list|)
