@@ -150,6 +150,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|ProtobufRpcEngine
@@ -240,6 +254,26 @@ name|Tool
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * A command-line tool for viewing and modifying tracing settings.  */
 end_comment
@@ -267,6 +301,22 @@ DECL|field|remote
 specifier|private
 name|TraceAdminProtocolTranslatorPB
 name|remote
+decl_stmt|;
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|TraceAdmin
+operator|.
+name|class
+argument_list|)
 decl_stmt|;
 DECL|method|usage ()
 specifier|private
@@ -312,6 +362,10 @@ operator|+
 literal|"    Remove the span receiver with the specified id.  Use -list to\n"
 operator|+
 literal|"    find the id of each receiver.\n"
+operator|+
+literal|"  -principal: If the daemon is Kerberized, specify the service\n"
+operator|+
+literal|"    principal name."
 argument_list|)
 expr_stmt|;
 block|}
@@ -975,6 +1029,47 @@ expr_stmt|;
 return|return
 literal|1
 return|;
+block|}
+name|String
+name|servicePrincipal
+init|=
+name|StringUtils
+operator|.
+name|popOptionWithArgument
+argument_list|(
+literal|"-principal"
+argument_list|,
+name|args
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|servicePrincipal
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Set service principal: {}"
+argument_list|,
+name|servicePrincipal
+argument_list|)
+expr_stmt|;
+name|getConf
+argument_list|()
+operator|.
+name|set
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_SERVICE_USER_NAME_KEY
+argument_list|,
+name|servicePrincipal
+argument_list|)
+expr_stmt|;
 block|}
 name|RPC
 operator|.
