@@ -1229,7 +1229,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Exeption while contacting value generator "
+literal|"Exception while contacting value generator "
 argument_list|,
 name|e
 argument_list|)
