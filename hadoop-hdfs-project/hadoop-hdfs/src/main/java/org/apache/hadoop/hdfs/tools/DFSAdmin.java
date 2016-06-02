@@ -1337,7 +1337,7 @@ literal|"\t\ton the number of names in the directory tree\n"
 operator|+
 literal|"\t\tFor each directory, attempt to set the quota. An error will be reported if\n"
 operator|+
-literal|"\t\t1. N is not a positive integer, or\n"
+literal|"\t\t1. quota is not a positive integer, or\n"
 operator|+
 literal|"\t\t2. User is not an administrator, or\n"
 operator|+
@@ -1809,7 +1809,7 @@ literal|"\t\tpetabytes etc (e.g. 50t is 50TB, 5m is 5MB, 3p is 3PB).\n"
 operator|+
 literal|"\t\tFor each directory, attempt to set the quota. An error will be reported if\n"
 operator|+
-literal|"\t\t1. N is not a positive integer, or\n"
+literal|"\t\t1. quota is not a positive integer or zero, or\n"
 operator|+
 literal|"\t\t2. user is not an administrator, or\n"
 operator|+
