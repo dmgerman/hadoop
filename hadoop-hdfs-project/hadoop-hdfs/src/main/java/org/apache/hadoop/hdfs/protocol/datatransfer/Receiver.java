@@ -2081,6 +2081,16 @@ argument_list|)
 argument_list|,
 name|PBHelperClient
 operator|.
+name|convertBlockIndices
+argument_list|(
+name|proto
+operator|.
+name|getBlockIndicesList
+argument_list|()
+argument_list|)
+argument_list|,
+name|PBHelperClient
+operator|.
 name|convertErasureCodingPolicy
 argument_list|(
 name|proto

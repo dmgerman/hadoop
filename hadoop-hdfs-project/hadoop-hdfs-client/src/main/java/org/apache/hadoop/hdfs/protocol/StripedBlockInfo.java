@@ -123,13 +123,20 @@ argument_list|>
 index|[]
 name|blockTokens
 decl_stmt|;
+DECL|field|blockIndices
+specifier|private
+specifier|final
+name|byte
+index|[]
+name|blockIndices
+decl_stmt|;
 DECL|field|ecPolicy
 specifier|private
 specifier|final
 name|ErasureCodingPolicy
 name|ecPolicy
 decl_stmt|;
-DECL|method|StripedBlockInfo (ExtendedBlock block, DatanodeInfo[] datanodes, Token<BlockTokenIdentifier>[] blockTokens, ErasureCodingPolicy ecPolicy)
+DECL|method|StripedBlockInfo (ExtendedBlock block, DatanodeInfo[] datanodes, Token<BlockTokenIdentifier>[] blockTokens, byte[] blockIndices, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|StripedBlockInfo
 parameter_list|(
@@ -146,6 +153,10 @@ name|BlockTokenIdentifier
 argument_list|>
 index|[]
 name|blockTokens
+parameter_list|,
+name|byte
+index|[]
+name|blockIndices
 parameter_list|,
 name|ErasureCodingPolicy
 name|ecPolicy
@@ -168,6 +179,12 @@ operator|.
 name|blockTokens
 operator|=
 name|blockTokens
+expr_stmt|;
+name|this
+operator|.
+name|blockIndices
+operator|=
+name|blockIndices
 expr_stmt|;
 name|this
 operator|.
@@ -209,6 +226,17 @@ parameter_list|()
 block|{
 return|return
 name|blockTokens
+return|;
+block|}
+DECL|method|getBlockIndices ()
+specifier|public
+name|byte
+index|[]
+name|getBlockIndices
+parameter_list|()
+block|{
+return|return
+name|blockIndices
 return|;
 block|}
 DECL|method|getErasureCodingPolicy ()

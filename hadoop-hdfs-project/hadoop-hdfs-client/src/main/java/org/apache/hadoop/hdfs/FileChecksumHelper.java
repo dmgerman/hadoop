@@ -2102,6 +2102,11 @@ operator|.
 name|getBlockTokens
 argument_list|()
 argument_list|,
+name|blockGroup
+operator|.
+name|getBlockIndices
+argument_list|()
+argument_list|,
 name|ecPolicy
 argument_list|)
 decl_stmt|;
