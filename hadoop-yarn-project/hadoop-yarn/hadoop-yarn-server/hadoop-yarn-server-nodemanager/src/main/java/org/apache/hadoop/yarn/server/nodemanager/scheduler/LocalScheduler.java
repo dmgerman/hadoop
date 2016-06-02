@@ -1112,6 +1112,9 @@ if|if
 condition|(
 name|rr
 operator|.
+name|getExecutionTypeRequest
+argument_list|()
+operator|.
 name|getExecutionType
 argument_list|()
 operator|==

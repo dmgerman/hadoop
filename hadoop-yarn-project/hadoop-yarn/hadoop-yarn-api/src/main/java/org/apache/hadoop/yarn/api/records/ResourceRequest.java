@@ -255,17 +255,18 @@ name|relaxLocality
 argument_list|,
 name|labelExpression
 argument_list|,
-name|ExecutionType
+name|ExecutionTypeRequest
 operator|.
-name|GUARANTEED
+name|newInstance
+argument_list|()
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Public
 annotation|@
-name|Stable
-DECL|method|newInstance (Priority priority, String hostName, Resource capability, int numContainers, boolean relaxLocality, String labelExpression, ExecutionType execType)
+name|Evolving
+DECL|method|newInstance (Priority priority, String hostName, Resource capability, int numContainers, boolean relaxLocality, String labelExpression, ExecutionTypeRequest executionTypeRequest)
 specifier|public
 specifier|static
 name|ResourceRequest
@@ -289,8 +290,8 @@ parameter_list|,
 name|String
 name|labelExpression
 parameter_list|,
-name|ExecutionType
-name|execType
+name|ExecutionTypeRequest
+name|executionTypeRequest
 parameter_list|)
 block|{
 name|ResourceRequest
@@ -349,9 +350,9 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setExecutionType
+name|setExecutionTypeRequest
 argument_list|(
-name|execType
+name|executionTypeRequest
 argument_list|)
 expr_stmt|;
 return|return
@@ -634,33 +635,43 @@ name|boolean
 name|getRelaxLocality
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<code>ExecutionType</code> of the requested container.    *    * @param execType    *          ExecutionType of the requested container    */
+comment|/**    * Set the<code>ExecutionTypeRequest</code> of the requested container.    *    * @param execSpec    *          ExecutionTypeRequest of the requested container    */
 annotation|@
 name|Public
 annotation|@
-name|Stable
-DECL|method|setExecutionType (ExecutionType execType)
+name|Evolving
+DECL|method|setExecutionTypeRequest (ExecutionTypeRequest execSpec)
 specifier|public
-specifier|abstract
 name|void
-name|setExecutionType
+name|setExecutionTypeRequest
 parameter_list|(
-name|ExecutionType
-name|execType
+name|ExecutionTypeRequest
+name|execSpec
 parameter_list|)
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
 comment|/**    * Get whether locality relaxation is enabled with this    *<code>ResourceRequest</code>. Defaults to true.    *    * @return whether locality relaxation is enabled with this    *<code>ResourceRequest</code>.    */
 annotation|@
 name|Public
 annotation|@
-name|Stable
-DECL|method|getExecutionType ()
+name|Evolving
+DECL|method|getExecutionTypeRequest ()
 specifier|public
-specifier|abstract
-name|ExecutionType
-name|getExecutionType
+name|ExecutionTypeRequest
+name|getExecutionTypeRequest
 parameter_list|()
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
 comment|/**    *<p>For a request at a network hierarchy level, set whether locality can be relaxed    * to that level and beyond.<p>    *     *<p>If the flag is off on a rack-level<code>ResourceRequest</code>,    * containers at that request's priority will not be assigned to nodes on that    * request's rack unless requests specifically for those nodes have also been    * submitted.<p>    *     *<p>If the flag is off on an {@link ResourceRequest#ANY}-level    *<code>ResourceRequest</code>, containers at that request's priority will    * only be assigned on racks for which specific requests have also been    * submitted.<p>    *     *<p>For example, to request a container strictly on a specific node, the    * corresponding rack-level and any-level requests should have locality    * relaxation set to false.  Similarly, to request a container strictly on a    * specific rack, the corresponding any-level request should have locality    * relaxation set to false.<p>    *     * @param relaxLocality whether locality relaxation is enabled with this    *<code>ResourceRequest</code>.    */
 annotation|@
 name|Public
@@ -1008,15 +1019,15 @@ condition|)
 return|return
 literal|false
 return|;
-name|ExecutionType
-name|executionType
+name|ExecutionTypeRequest
+name|execTypeRequest
 init|=
-name|getExecutionType
+name|getExecutionTypeRequest
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|executionType
+name|execTypeRequest
 operator|==
 literal|null
 condition|)
@@ -1025,7 +1036,7 @@ if|if
 condition|(
 name|other
 operator|.
-name|getExecutionType
+name|getExecutionTypeRequest
 argument_list|()
 operator|!=
 literal|null
@@ -1039,12 +1050,16 @@ block|}
 elseif|else
 if|if
 condition|(
-name|executionType
-operator|!=
+operator|!
+name|execTypeRequest
+operator|.
+name|equals
+argument_list|(
 name|other
 operator|.
-name|getExecutionType
+name|getExecutionTypeRequest
 argument_list|()
+argument_list|)
 condition|)
 block|{
 return|return
