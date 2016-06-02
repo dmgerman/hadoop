@@ -210,6 +210,13 @@ name|fsRunning
 init|=
 literal|true
 decl_stmt|;
+DECL|field|timedOutCount
+specifier|private
+name|long
+name|timedOutCount
+init|=
+literal|0L
+decl_stmt|;
 comment|//
 comment|// It might take anywhere between 5 to 10 minutes before
 comment|// a request is timed out.
@@ -476,6 +483,10 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+name|timedOutCount
+operator|=
+literal|0L
+expr_stmt|;
 block|}
 block|}
 comment|/**    * The total number of blocks that are undergoing reconstruction.    */
@@ -534,6 +545,27 @@ return|return
 literal|0
 return|;
 block|}
+comment|/**    * Used for metrics.    * @return The number of timeouts    */
+DECL|method|getNumTimedOuts ()
+name|long
+name|getNumTimedOuts
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|timedOutItems
+init|)
+block|{
+return|return
+name|timedOutCount
+operator|+
+name|timedOutItems
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
+block|}
 comment|/**    * Returns a list of blocks that have timed out their    * reconstruction requests. Returns null if no blocks have    * timed out.    */
 DECL|method|getTimedOutBlocks ()
 name|BlockInfo
@@ -560,6 +592,14 @@ return|return
 literal|null
 return|;
 block|}
+name|int
+name|size
+init|=
+name|timedOutItems
+operator|.
+name|size
+argument_list|()
+decl_stmt|;
 name|BlockInfo
 index|[]
 name|blockList
@@ -571,10 +611,7 @@ argument_list|(
 operator|new
 name|BlockInfo
 index|[
-name|timedOutItems
-operator|.
 name|size
-argument_list|()
 index|]
 argument_list|)
 decl_stmt|;
@@ -582,6 +619,10 @@ name|timedOutItems
 operator|.
 name|clear
 argument_list|()
+expr_stmt|;
+name|timedOutCount
+operator|+=
+name|size
 expr_stmt|;
 return|return
 name|blockList

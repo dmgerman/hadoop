@@ -1747,6 +1747,20 @@ name|count
 argument_list|()
 return|;
 block|}
+comment|/** Used by metrics. */
+DECL|method|getNumTimedOutPendingReconstructions ()
+specifier|public
+name|long
+name|getNumTimedOutPendingReconstructions
+parameter_list|()
+block|{
+return|return
+name|pendingReconstruction
+operator|.
+name|getNumTimedOuts
+argument_list|()
+return|;
+block|}
 comment|/**replicationRecheckInterval is how often namenode checks for new replication work*/
 DECL|field|replicationRecheckInterval
 specifier|private

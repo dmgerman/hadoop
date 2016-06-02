@@ -21411,6 +21411,21 @@ name|getExcessBlocksCount
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Metric
+DECL|method|getNumTimedOutPendingReconstructions ()
+specifier|public
+name|long
+name|getNumTimedOutPendingReconstructions
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getNumTimedOutPendingReconstructions
+argument_list|()
+return|;
+block|}
 comment|// HA-only metric
 annotation|@
 name|Metric
