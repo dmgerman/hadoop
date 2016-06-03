@@ -336,7 +336,7 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|FileSystemTimelineReaderImpl
+name|HBaseTimelineReaderImpl
 import|;
 end_import
 
@@ -588,7 +588,7 @@ name|YarnConfiguration
 operator|.
 name|TIMELINE_SERVICE_READER_CLASS
 argument_list|,
-name|FileSystemTimelineReaderImpl
+name|HBaseTimelineReaderImpl
 operator|.
 name|class
 argument_list|,

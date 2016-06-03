@@ -6870,9 +6870,9 @@ name|APP_FINAL_VALUE_RETENTION_THRESHOLD
 init|=
 name|TIMELINE_SERVICE_PREFIX
 operator|+
-literal|"coprocessor.app-final-value-retention-milliseconds"
+literal|"hbase.coprocessor.app-final-value-retention-milliseconds"
 decl_stmt|;
-comment|/**    * The setting that controls how long the final value of a metric    * of a completed app is retained before merging into the flow sum.    */
+comment|/**    * The setting that controls how long the final value of a metric of a    * completed app is retained before merging into the flow sum. Up to this time    * after an application is completed out-of-order values that arrive can be    * recognized and discarded at the cost of increased storage.    */
 DECL|field|DEFAULT_APP_FINAL_VALUE_RETENTION_THRESHOLD
 specifier|public
 specifier|static

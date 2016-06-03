@@ -493,7 +493,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *  File System based implementation for TimelineReader.  */
+comment|/**  *  File System based implementation for TimelineReader. This implementation may  *  not provide a complete implementation of all the necessary features. This  *  implementation is provided solely for basic testing purposes, and should not  *  be used in a non-test situation.  */
 end_comment
 
 begin_class

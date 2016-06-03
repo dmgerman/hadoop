@@ -252,7 +252,7 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|FileSystemTimelineWriterImpl
+name|HBaseTimelineWriterImpl
 import|;
 end_import
 
@@ -373,7 +373,7 @@ name|YarnConfiguration
 operator|.
 name|TIMELINE_SERVICE_WRITER_CLASS
 argument_list|,
-name|FileSystemTimelineWriterImpl
+name|HBaseTimelineWriterImpl
 operator|.
 name|class
 argument_list|,
