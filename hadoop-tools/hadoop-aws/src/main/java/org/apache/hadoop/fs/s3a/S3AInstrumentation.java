@@ -20,6 +20,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -142,6 +156,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|lib
+operator|.
+name|MutableMetric
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|net
@@ -180,8 +210,26 @@ name|UUID
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Statistic
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
-comment|/**  * Instrumentation of S3a.  * Derived from the {@code AzureFileSystemInstrumentation}  */
+comment|/**  * Instrumentation of S3a.  * Derived from the {@code AzureFileSystemInstrumentation}.  *  * Counters and metrics are generally addressed in code by their name or  * {@link Statistic} key. There<i>may</i> be some Statistics which do  * not have an entry here. To avoid attempts to access such counters failing,  * the operations to increment/query metric values are designed to handle  * lookup failures.  */
 end_comment
 
 begin_class
@@ -217,195 +265,6 @@ name|String
 name|CONTEXT
 init|=
 literal|"S3AFileSystem"
-decl_stmt|;
-DECL|field|STREAM_OPENED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_OPENED
-init|=
-literal|"streamOpened"
-decl_stmt|;
-DECL|field|STREAM_CLOSE_OPERATIONS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_CLOSE_OPERATIONS
-init|=
-literal|"streamCloseOperations"
-decl_stmt|;
-DECL|field|STREAM_CLOSED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_CLOSED
-init|=
-literal|"streamClosed"
-decl_stmt|;
-DECL|field|STREAM_ABORTED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_ABORTED
-init|=
-literal|"streamAborted"
-decl_stmt|;
-DECL|field|STREAM_READ_EXCEPTIONS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_READ_EXCEPTIONS
-init|=
-literal|"streamReadExceptions"
-decl_stmt|;
-DECL|field|STREAM_SEEK_OPERATIONS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_SEEK_OPERATIONS
-init|=
-literal|"streamSeekOperations"
-decl_stmt|;
-DECL|field|STREAM_FORWARD_SEEK_OPERATIONS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_FORWARD_SEEK_OPERATIONS
-init|=
-literal|"streamForwardSeekOperations"
-decl_stmt|;
-DECL|field|STREAM_BACKWARD_SEEK_OPERATIONS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_BACKWARD_SEEK_OPERATIONS
-init|=
-literal|"streamBackwardSeekOperations"
-decl_stmt|;
-DECL|field|STREAM_SEEK_BYTES_SKIPPED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_SEEK_BYTES_SKIPPED
-init|=
-literal|"streamBytesSkippedOnSeek"
-decl_stmt|;
-DECL|field|STREAM_SEEK_BYTES_BACKWARDS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_SEEK_BYTES_BACKWARDS
-init|=
-literal|"streamBytesBackwardsOnSeek"
-decl_stmt|;
-DECL|field|STREAM_SEEK_BYTES_READ
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_SEEK_BYTES_READ
-init|=
-literal|"streamBytesRead"
-decl_stmt|;
-DECL|field|STREAM_READ_OPERATIONS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_READ_OPERATIONS
-init|=
-literal|"streamReadOperations"
-decl_stmt|;
-DECL|field|STREAM_READ_FULLY_OPERATIONS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_READ_FULLY_OPERATIONS
-init|=
-literal|"streamReadFullyOperations"
-decl_stmt|;
-DECL|field|STREAM_READ_OPERATIONS_INCOMPLETE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|STREAM_READ_OPERATIONS_INCOMPLETE
-init|=
-literal|"streamReadOperationsIncomplete"
-decl_stmt|;
-DECL|field|FILES_CREATED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|FILES_CREATED
-init|=
-literal|"files_created"
-decl_stmt|;
-DECL|field|FILES_COPIED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|FILES_COPIED
-init|=
-literal|"files_copied"
-decl_stmt|;
-DECL|field|FILES_COPIED_BYTES
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|FILES_COPIED_BYTES
-init|=
-literal|"files_copied_bytes"
-decl_stmt|;
-DECL|field|FILES_DELETED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|FILES_DELETED
-init|=
-literal|"files_deleted"
-decl_stmt|;
-DECL|field|DIRECTORIES_CREATED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DIRECTORIES_CREATED
-init|=
-literal|"directories_created"
-decl_stmt|;
-DECL|field|DIRECTORIES_DELETED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DIRECTORIES_DELETED
-init|=
-literal|"directories_deleted"
-decl_stmt|;
-DECL|field|IGNORED_ERRORS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|IGNORED_ERRORS
-init|=
-literal|"ignored_errors"
 decl_stmt|;
 DECL|field|registry
 specifier|private
@@ -566,6 +425,52 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+DECL|field|COUNTERS_TO_CREATE
+specifier|private
+specifier|static
+specifier|final
+name|Statistic
+index|[]
+name|COUNTERS_TO_CREATE
+init|=
+block|{
+name|INVOCATION_COPY_FROM_LOCAL_FILE
+block|,
+name|INVOCATION_EXISTS
+block|,
+name|INVOCATION_GET_FILE_STATUS
+block|,
+name|INVOCATION_GLOB_STATUS
+block|,
+name|INVOCATION_IS_DIRECTORY
+block|,
+name|INVOCATION_IS_FILE
+block|,
+name|INVOCATION_LIST_FILES
+block|,
+name|INVOCATION_LIST_LOCATED_STATUS
+block|,
+name|INVOCATION_LIST_STATUS
+block|,
+name|INVOCATION_MKDIRS
+block|,
+name|INVOCATION_RENAME
+block|,
+name|OBJECT_COPY_REQUESTS
+block|,
+name|OBJECT_DELETE_REQUESTS
+block|,
+name|OBJECT_LIST_REQUESTS
+block|,
+name|OBJECT_METADATA_REQUESTS
+block|,
+name|OBJECT_MULTIPART_UPLOAD_ABORTED
+block|,
+name|OBJECT_PUT_BYTES
+block|,
+name|OBJECT_PUT_REQUESTS
+block|}
+decl_stmt|;
 DECL|method|S3AInstrumentation (URI name)
 specifier|public
 name|S3AInstrumentation
@@ -622,8 +527,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_OPENED
-argument_list|,
-literal|"Total count of times an input stream to object store was opened"
 argument_list|)
 expr_stmt|;
 name|streamCloseOperations
@@ -631,8 +534,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_CLOSE_OPERATIONS
-argument_list|,
-literal|"Total count of times an attempt to close a data stream was made"
 argument_list|)
 expr_stmt|;
 name|streamClosed
@@ -640,8 +541,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_CLOSED
-argument_list|,
-literal|"Count of times the TCP stream was closed"
 argument_list|)
 expr_stmt|;
 name|streamAborted
@@ -649,8 +548,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_ABORTED
-argument_list|,
-literal|"Count of times the TCP stream was aborted"
 argument_list|)
 expr_stmt|;
 name|streamSeekOperations
@@ -658,8 +555,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_SEEK_OPERATIONS
-argument_list|,
-literal|"Number of seek operations invoked on input streams"
 argument_list|)
 expr_stmt|;
 name|streamReadExceptions
@@ -667,8 +562,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_READ_EXCEPTIONS
-argument_list|,
-literal|"Number of read exceptions caught and attempted to recovered from"
 argument_list|)
 expr_stmt|;
 name|streamForwardSeekOperations
@@ -676,8 +569,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_FORWARD_SEEK_OPERATIONS
-argument_list|,
-literal|"Number of executed seek operations which went forward in a stream"
 argument_list|)
 expr_stmt|;
 name|streamBackwardSeekOperations
@@ -685,8 +576,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_BACKWARD_SEEK_OPERATIONS
-argument_list|,
-literal|"Number of executed seek operations which went backwards in a stream"
 argument_list|)
 expr_stmt|;
 name|streamBytesSkippedOnSeek
@@ -694,8 +583,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_SEEK_BYTES_SKIPPED
-argument_list|,
-literal|"Count of bytes skipped during forward seek operations"
 argument_list|)
 expr_stmt|;
 name|streamBytesBackwardsOnSeek
@@ -703,8 +590,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_SEEK_BYTES_BACKWARDS
-argument_list|,
-literal|"Count of bytes moved backwards during seek operations"
 argument_list|)
 expr_stmt|;
 name|streamBytesRead
@@ -712,8 +597,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_SEEK_BYTES_READ
-argument_list|,
-literal|"Count of bytes read during seek() in stream operations"
 argument_list|)
 expr_stmt|;
 name|streamReadOperations
@@ -721,8 +604,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_READ_OPERATIONS
-argument_list|,
-literal|"Count of read() operations in streams"
 argument_list|)
 expr_stmt|;
 name|streamReadFullyOperations
@@ -730,8 +611,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_READ_FULLY_OPERATIONS
-argument_list|,
-literal|"Count of readFully() operations in streams"
 argument_list|)
 expr_stmt|;
 name|streamReadsIncomplete
@@ -739,8 +618,6 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_READ_OPERATIONS_INCOMPLETE
-argument_list|,
-literal|"Count of incomplete read() operations in streams"
 argument_list|)
 expr_stmt|;
 name|numberOfFilesCreated
@@ -748,8 +625,6 @@ operator|=
 name|counter
 argument_list|(
 name|FILES_CREATED
-argument_list|,
-literal|"Total number of files created through the object store."
 argument_list|)
 expr_stmt|;
 name|numberOfFilesCopied
@@ -757,8 +632,6 @@ operator|=
 name|counter
 argument_list|(
 name|FILES_COPIED
-argument_list|,
-literal|"Total number of files copied within the object store."
 argument_list|)
 expr_stmt|;
 name|bytesOfFilesCopied
@@ -766,8 +639,6 @@ operator|=
 name|counter
 argument_list|(
 name|FILES_COPIED_BYTES
-argument_list|,
-literal|"Total number of bytes copied within the object store."
 argument_list|)
 expr_stmt|;
 name|numberOfFilesDeleted
@@ -775,8 +646,6 @@ operator|=
 name|counter
 argument_list|(
 name|FILES_DELETED
-argument_list|,
-literal|"Total number of files deleted through from the object store."
 argument_list|)
 expr_stmt|;
 name|numberOfDirectoriesCreated
@@ -784,8 +653,6 @@ operator|=
 name|counter
 argument_list|(
 name|DIRECTORIES_CREATED
-argument_list|,
-literal|"Total number of directories created through the object store."
 argument_list|)
 expr_stmt|;
 name|numberOfDirectoriesDeleted
@@ -793,8 +660,6 @@ operator|=
 name|counter
 argument_list|(
 name|DIRECTORIES_DELETED
-argument_list|,
-literal|"Total number of directories deleted through the object store."
 argument_list|)
 expr_stmt|;
 name|ignoredErrors
@@ -802,10 +667,22 @@ operator|=
 name|counter
 argument_list|(
 name|IGNORED_ERRORS
-argument_list|,
-literal|"Total number of errors caught and ingored."
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|Statistic
+name|statistic
+range|:
+name|COUNTERS_TO_CREATE
+control|)
+block|{
+name|counter
+argument_list|(
+name|statistic
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Create a counter in the registry.    * @param name counter name    * @param desc counter description    * @return a new counter    */
 DECL|method|counter (String name, String desc)
@@ -877,6 +754,58 @@ argument_list|)
 expr_stmt|;
 return|return
 name|counter
+return|;
+block|}
+comment|/**    * Create a counter in the registry.    * @param op statistic to count    * @return a new counter    */
+DECL|method|counter (Statistic op)
+specifier|protected
+specifier|final
+name|MutableCounterLong
+name|counter
+parameter_list|(
+name|Statistic
+name|op
+parameter_list|)
+block|{
+return|return
+name|counter
+argument_list|(
+name|op
+operator|.
+name|getSymbol
+argument_list|()
+argument_list|,
+name|op
+operator|.
+name|getDescription
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Create a counter in the stream map: these are unregistered in the public    * metrics.    * @param op statistic to count    * @return a new counter    */
+DECL|method|streamCounter (Statistic op)
+specifier|protected
+specifier|final
+name|MutableCounterLong
+name|streamCounter
+parameter_list|(
+name|Statistic
+name|op
+parameter_list|)
+block|{
+return|return
+name|streamCounter
+argument_list|(
+name|op
+operator|.
+name|getSymbol
+argument_list|()
+argument_list|,
+name|op
+operator|.
+name|getDescription
+argument_list|()
+argument_list|)
 return|;
 block|}
 comment|/**    * Create a gauge in the registry.    * @param name name gauge name    * @param desc description    * @return the gauge    */
@@ -1009,6 +938,170 @@ name|toString
 argument_list|()
 return|;
 block|}
+comment|/**    * Get the value of a counter.    * @param statistic the operation    * @return its value, or 0 if not found.    */
+DECL|method|getCounterValue (Statistic statistic)
+specifier|public
+name|long
+name|getCounterValue
+parameter_list|(
+name|Statistic
+name|statistic
+parameter_list|)
+block|{
+return|return
+name|getCounterValue
+argument_list|(
+name|statistic
+operator|.
+name|getSymbol
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the value of a counter.    * If the counter is null, return 0.    * @param name the name of the counter    * @return its value.    */
+DECL|method|getCounterValue (String name)
+specifier|public
+name|long
+name|getCounterValue
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|MutableCounterLong
+name|counter
+init|=
+name|lookupCounter
+argument_list|(
+name|name
+argument_list|)
+decl_stmt|;
+return|return
+name|counter
+operator|==
+literal|null
+condition|?
+literal|0
+else|:
+name|counter
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+comment|/**    * Lookup a counter by name. Return null if it is not known.    * @param name counter name    * @return the counter    */
+DECL|method|lookupCounter (String name)
+specifier|private
+name|MutableCounterLong
+name|lookupCounter
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|MutableMetric
+name|metric
+init|=
+name|lookupMetric
+argument_list|(
+name|name
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|metric
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|metric
+argument_list|,
+literal|"not found: "
+operator|+
+name|name
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+operator|(
+name|metric
+operator|instanceof
+name|MutableCounterLong
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"Metric "
+operator|+
+name|name
+operator|+
+literal|" is not a MutableCounterLong: "
+operator|+
+name|metric
+argument_list|)
+throw|;
+block|}
+return|return
+operator|(
+name|MutableCounterLong
+operator|)
+name|metric
+return|;
+block|}
+comment|/**    * Look up a metric from both the registered set and the lighter weight    * stream entries.    * @param name metric name    * @return the metric or null    */
+DECL|method|lookupMetric (String name)
+specifier|public
+name|MutableMetric
+name|lookupMetric
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|MutableMetric
+name|metric
+init|=
+name|getRegistry
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|name
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|metric
+operator|==
+literal|null
+condition|)
+block|{
+name|metric
+operator|=
+name|streamMetrics
+operator|.
+name|get
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|metric
+return|;
+block|}
 comment|/**    * Indicate that S3A created a file.    */
 DECL|method|fileCreated ()
 specifier|public
@@ -1106,6 +1199,46 @@ operator|.
 name|incr
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Increment a specific counter.    * No-op if not defined.    * @param op operation    * @param count increment value    */
+DECL|method|incrementCounter (Statistic op, long count)
+specifier|public
+name|void
+name|incrementCounter
+parameter_list|(
+name|Statistic
+name|op
+parameter_list|,
+name|long
+name|count
+parameter_list|)
+block|{
+name|MutableCounterLong
+name|counter
+init|=
+name|lookupCounter
+argument_list|(
+name|op
+operator|.
+name|getSymbol
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|counter
+operator|!=
+literal|null
+condition|)
+block|{
+name|counter
+operator|.
+name|incr
+argument_list|(
+name|count
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Create a stream input statistics instance.    * @return the new instance    */
 DECL|method|newInputStreamStatistics ()

@@ -56,29 +56,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Rule
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|rules
-operator|.
-name|Timeout
 import|;
 end_import
 
@@ -184,17 +162,9 @@ name|Future
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
+begin_comment
+comment|/**  * Test some scalable operations related to file renaming and deletion.  */
+end_comment
 
 begin_class
 DECL|class|TestS3ADeleteManyFiles
@@ -218,23 +188,6 @@ argument_list|(
 name|TestS3ADeleteManyFiles
 operator|.
 name|class
-argument_list|)
-decl_stmt|;
-annotation|@
-name|Rule
-DECL|field|testTimeout
-specifier|public
-name|Timeout
-name|testTimeout
-init|=
-operator|new
-name|Timeout
-argument_list|(
-literal|30
-operator|*
-literal|60
-operator|*
-literal|1000
 argument_list|)
 decl_stmt|;
 comment|/**    * CAUTION: If this test starts failing, please make sure that the    * {@link org.apache.hadoop.fs.s3a.Constants#MAX_THREADS} configuration is not    * set too low. Alternatively, consider reducing the    *<code>scale.test.operation.count</code> parameter in    *<code>getOperationCount()</code>.    *    * @see #getOperationCount()    */

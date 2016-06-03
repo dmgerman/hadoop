@@ -224,8 +224,26 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|contract
+operator|.
+name|ContractTestUtils
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
-comment|/**  * Look at the performance of S3a operations  */
+comment|/**  * Look at the performance of S3a operations.  */
 end_comment
 
 begin_class
@@ -684,7 +702,7 @@ name|nanosPerByte
 init|=
 name|readTimer
 operator|.
-name|nanosPerByte
+name|nanosPerOperation
 argument_list|(
 name|count
 argument_list|)

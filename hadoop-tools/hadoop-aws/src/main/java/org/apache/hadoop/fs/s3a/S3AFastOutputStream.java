@@ -280,20 +280,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|lang
-operator|.
-name|StringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -313,20 +299,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileSystem
 import|;
 end_import
 
@@ -468,6 +440,24 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Statistic
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
 comment|/**  * Upload files/parts asap directly from a memory buffer (instead of buffering  * to a file).  *<p>  * Uploads are managed low-level rather than through the AWS TransferManager.  * This allows for uploading each part of a multi-part upload as soon as  * the bytes are in memory, rather than waiting until the file is closed.  *<p>  * Unstable: statistics and error handling might evolve  */
 end_comment
@@ -541,20 +531,6 @@ specifier|final
 name|CannedAccessControlList
 name|cannedACL
 decl_stmt|;
-DECL|field|statistics
-specifier|private
-specifier|final
-name|FileSystem
-operator|.
-name|Statistics
-name|statistics
-decl_stmt|;
-DECL|field|serverSideEncryptionAlgorithm
-specifier|private
-specifier|final
-name|String
-name|serverSideEncryptionAlgorithm
-decl_stmt|;
 DECL|field|progressListener
 specifier|private
 specifier|final
@@ -587,8 +563,8 @@ specifier|private
 name|int
 name|bufferLimit
 decl_stmt|;
-comment|/**    * Creates a fast OutputStream that uploads to S3 from memory.    * For MultiPartUploads, as soon as sufficient bytes have been written to    * the stream a part is uploaded immediately (by using the low-level    * multi-part upload API on the AmazonS3Client).    *    * @param client AmazonS3Client used for S3 calls    * @param fs S3AFilesystem    * @param bucket S3 bucket name    * @param key S3 key name    * @param progress report progress in order to prevent timeouts    * @param statistics track FileSystem.Statistics on the performed operations    * @param cannedACL used CannedAccessControlList    * @param serverSideEncryptionAlgorithm algorithm for server side encryption    * @param partSize size of a single part in a multi-part upload (except    * last part)    * @param multiPartThreshold files at least this size use multi-part upload    * @param threadPoolExecutor thread factory    * @throws IOException on any problem    */
-DECL|method|S3AFastOutputStream (AmazonS3Client client, S3AFileSystem fs, String bucket, String key, Progressable progress, FileSystem.Statistics statistics, CannedAccessControlList cannedACL, String serverSideEncryptionAlgorithm, long partSize, long multiPartThreshold, ExecutorService threadPoolExecutor)
+comment|/**    * Creates a fast OutputStream that uploads to S3 from memory.    * For MultiPartUploads, as soon as sufficient bytes have been written to    * the stream a part is uploaded immediately (by using the low-level    * multi-part upload API on the AmazonS3Client).    *    * @param client AmazonS3Client used for S3 calls    * @param fs S3AFilesystem    * @param bucket S3 bucket name    * @param key S3 key name    * @param progress report progress in order to prevent timeouts    * @param cannedACL used CannedAccessControlList    * @param partSize size of a single part in a multi-part upload (except    * last part)    * @param multiPartThreshold files at least this size use multi-part upload    * @param threadPoolExecutor thread factory    * @throws IOException on any problem    */
+DECL|method|S3AFastOutputStream (AmazonS3Client client, S3AFileSystem fs, String bucket, String key, Progressable progress, CannedAccessControlList cannedACL, long partSize, long multiPartThreshold, ExecutorService threadPoolExecutor)
 specifier|public
 name|S3AFastOutputStream
 parameter_list|(
@@ -607,16 +583,8 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|,
-name|FileSystem
-operator|.
-name|Statistics
-name|statistics
-parameter_list|,
 name|CannedAccessControlList
 name|cannedACL
-parameter_list|,
-name|String
-name|serverSideEncryptionAlgorithm
 parameter_list|,
 name|long
 name|partSize
@@ -659,18 +627,6 @@ operator|.
 name|cannedACL
 operator|=
 name|cannedACL
-expr_stmt|;
-name|this
-operator|.
-name|statistics
-operator|=
-name|statistics
-expr_stmt|;
-name|this
-operator|.
-name|serverSideEncryptionAlgorithm
-operator|=
-name|serverSideEncryptionAlgorithm
 expr_stmt|;
 comment|//Ensure limit as ByteArrayOutputStream size cannot exceed Integer.MAX_VALUE
 if|if
@@ -1279,16 +1235,28 @@ expr_stmt|;
 block|}
 else|else
 block|{
-if|if
-condition|(
+name|int
+name|size
+init|=
 name|buffer
 operator|.
 name|size
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|size
 operator|>
 literal|0
 condition|)
 block|{
+name|fs
+operator|.
+name|incrementPutStartStatistics
+argument_list|(
+name|size
+argument_list|)
+expr_stmt|;
 comment|//send last part
 name|multiPartUpload
 operator|.
@@ -1303,10 +1271,7 @@ name|toByteArray
 argument_list|()
 argument_list|)
 argument_list|,
-name|buffer
-operator|.
 name|size
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1330,13 +1295,6 @@ name|partETags
 argument_list|)
 expr_stmt|;
 block|}
-name|statistics
-operator|.
-name|incrementWriteOps
-argument_list|(
-literal|1
-argument_list|)
-expr_stmt|;
 comment|// This will delete unnecessary fake parent directories
 name|fs
 operator|.
@@ -1370,39 +1328,18 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Create the default metadata for a multipart upload operation.    * @return the metadata to use/extend.    */
 DECL|method|createDefaultMetadata ()
 specifier|private
 name|ObjectMetadata
 name|createDefaultMetadata
 parameter_list|()
 block|{
-name|ObjectMetadata
-name|om
-init|=
-operator|new
-name|ObjectMetadata
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|StringUtils
-operator|.
-name|isNotBlank
-argument_list|(
-name|serverSideEncryptionAlgorithm
-argument_list|)
-condition|)
-block|{
-name|om
-operator|.
-name|setSSEAlgorithm
-argument_list|(
-name|serverSideEncryptionAlgorithm
-argument_list|)
-expr_stmt|;
-block|}
 return|return
-name|om
+name|fs
+operator|.
+name|newObjectMetadata
+argument_list|()
 return|;
 block|}
 DECL|method|initiateMultiPartUpload ()
@@ -1414,13 +1351,6 @@ throws|throws
 name|IOException
 block|{
 specifier|final
-name|ObjectMetadata
-name|om
-init|=
-name|createDefaultMetadata
-argument_list|()
-decl_stmt|;
-specifier|final
 name|InitiateMultipartUploadRequest
 name|initiateMPURequest
 init|=
@@ -1431,7 +1361,8 @@ name|bucket
 argument_list|,
 name|key
 argument_list|,
-name|om
+name|createDefaultMetadata
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|initiateMPURequest
@@ -1503,26 +1434,33 @@ init|=
 name|createDefaultMetadata
 argument_list|()
 decl_stmt|;
-name|om
-operator|.
-name|setContentLength
-argument_list|(
+specifier|final
+name|int
+name|size
+init|=
 name|buffer
 operator|.
 name|size
 argument_list|()
+decl_stmt|;
+name|om
+operator|.
+name|setContentLength
+argument_list|(
+name|size
 argument_list|)
 expr_stmt|;
 specifier|final
 name|PutObjectRequest
 name|putObjectRequest
 init|=
-operator|new
-name|PutObjectRequest
+name|fs
+operator|.
+name|newPutObjectRequest
 argument_list|(
-name|bucket
-argument_list|,
 name|key
+argument_list|,
+name|om
 argument_list|,
 operator|new
 name|ByteArrayInputStream
@@ -1532,17 +1470,8 @@ operator|.
 name|toByteArray
 argument_list|()
 argument_list|)
-argument_list|,
-name|om
 argument_list|)
 decl_stmt|;
-name|putObjectRequest
-operator|.
-name|setCannedAcl
-argument_list|(
-name|cannedACL
-argument_list|)
-expr_stmt|;
 name|putObjectRequest
 operator|.
 name|setGeneralProgressListener
@@ -1576,6 +1505,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|fs
+operator|.
+name|incrementPutStartStatistics
+argument_list|(
+name|size
+argument_list|)
+expr_stmt|;
 return|return
 name|client
 operator|.
@@ -1607,8 +1543,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Interrupted object upload:"
-operator|+
+literal|"Interrupted object upload: {}"
+argument_list|,
 name|ie
 argument_list|,
 name|ie
@@ -1814,7 +1750,7 @@ name|uploadId
 argument_list|)
 expr_stmt|;
 return|return
-name|client
+name|fs
 operator|.
 name|uploadPart
 argument_list|(
@@ -1871,8 +1807,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Interrupted partUpload:"
-operator|+
+literal|"Interrupted partUpload: {}"
+argument_list|,
 name|ie
 argument_list|,
 name|ie
@@ -2019,6 +1955,13 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+name|fs
+operator|.
+name|incrementStatistic
+argument_list|(
+name|OBJECT_MULTIPART_UPLOAD_ABORTED
+argument_list|)
+expr_stmt|;
 name|client
 operator|.
 name|abortMultipartUpload
@@ -2047,8 +1990,8 @@ name|warn
 argument_list|(
 literal|"Unable to abort multipart upload, you may need to purge  "
 operator|+
-literal|"uploaded parts: "
-operator|+
+literal|"uploaded parts: {}"
+argument_list|,
 name|e2
 argument_list|,
 name|e2
