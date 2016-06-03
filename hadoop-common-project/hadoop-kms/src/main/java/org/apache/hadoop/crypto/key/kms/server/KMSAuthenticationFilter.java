@@ -499,7 +499,7 @@ name|TOKEN_KIND
 argument_list|,
 name|KMSClientProvider
 operator|.
-name|TOKEN_KIND
+name|TOKEN_KIND_STR
 argument_list|)
 expr_stmt|;
 return|return

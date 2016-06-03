@@ -85,7 +85,7 @@ operator|new
 name|DefaultDelegationTokenExtension
 argument_list|()
 decl_stmt|;
-comment|/**    * DelegationTokenExtension is a type of Extension that exposes methods to     * needed to work with Delegation Tokens.    */
+comment|/**    * DelegationTokenExtension is a type of Extension that exposes methods    * needed to work with Delegation Tokens.    */
 DECL|interface|DelegationTokenExtension
 specifier|public
 interface|interface
@@ -97,7 +97,6 @@ name|Extension
 block|{
 comment|/**      * The implementer of this class will take a renewer and add all      * delegation tokens associated with the renewer to the       *<code>Credentials</code> object if it is not already present,       * @param renewer the user allowed to renew the delegation tokens      * @param credentials cache in which to add new delegation tokens      * @return list of new delegation tokens      * @throws IOException thrown if IOException if an IO error occurs.      */
 DECL|method|addDelegationTokens (final String renewer, Credentials credentials)
-specifier|public
 name|Token
 argument_list|<
 name|?
@@ -111,6 +110,36 @@ name|renewer
 parameter_list|,
 name|Credentials
 name|credentials
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**      * Renews the given token.      * @param token The token to be renewed.      * @return The token's lifetime after renewal, or 0 if it can't be renewed.      * @throws IOException      */
+DECL|method|renewDelegationToken (final Token<?> token)
+name|long
+name|renewDelegationToken
+parameter_list|(
+specifier|final
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|token
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**      * Cancels the given token.      * @param token The token to be cancelled.      * @throws IOException      */
+DECL|method|cancelDelegationToken (final Token<?> token)
+name|Void
+name|cancelDelegationToken
+parameter_list|(
+specifier|final
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|token
 parameter_list|)
 throws|throws
 name|IOException
@@ -142,6 +171,48 @@ parameter_list|,
 name|Credentials
 name|credentials
 parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|renewDelegationToken (final Token<?> token)
+specifier|public
+name|long
+name|renewDelegationToken
+parameter_list|(
+specifier|final
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|token
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|cancelDelegationToken (final Token<?> token)
+specifier|public
+name|Void
+name|cancelDelegationToken
+parameter_list|(
+specifier|final
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|token
+parameter_list|)
+throws|throws
+name|IOException
 block|{
 return|return
 literal|null
