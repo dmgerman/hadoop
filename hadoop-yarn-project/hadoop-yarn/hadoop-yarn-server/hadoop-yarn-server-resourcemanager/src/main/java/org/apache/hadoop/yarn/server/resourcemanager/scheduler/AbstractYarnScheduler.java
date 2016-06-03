@@ -2246,43 +2246,6 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
-comment|// Unmanaged AM recovery is addressed in YARN-1815
-if|if
-condition|(
-name|rmApp
-operator|.
-name|getApplicationSubmissionContext
-argument_list|()
-operator|.
-name|getUnmanagedAM
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Skip recovering container "
-operator|+
-name|container
-operator|+
-literal|" for unmanaged AM."
-operator|+
-name|rmApp
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|killOrphanContainerOnNode
-argument_list|(
-name|nm
-argument_list|,
-name|container
-argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
 name|SchedulerApplication
 argument_list|<
 name|T

@@ -2822,18 +2822,9 @@ name|RMAppAttemptState
 operator|.
 name|RUNNING
 argument_list|,
-name|EnumSet
-operator|.
-name|of
-argument_list|(
 name|RMAppAttemptState
 operator|.
 name|FINAL_SAVING
-argument_list|,
-name|RMAppAttemptState
-operator|.
-name|FINISHED
-argument_list|)
 argument_list|,
 name|RMAppAttemptEventType
 operator|.
@@ -8591,21 +8582,14 @@ specifier|static
 specifier|final
 class|class
 name|AMUnregisteredTransition
-implements|implements
-name|MultipleArcTransition
-argument_list|<
-name|RMAppAttemptImpl
-argument_list|,
-name|RMAppAttemptEvent
-argument_list|,
-name|RMAppAttemptState
-argument_list|>
+extends|extends
+name|BaseTransition
 block|{
 annotation|@
 name|Override
 DECL|method|transition (RMAppAttemptImpl appAttempt, RMAppAttemptEvent event)
 specifier|public
-name|RMAppAttemptState
+name|void
 name|transition
 parameter_list|(
 name|RMAppAttemptImpl
@@ -8627,36 +8611,34 @@ name|getUnmanagedAM
 argument_list|()
 condition|)
 block|{
+comment|// YARN-1815: Saving the attempt final state so that we do not recover
+comment|// the finished Unmanaged AM post RM failover
 comment|// Unmanaged AMs have no container to wait for, so they skip
 comment|// the FINISHING state and go straight to FINISHED.
 name|appAttempt
 operator|.
-name|updateInfoOnAMUnregister
+name|rememberTargetTransitionsAndStoreState
 argument_list|(
 name|event
-argument_list|)
-expr_stmt|;
-operator|new
-name|FinalTransition
-argument_list|(
-name|RMAppAttemptState
-operator|.
-name|FINISHED
-argument_list|)
-operator|.
-name|transition
-argument_list|(
-name|appAttempt
 argument_list|,
+operator|new
+name|AMFinishedAfterFinalSavingTransition
+argument_list|(
 name|event
 argument_list|)
-expr_stmt|;
-return|return
+argument_list|,
 name|RMAppAttemptState
 operator|.
 name|FINISHED
-return|;
+argument_list|,
+name|RMAppAttemptState
+operator|.
+name|FINISHED
+argument_list|)
+expr_stmt|;
 block|}
+else|else
+block|{
 comment|// Saving the attempt final state
 name|appAttempt
 operator|.
@@ -8677,6 +8659,7 @@ operator|.
 name|FINISHED
 argument_list|)
 expr_stmt|;
+block|}
 name|ApplicationId
 name|applicationId
 init|=
@@ -8710,11 +8693,7 @@ name|ATTEMPT_UNREGISTERED
 argument_list|)
 argument_list|)
 expr_stmt|;
-return|return
-name|RMAppAttemptState
-operator|.
-name|FINAL_SAVING
-return|;
+return|return;
 block|}
 block|}
 DECL|class|FinalStateSavedAfterAMUnregisterTransition

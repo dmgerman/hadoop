@@ -4418,10 +4418,10 @@ name|getTrackingUrl
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|verifyAttemptFinalStateSaved
 argument_list|()
 expr_stmt|;
-block|}
 name|assertEquals
 argument_list|(
 name|finishedContainerCount
@@ -5179,6 +5179,11 @@ name|finalStatus
 argument_list|,
 name|diagnostics
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|sendAttemptUpdateSavedEvent
+argument_list|(
+name|applicationAttempt
 argument_list|)
 expr_stmt|;
 name|testAppAttemptFinishedState
