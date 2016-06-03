@@ -895,11 +895,6 @@ argument_list|(
 literal|100
 argument_list|)
 expr_stmt|;
-name|system
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
 comment|// verify metrics1 is unregistered
 name|assertTrue
 argument_list|(
@@ -956,6 +951,13 @@ argument_list|,
 literal|0
 argument_list|)
 argument_list|)
+expr_stmt|;
+comment|// YARN-5190: move stop() to the end to verify registering containerId1 and
+comment|// containerId2 won't get MetricsException thrown.
+name|system
+operator|.
+name|stop
+argument_list|()
 expr_stmt|;
 name|system
 operator|.

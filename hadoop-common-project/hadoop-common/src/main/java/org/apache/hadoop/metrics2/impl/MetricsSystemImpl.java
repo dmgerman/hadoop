@@ -1655,6 +1655,13 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
+name|DefaultMetricsSystem
+operator|.
+name|removeSourceName
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
 block|}
 specifier|synchronized
 DECL|method|registerSource (String name, String desc, MetricsSource source)

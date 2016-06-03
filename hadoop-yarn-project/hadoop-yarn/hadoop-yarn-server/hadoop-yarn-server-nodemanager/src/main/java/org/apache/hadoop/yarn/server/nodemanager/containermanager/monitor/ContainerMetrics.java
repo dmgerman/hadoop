@@ -1064,6 +1064,27 @@ name|delayMs
 argument_list|)
 return|;
 block|}
+DECL|method|getContainerMetrics ( ContainerId containerId)
+specifier|public
+specifier|synchronized
+specifier|static
+name|ContainerMetrics
+name|getContainerMetrics
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+block|{
+comment|// could be null
+return|return
+name|usageMetrics
+operator|.
+name|get
+argument_list|(
+name|containerId
+argument_list|)
+return|;
+block|}
 DECL|method|forContainer ( MetricsSystem ms, ContainerId containerId, long flushPeriodMs, long delayMs)
 specifier|synchronized
 specifier|static
@@ -1261,6 +1282,12 @@ name|void
 name|finished
 parameter_list|()
 block|{
+if|if
+condition|(
+operator|!
+name|finished
+condition|)
+block|{
 name|this
 operator|.
 name|finished
@@ -1287,6 +1314,7 @@ block|}
 name|scheduleTimerTaskForUnregistration
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|recordMemoryUsage (int memoryMBs)
 specifier|public
