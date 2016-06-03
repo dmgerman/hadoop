@@ -444,6 +444,22 @@ name|security
 operator|.
 name|token
 operator|.
+name|SecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
 name|Token
 import|;
 end_import
@@ -2491,6 +2507,82 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+if|if
+condition|(
+name|ioe
+operator|instanceof
+name|SecretManager
+operator|.
+name|InvalidToken
+operator|&&
+name|dttr
+operator|.
+name|maxDate
+operator|<
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|&&
+name|evt
+operator|instanceof
+name|DelegationTokenRenewerAppRecoverEvent
+operator|&&
+name|token
+operator|.
+name|getKind
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|HDFS_DELEGATION_KIND
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Failed to renew hdfs token "
+operator|+
+name|dttr
+operator|+
+literal|" on recovery as it expired, requesting new hdfs token for "
+operator|+
+name|applicationId
+operator|+
+literal|", user="
+operator|+
+name|evt
+operator|.
+name|getUser
+argument_list|()
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+name|requestNewHdfsDelegationTokenAsProxyUser
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|applicationId
+argument_list|)
+argument_list|,
+name|evt
+operator|.
+name|getUser
+argument_list|()
+argument_list|,
+name|evt
+operator|.
+name|shouldCancelAtEnd
+argument_list|()
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 throw|throw
 operator|new
 name|IOException
@@ -2607,7 +2699,7 @@ operator|!
 name|hasHdfsToken
 condition|)
 block|{
-name|requestNewHdfsDelegationToken
+name|requestNewHdfsDelegationTokenAsProxyUser
 argument_list|(
 name|Arrays
 operator|.
@@ -3033,11 +3125,7 @@ literal|"Renewed delegation-token= ["
 operator|+
 name|dttr
 operator|+
-literal|"], for "
-operator|+
-name|dttr
-operator|.
-name|referringAppIds
+literal|"]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3243,7 +3331,7 @@ operator|+
 literal|") is expiring, request new token."
 argument_list|)
 expr_stmt|;
-name|requestNewHdfsDelegationToken
+name|requestNewHdfsDelegationTokenAsProxyUser
 argument_list|(
 name|applicationIds
 argument_list|,
@@ -3258,10 +3346,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|requestNewHdfsDelegationToken ( Collection<ApplicationId> referringAppIds, String user, boolean shouldCancelAtEnd)
+DECL|method|requestNewHdfsDelegationTokenAsProxyUser ( Collection<ApplicationId> referringAppIds, String user, boolean shouldCancelAtEnd)
 specifier|private
 name|void
-name|requestNewHdfsDelegationToken
+name|requestNewHdfsDelegationTokenAsProxyUser
 parameter_list|(
 name|Collection
 argument_list|<
@@ -4543,7 +4631,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to add the application to the delegation token renewer."
+literal|"Unable to add the application to the delegation token"
+operator|+
+literal|" renewer on recovery."
 argument_list|,
 name|t
 argument_list|)
