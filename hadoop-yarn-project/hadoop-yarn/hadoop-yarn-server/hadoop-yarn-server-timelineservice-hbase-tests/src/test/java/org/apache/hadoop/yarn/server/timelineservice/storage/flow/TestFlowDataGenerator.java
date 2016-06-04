@@ -365,7 +365,7 @@ name|ts
 operator|-
 name|k
 operator|*
-literal|200000
+literal|200000L
 argument_list|,
 literal|20L
 argument_list|)
@@ -460,7 +460,7 @@ name|ts
 operator|-
 name|k
 operator|*
-literal|100000
+literal|100000L
 argument_list|,
 literal|31L
 argument_list|)

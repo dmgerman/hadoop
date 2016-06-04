@@ -650,6 +650,7 @@ name|util
 decl_stmt|;
 DECL|field|metric1
 specifier|private
+specifier|static
 specifier|final
 name|String
 name|metric1
@@ -658,6 +659,7 @@ literal|"MAP_SLOT_MILLIS"
 decl_stmt|;
 DECL|field|metric2
 specifier|private
+specifier|static
 specifier|final
 name|String
 name|metric2
@@ -1254,6 +1256,13 @@ argument_list|(
 name|entityApp1
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|hbi
+operator|!=
+literal|null
+condition|)
+block|{
 name|hbi
 operator|.
 name|write
@@ -1283,6 +1292,7 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|// check in flow run table
 name|HRegionServer
