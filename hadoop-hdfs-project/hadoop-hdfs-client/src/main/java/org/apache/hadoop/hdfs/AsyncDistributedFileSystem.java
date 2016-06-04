@@ -164,11 +164,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|retry
+name|protocolPB
 operator|.
-name|AsyncCallHandler
+name|ClientNamenodeProtocolTranslatorPB
 import|;
 end_import
 
@@ -236,7 +236,6 @@ name|dfs
 expr_stmt|;
 block|}
 DECL|method|getReturnValue ()
-specifier|private
 specifier|static
 parameter_list|<
 name|T
@@ -253,9 +252,9 @@ operator|new
 name|AsyncGetFuture
 argument_list|<>
 argument_list|(
-name|AsyncCallHandler
+name|ClientNamenodeProtocolTranslatorPB
 operator|.
-name|getAsyncReturn
+name|getAsyncReturnValue
 argument_list|()
 argument_list|)
 return|;

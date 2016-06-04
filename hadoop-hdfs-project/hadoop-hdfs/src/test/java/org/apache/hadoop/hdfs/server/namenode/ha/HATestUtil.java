@@ -272,20 +272,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DistributedFileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|MiniDFSCluster
 import|;
 end_import
@@ -769,10 +755,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Gets the filesystem instance by setting the failover configurations */
-DECL|method|configureFailoverFs ( MiniDFSCluster cluster, Configuration conf)
+DECL|method|configureFailoverFs (MiniDFSCluster cluster, Configuration conf)
 specifier|public
 specifier|static
-name|DistributedFileSystem
+name|FileSystem
 name|configureFailoverFs
 parameter_list|(
 name|MiniDFSCluster
@@ -798,10 +784,10 @@ argument_list|)
 return|;
 block|}
 comment|/**     * Gets the filesystem instance by setting the failover configurations    * @param cluster the single process DFS cluster    * @param conf cluster configuration    * @param nsIndex namespace index starting with zero    * @throws IOException if an error occurs rolling the edit log    */
-DECL|method|configureFailoverFs ( MiniDFSCluster cluster, Configuration conf, int nsIndex)
+DECL|method|configureFailoverFs (MiniDFSCluster cluster, Configuration conf, int nsIndex)
 specifier|public
 specifier|static
-name|DistributedFileSystem
+name|FileSystem
 name|configureFailoverFs
 parameter_list|(
 name|MiniDFSCluster
@@ -864,9 +850,6 @@ name|conf
 argument_list|)
 decl_stmt|;
 return|return
-operator|(
-name|DistributedFileSystem
-operator|)
 name|fs
 return|;
 block|}

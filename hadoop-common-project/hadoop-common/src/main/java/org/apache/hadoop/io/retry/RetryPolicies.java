@@ -24,16 +24,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|EOFException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -2910,10 +2900,6 @@ condition|(
 name|e
 operator|instanceof
 name|ConnectException
-operator|||
-name|e
-operator|instanceof
-name|EOFException
 operator|||
 name|e
 operator|instanceof
