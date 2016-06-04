@@ -1074,24 +1074,6 @@ operator|*
 literal|60
 decl_stmt|;
 comment|// 4 hours
-DECL|field|IPC_CLIENT_ASYNC_CALLS_MAX_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|IPC_CLIENT_ASYNC_CALLS_MAX_KEY
-init|=
-literal|"ipc.client.async.calls.max"
-decl_stmt|;
-DECL|field|IPC_CLIENT_ASYNC_CALLS_MAX_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|IPC_CLIENT_ASYNC_CALLS_MAX_DEFAULT
-init|=
-literal|100
-decl_stmt|;
 DECL|field|IPC_CLIENT_FALLBACK_TO_SIMPLE_AUTH_ALLOWED_KEY
 specifier|public
 specifier|static
