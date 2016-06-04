@@ -152,22 +152,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|conf
 operator|.
 name|Configuration
@@ -1528,6 +1512,7 @@ return|;
 block|}
 comment|/**    * Checks that the passed URI belongs to this filesystem and returns    * just the path component. Expects a URI with an absolute path.    *    * @param file URI with absolute path    * @return path component of {file}    * @throws IllegalArgumentException if URI does not belong to this DFS    */
 DECL|method|getPathName (Path file)
+specifier|private
 name|String
 name|getPathName
 parameter_list|(
@@ -12498,60 +12483,6 @@ expr_stmt|;
 block|}
 return|return
 name|ret
-return|;
-block|}
-DECL|field|adfs
-specifier|private
-specifier|final
-name|AsyncDistributedFileSystem
-name|adfs
-init|=
-operator|new
-name|AsyncDistributedFileSystem
-argument_list|(
-name|this
-argument_list|)
-decl_stmt|;
-comment|/** @return an {@link AsyncDistributedFileSystem} object. */
-annotation|@
-name|Unstable
-DECL|method|getAsyncDistributedFileSystem ()
-specifier|public
-name|AsyncDistributedFileSystem
-name|getAsyncDistributedFileSystem
-parameter_list|()
-block|{
-return|return
-name|adfs
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|fixRelativePart (Path p)
-specifier|protected
-name|Path
-name|fixRelativePart
-parameter_list|(
-name|Path
-name|p
-parameter_list|)
-block|{
-return|return
-name|super
-operator|.
-name|fixRelativePart
-argument_list|(
-name|p
-argument_list|)
-return|;
-block|}
-DECL|method|getFsStatistics ()
-name|Statistics
-name|getFsStatistics
-parameter_list|()
-block|{
-return|return
-name|statistics
 return|;
 block|}
 block|}

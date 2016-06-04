@@ -566,7 +566,7 @@ name|returnFuture
 init|=
 name|Client
 operator|.
-name|getReturnRpcResponse
+name|getReturnValue
 argument_list|()
 decl_stmt|;
 name|returnFutures
