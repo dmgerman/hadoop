@@ -12554,15 +12554,6 @@ return|return
 name|statistics
 return|;
 block|}
-DECL|method|getDFSOpsCountStatistics ()
-name|DFSOpsCountStatistics
-name|getDFSOpsCountStatistics
-parameter_list|()
-block|{
-return|return
-name|storageStatistics
-return|;
-block|}
 block|}
 end_class
 
