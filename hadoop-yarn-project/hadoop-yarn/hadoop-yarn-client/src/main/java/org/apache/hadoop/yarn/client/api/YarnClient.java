@@ -1521,11 +1521,11 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    *<p>    * Signal a container identified by given ID.    *</p>    *    * @param containerId    *          {@link ContainerId} of the container that needs to be signaled    * @param command the signal container command    * @throws YarnException    * @throws IOException    */
-DECL|method|signalContainer (ContainerId containerId, SignalContainerCommand command)
+DECL|method|signalToContainer (ContainerId containerId, SignalContainerCommand command)
 specifier|public
 specifier|abstract
 name|void
-name|signalContainer
+name|signalToContainer
 parameter_list|(
 name|ContainerId
 name|containerId

@@ -567,7 +567,7 @@ control|)
 block|{
 name|rm
 operator|.
-name|signalContainer
+name|signalToContainer
 argument_list|(
 name|container
 operator|.

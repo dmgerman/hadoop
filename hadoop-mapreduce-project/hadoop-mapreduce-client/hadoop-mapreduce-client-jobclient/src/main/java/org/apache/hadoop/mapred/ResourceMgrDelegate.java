@@ -2835,10 +2835,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|signalContainer (ContainerId containerId, SignalContainerCommand command)
+DECL|method|signalToContainer (ContainerId containerId, SignalContainerCommand command)
 specifier|public
 name|void
-name|signalContainer
+name|signalToContainer
 parameter_list|(
 name|ContainerId
 name|containerId
@@ -2853,7 +2853,7 @@ name|IOException
 block|{
 name|client
 operator|.
-name|signalContainer
+name|signalToContainer
 argument_list|(
 name|containerId
 argument_list|,

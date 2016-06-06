@@ -11084,7 +11084,7 @@ name|OUTPUT_THREAD_DUMP
 decl_stmt|;
 name|client
 operator|.
-name|signalContainer
+name|signalToContainer
 argument_list|(
 name|containerId
 argument_list|,
@@ -11120,7 +11120,7 @@ name|getRMClient
 argument_list|()
 argument_list|)
 operator|.
-name|signalContainer
+name|signalToContainer
 argument_list|(
 name|signalReqCaptor
 operator|.

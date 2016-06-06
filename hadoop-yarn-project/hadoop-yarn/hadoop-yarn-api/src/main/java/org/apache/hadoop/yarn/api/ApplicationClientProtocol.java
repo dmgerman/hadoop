@@ -1335,10 +1335,9 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|signalContainer ( SignalContainerRequest request)
-specifier|public
+DECL|method|signalToContainer ( SignalContainerRequest request)
 name|SignalContainerResponse
-name|signalContainer
+name|signalToContainer
 parameter_list|(
 name|SignalContainerRequest
 name|request

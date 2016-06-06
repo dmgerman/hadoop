@@ -69,7 +69,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to the client  * signalling a container.</p>  *  *<p>Currently it's empty.</p>  *  * @see ApplicationClientProtocol#signalContainer(SignalContainerRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to the client  * signalling a container.</p>  *  *<p>Currently it's empty.</p>  *  * @see ApplicationClientProtocol#signalToContainer(SignalContainerRequest)  */
 end_comment
 
 begin_class

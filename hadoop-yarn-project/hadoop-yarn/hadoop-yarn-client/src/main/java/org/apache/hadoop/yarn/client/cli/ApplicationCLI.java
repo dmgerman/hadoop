@@ -2174,7 +2174,7 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-name|signalContainer
+name|signalToContainer
 argument_list|(
 name|containerId
 argument_list|,
@@ -2204,10 +2204,10 @@ literal|0
 return|;
 block|}
 comment|/**    * Signals the containerId    *    * @param containerIdStr the container id    * @param command the signal command    * @throws YarnException    */
-DECL|method|signalContainer (String containerIdStr, SignalContainerCommand command)
+DECL|method|signalToContainer (String containerIdStr, SignalContainerCommand command)
 specifier|private
 name|void
-name|signalContainer
+name|signalToContainer
 parameter_list|(
 name|String
 name|containerIdStr
@@ -2241,7 +2241,7 @@ argument_list|)
 expr_stmt|;
 name|client
 operator|.
-name|signalContainer
+name|signalToContainer
 argument_list|(
 name|containerId
 argument_list|,

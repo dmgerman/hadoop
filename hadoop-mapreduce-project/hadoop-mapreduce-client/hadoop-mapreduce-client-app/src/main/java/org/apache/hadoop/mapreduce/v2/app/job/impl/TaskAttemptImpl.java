@@ -11640,6 +11640,8 @@ operator|.
 name|EventType
 operator|.
 name|CONTAINER_REMOTE_CLEANUP
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -11912,6 +11914,15 @@ operator|.
 name|EventType
 operator|.
 name|CONTAINER_REMOTE_CLEANUP
+argument_list|,
+name|event
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|TaskAttemptEventType
+operator|.
+name|TA_TIMED_OUT
 argument_list|)
 argument_list|)
 expr_stmt|;

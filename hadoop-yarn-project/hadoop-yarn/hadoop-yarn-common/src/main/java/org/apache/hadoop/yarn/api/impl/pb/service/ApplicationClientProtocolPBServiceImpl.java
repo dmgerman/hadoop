@@ -5002,10 +5002,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|signalContainer (RpcController controller, YarnServiceProtos.SignalContainerRequestProto proto)
+DECL|method|signalToContainer ( RpcController controller, YarnServiceProtos.SignalContainerRequestProto proto)
 specifier|public
 name|SignalContainerResponseProto
-name|signalContainer
+name|signalToContainer
 parameter_list|(
 name|RpcController
 name|controller
@@ -5034,7 +5034,7 @@ name|response
 init|=
 name|real
 operator|.
-name|signalContainer
+name|signalToContainer
 argument_list|(
 name|request
 argument_list|)

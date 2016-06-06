@@ -4681,10 +4681,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|signalContainer ( SignalContainerRequest request)
+DECL|method|signalToContainer ( SignalContainerRequest request)
 specifier|public
 name|SignalContainerResponse
-name|signalContainer
+name|signalToContainer
 parameter_list|(
 name|SignalContainerRequest
 name|request
@@ -4717,7 +4717,7 @@ name|SignalContainerResponsePBImpl
 argument_list|(
 name|proxy
 operator|.
-name|signalContainer
+name|signalToContainer
 argument_list|(
 literal|null
 argument_list|,
