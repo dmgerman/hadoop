@@ -1144,7 +1144,6 @@ name|Integer
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|returnValue
 specifier|private
 specifier|static
 specifier|final
@@ -1155,7 +1154,8 @@ argument_list|<
 name|?
 argument_list|>
 argument_list|>
-name|returnValue
+DECL|field|RETURN_RPC_RESPONSE
+name|RETURN_RPC_RESPONSE
 init|=
 operator|new
 name|ThreadLocal
@@ -1199,7 +1199,7 @@ literal|"unchecked"
 argument_list|)
 annotation|@
 name|Unstable
-DECL|method|getReturnValue ()
+DECL|method|getReturnRpcResponse ()
 specifier|public
 specifier|static
 parameter_list|<
@@ -1209,7 +1209,7 @@ name|Future
 argument_list|<
 name|T
 argument_list|>
-name|getReturnValue
+name|getReturnRpcResponse
 parameter_list|()
 block|{
 return|return
@@ -1219,7 +1219,7 @@ argument_list|<
 name|T
 argument_list|>
 operator|)
-name|returnValue
+name|RETURN_RPC_RESPONSE
 operator|.
 name|get
 argument_list|()
@@ -6265,7 +6265,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-name|returnValue
+name|RETURN_RPC_RESPONSE
 operator|.
 name|set
 argument_list|(
@@ -6292,6 +6292,7 @@ comment|/**    * Check if RPC is in asynchronous mode or not.    *    * @returns
 annotation|@
 name|Unstable
 DECL|method|isAsynchronousMode ()
+specifier|public
 specifier|static
 name|boolean
 name|isAsynchronousMode
