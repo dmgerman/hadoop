@@ -162,7 +162,7 @@ specifier|static
 name|String
 name|special
 init|=
-literal|".   *   |   ?   +   \t   (   )   [   ]   {   }   ^   $  \\ \""
+literal|".   *   |   ?   +   \t   (   )   [   ]   {   }   ^   $  \\ \"  %"
 decl_stmt|;
 comment|/**    *    */
 annotation|@
@@ -433,6 +433,38 @@ argument_list|,
 name|Separator
 operator|.
 name|SPACE
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testEncodedValues ()
+specifier|public
+name|void
+name|testEncodedValues
+parameter_list|()
+block|{
+name|testEncodeDecode
+argument_list|(
+literal|"Double-escape %2$ and %9$ or %%2$ or %%3$, nor  %%%2$"
+operator|+
+literal|"= no problem!"
+argument_list|,
+name|Separator
+operator|.
+name|QUALIFIERS
+argument_list|,
+name|Separator
+operator|.
+name|VALUES
+argument_list|,
+name|Separator
+operator|.
+name|SPACE
+argument_list|,
+name|Separator
+operator|.
+name|TAB
 argument_list|)
 expr_stmt|;
 block|}

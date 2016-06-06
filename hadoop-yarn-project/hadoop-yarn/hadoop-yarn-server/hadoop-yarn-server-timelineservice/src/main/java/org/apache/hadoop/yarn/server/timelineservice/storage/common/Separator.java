@@ -72,6 +72,18 @@ name|util
 operator|.
 name|regex
 operator|.
+name|Matcher
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|regex
+operator|.
 name|Pattern
 import|;
 end_import
@@ -93,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Used to separate row qualifiers, column qualifiers and compount fields.  */
+comment|/**  * Used to separate row qualifiers, column qualifiers and compound fields.  */
 end_comment
 
 begin_enum
@@ -138,19 +150,98 @@ argument_list|,
 literal|"%3$"
 argument_list|)
 block|;
+comment|// a reserved character that starts each of the encoded values and is encoded
+comment|// first in order to escape naturally occurring instances of encoded values
+comment|// although it can be expressed as an enum instance, we define them as private
+comment|// variables to hide it from callers
+DECL|field|PERCENT
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|PERCENT
+init|=
+literal|"%"
+decl_stmt|;
+DECL|field|PERCENT_ENCODED
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|PERCENT_ENCODED
+init|=
+literal|"%9$"
+decl_stmt|;
+DECL|field|PERCENT_PATTERN
+specifier|private
+specifier|static
+specifier|final
+name|Pattern
+name|PERCENT_PATTERN
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+name|PERCENT
+argument_list|,
+name|Pattern
+operator|.
+name|LITERAL
+argument_list|)
+decl_stmt|;
+DECL|field|PERCENT_REPLACEMENT
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|PERCENT_REPLACEMENT
+init|=
+name|Matcher
+operator|.
+name|quoteReplacement
+argument_list|(
+name|PERCENT
+argument_list|)
+decl_stmt|;
+DECL|field|PERCENT_ENCODED_PATTERN
+specifier|private
+specifier|static
+specifier|final
+name|Pattern
+name|PERCENT_ENCODED_PATTERN
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+name|PERCENT_ENCODED
+argument_list|,
+name|Pattern
+operator|.
+name|LITERAL
+argument_list|)
+decl_stmt|;
+DECL|field|PERCENT_ENCODED_REPLACEMENT
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|PERCENT_ENCODED_REPLACEMENT
+init|=
+name|Matcher
+operator|.
+name|quoteReplacement
+argument_list|(
+name|PERCENT_ENCODED
+argument_list|)
+decl_stmt|;
 comment|/**    * The string value of this separator.    */
 DECL|field|value
 specifier|private
 specifier|final
 name|String
 name|value
-decl_stmt|;
-comment|/**    * The URLEncoded version of this separator.    */
-DECL|field|encodedValue
-specifier|private
-specifier|final
-name|String
-name|encodedValue
 decl_stmt|;
 comment|/**    * The bye representation of value.    */
 DECL|field|bytes
@@ -160,12 +251,30 @@ name|byte
 index|[]
 name|bytes
 decl_stmt|;
-comment|/**    * The value quoted so that it can be used as a safe regex.    */
-DECL|field|quotedValue
+comment|// pre-compiled patterns and quoted replacements for optimization
+DECL|field|valuePattern
+specifier|private
+specifier|final
+name|Pattern
+name|valuePattern
+decl_stmt|;
+DECL|field|valueReplacement
 specifier|private
 specifier|final
 name|String
-name|quotedValue
+name|valueReplacement
+decl_stmt|;
+DECL|field|encodedValuePattern
+specifier|private
+specifier|final
+name|Pattern
+name|encodedValuePattern
+decl_stmt|;
+DECL|field|encodedValueReplacement
+specifier|private
+specifier|final
+name|String
+name|encodedValueReplacement
 decl_stmt|;
 comment|/**    * Indicator for variable size of an individual segment in a split. The    * segment ends wherever separator is encountered.    * Typically used for string.    * Also used to indicate that there is no fixed number of splits which need to    * be returned. If split limit is specified as this, all possible splits are    * returned.    */
 DECL|field|VARIABLE_SIZE
@@ -220,12 +329,6 @@ name|value
 operator|=
 name|value
 expr_stmt|;
-name|this
-operator|.
-name|encodedValue
-operator|=
-name|encodedValue
-expr_stmt|;
 comment|// validation
 if|if
 condition|(
@@ -273,13 +376,54 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|quotedValue
+name|valuePattern
 operator|=
 name|Pattern
 operator|.
-name|quote
+name|compile
 argument_list|(
 name|value
+argument_list|,
+name|Pattern
+operator|.
+name|LITERAL
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|valueReplacement
+operator|=
+name|Matcher
+operator|.
+name|quoteReplacement
+argument_list|(
+name|value
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|encodedValuePattern
+operator|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+name|encodedValue
+argument_list|,
+name|Pattern
+operator|.
+name|LITERAL
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|encodedValueReplacement
+operator|=
+name|Matcher
+operator|.
+name|quoteReplacement
+argument_list|(
+name|encodedValue
 argument_list|)
 expr_stmt|;
 block|}
@@ -294,7 +438,7 @@ return|return
 name|value
 return|;
 block|}
-comment|/**    * Used to make token safe to be used with this separator without collisions.    *    * @param token Token to be encoded.    * @return the token with any occurrences of this separator URLEncoded.    */
+comment|/**    * Used to make token safe to be used with this separator without collisions.    * It<em>must</em> be paired with {@link #decode(String)} for it to be    * decoded correctly.    *<p>    * If you need to encode a given string for multiple separators,    * {@link #encode(String, Separator...)} should be used over successive    * invocations of this method. It will result in a more compact version of the    * encoded value.    *    * @param token Token to be encoded.    * @return the token with any occurrences of this separator URLEncoded.    */
 DECL|method|encode (String token)
 specifier|public
 name|String
@@ -323,18 +467,104 @@ return|return
 name|token
 return|;
 block|}
-return|return
-name|token
-operator|.
-name|replace
+comment|// first encode the percent to escape naturally occurring encoded values
+name|String
+name|escaped
+init|=
+name|encodePercent
 argument_list|(
-name|value
+name|token
+argument_list|)
+decl_stmt|;
+return|return
+name|encodeSingle
+argument_list|(
+name|escaped
 argument_list|,
-name|encodedValue
+name|this
 argument_list|)
 return|;
 block|}
-comment|/**    * Decode the token encoded using {@link #encode}.    *    * @param token Token to be decoded.    * @return the token with any occurrences of the encoded separator replaced by    *         the separator itself.    */
+DECL|method|replace (String token, Pattern pattern, String replacement)
+specifier|private
+specifier|static
+name|String
+name|replace
+parameter_list|(
+name|String
+name|token
+parameter_list|,
+name|Pattern
+name|pattern
+parameter_list|,
+name|String
+name|replacement
+parameter_list|)
+block|{
+return|return
+name|pattern
+operator|.
+name|matcher
+argument_list|(
+name|token
+argument_list|)
+operator|.
+name|replaceAll
+argument_list|(
+name|replacement
+argument_list|)
+return|;
+block|}
+DECL|method|encodeSingle (String token, Separator separator)
+specifier|private
+specifier|static
+name|String
+name|encodeSingle
+parameter_list|(
+name|String
+name|token
+parameter_list|,
+name|Separator
+name|separator
+parameter_list|)
+block|{
+return|return
+name|replace
+argument_list|(
+name|token
+argument_list|,
+name|separator
+operator|.
+name|valuePattern
+argument_list|,
+name|separator
+operator|.
+name|encodedValueReplacement
+argument_list|)
+return|;
+block|}
+DECL|method|encodePercent (String token)
+specifier|private
+specifier|static
+name|String
+name|encodePercent
+parameter_list|(
+name|String
+name|token
+parameter_list|)
+block|{
+return|return
+name|replace
+argument_list|(
+name|token
+argument_list|,
+name|PERCENT_PATTERN
+argument_list|,
+name|PERCENT_ENCODED_REPLACEMENT
+argument_list|)
+return|;
+block|}
+comment|/**    * Decode the token encoded using {@link #encode(String)}. It<em>must</em> be    * used for the result encoded with {@link #encode(String)} to be able to    * recover the original.    *    * @param token Token to be decoded.    * @return the token with any occurrences of the encoded separator replaced by    *         the separator itself.    */
 DECL|method|decode (String token)
 specifier|public
 name|String
@@ -363,18 +593,74 @@ return|return
 name|token
 return|;
 block|}
-return|return
-name|token
-operator|.
-name|replace
+name|String
+name|escaped
+init|=
+name|decodeSingle
 argument_list|(
-name|encodedValue
+name|token
 argument_list|,
-name|value
+name|this
+argument_list|)
+decl_stmt|;
+comment|// decode percent to de-escape
+return|return
+name|decodePercent
+argument_list|(
+name|escaped
 argument_list|)
 return|;
 block|}
-comment|/**    * Encode the given separators in the token with their encoding equivalent.    * This means that when encoding is already present in the token itself, this    * is not a reversible process. See also {@link #decode(String, Separator...)}    *    * @param token containing possible separators that need to be encoded.    * @param separators to be encoded in the token with their URLEncoding    *          equivalent.    * @return non-null byte representation of the token with occurrences of the    *         separators encoded.    */
+DECL|method|decodeSingle (String token, Separator separator)
+specifier|private
+specifier|static
+name|String
+name|decodeSingle
+parameter_list|(
+name|String
+name|token
+parameter_list|,
+name|Separator
+name|separator
+parameter_list|)
+block|{
+return|return
+name|replace
+argument_list|(
+name|token
+argument_list|,
+name|separator
+operator|.
+name|encodedValuePattern
+argument_list|,
+name|separator
+operator|.
+name|valueReplacement
+argument_list|)
+return|;
+block|}
+DECL|method|decodePercent (String token)
+specifier|private
+specifier|static
+name|String
+name|decodePercent
+parameter_list|(
+name|String
+name|token
+parameter_list|)
+block|{
+return|return
+name|replace
+argument_list|(
+name|token
+argument_list|,
+name|PERCENT_ENCODED_PATTERN
+argument_list|,
+name|PERCENT_REPLACEMENT
+argument_list|)
+return|;
+block|}
+comment|/**    * Encode the given separators in the token with their encoding equivalents.    * It<em>must</em> be paired with {@link #decode(byte[], Separator...)} or    * {@link #decode(String, Separator...)} with the same separators for it to be    * decoded correctly.    *<p>    * If you need to encode a given string for multiple separators, this form of    * encoding should be used over successive invocations of    * {@link #encode(String)}. It will result in a more compact version of the    * encoded value.    *    * @param token containing possible separators that need to be encoded.    * @param separators to be encoded in the token with their URLEncoding    *          equivalent.    * @return non-null byte representation of the token with occurrences of the    *         separators encoded.    */
 DECL|method|encode (String token, Separator... separators)
 specifier|public
 specifier|static
@@ -395,6 +681,13 @@ condition|(
 name|token
 operator|==
 literal|null
+operator|||
+name|token
+operator|.
+name|length
+argument_list|()
+operator|==
+literal|0
 condition|)
 block|{
 return|return
@@ -406,6 +699,14 @@ name|result
 init|=
 name|token
 decl_stmt|;
+comment|// first encode the percent to escape naturally occurring encoded values
+name|result
+operator|=
+name|encodePercent
+argument_list|(
+name|token
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|Separator
@@ -423,11 +724,11 @@ condition|)
 block|{
 name|result
 operator|=
-name|separator
-operator|.
-name|encode
+name|encodeSingle
 argument_list|(
 name|result
+argument_list|,
+name|separator
 argument_list|)
 expr_stmt|;
 block|}
@@ -441,7 +742,7 @@ name|result
 argument_list|)
 return|;
 block|}
-comment|/**    * Decode the given separators in the token with their decoding equivalent.    * This means that when encoding is already present in the token itself, this    * is not a reversible process.    *    * @param token containing possible separators that need to be encoded.    * @param separators to be encoded in the token with their URLEncoding    *          equivalent.    * @return String representation of the token with occurrences of the URL    *         encoded separators decoded.    */
+comment|/**    * Decode the given separators in the token with their decoding equivalents.    * It<em>must</em> be used for the result encoded with    * {@link #encode(String, Separator...)} with the same separators to be able    * to recover the original.    *    * @param token containing possible separators that need to be encoded.    * @param separators to be encoded in the token with their URLEncoding    *          equivalent.    * @return String representation of the token with occurrences of the URL    *         encoded separators decoded.    */
 DECL|method|decode (byte[] token, Separator... separators)
 specifier|public
 specifier|static
@@ -482,7 +783,7 @@ name|separators
 argument_list|)
 return|;
 block|}
-comment|/**    * Decode the given separators in the token with their decoding equivalent.    * This means that when encoding is already present in the token itself, this    * is not a reversible process.    *    * @param token containing possible separators that need to be encoded.    * @param separators to be encoded in the token with their URLEncoding    *          equivalent.    * @return String representation of the token with occurrences of the URL    *         encoded separators decoded.    */
+comment|/**    * Decode the given separators in the token with their decoding equivalents.    * It<em>must</em> be used for the result encoded with    * {@link #encode(String, Separator...)} with the same separators to be able    * to recover the original.    *    * @param token containing possible separators that need to be encoded.    * @param separators to be encoded in the token with their URLEncoding    *          equivalent.    * @return String representation of the token with occurrences of the URL    *         encoded separators decoded.    */
 DECL|method|decode (String token, Separator... separators)
 specifier|public
 specifier|static
@@ -530,17 +831,21 @@ condition|)
 block|{
 name|result
 operator|=
-name|separator
-operator|.
-name|decode
+name|decodeSingle
 argument_list|(
 name|result
+argument_list|,
+name|separator
 argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// decode percent to de-escape
 return|return
+name|decodePercent
+argument_list|(
 name|result
+argument_list|)
 return|;
 block|}
 comment|/**    * Returns a single byte array containing all of the individual arrays    * components separated by this separator.    *    * @param components Byte array components to be joined together.    * @return byte array after joining the components    */
@@ -986,11 +1291,11 @@ control|(
 name|String
 name|val
 range|:
-name|compoundValue
+name|valuePattern
 operator|.
 name|split
 argument_list|(
-name|quotedValue
+name|compoundValue
 argument_list|)
 control|)
 block|{
