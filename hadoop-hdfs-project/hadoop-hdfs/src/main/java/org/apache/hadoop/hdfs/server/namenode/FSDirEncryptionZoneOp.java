@@ -1209,6 +1209,14 @@ name|inode
 operator|.
 name|isFile
 argument_list|()
+operator|||
+operator|!
+name|fsd
+operator|.
+name|ezManager
+operator|.
+name|hasCreatedEncryptionZone
+argument_list|()
 condition|)
 block|{
 return|return
