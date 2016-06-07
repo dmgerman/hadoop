@@ -948,6 +948,10 @@ operator|.
 name|toString
 argument_list|()
 operator|+
+name|Path
+operator|.
+name|SEPARATOR
+operator|+
 name|format
 operator|.
 name|format
@@ -968,6 +972,10 @@ name|DEFAULT_LOG_DIR
 operator|.
 name|toString
 argument_list|()
+operator|+
+name|Path
+operator|.
+name|SEPARATOR
 operator|+
 name|format
 operator|.

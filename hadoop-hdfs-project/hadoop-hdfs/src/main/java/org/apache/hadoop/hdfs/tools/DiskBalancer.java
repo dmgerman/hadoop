@@ -816,6 +816,24 @@ argument_list|(
 name|help
 argument_list|)
 expr_stmt|;
+name|Option
+name|verbose
+init|=
+operator|new
+name|Option
+argument_list|(
+name|VERBOSE
+argument_list|,
+literal|"Print out the summary of the plan"
+argument_list|)
+decl_stmt|;
+name|opt
+operator|.
+name|addOption
+argument_list|(
+name|verbose
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Adds execute command options.    * @param opt Options    */
 DECL|method|addExecuteCommands (Options opt)
