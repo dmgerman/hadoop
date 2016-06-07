@@ -40,6 +40,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|InterruptedIOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -53,6 +63,18 @@ operator|.
 name|nio
 operator|.
 name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|channels
+operator|.
+name|ClosedByInterruptException
 import|;
 end_import
 
@@ -1632,7 +1654,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|InterruptedIOException
 argument_list|(
 literal|"Interrupted while getting the last block length."
 argument_list|)
@@ -2067,6 +2089,11 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+name|checkInterrupted
+argument_list|(
+name|ioe
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|ioe
@@ -2235,7 +2262,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|InterruptedIOException
 argument_list|(
 literal|"Interrupted while getting the length."
 argument_list|)
@@ -3194,6 +3221,11 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
+name|checkInterrupted
+argument_list|(
+name|ex
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|ex
@@ -3289,6 +3321,54 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+block|}
+DECL|method|checkInterrupted (IOException e)
+specifier|private
+name|void
+name|checkInterrupted
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
+argument_list|()
+operator|&&
+operator|(
+name|e
+operator|instanceof
+name|ClosedByInterruptException
+operator|||
+name|e
+operator|instanceof
+name|InterruptedIOException
+operator|)
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"The reading thread has been interrupted."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
 block|}
 block|}
 DECL|method|getBlockReader (LocatedBlock targetBlock, long offsetInBlock, long length, InetSocketAddress targetAddr, StorageType storageType, DatanodeInfo datanode)
@@ -4535,6 +4615,11 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|checkInterrupted
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|retries
@@ -5064,9 +5149,17 @@ block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|ignored
+name|e
 parameter_list|)
-block|{         }
+block|{
+throw|throw
+operator|new
+name|InterruptedIOException
+argument_list|(
+literal|"Interrupted while choosing DataNode for read."
+argument_list|)
+throw|;
+block|}
 name|deadNodes
 operator|.
 name|clear
@@ -5572,7 +5665,13 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// Ignore. Already processed inside the function.
+name|checkInterrupted
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
+comment|// check if the read has been interrupted
+comment|// Ignore other IOException. Already processed inside the function.
 comment|// Loop through to try the next node.
 block|}
 block|}
@@ -5969,6 +6068,11 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|checkInterrupted
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|e
@@ -6440,13 +6544,25 @@ comment|// continue; no need to refresh block locations
 block|}
 catch|catch
 parameter_list|(
-name|InterruptedException
-decl||
 name|ExecutionException
 name|e
 parameter_list|)
 block|{
 comment|// Ignore
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|InterruptedIOException
+argument_list|(
+literal|"Interrupted while waiting for reading task"
+argument_list|)
+throw|;
 block|}
 block|}
 else|else
@@ -7700,6 +7816,11 @@ name|src
 argument_list|,
 name|currentNode
 argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|checkInterrupted
+argument_list|(
 name|e
 argument_list|)
 expr_stmt|;

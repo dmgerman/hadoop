@@ -4791,7 +4791,8 @@ literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|getBlockInputStream (ExtendedBlock b )
+DECL|method|getBlockInputStream (ExtendedBlock b)
+specifier|protected
 specifier|synchronized
 name|InputStream
 name|getBlockInputStream
