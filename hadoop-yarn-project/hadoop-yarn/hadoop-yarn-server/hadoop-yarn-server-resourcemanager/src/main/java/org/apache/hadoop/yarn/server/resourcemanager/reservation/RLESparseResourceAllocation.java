@@ -2458,6 +2458,16 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|end
+operator|<
+name|a
+operator|.
+name|lastKey
+argument_list|()
+condition|)
+block|{
 name|a
 operator|=
 name|a
@@ -2469,6 +2479,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|RLESparseResourceAllocation
 name|ret
