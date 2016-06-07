@@ -126,6 +126,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1721,8 +1735,13 @@ decl_stmt|;
 comment|// number of transactions
 DECL|field|numTransactionsBatchedInSync
 specifier|private
-name|long
+specifier|final
+name|AtomicLong
 name|numTransactionsBatchedInSync
+init|=
+operator|new
+name|AtomicLong
+argument_list|()
 decl_stmt|;
 DECL|field|totalTimeTransactions
 specifier|private
@@ -3396,8 +3415,11 @@ name|editsBatchedInSync
 argument_list|)
 expr_stmt|;
 name|numTransactionsBatchedInSync
-operator|+=
+operator|.
+name|addAndGet
+argument_list|(
 name|editsBatchedInSync
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -3547,6 +3569,9 @@ operator|.
 name|append
 argument_list|(
 name|numTransactionsBatchedInSync
+operator|.
+name|get
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|buf
@@ -6351,11 +6376,18 @@ argument_list|)
 expr_stmt|;
 name|numTransactions
 operator|=
+literal|0
+expr_stmt|;
 name|totalTimeTransactions
 operator|=
-name|numTransactionsBatchedInSync
-operator|=
 literal|0
+expr_stmt|;
+name|numTransactionsBatchedInSync
+operator|.
+name|set
+argument_list|(
+literal|0L
+argument_list|)
 expr_stmt|;
 comment|// TODO no need to link this back to storage anymore!
 comment|// See HDFS-2174.
