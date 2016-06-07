@@ -1411,33 +1411,6 @@ name|ReservationId
 name|reservationID
 parameter_list|)
 function_decl|;
-comment|/**    * Get AM Blacklisting request object to know whether application needs any    * specific blacklisting for AM Nodes.    *    * @return AMBlackListingRequest object which has blacklisting information.    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|getAMBlackListRequest ()
-specifier|public
-specifier|abstract
-name|AMBlackListingRequest
-name|getAMBlackListRequest
-parameter_list|()
-function_decl|;
-comment|/**    * Get AM Blacklisting request object to know whether application needs any    * specific blacklisting for AM Nodes.    *    * @param blackListRequest    *          object which has blacklisting information such as    *          "enable/disable AM blacklisting" and "disable failure threshold".    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|setAMBlackListRequest ( AMBlackListingRequest blackListRequest)
-specifier|public
-specifier|abstract
-name|void
-name|setAMBlackListRequest
-parameter_list|(
-name|AMBlackListingRequest
-name|blackListRequest
-parameter_list|)
-function_decl|;
 block|}
 end_class
 

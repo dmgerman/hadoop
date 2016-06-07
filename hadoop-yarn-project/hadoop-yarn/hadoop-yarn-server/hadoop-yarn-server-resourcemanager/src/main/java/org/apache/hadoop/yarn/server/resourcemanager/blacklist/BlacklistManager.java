@@ -38,6 +38,24 @@ name|Private
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceBlacklistRequest
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tracks blacklists based on failures reported on nodes.  */
 end_comment
@@ -59,13 +77,13 @@ name|String
 name|node
 parameter_list|)
 function_decl|;
-comment|/**    * Get {@link BlacklistUpdates} that indicate which nodes should be    * added or to removed from the blacklist.    * @return {@link BlacklistUpdates}    */
+comment|/**    * Get {@link ResourceBlacklistRequest} that indicate which nodes should be    * added or to removed from the blacklist.    * @return {@link ResourceBlacklistRequest}    */
 DECL|method|getBlacklistUpdates ()
-name|BlacklistUpdates
+name|ResourceBlacklistRequest
 name|getBlacklistUpdates
 parameter_list|()
 function_decl|;
-comment|/**    * Refresh the number of nodemanager hosts available for scheduling.    * @param nodeHostCount is the number of node hosts.    */
+comment|/**    * Refresh the number of NodeManagers available for scheduling.    * @param nodeHostCount is the number of node hosts.    */
 DECL|method|refreshNodeHostCount (int nodeHostCount)
 name|void
 name|refreshNodeHostCount

@@ -2185,7 +2185,7 @@ name|assertTrue
 argument_list|(
 name|spyApp
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|n1
 operator|.
@@ -2198,7 +2198,7 @@ name|assertFalse
 argument_list|(
 name|spyApp
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|n2
 operator|.
@@ -2258,7 +2258,7 @@ name|assertFalse
 argument_list|(
 name|spyApp
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|n1
 operator|.
@@ -2271,7 +2271,7 @@ name|assertTrue
 argument_list|(
 name|spyApp
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|n2
 operator|.
@@ -2326,7 +2326,7 @@ name|assertFalse
 argument_list|(
 name|spyApp
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|n1
 operator|.
@@ -2339,7 +2339,7 @@ name|assertFalse
 argument_list|(
 name|spyApp
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|n2
 operator|.

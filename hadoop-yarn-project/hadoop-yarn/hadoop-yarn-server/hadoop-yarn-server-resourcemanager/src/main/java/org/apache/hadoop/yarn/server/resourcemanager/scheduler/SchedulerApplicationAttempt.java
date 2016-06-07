@@ -3259,8 +3259,7 @@ literal|null
 operator|)
 return|;
 block|}
-comment|// Blacklist used for user containers
-DECL|method|updateBlacklist ( List<String> blacklistAdditions, List<String> blacklistRemovals)
+DECL|method|updateBlacklist (List<String> blacklistAdditions, List<String> blacklistRemovals)
 specifier|public
 specifier|synchronized
 name|void
@@ -3285,50 +3284,34 @@ operator|!
 name|isStopped
 condition|)
 block|{
-name|this
-operator|.
-name|appSchedulingInfo
-operator|.
-name|updateBlacklist
-argument_list|(
-name|blacklistAdditions
-argument_list|,
-name|blacklistRemovals
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|// Blacklist used for AM containers
-DECL|method|updateAMBlacklist ( List<String> blacklistAdditions, List<String> blacklistRemovals)
-specifier|public
-specifier|synchronized
-name|void
-name|updateAMBlacklist
-parameter_list|(
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|blacklistAdditions
-parameter_list|,
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|blacklistRemovals
-parameter_list|)
-block|{
 if|if
 condition|(
-operator|!
-name|isStopped
+name|isWaitingForAMContainer
+argument_list|()
 condition|)
+block|{
+comment|// The request is for the AM-container, and the AM-container is launched
+comment|// by the system. So, update the places that are blacklisted by system
+comment|// (as opposed to those blacklisted by the application).
+name|this
+operator|.
+name|appSchedulingInfo
+operator|.
+name|updatePlacesBlacklistedBySystem
+argument_list|(
+name|blacklistAdditions
+argument_list|,
+name|blacklistRemovals
+argument_list|)
+expr_stmt|;
+block|}
+else|else
 block|{
 name|this
 operator|.
 name|appSchedulingInfo
 operator|.
-name|updateAMBlacklist
+name|updatePlacesBlacklistedByApp
 argument_list|(
 name|blacklistAdditions
 argument_list|,
@@ -3337,17 +3320,18 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|isBlacklisted (String resourceName)
+block|}
+DECL|method|isPlaceBlacklisted (String resourceName)
 specifier|public
 name|boolean
-name|isBlacklisted
+name|isPlaceBlacklisted
 parameter_list|(
 name|String
 name|resourceName
 parameter_list|)
 block|{
 name|boolean
-name|useAMBlacklist
+name|forAMContainer
 init|=
 name|isWaitingForAMContainer
 argument_list|()
@@ -3357,11 +3341,11 @@ name|this
 operator|.
 name|appSchedulingInfo
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|resourceName
 argument_list|,
-name|useAMBlacklist
+name|forAMContainer
 argument_list|)
 return|;
 block|}

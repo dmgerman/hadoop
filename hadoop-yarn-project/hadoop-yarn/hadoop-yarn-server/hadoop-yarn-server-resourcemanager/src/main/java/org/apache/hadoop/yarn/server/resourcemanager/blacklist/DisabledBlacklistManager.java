@@ -32,6 +32,24 @@ name|ArrayList
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceBlacklistRequest
+import|;
+end_import
+
 begin_comment
 comment|/**  * A {@link BlacklistManager} that returns no blacklists.  */
 end_comment
@@ -63,11 +81,12 @@ argument_list|()
 decl_stmt|;
 DECL|field|noBlacklist
 specifier|private
-name|BlacklistUpdates
+name|ResourceBlacklistRequest
 name|noBlacklist
 init|=
-operator|new
-name|BlacklistUpdates
+name|ResourceBlacklistRequest
+operator|.
+name|newInstance
 argument_list|(
 name|EMPTY_LIST
 argument_list|,
@@ -89,7 +108,7 @@ annotation|@
 name|Override
 DECL|method|getBlacklistUpdates ()
 specifier|public
-name|BlacklistUpdates
+name|ResourceBlacklistRequest
 name|getBlacklistUpdates
 parameter_list|()
 block|{

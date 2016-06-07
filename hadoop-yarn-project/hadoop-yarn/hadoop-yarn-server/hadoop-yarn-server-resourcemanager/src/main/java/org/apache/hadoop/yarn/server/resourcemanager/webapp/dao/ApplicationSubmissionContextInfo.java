@@ -339,17 +339,6 @@ DECL|field|reservationId
 name|String
 name|reservationId
 decl_stmt|;
-annotation|@
-name|XmlElement
-argument_list|(
-name|name
-operator|=
-literal|"am-black-listing-requests"
-argument_list|)
-DECL|field|amBlackListingRequestInfo
-name|AMBlackListingRequestInfo
-name|amBlackListingRequestInfo
-decl_stmt|;
 DECL|method|ApplicationSubmissionContextInfo ()
 specifier|public
 name|ApplicationSubmissionContextInfo
@@ -429,10 +418,6 @@ expr_stmt|;
 name|reservationId
 operator|=
 literal|""
-expr_stmt|;
-name|amBlackListingRequestInfo
-operator|=
-literal|null
 expr_stmt|;
 block|}
 DECL|method|getApplicationId ()
@@ -596,16 +581,6 @@ parameter_list|()
 block|{
 return|return
 name|attemptFailuresValidityInterval
-return|;
-block|}
-DECL|method|getAMBlackListingRequestInfo ()
-specifier|public
-name|AMBlackListingRequestInfo
-name|getAMBlackListingRequestInfo
-parameter_list|()
-block|{
-return|return
-name|amBlackListingRequestInfo
 return|;
 block|}
 DECL|method|getReservationId ()
@@ -891,22 +866,6 @@ operator|.
 name|reservationId
 operator|=
 name|reservationId
-expr_stmt|;
-block|}
-DECL|method|setAMBlackListingRequestInfo ( AMBlackListingRequestInfo amBlackListingRequestInfo)
-specifier|public
-name|void
-name|setAMBlackListingRequestInfo
-parameter_list|(
-name|AMBlackListingRequestInfo
-name|amBlackListingRequestInfo
-parameter_list|)
-block|{
-name|this
-operator|.
-name|amBlackListingRequestInfo
-operator|=
-name|amBlackListingRequestInfo
 expr_stmt|;
 block|}
 block|}

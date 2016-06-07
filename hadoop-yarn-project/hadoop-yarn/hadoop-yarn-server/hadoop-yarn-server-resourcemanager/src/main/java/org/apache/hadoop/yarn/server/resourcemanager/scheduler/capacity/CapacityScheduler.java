@@ -6127,27 +6127,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
-name|application
-operator|.
-name|isWaitingForAMContainer
-argument_list|()
-condition|)
-block|{
-comment|// Allocate is for AM and update AM blacklist for this
-name|application
-operator|.
-name|updateAMBlacklist
-argument_list|(
-name|blacklistAdditions
-argument_list|,
-name|blacklistRemovals
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
 name|application
 operator|.
 name|updateBlacklist
@@ -6157,7 +6136,6 @@ argument_list|,
 name|blacklistRemovals
 argument_list|)
 expr_stmt|;
-block|}
 name|allocation
 operator|=
 name|application

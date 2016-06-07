@@ -42,11 +42,11 @@ specifier|public
 class|class
 name|SchedulerAppUtils
 block|{
-DECL|method|isBlacklisted (SchedulerApplicationAttempt application, SchedulerNode node, Log LOG)
+DECL|method|isPlaceBlacklisted ( SchedulerApplicationAttempt application, SchedulerNode node, Log log)
 specifier|public
 specifier|static
 name|boolean
-name|isBlacklisted
+name|isPlaceBlacklisted
 parameter_list|(
 name|SchedulerApplicationAttempt
 name|application
@@ -55,14 +55,14 @@ name|SchedulerNode
 name|node
 parameter_list|,
 name|Log
-name|LOG
+name|log
 parameter_list|)
 block|{
 if|if
 condition|(
 name|application
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|node
 operator|.
@@ -73,13 +73,13 @@ condition|)
 block|{
 if|if
 condition|(
-name|LOG
+name|log
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|LOG
+name|log
 operator|.
 name|debug
 argument_list|(
@@ -109,7 +109,7 @@ if|if
 condition|(
 name|application
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|node
 operator|.
@@ -120,13 +120,13 @@ condition|)
 block|{
 if|if
 condition|(
-name|LOG
+name|log
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|LOG
+name|log
 operator|.
 name|debug
 argument_list|(

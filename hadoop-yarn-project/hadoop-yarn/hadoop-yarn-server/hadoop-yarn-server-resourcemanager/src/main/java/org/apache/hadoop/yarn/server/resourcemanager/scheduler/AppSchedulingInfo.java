@@ -605,27 +605,29 @@ argument_list|(
 literal|false
 argument_list|)
 decl_stmt|;
-DECL|field|amBlacklist
+comment|// Set of places (nodes / racks) blacklisted by the system. Today, this only
+comment|// has places blacklisted for AM containers.
+DECL|field|placesBlacklistedBySystem
 specifier|private
 specifier|final
 name|Set
 argument_list|<
 name|String
 argument_list|>
-name|amBlacklist
+name|placesBlacklistedBySystem
 init|=
 operator|new
 name|HashSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
-DECL|field|userBlacklist
+DECL|field|placesBlacklistedByApp
 specifier|private
 name|Set
 argument_list|<
 name|String
 argument_list|>
-name|userBlacklist
+name|placesBlacklistedByApp
 init|=
 operator|new
 name|HashSet
@@ -2374,11 +2376,11 @@ operator|)
 operator|)
 return|;
 block|}
-comment|/**    * The ApplicationMaster is updating the userBlacklist used for containers    * other than AMs.    *    * @param blacklistAdditions resources to be added to the userBlacklist    * @param blacklistRemovals resources to be removed from the userBlacklist    */
-DECL|method|updateBlacklist ( List<String> blacklistAdditions, List<String> blacklistRemovals)
+comment|/**    * The ApplicationMaster is updating the placesBlacklistedByApp used for    * containers other than AMs.    *    * @param blacklistAdditions    *          resources to be added to the userBlacklist    * @param blacklistRemovals    *          resources to be removed from the userBlacklist    */
+DECL|method|updatePlacesBlacklistedByApp ( List<String> blacklistAdditions, List<String> blacklistRemovals)
 specifier|public
 name|void
-name|updateBlacklist
+name|updatePlacesBlacklistedByApp
 parameter_list|(
 name|List
 argument_list|<
@@ -2395,9 +2397,9 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|updateUserOrAMBlacklist
+name|updateBlacklistedPlaces
 argument_list|(
-name|userBlacklist
+name|placesBlacklistedByApp
 argument_list|,
 name|blacklistAdditions
 argument_list|,
@@ -2414,11 +2416,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * RM is updating blacklist for AM containers.    * @param blacklistAdditions resources to be added to the amBlacklist    * @param blacklistRemovals resources to be added to the amBlacklist    */
-DECL|method|updateAMBlacklist ( List<String> blacklistAdditions, List<String> blacklistRemovals)
+comment|/**    * Update the list of places that are blacklisted by the system. Today the    * system only blacklists places when it sees that AMs failed there    *    * @param blacklistAdditions    *          resources to be added to placesBlacklistedBySystem    * @param blacklistRemovals    *          resources to be removed from placesBlacklistedBySystem    */
+DECL|method|updatePlacesBlacklistedBySystem ( List<String> blacklistAdditions, List<String> blacklistRemovals)
 specifier|public
 name|void
-name|updateAMBlacklist
+name|updatePlacesBlacklistedBySystem
 parameter_list|(
 name|List
 argument_list|<
@@ -2433,9 +2435,9 @@ argument_list|>
 name|blacklistRemovals
 parameter_list|)
 block|{
-name|updateUserOrAMBlacklist
+name|updateBlacklistedPlaces
 argument_list|(
-name|amBlacklist
+name|placesBlacklistedBySystem
 argument_list|,
 name|blacklistAdditions
 argument_list|,
@@ -2443,9 +2445,11 @@ name|blacklistRemovals
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|updateUserOrAMBlacklist (Set<String> blacklist, List<String> blacklistAdditions, List<String> blacklistRemovals)
+DECL|method|updateBlacklistedPlaces (Set<String> blacklist, List<String> blacklistAdditions, List<String> blacklistRemovals)
+specifier|private
+specifier|static
 name|boolean
-name|updateUserOrAMBlacklist
+name|updateBlacklistedPlaces
 parameter_list|(
 name|Set
 argument_list|<
@@ -2500,21 +2504,17 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
+name|changed
+operator|=
 name|blacklist
 operator|.
 name|removeAll
 argument_list|(
 name|blacklistRemovals
 argument_list|)
-condition|)
-block|{
+operator|||
 name|changed
-operator|=
-literal|true
 expr_stmt|;
-block|}
 block|}
 block|}
 return|return
@@ -2708,31 +2708,31 @@ name|getCapability
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns if the node is either blacklisted by the user or the system    * @param resourceName the resourcename    * @param useAMBlacklist true if it should check amBlacklist    * @return true if its blacklisted    */
-DECL|method|isBlacklisted (String resourceName, boolean useAMBlacklist)
+comment|/**    * Returns if the place (node/rack today) is either blacklisted by the    * application (user) or the system    *    * @param resourceName    *          the resourcename    * @param blacklistedBySystem    *          true if it should check amBlacklist    * @return true if its blacklisted    */
+DECL|method|isPlaceBlacklisted (String resourceName, boolean blacklistedBySystem)
 specifier|public
 name|boolean
-name|isBlacklisted
+name|isPlaceBlacklisted
 parameter_list|(
 name|String
 name|resourceName
 parameter_list|,
 name|boolean
-name|useAMBlacklist
+name|blacklistedBySystem
 parameter_list|)
 block|{
 if|if
 condition|(
-name|useAMBlacklist
+name|blacklistedBySystem
 condition|)
 block|{
 synchronized|synchronized
 init|(
-name|amBlacklist
+name|placesBlacklistedBySystem
 init|)
 block|{
 return|return
-name|amBlacklist
+name|placesBlacklistedBySystem
 operator|.
 name|contains
 argument_list|(
@@ -2745,11 +2745,11 @@ else|else
 block|{
 synchronized|synchronized
 init|(
-name|userBlacklist
+name|placesBlacklistedByApp
 init|)
 block|{
 return|return
-name|userBlacklist
+name|placesBlacklistedByApp
 operator|.
 name|contains
 argument_list|(
@@ -3938,7 +3938,7 @@ block|{
 return|return
 name|this
 operator|.
-name|userBlacklist
+name|placesBlacklistedByApp
 return|;
 block|}
 DECL|method|getBlackListCopy ()
@@ -3952,7 +3952,7 @@ parameter_list|()
 block|{
 synchronized|synchronized
 init|(
-name|userBlacklist
+name|placesBlacklistedByApp
 init|)
 block|{
 return|return
@@ -3962,7 +3962,7 @@ argument_list|<>
 argument_list|(
 name|this
 operator|.
-name|userBlacklist
+name|placesBlacklistedByApp
 argument_list|)
 return|;
 block|}
@@ -3981,7 +3981,7 @@ comment|// This should not require locking the userBlacklist since it will not b
 comment|// used by this instance until after setCurrentAppAttempt.
 name|this
 operator|.
-name|userBlacklist
+name|placesBlacklistedByApp
 operator|=
 name|appInfo
 operator|.

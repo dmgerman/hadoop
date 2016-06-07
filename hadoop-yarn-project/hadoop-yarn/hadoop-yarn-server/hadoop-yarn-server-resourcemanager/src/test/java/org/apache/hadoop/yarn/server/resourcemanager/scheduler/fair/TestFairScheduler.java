@@ -25864,7 +25864,7 @@ name|assertTrue
 argument_list|(
 name|app
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|host
 argument_list|)
@@ -25915,7 +25915,7 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|host
 argument_list|)
@@ -25983,7 +25983,7 @@ name|assertTrue
 argument_list|(
 name|app
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|host
 argument_list|)
@@ -26051,7 +26051,7 @@ name|assertFalse
 argument_list|(
 name|app
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|host
 argument_list|)

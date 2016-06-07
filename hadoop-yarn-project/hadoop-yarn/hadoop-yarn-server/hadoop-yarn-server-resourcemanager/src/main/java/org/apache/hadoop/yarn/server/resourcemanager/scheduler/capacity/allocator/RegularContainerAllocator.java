@@ -661,7 +661,7 @@ if|if
 condition|(
 name|SchedulerAppUtils
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|application
 argument_list|,

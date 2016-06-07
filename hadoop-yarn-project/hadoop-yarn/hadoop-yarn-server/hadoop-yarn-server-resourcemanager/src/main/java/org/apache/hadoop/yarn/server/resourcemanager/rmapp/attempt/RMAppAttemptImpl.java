@@ -558,6 +558,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ResourceBlacklistRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ResourceRequest
 import|;
 end_import
@@ -825,26 +843,6 @@ operator|.
 name|blacklist
 operator|.
 name|BlacklistManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|blacklist
-operator|.
-name|BlacklistUpdates
 import|;
 end_import
 
@@ -3452,7 +3450,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, boolean maybeLastAttempt, ResourceRequest amReq, BlacklistManager amBlacklist)
+DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, boolean maybeLastAttempt, ResourceRequest amReq, BlacklistManager amBlacklistManager)
 specifier|public
 name|RMAppAttemptImpl
 parameter_list|(
@@ -3481,7 +3479,7 @@ name|ResourceRequest
 name|amReq
 parameter_list|,
 name|BlacklistManager
-name|amBlacklist
+name|amBlacklistManager
 parameter_list|)
 block|{
 name|this
@@ -3603,7 +3601,7 @@ name|this
 operator|.
 name|blacklistedNodesForAM
 operator|=
-name|amBlacklist
+name|amBlacklistManager
 expr_stmt|;
 block|}
 annotation|@
@@ -5805,7 +5803,7 @@ argument_list|)
 expr_stmt|;
 name|appAttempt
 operator|.
-name|getAMBlacklist
+name|getAMBlacklistManager
 argument_list|()
 operator|.
 name|refreshNodeHostCount
@@ -5818,12 +5816,12 @@ name|getNumClusterNodes
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|BlacklistUpdates
+name|ResourceBlacklistRequest
 name|amBlacklist
 init|=
 name|appAttempt
 operator|.
-name|getAMBlacklist
+name|getAMBlacklistManager
 argument_list|()
 operator|.
 name|getBlacklistUpdates
@@ -5845,14 +5843,14 @@ literal|"Using blacklist for AM: additions("
 operator|+
 name|amBlacklist
 operator|.
-name|getAdditions
+name|getBlacklistAdditions
 argument_list|()
 operator|+
 literal|") and removals("
 operator|+
 name|amBlacklist
 operator|.
-name|getRemovals
+name|getBlacklistRemovals
 argument_list|()
 operator|+
 literal|")"
@@ -5886,12 +5884,12 @@ name|EMPTY_CONTAINER_RELEASE_LIST
 argument_list|,
 name|amBlacklist
 operator|.
-name|getAdditions
+name|getBlacklistAdditions
 argument_list|()
 argument_list|,
 name|amBlacklist
 operator|.
-name|getRemovals
+name|getBlacklistRemovals
 argument_list|()
 argument_list|,
 literal|null
@@ -7637,6 +7635,7 @@ block|}
 block|}
 DECL|method|shouldCountTowardsNodeBlacklisting (int exitStatus)
 specifier|private
+specifier|static
 name|boolean
 name|shouldCountTowardsNodeBlacklisting
 parameter_list|(
@@ -7644,22 +7643,91 @@ name|int
 name|exitStatus
 parameter_list|)
 block|{
-return|return
-operator|!
-operator|(
+switch|switch
+condition|(
 name|exitStatus
-operator|==
-name|ContainerExitStatus
-operator|.
-name|SUCCESS
-operator|||
-name|exitStatus
-operator|==
+condition|)
+block|{
+case|case
 name|ContainerExitStatus
 operator|.
 name|PREEMPTED
-operator|)
+case|:
+case|case
+name|ContainerExitStatus
+operator|.
+name|KILLED_BY_RESOURCEMANAGER
+case|:
+case|case
+name|ContainerExitStatus
+operator|.
+name|KILLED_BY_APPMASTER
+case|:
+case|case
+name|ContainerExitStatus
+operator|.
+name|KILLED_AFTER_APP_COMPLETION
+case|:
+case|case
+name|ContainerExitStatus
+operator|.
+name|ABORTED
+case|:
+comment|// Neither the app's fault nor the system's fault. This happens by design,
+comment|// so no need for skipping nodes
+return|return
+literal|false
 return|;
+case|case
+name|ContainerExitStatus
+operator|.
+name|DISKS_FAILED
+case|:
+comment|// This container is marked with this exit-status means that the node is
+comment|// already marked as unhealthy given that most of the disks failed. So, no
+comment|// need for any explicit skipping of nodes.
+return|return
+literal|false
+return|;
+case|case
+name|ContainerExitStatus
+operator|.
+name|KILLED_EXCEEDED_VMEM
+case|:
+case|case
+name|ContainerExitStatus
+operator|.
+name|KILLED_EXCEEDED_PMEM
+case|:
+comment|// No point in skipping the node as it's not the system's fault
+return|return
+literal|false
+return|;
+case|case
+name|ContainerExitStatus
+operator|.
+name|SUCCESS
+case|:
+return|return
+literal|false
+return|;
+case|case
+name|ContainerExitStatus
+operator|.
+name|INVALID
+case|:
+comment|// Ideally, this shouldn't be considered for skipping a node. But in
+comment|// reality, it seems like there are cases where we are not setting
+comment|// exit-code correctly and so it's better to be conservative. See
+comment|// YARN-4284.
+return|return
+literal|true
+return|;
+default|default:
+return|return
+literal|true
+return|;
+block|}
 block|}
 DECL|class|UnmanagedAMAttemptSavedTransition
 specifier|private
@@ -8918,7 +8986,7 @@ condition|)
 block|{
 name|appAttempt
 operator|.
-name|sendAMContainerToNM
+name|amContainerFinished
 argument_list|(
 name|appAttempt
 argument_list|,
@@ -9106,10 +9174,11 @@ block|}
 block|}
 comment|// Add am container to the list so that am container instance will be
 comment|// removed from NMContext.
-DECL|method|sendAMContainerToNM (RMAppAttemptImpl appAttempt, RMAppAttemptContainerFinishedEvent containerFinishedEvent)
+DECL|method|amContainerFinished (RMAppAttemptImpl appAttempt, RMAppAttemptContainerFinishedEvent containerFinishedEvent)
 specifier|private
+specifier|static
 name|void
-name|sendAMContainerToNM
+name|amContainerFinished
 parameter_list|(
 name|RMAppAttemptImpl
 name|appAttempt
@@ -9126,27 +9195,34 @@ operator|.
 name|getNodeId
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
+name|ContainerStatus
+name|containerStatus
+init|=
 name|containerFinishedEvent
 operator|.
 name|getContainerStatus
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|containerStatus
 operator|!=
 literal|null
 condition|)
 block|{
+name|int
+name|exitStatus
+init|=
+name|containerStatus
+operator|.
+name|getExitStatus
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|shouldCountTowardsNodeBlacklisting
 argument_list|(
-name|containerFinishedEvent
-operator|.
-name|getContainerStatus
-argument_list|()
-operator|.
-name|getExitStatus
-argument_list|()
+name|exitStatus
 argument_list|)
 condition|)
 block|{
@@ -9154,10 +9230,7 @@ name|appAttempt
 operator|.
 name|addAMNodeToBlackList
 argument_list|(
-name|containerFinishedEvent
-operator|.
-name|getNodeId
-argument_list|()
+name|nodeId
 argument_list|)
 expr_stmt|;
 block|}
@@ -9184,6 +9257,8 @@ name|getKeepContainersAcrossApplicationAttempts
 argument_list|()
 condition|)
 block|{
+name|appAttempt
+operator|.
 name|finishedContainersSentToAM
 operator|.
 name|putIfAbsent
@@ -9209,10 +9284,7 @@ argument_list|)
 operator|.
 name|add
 argument_list|(
-name|containerFinishedEvent
-operator|.
-name|getContainerStatus
-argument_list|()
+name|containerStatus
 argument_list|)
 expr_stmt|;
 name|appAttempt
@@ -9229,10 +9301,7 @@ name|sendFinishedAMContainerToNM
 argument_list|(
 name|nodeId
 argument_list|,
-name|containerFinishedEvent
-operator|.
-name|getContainerStatus
-argument_list|()
+name|containerStatus
 operator|.
 name|getContainerId
 argument_list|()
@@ -9296,10 +9365,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getAMBlacklist ()
+DECL|method|getAMBlacklistManager ()
 specifier|public
 name|BlacklistManager
-name|getAMBlacklist
+name|getAMBlacklistManager
 parameter_list|()
 block|{
 return|return
@@ -9548,7 +9617,7 @@ argument_list|)
 expr_stmt|;
 name|appAttempt
 operator|.
-name|sendAMContainerToNM
+name|amContainerFinished
 argument_list|(
 name|appAttempt
 argument_list|,
@@ -9637,7 +9706,7 @@ condition|)
 block|{
 name|appAttempt
 operator|.
-name|sendAMContainerToNM
+name|amContainerFinished
 argument_list|(
 name|appAttempt
 argument_list|,

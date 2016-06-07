@@ -218,7 +218,7 @@ argument_list|)
 decl_stmt|;
 name|appSchedulingInfo
 operator|.
-name|updateBlacklist
+name|updatePlacesBlacklistedByApp
 argument_list|(
 operator|new
 name|ArrayList
@@ -274,7 +274,7 @@ argument_list|)
 expr_stmt|;
 name|appSchedulingInfo
 operator|.
-name|updateBlacklist
+name|updatePlacesBlacklistedByApp
 argument_list|(
 name|blacklistAdditions
 argument_list|,
@@ -310,7 +310,7 @@ argument_list|)
 expr_stmt|;
 name|appSchedulingInfo
 operator|.
-name|updateBlacklist
+name|updatePlacesBlacklistedByApp
 argument_list|(
 name|blacklistAdditions
 argument_list|,
@@ -354,7 +354,7 @@ argument_list|)
 expr_stmt|;
 name|appSchedulingInfo
 operator|.
-name|updateBlacklist
+name|updatePlacesBlacklistedByApp
 argument_list|(
 operator|new
 name|ArrayList
@@ -368,7 +368,7 @@ argument_list|)
 expr_stmt|;
 name|appSchedulingInfo
 operator|.
-name|updateBlacklist
+name|updatePlacesBlacklistedByApp
 argument_list|(
 operator|new
 name|ArrayList
@@ -392,7 +392,7 @@ argument_list|)
 expr_stmt|;
 name|appSchedulingInfo
 operator|.
-name|updateBlacklist
+name|updatePlacesBlacklistedByApp
 argument_list|(
 operator|new
 name|ArrayList

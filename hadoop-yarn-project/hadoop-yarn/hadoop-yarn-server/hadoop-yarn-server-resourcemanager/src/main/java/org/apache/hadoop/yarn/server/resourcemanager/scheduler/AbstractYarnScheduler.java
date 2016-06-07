@@ -1406,7 +1406,7 @@ block|{
 return|return
 name|SchedulerAppUtils
 operator|.
-name|isBlacklisted
+name|isPlaceBlacklisted
 argument_list|(
 name|app
 argument_list|,

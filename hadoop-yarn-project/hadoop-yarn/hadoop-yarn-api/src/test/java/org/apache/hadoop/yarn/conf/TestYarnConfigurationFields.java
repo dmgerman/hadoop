@@ -286,6 +286,26 @@ operator|.
 name|CURATOR_LEADER_ELECTOR
 argument_list|)
 expr_stmt|;
+comment|// Ignore blacklisting nodes for AM failures feature since it is still a
+comment|// "work in progress"
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|AM_SCHEDULING_NODE_BLACKLISTING_ENABLED
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|AM_SCHEDULING_NODE_BLACKLISTING_DISABLE_THRESHOLD
+argument_list|)
+expr_stmt|;
 comment|// Ignore all YARN Application Timeline Service (version 1) properties
 name|configurationPrefixToSkipCompare
 operator|.

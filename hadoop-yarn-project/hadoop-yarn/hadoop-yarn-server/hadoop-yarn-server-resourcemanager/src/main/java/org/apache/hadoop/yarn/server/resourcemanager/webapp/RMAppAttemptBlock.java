@@ -1650,13 +1650,13 @@ name|getNodeString
 argument_list|(
 name|rmAppAttempt
 operator|.
-name|getAMBlacklist
+name|getAMBlacklistManager
 argument_list|()
 operator|.
 name|getBlacklistUpdates
 argument_list|()
 operator|.
-name|getAdditions
+name|getBlacklistAdditions
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1900,14 +1900,14 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Application Blacklisted Nodes:"
+literal|"Nodes blacklisted by the application:"
 argument_list|,
 name|appBlacklistedNodes
 argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"RM Blacklisted Nodes(for AM launches)"
+literal|"Nodes blacklisted by the system:"
 argument_list|,
 name|rmBlackListedNodes
 argument_list|)

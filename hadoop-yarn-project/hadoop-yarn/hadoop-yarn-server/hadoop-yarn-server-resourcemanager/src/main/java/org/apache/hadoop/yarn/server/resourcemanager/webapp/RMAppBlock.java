@@ -809,20 +809,20 @@ name|th
 argument_list|(
 literal|".appBlacklistednodes"
 argument_list|,
-literal|"Nodes black listed by the application"
+literal|"Nodes blacklisted by the application"
 argument_list|,
-literal|"App Blacklisted Nodes"
+literal|"Nodes blacklisted by the app"
 argument_list|)
 operator|.
 name|th
 argument_list|(
 literal|".rmBlacklistednodes"
 argument_list|,
-literal|"Nodes black listed by the RM for the"
+literal|"Nodes blacklisted by the RM for the"
 operator|+
 literal|" app"
 argument_list|,
-literal|"RM Blacklisted Nodes"
+literal|"Nodes blacklisted by the system"
 argument_list|)
 operator|.
 name|_
@@ -963,13 +963,13 @@ name|valueOf
 argument_list|(
 name|rmAppAttempt
 operator|.
-name|getAMBlacklist
+name|getAMBlacklistManager
 argument_list|()
 operator|.
 name|getBlacklistUpdates
 argument_list|()
 operator|.
-name|getAdditions
+name|getBlacklistAdditions
 argument_list|()
 operator|.
 name|size

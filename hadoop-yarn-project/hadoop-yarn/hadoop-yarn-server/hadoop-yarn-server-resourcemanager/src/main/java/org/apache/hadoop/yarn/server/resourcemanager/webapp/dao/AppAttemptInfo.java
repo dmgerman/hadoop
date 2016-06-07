@@ -272,10 +272,10 @@ specifier|protected
 name|String
 name|blacklistedNodes
 decl_stmt|;
-DECL|field|rmBlacklistedNodesForAMLaunches
-specifier|protected
+DECL|field|nodesBlacklistedBySystem
+specifier|private
 name|String
-name|rmBlacklistedNodesForAMLaunches
+name|nodesBlacklistedBySystem
 decl_stmt|;
 DECL|field|appAttemptId
 specifier|protected
@@ -453,7 +453,7 @@ argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
-name|rmBlacklistedNodesForAMLaunches
+name|nodesBlacklistedBySystem
 operator|=
 name|StringUtils
 operator|.
@@ -461,13 +461,13 @@ name|join
 argument_list|(
 name|attempt
 operator|.
-name|getAMBlacklist
+name|getAMBlacklistManager
 argument_list|()
 operator|.
 name|getBlacklistUpdates
 argument_list|()
 operator|.
-name|getAdditions
+name|getBlacklistAdditions
 argument_list|()
 argument_list|,
 literal|", "

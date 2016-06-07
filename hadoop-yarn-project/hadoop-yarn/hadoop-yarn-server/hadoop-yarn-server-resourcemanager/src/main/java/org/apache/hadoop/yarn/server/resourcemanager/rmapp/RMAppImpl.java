@@ -3205,21 +3205,21 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-DECL|field|MINIMUM_THRESHOLD_VALUE
+DECL|field|MINIMUM_AM_BLACKLIST_THRESHOLD_VALUE
 specifier|private
 specifier|static
 specifier|final
 name|float
-name|MINIMUM_THRESHOLD_VALUE
+name|MINIMUM_AM_BLACKLIST_THRESHOLD_VALUE
 init|=
 literal|0.0f
 decl_stmt|;
-DECL|field|MAXIMUM_THRESHOLD_VALUE
+DECL|field|MAXIMUM_AM_BLACKLIST_THRESHOLD_VALUE
 specifier|private
 specifier|static
 specifier|final
 name|float
-name|MAXIMUM_THRESHOLD_VALUE
+name|MAXIMUM_AM_BLACKLIST_THRESHOLD_VALUE
 init|=
 literal|1.0f
 decl_stmt|;
@@ -3642,89 +3642,8 @@ operator|.
 name|DEFAULT_RM_MAX_LOG_AGGREGATION_DIAGNOSTICS_IN_MEMORY
 argument_list|)
 expr_stmt|;
-comment|// amBlacklistingEnabled can be configured globally and by each
-comment|// application.
-comment|// Case 1: If AMBlackListRequest is available in submission context, we
-comment|// will consider only app level request (RM level configuration will be
-comment|// skipped).
-comment|// Case 2: AMBlackListRequest is available in submission context and
-comment|// amBlacklisting is disabled. In this case, AM blacklisting wont be
-comment|// enabled for this app even if this feature is enabled in RM level.
-comment|// Case 3: AMBlackListRequest is not available through submission context.
-comment|// RM level AM black listing configuration will be considered.
-if|if
-condition|(
-literal|null
-operator|!=
-name|submissionContext
-operator|.
-name|getAMBlackListRequest
-argument_list|()
-condition|)
-block|{
-name|amBlacklistingEnabled
-operator|=
-name|submissionContext
-operator|.
-name|getAMBlackListRequest
-argument_list|()
-operator|.
-name|isAMBlackListingEnabled
-argument_list|()
-expr_stmt|;
-name|blacklistDisableThreshold
-operator|=
-literal|0.0f
-expr_stmt|;
-if|if
-condition|(
-name|amBlacklistingEnabled
-condition|)
-block|{
-name|blacklistDisableThreshold
-operator|=
-name|submissionContext
-operator|.
-name|getAMBlackListRequest
-argument_list|()
-operator|.
-name|getBlackListingDisableFailureThreshold
-argument_list|()
-expr_stmt|;
-comment|// Verify whether blacklistDisableThreshold is valid. And for invalid
-comment|// threshold, reset to global level blacklistDisableThreshold
-comment|// configured.
-if|if
-condition|(
-name|blacklistDisableThreshold
-argument_list|<
-name|MINIMUM_THRESHOLD_VALUE
-operator|||
-name|blacklistDisableThreshold
-argument_list|>
-name|MAXIMUM_THRESHOLD_VALUE
-condition|)
-block|{
-name|blacklistDisableThreshold
-operator|=
-name|conf
-operator|.
-name|getFloat
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|AM_BLACKLISTING_DISABLE_THRESHOLD
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_AM_BLACKLISTING_DISABLE_THRESHOLD
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
-else|else
-block|{
+comment|// amBlacklistingEnabled can be configured globally
+comment|// Just use the global values
 name|amBlacklistingEnabled
 operator|=
 name|conf
@@ -3733,11 +3652,11 @@ name|getBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|AM_BLACKLISTING_ENABLED
+name|AM_SCHEDULING_NODE_BLACKLISTING_ENABLED
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_AM_BLACKLISTING_ENABLED
+name|DEFAULT_AM_SCHEDULING_NODE_BLACKLISTING_ENABLED
 argument_list|)
 expr_stmt|;
 if|if
@@ -3753,12 +3672,32 @@ name|getFloat
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|AM_BLACKLISTING_DISABLE_THRESHOLD
+name|AM_SCHEDULING_NODE_BLACKLISTING_DISABLE_THRESHOLD
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_AM_BLACKLISTING_DISABLE_THRESHOLD
+name|DEFAULT_AM_SCHEDULING_NODE_BLACKLISTING_DISABLE_THRESHOLD
 argument_list|)
+expr_stmt|;
+comment|// Verify whether blacklistDisableThreshold is valid. And for invalid
+comment|// threshold, reset to global level blacklistDisableThreshold
+comment|// configured.
+if|if
+condition|(
+name|blacklistDisableThreshold
+argument_list|<
+name|MINIMUM_AM_BLACKLIST_THRESHOLD_VALUE
+operator|||
+name|blacklistDisableThreshold
+argument_list|>
+name|MAXIMUM_AM_BLACKLIST_THRESHOLD_VALUE
+condition|)
+block|{
+name|blacklistDisableThreshold
+operator|=
+name|YarnConfiguration
+operator|.
+name|DEFAULT_AM_SCHEDULING_NODE_BLACKLISTING_DISABLE_THRESHOLD
 expr_stmt|;
 block|}
 block|}
@@ -5449,7 +5388,7 @@ name|appAttemptId
 parameter_list|)
 block|{
 name|BlacklistManager
-name|currentAMBlacklist
+name|currentAMBlacklistManager
 decl_stmt|;
 if|if
 condition|(
@@ -5458,11 +5397,12 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|currentAMBlacklist
+comment|// Transfer over the blacklist from the previous app-attempt.
+name|currentAMBlacklistManager
 operator|=
 name|currentAttempt
 operator|.
-name|getAMBlacklist
+name|getAMBlacklistManager
 argument_list|()
 expr_stmt|;
 block|}
@@ -5473,7 +5413,7 @@ condition|(
 name|amBlacklistingEnabled
 condition|)
 block|{
-name|currentAMBlacklist
+name|currentAMBlacklistManager
 operator|=
 operator|new
 name|SimpleBlacklistManager
@@ -5489,7 +5429,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|currentAMBlacklist
+name|currentAMBlacklistManager
 operator|=
 operator|new
 name|DisabledBlacklistManager
@@ -5530,7 +5470,7 @@ operator|)
 argument_list|,
 name|amReq
 argument_list|,
-name|currentAMBlacklist
+name|currentAMBlacklistManager
 argument_list|)
 decl_stmt|;
 name|attempts
@@ -9974,30 +9914,6 @@ argument_list|,
 name|startTime
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|isAmBlacklistingEnabled ()
-specifier|public
-name|boolean
-name|isAmBlacklistingEnabled
-parameter_list|()
-block|{
-return|return
-name|amBlacklistingEnabled
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getAmBlacklistingDisableThreshold ()
-specifier|public
-name|float
-name|getAmBlacklistingDisableThreshold
-parameter_list|()
-block|{
-return|return
-name|blacklistDisableThreshold
-return|;
 block|}
 annotation|@
 name|Private

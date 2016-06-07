@@ -538,9 +538,9 @@ name|getApplicationResourceUsageReport
 parameter_list|()
 function_decl|;
 comment|/**    * Get the {@link BlacklistManager} that manages blacklists for AM failures    * @return the {@link BlacklistManager} that tracks AM failures.    */
-DECL|method|getAMBlacklist ()
+DECL|method|getAMBlacklistManager ()
 name|BlacklistManager
-name|getAMBlacklist
+name|getAMBlacklistManager
 parameter_list|()
 function_decl|;
 comment|/**    * the start time of the application.    * @return the start time of the application.    */
