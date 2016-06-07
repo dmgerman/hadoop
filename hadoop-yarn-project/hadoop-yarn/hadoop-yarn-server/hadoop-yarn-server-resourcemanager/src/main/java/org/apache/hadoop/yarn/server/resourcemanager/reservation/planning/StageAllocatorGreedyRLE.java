@@ -780,6 +780,27 @@ condition|)
 block|{
 comment|// set earliest start to the min of the constraining "range" or my the
 comment|// end of this allocation
+if|if
+condition|(
+name|partialMap
+operator|.
+name|higherKey
+argument_list|(
+name|minPoint
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+name|stageEarliestStart
+operator|=
+name|stageEarliestStart
+operator|+
+name|dur
+expr_stmt|;
+block|}
+else|else
+block|{
 name|stageEarliestStart
 operator|=
 name|Math
@@ -799,9 +820,31 @@ name|dur
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 else|else
 block|{
 comment|// same as above moving right-to-left
+if|if
+condition|(
+name|partialMap
+operator|.
+name|higherKey
+argument_list|(
+name|minPoint
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+name|stageDeadline
+operator|=
+name|stageDeadline
+operator|-
+name|dur
+expr_stmt|;
+block|}
+else|else
+block|{
 name|stageDeadline
 operator|=
 name|Math
@@ -820,6 +863,7 @@ operator|-
 name|dur
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|// if no gangs are left to place we succeed and return the allocation
