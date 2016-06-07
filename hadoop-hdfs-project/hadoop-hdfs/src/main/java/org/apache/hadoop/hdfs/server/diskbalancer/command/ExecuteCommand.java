@@ -294,9 +294,10 @@ operator|.
 name|checkArgument
 argument_list|(
 name|planFile
-operator|==
+operator|!=
 literal|null
-operator|||
+operator|&&
+operator|!
 name|planFile
 operator|.
 name|isEmpty
