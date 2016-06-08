@@ -1226,6 +1226,15 @@ condition|(
 name|foundInQueue
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Removing queued container with ID "
+operator|+
+name|containerID
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|context
@@ -2495,6 +2504,36 @@ parameter_list|()
 block|{
 return|return
 name|allocatedOpportunisticContainers
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumQueuedGuaranteedContainers ()
+specifier|public
+name|int
+name|getNumQueuedGuaranteedContainers
+parameter_list|()
+block|{
+return|return
+name|queuedGuaranteedContainers
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumQueuedOpportunisticContainers ()
+specifier|public
+name|int
+name|getNumQueuedOpportunisticContainers
+parameter_list|()
+block|{
+return|return
+name|queuedOpportunisticContainers
 operator|.
 name|size
 argument_list|()
