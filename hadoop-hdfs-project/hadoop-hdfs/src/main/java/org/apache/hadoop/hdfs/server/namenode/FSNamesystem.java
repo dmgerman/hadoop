@@ -984,6 +984,70 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_NAMENODE_LEASE_RECHECK_INTERVAL_MS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_LEASE_RECHECK_INTERVAL_MS_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAX_LOCK_HOLD_TO_RELEASE_LEASE_MS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAX_LOCK_HOLD_TO_RELEASE_LEASE_MS_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_PERMISSIONS_ENABLED_DEFAULT
 import|;
 end_import
@@ -4581,6 +4645,20 @@ specifier|final
 name|boolean
 name|standbyShouldCheckpoint
 decl_stmt|;
+comment|/** Interval between each check of lease to release. */
+DECL|field|leaseRecheckIntervalMs
+specifier|private
+specifier|final
+name|long
+name|leaseRecheckIntervalMs
+decl_stmt|;
+comment|/** Maximum time the lock is hold to release lease. */
+DECL|field|maxLockHoldToReleaseLeaseMs
+specifier|private
+specifier|final
+name|long
+name|maxLockHoldToReleaseLeaseMs
+decl_stmt|;
 comment|// Scan interval is not configurable.
 DECL|field|DELEGATION_TOKEN_REMOVER_SCAN_INTERVAL
 specifier|private
@@ -6151,6 +6229,32 @@ operator|.
 name|DFS_NAMENODE_EDEKCACHELOADER_INTERVAL_MS_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|leaseRecheckIntervalMs
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFS_NAMENODE_LEASE_RECHECK_INTERVAL_MS_KEY
+argument_list|,
+name|DFS_NAMENODE_LEASE_RECHECK_INTERVAL_MS_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxLockHoldToReleaseLeaseMs
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFS_NAMENODE_MAX_LOCK_HOLD_TO_RELEASE_LEASE_MS_KEY
+argument_list|,
+name|DFS_NAMENODE_MAX_LOCK_HOLD_TO_RELEASE_LEASE_MS_DEFAULT
+argument_list|)
+expr_stmt|;
 comment|// For testing purposes, allow the DT secret manager to be started regardless
 comment|// of whether security is enabled.
 name|alwaysUseDelegationTokensForTests
@@ -6404,6 +6508,30 @@ parameter_list|()
 block|{
 return|return
 name|retryCache
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getLeaseRecheckIntervalMs ()
+specifier|public
+name|long
+name|getLeaseRecheckIntervalMs
+parameter_list|()
+block|{
+return|return
+name|leaseRecheckIntervalMs
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getMaxLockHoldToReleaseLeaseMs ()
+specifier|public
+name|long
+name|getMaxLockHoldToReleaseLeaseMs
+parameter_list|()
+block|{
+return|return
+name|maxLockHoldToReleaseLeaseMs
 return|;
 block|}
 DECL|method|lockRetryCache ()
@@ -16024,7 +16152,11 @@ literal|"BLOCK*"
 operator|+
 literal|" internalReleaseLease: All existing blocks are COMPLETE,"
 operator|+
-literal|" lease removed, file closed."
+literal|" lease removed, file "
+operator|+
+name|src
+operator|+
+literal|" closed."
 argument_list|)
 expr_stmt|;
 return|return
@@ -16185,9 +16317,13 @@ name|warn
 argument_list|(
 literal|"BLOCK*"
 operator|+
-literal|" internalReleaseLease: Committed blocks are minimally replicated,"
+literal|" internalReleaseLease: Committed blocks are minimally"
 operator|+
-literal|" lease removed, file closed."
+literal|" replicated, lease removed, file"
+operator|+
+name|src
+operator|+
+literal|" closed."
 argument_list|)
 expr_stmt|;
 return|return
@@ -16390,7 +16526,9 @@ name|warn
 argument_list|(
 literal|"BLOCK* internalReleaseLease: "
 operator|+
-literal|"Removed empty last block and closed file."
+literal|"Removed empty last block and closed file "
+operator|+
+name|src
 argument_list|)
 expr_stmt|;
 return|return

@@ -1367,12 +1367,6 @@ name|NAMENODE_LEASE_HOLDER
 init|=
 literal|"HDFS_NameNode"
 decl_stmt|;
-DECL|field|NAMENODE_LEASE_RECHECK_INTERVAL
-name|long
-name|NAMENODE_LEASE_RECHECK_INTERVAL
-init|=
-literal|2000
-decl_stmt|;
 DECL|field|CRYPTO_XATTR_ENCRYPTION_ZONE
 name|String
 name|CRYPTO_XATTR_ENCRYPTION_ZONE
