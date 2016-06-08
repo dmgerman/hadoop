@@ -1619,9 +1619,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Invalid id:password: "
-operator|+
-name|idPasswordPair
+literal|"Invalid id:password"
 argument_list|)
 throw|;
 block|}
