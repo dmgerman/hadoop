@@ -38,7 +38,7 @@ name|amazonaws
 operator|.
 name|auth
 operator|.
-name|BasicAWSCredentials
+name|BasicSessionCredentials
 import|;
 end_import
 
@@ -70,6 +70,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -96,8 +106,40 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Constants
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
-comment|/**  * BasicAWSCredentialsProvider supports static configuration of access key ID  * and secret access key for use with the AWS SDK.  *  * Please note that users may reference this class name from configuration  * property fs.s3a.aws.credentials.provider.  Therefore, changing the class name  * would be a backward-incompatible change.  */
+comment|/**  * Support session credentials for authenticating with AWS.  */
 end_comment
 
 begin_class
@@ -109,13 +151,22 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Stable
-DECL|class|BasicAWSCredentialsProvider
+DECL|class|TemporaryAWSCredentialsProvider
 specifier|public
 class|class
-name|BasicAWSCredentialsProvider
+name|TemporaryAWSCredentialsProvider
 implements|implements
 name|AWSCredentialsProvider
 block|{
+DECL|field|NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NAME
+init|=
+literal|"org.apache.hadoop.fs.s3a.TemporaryAWSCredentialsProvider"
+decl_stmt|;
 DECL|field|accessKey
 specifier|private
 specifier|final
@@ -128,28 +179,61 @@ specifier|final
 name|String
 name|secretKey
 decl_stmt|;
-DECL|method|BasicAWSCredentialsProvider (String accessKey, String secretKey)
+DECL|field|sessionToken
+specifier|private
+specifier|final
+name|String
+name|sessionToken
+decl_stmt|;
+DECL|method|TemporaryAWSCredentialsProvider (URI uri, Configuration conf)
 specifier|public
-name|BasicAWSCredentialsProvider
+name|TemporaryAWSCredentialsProvider
 parameter_list|(
-name|String
-name|accessKey
+name|URI
+name|uri
 parameter_list|,
-name|String
-name|secretKey
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
 operator|.
 name|accessKey
 operator|=
-name|accessKey
+name|conf
+operator|.
+name|get
+argument_list|(
+name|ACCESS_KEY
+argument_list|,
+literal|null
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
 name|secretKey
 operator|=
-name|secretKey
+name|conf
+operator|.
+name|get
+argument_list|(
+name|SECRET_KEY
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|sessionToken
+operator|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|SESSION_TOKEN
+argument_list|,
+literal|null
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getCredentials ()
@@ -175,15 +259,25 @@ name|isEmpty
 argument_list|(
 name|secretKey
 argument_list|)
+operator|&&
+operator|!
+name|StringUtils
+operator|.
+name|isEmpty
+argument_list|(
+name|sessionToken
+argument_list|)
 condition|)
 block|{
 return|return
 operator|new
-name|BasicAWSCredentials
+name|BasicSessionCredentials
 argument_list|(
 name|accessKey
 argument_list|,
 name|secretKey
+argument_list|,
+name|sessionToken
 argument_list|)
 return|;
 block|}
@@ -191,10 +285,12 @@ throw|throw
 operator|new
 name|CredentialInitializationException
 argument_list|(
-literal|"Access key or secret key is null"
+literal|"Access key, secret key or session token is unset"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
 DECL|method|refresh ()
 specifier|public
 name|void

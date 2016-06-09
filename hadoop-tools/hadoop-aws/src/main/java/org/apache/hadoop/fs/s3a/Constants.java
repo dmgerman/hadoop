@@ -100,6 +100,16 @@ name|AWS_CREDENTIALS_PROVIDER
 init|=
 literal|"fs.s3a.aws.credentials.provider"
 decl_stmt|;
+comment|// session token for when using TemporaryAWSCredentialsProvider
+DECL|field|SESSION_TOKEN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SESSION_TOKEN
+init|=
+literal|"fs.s3a.session.token"
+decl_stmt|;
 comment|// number of simultaneous connections to s3
 DECL|field|MAXIMUM_CONNECTIONS
 specifier|public
