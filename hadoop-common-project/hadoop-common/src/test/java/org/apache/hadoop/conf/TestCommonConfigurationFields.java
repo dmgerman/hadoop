@@ -458,6 +458,29 @@ argument_list|(
 literal|"s3native."
 argument_list|)
 expr_stmt|;
+comment|// ADL properties are in a different subtree
+comment|// - org.apache.hadoop.hdfs.web.ADLConfKeys
+name|xmlPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"adl."
+argument_list|)
+expr_stmt|;
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.adl.impl"
+argument_list|)
+expr_stmt|;
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.AbstractFileSystem.adl.impl"
+argument_list|)
+expr_stmt|;
 comment|// Deprecated properties.  These should eventually be removed from the
 comment|// class.
 name|configurationPropsToSkipCompare
