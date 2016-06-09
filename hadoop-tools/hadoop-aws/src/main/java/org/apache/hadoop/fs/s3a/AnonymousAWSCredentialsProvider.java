@@ -82,6 +82,10 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_comment
+comment|/**  * AnonymousAWSCredentialsProvider supports anonymous access to AWS services  * through the AWS SDK.  AWS requests will not be signed.  This is not suitable  * for most cases, because allowing anonymous access to an S3 bucket compromises  * security.  This can be useful for accessing public data sets without  * requiring AWS credentials.  *  * Please note that users may reference this class name from configuration  * property fs.s3a.aws.credentials.provider.  Therefore, changing the class name  * would be a backward-incompatible change.  */
+end_comment
+
 begin_class
 annotation|@
 name|InterfaceAudience

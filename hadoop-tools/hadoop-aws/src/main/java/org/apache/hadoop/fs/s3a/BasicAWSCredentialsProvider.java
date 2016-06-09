@@ -106,6 +106,10 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_comment
+comment|/**  * BasicAWSCredentialsProvider supports static configuration of access key ID  * and secret access key for use with the AWS SDK.  *  * Please note that users may reference this class name from configuration  * property fs.s3a.aws.credentials.provider.  Therefore, changing the class name  * would be a backward-incompatible change.  */
+end_comment
+
 begin_class
 annotation|@
 name|InterfaceAudience
