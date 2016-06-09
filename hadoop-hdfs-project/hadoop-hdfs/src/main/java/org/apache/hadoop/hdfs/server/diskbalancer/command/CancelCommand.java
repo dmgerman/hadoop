@@ -347,9 +347,10 @@ operator|.
 name|checkArgument
 argument_list|(
 name|planFile
-operator|==
+operator|!=
 literal|null
-operator|||
+operator|&&
+operator|!
 name|planFile
 operator|.
 name|isEmpty
@@ -413,7 +414,9 @@ expr_stmt|;
 name|NodePlan
 name|plan
 init|=
-name|readPlan
+name|NodePlan
+operator|.
+name|parseJson
 argument_list|(
 name|planData
 argument_list|)

@@ -360,7 +360,9 @@ expr_stmt|;
 name|NodePlan
 name|plan
 init|=
-name|readPlan
+name|NodePlan
+operator|.
+name|parseJson
 argument_list|(
 name|planData
 argument_list|)
