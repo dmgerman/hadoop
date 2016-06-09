@@ -2043,6 +2043,29 @@ operator|.
 name|getCpuUsagePercent
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|cpuUsagePercentPerCore
+operator|<
+literal|0
+condition|)
+block|{
+comment|// CPU usage is not available likely because the container just
+comment|// started. Let us skip this turn and consider this container
+comment|// in the next iteration.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Skipping monitoring container "
+operator|+
+name|containerId
+operator|+
+literal|" since CPU usage is not yet available."
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 name|float
 name|cpuUsageTotalCoresPercentage
 init|=

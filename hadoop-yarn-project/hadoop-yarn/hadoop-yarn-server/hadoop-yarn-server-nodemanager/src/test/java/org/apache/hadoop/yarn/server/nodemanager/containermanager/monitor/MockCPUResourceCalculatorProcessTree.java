@@ -40,24 +40,31 @@ name|ResourceCalculatorProcessTree
 import|;
 end_import
 
+begin_comment
+comment|/**  * Mock class to obtain resource usage (CPU).  */
+end_comment
+
 begin_class
-DECL|class|MockResourceCalculatorProcessTree
+DECL|class|MockCPUResourceCalculatorProcessTree
 specifier|public
 class|class
-name|MockResourceCalculatorProcessTree
+name|MockCPUResourceCalculatorProcessTree
 extends|extends
 name|ResourceCalculatorProcessTree
 block|{
-DECL|field|rssMemorySize
+DECL|field|cpuPercentage
 specifier|private
 name|long
-name|rssMemorySize
+name|cpuPercentage
 init|=
-literal|0
+name|ResourceCalculatorProcessTree
+operator|.
+name|UNAVAILABLE
 decl_stmt|;
-DECL|method|MockResourceCalculatorProcessTree (String root)
+comment|/**    * Constructor for MockCPUResourceCalculatorProcessTree with specified root    * process.    * @param root    */
+DECL|method|MockCPUResourceCalculatorProcessTree (String root)
 specifier|public
-name|MockResourceCalculatorProcessTree
+name|MockCPUResourceCalculatorProcessTree
 parameter_list|(
 name|String
 name|root
@@ -113,34 +120,6 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|setRssMemorySize (long rssMemorySize)
-specifier|public
-name|void
-name|setRssMemorySize
-parameter_list|(
-name|long
-name|rssMemorySize
-parameter_list|)
-block|{
-name|this
-operator|.
-name|rssMemorySize
-operator|=
-name|rssMemorySize
-expr_stmt|;
-block|}
-DECL|method|getRssMemorySize ()
-specifier|public
-name|long
-name|getRssMemorySize
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|rssMemorySize
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|getCpuUsagePercent ()
@@ -149,8 +128,34 @@ name|float
 name|getCpuUsagePercent
 parameter_list|()
 block|{
+name|long
+name|cpu
+init|=
+name|this
+operator|.
+name|cpuPercentage
+decl_stmt|;
+comment|// First getter call will be returned with -1, and other calls will
+comment|// return non-zero value as defined below.
+if|if
+condition|(
+name|cpu
+operator|==
+name|ResourceCalculatorProcessTree
+operator|.
+name|UNAVAILABLE
+condition|)
+block|{
+comment|// Set a default value other than 0 for test.
+name|this
+operator|.
+name|cpuPercentage
+operator|=
+literal|50
+expr_stmt|;
+block|}
 return|return
-literal|0
+name|cpu
 return|;
 block|}
 block|}

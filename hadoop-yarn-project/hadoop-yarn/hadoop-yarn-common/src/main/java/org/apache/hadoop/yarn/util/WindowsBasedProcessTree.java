@@ -1234,6 +1234,7 @@ name|totalMs
 argument_list|)
 return|;
 block|}
+comment|/**    * Get the CPU usage by all the processes in the process-tree in Windows.    * Note: UNAVAILABLE will be returned in case when CPU usage is not    * available. It is NOT advised to return any other error code.    *    * @return percentage CPU usage since the process-tree was created,    * {@link #UNAVAILABLE} if CPU usage cannot be calculated or not available.    */
 annotation|@
 name|Override
 DECL|method|getCpuUsagePercent ()
