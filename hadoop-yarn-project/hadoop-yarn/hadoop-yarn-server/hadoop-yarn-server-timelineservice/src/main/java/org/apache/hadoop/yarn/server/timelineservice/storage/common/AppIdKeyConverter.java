@@ -90,30 +90,8 @@ argument_list|<
 name|String
 argument_list|>
 block|{
-DECL|field|INSTANCE
-specifier|private
-specifier|static
-specifier|final
-name|AppIdKeyConverter
-name|INSTANCE
-init|=
-operator|new
-name|AppIdKeyConverter
-argument_list|()
-decl_stmt|;
-DECL|method|getInstance ()
-specifier|public
-specifier|static
-name|AppIdKeyConverter
-name|getInstance
-parameter_list|()
-block|{
-return|return
-name|INSTANCE
-return|;
-block|}
 DECL|method|AppIdKeyConverter ()
-specifier|private
+specifier|public
 name|AppIdKeyConverter
 parameter_list|()
 block|{   }
@@ -159,7 +137,7 @@ name|Bytes
 operator|.
 name|toBytes
 argument_list|(
-name|TimelineStorageUtils
+name|LongConverter
 operator|.
 name|invertLong
 argument_list|(
@@ -263,7 +241,7 @@ block|}
 name|long
 name|clusterTs
 init|=
-name|TimelineStorageUtils
+name|LongConverter
 operator|.
 name|invertLong
 argument_list|(

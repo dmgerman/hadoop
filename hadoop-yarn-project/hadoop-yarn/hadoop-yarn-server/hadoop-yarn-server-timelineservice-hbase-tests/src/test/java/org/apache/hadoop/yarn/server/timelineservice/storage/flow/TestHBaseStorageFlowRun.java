@@ -680,7 +680,9 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|TimelineSchemaCreator
+name|TimelineReader
+operator|.
+name|Field
 import|;
 end_import
 
@@ -700,9 +702,7 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|TimelineReader
-operator|.
-name|Field
+name|TimelineSchemaCreator
 import|;
 end_import
 
@@ -1541,9 +1541,8 @@ name|byte
 index|[]
 name|startRow
 init|=
+operator|new
 name|FlowRunRowKey
-operator|.
-name|getRowKey
 argument_list|(
 name|cluster
 argument_list|,
@@ -1553,6 +1552,9 @@ name|flow
 argument_list|,
 name|runid
 argument_list|)
+operator|.
+name|getRowKey
+argument_list|()
 decl_stmt|;
 name|Get
 name|g
@@ -2290,9 +2292,8 @@ name|byte
 index|[]
 name|startRow
 init|=
+operator|new
 name|FlowRunRowKey
-operator|.
-name|getRowKey
 argument_list|(
 name|cluster
 argument_list|,
@@ -2302,6 +2303,9 @@ name|flow
 argument_list|,
 name|runid
 argument_list|)
+operator|.
+name|getRowKey
+argument_list|()
 decl_stmt|;
 name|s
 operator|.
@@ -2321,9 +2325,8 @@ name|byte
 index|[]
 name|stopRow
 init|=
+operator|new
 name|FlowRunRowKey
-operator|.
-name|getRowKey
 argument_list|(
 name|clusterStop
 argument_list|,
@@ -2333,6 +2336,9 @@ name|flow
 argument_list|,
 name|runid
 argument_list|)
+operator|.
+name|getRowKey
+argument_list|()
 decl_stmt|;
 name|s
 operator|.
@@ -3989,9 +3995,8 @@ name|byte
 index|[]
 name|startRow
 init|=
+operator|new
 name|FlowRunRowKey
-operator|.
-name|getRowKey
 argument_list|(
 name|cluster
 argument_list|,
@@ -4001,6 +4006,9 @@ name|flow
 argument_list|,
 name|runid
 argument_list|)
+operator|.
+name|getRowKey
+argument_list|()
 decl_stmt|;
 name|Get
 name|g

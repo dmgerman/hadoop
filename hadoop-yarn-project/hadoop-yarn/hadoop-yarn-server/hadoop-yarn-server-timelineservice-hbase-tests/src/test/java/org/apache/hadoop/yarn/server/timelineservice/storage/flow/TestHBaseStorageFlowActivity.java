@@ -998,9 +998,8 @@ name|byte
 index|[]
 name|startRow
 init|=
+operator|new
 name|FlowActivityRowKey
-operator|.
-name|getRowKey
 argument_list|(
 name|cluster
 argument_list|,
@@ -1010,6 +1009,9 @@ name|user
 argument_list|,
 name|flow
 argument_list|)
+operator|.
+name|getRowKey
+argument_list|()
 decl_stmt|;
 name|Get
 name|g
@@ -1762,9 +1764,8 @@ name|byte
 index|[]
 name|startRow
 init|=
+operator|new
 name|FlowActivityRowKey
-operator|.
-name|getRowKey
 argument_list|(
 name|cluster
 argument_list|,
@@ -1774,6 +1775,9 @@ name|user
 argument_list|,
 name|flow
 argument_list|)
+operator|.
+name|getRowKey
+argument_list|()
 decl_stmt|;
 name|s
 operator|.
@@ -1793,9 +1797,8 @@ name|byte
 index|[]
 name|stopRow
 init|=
+operator|new
 name|FlowActivityRowKey
-operator|.
-name|getRowKey
 argument_list|(
 name|clusterStop
 argument_list|,
@@ -1805,6 +1808,9 @@ name|user
 argument_list|,
 name|flow
 argument_list|)
+operator|.
+name|getRowKey
+argument_list|()
 decl_stmt|;
 name|s
 operator|.
@@ -2616,9 +2622,8 @@ name|byte
 index|[]
 name|startRow
 init|=
+operator|new
 name|FlowActivityRowKey
-operator|.
-name|getRowKey
 argument_list|(
 name|cluster
 argument_list|,
@@ -2628,6 +2633,9 @@ name|user
 argument_list|,
 name|flow
 argument_list|)
+operator|.
+name|getRowKey
+argument_list|()
 decl_stmt|;
 name|s
 operator|.
@@ -2647,9 +2655,8 @@ name|byte
 index|[]
 name|stopRow
 init|=
+operator|new
 name|FlowActivityRowKey
-operator|.
-name|getRowKey
 argument_list|(
 name|clusterStop
 argument_list|,
@@ -2659,6 +2666,9 @@ name|user
 argument_list|,
 name|flow
 argument_list|)
+operator|.
+name|getRowKey
+argument_list|()
 decl_stmt|;
 name|s
 operator|.

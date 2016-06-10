@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.common
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.flow
 package|package
 name|org
 operator|.
@@ -20,89 +20,91 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|common
+name|flow
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
+name|RowKeyPrefix
+import|;
+end_import
+
 begin_comment
-comment|/**  * Encodes and decodes column names / row keys which are merely strings.  * Column prefixes are not part of the column name passed for encoding. It is  * added later, if required in the associated ColumnPrefix implementations.  */
+comment|/**  * Represents a partial rowkey (without the flowRunId) for the flow run table.  */
 end_comment
 
 begin_class
-DECL|class|StringKeyConverter
+DECL|class|FlowRunRowKeyPrefix
 specifier|public
-specifier|final
 class|class
-name|StringKeyConverter
+name|FlowRunRowKeyPrefix
+extends|extends
+name|FlowRunRowKey
 implements|implements
-name|KeyConverter
+name|RowKeyPrefix
 argument_list|<
-name|String
+name|FlowRunRowKey
 argument_list|>
 block|{
-DECL|method|StringKeyConverter ()
+comment|/**    * Constructs a row key prefix for the flow run table as follows:    * {@code clusterId!userI!flowName!}.    *    * @param clusterId identifying the cluster    * @param userId identifying the user    * @param flowName identifying the flow    */
+DECL|method|FlowRunRowKeyPrefix (String clusterId, String userId, String flowName)
 specifier|public
-name|StringKeyConverter
-parameter_list|()
-block|{   }
-comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.KeyConverter    * #encode(java.lang.Object)    */
-annotation|@
-name|Override
-DECL|method|encode (String key)
-specifier|public
-name|byte
-index|[]
-name|encode
+name|FlowRunRowKeyPrefix
 parameter_list|(
 name|String
-name|key
+name|clusterId
+parameter_list|,
+name|String
+name|userId
+parameter_list|,
+name|String
+name|flowName
 parameter_list|)
 block|{
-return|return
-name|Separator
-operator|.
-name|encode
+name|super
 argument_list|(
-name|key
+name|clusterId
 argument_list|,
-name|Separator
-operator|.
-name|SPACE
+name|userId
 argument_list|,
-name|Separator
-operator|.
-name|TAB
+name|flowName
+argument_list|,
+literal|null
 argument_list|)
-return|;
+expr_stmt|;
 block|}
-comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.KeyConverter    * #decode(byte[])    */
-annotation|@
-name|Override
-DECL|method|decode (byte[] bytes)
+comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.application.    * RowKeyPrefix#getRowKeyPrefix()    */
+DECL|method|getRowKeyPrefix ()
 specifier|public
-name|String
-name|decode
-parameter_list|(
 name|byte
 index|[]
-name|bytes
-parameter_list|)
+name|getRowKeyPrefix
+parameter_list|()
 block|{
+comment|// We know we're a FlowRunRowKey with null florRunId, so we can simply
+comment|// delegate
 return|return
-name|Separator
+name|super
 operator|.
-name|decode
-argument_list|(
-name|bytes
-argument_list|,
-name|Separator
-operator|.
-name|TAB
-argument_list|,
-name|Separator
-operator|.
-name|SPACE
-argument_list|)
+name|getRowKey
+argument_list|()
 return|;
 block|}
 block|}

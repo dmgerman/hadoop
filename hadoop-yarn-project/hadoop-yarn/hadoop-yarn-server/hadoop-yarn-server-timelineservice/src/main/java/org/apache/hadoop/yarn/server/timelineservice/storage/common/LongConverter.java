@@ -36,6 +36,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Serializable
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -62,34 +72,24 @@ class|class
 name|LongConverter
 implements|implements
 name|NumericValueConverter
+implements|,
+name|Serializable
 block|{
-DECL|field|INSTANCE
+comment|/**    * Added because we implement Comparator<Number>.    */
+DECL|field|serialVersionUID
 specifier|private
 specifier|static
 specifier|final
-name|LongConverter
-name|INSTANCE
+name|long
+name|serialVersionUID
 init|=
-operator|new
-name|LongConverter
-argument_list|()
+literal|1L
 decl_stmt|;
 DECL|method|LongConverter ()
-specifier|private
+specifier|public
 name|LongConverter
 parameter_list|()
 block|{   }
-DECL|method|getInstance ()
-specifier|public
-specifier|static
-name|LongConverter
-name|getInstance
-parameter_list|()
-block|{
-return|return
-name|INSTANCE
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|encodeValue (Object value)
@@ -303,6 +303,25 @@ expr_stmt|;
 block|}
 return|return
 name|sum
+return|;
+block|}
+comment|/**    * Converts a timestamp into it's inverse timestamp to be used in (row) keys    * where we want to have the most recent timestamp in the top of the table    * (scans start at the most recent timestamp first).    *    * @param key value to be inverted so that the latest version will be first in    *          a scan.    * @return inverted long    */
+DECL|method|invertLong (long key)
+specifier|public
+specifier|static
+name|long
+name|invertLong
+parameter_list|(
+name|long
+name|key
+parameter_list|)
+block|{
+return|return
+name|Long
+operator|.
+name|MAX_VALUE
+operator|-
+name|key
 return|;
 block|}
 block|}

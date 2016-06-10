@@ -50,6 +50,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
 import|;
 end_import
@@ -176,6 +186,24 @@ name|hbase
 operator|.
 name|filter
 operator|.
+name|CompareFilter
+operator|.
+name|CompareOp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hbase
+operator|.
+name|filter
+operator|.
 name|FamilyFilter
 import|;
 end_import
@@ -208,43 +236,25 @@ name|hbase
 operator|.
 name|filter
 operator|.
-name|QualifierFilter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hbase
-operator|.
-name|filter
-operator|.
-name|CompareFilter
-operator|.
-name|CompareOp
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hbase
-operator|.
-name|filter
-operator|.
 name|FilterList
 operator|.
 name|Operator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hbase
+operator|.
+name|filter
+operator|.
+name|QualifierFilter
 import|;
 end_import
 
@@ -500,6 +510,94 @@ name|storage
 operator|.
 name|common
 operator|.
+name|ColumnPrefix
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
+name|KeyConverter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
+name|RowKeyPrefix
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
+name|StringKeyConverter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|common
+operator|.
 name|TimelineStorageUtils
 import|;
 end_import
@@ -610,6 +708,28 @@ name|storage
 operator|.
 name|entity
 operator|.
+name|EntityRowKeyPrefix
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|storage
+operator|.
+name|entity
+operator|.
 name|EntityTable
 import|;
 end_import
@@ -675,6 +795,20 @@ name|appToFlowTable
 init|=
 operator|new
 name|AppToFlowTable
+argument_list|()
+decl_stmt|;
+comment|/**    * Used to convert strings key components to and from storage format.    */
+DECL|field|stringKeyConverter
+specifier|private
+specifier|final
+name|KeyConverter
+argument_list|<
+name|String
+argument_list|>
+name|stringKeyConverter
+init|=
+operator|new
+name|StringKeyConverter
 argument_list|()
 decl_stmt|;
 DECL|method|GenericEntityReader (TimelineReaderContext ctxt, TimelineEntityFilters entityFilters, TimelineDataToRetrieve toRetrieve, boolean sortedKeys)
@@ -949,7 +1083,6 @@ block|}
 comment|/**    * Check if we need to fetch only some of the event columns.    *    * @return true if we need to fetch some of the columns, false otherwise.    */
 DECL|method|fetchPartialEventCols (TimelineFilterList eventFilters, EnumSet<Field> fieldsToRetrieve)
 specifier|private
-specifier|static
 name|boolean
 name|fetchPartialEventCols
 parameter_list|(
@@ -979,8 +1112,6 @@ name|isEmpty
 argument_list|()
 operator|&&
 operator|!
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -995,7 +1126,6 @@ block|}
 comment|/**    * Check if we need to fetch only some of the relates_to columns.    *    * @return true if we need to fetch some of the columns, false otherwise.    */
 DECL|method|fetchPartialRelatesToCols (TimelineFilterList relatesTo, EnumSet<Field> fieldsToRetrieve)
 specifier|private
-specifier|static
 name|boolean
 name|fetchPartialRelatesToCols
 parameter_list|(
@@ -1025,8 +1155,6 @@ name|isEmpty
 argument_list|()
 operator|&&
 operator|!
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -1039,9 +1167,8 @@ operator|)
 return|;
 block|}
 comment|/**    * Check if we need to fetch only some of the is_related_to columns.    *    * @return true if we need to fetch some of the columns, false otherwise.    */
-DECL|method|fetchPartialIsRelatedToCols ( TimelineFilterList isRelatedTo, EnumSet<Field> fieldsToRetrieve)
+DECL|method|fetchPartialIsRelatedToCols (TimelineFilterList isRelatedTo, EnumSet<Field> fieldsToRetrieve)
 specifier|private
-specifier|static
 name|boolean
 name|fetchPartialIsRelatedToCols
 parameter_list|(
@@ -1071,8 +1198,6 @@ name|isEmpty
 argument_list|()
 operator|&&
 operator|!
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -1084,7 +1209,7 @@ argument_list|)
 operator|)
 return|;
 block|}
-comment|/**    * Check if we need to fetch only some of the columns based on event filters,    * relatesto and isrelatedto from info family.    *    * @return true, if we need to fetch only some of the columns, false if we    *     need to fetch all the columns under info column family.    */
+comment|/**    * Check if we need to fetch only some of the columns based on event filters,    * relatesto and isrelatedto from info family.    *    * @return true, if we need to fetch only some of the columns, false if we    *         need to fetch all the columns under info column family.    */
 DECL|method|fetchPartialColsFromInfoFamily ()
 specifier|protected
 name|boolean
@@ -1141,7 +1266,7 @@ name|fieldsToRetrieve
 argument_list|)
 return|;
 block|}
-comment|/**    * Check if we need to create filter list based on fields. We need to create    * a filter list iff all fields need not be retrieved or we have some specific    * fields or metrics to retrieve. We also need to create a filter list if we    * have relationships(relatesTo/isRelatedTo) and event filters specified for    * the query.    *    * @return true if we need to create the filter list, false otherwise.    */
+comment|/**    * Check if we need to create filter list based on fields. We need to create a    * filter list iff all fields need not be retrieved or we have some specific    * fields or metrics to retrieve. We also need to create a filter list if we    * have relationships(relatesTo/isRelatedTo) and event filters specified for    * the query.    *    * @return true if we need to create the filter list, false otherwise.    */
 DECL|method|needCreateFilterListBasedOnFields ()
 specifier|protected
 name|boolean
@@ -1350,7 +1475,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Creates a filter list which indicates that only some of the column    * qualifiers in the info column family will be returned in result.    *    * @param isApplication If true, it means operations are to be performed for    *     application table, otherwise for entity table.    * @return filter list.    * @throws IOException if any problem occurs while creating filter list.    */
+comment|/**    * Creates a filter list which indicates that only some of the column    * qualifiers in the info column family will be returned in result.    *    * @param isApplication If true, it means operations are to be performed for    *          application table, otherwise for entity table.    * @return filter list.    * @throws IOException if any problem occurs while creating filter list.    */
 DECL|method|createFilterListForColsOfInfoFamily ()
 specifier|private
 name|FilterList
@@ -1392,8 +1517,6 @@ comment|// If INFO field has to be retrieved, add a filter for fetching columns
 comment|// with INFO column prefix.
 if|if
 condition|(
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -1434,8 +1557,6 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -1505,8 +1626,6 @@ name|infoFamilyColsFilter
 operator|.
 name|addFilter
 argument_list|(
-name|TimelineFilterUtils
-operator|.
 name|createFiltersFromColumnQualifiers
 argument_list|(
 name|EntityColumnPrefix
@@ -1529,8 +1648,6 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -1600,8 +1717,6 @@ name|infoFamilyColsFilter
 operator|.
 name|addFilter
 argument_list|(
-name|TimelineFilterUtils
-operator|.
 name|createFiltersFromColumnQualifiers
 argument_list|(
 name|EntityColumnPrefix
@@ -1624,8 +1739,6 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -1695,8 +1808,6 @@ name|infoFamilyColsFilter
 operator|.
 name|addFilter
 argument_list|(
-name|TimelineFilterUtils
-operator|.
 name|createFiltersFromColumnQualifiers
 argument_list|(
 name|EntityColumnPrefix
@@ -1738,8 +1849,6 @@ comment|// Events not required.
 if|if
 condition|(
 operator|!
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -1773,8 +1882,6 @@ comment|// info not required.
 if|if
 condition|(
 operator|!
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -1808,8 +1915,6 @@ comment|// is related to not required.
 if|if
 condition|(
 operator|!
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -1843,8 +1948,6 @@ comment|// relates to not required.
 if|if
 condition|(
 operator|!
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -2094,17 +2197,14 @@ return|return
 name|listBasedOnFields
 return|;
 block|}
-comment|/**    * Looks up flow context from AppToFlow table.    *    * @param clusterId Cluster Id.    * @param appId App Id.    * @param hbaseConf HBase configuration.    * @param conn HBase Connection.    * @return flow context information.    * @throws IOException if any problem occurs while fetching flow information.    */
-DECL|method|lookupFlowContext (String clusterId, String appId, Configuration hbaseConf, Connection conn)
+comment|/**    * Looks up flow context from AppToFlow table.    *    * @param appToFlowRowKey to identify Cluster and App Ids.    * @param hbaseConf HBase configuration.    * @param conn HBase Connection.    * @return flow context information.    * @throws IOException if any problem occurs while fetching flow information.    */
+DECL|method|lookupFlowContext (AppToFlowRowKey appToFlowRowKey, Configuration hbaseConf, Connection conn)
 specifier|protected
 name|FlowContext
 name|lookupFlowContext
 parameter_list|(
-name|String
-name|clusterId
-parameter_list|,
-name|String
-name|appId
+name|AppToFlowRowKey
+name|appToFlowRowKey
 parameter_list|,
 name|Configuration
 name|hbaseConf
@@ -2119,14 +2219,10 @@ name|byte
 index|[]
 name|rowKey
 init|=
-name|AppToFlowRowKey
+name|appToFlowRowKey
 operator|.
 name|getRowKey
-argument_list|(
-name|clusterId
-argument_list|,
-name|appId
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|Get
 name|get
@@ -2219,11 +2315,17 @@ name|NotFoundException
 argument_list|(
 literal|"Unable to find the context flow ID and flow run ID for clusterId="
 operator|+
-name|clusterId
+name|appToFlowRowKey
+operator|.
+name|getClusterId
+argument_list|()
 operator|+
 literal|", appId="
 operator|+
-name|appId
+name|appToFlowRowKey
+operator|.
+name|getAppId
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -2453,10 +2555,11 @@ literal|null
 condition|)
 block|{
 comment|// Get flow context information from AppToFlow table.
-name|FlowContext
-name|flowContext
+name|AppToFlowRowKey
+name|appToFlowRowKey
 init|=
-name|lookupFlowContext
+operator|new
+name|AppToFlowRowKey
 argument_list|(
 name|context
 operator|.
@@ -2467,6 +2570,14 @@ name|context
 operator|.
 name|getAppId
 argument_list|()
+argument_list|)
+decl_stmt|;
+name|FlowContext
+name|flowContext
+init|=
+name|lookupFlowContext
+argument_list|(
+name|appToFlowRowKey
 argument_list|,
 name|hbaseConf
 argument_list|,
@@ -2550,9 +2661,8 @@ name|byte
 index|[]
 name|rowKey
 init|=
+operator|new
 name|EntityRowKey
-operator|.
-name|getRowKey
 argument_list|(
 name|context
 operator|.
@@ -2589,6 +2699,9 @@ operator|.
 name|getEntityId
 argument_list|()
 argument_list|)
+operator|.
+name|getRowKey
+argument_list|()
 decl_stmt|;
 name|Get
 name|get
@@ -2682,13 +2795,14 @@ init|=
 name|getContext
 argument_list|()
 decl_stmt|;
-name|scan
-operator|.
-name|setRowPrefixFilter
-argument_list|(
+name|RowKeyPrefix
+argument_list|<
 name|EntityRowKey
-operator|.
-name|getRowKeyPrefix
+argument_list|>
+name|entityRowKeyPrefix
+init|=
+operator|new
+name|EntityRowKeyPrefix
 argument_list|(
 name|context
 operator|.
@@ -2720,6 +2834,15 @@ operator|.
 name|getEntityType
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|scan
+operator|.
+name|setRowPrefixFilter
+argument_list|(
+name|entityRowKeyPrefix
+operator|.
+name|getRowKeyPrefix
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|scan
@@ -2925,8 +3048,6 @@ literal|0
 decl_stmt|;
 if|if
 condition|(
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -2939,8 +3060,6 @@ operator|||
 name|checkIsRelatedTo
 condition|)
 block|{
-name|TimelineStorageUtils
-operator|.
 name|readRelationship
 argument_list|(
 name|entity
@@ -2979,8 +3098,6 @@ block|}
 if|if
 condition|(
 operator|!
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -3034,8 +3151,6 @@ literal|0
 decl_stmt|;
 if|if
 condition|(
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -3048,8 +3163,6 @@ operator|||
 name|checkRelatesTo
 condition|)
 block|{
-name|TimelineStorageUtils
-operator|.
 name|readRelationship
 argument_list|(
 name|entity
@@ -3088,8 +3201,6 @@ block|}
 if|if
 condition|(
 operator|!
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -3113,8 +3224,6 @@ block|}
 comment|// fetch info if fieldsToRetrieve contains INFO or ALL.
 if|if
 condition|(
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -3125,8 +3234,6 @@ name|INFO
 argument_list|)
 condition|)
 block|{
-name|TimelineStorageUtils
-operator|.
 name|readKeyValuePairs
 argument_list|(
 name|entity
@@ -3144,8 +3251,6 @@ block|}
 comment|// fetch configs if fieldsToRetrieve contains CONFIGS or ALL.
 if|if
 condition|(
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -3156,8 +3261,6 @@ name|CONFIGS
 argument_list|)
 condition|)
 block|{
-name|TimelineStorageUtils
-operator|.
 name|readKeyValuePairs
 argument_list|(
 name|entity
@@ -3205,8 +3308,6 @@ literal|0
 decl_stmt|;
 if|if
 condition|(
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -3219,8 +3320,6 @@ operator|||
 name|checkEvents
 condition|)
 block|{
-name|TimelineStorageUtils
-operator|.
 name|readEvents
 argument_list|(
 name|entity
@@ -3257,8 +3356,6 @@ block|}
 if|if
 condition|(
 operator|!
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -3282,8 +3379,6 @@ block|}
 comment|// fetch metrics if fieldsToRetrieve contains METRICS or ALL.
 if|if
 condition|(
-name|TimelineStorageUtils
-operator|.
 name|hasField
 argument_list|(
 name|fieldsToRetrieve
@@ -3309,6 +3404,105 @@ block|}
 return|return
 name|entity
 return|;
+block|}
+comment|/**    * Helper method for reading key-value pairs for either info or config.    *    * @param<T> Describes the type of column prefix.    * @param entity entity to fill.    * @param result result from HBase.    * @param prefix column prefix.    * @param isConfig if true, means we are reading configs, otherwise info.    * @throws IOException if any problem is encountered while reading result.    */
+DECL|method|readKeyValuePairs (TimelineEntity entity, Result result, ColumnPrefix<T> prefix, boolean isConfig)
+specifier|protected
+parameter_list|<
+name|T
+parameter_list|>
+name|void
+name|readKeyValuePairs
+parameter_list|(
+name|TimelineEntity
+name|entity
+parameter_list|,
+name|Result
+name|result
+parameter_list|,
+name|ColumnPrefix
+argument_list|<
+name|T
+argument_list|>
+name|prefix
+parameter_list|,
+name|boolean
+name|isConfig
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// info and configuration are of type Map<String, Object or String>
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Object
+argument_list|>
+name|columns
+init|=
+name|prefix
+operator|.
+name|readResults
+argument_list|(
+name|result
+argument_list|,
+name|stringKeyConverter
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|isConfig
+condition|)
+block|{
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|Object
+argument_list|>
+name|column
+range|:
+name|columns
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|entity
+operator|.
+name|addConfig
+argument_list|(
+name|column
+operator|.
+name|getKey
+argument_list|()
+argument_list|,
+name|column
+operator|.
+name|getValue
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|entity
+operator|.
+name|addInfo
+argument_list|(
+name|columns
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

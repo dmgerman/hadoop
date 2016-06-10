@@ -311,9 +311,8 @@ literal|"m"
 argument_list|,
 literal|null
 argument_list|,
+operator|new
 name|LongConverter
-operator|.
-name|getInstance
 argument_list|()
 argument_list|)
 block|;

@@ -50,30 +50,19 @@ argument_list|<
 name|Long
 argument_list|>
 block|{
-DECL|field|INSTANCE
+comment|/**    * To delegate the actual work to.    */
+DECL|field|longConverter
 specifier|private
-specifier|static
 specifier|final
-name|LongKeyConverter
-name|INSTANCE
+name|LongConverter
+name|longConverter
 init|=
 operator|new
-name|LongKeyConverter
+name|LongConverter
 argument_list|()
 decl_stmt|;
-DECL|method|getInstance ()
-specifier|public
-specifier|static
-name|LongKeyConverter
-name|getInstance
-parameter_list|()
-block|{
-return|return
-name|INSTANCE
-return|;
-block|}
 DECL|method|LongKeyConverter ()
-specifier|private
+specifier|public
 name|LongKeyConverter
 parameter_list|()
 block|{   }
@@ -95,10 +84,7 @@ block|{
 comment|// IOException will not be thrown here as we are explicitly passing
 comment|// Long.
 return|return
-name|LongConverter
-operator|.
-name|getInstance
-argument_list|()
+name|longConverter
 operator|.
 name|encodeValue
 argument_list|(
@@ -136,10 +122,7 @@ return|return
 operator|(
 name|Long
 operator|)
-name|LongConverter
-operator|.
-name|getInstance
-argument_list|()
+name|longConverter
 operator|.
 name|decodeValue
 argument_list|(

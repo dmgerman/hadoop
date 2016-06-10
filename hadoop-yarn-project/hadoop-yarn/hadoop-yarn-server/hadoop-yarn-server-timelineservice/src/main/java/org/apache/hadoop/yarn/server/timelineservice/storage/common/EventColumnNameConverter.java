@@ -56,30 +56,8 @@ argument_list|<
 name|EventColumnName
 argument_list|>
 block|{
-DECL|field|INSTANCE
-specifier|private
-specifier|static
-specifier|final
-name|EventColumnNameConverter
-name|INSTANCE
-init|=
-operator|new
-name|EventColumnNameConverter
-argument_list|()
-decl_stmt|;
-DECL|method|getInstance ()
-specifier|public
-specifier|static
-name|EventColumnNameConverter
-name|getInstance
-parameter_list|()
-block|{
-return|return
-name|INSTANCE
-return|;
-block|}
 DECL|method|EventColumnNameConverter ()
-specifier|private
+specifier|public
 name|EventColumnNameConverter
 parameter_list|()
 block|{   }
@@ -180,7 +158,7 @@ name|Bytes
 operator|.
 name|toBytes
 argument_list|(
-name|TimelineStorageUtils
+name|LongConverter
 operator|.
 name|invertLong
 argument_list|(
@@ -332,7 +310,7 @@ decl_stmt|;
 name|Long
 name|ts
 init|=
-name|TimelineStorageUtils
+name|LongConverter
 operator|.
 name|invertLong
 argument_list|(
