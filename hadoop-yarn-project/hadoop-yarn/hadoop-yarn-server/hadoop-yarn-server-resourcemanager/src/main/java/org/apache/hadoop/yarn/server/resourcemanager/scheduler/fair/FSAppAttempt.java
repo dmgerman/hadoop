@@ -718,10 +718,10 @@ specifier|private
 name|long
 name|startTime
 decl_stmt|;
-DECL|field|priority
+DECL|field|appPriority
 specifier|private
 name|Priority
-name|priority
+name|appPriority
 decl_stmt|;
 DECL|field|resourceWeights
 specifier|private
@@ -910,7 +910,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|priority
+name|appPriority
 operator|=
 name|Priority
 operator|.
@@ -2046,7 +2046,7 @@ name|priority
 argument_list|)
 return|;
 block|}
-DECL|method|allocate (NodeType type, FSSchedulerNode node, Priority priority, ResourceRequest request, Container container)
+DECL|method|allocate (NodeType type, FSSchedulerNode node, Priority priority, ResourceRequest request, Container reservedContainer)
 specifier|synchronized
 specifier|public
 name|RMContainer
@@ -2065,7 +2065,7 @@ name|ResourceRequest
 name|request
 parameter_list|,
 name|Container
-name|container
+name|reservedContainer
 parameter_list|)
 block|{
 comment|// Update allowed locality level
@@ -2176,6 +2176,36 @@ block|{
 return|return
 literal|null
 return|;
+block|}
+name|Container
+name|container
+init|=
+name|reservedContainer
+decl_stmt|;
+if|if
+condition|(
+name|container
+operator|==
+literal|null
+condition|)
+block|{
+name|container
+operator|=
+name|createContainer
+argument_list|(
+name|node
+argument_list|,
+name|request
+operator|.
+name|getCapability
+argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getPriority
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Create RMContainer
 name|RMContainer
@@ -2671,27 +2701,32 @@ name|container
 return|;
 block|}
 comment|/**    * Reserve a spot for {@code container} on this {@code node}. If    * the container is {@code alreadyReserved} on the node, simply    * update relevant bookeeping. This dispatches ro relevant handlers    * in {@link FSSchedulerNode}..    * return whether reservation was possible with the current threshold limits    */
-DECL|method|reserve (Priority priority, FSSchedulerNode node, Container container, NodeType type, boolean alreadyReserved)
+DECL|method|reserve (ResourceRequest request, FSSchedulerNode node, Container reservedContainer, NodeType type)
 specifier|private
 name|boolean
 name|reserve
 parameter_list|(
-name|Priority
-name|priority
+name|ResourceRequest
+name|request
 parameter_list|,
 name|FSSchedulerNode
 name|node
 parameter_list|,
 name|Container
-name|container
+name|reservedContainer
 parameter_list|,
 name|NodeType
 name|type
-parameter_list|,
-name|boolean
-name|alreadyReserved
 parameter_list|)
 block|{
+name|Priority
+name|priority
+init|=
+name|request
+operator|.
+name|getPriority
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -2722,10 +2757,28 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-operator|!
-name|alreadyReserved
+name|reservedContainer
+operator|==
+literal|null
 condition|)
 block|{
+name|reservedContainer
+operator|=
+name|createContainer
+argument_list|(
+name|node
+argument_list|,
+name|request
+operator|.
+name|getCapability
+argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getPriority
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|getMetrics
 argument_list|()
 operator|.
@@ -2734,7 +2787,7 @@ argument_list|(
 name|getUser
 argument_list|()
 argument_list|,
-name|container
+name|reservedContainer
 operator|.
 name|getResource
 argument_list|()
@@ -2753,7 +2806,7 @@ name|priority
 argument_list|,
 literal|null
 argument_list|,
-name|container
+name|reservedContainer
 argument_list|)
 decl_stmt|;
 name|node
@@ -2793,7 +2846,7 @@ name|priority
 argument_list|,
 name|rmContainer
 argument_list|,
-name|container
+name|reservedContainer
 argument_list|)
 expr_stmt|;
 name|node
@@ -3302,7 +3355,7 @@ name|getUnallocatedResource
 argument_list|()
 decl_stmt|;
 name|Container
-name|container
+name|reservedContainer
 init|=
 literal|null
 decl_stmt|;
@@ -3311,7 +3364,7 @@ condition|(
 name|reserved
 condition|)
 block|{
-name|container
+name|reservedContainer
 operator|=
 name|node
 operator|.
@@ -3320,23 +3373,6 @@ argument_list|()
 operator|.
 name|getContainer
 argument_list|()
-expr_stmt|;
-block|}
-else|else
-block|{
-name|container
-operator|=
-name|createContainer
-argument_list|(
-name|node
-argument_list|,
-name|capability
-argument_list|,
-name|request
-operator|.
-name|getPriority
-argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 comment|// Can we allocate a container on this node?
@@ -3369,7 +3405,7 @@ argument_list|()
 argument_list|,
 name|request
 argument_list|,
-name|container
+name|reservedContainer
 argument_list|)
 decl_stmt|;
 if|if
@@ -3444,10 +3480,7 @@ condition|)
 block|{
 name|setAMResource
 argument_list|(
-name|container
-operator|.
-name|getResource
-argument_list|()
+name|capability
 argument_list|)
 expr_stmt|;
 name|getQueue
@@ -3455,10 +3488,7 @@ argument_list|()
 operator|.
 name|addAMResourceUsage
 argument_list|(
-name|container
-operator|.
-name|getResource
-argument_list|()
+name|capability
 argument_list|)
 expr_stmt|;
 name|setAmRunning
@@ -3468,10 +3498,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|container
-operator|.
-name|getResource
-argument_list|()
+name|capability
 return|;
 block|}
 comment|// The desired container won't fit here, so reserve
@@ -3479,23 +3506,18 @@ if|if
 condition|(
 name|isReservable
 argument_list|(
-name|container
+name|capability
 argument_list|)
 operator|&&
 name|reserve
 argument_list|(
 name|request
-operator|.
-name|getPriority
-argument_list|()
 argument_list|,
 name|node
 argument_list|,
-name|container
+name|reservedContainer
 argument_list|,
 name|type
-argument_list|,
-name|reserved
 argument_list|)
 condition|)
 block|{
@@ -3519,14 +3541,17 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Not creating reservation as container "
+literal|"Couldn't creating reservation for "
 operator|+
-name|container
-operator|.
-name|getId
+name|getName
 argument_list|()
 operator|+
-literal|" is not reservable"
+literal|",at priority "
+operator|+
+name|request
+operator|.
+name|getPriority
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -3538,13 +3563,13 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|isReservable (Container container)
+DECL|method|isReservable (Resource capacity)
 specifier|private
 name|boolean
 name|isReservable
 parameter_list|(
-name|Container
-name|container
+name|Resource
+name|capacity
 parameter_list|)
 block|{
 return|return
@@ -3561,10 +3586,7 @@ operator|.
 name|getResourceCalculator
 argument_list|()
 argument_list|,
-name|container
-operator|.
-name|getResource
-argument_list|()
+name|capacity
 argument_list|)
 return|;
 block|}
@@ -4570,7 +4592,7 @@ block|{
 comment|// Right now per-app priorities are not passed to scheduler,
 comment|// so everyone has the same priority.
 return|return
-name|priority
+name|appPriority
 return|;
 block|}
 annotation|@
