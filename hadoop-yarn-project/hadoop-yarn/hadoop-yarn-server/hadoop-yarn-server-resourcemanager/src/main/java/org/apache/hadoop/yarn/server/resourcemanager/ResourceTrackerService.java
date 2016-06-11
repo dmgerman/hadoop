@@ -2480,7 +2480,19 @@ name|host
 operator|+
 literal|" doesn't satisfy minimum allocations, Sending SHUTDOWN"
 operator|+
-literal|" signal to the NodeManager."
+literal|" signal to the NodeManager. Node capabilities are "
+operator|+
+name|capability
+operator|+
+literal|"; minimums are "
+operator|+
+name|minAllocMb
+operator|+
+literal|"mb and "
+operator|+
+name|minAllocVcores
+operator|+
+literal|" vcores"
 decl_stmt|;
 name|LOG
 operator|.

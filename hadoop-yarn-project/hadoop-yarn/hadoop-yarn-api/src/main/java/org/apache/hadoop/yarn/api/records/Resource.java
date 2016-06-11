@@ -943,7 +943,12 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-literal|""
+name|ResourceInformation
+operator|.
+name|VCORES
+operator|.
+name|getUnits
+argument_list|()
 argument_list|)
 condition|)
 block|{

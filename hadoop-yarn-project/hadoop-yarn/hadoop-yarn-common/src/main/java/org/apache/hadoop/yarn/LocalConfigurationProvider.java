@@ -201,6 +201,15 @@ name|contains
 argument_list|(
 name|name
 argument_list|)
+operator|||
+name|YarnConfiguration
+operator|.
+name|NM_CONFIGURATION_FILES
+operator|.
+name|contains
+argument_list|(
+name|name
+argument_list|)
 condition|)
 block|{
 return|return
