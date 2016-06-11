@@ -345,6 +345,65 @@ return|return
 name|capacity
 return|;
 block|}
+comment|/**    * Get free space of the volume.    *    * @return long    */
+annotation|@
+name|JsonIgnore
+DECL|method|getFreeSpace ()
+specifier|public
+name|long
+name|getFreeSpace
+parameter_list|()
+block|{
+return|return
+name|getCapacity
+argument_list|()
+operator|-
+name|getUsed
+argument_list|()
+return|;
+block|}
+comment|/**    * Get ratio between used space and capacity.    *    * @return double    */
+annotation|@
+name|JsonIgnore
+DECL|method|getUsedRatio ()
+specifier|public
+name|double
+name|getUsedRatio
+parameter_list|()
+block|{
+return|return
+operator|(
+literal|1.0
+operator|*
+name|getUsed
+argument_list|()
+operator|)
+operator|/
+name|getCapacity
+argument_list|()
+return|;
+block|}
+comment|/**    * Get ratio between free space and capacity.    *    * @return double    */
+annotation|@
+name|JsonIgnore
+DECL|method|getFreeRatio ()
+specifier|public
+name|double
+name|getFreeRatio
+parameter_list|()
+block|{
+return|return
+operator|(
+literal|1.0
+operator|*
+name|getFreeSpace
+argument_list|()
+operator|)
+operator|/
+name|getCapacity
+argument_list|()
+return|;
+block|}
 comment|/**    * Sets the capacity of this volume.    *    * @param totalCapacity long    */
 DECL|method|setCapacity (long totalCapacity)
 specifier|public

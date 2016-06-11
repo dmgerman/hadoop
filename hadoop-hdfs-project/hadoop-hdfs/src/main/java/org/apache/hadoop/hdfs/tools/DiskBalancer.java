@@ -238,6 +238,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|diskbalancer
+operator|.
+name|command
+operator|.
+name|ReportCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Tool
@@ -285,6 +305,16 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|PrintStream
 import|;
 end_import
 
@@ -391,6 +421,36 @@ name|String
 name|EXECUTE
 init|=
 literal|"execute"
+decl_stmt|;
+comment|/**    * The report command prints out a disk fragmentation report about the data    * cluster. By default it prints the DEFAULT_TOP machines names with high    * nodeDataDensity {DiskBalancerDataNode#getNodeDataDensity} values. This    * means that these are the nodes that deviates from the ideal data    * distribution.    */
+DECL|field|REPORT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|REPORT
+init|=
+literal|"report"
+decl_stmt|;
+comment|/**    * specify top number of nodes to be processed.    */
+DECL|field|TOP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TOP
+init|=
+literal|"top"
+decl_stmt|;
+comment|/**    * specify default top number of nodes to be processed.    */
+DECL|field|DEFAULT_TOP
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_TOP
+init|=
+literal|100
 decl_stmt|;
 comment|/**    * Name or address of the node to execute against.    */
 DECL|field|NODE
@@ -583,6 +643,34 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+return|return
+name|run
+argument_list|(
+name|args
+argument_list|,
+name|System
+operator|.
+name|out
+argument_list|)
+return|;
+block|}
+comment|/**    * Execute the command with the given arguments.    *    * @param args command specific arguments.    * @param out the output stream used for printing    * @return exit code.    * @throws Exception    */
+DECL|method|run (String[] args, final PrintStream out)
+specifier|public
+name|int
+name|run
+parameter_list|(
+name|String
+index|[]
+name|args
+parameter_list|,
+specifier|final
+name|PrintStream
+name|out
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 name|Options
 name|opts
 init|=
@@ -605,6 +693,8 @@ argument_list|(
 name|cmd
 argument_list|,
 name|opts
+argument_list|,
+name|out
 argument_list|)
 return|;
 block|}
@@ -638,6 +728,11 @@ name|opts
 argument_list|)
 expr_stmt|;
 name|addCancelCommands
+argument_list|(
+name|opts
+argument_list|)
+expr_stmt|;
+name|addReportCommands
 argument_list|(
 name|opts
 argument_list|)
@@ -956,6 +1051,81 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Adds report command options.    * @param opt Options    */
+DECL|method|addReportCommands (Options opt)
+specifier|private
+name|void
+name|addReportCommands
+parameter_list|(
+name|Options
+name|opt
+parameter_list|)
+block|{
+name|Option
+name|report
+init|=
+operator|new
+name|Option
+argument_list|(
+name|REPORT
+argument_list|,
+literal|false
+argument_list|,
+literal|"Report volume information of DataNode(s)"
+operator|+
+literal|" benefiting from running DiskBalancer. "
+operator|+
+literal|"-report [top -X] | [-node {DataNodeID | IP | Hostname}]."
+argument_list|)
+decl_stmt|;
+name|opt
+operator|.
+name|addOption
+argument_list|(
+name|report
+argument_list|)
+expr_stmt|;
+name|Option
+name|top
+init|=
+operator|new
+name|Option
+argument_list|(
+name|TOP
+argument_list|,
+literal|true
+argument_list|,
+literal|"specify the top number of nodes to be processed."
+argument_list|)
+decl_stmt|;
+name|opt
+operator|.
+name|addOption
+argument_list|(
+name|top
+argument_list|)
+expr_stmt|;
+name|Option
+name|node
+init|=
+operator|new
+name|Option
+argument_list|(
+name|NODE
+argument_list|,
+literal|true
+argument_list|,
+literal|"Name of the datanode in the format of DataNodeID, IP or hostname."
+argument_list|)
+decl_stmt|;
+name|opt
+operator|.
+name|addOption
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * This function parses all command line arguments and returns the appropriate    * values.    *    * @param argv - Argv from main    * @return CommandLine    */
 DECL|method|parseArgs (String[] argv, Options opts)
 specifier|private
@@ -998,8 +1168,8 @@ name|argv
 argument_list|)
 return|;
 block|}
-comment|/**    * Dispatches calls to the right command Handler classes.    *    * @param cmd - CommandLine    * @throws IOException    * @throws URISyntaxException    */
-DECL|method|dispatch (CommandLine cmd, Options opts)
+comment|/**    * Dispatches calls to the right command Handler classes.    *    * @param cmd - CommandLine    * @param opts options of command line    * @param out the output stream used for printing    * @throws IOException    * @throws URISyntaxException    */
+DECL|method|dispatch (CommandLine cmd, Options opts, final PrintStream out)
 specifier|private
 name|int
 name|dispatch
@@ -1009,6 +1179,10 @@ name|cmd
 parameter_list|,
 name|Options
 name|opts
+parameter_list|,
+specifier|final
+name|PrintStream
+name|out
 parameter_list|)
 throws|throws
 name|IOException
@@ -1107,6 +1281,30 @@ name|CancelCommand
 argument_list|(
 name|getConf
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|DiskBalancer
+operator|.
+name|REPORT
+argument_list|)
+condition|)
+block|{
+name|currentCommand
+operator|=
+operator|new
+name|ReportCommand
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|,
+name|out
 argument_list|)
 expr_stmt|;
 block|}
