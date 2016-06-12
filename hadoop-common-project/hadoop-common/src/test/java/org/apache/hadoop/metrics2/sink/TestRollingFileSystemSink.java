@@ -618,7 +618,14 @@ name|diff
 argument_list|,
 operator|(
 name|diff
-operator|>=
+operator|==
+literal|0L
+operator|)
+operator|||
+operator|(
+operator|(
+name|diff
+operator|>
 operator|-
 literal|1000L
 operator|)
@@ -628,6 +635,7 @@ name|diff
 operator|<
 operator|-
 literal|900L
+operator|)
 operator|)
 argument_list|)
 expr_stmt|;
@@ -673,7 +681,6 @@ operator|+
 name|diff
 argument_list|,
 operator|(
-operator|(
 name|diff
 operator|>=
 operator|-
@@ -699,7 +706,6 @@ name|diff
 operator|<
 operator|-
 literal|910L
-operator|)
 operator|)
 operator|)
 argument_list|)
@@ -757,7 +763,6 @@ operator|+
 name|diff
 argument_list|,
 operator|(
-operator|(
 name|diff
 operator|>=
 operator|-
@@ -783,7 +788,6 @@ name|diff
 operator|<
 operator|-
 literal|910L
-operator|)
 operator|)
 operator|)
 argument_list|)
