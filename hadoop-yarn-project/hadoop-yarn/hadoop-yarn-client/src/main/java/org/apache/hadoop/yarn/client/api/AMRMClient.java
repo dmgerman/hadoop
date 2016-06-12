@@ -256,6 +256,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ExecutionTypeRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -520,10 +538,10 @@ specifier|final
 name|String
 name|nodeLabelsExpression
 decl_stmt|;
-DECL|field|executionType
+DECL|field|executionTypeRequest
 specifier|final
-name|ExecutionType
-name|executionType
+name|ExecutionTypeRequest
+name|executionTypeRequest
 decl_stmt|;
 comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints and      * locality relaxation enabled.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      */
 DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority)
@@ -640,14 +658,15 @@ name|relaxLocality
 argument_list|,
 name|nodeLabelsExpression
 argument_list|,
-name|ExecutionType
+name|ExecutionTypeRequest
 operator|.
-name|GUARANTEED
+name|newInstance
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param relaxLocality      *          If true, containers for this request may be assigned on hosts      *          and racks other than the ones explicitly requested.      * @param nodeLabelsExpression      *          Set node labels to allocate resource, now we only support      *          asking for only a single node label      * @param executionType      *          Set the execution type of the container request.      */
-DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, boolean relaxLocality, String nodeLabelsExpression, ExecutionType executionType)
+comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param relaxLocality      *          If true, containers for this request may be assigned on hosts      *          and racks other than the ones explicitly requested.      * @param nodeLabelsExpression      *          Set node labels to allocate resource, now we only support      *          asking for only a single node label      * @param executionTypeRequest      *          Set the execution type of the container request.      */
+DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, boolean relaxLocality, String nodeLabelsExpression, ExecutionTypeRequest executionTypeRequest)
 specifier|public
 name|ContainerRequest
 parameter_list|(
@@ -671,8 +690,8 @@ parameter_list|,
 name|String
 name|nodeLabelsExpression
 parameter_list|,
-name|ExecutionType
-name|executionType
+name|ExecutionTypeRequest
+name|executionTypeRequest
 parameter_list|)
 block|{
 comment|// Validate request
@@ -803,9 +822,9 @@ name|nodeLabelsExpression
 expr_stmt|;
 name|this
 operator|.
-name|executionType
+name|executionTypeRequest
 operator|=
-name|executionType
+name|executionTypeRequest
 expr_stmt|;
 block|}
 DECL|method|getCapability ()
@@ -874,14 +893,14 @@ return|return
 name|nodeLabelsExpression
 return|;
 block|}
-DECL|method|getExecutionType ()
+DECL|method|getExecutionTypeRequest ()
 specifier|public
-name|ExecutionType
-name|getExecutionType
+name|ExecutionTypeRequest
+name|getExecutionTypeRequest
 parameter_list|()
 block|{
 return|return
-name|executionType
+name|executionTypeRequest
 return|;
 block|}
 DECL|method|toString ()
@@ -935,12 +954,12 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"ExecutionType["
+literal|"ExecutionTypeRequest["
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|executionType
+name|executionTypeRequest
 argument_list|)
 operator|.
 name|append
@@ -1077,6 +1096,10 @@ name|getClusterNodeCount
 parameter_list|()
 function_decl|;
 comment|/**    * Get outstanding<code>ContainerRequest</code>s matching the given     * parameters. These ContainerRequests should have been added via    *<code>addContainerRequest</code> earlier in the lifecycle. For performance,    * the AMRMClient may return its internal collection directly without creating     * a copy. Users should not perform mutable operations on the return value.    * Each collection in the list contains requests with identical     *<code>Resource</code> size that fit in the given capability. In a     * collection, requests will be returned in the same order as they were added.    * @return Collection of request matching the parameters    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|getMatchingRequests ( Priority priority, String resourceName, Resource capability)
 specifier|public
 specifier|abstract
@@ -1101,6 +1124,47 @@ name|Resource
 name|capability
 parameter_list|)
 function_decl|;
+comment|/**    * Get outstanding<code>ContainerRequest</code>s matching the given    * parameters. These ContainerRequests should have been added via    *<code>addContainerRequest</code> earlier in the lifecycle. For performance,    * the AMRMClient may return its internal collection directly without creating    * a copy. Users should not perform mutable operations on the return value.    * Each collection in the list contains requests with identical    *<code>Resource</code> size that fit in the given capability. In a    * collection, requests will be returned in the same order as they were added.    * specify an<code>ExecutionType</code> .    * @param priority Priority    * @param resourceName Location    * @param executionType ExecutionType    * @param capability Capability    * @return Collection of request matching the parameters    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
+DECL|method|getMatchingRequests ( Priority priority, String resourceName, ExecutionType executionType, Resource capability)
+specifier|public
+name|List
+argument_list|<
+name|?
+extends|extends
+name|Collection
+argument_list|<
+name|T
+argument_list|>
+argument_list|>
+name|getMatchingRequests
+parameter_list|(
+name|Priority
+name|priority
+parameter_list|,
+name|String
+name|resourceName
+parameter_list|,
+name|ExecutionType
+name|executionType
+parameter_list|,
+name|Resource
+name|capability
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"The sub-class extending"
+operator|+
+literal|" AMRMClient is expected to implement this !!"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Update application's blacklist with addition or removal resources.    *     * @param blacklistAdditions list of resources which should be added to the     *        application blacklist    * @param blacklistRemovals list of resources which should be removed from the     *        application blacklist    */
 DECL|method|updateBlacklist (List<String> blacklistAdditions, List<String> blacklistRemovals)
 specifier|public
