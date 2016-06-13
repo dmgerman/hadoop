@@ -4855,7 +4855,7 @@ literal|2
 argument_list|,
 name|rm2
 argument_list|,
-name|am1_2
+name|am2
 operator|.
 name|getApplicationAttemptId
 argument_list|()
