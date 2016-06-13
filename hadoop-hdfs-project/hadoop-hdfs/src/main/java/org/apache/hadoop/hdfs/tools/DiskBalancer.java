@@ -56,7 +56,7 @@ name|commons
 operator|.
 name|cli
 operator|.
-name|HelpFormatter
+name|Option
 import|;
 end_import
 
@@ -70,7 +70,7 @@ name|commons
 operator|.
 name|cli
 operator|.
-name|Option
+name|OptionBuilder
 import|;
 end_import
 
@@ -187,6 +187,26 @@ operator|.
 name|command
 operator|.
 name|ExecuteCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|diskbalancer
+operator|.
+name|command
+operator|.
+name|HelpCommand
 import|;
 end_import
 
@@ -537,6 +557,72 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|PLAN_OPTIONS
+specifier|private
+specifier|static
+specifier|final
+name|Options
+name|PLAN_OPTIONS
+init|=
+operator|new
+name|Options
+argument_list|()
+decl_stmt|;
+DECL|field|EXECUTE_OPTIONS
+specifier|private
+specifier|static
+specifier|final
+name|Options
+name|EXECUTE_OPTIONS
+init|=
+operator|new
+name|Options
+argument_list|()
+decl_stmt|;
+DECL|field|QUERY_OPTIONS
+specifier|private
+specifier|static
+specifier|final
+name|Options
+name|QUERY_OPTIONS
+init|=
+operator|new
+name|Options
+argument_list|()
+decl_stmt|;
+DECL|field|HELP_OPTIONS
+specifier|private
+specifier|static
+specifier|final
+name|Options
+name|HELP_OPTIONS
+init|=
+operator|new
+name|Options
+argument_list|()
+decl_stmt|;
+DECL|field|CANCEL_OPTIONS
+specifier|private
+specifier|static
+specifier|final
+name|Options
+name|CANCEL_OPTIONS
+init|=
+operator|new
+name|Options
+argument_list|()
+decl_stmt|;
+DECL|field|REPORT_OPTIONS
+specifier|private
+specifier|static
+specifier|final
+name|Options
+name|REPORT_OPTIONS
+init|=
+operator|new
+name|Options
+argument_list|()
+decl_stmt|;
 comment|/**    * Construct a DiskBalancer.    *    * @param conf    */
 DECL|method|DiskBalancer (Configuration conf)
 specifier|public
@@ -654,7 +740,7 @@ name|out
 argument_list|)
 return|;
 block|}
-comment|/**    * Execute the command with the given arguments.    *    * @param args command specific arguments.    * @param out the output stream used for printing    * @return exit code.    * @throws Exception    */
+comment|/**    * Execute the command with the given arguments.    *    * @param args command specific arguments.    * @param out  the output stream used for printing    * @return exit code.    * @throws Exception    */
 DECL|method|run (String[] args, final PrintStream out)
 specifier|public
 name|int
@@ -717,6 +803,11 @@ argument_list|(
 name|opts
 argument_list|)
 expr_stmt|;
+name|addHelpCommands
+argument_list|(
+name|opts
+argument_list|)
+expr_stmt|;
 name|addExecuteCommands
 argument_list|(
 name|opts
@@ -741,7 +832,79 @@ return|return
 name|opts
 return|;
 block|}
-comment|/**    * Adds commands for plan command.    *    * @param opt - Options    */
+comment|/**    * Returns Plan options.    *    * @return Options.    */
+DECL|method|getPlanOptions ()
+specifier|public
+specifier|static
+name|Options
+name|getPlanOptions
+parameter_list|()
+block|{
+return|return
+name|PLAN_OPTIONS
+return|;
+block|}
+comment|/**    * Returns help options.    *    * @return - help options.    */
+DECL|method|getHelpOptions ()
+specifier|public
+specifier|static
+name|Options
+name|getHelpOptions
+parameter_list|()
+block|{
+return|return
+name|HELP_OPTIONS
+return|;
+block|}
+comment|/**    * Retuns execute options.    *    * @return - execute options.    */
+DECL|method|getExecuteOptions ()
+specifier|public
+specifier|static
+name|Options
+name|getExecuteOptions
+parameter_list|()
+block|{
+return|return
+name|EXECUTE_OPTIONS
+return|;
+block|}
+comment|/**    * Returns Query Options.    *    * @return query Options    */
+DECL|method|getQueryOptions ()
+specifier|public
+specifier|static
+name|Options
+name|getQueryOptions
+parameter_list|()
+block|{
+return|return
+name|QUERY_OPTIONS
+return|;
+block|}
+comment|/**    * Returns Cancel Options.    *    * @return Options    */
+DECL|method|getCancelOptions ()
+specifier|public
+specifier|static
+name|Options
+name|getCancelOptions
+parameter_list|()
+block|{
+return|return
+name|CANCEL_OPTIONS
+return|;
+block|}
+comment|/**    * Returns Report Options.    *    * @return Options    */
+DECL|method|getReportOptions ()
+specifier|public
+specifier|static
+name|Options
+name|getReportOptions
+parameter_list|()
+block|{
+return|return
+name|REPORT_OPTIONS
+return|;
+block|}
+comment|/**    * Adds commands for plan command.    *    * @return Options.    */
 DECL|method|addPlanCommands (Options opt)
 specifier|private
 name|void
@@ -752,46 +915,108 @@ name|opt
 parameter_list|)
 block|{
 name|Option
-name|nameNodeUri
+name|uri
 init|=
-operator|new
-name|Option
+name|OptionBuilder
+operator|.
+name|withLongOpt
 argument_list|(
 name|NAMENODEURI
-argument_list|,
-literal|true
-argument_list|,
-literal|"NameNode URI. e.g http://namenode"
-operator|+
-literal|".mycluster.com or file:///myCluster"
-operator|+
-literal|".json"
 argument_list|)
+operator|.
+name|withDescription
+argument_list|(
+literal|"Address of the Namenode. e,g. hdfs://namenode"
+argument_list|)
+operator|.
+name|hasArg
+argument_list|()
+operator|.
+name|create
+argument_list|()
 decl_stmt|;
+name|getPlanOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|uri
+argument_list|)
+expr_stmt|;
 name|opt
 operator|.
 name|addOption
 argument_list|(
-name|nameNodeUri
+name|uri
+argument_list|)
+expr_stmt|;
+name|Option
+name|plan
+init|=
+name|OptionBuilder
+operator|.
+name|withLongOpt
+argument_list|(
+name|PLAN
+argument_list|)
+operator|.
+name|withDescription
+argument_list|(
+literal|"creates a plan for datanode."
+argument_list|)
+operator|.
+name|hasArg
+argument_list|()
+operator|.
+name|create
+argument_list|()
+decl_stmt|;
+name|getPlanOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|plan
+argument_list|)
+expr_stmt|;
+name|opt
+operator|.
+name|addOption
+argument_list|(
+name|plan
 argument_list|)
 expr_stmt|;
 name|Option
 name|outFile
 init|=
-operator|new
-name|Option
+name|OptionBuilder
+operator|.
+name|withLongOpt
 argument_list|(
 name|OUTFILE
-argument_list|,
-literal|true
-argument_list|,
+argument_list|)
+operator|.
+name|hasArg
+argument_list|()
+operator|.
+name|withDescription
+argument_list|(
 literal|"File to write output to, if not specified "
 operator|+
 literal|"defaults will be used."
-operator|+
-literal|"e.g -out outfile.txt"
 argument_list|)
+operator|.
+name|create
+argument_list|()
 decl_stmt|;
+name|getPlanOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|outFile
+argument_list|)
+expr_stmt|;
 name|opt
 operator|.
 name|addOption
@@ -800,44 +1025,36 @@ name|outFile
 argument_list|)
 expr_stmt|;
 name|Option
-name|plan
-init|=
-operator|new
-name|Option
-argument_list|(
-name|PLAN
-argument_list|,
-literal|true
-argument_list|,
-literal|"create a plan for the given node. "
-operator|+
-literal|"e.g -plan<nodename> |<nodeIP> |<nodeUUID>"
-argument_list|)
-decl_stmt|;
-name|opt
-operator|.
-name|addOption
-argument_list|(
-name|plan
-argument_list|)
-expr_stmt|;
-name|Option
 name|bandwidth
 init|=
-operator|new
-name|Option
+name|OptionBuilder
+operator|.
+name|withLongOpt
 argument_list|(
 name|BANDWIDTH
-argument_list|,
-literal|true
-argument_list|,
-literal|"Maximum disk bandwidth to"
-operator|+
-literal|" be consumed by diskBalancer. "
-operator|+
-literal|"Expressed as MBs per second."
 argument_list|)
+operator|.
+name|hasArg
+argument_list|()
+operator|.
+name|withDescription
+argument_list|(
+literal|"Maximum disk bandwidth to be consumed by "
+operator|+
+literal|"diskBalancer. e.g. 10"
+argument_list|)
+operator|.
+name|create
+argument_list|()
 decl_stmt|;
+name|getPlanOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|bandwidth
+argument_list|)
+expr_stmt|;
 name|opt
 operator|.
 name|addOption
@@ -848,20 +1065,34 @@ expr_stmt|;
 name|Option
 name|threshold
 init|=
-operator|new
-name|Option
+name|OptionBuilder
+operator|.
+name|withLongOpt
 argument_list|(
 name|THRESHOLD
-argument_list|,
-literal|true
-argument_list|,
-literal|"Percentage skew that we "
-operator|+
-literal|"tolerate before diskbalancer starts working or stops when reaching "
-operator|+
-literal|"that range."
 argument_list|)
+operator|.
+name|hasArg
+argument_list|()
+operator|.
+name|withDescription
+argument_list|(
+literal|"Percentage skew that we"
+operator|+
+literal|"tolerate before diskbalancer starts working e.g. 10"
+argument_list|)
+operator|.
+name|create
+argument_list|()
 decl_stmt|;
+name|getPlanOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|threshold
+argument_list|)
+expr_stmt|;
 name|opt
 operator|.
 name|addOption
@@ -870,58 +1101,69 @@ name|threshold
 argument_list|)
 expr_stmt|;
 name|Option
-name|maxErrors
+name|maxError
 init|=
-operator|new
-name|Option
+name|OptionBuilder
+operator|.
+name|withLongOpt
 argument_list|(
 name|MAXERROR
-argument_list|,
-literal|true
-argument_list|,
+argument_list|)
+operator|.
+name|hasArg
+argument_list|()
+operator|.
+name|withDescription
+argument_list|(
 literal|"Describes how many errors "
 operator|+
 literal|"can be tolerated while copying between a pair of disks."
 argument_list|)
+operator|.
+name|create
+argument_list|()
 decl_stmt|;
-name|opt
+name|getPlanOptions
+argument_list|()
 operator|.
 name|addOption
 argument_list|(
-name|maxErrors
+name|maxError
 argument_list|)
 expr_stmt|;
-name|Option
-name|help
-init|=
-operator|new
-name|Option
-argument_list|(
-name|HELP
-argument_list|,
-literal|true
-argument_list|,
-literal|"Help about a command or this message"
-argument_list|)
-decl_stmt|;
 name|opt
 operator|.
 name|addOption
 argument_list|(
-name|help
+name|maxError
 argument_list|)
 expr_stmt|;
 name|Option
 name|verbose
 init|=
-operator|new
-name|Option
+name|OptionBuilder
+operator|.
+name|withLongOpt
 argument_list|(
 name|VERBOSE
-argument_list|,
-literal|"Print out the summary of the plan"
 argument_list|)
+operator|.
+name|withDescription
+argument_list|(
+literal|"Print out the summary of the plan on console"
+argument_list|)
+operator|.
+name|create
+argument_list|()
 decl_stmt|;
+name|getPlanOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|verbose
+argument_list|)
+expr_stmt|;
 name|opt
 operator|.
 name|addOption
@@ -930,7 +1172,61 @@ name|verbose
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Adds execute command options.    * @param opt Options    */
+comment|/**    * Adds Help to the options.    */
+DECL|method|addHelpCommands (Options opt)
+specifier|private
+name|void
+name|addHelpCommands
+parameter_list|(
+name|Options
+name|opt
+parameter_list|)
+block|{
+name|Option
+name|help
+init|=
+name|OptionBuilder
+operator|.
+name|withLongOpt
+argument_list|(
+name|HELP
+argument_list|)
+operator|.
+name|hasOptionalArg
+argument_list|()
+operator|.
+name|withArgName
+argument_list|(
+name|HELP
+argument_list|)
+operator|.
+name|withDescription
+argument_list|(
+literal|"valid commands are plan | execute | query | cancel"
+operator|+
+literal|" | report"
+argument_list|)
+operator|.
+name|create
+argument_list|()
+decl_stmt|;
+name|getHelpOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|help
+argument_list|)
+expr_stmt|;
+name|opt
+operator|.
+name|addOption
+argument_list|(
+name|help
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Adds execute command options.    *    * @param opt Options    */
 DECL|method|addExecuteCommands (Options opt)
 specifier|private
 name|void
@@ -943,18 +1239,34 @@ block|{
 name|Option
 name|execute
 init|=
-operator|new
-name|Option
+name|OptionBuilder
+operator|.
+name|withLongOpt
 argument_list|(
 name|EXECUTE
-argument_list|,
-literal|true
-argument_list|,
+argument_list|)
+operator|.
+name|hasArg
+argument_list|()
+operator|.
+name|withDescription
+argument_list|(
 literal|"Takes a plan file and "
 operator|+
-literal|"submits it for execution to the datanode. e.g -execute<planfile>"
+literal|"submits it for execution by the datanode."
 argument_list|)
+operator|.
+name|create
+argument_list|()
 decl_stmt|;
+name|getExecuteOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|execute
+argument_list|)
+expr_stmt|;
 name|opt
 operator|.
 name|addOption
@@ -963,7 +1275,7 @@ name|execute
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Adds query command options.    * @param opt Options    */
+comment|/**    * Adds query command options.    *    * @param opt Options    */
 DECL|method|addQueryCommands (Options opt)
 specifier|private
 name|void
@@ -976,18 +1288,34 @@ block|{
 name|Option
 name|query
 init|=
-operator|new
-name|Option
+name|OptionBuilder
+operator|.
+name|withLongOpt
 argument_list|(
 name|QUERY
-argument_list|,
-literal|true
-argument_list|,
+argument_list|)
+operator|.
+name|hasArg
+argument_list|()
+operator|.
+name|withDescription
+argument_list|(
 literal|"Queries the disk balancer "
 operator|+
-literal|"status of a given datanode. e.g. -query<nodename>"
+literal|"status of a given datanode."
 argument_list|)
+operator|.
+name|create
+argument_list|()
 decl_stmt|;
+name|getQueryOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|query
+argument_list|)
+expr_stmt|;
 name|opt
 operator|.
 name|addOption
@@ -995,8 +1323,38 @@ argument_list|(
 name|query
 argument_list|)
 expr_stmt|;
+comment|// Please note: Adding this only to Query options since -v is already
+comment|// added to global table.
+name|Option
+name|verbose
+init|=
+name|OptionBuilder
+operator|.
+name|withLongOpt
+argument_list|(
+name|VERBOSE
+argument_list|)
+operator|.
+name|withDescription
+argument_list|(
+literal|"Prints details of the plan that is being executed "
+operator|+
+literal|"on the node."
+argument_list|)
+operator|.
+name|create
+argument_list|()
+decl_stmt|;
+name|getQueryOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|verbose
+argument_list|)
+expr_stmt|;
 block|}
-comment|/**    * Adds cancel command options.    * @param opt Options    */
+comment|/**    * Adds cancel command options.    *    * @param opt Options    */
 DECL|method|addCancelCommands (Options opt)
 specifier|private
 name|void
@@ -1009,18 +1367,32 @@ block|{
 name|Option
 name|cancel
 init|=
-operator|new
-name|Option
+name|OptionBuilder
+operator|.
+name|withLongOpt
 argument_list|(
 name|CANCEL
-argument_list|,
-literal|true
-argument_list|,
-literal|"Cancels a running plan. -cancel"
-operator|+
-literal|"<planFile> or -cancel<planID> -node<datanode:port>"
 argument_list|)
+operator|.
+name|hasArg
+argument_list|()
+operator|.
+name|withDescription
+argument_list|(
+literal|"Cancels a running plan using a plan file."
+argument_list|)
+operator|.
+name|create
+argument_list|()
 decl_stmt|;
+name|getCancelOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|cancel
+argument_list|)
+expr_stmt|;
 name|opt
 operator|.
 name|addOption
@@ -1031,18 +1403,32 @@ expr_stmt|;
 name|Option
 name|node
 init|=
-operator|new
-name|Option
+name|OptionBuilder
+operator|.
+name|withLongOpt
 argument_list|(
 name|NODE
-argument_list|,
-literal|true
-argument_list|,
-literal|"Name of the datanode in name:port "
-operator|+
-literal|"format"
 argument_list|)
+operator|.
+name|hasArg
+argument_list|()
+operator|.
+name|withDescription
+argument_list|(
+literal|"Cancels a running plan using a plan ID and hostName"
+argument_list|)
+operator|.
+name|create
+argument_list|()
 decl_stmt|;
+name|getCancelOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
 name|opt
 operator|.
 name|addOption
@@ -1051,7 +1437,7 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Adds report command options.    * @param opt Options    */
+comment|/**    * Adds report command options.    *    * @param opt Options    */
 DECL|method|addReportCommands (Options opt)
 specifier|private
 name|void
@@ -1064,20 +1450,31 @@ block|{
 name|Option
 name|report
 init|=
-operator|new
-name|Option
+name|OptionBuilder
+operator|.
+name|withLongOpt
 argument_list|(
 name|REPORT
-argument_list|,
-literal|false
-argument_list|,
-literal|"Report volume information of DataNode(s)"
-operator|+
-literal|" benefiting from running DiskBalancer. "
-operator|+
-literal|"-report [top -X] | [-node {DataNodeID | IP | Hostname}]."
 argument_list|)
+operator|.
+name|withDescription
+argument_list|(
+literal|"List nodes that will benefit from running "
+operator|+
+literal|"DiskBalancer."
+argument_list|)
+operator|.
+name|create
+argument_list|()
 decl_stmt|;
+name|getReportOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|report
+argument_list|)
+expr_stmt|;
 name|opt
 operator|.
 name|addOption
@@ -1095,9 +1492,17 @@ name|TOP
 argument_list|,
 literal|true
 argument_list|,
-literal|"specify the top number of nodes to be processed."
+literal|"specify the number of nodes to be listed which has data imbalance."
 argument_list|)
 decl_stmt|;
+name|getReportOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|top
+argument_list|)
+expr_stmt|;
 name|opt
 operator|.
 name|addOption
@@ -1115,9 +1520,17 @@ name|NODE
 argument_list|,
 literal|true
 argument_list|,
-literal|"Name of the datanode in the format of DataNodeID, IP or hostname."
+literal|"Datanode address, it can be DataNodeID, IP or hostname."
 argument_list|)
 decl_stmt|;
+name|getReportOptions
+argument_list|()
+operator|.
+name|addOption
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
 name|opt
 operator|.
 name|addOption
@@ -1168,7 +1581,7 @@ name|argv
 argument_list|)
 return|;
 block|}
-comment|/**    * Dispatches calls to the right command Handler classes.    *    * @param cmd - CommandLine    * @param opts options of command line    * @param out the output stream used for printing    * @throws IOException    * @throws URISyntaxException    */
+comment|/**    * Dispatches calls to the right command Handler classes.    *    * @param cmd  - CommandLine    * @param opts options of command line    * @param out  the output stream used for printing    * @throws IOException    * @throws URISyntaxException    */
 DECL|method|dispatch (CommandLine cmd, Options opts, final PrintStream out)
 specifier|private
 name|int
@@ -1310,31 +1723,44 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|DiskBalancer
+operator|.
+name|HELP
+argument_list|)
+condition|)
+block|{
+name|currentCommand
+operator|=
+operator|new
+name|HelpCommand
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Invoke Main help here.
+if|if
+condition|(
 name|currentCommand
 operator|==
 literal|null
 condition|)
 block|{
-name|HelpFormatter
-name|helpFormatter
-init|=
 operator|new
-name|HelpFormatter
-argument_list|()
-decl_stmt|;
-name|helpFormatter
-operator|.
-name|printHelp
+name|HelpCommand
 argument_list|(
-literal|80
-argument_list|,
-literal|"hdfs diskbalancer -uri [args]"
-argument_list|,
-literal|"disk balancer commands"
-argument_list|,
-name|opts
-argument_list|,
-literal|"Please correct your command and try again."
+name|getConf
+argument_list|()
+argument_list|)
+operator|.
+name|execute
+argument_list|(
+literal|null
 argument_list|)
 expr_stmt|;
 return|return

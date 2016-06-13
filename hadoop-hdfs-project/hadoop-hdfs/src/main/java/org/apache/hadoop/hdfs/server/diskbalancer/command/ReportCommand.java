@@ -74,6 +74,20 @@ name|apache
 operator|.
 name|commons
 operator|.
+name|cli
+operator|.
+name|HelpFormatter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
 name|lang
 operator|.
 name|StringUtils
@@ -873,24 +887,30 @@ block|}
 block|}
 block|}
 block|}
+comment|/**    * Prints the help message.    */
 annotation|@
 name|Override
-DECL|method|getHelp ()
-specifier|protected
-name|String
-name|getHelp
+DECL|method|printHelp ()
+specifier|public
+name|void
+name|printHelp
 parameter_list|()
 block|{
-return|return
-literal|"Report volume information for a specific DataNode or top X "
+name|String
+name|header
+init|=
+literal|"Report command reports the volume information of a given"
 operator|+
-literal|"one(s) benefiting from running DiskBalancer, "
+literal|" datanode, or prints out the list of nodes that will benefit from "
 operator|+
-literal|"top defaults to "
+literal|"running disk balancer. Top defaults to "
 operator|+
 name|getDefaultTop
 argument_list|()
-operator|+
+decl_stmt|;
+name|String
+name|footer
+init|=
 literal|". E.g.:\n"
 operator|+
 literal|"hdfs diskbalancer -uri http://namenode.uri -report\n"
@@ -900,7 +920,32 @@ operator|+
 literal|"hdfs diskbalancer -uri http://namenode.uri -report "
 operator|+
 literal|"-node {DataNodeID | IP | Hostname}"
-return|;
+decl_stmt|;
+name|HelpFormatter
+name|helpFormatter
+init|=
+operator|new
+name|HelpFormatter
+argument_list|()
+decl_stmt|;
+name|helpFormatter
+operator|.
+name|printHelp
+argument_list|(
+literal|"hdfs diskbalancer -uri http://namenode.uri "
+operator|+
+literal|"-report [options]"
+argument_list|,
+name|header
+argument_list|,
+name|DiskBalancer
+operator|.
+name|getReportOptions
+argument_list|()
+argument_list|,
+name|footer
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

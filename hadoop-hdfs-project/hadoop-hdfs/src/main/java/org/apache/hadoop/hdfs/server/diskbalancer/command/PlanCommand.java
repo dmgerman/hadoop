@@ -58,6 +58,20 @@ name|apache
 operator|.
 name|commons
 operator|.
+name|cli
+operator|.
+name|HelpFormatter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
 name|lang
 operator|.
 name|StringUtils
@@ -1026,18 +1040,56 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Gets extended help for this command.    *    * @return Help Message    */
+comment|/**    * Gets extended help for this command.    */
 annotation|@
 name|Override
-DECL|method|getHelp ()
-specifier|protected
-name|String
-name|getHelp
+DECL|method|printHelp ()
+specifier|public
+name|void
+name|printHelp
 parameter_list|()
 block|{
-return|return
-literal|"This commands creates a disk balancer plan for given datanode"
-return|;
+name|String
+name|header
+init|=
+literal|"creates a plan that describes how much data should be "
+operator|+
+literal|"moved between disks.\n\n"
+decl_stmt|;
+name|String
+name|footer
+init|=
+literal|"\nPlan command creates a set of steps that represent a "
+operator|+
+literal|"planned data move. A plan file can be executed on a data node, which"
+operator|+
+literal|" will balance the data."
+decl_stmt|;
+name|HelpFormatter
+name|helpFormatter
+init|=
+operator|new
+name|HelpFormatter
+argument_list|()
+decl_stmt|;
+name|helpFormatter
+operator|.
+name|printHelp
+argument_list|(
+literal|"hdfs diskbalancer -uri<namenode> -plan "
+operator|+
+literal|"<hostname> [options]"
+argument_list|,
+name|header
+argument_list|,
+name|DiskBalancer
+operator|.
+name|getPlanOptions
+argument_list|()
+argument_list|,
+name|footer
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Get Threshold for planning purpose.    *    * @param cmd - Command Line Argument.    * @return double    */
 DECL|method|getThresholdPercentage (CommandLine cmd)

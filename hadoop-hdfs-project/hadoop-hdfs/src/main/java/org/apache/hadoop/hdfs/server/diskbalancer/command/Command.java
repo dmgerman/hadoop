@@ -710,12 +710,12 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
-comment|/**    * Gets extended help for this command.    *    * @return Help Message    */
-DECL|method|getHelp ()
-specifier|protected
+comment|/**    * Gets extended help for this command.    */
+DECL|method|printHelp ()
+specifier|public
 specifier|abstract
-name|String
-name|getHelp
+name|void
+name|printHelp
 parameter_list|()
 function_decl|;
 comment|/**    * verifies user provided URL.    *    * @param uri - UrlString    * @return URL    * @throws URISyntaxException, MalformedURLException    */

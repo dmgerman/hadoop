@@ -58,6 +58,20 @@ name|apache
 operator|.
 name|commons
 operator|.
+name|cli
+operator|.
+name|HelpFormatter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
 name|codec
 operator|.
 name|digest
@@ -587,20 +601,60 @@ name|ex
 throw|;
 block|}
 block|}
-comment|/**    * Gets extended help for this command.    *    * @return Help Message    */
+comment|/**    * Gets extended help for this command.    */
 annotation|@
 name|Override
-DECL|method|getHelp ()
-specifier|protected
-name|String
-name|getHelp
+DECL|method|printHelp ()
+specifier|public
+name|void
+name|printHelp
 parameter_list|()
 block|{
-return|return
-literal|"Cancels a running command. e.g -cancel<PlanFile> or -cancel "
+name|String
+name|header
+init|=
+literal|"Cancel command cancels a running disk balancer operation"
 operator|+
-literal|"<planID> -node<datanode>"
-return|;
+literal|".\n\n"
+decl_stmt|;
+name|String
+name|footer
+init|=
+literal|"\nCancel command can be run via pointing to a plan file,"
+operator|+
+literal|" or by reading the plan ID using the query command and then using "
+operator|+
+literal|"planID and hostname. Examples of how to run this command are \n"
+operator|+
+literal|"hdfs diskbalancer -cancel<planfile> \n"
+operator|+
+literal|"hdfs diskbalancer -cancel<planID> -node<hostname>"
+decl_stmt|;
+name|HelpFormatter
+name|helpFormatter
+init|=
+operator|new
+name|HelpFormatter
+argument_list|()
+decl_stmt|;
+name|helpFormatter
+operator|.
+name|printHelp
+argument_list|(
+literal|"hdfs diskbalancer -cancel<planFile> | -cancel "
+operator|+
+literal|"<planID> -node<hostname>"
+argument_list|,
+name|header
+argument_list|,
+name|DiskBalancer
+operator|.
+name|getCancelOptions
+argument_list|()
+argument_list|,
+name|footer
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
