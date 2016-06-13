@@ -2455,6 +2455,18 @@ name|FsDatasetSpi
 name|getDataset
 parameter_list|()
 function_decl|;
+comment|/**      * Returns time when this plan started executing.      *      * @return Start time in milliseconds.      */
+DECL|method|getStartTime ()
+name|long
+name|getStartTime
+parameter_list|()
+function_decl|;
+comment|/**      * Number of seconds elapsed.      *      * @return time in seconds      */
+DECL|method|getElapsedSeconds ()
+name|long
+name|getElapsedSeconds
+parameter_list|()
+function_decl|;
 block|}
 comment|/**    * Holds references to actual volumes that we will be operating against.    */
 DECL|class|VolumePair
@@ -2668,6 +2680,16 @@ DECL|field|shouldRun
 specifier|private
 name|AtomicBoolean
 name|shouldRun
+decl_stmt|;
+DECL|field|startTime
+specifier|private
+name|long
+name|startTime
+decl_stmt|;
+DECL|field|secondsElapsed
+specifier|private
+name|long
+name|secondsElapsed
 decl_stmt|;
 comment|/**      * Constructs diskBalancerMover.      *      * @param dataset Dataset      * @param conf    Configuration      */
 DECL|method|DiskBalancerMover (FsDatasetSpi dataset, Configuration conf)
@@ -3593,6 +3615,24 @@ name|LinkedList
 argument_list|<>
 argument_list|()
 decl_stmt|;
+name|startTime
+operator|=
+name|Time
+operator|.
+name|now
+argument_list|()
+expr_stmt|;
+name|item
+operator|.
+name|setStartTime
+argument_list|(
+name|startTime
+argument_list|)
+expr_stmt|;
+name|secondsElapsed
+operator|=
+literal|0
+expr_stmt|;
 if|if
 condition|(
 name|source
@@ -3913,21 +3953,6 @@ name|getBasePath
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|item
-operator|.
-name|incCopiedSoFar
-argument_list|(
-name|block
-operator|.
-name|getNumBytes
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|item
-operator|.
-name|incBlocksCopied
-argument_list|()
-expr_stmt|;
 comment|// Check for the max throughput constraint.
 comment|// We sleep here to keep the promise that we will not
 comment|// copy more than Max MB/sec. we sleep enough time
@@ -3949,6 +3974,47 @@ name|timeUsed
 argument_list|,
 name|item
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// We delay updating the info to avoid confusing the user.
+comment|// This way we report the copy only if it is under the
+comment|// throughput threshold.
+name|item
+operator|.
+name|incCopiedSoFar
+argument_list|(
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|item
+operator|.
+name|incBlocksCopied
+argument_list|()
+expr_stmt|;
+name|secondsElapsed
+operator|=
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+operator|.
+name|toSeconds
+argument_list|(
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|-
+name|startTime
+argument_list|)
+expr_stmt|;
+name|item
+operator|.
+name|setSecondsElapsed
+argument_list|(
+name|secondsElapsed
 argument_list|)
 expr_stmt|;
 block|}
@@ -4028,6 +4094,32 @@ parameter_list|()
 block|{
 return|return
 name|dataset
+return|;
+block|}
+comment|/**      * Returns time when this plan started executing.      *      * @return Start time in milliseconds.      */
+annotation|@
+name|Override
+DECL|method|getStartTime ()
+specifier|public
+name|long
+name|getStartTime
+parameter_list|()
+block|{
+return|return
+name|startTime
+return|;
+block|}
+comment|/**      * Number of seconds elapsed.      *      * @return time in seconds      */
+annotation|@
+name|Override
+DECL|method|getElapsedSeconds ()
+specifier|public
+name|long
+name|getElapsedSeconds
+parameter_list|()
+block|{
+return|return
+name|secondsElapsed
 return|;
 block|}
 block|}

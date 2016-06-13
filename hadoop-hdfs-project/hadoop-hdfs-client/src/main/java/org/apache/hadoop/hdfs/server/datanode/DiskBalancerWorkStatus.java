@@ -77,6 +77,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|codehaus
+operator|.
+name|jackson
+operator|.
+name|map
+operator|.
+name|SerializationConfig
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -356,6 +370,17 @@ operator|new
 name|ObjectMapper
 argument_list|()
 decl_stmt|;
+name|mapper
+operator|.
+name|enable
+argument_list|(
+name|SerializationConfig
+operator|.
+name|Feature
+operator|.
+name|INDENT_OUTPUT
+argument_list|)
+expr_stmt|;
 return|return
 name|mapper
 operator|.

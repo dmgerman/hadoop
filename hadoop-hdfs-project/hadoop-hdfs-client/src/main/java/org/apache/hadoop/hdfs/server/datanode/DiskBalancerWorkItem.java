@@ -131,6 +131,16 @@ specifier|public
 class|class
 name|DiskBalancerWorkItem
 block|{
+DECL|field|startTime
+specifier|private
+name|long
+name|startTime
+decl_stmt|;
+DECL|field|secondsElapsed
+specifier|private
+name|long
+name|secondsElapsed
+decl_stmt|;
 DECL|field|bytesToCopy
 specifier|private
 name|long
@@ -513,6 +523,62 @@ operator|.
 name|bandwidth
 operator|=
 name|bandwidth
+expr_stmt|;
+block|}
+comment|/**    * Records the Start time of execution.    * @return startTime    */
+DECL|method|getStartTime ()
+specifier|public
+name|long
+name|getStartTime
+parameter_list|()
+block|{
+return|return
+name|startTime
+return|;
+block|}
+comment|/**    * Sets the Start time.    * @param startTime  - Time stamp for start of execution.    */
+DECL|method|setStartTime (long startTime)
+specifier|public
+name|void
+name|setStartTime
+parameter_list|(
+name|long
+name|startTime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|startTime
+operator|=
+name|startTime
+expr_stmt|;
+block|}
+comment|/**    * Gets the number of seconds elapsed from the start time.    *    * The reason why we have this is of time skews. The client's current time    * may not match with the server time stamp, hence the elapsed second    * cannot be computed from only startTime.    *    * @return seconds elapsed from start time.    */
+DECL|method|getSecondsElapsed ()
+specifier|public
+name|long
+name|getSecondsElapsed
+parameter_list|()
+block|{
+return|return
+name|secondsElapsed
+return|;
+block|}
+comment|/**    * Sets number of seconds elapsed.    *    * This is updated whenever we update the other counters.    * @param secondsElapsed  - seconds elapsed.    */
+DECL|method|setSecondsElapsed (long secondsElapsed)
+specifier|public
+name|void
+name|setSecondsElapsed
+parameter_list|(
+name|long
+name|secondsElapsed
+parameter_list|)
+block|{
+name|this
+operator|.
+name|secondsElapsed
+operator|=
+name|secondsElapsed
 expr_stmt|;
 block|}
 block|}

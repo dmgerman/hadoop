@@ -2258,6 +2258,32 @@ operator|.
 name|dataset
 return|;
 block|}
+comment|/**      * Returns time when this plan started executing.      *      * @return Start time in milliseconds.      */
+annotation|@
+name|Override
+DECL|method|getStartTime ()
+specifier|public
+name|long
+name|getStartTime
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+comment|/**      * Number of seconds elapsed.      *      * @return time in seconds      */
+annotation|@
+name|Override
+DECL|method|getElapsedSeconds ()
+specifier|public
+name|long
+name|getElapsedSeconds
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
 DECL|method|getRunCount ()
 specifier|public
 name|int
