@@ -241,6 +241,15 @@ name|OPTION_HUMAN
 init|=
 literal|"h"
 decl_stmt|;
+DECL|field|OPTION_HIDENONPRINTABLE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|OPTION_HIDENONPRINTABLE
+init|=
+literal|"q"
+decl_stmt|;
 DECL|field|OPTION_RECURSIVE
 specifier|private
 specifier|static
@@ -316,6 +325,10 @@ name|OPTION_HUMAN
 operator|+
 literal|"] [-"
 operator|+
+name|OPTION_HIDENONPRINTABLE
+operator|+
+literal|"] [-"
+operator|+
 name|OPTION_RECURSIVE
 operator|+
 literal|"] [-"
@@ -382,6 +395,12 @@ operator|+
 literal|"  Formats the sizes of files in a human-readable fashion\n"
 operator|+
 literal|"      rather than a number of bytes.\n"
+operator|+
+literal|"  -"
+operator|+
+name|OPTION_HIDENONPRINTABLE
+operator|+
+literal|"  Print ? instead of non-printable characters.\n"
 operator|+
 literal|"  -"
 operator|+
@@ -499,6 +518,14 @@ name|humanReadable
 init|=
 literal|false
 decl_stmt|;
+comment|/** Whether to print ? instead of non-printable characters. */
+DECL|field|hideNonPrintable
+specifier|private
+name|boolean
+name|hideNonPrintable
+init|=
+literal|false
+decl_stmt|;
 DECL|method|Ls ()
 specifier|protected
 name|Ls
@@ -585,6 +612,8 @@ name|OPTION_DIRECTORY
 argument_list|,
 name|OPTION_HUMAN
 argument_list|,
+name|OPTION_HIDENONPRINTABLE
+argument_list|,
 name|OPTION_RECURSIVE
 argument_list|,
 name|OPTION_REVERSE
@@ -641,6 +670,15 @@ operator|.
 name|getOpt
 argument_list|(
 name|OPTION_HUMAN
+argument_list|)
+expr_stmt|;
+name|hideNonPrintable
+operator|=
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+name|OPTION_HIDENONPRINTABLE
 argument_list|)
 expr_stmt|;
 name|orderReverse
@@ -748,6 +786,20 @@ return|return
 name|this
 operator|.
 name|humanReadable
+return|;
+block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|method|isHideNonPrintable ()
+specifier|private
+name|boolean
+name|isHideNonPrintable
+parameter_list|()
+block|{
+return|return
+name|hideNonPrintable
 return|;
 block|}
 comment|/**    * Should directory contents be displayed in reverse order    * @return true reverse order, false default order    */
@@ -1074,6 +1126,18 @@ argument_list|()
 argument_list|)
 argument_list|)
 argument_list|,
+name|isHideNonPrintable
+argument_list|()
+condition|?
+operator|new
+name|PrintableString
+argument_list|(
+name|item
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+else|:
 name|item
 argument_list|)
 decl_stmt|;
