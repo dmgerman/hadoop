@@ -1762,6 +1762,7 @@ block|{
 name|ret
 index|[
 name|index
+operator|++
 index|]
 operator|=
 name|entry

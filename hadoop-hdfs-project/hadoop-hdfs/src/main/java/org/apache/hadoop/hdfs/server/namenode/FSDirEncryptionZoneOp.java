@@ -1787,6 +1787,27 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|NameNode
+operator|.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Cannot warm up EDEKs."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
 try|try
 block|{
 name|Thread
