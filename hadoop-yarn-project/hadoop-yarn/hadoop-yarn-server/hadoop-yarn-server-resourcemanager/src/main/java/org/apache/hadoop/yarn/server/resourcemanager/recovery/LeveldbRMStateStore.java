@@ -3178,9 +3178,9 @@ block|{
 name|ApplicationId
 name|appId
 init|=
-name|ConverterUtils
+name|ApplicationId
 operator|.
-name|toApplicationId
+name|fromString
 argument_list|(
 name|appIdStr
 argument_list|)
@@ -3414,9 +3414,9 @@ block|{
 name|ApplicationAttemptId
 name|attemptId
 init|=
-name|ConverterUtils
+name|ApplicationAttemptId
 operator|.
-name|toApplicationAttemptId
+name|fromString
 argument_list|(
 name|itemName
 argument_list|)

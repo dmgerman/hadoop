@@ -702,9 +702,9 @@ block|{
 name|NodeId
 name|nid
 init|=
-name|ConverterUtils
+name|NodeId
 operator|.
-name|toNodeId
+name|fromString
 argument_list|(
 name|node
 argument_list|)

@@ -1606,9 +1606,9 @@ name|container
 operator|.
 name|setId
 argument_list|(
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|containerIdStr
 argument_list|)
@@ -1878,9 +1878,9 @@ decl_stmt|;
 name|ApplicationAttemptId
 name|attemptId1
 init|=
-name|ConverterUtils
+name|ApplicationAttemptId
 operator|.
-name|toApplicationAttemptId
+name|fromString
 argument_list|(
 literal|"appattempt_1352994193343_0001_000001"
 argument_list|)
@@ -1969,9 +1969,9 @@ decl_stmt|;
 name|ApplicationAttemptId
 name|attemptId2
 init|=
-name|ConverterUtils
+name|ApplicationAttemptId
 operator|.
-name|toApplicationAttemptId
+name|fromString
 argument_list|(
 name|appAttemptIdStr2
 argument_list|)
@@ -2027,9 +2027,9 @@ decl_stmt|;
 name|ApplicationAttemptId
 name|attemptIdRemoved
 init|=
-name|ConverterUtils
+name|ApplicationAttemptId
 operator|.
-name|toApplicationAttemptId
+name|fromString
 argument_list|(
 literal|"appattempt_1352994193343_0002_000001"
 argument_list|)

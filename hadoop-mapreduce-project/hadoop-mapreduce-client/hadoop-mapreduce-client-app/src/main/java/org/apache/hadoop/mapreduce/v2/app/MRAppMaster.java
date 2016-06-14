@@ -8491,9 +8491,9 @@ expr_stmt|;
 name|ContainerId
 name|containerId
 init|=
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|containerIdStr
 argument_list|)

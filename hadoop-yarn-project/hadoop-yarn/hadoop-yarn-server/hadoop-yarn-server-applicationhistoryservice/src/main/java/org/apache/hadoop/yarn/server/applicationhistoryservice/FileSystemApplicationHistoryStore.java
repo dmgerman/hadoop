@@ -1576,9 +1576,9 @@ block|{
 name|ApplicationId
 name|appId
 init|=
-name|ConverterUtils
+name|ApplicationId
 operator|.
-name|toApplicationId
+name|fromString
 argument_list|(
 name|file
 operator|.
@@ -1726,9 +1726,9 @@ block|{
 name|ApplicationAttemptId
 name|appAttemptId
 init|=
-name|ConverterUtils
+name|ApplicationAttemptId
 operator|.
-name|toApplicationAttemptId
+name|fromString
 argument_list|(
 name|entry
 operator|.
@@ -2583,9 +2583,9 @@ block|{
 name|ContainerId
 name|containerId
 init|=
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|entry
 operator|.

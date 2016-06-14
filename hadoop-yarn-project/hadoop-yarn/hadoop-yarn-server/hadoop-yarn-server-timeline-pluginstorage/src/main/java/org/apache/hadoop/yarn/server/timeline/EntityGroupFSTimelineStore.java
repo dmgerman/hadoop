@@ -2886,9 +2886,9 @@ try|try
 block|{
 name|appId
 operator|=
-name|ConverterUtils
+name|ApplicationId
 operator|.
-name|toApplicationId
+name|fromString
 argument_list|(
 name|appIdStr
 argument_list|)

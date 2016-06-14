@@ -146,9 +146,9 @@ block|{
 name|URL
 name|local
 init|=
-name|ConverterUtils
+name|URL
 operator|.
-name|getYarnUrlFromPath
+name|fromPath
 argument_list|(
 name|path
 argument_list|)

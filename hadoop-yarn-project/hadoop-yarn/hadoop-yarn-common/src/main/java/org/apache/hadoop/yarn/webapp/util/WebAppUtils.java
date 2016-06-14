@@ -1988,12 +1988,10 @@ try|try
 block|{
 name|aid
 operator|=
-name|ConverterUtils
+name|ApplicationId
 operator|.
-name|toApplicationId
+name|fromString
 argument_list|(
-name|recordFactory
-argument_list|,
 name|appId
 argument_list|)
 expr_stmt|;

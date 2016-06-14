@@ -1222,9 +1222,9 @@ decl_stmt|;
 name|ApplicationAttemptId
 name|attemptId3
 init|=
-name|ConverterUtils
+name|ApplicationAttemptId
 operator|.
-name|toApplicationAttemptId
+name|fromString
 argument_list|(
 name|appAttemptIdStr3
 argument_list|)
@@ -2155,9 +2155,9 @@ decl_stmt|;
 name|ApplicationAttemptId
 name|attemptId1
 init|=
-name|ConverterUtils
+name|ApplicationAttemptId
 operator|.
-name|toApplicationAttemptId
+name|fromString
 argument_list|(
 name|appAttemptIdStr1
 argument_list|)

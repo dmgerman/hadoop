@@ -7168,9 +7168,9 @@ decl_stmt|;
 name|ApplicationAttemptId
 name|id
 init|=
-name|ConverterUtils
+name|ApplicationAttemptId
 operator|.
-name|toApplicationAttemptId
+name|fromString
 argument_list|(
 literal|"appattempt_1234567890000_0001_0"
 argument_list|)

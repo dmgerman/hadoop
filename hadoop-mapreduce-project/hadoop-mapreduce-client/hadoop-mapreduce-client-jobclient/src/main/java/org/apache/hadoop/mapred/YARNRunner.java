@@ -2022,9 +2022,9 @@ name|rsrc
 operator|.
 name|setResource
 argument_list|(
-name|ConverterUtils
+name|URL
 operator|.
-name|getYarnUrlFromPath
+name|fromPath
 argument_list|(
 name|fs
 operator|.
@@ -2198,9 +2198,9 @@ decl_stmt|;
 name|URL
 name|yarnUrlForJobSubmitDir
 init|=
-name|ConverterUtils
+name|URL
 operator|.
-name|getYarnUrlFromPath
+name|fromPath
 argument_list|(
 name|defaultFileContext
 operator|.

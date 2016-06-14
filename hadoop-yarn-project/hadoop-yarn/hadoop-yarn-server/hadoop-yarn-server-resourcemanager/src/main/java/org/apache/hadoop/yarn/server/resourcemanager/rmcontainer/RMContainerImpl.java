@@ -2128,12 +2128,10 @@ operator|.
 name|getNodeHttpAddress
 argument_list|()
 argument_list|,
-name|ConverterUtils
+name|containerId
 operator|.
 name|toString
-argument_list|(
-name|containerId
-argument_list|)
+argument_list|()
 argument_list|,
 name|user
 argument_list|)

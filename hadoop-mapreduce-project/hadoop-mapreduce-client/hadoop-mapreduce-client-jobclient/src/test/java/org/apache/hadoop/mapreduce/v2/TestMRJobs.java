@@ -5241,9 +5241,9 @@ specifier|final
 name|ContainerId
 name|cid
 init|=
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|containerPathComponent
 operator|.

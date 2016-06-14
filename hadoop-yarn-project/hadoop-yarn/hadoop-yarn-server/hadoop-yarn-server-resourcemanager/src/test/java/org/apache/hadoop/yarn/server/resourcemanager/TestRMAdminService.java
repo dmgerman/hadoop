@@ -1493,9 +1493,9 @@ block|}
 name|NodeId
 name|nid
 init|=
-name|ConverterUtils
+name|NodeId
 operator|.
-name|toNodeId
+name|fromString
 argument_list|(
 literal|"h1:1234"
 argument_list|)
@@ -1709,9 +1709,9 @@ block|}
 name|NodeId
 name|nid
 init|=
-name|ConverterUtils
+name|NodeId
 operator|.
-name|toNodeId
+name|fromString
 argument_list|(
 literal|"h1:1234"
 argument_list|)
@@ -1971,9 +1971,9 @@ block|}
 name|NodeId
 name|nid
 init|=
-name|ConverterUtils
+name|NodeId
 operator|.
-name|toNodeId
+name|fromString
 argument_list|(
 literal|"h1:1234"
 argument_list|)
@@ -2225,9 +2225,9 @@ block|}
 name|NodeId
 name|nid
 init|=
-name|ConverterUtils
+name|NodeId
 operator|.
-name|toNodeId
+name|fromString
 argument_list|(
 literal|"h1:1234"
 argument_list|)

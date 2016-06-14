@@ -285,9 +285,9 @@ block|{
 name|ContainerId
 name|containerId
 init|=
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|entityId
 argument_list|)
@@ -363,9 +363,9 @@ block|{
 name|ApplicationId
 name|appId
 init|=
-name|ConverterUtils
+name|ApplicationId
 operator|.
-name|toApplicationId
+name|fromString
 argument_list|(
 name|strAppId
 argument_list|)

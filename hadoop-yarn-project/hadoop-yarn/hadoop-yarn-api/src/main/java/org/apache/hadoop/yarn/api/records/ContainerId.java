@@ -209,7 +209,7 @@ init|=
 literal|"e"
 decl_stmt|;
 annotation|@
-name|Private
+name|Public
 annotation|@
 name|Unstable
 DECL|method|newContainerId (ApplicationAttemptId appAttemptId, long containerId)
@@ -346,7 +346,7 @@ name|Public
 annotation|@
 name|Deprecated
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|getId ()
 specifier|public
 specifier|abstract
@@ -842,7 +842,7 @@ block|}
 annotation|@
 name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|fromString (String containerIdStr)
 specifier|public
 specifier|static

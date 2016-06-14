@@ -1672,12 +1672,10 @@ name|writer
 operator|.
 name|write
 argument_list|(
-name|ConverterUtils
+name|containerId
 operator|.
 name|toString
-argument_list|(
-name|containerId
-argument_list|)
+argument_list|()
 operator|+
 literal|"\n Hello "
 operator|+

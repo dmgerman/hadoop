@@ -2404,9 +2404,9 @@ name|Resource
 operator|.
 name|newInstance
 argument_list|(
-literal|1234
+literal|1234L
 argument_list|,
-literal|2
+literal|2L
 argument_list|)
 expr_stmt|;
 block|}

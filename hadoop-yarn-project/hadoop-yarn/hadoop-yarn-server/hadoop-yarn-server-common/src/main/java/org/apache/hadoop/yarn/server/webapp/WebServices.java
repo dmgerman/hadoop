@@ -2632,9 +2632,9 @@ try|try
 block|{
 name|aid
 operator|=
-name|ConverterUtils
+name|ApplicationId
 operator|.
-name|toApplicationId
+name|fromString
 argument_list|(
 name|appId
 argument_list|)
@@ -2716,9 +2716,9 @@ try|try
 block|{
 name|aaid
 operator|=
-name|ConverterUtils
+name|ApplicationAttemptId
 operator|.
-name|toApplicationAttemptId
+name|fromString
 argument_list|(
 name|appAttemptId
 argument_list|)
@@ -2800,9 +2800,9 @@ try|try
 block|{
 name|cid
 operator|=
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|containerId
 argument_list|)

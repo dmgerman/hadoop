@@ -985,9 +985,9 @@ block|{
 return|return
 name|newLocalResource
 argument_list|(
-name|ConverterUtils
+name|URL
 operator|.
-name|getYarnUrlFromURI
+name|fromURI
 argument_list|(
 name|uri
 argument_list|)

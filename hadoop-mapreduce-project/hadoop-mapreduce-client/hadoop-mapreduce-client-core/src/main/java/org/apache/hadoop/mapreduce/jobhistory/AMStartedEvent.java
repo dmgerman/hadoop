@@ -342,9 +342,9 @@ name|getAppAttemptId
 parameter_list|()
 block|{
 return|return
-name|ConverterUtils
+name|ApplicationAttemptId
 operator|.
-name|toApplicationAttemptId
+name|fromString
 argument_list|(
 name|datum
 operator|.
@@ -378,9 +378,9 @@ name|getContainerId
 parameter_list|()
 block|{
 return|return
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|datum
 operator|.

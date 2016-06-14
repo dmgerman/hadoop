@@ -2111,12 +2111,10 @@ decl_stmt|;
 name|String
 name|containerIdStr
 init|=
-name|ConverterUtils
+name|containerId
 operator|.
 name|toString
-argument_list|(
-name|containerId
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|resourcesHandler
 operator|.

@@ -1283,9 +1283,9 @@ try|try
 block|{
 name|appId
 operator|=
-name|ConverterUtils
+name|ApplicationId
 operator|.
-name|toApplicationId
+name|fromString
 argument_list|(
 name|appIdStr
 argument_list|)
@@ -3105,9 +3105,9 @@ name|yarnClient
 operator|.
 name|getContainerReport
 argument_list|(
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|containerIdStr
 argument_list|)

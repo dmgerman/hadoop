@@ -1335,12 +1335,10 @@ name|this
 operator|.
 name|applicationId
 operator|=
-name|ConverterUtils
+name|appId
 operator|.
 name|toString
-argument_list|(
-name|appId
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|this
 operator|.

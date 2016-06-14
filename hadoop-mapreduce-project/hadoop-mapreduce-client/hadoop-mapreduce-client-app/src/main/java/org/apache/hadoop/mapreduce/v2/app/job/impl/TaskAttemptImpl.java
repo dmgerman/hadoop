@@ -4620,9 +4620,9 @@ decl_stmt|;
 name|URL
 name|resourceURL
 init|=
-name|ConverterUtils
+name|URL
 operator|.
-name|getYarnUrlFromPath
+name|fromPath
 argument_list|(
 name|fc
 operator|.
@@ -7024,9 +7024,9 @@ decl_stmt|;
 name|NodeId
 name|containerNodeId
 init|=
-name|ConverterUtils
+name|NodeId
 operator|.
-name|toNodeId
+name|fromString
 argument_list|(
 name|taInfo
 operator|.

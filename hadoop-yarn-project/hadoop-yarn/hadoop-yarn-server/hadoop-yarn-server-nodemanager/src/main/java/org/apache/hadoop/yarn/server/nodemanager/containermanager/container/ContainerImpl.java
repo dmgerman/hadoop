@@ -7144,14 +7144,12 @@ expr_stmt|;
 try|try
 block|{
 return|return
-name|ConverterUtils
-operator|.
-name|toString
-argument_list|(
 name|this
 operator|.
 name|containerId
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 finally|finally

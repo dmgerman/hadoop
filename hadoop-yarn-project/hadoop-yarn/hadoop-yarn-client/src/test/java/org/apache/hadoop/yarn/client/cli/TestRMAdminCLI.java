@@ -1695,9 +1695,9 @@ decl_stmt|;
 name|NodeId
 name|nodeId
 init|=
-name|ConverterUtils
+name|NodeId
 operator|.
-name|toNodeId
+name|fromString
 argument_list|(
 name|nodeIdStr
 argument_list|)

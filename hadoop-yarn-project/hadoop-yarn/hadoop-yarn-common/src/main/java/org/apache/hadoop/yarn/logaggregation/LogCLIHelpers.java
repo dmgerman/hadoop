@@ -462,9 +462,9 @@ name|options
 operator|.
 name|setAppId
 argument_list|(
-name|ConverterUtils
+name|ApplicationId
 operator|.
-name|toApplicationId
+name|fromString
 argument_list|(
 name|appId
 argument_list|)

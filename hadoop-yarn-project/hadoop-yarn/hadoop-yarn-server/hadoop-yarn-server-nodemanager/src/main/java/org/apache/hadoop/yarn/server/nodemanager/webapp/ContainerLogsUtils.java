@@ -565,10 +565,6 @@ expr_stmt|;
 name|String
 name|appIdStr
 init|=
-name|ConverterUtils
-operator|.
-name|toString
-argument_list|(
 name|containerId
 operator|.
 name|getApplicationAttemptId
@@ -576,7 +572,9 @@ argument_list|()
 operator|.
 name|getApplicationId
 argument_list|()
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 decl_stmt|;
 name|File
 name|appLogDir
@@ -1012,9 +1010,9 @@ block|{
 name|ContainerId
 name|containerId
 init|=
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|containerIdStr
 argument_list|)

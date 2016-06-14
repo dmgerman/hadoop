@@ -4257,9 +4257,9 @@ decl_stmt|;
 name|URL
 name|resource_alpha
 init|=
-name|ConverterUtils
+name|URL
 operator|.
-name|getYarnUrlFromPath
+name|fromPath
 argument_list|(
 name|localFS
 operator|.

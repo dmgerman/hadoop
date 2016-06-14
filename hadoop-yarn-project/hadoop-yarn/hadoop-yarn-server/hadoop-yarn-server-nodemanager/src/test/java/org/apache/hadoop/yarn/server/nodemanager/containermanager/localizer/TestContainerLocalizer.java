@@ -3174,9 +3174,9 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|ConverterUtils
+name|URL
 operator|.
-name|getYarnUrlFromPath
+name|fromPath
 argument_list|(
 name|p
 argument_list|)

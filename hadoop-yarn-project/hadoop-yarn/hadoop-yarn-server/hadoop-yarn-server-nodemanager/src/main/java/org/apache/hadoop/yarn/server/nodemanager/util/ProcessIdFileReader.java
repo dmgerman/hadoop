@@ -138,6 +138,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|ConverterUtils
@@ -312,9 +330,9 @@ comment|// On Windows, pid is expected to be a container ID, so find first
 comment|// line that parses successfully as a container ID.
 try|try
 block|{
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|temp
 argument_list|)

@@ -2468,9 +2468,9 @@ decl_stmt|;
 name|ApplicationAttemptId
 name|attemptId
 init|=
-name|ConverterUtils
+name|ApplicationAttemptId
 operator|.
-name|toApplicationAttemptId
+name|fromString
 argument_list|(
 name|currAttemptEntityId
 argument_list|)

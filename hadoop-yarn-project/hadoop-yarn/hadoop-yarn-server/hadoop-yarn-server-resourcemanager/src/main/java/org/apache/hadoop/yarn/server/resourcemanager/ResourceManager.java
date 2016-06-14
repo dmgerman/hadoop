@@ -7096,9 +7096,9 @@ block|{
 name|ApplicationId
 name|removeAppId
 init|=
-name|ConverterUtils
+name|ApplicationId
 operator|.
-name|toApplicationId
+name|fromString
 argument_list|(
 name|applicationId
 argument_list|)

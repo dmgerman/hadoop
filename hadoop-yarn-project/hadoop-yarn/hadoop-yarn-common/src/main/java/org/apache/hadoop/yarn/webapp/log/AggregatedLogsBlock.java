@@ -1903,9 +1903,9 @@ try|try
 block|{
 name|containerId
 operator|=
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|containerIdStr
 argument_list|)
@@ -1995,9 +1995,9 @@ try|try
 block|{
 name|nodeId
 operator|=
-name|ConverterUtils
+name|NodeId
 operator|.
-name|toNodeId
+name|fromString
 argument_list|(
 name|nodeIdStr
 argument_list|)

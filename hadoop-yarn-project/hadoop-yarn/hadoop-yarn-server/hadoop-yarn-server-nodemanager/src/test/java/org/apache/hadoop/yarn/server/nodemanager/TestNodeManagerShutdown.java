@@ -1465,9 +1465,9 @@ decl_stmt|;
 name|URL
 name|localResourceUri
 init|=
-name|ConverterUtils
+name|URL
 operator|.
-name|getYarnUrlFromPath
+name|fromPath
 argument_list|(
 name|localFS
 operator|.

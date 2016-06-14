@@ -389,9 +389,9 @@ try|try
 block|{
 name|containerId
 operator|=
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|containerid
 argument_list|)

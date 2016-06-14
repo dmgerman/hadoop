@@ -1373,9 +1373,9 @@ try|try
 block|{
 name|containerId
 operator|=
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|id
 argument_list|)
@@ -1525,9 +1525,9 @@ try|try
 block|{
 name|containerId
 operator|=
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|containerIdStr
 argument_list|)

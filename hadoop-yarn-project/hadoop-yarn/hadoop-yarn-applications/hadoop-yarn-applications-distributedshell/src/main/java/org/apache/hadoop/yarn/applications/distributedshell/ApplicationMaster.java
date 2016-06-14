@@ -2511,9 +2511,9 @@ argument_list|)
 decl_stmt|;
 name|appAttemptID
 operator|=
-name|ConverterUtils
+name|ApplicationAttemptId
 operator|.
-name|toApplicationAttemptId
+name|fromString
 argument_list|(
 name|appIdStr
 argument_list|)
@@ -2535,9 +2535,9 @@ block|{
 name|ContainerId
 name|containerId
 init|=
-name|ConverterUtils
+name|ContainerId
 operator|.
-name|toContainerId
+name|fromString
 argument_list|(
 name|envs
 operator|.
@@ -5296,9 +5296,9 @@ try|try
 block|{
 name|yarnUrl
 operator|=
-name|ConverterUtils
+name|URL
 operator|.
-name|getYarnUrlFromURI
+name|fromURI
 argument_list|(
 operator|new
 name|URI

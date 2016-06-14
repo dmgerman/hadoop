@@ -535,9 +535,9 @@ try|try
 block|{
 name|appAttemptId
 operator|=
-name|ConverterUtils
+name|ApplicationAttemptId
 operator|.
-name|toApplicationAttemptId
+name|fromString
 argument_list|(
 name|attemptid
 argument_list|)

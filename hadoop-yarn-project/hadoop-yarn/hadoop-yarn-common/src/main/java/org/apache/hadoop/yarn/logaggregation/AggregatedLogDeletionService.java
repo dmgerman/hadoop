@@ -695,9 +695,9 @@ name|appTerminated
 init|=
 name|isApplicationTerminated
 argument_list|(
-name|ConverterUtils
+name|ApplicationId
 operator|.
-name|toApplicationId
+name|fromString
 argument_list|(
 name|appDir
 operator|.
