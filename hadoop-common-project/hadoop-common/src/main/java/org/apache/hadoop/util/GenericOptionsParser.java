@@ -559,6 +559,7 @@ argument_list|)
 DECL|method|buildGeneralOptions (Options opts)
 specifier|private
 specifier|static
+specifier|synchronized
 name|Options
 name|buildGeneralOptions
 parameter_list|(
