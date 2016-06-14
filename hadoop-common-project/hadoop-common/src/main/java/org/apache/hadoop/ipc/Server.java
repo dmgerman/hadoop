@@ -12095,6 +12095,8 @@ name|this
 operator|.
 name|maxQueueSize
 operator|=
+name|handlerCount
+operator|*
 name|queueSizePerHandler
 expr_stmt|;
 block|}
