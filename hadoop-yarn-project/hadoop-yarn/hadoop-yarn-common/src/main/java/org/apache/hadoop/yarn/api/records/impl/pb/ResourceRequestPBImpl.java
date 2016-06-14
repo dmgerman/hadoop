@@ -909,6 +909,54 @@ name|relaxLocality
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getAllocationRequestId ()
+specifier|public
+name|long
+name|getAllocationRequestId
+parameter_list|()
+block|{
+name|ResourceRequestProtoOrBuilder
+name|p
+init|=
+name|viaProto
+condition|?
+name|proto
+else|:
+name|builder
+decl_stmt|;
+return|return
+operator|(
+name|p
+operator|.
+name|getAllocationRequestId
+argument_list|()
+operator|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setAllocationRequestId (long allocationRequestID)
+specifier|public
+name|void
+name|setAllocationRequestId
+parameter_list|(
+name|long
+name|allocationRequestID
+parameter_list|)
+block|{
+name|maybeInitBuilder
+argument_list|()
+expr_stmt|;
+name|builder
+operator|.
+name|setAllocationRequestId
+argument_list|(
+name|allocationRequestID
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|convertFromProtoFormat (PriorityProto p)
 specifier|private
 name|PriorityPBImpl
@@ -994,7 +1042,12 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|"{Priority: "
+literal|"{AllocationRequestId: "
+operator|+
+name|getAllocationRequestId
+argument_list|()
+operator|+
+literal|", Priority: "
 operator|+
 name|getPriority
 argument_list|()

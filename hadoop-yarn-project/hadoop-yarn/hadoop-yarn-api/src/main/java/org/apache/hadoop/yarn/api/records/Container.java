@@ -64,6 +64,22 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
+name|Evolving
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
 name|Stable
 import|;
 end_import
@@ -482,6 +498,43 @@ name|ExecutionType
 name|executionType
 parameter_list|)
 function_decl|;
+comment|/**    * Get the optional<em>ID</em> corresponding to the original {@code    * ResourceRequest{@link #getAllocationRequestId()}}s which is satisfied by    * this allocated {@code Container}.    *<p>    * The scheduler may return multiple {@code AllocateResponse}s corresponding    * to the same ID as and when scheduler allocates {@code Container}s.    *<b>Applications</b> can continue to completely ignore the returned ID in    * the response and use the allocation for any of their outstanding requests.    *<p>    *    * @return the<em>ID</em> corresponding to the original  allocation request    * which is satisfied by this allocation.    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|getAllocationRequestId ()
+specifier|public
+name|long
+name|getAllocationRequestId
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+comment|/**    * Set the optional<em>ID</em> corresponding to the original {@code    * ResourceRequest{@link #setAllocationRequestId(long)}    * etAllocationRequestId()}}s which is satisfied by this allocated {@code    * Container}.    *<p>    * The scheduler may return multiple {@code AllocateResponse}s corresponding    * to the same ID as and when scheduler allocates {@code Container}s.    *<b>Applications</b> can continue to completely ignore the returned ID in    * the response and use the allocation for any of their outstanding requests.    * If the ID is not set, scheduler will continue to work as previously and all    * allocated {@code Container}(s) will have the default ID, -1.    *<p>    *    * @param allocationRequestID the<em>ID</em> corresponding to the original    *                            allocation request which is satisfied by this    *                            allocation.    */
+annotation|@
+name|Private
+annotation|@
+name|Evolving
+DECL|method|setAllocationRequestId (long allocationRequestID)
+specifier|public
+name|void
+name|setAllocationRequestId
+parameter_list|(
+name|long
+name|allocationRequestID
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
 block|}
 end_class
 
