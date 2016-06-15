@@ -1020,6 +1020,16 @@ init|=
 literal|"\n\nContainer: "
 operator|+
 name|containerId
+operator|+
+literal|" on "
+operator|+
+name|thisNodeFile
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|getName
+argument_list|()
 decl_stmt|;
 name|out
 operator|.
@@ -1394,6 +1404,16 @@ operator|.
 name|println
 argument_list|(
 name|containerId
+operator|+
+literal|" on "
+operator|+
+name|thisNodeFile
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|out

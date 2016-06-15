@@ -2753,6 +2753,10 @@ init|=
 literal|"\n\nContainer: "
 operator|+
 name|containerIdStr
+operator|+
+literal|" on "
+operator|+
+name|nodeId
 decl_stmt|;
 name|out
 operator|.
