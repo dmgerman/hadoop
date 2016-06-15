@@ -377,7 +377,9 @@ literal|"[-list-corruptfileblocks | "
 operator|+
 literal|"[-move | -delete | -openforwrite] "
 operator|+
-literal|"[-files [-blocks [-locations | -racks | -replicaDetails]]]] "
+literal|"[-files [-blocks [-locations | -racks | -replicaDetails | "
+operator|+
+literal|"-upgradedomains]]]] "
 operator|+
 literal|"[-includeSnapshots] [-showprogress] "
 operator|+
@@ -412,6 +414,10 @@ operator|+
 literal|"\tprint out network topology for data-node locations\n"
 operator|+
 literal|"\t-files -blocks -replicaDetails\tprint out each replica details \n"
+operator|+
+literal|"\t-files -blocks -upgradedomains\tprint out upgrade domains for "
+operator|+
+literal|"every block\n"
 operator|+
 literal|"\t-storagepolicies\tprint out storage policy summary for the blocks\n"
 operator|+
@@ -1378,6 +1384,28 @@ operator|.
 name|append
 argument_list|(
 literal|"&replicadetails=1"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|args
+index|[
+name|idx
+index|]
+operator|.
+name|equals
+argument_list|(
+literal|"-upgradedomains"
+argument_list|)
+condition|)
+block|{
+name|url
+operator|.
+name|append
+argument_list|(
+literal|"&upgradedomains=1"
 argument_list|)
 expr_stmt|;
 block|}
