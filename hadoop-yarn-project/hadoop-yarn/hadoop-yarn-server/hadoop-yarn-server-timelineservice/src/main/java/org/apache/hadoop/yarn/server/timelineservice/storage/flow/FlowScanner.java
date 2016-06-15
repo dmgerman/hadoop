@@ -226,9 +226,9 @@ name|hadoop
 operator|.
 name|hbase
 operator|.
-name|coprocessor
+name|client
 operator|.
-name|RegionCoprocessorEnvironment
+name|Scan
 import|;
 end_import
 
@@ -242,9 +242,9 @@ name|hadoop
 operator|.
 name|hbase
 operator|.
-name|regionserver
+name|coprocessor
 operator|.
-name|HRegion
+name|RegionCoprocessorEnvironment
 import|;
 end_import
 
@@ -276,7 +276,39 @@ name|hbase
 operator|.
 name|regionserver
 operator|.
+name|Region
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hbase
+operator|.
+name|regionserver
+operator|.
 name|RegionScanner
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hbase
+operator|.
+name|regionserver
+operator|.
+name|ScannerContext
 import|;
 end_import
 
@@ -518,7 +550,7 @@ decl_stmt|;
 DECL|field|region
 specifier|private
 specifier|final
-name|HRegion
+name|Region
 name|region
 decl_stmt|;
 DECL|field|flowRunScanner
@@ -527,11 +559,11 @@ specifier|final
 name|InternalScanner
 name|flowRunScanner
 decl_stmt|;
-DECL|field|limit
+DECL|field|batchSize
 specifier|private
 specifier|final
 name|int
-name|limit
+name|batchSize
 decl_stmt|;
 DECL|field|appFinalValueRetentionThreshold
 specifier|private
@@ -582,14 +614,39 @@ name|FlowScannerOperation
 operator|.
 name|READ
 decl_stmt|;
-DECL|method|FlowScanner (RegionCoprocessorEnvironment env, int limit, InternalScanner internalScanner, FlowScannerOperation action)
+DECL|method|FlowScanner (RegionCoprocessorEnvironment env, InternalScanner internalScanner, FlowScannerOperation action)
 name|FlowScanner
 parameter_list|(
 name|RegionCoprocessorEnvironment
 name|env
 parameter_list|,
-name|int
-name|limit
+name|InternalScanner
+name|internalScanner
+parameter_list|,
+name|FlowScannerOperation
+name|action
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|env
+argument_list|,
+literal|null
+argument_list|,
+name|internalScanner
+argument_list|,
+name|action
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|FlowScanner (RegionCoprocessorEnvironment env, Scan incomingScan, InternalScanner internalScanner, FlowScannerOperation action)
+name|FlowScanner
+parameter_list|(
+name|RegionCoprocessorEnvironment
+name|env
+parameter_list|,
+name|Scan
+name|incomingScan
 parameter_list|,
 name|InternalScanner
 name|internalScanner
@@ -600,10 +657,21 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|limit
+name|batchSize
 operator|=
-name|limit
+name|incomingScan
+operator|==
+literal|null
+condition|?
+operator|-
+literal|1
+else|:
+name|incomingScan
+operator|.
+name|getBatch
+argument_list|()
 expr_stmt|;
+comment|// TODO initialize other scan attributes like Scan#maxResultSize
 name|this
 operator|.
 name|flowRunScanner
@@ -692,6 +760,24 @@ name|DEFAULT_APP_FINAL_VALUE_RETENTION_THRESHOLD
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|" batch size="
+operator|+
+name|batchSize
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/*    * (non-Javadoc)    *    * @see org.apache.hadoop.hbase.regionserver.RegionScanner#getRegionInfo()    */
 annotation|@
@@ -730,13 +816,19 @@ name|nextRaw
 argument_list|(
 name|cells
 argument_list|,
-name|limit
+name|ScannerContext
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|build
+argument_list|()
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|nextRaw (List<Cell> cells, int cellLimit)
+DECL|method|nextRaw (List<Cell> cells, ScannerContext scannerContext)
 specifier|public
 name|boolean
 name|nextRaw
@@ -747,8 +839,8 @@ name|Cell
 argument_list|>
 name|cells
 parameter_list|,
-name|int
-name|cellLimit
+name|ScannerContext
+name|scannerContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -758,7 +850,7 @@ name|nextInternal
 argument_list|(
 name|cells
 argument_list|,
-name|cellLimit
+name|scannerContext
 argument_list|)
 return|;
 block|}
@@ -783,13 +875,19 @@ name|next
 argument_list|(
 name|cells
 argument_list|,
-name|limit
+name|ScannerContext
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|build
+argument_list|()
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|next (List<Cell> cells, int cellLimit)
+DECL|method|next (List<Cell> cells, ScannerContext scannerContext)
 specifier|public
 name|boolean
 name|next
@@ -800,8 +898,8 @@ name|Cell
 argument_list|>
 name|cells
 parameter_list|,
-name|int
-name|cellLimit
+name|ScannerContext
+name|scannerContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -811,7 +909,7 @@ name|nextInternal
 argument_list|(
 name|cells
 argument_list|,
-name|cellLimit
+name|scannerContext
 argument_list|)
 return|;
 block|}
@@ -931,32 +1029,8 @@ name|getInstance
 argument_list|()
 return|;
 block|}
-comment|/**    * Checks if the converter is a numeric converter or not. For a converter to    * be numeric, it must implement {@link NumericValueConverter} interface.    * @param converter    * @return true, if converter is of type NumericValueConverter, false    * otherwise.    */
-DECL|method|isNumericConverter (ValueConverter converter)
-specifier|private
-specifier|static
-name|boolean
-name|isNumericConverter
-parameter_list|(
-name|ValueConverter
-name|converter
-parameter_list|)
-block|{
-return|return
-operator|(
-name|converter
-operator|instanceof
-name|NumericValueConverter
-operator|)
-return|;
-block|}
-comment|/**    * This method loops through the cells in a given row of the    * {@link FlowRunTable}. It looks at the tags of each cell to figure out how    * to process the contents. It then calculates the sum or min or max for each    * column or returns the cell as is.    *    * @param cells    * @param cellLimit    * @return true if next row is available for the scanner, false otherwise    * @throws IOException    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-DECL|method|nextInternal (List<Cell> cells, int cellLimit)
+comment|/**    * This method loops through the cells in a given row of the    * {@link FlowRunTable}. It looks at the tags of each cell to figure out how    * to process the contents. It then calculates the sum or min or max for each    * column or returns the cell as is.    *    * @param cells    * @param scannerContext    * @return true if next row is available for the scanner, false otherwise    * @throws IOException    */
+DECL|method|nextInternal (List<Cell> cells, ScannerContext scannerContext)
 specifier|private
 name|boolean
 name|nextInternal
@@ -967,8 +1041,8 @@ name|Cell
 argument_list|>
 name|cells
 parameter_list|,
-name|int
-name|cellLimit
+name|ScannerContext
+name|scannerContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -998,7 +1072,7 @@ argument_list|()
 decl_stmt|;
 name|byte
 index|[]
-name|currentColumnQualifier
+name|previousColumnQualifier
 init|=
 name|Separator
 operator|.
@@ -1053,22 +1127,27 @@ name|converter
 init|=
 literal|null
 decl_stmt|;
+name|int
+name|limit
+init|=
+name|batchSize
+decl_stmt|;
 while|while
 condition|(
-name|cellLimit
+name|limit
 operator|<=
 literal|0
 operator|||
 name|addedCnt
 operator|<
-name|cellLimit
+name|limit
 condition|)
 block|{
 name|cell
 operator|=
 name|peekAtNextCell
 argument_list|(
-name|cellLimit
+name|scannerContext
 argument_list|)
 expr_stmt|;
 if|if
@@ -1082,7 +1161,7 @@ break|break;
 block|}
 name|byte
 index|[]
-name|newColumnQualifier
+name|currentColumnQualifier
 init|=
 name|CellUtil
 operator|.
@@ -1093,28 +1172,36 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|previousColumnQualifier
+operator|==
+literal|null
+condition|)
+block|{
+comment|// first time in loop
+name|previousColumnQualifier
+operator|=
+name|currentColumnQualifier
+expr_stmt|;
+block|}
+name|converter
+operator|=
+name|getValueConverter
+argument_list|(
+name|currentColumnQualifier
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
 name|comp
 operator|.
 name|compare
 argument_list|(
-name|currentColumnQualifier
+name|previousColumnQualifier
 argument_list|,
-name|newColumnQualifier
+name|currentColumnQualifier
 argument_list|)
 operator|!=
 literal|0
-condition|)
-block|{
-if|if
-condition|(
-name|converter
-operator|!=
-literal|null
-operator|&&
-name|isNumericConverter
-argument_list|(
-name|converter
-argument_list|)
 condition|)
 block|{
 name|addedCnt
@@ -1132,7 +1219,6 @@ argument_list|,
 name|currentTimestamp
 argument_list|)
 expr_stmt|;
-block|}
 name|resetState
 argument_list|(
 name|currentColumnCells
@@ -1140,9 +1226,9 @@ argument_list|,
 name|alreadySeenAggDim
 argument_list|)
 expr_stmt|;
-name|currentColumnQualifier
+name|previousColumnQualifier
 operator|=
-name|newColumnQualifier
+name|currentColumnQualifier
 expr_stmt|;
 name|currentAggOp
 operator|=
@@ -1155,33 +1241,9 @@ name|converter
 operator|=
 name|getValueConverter
 argument_list|(
-name|newColumnQualifier
+name|currentColumnQualifier
 argument_list|)
 expr_stmt|;
-block|}
-comment|// No operation needs to be performed on non numeric converters.
-if|if
-condition|(
-operator|!
-name|isNumericConverter
-argument_list|(
-name|converter
-argument_list|)
-condition|)
-block|{
-name|currentColumnCells
-operator|.
-name|add
-argument_list|(
-name|cell
-argument_list|)
-expr_stmt|;
-name|nextCell
-argument_list|(
-name|cellLimit
-argument_list|)
-expr_stmt|;
-continue|continue;
 block|}
 name|collectCells
 argument_list|(
@@ -1193,25 +1255,38 @@ name|cell
 argument_list|,
 name|alreadySeenAggDim
 argument_list|,
-operator|(
-name|NumericValueConverter
-operator|)
 name|converter
+argument_list|,
+name|scannerContext
 argument_list|)
 expr_stmt|;
 name|nextCell
 argument_list|(
-name|cellLimit
+name|scannerContext
 argument_list|)
 expr_stmt|;
 block|}
 if|if
 condition|(
+operator|(
 operator|!
 name|currentColumnCells
 operator|.
 name|isEmpty
 argument_list|()
+operator|)
+operator|&&
+operator|(
+operator|(
+name|limit
+operator|<=
+literal|0
+operator|||
+name|addedCnt
+operator|<
+name|limit
+operator|)
+operator|)
 condition|)
 block|{
 name|addedCnt
@@ -1264,19 +1339,18 @@ name|FlowRunRowKey
 operator|.
 name|parseRowKey
 argument_list|(
+name|CellUtil
+operator|.
+name|cloneRow
+argument_list|(
 name|cells
 operator|.
 name|get
 argument_list|(
 literal|0
 argument_list|)
-operator|.
-name|getRow
-argument_list|()
 argument_list|)
-operator|.
-name|toString
-argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1346,7 +1420,7 @@ name|tags
 argument_list|)
 return|;
 block|}
-comment|/**    * resets the parameters to an intialized state for next loop iteration.    *    * @param cell    * @param currentAggOp    * @param currentColumnCells    * @param alreadySeenAggDim    * @param collectedButNotEmitted    */
+comment|/**    * resets the parameters to an initialized state for next loop iteration.    *    * @param cell    * @param currentAggOp    * @param currentColumnCells    * @param alreadySeenAggDim    * @param collectedButNotEmitted    */
 DECL|method|resetState (SortedSet<Cell> currentColumnCells, Set<String> alreadySeenAggDim)
 specifier|private
 name|void
@@ -1376,7 +1450,7 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|collectCells (SortedSet<Cell> currentColumnCells, AggregationOperation currentAggOp, Cell cell, Set<String> alreadySeenAggDim, NumericValueConverter converter)
+DECL|method|collectCells (SortedSet<Cell> currentColumnCells, AggregationOperation currentAggOp, Cell cell, Set<String> alreadySeenAggDim, ValueConverter converter, ScannerContext scannerContext)
 specifier|private
 name|void
 name|collectCells
@@ -1399,8 +1473,11 @@ name|String
 argument_list|>
 name|alreadySeenAggDim
 parameter_list|,
-name|NumericValueConverter
+name|ValueConverter
 name|converter
+parameter_list|,
+name|ScannerContext
+name|scannerContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1418,11 +1495,6 @@ operator|.
 name|add
 argument_list|(
 name|cell
-argument_list|)
-expr_stmt|;
-name|nextCell
-argument_list|(
-name|limit
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1474,6 +1546,9 @@ name|cell
 argument_list|,
 name|currentAggOp
 argument_list|,
+operator|(
+name|NumericValueConverter
+operator|)
 name|converter
 argument_list|)
 decl_stmt|;
@@ -1547,6 +1622,9 @@ name|cell
 argument_list|,
 name|currentAggOp
 argument_list|,
+operator|(
+name|NumericValueConverter
+operator|)
 name|converter
 argument_list|)
 decl_stmt|;
@@ -2938,14 +3016,14 @@ else|:
 name|hasMore
 return|;
 block|}
-comment|/**    * Returns the next available cell for the current row and advances the    * pointer to the next cell. This method can be called multiple times in a row    * to advance through all the available cells.    *    * @param cellLimit    *          the limit of number of cells to return if the next batch must be    *          fetched by the wrapped scanner    * @return the next available cell or null if no more cells are available for    *         the current row    * @throws IOException    */
-DECL|method|nextCell (int cellLimit)
+comment|/**    * Returns the next available cell for the current row and advances the    * pointer to the next cell. This method can be called multiple times in a row    * to advance through all the available cells.    *    * @param scannerContext    *          context information for the batch of cells under consideration    * @return the next available cell or null if no more cells are available for    *         the current row    * @throws IOException    */
+DECL|method|nextCell (ScannerContext scannerContext)
 specifier|public
 name|Cell
 name|nextCell
 parameter_list|(
-name|int
-name|cellLimit
+name|ScannerContext
+name|scannerContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -2955,7 +3033,7 @@ name|cell
 init|=
 name|peekAtNextCell
 argument_list|(
-name|cellLimit
+name|scannerContext
 argument_list|)
 decl_stmt|;
 if|if
@@ -2973,14 +3051,14 @@ return|return
 name|cell
 return|;
 block|}
-comment|/**    * Returns the next available cell for the current row, without advancing the    * pointer. Calling this method multiple times in a row will continue to    * return the same cell.    *    * @param cellLimit    *          the limit of number of cells to return if the next batch must be    *          fetched by the wrapped scanner    * @return the next available cell or null if no more cells are available for    *         the current row    * @throws IOException if any problem is encountered while grabbing the next    *     cell.    */
-DECL|method|peekAtNextCell (int cellLimit)
+comment|/**    * Returns the next available cell for the current row, without advancing the    * pointer. Calling this method multiple times in a row will continue to    * return the same cell.    *    * @param scannerContext    *          context information for the batch of cells under consideration    * @return the next available cell or null if no more cells are available for    *         the current row    * @throws IOException if any problem is encountered while grabbing the next    *     cell.    */
+DECL|method|peekAtNextCell (ScannerContext scannerContext)
 specifier|public
 name|Cell
 name|peekAtNextCell
 parameter_list|(
-name|int
-name|cellLimit
+name|ScannerContext
+name|scannerContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -3013,7 +3091,7 @@ name|next
 argument_list|(
 name|availableCells
 argument_list|,
-name|cellLimit
+name|scannerContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -3224,6 +3302,18 @@ name|reseek
 argument_list|(
 name|bytes
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getBatch ()
+specifier|public
+name|int
+name|getBatch
+parameter_list|()
+block|{
+return|return
+name|batchSize
 return|;
 block|}
 block|}

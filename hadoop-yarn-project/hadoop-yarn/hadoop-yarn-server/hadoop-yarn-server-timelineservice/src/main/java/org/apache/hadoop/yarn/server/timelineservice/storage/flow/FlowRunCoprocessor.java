@@ -320,7 +320,7 @@ name|hbase
 operator|.
 name|regionserver
 operator|.
-name|HRegion
+name|Region
 import|;
 end_import
 
@@ -537,7 +537,7 @@ literal|false
 decl_stmt|;
 DECL|field|region
 specifier|private
-name|HRegion
+name|Region
 name|region
 decl_stmt|;
 comment|/**    * generate a timestamp that is unique per row in a region this is per region.    */
@@ -1017,9 +1017,6 @@ name|getEnvironment
 argument_list|()
 argument_list|,
 name|scan
-operator|.
-name|getBatch
-argument_list|()
 argument_list|,
 name|region
 operator|.
@@ -1146,9 +1143,6 @@ name|getEnvironment
 argument_list|()
 argument_list|,
 name|scan
-operator|.
-name|getBatch
-argument_list|()
 argument_list|,
 name|scanner
 argument_list|,
@@ -1283,9 +1277,6 @@ name|c
 operator|.
 name|getEnvironment
 argument_list|()
-argument_list|,
-operator|-
-literal|1
 argument_list|,
 name|scanner
 argument_list|,
@@ -1506,6 +1497,9 @@ operator|.
 name|getRegion
 argument_list|()
 operator|.
+name|getRegionInfo
+argument_list|()
+operator|.
 name|getRegionNameAsString
 argument_list|()
 argument_list|)
@@ -1519,9 +1513,6 @@ name|e
 operator|.
 name|getEnvironment
 argument_list|()
-argument_list|,
-operator|-
-literal|1
 argument_list|,
 name|scanner
 argument_list|,
