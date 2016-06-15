@@ -2157,6 +2157,13 @@ argument_list|(
 name|writer
 argument_list|,
 name|appFinished
+argument_list|,
+name|finishedContainers
+operator|.
+name|contains
+argument_list|(
+name|container
+argument_list|)
 argument_list|)
 decl_stmt|;
 if|if
@@ -3685,7 +3692,7 @@ literal|1000
 argument_list|)
 return|;
 block|}
-DECL|method|doContainerLogAggregation (LogWriter writer, boolean appFinished)
+DECL|method|doContainerLogAggregation (LogWriter writer, boolean appFinished, boolean containerFinished)
 specifier|public
 name|Set
 argument_list|<
@@ -3698,6 +3705,9 @@ name|writer
 parameter_list|,
 name|boolean
 name|appFinished
+parameter_list|,
+name|boolean
+name|containerFinished
 parameter_list|)
 block|{
 name|LOG
@@ -3761,6 +3771,8 @@ argument_list|,
 name|retentionContext
 argument_list|,
 name|appFinished
+argument_list|,
+name|containerFinished
 argument_list|)
 decl_stmt|;
 try|try
