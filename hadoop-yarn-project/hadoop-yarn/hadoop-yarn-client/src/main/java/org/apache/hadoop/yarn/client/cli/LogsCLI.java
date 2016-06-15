@@ -2926,6 +2926,16 @@ argument_list|(
 literal|"End of LogType:"
 operator|+
 name|logFile
+operator|+
+literal|". This log file belongs"
+operator|+
+literal|" to a running container ("
+operator|+
+name|containerIdStr
+operator|+
+literal|") and so may"
+operator|+
+literal|" not be complete."
 argument_list|)
 expr_stmt|;
 name|out
