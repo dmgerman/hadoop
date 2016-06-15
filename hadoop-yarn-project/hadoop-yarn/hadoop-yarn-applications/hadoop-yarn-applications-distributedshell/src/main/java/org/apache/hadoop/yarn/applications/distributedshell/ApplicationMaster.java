@@ -3579,7 +3579,7 @@ argument_list|()
 argument_list|,
 name|DSEvent
 operator|.
-name|DS_APP_ATTEMPT_END
+name|DS_APP_ATTEMPT_START
 argument_list|,
 name|domainId
 argument_list|,

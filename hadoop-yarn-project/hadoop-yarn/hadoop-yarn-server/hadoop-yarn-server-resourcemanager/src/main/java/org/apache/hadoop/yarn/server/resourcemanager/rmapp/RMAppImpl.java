@@ -3979,6 +3979,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Starts the application level timeline collector for this app. This should    * be used only if the timeline service v.2 is enabled.    */
 DECL|method|startTimelineCollector ()
 specifier|public
 name|void
@@ -4007,6 +4008,7 @@ name|collector
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Stops the application level timeline collector for this app. This should be    * used only if the timeline service v.2 is enabled.    */
 DECL|method|stopTimelineCollector ()
 specifier|public
 name|void

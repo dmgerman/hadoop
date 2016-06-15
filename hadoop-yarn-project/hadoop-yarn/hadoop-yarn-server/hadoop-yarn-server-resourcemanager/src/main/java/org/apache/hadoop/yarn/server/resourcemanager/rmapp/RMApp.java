@@ -482,13 +482,13 @@ name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
-comment|/**    * The collector address for the application.    * @return the address for the application's collector.    */
+comment|/**    * The collector address for the application. It should be used only if the    * timeline service v.2 is enabled.    *    * @return the address for the application's collector, or null if the    * timeline service v.2 is not enabled.    */
 DECL|method|getCollectorAddr ()
 name|String
 name|getCollectorAddr
 parameter_list|()
 function_decl|;
-comment|/**    * Set collector address for the application    * @param collectorAddr the address of collector    */
+comment|/**    * Set collector address for the application. It should be used only if the    * timeline service v.2 is enabled.    *    * @param collectorAddr the address of collector    */
 DECL|method|setCollectorAddr (String collectorAddr)
 name|void
 name|setCollectorAddr
@@ -497,7 +497,7 @@ name|String
 name|collectorAddr
 parameter_list|)
 function_decl|;
-comment|/**    * Remove collector address when application is finished or killed.    */
+comment|/**    * Remove collector address when application is finished or killed. It should    * be used only if the timeline service v.2 is enabled.    */
 DECL|method|removeCollectorAddr ()
 name|void
 name|removeCollectorAddr

@@ -3688,6 +3688,13 @@ argument_list|>
 name|newRegisteredCollectors
 parameter_list|)
 block|{
+if|if
+condition|(
+name|registeredCollectors
+operator|!=
+literal|null
+condition|)
+block|{
 name|this
 operator|.
 name|registeredCollectors
@@ -3697,6 +3704,19 @@ argument_list|(
 name|newRegisteredCollectors
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"collectors are added when the registered collectors are "
+operator|+
+literal|"initialized"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

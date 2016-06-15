@@ -4496,6 +4496,7 @@ argument_list|(
 name|response
 argument_list|)
 expr_stmt|;
+comment|// handle receiving the timeline collector address for this app
 name|String
 name|collectorAddr
 init|=
