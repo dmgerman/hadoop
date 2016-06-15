@@ -42,6 +42,7 @@ name|DiskBalancerException
 extends|extends
 name|IOException
 block|{
+comment|/**    * Results returned by the RPC layer of DiskBalancer.    */
 DECL|enum|Result
 specifier|public
 enum|enum

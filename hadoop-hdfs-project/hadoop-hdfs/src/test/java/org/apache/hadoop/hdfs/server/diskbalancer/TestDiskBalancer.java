@@ -506,6 +506,10 @@ name|assertTrue
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test Disk Balancer.  */
+end_comment
+
 begin_class
 DECL|class|TestDiskBalancer
 specifier|public
@@ -514,10 +518,10 @@ name|TestDiskBalancer
 block|{
 annotation|@
 name|Test
-DECL|method|TestDiskBalancerNameNodeConnectivity ()
+DECL|method|testDiskBalancerNameNodeConnectivity ()
 specifier|public
 name|void
-name|TestDiskBalancerNameNodeConnectivity
+name|testDiskBalancerNameNodeConnectivity
 parameter_list|()
 throws|throws
 name|Exception
@@ -593,7 +597,7 @@ name|conf
 argument_list|)
 decl_stmt|;
 name|DiskBalancerCluster
-name|DiskBalancerCluster
+name|diskBalancerCluster
 init|=
 operator|new
 name|DiskBalancerCluster
@@ -601,14 +605,14 @@ argument_list|(
 name|nameNodeConnector
 argument_list|)
 decl_stmt|;
-name|DiskBalancerCluster
+name|diskBalancerCluster
 operator|.
 name|readClusterInfo
 argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|DiskBalancerCluster
+name|diskBalancerCluster
 operator|.
 name|getNodes
 argument_list|()
@@ -635,7 +639,7 @@ decl_stmt|;
 name|DiskBalancerDataNode
 name|dbDnNode
 init|=
-name|DiskBalancerCluster
+name|diskBalancerCluster
 operator|.
 name|getNodeByUUID
 argument_list|(
@@ -730,13 +734,13 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * This test simulates a real Data node working with DiskBalancer.    *    * Here is the overview of this test.    *    * 1. Write a bunch of blocks and move them to one disk to create imbalance.    * 2. Rewrite  the capacity of the disks in DiskBalancer Model so that    * planner will produce a move plan.    * 3. Execute the move plan and wait unitl the plan is done.    * 4. Verify the source disk has blocks now.    *    * @throws Exception    */
+comment|/**    * This test simulates a real Data node working with DiskBalancer.    *<p>    * Here is the overview of this test.    *<p>    * 1. Write a bunch of blocks and move them to one disk to create imbalance.    * 2. Rewrite  the capacity of the disks in DiskBalancer Model so that planner    * will produce a move plan. 3. Execute the move plan and wait unitl the plan    * is done. 4. Verify the source disk has blocks now.    *    * @throws Exception    */
 annotation|@
 name|Test
-DECL|method|TestDiskBalancerEndToEnd ()
+DECL|method|testDiskBalancerEndToEnd ()
 specifier|public
 name|void
-name|TestDiskBalancerEndToEnd
+name|testDiskBalancerEndToEnd
 parameter_list|()
 throws|throws
 name|Exception
@@ -750,7 +754,7 @@ argument_list|()
 decl_stmt|;
 specifier|final
 name|int
-name|DEFAULT_BLOCK_SIZE
+name|defaultBlockSize
 init|=
 literal|100
 decl_stmt|;
@@ -773,7 +777,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_SIZE_KEY
 argument_list|,
-name|DEFAULT_BLOCK_SIZE
+name|defaultBlockSize
 argument_list|)
 expr_stmt|;
 name|conf
@@ -784,7 +788,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BYTES_PER_CHECKSUM_KEY
 argument_list|,
-name|DEFAULT_BLOCK_SIZE
+name|defaultBlockSize
 argument_list|)
 expr_stmt|;
 name|conf
@@ -849,13 +853,13 @@ operator|new
 name|long
 index|[]
 block|{
-name|DEFAULT_BLOCK_SIZE
+name|defaultBlockSize
 operator|*
 literal|2
 operator|*
 name|fileLen
 block|,
-name|DEFAULT_BLOCK_SIZE
+name|defaultBlockSize
 operator|*
 literal|2
 operator|*
@@ -1158,7 +1162,7 @@ name|setVolumeCapacity
 argument_list|(
 name|diskBalancerCluster
 argument_list|,
-name|DEFAULT_BLOCK_SIZE
+name|defaultBlockSize
 operator|*
 literal|2
 operator|*
@@ -1518,7 +1522,7 @@ argument_list|(
 name|source
 argument_list|)
 operator|*
-name|DEFAULT_BLOCK_SIZE
+name|defaultBlockSize
 operator|+
 name|delta
 operator|)
@@ -1547,7 +1551,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Sets alll Disks capacity to size specified.    * @param cluster   - DiskBalancerCluster    * @param size   - new size of the disk    */
+comment|/**    * Sets alll Disks capacity to size specified.    *    * @param cluster - DiskBalancerCluster    * @param size    - new size of the disk    */
 DECL|method|setVolumeCapacity (DiskBalancerCluster cluster, long size, String diskType)
 specifier|private
 name|void

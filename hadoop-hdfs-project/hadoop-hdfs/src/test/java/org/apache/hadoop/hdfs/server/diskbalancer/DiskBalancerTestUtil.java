@@ -337,6 +337,7 @@ literal|900
 block|}
 decl_stmt|;
 DECL|field|rand
+specifier|private
 name|Random
 name|rand
 decl_stmt|;

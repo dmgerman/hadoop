@@ -184,6 +184,10 @@ name|UUID
 import|;
 end_import
 
+begin_comment
+comment|/**  * Tests DiskBalancer Data models.  */
+end_comment
+
 begin_class
 DECL|class|TestDataModels
 specifier|public
@@ -192,10 +196,10 @@ name|TestDataModels
 block|{
 annotation|@
 name|Test
-DECL|method|TestCreateRandomVolume ()
+DECL|method|testCreateRandomVolume ()
 specifier|public
 name|void
-name|TestCreateRandomVolume
+name|testCreateRandomVolume
 parameter_list|()
 throws|throws
 name|Exception
@@ -325,10 +329,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestCreateRandomVolumeSet ()
+DECL|method|testCreateRandomVolumeSet ()
 specifier|public
 name|void
-name|TestCreateRandomVolumeSet
+name|testCreateRandomVolumeSet
 parameter_list|()
 throws|throws
 name|Exception
@@ -394,10 +398,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestCreateRandomDataNode ()
+DECL|method|testCreateRandomDataNode ()
 specifier|public
 name|void
-name|TestCreateRandomDataNode
+name|testCreateRandomDataNode
 parameter_list|()
 throws|throws
 name|Exception
@@ -445,10 +449,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestDiskQueues ()
+DECL|method|testDiskQueues ()
 specifier|public
 name|void
-name|TestDiskQueues
+name|testDiskQueues
 parameter_list|()
 throws|throws
 name|Exception
@@ -674,10 +678,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|TestNoBalancingNeededEvenDataSpread ()
+DECL|method|testNoBalancingNeededEvenDataSpread ()
 specifier|public
 name|void
-name|TestNoBalancingNeededEvenDataSpread
+name|testNoBalancingNeededEvenDataSpread
 parameter_list|()
 throws|throws
 name|Exception
@@ -836,10 +840,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|TestNoBalancingNeededTransientDisks ()
+DECL|method|testNoBalancingNeededTransientDisks ()
 specifier|public
 name|void
-name|TestNoBalancingNeededTransientDisks
+name|testNoBalancingNeededTransientDisks
 parameter_list|()
 throws|throws
 name|Exception
@@ -998,10 +1002,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|TestNoBalancingNeededFailedDisks ()
+DECL|method|testNoBalancingNeededFailedDisks ()
 specifier|public
 name|void
-name|TestNoBalancingNeededFailedDisks
+name|testNoBalancingNeededFailedDisks
 parameter_list|()
 throws|throws
 name|Exception
@@ -1167,10 +1171,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|TestNeedBalancingUnevenDataSpread ()
+DECL|method|testNeedBalancingUnevenDataSpread ()
 specifier|public
 name|void
-name|TestNeedBalancingUnevenDataSpread
+name|testNeedBalancingUnevenDataSpread
 parameter_list|()
 throws|throws
 name|Exception
@@ -1323,10 +1327,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|TestVolumeSerialize ()
+DECL|method|testVolumeSerialize ()
 specifier|public
 name|void
-name|TestVolumeSerialize
+name|testVolumeSerialize
 parameter_list|()
 throws|throws
 name|Exception
@@ -1388,10 +1392,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestClusterSerialize ()
+DECL|method|testClusterSerialize ()
 specifier|public
 name|void
-name|TestClusterSerialize
+name|testClusterSerialize
 parameter_list|()
 throws|throws
 name|Exception

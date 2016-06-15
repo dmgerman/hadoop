@@ -40,6 +40,10 @@ name|TypeSafeMatcher
 import|;
 end_import
 
+begin_comment
+comment|/**  * Helps in verifying test results.  */
+end_comment
+
 begin_class
 DECL|class|DiskBalancerResultVerifier
 specifier|public

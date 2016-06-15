@@ -582,6 +582,10 @@ name|assertTrue
 import|;
 end_import
 
+begin_comment
+comment|/**  * Tests diskbalancer with a mock mover.  */
+end_comment
+
 begin_class
 DECL|class|TestDiskBalancerWithMockMover
 specifier|public
@@ -616,30 +620,37 @@ name|none
 argument_list|()
 decl_stmt|;
 DECL|field|cluster
+specifier|private
 name|MiniDFSCluster
 name|cluster
 decl_stmt|;
 DECL|field|sourceName
+specifier|private
 name|String
 name|sourceName
 decl_stmt|;
 DECL|field|destName
+specifier|private
 name|String
 name|destName
 decl_stmt|;
 DECL|field|sourceUUID
+specifier|private
 name|String
 name|sourceUUID
 decl_stmt|;
 DECL|field|destUUID
+specifier|private
 name|String
 name|destUUID
 decl_stmt|;
 DECL|field|nodeID
+specifier|private
 name|String
 name|nodeID
 decl_stmt|;
 DECL|field|dataNode
+specifier|private
 name|DataNode
 name|dataNode
 decl_stmt|;
@@ -1119,7 +1130,7 @@ name|Exception
 block|{
 specifier|final
 name|long
-name|MILLISECOND_IN_AN_HOUR
+name|millisecondInAnHour
 init|=
 literal|1000
 operator|*
@@ -1165,7 +1176,7 @@ operator|-
 operator|(
 literal|32
 operator|*
-name|MILLISECOND_IN_AN_HOUR
+name|millisecondInAnHour
 operator|)
 argument_list|)
 expr_stmt|;
@@ -1819,7 +1830,7 @@ argument_list|()
 decl_stmt|;
 specifier|final
 name|int
-name|NUM_STORAGES_PER_DN
+name|numStoragesPerDn
 init|=
 literal|2
 decl_stmt|;
@@ -1840,7 +1851,7 @@ argument_list|)
 operator|.
 name|storagesPerDatanode
 argument_list|(
-name|NUM_STORAGES_PER_DN
+name|numStoragesPerDn
 argument_list|)
 operator|.
 name|build

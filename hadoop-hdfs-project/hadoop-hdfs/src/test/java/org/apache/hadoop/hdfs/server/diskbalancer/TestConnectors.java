@@ -172,6 +172,10 @@ name|IOException
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test Class that tests connectors.  */
+end_comment
+
 begin_class
 DECL|class|TestConnectors
 specifier|public
@@ -184,6 +188,7 @@ name|MiniDFSCluster
 name|cluster
 decl_stmt|;
 DECL|field|numDatanodes
+specifier|private
 specifier|final
 name|int
 name|numDatanodes
@@ -191,6 +196,7 @@ init|=
 literal|3
 decl_stmt|;
 DECL|field|volumeCount
+specifier|private
 specifier|final
 name|int
 name|volumeCount
@@ -199,6 +205,7 @@ literal|2
 decl_stmt|;
 comment|// default volumes in MiniDFSCluster.
 DECL|field|conf
+specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
@@ -261,10 +268,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|TestNameNodeConnector ()
+DECL|method|testNameNodeConnector ()
 specifier|public
 name|void
-name|TestNameNodeConnector
+name|testNameNodeConnector
 parameter_list|()
 throws|throws
 name|Exception
@@ -350,10 +357,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestJsonConnector ()
+DECL|method|testJsonConnector ()
 specifier|public
 name|void
-name|TestJsonConnector
+name|testJsonConnector
 parameter_list|()
 throws|throws
 name|Exception

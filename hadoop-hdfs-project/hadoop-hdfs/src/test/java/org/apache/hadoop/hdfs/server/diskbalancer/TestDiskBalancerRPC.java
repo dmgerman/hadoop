@@ -536,6 +536,10 @@ name|assertTrue
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test DiskBalancer RPC.  */
+end_comment
+
 begin_class
 DECL|class|TestDiskBalancerRPC
 specifier|public
@@ -745,8 +749,8 @@ name|getPlanHash
 argument_list|()
 decl_stmt|;
 name|char
-name|hashArray
 index|[]
+name|hashArray
 init|=
 name|planHash
 operator|.
@@ -1118,8 +1122,8 @@ name|getPlanHash
 argument_list|()
 decl_stmt|;
 name|char
-name|hashArray
 index|[]
+name|hashArray
 init|=
 name|planHash
 operator|.
@@ -1671,7 +1675,7 @@ argument_list|()
 decl_stmt|;
 specifier|final
 name|int
-name|DEFAULT_BLOCK_SIZE
+name|defaultBlockSize
 init|=
 literal|100
 decl_stmt|;
@@ -1694,7 +1698,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_SIZE_KEY
 argument_list|,
-name|DEFAULT_BLOCK_SIZE
+name|defaultBlockSize
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1705,7 +1709,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BYTES_PER_CHECKSUM_KEY
 argument_list|,
-name|DEFAULT_BLOCK_SIZE
+name|defaultBlockSize
 argument_list|)
 expr_stmt|;
 name|String
