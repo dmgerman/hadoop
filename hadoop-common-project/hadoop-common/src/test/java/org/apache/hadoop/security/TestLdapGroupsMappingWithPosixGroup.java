@@ -446,7 +446,8 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-name|testGroups
+name|getTestGroups
+argument_list|()
 argument_list|)
 argument_list|,
 literal|2
