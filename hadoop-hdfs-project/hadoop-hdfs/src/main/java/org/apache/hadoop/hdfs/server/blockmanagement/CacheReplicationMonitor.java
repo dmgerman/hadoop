@@ -2210,6 +2210,36 @@ decl_stmt|;
 if|if
 condition|(
 name|blockInfo
+operator|==
+literal|null
+condition|)
+block|{
+comment|// Cannot find this block on the NameNode, skip this block from
+comment|// capacity calculation. Later logic will handle this block.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Block {}: cannot be found in block manager and hence"
+operator|+
+literal|" skipped from calculation for node {}."
+argument_list|,
+name|cblock
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|,
+name|dn
+operator|.
+name|getDatanodeUuid
+argument_list|()
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+if|if
+condition|(
+name|blockInfo
 operator|.
 name|getNumBytes
 argument_list|()
