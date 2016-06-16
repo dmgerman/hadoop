@@ -1892,7 +1892,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getAMContainerInfoForRMWebService ( Configuration conf, String appId)
-specifier|private
+specifier|protected
 name|List
 argument_list|<
 name|JSONObject
@@ -3585,6 +3585,36 @@ argument_list|,
 name|logCliHelper
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"ERROR: Specified AM containerId"
+operator|+
+literal|" (%s) exceeds the number of AM containers (%s)."
+argument_list|,
+name|amContainerId
+argument_list|,
+name|requests
+operator|.
+name|size
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
 block|}
 block|}
 block|}
