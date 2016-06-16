@@ -80,6 +80,22 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3native
+operator|.
+name|S3xLoginHelper
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * Extracts AWS credentials from the filesystem URI or configuration.  *</p>  */
 end_comment
@@ -143,69 +159,40 @@ name|uri
 argument_list|)
 throw|;
 block|}
-name|String
-name|userInfo
-init|=
-name|uri
+name|S3xLoginHelper
 operator|.
-name|getUserInfo
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|userInfo
-operator|!=
-literal|null
-condition|)
-block|{
-name|int
-name|index
+name|Login
+name|login
 init|=
-name|userInfo
+name|S3xLoginHelper
 operator|.
-name|indexOf
+name|extractLoginDetailsWithWarnings
 argument_list|(
-literal|':'
+name|uri
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|index
-operator|!=
-operator|-
-literal|1
+name|login
+operator|.
+name|hasLogin
+argument_list|()
 condition|)
 block|{
 name|accessKey
 operator|=
-name|userInfo
+name|login
 operator|.
-name|substring
-argument_list|(
-literal|0
-argument_list|,
-name|index
-argument_list|)
+name|getUser
+argument_list|()
 expr_stmt|;
 name|secretAccessKey
 operator|=
-name|userInfo
+name|login
 operator|.
-name|substring
-argument_list|(
-name|index
-operator|+
-literal|1
-argument_list|)
+name|getPassword
+argument_list|()
 expr_stmt|;
-block|}
-else|else
-block|{
-name|accessKey
-operator|=
-name|userInfo
-expr_stmt|;
-block|}
 block|}
 name|String
 name|scheme
@@ -316,19 +303,13 @@ literal|"AWS "
 operator|+
 literal|"Access Key ID and Secret Access "
 operator|+
-literal|"Key must be specified as the "
+literal|"Key must be specified "
 operator|+
-literal|"username or password "
-operator|+
-literal|"(respectively) of a "
-operator|+
-name|scheme
-operator|+
-literal|" URL, or by setting the "
+literal|"by setting the "
 operator|+
 name|accessKeyProperty
 operator|+
-literal|" or "
+literal|" and "
 operator|+
 name|secretAccessKeyProperty
 operator|+
@@ -352,11 +333,7 @@ literal|"AWS "
 operator|+
 literal|"Access Key ID must be specified "
 operator|+
-literal|"as the username of a "
-operator|+
-name|scheme
-operator|+
-literal|" URL, or by setting the "
+literal|"by setting the "
 operator|+
 name|accessKeyProperty
 operator|+
@@ -380,11 +357,7 @@ literal|"AWS "
 operator|+
 literal|"Secret Access Key must be "
 operator|+
-literal|"specified as the password of a "
-operator|+
-name|scheme
-operator|+
-literal|" URL, or by setting the "
+literal|"specified by setting the "
 operator|+
 name|secretAccessKeyProperty
 operator|+
