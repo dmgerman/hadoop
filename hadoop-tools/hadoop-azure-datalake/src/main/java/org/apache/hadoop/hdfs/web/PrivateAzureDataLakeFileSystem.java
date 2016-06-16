@@ -4396,14 +4396,9 @@ name|Math
 operator|.
 name|max
 argument_list|(
-name|Math
-operator|.
-name|round
-argument_list|(
 name|size
 operator|/
 name|SIZE4MB
-argument_list|)
 argument_list|,
 literal|1
 argument_list|)
