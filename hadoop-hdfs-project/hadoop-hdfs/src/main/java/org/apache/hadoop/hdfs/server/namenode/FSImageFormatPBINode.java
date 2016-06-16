@@ -893,7 +893,7 @@ init|=
 literal|16
 decl_stmt|;
 DECL|field|ACL_ENTRY_NAME_MASK
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -908,7 +908,7 @@ operator|-
 literal|1
 decl_stmt|;
 DECL|field|ACL_ENTRY_NAME_OFFSET
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -917,7 +917,7 @@ init|=
 literal|6
 decl_stmt|;
 DECL|field|ACL_ENTRY_TYPE_OFFSET
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -926,7 +926,7 @@ init|=
 literal|3
 decl_stmt|;
 DECL|field|ACL_ENTRY_SCOPE_OFFSET
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -935,7 +935,7 @@ init|=
 literal|5
 decl_stmt|;
 DECL|field|ACL_ENTRY_PERM_MASK
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int
