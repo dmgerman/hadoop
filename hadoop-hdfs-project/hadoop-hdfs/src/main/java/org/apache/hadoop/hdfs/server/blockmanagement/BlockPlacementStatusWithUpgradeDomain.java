@@ -185,7 +185,7 @@ block|{
 return|return
 operator|(
 name|numberOfReplicas
-operator|==
+operator|<=
 name|upgradeDomains
 operator|.
 name|size
