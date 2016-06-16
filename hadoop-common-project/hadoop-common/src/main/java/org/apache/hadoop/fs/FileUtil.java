@@ -547,6 +547,56 @@ name|stats
 argument_list|)
 return|;
 block|}
+comment|/**    * Register all files recursively to be deleted on exit.    * @param file File/directory to be deleted    */
+DECL|method|fullyDeleteOnExit (final File file)
+specifier|public
+specifier|static
+name|void
+name|fullyDeleteOnExit
+parameter_list|(
+specifier|final
+name|File
+name|file
+parameter_list|)
+block|{
+name|file
+operator|.
+name|deleteOnExit
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|file
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+name|File
+index|[]
+name|files
+init|=
+name|file
+operator|.
+name|listFiles
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|File
+name|child
+range|:
+name|files
+control|)
+block|{
+name|fullyDeleteOnExit
+argument_list|(
+name|child
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 comment|/**    * Delete a directory and all its contents.  If    * we return false, the directory may be partially-deleted.    * (1) If dir is symlink to a file, the symlink is deleted. The file pointed    *     to by the symlink is not deleted.    * (2) If dir is symlink to a directory, symlink is deleted. The directory    *     pointed to by symlink is not deleted.    * (3) If dir is a normal file, it is deleted.    * (4) If dir is a normal directory, then dir and all its contents recursively    *     are deleted.    */
 DECL|method|fullyDelete (final File dir)
 specifier|public

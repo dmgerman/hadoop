@@ -21579,14 +21579,12 @@ specifier|final
 name|String
 name|testdir
 init|=
-name|System
+name|GenericTestUtils
 operator|.
-name|getProperty
+name|getTempPath
 argument_list|(
-literal|"test.build.data"
+literal|"TestDFSShell-testCopyReserved"
 argument_list|)
-operator|+
-literal|"/TestDFSShell-testCopyReserved"
 decl_stmt|;
 specifier|final
 name|Path

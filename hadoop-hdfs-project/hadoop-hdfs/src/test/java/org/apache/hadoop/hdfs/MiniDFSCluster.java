@@ -1330,28 +1330,6 @@ name|fsdataset
 operator|.
 name|impl
 operator|.
-name|FsDatasetUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
-name|impl
-operator|.
 name|FsVolumeImpl
 import|;
 end_import
@@ -1772,7 +1750,9 @@ specifier|final
 name|String
 name|PROP_TEST_BUILD_DATA
 init|=
-literal|"test.build.data"
+name|GenericTestUtils
+operator|.
+name|SYSPROP_TEST_DATA_DIR
 decl_stmt|;
 comment|/** Configuration option to set the data dir: {@value} */
 DECL|field|HDFS_MINIDFS_BASEDIR
@@ -9144,18 +9124,22 @@ condition|(
 name|deleteDfsDir
 condition|)
 block|{
-name|base_dir
+name|FileUtil
 operator|.
-name|delete
-argument_list|()
+name|fullyDelete
+argument_list|(
+name|base_dir
+argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
-name|base_dir
+name|FileUtil
 operator|.
-name|deleteOnExit
-argument_list|()
+name|fullyDeleteOnExit
+argument_list|(
+name|base_dir
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -12442,7 +12426,7 @@ name|getBaseDirectory
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the base directory for any DFS cluster whose configuration does    * not explicitly set it. This is done by retrieving the system property    * {@link #PROP_TEST_BUILD_DATA} (defaulting to "build/test/data" ),    * and returning that directory with a subdir of /dfs.    * @return a directory for use as a miniDFS filesystem.    */
+comment|/**    * Get the base directory for any DFS cluster whose configuration does    * not explicitly set it. This is done via    * {@link GenericTestUtils#getTestDir()}.    * @return a directory for use as a miniDFS filesystem.    */
 DECL|method|getBaseDirectory ()
 specifier|public
 specifier|static
@@ -12451,16 +12435,19 @@ name|getBaseDirectory
 parameter_list|()
 block|{
 return|return
-name|System
+name|GenericTestUtils
 operator|.
-name|getProperty
+name|getTestDir
 argument_list|(
-name|PROP_TEST_BUILD_DATA
-argument_list|,
-literal|"build/test/data"
+literal|"dfs"
 argument_list|)
+operator|.
+name|getAbsolutePath
+argument_list|()
 operator|+
-literal|"/dfs/"
+name|File
+operator|.
+name|separator
 return|;
 block|}
 comment|/**    * Get a storage directory for a datanode in this specific instance of    * a MiniCluster.    *    * @param dnIndex datanode index (starts from 0)    * @param dirIndex directory index (0 or 1). Index 0 provides access to the    *          first storage directory. Index 1 provides access to the second    *          storage directory.    * @return Storage directory    */

@@ -3037,9 +3037,12 @@ init|=
 operator|new
 name|Path
 argument_list|(
-literal|"build/test/data"
-argument_list|,
+name|GenericTestUtils
+operator|.
+name|getTempPath
+argument_list|(
 literal|"preadtest.dat"
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|writeFile

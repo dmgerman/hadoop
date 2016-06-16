@@ -142,6 +142,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -1240,23 +1254,17 @@ specifier|final
 name|String
 name|BASEDIR
 init|=
-name|System
+name|GenericTestUtils
 operator|.
-name|getProperty
+name|getTempPath
 argument_list|(
-literal|"test.build.dir"
-argument_list|,
-literal|"target/test-dir"
-argument_list|)
-operator|+
-literal|"/"
-operator|+
 name|TestNameNodeRespectsBindHostKeys
 operator|.
 name|class
 operator|.
 name|getSimpleName
 argument_list|()
+argument_list|)
 decl_stmt|;
 DECL|method|setupSsl ()
 specifier|private

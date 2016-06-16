@@ -90,6 +90,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|AfterClass
@@ -340,9 +354,7 @@ block|{
 return|return
 operator|new
 name|FileContextTestHelper
-argument_list|(
-literal|"/tmp/TestWebHdfsFileContextMainOperations"
-argument_list|)
+argument_list|()
 return|;
 block|}
 DECL|method|getWebhdfsUrl ()
@@ -489,7 +501,11 @@ name|Path
 argument_list|(
 name|webhdfsUrlReal
 operator|+
-literal|"/build/test/data/"
+literal|"/"
+operator|+
+name|GenericTestUtils
+operator|.
+name|DEFAULT_TEST_DATA_PATH
 operator|+
 name|RandomStringUtils
 operator|.

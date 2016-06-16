@@ -1282,22 +1282,18 @@ specifier|public
 class|class
 name|TestFsck
 block|{
-DECL|field|auditLogFile
+DECL|field|AUDITLOG_FILE
 specifier|static
 specifier|final
 name|String
-name|auditLogFile
+name|AUDITLOG_FILE
 init|=
-name|System
+name|GenericTestUtils
 operator|.
-name|getProperty
+name|getTempPath
 argument_list|(
-literal|"test.build.dir"
-argument_list|,
-literal|"build/test"
+literal|"TestFsck-audit.log"
 argument_list|)
-operator|+
-literal|"/TestFsck-audit.log"
 decl_stmt|;
 comment|// Pattern for:
 comment|// allowed=true ugi=name ip=/address cmd=FSCK src=/ dst=null perm=null
@@ -1907,7 +1903,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-name|auditLogFile
+name|AUDITLOG_FILE
 argument_list|)
 decl_stmt|;
 if|if
@@ -1965,7 +1961,7 @@ name|RollingFileAppender
 argument_list|(
 name|layout
 argument_list|,
-name|auditLogFile
+name|AUDITLOG_FILE
 argument_list|)
 decl_stmt|;
 name|logger
@@ -2025,7 +2021,7 @@ argument_list|(
 operator|new
 name|FileReader
 argument_list|(
-name|auditLogFile
+name|AUDITLOG_FILE
 argument_list|)
 argument_list|)
 expr_stmt|;
