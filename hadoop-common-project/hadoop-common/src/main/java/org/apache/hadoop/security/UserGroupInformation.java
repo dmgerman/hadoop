@@ -803,6 +803,7 @@ comment|/**    * For the purposes of unit tests, we want to test login    * from
 annotation|@
 name|VisibleForTesting
 DECL|method|setShouldRenewImmediatelyForTests (boolean immediate)
+specifier|public
 specifier|static
 name|void
 name|setShouldRenewImmediatelyForTests

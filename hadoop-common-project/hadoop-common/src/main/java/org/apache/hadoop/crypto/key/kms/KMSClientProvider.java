@@ -3253,12 +3253,6 @@ argument_list|()
 else|:
 literal|null
 decl_stmt|;
-comment|// check and renew TGT to handle potential expiration
-name|actualUgi
-operator|.
-name|checkTGTAndReloginFromKeytab
-argument_list|()
-expr_stmt|;
 comment|// creating the HTTP connection using the current UGI at constructor time
 name|conn
 operator|=

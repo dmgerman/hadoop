@@ -74,6 +74,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|authentication
 operator|.
 name|client
@@ -770,6 +784,15 @@ name|token
 argument_list|)
 condition|)
 block|{
+comment|// check and renew TGT to handle potential expiration
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|checkTGTAndReloginFromKeytab
+argument_list|()
+expr_stmt|;
 name|authenticator
 operator|.
 name|authenticate
