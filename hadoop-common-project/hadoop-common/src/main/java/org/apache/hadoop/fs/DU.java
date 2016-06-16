@@ -150,7 +150,7 @@ name|duShell
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
-DECL|method|DU (File path, long interval, long initialUsed)
+DECL|method|DU (File path, long interval, long jitter, long initialUsed)
 specifier|public
 name|DU
 parameter_list|(
@@ -159,6 +159,9 @@ name|path
 parameter_list|,
 name|long
 name|interval
+parameter_list|,
+name|long
+name|jitter
 parameter_list|,
 name|long
 name|initialUsed
@@ -171,6 +174,8 @@ argument_list|(
 name|path
 argument_list|,
 name|interval
+argument_list|,
+name|jitter
 argument_list|,
 name|initialUsed
 argument_list|)
@@ -198,6 +203,11 @@ argument_list|,
 name|builder
 operator|.
 name|getInterval
+argument_list|()
+argument_list|,
+name|builder
+operator|.
+name|getJitter
 argument_list|()
 argument_list|,
 name|builder

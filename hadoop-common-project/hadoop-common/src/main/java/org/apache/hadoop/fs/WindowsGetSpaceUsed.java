@@ -82,7 +82,6 @@ extends|extends
 name|CachingGetSpaceUsed
 block|{
 DECL|method|WindowsGetSpaceUsed (CachingGetSpaceUsed.Builder builder)
-specifier|public
 name|WindowsGetSpaceUsed
 parameter_list|(
 name|CachingGetSpaceUsed
@@ -103,6 +102,11 @@ argument_list|,
 name|builder
 operator|.
 name|getInterval
+argument_list|()
+argument_list|,
+name|builder
+operator|.
+name|getJitter
 argument_list|()
 argument_list|,
 name|builder
