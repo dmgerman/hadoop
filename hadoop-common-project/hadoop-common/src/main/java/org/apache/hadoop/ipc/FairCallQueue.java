@@ -384,7 +384,7 @@ name|AtomicLong
 argument_list|>
 name|overflowedCalls
 decl_stmt|;
-comment|/**    * Create a FairCallQueue.    * @param capacity the maximum size of each sub-queue    * @param ns the prefix to use for configuration    * @param conf the configuration to read from    * Notes: the FairCallQueue has no fixed capacity. Rather, it has a minimum    * capacity of `capacity` and a maximum capacity of `capacity * number_queues`    */
+comment|/**    * Create a FairCallQueue.    * @param capacity the total size of all sub-queues    * @param ns the prefix to use for configuration    * @param conf the configuration to read from    * Notes: Each sub-queue has a capacity of `capacity / numSubqueues`.    * The first or the highest priority sub-queue has an excess capacity    * of `capacity % numSubqueues`    */
 DECL|method|FairCallQueue (int priorityLevels, int capacity, String ns, Configuration conf)
 specifier|public
 name|FairCallQueue
@@ -432,7 +432,9 @@ literal|"FairCallQueue is in use with "
 operator|+
 name|numQueues
 operator|+
-literal|" queues."
+literal|" queues with total capacity of "
+operator|+
+name|capacity
 argument_list|)
 expr_stmt|;
 name|this
@@ -464,6 +466,24 @@ argument_list|(
 name|numQueues
 argument_list|)
 expr_stmt|;
+name|int
+name|queueCapacity
+init|=
+name|capacity
+operator|/
+name|numQueues
+decl_stmt|;
+name|int
+name|capacityForFirstQueue
+init|=
+name|queueCapacity
+operator|+
+operator|(
+name|capacity
+operator|%
+name|numQueues
+operator|)
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -479,6 +499,13 @@ name|i
 operator|++
 control|)
 block|{
+if|if
+condition|(
+name|i
+operator|==
+literal|0
+condition|)
+block|{
 name|this
 operator|.
 name|queues
@@ -491,10 +518,30 @@ argument_list|<
 name|E
 argument_list|>
 argument_list|(
-name|capacity
+name|capacityForFirstQueue
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|queues
+operator|.
+name|add
+argument_list|(
+operator|new
+name|LinkedBlockingQueue
+argument_list|<
+name|E
+argument_list|>
+argument_list|(
+name|queueCapacity
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|overflowedCalls

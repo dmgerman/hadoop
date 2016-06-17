@@ -429,6 +429,10 @@ literal|"Using callQueue: "
 operator|+
 name|backingClass
 operator|+
+literal|" queueCapacity: "
+operator|+
+name|maxQueueSize
+operator|+
 literal|" scheduler: "
 operator|+
 name|schedulerClass

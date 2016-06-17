@@ -1055,14 +1055,14 @@ name|scheduler
 argument_list|,
 literal|false
 argument_list|,
-literal|2
+literal|8
 argument_list|,
 literal|""
 argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-comment|// Default FCQ has 4 levels and the max capacity is 2 x 4
+comment|// Default FCQ has 4 levels and the max capacity is 8
 name|assertCanPut
 argument_list|(
 name|manager
