@@ -285,6 +285,12 @@ specifier|private
 name|long
 name|limit
 decl_stmt|;
+comment|/**    * Default replication num for CacheDirective in this pool.    */
+DECL|field|defaultReplication
+specifier|private
+name|short
+name|defaultReplication
+decl_stmt|;
 comment|/**    * Maximum duration that a CacheDirective in this pool remains valid,    * in milliseconds.    */
 DECL|field|maxRelativeExpiryMs
 specifier|private
@@ -495,6 +501,25 @@ operator|.
 name|getLimit
 argument_list|()
 decl_stmt|;
+name|short
+name|defaultReplication
+init|=
+name|info
+operator|.
+name|getDefaultReplication
+argument_list|()
+operator|==
+literal|null
+condition|?
+name|CachePoolInfo
+operator|.
+name|DEFAULT_REPLICATION_NUM
+else|:
+name|info
+operator|.
+name|getDefaultReplication
+argument_list|()
+decl_stmt|;
 name|long
 name|maxRelativeExpiry
 init|=
@@ -530,6 +555,8 @@ argument_list|,
 name|mode
 argument_list|,
 name|limit
+argument_list|,
+name|defaultReplication
 argument_list|,
 name|maxRelativeExpiry
 argument_list|)
@@ -576,12 +603,17 @@ argument_list|()
 argument_list|,
 name|info
 operator|.
+name|getDefaultReplication
+argument_list|()
+argument_list|,
+name|info
+operator|.
 name|getMaxRelativeExpiryMs
 argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|CachePool (String poolName, String ownerName, String groupName, FsPermission mode, long limit, long maxRelativeExpiry)
+DECL|method|CachePool (String poolName, String ownerName, String groupName, FsPermission mode, long limit, short defaultReplication, long maxRelativeExpiry)
 name|CachePool
 parameter_list|(
 name|String
@@ -598,6 +630,9 @@ name|mode
 parameter_list|,
 name|long
 name|limit
+parameter_list|,
+name|short
+name|defaultReplication
 parameter_list|,
 name|long
 name|maxRelativeExpiry
@@ -664,6 +699,12 @@ operator|.
 name|limit
 operator|=
 name|limit
+expr_stmt|;
+name|this
+operator|.
+name|defaultReplication
+operator|=
+name|defaultReplication
 expr_stmt|;
 name|this
 operator|.
@@ -802,6 +843,32 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|getDefaultReplication ()
+specifier|public
+name|short
+name|getDefaultReplication
+parameter_list|()
+block|{
+return|return
+name|defaultReplication
+return|;
+block|}
+DECL|method|setDefaultReplication (short replication)
+specifier|public
+name|void
+name|setDefaultReplication
+parameter_list|(
+name|short
+name|replication
+parameter_list|)
+block|{
+name|this
+operator|.
+name|defaultReplication
+operator|=
+name|replication
+expr_stmt|;
+block|}
 DECL|method|getMaxRelativeExpiryMs ()
 specifier|public
 name|long
@@ -884,6 +951,11 @@ operator|.
 name|setLimit
 argument_list|(
 name|limit
+argument_list|)
+operator|.
+name|setDefaultReplication
+argument_list|(
+name|defaultReplication
 argument_list|)
 operator|.
 name|setMaxRelativeExpiryMs
@@ -1212,6 +1284,16 @@ operator|.
 name|append
 argument_list|(
 name|limit
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", defaultReplication"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|defaultReplication
 argument_list|)
 operator|.
 name|append

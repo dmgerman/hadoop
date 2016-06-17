@@ -3186,7 +3186,7 @@ literal|"<name> [-owner<owner>] "
 operator|+
 literal|"[-group<group>] [-mode<mode>] [-limit<limit>] "
 operator|+
-literal|"[-maxTtl<maxTtl>]"
+literal|"[-defaultReplication<defaultReplication>] [-maxTtl<maxTtl>]"
 operator|+
 literal|"]\n"
 return|;
@@ -3279,6 +3279,19 @@ operator|+
 literal|"cached by directives in this pool, in aggregate. By default, "
 operator|+
 literal|"no limit is set."
+argument_list|)
+expr_stmt|;
+name|listing
+operator|.
+name|addRow
+argument_list|(
+literal|"<defaultReplication>"
+argument_list|,
+literal|"The default replication "
+operator|+
+literal|"number for cache directive in the pool. "
+operator|+
+literal|"If not set, the replication is set to 1"
 argument_list|)
 expr_stmt|;
 name|listing
@@ -3507,6 +3520,43 @@ argument_list|)
 expr_stmt|;
 block|}
 name|String
+name|replicationString
+init|=
+name|StringUtils
+operator|.
+name|popOptionWithArgument
+argument_list|(
+literal|"-defaultReplication"
+argument_list|,
+name|args
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|replicationString
+operator|!=
+literal|null
+condition|)
+block|{
+name|short
+name|defaultReplication
+init|=
+name|Short
+operator|.
+name|parseShort
+argument_list|(
+name|replicationString
+argument_list|)
+decl_stmt|;
+name|info
+operator|.
+name|setDefaultReplication
+argument_list|(
+name|defaultReplication
+argument_list|)
+expr_stmt|;
+block|}
+name|String
 name|maxTtlString
 init|=
 name|StringUtils
@@ -3720,7 +3770,7 @@ literal|"<name> [-owner<owner>] "
 operator|+
 literal|"[-group<group>] [-mode<mode>] [-limit<limit>] "
 operator|+
-literal|"[-maxTtl<maxTtl>]]\n"
+literal|"[-defaultReplication<defaultReplication>] [-maxTtl<maxTtl>]]\n"
 return|;
 block|}
 annotation|@
@@ -3784,6 +3834,17 @@ argument_list|,
 literal|"Maximum number of bytes that can be cached "
 operator|+
 literal|"by this pool."
+argument_list|)
+expr_stmt|;
+name|listing
+operator|.
+name|addRow
+argument_list|(
+literal|"<defaultReplication>"
+argument_list|,
+literal|"Default replication num for "
+operator|+
+literal|"directives in this pool"
 argument_list|)
 expr_stmt|;
 name|listing
@@ -3927,6 +3988,40 @@ argument_list|(
 name|limitString
 argument_list|)
 decl_stmt|;
+name|String
+name|replicationString
+init|=
+name|StringUtils
+operator|.
+name|popOptionWithArgument
+argument_list|(
+literal|"-defaultReplication"
+argument_list|,
+name|args
+argument_list|)
+decl_stmt|;
+name|Short
+name|defaultReplication
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|replicationString
+operator|!=
+literal|null
+condition|)
+block|{
+name|defaultReplication
+operator|=
+name|Short
+operator|.
+name|parseShort
+argument_list|(
+name|replicationString
+argument_list|)
+expr_stmt|;
+block|}
 name|String
 name|maxTtlString
 init|=
@@ -4157,6 +4252,25 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|defaultReplication
+operator|!=
+literal|null
+condition|)
+block|{
+name|info
+operator|.
+name|setDefaultReplication
+argument_list|(
+name|defaultReplication
+argument_list|)
+expr_stmt|;
+name|changed
+operator|=
+literal|true
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|maxTtl
 operator|!=
 literal|null
@@ -4360,6 +4474,31 @@ expr_stmt|;
 name|prefix
 operator|=
 literal|" and "
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|defaultReplication
+operator|!=
+literal|null
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|prefix
+operator|+
+literal|"replication "
+operator|+
+name|defaultReplication
+argument_list|)
+expr_stmt|;
+name|prefix
+operator|=
+literal|" replication "
 expr_stmt|;
 block|}
 if|if
@@ -4891,6 +5030,15 @@ name|Justification
 operator|.
 name|RIGHT
 argument_list|)
+operator|.
+name|addField
+argument_list|(
+literal|"DEFAULT_REPLICATION"
+argument_list|,
+name|Justification
+operator|.
+name|RIGHT
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -5177,6 +5325,18 @@ operator|.
 name|add
 argument_list|(
 name|maxTtlString
+argument_list|)
+expr_stmt|;
+name|row
+operator|.
+name|add
+argument_list|(
+literal|""
+operator|+
+name|info
+operator|.
+name|getDefaultReplication
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if

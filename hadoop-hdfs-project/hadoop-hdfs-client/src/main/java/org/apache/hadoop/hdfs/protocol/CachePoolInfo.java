@@ -206,6 +206,15 @@ name|DEFAULT_LIMIT
 init|=
 name|LIMIT_UNLIMITED
 decl_stmt|;
+DECL|field|DEFAULT_REPLICATION_NUM
+specifier|public
+specifier|static
+specifier|final
+name|short
+name|DEFAULT_REPLICATION_NUM
+init|=
+literal|1
+decl_stmt|;
 DECL|field|poolName
 specifier|final
 name|String
@@ -234,6 +243,13 @@ name|Nullable
 DECL|field|limit
 name|Long
 name|limit
+decl_stmt|;
+annotation|@
+name|Nullable
+DECL|field|defaultReplication
+specifier|private
+name|Short
+name|defaultReplication
 decl_stmt|;
 annotation|@
 name|Nullable
@@ -387,6 +403,36 @@ return|return
 name|this
 return|;
 block|}
+comment|/**    * @return The default replication num for CacheDirective in this pool      */
+DECL|method|getDefaultReplication ()
+specifier|public
+name|Short
+name|getDefaultReplication
+parameter_list|()
+block|{
+return|return
+name|defaultReplication
+return|;
+block|}
+DECL|method|setDefaultReplication (Short repl)
+specifier|public
+name|CachePoolInfo
+name|setDefaultReplication
+parameter_list|(
+name|Short
+name|repl
+parameter_list|)
+block|{
+name|this
+operator|.
+name|defaultReplication
+operator|=
+name|repl
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**    * @return The maximum relative expiration of directives of this pool in    *         milliseconds    */
 DECL|method|getMaxRelativeExpiryMs ()
 specifier|public
@@ -466,6 +512,10 @@ operator|+
 literal|", limit:"
 operator|+
 name|limit
+operator|+
+literal|", defaultReplication:"
+operator|+
+name|defaultReplication
 operator|+
 literal|", maxRelativeExpiryMs:"
 operator|+
@@ -582,6 +632,15 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+name|defaultReplication
+argument_list|,
+name|other
+operator|.
+name|defaultReplication
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|maxRelativeExpiryMs
 argument_list|,
 name|other
@@ -629,6 +688,11 @@ operator|.
 name|append
 argument_list|(
 name|limit
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|defaultReplication
 argument_list|)
 operator|.
 name|append
@@ -693,6 +757,35 @@ operator|new
 name|InvalidRequestException
 argument_list|(
 literal|"Limit is negative."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+operator|(
+name|info
+operator|.
+name|getDefaultReplication
+argument_list|()
+operator|!=
+literal|null
+operator|)
+operator|&&
+operator|(
+name|info
+operator|.
+name|getDefaultReplication
+argument_list|()
+operator|<
+literal|0
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"Default Replication is negative"
 argument_list|)
 throw|;
 block|}
