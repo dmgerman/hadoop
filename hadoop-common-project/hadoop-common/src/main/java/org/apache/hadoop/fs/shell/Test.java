@@ -24,6 +24,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -63,6 +73,36 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|permission
+operator|.
+name|FsAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|AccessControlException
 import|;
 end_import
 
@@ -140,9 +180,21 @@ literal|"  -e  return 0 if<path> exists.\n"
 operator|+
 literal|"  -f  return 0 if<path> is a file.\n"
 operator|+
-literal|"  -s  return 0 if file<path> is greater than zero bytes in size.\n"
+literal|"  -s  return 0 if file<path> is greater "
 operator|+
-literal|"  -z  return 0 if file<path> is zero bytes in size, else return 1."
+literal|"        than zero bytes in size.\n"
+operator|+
+literal|"  -w  return 0 if file<path> exists "
+operator|+
+literal|"        and write permission is granted.\n"
+operator|+
+literal|"  -r  return 0 if file<path> exists "
+operator|+
+literal|"        and read permission is granted.\n"
+operator|+
+literal|"  -z  return 0 if file<path> is "
+operator|+
+literal|"        zero bytes in size, else return 1."
 decl_stmt|;
 DECL|field|flag
 specifier|private
@@ -182,6 +234,10 @@ argument_list|,
 literal|"s"
 argument_list|,
 literal|"z"
+argument_list|,
+literal|"w"
+argument_list|,
+literal|"r"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -343,6 +399,36 @@ literal|0
 operator|)
 expr_stmt|;
 break|break;
+case|case
+literal|'w'
+case|:
+name|test
+operator|=
+name|testAccess
+argument_list|(
+name|item
+argument_list|,
+name|FsAction
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+literal|'r'
+case|:
+name|test
+operator|=
+name|testAccess
+argument_list|(
+name|item
+argument_list|,
+name|FsAction
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
+break|break;
 default|default:
 break|break;
 block|}
@@ -351,10 +437,58 @@ condition|(
 operator|!
 name|test
 condition|)
+block|{
 name|exitCode
 operator|=
 literal|1
 expr_stmt|;
+block|}
+block|}
+DECL|method|testAccess (PathData item, FsAction action)
+specifier|private
+name|boolean
+name|testAccess
+parameter_list|(
+name|PathData
+name|item
+parameter_list|,
+name|FsAction
+name|action
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+name|item
+operator|.
+name|fs
+operator|.
+name|access
+argument_list|(
+name|item
+operator|.
+name|path
+argument_list|,
+name|action
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+decl||
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 annotation|@
 name|Override
