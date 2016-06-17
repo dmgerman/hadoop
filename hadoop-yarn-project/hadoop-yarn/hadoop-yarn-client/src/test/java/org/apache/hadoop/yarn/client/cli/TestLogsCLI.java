@@ -2870,7 +2870,7 @@ decl_stmt|;
 name|int
 name|tailContentSize
 init|=
-literal|"End of LogType:syslog\n\n"
+literal|"\nEnd of LogType:syslog\n\n"
 operator|.
 name|getBytes
 argument_list|()

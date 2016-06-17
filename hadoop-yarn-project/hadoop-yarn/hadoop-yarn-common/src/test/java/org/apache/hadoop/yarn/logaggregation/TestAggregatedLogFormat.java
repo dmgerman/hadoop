@@ -1673,7 +1673,7 @@ operator|.
 name|length
 argument_list|()
 operator|+
-literal|"End of LogType:stdout\n"
+literal|"\nEnd of LogType:stdout\n"
 operator|.
 name|length
 argument_list|()

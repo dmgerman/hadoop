@@ -6717,7 +6717,7 @@ literal|" Hello "
 operator|+
 name|fileType
 operator|+
-literal|"!End of LogType:"
+literal|"!\nEnd of LogType:"
 operator|+
 name|fileType
 decl_stmt|;
