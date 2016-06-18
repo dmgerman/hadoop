@@ -796,6 +796,16 @@ condition|(
 name|plan
 operator|!=
 literal|null
+operator|&&
+name|plan
+operator|.
+name|getVolumeSetPlans
+argument_list|()
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
 condition|)
 block|{
 name|LOG
