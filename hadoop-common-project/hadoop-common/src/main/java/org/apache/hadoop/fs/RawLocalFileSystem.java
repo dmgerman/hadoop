@@ -158,18 +158,6 @@ name|nio
 operator|.
 name|file
 operator|.
-name|AccessDeniedException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|file
-operator|.
 name|Files
 import|;
 end_import
@@ -2504,27 +2492,6 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-operator|!
-name|localf
-operator|.
-name|canRead
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|AccessDeniedException
-argument_list|(
-literal|"cannot open directory "
-operator|+
-name|f
-operator|+
-literal|": Permission denied"
-argument_list|)
-throw|;
-block|}
 return|return
 literal|null
 return|;
