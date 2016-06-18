@@ -350,7 +350,7 @@ specifier|final
 name|String
 name|NAMENODEURI
 init|=
-literal|"uri"
+literal|"fs"
 decl_stmt|;
 comment|/**    * Computes a plan for a given set of nodes.    */
 DECL|field|PLAN
