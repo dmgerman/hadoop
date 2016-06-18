@@ -1323,6 +1323,16 @@ return|;
 block|}
 catch|catch
 parameter_list|(
+name|DiskBalancerException
+name|ex
+parameter_list|)
+block|{
+throw|throw
+name|ex
+throw|;
+block|}
+catch|catch
+parameter_list|(
 name|IOException
 name|e
 parameter_list|)

@@ -324,27 +324,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|PrintStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URISyntaxException
 import|;
 end_import
 
@@ -698,12 +678,9 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|exit
-argument_list|(
+name|res
+operator|=
 literal|1
-argument_list|)
 expr_stmt|;
 block|}
 name|System
@@ -1581,7 +1558,7 @@ name|argv
 argument_list|)
 return|;
 block|}
-comment|/**    * Dispatches calls to the right command Handler classes.    *    * @param cmd  - CommandLine    * @param opts options of command line    * @param out  the output stream used for printing    * @throws IOException    * @throws URISyntaxException    */
+comment|/**    * Dispatches calls to the right command Handler classes.    *    * @param cmd  - CommandLine    * @param opts options of command line    * @param out  the output stream used for printing    */
 DECL|method|dispatch (CommandLine cmd, Options opts, final PrintStream out)
 specifier|private
 name|int
@@ -1598,17 +1575,13 @@ name|PrintStream
 name|out
 parameter_list|)
 throws|throws
-name|IOException
-throws|,
-name|URISyntaxException
+name|Exception
 block|{
 name|Command
 name|currentCommand
 init|=
 literal|null
 decl_stmt|;
-try|try
-block|{
 if|if
 condition|(
 name|cmd
@@ -1743,7 +1716,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Invoke Main help here.
+comment|// Invoke main help here.
 if|if
 condition|(
 name|currentCommand
@@ -1774,29 +1747,6 @@ argument_list|(
 name|cmd
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ex
-parameter_list|)
-block|{
-name|System
-operator|.
-name|err
-operator|.
-name|printf
-argument_list|(
-name|ex
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
-expr_stmt|;
-return|return
-literal|1
-return|;
-block|}
 return|return
 literal|0
 return|;

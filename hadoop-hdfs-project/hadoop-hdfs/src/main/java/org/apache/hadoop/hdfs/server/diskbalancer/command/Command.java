@@ -1011,7 +1011,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Another Diskbalancer instance is running ? - Target "
 operator|+
