@@ -878,32 +878,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|checkIfAMResourceUsageOverLimit (Resource usage, Resource maxAMResource)
-specifier|public
-name|boolean
-name|checkIfAMResourceUsageOverLimit
-parameter_list|(
-name|Resource
-name|usage
-parameter_list|,
-name|Resource
-name|maxAMResource
-parameter_list|)
-block|{
-return|return
-name|usage
-operator|.
-name|getMemorySize
-argument_list|()
-operator|>
-name|maxAMResource
-operator|.
-name|getMemorySize
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getApplicableDepth ()
 specifier|public
 name|byte

@@ -681,20 +681,6 @@ name|Resource
 name|fairShare
 parameter_list|)
 function_decl|;
-comment|/**    * Check if a leaf queue's AM resource usage over its limit under this policy    *    * @param usage {@link Resource} the resource used by application masters    * @param maxAMResource {@link Resource} the maximum allowed resource for    *                                      application masters    * @return true if AM resource usage is over the limit    */
-DECL|method|checkIfAMResourceUsageOverLimit ( Resource usage, Resource maxAMResource)
-specifier|public
-specifier|abstract
-name|boolean
-name|checkIfAMResourceUsageOverLimit
-parameter_list|(
-name|Resource
-name|usage
-parameter_list|,
-name|Resource
-name|maxAMResource
-parameter_list|)
-function_decl|;
 comment|/**    * Get headroom by calculating the min of<code>clusterAvailable</code> and    * (<code>queueFairShare</code> -<code>queueUsage</code>) resources that are    * applicable to this policy. For eg if only memory then leave other    * resources such as CPU to same as clusterAvailable.    *    * @param queueFairShare fairshare in the queue    * @param queueUsage resources used in the queue    * @param maxAvailable available resource in cluster for this queue    * @return calculated headroom    */
 DECL|method|getHeadroom (Resource queueFairShare, Resource queueUsage, Resource maxAvailable)
 specifier|public
