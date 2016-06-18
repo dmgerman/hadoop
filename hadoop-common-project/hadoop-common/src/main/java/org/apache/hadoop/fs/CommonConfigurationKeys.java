@@ -688,6 +688,15 @@ specifier|public
 specifier|static
 specifier|final
 name|String
+DECL|field|HADOOP_SECURITY_SERVICE_AUTHORIZATION_RECONFIGURATION
+name|HADOOP_SECURITY_SERVICE_AUTHORIZATION_RECONFIGURATION
+init|=
+literal|"security.reconfiguration.protocol.acl"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
 DECL|field|SECURITY_HA_SERVICE_PROTOCOL_ACL
 name|SECURITY_HA_SERVICE_PROTOCOL_ACL
 init|=

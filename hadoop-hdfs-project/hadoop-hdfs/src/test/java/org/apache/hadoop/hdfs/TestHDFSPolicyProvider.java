@@ -74,7 +74,41 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Sets
 import|;
 end_import
 
@@ -89,22 +123,6 @@ operator|.
 name|lang
 operator|.
 name|ClassUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|ReconfigurationProtocol
 import|;
 end_import
 
@@ -314,7 +332,7 @@ decl_stmt|;
 DECL|field|policyProviderProtocols
 specifier|private
 specifier|static
-name|List
+name|Set
 argument_list|<
 name|Class
 argument_list|<
@@ -425,7 +443,7 @@ decl_stmt|;
 name|policyProviderProtocols
 operator|=
 operator|new
-name|ArrayList
+name|HashSet
 argument_list|<>
 argument_list|(
 name|services
@@ -452,15 +470,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|Collections
-operator|.
-name|sort
-argument_list|(
-name|policyProviderProtocols
-argument_list|,
-name|CLASS_NAME_COMPARATOR
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|TestHDFSPolicyProvider (Class<?> rpcServerClass)
 specifier|public
@@ -559,7 +568,7 @@ argument_list|(
 name|rpcServerClass
 argument_list|)
 decl_stmt|;
-name|List
+name|Set
 argument_list|<
 name|Class
 argument_list|<
@@ -569,7 +578,7 @@ argument_list|>
 name|serverProtocols
 init|=
 operator|new
-name|ArrayList
+name|HashSet
 argument_list|<>
 argument_list|(
 name|ifaces
@@ -600,9 +609,6 @@ argument_list|>
 operator|)
 name|obj
 decl_stmt|;
-comment|// ReconfigurationProtocol is not covered in HDFSPolicyProvider
-comment|// currently, so we have a special case to skip it.  This needs follow-up
-comment|// investigation.
 if|if
 condition|(
 name|iface
@@ -614,12 +620,6 @@ name|endsWith
 argument_list|(
 literal|"Protocol"
 argument_list|)
-operator|&&
-name|iface
-operator|!=
-name|ReconfigurationProtocol
-operator|.
-name|class
 condition|)
 block|{
 name|serverProtocols
@@ -631,15 +631,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|Collections
-operator|.
-name|sort
-argument_list|(
-name|serverProtocols
-argument_list|,
-name|CLASS_NAME_COMPARATOR
-argument_list|)
-expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -673,17 +664,34 @@ name|isEmpty
 argument_list|()
 argument_list|)
 expr_stmt|;
+specifier|final
+name|Set
+argument_list|<
+name|Class
+argument_list|<
+name|?
+argument_list|>
+argument_list|>
+name|differenceSet
+init|=
+name|Sets
+operator|.
+name|difference
+argument_list|(
+name|serverProtocols
+argument_list|,
+name|policyProviderProtocols
+argument_list|)
+decl_stmt|;
 name|assertTrue
 argument_list|(
 name|String
 operator|.
 name|format
 argument_list|(
-literal|"Expected all protocols for server %s to be defined in "
+literal|"Following protocols for server %s are not defined in "
 operator|+
-literal|"%s.  Server contains protocols %s.  Policy provider contains "
-operator|+
-literal|"protocols %s."
+literal|"%s: %s"
 argument_list|,
 name|rpcServerClass
 operator|.
@@ -697,17 +705,21 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-name|serverProtocols
-argument_list|,
-name|policyProviderProtocols
-argument_list|)
-argument_list|,
-name|policyProviderProtocols
+name|Arrays
 operator|.
-name|containsAll
+name|toString
 argument_list|(
-name|serverProtocols
+name|differenceSet
+operator|.
+name|toArray
+argument_list|()
 argument_list|)
+argument_list|)
+argument_list|,
+name|differenceSet
+operator|.
+name|isEmpty
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
