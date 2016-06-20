@@ -655,7 +655,7 @@ operator|.
 name|getKey
 argument_list|()
 operator|.
-name|name
+name|getSymbol
 argument_list|()
 argument_list|,
 name|entry
@@ -758,7 +758,7 @@ name|fromSymbol
 argument_list|(
 name|key
 argument_list|)
-operator|==
+operator|!=
 literal|null
 return|;
 block|}
