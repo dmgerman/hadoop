@@ -38,6 +38,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -288,6 +302,17 @@ name|String
 name|key
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|key
+operator|!=
+literal|null
+argument_list|,
+literal|"The stat key of FileSystemStorageStatistics should not be null!"
+argument_list|)
+expr_stmt|;
 switch|switch
 condition|(
 name|key
@@ -415,6 +440,31 @@ block|{
 name|super
 argument_list|(
 name|name
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|stats
+operator|!=
+literal|null
+argument_list|,
+literal|"FileSystem.Statistics can not be null"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|stats
+operator|.
+name|getData
+argument_list|()
+operator|!=
+literal|null
+argument_list|,
+literal|"FileSystem.Statistics can not have null data"
 argument_list|)
 expr_stmt|;
 name|this
