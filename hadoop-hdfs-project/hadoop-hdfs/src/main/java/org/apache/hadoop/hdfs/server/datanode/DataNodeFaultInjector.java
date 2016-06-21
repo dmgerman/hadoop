@@ -158,6 +158,14 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{ }
+DECL|method|failMirrorConnection ()
+specifier|public
+name|void
+name|failMirrorConnection
+parameter_list|()
+throws|throws
+name|IOException
+block|{ }
 block|}
 end_class
 

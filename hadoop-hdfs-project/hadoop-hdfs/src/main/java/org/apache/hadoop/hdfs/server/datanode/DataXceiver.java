@@ -4617,6 +4617,14 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|DataNodeFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|failMirrorConnection
+argument_list|()
+expr_stmt|;
 name|int
 name|timeoutValue
 init|=
