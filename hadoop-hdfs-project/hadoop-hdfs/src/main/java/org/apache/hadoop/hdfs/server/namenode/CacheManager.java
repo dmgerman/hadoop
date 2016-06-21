@@ -2198,14 +2198,10 @@ operator|.
 name|getBytesNeeded
 argument_list|()
 operator|+
-operator|(
 name|stats
 operator|.
 name|getBytesNeeded
 argument_list|()
-operator|*
-name|replication
-operator|)
 operator|>
 name|pool
 operator|.
@@ -2451,6 +2447,8 @@ operator|.
 name|setBytesNeeded
 argument_list|(
 name|requestedBytes
+operator|*
+name|replication
 argument_list|)
 operator|.
 name|setFilesCached
