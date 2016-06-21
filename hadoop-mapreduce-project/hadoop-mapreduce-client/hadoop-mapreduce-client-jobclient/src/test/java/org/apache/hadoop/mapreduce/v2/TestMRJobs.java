@@ -6132,13 +6132,16 @@ name|map
 return|;
 block|}
 block|}
-DECL|method|_testDistributedCache (String jobJarPath)
-specifier|public
+DECL|method|testDistributedCache (String jobJarPath, boolean withWildcard)
+specifier|private
 name|void
-name|_testDistributedCache
+name|testDistributedCache
 parameter_list|(
 name|String
 name|jobJarPath
+parameter_list|,
+name|boolean
+name|withWildcard
 parameter_list|)
 throws|throws
 name|Exception
@@ -6186,7 +6189,7 @@ argument_list|,
 literal|"x"
 argument_list|)
 decl_stmt|;
-comment|// Create two jars with a single file inside them.
+comment|// Create three jars with a single file inside them.
 name|Path
 name|second
 init|=
@@ -6257,6 +6260,68 @@ argument_list|(
 name|jobJarPath
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|withWildcard
+condition|)
+block|{
+comment|// If testing with wildcards, upload the DistributedCacheChecker into HDFS
+comment|// and add the directory as a wildcard.
+name|Path
+name|libs
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"testLibs"
+argument_list|)
+decl_stmt|;
+name|Path
+name|wildcard
+init|=
+name|remoteFs
+operator|.
+name|makeQualified
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|libs
+argument_list|,
+literal|"*"
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|remoteFs
+operator|.
+name|mkdirs
+argument_list|(
+name|libs
+argument_list|)
+expr_stmt|;
+name|remoteFs
+operator|.
+name|copyFromLocalFile
+argument_list|(
+name|third
+argument_list|,
+name|libs
+argument_list|)
+expr_stmt|;
+name|job
+operator|.
+name|addCacheFile
+argument_list|(
+name|wildcard
+operator|.
+name|toUri
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Otherwise add the DistributedCacheChecker directly to the classpath.
 comment|// Because the job jar is a "dummy" jar, we need to include the jar with
 comment|// DistributedCacheChecker or it won't be able to find it
 name|Path
@@ -6279,22 +6344,15 @@ name|job
 operator|.
 name|addFileToClassPath
 argument_list|(
-name|distributedCacheCheckerJar
+name|localFs
 operator|.
 name|makeQualified
 argument_list|(
-name|localFs
-operator|.
-name|getUri
-argument_list|()
-argument_list|,
 name|distributedCacheCheckerJar
-operator|.
-name|getParent
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|job
 operator|.
 name|setMapperClass
@@ -6464,18 +6522,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|600000
-argument_list|)
-DECL|method|testDistributedCache ()
-specifier|public
+DECL|method|testDistributedCache (boolean withWildcard)
+specifier|private
 name|void
 name|testDistributedCache
-parameter_list|()
+parameter_list|(
+name|boolean
+name|withWildcard
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -6494,7 +6548,7 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|_testDistributedCache
+name|testDistributedCache
 argument_list|(
 name|localJobJarPath
 operator|.
@@ -6503,6 +6557,8 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|withWildcard
 argument_list|)
 expr_stmt|;
 comment|// Test with a remote (hdfs://) Job Jar
@@ -6567,7 +6623,7 @@ name|delete
 argument_list|()
 expr_stmt|;
 block|}
-name|_testDistributedCache
+name|testDistributedCache
 argument_list|(
 name|remoteJobJarPath
 operator|.
@@ -6576,6 +6632,50 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|withWildcard
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
+DECL|method|testDistributedCache ()
+specifier|public
+name|void
+name|testDistributedCache
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testDistributedCache
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
+DECL|method|testDistributedCacheWithWildcards ()
+specifier|public
+name|void
+name|testDistributedCacheWithWildcards
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testDistributedCache
+argument_list|(
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

@@ -202,7 +202,7 @@ operator|)
 literal|0700
 argument_list|)
 decl_stmt|;
-comment|// rwx--------
+comment|// rwx------
 comment|//job files are world-wide readable and owner writable
 DECL|field|JOB_FILE_PERMISSION
 specifier|final

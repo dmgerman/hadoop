@@ -32,16 +32,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|FileOutputStream
 import|;
 end_import
@@ -53,16 +43,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URL
 import|;
 end_import
 
@@ -142,6 +122,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|Job
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|MRConfig
 import|;
 end_import
@@ -185,26 +179,6 @@ operator|.
 name|util
 operator|.
 name|ToolRunner
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
 import|;
 end_import
 
@@ -259,25 +233,7 @@ literal|"/tmp"
 argument_list|)
 argument_list|)
 decl_stmt|;
-annotation|@
-name|Before
-DECL|method|configure ()
-specifier|public
-name|void
-name|configure
-parameter_list|()
-throws|throws
-name|Exception
-block|{   }
-annotation|@
-name|After
-DECL|method|cleanup ()
-specifier|public
-name|void
-name|cleanup
-parameter_list|()
-block|{   }
-comment|/**    * test the local job submission options of    * -jt local -libjars.    * @throws IOException    */
+comment|/**    * Test the local job submission options of -jt local -libjars.    *    * @throws IOException thrown if there's an error creating the JAR file    */
 annotation|@
 name|Test
 DECL|method|testLocalJobLibjarsOption ()
@@ -285,6 +241,47 @@ specifier|public
 name|void
 name|testLocalJobLibjarsOption
 parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|testLocalJobLibjarsOption
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|Job
+operator|.
+name|USE_WILDCARD_FOR_LIBJARS
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|testLocalJobLibjarsOption
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test the local job submission options of -jt local -libjars.    *    * @param conf the {@link Configuration} to use    * @throws IOException thrown if there's an error creating the JAR file    */
+DECL|method|testLocalJobLibjarsOption (Configuration conf)
+specifier|private
+name|void
+name|testLocalJobLibjarsOption
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -301,13 +298,6 @@ argument_list|,
 literal|"test.jar"
 argument_list|)
 argument_list|)
-decl_stmt|;
-name|Configuration
-name|conf
-init|=
-operator|new
-name|Configuration
-argument_list|()
 decl_stmt|;
 name|conf
 operator|.

@@ -1169,7 +1169,7 @@ name|statCache
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns a boolean to denote whether a cache file is visible to all(public)    * or not    * @param conf    * @param uri    * @return true if the path in the uri is visible to all, false otherwise    * @throws IOException    */
+comment|/**    * Returns a boolean to denote whether a cache file is visible to all(public)    * or not    * @param conf the configuration    * @param uri the URI to test    * @return true if the path in the uri is visible to all, false otherwise    * @throws IOException thrown if a file system operation fails    */
 DECL|method|isPublic (Configuration conf, URI uri, Map<URI, FileStatus> statCache)
 specifier|static
 name|boolean
@@ -1192,6 +1192,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|boolean
+name|isPublic
+init|=
+literal|true
+decl_stmt|;
 name|FileSystem
 name|fs
 init|=
@@ -1225,10 +1230,27 @@ argument_list|(
 name|current
 argument_list|)
 expr_stmt|;
-comment|//the leaf level file should be readable by others
+comment|// If we're looking at a wildcarded path, we only need to check that the
+comment|// ancestors allow execution.  Otherwise, look for read permissions in
+comment|// addition to the ancestors' permissions.
 if|if
 condition|(
 operator|!
+name|current
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|DistributedCache
+operator|.
+name|WILDCARD
+argument_list|)
+condition|)
+block|{
+name|isPublic
+operator|=
 name|checkPermissionOfOther
 argument_list|(
 name|fs
@@ -1241,13 +1263,11 @@ name|READ
 argument_list|,
 name|statCache
 argument_list|)
-condition|)
-block|{
-return|return
-literal|false
-return|;
+expr_stmt|;
 block|}
 return|return
+name|isPublic
+operator|&&
 name|ancestorsHaveExecutePermissions
 argument_list|(
 name|fs
@@ -1429,6 +1449,45 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Path
+name|path
+init|=
+operator|new
+name|Path
+argument_list|(
+name|uri
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|path
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|DistributedCache
+operator|.
+name|WILDCARD
+argument_list|)
+condition|)
+block|{
+name|path
+operator|=
+name|path
+operator|.
+name|getParent
+argument_list|()
+expr_stmt|;
+name|uri
+operator|=
+name|path
+operator|.
+name|toUri
+argument_list|()
+expr_stmt|;
+block|}
 name|FileStatus
 name|stat
 init|=
@@ -1452,11 +1511,7 @@ name|fs
 operator|.
 name|getFileStatus
 argument_list|(
-operator|new
-name|Path
-argument_list|(
-name|uri
-argument_list|)
+name|path
 argument_list|)
 expr_stmt|;
 name|statCache
