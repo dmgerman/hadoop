@@ -141,7 +141,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Names a file or directory in a {@link FileSystem}.  * Path strings use slash as the directory separator.  */
+comment|/**  * Names a file or directory in a {@link FileSystem}.  * Path strings use slash as the directory separator.  */
 end_comment
 
 begin_class
@@ -162,7 +162,7 @@ name|Path
 implements|implements
 name|Comparable
 block|{
-comment|/** The directory separator, a slash. */
+comment|/**    * The directory separator, a slash.    */
 DECL|field|SEPARATOR
 specifier|public
 specifier|static
@@ -172,6 +172,7 @@ name|SEPARATOR
 init|=
 literal|"/"
 decl_stmt|;
+comment|/**    * The directory separator, a slash, as a character.    */
 DECL|field|SEPARATOR_CHAR
 specifier|public
 specifier|static
@@ -181,6 +182,7 @@ name|SEPARATOR_CHAR
 init|=
 literal|'/'
 decl_stmt|;
+comment|/**    * The current directory, ".".    */
 DECL|field|CUR_DIR
 specifier|public
 specifier|static
@@ -190,6 +192,7 @@ name|CUR_DIR
 init|=
 literal|"."
 decl_stmt|;
+comment|/**    * Whether the current host is a Windows machine.    */
 DECL|field|WINDOWS
 specifier|public
 specifier|static
@@ -210,26 +213,12 @@ literal|"Windows"
 argument_list|)
 decl_stmt|;
 comment|/**    *  Pre-compiled regular expressions to detect path formats.    */
-DECL|field|hasUriScheme
+DECL|field|HAS_DRIVE_LETTER_SPECIFIER
 specifier|private
 specifier|static
 specifier|final
 name|Pattern
-name|hasUriScheme
-init|=
-name|Pattern
-operator|.
-name|compile
-argument_list|(
-literal|"^[a-zA-Z][a-zA-Z0-9+-.]+:"
-argument_list|)
-decl_stmt|;
-DECL|field|hasDriveLetterSpecifier
-specifier|private
-specifier|static
-specifier|final
-name|Pattern
-name|hasDriveLetterSpecifier
+name|HAS_DRIVE_LETTER_SPECIFIER
 init|=
 name|Pattern
 operator|.
@@ -244,7 +233,7 @@ name|URI
 name|uri
 decl_stmt|;
 comment|// a hierarchical uri
-comment|/**    * Pathnames with scheme and relative path are illegal.    */
+comment|/**    * Test whether this Path uses a scheme and is relative.    * Pathnames with scheme and relative path are illegal.    */
 DECL|method|checkNotSchemeWithRelative ()
 name|void
 name|checkNotSchemeWithRelative
@@ -301,6 +290,7 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Return a version of the given Path without the scheme information.    *    * @param path the source Path    * @return a copy of this Path without the scheme information    */
 DECL|method|getPathWithoutSchemeAndAuthority (Path path)
 specifier|public
 specifier|static
@@ -343,7 +333,7 @@ return|return
 name|newPath
 return|;
 block|}
-comment|/** Resolve a child path against a parent path. */
+comment|/**    * Create a new Path based on the child path resolved against the parent path.    *    * @param parent the parent path    * @param child the child path    */
 DECL|method|Path (String parent, String child)
 specifier|public
 name|Path
@@ -371,7 +361,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Resolve a child path against a parent path. */
+comment|/**    * Create a new Path based on the child path resolved against the parent path.    *    * @param parent the parent path    * @param child the child path    */
 DECL|method|Path (Path parent, String child)
 specifier|public
 name|Path
@@ -395,7 +385,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Resolve a child path against a parent path. */
+comment|/**    * Create a new Path based on the child path resolved against the parent path.    *    * @param parent the parent path    * @param child the child path    */
 DECL|method|Path (String parent, Path child)
 specifier|public
 name|Path
@@ -419,7 +409,7 @@ name|child
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Resolve a child path against a parent path. */
+comment|/**    * Create a new Path based on the child path resolved against the parent path.    *    * @param parent the parent path    * @param child the child path    */
 DECL|method|Path (Path parent, Path child)
 specifier|public
 name|Path
@@ -595,7 +585,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** Construct a path from a String.  Path strings are URIs, but with    * unescaped elements and some additional normalization. */
+comment|/**    * Construct a path from a String.  Path strings are URIs, but with    * unescaped elements and some additional normalization.    *    * @param pathString the path string    */
 DECL|method|Path (String pathString)
 specifier|public
 name|Path
@@ -818,7 +808,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Construct a path from a URI    */
+comment|/**    * Construct a path from a URI    *    * @param aUri the source URI    */
 DECL|method|Path (URI aUri)
 specifier|public
 name|Path
@@ -835,7 +825,7 @@ name|normalize
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** Construct a Path from components. */
+comment|/**    * Construct a Path from components.    *    * @param scheme the scheme    * @param authority the authority    * @param path the path    */
 DECL|method|Path (String scheme, String authority, String path)
 specifier|public
 name|Path
@@ -978,7 +968,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Merge 2 paths such that the second path is appended relative to the first.    * The returned path has the scheme and authority of the first path.  On    * Windows, the drive specification in the second path is discarded.    *     * @param path1 Path first path    * @param path2 Path second path, to be appended relative to path1    * @return Path merged path    */
+comment|/**    * Merge 2 paths such that the second path is appended relative to the first.    * The returned path has the scheme and authority of the first path.  On    * Windows, the drive specification in the second path is discarded.    *     * @param path1 the first path    * @param path2 the second path, to be appended relative to path1    * @return the merged path    */
 DECL|method|mergePaths (Path path1, Path path2)
 specifier|public
 specifier|static
@@ -1050,7 +1040,7 @@ name|path2Str
 argument_list|)
 return|;
 block|}
-comment|/**    * Normalize a path string to use non-duplicated forward slashes as    * the path separator and remove any trailing path separators.    * @param scheme Supplies the URI scheme. Used to deduce whether we    *               should replace backslashes or not.    * @param path Supplies the scheme-specific part    * @return Normalized path string.    */
+comment|/**    * Normalize a path string to use non-duplicated forward slashes as    * the path separator and remove any trailing path separators.    *    * @param scheme the URI scheme. Used to deduce whether we    * should replace backslashes or not    * @param path the scheme-specific part    * @return the normalized path string    */
 DECL|method|normalizePath (String scheme, String path)
 specifier|private
 specifier|static
@@ -1191,7 +1181,7 @@ return|return
 operator|(
 name|WINDOWS
 operator|&&
-name|hasDriveLetterSpecifier
+name|HAS_DRIVE_LETTER_SPECIFIER
 operator|.
 name|matcher
 argument_list|(
@@ -1243,7 +1233,7 @@ literal|0
 return|;
 block|}
 block|}
-comment|/**    * Determine whether a given path string represents an absolute path on    * Windows. e.g. "C:/a/b" is an absolute path. "C:a/b" is not.    *    * @param pathString Supplies the path string to evaluate.    * @param slashed true if the given path is prefixed with "/".    * @return true if the supplied path looks like an absolute path with a Windows    * drive-specifier.    */
+comment|/**    * Determine whether a given path string represents an absolute path on    * Windows. e.g. "C:/a/b" is an absolute path. "C:a/b" is not.    *    * @param pathString the path string to evaluate    * @param slashed true if the given path is prefixed with "/"    * @return true if the supplied path looks like an absolute path with a Windows    * drive-specifier    */
 DECL|method|isWindowsAbsolutePath (final String pathString, final boolean slashed)
 specifier|public
 specifier|static
@@ -1304,7 +1294,7 @@ operator|)
 operator|)
 return|;
 block|}
-comment|/** Convert this to a URI. */
+comment|/**    * Convert this Path to a URI.    *    * @return this Path as a URI    */
 DECL|method|toUri ()
 specifier|public
 name|URI
@@ -1315,7 +1305,7 @@ return|return
 name|uri
 return|;
 block|}
-comment|/** Return the FileSystem that owns this Path. */
+comment|/**    * Return the FileSystem that owns this Path.    *    * @param conf the configuration to use when resolving the FileSystem    * @return the FileSystem that owns this Path    * @throws java.io.IOException thrown if there's an issue resolving the    * FileSystem    */
 DECL|method|getFileSystem (Configuration conf)
 specifier|public
 name|FileSystem
@@ -1341,7 +1331,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Is an absolute path (ie a slash relative path part)    *  AND  a scheme is null AND  authority is null.    */
+comment|/**    * Returns true if the path component (i.e. directory) of this URI is    * absolute<strong>and</strong> the scheme is null,<b>and</b> the authority    * is null.    *    * @return whether the path is absolute and the URI has no scheme nor    * authority parts    */
 DECL|method|isAbsoluteAndSchemeAuthorityNull ()
 specifier|public
 name|boolean
@@ -1369,7 +1359,7 @@ literal|null
 operator|)
 return|;
 block|}
-comment|/**    *  True if the path component (i.e. directory) of this URI is absolute.    */
+comment|/**    * Returns true if the path component (i.e. directory) of this URI is    * absolute.    *    * @return whether this URI's path is absolute    */
 DECL|method|isUriPathAbsolute ()
 specifier|public
 name|boolean
@@ -1401,7 +1391,7 @@ name|start
 argument_list|)
 return|;
 block|}
-comment|/** True if the path is not a relative path and starts with root. */
+comment|/**    * Returns true if the path component (i.e. directory) of this URI is    * absolute.  This method is a wrapper for {@link #isUriPathAbsolute()}.    *    * @return whether this URI's path is absolute    */
 DECL|method|isAbsolute ()
 specifier|public
 name|boolean
@@ -1413,7 +1403,7 @@ name|isUriPathAbsolute
 argument_list|()
 return|;
 block|}
-comment|/**    * @return true if and only if this path represents the root of a file system    */
+comment|/**    * Returns true if and only if this path represents the root of a file system.    *    * @return true if and only if this path represents the root of a file system    */
 DECL|method|isRoot ()
 specifier|public
 name|boolean
@@ -1427,7 +1417,7 @@ operator|==
 literal|null
 return|;
 block|}
-comment|/** Returns the final component of this path.*/
+comment|/**    * Returns the final component of this path.    *    * @return the final component of this path    */
 DECL|method|getName ()
 specifier|public
 name|String
@@ -1463,7 +1453,7 @@ literal|1
 argument_list|)
 return|;
 block|}
-comment|/** Returns the parent of a path or null if at root. */
+comment|/**    * Returns the parent of a path or null if at root.    * @return the parent of a path or null if at root    */
 DECL|method|getParent ()
 specifier|public
 name|Path
@@ -1585,7 +1575,7 @@ name|parent
 argument_list|)
 return|;
 block|}
-comment|/** Adds a suffix to the final name in the path.*/
+comment|/**    * Adds a suffix to the final name in the path.    *    * @param suffix the suffix to add    * @return a new path with the suffix added    */
 DECL|method|suffix (String suffix)
 specifier|public
 name|Path
@@ -1879,7 +1869,7 @@ name|uri
 argument_list|)
 return|;
 block|}
-comment|/** Return the number of elements in this path. */
+comment|/**    * Returns the number of elements in this path.    * @return the number of elements in this path    */
 DECL|method|depth ()
 specifier|public
 name|int
@@ -1952,7 +1942,7 @@ return|return
 name|depth
 return|;
 block|}
-comment|/**    *  Returns a qualified path object.    *      *  Deprecated - use {@link #makeQualified(URI, Path)}    */
+comment|/**    * Returns a qualified path object for the {@link FileSystem}'s working    * directory.    *      * @param fs the target FileSystem    * @return a qualified path object for the FileSystem's working directory    * @deprecated use {@link #makeQualified(URI, Path)}    */
 annotation|@
 name|Deprecated
 DECL|method|makeQualified (FileSystem fs)
@@ -1979,7 +1969,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/** Returns a qualified path object. */
+comment|/**    * Returns a qualified path object.    *    * @param defaultUri if this path is missing the scheme or authority    * components, borrow them from this URI    * @param workingDir if this path isn't absolute, treat it as relative to this    * working directory    * @return this path if it contains a scheme and authority and is absolute, or    * a new path that includes a path and authority and is fully qualified    */
 annotation|@
 name|InterfaceAudience
 operator|.
