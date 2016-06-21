@@ -2388,24 +2388,6 @@ name|ByteString
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|resource
-operator|.
-name|Resources
-import|;
-end_import
-
 begin_class
 DECL|class|ContainerManagerImpl
 specifier|public
@@ -3380,8 +3362,6 @@ name|p
 operator|.
 name|getUser
 argument_list|()
-argument_list|,
-literal|null
 argument_list|,
 name|appId
 argument_list|,
