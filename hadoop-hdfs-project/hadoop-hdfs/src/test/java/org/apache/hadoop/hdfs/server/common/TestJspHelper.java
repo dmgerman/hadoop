@@ -728,6 +728,14 @@ argument_list|)
 expr_stmt|;
 comment|//Test attribute name.node.address
 comment|//Set the nnaddr url parameter to null.
+name|token
+operator|.
+name|decodeIdentifier
+argument_list|()
+operator|.
+name|clearCache
+argument_list|()
+expr_stmt|;
 name|when
 argument_list|(
 name|request
@@ -790,7 +798,53 @@ operator|+
 literal|":2222"
 argument_list|)
 expr_stmt|;
-comment|//Test service already set in the token
+comment|//Test service already set in the token and DN doesn't change service
+comment|//when it doesn't know the NN service addr
+name|userText
+operator|=
+operator|new
+name|Text
+argument_list|(
+name|user
+operator|+
+literal|"2"
+argument_list|)
+expr_stmt|;
+name|dtId
+operator|=
+operator|new
+name|DelegationTokenIdentifier
+argument_list|(
+name|userText
+argument_list|,
+name|userText
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|token
+operator|=
+operator|new
+name|Token
+argument_list|<
+name|DelegationTokenIdentifier
+argument_list|>
+argument_list|(
+name|dtId
+argument_list|,
+operator|new
+name|DummySecretManager
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|token
 operator|.
 name|setService

@@ -378,6 +378,36 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|clearCache ()
+name|void
+name|clearCache
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|params
+operator|.
+name|delegationToken
+argument_list|()
+operator|.
+name|decodeIdentifier
+argument_list|()
+operator|.
+name|clearCache
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|ugi ()
 name|UserGroupInformation
 name|ugi

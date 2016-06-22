@@ -909,6 +909,11 @@ argument_list|,
 name|url22
 argument_list|)
 expr_stmt|;
+name|ugiProvider2
+operator|.
+name|clearCache
+argument_list|()
+expr_stmt|;
 name|awaitCacheEmptyDueToExpiration
 argument_list|()
 expr_stmt|;
