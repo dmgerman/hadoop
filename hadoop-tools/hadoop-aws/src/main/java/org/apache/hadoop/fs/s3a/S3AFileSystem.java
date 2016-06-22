@@ -136,6 +136,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Objects
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|TimeUnit
@@ -840,22 +850,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|lang
-operator|.
-name|StringUtils
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|fs
@@ -1048,6 +1042,11 @@ DECL|field|readAhead
 specifier|private
 name|long
 name|readAhead
+decl_stmt|;
+DECL|field|inputPolicy
+specifier|private
+name|S3AInputPolicy
+name|inputPolicy
 decl_stmt|;
 comment|// The maximum number of entries that can be deleted in any call to s3
 DECL|field|MAX_ENTRIES_TO_DELETE
@@ -1599,6 +1598,22 @@ operator|.
 name|getTrimmed
 argument_list|(
 name|SERVER_SIDE_ENCRYPTION_ALGORITHM
+argument_list|)
+expr_stmt|;
+name|inputPolicy
+operator|=
+name|S3AInputPolicy
+operator|.
+name|getPolicy
+argument_list|(
+name|conf
+operator|.
+name|getTrimmed
+argument_list|(
+name|INPUT_FADVISE
+argument_list|,
+name|INPUT_FADV_NORMAL
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2799,6 +2814,60 @@ return|return
 name|s3
 return|;
 block|}
+comment|/**    * Get the input policy for this FS instance.    * @return the input policy    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|getInputPolicy ()
+specifier|public
+name|S3AInputPolicy
+name|getInputPolicy
+parameter_list|()
+block|{
+return|return
+name|inputPolicy
+return|;
+block|}
+comment|/**    * Change the input policy for this FS.    * @param inputPolicy new policy    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|setInputPolicy (S3AInputPolicy inputPolicy)
+specifier|public
+name|void
+name|setInputPolicy
+parameter_list|(
+name|S3AInputPolicy
+name|inputPolicy
+parameter_list|)
+block|{
+name|Objects
+operator|.
+name|requireNonNull
+argument_list|(
+name|inputPolicy
+argument_list|,
+literal|"Null inputStrategy"
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Setting input strategy: {}"
+argument_list|,
+name|inputPolicy
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|inputPolicy
+operator|=
+name|inputPolicy
+expr_stmt|;
+block|}
 DECL|method|S3AFileSystem ()
 specifier|public
 name|S3AFileSystem
@@ -3031,6 +3100,8 @@ argument_list|,
 name|instrumentation
 argument_list|,
 name|readAhead
+argument_list|,
+name|inputPolicy
 argument_list|)
 argument_list|)
 return|;
@@ -7678,6 +7749,18 @@ operator|.
 name|append
 argument_list|(
 name|workingDir
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", inputPolicy="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|inputPolicy
 argument_list|)
 expr_stmt|;
 name|sb

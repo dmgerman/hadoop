@@ -386,6 +386,24 @@ argument_list|(
 name|FSExceptionMessages
 operator|.
 name|TOO_MANY_BYTES_FOR_DEST_BUFFER
+operator|+
+literal|": request length="
+operator|+
+name|length
+operator|+
+literal|", with offset ="
+operator|+
+name|offset
+operator|+
+literal|"; buffer capacity ="
+operator|+
+operator|(
+name|buffer
+operator|.
+name|length
+operator|-
+name|offset
+operator|)
 argument_list|)
 throw|;
 block|}

@@ -323,15 +323,6 @@ name|S3AFileSystem
 operator|.
 name|LOG
 decl_stmt|;
-DECL|field|CLOSE_THRESHOLD
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|CLOSE_THRESHOLD
-init|=
-literal|4096
-decl_stmt|;
 DECL|field|streamStatistics
 specifier|private
 specifier|final
@@ -340,10 +331,20 @@ operator|.
 name|InputStreamStatistics
 name|streamStatistics
 decl_stmt|;
+DECL|field|inputPolicy
+specifier|private
+specifier|final
+name|S3AInputPolicy
+name|inputPolicy
+decl_stmt|;
 DECL|field|readahead
 specifier|private
 name|long
 name|readahead
+init|=
+name|Constants
+operator|.
+name|DEFAULT_READAHEAD_RANGE
 decl_stmt|;
 comment|/**    * This is the actual position within the object, used by    * lazy seek to decide whether to seek on the next read or not.    */
 DECL|field|nextReadPos
@@ -351,13 +352,19 @@ specifier|private
 name|long
 name|nextReadPos
 decl_stmt|;
-comment|/* Amount of data desired from the request */
-DECL|field|requestedStreamLen
+comment|/**    * The end of the content range of the last request.    * This is an absolute value of the range, not a length field.    */
+DECL|field|contentRangeFinish
 specifier|private
 name|long
-name|requestedStreamLen
+name|contentRangeFinish
 decl_stmt|;
-DECL|method|S3AInputStream (String bucket, String key, long contentLength, AmazonS3Client client, FileSystem.Statistics stats, S3AInstrumentation instrumentation, long readahead)
+comment|/**    * The start of the content range of the last request.    */
+DECL|field|contentRangeStart
+specifier|private
+name|long
+name|contentRangeStart
+decl_stmt|;
+DECL|method|S3AInputStream (String bucket, String key, long contentLength, AmazonS3Client client, FileSystem.Statistics stats, S3AInstrumentation instrumentation, long readahead, S3AInputPolicy inputPolicy)
 specifier|public
 name|S3AInputStream
 parameter_list|(
@@ -383,6 +390,9 @@ name|instrumentation
 parameter_list|,
 name|long
 name|readahead
+parameter_list|,
+name|S3AInputPolicy
+name|inputPolicy
 parameter_list|)
 block|{
 name|Preconditions
@@ -479,6 +489,12 @@ operator|.
 name|newInputStreamStatistics
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|inputPolicy
+operator|=
+name|inputPolicy
+expr_stmt|;
 name|setReadahead
 argument_list|(
 name|readahead
@@ -504,12 +520,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|requestedStreamLen
-operator|=
-name|this
-operator|.
-name|contentLength
-expr_stmt|;
 if|if
 condition|(
 name|wrappedStream
@@ -525,17 +535,32 @@ name|reason
 operator|+
 literal|")"
 argument_list|,
-name|requestedStreamLen
+name|contentRangeFinish
 argument_list|)
 expr_stmt|;
 block|}
+name|contentRangeFinish
+operator|=
+name|calculateRequestLimit
+argument_list|(
+name|inputPolicy
+argument_list|,
+name|targetPos
+argument_list|,
+name|length
+argument_list|,
+name|contentLength
+argument_list|,
+name|readahead
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"reopen({}) for {} at targetPos={}, length={},"
+literal|"reopen({}) for {} range[{}-{}], length={},"
 operator|+
-literal|" requestedStreamLen={}, streamPosition={}, nextReadPosition={}"
+literal|" streamPosition={}, nextReadPosition={}"
 argument_list|,
 name|uri
 argument_list|,
@@ -543,9 +568,9 @@ name|reason
 argument_list|,
 name|targetPos
 argument_list|,
-name|length
+name|contentRangeFinish
 argument_list|,
-name|requestedStreamLen
+name|length
 argument_list|,
 name|pos
 argument_list|,
@@ -574,7 +599,7 @@ name|withRange
 argument_list|(
 name|targetPos
 argument_list|,
-name|requestedStreamLen
+name|contentRangeFinish
 argument_list|)
 decl_stmt|;
 name|wrappedStream
@@ -588,6 +613,10 @@ argument_list|)
 operator|.
 name|getObjectContent
 argument_list|()
+expr_stmt|;
+name|contentRangeStart
+operator|=
+name|targetPos
 expr_stmt|;
 if|if
 condition|(
@@ -822,23 +851,37 @@ decl_stmt|;
 comment|// work out how much is actually left in the stream
 comment|// then choose whichever comes first: the range or the EOF
 name|long
+name|remainingInCurrentRequest
+init|=
+name|remainingInCurrentRequest
+argument_list|()
+decl_stmt|;
+name|long
 name|forwardSeekLimit
 init|=
 name|Math
 operator|.
 name|min
 argument_list|(
-name|remaining
-argument_list|()
+name|remainingInCurrentRequest
 argument_list|,
 name|forwardSeekRange
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+name|boolean
+name|skipForward
+init|=
+name|remainingInCurrentRequest
+operator|>
+literal|0
+operator|&&
 name|diff
 operator|<=
 name|forwardSeekLimit
+decl_stmt|;
+if|if
+condition|(
+name|skipForward
 condition|)
 block|{
 comment|// the forward seek range is within the limits
@@ -937,20 +980,19 @@ block|}
 else|else
 block|{
 comment|// targetPos == pos
-comment|// this should never happen as the caller filters it out.
-comment|// Retained just in case
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Ignoring seek {} to {} as target position == current"
-argument_list|,
-name|uri
-argument_list|,
-name|targetPos
-argument_list|)
-expr_stmt|;
+if|if
+condition|(
+name|remainingInCurrentRequest
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+comment|// if there is data left in the stream, keep going
+return|return;
 block|}
+block|}
+comment|// if the code reaches here, the stream needs to be reopened.
 comment|// close the stream; if read the object will be opened at the new pos
 name|closeStream
 argument_list|(
@@ -958,7 +1000,7 @@ literal|"seekInStream()"
 argument_list|,
 name|this
 operator|.
-name|requestedStreamLen
+name|contentRangeFinish
 argument_list|)
 expr_stmt|;
 name|pos
@@ -999,15 +1041,6 @@ throws|throws
 name|IOException
 block|{
 comment|//For lazy seek
-if|if
-condition|(
-name|targetPos
-operator|!=
-name|this
-operator|.
-name|pos
-condition|)
-block|{
 name|seekInStream
 argument_list|(
 name|targetPos
@@ -1015,7 +1048,6 @@ argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
-block|}
 comment|//re-open at specific location if needed
 if|if
 condition|(
@@ -1243,7 +1275,7 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * {@inheritDoc}    *    * This updates the statistics on read operations started and whether    * or not the read operation "completed", that is: returned the exact    * number of bytes requested.    * @throws EOFException if there is no more data    * @throws IOException if there are other problems    */
+comment|/**    * {@inheritDoc}    *    * This updates the statistics on read operations started and whether    * or not the read operation "completed", that is: returned the exact    * number of bytes requested.    * @throws IOException if there are other problems    */
 annotation|@
 name|Override
 DECL|method|read (byte[] buf, int off, int len)
@@ -1366,9 +1398,18 @@ name|EOFException
 name|e
 parameter_list|)
 block|{
-throw|throw
+name|onReadFailure
+argument_list|(
 name|e
-throw|;
+argument_list|,
+name|len
+argument_list|)
+expr_stmt|;
+comment|// the base implementation swallows EOFs.
+return|return
+operator|-
+literal|1
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -1491,7 +1532,7 @@ literal|"close() operation"
 argument_list|,
 name|this
 operator|.
-name|contentLength
+name|contentRangeFinish
 argument_list|)
 expr_stmt|;
 comment|// this is actually a no-op
@@ -1532,14 +1573,20 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// if the amount of data remaining in the current request is greater
+comment|// than the readahead value: abort.
+name|long
+name|remaining
+init|=
+name|remainingInCurrentRequest
+argument_list|()
+decl_stmt|;
 name|boolean
 name|shouldAbort
 init|=
-name|length
-operator|-
-name|pos
+name|remaining
 operator|>
-name|CLOSE_THRESHOLD
+name|readahead
 decl_stmt|;
 if|if
 condition|(
@@ -1561,6 +1608,8 @@ operator|.
 name|streamClose
 argument_list|(
 literal|false
+argument_list|,
+name|remaining
 argument_list|)
 expr_stmt|;
 block|}
@@ -1607,6 +1656,8 @@ operator|.
 name|streamClose
 argument_list|(
 literal|true
+argument_list|,
+name|remaining
 argument_list|)
 expr_stmt|;
 block|}
@@ -1616,7 +1667,7 @@ name|debug
 argument_list|(
 literal|"Stream {} {}: {}; streamPos={}, nextReadPos={},"
 operator|+
-literal|" length={}"
+literal|" request range {}-{} length={}"
 argument_list|,
 name|uri
 argument_list|,
@@ -1633,6 +1684,10 @@ argument_list|,
 name|pos
 argument_list|,
 name|nextReadPos
+argument_list|,
+name|contentRangeStart
+argument_list|,
+name|contentRangeFinish
 argument_list|,
 name|length
 argument_list|)
@@ -1660,7 +1715,7 @@ expr_stmt|;
 name|long
 name|remaining
 init|=
-name|remaining
+name|remainingInFile
 argument_list|()
 decl_stmt|;
 if|if
@@ -1686,10 +1741,19 @@ name|remaining
 return|;
 block|}
 comment|/**    * Bytes left in stream.    * @return how many bytes are left to read    */
-DECL|method|remaining ()
-specifier|protected
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|remainingInFile ()
+specifier|public
+specifier|synchronized
 name|long
-name|remaining
+name|remainingInFile
 parameter_list|()
 block|{
 return|return
@@ -1700,6 +1764,70 @@ operator|-
 name|this
 operator|.
 name|pos
+return|;
+block|}
+comment|/**    * Bytes left in the current request.    * Only valid if there is an active request.    * @return how many bytes are left to read in the current GET.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|remainingInCurrentRequest ()
+specifier|public
+specifier|synchronized
+name|long
+name|remainingInCurrentRequest
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|contentRangeFinish
+operator|-
+name|this
+operator|.
+name|pos
+return|;
+block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|getContentRangeFinish ()
+specifier|public
+specifier|synchronized
+name|long
+name|getContentRangeFinish
+parameter_list|()
+block|{
+return|return
+name|contentRangeFinish
+return|;
+block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|getContentRangeStart ()
+specifier|public
+specifier|synchronized
+name|long
+name|getContentRangeStart
+parameter_list|()
+block|{
+return|return
+name|contentRangeStart
 return|;
 block|}
 annotation|@
@@ -1727,6 +1855,19 @@ name|String
 name|toString
 parameter_list|()
 block|{
+name|String
+name|s
+init|=
+name|streamStatistics
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 specifier|final
 name|StringBuilder
 name|sb
@@ -1742,6 +1883,36 @@ operator|.
 name|append
 argument_list|(
 name|uri
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" wrappedStream="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|wrappedStream
+operator|!=
+literal|null
+condition|?
+literal|"open"
+else|:
+literal|"closed"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" read policy="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|inputPolicy
 argument_list|)
 expr_stmt|;
 name|sb
@@ -1784,15 +1955,49 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|" "
+literal|" contentRangeStart="
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|streamStatistics
+name|contentRangeStart
+argument_list|)
+expr_stmt|;
+name|sb
 operator|.
-name|toString
+name|append
+argument_list|(
+literal|" contentRangeFinish="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|contentRangeFinish
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" remainingInCurrentRequest="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|remainingInCurrentRequest
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|'\n'
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|s
 argument_list|)
 expr_stmt|;
 name|sb
@@ -1808,6 +2013,7 @@ operator|.
 name|toString
 argument_list|()
 return|;
+block|}
 block|}
 comment|/**    * Subclass {@code readFully()} operation which only seeks at the start    * of the series of operations; seeking back at the end.    *    * This is significantly higher performance if multiple read attempts are    * needed to fetch the data, as it does not break the HTTP connection.    *    * To maintain thread safety requirements, this operation is synchronized    * for the duration of the sequence.    * {@inheritDoc}    *    */
 annotation|@
@@ -1969,6 +2175,7 @@ annotation|@
 name|Override
 DECL|method|setReadahead (Long readahead)
 specifier|public
+specifier|synchronized
 name|void
 name|setReadahead
 parameter_list|(
@@ -2016,12 +2223,104 @@ block|}
 comment|/**    * Get the current readahead value.    * @return a non-negative readahead value    */
 DECL|method|getReadahead ()
 specifier|public
+specifier|synchronized
 name|long
 name|getReadahead
 parameter_list|()
 block|{
 return|return
 name|readahead
+return|;
+block|}
+comment|/**    * Calculate the limit for a get request, based on input policy    * and state of object.    * @param inputPolicy input policy    * @param targetPos position of the read    * @param length length of bytes requested; if less than zero "unknown"    * @param contentLength total length of file    * @param readahead current readahead value    * @return the absolute value of the limit of the request.    */
+DECL|method|calculateRequestLimit ( S3AInputPolicy inputPolicy, long targetPos, long length, long contentLength, long readahead)
+specifier|static
+name|long
+name|calculateRequestLimit
+parameter_list|(
+name|S3AInputPolicy
+name|inputPolicy
+parameter_list|,
+name|long
+name|targetPos
+parameter_list|,
+name|long
+name|length
+parameter_list|,
+name|long
+name|contentLength
+parameter_list|,
+name|long
+name|readahead
+parameter_list|)
+block|{
+name|long
+name|rangeLimit
+decl_stmt|;
+switch|switch
+condition|(
+name|inputPolicy
+condition|)
+block|{
+case|case
+name|Random
+case|:
+comment|// positioned.
+comment|// read either this block, or the here + readahead value.
+name|rangeLimit
+operator|=
+operator|(
+name|length
+operator|<
+literal|0
+operator|)
+condition|?
+name|contentLength
+else|:
+name|targetPos
+operator|+
+name|Math
+operator|.
+name|max
+argument_list|(
+name|readahead
+argument_list|,
+name|length
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|Sequential
+case|:
+comment|// sequential: plan for reading the entire object.
+name|rangeLimit
+operator|=
+name|contentLength
+expr_stmt|;
+break|break;
+case|case
+name|Normal
+case|:
+default|default:
+name|rangeLimit
+operator|=
+name|contentLength
+expr_stmt|;
+block|}
+comment|// cannot read past the end of the object
+name|rangeLimit
+operator|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|contentLength
+argument_list|,
+name|rangeLimit
+argument_list|)
+expr_stmt|;
+return|return
+name|rangeLimit
 return|;
 block|}
 block|}

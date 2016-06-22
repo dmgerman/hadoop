@@ -47,7 +47,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * All the constants used with the {@link S3AFileSystem}.  */
+comment|/**  * All the constants used with the {@link S3AFileSystem}.  *  * Some of the strings are marked as {@code Unstable}. This means  * that they may be unsupported in future; at which point they will be marked  * as deprecated and simply ignored.  */
 end_comment
 
 begin_class
@@ -610,6 +610,62 @@ init|=
 literal|64
 operator|*
 literal|1024
+decl_stmt|;
+comment|/**    * Which input strategy to use for buffering, seeking and similar when    * reading data.    * Value: {@value}    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|INPUT_FADVISE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|INPUT_FADVISE
+init|=
+literal|"fs.s3a.experimental.input.fadvise"
+decl_stmt|;
+comment|/**    * General input. Some seeks, some reads.    * Value: {@value}    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|INPUT_FADV_NORMAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|INPUT_FADV_NORMAL
+init|=
+literal|"normal"
+decl_stmt|;
+comment|/**    * Optimized for sequential access.    * Value: {@value}    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|INPUT_FADV_SEQUENTIAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|INPUT_FADV_SEQUENTIAL
+init|=
+literal|"sequential"
+decl_stmt|;
+comment|/**    * Optimized purely for random seek+read/positionedRead operations;    * The performance of sequential IO may be reduced in exchange for    * more efficient {@code seek()} operations.    * Value: {@value}    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|INPUT_FADV_RANDOM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|INPUT_FADV_RANDOM
+init|=
+literal|"random"
 decl_stmt|;
 block|}
 end_class

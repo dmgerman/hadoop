@@ -231,7 +231,7 @@ block|,
 DECL|enumConstant|STREAM_ABORTED
 name|STREAM_ABORTED
 argument_list|(
-literal|"streamAborted"
+literal|"stream_aborted"
 argument_list|,
 literal|"Count of times the TCP stream was aborted"
 argument_list|)
@@ -239,7 +239,7 @@ block|,
 DECL|enumConstant|STREAM_BACKWARD_SEEK_OPERATIONS
 name|STREAM_BACKWARD_SEEK_OPERATIONS
 argument_list|(
-literal|"streamBackwardSeekOperations"
+literal|"stream_backward_seek_pperations"
 argument_list|,
 literal|"Number of executed seek operations which went backwards in a stream"
 argument_list|)
@@ -255,7 +255,7 @@ block|,
 DECL|enumConstant|STREAM_CLOSE_OPERATIONS
 name|STREAM_CLOSE_OPERATIONS
 argument_list|(
-literal|"streamCloseOperations"
+literal|"stream_close_operations"
 argument_list|,
 literal|"Total count of times an attempt to close a data stream was made"
 argument_list|)
@@ -263,7 +263,7 @@ block|,
 DECL|enumConstant|STREAM_FORWARD_SEEK_OPERATIONS
 name|STREAM_FORWARD_SEEK_OPERATIONS
 argument_list|(
-literal|"streamForwardSeekOperations"
+literal|"stream_forward_seek_operations"
 argument_list|,
 literal|"Number of executed seek operations which went forward in a stream"
 argument_list|)
@@ -279,7 +279,7 @@ block|,
 DECL|enumConstant|STREAM_READ_EXCEPTIONS
 name|STREAM_READ_EXCEPTIONS
 argument_list|(
-literal|"streamReadExceptions"
+literal|"stream_read_exceptions"
 argument_list|,
 literal|"Number of seek operations invoked on input streams"
 argument_list|)
@@ -287,15 +287,15 @@ block|,
 DECL|enumConstant|STREAM_READ_FULLY_OPERATIONS
 name|STREAM_READ_FULLY_OPERATIONS
 argument_list|(
-literal|"streamReadFullyOperations"
+literal|"stream_read_fully_operations"
 argument_list|,
-literal|"count of readFully() operations in streams"
+literal|"Count of readFully() operations in streams"
 argument_list|)
 block|,
 DECL|enumConstant|STREAM_READ_OPERATIONS
 name|STREAM_READ_OPERATIONS
 argument_list|(
-literal|"streamReadOperations"
+literal|"stream_read_operations"
 argument_list|,
 literal|"Count of read() operations in streams"
 argument_list|)
@@ -303,7 +303,7 @@ block|,
 DECL|enumConstant|STREAM_READ_OPERATIONS_INCOMPLETE
 name|STREAM_READ_OPERATIONS_INCOMPLETE
 argument_list|(
-literal|"streamReadOperationsIncomplete"
+literal|"stream_read_operations_incomplete"
 argument_list|,
 literal|"Count of incomplete read() operations in streams"
 argument_list|)
@@ -311,7 +311,7 @@ block|,
 DECL|enumConstant|STREAM_SEEK_BYTES_BACKWARDS
 name|STREAM_SEEK_BYTES_BACKWARDS
 argument_list|(
-literal|"streamBytesBackwardsOnSeek"
+literal|"stream_bytes_backwards_on_seek"
 argument_list|,
 literal|"Count of bytes moved backwards during seek operations"
 argument_list|)
@@ -319,7 +319,7 @@ block|,
 DECL|enumConstant|STREAM_SEEK_BYTES_READ
 name|STREAM_SEEK_BYTES_READ
 argument_list|(
-literal|"streamBytesRead"
+literal|"stream_bytes_read"
 argument_list|,
 literal|"Count of bytes read during seek() in stream operations"
 argument_list|)
@@ -327,7 +327,7 @@ block|,
 DECL|enumConstant|STREAM_SEEK_BYTES_SKIPPED
 name|STREAM_SEEK_BYTES_SKIPPED
 argument_list|(
-literal|"streamBytesSkippedOnSeek"
+literal|"stream_bytes_skipped_on_seek"
 argument_list|,
 literal|"Count of bytes skipped during forward seek operation"
 argument_list|)
@@ -335,9 +335,25 @@ block|,
 DECL|enumConstant|STREAM_SEEK_OPERATIONS
 name|STREAM_SEEK_OPERATIONS
 argument_list|(
-literal|"streamSeekOperations"
+literal|"stream_seek_operations"
 argument_list|,
-literal|"Number of read exceptions caught and attempted to recovered from"
+literal|"Number of seek operations during stream IO."
+argument_list|)
+block|,
+DECL|enumConstant|STREAM_CLOSE_BYTES_READ
+name|STREAM_CLOSE_BYTES_READ
+argument_list|(
+literal|"stream_bytes_read_in_close"
+argument_list|,
+literal|"Count of bytes read when closing streams during seek operations."
+argument_list|)
+block|,
+DECL|enumConstant|STREAM_ABORT_BYTES_DISCARDED
+name|STREAM_ABORT_BYTES_DISCARDED
+argument_list|(
+literal|"stream_bytes_discarded_in_abort"
+argument_list|,
+literal|"Count of bytes discarded by aborting the stream"
 argument_list|)
 block|;
 DECL|method|Statistic (String symbol, String description)

@@ -367,6 +367,18 @@ specifier|final
 name|MutableCounterLong
 name|streamReadsIncomplete
 decl_stmt|;
+DECL|field|streamBytesReadInClose
+specifier|private
+specifier|final
+name|MutableCounterLong
+name|streamBytesReadInClose
+decl_stmt|;
+DECL|field|streamBytesDiscardedInAbort
+specifier|private
+specifier|final
+name|MutableCounterLong
+name|streamBytesDiscardedInAbort
+decl_stmt|;
 DECL|field|ignoredErrors
 specifier|private
 specifier|final
@@ -423,7 +435,9 @@ init|=
 operator|new
 name|HashMap
 argument_list|<>
-argument_list|()
+argument_list|(
+literal|30
+argument_list|)
 decl_stmt|;
 DECL|field|COUNTERS_TO_CREATE
 specifier|private
@@ -618,6 +632,20 @@ operator|=
 name|streamCounter
 argument_list|(
 name|STREAM_READ_OPERATIONS_INCOMPLETE
+argument_list|)
+expr_stmt|;
+name|streamBytesReadInClose
+operator|=
+name|streamCounter
+argument_list|(
+name|STREAM_CLOSE_BYTES_READ
+argument_list|)
+expr_stmt|;
+name|streamBytesDiscardedInAbort
+operator|=
+name|streamCounter
+argument_list|(
+name|STREAM_ABORT_BYTES_DISCARDED
 argument_list|)
 expr_stmt|;
 name|numberOfFilesCreated
@@ -1388,6 +1416,24 @@ operator|.
 name|readsIncomplete
 argument_list|)
 expr_stmt|;
+name|streamBytesReadInClose
+operator|.
+name|incr
+argument_list|(
+name|statistics
+operator|.
+name|bytesReadInClose
+argument_list|)
+expr_stmt|;
+name|streamBytesDiscardedInAbort
+operator|.
+name|incr
+argument_list|(
+name|statistics
+operator|.
+name|bytesDiscardedInAbort
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Statistics updated by an input stream during its actual operation.    * These counters not thread-safe and are for use in a single instance    * of a stream.    */
 annotation|@
@@ -1476,6 +1522,16 @@ specifier|public
 name|long
 name|readsIncomplete
 decl_stmt|;
+DECL|field|bytesReadInClose
+specifier|public
+name|long
+name|bytesReadInClose
+decl_stmt|;
+DECL|field|bytesDiscardedInAbort
+specifier|public
+name|long
+name|bytesDiscardedInAbort
+decl_stmt|;
 DECL|method|InputStreamStatistics ()
 specifier|private
 name|InputStreamStatistics
@@ -1542,14 +1598,17 @@ name|openOperations
 operator|++
 expr_stmt|;
 block|}
-comment|/**      * The inner stream was closed.      * @param abortedConnection flag to indicate the stream was aborted,      * rather than closed cleanly      */
-DECL|method|streamClose (boolean abortedConnection)
+comment|/**      * The inner stream was closed.      * @param abortedConnection flag to indicate the stream was aborted,      * rather than closed cleanly      * @param remainingInCurrentRequest the number of bytes remaining in      * the current request.      */
+DECL|method|streamClose (boolean abortedConnection, long remainingInCurrentRequest)
 specifier|public
 name|void
 name|streamClose
 parameter_list|(
 name|boolean
 name|abortedConnection
+parameter_list|,
+name|long
+name|remainingInCurrentRequest
 parameter_list|)
 block|{
 name|closeOperations
@@ -1565,11 +1624,19 @@ operator|.
 name|aborted
 operator|++
 expr_stmt|;
+name|bytesDiscardedInAbort
+operator|+=
+name|remainingInCurrentRequest
+expr_stmt|;
 block|}
 else|else
 block|{
 name|closed
 operator|++
+expr_stmt|;
+name|bytesReadInClose
+operator|+=
+name|remainingInCurrentRequest
 expr_stmt|;
 block|}
 block|}
@@ -1884,6 +1951,30 @@ operator|.
 name|append
 argument_list|(
 name|readsIncomplete
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", BytesReadInClose="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|bytesReadInClose
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", BytesDiscardedInAbort="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|bytesDiscardedInAbort
 argument_list|)
 expr_stmt|;
 name|sb
