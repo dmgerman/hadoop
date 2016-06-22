@@ -434,8 +434,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/* test basic report */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testReportSimple ()
-specifier|private
+specifier|public
 name|void
 name|testReportSimple
 parameter_list|()
@@ -450,7 +458,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"hdfs diskbalancer -uri %s -report"
+literal|"hdfs diskbalancer -fs %s -report"
 argument_list|,
 name|clusterJson
 operator|.
@@ -579,8 +587,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/* test less than 64 DataNode(s) as total, e.g., -report -top 32 */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testReportLessThanTotal ()
-specifier|private
+specifier|public
 name|void
 name|testReportLessThanTotal
 parameter_list|()
@@ -595,7 +611,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"hdfs diskbalancer -uri %s -report -top 32"
+literal|"hdfs diskbalancer -fs %s -report -top 32"
 argument_list|,
 name|clusterJson
 operator|.
@@ -693,8 +709,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/* test more than 64 DataNode(s) as total, e.g., -report -top 128 */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testReportMoreThanTotal ()
-specifier|private
+specifier|public
 name|void
 name|testReportMoreThanTotal
 parameter_list|()
@@ -709,7 +733,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"hdfs diskbalancer -uri %s -report -top 128"
+literal|"hdfs diskbalancer -fs %s -report -top 128"
 argument_list|,
 name|clusterJson
 operator|.
@@ -807,8 +831,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/* test invalid top limit, e.g., -report -top xx */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testReportInvalidTopLimit ()
-specifier|private
+specifier|public
 name|void
 name|testReportInvalidTopLimit
 parameter_list|()
@@ -823,7 +855,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"hdfs diskbalancer -uri %s -report -top xx"
+literal|"hdfs diskbalancer -fs %s -report -top xx"
 argument_list|,
 name|clusterJson
 operator|.
@@ -952,8 +984,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/* test -report -node DataNodeID */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testReportNode ()
-specifier|private
+specifier|public
 name|void
 name|testReportNode
 parameter_list|()
@@ -968,7 +1008,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"hdfs diskbalancer -uri %s -report -node "
+literal|"hdfs diskbalancer -fs %s -report -node "
 operator|+
 literal|"a87654a9-54c7-4693-8dd9-c9c7021dc340"
 argument_list|,
@@ -1082,17 +1122,17 @@ argument_list|)
 argument_list|,
 name|containsString
 argument_list|(
-literal|"/tmp/disk/xx3j3ph3zd"
+literal|"/tmp/disk/KmHefYNURo"
 argument_list|)
 argument_list|,
 name|containsString
 argument_list|(
-literal|"0.72 used: 289544224916/400000000000"
+literal|"0.20 used: 39160240782/200000000000"
 argument_list|)
 argument_list|,
 name|containsString
 argument_list|(
-literal|"0.28 free: 110455775084/400000000000"
+literal|"0.80 free: 160839759218/200000000000"
 argument_list|)
 argument_list|)
 argument_list|)
@@ -1154,22 +1194,17 @@ argument_list|)
 argument_list|,
 name|containsString
 argument_list|(
-literal|"DISK"
+literal|"/tmp/disk/xx3j3ph3zd"
 argument_list|)
 argument_list|,
 name|containsString
 argument_list|(
-literal|"/tmp/disk/KmHefYNURo"
+literal|"0.72 used: 289544224916/400000000000"
 argument_list|)
 argument_list|,
 name|containsString
 argument_list|(
-literal|"0.20 used: 39160240782/200000000000"
-argument_list|)
-argument_list|,
-name|containsString
-argument_list|(
-literal|"0.80 free: 160839759218/200000000000"
+literal|"0.28 free: 110455775084/400000000000"
 argument_list|)
 argument_list|)
 argument_list|)
@@ -1195,17 +1230,17 @@ argument_list|)
 argument_list|,
 name|containsString
 argument_list|(
-literal|"/tmp/disk/MXRyYsCz3U"
+literal|"/tmp/disk/BoBlQFxhfw"
 argument_list|)
 argument_list|,
 name|containsString
 argument_list|(
-literal|"0.55 used: 438102096853/800000000000"
+literal|"0.60 used: 477590453390/800000000000"
 argument_list|)
 argument_list|,
 name|containsString
 argument_list|(
-literal|"0.45 free: 361897903147/800000000000"
+literal|"0.40 free: 322409546610/800000000000"
 argument_list|)
 argument_list|)
 argument_list|)
@@ -1267,17 +1302,17 @@ argument_list|)
 argument_list|,
 name|containsString
 argument_list|(
-literal|"/tmp/disk/BoBlQFxhfw"
+literal|"/tmp/disk/MXRyYsCz3U"
 argument_list|)
 argument_list|,
 name|containsString
 argument_list|(
-literal|"0.60 used: 477590453390/800000000000"
+literal|"0.55 used: 438102096853/800000000000"
 argument_list|)
 argument_list|,
 name|containsString
 argument_list|(
-literal|"0.40 free: 322409546610/800000000000"
+literal|"0.45 free: 361897903147/800000000000"
 argument_list|)
 argument_list|)
 argument_list|)
@@ -1399,37 +1434,6 @@ name|timeout
 operator|=
 literal|60000
 argument_list|)
-DECL|method|testReportCommmand ()
-specifier|public
-name|void
-name|testReportCommmand
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-comment|/* test basic report */
-name|testReportSimple
-argument_list|()
-expr_stmt|;
-comment|/* test less than 64 DataNode(s) as total, e.g., -report -top 32 */
-name|testReportLessThanTotal
-argument_list|()
-expr_stmt|;
-comment|/* test more than 64 DataNode(s) as total, e.g., -report -top 128 */
-name|testReportMoreThanTotal
-argument_list|()
-expr_stmt|;
-comment|/* test invalid top limit, e.g., -report -top xx */
-name|testReportInvalidTopLimit
-argument_list|()
-expr_stmt|;
-comment|/* test -report -node DataNodeID */
-name|testReportNode
-argument_list|()
-expr_stmt|;
-block|}
-annotation|@
-name|Test
 DECL|method|testReadClusterFromJson ()
 specifier|public
 name|void

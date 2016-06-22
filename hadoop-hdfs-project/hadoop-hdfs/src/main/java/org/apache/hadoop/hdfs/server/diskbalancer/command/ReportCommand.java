@@ -48,6 +48,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|ListIterator
 import|;
 end_import
@@ -211,6 +221,20 @@ operator|.
 name|base
 operator|.
 name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Lists
 import|;
 end_import
 
@@ -769,6 +793,17 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|volumeList
+init|=
+name|Lists
+operator|.
+name|newArrayList
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|DiskBalancerVolumeSet
@@ -794,9 +829,9 @@ name|getVolumes
 argument_list|()
 control|)
 block|{
-name|result
+name|volumeList
 operator|.
-name|appendln
+name|add
 argument_list|(
 name|String
 operator|.
@@ -884,6 +919,33 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|Collections
+operator|.
+name|sort
+argument_list|(
+name|volumeList
+argument_list|)
+expr_stmt|;
+name|result
+operator|.
+name|appendln
+argument_list|(
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+name|volumeList
+operator|.
+name|toArray
+argument_list|()
+argument_list|,
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -913,11 +975,11 @@ name|footer
 init|=
 literal|". E.g.:\n"
 operator|+
-literal|"hdfs diskbalancer -uri http://namenode.uri -report\n"
+literal|"hdfs diskbalancer -fs http://namenode.uri -report\n"
 operator|+
-literal|"hdfs diskbalancer -uri http://namenode.uri -report -top 5\n"
+literal|"hdfs diskbalancer -fs http://namenode.uri -report -top 5\n"
 operator|+
-literal|"hdfs diskbalancer -uri http://namenode.uri -report "
+literal|"hdfs diskbalancer -fs http://namenode.uri -report "
 operator|+
 literal|"-node {DataNodeID | IP | Hostname}"
 decl_stmt|;
@@ -932,7 +994,7 @@ name|helpFormatter
 operator|.
 name|printHelp
 argument_list|(
-literal|"hdfs diskbalancer -uri http://namenode.uri "
+literal|"hdfs diskbalancer -fs http://namenode.uri "
 operator|+
 literal|"-report [options]"
 argument_list|,
