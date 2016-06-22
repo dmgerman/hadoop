@@ -817,7 +817,7 @@ name|JobHistoryEventUtils
 operator|.
 name|countersToTimelineMetric
 argument_list|(
-name|getMapCounters
+name|getTotalCounters
 argument_list|()
 argument_list|,
 name|finishTime
@@ -831,10 +831,12 @@ name|JobHistoryEventUtils
 operator|.
 name|countersToTimelineMetric
 argument_list|(
-name|getReduceCounters
+name|getMapCounters
 argument_list|()
 argument_list|,
 name|finishTime
+argument_list|,
+literal|"MAP:"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -846,10 +848,12 @@ name|JobHistoryEventUtils
 operator|.
 name|countersToTimelineMetric
 argument_list|(
-name|getTotalCounters
+name|getReduceCounters
 argument_list|()
 argument_list|,
 name|finishTime
+argument_list|,
+literal|"REDUCE:"
 argument_list|)
 argument_list|)
 expr_stmt|;
