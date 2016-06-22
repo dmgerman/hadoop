@@ -392,6 +392,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|ErasureCodingPolicyManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|INode
 import|;
 end_import
@@ -2432,6 +2450,16 @@ name|isStriped
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|ErasureCodingPolicyManager
+operator|.
+name|checkStoragePolicySuitableForECStripedMode
+argument_list|(
+name|policyId
+argument_list|)
+condition|)
+block|{
 name|types
 operator|=
 name|policy
@@ -2449,6 +2477,31 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Currently we support only limited policies (HOT, COLD, ALLSSD)
+comment|// for EC striped mode files.
+comment|// Mover tool will ignore to move the blocks if the storage policy
+comment|// is not in EC Striped mode supported policies
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The storage policy "
+operator|+
+name|policy
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" is not suitable for Striped EC files. "
+operator|+
+literal|"So, Ignoring to move the blocks"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 block|}
 specifier|final
 name|StorageTypeDiff

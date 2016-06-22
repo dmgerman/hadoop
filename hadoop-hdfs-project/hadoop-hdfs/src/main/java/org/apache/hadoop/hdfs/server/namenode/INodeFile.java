@@ -266,6 +266,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|QuotaExceededException
 import|;
 end_import
@@ -2494,7 +2510,8 @@ operator|==
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 condition|)
 block|{
-return|return
+name|id
+operator|=
 name|this
 operator|.
 name|getParent
@@ -2511,7 +2528,61 @@ name|getStoragePolicyID
 argument_list|()
 else|:
 name|id
-return|;
+expr_stmt|;
+block|}
+comment|// For Striped EC files, we support only suitable policies. Current
+comment|// supported policies are HOT, COLD, ALL_SSD.
+comment|// If the file was set with any other policies, then we just treat policy as
+comment|// BLOCK_STORAGE_POLICY_ID_UNSPECIFIED.
+if|if
+condition|(
+name|isStriped
+argument_list|()
+operator|&&
+name|id
+operator|!=
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
+operator|&&
+operator|!
+name|ErasureCodingPolicyManager
+operator|.
+name|checkStoragePolicySuitableForECStripedMode
+argument_list|(
+name|id
+argument_list|)
+condition|)
+block|{
+name|id
+operator|=
+name|HdfsConstants
+operator|.
+name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"The current effective storage policy id : "
+operator|+
+name|id
+operator|+
+literal|" is not suitable for striped mode EC file : "
+operator|+
+name|getName
+argument_list|()
+operator|+
+literal|". So, just returning unspecified storage policy id"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 return|return
 name|id
