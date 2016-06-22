@@ -124,18 +124,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|CopyOnWriteArrayList
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -782,6 +770,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// Setting long interval to avoid periodic publishing.
+comment|// We manually publish metrics by MeticsSystem#publishMetricsNow here.
 name|ConfigBuilder
 name|cb
 init|=
@@ -791,9 +781,9 @@ argument_list|()
 operator|.
 name|add
 argument_list|(
-literal|"default.period"
+literal|"*.period"
 argument_list|,
-literal|10
+literal|120
 argument_list|)
 operator|.
 name|add
@@ -1299,7 +1289,7 @@ block|{
 name|capture
 operator|=
 operator|new
-name|CopyOnWriteArrayList
+name|ArrayList
 argument_list|<
 name|byte
 index|[]
@@ -1312,6 +1302,7 @@ annotation|@
 name|Override
 DECL|method|send (DatagramPacket p)
 specifier|public
+specifier|synchronized
 name|void
 name|send
 parameter_list|(
@@ -1369,6 +1360,7 @@ expr_stmt|;
 block|}
 comment|/**      * @return the captured byte arrays      */
 DECL|method|getCapturedSend ()
+specifier|synchronized
 name|List
 argument_list|<
 name|byte
