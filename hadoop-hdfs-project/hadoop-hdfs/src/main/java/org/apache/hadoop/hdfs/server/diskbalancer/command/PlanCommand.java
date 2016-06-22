@@ -399,20 +399,13 @@ name|addValidCommandParameters
 argument_list|(
 name|DiskBalancer
 operator|.
-name|NAMENODEURI
-argument_list|,
-literal|"Name Node URI or "
-operator|+
-literal|"file URI for cluster"
-argument_list|)
-expr_stmt|;
-name|addValidCommandParameters
-argument_list|(
-name|DiskBalancer
-operator|.
 name|OUTFILE
 argument_list|,
-literal|"Output file"
+literal|"Output directory in "
+operator|+
+literal|"HDFS. The generated plan will be written to a file in this "
+operator|+
+literal|"directory."
 argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
@@ -1062,7 +1055,7 @@ block|{
 name|String
 name|header
 init|=
-literal|"creates a plan that describes how much data should be "
+literal|"Creates a plan that describes how much data should be "
 operator|+
 literal|"moved between disks.\n\n"
 decl_stmt|;
@@ -1086,7 +1079,7 @@ name|helpFormatter
 operator|.
 name|printHelp
 argument_list|(
-literal|"hdfs diskbalancer -uri<namenode> -plan "
+literal|"hdfs diskbalancer -plan "
 operator|+
 literal|"<hostname> [options]"
 argument_list|,

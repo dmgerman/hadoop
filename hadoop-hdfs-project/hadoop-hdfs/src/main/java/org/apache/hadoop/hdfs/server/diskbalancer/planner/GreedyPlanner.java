@@ -289,11 +289,16 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Starting plan for Node : "
-operator|+
+literal|"Starting plan for Node : {}:{}"
+argument_list|,
 name|node
 operator|.
-name|getDataNodeUUID
+name|getDataNodeName
+argument_list|()
+argument_list|,
+name|node
+operator|.
+name|getDataNodePort
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -349,11 +354,16 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Compute Plan for Node : %s took %d ms "
+literal|"Compute Plan for Node : %s:%d took %d ms "
 argument_list|,
 name|node
 operator|.
-name|getDataNodeUUID
+name|getDataNodeName
+argument_list|()
+argument_list|,
+name|node
+operator|.
+name|getDataNodePort
 argument_list|()
 argument_list|,
 name|endTime

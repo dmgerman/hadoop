@@ -406,27 +406,7 @@ name|java
 operator|.
 name|net
 operator|.
-name|MalformedURLException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
 name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URISyntaxException
 import|;
 end_import
 
@@ -697,7 +677,7 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|/**    * Executes the Client Calls.    *    * @param cmd - CommandLine    * @throws IOException    * @throws URISyntaxException    */
+comment|/**    * Executes the Client Calls.    *    * @param cmd - CommandLine    * @throws Exception    */
 DECL|method|execute (CommandLine cmd)
 specifier|public
 specifier|abstract
@@ -718,50 +698,6 @@ name|void
 name|printHelp
 parameter_list|()
 function_decl|;
-comment|/**    * verifies user provided URL.    *    * @param uri - UrlString    * @return URL    * @throws URISyntaxException, MalformedURLException    */
-DECL|method|verifyURI (String uri)
-specifier|protected
-name|URI
-name|verifyURI
-parameter_list|(
-name|String
-name|uri
-parameter_list|)
-throws|throws
-name|URISyntaxException
-throws|,
-name|MalformedURLException
-block|{
-if|if
-condition|(
-operator|(
-name|uri
-operator|==
-literal|null
-operator|)
-operator|||
-name|uri
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|MalformedURLException
-argument_list|(
-literal|"A valid URI is needed to execute this command."
-argument_list|)
-throw|;
-block|}
-return|return
-operator|new
-name|URI
-argument_list|(
-name|uri
-argument_list|)
-return|;
-block|}
 comment|/**    * Process the URI and return the cluster with nodes setup. This is used in    * all commands.    *    * @param cmd - CommandLine    * @return DiskBalancerCluster    * @throws Exception    */
 DECL|method|readClusterInfo (CommandLine cmd)
 specifier|protected
@@ -781,36 +717,14 @@ argument_list|(
 name|cmd
 argument_list|)
 expr_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|cmd
-operator|.
-name|getOptionValue
-argument_list|(
-name|DiskBalancer
-operator|.
-name|NAMENODEURI
-argument_list|)
-operator|!=
-literal|null
-argument_list|,
-literal|"Required argument missing : uri"
-argument_list|)
-expr_stmt|;
 name|setClusterURI
 argument_list|(
-name|verifyURI
-argument_list|(
-name|cmd
+name|FileSystem
 operator|.
-name|getOptionValue
+name|getDefaultUri
 argument_list|(
-name|DiskBalancer
-operator|.
-name|NAMENODEURI
-argument_list|)
+name|getConf
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1640,7 +1554,7 @@ name|getCurrentUser
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns a file created in the cluster.    *    * @param fileName - fileName to open.    * @return OutputStream.    */
+comment|/**    * Returns a file created in the cluster.    *    * @param fileName - fileName to open.    * @return OutputStream.    * @throws IOException    */
 DECL|method|create (String fileName)
 specifier|protected
 name|FSDataOutputStream

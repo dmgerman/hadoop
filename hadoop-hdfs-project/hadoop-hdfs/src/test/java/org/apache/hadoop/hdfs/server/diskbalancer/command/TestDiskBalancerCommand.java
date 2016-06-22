@@ -168,6 +168,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -454,17 +468,7 @@ specifier|final
 name|String
 name|cmdLine
 init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"hdfs diskbalancer -fs %s -report"
-argument_list|,
-name|clusterJson
-operator|.
-name|toString
-argument_list|()
-argument_list|)
+literal|"hdfs diskbalancer -report"
 decl_stmt|;
 specifier|final
 name|List
@@ -607,17 +611,7 @@ specifier|final
 name|String
 name|cmdLine
 init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"hdfs diskbalancer -fs %s -report -top 32"
-argument_list|,
-name|clusterJson
-operator|.
-name|toString
-argument_list|()
-argument_list|)
+literal|"hdfs diskbalancer -report -top 32"
 decl_stmt|;
 specifier|final
 name|List
@@ -729,17 +723,7 @@ specifier|final
 name|String
 name|cmdLine
 init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"hdfs diskbalancer -fs %s -report -top 128"
-argument_list|,
-name|clusterJson
-operator|.
-name|toString
-argument_list|()
-argument_list|)
+literal|"hdfs diskbalancer -report -top 128"
 decl_stmt|;
 specifier|final
 name|List
@@ -851,17 +835,7 @@ specifier|final
 name|String
 name|cmdLine
 init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"hdfs diskbalancer -fs %s -report -top xx"
-argument_list|,
-name|clusterJson
-operator|.
-name|toString
-argument_list|()
-argument_list|)
+literal|"hdfs diskbalancer -report -top xx"
 decl_stmt|;
 specifier|final
 name|List
@@ -984,7 +958,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/* test -report -node DataNodeID */
 annotation|@
 name|Test
 argument_list|(
@@ -1004,19 +977,9 @@ specifier|final
 name|String
 name|cmdLine
 init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"hdfs diskbalancer -fs %s -report -node "
+literal|"hdfs diskbalancer -report -node "
 operator|+
 literal|"a87654a9-54c7-4693-8dd9-c9c7021dc340"
-argument_list|,
-name|clusterJson
-operator|.
-name|toString
-argument_list|()
-argument_list|)
 decl_stmt|;
 specifier|final
 name|List
@@ -1564,6 +1527,15 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+name|FileSystem
+operator|.
+name|setDefaultUri
+argument_list|(
+name|conf
+argument_list|,
+name|clusterJson
+argument_list|)
+expr_stmt|;
 name|ByteArrayOutputStream
 name|bufOut
 init|=

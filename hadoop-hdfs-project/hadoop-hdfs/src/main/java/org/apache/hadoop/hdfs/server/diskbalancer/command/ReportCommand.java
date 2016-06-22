@@ -975,11 +975,11 @@ name|footer
 init|=
 literal|". E.g.:\n"
 operator|+
-literal|"hdfs diskbalancer -fs http://namenode.uri -report\n"
+literal|"hdfs diskbalancer -report\n"
 operator|+
-literal|"hdfs diskbalancer -fs http://namenode.uri -report -top 5\n"
+literal|"hdfs diskbalancer -report -top 5\n"
 operator|+
-literal|"hdfs diskbalancer -fs http://namenode.uri -report "
+literal|"hdfs diskbalancer -report "
 operator|+
 literal|"-node {DataNodeID | IP | Hostname}"
 decl_stmt|;
