@@ -752,8 +752,6 @@ expr_stmt|;
 name|setupQueueConfiguration
 argument_list|(
 name|csConf
-argument_list|,
-name|rm
 argument_list|)
 expr_stmt|;
 name|conf
@@ -903,7 +901,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setupQueueConfiguration ( CapacitySchedulerConfiguration config, ResourceManager resourceManager)
+DECL|method|setupQueueConfiguration ( CapacitySchedulerConfiguration config)
 specifier|private
 specifier|static
 name|void
@@ -911,9 +909,6 @@ name|setupQueueConfiguration
 parameter_list|(
 name|CapacitySchedulerConfiguration
 name|config
-parameter_list|,
-name|ResourceManager
-name|resourceManager
 parameter_list|)
 block|{
 comment|// Define top-level queues
