@@ -1191,11 +1191,11 @@ decl_stmt|;
 if|if
 condition|(
 name|singleShuffleMemoryLimitPercent
-operator|<=
+argument_list|<
 literal|0.0f
 operator|||
 name|singleShuffleMemoryLimitPercent
-operator|>
+argument_list|>
 literal|1.0f
 condition|)
 block|{
