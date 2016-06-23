@@ -2617,7 +2617,7 @@ annotation|@
 name|VisibleForTesting
 DECL|method|printContainerLogsFromRunningApplication (Configuration conf, ContainerLogsRequest request, LogCLIHelpers logCliHelper)
 specifier|public
-name|void
+name|int
 name|printContainerLogsFromRunningApplication
 parameter_list|(
 name|Configuration
@@ -2712,8 +2712,6 @@ argument_list|(
 name|request
 argument_list|,
 name|allLogs
-argument_list|,
-literal|true
 argument_list|)
 decl_stmt|;
 if|if
@@ -2724,7 +2722,35 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-return|return;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Can not find any log file matching the pattern: "
+operator|+
+name|request
+operator|.
+name|getLogTypes
+argument_list|()
+operator|+
+literal|" for the container: "
+operator|+
+name|containerIdStr
+operator|+
+literal|" within the application: "
+operator|+
+name|request
+operator|.
+name|getAppId
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
 block|}
 name|ContainerLogsRequest
 name|newOptions
@@ -2785,6 +2811,11 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|boolean
+name|foundAnyLogs
+init|=
+literal|false
+decl_stmt|;
 for|for
 control|(
 name|String
@@ -2950,6 +2981,10 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+name|foundAnyLogs
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -2981,15 +3016,38 @@ expr_stmt|;
 block|}
 block|}
 comment|// for the case, we have already uploaded partial logs in HDFS
+name|int
+name|result
+init|=
 name|logCliHelper
 operator|.
-name|dumpAContainersLogsForALogType
+name|dumpAContainerLogsForLogType
 argument_list|(
 name|newOptions
 argument_list|,
 literal|false
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+if|if
+condition|(
+name|result
+operator|==
+literal|0
+operator|||
+name|foundAnyLogs
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
+else|else
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
 block|}
 finally|finally
 block|{
@@ -3033,6 +3091,34 @@ operator|==
 literal|null
 condition|)
 block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Can not find any log file matching the pattern: "
+operator|+
+name|request
+operator|.
+name|getLogTypes
+argument_list|()
+operator|+
+literal|" for the container: "
+operator|+
+name|request
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|" within the application: "
+operator|+
+name|request
+operator|.
+name|getAppId
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 operator|-
 literal|1
@@ -3041,7 +3127,7 @@ block|}
 return|return
 name|logCliHelper
 operator|.
-name|dumpAContainersLogsForALogType
+name|dumpAContainerLogsForLogType
 argument_list|(
 name|newOptions
 argument_list|)
@@ -3078,6 +3164,34 @@ operator|==
 literal|null
 condition|)
 block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Can not find any log file matching the pattern: "
+operator|+
+name|request
+operator|.
+name|getLogTypes
+argument_list|()
+operator|+
+literal|" for the container: "
+operator|+
+name|request
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|" within the application: "
+operator|+
+name|request
+operator|.
+name|getAppId
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 operator|-
 literal|1
@@ -3086,7 +3200,7 @@ block|}
 return|return
 name|logCliHelper
 operator|.
-name|dumpAContainersLogsForALogTypeWithoutNodeId
+name|dumpAContainerLogsForLogTypeWithoutNodeId
 argument_list|(
 name|newOptions
 argument_list|)
@@ -4083,7 +4197,7 @@ name|CONTAINER_LOG_FILES
 argument_list|,
 literal|true
 argument_list|,
-literal|"Work with -am/-containerId and specify comma-separated value "
+literal|"Specify comma-separated value "
 operator|+
 literal|"to get specified container log files. Use \"ALL\" to fetch all the "
 operator|+
@@ -5043,6 +5157,8 @@ argument_list|(
 name|logFiles
 argument_list|)
 expr_stmt|;
+name|resultCode
+operator|=
 name|printContainerLogsFromRunningApplication
 argument_list|(
 name|getConf
@@ -5096,7 +5212,8 @@ comment|// container from NM.
 name|int
 name|resultCode
 init|=
-literal|0
+operator|-
+literal|1
 decl_stmt|;
 if|if
 condition|(
@@ -5123,10 +5240,26 @@ operator|==
 literal|null
 condition|)
 block|{
-name|resultCode
-operator|=
-operator|-
-literal|1
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Can not find any log file matching the pattern: "
+operator|+
+name|options
+operator|.
+name|getLogTypes
+argument_list|()
+operator|+
+literal|" for the application: "
+operator|+
+name|options
+operator|.
+name|getAppId
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 else|else
@@ -5163,6 +5296,9 @@ range|:
 name|containerLogRequests
 control|)
 block|{
+name|int
+name|result
+init|=
 name|printContainerLogsFromRunningApplication
 argument_list|(
 name|getConf
@@ -5172,7 +5308,19 @@ name|container
 argument_list|,
 name|logCliHelper
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|result
+operator|==
+literal|0
+condition|)
+block|{
+name|resultCode
+operator|=
+literal|0
 expr_stmt|;
+block|}
 block|}
 block|}
 if|if
@@ -5364,8 +5512,6 @@ argument_list|(
 name|request
 argument_list|,
 name|files
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 if|if
@@ -5393,7 +5539,7 @@ return|return
 name|newOptions
 return|;
 block|}
-DECL|method|getMatchedLogFiles (ContainerLogsRequest options, Collection<String> candidate, boolean printError)
+DECL|method|getMatchedLogFiles (ContainerLogsRequest options, Collection<String> candidate)
 specifier|private
 name|List
 argument_list|<
@@ -5409,9 +5555,6 @@ argument_list|<
 name|String
 argument_list|>
 name|candidate
-parameter_list|,
-name|boolean
-name|printError
 parameter_list|)
 throws|throws
 name|IOException
@@ -5463,42 +5606,6 @@ operator|.
 name|add
 argument_list|(
 name|file
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-if|if
-condition|(
-name|matchedFiles
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-if|if
-condition|(
-name|printError
-condition|)
-block|{
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"Can not find any log file matching the pattern: "
-operator|+
-name|options
-operator|.
-name|getLogTypes
-argument_list|()
-operator|+
-literal|" for the application: "
-operator|+
-name|options
-operator|.
-name|getAppId
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

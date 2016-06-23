@@ -386,22 +386,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -521,7 +505,7 @@ name|MAX_VALUE
 argument_list|)
 expr_stmt|;
 return|return
-name|dumpAContainersLogsForALogType
+name|dumpAContainerLogsForLogType
 argument_list|(
 name|options
 argument_list|,
@@ -769,10 +753,10 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
-DECL|method|dumpAContainersLogsForALogType (ContainerLogsRequest options)
+DECL|method|dumpAContainerLogsForLogType (ContainerLogsRequest options)
 specifier|public
 name|int
-name|dumpAContainersLogsForALogType
+name|dumpAContainerLogsForLogType
 parameter_list|(
 name|ContainerLogsRequest
 name|options
@@ -781,7 +765,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|dumpAContainersLogsForALogType
+name|dumpAContainerLogsForLogType
 argument_list|(
 name|options
 argument_list|,
@@ -793,10 +777,10 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
-DECL|method|dumpAContainersLogsForALogType (ContainerLogsRequest options, boolean outputFailure)
+DECL|method|dumpAContainerLogsForLogType (ContainerLogsRequest options, boolean outputFailure)
 specifier|public
 name|int
-name|dumpAContainersLogsForALogType
+name|dumpAContainerLogsForLogType
 parameter_list|(
 name|ContainerLogsRequest
 name|options
@@ -1201,10 +1185,10 @@ return|;
 block|}
 annotation|@
 name|Private
-DECL|method|dumpAContainersLogsForALogTypeWithoutNodeId ( ContainerLogsRequest options)
+DECL|method|dumpAContainerLogsForLogTypeWithoutNodeId ( ContainerLogsRequest options)
 specifier|public
 name|int
-name|dumpAContainersLogsForALogTypeWithoutNodeId
+name|dumpAContainerLogsForLogTypeWithoutNodeId
 parameter_list|(
 name|ContainerLogsRequest
 name|options

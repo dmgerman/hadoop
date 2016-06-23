@@ -76,18 +76,6 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|doNothing
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
 name|doReturn
 import|;
 end_import
@@ -1582,35 +1570,28 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -logFiles<Log File Name>       Work with -am/-containerId and specify"
+literal|" -logFiles<Log File Name>       Specify comma-separated value to get"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 comma-separated value to get specified"
+literal|"                                 specified container log files. Use \"ALL\""
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 container log files. Use \"ALL\" to fetch"
+literal|"                                 to fetch all the log files for the"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 all the log files for the container. It"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|println
-argument_list|(
-literal|"                                 also supports Java Regex."
+literal|"                                 container. It also supports Java Regex."
 argument_list|)
 expr_stmt|;
 name|pw
@@ -2635,7 +2616,14 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Can not find any log file matching the pattern: [123]"
+literal|"Can not find any log file matching the pattern: [123] "
+operator|+
+literal|"for the application: "
+operator|+
+name|appId
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2788,6 +2776,73 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 name|sysOutStream
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|exitCode
+operator|=
+name|cli
+operator|.
+name|run
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-applicationId"
+block|,
+name|appId
+operator|.
+name|toString
+argument_list|()
+block|,
+literal|"-containerId"
+block|,
+name|containerId3
+operator|.
+name|toString
+argument_list|()
+block|,
+literal|"-logFiles"
+block|,
+literal|"123"
+block|}
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|exitCode
+operator|==
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysErrStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Can not find any log file matching the pattern: [123] "
+operator|+
+literal|"for the container: "
+operator|+
+name|containerId3
+operator|+
+literal|" within the application: "
+operator|+
+name|appId
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|sysErrStream
 operator|.
 name|reset
 argument_list|()
@@ -3755,8 +3810,10 @@ name|mockYarnClient
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|doNothing
-argument_list|()
+name|doReturn
+argument_list|(
+literal|0
+argument_list|)
 operator|.
 name|when
 argument_list|(
