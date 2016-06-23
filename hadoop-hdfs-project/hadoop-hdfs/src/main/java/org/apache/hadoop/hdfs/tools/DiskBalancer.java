@@ -1411,15 +1411,25 @@ expr_stmt|;
 name|Option
 name|top
 init|=
-operator|new
-name|Option
+name|OptionBuilder
+operator|.
+name|withLongOpt
 argument_list|(
 name|TOP
-argument_list|,
-literal|true
-argument_list|,
-literal|"specify the number of nodes to be listed which has data imbalance."
 argument_list|)
+operator|.
+name|hasArg
+argument_list|()
+operator|.
+name|withDescription
+argument_list|(
+literal|"specify the number of nodes to be listed which has"
+operator|+
+literal|" data imbalance."
+argument_list|)
+operator|.
+name|create
+argument_list|()
 decl_stmt|;
 name|getReportOptions
 argument_list|()
@@ -1439,15 +1449,25 @@ expr_stmt|;
 name|Option
 name|node
 init|=
-operator|new
-name|Option
+name|OptionBuilder
+operator|.
+name|withLongOpt
 argument_list|(
 name|NODE
-argument_list|,
-literal|true
-argument_list|,
-literal|"Datanode address, it can be DataNodeID, IP or hostname."
 argument_list|)
+operator|.
+name|hasArg
+argument_list|()
+operator|.
+name|withDescription
+argument_list|(
+literal|"Datanode address, "
+operator|+
+literal|"it can be DataNodeID, IP or hostname."
+argument_list|)
+operator|.
+name|create
+argument_list|()
 decl_stmt|;
 name|getReportOptions
 argument_list|()

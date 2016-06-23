@@ -237,15 +237,6 @@ argument_list|,
 literal|"Executes a given plan."
 argument_list|)
 expr_stmt|;
-name|addValidCommandParameters
-argument_list|(
-name|DiskBalancer
-operator|.
-name|NODE
-argument_list|,
-literal|"Name of the target node."
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Executes the Client Calls.    *    * @param cmd - CommandLine    */
 annotation|@

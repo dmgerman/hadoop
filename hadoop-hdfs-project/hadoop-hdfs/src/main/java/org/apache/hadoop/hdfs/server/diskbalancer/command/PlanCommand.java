@@ -452,6 +452,15 @@ operator|+
 literal|"verbose mode."
 argument_list|)
 expr_stmt|;
+name|addValidCommandParameters
+argument_list|(
+name|DiskBalancer
+operator|.
+name|PLAN
+argument_list|,
+literal|"Plan Command"
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Runs the plan command. This command can be run with various options like    *<p>    * -plan -node IP -plan -node hostName -plan -node DatanodeUUID    *    * @param cmd - CommandLine    */
 annotation|@

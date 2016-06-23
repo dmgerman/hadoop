@@ -120,6 +120,15 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|addValidCommandParameters
+argument_list|(
+name|DiskBalancer
+operator|.
+name|HELP
+argument_list|,
+literal|"Help Command"
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Executes the Client Calls.    *    * @param cmd - CommandLine    */
 annotation|@

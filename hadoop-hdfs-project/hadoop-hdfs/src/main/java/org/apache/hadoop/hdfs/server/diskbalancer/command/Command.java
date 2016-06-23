@@ -656,22 +656,6 @@ name|conf
 argument_list|)
 expr_stmt|;
 comment|// These arguments are valid for all commands.
-name|addValidCommandParameters
-argument_list|(
-name|DiskBalancer
-operator|.
-name|HELP
-argument_list|,
-literal|"Help for this command"
-argument_list|)
-expr_stmt|;
-name|addValidCommandParameters
-argument_list|(
-literal|"arg"
-argument_list|,
-literal|""
-argument_list|)
-expr_stmt|;
 name|topNodes
 operator|=
 literal|0
@@ -1317,7 +1301,7 @@ name|containsKey
 argument_list|(
 name|opt
 operator|.
-name|getArgName
+name|getLongOpt
 argument_list|()
 argument_list|)
 condition|)
@@ -1335,7 +1319,7 @@ name|commandName
 argument_list|,
 name|opt
 operator|.
-name|getArgName
+name|getLongOpt
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1350,7 +1334,12 @@ name|validArguments
 operator|.
 name|append
 argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
 literal|"Valid arguments are : %n"
+argument_list|)
 argument_list|)
 expr_stmt|;
 for|for
