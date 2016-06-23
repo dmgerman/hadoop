@@ -993,6 +993,13 @@ argument_list|,
 name|xceiver
 argument_list|)
 expr_stmt|;
+name|datanode
+operator|.
+name|metrics
+operator|.
+name|incrDataNodeActiveXceiversCount
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|closePeer (Peer peer)
 specifier|synchronized
@@ -1016,6 +1023,13 @@ name|remove
 argument_list|(
 name|peer
 argument_list|)
+expr_stmt|;
+name|datanode
+operator|.
+name|metrics
+operator|.
+name|decrDataNodeActiveXceiversCount
+argument_list|()
 expr_stmt|;
 name|IOUtils
 operator|.
@@ -1217,6 +1231,15 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+name|datanode
+operator|.
+name|metrics
+operator|.
+name|setDataNodeActiveXceiversCount
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Return the number of peers.
 DECL|method|getNumPeers ()
@@ -1281,6 +1304,13 @@ name|remove
 argument_list|(
 name|peer
 argument_list|)
+expr_stmt|;
+name|datanode
+operator|.
+name|metrics
+operator|.
+name|decrDataNodeActiveXceiversCount
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|updateBalancerMaxConcurrentMovers (int movers)

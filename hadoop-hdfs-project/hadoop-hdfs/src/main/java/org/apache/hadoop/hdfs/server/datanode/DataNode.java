@@ -10269,6 +10269,21 @@ name|ie
 parameter_list|)
 block|{       }
 block|}
+if|if
+condition|(
+name|metrics
+operator|!=
+literal|null
+condition|)
+block|{
+name|metrics
+operator|.
+name|setDataNodeActiveXceiversCount
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 comment|// IPC server needs to be shutdown late in the process, otherwise
 comment|// shutdown command response won't get sent.
 if|if
