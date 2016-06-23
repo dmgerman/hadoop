@@ -304,7 +304,7 @@ name|nodeName
 operator|.
 name|matches
 argument_list|(
-literal|"^.*:\\d$"
+literal|"[^\\:]+:[0-9]{2,5}"
 argument_list|)
 condition|)
 block|{

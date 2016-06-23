@@ -660,6 +660,13 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
+name|planID
+operator|=
+literal|""
+expr_stmt|;
+comment|// to keep protobuf happy.
+name|this
+operator|.
 name|isDiskBalancerEnabled
 operator|=
 name|conf
@@ -1141,15 +1148,12 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-operator|(
 name|this
 operator|.
 name|planID
 operator|==
 literal|null
-operator|)
 operator|||
-operator|(
 operator|!
 name|this
 operator|.
@@ -1159,7 +1163,13 @@ name|equals
 argument_list|(
 name|planID
 argument_list|)
-operator|)
+operator|||
+name|this
+operator|.
+name|planID
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 name|LOG
