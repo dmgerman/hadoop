@@ -28,6 +28,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+operator|.
+name|waitFor
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -3354,28 +3370,26 @@ operator|.
 name|KILLED
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+name|waitFor
 argument_list|(
-literal|"No Ta Started JH Event"
-argument_list|,
 name|app
-operator|.
+operator|::
 name|getTaStartJHEvent
-argument_list|()
+argument_list|,
+literal|100
+argument_list|,
+literal|800
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+name|waitFor
 argument_list|(
-literal|"No Ta Killed JH Event"
-argument_list|,
 name|app
-operator|.
+operator|::
 name|getTaKilledJHEvent
-argument_list|()
+argument_list|,
+literal|100
+argument_list|,
+literal|800
 argument_list|)
 expr_stmt|;
 block|}
