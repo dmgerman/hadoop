@@ -719,13 +719,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|validatePaths (DistCpOptions options)
+DECL|method|validatePaths (DistCpContext context)
 specifier|protected
 name|void
 name|validatePaths
 parameter_list|(
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
@@ -735,7 +735,7 @@ block|{
 name|Path
 name|targetPath
 init|=
-name|options
+name|context
 operator|.
 name|getTargetPath
 argument_list|()
@@ -822,7 +822,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|options
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -846,7 +846,7 @@ block|}
 name|Path
 name|srcPath
 init|=
-name|options
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -895,7 +895,7 @@ block|}
 block|}
 if|if
 condition|(
-name|options
+name|context
 operator|.
 name|shouldAtomicCommit
 argument_list|()
@@ -920,7 +920,7 @@ control|(
 name|Path
 name|path
 range|:
-name|options
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -1051,10 +1051,12 @@ condition|(
 name|targetIsReservedRaw
 condition|)
 block|{
-name|options
+name|context
 operator|.
-name|preserveRawXattrs
-argument_list|()
+name|setPreserveRawXattrs
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 name|getConf
 argument_list|()
@@ -1087,7 +1089,7 @@ name|Path
 index|[]
 name|inputPaths
 init|=
-name|options
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -1117,7 +1119,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|doBuildListing (Path pathToListingFile, DistCpOptions options)
+DECL|method|doBuildListing (Path pathToListingFile, DistCpContext context)
 specifier|protected
 name|void
 name|doBuildListing
@@ -1125,15 +1127,15 @@ parameter_list|(
 name|Path
 name|pathToListingFile
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 if|if
 condition|(
-name|options
+name|context
 operator|.
 name|shouldUseSnapshotDiff
 argument_list|()
@@ -1146,7 +1148,7 @@ argument_list|(
 name|pathToListingFile
 argument_list|)
 argument_list|,
-name|options
+name|context
 argument_list|)
 expr_stmt|;
 block|}
@@ -1159,7 +1161,7 @@ argument_list|(
 name|pathToListingFile
 argument_list|)
 argument_list|,
-name|options
+name|context
 argument_list|)
 expr_stmt|;
 block|}
@@ -1267,7 +1269,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Write a single file/directory to the sequence file.    * @throws IOException    */
-DECL|method|addToFileListing (SequenceFile.Writer fileListWriter, Path sourceRoot, Path path, DistCpOptions options)
+DECL|method|addToFileListing (SequenceFile.Writer fileListWriter, Path sourceRoot, Path path, DistCpContext context)
 specifier|private
 name|void
 name|addToFileListing
@@ -1283,8 +1285,8 @@ parameter_list|,
 name|Path
 name|path
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
@@ -1335,7 +1337,7 @@ specifier|final
 name|boolean
 name|preserveAcls
 init|=
-name|options
+name|context
 operator|.
 name|shouldPreserve
 argument_list|(
@@ -1348,7 +1350,7 @@ specifier|final
 name|boolean
 name|preserveXAttrs
 init|=
-name|options
+name|context
 operator|.
 name|shouldPreserve
 argument_list|(
@@ -1361,7 +1363,7 @@ specifier|final
 name|boolean
 name|preserveRawXAttrs
 init|=
-name|options
+name|context
 operator|.
 name|shouldPreserveRawXattrs
 argument_list|()
@@ -1386,7 +1388,7 @@ name|preserveXAttrs
 argument_list|,
 name|preserveRawXAttrs
 argument_list|,
-name|options
+name|context
 operator|.
 name|getBlocksPerChunk
 argument_list|()
@@ -1400,14 +1402,14 @@ name|fileCopyListingStatus
 argument_list|,
 name|sourceRoot
 argument_list|,
-name|options
+name|context
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Build a copy list based on the snapshot diff report.    *    * Any file/directory changed or created will be in the list. Deleted    * files/directories will not be in the list, since they are handled by    * {@link org.apache.hadoop.tools.DistCpSync#sync}. An item can be    * created/modified and renamed, in which case, the target path is put    * into the list.    * @throws IOException    */
+comment|/**    * Build a copy list based on the snapshot diff report.    *    * Any file/directory changed or created will be in the list. Deleted    * files/directories will not be in the list, since they are handled by    * {@link org.apache.hadoop.tools.DistCpSync#sync}. An item can be    * created/modified and renamed, in which case, the target path is put    * into the list.    * @param fileListWriter the list for holding processed results    * @param context The DistCp context with associated input options    * @throws IOException    */
 annotation|@
 name|VisibleForTesting
-DECL|method|doBuildListingWithSnapshotDiff ( SequenceFile.Writer fileListWriter, DistCpOptions options)
+DECL|method|doBuildListingWithSnapshotDiff ( SequenceFile.Writer fileListWriter, DistCpContext context)
 specifier|protected
 name|void
 name|doBuildListingWithSnapshotDiff
@@ -1417,8 +1419,8 @@ operator|.
 name|Writer
 name|fileListWriter
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
@@ -1437,7 +1439,7 @@ decl_stmt|;
 name|Path
 name|sourceRoot
 init|=
-name|options
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -1487,7 +1489,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|options
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -1529,7 +1531,7 @@ operator|.
 name|getTarget
 argument_list|()
 argument_list|,
-name|options
+name|context
 argument_list|)
 expr_stmt|;
 block|}
@@ -1559,7 +1561,7 @@ operator|.
 name|getTarget
 argument_list|()
 argument_list|,
-name|options
+name|context
 argument_list|)
 expr_stmt|;
 name|FileStatus
@@ -1619,7 +1621,7 @@ operator|.
 name|getSource
 argument_list|()
 argument_list|,
-name|options
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -1658,7 +1660,7 @@ name|sourceDirs
 argument_list|,
 name|sourceRoot
 argument_list|,
-name|options
+name|context
 argument_list|,
 name|excludeList
 argument_list|,
@@ -1704,10 +1706,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Collect the list of     *   {@literal<sourceRelativePath, sourceFileStatus>}    * to be copied and write to the sequence file. In essence, any file or    * directory that need to be copied or sync-ed is written as an entry to the    * sequence file, with the possible exception of the source root:    *     when either -update (sync) or -overwrite switch is specified, and if    *     the the source root is a directory, then the source root entry is not     *     written to the sequence file, because only the contents of the source    *     directory need to be copied in this case.    * See {@link org.apache.hadoop.tools.util.DistCpUtils#getRelativePath} for    *     how relative path is computed.    * See computeSourceRootPath method for how the root path of the source is    *     computed.    * @param fileListWriter    * @param options    * @throws IOException    */
+comment|/**    * Collect the list of     *   {@literal<sourceRelativePath, sourceFileStatus>}    * to be copied and write to the sequence file. In essence, any file or    * directory that need to be copied or sync-ed is written as an entry to the    * sequence file, with the possible exception of the source root:    *     when either -update (sync) or -overwrite switch is specified, and if    *     the the source root is a directory, then the source root entry is not     *     written to the sequence file, because only the contents of the source    *     directory need to be copied in this case.    * See {@link org.apache.hadoop.tools.util.DistCpUtils#getRelativePath} for    *     how relative path is computed.    * See computeSourceRootPath method for how the root path of the source is    *     computed.    * @param fileListWriter    * @param context The distcp context with associated input options    * @throws IOException    */
 annotation|@
 name|VisibleForTesting
-DECL|method|doBuildListing (SequenceFile.Writer fileListWriter, DistCpOptions options)
+DECL|method|doBuildListing (SequenceFile.Writer fileListWriter, DistCpContext context)
 specifier|protected
 name|void
 name|doBuildListing
@@ -1717,15 +1719,15 @@ operator|.
 name|Writer
 name|fileListWriter
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 if|if
 condition|(
-name|options
+name|context
 operator|.
 name|getNumListstatusThreads
 argument_list|()
@@ -1735,7 +1737,7 @@ condition|)
 block|{
 name|numListstatusThreads
 operator|=
-name|options
+name|context
 operator|.
 name|getNumListstatusThreads
 argument_list|()
@@ -1759,7 +1761,7 @@ control|(
 name|Path
 name|path
 range|:
-name|options
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -1780,7 +1782,7 @@ specifier|final
 name|boolean
 name|preserveAcls
 init|=
-name|options
+name|context
 operator|.
 name|shouldPreserve
 argument_list|(
@@ -1793,7 +1795,7 @@ specifier|final
 name|boolean
 name|preserveXAttrs
 init|=
-name|options
+name|context
 operator|.
 name|shouldPreserve
 argument_list|(
@@ -1806,7 +1808,7 @@ specifier|final
 name|boolean
 name|preserveRawXAttrs
 init|=
-name|options
+name|context
 operator|.
 name|shouldPreserveRawXattrs
 argument_list|()
@@ -1835,7 +1837,7 @@ name|computeSourceRootPath
 argument_list|(
 name|rootStatus
 argument_list|,
-name|options
+name|context
 argument_list|)
 decl_stmt|;
 name|FileStatus
@@ -1895,7 +1897,7 @@ name|preserveXAttrs
 argument_list|,
 name|preserveRawXAttrs
 argument_list|,
-name|options
+name|context
 operator|.
 name|getBlocksPerChunk
 argument_list|()
@@ -1909,7 +1911,7 @@ name|rootCopyListingStatus
 argument_list|,
 name|sourcePathRoot
 argument_list|,
-name|options
+name|context
 argument_list|)
 expr_stmt|;
 block|}
@@ -1997,7 +1999,7 @@ operator|.
 name|isDirectory
 argument_list|()
 argument_list|,
-name|options
+name|context
 operator|.
 name|getBlocksPerChunk
 argument_list|()
@@ -2093,7 +2095,7 @@ name|sourceDirs
 argument_list|,
 name|sourcePathRoot
 argument_list|,
-name|options
+name|context
 argument_list|,
 literal|null
 argument_list|,
@@ -2357,7 +2359,7 @@ name|sourceRootPath
 expr_stmt|;
 block|}
 block|}
-DECL|method|computeSourceRootPath (FileStatus sourceStatus, DistCpOptions options)
+DECL|method|computeSourceRootPath (FileStatus sourceStatus, DistCpContext context)
 specifier|private
 name|Path
 name|computeSourceRootPath
@@ -2365,8 +2367,8 @@ parameter_list|(
 name|FileStatus
 name|sourceStatus
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
@@ -2374,7 +2376,7 @@ block|{
 name|Path
 name|target
 init|=
-name|options
+name|context
 operator|.
 name|getTargetPath
 argument_list|()
@@ -2394,15 +2396,15 @@ specifier|final
 name|boolean
 name|targetPathExists
 init|=
-name|options
+name|context
 operator|.
-name|getTargetPathExists
+name|isTargetPathExists
 argument_list|()
 decl_stmt|;
 name|boolean
 name|solitaryFile
 init|=
-name|options
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -2462,7 +2464,7 @@ name|boolean
 name|specialHandling
 init|=
 operator|(
-name|options
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -2476,12 +2478,12 @@ operator|!
 name|targetPathExists
 operator|)
 operator|||
-name|options
+name|context
 operator|.
 name|shouldSyncFolder
 argument_list|()
 operator|||
-name|options
+name|context
 operator|.
 name|shouldOverwrite
 argument_list|()
@@ -3124,7 +3126,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|traverseDirectory (SequenceFile.Writer fileListWriter, FileSystem sourceFS, ArrayList<FileStatus> sourceDirs, Path sourcePathRoot, DistCpOptions options, HashSet<String> excludeList, List<FileStatusInfo> fileStatuses)
+DECL|method|traverseDirectory (SequenceFile.Writer fileListWriter, FileSystem sourceFS, ArrayList<FileStatus> sourceDirs, Path sourcePathRoot, DistCpContext context, HashSet<String> excludeList, List<FileStatusInfo> fileStatuses)
 specifier|private
 name|void
 name|traverseDirectory
@@ -3146,8 +3148,8 @@ parameter_list|,
 name|Path
 name|sourcePathRoot
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|,
 name|HashSet
 argument_list|<
@@ -3168,7 +3170,7 @@ specifier|final
 name|boolean
 name|preserveAcls
 init|=
-name|options
+name|context
 operator|.
 name|shouldPreserve
 argument_list|(
@@ -3181,7 +3183,7 @@ specifier|final
 name|boolean
 name|preserveXAttrs
 init|=
-name|options
+name|context
 operator|.
 name|shouldPreserve
 argument_list|(
@@ -3194,7 +3196,7 @@ specifier|final
 name|boolean
 name|preserveRawXattrs
 init|=
-name|options
+name|context
 operator|.
 name|shouldPreserveRawXattrs
 argument_list|()
@@ -3412,7 +3414,7 @@ operator|.
 name|isDirectory
 argument_list|()
 argument_list|,
-name|options
+name|context
 operator|.
 name|getBlocksPerChunk
 argument_list|()
@@ -3559,7 +3561,7 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|writeToFileListingRoot (SequenceFile.Writer fileListWriter, LinkedList<CopyListingFileStatus> fileStatus, Path sourcePathRoot, DistCpOptions options)
+DECL|method|writeToFileListingRoot (SequenceFile.Writer fileListWriter, LinkedList<CopyListingFileStatus> fileStatus, Path sourcePathRoot, DistCpContext context)
 specifier|private
 name|void
 name|writeToFileListingRoot
@@ -3578,8 +3580,8 @@ parameter_list|,
 name|Path
 name|sourcePathRoot
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
@@ -3587,12 +3589,12 @@ block|{
 name|boolean
 name|syncOrOverwrite
 init|=
-name|options
+name|context
 operator|.
 name|shouldSyncFolder
 argument_list|()
 operator|||
-name|options
+name|context
 operator|.
 name|shouldOverwrite
 argument_list|()

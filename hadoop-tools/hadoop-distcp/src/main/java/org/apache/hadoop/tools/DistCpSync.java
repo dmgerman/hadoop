@@ -249,10 +249,10 @@ DECL|class|DistCpSync
 class|class
 name|DistCpSync
 block|{
-DECL|field|inputOptions
+DECL|field|context
 specifier|private
-name|DistCpOptions
-name|inputOptions
+name|DistCpContext
+name|context
 decl_stmt|;
 DECL|field|conf
 specifier|private
@@ -285,11 +285,11 @@ name|DiffInfo
 index|[]
 name|renameDiffs
 decl_stmt|;
-DECL|method|DistCpSync (DistCpOptions options, Configuration conf)
+DECL|method|DistCpSync (DistCpContext context, Configuration conf)
 name|DistCpSync
 parameter_list|(
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|,
 name|Configuration
 name|conf
@@ -297,9 +297,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|inputOptions
+name|context
 operator|=
-name|options
+name|context
 expr_stmt|;
 name|this
 operator|.
@@ -315,7 +315,7 @@ name|isRdiff
 parameter_list|()
 block|{
 return|return
-name|inputOptions
+name|context
 operator|.
 name|shouldUseRdiff
 argument_list|()
@@ -336,7 +336,7 @@ name|Path
 argument_list|>
 name|sourcePaths
 init|=
-name|inputOptions
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -380,7 +380,7 @@ specifier|final
 name|Path
 name|targetDir
 init|=
-name|inputOptions
+name|context
 operator|.
 name|getTargetPath
 argument_list|()
@@ -480,7 +480,7 @@ argument_list|)
 condition|)
 block|{
 comment|// set the source path using the snapshot path
-name|inputOptions
+name|context
 operator|.
 name|setSourcePaths
 argument_list|(
@@ -492,7 +492,7 @@ name|getSnapshotPath
 argument_list|(
 name|sourceDir
 argument_list|,
-name|inputOptions
+name|context
 operator|.
 name|getToSnapshot
 argument_list|()
@@ -510,7 +510,7 @@ name|from
 init|=
 name|getSnapshotName
 argument_list|(
-name|inputOptions
+name|context
 operator|.
 name|getFromSnapshot
 argument_list|()
@@ -522,7 +522,7 @@ name|to
 init|=
 name|getSnapshotName
 argument_list|(
-name|inputOptions
+name|context
 operator|.
 name|getToSnapshot
 argument_list|()
@@ -701,7 +701,7 @@ name|Path
 argument_list|>
 name|sourcePaths
 init|=
-name|inputOptions
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -721,7 +721,7 @@ specifier|final
 name|Path
 name|targetDir
 init|=
-name|inputOptions
+name|context
 operator|.
 name|getTargetPath
 argument_list|()
@@ -827,7 +827,7 @@ argument_list|)
 expr_stmt|;
 comment|// TODO: since we have tmp directory, we can support "undo" with failures
 comment|// set the source path using the snapshot path
-name|inputOptions
+name|context
 operator|.
 name|setSourcePaths
 argument_list|(
@@ -839,7 +839,7 @@ name|getSnapshotPath
 argument_list|(
 name|sourceDir
 argument_list|,
-name|inputOptions
+name|context
 operator|.
 name|getToSnapshot
 argument_list|()
@@ -864,12 +864,12 @@ init|=
 name|isRdiff
 argument_list|()
 condition|?
-name|inputOptions
+name|context
 operator|.
 name|getTargetPath
 argument_list|()
 else|:
-name|inputOptions
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -900,7 +900,7 @@ name|from
 init|=
 name|getSnapshotName
 argument_list|(
-name|inputOptions
+name|context
 operator|.
 name|getFromSnapshot
 argument_list|()
@@ -912,7 +912,7 @@ name|to
 init|=
 name|getSnapshotName
 argument_list|(
-name|inputOptions
+name|context
 operator|.
 name|getToSnapshot
 argument_list|()
@@ -1399,7 +1399,7 @@ name|from
 init|=
 name|getSnapshotName
 argument_list|(
-name|inputOptions
+name|context
 operator|.
 name|getFromSnapshot
 argument_list|()
@@ -1439,7 +1439,7 @@ name|warn
 argument_list|(
 literal|"The target has been modified since snapshot "
 operator|+
-name|inputOptions
+name|context
 operator|.
 name|getFromSnapshot
 argument_list|()
@@ -1474,7 +1474,7 @@ name|path
 operator|+
 literal|" at snapshot "
 operator|+
-name|inputOptions
+name|context
 operator|.
 name|getFromSnapshot
 argument_list|()

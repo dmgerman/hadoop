@@ -200,23 +200,23 @@ block|}
 comment|/** {@inheritDoc} */
 annotation|@
 name|Override
-DECL|method|validatePaths (DistCpOptions options)
+DECL|method|validatePaths (DistCpContext context)
 specifier|protected
 name|void
 name|validatePaths
 parameter_list|(
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
 throws|,
 name|InvalidInputException
 block|{   }
-comment|/**    * Implementation of CopyListing::buildListing().    *   Iterates over all source paths mentioned in the input-file.    * @param pathToListFile Path on HDFS where the listing file is written.    * @param options Input Options for DistCp (indicating source/target paths.)    * @throws IOException    */
+comment|/**    * Implementation of CopyListing::buildListing().    *   Iterates over all source paths mentioned in the input-file.    * @param pathToListFile Path on HDFS where the listing file is written.    * @param context Distcp context with associated input options.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|doBuildListing (Path pathToListFile, DistCpOptions options)
+DECL|method|doBuildListing (Path pathToListFile, DistCpContext context)
 specifier|public
 name|void
 name|doBuildListing
@@ -224,28 +224,19 @@ parameter_list|(
 name|Path
 name|pathToListFile
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|DistCpOptions
-name|newOption
-init|=
-operator|new
-name|DistCpOptions
-argument_list|(
-name|options
-argument_list|)
-decl_stmt|;
-name|newOption
+name|context
 operator|.
 name|setSourcePaths
 argument_list|(
 name|fetchFileList
 argument_list|(
-name|options
+name|context
 operator|.
 name|getSourceFileListing
 argument_list|()
@@ -258,7 +249,7 @@ name|buildListing
 argument_list|(
 name|pathToListFile
 argument_list|,
-name|newOption
+name|context
 argument_list|)
 expr_stmt|;
 block|}

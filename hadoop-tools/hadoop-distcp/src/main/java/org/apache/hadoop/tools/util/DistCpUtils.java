@@ -318,7 +318,7 @@ name|hadoop
 operator|.
 name|tools
 operator|.
-name|DistCpOptions
+name|DistCpContext
 import|;
 end_import
 
@@ -630,8 +630,8 @@ return|return
 name|value
 return|;
 block|}
-comment|/**    * Returns the class that implements a copy strategy. Looks up the implementation for    * a particular strategy from distcp-default.xml    *    * @param conf - Configuration object    * @param options - Handle to input options    * @return Class implementing the strategy specified in options.    */
-DECL|method|getStrategy (Configuration conf, DistCpOptions options)
+comment|/**    * Returns the class that implements a copy strategy. Looks up the implementation for    * a particular strategy from distcp-default.xml    *    * @param conf - Configuration object    * @param context - Distcp context with associated input options    * @return Class implementing the strategy specified in options.    */
+DECL|method|getStrategy (Configuration conf, DistCpContext context)
 specifier|public
 specifier|static
 name|Class
@@ -645,8 +645,8 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 block|{
 name|String
@@ -658,7 +658,7 @@ name|StringUtils
 operator|.
 name|toLowerCase
 argument_list|(
-name|options
+name|context
 operator|.
 name|getCopyStrategy
 argument_list|()

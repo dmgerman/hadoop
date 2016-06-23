@@ -37,24 +37,12 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
 name|util
 operator|.
-name|Arrays
+name|Collections
 import|;
 end_import
 
@@ -1074,16 +1062,21 @@ name|options
 init|=
 operator|new
 name|DistCpOptions
-argument_list|(
-name|Arrays
 operator|.
-name|asList
+name|Builder
+argument_list|(
+name|Collections
+operator|.
+name|singletonList
 argument_list|(
 name|src
 argument_list|)
 argument_list|,
 name|dst
 argument_list|)
+operator|.
+name|build
+argument_list|()
 decl_stmt|;
 name|Job
 name|job

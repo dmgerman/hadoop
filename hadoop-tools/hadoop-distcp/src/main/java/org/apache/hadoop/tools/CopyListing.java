@@ -261,8 +261,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Build listing function creates the input listing that distcp uses to    * perform the copy.    *    * The build listing is a sequence file that has relative path of a file in the key    * and the file status information of the source file in the value    *    * For instance if the source path is /tmp/data and the traversed path is    * /tmp/data/dir1/dir2/file1, then the sequence file would contain    *    * key: /dir1/dir2/file1 and value: FileStatus(/tmp/data/dir1/dir2/file1)    *    * File would also contain directory entries. Meaning, if /tmp/data/dir1/dir2/file1    * is the only file under /tmp/data, the resulting sequence file would contain the    * following entries    *    * key: /dir1 and value: FileStatus(/tmp/data/dir1)    * key: /dir1/dir2 and value: FileStatus(/tmp/data/dir1/dir2)    * key: /dir1/dir2/file1 and value: FileStatus(/tmp/data/dir1/dir2/file1)    *    * Cases requiring special handling:    * If source path is a file (/tmp/file1), contents of the file will be as follows    *    * TARGET DOES NOT EXIST: Key-"", Value-FileStatus(/tmp/file1)    * TARGET IS FILE       : Key-"", Value-FileStatus(/tmp/file1)    * TARGET IS DIR        : Key-"/file1", Value-FileStatus(/tmp/file1)      *    * @param pathToListFile - Output file where the listing would be stored    * @param options - Input options to distcp    * @throws IOException - Exception if any    */
-DECL|method|buildListing (Path pathToListFile, DistCpOptions options)
+comment|/**    * Build listing function creates the input listing that distcp uses to    * perform the copy.    *    * The build listing is a sequence file that has relative path of a file in the key    * and the file status information of the source file in the value    *    * For instance if the source path is /tmp/data and the traversed path is    * /tmp/data/dir1/dir2/file1, then the sequence file would contain    *    * key: /dir1/dir2/file1 and value: FileStatus(/tmp/data/dir1/dir2/file1)    *    * File would also contain directory entries. Meaning, if /tmp/data/dir1/dir2/file1    * is the only file under /tmp/data, the resulting sequence file would contain the    * following entries    *    * key: /dir1 and value: FileStatus(/tmp/data/dir1)    * key: /dir1/dir2 and value: FileStatus(/tmp/data/dir1/dir2)    * key: /dir1/dir2/file1 and value: FileStatus(/tmp/data/dir1/dir2/file1)    *    * Cases requiring special handling:    * If source path is a file (/tmp/file1), contents of the file will be as follows    *    * TARGET DOES NOT EXIST: Key-"", Value-FileStatus(/tmp/file1)    * TARGET IS FILE       : Key-"", Value-FileStatus(/tmp/file1)    * TARGET IS DIR        : Key-"/file1", Value-FileStatus(/tmp/file1)      *    * @param pathToListFile - Output file where the listing would be stored    * @param distCpContext - distcp context associated with input options    * @throws IOException - Exception if any    */
+DECL|method|buildListing (Path pathToListFile, DistCpContext distCpContext)
 specifier|public
 specifier|final
 name|void
@@ -271,22 +271,22 @@ parameter_list|(
 name|Path
 name|pathToListFile
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|distCpContext
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 name|validatePaths
 argument_list|(
-name|options
+name|distCpContext
 argument_list|)
 expr_stmt|;
 name|doBuildListing
 argument_list|(
 name|pathToListFile
 argument_list|,
-name|options
+name|distCpContext
 argument_list|)
 expr_stmt|;
 name|Configuration
@@ -337,7 +337,7 @@ name|validateFinalListing
 argument_list|(
 name|pathToListFile
 argument_list|,
-name|options
+name|distCpContext
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -353,23 +353,23 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Validate input and output paths    *    * @param options - Input options    * @throws InvalidInputException If inputs are invalid    * @throws IOException any Exception with FS    */
-DECL|method|validatePaths (DistCpOptions options)
+comment|/**    * Validate input and output paths    *    * @param distCpContext - Distcp context    * @throws InvalidInputException If inputs are invalid    * @throws IOException any Exception with FS    */
+DECL|method|validatePaths (DistCpContext distCpContext)
 specifier|protected
 specifier|abstract
 name|void
 name|validatePaths
 parameter_list|(
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|distCpContext
 parameter_list|)
 throws|throws
 name|IOException
 throws|,
 name|InvalidInputException
 function_decl|;
-comment|/**    * The interface to be implemented by sub-classes, to create the source/target file listing.    * @param pathToListFile Path on HDFS where the listing file is written.    * @param options Input Options for DistCp (indicating source/target paths.)    * @throws IOException Thrown on failure to create the listing file.    */
-DECL|method|doBuildListing (Path pathToListFile, DistCpOptions options)
+comment|/**    * The interface to be implemented by sub-classes, to create the source/target file listing.    * @param pathToListFile Path on HDFS where the listing file is written.    * @param distCpContext - Distcp context    * @throws IOException Thrown on failure to create the listing file.    */
+DECL|method|doBuildListing (Path pathToListFile, DistCpContext distCpContext)
 specifier|protected
 specifier|abstract
 name|void
@@ -378,8 +378,8 @@ parameter_list|(
 name|Path
 name|pathToListFile
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|distCpContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -400,8 +400,8 @@ name|long
 name|getNumberOfPaths
 parameter_list|()
 function_decl|;
-comment|/**    * Validate the final resulting path listing.  Checks if there are duplicate    * entries.  If preserving ACLs, checks that file system can support ACLs.    * If preserving XAttrs, checks that file system can support XAttrs.    *    * @param pathToListFile - path listing build by doBuildListing    * @param options - Input options to distcp    * @throws IOException - Any issues while checking for duplicates and throws    * @throws DuplicateFileException - if there are duplicates    */
-DECL|method|validateFinalListing (Path pathToListFile, DistCpOptions options)
+comment|/**    * Validate the final resulting path listing.  Checks if there are duplicate    * entries.  If preserving ACLs, checks that file system can support ACLs.    * If preserving XAttrs, checks that file system can support XAttrs.    *    * @param pathToListFile - path listing build by doBuildListing    * @param context - Distcp context with associated input options    * @throws IOException - Any issues while checking for duplicates and throws    * @throws DuplicateFileException - if there are duplicates    */
+DECL|method|validateFinalListing (Path pathToListFile, DistCpContext context)
 specifier|private
 name|void
 name|validateFinalListing
@@ -409,8 +409,8 @@ parameter_list|(
 name|Path
 name|pathToListFile
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 throws|throws
 name|DuplicateFileException
@@ -437,7 +437,7 @@ specifier|final
 name|boolean
 name|splitLargeFile
 init|=
-name|options
+name|context
 operator|.
 name|splitLargeFile
 argument_list|()
@@ -683,7 +683,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|options
+name|context
 operator|.
 name|shouldPreserve
 argument_list|(
@@ -745,7 +745,7 @@ block|}
 block|}
 if|if
 condition|(
-name|options
+name|context
 operator|.
 name|shouldPreserve
 argument_list|(
@@ -834,7 +834,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|options
+name|context
 operator|.
 name|shouldUseDiff
 argument_list|()
@@ -935,8 +935,8 @@ return|return
 name|credentials
 return|;
 block|}
-comment|/**    * Public Factory method with which the appropriate CopyListing implementation may be retrieved.    * @param configuration The input configuration.    * @param credentials Credentials object on which the FS delegation tokens are cached    * @param options The input Options, to help choose the appropriate CopyListing Implementation.    * @return An instance of the appropriate CopyListing implementation.    * @throws java.io.IOException - Exception if any    */
-DECL|method|getCopyListing (Configuration configuration, Credentials credentials, DistCpOptions options)
+comment|/**    * Public Factory method with which the appropriate CopyListing implementation may be retrieved.    * @param configuration The input configuration.    * @param credentials Credentials object on which the FS delegation tokens are cached    * @param context Distcp context with associated input options    * @return An instance of the appropriate CopyListing implementation.    * @throws java.io.IOException - Exception if any    */
+DECL|method|getCopyListing (Configuration configuration, Credentials credentials, DistCpContext context)
 specifier|public
 specifier|static
 name|CopyListing
@@ -948,8 +948,8 @@ parameter_list|,
 name|Credentials
 name|credentials
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
@@ -1011,7 +1011,7 @@ else|else
 block|{
 if|if
 condition|(
-name|options
+name|context
 operator|.
 name|getSourceFileListing
 argument_list|()

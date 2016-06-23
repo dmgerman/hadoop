@@ -171,7 +171,7 @@ literal|"use for building file listing (max "
 operator|+
 name|DistCpOptions
 operator|.
-name|maxNumListstatusThreads
+name|MAX_NUM_LISTSTATUS_THREADS
 operator|+
 literal|")."
 argument_list|)

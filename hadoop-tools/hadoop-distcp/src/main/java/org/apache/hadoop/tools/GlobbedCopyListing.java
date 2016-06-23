@@ -212,23 +212,23 @@ block|}
 comment|/** {@inheritDoc} */
 annotation|@
 name|Override
-DECL|method|validatePaths (DistCpOptions options)
+DECL|method|validatePaths (DistCpContext context)
 specifier|protected
 name|void
 name|validatePaths
 parameter_list|(
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
 throws|,
 name|InvalidInputException
 block|{   }
-comment|/**    * Implementation of CopyListing::buildListing().    * Creates the copy listing by "globbing" all source-paths.    * @param pathToListingFile The location at which the copy-listing file    *                           is to be created.    * @param options Input Options for DistCp (indicating source/target paths.)    * @throws IOException    */
+comment|/**    * Implementation of CopyListing::buildListing().    * Creates the copy listing by "globbing" all source-paths.    * @param pathToListingFile The location at which the copy-listing file    *                           is to be created.    * @param context The distcp context with associated input options.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|doBuildListing (Path pathToListingFile, DistCpOptions options)
+DECL|method|doBuildListing (Path pathToListingFile, DistCpContext context)
 specifier|public
 name|void
 name|doBuildListing
@@ -236,8 +236,8 @@ parameter_list|(
 name|Path
 name|pathToListingFile
 parameter_list|,
-name|DistCpOptions
-name|options
+name|DistCpContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
@@ -257,7 +257,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|options
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -279,7 +279,7 @@ control|(
 name|Path
 name|p
 range|:
-name|options
+name|context
 operator|.
 name|getSourcePaths
 argument_list|()
@@ -353,16 +353,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-name|DistCpOptions
-name|optionsGlobbed
-init|=
-operator|new
-name|DistCpOptions
-argument_list|(
-name|options
-argument_list|)
-decl_stmt|;
-name|optionsGlobbed
+name|context
 operator|.
 name|setSourcePaths
 argument_list|(
@@ -375,7 +366,7 @@ name|buildListing
 argument_list|(
 name|pathToListingFile
 argument_list|,
-name|optionsGlobbed
+name|context
 argument_list|)
 expr_stmt|;
 block|}

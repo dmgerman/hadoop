@@ -20,11 +20,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Assert
+name|hadoop
 operator|.
-name|assertFalse
+name|test
+operator|.
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
 import|;
 end_import
 
@@ -115,16 +119,6 @@ operator|.
 name|conf
 operator|.
 name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Iterator
 import|;
 end_import
 
@@ -1451,7 +1445,7 @@ name|assertEquals
 argument_list|(
 name|DistCpOptions
 operator|.
-name|maxNumListstatusThreads
+name|MAX_NUM_LISTSTATUS_THREADS
 argument_list|,
 name|options
 operator|.
@@ -1663,93 +1657,6 @@ name|IllegalArgumentException
 name|ignore
 parameter_list|)
 block|{}
-block|}
-annotation|@
-name|Test
-DECL|method|testToString ()
-specifier|public
-name|void
-name|testToString
-parameter_list|()
-block|{
-name|DistCpOptions
-name|option
-init|=
-operator|new
-name|DistCpOptions
-argument_list|(
-operator|new
-name|Path
-argument_list|(
-literal|"abc"
-argument_list|)
-argument_list|,
-operator|new
-name|Path
-argument_list|(
-literal|"xyz"
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|String
-name|val
-init|=
-literal|"DistCpOptions{atomicCommit=false, syncFolder=false, "
-operator|+
-literal|"deleteMissing=false, ignoreFailures=false, overwrite=false, "
-operator|+
-literal|"append=false, useDiff=false, useRdiff=false, "
-operator|+
-literal|"fromSnapshot=null, toSnapshot=null, "
-operator|+
-literal|"skipCRC=false, blocking=true, numListstatusThreads=0, maxMaps=20, "
-operator|+
-literal|"mapBandwidth=0.0, "
-operator|+
-literal|"copyStrategy='uniformsize', preserveStatus=[], "
-operator|+
-literal|"preserveRawXattrs=false, atomicWorkPath=null, logPath=null, "
-operator|+
-literal|"sourceFileListing=abc, sourcePaths=null, targetPath=xyz, "
-operator|+
-literal|"targetPathExists=true, filtersFile='null', blocksPerChunk=0}"
-decl_stmt|;
-name|String
-name|optionString
-init|=
-name|option
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-name|val
-argument_list|,
-name|optionString
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertNotSame
-argument_list|(
-name|DistCpOptionSwitch
-operator|.
-name|ATOMIC_COMMIT
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-name|DistCpOptionSwitch
-operator|.
-name|ATOMIC_COMMIT
-operator|.
-name|name
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 annotation|@
 name|Test
@@ -2806,45 +2713,10 @@ literal|"hdfs://localhost:9820/target/"
 block|}
 argument_list|)
 expr_stmt|;
-name|int
-name|i
-init|=
-literal|0
-decl_stmt|;
-name|Iterator
-argument_list|<
-name|FileAttribute
-argument_list|>
-name|attribIterator
-init|=
-name|options
-operator|.
-name|preserveAttributes
-argument_list|()
-decl_stmt|;
-while|while
-condition|(
-name|attribIterator
-operator|.
-name|hasNext
-argument_list|()
-condition|)
-block|{
-name|attribIterator
-operator|.
-name|next
-argument_list|()
-expr_stmt|;
-name|i
-operator|++
-expr_stmt|;
-block|}
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|i
-argument_list|,
 name|DistCpOptionSwitch
 operator|.
 name|PRESERVE_STATUS_DEFAULT
@@ -2853,6 +2725,14 @@ name|length
 argument_list|()
 operator|-
 literal|2
+argument_list|,
+name|options
+operator|.
+name|getPreserveAttributes
+argument_list|()
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 try|try
@@ -2885,39 +2765,39 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IllegalArgumentException
-name|ignore
-parameter_list|)
-block|{}
-catch|catch
-parameter_list|(
 name|NoSuchElementException
 name|ignore
 parameter_list|)
 block|{}
-name|options
-operator|=
-name|OptionsParser
+name|Builder
+name|builder
+init|=
+operator|new
+name|DistCpOptions
 operator|.
-name|parse
+name|Builder
 argument_list|(
 operator|new
-name|String
-index|[]
-block|{
-literal|"-f"
-block|,
+name|Path
+argument_list|(
 literal|"hdfs://localhost:9820/source/first"
-block|,
-literal|"hdfs://localhost:9820/target/"
-block|}
 argument_list|)
-expr_stmt|;
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"hdfs://localhost:9820/target/"
+argument_list|)
+argument_list|)
+decl_stmt|;
 name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|options
+name|builder
+operator|.
+name|build
+argument_list|()
 operator|.
 name|shouldPreserve
 argument_list|(
@@ -2927,7 +2807,7 @@ name|PERMISSION
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|options
+name|builder
 operator|.
 name|preserve
 argument_list|(
@@ -2940,7 +2820,10 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|options
+name|builder
+operator|.
+name|build
+argument_list|()
 operator|.
 name|shouldPreserve
 argument_list|(
@@ -2950,7 +2833,7 @@ name|PERMISSION
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|options
+name|builder
 operator|.
 name|preserve
 argument_list|(
@@ -2963,7 +2846,10 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|options
+name|builder
+operator|.
+name|build
+argument_list|()
 operator|.
 name|shouldPreserve
 argument_list|(
@@ -4256,8 +4142,6 @@ expr_stmt|;
 block|}
 try|try
 block|{
-name|options
-operator|=
 name|OptionsParser
 operator|.
 name|parse
@@ -4266,7 +4150,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|optionStr
+literal|"-diff"
 block|,
 literal|"s1"
 block|,
@@ -4282,18 +4166,9 @@ literal|"hdfs://localhost:9820/target/"
 block|}
 argument_list|)
 expr_stmt|;
-name|assertFalse
+name|fail
 argument_list|(
-literal|"-delete should be ignored when "
-operator|+
-name|optionStr
-operator|+
-literal|" is specified"
-argument_list|,
-name|options
-operator|.
-name|shouldDeleteMissing
-argument_list|()
+literal|"Should fail as -delete and -diff/-rdiff are mutually exclusive"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4303,21 +4178,16 @@ name|IllegalArgumentException
 name|e
 parameter_list|)
 block|{
-name|fail
+name|assertExceptionContains
 argument_list|(
-literal|"Got unexpected IllegalArgumentException: "
-operator|+
+literal|"-delete and -diff/-rdiff are mutually exclusive"
+argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 try|try
 block|{
-name|options
-operator|=
 name|OptionsParser
 operator|.
 name|parse
@@ -4326,7 +4196,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|optionStr
+literal|"-diff"
 block|,
 literal|"s1"
 block|,
@@ -4342,9 +4212,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-name|optionStr
-operator|+
-literal|" should fail if -update option is not specified"
+literal|"Should fail as -delete and -diff/-rdiff are mutually exclusive"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4354,21 +4222,9 @@ name|IllegalArgumentException
 name|e
 parameter_list|)
 block|{
-name|assertFalse
-argument_list|(
-literal|"-delete should be ignored when -diff is specified"
-argument_list|,
-name|options
-operator|.
-name|shouldDeleteMissing
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|GenericTestUtils
-operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"-diff/-rdiff is valid only with -update option"
+literal|"-delete and -diff/-rdiff are mutually exclusive"
 argument_list|,
 name|e
 argument_list|)
@@ -4402,9 +4258,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-name|optionStr
-operator|+
-literal|" should fail if -update option is not specified"
+literal|"Should fail as -delete and -diff are mutually exclusive"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4414,11 +4268,9 @@ name|IllegalArgumentException
 name|e
 parameter_list|)
 block|{
-name|GenericTestUtils
-operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"-diff/-rdiff is valid only with -update option"
+literal|"-delete and -diff/-rdiff are mutually exclusive"
 argument_list|,
 name|e
 argument_list|)
