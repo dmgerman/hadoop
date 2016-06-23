@@ -462,6 +462,26 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
+name|DistSchedAllocateRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
 name|DistSchedRegisterResponse
 import|;
 end_import
@@ -841,12 +861,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocateForDistributedScheduling (AllocateRequest request)
+DECL|method|allocateForDistributedScheduling ( DistSchedAllocateRequest request)
 specifier|public
 name|DistSchedAllocateResponse
 name|allocateForDistributedScheduling
 parameter_list|(
-name|AllocateRequest
+name|DistSchedAllocateRequest
 name|request
 parameter_list|)
 throws|throws
@@ -1206,7 +1226,7 @@ specifier|public
 name|DistSchedAllocateResponse
 name|allocateForDistributedScheduling
 parameter_list|(
-name|AllocateRequest
+name|DistSchedAllocateRequest
 name|request
 parameter_list|)
 throws|throws

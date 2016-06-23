@@ -94,11 +94,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
 name|api
 operator|.
 name|protocolrecords
 operator|.
-name|AllocateRequest
+name|DistSchedAllocateRequest
 import|;
 end_import
 
@@ -224,11 +226,11 @@ annotation|@
 name|Unstable
 annotation|@
 name|Idempotent
-DECL|method|allocateForDistributedScheduling ( AllocateRequest request)
+DECL|method|allocateForDistributedScheduling ( DistSchedAllocateRequest request)
 name|DistSchedAllocateResponse
 name|allocateForDistributedScheduling
 parameter_list|(
-name|AllocateRequest
+name|DistSchedAllocateRequest
 name|request
 parameter_list|)
 throws|throws

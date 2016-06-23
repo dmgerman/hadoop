@@ -90,6 +90,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|proto
+operator|.
+name|YarnServerCommonServiceProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
@@ -131,6 +147,26 @@ operator|.
 name|protocolrecords
 operator|.
 name|AllocateResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|DistSchedAllocateRequest
 import|;
 end_import
 
@@ -287,6 +323,30 @@ operator|.
 name|pb
 operator|.
 name|AllocateResponsePBImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|impl
+operator|.
+name|pb
+operator|.
+name|DistSchedAllocateRequestPBImpl
 import|;
 end_import
 
@@ -618,7 +678,7 @@ annotation|@
 name|Override
 specifier|public
 name|DistSchedRegisterResponse
-DECL|method|registerApplicationMasterForDistributedScheduling (RegisterApplicationMasterRequest request)
+DECL|method|registerApplicationMasterForDistributedScheduling ( RegisterApplicationMasterRequest request)
 name|registerApplicationMasterForDistributedScheduling
 parameter_list|(
 name|RegisterApplicationMasterRequest
@@ -681,12 +741,12 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|allocateForDistributedScheduling (AllocateRequest request)
+DECL|method|allocateForDistributedScheduling ( DistSchedAllocateRequest request)
 specifier|public
 name|DistSchedAllocateResponse
 name|allocateForDistributedScheduling
 parameter_list|(
-name|AllocateRequest
+name|DistSchedAllocateRequest
 name|request
 parameter_list|)
 throws|throws
@@ -694,14 +754,14 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-name|YarnServiceProtos
+name|YarnServerCommonServiceProtos
 operator|.
-name|AllocateRequestProto
+name|DistSchedAllocateRequestProto
 name|requestProto
 init|=
 operator|(
 operator|(
-name|AllocateRequestPBImpl
+name|DistSchedAllocateRequestPBImpl
 operator|)
 name|request
 operator|)

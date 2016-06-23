@@ -136,6 +136,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ExecutionType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeId
 import|;
 end_import
@@ -371,6 +389,17 @@ function_decl|;
 DECL|method|getQueueName ()
 name|String
 name|getQueueName
+parameter_list|()
+function_decl|;
+DECL|method|getExecutionType ()
+name|ExecutionType
+name|getExecutionType
+parameter_list|()
+function_decl|;
+comment|/**    * If the container was allocated by a container other than the Resource    * Manager (e.g., the distributed scheduler in the NM    *<code>LocalScheduler</code>).    * @return If the container was allocated remotely.    */
+DECL|method|isRemotelyAllocated ()
+name|boolean
+name|isRemotelyAllocated
 parameter_list|()
 function_decl|;
 block|}
