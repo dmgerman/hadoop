@@ -4048,7 +4048,7 @@ operator|(
 name|flags
 operator|&
 operator|~
-literal|0x2F
+literal|0x3F
 operator|)
 operator|!=
 literal|0
