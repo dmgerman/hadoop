@@ -2053,6 +2053,14 @@ operator|.
 name|getBlock
 argument_list|()
 decl_stmt|;
+name|long
+name|requestedNumBytes
+init|=
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|getRemaining
@@ -2064,13 +2072,10 @@ name|getNumBytes
 argument_list|()
 condition|)
 block|{
-name|block
-operator|.
-name|setNumBytes
-argument_list|(
+name|requestedNumBytes
+operator|=
 name|getRemaining
 argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 name|setRemaining
@@ -2078,10 +2083,7 @@ argument_list|(
 name|getRemaining
 argument_list|()
 operator|-
-name|block
-operator|.
-name|getNumBytes
-argument_list|()
+name|requestedNumBytes
 argument_list|)
 expr_stmt|;
 name|StripedBlockInfo
@@ -2157,6 +2159,8 @@ name|datanodes
 index|[
 name|j
 index|]
+argument_list|,
+name|requestedNumBytes
 argument_list|)
 expr_stmt|;
 name|done
@@ -2254,7 +2258,7 @@ name|done
 return|;
 block|}
 comment|/**      * Return true when sounds good to continue or retry, false when severe      * condition or totally failed.      */
-DECL|method|tryDatanode (LocatedStripedBlock blockGroup, StripedBlockInfo stripedBlockInfo, DatanodeInfo datanode)
+DECL|method|tryDatanode (LocatedStripedBlock blockGroup, StripedBlockInfo stripedBlockInfo, DatanodeInfo datanode, long requestedNumBytes)
 specifier|private
 name|void
 name|tryDatanode
@@ -2267,6 +2271,9 @@ name|stripedBlockInfo
 parameter_list|,
 name|DatanodeInfo
 name|datanode
+parameter_list|,
+name|long
+name|requestedNumBytes
 parameter_list|)
 throws|throws
 name|IOException
@@ -2322,6 +2329,8 @@ name|blockGroup
 operator|.
 name|getBlockToken
 argument_list|()
+argument_list|,
+name|requestedNumBytes
 argument_list|)
 expr_stmt|;
 name|BlockOpResponseProto

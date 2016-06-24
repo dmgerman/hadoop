@@ -537,8 +537,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get striped block group checksum (MD5 of CRC32).    *    * @param stripedBlockInfo a striped block info.    * @param blockToken security token for accessing the block.    * @throws IOException    */
-DECL|method|blockGroupChecksum (StripedBlockInfo stripedBlockInfo, Token<BlockTokenIdentifier> blockToken)
+comment|/**    * Get striped block group checksum (MD5 of CRC32).    *    * @param stripedBlockInfo a striped block info.    * @param blockToken security token for accessing the block.    * @param requestedNumBytes requested number of bytes in the block group    *                          to compute the checksum.    * @throws IOException    */
+DECL|method|blockGroupChecksum (StripedBlockInfo stripedBlockInfo, Token<BlockTokenIdentifier> blockToken, long requestedNumBytes)
 name|void
 name|blockGroupChecksum
 parameter_list|(
@@ -550,6 +550,9 @@ argument_list|<
 name|BlockTokenIdentifier
 argument_list|>
 name|blockToken
+parameter_list|,
+name|long
+name|requestedNumBytes
 parameter_list|)
 throws|throws
 name|IOException

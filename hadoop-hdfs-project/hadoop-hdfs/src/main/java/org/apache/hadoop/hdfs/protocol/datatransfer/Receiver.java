@@ -2118,6 +2118,11 @@ operator|.
 name|getToken
 argument_list|()
 argument_list|)
+argument_list|,
+name|proto
+operator|.
+name|getRequestedNumBytes
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

@@ -1353,39 +1353,24 @@ name|getDigest
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"block="
-operator|+
+literal|"block={}, bytesPerCRC={}, crcPerBlock={}, md5out={}"
+argument_list|,
 name|getBlock
 argument_list|()
-operator|+
-literal|", bytesPerCRC="
-operator|+
+argument_list|,
 name|getBytesPerCRC
 argument_list|()
-operator|+
-literal|", crcPerBlock="
-operator|+
+argument_list|,
 name|getCrcPerBlock
 argument_list|()
-operator|+
-literal|", md5out="
-operator|+
+argument_list|,
 name|md5out
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 finally|finally
 block|{
@@ -1613,6 +1598,12 @@ name|byte
 index|[]
 name|blockIndices
 decl_stmt|;
+DECL|field|requestedNumBytes
+specifier|private
+specifier|final
+name|long
+name|requestedNumBytes
+decl_stmt|;
 DECL|field|md5writer
 specifier|private
 specifier|final
@@ -1623,7 +1614,7 @@ operator|new
 name|DataOutputBuffer
 argument_list|()
 decl_stmt|;
-DECL|method|BlockGroupNonStripedChecksumComputer (DataNode datanode, StripedBlockInfo stripedBlockInfo)
+DECL|method|BlockGroupNonStripedChecksumComputer (DataNode datanode, StripedBlockInfo stripedBlockInfo, long requestedNumBytes)
 name|BlockGroupNonStripedChecksumComputer
 parameter_list|(
 name|DataNode
@@ -1631,6 +1622,9 @@ name|datanode
 parameter_list|,
 name|StripedBlockInfo
 name|stripedBlockInfo
+parameter_list|,
+name|long
+name|requestedNumBytes
 parameter_list|)
 throws|throws
 name|IOException
@@ -1684,6 +1678,12 @@ name|stripedBlockInfo
 operator|.
 name|getBlockIndices
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|requestedNumBytes
+operator|=
+name|requestedNumBytes
 expr_stmt|;
 block|}
 DECL|class|LiveBlockInfo
@@ -1847,6 +1847,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|long
+name|checksumLen
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -1868,6 +1873,16 @@ control|)
 block|{
 try|try
 block|{
+name|ExtendedBlock
+name|block
+init|=
+name|getInternalBlock
+argument_list|(
+name|numDataUnits
+argument_list|,
+name|idx
+argument_list|)
+decl_stmt|;
 name|LiveBlockInfo
 name|liveBlkInfo
 init|=
@@ -1892,6 +1907,11 @@ comment|// reconstruct block and calculate checksum for missing node
 name|recalculateChecksum
 argument_list|(
 name|idx
+argument_list|,
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1899,25 +1919,6 @@ else|else
 block|{
 try|try
 block|{
-name|ExtendedBlock
-name|block
-init|=
-name|StripedBlockUtil
-operator|.
-name|constructInternalBlock
-argument_list|(
-name|blockGroup
-argument_list|,
-name|ecPolicy
-operator|.
-name|getCellSize
-argument_list|()
-argument_list|,
-name|numDataUnits
-argument_list|,
-name|idx
-argument_list|)
-decl_stmt|;
 name|checksumBlock
 argument_list|(
 name|block
@@ -1955,9 +1956,31 @@ comment|// reconstruct block and calculate checksum for the failed node
 name|recalculateChecksum
 argument_list|(
 name|idx
+argument_list|,
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+name|checksumLen
+operator|+=
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|checksumLen
+operator|>=
+name|requestedNumBytes
+condition|)
+block|{
+break|break;
+comment|// done with the computation, simply return.
 block|}
 block|}
 catch|catch
@@ -1998,6 +2021,66 @@ name|getDigest
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getInternalBlock (int numDataUnits, int idx)
+specifier|private
+name|ExtendedBlock
+name|getInternalBlock
+parameter_list|(
+name|int
+name|numDataUnits
+parameter_list|,
+name|int
+name|idx
+parameter_list|)
+block|{
+comment|// Sets requested number of bytes in blockGroup which is required to
+comment|// construct the internal block for computing checksum.
+name|long
+name|actualNumBytes
+init|=
+name|blockGroup
+operator|.
+name|getNumBytes
+argument_list|()
+decl_stmt|;
+name|blockGroup
+operator|.
+name|setNumBytes
+argument_list|(
+name|requestedNumBytes
+argument_list|)
+expr_stmt|;
+name|ExtendedBlock
+name|block
+init|=
+name|StripedBlockUtil
+operator|.
+name|constructInternalBlock
+argument_list|(
+name|blockGroup
+argument_list|,
+name|ecPolicy
+operator|.
+name|getCellSize
+argument_list|()
+argument_list|,
+name|numDataUnits
+argument_list|,
+name|idx
+argument_list|)
+decl_stmt|;
+comment|// Set back actualNumBytes value in blockGroup.
+name|blockGroup
+operator|.
+name|setNumBytes
+argument_list|(
+name|actualNumBytes
+argument_list|)
+expr_stmt|;
+return|return
+name|block
+return|;
 block|}
 DECL|method|checksumBlock (ExtendedBlock block, int blockIdx, Token<BlockTokenIdentifier> blockToken, DatanodeInfo targetDatanode)
 specifier|private
@@ -2217,60 +2300,43 @@ argument_list|(
 name|md5writer
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"got reply from "
-operator|+
+literal|"got reply from datanode:{}, md5={}"
+argument_list|,
 name|targetDatanode
-operator|+
-literal|": md5="
-operator|+
+argument_list|,
 name|md5
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-comment|/**      * Reconstruct this data block and recalculate checksum.      *      * @param errBlkIndex      *          error index to be reconstrcuted and recalculate checksum.      * @throws IOException      */
-DECL|method|recalculateChecksum (int errBlkIndex)
+comment|/**      * Reconstruct this data block and recalculate checksum.      *      * @param errBlkIndex      *          error index to be reconstructed and recalculate checksum.      * @param blockLength      *          number of bytes in the block to compute checksum.      * @throws IOException      */
+DECL|method|recalculateChecksum (int errBlkIndex, long blockLength)
 specifier|private
 name|void
 name|recalculateChecksum
 parameter_list|(
 name|int
 name|errBlkIndex
+parameter_list|,
+name|long
+name|blockLength
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Recalculate checksum for the missing/failed block index "
-operator|+
+literal|"Recalculate checksum for the missing/failed block index {}"
+argument_list|,
 name|errBlkIndex
 argument_list|)
 expr_stmt|;
-block|}
 name|byte
 index|[]
 name|errIndices
@@ -2324,6 +2390,8 @@ argument_list|,
 name|stripedReconInfo
 argument_list|,
 name|md5writer
+argument_list|,
+name|blockLength
 argument_list|)
 decl_stmt|;
 name|checksumRecon
@@ -2378,31 +2446,20 @@ name|getChecksumType
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Recalculated checksum for the block index "
-operator|+
+literal|"Recalculated checksum for the block index:{}, md5={}"
+argument_list|,
 name|errBlkIndex
-operator|+
-literal|": md5="
-operator|+
+argument_list|,
 name|checksumRecon
 operator|.
 name|getMD5
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|setOrVerifyChecksumProperties (int blockIdx, int bpc, final long cpb, DataChecksum.Type ct)
 specifier|private
@@ -2525,14 +2582,6 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-if|if
-condition|(
 name|blockIdx
 operator|==
 literal|0
@@ -2542,18 +2591,15 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"set bytesPerCRC="
-operator|+
+literal|"set bytesPerCRC={}, crcPerBlock={}"
+argument_list|,
 name|getBytesPerCRC
 argument_list|()
-operator|+
-literal|", crcPerBlock="
-operator|+
+argument_list|,
 name|getCrcPerBlock
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}

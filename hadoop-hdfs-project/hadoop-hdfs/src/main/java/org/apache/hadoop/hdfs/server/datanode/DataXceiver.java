@@ -5800,7 +5800,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|blockGroupChecksum (final StripedBlockInfo stripedBlockInfo, final Token<BlockTokenIdentifier> blockToken)
+DECL|method|blockGroupChecksum (final StripedBlockInfo stripedBlockInfo, final Token<BlockTokenIdentifier> blockToken, long requestedNumBytes)
 specifier|public
 name|void
 name|blockGroupChecksum
@@ -5815,6 +5815,9 @@ argument_list|<
 name|BlockTokenIdentifier
 argument_list|>
 name|blockToken
+parameter_list|,
+name|long
+name|requestedNumBytes
 parameter_list|)
 throws|throws
 name|IOException
@@ -5873,6 +5876,8 @@ argument_list|(
 name|datanode
 argument_list|,
 name|stripedBlockInfo
+argument_list|,
+name|requestedNumBytes
 argument_list|)
 decl_stmt|;
 try|try

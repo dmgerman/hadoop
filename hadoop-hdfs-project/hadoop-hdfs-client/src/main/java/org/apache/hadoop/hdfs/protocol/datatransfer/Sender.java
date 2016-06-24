@@ -1732,7 +1732,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|blockGroupChecksum (StripedBlockInfo stripedBlockInfo, Token<BlockTokenIdentifier> blockToken)
+DECL|method|blockGroupChecksum (StripedBlockInfo stripedBlockInfo, Token<BlockTokenIdentifier> blockToken, long requestedNumBytes)
 specifier|public
 name|void
 name|blockGroupChecksum
@@ -1745,6 +1745,9 @@ argument_list|<
 name|BlockTokenIdentifier
 argument_list|>
 name|blockToken
+parameter_list|,
+name|long
+name|requestedNumBytes
 parameter_list|)
 throws|throws
 name|IOException
@@ -1822,6 +1825,11 @@ operator|.
 name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
+argument_list|)
+operator|.
+name|setRequestedNumBytes
+argument_list|(
+name|requestedNumBytes
 argument_list|)
 operator|.
 name|build
