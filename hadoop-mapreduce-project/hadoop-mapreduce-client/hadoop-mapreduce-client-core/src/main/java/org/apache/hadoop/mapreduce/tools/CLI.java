@@ -4100,7 +4100,7 @@ name|getValue
 argument_list|()
 return|;
 block|}
-comment|/**    * List the events for the given job    * @param jobId the job id for the job's events to list    * @throws IOException    */
+comment|/**    * List the events for the given job    * @param job the job to list    * @param fromEventId event id for the job's events to list from    * @param numEvents number of events we want to list    * @throws IOException    */
 DECL|method|listEvents (Job job, int fromEventId, int numEvents)
 specifier|private
 name|void
