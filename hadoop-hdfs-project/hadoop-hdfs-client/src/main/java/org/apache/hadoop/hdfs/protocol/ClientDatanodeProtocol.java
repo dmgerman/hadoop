@@ -198,6 +198,24 @@ name|TokenInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|DiskBalancerWorkStatus
+import|;
+end_import
+
 begin_comment
 comment|/** An client-datanode protocol for block recovery  */
 end_comment
@@ -359,6 +377,56 @@ DECL|method|getBalancerBandwidth ()
 name|long
 name|getBalancerBandwidth
 parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Submit a disk balancer plan for execution.    */
+DECL|method|submitDiskBalancerPlan (String planID, long planVersion, String plan, boolean skipDateCheck)
+name|void
+name|submitDiskBalancerPlan
+parameter_list|(
+name|String
+name|planID
+parameter_list|,
+name|long
+name|planVersion
+parameter_list|,
+name|String
+name|plan
+parameter_list|,
+name|boolean
+name|skipDateCheck
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Cancel an executing plan.    *    * @param planID - A SHA512 hash of the plan string.    */
+DECL|method|cancelDiskBalancePlan (String planID)
+name|void
+name|cancelDiskBalancePlan
+parameter_list|(
+name|String
+name|planID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Gets the status of an executing diskbalancer Plan.    */
+DECL|method|queryDiskBalancerPlan ()
+name|DiskBalancerWorkStatus
+name|queryDiskBalancerPlan
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Gets a run-time configuration value from running diskbalancer instance.    * For example : Disk Balancer bandwidth of a running instance.    *    * @param key runtime configuration key    * @return value of the key as a string.    * @throws IOException - Throws if there is no such key    */
+DECL|method|getDiskBalancerSetting (String key)
+name|String
+name|getDiskBalancerSetting
+parameter_list|(
+name|String
+name|key
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;

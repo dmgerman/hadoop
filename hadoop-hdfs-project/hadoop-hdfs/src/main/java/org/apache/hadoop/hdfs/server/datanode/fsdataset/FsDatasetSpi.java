@@ -1834,6 +1834,21 @@ name|long
 name|blockId
 parameter_list|)
 function_decl|;
+comment|/**    * Moves a given block from one volume to another volume. This is used by disk    * balancer.    *    * @param block       - ExtendedBlock    * @param destination - Destination volume    * @return Old replica info    */
+DECL|method|moveBlockAcrossVolumes (final ExtendedBlock block, FsVolumeSpi destination)
+name|ReplicaInfo
+name|moveBlockAcrossVolumes
+parameter_list|(
+specifier|final
+name|ExtendedBlock
+name|block
+parameter_list|,
+name|FsVolumeSpi
+name|destination
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

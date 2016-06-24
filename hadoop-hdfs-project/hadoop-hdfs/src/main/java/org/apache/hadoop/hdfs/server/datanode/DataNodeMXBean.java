@@ -149,6 +149,12 @@ argument_list|>
 name|getDatanodeNetworkCounts
 parameter_list|()
 function_decl|;
+comment|/**    * Gets the diskBalancer Status.    * Please see implementation for the format of the returned information.    *    * @return  DiskBalancer Status    */
+DECL|method|getDiskBalancerStatus ()
+name|String
+name|getDiskBalancerStatus
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
