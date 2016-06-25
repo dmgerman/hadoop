@@ -896,6 +896,21 @@ name|Integer
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|EXTERNAL_CALL_HANDLER
+specifier|private
+specifier|static
+specifier|final
+name|ThreadLocal
+argument_list|<
+name|Object
+argument_list|>
+name|EXTERNAL_CALL_HANDLER
+init|=
+operator|new
+name|ThreadLocal
+argument_list|<>
+argument_list|()
+decl_stmt|;
 specifier|private
 specifier|static
 specifier|final
@@ -988,7 +1003,7 @@ argument_list|()
 return|;
 block|}
 comment|/** Set call id and retry count for the next call. */
-DECL|method|setCallIdAndRetryCount (int cid, int rc)
+DECL|method|setCallIdAndRetryCount (int cid, int rc, Object externalHandler)
 specifier|public
 specifier|static
 name|void
@@ -999,6 +1014,9 @@ name|cid
 parameter_list|,
 name|int
 name|rc
+parameter_list|,
+name|Object
+name|externalHandler
 parameter_list|)
 block|{
 name|Preconditions
@@ -1047,6 +1065,13 @@ operator|.
 name|set
 argument_list|(
 name|rc
+argument_list|)
+expr_stmt|;
+name|EXTERNAL_CALL_HANDLER
+operator|.
+name|set
+argument_list|(
+name|externalHandler
 argument_list|)
 expr_stmt|;
 block|}
@@ -1734,6 +1759,12 @@ name|boolean
 name|done
 decl_stmt|;
 comment|// true when call is done
+DECL|field|externalHandler
+specifier|private
+specifier|final
+name|Object
+name|externalHandler
+decl_stmt|;
 DECL|method|Call (RPC.RpcKind rpcKind, Writable param)
 specifier|private
 name|Call
@@ -1831,6 +1862,15 @@ operator|=
 name|rc
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|externalHandler
+operator|=
+name|EXTERNAL_CALL_HANDLER
+operator|.
+name|get
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1868,6 +1908,25 @@ name|notify
 argument_list|()
 expr_stmt|;
 comment|// notify caller
+if|if
+condition|(
+name|externalHandler
+operator|!=
+literal|null
+condition|)
+block|{
+synchronized|synchronized
+init|(
+name|externalHandler
+init|)
+block|{
+name|externalHandler
+operator|.
+name|notify
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|/** Set the exception when there is an error.      * Notify the caller the call is done.      *       * @param error exception thrown by the call; either local or remote      */
 DECL|method|setException (IOException error)

@@ -2278,6 +2278,8 @@ name|nextInt
 argument_list|(
 literal|255
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -2538,6 +2540,8 @@ name|nextCallId
 argument_list|()
 argument_list|,
 name|retryCount
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Attach a listener that tracks every call ID received by the server.

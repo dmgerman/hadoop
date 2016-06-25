@@ -6429,6 +6429,8 @@ argument_list|(
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|client
@@ -6614,6 +6616,8 @@ argument_list|(
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|client
@@ -6809,6 +6813,8 @@ name|nextCallId
 argument_list|()
 argument_list|,
 literal|255
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Attach a listener that tracks every call ID received by the server.

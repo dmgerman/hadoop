@@ -228,6 +228,7 @@ specifier|public
 enum|enum
 name|RetryDecision
 block|{
+comment|// Ordering: FAIL< RETRY< FAILOVER_AND_RETRY.
 DECL|enumConstant|FAIL
 name|FAIL
 block|,

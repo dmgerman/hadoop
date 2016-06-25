@@ -58,6 +58,10 @@ comment|/** Call should be retried according to the {@link RetryPolicy}. */
 DECL|enumConstant|RETRY
 name|RETRY
 block|,
+comment|/** Call should wait and then retry according to the {@link RetryPolicy}. */
+DECL|enumConstant|WAIT_RETRY
+name|WAIT_RETRY
+block|,
 comment|/** Call, which is async, is still in progress. */
 DECL|enumConstant|ASYNC_CALL_IN_PROGRESS
 name|ASYNC_CALL_IN_PROGRESS
@@ -106,6 +110,20 @@ argument_list|(
 name|State
 operator|.
 name|RETRY
+argument_list|)
+decl_stmt|;
+DECL|field|WAIT_RETRY
+specifier|static
+specifier|final
+name|CallReturn
+name|WAIT_RETRY
+init|=
+operator|new
+name|CallReturn
+argument_list|(
+name|State
+operator|.
+name|WAIT_RETRY
 argument_list|)
 decl_stmt|;
 DECL|field|returnValue
