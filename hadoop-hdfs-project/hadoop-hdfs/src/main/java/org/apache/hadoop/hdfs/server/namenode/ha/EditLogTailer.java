@@ -1770,6 +1770,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// reset the loop count on success
+name|nnLoopCount
+operator|=
+literal|0
+expr_stmt|;
 while|while
 condition|(
 operator|(
@@ -1790,11 +1795,6 @@ init|=
 name|doWork
 argument_list|()
 decl_stmt|;
-comment|// reset the loop count on success
-name|nnLoopCount
-operator|=
-literal|0
-expr_stmt|;
 return|return
 name|ret
 return|;
