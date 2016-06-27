@@ -1077,6 +1077,46 @@ init|=
 literal|5000
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_GROUPS_CACHE_BACKGROUND_RELOAD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_GROUPS_CACHE_BACKGROUND_RELOAD
+init|=
+literal|"hadoop.security.groups.cache.background.reload"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a>. */
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|HADOOP_SECURITY_GROUPS_CACHE_BACKGROUND_RELOAD_DEFAULT
+name|HADOOP_SECURITY_GROUPS_CACHE_BACKGROUND_RELOAD_DEFAULT
+init|=
+literal|false
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a>. */
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|HADOOP_SECURITY_GROUPS_CACHE_BACKGROUND_RELOAD_THREADS
+name|HADOOP_SECURITY_GROUPS_CACHE_BACKGROUND_RELOAD_THREADS
+init|=
+literal|"hadoop.security.groups.cache.background.reload.threads"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a>. */
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|HADOOP_SECURITY_GROUPS_CACHE_BACKGROUND_RELOAD_THREADS_DEFAULT
+name|HADOOP_SECURITY_GROUPS_CACHE_BACKGROUND_RELOAD_THREADS_DEFAULT
+init|=
+literal|3
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a>.*/
 DECL|field|HADOOP_SECURITY_AUTHENTICATION
 specifier|public
 specifier|static
