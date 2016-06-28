@@ -1106,12 +1106,12 @@ argument_list|,
 literal|"tokenFile.binary"
 argument_list|)
 decl_stmt|;
-DECL|field|numSlaves
+DECL|field|NUMWORKERS
 specifier|private
 specifier|static
 specifier|final
 name|int
-name|numSlaves
+name|NUMWORKERS
 init|=
 literal|1
 decl_stmt|;
@@ -1205,7 +1205,7 @@ name|builder
 operator|.
 name|numDataNodes
 argument_list|(
-name|numSlaves
+name|NUMWORKERS
 argument_list|)
 expr_stmt|;
 name|builder

@@ -296,11 +296,11 @@ specifier|static
 name|MiniDFSCluster
 name|dfsCluster
 decl_stmt|;
-DECL|field|numSlaves
+DECL|field|numWorkers
 specifier|private
 specifier|static
 name|int
-name|numSlaves
+name|numWorkers
 init|=
 literal|1
 decl_stmt|;
@@ -354,7 +354,7 @@ argument_list|)
 operator|.
 name|numDataNodes
 argument_list|(
-name|numSlaves
+name|numWorkers
 argument_list|)
 operator|.
 name|build

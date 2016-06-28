@@ -260,12 +260,12 @@ specifier|public
 class|class
 name|TestLazyOutput
 block|{
-DECL|field|NUM_HADOOP_SLAVES
+DECL|field|NUM_HADOOP_WORKERS
 specifier|private
 specifier|static
 specifier|final
 name|int
-name|NUM_HADOOP_SLAVES
+name|NUM_HADOOP_WORKERS
 init|=
 literal|3
 decl_stmt|;
@@ -278,12 +278,12 @@ name|NUM_MAPS_PER_NODE
 init|=
 literal|2
 decl_stmt|;
-DECL|field|INPUT
+DECL|field|INPUTPATH
 specifier|private
 specifier|static
 specifier|final
 name|Path
-name|INPUT
+name|INPUTPATH
 init|=
 operator|new
 name|Path
@@ -291,7 +291,7 @@ argument_list|(
 literal|"/testlazy/input"
 argument_list|)
 decl_stmt|;
-DECL|field|input
+DECL|field|INPUTLIST
 specifier|private
 specifier|static
 specifier|final
@@ -299,7 +299,7 @@ name|List
 argument_list|<
 name|String
 argument_list|>
-name|input
+name|INPUTLIST
 init|=
 name|Arrays
 operator|.
@@ -557,7 +557,7 @@ name|setInputPaths
 argument_list|(
 name|job
 argument_list|,
-name|INPUT
+name|INPUTPATH
 argument_list|)
 expr_stmt|;
 name|FileOutputFormat
@@ -724,7 +724,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|INPUT
+name|INPUTPATH
 argument_list|,
 literal|"text"
 operator|+
@@ -748,7 +748,7 @@ control|(
 name|String
 name|inp
 range|:
-name|input
+name|INPUTLIST
 control|)
 block|{
 name|wr
@@ -815,7 +815,7 @@ argument_list|)
 operator|.
 name|numDataNodes
 argument_list|(
-name|NUM_HADOOP_SLAVES
+name|NUM_HADOOP_WORKERS
 argument_list|)
 operator|.
 name|build
@@ -833,7 +833,7 @@ operator|=
 operator|new
 name|MiniMRCluster
 argument_list|(
-name|NUM_HADOOP_SLAVES
+name|NUM_HADOOP_WORKERS
 argument_list|,
 name|fileSys
 operator|.
@@ -854,7 +854,7 @@ decl_stmt|;
 name|int
 name|numMappers
 init|=
-name|NUM_HADOOP_SLAVES
+name|NUM_HADOOP_WORKERS
 operator|*
 name|NUM_MAPS_PER_NODE
 decl_stmt|;

@@ -291,7 +291,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * BlockTokenSecretManager can be instantiated in 2 modes, master mode and slave  * mode. Master can generate new block keys and export block keys to slaves,  * while slaves can only import and use block keys received from master. Both  * master and slave can generate and verify block tokens. Typically, master mode  * is used by NN and slave mode is used by DN.  */
+comment|/**  * BlockTokenSecretManager can be instantiated in 2 modes, master mode  * and worker mode. Master can generate new block keys and export block  * keys to workers, while workers can only import and use block keys  * received from master. Both master and worker can generate and verify  * block tokens. Typically, master mode is used by NN and worker mode  * is used by DN.  */
 end_comment
 
 begin_class
@@ -419,7 +419,7 @@ operator|new
 name|SecureRandom
 argument_list|()
 decl_stmt|;
-comment|/**    * Constructor for slaves.    *    * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    */
+comment|/**    * Constructor for workers.    *    * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    */
 DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime, String blockPoolId, String encryptionAlgorithm)
 specifier|public
 name|BlockTokenSecretManager
@@ -455,7 +455,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor for masters.    *     * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    * @param nnIndex namenode index of the namenode for which we are creating the manager    * @param blockPoolId block pool ID    * @param encryptionAlgorithm encryption algorithm to use    * @param numNNs number of namenodes possible    */
+comment|/**    * Constructor for masters.    *    * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    * @param nnIndex namenode index of the namenode for which we are creating the manager    * @param blockPoolId block pool ID    * @param encryptionAlgorithm encryption algorithm to use    * @param numNNs number of namenodes possible    */
 DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime, int nnIndex, int numNNs, String blockPoolId, String encryptionAlgorithm)
 specifier|public
 name|BlockTokenSecretManager
@@ -900,7 +900,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Set block keys, only to be used in slave mode    */
+comment|/**    * Set block keys, only to be used in worker mode    */
 DECL|method|addKeys (ExportedBlockKeys exportedKeys)
 specifier|public
 specifier|synchronized
@@ -1722,7 +1722,7 @@ operator|=
 name|tokenLifetime
 expr_stmt|;
 block|}
-comment|/**    * Create an empty block token identifier    *     * @return a newly created empty block token identifier    */
+comment|/**    * Create an empty block token identifier    *    * @return a newly created empty block token identifier    */
 annotation|@
 name|Override
 DECL|method|createIdentifier ()
@@ -1737,7 +1737,7 @@ name|BlockTokenIdentifier
 argument_list|()
 return|;
 block|}
-comment|/**    * Create a new password/secret for the given block token identifier.    *     * @param identifier    *          the block token identifier    * @return token password/secret    */
+comment|/**    * Create a new password/secret for the given block token identifier.    *    * @param identifier    *          the block token identifier    * @return token password/secret    */
 annotation|@
 name|Override
 DECL|method|createPassword (BlockTokenIdentifier identifier)
@@ -1836,7 +1836,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Look up the token password/secret for the given block token identifier.    *     * @param identifier    *          the block token identifier to look up    * @return token password/secret as byte[]    * @throws InvalidToken    */
+comment|/**    * Look up the token password/secret for the given block token identifier.    *    * @param identifier    *          the block token identifier to look up    * @return token password/secret as byte[]    * @throws InvalidToken    */
 annotation|@
 name|Override
 DECL|method|retrievePassword (BlockTokenIdentifier identifier)
@@ -1944,7 +1944,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Generate a data encryption key for this block pool, using the current    * BlockKey.    *     * @return a data encryption key which may be used to encrypt traffic    *         over the DataTransferProtocol    */
+comment|/**    * Generate a data encryption key for this block pool, using the current    * BlockKey.    *    * @return a data encryption key which may be used to encrypt traffic    *         over the DataTransferProtocol    */
 DECL|method|generateDataEncryptionKey ()
 specifier|public
 name|DataEncryptionKey
@@ -2023,7 +2023,7 @@ name|encryptionAlgorithm
 argument_list|)
 return|;
 block|}
-comment|/**    * Recreate an encryption key based on the given key id and nonce.    *     * @param keyId identifier of the secret key used to generate the encryption key.    * @param nonce random value used to create the encryption key    * @return the encryption key which corresponds to this (keyId, blockPoolId, nonce)    * @throws InvalidEncryptionKeyException    */
+comment|/**    * Recreate an encryption key based on the given key id and nonce.    *    * @param keyId identifier of the secret key used to generate the encryption key.    * @param nonce random value used to create the encryption key    * @return the encryption key which corresponds to this (keyId, blockPoolId, nonce)    * @throws InvalidEncryptionKeyException    */
 DECL|method|retrieveDataEncryptionKey (int keyId, byte[] nonce)
 specifier|public
 name|byte

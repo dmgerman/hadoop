@@ -445,6 +445,7 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 DECL|field|wordCountSimple
+specifier|private
 specifier|static
 name|Path
 name|wordCountSimple
@@ -458,6 +459,7 @@ literal|"bin/wordcount-simple"
 argument_list|)
 decl_stmt|;
 DECL|field|wordCountPart
+specifier|private
 specifier|static
 name|Path
 name|wordCountPart
@@ -471,6 +473,7 @@ literal|"bin/wordcount-part"
 argument_list|)
 decl_stmt|;
 DECL|field|wordCountNoPipes
+specifier|private
 specifier|static
 name|Path
 name|wordCountNoPipes
@@ -587,7 +590,7 @@ try|try
 block|{
 specifier|final
 name|int
-name|numSlaves
+name|numWorkers
 init|=
 literal|2
 decl_stmt|;
@@ -610,7 +613,7 @@ argument_list|)
 operator|.
 name|numDataNodes
 argument_list|(
-name|numSlaves
+name|numWorkers
 argument_list|)
 operator|.
 name|build
@@ -621,7 +624,7 @@ operator|=
 operator|new
 name|MiniMRCluster
 argument_list|(
-name|numSlaves
+name|numWorkers
 argument_list|,
 name|dfs
 operator|.

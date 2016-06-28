@@ -289,7 +289,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class tests reliability of the framework in the face of failures of   * both tasks and tasktrackers. Steps:  * 1) Get the cluster status  * 2) Get the number of slots in the cluster  * 3) Spawn a sleepjob that occupies the entire cluster (with two waves of maps)  * 4) Get the list of running attempts for the job  * 5) Fail a few of them  * 6) Now fail a few trackers (ssh)  * 7) Job should run to completion  * 8) The above is repeated for the Sort suite of job (randomwriter, sort,  *    validator). All jobs must complete, and finally, the sort validation  *    should succeed.  * To run the test:  * ./bin/hadoop --config<config> jar  *   build/hadoop-<version>-test.jar MRReliabilityTest -libjars  *   build/hadoop-<version>-examples.jar [-scratchdir<dir>]"  *     *   The scratchdir is optional and by default the current directory on the client  *   will be used as the scratch space. Note that password-less SSH must be set up   *   between the client machine from where the test is submitted, and the cluster   *   nodes where the test runs.  *     *   The test should be run on a<b>free</b> cluster where there is no other parallel  *   job submission going on. Submission of other jobs while the test runs can cause  *   the tests/jobs submitted to fail.  */
+comment|/**  * This class tests reliability of the framework in the face of failures of  * both tasks and tasktrackers. Steps:  * 1) Get the cluster status  * 2) Get the number of slots in the cluster  * 3) Spawn a sleepjob that occupies the entire cluster (with two waves of maps)  * 4) Get the list of running attempts for the job  * 5) Fail a few of them  * 6) Now fail a few trackers (ssh)  * 7) Job should run to completion  * 8) The above is repeated for the Sort suite of job (randomwriter, sort,  *    validator). All jobs must complete, and finally, the sort validation  *    should succeed.  * To run the test:  * ./bin/hadoop --config<config> jar  *   build/hadoop-<version>-test.jar MRReliabilityTest -libjars  *   build/hadoop-<version>-examples.jar [-scratchdir<dir>]"  *  *   The scratchdir is optional and by default the current directory on  *   the client will be used as the scratch space. Note that password-less  *   SSH must be set up between the client machine from where the test is  *   submitted, and the cluster nodes where the test runs.  *  *   The test should be run on a<b>free</b> cluster where there is no other parallel  *   job submission going on. Submission of other jobs while the test runs can cause  *   the tests/jobs submitted to fail.  */
 end_comment
 
 begin_class
@@ -1302,7 +1302,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"The last job returned by the querying JobTracker is complete :"
+literal|"The last job returned by the querying "
+operator|+
+literal|"JobTracker is complete :"
 operator|+
 name|rJob
 operator|.
@@ -1479,31 +1481,32 @@ specifier|private
 name|int
 name|numIterations
 decl_stmt|;
-DECL|field|slavesFile
+DECL|field|workersFile
 specifier|final
 specifier|private
 name|String
-name|slavesFile
+name|workersFile
 init|=
 name|dir
 operator|+
-literal|"/_reliability_test_slaves_file_"
+literal|"/_reliability_test_workers_file_"
 decl_stmt|;
 DECL|field|shellCommand
 specifier|final
+specifier|private
 name|String
 name|shellCommand
 init|=
 name|normalizeCommandPath
 argument_list|(
-literal|"bin/slaves.sh"
+literal|"bin/workers.sh"
 argument_list|)
 decl_stmt|;
-DECL|field|STOP_COMMAND
+DECL|field|stopCommand
 specifier|final
 specifier|private
 name|String
-name|STOP_COMMAND
+name|stopCommand
 init|=
 literal|"ps uwwx | grep java | grep "
 operator|+
@@ -1513,11 +1516,11 @@ literal|" |"
 operator|+
 literal|" grep -v grep | tr -s ' ' | cut -d ' ' -f2 | xargs kill -s STOP"
 decl_stmt|;
-DECL|field|RESUME_COMMAND
+DECL|field|resumeCommand
 specifier|final
 specifier|private
 name|String
-name|RESUME_COMMAND
+name|resumeCommand
 init|=
 literal|"ps uwwx | grep java | grep "
 operator|+
@@ -1926,7 +1929,7 @@ argument_list|(
 operator|new
 name|File
 argument_list|(
-name|slavesFile
+name|workersFile
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -2038,7 +2041,7 @@ expr_stmt|;
 operator|new
 name|File
 argument_list|(
-name|slavesFile
+name|workersFile
 argument_list|)
 operator|.
 name|delete
@@ -2077,9 +2080,9 @@ name|hMap
 operator|.
 name|put
 argument_list|(
-literal|"HADOOP_SLAVES"
+literal|"HADOOP_WORKERS"
 argument_list|,
-name|slavesFile
+name|workersFile
 argument_list|)
 expr_stmt|;
 name|StringTokenizer
@@ -2100,7 +2103,7 @@ operator|=
 operator|new
 name|StringTokenizer
 argument_list|(
-name|STOP_COMMAND
+name|stopCommand
 argument_list|,
 literal|" "
 argument_list|)
@@ -2113,7 +2116,7 @@ operator|=
 operator|new
 name|StringTokenizer
 argument_list|(
-name|RESUME_COMMAND
+name|resumeCommand
 argument_list|,
 literal|" "
 argument_list|)
