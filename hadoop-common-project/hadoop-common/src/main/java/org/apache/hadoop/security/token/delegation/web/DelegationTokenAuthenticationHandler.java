@@ -938,8 +938,11 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// Don't authenticate via DT for DT ops.
 name|token
 operator|=
+name|authHandler
+operator|.
 name|authenticate
 argument_list|(
 name|request
