@@ -1700,6 +1700,8 @@ literal|"DistCpOptions{atomicCommit=false, syncFolder=false, "
 operator|+
 literal|"deleteMissing=false, ignoreFailures=false, overwrite=false, "
 operator|+
+literal|"append=false, useDiff=false, fromSnapshot=null, toSnapshot=null, "
+operator|+
 literal|"skipCRC=false, blocking=true, numListstatusThreads=0, maxMaps=20, "
 operator|+
 literal|"mapBandwidth=100.0, "

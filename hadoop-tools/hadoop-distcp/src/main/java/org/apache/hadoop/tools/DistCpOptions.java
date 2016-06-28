@@ -1802,6 +1802,22 @@ literal|", overwrite="
 operator|+
 name|overwrite
 operator|+
+literal|", append="
+operator|+
+name|append
+operator|+
+literal|", useDiff="
+operator|+
+name|useDiff
+operator|+
+literal|", fromSnapshot="
+operator|+
+name|fromSnapshot
+operator|+
+literal|", toSnapshot="
+operator|+
+name|toSnapshot
+operator|+
 literal|", skipCRC="
 operator|+
 name|skipCRC
