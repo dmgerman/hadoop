@@ -104,11 +104,23 @@ name|String
 name|getHttpPort
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the namenode IP addresses    *     * @return the namenode IP addresses that the datanode is talking to    */
+comment|/**    * Gets the data port.    *    * @return the data port    */
+DECL|method|getDataPort ()
+name|String
+name|getDataPort
+parameter_list|()
+function_decl|;
+comment|/**    * Gets the namenode IP addresses.    *     * @return the namenode IP addresses that the datanode is talking to    */
 DECL|method|getNamenodeAddresses ()
 specifier|public
 name|String
 name|getNamenodeAddresses
+parameter_list|()
+function_decl|;
+comment|/**    * Gets information of the block pool service actors.    *    * @return block pool service actors info    */
+DECL|method|getBPServiceActorInfo ()
+name|String
+name|getBPServiceActorInfo
 parameter_list|()
 function_decl|;
 comment|/**    * Gets the information of each volume on the Datanode. Please    * see the implementation for the format of returned information.    *     * @return the volume info    */
