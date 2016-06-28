@@ -828,7 +828,7 @@ name|NAME
 argument_list|)
 argument_list|)
 operator|.
-name|getFsPermission
+name|getFileFsPermission
 argument_list|()
 return|;
 block|}

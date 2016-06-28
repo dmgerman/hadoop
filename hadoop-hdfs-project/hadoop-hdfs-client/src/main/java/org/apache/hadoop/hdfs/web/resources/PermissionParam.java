@@ -83,28 +83,78 @@ argument_list|,
 literal|8
 argument_list|)
 decl_stmt|;
-DECL|field|DEFAULT_PERMISSION
+DECL|field|DEFAULT_DIR_PERMISSION
 specifier|private
 specifier|static
 specifier|final
 name|short
-name|DEFAULT_PERMISSION
+name|DEFAULT_DIR_PERMISSION
 init|=
 literal|0755
 decl_stmt|;
-comment|/** @return the default FsPermission. */
-DECL|method|getDefaultFsPermission ()
+DECL|field|DEFAULT_FILE_PERMISSION
+specifier|private
+specifier|static
+specifier|final
+name|short
+name|DEFAULT_FILE_PERMISSION
+init|=
+literal|0644
+decl_stmt|;
+DECL|field|DEFAULT_SYMLINK_PERMISSION
+specifier|private
+specifier|static
+specifier|final
+name|short
+name|DEFAULT_SYMLINK_PERMISSION
+init|=
+literal|0777
+decl_stmt|;
+comment|/** @return the default FsPermission for directory. */
+DECL|method|getDefaultDirFsPermission ()
 specifier|public
 specifier|static
 name|FsPermission
-name|getDefaultFsPermission
+name|getDefaultDirFsPermission
 parameter_list|()
 block|{
 return|return
 operator|new
 name|FsPermission
 argument_list|(
-name|DEFAULT_PERMISSION
+name|DEFAULT_DIR_PERMISSION
+argument_list|)
+return|;
+block|}
+comment|/** @return the default FsPermission for file. */
+DECL|method|getDefaultFileFsPermission ()
+specifier|public
+specifier|static
+name|FsPermission
+name|getDefaultFileFsPermission
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FsPermission
+argument_list|(
+name|DEFAULT_FILE_PERMISSION
+argument_list|)
+return|;
+block|}
+comment|/** @return the default FsPermission for symlink. */
+DECL|method|getDefaultSymLinkFsPermission ()
+specifier|public
+specifier|static
+name|FsPermission
+name|getDefaultSymLinkFsPermission
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FsPermission
+argument_list|(
+name|DEFAULT_SYMLINK_PERMISSION
 argument_list|)
 return|;
 block|}
@@ -185,11 +235,45 @@ name|NAME
 return|;
 block|}
 comment|/** @return the represented FsPermission. */
-DECL|method|getFsPermission ()
+DECL|method|getFileFsPermission ()
 specifier|public
 name|FsPermission
-name|getFsPermission
+name|getFileFsPermission
 parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|getFsPermission
+argument_list|(
+name|DEFAULT_FILE_PERMISSION
+argument_list|)
+return|;
+block|}
+comment|/** @return the represented FsPermission. */
+DECL|method|getDirFsPermission ()
+specifier|public
+name|FsPermission
+name|getDirFsPermission
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|getFsPermission
+argument_list|(
+name|DEFAULT_DIR_PERMISSION
+argument_list|)
+return|;
+block|}
+DECL|method|getFsPermission (short defaultPermission)
+specifier|private
+name|FsPermission
+name|getFsPermission
+parameter_list|(
+name|short
+name|defaultPermission
+parameter_list|)
 block|{
 specifier|final
 name|Short
@@ -208,7 +292,7 @@ literal|null
 condition|?
 name|v
 else|:
-name|DEFAULT_PERMISSION
+name|defaultPermission
 argument_list|)
 return|;
 block|}

@@ -3876,7 +3876,7 @@ name|fullpath
 argument_list|,
 name|permission
 operator|.
-name|getFsPermission
+name|getDirFsPermission
 argument_list|()
 argument_list|,
 literal|true
@@ -3931,7 +3931,7 @@ name|fullpath
 argument_list|,
 name|PermissionParam
 operator|.
-name|getDefaultFsPermission
+name|getDefaultSymLinkFsPermission
 argument_list|()
 argument_list|,
 name|createParent
@@ -4208,7 +4208,7 @@ name|fullpath
 argument_list|,
 name|permission
 operator|.
-name|getFsPermission
+name|getDirFsPermission
 argument_list|()
 argument_list|)
 expr_stmt|;
