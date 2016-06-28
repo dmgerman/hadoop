@@ -1834,6 +1834,7 @@ name|Private
 annotation|@
 name|VisibleForTesting
 DECL|method|reset ()
+specifier|public
 specifier|static
 name|void
 name|reset
