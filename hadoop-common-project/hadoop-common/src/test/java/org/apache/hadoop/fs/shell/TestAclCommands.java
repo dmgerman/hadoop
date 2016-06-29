@@ -445,6 +445,46 @@ name|Exception
 block|{
 name|assertFalse
 argument_list|(
+literal|"setfacl should fail without options"
+argument_list|,
+literal|0
+operator|==
+name|runCommand
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-setfacl"
+block|,
+literal|"/"
+block|}
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+literal|"setfacl should fail without options -b, -k, -m, -x or --set"
+argument_list|,
+literal|0
+operator|==
+name|runCommand
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-setfacl"
+block|,
+literal|"-R"
+block|,
+literal|"/"
+block|}
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
 literal|"setfacl should fail without path"
 argument_list|,
 literal|0

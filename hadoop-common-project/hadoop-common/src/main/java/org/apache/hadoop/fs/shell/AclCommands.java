@@ -1038,6 +1038,44 @@ argument_list|(
 literal|"-set"
 argument_list|)
 decl_stmt|;
+name|boolean
+name|hasExpectedOptions
+init|=
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"b"
+argument_list|)
+operator|||
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"k"
+argument_list|)
+operator|||
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"m"
+argument_list|)
+operator|||
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"x"
+argument_list|)
+operator|||
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"-set"
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 operator|(
@@ -1083,6 +1121,22 @@ if|if
 condition|(
 name|args
 operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"Missing arguments:<acl_spec><path>"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|args
+operator|.
 name|size
 argument_list|()
 operator|<
@@ -1093,7 +1147,7 @@ throw|throw
 operator|new
 name|HadoopIllegalArgumentException
 argument_list|(
-literal|"<acl_spec> is missing"
+literal|"Missing either<acl_spec> or<path>"
 argument_list|)
 throw|;
 block|}
@@ -1149,6 +1203,20 @@ operator|new
 name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Too many arguments"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+operator|!
+name|hasExpectedOptions
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"Expected one of -b, -k, -m, -x or --set options"
 argument_list|)
 throw|;
 block|}
