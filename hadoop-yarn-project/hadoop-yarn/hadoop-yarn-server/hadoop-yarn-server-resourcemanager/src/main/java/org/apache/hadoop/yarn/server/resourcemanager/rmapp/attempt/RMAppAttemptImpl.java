@@ -4841,6 +4841,15 @@ expr_stmt|;
 block|}
 block|}
 block|}
+if|if
+condition|(
+operator|!
+name|finishedContainers
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 name|finishedContainersSentToAM
 operator|.
 name|putIfAbsent
@@ -4867,6 +4876,7 @@ argument_list|(
 name|finishedContainers
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|returnList
@@ -9171,6 +9181,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|finishedContainersSentToAM
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
 comment|// Add am container to the list so that am container instance will be
 comment|// removed from NMContext.
