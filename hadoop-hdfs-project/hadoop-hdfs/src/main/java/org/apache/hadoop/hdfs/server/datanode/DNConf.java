@@ -774,6 +774,12 @@ specifier|final
 name|int
 name|transferSocketRecvBufferSize
 decl_stmt|;
+DECL|field|tcpNoDelay
+specifier|private
+specifier|final
+name|boolean
+name|tcpNoDelay
+decl_stmt|;
 DECL|field|transferToAllowed
 specifier|final
 name|boolean
@@ -1023,6 +1029,23 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_TRANSFER_SOCKET_RECV_BUFFER_SIZE_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|tcpNoDelay
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATA_TRANSFER_SERVER_TCPNODELAY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATA_TRANSFER_SERVER_TCPNODELAY_DEFAULT
 argument_list|)
 expr_stmt|;
 comment|/* Based on results on different platforms, we might need set the default      * to false on some of them. */
@@ -1710,6 +1733,16 @@ parameter_list|()
 block|{
 return|return
 name|transferSocketSendBufferSize
+return|;
+block|}
+DECL|method|getDataTransferServerTcpNoDelay ()
+specifier|public
+name|boolean
+name|getDataTransferServerTcpNoDelay
+parameter_list|()
+block|{
+return|return
+name|tcpNoDelay
 return|;
 block|}
 DECL|method|getBpReadyTimeout ()

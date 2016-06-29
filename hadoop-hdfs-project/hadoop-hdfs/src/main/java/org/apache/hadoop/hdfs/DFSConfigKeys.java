@@ -6008,6 +6008,24 @@ name|HdfsConstants
 operator|.
 name|DEFAULT_DATA_SOCKET_SIZE
 decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|DFS_DATA_TRANSFER_SERVER_TCPNODELAY
+name|DFS_DATA_TRANSFER_SERVER_TCPNODELAY
+init|=
+literal|"dfs.data.transfer.server.tcpnodelay"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|DFS_DATA_TRANSFER_SERVER_TCPNODELAY_DEFAULT
+name|DFS_DATA_TRANSFER_SERVER_TCPNODELAY_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|// Disk Balancer Keys
 DECL|field|DFS_DISK_BALANCER_ENABLED
 specifier|public
