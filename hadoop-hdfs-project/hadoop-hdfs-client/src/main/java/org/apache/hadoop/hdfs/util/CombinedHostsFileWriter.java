@@ -150,6 +150,17 @@ specifier|final
 class|class
 name|CombinedHostsFileWriter
 block|{
+DECL|field|MAPPER
+specifier|private
+specifier|static
+specifier|final
+name|ObjectMapper
+name|MAPPER
+init|=
+operator|new
+name|ObjectMapper
+argument_list|()
+decl_stmt|;
 DECL|method|CombinedHostsFileWriter ()
 specifier|private
 name|CombinedHostsFileWriter
@@ -209,18 +220,11 @@ range|:
 name|allDNs
 control|)
 block|{
-name|ObjectMapper
-name|mapper
-init|=
-operator|new
-name|ObjectMapper
-argument_list|()
-decl_stmt|;
 name|configs
 operator|.
 name|append
 argument_list|(
-name|mapper
+name|MAPPER
 operator|.
 name|writeValueAsString
 argument_list|(
