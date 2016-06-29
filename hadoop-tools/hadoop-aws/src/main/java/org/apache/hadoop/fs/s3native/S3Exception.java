@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.s3
+DECL|package|org.apache.hadoop.fs.s3native
 package|package
 name|org
 operator|.
@@ -14,7 +14,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|s3
+name|s3native
 package|;
 end_package
 
@@ -57,7 +57,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Thrown when there is a fatal exception while using {@link S3FileSystem}.  */
+comment|/**  * Thrown if there is a problem communicating with Amazon S3.  */
 end_comment
 
 begin_class
@@ -69,10 +69,10 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Stable
-DECL|class|S3FileSystemException
+DECL|class|S3Exception
 specifier|public
 class|class
-name|S3FileSystemException
+name|S3Exception
 extends|extends
 name|IOException
 block|{
@@ -85,17 +85,17 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|S3FileSystemException (String message)
+DECL|method|S3Exception (Throwable t)
 specifier|public
-name|S3FileSystemException
+name|S3Exception
 parameter_list|(
-name|String
-name|message
+name|Throwable
+name|t
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|message
+name|t
 argument_list|)
 expr_stmt|;
 block|}

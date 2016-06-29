@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.s3
+DECL|package|org.apache.hadoop.fs.s3native
 package|package
 name|org
 operator|.
@@ -14,7 +14,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|s3
+name|s3native
 package|;
 end_package
 
@@ -194,6 +194,42 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3native
+operator|.
+name|S3NativeFileSystemConfigKeys
+operator|.
+name|S3_NATIVE_AWS_ACCESS_KEY_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3native
+operator|.
+name|S3NativeFileSystemConfigKeys
+operator|.
+name|S3_NATIVE_AWS_SECRET_ACCESS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -213,6 +249,10 @@ operator|.
 name|fail
 import|;
 end_import
+
+begin_comment
+comment|/**  * This is to test the {@link S3Credentials} class for extracting AWS  * credentials.  */
+end_comment
 
 begin_class
 DECL|class|TestS3Credentials
@@ -313,7 +353,7 @@ argument_list|(
 operator|new
 name|URI
 argument_list|(
-literal|"s3://a:b@c_d"
+literal|"s3n://a:b@c_d"
 argument_list|)
 argument_list|,
 operator|new
@@ -335,7 +375,7 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"Invalid hostname in URI s3://a:b@c_d"
+literal|"Invalid hostname in URI s3n://a:b@c_d"
 argument_list|,
 name|e
 operator|.
@@ -373,7 +413,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.s3.awsAccessKeyId"
+name|S3_NATIVE_AWS_ACCESS_KEY_ID
 argument_list|,
 name|EXAMPLE_ID
 argument_list|)
@@ -382,7 +422,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.s3.awsSecretAccessKey"
+name|S3_NATIVE_AWS_SECRET_ACCESS_KEY
 argument_list|,
 name|EXAMPLE_KEY
 argument_list|)
@@ -394,7 +434,7 @@ argument_list|(
 operator|new
 name|URI
 argument_list|(
-literal|"s3://foobar"
+literal|"s3n://foobar"
 argument_list|)
 argument_list|,
 name|conf
@@ -453,7 +493,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.s3.awsAccessKeyId"
+name|S3_NATIVE_AWS_ACCESS_KEY_ID
 argument_list|,
 literal|"\r\n "
 operator|+
@@ -466,7 +506,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.s3.awsSecretAccessKey"
+name|S3_NATIVE_AWS_SECRET_ACCESS_KEY
 argument_list|,
 literal|"\r\n "
 operator|+
@@ -482,7 +522,7 @@ argument_list|(
 operator|new
 name|URI
 argument_list|(
-literal|"s3://foobar"
+literal|"s3n://foobar"
 argument_list|)
 argument_list|,
 name|conf
@@ -604,7 +644,7 @@ name|provider
 operator|.
 name|createCredentialEntry
 argument_list|(
-literal|"fs.s3.awsSecretAccessKey"
+name|S3_NATIVE_AWS_SECRET_ACCESS_KEY
 argument_list|,
 name|EXAMPLE_KEY
 operator|.
@@ -629,7 +669,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.s3.awsAccessKeyId"
+name|S3_NATIVE_AWS_ACCESS_KEY_ID
 argument_list|,
 name|EXAMPLE_ID
 argument_list|)
@@ -641,7 +681,7 @@ argument_list|(
 operator|new
 name|URI
 argument_list|(
-literal|"s3://foobar"
+literal|"s3n://foobar"
 argument_list|)
 argument_list|,
 name|conf
@@ -709,7 +749,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.s3.awsAccessKeyId"
+name|S3_NATIVE_AWS_ACCESS_KEY_ID
 argument_list|,
 name|EXAMPLE_ID
 argument_list|)
@@ -721,7 +761,7 @@ argument_list|(
 operator|new
 name|URI
 argument_list|(
-literal|"s3://foobar"
+literal|"s3n://foobar"
 argument_list|)
 argument_list|,
 name|conf
@@ -765,7 +805,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.s3.awsSecretAccessKey"
+name|S3_NATIVE_AWS_SECRET_ACCESS_KEY
 argument_list|,
 name|EXAMPLE_KEY
 argument_list|)
@@ -777,7 +817,7 @@ argument_list|(
 operator|new
 name|URI
 argument_list|(
-literal|"s3://foobar"
+literal|"s3n://foobar"
 argument_list|)
 argument_list|,
 name|conf

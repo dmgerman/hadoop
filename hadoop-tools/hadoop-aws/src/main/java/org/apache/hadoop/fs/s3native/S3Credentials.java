@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.s3
+DECL|package|org.apache.hadoop.fs.s3native
 package|package
 name|org
 operator|.
@@ -14,7 +14,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|s3
+name|s3native
 package|;
 end_package
 
@@ -35,6 +35,20 @@ operator|.
 name|net
 operator|.
 name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
 import|;
 end_import
 
@@ -81,7 +95,7 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|apache
@@ -92,7 +106,27 @@ name|fs
 operator|.
 name|s3native
 operator|.
-name|S3xLoginHelper
+name|S3NativeFileSystemConfigKeys
+operator|.
+name|S3_NATIVE_AWS_ACCESS_KEY_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3native
+operator|.
+name|S3NativeFileSystemConfigKeys
+operator|.
+name|S3_NATIVE_AWS_SECRET_ACCESS_KEY
 import|;
 end_import
 
@@ -139,93 +173,86 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
 name|uri
 operator|.
 name|getHost
 argument_list|()
-operator|==
+operator|!=
 literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
+argument_list|,
 literal|"Invalid hostname in URI "
 operator|+
 name|uri
 argument_list|)
-throw|;
-block|}
-name|S3xLoginHelper
-operator|.
-name|Login
-name|login
+expr_stmt|;
+name|String
+name|userInfo
 init|=
-name|S3xLoginHelper
-operator|.
-name|extractLoginDetailsWithWarnings
-argument_list|(
 name|uri
+operator|.
+name|getUserInfo
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|userInfo
+operator|!=
+literal|null
+condition|)
+block|{
+name|int
+name|index
+init|=
+name|userInfo
+operator|.
+name|indexOf
+argument_list|(
+literal|':'
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|login
-operator|.
-name|hasLogin
-argument_list|()
+name|index
+operator|!=
+operator|-
+literal|1
 condition|)
 block|{
 name|accessKey
 operator|=
-name|login
+name|userInfo
 operator|.
-name|getUser
-argument_list|()
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+name|index
+argument_list|)
 expr_stmt|;
 name|secretAccessKey
 operator|=
-name|login
+name|userInfo
 operator|.
-name|getPassword
-argument_list|()
+name|substring
+argument_list|(
+name|index
+operator|+
+literal|1
+argument_list|)
 expr_stmt|;
 block|}
-name|String
-name|scheme
-init|=
-name|uri
-operator|.
-name|getScheme
-argument_list|()
-decl_stmt|;
-name|String
-name|accessKeyProperty
-init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"fs.%s.awsAccessKeyId"
-argument_list|,
-name|scheme
-argument_list|)
-decl_stmt|;
-name|String
-name|secretAccessKeyProperty
-init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"fs.%s.awsSecretAccessKey"
-argument_list|,
-name|scheme
-argument_list|)
-decl_stmt|;
+else|else
+block|{
+name|accessKey
+operator|=
+name|userInfo
+expr_stmt|;
+block|}
+block|}
 if|if
 condition|(
 name|accessKey
@@ -239,7 +266,7 @@ name|conf
 operator|.
 name|getTrimmed
 argument_list|(
-name|accessKeyProperty
+name|S3_NATIVE_AWS_ACCESS_KEY_ID
 argument_list|)
 expr_stmt|;
 block|}
@@ -259,7 +286,7 @@ name|conf
 operator|.
 name|getPassword
 argument_list|(
-name|secretAccessKeyProperty
+name|S3_NATIVE_AWS_SECRET_ACCESS_KEY
 argument_list|)
 decl_stmt|;
 if|if
@@ -284,8 +311,21 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
+specifier|final
+name|String
+name|scheme
+init|=
+name|uri
+operator|.
+name|getScheme
+argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|!
+operator|(
 name|accessKey
 operator|==
 literal|null
@@ -293,78 +333,65 @@ operator|&&
 name|secretAccessKey
 operator|==
 literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"AWS "
+operator|)
+argument_list|,
+literal|"AWS Access Key ID and Secret Access Key must be specified as the "
 operator|+
-literal|"Access Key ID and Secret Access "
+literal|"username or password (respectively) of a "
 operator|+
-literal|"Key must be specified "
+name|scheme
+operator|+
+literal|" URL, or "
 operator|+
 literal|"by setting the "
 operator|+
-name|accessKeyProperty
+name|S3_NATIVE_AWS_ACCESS_KEY_ID
 operator|+
-literal|" and "
+literal|" or "
 operator|+
-name|secretAccessKeyProperty
+name|S3_NATIVE_AWS_SECRET_ACCESS_KEY
 operator|+
 literal|" properties (respectively)."
 argument_list|)
-throw|;
-block|}
-elseif|else
-if|if
-condition|(
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
 name|accessKey
-operator|==
+operator|!=
 literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"AWS "
+argument_list|,
+literal|"AWS Access Key ID must be specified as the username of a "
 operator|+
-literal|"Access Key ID must be specified "
+name|scheme
 operator|+
-literal|"by setting the "
+literal|" URL, or by setting the "
 operator|+
-name|accessKeyProperty
+name|S3_NATIVE_AWS_ACCESS_KEY_ID
 operator|+
 literal|" property."
 argument_list|)
-throw|;
-block|}
-elseif|else
-if|if
-condition|(
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
 name|secretAccessKey
-operator|==
+operator|!=
 literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"AWS "
+argument_list|,
+literal|"AWS Secret Access Key must be specified as the password of a "
 operator|+
-literal|"Secret Access Key must be "
+name|scheme
 operator|+
-literal|"specified by setting the "
+literal|" URL, or by setting the "
 operator|+
-name|secretAccessKeyProperty
+name|S3_NATIVE_AWS_SECRET_ACCESS_KEY
 operator|+
 literal|" property."
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 block|}
 DECL|method|getAccessKey ()
 specifier|public

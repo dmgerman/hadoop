@@ -783,16 +783,6 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-literal|"s3"
-argument_list|)
-operator|||
-name|fs
-operator|.
-name|getScheme
-argument_list|()
-operator|.
-name|equals
-argument_list|(
 literal|"s3n"
 argument_list|)
 condition|)

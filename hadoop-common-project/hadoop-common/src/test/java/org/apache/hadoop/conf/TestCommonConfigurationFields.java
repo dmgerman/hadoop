@@ -382,13 +382,6 @@ name|xmlPropsToSkipCompare
 operator|.
 name|add
 argument_list|(
-literal|"fs.s3.block.size"
-argument_list|)
-expr_stmt|;
-name|xmlPropsToSkipCompare
-operator|.
-name|add
-argument_list|(
 literal|"hadoop.tmp.dir"
 argument_list|)
 expr_stmt|;
@@ -410,26 +403,11 @@ name|xmlPropsToSkipCompare
 operator|.
 name|add
 argument_list|(
-literal|"test.fs.s3.name"
-argument_list|)
-expr_stmt|;
-name|xmlPropsToSkipCompare
-operator|.
-name|add
-argument_list|(
 literal|"test.fs.s3n.name"
 argument_list|)
 expr_stmt|;
-comment|// S3/S3A properties are in a different subtree.
-comment|// - org.apache.hadoop.fs.s3.S3FileSystemConfigKeys
+comment|// S3N/S3A properties are in a different subtree.
 comment|// - org.apache.hadoop.fs.s3native.S3NativeFileSystemConfigKeys
-name|xmlPrefixToSkipCompare
-operator|.
-name|add
-argument_list|(
-literal|"fs.s3."
-argument_list|)
-expr_stmt|;
 name|xmlPrefixToSkipCompare
 operator|.
 name|add
@@ -442,13 +420,6 @@ operator|.
 name|add
 argument_list|(
 literal|"fs.s3n."
-argument_list|)
-expr_stmt|;
-name|xmlPrefixToSkipCompare
-operator|.
-name|add
-argument_list|(
-literal|"s3."
 argument_list|)
 expr_stmt|;
 name|xmlPrefixToSkipCompare

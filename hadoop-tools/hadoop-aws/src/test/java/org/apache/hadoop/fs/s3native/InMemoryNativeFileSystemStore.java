@@ -37,6 +37,42 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3native
+operator|.
+name|S3NativeFileSystemConfigKeys
+operator|.
+name|S3_NATIVE_BUFFER_DIR_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3native
+operator|.
+name|S3NativeFileSystemConfigKeys
+operator|.
+name|addDeprecatedConfigKeys
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -248,6 +284,13 @@ name|InMemoryNativeFileSystemStore
 implements|implements
 name|NativeFileSystemStore
 block|{
+static|static
+block|{
+comment|// Add the deprecated config keys
+name|addDeprecatedConfigKeys
+argument_list|()
+expr_stmt|;
+block|}
 DECL|field|conf
 specifier|private
 name|Configuration
@@ -641,7 +684,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"fs.s3.buffer.dir"
+name|S3_NATIVE_BUFFER_DIR_KEY
 argument_list|)
 argument_list|)
 decl_stmt|;
