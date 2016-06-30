@@ -40,6 +40,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -227,6 +241,17 @@ return|return
 name|mAuxGIDs
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getStamp ()
+name|int
+name|getStamp
+parameter_list|()
+block|{
+return|return
+name|mStamp
+return|;
+block|}
 DECL|method|setGID (int gid)
 specifier|public
 name|void
@@ -273,6 +298,23 @@ operator|.
 name|mStamp
 operator|=
 name|stamp
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setHostName (String hostname)
+name|void
+name|setHostName
+parameter_list|(
+name|String
+name|hostname
+parameter_list|)
+block|{
+name|this
+operator|.
+name|mHostName
+operator|=
+name|hostname
 expr_stmt|;
 block|}
 annotation|@
@@ -375,6 +417,38 @@ name|XDR
 name|xdr
 parameter_list|)
 block|{
+name|int
+name|padding
+init|=
+literal|0
+decl_stmt|;
+comment|// Ensure there are padding bytes if hostname is not a multiple of 4.
+name|padding
+operator|=
+literal|4
+operator|-
+operator|(
+name|mHostName
+operator|.
+name|getBytes
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
+operator|.
+name|length
+operator|%
+literal|4
+operator|)
+expr_stmt|;
+comment|// padding bytes is zero if hostname is already a multiple of 4.
+name|padding
+operator|=
+name|padding
+operator|%
+literal|4
+expr_stmt|;
 comment|// mStamp + mHostName.length + mHostName + mUID + mGID + mAuxGIDs.count
 name|mCredentialsLength
 operator|=
@@ -390,6 +464,12 @@ name|UTF_8
 argument_list|)
 operator|.
 name|length
+expr_stmt|;
+name|mCredentialsLength
+operator|=
+name|mCredentialsLength
+operator|+
+name|padding
 expr_stmt|;
 comment|// mAuxGIDs
 if|if

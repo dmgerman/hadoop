@@ -20,6 +20,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -301,6 +315,17 @@ argument_list|(
 name|flavor
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getCredentialLength ()
+name|int
+name|getCredentialLength
+parameter_list|()
+block|{
+return|return
+name|mCredentialsLength
+return|;
 block|}
 block|}
 end_class
