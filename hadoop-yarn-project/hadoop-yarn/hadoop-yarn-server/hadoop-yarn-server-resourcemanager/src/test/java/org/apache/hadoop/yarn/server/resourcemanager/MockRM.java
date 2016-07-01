@@ -5729,6 +5729,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * NOTE: nm.nodeHeartbeat is explicitly invoked,    * don't invoke it before calling launchAM    */
 DECL|method|launchAM (RMApp app, MockRM rm, MockNM nm)
 specifier|public
 specifier|static

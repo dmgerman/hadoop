@@ -1724,14 +1724,6 @@ operator|.
 name|getNewContainerId
 argument_list|()
 expr_stmt|;
-comment|// kick the scheduling
-name|nm1
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
 name|MockAM
 name|am
 init|=

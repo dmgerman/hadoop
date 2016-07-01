@@ -3379,13 +3379,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// launch next AM in nm2
-name|nm2
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
 name|MockAM
 name|am5
 init|=
