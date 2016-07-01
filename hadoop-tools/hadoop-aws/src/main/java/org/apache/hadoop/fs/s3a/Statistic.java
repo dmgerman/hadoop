@@ -18,6 +18,22 @@ name|s3a
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|StorageStatistics
+operator|.
+name|CommonStatisticNames
+import|;
+end_import
+
 begin_comment
 comment|/**  * Statistic which are collected in S3A.  * These statistics are available at a low level in {@link S3AStorageStatistics}  * and as metrics in {@link S3AInstrumentation}  */
 end_comment
@@ -87,7 +103,9 @@ block|,
 DECL|enumConstant|INVOCATION_COPY_FROM_LOCAL_FILE
 name|INVOCATION_COPY_FROM_LOCAL_FILE
 argument_list|(
-literal|"invocations_copyfromlocalfile"
+name|CommonStatisticNames
+operator|.
+name|OP_COPY_FROM_LOCAL_FILE
 argument_list|,
 literal|"Calls of copyFromLocalFile()"
 argument_list|)
@@ -95,7 +113,9 @@ block|,
 DECL|enumConstant|INVOCATION_EXISTS
 name|INVOCATION_EXISTS
 argument_list|(
-literal|"invocations_exists"
+name|CommonStatisticNames
+operator|.
+name|OP_EXISTS
 argument_list|,
 literal|"Calls of exists()"
 argument_list|)
@@ -103,7 +123,9 @@ block|,
 DECL|enumConstant|INVOCATION_GET_FILE_STATUS
 name|INVOCATION_GET_FILE_STATUS
 argument_list|(
-literal|"invocations_getfilestatus"
+name|CommonStatisticNames
+operator|.
+name|OP_GET_FILE_STATUS
 argument_list|,
 literal|"Calls of getFileStatus()"
 argument_list|)
@@ -111,7 +133,9 @@ block|,
 DECL|enumConstant|INVOCATION_GLOB_STATUS
 name|INVOCATION_GLOB_STATUS
 argument_list|(
-literal|"invocations_globstatus"
+name|CommonStatisticNames
+operator|.
+name|OP_GLOB_STATUS
 argument_list|,
 literal|"Calls of globStatus()"
 argument_list|)
@@ -119,7 +143,9 @@ block|,
 DECL|enumConstant|INVOCATION_IS_DIRECTORY
 name|INVOCATION_IS_DIRECTORY
 argument_list|(
-literal|"invocations_is_directory"
+name|CommonStatisticNames
+operator|.
+name|OP_IS_DIRECTORY
 argument_list|,
 literal|"Calls of isDirectory()"
 argument_list|)
@@ -127,7 +153,9 @@ block|,
 DECL|enumConstant|INVOCATION_IS_FILE
 name|INVOCATION_IS_FILE
 argument_list|(
-literal|"invocations_is_file"
+name|CommonStatisticNames
+operator|.
+name|OP_IS_FILE
 argument_list|,
 literal|"Calls of isFile()"
 argument_list|)
@@ -135,7 +163,9 @@ block|,
 DECL|enumConstant|INVOCATION_LIST_FILES
 name|INVOCATION_LIST_FILES
 argument_list|(
-literal|"invocations_listfiles"
+name|CommonStatisticNames
+operator|.
+name|OP_LIST_FILES
 argument_list|,
 literal|"Calls of listFiles()"
 argument_list|)
@@ -143,7 +173,9 @@ block|,
 DECL|enumConstant|INVOCATION_LIST_LOCATED_STATUS
 name|INVOCATION_LIST_LOCATED_STATUS
 argument_list|(
-literal|"invocations_listlocatedstatus"
+name|CommonStatisticNames
+operator|.
+name|OP_LIST_LOCATED_STATUS
 argument_list|,
 literal|"Calls of listLocatedStatus()"
 argument_list|)
@@ -151,7 +183,9 @@ block|,
 DECL|enumConstant|INVOCATION_LIST_STATUS
 name|INVOCATION_LIST_STATUS
 argument_list|(
-literal|"invocations_liststatus"
+name|CommonStatisticNames
+operator|.
+name|OP_LIST_STATUS
 argument_list|,
 literal|"Calls of listStatus()"
 argument_list|)
@@ -159,7 +193,9 @@ block|,
 DECL|enumConstant|INVOCATION_MKDIRS
 name|INVOCATION_MKDIRS
 argument_list|(
-literal|"invocations_mdkirs"
+name|CommonStatisticNames
+operator|.
+name|OP_MKDIRS
 argument_list|,
 literal|"Calls of mkdirs()"
 argument_list|)
@@ -167,7 +203,9 @@ block|,
 DECL|enumConstant|INVOCATION_RENAME
 name|INVOCATION_RENAME
 argument_list|(
-literal|"invocations_rename"
+name|CommonStatisticNames
+operator|.
+name|OP_RENAME
 argument_list|,
 literal|"Calls of rename()"
 argument_list|)

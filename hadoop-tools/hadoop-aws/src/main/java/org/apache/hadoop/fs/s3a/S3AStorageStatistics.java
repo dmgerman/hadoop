@@ -406,6 +406,18 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"s3a"
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getLongStatistics ()
 specifier|public
 name|Iterator

@@ -476,6 +476,21 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+name|stats
+operator|.
+name|getScheme
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getLongStatistics ()
 specifier|public
 name|Iterator
