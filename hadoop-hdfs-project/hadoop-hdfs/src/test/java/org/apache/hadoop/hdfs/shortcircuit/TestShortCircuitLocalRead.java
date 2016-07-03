@@ -3819,20 +3819,18 @@ name|timeout
 operator|=
 literal|60000
 argument_list|)
-DECL|method|testReadWithRemoteBlockReader ()
+DECL|method|testReadWithRemoteBlockReader2 ()
 specifier|public
 name|void
-name|testReadWithRemoteBlockReader
+name|testReadWithRemoteBlockReader2
 parameter_list|()
 throws|throws
 name|IOException
 throws|,
 name|InterruptedException
 block|{
-name|doTestShortCircuitReadWithRemoteBlockReader
+name|doTestShortCircuitReadWithRemoteBlockReader2
 argument_list|(
-literal|true
-argument_list|,
 literal|3
 operator|*
 name|blockSize
@@ -3849,14 +3847,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that file data can be read by reading the block    * through BlockReaderRemote    * @throws IOException   */
-DECL|method|doTestShortCircuitReadWithRemoteBlockReader ( boolean ignoreChecksum, int size, String shortCircuitUser, int readOffset, boolean shortCircuitFails)
+DECL|method|doTestShortCircuitReadWithRemoteBlockReader2 ( int size, String shortCircuitUser, int readOffset, boolean shortCircuitFails)
 specifier|public
 name|void
-name|doTestShortCircuitReadWithRemoteBlockReader
+name|doTestShortCircuitReadWithRemoteBlockReader2
 parameter_list|(
-name|boolean
-name|ignoreChecksum
-parameter_list|,
 name|int
 name|size
 parameter_list|,
@@ -3881,17 +3876,6 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|HdfsClientConfigKeys
-operator|.
-name|DFS_CLIENT_USE_LEGACY_BLOCKREADER
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|conf
 operator|.
 name|setBoolean
@@ -4037,10 +4021,10 @@ argument_list|,
 name|shortCircuitFails
 argument_list|)
 expr_stmt|;
-comment|//BlockReaderRemote have unsupported method read(ByteBuffer bf)
-name|assertTrue
+comment|//BlockReaderRemote2 have unsupported method read(ByteBuffer bf)
+name|assertFalse
 argument_list|(
-literal|"BlockReaderRemote unsupported method read(ByteBuffer bf) error"
+literal|"BlockReaderRemote2 unsupported method read(ByteBuffer bf) error"
 argument_list|,
 name|checkUnsupportedMethod
 argument_list|(

@@ -122,7 +122,7 @@ name|client
 operator|.
 name|impl
 operator|.
-name|BlockReaderRemote2
+name|BlockReaderRemote
 import|;
 end_import
 
@@ -603,7 +603,7 @@ argument_list|)
 decl_stmt|;
 comment|/*          * This can be further improved if the replica is local, then we can          * read directly from DN and need to check the replica is FINALIZED          * state, notice we should not use short-circuit local read which          * requires config for domain-socket in UNIX or legacy config in          * Windows. The network distance value isn't used for this scenario.          *          * TODO: add proper tracer          */
 return|return
-name|BlockReaderRemote2
+name|BlockReaderRemote
 operator|.
 name|newBlockReader
 argument_list|(

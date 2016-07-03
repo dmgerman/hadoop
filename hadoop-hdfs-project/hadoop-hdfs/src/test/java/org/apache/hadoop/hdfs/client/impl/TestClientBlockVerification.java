@@ -232,7 +232,7 @@ name|GenericTestUtils
 operator|.
 name|setLogLevel
 argument_list|(
-name|BlockReaderRemote2
+name|BlockReaderRemote
 operator|.
 name|LOG
 argument_list|,
@@ -313,11 +313,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|BlockReaderRemote2
+name|BlockReaderRemote
 name|reader
 init|=
 operator|(
-name|BlockReaderRemote2
+name|BlockReaderRemote
 operator|)
 name|spy
 argument_list|(
@@ -377,11 +377,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|BlockReaderRemote2
+name|BlockReaderRemote
 name|reader
 init|=
 operator|(
-name|BlockReaderRemote2
+name|BlockReaderRemote
 operator|)
 name|spy
 argument_list|(
@@ -449,11 +449,11 @@ throws|throws
 name|Exception
 block|{
 comment|// Ask for half the file
-name|BlockReaderRemote2
+name|BlockReaderRemote
 name|reader
 init|=
 operator|(
-name|BlockReaderRemote2
+name|BlockReaderRemote
 operator|)
 name|spy
 argument_list|(
@@ -585,11 +585,11 @@ operator|+
 name|length
 argument_list|)
 expr_stmt|;
-name|BlockReaderRemote2
+name|BlockReaderRemote
 name|reader
 init|=
 operator|(
-name|BlockReaderRemote2
+name|BlockReaderRemote
 operator|)
 name|spy
 argument_list|(

@@ -784,24 +784,6 @@ name|client
 operator|.
 name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_USE_LEGACY_BLOCKREADER
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|HdfsClientConfigKeys
-operator|.
 name|DFS_CLIENT_USE_LEGACY_BLOCKREADERLOCAL
 import|;
 end_import
@@ -821,24 +803,6 @@ operator|.
 name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_USE_LEGACY_BLOCKREADERLOCAL_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|HdfsClientConfigKeys
-operator|.
-name|DFS_CLIENT_USE_LEGACY_BLOCKREADER_DEFAULT
 import|;
 end_import
 
@@ -2766,12 +2730,6 @@ specifier|final
 name|long
 name|socketCacheExpiry
 decl_stmt|;
-DECL|field|useLegacyBlockReader
-specifier|private
-specifier|final
-name|boolean
-name|useLegacyBlockReader
-decl_stmt|;
 DECL|field|useLegacyBlockReaderLocal
 specifier|private
 specifier|final
@@ -2890,17 +2848,6 @@ argument_list|(
 name|DFS_CLIENT_SOCKET_CACHE_EXPIRY_MSEC_KEY
 argument_list|,
 name|DFS_CLIENT_SOCKET_CACHE_EXPIRY_MSEC_DEFAULT
-argument_list|)
-expr_stmt|;
-name|useLegacyBlockReader
-operator|=
-name|conf
-operator|.
-name|getBoolean
-argument_list|(
-name|DFS_CLIENT_USE_LEGACY_BLOCKREADER
-argument_list|,
-name|DFS_CLIENT_USE_LEGACY_BLOCKREADER_DEFAULT
 argument_list|)
 expr_stmt|;
 name|useLegacyBlockReaderLocal
@@ -3237,17 +3184,6 @@ parameter_list|()
 block|{
 return|return
 name|domainSocketDataTraffic
-return|;
-block|}
-comment|/**      * @return the useLegacyBlockReader      */
-DECL|method|isUseLegacyBlockReader ()
-specifier|public
-name|boolean
-name|isUseLegacyBlockReader
-parameter_list|()
-block|{
-return|return
-name|useLegacyBlockReader
 return|;
 block|}
 comment|/**      * @return the skipShortCircuitChecksums      */
