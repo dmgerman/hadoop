@@ -140,7 +140,7 @@ specifier|private
 name|long
 name|lastHATransitionTime
 decl_stmt|;
-comment|/**    * Constructor    * @param name Name of the state.    */
+comment|/**    * Constructor    * @param state HA service state.    */
 DECL|method|HAState (HAServiceState state)
 specifier|public
 name|HAState
@@ -167,7 +167,7 @@ return|return
 name|state
 return|;
 block|}
-comment|/**    * Internal method to transition the state of a given namenode to a new state.    * @param nn Namenode    * @param s new state    * @throws ServiceFailedException on failure to transition to new state.    */
+comment|/**    * Internal method to move from the existing state to a new state.    * @param context HA context    * @param s new state    * @throws ServiceFailedException on failure to transition to new state.    */
 DECL|method|setStateInternal (final HAContext context, final HAState s)
 specifier|protected
 specifier|final
