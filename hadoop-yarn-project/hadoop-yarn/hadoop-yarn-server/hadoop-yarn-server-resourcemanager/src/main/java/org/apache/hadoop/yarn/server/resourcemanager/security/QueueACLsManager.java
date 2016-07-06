@@ -24,6 +24,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -158,24 +172,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|ResourceTrackerService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmapp
 operator|.
 name|RMApp
@@ -199,20 +195,6 @@ operator|.
 name|scheduler
 operator|.
 name|ResourceScheduler
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
 import|;
 end_import
 
@@ -277,6 +259,16 @@ operator|.
 name|capacity
 operator|.
 name|CapacityScheduler
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -380,7 +372,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkAccess (UserGroupInformation callerUGI, QueueACL acl, RMApp app)
+DECL|method|checkAccess (UserGroupInformation callerUGI, QueueACL acl, RMApp app, String remoteAddress, List<String> forwardedAddresses)
 specifier|public
 name|boolean
 name|checkAccess
@@ -393,6 +385,15 @@ name|acl
 parameter_list|,
 name|RMApp
 name|app
+parameter_list|,
+name|String
+name|remoteAddress
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|forwardedAddresses
 parameter_list|)
 block|{
 if|if
@@ -497,6 +498,10 @@ name|app
 operator|.
 name|getName
 argument_list|()
+argument_list|,
+name|remoteAddress
+argument_list|,
+name|forwardedAddresses
 argument_list|)
 argument_list|)
 return|;
