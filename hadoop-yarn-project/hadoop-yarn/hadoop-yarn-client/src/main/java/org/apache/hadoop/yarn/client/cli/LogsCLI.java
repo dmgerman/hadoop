@@ -1253,6 +1253,10 @@ condition|(
 name|appIdStr
 operator|==
 literal|null
+operator|&&
+name|containerIdStr
+operator|==
+literal|null
 condition|)
 block|{
 name|System
@@ -1261,7 +1265,9 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"ApplicationId cannot be null!"
+literal|"Both applicationId and containerId are missing, "
+operator|+
+literal|" one of them must be specified."
 argument_list|)
 expr_stmt|;
 name|printHelpMessage
@@ -1279,6 +1285,13 @@ name|appId
 init|=
 literal|null
 decl_stmt|;
+if|if
+condition|(
+name|appIdStr
+operator|!=
+literal|null
+condition|)
+block|{
 try|try
 block|{
 name|appId
@@ -1310,6 +1323,104 @@ return|return
 operator|-
 literal|1
 return|;
+block|}
+block|}
+if|if
+condition|(
+name|containerIdStr
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|ContainerId
+name|containerId
+init|=
+name|ContainerId
+operator|.
+name|fromString
+argument_list|(
+name|containerIdStr
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|appId
+operator|==
+literal|null
+condition|)
+block|{
+name|appId
+operator|=
+name|containerId
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|containerId
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|appId
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"The Application:"
+operator|+
+name|appId
+operator|+
+literal|" does not have the container:"
+operator|+
+name|containerId
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Invalid ContainerId specified"
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
 block|}
 name|LogCLIHelpers
 name|logCliHelper
@@ -1612,53 +1723,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|ContainerId
-name|containerId
-init|=
-name|ContainerId
-operator|.
-name|fromString
-argument_list|(
-name|containerIdStr
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|containerId
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-operator|.
-name|getApplicationId
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|appId
-argument_list|)
-condition|)
-block|{
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"The Application:"
-operator|+
-name|appId
-operator|+
-literal|" does not have the container:"
-operator|+
-name|containerId
-argument_list|)
-expr_stmt|;
-return|return
-operator|-
-literal|1
-return|;
-block|}
 return|return
 name|fetchContainerLogs
 argument_list|(
@@ -4077,13 +4141,6 @@ argument_list|,
 literal|"ApplicationId (required)"
 argument_list|)
 decl_stmt|;
-name|appIdOpt
-operator|.
-name|setRequired
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
 name|opts
 operator|.
 name|addOption
@@ -4101,9 +4158,11 @@ literal|true
 argument_list|,
 literal|"ContainerId. "
 operator|+
-literal|"By default, it will only print syslog if the application is runing."
+literal|"By default, it will only print syslog if the application is running."
 operator|+
-literal|" Work with -logFiles to get other logs."
+literal|" Work with -logFiles to get other logs. If specified, the"
+operator|+
+literal|" applicationId can be omitted"
 argument_list|)
 expr_stmt|;
 name|opts

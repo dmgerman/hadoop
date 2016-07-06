@@ -1528,14 +1528,21 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 runing. Work with -logFiles to get other"
+literal|"                                 running. Work with -logFiles to get other"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 logs."
+literal|"                                 logs. If specified, the applicationId can"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 be omitted"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -3510,6 +3517,128 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 name|sysOutStream
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+comment|// The same should also work without the applicationId
+name|exitCode
+operator|=
+name|cli
+operator|.
+name|run
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-containerId"
+block|,
+name|containerId3
+operator|.
+name|toString
+argument_list|()
+block|}
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|exitCode
+operator|==
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Hello container_0_0001_01_000003 in syslog!"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Hello container_0_0001_01_000003 in stdout!"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|containerId3
+operator|+
+literal|" on "
+operator|+
+name|LogAggregationUtils
+operator|.
+name|getNodeString
+argument_list|(
+name|nodeId
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|sysOutStream
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|exitCode
+operator|=
+name|cli
+operator|.
+name|run
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-containerId"
+block|,
+literal|"invalid_container"
+block|}
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|exitCode
+operator|==
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysErrStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Invalid ContainerId specified"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|sysErrStream
 operator|.
 name|reset
 argument_list|()
@@ -5930,9 +6059,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"The container container_1234 couldn't be found on the node "
-operator|+
-literal|"specified: localhost"
+literal|"Invalid ContainerId specified"
 argument_list|)
 argument_list|)
 expr_stmt|;
