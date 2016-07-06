@@ -1314,6 +1314,20 @@ block|}
 name|scheduleTimerTaskForUnregistration
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|pMemMBQuantiles
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|cpuCoreUsagePercentQuantiles
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|method|recordMemoryUsage (int memoryMBs)
