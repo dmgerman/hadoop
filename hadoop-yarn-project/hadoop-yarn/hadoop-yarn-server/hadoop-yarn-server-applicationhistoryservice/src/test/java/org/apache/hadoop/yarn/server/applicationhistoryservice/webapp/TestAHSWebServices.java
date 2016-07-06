@@ -5666,7 +5666,7 @@ name|redirectURL
 operator|.
 name|contains
 argument_list|(
-literal|"ws/v1/node/containerlogs"
+literal|"ws/v1/node/containers"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5680,6 +5680,18 @@ name|containerId1
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|redirectURL
+operator|.
+name|contains
+argument_list|(
+literal|"/logs/"
+operator|+
+name|fileName
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -802,7 +802,7 @@ specifier|final
 name|String
 name|NM_DOWNLOAD_URI_STR
 init|=
-literal|"/ws/v1/node/containerlogs"
+literal|"/ws/v1/node/containers"
 decl_stmt|;
 DECL|field|JOINER
 specifier|private
@@ -1928,7 +1928,7 @@ operator|.
 name|toString
 argument_list|()
 operator|+
-literal|"/"
+literal|"/logs/"
 operator|+
 name|filename
 decl_stmt|;
