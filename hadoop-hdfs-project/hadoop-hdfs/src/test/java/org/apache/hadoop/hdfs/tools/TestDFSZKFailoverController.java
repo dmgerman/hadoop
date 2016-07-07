@@ -272,9 +272,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|ha
-operator|.
-name|HATestUtil
+name|MockNameNodeResourceChecker
 import|;
 end_import
 
@@ -310,7 +308,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|NameNodeResourceChecker
+name|ha
+operator|.
+name|HATestUtil
 import|;
 end_import
 
@@ -401,16 +401,6 @@ operator|.
 name|base
 operator|.
 name|Supplier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
 import|;
 end_import
 
@@ -852,32 +842,21 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|NameNodeResourceChecker
+name|MockNameNodeResourceChecker
 name|mockResourceChecker
 init|=
-name|Mockito
-operator|.
-name|mock
+operator|new
+name|MockNameNodeResourceChecker
 argument_list|(
-name|NameNodeResourceChecker
-operator|.
-name|class
+name|conf
 argument_list|)
 decl_stmt|;
-name|Mockito
+name|mockResourceChecker
 operator|.
-name|doReturn
+name|setResourcesAvailable
 argument_list|(
 literal|false
 argument_list|)
-operator|.
-name|when
-argument_list|(
-name|mockResourceChecker
-argument_list|)
-operator|.
-name|hasAvailableDiskSpace
-argument_list|()
 expr_stmt|;
 name|cluster
 operator|.
