@@ -169,7 +169,7 @@ name|name
 argument_list|)
 return|;
 block|}
-comment|/**    * Create or return the StorageStatistics object with the given name.    *    * @param name        The storage statistics object name.    * @param provider    An object which can create a new StorageStatistics    *                      object if needed.    * @return            The StorageStatistics object with the given name.    * @throws RuntimeException  If the StorageStatisticsProvider provides a new    *                           StorageStatistics object with the wrong name.    */
+comment|/**    * Create or return the StorageStatistics object with the given name.    *    * @param name        The storage statistics object name.    * @param provider    An object which can create a new StorageStatistics    *                      object if needed.    * @return            The StorageStatistics object with the given name.    * @throws RuntimeException  If the StorageStatisticsProvider provides a null    *                           object or a new StorageStatistics object with the    *                           wrong name.    */
 DECL|method|put (String name, StorageStatisticsProvider provider)
 specifier|public
 specifier|synchronized
@@ -222,6 +222,25 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
+name|stats
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"StorageStatisticsProvider for "
+operator|+
+name|name
+operator|+
+literal|" should not provide a null StorageStatistics object."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 operator|!
 name|stats
 operator|.
@@ -265,6 +284,32 @@ expr_stmt|;
 return|return
 name|stats
 return|;
+block|}
+comment|/**    * Reset all global storage statistics.    */
+DECL|method|reset ()
+specifier|public
+specifier|synchronized
+name|void
+name|reset
+parameter_list|()
+block|{
+for|for
+control|(
+name|StorageStatistics
+name|statistics
+range|:
+name|map
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|statistics
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Get an iterator that we can use to iterate throw all the global storage    * statistics objects.    */
 DECL|method|iterator ()

@@ -870,6 +870,37 @@ return|;
 block|}
 end_function
 
+begin_function
+annotation|@
+name|Override
+DECL|method|reset ()
+specifier|public
+name|void
+name|reset
+parameter_list|()
+block|{
+for|for
+control|(
+name|AtomicLong
+name|count
+range|:
+name|opsCount
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|count
+operator|.
+name|set
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+end_function
+
 unit|}
 end_unit
 

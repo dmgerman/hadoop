@@ -535,6 +535,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Return true if a statistic is being tracked.    *    * @return         True only if the statistic is being tracked.    */
+annotation|@
+name|Override
 DECL|method|isTracked (String key)
 specifier|public
 name|boolean
@@ -570,6 +572,20 @@ block|}
 return|return
 literal|false
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|reset ()
+specifier|public
+name|void
+name|reset
+parameter_list|()
+block|{
+name|stats
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

@@ -60,6 +60,8 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getLongStatistics ()
 specifier|public
 name|Iterator
@@ -76,6 +78,8 @@ name|emptyIterator
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getLong (String key)
 specifier|public
 name|Long
@@ -89,6 +93,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|isTracked (String key)
 specifier|public
 name|boolean
@@ -102,6 +108,14 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|reset ()
+specifier|public
+name|void
+name|reset
+parameter_list|()
+block|{   }
 block|}
 end_class
 

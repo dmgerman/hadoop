@@ -377,10 +377,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testgetLongStatistics ()
+DECL|method|testGetLongStatistics ()
 specifier|public
 name|void
-name|testgetLongStatistics
+name|testGetLongStatistics
 parameter_list|()
 block|{
 name|Iterator

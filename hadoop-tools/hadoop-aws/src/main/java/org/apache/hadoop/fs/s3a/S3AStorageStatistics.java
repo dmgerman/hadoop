@@ -495,6 +495,34 @@ operator|!=
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|reset ()
+specifier|public
+name|void
+name|reset
+parameter_list|()
+block|{
+for|for
+control|(
+name|AtomicLong
+name|value
+range|:
+name|opsCount
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|value
+operator|.
+name|set
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 

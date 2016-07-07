@@ -351,7 +351,7 @@ argument_list|>
 name|getLongStatistics
 parameter_list|()
 function_decl|;
-comment|/**    * Get the value of a statistic.    *    * @return         null if the statistic is not being tracked or is not a    *                     long statistic.    *                 The value of the statistic, otherwise.    */
+comment|/**    * Get the value of a statistic.    *    * @return         null if the statistic is not being tracked or is not a    *                 long statistic. The value of the statistic, otherwise.    */
 DECL|method|getLong (String key)
 specifier|public
 specifier|abstract
@@ -372,6 +372,14 @@ parameter_list|(
 name|String
 name|key
 parameter_list|)
+function_decl|;
+comment|/**    * Reset all the statistic data.    */
+DECL|method|reset ()
+specifier|public
+specifier|abstract
+name|void
+name|reset
+parameter_list|()
 function_decl|;
 block|}
 end_class
