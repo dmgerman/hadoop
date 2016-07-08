@@ -767,6 +767,15 @@ name|contains
 argument_list|(
 name|NodeState
 operator|.
+name|DECOMMISSIONING
+argument_list|)
+operator|||
+name|acceptedStates
+operator|.
+name|contains
+argument_list|(
+name|NodeState
+operator|.
 name|UNHEALTHY
 argument_list|)
 condition|)

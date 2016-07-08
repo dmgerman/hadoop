@@ -2238,6 +2238,12 @@ name|isValidNode
 argument_list|(
 name|host
 argument_list|)
+operator|&&
+operator|!
+name|isNodeInDecommissioning
+argument_list|(
+name|nodeId
+argument_list|)
 condition|)
 block|{
 name|String
