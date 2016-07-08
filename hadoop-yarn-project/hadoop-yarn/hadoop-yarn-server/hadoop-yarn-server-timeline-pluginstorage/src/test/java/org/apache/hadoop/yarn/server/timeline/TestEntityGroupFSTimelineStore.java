@@ -2364,8 +2364,6 @@ name|mainTestAppId
 argument_list|)
 argument_list|,
 name|config
-argument_list|,
-name|fs
 argument_list|)
 decl_stmt|;
 name|cacheItem
@@ -2723,8 +2721,6 @@ name|mainTestAppId
 argument_list|)
 argument_list|,
 name|config
-argument_list|,
-name|fs
 argument_list|)
 decl_stmt|;
 name|cacheItem
@@ -2925,8 +2921,6 @@ name|appId
 argument_list|)
 argument_list|,
 name|config
-argument_list|,
-name|fs
 argument_list|)
 decl_stmt|;
 name|item
