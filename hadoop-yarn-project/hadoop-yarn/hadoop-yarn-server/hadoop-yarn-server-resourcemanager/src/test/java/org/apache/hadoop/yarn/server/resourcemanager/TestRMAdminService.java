@@ -1589,6 +1589,11 @@ name|newInstance
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|rm
+operator|.
+name|drainEvents
+argument_list|()
+expr_stmt|;
 name|RMNode
 name|niAfter
 init|=
