@@ -12389,6 +12389,11 @@ block|{
 comment|// Reset UGI so that other tests are not affected.
 name|UserGroupInformation
 operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|UserGroupInformation
+operator|.
 name|setConfiguration
 argument_list|(
 operator|new
