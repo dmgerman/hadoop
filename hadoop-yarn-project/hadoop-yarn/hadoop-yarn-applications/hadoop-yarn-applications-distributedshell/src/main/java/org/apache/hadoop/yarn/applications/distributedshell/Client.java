@@ -1045,7 +1045,7 @@ specifier|private
 name|long
 name|amMemory
 init|=
-literal|10
+literal|100
 decl_stmt|;
 comment|// Amt. of virtual core resource to request for to run the App Master
 DECL|field|amVCores
@@ -2141,7 +2141,7 @@ name|getOptionValue
 argument_list|(
 literal|"master_memory"
 argument_list|,
-literal|"10"
+literal|"100"
 argument_list|)
 argument_list|)
 expr_stmt|;

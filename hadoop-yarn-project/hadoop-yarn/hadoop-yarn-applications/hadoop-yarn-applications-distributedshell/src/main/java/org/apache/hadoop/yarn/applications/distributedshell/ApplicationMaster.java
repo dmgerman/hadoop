@@ -4714,6 +4714,15 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error in RMCallbackHandler: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|done
 operator|=
 literal|true
