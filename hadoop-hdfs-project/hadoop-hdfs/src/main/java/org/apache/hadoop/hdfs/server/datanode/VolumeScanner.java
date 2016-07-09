@@ -1305,6 +1305,8 @@ operator|.
 name|reportBadBlocks
 argument_list|(
 name|block
+argument_list|,
+name|volume
 argument_list|)
 expr_stmt|;
 block|}

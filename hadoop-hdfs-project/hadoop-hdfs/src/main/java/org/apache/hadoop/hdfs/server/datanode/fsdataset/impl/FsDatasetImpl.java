@@ -12730,6 +12730,11 @@ name|bpid
 argument_list|,
 name|corruptBlock
 argument_list|)
+argument_list|,
+name|memBlockInfo
+operator|.
+name|getVolume
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
