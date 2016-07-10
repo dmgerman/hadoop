@@ -62,6 +62,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|Credentials
@@ -334,6 +348,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|nodemanager
+operator|.
+name|timelineservice
+operator|.
+name|NMTimelinePublisher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|security
 operator|.
 name|ApplicationACLsManager
@@ -406,6 +440,17 @@ argument_list|,
 name|Credentials
 argument_list|>
 name|getSystemCredentialsForApps
+parameter_list|()
+function_decl|;
+comment|/**    * Get the registered collectors that located on this NM.    * @return registered collectors, or null if the timeline service v.2 is not    * enabled    */
+DECL|method|getRegisteredCollectors ()
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|String
+argument_list|>
+name|getRegisteredCollectors
 parameter_list|()
 function_decl|;
 DECL|method|getContainers ()
@@ -485,6 +530,11 @@ name|boolean
 name|getDecommissioned
 parameter_list|()
 function_decl|;
+DECL|method|getConf ()
+name|Configuration
+name|getConf
+parameter_list|()
+function_decl|;
 DECL|method|setDecommissioned (boolean isDecommissioned)
 name|void
 name|setDecommissioned
@@ -520,6 +570,19 @@ function_decl|;
 DECL|method|getContainerAllocator ()
 name|OpportunisticContainerAllocator
 name|getContainerAllocator
+parameter_list|()
+function_decl|;
+DECL|method|setNMTimelinePublisher (NMTimelinePublisher nmMetricsPublisher)
+name|void
+name|setNMTimelinePublisher
+parameter_list|(
+name|NMTimelinePublisher
+name|nmMetricsPublisher
+parameter_list|)
+function_decl|;
+DECL|method|getNMTimelinePublisher ()
+name|NMTimelinePublisher
+name|getNMTimelinePublisher
 parameter_list|()
 function_decl|;
 block|}

@@ -2372,6 +2372,24 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// Remove collector address when app get finished.
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|rmApp
+operator|.
+name|removeCollectorAddr
+argument_list|()
+expr_stmt|;
+block|}
 comment|// checking whether the app exits in RMStateStore at first not to throw
 comment|// ApplicationDoesNotExistInCacheException before and after
 comment|// RM work-preserving restart.
@@ -3702,6 +3720,39 @@ name|getNumClusterNodes
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// add collector address for this application
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|allocateResponse
+operator|.
+name|setCollectorAddr
+argument_list|(
+name|this
+operator|.
+name|rmContext
+operator|.
+name|getRMApps
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|applicationId
+argument_list|)
+operator|.
+name|getCollectorAddr
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// add preemption to the allocateResponse message (if any)
 name|allocateResponse
 operator|.

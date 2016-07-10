@@ -66,9 +66,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|classification
 operator|.
-name|Configuration
+name|InterfaceStability
+operator|.
+name|Unstable
 import|;
 end_import
 
@@ -80,11 +82,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|conf
 operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
+name|Configuration
 import|;
 end_import
 
@@ -581,6 +581,26 @@ operator|.
 name|security
 operator|.
 name|RMDelegationTokenSecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|timelineservice
+operator|.
+name|RMTimelineCollectorManager
 import|;
 end_import
 
@@ -1608,20 +1628,54 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setSystemMetricsPublisher ( SystemMetricsPublisher systemMetricsPublisher)
+DECL|method|setRMTimelineCollectorManager ( RMTimelineCollectorManager timelineCollectorManager)
+specifier|public
+name|void
+name|setRMTimelineCollectorManager
+parameter_list|(
+name|RMTimelineCollectorManager
+name|timelineCollectorManager
+parameter_list|)
+block|{
+name|activeServiceContext
+operator|.
+name|setRMTimelineCollectorManager
+argument_list|(
+name|timelineCollectorManager
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRMTimelineCollectorManager ()
+specifier|public
+name|RMTimelineCollectorManager
+name|getRMTimelineCollectorManager
+parameter_list|()
+block|{
+return|return
+name|activeServiceContext
+operator|.
+name|getRMTimelineCollectorManager
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setSystemMetricsPublisher ( SystemMetricsPublisher metricsPublisher)
 specifier|public
 name|void
 name|setSystemMetricsPublisher
 parameter_list|(
 name|SystemMetricsPublisher
-name|systemMetricsPublisher
+name|metricsPublisher
 parameter_list|)
 block|{
 name|this
 operator|.
 name|systemMetricsPublisher
 operator|=
-name|systemMetricsPublisher
+name|metricsPublisher
 expr_stmt|;
 block|}
 annotation|@

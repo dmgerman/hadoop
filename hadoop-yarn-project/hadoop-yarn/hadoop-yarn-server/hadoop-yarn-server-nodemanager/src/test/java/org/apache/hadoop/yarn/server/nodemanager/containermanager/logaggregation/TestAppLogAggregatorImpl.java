@@ -2350,6 +2350,8 @@ name|NMNullStateStoreService
 argument_list|()
 argument_list|,
 literal|false
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}

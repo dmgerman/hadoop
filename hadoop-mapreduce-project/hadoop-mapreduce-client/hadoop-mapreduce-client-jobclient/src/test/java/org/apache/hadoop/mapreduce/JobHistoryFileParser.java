@@ -130,6 +130,10 @@ name|JobInfo
 import|;
 end_import
 
+begin_comment
+comment|/**  * Used to parse job history and configuration files.  */
+end_comment
+
 begin_class
 DECL|class|JobHistoryFileParser
 class|class

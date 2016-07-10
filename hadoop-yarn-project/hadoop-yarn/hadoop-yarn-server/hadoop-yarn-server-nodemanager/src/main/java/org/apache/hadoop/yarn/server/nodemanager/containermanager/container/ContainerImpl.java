@@ -420,6 +420,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -525,6 +543,24 @@ operator|.
 name|ContainerExecutor
 operator|.
 name|ExitCode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|Context
 import|;
 end_import
 
@@ -942,24 +978,6 @@ name|server
 operator|.
 name|nodemanager
 operator|.
-name|Context
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
 name|metrics
 operator|.
 name|NodeManagerMetrics
@@ -1027,6 +1045,26 @@ operator|.
 name|NMStateStoreService
 operator|.
 name|RecoveredContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|timelineservice
+operator|.
+name|NMTimelinePublisher
 import|;
 end_import
 
@@ -1141,22 +1179,6 @@ operator|.
 name|util
 operator|.
 name|Clock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|ConverterUtils
 import|;
 end_import
 
@@ -1870,6 +1892,12 @@ name|make
 argument_list|(
 name|this
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|context
+operator|=
+name|context
 expr_stmt|;
 block|}
 comment|// constructor for a recovered container
@@ -3111,6 +3139,19 @@ name|COMPLETE
 return|;
 block|}
 block|}
+DECL|method|getNMTimelinePublisher ()
+specifier|public
+name|NMTimelinePublisher
+name|getNMTimelinePublisher
+parameter_list|()
+block|{
+return|return
+name|context
+operator|.
+name|getNMTimelinePublisher
+argument_list|()
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getUser ()
@@ -3626,6 +3667,12 @@ operator|.
 name|getEventHandler
 argument_list|()
 decl_stmt|;
+name|ContainerStatus
+name|containerStatus
+init|=
+name|cloneAndGetContainerStatus
+argument_list|()
+decl_stmt|;
 name|eventHandler
 operator|.
 name|handle
@@ -3633,7 +3680,7 @@ argument_list|(
 operator|new
 name|ApplicationContainerFinishedEvent
 argument_list|(
-name|containerId
+name|containerStatus
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -6359,7 +6406,7 @@ operator|.
 name|sendFinishedEvents
 argument_list|()
 expr_stmt|;
-comment|//if the current state is NEW it means the CONTAINER_INIT was never
+comment|// if the current state is NEW it means the CONTAINER_INIT was never
 comment|// sent for the event, thus no need to send the CONTAINER_STOP
 if|if
 condition|(
@@ -7215,6 +7262,21 @@ parameter_list|()
 block|{
 return|return
 name|containerRetryContext
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getPriority ()
+specifier|public
+name|Priority
+name|getPriority
+parameter_list|()
+block|{
+return|return
+name|containerTokenIdentifier
+operator|.
+name|getPriority
+argument_list|()
 return|;
 block|}
 block|}

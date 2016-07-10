@@ -699,6 +699,57 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|getCollectorAddr ()
+specifier|public
+name|String
+name|getCollectorAddr
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|setCollectorAddr (String collectorAddr)
+specifier|public
+name|void
+name|setCollectorAddr
+parameter_list|(
+name|String
+name|collectorAddr
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|removeCollectorAddr ()
+specifier|public
+name|void
+name|removeCollectorAddr
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|getApplicationId ()
 specifier|public
 name|ApplicationId

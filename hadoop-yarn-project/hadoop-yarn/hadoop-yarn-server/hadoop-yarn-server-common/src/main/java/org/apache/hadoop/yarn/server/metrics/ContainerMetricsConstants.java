@@ -71,6 +71,7 @@ name|ENTITY_TYPE
 init|=
 literal|"YARN_CONTAINER"
 decl_stmt|;
+comment|// Event of this type will be emitted by NM.
 DECL|field|CREATED_EVENT_TYPE
 specifier|public
 specifier|static
@@ -80,6 +81,17 @@ name|CREATED_EVENT_TYPE
 init|=
 literal|"YARN_CONTAINER_CREATED"
 decl_stmt|;
+comment|// Event of this type will be emitted by RM.
+DECL|field|CREATED_IN_RM_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CREATED_IN_RM_EVENT_TYPE
+init|=
+literal|"YARN_RM_CONTAINER_CREATED"
+decl_stmt|;
+comment|// Event of this type will be emitted by NM.
 DECL|field|FINISHED_EVENT_TYPE
 specifier|public
 specifier|static
@@ -88,6 +100,16 @@ name|String
 name|FINISHED_EVENT_TYPE
 init|=
 literal|"YARN_CONTAINER_FINISHED"
+decl_stmt|;
+comment|// Event of this type will be emitted by RM.
+DECL|field|FINISHED_IN_RM_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FINISHED_IN_RM_EVENT_TYPE
+init|=
+literal|"YARN_RM_CONTAINER_FINISHED"
 decl_stmt|;
 DECL|field|PARENT_PRIMARIY_FILTER
 specifier|public
@@ -178,6 +200,26 @@ name|String
 name|ALLOCATED_HOST_HTTP_ADDRESS_ENTITY_INFO
 init|=
 literal|"YARN_CONTAINER_ALLOCATED_HOST_HTTP_ADDRESS"
+decl_stmt|;
+comment|// Event of this type will be emitted by NM.
+DECL|field|LOCALIZATION_START_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LOCALIZATION_START_EVENT_TYPE
+init|=
+literal|"YARN_NM_CONTAINER_LOCALIZATION_STARTED"
+decl_stmt|;
+comment|// Event of this type will be emitted by NM.
+DECL|field|LOCALIZATION_FINISHED_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LOCALIZATION_FINISHED_EVENT_TYPE
+init|=
+literal|"YARN_NM_CONTAINER_LOCALIZATION_FINISHED"
 decl_stmt|;
 block|}
 end_class

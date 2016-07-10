@@ -767,7 +767,7 @@ decl_stmt|;
 DECL|field|metricsPublisher
 specifier|private
 specifier|static
-name|SystemMetricsPublisher
+name|TimelineServiceV1Publisher
 name|metricsPublisher
 decl_stmt|;
 DECL|field|store
@@ -811,7 +811,7 @@ name|setBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_SYSTEM_METRICS_PUBLISHER_ENABLED
+name|SYSTEM_METRICS_PUBLISHER_ENABLED
 argument_list|,
 literal|true
 argument_list|)
@@ -889,7 +889,7 @@ expr_stmt|;
 name|metricsPublisher
 operator|=
 operator|new
-name|SystemMetricsPublisher
+name|TimelineServiceV1Publisher
 argument_list|()
 expr_stmt|;
 name|metricsPublisher

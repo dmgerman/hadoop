@@ -19,6 +19,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -69,14 +93,12 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
+import|import
+name|java
 operator|.
-name|junit
+name|util
 operator|.
-name|Assert
-operator|.
-name|*
+name|Set
 import|;
 end_import
 
@@ -211,6 +233,46 @@ operator|.
 name|impl
 operator|.
 name|JobImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timelineservice
+operator|.
+name|TimelineEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timelineservice
+operator|.
+name|TimelineMetric
 import|;
 end_import
 
@@ -2464,6 +2526,33 @@ name|datum
 operator|=
 name|datum
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|toTimelineEvent ()
+specifier|public
+name|TimelineEvent
+name|toTimelineEvent
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getTimelineMetrics ()
+specifier|public
+name|Set
+argument_list|<
+name|TimelineMetric
+argument_list|>
+name|getTimelineMetrics
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
 block|}
 block|}
 block|}

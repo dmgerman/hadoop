@@ -524,6 +524,26 @@ name|RMDelegationTokenSecretManager
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|timelineservice
+operator|.
+name|RMTimelineCollectorManager
+import|;
+end_import
+
 begin_comment
 comment|/**  * Context of the ResourceManager.  */
 end_comment
@@ -709,6 +729,19 @@ function_decl|;
 DECL|method|getSystemMetricsPublisher ()
 name|SystemMetricsPublisher
 name|getSystemMetricsPublisher
+parameter_list|()
+function_decl|;
+DECL|method|setRMTimelineCollectorManager ( RMTimelineCollectorManager timelineCollectorManager)
+name|void
+name|setRMTimelineCollectorManager
+parameter_list|(
+name|RMTimelineCollectorManager
+name|timelineCollectorManager
+parameter_list|)
+function_decl|;
+DECL|method|getRMTimelineCollectorManager ()
+name|RMTimelineCollectorManager
+name|getRMTimelineCollectorManager
 parameter_list|()
 function_decl|;
 DECL|method|getConfigurationProvider ()

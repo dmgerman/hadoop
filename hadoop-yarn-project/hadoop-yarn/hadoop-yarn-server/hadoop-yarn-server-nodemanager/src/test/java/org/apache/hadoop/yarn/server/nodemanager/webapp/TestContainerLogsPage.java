@@ -66,7 +66,7 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|when
+name|verify
 import|;
 end_import
 
@@ -78,7 +78,7 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|verify
+name|when
 import|;
 end_import
 
@@ -378,28 +378,6 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|ContainerIdPBImpl
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|impl
-operator|.
-name|pb
-operator|.
 name|ApplicationAttemptIdPBImpl
 import|;
 end_import
@@ -436,15 +414,15 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|api
 operator|.
-name|nodemanager
+name|records
 operator|.
-name|containermanager
+name|impl
 operator|.
-name|container
+name|pb
 operator|.
-name|ContainerImpl
+name|ContainerIdPBImpl
 import|;
 end_import
 
@@ -663,6 +641,28 @@ operator|.
 name|container
 operator|.
 name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
+name|ContainerImpl
 import|;
 end_import
 
@@ -1023,6 +1023,8 @@ name|NMNullStateStoreService
 argument_list|()
 argument_list|,
 literal|false
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 comment|// Add an application and the corresponding containers
@@ -1363,6 +1365,8 @@ name|NMNullStateStoreService
 argument_list|()
 argument_list|,
 literal|false
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|nmContext
@@ -1560,6 +1564,8 @@ name|NMNullStateStoreService
 argument_list|()
 argument_list|,
 literal|false
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 comment|// Add an application and the corresponding containers

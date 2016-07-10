@@ -432,6 +432,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|timelineClient
+specifier|private
+name|TimelineClient
+name|timelineClient
+decl_stmt|;
 comment|/**    * Create a new instance of AMRMClient.    * For usage:    *<pre>    * {@code    * AMRMClient.<T>createAMRMClientContainerRequest()    * }</pre>    * @return the newly create AMRMClient instance.    */
 annotation|@
 name|Public
@@ -1213,7 +1218,37 @@ return|return
 name|nmTokenCache
 return|;
 block|}
-comment|/**    * Wait for<code>check</code> to return true for each 1000 ms.    * See also {@link #waitFor(com.google.common.base.Supplier, int)}    * and {@link #waitFor(com.google.common.base.Supplier, int, int)}    * @param check    */
+comment|/**    * Register TimelineClient to AMRMClient.    * @param client the timeline client to register    */
+DECL|method|registerTimelineClient (TimelineClient client)
+specifier|public
+name|void
+name|registerTimelineClient
+parameter_list|(
+name|TimelineClient
+name|client
+parameter_list|)
+block|{
+name|this
+operator|.
+name|timelineClient
+operator|=
+name|client
+expr_stmt|;
+block|}
+comment|/**    * Get registered timeline client.    * @return the registered timeline client    */
+DECL|method|getRegisteredTimeineClient ()
+specifier|public
+name|TimelineClient
+name|getRegisteredTimeineClient
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|timelineClient
+return|;
+block|}
+comment|/**    * Wait for<code>check</code> to return true for each 1000 ms.    * See also {@link #waitFor(com.google.common.base.Supplier, int)}    * and {@link #waitFor(com.google.common.base.Supplier, int, int)}    * @param check the condition for which it should wait    */
 DECL|method|waitFor (Supplier<Boolean> check)
 specifier|public
 name|void

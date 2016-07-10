@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -43,6 +53,46 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timelineservice
+operator|.
+name|TimelineEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timelineservice
+operator|.
+name|TimelineMetric
 import|;
 end_import
 
@@ -84,6 +134,21 @@ parameter_list|(
 name|Object
 name|datum
 parameter_list|)
+function_decl|;
+comment|/**    * Map HistoryEvent to TimelineEvent.    *    * @return the timeline event    */
+DECL|method|toTimelineEvent ()
+name|TimelineEvent
+name|toTimelineEvent
+parameter_list|()
+function_decl|;
+comment|/**    * Counters or Metrics if any else return null.    *    * @return the set of timeline metrics    */
+DECL|method|getTimelineMetrics ()
+name|Set
+argument_list|<
+name|TimelineMetric
+argument_list|>
+name|getTimelineMetrics
+parameter_list|()
 function_decl|;
 block|}
 end_interface

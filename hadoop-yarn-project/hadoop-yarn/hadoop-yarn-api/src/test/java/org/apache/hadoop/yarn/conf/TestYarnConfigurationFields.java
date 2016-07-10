@@ -314,6 +314,16 @@ argument_list|(
 literal|"yarn.timeline-service."
 argument_list|)
 expr_stmt|;
+comment|// skip deprecated RM_SYSTEM_METRICS_PUBLISHER_ENABLED
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SYSTEM_METRICS_PUBLISHER_ENABLED
+argument_list|)
+expr_stmt|;
 comment|// Used as Java command line properties, not XML
 name|configurationPrefixToSkipCompare
 operator|.

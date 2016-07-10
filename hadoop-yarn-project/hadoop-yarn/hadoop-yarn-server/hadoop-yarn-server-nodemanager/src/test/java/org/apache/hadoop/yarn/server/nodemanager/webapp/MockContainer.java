@@ -208,6 +208,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -887,6 +905,18 @@ name|String
 name|logDir
 parameter_list|)
 block|{   }
+DECL|method|getPriority ()
+specifier|public
+name|Priority
+name|getPriority
+parameter_list|()
+block|{
+return|return
+name|Priority
+operator|.
+name|UNDEFINED
+return|;
+block|}
 block|}
 end_class
 
