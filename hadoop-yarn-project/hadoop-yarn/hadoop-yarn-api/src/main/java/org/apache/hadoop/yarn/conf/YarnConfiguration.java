@@ -1912,7 +1912,7 @@ name|DEFAULT_RM_SYSTEM_METRICS_PUBLISHER_ENABLED
 init|=
 literal|false
 decl_stmt|;
-comment|/**    *  The setting that controls whether yarn system metrics is published on the    *  timeline server or not by RM and NM. This configuration setting is for ATS V2    */
+comment|/**    *  The setting that controls whether yarn system metrics is published on the    *  timeline server or not by RM and NM. This configuration setting is for    *  ATS v2.    */
 DECL|field|SYSTEM_METRICS_PUBLISHER_ENABLED
 specifier|public
 specifier|static

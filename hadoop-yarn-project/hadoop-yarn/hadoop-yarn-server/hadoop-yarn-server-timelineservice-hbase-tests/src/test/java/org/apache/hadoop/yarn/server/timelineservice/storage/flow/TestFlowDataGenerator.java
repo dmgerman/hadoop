@@ -199,29 +199,35 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Generates the data/entities for the FlowRun and FlowActivity Tables  */
+comment|/**  * Generates the data/entities for the FlowRun and FlowActivity Tables.  */
 end_comment
 
 begin_class
 DECL|class|TestFlowDataGenerator
+specifier|final
 class|class
 name|TestFlowDataGenerator
 block|{
-DECL|field|metric1
+DECL|method|TestFlowDataGenerator ()
+specifier|private
+name|TestFlowDataGenerator
+parameter_list|()
+block|{   }
+DECL|field|METRIC_1
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|metric1
+name|METRIC_1
 init|=
 literal|"MAP_SLOT_MILLIS"
 decl_stmt|;
-DECL|field|metric2
+DECL|field|METRIC_2
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|metric2
+name|METRIC_2
 init|=
 literal|"HDFS_BYTES_READ"
 decl_stmt|;
@@ -317,7 +323,7 @@ name|m1
 operator|.
 name|setId
 argument_list|(
-name|metric1
+name|METRIC_1
 argument_list|)
 expr_stmt|;
 name|Map
@@ -416,7 +422,7 @@ name|m2
 operator|.
 name|setId
 argument_list|(
-name|metric2
+name|METRIC_2
 argument_list|)
 expr_stmt|;
 name|metricValues
@@ -594,7 +600,7 @@ name|m1
 operator|.
 name|setId
 argument_list|(
-name|metric1
+name|METRIC_1
 argument_list|)
 expr_stmt|;
 name|Map
@@ -664,7 +670,7 @@ name|m2
 operator|.
 name|setId
 argument_list|(
-name|metric2
+name|METRIC_2
 argument_list|)
 expr_stmt|;
 name|metricValues
@@ -848,7 +854,7 @@ name|m1
 operator|.
 name|setId
 argument_list|(
-name|metric1
+name|METRIC_1
 argument_list|)
 expr_stmt|;
 name|Map
@@ -929,7 +935,7 @@ name|m2
 operator|.
 name|setId
 argument_list|(
-name|metric2
+name|METRIC_2
 argument_list|)
 expr_stmt|;
 name|metricValues
@@ -1137,7 +1143,7 @@ name|m1
 operator|.
 name|setId
 argument_list|(
-name|metric1
+name|METRIC_1
 argument_list|)
 expr_stmt|;
 name|Map
@@ -1349,7 +1355,7 @@ name|m1
 operator|.
 name|setId
 argument_list|(
-name|metric1
+name|METRIC_1
 argument_list|)
 expr_stmt|;
 name|Map
@@ -1650,7 +1656,7 @@ name|m1
 operator|.
 name|setId
 argument_list|(
-name|metric1
+name|METRIC_1
 argument_list|)
 expr_stmt|;
 name|Map
@@ -1770,7 +1776,7 @@ name|m2
 operator|.
 name|setId
 argument_list|(
-name|metric2
+name|METRIC_2
 argument_list|)
 expr_stmt|;
 name|metricValues

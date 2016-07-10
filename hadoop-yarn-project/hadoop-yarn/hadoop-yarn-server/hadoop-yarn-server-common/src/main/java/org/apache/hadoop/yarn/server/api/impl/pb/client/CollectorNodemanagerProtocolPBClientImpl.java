@@ -473,7 +473,7 @@ name|YARN_PREFIX
 operator|+
 literal|"rpc.nm-command-timeout"
 decl_stmt|;
-comment|/**    * Maximum of 1 minute timeout for a Node to react to the command    */
+comment|/**    * Maximum of 1 minute timeout for a Node to react to the command.    */
 DECL|field|DEFAULT_COMMAND_TIMEOUT
 specifier|static
 specifier|final

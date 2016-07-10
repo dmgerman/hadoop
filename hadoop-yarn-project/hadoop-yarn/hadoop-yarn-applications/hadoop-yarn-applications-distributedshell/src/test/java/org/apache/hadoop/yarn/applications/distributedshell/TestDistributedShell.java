@@ -3491,7 +3491,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|500l
+literal|500L
 argument_list|)
 expr_stmt|;
 block|}
@@ -3612,7 +3612,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|500l
+literal|500L
 argument_list|)
 expr_stmt|;
 block|}
@@ -3862,9 +3862,11 @@ argument_list|(
 name|searchString
 argument_list|)
 condition|)
+block|{
 name|actualCount
 operator|++
 expr_stmt|;
+block|}
 block|}
 block|}
 finally|finally

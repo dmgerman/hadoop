@@ -803,7 +803,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests the FlowRun and FlowActivity Tables  */
+comment|/**  * Tests the FlowRun and FlowActivity Tables.  */
 end_comment
 
 begin_class

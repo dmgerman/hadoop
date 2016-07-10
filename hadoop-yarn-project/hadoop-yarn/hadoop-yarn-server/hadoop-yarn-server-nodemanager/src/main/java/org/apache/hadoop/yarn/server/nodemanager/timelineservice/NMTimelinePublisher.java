@@ -246,26 +246,6 @@ name|records
 operator|.
 name|timelineservice
 operator|.
-name|TimelineMetricOperation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|timelineservice
-operator|.
 name|TimelineEntity
 import|;
 end_import
@@ -349,6 +329,26 @@ operator|.
 name|timelineservice
 operator|.
 name|TimelineMetric
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timelineservice
+operator|.
+name|TimelineMetricOperation
 import|;
 end_import
 
@@ -664,6 +664,20 @@ name|TimelineUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Metrics publisher service that publishes data to the timeline service v.2. It  * is used only if the timeline service v.2 is enabled and the system publishing  * of events and metrics is enabled.  */
 end_comment
@@ -713,7 +727,7 @@ name|String
 name|httpAddress
 decl_stmt|;
 DECL|field|appToClientMap
-specifier|protected
+specifier|private
 specifier|final
 name|Map
 argument_list|<
@@ -842,6 +856,22 @@ operator|.
 name|getHttpPort
 argument_list|()
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getAppToClientMap ()
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|TimelineClient
+argument_list|>
+name|getAppToClientMap
+parameter_list|()
+block|{
+return|return
+name|appToClientMap
+return|;
 block|}
 DECL|method|handleNMTimelineEvent (NMTimelineEvent event)
 specifier|protected

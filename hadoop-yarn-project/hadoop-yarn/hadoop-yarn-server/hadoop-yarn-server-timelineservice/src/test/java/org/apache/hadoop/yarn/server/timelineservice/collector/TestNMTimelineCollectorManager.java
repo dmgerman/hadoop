@@ -605,7 +605,7 @@ name|Exception
 block|{
 specifier|final
 name|int
-name|NUM_APPS
+name|numApps
 init|=
 literal|5
 decl_stmt|;
@@ -637,7 +637,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|NUM_APPS
+name|numApps
 condition|;
 name|i
 operator|++
@@ -715,7 +715,7 @@ name|Executors
 operator|.
 name|newFixedThreadPool
 argument_list|(
-name|NUM_APPS
+name|numApps
 argument_list|)
 decl_stmt|;
 try|try
@@ -775,7 +775,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|NUM_APPS
+name|numApps
 condition|;
 name|i
 operator|++
@@ -818,7 +818,7 @@ name|Exception
 block|{
 specifier|final
 name|int
-name|NUM_APPS
+name|numApps
 init|=
 literal|5
 decl_stmt|;
@@ -850,7 +850,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|NUM_APPS
+name|numApps
 condition|;
 name|i
 operator|++
@@ -940,7 +940,7 @@ name|Executors
 operator|.
 name|newFixedThreadPool
 argument_list|(
-name|NUM_APPS
+name|numApps
 argument_list|)
 decl_stmt|;
 try|try
@@ -1000,7 +1000,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|NUM_APPS
+name|numApps
 condition|;
 name|i
 operator|++
@@ -1039,7 +1039,7 @@ parameter_list|()
 block|{
 specifier|final
 name|NodeTimelineCollectorManager
-name|collectorManager
+name|cm
 init|=
 name|spy
 argument_list|(
@@ -1057,7 +1057,7 @@ argument_list|)
 operator|.
 name|when
 argument_list|(
-name|collectorManager
+name|cm
 argument_list|)
 operator|.
 name|getConfig
@@ -1131,14 +1131,14 @@ argument_list|)
 operator|.
 name|when
 argument_list|(
-name|collectorManager
+name|cm
 argument_list|)
 operator|.
 name|getNMCollectorService
 argument_list|()
 expr_stmt|;
 return|return
-name|collectorManager
+name|cm
 return|;
 block|}
 block|}

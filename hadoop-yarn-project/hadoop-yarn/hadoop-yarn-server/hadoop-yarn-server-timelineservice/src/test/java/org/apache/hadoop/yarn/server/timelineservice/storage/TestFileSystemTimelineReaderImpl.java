@@ -576,18 +576,19 @@ specifier|public
 class|class
 name|TestFileSystemTimelineReaderImpl
 block|{
-DECL|field|rootDir
+DECL|field|ROOT_DIR
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|rootDir
+name|ROOT_DIR
 init|=
 name|FileSystemTimelineReaderImpl
 operator|.
 name|DEFAULT_TIMELINE_SERVICE_STORAGE_DIR_ROOT
 decl_stmt|;
 DECL|field|reader
+specifier|private
 name|FileSystemTimelineReaderImpl
 name|reader
 decl_stmt|;
@@ -627,7 +628,7 @@ decl_stmt|;
 name|String
 name|appFlowMappingFile
 init|=
-name|rootDir
+name|ROOT_DIR
 operator|+
 literal|"/entities/cluster1/"
 operator|+
@@ -704,7 +705,7 @@ operator|(
 operator|new
 name|File
 argument_list|(
-name|rootDir
+name|ROOT_DIR
 argument_list|)
 operator|)
 operator|.
@@ -730,7 +731,7 @@ argument_list|(
 operator|new
 name|File
 argument_list|(
-name|rootDir
+name|ROOT_DIR
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -766,7 +767,7 @@ name|FileSystemTimelineReaderImpl
 operator|.
 name|TIMELINE_SERVICE_STORAGE_DIR_ROOT
 argument_list|,
-name|rootDir
+name|ROOT_DIR
 argument_list|)
 expr_stmt|;
 name|reader
@@ -901,7 +902,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-name|rootDir
+name|ROOT_DIR
 operator|+
 literal|"/entities/cluster1/user1/flow1/1/app1/app/"
 argument_list|)
@@ -2034,7 +2035,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-name|rootDir
+name|ROOT_DIR
 operator|+
 literal|"/entities/cluster1/user1/flow1,flow/1/app2/app/"
 argument_list|)
@@ -2332,7 +2333,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** This test checks whether we can handle commas in app flow mapping csv */
+comment|/** This test checks whether we can handle commas in app flow mapping csv. */
 annotation|@
 name|Test
 DECL|method|testAppFlowMappingCsv ()

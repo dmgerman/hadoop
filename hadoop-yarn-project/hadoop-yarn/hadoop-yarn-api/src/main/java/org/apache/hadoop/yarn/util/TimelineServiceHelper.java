@@ -81,7 +81,7 @@ parameter_list|()
 block|{
 comment|// Utility classes should not have a public or default constructor.
 block|}
-comment|/**    * Cast map to HashMap for generic type.    * @param originalMap the map need to be casted    * @return casted HashMap object    */
+comment|/**    * Cast map to HashMap for generic type.    * @param originalMap the map need to be casted    * @param<E> key type    * @param<V> value type    * @return casted HashMap object    */
 DECL|method|mapCastToHashMap ( Map<E, V> originalMap)
 specifier|public
 specifier|static

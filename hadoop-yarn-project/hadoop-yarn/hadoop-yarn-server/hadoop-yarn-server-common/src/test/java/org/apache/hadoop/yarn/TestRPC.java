@@ -906,12 +906,12 @@ name|EXCEPTION_CAUSE
 init|=
 literal|"exception cause"
 decl_stmt|;
-DECL|field|recordFactory
+DECL|field|RECORD_FACTORY
 specifier|private
 specifier|static
 specifier|final
 name|RecordFactory
-name|recordFactory
+name|RECORD_FACTORY
 init|=
 name|RecordFactoryProvider
 operator|.
@@ -1109,7 +1109,9 @@ literal|"Unknown method getNewApplication called on.*"
 operator|+
 literal|"org.apache.hadoop.yarn.proto.ApplicationClientProtocol"
 operator|+
-literal|"\\$ApplicationClientProtocolService\\$BlockingInterface protocol."
+literal|"\\$ApplicationClientProtocolService\\$BlockingInterface "
+operator|+
+literal|"protocol."
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1292,7 +1294,9 @@ literal|"Unknown method getNewApplication called on.*"
 operator|+
 literal|"org.apache.hadoop.yarn.proto.ApplicationClientProtocol"
 operator|+
-literal|"\\$ApplicationClientProtocolService\\$BlockingInterface protocol."
+literal|"\\$ApplicationClientProtocolService\\$BlockingInterface "
+operator|+
+literal|"protocol."
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1735,7 +1739,7 @@ decl_stmt|;
 name|ContainerLaunchContext
 name|containerLaunchContext
 init|=
-name|recordFactory
+name|RECORD_FACTORY
 operator|.
 name|newRecordInstance
 argument_list|(
@@ -1965,7 +1969,7 @@ block|{
 name|StopContainersRequest
 name|stopRequest
 init|=
-name|recordFactory
+name|RECORD_FACTORY
 operator|.
 name|newRecordInstance
 argument_list|(
@@ -2141,7 +2145,7 @@ block|{
 name|GetContainerStatusesResponse
 name|response
 init|=
-name|recordFactory
+name|RECORD_FACTORY
 operator|.
 name|newRecordInstance
 argument_list|(
@@ -2177,7 +2181,7 @@ block|{
 name|StartContainersResponse
 name|response
 init|=
-name|recordFactory
+name|RECORD_FACTORY
 operator|.
 name|newRecordInstance
 argument_list|(
@@ -2238,7 +2242,7 @@ block|}
 name|ContainerStatus
 name|status
 init|=
-name|recordFactory
+name|RECORD_FACTORY
 operator|.
 name|newRecordInstance
 argument_list|(
@@ -2631,7 +2635,7 @@ block|}
 name|ReportNewCollectorInfoResponse
 name|response
 init|=
-name|recordFactory
+name|RECORD_FACTORY
 operator|.
 name|newRecordInstance
 argument_list|(

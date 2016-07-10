@@ -154,7 +154,7 @@ specifier|public
 interface|interface
 name|CollectorNodemanagerProtocol
 block|{
-comment|/**    *    *<p>    * The<code>TimelineCollectorManager</code> provides a list of mapping    * between application and collector's address in    * {@link ReportNewCollectorInfoRequest} to a<code>NodeManager</code> to    *<em>register</em> collector's info, include: applicationId and REST URI to    * access collector. NodeManager will add them into registered collectors    * and register them into<code>ResourceManager</code> afterwards.    *</p>    *    * @param request the request of registering a new collector or a list of    *                collectors    * @return    * @throws YarnException    * @throws IOException    */
+comment|/**    *    *<p>    * The<code>TimelineCollectorManager</code> provides a list of mapping    * between application and collector's address in    * {@link ReportNewCollectorInfoRequest} to a<code>NodeManager</code> to    *<em>register</em> collector's info, include: applicationId and REST URI to    * access collector. NodeManager will add them into registered collectors    * and register them into<code>ResourceManager</code> afterwards.    *</p>    *    * @param request the request of registering a new collector or a list of    *                collectors    * @return the response for registering the new collector    * @throws YarnException if the request is invalid    * @throws IOException if there are I/O errors    */
 DECL|method|reportNewCollectorInfo ( ReportNewCollectorInfoRequest request)
 name|ReportNewCollectorInfoResponse
 name|reportNewCollectorInfo
@@ -167,7 +167,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * The collector needs to get the context information including user, flow    * and flow run ID to associate with every incoming put-entity requests.    *</p>    * @param request the request of getting the aggregator context information of    *                the given application    * @return    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>    * The collector needs to get the context information including user, flow    * and flow run ID to associate with every incoming put-entity requests.    *</p>    * @param request the request of getting the aggregator context information of    *                the given application    * @return the response for registering the new collector    * @throws YarnException if the request is invalid    * @throws IOException if there are I/O errors    */
 DECL|method|getTimelineCollectorContext ( GetTimelineCollectorContextRequest request)
 name|GetTimelineCollectorContextResponse
 name|getTimelineCollectorContext

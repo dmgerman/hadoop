@@ -286,10 +286,11 @@ decl_stmt|;
 DECL|field|TIME_TO_SLEEP
 specifier|private
 specifier|static
+specifier|final
 name|long
 name|TIME_TO_SLEEP
 init|=
-literal|150
+literal|150L
 decl_stmt|;
 DECL|field|EXCEPTION_MSG
 specifier|private
@@ -386,13 +387,13 @@ specifier|private
 name|YarnConfiguration
 name|conf
 decl_stmt|;
-DECL|method|createTimelineClient (YarnConfiguration conf)
+DECL|method|createTimelineClient (YarnConfiguration config)
 specifier|private
 name|TestV2TimelineClient
 name|createTimelineClient
 parameter_list|(
 name|YarnConfiguration
-name|conf
+name|config
 parameter_list|)
 block|{
 name|ApplicationId
@@ -408,7 +409,7 @@ literal|0
 argument_list|)
 decl_stmt|;
 name|TestV2TimelineClient
-name|client
+name|tc
 init|=
 operator|new
 name|TestV2TimelineClient
@@ -416,20 +417,20 @@ argument_list|(
 name|id
 argument_list|)
 decl_stmt|;
-name|client
+name|tc
 operator|.
 name|init
 argument_list|(
-name|conf
+name|config
 argument_list|)
 expr_stmt|;
-name|client
+name|tc
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
 return|return
-name|client
+name|tc
 return|;
 block|}
 DECL|class|TestV2TimelineClientForExceptionHandling
@@ -454,7 +455,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|field|throwYarnException
-specifier|protected
+specifier|private
 name|boolean
 name|throwYarnException
 decl_stmt|;
@@ -473,6 +474,16 @@ name|throwYarnException
 operator|=
 name|throwYarnException
 expr_stmt|;
+block|}
+DECL|method|isThrowYarnException ()
+specifier|public
+name|boolean
+name|isThrowYarnException
+parameter_list|()
+block|{
+return|return
+name|throwYarnException
+return|;
 block|}
 annotation|@
 name|Override
@@ -658,7 +669,8 @@ name|YarnException
 block|{
 if|if
 condition|(
-name|throwYarnException
+name|isThrowYarnException
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -721,7 +733,7 @@ name|testExceptionMultipleRetry
 parameter_list|()
 block|{
 name|TestV2TimelineClientForExceptionHandling
-name|client
+name|c
 init|=
 operator|new
 name|TestV2TimelineClientForExceptionHandling
@@ -752,19 +764,19 @@ argument_list|,
 name|maxRetries
 argument_list|)
 expr_stmt|;
-name|client
+name|c
 operator|.
 name|init
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|client
+name|c
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|client
+name|c
 operator|.
 name|setTimelineServiceAddress
 argument_list|(
@@ -773,7 +785,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|client
+name|c
 operator|.
 name|putEntities
 argument_list|(
@@ -842,7 +854,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|client
+name|c
 operator|.
 name|setThrowYarnException
 argument_list|(
@@ -851,7 +863,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|client
+name|c
 operator|.
 name|putEntities
 argument_list|(
@@ -918,7 +930,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|client
+name|c
 operator|.
 name|stop
 argument_list|()
@@ -1992,7 +2004,6 @@ operator|new
 name|StringBuilder
 argument_list|()
 decl_stmt|;
-empty_stmt|;
 for|for
 control|(
 name|TimelineEntity

@@ -448,7 +448,8 @@ block|{
 if|if
 condition|(
 operator|!
-name|appToClientMap
+name|getAppToClientMap
+argument_list|()
 operator|.
 name|containsKey
 argument_list|(
@@ -456,7 +457,8 @@ name|appId
 argument_list|)
 condition|)
 block|{
-name|appToClientMap
+name|getAppToClientMap
+argument_list|()
 operator|.
 name|put
 argument_list|(

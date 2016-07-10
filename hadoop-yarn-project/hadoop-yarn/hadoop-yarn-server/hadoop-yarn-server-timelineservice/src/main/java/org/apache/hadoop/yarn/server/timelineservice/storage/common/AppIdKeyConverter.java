@@ -58,22 +58,6 @@ name|ApplicationId
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * Encodes and decodes {@link ApplicationId} for row keys.  * App ID is stored in row key as 12 bytes, cluster timestamp section of app id  * (long - 8 bytes) followed by sequence id section of app id (int - 4 bytes).  */
 end_comment
@@ -111,9 +95,9 @@ block|{
 name|ApplicationId
 name|appId
 init|=
-name|ConverterUtils
+name|ApplicationId
 operator|.
-name|toApplicationId
+name|fromString
 argument_list|(
 name|appIdStr
 argument_list|)

@@ -121,6 +121,7 @@ extends|extends
 name|ReportNewCollectorInfoResponse
 block|{
 DECL|field|proto
+specifier|private
 name|ReportNewCollectorInfoResponseProto
 name|proto
 init|=
@@ -130,6 +131,7 @@ name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
+specifier|private
 name|ReportNewCollectorInfoResponseProto
 operator|.
 name|Builder
@@ -138,6 +140,7 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|viaProto
+specifier|private
 name|boolean
 name|viaProto
 init|=
@@ -156,7 +159,7 @@ name|newBuilder
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|ReportNewCollectorInfoResponsePBImpl (ReportNewCollectorInfoResponseProto proto)
+DECL|method|ReportNewCollectorInfoResponsePBImpl ( ReportNewCollectorInfoResponseProto proto)
 specifier|public
 name|ReportNewCollectorInfoResponsePBImpl
 parameter_list|(
@@ -233,9 +236,11 @@ name|other
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 if|if
 condition|(
 name|other

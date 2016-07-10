@@ -1065,7 +1065,7 @@ name|timelineClient
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get registered timeline client.    * @return    */
+comment|/**    * Get registered timeline client.    * @return the registered timeline client    */
 DECL|method|getRegisteredTimeineClient ()
 specifier|public
 name|TimelineClient
@@ -1099,7 +1099,7 @@ argument_list|>
 name|blacklistRemovals
 parameter_list|)
 function_decl|;
-comment|/**    * Wait for<code>check</code> to return true for each 1000 ms.    * See also {@link #waitFor(com.google.common.base.Supplier, int)}    * and {@link #waitFor(com.google.common.base.Supplier, int, int)}    * @param check    */
+comment|/**    * Wait for<code>check</code> to return true for each 1000 ms.    * See also {@link #waitFor(com.google.common.base.Supplier, int)}    * and {@link #waitFor(com.google.common.base.Supplier, int, int)}    * @param check the condition for which it should wait    */
 DECL|method|waitFor (Supplier<Boolean> check)
 specifier|public
 name|void

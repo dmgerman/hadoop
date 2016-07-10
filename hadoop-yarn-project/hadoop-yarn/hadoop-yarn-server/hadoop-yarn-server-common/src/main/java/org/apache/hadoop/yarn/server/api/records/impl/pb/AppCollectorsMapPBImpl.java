@@ -197,6 +197,7 @@ extends|extends
 name|AppCollectorsMap
 block|{
 DECL|field|proto
+specifier|private
 name|AppCollectorsMapProto
 name|proto
 init|=
@@ -206,6 +207,7 @@ name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
+specifier|private
 name|AppCollectorsMapProto
 operator|.
 name|Builder
@@ -214,6 +216,7 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|viaProto
+specifier|private
 name|boolean
 name|viaProto
 init|=
@@ -326,9 +329,11 @@ name|other
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 if|if
 condition|(
 name|other
@@ -489,13 +494,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setApplicationId (ApplicationId appId)
+DECL|method|setApplicationId (ApplicationId id)
 specifier|public
 name|void
 name|setApplicationId
 parameter_list|(
 name|ApplicationId
-name|appId
+name|id
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -503,7 +508,7 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|appId
+name|id
 operator|==
 literal|null
 condition|)
@@ -518,7 +523,7 @@ name|this
 operator|.
 name|appId
 operator|=
-name|appId
+name|id
 expr_stmt|;
 block|}
 annotation|@

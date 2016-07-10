@@ -2869,7 +2869,10 @@ literal|null
 operator|||
 name|resp
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
+argument_list|()
+operator|.
+name|getStatusCode
 argument_list|()
 operator|!=
 name|ClientResponse
@@ -2877,6 +2880,9 @@ operator|.
 name|Status
 operator|.
 name|OK
+operator|.
+name|getStatusCode
+argument_list|()
 condition|)
 block|{
 name|String
@@ -4891,7 +4897,6 @@ argument_list|<
 name|Void
 argument_list|>
 block|{
-DECL|field|entities
 specifier|private
 specifier|final
 name|org
@@ -4909,6 +4914,7 @@ operator|.
 name|timelineservice
 operator|.
 name|TimelineEntities
+DECL|field|entities
 name|entities
 decl_stmt|;
 DECL|field|isSync
@@ -4978,7 +4984,8 @@ name|add
 argument_list|(
 literal|"appid"
 argument_list|,
-name|contextAppId
+name|getContextAppId
+argument_list|()
 operator|.
 name|toString
 argument_list|()
@@ -5038,7 +5045,6 @@ return|return
 name|isSync
 return|;
 block|}
-DECL|method|getEntities ()
 specifier|public
 name|org
 operator|.
@@ -5055,6 +5061,7 @@ operator|.
 name|timelineservice
 operator|.
 name|TimelineEntities
+DECL|method|getEntities ()
 name|getEntities
 parameter_list|()
 block|{
@@ -5069,7 +5076,7 @@ specifier|private
 class|class
 name|TimelineEntityDispatcher
 block|{
-comment|/**      * Time period for which the timelineclient will wait for draining after      * stop      */
+comment|/**      * Time period for which the timelineclient will wait for draining after      * stop.      */
 DECL|field|DRAIN_TIME_PERIOD
 specifier|private
 specifier|static

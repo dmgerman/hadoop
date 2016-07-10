@@ -56,7 +56,7 @@ name|TIMELINE_SERVICE_PERFORMANCE_RUN_ID
 init|=
 literal|"timeline.server.performance.run.id"
 decl_stmt|;
-comment|/**    *  To ensure that the compression really gets exercised, generate a    *  random alphanumeric fixed length payload    */
+comment|/**    *  To ensure that the compression really gets exercised, generate a    *  random alphanumeric fixed length payload.    */
 DECL|field|ALPHA_NUMS
 name|char
 index|[]

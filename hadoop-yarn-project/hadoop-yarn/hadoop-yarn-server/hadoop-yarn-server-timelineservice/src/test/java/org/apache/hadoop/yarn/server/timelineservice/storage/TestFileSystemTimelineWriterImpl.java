@@ -278,7 +278,7 @@ specifier|public
 class|class
 name|TestFileSystemTimelineWriterImpl
 block|{
-comment|/**    * Unit test for PoC YARN 3264    * @throws Exception    */
+comment|/**    * Unit test for PoC YARN 3264.    *    * @throws Exception    */
 annotation|@
 name|Test
 DECL|method|testWriteEntityToFile ()
@@ -521,7 +521,9 @@ operator|.
 name|getOutputRoot
 argument_list|()
 operator|+
-literal|"/entities/cluster_id/user_id/flow_name/flow_version/12345678/app_id/"
+literal|"/entities/cluster_id/user_id/flow_name/flow_version/12345678/"
+operator|+
+literal|"app_id/"
 operator|+
 name|type
 operator|+

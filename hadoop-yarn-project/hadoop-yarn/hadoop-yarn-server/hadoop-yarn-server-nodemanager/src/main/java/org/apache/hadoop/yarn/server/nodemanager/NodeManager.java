@@ -1527,20 +1527,20 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|createNMCollectorService (Context context)
+DECL|method|createNMCollectorService (Context ctxt)
 specifier|protected
 name|NMCollectorService
 name|createNMCollectorService
 parameter_list|(
 name|Context
-name|context
+name|ctxt
 parameter_list|)
 block|{
 return|return
 operator|new
 name|NMCollectorService
 argument_list|(
-name|context
+name|ctxt
 argument_list|)
 return|;
 block|}

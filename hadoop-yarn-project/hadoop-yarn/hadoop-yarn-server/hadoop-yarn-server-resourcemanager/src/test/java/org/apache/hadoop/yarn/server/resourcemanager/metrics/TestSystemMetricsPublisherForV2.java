@@ -866,9 +866,9 @@ specifier|public
 class|class
 name|TestSystemMetricsPublisherForV2
 block|{
-comment|/**    * is the folder where the FileSystemTimelineWriterImpl writes the entities    */
+comment|/**    * The folder where the FileSystemTimelineWriterImpl writes the entities.    */
 DECL|field|testRootDir
-specifier|protected
+specifier|private
 specifier|static
 name|File
 name|testRootDir
@@ -1267,7 +1267,9 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Exception while setting the TIMELINE_SERVICE_STORAGE_DIR_ROOT "
+literal|"Exception while setting the "
+operator|+
+literal|"TIMELINE_SERVICE_STORAGE_DIR_ROOT "
 argument_list|)
 expr_stmt|;
 block|}
@@ -1289,7 +1291,7 @@ argument_list|(
 literal|"resource"
 argument_list|)
 name|TimelineServiceV2Publisher
-name|metricsPublisher
+name|publisher
 init|=
 operator|new
 name|TimelineServiceV2Publisher
@@ -1323,7 +1325,7 @@ operator|.
 name|DEFAULT_RM_PUBLISH_CONTAINER_EVENTS_ENABLED
 argument_list|)
 expr_stmt|;
-name|metricsPublisher
+name|publisher
 operator|.
 name|init
 argument_list|(
@@ -1334,18 +1336,18 @@ name|assertFalse
 argument_list|(
 literal|"Default configuration should not publish container events from RM"
 argument_list|,
-name|metricsPublisher
+name|publisher
 operator|.
 name|isPublishContainerEvents
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|metricsPublisher
+name|publisher
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-name|metricsPublisher
+name|publisher
 operator|=
 operator|new
 name|TimelineServiceV2Publisher
@@ -1363,7 +1365,7 @@ operator|=
 name|getTimelineV2Conf
 argument_list|()
 expr_stmt|;
-name|metricsPublisher
+name|publisher
 operator|.
 name|init
 argument_list|(
@@ -1376,13 +1378,13 @@ literal|"Expected to have registered event handlers and set ready to "
 operator|+
 literal|"publish events after init"
 argument_list|,
-name|metricsPublisher
+name|publisher
 operator|.
 name|isPublishContainerEvents
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|metricsPublisher
+name|publisher
 operator|.
 name|start
 argument_list|()
@@ -1391,7 +1393,7 @@ name|assertTrue
 argument_list|(
 literal|"Expected to publish container events from RM"
 argument_list|,
-name|metricsPublisher
+name|publisher
 operator|.
 name|isPublishContainerEvents
 argument_list|()
@@ -1400,7 +1402,7 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|metricsPublisher
+name|publisher
 operator|.
 name|stop
 argument_list|()

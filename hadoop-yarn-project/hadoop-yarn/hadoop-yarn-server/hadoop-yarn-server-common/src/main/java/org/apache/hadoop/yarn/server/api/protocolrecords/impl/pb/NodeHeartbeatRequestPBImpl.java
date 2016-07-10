@@ -559,6 +559,7 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|registeredCollectors
+specifier|private
 name|Map
 argument_list|<
 name|ApplicationId

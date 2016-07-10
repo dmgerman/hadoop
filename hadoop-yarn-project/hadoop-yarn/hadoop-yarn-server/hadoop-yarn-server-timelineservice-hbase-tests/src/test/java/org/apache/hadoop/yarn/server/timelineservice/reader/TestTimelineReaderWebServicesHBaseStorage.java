@@ -3187,7 +3187,10 @@ literal|null
 operator|||
 name|resp
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
+argument_list|()
+operator|.
+name|getStatusCode
 argument_list|()
 operator|!=
 name|ClientResponse
@@ -3195,6 +3198,9 @@ operator|.
 name|Status
 operator|.
 name|OK
+operator|.
+name|getStatusCode
+argument_list|()
 condition|)
 block|{
 name|String
@@ -3211,13 +3217,18 @@ condition|)
 block|{
 name|msg
 operator|=
+name|String
+operator|.
+name|valueOf
+argument_list|(
 name|resp
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 operator|.
-name|toString
+name|getStatusCode
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 throw|throw
@@ -3328,7 +3339,7 @@ return|return
 name|entity
 return|;
 block|}
-DECL|method|newMetric (TimelineMetric.Type type, String id, long ts, Number value)
+DECL|method|newMetric (TimelineMetric.Type type, String id, long t, Number value)
 specifier|private
 specifier|static
 name|TimelineMetric
@@ -3343,7 +3354,7 @@ name|String
 name|id
 parameter_list|,
 name|long
-name|ts
+name|t
 parameter_list|,
 name|Number
 name|value
@@ -3369,7 +3380,7 @@ name|metric
 operator|.
 name|addValue
 argument_list|(
-name|ts
+name|t
 argument_list|,
 name|value
 argument_list|)
@@ -3589,13 +3600,16 @@ name|status
 argument_list|,
 name|resp
 operator|.
-name|getClientResponseStatus
+name|getStatusInfo
 argument_list|()
 operator|.
-name|equals
-argument_list|(
+name|getStatusCode
+argument_list|()
+operator|==
 name|status
-argument_list|)
+operator|.
+name|getStatusCode
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|System
@@ -6531,7 +6545,6 @@ argument_list|,
 name|uri
 argument_list|)
 expr_stmt|;
-empty_stmt|;
 name|TimelineEntity
 name|appEntity2
 init|=
@@ -6746,7 +6759,6 @@ argument_list|,
 name|uri
 argument_list|)
 expr_stmt|;
-empty_stmt|;
 name|TimelineEntity
 name|singleEntity1
 init|=
@@ -6817,7 +6829,6 @@ argument_list|,
 name|uri
 argument_list|)
 expr_stmt|;
-empty_stmt|;
 name|TimelineEntity
 name|singleEntity2
 init|=
@@ -10301,7 +10312,9 @@ literal|"timeline/clusters/cluster1/apps/application_1111111111_1111/"
 operator|+
 literal|"entities/type1?infofilters=(info1%20eq%20cluster1%20AND%20info4%20"
 operator|+
-literal|"eq%2035000)%20OR%20(info1%20eq%20cluster2%20AND%20info2%20eq%202.0)"
+literal|"eq%2035000)%20OR%20(info1%20eq%20cluster2%20AND%20info2%20eq%202.0"
+operator|+
+literal|")"
 argument_list|)
 expr_stmt|;
 name|resp

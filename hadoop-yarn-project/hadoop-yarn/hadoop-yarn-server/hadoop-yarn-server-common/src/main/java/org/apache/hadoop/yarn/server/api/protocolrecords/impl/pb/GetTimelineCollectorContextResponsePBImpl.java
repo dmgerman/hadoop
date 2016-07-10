@@ -103,6 +103,7 @@ extends|extends
 name|GetTimelineCollectorContextResponse
 block|{
 DECL|field|proto
+specifier|private
 name|GetTimelineCollectorContextResponseProto
 name|proto
 init|=
@@ -112,6 +113,7 @@ name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
+specifier|private
 name|GetTimelineCollectorContextResponseProto
 operator|.
 name|Builder
@@ -120,6 +122,7 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|viaProto
+specifier|private
 name|boolean
 name|viaProto
 init|=
@@ -218,9 +221,11 @@ name|other
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 if|if
 condition|(
 name|other
@@ -292,9 +297,11 @@ if|if
 condition|(
 name|viaProto
 condition|)
+block|{
 name|maybeInitBuilder
 argument_list|()
 expr_stmt|;
+block|}
 name|proto
 operator|=
 name|builder

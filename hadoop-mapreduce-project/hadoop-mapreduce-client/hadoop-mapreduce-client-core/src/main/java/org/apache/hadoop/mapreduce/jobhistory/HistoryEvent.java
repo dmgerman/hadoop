@@ -135,13 +135,13 @@ name|Object
 name|datum
 parameter_list|)
 function_decl|;
-comment|/** Map HistoryEvent to TimelineEvent */
+comment|/**    * Map HistoryEvent to TimelineEvent.    *    * @return the timeline event    */
 DECL|method|toTimelineEvent ()
 name|TimelineEvent
 name|toTimelineEvent
 parameter_list|()
 function_decl|;
-comment|/** Counters or Metrics if any else return null. */
+comment|/**    * Counters or Metrics if any else return null.    *    * @return the set of timeline metrics    */
 DECL|method|getTimelineMetrics ()
 name|Set
 argument_list|<

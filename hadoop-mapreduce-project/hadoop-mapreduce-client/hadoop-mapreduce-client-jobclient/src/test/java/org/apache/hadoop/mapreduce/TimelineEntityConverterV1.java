@@ -486,12 +486,12 @@ return|return
 name|job
 return|;
 block|}
-DECL|method|createTaskAndTaskAttemptEntities (JobInfo jobInfo)
 specifier|private
 name|Set
 argument_list|<
 name|TimelineEntity
 argument_list|>
+DECL|method|createTaskAndTaskAttemptEntities (JobInfo jobInfo)
 name|createTaskAndTaskAttemptEntities
 parameter_list|(
 name|JobInfo
@@ -807,9 +807,9 @@ return|return
 name|taskAttempts
 return|;
 block|}
-DECL|method|createTaskAttemptEntity (TaskAttemptInfo taskAttemptInfo)
 specifier|private
 name|TimelineEntity
+DECL|method|createTaskAttemptEntity (TaskAttemptInfo taskAttemptInfo)
 name|createTaskAttemptEntity
 parameter_list|(
 name|TaskAttemptInfo

@@ -173,6 +173,7 @@ extends|extends
 name|ReportNewCollectorInfoRequest
 block|{
 DECL|field|proto
+specifier|private
 name|ReportNewCollectorInfoRequestProto
 name|proto
 init|=
@@ -182,6 +183,7 @@ name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
+specifier|private
 name|ReportNewCollectorInfoRequestProto
 operator|.
 name|Builder
@@ -190,6 +192,7 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|viaProto
+specifier|private
 name|boolean
 name|viaProto
 init|=
@@ -298,9 +301,11 @@ name|other
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 if|if
 condition|(
 name|other
@@ -354,9 +359,11 @@ if|if
 condition|(
 name|viaProto
 condition|)
+block|{
 name|maybeInitBuilder
 argument_list|()
 expr_stmt|;
+block|}
 name|mergeLocalToBuilder
 argument_list|()
 expr_stmt|;
@@ -495,7 +502,7 @@ name|List
 argument_list|<
 name|AppCollectorsMapProto
 argument_list|>
-name|collectorsList
+name|list
 init|=
 name|p
 operator|.
@@ -518,7 +525,7 @@ control|(
 name|AppCollectorsMapProto
 name|m
 range|:
-name|collectorsList
+name|list
 control|)
 block|{
 name|this

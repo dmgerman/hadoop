@@ -56,22 +56,6 @@ name|ApplicationId
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * Utility class that allows HBase coprocessors to interact with unique  * timestamps.  */
 end_comment
@@ -234,9 +218,9 @@ block|}
 name|ApplicationId
 name|appId
 init|=
-name|ConverterUtils
+name|ApplicationId
 operator|.
-name|toApplicationId
+name|fromString
 argument_list|(
 name|appIdStr
 argument_list|)

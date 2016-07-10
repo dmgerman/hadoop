@@ -333,7 +333,7 @@ specifier|private
 name|CollectorNodemanagerProtocol
 name|real
 decl_stmt|;
-DECL|method|CollectorNodemanagerProtocolPBServiceImpl (CollectorNodemanagerProtocol impl)
+DECL|method|CollectorNodemanagerProtocolPBServiceImpl ( CollectorNodemanagerProtocol impl)
 specifier|public
 name|CollectorNodemanagerProtocolPBServiceImpl
 parameter_list|(

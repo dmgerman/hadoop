@@ -158,6 +158,7 @@ name|GetTimelineCollectorContextRequestPBImpl
 extends|extends
 name|GetTimelineCollectorContextRequest
 block|{
+specifier|private
 name|GetTimelineCollectorContextRequestProto
 DECL|field|proto
 name|proto
@@ -168,6 +169,7 @@ name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
+specifier|private
 name|GetTimelineCollectorContextRequestProto
 operator|.
 name|Builder
@@ -176,6 +178,7 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|viaProto
+specifier|private
 name|boolean
 name|viaProto
 init|=
@@ -281,9 +284,11 @@ name|other
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 if|if
 condition|(
 name|other
@@ -382,9 +387,11 @@ if|if
 condition|(
 name|viaProto
 condition|)
+block|{
 name|maybeInitBuilder
 argument_list|()
 expr_stmt|;
+block|}
 name|mergeLocalToBuilder
 argument_list|()
 expr_stmt|;
@@ -495,13 +502,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setApplicationId (ApplicationId appId)
+DECL|method|setApplicationId (ApplicationId id)
 specifier|public
 name|void
 name|setApplicationId
 parameter_list|(
 name|ApplicationId
-name|appId
+name|id
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -509,23 +516,25 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|appId
+name|id
 operator|==
 literal|null
 condition|)
+block|{
 name|builder
 operator|.
 name|clearAppId
 argument_list|()
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|appId
 operator|=
-name|appId
+name|id
 expr_stmt|;
 block|}
-DECL|method|convertFromProtoFormat (YarnProtos.ApplicationIdProto p)
+DECL|method|convertFromProtoFormat ( YarnProtos.ApplicationIdProto p)
 specifier|private
 name|ApplicationIdPBImpl
 name|convertFromProtoFormat

@@ -783,7 +783,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|500l
+literal|500L
 argument_list|)
 expr_stmt|;
 if|if
@@ -986,7 +986,7 @@ name|createCollectorAndAddApplication
 parameter_list|()
 block|{
 name|PerNodeTimelineCollectorsAuxService
-name|auxService
+name|service
 init|=
 name|createCollector
 argument_list|()
@@ -1036,7 +1036,7 @@ operator|.
 name|APPLICATION_MASTER
 argument_list|)
 expr_stmt|;
-name|auxService
+name|service
 operator|.
 name|initializeContainer
 argument_list|(
@@ -1044,7 +1044,7 @@ name|context
 argument_list|)
 expr_stmt|;
 return|return
-name|auxService
+name|service
 return|;
 block|}
 DECL|method|createCollector ()
@@ -1060,7 +1060,7 @@ name|createCollectorManager
 argument_list|()
 decl_stmt|;
 name|PerNodeTimelineCollectorsAuxService
-name|auxService
+name|service
 init|=
 name|spy
 argument_list|(
@@ -1071,20 +1071,20 @@ name|collectorManager
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|auxService
+name|service
 operator|.
 name|init
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|auxService
+name|service
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
 return|return
-name|auxService
+name|service
 return|;
 block|}
 DECL|method|createCollectorManager ()

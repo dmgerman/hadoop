@@ -2730,16 +2730,9 @@ name|this
 operator|.
 name|containersMonitor
 operator|=
-operator|new
-name|ContainersMonitorImpl
+name|createContainersMonitor
 argument_list|(
 name|exec
-argument_list|,
-name|dispatcher
-argument_list|,
-name|this
-operator|.
-name|context
 argument_list|)
 expr_stmt|;
 name|addService
@@ -3911,13 +3904,13 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|createNMTimelinePublisher (Context context)
+DECL|method|createNMTimelinePublisher (Context ctxt)
 specifier|protected
 name|NMTimelinePublisher
 name|createNMTimelinePublisher
 parameter_list|(
 name|Context
-name|context
+name|ctxt
 parameter_list|)
 block|{
 name|NMTimelinePublisher
@@ -3926,7 +3919,7 @@ init|=
 operator|new
 name|NMTimelinePublisher
 argument_list|(
-name|context
+name|ctxt
 argument_list|)
 decl_stmt|;
 name|addIfService

@@ -589,7 +589,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"parsed the job history file and the configuration file for job"
+literal|"parsed the job history file and the configuration file "
+operator|+
+literal|"for job "
 operator|+
 name|jobIdStr
 argument_list|)

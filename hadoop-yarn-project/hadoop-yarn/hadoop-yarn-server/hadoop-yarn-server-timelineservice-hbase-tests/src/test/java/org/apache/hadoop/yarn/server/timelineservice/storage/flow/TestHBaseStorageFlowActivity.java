@@ -595,7 +595,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests the FlowRun and FlowActivity Tables  */
+comment|/**  * Tests the FlowRun and FlowActivity Tables.  */
 end_comment
 
 begin_class
@@ -765,7 +765,6 @@ literal|1424995200300L
 operator|+
 literal|86000000L
 decl_stmt|;
-empty_stmt|;
 name|TimelineEntity
 name|entityMinStartTime
 init|=
@@ -1372,7 +1371,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Write 1 application entity and checks the record for today in the flow    * activity table    */
+comment|/**    * Write 1 application entity and checks the record for today in the flow    * activity table.    */
 annotation|@
 name|Test
 DECL|method|testWriteFlowActivityOneFlow ()
@@ -2010,7 +2009,7 @@ name|rowCount
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Writes 3 applications each with a different run id and version for the same    * {cluster, user, flow}    *    * They should be getting inserted into one record in the flow activity table    * with 3 columns, one per run id    */
+comment|/**    * Writes 3 applications each with a different run id and version for the same    * {cluster, user, flow}.    *    * They should be getting inserted into one record in the flow activity table    * with 3 columns, one per run id.    */
 annotation|@
 name|Test
 DECL|method|testFlowActivityTableOneFlowMultipleRunIds ()
