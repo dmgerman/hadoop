@@ -768,12 +768,7 @@ name|defFs
 expr_stmt|;
 name|umask
 operator|=
-name|FsPermission
-operator|.
-name|getUMask
-argument_list|(
-name|aConf
-argument_list|)
+name|theUmask
 expr_stmt|;
 name|conf
 operator|=
