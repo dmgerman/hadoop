@@ -610,8 +610,6 @@ operator|.
 name|getMethod
 argument_list|(
 name|action
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|Dest
