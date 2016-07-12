@@ -279,10 +279,32 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setMemory (long memory)
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+DECL|method|setMemory (int memory)
 specifier|public
 name|void
 name|setMemory
+parameter_list|(
+name|int
+name|memory
+parameter_list|)
+block|{
+name|setMemorySize
+argument_list|(
+name|memory
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|setMemorySize (long memory)
+specifier|public
+name|void
+name|setMemorySize
 parameter_list|(
 name|long
 name|memory
@@ -307,22 +329,6 @@ name|int
 name|getVirtualCores
 parameter_list|()
 block|{
-return|return
-operator|(
-name|int
-operator|)
-name|getVirtualCoresSize
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getVirtualCoresSize ()
-specifier|public
-name|long
-name|getVirtualCoresSize
-parameter_list|()
-block|{
 name|ResourceProtoOrBuilder
 name|p
 init|=
@@ -341,12 +347,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setVirtualCores (long vCores)
+DECL|method|setVirtualCores (int vCores)
 specifier|public
 name|void
 name|setVirtualCores
 parameter_list|(
-name|long
+name|int
 name|vCores
 parameter_list|)
 block|{

@@ -526,7 +526,7 @@ name|Metric
 argument_list|(
 literal|"Allocated CPU in virtual cores"
 argument_list|)
-name|MutableGaugeLong
+name|MutableGaugeInt
 name|allocatedVCores
 decl_stmt|;
 DECL|field|allocatedContainers
@@ -598,7 +598,7 @@ name|Metric
 argument_list|(
 literal|"Available CPU in virtual cores"
 argument_list|)
-name|MutableGaugeLong
+name|MutableGaugeInt
 name|availableVCores
 decl_stmt|;
 DECL|field|pendingMB
@@ -616,7 +616,7 @@ name|Metric
 argument_list|(
 literal|"Pending CPU allocation in virtual cores"
 argument_list|)
-name|MutableGaugeLong
+name|MutableGaugeInt
 name|pendingVCores
 decl_stmt|;
 DECL|field|pendingContainers
@@ -643,7 +643,7 @@ name|Metric
 argument_list|(
 literal|"Reserved CPU in virtual cores"
 argument_list|)
-name|MutableGaugeLong
+name|MutableGaugeInt
 name|reservedVCores
 decl_stmt|;
 DECL|field|reservedContainers
@@ -2266,7 +2266,7 @@ name|incr
 argument_list|(
 name|res
 operator|.
-name|getVirtualCoresSize
+name|getVirtualCores
 argument_list|()
 operator|*
 name|containers
@@ -2379,7 +2379,7 @@ name|decr
 argument_list|(
 name|res
 operator|.
-name|getVirtualCoresSize
+name|getVirtualCores
 argument_list|()
 operator|*
 name|containers
@@ -2542,7 +2542,7 @@ name|incr
 argument_list|(
 name|res
 operator|.
-name|getVirtualCoresSize
+name|getVirtualCores
 argument_list|()
 operator|*
 name|containers
@@ -2755,7 +2755,7 @@ name|decr
 argument_list|(
 name|res
 operator|.
-name|getVirtualCoresSize
+name|getVirtualCores
 argument_list|()
 operator|*
 name|containers
@@ -3285,6 +3285,9 @@ operator|.
 name|value
 argument_list|()
 argument_list|,
+operator|(
+name|int
+operator|)
 name|allocatedVCores
 operator|.
 name|value
@@ -3307,7 +3310,7 @@ return|;
 block|}
 DECL|method|getAllocatedVirtualCores ()
 specifier|public
-name|long
+name|int
 name|getAllocatedVirtualCores
 parameter_list|()
 block|{
@@ -3346,7 +3349,7 @@ return|;
 block|}
 DECL|method|getAvailableVirtualCores ()
 specifier|public
-name|long
+name|int
 name|getAvailableVirtualCores
 parameter_list|()
 block|{
@@ -3372,7 +3375,7 @@ return|;
 block|}
 DECL|method|getPendingVirtualCores ()
 specifier|public
-name|long
+name|int
 name|getPendingVirtualCores
 parameter_list|()
 block|{
@@ -3411,7 +3414,7 @@ return|;
 block|}
 DECL|method|getReservedVirtualCores ()
 specifier|public
-name|long
+name|int
 name|getReservedVirtualCores
 parameter_list|()
 block|{

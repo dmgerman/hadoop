@@ -2406,7 +2406,7 @@ name|newInstance
 argument_list|(
 literal|1234L
 argument_list|,
-literal|2L
+literal|2
 argument_list|)
 expr_stmt|;
 block|}

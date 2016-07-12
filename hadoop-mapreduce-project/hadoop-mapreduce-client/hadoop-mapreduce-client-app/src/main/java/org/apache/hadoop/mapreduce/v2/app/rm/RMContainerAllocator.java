@@ -2558,7 +2558,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|mapResourceRequest
 operator|.
@@ -2732,7 +2732,7 @@ operator|.
 name|getCapability
 argument_list|()
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|reduceResourceRequest
 operator|.

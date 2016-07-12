@@ -742,22 +742,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -3126,7 +3110,7 @@ return|return
 name|report
 return|;
 block|}
-DECL|method|newResource (long memory, long vCores)
+DECL|method|newResource (long memory, int vCores)
 specifier|public
 specifier|static
 name|Resource
@@ -3135,7 +3119,7 @@ parameter_list|(
 name|long
 name|memory
 parameter_list|,
-name|long
+name|int
 name|vCores
 parameter_list|)
 block|{
@@ -3153,7 +3137,7 @@ argument_list|)
 decl_stmt|;
 name|resource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|memory
 argument_list|)

@@ -101,6 +101,44 @@ name|Resource
 name|rhs
 parameter_list|)
 function_decl|;
+DECL|method|divideAndCeil (int a, int b)
+specifier|public
+specifier|static
+name|int
+name|divideAndCeil
+parameter_list|(
+name|int
+name|a
+parameter_list|,
+name|int
+name|b
+parameter_list|)
+block|{
+if|if
+condition|(
+name|b
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
+return|return
+operator|(
+name|a
+operator|+
+operator|(
+name|b
+operator|-
+literal|1
+operator|)
+operator|)
+operator|/
+name|b
+return|;
+block|}
 DECL|method|divideAndCeil (long a, long b)
 specifier|public
 specifier|static
@@ -139,6 +177,30 @@ operator|/
 name|b
 return|;
 block|}
+DECL|method|roundUp (int a, int b)
+specifier|public
+specifier|static
+name|int
+name|roundUp
+parameter_list|(
+name|int
+name|a
+parameter_list|,
+name|int
+name|b
+parameter_list|)
+block|{
+return|return
+name|divideAndCeil
+argument_list|(
+name|a
+argument_list|,
+name|b
+argument_list|)
+operator|*
+name|b
+return|;
+block|}
 DECL|method|roundUp (long a, long b)
 specifier|public
 specifier|static
@@ -173,6 +235,29 @@ name|long
 name|a
 parameter_list|,
 name|long
+name|b
+parameter_list|)
+block|{
+return|return
+operator|(
+name|a
+operator|/
+name|b
+operator|)
+operator|*
+name|b
+return|;
+block|}
+DECL|method|roundDown (int a, int b)
+specifier|public
+specifier|static
+name|int
+name|roundDown
+parameter_list|(
+name|int
+name|a
+parameter_list|,
+name|int
 name|b
 parameter_list|)
 block|{
@@ -354,7 +439,7 @@ name|b
 parameter_list|)
 function_decl|;
 comment|/**    * Divide-and-ceil<code>numerator</code> by<code>denominator</code>.    *     * @param numerator numerator resource    * @param denominator denominator    * @return resultant resource    */
-DECL|method|divideAndCeil (Resource numerator, long denominator)
+DECL|method|divideAndCeil (Resource numerator, int denominator)
 specifier|public
 specifier|abstract
 name|Resource
@@ -363,7 +448,7 @@ parameter_list|(
 name|Resource
 name|numerator
 parameter_list|,
-name|long
+name|int
 name|denominator
 parameter_list|)
 function_decl|;

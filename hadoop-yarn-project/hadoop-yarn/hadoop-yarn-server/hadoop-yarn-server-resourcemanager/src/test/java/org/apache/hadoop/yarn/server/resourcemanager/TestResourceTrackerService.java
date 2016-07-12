@@ -5267,7 +5267,7 @@ argument_list|)
 expr_stmt|;
 name|capability
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|2048
 argument_list|)
@@ -5312,7 +5312,7 @@ argument_list|)
 expr_stmt|;
 name|capability
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|1024
 argument_list|)
@@ -5357,7 +5357,7 @@ argument_list|)
 expr_stmt|;
 name|capability
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|2048
 argument_list|)

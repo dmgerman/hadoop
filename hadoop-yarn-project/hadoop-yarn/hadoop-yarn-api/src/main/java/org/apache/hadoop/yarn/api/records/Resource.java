@@ -26,13 +26,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
+name|commons
 operator|.
-name|classification
+name|lang
 operator|.
-name|InterfaceAudience
-operator|.
-name|Private
+name|NotImplementedException
 import|;
 end_import
 
@@ -49,22 +47,6 @@ operator|.
 name|InterfaceAudience
 operator|.
 name|Public
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
 import|;
 end_import
 
@@ -156,16 +138,16 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|newInstance (long memory, long vCores)
+DECL|method|newInstance (int memory, int vCores)
 specifier|public
 specifier|static
 name|Resource
 name|newInstance
 parameter_list|(
-name|long
+name|int
 name|memory
 parameter_list|,
-name|long
+name|int
 name|vCores
 parameter_list|)
 block|{
@@ -183,7 +165,54 @@ argument_list|)
 decl_stmt|;
 name|resource
 operator|.
-name|setMemory
+name|setMemorySize
+argument_list|(
+name|memory
+argument_list|)
+expr_stmt|;
+name|resource
+operator|.
+name|setVirtualCores
+argument_list|(
+name|vCores
+argument_list|)
+expr_stmt|;
+return|return
+name|resource
+return|;
+block|}
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|newInstance (long memory, int vCores)
+specifier|public
+specifier|static
+name|Resource
+name|newInstance
+parameter_list|(
+name|long
+name|memory
+parameter_list|,
+name|int
+name|vCores
+parameter_list|)
+block|{
+name|Resource
+name|resource
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|Resource
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|resource
+operator|.
+name|setMemorySize
 argument_list|(
 name|memory
 argument_list|)
@@ -213,31 +242,60 @@ parameter_list|()
 function_decl|;
 comment|/**    * Get<em>memory</em> of the resource.    * @return<em>memory</em> of the resource    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|getMemorySize ()
 specifier|public
-specifier|abstract
 name|long
 name|getMemorySize
 parameter_list|()
+block|{
+throw|throw
+operator|new
+name|NotImplementedException
+argument_list|(
+literal|"This method is implemented by ResourcePBImpl"
+argument_list|)
+throw|;
+block|}
+comment|/**    * Set<em>memory</em> of the resource.    * @param memory<em>memory</em> of the resource    */
+annotation|@
+name|Public
+annotation|@
+name|Deprecated
+DECL|method|setMemory (int memory)
+specifier|public
+specifier|abstract
+name|void
+name|setMemory
+parameter_list|(
+name|int
+name|memory
+parameter_list|)
 function_decl|;
 comment|/**    * Set<em>memory</em> of the resource.    * @param memory<em>memory</em> of the resource    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|setMemory (long memory)
+DECL|method|setMemorySize (long memory)
 specifier|public
-specifier|abstract
 name|void
-name|setMemory
+name|setMemorySize
 parameter_list|(
 name|long
 name|memory
 parameter_list|)
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|NotImplementedException
+argument_list|(
+literal|"This method is implemented by ResourcePBImpl"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Get<em>number of virtual cpu cores</em> of the resource.    *     * Virtual cores are a unit for expressing CPU parallelism. A node's capacity    * should be configured with virtual cores equal to its number of physical cores.    * A container should be requested with the number of cores it can saturate, i.e.    * the average number of threads it expects to have runnable at a time.    *       * @return<em>num of virtual cpu cores</em> of the resource    */
 annotation|@
 name|Public
@@ -250,29 +308,18 @@ name|int
 name|getVirtualCores
 parameter_list|()
 function_decl|;
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|getVirtualCoresSize ()
-specifier|public
-specifier|abstract
-name|long
-name|getVirtualCoresSize
-parameter_list|()
-function_decl|;
 comment|/**    * Set<em>number of virtual cpu cores</em> of the resource.    *     * Virtual cores are a unit for expressing CPU parallelism. A node's capacity    * should be configured with virtual cores equal to its number of physical cores.    * A container should be requested with the number of cores it can saturate, i.e.    * the average number of threads it expects to have runnable at a time.    *        * @param vCores<em>number of virtual cpu cores</em> of the resource    */
 annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|method|setVirtualCores (long vCores)
+DECL|method|setVirtualCores (int vCores)
 specifier|public
 specifier|abstract
 name|void
 name|setVirtualCores
 parameter_list|(
-name|long
+name|int
 name|vCores
 parameter_list|)
 function_decl|;

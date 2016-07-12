@@ -174,7 +174,7 @@ argument_list|)
 decl_stmt|;
 name|total
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|8
 operator|*
@@ -202,7 +202,7 @@ argument_list|)
 decl_stmt|;
 name|resource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|512
 argument_list|)
@@ -229,7 +229,7 @@ argument_list|)
 decl_stmt|;
 name|largerResource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|1024
 argument_list|)
@@ -255,7 +255,7 @@ argument_list|)
 decl_stmt|;
 name|smallerResource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|256
 argument_list|)

@@ -104,7 +104,7 @@ name|long
 name|memory
 decl_stmt|;
 DECL|field|vCores
-name|long
+name|int
 name|vCores
 decl_stmt|;
 DECL|method|ResourceInfo ()
@@ -147,7 +147,7 @@ return|;
 block|}
 DECL|method|getvCores ()
 specifier|public
-name|long
+name|int
 name|getvCores
 parameter_list|()
 block|{

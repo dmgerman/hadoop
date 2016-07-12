@@ -799,7 +799,7 @@ argument_list|()
 decl_stmt|;
 name|resource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|memory
 argument_list|)

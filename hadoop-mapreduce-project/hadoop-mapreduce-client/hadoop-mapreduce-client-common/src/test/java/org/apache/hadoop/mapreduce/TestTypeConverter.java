@@ -657,7 +657,7 @@ argument_list|)
 decl_stmt|;
 name|r
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|2048
 argument_list|)
@@ -974,7 +974,7 @@ argument_list|)
 decl_stmt|;
 name|r
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|2048
 argument_list|)

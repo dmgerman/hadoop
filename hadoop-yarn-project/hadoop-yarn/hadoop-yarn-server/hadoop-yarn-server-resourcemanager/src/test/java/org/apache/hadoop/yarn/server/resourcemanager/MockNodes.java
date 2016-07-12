@@ -652,7 +652,7 @@ argument_list|)
 decl_stmt|;
 name|rs
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|mem
 argument_list|)
@@ -685,7 +685,7 @@ argument_list|)
 decl_stmt|;
 name|rs
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 call|(
 name|int
@@ -734,7 +734,7 @@ argument_list|)
 decl_stmt|;
 name|rs
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|total
 operator|.

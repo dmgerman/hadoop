@@ -2279,7 +2279,7 @@ condition|)
 block|{
 name|maxResource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|Math
 operator|.
@@ -2306,7 +2306,7 @@ if|if
 condition|(
 name|maxResource
 operator|.
-name|getVirtualCoresSize
+name|getVirtualCores
 argument_list|()
 operator|==
 literal|0
@@ -2331,7 +2331,7 @@ argument_list|,
 name|getMaxShare
 argument_list|()
 operator|.
-name|getVirtualCoresSize
+name|getVirtualCores
 argument_list|()
 argument_list|)
 argument_list|)

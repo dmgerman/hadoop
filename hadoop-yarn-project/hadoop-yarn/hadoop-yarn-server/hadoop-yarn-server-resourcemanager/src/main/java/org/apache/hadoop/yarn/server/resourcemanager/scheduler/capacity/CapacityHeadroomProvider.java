@@ -340,7 +340,7 @@ condition|)
 block|{
 name|headroom
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|0
 argument_list|)

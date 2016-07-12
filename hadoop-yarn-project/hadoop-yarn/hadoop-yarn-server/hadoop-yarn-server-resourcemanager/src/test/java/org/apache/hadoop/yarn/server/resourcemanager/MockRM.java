@@ -3001,7 +3001,7 @@ argument_list|)
 decl_stmt|;
 name|resource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|masterMemory
 argument_list|)
@@ -3477,7 +3477,7 @@ argument_list|)
 decl_stmt|;
 name|resource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|masterMemory
 argument_list|)
@@ -3554,7 +3554,7 @@ argument_list|)
 decl_stmt|;
 name|resource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|masterMemory
 argument_list|)
@@ -3694,7 +3694,7 @@ argument_list|)
 decl_stmt|;
 name|resource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|masterMemory
 argument_list|)
@@ -3776,7 +3776,7 @@ argument_list|)
 decl_stmt|;
 name|resource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|masterMemory
 argument_list|)

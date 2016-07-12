@@ -367,7 +367,7 @@ literal|1
 decl_stmt|;
 DECL|field|maxNodeVCores
 specifier|private
-name|long
+name|int
 name|maxNodeVCores
 init|=
 operator|-

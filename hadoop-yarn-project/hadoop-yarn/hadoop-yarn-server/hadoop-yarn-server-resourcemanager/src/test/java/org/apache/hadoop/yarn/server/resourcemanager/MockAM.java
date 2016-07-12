@@ -450,16 +450,6 @@ name|Logger
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-import|;
-end_import
-
 begin_class
 DECL|class|MockAM
 specifier|public
@@ -1382,7 +1372,7 @@ argument_list|)
 decl_stmt|;
 name|capability
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|memory
 argument_list|)

@@ -6972,7 +6972,7 @@ argument_list|)
 decl_stmt|;
 name|resource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|200
 argument_list|)
@@ -7432,7 +7432,7 @@ argument_list|)
 decl_stmt|;
 name|resource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|200
 argument_list|)

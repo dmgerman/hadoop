@@ -981,7 +981,7 @@ name|MEMORY
 case|:
 name|resource
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|val
 argument_list|)
@@ -994,6 +994,9 @@ name|resource
 operator|.
 name|setVirtualCores
 argument_list|(
+operator|(
+name|int
+operator|)
 name|val
 argument_list|)
 expr_stmt|;

@@ -228,7 +228,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|divideAndCeil (Resource numerator, long denominator)
+DECL|method|divideAndCeil (Resource numerator, int denominator)
 specifier|public
 name|Resource
 name|divideAndCeil
@@ -236,7 +236,7 @@ parameter_list|(
 name|Resource
 name|numerator
 parameter_list|,
-name|long
+name|int
 name|denominator
 parameter_list|)
 block|{

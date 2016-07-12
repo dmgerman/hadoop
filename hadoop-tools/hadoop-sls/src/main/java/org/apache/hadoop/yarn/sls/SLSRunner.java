@@ -2220,7 +2220,7 @@ argument_list|)
 decl_stmt|;
 name|res
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|containerMemory
 argument_list|)

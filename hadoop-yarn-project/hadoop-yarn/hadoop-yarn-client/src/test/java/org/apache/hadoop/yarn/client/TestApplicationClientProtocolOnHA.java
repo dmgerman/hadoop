@@ -1176,7 +1176,7 @@ argument_list|)
 decl_stmt|;
 name|capability
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|10
 argument_list|)

@@ -1315,7 +1315,7 @@ condition|)
 block|{
 name|availableResources
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|0
 argument_list|)
@@ -2615,7 +2615,7 @@ parameter_list|()
 block|{
 name|preemptedResources
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 literal|0
 argument_list|)

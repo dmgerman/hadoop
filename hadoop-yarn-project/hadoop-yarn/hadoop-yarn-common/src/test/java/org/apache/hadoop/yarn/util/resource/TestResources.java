@@ -66,7 +66,7 @@ specifier|public
 class|class
 name|TestResources
 block|{
-DECL|method|createResource (long memory, long vCores)
+DECL|method|createResource (long memory, int vCores)
 specifier|public
 name|Resource
 name|createResource
@@ -74,7 +74,7 @@ parameter_list|(
 name|long
 name|memory
 parameter_list|,
-name|long
+name|int
 name|vCores
 parameter_list|)
 block|{
@@ -117,7 +117,7 @@ name|Long
 operator|.
 name|MAX_VALUE
 argument_list|,
-name|Long
+name|Integer
 operator|.
 name|MAX_VALUE
 argument_list|)
@@ -161,7 +161,7 @@ name|createResource
 argument_list|(
 literal|0
 argument_list|,
-name|Long
+name|Integer
 operator|.
 name|MAX_VALUE
 argument_list|)
