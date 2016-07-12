@@ -4973,7 +4973,7 @@ name|req
 argument_list|)
 return|;
 block|}
-comment|// from AMLauncher
+comment|/**    * recommend to use launchAM, or use sendAMLaunched like:    * 1, wait RMAppAttempt scheduled    * 2, send node heartbeat    * 3, sendAMLaunched    */
 DECL|method|sendAMLaunched (ApplicationAttemptId appAttemptId)
 specifier|public
 name|MockAM
