@@ -8032,6 +8032,22 @@ operator|.
 name|cancelled
 argument_list|)
 expr_stmt|;
+comment|// make sure the token also has been removed from appTokens
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+name|renewer
+operator|.
+name|getDelegationTokens
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|token1
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
