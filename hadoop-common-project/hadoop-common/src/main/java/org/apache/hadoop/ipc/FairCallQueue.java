@@ -1259,6 +1259,9 @@ decl_stmt|;
 for|for
 control|(
 name|BlockingQueue
+argument_list|<
+name|E
+argument_list|>
 name|q
 range|:
 name|this
@@ -1415,6 +1418,9 @@ decl_stmt|;
 for|for
 control|(
 name|BlockingQueue
+argument_list|<
+name|E
+argument_list|>
 name|q
 range|:
 name|this
@@ -1472,6 +1478,11 @@ specifier|private
 name|WeakReference
 argument_list|<
 name|FairCallQueue
+argument_list|<
+name|?
+extends|extends
+name|Schedulable
+argument_list|>
 argument_list|>
 name|delegate
 decl_stmt|;
@@ -1554,12 +1565,17 @@ return|return
 name|mp
 return|;
 block|}
-DECL|method|setDelegate (FairCallQueue obj)
+DECL|method|setDelegate (FairCallQueue<? extends Schedulable> obj)
 specifier|public
 name|void
 name|setDelegate
 parameter_list|(
 name|FairCallQueue
+argument_list|<
+name|?
+extends|extends
+name|Schedulable
+argument_list|>
 name|obj
 parameter_list|)
 block|{
@@ -1571,6 +1587,11 @@ operator|new
 name|WeakReference
 argument_list|<
 name|FairCallQueue
+argument_list|<
+name|?
+extends|extends
+name|Schedulable
+argument_list|>
 argument_list|>
 argument_list|(
 name|obj
@@ -1592,6 +1613,11 @@ name|getQueueSizes
 parameter_list|()
 block|{
 name|FairCallQueue
+argument_list|<
+name|?
+extends|extends
+name|Schedulable
+argument_list|>
 name|obj
 init|=
 name|this
@@ -1632,6 +1658,11 @@ name|getOverflowedCalls
 parameter_list|()
 block|{
 name|FairCallQueue
+argument_list|<
+name|?
+extends|extends
+name|Schedulable
+argument_list|>
 name|obj
 init|=
 name|this
