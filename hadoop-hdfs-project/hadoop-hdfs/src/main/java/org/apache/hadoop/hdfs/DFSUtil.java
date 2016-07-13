@@ -3585,7 +3585,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a URI for each internal nameservice. If a nameservice is    * HA-enabled, then the logical URI of the nameservice is returned. If the    * nameservice is not HA-enabled, then a URI corresponding to an RPC address    * of the single NN for that nameservice is returned, preferring the service    * RPC address over the client RPC address.    *     * @param conf configuration    * @return a collection of all configured NN URIs, preferring service    *         addresses    */
+comment|/**    * Get a URI for each internal nameservice. If a nameservice is    * HA-enabled, and the configured failover proxy provider supports logical    * URIs, then the logical URI of the nameservice is returned.    * Otherwise, a URI corresponding to an RPC address of the single NN for that    * nameservice is returned, preferring the service RPC address over the    * client RPC address.    *     * @param conf configuration    * @return a collection of all configured NN URIs, preferring service    *         addresses    */
 DECL|method|getInternalNsRpcUris (Configuration conf)
 specifier|public
 specifier|static
@@ -3619,7 +3619,7 @@ name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a URI for each configured nameservice. If a nameservice is    * HA-enabled, then the logical URI of the nameservice is returned. If the    * nameservice is not HA-enabled, then a URI corresponding to the address of    * the single NN for that nameservice is returned.    *     * @param conf configuration    * @param keys configuration keys to try in order to get the URI for non-HA    *        nameservices    * @return a collection of all configured NN URIs    */
+comment|/**    * Get a URI for each configured nameservice. If a nameservice is    * HA-enabled, and the configured failover proxy provider supports logical    * URIs, then the logical URI of the nameservice is returned.    * Otherwise, a URI corresponding to the address of the single NN for that    * nameservice is returned.    *     * @param conf configuration    * @param keys configuration keys to try in order to get the URI for non-HA    *        nameservices    * @return a collection of all configured NN URIs    */
 DECL|method|getNameServiceUris (Configuration conf, Collection<String> nameServices, String... keys)
 specifier|static
 name|Collection
@@ -3681,25 +3681,13 @@ range|:
 name|nameServices
 control|)
 block|{
-if|if
-condition|(
-name|HAUtil
-operator|.
-name|isHAEnabled
-argument_list|(
-name|conf
-argument_list|,
-name|nsId
-argument_list|)
-condition|)
-block|{
-comment|// Add the logical URI of the nameservice.
+name|URI
+name|nsUri
+decl_stmt|;
 try|try
 block|{
-name|ret
-operator|.
-name|add
-argument_list|(
+name|nsUri
+operator|=
 operator|new
 name|URI
 argument_list|(
@@ -3710,7 +3698,6 @@ operator|+
 literal|"://"
 operator|+
 name|nsId
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3728,6 +3715,68 @@ name|ue
 argument_list|)
 throw|;
 block|}
+comment|/**        * Determine whether the logical URI of the name service can be resolved        * by the configured failover proxy provider. If not, we should try to        * resolve the URI here        */
+name|boolean
+name|useLogicalUri
+init|=
+literal|false
+decl_stmt|;
+try|try
+block|{
+name|useLogicalUri
+operator|=
+name|HAUtil
+operator|.
+name|useLogicalUri
+argument_list|(
+name|conf
+argument_list|,
+name|nsUri
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Getting exception  while trying to determine if nameservice "
+operator|+
+name|nsId
+operator|+
+literal|" can use logical URI: "
+operator|+
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|conf
+argument_list|,
+name|nsId
+argument_list|)
+operator|&&
+name|useLogicalUri
+condition|)
+block|{
+comment|// Add the logical URI of the nameservice.
+name|ret
+operator|.
+name|add
+argument_list|(
+name|nsUri
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
