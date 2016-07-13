@@ -3477,6 +3477,19 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Waiting for reconstruction to be finished for the file:"
+operator|+
+name|file
+operator|+
+literal|", groupSize:"
+operator|+
+name|groupSize
+argument_list|)
+expr_stmt|;
 specifier|final
 name|int
 name|attempts

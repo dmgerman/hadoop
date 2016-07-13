@@ -1974,6 +1974,17 @@ expr_stmt|;
 block|}
 comment|// check if NN can detect the missing internal block and finish the
 comment|// reconstruction
+name|StripedFileTestUtil
+operator|.
+name|waitForReconstructionFinished
+argument_list|(
+name|filePath
+argument_list|,
+name|fs
+argument_list|,
+name|GROUP_SIZE
+argument_list|)
+expr_stmt|;
 name|boolean
 name|reconstructed
 init|=
