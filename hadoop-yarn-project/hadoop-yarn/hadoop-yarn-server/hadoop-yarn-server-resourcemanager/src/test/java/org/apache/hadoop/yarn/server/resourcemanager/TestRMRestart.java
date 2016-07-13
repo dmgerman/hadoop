@@ -11022,6 +11022,11 @@ argument_list|,
 name|am1
 argument_list|)
 expr_stmt|;
+name|rm2
+operator|.
+name|drainEvents
+argument_list|()
+expr_stmt|;
 comment|// the first app0 get kicked out from both rmContext and state store
 name|Assert
 operator|.
