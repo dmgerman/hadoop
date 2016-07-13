@@ -1397,7 +1397,7 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"Retrieve logs for completed YARN applications."
+literal|"Retrieve logs for YARN applications."
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1640,56 +1640,84 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -show_meta_info                 Show the log metadata, including log-file"
+literal|" -show_application_log_info      Show the containerIds which belong to the"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 names, the size of the log files. You can"
+literal|"                                 specific Application. You can combine"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 combine this with --containerId to get"
+literal|"                                 this with --nodeAddress to get"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 log metadata for the specific container,"
+literal|"                                 containerIds for all the containers on"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 or with --nodeAddress to get log metadata"
+literal|"                                 the specific NodeManager."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 for all the containers on the specific"
+literal|" -show_container_log_info        Show the container log metadata,"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 NodeManager. Currently, this option can"
+literal|"                                 including log-file names, the size of the"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 only be used for finished applications."
+literal|"                                 log files. You can combine this with"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 --containerId to get log metadata for the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 specific container, or with --nodeAddress"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 to get log metadata for all the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 containers on the specific NodeManager."
 argument_list|)
 expr_stmt|;
 name|pw
@@ -4791,21 +4819,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Guessed logs' owner is "
+literal|"Can not find the logs for the application: "
 operator|+
-name|priorityUser
-operator|+
-literal|" and current user "
-operator|+
-name|UserGroupInformation
+name|appTest
 operator|.
-name|getCurrentUser
+name|toString
 argument_list|()
-operator|.
-name|getUserName
-argument_list|()
-operator|+
-literal|" does not have permission to access"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5787,6 +5806,9 @@ argument_list|(
 name|configuration
 argument_list|)
 expr_stmt|;
+name|int
+name|result
+init|=
 name|cli
 operator|.
 name|run
@@ -5802,7 +5824,53 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-show_meta_info"
+literal|"-show_container_log_info"
+block|,
+literal|"-show_application_log_info"
+block|}
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|result
+operator|==
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysErrStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Invalid options. "
+operator|+
+literal|"Can only accept one of show_application_log_info/"
+operator|+
+literal|"show_container_log_info."
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|cli
+operator|.
+name|run
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-applicationId"
+block|,
+name|appId
+operator|.
+name|toString
+argument_list|()
+block|,
+literal|"-show_container_log_info"
 block|}
 argument_list|)
 expr_stmt|;
@@ -5841,7 +5909,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"LogType:syslog"
+literal|"syslog"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5854,7 +5922,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"LogLength:43"
+literal|"43"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5878,7 +5946,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-show_meta_info"
+literal|"-show_container_log_info"
 block|,
 literal|"-containerId"
 block|,
@@ -5921,7 +5989,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"LogType:syslog"
+literal|"syslog"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5934,7 +6002,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"LogLength:43"
+literal|"43"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5958,7 +6026,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-show_meta_info"
+literal|"-show_container_log_info"
 block|,
 literal|"-nodeAddress"
 block|,
@@ -6001,7 +6069,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"LogType:syslog"
+literal|"syslog"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -6014,7 +6082,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"LogLength:43"
+literal|"43"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -6038,7 +6106,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-show_meta_info"
+literal|"-show_container_log_info"
 block|,
 literal|"-nodeAddress"
 block|,
@@ -6064,6 +6132,136 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 name|sysErrStream
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|cli
+operator|.
+name|run
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-applicationId"
+block|,
+name|appId
+operator|.
+name|toString
+argument_list|()
+block|,
+literal|"-show_application_log_info"
+block|}
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Application State: Completed."
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"container_0_0001_01_000001 on localhost"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"container_0_0001_01_000002 on localhost"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|sysOutStream
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|cli
+operator|.
+name|run
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-applicationId"
+block|,
+name|appId
+operator|.
+name|toString
+argument_list|()
+block|,
+literal|"-show_application_log_info"
+block|,
+literal|"-nodeAddress"
+block|,
+literal|"localhost"
+block|}
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Application State: Completed."
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"container_0_0001_01_000001 on localhost"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"container_0_0001_01_000002 on localhost"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|sysOutStream
 operator|.
 name|reset
 argument_list|()
