@@ -254,6 +254,20 @@ name|TimelineUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * This implements a local file based backend for storing application timeline  * information. This implementation may not provide a complete implementation of  * all the necessary features. This implementation is provided solely for basic  * testing purposes, and should not be used in a non-test situation.  */
 end_comment
@@ -295,16 +309,6 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"fs-writer.root-dir"
 decl_stmt|;
-comment|/** default value for storage location on local disk. */
-DECL|field|DEFAULT_TIMELINE_SERVICE_STORAGE_DIR_ROOT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_TIMELINE_SERVICE_STORAGE_DIR_ROOT
-init|=
-literal|"/tmp/timeline_service_data"
-decl_stmt|;
 DECL|field|ENTITIES_DIR
 specifier|public
 specifier|static
@@ -323,6 +327,16 @@ name|String
 name|TIMELINE_SERVICE_STORAGE_EXTENSION
 init|=
 literal|".thist"
+decl_stmt|;
+comment|/** default value for storage location on local disk. */
+DECL|field|STORAGE_DIR_ROOT
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|STORAGE_DIR_ROOT
+init|=
+literal|"timeline_service_data"
 decl_stmt|;
 DECL|method|FileSystemTimelineWriterImpl ()
 name|FileSystemTimelineWriterImpl
@@ -627,8 +641,9 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getOutputRoot ()
-specifier|public
 name|String
 name|getOutputRoot
 parameter_list|()
@@ -658,7 +673,18 @@ name|get
 argument_list|(
 name|TIMELINE_SERVICE_STORAGE_DIR_ROOT
 argument_list|,
-name|DEFAULT_TIMELINE_SERVICE_STORAGE_DIR_ROOT
+name|conf
+operator|.
+name|get
+argument_list|(
+literal|"hadoop.tmp.dir"
+argument_list|)
+operator|+
+name|File
+operator|.
+name|separator
+operator|+
+name|STORAGE_DIR_ROOT
 argument_list|)
 expr_stmt|;
 block|}
@@ -729,7 +755,9 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|'/'
+name|File
+operator|.
+name|separatorChar
 argument_list|)
 expr_stmt|;
 name|File
