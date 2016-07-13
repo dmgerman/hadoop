@@ -87,7 +87,7 @@ class|class
 name|CommonConfigurationKeysPublic
 block|{
 comment|// The Keys
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|NET_TOPOLOGY_SCRIPT_NUMBER_ARGS_KEY
 specifier|public
 specifier|static
@@ -108,7 +108,7 @@ init|=
 literal|100
 decl_stmt|;
 comment|//FS keys
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|FS_DEFAULT_NAME_KEY
 specifier|public
 specifier|static
@@ -128,7 +128,7 @@ name|FS_DEFAULT_NAME_DEFAULT
 init|=
 literal|"file:///"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|FS_DF_INTERVAL_KEY
 specifier|public
 specifier|static
@@ -148,7 +148,7 @@ name|FS_DF_INTERVAL_DEFAULT
 init|=
 literal|60000
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|FS_DU_INTERVAL_KEY
 specifier|public
 specifier|static
@@ -168,7 +168,7 @@ name|FS_DU_INTERVAL_DEFAULT
 init|=
 literal|600000
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|FS_CLIENT_RESOLVE_REMOTE_SYMLINKS_KEY
 specifier|public
 specifier|static
@@ -189,7 +189,7 @@ init|=
 literal|true
 decl_stmt|;
 comment|//Defaults are not specified for following keys
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY
 specifier|public
 specifier|static
@@ -199,7 +199,7 @@ name|NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY
 init|=
 literal|"net.topology.script.file.name"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|NET_TOPOLOGY_NODE_SWITCH_MAPPING_IMPL_KEY
 specifier|public
 specifier|static
@@ -209,7 +209,7 @@ name|NET_TOPOLOGY_NODE_SWITCH_MAPPING_IMPL_KEY
 init|=
 literal|"net.topology.node.switch.mapping.impl"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|NET_TOPOLOGY_IMPL_KEY
 specifier|public
 specifier|static
@@ -219,7 +219,7 @@ name|NET_TOPOLOGY_IMPL_KEY
 init|=
 literal|"net.topology.impl"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|NET_TOPOLOGY_TABLE_MAPPING_FILE_KEY
 specifier|public
 specifier|static
@@ -238,7 +238,7 @@ name|NET_DEPENDENCY_SCRIPT_FILE_NAME_KEY
 init|=
 literal|"net.topology.dependency.script.file.name"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|FS_TRASH_CHECKPOINT_INTERVAL_KEY
 specifier|public
 specifier|static
@@ -285,7 +285,7 @@ literal|1024
 operator|*
 literal|1024
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|FS_AUTOMATIC_CLOSE_KEY
 specifier|public
 specifier|static
@@ -305,7 +305,7 @@ name|FS_AUTOMATIC_CLOSE_DEFAULT
 init|=
 literal|true
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|FS_FILE_IMPL_KEY
 specifier|public
 specifier|static
@@ -315,7 +315,7 @@ name|FS_FILE_IMPL_KEY
 init|=
 literal|"fs.file.impl"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|FS_FTP_HOST_KEY
 specifier|public
 specifier|static
@@ -325,7 +325,7 @@ name|FS_FTP_HOST_KEY
 init|=
 literal|"fs.ftp.host"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|FS_FTP_HOST_PORT_KEY
 specifier|public
 specifier|static
@@ -335,7 +335,7 @@ name|FS_FTP_HOST_PORT_KEY
 init|=
 literal|"fs.ftp.host.port"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|FS_TRASH_INTERVAL_KEY
 specifier|public
 specifier|static
@@ -355,7 +355,7 @@ name|FS_TRASH_INTERVAL_DEFAULT
 init|=
 literal|0
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a>. */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED
 specifier|public
 specifier|static
@@ -375,7 +375,7 @@ name|FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IO_MAPFILE_BLOOM_SIZE_KEY
 specifier|public
 specifier|static
@@ -397,7 +397,7 @@ literal|1024
 operator|*
 literal|1024
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IO_MAPFILE_BLOOM_ERROR_RATE_KEY
 specifier|public
 specifier|static
@@ -427,7 +427,7 @@ name|IO_COMPRESSION_CODEC_LZO_CLASS_KEY
 init|=
 literal|"io.compression.codec.lzo.class"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IO_MAP_INDEX_INTERVAL_KEY
 specifier|public
 specifier|static
@@ -447,7 +447,7 @@ name|IO_MAP_INDEX_INTERVAL_DEFAULT
 init|=
 literal|128
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IO_MAP_INDEX_SKIP_KEY
 specifier|public
 specifier|static
@@ -467,7 +467,7 @@ name|IO_MAP_INDEX_SKIP_DEFAULT
 init|=
 literal|0
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IO_SEQFILE_COMPRESS_BLOCKSIZE_KEY
 specifier|public
 specifier|static
@@ -487,7 +487,7 @@ name|IO_SEQFILE_COMPRESS_BLOCKSIZE_DEFAULT
 init|=
 literal|1000000
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IO_FILE_BUFFER_SIZE_KEY
 specifier|public
 specifier|static
@@ -507,7 +507,7 @@ name|IO_FILE_BUFFER_SIZE_DEFAULT
 init|=
 literal|4096
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IO_SKIP_CHECKSUM_ERRORS_KEY
 specifier|public
 specifier|static
@@ -567,7 +567,7 @@ name|IO_SORT_FACTOR_DEFAULT
 init|=
 literal|100
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IO_SERIALIZATIONS_KEY
 specifier|public
 specifier|static
@@ -577,7 +577,7 @@ name|IO_SERIALIZATIONS_KEY
 init|=
 literal|"io.serializations"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|TFILE_IO_CHUNK_SIZE_KEY
 specifier|public
 specifier|static
@@ -599,7 +599,7 @@ literal|1024
 operator|*
 literal|1024
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|TFILE_FS_INPUT_BUFFER_SIZE_KEY
 specifier|public
 specifier|static
@@ -621,7 +621,7 @@ literal|256
 operator|*
 literal|1024
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|TFILE_FS_OUTPUT_BUFFER_SIZE_KEY
 specifier|public
 specifier|static
@@ -697,7 +697,7 @@ name|HADOOP_CALLER_CONTEXT_SIGNATURE_MAX_SIZE_DEFAULT
 init|=
 literal|40
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IPC_CLIENT_CONNECTION_MAXIDLETIME_KEY
 specifier|public
 specifier|static
@@ -718,7 +718,7 @@ init|=
 literal|10000
 decl_stmt|;
 comment|// 10s
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IPC_CLIENT_CONNECT_TIMEOUT_KEY
 specifier|public
 specifier|static
@@ -739,7 +739,7 @@ init|=
 literal|20000
 decl_stmt|;
 comment|// 20s
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IPC_CLIENT_CONNECT_MAX_RETRIES_KEY
 specifier|public
 specifier|static
@@ -759,7 +759,7 @@ name|IPC_CLIENT_CONNECT_MAX_RETRIES_DEFAULT
 init|=
 literal|10
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IPC_CLIENT_CONNECT_RETRY_INTERVAL_KEY
 specifier|public
 specifier|static
@@ -779,7 +779,7 @@ name|IPC_CLIENT_CONNECT_RETRY_INTERVAL_DEFAULT
 init|=
 literal|1000
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_KEY
 specifier|public
 specifier|static
@@ -799,7 +799,7 @@ name|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_DEFAULT
 init|=
 literal|45
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IPC_CLIENT_TCPNODELAY_KEY
 specifier|public
 specifier|static
@@ -839,7 +839,7 @@ name|IPC_CLIENT_LOW_LATENCY_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IPC_SERVER_LISTEN_QUEUE_SIZE_KEY
 specifier|public
 specifier|static
@@ -859,7 +859,7 @@ name|IPC_SERVER_LISTEN_QUEUE_SIZE_DEFAULT
 init|=
 literal|128
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IPC_CLIENT_KILL_MAX_KEY
 specifier|public
 specifier|static
@@ -879,7 +879,7 @@ name|IPC_CLIENT_KILL_MAX_DEFAULT
 init|=
 literal|10
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IPC_CLIENT_IDLETHRESHOLD_KEY
 specifier|public
 specifier|static
@@ -899,7 +899,7 @@ name|IPC_CLIENT_IDLETHRESHOLD_DEFAULT
 init|=
 literal|4000
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IPC_SERVER_TCPNODELAY_KEY
 specifier|public
 specifier|static
@@ -919,7 +919,7 @@ name|IPC_SERVER_TCPNODELAY_DEFAULT
 init|=
 literal|true
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IPC_SERVER_MAX_CONNECTIONS_KEY
 specifier|public
 specifier|static
@@ -958,7 +958,7 @@ name|IPC_SERVER_LOG_SLOW_RPC_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_KEY
 specifier|public
 specifier|static
@@ -977,7 +977,7 @@ name|HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_DEFAULT
 init|=
 literal|"org.apache.hadoop.net.StandardSocketFactory"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SOCKS_SERVER_KEY
 specifier|public
 specifier|static
@@ -987,7 +987,7 @@ name|HADOOP_SOCKS_SERVER_KEY
 init|=
 literal|"hadoop.socks.server"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_UTIL_HASH_TYPE_KEY
 specifier|public
 specifier|static
@@ -1007,7 +1007,7 @@ name|HADOOP_UTIL_HASH_TYPE_DEFAULT
 init|=
 literal|"murmur"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_GROUP_MAPPING
 specifier|public
 specifier|static
@@ -1017,7 +1017,7 @@ name|HADOOP_SECURITY_GROUP_MAPPING
 init|=
 literal|"hadoop.security.group.mapping"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_GROUPS_CACHE_SECS
 specifier|public
 specifier|static
@@ -1027,7 +1027,7 @@ name|HADOOP_SECURITY_GROUPS_CACHE_SECS
 init|=
 literal|"hadoop.security.groups.cache.secs"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_GROUPS_CACHE_SECS_DEFAULT
 specifier|public
 specifier|static
@@ -1037,7 +1037,7 @@ name|HADOOP_SECURITY_GROUPS_CACHE_SECS_DEFAULT
 init|=
 literal|300
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_GROUPS_NEGATIVE_CACHE_SECS
 specifier|public
 specifier|static
@@ -1047,7 +1047,7 @@ name|HADOOP_SECURITY_GROUPS_NEGATIVE_CACHE_SECS
 init|=
 literal|"hadoop.security.groups.negative-cache.secs"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_GROUPS_NEGATIVE_CACHE_SECS_DEFAULT
 specifier|public
 specifier|static
@@ -1057,7 +1057,7 @@ name|HADOOP_SECURITY_GROUPS_NEGATIVE_CACHE_SECS_DEFAULT
 init|=
 literal|30
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_GROUPS_CACHE_WARN_AFTER_MS
 specifier|public
 specifier|static
@@ -1076,7 +1076,7 @@ name|HADOOP_SECURITY_GROUPS_CACHE_WARN_AFTER_MS_DEFAULT
 init|=
 literal|5000
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_GROUPS_CACHE_BACKGROUND_RELOAD
 specifier|public
 specifier|static
@@ -1086,7 +1086,7 @@ name|HADOOP_SECURITY_GROUPS_CACHE_BACKGROUND_RELOAD
 init|=
 literal|"hadoop.security.groups.cache.background.reload"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a>. */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 specifier|public
 specifier|static
 specifier|final
@@ -1096,7 +1096,7 @@ name|HADOOP_SECURITY_GROUPS_CACHE_BACKGROUND_RELOAD_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a>. */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 specifier|public
 specifier|static
 specifier|final
@@ -1106,7 +1106,7 @@ name|HADOOP_SECURITY_GROUPS_CACHE_BACKGROUND_RELOAD_THREADS
 init|=
 literal|"hadoop.security.groups.cache.background.reload.threads"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a>. */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 specifier|public
 specifier|static
 specifier|final
@@ -1116,7 +1116,7 @@ name|HADOOP_SECURITY_GROUPS_CACHE_BACKGROUND_RELOAD_THREADS_DEFAULT
 init|=
 literal|3
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a>.*/
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_AUTHENTICATION
 specifier|public
 specifier|static
@@ -1126,7 +1126,7 @@ name|HADOOP_SECURITY_AUTHENTICATION
 init|=
 literal|"hadoop.security.authentication"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_AUTHORIZATION
 specifier|public
 specifier|static
@@ -1136,7 +1136,7 @@ name|HADOOP_SECURITY_AUTHORIZATION
 init|=
 literal|"hadoop.security.authorization"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_INSTRUMENTATION_REQUIRES_ADMIN
 specifier|public
 specifier|static
@@ -1146,7 +1146,7 @@ name|HADOOP_SECURITY_INSTRUMENTATION_REQUIRES_ADMIN
 init|=
 literal|"hadoop.security.instrumentation.requires.admin"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_SERVICE_USER_NAME_KEY
 specifier|public
 specifier|static
@@ -1156,7 +1156,7 @@ name|HADOOP_SECURITY_SERVICE_USER_NAME_KEY
 init|=
 literal|"hadoop.security.service.user.name.key"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_AUTH_TO_LOCAL
 specifier|public
 specifier|static
@@ -1166,7 +1166,7 @@ name|HADOOP_SECURITY_AUTH_TO_LOCAL
 init|=
 literal|"hadoop.security.auth_to_local"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_DNS_INTERFACE_KEY
 specifier|public
 specifier|static
@@ -1176,7 +1176,7 @@ name|HADOOP_SECURITY_DNS_INTERFACE_KEY
 init|=
 literal|"hadoop.security.dns.interface"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_DNS_NAMESERVER_KEY
 specifier|public
 specifier|static
@@ -1186,7 +1186,7 @@ name|HADOOP_SECURITY_DNS_NAMESERVER_KEY
 init|=
 literal|"hadoop.security.dns.nameserver"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_TOKEN_FILES
 specifier|public
 specifier|static
@@ -1196,7 +1196,7 @@ name|HADOOP_TOKEN_FILES
 init|=
 literal|"hadoop.token.files"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN
 specifier|public
 specifier|static
@@ -1216,7 +1216,7 @@ name|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN_DEFAULT
 init|=
 literal|60
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_RPC_PROTECTION
 specifier|public
 specifier|static
@@ -1284,7 +1284,7 @@ operator|.
 name|getName
 argument_list|()
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY
 specifier|public
 specifier|static
@@ -1303,7 +1303,7 @@ name|HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_DEFAULT
 init|=
 literal|"AES/CTR/NoPadding"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_CRYPTO_JCE_PROVIDER_KEY
 specifier|public
 specifier|static
@@ -1313,7 +1313,7 @@ name|HADOOP_SECURITY_CRYPTO_JCE_PROVIDER_KEY
 init|=
 literal|"hadoop.security.crypto.jce.provider"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY
 specifier|public
 specifier|static
@@ -1344,7 +1344,7 @@ init|=
 literal|"hadoop.security.impersonation.provider.class"
 decl_stmt|;
 comment|//<!-- KMSClientProvider configurations -->
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|KMS_CLIENT_ENC_KEY_CACHE_SIZE
 specifier|public
 specifier|static
@@ -1364,7 +1364,7 @@ name|KMS_CLIENT_ENC_KEY_CACHE_SIZE_DEFAULT
 init|=
 literal|500
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK
 specifier|public
 specifier|static
@@ -1384,7 +1384,7 @@ name|KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK_DEFAULT
 init|=
 literal|0.3f
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS
 specifier|public
 specifier|static
@@ -1404,7 +1404,7 @@ name|KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS_DEFAULT
 init|=
 literal|2
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_MS
 specifier|public
 specifier|static
@@ -1424,7 +1424,7 @@ name|KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_DEFAULT
 init|=
 literal|43200000
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY
 specifier|public
 specifier|static
@@ -1444,7 +1444,7 @@ name|HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_DEFAULT
 init|=
 literal|"SHA1PRNG"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_SECURE_RANDOM_IMPL_KEY
 specifier|public
 specifier|static
@@ -1454,7 +1454,7 @@ name|HADOOP_SECURITY_SECURE_RANDOM_IMPL_KEY
 init|=
 literal|"hadoop.security.secure.random.impl"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_KEY
 specifier|public
 specifier|static
@@ -1473,7 +1473,7 @@ name|HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_DEFAULT
 init|=
 literal|"/dev/urandom"
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_KEY
 specifier|public
 specifier|static
@@ -1492,7 +1492,7 @@ name|HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES
 specifier|public
 specifier|static
@@ -1511,7 +1511,7 @@ name|HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES_DEFAULT
 init|=
 literal|100
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_HTTP_LOGS_ENABLED
 specifier|public
 specifier|static

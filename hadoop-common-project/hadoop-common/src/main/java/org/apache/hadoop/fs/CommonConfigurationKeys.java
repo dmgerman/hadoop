@@ -783,7 +783,7 @@ name|HADOOP_SECURITY_TOKEN_SERVICE_USE_IP_DEFAULT
 init|=
 literal|true
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml .</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_DNS_LOG_SLOW_LOOKUPS_ENABLED_KEY
 specifier|public
 specifier|static
@@ -802,7 +802,7 @@ name|HADOOP_SECURITY_DNS_LOG_SLOW_LOOKUPS_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml .</a> */
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 specifier|public
 specifier|static
 specifier|final
