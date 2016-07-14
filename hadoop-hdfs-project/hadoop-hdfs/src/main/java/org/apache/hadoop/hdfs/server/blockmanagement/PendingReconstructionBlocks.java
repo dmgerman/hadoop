@@ -495,12 +495,18 @@ name|int
 name|size
 parameter_list|()
 block|{
+synchronized|synchronized
+init|(
+name|pendingReconstructions
+init|)
+block|{
 return|return
 name|pendingReconstructions
 operator|.
 name|size
 argument_list|()
 return|;
+block|}
 block|}
 comment|/**    * How many copies of this block is pending reconstruction?.    */
 DECL|method|getNumReplicas (BlockInfo block)
