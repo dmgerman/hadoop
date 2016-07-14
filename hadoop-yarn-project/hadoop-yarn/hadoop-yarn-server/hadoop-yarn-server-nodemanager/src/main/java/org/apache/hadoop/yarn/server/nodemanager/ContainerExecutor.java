@@ -626,6 +626,10 @@ name|StringUtils
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class is abstraction of the mechanism used to launch a container on the  * underlying OS.  All executor implementations must extend ContainerExecutor.  */
+end_comment
+
 begin_class
 DECL|class|ContainerExecutor
 specifier|public
@@ -660,10 +664,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * The permissions to use when creating the launch script.    */
 DECL|field|TASK_LAUNCH_SCRIPT_PERMISSION
-specifier|final
 specifier|public
 specifier|static
+specifier|final
 name|FsPermission
 name|TASK_LAUNCH_SCRIPT_PERMISSION
 init|=
@@ -677,6 +682,7 @@ operator|)
 literal|0700
 argument_list|)
 decl_stmt|;
+comment|/**    * The relative path to which debug information will be written.    *    * @see ContainerLaunch.ShellScriptBuilder#listDebugInformation    */
 DECL|field|DIRECTORY_CONTENTS
 specifier|public
 specifier|static
@@ -693,6 +699,7 @@ name|conf
 decl_stmt|;
 DECL|field|pidFiles
 specifier|private
+specifier|final
 name|ConcurrentMap
 argument_list|<
 name|ContainerId
@@ -703,15 +710,12 @@ name|pidFiles
 init|=
 operator|new
 name|ConcurrentHashMap
-argument_list|<
-name|ContainerId
-argument_list|,
-name|Path
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|lock
 specifier|private
+specifier|final
 name|ReentrantReadWriteLock
 name|lock
 init|=
@@ -771,7 +775,7 @@ return|return
 name|conf
 return|;
 block|}
-comment|/**    * Run the executor initialization steps.     * Verify that the necessary configs, permissions are in place.    * @throws IOException    */
+comment|/**    * Run the executor initialization steps.    * Verify that the necessary configs and permissions are in place.    *    * @throws IOException if initialization fails    */
 DECL|method|init ()
 specifier|public
 specifier|abstract
@@ -781,17 +785,17 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * On Windows the ContainerLaunch creates a temporary special jar manifest of     * other jars to workaround the CLASSPATH length. In a  secure cluster this     * jar must be localized so that the container has access to it.     * This function localizes on-demand the jar.    *     * @param classPathJar    * @param owner    * @throws IOException    */
-DECL|method|localizeClasspathJar (Path classPathJar, Path pwd, String owner)
+comment|/**    * This function localizes the JAR file on-demand.    * On Windows the ContainerLaunch creates a temporary special JAR manifest of    * other JARs to workaround the CLASSPATH length. In a secure cluster this    * JAR must be localized so that the container has access to it.    * The default implementation returns the classpath passed to it, which    * is expected to have been created in the node manager's<i>fprivate</i>    * folder, which will not work with secure Windows clusters.    *    * @param jarPath the path to the JAR to localize    * @param target the directory where the JAR file should be localized    * @param owner the name of the user who should own the localized file    * @return the path to the localized JAR file    * @throws IOException if localization fails    */
+DECL|method|localizeClasspathJar (Path jarPath, Path target, String owner)
 specifier|public
 name|Path
 name|localizeClasspathJar
 parameter_list|(
 name|Path
-name|classPathJar
+name|jarPath
 parameter_list|,
 name|Path
-name|pwd
+name|target
 parameter_list|,
 name|String
 name|owner
@@ -799,13 +803,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Non-secure executor simply use the classpath created
-comment|// in the NM fprivate folder
 return|return
-name|classPathJar
+name|jarPath
 return|;
 block|}
-comment|/**    * Prepare the environment for containers in this application to execute.    *<pre>    * For $x in local.dirs    *   create $x/$user/$appId    * Copy $nmLocal/appTokens {@literal ->} $N/$user/$appId    * For $rsrc in private resources    *   Copy $rsrc {@literal ->} $N/$user/filecache/[idef]    * For $rsrc in job resources    *   Copy $rsrc {@literal ->} $N/$user/$appId/filecache/idef    *</pre>    * @param ctx LocalizerStartContext that encapsulates necessary information    *            for starting a localizer.    * @throws IOException For most application init failures    * @throws InterruptedException If application init thread is halted by NM    */
+comment|/**    * Prepare the environment for containers in this application to execute.    *<pre>    * For $x in local.dirs    *   create $x/$user/$appId    * Copy $nmLocal/appTokens {@literal ->} $N/$user/$appId    * For $rsrc in private resources    *   Copy $rsrc {@literal ->} $N/$user/filecache/[idef]    * For $rsrc in job resources    *   Copy $rsrc {@literal ->} $N/$user/$appId/filecache/idef    *</pre>    *    * @param ctx LocalizerStartContext that encapsulates necessary information    *            for starting a localizer.    * @throws IOException for most application init failures    * @throws InterruptedException if application init thread is halted by NM    */
 DECL|method|startLocalizer (LocalizerStartContext ctx)
 specifier|public
 specifier|abstract
@@ -820,7 +822,7 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Launch the container on the node. This is a blocking call and returns only    * when the container exits.    * @param ctx Encapsulates information necessary for launching containers.    * @return the return status of the launch    * @throws IOException    */
+comment|/**    * Launch the container on the node. This is a blocking call and returns only    * when the container exits.    * @param ctx Encapsulates information necessary for launching containers.    * @return the return status of the launch    * @throws IOException if the container launch fails    */
 DECL|method|launchContainer (ContainerStartContext ctx)
 specifier|public
 specifier|abstract
@@ -833,7 +835,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Signal container with the specified signal.    * @param ctx Encapsulates information necessary for signaling containers.    * @return returns true if the operation succeeded    * @throws IOException    */
+comment|/**    * Signal container with the specified signal.    *    * @param ctx Encapsulates information necessary for signaling containers.    * @return returns true if the operation succeeded    * @throws IOException if signaling the container fails    */
 DECL|method|signalContainer (ContainerSignalContext ctx)
 specifier|public
 specifier|abstract
@@ -846,7 +848,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delete specified directories as a given user.    * @param ctx Encapsulates information necessary for deletion.    * @throws IOException    * @throws InterruptedException    */
+comment|/**    * Delete specified directories as a given user.    *    * @param ctx Encapsulates information necessary for deletion.    * @throws IOException if delete fails    * @throws InterruptedException if interrupted while waiting for the deletion    * operation to complete    */
 DECL|method|deleteAsUser (DeletionAsUserContext ctx)
 specifier|public
 specifier|abstract
@@ -861,7 +863,7 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Check if a container is alive.    * @param ctx Encapsulates information necessary for container liveness check.    * @return true if container is still alive    * @throws IOException    */
+comment|/**    * Check if a container is alive.    * @param ctx Encapsulates information necessary for container liveness check.    * @return true if container is still alive    * @throws IOException if there is a failure while checking the container    * status    */
 DECL|method|isContainerAlive (ContainerLivenessContext ctx)
 specifier|public
 specifier|abstract
@@ -874,7 +876,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Recover an already existing container. This is a blocking call and returns    * only when the container exits.  Note that the container must have been    * activated prior to this call.    * @param ctx encapsulates information necessary to reacquire container    * @return The exit code of the pre-existing container    * @throws IOException    * @throws InterruptedException     */
+comment|/**    * Recover an already existing container. This is a blocking call and returns    * only when the container exits.  Note that the container must have been    * activated prior to this call.    *    * @param ctx encapsulates information necessary to reacquire container    * @return The exit code of the pre-existing container    * @throws IOException if there is a failure while reacquiring the container    * @throws InterruptedException if interrupted while waiting to reacquire    * the container    */
 DECL|method|reacquireContainer (ContainerReacquisitionContext ctx)
 specifier|public
 name|int
@@ -948,17 +950,13 @@ block|}
 name|String
 name|pid
 init|=
-literal|null
-decl_stmt|;
-name|pid
-operator|=
 name|ProcessIdFileReader
 operator|.
 name|getProcessId
 argument_list|(
 name|pidPath
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|pid
@@ -1033,6 +1031,17 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// wait for exit code file to appear
+specifier|final
+name|int
+name|sleepMsec
+init|=
+literal|100
+decl_stmt|;
+name|int
+name|msecLeft
+init|=
+literal|2000
+decl_stmt|;
 name|String
 name|exitCodeFile
 init|=
@@ -1054,17 +1063,6 @@ name|File
 argument_list|(
 name|exitCodeFile
 argument_list|)
-decl_stmt|;
-specifier|final
-name|int
-name|sleepMsec
-init|=
-literal|100
-decl_stmt|;
-name|int
-name|msecLeft
-init|=
-literal|2000
 decl_stmt|;
 while|while
 condition|(
@@ -1173,7 +1171,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * This method writes out the launch environment of a container. This can be    * overridden by extending ContainerExecutors to provide different behaviors    * @param out the output stream to which the environment is written (usually    * a script file which will be executed by the Launcher)    * @param environment The environment variables and their values    * @param resources The resources which have been localized for this container    * Symlinks will be created to these localized resources    * @param command The command that will be run.    * @param logDir The log dir to copy debugging information to    * @throws IOException if any errors happened writing to the OutputStream,    * while creating symlinks    */
+comment|/**    * This method writes out the launch environment of a container to the    * default container launch script. For the default container script path see    * {@link ContainerLaunch#CONTAINER_SCRIPT}.    *    * @param out the output stream to which the environment is written (usually    * a script file which will be executed by the Launcher)    * @param environment the environment variables and their values    * @param resources the resources which have been localized for this    * container. Symlinks will be created to these localized resources    * @param command the command that will be run.    * @param logDir the log dir to copy debugging information to    * @throws IOException if any errors happened writing to the OutputStream,    * while creating symlinks    */
 DECL|method|writeLaunchEnv (OutputStream out, Map<String, String> environment, Map<Path, List<String>> resources, List<String> command, Path logDir)
 specifier|public
 name|void
@@ -1233,6 +1231,7 @@ name|CONTAINER_SCRIPT
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * This method writes out the launch environment of a container to a specified    * path.    *    * @param out the output stream to which the environment is written (usually    * a script file which will be executed by the Launcher)    * @param environment the environment variables and their values    * @param resources the resources which have been localized for this    * container. Symlinks will be created to these localized resources    * @param command the command that will be run.    * @param logDir the log dir to copy debugging information to    * @param outFilename the path to which to write the launch environment    * @throws IOException if any errors happened writing to the OutputStream,    * while creating symlinks    */
 annotation|@
 name|VisibleForTesting
 DECL|method|writeLaunchEnv (OutputStream out, Map<String, String> environment, Map<Path, List<String>> resources, List<String> command, Path logDir, String outFilename)
@@ -1297,9 +1296,7 @@ name|whitelist
 init|=
 operator|new
 name|HashSet
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|whitelist
@@ -1428,16 +1425,10 @@ name|env
 operator|.
 name|getKey
 argument_list|()
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|env
 operator|.
 name|getValue
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1452,16 +1443,10 @@ name|env
 operator|.
 name|getKey
 argument_list|()
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|env
 operator|.
 name|getValue
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1477,22 +1462,12 @@ condition|)
 block|{
 for|for
 control|(
-name|Map
-operator|.
-name|Entry
-argument_list|<
 name|Path
-argument_list|,
-name|List
-argument_list|<
-name|String
-argument_list|>
-argument_list|>
-name|entry
+name|path
 range|:
 name|resources
 operator|.
-name|entrySet
+name|keySet
 argument_list|()
 control|)
 block|{
@@ -1501,10 +1476,12 @@ control|(
 name|String
 name|linkName
 range|:
-name|entry
+name|resources
 operator|.
-name|getValue
-argument_list|()
+name|get
+argument_list|(
+name|path
+argument_list|)
 control|)
 block|{
 if|if
@@ -1532,10 +1509,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-name|entry
-operator|.
-name|getKey
-argument_list|()
+name|path
 operator|.
 name|toString
 argument_list|()
@@ -1583,10 +1557,7 @@ name|sb
 operator|.
 name|symlink
 argument_list|(
-name|entry
-operator|.
-name|getKey
-argument_list|()
+name|path
 argument_list|,
 operator|new
 name|Path
@@ -1706,6 +1677,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * The container exit code.    */
 DECL|enum|ExitCode
 specifier|public
 enum|enum
@@ -1756,6 +1728,7 @@ operator|=
 name|exitCode
 expr_stmt|;
 block|}
+comment|/**      * Get the exit code as an int.      * @return the exit code as an int      */
 DECL|method|getExitCode ()
 specifier|public
 name|int
@@ -1791,7 +1764,6 @@ enum|enum
 name|Signal
 block|{
 DECL|enumConstant|NULL
-DECL|enumConstant|QUIT
 name|NULL
 argument_list|(
 literal|0
@@ -1799,6 +1771,7 @@ argument_list|,
 literal|"NULL"
 argument_list|)
 block|,
+DECL|enumConstant|QUIT
 name|QUIT
 argument_list|(
 literal|3
@@ -1807,7 +1780,6 @@ literal|"SIGQUIT"
 argument_list|)
 block|,
 DECL|enumConstant|KILL
-DECL|enumConstant|TERM
 name|KILL
 argument_list|(
 literal|9
@@ -1815,6 +1787,7 @@ argument_list|,
 literal|"SIGKILL"
 argument_list|)
 block|,
+DECL|enumConstant|TERM
 name|TERM
 argument_list|(
 literal|15
@@ -1858,6 +1831,7 @@ operator|=
 name|value
 expr_stmt|;
 block|}
+comment|/**      * Get the signal number.      * @return the signal number      */
 DECL|method|getValue ()
 specifier|public
 name|int
@@ -1881,6 +1855,7 @@ name|str
 return|;
 block|}
 block|}
+comment|/**    * Log each line of the output string as INFO level log messages.    *    * @param output the output string to log    */
 DECL|method|logOutput (String output)
 specifier|protected
 name|void
@@ -1925,7 +1900,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Get the pidFile of the container.    * @param containerId    * @return the path of the pid-file for the given containerId.    */
+comment|/**    * Get the pidFile of the container.    *    * @param containerId the container ID    * @return the path of the pid-file for the given containerId.    */
 DECL|method|getPidFilePath (ContainerId containerId)
 specifier|protected
 name|Path
@@ -1964,6 +1939,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Return a command line to execute the given command in the OS shell.    * On Windows, the {code}groupId{code} parameter can be used to launch    * and associate the given GID with a process group. On    * non-Windows hosts, the {code}groupId{code} parameter is ignored.    *    * @param command the command to execute    * @param groupId the job owner's GID    * @param userName the job owner's username    * @param pidFile the path to the container's PID file    * @param conf the configuration    * @return the command line to execute    */
 DECL|method|getRunCommand (String command, String groupId, String userName, Path pidFile, Configuration conf)
 specifier|protected
 name|String
@@ -2003,7 +1979,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**     *  Return a command to execute the given command in OS shell.    *  On Windows, the passed in groupId can be used to launch    *  and associate the given groupId in a process group. On    *  non-Windows, groupId is ignored.     */
+comment|/**    * Return a command line to execute the given command in the OS shell.    * On Windows, the {code}groupId{code} parameter can be used to launch    * and associate the given GID with a process group. On    * non-Windows hosts, the {code}groupId{code} parameter is ignored.    *    * @param command the command to execute    * @param groupId the job owner's GID for Windows. On other operating systems    * it is ignored.    * @param userName the job owner's username for Windows. On other operating    * systems it is ignored.    * @param pidFile the path to the container's PID file on Windows. On other    * operating systems it is ignored.    * @param conf the configuration    * @param resource on Windows this parameter controls memory and CPU limits.    * If null, no limits are set. On other operating systems it is ignored.    * @return the command line to execute    */
 DECL|method|getRunCommand (String command, String groupId, String userName, Path pidFile, Configuration conf, Resource resource)
 specifier|protected
 name|String
@@ -2029,58 +2005,67 @@ name|Resource
 name|resource
 parameter_list|)
 block|{
-name|boolean
-name|containerSchedPriorityIsSet
-init|=
-literal|false
-decl_stmt|;
-name|int
-name|containerSchedPriorityAdjustment
-init|=
-name|YarnConfiguration
-operator|.
-name|DEFAULT_NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
-decl_stmt|;
-if|if
-condition|(
-name|conf
-operator|.
-name|get
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
-argument_list|)
-operator|!=
-literal|null
-condition|)
-block|{
-name|containerSchedPriorityIsSet
-operator|=
-literal|true
-expr_stmt|;
-name|containerSchedPriorityAdjustment
-operator|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
-argument_list|)
-expr_stmt|;
-block|}
 if|if
 condition|(
 name|Shell
 operator|.
 name|WINDOWS
 condition|)
+block|{
+return|return
+name|getRunCommandForWindows
+argument_list|(
+name|command
+argument_list|,
+name|groupId
+argument_list|,
+name|userName
+argument_list|,
+name|pidFile
+argument_list|,
+name|conf
+argument_list|,
+name|resource
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+return|return
+name|getRunCommandForOther
+argument_list|(
+name|command
+argument_list|,
+name|conf
+argument_list|)
+return|;
+block|}
+block|}
+comment|/**    * Return a command line to execute the given command in the OS shell.    * The {code}groupId{code} parameter can be used to launch    * and associate the given GID with a process group.    *    * @param command the command to execute    * @param groupId the job owner's GID    * @param userName the job owner's username    * @param pidFile the path to the container's PID file    * @param conf the configuration    * @param resource this parameter controls memory and CPU limits.    * If null, no limits are set.    * @return the command line to execute    */
+DECL|method|getRunCommandForWindows (String command, String groupId, String userName, Path pidFile, Configuration conf, Resource resource)
+specifier|protected
+name|String
+index|[]
+name|getRunCommandForWindows
+parameter_list|(
+name|String
+name|command
+parameter_list|,
+name|String
+name|groupId
+parameter_list|,
+name|String
+name|userName
+parameter_list|,
+name|Path
+name|pidFile
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|)
 block|{
 name|int
 name|cpuRate
@@ -2248,7 +2233,19 @@ name|command
 block|}
 return|;
 block|}
-else|else
+comment|/**    * Return a command line to execute the given command in the OS shell.    *    * @param command the command to execute    * @param conf the configuration    * @return the command line to execute    */
+DECL|method|getRunCommandForOther (String command, Configuration conf)
+specifier|protected
+name|String
+index|[]
+name|getRunCommandForOther
+parameter_list|(
+name|String
+name|command
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
 block|{
 name|List
 argument_list|<
@@ -2258,11 +2255,55 @@ name|retCommand
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
+name|boolean
+name|containerSchedPriorityIsSet
+init|=
+literal|false
+decl_stmt|;
+name|int
+name|containerSchedPriorityAdjustment
+init|=
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
+decl_stmt|;
+if|if
+condition|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
+argument_list|)
+operator|!=
+literal|null
+condition|)
+block|{
+name|containerSchedPriorityIsSet
+operator|=
+literal|true
+expr_stmt|;
+name|containerSchedPriorityAdjustment
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|containerSchedPriorityIsSet
@@ -2320,8 +2361,7 @@ index|]
 argument_list|)
 return|;
 block|}
-block|}
-comment|/**    * Is the container still active?    * @param containerId    * @return true if the container is active else false.    */
+comment|/**    * Return whether the container is still active.    *    * @param containerId the target container's ID    * @return true if the container is active    */
 DECL|method|isContainerActive (ContainerId containerId)
 specifier|protected
 name|boolean
@@ -2360,7 +2400,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Mark the container as active    *     * @param containerId    *          the ContainerId    * @param pidFilePath    *          Path where the executor should write the pid of the launched    *          process    */
+comment|/**    * Mark the container as active.    *    * @param containerId the container ID    * @param pidFilePath the path where the executor should write the PID    * of the launched process    */
 DECL|method|activateContainer (ContainerId containerId, Path pidFilePath)
 specifier|public
 name|void
@@ -2401,7 +2441,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Mark the container as inactive.    * Done iff the container is still active. Else treat it as    * a no-op    */
+comment|/**    * Mark the container as inactive. For inactive containers this    * method has no effect.    *    * @param containerId the container ID    */
 DECL|method|deactivateContainer (ContainerId containerId)
 specifier|public
 name|void
@@ -2437,7 +2477,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the process-identifier for the container    *     * @param containerID    * @return the processid of the container if it has already launched,    *         otherwise return null    */
+comment|/**    * Get the process-identifier for the container.    *    * @param containerID the container ID    * @return the process ID of the container if it has already launched,    * or null otherwise    */
 DECL|method|getProcessId (ContainerId containerID)
 specifier|public
 name|String
@@ -2462,18 +2502,14 @@ argument_list|(
 name|containerID
 argument_list|)
 decl_stmt|;
+comment|// If PID is null, this container hasn't launched yet.
 if|if
 condition|(
 name|pidFile
-operator|==
+operator|!=
 literal|null
 condition|)
 block|{
-comment|// This container isn't even launched yet.
-return|return
-name|pid
-return|;
-block|}
 try|try
 block|{
 name|pid
@@ -2504,10 +2540,12 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 return|return
 name|pid
 return|;
 block|}
+comment|/**    * This class will signal a target container after a specified delay.    * @see #signalContainer    */
 DECL|class|DelayedProcessKiller
 specifier|public
 specifier|static
@@ -2518,6 +2556,7 @@ name|Thread
 block|{
 DECL|field|container
 specifier|private
+specifier|final
 name|Container
 name|container
 decl_stmt|;
@@ -2551,7 +2590,8 @@ specifier|final
 name|ContainerExecutor
 name|containerExecutor
 decl_stmt|;
-DECL|method|DelayedProcessKiller (Container container, String user, String pid, long delay, Signal signal, ContainerExecutor containerExecutor)
+comment|/**      * Basic constructor.      *      * @param container the container to signal      * @param user the user as whow to send the signal      * @param pid the PID of the container process      * @param delayMS the period of time to wait in millis before signaling      * the container      * @param signal the signal to send      * @param containerExecutor the executor to use to send the signal      */
+DECL|method|DelayedProcessKiller (Container container, String user, String pid, long delayMS, Signal signal, ContainerExecutor containerExecutor)
 specifier|public
 name|DelayedProcessKiller
 parameter_list|(
@@ -2565,7 +2605,7 @@ name|String
 name|pid
 parameter_list|,
 name|long
-name|delay
+name|delayMS
 parameter_list|,
 name|Signal
 name|signal
@@ -2596,7 +2636,7 @@ name|this
 operator|.
 name|delay
 operator|=
-name|delay
+name|delayMS
 expr_stmt|;
 name|this
 operator|.
@@ -2681,7 +2721,9 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
-return|return;
+name|interrupt
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(

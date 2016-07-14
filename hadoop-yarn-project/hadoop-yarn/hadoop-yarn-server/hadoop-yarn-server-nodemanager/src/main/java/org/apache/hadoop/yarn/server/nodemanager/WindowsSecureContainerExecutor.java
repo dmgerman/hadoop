@@ -3107,16 +3107,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|localizeClasspathJar (Path classPathJar, Path pwd, String owner)
+DECL|method|localizeClasspathJar (Path jarPath, Path target, String owner)
 specifier|public
 name|Path
 name|localizeClasspathJar
 parameter_list|(
 name|Path
-name|classPathJar
+name|jarPath
 parameter_list|,
 name|Path
-name|pwd
+name|target
 parameter_list|,
 name|String
 name|owner
@@ -3142,9 +3142,9 @@ name|format
 argument_list|(
 literal|"localizeClasspathJar: %s %s o:%s"
 argument_list|,
-name|classPathJar
+name|jarPath
 argument_list|,
-name|pwd
+name|target
 argument_list|,
 name|owner
 argument_list|)
@@ -3153,7 +3153,7 @@ expr_stmt|;
 block|}
 name|createDir
 argument_list|(
-name|pwd
+name|target
 argument_list|,
 operator|new
 name|FsPermission
@@ -3169,7 +3169,7 @@ expr_stmt|;
 name|String
 name|fileName
 init|=
-name|classPathJar
+name|jarPath
 operator|.
 name|getName
 argument_list|()
@@ -3180,7 +3180,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|pwd
+name|target
 argument_list|,
 name|fileName
 argument_list|)
@@ -3191,7 +3191,7 @@ name|Elevated
 operator|.
 name|move
 argument_list|(
-name|classPathJar
+name|jarPath
 argument_list|,
 name|dst
 argument_list|,

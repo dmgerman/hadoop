@@ -1016,22 +1016,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -4850,7 +4834,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**      * Method to dump debug information to the a target file. This method will      * be called by ContainerExecutor when setting up the container launch      * script.      * @param output the file to which debug information is to be written      * @throws IOException      */
+comment|/**      * Method to dump debug information to a target file. This method will      * be called by ContainerExecutor when setting up the container launch      * script.      * @param output the file to which debug information is to be written      * @throws IOException      */
 DECL|method|listDebugInformation (Path output)
 specifier|public
 specifier|abstract
