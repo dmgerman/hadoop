@@ -1171,11 +1171,11 @@ name|getDouble
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DISK_BALANCER_MAX_DISK_THRUPUT
+name|DFS_DISK_BALANCER_PLAN_THRESHOLD
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_DISK_BALANCER_MAX_DISK_THRUPUT_DEFAULT
+name|DFS_DISK_BALANCER_PLAN_THRESHOLD_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}

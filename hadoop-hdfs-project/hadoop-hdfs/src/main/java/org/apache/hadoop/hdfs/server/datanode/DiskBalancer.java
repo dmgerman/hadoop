@@ -692,11 +692,11 @@ name|getInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DISK_BALANCER_MAX_DISK_THRUPUT
+name|DFS_DISK_BALANCER_MAX_DISK_THROUGHPUT
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_DISK_BALANCER_MAX_DISK_THRUPUT_DEFAULT
+name|DFS_DISK_BALANCER_MAX_DISK_THROUGHPUT_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -2747,11 +2747,11 @@ name|getLong
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DISK_BALANCER_MAX_DISK_THRUPUT
+name|DFS_DISK_BALANCER_MAX_DISK_THROUGHPUT
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_DISK_BALANCER_MAX_DISK_THRUPUT_DEFAULT
+name|DFS_DISK_BALANCER_MAX_DISK_THROUGHPUT_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
@@ -2814,7 +2814,7 @@ name|diskBandwidth
 operator|=
 name|DFSConfigKeys
 operator|.
-name|DFS_DISK_BALANCER_MAX_DISK_THRUPUT_DEFAULT
+name|DFS_DISK_BALANCER_MAX_DISK_THROUGHPUT_DEFAULT
 expr_stmt|;
 block|}
 if|if
