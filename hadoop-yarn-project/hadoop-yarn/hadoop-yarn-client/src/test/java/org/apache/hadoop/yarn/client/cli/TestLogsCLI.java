@@ -744,6 +744,16 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentCaptor
+import|;
+end_import
+
 begin_class
 DECL|class|TestLogsCLI
 specifier|public
@@ -1486,14 +1496,21 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 default, it will only print out syslog."
+literal|"                                 default, it will print all available"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 Work with -logFiles to get other logs"
+literal|"                                 logs. Work with -log_files to get only"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                 specific logs."
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1514,35 +1531,28 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -containerId<Container ID>     ContainerId. By default, it will only"
+literal|" -containerId<Container ID>     ContainerId. By default, it will print"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 print syslog if the application is"
+literal|"                                 all available logs. Work with -log_files"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 running. Work with -logFiles to get other"
+literal|"                                 to get only specific logs. If specified,"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 logs. If specified, the applicationId can"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|println
-argument_list|(
-literal|"                                 be omitted"
+literal|"                                 the applicationId can be omitted"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1577,7 +1587,7 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -logFiles<Log File Name>       Specify comma-separated value to get"
+literal|" -log_files<Log File Name>      Specify comma-separated value to get"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1790,10 +1800,10 @@ name|timeout
 operator|=
 literal|15000
 argument_list|)
-DECL|method|testFetchApplictionLogs ()
+DECL|method|testFetchFinishedApplictionLogs ()
 specifier|public
 name|void
-name|testFetchApplictionLogs
+name|testFetchFinishedApplictionLogs
 parameter_list|()
 throws|throws
 name|Exception
@@ -2444,7 +2454,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-logFiles"
+literal|"-log_files"
 block|,
 literal|".*"
 block|}
@@ -2541,7 +2551,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-logFiles"
+literal|"-log_files"
 block|,
 literal|"std*"
 block|}
@@ -2628,7 +2638,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-logFiles"
+literal|"-log_files"
 block|,
 literal|"123"
 block|}
@@ -2686,7 +2696,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-logFiles"
+literal|"-log_files"
 block|,
 literal|".*"
 block|,
@@ -2839,7 +2849,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-logFiles"
+literal|"-log_files"
 block|,
 literal|"123"
 block|}
@@ -2906,7 +2916,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-logFiles"
+literal|"-log_files"
 block|,
 literal|"stdout"
 block|}
@@ -2994,7 +3004,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-logFiles"
+literal|"-log_files"
 block|,
 literal|"stdout"
 block|,
@@ -3079,7 +3089,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-logFiles"
+literal|"-log_files"
 block|,
 literal|"stdout"
 block|,
@@ -3183,7 +3193,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-logFiles"
+literal|"-log_files"
 block|,
 literal|"stdout"
 block|,
@@ -3364,7 +3374,7 @@ operator|.
 name|reset
 argument_list|()
 expr_stmt|;
-comment|// set -logFiles option as stdout
+comment|// set -log_files option as stdout
 comment|// should only print log with the name as stdout
 name|exitCode
 operator|=
@@ -3397,7 +3407,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"-logFiles"
+literal|"-log_files"
 block|,
 literal|"stdout"
 block|}
@@ -4037,6 +4047,21 @@ operator|==
 literal|0
 argument_list|)
 expr_stmt|;
+name|ArgumentCaptor
+argument_list|<
+name|ContainerLogsRequest
+argument_list|>
+name|logsRequestCaptor
+init|=
+name|ArgumentCaptor
+operator|.
+name|forClass
+argument_list|(
+name|ContainerLogsRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|// we have two container reports, so make sure we have called
 comment|// printContainerLogsFromRunningApplication twice
 name|verify
@@ -4058,18 +4083,100 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|any
-argument_list|(
-name|ContainerLogsRequest
+name|logsRequestCaptor
 operator|.
-name|class
-argument_list|)
+name|capture
+argument_list|()
 argument_list|,
 name|any
 argument_list|(
 name|LogCLIHelpers
 operator|.
 name|class
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Verify that the log-type is *
+name|List
+argument_list|<
+name|ContainerLogsRequest
+argument_list|>
+name|capturedRequests
+init|=
+name|logsRequestCaptor
+operator|.
+name|getAllValues
+argument_list|()
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|2
+argument_list|,
+name|capturedRequests
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|logTypes0
+init|=
+name|capturedRequests
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getLogTypes
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|logTypes1
+init|=
+name|capturedRequests
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|getLogTypes
+argument_list|()
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|".*"
+argument_list|,
+name|logTypes0
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|".*"
+argument_list|,
+name|logTypes1
+operator|.
+name|get
+argument_list|(
+literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;

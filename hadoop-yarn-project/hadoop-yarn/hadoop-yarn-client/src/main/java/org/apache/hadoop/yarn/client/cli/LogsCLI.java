@@ -522,7 +522,7 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|LogCLIHelpers
+name|ContainerLogsRequest
 import|;
 end_import
 
@@ -538,23 +538,7 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|ContainerLogsRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|ConverterUtils
+name|LogCLIHelpers
 import|;
 end_import
 
@@ -787,14 +771,14 @@ name|AM_CONTAINER_OPTION
 init|=
 literal|"am"
 decl_stmt|;
-DECL|field|CONTAINER_LOG_FILES
+DECL|field|PER_CONTAINER_LOG_FILES_OPTION
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|CONTAINER_LOG_FILES
+name|PER_CONTAINER_LOG_FILES_OPTION
 init|=
-literal|"logFiles"
+literal|"log_files"
 decl_stmt|;
 DECL|field|LIST_NODES_OPTION
 specifier|private
@@ -1200,7 +1184,7 @@ name|commandLine
 operator|.
 name|hasOption
 argument_list|(
-name|CONTAINER_LOG_FILES
+name|PER_CONTAINER_LOG_FILES_OPTION
 argument_list|)
 condition|)
 block|{
@@ -1210,7 +1194,7 @@ name|commandLine
 operator|.
 name|getOptionValues
 argument_list|(
-name|CONTAINER_LOG_FILES
+name|PER_CONTAINER_LOG_FILES_OPTION
 argument_list|)
 expr_stmt|;
 block|}
@@ -2406,13 +2390,25 @@ index|[]
 name|logFiles
 parameter_list|)
 block|{
+comment|// If no value is specified for the PER_CONTAINER_LOG_FILES_OPTION option,
+comment|// we will assume all logs.
 if|if
 condition|(
 name|logFiles
-operator|!=
+operator|==
 literal|null
+operator|||
+name|logFiles
+operator|.
+name|length
+operator|==
+literal|0
 condition|)
 block|{
+return|return
+literal|true
+return|;
+block|}
 name|List
 argument_list|<
 name|String
@@ -2446,7 +2442,6 @@ block|{
 return|return
 literal|true
 return|;
-block|}
 block|}
 return|return
 literal|false
@@ -2844,7 +2839,7 @@ decl_stmt|;
 try|try
 block|{
 comment|// fetch all the log files for the container
-comment|// filter the log files based on the given --logFiles pattern
+comment|// filter the log files based on the given -log_files pattern
 name|List
 argument_list|<
 name|PerLogFileInfo
@@ -4452,9 +4447,9 @@ literal|true
 argument_list|,
 literal|"ContainerId. "
 operator|+
-literal|"By default, it will only print syslog if the application is running."
+literal|"By default, it will print all available logs."
 operator|+
-literal|" Work with -logFiles to get other logs. If specified, the"
+literal|" Work with -log_files to get only specific logs. If specified, the"
 operator|+
 literal|" applicationId can be omitted"
 argument_list|)
@@ -4505,9 +4500,9 @@ literal|"AM Container. To get logs for all AM Containers, use -am ALL. "
 operator|+
 literal|"To get logs for the latest AM Container, use -am -1. "
 operator|+
-literal|"By default, it will only print out syslog. Work with -logFiles "
+literal|"By default, it will print all available logs. Work with -log_files "
 operator|+
-literal|"to get other logs"
+literal|"to get only specific logs."
 argument_list|)
 decl_stmt|;
 name|amOption
@@ -4546,7 +4541,7 @@ init|=
 operator|new
 name|Option
 argument_list|(
-name|CONTAINER_LOG_FILES
+name|PER_CONTAINER_LOG_FILES_OPTION
 argument_list|,
 literal|true
 argument_list|,
@@ -4838,7 +4833,7 @@ name|commandOpts
 operator|.
 name|getOption
 argument_list|(
-name|CONTAINER_LOG_FILES
+name|PER_CONTAINER_LOG_FILES_OPTION
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5090,48 +5085,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|logFiles
-init|=
-name|request
-operator|.
-name|getLogTypes
-argument_list|()
-decl_stmt|;
-comment|// if we do not specify the value for CONTAINER_LOG_FILES option,
-comment|// we will only output syslog
-if|if
-condition|(
-name|logFiles
-operator|==
-literal|null
-operator|||
-name|logFiles
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|logFiles
-operator|=
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-literal|"syslog"
-argument_list|)
-expr_stmt|;
-block|}
-name|request
-operator|.
-name|setLogTypes
-argument_list|(
-name|logFiles
-argument_list|)
-expr_stmt|;
 comment|// If the application is running, we will call the RM WebService
 comment|// to get the AppAttempts which includes the nodeHttpAddress
 comment|// and containerId for all the AM Containers.
@@ -5324,17 +5277,6 @@ operator|.
 name|isAppFinished
 argument_list|()
 decl_stmt|;
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|logFiles
-init|=
-name|request
-operator|.
-name|getLogTypes
-argument_list|()
-decl_stmt|;
 comment|// if we provide the node address and the application is in the final
 comment|// state, we could directly get logs from HDFS.
 if|if
@@ -5522,37 +5464,6 @@ operator|!
 name|isAppFinished
 condition|)
 block|{
-comment|// if we do not specify the value for CONTAINER_LOG_FILES option,
-comment|// we will only output syslog
-if|if
-condition|(
-name|logFiles
-operator|==
-literal|null
-operator|||
-name|logFiles
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|logFiles
-operator|=
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-literal|"syslog"
-argument_list|)
-expr_stmt|;
-block|}
-name|request
-operator|.
-name|setLogTypes
-argument_list|(
-name|logFiles
-argument_list|)
-expr_stmt|;
 name|resultCode
 operator|=
 name|printContainerLogsFromRunningApplication
@@ -6192,48 +6103,6 @@ argument_list|)
 argument_list|,
 literal|""
 argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|// if we do not specify the value for CONTAINER_LOG_FILES option,
-comment|// we will only output syslog
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|logFiles
-init|=
-name|newOptions
-operator|.
-name|getLogTypes
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|logFiles
-operator|==
-literal|null
-operator|||
-name|logFiles
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|logFiles
-operator|=
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-literal|"syslog"
-argument_list|)
-expr_stmt|;
-name|newOptions
-operator|.
-name|setLogTypes
-argument_list|(
-name|logFiles
 argument_list|)
 expr_stmt|;
 block|}
