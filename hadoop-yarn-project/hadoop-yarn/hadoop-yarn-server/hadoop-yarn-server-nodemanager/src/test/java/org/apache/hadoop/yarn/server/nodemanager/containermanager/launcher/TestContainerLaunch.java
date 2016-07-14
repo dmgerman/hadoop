@@ -3488,6 +3488,17 @@ name|List
 argument_list|<
 name|String
 argument_list|>
+name|userLocalDirs
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|String
+argument_list|>
 name|containerLogs
 init|=
 operator|new
@@ -3576,6 +3587,8 @@ argument_list|,
 name|pwd
 argument_list|,
 name|appDirs
+argument_list|,
+name|userLocalDirs
 argument_list|,
 name|containerLogs
 argument_list|,
@@ -3709,6 +3722,8 @@ argument_list|,
 name|pwd
 argument_list|,
 name|appDirs
+argument_list|,
+name|userLocalDirs
 argument_list|,
 name|containerLogs
 argument_list|,

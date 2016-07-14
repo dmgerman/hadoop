@@ -389,6 +389,13 @@ argument_list|(
 literal|"LOCAL_DIRS"
 argument_list|)
 block|,
+comment|/**      * $LOCAL_USER_DIRS      * Final, exported by NodeManager and non-modifiable by users.      */
+DECL|enumConstant|LOCAL_USER_DIRS
+name|LOCAL_USER_DIRS
+argument_list|(
+literal|"LOCAL_USER_DIRS"
+argument_list|)
+block|,
 comment|/**      * $LOG_DIRS      * Final, exported by NodeManager and non-modifiable by users.      * Comma separate list of directories that the container should use for      * logging.      */
 DECL|enumConstant|LOG_DIRS
 name|LOG_DIRS

@@ -710,6 +710,22 @@ name|String
 argument_list|>
 name|logDirs
 decl_stmt|;
+DECL|field|filecacheDirs
+specifier|private
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|filecacheDirs
+decl_stmt|;
+DECL|field|userLocalDirs
+specifier|private
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|userLocalDirs
+decl_stmt|;
 DECL|field|containerLocalDirs
 specifier|private
 name|List
@@ -1029,9 +1045,23 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 expr_stmt|;
+name|filecacheDirs
+operator|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+expr_stmt|;
 name|resourcesOptions
 operator|=
 literal|"cgroups=none"
+expr_stmt|;
+name|userLocalDirs
+operator|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
 expr_stmt|;
 name|containerLocalDirs
 operator|=
@@ -1066,6 +1096,20 @@ operator|.
 name|add
 argument_list|(
 literal|"/test_log_dir"
+argument_list|)
+expr_stmt|;
+name|filecacheDirs
+operator|.
+name|add
+argument_list|(
+literal|"/test_filecache_dir"
+argument_list|)
+expr_stmt|;
+name|userLocalDirs
+operator|.
+name|add
+argument_list|(
+literal|"/test_user_local_dir"
 argument_list|)
 expr_stmt|;
 name|containerLocalDirs
@@ -1202,6 +1246,20 @@ argument_list|(
 name|LOG_DIRS
 argument_list|,
 name|logDirs
+argument_list|)
+operator|.
+name|setExecutionAttribute
+argument_list|(
+name|FILECACHE_DIRS
+argument_list|,
+name|filecacheDirs
+argument_list|)
+operator|.
+name|setExecutionAttribute
+argument_list|(
+name|USER_LOCAL_DIRS
+argument_list|,
+name|userLocalDirs
 argument_list|)
 operator|.
 name|setExecutionAttribute
@@ -1868,12 +1926,22 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"%7$s "
+literal|"-v %7$s:%7$s "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"bash %8$s/launch_container.sh"
+literal|"-v %8$s:%8$s "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"%9$s "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"bash %10$s/launch_container.sh"
 argument_list|)
 decl_stmt|;
 name|String
@@ -1901,9 +1969,23 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
+name|filecacheDirs
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
 name|containerWorkDir
 argument_list|,
 name|containerLogDirs
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
+name|userLocalDirs
 operator|.
 name|get
 argument_list|(
@@ -2355,12 +2437,22 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"%7$s "
+literal|"-v %7$s:%7$s "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"bash %8$s/launch_container.sh"
+literal|"-v %8$s:%8$s "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"%9$s "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"bash %10$s/launch_container.sh"
 argument_list|)
 decl_stmt|;
 name|String
@@ -2388,9 +2480,23 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
+name|filecacheDirs
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
 name|containerWorkDir
 argument_list|,
 name|containerLogDirs
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
+name|userLocalDirs
 operator|.
 name|get
 argument_list|(
@@ -2642,12 +2748,22 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"%7$s "
+literal|"-v %7$s:%7$s "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"bash %8$s/launch_container.sh"
+literal|"-v %8$s:%8$s "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"%9$s "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"bash %10$s/launch_container.sh"
 argument_list|)
 decl_stmt|;
 name|String
@@ -2675,9 +2791,23 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
+name|filecacheDirs
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
 name|containerWorkDir
 argument_list|,
 name|containerLogDirs
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
+name|userLocalDirs
 operator|.
 name|get
 argument_list|(
@@ -2839,12 +2969,22 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"%7$s "
+literal|"-v %7$s:%7$s "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"bash %8$s/launch_container.sh"
+literal|"-v %8$s:%8$s "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"%9$s "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"bash %10$s/launch_container.sh"
 argument_list|)
 expr_stmt|;
 name|expectedCommand
@@ -2871,9 +3011,23 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
+name|filecacheDirs
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
 name|containerWorkDir
 argument_list|,
 name|containerLogDirs
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
+name|userLocalDirs
 operator|.
 name|get
 argument_list|(
