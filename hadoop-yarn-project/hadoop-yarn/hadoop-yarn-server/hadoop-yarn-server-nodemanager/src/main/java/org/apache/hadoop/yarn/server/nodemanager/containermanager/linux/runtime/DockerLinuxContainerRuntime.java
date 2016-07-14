@@ -2311,6 +2311,27 @@ name|tcCommandFile
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Launching container with cmd: "
+operator|+
+name|runCommand
+operator|.
+name|getCommandWithArguments
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 name|privilegedOperationExecutor
@@ -2350,6 +2371,18 @@ argument_list|(
 literal|"Launch container failed. Exception: "
 argument_list|,
 name|e
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Docker command used: "
+operator|+
+name|runCommand
+operator|.
+name|getCommandWithArguments
+argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
