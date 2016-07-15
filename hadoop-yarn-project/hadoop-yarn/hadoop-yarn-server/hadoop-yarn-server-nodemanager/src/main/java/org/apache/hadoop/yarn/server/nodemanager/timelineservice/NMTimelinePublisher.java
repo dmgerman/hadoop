@@ -1257,7 +1257,7 @@ name|ALLOCATED_MEMORY_ENTITY_INFO
 argument_list|,
 name|resource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
