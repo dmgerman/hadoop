@@ -819,6 +819,28 @@ name|DEFAULT_MR_HS_JHIST_FORMAT
 init|=
 literal|"binary"
 decl_stmt|;
+comment|/**    * The maximum number of tasks for a job to be loaded in Job History Server.    */
+DECL|field|MR_HS_LOADED_JOBS_TASKS_MAX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HS_LOADED_JOBS_TASKS_MAX
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"loadedjob.tasks.max"
+decl_stmt|;
+DECL|field|DEFAULT_MR_HS_LOADED_JOBS_TASKS_MAX
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_HS_LOADED_JOBS_TASKS_MAX
+init|=
+operator|-
+literal|1
+decl_stmt|;
 block|}
 end_class
 

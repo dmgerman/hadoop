@@ -2519,7 +2519,7 @@ name|MOVE_FAILED
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Parse a job from the JobHistoryFile, if the underlying file is not going      * to be deleted.      *       * @return the Job or null if the underlying file was deleted.      * @throws IOException      *           if there is an error trying to read the file.      */
+comment|/**      * Parse a job from the JobHistoryFile, if the underlying file is not going      * to be deleted and the number of tasks associated with the job is not      * greater than maxTasksForLoadedJob.      *       * @return null if the underlying job history file was deleted, or      *         an {@link UnparsedJob} object representing a partially parsed job      *           if the job tasks exceeds the configured maximum, or      *         a {@link CompletedJob} representing a fully parsed job.      * @throws IOException      *           if there is an error trying to read the file if parsed.      */
 DECL|method|loadJob ()
 specifier|public
 specifier|synchronized
@@ -2528,6 +2528,26 @@ name|loadJob
 parameter_list|()
 throws|throws
 name|IOException
+block|{
+if|if
+condition|(
+name|isOversized
+argument_list|()
+condition|)
+block|{
+return|return
+operator|new
+name|UnparsedJob
+argument_list|(
+name|maxTasksForLoadedJob
+argument_list|,
+name|jobIndexInfo
+argument_list|,
+name|this
+argument_list|)
+return|;
+block|}
+else|else
 block|{
 return|return
 operator|new
@@ -2554,6 +2574,7 @@ argument_list|,
 name|aclsMgr
 argument_list|)
 return|;
+block|}
 block|}
 comment|/**      * Return the history file.      * @return the history file.      */
 DECL|method|getHistoryFile ()
@@ -2721,6 +2742,40 @@ return|return
 name|jobConf
 return|;
 block|}
+DECL|method|isOversized ()
+specifier|private
+name|boolean
+name|isOversized
+parameter_list|()
+block|{
+specifier|final
+name|int
+name|totalTasks
+init|=
+name|jobIndexInfo
+operator|.
+name|getNumReduces
+argument_list|()
+operator|+
+name|jobIndexInfo
+operator|.
+name|getNumMaps
+argument_list|()
+decl_stmt|;
+return|return
+operator|(
+name|maxTasksForLoadedJob
+operator|>
+literal|0
+operator|)
+operator|&&
+operator|(
+name|totalTasks
+operator|>
+name|maxTasksForLoadedJob
+operator|)
+return|;
+block|}
 block|}
 DECL|field|serialNumberIndex
 specifier|private
@@ -2839,6 +2894,15 @@ name|maxHistoryAge
 init|=
 literal|0
 decl_stmt|;
+comment|/**    * The maximum number of tasks allowed for a job to be loaded.    */
+DECL|field|maxTasksForLoadedJob
+specifier|private
+name|int
+name|maxTasksForLoadedJob
+init|=
+operator|-
+literal|1
+decl_stmt|;
 DECL|method|HistoryFileManager ()
 specifier|public
 name|HistoryFileManager
@@ -2923,6 +2987,21 @@ operator|*
 literal|1000
 argument_list|,
 name|maxFSWaitTime
+argument_list|)
+expr_stmt|;
+name|maxTasksForLoadedJob
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|JHAdminConfig
+operator|.
+name|MR_HS_LOADED_JOBS_TASKS_MAX
+argument_list|,
+name|JHAdminConfig
+operator|.
+name|DEFAULT_MR_HS_LOADED_JOBS_TASKS_MAX
 argument_list|)
 expr_stmt|;
 name|this
