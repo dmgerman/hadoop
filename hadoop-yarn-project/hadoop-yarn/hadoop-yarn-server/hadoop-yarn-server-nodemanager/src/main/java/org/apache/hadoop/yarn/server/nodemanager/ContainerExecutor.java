@@ -1462,12 +1462,22 @@ condition|)
 block|{
 for|for
 control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
 name|Path
-name|path
+argument_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+argument_list|>
+name|resourceEntry
 range|:
 name|resources
 operator|.
-name|keySet
+name|entrySet
 argument_list|()
 control|)
 block|{
@@ -1476,12 +1486,10 @@ control|(
 name|String
 name|linkName
 range|:
-name|resources
+name|resourceEntry
 operator|.
-name|get
-argument_list|(
-name|path
-argument_list|)
+name|getValue
+argument_list|()
 control|)
 block|{
 if|if
@@ -1509,7 +1517,10 @@ init|=
 operator|new
 name|File
 argument_list|(
-name|path
+name|resourceEntry
+operator|.
+name|getKey
+argument_list|()
 operator|.
 name|toString
 argument_list|()
@@ -1557,7 +1568,10 @@ name|sb
 operator|.
 name|symlink
 argument_list|(
-name|path
+name|resourceEntry
+operator|.
+name|getKey
+argument_list|()
 argument_list|,
 operator|new
 name|Path
@@ -1939,8 +1953,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Return a command line to execute the given command in the OS shell.    * On Windows, the {code}groupId{code} parameter can be used to launch    * and associate the given GID with a process group. On    * non-Windows hosts, the {code}groupId{code} parameter is ignored.    *    * @param command the command to execute    * @param groupId the job owner's GID    * @param userName the job owner's username    * @param pidFile the path to the container's PID file    * @param conf the configuration    * @return the command line to execute    */
-DECL|method|getRunCommand (String command, String groupId, String userName, Path pidFile, Configuration conf)
+comment|/**    * Return a command line to execute the given command in the OS shell.    * On Windows, the {code}groupId{code} parameter can be used to launch    * and associate the given GID with a process group. On    * non-Windows hosts, the {code}groupId{code} parameter is ignored.    *    * @param command the command to execute    * @param groupId the job owner's GID    * @param userName the job owner's username    * @param pidFile the path to the container's PID file    * @param config the configuration    * @return the command line to execute    */
+DECL|method|getRunCommand (String command, String groupId, String userName, Path pidFile, Configuration config)
 specifier|protected
 name|String
 index|[]
@@ -1959,7 +1973,7 @@ name|Path
 name|pidFile
 parameter_list|,
 name|Configuration
-name|conf
+name|config
 parameter_list|)
 block|{
 return|return
@@ -1973,14 +1987,14 @@ name|userName
 argument_list|,
 name|pidFile
 argument_list|,
-name|conf
+name|config
 argument_list|,
 literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a command line to execute the given command in the OS shell.    * On Windows, the {code}groupId{code} parameter can be used to launch    * and associate the given GID with a process group. On    * non-Windows hosts, the {code}groupId{code} parameter is ignored.    *    * @param command the command to execute    * @param groupId the job owner's GID for Windows. On other operating systems    * it is ignored.    * @param userName the job owner's username for Windows. On other operating    * systems it is ignored.    * @param pidFile the path to the container's PID file on Windows. On other    * operating systems it is ignored.    * @param conf the configuration    * @param resource on Windows this parameter controls memory and CPU limits.    * If null, no limits are set. On other operating systems it is ignored.    * @return the command line to execute    */
-DECL|method|getRunCommand (String command, String groupId, String userName, Path pidFile, Configuration conf, Resource resource)
+comment|/**    * Return a command line to execute the given command in the OS shell.    * On Windows, the {code}groupId{code} parameter can be used to launch    * and associate the given GID with a process group. On    * non-Windows hosts, the {code}groupId{code} parameter is ignored.    *    * @param command the command to execute    * @param groupId the job owner's GID for Windows. On other operating systems    * it is ignored.    * @param userName the job owner's username for Windows. On other operating    * systems it is ignored.    * @param pidFile the path to the container's PID file on Windows. On other    * operating systems it is ignored.    * @param config the configuration    * @param resource on Windows this parameter controls memory and CPU limits.    * If null, no limits are set. On other operating systems it is ignored.    * @return the command line to execute    */
+DECL|method|getRunCommand (String command, String groupId, String userName, Path pidFile, Configuration config, Resource resource)
 specifier|protected
 name|String
 index|[]
@@ -1999,7 +2013,7 @@ name|Path
 name|pidFile
 parameter_list|,
 name|Configuration
-name|conf
+name|config
 parameter_list|,
 name|Resource
 name|resource
@@ -2023,7 +2037,7 @@ name|userName
 argument_list|,
 name|pidFile
 argument_list|,
-name|conf
+name|config
 argument_list|,
 name|resource
 argument_list|)
@@ -2036,13 +2050,13 @@ name|getRunCommandForOther
 argument_list|(
 name|command
 argument_list|,
-name|conf
+name|config
 argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Return a command line to execute the given command in the OS shell.    * The {code}groupId{code} parameter can be used to launch    * and associate the given GID with a process group.    *    * @param command the command to execute    * @param groupId the job owner's GID    * @param userName the job owner's username    * @param pidFile the path to the container's PID file    * @param conf the configuration    * @param resource this parameter controls memory and CPU limits.    * If null, no limits are set.    * @return the command line to execute    */
-DECL|method|getRunCommandForWindows (String command, String groupId, String userName, Path pidFile, Configuration conf, Resource resource)
+comment|/**    * Return a command line to execute the given command in the OS shell.    * The {code}groupId{code} parameter can be used to launch    * and associate the given GID with a process group.    *    * @param command the command to execute    * @param groupId the job owner's GID    * @param userName the job owner's username    * @param pidFile the path to the container's PID file    * @param config the configuration    * @param resource this parameter controls memory and CPU limits.    * If null, no limits are set.    * @return the command line to execute    */
+DECL|method|getRunCommandForWindows (String command, String groupId, String userName, Path pidFile, Configuration config, Resource resource)
 specifier|protected
 name|String
 index|[]
@@ -2061,7 +2075,7 @@ name|Path
 name|pidFile
 parameter_list|,
 name|Configuration
-name|conf
+name|config
 parameter_list|,
 name|Resource
 name|resource
@@ -2088,7 +2102,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|conf
+name|config
 operator|.
 name|getBoolean
 argument_list|(
@@ -2115,7 +2129,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|conf
+name|config
 operator|.
 name|getBoolean
 argument_list|(
@@ -2144,7 +2158,7 @@ name|NodeManagerHardwareUtils
 operator|.
 name|getVCores
 argument_list|(
-name|conf
+name|config
 argument_list|)
 decl_stmt|;
 name|int
@@ -2154,7 +2168,7 @@ name|NodeManagerHardwareUtils
 operator|.
 name|getNodeCpuPercentage
 argument_list|(
-name|conf
+name|config
 argument_list|)
 decl_stmt|;
 name|float
@@ -2233,8 +2247,8 @@ name|command
 block|}
 return|;
 block|}
-comment|/**    * Return a command line to execute the given command in the OS shell.    *    * @param command the command to execute    * @param conf the configuration    * @return the command line to execute    */
-DECL|method|getRunCommandForOther (String command, Configuration conf)
+comment|/**    * Return a command line to execute the given command in the OS shell.    *    * @param command the command to execute    * @param config the configuration    * @return the command line to execute    */
+DECL|method|getRunCommandForOther (String command, Configuration config)
 specifier|protected
 name|String
 index|[]
@@ -2244,7 +2258,7 @@ name|String
 name|command
 parameter_list|,
 name|Configuration
-name|conf
+name|config
 parameter_list|)
 block|{
 name|List
@@ -2272,7 +2286,7 @@ name|DEFAULT_NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
 decl_stmt|;
 if|if
 condition|(
-name|conf
+name|config
 operator|.
 name|get
 argument_list|(
@@ -2290,7 +2304,7 @@ literal|true
 expr_stmt|;
 name|containerSchedPriorityAdjustment
 operator|=
-name|conf
+name|config
 operator|.
 name|getInt
 argument_list|(
