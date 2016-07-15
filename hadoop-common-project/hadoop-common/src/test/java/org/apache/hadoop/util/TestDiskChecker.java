@@ -849,7 +849,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|_checkDirs
+name|checkDirs
 argument_list|(
 literal|true
 argument_list|,
@@ -874,7 +874,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|_checkDirs
+name|checkDirs
 argument_list|(
 literal|false
 argument_list|,
@@ -899,7 +899,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|_checkDirs
+name|checkDirs
 argument_list|(
 literal|true
 argument_list|,
@@ -924,7 +924,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|_checkDirs
+name|checkDirs
 argument_list|(
 literal|true
 argument_list|,
@@ -949,7 +949,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|_checkDirs
+name|checkDirs
 argument_list|(
 literal|true
 argument_list|,
@@ -959,10 +959,10 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|_checkDirs (boolean isDir, String perm, boolean success)
-specifier|private
+DECL|method|checkDirs (boolean isDir, String perm, boolean success)
+specifier|protected
 name|void
-name|_checkDirs
+name|checkDirs
 parameter_list|(
 name|boolean
 name|isDir
