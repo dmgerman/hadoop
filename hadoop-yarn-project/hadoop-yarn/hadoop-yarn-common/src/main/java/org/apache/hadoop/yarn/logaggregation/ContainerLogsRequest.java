@@ -46,6 +46,24 @@ name|ApplicationId
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerState
+import|;
+end_import
+
 begin_class
 DECL|class|ContainerLogsRequest
 specifier|public
@@ -99,6 +117,11 @@ DECL|field|bytes
 specifier|private
 name|long
 name|bytes
+decl_stmt|;
+DECL|field|containerState
+specifier|private
+name|ContainerState
+name|containerState
 decl_stmt|;
 DECL|method|ContainerLogsRequest ()
 specifier|public
@@ -203,8 +226,18 @@ name|getBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|setContainerState
+argument_list|(
+name|request
+operator|.
+name|getContainerState
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
-DECL|method|ContainerLogsRequest (ApplicationId applicationId, boolean isAppFinished, String owner, String address, String httpAddress, String container, String localDir, List<String> logs, long bytes)
+DECL|method|ContainerLogsRequest (ApplicationId applicationId, boolean isAppFinished, String owner, String address, String httpAddress, String container, String localDir, List<String> logs, long bytes, ContainerState containerState)
 specifier|public
 name|ContainerLogsRequest
 parameter_list|(
@@ -237,6 +270,9 @@ name|logs
 parameter_list|,
 name|long
 name|bytes
+parameter_list|,
+name|ContainerState
+name|containerState
 parameter_list|)
 block|{
 name|this
@@ -300,6 +336,13 @@ operator|.
 name|setBytes
 argument_list|(
 name|bytes
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|setContainerState
+argument_list|(
+name|containerState
 argument_list|)
 expr_stmt|;
 block|}
@@ -541,6 +584,32 @@ operator|.
 name|bytes
 operator|=
 name|bytes
+expr_stmt|;
+block|}
+DECL|method|getContainerState ()
+specifier|public
+name|ContainerState
+name|getContainerState
+parameter_list|()
+block|{
+return|return
+name|containerState
+return|;
+block|}
+DECL|method|setContainerState (ContainerState containerState)
+specifier|public
+name|void
+name|setContainerState
+parameter_list|(
+name|ContainerState
+name|containerState
+parameter_list|)
+block|{
+name|this
+operator|.
+name|containerState
+operator|=
+name|containerState
 expr_stmt|;
 block|}
 block|}
