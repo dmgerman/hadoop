@@ -423,11 +423,6 @@ name|useDeprecatedFileStatus
 init|=
 literal|true
 decl_stmt|;
-DECL|field|umask
-specifier|private
-name|FsPermission
-name|umask
-decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|method|useStatIfAvailable ()
@@ -579,15 +574,6 @@ name|conf
 argument_list|)
 expr_stmt|;
 name|setConf
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|umask
-operator|=
-name|FsPermission
-operator|.
-name|getUMask
 argument_list|(
 name|conf
 argument_list|)
@@ -1217,7 +1203,13 @@ name|permission
 operator|.
 name|applyUMask
 argument_list|(
-name|umask
+name|FsPermission
+operator|.
+name|getUMask
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -2702,7 +2694,13 @@ name|permission
 operator|.
 name|applyUMask
 argument_list|(
-name|umask
+name|FsPermission
+operator|.
+name|getUMask
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
