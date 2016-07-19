@@ -211,6 +211,16 @@ name|DelegateToFileSystem
 extends|extends
 name|AbstractFileSystem
 block|{
+DECL|field|DELEGATE_TO_FS_DEFAULT_PORT
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|DELEGATE_TO_FS_DEFAULT_PORT
+init|=
+operator|-
+literal|1
+decl_stmt|;
 DECL|field|fsImpl
 specifier|protected
 specifier|final
@@ -302,8 +312,7 @@ literal|0
 condition|?
 name|defaultPort
 else|:
-operator|-
-literal|1
+name|DELEGATE_TO_FS_DEFAULT_PORT
 return|;
 block|}
 annotation|@
@@ -714,7 +723,7 @@ name|getUriDefaultPort
 parameter_list|()
 block|{
 return|return
-literal|0
+name|DELEGATE_TO_FS_DEFAULT_PORT
 return|;
 block|}
 annotation|@
