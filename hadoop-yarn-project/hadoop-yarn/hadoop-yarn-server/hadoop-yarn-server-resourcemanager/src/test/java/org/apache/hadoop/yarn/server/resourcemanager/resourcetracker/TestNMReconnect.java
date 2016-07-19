@@ -366,6 +366,24 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|ParameterizedSchedulerTestBase
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|NMLivelinessMonitor
 import|;
 end_import
@@ -540,9 +558,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|capacity
-operator|.
-name|CapacityScheduler
+name|AbstractYarnScheduler
 import|;
 end_import
 
@@ -666,11 +682,17 @@ name|Test
 import|;
 end_import
 
+begin_comment
+comment|/**  * TestNMReconnect run tests against the scheduler set by  * {@link ParameterizedSchedulerTestBase} which is configured  * in {@link YarnConfiguration}.  */
+end_comment
+
 begin_class
 DECL|class|TestNMReconnect
 specifier|public
 class|class
 name|TestNMReconnect
+extends|extends
+name|ParameterizedSchedulerTestBase
 block|{
 DECL|field|recordFactory
 specifier|private
@@ -1133,6 +1155,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|AbstractYarnScheduler
+name|scheduler
+init|=
+name|getScheduler
+argument_list|()
+decl_stmt|;
 name|Configuration
 name|yarnConf
 init|=
@@ -1140,20 +1168,6 @@ operator|new
 name|YarnConfiguration
 argument_list|()
 decl_stmt|;
-name|CapacityScheduler
-name|scheduler
-init|=
-operator|new
-name|CapacityScheduler
-argument_list|()
-decl_stmt|;
-name|scheduler
-operator|.
-name|setConf
-argument_list|(
-name|yarnConf
-argument_list|)
-expr_stmt|;
 name|ConfigurationProvider
 name|configurationProvider
 init|=
