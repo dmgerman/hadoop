@@ -1039,6 +1039,36 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
+name|reader
+operator|=
+operator|new
+name|AggregatedLogFormat
+operator|.
+name|LogReader
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|,
+name|thisNodeFile
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|getContainerLogsStream
+argument_list|(
+name|containerId
+argument_list|,
+name|reader
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+continue|continue;
+block|}
 name|String
 name|containerString
 init|=
@@ -1083,6 +1113,9 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// We have to re-create reader object to reset the stream index
+comment|// after calling getContainerLogsStream which would move the stream
+comment|// index to the end of the log file.
 name|reader
 operator|=
 operator|new
@@ -1394,6 +1427,9 @@ condition|)
 block|{
 continue|continue;
 block|}
+comment|// We have to re-create reader object to reset the stream index
+comment|// after calling getContainerLogsStream which would move the stream
+comment|// index to the end of the log file.
 name|reader
 operator|=
 operator|new

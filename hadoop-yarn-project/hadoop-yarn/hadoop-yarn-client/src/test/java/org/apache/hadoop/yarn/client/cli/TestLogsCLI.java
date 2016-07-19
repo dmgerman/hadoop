@@ -2389,20 +2389,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000001 in syslog!"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
+name|logMessage
 argument_list|(
-name|sysOutStream
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Hello container_0_0001_01_000002 in syslog!"
+name|containerId1
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2415,7 +2407,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in syslog!"
+name|logMessage
+argument_list|(
+name|containerId2
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2428,7 +2425,30 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in stdout!"
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"syslog"
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"stdout"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2476,20 +2496,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000001 in syslog!"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
+name|logMessage
 argument_list|(
-name|sysOutStream
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Hello container_0_0001_01_000002 in syslog!"
+name|containerId1
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2502,7 +2514,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in syslog!"
+name|logMessage
+argument_list|(
+name|containerId2
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2515,7 +2532,30 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in stdout!"
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"syslog"
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"stdout"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2573,20 +2613,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000001 in syslog!"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertFalse
+name|logMessage
 argument_list|(
-name|sysOutStream
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Hello container_0_0001_01_000002 in syslog!"
+name|containerId1
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2599,7 +2631,30 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in syslog!"
+name|logMessage
+argument_list|(
+name|containerId2
+argument_list|,
+literal|"syslog"
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|sysOutStream
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2612,7 +2667,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in stdout!"
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"stdout"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2782,7 +2842,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000001 in syslog!"
+name|logMessage
+argument_list|(
+name|containerId1
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2955,7 +3020,12 @@ expr_stmt|;
 name|String
 name|logMessage
 init|=
-literal|"Hello container_0_0001_01_000003 in stdout!"
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"stdout"
+argument_list|)
 decl_stmt|;
 name|int
 name|fileContentSize
@@ -2970,7 +3040,7 @@ decl_stmt|;
 name|int
 name|tailContentSize
 init|=
-literal|"\nEnd of LogType:syslog\n\n"
+literal|"\nEnd of LogType:stdout\n\n"
 operator|.
 name|getBytes
 argument_list|()
@@ -3352,7 +3422,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in syslog!"
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3365,7 +3440,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in stdout!"
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"stdout"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3429,7 +3509,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in stdout!"
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"stdout"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3443,7 +3528,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in syslog!"
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3515,7 +3605,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in syslog!"
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3528,7 +3623,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in stdout!"
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"stdout"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3595,7 +3695,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in syslog!"
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3608,7 +3713,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello container_0_0001_01_000003 in stdout!"
+name|logMessage
+argument_list|(
+name|containerId3
+argument_list|,
+literal|"stdout"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4600,11 +4710,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello "
-operator|+
+name|logMessage
+argument_list|(
 name|containerId
-operator|+
-literal|" in syslog!"
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4730,11 +4841,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Hello "
-operator|+
+name|logMessage
+argument_list|(
 name|containerId
-operator|+
-literal|" in syslog!"
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5765,11 +5877,12 @@ name|container1
 operator|.
 name|contains
 argument_list|(
-literal|"Hello "
-operator|+
+name|logMessage
+argument_list|(
 name|containerId1
-operator|+
-literal|" in syslog!"
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5843,11 +5956,12 @@ name|container2
 operator|.
 name|contains
 argument_list|(
-literal|"Hello "
-operator|+
+name|logMessage
+argument_list|(
 name|containerId2
-operator|+
-literal|" in syslog!"
+argument_list|,
+literal|"syslog"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -7762,6 +7876,45 @@ name|writer
 operator|.
 name|write
 argument_list|(
+name|logMessage
+argument_list|(
+name|containerId
+argument_list|,
+name|logType
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|writer
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|logMessage (ContainerId containerId, String logType)
+specifier|private
+specifier|static
+name|String
+name|logMessage
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|String
+name|logType
+parameter_list|)
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
 literal|"Hello "
 operator|+
 name|containerId
@@ -7773,12 +7926,12 @@ operator|+
 literal|"!"
 argument_list|)
 expr_stmt|;
-name|writer
+return|return
+name|sb
 operator|.
-name|close
+name|toString
 argument_list|()
-expr_stmt|;
-block|}
+return|;
 block|}
 DECL|method|uploadContainerLogIntoRemoteDir (UserGroupInformation ugi, Configuration configuration, List<String> rootLogDirs, NodeId nodeId, ContainerId containerId, Path appDir, FileSystem fs)
 specifier|private
