@@ -2588,8 +2588,9 @@ name|YarnException
 throws|,
 name|StandbyException
 block|{
+specifier|final
 name|String
-name|argName
+name|operation
 init|=
 literal|"refreshQueues"
 decl_stmt|;
@@ -2604,7 +2605,7 @@ name|user
 init|=
 name|checkAcls
 argument_list|(
-name|argName
+name|operation
 argument_list|)
 decl_stmt|;
 name|checkRMStatus
@@ -2614,7 +2615,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
@@ -2684,7 +2685,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"AdminService"
 argument_list|)
@@ -2709,7 +2710,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
@@ -2731,8 +2732,9 @@ name|YarnException
 throws|,
 name|StandbyException
 block|{
+specifier|final
 name|String
-name|argName
+name|operation
 init|=
 literal|"refreshNodes"
 decl_stmt|;
@@ -2757,7 +2759,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
@@ -2838,7 +2840,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"AdminService"
 argument_list|)
@@ -2870,7 +2872,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
@@ -2892,8 +2894,9 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+specifier|final
 name|String
-name|argName
+name|operation
 init|=
 literal|"refreshSuperUserGroupsConfiguration"
 decl_stmt|;
@@ -2902,7 +2905,7 @@ name|user
 init|=
 name|checkAcls
 argument_list|(
-name|argName
+name|operation
 argument_list|)
 decl_stmt|;
 name|checkRMStatus
@@ -2912,7 +2915,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"refresh super-user-groups."
 argument_list|)
@@ -2962,7 +2965,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"AdminService"
 argument_list|)
@@ -2993,8 +2996,9 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+specifier|final
 name|String
-name|argName
+name|operation
 init|=
 literal|"refreshUserToGroupsMappings"
 decl_stmt|;
@@ -3003,7 +3007,7 @@ name|user
 init|=
 name|checkAcls
 argument_list|(
-name|argName
+name|operation
 argument_list|)
 decl_stmt|;
 name|checkRMStatus
@@ -3013,7 +3017,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"refresh user-groups."
 argument_list|)
@@ -3048,7 +3052,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"AdminService"
 argument_list|)
@@ -3099,8 +3103,9 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+specifier|final
 name|String
-name|argName
+name|operation
 init|=
 literal|"refreshAdminAcls"
 decl_stmt|;
@@ -3109,7 +3114,7 @@ name|user
 init|=
 name|checkAcls
 argument_list|(
-name|argName
+name|operation
 argument_list|)
 decl_stmt|;
 if|if
@@ -3124,7 +3129,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"refresh Admin ACLs."
 argument_list|)
@@ -3170,7 +3175,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"AdminService"
 argument_list|)
@@ -3236,8 +3241,9 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
+specifier|final
 name|String
-name|argName
+name|operation
 init|=
 literal|"refreshServiceAcls"
 decl_stmt|;
@@ -3246,7 +3252,7 @@ name|user
 init|=
 name|checkAcls
 argument_list|(
-name|argName
+name|operation
 argument_list|)
 decl_stmt|;
 name|checkRMStatus
@@ -3256,7 +3262,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"refresh Service ACLs."
 argument_list|)
@@ -3337,7 +3343,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"AdminService"
 argument_list|)
@@ -3424,8 +3430,9 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+specifier|final
 name|String
-name|argName
+name|operation
 init|=
 literal|"updateNodeResource"
 decl_stmt|;
@@ -3434,7 +3441,7 @@ name|user
 init|=
 name|checkAcls
 argument_list|(
-name|argName
+name|operation
 argument_list|)
 decl_stmt|;
 name|checkRMStatus
@@ -3444,7 +3451,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"update node resource."
 argument_list|)
@@ -3671,7 +3678,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"AdminService"
 argument_list|)
@@ -3704,8 +3711,9 @@ name|YarnException
 throws|,
 name|StandbyException
 block|{
+specifier|final
 name|String
-name|argName
+name|operation
 init|=
 literal|"refreshNodesResources"
 decl_stmt|;
@@ -3714,7 +3722,7 @@ name|user
 init|=
 name|checkAcls
 argument_list|(
-name|argName
+name|operation
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -3730,7 +3738,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
@@ -3885,7 +3893,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"AdminService"
 argument_list|)
@@ -3910,7 +3918,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
@@ -4129,8 +4137,9 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+specifier|final
 name|String
-name|argName
+name|operation
 init|=
 literal|"addToClusterNodeLabels"
 decl_stmt|;
@@ -4145,7 +4154,7 @@ name|user
 init|=
 name|checkAcls
 argument_list|(
-name|argName
+name|operation
 argument_list|)
 decl_stmt|;
 name|checkRMStatus
@@ -4155,7 +4164,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
@@ -4196,7 +4205,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"AdminService"
 argument_list|)
@@ -4221,7 +4230,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
@@ -4243,6 +4252,7 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+specifier|final
 name|String
 name|operation
 init|=
@@ -4357,6 +4367,7 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+specifier|final
 name|String
 name|operation
 init|=
@@ -4601,8 +4612,9 @@ name|IOException
 throws|,
 name|YarnException
 block|{
+specifier|final
 name|String
-name|argName
+name|operation
 init|=
 literal|"checkForDecommissioningNodes"
 decl_stmt|;
@@ -4627,7 +4639,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
@@ -4655,7 +4667,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"AdminService"
 argument_list|)
@@ -4698,11 +4710,13 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+specifier|final
 name|String
-name|argName
+name|operation
 init|=
 literal|"refreshClusterMaxPriority"
 decl_stmt|;
+specifier|final
 name|String
 name|msg
 init|=
@@ -4713,7 +4727,7 @@ name|user
 init|=
 name|checkAcls
 argument_list|(
-name|argName
+name|operation
 argument_list|)
 decl_stmt|;
 name|checkRMStatus
@@ -4723,7 +4737,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
@@ -4765,7 +4779,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 literal|"AdminService"
 argument_list|)
@@ -4797,7 +4811,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 argument_list|,
-name|argName
+name|operation
 argument_list|,
 name|msg
 argument_list|)
