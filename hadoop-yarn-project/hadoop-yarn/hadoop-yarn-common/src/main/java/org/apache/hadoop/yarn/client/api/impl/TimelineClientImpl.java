@@ -1282,6 +1282,11 @@ specifier|private
 name|TimelineWriter
 name|timelineWriter
 decl_stmt|;
+DECL|field|sslFactory
+specifier|private
+name|SSLFactory
+name|sslFactory
+decl_stmt|;
 DECL|field|timelineServiceAddress
 specifier|private
 specifier|volatile
@@ -1933,7 +1938,7 @@ argument_list|)
 expr_stmt|;
 name|connConfigurator
 operator|=
-name|newConnConfigurator
+name|initConnConfigurator
 argument_list|(
 name|conf
 argument_list|)
@@ -2297,6 +2302,23 @@ block|{
 name|entityDispatcher
 operator|.
 name|stop
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|sslFactory
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|sslFactory
+operator|.
+name|destroy
 argument_list|()
 expr_stmt|;
 block|}
@@ -3710,11 +3732,10 @@ throw|;
 block|}
 block|}
 block|}
-DECL|method|newConnConfigurator (Configuration conf)
+DECL|method|initConnConfigurator (Configuration conf)
 specifier|private
-specifier|static
 name|ConnectionConfigurator
-name|newConnConfigurator
+name|initConnConfigurator
 parameter_list|(
 name|Configuration
 name|conf
@@ -3723,7 +3744,7 @@ block|{
 try|try
 block|{
 return|return
-name|newSslConnConfigurator
+name|initSslConnConfigurator
 argument_list|(
 name|DEFAULT_SOCKET_TIMEOUT
 argument_list|,
@@ -3789,11 +3810,10 @@ return|;
 block|}
 block|}
 decl_stmt|;
-DECL|method|newSslConnConfigurator (final int timeout, Configuration conf)
+DECL|method|initSslConnConfigurator (final int timeout, Configuration conf)
 specifier|private
-specifier|static
 name|ConnectionConfigurator
-name|newSslConnConfigurator
+name|initSslConnConfigurator
 parameter_list|(
 specifier|final
 name|int
@@ -3808,10 +3828,6 @@ throws|,
 name|GeneralSecurityException
 block|{
 specifier|final
-name|SSLFactory
-name|factory
-decl_stmt|;
-specifier|final
 name|SSLSocketFactory
 name|sf
 decl_stmt|;
@@ -3819,7 +3835,7 @@ specifier|final
 name|HostnameVerifier
 name|hv
 decl_stmt|;
-name|factory
+name|sslFactory
 operator|=
 operator|new
 name|SSLFactory
@@ -3833,21 +3849,21 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-name|factory
+name|sslFactory
 operator|.
 name|init
 argument_list|()
 expr_stmt|;
 name|sf
 operator|=
-name|factory
+name|sslFactory
 operator|.
 name|createSSLSocketFactory
 argument_list|()
 expr_stmt|;
 name|hv
 operator|=
-name|factory
+name|sslFactory
 operator|.
 name|getHostnameVerifier
 argument_list|()
