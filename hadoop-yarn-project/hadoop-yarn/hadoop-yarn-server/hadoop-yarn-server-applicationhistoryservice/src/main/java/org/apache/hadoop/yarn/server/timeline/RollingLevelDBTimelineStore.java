@@ -7211,7 +7211,7 @@ return|;
 block|}
 block|}
 block|}
-comment|/**    * Get the unique start time for a given entity as a byte array that sorts the    * timestamps in reverse order (see    * {@link GenericObjectMapper#writeReverseOrderedLong(long)}). If the start    * time doesn't exist, set it based on the information provided. Should only    * be called when a lock has been obtained on the entity.    *    * @param entityId    *          The id of the entity    * @param entityType    *          The type of the entity    * @param startTime    *          The start time of the entity, or null    * @param events    *          A list of events for the entity, or null    * @return A StartAndInsertTime    * @throws IOException    */
+comment|/**    * Get the unique start time for a given entity as a byte array that sorts the    * timestamps in reverse order (see    * {@link GenericObjectMapper#writeReverseOrderedLong(long)}). If the start    * time doesn't exist, set it based on the information provided.    *    * @param entityId    *          The id of the entity    * @param entityType    *          The type of the entity    * @param startTime    *          The start time of the entity, or null    * @param events    *          A list of events for the entity, or null    * @return A StartAndInsertTime    * @throws IOException    */
 DECL|method|getAndSetStartTime (String entityId, String entityType, Long startTime, List<TimelineEvent> events)
 specifier|private
 name|Long
@@ -7324,7 +7324,7 @@ name|startTime
 argument_list|)
 return|;
 block|}
-comment|/**    * Checks db for start time and returns it if it exists. If it doesn't exist,    * writes the suggested start time (if it is not null). This is only called    * when the start time is not found in the cache, so it adds it back into the    * cache if it is found. Should only be called when a lock has been obtained    * on the entity.    */
+comment|/**    * Checks db for start time and returns it if it exists. If it doesn't exist,    * writes the suggested start time (if it is not null). This is only called    * when the start time is not found in the cache, so it adds it back into the    * cache if it is found.    */
 DECL|method|checkStartTimeInDb (EntityIdentifier entity, Long suggestedStartTime)
 specifier|private
 name|Long
@@ -7362,6 +7362,11 @@ name|getType
 argument_list|()
 argument_list|)
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 comment|// retrieve value for key
 name|byte
 index|[]
@@ -7423,6 +7428,7 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|startTimeWriteCache
 operator|.
