@@ -764,7 +764,7 @@ argument_list|)
 decl_stmt|;
 name|rUploader
 operator|.
-name|uploadFiles
+name|uploadResources
 argument_list|(
 name|job
 argument_list|,
