@@ -710,12 +710,14 @@ name|Void
 argument_list|>
 block|{
 DECL|field|count
+specifier|private
 name|int
 name|count
 init|=
 literal|0
 decl_stmt|;
 DECL|field|throwRTE
+specifier|private
 name|boolean
 name|throwRTE
 init|=
@@ -980,7 +982,6 @@ block|,
 DECL|enumConstant|WRITE_STORAGE_ONE
 name|WRITE_STORAGE_ONE
 block|}
-empty_stmt|;
 DECL|method|saveNamespaceWithInjectedFault (Fault fault)
 specifier|private
 name|void
@@ -1108,21 +1109,12 @@ argument_list|)
 operator|.
 name|saveFSImage
 argument_list|(
-operator|(
-name|SaveNamespaceContext
-operator|)
 name|anyObject
 argument_list|()
 argument_list|,
-operator|(
-name|StorageDirectory
-operator|)
 name|anyObject
 argument_list|()
 argument_list|,
-operator|(
-name|NameNodeFile
-operator|)
 name|anyObject
 argument_list|()
 argument_list|)
@@ -1152,21 +1144,12 @@ argument_list|)
 operator|.
 name|saveFSImage
 argument_list|(
-operator|(
-name|SaveNamespaceContext
-operator|)
 name|anyObject
 argument_list|()
 argument_list|,
-operator|(
-name|StorageDirectory
-operator|)
 name|anyObject
 argument_list|()
 argument_list|,
-operator|(
-name|NameNodeFile
-operator|)
 name|anyObject
 argument_list|()
 argument_list|)
@@ -1196,21 +1179,12 @@ argument_list|)
 operator|.
 name|saveFSImage
 argument_list|(
-operator|(
-name|SaveNamespaceContext
-operator|)
 name|anyObject
 argument_list|()
 argument_list|,
-operator|(
-name|StorageDirectory
-operator|)
 name|anyObject
 argument_list|()
 argument_list|,
-operator|(
-name|NameNodeFile
-operator|)
 name|anyObject
 argument_list|()
 argument_list|)
@@ -1242,9 +1216,6 @@ argument_list|)
 operator|.
 name|writeProperties
 argument_list|(
-operator|(
-name|StorageDirectory
-operator|)
 name|anyObject
 argument_list|()
 argument_list|)
@@ -1276,9 +1247,6 @@ argument_list|)
 operator|.
 name|writeProperties
 argument_list|(
-operator|(
-name|StorageDirectory
-operator|)
 name|anyObject
 argument_list|()
 argument_list|)
@@ -1286,6 +1254,13 @@ expr_stmt|;
 name|shouldFail
 operator|=
 literal|false
+expr_stmt|;
+break|break;
+default|default:
+name|fail
+argument_list|(
+literal|"Unknown fail type"
+argument_list|)
 expr_stmt|;
 break|break;
 block|}
@@ -2088,12 +2063,13 @@ operator|.
 name|getStorage
 argument_list|()
 decl_stmt|;
+comment|// unlock any directories that
+comment|// FSNamesystem's initialization may have locked
 name|storage
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
-comment|// unlock any directories that FSNamesystem's initialization may have locked
 name|NNStorage
 name|spyStorage
 init|=
@@ -2164,21 +2140,12 @@ argument_list|)
 operator|.
 name|saveFSImage
 argument_list|(
-operator|(
-name|SaveNamespaceContext
-operator|)
 name|anyObject
 argument_list|()
 argument_list|,
-operator|(
-name|StorageDirectory
-operator|)
 name|anyObject
 argument_list|()
 argument_list|,
-operator|(
-name|NameNodeFile
-operator|)
 name|anyObject
 argument_list|()
 argument_list|)
@@ -2737,12 +2704,13 @@ operator|.
 name|getStorage
 argument_list|()
 decl_stmt|;
+comment|// unlock any directories that
+comment|// FSNamesystem's initialization may have locked
 name|storage
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
-comment|// unlock any directories that FSNamesystem's initialization may have locked
 name|storage
 operator|.
 name|setStorageDirectories
@@ -2968,8 +2936,8 @@ argument_list|(
 literal|500
 argument_list|)
 expr_stmt|;
-comment|// allow saveNamespace to proceed - it should check the cancel flag after
-comment|// this point and throw an exception
+comment|// allow saveNamespace to proceed - it should check the cancel flag
+comment|// after this point and throw an exception
 name|delayer
 operator|.
 name|proceed
@@ -3227,19 +3195,11 @@ argument_list|,
 name|fs
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 block|}
 annotation|@
@@ -3344,19 +3304,11 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 block|}
 annotation|@

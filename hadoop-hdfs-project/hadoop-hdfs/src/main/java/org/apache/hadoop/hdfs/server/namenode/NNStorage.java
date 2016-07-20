@@ -582,9 +582,7 @@ name|LOCAL_URI_SCHEME
 init|=
 literal|"file"
 decl_stmt|;
-comment|//
-comment|// The filenames used for storing the images
-comment|//
+comment|/**    * The filenames used for storing the images.    */
 DECL|enum|NameNodeFile
 specifier|public
 enum|enum
@@ -661,7 +659,6 @@ init|=
 literal|null
 decl_stmt|;
 DECL|method|NameNodeFile (String name)
-specifier|private
 name|NameNodeFile
 parameter_list|(
 name|String
@@ -693,7 +690,6 @@ annotation|@
 name|VisibleForTesting
 DECL|enum|NameNodeDirType
 specifier|public
-specifier|static
 enum|enum
 name|NameNodeDirType
 implements|implements
@@ -734,8 +730,7 @@ name|StorageDirType
 name|type
 parameter_list|)
 block|{
-if|if
-condition|(
+return|return
 operator|(
 name|this
 operator|==
@@ -751,11 +746,7 @@ name|type
 operator|==
 name|EDITS
 operator|)
-condition|)
-return|return
-literal|true
-return|;
-return|return
+operator|||
 name|this
 operator|==
 name|type
@@ -770,7 +761,7 @@ init|=
 literal|""
 decl_stmt|;
 comment|// id of the block pool
-comment|/**    * flag that controls if we try to restore failed storages    */
+comment|/**    * Flag that controls if we try to restore failed storages.    */
 DECL|field|restoreFailedStorage
 specifier|private
 name|boolean
@@ -814,7 +805,7 @@ name|mostRecentCheckpointTime
 init|=
 literal|0
 decl_stmt|;
-comment|/**    * list of failed (and thus removed) storages    */
+comment|/**    * List of failed (and thus removed) storages.    */
 DECL|field|removedStorageDirs
 specifier|final
 specifier|protected
@@ -826,9 +817,7 @@ name|removedStorageDirs
 init|=
 operator|new
 name|CopyOnWriteArrayList
-argument_list|<
-name|StorageDirectory
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * Properties from old layout versions that may be needed    * during upgrade only.    */
@@ -892,9 +881,7 @@ name|storageDirs
 operator|=
 operator|new
 name|CopyOnWriteArrayList
-argument_list|<
-name|StorageDirectory
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 comment|// this may modify the editsDirs, so copy before passing in
@@ -1027,9 +1014,11 @@ name|oldVersion
 operator|<
 name|LAST_PRE_UPGRADE_LAYOUT_VERSION
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 block|}
 finally|finally
 block|{
@@ -1119,8 +1108,10 @@ argument_list|()
 operator|==
 literal|0
 condition|)
+block|{
 return|return;
 comment|//nothing to restore
+block|}
 comment|/* We don't want more than one thread trying to restore at a time */
 synchronized|synchronized
 init|(
@@ -1145,34 +1136,14 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|Iterator
-argument_list|<
 name|StorageDirectory
-argument_list|>
-name|it
-init|=
+name|sd
+range|:
 name|this
 operator|.
 name|removedStorageDirs
-operator|.
-name|iterator
-argument_list|()
-init|;
-name|it
-operator|.
-name|hasNext
-argument_list|()
-condition|;
 control|)
 block|{
-name|StorageDirectory
-name|sd
-init|=
-name|it
-operator|.
-name|next
-argument_list|()
-decl_stmt|;
 name|File
 name|root
 init|=
@@ -1275,7 +1246,7 @@ operator|.
 name|removedStorageDirs
 return|;
 block|}
-comment|/**    * See {@link NNStorage#setStorageDirectories(Collection, Collection, Collection)}    */
+comment|/**    * See {@link NNStorage#setStorageDirectories(Collection, Collection, Collection)}.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|setStorageDirectories (Collection<URI> fsNameDirs, Collection<URI> fsEditsDirs)
@@ -1306,9 +1277,7 @@ name|fsEditsDirs
 argument_list|,
 operator|new
 name|ArrayList
-argument_list|<
-name|URI
-argument_list|>
+argument_list|<>
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1501,6 +1470,7 @@ argument_list|)
 operator|==
 literal|0
 condition|)
+block|{
 name|this
 operator|.
 name|addStorageDir
@@ -1532,7 +1502,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Return the storage directory corresponding to the passed URI    * @param uri URI of a storage directory    * @return The matching storage directory or null if none found    */
+block|}
+comment|/**    * Return the storage directory corresponding to the passed URI.    * @param uri URI of a storage directory    * @return The matching storage directory or null if none found    */
 DECL|method|getStorageDirectory (URI uri)
 name|StorageDirectory
 name|getStorageDirectory
@@ -1565,15 +1536,13 @@ init|=
 name|dirIterator
 argument_list|()
 decl_stmt|;
-for|for
-control|(
-init|;
+while|while
+condition|(
 name|it
 operator|.
 name|hasNext
 argument_list|()
-condition|;
-control|)
+condition|)
 block|{
 name|StorageDirectory
 name|sd
@@ -1627,7 +1596,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Checks the consistency of a URI, in particular if the scheme    * is specified     * @param u URI whose consistency is being checked.    */
+comment|/**    * Checks the consistency of a URI, in particular if the scheme    * is specified.    * @param u URI whose consistency is being checked.    */
 DECL|method|checkSchemeConsistency (URI u)
 specifier|private
 specifier|static
@@ -1667,7 +1636,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Retrieve current directories of type IMAGE    * @return Collection of URI representing image directories    * @throws IOException in case of URI processing error    */
+comment|/**    * Retrieve current directories of type IMAGE.    * @return Collection of URI representing image directories    * @throws IOException in case of URI processing error    */
 DECL|method|getImageDirectories ()
 name|Collection
 argument_list|<
@@ -1687,7 +1656,7 @@ name|IMAGE
 argument_list|)
 return|;
 block|}
-comment|/**    * Retrieve current directories of type EDITS    * @return Collection of URI representing edits directories    * @throws IOException in case of URI processing error    */
+comment|/**    * Retrieve current directories of type EDITS.    * @return Collection of URI representing edits directories    * @throws IOException in case of URI processing error    */
 DECL|method|getEditsDirectories ()
 name|Collection
 argument_list|<
@@ -1722,10 +1691,12 @@ name|dirType
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 name|getNumStorageDirs
 argument_list|()
 return|;
+block|}
 name|Iterator
 argument_list|<
 name|StorageDirectory
@@ -1755,9 +1726,11 @@ operator|.
 name|next
 argument_list|()
 control|)
+block|{
 name|numDirs
 operator|++
 expr_stmt|;
+block|}
 return|return
 name|numDirs
 return|;
@@ -1784,9 +1757,7 @@ name|list
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|URI
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Iterator
@@ -1957,7 +1928,7 @@ name|txid
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set the transaction ID and time of the last checkpoint    *     * @param txid transaction id of the last checkpoint    * @param time time of the last checkpoint, in millis since the epoch    */
+comment|/**    * Set the transaction ID and time of the last checkpoint.    *     * @param txid transaction id of the last checkpoint    * @param time time of the last checkpoint, in millis since the epoch    */
 DECL|method|setMostRecentCheckpointInfo (long txid, long time)
 name|void
 name|setMostRecentCheckpointInfo
@@ -2099,7 +2070,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Return the name of the image file that is uploaded by periodic    * checkpointing    *    * @return List of filenames to save checkpoints to.    */
+comment|/**    * Return the name of the image file that is uploaded by periodic    * checkpointing.    *    * @return List of filenames to save checkpoints to.    */
 DECL|method|getFsImageNameCheckpoint (long txid)
 specifier|public
 name|File
@@ -2118,9 +2089,7 @@ name|list
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|File
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -2622,6 +2591,7 @@ name|newID
 operator|==
 literal|0
 condition|)
+block|{
 name|newID
 operator|=
 name|ThreadLocalRandom
@@ -2635,6 +2605,7 @@ literal|0x7FFFFFFF
 argument_list|)
 expr_stmt|;
 comment|// use 31 bits
+block|}
 return|return
 name|newID
 return|;
@@ -2856,11 +2827,7 @@ name|deprecatedProperties
 operator|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|String
@@ -2925,7 +2892,7 @@ comment|/**    * Write version file into the storage directory.    *    * The ve
 annotation|@
 name|Override
 comment|// Storage
-DECL|method|setPropertiesFromFields (Properties props, StorageDirectory sd )
+DECL|method|setPropertiesFromFields (Properties props, StorageDirectory sd)
 specifier|protected
 name|void
 name|setPropertiesFromFields
@@ -3017,7 +2984,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a storage file for one of the files that doesn't need a txid associated    * (e.g version, seen_txid)    */
+comment|/**    * Get a storage file for one of the files that doesn't need a txid associated    * (e.g version, seen_txid).    */
 DECL|method|getStorageFile (StorageDirectory sd, NameNodeFile type)
 specifier|static
 name|File
@@ -3451,7 +3418,7 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * Return the first readable image file for the given txid and image type, or    * null if no such image can be found    */
+comment|/**    * Return the first readable image file for the given txid and image type, or    * null if no such image can be found.    */
 DECL|method|findImageFile (NameNodeFile nnf, long txid)
 name|File
 name|findImageFile
@@ -3927,7 +3894,7 @@ return|return;
 block|}
 block|}
 block|}
-comment|/**    * Generate new clusterID.    *     * clusterID is a persistent attribute of the cluster.    * It is generated when the cluster is created and remains the same    * during the life cycle of the cluster.  When a new name node is formated, if     * this is a new cluster, a new clusterID is geneated and stored.  Subsequent     * name node must be given the same ClusterID during its format to be in the     * same cluster.    * When a datanode register it receive the clusterID and stick with it.    * If at any point, name node or data node tries to join another cluster, it     * will be rejected.    *     * @return new clusterID    */
+comment|/**    * Generate new clusterID.    *     * clusterID is a persistent attribute of the cluster.    * It is generated when the cluster is created and remains the same    * during the life cycle of the cluster.  When a new name node is formated,    * if this is a new cluster, a new clusterID is geneated and stored.    * Subsequent name node must be given the same ClusterID during its format to    * be in the same cluster.    * When a datanode register it receive the clusterID and stick with it.    * If at any point, name node or data node tries to join another cluster, it     * will be rejected.    *     * @return new clusterID    */
 DECL|method|newClusterID ()
 specifier|public
 specifier|static
@@ -3960,7 +3927,7 @@ operator|=
 name|cid
 expr_stmt|;
 block|}
-comment|/**    * try to find current cluster id in the VERSION files    * returns first cluster id found in any VERSION file    * null in case none found    * @return clusterId or null in case no cluster id found    */
+comment|/**    * Try to find current cluster id in the VERSION files.    * returns first cluster id found in any VERSION file    * null in case none found    * @return clusterId or null in case no cluster id found    */
 DECL|method|determineClusterId ()
 specifier|public
 name|String
@@ -3969,8 +3936,6 @@ parameter_list|()
 block|{
 name|String
 name|cid
-init|=
-literal|null
 decl_stmt|;
 name|Iterator
 argument_list|<
@@ -4057,9 +4022,11 @@ argument_list|(
 literal|""
 argument_list|)
 condition|)
+block|{
 return|return
 name|cid
 return|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -4104,8 +4071,6 @@ name|UnknownHostException
 block|{
 name|String
 name|ip
-init|=
-literal|"unknownIP"
 decl_stmt|;
 try|try
 block|{
@@ -4151,9 +4116,7 @@ operator|.
 name|MAX_VALUE
 argument_list|)
 decl_stmt|;
-name|String
-name|bpid
-init|=
+return|return
 literal|"BP-"
 operator|+
 name|rand
@@ -4168,12 +4131,9 @@ name|Time
 operator|.
 name|now
 argument_list|()
-decl_stmt|;
-return|return
-name|bpid
 return|;
 block|}
-comment|/** Validate and set block pool ID */
+comment|/** Validate and set block pool ID. */
 DECL|method|setBlockPoolID (String bpid)
 specifier|public
 name|void
@@ -4188,7 +4148,7 @@ operator|=
 name|bpid
 expr_stmt|;
 block|}
-comment|/** Validate and set block pool ID */
+comment|/** Validate and set block pool ID. */
 DECL|method|setBlockPoolID (File storage, String bpid)
 specifier|private
 name|void
@@ -4332,7 +4292,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Iterate over all of the storage dirs, reading their contents to determine    * their layout versions. Returns an FSImageStorageInspector which has    * inspected each directory.    *     *<b>Note:</b> this can mutate the storage info fields (ctime, version, etc).    * @throws IOException if no valid storage dirs are found or no valid layout version    */
+comment|/**    * Iterate over all of the storage dirs, reading their contents to determine    * their layout versions. Returns an FSImageStorageInspector which has    * inspected each directory.    *     *<b>Note:</b> this can mutate the storage info fields (ctime, version, etc).    * @throws IOException if no valid storage dirs are found or no valid layout    * version    */
 DECL|method|readAndInspectDirs (EnumSet<NameNodeFile> fileTypes, StartupOption startupOption)
 name|FSImageStorageInspector
 name|readAndInspectDirs
@@ -4445,12 +4405,7 @@ condition|)
 block|{
 name|layoutVersion
 operator|=
-name|Integer
-operator|.
-name|valueOf
-argument_list|(
 name|lv
-argument_list|)
 expr_stmt|;
 block|}
 elseif|else
@@ -4512,7 +4467,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"No storage directories contained VERSION information"
+literal|"No storage directories contained VERSION"
+operator|+
+literal|" information"
 argument_list|)
 throw|;
 block|}
