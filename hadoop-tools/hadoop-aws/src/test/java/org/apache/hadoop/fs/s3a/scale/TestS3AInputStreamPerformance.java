@@ -344,6 +344,24 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Constants
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
 comment|/**  * Look at the performance of S3a operations.  */
 end_comment
@@ -453,6 +471,28 @@ init|=
 name|getConf
 argument_list|()
 decl_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|SOCKET_SEND_BUFFER
+argument_list|,
+literal|16
+operator|*
+literal|1024
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|SOCKET_RECV_BUFFER
+argument_list|,
+literal|16
+operator|*
+literal|1024
+argument_list|)
+expr_stmt|;
 name|String
 name|testFile
 init|=
