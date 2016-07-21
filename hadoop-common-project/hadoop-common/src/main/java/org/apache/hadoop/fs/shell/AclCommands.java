@@ -1171,6 +1171,22 @@ literal|"x"
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|aclEntries
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"Missing<acl_spec> entry"
+argument_list|)
+throw|;
+block|}
 block|}
 if|if
 condition|(
