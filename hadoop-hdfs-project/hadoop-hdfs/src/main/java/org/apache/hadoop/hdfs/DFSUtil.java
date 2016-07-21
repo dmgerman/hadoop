@@ -1899,6 +1899,48 @@ name|toString
 argument_list|()
 return|;
 block|}
+comment|/**    * Convert a UTF8 string to an array of byte arrays.    */
+DECL|method|getPathComponents (String path)
+specifier|public
+specifier|static
+name|byte
+index|[]
+index|[]
+name|getPathComponents
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+block|{
+comment|// avoid intermediate split to String[]
+specifier|final
+name|byte
+index|[]
+name|bytes
+init|=
+name|string2Bytes
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+return|return
+name|bytes2byteArray
+argument_list|(
+name|bytes
+argument_list|,
+name|bytes
+operator|.
+name|length
+argument_list|,
+operator|(
+name|byte
+operator|)
+name|Path
+operator|.
+name|SEPARATOR_CHAR
+argument_list|)
+return|;
+block|}
 comment|/**    * Splits the array of bytes into array of arrays of bytes    * on byte separator    * @param bytes the array of bytes to split    * @param separator the delimiting byte    */
 DECL|method|bytes2byteArray (byte[] bytes, byte separator)
 specifier|public
