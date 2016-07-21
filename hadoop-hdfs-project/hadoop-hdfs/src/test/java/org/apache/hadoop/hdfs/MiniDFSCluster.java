@@ -1716,6 +1716,8 @@ DECL|class|MiniDFSCluster
 specifier|public
 class|class
 name|MiniDFSCluster
+implements|implements
+name|AutoCloseable
 block|{
 DECL|field|NAMESERVICE_ID_PREFIX
 specifier|private
@@ -13693,6 +13695,18 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class
