@@ -8933,7 +8933,7 @@ index|[]
 block|{
 literal|"-list"
 block|,
-literal|"--states"
+literal|"-states"
 block|,
 literal|"NEW"
 block|}
@@ -9125,7 +9125,7 @@ index|[]
 block|{
 literal|"-list"
 block|,
-literal|"--states"
+literal|"-states"
 block|,
 literal|"RUNNING"
 block|}
@@ -9621,7 +9621,7 @@ index|[]
 block|{
 literal|"-list"
 block|,
-literal|"--states"
+literal|"-states"
 block|,
 literal|"UNHEALTHY"
 block|}
@@ -9810,7 +9810,7 @@ index|[]
 block|{
 literal|"-list"
 block|,
-literal|"--states"
+literal|"-states"
 block|,
 literal|"DECOMMISSIONED"
 block|}
@@ -9999,7 +9999,7 @@ index|[]
 block|{
 literal|"-list"
 block|,
-literal|"--states"
+literal|"-states"
 block|,
 literal|"REBOOTED"
 block|}
@@ -10188,7 +10188,7 @@ index|[]
 block|{
 literal|"-list"
 block|,
-literal|"--states"
+literal|"-states"
 block|,
 literal|"LOST"
 block|}
@@ -10404,7 +10404,7 @@ index|[]
 block|{
 literal|"-list"
 block|,
-literal|"--states"
+literal|"-states"
 block|,
 literal|"NEW,RUNNING,LOST,REBOOTED"
 block|}
@@ -10659,7 +10659,7 @@ index|[]
 block|{
 literal|"-list"
 block|,
-literal|"--all"
+literal|"-All"
 block|}
 argument_list|)
 expr_stmt|;
@@ -10864,6 +10864,37 @@ argument_list|()
 argument_list|,
 name|anyInt
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|sysOutStream
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|result
+operator|=
+name|cli
+operator|.
+name|run
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-list"
+block|,
+literal|"-states"
+block|,
+literal|"InvalidState"
+block|}
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+name|result
 argument_list|)
 expr_stmt|;
 block|}
@@ -14947,7 +14978,28 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                    comma-separated list of node states."
+literal|"                    comma-separated list of node states. The valid node"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                    state can be one of the following:"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                    NEW,RUNNING,UNHEALTHY,DECOMMISSIONED,LOST,REBOOTED,DEC"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                    OMMISSIONING,SHUTDOWN."
 argument_list|)
 expr_stmt|;
 name|pw
