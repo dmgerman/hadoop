@@ -244,7 +244,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|Queue
+name|SchedulerRequestKey
 import|;
 end_import
 
@@ -293,9 +293,9 @@ name|NodeId
 name|getReservedNode
 parameter_list|()
 function_decl|;
-DECL|method|getReservedPriority ()
-name|Priority
-name|getReservedPriority
+DECL|method|getReservedSchedulerKey ()
+name|SchedulerRequestKey
+name|getReservedSchedulerKey
 parameter_list|()
 function_decl|;
 DECL|method|getAllocatedResource ()
@@ -311,6 +311,11 @@ function_decl|;
 DECL|method|getAllocatedNode ()
 name|NodeId
 name|getAllocatedNode
+parameter_list|()
+function_decl|;
+DECL|method|getAllocatedSchedulerKey ()
+name|SchedulerRequestKey
+name|getAllocatedSchedulerKey
 parameter_list|()
 function_decl|;
 DECL|method|getAllocatedPriority ()

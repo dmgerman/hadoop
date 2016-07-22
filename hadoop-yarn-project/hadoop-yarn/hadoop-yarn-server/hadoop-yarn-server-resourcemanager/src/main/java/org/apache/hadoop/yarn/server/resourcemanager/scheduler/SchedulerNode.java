@@ -200,24 +200,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|Priority
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Resource
 import|;
 end_import
@@ -1296,8 +1278,8 @@ name|resource
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Reserve container for the attempt on this node.    * @param attempt Application attempt asking for the reservation.    * @param priority Priority of the reservation.    * @param container Container reserving resources for.    */
-DECL|method|reserveResource (SchedulerApplicationAttempt attempt, Priority priority, RMContainer container)
+comment|/**    * Reserve container for the attempt on this node.    * @param attempt Application attempt asking for the reservation.    * @param schedulerKey Priority of the reservation.    * @param container Container reserving resources for.    */
+DECL|method|reserveResource (SchedulerApplicationAttempt attempt, SchedulerRequestKey schedulerKey, RMContainer container)
 specifier|public
 specifier|abstract
 name|void
@@ -1306,8 +1288,8 @@ parameter_list|(
 name|SchedulerApplicationAttempt
 name|attempt
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|RMContainer
 name|container

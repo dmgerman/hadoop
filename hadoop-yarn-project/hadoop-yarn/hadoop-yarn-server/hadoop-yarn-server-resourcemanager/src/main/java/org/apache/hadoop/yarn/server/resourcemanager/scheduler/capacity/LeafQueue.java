@@ -6182,10 +6182,7 @@ name|unreserve
 argument_list|(
 name|rmContainer
 operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getPriority
+name|getAllocatedSchedulerKey
 argument_list|()
 argument_list|,
 name|node
@@ -6434,7 +6431,7 @@ argument_list|()
 argument_list|,
 name|rmContainer
 operator|.
-name|getAllocatedPriority
+name|getAllocatedSchedulerKey
 argument_list|()
 argument_list|,
 name|rmContainer
@@ -6486,7 +6483,7 @@ name|unreserve
 argument_list|(
 name|rmContainer
 operator|.
-name|getReservedPriority
+name|getReservedSchedulerKey
 argument_list|()
 argument_list|,
 name|node
@@ -8559,7 +8556,10 @@ argument_list|()
 argument_list|,
 name|decreaseRequest
 operator|.
-name|getPriority
+name|getRMContainer
+argument_list|()
+operator|.
+name|getAllocatedSchedulerKey
 argument_list|()
 argument_list|,
 name|decreaseRequest

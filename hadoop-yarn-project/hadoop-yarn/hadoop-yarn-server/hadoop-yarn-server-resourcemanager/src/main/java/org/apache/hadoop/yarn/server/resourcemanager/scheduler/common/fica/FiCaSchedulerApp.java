@@ -664,6 +664,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|SchedulerRequestKey
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|capacity
 operator|.
 name|CSAMContainerLaunchDiagnosticsConstants
@@ -1415,7 +1435,7 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|allocate (NodeType type, FiCaSchedulerNode node, Priority priority, ResourceRequest request, Container container)
+DECL|method|allocate (NodeType type, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, ResourceRequest request, Container container)
 specifier|public
 specifier|synchronized
 name|RMContainer
@@ -1427,8 +1447,8 @@ parameter_list|,
 name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ResourceRequest
 name|request
@@ -1452,7 +1472,7 @@ if|if
 condition|(
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|<=
 literal|0
@@ -1560,7 +1580,7 @@ name|type
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|request
 argument_list|,
@@ -1678,14 +1698,14 @@ return|return
 name|rmContainer
 return|;
 block|}
-DECL|method|unreserve (Priority priority, FiCaSchedulerNode node, RMContainer rmContainer)
+DECL|method|unreserve (SchedulerRequestKey schedulerKey, FiCaSchedulerNode node, RMContainer rmContainer)
 specifier|public
 specifier|synchronized
 name|boolean
 name|unreserve
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|FiCaSchedulerNode
 name|node
@@ -1707,7 +1727,7 @@ name|internalUnreserve
 argument_list|(
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|)
 condition|)
 block|{
@@ -1758,7 +1778,7 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|internalUnreserve (FiCaSchedulerNode node, Priority priority)
+DECL|method|internalUnreserve (FiCaSchedulerNode node, SchedulerRequestKey schedulerKey)
 specifier|private
 name|boolean
 name|internalUnreserve
@@ -1766,8 +1786,8 @@ parameter_list|(
 name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 name|Map
@@ -1784,7 +1804,7 @@ name|reservedContainers
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 if|if
@@ -1847,14 +1867,14 @@ name|reservedContainers
 operator|.
 name|remove
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
 comment|// Reset the re-reservation count
 name|resetReReservations
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 name|Resource
@@ -1903,7 +1923,10 @@ argument_list|()
 operator|+
 literal|" at priority "
 operator|+
-name|priority
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
 operator|+
 literal|"; currentReservation "
 operator|+
@@ -1931,14 +1954,14 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|getLocalityWaitFactor ( Priority priority, int clusterNodes)
+DECL|method|getLocalityWaitFactor ( SchedulerRequestKey schedulerKey, int clusterNodes)
 specifier|public
 specifier|synchronized
 name|float
 name|getLocalityWaitFactor
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|int
 name|clusterNodes
@@ -1956,7 +1979,7 @@ name|this
 operator|.
 name|getResourceRequests
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|.
 name|size
@@ -2290,14 +2313,14 @@ name|newlyDecreasedContainers
 argument_list|)
 return|;
 block|}
-DECL|method|getNodeIdToUnreserve (Priority priority, Resource resourceNeedUnreserve, ResourceCalculator rc, Resource clusterResource)
+DECL|method|getNodeIdToUnreserve ( SchedulerRequestKey schedulerKey, Resource resourceNeedUnreserve, ResourceCalculator rc, Resource clusterResource)
 specifier|synchronized
 specifier|public
 name|NodeId
 name|getNodeIdToUnreserve
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|Resource
 name|resourceNeedUnreserve
@@ -2325,7 +2348,7 @@ name|reservedContainers
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 if|if
@@ -2542,13 +2565,13 @@ name|getHeadroomProvider
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|reserveIncreasedContainer (Priority priority, FiCaSchedulerNode node, RMContainer rmContainer, Resource reservedResource)
+DECL|method|reserveIncreasedContainer (SchedulerRequestKey schedulerKey, FiCaSchedulerNode node, RMContainer rmContainer, Resource reservedResource)
 specifier|public
 name|boolean
 name|reserveIncreasedContainer
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|FiCaSchedulerNode
 name|node
@@ -2569,7 +2592,7 @@ name|reserveIncreasedContainer
 argument_list|(
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|rmContainer
 argument_list|,
@@ -2597,7 +2620,7 @@ name|reserveResource
 argument_list|(
 name|this
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|rmContainer
 argument_list|)
@@ -2611,13 +2634,13 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|reserve (Priority priority, FiCaSchedulerNode node, RMContainer rmContainer, Container container)
+DECL|method|reserve (SchedulerRequestKey schedulerKey, FiCaSchedulerNode node, RMContainer rmContainer, Container container)
 specifier|public
 name|void
 name|reserve
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|FiCaSchedulerNode
 name|node
@@ -2663,7 +2686,7 @@ name|reserve
 argument_list|(
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|rmContainer
 argument_list|,
@@ -2677,7 +2700,7 @@ name|reserveResource
 argument_list|(
 name|this
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|rmContainer
 argument_list|)
@@ -2685,7 +2708,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|findNodeToUnreserve (Resource clusterResource, FiCaSchedulerNode node, Priority priority, Resource minimumUnreservedResource)
+DECL|method|findNodeToUnreserve (Resource clusterResource, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, Resource minimumUnreservedResource)
 specifier|public
 name|RMContainer
 name|findNodeToUnreserve
@@ -2696,8 +2719,8 @@ parameter_list|,
 name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|Resource
 name|minimumUnreservedResource
@@ -2709,7 +2732,7 @@ name|idToUnreserve
 init|=
 name|getNodeIdToUnreserve
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|minimumUnreservedResource
 argument_list|,

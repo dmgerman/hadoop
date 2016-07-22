@@ -1026,12 +1026,11 @@ name|RMContainer
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|reservedContainers
 specifier|protected
 specifier|final
 name|Map
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|,
 name|Map
 argument_list|<
@@ -1040,20 +1039,12 @@ argument_list|,
 name|RMContainer
 argument_list|>
 argument_list|>
+DECL|field|reservedContainers
 name|reservedContainers
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|Priority
-argument_list|,
-name|Map
-argument_list|<
-name|NodeId
-argument_list|,
-name|RMContainer
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|reReservations
@@ -1061,7 +1052,7 @@ specifier|private
 specifier|final
 name|Multiset
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|>
 name|reReservations
 init|=
@@ -1232,7 +1223,7 @@ comment|/**    * Count how many times the application has been given an opportun
 DECL|field|schedulingOpportunities
 name|Multiset
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|>
 name|schedulingOpportunities
 init|=
@@ -1242,12 +1233,12 @@ name|create
 argument_list|()
 decl_stmt|;
 comment|/**    * Count how many times the application has been given an opportunity to    * schedule a non-partitioned resource request at each priority. Each time the    * scheduler asks the application for a task at this priority, it is    * incremented, and each time the application successfully schedules a task,    * it is reset to 0 when schedule any task at corresponding priority.    */
-DECL|field|missedNonPartitionedRequestSchedulingOpportunity
+DECL|field|missedNonPartitionedReqSchedulingOpportunity
 name|Multiset
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|>
-name|missedNonPartitionedRequestSchedulingOpportunity
+name|missedNonPartitionedReqSchedulingOpportunity
 init|=
 name|HashMultiset
 operator|.
@@ -1259,7 +1250,7 @@ DECL|field|lastScheduledContainer
 specifier|protected
 name|Map
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|,
 name|Long
 argument_list|>
@@ -1267,11 +1258,7 @@ name|lastScheduledContainer
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|Priority
-argument_list|,
-name|Long
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|queue
@@ -1558,7 +1545,7 @@ name|getUser
 argument_list|()
 return|;
 block|}
-DECL|method|getResourceRequests (Priority priority)
+DECL|method|getResourceRequests ( SchedulerRequestKey schedulerKey)
 specifier|public
 name|Map
 argument_list|<
@@ -1568,8 +1555,8 @@ name|ResourceRequest
 argument_list|>
 name|getResourceRequests
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 return|return
@@ -1577,7 +1564,7 @@ name|appSchedulingInfo
 operator|.
 name|getResourceRequests
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 return|;
 block|}
@@ -1609,56 +1596,54 @@ name|getNewContainerId
 argument_list|()
 return|;
 block|}
-DECL|method|getPriorities ()
+DECL|method|getSchedulerKeys ()
 specifier|public
 name|Collection
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|>
-name|getPriorities
+name|getSchedulerKeys
 parameter_list|()
 block|{
 return|return
 name|appSchedulingInfo
 operator|.
-name|getPriorities
+name|getSchedulerKeys
 argument_list|()
 return|;
 block|}
-DECL|method|getResourceRequest (Priority priority, String resourceName)
+DECL|method|getResourceRequest ( SchedulerRequestKey schedulerKey, String resourceName)
 specifier|public
 specifier|synchronized
 name|ResourceRequest
 name|getResourceRequest
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|String
 name|resourceName
 parameter_list|)
 block|{
 return|return
-name|this
-operator|.
 name|appSchedulingInfo
 operator|.
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|resourceName
 argument_list|)
 return|;
 block|}
-DECL|method|getTotalRequiredResources (Priority priority)
+DECL|method|getTotalRequiredResources ( SchedulerRequestKey schedulerKey)
 specifier|public
 specifier|synchronized
 name|int
 name|getTotalRequiredResources
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 name|ResourceRequest
@@ -1666,7 +1651,7 @@ name|request
 init|=
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|ResourceRequest
 operator|.
@@ -1686,14 +1671,14 @@ name|getNumContainers
 argument_list|()
 return|;
 block|}
-DECL|method|getResource (Priority priority)
+DECL|method|getResource (SchedulerRequestKey schedulerKey)
 specifier|public
 specifier|synchronized
 name|Resource
 name|getResource
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 return|return
@@ -1701,7 +1686,7 @@ name|appSchedulingInfo
 operator|.
 name|getResource
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 return|;
 block|}
@@ -1931,52 +1916,52 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|resetReReservations (Priority priority)
+DECL|method|resetReReservations ( SchedulerRequestKey schedulerKey)
 specifier|protected
 specifier|synchronized
 name|void
 name|resetReReservations
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 name|reReservations
 operator|.
 name|setCount
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addReReservation (Priority priority)
+DECL|method|addReReservation ( SchedulerRequestKey schedulerKey)
 specifier|protected
 specifier|synchronized
 name|void
 name|addReReservation
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 name|reReservations
 operator|.
 name|add
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getReReservations (Priority priority)
+DECL|method|getReReservations (SchedulerRequestKey schedulerKey)
 specifier|public
 specifier|synchronized
 name|int
 name|getReReservations
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 return|return
@@ -1984,7 +1969,7 @@ name|reReservations
 operator|.
 name|count
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 return|;
 block|}
@@ -2143,7 +2128,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|,
 name|Map
 argument_list|<
@@ -2180,7 +2165,7 @@ return|return
 name|reservedContainers
 return|;
 block|}
-DECL|method|reserveIncreasedContainer (SchedulerNode node, Priority priority, RMContainer rmContainer, Resource reservedResource)
+DECL|method|reserveIncreasedContainer (SchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer rmContainer, Resource reservedResource)
 specifier|public
 specifier|synchronized
 name|boolean
@@ -2189,8 +2174,8 @@ parameter_list|(
 name|SchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|RMContainer
 name|rmContainer
@@ -2205,7 +2190,7 @@ name|commonReserve
 argument_list|(
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|rmContainer
 argument_list|,
@@ -2234,7 +2219,7 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|commonReserve (SchedulerNode node, Priority priority, RMContainer rmContainer, Resource reservedResource)
+DECL|method|commonReserve (SchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer rmContainer, Resource reservedResource)
 specifier|private
 specifier|synchronized
 name|boolean
@@ -2243,8 +2228,8 @@ parameter_list|(
 name|SchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|RMContainer
 name|rmContainer
@@ -2274,7 +2259,7 @@ operator|.
 name|getNodeID
 argument_list|()
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2305,7 +2290,7 @@ name|reservedContainers
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 if|if
@@ -2332,7 +2317,7 @@ name|reservedContainers
 operator|.
 name|put
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|reservedContainers
 argument_list|)
@@ -2384,7 +2369,10 @@ argument_list|()
 operator|+
 literal|" reserved containers at priority "
 operator|+
-name|priority
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
 operator|+
 literal|"; currentReservation "
 operator|+
@@ -2396,7 +2384,7 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|reserve (SchedulerNode node, Priority priority, RMContainer rmContainer, Container container)
+DECL|method|reserve (SchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer rmContainer, Container container)
 specifier|public
 specifier|synchronized
 name|RMContainer
@@ -2405,8 +2393,8 @@ parameter_list|(
 name|SchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|RMContainer
 name|rmContainer
@@ -2479,7 +2467,7 @@ expr_stmt|;
 comment|// Reset the re-reservation count
 name|resetReReservations
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -2488,7 +2476,7 @@ block|{
 comment|// Note down the re-reservation
 name|addReReservation
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -2496,7 +2484,7 @@ name|commonReserve
 argument_list|(
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|rmContainer
 argument_list|,
@@ -2510,8 +2498,8 @@ return|return
 name|rmContainer
 return|;
 block|}
-comment|/**    * Has the application reserved the given<code>node</code> at the    * given<code>priority</code>?    * @param node node to be checked    * @param priority priority of reserved container    * @return true is reserved, false if not    */
-DECL|method|isReserved (SchedulerNode node, Priority priority)
+comment|/**    * Has the application reserved the given<code>node</code> at the    * given<code>priority</code>?    * @param node node to be checked    * @param schedulerKey scheduler key  of reserved container    * @return true is reserved, false if not    */
+DECL|method|isReserved (SchedulerNode node, SchedulerRequestKey schedulerKey)
 specifier|public
 specifier|synchronized
 name|boolean
@@ -2520,8 +2508,8 @@ parameter_list|(
 name|SchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 name|Map
@@ -2538,7 +2526,7 @@ name|reservedContainers
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 if|if
@@ -2612,14 +2600,14 @@ return|return
 name|resourceLimit
 return|;
 block|}
-DECL|method|getNumReservedContainers (Priority priority)
+DECL|method|getNumReservedContainers ( SchedulerRequestKey schedulerKey)
 specifier|public
 specifier|synchronized
 name|int
 name|getNumReservedContainers
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 name|Map
@@ -2636,7 +2624,7 @@ name|reservedContainers
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 return|return
@@ -2743,10 +2731,10 @@ condition|)
 block|{
 for|for
 control|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 range|:
-name|getPriorities
+name|getSchedulerKeys
 argument_list|()
 control|)
 block|{
@@ -2760,7 +2748,7 @@ name|requests
 init|=
 name|getResourceRequests
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 if|if
@@ -3449,60 +3437,60 @@ name|forAMContainer
 argument_list|)
 return|;
 block|}
-DECL|method|addMissedNonPartitionedRequestSchedulingOpportunity ( Priority priority)
+DECL|method|addMissedNonPartitionedRequestSchedulingOpportunity ( SchedulerRequestKey schedulerKey)
 specifier|public
 specifier|synchronized
 name|int
 name|addMissedNonPartitionedRequestSchedulingOpportunity
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
-name|missedNonPartitionedRequestSchedulingOpportunity
+name|missedNonPartitionedReqSchedulingOpportunity
 operator|.
 name|add
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 return|return
-name|missedNonPartitionedRequestSchedulingOpportunity
+name|missedNonPartitionedReqSchedulingOpportunity
 operator|.
 name|count
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 return|;
 block|}
 specifier|public
 specifier|synchronized
 name|void
-DECL|method|resetMissedNonPartitionedRequestSchedulingOpportunity (Priority priority)
+DECL|method|resetMissedNonPartitionedRequestSchedulingOpportunity ( SchedulerRequestKey schedulerKey)
 name|resetMissedNonPartitionedRequestSchedulingOpportunity
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
-name|missedNonPartitionedRequestSchedulingOpportunity
+name|missedNonPartitionedReqSchedulingOpportunity
 operator|.
 name|setCount
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addSchedulingOpportunity (Priority priority)
+DECL|method|addSchedulingOpportunity ( SchedulerRequestKey schedulerKey)
 specifier|public
 specifier|synchronized
 name|void
 name|addSchedulingOpportunity
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 name|int
@@ -3512,7 +3500,7 @@ name|schedulingOpportunities
 operator|.
 name|count
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 if|if
@@ -3528,7 +3516,7 @@ name|schedulingOpportunities
 operator|.
 name|setCount
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|count
 operator|+
@@ -3537,14 +3525,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|subtractSchedulingOpportunity (Priority priority)
+DECL|method|subtractSchedulingOpportunity ( SchedulerRequestKey schedulerKey)
 specifier|public
 specifier|synchronized
 name|void
 name|subtractSchedulingOpportunity
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 name|int
@@ -3554,7 +3542,7 @@ name|schedulingOpportunities
 operator|.
 name|count
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|-
 literal|1
@@ -3565,7 +3553,7 @@ name|schedulingOpportunities
 operator|.
 name|setCount
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|Math
 operator|.
@@ -3578,15 +3566,15 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return the number of times the application has been given an opportunity    * to schedule a task at the given priority since the last time it    * successfully did so.    */
-DECL|method|getSchedulingOpportunities (Priority priority)
+comment|/**    * Return the number of times the application has been given an opportunity    * to schedule a task at the given priority since the last time it    * successfully did so.    * @param schedulerKey Scheduler Key    * @return number of scheduling opportunities    */
+DECL|method|getSchedulingOpportunities ( SchedulerRequestKey schedulerKey)
 specifier|public
 specifier|synchronized
 name|int
 name|getSchedulingOpportunities
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 return|return
@@ -3594,24 +3582,24 @@ name|schedulingOpportunities
 operator|.
 name|count
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 return|;
 block|}
-comment|/**    * Should be called when an application has successfully scheduled a container,    * or when the scheduling locality threshold is relaxed.    * Reset various internal counters which affect delay scheduling    *    * @param priority The priority of the container scheduled.    */
-DECL|method|resetSchedulingOpportunities (Priority priority)
+comment|/**    * Should be called when an application has successfully scheduled a    * container, or when the scheduling locality threshold is relaxed.    * Reset various internal counters which affect delay scheduling    *    * @param schedulerKey The priority of the container scheduled.    */
+DECL|method|resetSchedulingOpportunities ( SchedulerRequestKey schedulerKey)
 specifier|public
 specifier|synchronized
 name|void
 name|resetSchedulingOpportunities
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 name|resetSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|System
 operator|.
@@ -3621,14 +3609,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// used for continuous scheduling
-DECL|method|resetSchedulingOpportunities (Priority priority, long currentTimeMs)
+DECL|method|resetSchedulingOpportunities ( SchedulerRequestKey schedulerKey, long currentTimeMs)
 specifier|public
 specifier|synchronized
 name|void
 name|resetSchedulingOpportunities
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|long
 name|currentTimeMs
@@ -3638,7 +3626,7 @@ name|lastScheduledContainer
 operator|.
 name|put
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|currentTimeMs
 argument_list|)
@@ -3647,7 +3635,7 @@ name|schedulingOpportunities
 operator|.
 name|setCount
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 literal|0
 argument_list|)
@@ -3655,12 +3643,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|setSchedulingOpportunities (Priority priority, int count)
+DECL|method|setSchedulingOpportunities (SchedulerRequestKey schedulerKey, int count)
 name|void
 name|setSchedulingOpportunities
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|int
 name|count
@@ -3670,7 +3658,7 @@ name|schedulingOpportunities
 operator|.
 name|setCount
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|count
 argument_list|)
@@ -4002,15 +3990,15 @@ operator|.
 name|resourceLimit
 return|;
 block|}
-DECL|method|getLastScheduledContainer ()
 specifier|public
 specifier|synchronized
 name|Map
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|,
 name|Long
 argument_list|>
+DECL|method|getLastScheduledContainer ()
 name|getLastScheduledContainer
 parameter_list|()
 block|{
@@ -4700,7 +4688,7 @@ return|return
 name|attemptResourceUsage
 return|;
 block|}
-DECL|method|removeIncreaseRequest (NodeId nodeId, Priority priority, ContainerId containerId)
+DECL|method|removeIncreaseRequest (NodeId nodeId, SchedulerRequestKey schedulerKey, ContainerId containerId)
 specifier|public
 specifier|synchronized
 name|boolean
@@ -4709,8 +4697,8 @@ parameter_list|(
 name|NodeId
 name|nodeId
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ContainerId
 name|containerId
@@ -4723,7 +4711,7 @@ name|removeIncreaseRequest
 argument_list|(
 name|nodeId
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|containerId
 argument_list|)

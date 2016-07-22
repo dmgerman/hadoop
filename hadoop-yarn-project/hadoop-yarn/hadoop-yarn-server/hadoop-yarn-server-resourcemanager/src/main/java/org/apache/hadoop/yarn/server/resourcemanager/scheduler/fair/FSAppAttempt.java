@@ -610,6 +610,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|SchedulerRequestKey
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|SchedulerNode
 import|;
 end_import
@@ -839,7 +859,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|,
 name|NodeType
 argument_list|>
@@ -847,11 +867,7 @@ name|allowedLocalityLevel
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|Priority
-argument_list|,
-name|NodeType
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|method|FSAppAttempt (FairScheduler scheduler, ApplicationAttemptId applicationAttemptId, String user, FSLeafQueue queue, ActiveUsersManager activeUsersManager, RMContext rmContext)
@@ -1123,14 +1139,14 @@ operator|-
 literal|1
 expr_stmt|;
 block|}
-DECL|method|unreserveInternal ( Priority priority, FSSchedulerNode node)
+DECL|method|unreserveInternal ( SchedulerRequestKey schedulerKey, FSSchedulerNode node)
 specifier|private
 specifier|synchronized
 name|void
 name|unreserveInternal
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|FSSchedulerNode
 name|node
@@ -1150,7 +1166,7 @@ name|reservedContainers
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 name|RMContainer
@@ -1180,14 +1196,14 @@ name|reservedContainers
 operator|.
 name|remove
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
 comment|// Reset the re-reservation count
 name|resetReReservations
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 name|Resource
@@ -1234,7 +1250,10 @@ argument_list|()
 operator|+
 literal|" at priority "
 operator|+
-name|priority
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
 operator|+
 literal|"; currentReservation "
 operator|+
@@ -1512,14 +1531,14 @@ return|return
 name|headroom
 return|;
 block|}
-DECL|method|getLocalityWaitFactor ( Priority priority, int clusterNodes)
+DECL|method|getLocalityWaitFactor ( SchedulerRequestKey schedulerKey, int clusterNodes)
 specifier|public
 specifier|synchronized
 name|float
 name|getLocalityWaitFactor
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|int
 name|clusterNodes
@@ -1537,7 +1556,7 @@ name|this
 operator|.
 name|getResourceRequests
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|.
 name|size
@@ -1568,15 +1587,15 @@ literal|1.0f
 argument_list|)
 return|;
 block|}
-comment|/**    * Return the level at which we are allowed to schedule containers, given the    * current size of the cluster and thresholds indicating how many nodes to    * fail at (as a fraction of cluster size) before relaxing scheduling    * constraints.    */
-DECL|method|getAllowedLocalityLevel (Priority priority, int numNodes, double nodeLocalityThreshold, double rackLocalityThreshold)
+comment|/**    * Return the level at which we are allowed to schedule containers, given the    * current size of the cluster and thresholds indicating how many nodes to    * fail at (as a fraction of cluster size) before relaxing scheduling    * constraints.    * @param schedulerKey SchedulerRequestKey    * @param numNodes Num Nodes    * @param nodeLocalityThreshold nodeLocalityThreshold    * @param rackLocalityThreshold rackLocalityThreshold    * @return NodeType    */
+DECL|method|getAllowedLocalityLevel ( SchedulerRequestKey schedulerKey, int numNodes, double nodeLocalityThreshold, double rackLocalityThreshold)
 specifier|public
 specifier|synchronized
 name|NodeType
 name|getAllowedLocalityLevel
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|int
 name|numNodes
@@ -1639,7 +1658,7 @@ name|allowedLocalityLevel
 operator|.
 name|containsKey
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 condition|)
 block|{
@@ -1647,7 +1666,7 @@ name|allowedLocalityLevel
 operator|.
 name|put
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|NodeType
 operator|.
@@ -1667,7 +1686,7 @@ name|allowedLocalityLevel
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 comment|// If level is already most liberal, we're done
@@ -1708,7 +1727,7 @@ if|if
 condition|(
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|>
 operator|(
@@ -1734,7 +1753,7 @@ name|allowedLocalityLevel
 operator|.
 name|put
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|NodeType
 operator|.
@@ -1743,7 +1762,7 @@ argument_list|)
 expr_stmt|;
 name|resetSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -1764,7 +1783,7 @@ name|allowedLocalityLevel
 operator|.
 name|put
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|NodeType
 operator|.
@@ -1773,7 +1792,7 @@ argument_list|)
 expr_stmt|;
 name|resetSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -1783,19 +1802,19 @@ name|allowedLocalityLevel
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 return|;
 block|}
-comment|/**    * Return the level at which we are allowed to schedule containers.    * Given the thresholds indicating how much time passed before relaxing    * scheduling constraints.    */
-DECL|method|getAllowedLocalityLevelByTime (Priority priority, long nodeLocalityDelayMs, long rackLocalityDelayMs, long currentTimeMs)
+comment|/**    * Return the level at which we are allowed to schedule containers.    * Given the thresholds indicating how much time passed before relaxing    * scheduling constraints.    * @param schedulerKey SchedulerRequestKey    * @param nodeLocalityDelayMs nodeLocalityThreshold    * @param rackLocalityDelayMs nodeLocalityDelayMs    * @param currentTimeMs currentTimeMs    * @return NodeType    */
+DECL|method|getAllowedLocalityLevelByTime ( SchedulerRequestKey schedulerKey, long nodeLocalityDelayMs, long rackLocalityDelayMs, long currentTimeMs)
 specifier|public
 specifier|synchronized
 name|NodeType
 name|getAllowedLocalityLevelByTime
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|long
 name|nodeLocalityDelayMs
@@ -1833,7 +1852,7 @@ name|allowedLocalityLevel
 operator|.
 name|containsKey
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 condition|)
 block|{
@@ -1843,7 +1862,7 @@ name|lastScheduledContainer
 operator|.
 name|put
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|currentTimeMs
 argument_list|)
@@ -1862,7 +1881,10 @@ name|debug
 argument_list|(
 literal|"Init the lastScheduledContainer time, priority: "
 operator|+
-name|priority
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
 operator|+
 literal|", time: "
 operator|+
@@ -1874,7 +1896,7 @@ name|allowedLocalityLevel
 operator|.
 name|put
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|NodeType
 operator|.
@@ -1894,7 +1916,7 @@ name|allowedLocalityLevel
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 comment|// if level is already most liberal, we're done
@@ -1928,7 +1950,7 @@ name|lastScheduledContainer
 operator|.
 name|containsKey
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 condition|)
 block|{
@@ -1938,7 +1960,7 @@ name|lastScheduledContainer
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -1989,7 +2011,7 @@ name|allowedLocalityLevel
 operator|.
 name|put
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|NodeType
 operator|.
@@ -1998,7 +2020,7 @@ argument_list|)
 expr_stmt|;
 name|resetSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|currentTimeMs
 argument_list|)
@@ -2021,7 +2043,7 @@ name|allowedLocalityLevel
 operator|.
 name|put
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|NodeType
 operator|.
@@ -2030,7 +2052,7 @@ argument_list|)
 expr_stmt|;
 name|resetSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|currentTimeMs
 argument_list|)
@@ -2042,11 +2064,11 @@ name|allowedLocalityLevel
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 return|;
 block|}
-DECL|method|allocate (NodeType type, FSSchedulerNode node, Priority priority, ResourceRequest request, Container reservedContainer)
+DECL|method|allocate (NodeType type, FSSchedulerNode node, SchedulerRequestKey schedulerKey, ResourceRequest request, Container reservedContainer)
 specifier|synchronized
 specifier|public
 name|RMContainer
@@ -2058,8 +2080,8 @@ parameter_list|,
 name|FSSchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ResourceRequest
 name|request
@@ -2076,7 +2098,7 @@ name|allowedLocalityLevel
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 if|if
@@ -2122,7 +2144,7 @@ name|this
 operator|.
 name|resetAllowedLocalityLevel
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|type
 argument_list|)
@@ -2154,7 +2176,7 @@ name|this
 operator|.
 name|resetAllowedLocalityLevel
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|type
 argument_list|)
@@ -2167,7 +2189,7 @@ if|if
 condition|(
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|<=
 literal|0
@@ -2200,10 +2222,7 @@ operator|.
 name|getCapability
 argument_list|()
 argument_list|,
-name|request
-operator|.
-name|getPriority
-argument_list|()
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -2282,7 +2301,7 @@ name|type
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|request
 argument_list|,
@@ -2409,15 +2428,15 @@ return|return
 name|rmContainer
 return|;
 block|}
-comment|/**    * Should be called when the scheduler assigns a container at a higher    * degree of locality than the current threshold. Reset the allowed locality    * level to a higher degree of locality.    */
-DECL|method|resetAllowedLocalityLevel (Priority priority, NodeType level)
+comment|/**    * Should be called when the scheduler assigns a container at a higher    * degree of locality than the current threshold. Reset the allowed locality    * level to a higher degree of locality.    * @param schedulerKey Scheduler Key    * @param level NodeType    */
+DECL|method|resetAllowedLocalityLevel ( SchedulerRequestKey schedulerKey, NodeType level)
 specifier|public
 specifier|synchronized
 name|void
 name|resetAllowedLocalityLevel
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|NodeType
 name|level
@@ -2430,7 +2449,7 @@ name|allowedLocalityLevel
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -2449,14 +2468,17 @@ literal|" at "
 operator|+
 literal|" priority "
 operator|+
-name|priority
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|allowedLocalityLevel
 operator|.
 name|put
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|level
 argument_list|)
@@ -2628,8 +2650,8 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create and return a container object reflecting an allocation for the    * given appliction on the given node with the given capability and    * priority.    */
-DECL|method|createContainer ( FSSchedulerNode node, Resource capability, Priority priority)
+comment|/**    * Create and return a container object reflecting an allocation for the    * given appliction on the given node with the given capability and    * priority.    * @param node Node    * @param capability Capability    * @param schedulerKey Scheduler Key    * @return Container    */
+DECL|method|createContainer (FSSchedulerNode node, Resource capability, SchedulerRequestKey schedulerKey)
 specifier|public
 name|Container
 name|createContainer
@@ -2640,8 +2662,8 @@ parameter_list|,
 name|Resource
 name|capability
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 name|NodeId
@@ -2691,7 +2713,10 @@ argument_list|()
 argument_list|,
 name|capability
 argument_list|,
-name|priority
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2701,7 +2726,7 @@ name|container
 return|;
 block|}
 comment|/**    * Reserve a spot for {@code container} on this {@code node}. If    * the container is {@code alreadyReserved} on the node, simply    * update relevant bookeeping. This dispatches ro relevant handlers    * in {@link FSSchedulerNode}..    * return whether reservation was possible with the current threshold limits    */
-DECL|method|reserve (ResourceRequest request, FSSchedulerNode node, Container reservedContainer, NodeType type)
+DECL|method|reserve (ResourceRequest request, FSSchedulerNode node, Container reservedContainer, NodeType type, SchedulerRequestKey schedulerKey)
 specifier|private
 name|boolean
 name|reserve
@@ -2717,16 +2742,11 @@ name|reservedContainer
 parameter_list|,
 name|NodeType
 name|type
+parameter_list|,
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
-name|Priority
-name|priority
-init|=
-name|request
-operator|.
-name|getPriority
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -2773,10 +2793,7 @@ operator|.
 name|getCapability
 argument_list|()
 argument_list|,
-name|request
-operator|.
-name|getPriority
-argument_list|()
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 name|getMetrics
@@ -2802,7 +2819,7 @@ name|reserve
 argument_list|(
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 literal|null
 argument_list|,
@@ -2815,7 +2832,7 @@ name|reserveResource
 argument_list|(
 name|this
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|rmContainer
 argument_list|)
@@ -2842,7 +2859,7 @@ name|reserve
 argument_list|(
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|rmContainer
 argument_list|,
@@ -2855,7 +2872,7 @@ name|reserveResource
 argument_list|(
 name|this
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|rmContainer
 argument_list|)
@@ -3032,14 +3049,14 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Remove the reservation on {@code node} at the given {@link Priority}.    * This dispatches SchedulerNode handlers as well.    */
-DECL|method|unreserve (Priority priority, FSSchedulerNode node)
+comment|/**    * Remove the reservation on {@code node} at the given SchedulerRequestKey.    * This dispatches SchedulerNode handlers as well.    * @param schedulerKey Scheduler Key    * @param node Node    */
+DECL|method|unreserve (SchedulerRequestKey schedulerKey, FSSchedulerNode node)
 specifier|public
 name|void
 name|unreserve
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|FSSchedulerNode
 name|node
@@ -3055,7 +3072,7 @@ argument_list|()
 decl_stmt|;
 name|unreserveInternal
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|node
 argument_list|)
@@ -3318,7 +3335,7 @@ name|counter
 return|;
 block|}
 comment|/**    * Assign a container to this node to facilitate {@code request}. If node does    * not have enough memory, create a reservation. This is called once we are    * sure the particular request should be facilitated by this node.    *    * @param node    *     The node to try placing the container on.    * @param request    *     The ResourceRequest we're trying to satisfy.    * @param type    *     The locality of the assignment.    * @param reserved    *     Whether there's already a container reserved for this app on the node.    * @return    *     If an assignment was made, returns the resources allocated to the    *     container.  If a reservation was made, returns    *     FairScheduler.CONTAINER_RESERVED.  If no assignment or reservation was    *     made, returns an empty resource.    */
-DECL|method|assignContainer ( FSSchedulerNode node, ResourceRequest request, NodeType type, boolean reserved)
+DECL|method|assignContainer ( FSSchedulerNode node, ResourceRequest request, NodeType type, boolean reserved, SchedulerRequestKey schedulerKey)
 specifier|private
 name|Resource
 name|assignContainer
@@ -3334,6 +3351,9 @@ name|type
 parameter_list|,
 name|boolean
 name|reserved
+parameter_list|,
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 comment|// How much does this request need?
@@ -3398,10 +3418,7 @@ name|type
 argument_list|,
 name|node
 argument_list|,
-name|request
-operator|.
-name|getPriority
-argument_list|()
+name|schedulerKey
 argument_list|,
 name|request
 argument_list|,
@@ -3423,10 +3440,7 @@ condition|)
 block|{
 name|unreserve
 argument_list|(
-name|request
-operator|.
-name|getPriority
-argument_list|()
+name|schedulerKey
 argument_list|,
 name|node
 argument_list|)
@@ -3447,10 +3461,7 @@ condition|)
 block|{
 name|unreserve
 argument_list|(
-name|request
-operator|.
-name|getPriority
-argument_list|()
+name|schedulerKey
 argument_list|,
 name|node
 argument_list|)
@@ -3518,6 +3529,8 @@ argument_list|,
 name|reservedContainer
 argument_list|,
 name|type
+argument_list|,
+name|schedulerKey
 argument_list|)
 condition|)
 block|{
@@ -3590,19 +3603,19 @@ name|capacity
 argument_list|)
 return|;
 block|}
-DECL|method|hasNodeOrRackLocalRequests (Priority priority)
+DECL|method|hasNodeOrRackLocalRequests (SchedulerRequestKey schedulerKey)
 specifier|private
 name|boolean
 name|hasNodeOrRackLocalRequests
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 return|return
 name|getResourceRequests
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|.
 name|size
@@ -3712,9 +3725,9 @@ expr_stmt|;
 block|}
 name|Collection
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|>
-name|prioritiesToTry
+name|keysToTry
 init|=
 operator|(
 name|reserved
@@ -3729,11 +3742,11 @@ operator|.
 name|getReservedContainer
 argument_list|()
 operator|.
-name|getReservedPriority
+name|getReservedSchedulerKey
 argument_list|()
 argument_list|)
 else|:
-name|getPriorities
+name|getSchedulerKeys
 argument_list|()
 decl_stmt|;
 comment|// For each priority, see if we can schedule a node local, rack local
@@ -3746,10 +3759,10 @@ init|)
 block|{
 for|for
 control|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 range|:
-name|prioritiesToTry
+name|keysToTry
 control|)
 block|{
 comment|// Skip it for reserved container, since
@@ -3762,7 +3775,7 @@ operator|&&
 operator|!
 name|hasContainerForNode
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|node
 argument_list|)
@@ -3772,7 +3785,7 @@ continue|continue;
 block|}
 name|addSchedulingOpportunity
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 name|ResourceRequest
@@ -3780,7 +3793,7 @@ name|rackLocalRequest
 init|=
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|node
 operator|.
@@ -3793,7 +3806,7 @@ name|localRequest
 init|=
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|node
 operator|.
@@ -3839,7 +3852,7 @@ name|allowedLocality
 operator|=
 name|getAllowedLocalityLevelByTime
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|scheduler
 operator|.
@@ -3867,7 +3880,7 @@ name|allowedLocality
 operator|=
 name|getAllowedLocalityLevel
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|scheduler
 operator|.
@@ -3923,6 +3936,8 @@ operator|.
 name|NODE_LOCAL
 argument_list|,
 name|reserved
+argument_list|,
+name|schedulerKey
 argument_list|)
 return|;
 block|}
@@ -3987,6 +4002,8 @@ operator|.
 name|RACK_LOCAL
 argument_list|,
 name|reserved
+argument_list|,
+name|schedulerKey
 argument_list|)
 return|;
 block|}
@@ -3995,7 +4012,7 @@ name|offSwitchRequest
 init|=
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|ResourceRequest
 operator|.
@@ -4036,7 +4053,7 @@ condition|(
 operator|!
 name|hasNodeOrRackLocalRequests
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|||
 name|allowedLocality
@@ -4061,6 +4078,8 @@ operator|.
 name|OFF_SWITCH
 argument_list|,
 name|reserved
+argument_list|,
+name|schedulerKey
 argument_list|)
 return|;
 block|}
@@ -4075,13 +4094,13 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Whether this app has containers requests that could be satisfied on the    * given node, if the node had full space.    */
-DECL|method|hasContainerForNode (Priority prio, FSSchedulerNode node)
+DECL|method|hasContainerForNode (SchedulerRequestKey key, FSSchedulerNode node)
 specifier|private
 name|boolean
 name|hasContainerForNode
 parameter_list|(
-name|Priority
-name|prio
+name|SchedulerRequestKey
+name|key
 parameter_list|,
 name|FSSchedulerNode
 name|node
@@ -4092,7 +4111,7 @@ name|anyRequest
 init|=
 name|getResourceRequest
 argument_list|(
-name|prio
+name|key
 argument_list|,
 name|ResourceRequest
 operator|.
@@ -4104,7 +4123,7 @@ name|rackRequest
 init|=
 name|getResourceRequest
 argument_list|(
-name|prio
+name|key
 argument_list|,
 name|node
 operator|.
@@ -4117,7 +4136,7 @@ name|nodeRequest
 init|=
 name|getResourceRequest
 argument_list|(
-name|prio
+name|key
 argument_list|,
 name|node
 operator|.
@@ -4231,21 +4250,21 @@ name|FSSchedulerNode
 name|node
 parameter_list|)
 block|{
-name|Priority
-name|reservedPriority
+name|SchedulerRequestKey
+name|schedulerKey
 init|=
 name|node
 operator|.
 name|getReservedContainer
 argument_list|()
 operator|.
-name|getReservedPriority
+name|getReservedSchedulerKey
 argument_list|()
 decl_stmt|;
 return|return
 name|hasContainerForNode
 argument_list|(
-name|reservedPriority
+name|schedulerKey
 argument_list|,
 name|node
 argument_list|)
@@ -4273,12 +4292,12 @@ operator|.
 name|getReservedContainer
 argument_list|()
 decl_stmt|;
-name|Priority
-name|reservedPriority
+name|SchedulerRequestKey
+name|reservedSchedulerKey
 init|=
 name|rmContainer
 operator|.
-name|getReservedPriority
+name|getReservedSchedulerKey
 argument_list|()
 decl_stmt|;
 if|if
@@ -4309,7 +4328,7 @@ argument_list|)
 expr_stmt|;
 name|unreserve
 argument_list|(
-name|reservedPriority
+name|reservedSchedulerKey
 argument_list|,
 name|node
 argument_list|)
@@ -4663,10 +4682,10 @@ init|)
 block|{
 for|for
 control|(
-name|Priority
-name|p
+name|SchedulerRequestKey
+name|k
 range|:
-name|getPriorities
+name|getSchedulerKeys
 argument_list|()
 control|)
 block|{
@@ -4675,7 +4694,7 @@ name|r
 init|=
 name|getResourceRequest
 argument_list|(
-name|p
+name|k
 argument_list|,
 name|ResourceRequest
 operator|.

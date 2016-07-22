@@ -48,16 +48,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Comparator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|HashMap
 import|;
 end_import
@@ -326,24 +316,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|Priority
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Resource
 import|;
 end_import
@@ -508,36 +480,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|COMPARATOR
-specifier|private
-specifier|static
-specifier|final
-name|Comparator
-argument_list|<
-name|Priority
-argument_list|>
-name|COMPARATOR
-init|=
-operator|new
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|resource
-operator|.
-name|Priority
-operator|.
-name|Comparator
-argument_list|()
-decl_stmt|;
 DECL|field|EPOCH_BIT_SHIFT
 specifier|private
 specifier|static
@@ -647,26 +589,23 @@ name|HashSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
-DECL|field|priorities
+DECL|field|schedulerKeys
 specifier|final
 name|Set
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|>
-name|priorities
+name|schedulerKeys
 init|=
 operator|new
 name|TreeSet
 argument_list|<>
-argument_list|(
-name|COMPARATOR
-argument_list|)
+argument_list|()
 decl_stmt|;
-DECL|field|resourceRequestMap
 specifier|final
 name|Map
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|,
 name|Map
 argument_list|<
@@ -675,6 +614,7 @@ argument_list|,
 name|ResourceRequest
 argument_list|>
 argument_list|>
+DECL|field|resourceRequestMap
 name|resourceRequestMap
 init|=
 operator|new
@@ -689,7 +629,7 @@ name|NodeId
 argument_list|,
 name|Map
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|,
 name|Map
 argument_list|<
@@ -873,7 +813,7 @@ name|void
 name|clearRequests
 parameter_list|()
 block|{
-name|priorities
+name|schedulerKeys
 operator|.
 name|clear
 argument_list|()
@@ -907,7 +847,7 @@ parameter_list|)
 block|{
 name|Map
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|,
 name|Map
 argument_list|<
@@ -948,19 +888,19 @@ name|ContainerId
 argument_list|,
 name|SchedContainerChangeRequest
 argument_list|>
-DECL|method|getIncreaseRequests (NodeId nodeId, Priority priority)
+DECL|method|getIncreaseRequests (NodeId nodeId, SchedulerRequestKey schedulerKey)
 name|getIncreaseRequests
 parameter_list|(
 name|NodeId
 name|nodeId
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 name|Map
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|,
 name|Map
 argument_list|<
@@ -989,7 +929,7 @@ name|requestsOnNode
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 return|;
 block|}
@@ -1095,7 +1035,7 @@ argument_list|()
 decl_stmt|;
 name|Map
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|,
 name|Map
 argument_list|<
@@ -1146,7 +1086,10 @@ name|nodeId
 argument_list|,
 name|r
 operator|.
-name|getPriority
+name|getRMContainer
+argument_list|()
+operator|.
+name|getAllocatedSchedulerKey
 argument_list|()
 argument_list|,
 name|r
@@ -1190,7 +1133,10 @@ name|nodeId
 argument_list|,
 name|prevChangeRequest
 operator|.
-name|getPriority
+name|getRMContainer
+argument_list|()
+operator|.
+name|getAllocatedSchedulerKey
 argument_list|()
 argument_list|,
 name|prevChangeRequest
@@ -1283,12 +1229,15 @@ operator|.
 name|getNodeId
 argument_list|()
 decl_stmt|;
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 init|=
 name|request
 operator|.
-name|getPriority
+name|getRMContainer
+argument_list|()
+operator|.
+name|getAllocatedSchedulerKey
 argument_list|()
 decl_stmt|;
 name|ContainerId
@@ -1301,7 +1250,7 @@ argument_list|()
 decl_stmt|;
 name|Map
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|,
 name|Map
 argument_list|<
@@ -1355,7 +1304,7 @@ name|requestsOnNode
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 if|if
@@ -1376,7 +1325,7 @@ name|requestsOnNode
 operator|.
 name|put
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|requestsOnNodeWithPriority
 argument_list|)
@@ -1454,16 +1403,16 @@ name|delta
 argument_list|)
 expr_stmt|;
 block|}
-comment|// update priorities
-name|priorities
+comment|// update Scheduler Keys
+name|schedulerKeys
 operator|.
 name|add
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeIncreaseRequest (NodeId nodeId, Priority priority, ContainerId containerId)
+DECL|method|removeIncreaseRequest (NodeId nodeId, SchedulerRequestKey schedulerKey, ContainerId containerId)
 specifier|public
 specifier|synchronized
 name|boolean
@@ -1472,8 +1421,8 @@ parameter_list|(
 name|NodeId
 name|nodeId
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ContainerId
 name|containerId
@@ -1481,7 +1430,7 @@ parameter_list|)
 block|{
 name|Map
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|,
 name|Map
 argument_list|<
@@ -1522,7 +1471,7 @@ name|requestsOnNode
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 if|if
@@ -1559,7 +1508,7 @@ name|requestsOnNode
 operator|.
 name|remove
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -1650,7 +1599,7 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|getIncreaseRequest (NodeId nodeId, Priority priority, ContainerId containerId)
+DECL|method|getIncreaseRequest (NodeId nodeId, SchedulerRequestKey schedulerKey, ContainerId containerId)
 specifier|public
 name|SchedContainerChangeRequest
 name|getIncreaseRequest
@@ -1658,8 +1607,8 @@ parameter_list|(
 name|NodeId
 name|nodeId
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ContainerId
 name|containerId
@@ -1667,7 +1616,7 @@ parameter_list|)
 block|{
 name|Map
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|,
 name|Map
 argument_list|<
@@ -1708,7 +1657,7 @@ name|requestsOnNode
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 return|return
@@ -1758,13 +1707,15 @@ range|:
 name|requests
 control|)
 block|{
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 init|=
-name|request
+name|SchedulerRequestKey
 operator|.
-name|getPriority
-argument_list|()
+name|create
+argument_list|(
+name|request
+argument_list|)
 decl_stmt|;
 name|String
 name|resourceName
@@ -1794,7 +1745,7 @@ name|resourceRequestMap
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 if|if
@@ -1817,18 +1768,18 @@ name|resourceRequestMap
 operator|.
 name|put
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|asks
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|priorities
+name|schedulerKeys
 operator|.
 name|add
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -2152,13 +2103,15 @@ name|ResourceRequest
 name|request
 parameter_list|)
 block|{
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 init|=
-name|request
+name|SchedulerRequestKey
 operator|.
-name|getPriority
-argument_list|()
+name|create
+argument_list|(
+name|request
+argument_list|)
 decl_stmt|;
 name|String
 name|resourceName
@@ -2185,7 +2138,7 @@ name|previousAnyRequest
 init|=
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|resourceName
 argument_list|)
@@ -2219,7 +2172,7 @@ name|resourceRequest
 init|=
 name|getResourceRequests
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 if|if
@@ -2278,7 +2231,7 @@ name|anyRequest
 init|=
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|ResourceRequest
 operator|.
@@ -2536,21 +2489,21 @@ literal|false
 argument_list|)
 return|;
 block|}
-DECL|method|getPriorities ()
+DECL|method|getSchedulerKeys ()
 specifier|public
 specifier|synchronized
 name|Collection
 argument_list|<
-name|Priority
+name|SchedulerRequestKey
 argument_list|>
-name|getPriorities
+name|getSchedulerKeys
 parameter_list|()
 block|{
 return|return
-name|priorities
+name|schedulerKeys
 return|;
 block|}
-DECL|method|getResourceRequests ( Priority priority)
+DECL|method|getResourceRequests ( SchedulerRequestKey schedulerKey)
 specifier|public
 specifier|synchronized
 name|Map
@@ -2561,8 +2514,8 @@ name|ResourceRequest
 argument_list|>
 name|getResourceRequests
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 return|return
@@ -2570,7 +2523,7 @@ name|resourceRequestMap
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 return|;
 block|}
@@ -2626,14 +2579,14 @@ return|return
 name|ret
 return|;
 block|}
-DECL|method|getResourceRequest (Priority priority, String resourceName)
+DECL|method|getResourceRequest ( SchedulerRequestKey schedulerKey, String resourceName)
 specifier|public
 specifier|synchronized
 name|ResourceRequest
 name|getResourceRequest
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|String
 name|resourceName
@@ -2651,7 +2604,7 @@ name|resourceRequestMap
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 return|return
@@ -2671,14 +2624,14 @@ name|resourceName
 argument_list|)
 return|;
 block|}
-DECL|method|getResource (Priority priority)
+DECL|method|getResource (SchedulerRequestKey schedulerKey)
 specifier|public
 specifier|synchronized
 name|Resource
 name|getResource
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 name|ResourceRequest
@@ -2686,7 +2639,7 @@ name|request
 init|=
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|ResourceRequest
 operator|.
@@ -2777,12 +2730,15 @@ operator|.
 name|getNodeId
 argument_list|()
 decl_stmt|;
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 init|=
 name|increaseRequest
 operator|.
-name|getPriority
+name|getRMContainer
+argument_list|()
+operator|.
+name|getAllocatedSchedulerKey
 argument_list|()
 decl_stmt|;
 name|ContainerId
@@ -2856,7 +2812,7 @@ name|removeIncreaseRequest
 argument_list|(
 name|nodeId
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|containerId
 argument_list|)
@@ -2966,8 +2922,8 @@ name|absDelta
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Resources have been allocated to this application by the resource    * scheduler. Track them.    */
-DECL|method|allocate (NodeType type, SchedulerNode node, Priority priority, ResourceRequest request, Container containerAllocated)
+comment|/**    * Resources have been allocated to this application by the resource    * scheduler. Track them.    * @param type Node Type    * @param node SchedulerNode    * @param schedulerKey SchedulerRequestKey    * @param request ResourceRequest    * @param containerAllocated Container Allocated    * @return List of ResourceRequests    */
+DECL|method|allocate (NodeType type, SchedulerNode node, SchedulerRequestKey schedulerKey, ResourceRequest request, Container containerAllocated)
 specifier|public
 specifier|synchronized
 name|List
@@ -2982,8 +2938,8 @@ parameter_list|,
 name|SchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ResourceRequest
 name|request
@@ -3016,7 +2972,7 @@ name|allocateNodeLocal
 argument_list|(
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|request
 argument_list|,
@@ -3038,7 +2994,7 @@ name|allocateRackLocal
 argument_list|(
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|request
 argument_list|,
@@ -3165,7 +3121,7 @@ name|resourceRequests
 return|;
 block|}
 comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    */
-DECL|method|allocateNodeLocal (SchedulerNode node, Priority priority, ResourceRequest nodeLocalRequest, List<ResourceRequest> resourceRequests)
+DECL|method|allocateNodeLocal (SchedulerNode node, SchedulerRequestKey schedulerKey, ResourceRequest nodeLocalRequest, List<ResourceRequest> resourceRequests)
 specifier|private
 specifier|synchronized
 name|void
@@ -3174,8 +3130,8 @@ parameter_list|(
 name|SchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ResourceRequest
 name|nodeLocalRequest
@@ -3195,7 +3151,7 @@ operator|.
 name|getNodeName
 argument_list|()
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|nodeLocalRequest
 argument_list|)
@@ -3207,7 +3163,7 @@ name|resourceRequestMap
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|.
 name|get
@@ -3225,7 +3181,7 @@ operator|.
 name|getRackName
 argument_list|()
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|rackLocalRequest
 argument_list|)
@@ -3237,7 +3193,7 @@ name|resourceRequestMap
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|.
 name|get
@@ -3284,7 +3240,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|decResourceRequest (String resourceName, Priority priority, ResourceRequest request)
+DECL|method|decResourceRequest (String resourceName, SchedulerRequestKey schedulerKey, ResourceRequest request)
 specifier|private
 name|void
 name|decResourceRequest
@@ -3292,8 +3248,8 @@ parameter_list|(
 name|String
 name|resourceName
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ResourceRequest
 name|request
@@ -3325,7 +3281,7 @@ name|resourceRequestMap
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|.
 name|remove
@@ -3336,7 +3292,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    */
-DECL|method|allocateRackLocal (SchedulerNode node, Priority priority, ResourceRequest rackLocalRequest, List<ResourceRequest> resourceRequests)
+DECL|method|allocateRackLocal (SchedulerNode node, SchedulerRequestKey schedulerKey, ResourceRequest rackLocalRequest, List<ResourceRequest> resourceRequests)
 specifier|private
 specifier|synchronized
 name|void
@@ -3345,8 +3301,8 @@ parameter_list|(
 name|SchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ResourceRequest
 name|rackLocalRequest
@@ -3366,7 +3322,7 @@ operator|.
 name|getRackName
 argument_list|()
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|rackLocalRequest
 argument_list|)
@@ -3378,7 +3334,7 @@ name|resourceRequestMap
 operator|.
 name|get
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|.
 name|get
@@ -3536,10 +3492,10 @@ literal|true
 decl_stmt|;
 for|for
 control|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 range|:
-name|getPriorities
+name|getSchedulerKeys
 argument_list|()
 control|)
 block|{
@@ -3548,7 +3504,7 @@ name|request
 init|=
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|ResourceRequest
 operator|.

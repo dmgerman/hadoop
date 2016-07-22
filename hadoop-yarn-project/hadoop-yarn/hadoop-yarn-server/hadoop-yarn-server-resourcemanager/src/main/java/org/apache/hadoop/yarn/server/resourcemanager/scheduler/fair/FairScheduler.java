@@ -4699,7 +4699,7 @@ name|unreserve
 argument_list|(
 name|rmContainer
 operator|.
-name|getReservedPriority
+name|getReservedSchedulerKey
 argument_list|()
 argument_list|,
 name|node

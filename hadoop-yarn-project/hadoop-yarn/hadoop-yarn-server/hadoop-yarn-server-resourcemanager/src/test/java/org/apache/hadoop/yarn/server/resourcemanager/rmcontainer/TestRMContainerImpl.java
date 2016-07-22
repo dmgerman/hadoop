@@ -1224,7 +1224,10 @@ name|priority
 argument_list|,
 name|rmContainer
 operator|.
-name|getAllocatedPriority
+name|getAllocatedSchedulerKey
+argument_list|()
+operator|.
+name|getPriority
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1983,7 +1986,10 @@ name|priority
 argument_list|,
 name|rmContainer
 operator|.
-name|getAllocatedPriority
+name|getAllocatedSchedulerKey
+argument_list|()
+operator|.
+name|getPriority
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -416,6 +416,30 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|TestUtils
+operator|.
+name|toSchedulerKey
+import|;
+end_import
+
 begin_class
 DECL|class|TestSchedulerApplicationAttempt
 specifier|public
@@ -703,7 +727,10 @@ name|OFF_SWITCH
 argument_list|,
 name|node
 argument_list|,
+name|toSchedulerKey
+argument_list|(
 name|requestedPriority
+argument_list|)
 argument_list|,
 name|request
 argument_list|,
@@ -790,7 +817,10 @@ name|reservedContainers
 operator|.
 name|put
 argument_list|(
+name|toSchedulerKey
+argument_list|(
 name|prio1
+argument_list|)
 argument_list|,
 name|reservations
 argument_list|)
@@ -1161,13 +1191,16 @@ name|when
 argument_list|(
 name|container
 operator|.
-name|getReservedPriority
+name|getReservedSchedulerKey
 argument_list|()
 argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
+name|toSchedulerKey
+argument_list|(
 name|reservedPriority
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|when
@@ -2073,6 +2106,14 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
+name|SchedulerRequestKey
+name|schedulerKey
+init|=
+name|toSchedulerKey
+argument_list|(
+name|priority
+argument_list|)
+decl_stmt|;
 name|assertEquals
 argument_list|(
 literal|0
@@ -2081,7 +2122,7 @@ name|app
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2089,7 +2130,7 @@ name|app
 operator|.
 name|addSchedulingOpportunity
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2100,7 +2141,7 @@ name|app
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2109,7 +2150,7 @@ name|app
 operator|.
 name|setSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|Integer
 operator|.
@@ -2130,7 +2171,7 @@ name|app
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2138,7 +2179,7 @@ name|app
 operator|.
 name|addSchedulingOpportunity
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2151,7 +2192,7 @@ name|app
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2159,7 +2200,7 @@ name|app
 operator|.
 name|addSchedulingOpportunity
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2172,7 +2213,7 @@ name|app
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;

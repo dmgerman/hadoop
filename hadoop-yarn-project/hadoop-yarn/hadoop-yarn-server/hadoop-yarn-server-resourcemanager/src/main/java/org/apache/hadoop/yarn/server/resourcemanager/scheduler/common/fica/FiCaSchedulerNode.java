@@ -122,24 +122,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|Priority
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Resource
 import|;
 end_import
@@ -217,6 +199,26 @@ operator|.
 name|scheduler
 operator|.
 name|SchedulerApplicationAttempt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|SchedulerRequestKey
 import|;
 end_import
 
@@ -403,7 +405,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|reserveResource ( SchedulerApplicationAttempt application, Priority priority, RMContainer container)
+DECL|method|reserveResource ( SchedulerApplicationAttempt application, SchedulerRequestKey priority, RMContainer container)
 specifier|public
 specifier|synchronized
 name|void
@@ -412,7 +414,7 @@ parameter_list|(
 name|SchedulerApplicationAttempt
 name|application
 parameter_list|,
-name|Priority
+name|SchedulerRequestKey
 name|priority
 parameter_list|,
 name|RMContainer

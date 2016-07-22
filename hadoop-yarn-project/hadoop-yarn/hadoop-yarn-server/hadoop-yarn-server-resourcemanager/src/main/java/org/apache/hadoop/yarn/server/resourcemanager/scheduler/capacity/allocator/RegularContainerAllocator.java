@@ -122,24 +122,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|Priority
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Resource
 import|;
 end_import
@@ -277,6 +259,26 @@ operator|.
 name|scheduler
 operator|.
 name|SchedulerAppUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|SchedulerRequestKey
 import|;
 end_import
 
@@ -636,7 +638,7 @@ name|required
 argument_list|)
 return|;
 block|}
-DECL|method|preCheckForNewContainer (Resource clusterResource, FiCaSchedulerNode node, SchedulingMode schedulingMode, ResourceLimits resourceLimits, Priority priority)
+DECL|method|preCheckForNewContainer (Resource clusterResource, FiCaSchedulerNode node, SchedulingMode schedulingMode, ResourceLimits resourceLimits, SchedulerRequestKey schedulerKey)
 specifier|private
 name|ContainerAllocation
 name|preCheckForNewContainer
@@ -653,8 +655,8 @@ parameter_list|,
 name|ResourceLimits
 name|resourceLimits
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 if|if
@@ -693,7 +695,7 @@ name|application
 operator|.
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|ResourceRequest
 operator|.
@@ -729,7 +731,7 @@ name|application
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|<=
 literal|0
@@ -844,7 +846,7 @@ condition|(
 operator|!
 name|shouldAllocOrReserveNewContainer
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|required
 argument_list|)
@@ -919,7 +921,7 @@ name|application
 operator|.
 name|addSchedulingOpportunity
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 comment|// Increase missed-non-partitioned-resource-request-opportunity.
@@ -951,7 +953,7 @@ name|application
 operator|.
 name|addMissedNonPartitionedRequestSchedulingOpportunity
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -1001,7 +1003,10 @@ argument_list|()
 operator|+
 literal|" priority="
 operator|+
-name|priority
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
 operator|+
 literal|" because missed-non-partitioned-resource-request"
 operator|+
@@ -1034,7 +1039,7 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|preAllocation (Resource clusterResource, FiCaSchedulerNode node, SchedulingMode schedulingMode, ResourceLimits resourceLimits, Priority priority, RMContainer reservedContainer)
+DECL|method|preAllocation (Resource clusterResource, FiCaSchedulerNode node, SchedulingMode schedulingMode, ResourceLimits resourceLimits, SchedulerRequestKey schedulerKey, RMContainer reservedContainer)
 name|ContainerAllocation
 name|preAllocation
 parameter_list|(
@@ -1050,8 +1055,8 @@ parameter_list|,
 name|ResourceLimits
 name|resourceLimits
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|RMContainer
 name|reservedContainer
@@ -1080,7 +1085,7 @@ name|schedulingMode
 argument_list|,
 name|resourceLimits
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 if|if
@@ -1104,7 +1109,7 @@ name|application
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|==
 literal|0
@@ -1135,7 +1140,7 @@ name|clusterResource
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|reservedContainer
 argument_list|,
@@ -1167,7 +1172,7 @@ name|application
 operator|.
 name|subtractSchedulingOpportunity
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -1176,14 +1181,14 @@ return|return
 name|result
 return|;
 block|}
-DECL|method|getLocalityWaitFactor ( Priority priority, int clusterNodes)
+DECL|method|getLocalityWaitFactor ( SchedulerRequestKey schedulerKey, int clusterNodes)
 specifier|public
 specifier|synchronized
 name|float
 name|getLocalityWaitFactor
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|int
 name|clusterNodes
@@ -1201,7 +1206,7 @@ name|application
 operator|.
 name|getResourceRequests
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|.
 name|size
@@ -1261,13 +1266,13 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|canAssign (Priority priority, FiCaSchedulerNode node, NodeType type, RMContainer reservedContainer)
+DECL|method|canAssign (SchedulerRequestKey schedulerKey, FiCaSchedulerNode node, NodeType type, RMContainer reservedContainer)
 specifier|private
 name|boolean
 name|canAssign
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|FiCaSchedulerNode
 name|node
@@ -1308,7 +1313,7 @@ name|application
 operator|.
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|ResourceRequest
 operator|.
@@ -1322,7 +1327,7 @@ name|application
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 name|long
@@ -1338,7 +1343,7 @@ name|localityWaitFactor
 init|=
 name|getLocalityWaitFactor
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|rmContext
 operator|.
@@ -1349,8 +1354,8 @@ name|getNumClusterNodes
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Cap the delay by the number of nodes in the cluster. Under most conditions
-comment|// this means we will consider each node in the cluster before
+comment|// Cap the delay by the number of nodes in the cluster. Under most
+comment|// conditions this means we will consider each node in the cluster before
 comment|// accepting an off-switch assignment.
 return|return
 operator|(
@@ -1385,7 +1390,7 @@ name|application
 operator|.
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|node
 operator|.
@@ -1429,7 +1434,7 @@ name|application
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 return|return
@@ -1457,7 +1462,7 @@ name|application
 operator|.
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|node
 operator|.
@@ -1486,7 +1491,7 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|assignNodeLocalContainers ( Resource clusterResource, ResourceRequest nodeLocalResourceRequest, FiCaSchedulerNode node, Priority priority, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
+DECL|method|assignNodeLocalContainers ( Resource clusterResource, ResourceRequest nodeLocalResourceRequest, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|ContainerAllocation
 name|assignNodeLocalContainers
@@ -1500,8 +1505,8 @@ parameter_list|,
 name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|RMContainer
 name|reservedContainer
@@ -1517,7 +1522,7 @@ if|if
 condition|(
 name|canAssign
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|node
 argument_list|,
@@ -1536,7 +1541,7 @@ name|clusterResource
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|nodeLocalResourceRequest
 argument_list|,
@@ -1559,7 +1564,7 @@ operator|.
 name|LOCALITY_SKIPPED
 return|;
 block|}
-DECL|method|assignRackLocalContainers ( Resource clusterResource, ResourceRequest rackLocalResourceRequest, FiCaSchedulerNode node, Priority priority, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
+DECL|method|assignRackLocalContainers ( Resource clusterResource, ResourceRequest rackLocalResourceRequest, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|ContainerAllocation
 name|assignRackLocalContainers
@@ -1573,8 +1578,8 @@ parameter_list|,
 name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|RMContainer
 name|reservedContainer
@@ -1590,7 +1595,7 @@ if|if
 condition|(
 name|canAssign
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|node
 argument_list|,
@@ -1609,7 +1614,7 @@ name|clusterResource
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|rackLocalResourceRequest
 argument_list|,
@@ -1632,7 +1637,7 @@ operator|.
 name|LOCALITY_SKIPPED
 return|;
 block|}
-DECL|method|assignOffSwitchContainers ( Resource clusterResource, ResourceRequest offSwitchResourceRequest, FiCaSchedulerNode node, Priority priority, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
+DECL|method|assignOffSwitchContainers ( Resource clusterResource, ResourceRequest offSwitchResourceRequest, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|ContainerAllocation
 name|assignOffSwitchContainers
@@ -1646,8 +1651,8 @@ parameter_list|,
 name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|RMContainer
 name|reservedContainer
@@ -1663,7 +1668,7 @@ if|if
 condition|(
 name|canAssign
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|node
 argument_list|,
@@ -1682,7 +1687,7 @@ name|clusterResource
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|offSwitchResourceRequest
 argument_list|,
@@ -1713,7 +1718,7 @@ operator|.
 name|APP_SKIPPED
 return|;
 block|}
-DECL|method|assignContainersOnNode (Resource clusterResource, FiCaSchedulerNode node, Priority priority, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
+DECL|method|assignContainersOnNode (Resource clusterResource, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|ContainerAllocation
 name|assignContainersOnNode
@@ -1724,8 +1729,8 @@ parameter_list|,
 name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|RMContainer
 name|reservedContainer
@@ -1753,7 +1758,7 @@ name|application
 operator|.
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|node
 operator|.
@@ -1784,7 +1789,7 @@ name|nodeLocalResourceRequest
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|reservedContainer
 argument_list|,
@@ -1834,7 +1839,7 @@ name|application
 operator|.
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|node
 operator|.
@@ -1890,7 +1895,7 @@ name|rackLocalResourceRequest
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|reservedContainer
 argument_list|,
@@ -1940,7 +1945,7 @@ name|application
 operator|.
 name|getResourceRequest
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|ResourceRequest
 operator|.
@@ -2001,7 +2006,7 @@ name|offSwitchResourceRequest
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|reservedContainer
 argument_list|,
@@ -2048,7 +2053,7 @@ operator|.
 name|PRIORITY_SKIPPED
 return|;
 block|}
-DECL|method|assignContainer (Resource clusterResource, FiCaSchedulerNode node, Priority priority, ResourceRequest request, NodeType type, RMContainer rmContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
+DECL|method|assignContainer (Resource clusterResource, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, ResourceRequest request, NodeType type, RMContainer rmContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|ContainerAllocation
 name|assignContainer
@@ -2059,8 +2064,8 @@ parameter_list|,
 name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ResourceRequest
 name|request
@@ -2110,7 +2115,7 @@ argument_list|()
 operator|+
 literal|" priority="
 operator|+
-name|priority
+name|schedulerKey
 operator|.
 name|getPriority
 argument_list|()
@@ -2240,7 +2245,7 @@ name|shouldAllocOrReserveNewContainer
 init|=
 name|shouldAllocOrReserveNewContainer
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|capability
 argument_list|)
@@ -2494,7 +2499,7 @@ name|clusterResource
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|resourceNeedToUnReserve
 argument_list|)
@@ -2652,12 +2657,12 @@ name|LOCALITY_SKIPPED
 return|;
 block|}
 block|}
+DECL|method|shouldAllocOrReserveNewContainer ( SchedulerRequestKey schedulerKey, Resource required)
 name|boolean
-DECL|method|shouldAllocOrReserveNewContainer (Priority priority, Resource required)
 name|shouldAllocOrReserveNewContainer
 parameter_list|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|Resource
 name|required
@@ -2670,7 +2675,7 @@ name|application
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 name|int
@@ -2680,7 +2685,7 @@ name|application
 operator|.
 name|getNumReservedContainers
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 name|int
@@ -2729,7 +2734,7 @@ name|application
 operator|.
 name|getReReservations
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|/
 operator|(
@@ -2780,7 +2785,7 @@ name|application
 operator|.
 name|getReReservations
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 operator|+
 literal|" reserved="
@@ -2824,7 +2829,7 @@ literal|0
 operator|)
 return|;
 block|}
-DECL|method|getContainer (RMContainer rmContainer, FiCaSchedulerNode node, Resource capability, Priority priority)
+DECL|method|getContainer (RMContainer rmContainer, FiCaSchedulerNode node, Resource capability, SchedulerRequestKey schedulerKey)
 specifier|private
 name|Container
 name|getContainer
@@ -2838,8 +2843,8 @@ parameter_list|,
 name|Resource
 name|capability
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 return|return
@@ -2860,11 +2865,11 @@ name|node
 argument_list|,
 name|capability
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|)
 return|;
 block|}
-DECL|method|createContainer (FiCaSchedulerNode node, Resource capability, Priority priority)
+DECL|method|createContainer (FiCaSchedulerNode node, Resource capability, SchedulerRequestKey schedulerKey)
 specifier|private
 name|Container
 name|createContainer
@@ -2875,8 +2880,8 @@ parameter_list|,
 name|Resource
 name|capability
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|)
 block|{
 name|NodeId
@@ -2928,13 +2933,16 @@ argument_list|()
 argument_list|,
 name|capability
 argument_list|,
-name|priority
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
 argument_list|,
 literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|handleNewContainerAllocation ( ContainerAllocation allocationResult, FiCaSchedulerNode node, Priority priority, RMContainer reservedContainer, Container container)
+DECL|method|handleNewContainerAllocation ( ContainerAllocation allocationResult, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer reservedContainer, Container container)
 specifier|private
 name|ContainerAllocation
 name|handleNewContainerAllocation
@@ -2945,8 +2953,8 @@ parameter_list|,
 name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|RMContainer
 name|reservedContainer
@@ -2968,7 +2976,7 @@ name|application
 operator|.
 name|unreserve
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|node
 argument_list|,
@@ -2990,7 +2998,7 @@ name|containerNodeType
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|lastResourceRequest
 argument_list|,
@@ -3053,7 +3061,7 @@ return|return
 name|allocationResult
 return|;
 block|}
-DECL|method|doAllocation (ContainerAllocation allocationResult, FiCaSchedulerNode node, Priority priority, RMContainer reservedContainer)
+DECL|method|doAllocation (ContainerAllocation allocationResult, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer reservedContainer)
 name|ContainerAllocation
 name|doAllocation
 parameter_list|(
@@ -3063,8 +3071,8 @@ parameter_list|,
 name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|RMContainer
 name|reservedContainer
@@ -3085,7 +3093,7 @@ operator|.
 name|getResourceToBeAllocated
 argument_list|()
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 comment|// something went wrong getting/creating the container
@@ -3137,7 +3145,7 @@ name|allocationResult
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|reservedContainer
 argument_list|,
@@ -3152,7 +3160,7 @@ name|application
 operator|.
 name|reserve
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|,
 name|node
 argument_list|,
@@ -3233,7 +3241,7 @@ name|application
 operator|.
 name|resetSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -3245,7 +3253,7 @@ name|application
 operator|.
 name|resetMissedNonPartitionedRequestSchedulingOpportunity
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -3253,7 +3261,7 @@ return|return
 name|allocationResult
 return|;
 block|}
-DECL|method|allocate (Resource clusterResource, FiCaSchedulerNode node, SchedulingMode schedulingMode, ResourceLimits resourceLimits, Priority priority, RMContainer reservedContainer)
+DECL|method|allocate (Resource clusterResource, FiCaSchedulerNode node, SchedulingMode schedulingMode, ResourceLimits resourceLimits, SchedulerRequestKey schedulerKey, RMContainer reservedContainer)
 specifier|private
 name|ContainerAllocation
 name|allocate
@@ -3270,8 +3278,8 @@ parameter_list|,
 name|ResourceLimits
 name|resourceLimits
 parameter_list|,
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|RMContainer
 name|reservedContainer
@@ -3290,7 +3298,7 @@ name|schedulingMode
 argument_list|,
 name|resourceLimits
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|reservedContainer
 argument_list|)
@@ -3322,7 +3330,7 @@ name|result
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 name|reservedContainer
 argument_list|)
@@ -3427,12 +3435,12 @@ block|}
 comment|// Schedule in priority order
 for|for
 control|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 range|:
 name|application
 operator|.
-name|getPriorities
+name|getSchedulerKeys
 argument_list|()
 control|)
 block|{
@@ -3449,7 +3457,7 @@ name|schedulingMode
 argument_list|,
 name|resourceLimits
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|,
 literal|null
 argument_list|)
@@ -3509,7 +3517,7 @@ name|resourceLimits
 argument_list|,
 name|reservedContainer
 operator|.
-name|getReservedPriority
+name|getReservedSchedulerKey
 argument_list|()
 argument_list|,
 name|reservedContainer

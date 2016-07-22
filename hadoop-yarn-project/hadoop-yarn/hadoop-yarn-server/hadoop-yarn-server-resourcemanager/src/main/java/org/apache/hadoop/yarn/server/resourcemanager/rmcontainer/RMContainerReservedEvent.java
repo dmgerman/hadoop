@@ -72,7 +72,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Priority
+name|Resource
 import|;
 end_import
 
@@ -86,11 +86,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
+name|server
 operator|.
-name|records
+name|resourcemanager
 operator|.
-name|Resource
+name|scheduler
+operator|.
+name|SchedulerRequestKey
 import|;
 end_import
 
@@ -118,13 +120,13 @@ specifier|final
 name|NodeId
 name|reservedNode
 decl_stmt|;
-DECL|field|reservedPriority
+DECL|field|reservedSchedulerKey
 specifier|private
 specifier|final
-name|Priority
-name|reservedPriority
+name|SchedulerRequestKey
+name|reservedSchedulerKey
 decl_stmt|;
-DECL|method|RMContainerReservedEvent (ContainerId containerId, Resource reservedResource, NodeId reservedNode, Priority reservedPriority)
+DECL|method|RMContainerReservedEvent (ContainerId containerId, Resource reservedResource, NodeId reservedNode, SchedulerRequestKey reservedSchedulerKey)
 specifier|public
 name|RMContainerReservedEvent
 parameter_list|(
@@ -137,8 +139,8 @@ parameter_list|,
 name|NodeId
 name|reservedNode
 parameter_list|,
-name|Priority
-name|reservedPriority
+name|SchedulerRequestKey
+name|reservedSchedulerKey
 parameter_list|)
 block|{
 name|super
@@ -164,9 +166,9 @@ name|reservedNode
 expr_stmt|;
 name|this
 operator|.
-name|reservedPriority
+name|reservedSchedulerKey
 operator|=
-name|reservedPriority
+name|reservedSchedulerKey
 expr_stmt|;
 block|}
 DECL|method|getReservedResource ()
@@ -189,14 +191,14 @@ return|return
 name|reservedNode
 return|;
 block|}
-DECL|method|getReservedPriority ()
+DECL|method|getReservedSchedulerKey ()
 specifier|public
-name|Priority
-name|getReservedPriority
+name|SchedulerRequestKey
+name|getReservedSchedulerKey
 parameter_list|()
 block|{
 return|return
-name|reservedPriority
+name|reservedSchedulerKey
 return|;
 block|}
 block|}

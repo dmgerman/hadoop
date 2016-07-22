@@ -174,24 +174,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|Priority
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Resource
 import|;
 end_import
@@ -311,6 +293,26 @@ operator|.
 name|scheduler
 operator|.
 name|SchedContainerChangeRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|SchedulerRequestKey
 import|;
 end_import
 
@@ -826,7 +828,10 @@ name|unreserve
 argument_list|(
 name|increaseRequest
 operator|.
-name|getPriority
+name|getRMContainer
+argument_list|()
+operator|.
+name|getAllocatedSchedulerKey
 argument_list|()
 argument_list|,
 operator|(
@@ -988,7 +993,10 @@ name|reserveIncreasedContainer
 argument_list|(
 name|increaseRequest
 operator|.
-name|getPriority
+name|getRMContainer
+argument_list|()
+operator|.
+name|getAllocatedSchedulerKey
 argument_list|()
 argument_list|,
 name|node
@@ -1251,12 +1259,12 @@ decl_stmt|;
 comment|/*        * Loop each priority, and containerId. Container priority is not        * equivalent to request priority, application master can run an important        * task on a less prioritized container.        *         * So behavior here is, we still try to increase container with higher        * priority, but will skip increase request and move to next increase        * request if queue-limit or user-limit aren't satisfied         */
 for|for
 control|(
-name|Priority
-name|priority
+name|SchedulerRequestKey
+name|schedulerKey
 range|:
 name|application
 operator|.
-name|getPriorities
+name|getSchedulerKeys
 argument_list|()
 control|)
 block|{
@@ -1281,7 +1289,10 @@ argument_list|()
 operator|+
 literal|" priority="
 operator|+
-name|priority
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1300,7 +1311,7 @@ name|getIncreaseRequests
 argument_list|(
 name|nodeId
 argument_list|,
-name|priority
+name|schedulerKey
 argument_list|)
 decl_stmt|;
 comment|// We don't have more increase request on this priority, skip..
@@ -1332,7 +1343,10 @@ argument_list|()
 operator|+
 literal|" priority="
 operator|+
-name|priority
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1620,7 +1634,10 @@ argument_list|()
 argument_list|,
 name|req
 operator|.
-name|getPriority
+name|getRMContainer
+argument_list|()
+operator|.
+name|getAllocatedSchedulerKey
 argument_list|()
 argument_list|,
 name|req
@@ -1690,10 +1707,7 @@ name|nodeId
 argument_list|,
 name|reservedContainer
 operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getPriority
+name|getAllocatedSchedulerKey
 argument_list|()
 argument_list|,
 name|reservedContainer

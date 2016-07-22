@@ -778,6 +778,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|SchedulerRequestKey
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|capacity
 operator|.
 name|preemption
@@ -1119,6 +1139,30 @@ operator|.
 name|mockito
 operator|.
 name|Mockito
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|TestUtils
+operator|.
+name|toSchedulerKey
 import|;
 end_import
 
@@ -5422,6 +5466,14 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
+name|SchedulerRequestKey
+name|u0SchedKey
+init|=
+name|toSchedulerKey
+argument_list|(
+name|u0Priority
+argument_list|)
+decl_stmt|;
 name|app_0
 operator|.
 name|updateResourceRequests
@@ -5561,6 +5613,14 @@ operator|.
 name|createMockPriority
 argument_list|(
 literal|2
+argument_list|)
+decl_stmt|;
+name|SchedulerRequestKey
+name|u1SchedKey
+init|=
+name|toSchedulerKey
+argument_list|(
+name|u1Priority
 argument_list|)
 decl_stmt|;
 name|app_2
@@ -5751,7 +5811,7 @@ name|app_0
 operator|.
 name|getResource
 argument_list|(
-name|u0Priority
+name|u0SchedKey
 argument_list|)
 argument_list|,
 literal|null
@@ -5773,7 +5833,7 @@ name|app_2
 operator|.
 name|getResource
 argument_list|(
-name|u1Priority
+name|u1SchedKey
 argument_list|)
 argument_list|,
 literal|null
@@ -10939,7 +10999,10 @@ name|app_1
 operator|.
 name|getReReservations
 argument_list|(
+name|toSchedulerKey
+argument_list|(
 name|priority
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -11046,7 +11109,10 @@ name|app_1
 operator|.
 name|getReReservations
 argument_list|(
+name|toSchedulerKey
+argument_list|(
 name|priority
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -11155,7 +11221,10 @@ name|app_1
 operator|.
 name|getReReservations
 argument_list|(
+name|toSchedulerKey
+argument_list|(
 name|priority
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -11780,6 +11849,14 @@ name|assignment
 init|=
 literal|null
 decl_stmt|;
+name|SchedulerRequestKey
+name|schedulerKey
+init|=
+name|toSchedulerKey
+argument_list|(
+name|priority
+argument_list|)
+decl_stmt|;
 comment|// Start with off switch, shouldn't allocate due to delay scheduling
 name|assignment
 operator|=
@@ -11815,7 +11892,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -11827,7 +11904,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -11879,7 +11956,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -11891,7 +11968,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -11943,7 +12020,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -11955,7 +12032,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12004,6 +12081,7 @@ operator|.
 name|OFF_SWITCH
 argument_list|)
 expr_stmt|;
+comment|// should NOT reset
 name|assertEquals
 argument_list|(
 literal|4
@@ -12012,11 +12090,10 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// should NOT reset
 name|assertEquals
 argument_list|(
 literal|2
@@ -12025,7 +12102,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12060,6 +12137,7 @@ operator|.
 name|NODE_LOCAL
 argument_list|)
 expr_stmt|;
+comment|// should reset
 name|assertEquals
 argument_list|(
 literal|0
@@ -12068,11 +12146,10 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// should reset
 name|assertEquals
 argument_list|(
 literal|1
@@ -12081,7 +12158,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12116,6 +12193,7 @@ operator|.
 name|NODE_LOCAL
 argument_list|)
 expr_stmt|;
+comment|// should reset
 name|assertEquals
 argument_list|(
 literal|0
@@ -12124,11 +12202,10 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// should reset
 name|assertEquals
 argument_list|(
 literal|0
@@ -12137,7 +12214,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12249,7 +12326,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12334,7 +12411,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12346,7 +12423,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12381,6 +12458,7 @@ operator|.
 name|RACK_LOCAL
 argument_list|)
 expr_stmt|;
+comment|// should reset
 name|assertEquals
 argument_list|(
 literal|0
@@ -12389,11 +12467,10 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// should reset
 name|assertEquals
 argument_list|(
 literal|3
@@ -12402,7 +12479,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12436,7 +12513,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12448,7 +12525,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12497,6 +12574,7 @@ operator|.
 name|RACK_LOCAL
 argument_list|)
 expr_stmt|;
+comment|// should NOT reset
 name|assertEquals
 argument_list|(
 literal|2
@@ -12505,11 +12583,10 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// should NOT reset
 name|assertEquals
 argument_list|(
 literal|2
@@ -12518,7 +12595,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12553,6 +12630,7 @@ operator|.
 name|RACK_LOCAL
 argument_list|)
 expr_stmt|;
+comment|// should NOT reset
 name|assertEquals
 argument_list|(
 literal|3
@@ -12561,11 +12639,10 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// should NOT reset
 name|assertEquals
 argument_list|(
 literal|1
@@ -12574,7 +12651,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12584,7 +12661,7 @@ name|app_0
 operator|.
 name|resetSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 expr_stmt|;
 name|app_0_requests_0
@@ -12725,7 +12802,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12771,7 +12848,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13001,6 +13078,14 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
+name|SchedulerRequestKey
+name|schedulerKey1
+init|=
+name|toSchedulerKey
+argument_list|(
+name|priority_1
+argument_list|)
+decl_stmt|;
 name|app_0_requests_0
 operator|.
 name|add
@@ -13134,6 +13219,14 @@ argument_list|(
 literal|2
 argument_list|)
 decl_stmt|;
+name|SchedulerRequestKey
+name|schedulerKey2
+init|=
+name|toSchedulerKey
+argument_list|(
+name|priority_2
+argument_list|)
+decl_stmt|;
 name|app_0_requests_0
 operator|.
 name|add
@@ -13253,7 +13346,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority_1
+name|schedulerKey1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13265,7 +13358,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority_1
+name|schedulerKey1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13277,7 +13370,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority_2
+name|schedulerKey2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13289,7 +13382,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority_2
+name|schedulerKey2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13329,7 +13422,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority_1
+name|schedulerKey1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13341,7 +13434,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority_1
+name|schedulerKey1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13353,7 +13446,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority_2
+name|schedulerKey2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13365,7 +13458,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority_2
+name|schedulerKey2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13408,7 +13501,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority_1
+name|schedulerKey1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13420,7 +13513,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority_1
+name|schedulerKey1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13432,7 +13525,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority_2
+name|schedulerKey2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13444,7 +13537,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority_2
+name|schedulerKey2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13487,7 +13580,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority_1
+name|schedulerKey1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13499,7 +13592,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority_1
+name|schedulerKey1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13511,7 +13604,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority_2
+name|schedulerKey2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13523,7 +13616,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority_2
+name|schedulerKey2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13566,7 +13659,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority_1
+name|schedulerKey1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13578,7 +13671,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority_1
+name|schedulerKey1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13590,7 +13683,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority_2
+name|schedulerKey2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13602,7 +13695,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority_2
+name|schedulerKey2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13815,6 +13908,14 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
+name|SchedulerRequestKey
+name|schedulerKey
+init|=
+name|toSchedulerKey
+argument_list|(
+name|priority
+argument_list|)
+decl_stmt|;
 name|List
 argument_list|<
 name|ResourceRequest
@@ -13980,7 +14081,7 @@ name|GB
 argument_list|,
 literal|1
 argument_list|,
-comment|// only one
+comment|// only 1
 literal|true
 argument_list|,
 name|priority
@@ -14036,7 +14137,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -14049,7 +14150,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -14081,18 +14182,6 @@ argument_list|(
 name|assignment
 argument_list|)
 expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|0
-argument_list|,
-name|app_0
-operator|.
-name|getSchedulingOpportunities
-argument_list|(
-name|priority
-argument_list|)
-argument_list|)
-expr_stmt|;
 comment|// Still zero
 comment|// since #req=0
 name|assertEquals
@@ -14101,9 +14190,21 @@ literal|0
 argument_list|,
 name|app_0
 operator|.
+name|getSchedulingOpportunities
+argument_list|(
+name|schedulerKey
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|app_0
+operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -14183,7 +14284,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -14195,7 +14296,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -14230,6 +14331,7 @@ operator|.
 name|NODE_LOCAL
 argument_list|)
 expr_stmt|;
+comment|// should reset
 name|assertEquals
 argument_list|(
 literal|0
@@ -14238,11 +14340,10 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// should reset
 name|assertEquals
 argument_list|(
 literal|0
@@ -14251,7 +14352,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -15498,6 +15599,14 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
+name|SchedulerRequestKey
+name|schedulerKey
+init|=
+name|toSchedulerKey
+argument_list|(
+name|priority
+argument_list|)
+decl_stmt|;
 name|List
 argument_list|<
 name|ResourceRequest
@@ -15668,6 +15777,7 @@ argument_list|(
 name|assignment
 argument_list|)
 expr_stmt|;
+comment|// should be 0
 name|assertEquals
 argument_list|(
 literal|0
@@ -15676,11 +15786,10 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// should be 0
 comment|// resourceName:<priority, memory, #containers, relaxLocality>
 comment|// host_0_0:< 1, 1GB, 1, true>
 comment|// host_0_1:< null>
@@ -15723,6 +15832,7 @@ argument_list|(
 name|assignment
 argument_list|)
 expr_stmt|;
+comment|// should be 0
 name|assertEquals
 argument_list|(
 literal|0
@@ -15731,11 +15841,10 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// should be 0
 comment|// Allow rack-locality for rack_1, but blacklist node_1_1
 name|app_0_requests_0
 operator|.
@@ -15829,6 +15938,7 @@ argument_list|(
 name|assignment
 argument_list|)
 expr_stmt|;
+comment|// should be 0
 name|assertEquals
 argument_list|(
 literal|0
@@ -15837,11 +15947,10 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// should be 0
 comment|// Now, remove node_1_1 from blacklist, but add rack_1 to blacklist
 name|app_0
 operator|.
@@ -15916,6 +16025,7 @@ argument_list|(
 name|assignment
 argument_list|)
 expr_stmt|;
+comment|// should be 0
 name|assertEquals
 argument_list|(
 literal|0
@@ -15924,11 +16034,10 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// should be 0
 comment|// Now remove rack_1 from blacklist
 name|app_0
 operator|.
@@ -16005,7 +16114,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -16017,7 +16126,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -16136,7 +16245,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -16148,7 +16257,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -18403,6 +18512,14 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
+name|SchedulerRequestKey
+name|schedulerKey
+init|=
+name|toSchedulerKey
+argument_list|(
+name|priority
+argument_list|)
+decl_stmt|;
 name|List
 argument_list|<
 name|ResourceRequest
@@ -18688,7 +18805,7 @@ name|app_0
 operator|.
 name|getSchedulingOpportunities
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -18700,7 +18817,7 @@ name|app_0
 operator|.
 name|getTotalRequiredResources
 argument_list|(
-name|priority
+name|schedulerKey
 argument_list|)
 argument_list|)
 expr_stmt|;
