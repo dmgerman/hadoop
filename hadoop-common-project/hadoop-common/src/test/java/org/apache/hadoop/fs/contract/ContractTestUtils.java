@@ -288,6 +288,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|NoSuchElementException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Properties
 import|;
 end_import
@@ -313,7 +323,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Utilities used across test cases  */
+comment|/**  * Utilities used across test cases.  */
 end_comment
 
 begin_class
@@ -387,7 +397,7 @@ name|DEFAULT_IO_CHUNK_MODULUS_SIZE
 init|=
 literal|128
 decl_stmt|;
-comment|/**    * Assert that a property in the property set matches the expected value    * @param props property set    * @param key property name    * @param expected expected value. If null, the property must not be in the set    */
+comment|/**    * Assert that a property in the property set matches the expected value.    * @param props property set    * @param key property name    * @param expected expected value. If null, the property must not be in the set    */
 DECL|method|assertPropertyEquals (Properties props, String key, String expected)
 specifier|public
 specifier|static
@@ -694,16 +704,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSDataInputStream
-name|in
-init|=
-name|fs
-operator|.
-name|open
-argument_list|(
-name|path
-argument_list|)
-decl_stmt|;
 name|byte
 index|[]
 name|dest
@@ -725,6 +725,17 @@ init|=
 literal|0
 decl_stmt|;
 try|try
+init|(
+name|FSDataInputStream
+name|in
+init|=
+name|fs
+operator|.
+name|open
+argument_list|(
+name|path
+argument_list|)
+init|)
 block|{
 while|while
 condition|(
@@ -772,19 +783,11 @@ name|nbytes
 expr_stmt|;
 block|}
 block|}
-finally|finally
-block|{
-name|in
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 return|return
 name|dest
 return|;
 block|}
-comment|/**    * Read a file, verify its length and contents match the expected array    * @param fs filesystem    * @param path path to file    * @param original original dataset    * @throws IOException IO Problems    */
+comment|/**    * Read a file, verify its length and contents match the expected array.    * @param fs filesystem    * @param path path to file    * @param original original dataset    * @throws IOException IO Problems    */
 DECL|method|verifyFileContents (FileSystem fs, Path path, byte[] original)
 specifier|public
 specifier|static
@@ -877,7 +880,7 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Verify that the read at a specific offset in a stream    * matches that expected    * @param stm stream    * @param fileContents original file contents    * @param seekOff seek offset    * @param toRead number of bytes to read    * @throws IOException IO problems    */
+comment|/**    * Verify that the read at a specific offset in a stream    * matches that expected.    * @param stm stream    * @param fileContents original file contents    * @param seekOff seek offset    * @param toRead number of bytes to read    * @throws IOException IO problems    */
 DECL|method|verifyRead (FSDataInputStream stm, byte[] fileContents, int seekOff, int toRead)
 specifier|public
 specifier|static
@@ -1137,7 +1140,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"[%04d] %2x %s\n"
+literal|"[%04d] %2x %s%n"
 argument_list|,
 name|i
 argument_list|,
@@ -1159,7 +1162,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"[%04d] %2x %s -expected %2x %s\n"
+literal|"[%04d] %2x %s -expected %2x %s%n"
 argument_list|,
 name|i
 argument_list|,
@@ -1235,7 +1238,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Convert a buffer to a string, character by character    * @param buffer input bytes    * @return a string conversion    */
+comment|/**    * Convert a buffer to a string, character by character.    * @param buffer input bytes    * @return a string conversion    */
 DECL|method|toChar (byte[] buffer)
 specifier|public
 specifier|static
@@ -1358,7 +1361,7 @@ return|return
 name|buffer
 return|;
 block|}
-comment|/**    * Cleanup at the end of a test run    * @param action action triggering the operation (for use in logging)    * @param fileSystem filesystem to work with. May be null    * @param cleanupPath path to delete as a string    */
+comment|/**    * Cleanup at the end of a test run.    * @param action action triggering the operation (for use in logging)    * @param fileSystem filesystem to work with. May be null    * @param cleanupPath path to delete as a string    */
 DECL|method|cleanup (String action, FileSystem fileSystem, String cleanupPath)
 specifier|public
 specifier|static
@@ -1416,7 +1419,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Cleanup at the end of a test run    * @param action action triggering the operation (for use in logging)    * @param fileSystem filesystem to work with. May be null    * @param path path to delete    */
+comment|/**    * Cleanup at the end of a test run.    * @param action action triggering the operation (for use in logging)    * @param fileSystem filesystem to work with. May be null    * @param path path to delete    */
 DECL|method|cleanup (String action, FileSystem fileSystem, Path path)
 specifier|public
 specifier|static
@@ -1631,7 +1634,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * downgrade a failure to a message and a warning, then an    * exception for the Junit test runner to mark as failed    * @param message text message    * @param failure what failed    * @throws AssumptionViolatedException always    */
+comment|/**    * downgrade a failure to a message and a warning, then an    * exception for the Junit test runner to mark as failed.    * @param message text message    * @param failure what failed    * @throws AssumptionViolatedException always    */
 DECL|method|downgrade (String message, Throwable failure)
 specifier|public
 specifier|static
@@ -1671,7 +1674,7 @@ throw|throw
 name|ave
 throw|;
 block|}
-comment|/**    * report an overridden test as unsupported    * @param message message to use in the text    * @throws AssumptionViolatedException always    */
+comment|/**    * report an overridden test as unsupported.    * @param message message to use in the text    * @throws AssumptionViolatedException always    */
 DECL|method|unsupported (String message)
 specifier|public
 specifier|static
@@ -1688,7 +1691,7 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * report a test has been skipped for some reason    * @param message message to use in the text    * @throws AssumptionViolatedException always    */
+comment|/**    * report a test has been skipped for some reason.    * @param message message to use in the text    * @throws AssumptionViolatedException always    */
 DECL|method|skip (String message)
 specifier|public
 specifier|static
@@ -1716,7 +1719,7 @@ name|message
 argument_list|)
 throw|;
 block|}
-comment|/**    * Fail with an exception that was received    * @param text text to use in the exception    * @param thrown a (possibly null) throwable to init the cause with    * @throws AssertionError with the text and throwable -always    */
+comment|/**    * Fail with an exception that was received.    * @param text text to use in the exception    * @param thrown a (possibly null) throwable to init the cause with    * @throws AssertionError with the text and throwable -always    */
 DECL|method|fail (String text, Throwable thrown)
 specifier|public
 specifier|static
@@ -1740,7 +1743,7 @@ name|thrown
 argument_list|)
 throw|;
 block|}
-comment|/**    * Make an assertion about the length of a file    * @param fs filesystem    * @param path path of the file    * @param expected expected length    * @throws IOException on File IO problems    */
+comment|/**    * Make an assertion about the length of a file.    * @param fs filesystem    * @param path path of the file    * @param expected expected length    * @throws IOException on File IO problems    */
 DECL|method|assertFileHasLength (FileSystem fs, Path path, int expected)
 specifier|public
 specifier|static
@@ -1788,7 +1791,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Assert that a path refers to a directory    * @param fs filesystem    * @param path path of the directory    * @throws IOException on File IO problems    */
+comment|/**    * Assert that a path refers to a directory.    * @param fs filesystem    * @param path path of the directory    * @throws IOException on File IO problems    */
 DECL|method|assertIsDirectory (FileSystem fs, Path path)
 specifier|public
 specifier|static
@@ -1820,7 +1823,7 @@ name|fileStatus
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Assert that a path refers to a directory    * @param fileStatus stats to check    */
+comment|/**    * Assert that a path refers to a directory.    * @param fileStatus stats to check    */
 DECL|method|assertIsDirectory (FileStatus fileStatus)
 specifier|public
 specifier|static
@@ -1844,7 +1847,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Write the text to a file, returning the converted byte array    * for use in validating the round trip    * @param fs filesystem    * @param path path of file    * @param text text to write    * @param overwrite should the operation overwrite any existing file?    * @return the read bytes    * @throws IOException on IO problems    */
+comment|/**    * Write the text to a file, returning the converted byte array    * for use in validating the round trip.    * @param fs filesystem    * @param path path of file    * @param text text to write    * @param overwrite should the operation overwrite any existing file?    * @return the read bytes    * @throws IOException on IO problems    */
 DECL|method|writeTextFile (FileSystem fs, Path path, String text, boolean overwrite)
 specifier|public
 specifier|static
@@ -1907,7 +1910,7 @@ return|return
 name|bytes
 return|;
 block|}
-comment|/**    * Create a file    * @param fs filesystem    * @param path       path to write    * @param overwrite overwrite flag    * @param data source dataset. Can be null    * @throws IOException on any problem    */
+comment|/**    * Create a file.    * @param fs filesystem    * @param path       path to write    * @param overwrite overwrite flag    * @param data source dataset. Can be null    * @throws IOException on any problem    */
 DECL|method|createFile (FileSystem fs, Path path, boolean overwrite, byte[] data)
 specifier|public
 specifier|static
@@ -1982,7 +1985,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Touch a file    * @param fs filesystem    * @param path path    * @throws IOException IO problems    */
+comment|/**    * Touch a file.    * @param fs filesystem    * @param path path    * @throws IOException IO problems    */
 DECL|method|touch (FileSystem fs, Path path)
 specifier|public
 specifier|static
@@ -2010,7 +2013,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Delete a file/dir and assert that delete() returned true    *<i>and</i> that the path no longer exists. This variant rejects    * all operations on root directories    * @param fs filesystem    * @param file path to delete    * @param recursive flag to enable recursive delete    * @throws IOException IO problems    */
+comment|/**    * Delete a file/dir and assert that delete() returned true    *<i>and</i> that the path no longer exists. This variant rejects    * all operations on root directories.    * @param fs filesystem    * @param file path to delete    * @param recursive flag to enable recursive delete    * @throws IOException IO problems    */
 DECL|method|assertDeleted (FileSystem fs, Path file, boolean recursive)
 specifier|public
 specifier|static
@@ -2127,7 +2130,7 @@ name|file
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Read in "length" bytes, convert to an ascii string    * @param fs filesystem    * @param path path to read    * @param length #of bytes to read.    * @return the bytes read and converted to a string    * @throws IOException IO problems    */
+comment|/**    * Read in "length" bytes, convert to an ascii string.    * @param fs filesystem    * @param path path to read    * @param length #of bytes to read.    * @return the bytes read and converted to a string    * @throws IOException IO problems    */
 DECL|method|readBytesToString (FileSystem fs, Path path, int length)
 specifier|public
 specifier|static
@@ -2186,7 +2189,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Take an array of filestats and convert to a string (prefixed w/ a [01] counter    * @param stats array of stats    * @param separator separator after every entry    * @return a stringified set    */
+comment|/**    * Take an array of filestats and convert to a string    * (prefixed with/ a [%02d] counter).    * @param stats array of stats    * @param separator separator after every entry    * @return a stringified set    */
 DECL|method|fileStatsToString (FileStatus[] stats, String separator)
 specifier|public
 specifier|static
@@ -2263,7 +2266,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * List a directory    * @param fileSystem FS    * @param path path    * @return a directory listing or failure message    * @throws IOException    */
+comment|/**    * List a directory.    * @param fileSystem FS    * @param path path    * @return a directory listing or failure message    * @throws IOException    */
 DECL|method|ls (FileSystem fileSystem, Path path)
 specifier|public
 specifier|static
@@ -2366,11 +2369,16 @@ block|{
 return|return
 name|pathname
 operator|+
+literal|' '
+operator|+
 name|fileStatsToString
 argument_list|(
 name|stats
 argument_list|,
-literal|"\n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -2465,7 +2473,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a dataset for use in the tests; all data is in the range    * base to (base+modulo-1) inclusive    * @param len length of data    * @param base base of the data    * @param modulo the modulo    * @return the newly generated dataset    */
+comment|/**    * Create a dataset for use in the tests; all data is in the range    * base to (base+modulo-1) inclusive.    * @param len length of data    * @param base base of the data    * @param modulo the modulo    * @return the newly generated dataset    */
 DECL|method|dataset (int len, int base, int modulo)
 specifier|public
 specifier|static
@@ -2531,7 +2539,7 @@ return|return
 name|dataset
 return|;
 block|}
-comment|/**    * Assert that a path exists -but make no assertions as to the    * type of that entry    *    * @param fileSystem filesystem to examine    * @param message message to include in the assertion failure message    * @param path path in the filesystem    * @throws FileNotFoundException raised if the path is missing    * @throws IOException IO problems    */
+comment|/**    * Assert that a path exists -but make no assertions as to the    * type of that entry.    *    * @param fileSystem filesystem to examine    * @param message message to include in the assertion failure message    * @param path path in the filesystem    * @throws FileNotFoundException raised if the path is missing    * @throws IOException IO problems    */
 DECL|method|assertPathExists (FileSystem fileSystem, String message, Path path)
 specifier|public
 specifier|static
@@ -2592,7 +2600,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Assert that a path does not exist    *    * @param fileSystem filesystem to examine    * @param message message to include in the assertion failure message    * @param path path in the filesystem    * @throws IOException IO problems    */
+comment|/**    * Assert that a path does not exist.    *    * @param fileSystem filesystem to examine    * @param message message to include in the assertion failure message    * @param path path in the filesystem    * @throws IOException IO problems    */
 DECL|method|assertPathDoesNotExist (FileSystem fileSystem, String message, Path path)
 specifier|public
 specifier|static
@@ -2646,7 +2654,7 @@ block|{
 comment|//this is expected
 block|}
 block|}
-comment|/**    * Assert that a FileSystem.listStatus on a dir finds the subdir/child entry    * @param fs filesystem    * @param dir directory to scan    * @param subdir full path to look for    * @throws IOException IO probles    */
+comment|/**    * Assert that a FileSystem.listStatus on a dir finds the subdir/child entry.    * @param fs filesystem    * @param dir directory to scan    * @param subdir full path to look for    * @throws IOException IO probles    */
 DECL|method|assertListStatusFinds (FileSystem fs, Path dir, Path subdir)
 specifier|public
 specifier|static
@@ -2708,7 +2716,10 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|'\n'
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -2770,7 +2781,7 @@ literal|"OS X"
 argument_list|)
 return|;
 block|}
-comment|/**    * compare content of file operations using a double byte array    * @param concat concatenated files    * @param bytes bytes    */
+comment|/**    * compare content of file operations using a double byte array.    * @param concat concatenated files    * @param bytes bytes    */
 DECL|method|validateFileContent (byte[] concat, byte[][] bytes)
 specifier|public
 specifier|static
@@ -3092,7 +3103,13 @@ name|modulus
 argument_list|)
 expr_stmt|;
 block|}
-specifier|final
+name|long
+name|bytesWritten
+init|=
+literal|0
+decl_stmt|;
+try|try
+init|(
 name|OutputStream
 name|outputStream
 init|=
@@ -3104,13 +3121,7 @@ name|path
 argument_list|,
 literal|false
 argument_list|)
-decl_stmt|;
-name|long
-name|bytesWritten
-init|=
-literal|0
-decl_stmt|;
-try|try
+init|)
 block|{
 while|while
 condition|(
@@ -3175,14 +3186,6 @@ block|}
 return|return
 name|bytesWritten
 return|;
-block|}
-finally|finally
-block|{
-name|outputStream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Creates and reads a file with the given size. The test file is generated    * according to a specific pattern so it can be easily verified even if it's    * a multi-GB one.    * During the read phase the incoming data stream is also checked against    * this pattern.    *    * @param fs FileSystem    * @param parent Test file parent dir path    * @throws IOException    *    thrown if an I/O error occurs while writing or reading the test file    */
@@ -3731,6 +3734,97 @@ name|left
 argument_list|)
 return|;
 block|}
+comment|/**    * Take a collection of paths and build a string from them: useful    * for assertion messages.    * @param paths paths to stringify    * @return a string representation    */
+DECL|method|pathsToString (Collection<Path> paths)
+specifier|public
+specifier|static
+name|String
+name|pathsToString
+parameter_list|(
+name|Collection
+argument_list|<
+name|Path
+argument_list|>
+name|paths
+parameter_list|)
+block|{
+name|StringBuilder
+name|builder
+init|=
+operator|new
+name|StringBuilder
+argument_list|(
+name|paths
+operator|.
+name|size
+argument_list|()
+operator|*
+literal|100
+argument_list|)
+decl_stmt|;
+name|String
+name|nl
+init|=
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+decl_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+name|nl
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|Path
+name|path
+range|:
+name|paths
+control|)
+block|{
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"  \""
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\""
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|nl
+argument_list|)
+expr_stmt|;
+block|}
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"]"
+argument_list|)
+expr_stmt|;
+return|return
+name|builder
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 comment|/**    * Predicate to determine if two lists are equivalent, that is, they    * contain the same entries.    * @param left first collection of paths    * @param right second collection of paths    * @return true if all entries are in each collection of path.    */
 DECL|method|collectionsEquivalentNoDuplicates (Collection<Path> left, Collection<Path> right)
 specifier|public
@@ -3911,6 +4005,125 @@ return|return
 name|dirsAndFiles
 return|;
 block|}
+comment|/**    * Convert a remote iterator over file status results into a list.    * The utility equivalents in commons collection and guava cannot be    * used here, as this is a different interface, one whose operators    * can throw IOEs.    * @param iterator input iterator    * @return the status entries as a list.    * @throws IOException    */
+DECL|method|toList ( RemoteIterator<LocatedFileStatus> iterator)
+specifier|public
+specifier|static
+name|List
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|toList
+parameter_list|(
+name|RemoteIterator
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|iterator
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|ArrayList
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|list
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|iterator
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
+name|list
+operator|.
+name|add
+argument_list|(
+name|iterator
+operator|.
+name|next
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|list
+return|;
+block|}
+comment|/**    * Convert a remote iterator over file status results into a list.    * This uses {@link RemoteIterator#next()} calls only, expecting    * a raised {@link NoSuchElementException} exception to indicate that    * the end of the listing has been reached. This iteration strategy is    * designed to verify that the implementation of the remote iterator    * generates results and terminates consistently with the {@code hasNext/next}    * iteration. More succinctly "verifies that the {@code next()} operator    * isn't relying on {@code hasNext()} to always be called during an iteration.    * @param iterator input iterator    * @return the status entries as a list.    * @throws IOException IO problems    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"InfiniteLoopStatement"
+argument_list|)
+DECL|method|toListThroughNextCallsAlone ( RemoteIterator<LocatedFileStatus> iterator)
+specifier|public
+specifier|static
+name|List
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|toListThroughNextCallsAlone
+parameter_list|(
+name|RemoteIterator
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|iterator
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|ArrayList
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|list
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+while|while
+condition|(
+literal|true
+condition|)
+block|{
+name|list
+operator|.
+name|add
+argument_list|(
+name|iterator
+operator|.
+name|next
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|NoSuchElementException
+name|expected
+parameter_list|)
+block|{
+comment|// ignored
+block|}
+return|return
+name|list
+return|;
+block|}
 comment|/**    * Results of recursive directory creation/scan operations.    */
 DECL|class|TreeScanResults
 specifier|public
@@ -4035,6 +4248,38 @@ argument_list|,
 name|stats
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|FileStatus
+name|stat
+range|:
+name|stats
+control|)
+block|{
+name|add
+argument_list|(
+name|stat
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**      * Construct results from an iterable collection of statistics.      * @param stats statistics source. Must not be null.      */
+DECL|method|TreeScanResults (Iterable<F> stats)
+specifier|public
+parameter_list|<
+name|F
+extends|extends
+name|FileStatus
+parameter_list|>
+name|TreeScanResults
+parameter_list|(
+name|Iterable
+argument_list|<
+name|F
+argument_list|>
+name|stats
+parameter_list|)
+block|{
 for|for
 control|(
 name|FileStatus
@@ -4220,6 +4465,90 @@ literal|"s"
 argument_list|)
 return|;
 block|}
+comment|/**      * Equality check compares files and directory counts.      * As these are non-final fields, this class cannot be used in      * hash tables.      * @param o other object      * @return true iff the file and dir count match.      */
+annotation|@
+name|Override
+DECL|method|equals (Object o)
+specifier|public
+name|boolean
+name|equals
+parameter_list|(
+name|Object
+name|o
+parameter_list|)
+block|{
+if|if
+condition|(
+name|this
+operator|==
+name|o
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+if|if
+condition|(
+name|o
+operator|==
+literal|null
+operator|||
+name|getClass
+argument_list|()
+operator|!=
+name|o
+operator|.
+name|getClass
+argument_list|()
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+name|TreeScanResults
+name|that
+init|=
+operator|(
+name|TreeScanResults
+operator|)
+name|o
+decl_stmt|;
+return|return
+name|getFileCount
+argument_list|()
+operator|==
+name|that
+operator|.
+name|getFileCount
+argument_list|()
+operator|&&
+name|getDirCount
+argument_list|()
+operator|==
+name|that
+operator|.
+name|getDirCount
+argument_list|()
+return|;
+block|}
+comment|/**      * This is a spurious hash code subclass to keep findbugs quiet.      * @return the base {@link Object#hashCode()}      */
+annotation|@
+name|Override
+DECL|method|hashCode ()
+specifier|public
+name|int
+name|hashCode
+parameter_list|()
+block|{
+return|return
+name|super
+operator|.
+name|hashCode
+argument_list|()
+return|;
+block|}
 comment|/**      * Assert that the state of a listing has the specific number of files,      * directories and other entries. The error text will include      * the {@code text} param, the field in question, and the entire object's      * string value.      * @param text text prefix for assertions.      * @param f file count      * @param d expected directory count      * @param o expected other entries.      */
 DECL|method|assertSizeEquals (String text, long f, long d, long o)
 specifier|public
@@ -4304,17 +4633,6 @@ name|TreeScanResults
 name|that
 parameter_list|)
 block|{
-name|String
-name|details
-init|=
-literal|"this= "
-operator|+
-name|this
-operator|+
-literal|"; that="
-operator|+
-name|that
-decl_stmt|;
 name|assertFieldsEquivalent
 argument_list|(
 literal|"files"
@@ -4380,15 +4698,35 @@ argument_list|>
 name|theirs
 parameter_list|)
 block|{
+name|String
+name|ourList
+init|=
+name|pathsToString
+argument_list|(
+name|ours
+argument_list|)
+decl_stmt|;
+name|String
+name|theirList
+init|=
+name|pathsToString
+argument_list|(
+name|theirs
+argument_list|)
+decl_stmt|;
 name|assertFalse
 argument_list|(
 literal|"Duplicate  "
 operator|+
-name|files
+name|fieldname
 operator|+
 literal|" in "
 operator|+
 name|this
+operator|+
+literal|": "
+operator|+
+name|ourList
 argument_list|,
 name|containsDuplicates
 argument_list|(
@@ -4400,11 +4738,15 @@ name|assertFalse
 argument_list|(
 literal|"Duplicate  "
 operator|+
-name|files
+name|fieldname
 operator|+
 literal|" in other "
 operator|+
 name|that
+operator|+
+literal|": "
+operator|+
+name|theirList
 argument_list|,
 name|containsDuplicates
 argument_list|(
@@ -4416,25 +4758,19 @@ name|assertTrue
 argument_list|(
 name|fieldname
 operator|+
-literal|" mismatch: between {"
+literal|" mismatch: between "
 operator|+
-name|this
+name|ourList
 operator|+
-literal|"}"
+literal|" and "
 operator|+
-literal|" and {"
-operator|+
-name|that
-operator|+
-literal|"}"
+name|theirList
 argument_list|,
 name|collectionsEquivalent
 argument_list|(
-name|files
+name|ours
 argument_list|,
-name|that
-operator|.
-name|files
+name|theirs
 argument_list|)
 argument_list|)
 expr_stmt|;

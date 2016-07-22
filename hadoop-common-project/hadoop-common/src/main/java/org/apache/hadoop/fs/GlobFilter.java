@@ -218,6 +218,7 @@ throw|;
 block|}
 block|}
 DECL|method|hasPattern ()
+specifier|public
 name|boolean
 name|hasPattern
 parameter_list|()

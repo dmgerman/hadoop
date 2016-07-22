@@ -110,6 +110,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|BeforeClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Rule
 import|;
 end_import
@@ -123,6 +133,18 @@ operator|.
 name|internal
 operator|.
 name|AssumptionViolatedException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|TestName
 import|;
 end_import
 
@@ -215,7 +237,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is the base class for all the contract tests  */
+comment|/**  * This is the base class for all the contract tests.  */
 end_comment
 
 begin_class
@@ -245,7 +267,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Length of files to work with: {@value}    */
+comment|/**    * Length of files to work with: {@value}.    */
 DECL|field|TEST_FILE_LEN
 specifier|public
 specifier|static
@@ -255,7 +277,7 @@ name|TEST_FILE_LEN
 init|=
 literal|1024
 decl_stmt|;
-comment|/**    * standard test timeout: {@value}    */
+comment|/**    * standard test timeout: {@value}.    */
 DECL|field|DEFAULT_TEST_TIMEOUT
 specifier|public
 specifier|static
@@ -267,25 +289,56 @@ literal|180
 operator|*
 literal|1000
 decl_stmt|;
-comment|/**    * The FS contract used for these tests    */
+comment|/**    * The FS contract used for these tests.    */
 DECL|field|contract
 specifier|private
 name|AbstractFSContract
 name|contract
 decl_stmt|;
-comment|/**    * The test filesystem extracted from it    */
+comment|/**    * The test filesystem extracted from it.    */
 DECL|field|fileSystem
 specifier|private
 name|FileSystem
 name|fileSystem
 decl_stmt|;
-comment|/**    * The path for tests    */
+comment|/**    * The path for tests.    */
 DECL|field|testPath
 specifier|private
 name|Path
 name|testPath
 decl_stmt|;
-comment|/**    * This must be implemented by all instantiated test cases    * -provide the FS contract    * @return the FS contract    */
+annotation|@
+name|Rule
+DECL|field|methodName
+specifier|public
+name|TestName
+name|methodName
+init|=
+operator|new
+name|TestName
+argument_list|()
+decl_stmt|;
+annotation|@
+name|BeforeClass
+DECL|method|nameTestThread ()
+specifier|public
+specifier|static
+name|void
+name|nameTestThread
+parameter_list|()
+block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|setName
+argument_list|(
+literal|"JUnit"
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * This must be implemented by all instantiated test cases.    * -provide the FS contract    * @return the FS contract    */
 DECL|method|createContract (Configuration conf)
 specifier|protected
 specifier|abstract
@@ -296,7 +349,7 @@ name|Configuration
 name|conf
 parameter_list|)
 function_decl|;
-comment|/**    * Get the contract    * @return the contract, which will be non-null once the setup operation has    * succeeded    */
+comment|/**    * Get the contract.    * @return the contract, which will be non-null once the setup operation has    * succeeded    */
 DECL|method|getContract ()
 specifier|protected
 name|AbstractFSContract
@@ -307,7 +360,7 @@ return|return
 name|contract
 return|;
 block|}
-comment|/**    * Get the filesystem created in startup    * @return the filesystem to use for tests    */
+comment|/**    * Get the filesystem created in startup.    * @return the filesystem to use for tests    */
 DECL|method|getFileSystem ()
 specifier|public
 name|FileSystem
@@ -318,7 +371,7 @@ return|return
 name|fileSystem
 return|;
 block|}
-comment|/**    * Get the log of the base class    * @return a logger    */
+comment|/**    * Get the log of the base class.    * @return a logger    */
 DECL|method|getLog ()
 specifier|public
 specifier|static
@@ -330,7 +383,7 @@ return|return
 name|LOG
 return|;
 block|}
-comment|/**    * Skip a test if a feature is unsupported in this FS    * @param feature feature to look for    * @throws IOException IO problem    */
+comment|/**    * Skip a test if a feature is unsupported in this FS.    * @param feature feature to look for    * @throws IOException IO problem    */
 DECL|method|skipIfUnsupported (String feature)
 specifier|protected
 name|void
@@ -421,7 +474,7 @@ name|Configuration
 argument_list|()
 return|;
 block|}
-comment|/**    * Set the timeout for every test    */
+comment|/**    * Set the timeout for every test.    */
 annotation|@
 name|Rule
 DECL|field|testTimeout
@@ -436,7 +489,7 @@ name|getTestTimeoutMillis
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|/**    * Option for tests to override the default timeout value    * @return the current test timeout    */
+comment|/**    * Option for tests to override the default timeout value.    * @return the current test timeout    */
 DECL|method|getTestTimeoutMillis ()
 specifier|protected
 name|int
@@ -447,7 +500,7 @@ return|return
 name|DEFAULT_TEST_TIMEOUT
 return|;
 block|}
-comment|/**    * Setup: create the contract then init it    * @throws Exception on any failure    */
+comment|/**    * Setup: create the contract then init it.    * @throws Exception on any failure    */
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -458,6 +511,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"== Setup =="
+argument_list|)
+expr_stmt|;
 name|contract
 operator|=
 name|createContract
@@ -543,8 +603,15 @@ argument_list|(
 name|testPath
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"== Setup complete =="
+argument_list|)
+expr_stmt|;
 block|}
-comment|/**    * Teardown    * @throws Exception on any failure    */
+comment|/**    * Teardown.    * @throws Exception on any failure    */
 annotation|@
 name|After
 DECL|method|teardown ()
@@ -555,11 +622,25 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"== Teardown =="
+argument_list|)
+expr_stmt|;
 name|deleteTestDirInTeardown
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"== Teardown complete =="
+argument_list|)
+expr_stmt|;
 block|}
-comment|/**    * Delete the test dir in the per-test teardown    * @throws IOException    */
+comment|/**    * Delete the test dir in the per-test teardown.    * @throws IOException    */
 DECL|method|deleteTestDirInTeardown ()
 specifier|protected
 name|void
@@ -579,7 +660,7 @@ name|testPath
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a path under the test path provided by    * the FS contract    * @param filepath path string in    * @return a path qualified by the test filesystem    * @throws IOException IO problems    */
+comment|/**    * Create a path under the test path provided by    * the FS contract.    * @param filepath path string in    * @return a path qualified by the test filesystem    * @throws IOException IO problems    */
 DECL|method|path (String filepath)
 specifier|protected
 name|Path
@@ -611,7 +692,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Take a simple path like "/something" and turn it into    * a qualified path against the test FS    * @param filepath path string in    * @return a path qualified by the test filesystem    * @throws IOException IO problems    */
+comment|/**    * Take a simple path like "/something" and turn it into    * a qualified path against the test FS.    * @param filepath path string in    * @return a path qualified by the test filesystem    * @throws IOException IO problems    */
 DECL|method|absolutepath (String filepath)
 specifier|protected
 name|Path
@@ -637,7 +718,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * List a path in the test FS    * @param path path to list    * @return the contents of the path/dir    * @throws IOException IO problems    */
+comment|/**    * List a path in the test FS.    * @param path path to list    * @return the contents of the path/dir    * @throws IOException IO problems    */
 DECL|method|ls (Path path)
 specifier|protected
 name|String
@@ -734,7 +815,7 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Handle expected exceptions through logging and/or other actions    * @param e exception raised.    */
+comment|/**    * Handle expected exceptions through logging and/or other actions.    * @param e exception raised.    */
 DECL|method|handleExpectedException (Exception e)
 specifier|protected
 name|void
@@ -757,7 +838,7 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * assert that a path exists    * @param message message to use in an assertion    * @param path path to probe    * @throws IOException IO problems    */
+comment|/**    * assert that a path exists.    * @param message message to use in an assertion    * @param path path to probe    * @throws IOException IO problems    */
 DECL|method|assertPathExists (String message, Path path)
 specifier|public
 name|void
@@ -784,7 +865,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * assert that a path does not    * @param message message to use in an assertion    * @param path path to probe    * @throws IOException IO problems    */
+comment|/**    * Assert that a path does not exist.    * @param message message to use in an assertion    * @param path path to probe    * @throws IOException IO problems    */
 DECL|method|assertPathDoesNotExist (String message, Path path)
 specifier|public
 name|void
@@ -882,7 +963,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Assert that a delete succeeded    * @param path path to delete    * @param recursive recursive flag    * @throws IOException IO problems    */
+comment|/**    * Assert that a delete succeeded.    * @param path path to delete    * @param recursive recursive flag    * @throws IOException IO problems    */
 DECL|method|assertDeleted (Path path, boolean recursive)
 specifier|protected
 name|void
@@ -909,7 +990,7 @@ name|recursive
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Assert that the result value == -1; which implies    * that a read was successful    * @param text text to include in a message (usually the operation)    * @param result read result to validate    */
+comment|/**    * Assert that the result value == -1; which implies    * that a read was successful.    * @param text text to include in a message (usually the operation)    * @param result read result to validate    */
 DECL|method|assertMinusOne (String text, int result)
 specifier|protected
 name|void

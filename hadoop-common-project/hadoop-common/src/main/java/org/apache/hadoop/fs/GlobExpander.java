@@ -84,6 +84,7 @@ name|InterfaceStability
 operator|.
 name|Unstable
 DECL|class|GlobExpander
+specifier|public
 class|class
 name|GlobExpander
 block|{
