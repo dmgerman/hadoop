@@ -54,6 +54,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|EnumSet
 import|;
 end_import
@@ -109,6 +119,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|BlockStoragePolicySpi
 import|;
 end_import
 
@@ -1133,6 +1157,70 @@ argument_list|,
 name|policyName
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Unset the storage policy set for a given file or directory.    *    * @param src file or directory path.    * @throws IOException    */
+DECL|method|unsetStoragePolicy (final Path src)
+specifier|public
+name|void
+name|unsetStoragePolicy
+parameter_list|(
+specifier|final
+name|Path
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|unsetStoragePolicy
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Query the effective storage policy ID for the given file or directory.    *    * @param src file or directory path.    * @return storage policy for the given file or directory.    * @throws IOException    */
+DECL|method|getStoragePolicy (final Path src)
+specifier|public
+name|BlockStoragePolicySpi
+name|getStoragePolicy
+parameter_list|(
+specifier|final
+name|Path
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|getStoragePolicy
+argument_list|(
+name|src
+argument_list|)
+return|;
+block|}
+comment|/**    * Retrieve all the storage policies supported by HDFS file system.    *    * @return all storage policies supported by HDFS file system.    * @throws IOException    */
+DECL|method|getAllStoragePolicies ()
+specifier|public
+name|Collection
+argument_list|<
+name|?
+extends|extends
+name|BlockStoragePolicySpi
+argument_list|>
+name|getAllStoragePolicies
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|getAllStoragePolicies
+argument_list|()
+return|;
 block|}
 comment|/**    * Set the source path to the specified erasure coding policy.    *    * @param path The source path referring to a directory.    * @param ecPolicy The erasure coding policy for the directory.    *                 If null, the default will be used.    * @throws IOException    */
 DECL|method|setErasureCodingPolicy (final Path path, final ErasureCodingPolicy ecPolicy)
