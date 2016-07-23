@@ -484,17 +484,6 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|HdfsClientConfigKeys
-operator|.
-name|DFS_CLIENT_USE_LEGACY_BLOCKREADER
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
