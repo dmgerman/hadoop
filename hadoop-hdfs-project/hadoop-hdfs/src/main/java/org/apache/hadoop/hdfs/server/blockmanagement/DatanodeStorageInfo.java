@@ -576,14 +576,6 @@ name|FoldedTreeSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|// The ID of the last full block report which updated this storage.
-DECL|field|lastBlockReportId
-specifier|private
-name|long
-name|lastBlockReportId
-init|=
-literal|0
-decl_stmt|;
 comment|/** The number of block reports received */
 DECL|field|blockReportCount
 specifier|private
@@ -781,30 +773,6 @@ operator|.
 name|blockPoolUsed
 operator|=
 name|blockPoolUsed
-expr_stmt|;
-block|}
-DECL|method|getLastBlockReportId ()
-name|long
-name|getLastBlockReportId
-parameter_list|()
-block|{
-return|return
-name|lastBlockReportId
-return|;
-block|}
-DECL|method|setLastBlockReportId (long lastBlockReportId)
-name|void
-name|setLastBlockReportId
-parameter_list|(
-name|long
-name|lastBlockReportId
-parameter_list|)
-block|{
-name|this
-operator|.
-name|lastBlockReportId
-operator|=
-name|lastBlockReportId
 expr_stmt|;
 block|}
 DECL|method|getState ()

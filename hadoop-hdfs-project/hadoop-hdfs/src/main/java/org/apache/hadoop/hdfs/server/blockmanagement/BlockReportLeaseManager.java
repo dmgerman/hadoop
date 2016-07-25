@@ -1289,7 +1289,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"BR lease 0x{} is not valid for DN {}, because the DN "
+literal|"BR lease 0x{} is not found for DN {}, because the DN "
 operator|+
 literal|"is not in the pending set."
 argument_list|,
@@ -1307,7 +1307,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-literal|false
+literal|true
 return|;
 block|}
 if|if
