@@ -1334,7 +1334,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|3000
+literal|10000
 argument_list|)
 DECL|method|testRead ()
 specifier|public
@@ -1396,7 +1396,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|3000
+literal|10000
 argument_list|)
 DECL|method|testReadRandom ()
 specifier|public
@@ -1470,7 +1470,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|3000
+literal|10000
 argument_list|)
 DECL|method|testReadBackward ()
 specifier|public
@@ -1545,7 +1545,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|3000
+literal|10000
 argument_list|)
 DECL|method|testReadSkip ()
 specifier|public
@@ -1619,7 +1619,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|6000
+literal|10000
 argument_list|)
 DECL|method|testAppend ()
 specifier|public
