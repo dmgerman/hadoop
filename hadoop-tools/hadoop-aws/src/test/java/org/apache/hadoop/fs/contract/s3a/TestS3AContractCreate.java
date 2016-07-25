@@ -109,24 +109,6 @@ name|conf
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|testOverwriteEmptyDirectory ()
-specifier|public
-name|void
-name|testOverwriteEmptyDirectory
-parameter_list|()
-throws|throws
-name|Throwable
-block|{
-name|ContractTestUtils
-operator|.
-name|skip
-argument_list|(
-literal|"blobstores can't distinguish empty directories from files"
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 end_class
 

@@ -3183,17 +3183,48 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+name|S3AFileStatus
+name|status
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+comment|// get the status or throw an FNFE
+name|status
+operator|=
+name|getFileStatus
+argument_list|(
+name|f
+argument_list|)
+expr_stmt|;
+comment|// if the thread reaches here, there is something at the path
+if|if
+condition|(
+name|status
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+comment|// path references a directory: automatic error
+throw|throw
+operator|new
+name|FileAlreadyExistsException
+argument_list|(
+name|f
+operator|+
+literal|" is a directory"
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 operator|!
 name|overwrite
-operator|&&
-name|exists
-argument_list|(
-name|f
-argument_list|)
 condition|)
 block|{
+comment|// path references a file and overwrite is disabled
 throw|throw
 operator|new
 name|FileAlreadyExistsException
@@ -3203,6 +3234,24 @@ operator|+
 literal|" already exists"
 argument_list|)
 throw|;
+block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Overwriting file {}"
+argument_list|,
+name|f
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+comment|// this means the file is not found
 block|}
 name|instrumentation
 operator|.
