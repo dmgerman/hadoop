@@ -3371,6 +3371,42 @@ argument_list|,
 name|re
 argument_list|)
 expr_stmt|;
+name|sleepAfterException
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"IOException in offerService"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|sleepAfterException
+argument_list|()
+expr_stmt|;
+block|}
+name|processQueueMessages
+argument_list|()
+expr_stmt|;
+block|}
+comment|// while (shouldRun())
+block|}
+comment|// offerService
+DECL|method|sleepAfterException ()
+specifier|private
+name|void
+name|sleepAfterException
+parameter_list|()
+block|{
 try|try
 block|{
 name|long
@@ -3411,29 +3447,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"IOException in offerService"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-name|processQueueMessages
-argument_list|()
-expr_stmt|;
-block|}
-comment|// while (shouldRun())
-block|}
-comment|// offerService
 comment|/**    * Register one bp with the corresponding NameNode    *<p>    * The bpDatanode needs to register with the namenode on startup in order    * 1) to report which storage it is serving now and     * 2) to receive a registrationID    *      * issued by the namenode to recognize registered datanodes.    *     * @param nsInfo current NamespaceInfo    * @see FSNamesystem#registerDatanode(DatanodeRegistration)    * @throws IOException    */
 DECL|method|register (NamespaceInfo nsInfo)
 name|void
