@@ -330,6 +330,10 @@ name|testWithNoLockedMemory
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 name|getClusterBuilder
 argument_list|()

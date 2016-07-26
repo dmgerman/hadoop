@@ -73,6 +73,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -123,6 +135,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 name|getClusterBuilder
 argument_list|()
@@ -232,6 +246,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 name|getClusterBuilder
 argument_list|()
