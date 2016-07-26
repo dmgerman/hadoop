@@ -592,26 +592,6 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|// Due to backwards compat, the max value for memory and vcores
-comment|// needs to be Integer.MAX_VALUE
-name|int
-name|max
-init|=
-name|resourceValue
-operator|>
-name|Integer
-operator|.
-name|MAX_VALUE
-condition|?
-name|Integer
-operator|.
-name|MAX_VALUE
-else|:
-name|resourceValue
-operator|.
-name|intValue
-argument_list|()
-decl_stmt|;
 name|Map
 argument_list|<
 name|String
@@ -682,10 +662,7 @@ argument_list|)
 operator|.
 name|setValue
 argument_list|(
-operator|(
-name|long
-operator|)
-name|max
+name|resourceValue
 argument_list|)
 expr_stmt|;
 block|}

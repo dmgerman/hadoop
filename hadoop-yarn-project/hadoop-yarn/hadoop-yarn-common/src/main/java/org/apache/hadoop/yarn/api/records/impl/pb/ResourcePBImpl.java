@@ -1407,7 +1407,7 @@ name|setMemory
 argument_list|(
 name|this
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
