@@ -1552,6 +1552,16 @@ operator|+
 literal|"\t\tIt does not fault if the directory has no quota.\n"
 operator|+
 literal|"\t\tThe storage type specific quota is cleared when -storageType option is specified."
+operator|+
+literal|"\t\tAvailable storageTypes are \n"
+operator|+
+literal|"\t\t- RAM_DISK\n"
+operator|+
+literal|"\t\t- DISK\n"
+operator|+
+literal|"\t\t- SSD\n"
+operator|+
+literal|"\t\t- ARCHIVE"
 decl_stmt|;
 DECL|field|type
 specifier|private
@@ -1816,6 +1826,16 @@ operator|+
 literal|"\t\t3. the directory does not exist or is a file.\n"
 operator|+
 literal|"\t\tThe storage type specific quota is set when -storageType option is specified.\n"
+operator|+
+literal|"\t\tAvailable storageTypes are \n"
+operator|+
+literal|"\t\t- RAM_DISK\n"
+operator|+
+literal|"\t\t- DISK\n"
+operator|+
+literal|"\t\t- SSD\n"
+operator|+
+literal|"\t\t- ARCHIVE"
 decl_stmt|;
 DECL|field|quota
 specifier|private
@@ -3288,7 +3308,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Safe mode maintenance command.    * Usage: hdfs dfsadmin -safemode [enter | leave | get]    * @param argv List of of command line parameters.    * @param idx The index of the command that is being processed.    * @exception IOException if the filesystem does not exist.    */
+comment|/**    * Safe mode maintenance command.    * Usage: hdfs dfsadmin -safemode [enter | leave | get | wait | forceExit]    * @param argv List of of command line parameters.    * @param idx The index of the command that is being processed.    * @exception IOException if the filesystem does not exist.    */
 DECL|method|setSafeMode (String[] argv, int idx)
 specifier|public
 name|void
@@ -9818,7 +9838,9 @@ name|println
 argument_list|(
 literal|"Usage: hdfs dfsadmin"
 operator|+
-literal|" [-reconfig<namenode|datanode><host:port><start|status>]"
+literal|" [-reconfig<namenode|datanode><host:port> "
+operator|+
+literal|"<start|status|properties>]"
 argument_list|)
 expr_stmt|;
 block|}
