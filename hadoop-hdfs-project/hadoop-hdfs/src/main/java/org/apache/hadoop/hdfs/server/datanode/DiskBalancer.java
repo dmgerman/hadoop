@@ -2245,6 +2245,8 @@ operator|+
 name|planID
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|Map
@@ -2277,6 +2279,15 @@ operator|.
 name|getValue
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|blockMover
+operator|.
+name|setExitFlag
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -3747,12 +3758,7 @@ name|getErrorCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|setExitFlag
-argument_list|()
-expr_stmt|;
-continue|continue;
+break|break;
 block|}
 comment|// Check for the block tolerance constraint.
 if|if
@@ -3792,12 +3798,7 @@ name|getBlocksCopied
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|setExitFlag
-argument_list|()
-expr_stmt|;
-continue|continue;
+break|break;
 block|}
 name|ExtendedBlock
 name|block
@@ -3817,11 +3818,6 @@ operator|==
 literal|null
 condition|)
 block|{
-name|this
-operator|.
-name|setExitFlag
-argument_list|()
-expr_stmt|;
 name|LOG
 operator|.
 name|error
@@ -3841,7 +3837,7 @@ name|getBasePath
 argument_list|()
 argument_list|)
 expr_stmt|;
-continue|continue;
+break|break;
 block|}
 comment|// check if someone told us exit, treat this as an interruption
 comment|// point
@@ -3854,7 +3850,7 @@ name|shouldRun
 argument_list|()
 condition|)
 block|{
-continue|continue;
+break|break;
 block|}
 name|long
 name|timeUsed
@@ -3944,12 +3940,7 @@ name|getNumBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|setExitFlag
-argument_list|()
-expr_stmt|;
-continue|continue;
+break|break;
 block|}
 name|LOG
 operator|.
