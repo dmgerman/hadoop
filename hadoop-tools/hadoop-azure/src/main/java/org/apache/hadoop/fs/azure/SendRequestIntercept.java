@@ -438,7 +438,7 @@ comment|// Sign the request. GET's have no payload so the content length is
 comment|// zero.
 name|StorageCredentialsHelper
 operator|.
-name|signBlobAndQueueRequest
+name|signBlobQueueAndFileRequest
 argument_list|(
 name|getCredentials
 argument_list|()
