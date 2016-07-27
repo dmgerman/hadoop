@@ -34,6 +34,20 @@ name|apache
 operator|.
 name|commons
 operator|.
+name|lang
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
 name|logging
 operator|.
 name|Log
@@ -3247,8 +3261,28 @@ expr_stmt|;
 block|}
 block|}
 comment|// Non-exclusive scheduling opportunity is different: we need reset
-comment|// it every time to make sure non-labeled resource request will be
+comment|// it when:
+comment|// - It allocated on the default partition
+comment|//
+comment|// This is to make sure non-labeled resource request will be
 comment|// most likely allocated on non-labeled nodes first.
+if|if
+condition|(
+name|StringUtils
+operator|.
+name|equals
+argument_list|(
+name|node
+operator|.
+name|getPartition
+argument_list|()
+argument_list|,
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+condition|)
+block|{
 name|application
 operator|.
 name|resetMissedNonPartitionedRequestSchedulingOpportunity
@@ -3256,6 +3290,7 @@ argument_list|(
 name|schedulerKey
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|allocationResult

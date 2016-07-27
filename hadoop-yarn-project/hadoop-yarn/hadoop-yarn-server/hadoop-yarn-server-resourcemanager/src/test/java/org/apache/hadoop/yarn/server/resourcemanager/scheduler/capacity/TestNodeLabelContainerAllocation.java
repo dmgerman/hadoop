@@ -5484,9 +5484,6 @@ name|GB
 argument_list|)
 decl_stmt|;
 comment|// label =<empty>
-name|ContainerId
-name|nextContainerId
-decl_stmt|;
 comment|// launch an app to queue b1 (label = y), AM container should be launched in nm3
 name|RMApp
 name|app1
@@ -5524,20 +5521,6 @@ argument_list|)
 decl_stmt|;
 comment|// request containers from am2, priority=1 asks for "" and priority=2 asks
 comment|// for "y", "y" container should be allocated first
-name|nextContainerId
-operator|=
-name|ContainerId
-operator|.
-name|newContainerId
-argument_list|(
-name|am1
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-argument_list|,
-literal|2
-argument_list|)
-expr_stmt|;
 name|am1
 operator|.
 name|allocate
@@ -5586,21 +5569,40 @@ argument_list|,
 literal|"y"
 argument_list|)
 expr_stmt|;
-name|Assert
+comment|// Do a node heartbeat once
+name|CapacityScheduler
+name|cs
+init|=
+operator|(
+name|CapacityScheduler
+operator|)
+name|rm1
 operator|.
-name|assertTrue
+name|getResourceScheduler
+argument_list|()
+decl_stmt|;
+name|cs
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|NodeUpdateSchedulerEvent
 argument_list|(
 name|rm1
 operator|.
-name|waitForState
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMNodes
+argument_list|()
+operator|.
+name|get
 argument_list|(
 name|nm1
-argument_list|,
-name|nextContainerId
-argument_list|,
-name|RMContainerState
 operator|.
-name|ALLOCATED
+name|getNodeId
+argument_list|()
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -11336,7 +11338,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-literal|2
+literal|1
 argument_list|)
 expr_stmt|;
 name|checkNumOfContainersInAnAppOnGivenNode
