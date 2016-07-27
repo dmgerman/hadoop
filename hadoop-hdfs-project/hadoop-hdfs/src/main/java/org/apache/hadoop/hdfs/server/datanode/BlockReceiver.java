@@ -2600,6 +2600,33 @@ name|ChecksumException
 name|ce
 parameter_list|)
 block|{
+name|PacketHeader
+name|header
+init|=
+name|packetReceiver
+operator|.
+name|getHeader
+argument_list|()
+decl_stmt|;
+name|String
+name|specificOffset
+init|=
+literal|"specific offsets are:"
+operator|+
+literal|" offsetInBlock = "
+operator|+
+name|header
+operator|.
+name|getOffsetInBlock
+argument_list|()
+operator|+
+literal|" offsetInPacket = "
+operator|+
+name|ce
+operator|.
+name|getPos
+argument_list|()
+decl_stmt|;
 name|LOG
 operator|.
 name|warn
@@ -2611,6 +2638,10 @@ operator|+
 literal|" from "
 operator|+
 name|inAddr
+operator|+
+literal|", "
+operator|+
+name|specificOffset
 argument_list|,
 name|ce
 argument_list|)
