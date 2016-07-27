@@ -28,6 +28,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeWindows
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -3071,14 +3087,8 @@ throws|throws
 name|Exception
 block|{
 comment|// Test is only relevant on Windows
-name|Assume
-operator|.
-name|assumeTrue
-argument_list|(
-name|Shell
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
 name|ContainerLaunchContext
 name|containerLaunchContext
@@ -8031,14 +8041,8 @@ init|=
 literal|"@call "
 decl_stmt|;
 comment|// Test is only relevant on Windows
-name|Assume
-operator|.
-name|assumeTrue
-argument_list|(
-name|Shell
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
 comment|// The tests are built on assuming 8191 max command line length
 name|assertEquals
@@ -8428,14 +8432,8 @@ throws|throws
 name|IOException
 block|{
 comment|// Test is only relevant on Windows
-name|Assume
-operator|.
-name|assumeTrue
-argument_list|(
-name|Shell
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
 comment|// The tests are built on assuming 8191 max command line length
 name|assertEquals
@@ -8600,14 +8598,8 @@ init|=
 literal|"@if not exist \"\" mkdir \"\""
 decl_stmt|;
 comment|// Test is only relevant on Windows
-name|Assume
-operator|.
-name|assumeTrue
-argument_list|(
-name|Shell
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
 comment|// The tests are built on assuming 8191 max command line length
 name|assertEquals
@@ -8777,14 +8769,8 @@ throws|throws
 name|IOException
 block|{
 comment|// Test is only relevant on Windows
-name|Assume
-operator|.
-name|assumeTrue
-argument_list|(
-name|Shell
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
 name|String
 name|linkCmd

@@ -20,6 +20,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeWindows
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|hamcrest
 operator|.
 name|CoreMatchers
@@ -85,18 +101,6 @@ operator|.
 name|Assert
 operator|.
 name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
-operator|.
-name|assumeTrue
 import|;
 end_import
 
@@ -906,12 +910,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assumeTrue
-argument_list|(
-name|Path
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
 name|String
 name|windowsTestRootPath
@@ -1019,12 +1019,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assumeTrue
-argument_list|(
-name|Path
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
 name|String
 name|windowsTestRootPath
@@ -3288,12 +3284,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assumeTrue
-argument_list|(
-name|Path
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
 name|Path
 name|testRoot
@@ -3433,12 +3425,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assumeTrue
-argument_list|(
-name|Path
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
 name|String
 name|winDstFile

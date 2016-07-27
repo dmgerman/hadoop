@@ -292,20 +292,6 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|Shell
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
 name|StringUtils
 import|;
 end_import
@@ -335,6 +321,22 @@ operator|.
 name|tar
 operator|.
 name|TarOutputStream
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
 import|;
 end_import
 
@@ -2202,16 +2204,10 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|Shell
-operator|.
-name|WINDOWS
-condition|)
-block|{
-comment|// windows Dir.setWritable(false) does not work for directories
-return|return;
-block|}
+comment|// Windows Dir.setWritable(false) does not work for directories
+name|assumeNotWindows
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -2535,16 +2531,10 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|Shell
-operator|.
-name|WINDOWS
-condition|)
-block|{
-comment|// windows Dir.setWritable(false) does not work for directories
-return|return;
-block|}
+comment|// Windows Dir.setWritable(false) does not work for directories
+name|assumeNotWindows
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info

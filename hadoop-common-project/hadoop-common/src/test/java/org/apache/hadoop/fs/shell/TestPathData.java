@@ -22,6 +22,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeWindows
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -778,16 +794,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
-name|Path
-operator|.
-name|WINDOWS
-condition|)
-block|{
-return|return;
-block|}
+name|assumeWindows
+argument_list|()
+expr_stmt|;
 comment|// Can we handle raw Windows paths? The files need not exist for
 comment|// these tests to succeed.
 name|String
@@ -888,16 +897,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
-name|Path
-operator|.
-name|WINDOWS
-condition|)
-block|{
-return|return;
-block|}
+name|assumeWindows
+argument_list|()
+expr_stmt|;
 comment|// Verify that the following invalid paths are rejected.
 name|String
 index|[]

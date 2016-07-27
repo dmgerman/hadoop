@@ -24,35 +24,27 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
 operator|.
 name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
-operator|.
-name|assumeTrue
 import|;
 end_import
 
@@ -462,13 +454,8 @@ name|InterruptedException
 block|{
 comment|// This test cannot pass on Windows due to file locking enforcement.  It will
 comment|// reject the attempt to delete the block file from the RBW folder.
-name|assumeTrue
-argument_list|(
-operator|!
-name|Path
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
 name|Configuration
 name|conf

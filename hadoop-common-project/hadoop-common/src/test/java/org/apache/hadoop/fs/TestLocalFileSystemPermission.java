@@ -108,11 +108,51 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|*
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -181,8 +221,6 @@ DECL|class|TestLocalFileSystemPermission
 specifier|public
 class|class
 name|TestLocalFileSystemPermission
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOGGER
 specifier|public
@@ -403,6 +441,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testLocalFSDirsetPermission ()
 specifier|public
 name|void
@@ -411,22 +451,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|Path
-operator|.
-name|WINDOWS
-condition|)
-block|{
-name|LOGGER
-operator|.
-name|info
-argument_list|(
-literal|"Cannot run test for Windows"
-argument_list|)
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
-return|return;
-block|}
 name|LocalFileSystem
 name|localfs
 init|=
@@ -733,6 +760,8 @@ block|}
 block|}
 block|}
 comment|/** Test LocalFileSystem.setPermission */
+annotation|@
+name|Test
 DECL|method|testLocalFSsetPermission ()
 specifier|public
 name|void
@@ -741,22 +770,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|Path
-operator|.
-name|WINDOWS
-condition|)
-block|{
-name|LOGGER
-operator|.
-name|info
-argument_list|(
-literal|"Cannot run test for Windows"
-argument_list|)
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
-return|return;
-block|}
 name|Configuration
 name|conf
 init|=
@@ -1146,6 +1162,8 @@ argument_list|()
 return|;
 block|}
 comment|/** Test LocalFileSystem.setOwner. */
+annotation|@
+name|Test
 DECL|method|testLocalFSsetOwner ()
 specifier|public
 name|void
@@ -1392,6 +1410,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Steps:    * 1. Create a directory with default permissions: 777 with umask 022    * 2. Check the directory has good permissions: 755    * 3. Set the umask to 062.    * 4. Create a new directory with default permissions.    * 5. For this directory we expect 715 as permission not 755    * @throws Exception we can throw away all the exception.    */
+annotation|@
+name|Test
 DECL|method|testSetUmaskInRealTime ()
 specifier|public
 name|void

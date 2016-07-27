@@ -20,6 +20,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -35,16 +51,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|security
-operator|.
-name|PrivilegedExceptionAction
 import|;
 end_import
 
@@ -3092,19 +3098,8 @@ name|IOException
 block|{
 comment|// Skip the test case on Windows because backslash will be treated as a
 comment|// path separator instead of an escaping character on Windows.
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
-operator|.
-name|assumeTrue
-argument_list|(
-operator|!
-name|Path
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
 try|try
 block|{

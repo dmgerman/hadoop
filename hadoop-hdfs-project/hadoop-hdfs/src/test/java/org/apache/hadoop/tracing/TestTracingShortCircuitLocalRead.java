@@ -20,6 +20,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assume
@@ -73,20 +89,6 @@ operator|.
 name|fs
 operator|.
 name|FSDataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileSystem
 import|;
 end_import
 
@@ -412,12 +414,10 @@ name|NativeCodeLoader
 operator|.
 name|isNativeCodeLoaded
 argument_list|()
-operator|&&
-operator|!
-name|Path
-operator|.
-name|WINDOWS
 argument_list|)
+expr_stmt|;
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
 name|conf
 operator|=

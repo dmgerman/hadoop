@@ -50,20 +50,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Shell
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -77,6 +63,22 @@ operator|.
 name|junit
 operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeWindows
 import|;
 end_import
 
@@ -175,23 +177,9 @@ name|void
 name|tree
 parameter_list|()
 block|{
-if|if
-condition|(
-operator|!
-name|Shell
-operator|.
-name|WINDOWS
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Platform not Windows. Not testing"
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
-return|return;
-block|}
 name|assertTrue
 argument_list|(
 literal|"WindowsBasedProcessTree should be available on Windows"

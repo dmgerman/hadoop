@@ -442,6 +442,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -471,18 +487,6 @@ operator|.
 name|Assert
 operator|.
 name|fail
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
-operator|.
-name|assumeTrue
 import|;
 end_import
 
@@ -3451,13 +3455,8 @@ block|{
 comment|// This test assumes stick-bit based block pin mechanism available only
 comment|// in Linux/Unix. It can be unblocked on Windows when HDFS-7759 is ready to
 comment|// provide a different mechanism for Windows.
-name|assumeTrue
-argument_list|(
-operator|!
-name|Path
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
 specifier|final
 name|Configuration

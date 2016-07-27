@@ -152,11 +152,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Assert
+name|hadoop
 operator|.
-name|*
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeWindows
 import|;
 end_import
 
@@ -166,9 +170,9 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assume
+name|Assert
 operator|.
-name|assumeTrue
+name|*
 import|;
 end_import
 
@@ -492,13 +496,8 @@ name|void
 name|testRunCommandWithNoResources
 parameter_list|()
 block|{
-comment|// Windows only test
-name|assumeTrue
-argument_list|(
-name|Shell
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
 name|Configuration
 name|conf
@@ -592,13 +591,8 @@ name|void
 name|testRunCommandWithMemoryOnlyResources
 parameter_list|()
 block|{
-comment|// Windows only test
-name|assumeTrue
-argument_list|(
-name|Shell
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
 name|Configuration
 name|conf
@@ -703,13 +697,8 @@ name|void
 name|testRunCommandWithCpuAndMemoryResources
 parameter_list|()
 block|{
-comment|// Windows only test
-name|assumeTrue
-argument_list|(
-name|Shell
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
 name|int
 name|containerCores

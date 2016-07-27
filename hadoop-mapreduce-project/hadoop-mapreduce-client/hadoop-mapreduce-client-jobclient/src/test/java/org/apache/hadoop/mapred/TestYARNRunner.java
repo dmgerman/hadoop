@@ -20,6 +20,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -607,20 +623,6 @@ operator|.
 name|token
 operator|.
 name|Token
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Shell
 import|;
 end_import
 
@@ -4344,15 +4346,9 @@ block|{
 comment|// the Windows behavior is different and this test currently doesn't really
 comment|// apply
 comment|// MAPREDUCE-6588 should revisit this test
-if|if
-condition|(
-name|Shell
-operator|.
-name|WINDOWS
-condition|)
-block|{
-return|return;
-block|}
+name|assumeNotWindows
+argument_list|()
+expr_stmt|;
 specifier|final
 name|String
 name|ADMIN_LIB_PATH

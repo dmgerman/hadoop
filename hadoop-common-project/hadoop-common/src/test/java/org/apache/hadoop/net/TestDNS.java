@@ -138,20 +138,6 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|Shell
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
 name|Time
 import|;
 end_import
@@ -163,6 +149,22 @@ operator|.
 name|junit
 operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
 import|;
 end_import
 
@@ -201,18 +203,6 @@ operator|.
 name|Assert
 operator|.
 name|*
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
-operator|.
-name|assumeTrue
 import|;
 end_import
 
@@ -823,13 +813,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assumeTrue
-argument_list|(
-operator|!
-name|Shell
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
 specifier|final
 name|String

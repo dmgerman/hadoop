@@ -22,11 +22,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Assume
+name|hadoop
 operator|.
-name|assumeTrue
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
 import|;
 end_import
 
@@ -160,13 +164,8 @@ operator|+
 literal|" doesn't honor directory permissions."
 argument_list|)
 expr_stmt|;
-name|assumeTrue
-argument_list|(
-operator|!
-name|Path
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@

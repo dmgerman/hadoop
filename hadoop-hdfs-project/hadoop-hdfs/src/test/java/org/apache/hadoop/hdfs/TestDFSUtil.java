@@ -276,6 +276,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|hamcrest
 operator|.
 name|CoreMatchers
@@ -764,33 +780,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Shell
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
 import|;
 end_import
 
@@ -4714,15 +4706,8 @@ name|testLocalhostReverseLookup
 parameter_list|()
 block|{
 comment|// 127.0.0.1 -> localhost reverse resolution does not happen on Windows.
-name|Assume
-operator|.
-name|assumeTrue
-argument_list|(
-operator|!
-name|Shell
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
 comment|// Make sure when config FS_DEFAULT_NAME_KEY using IP address,
 comment|// it will automatically convert it to hostname

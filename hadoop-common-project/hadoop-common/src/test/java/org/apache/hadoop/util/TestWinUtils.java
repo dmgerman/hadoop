@@ -20,11 +20,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Assert
+name|hadoop
 operator|.
-name|*
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeWindows
 import|;
 end_import
 
@@ -34,9 +38,9 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assume
+name|Assert
 operator|.
-name|assumeTrue
+name|*
 import|;
 end_import
 
@@ -275,12 +279,8 @@ throws|throws
 name|IOException
 block|{
 comment|// Not supported on non-Windows platforms
-name|assumeTrue
-argument_list|(
-name|Shell
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeWindows
+argument_list|()
 expr_stmt|;
 name|TEST_DIR
 operator|.

@@ -137,22 +137,94 @@ import|;
 end_import
 
 begin_import
-import|import
-name|junit
+import|import static
+name|org
 operator|.
-name|framework
+name|apache
 operator|.
-name|TestCase
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
 import|;
 end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeWindows
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_comment
+comment|/**  * Test Hadoop Filesystem Paths.  */
+end_comment
 
 begin_class
 DECL|class|TestPath
 specifier|public
 class|class
 name|TestPath
-extends|extends
-name|TestCase
 block|{
 comment|/**    * Merge a bunch of Path objects into a sorted semicolon-separated    * path string.    */
 DECL|method|mergeStatuses (Path paths[])
@@ -1864,16 +1936,9 @@ name|URISyntaxException
 throws|,
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
-name|Path
-operator|.
-name|WINDOWS
-condition|)
-block|{
-return|return;
-block|}
+name|assumeWindows
+argument_list|()
+expr_stmt|;
 name|assertEquals
 argument_list|(
 operator|new
@@ -1949,16 +2014,9 @@ name|URISyntaxException
 throws|,
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
-name|Path
-operator|.
-name|WINDOWS
-condition|)
-block|{
-return|return;
-block|}
+name|assumeWindows
+argument_list|()
+expr_stmt|;
 name|String
 index|[]
 name|invalidPaths
@@ -3046,13 +3104,9 @@ throws|throws
 name|Exception
 block|{
 comment|// This test is not meaningful on Windows where * is disallowed in file name.
-if|if
-condition|(
-name|Shell
-operator|.
-name|WINDOWS
-condition|)
-return|return;
+name|assumeNotWindows
+argument_list|()
+expr_stmt|;
 name|FileSystem
 name|lfs
 init|=
@@ -3732,14 +3786,9 @@ name|void
 name|testIsWindowsAbsolutePath
 parameter_list|()
 block|{
-if|if
-condition|(
-operator|!
-name|Shell
-operator|.
-name|WINDOWS
-condition|)
-return|return;
+name|assumeWindows
+argument_list|()
+expr_stmt|;
 name|assertTrue
 argument_list|(
 name|Path

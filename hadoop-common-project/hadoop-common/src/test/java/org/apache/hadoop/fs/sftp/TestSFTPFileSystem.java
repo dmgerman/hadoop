@@ -172,20 +172,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Shell
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|sshd
 operator|.
 name|SshServer
@@ -368,11 +354,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Assert
+name|hadoop
 operator|.
-name|*
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
 import|;
 end_import
 
@@ -382,9 +372,9 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assume
+name|Assert
 operator|.
-name|assumeTrue
+name|*
 import|;
 end_import
 
@@ -645,13 +635,8 @@ throws|throws
 name|Exception
 block|{
 comment|// skip all tests if running on Windows
-name|assumeTrue
-argument_list|(
-operator|!
-name|Shell
-operator|.
-name|WINDOWS
-argument_list|)
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
 name|startSshdServer
 argument_list|()

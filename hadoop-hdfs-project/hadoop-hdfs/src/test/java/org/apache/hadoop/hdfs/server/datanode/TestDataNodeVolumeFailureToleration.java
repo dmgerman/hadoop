@@ -24,6 +24,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -53,18 +69,6 @@ operator|.
 name|Assert
 operator|.
 name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
-operator|.
-name|assumeTrue
 import|;
 end_import
 
@@ -476,21 +480,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assumeTrue
-argument_list|(
-operator|!
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"os.name"
-argument_list|)
-operator|.
-name|startsWith
-argument_list|(
-literal|"Windows"
-argument_list|)
-argument_list|)
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
 comment|// Make sure no DNs are running.
 name|cluster
@@ -724,21 +715,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assumeTrue
-argument_list|(
-operator|!
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"os.name"
-argument_list|)
-operator|.
-name|startsWith
-argument_list|(
-literal|"Windows"
-argument_list|)
-argument_list|)
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
 comment|// Bring up two additional datanodes that need both of their volumes
 comment|// functioning in order to stay up.
@@ -1115,21 +1093,8 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-name|assumeTrue
-argument_list|(
-operator|!
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"os.name"
-argument_list|)
-operator|.
-name|startsWith
-argument_list|(
-literal|"Windows"
-argument_list|)
-argument_list|)
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
 specifier|final
 name|int
@@ -1358,21 +1323,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assumeTrue
-argument_list|(
-operator|!
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"os.name"
-argument_list|)
-operator|.
-name|startsWith
-argument_list|(
-literal|"Windows"
-argument_list|)
-argument_list|)
+name|assumeNotWindows
+argument_list|()
 expr_stmt|;
 specifier|final
 name|DatanodeManager
