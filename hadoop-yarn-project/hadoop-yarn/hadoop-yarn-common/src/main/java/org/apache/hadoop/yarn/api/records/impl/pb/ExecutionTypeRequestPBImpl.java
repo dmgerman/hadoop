@@ -352,6 +352,32 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|compareTo (ExecutionTypeRequest other)
+specifier|public
+name|int
+name|compareTo
+parameter_list|(
+name|ExecutionTypeRequest
+name|other
+parameter_list|)
+block|{
+return|return
+name|this
+operator|.
+name|getExecutionType
+argument_list|()
+operator|.
+name|compareTo
+argument_list|(
+name|other
+operator|.
+name|getExecutionType
+argument_list|()
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
