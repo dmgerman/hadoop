@@ -7153,7 +7153,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|allocateContainersToNode (FiCaSchedulerNode node)
-specifier|protected
+specifier|public
 specifier|synchronized
 name|void
 name|allocateContainersToNode
@@ -7176,6 +7176,36 @@ name|isSchedulerReadyForAllocatingContainers
 argument_list|()
 condition|)
 block|{
+return|return;
+block|}
+if|if
+condition|(
+operator|!
+name|nodeTracker
+operator|.
+name|exists
+argument_list|(
+name|node
+operator|.
+name|getNodeID
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Skipping scheduling as the node "
+operator|+
+name|node
+operator|.
+name|getNodeID
+argument_list|()
+operator|+
+literal|" has been removed"
+argument_list|)
+expr_stmt|;
 return|return;
 block|}
 comment|// reset allocation and reservation stats before we start doing any work
