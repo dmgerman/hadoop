@@ -306,6 +306,9 @@ literal|false
 decl_stmt|;
 comment|// Indicates all the remaining dispatcher's events on stop have been drained
 comment|// and processed.
+comment|// Race condition happens if dispatcher thread sets drained to true between
+comment|// handler setting drained to false and enqueueing event. YARN-3878 decided
+comment|// to ignore it because of its tiny impact. Also see YARN-5436.
 DECL|field|drained
 specifier|private
 specifier|volatile
@@ -1387,20 +1390,6 @@ operator|.
 name|State
 operator|.
 name|WAITING
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|isDrained ()
-specifier|protected
-name|boolean
-name|isDrained
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|drained
 return|;
 block|}
 block|}
