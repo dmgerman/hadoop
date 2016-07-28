@@ -7798,6 +7798,7 @@ argument_list|,
 name|dir2
 argument_list|)
 expr_stmt|;
+comment|// sticky bit explicit set
 name|confirmPermissionChange
 argument_list|(
 literal|"+t"
@@ -7811,6 +7812,7 @@ argument_list|,
 name|dir2
 argument_list|)
 expr_stmt|;
+comment|// sticky bit explicit reset
 name|confirmPermissionChange
 argument_list|(
 literal|"-t"
@@ -7837,6 +7839,7 @@ argument_list|,
 name|dir2
 argument_list|)
 expr_stmt|;
+comment|// reset all permissions
 name|confirmPermissionChange
 argument_list|(
 literal|"0000"
@@ -7850,6 +7853,7 @@ argument_list|,
 name|dir2
 argument_list|)
 expr_stmt|;
+comment|// turn on rw permissions for all
 name|confirmPermissionChange
 argument_list|(
 literal|"1666"
@@ -7863,11 +7867,54 @@ argument_list|,
 name|dir2
 argument_list|)
 expr_stmt|;
+comment|// sticky bit explicit set along with x permission
+name|confirmPermissionChange
+argument_list|(
+literal|"1777"
+argument_list|,
+literal|"rwxrwxrwt"
+argument_list|,
+name|fs
+argument_list|,
+name|shell
+argument_list|,
+name|dir2
+argument_list|)
+expr_stmt|;
+comment|// sticky bit explicit reset
+name|confirmPermissionChange
+argument_list|(
+literal|"0777"
+argument_list|,
+literal|"rwxrwxrwx"
+argument_list|,
+name|fs
+argument_list|,
+name|shell
+argument_list|,
+name|dir2
+argument_list|)
+expr_stmt|;
+comment|// sticky bit explicit set
+name|confirmPermissionChange
+argument_list|(
+literal|"1777"
+argument_list|,
+literal|"rwxrwxrwt"
+argument_list|,
+name|fs
+argument_list|,
+name|shell
+argument_list|,
+name|dir2
+argument_list|)
+expr_stmt|;
+comment|// sticky bit implicit reset
 name|confirmPermissionChange
 argument_list|(
 literal|"777"
 argument_list|,
-literal|"rwxrwxrwt"
+literal|"rwxrwxrwx"
 argument_list|,
 name|fs
 argument_list|,

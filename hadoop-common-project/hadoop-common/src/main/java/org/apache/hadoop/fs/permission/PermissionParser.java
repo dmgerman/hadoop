@@ -209,8 +209,6 @@ condition|)
 block|{
 name|applyOctalPattern
 argument_list|(
-name|modeStr
-argument_list|,
 name|matcher
 argument_list|)
 expr_stmt|;
@@ -240,7 +238,7 @@ parameter_list|)
 block|{
 comment|// Are there multiple permissions stored in one chmod?
 name|boolean
-name|commaSeperated
+name|commaSeparated
 init|=
 literal|false
 decl_stmt|;
@@ -277,7 +275,7 @@ literal|0
 operator|&&
 operator|(
 operator|!
-name|commaSeperated
+name|commaSeparated
 operator|||
 operator|!
 name|matcher
@@ -556,7 +554,7 @@ operator|=
 name|type
 expr_stmt|;
 block|}
-name|commaSeperated
+name|commaSeparated
 operator|=
 name|matcher
 operator|.
@@ -576,27 +574,41 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-DECL|method|applyOctalPattern (String modeStr, Matcher matcher)
+DECL|method|applyOctalPattern (final Matcher matcher)
 specifier|private
 name|void
 name|applyOctalPattern
 parameter_list|(
-name|String
-name|modeStr
-parameter_list|,
+specifier|final
 name|Matcher
 name|matcher
 parameter_list|)
 block|{
+comment|// Matcher groups: 1: [01]  2: [0-7]{3}
+specifier|final
+name|char
+name|typeApply
+init|=
+literal|'='
+decl_stmt|;
+name|stickyBitType
+operator|=
+name|typeApply
+expr_stmt|;
 name|userType
 operator|=
+name|typeApply
+expr_stmt|;
 name|groupType
 operator|=
+name|typeApply
+expr_stmt|;
 name|othersType
 operator|=
-literal|'='
+name|typeApply
 expr_stmt|;
-comment|// Check if sticky bit is specified
+comment|// If sticky bit is specified get the bit, else
+comment|// default to reset for apply condition
 name|String
 name|sb
 init|=
@@ -632,9 +644,12 @@ literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|stickyBitType
+block|}
+else|else
+block|{
+name|stickyMode
 operator|=
-literal|'='
+literal|0
 expr_stmt|;
 block|}
 name|String
