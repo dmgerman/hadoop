@@ -388,6 +388,28 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
+name|webapp
+operator|.
+name|dao
+operator|.
+name|ResourceRequestInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|webapp
 operator|.
 name|AppAttemptBlock
@@ -678,7 +700,7 @@ argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|ResourceRequest
+name|ResourceRequestInfo
 argument_list|>
 name|resourceRequests
 init|=
@@ -812,7 +834,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|ResourceRequest
+name|ResourceRequestInfo
 name|resourceRequest
 range|:
 name|resourceRequests
@@ -1033,14 +1055,14 @@ name|_
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|getTotalResource (List<ResourceRequest> requests)
+DECL|method|getTotalResource (List<ResourceRequestInfo> requests)
 specifier|private
 name|Resource
 name|getTotalResource
 parameter_list|(
 name|List
 argument_list|<
-name|ResourceRequest
+name|ResourceRequestInfo
 argument_list|>
 name|requests
 parameter_list|)
@@ -1070,7 +1092,7 @@ return|;
 block|}
 for|for
 control|(
-name|ResourceRequest
+name|ResourceRequestInfo
 name|request
 range|:
 name|requests
@@ -1116,6 +1138,9 @@ argument_list|(
 name|request
 operator|.
 name|getCapability
+argument_list|()
+operator|.
+name|getResource
 argument_list|()
 argument_list|,
 name|request
