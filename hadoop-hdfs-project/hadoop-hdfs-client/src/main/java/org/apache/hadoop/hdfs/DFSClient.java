@@ -6325,6 +6325,42 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+DECL|method|applyUMaskDir (FsPermission permission)
+specifier|private
+name|FsPermission
+name|applyUMaskDir
+parameter_list|(
+name|FsPermission
+name|permission
+parameter_list|)
+block|{
+if|if
+condition|(
+name|permission
+operator|==
+literal|null
+condition|)
+block|{
+name|permission
+operator|=
+name|FsPermission
+operator|.
+name|getDirDefault
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|permission
+operator|.
+name|applyUMask
+argument_list|(
+name|dfsClientConf
+operator|.
+name|getUMask
+argument_list|()
+argument_list|)
+return|;
+block|}
 comment|/**    * Same as {@link #create(String, FsPermission, EnumSet, boolean, short, long,    * Progressable, int, ChecksumOpt)} with the addition of favoredNodes that is    * a hint to where the namenode should place the file blocks.    * The favored nodes hint is not persisted in HDFS. Hence it may be honored    * at the creation time only. HDFS could move the blocks during balancing or    * replication, to move the blocks from favored nodes. A value of null means    * no favored nodes for this create    */
 DECL|method|create (String src, FsPermission permission, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, ChecksumOpt checksumOpt, InetSocketAddress[] favoredNodes)
 specifier|public
@@ -10599,7 +10635,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a directory (or hierarchy of directories) with the given    * name and permission.    *    * @param src The path of the directory being created    * @param permission The permission of the directory being created.    * If permission == null, use {@link FsPermission#getDefault()}.    * @param createParent create missing parent directory if true    *    * @return True if the operation success.    *    * @see ClientProtocol#mkdirs(String, FsPermission, boolean)    */
+comment|/**    * Create a directory (or hierarchy of directories) with the given    * name and permission.    *    * @param src The path of the directory being created    * @param permission The permission of the directory being created.    * If permission == null, use {@link FsPermission#getDirDefault()}.    * @param createParent create missing parent directory if true    *    * @return True if the operation success.    *    * @see ClientProtocol#mkdirs(String, FsPermission, boolean)    */
 DECL|method|mkdirs (String src, FsPermission permission, boolean createParent)
 specifier|public
 name|boolean
@@ -10621,7 +10657,7 @@ specifier|final
 name|FsPermission
 name|masked
 init|=
-name|applyUMask
+name|applyUMaskDir
 argument_list|(
 name|permission
 argument_list|)
@@ -10693,7 +10729,7 @@ condition|)
 block|{
 name|absPermission
 operator|=
-name|applyUMask
+name|applyUMaskDir
 argument_list|(
 literal|null
 argument_list|)
