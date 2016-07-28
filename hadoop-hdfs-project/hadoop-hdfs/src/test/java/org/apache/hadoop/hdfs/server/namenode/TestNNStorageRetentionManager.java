@@ -2727,6 +2727,14 @@ name|args
 index|[
 literal|2
 index|]
+argument_list|,
+operator|(
+name|Boolean
+operator|)
+name|args
+index|[
+literal|3
+index|]
 argument_list|)
 expr_stmt|;
 return|return
@@ -2751,6 +2759,11 @@ argument_list|,
 name|Mockito
 operator|.
 name|anyLong
+argument_list|()
+argument_list|,
+name|Mockito
+operator|.
+name|anyBoolean
 argument_list|()
 argument_list|,
 name|Mockito

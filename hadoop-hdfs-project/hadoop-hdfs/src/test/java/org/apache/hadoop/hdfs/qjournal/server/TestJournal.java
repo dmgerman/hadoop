@@ -1091,7 +1091,7 @@ literal|0
 argument_list|,
 name|journal
 operator|.
-name|getCommittedTxnIdForTests
+name|getCommittedTxnId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1134,7 +1134,7 @@ literal|3
 argument_list|,
 name|journal
 operator|.
-name|getCommittedTxnIdForTests
+name|getCommittedTxnId
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -2836,6 +2836,14 @@ name|RemoteEditLogManifestProto
 operator|.
 name|newBuilder
 argument_list|()
+operator|.
+name|setCommittedTxnId
+argument_list|(
+name|manifest
+operator|.
+name|getCommittedTxnId
+argument_list|()
+argument_list|)
 decl_stmt|;
 for|for
 control|(
@@ -2924,6 +2932,11 @@ operator|new
 name|RemoteEditLogManifest
 argument_list|(
 name|logs
+argument_list|,
+name|manifest
+operator|.
+name|getCommittedTxnId
+argument_list|()
 argument_list|)
 return|;
 block|}

@@ -2345,6 +2345,8 @@ argument_list|,
 name|segmentTxId
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 if|if
@@ -7426,7 +7428,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk)
+DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk, boolean onlyDurableTxns)
 specifier|public
 name|void
 name|selectInputStreams
@@ -7442,6 +7444,9 @@ name|fromTxId
 parameter_list|,
 name|boolean
 name|inProgressOk
+parameter_list|,
+name|boolean
+name|onlyDurableTxns
 parameter_list|)
 throws|throws
 name|IOException
@@ -7455,6 +7460,8 @@ argument_list|,
 name|fromTxId
 argument_list|,
 name|inProgressOk
+argument_list|,
+name|onlyDurableTxns
 argument_list|)
 expr_stmt|;
 block|}
@@ -7485,11 +7492,51 @@ argument_list|,
 literal|null
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Select a list of input streams.    *     * @param fromTxId first transaction in the selected streams    * @param toAtLeastTxId the selected streams must contain this transaction    * @param recovery recovery context    * @param inProgressOk set to true if in-progress streams are OK    */
-DECL|method|selectInputStreams ( long fromTxId, long toAtLeastTxId, MetaRecoveryContext recovery, boolean inProgressOk)
+DECL|method|selectInputStreams ( long fromTxId, long toAtLeastTxId, MetaRecoveryContext recovery, boolean inProgressOK)
+specifier|public
+name|Collection
+argument_list|<
+name|EditLogInputStream
+argument_list|>
+name|selectInputStreams
+parameter_list|(
+name|long
+name|fromTxId
+parameter_list|,
+name|long
+name|toAtLeastTxId
+parameter_list|,
+name|MetaRecoveryContext
+name|recovery
+parameter_list|,
+name|boolean
+name|inProgressOK
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|selectInputStreams
+argument_list|(
+name|fromTxId
+argument_list|,
+name|toAtLeastTxId
+argument_list|,
+name|recovery
+argument_list|,
+name|inProgressOK
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/**    * Select a list of input streams.    *     * @param fromTxId first transaction in the selected streams    * @param toAtLeastTxId the selected streams must contain this transaction    * @param recovery recovery context    * @param inProgressOk set to true if in-progress streams are OK    * @param onlyDurableTxns set to true if streams are bounded    *                        by the durable TxId    */
+DECL|method|selectInputStreams (long fromTxId, long toAtLeastTxId, MetaRecoveryContext recovery, boolean inProgressOk, boolean onlyDurableTxns)
 specifier|public
 name|Collection
 argument_list|<
@@ -7508,6 +7555,9 @@ name|recovery
 parameter_list|,
 name|boolean
 name|inProgressOk
+parameter_list|,
+name|boolean
+name|onlyDurableTxns
 parameter_list|)
 throws|throws
 name|IOException
@@ -7551,6 +7601,8 @@ argument_list|,
 name|fromTxId
 argument_list|,
 name|inProgressOk
+argument_list|,
+name|onlyDurableTxns
 argument_list|)
 expr_stmt|;
 block|}

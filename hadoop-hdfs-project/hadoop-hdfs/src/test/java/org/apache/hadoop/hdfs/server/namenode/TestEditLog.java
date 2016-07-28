@@ -5288,7 +5288,7 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"[[1,100], [101,200]]"
+literal|"[[1,100], [101,200]] CommittedTxId: 200"
 argument_list|,
 name|log
 operator|.
@@ -5303,7 +5303,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"[[101,200]]"
+literal|"[[101,200]] CommittedTxId: 200"
 argument_list|,
 name|log
 operator|.
@@ -5343,6 +5343,8 @@ expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"[[1,100], [101,200], [201,300], [301,400]]"
+operator|+
+literal|" CommittedTxId: 400"
 argument_list|,
 name|log
 operator|.
@@ -5381,7 +5383,7 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"[[301,400], [401,500]]"
+literal|"[[301,400], [401,500]] CommittedTxId: 500"
 argument_list|,
 name|log
 operator|.
@@ -5421,7 +5423,7 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"[[1,100], [101,200]]"
+literal|"[[1,100], [101,200]] CommittedTxId: 200"
 argument_list|,
 name|log
 operator|.
@@ -5436,7 +5438,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"[[101,200]]"
+literal|"[[101,200]] CommittedTxId: 200"
 argument_list|,
 name|log
 operator|.
@@ -5475,7 +5477,7 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"[[1,100], [101,200]]"
+literal|"[[1,100], [101,200]] CommittedTxId: 200"
 argument_list|,
 name|log
 operator|.
@@ -5490,7 +5492,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"[[101,200]]"
+literal|"[[101,200]] CommittedTxId: 200"
 argument_list|,
 name|log
 operator|.

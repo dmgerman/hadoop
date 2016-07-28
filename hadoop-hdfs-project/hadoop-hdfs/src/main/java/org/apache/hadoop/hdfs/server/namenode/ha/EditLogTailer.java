@@ -670,6 +670,13 @@ specifier|private
 name|int
 name|maxRetries
 decl_stmt|;
+comment|/**    * Whether the tailer should tail the in-progress edit log segments.    */
+DECL|field|inProgressOk
+specifier|private
+specifier|final
+name|boolean
+name|inProgressOk
+decl_stmt|;
 DECL|method|EditLogTailer (FSNamesystem namesystem, Configuration conf)
 specifier|public
 name|EditLogTailer
@@ -926,6 +933,21 @@ operator|.
 name|DFS_HA_TAILEDITS_ALL_NAMESNODES_RETRY_DEFAULT
 expr_stmt|;
 block|}
+name|inProgressOk
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HA_TAILEDITS_INPROGRESS_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_HA_TAILEDITS_INPROGRESS_DEFAULT
+argument_list|)
+expr_stmt|;
 name|nnCount
 operator|=
 name|nns
@@ -1206,7 +1228,9 @@ literal|0
 argument_list|,
 literal|null
 argument_list|,
-literal|false
+name|inProgressOk
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

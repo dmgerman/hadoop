@@ -86,12 +86,20 @@ name|RemoteEditLog
 argument_list|>
 name|logs
 decl_stmt|;
+DECL|field|committedTxnId
+specifier|private
+name|long
+name|committedTxnId
+init|=
+operator|-
+literal|1
+decl_stmt|;
 DECL|method|RemoteEditLogManifest ()
 specifier|public
 name|RemoteEditLogManifest
 parameter_list|()
 block|{   }
-DECL|method|RemoteEditLogManifest (List<RemoteEditLog> logs)
+DECL|method|RemoteEditLogManifest (List<RemoteEditLog> logs, long committedTxnId)
 specifier|public
 name|RemoteEditLogManifest
 parameter_list|(
@@ -100,6 +108,9 @@ argument_list|<
 name|RemoteEditLog
 argument_list|>
 name|logs
+parameter_list|,
+name|long
+name|committedTxnId
 parameter_list|)
 block|{
 name|this
@@ -107,6 +118,12 @@ operator|.
 name|logs
 operator|=
 name|logs
+expr_stmt|;
+name|this
+operator|.
+name|committedTxnId
+operator|=
+name|committedTxnId
 expr_stmt|;
 name|checkState
 argument_list|()
@@ -202,6 +219,16 @@ name|logs
 argument_list|)
 return|;
 block|}
+DECL|method|getCommittedTxnId ()
+specifier|public
+name|long
+name|getCommittedTxnId
+parameter_list|()
+block|{
+return|return
+name|committedTxnId
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -226,6 +253,10 @@ name|logs
 argument_list|)
 operator|+
 literal|"]"
+operator|+
+literal|" CommittedTxId: "
+operator|+
+name|committedTxnId
 return|;
 block|}
 block|}

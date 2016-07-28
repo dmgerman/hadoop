@@ -2472,13 +2472,13 @@ name|badDir
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getJournalInputStream (JournalManager jm, long txId, boolean inProgressOk)
+DECL|method|getJournalInputStream (FileJournalManager jm, long txId, boolean inProgressOk)
 specifier|private
 specifier|static
 name|EditLogInputStream
 name|getJournalInputStream
 parameter_list|(
-name|JournalManager
+name|FileJournalManager
 name|jm
 parameter_list|,
 name|long

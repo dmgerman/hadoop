@@ -1749,9 +1749,42 @@ return|return
 name|ret
 return|;
 block|}
+DECL|method|selectInputStreams ( Collection<EditLogInputStream> streams, long fromTxnId, boolean inProgressOk)
+specifier|synchronized
+specifier|public
+name|void
+name|selectInputStreams
+parameter_list|(
+name|Collection
+argument_list|<
+name|EditLogInputStream
+argument_list|>
+name|streams
+parameter_list|,
+name|long
+name|fromTxnId
+parameter_list|,
+name|boolean
+name|inProgressOk
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|selectInputStreams
+argument_list|(
+name|streams
+argument_list|,
+name|fromTxnId
+argument_list|,
+name|inProgressOk
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
-DECL|method|selectInputStreams ( Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk)
+DECL|method|selectInputStreams ( Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk, boolean onlyDurableTxns)
 specifier|synchronized
 specifier|public
 name|void
@@ -1768,6 +1801,9 @@ name|fromTxId
 parameter_list|,
 name|boolean
 name|inProgressOk
+parameter_list|,
+name|boolean
+name|onlyDurableTxns
 parameter_list|)
 throws|throws
 name|IOException

@@ -1126,10 +1126,10 @@ operator|!
 name|closed
 return|;
 block|}
-comment|/**    * In this function, we get a bunch of streams from all of our JournalManager    * objects.  Then we add these to the collection one by one.    *     * @param streams          The collection to add the streams to.  It may or     *                         may not be sorted-- this is up to the caller.    * @param fromTxId         The transaction ID to start looking for streams at    * @param inProgressOk     Should we consider unfinalized streams?    */
+comment|/**    * In this function, we get a bunch of streams from all of our JournalManager    * objects.  Then we add these to the collection one by one.    *     * @param streams          The collection to add the streams to.  It may or     *                         may not be sorted-- this is up to the caller.    * @param fromTxId         The transaction ID to start looking for streams at    * @param inProgressOk     Should we consider unfinalized streams?    * @param onlyDurableTxns  Set to true if streams are bounded by the durable    *                         TxId. A durable TxId is the committed txid in QJM    *                         or the largest txid written into file in FJM    */
 annotation|@
 name|Override
-DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk)
+DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk, boolean onlyDurableTxns)
 specifier|public
 name|void
 name|selectInputStreams
@@ -1145,6 +1145,9 @@ name|fromTxId
 parameter_list|,
 name|boolean
 name|inProgressOk
+parameter_list|,
+name|boolean
+name|onlyDurableTxns
 parameter_list|)
 block|{
 specifier|final
@@ -1208,6 +1211,8 @@ argument_list|,
 name|fromTxId
 argument_list|,
 name|inProgressOk
+argument_list|,
+name|onlyDurableTxns
 argument_list|)
 expr_stmt|;
 block|}
@@ -2944,6 +2949,10 @@ operator|new
 name|RemoteEditLogManifest
 argument_list|(
 name|logs
+argument_list|,
+name|curStartTxId
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 if|if

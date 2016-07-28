@@ -3124,6 +3124,8 @@ operator|new
 name|RemoteEditLogManifest
 argument_list|(
 name|logs
+argument_list|,
+literal|20
 argument_list|)
 decl_stmt|;
 name|RemoteEditLogManifestProto

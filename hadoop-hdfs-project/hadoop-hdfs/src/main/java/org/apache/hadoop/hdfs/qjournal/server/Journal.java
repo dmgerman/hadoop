@@ -1403,10 +1403,10 @@ name|get
 argument_list|()
 return|;
 block|}
-DECL|method|getCommittedTxnIdForTests ()
+DECL|method|getCommittedTxnId ()
 specifier|synchronized
 name|long
-name|getCommittedTxnIdForTests
+name|getCommittedTxnId
 parameter_list|()
 throws|throws
 name|IOException
@@ -1725,6 +1725,17 @@ argument_list|(
 name|reqInfo
 argument_list|)
 expr_stmt|;
+comment|// If numTxns is 0, it's actually a fake send which aims at updating
+comment|// committedTxId only. So we can return early.
+if|if
+condition|(
+name|numTxns
+operator|==
+literal|0
+condition|)
+block|{
+return|return;
+block|}
 name|checkSync
 argument_list|(
 name|curSegment
@@ -3031,6 +3042,9 @@ operator|new
 name|RemoteEditLogManifest
 argument_list|(
 name|logs
+argument_list|,
+name|getCommittedTxnId
+argument_list|()
 argument_list|)
 return|;
 block|}
