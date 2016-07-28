@@ -4928,6 +4928,25 @@ name|DFS_HA_TAILEDITS_INPROGRESS_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|DFS_HA_TAILEDITS_ROLLEDITS_TIMEOUT_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_HA_TAILEDITS_ROLLEDITS_TIMEOUT_KEY
+init|=
+literal|"dfs.ha.tail-edits.rolledits.timeout"
+decl_stmt|;
+DECL|field|DFS_HA_TAILEDITS_ROLLEDITS_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_HA_TAILEDITS_ROLLEDITS_TIMEOUT_DEFAULT
+init|=
+literal|60
+decl_stmt|;
+comment|// 1m
 DECL|field|DFS_HA_LOGROLL_RPC_TIMEOUT_KEY
 specifier|public
 specifier|static
