@@ -22,34 +22,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -146,20 +118,6 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicInteger
-import|;
-end_import
-
 begin_comment
 comment|/**  * Cache item for timeline server v1.5 reader cache. Each cache item has a  * TimelineStore that can be filled with data within one entity group.  */
 end_comment
@@ -212,25 +170,6 @@ DECL|field|config
 specifier|private
 name|Configuration
 name|config
-decl_stmt|;
-DECL|field|refCount
-specifier|private
-name|int
-name|refCount
-init|=
-literal|0
-decl_stmt|;
-DECL|field|activeStores
-specifier|private
-specifier|static
-name|AtomicInteger
-name|activeStores
-init|=
-operator|new
-name|AtomicInteger
-argument_list|(
-literal|0
-argument_list|)
 decl_stmt|;
 DECL|method|EntityCacheItem (TimelineEntityGroupId gId, Configuration config)
 specifier|public
@@ -302,21 +241,6 @@ parameter_list|()
 block|{
 return|return
 name|store
-return|;
-block|}
-comment|/**    * @return The number of currently active stores in all CacheItems.    */
-DECL|method|getActiveStores ()
-specifier|public
-specifier|static
-name|int
-name|getActiveStores
-parameter_list|()
-block|{
-return|return
-name|activeStores
-operator|.
-name|get
-argument_list|()
 return|;
 block|}
 comment|/**    * Refresh this cache item if it needs refresh. This will enforce an appLogs    * rescan and then load new data. The refresh process is synchronized with    * other operations on the same cache item.    *    * @param aclManager ACL manager for the timeline storage    * @param metrics Metrics to trace the status of the entity group store    * @return a {@link org.apache.hadoop.yarn.server.timeline.TimelineStore}    *         object filled with all entities in the group.    * @throws IOException    */
@@ -404,11 +328,6 @@ operator|==
 literal|null
 condition|)
 block|{
-name|activeStores
-operator|.
-name|getAndIncrement
-argument_list|()
-expr_stmt|;
 name|store
 operator|=
 operator|new
@@ -519,59 +438,6 @@ return|return
 name|store
 return|;
 block|}
-comment|/**    * Increase the number of references to this cache item by 1.    */
-DECL|method|incrRefs ()
-specifier|public
-specifier|synchronized
-name|void
-name|incrRefs
-parameter_list|()
-block|{
-name|refCount
-operator|++
-expr_stmt|;
-block|}
-comment|/**    * Unregister a reader. Try to release the cache if the reader to current    * cache reaches 0.    *    * @return true if the cache has been released, otherwise false    */
-DECL|method|tryRelease ()
-specifier|public
-specifier|synchronized
-name|boolean
-name|tryRelease
-parameter_list|()
-block|{
-name|refCount
-operator|--
-expr_stmt|;
-comment|// Only reclaim the storage if there is no reader.
-if|if
-condition|(
-name|refCount
-operator|>
-literal|0
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"{} references left for cached group {}, skipping the release"
-argument_list|,
-name|refCount
-argument_list|,
-name|groupId
-argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
-name|forceRelease
-argument_list|()
-expr_stmt|;
-return|return
-literal|true
-return|;
-block|}
 comment|/**    * Force releasing the cache item for the given group id, even though there    * may be active references.    */
 DECL|method|forceRelease ()
 specifier|public
@@ -615,15 +481,6 @@ block|}
 name|store
 operator|=
 literal|null
-expr_stmt|;
-name|activeStores
-operator|.
-name|getAndDecrement
-argument_list|()
-expr_stmt|;
-name|refCount
-operator|=
-literal|0
 expr_stmt|;
 comment|// reset offsets so next time logs are re-parsed
 for|for
@@ -671,22 +528,6 @@ argument_list|,
 name|groupId
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-annotation|@
-name|VisibleForTesting
-DECL|method|getRefCount ()
-specifier|synchronized
-name|int
-name|getRefCount
-parameter_list|()
-block|{
-return|return
-name|refCount
-return|;
 block|}
 DECL|method|needRefresh ()
 specifier|private
