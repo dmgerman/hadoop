@@ -1543,7 +1543,9 @@ literal|": "
 operator|+
 literal|"Clear the space quota for each directory<dirName>.\n"
 operator|+
-literal|"\t\tFor each directory, attempt to clear the quota. An error will be reported if\n"
+literal|"\t\tFor each directory, attempt to clear the quota. "
+operator|+
+literal|"An error will be reported if\n"
 operator|+
 literal|"\t\t1. the directory does not exist or is a file, or\n"
 operator|+
@@ -1551,7 +1553,9 @@ literal|"\t\t2. user is not an administrator.\n"
 operator|+
 literal|"\t\tIt does not fault if the directory has no quota.\n"
 operator|+
-literal|"\t\tThe storage type specific quota is cleared when -storageType option is specified."
+literal|"\t\tThe storage type specific quota is cleared when -storageType "
+operator|+
+literal|"option is specified.\n"
 operator|+
 literal|"\t\tAvailable storageTypes are \n"
 operator|+
