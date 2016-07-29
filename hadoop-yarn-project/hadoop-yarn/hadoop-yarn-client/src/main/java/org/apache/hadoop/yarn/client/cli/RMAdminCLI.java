@@ -983,15 +983,25 @@ argument_list|,
 operator|new
 name|UsageInfo
 argument_list|(
-literal|"[-g [timeout in seconds]]"
+literal|"[-g [timeout in seconds] -client|server]"
 argument_list|,
 literal|"Refresh the hosts information at the ResourceManager. Here "
 operator|+
-literal|"[-g [timeout in seconds] is optional, if we specify the "
+literal|"[-g [timeout in seconds] -client|server] is optional, if we "
 operator|+
-literal|"timeout then ResourceManager will wait for timeout before "
+literal|"specify the timeout then ResourceManager will wait for "
 operator|+
-literal|"marking the NodeManager as decommissioned."
+literal|"timeout before marking the NodeManager as decommissioned."
+operator|+
+literal|" The -client|server indicates if the timeout tracking should"
+operator|+
+literal|" be handled by the client or the ResourceManager. The client"
+operator|+
+literal|"-side tracking is blocking, while the server-side tracking"
+operator|+
+literal|" is not. Omitting the timeout, or a timeout of -1, indicates"
+operator|+
+literal|" an infinite timeout."
 argument_list|)
 argument_list|)
 decl|.
@@ -1679,7 +1689,7 @@ literal|"yarn rmadmin"
 operator|+
 literal|" [-refreshQueues]"
 operator|+
-literal|" [-refreshNodes [-g [timeout in seconds]]]"
+literal|" [-refreshNodes [-g [timeout in seconds] -client|server]]"
 operator|+
 literal|" [-refreshNodesResources]"
 operator|+
@@ -2048,19 +2058,41 @@ return|return
 literal|0
 return|;
 block|}
-DECL|method|refreshNodes (long timeout)
+DECL|method|refreshNodes (long timeout, String trackingMode)
 specifier|private
 name|int
 name|refreshNodes
 parameter_list|(
 name|long
 name|timeout
+parameter_list|,
+name|String
+name|trackingMode
 parameter_list|)
 throws|throws
 name|IOException
 throws|,
 name|YarnException
 block|{
+if|if
+condition|(
+operator|!
+literal|"client"
+operator|.
+name|equals
+argument_list|(
+name|trackingMode
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Only client tracking mode is currently supported."
+argument_list|)
+throw|;
+block|}
 comment|// Graceful decommissioning with timeout
 name|ResourceManagerAdministrationProtocol
 name|adminProtocol
@@ -4237,6 +4269,12 @@ operator|.
 name|length
 operator|==
 literal|3
+operator|||
+name|args
+operator|.
+name|length
+operator|==
+literal|4
 condition|)
 block|{
 comment|// if the graceful timeout specified
@@ -4256,6 +4294,23 @@ block|{
 name|long
 name|timeout
 init|=
+operator|-
+literal|1
+decl_stmt|;
+name|String
+name|trackingMode
+decl_stmt|;
+if|if
+condition|(
+name|args
+operator|.
+name|length
+operator|==
+literal|4
+condition|)
+block|{
+name|timeout
+operator|=
 name|validateTimeout
 argument_list|(
 name|args
@@ -4263,12 +4318,38 @@ index|[
 literal|2
 index|]
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+name|trackingMode
+operator|=
+name|validateTrackingMode
+argument_list|(
+name|args
+index|[
+literal|3
+index|]
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|trackingMode
+operator|=
+name|validateTrackingMode
+argument_list|(
+name|args
+index|[
+literal|2
+index|]
+argument_list|)
+expr_stmt|;
+block|}
 name|exitCode
 operator|=
 name|refreshNodes
 argument_list|(
 name|timeout
+argument_list|,
+name|trackingMode
 argument_list|)
 expr_stmt|;
 block|}
@@ -5009,6 +5090,53 @@ block|}
 return|return
 name|timeout
 return|;
+block|}
+DECL|method|validateTrackingMode (String mode)
+specifier|private
+name|String
+name|validateTrackingMode
+parameter_list|(
+name|String
+name|mode
+parameter_list|)
+block|{
+if|if
+condition|(
+literal|"-client"
+operator|.
+name|equals
+argument_list|(
+name|mode
+argument_list|)
+condition|)
+block|{
+return|return
+literal|"client"
+return|;
+block|}
+if|if
+condition|(
+literal|"-server"
+operator|.
+name|equals
+argument_list|(
+name|mode
+argument_list|)
+condition|)
+block|{
+return|return
+literal|"server"
+return|;
+block|}
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid mode specified: "
+operator|+
+name|mode
+argument_list|)
+throw|;
 block|}
 annotation|@
 name|Override
