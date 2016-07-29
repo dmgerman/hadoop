@@ -722,6 +722,27 @@ operator|/
 name|steps
 argument_list|)
 decl_stmt|;
+comment|// Compare the bucket value with distribution's length again,
+comment|// because sometimes the bucket value will be equal to
+comment|// the length when maxSize can't be divided completely by step.
+if|if
+condition|(
+name|bucket
+operator|>=
+name|distribution
+operator|.
+name|length
+condition|)
+block|{
+name|bucket
+operator|=
+name|distribution
+operator|.
+name|length
+operator|-
+literal|1
+expr_stmt|;
+block|}
 operator|++
 name|distribution
 index|[
