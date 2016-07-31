@@ -50,7 +50,7 @@ name|server
 operator|.
 name|api
 operator|.
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 import|;
 end_import
 
@@ -64,7 +64,7 @@ specifier|public
 interface|interface
 name|RequestInterceptor
 extends|extends
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 extends|,
 name|Configurable
 block|{

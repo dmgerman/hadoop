@@ -100,7 +100,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 import|;
 end_import
 
@@ -120,7 +120,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 import|;
 end_import
 
@@ -140,7 +140,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 import|;
 end_import
 
@@ -189,26 +189,26 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>This protocol extends the<code>ApplicationMasterProtocol</code>. It is  * used by the<code>LocalScheduler</code> running on the NodeManager to wrap  * the request / response objects of the<code>registerApplicationMaster</code>  * and<code>allocate</code> methods of the protocol with addition information  * required to perform Distributed Scheduling.  *</p>  */
+comment|/**  *<p>  * This protocol extends the<code>ApplicationMasterProtocol</code>. It is used  * by the<code>DistributedScheduler</code> running on the NodeManager to wrap  * the request / response objects of the<code>registerApplicationMaster</code>  * and<code>allocate</code> methods of the protocol with additional information  * required to perform distributed scheduling.  *</p>  */
 end_comment
 
 begin_interface
-DECL|interface|DistributedSchedulerProtocol
+DECL|interface|DistributedSchedulingAMProtocol
 specifier|public
 interface|interface
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 extends|extends
 name|ApplicationMasterProtocol
 block|{
-comment|/**    *<p> Extends the<code>registerApplicationMaster</code> to wrap the response    * with additional metadata.</p>    *    * @param request ApplicationMaster registration request    * @return A<code>DistSchedRegisterResponse</code> that contains a standard    *         AM registration response along with additional information required    *         for Distributed Scheduling    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>    * Extends the<code>registerApplicationMaster</code> to wrap the response    * with additional metadata.    *</p>    *    * @param request    *          ApplicationMaster registration request    * @return A<code>RegisterDistributedSchedulingAMResponse</code> that    *         contains a standard AM registration response along with additional    *         information required for distributed scheduling    * @throws YarnException YarnException    * @throws IOException IOException    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
 annotation|@
 name|Idempotent
+name|RegisterDistributedSchedulingAMResponse
 DECL|method|registerApplicationMasterForDistributedScheduling ( RegisterApplicationMasterRequest request)
-name|DistSchedRegisterResponse
 name|registerApplicationMasterForDistributedScheduling
 parameter_list|(
 name|RegisterApplicationMasterRequest
@@ -219,18 +219,18 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p> Extends the<code>allocate</code> to wrap the response with additional    * metadata.</p>    *    * @param request ApplicationMaster allocate request    * @return A<code>DistSchedAllocateResponse</code> that contains a standard    *         AM allocate response along with additional information required    *         for Distributed Scheduling    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>    * Extends the<code>allocate</code> to wrap the response with additional    * metadata.    *</p>    *    * @param request    *          ApplicationMaster allocate request    * @return A<code>DistributedSchedulingAllocateResponse</code> that contains    *         a standard AM allocate response along with additional information    *         required for distributed scheduling    * @throws YarnException YarnException    * @throws IOException IOException    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
 annotation|@
 name|Idempotent
-DECL|method|allocateForDistributedScheduling ( DistSchedAllocateRequest request)
-name|DistSchedAllocateResponse
+DECL|method|allocateForDistributedScheduling ( DistributedSchedulingAllocateRequest request)
+name|DistributedSchedulingAllocateResponse
 name|allocateForDistributedScheduling
 parameter_list|(
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 name|request
 parameter_list|)
 throws|throws

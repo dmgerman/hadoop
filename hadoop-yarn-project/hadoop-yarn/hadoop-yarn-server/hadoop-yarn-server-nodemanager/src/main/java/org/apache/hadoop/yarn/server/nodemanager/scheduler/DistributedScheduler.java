@@ -122,7 +122,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 import|;
 end_import
 
@@ -142,7 +142,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 import|;
 end_import
 
@@ -162,7 +162,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 import|;
 end_import
 
@@ -623,15 +623,15 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The LocalScheduler runs on the NodeManager and is modelled as an  *<code>AMRMProxy</code> request interceptor. It is responsible for the  * following :</p>  *<ul>  *<li>Intercept<code>ApplicationMasterProtocol</code> calls and unwrap the  *   response objects to extract instructions from the  *<code>ClusterManager</code> running on the ResourceManager to aid in making  *   Scheduling scheduling decisions</li>  *<li>Call the<code>OpportunisticContainerAllocator</code> to allocate  *   containers for the opportunistic resource outstandingOpReqs</li>  *</ul>  */
+comment|/**  *<p>The DistributedScheduler runs on the NodeManager and is modeled as an  *<code>AMRMProxy</code> request interceptor. It is responsible for the  * following:</p>  *<ul>  *<li>Intercept<code>ApplicationMasterProtocol</code> calls and unwrap the  *   response objects to extract instructions from the  *<code>ClusterMonitor</code> running on the ResourceManager to aid in making  *   distributed scheduling decisions.</li>  *<li>Call the<code>OpportunisticContainerAllocator</code> to allocate  *   containers for the outstanding OPPORTUNISTIC container requests.</li>  *</ul>  */
 end_comment
 
 begin_class
-DECL|class|LocalScheduler
+DECL|class|DistributedScheduler
 specifier|public
 specifier|final
 class|class
-name|LocalScheduler
+name|DistributedScheduler
 extends|extends
 name|AbstractRequestInterceptor
 block|{
@@ -693,10 +693,10 @@ name|opportunistic
 return|;
 block|}
 block|}
-DECL|class|DistSchedulerParams
+DECL|class|DistributedSchedulerParams
 specifier|static
 class|class
-name|DistSchedulerParams
+name|DistributedSchedulerParams
 block|{
 DECL|field|maxResource
 name|Resource
@@ -726,7 +726,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|LocalScheduler
+name|DistributedScheduler
 operator|.
 name|class
 argument_list|)
@@ -745,8 +745,8 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-comment|// Currently just used to keep track of allocated Containers
-comment|// Can be used for reporting stats later
+comment|// Currently just used to keep track of allocated containers.
+comment|// Can be used for reporting stats later.
 DECL|field|containersAllocated
 specifier|private
 name|Set
@@ -762,19 +762,19 @@ argument_list|()
 decl_stmt|;
 DECL|field|appParams
 specifier|private
-name|DistSchedulerParams
+name|DistributedSchedulerParams
 name|appParams
 init|=
 operator|new
-name|DistSchedulerParams
+name|DistributedSchedulerParams
 argument_list|()
 decl_stmt|;
-DECL|field|containerIdCounter
 specifier|private
 specifier|final
 name|OpportunisticContainerAllocator
 operator|.
 name|ContainerIdCounter
+DECL|field|containerIdCounter
 name|containerIdCounter
 init|=
 operator|new
@@ -831,7 +831,7 @@ decl_stmt|;
 comment|// This maintains a map of outstanding OPPORTUNISTIC Reqs. Key-ed by Priority,
 comment|// Resource Name (Host/rack/any) and capability. This mapping is required
 comment|// to match a received Container to an outstanding OPPORTUNISTIC
-comment|// ResourceRequests (ask)
+comment|// ResourceRequest (ask).
 specifier|final
 name|TreeMap
 argument_list|<
@@ -962,7 +962,7 @@ operator|=
 name|appSubmitter
 expr_stmt|;
 block|}
-comment|/**    * Route register call to the corresponding distributed scheduling method viz.    * registerApplicationMasterForDistributedScheduling, and return response to    * the caller after stripping away Distributed Scheduling information.    *    * @param request    *          registration request    * @return Allocate Response    * @throws YarnException    * @throws IOException    */
+comment|/**    * Route register call to the corresponding distributed scheduling method viz.    * registerApplicationMasterForDistributedScheduling, and return response to    * the caller after stripping away Distributed Scheduling information.    *    * @param request    *          registration request    * @return Allocate Response    * @throws YarnException YarnException    * @throws IOException IOException    */
 annotation|@
 name|Override
 DECL|method|registerApplicationMaster (RegisterApplicationMasterRequest request)
@@ -988,7 +988,7 @@ name|getRegisterResponse
 argument_list|()
 return|;
 block|}
-comment|/**    * Route allocate call to the allocateForDistributedScheduling method and    * return response to the caller after stripping away Distributed Scheduling    * information.    *    * @param request    *          allocation request    * @return Allocate Response    * @throws YarnException    * @throws IOException    */
+comment|/**    * Route allocate call to the allocateForDistributedScheduling method and    * return response to the caller after stripping away Distributed Scheduling    * information.    *    * @param request    *          allocation request    * @return Allocate Response    * @throws YarnException YarnException    * @throws IOException IOException    */
 annotation|@
 name|Override
 DECL|method|allocate (AllocateRequest request)
@@ -1004,14 +1004,14 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 name|distRequest
 init|=
 name|RECORD_FACTORY
 operator|.
 name|newRecordInstance
 argument_list|(
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 operator|.
 name|class
 argument_list|)
@@ -1058,7 +1058,7 @@ name|request
 argument_list|)
 return|;
 block|}
-comment|/**    * Check if we already have a NMToken. if Not, generate the Token and    * add it to the response    * @param response    * @param nmTokens    * @param allocatedContainers    */
+comment|/**    * Check if we already have a NMToken. if Not, generate the Token and    * add it to the response    */
 DECL|method|updateResponseWithNMTokens (AllocateResponse response, List<NMToken> nmTokens, List<Container> allocatedContainers)
 specifier|private
 name|void
@@ -1249,12 +1249,12 @@ return|return
 name|partitionedRequests
 return|;
 block|}
-DECL|method|updateParameters ( DistSchedRegisterResponse registerResponse)
+DECL|method|updateParameters ( RegisterDistributedSchedulingAMResponse registerResponse)
 specifier|private
 name|void
 name|updateParameters
 parameter_list|(
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 name|registerResponse
 parameter_list|)
 block|{
@@ -1264,7 +1264,7 @@ name|minResource
 operator|=
 name|registerResponse
 operator|.
-name|getMinAllocatableCapabilty
+name|getMinContainerResource
 argument_list|()
 expr_stmt|;
 name|appParams
@@ -1273,7 +1273,7 @@ name|maxResource
 operator|=
 name|registerResponse
 operator|.
-name|getMaxAllocatableCapabilty
+name|getMaxContainerResource
 argument_list|()
 expr_stmt|;
 name|appParams
@@ -1282,7 +1282,7 @@ name|incrementResource
 operator|=
 name|registerResponse
 operator|.
-name|getIncrAllocatableCapabilty
+name|getIncrContainerResource
 argument_list|()
 expr_stmt|;
 if|if
@@ -1331,7 +1331,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Takes a list of ResourceRequests (asks), extracts the key information viz.    * (Priority, ResourceName, Capability) and adds it the outstanding    * OPPORTUNISTIC outstandingOpReqs map. The nested map is required to enforce    * the current YARN constraint that only a single ResourceRequest can exist at    * a give Priority and Capability    * @param resourceAsks    */
+comment|/**    * Takes a list of ResourceRequests (asks), extracts the key information viz.    * (Priority, ResourceName, Capability) and adds to the outstanding    * OPPORTUNISTIC outstandingOpReqs map. The nested map is required to enforce    * the current YARN constraint that only a single ResourceRequest can exist at    * a give Priority and Capability.    *    * @param resourceAsks the list with the {@link ResourceRequest}s    */
 DECL|method|addToOutstandingReqs (List<ResourceRequest> resourceAsks)
 specifier|public
 name|void
@@ -1526,9 +1526,9 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * This method matches a returned list of Container Allocations to any    * outstanding OPPORTUNISTIC ResourceRequest    * @param capability    * @param allocatedContainers    */
+comment|/**    * This method matches a returned list of Container Allocations to any    * outstanding OPPORTUNISTIC ResourceRequest.    */
 DECL|method|matchAllocationToOutstandingRequest (Resource capability, List<Container> allocatedContainers)
-specifier|public
+specifier|private
 name|void
 name|matchAllocationToOutstandingRequest
 parameter_list|(
@@ -1699,7 +1699,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 DECL|method|registerApplicationMasterForDistributedScheduling ( RegisterApplicationMasterRequest request)
 name|registerApplicationMasterForDistributedScheduling
 parameter_list|(
@@ -1720,7 +1720,7 @@ operator|+
 literal|"Distributed Scheduler Service on YARN RM"
 argument_list|)
 expr_stmt|;
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 name|dsResp
 init|=
 name|getNextInterceptor
@@ -1742,12 +1742,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocateForDistributedScheduling ( DistSchedAllocateRequest request)
+DECL|method|allocateForDistributedScheduling ( DistributedSchedulingAllocateRequest request)
 specifier|public
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|allocateForDistributedScheduling
 parameter_list|(
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 name|request
 parameter_list|)
 throws|throws
@@ -2022,7 +2022,7 @@ name|getGuaranteed
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|dsResp
 init|=
 name|getNextInterceptor

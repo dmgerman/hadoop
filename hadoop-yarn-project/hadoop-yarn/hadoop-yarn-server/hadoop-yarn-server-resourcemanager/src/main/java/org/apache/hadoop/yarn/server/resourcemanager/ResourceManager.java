@@ -6499,11 +6499,11 @@ name|DIST_SCHEDULING_ENABLED_DEFAULT
 argument_list|)
 condition|)
 block|{
-name|DistributedSchedulingService
+name|DistributedSchedulingAMService
 name|distributedSchedulingService
 init|=
 operator|new
-name|DistributedSchedulingService
+name|DistributedSchedulingAMService
 argument_list|(
 name|this
 operator|.
@@ -6520,7 +6520,7 @@ name|EventDispatcher
 argument_list|(
 name|distributedSchedulingService
 argument_list|,
-name|DistributedSchedulingService
+name|DistributedSchedulingAMService
 operator|.
 name|class
 operator|.
@@ -6528,7 +6528,7 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Add an event dispoatcher for the DistributedSchedulingService
+comment|// Add an event dispatcher for the DistributedSchedulingAMService
 comment|// to handle node updates/additions and removals.
 comment|// Since the SchedulerEvent is currently a super set of theses,
 comment|// we register interest for it..

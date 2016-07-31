@@ -345,7 +345,7 @@ if|if
 condition|(
 name|protocol
 operator|==
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 operator|.
 name|class
 condition|)

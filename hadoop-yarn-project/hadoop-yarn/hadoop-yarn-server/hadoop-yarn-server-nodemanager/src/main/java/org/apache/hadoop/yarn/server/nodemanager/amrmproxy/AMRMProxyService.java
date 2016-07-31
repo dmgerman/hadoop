@@ -722,7 +722,7 @@ name|nodemanager
 operator|.
 name|scheduler
 operator|.
-name|LocalScheduler
+name|DistributedScheduler
 import|;
 end_import
 
@@ -2366,8 +2366,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Make sure LocalScheduler is present at the beginning
-comment|// of the chain..
+comment|// Make sure DistributedScheduler is present at the beginning of the chain.
 if|if
 condition|(
 name|this
@@ -2384,7 +2383,7 @@ name|add
 argument_list|(
 literal|0
 argument_list|,
-name|LocalScheduler
+name|DistributedScheduler
 operator|.
 name|class
 operator|.

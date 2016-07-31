@@ -134,16 +134,20 @@ name|List
 import|;
 end_import
 
+begin_comment
+comment|/**  * This is the response to registering an Application Master when distributed  * scheduling is enabled. Apart from the  * {@link RegisterApplicationMasterResponse}, it includes various parameters  * to be used during distributed scheduling, such as the min and max resources  * that can be requested by containers.  */
+end_comment
+
 begin_class
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|class|DistSchedRegisterResponse
+DECL|class|RegisterDistributedSchedulingAMResponse
 specifier|public
 specifier|abstract
 class|class
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 block|{
 annotation|@
 name|Public
@@ -152,21 +156,21 @@ name|Unstable
 DECL|method|newInstance (RegisterApplicationMasterResponse regAMResp)
 specifier|public
 specifier|static
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 name|newInstance
 parameter_list|(
 name|RegisterApplicationMasterResponse
 name|regAMResp
 parameter_list|)
 block|{
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 name|response
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 operator|.
 name|class
 argument_list|)
@@ -211,11 +215,11 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|setMinAllocatableCapabilty (Resource minResource)
+DECL|method|setMinContainerResource (Resource minResource)
 specifier|public
 specifier|abstract
 name|void
-name|setMinAllocatableCapabilty
+name|setMinContainerResource
 parameter_list|(
 name|Resource
 name|minResource
@@ -225,22 +229,22 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getMinAllocatableCapabilty ()
+DECL|method|getMinContainerResource ()
 specifier|public
 specifier|abstract
 name|Resource
-name|getMinAllocatableCapabilty
+name|getMinContainerResource
 parameter_list|()
 function_decl|;
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|setMaxAllocatableCapabilty (Resource maxResource)
+DECL|method|setMaxContainerResource (Resource maxResource)
 specifier|public
 specifier|abstract
 name|void
-name|setMaxAllocatableCapabilty
+name|setMaxContainerResource
 parameter_list|(
 name|Resource
 name|maxResource
@@ -250,22 +254,22 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getMaxAllocatableCapabilty ()
+DECL|method|getMaxContainerResource ()
 specifier|public
 specifier|abstract
 name|Resource
-name|getMaxAllocatableCapabilty
+name|getMaxContainerResource
 parameter_list|()
 function_decl|;
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|setIncrAllocatableCapabilty (Resource maxResource)
+DECL|method|setIncrContainerResource (Resource maxResource)
 specifier|public
 specifier|abstract
 name|void
-name|setIncrAllocatableCapabilty
+name|setIncrContainerResource
 parameter_list|(
 name|Resource
 name|maxResource
@@ -275,11 +279,11 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getIncrAllocatableCapabilty ()
+DECL|method|getIncrContainerResource ()
 specifier|public
 specifier|abstract
 name|Resource
-name|getIncrAllocatableCapabilty
+name|getIncrContainerResource
 parameter_list|()
 function_decl|;
 annotation|@

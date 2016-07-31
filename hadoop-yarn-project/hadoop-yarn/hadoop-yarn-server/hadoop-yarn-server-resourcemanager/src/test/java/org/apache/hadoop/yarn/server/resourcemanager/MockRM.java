@@ -5303,7 +5303,7 @@ condition|)
 block|{
 return|return
 operator|new
-name|DistributedSchedulingService
+name|DistributedSchedulingAMService
 argument_list|(
 name|getRMContext
 argument_list|()

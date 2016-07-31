@@ -172,7 +172,7 @@ name|server
 operator|.
 name|api
 operator|.
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 import|;
 end_import
 
@@ -250,7 +250,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 import|;
 end_import
 
@@ -270,7 +270,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 import|;
 end_import
 
@@ -290,7 +290,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 import|;
 end_import
 
@@ -827,18 +827,18 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The DistributedSchedulingService is started instead of the  * ApplicationMasterService if DistributedScheduling is enabled for the YARN  * cluster.  * It extends the functionality of the ApplicationMasterService by servicing  * clients (AMs and AMRMProxy request interceptors) that understand the  * DistributedSchedulingProtocol.  */
+comment|/**  * The DistributedSchedulingAMService is started instead of the  * ApplicationMasterService if distributed scheduling is enabled for the YARN  * cluster.  * It extends the functionality of the ApplicationMasterService by servicing  * clients (AMs and AMRMProxy request interceptors) that understand the  * DistributedSchedulingProtocol.  */
 end_comment
 
 begin_class
-DECL|class|DistributedSchedulingService
+DECL|class|DistributedSchedulingAMService
 specifier|public
 class|class
-name|DistributedSchedulingService
+name|DistributedSchedulingAMService
 extends|extends
 name|ApplicationMasterService
 implements|implements
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 implements|,
 name|EventHandler
 argument_list|<
@@ -856,7 +856,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|DistributedSchedulingService
+name|DistributedSchedulingAMService
 operator|.
 name|class
 argument_list|)
@@ -911,9 +911,9 @@ specifier|final
 name|int
 name|k
 decl_stmt|;
-DECL|method|DistributedSchedulingService (RMContext rmContext, YarnScheduler scheduler)
+DECL|method|DistributedSchedulingAMService (RMContext rmContext, YarnScheduler scheduler)
 specifier|public
-name|DistributedSchedulingService
+name|DistributedSchedulingAMService
 parameter_list|(
 name|RMContext
 name|rmContext
@@ -924,7 +924,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|DistributedSchedulingService
+name|DistributedSchedulingAMService
 operator|.
 name|class
 operator|.
@@ -949,11 +949,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_TOP_K
+name|DIST_SCHEDULING_NODES_NUMBER_USED
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_TOP_K_DEFAULT
+name|DIST_SCHEDULING_NODES_NUMBER_USED_DEFAULT
 argument_list|)
 expr_stmt|;
 name|long
@@ -1170,7 +1170,7 @@ name|rpc
 operator|.
 name|getServer
 argument_list|(
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 operator|.
 name|class
 argument_list|,
@@ -1311,7 +1311,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 DECL|method|registerApplicationMasterForDistributedScheduling ( RegisterApplicationMasterRequest request)
 name|registerApplicationMasterForDistributedScheduling
 parameter_list|(
@@ -1331,14 +1331,14 @@ argument_list|(
 name|request
 argument_list|)
 decl_stmt|;
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 name|dsResp
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 operator|.
 name|class
 argument_list|)
@@ -1352,7 +1352,7 @@ argument_list|)
 expr_stmt|;
 name|dsResp
 operator|.
-name|setMinAllocatableCapabilty
+name|setMinContainerResource
 argument_list|(
 name|Resource
 operator|.
@@ -1365,11 +1365,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MIN_MEMORY
+name|DIST_SCHEDULING_MIN_CONTAINER_MEMORY_MB
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MIN_MEMORY_DEFAULT
+name|DIST_SCHEDULING_MIN_CONTAINER_MEMORY_MB_DEFAULT
 argument_list|)
 argument_list|,
 name|getConfig
@@ -1379,18 +1379,18 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MIN_VCORES
+name|DIST_SCHEDULING_MIN_CONTAINER_VCORES
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MIN_VCORES_DEFAULT
+name|DIST_SCHEDULING_MIN_CONTAINER_VCORES_DEFAULT
 argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|dsResp
 operator|.
-name|setMaxAllocatableCapabilty
+name|setMaxContainerResource
 argument_list|(
 name|Resource
 operator|.
@@ -1403,11 +1403,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MAX_MEMORY
+name|DIST_SCHEDULING_MAX_MEMORY_MB
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MAX_MEMORY_DEFAULT
+name|DIST_SCHEDULING_MAX_MEMORY_MB_DEFAULT
 argument_list|)
 argument_list|,
 name|getConfig
@@ -1417,18 +1417,18 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MAX_VCORES
+name|DIST_SCHEDULING_MAX_CONTAINER_VCORES
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MAX_VCORES_DEFAULT
+name|DIST_SCHEDULING_MAX_CONTAINER_VCORES_DEFAULT
 argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|dsResp
 operator|.
-name|setIncrAllocatableCapabilty
+name|setIncrContainerResource
 argument_list|(
 name|Resource
 operator|.
@@ -1441,11 +1441,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_INCR_MEMORY
+name|DIST_SCHEDULING_INCR_CONTAINER_MEMORY_MB
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_INCR_MEMORY_DEFAULT
+name|DIST_SCHEDULING_INCR_CONTAINER_MEMORY_MB_DEFAULT
 argument_list|)
 argument_list|,
 name|getConfig
@@ -1455,11 +1455,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_INCR_VCORES
+name|DIST_SCHEDULING_INCR_CONTAINER_VCORES
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_INCR_VCORES_DEFAULT
+name|DIST_SCHEDULING_INCR_CONTAINER_VCORES_DEFAULT
 argument_list|)
 argument_list|)
 argument_list|)
@@ -1522,12 +1522,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocateForDistributedScheduling ( DistSchedAllocateRequest request)
+DECL|method|allocateForDistributedScheduling ( DistributedSchedulingAllocateRequest request)
 specifier|public
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|allocateForDistributedScheduling
 parameter_list|(
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 name|request
 parameter_list|)
 throws|throws
@@ -1646,14 +1646,14 @@ name|getAllocateRequest
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|dsResp
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 operator|.
 name|class
 argument_list|)
@@ -2127,7 +2127,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unknown event arrived at DistributedSchedulingService: "
+literal|"Unknown event arrived at DistributedSchedulingAMService: "
 operator|+
 name|event
 operator|.

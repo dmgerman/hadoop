@@ -110,7 +110,7 @@ name|server
 operator|.
 name|api
 operator|.
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 import|;
 end_import
 
@@ -166,7 +166,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 import|;
 end_import
 
@@ -186,7 +186,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 import|;
 end_import
 
@@ -206,7 +206,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 import|;
 end_import
 
@@ -346,7 +346,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|DistSchedAllocateRequestPBImpl
+name|DistributedSchedulingAllocateRequestPBImpl
 import|;
 end_import
 
@@ -370,7 +370,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|DistSchedAllocateResponsePBImpl
+name|DistributedSchedulingAllocateResponsePBImpl
 import|;
 end_import
 
@@ -394,7 +394,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|DistSchedRegisterResponsePBImpl
+name|RegisterDistributedSchedulingAMResponsePBImpl
 import|;
 end_import
 
@@ -548,7 +548,7 @@ name|server
 operator|.
 name|api
 operator|.
-name|DistributedSchedulerProtocolPB
+name|DistributedSchedulingAMProtocolPB
 import|;
 end_import
 
@@ -582,24 +582,28 @@ name|InetSocketAddress
 import|;
 end_import
 
+begin_comment
+comment|/**  * Implementation of {@link DistributedSchedulingAMProtocol}, used when  * distributed scheduling is enabled.  */
+end_comment
+
 begin_class
-DECL|class|DistributedSchedulerProtocolPBClientImpl
+DECL|class|DistributedSchedulingAMProtocolPBClientImpl
 specifier|public
 class|class
-name|DistributedSchedulerProtocolPBClientImpl
+name|DistributedSchedulingAMProtocolPBClientImpl
 implements|implements
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 implements|,
 name|Closeable
 block|{
 DECL|field|proxy
 specifier|private
-name|DistributedSchedulerProtocolPB
+name|DistributedSchedulingAMProtocolPB
 name|proxy
 decl_stmt|;
-DECL|method|DistributedSchedulerProtocolPBClientImpl (long clientVersion, InetSocketAddress addr, Configuration conf)
+DECL|method|DistributedSchedulingAMProtocolPBClientImpl (long clientVersion, InetSocketAddress addr, Configuration conf)
 specifier|public
-name|DistributedSchedulerProtocolPBClientImpl
+name|DistributedSchedulingAMProtocolPBClientImpl
 parameter_list|(
 name|long
 name|clientVersion
@@ -619,7 +623,7 @@ name|setProtocolEngine
 argument_list|(
 name|conf
 argument_list|,
-name|DistributedSchedulerProtocolPB
+name|DistributedSchedulingAMProtocolPB
 operator|.
 name|class
 argument_list|,
@@ -634,7 +638,7 @@ name|RPC
 operator|.
 name|getProxy
 argument_list|(
-name|DistributedSchedulerProtocolPB
+name|DistributedSchedulingAMProtocolPB
 operator|.
 name|class
 argument_list|,
@@ -677,7 +681,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 DECL|method|registerApplicationMasterForDistributedScheduling ( RegisterApplicationMasterRequest request)
 name|registerApplicationMasterForDistributedScheduling
 parameter_list|(
@@ -708,7 +712,7 @@ try|try
 block|{
 return|return
 operator|new
-name|DistSchedRegisterResponsePBImpl
+name|RegisterDistributedSchedulingAMResponsePBImpl
 argument_list|(
 name|proxy
 operator|.
@@ -741,12 +745,12 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|allocateForDistributedScheduling ( DistSchedAllocateRequest request)
+DECL|method|allocateForDistributedScheduling ( DistributedSchedulingAllocateRequest request)
 specifier|public
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|allocateForDistributedScheduling
 parameter_list|(
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 name|request
 parameter_list|)
 throws|throws
@@ -756,12 +760,12 @@ name|IOException
 block|{
 name|YarnServerCommonServiceProtos
 operator|.
-name|DistSchedAllocateRequestProto
+name|DistributedSchedulingAllocateRequestProto
 name|requestProto
 init|=
 operator|(
 operator|(
-name|DistSchedAllocateRequestPBImpl
+name|DistributedSchedulingAllocateRequestPBImpl
 operator|)
 name|request
 operator|)
@@ -773,7 +777,7 @@ try|try
 block|{
 return|return
 operator|new
-name|DistSchedAllocateResponsePBImpl
+name|DistributedSchedulingAllocateResponsePBImpl
 argument_list|(
 name|proxy
 operator|.
@@ -806,7 +810,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|registerApplicationMaster (RegisterApplicationMasterRequest request)
+DECL|method|registerApplicationMaster ( RegisterApplicationMasterRequest request)
 specifier|public
 name|RegisterApplicationMasterResponse
 name|registerApplicationMaster
@@ -871,7 +875,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|finishApplicationMaster (FinishApplicationMasterRequest request)
+DECL|method|finishApplicationMaster ( FinishApplicationMasterRequest request)
 specifier|public
 name|FinishApplicationMasterResponse
 name|finishApplicationMaster

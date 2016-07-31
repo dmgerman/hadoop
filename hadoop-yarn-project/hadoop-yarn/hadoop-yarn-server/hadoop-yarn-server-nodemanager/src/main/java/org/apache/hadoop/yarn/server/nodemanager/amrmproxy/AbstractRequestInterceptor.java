@@ -100,7 +100,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 import|;
 end_import
 
@@ -120,7 +120,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 import|;
 end_import
 
@@ -140,7 +140,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 import|;
 end_import
 
@@ -371,12 +371,12 @@ block|}
 comment|/**    * Default implementation that invokes the distributed scheduling version    * of the register method.    *    * @param request ApplicationMaster allocate request    * @return Distribtued Scheduler Allocate Response    * @throws YarnException    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|allocateForDistributedScheduling ( DistSchedAllocateRequest request)
+DECL|method|allocateForDistributedScheduling ( DistributedSchedulingAllocateRequest request)
 specifier|public
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|allocateForDistributedScheduling
 parameter_list|(
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 name|request
 parameter_list|)
 throws|throws
@@ -409,7 +409,7 @@ comment|/**    * Default implementation that invokes the distributed scheduling 
 annotation|@
 name|Override
 specifier|public
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 DECL|method|registerApplicationMasterForDistributedScheduling ( RegisterApplicationMasterRequest request)
 name|registerApplicationMasterForDistributedScheduling
 parameter_list|(

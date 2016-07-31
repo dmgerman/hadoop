@@ -48,40 +48,6 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|records
-operator|.
-name|ExecutionTypeRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|security
-operator|.
-name|ContainerTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
 name|protocolrecords
 operator|.
 name|AllocateRequest
@@ -103,66 +69,6 @@ operator|.
 name|protocolrecords
 operator|.
 name|AllocateResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|DistSchedAllocateRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|DistSchedAllocateResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|DistSchedRegisterResponse
 import|;
 end_import
 
@@ -306,6 +212,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ExecutionTypeRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeId
 import|;
 end_import
@@ -361,6 +285,82 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|security
+operator|.
+name|ContainerTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|DistributedSchedulingAllocateRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|DistributedSchedulingAllocateResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|RegisterDistributedSchedulingAMResponse
 import|;
 end_import
 
@@ -642,18 +642,22 @@ name|AtomicBoolean
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test cases for {@link DistributedScheduler}.  */
+end_comment
+
 begin_class
-DECL|class|TestLocalScheduler
+DECL|class|TestDistributedScheduler
 specifier|public
 class|class
-name|TestLocalScheduler
+name|TestDistributedScheduler
 block|{
 annotation|@
 name|Test
-DECL|method|testLocalScheduler ()
+DECL|method|testDistributedScheduler ()
 specifier|public
 name|void
-name|testLocalScheduler
+name|testDistributedScheduler
 parameter_list|()
 throws|throws
 name|Exception
@@ -665,11 +669,11 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-name|LocalScheduler
-name|localScheduler
+name|DistributedScheduler
+name|distributedScheduler
 init|=
 operator|new
-name|LocalScheduler
+name|DistributedScheduler
 argument_list|()
 decl_stmt|;
 name|RequestInterceptor
@@ -679,12 +683,12 @@ name|setup
 argument_list|(
 name|conf
 argument_list|,
-name|localScheduler
+name|distributedScheduler
 argument_list|)
 decl_stmt|;
 name|registerAM
 argument_list|(
-name|localScheduler
+name|distributedScheduler
 argument_list|,
 name|finalReqIntcptr
 argument_list|,
@@ -719,7 +723,7 @@ init|=
 operator|new
 name|AtomicBoolean
 argument_list|(
-literal|false
+literal|true
 argument_list|)
 decl_stmt|;
 name|Mockito
@@ -734,7 +738,7 @@ name|Mockito
 operator|.
 name|any
 argument_list|(
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 operator|.
 name|class
 argument_list|)
@@ -746,14 +750,14 @@ argument_list|(
 operator|new
 name|Answer
 argument_list|<
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|answer
 parameter_list|(
 name|InvocationOnMock
@@ -901,7 +905,7 @@ comment|// Verify 4 containers were allocated
 name|AllocateResponse
 name|allocateResponse
 init|=
-name|localScheduler
+name|distributedScheduler
 operator|.
 name|allocate
 argument_list|(
@@ -923,8 +927,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Verify equal distribution on hosts a and b
-comment|// And None on c and d
+comment|// Verify equal distribution on hosts a and b, and none on c or d
 name|Map
 argument_list|<
 name|NodeId
@@ -1071,7 +1074,7 @@ expr_stmt|;
 comment|// Verify 6 containers were allocated
 name|allocateResponse
 operator|=
-name|localScheduler
+name|distributedScheduler
 operator|.
 name|allocate
 argument_list|(
@@ -1093,8 +1096,8 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Verify New containers are equally distribution on hosts c and d
-comment|// And None on a and b
+comment|// Verify new containers are equally distribution on hosts c and d,
+comment|// and none on a or b
 name|allocs
 operator|=
 name|mapAllocs
@@ -1190,7 +1193,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Ensure the LocalScheduler respects the list order..
+comment|// Ensure the DistributedScheduler respects the list order..
 comment|// The first request should be allocated to "d" since it is ranked higher
 comment|// The second request should be allocated to "c" since the ranking is
 comment|// flipped on every allocate response.
@@ -1234,7 +1237,7 @@ argument_list|)
 expr_stmt|;
 name|allocateResponse
 operator|=
-name|localScheduler
+name|distributedScheduler
 operator|.
 name|allocate
 argument_list|(
@@ -1314,7 +1317,7 @@ argument_list|)
 expr_stmt|;
 name|allocateResponse
 operator|=
-name|localScheduler
+name|distributedScheduler
 operator|.
 name|allocate
 argument_list|(
@@ -1394,7 +1397,7 @@ argument_list|)
 expr_stmt|;
 name|allocateResponse
 operator|=
-name|localScheduler
+name|distributedScheduler
 operator|.
 name|allocate
 argument_list|(
@@ -1435,13 +1438,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|registerAM (LocalScheduler localScheduler, RequestInterceptor finalReqIntcptr, List<NodeId> nodeList)
+DECL|method|registerAM (DistributedScheduler distributedScheduler, RequestInterceptor finalReqIntcptr, List<NodeId> nodeList)
 specifier|private
 name|void
 name|registerAM
 parameter_list|(
-name|LocalScheduler
-name|localScheduler
+name|DistributedScheduler
+name|distributedScheduler
 parameter_list|,
 name|RequestInterceptor
 name|finalReqIntcptr
@@ -1455,14 +1458,14 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 name|distSchedRegisterResponse
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 operator|.
 name|class
 argument_list|)
@@ -1497,7 +1500,7 @@ argument_list|)
 expr_stmt|;
 name|distSchedRegisterResponse
 operator|.
-name|setMaxAllocatableCapabilty
+name|setMaxContainerResource
 argument_list|(
 name|Resource
 operator|.
@@ -1511,7 +1514,7 @@ argument_list|)
 expr_stmt|;
 name|distSchedRegisterResponse
 operator|.
-name|setMinAllocatableCapabilty
+name|setMinContainerResource
 argument_list|(
 name|Resource
 operator|.
@@ -1554,7 +1557,7 @@ argument_list|(
 name|distSchedRegisterResponse
 argument_list|)
 expr_stmt|;
-name|localScheduler
+name|distributedScheduler
 operator|.
 name|registerApplicationMaster
 argument_list|(
@@ -1569,7 +1572,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setup (Configuration conf, LocalScheduler localScheduler)
+DECL|method|setup (Configuration conf, DistributedScheduler distributedScheduler)
 specifier|private
 name|RequestInterceptor
 name|setup
@@ -1577,8 +1580,8 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|,
-name|LocalScheduler
-name|localScheduler
+name|DistributedScheduler
+name|distributedScheduler
 parameter_list|)
 block|{
 name|NodeStatusUpdater
@@ -1734,7 +1737,7 @@ argument_list|(
 name|mKey
 argument_list|)
 expr_stmt|;
-name|localScheduler
+name|distributedScheduler
 operator|.
 name|initLocal
 argument_list|(
@@ -1773,7 +1776,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|localScheduler
+name|distributedScheduler
 operator|.
 name|setNextInterceptor
 argument_list|(
@@ -1876,9 +1879,9 @@ return|return
 name|opportunisticReq
 return|;
 block|}
-DECL|method|createAllocateResponse (List<NodeId> nodes)
+DECL|method|createAllocateResponse ( List<NodeId> nodes)
 specifier|private
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|createAllocateResponse
 parameter_list|(
 name|List
@@ -1888,14 +1891,14 @@ argument_list|>
 name|nodes
 parameter_list|)
 block|{
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|distSchedAllocateResponse
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 operator|.
 name|class
 argument_list|)
@@ -1925,7 +1928,7 @@ return|return
 name|distSchedAllocateResponse
 return|;
 block|}
-DECL|method|mapAllocs (AllocateResponse allocateResponse, int expectedSize)
+DECL|method|mapAllocs ( AllocateResponse allocateResponse, int expectedSize)
 specifier|private
 name|Map
 argument_list|<

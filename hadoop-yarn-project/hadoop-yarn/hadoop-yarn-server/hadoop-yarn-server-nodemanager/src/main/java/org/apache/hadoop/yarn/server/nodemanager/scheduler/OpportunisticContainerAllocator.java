@@ -214,9 +214,9 @@ name|nodemanager
 operator|.
 name|scheduler
 operator|.
-name|LocalScheduler
+name|DistributedScheduler
 operator|.
-name|DistSchedulerParams
+name|DistributedSchedulerParams
 import|;
 end_import
 
@@ -318,6 +318,18 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+operator|.
+name|Entry
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|atomic
@@ -327,7 +339,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The OpportunisticContainerAllocator allocates containers on a given list  * of Nodes after it modifies the container sizes to within allowable limits  * specified by the<code>ClusterManager</code> running on the RM. It tries to  * distribute the containers as evenly as possible. It also uses the  *<code>NMTokenSecretManagerInNM</code> to generate the required NM tokens for  * the allocated containers</p>  */
+comment|/**  *<p>  * The OpportunisticContainerAllocator allocates containers on a given list of  * nodes, after modifying the container sizes to respect the limits set by the  * ResourceManager. It tries to distribute the containers as evenly as possible.  * It also uses the<code>NMTokenSecretManagerInNM</code> to generate the  * required NM tokens for the allocated containers.  *</p>  */
 end_comment
 
 begin_class
@@ -462,7 +474,7 @@ operator|=
 name|webpagePort
 expr_stmt|;
 block|}
-DECL|method|allocate (DistSchedulerParams appParams, ContainerIdCounter idCounter, Collection<ResourceRequest> resourceAsks, Set<String> blacklist, ApplicationAttemptId appAttId, Map<String, NodeId> allNodes, String userName)
+DECL|method|allocate ( DistributedSchedulerParams appParams, ContainerIdCounter idCounter, Collection<ResourceRequest> resourceAsks, Set<String> blacklist, ApplicationAttemptId appAttId, Map<String, NodeId> allNodes, String userName)
 specifier|public
 name|Map
 argument_list|<
@@ -475,7 +487,7 @@ argument_list|>
 argument_list|>
 name|allocate
 parameter_list|(
-name|DistSchedulerParams
+name|DistributedSchedulerParams
 name|appParams
 parameter_list|,
 name|ContainerIdCounter
@@ -526,17 +538,6 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|nodesAllocated
-init|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|()
-decl_stmt|;
 for|for
 control|(
 name|ResourceRequest
@@ -560,8 +561,6 @@ argument_list|,
 name|userName
 argument_list|,
 name|containers
-argument_list|,
-name|nodesAllocated
 argument_list|,
 name|anyAsk
 argument_list|)
@@ -616,12 +615,12 @@ return|return
 name|containers
 return|;
 block|}
-DECL|method|allocateOpportunisticContainers (DistSchedulerParams appParams, ContainerIdCounter idCounter, Set<String> blacklist, ApplicationAttemptId id, Map<String, NodeId> allNodes, String userName, Map<Resource, List<Container>> containers, Set<String> nodesAllocated, ResourceRequest anyAsk)
+DECL|method|allocateOpportunisticContainers ( DistributedSchedulerParams appParams, ContainerIdCounter idCounter, Set<String> blacklist, ApplicationAttemptId id, Map<String, NodeId> allNodes, String userName, Map<Resource, List<Container>> containers, ResourceRequest anyAsk)
 specifier|private
 name|void
 name|allocateOpportunisticContainers
 parameter_list|(
-name|DistSchedulerParams
+name|DistributedSchedulerParams
 name|appParams
 parameter_list|,
 name|ContainerIdCounter
@@ -657,12 +656,6 @@ name|Container
 argument_list|>
 argument_list|>
 name|containers
-parameter_list|,
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|nodesAllocated
 parameter_list|,
 name|ResourceRequest
 name|anyAsk
@@ -702,9 +695,9 @@ operator|)
 decl_stmt|;
 name|List
 argument_list|<
-name|String
+name|NodeId
 argument_list|>
-name|topKNodesLeft
+name|nodesForScheduling
 init|=
 operator|new
 name|ArrayList
@@ -713,40 +706,44 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
+name|Entry
+argument_list|<
 name|String
-name|s
+argument_list|,
+name|NodeId
+argument_list|>
+name|nodeEntry
 range|:
 name|allNodes
 operator|.
-name|keySet
+name|entrySet
 argument_list|()
 control|)
 block|{
-comment|// Bias away from whatever we have already allocated and respect blacklist
+comment|// Do not use blacklisted nodes for scheduling.
 if|if
 condition|(
-name|nodesAllocated
-operator|.
-name|contains
-argument_list|(
-name|s
-argument_list|)
-operator|||
 name|blacklist
 operator|.
 name|contains
 argument_list|(
-name|s
+name|nodeEntry
+operator|.
+name|getKey
+argument_list|()
 argument_list|)
 condition|)
 block|{
 continue|continue;
 block|}
-name|topKNodesLeft
+name|nodesForScheduling
 operator|.
 name|add
 argument_list|(
-name|s
+name|nodeEntry
+operator|.
+name|getValue
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -756,7 +753,7 @@ init|=
 literal|0
 decl_stmt|;
 name|int
-name|nextNodeToAllocate
+name|nextNodeToSchedule
 init|=
 literal|0
 decl_stmt|;
@@ -775,22 +772,12 @@ name|numCont
 operator|++
 control|)
 block|{
-name|String
-name|topNode
-init|=
-name|topKNodesLeft
-operator|.
-name|get
-argument_list|(
-name|nextNodeToAllocate
-argument_list|)
-decl_stmt|;
-name|nextNodeToAllocate
+name|nextNodeToSchedule
 operator|++
 expr_stmt|;
-name|nextNodeToAllocate
+name|nextNodeToSchedule
 operator|%=
-name|topKNodesLeft
+name|nodesForScheduling
 operator|.
 name|size
 argument_list|()
@@ -798,11 +785,11 @@ expr_stmt|;
 name|NodeId
 name|nodeId
 init|=
-name|allNodes
+name|nodesForScheduling
 operator|.
 name|get
 argument_list|(
-name|topNode
+name|nextNodeToSchedule
 argument_list|)
 decl_stmt|;
 name|Container
@@ -903,12 +890,12 @@ literal|" opportunistic containers."
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|buildContainer (DistSchedulerParams appParams, ContainerIdCounter idCounter, ResourceRequest rr, ApplicationAttemptId id, String userName, NodeId nodeId)
+DECL|method|buildContainer (DistributedSchedulerParams appParams, ContainerIdCounter idCounter, ResourceRequest rr, ApplicationAttemptId id, String userName, NodeId nodeId)
 specifier|private
 name|Container
 name|buildContainer
 parameter_list|(
-name|DistSchedulerParams
+name|DistributedSchedulerParams
 name|appParams
 parameter_list|,
 name|ContainerIdCounter
@@ -1097,12 +1084,12 @@ return|return
 name|container
 return|;
 block|}
-DECL|method|normalizeCapability (DistSchedulerParams appParams, ResourceRequest ask)
+DECL|method|normalizeCapability (DistributedSchedulerParams appParams, ResourceRequest ask)
 specifier|private
 name|Resource
 name|normalizeCapability
 parameter_list|(
-name|DistSchedulerParams
+name|DistributedSchedulerParams
 name|appParams
 parameter_list|,
 name|ResourceRequest

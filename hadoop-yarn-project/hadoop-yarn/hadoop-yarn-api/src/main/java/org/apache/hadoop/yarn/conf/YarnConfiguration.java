@@ -1231,7 +1231,7 @@ name|DEFAULT_YARN_APP_ACL
 init|=
 literal|" "
 decl_stmt|;
-comment|/** Is Distributed Scheduling Enabled. */
+comment|/** Setting that controls whether distributed scheduling is enabled or not. */
 DECL|field|DIST_SCHEDULING_ENABLED
 specifier|public
 specifier|static
@@ -1252,133 +1252,133 @@ name|DIST_SCHEDULING_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-comment|/** Mininum allocatable container memory for Distributed Scheduling. */
-DECL|field|DIST_SCHEDULING_MIN_MEMORY
+comment|/** Minimum memory (in MB) used for allocating a container through distributed    * scheduling. */
+DECL|field|DIST_SCHEDULING_MIN_CONTAINER_MEMORY_MB
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DIST_SCHEDULING_MIN_MEMORY
+name|DIST_SCHEDULING_MIN_CONTAINER_MEMORY_MB
 init|=
 name|YARN_PREFIX
 operator|+
-literal|"distributed-scheduling.min-memory"
+literal|"distributed-scheduling.min-container-memory-mb"
 decl_stmt|;
-DECL|field|DIST_SCHEDULING_MIN_MEMORY_DEFAULT
+DECL|field|DIST_SCHEDULING_MIN_CONTAINER_MEMORY_MB_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DIST_SCHEDULING_MIN_MEMORY_DEFAULT
+name|DIST_SCHEDULING_MIN_CONTAINER_MEMORY_MB_DEFAULT
 init|=
 literal|512
 decl_stmt|;
-comment|/** Mininum allocatable container vcores for Distributed Scheduling. */
-DECL|field|DIST_SCHEDULING_MIN_VCORES
+comment|/** Minimum virtual CPU cores used for allocating a container through    * distributed scheduling. */
+DECL|field|DIST_SCHEDULING_MIN_CONTAINER_VCORES
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DIST_SCHEDULING_MIN_VCORES
+name|DIST_SCHEDULING_MIN_CONTAINER_VCORES
 init|=
 name|YARN_PREFIX
 operator|+
-literal|"distributed-scheduling.min-vcores"
+literal|"distributed-scheduling.min-container-vcores"
 decl_stmt|;
-DECL|field|DIST_SCHEDULING_MIN_VCORES_DEFAULT
+DECL|field|DIST_SCHEDULING_MIN_CONTAINER_VCORES_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DIST_SCHEDULING_MIN_VCORES_DEFAULT
+name|DIST_SCHEDULING_MIN_CONTAINER_VCORES_DEFAULT
 init|=
 literal|1
 decl_stmt|;
-comment|/** Maximum allocatable container memory for Distributed Scheduling. */
-DECL|field|DIST_SCHEDULING_MAX_MEMORY
+comment|/** Maximum memory (in MB) used for allocating a container through distributed    * scheduling. */
+DECL|field|DIST_SCHEDULING_MAX_MEMORY_MB
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DIST_SCHEDULING_MAX_MEMORY
+name|DIST_SCHEDULING_MAX_MEMORY_MB
 init|=
 name|YARN_PREFIX
 operator|+
-literal|"distributed-scheduling.max-memory"
+literal|"distributed-scheduling.max-container-memory-mb"
 decl_stmt|;
-DECL|field|DIST_SCHEDULING_MAX_MEMORY_DEFAULT
+DECL|field|DIST_SCHEDULING_MAX_MEMORY_MB_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DIST_SCHEDULING_MAX_MEMORY_DEFAULT
+name|DIST_SCHEDULING_MAX_MEMORY_MB_DEFAULT
 init|=
 literal|2048
 decl_stmt|;
-comment|/** Maximum allocatable container vcores for Distributed Scheduling. */
-DECL|field|DIST_SCHEDULING_MAX_VCORES
+comment|/** Maximum virtual CPU cores used for allocating a container through    * distributed scheduling. */
+DECL|field|DIST_SCHEDULING_MAX_CONTAINER_VCORES
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DIST_SCHEDULING_MAX_VCORES
+name|DIST_SCHEDULING_MAX_CONTAINER_VCORES
 init|=
 name|YARN_PREFIX
 operator|+
-literal|"distributed-scheduling.max-vcores"
+literal|"distributed-scheduling.max-container-vcores"
 decl_stmt|;
-DECL|field|DIST_SCHEDULING_MAX_VCORES_DEFAULT
+DECL|field|DIST_SCHEDULING_MAX_CONTAINER_VCORES_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DIST_SCHEDULING_MAX_VCORES_DEFAULT
+name|DIST_SCHEDULING_MAX_CONTAINER_VCORES_DEFAULT
 init|=
 literal|4
 decl_stmt|;
-comment|/** Incremental allocatable container memory for Distributed Scheduling. */
-DECL|field|DIST_SCHEDULING_INCR_MEMORY
+comment|/** Incremental memory (in MB) used for allocating a container through    * distributed scheduling. */
+DECL|field|DIST_SCHEDULING_INCR_CONTAINER_MEMORY_MB
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DIST_SCHEDULING_INCR_MEMORY
+name|DIST_SCHEDULING_INCR_CONTAINER_MEMORY_MB
 init|=
 name|YARN_PREFIX
 operator|+
-literal|"distributed-scheduling.incr-memory"
+literal|"distributed-scheduling.incr-container-memory-mb"
 decl_stmt|;
-DECL|field|DIST_SCHEDULING_INCR_MEMORY_DEFAULT
+DECL|field|DIST_SCHEDULING_INCR_CONTAINER_MEMORY_MB_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DIST_SCHEDULING_INCR_MEMORY_DEFAULT
+name|DIST_SCHEDULING_INCR_CONTAINER_MEMORY_MB_DEFAULT
 init|=
 literal|512
 decl_stmt|;
-comment|/** Incremental allocatable container vcores for Distributed Scheduling. */
-DECL|field|DIST_SCHEDULING_INCR_VCORES
+comment|/** Incremental virtual CPU cores used for allocating a container through    * distributed scheduling. */
+DECL|field|DIST_SCHEDULING_INCR_CONTAINER_VCORES
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DIST_SCHEDULING_INCR_VCORES
+name|DIST_SCHEDULING_INCR_CONTAINER_VCORES
 init|=
 name|YARN_PREFIX
 operator|+
 literal|"distributed-scheduling.incr-vcores"
 decl_stmt|;
-DECL|field|DIST_SCHEDULING_INCR_VCORES_DEFAULT
+DECL|field|DIST_SCHEDULING_INCR_CONTAINER_VCORES_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DIST_SCHEDULING_INCR_VCORES_DEFAULT
+name|DIST_SCHEDULING_INCR_CONTAINER_VCORES_DEFAULT
 init|=
 literal|1
 decl_stmt|;
-comment|/** Container token expiry for container allocated via Distributed    * Scheduling. */
+comment|/** Container token expiry for container allocated via distributed    * scheduling. */
 DECL|field|DIST_SCHEDULING_CONTAINER_TOKEN_EXPIRY_MS
 specifier|public
 specifier|static
@@ -1388,7 +1388,7 @@ name|DIST_SCHEDULING_CONTAINER_TOKEN_EXPIRY_MS
 init|=
 name|YARN_PREFIX
 operator|+
-literal|"distributed-scheduling.container-token-expiry"
+literal|"distributed-scheduling.container-token-expiry-ms"
 decl_stmt|;
 DECL|field|DIST_SCHEDULING_CONTAINER_TOKEN_EXPIRY_MS_DEFAULT
 specifier|public
@@ -1399,24 +1399,24 @@ name|DIST_SCHEDULING_CONTAINER_TOKEN_EXPIRY_MS_DEFAULT
 init|=
 literal|600000
 decl_stmt|;
-comment|/** K least loaded nodes to be provided to the LocalScheduler of a    * NodeManager for Distributed Scheduling. */
-DECL|field|DIST_SCHEDULING_TOP_K
+comment|/** Number of nodes to be used by the LocalScheduler of a NodeManager for    * dispatching containers during distributed scheduling. */
+DECL|field|DIST_SCHEDULING_NODES_NUMBER_USED
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DIST_SCHEDULING_TOP_K
+name|DIST_SCHEDULING_NODES_NUMBER_USED
 init|=
 name|YARN_PREFIX
 operator|+
-literal|"distributed-scheduling.top-k"
+literal|"distributed-scheduling.nodes-used"
 decl_stmt|;
-DECL|field|DIST_SCHEDULING_TOP_K_DEFAULT
+DECL|field|DIST_SCHEDULING_NODES_NUMBER_USED_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DIST_SCHEDULING_TOP_K_DEFAULT
+name|DIST_SCHEDULING_NODES_NUMBER_USED_DEFAULT
 init|=
 literal|10
 decl_stmt|;
@@ -1441,7 +1441,7 @@ name|NM_CONTAINER_QUEUING_SORTING_NODES_INTERVAL_MS_DEFAULT
 init|=
 literal|1000
 decl_stmt|;
-comment|/** Comparator for determining Node Load for Distributed Scheduling. */
+comment|/** Comparator for determining node load for Distributed Scheduling. */
 DECL|field|NM_CONTAINER_QUEUING_LOAD_COMPARATOR
 specifier|public
 specifier|static
@@ -1525,7 +1525,7 @@ name|NM_CONTAINER_QUEUING_MAX_QUEUE_LENGTH_DEFAULT
 init|=
 literal|10
 decl_stmt|;
-comment|/** Min wait time of container queue at NodeManager. */
+comment|/** Min queue wait time for a container at a NodeManager. */
 DECL|field|NM_CONTAINER_QUEUING_MIN_QUEUE_WAIT_TIME_MS
 specifier|public
 specifier|static
@@ -1546,7 +1546,7 @@ name|NM_CONTAINER_QUEUING_MIN_QUEUE_WAIT_TIME_MS_DEFAULT
 init|=
 literal|1
 decl_stmt|;
-comment|/** Max wait time of container queue at NodeManager. */
+comment|/** Max queue wait time for a container queue at a NodeManager. */
 DECL|field|NM_CONTAINER_QUEUING_MAX_QUEUE_WAIT_TIME_MS
 specifier|public
 specifier|static
@@ -5908,6 +5908,7 @@ name|YARN_PREFIX
 operator|+
 literal|"application.classpath"
 decl_stmt|;
+comment|/** The setting that controls whether AMRMProxy is enabled or not. */
 DECL|field|AMRM_PROXY_ENABLED
 specifier|public
 specifier|static
@@ -5917,7 +5918,7 @@ name|AMRM_PROXY_ENABLED
 init|=
 name|NM_PREFIX
 operator|+
-literal|"amrmproxy.enable"
+literal|"amrmproxy.enabled"
 decl_stmt|;
 DECL|field|DEFAULT_AMRM_PROXY_ENABLED
 specifier|public

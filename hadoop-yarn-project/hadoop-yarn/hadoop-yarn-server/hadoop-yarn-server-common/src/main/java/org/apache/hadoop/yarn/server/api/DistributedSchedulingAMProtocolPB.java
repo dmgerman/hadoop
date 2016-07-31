@@ -112,9 +112,9 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 operator|.
-name|DistributedSchedulerProtocolService
+name|DistributedSchedulingAMProtocolService
 import|;
 end_import
 
@@ -128,18 +128,18 @@ name|ProtocolInfo
 argument_list|(
 name|protocolName
 operator|=
-literal|"org.apache.hadoop.yarn.server.api.DistributedSchedulerProtocolPB"
+literal|"org.apache.hadoop.yarn.server.api.DistributedSchedulingAMProtocolPB"
 argument_list|,
 name|protocolVersion
 operator|=
 literal|1
 argument_list|)
-DECL|interface|DistributedSchedulerProtocolPB
+DECL|interface|DistributedSchedulingAMProtocolPB
 specifier|public
 interface|interface
-name|DistributedSchedulerProtocolPB
+name|DistributedSchedulingAMProtocolPB
 extends|extends
-name|DistributedSchedulerProtocolService
+name|DistributedSchedulingAMProtocolService
 operator|.
 name|BlockingInterface
 extends|,

@@ -116,39 +116,43 @@ name|List
 import|;
 end_import
 
+begin_comment
+comment|/**  * This is the response of the Resource Manager to the  * {@link DistributedSchedulingAllocateRequest}, when distributed scheduling is  * enabled. It includes the {@link AllocateResponse} for the GUARANTEED  * containers allocated by the Resource Manager. Moreover, it includes a list  * with the nodes that can be used by the Distributed Scheduler when allocating  * containers.  */
+end_comment
+
 begin_class
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|class|DistSchedAllocateResponse
+DECL|class|DistributedSchedulingAllocateResponse
 specifier|public
 specifier|abstract
 class|class
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 block|{
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|newInstance (AllocateResponse allResp)
+DECL|method|newInstance ( AllocateResponse allResp)
 specifier|public
 specifier|static
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|newInstance
 parameter_list|(
 name|AllocateResponse
 name|allResp
 parameter_list|)
 block|{
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|response
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 operator|.
 name|class
 argument_list|)

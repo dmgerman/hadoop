@@ -404,7 +404,7 @@ name|server
 operator|.
 name|api
 operator|.
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 import|;
 end_import
 
@@ -442,7 +442,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateRequest
 import|;
 end_import
 
@@ -462,7 +462,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateResponse
 import|;
 end_import
 
@@ -482,7 +482,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 import|;
 end_import
 
@@ -551,7 +551,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|rmClient
 specifier|private
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 name|rmClient
 decl_stmt|;
 DECL|field|user
@@ -629,14 +629,14 @@ argument_list|(
 operator|new
 name|PrivilegedExceptionAction
 argument_list|<
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 name|run
 parameter_list|()
 throws|throws
@@ -654,7 +654,7 @@ name|createRMProxy
 argument_list|(
 name|conf
 argument_list|,
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 operator|.
 name|class
 argument_list|)
@@ -829,7 +829,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 DECL|method|registerApplicationMasterForDistributedScheduling (RegisterApplicationMasterRequest request)
 name|registerApplicationMasterForDistributedScheduling
 parameter_list|(
@@ -861,12 +861,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocateForDistributedScheduling ( DistSchedAllocateRequest request)
+DECL|method|allocateForDistributedScheduling ( DistributedSchedulingAllocateRequest request)
 specifier|public
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|allocateForDistributedScheduling
 parameter_list|(
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 name|request
 parameter_list|)
 throws|throws
@@ -892,7 +892,7 @@ literal|"to the real YARN RM"
 argument_list|)
 expr_stmt|;
 block|}
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|allocateResponse
 init|=
 name|rmClient
@@ -1106,7 +1106,7 @@ if|if
 condition|(
 name|rmClient
 operator|instanceof
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 condition|)
 block|{
 name|this
@@ -1114,7 +1114,7 @@ operator|.
 name|rmClient
 operator|=
 operator|(
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 operator|)
 name|rmClient
 expr_stmt|;
@@ -1126,7 +1126,7 @@ operator|.
 name|rmClient
 operator|=
 operator|new
-name|DistributedSchedulerProtocol
+name|DistributedSchedulingAMProtocol
 argument_list|()
 block|{
 annotation|@
@@ -1201,7 +1201,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|DistSchedRegisterResponse
+name|RegisterDistributedSchedulingAMResponse
 name|registerApplicationMasterForDistributedScheduling
 parameter_list|(
 name|RegisterApplicationMasterRequest
@@ -1223,10 +1223,10 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|DistSchedAllocateResponse
+name|DistributedSchedulingAllocateResponse
 name|allocateForDistributedScheduling
 parameter_list|(
-name|DistSchedAllocateRequest
+name|DistributedSchedulingAllocateRequest
 name|request
 parameter_list|)
 throws|throws
