@@ -703,7 +703,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/**    * The FileContext is defined by.    *  1) defaultFS (slash)    *  2) wd    *  3) umask    */
+comment|/**    * The FileContext is defined by.    *  1) defaultFS (slash)    *  2) wd    *  3) umask (Obtained by FsPermission.getUMask(conf))    */
 DECL|field|defaultFS
 specifier|private
 specifier|final
@@ -717,11 +717,6 @@ name|Path
 name|workingDir
 decl_stmt|;
 comment|// Fully qualified
-DECL|field|umask
-specifier|private
-name|FsPermission
-name|umask
-decl_stmt|;
 DECL|field|conf
 specifier|private
 specifier|final
@@ -745,17 +740,13 @@ specifier|final
 name|Tracer
 name|tracer
 decl_stmt|;
-DECL|method|FileContext (final AbstractFileSystem defFs, final FsPermission theUmask, final Configuration aConf)
+DECL|method|FileContext (final AbstractFileSystem defFs, final Configuration aConf)
 specifier|private
 name|FileContext
 parameter_list|(
 specifier|final
 name|AbstractFileSystem
 name|defFs
-parameter_list|,
-specifier|final
-name|FsPermission
-name|theUmask
 parameter_list|,
 specifier|final
 name|Configuration
@@ -765,10 +756,6 @@ block|{
 name|defaultFS
 operator|=
 name|defFs
-expr_stmt|;
-name|umask
-operator|=
-name|theUmask
 expr_stmt|;
 name|conf
 operator|=
@@ -1189,13 +1176,6 @@ operator|new
 name|FileContext
 argument_list|(
 name|defFS
-argument_list|,
-name|FsPermission
-operator|.
-name|getUMask
-argument_list|(
-name|aConf
-argument_list|)
 argument_list|,
 name|aConf
 argument_list|)
@@ -1623,7 +1603,12 @@ name|getUMask
 parameter_list|()
 block|{
 return|return
-name|umask
+name|FsPermission
+operator|.
+name|getUMask
+argument_list|(
+name|conf
+argument_list|)
 return|;
 block|}
 comment|/**    * Set umask to the supplied parameter.    * @param newUmask  the new umask    */
@@ -1637,9 +1622,14 @@ name|FsPermission
 name|newUmask
 parameter_list|)
 block|{
-name|umask
-operator|=
+name|FsPermission
+operator|.
+name|setUMask
+argument_list|(
+name|conf
+argument_list|,
 name|newUmask
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Resolve the path following any symlinks or mount points    * @param f to be resolved    * @return fully qualified resolved path    *     * @throws FileNotFoundException  If<code>f</code> does not exist    * @throws AccessControlException if access denied    * @throws IOException If an IO Error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws    *           undeclared exception to RPC server    *     * RuntimeExceptions:    * @throws InvalidPathException If path<code>f</code> is not valid    */
@@ -1781,7 +1771,8 @@ name|permission
 operator|.
 name|applyUMask
 argument_list|(
-name|umask
+name|getUMask
+argument_list|()
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -1910,7 +1901,8 @@ operator|)
 operator|.
 name|applyUMask
 argument_list|(
-name|umask
+name|getUMask
+argument_list|()
 argument_list|)
 decl_stmt|;
 operator|new
