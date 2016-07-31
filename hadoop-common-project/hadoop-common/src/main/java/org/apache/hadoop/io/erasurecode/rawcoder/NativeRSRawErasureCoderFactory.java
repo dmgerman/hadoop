@@ -51,39 +51,61 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Raw erasure coder factory that can be used to create raw encoder and decoder.  * It helps in configuration since only one factory class is needed to be  * configured.  */
+comment|/**  * A raw coder factory for raw Reed-Solomon coder in native using Intel ISA-L.  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|interface|RawErasureCoderFactory
+DECL|class|NativeRSRawErasureCoderFactory
 specifier|public
-interface|interface
+class|class
+name|NativeRSRawErasureCoderFactory
+implements|implements
 name|RawErasureCoderFactory
 block|{
-comment|/**    * Create raw erasure encoder.    * @param coderOptions the options used to create the encoder    * @return raw erasure encoder    */
+annotation|@
+name|Override
 DECL|method|createEncoder (ErasureCoderOptions coderOptions)
+specifier|public
 name|RawErasureEncoder
 name|createEncoder
 parameter_list|(
 name|ErasureCoderOptions
 name|coderOptions
 parameter_list|)
-function_decl|;
-comment|/**    * Create raw erasure decoder.    * @param coderOptions the options used to create the encoder    * @return raw erasure decoder    */
+block|{
+return|return
+operator|new
+name|NativeRSRawEncoder
+argument_list|(
+name|coderOptions
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|createDecoder (ErasureCoderOptions coderOptions)
+specifier|public
 name|RawErasureDecoder
 name|createDecoder
 parameter_list|(
 name|ErasureCoderOptions
 name|coderOptions
 parameter_list|)
-function_decl|;
+block|{
+return|return
+operator|new
+name|NativeRSRawDecoder
+argument_list|(
+name|coderOptions
+argument_list|)
+return|;
 block|}
-end_interface
+block|}
+end_class
 
 end_unit
 

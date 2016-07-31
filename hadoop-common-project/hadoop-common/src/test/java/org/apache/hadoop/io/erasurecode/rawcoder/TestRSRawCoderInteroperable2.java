@@ -28,9 +28,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|io
 operator|.
-name|InterfaceAudience
+name|erasurecode
+operator|.
+name|ErasureCodeNative
 import|;
 end_import
 
@@ -38,52 +40,76 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
+name|Assume
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|io
+name|junit
 operator|.
-name|erasurecode
-operator|.
-name|ErasureCoderOptions
+name|Before
 import|;
 end_import
 
 begin_comment
-comment|/**  * Raw erasure coder factory that can be used to create raw encoder and decoder.  * It helps in configuration since only one factory class is needed to be  * configured.  */
+comment|/**  * Test raw Reed-solomon coder implemented in Java.  */
 end_comment
 
-begin_interface
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-DECL|interface|RawErasureCoderFactory
+begin_class
+DECL|class|TestRSRawCoderInteroperable2
 specifier|public
-interface|interface
-name|RawErasureCoderFactory
+class|class
+name|TestRSRawCoderInteroperable2
+extends|extends
+name|TestRSRawCoderBase
 block|{
-comment|/**    * Create raw erasure encoder.    * @param coderOptions the options used to create the encoder    * @return raw erasure encoder    */
-DECL|method|createEncoder (ErasureCoderOptions coderOptions)
-name|RawErasureEncoder
-name|createEncoder
-parameter_list|(
-name|ErasureCoderOptions
-name|coderOptions
-parameter_list|)
-function_decl|;
-comment|/**    * Create raw erasure decoder.    * @param coderOptions the options used to create the encoder    * @return raw erasure decoder    */
-DECL|method|createDecoder (ErasureCoderOptions coderOptions)
-name|RawErasureDecoder
-name|createDecoder
-parameter_list|(
-name|ErasureCoderOptions
-name|coderOptions
-parameter_list|)
-function_decl|;
+annotation|@
+name|Before
+DECL|method|setup ()
+specifier|public
+name|void
+name|setup
+parameter_list|()
+block|{
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+name|ErasureCodeNative
+operator|.
+name|isNativeCodeLoaded
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|encoderClass
+operator|=
+name|NativeRSRawEncoder
+operator|.
+name|class
+expr_stmt|;
+name|this
+operator|.
+name|decoderClass
+operator|=
+name|RSRawDecoder
+operator|.
+name|class
+expr_stmt|;
+name|setAllowDump
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 block|}
-end_interface
+block|}
+end_class
 
 end_unit
 

@@ -253,7 +253,7 @@ return|return
 name|buffer
 return|;
 block|}
-comment|/**    * Initialize the output buffers with ZERO bytes.    * @param buffers    * @param dataLen    */
+comment|/**    * Initialize the output buffers with ZERO bytes.    */
 DECL|method|resetOutputBuffers (ByteBuffer[] buffers, int dataLen)
 specifier|static
 name|void
@@ -284,7 +284,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Initialize the output buffers with ZERO bytes.    * @param buffers    * @param dataLen    */
+comment|/**    * Initialize the output buffers with ZERO bytes.    */
 DECL|method|resetOutputBuffers (byte[][] buffers, int[] offsets, int dataLen)
 specifier|static
 name|void
@@ -421,7 +421,7 @@ return|return
 name|buffers
 return|;
 block|}
-comment|/**    * Clone an input bytes array as direct ByteBuffer.    * @param input    * @param len    * @param offset    * @return direct ByteBuffer    */
+comment|/**    * Clone an input bytes array as direct ByteBuffer.    */
 DECL|method|cloneAsDirectByteBuffer (byte[] input, int offset, int len)
 specifier|static
 name|ByteBuffer
@@ -574,29 +574,6 @@ index|[]
 name|inputs
 parameter_list|)
 block|{
-if|if
-condition|(
-name|inputs
-operator|.
-name|length
-operator|>
-literal|0
-operator|&&
-name|inputs
-index|[
-literal|0
-index|]
-operator|!=
-literal|null
-condition|)
-block|{
-return|return
-name|inputs
-index|[
-literal|0
-index|]
-return|;
-block|}
 for|for
 control|(
 name|T
