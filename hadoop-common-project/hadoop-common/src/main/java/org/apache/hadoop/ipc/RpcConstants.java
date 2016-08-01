@@ -28,15 +28,13 @@ end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|nio
 operator|.
-name|commons
+name|charset
 operator|.
-name|io
-operator|.
-name|Charsets
+name|StandardCharsets
 import|;
 end_import
 
@@ -152,7 +150,7 @@ literal|"hrpc"
 operator|.
 name|getBytes
 argument_list|(
-name|Charsets
+name|StandardCharsets
 operator|.
 name|UTF_8
 argument_list|)

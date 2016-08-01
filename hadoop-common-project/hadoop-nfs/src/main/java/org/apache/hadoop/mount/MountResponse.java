@@ -20,23 +20,21 @@ begin_import
 import|import
 name|java
 operator|.
-name|util
+name|nio
 operator|.
-name|List
+name|charset
+operator|.
+name|StandardCharsets
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|commons
-operator|.
-name|io
-operator|.
-name|Charsets
+name|List
 import|;
 end_import
 
@@ -462,7 +460,7 @@ index|]
 operator|.
 name|getBytes
 argument_list|(
-name|Charsets
+name|StandardCharsets
 operator|.
 name|UTF_8
 argument_list|)
