@@ -904,6 +904,10 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|containerSchedPriorityIsSet
+operator|=
+literal|false
+expr_stmt|;
 if|if
 condition|(
 name|conf
