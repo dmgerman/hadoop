@@ -1125,7 +1125,7 @@ literal|"/user/testHome/FileNameLength"
 argument_list|,
 literal|"/user/testHome/really_big_name_0003_fail"
 argument_list|,
-literal|"/user/testHome/"
+literal|"/user/testHome"
 argument_list|,
 name|PathComponentTooLongException
 operator|.
