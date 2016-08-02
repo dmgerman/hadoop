@@ -245,6 +245,31 @@ name|DNS_PREFIX
 operator|+
 literal|"zones-dir"
 decl_stmt|;
+comment|/**    * Split Reverse Zone.    * It may be necessary to spit large reverse zone subnets    * into multiple zones to handle existing hosts collocated    * with containers.    */
+DECL|field|KEY_DNS_SPLIT_REVERSE_ZONE
+name|String
+name|KEY_DNS_SPLIT_REVERSE_ZONE
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"split-reverse-zone"
+decl_stmt|;
+comment|/**    * Default value for splitting the reverse zone.    */
+DECL|field|DEFAULT_DNS_SPLIT_REVERSE_ZONE
+name|boolean
+name|DEFAULT_DNS_SPLIT_REVERSE_ZONE
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * Split Reverse Zone IP Range.    * How many IPs should be part of each reverse zone split    */
+DECL|field|KEY_DNS_SPLIT_REVERSE_ZONE_RANGE
+name|String
+name|KEY_DNS_SPLIT_REVERSE_ZONE_RANGE
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"split-reverse-zone-range"
+decl_stmt|;
 comment|/**    * Key to set if the registry is secure: {@value}.    * Turning it on changes the permissions policy from "open access"    * to restrictions on kerberos with the option of    * a user adding one or more auth key pairs down their    * own tree.    */
 DECL|field|KEY_REGISTRY_SECURE
 name|String

@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1696,7 +1710,23 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Initializes the reverse lookup zone (mapping IP to name).    *    * @param conf the Hadoop configuration.    * @throws IOException    */
+comment|/**    * Return the number of zones in the map.    *    * @return number of zones in the map    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getZoneCount ()
+specifier|protected
+name|int
+name|getZoneCount
+parameter_list|()
+block|{
+return|return
+name|zones
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
+comment|/**    * Initializes the reverse lookup zone (mapping IP to name).    *    * @param conf the Hadoop configuration.    * @throws IOException if the DNSSEC key can not be read.    */
 DECL|method|initializeReverseLookupZone (Configuration conf)
 specifier|private
 name|void
@@ -1707,6 +1737,49 @@ name|conf
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+comment|// Determine if the subnet should be split into
+comment|// multiple reverse zones, this can be necessary in
+comment|// network configurations where the hosts and containers
+comment|// are part of the same subnet (i.e. the containers only use
+comment|// part of the subnet).
+name|Boolean
+name|shouldSplitReverseZone
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|KEY_DNS_SPLIT_REVERSE_ZONE
+argument_list|,
+name|DEFAULT_DNS_SPLIT_REVERSE_ZONE
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|shouldSplitReverseZone
+condition|)
+block|{
+name|int
+name|subnetCount
+init|=
+name|ReverseZoneUtils
+operator|.
+name|getSubnetCountForReverseZones
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|addSplitReverseZones
+argument_list|(
+name|conf
+argument_list|,
+name|subnetCount
+argument_list|)
+expr_stmt|;
+comment|// Single reverse zone
+block|}
+else|else
 block|{
 name|Name
 name|reverseLookupZoneName
@@ -1738,6 +1811,106 @@ argument_list|,
 name|reverseLookupZone
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+comment|/**    * Create the zones based on the zone count.    *    * @param conf        the Hadoop configuration.    * @param subnetCount number of subnets to create reverse zones for.    * @throws IOException if the DNSSEC key can not be read.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|addSplitReverseZones (Configuration conf, int subnetCount)
+specifier|protected
+name|void
+name|addSplitReverseZones
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|int
+name|subnetCount
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|String
+name|subnet
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|KEY_DNS_ZONE_SUBNET
+argument_list|)
+decl_stmt|;
+name|String
+name|range
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|KEY_DNS_SPLIT_REVERSE_ZONE_RANGE
+argument_list|)
+decl_stmt|;
+comment|// Add the split reverse zones
+for|for
+control|(
+name|int
+name|idx
+init|=
+literal|0
+init|;
+name|idx
+operator|<
+name|subnetCount
+condition|;
+name|idx
+operator|++
+control|)
+block|{
+name|Name
+name|reverseLookupZoneName
+init|=
+name|getReverseZoneName
+argument_list|(
+name|ReverseZoneUtils
+operator|.
+name|getReverseZoneNetworkAddress
+argument_list|(
+name|subnet
+argument_list|,
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|range
+argument_list|)
+argument_list|,
+name|idx
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|Zone
+name|reverseLookupZone
+init|=
+name|configureZone
+argument_list|(
+name|reverseLookupZoneName
+argument_list|,
+name|conf
+argument_list|)
+decl_stmt|;
+name|zones
+operator|.
+name|put
+argument_list|(
+name|reverseLookupZone
+operator|.
+name|getOrigin
+argument_list|()
+argument_list|,
+name|reverseLookupZone
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Returns the list of reverse lookup zones.    *    * @param conf the hadoop configuration.    * @return the list of reverse zone names required based on the configuration    * properties.    */
 DECL|method|getReverseZoneName (Configuration conf)
@@ -2288,8 +2461,10 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Set the value of the DNSSEC enabled property.    *    * @param conf the Hadoop configuration.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|setDNSSECEnabled (Configuration conf)
-specifier|private
+specifier|protected
 name|void
 name|setDNSSECEnabled
 parameter_list|(
