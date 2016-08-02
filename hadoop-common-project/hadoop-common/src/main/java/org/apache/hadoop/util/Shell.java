@@ -231,7 +231,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A base class for running a Shell command.  *  *<code>Shell</code> can be used to run shell commands like<code>du</code> or  *<code>df</code>. It also offers facilities to gate commands by   * time-intervals.  */
+comment|/**  * A base class for running a Shell command.  *  *<code>Shell</code> can be used to run shell commands like<code>du</code> or  *<code>df</code>. It also offers facilities to gate commands by  * time-intervals.  */
 end_comment
 
 begin_class
@@ -417,6 +417,65 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * Quote the given arg so that bash will interpret it as a single value.    * Note that this quotes it for one level of bash, if you are passing it    * into a badly written shell script, you need to fix your shell script.    * @param arg the argument to quote    * @return the quoted string    */
+DECL|method|bashQuote (String arg)
+specifier|static
+name|String
+name|bashQuote
+parameter_list|(
+name|String
+name|arg
+parameter_list|)
+block|{
+name|StringBuilder
+name|buffer
+init|=
+operator|new
+name|StringBuilder
+argument_list|(
+name|arg
+operator|.
+name|length
+argument_list|()
+operator|+
+literal|2
+argument_list|)
+decl_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|'\''
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+name|arg
+operator|.
+name|replace
+argument_list|(
+literal|"'"
+argument_list|,
+literal|"'\\''"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|'\''
+argument_list|)
+expr_stmt|;
+return|return
+name|buffer
+operator|.
+name|toString
+argument_list|()
+return|;
 block|}
 comment|/** a Unix command to get the current user's name: {@value}. */
 DECL|field|USER_NAME_COMMAND
@@ -735,10 +794,6 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"bash"
-block|,
-literal|"-c"
-block|,
 literal|"groups"
 block|}
 return|;
@@ -757,9 +812,12 @@ name|user
 parameter_list|)
 block|{
 comment|//'groups username' command return is inconsistent across different unixes
-return|return
+if|if
+condition|(
 name|WINDOWS
-condition|?
+condition|)
+block|{
+return|return
 operator|new
 name|String
 index|[]
@@ -777,7 +835,19 @@ name|user
 operator|+
 literal|"\""
 block|}
-else|:
+return|;
+block|}
+else|else
+block|{
+name|String
+name|quotedUser
+init|=
+name|bashQuote
+argument_list|(
+name|user
+argument_list|)
+decl_stmt|;
+return|return
 operator|new
 name|String
 index|[]
@@ -788,13 +858,14 @@ literal|"-c"
 block|,
 literal|"id -gn "
 operator|+
-name|user
+name|quotedUser
 operator|+
 literal|"; id -Gn "
 operator|+
-name|user
+name|quotedUser
 block|}
 return|;
+block|}
 block|}
 comment|/**    * A command to get a given user's group id list.    * The command will get the user's primary group    * first and finally get the groups list which includes the primary group.    * i.e. the user's primary group will be included twice.    * This command does not support Windows and will only return group names.    */
 DECL|method|getGroupsIDForUserCommand (final String user)
@@ -810,9 +881,12 @@ name|user
 parameter_list|)
 block|{
 comment|//'groups username' command return is inconsistent across different unixes
-return|return
+if|if
+condition|(
 name|WINDOWS
-condition|?
+condition|)
+block|{
+return|return
 operator|new
 name|String
 index|[]
@@ -830,7 +904,19 @@ name|user
 operator|+
 literal|"\""
 block|}
-else|:
+return|;
+block|}
+else|else
+block|{
+name|String
+name|quotedUser
+init|=
+name|bashQuote
+argument_list|(
+name|user
+argument_list|)
+decl_stmt|;
+return|return
 operator|new
 name|String
 index|[]
@@ -841,13 +927,14 @@ literal|"-c"
 block|,
 literal|"id -g "
 operator|+
-name|user
+name|quotedUser
 operator|+
 literal|"; id -G "
 operator|+
-name|user
+name|quotedUser
 block|}
 return|;
+block|}
 block|}
 comment|/** A command to get a given netgroup's user list. */
 DECL|method|getUsersForNetgroupCommand (final String netgroup)
@@ -864,31 +951,14 @@ parameter_list|)
 block|{
 comment|//'groups username' command return is non-consistent across different unixes
 return|return
-name|WINDOWS
-condition|?
 operator|new
 name|String
 index|[]
 block|{
-literal|"cmd"
+literal|"getent"
 block|,
-literal|"/c"
+literal|"netgroup"
 block|,
-literal|"getent netgroup "
-operator|+
-name|netgroup
-block|}
-else|:
-operator|new
-name|String
-index|[]
-block|{
-literal|"bash"
-block|,
-literal|"-c"
-block|,
-literal|"getent netgroup "
-operator|+
 name|netgroup
 block|}
 return|;
@@ -1010,7 +1080,7 @@ block|}
 return|;
 block|}
 block|}
-comment|/**    * Return a command to set permission for specific file.    *     * @param perm String permission to set    * @param recursive boolean true to apply to all sub-directories recursively    * @param file String file to set    * @return String[] containing command and arguments    */
+comment|/**    * Return a command to set permission for specific file.    *    * @param perm String permission to set    * @param recursive boolean true to apply to all sub-directories recursively    * @param file String file to set    * @return String[] containing command and arguments    */
 DECL|method|getSetPermissionCommand (String perm, boolean recursive, String file)
 specifier|public
 specifier|static
@@ -1298,15 +1368,15 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"bash"
+literal|"kill"
 block|,
-literal|"-c"
-block|,
-literal|"kill -"
+literal|"-"
 operator|+
 name|code
-operator|+
-literal|" -- -"
+block|,
+literal|"--"
+block|,
+literal|"-"
 operator|+
 name|pid
 block|}
@@ -1319,16 +1389,12 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"bash"
+literal|"kill"
 block|,
-literal|"-c"
-block|,
-literal|"kill -"
+literal|"-"
 operator|+
 name|code
-operator|+
-literal|" "
-operator|+
+block|,
 name|pid
 block|}
 return|;
@@ -1370,7 +1436,7 @@ operator|+
 literal|")"
 return|;
 block|}
-comment|/**    * Returns a File referencing a script with the given basename, inside the    * given parent directory.  The file extension is inferred by platform:    *<code>".cmd"</code> on Windows, or<code>".sh"</code> otherwise.    *     * @param parent File parent directory    * @param basename String script file basename    * @return File referencing the script in the directory    */
+comment|/**    * Returns a File referencing a script with the given basename, inside the    * given parent directory.  The file extension is inferred by platform:    *<code>".cmd"</code> on Windows, or<code>".sh"</code> otherwise.    *    * @param parent File parent directory    * @param basename String script file basename    * @return File referencing the script in the directory    */
 DECL|method|appendScriptExtension (File parent, String basename)
 specifier|public
 specifier|static
@@ -1460,7 +1526,10 @@ index|[]
 block|{
 literal|"/bin/bash"
 block|,
+name|bashQuote
+argument_list|(
 name|absolutePath
+argument_list|)
 block|}
 return|;
 block|}
@@ -2032,7 +2101,7 @@ return|return
 name|HADOOP_HOME_FILE
 return|;
 block|}
-comment|/**    *  Fully qualify the path to a binary that should be in a known hadoop    *  bin location. This is primarily useful for disambiguating call-outs     *  to executable sub-components of Hadoop to avoid clashes with other     *  executables that may be in the path.  Caveat:  this call doesn't     *  just format the path to the bin directory.  It also checks for file     *  existence of the composed path. The output of this call should be     *  cached by callers.    *    * @param executable executable    * @return executable file reference    * @throws FileNotFoundException if the path does not exist    */
+comment|/**    *  Fully qualify the path to a binary that should be in a known hadoop    *  bin location. This is primarily useful for disambiguating call-outs    *  to executable sub-components of Hadoop to avoid clashes with other    *  executables that may be in the path.  Caveat:  this call doesn't    *  just format the path to the bin directory.  It also checks for file    *  existence of the composed path. The output of this call should be    *  cached by callers.    *    * @param executable executable    * @return executable file reference    * @throws FileNotFoundException if the path does not exist    */
 DECL|method|getQualifiedBin (String executable)
 specifier|public
 specifier|static
@@ -3873,7 +3942,7 @@ name|close
 parameter_list|()
 function_decl|;
 block|}
-comment|/**    * A simple shell command executor.    *     *<code>ShellCommandExecutor</code>should be used in cases where the output    * of the command needs no explicit parsing and where the command, working    * directory and the environment remains unchanged. The output of the command    * is stored as-is and is expected to be small.    */
+comment|/**    * A simple shell command executor.    *    *<code>ShellCommandExecutor</code>should be used in cases where the output    * of the command needs no explicit parsing and where the command, working    * directory and the environment remains unchanged. The output of the command    * is stored as-is and is expected to be small.    */
 DECL|class|ShellCommandExecutor
 specifier|public
 specifier|static
@@ -4003,7 +4072,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Create a new instance of the ShellCommandExecutor to execute a command.      *       * @param execString The command to execute with arguments      * @param dir If not-null, specifies the directory which should be set      *            as the current working directory for the command.      *            If null, the current working directory is not modified.      * @param env If not-null, environment of the command will include the      *            key-value pairs specified in the map. If null, the current      *            environment is not modified.      * @param timeout Specifies the time in milliseconds, after which the      *                command will be killed and the status marked as timed-out.      *                If 0, the command will not be timed out.      * @param inheritParentEnv Indicates if the process should inherit the env      *                         vars from the parent process or not.      */
+comment|/**      * Create a new instance of the ShellCommandExecutor to execute a command.      *      * @param execString The command to execute with arguments      * @param dir If not-null, specifies the directory which should be set      *            as the current working directory for the command.      *            If null, the current working directory is not modified.      * @param env If not-null, environment of the command will include the      *            key-value pairs specified in the map. If null, the current      *            environment is not modified.      * @param timeout Specifies the time in milliseconds, after which the      *                command will be killed and the status marked as timed-out.      *                If 0, the command will not be timed out.      * @param inheritParentEnv Indicates if the process should inherit the env      *                         vars from the parent process or not.      */
 DECL|method|ShellCommandExecutor (String[] execString, File dir, Map<String, String> env, long timeout, boolean inheritParentEnv)
 specifier|public
 name|ShellCommandExecutor
@@ -4319,7 +4388,7 @@ name|close
 parameter_list|()
 block|{     }
 block|}
-comment|/**    * To check if the passed script to shell command executor timed out or    * not.    *     * @return if the script timed out.    */
+comment|/**    * To check if the passed script to shell command executor timed out or    * not.    *    * @return if the script timed out.    */
 DECL|method|isTimedOut ()
 specifier|public
 name|boolean
@@ -4333,7 +4402,7 @@ name|get
 argument_list|()
 return|;
 block|}
-comment|/**    * Declare that the command has timed out.    *     */
+comment|/**    * Declare that the command has timed out.    *    */
 DECL|method|setTimedOut ()
 specifier|private
 name|void
@@ -4350,7 +4419,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Static method to execute a shell command.     * Covers most of the simple cases without requiring the user to implement      * the<code>Shell</code> interface.    * @param cmd shell command to execute.    * @return the output of the executed command.    */
+comment|/**    * Static method to execute a shell command.    * Covers most of the simple cases without requiring the user to implement    * the<code>Shell</code> interface.    * @param cmd shell command to execute.    * @return the output of the executed command.    */
 DECL|method|execCommand (String .... cmd)
 specifier|public
 specifier|static
