@@ -878,8 +878,6 @@ name|pass
 init|=
 literal|null
 decl_stmt|;
-comment|// Get the password file from the conf, if not present from the user's
-comment|// environment var
 if|if
 condition|(
 name|System
