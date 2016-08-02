@@ -3600,11 +3600,16 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-name|String
+name|StringBuilder
 name|errorMessage
 init|=
-literal|""
+operator|new
+name|StringBuilder
+argument_list|()
 decl_stmt|;
+comment|// We will call RM webservice to get all AppAttempts information.
+comment|// If we get nothing, we will try to call AHS webservice to get AppAttempts
+comment|// which includes nodeAddress for the AM Containers.
 try|try
 block|{
 name|amContainersList
@@ -3722,11 +3727,16 @@ name|ex
 parameter_list|)
 block|{
 name|errorMessage
-operator|=
+operator|.
+name|append
+argument_list|(
 name|ex
 operator|.
 name|getMessage
 argument_list|()
+operator|+
+literal|"\n"
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -3735,6 +3745,35 @@ operator|.
 name|isAppFinished
 argument_list|()
 condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_TIMELINE_SERVICE_ENABLED
+argument_list|)
+condition|)
+block|{
+name|errorMessage
+operator|.
+name|append
+argument_list|(
+literal|"Please enable the timeline service "
+operator|+
+literal|"and make sure the timeline server is running."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
 block|{
 try|try
 block|{
@@ -3810,12 +3849,16 @@ name|e
 parameter_list|)
 block|{
 name|errorMessage
-operator|=
+operator|.
+name|append
+argument_list|(
 name|e
 operator|.
 name|getMessage
 argument_list|()
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -3845,6 +3888,26 @@ operator|.
 name|println
 argument_list|(
 name|errorMessage
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Can not get AMContainers logs for "
+operator|+
+literal|"the application:"
+operator|+
+name|appId
+operator|+
+literal|" with the appOwner:"
+operator|+
+name|request
+operator|.
+name|getAppOwner
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -4077,62 +4140,6 @@ block|{
 if|if
 condition|(
 name|nodeId
-operator|==
-literal|null
-operator|||
-name|nodeId
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-try|try
-block|{
-name|nodeId
-operator|=
-name|getContainerReport
-argument_list|(
-name|containerId
-argument_list|)
-operator|.
-name|getAssignedNode
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-expr_stmt|;
-name|request
-operator|.
-name|setNodeId
-argument_list|(
-name|nodeId
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ex
-parameter_list|)
-block|{
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-name|ex
-argument_list|)
-expr_stmt|;
-name|nodeId
-operator|=
-literal|null
-expr_stmt|;
-block|}
-block|}
-if|if
-condition|(
-name|nodeId
 operator|!=
 literal|null
 operator|&&
@@ -4144,6 +4151,16 @@ argument_list|()
 condition|)
 block|{
 name|printContainerLogsForFinishedApplication
+argument_list|(
+name|request
+argument_list|,
+name|logCliHelper
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|printContainerLogsForFinishedApplicationWithoutNodeId
 argument_list|(
 name|request
 argument_list|,
@@ -5180,20 +5197,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-comment|// If the application is running, we will call the RM WebService
-comment|// to get the AppAttempts which includes the nodeHttpAddress
-comment|// and containerId for all the AM Containers.
-comment|// After that, we will call NodeManager webService to get the
-comment|// related logs
-if|if
-condition|(
-operator|!
-name|request
-operator|.
-name|isAppFinished
-argument_list|()
-condition|)
-block|{
 return|return
 name|printAMContainerLogs
 argument_list|(
@@ -5207,108 +5210,6 @@ argument_list|,
 name|logCliHelper
 argument_list|)
 return|;
-block|}
-else|else
-block|{
-comment|// If the application is in the final state, we will call RM webservice
-comment|// to get all AppAttempts information first. If we get nothing,
-comment|// we will try to call AHS webservice to get related AppAttempts
-comment|// which includes nodeAddress for the AM Containers.
-comment|// After that, we will use nodeAddress and containerId
-comment|// to get logs from HDFS directly.
-if|if
-condition|(
-name|getConf
-argument_list|()
-operator|.
-name|getBoolean
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|APPLICATION_HISTORY_ENABLED
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_APPLICATION_HISTORY_ENABLED
-argument_list|)
-condition|)
-block|{
-return|return
-name|printAMContainerLogs
-argument_list|(
-name|getConf
-argument_list|()
-argument_list|,
-name|request
-argument_list|,
-name|amContainersList
-argument_list|,
-name|logCliHelper
-argument_list|)
-return|;
-block|}
-else|else
-block|{
-name|ApplicationId
-name|appId
-init|=
-name|request
-operator|.
-name|getAppId
-argument_list|()
-decl_stmt|;
-name|String
-name|appOwner
-init|=
-name|request
-operator|.
-name|getAppOwner
-argument_list|()
-decl_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"Can not get AMContainers logs for "
-operator|+
-literal|"the application:"
-operator|+
-name|appId
-operator|+
-literal|" with the appOwner:"
-operator|+
-name|appOwner
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"This application:"
-operator|+
-name|appId
-operator|+
-literal|" has finished."
-operator|+
-literal|" Please enable the application-history service or explicitly"
-operator|+
-literal|" use 'yarn logs -applicationId<appId> "
-operator|+
-literal|"-containerId<containerId> --nodeAddress<nodeHttpAddress>' "
-operator|+
-literal|"to get the container logs."
-argument_list|)
-expr_stmt|;
-return|return
-operator|-
-literal|1
-return|;
-block|}
-block|}
 block|}
 DECL|method|fetchContainerLogs (ContainerLogsRequest request, LogCLIHelpers logCliHelper)
 specifier|private
@@ -5372,19 +5273,28 @@ operator|.
 name|isAppFinished
 argument_list|()
 decl_stmt|;
-comment|// if we provide the node address and the application is in the final
-comment|// state, we could directly get logs from HDFS.
+comment|// if the application is in the final state,
+comment|// we could directly get logs from HDFS.
+if|if
+condition|(
+name|isAppFinished
+condition|)
+block|{
+comment|// if user specified "ALL" as the logFiles param, pass empty list
+comment|// to logCliHelper so that it fetches all the logs
 if|if
 condition|(
 name|nodeAddress
 operator|!=
 literal|null
 operator|&&
-name|isAppFinished
+operator|!
+name|nodeAddress
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
-comment|// if user specified "ALL" as the logFiles param, pass empty list
-comment|// to logCliHelper so that it fetches all the logs
 return|return
 name|printContainerLogsForFinishedApplication
 argument_list|(
@@ -5393,6 +5303,18 @@ argument_list|,
 name|logCliHelper
 argument_list|)
 return|;
+block|}
+else|else
+block|{
+return|return
+name|printContainerLogsForFinishedApplicationWithoutNodeId
+argument_list|(
+name|request
+argument_list|,
+name|logCliHelper
+argument_list|)
+return|;
+block|}
 block|}
 name|String
 name|nodeHttpAddress
