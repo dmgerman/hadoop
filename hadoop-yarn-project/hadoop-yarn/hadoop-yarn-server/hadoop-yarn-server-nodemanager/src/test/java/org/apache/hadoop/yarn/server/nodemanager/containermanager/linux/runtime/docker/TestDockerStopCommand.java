@@ -36,7 +36,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
 import|;
 end_import
 
@@ -65,10 +65,10 @@ comment|/**  * Tests the docker stop command and its command  * line arguments. 
 end_comment
 
 begin_class
-DECL|class|DockerStopCommandTest
+DECL|class|TestDockerStopCommand
 specifier|public
 class|class
-name|DockerStopCommandTest
+name|TestDockerStopCommand
 block|{
 DECL|field|dockerStopCommand
 specifier|private
