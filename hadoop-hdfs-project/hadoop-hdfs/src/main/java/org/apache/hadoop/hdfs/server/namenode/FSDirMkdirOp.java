@@ -40,20 +40,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|io
-operator|.
-name|Charsets
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|fs
@@ -243,6 +229,18 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|StandardCharsets
 import|;
 end_import
 
@@ -723,7 +721,7 @@ operator|.
 name|getLastLocalName
 argument_list|()
 argument_list|,
-name|Charsets
+name|StandardCharsets
 operator|.
 name|UTF_8
 argument_list|)
@@ -1065,7 +1063,7 @@ name|localName
 operator|.
 name|getBytes
 argument_list|(
-name|Charsets
+name|StandardCharsets
 operator|.
 name|UTF_8
 argument_list|)

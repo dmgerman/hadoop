@@ -64,23 +64,21 @@ begin_import
 import|import
 name|java
 operator|.
-name|util
+name|nio
 operator|.
-name|Arrays
+name|charset
+operator|.
+name|StandardCharsets
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|commons
-operator|.
-name|io
-operator|.
-name|Charsets
+name|Arrays
 import|;
 end_import
 
@@ -209,7 +207,7 @@ literal|"HDFSIMG1"
 operator|.
 name|getBytes
 argument_list|(
-name|Charsets
+name|StandardCharsets
 operator|.
 name|UTF_8
 argument_list|)
