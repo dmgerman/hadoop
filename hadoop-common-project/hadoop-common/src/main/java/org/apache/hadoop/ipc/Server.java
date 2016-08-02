@@ -7866,6 +7866,16 @@ name|qop
 argument_list|)
 operator|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|useWrap
+condition|)
+block|{
+name|disposeSasl
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**      * Process a saslMessge.      * @param saslMessage received SASL message      * @return the sasl response to send back to client      * @throws SaslException if authentication or generating response fails,       *                       or SASL protocol mixup      * @throws IOException if a SaslServer cannot be created      * @throws AccessControlException if the requested authentication type       *         is not supported or trying to re-attempt negotiation.      * @throws InterruptedException      */
@@ -8219,9 +8229,8 @@ name|AuthProtocol
 operator|.
 name|NONE
 expr_stmt|;
-name|saslServer
-operator|=
-literal|null
+name|disposeSasl
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|buildSaslResponse (SaslState state, byte[] replyToken)
@@ -8461,6 +8470,13 @@ name|SaslException
 name|ignored
 parameter_list|)
 block|{         }
+finally|finally
+block|{
+name|saslServer
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|checkDataLength (int dataLength)
@@ -9502,9 +9518,11 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|saslServer
+name|authProtocol
 operator|==
-literal|null
+name|AuthProtocol
+operator|.
+name|NONE
 condition|)
 block|{
 name|user
