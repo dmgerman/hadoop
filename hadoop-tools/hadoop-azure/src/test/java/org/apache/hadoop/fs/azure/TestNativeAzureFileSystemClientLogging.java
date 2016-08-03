@@ -154,7 +154,7 @@ specifier|public
 class|class
 name|TestNativeAzureFileSystemClientLogging
 extends|extends
-name|NativeAzureFileSystemBaseTest
+name|AbstractWasbTestBase
 block|{
 DECL|field|testAccount
 specifier|private

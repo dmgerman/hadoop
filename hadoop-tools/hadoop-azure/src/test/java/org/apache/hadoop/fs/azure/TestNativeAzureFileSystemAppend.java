@@ -168,7 +168,7 @@ specifier|public
 class|class
 name|TestNativeAzureFileSystemAppend
 extends|extends
-name|NativeAzureFileSystemBaseTest
+name|AbstractWasbTestBase
 block|{
 DECL|field|TEST_FILE
 specifier|private

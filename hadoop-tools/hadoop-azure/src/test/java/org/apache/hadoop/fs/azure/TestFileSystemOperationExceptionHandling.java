@@ -152,7 +152,7 @@ specifier|public
 class|class
 name|TestFileSystemOperationExceptionHandling
 extends|extends
-name|NativeAzureFileSystemBaseTest
+name|AbstractWasbTestBase
 block|{
 DECL|field|inputStream
 specifier|private

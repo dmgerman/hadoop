@@ -68,7 +68,7 @@ specifier|public
 class|class
 name|TestNativeAzureFileSystemAtomicRenameDirList
 extends|extends
-name|NativeAzureFileSystemBaseTest
+name|AbstractWasbTestBase
 block|{
 DECL|field|testAccount
 specifier|private
