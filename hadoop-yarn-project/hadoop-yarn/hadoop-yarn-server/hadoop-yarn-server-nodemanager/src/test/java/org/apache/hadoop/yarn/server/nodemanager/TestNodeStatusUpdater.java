@@ -3848,6 +3848,18 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// Make sure that all containers are started before starting shutdown
+name|syncBarrier
+operator|.
+name|await
+argument_list|(
+literal|10000
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+expr_stmt|;
 name|System
 operator|.
 name|out
@@ -10368,6 +10380,19 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+comment|// Wait until we start stopping
+name|syncBarrier
+operator|.
+name|await
+argument_list|(
+literal|10000
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+expr_stmt|;
+comment|// Wait until we finish stopping
 name|syncBarrier
 operator|.
 name|await
