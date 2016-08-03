@@ -4486,6 +4486,40 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// check if time is up or not
+if|if
+condition|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|startTime
+operator|>
+name|MAX_ITERATION_TIME
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Time up (max time="
+operator|+
+name|MAX_ITERATION_TIME
+operator|/
+literal|1000
+operator|+
+literal|" seconds).  Skipping "
+operator|+
+name|this
+argument_list|)
+expr_stmt|;
+name|isTimeUp
+operator|=
+literal|true
+expr_stmt|;
+continue|continue;
+block|}
 specifier|final
 name|PendingMove
 name|p
@@ -4600,40 +4634,6 @@ name|resetScheduledSize
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-comment|// check if time is up or not
-if|if
-condition|(
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-operator|-
-name|startTime
-operator|>
-name|MAX_ITERATION_TIME
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Time up (max time="
-operator|+
-name|MAX_ITERATION_TIME
-operator|/
-literal|1000
-operator|+
-literal|" seconds).  Skipping "
-operator|+
-name|this
-argument_list|)
-expr_stmt|;
-name|isTimeUp
-operator|=
-literal|true
-expr_stmt|;
-continue|continue;
 block|}
 comment|// Now we can not schedule any block to move and there are
 comment|// no new blocks added to the source block list, so we wait.
