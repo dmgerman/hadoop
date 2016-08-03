@@ -23944,12 +23944,10 @@ block|{
 name|String
 name|src
 init|=
-name|FSDirectory
+name|inode
 operator|.
 name|getFullPathName
-argument_list|(
-name|inode
-argument_list|)
+argument_list|()
 decl_stmt|;
 if|if
 condition|(

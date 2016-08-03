@@ -1808,7 +1808,7 @@ name|path
 operator|.
 name|length
 operator|-
-literal|1
+literal|2
 argument_list|)
 return|;
 block|}
@@ -1831,8 +1831,11 @@ argument_list|,
 literal|0
 argument_list|,
 name|pos
+operator|+
+literal|1
 argument_list|)
 return|;
+comment|// it's a length...
 block|}
 comment|/**    * @param offset start endpoint (inclusive)    * @param length number of path components    * @return sub-list of the path    */
 DECL|method|getPath (int offset, int length)
