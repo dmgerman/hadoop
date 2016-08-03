@@ -346,13 +346,13 @@ if|if
 condition|(
 name|LOG
 operator|.
-name|isInfoEnabled
+name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Using container runtime: "
 operator|+
