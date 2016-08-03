@@ -2147,12 +2147,12 @@ literal|"Unexpected watch error from Zookeeper"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get a new zookeeper client instance. protected so that test class can    * inherit and pass in a mock object for zookeeper    *     * @return new zookeeper client instance    * @throws IOException    * @throws KeeperException zookeeper connectionloss exception    */
-DECL|method|getNewZooKeeper ()
+comment|/**    * Get a new zookeeper client instance. protected so that test class can    * inherit and mock out the zookeeper instance    *     * @return new zookeeper client instance    * @throws IOException    * @throws KeeperException zookeeper connectionloss exception    */
+DECL|method|connectToZooKeeper ()
 specifier|protected
 specifier|synchronized
 name|ZooKeeper
-name|getNewZooKeeper
+name|connectToZooKeeper
 parameter_list|()
 throws|throws
 name|IOException
@@ -2173,15 +2173,8 @@ expr_stmt|;
 name|ZooKeeper
 name|zk
 init|=
-operator|new
-name|ZooKeeper
-argument_list|(
-name|zkHostPort
-argument_list|,
-name|zkSessionTimeout
-argument_list|,
-name|watcher
-argument_list|)
+name|createZooKeeper
+argument_list|()
 decl_stmt|;
 name|watcher
 operator|.
@@ -2225,6 +2218,27 @@ expr_stmt|;
 block|}
 return|return
 name|zk
+return|;
+block|}
+comment|/**    * Get a new zookeeper client instance. protected so that test class can    * inherit and pass in a mock object for zookeeper    *    * @return new zookeeper client instance    * @throws IOException    */
+DECL|method|createZooKeeper ()
+specifier|protected
+name|ZooKeeper
+name|createZooKeeper
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|ZooKeeper
+argument_list|(
+name|zkHostPort
+argument_list|,
+name|zkSessionTimeout
+argument_list|,
+name|watcher
+argument_list|)
 return|;
 block|}
 DECL|method|fatalError (String errorMessage)
@@ -2691,7 +2705,7 @@ expr_stmt|;
 block|}
 name|zkClient
 operator|=
-name|getNewZooKeeper
+name|connectToZooKeeper
 argument_list|()
 expr_stmt|;
 if|if

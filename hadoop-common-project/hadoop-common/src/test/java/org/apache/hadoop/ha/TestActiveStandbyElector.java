@@ -422,10 +422,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNewZooKeeper ()
+DECL|method|connectToZooKeeper ()
 specifier|public
 name|ZooKeeper
-name|getNewZooKeeper
+name|connectToZooKeeper
 parameter_list|()
 block|{
 operator|++
@@ -4690,6 +4690,28 @@ name|CommonConfigurationKeys
 operator|.
 name|HA_FC_ELECTOR_ZK_OP_RETRIES_DEFAULT
 argument_list|)
+block|{
+annotation|@
+name|Override
+specifier|protected
+name|ZooKeeper
+name|createZooKeeper
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|ZooKeeper
+operator|.
+name|class
+argument_list|)
+return|;
+block|}
+block|}
 expr_stmt|;
 name|Assert
 operator|.
