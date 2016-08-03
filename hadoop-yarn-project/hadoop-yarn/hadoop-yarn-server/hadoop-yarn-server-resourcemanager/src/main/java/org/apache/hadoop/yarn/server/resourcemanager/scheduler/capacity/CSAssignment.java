@@ -232,7 +232,9 @@ init|=
 operator|new
 name|CSAssignment
 argument_list|(
-literal|true
+name|SkippedType
+operator|.
+name|OTHER
 argument_list|)
 decl_stmt|;
 DECL|field|resource
@@ -257,10 +259,24 @@ name|application
 decl_stmt|;
 DECL|field|skipped
 specifier|private
-specifier|final
-name|boolean
+name|SkippedType
 name|skipped
 decl_stmt|;
+comment|/**    * Reason for the queue to get skipped.    */
+DECL|enum|SkippedType
+specifier|public
+enum|enum
+name|SkippedType
+block|{
+DECL|enumConstant|NONE
+name|NONE
+block|,
+DECL|enumConstant|QUEUE_LIMIT
+name|QUEUE_LIMIT
+block|,
+DECL|enumConstant|OTHER
+name|OTHER
+block|}
 DECL|field|fulfilledReservation
 specifier|private
 name|boolean
@@ -306,7 +322,9 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|false
+name|SkippedType
+operator|.
+name|NONE
 argument_list|,
 literal|false
 argument_list|)
@@ -341,17 +359,19 @@ name|excessReservation
 argument_list|,
 name|application
 argument_list|,
-literal|false
+name|SkippedType
+operator|.
+name|NONE
 argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|CSAssignment (boolean skipped)
+DECL|method|CSAssignment (SkippedType skipped)
 specifier|public
 name|CSAssignment
 parameter_list|(
-name|boolean
+name|SkippedType
 name|skipped
 parameter_list|)
 block|{
@@ -380,7 +400,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|CSAssignment (Resource resource, NodeType type, RMContainer excessReservation, FiCaSchedulerApp application, boolean skipped, boolean fulfilledReservation)
+DECL|method|CSAssignment (Resource resource, NodeType type, RMContainer excessReservation, FiCaSchedulerApp application, SkippedType skipped, boolean fulfilledReservation)
 specifier|public
 name|CSAssignment
 parameter_list|(
@@ -396,7 +416,7 @@ parameter_list|,
 name|FiCaSchedulerApp
 name|application
 parameter_list|,
-name|boolean
+name|SkippedType
 name|skipped
 parameter_list|,
 name|boolean
@@ -550,15 +570,31 @@ operator|=
 name|rmContainer
 expr_stmt|;
 block|}
-DECL|method|getSkipped ()
+DECL|method|getSkippedType ()
 specifier|public
-name|boolean
-name|getSkipped
+name|SkippedType
+name|getSkippedType
 parameter_list|()
 block|{
 return|return
 name|skipped
 return|;
+block|}
+DECL|method|setSkippedType (SkippedType skippedType)
+specifier|public
+name|void
+name|setSkippedType
+parameter_list|(
+name|SkippedType
+name|skippedType
+parameter_list|)
+block|{
+name|this
+operator|.
+name|skipped
+operator|=
+name|skippedType
+expr_stmt|;
 block|}
 annotation|@
 name|Override
