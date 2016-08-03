@@ -216,6 +216,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Time
 import|;
 end_import
@@ -515,17 +529,19 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"KMS provider at [{}] threw an IOException [{}]!!"
+literal|"KMS provider at [{}] threw an IOException!! {}"
 argument_list|,
 name|provider
 operator|.
 name|getKMSUrl
 argument_list|()
 argument_list|,
-name|ioe
+name|StringUtils
 operator|.
-name|getMessage
-argument_list|()
+name|stringifyException
+argument_list|(
+name|ioe
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|ex
