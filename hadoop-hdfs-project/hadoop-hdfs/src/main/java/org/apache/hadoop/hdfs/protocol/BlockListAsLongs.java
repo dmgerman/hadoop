@@ -2013,9 +2013,10 @@ literal|0
 init|;
 name|i
 operator|<
-name|longs
+name|values
 operator|.
-name|length
+name|size
+argument_list|()
 condition|;
 name|i
 operator|++
@@ -2023,6 +2024,8 @@ control|)
 block|{
 name|longs
 index|[
+literal|2
+operator|+
 name|i
 index|]
 operator|=
