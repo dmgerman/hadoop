@@ -3334,6 +3334,14 @@ argument_list|,
 literal|"thread-a 1"
 argument_list|)
 expr_stmt|;
+comment|// async log is doing batched syncs in background.  logSync just ensures
+comment|// the edit is durable, so the txid may increase prior to sync
+if|if
+condition|(
+operator|!
+name|useAsyncEditLog
+condition|)
+block|{
 name|assertEquals
 argument_list|(
 literal|"logging edit without syncing should do not affect txid"
@@ -3346,6 +3354,7 @@ name|getSyncTxId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// logSyncAll in Thread B
 name|doCallLogSyncAll
 argument_list|(
