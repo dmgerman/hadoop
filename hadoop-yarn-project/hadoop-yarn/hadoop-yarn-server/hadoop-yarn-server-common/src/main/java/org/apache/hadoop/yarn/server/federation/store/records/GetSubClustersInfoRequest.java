@@ -89,7 +89,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Request class to obtain information about all sub-clusters that are  * participating in federation.  */
+comment|/**  * Request class to obtain information about all sub-clusters that are  * participating in federation.  *  * If filterInactiveSubClusters is set to true, only active sub-clusters will be  * returned; otherwise, all sub-clusters will be returned regardless of state.  * By default, filterInactiveSubClusters is true.  */
 end_comment
 
 begin_class

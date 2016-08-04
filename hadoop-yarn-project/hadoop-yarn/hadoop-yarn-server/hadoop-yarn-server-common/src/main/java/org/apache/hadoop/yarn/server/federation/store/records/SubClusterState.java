@@ -116,6 +116,18 @@ name|SC_NEW
 operator|)
 return|;
 block|}
+DECL|method|isActive ()
+specifier|public
+name|boolean
+name|isActive
+parameter_list|()
+block|{
+return|return
+name|this
+operator|==
+name|SC_RUNNING
+return|;
+block|}
 DECL|method|isFinal ()
 specifier|public
 name|boolean
