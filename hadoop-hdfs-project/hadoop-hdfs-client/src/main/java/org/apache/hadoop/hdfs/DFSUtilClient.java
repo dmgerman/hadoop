@@ -956,6 +956,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// Using the charset canonical name for String/byte[] conversions is much
+comment|// more efficient due to use of cached encoders/decoders.
+DECL|field|UTF8_CSN
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|UTF8_CSN
+init|=
+name|StandardCharsets
+operator|.
+name|UTF_8
+operator|.
+name|name
+argument_list|()
+decl_stmt|;
 comment|/**    * Converts a string to a byte array using UTF8 encoding.    */
 DECL|method|string2Bytes (String str)
 specifier|public
@@ -968,16 +984,34 @@ name|String
 name|str
 parameter_list|)
 block|{
+try|try
+block|{
 return|return
 name|str
 operator|.
 name|getBytes
 argument_list|(
-name|StandardCharsets
-operator|.
-name|UTF_8
+name|UTF8_CSN
 argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|UnsupportedEncodingException
+name|e
+parameter_list|)
+block|{
+comment|// should never happen!
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"UTF8 decoding is not supported"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    * Converts a byte array to a string using UTF8 encoding.    */
 DECL|method|bytes2String (byte[] bytes)
@@ -1891,7 +1925,6 @@ return|;
 block|}
 comment|/**    * Decode a specific range of bytes of the given byte array to a string    * using UTF8.    *    * @param bytes The bytes to be decoded into characters    * @param offset The index of the first byte to decode    * @param length The number of bytes to decode    * @return The decoded string    */
 DECL|method|bytes2String (byte[] bytes, int offset, int length)
-specifier|private
 specifier|static
 name|String
 name|bytes2String
@@ -1919,7 +1952,7 @@ name|offset
 argument_list|,
 name|length
 argument_list|,
-literal|"UTF8"
+name|UTF8_CSN
 argument_list|)
 return|;
 block|}
@@ -1929,15 +1962,17 @@ name|UnsupportedEncodingException
 name|e
 parameter_list|)
 block|{
-assert|assert
-literal|false
-operator|:
-literal|"UTF8 encoding is not supported "
-assert|;
+comment|// should never happen!
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"UTF8 encoding is not supported"
+argument_list|,
+name|e
+argument_list|)
+throw|;
 block|}
-return|return
-literal|null
-return|;
 block|}
 comment|/**    * @return<code>coll</code> if it is non-null and non-empty. Otherwise,    * returns a list with a single null value.    */
 DECL|method|emptyAsSingletonNull (Collection<String> coll)
