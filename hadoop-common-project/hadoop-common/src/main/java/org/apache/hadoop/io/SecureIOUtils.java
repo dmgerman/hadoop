@@ -68,16 +68,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -987,15 +977,10 @@ argument_list|(
 name|adminsGroupString
 argument_list|)
 operator|&&
-name|Arrays
-operator|.
-name|asList
-argument_list|(
 name|ugi
 operator|.
-name|getGroupNames
+name|getGroups
 argument_list|()
-argument_list|)
 operator|.
 name|contains
 argument_list|(

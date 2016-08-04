@@ -860,7 +860,7 @@ name|group
 range|:
 name|ugi
 operator|.
-name|getGroupNames
+name|getGroups
 argument_list|()
 control|)
 block|{

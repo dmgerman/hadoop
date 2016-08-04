@@ -4413,11 +4413,8 @@ argument_list|()
 argument_list|,
 name|ugi
 operator|.
-name|getGroupNames
+name|getPrimaryGroupName
 argument_list|()
-index|[
-literal|0
-index|]
 argument_list|,
 operator|new
 name|Path
@@ -4448,7 +4445,7 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
-name|FileNotFoundException
+name|IOException
 block|{
 comment|// look up i internalDirs children - ignore first Slash
 name|INode
@@ -4544,11 +4541,8 @@ argument_list|()
 argument_list|,
 name|ugi
 operator|.
-name|getGroupNames
+name|getPrimaryGroupName
 argument_list|()
-index|[
-literal|0
-index|]
 argument_list|,
 name|inodelink
 operator|.
@@ -4600,11 +4594,8 @@ argument_list|()
 argument_list|,
 name|ugi
 operator|.
-name|getGroupNames
+name|getPrimaryGroupName
 argument_list|()
-index|[
-literal|0
-index|]
 argument_list|,
 operator|new
 name|Path
@@ -4803,11 +4794,8 @@ argument_list|()
 argument_list|,
 name|ugi
 operator|.
-name|getGroupNames
+name|getPrimaryGroupName
 argument_list|()
-index|[
-literal|0
-index|]
 argument_list|,
 name|link
 operator|.
@@ -5475,11 +5463,8 @@ name|group
 argument_list|(
 name|ugi
 operator|.
-name|getGroupNames
+name|getPrimaryGroupName
 argument_list|()
-index|[
-literal|0
-index|]
 argument_list|)
 operator|.
 name|addEntries
