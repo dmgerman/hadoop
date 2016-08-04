@@ -180,6 +180,18 @@ name|destroyImpl
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|preferDirectBuffer ()
+specifier|public
+name|boolean
+name|preferDirectBuffer
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 DECL|method|initImpl (int numDataUnits, int numParityUnits)
 specifier|private
 specifier|native
