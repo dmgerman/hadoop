@@ -4259,7 +4259,7 @@ condition|(
 name|task
 operator|.
 name|size
-operator|==
+operator|<=
 literal|0
 condition|)
 block|{
