@@ -8554,6 +8554,31 @@ init|=
 literal|20
 decl_stmt|;
 comment|////////////////////////////////
+comment|// Federation Configs
+comment|////////////////////////////////
+DECL|field|FEDERATION_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FEDERATION_PREFIX
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"federation."
+decl_stmt|;
+DECL|field|FEDERATION_MACHINE_LIST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FEDERATION_MACHINE_LIST
+init|=
+name|FEDERATION_PREFIX
+operator|+
+literal|"machine-list"
+decl_stmt|;
+comment|////////////////////////////////
 comment|// Other Configs
 comment|////////////////////////////////
 comment|/**    * Use YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS instead.    * The interval of the yarn client's querying application state after    * application submission. The unit is millisecond.    */
