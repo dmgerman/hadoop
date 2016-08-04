@@ -3394,9 +3394,16 @@ name|AccessControlException
 name|e
 parameter_list|)
 block|{
-name|assertTrue
+name|assertFalse
 argument_list|(
-literal|"Permission denied messages must carry file path"
+literal|"Permission denied messages must not carry full file path,"
+operator|+
+literal|"since the user does not have permission on /p4: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|,
 name|e
 operator|.
@@ -3414,11 +3421,14 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-literal|"Permission denied messages should not specify existing_file"
+literal|"Permission denied messages must not specify /p4"
 operator|+
-literal|" is not a directory, since the user does not have permission"
+literal|" is not a directory: "
 operator|+
-literal|" on /p4"
+name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|,
 name|e
 operator|.
