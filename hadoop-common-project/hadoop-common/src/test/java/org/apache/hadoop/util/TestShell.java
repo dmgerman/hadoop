@@ -1293,15 +1293,15 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"kill"
+literal|"bash"
 block|,
-literal|"-0"
+literal|"-c"
 block|,
-literal|"--"
-block|,
-literal|"-"
+literal|"kill -0 -- -'"
 operator|+
 name|anyPid
+operator|+
+literal|"'"
 block|}
 expr_stmt|;
 block|}
@@ -1313,11 +1313,15 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"kill"
+literal|"bash"
 block|,
-literal|"-0"
+literal|"-c"
 block|,
+literal|"kill -0 '"
+operator|+
 name|anyPid
+operator|+
+literal|"'"
 block|}
 expr_stmt|;
 block|}
@@ -1404,15 +1408,15 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"kill"
+literal|"bash"
 block|,
-literal|"-9"
+literal|"-c"
 block|,
-literal|"--"
-block|,
-literal|"-"
+literal|"kill -9 -- -'"
 operator|+
 name|anyPid
+operator|+
+literal|"'"
 block|}
 expr_stmt|;
 block|}
@@ -1424,11 +1428,15 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"kill"
+literal|"bash"
 block|,
-literal|"-9"
+literal|"-c"
 block|,
+literal|"kill -9 '"
+operator|+
 name|anyPid
+operator|+
+literal|"'"
 block|}
 expr_stmt|;
 block|}

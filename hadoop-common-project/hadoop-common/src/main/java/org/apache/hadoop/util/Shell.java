@@ -1357,28 +1357,39 @@ block|}
 return|;
 block|}
 block|}
+comment|// Use the bash-builtin instead of the Unix kill command (usually
+comment|// /bin/kill) as the bash-builtin supports "--" in all Hadoop supported
+comment|// OSes.
+specifier|final
+name|String
+name|quotedPid
+init|=
+name|bashQuote
+argument_list|(
+name|pid
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|isSetsidAvailable
 condition|)
 block|{
-comment|// Use the shell-builtin as it support "--" in all Hadoop supported OSes
 return|return
 operator|new
 name|String
 index|[]
 block|{
-literal|"kill"
+literal|"bash"
 block|,
-literal|"-"
+literal|"-c"
+block|,
+literal|"kill -"
 operator|+
 name|code
-block|,
-literal|"--"
-block|,
-literal|"-"
 operator|+
-name|pid
+literal|" -- -"
+operator|+
+name|quotedPid
 block|}
 return|;
 block|}
@@ -1389,13 +1400,17 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"kill"
+literal|"bash"
 block|,
-literal|"-"
+literal|"-c"
+block|,
+literal|"kill -"
 operator|+
 name|code
-block|,
-name|pid
+operator|+
+literal|" "
+operator|+
+name|quotedPid
 block|}
 return|;
 block|}
