@@ -24,7 +24,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|Set
 import|;
 end_import
 
@@ -107,7 +107,7 @@ name|outputLocalDir
 decl_stmt|;
 DECL|field|logTypes
 specifier|private
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -237,7 +237,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ContainerLogsRequest (ApplicationId applicationId, boolean isAppFinished, String owner, String address, String httpAddress, String container, String localDir, List<String> logs, long bytes, ContainerState containerState)
+DECL|method|ContainerLogsRequest (ApplicationId applicationId, boolean isAppFinished, String owner, String address, String httpAddress, String container, String localDir, Set<String> logs, long bytes, ContainerState containerState)
 specifier|public
 name|ContainerLogsRequest
 parameter_list|(
@@ -262,7 +262,7 @@ parameter_list|,
 name|String
 name|localDir
 parameter_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -530,7 +530,7 @@ expr_stmt|;
 block|}
 DECL|method|getLogTypes ()
 specifier|public
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -541,12 +541,12 @@ return|return
 name|logTypes
 return|;
 block|}
-DECL|method|setLogTypes (List<String> logTypes)
+DECL|method|setLogTypes (Set<String> logTypes)
 specifier|public
 name|void
 name|setLogTypes
 parameter_list|(
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>

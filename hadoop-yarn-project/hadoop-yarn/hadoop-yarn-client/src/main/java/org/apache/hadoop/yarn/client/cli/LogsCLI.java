@@ -96,6 +96,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -863,6 +873,15 @@ name|SIZE_OPTION
 init|=
 literal|"size"
 decl_stmt|;
+DECL|field|REGEX_OPTION
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|REGEX_OPTION
+init|=
+literal|"regex"
+decl_stmt|;
 DECL|field|HELP_CMD
 specifier|public
 specifier|static
@@ -1047,6 +1066,11 @@ name|showContainerLogInfo
 init|=
 literal|false
 decl_stmt|;
+name|boolean
+name|useRegex
+init|=
+literal|false
+decl_stmt|;
 name|String
 index|[]
 name|logFiles
@@ -1173,6 +1197,15 @@ operator|.
 name|hasOption
 argument_list|(
 name|SHOW_CONTAINER_LOG_INFO
+argument_list|)
+expr_stmt|;
+name|useRegex
+operator|=
+name|commandLine
+operator|.
+name|hasOption
+argument_list|(
+name|REGEX_OPTION
 argument_list|)
 expr_stmt|;
 if|if
@@ -1698,14 +1731,14 @@ literal|1
 return|;
 block|}
 block|}
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
 name|logs
 init|=
 operator|new
-name|ArrayList
+name|HashSet
 argument_list|<
 name|String
 argument_list|>
@@ -1716,6 +1749,8 @@ condition|(
 name|fetchAllLogFiles
 argument_list|(
 name|logFiles
+argument_list|,
+name|useRegex
 argument_list|)
 condition|)
 block|{
@@ -1723,7 +1758,7 @@ name|logs
 operator|.
 name|add
 argument_list|(
-literal|".*"
+literal|"ALL"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1742,12 +1777,15 @@ literal|0
 condition|)
 block|{
 name|logs
-operator|=
+operator|.
+name|addAll
+argument_list|(
 name|Arrays
 operator|.
 name|asList
 argument_list|(
 name|logFiles
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1837,6 +1875,8 @@ argument_list|,
 name|amContainersList
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 return|;
 block|}
@@ -1858,6 +1898,8 @@ argument_list|(
 name|request
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 return|;
 block|}
@@ -1877,6 +1919,8 @@ argument_list|(
 name|request
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 expr_stmt|;
 block|}
@@ -2420,7 +2464,7 @@ return|return
 name|amContainersList
 return|;
 block|}
-DECL|method|fetchAllLogFiles (String[] logFiles)
+DECL|method|fetchAllLogFiles (String[] logFiles, boolean useRegex)
 specifier|private
 name|boolean
 name|fetchAllLogFiles
@@ -2428,6 +2472,9 @@ parameter_list|(
 name|String
 index|[]
 name|logFiles
+parameter_list|,
+name|boolean
+name|useRegex
 parameter_list|)
 block|{
 comment|// If no value is specified for the PER_CONTAINER_LOG_FILES_OPTION option,
@@ -2475,8 +2522,19 @@ name|logs
 operator|.
 name|contains
 argument_list|(
+literal|"*"
+argument_list|)
+operator|||
+operator|(
+name|logs
+operator|.
+name|contains
+argument_list|(
 literal|".*"
 argument_list|)
+operator|&&
+name|useRegex
+operator|)
 condition|)
 block|{
 return|return
@@ -2771,7 +2829,7 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
-DECL|method|printContainerLogsFromRunningApplication (Configuration conf, ContainerLogsRequest request, LogCLIHelpers logCliHelper)
+DECL|method|printContainerLogsFromRunningApplication (Configuration conf, ContainerLogsRequest request, LogCLIHelpers logCliHelper, boolean useRegex)
 specifier|public
 name|int
 name|printContainerLogsFromRunningApplication
@@ -2784,6 +2842,9 @@ name|request
 parameter_list|,
 name|LogCLIHelpers
 name|logCliHelper
+parameter_list|,
+name|boolean
+name|useRegex
 parameter_list|)
 throws|throws
 name|IOException
@@ -2928,7 +2989,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -2939,6 +3000,8 @@ argument_list|(
 name|request
 argument_list|,
 name|fileNames
+argument_list|,
+name|useRegex
 argument_list|)
 decl_stmt|;
 if|if
@@ -3334,7 +3397,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|printContainerLogsForFinishedApplication ( ContainerLogsRequest request, LogCLIHelpers logCliHelper)
+DECL|method|printContainerLogsForFinishedApplication ( ContainerLogsRequest request, LogCLIHelpers logCliHelper, boolean useRegex)
 specifier|private
 name|int
 name|printContainerLogsForFinishedApplication
@@ -3344,6 +3407,9 @@ name|request
 parameter_list|,
 name|LogCLIHelpers
 name|logCliHelper
+parameter_list|,
+name|boolean
+name|useRegex
 parameter_list|)
 throws|throws
 name|IOException
@@ -3356,6 +3422,8 @@ argument_list|(
 name|request
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 decl_stmt|;
 if|if
@@ -3407,7 +3475,7 @@ name|newOptions
 argument_list|)
 return|;
 block|}
-DECL|method|printContainerLogsForFinishedApplicationWithoutNodeId ( ContainerLogsRequest request, LogCLIHelpers logCliHelper)
+DECL|method|printContainerLogsForFinishedApplicationWithoutNodeId ( ContainerLogsRequest request, LogCLIHelpers logCliHelper, boolean useRegex)
 specifier|private
 name|int
 name|printContainerLogsForFinishedApplicationWithoutNodeId
@@ -3417,6 +3485,9 @@ name|request
 parameter_list|,
 name|LogCLIHelpers
 name|logCliHelper
+parameter_list|,
+name|boolean
+name|useRegex
 parameter_list|)
 throws|throws
 name|IOException
@@ -3429,6 +3500,8 @@ argument_list|(
 name|request
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 decl_stmt|;
 if|if
@@ -3540,7 +3613,7 @@ operator|.
 name|KILLED
 return|;
 block|}
-DECL|method|printAMContainerLogs (Configuration conf, ContainerLogsRequest request, List<String> amContainers, LogCLIHelpers logCliHelper)
+DECL|method|printAMContainerLogs (Configuration conf, ContainerLogsRequest request, List<String> amContainers, LogCLIHelpers logCliHelper, boolean useRegex)
 specifier|private
 name|int
 name|printAMContainerLogs
@@ -3559,6 +3632,9 @@ name|amContainers
 parameter_list|,
 name|LogCLIHelpers
 name|logCliHelper
+parameter_list|,
+name|boolean
+name|useRegex
 parameter_list|)
 throws|throws
 name|Exception
@@ -3940,6 +4016,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 expr_stmt|;
 block|}
@@ -4006,6 +4084,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 expr_stmt|;
 block|}
@@ -4035,6 +4115,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 expr_stmt|;
 block|}
@@ -4075,7 +4157,7 @@ return|return
 literal|0
 return|;
 block|}
-DECL|method|outputAMContainerLogs (ContainerLogsRequest request, Configuration conf, LogCLIHelpers logCliHelper)
+DECL|method|outputAMContainerLogs (ContainerLogsRequest request, Configuration conf, LogCLIHelpers logCliHelper, boolean useRegex)
 specifier|private
 name|void
 name|outputAMContainerLogs
@@ -4088,6 +4170,9 @@ name|conf
 parameter_list|,
 name|LogCLIHelpers
 name|logCliHelper
+parameter_list|,
+name|boolean
+name|useRegex
 parameter_list|)
 throws|throws
 name|Exception
@@ -4155,6 +4240,8 @@ argument_list|(
 name|request
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 expr_stmt|;
 block|}
@@ -4165,6 +4252,8 @@ argument_list|(
 name|request
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 expr_stmt|;
 block|}
@@ -4220,6 +4309,8 @@ argument_list|,
 name|request
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 expr_stmt|;
 block|}
@@ -4659,9 +4750,11 @@ literal|true
 argument_list|,
 literal|"Specify comma-separated value "
 operator|+
-literal|"to get specified container log files. Use \"ALL\" to fetch all the "
+literal|"to get exact matched log files. Use \"ALL\" or \"*\"to "
 operator|+
-literal|"log files for the container. It also supports Java Regex."
+literal|"fetch all the log files for the container. Specific -regex "
+operator|+
+literal|"for using java regex to find matched log files."
 argument_list|)
 decl_stmt|;
 name|logFileOpt
@@ -4692,6 +4785,19 @@ operator|.
 name|addOption
 argument_list|(
 name|logFileOpt
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+name|REGEX_OPTION
+argument_list|,
+literal|false
+argument_list|,
+literal|"Work with -log_files to find "
+operator|+
+literal|"matched files by using java regex."
 argument_list|)
 expr_stmt|;
 name|opts
@@ -5009,6 +5115,18 @@ name|SIZE_OPTION
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|printOpts
+operator|.
+name|addOption
+argument_list|(
+name|commandOpts
+operator|.
+name|getOption
+argument_list|(
+name|REGEX_OPTION
+argument_list|)
+argument_list|)
+expr_stmt|;
 return|return
 name|printOpts
 return|;
@@ -5177,7 +5295,7 @@ return|return
 name|amContainersList
 return|;
 block|}
-DECL|method|fetchAMContainerLogs (ContainerLogsRequest request, List<String> amContainersList, LogCLIHelpers logCliHelper)
+DECL|method|fetchAMContainerLogs (ContainerLogsRequest request, List<String> amContainersList, LogCLIHelpers logCliHelper, boolean useRegex)
 specifier|private
 name|int
 name|fetchAMContainerLogs
@@ -5193,6 +5311,9 @@ name|amContainersList
 parameter_list|,
 name|LogCLIHelpers
 name|logCliHelper
+parameter_list|,
+name|boolean
+name|useRegex
 parameter_list|)
 throws|throws
 name|Exception
@@ -5208,10 +5329,12 @@ argument_list|,
 name|amContainersList
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 return|;
 block|}
-DECL|method|fetchContainerLogs (ContainerLogsRequest request, LogCLIHelpers logCliHelper)
+DECL|method|fetchContainerLogs (ContainerLogsRequest request, LogCLIHelpers logCliHelper, boolean useRegex)
 specifier|private
 name|int
 name|fetchContainerLogs
@@ -5221,6 +5344,9 @@ name|request
 parameter_list|,
 name|LogCLIHelpers
 name|logCliHelper
+parameter_list|,
+name|boolean
+name|useRegex
 parameter_list|)
 throws|throws
 name|IOException
@@ -5301,6 +5427,8 @@ argument_list|(
 name|request
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 return|;
 block|}
@@ -5312,6 +5440,8 @@ argument_list|(
 name|request
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 return|;
 block|}
@@ -5431,6 +5561,8 @@ argument_list|(
 name|request
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 return|;
 block|}
@@ -5501,6 +5633,8 @@ argument_list|,
 name|request
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 expr_stmt|;
 block|}
@@ -5515,6 +5649,8 @@ argument_list|(
 name|request
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 expr_stmt|;
 block|}
@@ -5522,7 +5658,7 @@ return|return
 name|resultCode
 return|;
 block|}
-DECL|method|fetchApplicationLogs (ContainerLogsRequest options, LogCLIHelpers logCliHelper)
+DECL|method|fetchApplicationLogs (ContainerLogsRequest options, LogCLIHelpers logCliHelper, boolean useRegex)
 specifier|private
 name|int
 name|fetchApplicationLogs
@@ -5532,6 +5668,9 @@ name|options
 parameter_list|,
 name|LogCLIHelpers
 name|logCliHelper
+parameter_list|,
+name|boolean
+name|useRegex
 parameter_list|)
 throws|throws
 name|IOException
@@ -5565,6 +5704,8 @@ argument_list|(
 name|options
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 decl_stmt|;
 if|if
@@ -5641,6 +5782,8 @@ argument_list|,
 name|container
 argument_list|,
 name|logCliHelper
+argument_list|,
+name|useRegex
 argument_list|)
 decl_stmt|;
 if|if
@@ -5757,7 +5900,7 @@ return|return
 name|appOwner
 return|;
 block|}
-DECL|method|getMatchedLogOptions ( ContainerLogsRequest request, LogCLIHelpers logCliHelper)
+DECL|method|getMatchedLogOptions ( ContainerLogsRequest request, LogCLIHelpers logCliHelper, boolean useRegex)
 specifier|private
 name|ContainerLogsRequest
 name|getMatchedLogOptions
@@ -5767,6 +5910,9 @@ name|request
 parameter_list|,
 name|LogCLIHelpers
 name|logCliHelper
+parameter_list|,
+name|boolean
+name|useRegex
 parameter_list|)
 throws|throws
 name|IOException
@@ -5799,14 +5945,14 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
 name|matchedFiles
 init|=
 operator|new
-name|ArrayList
+name|HashSet
 argument_list|<
 name|String
 argument_list|>
@@ -5822,7 +5968,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|".*"
+literal|"ALL"
 argument_list|)
 condition|)
 block|{
@@ -5846,6 +5992,8 @@ argument_list|(
 name|request
 argument_list|,
 name|files
+argument_list|,
+name|useRegex
 argument_list|)
 expr_stmt|;
 if|if
@@ -5873,9 +6021,9 @@ return|return
 name|newOptions
 return|;
 block|}
-DECL|method|getMatchedLogFiles (ContainerLogsRequest options, Collection<String> candidate)
+DECL|method|getMatchedLogFiles (ContainerLogsRequest options, Collection<String> candidate, boolean useRegex)
 specifier|private
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -5889,24 +6037,27 @@ argument_list|<
 name|String
 argument_list|>
 name|candidate
+parameter_list|,
+name|boolean
+name|useRegex
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
 name|matchedFiles
 init|=
 operator|new
-name|ArrayList
+name|HashSet
 argument_list|<
 name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -5917,6 +6068,30 @@ operator|.
 name|getLogTypes
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|options
+operator|.
+name|getLogTypes
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"ALL"
+argument_list|)
+condition|)
+block|{
+return|return
+operator|new
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+argument_list|(
+name|candidate
+argument_list|)
+return|;
+block|}
 for|for
 control|(
 name|String
@@ -5924,6 +6099,11 @@ name|file
 range|:
 name|candidate
 control|)
+block|{
+if|if
+condition|(
+name|useRegex
+condition|)
 block|{
 if|if
 condition|(
@@ -5944,11 +6124,33 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+else|else
+block|{
+if|if
+condition|(
+name|filePattern
+operator|.
+name|contains
+argument_list|(
+name|file
+argument_list|)
+condition|)
+block|{
+name|matchedFiles
+operator|.
+name|add
+argument_list|(
+name|file
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 return|return
 name|matchedFiles
 return|;
 block|}
-DECL|method|isFileMatching (String fileType, List<String> logTypes)
+DECL|method|isFileMatching (String fileType, Set<String> logTypes)
 specifier|private
 name|boolean
 name|isFileMatching
@@ -5956,7 +6158,7 @@ parameter_list|(
 name|String
 name|fileType
 parameter_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
