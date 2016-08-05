@@ -136,6 +136,28 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|activities
+operator|.
+name|ActivitiesManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|ResourceUsage
 import|;
 end_import
@@ -382,6 +404,11 @@ comment|/**    * @return QueueCapacities root queue of the Capacity Scheduler Qu
 DECL|method|getClusterResourceUsage ()
 name|ResourceUsage
 name|getClusterResourceUsage
+parameter_list|()
+function_decl|;
+DECL|method|getActivitiesManager ()
+name|ActivitiesManager
+name|getActivitiesManager
 parameter_list|()
 function_decl|;
 block|}

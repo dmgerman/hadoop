@@ -482,6 +482,28 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|activities
+operator|.
+name|ActivitiesManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|ResourceLimits
 import|;
 end_import
@@ -745,6 +767,11 @@ name|authorizer
 init|=
 literal|null
 decl_stmt|;
+DECL|field|activitiesManager
+specifier|protected
+name|ActivitiesManager
+name|activitiesManager
+decl_stmt|;
 DECL|method|AbstractCSQueue (CapacitySchedulerContext cs, String queueName, CSQueue parent, CSQueue old)
 specifier|public
 name|AbstractCSQueue
@@ -795,6 +822,15 @@ operator|=
 name|cs
 operator|.
 name|getResourceCalculator
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|activitiesManager
+operator|=
+name|cs
+operator|.
+name|getActivitiesManager
 argument_list|()
 expr_stmt|;
 comment|// must be called after parent and queueName is set
