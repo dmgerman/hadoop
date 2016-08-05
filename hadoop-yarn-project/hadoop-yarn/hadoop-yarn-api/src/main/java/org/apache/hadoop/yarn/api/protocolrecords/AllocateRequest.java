@@ -522,7 +522,7 @@ name|ResourceBlacklistRequest
 name|resourceBlacklistRequest
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of container resource increase requests being sent by the    *<code>ApplicationMaster</code>.    */
+comment|/**    * Get the list of container resource increase requests being sent by the    *<code>ApplicationMaster</code>.    * @return the list of {@link ContainerResourceChangeRequest}    *         being sent by the    *<code>ApplicationMaster</code>.    */
 annotation|@
 name|Public
 annotation|@
@@ -537,7 +537,7 @@ argument_list|>
 name|getIncreaseRequests
 parameter_list|()
 function_decl|;
-comment|/**    * Set the list of container resource increase requests to inform the    *<code>ResourceManager</code> about the containers whose resources need    * to be increased.    */
+comment|/**    * Set the list of container resource increase requests to inform the    *<code>ResourceManager</code> about the containers whose resources need    *         to be increased.    * @param increaseRequests list of    *        {@link ContainerResourceChangeRequest}    */
 annotation|@
 name|Public
 annotation|@
@@ -555,7 +555,7 @@ argument_list|>
 name|increaseRequests
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of container resource decrease requests being sent by the    *<code>ApplicationMaster</code>.    */
+comment|/**    * Get the list of container resource decrease requests being sent by the    *<code>ApplicationMaster</code>.    * @return list of {@link ContainerResourceChangeRequest}    *         being sent by the    *<code>ApplicationMaster</code>.    */
 annotation|@
 name|Public
 annotation|@
@@ -570,7 +570,7 @@ argument_list|>
 name|getDecreaseRequests
 parameter_list|()
 function_decl|;
-comment|/**    * Set the list of container resource decrease requests to inform the    *<code>ResourceManager</code> about the containers whose resources need    * to be decreased.    */
+comment|/**    * Set the list of container resource decrease requests to inform the    *<code>ResourceManager</code> about the containers whose resources need    * to be decreased.    * @param decreaseRequests list of    *        {@link ContainerResourceChangeRequest}    */
 annotation|@
 name|Public
 annotation|@

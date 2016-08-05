@@ -513,7 +513,7 @@ name|String
 name|pattern
 parameter_list|)
 function_decl|;
-comment|/**    * NM uses it to decide whether if it is necessary to upload the resource to    * the shared cache    */
+comment|/**    * NM uses it to decide whether if it is necessary to upload the resource to    * the shared cache    * @return true if it is necessary to upload the resource    *                 to the shared cache,    *         false otherwise    */
 annotation|@
 name|Public
 annotation|@

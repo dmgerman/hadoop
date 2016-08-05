@@ -299,7 +299,7 @@ argument_list|>
 name|succeededContainers
 parameter_list|)
 function_decl|;
-comment|/**    * Get the containerId-to-exception map in which the exception indicates error    * from per container for failed requests    */
+comment|/**    * Get the containerId-to-exception map in which the exception indicates error    * from per container for failed requests    * @return map of containerId-to-exception    */
 annotation|@
 name|Public
 annotation|@

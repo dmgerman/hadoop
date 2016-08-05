@@ -168,7 +168,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Get the flag which indicates that the application has successfully    * unregistered with the RM and the application can safely stop.    */
+comment|/**    * Get the flag which indicates that the application has successfully    * unregistered with the RM and the application can safely stop.    * @return true if the application has unregistered with the RM,    *         false otherwise    */
 annotation|@
 name|Public
 annotation|@
@@ -180,7 +180,7 @@ name|boolean
 name|getIsUnregistered
 parameter_list|()
 function_decl|;
-comment|/**    * Set the flag which indicates that the application has successfully    * unregistered with the RM and the application can safely stop.    */
+comment|/**    * Set the flag which indicates that the application has successfully    * unregistered with the RM and the application can safely stop.    * @param isUnregistered boolean flag to indicate that the application has    *        successfully unregistered with the RM    */
 annotation|@
 name|Private
 annotation|@

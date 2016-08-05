@@ -168,7 +168,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Get the flag which indicates that the process of killing application is completed or not.    */
+comment|/**    * Get the flag which indicates that the process of killing application is completed or not.    * @return true if the process of killing application has completed,    *         false otherwise    */
 annotation|@
 name|Public
 annotation|@

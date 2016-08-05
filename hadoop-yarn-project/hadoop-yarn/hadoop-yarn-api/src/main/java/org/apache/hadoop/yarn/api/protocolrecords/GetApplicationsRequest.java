@@ -393,7 +393,7 @@ return|return
 name|request
 return|;
 block|}
-comment|/**    *<p>    * The request from clients to get a report of Applications matching the    * giving application types in the cluster from the    *<code>ResourceManager</code>.    *</p>    *    * @param scope {@link ApplicationsRequestScope} to filter by    * @see ApplicationClientProtocol#getApplications(GetApplicationsRequest)    */
+comment|/**    *<p>    * The request from clients to get a report of Applications matching the    * giving application types in the cluster from the    *<code>ResourceManager</code>.    *</p>    *    * @param scope {@link ApplicationsRequestScope} to filter by    * @see ApplicationClientProtocol#getApplications(GetApplicationsRequest)    * @return a report of Applications in {@link GetApplicationsRequest}    */
 annotation|@
 name|Public
 annotation|@
@@ -431,7 +431,7 @@ return|return
 name|request
 return|;
 block|}
-comment|/**    *<p>    * The request from clients to get a report of Applications matching the    * giving application types in the cluster from the    *<code>ResourceManager</code>.    *</p>    *    *    * @see ApplicationClientProtocol#getApplications(GetApplicationsRequest)    */
+comment|/**    *<p>    * The request from clients to get a report of Applications matching the    * giving application types in the cluster from the    *<code>ResourceManager</code>.    *</p>    *    *    * @see ApplicationClientProtocol#getApplications(GetApplicationsRequest)    * @return a report of Applications in {@link GetApplicationsRequest}    */
 annotation|@
 name|Public
 annotation|@
@@ -472,7 +472,7 @@ return|return
 name|request
 return|;
 block|}
-comment|/**    *<p>    * The request from clients to get a report of Applications matching the    * giving application states in the cluster from the    *<code>ResourceManager</code>.    *</p>    *    *    * @see ApplicationClientProtocol#getApplications(GetApplicationsRequest)    */
+comment|/**    *<p>    * The request from clients to get a report of Applications matching the    * giving application states in the cluster from the    *<code>ResourceManager</code>.    *</p>    *    *    * @see ApplicationClientProtocol#getApplications(GetApplicationsRequest)    * @return  a report of Applications in {@link GetApplicationsRequest}    */
 annotation|@
 name|Public
 annotation|@
@@ -513,7 +513,7 @@ return|return
 name|request
 return|;
 block|}
-comment|/**    *<p>    * The request from clients to get a report of Applications matching the    * giving and application types and application types in the cluster from the    *<code>ResourceManager</code>.    *</p>    *    *    * @see ApplicationClientProtocol#getApplications(GetApplicationsRequest)    */
+comment|/**    *<p>    * The request from clients to get a report of Applications matching the    * giving and application types and application types in the cluster from the    *<code>ResourceManager</code>.    *</p>    *    *    * @see ApplicationClientProtocol#getApplications(GetApplicationsRequest)    * @return  a report of Applications in<code>GetApplicationsRequest</code>    */
 annotation|@
 name|Public
 annotation|@

@@ -1238,7 +1238,7 @@ else|:
 name|value
 return|;
 block|}
-comment|/** Add non empty and non null suffix to a key */
+comment|/**    * Add non empty and non null suffix to a key.    * @return the suffixed key    */
 DECL|method|addSuffix (String key, String suffix)
 specifier|public
 specifier|static

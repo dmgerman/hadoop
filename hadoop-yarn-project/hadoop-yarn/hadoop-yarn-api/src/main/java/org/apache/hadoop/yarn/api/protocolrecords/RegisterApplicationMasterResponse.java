@@ -425,7 +425,7 @@ argument_list|>
 name|acls
 parameter_list|)
 function_decl|;
-comment|/**    *<p>Get ClientToAMToken master key.</p>    *<p>The ClientToAMToken master key is sent to<code>ApplicationMaster</code>    * by<code>ResourceManager</code> via {@link RegisterApplicationMasterResponse}    * , used to verify corresponding ClientToAMToken.</p>    */
+comment|/**    *<p>Get ClientToAMToken master key.</p>    *<p>The ClientToAMToken master key is sent to<code>ApplicationMaster</code>    * by<code>ResourceManager</code> via {@link RegisterApplicationMasterResponse}    * , used to verify corresponding ClientToAMToken.</p>    * @return ClientToAMToken master key    */
 annotation|@
 name|Public
 annotation|@
@@ -452,7 +452,7 @@ name|ByteBuffer
 name|key
 parameter_list|)
 function_decl|;
-comment|/**    *<p>Get the queue that the application was placed in.<p>    */
+comment|/**    *<p>Get the queue that the application was placed in.<p>    * @return the queue that the application was placed in.    */
 annotation|@
 name|Public
 annotation|@

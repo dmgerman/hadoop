@@ -188,7 +188,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * The Delegation tokens have a identifier which maps to    * {@link AbstractDelegationTokenIdentifier}.    *    */
+comment|/**    * The Delegation tokens have a identifier which maps to    * {@link AbstractDelegationTokenIdentifier}.    * @return the delegation tokens    */
 annotation|@
 name|Public
 annotation|@

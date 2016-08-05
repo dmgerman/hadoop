@@ -998,7 +998,7 @@ name|PreemptionMessage
 name|request
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of NMTokens required for communicating with NM. New NMTokens    * issued only if    *<p>    * 1) AM is receiving first container on underlying NodeManager.<br>    * OR<br>    * 2) NMToken master key rolled over in ResourceManager and AM is getting new    * container on the same underlying NodeManager.    *<p>    * AM will receive one NMToken per NM irrespective of the number of containers    * issued on same NM. AM is expected to store these tokens until issued a    * new token for the same NM.    */
+comment|/**    * Get the list of NMTokens required for communicating with NM. New NMTokens    * issued only if    *<p>    * 1) AM is receiving first container on underlying NodeManager.<br>    * OR<br>    * 2) NMToken master key rolled over in ResourceManager and AM is getting new    * container on the same underlying NodeManager.    *<p>    * AM will receive one NMToken per NM irrespective of the number of containers    * issued on same NM. AM is expected to store these tokens until issued a    * new token for the same NM.    * @return list of NMTokens required for communicating with NM    */
 annotation|@
 name|Public
 annotation|@
@@ -1030,7 +1030,7 @@ argument_list|>
 name|nmTokens
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of newly increased containers by    *<code>ResourceManager</code>.    */
+comment|/**    * Get the list of newly increased containers by    *<code>ResourceManager</code>.    * @return list of newly increased containers    */
 annotation|@
 name|Public
 annotation|@
@@ -1063,7 +1063,7 @@ argument_list|>
 name|increasedContainers
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of newly decreased containers by    *<code>ResourceManager</code>.    */
+comment|/**    * Get the list of newly decreased containers by    *<code>ResourceManager</code>.    * @return the list of newly decreased containers    */
 annotation|@
 name|Public
 annotation|@

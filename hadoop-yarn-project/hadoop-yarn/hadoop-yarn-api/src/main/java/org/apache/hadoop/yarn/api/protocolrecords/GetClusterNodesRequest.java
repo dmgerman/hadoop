@@ -194,7 +194,7 @@ return|return
 name|request
 return|;
 block|}
-comment|/**    * The state to filter the cluster nodes with.    */
+comment|/**    * The state to filter the cluster nodes with.    * @return the set of {@link NodeState}    */
 DECL|method|getNodeStates ()
 specifier|public
 specifier|abstract
@@ -205,7 +205,7 @@ argument_list|>
 name|getNodeStates
 parameter_list|()
 function_decl|;
-comment|/**    * The state to filter the cluster nodes with.    */
+comment|/**    * The state to filter the cluster nodes with.    * @param states the set of {@link NodeState}    */
 DECL|method|setNodeStates (EnumSet<NodeState> states)
 specifier|public
 specifier|abstract

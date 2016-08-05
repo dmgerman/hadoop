@@ -444,7 +444,7 @@ return|return
 name|variable
 return|;
 block|}
-comment|/**      * Expand the environment variable based on client OS environment variable      * expansion syntax (e.g. $VAR for Linux and %VAR% for Windows).      *<p>      * Note: Use $$() method for cross-platform practice i.e. submit an      * application from a Windows client to a Linux/Unix server or vice versa.      *</p>      */
+comment|/**      * Expand the environment variable based on client OS environment variable      * expansion syntax (e.g. $VAR for Linux and %VAR% for Windows).      *<p>      * Note: Use $$() method for cross-platform practice i.e. submit an      * application from a Windows client to a Linux/Unix server or vice versa.      *</p>      * @return expanded environment variable.      */
 DECL|method|$ ()
 specifier|public
 name|String
@@ -475,7 +475,7 @@ name|variable
 return|;
 block|}
 block|}
-comment|/**      * Expand the environment variable in platform-agnostic syntax. The      * parameter expansion marker "{{VAR}}" will be replaced with real parameter      * expansion marker ('%' for Windows and '$' for Linux) by NodeManager on      * container launch. For example: {{VAR}} will be replaced as $VAR on Linux,      * and %VAR% on Windows.      */
+comment|/**      * Expand the environment variable in platform-agnostic syntax. The      * parameter expansion marker "{{VAR}}" will be replaced with real parameter      * expansion marker ('%' for Windows and '$' for Linux) by NodeManager on      * container launch. For example: {{VAR}} will be replaced as $VAR on Linux,      * and %VAR% on Windows.      * @return expanded environment variable.      */
 annotation|@
 name|Public
 annotation|@
