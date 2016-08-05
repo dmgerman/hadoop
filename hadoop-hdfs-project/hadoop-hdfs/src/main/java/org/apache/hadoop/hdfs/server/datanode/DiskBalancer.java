@@ -1423,13 +1423,6 @@ operator|!
 name|isDiskBalancerEnabled
 condition|)
 block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Disk Balancer is not enabled."
-argument_list|)
-expr_stmt|;
 throw|throw
 operator|new
 name|DiskBalancerException
