@@ -827,14 +827,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The DistributedSchedulingAMService is started instead of the  * ApplicationMasterService if distributed scheduling is enabled for the YARN  * cluster.  * It extends the functionality of the ApplicationMasterService by servicing  * clients (AMs and AMRMProxy request interceptors) that understand the  * DistributedSchedulingProtocol.  */
+comment|/**  * The OpportunisticContainerAllocatorAMService is started instead of the  * ApplicationMasterService if distributed scheduling is enabled for the YARN  * cluster.  * It extends the functionality of the ApplicationMasterService by servicing  * clients (AMs and AMRMProxy request interceptors) that understand the  * DistributedSchedulingProtocol.  */
 end_comment
 
 begin_class
-DECL|class|DistributedSchedulingAMService
+DECL|class|OpportunisticContainerAllocatorAMService
 specifier|public
 class|class
-name|DistributedSchedulingAMService
+name|OpportunisticContainerAllocatorAMService
 extends|extends
 name|ApplicationMasterService
 implements|implements
@@ -856,7 +856,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|DistributedSchedulingAMService
+name|OpportunisticContainerAllocatorAMService
 operator|.
 name|class
 argument_list|)
@@ -911,9 +911,9 @@ specifier|final
 name|int
 name|k
 decl_stmt|;
-DECL|method|DistributedSchedulingAMService (RMContext rmContext, YarnScheduler scheduler)
+DECL|method|OpportunisticContainerAllocatorAMService (RMContext rmContext, YarnScheduler scheduler)
 specifier|public
-name|DistributedSchedulingAMService
+name|OpportunisticContainerAllocatorAMService
 parameter_list|(
 name|RMContext
 name|rmContext
@@ -924,7 +924,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|DistributedSchedulingAMService
+name|OpportunisticContainerAllocatorAMService
 operator|.
 name|class
 operator|.
@@ -949,11 +949,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_NODES_NUMBER_USED
+name|OPP_CONTAINER_ALLOCATION_NODES_NUMBER_USED
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_NODES_NUMBER_USED_DEFAULT
+name|OPP_CONTAINER_ALLOCATION_NODES_NUMBER_USED_DEFAULT
 argument_list|)
 expr_stmt|;
 name|long
@@ -1163,6 +1163,16 @@ name|AMRMTokenSecretManager
 name|secretManager
 parameter_list|)
 block|{
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|isDistSchedulingEnabled
+argument_list|(
+name|serverConf
+argument_list|)
+condition|)
+block|{
 name|Server
 name|server
 init|=
@@ -1234,6 +1244,21 @@ argument_list|)
 expr_stmt|;
 return|return
 name|server
+return|;
+block|}
+return|return
+name|super
+operator|.
+name|getServer
+argument_list|(
+name|rpc
+argument_list|,
+name|serverConf
+argument_list|,
+name|addr
+argument_list|,
+name|secretManager
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -1365,11 +1390,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MIN_CONTAINER_MEMORY_MB
+name|OPPORTUNISTIC_CONTAINERS_MIN_MEMORY_MB
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MIN_CONTAINER_MEMORY_MB_DEFAULT
+name|OPPORTUNISTIC_CONTAINERS_MIN_MEMORY_MB_DEFAULT
 argument_list|)
 argument_list|,
 name|getConfig
@@ -1379,11 +1404,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MIN_CONTAINER_VCORES
+name|OPPORTUNISTIC_CONTAINERS_MIN_VCORES
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MIN_CONTAINER_VCORES_DEFAULT
+name|OPPORTUNISTIC_CONTAINERS_MIN_VCORES_DEFAULT
 argument_list|)
 argument_list|)
 argument_list|)
@@ -1403,11 +1428,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MAX_MEMORY_MB
+name|OPPORTUNISTIC_CONTAINERS_MAX_MEMORY_MB
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MAX_MEMORY_MB_DEFAULT
+name|OPPORTUNISTIC_CONTAINERS_MAX_MEMORY_MB_DEFAULT
 argument_list|)
 argument_list|,
 name|getConfig
@@ -1417,11 +1442,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MAX_CONTAINER_VCORES
+name|OPPORTUNISTIC_CONTAINERS_MAX_VCORES
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_MAX_CONTAINER_VCORES_DEFAULT
+name|OPPORTUNISTIC_CONTAINERS_MAX_VCORES_DEFAULT
 argument_list|)
 argument_list|)
 argument_list|)
@@ -1441,11 +1466,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_INCR_CONTAINER_MEMORY_MB
+name|OPPORTUNISTIC_CONTAINERS_INCR_MEMORY_MB
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_INCR_CONTAINER_MEMORY_MB_DEFAULT
+name|OPPORTUNISTIC_CONTAINERS_INCR_MEMORY_MB_DEFAULT
 argument_list|)
 argument_list|,
 name|getConfig
@@ -1455,11 +1480,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_INCR_CONTAINER_VCORES
+name|OPPORTUNISTIC_CONTAINERS_INCR_VCORES
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_INCR_CONTAINER_VCORES_DEFAULT
+name|OPPORTUNISTIC_CONTAINERS_INCR_VCORES_DEFAULT
 argument_list|)
 argument_list|)
 argument_list|)
@@ -1475,11 +1500,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_CONTAINER_TOKEN_EXPIRY_MS
+name|OPPORTUNISTIC_CONTAINERS_TOKEN_EXPIRY_MS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_CONTAINER_TOKEN_EXPIRY_MS_DEFAULT
+name|OPPORTUNISTIC_CONTAINERS_TOKEN_EXPIRY_MS_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2127,7 +2152,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unknown event arrived at DistributedSchedulingAMService: "
+literal|"Unknown event arrived at"
+operator|+
+literal|"OpportunisticContainerAllocatorAMService: "
 operator|+
 name|event
 operator|.

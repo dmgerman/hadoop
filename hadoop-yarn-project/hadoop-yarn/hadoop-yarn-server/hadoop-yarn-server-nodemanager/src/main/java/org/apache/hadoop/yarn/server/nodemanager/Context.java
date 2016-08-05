@@ -288,8 +288,6 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|nodemanager
-operator|.
 name|scheduler
 operator|.
 name|OpportunisticContainerAllocator

@@ -857,17 +857,17 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test cases for {@link DistributedSchedulingAMService}.  */
+comment|/**  * Test cases for {@link OpportunisticContainerAllocatorAMService}.  */
 end_comment
 
 begin_class
-DECL|class|TestDistributedSchedulingAMService
+DECL|class|TestOpportunisticContainerAllocatorAMService
 specifier|public
 class|class
-name|TestDistributedSchedulingAMService
+name|TestOpportunisticContainerAllocatorAMService
 block|{
-comment|// Test if the DistributedSchedulingAMService can handle both DSProtocol as
-comment|// well as AMProtocol clients
+comment|// Test if the OpportunisticContainerAllocatorAMService can handle both
+comment|// DSProtocol as well as AMProtocol clients
 annotation|@
 name|Test
 DECL|method|testRPCWrapping ()
@@ -1093,7 +1093,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|DistributedSchedulingAMService
+name|OpportunisticContainerAllocatorAMService
 name|service
 init|=
 name|createService
@@ -1105,6 +1105,17 @@ argument_list|,
 name|c
 argument_list|)
 decl_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|DIST_SCHEDULING_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|Server
 name|server
 init|=
@@ -1582,9 +1593,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createService (final RecordFactory factory, final RMContext rmContext, final Container c)
+DECL|method|createService ( final RecordFactory factory, final RMContext rmContext, final Container c)
 specifier|private
-name|DistributedSchedulingAMService
+name|OpportunisticContainerAllocatorAMService
 name|createService
 parameter_list|(
 specifier|final
@@ -1602,7 +1613,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|DistributedSchedulingAMService
+name|OpportunisticContainerAllocatorAMService
 argument_list|(
 name|rmContext
 argument_list|,

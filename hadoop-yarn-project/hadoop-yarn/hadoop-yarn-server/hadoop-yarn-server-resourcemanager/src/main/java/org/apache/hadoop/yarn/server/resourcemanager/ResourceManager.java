@@ -1674,22 +1674,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|webapp
 operator|.
 name|WebApp
@@ -6478,32 +6462,38 @@ name|ApplicationMasterService
 name|createApplicationMasterService
 parameter_list|()
 block|{
-if|if
-condition|(
+name|Configuration
+name|config
+init|=
 name|this
 operator|.
 name|rmContext
 operator|.
 name|getYarnConfiguration
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|YarnConfiguration
 operator|.
-name|getBoolean
+name|isOpportunisticContainerAllocationEnabled
 argument_list|(
+name|config
+argument_list|)
+operator|||
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_ENABLED
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DIST_SCHEDULING_ENABLED_DEFAULT
+name|isDistSchedulingEnabled
+argument_list|(
+name|config
 argument_list|)
 condition|)
 block|{
-name|DistributedSchedulingAMService
-name|distributedSchedulingService
+name|OpportunisticContainerAllocatorAMService
+name|oppContainerAllocatingAMService
 init|=
 operator|new
-name|DistributedSchedulingAMService
+name|OpportunisticContainerAllocatorAMService
 argument_list|(
 name|this
 operator|.
@@ -6513,14 +6503,14 @@ name|scheduler
 argument_list|)
 decl_stmt|;
 name|EventDispatcher
-name|distSchedulerEventDispatcher
+name|oppContainerAllocEventDispatcher
 init|=
 operator|new
 name|EventDispatcher
 argument_list|(
-name|distributedSchedulingService
+name|oppContainerAllocatingAMService
 argument_list|,
-name|DistributedSchedulingAMService
+name|OpportunisticContainerAllocatorAMService
 operator|.
 name|class
 operator|.
@@ -6528,13 +6518,14 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Add an event dispatcher for the DistributedSchedulingAMService
-comment|// to handle node updates/additions and removals.
+comment|// Add an event dispatcher for the
+comment|// OpportunisticContainerAllocatorAMService to handle node
+comment|// updates/additions and removals.
 comment|// Since the SchedulerEvent is currently a super set of theses,
 comment|// we register interest for it..
 name|addService
 argument_list|(
-name|distSchedulerEventDispatcher
+name|oppContainerAllocEventDispatcher
 argument_list|)
 expr_stmt|;
 name|rmDispatcher
@@ -6545,7 +6536,7 @@ name|SchedulerEventType
 operator|.
 name|class
 argument_list|,
-name|distSchedulerEventDispatcher
+name|oppContainerAllocEventDispatcher
 argument_list|)
 expr_stmt|;
 name|this
@@ -6554,14 +6545,14 @@ name|rmContext
 operator|.
 name|setContainerQueueLimitCalculator
 argument_list|(
-name|distributedSchedulingService
+name|oppContainerAllocatingAMService
 operator|.
 name|getNodeManagerQueueLimitCalculator
 argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|distributedSchedulingService
+name|oppContainerAllocatingAMService
 return|;
 block|}
 return|return

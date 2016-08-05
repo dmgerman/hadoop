@@ -437,6 +437,17 @@ name|setBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
+name|OPPORTUNISTIC_CONTAINER_ALLOCATION_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
 name|DIST_SCHEDULING_ENABLED
 argument_list|,
 literal|true

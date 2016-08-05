@@ -897,7 +897,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Validates End2End Distributed Scheduling flow which includes the AM  * specifying OPPORTUNISTIC containers in its resource requests,  * the AMRMProxyService on the NM, the DistributedScheduler RequestInterceptor  * on the NM and the DistributedSchedulingProtocol used by the framework to talk  * to the DistributedSchedulingAMService running on the RM.  */
+comment|/**  * Validates End2End Distributed Scheduling flow which includes the AM  * specifying OPPORTUNISTIC containers in its resource requests,  * the AMRMProxyService on the NM, the DistributedScheduler RequestInterceptor  * on the NM and the DistributedSchedulingProtocol used by the framework to talk  * to the OpportunisticContainerAllocatorAMService running on the RM.  */
 end_comment
 
 begin_class
@@ -996,6 +996,17 @@ argument_list|(
 name|YarnConfiguration
 operator|.
 name|AMRM_PROXY_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|OPPORTUNISTIC_CONTAINER_ALLOCATION_ENABLED
 argument_list|,
 literal|true
 argument_list|)

@@ -884,8 +884,6 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|nodemanager
-operator|.
 name|scheduler
 operator|.
 name|OpportunisticContainerAllocator
@@ -2275,7 +2273,7 @@ name|getBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_ENABLED
+name|OPPORTUNISTIC_CONTAINER_ALLOCATION_ENABLED
 argument_list|,
 name|YarnConfiguration
 operator|.
@@ -2452,9 +2450,10 @@ argument_list|(
 operator|new
 name|OpportunisticContainerAllocator
 argument_list|(
-name|nodeStatusUpdater
-argument_list|,
 name|context
+operator|.
+name|getContainerTokenSecretManager
+argument_list|()
 argument_list|,
 name|webServer
 operator|.
