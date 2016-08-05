@@ -4248,6 +4248,11 @@ name|getPriority
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+name|schedulerKey
+operator|.
+name|getAllocationRequestId
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Allocate!

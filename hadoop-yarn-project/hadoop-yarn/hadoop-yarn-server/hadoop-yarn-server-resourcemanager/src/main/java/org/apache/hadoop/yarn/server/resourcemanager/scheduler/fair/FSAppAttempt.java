@@ -50,7 +50,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
+name|ArrayList
 import|;
 end_import
 
@@ -60,7 +60,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
+name|Arrays
 import|;
 end_import
 
@@ -610,7 +610,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerRequestKey
+name|SchedulerNode
 import|;
 end_import
 
@@ -630,7 +630,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerNode
+name|SchedulerRequestKey
 import|;
 end_import
 
@@ -2719,6 +2719,11 @@ name|getPriority
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+name|schedulerKey
+operator|.
+name|getAllocationRequestId
+argument_list|()
 argument_list|)
 decl_stmt|;
 return|return

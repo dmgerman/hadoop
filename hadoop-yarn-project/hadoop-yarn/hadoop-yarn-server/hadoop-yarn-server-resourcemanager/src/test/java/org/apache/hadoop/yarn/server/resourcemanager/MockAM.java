@@ -871,6 +871,44 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|addRequests
+argument_list|(
+name|hosts
+argument_list|,
+name|memory
+argument_list|,
+name|priority
+argument_list|,
+name|containers
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addRequests (String[] hosts, int memory, int priority, int containers, long allocationRequestId)
+specifier|public
+name|void
+name|addRequests
+parameter_list|(
+name|String
+index|[]
+name|hosts
+parameter_list|,
+name|int
+name|memory
+parameter_list|,
+name|int
+name|priority
+parameter_list|,
+name|int
+name|containers
+parameter_list|,
+name|long
+name|allocationRequestId
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 name|requests
 operator|.
 name|addAll
@@ -884,6 +922,8 @@ argument_list|,
 name|priority
 argument_list|,
 name|containers
+argument_list|,
+name|allocationRequestId
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1069,6 +1109,8 @@ argument_list|,
 name|numContainers
 argument_list|,
 name|labelExpression
+argument_list|,
+literal|0L
 argument_list|)
 decl_stmt|;
 return|return
@@ -1080,7 +1122,7 @@ name|releases
 argument_list|)
 return|;
 block|}
-DECL|method|createReq (String[] hosts, int memory, int priority, int containers)
+DECL|method|createReq (String[] hosts, int memory, int priority, int containers, long allocationRequestId)
 specifier|public
 name|List
 argument_list|<
@@ -1100,6 +1142,9 @@ name|priority
 parameter_list|,
 name|int
 name|containers
+parameter_list|,
+name|long
+name|allocationRequestId
 parameter_list|)
 throws|throws
 name|Exception
@@ -1116,10 +1161,12 @@ argument_list|,
 name|containers
 argument_list|,
 literal|null
+argument_list|,
+name|allocationRequestId
 argument_list|)
 return|;
 block|}
-DECL|method|createReq (String[] hosts, int memory, int priority, int containers, String labelExpression)
+DECL|method|createReq (String[] hosts, int memory, int priority, int containers, String labelExpression, long allocationRequestId)
 specifier|public
 name|List
 argument_list|<
@@ -1142,6 +1189,9 @@ name|containers
 parameter_list|,
 name|String
 name|labelExpression
+parameter_list|,
+name|long
+name|allocationRequestId
 parameter_list|)
 throws|throws
 name|Exception
@@ -1204,6 +1254,13 @@ argument_list|,
 name|labelExpression
 argument_list|)
 decl_stmt|;
+name|hostReq
+operator|.
+name|setAllocationRequestId
+argument_list|(
+name|allocationRequestId
+argument_list|)
+expr_stmt|;
 name|reqs
 operator|.
 name|add
@@ -1227,6 +1284,13 @@ argument_list|,
 name|labelExpression
 argument_list|)
 decl_stmt|;
+name|rackReq
+operator|.
+name|setAllocationRequestId
+argument_list|(
+name|allocationRequestId
+argument_list|)
+expr_stmt|;
 name|reqs
 operator|.
 name|add
@@ -1255,6 +1319,13 @@ argument_list|,
 name|labelExpression
 argument_list|)
 decl_stmt|;
+name|offRackReq
+operator|.
+name|setAllocationRequestId
+argument_list|(
+name|allocationRequestId
+argument_list|)
+expr_stmt|;
 name|reqs
 operator|.
 name|add

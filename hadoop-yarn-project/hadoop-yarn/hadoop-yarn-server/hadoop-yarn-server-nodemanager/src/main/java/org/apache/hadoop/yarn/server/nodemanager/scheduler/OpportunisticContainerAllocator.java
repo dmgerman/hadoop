@@ -1078,6 +1078,11 @@ name|containerTokenIdentifier
 operator|.
 name|getExecutionType
 argument_list|()
+argument_list|,
+name|rr
+operator|.
+name|getAllocationRequestId
+argument_list|()
 argument_list|)
 decl_stmt|;
 return|return
