@@ -126,7 +126,7 @@ literal|100
 decl_stmt|;
 DECL|field|maxAMLimitPercentage
 specifier|private
-name|Float
+name|float
 name|maxAMLimitPercentage
 decl_stmt|;
 DECL|method|PartitionQueueCapacitiesInfo ()
@@ -134,7 +134,7 @@ specifier|public
 name|PartitionQueueCapacitiesInfo
 parameter_list|()
 block|{   }
-DECL|method|PartitionQueueCapacitiesInfo (String partitionName, float capacity, float usedCapacity, float maxCapacity, float absCapacity, float absUsedCapacity, float absMaxCapacity, Float maxAMLimitPercentage)
+DECL|method|PartitionQueueCapacitiesInfo (String partitionName, float capacity, float usedCapacity, float maxCapacity, float absCapacity, float absUsedCapacity, float absMaxCapacity, float maxAMLimitPercentage)
 specifier|public
 name|PartitionQueueCapacitiesInfo
 parameter_list|(
@@ -159,7 +159,7 @@ parameter_list|,
 name|float
 name|absMaxCapacity
 parameter_list|,
-name|Float
+name|float
 name|maxAMLimitPercentage
 parameter_list|)
 block|{

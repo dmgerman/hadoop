@@ -183,7 +183,7 @@ decl_stmt|;
 name|float
 name|absMaxCapacity
 decl_stmt|;
-name|Float
+name|float
 name|maxAMLimitPercentage
 decl_stmt|;
 for|for
@@ -346,7 +346,7 @@ name|considerAMUsage
 condition|?
 name|maxAMLimitPercentage
 else|:
-literal|null
+literal|0f
 argument_list|)
 argument_list|)
 expr_stmt|;
