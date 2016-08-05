@@ -2694,7 +2694,7 @@ block|{
 name|String
 name|password
 init|=
-literal|null
+name|defaultPass
 decl_stmt|;
 try|try
 block|{
@@ -2725,13 +2725,6 @@ name|passchars
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
-name|password
-operator|=
-name|defaultPass
-expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2743,16 +2736,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception while trying to password for alias "
+literal|"Exception while trying to get password for alias "
 operator|+
 name|alias
 operator|+
 literal|": "
-operator|+
+argument_list|,
 name|ioe
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
