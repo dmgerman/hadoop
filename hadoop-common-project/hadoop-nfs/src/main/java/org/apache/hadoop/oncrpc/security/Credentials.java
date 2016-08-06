@@ -203,7 +203,7 @@ return|return
 name|credentials
 return|;
 block|}
-comment|/**    * Write AuthFlavor and the credentials to the XDR    */
+comment|/**    * Write AuthFlavor and the credentials to the XDR    * @param cred credentials    * @param xdr XDR message    */
 DECL|method|writeFlavorAndCredentials (Credentials cred, XDR xdr)
 specifier|public
 specifier|static

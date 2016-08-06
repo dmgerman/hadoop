@@ -922,7 +922,7 @@ name|newbuf
 expr_stmt|;
 block|}
 block|}
-comment|/** check if the rest of data has more than len bytes */
+comment|/**    * check if the rest of data has more than len bytes.    * @param xdr XDR message    * @param len minimum remaining length    * @return specify remaining length is enough or not    */
 DECL|method|verifyLength (XDR xdr, int len)
 specifier|public
 specifier|static
@@ -998,7 +998,7 @@ return|return
 name|b
 return|;
 block|}
-comment|/** Write an XDR message to a TCP ChannelBuffer */
+comment|/**    * Write an XDR message to a TCP ChannelBuffer.    * @param request XDR request    * @param last specifies last request or not    * @return TCP buffer    */
 DECL|method|writeMessageTcp (XDR request, boolean last)
 specifier|public
 specifier|static
@@ -1080,7 +1080,7 @@ name|b
 argument_list|)
 return|;
 block|}
-comment|/** Write an XDR message to a UDP ChannelBuffer */
+comment|/**    * Write an XDR message to a UDP ChannelBuffer.    * @param response XDR response    * @return UDP buffer    */
 DECL|method|writeMessageUdp (XDR response)
 specifier|public
 specifier|static

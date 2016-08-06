@@ -181,7 +181,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|/**    * Handle is a 32 bytes number. For HDFS, the last 8 bytes is fileId.    */
+comment|/**    * Handle is a 32 bytes number. For HDFS, the last 8 bytes is fileId.    * @param v file id    */
 DECL|method|FileHandle (long v)
 specifier|public
 name|FileHandle

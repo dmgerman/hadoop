@@ -195,7 +195,7 @@ return|return
 name|rpcProgram
 return|;
 block|}
-comment|/**    * Constructor    * @param program    * @throws IOException    */
+comment|/**    * Constructor    * @param program  rpc server which handles mount request    * @throws IOException fail to construct MountdBase    */
 DECL|method|MountdBase (RpcProgram program)
 specifier|public
 name|MountdBase

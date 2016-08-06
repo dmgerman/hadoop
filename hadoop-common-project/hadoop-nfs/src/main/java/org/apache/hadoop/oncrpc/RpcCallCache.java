@@ -414,7 +414,7 @@ block|}
 block|}
 expr_stmt|;
 block|}
-comment|/** Return the program name */
+comment|/**    * Return the program name.    * @return RPC program name    */
 DECL|method|getProgram ()
 specifier|public
 name|String
@@ -425,7 +425,7 @@ return|return
 name|program
 return|;
 block|}
-comment|/** Mark a request as completed and add corresponding response to the cache */
+comment|/**    * Mark a request as completed and add corresponding response to the cache.    * @param clientId client IP address    * @param xid transaction id    * @param response RPC response    */
 DECL|method|callCompleted (InetAddress clientId, int xid, RpcResponse response)
 specifier|public
 name|void
@@ -477,7 +477,7 @@ operator|=
 name|response
 expr_stmt|;
 block|}
-comment|/**    * Check the cache for an entry. If it does not exist, add the request    * as in progress.    */
+comment|/**    * Check the cache for an entry. If it does not exist, add the request    * as in progress.    * @param clientId client IP address    * @param xid transaction id    * @return cached entry    */
 DECL|method|checkOrAddToCache (InetAddress clientId, int xid)
 specifier|public
 name|CacheEntry
@@ -543,7 +543,7 @@ return|return
 name|e
 return|;
 block|}
-comment|/** Return number of cached entries */
+comment|/**    * Return number of cached entries.    * @return cache size    */
 DECL|method|size ()
 specifier|public
 name|int
@@ -557,7 +557,7 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**     * Iterator to the cache entries     * @return iterator    */
+comment|/**     * Iterator to the cache entries.    * @return iterator cache iterator    */
 annotation|@
 name|VisibleForTesting
 DECL|method|iterator ()

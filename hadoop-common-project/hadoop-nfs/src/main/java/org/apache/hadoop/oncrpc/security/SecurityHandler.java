@@ -156,7 +156,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/** Used by GSS */
+comment|/**    * Used by GSS.    * @param request RPC request    * @param data request data    * @throws IOException fail to unwrap RPC call    * @return XDR response    */
 DECL|method|unwrap (RpcCall request, byte[] data )
 specifier|public
 name|XDR
@@ -178,7 +178,7 @@ name|UnsupportedOperationException
 argument_list|()
 throw|;
 block|}
-comment|/** Used by GSS */
+comment|/**    * Used by GSS.    * @param request RPC request    * @param response RPC response    * @throws IOException fail to wrap RPC call    * @return response byte buffer    */
 DECL|method|wrap (RpcCall request, XDR response)
 specifier|public
 name|byte
@@ -200,7 +200,7 @@ name|UnsupportedOperationException
 argument_list|()
 throw|;
 block|}
-comment|/** Used by AUTH_SYS */
+comment|/**    * Used by AUTH_SYS.    * Return the uid of the NFS user credential.    * @return uid    */
 DECL|method|getUid ()
 specifier|public
 name|int
@@ -213,7 +213,7 @@ name|UnsupportedOperationException
 argument_list|()
 throw|;
 block|}
-comment|/** Used by AUTH_SYS */
+comment|/**    * Used by AUTH_SYS.    * Return the gid of the NFS user credential.    * @return gid    */
 DECL|method|getGid ()
 specifier|public
 name|int
@@ -226,7 +226,7 @@ name|UnsupportedOperationException
 argument_list|()
 throw|;
 block|}
-comment|/** Used by AUTH_SYS */
+comment|/**    * Used by AUTH_SYS.    * Return the auxiliary gids of the NFS user credential.    * @return auxiliary gids    */
 DECL|method|getAuxGids ()
 specifier|public
 name|int

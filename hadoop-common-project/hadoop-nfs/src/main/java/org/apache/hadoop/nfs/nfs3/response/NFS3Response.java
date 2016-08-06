@@ -122,7 +122,7 @@ operator|=
 name|status
 expr_stmt|;
 block|}
-comment|/**    * Write the response, along with the rpc header (including verifier), to the    * XDR.    */
+comment|/**    * Write the response, along with the rpc header (including verifier), to the    * XDR.    * @param out XDR output message    * @param xid transaction id    * @param verifier verifies reply    * @return XDR response    */
 DECL|method|serialize (XDR out, int xid, Verifier verifier)
 specifier|public
 name|XDR

@@ -828,7 +828,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Return the configured group list    */
+comment|/**    * Return the configured group list    * @return host group list    */
 DECL|method|getHostGroupList ()
 specifier|public
 name|String

@@ -172,7 +172,7 @@ operator|=
 name|flavor
 expr_stmt|;
 block|}
-comment|/** Load auth info */
+comment|/**    * Load auth info.    * @param xdr XDR message    */
 DECL|method|read (XDR xdr)
 specifier|public
 specifier|abstract
@@ -183,7 +183,7 @@ name|XDR
 name|xdr
 parameter_list|)
 function_decl|;
-comment|/** Write auth info */
+comment|/** Write auth info.    * @param xdr XDR message    */
 DECL|method|write (XDR xdr)
 specifier|public
 specifier|abstract

@@ -414,7 +414,7 @@ literal|"connections from unprivileged ports"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Register this program with the local portmapper.    */
+comment|/**    * Register this program with the local portmapper.    * @param transport transport layer for port map    * @param boundPort port number of bounded RPC program    */
 DECL|method|register (int transport, int boundPort)
 specifier|public
 name|void
@@ -492,7 +492,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Unregister this program with the local portmapper.    */
+comment|/**    * Unregister this program with the local portmapper.    * @param transport transport layer for port map    * @param boundPort port number of bounded RPC program    */
 DECL|method|unregister (int transport, int boundPort)
 specifier|public
 name|void
@@ -570,7 +570,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Register the program with Portmap or Rpcbind    */
+comment|/**    * Register the program with Portmap or Rpcbind    * @param mapEntry port map entries    * @param set specifies registration or not    */
 DECL|method|register (PortmapMapping mapEntry, boolean set)
 specifier|protected
 name|void

@@ -113,7 +113,7 @@ return|return
 name|handle
 return|;
 block|}
-comment|/**    * Subclass should implement. Usually handle is the first to be serialized    */
+comment|/**    * Subclass should implement. Usually handle is the first to be serialized    * @param xdr XDR message    */
 DECL|method|serialize (XDR xdr)
 specifier|public
 specifier|abstract

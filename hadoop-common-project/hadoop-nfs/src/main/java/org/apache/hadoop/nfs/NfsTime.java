@@ -174,7 +174,7 @@ return|return
 name|nseconds
 return|;
 block|}
-comment|/**    * Get the total time in milliseconds    */
+comment|/**    * Get the total time in milliseconds    * @return convert to milli seconds    */
 DECL|method|getMilliSeconds ()
 specifier|public
 name|long

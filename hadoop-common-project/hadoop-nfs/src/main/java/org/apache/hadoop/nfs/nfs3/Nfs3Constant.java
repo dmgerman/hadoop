@@ -210,7 +210,7 @@ name|ordinal
 argument_list|()
 return|;
 block|}
-comment|/** @return the procedure corresponding to the value. */
+comment|/**      * Convert to NFS procedure.      * @param value specify the index of NFS procedure      * @return the procedure corresponding to the value.      */
 DECL|method|fromValue (int value)
 specifier|public
 specifier|static

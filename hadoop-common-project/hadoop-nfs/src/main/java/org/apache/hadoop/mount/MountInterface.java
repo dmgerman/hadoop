@@ -94,7 +94,7 @@ name|ordinal
 argument_list|()
 return|;
 block|}
-comment|/** @return the procedure corresponding to the value. */
+comment|/** The procedure of given value.      * @param value specifies the procedure index      * @return the procedure corresponding to the value.      */
 DECL|method|fromValue (int value)
 specifier|public
 specifier|static
@@ -132,7 +132,7 @@ index|]
 return|;
 block|}
 block|}
-comment|/** MNTPROC_NULL - Do Nothing */
+comment|/**    * MNTPRC_NULL - Do Nothing.    * @param out XDR response used in NFS protocol    * @param xid transaction id    * @param client represents IP address    * @return XDR response    */
 DECL|method|nullOp (XDR out, int xid, InetAddress client)
 specifier|public
 name|XDR
@@ -148,7 +148,7 @@ name|InetAddress
 name|client
 parameter_list|)
 function_decl|;
-comment|/** MNTPROC_MNT - Add mount entry */
+comment|/**    * MNTPROC_MNT - Add mount entry.    * @param xdr XDR message used in NFS protocol    * @param out XDR response used in NFS protocol    * @param xid transaction id    * @param client represents IP address    * @return XDR response    */
 DECL|method|mnt (XDR xdr, XDR out, int xid, InetAddress client)
 specifier|public
 name|XDR
@@ -167,7 +167,7 @@ name|InetAddress
 name|client
 parameter_list|)
 function_decl|;
-comment|/** MNTPROC_DUMP - Return mount entries */
+comment|/**    * MNTPROC_DUMP - Return mount entries.    * @param out XDR response used in NFS protocol    * @param xid transaction id    * @param client represents IP address    * @return XDR response    */
 DECL|method|dump (XDR out, int xid, InetAddress client)
 specifier|public
 name|XDR
@@ -183,7 +183,7 @@ name|InetAddress
 name|client
 parameter_list|)
 function_decl|;
-comment|/** MNTPROC_UMNT - Remove mount entry */
+comment|/**    * MNTPROC_UMNT - Remove mount entry.    * @param xdr XDR message used in NFS protocol    * @param out XDR response used in NFS protocol    * @param xid transaction id    * @param client represents IP address    * @return XDR response    */
 DECL|method|umnt (XDR xdr, XDR out, int xid, InetAddress client)
 specifier|public
 name|XDR
@@ -202,7 +202,7 @@ name|InetAddress
 name|client
 parameter_list|)
 function_decl|;
-comment|/** MNTPROC_UMNTALL - Remove all mount entries */
+comment|/**    * MNTPROC_UMNTALL - Remove all mount entries.    * @param out XDR response used in NFS protocol    * @param xid transaction id    * @param client represents IP address    * @return XDR response    */
 DECL|method|umntall (XDR out, int xid, InetAddress client)
 specifier|public
 name|XDR

@@ -139,7 +139,7 @@ specifier|private
 name|MountResponse
 parameter_list|()
 block|{   }
-comment|/** Response for RPC call {@link MountInterface.MNTPROC#MNT} */
+comment|/**    * Response for RPC call {@link MountInterface.MNTPROC#MNT}.    * @param status status of mount response    * @param xdr XDR message object    * @param xid transaction id    * @param handle file handle    * @return response XDR    */
 DECL|method|writeMNTResponse (int status, XDR xdr, int xid, byte[] handle)
 specifier|public
 specifier|static
@@ -222,7 +222,7 @@ return|return
 name|xdr
 return|;
 block|}
-comment|/** Response for RPC call {@link MountInterface.MNTPROC#DUMP} */
+comment|/**    * Response for RPC call {@link MountInterface.MNTPROC#DUMP}.    * @param xdr XDR message object    * @param xid transaction id    * @param mounts mount entries    * @return response XDR    */
 DECL|method|writeMountList (XDR xdr, int xid, List<MountEntry> mounts)
 specifier|public
 specifier|static
@@ -307,7 +307,7 @@ return|return
 name|xdr
 return|;
 block|}
-comment|/** Response for RPC call {@link MountInterface.MNTPROC#EXPORT} */
+comment|/**    * Response for RPC call {@link MountInterface.MNTPROC#EXPORT}.    * @param xdr XDR message object    * @param xid transaction id    * @param exports export list    * @param hostMatcher the list of export host    * @return response XDR    */
 DECL|method|writeExportList (XDR xdr, int xid, List<String> exports, List<NfsExports> hostMatcher)
 specifier|public
 specifier|static

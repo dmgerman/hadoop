@@ -74,14 +74,14 @@ specifier|public
 interface|interface
 name|Nfs3Interface
 block|{
-comment|/** NULL: Do nothing */
+comment|/**    * NULL: Do nothing.    * @return null NFS procedure    */
 DECL|method|nullProcedure ()
 specifier|public
 name|NFS3Response
 name|nullProcedure
 parameter_list|()
 function_decl|;
-comment|/** GETATTR: Get file attributes */
+comment|/**    * GETATTR: Get file attributes.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|getattr (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -94,7 +94,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** SETATTR: Set file attributes */
+comment|/**    * SETATTR: Set file attributes.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|setattr (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -107,7 +107,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** LOOKUP: Lookup filename */
+comment|/**    * LOOKUP: Lookup filename.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|lookup (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -120,7 +120,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** ACCESS: Check access permission */
+comment|/**    * ACCESS: Check access permission.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|access (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -133,7 +133,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** READLINK: Read from symbolic link */
+comment|/** READLINK: Read from symbolic link.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|readlink (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -146,7 +146,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** READ: Read from file */
+comment|/**    * READ: Read from file.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|read (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -159,7 +159,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** WRITE: Write to file */
+comment|/**    * WRITE: Write to file.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|write (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -172,7 +172,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** CREATE: Create a file */
+comment|/**    * CREATE: Create a file.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|create (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -185,7 +185,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** MKDIR: Create a directory */
+comment|/**    * MKDIR: Create a directory.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|mkdir (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -198,7 +198,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** SYMLINK: Create a symbolic link */
+comment|/**    * SYMLINK: Create a symbolic link.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|symlink (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -211,7 +211,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** MKNOD: Create a special device */
+comment|/**    * MKNOD: Create a special device.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|mknod (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -224,7 +224,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** REMOVE: Remove a file */
+comment|/**    * REMOVE: Remove a file.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|remove (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -237,7 +237,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** RMDIR: Remove a directory */
+comment|/**    * RMDIR: Remove a directory.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|rmdir (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -250,7 +250,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** RENAME: Rename a file or directory */
+comment|/**    * RENAME: Rename a file or directory.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|rename (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -263,7 +263,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** LINK: create link to an object */
+comment|/**    * LINK: create link to an object.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|link (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -276,7 +276,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** READDIR: Read From directory */
+comment|/**    * READDIR: Read From directory.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|readdir (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -289,7 +289,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** READDIRPLUS: Extended read from directory */
+comment|/**    * READDIRPLUS: Extended read from directory.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|readdirplus (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -302,7 +302,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** FSSTAT: Get dynamic file system information */
+comment|/**    * FSSTAT: Get dynamic file system information.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|fsstat (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -315,7 +315,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** FSINFO: Get static file system information */
+comment|/**    * FSINFO: Get static file system information.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|fsinfo (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -328,7 +328,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** PATHCONF: Retrieve POSIX information */
+comment|/**    * PATHCONF: Retrieve POSIX information.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|pathconf (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response
@@ -341,7 +341,7 @@ name|RpcInfo
 name|info
 parameter_list|)
 function_decl|;
-comment|/** COMMIT: Commit cached data on a server to stable storage */
+comment|/**    * COMMIT: Commit cached data on a server to stable storage.    * @param xdr XDR message    * @param info context of rpc message    * @return NFSv3 response    */
 DECL|method|commit (XDR xdr, RpcInfo info)
 specifier|public
 name|NFS3Response

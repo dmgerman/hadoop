@@ -70,7 +70,7 @@ name|flavor
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Read both AuthFlavor and the verifier from the XDR */
+comment|/**    * Read both AuthFlavor and the verifier from the XDR.    * @param xdr XDR message    * @return verifier    */
 DECL|method|readFlavorAndVerifier (XDR xdr)
 specifier|public
 specifier|static
@@ -154,7 +154,7 @@ return|return
 name|verifer
 return|;
 block|}
-comment|/**    * Write AuthFlavor and the verifier to the XDR    */
+comment|/**    * Write AuthFlavor and the verifier to the XDR.    * @param verifier written to XDR    * @param xdr XDR message    */
 DECL|method|writeFlavorAndVerifier (Verifier verifier, XDR xdr)
 specifier|public
 specifier|static
