@@ -1012,6 +1012,16 @@ operator|.
 name|readLine
 argument_list|()
 expr_stmt|;
+name|assertTrue
+argument_list|(
+name|line
+operator|.
+name|contains
+argument_list|(
+literal|"blk"
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// skip 1 line for Corrupt Blocks section.
 name|line
 operator|=
