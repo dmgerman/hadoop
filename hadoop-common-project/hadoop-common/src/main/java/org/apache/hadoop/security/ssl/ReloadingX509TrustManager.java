@@ -76,6 +76,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|net
@@ -221,8 +235,9 @@ name|X509TrustManager
 implements|,
 name|Runnable
 block|{
+annotation|@
+name|VisibleForTesting
 DECL|field|LOG
-specifier|private
 specifier|static
 specifier|final
 name|Log
@@ -236,6 +251,16 @@ name|ReloadingX509TrustManager
 operator|.
 name|class
 argument_list|)
+decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|RELOAD_ERROR_MESSAGE
+specifier|static
+specifier|final
+name|String
+name|RELOAD_ERROR_MESSAGE
+init|=
+literal|"Could not load truststore (keep using existing one) : "
 decl_stmt|;
 DECL|field|type
 specifier|private
@@ -823,7 +848,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Could not load truststore (keep using existing one) : "
+name|RELOAD_ERROR_MESSAGE
 operator|+
 name|ex
 operator|.
