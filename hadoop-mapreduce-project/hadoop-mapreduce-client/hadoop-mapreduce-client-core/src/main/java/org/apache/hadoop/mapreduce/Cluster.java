@@ -629,6 +629,26 @@ operator|+
 literal|" and the correspond server addresses."
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|jobTrackAddr
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initializing cluster for Job Tracker="
+operator|+
+name|jobTrackAddr
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 for|for
 control|(
 name|ClientProtocolProvider
