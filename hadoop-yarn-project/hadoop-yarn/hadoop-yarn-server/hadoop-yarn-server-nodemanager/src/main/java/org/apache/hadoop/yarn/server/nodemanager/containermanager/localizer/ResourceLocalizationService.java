@@ -7498,8 +7498,6 @@ name|nmPrivateCTokensPath
 operator|.
 name|toString
 argument_list|()
-operator|+
-literal|". Credentials list: "
 argument_list|)
 expr_stmt|;
 if|if
@@ -7510,6 +7508,20 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Credentials list in "
+operator|+
+name|nmPrivateCTokensPath
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|": "
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|Token
