@@ -1231,6 +1231,16 @@ name|KEY_ATOMIC_RENAME_DIRECTORIES
 init|=
 literal|"fs.azure.atomic.rename.dir"
 decl_stmt|;
+comment|/**    * Configuration key to enable flat listing of blobs. This config is useful    * only if listing depth is AZURE_UNBOUNDED_DEPTH.    */
+DECL|field|KEY_ENABLE_FLAT_LISTING
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KEY_ENABLE_FLAT_LISTING
+init|=
+literal|"fs.azure.flatlist.enable"
+decl_stmt|;
 comment|/**    * The set of directories where we should apply atomic folder rename    * synchronized with createNonRecursive.    */
 DECL|field|atomicRenameDirs
 specifier|private
@@ -1450,6 +1460,16 @@ name|int
 name|STORAGE_CONNECTION_TIMEOUT_DEFAULT
 init|=
 literal|90
+decl_stmt|;
+comment|/**    * Enable flat listing of blobs as default option. This is useful only if    * listing depth is AZURE_UNBOUNDED_DEPTH.    */
+DECL|field|DEFAULT_ENABLE_FLAT_LISTING
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_ENABLE_FLAT_LISTING
+init|=
+literal|false
 decl_stmt|;
 comment|/**    * MEMBER VARIABLES    */
 DECL|field|sessionUri
@@ -6137,8 +6157,8 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * This private method uses the root directory or the original container to    * list blobs under the directory or container depending on whether the    * original file system object was constructed with a short- or long-form URI.    * If the root directory is non-null the URI in the file constructor was in    * the long form.    *     * @param includeMetadata    *          if set, the listed items will have their metadata populated    *          already.    *     * @returns blobItems : iterable collection of blob items.    * @throws URISyntaxException    *     */
-DECL|method|listRootBlobs (boolean includeMetadata)
+comment|/**    * This private method uses the root directory or the original container to    * list blobs under the directory or container depending on whether the    * original file system object was constructed with a short- or long-form URI.    * If the root directory is non-null the URI in the file constructor was in    * the long form.    *     * @param includeMetadata    *          if set, the listed items will have their metadata populated    *          already.    * @param useFlatBlobListing    *          if set the list is flat, otherwise it is hierarchical.    *    * @returns blobItems : iterable collection of blob items.    * @throws URISyntaxException    *     */
+DECL|method|listRootBlobs (boolean includeMetadata, boolean useFlatBlobListing)
 specifier|private
 name|Iterable
 argument_list|<
@@ -6148,6 +6168,9 @@ name|listRootBlobs
 parameter_list|(
 name|boolean
 name|includeMetadata
+parameter_list|,
+name|boolean
+name|useFlatBlobListing
 parameter_list|)
 throws|throws
 name|StorageException
@@ -6161,7 +6184,7 @@ name|listBlobs
 argument_list|(
 literal|null
 argument_list|,
-literal|false
+name|useFlatBlobListing
 argument_list|,
 name|includeMetadata
 condition|?
@@ -6190,8 +6213,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * This private method uses the root directory or the original container to    * list blobs under the directory or container given a specified prefix for    * the directory depending on whether the original file system object was    * constructed with a short- or long-form URI. If the root directory is    * non-null the URI in the file constructor was in the long form.    *     * @param aPrefix    *          : string name representing the prefix of containing blobs.    * @param includeMetadata    *          if set, the listed items will have their metadata populated    *          already.    *     * @returns blobItems : iterable collection of blob items.    * @throws URISyntaxException    *     */
-DECL|method|listRootBlobs (String aPrefix, boolean includeMetadata)
+comment|/**    * This private method uses the root directory or the original container to    * list blobs under the directory or container given a specified prefix for    * the directory depending on whether the original file system object was    * constructed with a short- or long-form URI. If the root directory is    * non-null the URI in the file constructor was in the long form.    *     * @param aPrefix    *          : string name representing the prefix of containing blobs.    * @param includeMetadata    *          if set, the listed items will have their metadata populated    *          already.    * @param useFlatBlobListing    *          if set the list is flat, otherwise it is hierarchical.    *     * @returns blobItems : iterable collection of blob items.    * @throws URISyntaxException    *     */
+DECL|method|listRootBlobs (String aPrefix, boolean includeMetadata, boolean useFlatBlobListing)
 specifier|private
 name|Iterable
 argument_list|<
@@ -6204,6 +6227,9 @@ name|aPrefix
 parameter_list|,
 name|boolean
 name|includeMetadata
+parameter_list|,
+name|boolean
+name|useFlatBlobListing
 parameter_list|)
 throws|throws
 name|StorageException
@@ -6222,7 +6248,7 @@ name|listBlobs
 argument_list|(
 name|aPrefix
 argument_list|,
-literal|false
+name|useFlatBlobListing
 argument_list|,
 name|includeMetadata
 condition|?
@@ -7451,6 +7477,34 @@ operator|+=
 name|PATH_DELIMITER
 expr_stmt|;
 block|}
+comment|// Enable flat listing option only if depth is unbounded and config
+comment|// KEY_ENABLE_FLAT_LISTING is enabled.
+name|boolean
+name|enableFlatListing
+init|=
+literal|false
+decl_stmt|;
+if|if
+condition|(
+name|maxListingDepth
+operator|<
+literal|0
+operator|&&
+name|sessionConfiguration
+operator|.
+name|getBoolean
+argument_list|(
+name|KEY_ENABLE_FLAT_LISTING
+argument_list|,
+name|DEFAULT_ENABLE_FLAT_LISTING
+argument_list|)
+condition|)
+block|{
+name|enableFlatListing
+operator|=
+literal|true
+expr_stmt|;
+block|}
 name|Iterable
 argument_list|<
 name|ListBlobItem
@@ -7472,6 +7526,8 @@ operator|=
 name|listRootBlobs
 argument_list|(
 literal|true
+argument_list|,
+name|enableFlatListing
 argument_list|)
 expr_stmt|;
 block|}
@@ -7484,6 +7540,8 @@ argument_list|(
 name|prefix
 argument_list|,
 literal|true
+argument_list|,
+name|enableFlatListing
 argument_list|)
 expr_stmt|;
 block|}
@@ -7771,6 +7829,12 @@ name|directoryMetadata
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|enableFlatListing
+condition|)
+block|{
 comment|// Currently at a depth of one, decrement the listing depth for
 comment|// sub-directories.
 name|buildUpList
@@ -7786,6 +7850,7 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|// Note: Original code indicated that this may be a hack.
@@ -9720,6 +9785,8 @@ init|=
 name|listRootBlobs
 argument_list|(
 name|prefix
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
