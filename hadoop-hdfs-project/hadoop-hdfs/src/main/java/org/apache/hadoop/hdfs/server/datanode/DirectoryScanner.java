@@ -334,6 +334,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|AutoCloseableLock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -2232,9 +2246,15 @@ name|getDiskReport
 argument_list|()
 decl_stmt|;
 comment|// Hold FSDataset lock to prevent further changes to the block map
-synchronized|synchronized
+try|try
 init|(
+name|AutoCloseableLock
+name|lock
+init|=
 name|dataset
+operator|.
+name|acquireDatasetLock
+argument_list|()
 init|)
 block|{
 for|for

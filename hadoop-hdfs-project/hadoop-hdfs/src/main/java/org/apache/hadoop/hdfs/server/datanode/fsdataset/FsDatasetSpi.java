@@ -204,6 +204,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|AutoCloseableLock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -1848,6 +1862,12 @@ name|destination
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Acquire the lock of the data set.    */
+DECL|method|acquireDatasetLock ()
+name|AutoCloseableLock
+name|acquireDatasetLock
+parameter_list|()
 function_decl|;
 block|}
 end_interface

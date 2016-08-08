@@ -512,6 +512,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|AutoCloseableLock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -1784,7 +1798,6 @@ annotation|@
 name|Override
 DECL|method|getVolume (final ExtendedBlock b)
 specifier|public
-specifier|synchronized
 name|FsVolumeImpl
 name|getVolume
 parameter_list|(
@@ -1792,6 +1805,17 @@ specifier|final
 name|ExtendedBlock
 name|b
 parameter_list|)
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 specifier|final
 name|ReplicaInfo
@@ -1828,12 +1852,12 @@ else|:
 literal|null
 return|;
 block|}
+block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
 DECL|method|getStoredBlock (String bpid, long blkid)
 specifier|public
-specifier|synchronized
 name|Block
 name|getStoredBlock
 parameter_list|(
@@ -1845,6 +1869,17 @@ name|blkid
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 name|File
 name|blockfile
@@ -1907,6 +1942,7 @@ argument_list|,
 name|gs
 argument_list|)
 return|;
+block|}
 block|}
 comment|/**    * This should be primarily used for testing.    * @return clone of replica store in datanode memory    */
 DECL|method|fetchReplicaInfo (String bpid, long blockId)
@@ -2237,6 +2273,12 @@ specifier|final
 name|int
 name|maxDataLength
 decl_stmt|;
+DECL|field|datasetLock
+specifier|private
+specifier|final
+name|AutoCloseableLock
+name|datasetLock
+decl_stmt|;
 comment|/**    * An FSDataset has a directory where it loads its data files.    */
 DECL|method|FsDatasetImpl (DataNode datanode, DataStorage storage, Configuration conf )
 name|FsDatasetImpl
@@ -2287,6 +2329,14 @@ name|getSmallBufferSize
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|datasetLock
+operator|=
+operator|new
+name|AutoCloseableLock
+argument_list|()
 expr_stmt|;
 comment|// The number of volumes required for operation is the total number
 comment|// of volumes minus the number of failed volumes we can tolerate.
@@ -2656,6 +2706,21 @@ name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|acquireDatasetLock ()
+specifier|public
+name|AutoCloseableLock
+name|acquireDatasetLock
+parameter_list|()
+block|{
+return|return
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+return|;
+block|}
 comment|/**    * Gets initial volume failure information for all volumes that failed    * immediately at startup.  The method works by determining the set difference    * between all configured storage locations and the actual storage locations in    * use after attempting to put all of them into service.    *    * @return each storage location that has failed    */
 DECL|method|getInitialVolumeFailureInfos ( Collection<StorageLocation> dataLocations, DataStorage storage)
 specifier|private
@@ -2813,7 +2878,6 @@ block|}
 comment|/**    * Activate a volume to serve requests.    * @throws IOException if the storage UUID already exists.    */
 DECL|method|activateVolume ( ReplicaMap replicaMap, Storage.StorageDirectory sd, StorageType storageType, FsVolumeReference ref)
 specifier|private
-specifier|synchronized
 name|void
 name|activateVolume
 parameter_list|(
@@ -2833,6 +2897,17 @@ name|ref
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 name|DatanodeStorage
 name|dnStorage
@@ -2941,6 +3016,7 @@ argument_list|(
 name|ref
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|addVolume (Collection<StorageLocation> dataLocations, Storage.StorageDirectory sd)
 specifier|private
@@ -3477,9 +3553,15 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 for|for
@@ -3759,9 +3841,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 for|for
@@ -4502,9 +4590,15 @@ specifier|final
 name|File
 name|f
 decl_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|f
@@ -4745,7 +4839,6 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|getTmpInputStreams (ExtendedBlock b, long blkOffset, long metaOffset)
 specifier|public
-specifier|synchronized
 name|ReplicaInputStreams
 name|getTmpInputStreams
 parameter_list|(
@@ -4760,6 +4853,17 @@ name|metaOffset
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 name|ReplicaInfo
 name|info
@@ -4860,6 +4964,7 @@ expr_stmt|;
 throw|throw
 name|e
 throw|;
+block|}
 block|}
 block|}
 DECL|method|openAndSeek (File file, long offset)
@@ -5541,9 +5646,15 @@ name|volumeRef
 init|=
 literal|null
 decl_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|volumeRef
@@ -5735,9 +5846,15 @@ argument_list|,
 name|newReplicaInfo
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 comment|// Increment numBlocks here as this block moved without knowing to BPS
@@ -5850,9 +5967,15 @@ name|volumeRef
 init|=
 literal|null
 decl_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|volumeRef
@@ -6524,7 +6647,6 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|append (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
-specifier|synchronized
 name|ReplicaHandler
 name|append
 parameter_list|(
@@ -6539,6 +6661,17 @@ name|expectedBlockLen
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 comment|// If the block was successfully finalized because all packets
 comment|// were successfully processed at the Datanode but the ack for
@@ -6714,10 +6847,10 @@ name|ref
 argument_list|)
 return|;
 block|}
+block|}
 comment|/** Append to a finalized replica    * Change a finalized replica to be a RBW replica and     * bump its generation stamp to be the newGS    *     * @param bpid block pool Id    * @param replicaInfo a finalized replica    * @param newGS new generation stamp    * @param estimateBlockLen estimate block length    * @return a RBW replica    * @throws IOException if moving the replica from finalized directory     *         to rbw directory fails    */
 DECL|method|append (String bpid, FinalizedReplica replicaInfo, long newGS, long estimateBlockLen)
 specifier|private
-specifier|synchronized
 name|ReplicaBeingWritten
 name|append
 parameter_list|(
@@ -6736,6 +6869,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
+block|{
 comment|// If the block is cached, start uncaching it.
 name|cacheManager
 operator|.
@@ -6749,8 +6893,8 @@ name|getBlockId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// If there are any hardlinks to the block, break them.  This ensures we are
-comment|// not appending to a file that is part of a previous/ directory.
+comment|// If there are any hardlinks to the block, break them.  This ensures we
+comment|// are not appending to a file that is part of a previous/ directory.
 name|replicaInfo
 operator|.
 name|breakHardLinksIfNeeded
@@ -7061,6 +7205,7 @@ expr_stmt|;
 return|return
 name|newReplicaInfo
 return|;
+block|}
 block|}
 DECL|class|MustStopExistingWriter
 specifier|private
@@ -7389,9 +7534,15 @@ condition|)
 block|{
 try|try
 block|{
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|ReplicaInfo
@@ -7568,9 +7719,15 @@ condition|)
 block|{
 try|try
 block|{
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 comment|// check replica's state
@@ -7771,7 +7928,6 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|createRbw ( StorageType storageType, ExtendedBlock b, boolean allowLazyPersist)
 specifier|public
-specifier|synchronized
 name|ReplicaHandler
 name|createRbw
 parameter_list|(
@@ -7786,6 +7942,17 @@ name|allowLazyPersist
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 name|ReplicaInfo
 name|replicaInfo
@@ -8070,6 +8237,7 @@ name|ref
 argument_list|)
 return|;
 block|}
+block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
@@ -8109,9 +8277,15 @@ condition|)
 block|{
 try|try
 block|{
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|ReplicaInfo
@@ -8239,7 +8413,6 @@ block|}
 block|}
 DECL|method|recoverRbwImpl (ReplicaBeingWritten rbw, ExtendedBlock b, long newGS, long minBytesRcvd, long maxBytesRcvd)
 specifier|private
-specifier|synchronized
 name|ReplicaHandler
 name|recoverRbwImpl
 parameter_list|(
@@ -8260,6 +8433,17 @@ name|maxBytesRcvd
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 comment|// check generation stamp
 name|long
@@ -8467,12 +8651,12 @@ name|ref
 argument_list|)
 return|;
 block|}
+block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
 DECL|method|convertTemporaryToRbw ( final ExtendedBlock b)
 specifier|public
-specifier|synchronized
 name|ReplicaInPipeline
 name|convertTemporaryToRbw
 parameter_list|(
@@ -8482,6 +8666,17 @@ name|b
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 specifier|final
 name|long
@@ -8527,7 +8722,6 @@ specifier|final
 name|ReplicaInPipeline
 name|temp
 decl_stmt|;
-block|{
 comment|// get replica
 specifier|final
 name|ReplicaInfo
@@ -8594,7 +8788,6 @@ name|ReplicaInPipeline
 operator|)
 name|r
 expr_stmt|;
-block|}
 comment|// check generation stamp
 if|if
 condition|(
@@ -8775,6 +8968,7 @@ return|return
 name|rbw
 return|;
 block|}
+block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
@@ -8818,9 +9012,15 @@ literal|null
 decl_stmt|;
 do|do
 block|{
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|ReplicaInfo
@@ -9212,7 +9412,6 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|finalizeBlock (ExtendedBlock b)
 specifier|public
-specifier|synchronized
 name|void
 name|finalizeBlock
 parameter_list|(
@@ -9221,6 +9420,17 @@ name|b
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 if|if
 condition|(
@@ -9274,9 +9484,9 @@ name|replicaInfo
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 DECL|method|finalizeReplica (String bpid, ReplicaInfo replicaInfo)
 specifier|private
-specifier|synchronized
 name|FinalizedReplica
 name|finalizeReplica
 parameter_list|(
@@ -9288,6 +9498,17 @@ name|replicaInfo
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 name|FinalizedReplica
 name|newReplicaInfo
@@ -9485,13 +9706,13 @@ return|return
 name|newReplicaInfo
 return|;
 block|}
+block|}
 comment|/**    * Remove the temporary block file (if any)    */
 annotation|@
 name|Override
 comment|// FsDatasetSpi
 DECL|method|unfinalizeBlock (ExtendedBlock b)
 specifier|public
-specifier|synchronized
 name|void
 name|unfinalizeBlock
 parameter_list|(
@@ -9500,6 +9721,17 @@ name|b
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 name|ReplicaInfo
 name|replicaInfo
@@ -9613,6 +9845,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -9823,9 +10056,15 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 for|for
@@ -9964,7 +10203,6 @@ annotation|@
 name|Override
 DECL|method|getFinalizedBlocks (String bpid)
 specifier|public
-specifier|synchronized
 name|List
 argument_list|<
 name|FinalizedReplica
@@ -9974,6 +10212,17 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|)
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 name|ArrayList
 argument_list|<
@@ -10040,12 +10289,12 @@ return|return
 name|finalized
 return|;
 block|}
+block|}
 comment|/**    * Get the list of finalized blocks from in-memory blockmap for a block pool.    */
 annotation|@
 name|Override
-DECL|method|getFinalizedBlocksOnPersistentStorage (String bpid)
+DECL|method|getFinalizedBlocksOnPersistentStorage ( String bpid)
 specifier|public
-specifier|synchronized
 name|List
 argument_list|<
 name|FinalizedReplica
@@ -10055,6 +10304,17 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|)
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 name|ArrayList
 argument_list|<
@@ -10129,6 +10389,7 @@ block|}
 return|return
 name|finalized
 return|;
+block|}
 block|}
 comment|/**    * Check if a block is valid.    *    * @param b           The block to check.    * @param minLength   The minimum length that the block must have.  May be 0.    * @param state       If this is null, it is ignored.  If it is non-null, we    *                        will check that the replica has this state.    *    * @throws ReplicaNotFoundException          If the replica is not found     *    * @throws UnexpectedReplicaStateException   If the replica is not in the     *                                             expected state.    * @throws FileNotFoundException             If the block file is not found or there    *                                              was an error locating it.    * @throws EOFException                      If the replica length is too short.    *     * @throws IOException                       May be thrown from the methods called.     */
 annotation|@
@@ -10378,9 +10639,15 @@ specifier|final
 name|File
 name|f
 decl_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|f
@@ -10648,9 +10915,15 @@ specifier|final
 name|FsVolumeImpl
 name|v
 decl_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 specifier|final
@@ -11255,9 +11528,15 @@ decl_stmt|;
 name|Executor
 name|volumeExecutor
 decl_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|ReplicaInfo
@@ -11608,7 +11887,6 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|contains (final ExtendedBlock block)
 specifier|public
-specifier|synchronized
 name|boolean
 name|contains
 parameter_list|(
@@ -11616,6 +11894,17 @@ specifier|final
 name|ExtendedBlock
 name|block
 parameter_list|)
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 specifier|final
 name|long
@@ -11644,6 +11933,7 @@ argument_list|)
 operator|!=
 literal|null
 return|;
+block|}
 block|}
 comment|/**    * Turn the block identifier into a filename    * @param bpid Block pool Id    * @param blockId a block's id    * @return on disk data file path; null if the replica does not exist    */
 DECL|method|getFile (final String bpid, final long blockId, boolean touch)
@@ -12007,9 +12297,15 @@ decl_stmt|;
 name|ReplicaInfo
 name|memBlockInfo
 decl_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|memBlockInfo
@@ -12791,7 +13087,6 @@ annotation|@
 name|Override
 DECL|method|getReplicaString (String bpid, long blockId)
 specifier|public
-specifier|synchronized
 name|String
 name|getReplicaString
 parameter_list|(
@@ -12801,6 +13096,17 @@ parameter_list|,
 name|long
 name|blockId
 parameter_list|)
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 specifier|final
 name|Replica
@@ -12827,6 +13133,7 @@ operator|.
 name|toString
 argument_list|()
 return|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -13293,7 +13600,6 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|updateReplicaUnderRecovery ( final ExtendedBlock oldBlock, final long recoveryId, final long newBlockId, final long newlength)
 specifier|public
-specifier|synchronized
 name|Replica
 name|updateReplicaUnderRecovery
 parameter_list|(
@@ -13315,6 +13621,17 @@ name|newlength
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 comment|//get replica
 specifier|final
@@ -13595,6 +13912,7 @@ expr_stmt|;
 return|return
 name|finalized
 return|;
+block|}
 block|}
 DECL|method|updateReplicaUnderRecovery ( String bpid, ReplicaUnderRecovery rur, long recoveryId, long newBlockId, long newlength)
 specifier|private
@@ -14018,7 +14336,6 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|getReplicaVisibleLength (final ExtendedBlock block)
 specifier|public
-specifier|synchronized
 name|long
 name|getReplicaVisibleLength
 parameter_list|(
@@ -14028,6 +14345,17 @@ name|block
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 specifier|final
 name|Replica
@@ -14080,6 +14408,7 @@ name|getVisibleLength
 argument_list|()
 return|;
 block|}
+block|}
 annotation|@
 name|Override
 DECL|method|addBlockPool (String bpid, Configuration conf)
@@ -14105,9 +14434,15 @@ operator|+
 name|bpid
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|volumes
@@ -14143,13 +14478,23 @@ annotation|@
 name|Override
 DECL|method|shutdownBlockPool (String bpid)
 specifier|public
-specifier|synchronized
 name|void
 name|shutdownBlockPool
 parameter_list|(
 name|String
 name|bpid
 parameter_list|)
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 name|LOG
 operator|.
@@ -14189,6 +14534,7 @@ argument_list|,
 name|blocksPerVolume
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Class for representing the Datanode volume information    */
 DECL|class|VolumeInfo
@@ -14559,7 +14905,6 @@ name|Override
 comment|//FsDatasetSpi
 DECL|method|deleteBlockPool (String bpid, boolean force)
 specifier|public
-specifier|synchronized
 name|void
 name|deleteBlockPool
 parameter_list|(
@@ -14571,6 +14916,17 @@ name|force
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 name|List
 argument_list|<
@@ -14688,6 +15044,7 @@ comment|// ignore.
 block|}
 block|}
 block|}
+block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
@@ -14702,9 +15059,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 specifier|final
@@ -14964,11 +15327,15 @@ name|FsVolumeImpl
 name|targetVolume
 parameter_list|)
 block|{
-synchronized|synchronized
+try|try
 init|(
-name|FsDatasetImpl
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
 operator|.
-name|this
+name|acquire
+argument_list|()
 init|)
 block|{
 name|ramDiskReplicaTracker
@@ -15578,11 +15945,15 @@ operator|!=
 literal|null
 condition|)
 block|{
-synchronized|synchronized
+try|try
 init|(
-name|FsDatasetImpl
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
 operator|.
-name|this
+name|acquire
+argument_list|()
 init|)
 block|{
 name|replicaInfo
@@ -15908,11 +16279,15 @@ operator|.
 name|getBlockPoolId
 argument_list|()
 decl_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|FsDatasetImpl
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
 operator|.
-name|this
+name|acquire
+argument_list|()
 init|)
 block|{
 name|replicaInfo
@@ -16719,13 +17094,23 @@ name|newTimer
 expr_stmt|;
 block|}
 DECL|method|stopAllDataxceiverThreads (FsVolumeImpl volume)
-specifier|synchronized
 name|void
 name|stopAllDataxceiverThreads
 parameter_list|(
 name|FsVolumeImpl
 name|volume
 parameter_list|)
+block|{
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
 block|{
 for|for
 control|(
@@ -16789,6 +17174,7 @@ operator|.
 name|interruptThread
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

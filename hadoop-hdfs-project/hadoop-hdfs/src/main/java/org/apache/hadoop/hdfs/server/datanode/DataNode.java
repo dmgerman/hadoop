@@ -1256,6 +1256,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|AutoCloseableLock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|client
@@ -14099,9 +14113,15 @@ name|BlockConstructionStage
 name|stage
 decl_stmt|;
 comment|//get replica information
-synchronized|synchronized
+try|try
 init|(
+name|AutoCloseableLock
+name|lock
+init|=
 name|data
+operator|.
+name|acquireDatasetLock
+argument_list|()
 init|)
 block|{
 name|Block
