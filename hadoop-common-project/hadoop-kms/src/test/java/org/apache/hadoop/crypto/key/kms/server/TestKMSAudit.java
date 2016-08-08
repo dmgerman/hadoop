@@ -206,7 +206,29 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
 import|;
 end_import
 
@@ -291,6 +313,20 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
+name|Rule
+DECL|field|testTimeout
+specifier|public
+specifier|final
+name|Timeout
+name|testTimeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|180000
+argument_list|)
+decl_stmt|;
+annotation|@
 name|Before
 DECL|method|setUp ()
 specifier|public
@@ -366,7 +402,9 @@ operator|=
 operator|new
 name|KMSAudit
 argument_list|(
-literal|1000
+name|KMSConfiguration
+operator|.
+name|KMS_AUDIT_AGGREGATION_WINDOW_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -593,12 +631,10 @@ argument_list|,
 literal|"testmsg"
 argument_list|)
 expr_stmt|;
-name|Thread
+name|kmsAudit
 operator|.
-name|sleep
-argument_list|(
-literal|1500
-argument_list|)
+name|evictCacheForTesting
+argument_list|()
 expr_stmt|;
 name|kmsAudit
 operator|.
@@ -615,12 +651,10 @@ argument_list|,
 literal|"testmsg"
 argument_list|)
 expr_stmt|;
-name|Thread
+name|kmsAudit
 operator|.
-name|sleep
-argument_list|(
-literal|1500
-argument_list|)
+name|evictCacheForTesting
+argument_list|()
 expr_stmt|;
 name|String
 name|out
@@ -710,12 +744,10 @@ argument_list|,
 literal|"k2"
 argument_list|)
 expr_stmt|;
-name|Thread
+name|kmsAudit
 operator|.
-name|sleep
-argument_list|(
-literal|1000
-argument_list|)
+name|evictCacheForTesting
+argument_list|()
 expr_stmt|;
 name|kmsAudit
 operator|.
@@ -805,6 +837,14 @@ argument_list|,
 literal|"k3"
 argument_list|)
 expr_stmt|;
+comment|// wait a bit so the UNAUTHORIZED-triggered cache invalidation happens.
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1000
+argument_list|)
+expr_stmt|;
 name|kmsAudit
 operator|.
 name|ok
@@ -820,11 +860,172 @@ argument_list|,
 literal|"testmsg"
 argument_list|)
 expr_stmt|;
-name|Thread
+name|kmsAudit
 operator|.
-name|sleep
+name|evictCacheForTesting
+argument_list|()
+expr_stmt|;
+name|String
+name|out
+init|=
+name|getAndResetLogOutput
+argument_list|()
+decl_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
 argument_list|(
-literal|2000
+name|out
+argument_list|)
+expr_stmt|;
+comment|// The UNAUTHORIZED will trigger cache invalidation, which then triggers
+comment|// the aggregated OK (accessCount=5). But the order of the UNAUTHORIZED and
+comment|// the aggregated OK is arbitrary - no correctness concerns, but flaky here.
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|out
+operator|.
+name|matches
+argument_list|(
+literal|"UNAUTHORIZED\\[op=GENERATE_EEK, key=k2, user=luser\\] "
+operator|+
+literal|"OK\\[op=GENERATE_EEK, key=k3, user=luser, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
+operator|+
+literal|"OK\\[op=GENERATE_EEK, key=k3, user=luser, accessCount=5, interval=[^m]{1,4}ms\\] testmsg"
+operator|+
+literal|"UNAUTHORIZED\\[op=GENERATE_EEK, key=k3, user=luser\\] "
+operator|+
+literal|"OK\\[op=GENERATE_EEK, key=k3, user=luser, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
+argument_list|)
+operator|||
+name|out
+operator|.
+name|matches
+argument_list|(
+literal|"UNAUTHORIZED\\[op=GENERATE_EEK, key=k2, user=luser\\] "
+operator|+
+literal|"OK\\[op=GENERATE_EEK, key=k3, user=luser, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
+operator|+
+literal|"UNAUTHORIZED\\[op=GENERATE_EEK, key=k3, user=luser\\] "
+operator|+
+literal|"OK\\[op=GENERATE_EEK, key=k3, user=luser, accessCount=5, interval=[^m]{1,4}ms\\] testmsg"
+operator|+
+literal|"OK\\[op=GENERATE_EEK, key=k3, user=luser, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testAuditLogFormat ()
+specifier|public
+name|void
+name|testAuditLogFormat
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|UserGroupInformation
+name|luser
+init|=
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|UserGroupInformation
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|Mockito
+operator|.
+name|when
+argument_list|(
+name|luser
+operator|.
+name|getShortUserName
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|"luser"
+argument_list|)
+expr_stmt|;
+name|kmsAudit
+operator|.
+name|ok
+argument_list|(
+name|luser
+argument_list|,
+name|KMSOp
+operator|.
+name|GENERATE_EEK
+argument_list|,
+literal|"k4"
+argument_list|,
+literal|"testmsg"
+argument_list|)
+expr_stmt|;
+name|kmsAudit
+operator|.
+name|ok
+argument_list|(
+name|luser
+argument_list|,
+name|KMSOp
+operator|.
+name|GENERATE_EEK
+argument_list|,
+literal|"testmsg"
+argument_list|)
+expr_stmt|;
+name|kmsAudit
+operator|.
+name|evictCacheForTesting
+argument_list|()
+expr_stmt|;
+name|kmsAudit
+operator|.
+name|unauthorized
+argument_list|(
+name|luser
+argument_list|,
+name|KMSOp
+operator|.
+name|DECRYPT_EEK
+argument_list|,
+literal|"k4"
+argument_list|)
+expr_stmt|;
+name|kmsAudit
+operator|.
+name|error
+argument_list|(
+name|luser
+argument_list|,
+literal|"method"
+argument_list|,
+literal|"url"
+argument_list|,
+literal|"testmsg"
+argument_list|)
+expr_stmt|;
+name|kmsAudit
+operator|.
+name|unauthenticated
+argument_list|(
+literal|"remotehost"
+argument_list|,
+literal|"method"
+argument_list|,
+literal|"url"
+argument_list|,
+literal|"testmsg"
 argument_list|)
 expr_stmt|;
 name|String
@@ -850,15 +1051,17 @@ name|out
 operator|.
 name|matches
 argument_list|(
-literal|"UNAUTHORIZED\\[op=GENERATE_EEK, key=k2, user=luser\\] "
+literal|"OK\\[op=GENERATE_EEK, key=k4, user=luser, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
 operator|+
-literal|"OK\\[op=GENERATE_EEK, key=k3, user=luser, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
+literal|"OK\\[op=GENERATE_EEK, user=luser\\] testmsg"
 operator|+
-literal|"OK\\[op=GENERATE_EEK, key=k3, user=luser, accessCount=5, interval=[^m]{1,4}ms\\] testmsg"
+literal|"OK\\[op=GENERATE_EEK, key=k4, user=luser, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
 operator|+
-literal|"UNAUTHORIZED\\[op=GENERATE_EEK, key=k3, user=luser\\] "
+literal|"UNAUTHORIZED\\[op=DECRYPT_EEK, key=k4, user=luser\\] "
 operator|+
-literal|"OK\\[op=GENERATE_EEK, key=k3, user=luser, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
+literal|"ERROR\\[user=luser\\] Method:'method' Exception:'testmsg'"
+operator|+
+literal|"UNAUTHENTICATED RemoteHost:remotehost Method:method URL:url ErrorMsg:'testmsg'"
 argument_list|)
 argument_list|)
 expr_stmt|;
