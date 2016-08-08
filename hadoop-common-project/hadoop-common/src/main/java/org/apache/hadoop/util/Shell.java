@@ -1539,7 +1539,7 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"/bin/bash"
+literal|"bash"
 block|,
 name|bashQuote
 argument_list|(
