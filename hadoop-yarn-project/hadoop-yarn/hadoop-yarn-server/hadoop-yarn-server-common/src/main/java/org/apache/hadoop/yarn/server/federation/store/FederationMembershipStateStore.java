@@ -290,24 +290,6 @@ name|SubClusterRegisterResponse
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|records
-operator|.
-name|Version
-import|;
-end_import
-
 begin_comment
 comment|/**  * FederationMembershipStateStore maintains the state of all  *<em>subcluster(s)</em> as encapsulated by {@code SubClusterInfo} for all the  * subcluster(s) that are participating in federation.  */
 end_comment
@@ -322,12 +304,6 @@ specifier|public
 interface|interface
 name|FederationMembershipStateStore
 block|{
-comment|/**    * Get the {@link Version} of the underlying federation membership state    * store.    *    * @return the {@link Version} of the underlying federation membership state    *         store    */
-DECL|method|getMembershipStateStoreVersion ()
-name|Version
-name|getMembershipStateStoreVersion
-parameter_list|()
-function_decl|;
 comment|/**    * Register a<em>subcluster</em> by publishing capabilities as represented by    * {@code SubClusterInfo} to indicate participation in federation. This is    * typically done during initialization or restart/failover of the    * subcluster's<code>ResourceManager</code>. Upon successful registration, an    * identifier for the<em>subcluster</em> which is unique across the federated    * cluster is returned. The identifier is static, i.e. preserved across    * restarts and failover.    *    * @param registerSubClusterRequest the capabilities of the subcluster that    *          wants to participate in federation. The subcluster id is also    *          specified in case registration is triggered by restart/failover    * @return response empty on successfully if registration was successful    * @throws YarnException if the request is invalid/fails    */
 DECL|method|registerSubCluster ( SubClusterRegisterRequest registerSubClusterRequest)
 name|SubClusterRegisterResponse

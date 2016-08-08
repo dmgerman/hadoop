@@ -290,24 +290,6 @@ name|UpdateApplicationHomeSubClusterResponse
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|records
-operator|.
-name|Version
-import|;
-end_import
-
 begin_comment
 comment|/**  * FederationApplicationHomeSubClusterStore maintains the state of all  *<em>Applications</em> that have been submitted to the federated cluster.  *  * *  *<p>  * The mapping details contains:  *<ul>  *<li>{@code ApplicationId}</li>  *<li>{@code SubClusterId}</li>  *</ul>  *  */
 end_comment
@@ -322,12 +304,6 @@ specifier|public
 interface|interface
 name|FederationApplicationHomeSubClusterStore
 block|{
-comment|/**    * Get the {@link Version} of the underlying federation application state    * store.    *    * @return the {@link Version} of the underlying federation application state    *         store    */
-DECL|method|getApplicationStateStoreVersion ()
-name|Version
-name|getApplicationStateStoreVersion
-parameter_list|()
-function_decl|;
 comment|/**    * Register the home {@code SubClusterId} of the newly submitted    * {@code ApplicationId}. Currently response is empty if the operation was    * successful, if not an exception reporting reason for a failure.    *    * @param request the request to register a new application with its home    *          sub-cluster    * @return empty on successful registration of the application in the    *         StateStore, if not an exception reporting reason for a failure    * @throws YarnException if the request is invalid/fails    */
 DECL|method|addApplicationHomeSubClusterMap ( AddApplicationHomeSubClusterRequest request)
 name|AddApplicationHomeSubClusterResponse
@@ -350,7 +326,7 @@ parameter_list|)
 throws|throws
 name|YarnException
 function_decl|;
-comment|/**    * Get information about the application identified by the input    * {@code ApplicationId}.    *    * @param request contains the application queried    * @return {@code ApplicationHomeSubCluster} containing the application's    *         home subcluster    * @throws YarnException if the request is invalid/fails    */
+comment|/**    * Get information about the application identified by the input    * {@code ApplicationId}.    *    * @param request contains the application queried    * @return {@code ApplicationHomeSubCluster} containing the application's home    *         subcluster    * @throws YarnException if the request is invalid/fails    */
 DECL|method|getApplicationHomeSubClusterMap ( GetApplicationHomeSubClusterRequest request)
 name|GetApplicationHomeSubClusterResponse
 name|getApplicationHomeSubClusterMap
@@ -361,7 +337,7 @@ parameter_list|)
 throws|throws
 name|YarnException
 function_decl|;
-comment|/**    * Get the {@code ApplicationHomeSubCluster} list representing the mapping    * of all submitted applications to it's home sub-cluster.    *    * @param request empty representing all applications    * @return the mapping of all submitted application to it's home sub-cluster    * @throws YarnException if the request is invalid/fails    */
+comment|/**    * Get the {@code ApplicationHomeSubCluster} list representing the mapping of    * all submitted applications to it's home sub-cluster.    *    * @param request empty representing all applications    * @return the mapping of all submitted application to it's home sub-cluster    * @throws YarnException if the request is invalid/fails    */
 DECL|method|getApplicationsHomeSubClusterMap ( GetApplicationsHomeSubClusterRequest request)
 name|GetApplicationsHomeSubClusterResponse
 name|getApplicationsHomeSubClusterMap
