@@ -40,7 +40,7 @@ name|federation
 operator|.
 name|store
 operator|.
-name|FederationMembershipStateStore
+name|FederationStateStore
 import|;
 end_import
 
@@ -58,10 +58,10 @@ name|FederationStateStoreBaseTest
 block|{
 annotation|@
 name|Override
-DECL|method|getCleanStateStore ()
+DECL|method|createStateStore ()
 specifier|protected
-name|FederationMembershipStateStore
-name|getCleanStateStore
+name|FederationStateStore
+name|createStateStore
 parameter_list|()
 block|{
 return|return

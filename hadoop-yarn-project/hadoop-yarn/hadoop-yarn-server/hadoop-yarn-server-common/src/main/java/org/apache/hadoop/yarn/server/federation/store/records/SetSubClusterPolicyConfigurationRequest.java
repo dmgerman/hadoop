@@ -109,6 +109,7 @@ annotation|@
 name|Unstable
 DECL|method|newInstance ( SubClusterPolicyConfiguration policy)
 specifier|public
+specifier|static
 name|SetSubClusterPolicyConfigurationRequest
 name|newInstance
 parameter_list|(
@@ -139,33 +140,6 @@ return|return
 name|request
 return|;
 block|}
-comment|/**    * Get the name of the queue for which we are configuring a policy.    *    * @return the name of the queue    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|getQueue ()
-specifier|public
-specifier|abstract
-name|String
-name|getQueue
-parameter_list|()
-function_decl|;
-comment|/**    * Sets the name of the queue for which we are configuring a policy.    *    * @param queueName the name of the queue    */
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|setQueue (String queueName)
-specifier|public
-specifier|abstract
-name|void
-name|setQueue
-parameter_list|(
-name|String
-name|queueName
-parameter_list|)
-function_decl|;
 comment|/**    * Get the policy configuration assigned to the queue.    *    * @return the policy for the specified queue    */
 annotation|@
 name|Public

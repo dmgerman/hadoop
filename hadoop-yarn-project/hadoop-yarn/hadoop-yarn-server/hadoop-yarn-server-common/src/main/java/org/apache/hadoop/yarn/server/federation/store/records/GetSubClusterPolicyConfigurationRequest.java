@@ -107,8 +107,9 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (String queueName)
+DECL|method|newInstance ( String queueName)
 specifier|public
+specifier|static
 name|GetSubClusterPolicyConfigurationRequest
 name|newInstance
 parameter_list|(

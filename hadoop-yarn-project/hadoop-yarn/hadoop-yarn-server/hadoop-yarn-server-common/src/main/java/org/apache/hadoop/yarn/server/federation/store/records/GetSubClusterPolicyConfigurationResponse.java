@@ -109,6 +109,7 @@ annotation|@
 name|Unstable
 DECL|method|newInstance ( SubClusterPolicyConfiguration policy)
 specifier|public
+specifier|static
 name|GetSubClusterPolicyConfigurationResponse
 name|newInstance
 parameter_list|(

@@ -508,6 +508,17 @@ name|builder
 decl_stmt|;
 if|if
 condition|(
+name|applicationId
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|applicationId
+return|;
+block|}
+if|if
+condition|(
 operator|!
 name|p
 operator|.

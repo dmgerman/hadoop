@@ -89,6 +89,7 @@ name|SetSubClusterPolicyConfigurationResponse
 block|{
 DECL|method|newInstance ()
 specifier|public
+specifier|static
 name|SetSubClusterPolicyConfigurationResponse
 name|newInstance
 parameter_list|()

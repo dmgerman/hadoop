@@ -103,7 +103,7 @@ comment|// used in javadoc
 end_comment
 
 begin_comment
-comment|/**  * {@link SubClusterPolicyConfiguration} is a class that represents a  * configuration of a policy. It contains a policy type (resolve to a class  * name) and its params as an opaque {@link ByteBuffer}.  *  * Note: by design the params are an opaque ByteBuffer, this allows for enough  * flexibility to evolve the policies without impacting the protocols to/from  * the federation state store.  */
+comment|/**  * {@link SubClusterPolicyConfiguration} is a class that represents a  * configuration of a policy. For a single queue, it contains a policy type  * (resolve to a class name) and its params as an opaque {@link ByteBuffer}.  *  * Note: by design the params are an opaque ByteBuffer, this allows for enough  * flexibility to evolve the policies without impacting the protocols to/from  * the federation state store.  */
 end_comment
 
 begin_class
@@ -121,12 +121,15 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (String policyType, ByteBuffer policyParams)
+DECL|method|newInstance (String queue, String policyType, ByteBuffer policyParams)
 specifier|public
 specifier|static
 name|SubClusterPolicyConfiguration
 name|newInstance
 parameter_list|(
+name|String
+name|queue
+parameter_list|,
 name|String
 name|policyType
 parameter_list|,
@@ -148,6 +151,13 @@ argument_list|)
 decl_stmt|;
 name|policy
 operator|.
+name|setQueue
+argument_list|(
+name|queue
+argument_list|)
+expr_stmt|;
+name|policy
+operator|.
 name|setType
 argument_list|(
 name|policyType
@@ -164,6 +174,33 @@ return|return
 name|policy
 return|;
 block|}
+comment|/**    * Get the name of the queue for which we are configuring a policy.    *    * @return the name of the queue    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getQueue ()
+specifier|public
+specifier|abstract
+name|String
+name|getQueue
+parameter_list|()
+function_decl|;
+comment|/**    * Sets the name of the queue for which we are configuring a policy.    *    * @param queueName the name of the queue    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setQueue (String queueName)
+specifier|public
+specifier|abstract
+name|void
+name|setQueue
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+function_decl|;
 comment|/**    * Get the type of the policy. This could be random, round-robin, load-based,    * etc.    *    * @return the type of the policy    */
 annotation|@
 name|Public
