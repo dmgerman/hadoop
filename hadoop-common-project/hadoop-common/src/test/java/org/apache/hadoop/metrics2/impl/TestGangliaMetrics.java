@@ -404,6 +404,16 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// This is the prefix to locate the config file for this particular test
+comment|// This is to avoid using the same config file with other test cases,
+comment|// which can cause race conditions.
+DECL|field|testNamePrefix
+specifier|private
+name|String
+name|testNamePrefix
+init|=
+literal|"gangliametrics"
+decl_stmt|;
 DECL|field|expectedMetrics
 specifier|private
 specifier|final
@@ -412,17 +422,29 @@ index|[]
 name|expectedMetrics
 init|=
 block|{
-literal|"test.s1rec.C1"
+name|testNamePrefix
+operator|+
+literal|".s1rec.C1"
 block|,
-literal|"test.s1rec.G1"
+name|testNamePrefix
+operator|+
+literal|".s1rec.G1"
 block|,
-literal|"test.s1rec.Xxx"
+name|testNamePrefix
+operator|+
+literal|".s1rec.Xxx"
 block|,
-literal|"test.s1rec.Yyy"
+name|testNamePrefix
+operator|+
+literal|".s1rec.Yyy"
 block|,
-literal|"test.s1rec.S1NumOps"
+name|testNamePrefix
+operator|+
+literal|".s1rec.S1NumOps"
 block|,
-literal|"test.s1rec.S1AvgTime"
+name|testNamePrefix
+operator|+
+literal|".s1rec.S1AvgTime"
 block|}
 decl_stmt|;
 annotation|@
@@ -444,14 +466,18 @@ argument_list|()
 operator|.
 name|add
 argument_list|(
-literal|"test.sink.ganglia.tagsForPrefix.all"
+name|testNamePrefix
+operator|+
+literal|".sink.ganglia.tagsForPrefix.all"
 argument_list|,
 literal|"*"
 argument_list|)
 operator|.
 name|add
 argument_list|(
-literal|"test.sink.ganglia.tagsForPrefix.some"
+name|testNamePrefix
+operator|+
+literal|".sink.ganglia.tagsForPrefix.some"
 argument_list|,
 literal|"NumActiveSinks, "
 operator|+
@@ -460,7 +486,9 @@ argument_list|)
 operator|.
 name|add
 argument_list|(
-literal|"test.sink.ganglia.tagsForPrefix.none"
+name|testNamePrefix
+operator|+
+literal|".sink.ganglia.tagsForPrefix.none"
 argument_list|,
 literal|""
 argument_list|)
@@ -480,7 +508,9 @@ name|cb
 operator|.
 name|subset
 argument_list|(
-literal|"test.sink.ganglia"
+name|testNamePrefix
+operator|+
+literal|".sink.ganglia"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -786,17 +816,21 @@ argument_list|)
 operator|.
 name|add
 argument_list|(
-literal|"test.sink.gsink30.context"
+name|testNamePrefix
+operator|+
+literal|".sink.gsink30.context"
 argument_list|,
-literal|"test"
+name|testNamePrefix
 argument_list|)
 comment|// filter out only "test"
 operator|.
 name|add
 argument_list|(
-literal|"test.sink.gsink31.context"
+name|testNamePrefix
+operator|+
+literal|".sink.gsink31.context"
 argument_list|,
-literal|"test"
+name|testNamePrefix
 argument_list|)
 comment|// filter out only "test"
 operator|.
@@ -806,7 +840,9 @@ name|TestMetricsConfig
 operator|.
 name|getTestFilename
 argument_list|(
-literal|"hadoop-metrics2-test"
+literal|"hadoop-metrics2-"
+operator|+
+name|testNamePrefix
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -816,7 +852,7 @@ init|=
 operator|new
 name|MetricsSystemImpl
 argument_list|(
-literal|"Test"
+name|testNamePrefix
 argument_list|)
 decl_stmt|;
 name|ms
@@ -917,7 +953,7 @@ name|cb
 operator|.
 name|subset
 argument_list|(
-literal|"test"
+name|testNamePrefix
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -953,7 +989,7 @@ name|cb
 operator|.
 name|subset
 argument_list|(
-literal|"test"
+name|testNamePrefix
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1187,7 +1223,7 @@ name|Metrics
 argument_list|(
 name|context
 operator|=
-literal|"test"
+literal|"gangliametrics"
 argument_list|)
 DECL|class|TestSource
 specifier|private
