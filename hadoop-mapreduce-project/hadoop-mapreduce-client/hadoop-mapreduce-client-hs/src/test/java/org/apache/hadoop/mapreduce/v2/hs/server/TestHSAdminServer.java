@@ -1286,11 +1286,15 @@ name|when
 argument_list|(
 name|ugi
 operator|.
-name|getGroupNames
+name|getGroups
 argument_list|()
 argument_list|)
 operator|.
 name|thenReturn
+argument_list|(
+name|Arrays
+operator|.
+name|asList
 argument_list|(
 operator|new
 name|String
@@ -1298,6 +1302,7 @@ index|[]
 block|{
 literal|"group3"
 block|}
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|when
