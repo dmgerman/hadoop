@@ -3578,6 +3578,13 @@ name|DEFAULT_MR_NUM_OPPORTUNISTIC_MAPS_PER_100
 init|=
 literal|0
 decl_stmt|;
+comment|/**    * A comma-separated list of properties whose value will be redacted.    */
+DECL|field|MR_JOB_REDACTED_PROPERTIES
+name|String
+name|MR_JOB_REDACTED_PROPERTIES
+init|=
+literal|"mapreduce.job.redacted-properties"
+decl_stmt|;
 block|}
 end_interface
 
