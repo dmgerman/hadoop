@@ -1964,11 +1964,6 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"-v /etc/passwd:/etc/password:ro "
-argument_list|)
-operator|.
-name|append
-argument_list|(
 literal|"-v %4$s:%4$s "
 argument_list|)
 operator|.
@@ -2475,11 +2470,6 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"-v /etc/passwd:/etc/password:ro "
-argument_list|)
-operator|.
-name|append
-argument_list|(
 literal|"-v %4$s:%4$s "
 argument_list|)
 operator|.
@@ -2786,11 +2776,6 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"-v /etc/passwd:/etc/password:ro "
-argument_list|)
-operator|.
-name|append
-argument_list|(
 literal|"-v %4$s:%4$s "
 argument_list|)
 operator|.
@@ -3003,11 +2988,6 @@ name|append
 argument_list|(
 name|getExpectedTestCapabilitiesArgumentString
 argument_list|()
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"-v /etc/passwd:/etc/password:ro "
 argument_list|)
 operator|.
 name|append

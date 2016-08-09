@@ -1939,13 +1939,6 @@ name|setCapabilities
 argument_list|(
 name|capabilities
 argument_list|)
-operator|.
-name|addMountLocation
-argument_list|(
-literal|"/etc/passwd"
-argument_list|,
-literal|"/etc/password:ro"
-argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
