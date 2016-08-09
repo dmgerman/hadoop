@@ -17,6 +17,78 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertArrayEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -98,11 +170,43 @@ end_import
 
 begin_import
 import|import
-name|junit
+name|org
 operator|.
-name|framework
+name|apache
 operator|.
-name|TestCase
+name|commons
+operator|.
+name|cli
+operator|.
+name|Option
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|cli
+operator|.
+name|OptionBuilder
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|cli
+operator|.
+name|Options
 import|;
 end_import
 
@@ -258,41 +362,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|commons
-operator|.
-name|cli
-operator|.
-name|Option
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|cli
-operator|.
-name|OptionBuilder
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|cli
-operator|.
-name|Options
+name|After
 import|;
 end_import
 
@@ -302,7 +374,17 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -320,25 +402,11 @@ name|Maps
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
-import|;
-end_import
-
 begin_class
 DECL|class|TestGenericOptionsParser
 specifier|public
 class|class
 name|TestGenericOptionsParser
-extends|extends
-name|TestCase
 block|{
 DECL|field|testDir
 name|File
@@ -352,6 +420,8 @@ DECL|field|localFs
 name|FileSystem
 name|localFs
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testFilesOption ()
 specifier|public
 name|void
@@ -635,7 +705,183 @@ name|files
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testLibjarsOption ()
+specifier|public
+name|void
+name|testLibjarsOption
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|File
+name|tmpJar
+init|=
+operator|new
+name|File
+argument_list|(
+name|testDir
+argument_list|,
+literal|"tmp.jar"
+argument_list|)
+decl_stmt|;
+name|Path
+name|tmpJarPath
+init|=
+operator|new
+name|Path
+argument_list|(
+name|tmpJar
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|localFs
+operator|.
+name|create
+argument_list|(
+name|tmpJarPath
+argument_list|)
+expr_stmt|;
+name|String
+index|[]
+name|args
+init|=
+operator|new
+name|String
+index|[
+literal|2
+index|]
+decl_stmt|;
+comment|// pass a libjars option
+comment|// first, pass the jar directly
+name|args
+index|[
+literal|0
+index|]
+operator|=
+literal|"-libjars"
+expr_stmt|;
+comment|// Convert a file to a URI as File.toString() is not a valid URI on
+comment|// all platforms and GenericOptionsParser accepts only valid URIs
+name|args
+index|[
+literal|1
+index|]
+operator|=
+name|tmpJar
+operator|.
+name|toURI
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+operator|new
+name|GenericOptionsParser
+argument_list|(
+name|conf
+argument_list|,
+name|args
+argument_list|)
+expr_stmt|;
+name|String
+name|libjars
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+literal|"tmpjars"
+argument_list|)
+decl_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"libjars is null"
+argument_list|,
+name|libjars
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"libjars does not match"
+argument_list|,
+name|localFs
+operator|.
+name|makeQualified
+argument_list|(
+name|tmpJarPath
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|libjars
+argument_list|)
+expr_stmt|;
+comment|// now test the wildcard
+name|args
+index|[
+literal|1
+index|]
+operator|=
+name|testDir
+operator|.
+name|toURI
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|"*"
+expr_stmt|;
+operator|new
+name|GenericOptionsParser
+argument_list|(
+name|conf
+argument_list|,
+name|args
+argument_list|)
+expr_stmt|;
+name|libjars
+operator|=
+name|conf
+operator|.
+name|get
+argument_list|(
+literal|"tmpjars"
+argument_list|)
+expr_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"libjars is null"
+argument_list|,
+name|libjars
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"libjars does not match"
+argument_list|,
+name|localFs
+operator|.
+name|makeQualified
+argument_list|(
+name|tmpJarPath
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|libjars
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Test the case where the libjars, files and archives arguments    * contains an empty token, which should create an IllegalArgumentException.    */
+annotation|@
+name|Test
 DECL|method|testEmptyFilenames ()
 specifier|public
 name|void
@@ -740,14 +986,6 @@ init|=
 name|argAndConfName
 operator|.
 name|getFirst
-argument_list|()
-decl_stmt|;
-name|String
-name|configName
-init|=
-name|argAndConfName
-operator|.
-name|getSecond
 argument_list|()
 decl_stmt|;
 name|File
@@ -1008,6 +1246,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"static-access"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testCreateWithOptions ()
 specifier|public
 name|void
@@ -1112,6 +1352,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that multiple conf arguments can be used.    */
+annotation|@
+name|Test
 DECL|method|testConfWithMultipleOpts ()
 specifier|public
 name|void
@@ -1195,20 +1437,15 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|super
-operator|.
-name|setUp
-argument_list|()
-expr_stmt|;
 name|conf
 operator|=
 operator|new
@@ -1258,20 +1495,15 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|super
-operator|.
-name|tearDown
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|testDir
@@ -1299,6 +1531,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * testing -fileCache option    * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testTokenCacheOption ()
 specifier|public
 name|void
@@ -1602,6 +1836,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Test -D parsing */
+annotation|@
+name|Test
 DECL|method|testDOptionParsing ()
 specifier|public
 name|void
@@ -2210,8 +2446,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|Assert
-operator|.
 name|assertArrayEquals
 argument_list|(
 name|Arrays
@@ -2235,6 +2469,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Test passing null as args. Some classes still call    * Tool interface from java passing null.    */
+annotation|@
+name|Test
 DECL|method|testNullArgs ()
 specifier|public
 name|void
