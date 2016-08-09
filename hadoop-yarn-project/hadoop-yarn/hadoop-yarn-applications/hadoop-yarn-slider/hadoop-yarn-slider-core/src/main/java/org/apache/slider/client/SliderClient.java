@@ -1556,7 +1556,7 @@ name|slider
 operator|.
 name|core
 operator|.
-name|build
+name|buildutils
 operator|.
 name|InstanceBuilder
 import|;
@@ -1572,7 +1572,7 @@ name|slider
 operator|.
 name|core
 operator|.
-name|build
+name|buildutils
 operator|.
 name|InstanceIO
 import|;
@@ -2125,24 +2125,6 @@ operator|.
 name|docstore
 operator|.
 name|PublishedConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|registry
-operator|.
-name|docstore
-operator|.
-name|PublishedConfigurationOutputter
 import|;
 end_import
 
