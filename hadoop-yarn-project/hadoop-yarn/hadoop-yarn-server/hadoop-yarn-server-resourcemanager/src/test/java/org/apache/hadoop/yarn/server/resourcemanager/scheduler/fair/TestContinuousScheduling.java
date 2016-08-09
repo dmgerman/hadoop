@@ -1172,10 +1172,12 @@ specifier|private
 name|void
 name|triggerSchedulingAttempt
 parameter_list|()
+throws|throws
+name|InterruptedException
 block|{
-name|mockClock
+name|Thread
 operator|.
-name|tickMsec
+name|sleep
 argument_list|(
 literal|2
 operator|*
