@@ -594,6 +594,11 @@ specifier|private
 name|String
 name|planID
 decl_stmt|;
+DECL|field|planFile
+specifier|private
+name|String
+name|planFile
+decl_stmt|;
 DECL|field|currentResult
 specifier|private
 name|DiskBalancerWorkStatus
@@ -675,6 +680,13 @@ expr_stmt|;
 name|this
 operator|.
 name|planID
+operator|=
+literal|""
+expr_stmt|;
+comment|// to keep protobuf happy.
+name|this
+operator|.
+name|planFile
 operator|=
 literal|""
 expr_stmt|;
@@ -878,20 +890,23 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Takes a client submitted plan and converts into a set of work items that    * can be executed by the blockMover.    *    * @param planID      - A SHA512 of the plan string    * @param planVersion - version of the plan string - for future use.    * @param plan        - Actual Plan    * @param force       - Skip some validations and execute the plan file.    * @throws DiskBalancerException    */
-DECL|method|submitPlan (String planID, long planVersion, String plan, boolean force)
+comment|/**    * Takes a client submitted plan and converts into a set of work items that    * can be executed by the blockMover.    *    * @param planId      - A SHA512 of the plan string    * @param planVersion - version of the plan string - for future use.    * @param planFileName    - Plan file name    * @param planData    - Plan data in json format    * @param force       - Skip some validations and execute the plan file.    * @throws DiskBalancerException    */
+DECL|method|submitPlan (String planId, long planVersion, String planFileName, String planData, boolean force)
 specifier|public
 name|void
 name|submitPlan
 parameter_list|(
 name|String
-name|planID
+name|planId
 parameter_list|,
 name|long
 name|planVersion
 parameter_list|,
 name|String
-name|plan
+name|planFileName
+parameter_list|,
+name|String
+name|planData
 parameter_list|,
 name|boolean
 name|force
@@ -956,11 +971,11 @@ name|nodePlan
 init|=
 name|verifyPlan
 argument_list|(
-name|planID
+name|planId
 argument_list|,
 name|planVersion
 argument_list|,
-name|plan
+name|planData
 argument_list|,
 name|force
 argument_list|)
@@ -974,7 +989,13 @@ name|this
 operator|.
 name|planID
 operator|=
-name|planID
+name|planId
+expr_stmt|;
+name|this
+operator|.
+name|planFile
+operator|=
+name|planFileName
 expr_stmt|;
 name|this
 operator|.
@@ -1063,6 +1084,10 @@ argument_list|,
 name|this
 operator|.
 name|planID
+argument_list|,
+name|this
+operator|.
+name|planFile
 argument_list|)
 decl_stmt|;
 for|for
@@ -2253,8 +2278,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Executing Disk balancer plan. Plan ID -  "
-operator|+
+literal|"Executing Disk balancer plan. Plan File: {}, Plan ID: {}"
+argument_list|,
+name|planFile
+argument_list|,
 name|planID
 argument_list|)
 expr_stmt|;

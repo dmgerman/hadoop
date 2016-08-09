@@ -175,6 +175,11 @@ specifier|private
 name|String
 name|planID
 decl_stmt|;
+DECL|field|planFile
+specifier|private
+name|String
+name|planFile
+decl_stmt|;
 comment|/**    * Constructs a default workStatus Object.    */
 DECL|method|DiskBalancerWorkStatus ()
 specifier|public
@@ -191,8 +196,8 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Constructs a workStatus Object.    *    * @param result - int    * @param planID - Plan ID    */
-DECL|method|DiskBalancerWorkStatus (Result result, String planID)
+comment|/**    * Constructs a workStatus Object.    *    * @param result - int    * @param planID - Plan ID    * @param planFile - Plan file name    */
+DECL|method|DiskBalancerWorkStatus (Result result, String planID, String planFile)
 specifier|public
 name|DiskBalancerWorkStatus
 parameter_list|(
@@ -201,6 +206,9 @@ name|result
 parameter_list|,
 name|String
 name|planID
+parameter_list|,
+name|String
+name|planFile
 parameter_list|)
 block|{
 name|this
@@ -217,6 +225,12 @@ operator|.
 name|planID
 operator|=
 name|planID
+expr_stmt|;
+name|this
+operator|.
+name|planFile
+operator|=
+name|planFile
 expr_stmt|;
 block|}
 comment|/**    * Constructs a workStatus Object.    *    * @param result       - int    * @param planID       - Plan ID    * @param currentState - Current State    */
@@ -257,7 +271,7 @@ name|currentState
 expr_stmt|;
 block|}
 comment|/**    * Constructs a workStatus Object.    *    * @param result       - int    * @param planID       - Plan ID    * @param currentState - List of WorkEntries.    */
-DECL|method|DiskBalancerWorkStatus (Result result, String planID, String currentState)
+DECL|method|DiskBalancerWorkStatus (Result result, String planID, String planFile, String currentState)
 specifier|public
 name|DiskBalancerWorkStatus
 parameter_list|(
@@ -266,6 +280,9 @@ name|result
 parameter_list|,
 name|String
 name|planID
+parameter_list|,
+name|String
+name|planFile
 parameter_list|,
 name|String
 name|currentState
@@ -284,6 +301,12 @@ operator|.
 name|planID
 operator|=
 name|planID
+expr_stmt|;
+name|this
+operator|.
+name|planFile
+operator|=
+name|planFile
 expr_stmt|;
 name|ObjectMapper
 name|mapper
@@ -338,6 +361,17 @@ parameter_list|()
 block|{
 return|return
 name|planID
+return|;
+block|}
+comment|/**    * Returns planFile.    *    * @return String    */
+DECL|method|getPlanFile ()
+specifier|public
+name|String
+name|getPlanFile
+parameter_list|()
+block|{
+return|return
+name|planFile
 return|;
 block|}
 comment|/**    * Gets current Status.    *    * @return - Json String    */

@@ -375,7 +375,12 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"Plan ID: %s %nResult: %s%n"
+literal|"Plan File: %s%nPlan ID: %s%nResult: %s%n"
+argument_list|,
+name|workStatus
+operator|.
+name|getPlanFile
+argument_list|()
 argument_list|,
 name|workStatus
 operator|.

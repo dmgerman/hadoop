@@ -558,6 +558,15 @@ operator|.
 name|none
 argument_list|()
 decl_stmt|;
+DECL|field|PLAN_FILE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|PLAN_FILE
+init|=
+literal|"/system/current.plan.json"
+decl_stmt|;
 DECL|field|cluster
 specifier|private
 name|MiniDFSCluster
@@ -703,6 +712,8 @@ name|planHash
 argument_list|,
 name|planVersion
 argument_list|,
+name|PLAN_FILE
+argument_list|,
 name|plan
 operator|.
 name|toJson
@@ -818,6 +829,8 @@ name|planHash
 argument_list|,
 name|planVersion
 argument_list|,
+name|PLAN_FILE
+argument_list|,
 name|plan
 operator|.
 name|toJson
@@ -912,6 +925,8 @@ name|planHash
 argument_list|,
 name|planVersion
 argument_list|,
+name|PLAN_FILE
+argument_list|,
 name|plan
 operator|.
 name|toJson
@@ -1005,6 +1020,8 @@ name|planVersion
 argument_list|,
 literal|""
 argument_list|,
+literal|""
+argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
@@ -1068,6 +1085,8 @@ argument_list|(
 name|planHash
 argument_list|,
 name|planVersion
+argument_list|,
+name|PLAN_FILE
 argument_list|,
 name|plan
 operator|.
@@ -1471,6 +1490,8 @@ name|planHash
 argument_list|,
 name|planVersion
 argument_list|,
+name|PLAN_FILE
+argument_list|,
 name|plan
 operator|.
 name|toJson
@@ -1570,6 +1591,8 @@ argument_list|(
 name|planHash
 argument_list|,
 name|planVersion
+argument_list|,
+name|PLAN_FILE
 argument_list|,
 name|plan
 operator|.

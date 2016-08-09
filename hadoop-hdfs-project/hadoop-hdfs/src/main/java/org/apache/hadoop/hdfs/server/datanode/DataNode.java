@@ -16134,10 +16134,10 @@ return|return
 name|tracer
 return|;
 block|}
-comment|/**    * Allows submission of a disk balancer Job.    * @param planID  - Hash value of the plan.    * @param planVersion - Plan version, reserved for future use. We have only    *                    version 1 now.    * @param plan - Actual plan    * @throws IOException    */
+comment|/**    * Allows submission of a disk balancer Job.    * @param planID  - Hash value of the plan.    * @param planVersion - Plan version, reserved for future use. We have only    *                    version 1 now.    * @param planFile - Plan file name    * @param planData - Actual plan data in json format    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|submitDiskBalancerPlan (String planID, long planVersion, String plan, boolean skipDateCheck)
+DECL|method|submitDiskBalancerPlan (String planID, long planVersion, String planFile, String planData, boolean skipDateCheck)
 specifier|public
 name|void
 name|submitDiskBalancerPlan
@@ -16149,7 +16149,10 @@ name|long
 name|planVersion
 parameter_list|,
 name|String
-name|plan
+name|planFile
+parameter_list|,
+name|String
+name|planData
 parameter_list|,
 name|boolean
 name|skipDateCheck
@@ -16171,7 +16174,9 @@ name|planID
 argument_list|,
 name|planVersion
 argument_list|,
-name|plan
+name|planFile
+argument_list|,
+name|planData
 argument_list|,
 name|skipDateCheck
 argument_list|)

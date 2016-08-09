@@ -619,6 +619,15 @@ operator|.
 name|none
 argument_list|()
 decl_stmt|;
+DECL|field|PLAN_FILE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|PLAN_FILE
+init|=
+literal|"/system/current.plan.json"
+decl_stmt|;
 DECL|field|cluster
 specifier|private
 name|MiniDFSCluster
@@ -880,6 +889,8 @@ argument_list|(
 name|planID
 argument_list|,
 name|version
+argument_list|,
+name|PLAN_FILE
 argument_list|,
 name|planJson
 argument_list|,
@@ -1369,6 +1380,8 @@ name|planID
 argument_list|,
 literal|1
 argument_list|,
+literal|"no-plan-file.json"
+argument_list|,
 literal|null
 argument_list|,
 literal|false
@@ -1485,6 +1498,8 @@ name|repChar
 argument_list|)
 argument_list|,
 literal|1
+argument_list|,
+name|PLAN_FILE
 argument_list|,
 name|planJson
 argument_list|,

@@ -572,6 +572,15 @@ specifier|public
 class|class
 name|TestDiskBalancer
 block|{
+DECL|field|PLAN_FILE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|PLAN_FILE
+init|=
+literal|"/system/current.plan.json"
+decl_stmt|;
 annotation|@
 name|Test
 DECL|method|testDiskBalancerNameNodeConnectivity ()
@@ -1369,6 +1378,8 @@ name|planID
 argument_list|,
 literal|1
 argument_list|,
+name|PLAN_FILE
+argument_list|,
 name|planJson
 argument_list|,
 literal|false
@@ -2102,6 +2113,8 @@ argument_list|(
 name|planID
 argument_list|,
 literal|1
+argument_list|,
+name|PLAN_FILE
 argument_list|,
 name|planJson
 argument_list|,

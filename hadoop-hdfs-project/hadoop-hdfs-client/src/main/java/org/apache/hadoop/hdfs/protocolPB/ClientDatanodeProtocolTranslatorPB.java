@@ -2166,10 +2166,10 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Submits a disk balancer plan to the datanode.    * @param planID - Plan ID is the hash512 string of the plan that is    *               submitted. This is used by clients when they want to find    *               local copies of these plans.    * @param planVersion - The data format of the plans - for future , not    *                    used now.    * @param plan - Actual plan.    * @param skipDateCheck - Skips the date check.    * @throws IOException    */
+comment|/**    * Submits a disk balancer plan to the datanode.    * @param planID - Plan ID is the hash512 string of the plan that is    *               submitted. This is used by clients when they want to find    *               local copies of these plans.    * @param planVersion - The data format of the plans - for future , not    *                    used now.    * @param planFile - Plan file name    * @param planData - Actual plan data in json format    * @param skipDateCheck - Skips the date check.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|submitDiskBalancerPlan (String planID, long planVersion, String plan, boolean skipDateCheck)
+DECL|method|submitDiskBalancerPlan (String planID, long planVersion, String planFile, String planData, boolean skipDateCheck)
 specifier|public
 name|void
 name|submitDiskBalancerPlan
@@ -2181,7 +2181,10 @@ name|long
 name|planVersion
 parameter_list|,
 name|String
-name|plan
+name|planFile
+parameter_list|,
+name|String
+name|planData
 parameter_list|,
 name|boolean
 name|skipDateCheck
@@ -2209,9 +2212,14 @@ argument_list|(
 name|planVersion
 argument_list|)
 operator|.
+name|setPlanFile
+argument_list|(
+name|planFile
+argument_list|)
+operator|.
 name|setPlan
 argument_list|(
-name|plan
+name|planData
 argument_list|)
 operator|.
 name|setIgnoreDateCheck
@@ -2389,6 +2397,18 @@ condition|?
 name|response
 operator|.
 name|getPlanID
+argument_list|()
+else|:
+literal|null
+argument_list|,
+name|response
+operator|.
+name|hasPlanFile
+argument_list|()
+condition|?
+name|response
+operator|.
+name|getPlanFile
 argument_list|()
 else|:
 literal|null

@@ -339,16 +339,23 @@ expr_stmt|;
 block|}
 name|submitPlan
 argument_list|(
+name|planFile
+argument_list|,
 name|planData
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Submits plan to a given data node.    *    * @param planData - PlanData Json String.    * @throws IOException    */
-DECL|method|submitPlan (String planData)
+comment|/**    * Submits plan to a given data node.    *    * @param planFile - Plan file name    * @param planData - Plan data in json format    * @throws IOException    */
+DECL|method|submitPlan (final String planFile, final String planData)
 specifier|private
 name|void
 name|submitPlan
 parameter_list|(
+specifier|final
+name|String
+name|planFile
+parameter_list|,
+specifier|final
 name|String
 name|planData
 parameter_list|)
@@ -414,6 +421,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
+comment|// TODO : Support skipping date check.
 name|dataNode
 operator|.
 name|submitDiskBalancerPlan
@@ -424,12 +432,13 @@ name|DiskBalancer
 operator|.
 name|PLAN_VERSION
 argument_list|,
+name|planFile
+argument_list|,
 name|planData
 argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// TODO : Support skipping date check.
 block|}
 catch|catch
 parameter_list|(
