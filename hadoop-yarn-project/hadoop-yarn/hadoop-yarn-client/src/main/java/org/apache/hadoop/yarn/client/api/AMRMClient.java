@@ -1236,10 +1236,10 @@ name|client
 expr_stmt|;
 block|}
 comment|/**    * Get registered timeline client.    * @return the registered timeline client    */
-DECL|method|getRegisteredTimeineClient ()
+DECL|method|getRegisteredTimelineClient ()
 specifier|public
 name|TimelineClient
-name|getRegisteredTimeineClient
+name|getRegisteredTimelineClient
 parameter_list|()
 block|{
 return|return

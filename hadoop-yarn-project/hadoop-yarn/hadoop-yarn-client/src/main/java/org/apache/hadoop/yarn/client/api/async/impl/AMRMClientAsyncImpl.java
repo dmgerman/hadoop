@@ -1427,7 +1427,7 @@ name|timelineClient
 init|=
 name|client
 operator|.
-name|getRegisteredTimeineClient
+name|getRegisteredTimelineClient
 argument_list|()
 decl_stmt|;
 if|if
