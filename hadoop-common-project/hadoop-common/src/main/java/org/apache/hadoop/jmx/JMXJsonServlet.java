@@ -473,6 +473,35 @@ name|response
 argument_list|)
 return|;
 block|}
+comment|/**    * Disable TRACE method to avoid TRACE vulnerability.    */
+annotation|@
+name|Override
+DECL|method|doTrace (HttpServletRequest req, HttpServletResponse resp)
+specifier|protected
+name|void
+name|doTrace
+parameter_list|(
+name|HttpServletRequest
+name|req
+parameter_list|,
+name|HttpServletResponse
+name|resp
+parameter_list|)
+throws|throws
+name|ServletException
+throws|,
+name|IOException
+block|{
+name|resp
+operator|.
+name|sendError
+argument_list|(
+name|HttpServletResponse
+operator|.
+name|SC_METHOD_NOT_ALLOWED
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Process a GET request for the specified resource.    *     * @param request    *          The servlet request we are processing    * @param response    *          The servlet response we are creating    */
 annotation|@
 name|Override
