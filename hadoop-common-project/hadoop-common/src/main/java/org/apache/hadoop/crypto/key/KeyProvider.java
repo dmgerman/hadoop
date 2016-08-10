@@ -2263,6 +2263,23 @@ argument_list|(
 name|name
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|meta
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Can't find Metadata for key "
+operator|+
+name|name
+argument_list|)
+throw|;
+block|}
 name|byte
 index|[]
 name|material
