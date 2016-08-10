@@ -3637,6 +3637,27 @@ name|DEFAULT_NM_RESOURCEMANAGER_MINIMUM_VERSION
 init|=
 literal|"NONE"
 decl_stmt|;
+comment|/** Disk Validator. */
+DECL|field|DISK_VALIDATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DISK_VALIDATOR
+init|=
+name|NM_PREFIX
+operator|+
+literal|"disk-validator"
+decl_stmt|;
+DECL|field|DEFAULT_DISK_VALIDATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_DISK_VALIDATOR
+init|=
+literal|"basic"
+decl_stmt|;
 comment|/**    * Maximum size of contain's diagnostics to keep for relaunching container    * case.    **/
 DECL|field|NM_CONTAINER_DIAGNOSTICS_MAXIMUM_SIZE
 specifier|public
