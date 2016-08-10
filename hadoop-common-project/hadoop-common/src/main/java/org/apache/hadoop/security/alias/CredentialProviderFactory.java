@@ -180,6 +180,13 @@ argument_list|(
 name|CredentialProviderFactory
 operator|.
 name|class
+argument_list|,
+name|CredentialProviderFactory
+operator|.
+name|class
+operator|.
+name|getClassLoader
+argument_list|()
 argument_list|)
 decl_stmt|;
 DECL|method|getProviders (Configuration conf )
