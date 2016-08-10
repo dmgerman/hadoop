@@ -594,9 +594,11 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|InvalidChecksumSizeException
 argument_list|(
-literal|"Could not create DataChecksum of type "
+literal|"Could not create DataChecksum "
+operator|+
+literal|"of type "
 operator|+
 name|type
 operator|+

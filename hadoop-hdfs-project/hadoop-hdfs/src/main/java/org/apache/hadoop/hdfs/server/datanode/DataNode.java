@@ -2816,6 +2816,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|InvalidChecksumSizeException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|JvmPauseMonitor
 import|;
 end_import
@@ -3424,7 +3438,6 @@ literal|false
 decl_stmt|;
 DECL|field|blockScanner
 specifier|private
-specifier|final
 name|BlockScanner
 name|blockScanner
 decl_stmt|;
@@ -11121,8 +11134,9 @@ name|msg
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|transferBlock (ExtendedBlock block, DatanodeInfo[] xferTargets, StorageType[] xferTargetStorageTypes)
-specifier|private
 name|void
 name|transferBlock
 parameter_list|(
@@ -12248,6 +12262,45 @@ name|IOException
 name|ie
 parameter_list|)
 block|{
+if|if
+condition|(
+name|ie
+operator|instanceof
+name|InvalidChecksumSizeException
+condition|)
+block|{
+comment|// Add the block to the front of the scanning queue if metadata file
+comment|// is corrupt. We already add the block to front of scanner if the
+comment|// peer disconnects.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Adding block: "
+operator|+
+name|b
+operator|+
+literal|" for scanning"
+argument_list|)
+expr_stmt|;
+name|blockScanner
+operator|.
+name|markSuspectBlock
+argument_list|(
+name|data
+operator|.
+name|getVolume
+argument_list|(
+name|b
+argument_list|)
+operator|.
+name|getStorageID
+argument_list|()
+argument_list|,
+name|b
+argument_list|)
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|warn
@@ -16316,6 +16369,23 @@ name|UNKNOWN_KEY
 argument_list|)
 throw|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setBlockScanner (BlockScanner blockScanner)
+name|void
+name|setBlockScanner
+parameter_list|(
+name|BlockScanner
+name|blockScanner
+parameter_list|)
+block|{
+name|this
+operator|.
+name|blockScanner
+operator|=
+name|blockScanner
+expr_stmt|;
 block|}
 block|}
 end_class
