@@ -10634,6 +10634,25 @@ operator|.
 name|emptyList
 argument_list|()
 decl_stmt|;
+name|String
+name|strBlockReportId
+init|=
+name|context
+operator|!=
+literal|null
+condition|?
+name|Long
+operator|.
+name|toHexString
+argument_list|(
+name|context
+operator|.
+name|getReportId
+argument_list|()
+argument_list|)
+else|:
+literal|""
+decl_stmt|;
 try|try
 block|{
 name|node
@@ -10720,11 +10739,13 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* processReport: "
+literal|"BLOCK* processReport 0x{}: "
 operator|+
 literal|"discarded non-initial block report from {}"
 operator|+
 literal|" because namenode still in startup phase"
+argument_list|,
+name|strBlockReportId
 argument_list|,
 name|nodeID
 argument_list|)
@@ -10786,19 +10807,21 @@ condition|)
 block|{
 comment|// The first block report can be processed a lot more efficiently than
 comment|// ordinary block reports.  This shortens restart times.
-name|LOG
+name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"Processing first storage report for "
+literal|"BLOCK* processReport 0x{}: Processing first "
 operator|+
+literal|"storage report for {} from datanode {}"
+argument_list|,
+name|strBlockReportId
+argument_list|,
 name|storageInfo
 operator|.
 name|getStorageID
 argument_list|()
-operator|+
-literal|" from datanode "
-operator|+
+argument_list|,
 name|nodeID
 operator|.
 name|getDatanodeUuid
@@ -10824,15 +10847,6 @@ argument_list|,
 name|newReport
 argument_list|,
 name|context
-operator|!=
-literal|null
-condition|?
-name|context
-operator|.
-name|isSorted
-argument_list|()
-else|:
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -11028,9 +11042,11 @@ name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* processReport: {} on node {} size {} does not "
+literal|"BLOCK* processReport 0x{}: {} on node {} size {} does not"
 operator|+
-literal|"belong to any file"
+literal|" belong to any file"
+argument_list|,
+name|strBlockReportId
 argument_list|,
 name|b
 argument_list|,
@@ -11079,11 +11095,13 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* processReport: from storage {} node {}, "
+literal|"BLOCK* processReport 0x{}: from storage {} node {}, "
 operator|+
 literal|"blocks: {}, hasStaleStorage: {}, processing time: {} msecs, "
 operator|+
 literal|"invalidatedBlocks: {}"
+argument_list|,
+name|strBlockReportId
 argument_list|,
 name|storage
 operator|.
@@ -11613,7 +11631,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|processReport ( final DatanodeStorageInfo storageInfo, final BlockListAsLongs report, final boolean sorted)
+DECL|method|processReport ( final DatanodeStorageInfo storageInfo, final BlockListAsLongs report, BlockReportContext context)
 specifier|private
 name|Collection
 argument_list|<
@@ -11629,9 +11647,8 @@ specifier|final
 name|BlockListAsLongs
 name|report
 parameter_list|,
-specifier|final
-name|boolean
-name|sorted
+name|BlockReportContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
@@ -11695,6 +11712,43 @@ name|LinkedList
 argument_list|<>
 argument_list|()
 decl_stmt|;
+name|boolean
+name|sorted
+init|=
+literal|false
+decl_stmt|;
+name|String
+name|strBlockReportId
+init|=
+literal|""
+decl_stmt|;
+if|if
+condition|(
+name|context
+operator|!=
+literal|null
+condition|)
+block|{
+name|sorted
+operator|=
+name|context
+operator|.
+name|isSorted
+argument_list|()
+expr_stmt|;
+name|strBlockReportId
+operator|=
+name|Long
+operator|.
+name|toHexString
+argument_list|(
+name|context
+operator|.
+name|getReportId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|Iterable
 argument_list|<
 name|BlockReportReplica
@@ -11711,15 +11765,17 @@ name|blockLog
 operator|.
 name|warn
 argument_list|(
-literal|"BLOCK* processReport: Report from the DataNode ({}) is "
+literal|"BLOCK* processReport 0x{}: Report from the DataNode ({}) "
 operator|+
-literal|"unsorted. This will cause overhead on the NameNode "
+literal|"is unsorted. This will cause overhead on the NameNode "
 operator|+
 literal|"which needs to sort the Full BR. Please update the "
 operator|+
 literal|"DataNode to the same version of Hadoop HDFS as the "
 operator|+
 literal|"NameNode ({})."
+argument_list|,
+name|strBlockReportId
 argument_list|,
 name|storageInfo
 operator|.
@@ -11883,9 +11939,11 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* processReport: logged info for {} of {} "
+literal|"BLOCK* processReport 0x{}: logged info for {} of {} "
 operator|+
 literal|"reported."
+argument_list|,
+name|strBlockReportId
 argument_list|,
 name|maxNumBlocksToLog
 argument_list|,
