@@ -74,6 +74,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|PrivilegedExceptionAction
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|AbstractMap
@@ -386,6 +396,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|SecurityUtil
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -484,21 +508,42 @@ return|return
 literal|null
 return|;
 block|}
-name|EncryptedKeyVersion
-name|edek
-init|=
-literal|null
-decl_stmt|;
 name|long
 name|generateEDEKStartTime
 init|=
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+comment|// Generate EDEK with login user (hdfs) so that KMS does not need
+comment|// an extra proxy configuration allowing hdfs to proxy its clients and
+comment|// KMS does not need configuration to allow non-hdfs user GENERATE_EEK
+comment|// operation.
+name|EncryptedKeyVersion
+name|edek
+init|=
+name|SecurityUtil
+operator|.
+name|doAsLoginUser
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|EncryptedKeyVersion
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|EncryptedKeyVersion
+name|run
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 try|try
 block|{
-name|edek
-operator|=
+return|return
 name|fsd
 operator|.
 name|getProvider
@@ -508,7 +553,7 @@ name|generateEncryptedKey
 argument_list|(
 name|ezKeyName
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -524,6 +569,10 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+block|}
+argument_list|)
+decl_stmt|;
 name|long
 name|generateEDEKTime
 init|=
