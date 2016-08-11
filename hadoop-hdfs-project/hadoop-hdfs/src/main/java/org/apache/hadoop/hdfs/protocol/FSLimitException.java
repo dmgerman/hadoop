@@ -265,10 +265,13 @@ name|msg
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MaxDirectoryItemsExceededException (long quota, long count)
+DECL|method|MaxDirectoryItemsExceededException (String path, long quota, long count)
 specifier|public
 name|MaxDirectoryItemsExceededException
 parameter_list|(
+name|String
+name|path
+parameter_list|,
 name|long
 name|quota
 parameter_list|,
@@ -281,6 +284,11 @@ argument_list|(
 name|quota
 argument_list|,
 name|count
+argument_list|)
+expr_stmt|;
+name|setPathName
+argument_list|(
+name|path
 argument_list|)
 expr_stmt|;
 block|}

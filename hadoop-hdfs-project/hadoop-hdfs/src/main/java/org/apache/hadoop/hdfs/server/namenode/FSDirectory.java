@@ -4748,6 +4748,8 @@ init|=
 operator|new
 name|MaxDirectoryItemsExceededException
 argument_list|(
+name|parentPath
+argument_list|,
 name|maxDirItems
 argument_list|,
 name|count
@@ -4761,13 +4763,6 @@ name|isImageLoaded
 argument_list|()
 condition|)
 block|{
-name|e
-operator|.
-name|setPathName
-argument_list|(
-name|parentPath
-argument_list|)
-expr_stmt|;
 throw|throw
 name|e
 throw|;
