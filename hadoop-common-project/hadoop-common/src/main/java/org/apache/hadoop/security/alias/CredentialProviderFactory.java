@@ -120,6 +120,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
 begin_comment
 comment|/**  * A factory to create a list of CredentialProvider based on the path given in a  * Configuration. It uses a service loader interface to find the available  * CredentialProviders and create them based on the list of URIs.  */
 end_comment
@@ -146,7 +160,9 @@ specifier|final
 name|String
 name|CREDENTIAL_PROVIDER_PATH
 init|=
-literal|"hadoop.security.credential.provider.path"
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_CREDENTIAL_PROVIDER_PATH
 decl_stmt|;
 DECL|method|createProvider (URI providerName, Configuration conf )
 specifier|public

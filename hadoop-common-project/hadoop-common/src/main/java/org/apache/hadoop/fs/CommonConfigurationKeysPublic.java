@@ -1531,6 +1531,45 @@ name|HADOOP_HTTP_LOGS_ENABLED_DEFAULT
 init|=
 literal|true
 decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|HADOOP_SECURITY_CREDENTIAL_PROVIDER_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CREDENTIAL_PROVIDER_PATH
+init|=
+literal|"hadoop.security.credential.provider.path"
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|HADOOP_SECURITY_CREDENTIAL_CLEAR_TEXT_FALLBACK
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CREDENTIAL_CLEAR_TEXT_FALLBACK
+init|=
+literal|"hadoop.security.credential.clear-text-fallback"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|HADOOP_SECURITY_CREDENTIAL_CLEAR_TEXT_FALLBACK_DEFAULT
+name|HADOOP_SECURITY_CREDENTIAL_CLEAR_TEXT_FALLBACK_DEFAULT
+init|=
+literal|true
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|HADOOP_SECURITY_CREDENTIAL_PASSWORD_FILE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CREDENTIAL_PASSWORD_FILE_KEY
+init|=
+literal|"hadoop.security.credstore.java-keystore-provider.password-file"
+decl_stmt|;
 block|}
 end_class
 
