@@ -1976,8 +1976,6 @@ name|user
 parameter_list|)
 throws|throws
 name|YarnException
-throws|,
-name|AccessControlException
 block|{
 name|ApplicationId
 name|applicationId
@@ -2241,8 +2239,6 @@ name|startTime
 parameter_list|)
 throws|throws
 name|YarnException
-throws|,
-name|AccessControlException
 block|{
 comment|// Do queue mapping
 if|if
@@ -2479,6 +2475,10 @@ argument_list|)
 condition|)
 block|{
 throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
 operator|new
 name|AccessControlException
 argument_list|(
@@ -2496,6 +2496,7 @@ name|submissionContext
 operator|.
 name|getQueue
 argument_list|()
+argument_list|)
 argument_list|)
 throw|;
 block|}
