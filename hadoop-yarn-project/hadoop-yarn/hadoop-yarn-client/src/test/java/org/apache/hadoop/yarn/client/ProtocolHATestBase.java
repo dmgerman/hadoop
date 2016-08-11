@@ -2749,7 +2749,7 @@ name|get
 argument_list|()
 operator|&&
 name|count
-operator|>=
+operator|<=
 name|maximumWaittingTime
 condition|)
 block|{
@@ -2780,6 +2780,10 @@ condition|(
 name|count
 operator|>=
 name|maximumWaittingTime
+operator|&&
+name|failoverThread
+operator|!=
+literal|null
 condition|)
 block|{
 return|return
