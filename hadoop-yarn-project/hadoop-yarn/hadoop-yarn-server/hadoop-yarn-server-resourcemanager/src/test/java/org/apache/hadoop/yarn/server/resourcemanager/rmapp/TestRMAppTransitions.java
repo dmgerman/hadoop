@@ -52,6 +52,18 @@ name|org
 operator|.
 name|mockito
 operator|.
+name|Matchers
+operator|.
+name|eq
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
 name|Mockito
 operator|.
 name|doReturn
@@ -2788,6 +2800,29 @@ argument_list|,
 name|application
 argument_list|)
 expr_stmt|;
+comment|// verify sendATSCreateEvent() is not get called during
+comment|// RMAppNewlySavingTransition.
+name|verify
+argument_list|(
+name|publisher
+argument_list|,
+name|times
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+operator|.
+name|appCreated
+argument_list|(
+name|eq
+argument_list|(
+name|application
+argument_list|)
+argument_list|,
+name|anyLong
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|application
 return|;
@@ -2811,7 +2846,7 @@ argument_list|(
 name|submissionContext
 argument_list|)
 decl_stmt|;
-comment|// NEW_SAVING => SUBMITTED event RMAppEventType.APP_SAVED
+comment|// NEW_SAVING => SUBMITTED event RMAppEventType.APP_NEW_SAVED
 name|RMAppEvent
 name|event
 init|=
@@ -2847,6 +2882,24 @@ operator|.
 name|SUBMITTED
 argument_list|,
 name|application
+argument_list|)
+expr_stmt|;
+comment|// verify sendATSCreateEvent() is get called during
+comment|// AddApplicationToSchedulerTransition.
+name|verify
+argument_list|(
+name|publisher
+argument_list|)
+operator|.
+name|appCreated
+argument_list|(
+name|eq
+argument_list|(
+name|application
+argument_list|)
+argument_list|,
+name|anyLong
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

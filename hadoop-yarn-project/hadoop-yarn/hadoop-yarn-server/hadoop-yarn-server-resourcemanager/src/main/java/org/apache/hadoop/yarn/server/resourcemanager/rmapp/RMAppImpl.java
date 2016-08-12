@@ -5672,15 +5672,10 @@ expr_stmt|;
 block|}
 comment|//TODO recover collector address.
 comment|//this.collectorAddr = appState.getCollectorAddr();
-comment|// send the ATS create Event
+comment|// send the ATS create Event during RM recovery.
+comment|// NOTE: it could be duplicated with events sent before RM get restarted.
 name|sendATSCreateEvent
-argument_list|(
-name|this
-argument_list|,
-name|this
-operator|.
-name|startTime
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|RMAppAttemptImpl
 name|preAttempt
@@ -6753,6 +6748,12 @@ literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// send the ATS create Event
+name|app
+operator|.
+name|sendATSCreateEvent
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|class|StartAppAttemptTransition
@@ -7144,18 +7145,6 @@ operator|.
 name|storeNewApplication
 argument_list|(
 name|app
-argument_list|)
-expr_stmt|;
-comment|// send the ATS create Event
-name|app
-operator|.
-name|sendATSCreateEvent
-argument_list|(
-name|app
-argument_list|,
-name|app
-operator|.
-name|startTime
 argument_list|)
 expr_stmt|;
 block|}
@@ -10475,17 +10464,11 @@ return|return
 name|callerContext
 return|;
 block|}
-DECL|method|sendATSCreateEvent (RMApp app, long startTime)
+DECL|method|sendATSCreateEvent ()
 specifier|private
 name|void
 name|sendATSCreateEvent
-parameter_list|(
-name|RMApp
-name|app
-parameter_list|,
-name|long
-name|startTime
-parameter_list|)
+parameter_list|()
 block|{
 name|rmContext
 operator|.
@@ -10494,7 +10477,7 @@ argument_list|()
 operator|.
 name|applicationStarted
 argument_list|(
-name|app
+name|this
 argument_list|)
 expr_stmt|;
 name|rmContext
@@ -10504,8 +10487,10 @@ argument_list|()
 operator|.
 name|appCreated
 argument_list|(
-name|app
+name|this
 argument_list|,
+name|this
+operator|.
 name|startTime
 argument_list|)
 expr_stmt|;
