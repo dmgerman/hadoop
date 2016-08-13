@@ -140,6 +140,9 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|initDecoderIfNecessary
+argument_list|()
+expr_stmt|;
 name|getStripedReader
 argument_list|()
 operator|.
@@ -324,9 +327,6 @@ name|int
 name|toReconstructLen
 parameter_list|)
 block|{
-name|initDecoderIfNecessary
-argument_list|()
-expr_stmt|;
 name|ByteBuffer
 index|[]
 name|inputs

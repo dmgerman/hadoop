@@ -222,6 +222,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|initDecoderIfNecessary
+argument_list|()
+expr_stmt|;
 name|getStripedReader
 argument_list|()
 operator|.
@@ -707,9 +710,6 @@ name|int
 name|toReconstructLen
 parameter_list|)
 block|{
-name|initDecoderIfNecessary
-argument_list|()
-expr_stmt|;
 name|ByteBuffer
 index|[]
 name|inputs

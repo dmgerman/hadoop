@@ -524,6 +524,16 @@ return|return
 name|buffer
 return|;
 block|}
+DECL|method|freeReadBuffer ()
+name|void
+name|freeReadBuffer
+parameter_list|()
+block|{
+name|buffer
+operator|=
+literal|null
+expr_stmt|;
+block|}
 DECL|method|resetBlockReader (long offsetInBlock)
 name|void
 name|resetBlockReader

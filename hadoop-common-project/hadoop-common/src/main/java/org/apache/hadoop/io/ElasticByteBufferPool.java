@@ -461,6 +461,11 @@ name|ByteBuffer
 name|buffer
 parameter_list|)
 block|{
+name|buffer
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 name|TreeMap
 argument_list|<
 name|Key
