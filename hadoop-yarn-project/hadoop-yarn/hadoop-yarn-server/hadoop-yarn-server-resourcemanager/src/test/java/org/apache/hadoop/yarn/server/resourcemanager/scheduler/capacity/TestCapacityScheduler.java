@@ -24326,7 +24326,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"B Used Resource should be 2 GB"
+literal|"B Used Resource should be 13 GB"
 argument_list|,
 literal|13
 operator|*
@@ -24558,6 +24558,18 @@ name|containerId1
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|rm
+operator|.
+name|drainEvents
+argument_list|()
+expr_stmt|;
+name|CapacityScheduler
+operator|.
+name|schedule
+argument_list|(
+name|cs
+argument_list|)
+expr_stmt|;
 name|cs
 operator|.
 name|handle
@@ -24583,7 +24595,7 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"A Used Resource should be 2 GB"
+literal|"A Used Resource should be 4 GB"
 argument_list|,
 literal|4
 operator|*
