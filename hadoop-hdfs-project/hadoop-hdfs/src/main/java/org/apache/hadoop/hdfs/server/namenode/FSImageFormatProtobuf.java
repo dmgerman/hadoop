@@ -2852,6 +2852,23 @@ argument_list|(
 name|sectionOutputStream
 argument_list|)
 expr_stmt|;
+comment|// Skip snapshot-related sections when there is no snapshot.
+if|if
+condition|(
+name|context
+operator|.
+name|getSourceNamesystem
+argument_list|()
+operator|.
+name|getSnapshotManager
+argument_list|()
+operator|.
+name|getNumSnapshots
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
 name|snapshotSaver
 operator|.
 name|serializeSnapshotDiffSection
@@ -2859,6 +2876,7 @@ argument_list|(
 name|sectionOutputStream
 argument_list|)
 expr_stmt|;
+block|}
 name|snapshotSaver
 operator|.
 name|serializeINodeReferenceSection
