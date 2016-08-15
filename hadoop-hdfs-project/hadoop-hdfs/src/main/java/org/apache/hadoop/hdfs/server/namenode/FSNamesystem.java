@@ -17038,18 +17038,6 @@ literal|" because it is not under construction"
 argument_list|)
 throw|;
 block|}
-name|leaseManager
-operator|.
-name|removeLease
-argument_list|(
-name|uc
-operator|.
-name|getClientName
-argument_list|()
-argument_list|,
-name|pendingFile
-argument_list|)
-expr_stmt|;
 name|pendingFile
 operator|.
 name|recordModification
@@ -17077,6 +17065,18 @@ name|blockManager
 operator|.
 name|getMinReplication
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|leaseManager
+operator|.
+name|removeLease
+argument_list|(
+name|uc
+operator|.
+name|getClientName
+argument_list|()
+argument_list|,
+name|pendingFile
 argument_list|)
 expr_stmt|;
 comment|// close file and persist block allocations for this file

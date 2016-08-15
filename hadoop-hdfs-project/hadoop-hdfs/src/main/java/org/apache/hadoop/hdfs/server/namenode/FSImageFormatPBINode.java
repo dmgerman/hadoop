@@ -2365,6 +2365,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// Leases are added when the inode section is loaded. This section is
+comment|// still read in for compatibility reasons.
 while|while
 condition|(
 literal|true
@@ -2389,58 +2391,6 @@ condition|)
 block|{
 break|break;
 block|}
-comment|// update the lease manager
-name|INodeFile
-name|file
-init|=
-name|dir
-operator|.
-name|getInode
-argument_list|(
-name|entry
-operator|.
-name|getInodeId
-argument_list|()
-argument_list|)
-operator|.
-name|asFile
-argument_list|()
-decl_stmt|;
-name|FileUnderConstructionFeature
-name|uc
-init|=
-name|file
-operator|.
-name|getFileUnderConstructionFeature
-argument_list|()
-decl_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|uc
-operator|!=
-literal|null
-argument_list|)
-expr_stmt|;
-comment|// file must be under-construction
-name|fsn
-operator|.
-name|leaseManager
-operator|.
-name|addLease
-argument_list|(
-name|uc
-operator|.
-name|getClientName
-argument_list|()
-argument_list|,
-name|entry
-operator|.
-name|getInodeId
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 DECL|method|addToParent (INodeDirectory parent, INode child)
@@ -2936,6 +2886,24 @@ argument_list|,
 name|uc
 operator|.
 name|getClientMachine
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// update the lease manager
+name|fsn
+operator|.
+name|leaseManager
+operator|.
+name|addLease
+argument_list|(
+name|uc
+operator|.
+name|getClientName
+argument_list|()
+argument_list|,
+name|file
+operator|.
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
