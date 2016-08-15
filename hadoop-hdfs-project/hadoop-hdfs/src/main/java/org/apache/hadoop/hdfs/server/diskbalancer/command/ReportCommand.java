@@ -640,6 +640,8 @@ specifier|final
 name|String
 name|volumeFormat
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|String
 name|outputLine
@@ -723,6 +725,12 @@ argument_list|(
 name|nodeVal
 argument_list|)
 decl_stmt|;
+comment|// get storage path of datanode
+name|populatePathNames
+argument_list|(
+name|dbdn
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|dbdn
