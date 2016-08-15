@@ -14771,6 +14771,16 @@ operator|.
 name|KILLED
 argument_list|)
 expr_stmt|;
+name|rm
+operator|.
+name|waitForAppRemovedFromScheduler
+argument_list|(
+name|app
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|appsInRoot
 operator|=
 name|scheduler
