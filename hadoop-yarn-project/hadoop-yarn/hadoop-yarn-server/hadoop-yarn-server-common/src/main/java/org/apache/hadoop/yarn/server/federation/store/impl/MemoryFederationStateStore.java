@@ -979,16 +979,6 @@ operator|.
 name|getSubClusterInfo
 argument_list|()
 decl_stmt|;
-name|subClusterInfo
-operator|.
-name|setLastStartTime
-argument_list|(
-name|clock
-operator|.
-name|getTime
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|membership
 operator|.
 name|put
@@ -1305,10 +1295,10 @@ block|}
 comment|// FederationApplicationHomeSubClusterStore methods
 annotation|@
 name|Override
-DECL|method|addApplicationHomeSubClusterMap ( AddApplicationHomeSubClusterRequest request)
+DECL|method|addApplicationHomeSubCluster ( AddApplicationHomeSubClusterRequest request)
 specifier|public
 name|AddApplicationHomeSubClusterResponse
-name|addApplicationHomeSubClusterMap
+name|addApplicationHomeSubCluster
 parameter_list|(
 name|AddApplicationHomeSubClusterRequest
 name|request
@@ -1329,6 +1319,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+operator|!
 name|applications
 operator|.
 name|containsKey
@@ -1337,18 +1328,6 @@ name|appId
 argument_list|)
 condition|)
 block|{
-throw|throw
-operator|new
-name|YarnException
-argument_list|(
-literal|"Application "
-operator|+
-name|appId
-operator|+
-literal|" already exists"
-argument_list|)
-throw|;
-block|}
 name|applications
 operator|.
 name|put
@@ -1364,19 +1343,27 @@ name|getHomeSubCluster
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|AddApplicationHomeSubClusterResponse
 operator|.
 name|newInstance
-argument_list|()
+argument_list|(
+name|applications
+operator|.
+name|get
+argument_list|(
+name|appId
+argument_list|)
+argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationHomeSubClusterMap ( UpdateApplicationHomeSubClusterRequest request)
+DECL|method|updateApplicationHomeSubCluster ( UpdateApplicationHomeSubClusterRequest request)
 specifier|public
 name|UpdateApplicationHomeSubClusterResponse
-name|updateApplicationHomeSubClusterMap
+name|updateApplicationHomeSubCluster
 parameter_list|(
 name|UpdateApplicationHomeSubClusterRequest
 name|request
@@ -1442,10 +1429,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getApplicationHomeSubClusterMap ( GetApplicationHomeSubClusterRequest request)
+DECL|method|getApplicationHomeSubCluster ( GetApplicationHomeSubClusterRequest request)
 specifier|public
 name|GetApplicationHomeSubClusterResponse
-name|getApplicationHomeSubClusterMap
+name|getApplicationHomeSubCluster
 parameter_list|(
 name|GetApplicationHomeSubClusterRequest
 name|request
@@ -1507,10 +1494,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getApplicationsHomeSubClusterMap ( GetApplicationsHomeSubClusterRequest request)
+DECL|method|getApplicationsHomeSubCluster ( GetApplicationsHomeSubClusterRequest request)
 specifier|public
 name|GetApplicationsHomeSubClusterResponse
-name|getApplicationsHomeSubClusterMap
+name|getApplicationsHomeSubCluster
 parameter_list|(
 name|GetApplicationsHomeSubClusterRequest
 name|request
@@ -1586,10 +1573,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|deleteApplicationHomeSubClusterMap ( DeleteApplicationHomeSubClusterRequest request)
+DECL|method|deleteApplicationHomeSubCluster ( DeleteApplicationHomeSubClusterRequest request)
 specifier|public
 name|DeleteApplicationHomeSubClusterResponse
-name|deleteApplicationHomeSubClusterMap
+name|deleteApplicationHomeSubCluster
 parameter_list|(
 name|DeleteApplicationHomeSubClusterRequest
 name|request

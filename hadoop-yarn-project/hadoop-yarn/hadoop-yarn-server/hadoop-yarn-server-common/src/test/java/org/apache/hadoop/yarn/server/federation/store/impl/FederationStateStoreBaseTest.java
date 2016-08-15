@@ -923,7 +923,10 @@ argument_list|)
 decl_stmt|;
 name|registerSubCluster
 argument_list|(
+name|createSubClusterInfo
+argument_list|(
 name|subClusterId
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|SubClusterDeregisterRequest
@@ -1067,7 +1070,7 @@ argument_list|)
 decl_stmt|;
 name|registerSubCluster
 argument_list|(
-name|subClusterId
+name|subClusterInfo
 argument_list|)
 expr_stmt|;
 name|GetSubClusterInfoRequest
@@ -1398,7 +1401,10 @@ argument_list|)
 decl_stmt|;
 name|registerSubCluster
 argument_list|(
+name|createSubClusterInfo
+argument_list|(
 name|subClusterId
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|SubClusterHeartbeatRequest
@@ -1414,7 +1420,7 @@ name|SubClusterState
 operator|.
 name|SC_RUNNING
 argument_list|,
-literal|"cabability"
+literal|"capability"
 argument_list|)
 decl_stmt|;
 name|stateStore
@@ -1488,7 +1494,7 @@ name|SubClusterState
 operator|.
 name|SC_RUNNING
 argument_list|,
-literal|"cabability"
+literal|"capability"
 argument_list|)
 decl_stmt|;
 try|try
@@ -1532,10 +1538,10 @@ block|}
 comment|// Test FederationApplicationHomeSubClusterStore
 annotation|@
 name|Test
-DECL|method|testAddApplicationHomeSubClusterMap ()
+DECL|method|testAddApplicationHomeSubCluster ()
 specifier|public
 name|void
-name|testAddApplicationHomeSubClusterMap
+name|testAddApplicationHomeSubCluster
 parameter_list|()
 throws|throws
 name|Exception
@@ -1589,16 +1595,21 @@ name|response
 init|=
 name|stateStore
 operator|.
-name|addApplicationHomeSubClusterMap
+name|addApplicationHomeSubCluster
 argument_list|(
 name|request
 argument_list|)
 decl_stmt|;
 name|Assert
 operator|.
-name|assertNotNull
+name|assertEquals
 argument_list|(
+name|subClusterId
+argument_list|,
 name|response
+operator|.
+name|getHomeSubCluster
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1616,10 +1627,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testAddApplicationHomeSubClusterMapAppAlreadyExists ()
+DECL|method|testAddApplicationHomeSubClusterAppAlreadyExists ()
 specifier|public
 name|void
-name|testAddApplicationHomeSubClusterMapAppAlreadyExists
+name|testAddApplicationHomeSubClusterAppAlreadyExists
 parameter_list|()
 throws|throws
 name|Exception
@@ -1675,11 +1686,12 @@ argument_list|,
 name|subClusterId2
 argument_list|)
 decl_stmt|;
-try|try
-block|{
+name|AddApplicationHomeSubClusterResponse
+name|response
+init|=
 name|stateStore
 operator|.
-name|addApplicationHomeSubClusterMap
+name|addApplicationHomeSubCluster
 argument_list|(
 name|AddApplicationHomeSubClusterRequest
 operator|.
@@ -1688,42 +1700,19 @@ argument_list|(
 name|ahsc2
 argument_list|)
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|Assert
 operator|.
-name|fail
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|YarnException
-name|e
-parameter_list|)
-block|{
-name|Assert
-operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|e
+name|subClusterId1
+argument_list|,
+name|response
 operator|.
-name|getMessage
+name|getHomeSubCluster
 argument_list|()
-operator|.
-name|startsWith
-argument_list|(
-literal|"Application "
-operator|+
-name|appId
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" already exists"
-argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 name|Assert
 operator|.
 name|assertEquals
@@ -1739,10 +1728,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testDeleteApplicationHomeSubClusterMap ()
+DECL|method|testDeleteApplicationHomeSubCluster ()
 specifier|public
 name|void
-name|testDeleteApplicationHomeSubClusterMap
+name|testDeleteApplicationHomeSubCluster
 parameter_list|()
 throws|throws
 name|Exception
@@ -1791,7 +1780,7 @@ name|response
 init|=
 name|stateStore
 operator|.
-name|deleteApplicationHomeSubClusterMap
+name|deleteApplicationHomeSubCluster
 argument_list|(
 name|delRequest
 argument_list|)
@@ -1845,10 +1834,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testDeleteApplicationHomeSubClusterMapUnknownApp ()
+DECL|method|testDeleteApplicationHomeSubClusterUnknownApp ()
 specifier|public
 name|void
-name|testDeleteApplicationHomeSubClusterMapUnknownApp
+name|testDeleteApplicationHomeSubClusterUnknownApp
 parameter_list|()
 throws|throws
 name|Exception
@@ -1879,7 +1868,7 @@ try|try
 block|{
 name|stateStore
 operator|.
-name|deleteApplicationHomeSubClusterMap
+name|deleteApplicationHomeSubCluster
 argument_list|(
 name|delRequest
 argument_list|)
@@ -1922,10 +1911,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testGetApplicationHomeSubClusterMap ()
+DECL|method|testGetApplicationHomeSubCluster ()
 specifier|public
 name|void
-name|testGetApplicationHomeSubClusterMap
+name|testGetApplicationHomeSubCluster
 parameter_list|()
 throws|throws
 name|Exception
@@ -1974,7 +1963,7 @@ name|result
 init|=
 name|stateStore
 operator|.
-name|getApplicationHomeSubClusterMap
+name|getApplicationHomeSubCluster
 argument_list|(
 name|getRequest
 argument_list|)
@@ -2012,10 +2001,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testGetApplicationHomeSubClusterMapUnknownApp ()
+DECL|method|testGetApplicationHomeSubClusterUnknownApp ()
 specifier|public
 name|void
-name|testGetApplicationHomeSubClusterMapUnknownApp
+name|testGetApplicationHomeSubClusterUnknownApp
 parameter_list|()
 throws|throws
 name|Exception
@@ -2046,7 +2035,7 @@ try|try
 block|{
 name|stateStore
 operator|.
-name|getApplicationHomeSubClusterMap
+name|getApplicationHomeSubCluster
 argument_list|(
 name|request
 argument_list|)
@@ -2089,10 +2078,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testGetApplicationsHomeSubClusterMap ()
+DECL|method|testGetApplicationsHomeSubCluster ()
 specifier|public
 name|void
-name|testGetApplicationsHomeSubClusterMap
+name|testGetApplicationsHomeSubCluster
 parameter_list|()
 throws|throws
 name|Exception
@@ -2192,7 +2181,7 @@ name|result
 init|=
 name|stateStore
 operator|.
-name|getApplicationsHomeSubClusterMap
+name|getApplicationsHomeSubCluster
 argument_list|(
 name|getRequest
 argument_list|)
@@ -2245,10 +2234,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testUpdateApplicationHomeSubClusterMap ()
+DECL|method|testUpdateApplicationHomeSubCluster ()
 specifier|public
 name|void
-name|testUpdateApplicationHomeSubClusterMap
+name|testUpdateApplicationHomeSubCluster
 parameter_list|()
 throws|throws
 name|Exception
@@ -2319,7 +2308,7 @@ name|response
 init|=
 name|stateStore
 operator|.
-name|updateApplicationHomeSubClusterMap
+name|updateApplicationHomeSubCluster
 argument_list|(
 name|updateRequest
 argument_list|)
@@ -2346,10 +2335,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testUpdateApplicationHomeSubClusterMapUnknownApp ()
+DECL|method|testUpdateApplicationHomeSubClusterUnknownApp ()
 specifier|public
 name|void
-name|testUpdateApplicationHomeSubClusterMapUnknownApp
+name|testUpdateApplicationHomeSubClusterUnknownApp
 parameter_list|()
 throws|throws
 name|Exception
@@ -2402,7 +2391,7 @@ try|try
 block|{
 name|stateStore
 operator|.
-name|updateApplicationHomeSubClusterMap
+name|updateApplicationHomeSubCluster
 argument_list|(
 operator|(
 name|updateRequest
@@ -2857,7 +2846,7 @@ operator|.
 name|getTime
 argument_list|()
 argument_list|,
-literal|"cabability"
+literal|"capability"
 argument_list|)
 return|;
 block|}
@@ -2929,7 +2918,7 @@ argument_list|)
 decl_stmt|;
 name|stateStore
 operator|.
-name|addApplicationHomeSubClusterMap
+name|addApplicationHomeSubCluster
 argument_list|(
 name|request
 argument_list|)
@@ -2972,25 +2961,17 @@ name|request
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|registerSubCluster (SubClusterId subClusterId)
+DECL|method|registerSubCluster (SubClusterInfo subClusterInfo)
 specifier|private
 name|void
 name|registerSubCluster
 parameter_list|(
-name|SubClusterId
-name|subClusterId
+name|SubClusterInfo
+name|subClusterInfo
 parameter_list|)
 throws|throws
 name|YarnException
 block|{
-name|SubClusterInfo
-name|subClusterInfo
-init|=
-name|createSubClusterInfo
-argument_list|(
-name|subClusterId
-argument_list|)
-decl_stmt|;
 name|stateStore
 operator|.
 name|registerSubCluster
@@ -3063,7 +3044,7 @@ name|response
 init|=
 name|stateStore
 operator|.
-name|getApplicationHomeSubClusterMap
+name|getApplicationHomeSubCluster
 argument_list|(
 name|request
 argument_list|)

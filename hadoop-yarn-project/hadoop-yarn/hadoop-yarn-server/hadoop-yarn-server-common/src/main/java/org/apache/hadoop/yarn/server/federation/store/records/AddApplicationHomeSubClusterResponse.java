@@ -73,7 +73,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * AddApplicationHomeSubClusterResponse contains the answer from the  * {@code FederationApplicationHomeSubClusterStore} to a request to insert a  * newly generated applicationId and its owner. Currently response is empty if  * the operation was successful, if not an exception reporting reason for a  * failure.  *  */
+comment|/**  * AddApplicationHomeSubClusterResponse contains the answer from the  * {@code FederationApplicationHomeSubClusterStore} to a request to insert a  * newly generated applicationId and its owner.  *  * The response contains application's home sub-cluster as it is stored in the  * {@code FederationApplicationHomeSubClusterStore}. If a mapping for the  * application already existed, the {@code SubClusterId} in this response will  * return the existing mapping which might be different from that in the  * {@code AddApplicationHomeSubClusterRequest}.  */
 end_comment
 
 begin_class
@@ -91,12 +91,15 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ()
+DECL|method|newInstance ( SubClusterId homeSubCluster)
 specifier|public
 specifier|static
 name|AddApplicationHomeSubClusterResponse
 name|newInstance
-parameter_list|()
+parameter_list|(
+name|SubClusterId
+name|homeSubCluster
+parameter_list|)
 block|{
 name|AddApplicationHomeSubClusterResponse
 name|response
@@ -110,10 +113,36 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|response
+operator|.
+name|setHomeSubCluster
+argument_list|(
+name|homeSubCluster
+argument_list|)
+expr_stmt|;
 return|return
 name|response
 return|;
 block|}
+comment|/**    * Set the home sub-cluster that this application has been assigned to.    *    * @param homeSubCluster the {@link SubClusterId} of this application's home    *          sub-cluster    */
+DECL|method|setHomeSubCluster (SubClusterId homeSubCluster)
+specifier|public
+specifier|abstract
+name|void
+name|setHomeSubCluster
+parameter_list|(
+name|SubClusterId
+name|homeSubCluster
+parameter_list|)
+function_decl|;
+comment|/**    * Get the home sub-cluster that this application has been assigned to. This    * may not match the {@link SubClusterId} in the corresponding response, if    * the mapping for the request's application already existed.    *    * @return the {@link SubClusterId} of this application's home sub-cluster    */
+DECL|method|getHomeSubCluster ()
+specifier|public
+specifier|abstract
+name|SubClusterId
+name|getHomeSubCluster
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

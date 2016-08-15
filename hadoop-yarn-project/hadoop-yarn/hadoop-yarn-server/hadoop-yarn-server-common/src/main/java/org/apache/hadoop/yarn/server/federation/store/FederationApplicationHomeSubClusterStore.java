@@ -304,10 +304,10 @@ specifier|public
 interface|interface
 name|FederationApplicationHomeSubClusterStore
 block|{
-comment|/**    * Register the home {@code SubClusterId} of the newly submitted    * {@code ApplicationId}. Currently response is empty if the operation was    * successful, if not an exception reporting reason for a failure.    *    * @param request the request to register a new application with its home    *          sub-cluster    * @return empty on successful registration of the application in the    *         StateStore, if not an exception reporting reason for a failure    * @throws YarnException if the request is invalid/fails    */
-DECL|method|addApplicationHomeSubClusterMap ( AddApplicationHomeSubClusterRequest request)
+comment|/**    * Register the home {@code SubClusterId} of the newly submitted    * {@code ApplicationId}. Currently response is empty if the operation was    * successful, if not an exception reporting reason for a failure. If a    * mapping for the application already existed, the {@code SubClusterId} in    * this response will return the existing mapping which might be different    * from that in the {@code AddApplicationHomeSubClusterRequest}.    *    * @param request the request to register a new application with its home    *          sub-cluster    * @return upon successful registration of the application in the StateStore,    *         {@code AddApplicationHomeSubClusterRequest} containing the home    *         sub-cluster of the application. Otherwise, an exception reporting    *         reason for a failure    * @throws YarnException if the request is invalid/fails    */
+DECL|method|addApplicationHomeSubCluster ( AddApplicationHomeSubClusterRequest request)
 name|AddApplicationHomeSubClusterResponse
-name|addApplicationHomeSubClusterMap
+name|addApplicationHomeSubCluster
 parameter_list|(
 name|AddApplicationHomeSubClusterRequest
 name|request
@@ -316,9 +316,9 @@ throws|throws
 name|YarnException
 function_decl|;
 comment|/**    * Update the home {@code SubClusterId} of a previously submitted    * {@code ApplicationId}. Currently response is empty if the operation was    * successful, if not an exception reporting reason for a failure.    *    * @param request the request to update the home sub-cluster of an    *          application.    * @return empty on successful update of the application in the StateStore, if    *         not an exception reporting reason for a failure    * @throws YarnException if the request is invalid/fails    */
-DECL|method|updateApplicationHomeSubClusterMap ( UpdateApplicationHomeSubClusterRequest request)
+DECL|method|updateApplicationHomeSubCluster ( UpdateApplicationHomeSubClusterRequest request)
 name|UpdateApplicationHomeSubClusterResponse
-name|updateApplicationHomeSubClusterMap
+name|updateApplicationHomeSubCluster
 parameter_list|(
 name|UpdateApplicationHomeSubClusterRequest
 name|request
@@ -327,9 +327,9 @@ throws|throws
 name|YarnException
 function_decl|;
 comment|/**    * Get information about the application identified by the input    * {@code ApplicationId}.    *    * @param request contains the application queried    * @return {@code ApplicationHomeSubCluster} containing the application's home    *         subcluster    * @throws YarnException if the request is invalid/fails    */
-DECL|method|getApplicationHomeSubClusterMap ( GetApplicationHomeSubClusterRequest request)
+DECL|method|getApplicationHomeSubCluster ( GetApplicationHomeSubClusterRequest request)
 name|GetApplicationHomeSubClusterResponse
-name|getApplicationHomeSubClusterMap
+name|getApplicationHomeSubCluster
 parameter_list|(
 name|GetApplicationHomeSubClusterRequest
 name|request
@@ -338,9 +338,9 @@ throws|throws
 name|YarnException
 function_decl|;
 comment|/**    * Get the {@code ApplicationHomeSubCluster} list representing the mapping of    * all submitted applications to it's home sub-cluster.    *    * @param request empty representing all applications    * @return the mapping of all submitted application to it's home sub-cluster    * @throws YarnException if the request is invalid/fails    */
-DECL|method|getApplicationsHomeSubClusterMap ( GetApplicationsHomeSubClusterRequest request)
+DECL|method|getApplicationsHomeSubCluster ( GetApplicationsHomeSubClusterRequest request)
 name|GetApplicationsHomeSubClusterResponse
-name|getApplicationsHomeSubClusterMap
+name|getApplicationsHomeSubCluster
 parameter_list|(
 name|GetApplicationsHomeSubClusterRequest
 name|request
@@ -349,9 +349,9 @@ throws|throws
 name|YarnException
 function_decl|;
 comment|/**    * Delete the mapping of home {@code SubClusterId} of a previously submitted    * {@code ApplicationId}. Currently response is empty if the operation was    * successful, if not an exception reporting reason for a failure.    *    * @param request the request to delete the home sub-cluster of an    *          application.    * @return empty on successful update of the application in the StateStore, if    *         not an exception reporting reason for a failure    * @throws YarnException if the request is invalid/fails    */
-DECL|method|deleteApplicationHomeSubClusterMap ( DeleteApplicationHomeSubClusterRequest request)
+DECL|method|deleteApplicationHomeSubCluster ( DeleteApplicationHomeSubClusterRequest request)
 name|DeleteApplicationHomeSubClusterResponse
-name|deleteApplicationHomeSubClusterMap
+name|deleteApplicationHomeSubCluster
 parameter_list|(
 name|DeleteApplicationHomeSubClusterRequest
 name|request
