@@ -310,18 +310,6 @@ operator|.
 name|getPermissionChecker
 argument_list|()
 decl_stmt|;
-name|byte
-index|[]
-index|[]
-name|pathComponents
-init|=
-name|FSDirectory
-operator|.
-name|getPathComponentsForReservedPath
-argument_list|(
-name|link
-argument_list|)
-decl_stmt|;
 name|INodesInPath
 name|iip
 decl_stmt|;
@@ -341,8 +329,6 @@ argument_list|(
 name|pc
 argument_list|,
 name|link
-argument_list|,
-name|pathComponents
 argument_list|)
 expr_stmt|;
 name|iip

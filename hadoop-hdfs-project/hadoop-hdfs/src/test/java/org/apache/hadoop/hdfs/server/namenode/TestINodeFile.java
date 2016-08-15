@@ -5006,7 +5006,7 @@ name|actual
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Tests for {@link FSDirectory#resolvePath(String, byte[][], FSDirectory)}    */
+comment|/**    * Tests for {@link FSDirectory#resolvePath(String, FSDirectory)}    */
 annotation|@
 name|Test
 DECL|method|testInodePath ()
@@ -5064,37 +5064,8 @@ name|anyLong
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Null components
-name|assertEquals
-argument_list|(
-literal|"/test"
-argument_list|,
-name|FSDirectory
-operator|.
-name|resolvePath
-argument_list|(
-literal|"/test"
-argument_list|,
-literal|null
-argument_list|,
-name|fsd
-argument_list|)
-argument_list|)
-expr_stmt|;
 comment|// Tests for FSDirectory#resolvePath()
 comment|// Non inode regular path
-name|byte
-index|[]
-index|[]
-name|components
-init|=
-name|INode
-operator|.
-name|getPathComponents
-argument_list|(
-name|path
-argument_list|)
-decl_stmt|;
 name|String
 name|resolvedPath
 init|=
@@ -5103,8 +5074,6 @@ operator|.
 name|resolvePath
 argument_list|(
 name|path
-argument_list|,
-name|components
 argument_list|,
 name|fsd
 argument_list|)
@@ -5117,24 +5086,18 @@ name|resolvedPath
 argument_list|)
 expr_stmt|;
 comment|// Inode path with no trailing separator
-name|components
-operator|=
-name|INode
-operator|.
-name|getPathComponents
-argument_list|(
+name|String
+name|testPath
+init|=
 literal|"/.reserved/.inodes/1"
-argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|resolvedPath
 operator|=
 name|FSDirectory
 operator|.
 name|resolvePath
 argument_list|(
-name|path
-argument_list|,
-name|components
+name|testPath
 argument_list|,
 name|fsd
 argument_list|)
@@ -5147,13 +5110,19 @@ name|resolvedPath
 argument_list|)
 expr_stmt|;
 comment|// Inode path with trailing separator
-name|components
+name|testPath
 operator|=
-name|INode
-operator|.
-name|getPathComponents
-argument_list|(
 literal|"/.reserved/.inodes/1/"
+expr_stmt|;
+name|resolvedPath
+operator|=
+name|FSDirectory
+operator|.
+name|resolvePath
+argument_list|(
+name|testPath
+argument_list|,
+name|fsd
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5164,14 +5133,9 @@ name|resolvedPath
 argument_list|)
 expr_stmt|;
 comment|// Inode relative path
-name|components
+name|testPath
 operator|=
-name|INode
-operator|.
-name|getPathComponents
-argument_list|(
 literal|"/.reserved/.inodes/1/d/e/f"
-argument_list|)
 expr_stmt|;
 name|resolvedPath
 operator|=
@@ -5179,9 +5143,7 @@ name|FSDirectory
 operator|.
 name|resolvePath
 argument_list|(
-name|path
-argument_list|,
-name|components
+name|testPath
 argument_list|,
 name|fsd
 argument_list|)
@@ -5194,19 +5156,9 @@ name|resolvedPath
 argument_list|)
 expr_stmt|;
 comment|// A path with just .inodes  returns the path as is
-name|String
 name|testPath
-init|=
-literal|"/.reserved/.inodes"
-decl_stmt|;
-name|components
 operator|=
-name|INode
-operator|.
-name|getPathComponents
-argument_list|(
-name|testPath
-argument_list|)
+literal|"/.reserved/.inodes"
 expr_stmt|;
 name|resolvedPath
 operator|=
@@ -5215,8 +5167,6 @@ operator|.
 name|resolvePath
 argument_list|(
 name|testPath
-argument_list|,
-name|components
 argument_list|,
 name|fsd
 argument_list|)
@@ -5237,15 +5187,6 @@ name|INodeId
 operator|.
 name|ROOT_INODE_ID
 expr_stmt|;
-name|components
-operator|=
-name|INode
-operator|.
-name|getPathComponents
-argument_list|(
-name|testPath
-argument_list|)
-expr_stmt|;
 name|resolvedPath
 operator|=
 name|FSDirectory
@@ -5253,8 +5194,6 @@ operator|.
 name|resolvePath
 argument_list|(
 name|testPath
-argument_list|,
-name|components
 argument_list|,
 name|fsd
 argument_list|)
@@ -5271,15 +5210,6 @@ name|testPath
 operator|=
 literal|"/.invalid/.inodes/1"
 expr_stmt|;
-name|components
-operator|=
-name|INode
-operator|.
-name|getPathComponents
-argument_list|(
-name|testPath
-argument_list|)
-expr_stmt|;
 name|resolvedPath
 operator|=
 name|FSDirectory
@@ -5287,8 +5217,6 @@ operator|.
 name|resolvePath
 argument_list|(
 name|testPath
-argument_list|,
-name|components
 argument_list|,
 name|fsd
 argument_list|)
@@ -5325,15 +5253,6 @@ name|testPath
 operator|=
 literal|"/.reserved/.inodes/1234"
 expr_stmt|;
-name|components
-operator|=
-name|INode
-operator|.
-name|getPathComponents
-argument_list|(
-name|testPath
-argument_list|)
-expr_stmt|;
 try|try
 block|{
 name|String
@@ -5344,8 +5263,6 @@ operator|.
 name|resolvePath
 argument_list|(
 name|testPath
-argument_list|,
-name|components
 argument_list|,
 name|fsd
 argument_list|)

@@ -360,18 +360,6 @@ operator|.
 name|getPermissionChecker
 argument_list|()
 decl_stmt|;
-name|byte
-index|[]
-index|[]
-name|pathComponents
-init|=
-name|FSDirectory
-operator|.
-name|getPathComponentsForReservedPath
-argument_list|(
-name|src
-argument_list|)
-decl_stmt|;
 name|fsd
 operator|.
 name|writeLock
@@ -388,8 +376,6 @@ argument_list|(
 name|pc
 argument_list|,
 name|src
-argument_list|,
-name|pathComponents
 argument_list|)
 expr_stmt|;
 name|INodesInPath

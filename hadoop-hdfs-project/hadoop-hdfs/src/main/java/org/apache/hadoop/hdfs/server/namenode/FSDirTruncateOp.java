@@ -381,18 +381,6 @@ operator|.
 name|getFSDirectory
 argument_list|()
 decl_stmt|;
-name|byte
-index|[]
-index|[]
-name|pathComponents
-init|=
-name|FSDirectory
-operator|.
-name|getPathComponentsForReservedPath
-argument_list|(
-name|srcArg
-argument_list|)
-decl_stmt|;
 specifier|final
 name|String
 name|src
@@ -426,8 +414,6 @@ argument_list|(
 name|pc
 argument_list|,
 name|srcArg
-argument_list|,
-name|pathComponents
 argument_list|)
 expr_stmt|;
 name|iip
