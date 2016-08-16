@@ -286,9 +286,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|hdfs
 operator|.
-name|Time
+name|web
+operator|.
+name|JsonUtil
 import|;
 end_import
 
@@ -296,13 +298,13 @@ begin_import
 import|import
 name|org
 operator|.
-name|codehaus
+name|apache
 operator|.
-name|jackson
+name|hadoop
 operator|.
-name|map
+name|util
 operator|.
-name|ObjectMapper
+name|Time
 import|;
 end_import
 
@@ -1354,17 +1356,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|ObjectMapper
-name|mapper
-init|=
-operator|new
-name|ObjectMapper
-argument_list|()
-decl_stmt|;
 return|return
-name|mapper
+name|JsonUtil
 operator|.
-name|writeValueAsString
+name|toJsonString
 argument_list|(
 name|pathMap
 argument_list|)
