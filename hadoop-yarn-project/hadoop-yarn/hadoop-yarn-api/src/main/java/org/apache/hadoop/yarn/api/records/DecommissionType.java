@@ -20,21 +20,25 @@ name|records
 package|;
 end_package
 
+begin_comment
+comment|/**  * Specifies the different types of decommissioning of nodes.  */
+end_comment
+
 begin_enum
 DECL|enum|DecommissionType
 specifier|public
 enum|enum
 name|DecommissionType
 block|{
-comment|/** Decomissioning nodes in normal way **/
+comment|/** Decomissioning nodes in normal way. **/
 DECL|enumConstant|NORMAL
 name|NORMAL
 block|,
-comment|/** Graceful decommissioning of nodes **/
+comment|/** Graceful decommissioning of nodes. **/
 DECL|enumConstant|GRACEFUL
 name|GRACEFUL
 block|,
-comment|/** Forceful decommissioning of nodes which are already in progress **/
+comment|/**    * Forceful decommissioning of nodes whose decommissioning is already in    * progress.    **/
 DECL|enumConstant|FORCEFUL
 name|FORCEFUL
 block|}
