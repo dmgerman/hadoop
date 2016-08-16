@@ -470,7 +470,7 @@ name|planHash
 init|=
 name|DigestUtils
 operator|.
-name|sha512Hex
+name|shaHex
 argument_list|(
 name|planData
 argument_list|)

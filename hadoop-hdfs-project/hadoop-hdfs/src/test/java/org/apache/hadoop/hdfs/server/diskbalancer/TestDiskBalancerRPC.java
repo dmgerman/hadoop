@@ -2168,7 +2168,7 @@ name|planHash
 operator|=
 name|DigestUtils
 operator|.
-name|sha512Hex
+name|shaHex
 argument_list|(
 name|plan
 operator|.

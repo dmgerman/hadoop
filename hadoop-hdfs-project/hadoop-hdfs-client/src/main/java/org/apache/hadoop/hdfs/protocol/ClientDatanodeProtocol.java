@@ -403,7 +403,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Cancel an executing plan.    *    * @param planID - A SHA512 hash of the plan string.    */
+comment|/**    * Cancel an executing plan.    *    * @param planID - A SHA-1 hash of the plan string.    */
 DECL|method|cancelDiskBalancePlan (String planID)
 name|void
 name|cancelDiskBalancePlan

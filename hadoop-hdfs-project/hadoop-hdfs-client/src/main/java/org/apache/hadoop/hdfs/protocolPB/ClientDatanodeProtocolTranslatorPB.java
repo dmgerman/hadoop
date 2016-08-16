@@ -2256,7 +2256,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Cancels an executing disk balancer plan.    *    * @param planID - A SHA512 hash of the plan string.    * @throws IOException on error    */
+comment|/**    * Cancels an executing disk balancer plan.    *    * @param planID - A SHA-1 hash of the plan string.    * @throws IOException on error    */
 annotation|@
 name|Override
 DECL|method|cancelDiskBalancePlan (String planID)

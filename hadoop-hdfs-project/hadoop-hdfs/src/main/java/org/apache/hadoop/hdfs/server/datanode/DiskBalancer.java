@@ -890,7 +890,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Takes a client submitted plan and converts into a set of work items that    * can be executed by the blockMover.    *    * @param planId      - A SHA512 of the plan string    * @param planVersion - version of the plan string - for future use.    * @param planFileName    - Plan file name    * @param planData    - Plan data in json format    * @param force       - Skip some validations and execute the plan file.    * @throws DiskBalancerException    */
+comment|/**    * Takes a client submitted plan and converts into a set of work items that    * can be executed by the blockMover.    *    * @param planId      - A SHA-1 of the plan string    * @param planVersion - version of the plan string - for future use.    * @param planFileName    - Plan file name    * @param planData    - Plan data in json format    * @param force       - Skip some validations and execute the plan file.    * @throws DiskBalancerException    */
 DECL|method|submitPlan (String planId, long planVersion, String planFileName, String planData, boolean force)
 specifier|public
 name|void
@@ -1477,7 +1477,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Verifies that user provided plan is valid.    *    * @param planID      - SHA 512 of the plan.    * @param planVersion - Version of the plan, for future use.    * @param plan        - Plan String in Json.    * @param force       - Skip verifying when the plan was generated.    * @return a NodePlan Object.    * @throws DiskBalancerException    */
+comment|/**    * Verifies that user provided plan is valid.    *    * @param planID      - SHA-1 of the plan.    * @param planVersion - Version of the plan, for future use.    * @param plan        - Plan String in Json.    * @param force       - Skip verifying when the plan was generated.    * @return a NodePlan Object.    * @throws DiskBalancerException    */
 DECL|method|verifyPlan (String planID, long planVersion, String plan, boolean force)
 specifier|private
 name|NodePlan
@@ -1597,7 +1597,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Verifies that plan matches the SHA512 provided by the client.    *    * @param planID - Sha512 Hex Bytes    * @param plan   - Plan String    * @throws DiskBalancerException    */
+comment|/**    * Verifies that plan matches the SHA-1 provided by the client.    *    * @param planID - SHA-1 Hex Bytes    * @param plan   - Plan String    * @throws DiskBalancerException    */
 DECL|method|verifyPlanHash (String planID, String plan)
 specifier|private
 name|NodePlan
@@ -1614,9 +1614,9 @@ name|DiskBalancerException
 block|{
 specifier|final
 name|long
-name|sha512Length
+name|sha1Length
 init|=
-literal|128
+literal|40
 decl_stmt|;
 if|if
 condition|(
@@ -1667,13 +1667,13 @@ operator|.
 name|length
 argument_list|()
 operator|!=
-name|sha512Length
+name|sha1Length
 operator|)
 operator|||
 operator|!
 name|DigestUtils
 operator|.
-name|sha512Hex
+name|shaHex
 argument_list|(
 name|plan
 operator|.

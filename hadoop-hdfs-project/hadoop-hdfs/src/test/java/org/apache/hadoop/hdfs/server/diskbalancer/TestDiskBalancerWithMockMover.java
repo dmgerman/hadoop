@@ -877,7 +877,7 @@ name|planID
 init|=
 name|DigestUtils
 operator|.
-name|sha512Hex
+name|shaHex
 argument_list|(
 name|planJson
 argument_list|)
@@ -1343,7 +1343,7 @@ name|planID
 init|=
 name|DigestUtils
 operator|.
-name|sha512Hex
+name|shaHex
 argument_list|(
 name|planJson
 argument_list|)
@@ -1437,7 +1437,7 @@ name|planID
 init|=
 name|DigestUtils
 operator|.
-name|sha512Hex
+name|shaHex
 argument_list|(
 name|planJson
 argument_list|)
@@ -1573,7 +1573,7 @@ name|planID
 init|=
 name|DigestUtils
 operator|.
-name|sha512Hex
+name|shaHex
 argument_list|(
 name|planJson
 argument_list|)
