@@ -1985,6 +1985,48 @@ block|}
 else|else
 block|{
 comment|// not splitable
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+comment|// Log only if the file is big enough to be splitted
+if|if
+condition|(
+name|length
+operator|>
+name|Math
+operator|.
+name|min
+argument_list|(
+name|file
+operator|.
+name|getBlockSize
+argument_list|()
+argument_list|,
+name|minSize
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"File is not splittable so no parallelization "
+operator|+
+literal|"is possible: "
+operator|+
+name|file
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 name|splits
 operator|.
 name|add

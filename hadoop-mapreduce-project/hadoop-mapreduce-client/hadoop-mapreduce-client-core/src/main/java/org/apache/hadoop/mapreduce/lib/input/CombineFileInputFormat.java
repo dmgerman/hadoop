@@ -2686,6 +2686,29 @@ condition|)
 block|{
 comment|// if the file is not splitable, just create the one block with
 comment|// full file length
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"File is not splittable so no parallelization "
+operator|+
+literal|"is possible: "
+operator|+
+name|stat
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|blocks
 operator|=
 operator|new
