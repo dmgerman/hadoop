@@ -1007,7 +1007,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the file system of supplied path.    *     * @param absOrFqPath - absolute or fully qualified path    * @return the file system of the path    *     * @throws UnsupportedFileSystemException If the file system for    *<code>absOrFqPath</code> is not supported.    * @throws IOExcepton If the file system for<code>absOrFqPath</code> could    *         not be instantiated.    */
+comment|/**    * Get the file system of supplied path.    *     * @param absOrFqPath - absolute or fully qualified path    * @return the file system of the path    *     * @throws UnsupportedFileSystemException If the file system for    *<code>absOrFqPath</code> is not supported.    * @throws IOException If the file system for<code>absOrFqPath</code> could    *         not be instantiated.    */
 DECL|method|getFSofPath (final Path absOrFqPath)
 specifier|protected
 name|AbstractFileSystem
@@ -7294,7 +7294,7 @@ name|absF
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Query the effective storage policy ID for the given file or directory.    *    * @param src file or directory path.    * @return storage policy for give file.    * @throws IOException    */
+comment|/**    * Query the effective storage policy ID for the given file or directory.    *    * @param path file or directory path.    * @return storage policy for give file.    * @throws IOException    */
 DECL|method|getStoragePolicy (Path path)
 specifier|public
 name|BlockStoragePolicySpi
