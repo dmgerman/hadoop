@@ -6709,6 +6709,16 @@ argument_list|(
 literal|3
 argument_list|)
 decl_stmt|;
+specifier|final
+name|CountDownLatch
+name|doneLatch
+init|=
+operator|new
+name|CountDownLatch
+argument_list|(
+literal|1
+argument_list|)
+decl_stmt|;
 comment|// create a task intended to block while processing, thus causing
 comment|// the queue to backup.  simulates how a full BR is processed.
 name|FutureTask
@@ -6739,7 +6749,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-return|return
 name|bm
 operator|.
 name|runBlockOp
@@ -6779,6 +6788,15 @@ return|;
 block|}
 block|}
 argument_list|)
+expr_stmt|;
+comment|// signal that runBlockOp returned
+name|doneLatch
+operator|.
+name|countDown
+argument_list|()
+expr_stmt|;
+return|return
+literal|null
 return|;
 block|}
 block|}
@@ -6981,10 +6999,16 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|blockingOp
+name|doneLatch
 operator|.
-name|isDone
-argument_list|()
+name|await
+argument_list|(
+literal|1
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
