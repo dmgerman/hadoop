@@ -456,7 +456,7 @@ name|super
 argument_list|(
 literal|"verify"
 argument_list|,
-literal|"verify [-meta<metadata-file>] [-block<block-file>]"
+literal|"verify -meta<metadata-file> [-block<block-file>]"
 argument_list|,
 literal|"  Verify HDFS metadata and block files.  If a block file is specified, we\n"
 operator|+
@@ -1081,7 +1081,7 @@ name|super
 argument_list|(
 literal|"recoverLease"
 argument_list|,
-literal|"recoverLease [-path<path>] [-retries<num-retries>]"
+literal|"recoverLease -path<path> [-retries<num-retries>]"
 argument_list|,
 literal|"  Recover the lease on the specified path.  The path must reside on an\n"
 operator|+
