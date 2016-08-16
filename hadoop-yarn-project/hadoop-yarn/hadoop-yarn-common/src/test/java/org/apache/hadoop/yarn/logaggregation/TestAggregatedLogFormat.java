@@ -1032,7 +1032,9 @@ init|=
 operator|new
 name|LogWriter
 argument_list|(
-name|conf
+operator|new
+name|Configuration
+argument_list|()
 argument_list|,
 name|remoteAppLogFile
 argument_list|,
