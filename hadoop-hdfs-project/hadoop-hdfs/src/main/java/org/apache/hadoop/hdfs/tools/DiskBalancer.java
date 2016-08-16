@@ -893,7 +893,9 @@ argument_list|)
 operator|.
 name|withDescription
 argument_list|(
-literal|"creates a plan for datanode."
+literal|"Hostname, IP address or UUID of datanode "
+operator|+
+literal|"for which a plan is created."
 argument_list|)
 operator|.
 name|hasArg
@@ -932,7 +934,7 @@ argument_list|()
 operator|.
 name|withDescription
 argument_list|(
-literal|"File to write output to, if not specified "
+literal|"Local path of file to write output to, if not specified "
 operator|+
 literal|"defaults will be used."
 argument_list|)
@@ -970,9 +972,9 @@ argument_list|()
 operator|.
 name|withDescription
 argument_list|(
-literal|"Maximum disk bandwidth to be consumed by "
+literal|"Maximum disk bandwidth (MB/s) in integer to be consumed by "
 operator|+
-literal|"diskBalancer. e.g. 10"
+literal|"diskBalancer. e.g. 10 MB/s."
 argument_list|)
 operator|.
 name|create
@@ -1008,9 +1010,21 @@ argument_list|()
 operator|.
 name|withDescription
 argument_list|(
-literal|"Percentage skew that we"
+literal|"Percentage of data skew that is tolerated before"
 operator|+
-literal|"tolerate before diskbalancer starts working e.g. 10"
+literal|" disk balancer starts working. For example, if"
+operator|+
+literal|" total data on a 2 disk node is 100 GB then disk"
+operator|+
+literal|" balancer calculates the expected value on each disk,"
+operator|+
+literal|" which is 50 GB. If the tolerance is 10% then data"
+operator|+
+literal|" on a single disk needs to be more than 60 GB"
+operator|+
+literal|" (50 GB + 10% tolerance value) for Disk balancer to"
+operator|+
+literal|" balance the disks."
 argument_list|)
 operator|.
 name|create
