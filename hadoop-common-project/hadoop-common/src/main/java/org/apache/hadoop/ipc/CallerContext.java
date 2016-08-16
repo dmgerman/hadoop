@@ -140,6 +140,7 @@ operator|.
 name|Evolving
 DECL|class|CallerContext
 specifier|public
+specifier|final
 class|class
 name|CallerContext
 block|{
@@ -170,7 +171,7 @@ index|[]
 name|signature
 decl_stmt|;
 DECL|method|CallerContext (Builder builder)
-specifier|public
+specifier|private
 name|CallerContext
 parameter_list|(
 name|Builder
