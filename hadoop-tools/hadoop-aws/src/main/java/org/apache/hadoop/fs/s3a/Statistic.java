@@ -254,6 +254,14 @@ argument_list|,
 literal|"Number of object listings made"
 argument_list|)
 block|,
+DECL|enumConstant|OBJECT_CONTINUE_LIST_REQUESTS
+name|OBJECT_CONTINUE_LIST_REQUESTS
+argument_list|(
+literal|"object_continue_list_requests"
+argument_list|,
+literal|"Number of continued object listings made"
+argument_list|)
+block|,
 DECL|enumConstant|OBJECT_METADATA_REQUESTS
 name|OBJECT_METADATA_REQUESTS
 argument_list|(
