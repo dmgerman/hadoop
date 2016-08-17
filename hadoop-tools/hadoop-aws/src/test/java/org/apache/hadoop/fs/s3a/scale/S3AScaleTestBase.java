@@ -391,6 +391,28 @@ name|DEFAULT_CSVTEST_FILE
 init|=
 literal|"s3a://landsat-pds/scene_list.gz"
 decl_stmt|;
+comment|/**    * Endpoint for the S3 CSV/scale tests. This defaults to    * being us-east.    */
+DECL|field|KEY_CSVTEST_ENDPOINT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KEY_CSVTEST_ENDPOINT
+init|=
+name|S3A_SCALE_TEST
+operator|+
+literal|"csvfile.endpoint"
+decl_stmt|;
+comment|/**    * Endpoint for the S3 CSV/scale tests. This defaults to    * being us-east.    */
+DECL|field|DEFAULT_CSVTEST_ENDPOINT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_CSVTEST_ENDPOINT
+init|=
+literal|"s3.amazonaws.com"
+decl_stmt|;
 comment|/**    * The default number of operations to perform: {@value}.    */
 DECL|field|DEFAULT_OPERATION_COUNT
 specifier|public
