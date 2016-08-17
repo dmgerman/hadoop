@@ -1256,7 +1256,7 @@ name|SubClusterState
 operator|.
 name|SC_RUNNING
 argument_list|,
-literal|""
+literal|"capability"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1274,7 +1274,7 @@ name|SubClusterState
 operator|.
 name|SC_UNHEALTHY
 argument_list|,
-literal|""
+literal|"capability"
 argument_list|)
 argument_list|)
 expr_stmt|;
