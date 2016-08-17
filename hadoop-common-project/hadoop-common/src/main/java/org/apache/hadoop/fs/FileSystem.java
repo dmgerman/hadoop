@@ -3321,7 +3321,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param permission    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param permission file permission    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
 DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 specifier|abstract
@@ -3352,7 +3352,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param permission    * @param flags {@link CreateFlag}s to use for this stream.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param permission file permission    * @param flags {@link CreateFlag}s to use for this stream.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
 DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3406,7 +3406,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path with a custom    * checksum option    * @param f the file name to open    * @param permission    * @param flags {@link CreateFlag}s to use for this stream.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @param checksumOpt checksum parameter. If null, the values    *        found in conf will be used.    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with a custom    * checksum option    * @param f the file name to open    * @param permission file permission    * @param flags {@link CreateFlag}s to use for this stream.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @param checksumOpt checksum parameter. If null, the values    *        found in conf will be used.    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
 DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt)
 specifier|public
 name|FSDataOutputStream
@@ -3722,7 +3722,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
 DECL|method|createNonRecursive (Path f, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3773,7 +3773,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param permission    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param permission file permission    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
 DECL|method|createNonRecursive (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3844,7 +3844,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**     * Opens an FSDataOutputStream at the indicated Path with write-progress     * reporting. Same as create(), except fails if parent directory doesn't     * already exist.     * @param f the file name to open     * @param permission     * @param flags {@link CreateFlag}s to use for this stream.     * @param bufferSize the size of the buffer to be used.     * @param replication required block replication for the file.     * @param blockSize     * @param progress     * @throws IOException     * @see #setPermission(Path, FsPermission)     */
+comment|/**     * Opens an FSDataOutputStream at the indicated Path with write-progress     * reporting. Same as create(), except fails if parent directory doesn't     * already exist.     * @param f the file name to open     * @param permission file permission     * @param flags {@link CreateFlag}s to use for this stream.     * @param bufferSize the size of the buffer to be used.     * @param replication required block replication for the file.     * @param blockSize block size     * @param progress the progress reporter     * @throws IOException     * @see #setPermission(Path, FsPermission)     */
 DECL|method|createNonRecursive (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -5902,7 +5902,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Set the current working directory for the given file system. All relative    * paths will be resolved relative to it.    *     * @param new_dir    */
+comment|/**    * Set the current working directory for the given file system. All relative    * paths will be resolved relative to it.    *     * @param new_dir Path of new working directory    */
 DECL|method|setWorkingDirectory (Path new_dir)
 specifier|public
 specifier|abstract
@@ -6966,7 +6966,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Set the verify checksum flag. This is only applicable if the     * corresponding FileSystem supports checksum. By default doesn't do anything.    * @param verifyChecksum    */
+comment|/**    * Set the verify checksum flag. This is only applicable if the     * corresponding FileSystem supports checksum. By default doesn't do anything.    * @param verifyChecksum Verify checksum flag    */
 DECL|method|setVerifyChecksum (boolean verifyChecksum)
 specifier|public
 name|void
@@ -6978,7 +6978,7 @@ parameter_list|)
 block|{
 comment|//doesn't do anything
 block|}
-comment|/**    * Set the write checksum flag. This is only applicable if the     * corresponding FileSystem supports checksum. By default doesn't do anything.    * @param writeChecksum    */
+comment|/**    * Set the write checksum flag. This is only applicable if the     * corresponding FileSystem supports checksum. By default doesn't do anything.    * @param writeChecksum Write checsum flag    */
 DECL|method|setWriteChecksum (boolean writeChecksum)
 specifier|public
 name|void
@@ -7034,7 +7034,7 @@ name|MAX_VALUE
 argument_list|)
 return|;
 block|}
-comment|/**    * Set permission of a path.    * @param p    * @param permission    */
+comment|/**    * Set permission of a path.    * @param p The path    * @param permission permission    */
 DECL|method|setPermission (Path p, FsPermission permission )
 specifier|public
 name|void
@@ -7482,7 +7482,7 @@ literal|" doesn't support getXAttr"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get all of the xattr name/value pairs for a file or directory.    * Only those xattrs which the logged-in user has permissions to view    * are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @return Map<String, byte[]> describing the XAttrs of the file or directory    * @throws IOException    */
+comment|/**    * Get all of the xattr name/value pairs for a file or directory.    * Only those xattrs which the logged-in user has permissions to view    * are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @return Map describing the XAttrs of the file or directory    * @throws IOException    */
 DECL|method|getXAttrs (Path path)
 specifier|public
 name|Map
@@ -7514,7 +7514,7 @@ literal|" doesn't support getXAttrs"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get all of the xattrs name/value pairs for a file or directory.    * Only those xattrs which the logged-in user has permissions to view    * are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @param names XAttr names.    * @return Map<String, byte[]> describing the XAttrs of the file or directory    * @throws IOException    */
+comment|/**    * Get all of the xattrs name/value pairs for a file or directory.    * Only those xattrs which the logged-in user has permissions to view    * are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @param names XAttr names.    * @return Map describing the XAttrs of the file or directory    * @throws IOException    */
 DECL|method|getXAttrs (Path path, List<String> names)
 specifier|public
 name|Map
@@ -10867,7 +10867,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**      * Resets all statistics to 0.      *      * In order to reset, we add up all the thread-local statistics data, and      * set rootData to the negative of that.      *      * This may seem like a counterintuitive way to reset the statsitics.  Why      * can't we just zero out all the thread-local data?  Well, thread-local      * data can only be modified by the thread that owns it.  If we tried to      * modify the thread-local data from this thread, our modification might get      * interleaved with a read-modify-write operation done by the thread that      * owns the data.  That would result in our update getting lost.      *      * The approach used here avoids this problem because it only ever reads      * (not writes) the thread-local data.  Both reads and writes to rootData      * are done under the lock, so we're free to modify rootData from any thread      * that holds the lock.      */
+comment|/**      * Resets all statistics to 0.      *      * In order to reset, we add up all the thread-local statistics data, and      * set rootData to the negative of that.      *      * This may seem like a counterintuitive way to reset the statistics.  Why      * can't we just zero out all the thread-local data?  Well, thread-local      * data can only be modified by the thread that owns it.  If we tried to      * modify the thread-local data from this thread, our modification might get      * interleaved with a read-modify-write operation done by the thread that      * owns the data.  That would result in our update getting lost.      *      * The approach used here avoids this problem because it only ever reads      * (not writes) the thread-local data.  Both reads and writes to rootData      * are done under the lock, so we're free to modify rootData from any thread      * that holds the lock.      */
 DECL|method|reset ()
 specifier|public
 name|void
