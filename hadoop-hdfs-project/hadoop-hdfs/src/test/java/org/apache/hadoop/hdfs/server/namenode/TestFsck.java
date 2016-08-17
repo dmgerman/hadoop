@@ -100,7 +100,7 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
-name|anyBoolean
+name|anyObject
 import|;
 end_import
 
@@ -9084,12 +9084,12 @@ name|when
 argument_list|(
 name|fsd
 operator|.
-name|getINodesInPath
+name|resolvePath
 argument_list|(
-name|anyString
+name|anyObject
 argument_list|()
 argument_list|,
-name|anyBoolean
+name|anyString
 argument_list|()
 argument_list|)
 argument_list|)

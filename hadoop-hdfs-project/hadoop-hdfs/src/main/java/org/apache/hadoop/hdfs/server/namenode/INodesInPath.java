@@ -463,6 +463,33 @@ name|path
 argument_list|)
 return|;
 block|}
+DECL|method|fromComponents (byte[][] components)
+specifier|static
+name|INodesInPath
+name|fromComponents
+parameter_list|(
+name|byte
+index|[]
+index|[]
+name|components
+parameter_list|)
+block|{
+return|return
+operator|new
+name|INodesInPath
+argument_list|(
+operator|new
+name|INode
+index|[
+name|components
+operator|.
+name|length
+index|]
+argument_list|,
+name|components
+argument_list|)
+return|;
+block|}
 comment|/**    * Given some components, create a path name.    * @param components The path components    * @param start index    * @param end index    * @return concatenated path    */
 DECL|method|constructPath (byte[][] components, int start, int end)
 specifier|private
@@ -2257,6 +2284,19 @@ return|return
 name|this
 operator|.
 name|isSnapshot
+return|;
+block|}
+DECL|method|isDotSnapshotDir ()
+name|boolean
+name|isDotSnapshotDir
+parameter_list|()
+block|{
+return|return
+name|isDotSnapshotDir
+argument_list|(
+name|getLastLocalName
+argument_list|()
+argument_list|)
 return|;
 block|}
 DECL|method|toString (INode inode)
