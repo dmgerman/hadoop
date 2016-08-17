@@ -3559,6 +3559,45 @@ name|DEFAULT_MR_ENCRYPTED_INTERMEDIATE_DATA_BUFFER_KB
 init|=
 literal|128
 decl_stmt|;
+comment|/**    * The maximum number of resources a map reduce job is allowed to submit for    * localization via files, libjars, archives, and jobjar command line    * arguments and through the distributed cache. If set to 0 the limit is    * ignored.    */
+DECL|field|MAX_RESOURCES
+name|String
+name|MAX_RESOURCES
+init|=
+literal|"mapreduce.job.cache.limit.max-resources"
+decl_stmt|;
+DECL|field|MAX_RESOURCES_DEFAULT
+name|int
+name|MAX_RESOURCES_DEFAULT
+init|=
+literal|0
+decl_stmt|;
+comment|/**    * The maximum size (in MB) a map reduce job is allowed to submit for    * localization via files, libjars, archives, and jobjar command line    * arguments and through the distributed cache. If set to 0 the limit is    * ignored.    */
+DECL|field|MAX_RESOURCES_MB
+name|String
+name|MAX_RESOURCES_MB
+init|=
+literal|"mapreduce.job.cache.limit.max-resources-mb"
+decl_stmt|;
+DECL|field|MAX_RESOURCES_MB_DEFAULT
+name|long
+name|MAX_RESOURCES_MB_DEFAULT
+init|=
+literal|0
+decl_stmt|;
+comment|/**    * The maximum size (in MB) of a single resource a map reduce job is allow to    * submit for localization via files, libjars, archives, and jobjar command    * line arguments and through the distributed cache. If set to 0 the limit is    * ignored.    */
+DECL|field|MAX_SINGLE_RESOURCE_MB
+name|String
+name|MAX_SINGLE_RESOURCE_MB
+init|=
+literal|"mapreduce.job.cache.limit.max-single-resource-mb"
+decl_stmt|;
+DECL|field|MAX_SINGLE_RESOURCE_MB_DEFAULT
+name|long
+name|MAX_SINGLE_RESOURCE_MB_DEFAULT
+init|=
+literal|0
+decl_stmt|;
 comment|/**    * Number of OPPORTUNISTIC Containers per 100 containers that will be    * requested by the MRAppMaster. The Default value is 0, which implies all    * maps will be guaranteed. A value of 100 means all maps will be requested    * as opportunistic. For any other value say 'x', the FIRST 'x' maps    * requested by the AM will be opportunistic. If the total number of maps    * for the job is less than 'x', then ALL maps will be OPPORTUNISTIC    */
 DECL|field|MR_NUM_OPPORTUNISTIC_MAPS_PER_100
 specifier|public

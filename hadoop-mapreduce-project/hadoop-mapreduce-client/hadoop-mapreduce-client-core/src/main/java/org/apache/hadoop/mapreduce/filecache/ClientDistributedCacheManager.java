@@ -248,6 +248,35 @@ name|FileStatus
 argument_list|>
 argument_list|()
 decl_stmt|;
+name|determineTimestampsAndCacheVisibilities
+argument_list|(
+name|job
+argument_list|,
+name|statCache
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * See ClientDistributedCacheManager#determineTimestampsAndCacheVisibilities(    * Configuration).    *    * @param job Configuration of a job    * @param statCache A map containing cached file status objects    * @throws IOException if there is a problem with the underlying filesystem    */
+DECL|method|determineTimestampsAndCacheVisibilities (Configuration job, Map<URI, FileStatus> statCache)
+specifier|public
+specifier|static
+name|void
+name|determineTimestampsAndCacheVisibilities
+parameter_list|(
+name|Configuration
+name|job
+parameter_list|,
+name|Map
+argument_list|<
+name|URI
+argument_list|,
+name|FileStatus
+argument_list|>
+name|statCache
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|determineTimestamps
 argument_list|(
 name|job
