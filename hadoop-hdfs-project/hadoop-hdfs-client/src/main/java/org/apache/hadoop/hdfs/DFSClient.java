@@ -3647,8 +3647,6 @@ specifier|final
 name|long
 name|inodeId
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|getLeaseRenewer
 argument_list|()
