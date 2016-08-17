@@ -182,6 +182,28 @@ name|containermanager
 operator|.
 name|runtime
 operator|.
+name|ContainerRuntime
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|runtime
+operator|.
 name|ContainerRuntimeContext
 import|;
 end_import
@@ -195,6 +217,10 @@ operator|.
 name|Map
 import|;
 end_import
+
+begin_comment
+comment|/**  * This class is a {@link ContainerRuntime} implementation that delegates all  * operations to either a {@link DefaultLinuxContainerRuntime} instance or a  * {@link DockerLinuxContainerRuntime} instance, depending on whether the  * {@link DockerLinuxContainerRuntime} instance believes the operation to be  * requesting a Docker container.  *  * @see DockerLinuxContainerRuntime#isDockerContainerRequested  */
+end_comment
 
 begin_class
 annotation|@

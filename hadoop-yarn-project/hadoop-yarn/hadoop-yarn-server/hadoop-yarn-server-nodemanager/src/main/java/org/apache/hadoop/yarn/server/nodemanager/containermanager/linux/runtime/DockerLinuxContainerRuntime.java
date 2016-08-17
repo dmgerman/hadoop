@@ -484,6 +484,28 @@ name|containermanager
 operator|.
 name|runtime
 operator|.
+name|ContainerRuntime
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|runtime
+operator|.
 name|ContainerRuntimeConstants
 import|;
 end_import
@@ -631,6 +653,10 @@ operator|.
 name|*
 import|;
 end_import
+
+begin_comment
+comment|/**  *<p>This class is a {@link ContainerRuntime} implementation that uses the  * native {@code container-executor} binary via a  * {@link PrivilegedOperationExecutor} instance to launch processes inside  * Docker containers.</p>  *  *<p>The following environment variables are used to configure the Docker  * engine:</p>  *  *<ul>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_TYPE} ultimately determines whether a  *     Docker container will be used. If the value is {@code docker}, a Docker  *     container will be used. Otherwise a regular process tree container will  *     be used. This environment variable is checked by the  *     {@link #isDockerContainerRequested} method, which is called by the  *     {@link DelegatingLinuxContainerRuntime}.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_IMAGE} names which image  *     will be used to launch the Docker container.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_IMAGE_FILE} is currently ignored.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE} controls  *     whether the Docker container's default command is overridden.  When set  *     to {@code true}, the Docker container's command will be  *     {@code bash<path_to_launch_script>}. When unset or set to {@code false}  *     the Docker container's default command is used.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_CONTAINER_NETWORK} sets the  *     network type to be used by the Docker container. It must be a valid  *     value as determined by the  *     {@code yarn.nodemanager.runtime.linux.docker.allowed-container-networks}  *     property.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_RUN_PRIVILEGED_CONTAINER}  *     controls whether the Docker container is a privileged container. In order  *     to use privileged containers, the  *     {@code yarn.nodemanager.runtime.linux.docker.privileged-containers.allowed}  *     property must be set to {@code true}, and the application owner must  *     appear in the value of the  *     {@code yarn.nodemanager.runtime.linux.docker.privileged-containers.acl}  *     property. If this environment variable is set to {@code true}, a  *     privileged Docker container will be used if allowed. No other value is  *     allowed, so the environment variable should be left unset rather than  *     setting it to false.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_LOCAL_RESOURCE_MOUNTS} adds  *     additional volume mounts to the Docker container. The value of the  *     environment variable should be a comma-separated list of mounts.  *     All such mounts must be given as {@code source:dest}, where the  *     source is an absolute path that is not a symlink and that points to a  *     localized resource.  *</li>  *</ul>  */
+end_comment
 
 begin_class
 annotation|@
@@ -781,6 +807,7 @@ specifier|private
 name|AccessControlList
 name|privilegedContainersAcl
 decl_stmt|;
+comment|/**    * Return whether the given environment variables indicate that the operation    * is requesting a Docker container.  If the environment contains a key    * called {@code YARN_CONTAINER_RUNTIME_TYPE} whose value is {@code docker},    * this method will return true.  Otherwise it will return false.    *    * @param env the environment variable settings for the operation    * @return whether a Docker container is requested    */
 DECL|method|isDockerContainerRequested ( Map<String, String> env)
 specifier|public
 specifier|static
@@ -832,6 +859,7 @@ literal|"docker"
 argument_list|)
 return|;
 block|}
+comment|/**    * Create an instance using the given {@link PrivilegedOperationExecutor}    * instance for performing operations.    *    * @param privilegedOperationExecutor the {@link PrivilegedOperationExecutor}    * instance    */
 DECL|method|DockerLinuxContainerRuntime (PrivilegedOperationExecutor privilegedOperationExecutor)
 specifier|public
 name|DockerLinuxContainerRuntime
@@ -851,7 +879,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|//A constructor with an injected cGroupsHandler primarily used for testing.
+comment|/**    * Create an instance using the given {@link PrivilegedOperationExecutor}    * instance for performing operations and the given {@link CGroupsHandler}    * instance. This constructor is intended for use in testing.    *    * @param privilegedOperationExecutor the {@link PrivilegedOperationExecutor}    * instance    * @param cGroupsHandler the {@link CGroupsHandler} instance    */
 annotation|@
 name|VisibleForTesting
 DECL|method|DockerLinuxContainerRuntime (PrivilegedOperationExecutor privilegedOperationExecutor, CGroupsHandler cGroupsHandler)
@@ -1057,7 +1085,7 @@ name|ctx
 parameter_list|)
 throws|throws
 name|ContainerExecutionException
-block|{    }
+block|{   }
 DECL|method|validateContainerNetworkType (String network)
 specifier|private
 name|void
@@ -1103,8 +1131,11 @@ name|msg
 argument_list|)
 throw|;
 block|}
+comment|/**    * If CGROUPS in enabled and not set to none, then set the CGROUP parent for    * the command instance.    *    * @param resourcesOptions the resource options to check for "cgroups=none"    * @param containerIdStr the container ID    * @param runCommand the command to set with the CGROUP parent    */
+annotation|@
+name|VisibleForTesting
 DECL|method|addCGroupParentIfRequired (String resourcesOptions, String containerIdStr, DockerRunCommand runCommand)
-specifier|public
+specifier|protected
 name|void
 name|addCGroupParentIfRequired
 parameter_list|(
@@ -1117,8 +1148,6 @@ parameter_list|,
 name|DockerRunCommand
 name|runCommand
 parameter_list|)
-throws|throws
-name|ContainerExecutionException
 block|{
 if|if
 condition|(
@@ -1153,7 +1182,6 @@ name|resourcesOptions
 operator|.
 name|equals
 argument_list|(
-operator|(
 name|PrivilegedOperation
 operator|.
 name|CGROUP_ARG_PREFIX
@@ -1161,7 +1189,6 @@ operator|+
 name|PrivilegedOperation
 operator|.
 name|CGROUP_ARG_NO_TASKS
-operator|)
 argument_list|)
 condition|)
 block|{
@@ -1241,6 +1268,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Return whether the YARN container is allowed to run in a privileged    * Docker container. For a privileged container to be allowed all of the    * following three conditions must be satisfied:    *    *<ol>    *<li>Submitting user must request for a privileged container</li>    *<li>Privileged containers must be enabled on the cluster</li>    *<li>Submitting user must be white-listed to run a privileged    *   container</li>    *</ol>    *    * @param container the target YARN container    * @return whether privileged container execution is allowed    * @throws ContainerExecutionException if privileged container execution    * is requested but is not allowed    */
 DECL|method|allowPrivilegedContainerExecution (Container container)
 specifier|private
 name|boolean
@@ -1252,11 +1280,6 @@ parameter_list|)
 throws|throws
 name|ContainerExecutionException
 block|{
-comment|//For a privileged container to be run all of the following three conditions
-comment|// must be satisfied:
-comment|//1) Submitting user must request for a privileged container
-comment|//2) Privileged containers must be enabled on the cluster
-comment|//3) Submitting user must be whitelisted to run a privileged container
 name|Map
 argument_list|<
 name|String
@@ -2749,7 +2772,7 @@ name|ctx
 parameter_list|)
 throws|throws
 name|ContainerExecutionException
-block|{    }
+block|{   }
 block|}
 end_class
 

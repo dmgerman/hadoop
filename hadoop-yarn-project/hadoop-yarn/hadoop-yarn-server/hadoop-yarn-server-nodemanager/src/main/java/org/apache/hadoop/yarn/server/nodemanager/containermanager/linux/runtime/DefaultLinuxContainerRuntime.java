@@ -244,6 +244,28 @@ name|containermanager
 operator|.
 name|runtime
 operator|.
+name|ContainerRuntime
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|runtime
+operator|.
 name|ContainerRuntimeContext
 import|;
 end_import
@@ -284,6 +306,10 @@ name|*
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class is a {@link ContainerRuntime} implementation that uses the  * native {@code container-executor} binary via a  * {@link PrivilegedOperationExecutor} instance to launch processes using the  * standard process model.  */
+end_comment
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -316,17 +342,18 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|conf
-specifier|private
-name|Configuration
-name|conf
-decl_stmt|;
 DECL|field|privilegedOperationExecutor
 specifier|private
 specifier|final
 name|PrivilegedOperationExecutor
 name|privilegedOperationExecutor
 decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
+comment|/**    * Create an instance using the given {@link PrivilegedOperationExecutor}    * instance for performing operations.    *    * @param privilegedOperationExecutor the {@link PrivilegedOperationExecutor}    * instance    */
 DECL|method|DefaultLinuxContainerRuntime (PrivilegedOperationExecutor privilegedOperationExecutor)
 specifier|public
 name|DefaultLinuxContainerRuntime

@@ -113,7 +113,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Linux-specific container runtime implementations must implement this  * interface.  */
+comment|/**  * Linux-specific container runtime implementations must implement this  * interface.  */
 end_comment
 
 begin_interface
@@ -132,6 +132,7 @@ name|LinuxContainerRuntime
 extends|extends
 name|ContainerRuntime
 block|{
+comment|/**    * Initialize the runtime.    *    * @param conf the {@link Configuration} to use    * @throws ContainerExecutionException if an error occurs while initializing    * the runtime    */
 DECL|method|initialize (Configuration conf)
 name|void
 name|initialize

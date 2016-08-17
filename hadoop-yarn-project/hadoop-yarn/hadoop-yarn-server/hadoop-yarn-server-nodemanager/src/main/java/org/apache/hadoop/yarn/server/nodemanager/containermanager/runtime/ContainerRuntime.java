@@ -53,7 +53,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** An abstraction for various container runtime implementations. Examples  * include Process Tree, Docker, Appc runtimes etc., These implementations  * are meant for low-level OS container support - dependencies on  * higher-level nodemananger constructs should be avoided.  */
+comment|/**  * An abstraction for various container runtime implementations. Examples  * include Process Tree, Docker, Appc runtimes etc. These implementations  * are meant for low-level OS container support - dependencies on  * higher-level node mananger constructs should be avoided.  */
 end_comment
 
 begin_interface
@@ -70,7 +70,7 @@ specifier|public
 interface|interface
 name|ContainerRuntime
 block|{
-comment|/** Prepare a container to be ready for launch */
+comment|/**    * Prepare a container to be ready for launch.    *    * @param ctx the {@link ContainerRuntimeContext}    * @throws ContainerExecutionException if an error occurs while preparing    * the container    */
 DECL|method|prepareContainer (ContainerRuntimeContext ctx)
 name|void
 name|prepareContainer
@@ -81,7 +81,7 @@ parameter_list|)
 throws|throws
 name|ContainerExecutionException
 function_decl|;
-comment|/** Launch a container. */
+comment|/**    * Launch a container.    *    * @param ctx the {@link ContainerRuntimeContext}    * @throws ContainerExecutionException if an error occurs while launching    * the container    */
 DECL|method|launchContainer (ContainerRuntimeContext ctx)
 name|void
 name|launchContainer
@@ -92,7 +92,7 @@ parameter_list|)
 throws|throws
 name|ContainerExecutionException
 function_decl|;
-comment|/** Signal a container - request to terminate, status check etc., */
+comment|/**    * Signal a container. Signals may be a request to terminate, a status check,    * etc.    *    * @param ctx the {@link ContainerRuntimeContext}    * @throws ContainerExecutionException if an error occurs while signaling    * the container    */
 DECL|method|signalContainer (ContainerRuntimeContext ctx)
 name|void
 name|signalContainer
@@ -103,7 +103,7 @@ parameter_list|)
 throws|throws
 name|ContainerExecutionException
 function_decl|;
-comment|/** Any container cleanup that may be required. */
+comment|/**    * Perform any container cleanup that may be required.    *    * @param ctx the {@link ContainerRuntimeContext}    * @throws ContainerExecutionException if an error occurs while reaping    * the container    */
 DECL|method|reapContainer (ContainerRuntimeContext ctx)
 name|void
 name|reapContainer

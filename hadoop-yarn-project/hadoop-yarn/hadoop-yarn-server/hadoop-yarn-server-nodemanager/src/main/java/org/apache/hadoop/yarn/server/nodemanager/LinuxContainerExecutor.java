@@ -404,7 +404,55 @@ name|linux
 operator|.
 name|runtime
 operator|.
+name|DefaultLinuxContainerRuntime
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|linux
+operator|.
+name|runtime
+operator|.
 name|DelegatingLinuxContainerRuntime
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|linux
+operator|.
+name|runtime
+operator|.
+name|DockerLinuxContainerRuntime
 import|;
 end_import
 
@@ -787,7 +835,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Container execution for Linux. Provides linux-specific localization  * mechanisms, resource management via cgroups and can switch between multiple  * container runtimes - e.g Standard "Process Tree", Docker etc  */
+comment|/**  *<p>This class provides {@link Container} execution using a native  * {@code container-executor} binary. By using a helper written it native code,  * this class is able to do several things that the  * {@link DefaultContainerExecutor} cannot, such as execution of applications  * as the applications' owners, provide localization that takes advantage of  * mapping the application owner to a UID on the execution host, resource  * management through Linux CGROUPS, and Docker support.</p>  *  *<p>If {@code hadoop.security.authetication} is set to {@code simple},  * then the  * {@code yarn.nodemanager.linux-container-executor.nonsecure-mode.limit-users}  * property will determine whether the {@code LinuxContainerExecutor} runs  * processes as the application owner or as the default user, as set in the  * {@code yarn.nodemanager.linux-container-executor.nonsecure-mode.local-user}  * property.</p>  *  *<p>The {@code LinuxContainerExecutor} will manage applications through an  * appropriate {@link LinuxContainerRuntime} instance. This class uses a  * {@link DelegatingLinuxContainerRuntime} instance, which will delegate calls  * to either a {@link DefaultLinuxContainerRuntime} instance or a  * {@link DockerLinuxContainerRuntime} instance, depending on the job's  * configuration.</p>  *  * @see LinuxContainerRuntime  * @see DelegatingLinuxContainerRuntime  * @see DefaultLinuxContainerRuntime  * @see DockerLinuxContainerRuntime  * @see DockerLinuxContainerRuntime#isDockerContainerRequested  */
 end_comment
 
 begin_class
@@ -858,12 +906,13 @@ specifier|private
 name|LinuxContainerRuntime
 name|linuxContainerRuntime
 decl_stmt|;
+comment|/**    * Default constructor to allow for creation through reflection.    */
 DECL|method|LinuxContainerExecutor ()
 specifier|public
 name|LinuxContainerExecutor
 parameter_list|()
 block|{   }
-comment|// created primarily for testing
+comment|/**    * Create a LinuxContainerExecutor with a provided    * {@link LinuxContainerRuntime}.  Used primarily for testing.    *    * @param linuxContainerRuntime the runtime to use    */
 DECL|method|LinuxContainerExecutor (LinuxContainerRuntime linuxContainerRuntime)
 specifier|public
 name|LinuxContainerExecutor
@@ -1163,6 +1212,7 @@ name|nonsecureLocalUser
 return|;
 block|}
 block|}
+comment|/**    * Get the path to the {@code container-executor} binary. The path will    * be absolute.    *    * @param conf the {@link Configuration}    * @return the path to the {@code container-executor} binary    */
 DECL|method|getContainerExecutorExecutablePath (Configuration conf)
 specifier|protected
 name|String
@@ -1233,6 +1283,7 @@ name|defaultPath
 argument_list|)
 return|;
 block|}
+comment|/**    * Add a niceness level to the process that will be executed.  Adds    * {@code -n<nice>} to the given command. The niceness level will be    * taken from the    * {@code yarn.nodemanager.container-executer.os.sched.prioity} property.    *    * @param command the command to which to add the niceness setting.    */
 DECL|method|addSchedPriorityCommand (List<String> command)
 specifier|protected
 name|void
@@ -1904,6 +1955,7 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Set up the {@link ContainerLocalizer}.    *    * @param command the current ShellCommandExecutor command line    * @param user localization user    * @param appId localized app id    * @param locId localizer id    * @param nmAddr nodemanager address    * @param localDirs list of local dirs    * @see ContainerLocalizer#buildMainArgs    */
 annotation|@
 name|VisibleForTesting
 DECL|method|buildMainArgs (List<String> command, String user, String appId, String locId, InetSocketAddress nmAddr, List<String> localDirs)
@@ -3553,6 +3605,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Mount a CGROUPS controller at the requested mount point and create    * a hierarchy for the NodeManager to manage.    *    * @param cgroupKVs a key-value pair of the form    * {@code controller=mount-path}    * @param hierarchy the top directory of the hierarchy for the NodeManager    * @throws IOException if there is a problem mounting the CGROUPS    */
 DECL|method|mountCgroups (List<String> cgroupKVs, String hierarchy)
 specifier|public
 name|void
