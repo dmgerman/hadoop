@@ -498,8 +498,8 @@ init|=
 literal|1048576
 decl_stmt|;
 comment|//1MB
-comment|// private | public-read | public-read-write | authenticated-read |
-comment|// log-delivery-write | bucket-owner-read | bucket-owner-full-control
+comment|// Private | PublicRead | PublicReadWrite | AuthenticatedRead |
+comment|// LogDeliveryWrite | BucketOwnerRead | BucketOwnerFullControl
 DECL|field|CANNED_ACL
 specifier|public
 specifier|static
