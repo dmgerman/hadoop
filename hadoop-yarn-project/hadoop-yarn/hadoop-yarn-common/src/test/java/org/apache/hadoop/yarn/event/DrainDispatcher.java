@@ -319,6 +319,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|isDrained ()
+specifier|protected
+name|boolean
+name|isDrained
+parameter_list|()
+block|{
+return|return
+name|drained
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|serviceStop ()
 specifier|protected
 name|void

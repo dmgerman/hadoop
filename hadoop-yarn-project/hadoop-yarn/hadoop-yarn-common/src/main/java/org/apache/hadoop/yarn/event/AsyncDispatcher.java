@@ -693,7 +693,8 @@ block|{
 while|while
 condition|(
 operator|!
-name|drained
+name|isDrained
+argument_list|()
 operator|&&
 name|eventHandlingThread
 operator|!=
@@ -1390,6 +1391,16 @@ operator|.
 name|State
 operator|.
 name|WAITING
+return|;
+block|}
+DECL|method|isDrained ()
+specifier|protected
+name|boolean
+name|isDrained
+parameter_list|()
+block|{
+return|return
+name|drained
 return|;
 block|}
 block|}
