@@ -681,13 +681,6 @@ argument_list|(
 name|type
 argument_list|)
 decl_stmt|;
-name|lastLoaded
-operator|=
-name|file
-operator|.
-name|lastModified
-argument_list|()
-expr_stmt|;
 name|FileInputStream
 name|in
 init|=
@@ -710,6 +703,13 @@ operator|.
 name|toCharArray
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|lastLoaded
+operator|=
+name|file
+operator|.
+name|lastModified
+argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
