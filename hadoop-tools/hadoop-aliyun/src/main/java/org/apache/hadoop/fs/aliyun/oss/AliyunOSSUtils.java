@@ -36,6 +36,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|UnsupportedEncodingException
 import|;
 end_import
@@ -398,7 +408,7 @@ name|val
 return|;
 block|}
 block|}
-comment|/**    * Extract the user information details from a URI.    * @param name URI of the filesystem    * @return a login tuple, possibly empty.    */
+comment|/**    * Extract the user information details from a URI.    * @param name URI of the filesystem.    * @return a login tuple, possibly empty.    */
 DECL|method|extractLoginDetails (URI name)
 specifier|public
 specifier|static
@@ -566,6 +576,87 @@ operator|new
 name|RuntimeException
 argument_list|(
 name|e
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Skips the requested number of bytes or fail if there are not enough left.    * This allows for the possibility that {@link InputStream#skip(long)} may not    * skip as many bytes as requested (most likely because of reaching EOF).    * @param is the input stream to skip.    * @param n the number of bytes to skip.    * @throws IOException thrown when skipped less number of bytes.    */
+DECL|method|skipFully (InputStream is, long n)
+specifier|public
+specifier|static
+name|void
+name|skipFully
+parameter_list|(
+name|InputStream
+name|is
+parameter_list|,
+name|long
+name|n
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|long
+name|total
+init|=
+literal|0
+decl_stmt|;
+name|long
+name|cur
+init|=
+literal|0
+decl_stmt|;
+do|do
+block|{
+name|cur
+operator|=
+name|is
+operator|.
+name|skip
+argument_list|(
+name|n
+operator|-
+name|total
+argument_list|)
+expr_stmt|;
+name|total
+operator|+=
+name|cur
+expr_stmt|;
+block|}
+do|while
+condition|(
+operator|(
+name|total
+operator|<
+name|n
+operator|)
+operator|&&
+operator|(
+name|cur
+operator|>
+literal|0
+operator|)
+condition|)
+do|;
+if|if
+condition|(
+name|total
+operator|<
+name|n
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to skip "
+operator|+
+name|n
+operator|+
+literal|" bytes, possibly due "
+operator|+
+literal|"to EOF."
 argument_list|)
 throw|;
 block|}

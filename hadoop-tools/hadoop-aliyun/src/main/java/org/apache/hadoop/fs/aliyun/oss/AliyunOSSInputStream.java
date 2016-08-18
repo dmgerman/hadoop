@@ -983,6 +983,7 @@ annotation|@
 name|Override
 DECL|method|seek (long pos)
 specifier|public
+specifier|synchronized
 name|void
 name|seek
 parameter_list|(
@@ -1018,10 +1019,12 @@ operator|+
 name|partRemaining
 condition|)
 block|{
-name|wrappedStream
+name|AliyunOSSUtils
 operator|.
-name|skip
+name|skipFully
 argument_list|(
+name|wrappedStream
+argument_list|,
 name|pos
 operator|-
 name|position
@@ -1045,6 +1048,7 @@ annotation|@
 name|Override
 DECL|method|getPos ()
 specifier|public
+specifier|synchronized
 name|long
 name|getPos
 parameter_list|()
