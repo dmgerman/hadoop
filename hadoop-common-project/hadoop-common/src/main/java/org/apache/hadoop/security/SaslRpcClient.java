@@ -1756,11 +1756,6 @@ operator|.
 name|getName
 argument_list|()
 decl_stmt|;
-name|boolean
-name|isPrincipalValid
-init|=
-literal|false
-decl_stmt|;
 comment|// use the pattern if defined
 name|String
 name|serverKeyPattern
@@ -1797,8 +1792,9 @@ argument_list|(
 name|serverKeyPattern
 argument_list|)
 decl_stmt|;
-name|isPrincipalValid
-operator|=
+if|if
+condition|(
+operator|!
 name|pattern
 operator|.
 name|matcher
@@ -1808,7 +1804,27 @@ argument_list|)
 operator|.
 name|matches
 argument_list|()
-expr_stmt|;
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Server has invalid Kerberos principal: %s,"
+operator|+
+literal|" doesn't match the pattern: %s"
+argument_list|,
+name|serverPrincipal
+argument_list|,
+name|serverKeyPattern
+argument_list|)
+argument_list|)
+throw|;
+block|}
 block|}
 else|else
 block|{
@@ -1913,31 +1929,34 @@ name|confPrincipal
 argument_list|)
 throw|;
 block|}
-name|isPrincipalValid
-operator|=
+if|if
+condition|(
+operator|!
 name|serverPrincipal
 operator|.
 name|equals
 argument_list|(
 name|confPrincipal
 argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-operator|!
-name|isPrincipalValid
 condition|)
 block|{
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Server has invalid Kerberos principal: "
-operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Server has invalid Kerberos principal: %s, expecting: %s"
+argument_list|,
 name|serverPrincipal
+argument_list|,
+name|confPrincipal
+argument_list|)
 argument_list|)
 throw|;
+block|}
 block|}
 return|return
 name|serverPrincipal
