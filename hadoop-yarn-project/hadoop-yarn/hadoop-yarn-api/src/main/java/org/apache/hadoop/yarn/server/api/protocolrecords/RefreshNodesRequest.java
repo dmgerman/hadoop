@@ -179,6 +179,53 @@ return|return
 name|request
 return|;
 block|}
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|newInstance ( DecommissionType decommissionType, Integer timeout)
+specifier|public
+specifier|static
+name|RefreshNodesRequest
+name|newInstance
+parameter_list|(
+name|DecommissionType
+name|decommissionType
+parameter_list|,
+name|Integer
+name|timeout
+parameter_list|)
+block|{
+name|RefreshNodesRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|RefreshNodesRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setDecommissionType
+argument_list|(
+name|decommissionType
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setDecommissionTimeout
+argument_list|(
+name|timeout
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
 comment|/**    * Set the DecommissionType    *     * @param decommissionType    */
 DECL|method|setDecommissionType (DecommissionType decommissionType)
 specifier|public
@@ -196,6 +243,25 @@ specifier|public
 specifier|abstract
 name|DecommissionType
 name|getDecommissionType
+parameter_list|()
+function_decl|;
+comment|/**    * Set the DecommissionTimeout.    *    * @param timeout graceful decommission timeout in seconds    */
+DECL|method|setDecommissionTimeout (Integer timeout)
+specifier|public
+specifier|abstract
+name|void
+name|setDecommissionTimeout
+parameter_list|(
+name|Integer
+name|timeout
+parameter_list|)
+function_decl|;
+comment|/**    * Get the DecommissionTimeout.    *    * @return decommissionTimeout    */
+DECL|method|getDecommissionTimeout ()
+specifier|public
+specifier|abstract
+name|Integer
+name|getDecommissionTimeout
 parameter_list|()
 function_decl|;
 block|}

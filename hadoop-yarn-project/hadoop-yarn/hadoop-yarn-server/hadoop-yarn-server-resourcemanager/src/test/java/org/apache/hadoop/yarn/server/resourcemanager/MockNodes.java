@@ -1343,6 +1343,18 @@ name|long
 name|timeStamp
 parameter_list|)
 block|{     }
+annotation|@
+name|Override
+DECL|method|getDecommissioningTimeout ()
+specifier|public
+name|Integer
+name|getDecommissioningTimeout
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 empty_stmt|;
 DECL|method|buildRMNode (int rack, final Resource perNode, NodeState state, String httpAddr)

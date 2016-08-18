@@ -2811,6 +2811,11 @@ operator|.
 name|refreshNodesGracefully
 argument_list|(
 name|conf
+argument_list|,
+name|request
+operator|.
+name|getDecommissionTimeout
+argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;

@@ -2015,6 +2015,8 @@ argument_list|(
 name|DecommissionType
 operator|.
 name|GRACEFUL
+argument_list|,
+literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2386,6 +2388,9 @@ argument_list|(
 name|DecommissionType
 operator|.
 name|GRACEFUL
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2501,34 +2506,6 @@ operator|.
 name|run
 argument_list|(
 name|negativeTimeoutArgs
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// server tracking mode
-name|String
-index|[]
-name|serveTrackingrArgs
-init|=
-block|{
-literal|"-refreshNodes"
-block|,
-literal|"-g"
-block|,
-literal|"1"
-block|,
-literal|"-server"
-block|}
-decl_stmt|;
-name|assertEquals
-argument_list|(
-operator|-
-literal|1
-argument_list|,
-name|rmAdminCLI
-operator|.
-name|run
-argument_list|(
-name|serveTrackingrArgs
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3180,9 +3157,11 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"yarn rmadmin [-refreshQueues] [-refreshNodes [-g [timeout in "
+literal|"yarn rmadmin [-refreshQueues] [-refreshNodes "
 operator|+
-literal|"seconds] -client|server]] [-refreshNodesResources] [-refresh"
+literal|"[-g|graceful [timeout in seconds] -client|server]] "
+operator|+
+literal|"[-refreshNodesResources] [-refresh"
 operator|+
 literal|"SuperUserGroupsConfiguration] [-refreshUserToGroupsMappings] "
 operator|+
@@ -3230,7 +3209,9 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"-refreshNodes [-g [timeout in seconds] -client|server]: "
+literal|"-refreshNodes [-g|graceful [timeout in seconds]"
+operator|+
+literal|" -client|server]: "
 operator|+
 literal|"Refresh the hosts information at the ResourceManager."
 argument_list|)
@@ -3353,9 +3334,9 @@ block|,
 literal|"-refreshNodes"
 block|}
 argument_list|,
-literal|"Usage: yarn rmadmin [-refreshNodes [-g [timeout in seconds] "
+literal|"Usage: yarn rmadmin [-refreshNodes [-g|graceful "
 operator|+
-literal|"-client|server]]"
+literal|"[timeout in seconds] -client|server]]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -3624,9 +3605,9 @@ expr_stmt|;
 name|String
 name|expectedHelpMsg
 init|=
-literal|"yarn rmadmin [-refreshQueues] [-refreshNodes [-g [timeout in "
+literal|"yarn rmadmin [-refreshQueues] [-refreshNodes [-g|graceful "
 operator|+
-literal|"seconds] -client|server]] "
+literal|"[timeout in seconds] -client|server]] "
 operator|+
 literal|"[-refreshNodesResources] [-refreshSuperUserGroupsConfiguration] "
 operator|+

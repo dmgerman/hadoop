@@ -554,6 +554,8 @@ name|rebootedNodes
 operator|+
 name|unhealthyNodes
 operator|+
+name|decommissioningNodes
+operator|+
 name|shutdownNodes
 expr_stmt|;
 block|}

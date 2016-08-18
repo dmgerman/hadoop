@@ -851,6 +851,18 @@ name|long
 name|timeStamp
 parameter_list|)
 block|{   }
+annotation|@
+name|Override
+DECL|method|getDecommissioningTimeout ()
+specifier|public
+name|Integer
+name|getDecommissioningTimeout
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 

@@ -727,7 +727,7 @@ argument_list|>
 name|acceptedStates
 parameter_list|)
 block|{
-comment|// nodes contains nodes that are NEW, RUNNING OR UNHEALTHY
+comment|// nodes contains nodes that are NEW, RUNNING, UNHEALTHY or DECOMMISSIONING.
 name|ArrayList
 argument_list|<
 name|RMNode
