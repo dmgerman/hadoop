@@ -942,6 +942,12 @@ specifier|final
 name|int
 name|volsConfigured
 decl_stmt|;
+DECL|field|maxDataLength
+specifier|private
+specifier|final
+name|int
+name|maxDataLength
+decl_stmt|;
 DECL|method|DNConf (Configuration conf)
 specifier|public
 name|DNConf
@@ -1084,6 +1090,21 @@ argument_list|,
 name|HdfsClientConfigKeys
 operator|.
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
+argument_list|)
+expr_stmt|;
+name|maxDataLength
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|IPC_MAXIMUM_DATA_LENGTH
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
 argument_list|)
 expr_stmt|;
 name|dropCacheBehindWrites
@@ -1784,6 +1805,15 @@ parameter_list|()
 block|{
 return|return
 name|volsConfigured
+return|;
+block|}
+DECL|method|getMaxDataLength ()
+name|int
+name|getMaxDataLength
+parameter_list|()
+block|{
+return|return
+name|maxDataLength
 return|;
 block|}
 block|}
