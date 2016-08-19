@@ -9076,7 +9076,7 @@ specifier|final
 name|boolean
 name|DEFAULT_AM_SCHEDULING_NODE_BLACKLISTING_ENABLED
 init|=
-literal|true
+literal|false
 decl_stmt|;
 annotation|@
 name|Private
@@ -9101,7 +9101,7 @@ name|float
 DECL|field|DEFAULT_AM_SCHEDULING_NODE_BLACKLISTING_DISABLE_THRESHOLD
 name|DEFAULT_AM_SCHEDULING_NODE_BLACKLISTING_DISABLE_THRESHOLD
 init|=
-literal|0.8f
+literal|0.2f
 decl_stmt|;
 DECL|field|NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_PREFIX
 specifier|private
