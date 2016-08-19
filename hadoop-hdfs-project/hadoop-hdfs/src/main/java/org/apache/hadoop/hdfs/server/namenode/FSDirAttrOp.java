@@ -666,7 +666,7 @@ operator|&&
 operator|!
 name|pc
 operator|.
-name|containsGroup
+name|isMemberOfGroup
 argument_list|(
 name|group
 argument_list|)
