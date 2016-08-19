@@ -102,6 +102,15 @@ name|AnonymousAWSCredentialsProvider
 implements|implements
 name|AWSCredentialsProvider
 block|{
+DECL|field|NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NAME
+init|=
+literal|"org.apache.hadoop.fs.s3a.AnonymousAWSCredentialsProvider"
+decl_stmt|;
 DECL|method|getCredentials ()
 specifier|public
 name|AWSCredentials

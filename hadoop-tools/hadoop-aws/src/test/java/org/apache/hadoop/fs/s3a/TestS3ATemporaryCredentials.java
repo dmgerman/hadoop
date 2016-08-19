@@ -323,7 +323,9 @@ specifier|final
 name|String
 name|PROVIDER_CLASS
 init|=
-literal|"org.apache.hadoop.fs.s3a.TemporaryAWSCredentialsProvider"
+name|TemporaryAWSCredentialsProvider
+operator|.
+name|NAME
 decl_stmt|;
 DECL|field|TEST_FILE_SIZE
 specifier|private
