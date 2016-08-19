@@ -88,7 +88,7 @@ name|security
 operator|.
 name|ssl
 operator|.
-name|SslSocketConnectorSecure
+name|SslSelectChannelConnectorSecure
 import|;
 end_import
 
@@ -176,7 +176,7 @@ name|jetty
 operator|.
 name|security
 operator|.
-name|SslSocketConnector
+name|SslSelectChannelConnector
 import|;
 end_import
 
@@ -502,11 +502,11 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|SslSocketConnector
+name|SslSelectChannelConnector
 name|c
 init|=
 operator|new
-name|SslSocketConnectorSecure
+name|SslSelectChannelConnectorSecure
 argument_list|()
 decl_stmt|;
 name|c

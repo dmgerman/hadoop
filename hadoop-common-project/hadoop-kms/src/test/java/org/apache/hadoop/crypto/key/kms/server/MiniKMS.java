@@ -104,11 +104,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|util
 operator|.
-name|ssl
-operator|.
-name|SslSocketConnectorSecure
+name|ThreadUtil
 import|;
 end_import
 
@@ -120,9 +118,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|security
 operator|.
-name|ThreadUtil
+name|ssl
+operator|.
+name|SslSelectChannelConnectorSecure
 import|;
 end_import
 
@@ -160,7 +160,7 @@ name|jetty
 operator|.
 name|security
 operator|.
-name|SslSocketConnector
+name|SslSelectChannelConnector
 import|;
 end_import
 
@@ -385,11 +385,11 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|SslSocketConnector
+name|SslSelectChannelConnector
 name|c
 init|=
 operator|new
-name|SslSocketConnectorSecure
+name|SslSelectChannelConnectorSecure
 argument_list|()
 decl_stmt|;
 name|c
@@ -490,7 +490,7 @@ operator|.
 name|getClass
 argument_list|()
 operator|==
-name|SslSocketConnectorSecure
+name|SslSelectChannelConnectorSecure
 operator|.
 name|class
 decl_stmt|;
