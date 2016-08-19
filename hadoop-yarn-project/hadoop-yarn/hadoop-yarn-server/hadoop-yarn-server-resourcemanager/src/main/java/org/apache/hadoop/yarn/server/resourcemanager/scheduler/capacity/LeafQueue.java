@@ -4065,9 +4065,7 @@ argument_list|,
 name|application
 operator|.
 name|getAMResource
-argument_list|(
-name|partitionName
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
