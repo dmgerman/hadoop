@@ -1274,6 +1274,10 @@ operator|==
 name|JobState
 operator|.
 name|DEFINE
+operator|||
+name|status
+operator|==
+literal|null
 condition|)
 block|{
 return|return
