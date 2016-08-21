@@ -131,6 +131,8 @@ literal|"MapReduce"
 block|,
 literal|"Pig"
 block|,
+literal|"Spark"
+block|,
 literal|"YARN"
 block|}
 argument_list|)
