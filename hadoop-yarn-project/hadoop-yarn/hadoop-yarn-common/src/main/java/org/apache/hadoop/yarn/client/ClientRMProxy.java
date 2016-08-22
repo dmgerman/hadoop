@@ -521,7 +521,7 @@ name|Private
 annotation|@
 name|Override
 DECL|method|getRMAddress (YarnConfiguration conf, Class<?> protocol)
-specifier|protected
+specifier|public
 name|InetSocketAddress
 name|getRMAddress
 parameter_list|(
@@ -676,7 +676,7 @@ name|Private
 annotation|@
 name|Override
 DECL|method|checkAllowedProtocols (Class<?> protocol)
-specifier|protected
+specifier|public
 name|void
 name|checkAllowedProtocols
 parameter_list|(

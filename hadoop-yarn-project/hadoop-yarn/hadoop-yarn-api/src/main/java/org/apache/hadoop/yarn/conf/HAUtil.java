@@ -20,15 +20,21 @@ end_package
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|net
 operator|.
-name|common
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|annotations
+name|util
 operator|.
-name|VisibleForTesting
+name|Collection
 import|;
 end_import
 
@@ -132,21 +138,15 @@ end_import
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|net
+name|google
 operator|.
-name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|common
 operator|.
-name|util
+name|annotations
 operator|.
-name|Collection
+name|VisibleForTesting
 import|;
 end_import
 
@@ -212,6 +212,58 @@ operator|+
 name|msg
 argument_list|)
 throw|;
+block|}
+comment|/**    * Returns true if Federation is configured.    *    * @param conf Configuration    * @return true if federation is configured in the configuration; else false.    */
+DECL|method|isFederationEnabled (Configuration conf)
+specifier|public
+specifier|static
+name|boolean
+name|isFederationEnabled
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|FEDERATION_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_FEDERATION_ENABLED
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns true if RM failover is enabled in a Federation setting.    *    * @param conf Configuration    * @return if RM failover is enabled in conjunction with Federation in the    *         configuration; else false.    */
+DECL|method|isFederationFailoverEnabled (Configuration conf)
+specifier|public
+specifier|static
+name|boolean
+name|isFederationFailoverEnabled
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|FEDERATION_FAILOVER_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_FEDERATION_FAILOVER_ENABLED
+argument_list|)
+return|;
 block|}
 comment|/**    * Returns true if Resource Manager HA is configured.    *    * @param conf Configuration    * @return true if HA is configured in the configuration; else false.    */
 DECL|method|isHAEnabled (Configuration conf)

@@ -493,7 +493,7 @@ comment|/**    * Verify the passed protocol is supported.    */
 annotation|@
 name|Private
 DECL|method|checkAllowedProtocols (Class<?> protocol)
-specifier|protected
+specifier|public
 name|void
 name|checkAllowedProtocols
 parameter_list|(
@@ -508,7 +508,7 @@ comment|/**    * Get the ResourceManager address from the provided Configuration
 annotation|@
 name|Private
 DECL|method|getRMAddress ( YarnConfiguration conf, Class<?> protocol)
-specifier|protected
+specifier|public
 name|InetSocketAddress
 name|getRMAddress
 parameter_list|(
@@ -593,12 +593,21 @@ name|createRetryPolicy
 argument_list|(
 name|conf
 argument_list|,
+operator|(
 name|HAUtil
 operator|.
 name|isHAEnabled
 argument_list|(
 name|conf
 argument_list|)
+operator|||
+name|HAUtil
+operator|.
+name|isFederationFailoverEnabled
+argument_list|(
+name|conf
+argument_list|)
+operator|)
 argument_list|)
 decl_stmt|;
 return|return
@@ -746,6 +755,13 @@ name|isHAEnabled
 argument_list|(
 name|conf
 argument_list|)
+operator|||
+name|HAUtil
+operator|.
+name|isFederationEnabled
+argument_list|(
+name|conf
+argument_list|)
 condition|)
 block|{
 name|RMFailoverProxyProvider
@@ -837,9 +853,10 @@ comment|/**    * Get a proxy to the RM at the specified address. To be used to c
 annotation|@
 name|Private
 DECL|method|getProxy (final Configuration conf, final Class<T> protocol, final InetSocketAddress rmAddress)
-argument_list|<
+specifier|public
+parameter_list|<
 name|T
-argument_list|>
+parameter_list|>
 name|T
 name|getProxy
 parameter_list|(

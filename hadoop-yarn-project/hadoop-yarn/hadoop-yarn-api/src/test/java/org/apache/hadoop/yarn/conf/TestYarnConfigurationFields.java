@@ -188,6 +188,24 @@ operator|.
 name|DEFAULT_FEDERATION_STATESTORE_CLIENT_CLASS
 argument_list|)
 expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|FEDERATION_SUBCLUSTER_ID
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|FEDERATION_FAILOVER_ENABLED
+argument_list|)
+expr_stmt|;
 comment|// Ignore blacklisting nodes for AM failures feature since it is still a
 comment|// "work in progress"
 name|configurationPropsToSkipCompare
