@@ -2649,10 +2649,7 @@ literal|true
 expr_stmt|;
 block|}
 comment|/**    * This is a wrapper for resolvePath(). If the path passed    * is prefixed with /.reserved/raw, then it checks to ensure that the caller    * has super user privileges.    *    * @param pc The permission checker used when resolving path.    * @param path The path to resolve.    * @return if the path indicates an inode, return path after replacing up to    *<inodeid> with the corresponding path of the inode, else the path    *         in {@code src} as is. If the path refers to a path in the "raw"    *         directory, return the non-raw pathname.    * @throws FileNotFoundException    * @throws AccessControlException    */
-annotation|@
-name|VisibleForTesting
 DECL|method|resolvePath (FSPermissionChecker pc, String src)
-specifier|public
 name|INodesInPath
 name|resolvePath
 parameter_list|(
@@ -2680,10 +2677,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|resolvePath (FSPermissionChecker pc, String src, boolean resolveLink)
-specifier|public
 name|INodesInPath
 name|resolvePath
 parameter_list|(
@@ -2715,14 +2709,6 @@ argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
-name|boolean
-name|isRaw
-init|=
-name|isReservedRawName
-argument_list|(
-name|components
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|isPermissionEnabled
@@ -2731,7 +2717,10 @@ name|pc
 operator|!=
 literal|null
 operator|&&
-name|isRaw
+name|isReservedRawName
+argument_list|(
+name|components
+argument_list|)
 condition|)
 block|{
 name|pc
@@ -2757,8 +2746,6 @@ argument_list|(
 name|rootDir
 argument_list|,
 name|components
-argument_list|,
-name|isRaw
 argument_list|,
 name|resolveLink
 argument_list|)
@@ -7867,6 +7854,13 @@ argument_list|(
 name|this
 argument_list|,
 name|iip
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|iip
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)

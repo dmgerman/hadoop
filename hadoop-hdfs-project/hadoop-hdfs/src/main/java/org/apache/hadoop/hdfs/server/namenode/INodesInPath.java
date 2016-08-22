@@ -596,45 +596,6 @@ parameter_list|)
 throws|throws
 name|UnresolvedLinkException
 block|{
-return|return
-name|resolve
-argument_list|(
-name|startingDir
-argument_list|,
-name|components
-argument_list|,
-literal|false
-argument_list|,
-name|resolveLink
-argument_list|)
-return|;
-block|}
-DECL|method|resolve (final INodeDirectory startingDir, final byte[][] components, final boolean isRaw, final boolean resolveLink)
-specifier|static
-name|INodesInPath
-name|resolve
-parameter_list|(
-specifier|final
-name|INodeDirectory
-name|startingDir
-parameter_list|,
-specifier|final
-name|byte
-index|[]
-index|[]
-name|components
-parameter_list|,
-specifier|final
-name|boolean
-name|isRaw
-parameter_list|,
-specifier|final
-name|boolean
-name|resolveLink
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-block|{
 name|Preconditions
 operator|.
 name|checkArgument
@@ -1235,8 +1196,6 @@ name|inodes
 argument_list|,
 name|components
 argument_list|,
-name|isRaw
-argument_list|,
 name|isSnapshot
 argument_list|,
 name|snapshotId
@@ -1398,10 +1357,6 @@ argument_list|,
 name|iip
 operator|.
 name|path
-argument_list|,
-name|iip
-operator|.
-name|isRaw
 argument_list|,
 name|iip
 operator|.
@@ -1570,10 +1525,6 @@ name|path
 argument_list|,
 name|iip
 operator|.
-name|isRaw
-argument_list|,
-name|iip
-operator|.
 name|isSnapshot
 argument_list|,
 name|iip
@@ -1605,13 +1556,6 @@ specifier|final
 name|boolean
 name|isSnapshot
 decl_stmt|;
-comment|/**    * true if this is a /.reserved/raw path.  path component resolution strips    * it from the path so need to track it separately.    */
-DECL|field|isRaw
-specifier|private
-specifier|final
-name|boolean
-name|isRaw
-decl_stmt|;
 comment|/**    * For snapshot paths, it is the id of the snapshot; or     * {@link Snapshot#CURRENT_STATE_ID} if the snapshot does not exist. For     * non-snapshot paths, it is the id of the latest snapshot found in the path;    * or {@link Snapshot#CURRENT_STATE_ID} if no snapshot is found.    */
 DECL|field|snapshotId
 specifier|private
@@ -1619,7 +1563,7 @@ specifier|final
 name|int
 name|snapshotId
 decl_stmt|;
-DECL|method|INodesInPath (INode[] inodes, byte[][] path, boolean isRaw, boolean isSnapshot,int snapshotId)
+DECL|method|INodesInPath (INode[] inodes, byte[][] path, boolean isSnapshot, int snapshotId)
 specifier|private
 name|INodesInPath
 parameter_list|(
@@ -1631,9 +1575,6 @@ name|byte
 index|[]
 index|[]
 name|path
-parameter_list|,
-name|boolean
-name|isRaw
 parameter_list|,
 name|boolean
 name|isSnapshot
@@ -1669,12 +1610,6 @@ name|path
 expr_stmt|;
 name|this
 operator|.
-name|isRaw
-operator|=
-name|isRaw
-expr_stmt|;
-name|this
-operator|.
 name|isSnapshot
 operator|=
 name|isSnapshot
@@ -1705,8 +1640,6 @@ argument_list|(
 name|inodes
 argument_list|,
 name|path
-argument_list|,
-literal|false
 argument_list|,
 literal|false
 argument_list|,
@@ -2196,8 +2129,6 @@ name|anodes
 argument_list|,
 name|apath
 argument_list|,
-name|isRaw
-argument_list|,
 literal|false
 argument_list|,
 name|snapshotId
@@ -2337,8 +2268,6 @@ name|existing
 argument_list|,
 name|existingPath
 argument_list|,
-name|isRaw
-argument_list|,
 literal|false
 argument_list|,
 name|snapshotId
@@ -2357,7 +2286,6 @@ operator|.
 name|isSnapshot
 return|;
 block|}
-comment|/**    * @return if .snapshot is the last path component.    */
 DECL|method|isDotSnapshotDir ()
 name|boolean
 name|isDotSnapshotDir
@@ -2369,17 +2297,6 @@ argument_list|(
 name|getLastLocalName
 argument_list|()
 argument_list|)
-return|;
-block|}
-comment|/**    * @return if this is a /.reserved/raw path.    */
-DECL|method|isRaw ()
-specifier|public
-name|boolean
-name|isRaw
-parameter_list|()
-block|{
-return|return
-name|isRaw
 return|;
 block|}
 DECL|method|toString (INode inode)
