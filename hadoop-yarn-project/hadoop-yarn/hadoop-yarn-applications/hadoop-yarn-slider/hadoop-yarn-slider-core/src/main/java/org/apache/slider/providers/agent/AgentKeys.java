@@ -167,6 +167,12 @@ name|APP_DEF
 init|=
 literal|"application.def"
 decl_stmt|;
+DECL|field|APP_DEF_ORIGINAL
+name|String
+name|APP_DEF_ORIGINAL
+init|=
+literal|"application.def.original"
+decl_stmt|;
 DECL|field|ADDON_PREFIX
 name|String
 name|ADDON_PREFIX
@@ -354,6 +360,12 @@ name|String
 name|AM_CONFIG_GENERATION
 init|=
 literal|"am.config.generation"
+decl_stmt|;
+DECL|field|DEFAULT_METAINFO_MAP_KEY
+name|String
+name|DEFAULT_METAINFO_MAP_KEY
+init|=
+literal|"DEFAULT_KEY"
 decl_stmt|;
 block|}
 end_interface

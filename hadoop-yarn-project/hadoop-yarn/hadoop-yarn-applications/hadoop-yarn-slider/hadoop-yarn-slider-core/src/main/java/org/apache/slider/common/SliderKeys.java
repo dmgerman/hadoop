@@ -107,6 +107,41 @@ name|APP_TYPE
 init|=
 literal|"org-apache-slider"
 decl_stmt|;
+comment|/**    * Key for component type. This MUST NOT be set in app_config/global {@value}    */
+DECL|field|COMPONENT_TYPE_KEY
+name|String
+name|COMPONENT_TYPE_KEY
+init|=
+literal|"site.global.component_type"
+decl_stmt|;
+comment|/**    * A component type for an external app that has been predefined using the    * slider build command    */
+DECL|field|COMPONENT_TYPE_EXTERNAL_APP
+name|String
+name|COMPONENT_TYPE_EXTERNAL_APP
+init|=
+literal|"external_app"
+decl_stmt|;
+DECL|field|COMPONENT_SEPARATOR
+name|String
+name|COMPONENT_SEPARATOR
+init|=
+literal|"-"
+decl_stmt|;
+DECL|field|COMPONENT_KEYS_TO_SKIP
+name|String
+index|[]
+name|COMPONENT_KEYS_TO_SKIP
+init|=
+block|{
+literal|"zookeeper."
+block|,
+literal|"env.MALLOC_ARENA_MAX"
+block|,
+literal|"site.fs."
+block|,
+literal|"site.dfs."
+block|}
+decl_stmt|;
 comment|/**    * Key for application version. This must be set in app_config/global {@value}    */
 DECL|field|APP_VERSION
 name|String

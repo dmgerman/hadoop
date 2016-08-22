@@ -40,6 +40,13 @@ name|ROLE_GROUP
 init|=
 literal|"role.group"
 decl_stmt|;
+comment|/**    * The prefix of a role: {@value}    */
+DECL|field|ROLE_PREFIX
+name|String
+name|ROLE_PREFIX
+init|=
+literal|"role.prefix"
+decl_stmt|;
 comment|/**    * Status report: number actually granted : {@value}     */
 DECL|field|ROLE_ACTUAL_INSTANCES
 name|String

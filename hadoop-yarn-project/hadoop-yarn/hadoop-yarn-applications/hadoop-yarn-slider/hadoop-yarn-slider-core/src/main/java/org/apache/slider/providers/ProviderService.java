@@ -509,8 +509,8 @@ name|BadCommandArgumentsException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * The application configuration should be initialized here    *     * @param instanceDefinition    * @param fileSystem    * @throws IOException    * @throws SliderException    */
-DECL|method|initializeApplicationConfiguration (AggregateConf instanceDefinition, SliderFileSystem fileSystem)
+comment|/**    * The application configuration should be initialized here    *     * @param instanceDefinition    * @param fileSystem    * @param roleGroup    * @throws IOException    * @throws SliderException    */
+DECL|method|initializeApplicationConfiguration (AggregateConf instanceDefinition, SliderFileSystem fileSystem, String roleGroup)
 name|void
 name|initializeApplicationConfiguration
 parameter_list|(
@@ -519,6 +519,9 @@ name|instanceDefinition
 parameter_list|,
 name|SliderFileSystem
 name|fileSystem
+parameter_list|,
+name|String
+name|roleGroup
 parameter_list|)
 throws|throws
 name|IOException

@@ -997,7 +997,7 @@ block|}
 comment|/**    * No-op implementation of this method.    */
 annotation|@
 name|Override
-DECL|method|initializeApplicationConfiguration ( AggregateConf instanceDefinition, SliderFileSystem fileSystem)
+DECL|method|initializeApplicationConfiguration ( AggregateConf instanceDefinition, SliderFileSystem fileSystem, String roleGroup)
 specifier|public
 name|void
 name|initializeApplicationConfiguration
@@ -1007,6 +1007,9 @@ name|instanceDefinition
 parameter_list|,
 name|SliderFileSystem
 name|fileSystem
+parameter_list|,
+name|String
+name|roleGroup
 parameter_list|)
 throws|throws
 name|IOException

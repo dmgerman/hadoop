@@ -442,7 +442,7 @@ name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/{agent_name: [a-zA-Z][a-zA-Z_0-9]*}/register"
+literal|"/{agent_name: [a-zA-Z][a-zA-Z0-9_-]*}/register"
 argument_list|)
 annotation|@
 name|Consumes
@@ -517,7 +517,7 @@ name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/{agent_name: [a-zA-Z][a-zA-Z_0-9]*}/heartbeat"
+literal|"/{agent_name: [a-zA-Z][a-zA-Z0-9_-]*}/heartbeat"
 argument_list|)
 annotation|@
 name|Consumes
