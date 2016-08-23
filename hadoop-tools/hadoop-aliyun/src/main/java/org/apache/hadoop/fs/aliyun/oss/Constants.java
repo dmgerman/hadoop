@@ -54,7 +54,7 @@ specifier|final
 name|String
 name|ACCESS_KEY
 init|=
-literal|"fs.oss.access.key"
+literal|"fs.oss.accessKeyId"
 decl_stmt|;
 DECL|field|SECRET_KEY
 specifier|public
@@ -63,7 +63,16 @@ specifier|final
 name|String
 name|SECRET_KEY
 init|=
-literal|"fs.oss.secret.key"
+literal|"fs.oss.accessKeySecret"
+decl_stmt|;
+DECL|field|SECURITY_TOKEN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SECURITY_TOKEN
+init|=
+literal|"fs.oss.securityToken"
 decl_stmt|;
 comment|// Number of simultaneous connections to oss
 DECL|field|MAXIMUM_CONNECTIONS_KEY
