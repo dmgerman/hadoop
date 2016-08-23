@@ -598,6 +598,26 @@ name|UploadPartCopyResult
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * Implementation of {@link FileSystem} for<a href="https://oss.aliyun.com">  * Aliyun OSS</a>, used to access OSS blob system in a filesystem style.  */
 end_comment
@@ -610,6 +630,22 @@ name|AliyunOSSFileSystem
 extends|extends
 name|FileSystem
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|AliyunOSSFileSystem
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|uri
 specifier|private
 name|URI
@@ -751,17 +787,48 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
+name|FileStatus
+name|status
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+comment|// get the status or throw a FNFE
+name|status
+operator|=
+name|getFileStatus
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+comment|// if the thread reaches here, there is something at the path
+if|if
+condition|(
+name|status
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+comment|// path references a directory
+throw|throw
+operator|new
+name|FileAlreadyExistsException
+argument_list|(
+name|path
+operator|+
+literal|" is a directory"
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 operator|!
 name|overwrite
-operator|&&
-name|exists
-argument_list|(
-name|path
-argument_list|)
 condition|)
 block|{
+comment|// path references a file and overwrite is disabled
 throw|throw
 operator|new
 name|FileAlreadyExistsException
@@ -771,6 +838,24 @@ operator|+
 literal|" already exists"
 argument_list|)
 throw|;
+block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Overwriting file {}"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+comment|// this means the file is not found
 block|}
 return|return
 operator|new
@@ -3012,7 +3097,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Used to create an empty file that represents an empty directory.    *    * @param bucketName the bucket this directory belongs to    * @param objectName directory path    * @return true if directory successfully created    * @throws IOException    */
+comment|/**    * Used to create an empty file that represents an empty directory.    *    * @param bucket the bucket this directory belongs to    * @param objectName directory path    * @return true if directory successfully created    * @throws IOException    */
 DECL|method|mkdir (final String bucket, final String objectName)
 specifier|private
 name|boolean

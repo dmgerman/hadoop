@@ -68,22 +68,6 @@ name|AbstractFSContract
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|contract
-operator|.
-name|ContractTestUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * OSS contract creating tests.  */
 end_comment
@@ -114,24 +98,6 @@ argument_list|(
 name|conf
 argument_list|)
 return|;
-block|}
-annotation|@
-name|Override
-DECL|method|testOverwriteEmptyDirectory ()
-specifier|public
-name|void
-name|testOverwriteEmptyDirectory
-parameter_list|()
-throws|throws
-name|Throwable
-block|{
-name|ContractTestUtils
-operator|.
-name|skip
-argument_list|(
-literal|"blobstores can't distinguish empty directories from files"
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 end_class
