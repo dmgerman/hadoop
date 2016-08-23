@@ -1731,28 +1731,22 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|UnsupportedOperationException
 name|ex
 parameter_list|)
-block|{
-if|if
-condition|(
-name|ex
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"Not supported"
-argument_list|)
-condition|)
 block|{
 name|canAppend
 operator|=
 literal|false
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+comment|// Ignore. The operation is supported.
 block|}
 return|return
 name|canAppend

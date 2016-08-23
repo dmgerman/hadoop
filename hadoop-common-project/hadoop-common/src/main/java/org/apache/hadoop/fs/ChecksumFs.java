@@ -1476,9 +1476,11 @@ name|IOException
 block|{
 throw|throw
 operator|new
-name|IOException
+name|UnsupportedOperationException
 argument_list|(
-literal|"Not supported"
+literal|"Truncate is not supported "
+operator|+
+literal|"by ChecksumFs"
 argument_list|)
 throw|;
 block|}

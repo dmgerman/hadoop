@@ -1569,9 +1569,11 @@ name|IOException
 block|{
 throw|throw
 operator|new
-name|IOException
+name|UnsupportedOperationException
 argument_list|(
-literal|"Not supported"
+literal|"Append is not supported "
+operator|+
+literal|"by FTPFileSystem"
 argument_list|)
 throw|;
 block|}

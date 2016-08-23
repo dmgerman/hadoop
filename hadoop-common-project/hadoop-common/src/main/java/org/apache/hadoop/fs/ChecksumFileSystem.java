@@ -1656,9 +1656,11 @@ name|IOException
 block|{
 throw|throw
 operator|new
-name|IOException
+name|UnsupportedOperationException
 argument_list|(
-literal|"Not supported"
+literal|"Append is not supported "
+operator|+
+literal|"by ChecksumFileSystem"
 argument_list|)
 throw|;
 block|}
@@ -1680,9 +1682,11 @@ name|IOException
 block|{
 throw|throw
 operator|new
-name|IOException
+name|UnsupportedOperationException
 argument_list|(
-literal|"Not supported"
+literal|"Truncate is not supported "
+operator|+
+literal|"by ChecksumFileSystem"
 argument_list|)
 throw|;
 block|}

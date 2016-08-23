@@ -530,15 +530,6 @@ name|E_FILE_CHECK_FAILED
 init|=
 literal|"File check failed"
 decl_stmt|;
-DECL|field|E_NOT_SUPPORTED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|E_NOT_SUPPORTED
-init|=
-literal|"Not supported"
-decl_stmt|;
 DECL|field|E_SPATH_NOTEXIST
 specifier|public
 specifier|static
@@ -3071,9 +3062,11 @@ name|IOException
 block|{
 throw|throw
 operator|new
-name|IOException
+name|UnsupportedOperationException
 argument_list|(
-name|E_NOT_SUPPORTED
+literal|"Append is not supported "
+operator|+
+literal|"by SFTPFileSystem"
 argument_list|)
 throw|;
 block|}
