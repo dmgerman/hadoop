@@ -626,6 +626,9 @@ operator|.
 name|getResourceScheduler
 argument_list|()
 decl_stmt|;
+comment|// Register 5 nodes, so that we can blacklist atleast one if AM container
+comment|// is failed. As per calculation it will be like, 5nodes * 0.2 (default)=1.
+comment|// First register 2 nodes, and after AM lauched register 3 more nodes.
 name|MockNM
 name|nm1
 init|=
@@ -763,6 +766,70 @@ operator|=
 name|nm1
 expr_stmt|;
 block|}
+comment|// register 3 nodes now
+name|MockNM
+name|nm3
+init|=
+operator|new
+name|MockNM
+argument_list|(
+literal|"127.0.0.3:2345"
+argument_list|,
+literal|8000
+argument_list|,
+name|rm
+operator|.
+name|getResourceTrackerService
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|nm3
+operator|.
+name|registerNode
+argument_list|()
+expr_stmt|;
+name|MockNM
+name|nm4
+init|=
+operator|new
+name|MockNM
+argument_list|(
+literal|"127.0.0.4:2345"
+argument_list|,
+literal|8000
+argument_list|,
+name|rm
+operator|.
+name|getResourceTrackerService
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|nm4
+operator|.
+name|registerNode
+argument_list|()
+expr_stmt|;
+name|MockNM
+name|nm5
+init|=
+operator|new
+name|MockNM
+argument_list|(
+literal|"127.0.0.5:2345"
+argument_list|,
+literal|8000
+argument_list|,
+name|rm
+operator|.
+name|getResourceTrackerService
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|nm5
+operator|.
+name|registerNode
+argument_list|()
+expr_stmt|;
 comment|// Set the exist status to INVALID so that we can verify that the system
 comment|// automatically blacklisting the node
 name|makeAMContainerExit
