@@ -3038,6 +3038,23 @@ name|getCounts
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Also compute ContentSummary for snapshotCounts (So we can extract it
+comment|// later from the ContentSummary of all).
+name|sf
+operator|.
+name|computeContentSummary4Snapshot
+argument_list|(
+name|summary
+operator|.
+name|getBlockStoragePolicySuite
+argument_list|()
+argument_list|,
+name|summary
+operator|.
+name|getSnapshotCounts
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 specifier|final
 name|DirectoryWithQuotaFeature

@@ -122,6 +122,13 @@ name|counts
 init|=
 literal|null
 decl_stmt|;
+DECL|field|snapshotCounts
+specifier|private
+name|ContentCounts
+name|snapshotCounts
+init|=
+literal|null
+decl_stmt|;
 DECL|field|nextCountLimit
 specifier|private
 name|long
@@ -202,6 +209,19 @@ expr_stmt|;
 name|this
 operator|.
 name|counts
+operator|=
+operator|new
+name|ContentCounts
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|snapshotCounts
 operator|=
 operator|new
 name|ContentCounts
@@ -469,6 +489,16 @@ parameter_list|()
 block|{
 return|return
 name|counts
+return|;
+block|}
+DECL|method|getSnapshotCounts ()
+specifier|public
+name|ContentCounts
+name|getSnapshotCounts
+parameter_list|()
+block|{
+return|return
+name|snapshotCounts
 return|;
 block|}
 DECL|method|getBlockStoragePolicySuite ()

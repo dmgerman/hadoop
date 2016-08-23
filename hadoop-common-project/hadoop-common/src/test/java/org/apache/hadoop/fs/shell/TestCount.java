@@ -2446,7 +2446,7 @@ decl_stmt|;
 name|String
 name|expected
 init|=
-literal|"-count [-q] [-h] [-v] [-t [<storage type>]] [-u]<path> ..."
+literal|"-count [-q] [-h] [-v] [-t [<storage type>]] [-u] [-x]<path> ..."
 decl_stmt|;
 name|assertEquals
 argument_list|(
@@ -2500,6 +2500,8 @@ operator|+
 literal|"The -h option shows file sizes in human readable format.\n"
 operator|+
 literal|"The -v option displays a header line.\n"
+operator|+
+literal|"The -x option excludes snapshots from being calculated. \n"
 operator|+
 literal|"The -t option displays quota by storage types.\n"
 operator|+
@@ -2744,7 +2746,7 @@ parameter_list|()
 block|{     }
 annotation|@
 name|Override
-DECL|method|toString (boolean qOption, boolean hOption)
+DECL|method|toString (boolean qOption, boolean hOption, boolean xOption)
 specifier|public
 name|String
 name|toString
@@ -2754,6 +2756,9 @@ name|qOption
 parameter_list|,
 name|boolean
 name|hOption
+parameter_list|,
+name|boolean
+name|xOption
 parameter_list|)
 block|{
 if|if

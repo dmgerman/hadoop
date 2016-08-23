@@ -259,6 +259,16 @@ name|OPTION_TYPE
 init|=
 literal|"t"
 decl_stmt|;
+comment|// exclude snapshots from calculation. Only work on default columns.
+DECL|field|OPTION_EXCLUDE_SNAPSHOT
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|OPTION_EXCLUDE_SNAPSHOT
+init|=
+literal|"x"
+decl_stmt|;
 comment|//return the quota, namespace count and disk space usage.
 DECL|field|OPTION_QUOTA_AND_USAGE
 specifier|private
@@ -304,6 +314,10 @@ operator|+
 literal|" [<storage type>]] [-"
 operator|+
 name|OPTION_QUOTA_AND_USAGE
+operator|+
+literal|"] [-"
+operator|+
+name|OPTION_EXCLUDE_SNAPSHOT
 operator|+
 literal|"]<path> ..."
 decl_stmt|;
@@ -382,6 +396,14 @@ literal|" option displays a header line.\n"
 operator|+
 literal|"The -"
 operator|+
+name|OPTION_EXCLUDE_SNAPSHOT
+operator|+
+literal|" option excludes snapshots "
+operator|+
+literal|"from being calculated. \n"
+operator|+
+literal|"The -"
+operator|+
 name|OPTION_TYPE
 operator|+
 literal|" option displays quota by storage types.\n"
@@ -441,6 +463,11 @@ DECL|field|showQuotasAndUsageOnly
 specifier|private
 name|boolean
 name|showQuotasAndUsageOnly
+decl_stmt|;
+DECL|field|excludeSnapshots
+specifier|private
+name|boolean
+name|excludeSnapshots
 decl_stmt|;
 comment|/** Constructor */
 DECL|method|Count ()
@@ -522,6 +549,8 @@ argument_list|,
 name|OPTION_HEADER
 argument_list|,
 name|OPTION_QUOTA_AND_USAGE
+argument_list|,
+name|OPTION_EXCLUDE_SNAPSHOT
 argument_list|)
 decl_stmt|;
 name|cf
@@ -582,6 +611,15 @@ argument_list|(
 name|OPTION_QUOTA_AND_USAGE
 argument_list|)
 expr_stmt|;
+name|excludeSnapshots
+operator|=
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+name|OPTION_EXCLUDE_SNAPSHOT
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|showQuotas
@@ -621,6 +659,31 @@ block|}
 else|else
 block|{
 name|showQuotabyType
+operator|=
+literal|false
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|excludeSnapshots
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+name|OPTION_QUOTA
+operator|+
+literal|" or "
+operator|+
+name|OPTION_QUOTA_AND_USAGE
+operator|+
+literal|" option "
+operator|+
+literal|"is given, the -x option is ignored."
+argument_list|)
+expr_stmt|;
+name|excludeSnapshots
 operator|=
 literal|false
 expr_stmt|;
@@ -863,6 +926,8 @@ name|showQuotas
 argument_list|,
 name|isHumanReadable
 argument_list|()
+argument_list|,
+name|excludeSnapshots
 argument_list|)
 operator|+
 name|src

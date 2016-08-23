@@ -562,7 +562,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-s] [-h]<path> ..."
+literal|"[-s] [-h] [-x]<path> ..."
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -571,9 +571,9 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Show the amount of space, in bytes, used by the files that "
+literal|"Show the amount of space, in bytes, used by the files that match "
 operator|+
-literal|"match the specified file pattern. The following flags are optional:\n"
+literal|"the specified file pattern. The following flags are optional:\n"
 operator|+
 literal|"-s: Rather than showing the size of each individual file that"
 operator|+
@@ -581,11 +581,13 @@ literal|" matches the pattern, shows the total (summary) size.\n"
 operator|+
 literal|"-h: Formats the sizes of files in a human-readable fashion"
 operator|+
-literal|" rather than a number of bytes.\n\n"
+literal|" rather than a number of bytes.\n"
 operator|+
-literal|"Note that, even without the -s option, this only shows size summaries "
+literal|"-x: Excludes snapshots from being counted.\n\n"
 operator|+
-literal|"one level deep into a directory.\n\n"
+literal|"Note that, even without the -s option, this only shows size "
+operator|+
+literal|"summaries one level deep into a directory.\n\n"
 operator|+
 literal|"The output is in the form \n"
 operator|+
@@ -595,6 +597,13 @@ DECL|field|summary
 specifier|protected
 name|boolean
 name|summary
+init|=
+literal|false
+decl_stmt|;
+DECL|field|excludeSnapshots
+specifier|private
+name|boolean
+name|excludeSnapshots
 init|=
 literal|false
 decl_stmt|;
@@ -629,6 +638,8 @@ argument_list|,
 literal|"h"
 argument_list|,
 literal|"s"
+argument_list|,
+literal|"x"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -654,6 +665,15 @@ operator|.
 name|getOpt
 argument_list|(
 literal|"s"
+argument_list|)
+expr_stmt|;
+name|excludeSnapshots
+operator|=
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"x"
 argument_list|)
 expr_stmt|;
 if|if
@@ -809,6 +829,26 @@ operator|.
 name|getSpaceConsumed
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|excludeSnapshots
+condition|)
+block|{
+name|length
+operator|-=
+name|contentSummary
+operator|.
+name|getSnapshotLength
+argument_list|()
+expr_stmt|;
+name|spaceConsumed
+operator|-=
+name|contentSummary
+operator|.
+name|getSnapshotSpaceConsumed
+argument_list|()
+expr_stmt|;
+block|}
 name|usagesTable
 operator|.
 name|addRow
