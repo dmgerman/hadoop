@@ -644,6 +644,15 @@ name|APP_STATE_CMD
 init|=
 literal|"appStates"
 decl_stmt|;
+DECL|field|APP_TAG_CMD
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|APP_TAG_CMD
+init|=
+literal|"appTags"
+decl_stmt|;
 DECL|field|ALLSTATES_OPTION
 specifier|private
 specifier|static
@@ -847,9 +856,11 @@ literal|"List applications. "
 operator|+
 literal|"Supports optional use of -appTypes to filter applications "
 operator|+
-literal|"based on application type, "
+literal|"based on application type, -appStates to filter applications "
 operator|+
-literal|"and -appStates to filter applications based on application state."
+literal|"based on application state and -appTags to filter applications "
+operator|+
+literal|"based on application tag."
 argument_list|)
 expr_stmt|;
 name|opts
@@ -984,6 +995,53 @@ operator|.
 name|addOption
 argument_list|(
 name|appStateOpt
+argument_list|)
+expr_stmt|;
+name|Option
+name|appTagOpt
+init|=
+operator|new
+name|Option
+argument_list|(
+name|APP_TAG_CMD
+argument_list|,
+literal|true
+argument_list|,
+literal|"Works with -list to "
+operator|+
+literal|"filter applications based on input comma-separated list of "
+operator|+
+literal|"application tags."
+argument_list|)
+decl_stmt|;
+name|appTagOpt
+operator|.
+name|setValueSeparator
+argument_list|(
+literal|','
+argument_list|)
+expr_stmt|;
+name|appTagOpt
+operator|.
+name|setArgs
+argument_list|(
+name|Option
+operator|.
+name|UNLIMITED_VALUES
+argument_list|)
+expr_stmt|;
+name|appTagOpt
+operator|.
+name|setArgName
+argument_list|(
+literal|"Tags"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+name|appTagOpt
 argument_list|)
 expr_stmt|;
 name|opts
@@ -1765,11 +1823,88 @@ block|}
 block|}
 block|}
 block|}
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|appTags
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+name|APP_TAG_CMD
+argument_list|)
+condition|)
+block|{
+name|String
+index|[]
+name|tags
+init|=
+name|cliParser
+operator|.
+name|getOptionValues
+argument_list|(
+name|APP_TAG_CMD
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|tags
+operator|!=
+literal|null
+condition|)
+block|{
+for|for
+control|(
+name|String
+name|tag
+range|:
+name|tags
+control|)
+block|{
+if|if
+condition|(
+operator|!
+name|tag
+operator|.
+name|trim
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|appTags
+operator|.
+name|add
+argument_list|(
+name|tag
+operator|.
+name|trim
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+block|}
 name|listApplications
 argument_list|(
 name|appTypes
 argument_list|,
 name|appStates
+argument_list|,
+name|appTags
 argument_list|)
 expr_stmt|;
 block|}
@@ -2931,8 +3066,8 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * Lists the applications matching the given application Types And application    * States present in the Resource Manager    *     * @param appTypes    * @param appStates    * @throws YarnException    * @throws IOException    */
-DECL|method|listApplications (Set<String> appTypes, EnumSet<YarnApplicationState> appStates)
+comment|/**    * Lists the applications matching the given application Types, application    * States and application Tags present in the Resource Manager.    *     * @param appTypes    * @param appStates    * @param appTags    * @throws YarnException    * @throws IOException    */
+DECL|method|listApplications (Set<String> appTypes, EnumSet<YarnApplicationState> appStates, Set<String> appTags)
 specifier|private
 name|void
 name|listApplications
@@ -2948,6 +3083,12 @@ argument_list|<
 name|YarnApplicationState
 argument_list|>
 name|appStates
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|appTags
 parameter_list|)
 throws|throws
 name|YarnException
@@ -3051,6 +3192,8 @@ argument_list|(
 name|appTypes
 argument_list|,
 name|appStates
+argument_list|,
+name|appTags
 argument_list|)
 decl_stmt|;
 name|writer
@@ -3061,9 +3204,13 @@ literal|"Total number of applications (application-types: "
 operator|+
 name|appTypes
 operator|+
-literal|" and states: "
+literal|", states: "
 operator|+
 name|appStates
+operator|+
+literal|" and tags: "
+operator|+
+name|appTags
 operator|+
 literal|")"
 operator|+
