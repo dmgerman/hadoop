@@ -1476,10 +1476,6 @@ try|try
 block|{
 name|setupConnectionsWithRetry
 argument_list|(
-name|host
-argument_list|,
-name|remaining
-argument_list|,
 name|url
 argument_list|)
 expr_stmt|;
@@ -1967,20 +1963,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|setupConnectionsWithRetry (MapHost host, Set<TaskAttemptID> remaining, URL url)
+DECL|method|setupConnectionsWithRetry (URL url)
 specifier|private
 name|void
 name|setupConnectionsWithRetry
 parameter_list|(
-name|MapHost
-name|host
-parameter_list|,
-name|Set
-argument_list|<
-name|TaskAttemptID
-argument_list|>
-name|remaining
-parameter_list|,
 name|URL
 name|url
 parameter_list|)
@@ -1989,10 +1976,6 @@ name|IOException
 block|{
 name|openConnectionWithRetry
 argument_list|(
-name|host
-argument_list|,
-name|remaining
-argument_list|,
 name|url
 argument_list|)
 expr_stmt|;
@@ -2056,20 +2039,11 @@ name|encHash
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|openConnectionWithRetry (MapHost host, Set<TaskAttemptID> remaining, URL url)
+DECL|method|openConnectionWithRetry (URL url)
 specifier|private
 name|void
 name|openConnectionWithRetry
 parameter_list|(
-name|MapHost
-name|host
-parameter_list|,
-name|Set
-argument_list|<
-name|TaskAttemptID
-argument_list|>
-name|remaining
-parameter_list|,
 name|URL
 name|url
 parameter_list|)
