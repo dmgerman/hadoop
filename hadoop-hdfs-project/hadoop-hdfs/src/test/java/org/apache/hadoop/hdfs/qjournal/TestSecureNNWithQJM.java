@@ -704,7 +704,7 @@ init|=
 operator|new
 name|Timeout
 argument_list|(
-literal|30000
+literal|180000
 argument_list|)
 decl_stmt|;
 annotation|@
