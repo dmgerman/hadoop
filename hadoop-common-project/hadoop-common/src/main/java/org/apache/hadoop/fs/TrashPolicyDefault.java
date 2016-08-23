@@ -586,6 +586,11 @@ literal|0
 return|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|moveToTrash (Path path)
 specifier|public
@@ -863,8 +868,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
+comment|// move to current trash
 name|fs
 operator|.
 name|rename
@@ -872,10 +876,12 @@ argument_list|(
 name|path
 argument_list|,
 name|trashPath
+argument_list|,
+name|Rename
+operator|.
+name|TO_TRASH
 argument_list|)
-condition|)
-block|{
-comment|// move to current trash
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -892,7 +898,6 @@ expr_stmt|;
 return|return
 literal|true
 return|;
-block|}
 block|}
 catch|catch
 parameter_list|(

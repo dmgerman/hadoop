@@ -1530,6 +1530,78 @@ name|isPermissionEnabled
 argument_list|()
 condition|)
 block|{
+name|boolean
+name|renameToTrash
+init|=
+literal|false
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|!=
+name|options
+operator|&&
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|options
+argument_list|)
+operator|.
+name|contains
+argument_list|(
+name|Options
+operator|.
+name|Rename
+operator|.
+name|TO_TRASH
+argument_list|)
+condition|)
+block|{
+name|renameToTrash
+operator|=
+literal|true
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|renameToTrash
+condition|)
+block|{
+comment|// if destination is the trash directory,
+comment|// besides the permission check on "rename"
+comment|// we need to enforce the check for "delete"
+comment|// otherwise, it would expose a
+comment|// security hole that stuff moved to trash
+comment|// will be deleted by superuser
+name|fsd
+operator|.
+name|checkPermission
+argument_list|(
+name|pc
+argument_list|,
+name|srcIIP
+argument_list|,
+literal|false
+argument_list|,
+literal|null
+argument_list|,
+name|FsAction
+operator|.
+name|WRITE
+argument_list|,
+literal|null
+argument_list|,
+name|FsAction
+operator|.
+name|ALL
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 comment|// Rename does not operate on link targets
 comment|// Do not resolveLink when checking permissions of src and dst
 comment|// Check write access to parent of src
@@ -1556,6 +1628,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Check write access to ancestor of dst
 name|fsd
 operator|.

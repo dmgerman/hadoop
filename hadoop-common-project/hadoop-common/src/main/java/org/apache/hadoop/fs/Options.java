@@ -977,8 +977,18 @@ name|byte
 operator|)
 literal|1
 argument_list|)
-block|;
+block|,
 comment|// Overwrite the rename destination
+DECL|enumConstant|TO_TRASH
+name|TO_TRASH
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|2
+argument_list|)
+block|;
+comment|// Rename to trash
 DECL|field|code
 specifier|private
 specifier|final
