@@ -1788,9 +1788,7 @@ name|targetLength
 init|=
 name|strategy
 operator|.
-name|buf
-operator|.
-name|remaining
+name|getTargetLength
 argument_list|()
 decl_stmt|;
 name|int
@@ -1812,13 +1810,9 @@ name|ret
 init|=
 name|strategy
 operator|.
-name|doRead
+name|readFromBlock
 argument_list|(
 name|blockReader
-argument_list|,
-literal|0
-argument_list|,
-literal|0
 argument_list|)
 decl_stmt|;
 if|if
@@ -2088,7 +2082,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|readWithStrategy (ReaderStrategy strategy, int off, int len)
+DECL|method|readWithStrategy (ReaderStrategy strategy)
 specifier|protected
 specifier|synchronized
 name|int
@@ -2096,12 +2090,6 @@ name|readWithStrategy
 parameter_list|(
 name|ReaderStrategy
 name|strategy
-parameter_list|,
-name|int
-name|off
-parameter_list|,
-name|int
-name|len
 parameter_list|)
 throws|throws
 name|IOException
@@ -2127,6 +2115,14 @@ literal|"Stream closed"
 argument_list|)
 throw|;
 block|}
+name|int
+name|len
+init|=
+name|strategy
+operator|.
+name|getTargetLength
+argument_list|()
+decl_stmt|;
 name|CorruptedBlocks
 name|corruptedBlocks
 init|=
@@ -2250,10 +2246,6 @@ name|copyToTargetBuf
 argument_list|(
 name|strategy
 argument_list|,
-name|off
-operator|+
-name|result
-argument_list|,
 name|realLen
 operator|-
 name|result
@@ -2297,17 +2289,14 @@ operator|-
 literal|1
 return|;
 block|}
-comment|/**    * Copy the data from {@link #curStripeBuf} into the given buffer    * @param strategy the ReaderStrategy containing the given buffer    * @param offset the offset of the given buffer. Used only when strategy is    *               a ByteArrayStrategy    * @param length target length    * @return number of bytes copied    */
-DECL|method|copyToTargetBuf (ReaderStrategy strategy, int offset, int length)
+comment|/**    * Copy the data from {@link #curStripeBuf} into the given buffer    * @param strategy the ReaderStrategy containing the given buffer    * @param length target length    * @return number of bytes copied    */
+DECL|method|copyToTargetBuf (ReaderStrategy strategy, int length)
 specifier|private
 name|int
 name|copyToTargetBuf
 parameter_list|(
 name|ReaderStrategy
 name|strategy
-parameter_list|,
-name|int
-name|offset
 parameter_list|,
 name|int
 name|length
@@ -2338,11 +2327,9 @@ expr_stmt|;
 return|return
 name|strategy
 operator|.
-name|copyFrom
+name|readFromBuffer
 argument_list|(
 name|curStripeBuf
-argument_list|,
-name|offset
 argument_list|,
 name|Math
 operator|.
@@ -3508,6 +3495,10 @@ argument_list|(
 name|chunk
 operator|.
 name|byteBuffer
+argument_list|,
+name|readStatistics
+argument_list|,
+name|dfsClient
 argument_list|)
 decl_stmt|;
 return|return
@@ -3599,6 +3590,10 @@ operator|new
 name|ByteBufferStrategy
 argument_list|(
 name|buffer
+argument_list|,
+name|readStatistics
+argument_list|,
+name|dfsClient
 argument_list|)
 expr_stmt|;
 block|}

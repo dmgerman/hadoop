@@ -128,6 +128,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|ReadStatistics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
@@ -356,8 +370,6 @@ block|}
 comment|/**    * Get statistics about the reads which this DFSInputStream has done.    * Note that because HdfsDataInputStream is buffered, these stats may    * be higher than you would expect just by adding up the number of    * bytes read through HdfsDataInputStream.    */
 DECL|method|getReadStatistics ()
 specifier|public
-name|DFSInputStream
-operator|.
 name|ReadStatistics
 name|getReadStatistics
 parameter_list|()
