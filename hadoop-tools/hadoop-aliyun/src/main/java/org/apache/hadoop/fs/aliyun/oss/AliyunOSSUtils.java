@@ -108,6 +108,26 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|aliyun
+operator|.
+name|oss
+operator|.
+name|Constants
+operator|.
+name|MULTIPART_UPLOAD_PART_NUM_LIMIT
+import|;
+end_import
+
 begin_comment
 comment|/**  * Utility methods for Aliyun OSS code.  */
 end_comment
@@ -660,6 +680,40 @@ literal|"to EOF."
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * Calculate a proper size of multipart piece. If<code>minPartSize</code>    * is too small, the number of multipart pieces may exceed the limit of    * {@link Constants#MULTIPART_UPLOAD_PART_NUM_LIMIT}.    * @param contentLength the size of file.    * @param minPartSize the minimum size of multipart piece.    * @return a revisional size of multipart piece.      */
+DECL|method|calculatePartSize (long contentLength, long minPartSize)
+specifier|public
+specifier|static
+name|long
+name|calculatePartSize
+parameter_list|(
+name|long
+name|contentLength
+parameter_list|,
+name|long
+name|minPartSize
+parameter_list|)
+block|{
+name|long
+name|tmpPartSize
+init|=
+name|contentLength
+operator|/
+name|MULTIPART_UPLOAD_PART_NUM_LIMIT
+operator|+
+literal|1
+decl_stmt|;
+return|return
+name|Math
+operator|.
+name|max
+argument_list|(
+name|minPartSize
+argument_list|,
+name|tmpPartSize
+argument_list|)
+return|;
 block|}
 block|}
 end_class

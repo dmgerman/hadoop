@@ -3097,8 +3097,8 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Used to create an empty file that represents an empty directory.    *    * @param bucket the bucket this directory belongs to    * @param objectName directory path    * @return true if directory successfully created    * @throws IOException    */
-DECL|method|mkdir (final String bucket, final String objectName)
+comment|/**    * Used to create an empty file that represents an empty directory.    *    * @param bucket the bucket this directory belongs to    * @param key directory path    * @return true if directory successfully created    * @throws IOException    */
+DECL|method|mkdir (final String bucket, final String key)
 specifier|private
 name|boolean
 name|mkdir
@@ -3109,7 +3109,7 @@ name|bucket
 parameter_list|,
 specifier|final
 name|String
-name|objectName
+name|key
 parameter_list|)
 throws|throws
 name|IOException
@@ -3117,7 +3117,7 @@ block|{
 name|String
 name|dirName
 init|=
-name|objectName
+name|key
 decl_stmt|;
 name|ObjectMetadata
 name|dirMeta
@@ -3155,7 +3155,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|objectName
+name|key
 operator|.
 name|endsWith
 argument_list|(

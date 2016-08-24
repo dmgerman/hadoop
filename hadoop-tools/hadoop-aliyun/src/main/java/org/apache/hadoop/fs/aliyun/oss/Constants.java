@@ -283,7 +283,7 @@ specifier|final
 name|int
 name|MULTIPART_UPLOAD_PART_NUM_LIMIT
 init|=
-literal|1000
+literal|10000
 decl_stmt|;
 comment|// Minimum size in bytes before we start a multipart uploads or copy
 DECL|field|MIN_MULTIPART_UPLOAD_THRESHOLD_KEY
@@ -398,6 +398,17 @@ name|String
 name|FS_OSS
 init|=
 literal|"oss"
+decl_stmt|;
+DECL|field|MIN_MULTIPART_UPLOAD_PART_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|MIN_MULTIPART_UPLOAD_PART_SIZE
+init|=
+literal|100
+operator|*
+literal|1024L
 decl_stmt|;
 block|}
 end_class
