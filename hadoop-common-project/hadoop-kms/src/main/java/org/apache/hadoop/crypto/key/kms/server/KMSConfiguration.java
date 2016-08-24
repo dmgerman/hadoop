@@ -240,6 +240,18 @@ name|CONFIG_PREFIX
 operator|+
 literal|"audit.aggregation.window.ms"
 decl_stmt|;
+comment|// KMS Audit logger classes to use
+DECL|field|KMS_AUDIT_LOGGER_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_AUDIT_LOGGER_KEY
+init|=
+name|CONFIG_PREFIX
+operator|+
+literal|"audit.logger"
+decl_stmt|;
 DECL|field|KEY_CACHE_ENABLE_DEFAULT
 specifier|public
 specifier|static

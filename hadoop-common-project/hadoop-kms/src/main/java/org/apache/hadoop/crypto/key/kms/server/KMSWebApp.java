@@ -913,17 +913,6 @@ operator|new
 name|KMSAudit
 argument_list|(
 name|kmsConf
-operator|.
-name|getLong
-argument_list|(
-name|KMSConfiguration
-operator|.
-name|KMS_AUDIT_AGGREGATION_WINDOW
-argument_list|,
-name|KMSConfiguration
-operator|.
-name|KMS_AUDIT_AGGREGATION_WINDOW_DEFAULT
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// this is required for the the JMXJsonServlet to work properly.
