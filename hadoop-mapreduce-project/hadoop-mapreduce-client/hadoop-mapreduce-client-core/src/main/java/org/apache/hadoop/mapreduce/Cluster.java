@@ -82,7 +82,31 @@ name|java
 operator|.
 name|util
 operator|.
+name|ServiceConfigurationError
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|ServiceLoader
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -443,10 +467,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|frameworkLoader
-specifier|private
 specifier|static
-name|ServiceLoader
+name|Iterable
 argument_list|<
 name|ClientProtocolProvider
 argument_list|>
@@ -510,6 +535,8 @@ name|ClientProtocolProvider
 argument_list|>
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|ClientProtocolProvider
@@ -523,6 +550,29 @@ operator|.
 name|add
 argument_list|(
 name|provider
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|ServiceConfigurationError
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Failed to instantiate ClientProtocolProvider, please "
+operator|+
+literal|"check the /META-INF/services/org.apache."
+operator|+
+literal|"hadoop.mapreduce.protocol.ClientProtocolProvider "
+operator|+
+literal|"files on the classpath"
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
