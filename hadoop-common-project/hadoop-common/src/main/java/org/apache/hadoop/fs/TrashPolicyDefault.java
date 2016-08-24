@@ -423,8 +423,11 @@ name|fs
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @deprecated Use {@link #initialize(Configuration, FileSystem)} instead.    */
 annotation|@
 name|Override
+annotation|@
+name|Deprecated
 DECL|method|initialize (Configuration conf, FileSystem fs, Path home)
 specifier|public
 name|void

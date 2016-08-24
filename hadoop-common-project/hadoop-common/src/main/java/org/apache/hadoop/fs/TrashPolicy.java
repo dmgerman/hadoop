@@ -135,7 +135,9 @@ name|long
 name|deletionInterval
 decl_stmt|;
 comment|// deletion interval for Emptier
-comment|/**    * Used to setup the trash policy. Must be implemented by all TrashPolicy    * implementations.    * @param conf the configuration to be used    * @param fs the filesystem to be used    * @param home the home directory    */
+comment|/**    * Used to setup the trash policy. Must be implemented by all TrashPolicy    * implementations.    * @param conf the configuration to be used    * @param fs the filesystem to be used    * @param home the home directory    * @deprecated Use {@link #initialize(Configuration, FileSystem)} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|initialize (Configuration conf, FileSystem fs, Path home)
 specifier|public
 specifier|abstract
@@ -250,7 +252,9 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get an instance of the configured TrashPolicy based on the value    * of the configuration parameter fs.trash.classname.    *    * @param conf the configuration to be used    * @param fs the file system to be used    * @param home the home directory    * @return an instance of TrashPolicy    */
+comment|/**    * Get an instance of the configured TrashPolicy based on the value    * of the configuration parameter fs.trash.classname.    *    * @param conf the configuration to be used    * @param fs the file system to be used    * @param home the home directory    * @return an instance of TrashPolicy    * @deprecated Use {@link #getInstance(Configuration, FileSystem)} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|getInstance (Configuration conf, FileSystem fs, Path home)
 specifier|public
 specifier|static
