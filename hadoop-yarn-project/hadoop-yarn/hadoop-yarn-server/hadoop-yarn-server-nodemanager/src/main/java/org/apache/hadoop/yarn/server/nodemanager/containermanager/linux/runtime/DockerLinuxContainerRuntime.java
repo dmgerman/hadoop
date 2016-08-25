@@ -1962,6 +1962,15 @@ name|setCapabilities
 argument_list|(
 name|capabilities
 argument_list|)
+operator|.
+name|addMountLocation
+argument_list|(
+literal|"/sys/fs/cgroup"
+argument_list|,
+literal|"/sys/fs/cgroup:ro"
+argument_list|,
+literal|false
+argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
@@ -2022,6 +2031,8 @@ argument_list|(
 name|dir
 argument_list|,
 name|dir
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2129,6 +2140,8 @@ argument_list|,
 name|dst
 operator|+
 literal|":ro"
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
