@@ -445,7 +445,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|TeraSort
+name|TeraGen
 operator|.
 name|class
 argument_list|)
