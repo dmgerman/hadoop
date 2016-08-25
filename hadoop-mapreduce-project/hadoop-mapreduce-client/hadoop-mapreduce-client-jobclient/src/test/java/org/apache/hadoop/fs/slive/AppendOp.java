@@ -568,6 +568,8 @@ block|}
 catch|catch
 parameter_list|(
 name|IOException
+decl||
+name|UnsupportedOperationException
 name|e
 parameter_list|)
 block|{
