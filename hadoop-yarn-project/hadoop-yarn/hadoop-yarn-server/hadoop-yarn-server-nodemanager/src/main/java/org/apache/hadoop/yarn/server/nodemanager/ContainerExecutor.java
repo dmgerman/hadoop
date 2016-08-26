@@ -659,15 +659,6 @@ name|ContainerExecutor
 implements|implements
 name|Configurable
 block|{
-DECL|field|WILDCARD
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|WILDCARD
-init|=
-literal|"*"
-decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static
@@ -683,6 +674,15 @@ name|ContainerExecutor
 operator|.
 name|class
 argument_list|)
+decl_stmt|;
+DECL|field|WILDCARD
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|WILDCARD
+init|=
+literal|"*"
 decl_stmt|;
 comment|/**    * The permissions to use when creating the launch script.    */
 DECL|field|TASK_LAUNCH_SCRIPT_PERMISSION
@@ -1191,8 +1191,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * This method writes out the launch environment of a container to the    * default container launch script. For the default container script path see    * {@link ContainerLaunch#CONTAINER_SCRIPT}.    *    * @param out the output stream to which the environment is written (usually    * a script file which will be executed by the Launcher)    * @param environment the environment variables and their values    * @param resources the resources which have been localized for this    * container. Symlinks will be created to these localized resources    * @param command the command that will be run.    * @param logDir the log dir to copy debugging information to    * @throws IOException if any errors happened writing to the OutputStream,    * while creating symlinks    */
-DECL|method|writeLaunchEnv (OutputStream out, Map<String, String> environment, Map<Path, List<String>> resources, List<String> command, Path logDir)
+comment|/**    * This method writes out the launch environment of a container to the    * default container launch script. For the default container script path see    * {@link ContainerLaunch#CONTAINER_SCRIPT}.    *    * @param out the output stream to which the environment is written (usually    * a script file which will be executed by the Launcher)    * @param environment the environment variables and their values    * @param resources the resources which have been localized for this    * container. Symlinks will be created to these localized resources    * @param command the command that will be run    * @param logDir the log dir to which to copy debugging information    * @param user the username of the job owner    * @throws IOException if any errors happened writing to the OutputStream,    * while creating symlinks    */
+DECL|method|writeLaunchEnv (OutputStream out, Map<String, String> environment, Map<Path, List<String>> resources, List<String> command, Path logDir, String user)
 specifier|public
 name|void
 name|writeLaunchEnv
@@ -1227,6 +1227,9 @@ name|command
 parameter_list|,
 name|Path
 name|logDir
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
 name|IOException
@@ -1245,16 +1248,18 @@ name|command
 argument_list|,
 name|logDir
 argument_list|,
+name|user
+argument_list|,
 name|ContainerLaunch
 operator|.
 name|CONTAINER_SCRIPT
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This method writes out the launch environment of a container to a specified    * path.    *    * @param out the output stream to which the environment is written (usually    * a script file which will be executed by the Launcher)    * @param environment the environment variables and their values    * @param resources the resources which have been localized for this    * container. Symlinks will be created to these localized resources    * @param command the command that will be run.    * @param logDir the log dir to copy debugging information to    * @param outFilename the path to which to write the launch environment    * @throws IOException if any errors happened writing to the OutputStream,    * while creating symlinks    */
+comment|/**    * This method writes out the launch environment of a container to a specified    * path.    *    * @param out the output stream to which the environment is written (usually    * a script file which will be executed by the Launcher)    * @param environment the environment variables and their values    * @param resources the resources which have been localized for this    * container. Symlinks will be created to these localized resources    * @param command the command that will be run    * @param logDir the log dir to which to copy debugging information    * @param user the username of the job owner    * @param outFilename the path to which to write the launch environment    * @throws IOException if any errors happened writing to the OutputStream,    * while creating symlinks    */
 annotation|@
 name|VisibleForTesting
-DECL|method|writeLaunchEnv (OutputStream out, Map<String, String> environment, Map<Path, List<String>> resources, List<String> command, Path logDir, String outFilename)
+DECL|method|writeLaunchEnv (OutputStream out, Map<String, String> environment, Map<Path, List<String>> resources, List<String> command, Path logDir, String user, String outFilename)
 specifier|public
 name|void
 name|writeLaunchEnv
@@ -1289,6 +1294,9 @@ name|command
 parameter_list|,
 name|Path
 name|logDir
+parameter_list|,
+name|String
+name|user
 parameter_list|,
 name|String
 name|outFilename
@@ -1531,30 +1539,20 @@ condition|)
 block|{
 comment|// If this is a wildcarded path, link to everything in the
 comment|// directory from the working directory
-name|File
-name|directory
-init|=
-operator|new
-name|File
-argument_list|(
-name|resourceEntry
-operator|.
-name|getKey
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-decl_stmt|;
 for|for
 control|(
 name|File
 name|wildLink
 range|:
-name|directory
+name|readDirAsUser
+argument_list|(
+name|user
+argument_list|,
+name|resourceEntry
 operator|.
-name|listFiles
+name|getKey
 argument_list|()
+argument_list|)
 control|)
 block|{
 name|sb
@@ -1710,6 +1708,34 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**    * Return the files in the target directory. If retrieving the list of files    * requires specific access rights, that access will happen as the    * specified user. The list will not include entries for "." or "..".    *    * @param user the user as whom to access the target directory    * @param dir the target directory    * @return a list of files in the target directory    */
+DECL|method|readDirAsUser (String user, Path dir)
+specifier|protected
+name|File
+index|[]
+name|readDirAsUser
+parameter_list|(
+name|String
+name|user
+parameter_list|,
+name|Path
+name|dir
+parameter_list|)
+block|{
+return|return
+operator|new
+name|File
+argument_list|(
+name|dir
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|listFiles
+argument_list|()
+return|;
 block|}
 comment|/**    * The container exit code.    */
 DECL|enum|ExitCode

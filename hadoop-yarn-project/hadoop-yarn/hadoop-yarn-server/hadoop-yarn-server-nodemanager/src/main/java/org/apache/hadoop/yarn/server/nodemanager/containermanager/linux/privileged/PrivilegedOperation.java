@@ -193,7 +193,14 @@ name|RUN_DOCKER_CMD
 argument_list|(
 literal|"--run-docker"
 argument_list|)
+block|,
+DECL|enumConstant|LIST_AS_USER
+name|LIST_AS_USER
+argument_list|(
+literal|""
+argument_list|)
 block|;
+comment|//no CLI switch supported yet.
 DECL|field|option
 specifier|private
 specifier|final
@@ -596,6 +603,12 @@ DECL|enumConstant|LAUNCH_DOCKER_CONTAINER
 name|LAUNCH_DOCKER_CONTAINER
 argument_list|(
 literal|4
+argument_list|)
+block|,
+DECL|enumConstant|LIST_AS_USER
+name|LIST_AS_USER
+argument_list|(
+literal|5
 argument_list|)
 block|;
 DECL|field|value

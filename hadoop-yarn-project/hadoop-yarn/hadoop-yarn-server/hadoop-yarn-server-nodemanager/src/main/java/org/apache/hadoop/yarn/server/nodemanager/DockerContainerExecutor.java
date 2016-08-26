@@ -2073,7 +2073,7 @@ block|}
 annotation|@
 name|Override
 comment|/**    * Filter the environment variables that may conflict with the ones set in    * the docker image and write them out to an OutputStream.    */
-DECL|method|writeLaunchEnv (OutputStream out, Map<String, String> environment, Map<Path, List<String>> resources, List<String> command, Path logDir)
+DECL|method|writeLaunchEnv (OutputStream out, Map<String, String> environment, Map<Path, List<String>> resources, List<String> command, Path logDir, String user)
 specifier|public
 name|void
 name|writeLaunchEnv
@@ -2108,6 +2108,9 @@ name|command
 parameter_list|,
 name|Path
 name|logDir
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
 name|IOException

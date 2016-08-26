@@ -1766,6 +1766,8 @@ name|getAbsolutePath
 argument_list|()
 argument_list|)
 argument_list|,
+literal|"user"
+argument_list|,
 name|tempFile
 operator|.
 name|getName
@@ -2183,6 +2185,8 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|)
+argument_list|,
+literal|"user"
 argument_list|)
 expr_stmt|;
 name|fos
@@ -2490,6 +2494,8 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|)
+argument_list|,
+literal|"user"
 argument_list|)
 expr_stmt|;
 name|fos
@@ -2942,6 +2948,8 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|)
+argument_list|,
+literal|"user"
 argument_list|)
 expr_stmt|;
 name|fos
@@ -9962,6 +9970,8 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|)
+argument_list|,
+literal|"user"
 argument_list|,
 name|tempFile
 operator|.
