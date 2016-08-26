@@ -251,7 +251,7 @@ specifier|final
 name|int
 name|MAX_PAGING_KEYS_DEFAULT
 init|=
-literal|500
+literal|1000
 decl_stmt|;
 comment|// Size of each of or multipart pieces in bytes
 DECL|field|MULTIPART_UPLOAD_SIZE_KEY
@@ -409,6 +409,15 @@ init|=
 literal|100
 operator|*
 literal|1024L
+decl_stmt|;
+DECL|field|MAX_RETRIES
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|MAX_RETRIES
+init|=
+literal|10
 decl_stmt|;
 block|}
 end_class

@@ -294,7 +294,6 @@ name|Exception
 block|{
 comment|// not supported
 block|}
-comment|/**    * Assert that root directory renames are not allowed.    *    * @throws Exception on failures    */
 annotation|@
 name|Override
 DECL|method|testRootDirAlwaysExists ()
@@ -338,7 +337,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Assert that root directory renames are not allowed.    *    * @throws Exception on failures    */
 annotation|@
 name|Override
 DECL|method|testRenameRootDirForbidden ()
