@@ -2444,6 +2444,8 @@ literal|null
 argument_list|,
 name|priority2
 argument_list|,
+literal|0
+argument_list|,
 literal|true
 argument_list|,
 literal|null
@@ -2478,6 +2480,8 @@ literal|null
 argument_list|,
 name|priority2
 argument_list|,
+literal|0
+argument_list|,
 literal|true
 argument_list|,
 literal|null
@@ -2550,6 +2554,8 @@ literal|null
 argument_list|,
 name|priority2
 argument_list|,
+literal|0
+argument_list|,
 literal|true
 argument_list|,
 literal|null
@@ -2567,11 +2573,22 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|int
-name|containersRequestedNode
+name|RemoteRequestsTable
+argument_list|<
+name|ContainerRequest
+argument_list|>
+name|remoteRequestsTable
 init|=
 name|amClient
 operator|.
+name|getTable
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+name|int
+name|containersRequestedNode
+init|=
 name|remoteRequestsTable
 operator|.
 name|get
@@ -2595,8 +2612,6 @@ decl_stmt|;
 name|int
 name|containersRequestedRack
 init|=
-name|amClient
-operator|.
 name|remoteRequestsTable
 operator|.
 name|get
@@ -2620,8 +2635,6 @@ decl_stmt|;
 name|int
 name|containersRequestedAny
 init|=
-name|amClient
-operator|.
 name|remoteRequestsTable
 operator|.
 name|get
@@ -2647,8 +2660,6 @@ decl_stmt|;
 name|int
 name|oppContainersRequestedAny
 init|=
-name|amClient
-operator|.
 name|remoteRequestsTable
 operator|.
 name|get
@@ -3023,6 +3034,8 @@ name|racks
 argument_list|,
 name|priority2
 argument_list|,
+literal|0
+argument_list|,
 literal|true
 argument_list|,
 literal|null
@@ -3107,6 +3120,8 @@ argument_list|,
 name|racks
 argument_list|,
 name|priority2
+argument_list|,
+literal|0
 argument_list|,
 literal|true
 argument_list|,
@@ -3238,6 +3253,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|priority2
+argument_list|,
+literal|0
 argument_list|,
 literal|true
 argument_list|,
@@ -3693,6 +3710,8 @@ argument_list|,
 name|racks
 argument_list|,
 name|priority
+argument_list|,
+literal|0
 argument_list|,
 literal|true
 argument_list|,

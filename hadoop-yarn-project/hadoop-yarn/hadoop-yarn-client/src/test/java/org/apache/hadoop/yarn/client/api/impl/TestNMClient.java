@@ -1761,7 +1761,10 @@ name|containersRequestedAny
 init|=
 name|rmClient
 operator|.
-name|remoteRequestsTable
+name|getTable
+argument_list|(
+literal|0
+argument_list|)
 operator|.
 name|get
 argument_list|(

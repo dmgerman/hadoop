@@ -900,7 +900,7 @@ name|Resource
 name|capability
 parameter_list|)
 function_decl|;
-comment|/**    * Returns all matching ContainerRequests that match the given Priority,    * ResourceName, ExecutionType and Capability.    * @param priority Priority.    * @param resourceName Location.    * @param executionType ExecutionType.    * @param capability Capability.    * @return All matching ContainerRequests    */
+comment|/**    * Returns all matching ContainerRequests that match the given Priority,    * ResourceName, ExecutionType and Capability.    *    * NOTE: This matches only requests that were made by the client WITHOUT the    * allocationRequestId specified.    *    * @param priority Priority.    * @param resourceName Location.    * @param executionType ExecutionType.    * @param capability Capability.    * @return All matching ContainerRequests    */
 DECL|method|getMatchingRequests ( Priority priority, String resourceName, ExecutionType executionType, Resource capability)
 specifier|public
 name|List
@@ -939,6 +939,28 @@ argument_list|,
 name|executionType
 argument_list|,
 name|capability
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns all matching ContainerRequests that match the given    * AllocationRequestId.    *    * NOTE: This matches only requests that were made by the client WITH the    * allocationRequestId specified.    *    * @param allocationRequestId AllocationRequestId.    * @return All matching ContainerRequests    */
+DECL|method|getMatchingRequests (long allocationRequestId)
+specifier|public
+name|Collection
+argument_list|<
+name|T
+argument_list|>
+name|getMatchingRequests
+parameter_list|(
+name|long
+name|allocationRequestId
+parameter_list|)
+block|{
+return|return
+name|client
+operator|.
+name|getMatchingRequests
+argument_list|(
+name|allocationRequestId
 argument_list|)
 return|;
 block|}

@@ -533,6 +533,11 @@ specifier|final
 name|Priority
 name|priority
 decl_stmt|;
+DECL|field|allocationRequestId
+specifier|final
+name|long
+name|allocationRequestId
+decl_stmt|;
 DECL|field|relaxLocality
 specifier|final
 name|boolean
@@ -584,6 +589,58 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints and      * locality relaxation enabled.      *      * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param allocationRequestId Allocation Request Id      */
+annotation|@
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
+DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, long allocationRequestId)
+specifier|public
+name|ContainerRequest
+parameter_list|(
+name|Resource
+name|capability
+parameter_list|,
+name|String
+index|[]
+name|nodes
+parameter_list|,
+name|String
+index|[]
+name|racks
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|long
+name|allocationRequestId
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|capability
+argument_list|,
+name|nodes
+argument_list|,
+name|racks
+argument_list|,
+name|priority
+argument_list|,
+name|allocationRequestId
+argument_list|,
+literal|true
+argument_list|,
+literal|null
+argument_list|,
+name|ExecutionTypeRequest
+operator|.
+name|newInstance
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param relaxLocality      *          If true, containers for this request may be assigned on hosts      *          and racks other than the ones explicitly requested.      */
 DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, boolean relaxLocality)
 specifier|public
@@ -623,6 +680,61 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints.      *      * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param relaxLocality      *          If true, containers for this request may be assigned on hosts      *          and racks other than the ones explicitly requested.      * @param allocationRequestId Allocation Request Id      */
+annotation|@
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
+DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, long allocationRequestId, boolean relaxLocality)
+specifier|public
+name|ContainerRequest
+parameter_list|(
+name|Resource
+name|capability
+parameter_list|,
+name|String
+index|[]
+name|nodes
+parameter_list|,
+name|String
+index|[]
+name|racks
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|long
+name|allocationRequestId
+parameter_list|,
+name|boolean
+name|relaxLocality
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|capability
+argument_list|,
+name|nodes
+argument_list|,
+name|racks
+argument_list|,
+name|priority
+argument_list|,
+name|allocationRequestId
+argument_list|,
+name|relaxLocality
+argument_list|,
+literal|null
+argument_list|,
+name|ExecutionTypeRequest
+operator|.
+name|newInstance
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints.      *      * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param relaxLocality      *          If true, containers for this request may be assigned on hosts      *          and racks other than the ones explicitly requested.      * @param nodeLabelsExpression      *          Set node labels to allocate resource, now we only support      *          asking for only a single node label      */
 DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, boolean relaxLocality, String nodeLabelsExpression)
 specifier|public
@@ -659,6 +771,8 @@ name|racks
 argument_list|,
 name|priority
 argument_list|,
+literal|0
+argument_list|,
 name|relaxLocality
 argument_list|,
 name|nodeLabelsExpression
@@ -670,8 +784,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param relaxLocality      *          If true, containers for this request may be assigned on hosts      *          and racks other than the ones explicitly requested.      * @param nodeLabelsExpression      *          Set node labels to allocate resource, now we only support      *          asking for only a single node label      * @param executionTypeRequest      *          Set the execution type of the container request.      */
-DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, boolean relaxLocality, String nodeLabelsExpression, ExecutionTypeRequest executionTypeRequest)
+comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints.      *      * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param allocationRequestId      *          The allocationRequestId of the request. To be used as a tracking      *          id to match Containers allocated against this request. Will      *          default to 0 if not specified.      * @param relaxLocality      *          If true, containers for this request may be assigned on hosts      *          and racks other than the ones explicitly requested.      * @param nodeLabelsExpression      *          Set node labels to allocate resource, now we only support      *          asking for only a single node label      */
+annotation|@
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
+DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, long allocationRequestId, boolean relaxLocality, String nodeLabelsExpression)
 specifier|public
 name|ContainerRequest
 parameter_list|(
@@ -688,6 +808,61 @@ name|racks
 parameter_list|,
 name|Priority
 name|priority
+parameter_list|,
+name|long
+name|allocationRequestId
+parameter_list|,
+name|boolean
+name|relaxLocality
+parameter_list|,
+name|String
+name|nodeLabelsExpression
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|capability
+argument_list|,
+name|nodes
+argument_list|,
+name|racks
+argument_list|,
+name|priority
+argument_list|,
+name|allocationRequestId
+argument_list|,
+name|relaxLocality
+argument_list|,
+name|nodeLabelsExpression
+argument_list|,
+name|ExecutionTypeRequest
+operator|.
+name|newInstance
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param allocationRequestId      *          The allocationRequestId of the request. To be used as a tracking      *          id to match Containers allocated against this request. Will      *          default to 0 if not specified.      * @param relaxLocality      *          If true, containers for this request may be assigned on hosts      *          and racks other than the ones explicitly requested.      * @param nodeLabelsExpression      *          Set node labels to allocate resource, now we only support      *          asking for only a single node label      * @param executionTypeRequest      *          Set the execution type of the container request.      */
+DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, long allocationRequestId, boolean relaxLocality, String nodeLabelsExpression, ExecutionTypeRequest executionTypeRequest)
+specifier|public
+name|ContainerRequest
+parameter_list|(
+name|Resource
+name|capability
+parameter_list|,
+name|String
+index|[]
+name|nodes
+parameter_list|,
+name|String
+index|[]
+name|racks
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|long
+name|allocationRequestId
 parameter_list|,
 name|boolean
 name|relaxLocality
@@ -762,6 +937,12 @@ literal|"Can't turn off locality relaxation on a "
 operator|+
 literal|"request with no location constraints"
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|allocationRequestId
+operator|=
+name|allocationRequestId
 expr_stmt|;
 name|this
 operator|.
@@ -878,6 +1059,16 @@ return|return
 name|priority
 return|;
 block|}
+DECL|method|getAllocationRequestId ()
+specifier|public
+name|long
+name|getAllocationRequestId
+parameter_list|()
+block|{
+return|return
+name|allocationRequestId
+return|;
+block|}
 DECL|method|getRelaxLocality ()
 specifier|public
 name|boolean
@@ -948,6 +1139,23 @@ operator|.
 name|append
 argument_list|(
 name|priority
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"]"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"AllocationRequestId["
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|allocationRequestId
 argument_list|)
 operator|.
 name|append
@@ -1100,7 +1308,7 @@ name|int
 name|getClusterNodeCount
 parameter_list|()
 function_decl|;
-comment|/**    * Get outstanding<code>ContainerRequest</code>s matching the given     * parameters. These ContainerRequests should have been added via    *<code>addContainerRequest</code> earlier in the lifecycle. For performance,    * the AMRMClient may return its internal collection directly without creating     * a copy. Users should not perform mutable operations on the return value.    * Each collection in the list contains requests with identical     *<code>Resource</code> size that fit in the given capability. In a     * collection, requests will be returned in the same order as they were added.    * @return Collection of request matching the parameters    */
+comment|/**    * Get outstanding<code>ContainerRequest</code>s matching the given     * parameters. These ContainerRequests should have been added via    *<code>addContainerRequest</code> earlier in the lifecycle. For performance,    * the AMRMClient may return its internal collection directly without creating     * a copy. Users should not perform mutable operations on the return value.    * Each collection in the list contains requests with identical     *<code>Resource</code> size that fit in the given capability. In a     * collection, requests will be returned in the same order as they were added.    *    * NOTE: This API only matches Container requests that were created by the    * client WITHOUT the allocationRequestId being set.    *    * @return Collection of request matching the parameters    */
 annotation|@
 name|InterfaceStability
 operator|.
@@ -1129,7 +1337,7 @@ name|Resource
 name|capability
 parameter_list|)
 function_decl|;
-comment|/**    * Get outstanding<code>ContainerRequest</code>s matching the given    * parameters. These ContainerRequests should have been added via    *<code>addContainerRequest</code> earlier in the lifecycle. For performance,    * the AMRMClient may return its internal collection directly without creating    * a copy. Users should not perform mutable operations on the return value.    * Each collection in the list contains requests with identical    *<code>Resource</code> size that fit in the given capability. In a    * collection, requests will be returned in the same order as they were added.    * specify an<code>ExecutionType</code> .    * @param priority Priority    * @param resourceName Location    * @param executionType ExecutionType    * @param capability Capability    * @return Collection of request matching the parameters    */
+comment|/**    * Get outstanding<code>ContainerRequest</code>s matching the given    * parameters. These ContainerRequests should have been added via    *<code>addContainerRequest</code> earlier in the lifecycle. For performance,    * the AMRMClient may return its internal collection directly without creating    * a copy. Users should not perform mutable operations on the return value.    * Each collection in the list contains requests with identical    *<code>Resource</code> size that fit in the given capability. In a    * collection, requests will be returned in the same order as they were added.    * specify an<code>ExecutionType</code>.    *    * NOTE: This API only matches Container requests that were created by the    * client WITHOUT the allocationRequestId being set.    *    * @param priority Priority    * @param resourceName Location    * @param executionType ExecutionType    * @param capability Capability    * @return Collection of request matching the parameters    */
 annotation|@
 name|InterfaceStability
 operator|.
@@ -1170,6 +1378,24 @@ literal|" AMRMClient is expected to implement this !!"
 argument_list|)
 throw|;
 block|}
+comment|/**    * Get outstanding<code>ContainerRequest</code>s matching the given    * allocationRequestId. These ContainerRequests should have been added via    *<code>addContainerRequest</code> earlier in the lifecycle. For performance,    * the AMRMClient may return its internal collection directly without creating    * a copy. Users should not perform mutable operations on the return value.    *    * NOTE: This API only matches Container requests that were created by the    * client WITH the allocationRequestId being set to a non-default value.    *    * @param allocationRequestId Allocation Request Id    * @return Collection of request matching the parameters    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
+DECL|method|getMatchingRequests (long allocationRequestId)
+specifier|public
+specifier|abstract
+name|Collection
+argument_list|<
+name|T
+argument_list|>
+name|getMatchingRequests
+parameter_list|(
+name|long
+name|allocationRequestId
+parameter_list|)
+function_decl|;
 comment|/**    * Update application's blacklist with addition or removal resources.    *     * @param blacklistAdditions list of resources which should be added to the     *        application blacklist    * @param blacklistRemovals list of resources which should be removed from the     *        application blacklist    */
 DECL|method|updateBlacklist (List<String> blacklistAdditions, List<String> blacklistRemovals)
 specifier|public

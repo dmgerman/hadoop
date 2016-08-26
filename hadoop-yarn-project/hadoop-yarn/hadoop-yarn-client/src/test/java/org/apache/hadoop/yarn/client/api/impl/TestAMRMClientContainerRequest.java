@@ -449,6 +449,8 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
+literal|0
+argument_list|,
 literal|true
 argument_list|,
 literal|null
@@ -1791,7 +1793,10 @@ name|ask
 init|=
 name|client
 operator|.
-name|remoteRequestsTable
+name|getTable
+argument_list|(
+literal|0
+argument_list|)
 operator|.
 name|get
 argument_list|(

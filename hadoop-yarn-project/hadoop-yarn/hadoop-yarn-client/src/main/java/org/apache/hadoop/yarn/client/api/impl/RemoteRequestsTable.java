@@ -1579,10 +1579,13 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|addResourceRequest (Priority priority, String resourceName, ExecutionTypeRequest execTypeReq, Resource capability, T req, boolean relaxLocality, String labelExpression)
+DECL|method|addResourceRequest (Long allocationRequestId, Priority priority, String resourceName, ExecutionTypeRequest execTypeReq, Resource capability, T req, boolean relaxLocality, String labelExpression)
 name|ResourceRequestInfo
 name|addResourceRequest
 parameter_list|(
+name|Long
+name|allocationRequestId
+parameter_list|,
 name|Priority
 name|priority
 parameter_list|,
@@ -1634,6 +1637,8 @@ operator|=
 operator|new
 name|ResourceRequestInfo
 argument_list|(
+name|allocationRequestId
+argument_list|,
 name|priority
 argument_list|,
 name|resourceName
