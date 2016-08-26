@@ -103,7 +103,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|newInstance (long arrival, long deadline, ReservationRequests reservationRequests, String name)
+DECL|method|newInstance (long arrival, long deadline, ReservationRequests reservationRequests, String name, String recurrenceExpression)
 specifier|public
 specifier|static
 name|ReservationDefinition
@@ -120,6 +120,9 @@ name|reservationRequests
 parameter_list|,
 name|String
 name|name
+parameter_list|,
+name|String
+name|recurrenceExpression
 parameter_list|)
 block|{
 name|ReservationDefinition
@@ -162,6 +165,56 @@ argument_list|(
 name|name
 argument_list|)
 expr_stmt|;
+name|rDefinition
+operator|.
+name|setRecurrenceExpression
+argument_list|(
+name|recurrenceExpression
+argument_list|)
+expr_stmt|;
+return|return
+name|rDefinition
+return|;
+block|}
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|newInstance (long arrival, long deadline, ReservationRequests reservationRequests, String name)
+specifier|public
+specifier|static
+name|ReservationDefinition
+name|newInstance
+parameter_list|(
+name|long
+name|arrival
+parameter_list|,
+name|long
+name|deadline
+parameter_list|,
+name|ReservationRequests
+name|reservationRequests
+parameter_list|,
+name|String
+name|name
+parameter_list|)
+block|{
+name|ReservationDefinition
+name|rDefinition
+init|=
+name|newInstance
+argument_list|(
+name|arrival
+argument_list|,
+name|deadline
+argument_list|,
+name|reservationRequests
+argument_list|,
+name|name
+argument_list|,
+literal|"0"
+argument_list|)
+decl_stmt|;
 return|return
 name|rDefinition
 return|;
@@ -272,6 +325,33 @@ name|setReservationName
 parameter_list|(
 name|String
 name|name
+parameter_list|)
+function_decl|;
+comment|/**    * Get the recurrence of this reservation representing the time period of    * the periodic job. Currently, only long values are supported. Later,    * support for regular expressions denoting arbitrary recurrence patterns    * (e.g., every Tuesday and Thursday) will be added.    * Recurrence is represented in milliseconds for periodic jobs.    * Recurrence is 0 for non-periodic jobs. Periodic jobs are valid until they    * are explicitly cancelled and have higher priority than non-periodic jobs    * (during initial placement and replanning). Periodic job allocations are    * consistent across runs (flexibility in allocation is leveraged only during    * initial placement, allocations remain consistent thereafter).    *    * @return recurrence of this reservation    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|getRecurrenceExpression ()
+specifier|public
+specifier|abstract
+name|String
+name|getRecurrenceExpression
+parameter_list|()
+function_decl|;
+comment|/**    * Set the recurrence of this reservation representing the time period of    * the periodic job. Currently, only long values are supported. Later,    * support for regular expressions denoting arbitrary recurrence patterns    * (e.g., every Tuesday and Thursday) will be added.    * Recurrence is represented in milliseconds for periodic jobs.    * Recurrence is 0 for non-periodic jobs. Periodic jobs are valid until they    * are explicitly cancelled and have higher priority than non-periodic jobs    * (during initial placement and replanning). Periodic job allocations are    * consistent across runs (flexibility in allocation is leveraged only during    * initial placement, allocations remain consistent thereafter).    *    * @param recurrenceExpression recurrence interval of this reservation    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|setRecurrenceExpression (String recurrenceExpression)
+specifier|public
+specifier|abstract
+name|void
+name|setRecurrenceExpression
+parameter_list|(
+name|String
+name|recurrenceExpression
 parameter_list|)
 function_decl|;
 block|}

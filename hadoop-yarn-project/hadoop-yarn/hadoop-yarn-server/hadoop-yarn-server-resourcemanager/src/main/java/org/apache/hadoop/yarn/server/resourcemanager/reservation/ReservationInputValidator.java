@@ -945,6 +945,79 @@ name|message
 argument_list|)
 throw|;
 block|}
+comment|// check that the recurrence is a positive long value.
+name|String
+name|recurrenceExpression
+init|=
+name|contract
+operator|.
+name|getRecurrenceExpression
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+name|Long
+name|recurrence
+init|=
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|recurrenceExpression
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|recurrence
+operator|<
+literal|0
+condition|)
+block|{
+name|message
+operator|=
+literal|"Negative Period : "
+operator|+
+name|recurrenceExpression
+operator|+
+literal|". Please try"
+operator|+
+literal|" again with a non-negative long value as period"
+expr_stmt|;
+throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+name|message
+argument_list|)
+throw|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|NumberFormatException
+name|e
+parameter_list|)
+block|{
+name|message
+operator|=
+literal|"Invalid period "
+operator|+
+name|recurrenceExpression
+operator|+
+literal|". Please try"
+operator|+
+literal|" again with a non-negative long value as period"
+expr_stmt|;
+throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+name|message
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|getPlanFromQueue (ReservationSystem reservationSystem, String queue, String auditConstant)
 specifier|private
