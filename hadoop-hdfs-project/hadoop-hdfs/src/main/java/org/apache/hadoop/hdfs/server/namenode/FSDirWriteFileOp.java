@@ -704,16 +704,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Set
 import|;
 end_import
@@ -2665,14 +2655,7 @@ name|newNode
 init|=
 literal|null
 decl_stmt|;
-name|Map
-operator|.
-name|Entry
-argument_list|<
 name|INodesInPath
-argument_list|,
-name|String
-argument_list|>
 name|parent
 init|=
 name|FSDirMkdirOp
@@ -2700,13 +2683,10 @@ argument_list|(
 name|fsd
 argument_list|,
 name|parent
-operator|.
-name|getKey
-argument_list|()
 argument_list|,
-name|parent
+name|iip
 operator|.
-name|getValue
+name|getLastLocalName
 argument_list|()
 argument_list|,
 name|permissions
@@ -3588,7 +3568,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Add the given filename to the fs.    * @return the new INodesInPath instance that contains the new INode    */
-DECL|method|addFile ( FSDirectory fsd, INodesInPath existing, String localName, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine)
+DECL|method|addFile ( FSDirectory fsd, INodesInPath existing, byte[] localName, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine)
 specifier|private
 specifier|static
 name|INodesInPath
@@ -3600,7 +3580,8 @@ parameter_list|,
 name|INodesInPath
 name|existing
 parameter_list|,
-name|String
+name|byte
+index|[]
 name|localName
 parameter_list|,
 name|PermissionStatus
@@ -3703,12 +3684,7 @@ name|newNode
 operator|.
 name|setLocalName
 argument_list|(
-name|DFSUtil
-operator|.
-name|string2Bytes
-argument_list|(
 name|localName
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|newNode
@@ -3762,7 +3738,12 @@ argument_list|()
 operator|+
 literal|"/"
 operator|+
+name|DFSUtil
+operator|.
+name|bytes2String
+argument_list|(
 name|localName
+argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
@@ -3787,7 +3768,12 @@ name|debug
 argument_list|(
 literal|"DIR* addFile: "
 operator|+
+name|DFSUtil
+operator|.
+name|bytes2String
+argument_list|(
 name|localName
+argument_list|)
 operator|+
 literal|" is added"
 argument_list|)
