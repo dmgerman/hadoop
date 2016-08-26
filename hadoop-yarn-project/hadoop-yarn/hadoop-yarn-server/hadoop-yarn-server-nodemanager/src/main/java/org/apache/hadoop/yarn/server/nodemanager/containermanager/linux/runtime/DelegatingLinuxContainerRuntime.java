@@ -544,6 +544,35 @@ name|ctx
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getIpAndHost (Container container)
+specifier|public
+name|String
+index|[]
+name|getIpAndHost
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+name|LinuxContainerRuntime
+name|runtime
+init|=
+name|pickContainerRuntime
+argument_list|(
+name|container
+argument_list|)
+decl_stmt|;
+return|return
+name|runtime
+operator|.
+name|getIpAndHost
+argument_list|(
+name|container
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

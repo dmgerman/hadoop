@@ -52,6 +52,28 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
+name|Container
+import|;
+end_import
+
 begin_comment
 comment|/**  * An abstraction for various container runtime implementations. Examples  * include Process Tree, Docker, Appc runtimes etc. These implementations  * are meant for low-level OS container support - dependencies on  * higher-level node mananger constructs should be avoided.  */
 end_comment
@@ -113,6 +135,16 @@ name|ctx
 parameter_list|)
 throws|throws
 name|ContainerExecutionException
+function_decl|;
+comment|/**    * Return the host and ip of the container    */
+DECL|method|getIpAndHost (Container container)
+name|String
+index|[]
+name|getIpAndHost
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
 function_decl|;
 block|}
 end_interface

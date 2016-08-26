@@ -2922,6 +2922,27 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getIpAndHost (Container container)
+specifier|public
+name|String
+index|[]
+name|getIpAndHost
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+return|return
+name|linuxContainerRuntime
+operator|.
+name|getIpAndHost
+argument_list|(
+name|container
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|reacquireContainer (ContainerReacquisitionContext ctx)
 specifier|public
 name|int

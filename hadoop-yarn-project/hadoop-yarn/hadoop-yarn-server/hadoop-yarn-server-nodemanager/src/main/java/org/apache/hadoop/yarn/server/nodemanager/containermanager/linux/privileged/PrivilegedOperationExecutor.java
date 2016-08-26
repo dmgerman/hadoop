@@ -734,7 +734,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|". Privileged Execution Operation Output: "
+literal|". Privileged Execution Operation Stderr: "
 argument_list|)
 operator|.
 name|append
@@ -747,9 +747,35 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"Stdout: "
+operator|+
 name|exec
 operator|.
 name|getOutput
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|System
+operator|.
+name|lineSeparator
 argument_list|()
 argument_list|)
 decl_stmt|;

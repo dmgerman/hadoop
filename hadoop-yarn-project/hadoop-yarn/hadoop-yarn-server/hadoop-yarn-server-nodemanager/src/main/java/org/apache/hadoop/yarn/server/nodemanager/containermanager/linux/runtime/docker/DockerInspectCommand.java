@@ -98,6 +98,35 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|getIpAndHost ()
+specifier|public
+name|DockerInspectCommand
+name|getIpAndHost
+parameter_list|()
+block|{
+comment|// Be sure to not use space in the argument, otherwise the
+comment|// extract_values_delim method in container-executor binary
+comment|// cannot parse the arguments correctly.
+name|super
+operator|.
+name|addCommandArguments
+argument_list|(
+literal|"--format='{{range(.NetworkSettings.Networks)}}"
+operator|+
+literal|"{{.IPAddress}},{{end}}{{.Config.Hostname}}'"
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|addCommandArguments
+argument_list|(
+name|containerName
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 block|}
 end_class
 

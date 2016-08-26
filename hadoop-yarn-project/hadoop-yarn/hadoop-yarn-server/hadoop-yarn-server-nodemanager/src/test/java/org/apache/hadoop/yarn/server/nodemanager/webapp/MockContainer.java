@@ -905,6 +905,8 @@ name|String
 name|logDir
 parameter_list|)
 block|{   }
+annotation|@
+name|Override
 DECL|method|getPriority ()
 specifier|public
 name|Priority
@@ -917,6 +919,18 @@ operator|.
 name|UNDEFINED
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|setIpAndHost (String[] ipAndHost)
+specifier|public
+name|void
+name|setIpAndHost
+parameter_list|(
+name|String
+index|[]
+name|ipAndHost
+parameter_list|)
+block|{    }
 block|}
 end_class
 

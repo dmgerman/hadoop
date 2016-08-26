@@ -116,6 +116,16 @@ name|Records
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * {@code ContainerStatus} represents the current status of a  * {@code Container}.  *<p>  * It provides details such as:  *<ul>  *<li>{@code ContainerId} of the container.</li>  *<li>{@code ExecutionType} of the container.</li>  *<li>{@code ContainerState} of the container.</li>  *<li><em>Exit status</em> of a completed container.</li>  *<li><em>Diagnostic</em> message for a failed container.</li>  *<li>{@link Resource} allocated to the container.</li>  *</ul>  */
 end_comment
@@ -402,6 +412,64 @@ name|setCapability
 parameter_list|(
 name|Resource
 name|capability
+parameter_list|)
+function_decl|;
+comment|/**    * Get all the IP addresses with which the container run.    * @return The IP address where the container runs.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getIPs ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|getIPs
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setIPs (List<String> ips)
+specifier|public
+specifier|abstract
+name|void
+name|setIPs
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|ips
+parameter_list|)
+function_decl|;
+comment|/**    * Get the hostname where the container runs.    * @return The hostname where the container runs.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getHost ()
+specifier|public
+specifier|abstract
+name|String
+name|getHost
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setHost (String host)
+specifier|public
+specifier|abstract
+name|void
+name|setHost
+parameter_list|(
+name|String
+name|host
 parameter_list|)
 function_decl|;
 block|}

@@ -146,6 +146,34 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testGetIpAndHost ()
+specifier|public
+name|void
+name|testGetIpAndHost
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|dockerInspectCommand
+operator|.
+name|getIpAndHost
+argument_list|()
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"inspect --format='{{range(.NetworkSettings.Networks)}}{{.IPAddress}}"
+operator|+
+literal|",{{end}}{{.Config.Hostname}}' foo"
+argument_list|,
+name|dockerInspectCommand
+operator|.
+name|getCommandWithArguments
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

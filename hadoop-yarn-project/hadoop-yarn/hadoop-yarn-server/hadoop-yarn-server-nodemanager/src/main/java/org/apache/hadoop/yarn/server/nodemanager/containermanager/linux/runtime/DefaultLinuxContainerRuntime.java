@@ -124,6 +124,24 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|ContainerExecutor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|containermanager
 operator|.
 name|container
@@ -863,6 +881,27 @@ parameter_list|)
 throws|throws
 name|ContainerExecutionException
 block|{    }
+annotation|@
+name|Override
+DECL|method|getIpAndHost (Container container)
+specifier|public
+name|String
+index|[]
+name|getIpAndHost
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+return|return
+name|ContainerExecutor
+operator|.
+name|getLocalIpAndHost
+argument_list|(
+name|container
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

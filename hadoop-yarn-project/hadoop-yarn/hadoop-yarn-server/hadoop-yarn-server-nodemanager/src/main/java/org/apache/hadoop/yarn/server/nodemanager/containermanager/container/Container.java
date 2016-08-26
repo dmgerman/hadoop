@@ -330,6 +330,15 @@ name|String
 name|logDir
 parameter_list|)
 function_decl|;
+DECL|method|setIpAndHost (String[] ipAndHost)
+name|void
+name|setIpAndHost
+parameter_list|(
+name|String
+index|[]
+name|ipAndHost
+parameter_list|)
+function_decl|;
 DECL|method|toString ()
 name|String
 name|toString
