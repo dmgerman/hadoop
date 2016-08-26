@@ -904,6 +904,38 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_NAMENODE_WRITE_LOCK_REPORTING_THRESHOLD_MS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_WRITE_LOCK_REPORTING_THRESHOLD_MS_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_NAMENODE_RETRY_CACHE_EXPIRYTIME_MILLIS_DEFAULT
 import|;
 end_import
@@ -6255,6 +6287,19 @@ argument_list|,
 name|DFS_NAMENODE_MAX_LOCK_HOLD_TO_RELEASE_LEASE_MS_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|writeLockReportingThreshold
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFS_NAMENODE_WRITE_LOCK_REPORTING_THRESHOLD_MS_KEY
+argument_list|,
+name|DFS_NAMENODE_WRITE_LOCK_REPORTING_THRESHOLD_MS_DEFAULT
+argument_list|)
+expr_stmt|;
 comment|// For testing purposes, allow the DT secret manager to be started regardless
 comment|// of whether security is enabled.
 name|alwaysUseDelegationTokensForTests
@@ -9066,13 +9111,10 @@ argument_list|)
 return|;
 block|}
 comment|/** Threshold (ms) for long holding write lock report. */
-DECL|field|WRITELOCK_REPORTING_THRESHOLD
-specifier|static
-specifier|final
-name|short
-name|WRITELOCK_REPORTING_THRESHOLD
-init|=
-literal|1000
+DECL|field|writeLockReportingThreshold
+specifier|private
+name|long
+name|writeLockReportingThreshold
 decl_stmt|;
 comment|/** Last time stamp for write lock. Keep the longest one for multi-entrance.*/
 DECL|field|writeLockHeldTimeStamp
@@ -9239,7 +9281,9 @@ name|needReport
 operator|&&
 name|writeLockInterval
 operator|>=
-name|WRITELOCK_REPORTING_THRESHOLD
+name|this
+operator|.
+name|writeLockReportingThreshold
 condition|)
 block|{
 name|LOG
