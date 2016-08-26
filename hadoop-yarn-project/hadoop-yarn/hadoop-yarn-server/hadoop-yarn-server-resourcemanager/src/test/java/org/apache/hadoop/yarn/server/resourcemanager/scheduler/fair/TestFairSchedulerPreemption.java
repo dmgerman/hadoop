@@ -993,7 +993,7 @@ name|setFloat
 argument_list|(
 name|FairSchedulerConfiguration
 operator|.
-name|RM_SCHEDULER_RESERVATION_THRESHOLD_INCERMENT_MULTIPLE
+name|RM_SCHEDULER_RESERVATION_THRESHOLD_INCREMENT_MULTIPLE
 argument_list|,
 name|TEST_RESERVATION_THRESHOLD
 argument_list|)
