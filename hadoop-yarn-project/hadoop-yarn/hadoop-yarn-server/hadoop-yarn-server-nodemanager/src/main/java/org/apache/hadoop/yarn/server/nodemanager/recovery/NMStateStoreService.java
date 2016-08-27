@@ -510,6 +510,10 @@ specifier|private
 name|String
 name|logDir
 decl_stmt|;
+DECL|field|version
+name|int
+name|version
+decl_stmt|;
 DECL|method|getStatus ()
 specifier|public
 name|RecoveredContainerStatus
@@ -548,6 +552,16 @@ parameter_list|()
 block|{
 return|return
 name|diagnostics
+return|;
+block|}
+DECL|method|getVersion ()
+specifier|public
+name|int
+name|getVersion
+parameter_list|()
+block|{
+return|return
+name|version
 return|;
 block|}
 DECL|method|getStartRequest ()
@@ -677,6 +691,16 @@ operator|.
 name|append
 argument_list|(
 name|exitCode
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", Version: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|version
 argument_list|)
 operator|.
 name|append
@@ -1257,8 +1281,8 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Record a container start request    * @param containerId the container ID    * @param startRequest the container start request    * @throws IOException    */
-DECL|method|storeContainer (ContainerId containerId, StartContainerRequest startRequest)
+comment|/**    * Record a container start request    * @param containerId the container ID    * @param containerVersion the container Version    * @param startRequest the container start request    * @throws IOException    */
+DECL|method|storeContainer (ContainerId containerId, int containerVersion, StartContainerRequest startRequest)
 specifier|public
 specifier|abstract
 name|void
@@ -1266,6 +1290,9 @@ name|storeContainer
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|,
+name|int
+name|containerVersion
 parameter_list|,
 name|StartContainerRequest
 name|startRequest
@@ -1299,8 +1326,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Record that a container resource has been changed    * @param containerId the container ID    * @param capability the container resource capability    * @throws IOException    */
-DECL|method|storeContainerResourceChanged (ContainerId containerId, Resource capability)
+comment|/**    * Record that a container resource has been changed    * @param containerId the container ID    * @param containerVersion the container version    * @param capability the container resource capability    * @throws IOException    */
+DECL|method|storeContainerResourceChanged (ContainerId containerId, int containerVersion, Resource capability)
 specifier|public
 specifier|abstract
 name|void
@@ -1308,6 +1335,9 @@ name|storeContainerResourceChanged
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|,
+name|int
+name|containerVersion
 parameter_list|,
 name|Resource
 name|capability

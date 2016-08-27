@@ -1463,6 +1463,52 @@ name|allocationRequestID
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getVersion ()
+specifier|public
+name|int
+name|getVersion
+parameter_list|()
+block|{
+name|ContainerProtoOrBuilder
+name|p
+init|=
+name|viaProto
+condition|?
+name|proto
+else|:
+name|builder
+decl_stmt|;
+return|return
+name|p
+operator|.
+name|getVersion
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setVersion (int version)
+specifier|public
+name|void
+name|setVersion
+parameter_list|(
+name|int
+name|version
+parameter_list|)
+block|{
+name|maybeInitBuilder
+argument_list|()
+expr_stmt|;
+name|builder
+operator|.
+name|setVersion
+argument_list|(
+name|version
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|convertFromProtoFormat (ContainerIdProto p)
 specifier|private
 name|ContainerIdPBImpl
@@ -1737,6 +1783,24 @@ operator|.
 name|append
 argument_list|(
 name|getAllocationRequestId
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"Version: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getVersion
 argument_list|()
 argument_list|)
 operator|.

@@ -5002,6 +5002,8 @@ name|newInstance
 argument_list|(
 name|containerId
 argument_list|,
+literal|0
+argument_list|,
 name|containerState
 argument_list|,
 name|Resource

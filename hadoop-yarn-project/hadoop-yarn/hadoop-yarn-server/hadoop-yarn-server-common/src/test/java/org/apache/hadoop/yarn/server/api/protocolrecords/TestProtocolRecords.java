@@ -587,6 +587,8 @@ name|newInstance
 argument_list|(
 name|containerId
 argument_list|,
+literal|0
+argument_list|,
 name|ContainerState
 operator|.
 name|COMPLETE
@@ -772,6 +774,8 @@ operator|.
 name|newInstance
 argument_list|(
 name|containerId
+argument_list|,
+literal|0
 argument_list|,
 name|ContainerState
 operator|.

@@ -519,7 +519,7 @@ comment|/**    * Set the optional<em>ID</em> corresponding to the original {@cod
 annotation|@
 name|Private
 annotation|@
-name|Evolving
+name|Unstable
 DECL|method|setAllocationRequestId (long allocationRequestID)
 specifier|public
 name|void
@@ -527,6 +527,41 @@ name|setAllocationRequestId
 parameter_list|(
 name|long
 name|allocationRequestID
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+comment|/**    * Get the version of this container. The version will be incremented when    * a container is updated.    *    * @return version of this container.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getVersion ()
+specifier|public
+name|int
+name|getVersion
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+comment|/**    * Set the version of this container.    * @param version of this container.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setVersion (int version)
+specifier|public
+name|void
+name|setVersion
+parameter_list|(
+name|int
+name|version
 parameter_list|)
 block|{
 throw|throw

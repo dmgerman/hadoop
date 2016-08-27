@@ -166,6 +166,22 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
 name|Stable
 import|;
 end_import
@@ -356,6 +372,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|UpdatedContainer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|client
 operator|.
 name|api
@@ -475,7 +509,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<code>AMRMClientAsync</code> handles communication with the ResourceManager  * and provides asynchronous updates on events such as container allocations and  * completions.  It contains a thread that sends periodic heartbeats to the  * ResourceManager.  *   * It should be used by implementing a CallbackHandler:  *<pre>  * {@code  * class MyCallbackHandler extends AMRMClientAsync.AbstractCallbackHandler {  *   public void onContainersAllocated(List<Container> containers) {  *     [run tasks on the containers]  *   }  *  *   public void onContainersResourceChanged(List<Container> containers) {  *     [determine if resource allocation of containers have been increased in  *      the ResourceManager, and if so, inform the NodeManagers to increase the  *      resource monitor/enforcement on the containers]  *   }  *  *   public void onContainersCompleted(List<ContainerStatus> statuses) {  *     [update progress, check whether app is done]  *   }  *     *   public void onNodesUpdated(List<NodeReport> updated) {}  *     *   public void onReboot() {}  * }  * }  *</pre>  *   * The client's lifecycle should be managed similarly to the following:  *   *<pre>  * {@code  * AMRMClientAsync asyncClient =   *     createAMRMClientAsync(appAttId, 1000, new MyCallbackhandler());  * asyncClient.init(conf);  * asyncClient.start();  * RegisterApplicationMasterResponse response = asyncClient  *    .registerApplicationMaster(appMasterHostname, appMasterRpcPort,  *       appMasterTrackingUrl);  * asyncClient.addContainerRequest(containerRequest);  * [... wait for application to complete]  * asyncClient.unregisterApplicationMaster(status, appMsg, trackingUrl);  * asyncClient.stop();  * }  *</pre>  */
+comment|/**  *<code>AMRMClientAsync</code> handles communication with the ResourceManager  * and provides asynchronous updates on events such as container allocations and  * completions.  It contains a thread that sends periodic heartbeats to the  * ResourceManager.  *   * It should be used by implementing a CallbackHandler:  *<pre>  * {@code  * class MyCallbackHandler extends AMRMClientAsync.AbstractCallbackHandler {  *   public void onContainersAllocated(List<Container> containers) {  *     [run tasks on the containers]  *   }  *  *   public void onContainersUpdated(List<Container> containers) {  *     [determine if resource allocation of containers have been increased in  *      the ResourceManager, and if so, inform the NodeManagers to increase the  *      resource monitor/enforcement on the containers]  *   }  *  *   public void onContainersCompleted(List<ContainerStatus> statuses) {  *     [update progress, check whether app is done]  *   }  *     *   public void onNodesUpdated(List<NodeReport> updated) {}  *     *   public void onReboot() {}  * }  * }  *</pre>  *   * The client's lifecycle should be managed similarly to the following:  *   *<pre>  * {@code  * AMRMClientAsync asyncClient =   *     createAMRMClientAsync(appAttId, 1000, new MyCallbackhandler());  * asyncClient.init(conf);  * asyncClient.start();  * RegisterApplicationMasterResponse response = asyncClient  *    .registerApplicationMaster(appMasterHostname, appMasterRpcPort,  *       appMasterTrackingUrl);  * asyncClient.addContainerRequest(containerRequest);  * [... wait for application to complete]  * asyncClient.unregisterApplicationMaster(status, appMsg, trackingUrl);  * asyncClient.stop();  * }  *</pre>  */
 end_comment
 
 begin_class
@@ -1343,15 +1377,19 @@ name|containers
 parameter_list|)
 function_decl|;
 comment|/**      * Called when the ResourceManager responds to a heartbeat with containers      * whose resource allocation has been changed.      */
-DECL|method|onContainersResourceChanged ( List<Container> containers)
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|onContainersUpdated (List<UpdatedContainer> containers)
 specifier|public
 specifier|abstract
 name|void
-name|onContainersResourceChanged
+name|onContainersUpdated
 parameter_list|(
 name|List
 argument_list|<
-name|Container
+name|UpdatedContainer
 argument_list|>
 name|containers
 parameter_list|)

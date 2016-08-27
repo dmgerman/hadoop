@@ -2378,6 +2378,8 @@ name|newContainerToken
 argument_list|(
 name|firstContainerID
 argument_list|,
+literal|0
+argument_list|,
 name|InetAddress
 operator|.
 name|getByName
@@ -2667,6 +2669,8 @@ operator|.
 name|newContainerToken
 argument_list|(
 name|secondContainerID
+argument_list|,
+literal|0
 argument_list|,
 name|InetAddress
 operator|.
@@ -6386,6 +6390,8 @@ name|newContainerToken
 argument_list|(
 name|cId
 argument_list|,
+literal|0
+argument_list|,
 literal|"anyHost"
 argument_list|,
 literal|1234
@@ -6522,6 +6528,8 @@ operator|.
 name|newContainerToken
 argument_list|(
 name|runningContainerId
+argument_list|,
+literal|0
 argument_list|,
 literal|"anyHost"
 argument_list|,
@@ -6945,6 +6953,8 @@ name|newContainerToken
 argument_list|(
 name|runningContainerId
 argument_list|,
+literal|0
+argument_list|,
 literal|"anyHost"
 argument_list|,
 literal|1234
@@ -7102,6 +7112,8 @@ name|newContainerToken
 argument_list|(
 name|killedQueuedContainerId1
 argument_list|,
+literal|0
+argument_list|,
 literal|"anyHost"
 argument_list|,
 literal|1234
@@ -7154,6 +7166,8 @@ operator|.
 name|newContainerToken
 argument_list|(
 name|killedQueuedContainerId2
+argument_list|,
+literal|0
 argument_list|,
 literal|"anyHost"
 argument_list|,
@@ -7583,6 +7597,8 @@ name|newContainerToken
 argument_list|(
 name|containerId
 argument_list|,
+literal|0
+argument_list|,
 literal|"host"
 argument_list|,
 literal|1234
@@ -7809,6 +7825,8 @@ operator|.
 name|newContainerToken
 argument_list|(
 name|cId
+argument_list|,
+literal|0
 argument_list|,
 literal|"anyHost"
 argument_list|,

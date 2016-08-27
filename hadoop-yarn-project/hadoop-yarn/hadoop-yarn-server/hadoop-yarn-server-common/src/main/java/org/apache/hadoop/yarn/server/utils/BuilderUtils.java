@@ -752,6 +752,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|nodelabels
+operator|.
+name|CommonNodeLabelsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|security
 operator|.
 name|ContainerTokenIdentifier
@@ -769,6 +785,24 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|ContainerType
 import|;
 end_import
 
@@ -1225,7 +1259,7 @@ return|return
 name|cId
 return|;
 block|}
-DECL|method|newContainerToken (ContainerId cId, String host, int port, String user, Resource r, long expiryTime, int masterKeyId, byte[] password, long rmIdentifier)
+DECL|method|newContainerToken (ContainerId cId, int containerVersion, String host, int port, String user, Resource r, long expiryTime, int masterKeyId, byte[] password, long rmIdentifier)
 specifier|public
 specifier|static
 name|Token
@@ -1233,6 +1267,9 @@ name|newContainerToken
 parameter_list|(
 name|ContainerId
 name|cId
+parameter_list|,
+name|int
+name|containerVersion
 parameter_list|,
 name|String
 name|host
@@ -1270,6 +1307,8 @@ name|ContainerTokenIdentifier
 argument_list|(
 name|cId
 argument_list|,
+name|containerVersion
+argument_list|,
 name|host
 operator|+
 literal|":"
@@ -1294,6 +1333,20 @@ literal|0
 argument_list|)
 argument_list|,
 literal|0
+argument_list|,
+literal|null
+argument_list|,
+name|CommonNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|,
+name|ContainerType
+operator|.
+name|TASK
+argument_list|,
+name|ExecutionType
+operator|.
+name|GUARANTEED
 argument_list|)
 decl_stmt|;
 return|return

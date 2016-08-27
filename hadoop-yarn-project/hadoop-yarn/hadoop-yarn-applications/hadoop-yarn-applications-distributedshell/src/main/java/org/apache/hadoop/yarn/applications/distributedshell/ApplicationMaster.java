@@ -1052,6 +1052,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|UpdatedContainer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|timeline
 operator|.
 name|TimelineEntity
@@ -4752,14 +4770,14 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|onContainersResourceChanged (List<Container> containers)
+DECL|method|onContainersUpdated ( List<UpdatedContainer> containers)
 specifier|public
 name|void
-name|onContainersResourceChanged
+name|onContainersUpdated
 parameter_list|(
 name|List
 argument_list|<
-name|Container
+name|UpdatedContainer
 argument_list|>
 name|containers
 parameter_list|)

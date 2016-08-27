@@ -156,7 +156,7 @@ class|class
 name|NMContainerStatus
 block|{
 comment|// Used by tests only
-DECL|method|newInstance (ContainerId containerId, ContainerState containerState, Resource allocatedResource, String diagnostics, int containerExitStatus, Priority priority, long creationTime)
+DECL|method|newInstance (ContainerId containerId, int version, ContainerState containerState, Resource allocatedResource, String diagnostics, int containerExitStatus, Priority priority, long creationTime)
 specifier|public
 specifier|static
 name|NMContainerStatus
@@ -164,6 +164,9 @@ name|newInstance
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|,
+name|int
+name|version
 parameter_list|,
 name|ContainerState
 name|containerState
@@ -189,6 +192,8 @@ name|newInstance
 argument_list|(
 name|containerId
 argument_list|,
+name|version
+argument_list|,
 name|containerState
 argument_list|,
 name|allocatedResource
@@ -207,7 +212,7 @@ name|NO_LABEL
 argument_list|)
 return|;
 block|}
-DECL|method|newInstance (ContainerId containerId, ContainerState containerState, Resource allocatedResource, String diagnostics, int containerExitStatus, Priority priority, long creationTime, String nodeLabelExpression)
+DECL|method|newInstance (ContainerId containerId, int version, ContainerState containerState, Resource allocatedResource, String diagnostics, int containerExitStatus, Priority priority, long creationTime, String nodeLabelExpression)
 specifier|public
 specifier|static
 name|NMContainerStatus
@@ -215,6 +220,9 @@ name|newInstance
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|,
+name|int
+name|version
 parameter_list|,
 name|ContainerState
 name|containerState
@@ -255,6 +263,13 @@ operator|.
 name|setContainerId
 argument_list|(
 name|containerId
+argument_list|)
+expr_stmt|;
+name|status
+operator|.
+name|setVersion
+argument_list|(
+name|version
 argument_list|)
 expr_stmt|;
 name|status
@@ -453,6 +468,25 @@ name|String
 name|nodeLabelExpression
 parameter_list|)
 function_decl|;
+DECL|method|getVersion ()
+specifier|public
+name|int
+name|getVersion
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+DECL|method|setVersion (int version)
+specifier|public
+name|void
+name|setVersion
+parameter_list|(
+name|int
+name|version
+parameter_list|)
+block|{    }
 block|}
 end_class
 

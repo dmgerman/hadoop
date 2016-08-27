@@ -810,7 +810,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeContainer (ContainerId containerId, StartContainerRequest startRequest)
+DECL|method|storeContainer (ContainerId containerId, int version, StartContainerRequest startRequest)
 specifier|public
 specifier|synchronized
 name|void
@@ -818,6 +818,9 @@ name|storeContainer
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|,
+name|int
+name|version
 parameter_list|,
 name|StartContainerRequest
 name|startRequest
@@ -837,6 +840,12 @@ operator|.
 name|startRequest
 operator|=
 name|startRequest
+expr_stmt|;
+name|rcs
+operator|.
+name|version
+operator|=
+name|version
 expr_stmt|;
 name|containerStates
 operator|.
@@ -965,7 +974,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeContainerResourceChanged ( ContainerId containerId, Resource capability)
+DECL|method|storeContainerResourceChanged ( ContainerId containerId, int version, Resource capability)
 specifier|public
 specifier|synchronized
 name|void
@@ -973,6 +982,9 @@ name|storeContainerResourceChanged
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|,
+name|int
+name|version
 parameter_list|,
 name|Resource
 name|capability
@@ -993,6 +1005,12 @@ operator|.
 name|capability
 operator|=
 name|capability
+expr_stmt|;
+name|rcs
+operator|.
+name|version
+operator|=
+name|version
 expr_stmt|;
 block|}
 annotation|@

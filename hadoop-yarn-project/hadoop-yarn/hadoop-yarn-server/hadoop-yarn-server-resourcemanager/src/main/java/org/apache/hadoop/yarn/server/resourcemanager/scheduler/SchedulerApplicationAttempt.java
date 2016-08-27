@@ -2860,6 +2860,25 @@ name|ContainerType
 operator|.
 name|TASK
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|newContainer
+condition|)
+block|{
+name|container
+operator|.
+name|setVersion
+argument_list|(
+name|container
+operator|.
+name|getVersion
+argument_list|()
+operator|+
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 comment|// The working knowledge is that masterContainer for AM is null as it
 comment|// itself is the master container.
 if|if
@@ -2892,6 +2911,11 @@ argument_list|(
 name|container
 operator|.
 name|getId
+argument_list|()
+argument_list|,
+name|container
+operator|.
+name|getVersion
 argument_list|()
 argument_list|,
 name|container

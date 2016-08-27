@@ -1020,7 +1020,7 @@ return|return
 name|status
 return|;
 block|}
-comment|/**    * Verify both the RMNode and SchedulerNode have been updated with the test    * fixture utilization data.    * @param containersUtilization Utilization of the container.    * @param nodeUtilization Utilization of the node.    */
+comment|/**    * Verify both the RMNode and SchedulerNode have been updated with the test    * fixture utilization data.    */
 DECL|method|verifySimulatedUtilization ()
 specifier|private
 name|void

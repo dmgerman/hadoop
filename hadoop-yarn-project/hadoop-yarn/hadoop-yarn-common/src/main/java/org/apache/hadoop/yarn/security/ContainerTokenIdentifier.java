@@ -718,6 +718,8 @@ name|this
 argument_list|(
 name|containerID
 argument_list|,
+literal|0
+argument_list|,
 name|hostName
 argument_list|,
 name|appSubmitter
@@ -746,12 +748,15 @@ name|GUARANTEED
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ContainerTokenIdentifier (ContainerId containerID, String hostName, String appSubmitter, Resource r, long expiryTimeStamp, int masterKeyId, long rmIdentifier, Priority priority, long creationTime, LogAggregationContext logAggregationContext, String nodeLabelExpression, ContainerType containerType, ExecutionType executionType)
+DECL|method|ContainerTokenIdentifier (ContainerId containerID, int containerVersion, String hostName, String appSubmitter, Resource r, long expiryTimeStamp, int masterKeyId, long rmIdentifier, Priority priority, long creationTime, LogAggregationContext logAggregationContext, String nodeLabelExpression, ContainerType containerType, ExecutionType executionType)
 specifier|public
 name|ContainerTokenIdentifier
 parameter_list|(
 name|ContainerId
 name|containerID
+parameter_list|,
+name|int
+name|containerVersion
 parameter_list|,
 name|String
 name|hostName
@@ -823,6 +828,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|builder
+operator|.
+name|setVersion
+argument_list|(
+name|containerVersion
+argument_list|)
+expr_stmt|;
 name|builder
 operator|.
 name|setNmHostAddr
@@ -1152,7 +1164,7 @@ name|getRmIdentifier
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the ContainerType of container to allocate    * @return ContainerType    */
+comment|/**    * Get the ContainerType of container to allocate.    * @return ContainerType    */
 DECL|method|getContainerType ()
 specifier|public
 name|ContainerType
@@ -1367,6 +1379,35 @@ argument_list|(
 name|containerId
 argument_list|)
 return|;
+block|}
+comment|/**    * Get the Container version    * @return container version    */
+DECL|method|getVersion ()
+specifier|public
+name|int
+name|getVersion
+parameter_list|()
+block|{
+if|if
+condition|(
+name|proto
+operator|.
+name|hasVersion
+argument_list|()
+condition|)
+block|{
+return|return
+name|proto
+operator|.
+name|getVersion
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|0
+return|;
+block|}
 block|}
 comment|/**    * Get the node-label-expression in the original ResourceRequest    */
 DECL|method|getNodeLabelExpression ()

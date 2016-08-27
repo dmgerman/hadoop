@@ -314,24 +314,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerResourceChangeRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ContainerState
 import|;
 end_import
@@ -405,6 +387,24 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|UpdateContainerRequest
 import|;
 end_import
 
@@ -1979,6 +1979,8 @@ name|newInstance
 argument_list|(
 name|containerId
 argument_list|,
+literal|0
+argument_list|,
 name|ContainerState
 operator|.
 name|RUNNING
@@ -2725,6 +2727,8 @@ operator|.
 name|newInstance
 argument_list|(
 name|containerId
+argument_list|,
+literal|0
 argument_list|,
 name|ContainerState
 operator|.
@@ -3682,7 +3686,7 @@ decl_stmt|;
 DECL|field|lastIncrease
 name|List
 argument_list|<
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 argument_list|>
 name|lastIncrease
 init|=
@@ -3691,7 +3695,7 @@ decl_stmt|;
 DECL|field|lastDecrease
 name|List
 argument_list|<
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 argument_list|>
 name|lastDecrease
 init|=
@@ -3715,7 +3719,7 @@ comment|// override this to copy the objects otherwise FifoScheduler updates the
 comment|// numContainers in same objects as kept by RMContainerAllocator
 annotation|@
 name|Override
-DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, List<ContainerResourceChangeRequest> increaseRequests, List<ContainerResourceChangeRequest> decreaseRequests)
+DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, List<UpdateContainerRequest> increaseRequests, List<UpdateContainerRequest> decreaseRequests)
 specifier|public
 specifier|synchronized
 name|Allocation
@@ -3750,13 +3754,13 @@ name|blacklistRemovals
 parameter_list|,
 name|List
 argument_list|<
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 argument_list|>
 name|increaseRequests
 parameter_list|,
 name|List
 argument_list|<
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 argument_list|>
 name|decreaseRequests
 parameter_list|)

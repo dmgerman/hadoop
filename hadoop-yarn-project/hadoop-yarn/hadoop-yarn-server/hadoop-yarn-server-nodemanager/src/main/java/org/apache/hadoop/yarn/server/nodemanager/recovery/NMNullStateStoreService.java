@@ -380,13 +380,16 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeContainer (ContainerId containerId, StartContainerRequest startRequest)
+DECL|method|storeContainer (ContainerId containerId, int version, StartContainerRequest startRequest)
 specifier|public
 name|void
 name|storeContainer
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|,
+name|int
+name|version
 parameter_list|,
 name|StartContainerRequest
 name|startRequest
@@ -438,13 +441,16 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|storeContainerResourceChanged (ContainerId containerId, Resource capability)
+DECL|method|storeContainerResourceChanged (ContainerId containerId, int version, Resource capability)
 specifier|public
 name|void
 name|storeContainerResourceChanged
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|,
+name|int
+name|version
 parameter_list|,
 name|Resource
 name|capability

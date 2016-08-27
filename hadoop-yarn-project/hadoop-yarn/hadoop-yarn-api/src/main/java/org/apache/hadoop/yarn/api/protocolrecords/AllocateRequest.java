@@ -162,7 +162,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerResourceChangeRequest
+name|ResourceRequest
 import|;
 end_import
 
@@ -180,7 +180,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ResourceRequest
+name|UpdateContainerRequest
 import|;
 end_import
 
@@ -201,7 +201,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The core request sent by the<code>ApplicationMaster</code> to the   *<code>ResourceManager</code> to obtain resources in the cluster.</p>   *  *<p>The request includes:  *<ul>  *<li>A response id to track duplicate responses.</li>  *<li>Progress information.</li>  *<li>  *     A list of {@link ResourceRequest} to inform the  *<code>ResourceManager</code> about the application's  *     resource requirements.  *</li>  *<li>  *     A list of unused {@link Container} which are being returned.  *</li>  *<li>  *     A list of {@link ContainerResourceChangeRequest} to inform  *     the<code>ResourceManager</code> about the resource increase  *     requirements of running containers.  *</li>  *<li>  *     A list of {@link ContainerResourceChangeRequest} to inform  *     the<code>ResourceManager</code> about the resource decrease  *     requirements of running containers.  *</li>  *</ul>  *   * @see ApplicationMasterProtocol#allocate(AllocateRequest)  */
+comment|/**  *<p>The core request sent by the<code>ApplicationMaster</code> to the   *<code>ResourceManager</code> to obtain resources in the cluster.</p>   *  *<p>The request includes:  *<ul>  *<li>A response id to track duplicate responses.</li>  *<li>Progress information.</li>  *<li>  *     A list of {@link ResourceRequest} to inform the  *<code>ResourceManager</code> about the application's  *     resource requirements.  *</li>  *<li>  *     A list of unused {@link Container} which are being returned.  *</li>  *<li>  *     A list of {@link UpdateContainerRequest} to inform  *     the<code>ResourceManager</code> about the change in  *     requirements of running containers.  *</li>  *</ul>  *   * @see ApplicationMasterProtocol#allocate(AllocateRequest)  */
 end_comment
 
 begin_class
@@ -261,16 +261,14 @@ argument_list|,
 name|resourceBlacklistRequest
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Public
 annotation|@
-name|Stable
-DECL|method|newInstance (int responseID, float appProgress, List<ResourceRequest> resourceAsk, List<ContainerId> containersToBeReleased, ResourceBlacklistRequest resourceBlacklistRequest, List<ContainerResourceChangeRequest> increaseRequests, List<ContainerResourceChangeRequest> decreaseRequests)
+name|Unstable
+DECL|method|newInstance (int responseID, float appProgress, List<ResourceRequest> resourceAsk, List<ContainerId> containersToBeReleased, ResourceBlacklistRequest resourceBlacklistRequest, List<UpdateContainerRequest> updateRequests)
 specifier|public
 specifier|static
 name|AllocateRequest
@@ -299,15 +297,9 @@ name|resourceBlacklistRequest
 parameter_list|,
 name|List
 argument_list|<
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 argument_list|>
-name|increaseRequests
-parameter_list|,
-name|List
-argument_list|<
-name|ContainerResourceChangeRequest
-argument_list|>
-name|decreaseRequests
+name|updateRequests
 parameter_list|)
 block|{
 name|AllocateRequest
@@ -359,16 +351,9 @@ argument_list|)
 expr_stmt|;
 name|allocateRequest
 operator|.
-name|setIncreaseRequests
+name|setUpdateRequests
 argument_list|(
-name|increaseRequests
-argument_list|)
-expr_stmt|;
-name|allocateRequest
-operator|.
-name|setDecreaseRequests
-argument_list|(
-name|decreaseRequests
+name|updateRequests
 argument_list|)
 expr_stmt|;
 return|return
@@ -522,70 +507,37 @@ name|ResourceBlacklistRequest
 name|resourceBlacklistRequest
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of container resource increase requests being sent by the    *<code>ApplicationMaster</code>.    * @return the list of {@link ContainerResourceChangeRequest}    *         being sent by the    *<code>ApplicationMaster</code>.    */
+comment|/**    * Get the list of container update requests being sent by the    *<code>ApplicationMaster</code>.    * @return list of {@link UpdateContainerRequest}    *         being sent by the    *<code>ApplicationMaster</code>.    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getIncreaseRequests ()
+DECL|method|getUpdateRequests ()
 specifier|public
 specifier|abstract
 name|List
 argument_list|<
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 argument_list|>
-name|getIncreaseRequests
+name|getUpdateRequests
 parameter_list|()
 function_decl|;
-comment|/**    * Set the list of container resource increase requests to inform the    *<code>ResourceManager</code> about the containers whose resources need    *         to be increased.    * @param increaseRequests list of    *        {@link ContainerResourceChangeRequest}    */
+comment|/**    * Set the list of container update requests to inform the    *<code>ResourceManager</code> about the containers that need to be    * updated.    * @param updateRequests list of<code>UpdateContainerRequest</code> for    *                       containers to be updated    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|setIncreaseRequests ( List<ContainerResourceChangeRequest> increaseRequests)
+DECL|method|setUpdateRequests ( List<UpdateContainerRequest> updateRequests)
 specifier|public
 specifier|abstract
 name|void
-name|setIncreaseRequests
+name|setUpdateRequests
 parameter_list|(
 name|List
 argument_list|<
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 argument_list|>
-name|increaseRequests
-parameter_list|)
-function_decl|;
-comment|/**    * Get the list of container resource decrease requests being sent by the    *<code>ApplicationMaster</code>.    * @return list of {@link ContainerResourceChangeRequest}    *         being sent by the    *<code>ApplicationMaster</code>.    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|getDecreaseRequests ()
-specifier|public
-specifier|abstract
-name|List
-argument_list|<
-name|ContainerResourceChangeRequest
-argument_list|>
-name|getDecreaseRequests
-parameter_list|()
-function_decl|;
-comment|/**    * Set the list of container resource decrease requests to inform the    *<code>ResourceManager</code> about the containers whose resources need    * to be decreased.    * @param decreaseRequests list of    *        {@link ContainerResourceChangeRequest}    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|setDecreaseRequests ( List<ContainerResourceChangeRequest> decreaseRequests)
-specifier|public
-specifier|abstract
-name|void
-name|setDecreaseRequests
-parameter_list|(
-name|List
-argument_list|<
-name|ContainerResourceChangeRequest
-argument_list|>
-name|decreaseRequests
+name|updateRequests
 parameter_list|)
 function_decl|;
 block|}

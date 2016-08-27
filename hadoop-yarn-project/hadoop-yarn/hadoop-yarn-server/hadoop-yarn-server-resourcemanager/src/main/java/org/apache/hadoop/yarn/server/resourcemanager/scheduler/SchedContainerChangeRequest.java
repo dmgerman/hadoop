@@ -151,7 +151,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is ContainerResourceChangeRequest in scheduler side, it contains some  * pointers to runtime objects like RMContainer, SchedulerNode, etc. This will  * be easier for scheduler making decision.  */
+comment|/**  * This is UpdateContainerRequest in scheduler side, it contains some  * pointers to runtime objects like RMContainer, SchedulerNode, etc. This will  * be easier for scheduler making decision.  */
 end_comment
 
 begin_class

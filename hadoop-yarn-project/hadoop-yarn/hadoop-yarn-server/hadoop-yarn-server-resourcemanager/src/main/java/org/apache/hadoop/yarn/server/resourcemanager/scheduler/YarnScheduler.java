@@ -274,24 +274,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerResourceChangeRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|NodeId
 import|;
 end_import
@@ -401,6 +383,24 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|UpdateContainerRequest
 import|;
 end_import
 
@@ -665,7 +665,7 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|allocate (ApplicationAttemptId appAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, List<ContainerResourceChangeRequest> increaseRequests, List<ContainerResourceChangeRequest> decreaseRequests)
+DECL|method|allocate (ApplicationAttemptId appAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, List<UpdateContainerRequest> increaseRequests, List<UpdateContainerRequest> decreaseRequests)
 name|Allocation
 name|allocate
 parameter_list|(
@@ -698,13 +698,13 @@ name|blacklistRemovals
 parameter_list|,
 name|List
 argument_list|<
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 argument_list|>
 name|increaseRequests
 parameter_list|,
 name|List
 argument_list|<
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 argument_list|>
 name|decreaseRequests
 parameter_list|)

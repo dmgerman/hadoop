@@ -2082,6 +2082,9 @@ parameter_list|(
 name|ContainerId
 name|containerId
 parameter_list|,
+name|int
+name|containerVersion
+parameter_list|,
 name|NodeId
 name|nodeId
 parameter_list|,
@@ -2116,6 +2119,8 @@ operator|.
 name|createContainerToken
 argument_list|(
 name|containerId
+argument_list|,
+name|containerVersion
 argument_list|,
 name|nodeId
 argument_list|,

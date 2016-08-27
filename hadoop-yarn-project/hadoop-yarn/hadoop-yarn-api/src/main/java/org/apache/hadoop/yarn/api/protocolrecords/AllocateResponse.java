@@ -26,6 +26,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -298,6 +308,42 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|UpdateContainerError
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|UpdatedContainer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
@@ -451,8 +497,8 @@ block|}
 annotation|@
 name|Public
 annotation|@
-name|Stable
-DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, List<Container> increasedContainers, List<Container> decreasedContainers)
+name|Unstable
+DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, List<UpdatedContainer> updatedContainers)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -499,15 +545,9 @@ name|nmTokens
 parameter_list|,
 name|List
 argument_list|<
-name|Container
+name|UpdatedContainer
 argument_list|>
-name|increasedContainers
-parameter_list|,
-name|List
-argument_list|<
-name|Container
-argument_list|>
-name|decreasedContainers
+name|updatedContainers
 parameter_list|)
 block|{
 name|AllocateResponse
@@ -536,16 +576,9 @@ argument_list|)
 decl_stmt|;
 name|response
 operator|.
-name|setIncreasedContainers
+name|setUpdatedContainers
 argument_list|(
-name|increasedContainers
-argument_list|)
-expr_stmt|;
-name|response
-operator|.
-name|setDecreasedContainers
-argument_list|(
-name|decreasedContainers
+name|updatedContainers
 argument_list|)
 expr_stmt|;
 return|return
@@ -556,7 +589,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, Token amRMToken, List<Container> increasedContainers, List<Container> decreasedContainers)
+DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, Token amRMToken, List<UpdatedContainer> updatedContainers)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -606,15 +639,9 @@ name|amRMToken
 parameter_list|,
 name|List
 argument_list|<
-name|Container
+name|UpdatedContainer
 argument_list|>
-name|increasedContainers
-parameter_list|,
-name|List
-argument_list|<
-name|Container
-argument_list|>
-name|decreasedContainers
+name|updatedContainers
 parameter_list|)
 block|{
 name|AllocateResponse
@@ -640,9 +667,7 @@ name|preempt
 argument_list|,
 name|nmTokens
 argument_list|,
-name|increasedContainers
-argument_list|,
-name|decreasedContainers
+name|updatedContainers
 argument_list|)
 decl_stmt|;
 name|response
@@ -660,7 +685,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, Token amRMToken, List<Container> increasedContainers, List<Container> decreasedContainers, String collectorAddr)
+DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, Token amRMToken, List<UpdatedContainer> updatedContainers, String collectorAddr)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -710,15 +735,9 @@ name|amRMToken
 parameter_list|,
 name|List
 argument_list|<
-name|Container
+name|UpdatedContainer
 argument_list|>
-name|increasedContainers
-parameter_list|,
-name|List
-argument_list|<
-name|Container
-argument_list|>
-name|decreasedContainers
+name|updatedContainers
 parameter_list|,
 name|String
 name|collectorAddr
@@ -747,9 +766,7 @@ name|preempt
 argument_list|,
 name|nmTokens
 argument_list|,
-name|increasedContainers
-argument_list|,
-name|decreasedContainers
+name|updatedContainers
 argument_list|)
 decl_stmt|;
 name|response
@@ -1030,70 +1047,37 @@ argument_list|>
 name|nmTokens
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of newly increased containers by    *<code>ResourceManager</code>.    * @return list of newly increased containers    */
+comment|/**    * Get the list of newly updated containers by    *<code>ResourceManager</code>.    * @return list of newly increased containers    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getIncreasedContainers ()
+DECL|method|getUpdatedContainers ()
 specifier|public
 specifier|abstract
 name|List
 argument_list|<
-name|Container
+name|UpdatedContainer
 argument_list|>
-name|getIncreasedContainers
+name|getUpdatedContainers
 parameter_list|()
 function_decl|;
-comment|/**    * Set the list of newly increased containers by    *<code>ResourceManager</code>.    */
+comment|/**    * Set the list of newly updated containers by    *<code>ResourceManager</code>.    *    * @param updatedContainers List of Updated Containers.    */
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setIncreasedContainers ( List<Container> increasedContainers)
+DECL|method|setUpdatedContainers ( List<UpdatedContainer> updatedContainers)
 specifier|public
 specifier|abstract
 name|void
-name|setIncreasedContainers
+name|setUpdatedContainers
 parameter_list|(
 name|List
 argument_list|<
-name|Container
+name|UpdatedContainer
 argument_list|>
-name|increasedContainers
-parameter_list|)
-function_decl|;
-comment|/**    * Get the list of newly decreased containers by    *<code>ResourceManager</code>.    * @return the list of newly decreased containers    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|getDecreasedContainers ()
-specifier|public
-specifier|abstract
-name|List
-argument_list|<
-name|Container
-argument_list|>
-name|getDecreasedContainers
-parameter_list|()
-function_decl|;
-comment|/**    * Set the list of newly decreased containers by    *<code>ResourceManager</code>.    */
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|setDecreasedContainers ( List<Container> decreasedContainers)
-specifier|public
-specifier|abstract
-name|void
-name|setDecreasedContainers
-parameter_list|(
-name|List
-argument_list|<
-name|Container
-argument_list|>
-name|decreasedContainers
+name|updatedContainers
 parameter_list|)
 function_decl|;
 comment|/**    * The AMRMToken that belong to this attempt    *    * @return The AMRMToken that belong to this attempt    */
@@ -1174,6 +1158,44 @@ name|String
 name|collectorAddr
 parameter_list|)
 function_decl|;
+comment|/**    * Get the list of container update errors to inform the    * Application Master about the container updates that could not be    * satisfied due to error.    *    * @return List of Update Container Errors.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getUpdateErrors ()
+specifier|public
+name|List
+argument_list|<
+name|UpdateContainerError
+argument_list|>
+name|getUpdateErrors
+parameter_list|()
+block|{
+return|return
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+return|;
+block|}
+comment|/**    * Set the list of container update errors to inform the    * Application Master about the container updates that could not be    * satisfied due to error.    * @param updateErrors list of<code>UpdateContainerError</code> for    *                       containers updates requests that were in error    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setUpdateErrors (List<UpdateContainerError> updateErrors)
+specifier|public
+name|void
+name|setUpdateErrors
+parameter_list|(
+name|List
+argument_list|<
+name|UpdateContainerError
+argument_list|>
+name|updateErrors
+parameter_list|)
+block|{   }
 block|}
 end_class
 

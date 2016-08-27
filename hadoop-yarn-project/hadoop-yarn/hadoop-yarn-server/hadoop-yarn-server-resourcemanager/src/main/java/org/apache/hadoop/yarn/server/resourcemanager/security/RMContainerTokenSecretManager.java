@@ -132,6 +132,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ExecutionType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|LogAggregationContext
 import|;
 end_import
@@ -818,14 +836,17 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Helper function for creating ContainerTokens    *    * @param containerId    * @param nodeId    * @param appSubmitter    * @param capability    * @param priority    * @param createTime    * @return the container-token    */
-DECL|method|createContainerToken (ContainerId containerId, NodeId nodeId, String appSubmitter, Resource capability, Priority priority, long createTime)
+comment|/**    * Helper function for creating ContainerTokens    *    * @param containerId Container Id    * @param containerVersion Container Version    * @param nodeId Node Id    * @param appSubmitter App Submitter    * @param capability Capability    * @param priority Priority    * @param createTime Create Time    * @return the container-token    */
+DECL|method|createContainerToken (ContainerId containerId, int containerVersion, NodeId nodeId, String appSubmitter, Resource capability, Priority priority, long createTime)
 specifier|public
 name|Token
 name|createContainerToken
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|,
+name|int
+name|containerVersion
 parameter_list|,
 name|NodeId
 name|nodeId
@@ -848,6 +869,8 @@ name|createContainerToken
 argument_list|(
 name|containerId
 argument_list|,
+name|containerVersion
+argument_list|,
 name|nodeId
 argument_list|,
 name|appSubmitter
@@ -868,14 +891,17 @@ name|TASK
 argument_list|)
 return|;
 block|}
-comment|/**    * Helper function for creating ContainerTokens    *    * @param containerId    * @param nodeId    * @param appSubmitter    * @param capability    * @param priority    * @param createTime    * @param logAggregationContext    * @param nodeLabelExpression    * @param containerType    * @return the container-token    */
-DECL|method|createContainerToken (ContainerId containerId, NodeId nodeId, String appSubmitter, Resource capability, Priority priority, long createTime, LogAggregationContext logAggregationContext, String nodeLabelExpression, ContainerType containerType)
+comment|/**    * Helper function for creating ContainerTokens    *    * @param containerId Container Id    * @param containerVersion Container version    * @param nodeId Node Id    * @param appSubmitter App Submitter    * @param capability Capability    * @param priority Priority    * @param createTime Create Time    * @param logAggregationContext Log Aggregation Context    * @param nodeLabelExpression Node Label Expression    * @param containerType Container Type    * @return the container-token    */
+DECL|method|createContainerToken (ContainerId containerId, int containerVersion, NodeId nodeId, String appSubmitter, Resource capability, Priority priority, long createTime, LogAggregationContext logAggregationContext, String nodeLabelExpression, ContainerType containerType)
 specifier|public
 name|Token
 name|createContainerToken
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|,
+name|int
+name|containerVersion
 parameter_list|,
 name|NodeId
 name|nodeId
@@ -936,6 +962,8 @@ name|ContainerTokenIdentifier
 argument_list|(
 name|containerId
 argument_list|,
+name|containerVersion
+argument_list|,
 name|nodeId
 operator|.
 name|toString
@@ -971,6 +999,10 @@ argument_list|,
 name|nodeLabelExpression
 argument_list|,
 name|containerType
+argument_list|,
+name|ExecutionType
+operator|.
+name|GUARANTEED
 argument_list|)
 expr_stmt|;
 name|password

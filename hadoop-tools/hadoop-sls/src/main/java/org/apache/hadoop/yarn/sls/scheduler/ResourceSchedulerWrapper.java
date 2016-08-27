@@ -466,24 +466,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerResourceChangeRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ContainerStatus
 import|;
 end_import
@@ -611,6 +593,24 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|UpdateContainerRequest
 import|;
 end_import
 
@@ -1824,7 +1824,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocate (ApplicationAttemptId attemptId, List<ResourceRequest> resourceRequests, List<ContainerId> containerIds, List<String> strings, List<String> strings2, List<ContainerResourceChangeRequest> increaseRequests, List<ContainerResourceChangeRequest> decreaseRequests)
+DECL|method|allocate (ApplicationAttemptId attemptId, List<ResourceRequest> resourceRequests, List<ContainerId> containerIds, List<String> strings, List<String> strings2, List<UpdateContainerRequest> increaseRequests, List<UpdateContainerRequest> decreaseRequests)
 specifier|public
 name|Allocation
 name|allocate
@@ -1858,13 +1858,13 @@ name|strings2
 parameter_list|,
 name|List
 argument_list|<
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 argument_list|>
 name|increaseRequests
 parameter_list|,
 name|List
 argument_list|<
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 argument_list|>
 name|decreaseRequests
 parameter_list|)

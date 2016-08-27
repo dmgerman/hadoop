@@ -316,24 +316,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerResourceChangeRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ContainerState
 import|;
 end_import
@@ -443,6 +425,24 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|UpdateContainerRequest
 import|;
 end_import
 
@@ -2670,6 +2670,16 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+name|container
+operator|.
+name|setVersion
+argument_list|(
+name|status
+operator|.
+name|getVersion
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|ApplicationAttemptId
 name|attemptId
 init|=
@@ -3240,14 +3250,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|decreaseContainers ( List<ContainerResourceChangeRequest> decreaseRequests, SchedulerApplicationAttempt attempt)
+DECL|method|decreaseContainers ( List<UpdateContainerRequest> decreaseRequests, SchedulerApplicationAttempt attempt)
 specifier|protected
 name|void
 name|decreaseContainers
 parameter_list|(
 name|List
 argument_list|<
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 argument_list|>
 name|decreaseRequests
 parameter_list|,
@@ -3984,13 +3994,13 @@ name|maxClusterLevelAppPriority
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Sanity check increase/decrease request, and return    * SchedulerContainerResourceChangeRequest according to given    * ContainerResourceChangeRequest.    *     *<pre>    * - Returns non-null value means validation succeeded    * - Throw exception when any other error happens    *</pre>    */
-DECL|method|createSchedContainerChangeRequest ( ContainerResourceChangeRequest request, boolean increase)
+comment|/**    * Sanity check increase/decrease request, and return    * SchedulerContainerResourceChangeRequest according to given    * UpdateContainerRequest.    *     *<pre>    * - Returns non-null value means validation succeeded    * - Throw exception when any other error happens    *</pre>    */
+DECL|method|createSchedContainerChangeRequest ( UpdateContainerRequest request, boolean increase)
 specifier|private
 name|SchedContainerChangeRequest
 name|createSchedContainerChangeRequest
 parameter_list|(
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 name|request
 parameter_list|,
 name|boolean
@@ -4082,12 +4092,12 @@ name|List
 argument_list|<
 name|SchedContainerChangeRequest
 argument_list|>
-DECL|method|createSchedContainerChangeRequests ( List<ContainerResourceChangeRequest> changeRequests, boolean increase)
+DECL|method|createSchedContainerChangeRequests ( List<UpdateContainerRequest> changeRequests, boolean increase)
 name|createSchedContainerChangeRequests
 parameter_list|(
 name|List
 argument_list|<
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 argument_list|>
 name|changeRequests
 parameter_list|,
@@ -4110,7 +4120,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|ContainerResourceChangeRequest
+name|UpdateContainerRequest
 name|r
 range|:
 name|changeRequests
