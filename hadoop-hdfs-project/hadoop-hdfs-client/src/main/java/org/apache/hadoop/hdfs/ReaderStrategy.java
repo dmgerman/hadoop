@@ -564,10 +564,7 @@ name|blockReader
 operator|.
 name|read
 argument_list|(
-name|readBuf
-operator|.
-name|slice
-argument_list|()
+name|tmpBuf
 argument_list|)
 decl_stmt|;
 comment|// Only when data are read, update the position
