@@ -166,6 +166,20 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{ }
+DECL|method|failPipeline (ReplicaInPipelineInterface replicaInfo, String mirrorAddr)
+specifier|public
+name|void
+name|failPipeline
+parameter_list|(
+name|ReplicaInPipelineInterface
+name|replicaInfo
+parameter_list|,
+name|String
+name|mirrorAddr
+parameter_list|)
+throws|throws
+name|IOException
+block|{ }
 block|}
 end_class
 

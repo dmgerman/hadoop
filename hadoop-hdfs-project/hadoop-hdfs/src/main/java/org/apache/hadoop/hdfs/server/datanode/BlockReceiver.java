@@ -6100,6 +6100,18 @@ operator|!
 name|mirrorError
 condition|)
 block|{
+name|DataNodeFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|failPipeline
+argument_list|(
+name|replicaInfo
+argument_list|,
+name|mirrorAddr
+argument_list|)
+expr_stmt|;
 comment|// read an ack from downstream datanode
 name|ack
 operator|.

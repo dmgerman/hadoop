@@ -8365,7 +8365,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Recovering "
+literal|"At "
+operator|+
+name|datanode
+operator|.
+name|getDisplayName
+argument_list|()
+operator|+
+literal|", Recovering "
 operator|+
 name|rbw
 argument_list|)
