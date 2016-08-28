@@ -338,8 +338,7 @@ name|BUFFER_DIR_KEY
 init|=
 literal|"fs.oss.buffer.dir"
 decl_stmt|;
-comment|// private | public-read | public-read-write | authenticated-read |
-comment|// log-delivery-write | bucket-owner-read | bucket-owner-full-control
+comment|// private | public-read | public-read-write
 DECL|field|CANNED_ACL_KEY
 specifier|public
 specifier|static
