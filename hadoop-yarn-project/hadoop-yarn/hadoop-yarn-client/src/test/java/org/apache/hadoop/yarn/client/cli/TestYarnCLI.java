@@ -2848,66 +2848,37 @@ argument_list|)
 expr_stmt|;
 name|pw
 operator|.
-name|print
+name|printf
 argument_list|(
-literal|"                  Container-Id"
+name|ApplicationCLI
+operator|.
+name|CONTAINER_PATTERN
+argument_list|,
+literal|"Container-Id"
+argument_list|,
+literal|"Start Time"
+argument_list|,
+literal|"Finish Time"
+argument_list|,
+literal|"State"
+argument_list|,
+literal|"Host"
+argument_list|,
+literal|"Node Http Address"
+argument_list|,
+literal|"LOG-URL"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
-name|print
+name|printf
 argument_list|(
-literal|"\t          Start Time"
-argument_list|)
-expr_stmt|;
-name|pw
+name|ApplicationCLI
 operator|.
-name|print
-argument_list|(
-literal|"\t         Finish Time"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t               State"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t                Host"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t   Node Http Address"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|println
-argument_list|(
-literal|"\t                            LOG-URL"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|" container_1234_0005_01_000001"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t"
-operator|+
+name|CONTAINER_PATTERN
+argument_list|,
+literal|"container_1234_0005_01_000001"
+argument_list|,
 name|dateFormat
 operator|.
 name|format
@@ -2918,14 +2889,7 @@ argument_list|(
 name|time1
 argument_list|)
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t"
-operator|+
+argument_list|,
 name|dateFormat
 operator|.
 name|format
@@ -2936,49 +2900,26 @@ argument_list|(
 name|time2
 argument_list|)
 argument_list|)
+argument_list|,
+literal|"COMPLETE"
+argument_list|,
+literal|"host:1234"
+argument_list|,
+literal|"http://host:2345"
+argument_list|,
+literal|"logURL"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
-name|print
+name|printf
 argument_list|(
-literal|"\t            COMPLETE"
-argument_list|)
-expr_stmt|;
-name|pw
+name|ApplicationCLI
 operator|.
-name|print
-argument_list|(
-literal|"\t           host:1234"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t    http://host:2345"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|println
-argument_list|(
-literal|"\t                             logURL"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|" container_1234_0005_01_000002"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t"
-operator|+
+name|CONTAINER_PATTERN
+argument_list|,
+literal|"container_1234_0005_01_000002"
+argument_list|,
 name|dateFormat
 operator|.
 name|format
@@ -2989,14 +2930,7 @@ argument_list|(
 name|time1
 argument_list|)
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t"
-operator|+
+argument_list|,
 name|dateFormat
 operator|.
 name|format
@@ -3007,49 +2941,26 @@ argument_list|(
 name|time2
 argument_list|)
 argument_list|)
+argument_list|,
+literal|"COMPLETE"
+argument_list|,
+literal|"host:1234"
+argument_list|,
+literal|"http://host:2345"
+argument_list|,
+literal|"logURL"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
-name|print
+name|printf
 argument_list|(
-literal|"\t            COMPLETE"
-argument_list|)
-expr_stmt|;
-name|pw
+name|ApplicationCLI
 operator|.
-name|print
-argument_list|(
-literal|"\t           host:1234"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t    http://host:2345"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|println
-argument_list|(
-literal|"\t                             logURL"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|" container_1234_0005_01_000003"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t"
-operator|+
+name|CONTAINER_PATTERN
+argument_list|,
+literal|"container_1234_0005_01_000003"
+argument_list|,
 name|dateFormat
 operator|.
 name|format
@@ -3060,41 +2971,16 @@ argument_list|(
 name|time1
 argument_list|)
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t                 N/A"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t             RUNNING"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t           host:1234"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|print
-argument_list|(
-literal|"\t    http://host:2345"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|println
-argument_list|(
-literal|"\t                                   "
+argument_list|,
+literal|"N/A"
+argument_list|,
+literal|"RUNNING"
+argument_list|,
+literal|"host:1234"
+argument_list|,
+literal|"http://host:2345"
+argument_list|,
+literal|""
 argument_list|)
 expr_stmt|;
 name|pw
