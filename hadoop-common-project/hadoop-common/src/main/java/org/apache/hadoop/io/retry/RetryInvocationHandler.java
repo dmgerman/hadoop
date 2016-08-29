@@ -1814,9 +1814,17 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Exception while invoking call #"
 operator|+
@@ -1848,6 +1856,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 throw|throw
 name|e
