@@ -961,11 +961,6 @@ argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
-name|checker
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 return|return
 name|nread
