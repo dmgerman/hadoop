@@ -1286,14 +1286,18 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Reporting bad {} on {}"
-argument_list|,
+literal|"Reporting bad "
+operator|+
 name|block
-argument_list|,
+operator|+
+literal|" with volume "
+operator|+
 name|volume
 operator|.
 name|getBasePath
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 try|try
@@ -1321,14 +1325,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Cannot report bad "
+literal|"Cannot report bad block "
 operator|+
 name|block
-operator|.
-name|getBlockId
-argument_list|()
 argument_list|,
-name|e
+name|ie
 argument_list|)
 expr_stmt|;
 block|}

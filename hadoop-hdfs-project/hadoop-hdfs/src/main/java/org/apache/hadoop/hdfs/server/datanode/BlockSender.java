@@ -743,6 +743,13 @@ specifier|private
 name|FsVolumeReference
 name|volumeRef
 decl_stmt|;
+comment|/** The replica of the block that is being read. */
+DECL|field|replica
+specifier|private
+specifier|final
+name|Replica
+name|replica
+decl_stmt|;
 comment|// Cache-management related fields
 DECL|field|readaheadLength
 specifier|private
@@ -983,10 +990,6 @@ literal|"If verifying checksum, currently must also send it."
 argument_list|)
 expr_stmt|;
 block|}
-specifier|final
-name|Replica
-name|replica
-decl_stmt|;
 specifier|final
 name|long
 name|replicaVisibleLength
@@ -2948,6 +2951,33 @@ name|datalen
 operator|-
 name|dLeft
 decl_stmt|;
+name|StringBuilder
+name|replicaInfoString
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|replica
+operator|!=
+literal|null
+condition|)
+block|{
+name|replicaInfoString
+operator|.
+name|append
+argument_list|(
+literal|" for replica: "
+operator|+
+name|replica
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|ChecksumException
@@ -2955,6 +2985,8 @@ argument_list|(
 literal|"Checksum failed at "
 operator|+
 name|failedPos
+operator|+
+name|replicaInfoString
 argument_list|,
 name|failedPos
 argument_list|)
