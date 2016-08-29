@@ -444,6 +444,11 @@ init|=
 literal|"echo \"I am all fine\""
 decl_stmt|;
 name|String
+name|failWithExitCodeScript
+init|=
+literal|"echo \"Not healthy\"; exit -1"
+decl_stmt|;
+name|String
 name|timeOutScript
 init|=
 name|Shell
@@ -609,6 +614,31 @@ argument_list|,
 name|nodeHealthScriptRunner
 operator|.
 name|getHealthReport
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Script which fails with exit code.
+name|writeNodeHealthScriptFile
+argument_list|(
+name|failWithExitCodeScript
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|timerTask
+operator|.
+name|run
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+literal|"Node health status reported healthy"
+argument_list|,
+name|nodeHealthScriptRunner
+operator|.
+name|isHealthy
 argument_list|()
 argument_list|)
 expr_stmt|;
