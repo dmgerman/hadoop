@@ -194,7 +194,7 @@ name|add
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|FEDERATION_SUBCLUSTER_ID
+name|FEDERATION_FAILOVER_ENABLED
 argument_list|)
 expr_stmt|;
 name|configurationPropsToSkipCompare
@@ -203,7 +203,7 @@ name|add
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|FEDERATION_FAILOVER_ENABLED
+name|FEDERATION_STATESTORE_HEARTBEAT_INTERVAL_SECS
 argument_list|)
 expr_stmt|;
 comment|// Ignore blacklisting nodes for AM failures feature since it is still a

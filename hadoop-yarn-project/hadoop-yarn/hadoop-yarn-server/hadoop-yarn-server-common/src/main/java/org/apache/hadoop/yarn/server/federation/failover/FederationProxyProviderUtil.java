@@ -621,7 +621,7 @@ name|set
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|FEDERATION_SUBCLUSTER_ID
+name|RM_CLUSTER_ID
 argument_list|,
 name|subClusterId
 operator|.

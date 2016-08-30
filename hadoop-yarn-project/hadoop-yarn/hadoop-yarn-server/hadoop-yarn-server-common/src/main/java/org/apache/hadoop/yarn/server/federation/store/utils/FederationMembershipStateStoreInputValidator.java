@@ -531,7 +531,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Validate if the SubCluster Info are present or not.    *    * @param subClusterInfo the information of the subcluster to be verified    * @throws FederationStateStoreInvalidInputException if the SubCluster Info    *           are invalid    */
+comment|/**    * Validate if all the required fields on {@link SubClusterInfo} are present    * or not. {@code Capability} will be empty as the corresponding    * {@code ResourceManager} is in the process of initialization during    * registration.    *    * @param subClusterInfo the information of the subcluster to be verified    * @throws FederationStateStoreInvalidInputException if the SubCluster Info    *           are invalid    */
 DECL|method|checkSubClusterInfo (SubClusterInfo subClusterInfo)
 specifier|private
 specifier|static
@@ -642,15 +642,6 @@ argument_list|(
 name|subClusterInfo
 operator|.
 name|getState
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// validate subcluster capability
-name|checkCapability
-argument_list|(
-name|subClusterInfo
-operator|.
-name|getCapability
 argument_list|()
 argument_list|)
 expr_stmt|;

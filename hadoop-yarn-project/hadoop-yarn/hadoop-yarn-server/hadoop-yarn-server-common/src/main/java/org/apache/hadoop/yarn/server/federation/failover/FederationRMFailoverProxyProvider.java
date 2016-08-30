@@ -543,7 +543,7 @@ name|get
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|FEDERATION_SUBCLUSTER_ID
+name|RM_CLUSTER_ID
 argument_list|)
 decl_stmt|;
 name|Preconditions
@@ -552,7 +552,7 @@ name|checkNotNull
 argument_list|(
 name|clusterId
 argument_list|,
-literal|"Missing Federation SubClusterId"
+literal|"Missing RM ClusterId"
 argument_list|)
 expr_stmt|;
 name|this
