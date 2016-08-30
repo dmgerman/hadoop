@@ -188,6 +188,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|junit
@@ -1833,6 +1845,12 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+comment|// wait for the second task attempt to be assigned.
+name|waitForContainerAssignment
+argument_list|(
+name|task1Attempt2
+argument_list|)
+expr_stmt|;
 comment|// This attempt will automatically fail because of the way ContainerLauncher
 comment|// is setup
 comment|// This attempt 'disappears' from JobHistory and so causes MAPREDUCE-3846
@@ -2722,6 +2740,57 @@ argument_list|)
 expr_stmt|;
 comment|// TODO Add verification of additional data from jobHistory - whatever was
 comment|// available in the failed attempt should be available here
+block|}
+comment|/**    * Wait for a task attempt to be assigned a container to.    * @param task1Attempt2 the task attempt to wait for its container assignment    * @throws TimeoutException if times out    * @throws InterruptedException if interrupted    */
+DECL|method|waitForContainerAssignment (final TaskAttempt task1Attempt2)
+specifier|public
+specifier|static
+name|void
+name|waitForContainerAssignment
+parameter_list|(
+specifier|final
+name|TaskAttempt
+name|task1Attempt2
+parameter_list|)
+throws|throws
+name|TimeoutException
+throws|,
+name|InterruptedException
+block|{
+name|GenericTestUtils
+operator|.
+name|waitFor
+argument_list|(
+operator|new
+name|Supplier
+argument_list|<
+name|Boolean
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Boolean
+name|get
+parameter_list|()
+block|{
+return|return
+name|task1Attempt2
+operator|.
+name|getAssignedContainerID
+argument_list|()
+operator|!=
+literal|null
+return|;
+block|}
+block|}
+argument_list|,
+literal|10
+argument_list|,
+literal|10000
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * AM with 3 maps and 0 reduce. AM crashes after the first two tasks finishes    * and recovers completely and succeeds in the second generation.    *     * @throws Exception    */
 annotation|@
@@ -7974,38 +8043,9 @@ name|next
 argument_list|()
 decl_stmt|;
 comment|// wait for the second task attempt to be assigned.
-name|GenericTestUtils
-operator|.
-name|waitFor
+name|waitForContainerAssignment
 argument_list|(
-operator|new
-name|Supplier
-argument_list|<
-name|Boolean
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|Boolean
-name|get
-parameter_list|()
-block|{
-return|return
 name|task1Attempt2
-operator|.
-name|getAssignedContainerID
-argument_list|()
-operator|!=
-literal|null
-return|;
-block|}
-block|}
-argument_list|,
-literal|10
-argument_list|,
-literal|10000
 argument_list|)
 expr_stmt|;
 name|ContainerId
