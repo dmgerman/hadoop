@@ -2252,6 +2252,35 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+elseif|else
+if|if
+condition|(
+name|t
+operator|instanceof
+name|InvalidToken
+condition|)
+block|{
+comment|// The InvalidToken exception has already been logged in
+comment|// checkAccess() method and this is not a server error.
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+name|s
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 else|else
 block|{
 name|LOG
