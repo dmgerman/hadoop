@@ -2539,6 +2539,22 @@ name|numZones
 init|=
 literal|0
 decl_stmt|;
+comment|/* Number of EZs should be 0 if no EZ is created */
+name|assertEquals
+argument_list|(
+literal|"Unexpected number of encryption zones!"
+argument_list|,
+name|numZones
+argument_list|,
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getNumEncryptionZones
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|/* Test failure of create EZ on a directory that doesn't exist. */
 specifier|final
 name|Path
