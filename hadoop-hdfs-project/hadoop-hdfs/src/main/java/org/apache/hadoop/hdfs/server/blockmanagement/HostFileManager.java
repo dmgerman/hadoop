@@ -636,6 +636,22 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getMaintenanceExpirationTimeInMS (DatanodeID dn)
+specifier|public
+name|long
+name|getMaintenanceExpirationTimeInMS
+parameter_list|(
+name|DatanodeID
+name|dn
+parameter_list|)
+block|{
+comment|// The include/exclude files based config doesn't support maintenance mode.
+return|return
+literal|0
+return|;
+block|}
 comment|/**    * Read the includes and excludes lists from the named files.  Any previous    * includes and excludes lists are discarded.    * @param includeFile the path to the new includes list    * @param excludeFile the path to the new excludes list    * @throws IOException thrown if there is a problem reading one of the files    */
 DECL|method|refresh (String includeFile, String excludeFile)
 specifier|private

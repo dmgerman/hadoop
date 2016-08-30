@@ -549,6 +549,7 @@ DECL|enumConstant|ALL
 DECL|enumConstant|LIVE
 DECL|enumConstant|DEAD
 DECL|enumConstant|DECOMMISSIONING
+DECL|enumConstant|ENTERING_MAINTENANCE
 name|ALL
 block|,
 name|LIVE
@@ -556,6 +557,8 @@ block|,
 name|DEAD
 block|,
 name|DECOMMISSIONING
+block|,
+name|ENTERING_MAINTENANCE
 block|}
 DECL|field|RS_6_3_POLICY_ID
 specifier|public

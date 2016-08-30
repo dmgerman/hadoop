@@ -430,7 +430,7 @@ specifier|final
 name|ScheduledExecutorService
 name|executor
 decl_stmt|;
-comment|/**    * Map containing the decommission-in-progress datanodes that are being    * tracked so they can be be marked as decommissioned.    *<p/>    * This holds a set of references to the under-replicated blocks on the DN at    * the time the DN is added to the map, i.e. the blocks that are preventing    * the node from being marked as decommissioned. During a monitor tick, this    * list is pruned as blocks becomes replicated.    *<p/>    * Note also that the reference to the list of under-replicated blocks     * will be null on initial add    *<p/>    * However, this map can become out-of-date since it is not updated by block    * reports or other events. Before being finally marking as decommissioned,    * another check is done with the actual block map.    */
+comment|/**    * Map containing the DECOMMISSION_INPROGRESS or ENTERING_MAINTENANCE    * datanodes that are being tracked so they can be be marked as    * DECOMMISSIONED or IN_MAINTENANCE. Even after the node is marked as    * IN_MAINTENANCE, the node remains in the map until    * maintenance expires checked during a monitor tick.    *<p/>    * This holds a set of references to the under-replicated blocks on the DN at    * the time the DN is added to the map, i.e. the blocks that are preventing    * the node from being marked as decommissioned. During a monitor tick, this    * list is pruned as blocks becomes replicated.    *<p/>    * Note also that the reference to the list of under-replicated blocks     * will be null on initial add    *<p/>    * However, this map can become out-of-date since it is not updated by block    * reports or other events. Before being finally marking as decommissioned,    * another check is done with the actual block map.    */
 specifier|private
 specifier|final
 name|TreeMap
@@ -442,10 +442,10 @@ argument_list|<
 name|BlockInfo
 argument_list|>
 argument_list|>
-DECL|field|decomNodeBlocks
-name|decomNodeBlocks
+DECL|field|outOfServiceNodeBlocks
+name|outOfServiceNodeBlocks
 decl_stmt|;
-comment|/**    * Tracking a node in decomNodeBlocks consumes additional memory. To limit    * the impact on NN memory consumption, we limit the number of nodes in     * decomNodeBlocks. Additional nodes wait in pendingNodes.    */
+comment|/**    * Tracking a node in outOfServiceNodeBlocks consumes additional memory. To    * limit the impact on NN memory consumption, we limit the number of nodes in    * outOfServiceNodeBlocks. Additional nodes wait in pendingNodes.    */
 DECL|field|pendingNodes
 specifier|private
 specifier|final
@@ -522,7 +522,7 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|decomNodeBlocks
+name|outOfServiceNodeBlocks
 operator|=
 operator|new
 name|TreeMap
@@ -927,7 +927,7 @@ argument_list|(
 name|node
 argument_list|)
 expr_stmt|;
-name|decomNodeBlocks
+name|outOfServiceNodeBlocks
 operator|.
 name|remove
 argument_list|(
@@ -942,6 +942,137 @@ operator|.
 name|trace
 argument_list|(
 literal|"stopDecommission: Node {} in {}, nothing to do."
+operator|+
+name|node
+argument_list|,
+name|node
+operator|.
+name|getAdminState
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Start maintenance of the specified datanode.    * @param node    */
+annotation|@
+name|VisibleForTesting
+DECL|method|startMaintenance (DatanodeDescriptor node, long maintenanceExpireTimeInMS)
+specifier|public
+name|void
+name|startMaintenance
+parameter_list|(
+name|DatanodeDescriptor
+name|node
+parameter_list|,
+name|long
+name|maintenanceExpireTimeInMS
+parameter_list|)
+block|{
+comment|// Even if the node is already in maintenance, we still need to adjust
+comment|// the expiration time.
+name|node
+operator|.
+name|setMaintenanceExpireTimeInMS
+argument_list|(
+name|maintenanceExpireTimeInMS
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|node
+operator|.
+name|isMaintenance
+argument_list|()
+condition|)
+block|{
+comment|// Update DN stats maintained by HeartbeatManager
+name|hbManager
+operator|.
+name|startMaintenance
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+name|pendingNodes
+operator|.
+name|add
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"startMaintenance: Node {} in {}, nothing to do."
+operator|+
+name|node
+argument_list|,
+name|node
+operator|.
+name|getAdminState
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Stop maintenance of the specified datanode.    * @param node    */
+annotation|@
+name|VisibleForTesting
+DECL|method|stopMaintenance (DatanodeDescriptor node)
+specifier|public
+name|void
+name|stopMaintenance
+parameter_list|(
+name|DatanodeDescriptor
+name|node
+parameter_list|)
+block|{
+if|if
+condition|(
+name|node
+operator|.
+name|isMaintenance
+argument_list|()
+condition|)
+block|{
+comment|// Update DN stats maintained by HeartbeatManager
+name|hbManager
+operator|.
+name|stopMaintenance
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+comment|// TODO HDFS-9390 remove replicas from block maps
+comment|// or handle over replicated blocks.
+comment|// Remove from tracking in DecommissionManager
+name|pendingNodes
+operator|.
+name|remove
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+name|outOfServiceNodeBlocks
+operator|.
+name|remove
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"stopMaintenance: Node {} in {}, nothing to do."
 operator|+
 name|node
 argument_list|,
@@ -1354,7 +1485,7 @@ name|getNumTrackedNodes
 parameter_list|()
 block|{
 return|return
-name|decomNodeBlocks
+name|outOfServiceNodeBlocks
 operator|.
 name|size
 argument_list|()
@@ -1389,7 +1520,7 @@ specifier|final
 name|int
 name|numBlocksPerCheck
 decl_stmt|;
-comment|/**      * The maximum number of nodes to track in decomNodeBlocks. A value of 0      * means no limit.      */
+comment|/**      * The maximum number of nodes to track in outOfServiceNodeBlocks.      * A value of 0 means no limit.      */
 DECL|field|maxConcurrentTrackedNodes
 specifier|private
 specifier|final
@@ -1412,7 +1543,7 @@ name|numNodesChecked
 init|=
 literal|0
 decl_stmt|;
-comment|/**      * The last datanode in decomNodeBlocks that we've processed      */
+comment|/**      * The last datanode in outOfServiceNodeBlocks that we've processed      */
 DECL|field|iterkey
 specifier|private
 name|DatanodeDescriptor
@@ -1586,7 +1717,7 @@ name|maxConcurrentTrackedNodes
 operator|==
 literal|0
 operator|||
-name|decomNodeBlocks
+name|outOfServiceNodeBlocks
 operator|.
 name|size
 argument_list|()
@@ -1595,7 +1726,7 @@ name|maxConcurrentTrackedNodes
 operator|)
 condition|)
 block|{
-name|decomNodeBlocks
+name|outOfServiceNodeBlocks
 operator|.
 name|put
 argument_list|(
@@ -1636,7 +1767,7 @@ operator|new
 name|CyclicIteration
 argument_list|<>
 argument_list|(
-name|decomNodeBlocks
+name|outOfServiceNodeBlocks
 argument_list|,
 name|iterkey
 argument_list|)
@@ -1717,6 +1848,40 @@ literal|false
 decl_stmt|;
 if|if
 condition|(
+name|dn
+operator|.
+name|isMaintenance
+argument_list|()
+condition|)
+block|{
+comment|// TODO HDFS-9390 make sure blocks are minimally replicated
+comment|// before transitioning the node to IN_MAINTENANCE state.
+comment|// If maintenance expires, stop tracking it.
+if|if
+condition|(
+name|dn
+operator|.
+name|maintenanceExpired
+argument_list|()
+condition|)
+block|{
+name|stopMaintenance
+argument_list|(
+name|dn
+argument_list|)
+expr_stmt|;
+name|toRemove
+operator|.
+name|add
+argument_list|(
+name|dn
+argument_list|)
+expr_stmt|;
+block|}
+continue|continue;
+block|}
+if|if
+condition|(
 name|blocks
 operator|==
 literal|null
@@ -1743,7 +1908,7 @@ argument_list|(
 name|dn
 argument_list|)
 expr_stmt|;
-name|decomNodeBlocks
+name|outOfServiceNodeBlocks
 operator|.
 name|put
 argument_list|(
@@ -1818,7 +1983,7 @@ argument_list|(
 name|dn
 argument_list|)
 expr_stmt|;
-name|decomNodeBlocks
+name|outOfServiceNodeBlocks
 operator|.
 name|put
 argument_list|(
@@ -1929,7 +2094,8 @@ operator|=
 name|dn
 expr_stmt|;
 block|}
-comment|// Remove the datanodes that are decommissioned
+comment|// Remove the datanodes that are decommissioned or in service after
+comment|// maintenance expiration.
 for|for
 control|(
 name|DatanodeDescriptor
@@ -1946,11 +2112,16 @@ name|dn
 operator|.
 name|isDecommissioned
 argument_list|()
+operator|||
+name|dn
+operator|.
+name|isInService
+argument_list|()
 argument_list|,
-literal|"Removing a node that is not yet decommissioned!"
+literal|"Removing a node that is not yet decommissioned or in service!"
 argument_list|)
 expr_stmt|;
-name|decomNodeBlocks
+name|outOfServiceNodeBlocks
 operator|.
 name|remove
 argument_list|(

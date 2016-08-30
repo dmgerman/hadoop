@@ -404,6 +404,11 @@ specifier|protected
 name|AdminStates
 name|adminState
 decl_stmt|;
+DECL|field|maintenanceExpireTimeInMS
+specifier|private
+name|long
+name|maintenanceExpireTimeInMS
+decl_stmt|;
 DECL|method|DatanodeInfo (DatanodeInfo from)
 specifier|public
 name|DatanodeInfo
@@ -2717,13 +2722,15 @@ operator|.
 name|DECOMMISSIONED
 expr_stmt|;
 block|}
-comment|/**    * Put a node to maintenance mode.    */
+comment|/**    * Start the maintenance operation.    */
 DECL|method|startMaintenance ()
 specifier|public
 name|void
 name|startMaintenance
 parameter_list|()
 block|{
+name|this
+operator|.
 name|adminState
 operator|=
 name|AdminStates
@@ -2731,19 +2738,50 @@ operator|.
 name|ENTERING_MAINTENANCE
 expr_stmt|;
 block|}
-comment|/**    * Put a node to maintenance mode.    */
+comment|/**    * Put a node directly to maintenance mode.    */
 DECL|method|setInMaintenance ()
 specifier|public
 name|void
 name|setInMaintenance
 parameter_list|()
 block|{
+name|this
+operator|.
 name|adminState
 operator|=
 name|AdminStates
 operator|.
 name|IN_MAINTENANCE
 expr_stmt|;
+block|}
+comment|/**   * @param maintenanceExpireTimeInMS the time that the DataNode is in the   *        maintenance mode until in the unit of milliseconds.   */
+DECL|method|setMaintenanceExpireTimeInMS (long maintenanceExpireTimeInMS)
+specifier|public
+name|void
+name|setMaintenanceExpireTimeInMS
+parameter_list|(
+name|long
+name|maintenanceExpireTimeInMS
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maintenanceExpireTimeInMS
+operator|=
+name|maintenanceExpireTimeInMS
+expr_stmt|;
+block|}
+DECL|method|getMaintenanceExpireTimeInMS ()
+specifier|public
+name|long
+name|getMaintenanceExpireTimeInMS
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|maintenanceExpireTimeInMS
+return|;
 block|}
 comment|/**    * Take the node out of maintenance mode.    */
 DECL|method|stopMaintenance ()
@@ -2756,6 +2794,25 @@ name|adminState
 operator|=
 literal|null
 expr_stmt|;
+block|}
+DECL|method|maintenanceNotExpired (long maintenanceExpireTimeInMS)
+specifier|public
+specifier|static
+name|boolean
+name|maintenanceNotExpired
+parameter_list|(
+name|long
+name|maintenanceExpireTimeInMS
+parameter_list|)
+block|{
+return|return
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|<
+name|maintenanceExpireTimeInMS
+return|;
 block|}
 comment|/**    * Returns true if the node is is entering_maintenance    */
 DECL|method|isEnteringMaintenance ()
@@ -2808,6 +2865,22 @@ name|AdminStates
 operator|.
 name|IN_MAINTENANCE
 operator|)
+return|;
+block|}
+DECL|method|maintenanceExpired ()
+specifier|public
+name|boolean
+name|maintenanceExpired
+parameter_list|()
+block|{
+return|return
+operator|!
+name|maintenanceNotExpired
+argument_list|(
+name|this
+operator|.
+name|maintenanceExpireTimeInMS
+argument_list|)
 return|;
 block|}
 DECL|method|isInService ()

@@ -70,6 +70,15 @@ name|AdminStates
 operator|.
 name|NORMAL
 decl_stmt|;
+DECL|field|maintenanceExpireTimeInMS
+specifier|private
+name|long
+name|maintenanceExpireTimeInMS
+init|=
+name|Long
+operator|.
+name|MAX_VALUE
+decl_stmt|;
 comment|/**    * Return the host name of the datanode.    * @return the host name of the datanode.    */
 DECL|method|getHostName ()
 specifier|public
@@ -184,6 +193,37 @@ operator|.
 name|adminState
 operator|=
 name|adminState
+expr_stmt|;
+block|}
+comment|/**    * Get the maintenance expiration time in milliseconds.    * @return the maintenance expiration time in milliseconds.    */
+DECL|method|getMaintenanceExpireTimeInMS ()
+specifier|public
+name|long
+name|getMaintenanceExpireTimeInMS
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|maintenanceExpireTimeInMS
+return|;
+block|}
+comment|/**    * Get the maintenance expiration time in milliseconds.    * @param maintenanceExpireTimeInMS    *        the maintenance expiration time in milliseconds.    */
+DECL|method|setMaintenanceExpireTimeInMS ( final long maintenanceExpireTimeInMS)
+specifier|public
+name|void
+name|setMaintenanceExpireTimeInMS
+parameter_list|(
+specifier|final
+name|long
+name|maintenanceExpireTimeInMS
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maintenanceExpireTimeInMS
+operator|=
+name|maintenanceExpireTimeInMS
 expr_stmt|;
 block|}
 block|}

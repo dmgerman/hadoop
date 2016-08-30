@@ -184,6 +184,17 @@ name|DatanodeID
 name|dn
 parameter_list|)
 function_decl|;
+comment|/**    * Get the maintenance expiration time in milli seconds.    * @param dn the DatanodeID of the datanode    * @return the maintenance expiration time of dn.    */
+DECL|method|getMaintenanceExpirationTimeInMS (DatanodeID dn)
+specifier|public
+specifier|abstract
+name|long
+name|getMaintenanceExpirationTimeInMS
+parameter_list|(
+name|DatanodeID
+name|dn
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

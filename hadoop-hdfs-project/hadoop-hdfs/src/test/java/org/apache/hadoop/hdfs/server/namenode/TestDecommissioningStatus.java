@@ -1138,15 +1138,6 @@ operator|.
 name|initExcludeHosts
 argument_list|(
 name|nodes
-operator|.
-name|toArray
-argument_list|(
-operator|new
-name|String
-index|[
-literal|0
-index|]
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

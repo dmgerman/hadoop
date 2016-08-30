@@ -238,6 +238,24 @@ name|String
 name|getTotalSyncTimes
 parameter_list|()
 function_decl|;
+comment|/**    * @return Number of IN_MAINTENANCE live data nodes    */
+DECL|method|getNumInMaintenanceLiveDataNodes ()
+name|int
+name|getNumInMaintenanceLiveDataNodes
+parameter_list|()
+function_decl|;
+comment|/**    * @return Number of IN_MAINTENANCE dead data nodes    */
+DECL|method|getNumInMaintenanceDeadDataNodes ()
+name|int
+name|getNumInMaintenanceDeadDataNodes
+parameter_list|()
+function_decl|;
+comment|/**    * @return Number of ENTERING_MAINTENANCE data nodes    */
+DECL|method|getNumEnteringMaintenanceDataNodes ()
+name|int
+name|getNumEnteringMaintenanceDataNodes
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
