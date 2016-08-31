@@ -2560,7 +2560,8 @@ name|DFS_NAMENODE_MAX_LOCK_HOLD_TO_RELEASE_LEASE_MS_DEFAULT
 init|=
 literal|25
 decl_stmt|;
-comment|// Threshold for how long a write lock must be held for the event to be logged
+comment|// Threshold for how long namenode locks must be held for the
+comment|// event to be logged
 DECL|field|DFS_NAMENODE_WRITE_LOCK_REPORTING_THRESHOLD_MS_KEY
 specifier|public
 specifier|static
@@ -2578,6 +2579,24 @@ name|long
 name|DFS_NAMENODE_WRITE_LOCK_REPORTING_THRESHOLD_MS_DEFAULT
 init|=
 literal|1000L
+decl_stmt|;
+DECL|field|DFS_NAMENODE_READ_LOCK_REPORTING_THRESHOLD_MS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_READ_LOCK_REPORTING_THRESHOLD_MS_KEY
+init|=
+literal|"dfs.namenode.read-lock-reporting-threshold-ms"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_READ_LOCK_REPORTING_THRESHOLD_MS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_NAMENODE_READ_LOCK_REPORTING_THRESHOLD_MS_DEFAULT
+init|=
+literal|5000L
 decl_stmt|;
 DECL|field|DFS_UPGRADE_DOMAIN_FACTOR
 specifier|public
