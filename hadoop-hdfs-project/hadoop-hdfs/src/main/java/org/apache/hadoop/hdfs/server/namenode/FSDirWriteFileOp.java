@@ -374,6 +374,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|FSLimitException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -3255,21 +3271,11 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
 name|NameNode
 operator|.
 name|stateChangeLog
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|debug
+name|warn
 argument_list|(
 literal|"DIR* FSDirectory.unprotectedAddFile: exception when add "
 operator|+
@@ -3281,6 +3287,28 @@ operator|+
 literal|" to the file system"
 argument_list|,
 name|e
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|e
+operator|instanceof
+name|FSLimitException
+operator|.
+name|MaxDirectoryItemsExceededException
+condition|)
+block|{
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|warn
+argument_list|(
+literal|"Please increase "
+operator|+
+literal|"dfs.namenode.fs-limits.max-directory-items and make it "
+operator|+
+literal|"consistent across all NameNodes."
 argument_list|)
 expr_stmt|;
 block|}
