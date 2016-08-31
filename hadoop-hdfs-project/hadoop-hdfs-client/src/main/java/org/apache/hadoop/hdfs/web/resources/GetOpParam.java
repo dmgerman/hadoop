@@ -189,6 +189,16 @@ name|HttpURLConnection
 operator|.
 name|HTTP_OK
 argument_list|)
+block|,
+DECL|enumConstant|LISTSTATUS_BATCH
+name|LISTSTATUS_BATCH
+argument_list|(
+literal|false
+argument_list|,
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+argument_list|)
 block|;
 DECL|field|redirect
 specifier|final
