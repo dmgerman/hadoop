@@ -94,6 +94,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Priority
 import|;
 end_import
@@ -898,6 +916,30 @@ operator|=
 name|agentRestOperations
 expr_stmt|;
 block|}
+comment|/**    * Load default Configuration    * @param confDir configuration directory    * @return configuration    * @throws BadCommandArgumentsException    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|loadProviderConfigurationInformation (File confDir)
+specifier|public
+name|Configuration
+name|loadProviderConfigurationInformation
+parameter_list|(
+name|File
+name|confDir
+parameter_list|)
+throws|throws
+name|BadCommandArgumentsException
+throws|,
+name|IOException
+block|{
+return|return
+operator|new
+name|Configuration
+argument_list|(
+literal|false
+argument_list|)
+return|;
+block|}
 comment|/**    * Load a specific XML configuration file for the provider config    * @param confDir configuration directory    * @param siteXMLFilename provider-specific filename    * @return a configuration to be included in status    * @throws BadCommandArgumentsException argument problems    * @throws IOException IO problems    */
 DECL|method|loadProviderConfigurationInformation (File confDir, String siteXMLFilename)
 specifier|protected
@@ -1652,19 +1694,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|applyInitialRegistryDefinitions (URL amWebURI, URL agentOpsURI, URL agentStatusURI, ServiceRecord serviceRecord)
+DECL|method|applyInitialRegistryDefinitions (URL amWebURI, ServiceRecord serviceRecord)
 specifier|public
 name|void
 name|applyInitialRegistryDefinitions
 parameter_list|(
 name|URL
 name|amWebURI
-parameter_list|,
-name|URL
-name|agentOpsURI
-parameter_list|,
-name|URL
-name|agentStatusURI
 parameter_list|,
 name|ServiceRecord
 name|serviceRecord
@@ -1815,6 +1851,24 @@ argument_list|>
 name|providerRoles
 parameter_list|)
 block|{   }
+annotation|@
+name|Override
+DECL|method|processContainerStatus (ContainerId containerId, ContainerStatus status)
+specifier|public
+name|boolean
+name|processContainerStatus
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|ContainerStatus
+name|status
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

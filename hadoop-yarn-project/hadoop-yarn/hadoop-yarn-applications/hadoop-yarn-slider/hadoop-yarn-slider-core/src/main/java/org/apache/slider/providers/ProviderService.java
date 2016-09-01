@@ -118,6 +118,24 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|slider
 operator|.
 name|api
@@ -625,19 +643,13 @@ argument_list|>
 name|details
 parameter_list|)
 function_decl|;
-comment|/**    * Prior to going live -register the initial service registry data    * @param amWebURI URL to the AM. This may be proxied, so use relative paths    * @param agentOpsURI URI for agent operations. This will not be proxied    * @param agentStatusURI URI For agent status. Again: no proxy    * @param serviceRecord service record to build up    */
-DECL|method|applyInitialRegistryDefinitions (URL amWebURI, URL agentOpsURI, URL agentStatusURI, ServiceRecord serviceRecord)
+comment|/**    * Prior to going live -register the initial service registry data    * @param amWebURI URL to the AM. This may be proxied, so use relative paths    * @param serviceRecord service record to build up    */
+DECL|method|applyInitialRegistryDefinitions (URL amWebURI, ServiceRecord serviceRecord)
 name|void
 name|applyInitialRegistryDefinitions
 parameter_list|(
 name|URL
 name|amWebURI
-parameter_list|,
-name|URL
-name|agentOpsURI
-parameter_list|,
-name|URL
-name|agentStatusURI
 parameter_list|,
 name|ServiceRecord
 name|serviceRecord
@@ -672,6 +684,18 @@ argument_list|,
 name|ProviderRole
 argument_list|>
 name|providerRoles
+parameter_list|)
+function_decl|;
+comment|/**    * Process container status    * @return true if status needs to be requested again, false otherwise    */
+DECL|method|processContainerStatus (ContainerId containerId, ContainerStatus status)
+name|boolean
+name|processContainerStatus
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|ContainerStatus
+name|status
 parameter_list|)
 function_decl|;
 block|}

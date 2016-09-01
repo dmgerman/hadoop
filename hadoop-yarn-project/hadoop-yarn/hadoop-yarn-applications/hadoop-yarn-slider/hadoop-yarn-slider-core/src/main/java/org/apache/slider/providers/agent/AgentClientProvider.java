@@ -888,6 +888,24 @@ name|ZipInputStream
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|common
+operator|.
+name|tools
+operator|.
+name|SliderUtils
+operator|.
+name|getApplicationDefinitionPath
+import|;
+end_import
+
 begin_comment
 comment|/** This class implements  the client-side aspects of the agent deployer */
 end_comment
@@ -1109,8 +1127,6 @@ argument_list|()
 operator|.
 name|getOption
 argument_list|(
-name|AgentKeys
-operator|.
 name|AGENT_CONF
 argument_list|,
 literal|""
@@ -1151,8 +1167,6 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-name|AgentKeys
-operator|.
 name|PACKAGE_PATH
 argument_list|)
 decl_stmt|;
@@ -1364,8 +1378,6 @@ name|names
 operator|.
 name|remove
 argument_list|(
-name|SliderKeys
-operator|.
 name|COMPONENT_AM
 argument_list|)
 expr_stmt|;
@@ -1814,8 +1826,6 @@ operator|.
 name|getParent
 argument_list|()
 argument_list|,
-name|AgentKeys
-operator|.
 name|PROVIDER_AGENT
 argument_list|)
 decl_stmt|;
@@ -1882,6 +1892,35 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|getApplicationTags (SliderFileSystem fileSystem, ConfTreeOperations appConf)
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getApplicationTags
+parameter_list|(
+name|SliderFileSystem
+name|fileSystem
+parameter_list|,
+name|ConfTreeOperations
+name|appConf
+parameter_list|)
+throws|throws
+name|SliderException
+block|{
+return|return
+name|getApplicationTags
+argument_list|(
+name|fileSystem
+argument_list|,
+name|getApplicationDefinitionPath
+argument_list|(
+name|appConf
+argument_list|)
+argument_list|)
+return|;
+block|}
 DECL|method|getApplicationTags (SliderFileSystem fileSystem, String appDef)
 specifier|public
 name|Set
@@ -2799,8 +2838,6 @@ argument_list|)
 operator|.
 name|getString
 argument_list|(
-name|AgentKeys
-operator|.
 name|APP_CLIENT_ROOT
 argument_list|)
 expr_stmt|;
@@ -2819,8 +2856,6 @@ literal|"Couldn't read {} from provided client config, falling "
 operator|+
 literal|"back on default"
 argument_list|,
-name|AgentKeys
-operator|.
 name|APP_CLIENT_ROOT
 argument_list|)
 expr_stmt|;
@@ -2850,8 +2885,6 @@ argument_list|)
 operator|.
 name|getString
 argument_list|(
-name|AgentKeys
-operator|.
 name|APP_CLIENT_ROOT
 argument_list|)
 expr_stmt|;
@@ -2868,8 +2901,6 @@ name|info
 argument_list|(
 literal|"Couldn't read {} from default client config, using {}"
 argument_list|,
-name|AgentKeys
-operator|.
 name|APP_CLIENT_ROOT
 argument_list|,
 name|clientInstallPath
@@ -3150,8 +3181,6 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-name|AgentKeys
-operator|.
 name|PYTHON_EXE
 argument_list|,
 literal|"-S"
@@ -3231,8 +3260,6 @@ argument_list|()
 operator|.
 name|put
 argument_list|(
-name|SliderKeys
-operator|.
 name|PYTHONPATH
 argument_list|,
 name|agentPkgDir
@@ -3268,8 +3295,6 @@ name|info
 argument_list|(
 literal|"{}={}"
 argument_list|,
-name|SliderKeys
-operator|.
 name|PYTHONPATH
 argument_list|,
 name|pb
@@ -3279,8 +3304,6 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-name|SliderKeys
-operator|.
 name|PYTHONPATH
 argument_list|)
 argument_list|)
@@ -3502,8 +3525,6 @@ name|System
 operator|.
 name|getProperty
 argument_list|(
-name|SliderKeys
-operator|.
 name|PROPERTY_LIB_DIR
 argument_list|)
 decl_stmt|;
@@ -3515,8 +3536,6 @@ name|File
 argument_list|(
 name|libDirProp
 argument_list|,
-name|SliderKeys
-operator|.
 name|AGENT_TAR
 argument_list|)
 decl_stmt|;
@@ -3872,8 +3891,6 @@ name|pkgList
 operator|.
 name|put
 argument_list|(
-name|AgentKeys
-operator|.
 name|PACKAGE_LIST
 argument_list|,
 name|AgentProviderService

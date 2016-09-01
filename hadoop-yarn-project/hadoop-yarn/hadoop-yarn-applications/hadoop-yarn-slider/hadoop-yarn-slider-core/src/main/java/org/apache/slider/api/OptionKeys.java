@@ -48,6 +48,39 @@ name|SITE_XML_PREFIX
 init|=
 literal|"site."
 decl_stmt|;
+comment|/**    * Prefix for config file options: {@value}    */
+DECL|field|CONF_FILE_PREFIX
+name|String
+name|CONF_FILE_PREFIX
+init|=
+literal|"conf."
+decl_stmt|;
+comment|/**    * Prefix for package options: {@value}    */
+DECL|field|PKG_FILE_PREFIX
+name|String
+name|PKG_FILE_PREFIX
+init|=
+literal|"pkg."
+decl_stmt|;
+comment|/**    * Prefix for export options: {@value}    */
+DECL|field|EXPORT_PREFIX
+name|String
+name|EXPORT_PREFIX
+init|=
+literal|"export."
+decl_stmt|;
+DECL|field|TYPE_SUFFIX
+name|String
+name|TYPE_SUFFIX
+init|=
+literal|".type"
+decl_stmt|;
+DECL|field|NAME_SUFFIX
+name|String
+name|NAME_SUFFIX
+init|=
+literal|".name"
+decl_stmt|;
 comment|/**    * Zookeeper quorum host list: {@value}    */
 DECL|field|ZOOKEEPER_QUORUM
 name|String

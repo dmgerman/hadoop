@@ -438,6 +438,24 @@ name|Entry
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|providers
+operator|.
+name|docker
+operator|.
+name|DockerKeys
+operator|.
+name|DEFAULT_DOCKER_NETWORK
+import|;
+end_import
+
 begin_comment
 comment|/**  * Launcher of applications: base class  */
 end_comment
@@ -616,6 +634,13 @@ DECL|field|dockerImage
 specifier|protected
 name|String
 name|dockerImage
+decl_stmt|;
+DECL|field|dockerNetwork
+specifier|protected
+name|String
+name|dockerNetwork
+init|=
+name|DEFAULT_DOCKER_NETWORK
 decl_stmt|;
 DECL|field|yarnContainerMountPoints
 specifier|protected
@@ -1155,7 +1180,15 @@ argument_list|,
 name|dockerImage
 argument_list|)
 expr_stmt|;
-comment|//if yarnDockerMode, then dockerImage is set
+name|env
+operator|.
+name|put
+argument_list|(
+literal|"YARN_CONTAINER_RUNTIME_DOCKER_CONTAINER_NETWORK"
+argument_list|,
+name|dockerNetwork
+argument_list|)
+expr_stmt|;
 name|env
 operator|.
 name|put
@@ -2405,6 +2438,22 @@ operator|=
 name|dockerImage
 expr_stmt|;
 block|}
+DECL|method|setDockerNetwork (String dockerNetwork)
+specifier|public
+name|void
+name|setDockerNetwork
+parameter_list|(
+name|String
+name|dockerNetwork
+parameter_list|)
+block|{
+name|this
+operator|.
+name|dockerNetwork
+operator|=
+name|dockerNetwork
+expr_stmt|;
+block|}
 DECL|method|setYarnContainerMountPoints (String yarnContainerMountPoints)
 specifier|public
 name|void
@@ -2436,6 +2485,47 @@ name|runPrivilegedContainer
 operator|=
 name|runPrivilegedContainer
 expr_stmt|;
+block|}
+DECL|method|setRunPrivilegedContainer (boolean runPrivilegedContainer)
+specifier|public
+name|void
+name|setRunPrivilegedContainer
+parameter_list|(
+name|boolean
+name|runPrivilegedContainer
+parameter_list|)
+block|{
+if|if
+condition|(
+name|runPrivilegedContainer
+condition|)
+block|{
+name|this
+operator|.
+name|runPrivilegedContainer
+operator|=
+name|Boolean
+operator|.
+name|toString
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|runPrivilegedContainer
+operator|=
+name|Boolean
+operator|.
+name|toString
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

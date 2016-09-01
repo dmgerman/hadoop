@@ -628,19 +628,13 @@ name|SliderException
 block|{    }
 annotation|@
 name|Override
-DECL|method|applyInitialRegistryDefinitions (URL amWebURI, URL agentOpsURI, URL agentStatusURI, ServiceRecord serviceRecord)
+DECL|method|applyInitialRegistryDefinitions (URL amWebURI, ServiceRecord serviceRecord)
 specifier|public
 name|void
 name|applyInitialRegistryDefinitions
 parameter_list|(
 name|URL
 name|amWebURI
-parameter_list|,
-name|URL
-name|agentOpsURI
-parameter_list|,
-name|URL
-name|agentStatusURI
 parameter_list|,
 name|ServiceRecord
 name|serviceRecord
@@ -653,10 +647,6 @@ operator|.
 name|applyInitialRegistryDefinitions
 argument_list|(
 name|amWebURI
-argument_list|,
-name|agentOpsURI
-argument_list|,
-name|agentStatusURI
 argument_list|,
 name|serviceRecord
 argument_list|)

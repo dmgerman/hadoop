@@ -1537,6 +1537,27 @@ name|s
 argument_list|)
 return|;
 block|}
+DECL|method|isEmpty (List l)
+specifier|public
+specifier|static
+name|boolean
+name|isEmpty
+parameter_list|(
+name|List
+name|l
+parameter_list|)
+block|{
+return|return
+name|l
+operator|==
+literal|null
+operator|||
+name|l
+operator|.
+name|isEmpty
+argument_list|()
+return|;
+block|}
 comment|/**    * Probe for a list existing and not being empty    * @param l list    * @return true if the reference is valid and it contains entries    */
 DECL|method|isNotEmpty (List l)
 specifier|public

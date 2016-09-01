@@ -812,7 +812,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Return a set of application specific string tags.    * @return the set of tags.    */
-DECL|method|getApplicationTags (SliderFileSystem fileSystem, String appDef)
+DECL|method|getApplicationTags (SliderFileSystem fileSystem, ConfTreeOperations appConf)
 specifier|public
 name|Set
 argument_list|<
@@ -823,8 +823,8 @@ parameter_list|(
 name|SliderFileSystem
 name|fileSystem
 parameter_list|,
-name|String
-name|appDef
+name|ConfTreeOperations
+name|appConf
 parameter_list|)
 throws|throws
 name|SliderException

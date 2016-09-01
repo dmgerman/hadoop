@@ -2142,24 +2142,6 @@ name|registry
 operator|.
 name|docstore
 operator|.
-name|PublishedConfigurationOutputter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|registry
-operator|.
-name|docstore
-operator|.
 name|PublishedExports
 import|;
 end_import
@@ -2307,6 +2289,22 @@ operator|.
 name|agent
 operator|.
 name|AgentKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|providers
+operator|.
+name|docker
+operator|.
+name|DockerClientProvider
 import|;
 end_import
 
@@ -12281,10 +12279,7 @@ name|getApplicationTags
 argument_list|(
 name|sliderFileSystem
 argument_list|,
-name|getApplicationDefinitionPath
-argument_list|(
 name|appOperations
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|Credentials
@@ -12850,7 +12845,16 @@ argument_list|,
 name|clusterSecure
 argument_list|)
 expr_stmt|;
-comment|// TODO: consider supporting apps that don't have an image path
+if|if
+condition|(
+operator|!
+operator|(
+name|provider
+operator|instanceof
+name|DockerClientProvider
+operator|)
+condition|)
+block|{
 name|Path
 name|imagePath
 init|=
@@ -12882,6 +12886,7 @@ argument_list|,
 name|imagePath
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// build the environment
 name|amLauncher
@@ -19054,6 +19059,8 @@ name|imagePath
 operator|+
 literal|"/"
 operator|+
+name|AgentKeys
+operator|.
 name|AGENT_TAR
 decl_stmt|;
 try|try
