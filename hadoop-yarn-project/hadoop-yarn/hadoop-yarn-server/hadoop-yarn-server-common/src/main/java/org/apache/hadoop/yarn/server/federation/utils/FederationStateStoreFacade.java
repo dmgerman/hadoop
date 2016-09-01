@@ -418,6 +418,28 @@ name|store
 operator|.
 name|records
 operator|.
+name|AddApplicationHomeSubClusterResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|store
+operator|.
+name|records
+operator|.
 name|ApplicationHomeSubCluster
 import|;
 end_import
@@ -1563,10 +1585,10 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Adds the home {@link SubClusterId} for the specified {@link ApplicationId}.    *    * @param appHomeSubCluster the mapping of the application to it's home    *          sub-cluster    * @throws YarnException if the call to the state store is unsuccessful    */
+comment|/**    * Adds the home {@link SubClusterId} for the specified {@link ApplicationId}.    *    * @param appHomeSubCluster the mapping of the application to it's home    *          sub-cluster    * @return the stored Subcluster from StateStore    * @throws YarnException if the call to the state store is unsuccessful    */
 DECL|method|addApplicationHomeSubCluster ( ApplicationHomeSubCluster appHomeSubCluster)
 specifier|public
-name|void
+name|SubClusterId
 name|addApplicationHomeSubCluster
 parameter_list|(
 name|ApplicationHomeSubCluster
@@ -1575,6 +1597,9 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
+name|AddApplicationHomeSubClusterResponse
+name|response
+init|=
 name|stateStore
 operator|.
 name|addApplicationHomeSubCluster
@@ -1586,8 +1611,13 @@ argument_list|(
 name|appHomeSubCluster
 argument_list|)
 argument_list|)
-expr_stmt|;
-return|return;
+decl_stmt|;
+return|return
+name|response
+operator|.
+name|getHomeSubCluster
+argument_list|()
+return|;
 block|}
 comment|/**    * Updates the home {@link SubClusterId} for the specified    * {@link ApplicationId}.    *    * @param appHomeSubCluster the mapping of the application to it's home    *          sub-cluster    * @throws YarnException if the call to the state store is unsuccessful    */
 DECL|method|updateApplicationHomeSubCluster ( ApplicationHomeSubCluster appHomeSubCluster)
