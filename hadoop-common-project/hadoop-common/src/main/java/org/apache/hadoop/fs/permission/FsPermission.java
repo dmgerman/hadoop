@@ -449,12 +449,12 @@ block|{
 name|this
 argument_list|(
 operator|new
-name|UmaskParser
+name|RawParser
 argument_list|(
 name|mode
 argument_list|)
 operator|.
-name|getUMask
+name|getPermission
 argument_list|()
 argument_list|)
 expr_stmt|;
