@@ -1862,6 +1862,54 @@ name|toString
 argument_list|()
 return|;
 block|}
+DECL|method|getExpectedCGroupsMountString ()
+specifier|private
+name|String
+name|getExpectedCGroupsMountString
+parameter_list|()
+block|{
+name|boolean
+name|cGroupsMountExists
+init|=
+operator|new
+name|File
+argument_list|(
+name|DockerLinuxContainerRuntime
+operator|.
+name|CGROUPS_ROOT_DIRECTORY
+argument_list|)
+operator|.
+name|exists
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|cGroupsMountExists
+condition|)
+block|{
+return|return
+literal|"-v "
+operator|+
+name|DockerLinuxContainerRuntime
+operator|.
+name|CGROUPS_ROOT_DIRECTORY
+operator|+
+literal|":"
+operator|+
+name|DockerLinuxContainerRuntime
+operator|.
+name|CGROUPS_ROOT_DIRECTORY
+operator|+
+literal|":ro "
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|""
+return|;
+block|}
+block|}
 annotation|@
 name|Test
 DECL|method|testDockerContainerLaunch ()
@@ -1964,7 +2012,8 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"-v /sys/fs/cgroup:/sys/fs/cgroup:ro "
+name|getExpectedCGroupsMountString
+argument_list|()
 argument_list|)
 operator|.
 name|append
@@ -2475,7 +2524,8 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"-v /sys/fs/cgroup:/sys/fs/cgroup:ro "
+name|getExpectedCGroupsMountString
+argument_list|()
 argument_list|)
 operator|.
 name|append
@@ -2786,7 +2836,8 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"-v /sys/fs/cgroup:/sys/fs/cgroup:ro "
+name|getExpectedCGroupsMountString
+argument_list|()
 argument_list|)
 operator|.
 name|append
@@ -3007,7 +3058,8 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"-v /sys/fs/cgroup:/sys/fs/cgroup:ro "
+name|getExpectedCGroupsMountString
+argument_list|()
 argument_list|)
 operator|.
 name|append
