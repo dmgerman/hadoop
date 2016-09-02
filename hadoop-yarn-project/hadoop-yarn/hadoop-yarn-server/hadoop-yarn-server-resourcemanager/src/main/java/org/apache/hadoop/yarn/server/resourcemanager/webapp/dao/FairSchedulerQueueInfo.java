@@ -570,12 +570,10 @@ argument_list|()
 expr_stmt|;
 name|maxApps
 operator|=
-name|allocConf
+name|queue
 operator|.
-name|getQueueMaxApps
-argument_list|(
-name|queueName
-argument_list|)
+name|getMaxRunningApps
+argument_list|()
 expr_stmt|;
 name|pendingContainers
 operator|=

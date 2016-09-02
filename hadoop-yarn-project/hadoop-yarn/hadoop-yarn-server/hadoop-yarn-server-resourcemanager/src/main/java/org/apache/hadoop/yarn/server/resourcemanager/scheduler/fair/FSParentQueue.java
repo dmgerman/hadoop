@@ -825,20 +825,6 @@ parameter_list|()
 block|{
 comment|// Compute demand by iterating through apps in the queue
 comment|// Limit demand to maxResources
-name|Resource
-name|maxRes
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-operator|.
-name|getMaxResources
-argument_list|(
-name|getName
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|writeLock
 operator|.
 name|lock
@@ -929,7 +915,7 @@ name|componentwiseMin
 argument_list|(
 name|demand
 argument_list|,
-name|maxRes
+name|maxShare
 argument_list|)
 expr_stmt|;
 if|if
@@ -940,7 +926,7 @@ name|equals
 argument_list|(
 name|demand
 argument_list|,
-name|maxRes
+name|maxShare
 argument_list|)
 condition|)
 block|{
@@ -979,7 +965,7 @@ name|demand
 operator|+
 literal|"; the max is "
 operator|+
-name|maxRes
+name|maxShare
 argument_list|)
 expr_stmt|;
 block|}

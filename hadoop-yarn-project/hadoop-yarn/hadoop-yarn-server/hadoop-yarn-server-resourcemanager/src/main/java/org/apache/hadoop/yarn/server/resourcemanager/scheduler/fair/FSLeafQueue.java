@@ -1290,20 +1290,6 @@ parameter_list|()
 block|{
 comment|// Compute demand by iterating through apps in the queue
 comment|// Limit demand to maxResources
-name|Resource
-name|maxRes
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-operator|.
-name|getMaxResources
-argument_list|(
-name|getName
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|demand
 operator|=
 name|Resources
@@ -1336,7 +1322,7 @@ name|equals
 argument_list|(
 name|demand
 argument_list|,
-name|maxRes
+name|maxShare
 argument_list|)
 condition|)
 block|{
@@ -1346,7 +1332,7 @@ name|updateDemandForApp
 argument_list|(
 name|sched
 argument_list|,
-name|maxRes
+name|maxShare
 argument_list|)
 expr_stmt|;
 block|}
@@ -1366,7 +1352,7 @@ name|equals
 argument_list|(
 name|demand
 argument_list|,
-name|maxRes
+name|maxShare
 argument_list|)
 condition|)
 block|{
@@ -1376,7 +1362,7 @@ name|updateDemandForApp
 argument_list|(
 name|sched
 argument_list|,
-name|maxRes
+name|maxShare
 argument_list|)
 expr_stmt|;
 block|}
@@ -1412,7 +1398,7 @@ name|demand
 operator|+
 literal|"; the max is "
 operator|+
-name|maxRes
+name|maxShare
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2221,20 +2207,6 @@ name|Resource
 name|amResource
 parameter_list|)
 block|{
-name|float
-name|maxAMShare
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-operator|.
-name|getQueueMaxAMShare
-argument_list|(
-name|getName
-argument_list|()
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|Math
@@ -2473,21 +2445,14 @@ name|float
 name|weight
 parameter_list|)
 block|{
-name|scheduler
+name|this
 operator|.
-name|getAllocationConfiguration
-argument_list|()
-operator|.
-name|setQueueWeight
-argument_list|(
-name|getName
-argument_list|()
-argument_list|,
+name|weights
+operator|=
 operator|new
 name|ResourceWeights
 argument_list|(
 name|weight
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
