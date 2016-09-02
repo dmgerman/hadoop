@@ -982,6 +982,11 @@ name|EPOCH_NODE
 init|=
 literal|"EpochNode"
 decl_stmt|;
+DECL|field|baseEpoch
+specifier|protected
+name|long
+name|baseEpoch
+decl_stmt|;
 DECL|field|resourceManager
 specifier|protected
 name|ResourceManager
@@ -3986,6 +3991,22 @@ name|dispatcher
 operator|.
 name|setDrainEventsOnStop
 argument_list|()
+expr_stmt|;
+comment|// read the base epoch value from conf
+name|baseEpoch
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_EPOCH
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_EPOCH
+argument_list|)
 expr_stmt|;
 name|initInternal
 argument_list|(

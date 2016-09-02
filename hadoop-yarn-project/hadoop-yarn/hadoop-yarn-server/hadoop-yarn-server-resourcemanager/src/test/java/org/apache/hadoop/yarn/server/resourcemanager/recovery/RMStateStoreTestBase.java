@@ -1134,6 +1134,14 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|epoch
+specifier|protected
+specifier|final
+name|long
+name|epoch
+init|=
+literal|10L
+decl_stmt|;
 DECL|class|TestDispatcher
 specifier|static
 class|class
@@ -3872,7 +3880,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|0
+name|epoch
 argument_list|,
 name|firstTimeEpoch
 argument_list|)
@@ -3889,6 +3897,8 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+name|epoch
+operator|+
 literal|1
 argument_list|,
 name|secondTimeEpoch
@@ -3906,6 +3916,8 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+name|epoch
+operator|+
 literal|2
 argument_list|,
 name|thirdTimeEpoch

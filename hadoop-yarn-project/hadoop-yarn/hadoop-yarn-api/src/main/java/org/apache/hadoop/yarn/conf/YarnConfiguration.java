@@ -615,6 +615,26 @@ name|RM_PREFIX
 operator|+
 literal|"hostname"
 decl_stmt|;
+DECL|field|RM_EPOCH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_EPOCH
+init|=
+name|RM_PREFIX
+operator|+
+literal|"epoch"
+decl_stmt|;
+DECL|field|DEFAULT_RM_EPOCH
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_RM_EPOCH
+init|=
+literal|0L
+decl_stmt|;
 comment|/** The address of the applications manager interface in the RM.*/
 DECL|field|RM_ADDRESS
 specifier|public

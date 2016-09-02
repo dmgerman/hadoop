@@ -1363,7 +1363,7 @@ decl_stmt|;
 name|long
 name|currentEpoch
 init|=
-literal|0
+name|baseEpoch
 decl_stmt|;
 name|FileStatus
 name|status

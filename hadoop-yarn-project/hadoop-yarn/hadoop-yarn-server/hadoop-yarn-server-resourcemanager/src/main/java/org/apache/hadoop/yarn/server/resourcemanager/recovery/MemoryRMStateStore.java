@@ -517,7 +517,12 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
-block|{   }
+block|{
+name|epoch
+operator|=
+name|baseEpoch
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|startInternal ()

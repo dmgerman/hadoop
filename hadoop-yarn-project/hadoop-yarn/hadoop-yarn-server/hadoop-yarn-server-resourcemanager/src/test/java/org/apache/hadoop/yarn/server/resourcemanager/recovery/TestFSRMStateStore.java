@@ -832,6 +832,17 @@ argument_list|,
 literal|900L
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_EPOCH
+argument_list|,
+name|epoch
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|adminCheckEnable

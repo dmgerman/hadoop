@@ -206,6 +206,15 @@ operator|.
 name|FEDERATION_STATESTORE_HEARTBEAT_INTERVAL_SECS
 argument_list|)
 expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_EPOCH
+argument_list|)
+expr_stmt|;
 comment|// Ignore blacklisting nodes for AM failures feature since it is still a
 comment|// "work in progress"
 name|configurationPropsToSkipCompare

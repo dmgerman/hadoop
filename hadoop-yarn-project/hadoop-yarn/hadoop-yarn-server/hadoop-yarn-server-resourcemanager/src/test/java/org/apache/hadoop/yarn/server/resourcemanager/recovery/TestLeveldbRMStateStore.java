@@ -454,6 +454,17 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_EPOCH
+argument_list|,
+name|epoch
+argument_list|)
+expr_stmt|;
 name|LeveldbStateStoreTester
 name|tester
 init|=
