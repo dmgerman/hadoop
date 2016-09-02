@@ -85,13 +85,27 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
+comment|/** generates byte-length framed buffers. */
 DECL|class|ResponseBuffer
+specifier|public
 class|class
 name|ResponseBuffer
 extends|extends
 name|DataOutputStream
 block|{
+DECL|method|ResponseBuffer ()
+specifier|public
+name|ResponseBuffer
+parameter_list|()
+block|{
+name|this
+argument_list|(
+literal|1024
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|ResponseBuffer (int capacity)
+specifier|public
 name|ResponseBuffer
 parameter_list|(
 name|int
@@ -135,6 +149,7 @@ name|buf
 return|;
 block|}
 DECL|method|writeTo (OutputStream out)
+specifier|public
 name|void
 name|writeTo
 parameter_list|(

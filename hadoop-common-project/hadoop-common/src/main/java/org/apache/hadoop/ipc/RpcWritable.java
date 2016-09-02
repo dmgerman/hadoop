@@ -168,6 +168,10 @@ name|Message
 import|;
 end_import
 
+begin_comment
+comment|// note anything marked public is solely for access by SaslRpcClient
+end_comment
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -487,6 +491,15 @@ operator|=
 name|message
 expr_stmt|;
 block|}
+DECL|method|getMessage ()
+name|Message
+name|getMessage
+parameter_list|()
+block|{
+return|return
+name|message
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|writeTo (ResponseBuffer out)
@@ -642,8 +655,9 @@ name|message
 return|;
 block|}
 block|}
-comment|// adapter to allow decoding of writables and protobufs from a byte buffer.
+comment|/**    * adapter to allow decoding of writables and protobufs from a byte buffer.    */
 DECL|class|Buffer
+specifier|public
 specifier|static
 class|class
 name|Buffer
@@ -656,6 +670,7 @@ name|ByteBuffer
 name|bb
 decl_stmt|;
 DECL|method|wrap (ByteBuffer bb)
+specifier|public
 specifier|static
 name|Buffer
 name|wrap
@@ -689,6 +704,15 @@ name|bb
 operator|=
 name|bb
 expr_stmt|;
+block|}
+DECL|method|getByteBuffer ()
+name|ByteBuffer
+name|getByteBuffer
+parameter_list|()
+block|{
+return|return
+name|bb
+return|;
 block|}
 annotation|@
 name|Override
@@ -890,6 +914,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|remaining ()
+specifier|public
 name|int
 name|remaining
 parameter_list|()
