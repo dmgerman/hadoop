@@ -4503,6 +4503,16 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
+specifier|final
+name|CountDownLatch
+name|volRemovedLatch
+init|=
+operator|new
+name|CountDownLatch
+argument_list|(
+literal|1
+argument_list|)
+decl_stmt|;
 class|class
 name|BlockReportThread
 extends|extends
@@ -4513,6 +4523,31 @@ name|void
 name|run
 parameter_list|()
 block|{
+comment|// Lets wait for the volume remove process to start
+try|try
+block|{
+name|volRemovedLatch
+operator|.
+name|await
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Unexpected exception when waiting for vol removal:"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -4544,14 +4579,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-specifier|final
-name|BlockReportThread
-name|brt
-init|=
-operator|new
-name|BlockReportThread
-argument_list|()
-decl_stmt|;
 class|class
 name|ResponderThread
 extends|extends
@@ -4585,7 +4612,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"createRbw finished"
+literal|"CreateRbw finished"
 argument_list|)
 expr_stmt|;
 name|startFinalizeLatch
@@ -4593,13 +4620,40 @@ operator|.
 name|countDown
 argument_list|()
 expr_stmt|;
-comment|// Slow down while we're holding the reference to the volume
+comment|// Slow down while we're holding the reference to the volume.
+comment|// As we finalize a block, the volume is removed in parallel.
+comment|// Ignore any interrupts coming out of volume shutdown.
+try|try
+block|{
 name|Thread
 operator|.
 name|sleep
 argument_list|(
 literal|1000
 argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Ignoring "
+argument_list|,
+name|ie
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Lets wait for the other thread finish getting block report
+name|brReceivedLatch
+operator|.
+name|await
+argument_list|()
 expr_stmt|;
 name|dataset
 operator|.
@@ -4612,7 +4666,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"finalizeBlock finished"
+literal|"FinalizeBlock finished"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4651,6 +4705,21 @@ operator|.
 name|await
 argument_list|()
 expr_stmt|;
+comment|// Verify if block report can be received
+comment|// when volume is being removed
+specifier|final
+name|BlockReportThread
+name|brt
+init|=
+operator|new
+name|BlockReportThread
+argument_list|()
+decl_stmt|;
+name|brt
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 name|Set
 argument_list|<
 name|File
@@ -4685,6 +4754,9 @@ name|getFile
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|/**      * TODO: {@link FsDatasetImpl#removeVolumes(Set, boolean)} is throwing      * IllegalMonitorStateException when there is a parallel reader/writer      * to the volume. Remove below try/catch block after fixing HDFS-10830.      */
+try|try
+block|{
 name|LOG
 operator|.
 name|info
@@ -4693,12 +4765,6 @@ literal|"Removing volume "
 operator|+
 name|volumesToRemove
 argument_list|)
-expr_stmt|;
-comment|// Verify block report can be received during this
-name|brt
-operator|.
-name|start
-argument_list|()
 expr_stmt|;
 name|dataset
 operator|.
@@ -4709,6 +4775,31 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Unexpected issue while removing volume: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|volRemovedLatch
+operator|.
+name|countDown
+argument_list|()
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
