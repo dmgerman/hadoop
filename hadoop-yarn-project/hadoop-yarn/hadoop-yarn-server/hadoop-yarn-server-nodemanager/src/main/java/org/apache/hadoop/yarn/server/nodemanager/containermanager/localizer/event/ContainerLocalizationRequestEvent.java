@@ -202,7 +202,7 @@ name|super
 argument_list|(
 name|LocalizationEventType
 operator|.
-name|INIT_CONTAINER_RESOURCES
+name|LOCALIZE_CONTAINER_RESOURCES
 argument_list|,
 name|c
 argument_list|)

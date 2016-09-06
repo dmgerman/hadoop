@@ -583,6 +583,11 @@ name|NMTimelinePublisher
 name|getNMTimelinePublisher
 parameter_list|()
 function_decl|;
+DECL|method|getContainerExecutor ()
+name|ContainerExecutor
+name|getContainerExecutor
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

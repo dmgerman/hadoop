@@ -558,6 +558,28 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
+name|ContainerState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|executor
 operator|.
 name|LocalizerStartContext
@@ -13188,7 +13210,7 @@ comment|// Resource Localization Service code internally starts them which
 comment|// definitely we don't want.
 comment|// creating new containers and populating corresponding localizer runners
 comment|// Container - 1
-name|ContainerImpl
+name|Container
 name|container1
 init|=
 name|createMockContainer
@@ -15992,12 +16014,12 @@ name|resourceState
 argument_list|)
 return|;
 block|}
-DECL|method|createContainerLocalizationEvent ( ContainerImpl container, LocalResourceVisibility vis, LocalResourceRequest req)
+DECL|method|createContainerLocalizationEvent ( Container container, LocalResourceVisibility vis, LocalResourceRequest req)
 specifier|private
 name|ContainerLocalizationRequestEvent
 name|createContainerLocalizationEvent
 parameter_list|(
-name|ContainerImpl
+name|Container
 name|container
 parameter_list|,
 name|LocalResourceVisibility
@@ -16149,6 +16171,21 @@ operator|.
 name|thenReturn
 argument_list|(
 name|mockCredentials
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|container
+operator|.
+name|getContainerState
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|ContainerState
+operator|.
+name|LOCALIZING
 argument_list|)
 expr_stmt|;
 return|return
@@ -16491,6 +16528,21 @@ name|cId
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|c
+operator|.
+name|getContainerState
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|ContainerState
+operator|.
+name|LOCALIZING
 argument_list|)
 expr_stmt|;
 return|return

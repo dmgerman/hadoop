@@ -2935,6 +2935,22 @@ continue|continue;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|symLink (String target, String symlink)
+specifier|public
+name|void
+name|symLink
+parameter_list|(
+name|String
+name|target
+parameter_list|,
+name|String
+name|symlink
+parameter_list|)
+throws|throws
+name|IOException
+block|{    }
 comment|/**    * Converts a directory list to a docker mount string    * @param dirs    * @return a string of mounts for docker    */
 DECL|method|toMount (List<String> dirs)
 specifier|private

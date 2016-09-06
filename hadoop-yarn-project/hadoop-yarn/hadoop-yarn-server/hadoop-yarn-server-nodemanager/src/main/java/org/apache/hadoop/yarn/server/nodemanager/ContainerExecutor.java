@@ -883,6 +883,22 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
+comment|/**    * Create a symlink file which points to the target.    * @param target The target for symlink    * @param symlink the symlink file    * @throws IOException Error when creating symlinks    */
+DECL|method|symLink (String target, String symlink)
+specifier|public
+specifier|abstract
+name|void
+name|symLink
+parameter_list|(
+name|String
+name|target
+parameter_list|,
+name|String
+name|symlink
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Check if a container is alive.    * @param ctx Encapsulates information necessary for container liveness check.    * @return true if container is still alive    * @throws IOException if there is a failure while checking the container    * status    */
 DECL|method|isContainerAlive (ContainerLivenessContext ctx)
 specifier|public

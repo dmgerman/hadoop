@@ -2297,6 +2297,18 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+operator|(
+operator|(
+name|NMContext
+operator|)
+name|context
+operator|)
+operator|.
+name|setContainerExecutor
+argument_list|(
+name|exec
+argument_list|)
+expr_stmt|;
 name|nodeLabelsProvider
 operator|=
 name|createNodeLabelsProvider
@@ -3061,6 +3073,11 @@ specifier|final
 name|QueuingContext
 name|queuingContext
 decl_stmt|;
+DECL|field|executor
+specifier|private
+name|ContainerExecutor
+name|executor
+decl_stmt|;
 DECL|field|nmTimelinePublisher
 specifier|private
 name|NMTimelinePublisher
@@ -3746,6 +3763,34 @@ block|{
 return|return
 name|nmTimelinePublisher
 return|;
+block|}
+DECL|method|getContainerExecutor ()
+specifier|public
+name|ContainerExecutor
+name|getContainerExecutor
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|executor
+return|;
+block|}
+DECL|method|setContainerExecutor (ContainerExecutor executor)
+specifier|public
+name|void
+name|setContainerExecutor
+parameter_list|(
+name|ContainerExecutor
+name|executor
+parameter_list|)
+block|{
+name|this
+operator|.
+name|executor
+operator|=
+name|executor
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Class that keeps the context for containers queued at the NM.    */

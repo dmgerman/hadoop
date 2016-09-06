@@ -2049,7 +2049,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-name|INIT_CONTAINER_RESOURCES
+name|LOCALIZE_CONTAINER_RESOURCES
 case|:
 name|publishContainerLocalizationEvent
 argument_list|(

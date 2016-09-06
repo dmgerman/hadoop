@@ -688,6 +688,22 @@ name|InterruptedException
 block|{     }
 annotation|@
 name|Override
+DECL|method|symLink (String target, String symlink)
+specifier|public
+name|void
+name|symLink
+parameter_list|(
+name|String
+name|target
+parameter_list|,
+name|String
+name|symlink
+parameter_list|)
+throws|throws
+name|IOException
+block|{      }
+annotation|@
+name|Override
 DECL|method|getProcessId (ContainerId containerId)
 specifier|public
 name|String

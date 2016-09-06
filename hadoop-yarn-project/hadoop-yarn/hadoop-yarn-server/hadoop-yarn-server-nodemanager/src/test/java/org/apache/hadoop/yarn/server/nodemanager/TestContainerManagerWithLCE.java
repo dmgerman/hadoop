@@ -573,6 +573,39 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|testLocalingResourceWhileContainerRunning ()
+specifier|public
+name|void
+name|testLocalingResourceWhileContainerRunning
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Don't run the test if the binary is not available.
+if|if
+condition|(
+operator|!
+name|shouldRunTest
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"LCE binary path is not passed. Not running the test"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|super
+operator|.
+name|testLocalingResourceWhileContainerRunning
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|testLocalFilesCleanup ()
 specifier|public
 name|void
