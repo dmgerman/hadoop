@@ -38,7 +38,7 @@ name|services
 operator|.
 name|s3
 operator|.
-name|AmazonS3Client
+name|AmazonS3
 import|;
 end_import
 
@@ -285,7 +285,7 @@ decl_stmt|;
 DECL|field|client
 specifier|private
 specifier|final
-name|AmazonS3Client
+name|AmazonS3
 name|client
 decl_stmt|;
 DECL|field|bucket
@@ -364,7 +364,7 @@ specifier|private
 name|long
 name|contentRangeStart
 decl_stmt|;
-DECL|method|S3AInputStream (String bucket, String key, long contentLength, AmazonS3Client client, FileSystem.Statistics stats, S3AInstrumentation instrumentation, long readahead, S3AInputPolicy inputPolicy)
+DECL|method|S3AInputStream (String bucket, String key, long contentLength, AmazonS3 client, FileSystem.Statistics stats, S3AInstrumentation instrumentation, long readahead, S3AInputPolicy inputPolicy)
 specifier|public
 name|S3AInputStream
 parameter_list|(
@@ -377,7 +377,7 @@ parameter_list|,
 name|long
 name|contentLength
 parameter_list|,
-name|AmazonS3Client
+name|AmazonS3
 name|client
 parameter_list|,
 name|FileSystem

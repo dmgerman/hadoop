@@ -38,7 +38,7 @@ name|services
 operator|.
 name|s3
 operator|.
-name|AmazonS3Client
+name|AmazonS3
 import|;
 end_import
 
@@ -527,7 +527,7 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|AmazonS3Client
+name|AmazonS3
 name|s3
 init|=
 name|fs
@@ -2136,7 +2136,7 @@ argument_list|(
 name|fs
 argument_list|)
 expr_stmt|;
-name|AmazonS3Client
+name|AmazonS3
 name|s3
 init|=
 name|fs
@@ -2284,7 +2284,7 @@ argument_list|(
 name|fs
 argument_list|)
 expr_stmt|;
-name|AmazonS3Client
+name|AmazonS3
 name|s3
 init|=
 name|fs
@@ -2368,7 +2368,7 @@ argument_list|(
 name|fs
 argument_list|)
 expr_stmt|;
-name|AmazonS3Client
+name|AmazonS3
 name|s3
 init|=
 name|fs

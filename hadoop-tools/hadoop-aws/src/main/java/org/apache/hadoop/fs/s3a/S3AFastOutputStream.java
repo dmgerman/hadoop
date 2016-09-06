@@ -62,7 +62,7 @@ name|services
 operator|.
 name|s3
 operator|.
-name|AmazonS3Client
+name|AmazonS3
 import|;
 end_import
 
@@ -504,7 +504,7 @@ decl_stmt|;
 DECL|field|client
 specifier|private
 specifier|final
-name|AmazonS3Client
+name|AmazonS3
 name|client
 decl_stmt|;
 DECL|field|partSize
@@ -564,11 +564,11 @@ name|int
 name|bufferLimit
 decl_stmt|;
 comment|/**    * Creates a fast OutputStream that uploads to S3 from memory.    * For MultiPartUploads, as soon as sufficient bytes have been written to    * the stream a part is uploaded immediately (by using the low-level    * multi-part upload API on the AmazonS3Client).    *    * @param client AmazonS3Client used for S3 calls    * @param fs S3AFilesystem    * @param bucket S3 bucket name    * @param key S3 key name    * @param progress report progress in order to prevent timeouts    * @param cannedACL used CannedAccessControlList    * @param partSize size of a single part in a multi-part upload (except    * last part)    * @param multiPartThreshold files at least this size use multi-part upload    * @param threadPoolExecutor thread factory    * @throws IOException on any problem    */
-DECL|method|S3AFastOutputStream (AmazonS3Client client, S3AFileSystem fs, String bucket, String key, Progressable progress, CannedAccessControlList cannedACL, long partSize, long multiPartThreshold, ExecutorService threadPoolExecutor)
+DECL|method|S3AFastOutputStream (AmazonS3 client, S3AFileSystem fs, String bucket, String key, Progressable progress, CannedAccessControlList cannedACL, long partSize, long multiPartThreshold, ExecutorService threadPoolExecutor)
 specifier|public
 name|S3AFastOutputStream
 parameter_list|(
-name|AmazonS3Client
+name|AmazonS3
 name|client
 parameter_list|,
 name|S3AFileSystem
