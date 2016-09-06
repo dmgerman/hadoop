@@ -1758,6 +1758,11 @@ name|getBlockPoolUsed
 argument_list|(
 name|bpid
 argument_list|)
+argument_list|,
+name|volume
+operator|.
+name|getNonDfsUsed
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|reports

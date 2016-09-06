@@ -551,6 +551,11 @@ specifier|private
 name|long
 name|dfsUsed
 decl_stmt|;
+DECL|field|nonDfsUsed
+specifier|private
+name|long
+name|nonDfsUsed
+decl_stmt|;
 DECL|field|remaining
 specifier|private
 specifier|volatile
@@ -893,6 +898,15 @@ return|return
 name|dfsUsed
 return|;
 block|}
+DECL|method|getNonDfsUsed ()
+name|long
+name|getNonDfsUsed
+parameter_list|()
+block|{
+return|return
+name|nonDfsUsed
+return|;
+block|}
 DECL|method|getRemaining ()
 name|long
 name|getRemaining
@@ -1184,6 +1198,13 @@ operator|.
 name|getDfsUsed
 argument_list|()
 expr_stmt|;
+name|nonDfsUsed
+operator|=
+name|r
+operator|.
+name|getNonDfsUsed
+argument_list|()
+expr_stmt|;
 name|remaining
 operator|=
 name|r
@@ -1411,6 +1432,8 @@ argument_list|,
 name|remaining
 argument_list|,
 name|blockPoolUsed
+argument_list|,
+name|nonDfsUsed
 argument_list|)
 return|;
 block|}

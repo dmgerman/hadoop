@@ -1975,6 +1975,11 @@ name|totalDfsUsed
 init|=
 literal|0
 decl_stmt|;
+name|long
+name|totalNonDfsUsed
+init|=
+literal|0
+decl_stmt|;
 name|Set
 argument_list|<
 name|DatanodeStorageInfo
@@ -2208,6 +2213,13 @@ operator|.
 name|getDfsUsed
 argument_list|()
 expr_stmt|;
+name|totalNonDfsUsed
+operator|+=
+name|report
+operator|.
+name|getNonDfsUsed
+argument_list|()
+expr_stmt|;
 block|}
 name|rollBlocksScheduled
 argument_list|(
@@ -2234,6 +2246,11 @@ expr_stmt|;
 name|setDfsUsed
 argument_list|(
 name|totalDfsUsed
+argument_list|)
+expr_stmt|;
+name|setNonDfsUsed
+argument_list|(
+name|totalNonDfsUsed
 argument_list|)
 expr_stmt|;
 if|if

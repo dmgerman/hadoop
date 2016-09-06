@@ -2248,6 +2248,8 @@ argument_list|)
 operator|.
 name|getUsed
 argument_list|()
+argument_list|,
+literal|0L
 argument_list|)
 return|;
 block|}

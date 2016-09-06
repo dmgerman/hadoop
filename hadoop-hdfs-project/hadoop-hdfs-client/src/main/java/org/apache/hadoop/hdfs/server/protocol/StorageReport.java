@@ -54,6 +54,12 @@ specifier|final
 name|long
 name|dfsUsed
 decl_stmt|;
+DECL|field|nonDfsUsed
+specifier|private
+specifier|final
+name|long
+name|nonDfsUsed
+decl_stmt|;
 DECL|field|remaining
 specifier|private
 specifier|final
@@ -76,7 +82,7 @@ name|EMPTY_ARRAY
 init|=
 block|{}
 decl_stmt|;
-DECL|method|StorageReport (DatanodeStorage storage, boolean failed, long capacity, long dfsUsed, long remaining, long bpUsed)
+DECL|method|StorageReport (DatanodeStorage storage, boolean failed, long capacity, long dfsUsed, long remaining, long bpUsed, long nonDfsUsed)
 specifier|public
 name|StorageReport
 parameter_list|(
@@ -97,6 +103,9 @@ name|remaining
 parameter_list|,
 name|long
 name|bpUsed
+parameter_list|,
+name|long
+name|nonDfsUsed
 parameter_list|)
 block|{
 name|this
@@ -122,6 +131,12 @@ operator|.
 name|dfsUsed
 operator|=
 name|dfsUsed
+expr_stmt|;
+name|this
+operator|.
+name|nonDfsUsed
+operator|=
+name|nonDfsUsed
 expr_stmt|;
 name|this
 operator|.
@@ -174,6 +189,16 @@ parameter_list|()
 block|{
 return|return
 name|dfsUsed
+return|;
+block|}
+DECL|method|getNonDfsUsed ()
+specifier|public
+name|long
+name|getNonDfsUsed
+parameter_list|()
+block|{
+return|return
+name|nonDfsUsed
 return|;
 block|}
 DECL|method|getRemaining ()

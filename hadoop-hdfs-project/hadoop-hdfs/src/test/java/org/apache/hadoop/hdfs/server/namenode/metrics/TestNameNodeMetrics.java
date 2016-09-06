@@ -1306,6 +1306,8 @@ argument_list|,
 name|rb
 argument_list|)
 decl_stmt|;
+comment|// There will be 5% space reserved in ext filesystem which is not
+comment|// considered.
 assert|assert
 operator|(
 name|capacityUsed
@@ -1313,7 +1315,7 @@ operator|+
 name|capacityRemaining
 operator|+
 name|capacityUsedNonDFS
-operator|==
+operator|<=
 name|capacityTotal
 operator|)
 assert|;

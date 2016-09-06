@@ -5115,6 +5115,8 @@ operator|-
 name|DF_USED
 argument_list|,
 name|DF_USED
+argument_list|,
+literal|0L
 argument_list|)
 block|}
 decl_stmt|;
@@ -5384,6 +5386,8 @@ operator|-
 name|DF_USED
 argument_list|,
 name|DF_USED
+argument_list|,
+literal|0
 argument_list|)
 block|}
 decl_stmt|;

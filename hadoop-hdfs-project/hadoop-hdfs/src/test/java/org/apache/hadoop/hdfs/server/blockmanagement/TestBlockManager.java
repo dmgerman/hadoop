@@ -7821,6 +7821,8 @@ name|storageInfo
 operator|.
 name|getBlockPoolUsed
 argument_list|()
+argument_list|,
+literal|0L
 argument_list|)
 decl_stmt|;
 name|reports
