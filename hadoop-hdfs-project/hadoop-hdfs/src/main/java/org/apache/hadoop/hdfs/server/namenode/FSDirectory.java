@@ -1381,6 +1381,12 @@ specifier|final
 name|boolean
 name|aclsEnabled
 decl_stmt|;
+comment|/**    * Support for POSIX ACL inheritance. Not final for testing purpose.    */
+DECL|field|posixAclInheritanceEnabled
+specifier|private
+name|boolean
+name|posixAclInheritanceEnabled
+decl_stmt|;
 DECL|field|xattrsEnabled
 specifier|private
 specifier|final
@@ -1726,6 +1732,32 @@ argument_list|(
 literal|"ACLs enabled? "
 operator|+
 name|aclsEnabled
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|posixAclInheritanceEnabled
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_POSIX_ACL_INHERITANCE_ENABLED_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_POSIX_ACL_INHERITANCE_ENABLED_DEFAULT
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"POSIX ACL inheritance enabled? "
+operator|+
+name|posixAclInheritanceEnabled
 argument_list|)
 expr_stmt|;
 name|this
@@ -2481,6 +2513,36 @@ block|{
 return|return
 name|aclsEnabled
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|isPosixAclInheritanceEnabled ()
+specifier|public
+name|boolean
+name|isPosixAclInheritanceEnabled
+parameter_list|()
+block|{
+return|return
+name|posixAclInheritanceEnabled
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setPosixAclInheritanceEnabled ( boolean posixAclInheritanceEnabled)
+specifier|public
+name|void
+name|setPosixAclInheritanceEnabled
+parameter_list|(
+name|boolean
+name|posixAclInheritanceEnabled
+parameter_list|)
+block|{
+name|this
+operator|.
+name|posixAclInheritanceEnabled
+operator|=
+name|posixAclInheritanceEnabled
+expr_stmt|;
 block|}
 DECL|method|isXattrsEnabled ()
 name|boolean
@@ -4705,8 +4767,8 @@ return|return
 name|typeSpaceDeltas
 return|;
 block|}
-comment|/**    * Add the given child to the namespace.    * @param existing the INodesInPath containing all the ancestral INodes    * @param child the new INode to add    * @return a new INodesInPath instance containing the new child INode. Null    * if the adding fails.    * @throws QuotaExceededException is thrown if it violates quota limit    */
-DECL|method|addINode (INodesInPath existing, INode child)
+comment|/**    * Add the given child to the namespace.    * @param existing the INodesInPath containing all the ancestral INodes    * @param child the new INode to add    * @param modes create modes    * @return a new INodesInPath instance containing the new child INode. Null    * if the adding fails.    * @throws QuotaExceededException is thrown if it violates quota limit    */
+DECL|method|addINode (INodesInPath existing, INode child, FsPermission modes)
 name|INodesInPath
 name|addINode
 parameter_list|(
@@ -4715,6 +4777,9 @@ name|existing
 parameter_list|,
 name|INode
 name|child
+parameter_list|,
+name|FsPermission
+name|modes
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -4737,6 +4802,8 @@ argument_list|(
 name|existing
 argument_list|,
 name|child
+argument_list|,
+name|modes
 argument_list|,
 literal|true
 argument_list|)
@@ -5137,10 +5204,129 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Add a child to the end of the path specified by INodesInPath.    * @return an INodesInPath instance containing the new INode    */
+comment|/**    * Turn on HDFS-6962 POSIX ACL inheritance when the property    * {@link DFSConfigKeys#DFS_NAMENODE_POSIX_ACL_INHERITANCE_ENABLED_KEY} is    * true and a compatible client has sent both masked and unmasked create    * modes.    *    * @param child INode newly created child    * @param modes create modes    */
+DECL|method|copyINodeDefaultAcl (INode child, FsPermission modes)
+specifier|private
+name|void
+name|copyINodeDefaultAcl
+parameter_list|(
+name|INode
+name|child
+parameter_list|,
+name|FsPermission
+name|modes
+parameter_list|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"child: {}, posixAclInheritanceEnabled: {}, modes: {}"
+argument_list|,
+name|child
+argument_list|,
+name|posixAclInheritanceEnabled
+argument_list|,
+name|modes
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|posixAclInheritanceEnabled
+operator|&&
+name|modes
+operator|!=
+literal|null
+operator|&&
+name|modes
+operator|.
+name|getUnmasked
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+comment|//
+comment|// HDFS-6962: POSIX ACL inheritance
+comment|//
+name|child
+operator|.
+name|setPermission
+argument_list|(
+name|modes
+operator|.
+name|getUnmasked
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|AclStorage
+operator|.
+name|copyINodeDefaultAcl
+argument_list|(
+name|child
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"{}: no parent default ACL to inherit"
+argument_list|,
+name|child
+argument_list|)
+expr_stmt|;
+block|}
+name|child
+operator|.
+name|setPermission
+argument_list|(
+name|modes
+operator|.
+name|getMasked
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+comment|//
+comment|// Old behavior before HDFS-6962
+comment|//
+name|AclStorage
+operator|.
+name|copyINodeDefaultAcl
+argument_list|(
+name|child
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Add a child to the end of the path specified by INodesInPath.    * @param existing the INodesInPath containing all the ancestral INodes    * @param inode the new INode to add    * @param modes create modes    * @param checkQuota whether to check quota    * @return an INodesInPath instance containing the new INode    */
 annotation|@
 name|VisibleForTesting
-DECL|method|addLastINode (INodesInPath existing, INode inode, boolean checkQuota)
+DECL|method|addLastINode (INodesInPath existing, INode inode, FsPermission modes, boolean checkQuota)
 specifier|public
 name|INodesInPath
 name|addLastINode
@@ -5150,6 +5336,9 @@ name|existing
 parameter_list|,
 name|INode
 name|inode
+parameter_list|,
+name|FsPermission
+name|modes
 parameter_list|,
 name|boolean
 name|checkQuota
@@ -5400,11 +5589,11 @@ operator|!
 name|isRename
 condition|)
 block|{
-name|AclStorage
-operator|.
 name|copyINodeDefaultAcl
 argument_list|(
 name|inode
+argument_list|,
+name|modes
 argument_list|)
 expr_stmt|;
 block|}
@@ -5443,12 +5632,15 @@ parameter_list|)
 block|{
 try|try
 block|{
+comment|// All callers do not have create modes to pass.
 return|return
 name|addLastINode
 argument_list|(
 name|existing
 argument_list|,
 name|i
+argument_list|,
+literal|null
 argument_list|,
 literal|false
 argument_list|)

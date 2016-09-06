@@ -292,7 +292,7 @@ comment|/**    * If a default ACL is defined on a parent directory, then copies 
 DECL|method|copyINodeDefaultAcl (INode child)
 specifier|public
 specifier|static
-name|void
+name|boolean
 name|copyINodeDefaultAcl
 parameter_list|(
 name|INode
@@ -335,7 +335,9 @@ argument_list|()
 operator|)
 condition|)
 block|{
-return|return;
+return|return
+literal|false
+return|;
 block|}
 comment|// Split parent's entries into access vs. default.
 name|List
@@ -381,7 +383,9 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-return|return;
+return|return
+literal|false
+return|;
 block|}
 comment|// Pre-allocate list size for access entries to copy from parent.
 name|List
@@ -704,6 +708,9 @@ argument_list|(
 name|newPerm
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 comment|/**    * Reads the existing extended ACL entries of an inode.  This method returns    * only the extended ACL entries stored in the AclFeature.  If the inode does    * not have an ACL, then this method returns an empty list.  This method    * supports querying by snapshot ID.    *    * @param inode INode to read    * @param snapshotId int ID of snapshot to read    * @return List<AclEntry> containing extended inode ACL entries    */
 DECL|method|readINodeAcl (INode inode, int snapshotId)

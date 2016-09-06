@@ -633,6 +633,28 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Get masked permission if exists.    */
+DECL|method|getMasked ()
+specifier|public
+name|FsPermission
+name|getMasked
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Get unmasked permission if exists.    */
+DECL|method|getUnmasked ()
+specifier|public
+name|FsPermission
+name|getUnmasked
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Create and initialize a {@link FsPermission} from {@link DataInput}.    */
 DECL|method|read (DataInput in)
 specifier|public

@@ -1155,6 +1155,11 @@ name|parent
 argument_list|,
 name|dir
 argument_list|,
+name|permission
+operator|.
+name|getPermission
+argument_list|()
+argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;

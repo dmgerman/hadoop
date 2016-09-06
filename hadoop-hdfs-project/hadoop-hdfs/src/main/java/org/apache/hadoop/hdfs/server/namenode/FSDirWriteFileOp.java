@@ -3213,6 +3213,11 @@ argument_list|(
 name|existing
 argument_list|,
 name|newNode
+argument_list|,
+name|permissions
+operator|.
+name|getPermission
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -3733,6 +3738,11 @@ argument_list|(
 name|existing
 argument_list|,
 name|newNode
+argument_list|,
+name|permissions
+operator|.
+name|getPermission
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

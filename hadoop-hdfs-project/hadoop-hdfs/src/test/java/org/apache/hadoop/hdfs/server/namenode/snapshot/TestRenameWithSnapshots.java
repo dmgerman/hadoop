@@ -11957,6 +11957,14 @@ operator|.
 name|anyObject
 argument_list|()
 argument_list|,
+operator|(
+name|FsPermission
+operator|)
+name|Mockito
+operator|.
+name|anyObject
+argument_list|()
+argument_list|,
 name|Mockito
 operator|.
 name|anyBoolean

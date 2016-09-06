@@ -519,6 +519,11 @@ argument_list|(
 name|iip
 argument_list|,
 name|symlink
+argument_list|,
+name|perm
+operator|.
+name|getPermission
+argument_list|()
 argument_list|)
 operator|!=
 literal|null
