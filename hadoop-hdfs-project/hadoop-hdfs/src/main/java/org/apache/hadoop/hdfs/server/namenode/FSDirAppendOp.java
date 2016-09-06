@@ -403,10 +403,6 @@ name|getFSDirectory
 argument_list|()
 decl_stmt|;
 specifier|final
-name|String
-name|src
-decl_stmt|;
-specifier|final
 name|INodesInPath
 name|iip
 decl_stmt|;
@@ -427,13 +423,6 @@ name|pc
 argument_list|,
 name|srcArg
 argument_list|)
-expr_stmt|;
-name|src
-operator|=
-name|iip
-operator|.
-name|getPath
-argument_list|()
 expr_stmt|;
 comment|// Verify that the destination does not exist as a directory already
 specifier|final
@@ -551,7 +540,7 @@ name|UnsupportedOperationException
 argument_list|(
 literal|"Cannot append to files with striped block "
 operator|+
-name|src
+name|path
 argument_list|)
 throw|;
 block|}
