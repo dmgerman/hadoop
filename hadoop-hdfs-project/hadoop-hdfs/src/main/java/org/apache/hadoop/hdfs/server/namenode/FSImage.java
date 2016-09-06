@@ -188,6 +188,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -4106,7 +4118,7 @@ name|checkpointPeriod
 init|=
 name|conf
 operator|.
-name|getLong
+name|getTimeDuration
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -4115,6 +4127,10 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_CHECKPOINT_PERIOD_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 decl_stmt|;
 specifier|final

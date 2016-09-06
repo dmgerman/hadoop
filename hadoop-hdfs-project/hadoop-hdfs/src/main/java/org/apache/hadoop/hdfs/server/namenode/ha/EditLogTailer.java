@@ -800,7 +800,7 @@ name|logRollPeriodMs
 operator|=
 name|conf
 operator|.
-name|getInt
+name|getTimeDuration
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -809,6 +809,10 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_HA_LOGROLL_PERIOD_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 operator|*
 literal|1000
@@ -946,7 +950,7 @@ name|sleepTimeMs
 operator|=
 name|conf
 operator|.
-name|getInt
+name|getTimeDuration
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -955,6 +959,10 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_HA_TAILEDITS_PERIOD_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 operator|*
 literal|1000

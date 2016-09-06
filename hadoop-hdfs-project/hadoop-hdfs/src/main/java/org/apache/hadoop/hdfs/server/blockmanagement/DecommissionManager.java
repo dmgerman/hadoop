@@ -550,9 +550,12 @@ specifier|final
 name|int
 name|intervalSecs
 init|=
+operator|(
+name|int
+operator|)
 name|conf
 operator|.
-name|getInt
+name|getTimeDuration
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -561,6 +564,10 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_DECOMMISSION_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 decl_stmt|;
 name|checkArgument

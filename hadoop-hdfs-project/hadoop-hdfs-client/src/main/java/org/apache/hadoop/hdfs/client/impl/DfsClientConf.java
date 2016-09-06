@@ -1124,6 +1124,18 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
 begin_comment
 comment|/**  * DFSClient configuration.  */
 end_comment
@@ -1867,11 +1879,15 @@ name|datanodeRestartTimeout
 operator|=
 name|conf
 operator|.
-name|getLong
+name|getTimeDuration
 argument_list|(
 name|DFS_CLIENT_DATANODE_RESTART_TIMEOUT_KEY
 argument_list|,
 name|DFS_CLIENT_DATANODE_RESTART_TIMEOUT_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 operator|*
 literal|1000

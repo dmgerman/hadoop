@@ -594,6 +594,18 @@ name|ThreadLocalRandom
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
 begin_comment
 comment|/**  * Manage datanodes, include decommission and other activities.  */
 end_comment
@@ -1190,7 +1202,7 @@ name|heartbeatIntervalSeconds
 operator|=
 name|conf
 operator|.
-name|getLong
+name|getTimeDuration
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -1199,6 +1211,10 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_HEARTBEAT_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 expr_stmt|;
 name|heartbeatRecheckInterval
@@ -1493,7 +1509,7 @@ name|heartbeatIntervalSeconds
 init|=
 name|conf
 operator|.
-name|getLong
+name|getTimeDuration
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -1502,6 +1518,10 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_HEARTBEAT_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 decl_stmt|;
 comment|// The stale interval value cannot be smaller than

@@ -48,6 +48,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -413,7 +425,7 @@ name|heartbeatInterval
 operator|=
 name|conf
 operator|.
-name|getLong
+name|getTimeDuration
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -422,6 +434,10 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_HEARTBEAT_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 operator|*
 literal|1000

@@ -6597,11 +6597,15 @@ if|if
 condition|(
 name|conf
 operator|.
-name|getInt
+name|getTimeDuration
 argument_list|(
 name|DFS_DATANODE_DIRECTORYSCAN_INTERVAL_KEY
 argument_list|,
 name|DFS_DATANODE_DIRECTORYSCAN_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 operator|<
 literal|0
