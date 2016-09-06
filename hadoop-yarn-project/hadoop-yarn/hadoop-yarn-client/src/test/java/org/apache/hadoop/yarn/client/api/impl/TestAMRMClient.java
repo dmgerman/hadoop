@@ -1479,6 +1479,20 @@ name|start
 argument_list|()
 expr_stmt|;
 comment|// get node info
+name|assertTrue
+argument_list|(
+literal|"All node managers did not connect to the RM within the "
+operator|+
+literal|"allotted 5-second timeout"
+argument_list|,
+name|yarnCluster
+operator|.
+name|waitForNodeManagersToConnect
+argument_list|(
+literal|5000L
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|nodeReports
 operator|=
 name|yarnClient
@@ -1488,6 +1502,18 @@ argument_list|(
 name|NodeState
 operator|.
 name|RUNNING
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Not all node managers were reported running"
+argument_list|,
+name|nodeCount
+argument_list|,
+name|nodeReports
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|priority
