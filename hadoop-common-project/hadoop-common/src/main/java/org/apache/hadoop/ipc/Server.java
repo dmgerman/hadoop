@@ -1741,13 +1741,7 @@ name|rpcKindMap
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|RPC
-operator|.
-name|RpcKind
-argument_list|,
-name|RpcKindMapValue
-argument_list|>
+argument_list|<>
 argument_list|(
 literal|4
 argument_list|)
