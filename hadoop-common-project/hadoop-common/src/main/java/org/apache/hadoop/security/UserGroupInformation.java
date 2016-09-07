@@ -3151,6 +3151,27 @@ name|subject
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|subject
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create a UGI from the given subject.    * @param subject the subject    * @param externalKeyTab if the subject's keytab is managed by the user.    *                       Setting this to true will prevent UGI from attempting    *                       to login the keytab, or to renew it.    */
+DECL|method|UserGroupInformation (Subject subject, final boolean externalKeyTab)
+specifier|private
+name|UserGroupInformation
+parameter_list|(
+name|Subject
+name|subject
+parameter_list|,
+specifier|final
+name|boolean
+name|externalKeyTab
+parameter_list|)
+block|{
+name|this
 operator|.
 name|subject
 operator|=
@@ -3175,6 +3196,20 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|externalKeyTab
+condition|)
+block|{
+name|this
+operator|.
+name|isKeytab
+operator|=
+literal|false
+expr_stmt|;
+block|}
+else|else
+block|{
 name|this
 operator|.
 name|isKeytab
@@ -3186,6 +3221,7 @@ argument_list|(
 name|subject
 argument_list|)
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|isKrbTkt
@@ -4056,6 +4092,15 @@ operator|.
 name|login
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Assuming keytab is managed externally since logged in from"
+operator|+
+literal|" subject."
+argument_list|)
+expr_stmt|;
 name|UserGroupInformation
 name|realUser
 init|=
@@ -4063,6 +4108,8 @@ operator|new
 name|UserGroupInformation
 argument_list|(
 name|subject
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|realUser
@@ -4077,17 +4124,6 @@ operator|.
 name|setAuthenticationMethod
 argument_list|(
 name|authenticationMethod
-argument_list|)
-expr_stmt|;
-name|realUser
-operator|=
-operator|new
-name|UserGroupInformation
-argument_list|(
-name|login
-operator|.
-name|getSubject
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// If the HADOOP_PROXY_USER environment variable or property
