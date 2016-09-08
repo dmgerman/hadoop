@@ -444,15 +444,6 @@ name|e
 parameter_list|)
 block|{
 comment|// ignore the exit code of the script
-name|exceptionStackTrace
-operator|=
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
-name|e
-argument_list|)
-expr_stmt|;
 name|status
 operator|=
 name|HealthCheckerExitStatus
@@ -633,9 +624,11 @@ name|FAILED_WITH_EXIT_CODE
 case|:
 name|setHealthStatus
 argument_list|(
-literal|false
+literal|true
 argument_list|,
-name|exceptionStackTrace
+literal|""
+argument_list|,
+name|now
 argument_list|)
 expr_stmt|;
 break|break;
