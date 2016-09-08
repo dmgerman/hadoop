@@ -313,6 +313,10 @@ literal|"     analyzed (128GB by default).\n"
 operator|+
 literal|"    -step defines the granularity of the distribution. (2MB by default)\n"
 operator|+
+literal|"    -format formats the output result in a human-readable fashion\n"
+operator|+
+literal|"     rather than a number of bytes. (false by default)\n"
+operator|+
 literal|"  * Web: Run a viewer to expose read-only WebHDFS API.\n"
 operator|+
 literal|"    -addr specifies the address to listen. (localhost:5978 by default)\n"
@@ -466,6 +470,17 @@ argument_list|(
 literal|"step"
 argument_list|,
 literal|true
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+literal|"format"
+argument_list|,
+literal|false
 argument_list|,
 literal|""
 argument_list|)
@@ -800,6 +815,16 @@ literal|"0"
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|boolean
+name|formatOutput
+init|=
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+literal|"format"
+argument_list|)
+decl_stmt|;
 operator|new
 name|FileDistributionCalculator
 argument_list|(
@@ -808,6 +833,8 @@ argument_list|,
 name|maxSize
 argument_list|,
 name|step
+argument_list|,
+name|formatOutput
 argument_list|,
 name|out
 argument_list|)
