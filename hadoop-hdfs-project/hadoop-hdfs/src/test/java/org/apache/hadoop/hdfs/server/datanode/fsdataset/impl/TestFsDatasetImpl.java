@@ -4495,7 +4495,7 @@ argument_list|)
 decl_stmt|;
 specifier|final
 name|CountDownLatch
-name|brReceivedLatch
+name|blockReportReceivedLatch
 init|=
 operator|new
 name|CountDownLatch
@@ -4505,7 +4505,17 @@ argument_list|)
 decl_stmt|;
 specifier|final
 name|CountDownLatch
-name|volRemovedLatch
+name|volRemoveStartedLatch
+init|=
+operator|new
+name|CountDownLatch
+argument_list|(
+literal|1
+argument_list|)
+decl_stmt|;
+specifier|final
+name|CountDownLatch
+name|volRemoveCompletedLatch
 init|=
 operator|new
 name|CountDownLatch
@@ -4526,7 +4536,7 @@ block|{
 comment|// Lets wait for the volume remove process to start
 try|try
 block|{
-name|volRemovedLatch
+name|volRemoveStartedLatch
 operator|.
 name|await
 argument_list|()
@@ -4572,7 +4582,7 @@ argument_list|(
 literal|"Successfully received block report"
 argument_list|)
 expr_stmt|;
-name|brReceivedLatch
+name|blockReportReceivedLatch
 operator|.
 name|countDown
 argument_list|()
@@ -4650,7 +4660,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Lets wait for the other thread finish getting block report
-name|brReceivedLatch
+name|blockReportReceivedLatch
 operator|.
 name|await
 argument_list|()
@@ -4688,38 +4698,18 @@ expr_stmt|;
 block|}
 block|}
 block|}
-name|ResponderThread
-name|res
-init|=
-operator|new
-name|ResponderThread
-argument_list|()
-decl_stmt|;
-name|res
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|startFinalizeLatch
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-comment|// Verify if block report can be received
-comment|// when volume is being removed
-specifier|final
-name|BlockReportThread
-name|brt
-init|=
-operator|new
-name|BlockReportThread
-argument_list|()
-decl_stmt|;
-name|brt
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
+class|class
+name|VolRemoveThread
+extends|extends
+name|Thread
+block|{
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+try|try
+block|{
 name|Set
 argument_list|<
 name|File
@@ -4754,9 +4744,7 @@ name|getFile
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|/**      * TODO: {@link FsDatasetImpl#removeVolumes(Set, boolean)} is throwing      * IllegalMonitorStateException when there is a parallel reader/writer      * to the volume. Remove below try/catch block after fixing HDFS-10830.      */
-try|try
-block|{
+comment|/**            * TODO: {@link FsDatasetImpl#removeVolumes(Set, boolean)} is throwing            * IllegalMonitorStateException when there is a parallel reader/writer            * to the volume. Remove below exception handling block after fixing            * HDFS-10830.            */
 name|LOG
 operator|.
 name|info
@@ -4775,6 +4763,20 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|volRemoveCompletedLatch
+operator|.
+name|countDown
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Removed volume "
+operator|+
+name|volumesToRemove
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -4791,23 +4793,86 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|volRemovedLatch
+name|volRemoveCompletedLatch
 operator|.
 name|countDown
 argument_list|()
 expr_stmt|;
 block|}
-name|LOG
+block|}
+block|}
+comment|// Start the volume write operation
+name|ResponderThread
+name|responderThread
+init|=
+operator|new
+name|ResponderThread
+argument_list|()
+decl_stmt|;
+name|responderThread
 operator|.
-name|info
+name|start
+argument_list|()
+expr_stmt|;
+name|startFinalizeLatch
+operator|.
+name|await
+argument_list|()
+expr_stmt|;
+comment|// Start the block report get operation
+specifier|final
+name|BlockReportThread
+name|blockReportThread
+init|=
+operator|new
+name|BlockReportThread
+argument_list|()
+decl_stmt|;
+name|blockReportThread
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+comment|// Start the volume remove operation
+name|VolRemoveThread
+name|volRemoveThread
+init|=
+operator|new
+name|VolRemoveThread
+argument_list|()
+decl_stmt|;
+name|volRemoveThread
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+comment|// Let volume write and remove operation be
+comment|// blocked for few seconds
+name|Thread
+operator|.
+name|sleep
 argument_list|(
-literal|"Volumes removed"
+literal|2000
 argument_list|)
 expr_stmt|;
-name|brReceivedLatch
+comment|// Signal block report receiver and volume writer
+comment|// thread to complete their operations so that vol
+comment|// remove can proceed
+name|volRemoveStartedLatch
+operator|.
+name|countDown
+argument_list|()
+expr_stmt|;
+comment|// Verify if block report can be received
+comment|// when volume is in use and also being removed
+name|blockReportReceivedLatch
+operator|.
+name|await
+argument_list|()
+expr_stmt|;
+comment|// Verify if volume can be removed safely when there
+comment|// are read/write operation in-progress
+name|volRemoveCompletedLatch
 operator|.
 name|await
 argument_list|()
