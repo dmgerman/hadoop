@@ -5291,7 +5291,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Return a HttpServer.Builder that the journalnode / namenode / secondary    * namenode can use to initialize their HTTP / HTTPS server.    *    */
+comment|/**    * Return a HttpServer.Builder that the journalnode / namenode / secondary    * namenode can use to initialize their HTTP / HTTPS server.    *    * @param conf configuration object    * @param httpAddr HTTP address    * @param httpsAddr HTTPS address    * @param name  Name of the server    * @throws IOException from Builder    * @return builder object    */
 DECL|method|httpServerTemplateForRM (Configuration conf, final InetSocketAddress httpAddr, final InetSocketAddress httpsAddr, String name)
 specifier|public
 specifier|static
