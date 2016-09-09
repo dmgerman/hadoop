@@ -90,7 +90,7 @@ name|hdfs
 operator|.
 name|tools
 operator|.
-name|DiskBalancer
+name|DiskBalancerCLI
 import|;
 end_import
 
@@ -122,7 +122,7 @@ argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|HELP
 argument_list|,
@@ -173,7 +173,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|HELP
 argument_list|)
@@ -181,7 +181,7 @@ argument_list|)
 expr_stmt|;
 name|verifyCommandOptions
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|HELP
 argument_list|,
@@ -195,7 +195,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|HELP
 argument_list|)
@@ -244,7 +244,7 @@ name|helpCommand
 condition|)
 block|{
 case|case
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|PLAN
 case|:
@@ -259,7 +259,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|EXECUTE
 case|:
@@ -274,7 +274,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|QUERY
 case|:
@@ -289,7 +289,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|CANCEL
 case|:
@@ -304,7 +304,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|REPORT
 case|:
@@ -372,7 +372,7 @@ literal|"hdfs diskbalancer [command] [options]"
 argument_list|,
 name|header
 argument_list|,
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|getHelpOptions
 argument_list|()

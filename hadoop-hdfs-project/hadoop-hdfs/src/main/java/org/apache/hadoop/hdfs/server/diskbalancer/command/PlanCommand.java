@@ -192,7 +192,7 @@ name|hdfs
 operator|.
 name|tools
 operator|.
-name|DiskBalancer
+name|DiskBalancerCLI
 import|;
 end_import
 
@@ -279,7 +279,7 @@ literal|0
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|OUTFILE
 argument_list|,
@@ -292,40 +292,34 @@ argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|BANDWIDTH
 argument_list|,
-literal|"Maximum Bandwidth to "
-operator|+
-literal|"be used while copying."
+literal|"Maximum Bandwidth to be used while copying."
 argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|THRESHOLD
 argument_list|,
-literal|"Percentage skew that "
-operator|+
-literal|"we tolerate before diskbalancer starts working."
+literal|"Percentage skew that we tolerate before diskbalancer starts working."
 argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|MAXERROR
 argument_list|,
-literal|"Max errors to tolerate "
-operator|+
-literal|"between 2 disks"
+literal|"Max errors to tolerate between 2 disks"
 argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|VERBOSE
 argument_list|,
@@ -336,7 +330,7 @@ argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|PLAN
 argument_list|,
@@ -373,7 +367,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|PLAN
 argument_list|)
@@ -381,7 +375,7 @@ argument_list|)
 expr_stmt|;
 name|verifyCommandOptions
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|PLAN
 argument_list|,
@@ -394,7 +388,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|PLAN
 argument_list|)
@@ -418,7 +412,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|BANDWIDTH
 argument_list|)
@@ -436,7 +430,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|BANDWIDTH
 argument_list|)
@@ -449,7 +443,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|MAXERROR
 argument_list|)
@@ -467,7 +461,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|MAXERROR
 argument_list|)
@@ -490,7 +484,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|OUTFILE
 argument_list|)
@@ -502,7 +496,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|OUTFILE
 argument_list|)
@@ -523,7 +517,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|PLAN
 argument_list|)
@@ -546,7 +540,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|PLAN
 argument_list|)
@@ -640,7 +634,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|BEFORE_TEMPLATE
 argument_list|,
@@ -648,7 +642,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|PLAN
 argument_list|)
@@ -713,7 +707,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|PLAN_TEMPLATE
 argument_list|,
@@ -721,7 +715,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|PLAN
 argument_list|)
@@ -762,7 +756,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|PLAN
 argument_list|)
@@ -779,7 +773,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|VERBOSE
 argument_list|)
@@ -835,13 +829,11 @@ name|helpFormatter
 operator|.
 name|printHelp
 argument_list|(
-literal|"hdfs diskbalancer -plan "
-operator|+
-literal|"<hostname> [options]"
+literal|"hdfs diskbalancer -plan<hostname> [options]"
 argument_list|,
 name|header
 argument_list|,
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|getPlanOptions
 argument_list|()
@@ -871,7 +863,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|THRESHOLD
 argument_list|)
@@ -887,7 +879,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|THRESHOLD
 argument_list|)

@@ -414,7 +414,7 @@ name|hdfs
 operator|.
 name|tools
 operator|.
-name|DiskBalancer
+name|DiskBalancerCLI
 import|;
 end_import
 
@@ -1941,7 +1941,7 @@ name|getDefaultTop
 parameter_list|()
 block|{
 return|return
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|DEFAULT_TOP
 return|;
@@ -2009,7 +2009,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|TOP
 argument_list|)

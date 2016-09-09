@@ -188,7 +188,7 @@ name|hdfs
 operator|.
 name|tools
 operator|.
-name|DiskBalancer
+name|DiskBalancerCLI
 import|;
 end_import
 
@@ -230,7 +230,7 @@ argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|CANCEL
 argument_list|,
@@ -239,13 +239,11 @@ argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|NODE
 argument_list|,
-literal|"Node to run the command "
-operator|+
-literal|"against in node:port format."
+literal|"Node to run the command against in node:port format."
 argument_list|)
 expr_stmt|;
 block|}
@@ -278,7 +276,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|CANCEL
 argument_list|)
@@ -286,7 +284,7 @@ argument_list|)
 expr_stmt|;
 name|verifyCommandOptions
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|CANCEL
 argument_list|,
@@ -301,7 +299,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|NODE
 argument_list|)
@@ -314,7 +312,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|NODE
 argument_list|)
@@ -326,7 +324,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|CANCEL
 argument_list|)
@@ -351,7 +349,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|CANCEL
 argument_list|)
@@ -647,7 +645,7 @@ literal|"<planID> -node<hostname>"
 argument_list|,
 name|header
 argument_list|,
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|getCancelOptions
 argument_list|()
