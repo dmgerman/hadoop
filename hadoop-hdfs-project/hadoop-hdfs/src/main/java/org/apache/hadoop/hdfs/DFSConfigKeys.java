@@ -2616,6 +2616,26 @@ name|DFS_NAMENODE_READ_LOCK_REPORTING_THRESHOLD_MS_DEFAULT
 init|=
 literal|5000L
 decl_stmt|;
+comment|// Threshold for how long the lock warnings must be suppressed
+DECL|field|DFS_LOCK_SUPPRESS_WARNING_INTERVAL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_LOCK_SUPPRESS_WARNING_INTERVAL_KEY
+init|=
+literal|"dfs.lock.suppress.warning.interval"
+decl_stmt|;
+DECL|field|DFS_LOCK_SUPPRESS_WARNING_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_LOCK_SUPPRESS_WARNING_INTERVAL_DEFAULT
+init|=
+literal|10000
+decl_stmt|;
+comment|//ms
 DECL|field|DFS_UPGRADE_DOMAIN_FACTOR
 specifier|public
 specifier|static

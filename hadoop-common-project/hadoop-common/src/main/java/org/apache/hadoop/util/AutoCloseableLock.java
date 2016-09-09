@@ -26,7 +26,35 @@ name|concurrent
 operator|.
 name|locks
 operator|.
+name|Lock
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
 name|ReentrantLock
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -45,22 +73,37 @@ block|{
 DECL|field|lock
 specifier|private
 specifier|final
-name|ReentrantLock
+name|Lock
 name|lock
 decl_stmt|;
-comment|/**    * Creates an instance of {@code AutoCloseableLock}, initializes    * the underlying {@code ReentrantLock} object.    */
+comment|/**    * Creates an instance of {@code AutoCloseableLock}, initializes    * the underlying lock instance with a new {@code ReentrantLock}.    */
 DECL|method|AutoCloseableLock ()
 specifier|public
 name|AutoCloseableLock
 parameter_list|()
 block|{
 name|this
-operator|.
-name|lock
-operator|=
+argument_list|(
 operator|new
 name|ReentrantLock
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Wrap provided Lock instance.    * @param lock Lock instance to wrap in AutoCloseable API.    */
+DECL|method|AutoCloseableLock (Lock lock)
+specifier|public
+name|AutoCloseableLock
+parameter_list|(
+name|Lock
+name|lock
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lock
+operator|=
+name|lock
 expr_stmt|;
 block|}
 comment|/**    * A wrapper method that makes a call to {@code lock()} of the underlying    * {@code ReentrantLock} object.    *    * Acquire teh lock it is not held by another thread, then sets    * lock held count to one, then returns immediately.    *    * If the current thread already holds the lock, increase the lock    * help count by one and returns immediately.    *    * If the lock is held by another thread, the current thread is    * suspended until the lock has been acquired by current thread.    *    * @return The {@code ReentrantLock} object itself. This is to    * support try-with-resource syntax.    */
@@ -105,7 +148,7 @@ name|release
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * A wrapper method that makes a call to {@code tryLock()} of    * the underlying {@code ReentrantLock} object.    *    * If the lock is not held by another thread, acquires the lock, set the    * hold count to one and returns {@code true}.    *    * If the current thread already holds the lock, the increment the hold    * count by one and returns {@code true}.    *    * If the lock is held by another thread then the method returns    * immediately with {@code false}.    *    * @return {@code true} if the lock was free and was acquired by the    *          current thread, or the lock was already held by the current    *          thread; and {@code false} otherwise.    */
+comment|/**    * A wrapper method that makes a call to {@code tryLock()} of    * the underlying {@code Lock} object.    *    * If the lock is not held by another thread, acquires the lock, set the    * hold count to one and returns {@code true}.    *    * If the current thread already holds the lock, the increment the hold    * count by one and returns {@code true}.    *    * If the lock is held by another thread then the method returns    * immediately with {@code false}.    *    * @return {@code true} if the lock was free and was acquired by the    *          current thread, or the lock was already held by the current    *          thread; and {@code false} otherwise.    */
 DECL|method|tryLock ()
 specifier|public
 name|boolean
@@ -120,18 +163,37 @@ argument_list|()
 return|;
 block|}
 comment|/**    * A wrapper method that makes a call to {@code isLocked()} of    * the underlying {@code ReentrantLock} object.    *    * Queries if this lock is held by any thread. This method is    * designed for use in monitoring of the system state,    * not for synchronization control.    *    * @return {@code true} if any thread holds this lock and    *         {@code false} otherwise    */
+annotation|@
+name|VisibleForTesting
 DECL|method|isLocked ()
-specifier|public
 name|boolean
 name|isLocked
 parameter_list|()
 block|{
-return|return
+if|if
+condition|(
 name|lock
+operator|instanceof
+name|ReentrantLock
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|ReentrantLock
+operator|)
+name|lock
+operator|)
 operator|.
 name|isLocked
 argument_list|()
 return|;
+block|}
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
 block|}
 block|}
 end_class
