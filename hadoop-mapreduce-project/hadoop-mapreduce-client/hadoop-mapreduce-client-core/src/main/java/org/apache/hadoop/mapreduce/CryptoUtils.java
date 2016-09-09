@@ -337,7 +337,7 @@ name|DEFAULT_MR_ENCRYPTED_INTERMEDIATE_DATA
 argument_list|)
 return|;
 block|}
-comment|/**    * This method creates and initializes an IV (Initialization Vector)    *     * @param conf    * @return byte[]    * @throws IOException    */
+comment|/**    * This method creates and initializes an IV (Initialization Vector)    *     * @param conf configuration    * @return byte[] initialization vector    * @throws IOException exception in case of error    */
 DECL|method|createIV (Configuration conf)
 specifier|public
 specifier|static
@@ -490,7 +490,7 @@ operator|*
 literal|1024
 return|;
 block|}
-comment|/**    * Wraps a given FSDataOutputStream with a CryptoOutputStream. The size of the    * data buffer required for the stream is specified by the    * "mapreduce.job.encrypted-intermediate-data.buffer.kb" Job configuration    * variable.    *     * @param conf    * @param out    * @return FSDataOutputStream    * @throws IOException    */
+comment|/**    * Wraps a given FSDataOutputStream with a CryptoOutputStream. The size of the    * data buffer required for the stream is specified by the    * "mapreduce.job.encrypted-intermediate-data.buffer.kb" Job configuration    * variable.    *     * @param conf configuration    * @param out given output stream    * @return FSDataOutputStream encrypted output stream if encryption is    *         enabled; otherwise the given output stream itself    * @throws IOException exception in case of error    */
 DECL|method|wrapIfNecessary (Configuration conf, FSDataOutputStream out)
 specifier|public
 specifier|static
@@ -502,6 +502,36 @@ name|conf
 parameter_list|,
 name|FSDataOutputStream
 name|out
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|wrapIfNecessary
+argument_list|(
+name|conf
+argument_list|,
+name|out
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+comment|/**    * Wraps a given FSDataOutputStream with a CryptoOutputStream. The size of the    * data buffer required for the stream is specified by the    * "mapreduce.job.encrypted-intermediate-data.buffer.kb" Job configuration    * variable.    *    * @param conf configuration    * @param out given output stream    * @param closeOutputStream flag to indicate whether closing the wrapped    *        stream will close the given output stream    * @return FSDataOutputStream encrypted output stream if encryption is    *         enabled; otherwise the given output stream itself    * @throws IOException exception in case of error    */
+DECL|method|wrapIfNecessary (Configuration conf, FSDataOutputStream out, boolean closeOutputStream)
+specifier|public
+specifier|static
+name|FSDataOutputStream
+name|wrapIfNecessary
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|FSDataOutputStream
+name|out
+parameter_list|,
+name|boolean
+name|closeOutputStream
 parameter_list|)
 throws|throws
 name|IOException
@@ -600,6 +630,8 @@ name|getEncryptionKey
 argument_list|()
 argument_list|,
 name|iv
+argument_list|,
+name|closeOutputStream
 argument_list|)
 return|;
 block|}
@@ -610,7 +642,7 @@ name|out
 return|;
 block|}
 block|}
-comment|/**    * Wraps a given InputStream with a CryptoInputStream. The size of the data    * buffer required for the stream is specified by the    * "mapreduce.job.encrypted-intermediate-data.buffer.kb" Job configuration    * variable.    *     * If the value of 'length' is&gt; -1, The InputStream is additionally    * wrapped in a LimitInputStream. CryptoStreams are late buffering in nature.    * This means they will always try to read ahead if they can. The    * LimitInputStream will ensure that the CryptoStream does not read past the    * provided length from the given Input Stream.    *     * @param conf    * @param in    * @param length    * @return InputStream    * @throws IOException    */
+comment|/**    * Wraps a given InputStream with a CryptoInputStream. The size of the data    * buffer required for the stream is specified by the    * "mapreduce.job.encrypted-intermediate-data.buffer.kb" Job configuration    * variable.    *     * If the value of 'length' is&gt; -1, The InputStream is additionally    * wrapped in a LimitInputStream. CryptoStreams are late buffering in nature.    * This means they will always try to read ahead if they can. The    * LimitInputStream will ensure that the CryptoStream does not read past the    * provided length from the given Input Stream.    *     * @param conf configuration    * @param in given input stream    * @param length maximum number of bytes to read from the input stream    * @return InputStream encrypted input stream if encryption is    *         enabled; otherwise the given input stream itself    * @throws IOException exception in case of error    */
 DECL|method|wrapIfNecessary (Configuration conf, InputStream in, long length)
 specifier|public
 specifier|static
@@ -801,7 +833,7 @@ name|in
 return|;
 block|}
 block|}
-comment|/**    * Wraps a given FSDataInputStream with a CryptoInputStream. The size of the    * data buffer required for the stream is specified by the    * "mapreduce.job.encrypted-intermediate-data.buffer.kb" Job configuration    * variable.    *     * @param conf    * @param in    * @return FSDataInputStream    * @throws IOException    */
+comment|/**    * Wraps a given FSDataInputStream with a CryptoInputStream. The size of the    * data buffer required for the stream is specified by the    * "mapreduce.job.encrypted-intermediate-data.buffer.kb" Job configuration    * variable.    *     * @param conf configuration    * @param in given input stream    * @return FSDataInputStream encrypted input stream if encryption is    *         enabled; otherwise the given input stream itself    * @throws IOException exception in case of error    */
 DECL|method|wrapIfNecessary (Configuration conf, FSDataInputStream in)
 specifier|public
 specifier|static
