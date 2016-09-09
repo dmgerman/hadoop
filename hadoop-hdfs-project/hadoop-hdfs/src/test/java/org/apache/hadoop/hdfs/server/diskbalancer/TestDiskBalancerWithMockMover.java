@@ -2034,7 +2034,7 @@ name|dataset
 decl_stmt|;
 DECL|field|runCount
 specifier|private
-name|Integer
+name|int
 name|runCount
 decl_stmt|;
 DECL|field|sleepInCopyBlocks
@@ -2070,16 +2070,6 @@ operator|new
 name|AtomicBoolean
 argument_list|(
 literal|false
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|runCount
-operator|=
-operator|new
-name|Integer
-argument_list|(
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -2182,7 +2172,7 @@ expr_stmt|;
 block|}
 synchronized|synchronized
 init|(
-name|runCount
+name|this
 init|)
 block|{
 if|if
@@ -2318,7 +2308,7 @@ parameter_list|()
 block|{
 synchronized|synchronized
 init|(
-name|runCount
+name|this
 init|)
 block|{
 name|LOG
@@ -2328,16 +2318,10 @@ argument_list|(
 literal|"Run count : "
 operator|+
 name|runCount
-operator|.
-name|intValue
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
 name|runCount
-operator|.
-name|intValue
-argument_list|()
 return|;
 block|}
 block|}
@@ -2507,6 +2491,7 @@ block|}
 block|}
 DECL|class|DiskBalancerBuilder
 specifier|private
+specifier|static
 class|class
 name|DiskBalancerBuilder
 block|{
@@ -2640,6 +2625,7 @@ block|}
 block|}
 DECL|class|DiskBalancerClusterBuilder
 specifier|private
+specifier|static
 class|class
 name|DiskBalancerClusterBuilder
 block|{
@@ -2760,6 +2746,7 @@ block|}
 block|}
 DECL|class|PlanBuilder
 specifier|private
+specifier|static
 class|class
 name|PlanBuilder
 block|{
