@@ -4708,8 +4708,6 @@ name|void
 name|run
 parameter_list|()
 block|{
-try|try
-block|{
 name|Set
 argument_list|<
 name|File
@@ -4721,6 +4719,8 @@ name|HashSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|volumesToRemove
 operator|.
 name|add
@@ -4744,7 +4744,32 @@ name|getFile
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|/**            * TODO: {@link FsDatasetImpl#removeVolumes(Set, boolean)} is throwing            * IllegalMonitorStateException when there is a parallel reader/writer            * to the volume. Remove below exception handling block after fixing            * HDFS-10830.            */
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Problem preparing volumes to remove: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Exception in remove volume thread, check log for "
+operator|+
+literal|"details."
+argument_list|)
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -4777,28 +4802,6 @@ operator|+
 name|volumesToRemove
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Unexpected issue while removing volume: "
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|volRemoveCompletedLatch
-operator|.
-name|countDown
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 block|}
 comment|// Start the volume write operation

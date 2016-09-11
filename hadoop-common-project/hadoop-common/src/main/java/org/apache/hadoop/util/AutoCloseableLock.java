@@ -40,6 +40,20 @@ name|concurrent
 operator|.
 name|locks
 operator|.
+name|Condition
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
 name|ReentrantLock
 import|;
 end_import
@@ -194,6 +208,20 @@ operator|new
 name|UnsupportedOperationException
 argument_list|()
 throw|;
+block|}
+comment|/**    * See {@link ReentrantLock#newCondition()}.    * @return the Condition object    */
+DECL|method|newCondition ()
+specifier|public
+name|Condition
+name|newCondition
+parameter_list|()
+block|{
+return|return
+name|lock
+operator|.
+name|newCondition
+argument_list|()
+return|;
 block|}
 block|}
 end_class

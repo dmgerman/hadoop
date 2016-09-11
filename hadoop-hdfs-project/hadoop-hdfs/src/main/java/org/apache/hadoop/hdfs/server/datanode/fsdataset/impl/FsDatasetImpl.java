@@ -270,6 +270,20 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|locks
+operator|.
+name|Condition
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|TimeUnit
 import|;
 end_import
@@ -2310,6 +2324,12 @@ specifier|final
 name|AutoCloseableLock
 name|datasetLock
 decl_stmt|;
+DECL|field|datasetLockCondition
+specifier|private
+specifier|final
+name|Condition
+name|datasetLockCondition
+decl_stmt|;
 comment|/**    * An FSDataset has a directory where it loads its data files.    */
 DECL|method|FsDatasetImpl (DataNode datanode, DataStorage storage, Configuration conf )
 name|FsDatasetImpl
@@ -2399,6 +2419,15 @@ argument_list|,
 literal|300
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|datasetLockCondition
+operator|=
+name|datasetLock
+operator|.
+name|newCondition
+argument_list|()
 expr_stmt|;
 comment|// The number of volumes required for operation is the total number
 comment|// of volumes minus the number of failed volumes we can tolerate.
@@ -3715,7 +3744,7 @@ name|waitVolumeRemoved
 argument_list|(
 literal|5000
 argument_list|,
-name|this
+name|datasetLockCondition
 argument_list|)
 expr_stmt|;
 comment|// Removed all replica information for the blocks on the volume.
