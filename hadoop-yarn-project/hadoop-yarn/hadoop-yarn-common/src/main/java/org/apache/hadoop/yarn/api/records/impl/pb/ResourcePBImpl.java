@@ -983,6 +983,16 @@ block|}
 name|initResources
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|resources
+operator|.
+name|containsKey
+argument_list|(
+name|resource
+argument_list|)
+condition|)
+block|{
 name|resources
 operator|.
 name|put
@@ -992,6 +1002,7 @@ argument_list|,
 name|resourceInformation
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

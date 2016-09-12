@@ -1394,7 +1394,7 @@ literal|null
 expr_stmt|;
 block|}
 DECL|method|getUnits (String resourceValue)
-specifier|private
+specifier|public
 specifier|static
 name|String
 name|getUnits
