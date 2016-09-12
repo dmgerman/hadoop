@@ -4397,11 +4397,20 @@ operator|.
 name|SESSION_TIMEOUT
 argument_list|)
 expr_stmt|;
+name|boolean
+name|fromCache
+init|=
 name|client
 operator|.
 name|init
 argument_list|()
-expr_stmt|;
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|fromCache
+condition|)
+block|{
 name|watcher
 operator|.
 name|waitForZKConnection
@@ -4411,6 +4420,7 @@ operator|*
 literal|1000
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -4426,7 +4436,7 @@ name|log
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to connect to zookeeper quorum {}"
+literal|"Interrupted - unable to connect to zookeeper quorum {}"
 argument_list|,
 name|registryQuorum
 argument_list|,
