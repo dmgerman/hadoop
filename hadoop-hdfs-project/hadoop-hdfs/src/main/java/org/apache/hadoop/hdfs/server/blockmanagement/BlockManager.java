@@ -12901,7 +12901,7 @@ literal|null
 condition|)
 do|;
 block|}
-comment|// Iterate any remaing blocks that have not been reported and remove them
+comment|// Iterate any remaining blocks that have not been reported and remove them
 while|while
 condition|(
 name|storageBlocksIterator
@@ -13157,7 +13157,11 @@ name|BlockInfoToAdd
 argument_list|(
 name|storedBlock
 argument_list|,
+operator|new
+name|Block
+argument_list|(
 name|replica
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
