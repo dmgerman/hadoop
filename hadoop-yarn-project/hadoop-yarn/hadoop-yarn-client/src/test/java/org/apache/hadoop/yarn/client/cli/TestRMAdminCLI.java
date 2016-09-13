@@ -3177,11 +3177,11 @@ literal|"[-replaceLabelsOnNode "
 operator|+
 literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] "
 operator|+
-literal|"[-directlyAccessNodeLabelStore] [-updateNodeResource "
+literal|"[-directlyAccessNodeLabelStore] [-refreshClusterMaxPriority] "
 operator|+
-literal|"[NodeID] [MemSize] [vCores] ([OvercommitTimeout]) "
+literal|"[-updateNodeResource [NodeID] [MemSize] [vCores] "
 operator|+
-literal|"[-help [cmd]]"
+literal|"([OvercommitTimeout]) [-help [cmd]]"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3623,7 +3623,11 @@ literal|" [-removeFromClusterNodeLabels<label1,label2,label3>] [-replaceLabelsOn
 operator|+
 literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] [-directlyAccessNodeLabelStore] "
 operator|+
-literal|"[-updateNodeResource [NodeID] [MemSize] [vCores] ([OvercommitTimeout]) "
+literal|"[-refreshClusterMaxPriority] "
+operator|+
+literal|"[-updateNodeResource [NodeID] [MemSize] [vCores] "
+operator|+
+literal|"([OvercommitTimeout]) "
 operator|+
 literal|"[-transitionToActive [--forceactive]<serviceId>] "
 operator|+
