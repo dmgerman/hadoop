@@ -1993,6 +1993,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|idStr
+init|=
+name|containerId
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|LOG
@@ -2007,7 +2015,7 @@ name|debug
 argument_list|(
 literal|"storeContainer: containerId= "
 operator|+
-name|containerId
+name|idStr
 operator|+
 literal|", startRequest= "
 operator|+
@@ -2020,24 +2028,17 @@ name|keyRequest
 init|=
 name|CONTAINERS_KEY_PREFIX
 operator|+
-name|containerId
-operator|.
-name|toString
-argument_list|()
+name|idStr
 operator|+
 name|CONTAINER_REQUEST_KEY_SUFFIX
 decl_stmt|;
 name|String
 name|keyVersion
 init|=
-name|CONTAINERS_KEY_PREFIX
-operator|+
-name|containerId
-operator|.
-name|toString
-argument_list|()
-operator|+
-name|CONTAINER_VERSION_KEY_SUFFIX
+name|getContainerVersionKey
+argument_list|(
+name|idStr
+argument_list|)
 decl_stmt|;
 try|try
 block|{
@@ -2074,6 +2075,13 @@ name|toByteArray
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|containerVersion
+operator|!=
+literal|0
+condition|)
+block|{
 name|batch
 operator|.
 name|put
@@ -2094,6 +2102,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|db
 operator|.
 name|write
@@ -2125,6 +2134,24 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getContainerVersionKey (String containerId)
+name|String
+name|getContainerVersionKey
+parameter_list|(
+name|String
+name|containerId
+parameter_list|)
+block|{
+return|return
+name|CONTAINERS_KEY_PREFIX
+operator|+
+name|containerId
+operator|+
+name|CONTAINER_VERSION_KEY_SUFFIX
+return|;
 block|}
 annotation|@
 name|Override
@@ -7029,6 +7056,17 @@ parameter_list|()
 block|{
 return|return
 name|CURRENT_VERSION_INFO
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getDB ()
+name|DB
+name|getDB
+parameter_list|()
+block|{
+return|return
+name|db
 return|;
 block|}
 comment|/**    * 1) Versioning scheme: major.minor. For e.g. 1.0, 1.1, 1.2...1.25, 2.0 etc.    * 2) Any incompatible change of state-store is a major upgrade, and any    *    compatible change of state-store is a minor upgrade.    * 3) Within a minor upgrade, say 1.1 to 1.2:    *    overwrite the version info and proceed as normal.    * 4) Within a major upgrade, say 1.2 to 2.0:    *    throw exception and indicate user to use a separate upgrade tool to    *    upgrade NM state or remove incompatible old state.    */
