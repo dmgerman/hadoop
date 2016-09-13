@@ -54,7 +54,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 import|;
 end_import
 
@@ -170,7 +170,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 name|inst
 init|=
 operator|new

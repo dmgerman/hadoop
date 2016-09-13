@@ -2348,7 +2348,7 @@ name|length
 expr_stmt|;
 name|List
 argument_list|<
-name|FinalizedReplica
+name|ReplicaInfo
 argument_list|>
 name|bl
 init|=
@@ -2359,7 +2359,7 @@ argument_list|(
 name|bpid
 argument_list|)
 decl_stmt|;
-name|FinalizedReplica
+name|ReplicaInfo
 index|[]
 name|memReport
 init|=
@@ -2368,7 +2368,7 @@ operator|.
 name|toArray
 argument_list|(
 operator|new
-name|FinalizedReplica
+name|ReplicaInfo
 index|[
 name|bl
 operator|.
@@ -2412,7 +2412,7 @@ operator|.
 name|length
 condition|)
 block|{
-name|FinalizedReplica
+name|ReplicaInfo
 name|memBlock
 init|=
 name|memReport
@@ -2581,17 +2581,11 @@ block|}
 elseif|else
 if|if
 condition|(
-name|info
-operator|.
-name|getBlockFile
-argument_list|()
-operator|.
-name|compareTo
-argument_list|(
 name|memBlock
 operator|.
-name|getBlockFile
-argument_list|()
+name|compareWith
+argument_list|(
+name|info
 argument_list|)
 operator|!=
 literal|0
@@ -2679,7 +2673,7 @@ operator|.
 name|length
 condition|)
 block|{
-name|FinalizedReplica
+name|ReplicaInfo
 name|current
 init|=
 name|memReport

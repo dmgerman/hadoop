@@ -86,6 +86,24 @@ name|FsVolumeSpi
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|ReplicaRecoveryInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class describes a replica that has been finalized.  */
 end_comment
@@ -96,7 +114,7 @@ specifier|public
 class|class
 name|FinalizedReplica
 extends|extends
-name|ReplicaInfo
+name|LocalReplica
 block|{
 comment|/**    * Constructor    * @param blockId block id    * @param len replica length    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
 DECL|method|FinalizedReplica (long blockId, long len, long genStamp, FsVolumeSpi vol, File dir)
@@ -266,6 +284,93 @@ operator|.
 name|toString
 argument_list|()
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getOriginalReplica ()
+specifier|public
+name|ReplicaInfo
+name|getOriginalReplica
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Replica of type "
+operator|+
+name|getState
+argument_list|()
+operator|+
+literal|" does not support getOriginalReplica"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRecoveryID ()
+specifier|public
+name|long
+name|getRecoveryID
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Replica of type "
+operator|+
+name|getState
+argument_list|()
+operator|+
+literal|" does not support getRecoveryID"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|setRecoveryID (long recoveryId)
+specifier|public
+name|void
+name|setRecoveryID
+parameter_list|(
+name|long
+name|recoveryId
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Replica of type "
+operator|+
+name|getState
+argument_list|()
+operator|+
+literal|" does not support setRecoveryID"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|createInfo ()
+specifier|public
+name|ReplicaRecoveryInfo
+name|createInfo
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Replica of type "
+operator|+
+name|getState
+argument_list|()
+operator|+
+literal|" does not support createInfo"
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

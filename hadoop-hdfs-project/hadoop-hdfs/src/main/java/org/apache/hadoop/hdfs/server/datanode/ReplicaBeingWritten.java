@@ -96,9 +96,9 @@ specifier|public
 class|class
 name|ReplicaBeingWritten
 extends|extends
-name|ReplicaInPipeline
+name|LocalReplicaInPipeline
 block|{
-comment|/**    * Constructor for a zero length replica    * @param blockId block id    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param bytesToReserve disk space to reserve for this replica, based on    *                       the estimated maximum block length.    */
+comment|/**    * Constructor for a zero length replica.    * @param blockId block id    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param bytesToReserve disk space to reserve for this replica, based on    *                       the estimated maximum block length.    */
 DECL|method|ReplicaBeingWritten (long blockId, long genStamp, FsVolumeSpi vol, File dir, long bytesToReserve)
 specifier|public
 name|ReplicaBeingWritten
@@ -133,7 +133,7 @@ name|bytesToReserve
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor    * @param block a block    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param writer a thread that is writing to this replica    */
+comment|/**    * Constructor.    * @param block a block    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param writer a thread that is writing to this replica    */
 DECL|method|ReplicaBeingWritten (Block block, FsVolumeSpi vol, File dir, Thread writer)
 specifier|public
 name|ReplicaBeingWritten
@@ -163,7 +163,7 @@ name|writer
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor    * @param blockId block id    * @param len replica length    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param writer a thread that is writing to this replica    * @param bytesToReserve disk space to reserve for this replica, based on    *                       the estimated maximum block length.    */
+comment|/**    * Constructor.    * @param blockId block id    * @param len replica length    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param writer a thread that is writing to this replica    * @param bytesToReserve disk space to reserve for this replica, based on    *                       the estimated maximum block length.    */
 DECL|method|ReplicaBeingWritten (long blockId, long len, long genStamp, FsVolumeSpi vol, File dir, Thread writer, long bytesToReserve)
 specifier|public
 name|ReplicaBeingWritten

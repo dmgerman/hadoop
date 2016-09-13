@@ -538,7 +538,7 @@ argument_list|)
 decl_stmt|;
 comment|// we pass expected len as zero, - fsdataset should use the sizeof actual
 comment|// data written
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 name|bInfo
 init|=
 name|fsdataset

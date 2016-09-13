@@ -75,7 +75,7 @@ block|{
 DECL|field|replica
 specifier|private
 specifier|final
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 name|replica
 decl_stmt|;
 DECL|field|volumeReference
@@ -84,11 +84,11 @@ specifier|final
 name|FsVolumeReference
 name|volumeReference
 decl_stmt|;
-DECL|method|ReplicaHandler ( ReplicaInPipelineInterface replica, FsVolumeReference reference)
+DECL|method|ReplicaHandler ( ReplicaInPipeline replica, FsVolumeReference reference)
 specifier|public
 name|ReplicaHandler
 parameter_list|(
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 name|replica
 parameter_list|,
 name|FsVolumeReference
@@ -136,7 +136,7 @@ block|}
 block|}
 DECL|method|getReplica ()
 specifier|public
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 name|getReplica
 parameter_list|()
 block|{

@@ -302,7 +302,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 import|;
 end_import
 
@@ -2945,7 +2945,7 @@ specifier|public
 name|void
 name|failPipeline
 parameter_list|(
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 name|replicaInfo
 parameter_list|,
 name|String

@@ -22,16 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -98,14 +88,14 @@ specifier|public
 class|class
 name|ReplicaUnderRecovery
 extends|extends
-name|ReplicaInfo
+name|LocalReplica
 block|{
 DECL|field|original
 specifier|private
-name|ReplicaInfo
+name|LocalReplica
 name|original
 decl_stmt|;
-comment|// the original replica that needs to be recovered
+comment|// original replica to be recovered
 DECL|field|recoveryId
 specifier|private
 name|long
@@ -133,7 +123,12 @@ operator|.
 name|getVolume
 argument_list|()
 argument_list|,
+operator|(
+operator|(
+name|LocalReplica
+operator|)
 name|replica
+operator|)
 operator|.
 name|getDir
 argument_list|()
@@ -183,6 +178,9 @@ name|this
 operator|.
 name|original
 operator|=
+operator|(
+name|LocalReplica
+operator|)
 name|replica
 expr_stmt|;
 name|this
@@ -210,6 +208,9 @@ name|this
 operator|.
 name|original
 operator|=
+operator|(
+name|LocalReplica
+operator|)
 name|from
 operator|.
 name|getOriginalReplica
@@ -225,7 +226,8 @@ name|getRecoveryID
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**     * Get the recovery id    * @return the generation stamp that the replica will be bumped to     */
+annotation|@
+name|Override
 DECL|method|getRecoveryID ()
 specifier|public
 name|long
@@ -236,7 +238,8 @@ return|return
 name|recoveryId
 return|;
 block|}
-comment|/**     * Set the recovery id    * @param recoveryId the new recoveryId    */
+annotation|@
+name|Override
 DECL|method|setRecoveryID (long recoveryId)
 specifier|public
 name|void
@@ -282,6 +285,8 @@ throw|;
 block|}
 block|}
 comment|/**    * Get the original replica that's under recovery    * @return the original replica under recovery    */
+annotation|@
+name|Override
 DECL|method|getOriginalReplica ()
 specifier|public
 name|ReplicaInfo
@@ -421,27 +426,27 @@ block|}
 annotation|@
 name|Override
 comment|//ReplicaInfo
-DECL|method|setDir (File dir)
+DECL|method|updateWithReplica (StorageLocation replicaLocation)
 specifier|public
 name|void
-name|setDir
+name|updateWithReplica
 parameter_list|(
-name|File
-name|dir
+name|StorageLocation
+name|replicaLocation
 parameter_list|)
 block|{
 name|super
 operator|.
-name|setDir
+name|updateWithReplica
 argument_list|(
-name|dir
+name|replicaLocation
 argument_list|)
 expr_stmt|;
 name|original
 operator|.
-name|setDir
+name|updateWithReplica
 argument_list|(
-name|dir
+name|replicaLocation
 argument_list|)
 expr_stmt|;
 block|}
@@ -531,6 +536,8 @@ operator|+
 name|original
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createInfo ()
 specifier|public
 name|ReplicaRecoveryInfo

@@ -216,7 +216,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FinalizedReplica
+name|ReplicaInfo
 import|;
 end_import
 
@@ -951,7 +951,7 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|FinalizedReplica
+name|ReplicaInfo
 argument_list|>
 name|replicas
 init|=
@@ -994,7 +994,7 @@ name|idx
 operator|++
 control|)
 block|{
-name|FinalizedReplica
+name|ReplicaInfo
 name|replica
 init|=
 name|replicas

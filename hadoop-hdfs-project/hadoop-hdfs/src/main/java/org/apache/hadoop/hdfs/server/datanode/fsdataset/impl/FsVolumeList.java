@@ -1682,9 +1682,7 @@ name|IOUtils
 operator|.
 name|cleanup
 argument_list|(
-name|FsDatasetImpl
-operator|.
-name|LOG
+literal|null
 argument_list|,
 name|ref
 argument_list|)
