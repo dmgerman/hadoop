@@ -1706,12 +1706,6 @@ name|boolean
 name|sizeBasedWeight
 decl_stmt|;
 comment|// Give larger weights to larger jobs
-DECL|field|weightAdjuster
-specifier|protected
-name|WeightAdjuster
-name|weightAdjuster
-decl_stmt|;
-comment|// Can be null for no weight adjuster
 DECL|field|continuousSchedulingEnabled
 specifier|protected
 name|boolean
@@ -3320,26 +3314,6 @@ operator|.
 name|getPriority
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|weightAdjuster
-operator|!=
-literal|null
-condition|)
-block|{
-comment|// Run weight through the user-supplied weightAdjuster
-name|weight
-operator|=
-name|weightAdjuster
-operator|.
-name|adjustWeight
-argument_list|(
-name|app
-argument_list|,
-name|weight
-argument_list|)
-expr_stmt|;
-block|}
 name|ResourceWeights
 name|resourceWeights
 init|=

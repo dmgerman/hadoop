@@ -435,6 +435,15 @@ name|DISTCP_DEFAULT_XML
 init|=
 literal|"distcp-default.xml"
 decl_stmt|;
+DECL|field|DISTCP_SITE_XML
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|DISTCP_SITE_XML
+init|=
+literal|"distcp-site.xml"
+decl_stmt|;
 DECL|field|rand
 specifier|static
 specifier|final
@@ -483,6 +492,13 @@ operator|.
 name|addResource
 argument_list|(
 name|DISTCP_DEFAULT_XML
+argument_list|)
+expr_stmt|;
+name|config
+operator|.
+name|addResource
+argument_list|(
+name|DISTCP_SITE_XML
 argument_list|)
 expr_stmt|;
 name|setConf
@@ -1820,7 +1836,7 @@ name|exitCode
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Loads properties from distcp-default.xml into configuration    * object    * @return Configuration which includes properties from distcp-default.xml    */
+comment|/**    * Loads properties from distcp-default.xml into configuration    * object    * @return Configuration which includes properties from distcp-default.xml    *         and distcp-site.xml    */
 DECL|method|getDefaultConf ()
 specifier|private
 specifier|static
@@ -1840,6 +1856,13 @@ operator|.
 name|addResource
 argument_list|(
 name|DISTCP_DEFAULT_XML
+argument_list|)
+expr_stmt|;
+name|config
+operator|.
+name|addResource
+argument_list|(
+name|DISTCP_SITE_XML
 argument_list|)
 expr_stmt|;
 return|return

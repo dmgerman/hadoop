@@ -297,6 +297,7 @@ name|IPC_SERVER_RPC_READ_CONNECTION_QUEUE_SIZE_DEFAULT
 init|=
 literal|100
 decl_stmt|;
+comment|/** Max request size a server will accept. */
 DECL|field|IPC_MAXIMUM_DATA_LENGTH
 specifier|public
 specifier|static
@@ -306,6 +307,7 @@ name|IPC_MAXIMUM_DATA_LENGTH
 init|=
 literal|"ipc.maximum.data.length"
 decl_stmt|;
+comment|/** Default value for IPC_MAXIMUM_DATA_LENGTH. */
 DECL|field|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
 specifier|public
 specifier|static
@@ -314,6 +316,30 @@ name|int
 name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
 init|=
 literal|64
+operator|*
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
+comment|/** Max response size a client will accept. */
+DECL|field|IPC_MAXIMUM_RESPONSE_LENGTH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_MAXIMUM_RESPONSE_LENGTH
+init|=
+literal|"ipc.maximum.response.length"
+decl_stmt|;
+comment|/** Default value for IPC_MAXIMUM_RESPONSE_LENGTH. */
+DECL|field|IPC_MAXIMUM_RESPONSE_LENGTH_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IPC_MAXIMUM_RESPONSE_LENGTH_DEFAULT
+init|=
+literal|128
 operator|*
 literal|1024
 operator|*

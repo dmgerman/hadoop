@@ -1459,6 +1459,11 @@ name|NativeCrc32
 operator|.
 name|isAvailable
 argument_list|()
+operator|&&
+name|data
+operator|.
+name|isDirect
+argument_list|()
 condition|)
 block|{
 name|NativeCrc32

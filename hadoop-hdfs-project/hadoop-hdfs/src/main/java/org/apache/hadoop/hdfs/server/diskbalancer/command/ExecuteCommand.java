@@ -188,7 +188,7 @@ name|hdfs
 operator|.
 name|tools
 operator|.
-name|DiskBalancer
+name|DiskBalancerCLI
 import|;
 end_import
 
@@ -230,7 +230,7 @@ argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|EXECUTE
 argument_list|,
@@ -267,7 +267,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|EXECUTE
 argument_list|)
@@ -275,7 +275,7 @@ argument_list|)
 expr_stmt|;
 name|verifyCommandOptions
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|EXECUTE
 argument_list|,
@@ -289,7 +289,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|EXECUTE
 argument_list|)
@@ -428,7 +428,7 @@ name|submitDiskBalancerPlan
 argument_list|(
 name|planHash
 argument_list|,
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|PLAN_VERSION
 argument_list|,
@@ -516,7 +516,7 @@ literal|"hdfs diskbalancer -execute<planfile>"
 argument_list|,
 name|header
 argument_list|,
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|getExecuteOptions
 argument_list|()

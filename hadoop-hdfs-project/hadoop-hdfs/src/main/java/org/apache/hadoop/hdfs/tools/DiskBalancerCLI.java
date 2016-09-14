@@ -333,10 +333,10 @@ comment|/**  * DiskBalancer is a tool that can be used to ensure that data is sp
 end_comment
 
 begin_class
-DECL|class|DiskBalancer
+DECL|class|DiskBalancerCLI
 specifier|public
 class|class
-name|DiskBalancer
+name|DiskBalancerCLI
 extends|extends
 name|Configured
 implements|implements
@@ -522,7 +522,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|class
 argument_list|)
@@ -594,9 +594,9 @@ name|Options
 argument_list|()
 decl_stmt|;
 comment|/**    * Construct a DiskBalancer.    *    * @param conf    */
-DECL|method|DiskBalancer (Configuration conf)
+DECL|method|DiskBalancerCLI (Configuration conf)
 specifier|public
-name|DiskBalancer
+name|DiskBalancerCLI
 parameter_list|(
 name|Configuration
 name|conf
@@ -622,11 +622,11 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|DiskBalancer
+name|DiskBalancerCLI
 name|shell
 init|=
 operator|new
-name|DiskBalancer
+name|DiskBalancerCLI
 argument_list|(
 operator|new
 name|HdfsConfiguration
@@ -1571,7 +1571,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|PLAN
 argument_list|)
@@ -1593,7 +1593,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|EXECUTE
 argument_list|)
@@ -1615,7 +1615,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|QUERY
 argument_list|)
@@ -1637,7 +1637,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|CANCEL
 argument_list|)
@@ -1659,7 +1659,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|REPORT
 argument_list|)
@@ -1683,7 +1683,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|HELP
 argument_list|)

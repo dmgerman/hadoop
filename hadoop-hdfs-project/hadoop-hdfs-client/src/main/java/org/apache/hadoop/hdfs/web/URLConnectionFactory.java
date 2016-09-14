@@ -786,6 +786,17 @@ name|e
 parameter_list|)
 block|{
 comment|// Unreachable
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Open connection {} failed"
+argument_list|,
+name|url
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 return|return
 literal|null
 return|;

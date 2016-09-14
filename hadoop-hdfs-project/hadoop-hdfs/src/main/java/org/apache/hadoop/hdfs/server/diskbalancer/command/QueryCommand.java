@@ -156,7 +156,7 @@ name|hdfs
 operator|.
 name|tools
 operator|.
-name|DiskBalancer
+name|DiskBalancerCLI
 import|;
 end_import
 
@@ -202,18 +202,16 @@ argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|QUERY
 argument_list|,
-literal|"Queries the status of disk"
-operator|+
-literal|" plan running on a given datanode."
+literal|"Queries the status of disk plan running on a given datanode."
 argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|VERBOSE
 argument_list|,
@@ -250,7 +248,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|QUERY
 argument_list|)
@@ -258,7 +256,7 @@ argument_list|)
 expr_stmt|;
 name|verifyCommandOptions
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|QUERY
 argument_list|,
@@ -272,7 +270,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|QUERY
 argument_list|)
@@ -402,7 +400,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|VERBOSE
 argument_list|)
@@ -482,7 +480,7 @@ literal|"hdfs diskbalancer -query<hostname>  [options]"
 argument_list|,
 name|header
 argument_list|,
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|getQueryOptions
 argument_list|()

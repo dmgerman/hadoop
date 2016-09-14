@@ -86,7 +86,10 @@ name|NO_SUCH_PLAN
 block|,
 DECL|enumConstant|UNKNOWN_KEY
 name|UNKNOWN_KEY
-block|}
+block|,
+DECL|enumConstant|INVALID_NODE
+name|INVALID_NODE
+block|,   }
 DECL|field|result
 specifier|private
 specifier|final

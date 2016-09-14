@@ -148,6 +148,24 @@ name|server
 operator|.
 name|diskbalancer
 operator|.
+name|DiskBalancerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|diskbalancer
+operator|.
 name|datamodel
 operator|.
 name|DiskBalancerDataNode
@@ -206,7 +224,7 @@ name|hdfs
 operator|.
 name|tools
 operator|.
-name|DiskBalancer
+name|DiskBalancerCLI
 import|;
 end_import
 
@@ -280,7 +298,7 @@ name|out
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|REPORT
 argument_list|,
@@ -302,7 +320,7 @@ argument_list|)
 decl_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|TOP
 argument_list|,
@@ -315,12 +333,12 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Print out volume information for a DataNode."
+literal|"Print out volume information for DataNode(s)."
 argument_list|)
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|NODE
 argument_list|,
@@ -368,7 +386,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|REPORT
 argument_list|)
@@ -376,7 +394,7 @@ argument_list|)
 expr_stmt|;
 name|verifyCommandOptions
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|REPORT
 argument_list|,
@@ -414,13 +432,13 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|NODE
 argument_list|)
 condition|)
 block|{
-comment|/*        * Reporting volume information for a specific DataNode        */
+comment|/*        * Reporting volume information for specific DataNode(s)        */
 name|handleNodeReport
 argument_list|(
 name|cmd
@@ -648,7 +666,7 @@ name|outputLine
 init|=
 literal|""
 decl_stmt|;
-comment|/*      * get value that identifies a DataNode from command line, it could be UUID,      * IP address or host name.      */
+comment|/*      * get value that identifies DataNode(s) from command line, it could be      * UUID, IP address or host name.      */
 specifier|final
 name|String
 name|nodeVal
@@ -657,7 +675,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|NODE
 argument_list|)
@@ -686,14 +704,14 @@ expr_stmt|;
 block|}
 else|else
 block|{
-comment|/*        * Reporting volume information for a specific DataNode        */
+comment|/*        * Reporting volume information for specific DataNode(s)        */
 name|outputLine
 operator|=
 name|String
 operator|.
 name|format
 argument_list|(
-literal|"Reporting volume information for DataNode '%s'."
+literal|"Reporting volume information for DataNode(s) '%s'."
 argument_list|,
 name|nodeVal
 argument_list|)
@@ -705,6 +723,112 @@ argument_list|,
 name|outputLine
 argument_list|)
 expr_stmt|;
+name|List
+argument_list|<
+name|DiskBalancerDataNode
+argument_list|>
+name|dbdns
+init|=
+name|Lists
+operator|.
+name|newArrayList
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+name|dbdns
+operator|=
+name|getNodes
+argument_list|(
+name|nodeVal
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|DiskBalancerException
+name|e
+parameter_list|)
+block|{
+comment|// If there are some invalid nodes that contained in nodeVal,
+comment|// the exception will be threw.
+name|recordOutput
+argument_list|(
+name|result
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
+operator|!
+name|dbdns
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+for|for
+control|(
+name|DiskBalancerDataNode
+name|node
+range|:
+name|dbdns
+control|)
+block|{
+name|recordNodeReport
+argument_list|(
+name|result
+argument_list|,
+name|node
+argument_list|,
+name|nodeFormat
+argument_list|,
+name|volumeFormat
+argument_list|)
+expr_stmt|;
+name|result
+operator|.
+name|append
+argument_list|(
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+block|}
+comment|/**    * Put node report lines to string buffer.    */
+DECL|method|recordNodeReport (StrBuilder result, DiskBalancerDataNode dbdn, final String nodeFormat, final String volumeFormat)
+specifier|private
+name|void
+name|recordNodeReport
+parameter_list|(
+name|StrBuilder
+name|result
+parameter_list|,
+name|DiskBalancerDataNode
+name|dbdn
+parameter_list|,
+specifier|final
+name|String
+name|nodeFormat
+parameter_list|,
+specifier|final
+name|String
+name|volumeFormat
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 specifier|final
 name|String
 name|trueStr
@@ -717,48 +841,12 @@ name|falseStr
 init|=
 literal|"False"
 decl_stmt|;
-name|DiskBalancerDataNode
-name|dbdn
-init|=
-name|getNode
-argument_list|(
-name|nodeVal
-argument_list|)
-decl_stmt|;
 comment|// get storage path of datanode
 name|populatePathNames
 argument_list|(
 name|dbdn
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|dbdn
-operator|==
-literal|null
-condition|)
-block|{
-name|outputLine
-operator|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Can't find a DataNode that matches '%s'."
-argument_list|,
-name|nodeVal
-argument_list|)
-expr_stmt|;
-name|recordOutput
-argument_list|(
-name|result
-argument_list|,
-name|outputLine
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
 name|result
 operator|.
 name|appendln
@@ -955,8 +1043,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-block|}
 comment|/**    * Prints the help message.    */
 annotation|@
 name|Override
@@ -969,11 +1055,11 @@ block|{
 name|String
 name|header
 init|=
-literal|"Report command reports the volume information of a given"
+literal|"Report command reports the volume information of given"
 operator|+
-literal|" datanode, or prints out the list of nodes that will benefit from "
+literal|" datanode(s), or prints out the list of nodes that will benefit "
 operator|+
-literal|"running disk balancer. Top defaults to "
+literal|"from running disk balancer. Top defaults to "
 operator|+
 name|getDefaultTop
 argument_list|()
@@ -989,7 +1075,7 @@ literal|"hdfs diskbalancer -report -top 5\n"
 operator|+
 literal|"hdfs diskbalancer -report "
 operator|+
-literal|"-node {DataNodeID | IP | Hostname}"
+literal|"-node [<DataNodeID|IP|Hostname>,...]"
 decl_stmt|;
 name|HelpFormatter
 name|helpFormatter
@@ -1008,7 +1094,7 @@ literal|"-report [options]"
 argument_list|,
 name|header
 argument_list|,
-name|DiskBalancer
+name|DiskBalancerCLI
 operator|.
 name|getReportOptions
 argument_list|()

@@ -343,6 +343,10 @@ literal|"     analyzed (128GB by default).\n"
 operator|+
 literal|"    -step defines the granularity of the distribution. (2MB by default)\n"
 operator|+
+literal|"    -format formats the output result in a human-readable fashion\n"
+operator|+
+literal|"     rather than a number of bytes. (false by default)\n"
+operator|+
 literal|"  * NameDistribution: This processor analyzes the file names\n"
 operator|+
 literal|"    in the image and prints total number of file names and how frequently\n"
@@ -763,6 +767,17 @@ name|options
 operator|.
 name|addOption
 argument_list|(
+literal|"format"
+argument_list|,
+literal|false
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
 literal|"skipBlocks"
 argument_list|,
 literal|false
@@ -1114,6 +1129,16 @@ literal|"0"
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|boolean
+name|formatOutput
+init|=
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+literal|"format"
+argument_list|)
+decl_stmt|;
 name|v
 operator|=
 operator|new
@@ -1124,6 +1149,8 @@ argument_list|,
 name|maxSize
 argument_list|,
 name|step
+argument_list|,
+name|formatOutput
 argument_list|)
 expr_stmt|;
 block|}

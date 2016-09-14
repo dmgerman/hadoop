@@ -204,10 +204,9 @@ specifier|private
 name|float
 name|mapBandwidth
 init|=
-name|DistCpConstants
-operator|.
-name|DEFAULT_BANDWIDTH_MB
+literal|0
 decl_stmt|;
+comment|// Indicates that we should use the default.
 DECL|field|copyStrategy
 specifier|private
 name|String
@@ -1712,6 +1711,13 @@ name|skipCRC
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|mapBandwidth
+operator|>
+literal|0
+condition|)
+block|{
 name|DistCpOptionSwitch
 operator|.
 name|addToConf
@@ -1730,6 +1736,7 @@ name|mapBandwidth
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|DistCpOptionSwitch
 operator|.
 name|addToConf

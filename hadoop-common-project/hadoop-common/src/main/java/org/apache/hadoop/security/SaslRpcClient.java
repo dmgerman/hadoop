@@ -22,16 +22,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|BufferedInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|BufferedOutputStream
 import|;
 end_import
@@ -53,16 +43,6 @@ operator|.
 name|io
 operator|.
 name|DataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|DataOutputStream
 import|;
 end_import
 
@@ -401,6 +381,22 @@ operator|.
 name|fs
 operator|.
 name|GlobPattern
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|Client
+operator|.
+name|IpcStreams
 import|;
 end_import
 
@@ -1959,46 +1955,17 @@ name|serverPrincipal
 return|;
 block|}
 comment|/**    * Do client side SASL authentication with server via the given InputStream    * and OutputStream    *     * @param inS    *          InputStream to use    * @param outS    *          OutputStream to use    * @return AuthMethod used to negotiate the connection    * @throws IOException    */
-DECL|method|saslConnect (InputStream inS, OutputStream outS)
+DECL|method|saslConnect (IpcStreams ipcStreams)
 specifier|public
 name|AuthMethod
 name|saslConnect
 parameter_list|(
-name|InputStream
-name|inS
-parameter_list|,
-name|OutputStream
-name|outS
+name|IpcStreams
+name|ipcStreams
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|DataInputStream
-name|inStream
-init|=
-operator|new
-name|DataInputStream
-argument_list|(
-operator|new
-name|BufferedInputStream
-argument_list|(
-name|inS
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|DataOutputStream
-name|outStream
-init|=
-operator|new
-name|DataOutputStream
-argument_list|(
-operator|new
-name|BufferedOutputStream
-argument_list|(
-name|outS
-argument_list|)
-argument_list|)
-decl_stmt|;
 comment|// redefined if/when a SASL negotiation starts, can be queried if the
 comment|// negotiation fails
 name|authMethod
@@ -2009,7 +1976,9 @@ name|SIMPLE
 expr_stmt|;
 name|sendSaslMessage
 argument_list|(
-name|outStream
+name|ipcStreams
+operator|.
+name|out
 argument_list|,
 name|negotiateRequest
 argument_list|)
@@ -2022,34 +1991,14 @@ literal|false
 decl_stmt|;
 do|do
 block|{
-name|int
-name|rpcLen
-init|=
-name|inStream
-operator|.
-name|readInt
-argument_list|()
-decl_stmt|;
 name|ByteBuffer
 name|bb
 init|=
-name|ByteBuffer
+name|ipcStreams
 operator|.
-name|allocate
-argument_list|(
-name|rpcLen
-argument_list|)
-decl_stmt|;
-name|inStream
-operator|.
-name|readFully
-argument_list|(
-name|bb
-operator|.
-name|array
+name|readResponse
 argument_list|()
-argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|RpcWritable
 operator|.
 name|Buffer
@@ -2439,7 +2388,9 @@ condition|)
 block|{
 name|sendSaslMessage
 argument_list|(
-name|outStream
+name|ipcStreams
+operator|.
+name|out
 argument_list|,
 name|response
 operator|.
@@ -2512,6 +2463,11 @@ argument_list|(
 name|buf
 argument_list|)
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|out
+init|)
+block|{
 name|buf
 operator|.
 name|writeTo
@@ -2524,6 +2480,7 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Evaluate the server provided challenge.  The server must send a token    * if it's not done.  If the server is done, the challenge token is    * optional because not all mechanisms send a final token for the client to    * update its internal state.  The client must also be done after    * evaluating the optional token to ensure a malicious server doesn't    * prematurely end the negotiation with a phony success.    *      * @param saslResponse - client response to challenge    * @param serverIsDone - server negotiation state    * @throws SaslException - any problems with negotiation    */
 DECL|method|saslEvaluateToken (RpcSaslProto saslResponse, boolean serverIsDone)

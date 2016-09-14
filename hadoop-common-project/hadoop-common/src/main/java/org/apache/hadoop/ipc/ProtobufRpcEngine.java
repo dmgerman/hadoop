@@ -496,7 +496,7 @@ argument_list|()
 decl_stmt|;
 static|static
 block|{
-comment|// Register the rpcRequest deserializer for ProtobufRpcEngine
+comment|// Register the rpcRequest deserializer for WritableRpcEngine
 name|org
 operator|.
 name|apache
@@ -1195,7 +1195,7 @@ throw|throw
 operator|new
 name|ServiceException
 argument_list|(
-literal|"Too many or few parameters for request. Method: ["
+literal|"Too many parameters for request. Method: ["
 operator|+
 name|method
 operator|.
