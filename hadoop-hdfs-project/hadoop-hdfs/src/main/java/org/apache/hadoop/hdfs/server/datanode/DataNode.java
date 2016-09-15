@@ -3486,11 +3486,6 @@ name|StorageLocation
 argument_list|>
 name|dataDirs
 decl_stmt|;
-DECL|field|conf
-specifier|private
-name|Configuration
-name|conf
-decl_stmt|;
 DECL|field|confVersion
 specifier|private
 specifier|final
@@ -3779,7 +3774,10 @@ name|BlockScanner
 argument_list|(
 name|this
 argument_list|,
-name|conf
+name|this
+operator|.
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
@@ -3882,8 +3880,6 @@ operator|new
 name|BlockScanner
 argument_list|(
 name|this
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 name|this
@@ -4160,8 +4156,6 @@ argument_list|)
 expr_stmt|;
 name|startDataNode
 argument_list|(
-name|conf
-argument_list|,
 name|dataDirs
 argument_list|,
 name|resources
@@ -4346,7 +4340,8 @@ name|newVal
 argument_list|)
 expr_stmt|;
 return|return
-name|conf
+name|getConf
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -4835,9 +4830,8 @@ name|loc
 range|:
 name|getStorageLocations
 argument_list|(
-name|this
-operator|.
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 control|)
 block|{
@@ -5826,7 +5820,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-name|conf
+name|getConf
+argument_list|()
 operator|.
 name|set
 argument_list|(
@@ -6028,14 +6023,11 @@ name|name
 return|;
 block|}
 comment|/**    * @see DFSUtil#getHttpPolicy(org.apache.hadoop.conf.Configuration)    * for information related to the different configuration options and    * Http Policy is decided.    */
-DECL|method|startInfoServer (Configuration conf)
+DECL|method|startInfoServer ()
 specifier|private
 name|void
 name|startInfoServer
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 block|{
@@ -6055,14 +6047,13 @@ argument_list|()
 else|:
 literal|null
 decl_stmt|;
-name|this
-operator|.
 name|httpServer
 operator|=
 operator|new
 name|DatanodeHttpServer
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 name|this
 argument_list|,
@@ -6188,14 +6179,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|initIpcServer (Configuration conf)
+DECL|method|initIpcServer ()
 specifier|private
 name|void
 name|initIpcServer
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 block|{
@@ -6206,7 +6194,8 @@ name|NetUtils
 operator|.
 name|createSocketAddr
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 operator|.
 name|getTrimmed
 argument_list|(
@@ -6219,7 +6208,8 @@ name|RPC
 operator|.
 name|setProtocolEngine
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 name|ClientDatanodeProtocolPB
 operator|.
@@ -6256,7 +6246,8 @@ name|RPC
 operator|.
 name|Builder
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 operator|.
 name|setProtocol
@@ -6289,7 +6280,8 @@ argument_list|)
 operator|.
 name|setNumHandlers
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 operator|.
 name|getInt
 argument_list|(
@@ -6334,7 +6326,8 @@ name|DFSUtil
 operator|.
 name|addPBProtocol
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 name|ReconfigurationProtocolPB
 operator|.
@@ -6367,7 +6360,8 @@ name|DFSUtil
 operator|.
 name|addPBProtocol
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 name|InterDatanodeProtocolPB
 operator|.
@@ -6401,7 +6395,8 @@ name|DFSUtil
 operator|.
 name|addPBProtocol
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 name|TraceAdminProtocolPB
 operator|.
@@ -6427,7 +6422,8 @@ expr_stmt|;
 comment|// set service-level authorization security policy
 if|if
 condition|(
-name|conf
+name|getConf
+argument_list|()
 operator|.
 name|getBoolean
 argument_list|(
@@ -6443,7 +6439,8 @@ name|ipcServer
 operator|.
 name|refreshServiceAcl
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 operator|new
 name|HDFSPolicyProvider
@@ -6783,14 +6780,11 @@ literal|null
 expr_stmt|;
 block|}
 block|}
-DECL|method|initDataXceiver (Configuration conf)
+DECL|method|initDataXceiver ()
 specifier|private
 name|void
 name|initDataXceiver
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 block|{
@@ -6819,7 +6813,8 @@ block|{
 name|int
 name|backlogLength
 init|=
-name|conf
+name|getConf
+argument_list|()
 operator|.
 name|getInt
 argument_list|(
@@ -6845,7 +6840,8 @@ name|DataNode
 operator|.
 name|getStreamingAddr
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 argument_list|,
 name|backlogLength
@@ -6906,7 +6902,8 @@ name|DataXceiverServer
 argument_list|(
 name|tcpPeerServer
 argument_list|,
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 name|this
 argument_list|)
@@ -6935,7 +6932,8 @@ expr_stmt|;
 comment|// auto destroy when empty
 if|if
 condition|(
-name|conf
+name|getConf
+argument_list|()
 operator|.
 name|getBoolean
 argument_list|(
@@ -6956,7 +6954,8 @@ operator|.
 name|DEFAULT
 argument_list|)
 operator|||
-name|conf
+name|getConf
+argument_list|()
 operator|.
 name|getBoolean
 argument_list|(
@@ -6975,7 +6974,8 @@ name|domainPeerServer
 init|=
 name|getDomainPeerServer
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 name|streamingAddr
 operator|.
@@ -7004,7 +7004,8 @@ name|DataXceiverServer
 argument_list|(
 name|domainPeerServer
 argument_list|,
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 name|this
 argument_list|)
@@ -7031,7 +7032,8 @@ operator|=
 operator|new
 name|ShortCircuitRegistry
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -7772,19 +7774,16 @@ operator|.
 name|cacheReportsDisabledForTests
 return|;
 block|}
-comment|/**    * This method starts the data node with the specified conf.    *     * @param conf - the configuration    *  if conf's CONFIG_PROPERTY_SIMULATED property is set    *  then a simulated storage based data node is created.    *     * @param dataDirs - only for a non-simulated storage data node    * @throws IOException    */
-DECL|method|startDataNode (Configuration conf, List<StorageLocation> dataDirs, SecureResources resources )
+comment|/**    * This method starts the data node with the specified conf.    *     * If conf's CONFIG_PROPERTY_SIMULATED property is set    * then a simulated storage based data node is created.    *     * @param dataDirs - only for a non-simulated storage data node    * @throws IOException    */
+DECL|method|startDataNode (List<StorageLocation> dataDirectories, SecureResources resources )
 name|void
 name|startDataNode
 parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
 name|List
 argument_list|<
 name|StorageLocation
 argument_list|>
-name|dataDirs
+name|dataDirectories
 parameter_list|,
 name|SecureResources
 name|resources
@@ -7808,15 +7807,9 @@ name|this
 operator|.
 name|dataDirs
 operator|=
-name|dataDirs
+name|dataDirectories
 expr_stmt|;
 block|}
-name|this
-operator|.
-name|conf
-operator|=
-name|conf
-expr_stmt|;
 name|this
 operator|.
 name|dnConf
@@ -7824,14 +7817,15 @@ operator|=
 operator|new
 name|DNConf
 argument_list|(
-name|conf
+name|this
 argument_list|)
 expr_stmt|;
 name|checkSecureConfig
 argument_list|(
 name|dnConf
 argument_list|,
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 name|resources
 argument_list|)
@@ -8015,14 +8009,10 @@ name|registerMXBean
 argument_list|()
 expr_stmt|;
 name|initDataXceiver
-argument_list|(
-name|conf
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|startInfoServer
-argument_list|(
-name|conf
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|pauseMonitor
 operator|=
@@ -8034,7 +8024,8 @@ name|pauseMonitor
 operator|.
 name|init
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|pauseMonitor
@@ -8081,9 +8072,7 @@ name|supergroup
 argument_list|)
 expr_stmt|;
 name|initIpcServer
-argument_list|(
-name|conf
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|metrics
 operator|=
@@ -8091,7 +8080,8 @@ name|DataNodeMetrics
 operator|.
 name|create
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 name|getDisplayName
 argument_list|()
@@ -8112,7 +8102,8 @@ operator|=
 operator|new
 name|ErasureCodingWorker
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 name|this
 argument_list|)
@@ -8137,7 +8128,8 @@ name|blockPoolManager
 operator|.
 name|refreshNamenodes
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Create the ReadaheadPool from the DataNode context so we can
@@ -8156,7 +8148,8 @@ name|SaslDataTransferClient
 argument_list|(
 name|dnConf
 operator|.
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 name|dnConf
 operator|.
@@ -8178,9 +8171,7 @@ name|blockPoolTokenSecretManager
 argument_list|)
 expr_stmt|;
 name|startMetricsLogger
-argument_list|(
-name|conf
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Checks if the DataNode has a secure configuration if security is enabled.    * There are 2 possible configurations that are considered secure:    * 1. The server has bound to privileged ports for RPC and HTTP via    *   SecureDataNodeStarter.    * 2. The configuration enables SASL on DataTransferProtocol and HTTPS (no    *   plain HTTP) for the HTTP server.  The SASL handshake guarantees    *   authentication of the RPC server before a client transmits a secret, such    *   as a block access token.  Similarly, SSL guarantees authentication of the    *   HTTP server before a client transmits a secret, such as a delegation    *   token.    * It is not possible to run with both privileged ports and SASL on    * DataTransferProtocol.  For backwards-compatibility, the connection logic    * must check if the target port is a privileged port, and if so, skip the    * SASL handshake.    *    * @param dnConf DNConf to check    * @param conf Configuration to check    * @param resources SecuredResources obtained for DataNode    * @throws RuntimeException if security enabled, but configuration is insecure    */
@@ -8894,7 +8885,8 @@ operator|.
 name|getBlockPoolID
 argument_list|()
 argument_list|,
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|blockScanner
@@ -8909,14 +8901,16 @@ argument_list|)
 expr_stmt|;
 name|initDirectoryScanner
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|initDiskBalancer
 argument_list|(
 name|data
 argument_list|,
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -9000,7 +8994,8 @@ name|Factory
 operator|.
 name|getFactory
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -9018,7 +9013,8 @@ name|startOpt
 init|=
 name|getStartupOption
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -9137,7 +9133,8 @@ name|this
 argument_list|,
 name|storage
 argument_list|,
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -9356,7 +9353,8 @@ name|DatanodeProtocolClientSideTranslatorPB
 argument_list|(
 name|nnAddr
 argument_list|,
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -9377,7 +9375,8 @@ name|DatanodeLifelineProtocolClientSideTranslatorPB
 argument_list|(
 name|lifelineNnAddr
 argument_list|,
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -12002,7 +12001,8 @@ name|DFSUtilClient
 operator|.
 name|getSmallBufferSize
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 argument_list|)
 argument_list|)
@@ -12555,7 +12555,8 @@ argument_list|()
 expr_stmt|;
 name|startPlugins
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -14886,15 +14887,17 @@ block|{
 name|checkSuperuserPrivilege
 argument_list|()
 expr_stmt|;
-name|conf
-operator|=
+name|setConf
+argument_list|(
 operator|new
 name|Configuration
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|refreshNamenodes
 argument_list|(
-name|conf
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -15889,7 +15892,8 @@ name|datanodeID
 argument_list|,
 name|timeout
 argument_list|,
-name|conf
+name|getConf
+argument_list|()
 argument_list|,
 name|saslClient
 argument_list|,
@@ -15960,7 +15964,8 @@ name|String
 index|[]
 name|ele
 init|=
-name|conf
+name|getConf
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -16074,20 +16079,18 @@ name|OOB_RESTART_VALUE
 index|]
 return|;
 block|}
-comment|/**    * Start a timer to periodically write DataNode metrics to the log file. This    * behavior can be disabled by configuration.    *    * @param metricConf    */
-DECL|method|startMetricsLogger (Configuration metricConf)
+comment|/**    * Start a timer to periodically write DataNode metrics to the log file. This    * behavior can be disabled by configuration.    *    */
+DECL|method|startMetricsLogger ()
 specifier|protected
 name|void
 name|startMetricsLogger
-parameter_list|(
-name|Configuration
-name|metricConf
-parameter_list|)
+parameter_list|()
 block|{
 name|long
 name|metricsLoggerPeriodSec
 init|=
-name|metricConf
+name|getConf
+argument_list|()
 operator|.
 name|getInt
 argument_list|(

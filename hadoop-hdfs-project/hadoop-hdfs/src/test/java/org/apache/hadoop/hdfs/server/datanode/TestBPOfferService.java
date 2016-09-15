@@ -1118,7 +1118,7 @@ argument_list|(
 operator|new
 name|DNConf
 argument_list|(
-name|conf
+name|mockDn
 argument_list|)
 argument_list|)
 operator|.
@@ -2185,7 +2185,7 @@ argument_list|(
 operator|new
 name|DNConf
 argument_list|(
-name|conf
+name|mockDn
 argument_list|)
 argument_list|)
 operator|.
