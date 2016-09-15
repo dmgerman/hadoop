@@ -376,6 +376,24 @@ name|ResourceSet
 name|getResourceSet
 parameter_list|()
 function_decl|;
+DECL|method|isRunning ()
+name|boolean
+name|isRunning
+parameter_list|()
+function_decl|;
+DECL|method|setIsReInitializing (boolean isReInitializing)
+name|void
+name|setIsReInitializing
+parameter_list|(
+name|boolean
+name|isReInitializing
+parameter_list|)
+function_decl|;
+DECL|method|isReInitializing ()
+name|boolean
+name|isReInitializing
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

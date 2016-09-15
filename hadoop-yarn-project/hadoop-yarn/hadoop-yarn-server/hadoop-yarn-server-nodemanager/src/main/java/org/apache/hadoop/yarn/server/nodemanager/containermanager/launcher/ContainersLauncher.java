@@ -884,6 +884,9 @@ break|break;
 case|case
 name|CLEANUP_CONTAINER
 case|:
+case|case
+name|CLEANUP_CONTAINER_FOR_REINIT
+case|:
 name|ContainerLaunch
 name|launcher
 init|=

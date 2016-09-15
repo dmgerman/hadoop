@@ -967,6 +967,41 @@ index|[]
 name|ipAndHost
 parameter_list|)
 block|{    }
+annotation|@
+name|Override
+DECL|method|isRunning ()
+specifier|public
+name|boolean
+name|isRunning
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setIsReInitializing (boolean isReInitializing)
+specifier|public
+name|void
+name|setIsReInitializing
+parameter_list|(
+name|boolean
+name|isReInitializing
+parameter_list|)
+block|{    }
+annotation|@
+name|Override
+DECL|method|isReInitializing ()
+specifier|public
+name|boolean
+name|isReInitializing
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

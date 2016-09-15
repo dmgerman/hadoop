@@ -43,6 +43,10 @@ DECL|enumConstant|CLEANUP_CONTAINER
 name|CLEANUP_CONTAINER
 block|,
 comment|// The process(grp) itself.
+DECL|enumConstant|CLEANUP_CONTAINER_FOR_REINIT
+name|CLEANUP_CONTAINER_FOR_REINIT
+block|,
+comment|// The process(grp) itself.
 DECL|enumConstant|SIGNAL_CONTAINER
 name|SIGNAL_CONTAINER
 block|, }

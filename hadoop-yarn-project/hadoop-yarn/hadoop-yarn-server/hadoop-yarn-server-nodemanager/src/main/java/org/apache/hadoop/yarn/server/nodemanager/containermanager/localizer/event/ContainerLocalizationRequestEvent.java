@@ -178,7 +178,7 @@ argument_list|>
 DECL|field|rsrc
 name|rsrc
 decl_stmt|;
-comment|/**    * Event requesting the localization of the rsrc.    * @param c    * @param rsrc    */
+comment|/**    * Event requesting the localization of the rsrc.    * @param c Container    * @param rsrc LocalResourceRequests map    */
 DECL|method|ContainerLocalizationRequestEvent (Container c, Map<LocalResourceVisibility, Collection<LocalResourceRequest>> rsrc)
 specifier|public
 name|ContainerLocalizationRequestEvent
