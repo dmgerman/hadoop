@@ -3490,7 +3490,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Create a UserGroupInformation from a Kerberos ticket cache.    *     * @param user                The principal name to load from the ticket    *                            cache    * @param ticketCachePath     the path to the ticket cache file    *    * @throws IOException        if the kerberos login fails    */
+comment|/**    * Create a UserGroupInformation from a Kerberos ticket cache.    *     * @param user                The principal name to load from the ticket    *                            cache    * @param ticketCache     the path to the ticket cache file    *    * @throws IOException        if the kerberos login fails    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -3823,7 +3823,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create a UserGroupInformation from a Subject with Kerberos principal.    *    * @param user                The KerberosPrincipal to use in UGI    *    * @throws IOException        if the kerberos login fails    */
+comment|/**    * Create a UserGroupInformation from a Subject with Kerberos principal.    *    * @param subject             The KerberosPrincipal to use in UGI    *    * @throws IOException        if the kerberos login fails    */
 DECL|method|getUGIFromSubject (Subject subject)
 specifier|public
 specifier|static
