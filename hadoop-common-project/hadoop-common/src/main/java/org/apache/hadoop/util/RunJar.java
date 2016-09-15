@@ -1044,6 +1044,8 @@ name|loader
 init|=
 name|createClassLoader
 argument_list|(
+name|file
+argument_list|,
 name|workDir
 argument_list|)
 decl_stmt|;
@@ -1161,11 +1163,14 @@ throw|;
 block|}
 block|}
 comment|/**    * Creates a classloader based on the environment that was specified by the    * user. If HADOOP_USE_CLIENT_CLASSLOADER is specified, it creates an    * application classloader that provides the isolation of the user class space    * from the hadoop classes and their dependencies. It forms a class space for    * the user jar as well as the HADOOP_CLASSPATH. Otherwise, it creates a    * classloader that simply adds the user jar to the classpath.    */
-DECL|method|createClassLoader (final File workDir)
+DECL|method|createClassLoader (File file, final File workDir)
 specifier|private
 name|ClassLoader
 name|createClassLoader
 parameter_list|(
+name|File
+name|file
+parameter_list|,
 specifier|final
 name|File
 name|workDir
@@ -1200,6 +1205,18 @@ operator|.
 name|append
 argument_list|(
 literal|"/"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|File
+operator|.
+name|pathSeparator
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|file
 argument_list|)
 operator|.
 name|append
@@ -1352,6 +1369,19 @@ name|workDir
 operator|+
 literal|"/"
 argument_list|)
+operator|.
+name|toURI
+argument_list|()
+operator|.
+name|toURL
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|classPath
+operator|.
+name|add
+argument_list|(
+name|file
 operator|.
 name|toURI
 argument_list|()
