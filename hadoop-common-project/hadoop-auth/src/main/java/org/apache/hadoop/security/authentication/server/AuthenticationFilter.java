@@ -1552,6 +1552,22 @@ operator|.
 name|getValue
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|tokenStr
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|AuthenticationException
+argument_list|(
+literal|"Unauthorized access"
+argument_list|)
+throw|;
+block|}
 try|try
 block|{
 name|tokenStr
