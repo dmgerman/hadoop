@@ -46,6 +46,9 @@ block|,
 DECL|enumConstant|REINITIALIZE_CONTAINER
 name|REINITIALIZE_CONTAINER
 block|,
+DECL|enumConstant|ROLLBACK_REINIT
+name|ROLLBACK_REINIT
+block|,
 comment|// DownloadManager
 DECL|enumConstant|CONTAINER_INITED
 name|CONTAINER_INITED

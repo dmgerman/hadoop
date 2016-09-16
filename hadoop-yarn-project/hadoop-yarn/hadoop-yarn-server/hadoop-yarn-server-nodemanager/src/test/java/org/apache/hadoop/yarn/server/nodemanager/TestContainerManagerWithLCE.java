@@ -1066,10 +1066,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|testContainerUpgradeSuccess ()
+DECL|method|testContainerUpgradeSuccessAutoCommit ()
 specifier|public
 name|void
-name|testContainerUpgradeSuccess
+name|testContainerUpgradeSuccessAutoCommit
 parameter_list|()
 throws|throws
 name|IOException
@@ -1099,12 +1099,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Running testContainerUpgradeSuccess"
+literal|"Running testContainerUpgradeSuccessAutoCommit"
 argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|testContainerUpgradeSuccess
+name|testContainerUpgradeSuccessAutoCommit
 argument_list|()
 expr_stmt|;
 block|}
@@ -1149,6 +1149,138 @@ expr_stmt|;
 name|super
 operator|.
 name|testContainerUpgradeLocalizationFailure
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|testContainerUpgradeSuccessExplicitCommit ()
+specifier|public
+name|void
+name|testContainerUpgradeSuccessExplicitCommit
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|YarnException
+block|{
+comment|// Don't run the test if the binary is not available.
+if|if
+condition|(
+operator|!
+name|shouldRunTest
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"LCE binary path is not passed. Not running the test"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Running testContainerUpgradeSuccessExplicitCommit"
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|testContainerUpgradeSuccessExplicitCommit
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|testContainerUpgradeSuccessExplicitRollback ()
+specifier|public
+name|void
+name|testContainerUpgradeSuccessExplicitRollback
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|YarnException
+block|{
+comment|// Don't run the test if the binary is not available.
+if|if
+condition|(
+operator|!
+name|shouldRunTest
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"LCE binary path is not passed. Not running the test"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Running testContainerUpgradeSuccessExplicitRollback"
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|testContainerUpgradeSuccessExplicitRollback
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|testContainerUpgradeRollbackDueToFailure ()
+specifier|public
+name|void
+name|testContainerUpgradeRollbackDueToFailure
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|YarnException
+block|{
+comment|// Don't run the test if the binary is not available.
+if|if
+condition|(
+operator|!
+name|shouldRunTest
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"LCE binary path is not passed. Not running the test"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Running testContainerUpgradeRollbackDueToFailure"
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|testContainerUpgradeRollbackDueToFailure
 argument_list|()
 expr_stmt|;
 block|}

@@ -106,8 +106,14 @@ specifier|final
 name|ResourceSet
 name|resourceSet
 decl_stmt|;
-comment|/**    * Container Re-Init Event.    * @param cID Container Id    * @param upgradeContext Upgrade context    * @param resourceSet Resource Set    */
-DECL|method|ContainerReInitEvent (ContainerId cID, ContainerLaunchContext upgradeContext, ResourceSet resourceSet)
+DECL|field|autoCommit
+specifier|private
+specifier|final
+name|boolean
+name|autoCommit
+decl_stmt|;
+comment|/**    * Container Re-Init Event.    * @param cID Container Id.    * @param upgradeContext Upgrade Context.    * @param resourceSet Resource Set.    * @param autoCommit Auto Commit.    */
+DECL|method|ContainerReInitEvent (ContainerId cID, ContainerLaunchContext upgradeContext, ResourceSet resourceSet, boolean autoCommit)
 specifier|public
 name|ContainerReInitEvent
 parameter_list|(
@@ -119,6 +125,9 @@ name|upgradeContext
 parameter_list|,
 name|ResourceSet
 name|resourceSet
+parameter_list|,
+name|boolean
+name|autoCommit
 parameter_list|)
 block|{
 name|super
@@ -142,6 +151,12 @@ name|resourceSet
 operator|=
 name|resourceSet
 expr_stmt|;
+name|this
+operator|.
+name|autoCommit
+operator|=
+name|autoCommit
+expr_stmt|;
 block|}
 comment|/**    * Get the Launch Context to be used for upgrade.    * @return ContainerLaunchContext    */
 DECL|method|getReInitLaunchContext ()
@@ -163,6 +178,17 @@ parameter_list|()
 block|{
 return|return
 name|resourceSet
+return|;
+block|}
+comment|/**    * Should this re-Initialization be auto-committed.    * @return AutoCommit.    */
+DECL|method|isAutoCommit ()
+specifier|public
+name|boolean
+name|isAutoCommit
+parameter_list|()
+block|{
+return|return
+name|autoCommit
 return|;
 block|}
 block|}

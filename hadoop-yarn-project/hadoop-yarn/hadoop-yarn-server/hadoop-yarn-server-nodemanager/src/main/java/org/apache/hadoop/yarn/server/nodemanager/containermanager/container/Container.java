@@ -394,6 +394,16 @@ name|boolean
 name|isReInitializing
 parameter_list|()
 function_decl|;
+DECL|method|canRollback ()
+name|boolean
+name|canRollback
+parameter_list|()
+function_decl|;
+DECL|method|commitUpgrade ()
+name|void
+name|commitUpgrade
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
