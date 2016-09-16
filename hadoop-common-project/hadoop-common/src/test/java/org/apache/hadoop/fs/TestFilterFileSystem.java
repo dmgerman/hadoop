@@ -725,6 +725,20 @@ name|PathFilter
 name|filter
 parameter_list|)
 function_decl|;
+DECL|method|listStatusBatch (Path f, byte[] token)
+specifier|public
+name|FileStatus
+index|[]
+name|listStatusBatch
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|byte
+index|[]
+name|token
+parameter_list|)
+function_decl|;
 DECL|method|listStatus (Path[] files)
 specifier|public
 name|FileStatus
