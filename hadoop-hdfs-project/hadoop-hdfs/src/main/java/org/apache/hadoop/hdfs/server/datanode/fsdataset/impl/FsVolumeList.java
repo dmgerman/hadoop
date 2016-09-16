@@ -1170,7 +1170,7 @@ name|v
 operator|+
 literal|" is closed while "
 operator|+
-literal|"addng replicas, ignored."
+literal|"adding replicas, ignored."
 argument_list|)
 expr_stmt|;
 block|}

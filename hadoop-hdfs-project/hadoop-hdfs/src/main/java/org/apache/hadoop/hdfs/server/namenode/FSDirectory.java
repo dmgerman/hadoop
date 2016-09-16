@@ -2082,7 +2082,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Caching file names occuring more than "
+literal|"Caching file names occurring more than "
 operator|+
 name|threshold
 operator|+
