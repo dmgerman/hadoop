@@ -274,7 +274,7 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|" is instiantiated."
+literal|" is instantiated."
 argument_list|)
 expr_stmt|;
 block|}

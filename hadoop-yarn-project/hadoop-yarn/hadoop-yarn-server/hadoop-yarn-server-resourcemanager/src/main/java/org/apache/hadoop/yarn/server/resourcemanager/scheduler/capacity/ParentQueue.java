@@ -1073,7 +1073,7 @@ operator|.
 name|getCapacity
 argument_list|()
 operator|+
-literal|", asboluteCapacity="
+literal|", absoluteCapacity="
 operator|+
 name|this
 operator|.
@@ -1091,7 +1091,7 @@ operator|.
 name|getMaximumCapacity
 argument_list|()
 operator|+
-literal|", asboluteMaxCapacity="
+literal|", absoluteMaxCapacity="
 operator|+
 name|this
 operator|.

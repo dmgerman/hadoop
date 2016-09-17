@@ -1294,7 +1294,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Neither virutal-memory nor physical-memory monitoring is "
+literal|"Neither virtual-memory nor physical-memory monitoring is "
 operator|+
 literal|"needed. Not running the monitor-thread"
 argument_list|)

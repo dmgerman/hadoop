@@ -2187,7 +2187,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Intialized plan {} based on reservable queue {}"
+literal|"Initialized plan {} based on reservable queue {}"
 argument_list|,
 name|plan
 operator|.

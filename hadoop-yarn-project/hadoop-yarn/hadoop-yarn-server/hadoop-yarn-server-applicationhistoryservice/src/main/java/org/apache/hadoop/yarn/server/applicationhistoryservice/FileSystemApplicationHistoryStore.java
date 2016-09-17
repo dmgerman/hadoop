@@ -2727,7 +2727,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Completed reading history information of all conatiners"
+literal|"Completed reading history information of all containers"
 operator|+
 literal|" of application attempt "
 operator|+
