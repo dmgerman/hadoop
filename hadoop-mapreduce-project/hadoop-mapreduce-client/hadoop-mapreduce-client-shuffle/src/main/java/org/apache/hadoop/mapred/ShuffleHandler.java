@@ -4266,7 +4266,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Storing state DB schedma version info "
+literal|"Storing state DB schema version info "
 operator|+
 name|getCurrentVersion
 argument_list|()

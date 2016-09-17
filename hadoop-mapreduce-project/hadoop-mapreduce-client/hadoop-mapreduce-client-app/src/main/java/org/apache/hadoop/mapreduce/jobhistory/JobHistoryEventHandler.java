@@ -2351,7 +2351,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Exception while cancelling delayed flush timer. "
+literal|"Exception while canceling delayed flush timer. "
 operator|+
 literal|"Likely caused by a failed flush "
 operator|+
