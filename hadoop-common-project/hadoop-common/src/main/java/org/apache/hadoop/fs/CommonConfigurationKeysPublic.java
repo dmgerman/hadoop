@@ -1343,6 +1343,16 @@ name|HADOOP_SECURITY_IMPERSONATION_PROVIDER_CLASS
 init|=
 literal|"hadoop.security.impersonation.provider.class"
 decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|HADOOP_SECURITY_KEY_PROVIDER_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
+init|=
+literal|"hadoop.security.key.provider.path"
+decl_stmt|;
 comment|//<!-- KMSClientProvider configurations -->
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|KMS_CLIENT_ENC_KEY_CACHE_SIZE

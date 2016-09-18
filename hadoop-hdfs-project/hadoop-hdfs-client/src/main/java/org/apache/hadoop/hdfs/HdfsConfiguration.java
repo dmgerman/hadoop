@@ -52,6 +52,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|client
@@ -555,6 +569,16 @@ argument_list|,
 name|DeprecatedKeys
 operator|.
 name|DFS_NAMESERVICE_ID
+argument_list|)
+block|,
+operator|new
+name|DeprecationDelta
+argument_list|(
+literal|"dfs.encryption.key.provider.uri"
+argument_list|,
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|)
 block|,     }
 argument_list|)

@@ -556,12 +556,6 @@ operator|*
 literal|1024
 decl_stmt|;
 comment|// 4MB
-DECL|field|DFS_ENCRYPTION_KEY_PROVIDER_URI
-name|String
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
-init|=
-literal|"dfs.encryption.key.provider.uri"
-decl_stmt|;
 DECL|field|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
 name|String
 name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY

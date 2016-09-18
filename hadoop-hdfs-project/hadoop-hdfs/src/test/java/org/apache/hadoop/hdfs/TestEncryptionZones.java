@@ -1480,9 +1480,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|CommonConfigurationKeysPublic
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|,
 name|getKeyProviderURI
 argument_list|()
@@ -5742,9 +5742,9 @@ name|conf
 operator|.
 name|getTrimmed
 argument_list|(
-name|DFSConfigKeys
+name|CommonConfigurationKeysPublic
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|)
 argument_list|)
 argument_list|,
@@ -6300,9 +6300,9 @@ name|clusterConf
 operator|.
 name|unset
 argument_list|(
-name|DFSConfigKeys
+name|CommonConfigurationKeysPublic
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -6393,9 +6393,9 @@ name|clusterConf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|CommonConfigurationKeysPublic
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|,
 name|JavaKeyStoreProvider
 operator|.
