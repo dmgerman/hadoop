@@ -789,6 +789,10 @@ argument_list|(
 name|src
 argument_list|,
 name|dst
+argument_list|,
+literal|false
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

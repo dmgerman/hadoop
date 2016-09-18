@@ -461,7 +461,7 @@ block|}
 DECL|method|getReplica (final DataNode datanode, final String bpid, final ReplicaState expectedState)
 specifier|private
 specifier|static
-name|ReplicaInPipeline
+name|LocalReplicaInPipeline
 name|getReplica
 parameter_list|(
 specifier|final
@@ -575,7 +575,7 @@ argument_list|)
 expr_stmt|;
 return|return
 operator|(
-name|ReplicaInPipeline
+name|LocalReplicaInPipeline
 operator|)
 name|r
 return|;

@@ -280,7 +280,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 import|;
 end_import
 
@@ -3249,7 +3249,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 name|replicaInfo
 init|=
 name|dataSet

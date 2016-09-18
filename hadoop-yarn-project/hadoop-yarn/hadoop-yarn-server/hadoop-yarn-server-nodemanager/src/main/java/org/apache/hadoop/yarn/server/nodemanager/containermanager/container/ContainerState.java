@@ -48,9 +48,12 @@ name|RUNNING
 block|,
 name|RELAUNCHING
 block|,
+DECL|enumConstant|REINITIALIZING
 DECL|enumConstant|EXITED_WITH_SUCCESS
 DECL|enumConstant|EXITED_WITH_FAILURE
 DECL|enumConstant|KILLING
+name|REINITIALIZING
+block|,
 name|EXITED_WITH_SUCCESS
 block|,
 name|EXITED_WITH_FAILURE

@@ -886,6 +886,24 @@ index|[]
 block|{}
 argument_list|)
 expr_stmt|;
+name|PARAMS_DEF
+operator|.
+name|put
+argument_list|(
+name|Operation
+operator|.
+name|LISTSTATUS_BATCH
+argument_list|,
+operator|new
+name|Class
+index|[]
+block|{
+name|StartAfterParam
+operator|.
+name|class
+block|}
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|HttpFSParametersProvider ()
 specifier|public
@@ -1860,6 +1878,46 @@ argument_list|,
 name|XAttrCodec
 operator|.
 name|class
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Class for startafter parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|class|StartAfterParam
+specifier|public
+specifier|static
+class|class
+name|StartAfterParam
+extends|extends
+name|StringParam
+block|{
+comment|/**      * Parameter name.      */
+DECL|field|NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NAME
+init|=
+name|HttpFSFileSystem
+operator|.
+name|START_AFTER_PARAM
+decl_stmt|;
+comment|/**      * Constructor.      */
+DECL|method|StartAfterParam ()
+specifier|public
+name|StartAfterParam
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|NAME
 argument_list|,
 literal|null
 argument_list|)

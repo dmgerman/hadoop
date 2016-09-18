@@ -1715,6 +1715,8 @@ literal|" node2[:port]=label1\">]"
 operator|+
 literal|" [-directlyAccessNodeLabelStore]"
 operator|+
+literal|" [-refreshClusterMaxPriority]"
+operator|+
 literal|" [-updateNodeResource [NodeID] [MemSize] [vCores]"
 operator|+
 literal|" ([OvercommitTimeout])"

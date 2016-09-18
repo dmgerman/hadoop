@@ -1000,7 +1000,7 @@ specifier|private
 class|class
 name|BInfo
 implements|implements
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 block|{
 DECL|field|theBlock
 specifier|final
@@ -1805,6 +1805,68 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getReplicaInfo ()
+specifier|public
+name|ReplicaInfo
+name|getReplicaInfo
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setWriter (Thread writer)
+specifier|public
+name|void
+name|setWriter
+parameter_list|(
+name|Thread
+name|writer
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
+DECL|method|interruptThread ()
+specifier|public
+name|void
+name|interruptThread
+parameter_list|()
+block|{     }
+annotation|@
+name|Override
+DECL|method|attemptToSetWriter (Thread prevWriter, Thread newWriter)
+specifier|public
+name|boolean
+name|attemptToSetWriter
+parameter_list|(
+name|Thread
+name|prevWriter
+parameter_list|,
+name|Thread
+name|newWriter
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|stopWriter (long xceiverStopTimeout)
+specifier|public
+name|void
+name|stopWriter
+parameter_list|(
+name|long
+name|xceiverStopTimeout
+parameter_list|)
+throws|throws
+name|IOException
+block|{     }
 block|}
 comment|/**    * Class is used for tracking block pool storage utilization similar    * to {@link BlockPoolSlice}    */
 DECL|class|SimulatedBPStorage
@@ -5866,7 +5928,7 @@ annotation|@
 name|Override
 DECL|method|convertTemporaryToRbw (ExtendedBlock temporary)
 specifier|public
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 name|convertTemporaryToRbw
 parameter_list|(
 name|ExtendedBlock
@@ -6185,7 +6247,7 @@ DECL|method|getFinalizedBlocks (String bpid)
 specifier|public
 name|List
 argument_list|<
-name|FinalizedReplica
+name|ReplicaInfo
 argument_list|>
 name|getFinalizedBlocks
 parameter_list|(
@@ -6205,7 +6267,7 @@ DECL|method|getFinalizedBlocksOnPersistentStorage (String bpid)
 specifier|public
 name|List
 argument_list|<
-name|FinalizedReplica
+name|ReplicaInfo
 argument_list|>
 name|getFinalizedBlocksOnPersistentStorage
 parameter_list|(

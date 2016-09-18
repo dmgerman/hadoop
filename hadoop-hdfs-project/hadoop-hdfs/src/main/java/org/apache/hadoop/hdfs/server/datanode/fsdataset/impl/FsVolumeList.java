@@ -1170,7 +1170,7 @@ name|v
 operator|+
 literal|" is closed while "
 operator|+
-literal|"addng replicas, ignored."
+literal|"adding replicas, ignored."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1682,9 +1682,7 @@ name|IOUtils
 operator|.
 name|cleanup
 argument_list|(
-name|FsDatasetImpl
-operator|.
-name|LOG
+literal|null
 argument_list|,
 name|ref
 argument_list|)

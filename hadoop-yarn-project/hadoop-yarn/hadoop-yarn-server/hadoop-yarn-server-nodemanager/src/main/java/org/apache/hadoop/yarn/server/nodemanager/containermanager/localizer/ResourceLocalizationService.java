@@ -3726,6 +3726,10 @@ argument_list|,
 name|ContainerState
 operator|.
 name|RUNNING
+argument_list|,
+name|ContainerState
+operator|.
+name|REINITIALIZING
 argument_list|)
 decl_stmt|;
 if|if

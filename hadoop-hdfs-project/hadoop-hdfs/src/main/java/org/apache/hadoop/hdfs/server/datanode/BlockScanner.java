@@ -765,6 +765,25 @@ expr_stmt|;
 block|}
 block|}
 block|}
+DECL|method|BlockScanner (DataNode datanode)
+specifier|public
+name|BlockScanner
+parameter_list|(
+name|DataNode
+name|datanode
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|datanode
+argument_list|,
+name|datanode
+operator|.
+name|getConf
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|BlockScanner (DataNode datanode, Configuration conf)
 specifier|public
 name|BlockScanner

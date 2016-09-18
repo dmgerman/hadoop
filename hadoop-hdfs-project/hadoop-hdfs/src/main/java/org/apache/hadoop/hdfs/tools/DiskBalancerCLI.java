@@ -593,6 +593,12 @@ operator|new
 name|Options
 argument_list|()
 decl_stmt|;
+DECL|field|printStream
+specifier|private
+specifier|final
+name|PrintStream
+name|printStream
+decl_stmt|;
 comment|/**    * Construct a DiskBalancer.    *    * @param conf    */
 DECL|method|DiskBalancerCLI (Configuration conf)
 specifier|public
@@ -602,10 +608,38 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|conf
+argument_list|,
+name|System
+operator|.
+name|out
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|DiskBalancerCLI (Configuration conf, final PrintStream printStream)
+specifier|public
+name|DiskBalancerCLI
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+specifier|final
+name|PrintStream
+name|printStream
+parameter_list|)
+block|{
 name|super
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|printStream
+operator|=
+name|printStream
 expr_stmt|;
 block|}
 comment|/**    * Main for the  DiskBalancer Command handling.    *    * @param argv - System Args Strings[]    * @throws Exception    */
@@ -696,34 +730,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-return|return
-name|run
-argument_list|(
-name|args
-argument_list|,
-name|System
-operator|.
-name|out
-argument_list|)
-return|;
-block|}
-comment|/**    * Execute the command with the given arguments.    *    * @param args command specific arguments.    * @param out  the output stream used for printing    * @return exit code.    * @throws Exception    */
-DECL|method|run (String[] args, final PrintStream out)
-specifier|public
-name|int
-name|run
-parameter_list|(
-name|String
-index|[]
-name|args
-parameter_list|,
-specifier|final
-name|PrintStream
-name|out
-parameter_list|)
-throws|throws
-name|Exception
-block|{
 name|Options
 name|opts
 init|=
@@ -746,8 +752,6 @@ argument_list|(
 name|cmd
 argument_list|,
 name|opts
-argument_list|,
-name|out
 argument_list|)
 return|;
 block|}
@@ -1542,7 +1546,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Dispatches calls to the right command Handler classes.    *    * @param cmd  - CommandLine    * @param opts options of command line    * @param out  the output stream used for printing    */
-DECL|method|dispatch (CommandLine cmd, Options opts, final PrintStream out)
+DECL|method|dispatch (CommandLine cmd, Options opts)
 specifier|private
 name|int
 name|dispatch
@@ -1552,10 +1556,6 @@ name|cmd
 parameter_list|,
 name|Options
 name|opts
-parameter_list|,
-specifier|final
-name|PrintStream
-name|out
 parameter_list|)
 throws|throws
 name|Exception
@@ -1673,7 +1673,9 @@ argument_list|(
 name|getConf
 argument_list|()
 argument_list|,
-name|out
+name|this
+operator|.
+name|printStream
 argument_list|)
 expr_stmt|;
 block|}

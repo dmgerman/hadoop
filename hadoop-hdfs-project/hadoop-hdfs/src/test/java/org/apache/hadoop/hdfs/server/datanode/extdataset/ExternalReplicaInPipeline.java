@@ -94,7 +94,25 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|ReplicaInfo
 import|;
 end_import
 
@@ -138,7 +156,7 @@ specifier|public
 class|class
 name|ExternalReplicaInPipeline
 implements|implements
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 block|{
 annotation|@
 name|Override
@@ -357,6 +375,64 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getReplicaInfo ()
+specifier|public
+name|ReplicaInfo
+name|getReplicaInfo
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+DECL|method|setWriter (Thread writer)
+specifier|public
+name|void
+name|setWriter
+parameter_list|(
+name|Thread
+name|writer
+parameter_list|)
+block|{   }
+DECL|method|stopWriter (long xceiverStopTimeout)
+specifier|public
+name|void
+name|stopWriter
+parameter_list|(
+name|long
+name|xceiverStopTimeout
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|attemptToSetWriter (Thread prevWriter, Thread newWriter)
+specifier|public
+name|boolean
+name|attemptToSetWriter
+parameter_list|(
+name|Thread
+name|prevWriter
+parameter_list|,
+name|Thread
+name|newWriter
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|interruptThread ()
+specifier|public
+name|void
+name|interruptThread
+parameter_list|()
+block|{   }
 block|}
 end_class
 

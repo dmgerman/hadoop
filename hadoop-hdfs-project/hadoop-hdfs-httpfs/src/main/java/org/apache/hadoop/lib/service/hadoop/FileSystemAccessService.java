@@ -598,10 +598,10 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-DECL|method|getFileSytem (Configuration conf)
+DECL|method|getFileSystem (Configuration conf)
 specifier|synchronized
 name|FileSystem
-name|getFileSytem
+name|getFileSystem
 parameter_list|(
 name|Configuration
 name|conf
@@ -1814,7 +1814,7 @@ expr_stmt|;
 return|return
 name|cachedFS
 operator|.
-name|getFileSytem
+name|getFileSystem
 argument_list|(
 name|conf
 argument_list|)

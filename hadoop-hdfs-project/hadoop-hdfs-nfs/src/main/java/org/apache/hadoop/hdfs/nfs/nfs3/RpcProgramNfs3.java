@@ -5746,7 +5746,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Partical read. Asked offset: "
+literal|"Partial read. Asked offset: "
 operator|+
 name|offset
 operator|+

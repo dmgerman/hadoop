@@ -891,7 +891,7 @@ decl_stmt|;
 comment|/** the replica to write */
 DECL|field|replicaInfo
 specifier|private
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 name|replicaInfo
 decl_stmt|;
 comment|/** pipeline stage */

@@ -618,7 +618,7 @@ DECL|method|getFinalizedBlocks (String bpid)
 specifier|public
 name|List
 argument_list|<
-name|FinalizedReplica
+name|ReplicaInfo
 argument_list|>
 name|getFinalizedBlocks
 parameter_list|(
@@ -636,7 +636,7 @@ DECL|method|getFinalizedBlocksOnPersistentStorage (String bpid)
 specifier|public
 name|List
 argument_list|<
-name|FinalizedReplica
+name|ReplicaInfo
 argument_list|>
 name|getFinalizedBlocksOnPersistentStorage
 parameter_list|(
@@ -921,7 +921,7 @@ annotation|@
 name|Override
 DECL|method|convertTemporaryToRbw ( ExtendedBlock temporary)
 specifier|public
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 name|convertTemporaryToRbw
 parameter_list|(
 name|ExtendedBlock

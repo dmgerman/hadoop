@@ -358,24 +358,6 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FinalizedReplica
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
 name|Replica
 import|;
 end_import
@@ -394,7 +376,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 import|;
 end_import
 
@@ -1159,7 +1141,7 @@ comment|/** @return a list of finalized blocks for the given block pool. */
 DECL|method|getFinalizedBlocks (String bpid)
 name|List
 argument_list|<
-name|FinalizedReplica
+name|ReplicaInfo
 argument_list|>
 name|getFinalizedBlocks
 parameter_list|(
@@ -1171,7 +1153,7 @@ comment|/** @return a list of finalized blocks for the given block pool. */
 DECL|method|getFinalizedBlocksOnPersistentStorage (String bpid)
 name|List
 argument_list|<
-name|FinalizedReplica
+name|ReplicaInfo
 argument_list|>
 name|getFinalizedBlocksOnPersistentStorage
 parameter_list|(
@@ -1348,7 +1330,7 @@ name|IOException
 function_decl|;
 comment|/**    * Covert a temporary replica to a RBW.    * @param temporary the temporary replica being converted    * @return the result RBW    */
 DECL|method|convertTemporaryToRbw ( ExtendedBlock temporary)
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 name|convertTemporaryToRbw
 parameter_list|(
 name|ExtendedBlock

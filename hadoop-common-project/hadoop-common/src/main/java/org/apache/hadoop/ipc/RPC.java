@@ -20,6 +20,26 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|InterruptedIOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|lang
 operator|.
 name|reflect
@@ -89,16 +109,6 @@ operator|.
 name|net
 operator|.
 name|SocketTimeoutException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|*
 import|;
 end_import
 
@@ -196,7 +206,21 @@ name|commons
 operator|.
 name|logging
 operator|.
-name|*
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
 import|;
 end_import
 
@@ -209,6 +233,20 @@ operator|.
 name|hadoop
 operator|.
 name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -236,7 +274,7 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|*
+name|Writable
 import|;
 end_import
 
@@ -440,20 +478,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|ReflectionUtils
@@ -572,12 +596,11 @@ name|value
 decl_stmt|;
 comment|// used for array size
 DECL|field|value
-specifier|public
+specifier|private
 specifier|final
 name|short
 name|value
 decl_stmt|;
-comment|//TODO make it private
 DECL|method|RpcKind (short val)
 name|RpcKind
 parameter_list|(

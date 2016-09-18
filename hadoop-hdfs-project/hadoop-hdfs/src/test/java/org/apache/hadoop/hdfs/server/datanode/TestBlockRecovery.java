@@ -4573,7 +4573,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|ReplicaInPipelineInterface
+name|ReplicaInPipeline
 name|replicaInfo
 init|=
 name|dn

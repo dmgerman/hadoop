@@ -1126,7 +1126,7 @@ name|info
 argument_list|(
 literal|"NNStorage.attemptRestoreRemovedStorage: check removed(failed) "
 operator|+
-literal|"storarge. removedStorages size = "
+literal|"storage. removedStorages size = "
 operator|+
 name|removedStorageDirs
 operator|.

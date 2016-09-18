@@ -210,6 +210,16 @@ name|SERVICE_VERSION
 init|=
 literal|"/v1"
 decl_stmt|;
+DECL|field|EMPTY_BYTES
+specifier|public
+specifier|static
+specifier|final
+name|byte
+index|[]
+name|EMPTY_BYTES
+init|=
+block|{}
+decl_stmt|;
 DECL|field|SERVICE_PATH
 specifier|private
 specifier|static

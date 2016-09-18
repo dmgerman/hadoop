@@ -1210,16 +1210,16 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * If rolling upgrades are in progress then do not delete block files    * immediately. Instead we move the block files to an intermediate    * 'trash' directory. If there is a subsequent rollback, then the block    * files will be restored from trash.    *    * @return trash directory if rolling upgrade is in progress, null    *         otherwise.    */
-DECL|method|getTrashDirectoryForBlockFile (String bpid, File blockFile)
+DECL|method|getTrashDirectoryForReplica (String bpid, ReplicaInfo info)
 specifier|public
 name|String
-name|getTrashDirectoryForBlockFile
+name|getTrashDirectoryForReplica
 parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|File
-name|blockFile
+name|ReplicaInfo
+name|info
 parameter_list|)
 block|{
 if|if
@@ -1240,7 +1240,7 @@ argument_list|)
 operator|.
 name|getTrashDirectory
 argument_list|(
-name|blockFile
+name|info
 argument_list|)
 return|;
 block|}

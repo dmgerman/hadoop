@@ -43,6 +43,9 @@ block|,
 DECL|enumConstant|CONTAINER_DONE
 name|CONTAINER_DONE
 block|,
+DECL|enumConstant|REINITIALIZE_CONTAINER
+name|REINITIALIZE_CONTAINER
+block|,
 comment|// DownloadManager
 DECL|enumConstant|CONTAINER_INITED
 name|CONTAINER_INITED
@@ -68,7 +71,7 @@ name|CONTAINER_EXITED_WITH_FAILURE
 block|,
 DECL|enumConstant|CONTAINER_KILLED_ON_REQUEST
 name|CONTAINER_KILLED_ON_REQUEST
-block|, }
+block|}
 end_enum
 
 end_unit
