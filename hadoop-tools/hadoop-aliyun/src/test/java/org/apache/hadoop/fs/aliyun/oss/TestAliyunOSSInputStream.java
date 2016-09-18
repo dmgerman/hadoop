@@ -175,10 +175,10 @@ comment|/**  * Tests basic functionality for AliyunOSSInputStream, including see
 end_comment
 
 begin_class
-DECL|class|TestOSSInputStream
+DECL|class|TestAliyunOSSInputStream
 specifier|public
 class|class
-name|TestOSSInputStream
+name|TestAliyunOSSInputStream
 block|{
 DECL|field|fs
 specifier|private
@@ -186,7 +186,7 @@ name|FileSystem
 name|fs
 decl_stmt|;
 DECL|field|LOG
-specifier|protected
+specifier|private
 specifier|static
 specifier|final
 name|Logger
@@ -196,7 +196,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|TestOSSInputStream
+name|TestAliyunOSSInputStream
 operator|.
 name|class
 argument_list|)
@@ -207,7 +207,7 @@ specifier|static
 name|String
 name|testRootPath
 init|=
-name|OSSTestUtils
+name|AliyunOSSTestUtils
 operator|.
 name|generateUniqueTestPath
 argument_list|()
@@ -248,7 +248,7 @@ argument_list|()
 decl_stmt|;
 name|fs
 operator|=
-name|OSSTestUtils
+name|AliyunOSSTestUtils
 operator|.
 name|createTestFileSystem
 argument_list|(

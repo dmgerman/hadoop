@@ -145,10 +145,10 @@ comment|/**  * Tests regular and multi-part upload functionality for AliyunOSSOu
 end_comment
 
 begin_class
-DECL|class|TestOSSOutputStream
+DECL|class|TestAliyunOSSOutputStream
 specifier|public
 class|class
-name|TestOSSOutputStream
+name|TestAliyunOSSOutputStream
 block|{
 DECL|field|fs
 specifier|private
@@ -161,7 +161,7 @@ specifier|static
 name|String
 name|testRootPath
 init|=
-name|OSSTestUtils
+name|AliyunOSSTestUtils
 operator|.
 name|generateUniqueTestPath
 argument_list|()
@@ -232,7 +232,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|OSSTestUtils
+name|AliyunOSSTestUtils
 operator|.
 name|createTestFileSystem
 argument_list|(
@@ -284,7 +284,7 @@ name|Path
 argument_list|(
 name|testRootPath
 operator|+
-literal|"/testoss"
+literal|"/test-aliyun-oss"
 argument_list|)
 return|;
 block|}

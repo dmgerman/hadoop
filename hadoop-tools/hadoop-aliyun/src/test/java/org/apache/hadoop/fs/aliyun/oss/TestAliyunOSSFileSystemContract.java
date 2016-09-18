@@ -78,26 +78,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -117,33 +97,17 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests a live OSS system.  *  * This uses BlockJUnit4ClassRunner because FileSystemContractBaseTest from  * TestCase which uses the old Junit3 runner that doesn't ignore assumptions  * properly making it impossible to skip the tests if we don't have a valid  * bucket.  */
+comment|/**  * Tests a live Aliyun OSS system.  *  * This uses BlockJUnit4ClassRunner because FileSystemContractBaseTest from  * TestCase which uses the old Junit3 runner that doesn't ignore assumptions  * properly making it impossible to skip the tests if we don't have a valid  * bucket.  */
 end_comment
 
 begin_class
-DECL|class|TestOSSFileSystemContract
+DECL|class|TestAliyunOSSFileSystemContract
 specifier|public
 class|class
-name|TestOSSFileSystemContract
+name|TestAliyunOSSFileSystemContract
 extends|extends
 name|FileSystemContractBaseTest
 block|{
-DECL|field|LOG
-specifier|protected
-specifier|static
-specifier|final
-name|Logger
-name|LOG
-init|=
-name|LoggerFactory
-operator|.
-name|getLogger
-argument_list|(
-name|TestOSSFileSystemContract
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 DECL|field|TEST_FS_OSS_NAME
 specifier|public
 specifier|static
@@ -159,7 +123,7 @@ specifier|static
 name|String
 name|testRootPath
 init|=
-name|OSSTestUtils
+name|AliyunOSSTestUtils
 operator|.
 name|generateUniqueTestPath
 argument_list|()
@@ -183,7 +147,7 @@ argument_list|()
 decl_stmt|;
 name|fs
 operator|=
-name|OSSTestUtils
+name|AliyunOSSTestUtils
 operator|.
 name|createTestFileSystem
 argument_list|(

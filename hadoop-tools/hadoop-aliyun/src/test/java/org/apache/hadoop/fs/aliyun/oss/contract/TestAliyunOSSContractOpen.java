@@ -69,14 +69,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * OSS contract opening file tests.  */
+comment|/**  * Aliyun OSS contract opening file tests.  */
 end_comment
 
 begin_class
-DECL|class|TestOSSContractOpen
+DECL|class|TestAliyunOSSContractOpen
 specifier|public
 class|class
-name|TestOSSContractOpen
+name|TestAliyunOSSContractOpen
 extends|extends
 name|AbstractContractOpenTest
 block|{
@@ -93,7 +93,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|OSSContract
+name|AliyunOSSContract
 argument_list|(
 name|conf
 argument_list|)

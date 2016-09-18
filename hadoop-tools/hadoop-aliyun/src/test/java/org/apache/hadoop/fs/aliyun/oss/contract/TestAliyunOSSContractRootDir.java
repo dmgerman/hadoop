@@ -113,10 +113,10 @@ comment|/**  * Root dir operations against an Aliyun OSS bucket.  */
 end_comment
 
 begin_class
-DECL|class|TestOSSContractRootDir
+DECL|class|TestAliyunOSSContractRootDir
 specifier|public
 class|class
-name|TestOSSContractRootDir
+name|TestAliyunOSSContractRootDir
 extends|extends
 name|AbstractContractRootDirectoryTest
 block|{
@@ -131,7 +131,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|TestOSSContractRootDir
+name|TestAliyunOSSContractRootDir
 operator|.
 name|class
 argument_list|)
@@ -149,7 +149,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|OSSContract
+name|AliyunOSSContract
 argument_list|(
 name|conf
 argument_list|)

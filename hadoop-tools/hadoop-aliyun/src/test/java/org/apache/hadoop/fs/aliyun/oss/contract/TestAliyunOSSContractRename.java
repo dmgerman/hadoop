@@ -48,7 +48,7 @@ name|fs
 operator|.
 name|contract
 operator|.
-name|AbstractContractGetFileStatusTest
+name|AbstractContractRenameTest
 import|;
 end_import
 
@@ -69,16 +69,16 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test getFileStatus and related listing operations.  */
+comment|/**  * Aliyun OSS contract renaming tests.  */
 end_comment
 
 begin_class
-DECL|class|TestOSSContractGetFileStatus
+DECL|class|TestAliyunOSSContractRename
 specifier|public
 class|class
-name|TestOSSContractGetFileStatus
+name|TestAliyunOSSContractRename
 extends|extends
-name|AbstractContractGetFileStatusTest
+name|AbstractContractRenameTest
 block|{
 annotation|@
 name|Override
@@ -93,7 +93,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|OSSContract
+name|AliyunOSSContract
 argument_list|(
 name|conf
 argument_list|)

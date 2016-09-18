@@ -201,10 +201,10 @@ comment|/**  * Test the bridging logic between Hadoop's abstract filesystem and 
 end_comment
 
 begin_class
-DECL|class|TestOSSFileSystemStore
+DECL|class|TestAliyunOSSFileSystemStore
 specifier|public
 class|class
-name|TestOSSFileSystemStore
+name|TestAliyunOSSFileSystemStore
 block|{
 DECL|field|conf
 specifier|private
@@ -330,7 +330,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"fs.oss.accessKeyId"
+name|Constants
+operator|.
+name|ACCESS_KEY
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -340,7 +342,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"fs.oss.accessKeySecret"
+name|Constants
+operator|.
+name|SECRET_KEY
 argument_list|)
 argument_list|)
 expr_stmt|;

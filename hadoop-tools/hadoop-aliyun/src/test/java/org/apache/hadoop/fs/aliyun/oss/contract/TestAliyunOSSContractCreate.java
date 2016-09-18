@@ -48,7 +48,7 @@ name|fs
 operator|.
 name|contract
 operator|.
-name|AbstractContractSeekTest
+name|AbstractContractCreateTest
 import|;
 end_import
 
@@ -69,16 +69,16 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * OSS contract seeking tests.  */
+comment|/**  * Aliyun OSS contract creating tests.  */
 end_comment
 
 begin_class
-DECL|class|TestOSSContractSeek
+DECL|class|TestAliyunOSSContractCreate
 specifier|public
 class|class
-name|TestOSSContractSeek
+name|TestAliyunOSSContractCreate
 extends|extends
-name|AbstractContractSeekTest
+name|AbstractContractCreateTest
 block|{
 annotation|@
 name|Override
@@ -93,7 +93,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|OSSContract
+name|AliyunOSSContract
 argument_list|(
 name|conf
 argument_list|)

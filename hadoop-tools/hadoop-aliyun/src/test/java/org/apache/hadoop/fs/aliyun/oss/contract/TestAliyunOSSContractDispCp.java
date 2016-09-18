@@ -44,16 +44,16 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|tools
 operator|.
 name|contract
 operator|.
-name|AbstractContractCreateTest
+name|AbstractContractDistCpTest
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|apache
@@ -62,29 +62,85 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|contract
+name|aliyun
 operator|.
-name|AbstractFSContract
+name|oss
+operator|.
+name|Constants
+operator|.
+name|*
 import|;
 end_import
 
 begin_comment
-comment|/**  * OSS contract creating tests.  */
+comment|/**  * Contract test suite covering Aliyun OSS integration with DistCp.  */
 end_comment
 
 begin_class
-DECL|class|TestOSSContractCreate
+DECL|class|TestAliyunOSSContractDispCp
 specifier|public
 class|class
-name|TestOSSContractCreate
+name|TestAliyunOSSContractDispCp
 extends|extends
-name|AbstractContractCreateTest
+name|AbstractContractDistCpTest
 block|{
+DECL|field|MULTIPART_SETTING
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|MULTIPART_SETTING
+init|=
+literal|8
+operator|*
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
+comment|// 8 MB
+annotation|@
+name|Override
+DECL|method|createConfiguration ()
+specifier|protected
+name|Configuration
+name|createConfiguration
+parameter_list|()
+block|{
+name|Configuration
+name|newConf
+init|=
+name|super
+operator|.
+name|createConfiguration
+argument_list|()
+decl_stmt|;
+name|newConf
+operator|.
+name|setLong
+argument_list|(
+name|MIN_MULTIPART_UPLOAD_THRESHOLD_KEY
+argument_list|,
+name|MULTIPART_SETTING
+argument_list|)
+expr_stmt|;
+name|newConf
+operator|.
+name|setLong
+argument_list|(
+name|MULTIPART_UPLOAD_SIZE_KEY
+argument_list|,
+name|MULTIPART_SETTING
+argument_list|)
+expr_stmt|;
+return|return
+name|newConf
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|createContract (Configuration conf)
 specifier|protected
-name|AbstractFSContract
+name|AliyunOSSContract
 name|createContract
 parameter_list|(
 name|Configuration
@@ -93,7 +149,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|OSSContract
+name|AliyunOSSContract
 argument_list|(
 name|conf
 argument_list|)

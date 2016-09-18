@@ -46,9 +46,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|contract
-operator|.
-name|AbstractContractRenameTest
+name|Path
 import|;
 end_import
 
@@ -64,38 +62,99 @@ name|fs
 operator|.
 name|contract
 operator|.
-name|AbstractFSContract
+name|AbstractBondedFSContract
 import|;
 end_import
 
 begin_comment
-comment|/**  * OSS contract renaming tests.  */
+comment|/**  * The contract of Aliyun OSS: only enabled if the test bucket is provided.  */
 end_comment
 
 begin_class
-DECL|class|TestOSSContractRename
+DECL|class|AliyunOSSContract
 specifier|public
 class|class
-name|TestOSSContractRename
+name|AliyunOSSContract
 extends|extends
-name|AbstractContractRenameTest
+name|AbstractBondedFSContract
 block|{
-annotation|@
-name|Override
-DECL|method|createContract (Configuration conf)
-specifier|protected
-name|AbstractFSContract
-name|createContract
+DECL|field|CONTRACT_XML
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTRACT_XML
+init|=
+literal|"contract/aliyun-oss.xml"
+decl_stmt|;
+DECL|method|AliyunOSSContract (Configuration conf)
+specifier|public
+name|AliyunOSSContract
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
 block|{
-return|return
-operator|new
-name|OSSContract
+name|super
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+comment|//insert the base features
+name|addConfResource
+argument_list|(
+name|CONTRACT_XML
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"oss"
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getTestPath ()
+specifier|public
+name|Path
+name|getTestPath
+parameter_list|()
+block|{
+name|String
+name|testUniqueForkId
+init|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"test.unique.fork.id"
+argument_list|)
+decl_stmt|;
+return|return
+name|testUniqueForkId
+operator|==
+literal|null
+condition|?
+name|super
+operator|.
+name|getTestPath
+argument_list|()
+else|:
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+operator|+
+name|testUniqueForkId
+argument_list|,
+literal|"test"
 argument_list|)
 return|;
 block|}

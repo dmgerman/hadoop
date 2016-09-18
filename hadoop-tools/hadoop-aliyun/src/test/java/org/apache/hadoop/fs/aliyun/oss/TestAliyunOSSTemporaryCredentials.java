@@ -82,7 +82,7 @@ name|oss
 operator|.
 name|contract
 operator|.
-name|OSSContract
+name|AliyunOSSContract
 import|;
 end_import
 
@@ -203,10 +203,10 @@ comment|/**  * Tests use of temporary credentials (for example, Aliyun STS& Aliy
 end_comment
 
 begin_class
-DECL|class|TestOSSTemporaryCredentials
+DECL|class|TestAliyunOSSTemporaryCredentials
 specifier|public
 class|class
-name|TestOSSTemporaryCredentials
+name|TestAliyunOSSTemporaryCredentials
 extends|extends
 name|AbstractFSContractTestBase
 block|{
@@ -223,7 +223,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|OSSContract
+name|AliyunOSSContract
 argument_list|(
 name|conf
 argument_list|)

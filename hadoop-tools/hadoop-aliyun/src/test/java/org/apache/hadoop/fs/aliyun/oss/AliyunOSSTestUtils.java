@@ -80,40 +80,20 @@ name|URI
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Date
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Random
-import|;
-end_import
-
 begin_comment
-comment|/**  * Utility class for OSS Tests.  */
+comment|/**  * Utility class for Aliyun OSS Tests.  */
 end_comment
 
 begin_class
-DECL|class|OSSTestUtils
+DECL|class|AliyunOSSTestUtils
 specifier|public
 specifier|final
 class|class
-name|OSSTestUtils
+name|AliyunOSSTestUtils
 block|{
-DECL|method|OSSTestUtils ()
+DECL|method|AliyunOSSTestUtils ()
 specifier|private
-name|OSSTestUtils
+name|AliyunOSSTestUtils
 parameter_list|()
 block|{   }
 comment|/**    * Create the test filesystem.    *    * If the test.fs.oss.name property is not set,    * tests will fail.    *    * @param conf configuration    * @return the FS    * @throws IOException    */
@@ -136,7 +116,7 @@ name|conf
 operator|.
 name|getTrimmed
 argument_list|(
-name|TestOSSFileSystemContract
+name|TestAliyunOSSFileSystemContract
 operator|.
 name|TEST_FS_OSS_NAME
 argument_list|,
@@ -200,7 +180,7 @@ name|AssumptionViolatedException
 argument_list|(
 literal|"No test filesystem in "
 operator|+
-name|TestOSSFileSystemContract
+name|TestAliyunOSSFileSystemContract
 operator|.
 name|TEST_FS_OSS_NAME
 argument_list|)
@@ -234,49 +214,28 @@ name|String
 name|generateUniqueTestPath
 parameter_list|()
 block|{
-name|Long
-name|time
+name|String
+name|testUniqueForkId
 init|=
-operator|new
-name|Date
-argument_list|()
+name|System
 operator|.
-name|getTime
-argument_list|()
-decl_stmt|;
-name|Random
-name|rand
-init|=
-operator|new
-name|Random
-argument_list|()
+name|getProperty
+argument_list|(
+literal|"test.unique.fork.id"
+argument_list|)
 decl_stmt|;
 return|return
-literal|"/test_"
+name|testUniqueForkId
+operator|==
+literal|null
+condition|?
+literal|"/test"
+else|:
+literal|"/"
 operator|+
-name|Long
-operator|.
-name|toString
-argument_list|(
-name|time
-argument_list|)
+name|testUniqueForkId
 operator|+
-literal|"_"
-operator|+
-name|Long
-operator|.
-name|toString
-argument_list|(
-name|Math
-operator|.
-name|abs
-argument_list|(
-name|rand
-operator|.
-name|nextLong
-argument_list|()
-argument_list|)
-argument_list|)
+literal|"/test"
 return|;
 block|}
 block|}

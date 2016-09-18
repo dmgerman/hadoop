@@ -48,7 +48,7 @@ name|fs
 operator|.
 name|contract
 operator|.
-name|AbstractContractMkdirTest
+name|AbstractContractDeleteTest
 import|;
 end_import
 
@@ -69,16 +69,16 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * OSS contract directory tests.  */
+comment|/**  * Aliyun OSS contract deleting tests.  */
 end_comment
 
 begin_class
-DECL|class|TestOSSContractMkdir
+DECL|class|TestAliyunOSSContractDelete
 specifier|public
 class|class
-name|TestOSSContractMkdir
+name|TestAliyunOSSContractDelete
 extends|extends
-name|AbstractContractMkdirTest
+name|AbstractContractDeleteTest
 block|{
 annotation|@
 name|Override
@@ -93,7 +93,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|OSSContract
+name|AliyunOSSContract
 argument_list|(
 name|conf
 argument_list|)
