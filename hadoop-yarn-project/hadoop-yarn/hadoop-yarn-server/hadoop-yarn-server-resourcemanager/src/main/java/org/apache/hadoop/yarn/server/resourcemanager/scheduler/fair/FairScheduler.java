@@ -5096,7 +5096,7 @@ name|info
 argument_list|(
 literal|"Calling allocate on removed "
 operator|+
-literal|"or non existant application "
+literal|"or non existent application "
 operator|+
 name|appAttemptId
 argument_list|)

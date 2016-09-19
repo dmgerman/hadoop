@@ -660,7 +660,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"AsyncDispatcher is draining to stop, igonring any new events."
+literal|"AsyncDispatcher is draining to stop, ignoring any new events."
 argument_list|)
 expr_stmt|;
 name|long

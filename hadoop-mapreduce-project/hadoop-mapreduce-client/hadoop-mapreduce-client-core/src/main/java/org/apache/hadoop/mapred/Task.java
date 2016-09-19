@@ -5910,7 +5910,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Runnning cleanup for the task"
+literal|"Running cleanup for the task"
 argument_list|)
 expr_stmt|;
 comment|// do the cleanup

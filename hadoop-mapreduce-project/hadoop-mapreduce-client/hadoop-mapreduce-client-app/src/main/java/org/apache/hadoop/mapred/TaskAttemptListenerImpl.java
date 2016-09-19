@@ -1520,7 +1520,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Done acknowledgement from "
+literal|"Done acknowledgment from "
 operator|+
 name|taskAttemptID
 operator|.

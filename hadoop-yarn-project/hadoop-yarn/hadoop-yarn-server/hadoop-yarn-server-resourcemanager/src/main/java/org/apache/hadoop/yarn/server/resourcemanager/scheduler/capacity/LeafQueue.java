@@ -1764,7 +1764,7 @@ literal|" [= (float) configuredCapacity / 100 ]"
 operator|+
 literal|"\n"
 operator|+
-literal|"asboluteCapacity = "
+literal|"absoluteCapacity = "
 operator|+
 name|queueCapacities
 operator|.
