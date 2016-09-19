@@ -122,9 +122,49 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ConcurrentHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|atomic
 operator|.
 name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|ReentrantReadWriteLock
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|ConcurrentHashMultiset
 import|;
 end_import
 
@@ -894,34 +934,6 @@ name|Preconditions
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|HashMultiset
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|Multiset
-import|;
-end_import
-
 begin_comment
 comment|/**  * Represents an application attempt from the viewpoint of the scheduler.  * Each running app attempt in the RM corresponds to one instance  * of this class.  */
 end_comment
@@ -1018,12 +1030,8 @@ argument_list|>
 name|liveContainers
 init|=
 operator|new
-name|HashMap
-argument_list|<
-name|ContainerId
-argument_list|,
-name|RMContainer
-argument_list|>
+name|ConcurrentHashMap
+argument_list|<>
 argument_list|()
 decl_stmt|;
 specifier|protected
@@ -1050,19 +1058,20 @@ decl_stmt|;
 DECL|field|reReservations
 specifier|private
 specifier|final
-name|Multiset
+name|ConcurrentHashMultiset
 argument_list|<
 name|SchedulerRequestKey
 argument_list|>
 name|reReservations
 init|=
-name|HashMultiset
+name|ConcurrentHashMultiset
 operator|.
 name|create
 argument_list|()
 decl_stmt|;
 DECL|field|resourceLimit
 specifier|private
+specifier|volatile
 name|Resource
 name|resourceLimit
 init|=
@@ -1221,26 +1230,28 @@ literal|null
 decl_stmt|;
 comment|/**    * Count how many times the application has been given an opportunity to    * schedule a task at each priority. Each time the scheduler asks the    * application for a task at this priority, it is incremented, and each time    * the application successfully schedules a task (at rack or node local), it    * is reset to 0.    */
 DECL|field|schedulingOpportunities
-name|Multiset
+specifier|private
+name|ConcurrentHashMultiset
 argument_list|<
 name|SchedulerRequestKey
 argument_list|>
 name|schedulingOpportunities
 init|=
-name|HashMultiset
+name|ConcurrentHashMultiset
 operator|.
 name|create
 argument_list|()
 decl_stmt|;
 comment|/**    * Count how many times the application has been given an opportunity to    * schedule a non-partitioned resource request at each priority. Each time the    * scheduler asks the application for a task at this priority, it is    * incremented, and each time the application successfully schedules a task,    * it is reset to 0 when schedule any task at corresponding priority.    */
-DECL|field|missedNonPartitionedReqSchedulingOpportunity
-name|Multiset
+specifier|private
+name|ConcurrentHashMultiset
 argument_list|<
 name|SchedulerRequestKey
 argument_list|>
+DECL|field|missedNonPartitionedReqSchedulingOpportunity
 name|missedNonPartitionedReqSchedulingOpportunity
 init|=
-name|HashMultiset
+name|ConcurrentHashMultiset
 operator|.
 name|create
 argument_list|()
@@ -1257,17 +1268,19 @@ argument_list|>
 name|lastScheduledContainer
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|queue
 specifier|protected
+specifier|volatile
 name|Queue
 name|queue
 decl_stmt|;
 DECL|field|isStopped
 specifier|protected
+specifier|volatile
 name|boolean
 name|isStopped
 init|=
@@ -1292,6 +1305,20 @@ DECL|field|appAttempt
 specifier|private
 name|RMAppAttempt
 name|appAttempt
+decl_stmt|;
+DECL|field|readLock
+specifier|protected
+name|ReentrantReadWriteLock
+operator|.
+name|ReadLock
+name|readLock
+decl_stmt|;
+DECL|field|writeLock
+specifier|protected
+name|ReentrantReadWriteLock
+operator|.
+name|WriteLock
+name|writeLock
 decl_stmt|;
 DECL|method|SchedulerApplicationAttempt (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext)
 specifier|public
@@ -1453,11 +1480,31 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+name|ReentrantReadWriteLock
+name|lock
+init|=
+operator|new
+name|ReentrantReadWriteLock
+argument_list|()
+decl_stmt|;
+name|readLock
+operator|=
+name|lock
+operator|.
+name|readLock
+argument_list|()
+expr_stmt|;
+name|writeLock
+operator|=
+name|lock
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Get the live containers of the application.    * @return live containers of the application    */
 DECL|method|getLiveContainers ()
 specifier|public
-specifier|synchronized
 name|Collection
 argument_list|<
 name|RMContainer
@@ -1465,12 +1512,17 @@ argument_list|>
 name|getLiveContainers
 parameter_list|()
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 return|return
 operator|new
 name|ArrayList
-argument_list|<
-name|RMContainer
-argument_list|>
+argument_list|<>
 argument_list|(
 name|liveContainers
 operator|.
@@ -1478,6 +1530,15 @@ name|values
 argument_list|()
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|getAppSchedulingInfo ()
 specifier|public
@@ -1614,7 +1675,6 @@ return|;
 block|}
 DECL|method|getResourceRequest ( SchedulerRequestKey schedulerKey, String resourceName)
 specifier|public
-specifier|synchronized
 name|ResourceRequest
 name|getResourceRequest
 parameter_list|(
@@ -1625,6 +1685,13 @@ name|String
 name|resourceName
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 return|return
 name|appSchedulingInfo
 operator|.
@@ -1636,9 +1703,17 @@ name|resourceName
 argument_list|)
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|getTotalRequiredResources ( SchedulerRequestKey schedulerKey)
 specifier|public
-specifier|synchronized
 name|int
 name|getTotalRequiredResources
 parameter_list|(
@@ -1646,6 +1721,13 @@ name|SchedulerRequestKey
 name|schedulerKey
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|ResourceRequest
 name|request
 init|=
@@ -1671,9 +1753,17 @@ name|getNumContainers
 argument_list|()
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|getResource (SchedulerRequestKey schedulerKey)
 specifier|public
-specifier|synchronized
 name|Resource
 name|getResource
 parameter_list|(
@@ -1681,6 +1771,13 @@ name|SchedulerRequestKey
 name|schedulerKey
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 return|return
 name|appSchedulingInfo
 operator|.
@@ -1689,6 +1786,15 @@ argument_list|(
 name|schedulerKey
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|getQueueName ()
 specifier|public
@@ -1809,7 +1915,6 @@ return|;
 block|}
 DECL|method|getRMContainer (ContainerId id)
 specifier|public
-specifier|synchronized
 name|RMContainer
 name|getRMContainer
 parameter_list|(
@@ -1828,7 +1933,6 @@ return|;
 block|}
 DECL|method|addRMContainer ( ContainerId id, RMContainer rmContainer)
 specifier|public
-specifier|synchronized
 name|void
 name|addRMContainer
 parameter_list|(
@@ -1839,6 +1943,13 @@ name|RMContainer
 name|rmContainer
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|liveContainers
 operator|.
 name|put
@@ -1870,9 +1981,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|removeRMContainer (ContainerId containerId)
 specifier|public
-specifier|synchronized
 name|void
 name|removeRMContainer
 parameter_list|(
@@ -1880,6 +1999,13 @@ name|ContainerId
 name|containerId
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|RMContainer
 name|rmContainer
 init|=
@@ -1916,9 +2042,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|resetReReservations ( SchedulerRequestKey schedulerKey)
 specifier|protected
-specifier|synchronized
 name|void
 name|resetReReservations
 parameter_list|(
@@ -1938,7 +2072,6 @@ expr_stmt|;
 block|}
 DECL|method|addReReservation ( SchedulerRequestKey schedulerKey)
 specifier|protected
-specifier|synchronized
 name|void
 name|addReReservation
 parameter_list|(
@@ -1956,7 +2089,6 @@ expr_stmt|;
 block|}
 DECL|method|getReReservations (SchedulerRequestKey schedulerKey)
 specifier|public
-specifier|synchronized
 name|int
 name|getReReservations
 parameter_list|(
@@ -1980,7 +2112,6 @@ annotation|@
 name|Private
 DECL|method|getCurrentReservation ()
 specifier|public
-specifier|synchronized
 name|Resource
 name|getCurrentReservation
 parameter_list|()
@@ -2004,7 +2135,6 @@ return|;
 block|}
 DECL|method|updateResourceRequests ( List<ResourceRequest> requests)
 specifier|public
-specifier|synchronized
 name|boolean
 name|updateResourceRequests
 parameter_list|(
@@ -2015,6 +2145,13 @@ argument_list|>
 name|requests
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -2036,9 +2173,17 @@ return|return
 literal|false
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|recoverResourceRequestsForContainer ( List<ResourceRequest> requests)
 specifier|public
-specifier|synchronized
 name|void
 name|recoverResourceRequestsForContainer
 parameter_list|(
@@ -2049,6 +2194,13 @@ argument_list|>
 name|requests
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -2066,9 +2218,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|stop (RMAppAttemptState rmAppAttemptFinalState)
 specifier|public
-specifier|synchronized
 name|void
 name|stop
 parameter_list|(
@@ -2076,6 +2236,13 @@ name|RMAppAttemptState
 name|rmAppAttemptFinalState
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Cleanup all scheduling information
 name|isStopped
 operator|=
@@ -2087,9 +2254,17 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|isStopped ()
 specifier|public
-specifier|synchronized
 name|boolean
 name|isStopped
 parameter_list|()
@@ -2101,7 +2276,6 @@ block|}
 comment|/**    * Get the list of reserved containers    * @return All of the reserved containers.    */
 DECL|method|getReservedContainers ()
 specifier|public
-specifier|synchronized
 name|List
 argument_list|<
 name|RMContainer
@@ -2113,19 +2287,22 @@ name|List
 argument_list|<
 name|RMContainer
 argument_list|>
-name|reservedContainers
+name|list
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|RMContainer
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 for|for
 control|(
-name|Map
-operator|.
 name|Entry
 argument_list|<
 name|SchedulerRequestKey
@@ -2147,7 +2324,7 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-name|reservedContainers
+name|list
 operator|.
 name|addAll
 argument_list|(
@@ -2162,12 +2339,20 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|reservedContainers
+name|list
 return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|reserveIncreasedContainer (SchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer rmContainer, Resource reservedResource)
 specifier|public
-specifier|synchronized
 name|boolean
 name|reserveIncreasedContainer
 parameter_list|(
@@ -2184,6 +2369,13 @@ name|Resource
 name|reservedResource
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|commonReserve
@@ -2219,9 +2411,17 @@ return|return
 literal|false
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|commonReserve (SchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer rmContainer, Resource reservedResource)
 specifier|private
-specifier|synchronized
 name|boolean
 name|commonReserve
 parameter_list|(
@@ -2386,7 +2586,6 @@ return|;
 block|}
 DECL|method|reserve (SchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer rmContainer, Container container)
 specifier|public
-specifier|synchronized
 name|RMContainer
 name|reserve
 parameter_list|(
@@ -2403,6 +2602,13 @@ name|Container
 name|container
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Create RMContainer if necessary
 if|if
 condition|(
@@ -2498,63 +2704,17 @@ return|return
 name|rmContainer
 return|;
 block|}
-comment|/**    * Has the application reserved the given<code>node</code> at the    * given<code>priority</code>?    * @param node node to be checked    * @param schedulerKey scheduler key  of reserved container    * @return true is reserved, false if not    */
-DECL|method|isReserved (SchedulerNode node, SchedulerRequestKey schedulerKey)
-specifier|public
-specifier|synchronized
-name|boolean
-name|isReserved
-parameter_list|(
-name|SchedulerNode
-name|node
-parameter_list|,
-name|SchedulerRequestKey
-name|schedulerKey
-parameter_list|)
+finally|finally
 block|{
-name|Map
-argument_list|<
-name|NodeId
-argument_list|,
-name|RMContainer
-argument_list|>
-name|reservedContainers
-init|=
-name|this
+name|writeLock
 operator|.
-name|reservedContainers
-operator|.
-name|get
-argument_list|(
-name|schedulerKey
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|reservedContainers
-operator|!=
-literal|null
-condition|)
-block|{
-return|return
-name|reservedContainers
-operator|.
-name|containsKey
-argument_list|(
-name|node
-operator|.
-name|getNodeID
+name|unlock
 argument_list|()
-argument_list|)
-return|;
+expr_stmt|;
 block|}
-return|return
-literal|false
-return|;
 block|}
 DECL|method|setHeadroom (Resource globalLimit)
 specifier|public
-specifier|synchronized
 name|void
 name|setHeadroom
 parameter_list|(
@@ -2566,43 +2726,32 @@ name|this
 operator|.
 name|resourceLimit
 operator|=
+name|Resources
+operator|.
+name|componentwiseMax
+argument_list|(
 name|globalLimit
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get available headroom in terms of resources for the application's user.    * @return available resource headroom    */
 DECL|method|getHeadroom ()
 specifier|public
-specifier|synchronized
 name|Resource
 name|getHeadroom
 parameter_list|()
 block|{
-comment|// Corner case to deal with applications being slightly over-limit
-if|if
-condition|(
-name|resourceLimit
-operator|.
-name|getMemorySize
-argument_list|()
-operator|<
-literal|0
-condition|)
-block|{
-name|resourceLimit
-operator|.
-name|setMemorySize
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-block|}
 return|return
 name|resourceLimit
 return|;
 block|}
 DECL|method|getNumReservedContainers ( SchedulerRequestKey schedulerKey)
 specifier|public
-specifier|synchronized
 name|int
 name|getNumReservedContainers
 parameter_list|(
@@ -2610,13 +2759,20 @@ name|SchedulerRequestKey
 name|schedulerKey
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|Map
 argument_list|<
 name|NodeId
 argument_list|,
 name|RMContainer
 argument_list|>
-name|reservedContainers
+name|map
 init|=
 name|this
 operator|.
@@ -2629,18 +2785,27 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|(
-name|reservedContainers
+name|map
 operator|==
 literal|null
 operator|)
 condition|?
 literal|0
 else|:
-name|reservedContainers
+name|map
 operator|.
 name|size
 argument_list|()
 return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|SuppressWarnings
@@ -2649,7 +2814,6 @@ literal|"unchecked"
 argument_list|)
 DECL|method|containerLaunchedOnNode (ContainerId containerId, NodeId nodeId)
 specifier|public
-specifier|synchronized
 name|void
 name|containerLaunchedOnNode
 parameter_list|(
@@ -2660,6 +2824,13 @@ name|NodeId
 name|nodeId
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Inform the container
 name|RMContainer
 name|rmContainer
@@ -2714,9 +2885,17 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|showRequests ()
 specifier|public
-specifier|synchronized
 name|void
 name|showRequests
 parameter_list|()
@@ -2729,6 +2908,13 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 for|for
 control|(
 name|SchedulerRequestKey
@@ -2814,6 +3000,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -3068,7 +3263,6 @@ comment|// some reason like DNS unavailable, do not return this container and ke
 comment|// in the newlyAllocatedContainers waiting to be refetched.
 DECL|method|pullNewlyAllocatedContainers ()
 specifier|public
-specifier|synchronized
 name|List
 argument_list|<
 name|Container
@@ -3076,6 +3270,13 @@ argument_list|>
 name|pullNewlyAllocatedContainers
 parameter_list|()
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|List
 argument_list|<
 name|Container
@@ -3094,8 +3295,6 @@ name|size
 argument_list|()
 argument_list|)
 decl_stmt|;
-for|for
-control|(
 name|Iterator
 argument_list|<
 name|RMContainer
@@ -3106,13 +3305,14 @@ name|newlyAllocatedContainers
 operator|.
 name|iterator
 argument_list|()
-init|;
+decl_stmt|;
+while|while
+condition|(
 name|i
 operator|.
 name|hasNext
 argument_list|()
-condition|;
-control|)
+condition|)
 block|{
 name|RMContainer
 name|rmContainer
@@ -3134,9 +3334,9 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
-comment|// Only add container to return list when it's not null. updatedContainer
-comment|// could be null when generate token failed, it can be caused by DNS
-comment|// resolving failed.
+comment|// Only add container to return list when it's not null.
+comment|// updatedContainer could be null when generate token failed, it can be
+comment|// caused by DNS resolving failed.
 if|if
 condition|(
 name|updatedContainer
@@ -3162,9 +3362,17 @@ return|return
 name|returnContainerList
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|pullNewlyUpdatedContainers ( Map<ContainerId, RMContainer> updatedContainerMap, boolean increase)
 specifier|private
-specifier|synchronized
 name|List
 argument_list|<
 name|Container
@@ -3183,6 +3391,13 @@ name|boolean
 name|increase
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|List
 argument_list|<
 name|Container
@@ -3201,8 +3416,6 @@ name|size
 argument_list|()
 argument_list|)
 decl_stmt|;
-for|for
-control|(
 name|Iterator
 argument_list|<
 name|Entry
@@ -3221,13 +3434,14 @@ argument_list|()
 operator|.
 name|iterator
 argument_list|()
-init|;
+decl_stmt|;
+while|while
+condition|(
 name|i
 operator|.
 name|hasNext
 argument_list|()
-condition|;
-control|)
+condition|)
 block|{
 name|RMContainer
 name|rmContainer
@@ -3277,9 +3491,17 @@ return|return
 name|returnContainerList
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|pullNewlyIncreasedContainers ()
 specifier|public
-specifier|synchronized
 name|List
 argument_list|<
 name|Container
@@ -3298,7 +3520,6 @@ return|;
 block|}
 DECL|method|pullNewlyDecreasedContainers ()
 specifier|public
-specifier|synchronized
 name|List
 argument_list|<
 name|Container
@@ -3317,7 +3538,6 @@ return|;
 block|}
 DECL|method|pullUpdatedNMTokens ()
 specifier|public
-specifier|synchronized
 name|List
 argument_list|<
 name|NMToken
@@ -3325,6 +3545,13 @@ argument_list|>
 name|pullUpdatedNMTokens
 parameter_list|()
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|List
 argument_list|<
 name|NMToken
@@ -3333,9 +3560,7 @@ name|returnList
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|NMToken
-argument_list|>
+argument_list|<>
 argument_list|(
 name|updatedNMTokens
 argument_list|)
@@ -3348,6 +3573,15 @@ expr_stmt|;
 return|return
 name|returnList
 return|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|isWaitingForAMContainer ()
 specifier|public
@@ -3373,7 +3607,6 @@ return|;
 block|}
 DECL|method|updateBlacklist (List<String> blacklistAdditions, List<String> blacklistRemovals)
 specifier|public
-specifier|synchronized
 name|void
 name|updateBlacklist
 parameter_list|(
@@ -3390,6 +3623,13 @@ argument_list|>
 name|blacklistRemovals
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -3402,9 +3642,9 @@ name|isWaitingForAMContainer
 argument_list|()
 condition|)
 block|{
-comment|// The request is for the AM-container, and the AM-container is launched
-comment|// by the system. So, update the places that are blacklisted by system
-comment|// (as opposed to those blacklisted by the application).
+comment|// The request is for the AM-container, and the AM-container is
+comment|// launched by the system. So, update the places that are blacklisted
+comment|// by system (as opposed to those blacklisted by the application).
 name|this
 operator|.
 name|appSchedulingInfo
@@ -3433,6 +3673,15 @@ expr_stmt|;
 block|}
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|isPlaceBlacklisted (String resourceName)
 specifier|public
 name|boolean
@@ -3442,6 +3691,13 @@ name|String
 name|resourceName
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|boolean
 name|forAMContainer
 init|=
@@ -3461,9 +3717,17 @@ name|forAMContainer
 argument_list|)
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|addMissedNonPartitionedRequestSchedulingOpportunity ( SchedulerRequestKey schedulerKey)
 specifier|public
-specifier|synchronized
 name|int
 name|addMissedNonPartitionedRequestSchedulingOpportunity
 parameter_list|(
@@ -3471,24 +3735,20 @@ name|SchedulerRequestKey
 name|schedulerKey
 parameter_list|)
 block|{
+return|return
 name|missedNonPartitionedReqSchedulingOpportunity
 operator|.
 name|add
 argument_list|(
 name|schedulerKey
+argument_list|,
+literal|1
 argument_list|)
-expr_stmt|;
-return|return
-name|missedNonPartitionedReqSchedulingOpportunity
-operator|.
-name|count
-argument_list|(
-name|schedulerKey
-argument_list|)
+operator|+
+literal|1
 return|;
 block|}
 specifier|public
-specifier|synchronized
 name|void
 DECL|method|resetMissedNonPartitionedRequestSchedulingOpportunity ( SchedulerRequestKey schedulerKey)
 name|resetMissedNonPartitionedRequestSchedulingOpportunity
@@ -3509,7 +3769,6 @@ expr_stmt|;
 block|}
 DECL|method|addSchedulingOpportunity ( SchedulerRequestKey schedulerKey)
 specifier|public
-specifier|synchronized
 name|void
 name|addSchedulingOpportunity
 parameter_list|(
@@ -3517,41 +3776,29 @@ name|SchedulerRequestKey
 name|schedulerKey
 parameter_list|)
 block|{
-name|int
-name|count
-init|=
-name|schedulingOpportunities
-operator|.
-name|count
-argument_list|(
-name|schedulerKey
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|count
-operator|<
-name|Integer
-operator|.
-name|MAX_VALUE
-condition|)
+try|try
 block|{
 name|schedulingOpportunities
 operator|.
-name|setCount
+name|add
 argument_list|(
 name|schedulerKey
 argument_list|,
-name|count
-operator|+
 literal|1
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+comment|// This happens when count = MAX_INT, ignore the exception
+block|}
 block|}
 DECL|method|subtractSchedulingOpportunity ( SchedulerRequestKey schedulerKey)
 specifier|public
-specifier|synchronized
 name|void
 name|subtractSchedulingOpportunity
 parameter_list|(
@@ -3559,41 +3806,21 @@ name|SchedulerRequestKey
 name|schedulerKey
 parameter_list|)
 block|{
-name|int
-name|count
-init|=
-name|schedulingOpportunities
-operator|.
-name|count
-argument_list|(
-name|schedulerKey
-argument_list|)
-operator|-
-literal|1
-decl_stmt|;
 name|this
 operator|.
 name|schedulingOpportunities
 operator|.
-name|setCount
+name|removeExactly
 argument_list|(
 name|schedulerKey
 argument_list|,
-name|Math
-operator|.
-name|max
-argument_list|(
-name|count
-argument_list|,
-literal|0
-argument_list|)
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Return the number of times the application has been given an opportunity    * to schedule a task at the given priority since the last time it    * successfully did so.    * @param schedulerKey Scheduler Key    * @return number of scheduling opportunities    */
 DECL|method|getSchedulingOpportunities ( SchedulerRequestKey schedulerKey)
 specifier|public
-specifier|synchronized
 name|int
 name|getSchedulingOpportunities
 parameter_list|(
@@ -3613,7 +3840,6 @@ block|}
 comment|/**    * Should be called when an application has successfully scheduled a    * container, or when the scheduling locality threshold is relaxed.    * Reset various internal counters which affect delay scheduling    *    * @param schedulerKey The priority of the container scheduled.    */
 DECL|method|resetSchedulingOpportunities ( SchedulerRequestKey schedulerKey)
 specifier|public
-specifier|synchronized
 name|void
 name|resetSchedulingOpportunities
 parameter_list|(
@@ -3635,7 +3861,6 @@ block|}
 comment|// used for continuous scheduling
 DECL|method|resetSchedulingOpportunities ( SchedulerRequestKey schedulerKey, long currentTimeMs)
 specifier|public
-specifier|synchronized
 name|void
 name|resetSchedulingOpportunities
 parameter_list|(
@@ -3646,6 +3871,13 @@ name|long
 name|currentTimeMs
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|lastScheduledContainer
 operator|.
 name|put
@@ -3664,6 +3896,15 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|VisibleForTesting
@@ -3689,7 +3930,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getRunningAggregateAppResourceUsage ()
-specifier|synchronized
+specifier|private
 name|AggregateAppResourceUsage
 name|getRunningAggregateAppResourceUsage
 parameter_list|()
@@ -3811,11 +4052,17 @@ return|;
 block|}
 DECL|method|getResourceUsageReport ()
 specifier|public
-specifier|synchronized
 name|ApplicationResourceUsageReport
 name|getResourceUsageReport
 parameter_list|()
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|AggregateAppResourceUsage
 name|runningResourceUsage
 init|=
@@ -3983,9 +4230,19 @@ name|clusterUsagePerc
 argument_list|)
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getLiveContainersMap ()
 specifier|public
-specifier|synchronized
 name|Map
 argument_list|<
 name|ContainerId
@@ -4001,21 +4258,7 @@ operator|.
 name|liveContainers
 return|;
 block|}
-DECL|method|getResourceLimit ()
 specifier|public
-specifier|synchronized
-name|Resource
-name|getResourceLimit
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|resourceLimit
-return|;
-block|}
-specifier|public
-specifier|synchronized
 name|Map
 argument_list|<
 name|SchedulerRequestKey
@@ -4034,7 +4277,6 @@ return|;
 block|}
 DECL|method|transferStateFromPreviousAttempt ( SchedulerApplicationAttempt appAttempt)
 specifier|public
-specifier|synchronized
 name|void
 name|transferStateFromPreviousAttempt
 parameter_list|(
@@ -4042,6 +4284,13 @@ name|SchedulerApplicationAttempt
 name|appAttempt
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|liveContainers
@@ -4065,12 +4314,12 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|resourceLimit
-operator|=
+name|setHeadroom
+argument_list|(
 name|appAttempt
 operator|.
-name|getResourceLimit
-argument_list|()
+name|resourceLimit
+argument_list|)
 expr_stmt|;
 comment|// this.currentReservation = appAttempt.currentReservation;
 comment|// this.newlyAllocatedContainers = appAttempt.newlyAllocatedContainers;
@@ -4096,9 +4345,17 @@ name|appSchedulingInfo
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|move (Queue newQueue)
 specifier|public
-specifier|synchronized
 name|void
 name|move
 parameter_list|(
@@ -4106,6 +4363,13 @@ name|Queue
 name|newQueue
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|QueueMetrics
 name|oldMetrics
 init|=
@@ -4276,9 +4540,17 @@ operator|=
 name|newQueue
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|recoverContainer (SchedulerNode node, RMContainer rmContainer)
 specifier|public
-specifier|synchronized
 name|void
 name|recoverContainer
 parameter_list|(
@@ -4289,6 +4561,13 @@ name|RMContainer
 name|rmContainer
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// recover app scheduling info
 name|appSchedulingInfo
 operator|.
@@ -4366,6 +4645,15 @@ comment|// is called.
 comment|// newlyAllocatedContainers.add(rmContainer);
 comment|// schedulingOpportunities
 comment|// lastScheduledContainer
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|incNumAllocatedContainers (NodeType containerType, NodeType requestType)
 specifier|public
@@ -4714,7 +5002,6 @@ return|;
 block|}
 DECL|method|removeIncreaseRequest (NodeId nodeId, SchedulerRequestKey schedulerKey, ContainerId containerId)
 specifier|public
-specifier|synchronized
 name|boolean
 name|removeIncreaseRequest
 parameter_list|(
@@ -4728,6 +5015,13 @@ name|ContainerId
 name|containerId
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 return|return
 name|appSchedulingInfo
 operator|.
@@ -4741,9 +5035,17 @@ name|containerId
 argument_list|)
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|updateIncreaseRequests ( List<SchedContainerChangeRequest> increaseRequests)
 specifier|public
-specifier|synchronized
 name|boolean
 name|updateIncreaseRequests
 parameter_list|(
@@ -4754,6 +5056,13 @@ argument_list|>
 name|increaseRequests
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 return|return
 name|appSchedulingInfo
 operator|.
@@ -4763,9 +5072,17 @@ name|increaseRequests
 argument_list|)
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|changeContainerResource ( SchedContainerChangeRequest changeRequest, boolean increase)
 specifier|private
-specifier|synchronized
 name|void
 name|changeContainerResource
 parameter_list|(
@@ -4776,6 +5093,13 @@ name|boolean
 name|increase
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|increase
@@ -4828,8 +5152,8 @@ name|increase
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// remove pending and not pulled by AM newly-increased/decreased-containers
-comment|// and add the new one
+comment|// remove pending and not pulled by AM newly-increased or
+comment|// decreased-containers and add the new one
 if|if
 condition|(
 name|increase
@@ -4884,9 +5208,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|decreaseContainer ( SchedContainerChangeRequest decreaseRequest)
 specifier|public
-specifier|synchronized
 name|void
 name|decreaseContainer
 parameter_list|(
@@ -4904,7 +5236,6 @@ expr_stmt|;
 block|}
 DECL|method|increaseContainer ( SchedContainerChangeRequest increaseRequest)
 specifier|public
-specifier|synchronized
 name|void
 name|increaseContainer
 parameter_list|(
@@ -5152,9 +5483,9 @@ operator|=
 name|isRecovering
 expr_stmt|;
 block|}
+comment|/**    * Different state for Application Master, user can see this state from web UI    */
 DECL|enum|AMState
 specifier|public
-specifier|static
 enum|enum
 name|AMState
 block|{
