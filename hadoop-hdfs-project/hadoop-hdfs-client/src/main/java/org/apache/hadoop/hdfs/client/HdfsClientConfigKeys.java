@@ -521,18 +521,6 @@ literal|10
 argument_list|)
 decl_stmt|;
 comment|// 10 days
-DECL|field|DFS_HDFS_BLOCKS_METADATA_ENABLED
-name|String
-name|DFS_HDFS_BLOCKS_METADATA_ENABLED
-init|=
-literal|"dfs.datanode.hdfs-blocks-metadata.enabled"
-decl_stmt|;
-DECL|field|DFS_HDFS_BLOCKS_METADATA_ENABLED_DEFAULT
-name|boolean
-name|DFS_HDFS_BLOCKS_METADATA_ENABLED_DEFAULT
-init|=
-literal|false
-decl_stmt|;
 DECL|field|DFS_DATANODE_KERBEROS_PRINCIPAL_KEY
 name|String
 name|DFS_DATANODE_KERBEROS_PRINCIPAL_KEY

@@ -210,13 +210,6 @@ name|configurationPropsToSkipCompare
 operator|.
 name|add
 argument_list|(
-literal|"dfs.datanode.hdfs-blocks-metadata.enabled"
-argument_list|)
-expr_stmt|;
-name|configurationPropsToSkipCompare
-operator|.
-name|add
-argument_list|(
 literal|"dfs.metrics.session-id"
 argument_list|)
 expr_stmt|;
