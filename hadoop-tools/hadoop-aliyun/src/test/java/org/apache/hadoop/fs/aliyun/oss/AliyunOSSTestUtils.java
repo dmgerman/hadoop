@@ -126,10 +126,9 @@ decl_stmt|;
 name|boolean
 name|liveTest
 init|=
-operator|!
 name|StringUtils
 operator|.
-name|isEmpty
+name|isNotEmpty
 argument_list|(
 name|fsname
 argument_list|)
