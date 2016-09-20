@@ -112,11 +112,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|client
-operator|.
-name|HdfsClientConfigKeys
+name|CommonConfigurationKeysPublic
 import|;
 end_import
 
@@ -466,9 +464,9 @@ name|conf
 operator|.
 name|getTrimmed
 argument_list|(
-name|HdfsClientConfigKeys
+name|CommonConfigurationKeysPublic
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|,
 literal|""
 argument_list|)
@@ -488,9 +486,9 @@ name|error
 argument_list|(
 literal|"Could not find uri with key ["
 operator|+
-name|HdfsClientConfigKeys
+name|CommonConfigurationKeysPublic
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 operator|+
 literal|"] to create a keyProvider !!"
 argument_list|)

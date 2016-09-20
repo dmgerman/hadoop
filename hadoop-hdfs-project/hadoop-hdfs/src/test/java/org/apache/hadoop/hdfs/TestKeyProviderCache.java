@@ -100,13 +100,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|crypto
+name|fs
 operator|.
-name|key
-operator|.
-name|kms
-operator|.
-name|KMSClientProvider
+name|CommonConfigurationKeysPublic
 import|;
 end_import
 
@@ -378,9 +374,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|CommonConfigurationKeysPublic
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|,
 literal|"dummy://foo:bar@test_provider1"
 argument_list|)
@@ -408,9 +404,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|CommonConfigurationKeysPublic
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|,
 literal|"dummy://foo:bar@test_provider1"
 argument_list|)
@@ -440,9 +436,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|CommonConfigurationKeysPublic
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|,
 literal|"dummy://test_provider3"
 argument_list|)
@@ -472,9 +468,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|CommonConfigurationKeysPublic
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|,
 literal|"dummy://hello:there@test_provider1"
 argument_list|)

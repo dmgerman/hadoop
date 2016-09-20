@@ -1002,6 +1002,26 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|canRollback ()
+specifier|public
+name|boolean
+name|canRollback
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|commitUpgrade ()
+specifier|public
+name|void
+name|commitUpgrade
+parameter_list|()
+block|{    }
 block|}
 end_class
 

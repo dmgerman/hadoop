@@ -5332,17 +5332,6 @@ name|DFS_NAMENODE_LIST_ENCRYPTION_ZONES_NUM_RESPONSES
 init|=
 literal|"dfs.namenode.list.encryption.zones.num.responses"
 decl_stmt|;
-DECL|field|DFS_ENCRYPTION_KEY_PROVIDER_URI
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
-init|=
-name|HdfsClientConfigKeys
-operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
-decl_stmt|;
 DECL|field|DFS_NAMENODE_EDEKCACHELOADER_INTERVAL_MS_KEY
 specifier|public
 specifier|static

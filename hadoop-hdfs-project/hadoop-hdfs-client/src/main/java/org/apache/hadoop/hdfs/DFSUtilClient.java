@@ -3083,9 +3083,9 @@ specifier|static
 name|String
 name|keyProviderUriKeyName
 init|=
-name|HdfsClientConfigKeys
+name|CommonConfigurationKeysPublic
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 decl_stmt|;
 comment|/**    * Set the key provider uri configuration key name for creating key providers.    * @param keyName The configuration key name.    */
 DECL|method|setKeyProviderUriKeyName (final String keyName)
@@ -3388,7 +3388,7 @@ literal|512
 argument_list|)
 return|;
 block|}
-comment|/**    * Probe for HDFS Encryption being enabled; this uses the value of    * the option {@link HdfsClientConfigKeys#DFS_ENCRYPTION_KEY_PROVIDER_URI},    * returning true if that property contains a non-empty, non-whitespace    * string.    * @param conf configuration to probe    * @return true if encryption is considered enabled.    */
+comment|/**    * Probe for HDFS Encryption being enabled; this uses the value of the option    * {@link CommonConfigurationKeysPublic#HADOOP_SECURITY_KEY_PROVIDER_PATH}    * , returning true if that property contains a non-empty, non-whitespace    * string.    * @param conf configuration to probe    * @return true if encryption is considered enabled.    */
 DECL|method|isHDFSEncryptionEnabled (Configuration conf)
 specifier|public
 specifier|static
@@ -3401,19 +3401,21 @@ parameter_list|)
 block|{
 return|return
 operator|!
+operator|(
 name|conf
 operator|.
 name|getTrimmed
 argument_list|(
-name|HdfsClientConfigKeys
+name|CommonConfigurationKeysPublic
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|,
 literal|""
 argument_list|)
 operator|.
 name|isEmpty
 argument_list|()
+operator|)
 return|;
 block|}
 DECL|method|getNNAddress (String address)

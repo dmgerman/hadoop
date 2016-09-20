@@ -236,11 +236,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|crypto
+name|fs
 operator|.
-name|key
-operator|.
-name|KeyProviderFactory
+name|CommonConfigurationKeysPublic
 import|;
 end_import
 
@@ -530,9 +528,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|CommonConfigurationKeysPublic
 operator|.
-name|DFS_ENCRYPTION_KEY_PROVIDER_URI
+name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|,
 name|JavaKeyStoreProvider
 operator|.
