@@ -68,38 +68,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|aliyun
-operator|.
-name|oss
-operator|.
-name|common
-operator|.
-name|auth
-operator|.
-name|DefaultCredentialProvider
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|aliyun
-operator|.
-name|oss
-operator|.
-name|common
-operator|.
-name|auth
-operator|.
-name|DefaultCredentials
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -180,26 +148,6 @@ name|*
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|aliyun
-operator|.
-name|oss
-operator|.
-name|Constants
-operator|.
-name|ALIYUN_OSS_CREDENTIALS_PROVIDER_KEY
-import|;
-end_import
-
 begin_comment
 comment|/**  * Utility methods for Aliyun OSS code.  */
 end_comment
@@ -233,11 +181,11 @@ name|AliyunOSSUtils
 parameter_list|()
 block|{   }
 comment|/**    * Used to get password from configuration.    *    * @param conf configuration that contains password information    * @param key the key of the password    * @return the value for the key    * @throws IOException if failed to get password from configuration    */
-DECL|method|getPassword (Configuration conf, String key)
-specifier|static
+DECL|method|getValueWithKey (Configuration conf, String key)
 specifier|public
+specifier|static
 name|String
-name|getPassword
+name|getValueWithKey
 parameter_list|(
 name|Configuration
 name|conf
@@ -500,42 +448,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|String
-name|accessKey
-init|=
-name|AliyunOSSUtils
-operator|.
-name|getPassword
-argument_list|(
-name|newConf
-argument_list|,
-name|ACCESS_KEY
-argument_list|)
-decl_stmt|;
-name|String
-name|secretKey
-init|=
-name|AliyunOSSUtils
-operator|.
-name|getPassword
-argument_list|(
-name|newConf
-argument_list|,
-name|SECRET_KEY
-argument_list|)
-decl_stmt|;
 name|credentials
 operator|=
 operator|new
-name|DefaultCredentialProvider
+name|AliyunCredentialsProvider
 argument_list|(
-operator|new
-name|DefaultCredentials
-argument_list|(
-name|accessKey
-argument_list|,
-name|secretKey
-argument_list|)
+name|newConf
 argument_list|)
 expr_stmt|;
 block|}
@@ -576,10 +494,6 @@ name|credClass
 operator|.
 name|getDeclaredConstructor
 argument_list|(
-name|URI
-operator|.
-name|class
-argument_list|,
 name|Configuration
 operator|.
 name|class
@@ -587,8 +501,6 @@ argument_list|)
 operator|.
 name|newInstance
 argument_list|(
-name|uri
-argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;

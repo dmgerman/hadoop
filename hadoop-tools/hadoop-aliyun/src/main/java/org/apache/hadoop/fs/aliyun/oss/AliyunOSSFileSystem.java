@@ -21,26 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|aliyun
-operator|.
-name|oss
-operator|.
-name|Constants
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -277,6 +257,26 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|aliyun
+operator|.
+name|oss
+operator|.
+name|Constants
+operator|.
+name|*
 import|;
 end_import
 

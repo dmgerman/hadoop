@@ -332,7 +332,7 @@ name|get
 argument_list|(
 name|Constants
 operator|.
-name|ACCESS_KEY
+name|ACCESS_KEY_ID
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -344,7 +344,7 @@ name|get
 argument_list|(
 name|Constants
 operator|.
-name|SECRET_KEY
+name|ACCESS_KEY_SECRET
 argument_list|)
 argument_list|)
 expr_stmt|;

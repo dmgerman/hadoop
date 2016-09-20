@@ -47,21 +47,21 @@ init|=
 literal|"fs.oss.credentials.provider"
 decl_stmt|;
 comment|// OSS access verification
-DECL|field|ACCESS_KEY
+DECL|field|ACCESS_KEY_ID
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|ACCESS_KEY
+name|ACCESS_KEY_ID
 init|=
 literal|"fs.oss.accessKeyId"
 decl_stmt|;
-DECL|field|SECRET_KEY
+DECL|field|ACCESS_KEY_SECRET
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|SECRET_KEY
+name|ACCESS_KEY_SECRET
 init|=
 literal|"fs.oss.accessKeySecret"
 decl_stmt|;
