@@ -5669,14 +5669,11 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
+comment|// User will be removed
 name|Assert
 operator|.
-name|assertEquals
+name|assertNull
 argument_list|(
-literal|0
-operator|*
-name|GB
-argument_list|,
 operator|(
 operator|(
 name|LeafQueue
@@ -5693,12 +5690,6 @@ name|getUser
 argument_list|(
 literal|"user"
 argument_list|)
-operator|.
-name|getUsed
-argument_list|()
-operator|.
-name|getMemorySize
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert

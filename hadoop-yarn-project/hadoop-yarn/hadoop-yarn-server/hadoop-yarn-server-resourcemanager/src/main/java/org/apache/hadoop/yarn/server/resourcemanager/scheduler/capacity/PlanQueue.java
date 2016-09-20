@@ -430,7 +430,6 @@ annotation|@
 name|Override
 DECL|method|reinitialize (CSQueue newlyParsedQueue, Resource clusterResource)
 specifier|public
-specifier|synchronized
 name|void
 name|reinitialize
 parameter_list|(
@@ -443,6 +442,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Sanity check
 if|if
 condition|(
@@ -570,8 +576,16 @@ operator|.
 name|showReservationsAsQueues
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|addChildQueue (CSQueue newQueue)
-specifier|synchronized
 name|void
 name|addChildQueue
 parameter_list|(
@@ -581,6 +595,13 @@ parameter_list|)
 throws|throws
 name|SchedulerDynamicEditException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|newQueue
@@ -639,8 +660,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|removeChildQueue (CSQueue remQueue)
-specifier|synchronized
 name|void
 name|removeChildQueue
 parameter_list|(
@@ -650,6 +679,13 @@ parameter_list|)
 throws|throws
 name|SchedulerDynamicEditException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|remQueue
@@ -738,13 +774,28 @@ block|}
 block|}
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|sumOfChildCapacities ()
 specifier|protected
-specifier|synchronized
 name|float
 name|sumOfChildCapacities
 parameter_list|()
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|float
 name|ret
 init|=
@@ -769,6 +820,15 @@ block|}
 return|return
 name|ret
 return|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|updateQuotas (int userLimit, float userLimitFactor, int maxAppsForReservation, int maxAppsPerUserForReservation)
 specifier|private

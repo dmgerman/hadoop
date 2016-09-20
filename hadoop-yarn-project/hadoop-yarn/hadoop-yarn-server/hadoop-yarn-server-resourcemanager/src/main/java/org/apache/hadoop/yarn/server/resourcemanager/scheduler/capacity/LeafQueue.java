@@ -52,6 +52,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ConcurrentHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|locks
 operator|.
 name|ReentrantReadWriteLock
@@ -1079,11 +1091,13 @@ literal|0.0f
 decl_stmt|;
 DECL|field|userLimit
 specifier|private
+specifier|volatile
 name|int
 name|userLimit
 decl_stmt|;
 DECL|field|userLimitFactor
 specifier|private
+specifier|volatile
 name|float
 name|userLimitFactor
 decl_stmt|;
@@ -1094,6 +1108,7 @@ name|maxApplications
 decl_stmt|;
 DECL|field|maxApplicationsPerUser
 specifier|protected
+specifier|volatile
 name|int
 name|maxApplicationsPerUser
 decl_stmt|;
@@ -1124,12 +1139,8 @@ argument_list|>
 name|applicationAttemptMap
 init|=
 operator|new
-name|HashMap
-argument_list|<
-name|ApplicationAttemptId
-argument_list|,
-name|FiCaSchedulerApp
-argument_list|>
+name|ConcurrentHashMap
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|defaultAppPriorityPerQueue
@@ -1139,13 +1150,12 @@ name|defaultAppPriorityPerQueue
 decl_stmt|;
 DECL|field|pendingOrderingPolicy
 specifier|private
+specifier|final
 name|OrderingPolicy
 argument_list|<
 name|FiCaSchedulerApp
 argument_list|>
 name|pendingOrderingPolicy
-init|=
-literal|null
 decl_stmt|;
 DECL|field|minimumAllocationFactor
 specifier|private
@@ -1164,12 +1174,8 @@ argument_list|>
 name|users
 init|=
 operator|new
-name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|User
-argument_list|>
+name|ConcurrentHashMap
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|recordFactory
@@ -1227,6 +1233,7 @@ literal|null
 decl_stmt|;
 DECL|field|orderingPolicy
 specifier|private
+specifier|volatile
 name|OrderingPolicy
 argument_list|<
 name|FiCaSchedulerApp
@@ -1264,7 +1271,7 @@ argument_list|>
 name|ignorePartitionExclusivityRMContainers
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -1374,7 +1381,6 @@ expr_stmt|;
 block|}
 DECL|method|setupQueueConfigs (Resource clusterResource)
 specifier|protected
-specifier|synchronized
 name|void
 name|setupQueueConfigs
 parameter_list|(
@@ -1384,6 +1390,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|super
 operator|.
 name|setupQueueConfigs
@@ -1940,6 +1953,15 @@ name|defaultAppPriorityPerQueue
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|getQueuePath ()
@@ -1999,7 +2021,6 @@ return|;
 block|}
 DECL|method|getMaxApplicationsPerUser ()
 specifier|public
-specifier|synchronized
 name|int
 name|getMaxApplicationsPerUser
 parameter_list|()
@@ -2036,8 +2057,9 @@ literal|null
 return|;
 block|}
 comment|/**    * Set user limit - used only for testing.    * @param userLimit new user limit    */
+annotation|@
+name|VisibleForTesting
 DECL|method|setUserLimit (int userLimit)
-specifier|synchronized
 name|void
 name|setUserLimit
 parameter_list|(
@@ -2053,8 +2075,9 @@ name|userLimit
 expr_stmt|;
 block|}
 comment|/**    * Set user limit factor - used only for testing.    * @param userLimitFactor new user limit factor    */
+annotation|@
+name|VisibleForTesting
 DECL|method|setUserLimitFactor (float userLimitFactor)
-specifier|synchronized
 name|void
 name|setUserLimitFactor
 parameter_list|(
@@ -2073,11 +2096,17 @@ annotation|@
 name|Override
 DECL|method|getNumApplications ()
 specifier|public
-specifier|synchronized
 name|int
 name|getNumApplications
 parameter_list|()
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 return|return
 name|getNumPendingApplications
 argument_list|()
@@ -2086,13 +2115,28 @@ name|getNumActiveApplications
 argument_list|()
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|getNumPendingApplications ()
 specifier|public
-specifier|synchronized
 name|int
 name|getNumPendingApplications
 parameter_list|()
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 return|return
 name|pendingOrderingPolicy
 operator|.
@@ -2100,13 +2144,28 @@ name|getNumSchedulableEntities
 argument_list|()
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|getNumActiveApplications ()
 specifier|public
-specifier|synchronized
 name|int
 name|getNumActiveApplications
 parameter_list|()
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 return|return
 name|orderingPolicy
 operator|.
@@ -2114,33 +2173,19 @@ name|getNumSchedulableEntities
 argument_list|()
 return|;
 block|}
-annotation|@
-name|Private
-DECL|method|getNumApplications (String user)
-specifier|public
-specifier|synchronized
-name|int
-name|getNumApplications
-parameter_list|(
-name|String
-name|user
-parameter_list|)
+finally|finally
 block|{
-return|return
-name|getUser
-argument_list|(
-name|user
-argument_list|)
+name|readLock
 operator|.
-name|getTotalApplications
+name|unlock
 argument_list|()
-return|;
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Private
 DECL|method|getNumPendingApplications (String user)
 specifier|public
-specifier|synchronized
 name|int
 name|getNumPendingApplications
 parameter_list|(
@@ -2148,21 +2193,52 @@ name|String
 name|user
 parameter_list|)
 block|{
-return|return
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+name|User
+name|u
+init|=
 name|getUser
 argument_list|(
 name|user
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|u
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
+return|return
+name|u
 operator|.
 name|getPendingApplications
 argument_list|()
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Private
 DECL|method|getNumActiveApplications (String user)
 specifier|public
-specifier|synchronized
 name|int
 name|getNumActiveApplications
 parameter_list|(
@@ -2170,34 +2246,52 @@ name|String
 name|user
 parameter_list|)
 block|{
-return|return
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+name|User
+name|u
+init|=
 name|getUser
 argument_list|(
 name|user
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|u
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
+return|return
+name|u
 operator|.
 name|getActiveApplications
 argument_list|()
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|getState ()
-specifier|public
-specifier|synchronized
-name|QueueState
-name|getState
-parameter_list|()
+finally|finally
 block|{
-return|return
-name|state
-return|;
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Private
 DECL|method|getUserLimit ()
 specifier|public
-specifier|synchronized
 name|int
 name|getUserLimit
 parameter_list|()
@@ -2210,7 +2304,6 @@ annotation|@
 name|Private
 DECL|method|getUserLimitFactor ()
 specifier|public
-specifier|synchronized
 name|float
 name|getUserLimitFactor
 parameter_list|()
@@ -2246,7 +2339,6 @@ block|}
 annotation|@
 name|Override
 specifier|public
-specifier|synchronized
 name|List
 argument_list|<
 name|QueueUserACLInfo
@@ -2258,6 +2350,13 @@ name|UserGroupInformation
 name|user
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|QueueUserACLInfo
 name|userAclInfo
 init|=
@@ -2278,9 +2377,7 @@ name|operations
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|QueueACL
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -2337,12 +2434,28 @@ name|userAclInfo
 argument_list|)
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|toString ()
 specifier|public
 name|String
 name|toString
 parameter_list|()
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 return|return
 name|queueName
 operator|+
@@ -2402,30 +2515,19 @@ name|getNumContainers
 argument_list|()
 return|;
 block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|setNodeLabelManager (RMNodeLabelsManager mgr)
-specifier|public
-specifier|synchronized
-name|void
-name|setNodeLabelManager
-parameter_list|(
-name|RMNodeLabelsManager
-name|mgr
-parameter_list|)
+finally|finally
 block|{
-name|this
+name|readLock
 operator|.
-name|labelManager
-operator|=
-name|mgr
+name|unlock
+argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getUser (String userName)
 specifier|public
-specifier|synchronized
 name|User
 name|getUser
 parameter_list|(
@@ -2433,8 +2535,34 @@ name|String
 name|userName
 parameter_list|)
 block|{
+return|return
+name|users
+operator|.
+name|get
+argument_list|(
+name|userName
+argument_list|)
+return|;
+block|}
+comment|// Get and add user if absent
+DECL|method|getUserAndAddIfAbsent (String userName)
+specifier|private
 name|User
-name|user
+name|getUserAndAddIfAbsent
+parameter_list|(
+name|String
+name|userName
+parameter_list|)
+block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+name|User
+name|u
 init|=
 name|users
 operator|.
@@ -2445,12 +2573,12 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|user
-operator|==
 literal|null
+operator|==
+name|u
 condition|)
 block|{
-name|user
+name|u
 operator|=
 operator|new
 name|User
@@ -2462,18 +2590,26 @@ name|put
 argument_list|(
 name|userName
 argument_list|,
-name|user
+name|u
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|user
+name|u
 return|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * @return an ArrayList of UserInfo objects who are active in this queue    */
 DECL|method|getUsers ()
 specifier|public
-specifier|synchronized
 name|ArrayList
 argument_list|<
 name|UserInfo
@@ -2481,6 +2617,13 @@ argument_list|>
 name|getUsers
 parameter_list|()
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|ArrayList
 argument_list|<
 name|UserInfo
@@ -2584,11 +2727,19 @@ return|return
 name|usersToReturn
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|reinitialize ( CSQueue newlyParsedQueue, Resource clusterResource)
 specifier|public
-specifier|synchronized
 name|void
 name|reinitialize
 parameter_list|(
@@ -2601,6 +2752,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Sanity check
 if|if
 condition|(
@@ -2721,6 +2879,15 @@ name|activateApplications
 argument_list|()
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|submitApplicationAttempt (FiCaSchedulerApp application, String userName)
@@ -2736,15 +2903,19 @@ name|userName
 parameter_list|)
 block|{
 comment|// Careful! Locking order is important!
-synchronized|synchronized
-init|(
-name|this
-init|)
+try|try
 block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+comment|// TODO, should use getUser, use this method just to avoid UT failure
+comment|// which is caused by wrong invoking order, will fix UT separately
 name|User
 name|user
 init|=
-name|getUser
+name|getUserAndAddIfAbsent
 argument_list|(
 name|userName
 argument_list|)
@@ -2756,6 +2927,14 @@ name|application
 argument_list|,
 name|user
 argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 comment|// We don't want to update metrics for move app
@@ -2806,16 +2985,13 @@ throws|throws
 name|AccessControlException
 block|{
 comment|// Careful! Locking order is important!
-name|User
-name|user
-init|=
-literal|null
-decl_stmt|;
-synchronized|synchronized
-init|(
-name|this
-init|)
+try|try
 block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Check if the queue is accepting jobs
 if|if
 condition|(
@@ -2899,13 +3075,14 @@ argument_list|)
 throw|;
 block|}
 comment|// Check submission limits for the user on this queue
+name|User
 name|user
-operator|=
-name|getUser
+init|=
+name|getUserAndAddIfAbsent
 argument_list|(
 name|userName
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|user
@@ -2955,6 +3132,14 @@ name|msg
 argument_list|)
 throw|;
 block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 comment|// Inform the parent queue
 try|try
@@ -3029,9 +3214,10 @@ name|nodePartition
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|calculateAndGetAMResourceLimit ()
 specifier|public
-specifier|synchronized
 name|Resource
 name|calculateAndGetAMResourceLimit
 parameter_list|()
@@ -3049,7 +3235,6 @@ annotation|@
 name|VisibleForTesting
 DECL|method|getUserAMResourceLimit ()
 specifier|public
-specifier|synchronized
 name|Resource
 name|getUserAMResourceLimit
 parameter_list|()
@@ -3065,7 +3250,6 @@ return|;
 block|}
 DECL|method|getUserAMResourceLimitPerPartition ( String nodePartition)
 specifier|public
-specifier|synchronized
 name|Resource
 name|getUserAMResourceLimitPerPartition
 parameter_list|(
@@ -3073,7 +3257,14 @@ name|String
 name|nodePartition
 parameter_list|)
 block|{
-comment|/*      * The user am resource limit is based on the same approach as the user      * limit (as it should represent a subset of that). This means that it uses      * the absolute queue capacity (per partition) instead of the max and is      * modified by the userlimit and the userlimit factor as is the userlimit      */
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+comment|/*        * The user am resource limit is based on the same approach as the user        * limit (as it should represent a subset of that). This means that it uses        * the absolute queue capacity (per partition) instead of the max and is        * modified by the userlimit and the userlimit factor as is the userlimit        */
 name|float
 name|effectiveUserLimit
 init|=
@@ -3179,9 +3370,17 @@ name|nodePartition
 argument_list|)
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|calculateAndGetAMResourceLimitPerPartition ( String nodePartition)
 specifier|public
-specifier|synchronized
 name|Resource
 name|calculateAndGetAMResourceLimitPerPartition
 parameter_list|(
@@ -3189,7 +3388,14 @@ name|String
 name|nodePartition
 parameter_list|)
 block|{
-comment|/*      * For non-labeled partition, get the max value from resources currently      * available to the queue and the absolute resources guaranteed for the      * partition in the queue. For labeled partition, consider only the absolute      * resources guaranteed. Multiply this value (based on labeled/      * non-labeled), * with per-partition am-resource-percent to get the max am      * resource limit for this queue and partition.      */
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+comment|/*        * For non-labeled partition, get the max value from resources currently        * available to the queue and the absolute resources guaranteed for the        * partition in the queue. For labeled partition, consider only the absolute        * resources guaranteed. Multiply this value (based on labeled/        * non-labeled), * with per-partition am-resource-percent to get the max am        * resource limit for this queue and partition.        */
 name|Resource
 name|queuePartitionResource
 init|=
@@ -3318,13 +3524,28 @@ return|return
 name|amResouceLimit
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|activateApplications ()
 specifier|private
-specifier|synchronized
 name|void
 name|activateApplications
 parameter_list|()
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// limit of allowed resource usage for application masters
 name|Map
 argument_list|<
@@ -3895,9 +4116,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|addApplicationAttempt (FiCaSchedulerApp application, User user)
 specifier|private
-specifier|synchronized
 name|void
 name|addApplicationAttempt
 parameter_list|(
@@ -3908,6 +4137,13 @@ name|User
 name|user
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Accept
 name|user
 operator|.
@@ -3991,6 +4227,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|finishApplication (ApplicationId application, String user)
@@ -4042,25 +4287,16 @@ name|queue
 parameter_list|)
 block|{
 comment|// Careful! Locking order is important!
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
 name|removeApplicationAttempt
 argument_list|(
 name|application
 argument_list|,
-name|getUser
-argument_list|(
 name|application
 operator|.
 name|getUser
 argument_list|()
 argument_list|)
-argument_list|)
 expr_stmt|;
-block|}
 name|getParent
 argument_list|()
 operator|.
@@ -4072,19 +4308,35 @@ name|queue
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeApplicationAttempt ( FiCaSchedulerApp application, User user)
-specifier|public
-specifier|synchronized
+DECL|method|removeApplicationAttempt ( FiCaSchedulerApp application, String userName)
+specifier|private
 name|void
 name|removeApplicationAttempt
 parameter_list|(
 name|FiCaSchedulerApp
 name|application
 parameter_list|,
-name|User
-name|user
+name|String
+name|userName
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+comment|// TODO, should use getUser, use this method just to avoid UT failure
+comment|// which is caused by wrong invoking order, will fix UT separately
+name|User
+name|user
+init|=
+name|getUserAndAddIfAbsent
+argument_list|(
+name|userName
+argument_list|)
+decl_stmt|;
 name|String
 name|partitionName
 init|=
@@ -4261,9 +4513,17 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|getApplication ( ApplicationAttemptId applicationAttemptId)
 specifier|private
-specifier|synchronized
 name|FiCaSchedulerApp
 name|getApplication
 parameter_list|(
@@ -4597,7 +4857,6 @@ annotation|@
 name|Override
 DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, ResourceLimits currentResourceLimits, SchedulingMode schedulingMode)
 specifier|public
-specifier|synchronized
 name|CSAssignment
 name|assignContainers
 parameter_list|(
@@ -4614,6 +4873,13 @@ name|SchedulingMode
 name|schedulingMode
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|updateCurrentResourceLimits
 argument_list|(
 name|currentResourceLimits
@@ -4710,11 +4976,6 @@ argument_list|,
 name|application
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
-init|(
-name|application
-init|)
-block|{
 name|CSAssignment
 name|assignment
 init|=
@@ -4756,7 +5017,6 @@ expr_stmt|;
 return|return
 name|assignment
 return|;
-block|}
 block|}
 comment|// if our queue cannot access this node, just return
 if|if
@@ -5479,6 +5739,15 @@ operator|.
 name|NULL_ASSIGNMENT
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|getHeadroom (User user, Resource queueCurrentLimit, Resource clusterResource, FiCaSchedulerApp application)
 specifier|protected
 name|Resource
@@ -5740,15 +6009,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// It doesn't necessarily to hold application's lock here.
 annotation|@
 name|Lock
 argument_list|(
 block|{
 name|LeafQueue
-operator|.
-name|class
-block|,
-name|FiCaSchedulerApp
 operator|.
 name|class
 block|}
@@ -6324,7 +6590,6 @@ annotation|@
 name|Private
 DECL|method|canAssignToUser (Resource clusterResource, String userName, Resource limit, FiCaSchedulerApp application, String nodePartition, ResourceLimits currentResourceLimits)
 specifier|protected
-specifier|synchronized
 name|boolean
 name|canAssignToUser
 parameter_list|(
@@ -6347,6 +6612,13 @@ name|ResourceLimits
 name|currentResourceLimits
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|User
 name|user
 init|=
@@ -6555,6 +6827,15 @@ return|return
 literal|true
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|unreserveIncreasedContainer (Resource clusterResource, FiCaSchedulerApp app, FiCaSchedulerNode node, RMContainer rmContainer)
@@ -6585,11 +6866,13 @@ name|priority
 init|=
 literal|null
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|this
-init|)
+try|try
 block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|rmContainer
@@ -6672,6 +6955,14 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -6797,7 +7088,6 @@ block|}
 block|}
 DECL|method|calculateUserUsageRatio (Resource clusterResource, String nodePartition)
 specifier|private
-specifier|synchronized
 name|float
 name|calculateUserUsageRatio
 parameter_list|(
@@ -6808,6 +7098,13 @@ name|String
 name|nodePartition
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|Resource
 name|resourceByLabel
 init|=
@@ -6871,9 +7168,17 @@ return|return
 name|consumed
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|recalculateQueueUsageRatio (Resource clusterResource, String nodePartition)
 specifier|private
-specifier|synchronized
 name|void
 name|recalculateQueueUsageRatio
 parameter_list|(
@@ -6884,6 +7189,13 @@ name|String
 name|nodePartition
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|ResourceUsage
 name|queueResourceUsage
 init|=
@@ -6954,9 +7266,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|updateQueueUsageRatio (String nodePartition, float delta)
 specifier|private
-specifier|synchronized
 name|void
 name|updateQueueUsageRatio
 parameter_list|(
@@ -7072,11 +7392,13 @@ init|=
 literal|false
 decl_stmt|;
 comment|// Careful! Locking order is important!
-synchronized|synchronized
-init|(
-name|this
-init|)
+try|try
 block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|Container
 name|container
 init|=
@@ -7185,6 +7507,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|removed
@@ -7239,7 +7569,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|allocateResource (Resource clusterResource, SchedulerApplicationAttempt application, Resource resource, String nodePartition, RMContainer rmContainer, boolean isIncreasedAllocation)
-specifier|synchronized
 name|void
 name|allocateResource
 parameter_list|(
@@ -7262,6 +7591,13 @@ name|boolean
 name|isIncreasedAllocation
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|super
 operator|.
 name|allocateResource
@@ -7375,10 +7711,12 @@ operator|.
 name|getUser
 argument_list|()
 decl_stmt|;
+comment|// TODO, should use getUser, use this method just to avoid UT failure
+comment|// which is caused by wrong invoking order, will fix UT separately
 name|User
 name|user
 init|=
-name|getUser
+name|getUserAndAddIfAbsent
 argument_list|(
 name|userName
 argument_list|)
@@ -7483,8 +7821,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|releaseResource (Resource clusterResource, FiCaSchedulerApp application, Resource resource, String nodePartition, RMContainer rmContainer, boolean isChangeResource)
-specifier|synchronized
 name|void
 name|releaseResource
 parameter_list|(
@@ -7507,6 +7853,13 @@ name|boolean
 name|isChangeResource
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|super
 operator|.
 name|releaseResource
@@ -7622,7 +7975,7 @@ decl_stmt|;
 name|User
 name|user
 init|=
-name|getUser
+name|getUserAndAddIfAbsent
 argument_list|(
 name|userName
 argument_list|)
@@ -7702,6 +8055,15 @@ operator|.
 name|getUsed
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -7795,7 +8157,6 @@ annotation|@
 name|Override
 DECL|method|updateClusterResource (Resource clusterResource, ResourceLimits currentResourceLimits)
 specifier|public
-specifier|synchronized
 name|void
 name|updateClusterResource
 parameter_list|(
@@ -7806,6 +8167,13 @@ name|ResourceLimits
 name|currentResourceLimits
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|updateCurrentResourceLimits
 argument_list|(
 name|currentResourceLimits
@@ -7868,11 +8236,6 @@ name|getSchedulableEntities
 argument_list|()
 control|)
 block|{
-synchronized|synchronized
-init|(
-name|application
-init|)
-block|{
 name|computeUserLimitAndSetHeadroom
 argument_list|(
 name|application
@@ -7889,6 +8252,14 @@ name|RESPECT_PARTITION_EXCLUSIVITY
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -8353,12 +8724,14 @@ literal|0
 argument_list|)
 decl_stmt|;
 DECL|field|pendingApplications
+specifier|volatile
 name|int
 name|pendingApplications
 init|=
 literal|0
 decl_stmt|;
 DECL|field|activeApplications
+specifier|volatile
 name|int
 name|activeApplications
 init|=
@@ -8373,6 +8746,31 @@ operator|new
 name|UsageRatios
 argument_list|()
 decl_stmt|;
+DECL|field|writeLock
+specifier|private
+name|WriteLock
+name|writeLock
+decl_stmt|;
+DECL|method|User ()
+name|User
+parameter_list|()
+block|{
+name|ReentrantReadWriteLock
+name|lock
+init|=
+operator|new
+name|ReentrantReadWriteLock
+argument_list|()
+decl_stmt|;
+comment|// Nobody uses read-lock now, will add it when necessary
+name|writeLock
+operator|=
+name|lock
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|getResourceUsage ()
 specifier|public
 name|ResourceUsage
@@ -8385,7 +8783,6 @@ return|;
 block|}
 DECL|method|resetAndUpdateUsageRatio ( ResourceCalculator resourceCalculator, Resource resource, String nodePartition)
 specifier|public
-specifier|synchronized
 name|float
 name|resetAndUpdateUsageRatio
 parameter_list|(
@@ -8399,6 +8796,13 @@ name|String
 name|nodePartition
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|userUsageRatios
 operator|.
 name|setUsageRatio
@@ -8419,9 +8823,17 @@ name|nodePartition
 argument_list|)
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|updateUsageRatio ( ResourceCalculator resourceCalculator, Resource resource, String nodePartition)
 specifier|public
-specifier|synchronized
 name|float
 name|updateUsageRatio
 parameter_list|(
@@ -8435,6 +8847,13 @@ name|String
 name|nodePartition
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|float
 name|delta
 decl_stmt|;
@@ -8478,6 +8897,15 @@ expr_stmt|;
 return|return
 name|delta
 return|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|getUsed ()
 specifier|public
@@ -8590,22 +9018,43 @@ return|;
 block|}
 DECL|method|submitApplication ()
 specifier|public
-specifier|synchronized
 name|void
 name|submitApplication
 parameter_list|()
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 operator|++
 name|pendingApplications
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|activateApplication ()
 specifier|public
-specifier|synchronized
 name|void
 name|activateApplication
 parameter_list|()
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 operator|--
 name|pendingApplications
 expr_stmt|;
@@ -8613,9 +9062,17 @@ operator|++
 name|activeApplications
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|finishApplication (boolean wasActive)
 specifier|public
-specifier|synchronized
 name|void
 name|finishApplication
 parameter_list|(
@@ -8623,6 +9080,13 @@ name|boolean
 name|wasActive
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|wasActive
@@ -8636,6 +9100,15 @@ else|else
 block|{
 operator|--
 name|pendingApplications
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -8745,11 +9218,13 @@ block|{
 return|return;
 block|}
 comment|// Careful! Locking order is important!
-synchronized|synchronized
-init|(
-name|this
-init|)
+try|try
 block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|FiCaSchedulerNode
 name|node
 init|=
@@ -8789,6 +9264,14 @@ name|rmContainer
 argument_list|,
 literal|false
 argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 name|getParent
@@ -8854,7 +9337,6 @@ comment|//   sum(for each user(min((user's headroom), sum(user's pending request
 comment|//  NOTE: Used for calculating pedning resources in the preemption monitor.
 DECL|method|getTotalPendingResourcesConsideringUserLimit ( Resource resources, String partition)
 specifier|public
-specifier|synchronized
 name|Resource
 name|getTotalPendingResourcesConsideringUserLimit
 parameter_list|(
@@ -8865,6 +9347,13 @@ name|String
 name|partition
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|Map
 argument_list|<
 name|String
@@ -8875,11 +9364,7 @@ name|userNameToHeadroom
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|Resource
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Resource
@@ -9038,11 +9523,19 @@ return|return
 name|pendingConsideringUserLimit
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|collectSchedulerApplications ( Collection<ApplicationAttemptId> apps)
 specifier|public
-specifier|synchronized
 name|void
 name|collectSchedulerApplications
 parameter_list|(
@@ -9053,6 +9546,13 @@ argument_list|>
 name|apps
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 for|for
 control|(
 name|FiCaSchedulerApp
@@ -9095,6 +9595,15 @@ operator|.
 name|getApplicationAttemptId
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -9354,9 +9863,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * return all ignored partition exclusivity RMContainers in the LeafQueue, this    * will be used by preemption policy, and use of return    * ignorePartitionExclusivityRMContainer should protected by LeafQueue    * synchronized lock    */
+comment|/**    * return all ignored partition exclusivity RMContainers in the LeafQueue, this    * will be used by preemption policy.    */
 specifier|public
-specifier|synchronized
 name|Map
 argument_list|<
 name|String
@@ -9370,9 +9878,83 @@ DECL|method|getIgnoreExclusivityRMContainers ()
 name|getIgnoreExclusivityRMContainers
 parameter_list|()
 block|{
-return|return
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|TreeSet
+argument_list|<
+name|RMContainer
+argument_list|>
+argument_list|>
+name|clonedMap
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|TreeSet
+argument_list|<
+name|RMContainer
+argument_list|>
+argument_list|>
+name|entry
+range|:
 name|ignorePartitionExclusivityRMContainers
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|clonedMap
+operator|.
+name|put
+argument_list|(
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|,
+operator|new
+name|TreeSet
+argument_list|<>
+argument_list|(
+name|entry
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|clonedMap
 return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|setCapacity (float capacity)
 specifier|public
@@ -9425,7 +10007,6 @@ name|maxApplications
 expr_stmt|;
 block|}
 specifier|public
-specifier|synchronized
 name|OrderingPolicy
 argument_list|<
 name|FiCaSchedulerApp
@@ -9439,8 +10020,6 @@ name|orderingPolicy
 return|;
 block|}
 DECL|method|setOrderingPolicy ( OrderingPolicy<FiCaSchedulerApp> orderingPolicy)
-specifier|public
-specifier|synchronized
 name|void
 name|setOrderingPolicy
 parameter_list|(
@@ -9451,6 +10030,13 @@ argument_list|>
 name|orderingPolicy
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 literal|null
@@ -9479,6 +10065,15 @@ name|orderingPolicy
 operator|=
 name|orderingPolicy
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -9557,11 +10152,13 @@ name|Resource
 name|resourceBeforeDecrease
 decl_stmt|;
 comment|// Grab queue lock to avoid race condition when getting container resource
-synchronized|synchronized
-init|(
-name|this
-init|)
+try|try
 block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Make sure the decrease request is valid in terms of current resource
 comment|// and target resource. This must be done under the leaf queue lock.
 comment|// Throws exception if the check fails.
@@ -9757,6 +10354,14 @@ literal|true
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|resourceDecreased
@@ -9808,7 +10413,6 @@ expr_stmt|;
 block|}
 block|}
 specifier|public
-specifier|synchronized
 name|OrderingPolicy
 argument_list|<
 name|FiCaSchedulerApp

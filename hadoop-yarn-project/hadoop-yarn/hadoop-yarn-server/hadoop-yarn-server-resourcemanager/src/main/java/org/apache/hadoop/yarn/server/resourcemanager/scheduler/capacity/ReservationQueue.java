@@ -229,7 +229,6 @@ annotation|@
 name|Override
 DECL|method|reinitialize (CSQueue newlyParsedQueue, Resource clusterResource)
 specifier|public
-specifier|synchronized
 name|void
 name|reinitialize
 parameter_list|(
@@ -242,6 +241,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Sanity check
 if|if
 condition|(
@@ -333,10 +339,18 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * This methods to change capacity for a queue and adjusts its    * absoluteCapacity    *     * @param entitlement the new entitlement for the queue (capacity,    *          maxCapacity, etc..)    * @throws SchedulerDynamicEditException    */
 DECL|method|setEntitlement (QueueEntitlement entitlement)
 specifier|public
-specifier|synchronized
 name|void
 name|setEntitlement
 parameter_list|(
@@ -346,6 +360,13 @@ parameter_list|)
 throws|throws
 name|SchedulerDynamicEditException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|float
 name|capacity
 init|=
@@ -425,6 +446,15 @@ operator|.
 name|getQueueName
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
