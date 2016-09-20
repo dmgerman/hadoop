@@ -3304,6 +3304,15 @@ name|out
 operator|.
 name|println
 argument_list|(
+literal|"<defaultQueueSchedulingPolicy>drf"
+operator|+
+literal|"</defaultQueueSchedulingPolicy>"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
 literal|"<queue name=\"queueA\">"
 argument_list|)
 expr_stmt|;
