@@ -3021,6 +3021,19 @@ operator|.
 name|CURRENT_STATE_ID
 condition|)
 block|{
+specifier|final
+name|ContentCounts
+name|counts
+init|=
+operator|new
+name|ContentCounts
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|build
+argument_list|()
+decl_stmt|;
 comment|// if the getContentSummary call is against a non-snapshot path, the
 comment|// computation should include all the deleted files/directories
 name|sf
@@ -3032,27 +3045,29 @@ operator|.
 name|getBlockStoragePolicySuite
 argument_list|()
 argument_list|,
+name|counts
+argument_list|)
+expr_stmt|;
 name|summary
 operator|.
 name|getCounts
 argument_list|()
+operator|.
+name|addContents
+argument_list|(
+name|counts
 argument_list|)
 expr_stmt|;
-comment|// Also compute ContentSummary for snapshotCounts (So we can extract it
+comment|// Also add ContentSummary to snapshotCounts (So we can extract it
 comment|// later from the ContentSummary of all).
-name|sf
-operator|.
-name|computeContentSummary4Snapshot
-argument_list|(
-name|summary
-operator|.
-name|getBlockStoragePolicySuite
-argument_list|()
-argument_list|,
 name|summary
 operator|.
 name|getSnapshotCounts
 argument_list|()
+operator|.
+name|addContents
+argument_list|(
+name|counts
 argument_list|)
 expr_stmt|;
 block|}
