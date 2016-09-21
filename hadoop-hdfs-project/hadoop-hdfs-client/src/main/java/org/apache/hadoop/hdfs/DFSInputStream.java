@@ -7481,11 +7481,7 @@ name|getReadStatistics
 parameter_list|()
 block|{
 return|return
-operator|new
-name|ReadStatistics
-argument_list|(
 name|readStatistics
-argument_list|)
 return|;
 block|}
 comment|/**    * Clear statistics about the reads which this DFSInputStream has done.    */
