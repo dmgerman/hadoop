@@ -322,6 +322,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|net
+operator|.
+name|ServerSocketUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|test
 operator|.
 name|GenericTestUtils
@@ -522,6 +536,8 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+comment|// Get random port numbers in advance. Because ZKFCs and DFSHAAdmin
+comment|// needs rpc port numbers of all ZKFCs, Setting 0 does not work here.
 name|conf
 operator|.
 name|setInt
@@ -532,7 +548,14 @@ name|DFS_HA_ZKFC_PORT_KEY
 operator|+
 literal|".ns1.nn1"
 argument_list|,
+name|ServerSocketUtil
+operator|.
+name|getPort
+argument_list|(
 literal|10023
+argument_list|,
+literal|100
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|conf
@@ -545,9 +568,17 @@ name|DFS_HA_ZKFC_PORT_KEY
 operator|+
 literal|".ns1.nn2"
 argument_list|,
+name|ServerSocketUtil
+operator|.
+name|getPort
+argument_list|(
 literal|10024
+argument_list|,
+literal|100
+argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// prefer non-ephemeral port to avoid port collision on restartNameNode
 name|MiniDFSNNTopology
 name|topology
 init|=
@@ -577,7 +608,14 @@ argument_list|)
 operator|.
 name|setIpcPort
 argument_list|(
+name|ServerSocketUtil
+operator|.
+name|getPort
+argument_list|(
 literal|10021
+argument_list|,
+literal|100
+argument_list|)
 argument_list|)
 argument_list|)
 operator|.
@@ -593,7 +631,14 @@ argument_list|)
 operator|.
 name|setIpcPort
 argument_list|(
+name|ServerSocketUtil
+operator|.
+name|getPort
+argument_list|(
 literal|10022
+argument_list|,
+literal|100
+argument_list|)
 argument_list|)
 argument_list|)
 argument_list|)
