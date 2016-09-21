@@ -77,10 +77,10 @@ comment|/**  * Contract test suite covering Aliyun OSS integration with DistCp. 
 end_comment
 
 begin_class
-DECL|class|TestAliyunOSSContractDispCp
+DECL|class|TestAliyunOSSContractDistCp
 specifier|public
 class|class
-name|TestAliyunOSSContractDispCp
+name|TestAliyunOSSContractDistCp
 extends|extends
 name|AbstractContractDistCpTest
 block|{
