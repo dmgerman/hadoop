@@ -969,7 +969,6 @@ argument_list|()
 return|;
 block|}
 DECL|method|containerCompleted (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
-specifier|synchronized
 specifier|public
 name|void
 name|containerCompleted
@@ -984,6 +983,13 @@ name|RMContainerEventType
 name|event
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|Container
 name|container
 init|=
@@ -1139,9 +1145,17 @@ operator|-
 literal|1
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|unreserveInternal ( SchedulerRequestKey schedulerKey, FSSchedulerNode node)
 specifier|private
-specifier|synchronized
 name|void
 name|unreserveInternal
 parameter_list|(
@@ -1152,6 +1166,13 @@ name|FSSchedulerNode
 name|node
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|Map
 argument_list|<
 name|NodeId
@@ -1265,6 +1286,15 @@ name|getReserved
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|subtractResourcesOnBlacklistedNodes ( Resource availableResources)
 specifier|private
@@ -1531,66 +1561,8 @@ return|return
 name|headroom
 return|;
 block|}
-DECL|method|getLocalityWaitFactor ( SchedulerRequestKey schedulerKey, int clusterNodes)
-specifier|public
-specifier|synchronized
-name|float
-name|getLocalityWaitFactor
-parameter_list|(
-name|SchedulerRequestKey
-name|schedulerKey
-parameter_list|,
-name|int
-name|clusterNodes
-parameter_list|)
-block|{
-comment|// Estimate: Required unique resources (i.e. hosts + racks)
-name|int
-name|requiredResources
-init|=
-name|Math
-operator|.
-name|max
-argument_list|(
-name|this
-operator|.
-name|getResourceRequests
-argument_list|(
-name|schedulerKey
-argument_list|)
-operator|.
-name|size
-argument_list|()
-operator|-
-literal|1
-argument_list|,
-literal|0
-argument_list|)
-decl_stmt|;
-comment|// waitFactor can't be more than '1'
-comment|// i.e. no point skipping more than clustersize opportunities
-return|return
-name|Math
-operator|.
-name|min
-argument_list|(
-operator|(
-operator|(
-name|float
-operator|)
-name|requiredResources
-operator|/
-name|clusterNodes
-operator|)
-argument_list|,
-literal|1.0f
-argument_list|)
-return|;
-block|}
 comment|/**    * Return the level at which we are allowed to schedule containers, given the    * current size of the cluster and thresholds indicating how many nodes to    * fail at (as a fraction of cluster size) before relaxing scheduling    * constraints.    * @param schedulerKey SchedulerRequestKey    * @param numNodes Num Nodes    * @param nodeLocalityThreshold nodeLocalityThreshold    * @param rackLocalityThreshold rackLocalityThreshold    * @return NodeType    */
 DECL|method|getAllowedLocalityLevel ( SchedulerRequestKey schedulerKey, int numNodes, double nodeLocalityThreshold, double rackLocalityThreshold)
-specifier|public
-specifier|synchronized
 name|NodeType
 name|getAllowedLocalityLevel
 parameter_list|(
@@ -1650,6 +1622,13 @@ operator|.
 name|OFF_SWITCH
 return|;
 block|}
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Default level is NODE_LOCAL
 if|if
 condition|(
@@ -1701,11 +1680,13 @@ operator|.
 name|OFF_SWITCH
 argument_list|)
 condition|)
+block|{
 return|return
 name|NodeType
 operator|.
 name|OFF_SWITCH
 return|;
+block|}
 name|double
 name|threshold
 init|=
@@ -1806,10 +1787,17 @@ name|schedulerKey
 argument_list|)
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Return the level at which we are allowed to schedule containers.    * Given the thresholds indicating how much time passed before relaxing    * scheduling constraints.    * @param schedulerKey SchedulerRequestKey    * @param nodeLocalityDelayMs nodeLocalityThreshold    * @param rackLocalityDelayMs nodeLocalityDelayMs    * @param currentTimeMs currentTimeMs    * @return NodeType    */
 DECL|method|getAllowedLocalityLevelByTime ( SchedulerRequestKey schedulerKey, long nodeLocalityDelayMs, long rackLocalityDelayMs, long currentTimeMs)
-specifier|public
-specifier|synchronized
 name|NodeType
 name|getAllowedLocalityLevelByTime
 parameter_list|(
@@ -1844,6 +1832,13 @@ operator|.
 name|OFF_SWITCH
 return|;
 block|}
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// default level is NODE_LOCAL
 if|if
 condition|(
@@ -2068,8 +2063,16 @@ name|schedulerKey
 argument_list|)
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|allocate (NodeType type, FSSchedulerNode node, SchedulerRequestKey schedulerKey, ResourceRequest request, Container reservedContainer)
-specifier|synchronized
 specifier|public
 name|RMContainer
 name|allocate
@@ -2090,6 +2093,19 @@ name|Container
 name|reservedContainer
 parameter_list|)
 block|{
+name|RMContainer
+name|rmContainer
+decl_stmt|;
+name|Container
+name|container
+decl_stmt|;
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Update allowed locality level
 name|NodeType
 name|allowed
@@ -2199,11 +2215,10 @@ return|return
 literal|null
 return|;
 block|}
-name|Container
 name|container
-init|=
+operator|=
 name|reservedContainer
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|container
@@ -2227,9 +2242,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Create RMContainer
-name|RMContainer
 name|rmContainer
-init|=
+operator|=
 operator|new
 name|RMContainerImpl
 argument_list|(
@@ -2250,7 +2264,7 @@ argument_list|()
 argument_list|,
 name|rmContext
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 operator|(
 operator|(
 name|RMContainerImpl
@@ -2424,6 +2438,15 @@ name|getResource
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 return|return
 name|rmContainer
 return|;
@@ -2431,7 +2454,6 @@ block|}
 comment|/**    * Should be called when the scheduler assigns a container at a higher    * degree of locality than the current threshold. Reset the allowed locality    * level to a higher degree of locality.    * @param schedulerKey Scheduler Key    * @param level NodeType    */
 DECL|method|resetAllowedLocalityLevel ( SchedulerRequestKey schedulerKey, NodeType level)
 specifier|public
-specifier|synchronized
 name|void
 name|resetAllowedLocalityLevel
 parameter_list|(
@@ -2444,14 +2466,34 @@ parameter_list|)
 block|{
 name|NodeType
 name|old
-init|=
+decl_stmt|;
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+name|old
+operator|=
 name|allowedLocalityLevel
 operator|.
-name|get
+name|put
 argument_list|(
 name|schedulerKey
+argument_list|,
+name|level
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -2472,15 +2514,6 @@ name|schedulerKey
 operator|.
 name|getPriority
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|allowedLocalityLevel
-operator|.
-name|put
-argument_list|(
-name|schedulerKey
-argument_list|,
-name|level
 argument_list|)
 expr_stmt|;
 block|}
@@ -2507,6 +2540,13 @@ argument_list|)
 operator|==
 literal|null
 assert|;
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|preemptionMap
 operator|.
 name|put
@@ -2528,6 +2568,15 @@ name|getAllocatedResource
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|getContainerPreemptionTime (RMContainer container)
 specifier|public
@@ -3114,7 +3163,6 @@ expr_stmt|;
 block|}
 DECL|method|setReservation (SchedulerNode node)
 specifier|private
-specifier|synchronized
 name|void
 name|setReservation
 parameter_list|(
@@ -3139,6 +3187,13 @@ operator|.
 name|getRackName
 argument_list|()
 decl_stmt|;
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|Set
 argument_list|<
 name|String
@@ -3187,9 +3242,17 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|clearReservation (SchedulerNode node)
 specifier|private
-specifier|synchronized
 name|void
 name|clearReservation
 parameter_list|(
@@ -3214,6 +3277,13 @@ operator|.
 name|getRackName
 argument_list|()
 decl_stmt|;
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|Set
 argument_list|<
 name|String
@@ -3243,6 +3313,15 @@ operator|.
 name|getNodeName
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -3757,11 +3836,13 @@ decl_stmt|;
 comment|// For each priority, see if we can schedule a node local, rack local
 comment|// or off-switch request. Rack of off-switch requests may be delayed
 comment|// (not scheduled) in order to promote better locality.
-synchronized|synchronized
-init|(
-name|this
-init|)
+try|try
 block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 for|for
 control|(
 name|SchedulerRequestKey
@@ -4090,6 +4171,14 @@ return|;
 block|}
 block|}
 block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 return|return
 name|Resources
@@ -4680,11 +4769,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Add up outstanding resource requests
-synchronized|synchronized
-init|(
-name|this
-init|)
+try|try
 block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 for|for
 control|(
 name|SchedulerRequestKey
@@ -4732,6 +4823,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 annotation|@

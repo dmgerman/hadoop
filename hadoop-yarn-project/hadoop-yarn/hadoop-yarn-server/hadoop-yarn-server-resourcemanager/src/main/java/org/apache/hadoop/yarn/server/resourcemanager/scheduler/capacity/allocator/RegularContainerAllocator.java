@@ -1468,7 +1468,6 @@ return|;
 block|}
 DECL|method|getLocalityWaitFactor ( SchedulerRequestKey schedulerKey, int clusterNodes)
 specifier|public
-specifier|synchronized
 name|float
 name|getLocalityWaitFactor
 parameter_list|(
