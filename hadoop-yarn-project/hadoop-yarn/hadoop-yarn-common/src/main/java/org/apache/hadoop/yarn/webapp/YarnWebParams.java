@@ -159,7 +159,7 @@ DECL|field|NEXT_REFRESH_INTERVAL
 name|String
 name|NEXT_REFRESH_INTERVAL
 init|=
-literal|"next.fresh.interval"
+literal|"next.refresh.interval"
 decl_stmt|;
 block|}
 end_interface
