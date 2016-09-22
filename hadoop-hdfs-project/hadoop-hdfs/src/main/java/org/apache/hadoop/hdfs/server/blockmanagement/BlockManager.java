@@ -942,6 +942,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INodesInPath
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|NameNode
 import|;
 end_import
@@ -4289,8 +4307,8 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Commit the last block of the file and mark it as complete if it has    * meets the minimum redundancy requirement    *     * @param bc block collection    * @param commitBlock - contains client reported block length and generation    * @return true if the last block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
-DECL|method|commitOrCompleteLastBlock (BlockCollection bc, Block commitBlock)
+comment|/**    * Commit the last block of the file and mark it as complete if it has    * meets the minimum redundancy requirement    *     * @param bc block collection    * @param commitBlock - contains client reported block length and generation    * @param iip - INodes in path to bc    * @return true if the last block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
+DECL|method|commitOrCompleteLastBlock (BlockCollection bc, Block commitBlock, INodesInPath iip)
 specifier|public
 name|boolean
 name|commitOrCompleteLastBlock
@@ -4300,6 +4318,9 @@ name|bc
 parameter_list|,
 name|Block
 name|commitBlock
+parameter_list|,
+name|INodesInPath
+name|iip
 parameter_list|)
 throws|throws
 name|IOException
@@ -4402,6 +4423,8 @@ block|}
 name|completeBlock
 argument_list|(
 name|lastBlock
+argument_list|,
+name|iip
 argument_list|,
 literal|false
 argument_list|)
@@ -4528,14 +4551,17 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Convert a specified block of the file to a complete block.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
-DECL|method|completeBlock (BlockInfo curBlock, boolean force)
+comment|/**    * Convert a specified block of the file to a complete block.    * @param curBlock - block to be completed    * @param iip - INodes in path to file containing curBlock; if null,    *              this will be resolved internally    * @param force - force completion of the block    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
+DECL|method|completeBlock (BlockInfo curBlock, INodesInPath iip, boolean force)
 specifier|private
 name|void
 name|completeBlock
 parameter_list|(
 name|BlockInfo
 name|curBlock
+parameter_list|,
+name|INodesInPath
+name|iip
 parameter_list|,
 name|boolean
 name|force
@@ -4608,10 +4634,12 @@ literal|"Cannot complete block: block has not been COMMITTED by the client"
 argument_list|)
 throw|;
 block|}
-name|curBlock
-operator|.
 name|convertToCompleteBlock
-argument_list|()
+argument_list|(
+name|curBlock
+argument_list|,
+name|iip
+argument_list|)
 expr_stmt|;
 comment|// Since safe-mode only counts complete blocks, and we now have
 comment|// one more complete block, we need to adjust the total up, and
@@ -4666,6 +4694,39 @@ name|curBlock
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Convert a specified block of the file to a complete block.    * Skips validity checking and safe mode block total updates; use    * {@link BlockManager#completeBlock} to include these.    * @param curBlock - block to be completed    * @param iip - INodes in path to file containing curBlock; if null,    *              this will be resolved internally    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
+DECL|method|convertToCompleteBlock (BlockInfo curBlock, INodesInPath iip)
+specifier|private
+name|void
+name|convertToCompleteBlock
+parameter_list|(
+name|BlockInfo
+name|curBlock
+parameter_list|,
+name|INodesInPath
+name|iip
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|curBlock
+operator|.
+name|convertToCompleteBlock
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
+name|getFSDirectory
+argument_list|()
+operator|.
+name|updateSpaceForCompleteBlock
+argument_list|(
+name|curBlock
+argument_list|,
+name|iip
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Force the given block in the given file to be marked as complete,    * regardless of whether enough replicas are present. This is necessary    * when tailing edit logs as a Standby.    */
 DECL|method|forceCompleteBlock (final BlockInfo block)
 specifier|public
@@ -4689,6 +4750,8 @@ expr_stmt|;
 name|completeBlock
 argument_list|(
 name|block
+argument_list|,
+literal|null
 argument_list|,
 literal|true
 argument_list|)
@@ -14210,6 +14273,8 @@ name|completeBlock
 argument_list|(
 name|storedBlock
 argument_list|,
+literal|null
+argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
@@ -14540,6 +14605,8 @@ expr_stmt|;
 name|completeBlock
 argument_list|(
 name|storedBlock
+argument_list|,
+literal|null
 argument_list|,
 literal|false
 argument_list|)
