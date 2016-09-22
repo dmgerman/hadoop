@@ -352,8 +352,8 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|Exception
-name|ex
+name|IOException
+name|ioe
 parameter_list|)
 block|{
 name|mojo
@@ -367,7 +367,31 @@ name|command
 operator|+
 literal|" failed: "
 operator|+
-name|ex
+name|ioe
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+name|mojo
+operator|.
+name|getLog
+argument_list|()
+operator|.
+name|warn
+argument_list|(
+name|command
+operator|+
+literal|" failed: "
+operator|+
+name|ie
 operator|.
 name|toString
 argument_list|()
