@@ -148,70 +148,60 @@ name|Schedulable
 block|{
 comment|/**    * Name of job/queue, used for debugging as well as for breaking ties in    * scheduling order deterministically.    */
 DECL|method|getName ()
-specifier|public
 name|String
 name|getName
 parameter_list|()
 function_decl|;
 comment|/**    * Maximum number of resources required by this Schedulable. This is defined as    * number of currently utilized resources + number of unlaunched resources (that    * are either not yet launched or need to be speculated).    */
 DECL|method|getDemand ()
-specifier|public
 name|Resource
 name|getDemand
 parameter_list|()
 function_decl|;
 comment|/** Get the aggregate amount of resources consumed by the schedulable. */
 DECL|method|getResourceUsage ()
-specifier|public
 name|Resource
 name|getResourceUsage
 parameter_list|()
 function_decl|;
 comment|/** Minimum Resource share assigned to the schedulable. */
 DECL|method|getMinShare ()
-specifier|public
 name|Resource
 name|getMinShare
 parameter_list|()
 function_decl|;
 comment|/** Maximum Resource share assigned to the schedulable. */
 DECL|method|getMaxShare ()
-specifier|public
 name|Resource
 name|getMaxShare
 parameter_list|()
 function_decl|;
 comment|/** Job/queue weight in fair sharing. */
 DECL|method|getWeights ()
-specifier|public
 name|ResourceWeights
 name|getWeights
 parameter_list|()
 function_decl|;
 comment|/** Start time for jobs in FIFO queues; meaningless for QueueSchedulables.*/
 DECL|method|getStartTime ()
-specifier|public
 name|long
 name|getStartTime
 parameter_list|()
 function_decl|;
 comment|/** Job priority for jobs in FIFO queues; meaningless for QueueSchedulables. */
 DECL|method|getPriority ()
-specifier|public
 name|Priority
 name|getPriority
 parameter_list|()
 function_decl|;
 comment|/** Refresh the Schedulable's demand and those of its children if any. */
 DECL|method|updateDemand ()
-specifier|public
 name|void
 name|updateDemand
 parameter_list|()
 function_decl|;
 comment|/**    * Assign a container on this node if possible, and return the amount of    * resources assigned.    */
 DECL|method|assignContainer (FSSchedulerNode node)
-specifier|public
 name|Resource
 name|assignContainer
 parameter_list|(
@@ -219,23 +209,14 @@ name|FSSchedulerNode
 name|node
 parameter_list|)
 function_decl|;
-comment|/**    * Preempt a container from this Schedulable if possible.    */
-DECL|method|preemptContainer ()
-specifier|public
-name|RMContainer
-name|preemptContainer
-parameter_list|()
-function_decl|;
 comment|/** Get the fair share assigned to this Schedulable. */
 DECL|method|getFairShare ()
-specifier|public
 name|Resource
 name|getFairShare
 parameter_list|()
 function_decl|;
 comment|/** Assign a fair share to this Schedulable. */
 DECL|method|setFairShare (Resource fairShare)
-specifier|public
 name|void
 name|setFairShare
 parameter_list|(

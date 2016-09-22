@@ -3132,6 +3132,43 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Method to return the next resource request to be serviced.    *    * In the initial implementation, we just pick any {@link ResourceRequest}    * corresponding to the highest priority.    *    * @return next {@link ResourceRequest} to allocate resources for.    */
+annotation|@
+name|Unstable
+DECL|method|getNextResourceRequest ()
+specifier|public
+specifier|synchronized
+name|ResourceRequest
+name|getNextResourceRequest
+parameter_list|()
+block|{
+for|for
+control|(
+name|ResourceRequest
+name|rr
+range|:
+name|resourceRequestMap
+operator|.
+name|get
+argument_list|(
+name|schedulerKeys
+operator|.
+name|firstKey
+argument_list|()
+argument_list|)
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+return|return
+name|rr
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Returns if the place (node/rack today) is either blacklisted by the    * application (user) or the system    *    * @param resourceName    *          the resourcename    * @param blacklistedBySystem    *          true if it should check amBlacklist    * @return true if its blacklisted    */
 DECL|method|isPlaceBlacklisted (String resourceName, boolean blacklistedBySystem)
 specifier|public

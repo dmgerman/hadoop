@@ -1717,20 +1717,6 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|preemptContainer ()
-specifier|public
-name|RMContainer
-name|preemptContainer
-parameter_list|()
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
-block|}
-annotation|@
-name|Override
 DECL|method|getFairShare ()
 specifier|public
 name|Resource

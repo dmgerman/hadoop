@@ -202,6 +202,38 @@ name|SchedulerNode
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentSkipListSet
+import|;
+end_import
+
 begin_class
 annotation|@
 name|Private
@@ -234,6 +266,20 @@ DECL|field|reservedAppSchedulable
 specifier|private
 name|FSAppAttempt
 name|reservedAppSchedulable
+decl_stmt|;
+DECL|field|containersForPreemption
+specifier|private
+specifier|final
+name|Set
+argument_list|<
+name|RMContainer
+argument_list|>
+name|containersForPreemption
+init|=
+operator|new
+name|ConcurrentSkipListSet
+argument_list|<>
+argument_list|()
 decl_stmt|;
 DECL|method|FSSchedulerNode (RMNode node, boolean usePortForNodeName)
 specifier|public
@@ -550,7 +596,6 @@ literal|null
 expr_stmt|;
 block|}
 DECL|method|getReservedAppSchedulable ()
-specifier|public
 specifier|synchronized
 name|FSAppAttempt
 name|getReservedAppSchedulable
@@ -559,6 +604,56 @@ block|{
 return|return
 name|reservedAppSchedulable
 return|;
+block|}
+comment|/**    * Mark {@code containers} as being considered for preemption so they are    * not considered again. A call to this requires a corresponding call to    * {@link #removeContainerForPreemption} to ensure we do not mark a    * container for preemption and never consider it again and avoid memory    * leaks.    *    * @param containers container to mark    */
+DECL|method|addContainersForPreemption (Collection<RMContainer> containers)
+name|void
+name|addContainersForPreemption
+parameter_list|(
+name|Collection
+argument_list|<
+name|RMContainer
+argument_list|>
+name|containers
+parameter_list|)
+block|{
+name|containersForPreemption
+operator|.
+name|addAll
+argument_list|(
+name|containers
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * @return set of containers marked for preemption.    */
+DECL|method|getContainersForPreemption ()
+name|Set
+argument_list|<
+name|RMContainer
+argument_list|>
+name|getContainersForPreemption
+parameter_list|()
+block|{
+return|return
+name|containersForPreemption
+return|;
+block|}
+comment|/**    * Remove container from the set of containers marked for preemption.    *    * @param container container to remove    */
+DECL|method|removeContainerForPreemption (RMContainer container)
+name|void
+name|removeContainerForPreemption
+parameter_list|(
+name|RMContainer
+name|container
+parameter_list|)
+block|{
+name|containersForPreemption
+operator|.
+name|remove
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

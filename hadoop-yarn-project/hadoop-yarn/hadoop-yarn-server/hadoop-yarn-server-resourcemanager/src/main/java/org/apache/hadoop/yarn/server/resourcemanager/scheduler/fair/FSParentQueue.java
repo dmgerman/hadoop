@@ -60,16 +60,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Comparator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -470,7 +460,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|addChildQueue (FSQueue child)
-specifier|public
 name|void
 name|addChildQueue
 parameter_list|(
@@ -503,7 +492,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|removeChildQueue (FSQueue child)
-specifier|public
 name|void
 name|removeChildQueue
 parameter_list|(
@@ -537,11 +525,14 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|recomputeShares ()
+DECL|method|updateInternal (boolean checkStarvation)
 specifier|public
 name|void
-name|recomputeShares
-parameter_list|()
+name|updateInternal
+parameter_list|(
+name|boolean
+name|checkStarvation
+parameter_list|)
 block|{
 name|readLock
 operator|.
@@ -583,8 +574,10 @@ argument_list|)
 expr_stmt|;
 name|childQueue
 operator|.
-name|recomputeShares
-argument_list|()
+name|updateInternal
+argument_list|(
+name|checkStarvation
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -598,7 +591,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|recomputeSteadyShares ()
-specifier|public
 name|void
 name|recomputeSteadyShares
 parameter_list|()
@@ -1041,9 +1033,7 @@ name|userAcls
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|QueueUserACLInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|// Add queue acls
@@ -1220,137 +1210,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|preemptContainer ()
-specifier|public
-name|RMContainer
-name|preemptContainer
-parameter_list|()
-block|{
-name|RMContainer
-name|toBePreempted
-init|=
-literal|null
-decl_stmt|;
-comment|// Find the childQueue which is most over fair share
-name|FSQueue
-name|candidateQueue
-init|=
-literal|null
-decl_stmt|;
-name|Comparator
-argument_list|<
-name|Schedulable
-argument_list|>
-name|comparator
-init|=
-name|policy
-operator|.
-name|getComparator
-argument_list|()
-decl_stmt|;
-name|readLock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-for|for
-control|(
-name|FSQueue
-name|queue
-range|:
-name|childQueues
-control|)
-block|{
-comment|// Skip selection for non-preemptable queue
-if|if
-condition|(
-operator|!
-name|queue
-operator|.
-name|isPreemptable
-argument_list|()
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"skipping from queue="
-operator|+
-name|getName
-argument_list|()
-operator|+
-literal|" because it's a non-preemptable queue"
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-elseif|else
-if|if
-condition|(
-name|candidateQueue
-operator|==
-literal|null
-operator|||
-name|comparator
-operator|.
-name|compare
-argument_list|(
-name|queue
-argument_list|,
-name|candidateQueue
-argument_list|)
-operator|>
-literal|0
-condition|)
-block|{
-name|candidateQueue
-operator|=
-name|queue
-expr_stmt|;
-block|}
-block|}
-block|}
-finally|finally
-block|{
-name|readLock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-comment|// Let the selected queue choose which of its container to preempt
-if|if
-condition|(
-name|candidateQueue
-operator|!=
-literal|null
-condition|)
-block|{
-name|toBePreempted
-operator|=
-name|candidateQueue
-operator|.
-name|preemptContainer
-argument_list|()
-expr_stmt|;
-block|}
-return|return
-name|toBePreempted
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getChildQueues ()
 specifier|public
 name|List
@@ -1442,7 +1301,6 @@ name|policy
 expr_stmt|;
 block|}
 DECL|method|incrementRunnableApps ()
-specifier|public
 name|void
 name|incrementRunnableApps
 parameter_list|()
@@ -1468,7 +1326,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|decrementRunnableApps ()
-specifier|public
 name|void
 name|decrementRunnableApps
 parameter_list|()

@@ -531,18 +531,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|preemptContainer ()
-specifier|public
-name|RMContainer
-name|preemptContainer
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getFairShare ()
 specifier|public
 name|Resource

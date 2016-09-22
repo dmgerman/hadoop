@@ -1352,7 +1352,6 @@ name|steadyFairShare
 return|;
 block|}
 DECL|method|setSteadyFairShare (Resource steadyFairShare)
-specifier|public
 name|void
 name|setSteadyFairShare
 parameter_list|(
@@ -1403,7 +1402,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|getFairSharePreemptionTimeout ()
-specifier|public
 name|long
 name|getFairSharePreemptionTimeout
 parameter_list|()
@@ -1413,7 +1411,6 @@ name|fairSharePreemptionTimeout
 return|;
 block|}
 DECL|method|setFairSharePreemptionTimeout (long fairSharePreemptionTimeout)
-specifier|public
 name|void
 name|setFairSharePreemptionTimeout
 parameter_list|(
@@ -1429,7 +1426,6 @@ name|fairSharePreemptionTimeout
 expr_stmt|;
 block|}
 DECL|method|getMinSharePreemptionTimeout ()
-specifier|public
 name|long
 name|getMinSharePreemptionTimeout
 parameter_list|()
@@ -1439,7 +1435,6 @@ name|minSharePreemptionTimeout
 return|;
 block|}
 DECL|method|setMinSharePreemptionTimeout (long minSharePreemptionTimeout)
-specifier|public
 name|void
 name|setMinSharePreemptionTimeout
 parameter_list|(
@@ -1455,7 +1450,6 @@ name|minSharePreemptionTimeout
 expr_stmt|;
 block|}
 DECL|method|getFairSharePreemptionThreshold ()
-specifier|public
 name|float
 name|getFairSharePreemptionThreshold
 parameter_list|()
@@ -1465,7 +1459,6 @@ name|fairSharePreemptionThreshold
 return|;
 block|}
 DECL|method|setFairSharePreemptionThreshold (float fairSharePreemptionThreshold)
-specifier|public
 name|void
 name|setFairSharePreemptionThreshold
 parameter_list|(
@@ -1490,14 +1483,39 @@ return|return
 name|preemptable
 return|;
 block|}
-comment|/**    * Recomputes the shares for all child queues and applications based on this    * queue's current share    */
-DECL|method|recomputeShares ()
-specifier|public
+comment|/**    * Recomputes the shares for all child queues and applications based on this    * queue's current share, and checks for starvation.    *    * @param checkStarvation whether to check for fairshare or minshare    *                        starvation on update    */
+DECL|method|updateInternal (boolean checkStarvation)
 specifier|abstract
 name|void
-name|recomputeShares
-parameter_list|()
+name|updateInternal
+parameter_list|(
+name|boolean
+name|checkStarvation
+parameter_list|)
 function_decl|;
+DECL|method|update (Resource fairShare, boolean checkStarvation)
+specifier|public
+name|void
+name|update
+parameter_list|(
+name|Resource
+name|fairShare
+parameter_list|,
+name|boolean
+name|checkStarvation
+parameter_list|)
+block|{
+name|setFairShare
+argument_list|(
+name|fairShare
+argument_list|)
+expr_stmt|;
+name|updateInternal
+argument_list|(
+name|checkStarvation
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Update the min/fair share preemption timeouts, threshold and preemption    * disabled flag for this queue.    */
 DECL|method|updatePreemptionVariables ()
 specifier|public
@@ -1656,7 +1674,6 @@ parameter_list|()
 function_decl|;
 comment|/**    * Helper method to check if the queue should attempt assigning resources    *     * @return true if check passes (can assign) or false otherwise    */
 DECL|method|assignContainerPreCheck (FSSchedulerNode node)
-specifier|protected
 name|boolean
 name|assignContainerPreCheck
 parameter_list|(
@@ -1838,7 +1855,6 @@ literal|null
 return|;
 block|}
 DECL|method|fitsInMaxShare (Resource additionalResource)
-specifier|public
 name|boolean
 name|fitsInMaxShare
 parameter_list|(

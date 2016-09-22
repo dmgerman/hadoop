@@ -577,6 +577,25 @@ return|return
 name|NONE
 return|;
 block|}
+DECL|method|isNone (Resource other)
+specifier|public
+specifier|static
+name|boolean
+name|isNone
+parameter_list|(
+name|Resource
+name|other
+parameter_list|)
+block|{
+return|return
+name|NONE
+operator|.
+name|equals
+argument_list|(
+name|other
+argument_list|)
+return|;
+block|}
 DECL|method|unbounded ()
 specifier|public
 specifier|static

@@ -5764,6 +5764,43 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/*    * Overriding to appease findbugs    */
+annotation|@
+name|Override
+DECL|method|hashCode ()
+specifier|public
+name|int
+name|hashCode
+parameter_list|()
+block|{
+return|return
+name|super
+operator|.
+name|hashCode
+argument_list|()
+return|;
+block|}
+comment|/*    * Overriding to appease findbugs    */
+annotation|@
+name|Override
+DECL|method|equals (Object o)
+specifier|public
+name|boolean
+name|equals
+parameter_list|(
+name|Object
+name|o
+parameter_list|)
+block|{
+return|return
+name|super
+operator|.
+name|equals
+argument_list|(
+name|o
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 
