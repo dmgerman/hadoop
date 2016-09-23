@@ -1769,13 +1769,6 @@ name|getCause
 argument_list|()
 operator|instanceof
 name|ConnectException
-operator|||
-name|e
-operator|.
-name|getCause
-argument_list|()
-operator|instanceof
-name|SocketTimeoutException
 operator|)
 return|;
 block|}
