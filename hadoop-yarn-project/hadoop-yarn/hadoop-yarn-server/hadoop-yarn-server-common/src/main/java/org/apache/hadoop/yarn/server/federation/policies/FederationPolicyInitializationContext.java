@@ -171,21 +171,21 @@ return|return
 name|federationPolicyConfiguration
 return|;
 block|}
-comment|/**    * Setter for the {@link SubClusterPolicyConfiguration}.    *    * @param federationPolicyConfiguration the    * {@link SubClusterPolicyConfiguration}    *                                      to be used for initialization.    */
-DECL|method|setFederationPolicyConfiguration ( SubClusterPolicyConfiguration federationPolicyConfiguration)
+comment|/**    * Setter for the {@link SubClusterPolicyConfiguration}.    *    * @param fedPolicyConfiguration the {@link SubClusterPolicyConfiguration}    *                               to be used for initialization.    */
+DECL|method|setSubClusterPolicyConfiguration ( SubClusterPolicyConfiguration fedPolicyConfiguration)
 specifier|public
 name|void
-name|setFederationPolicyConfiguration
+name|setSubClusterPolicyConfiguration
 parameter_list|(
 name|SubClusterPolicyConfiguration
-name|federationPolicyConfiguration
+name|fedPolicyConfiguration
 parameter_list|)
 block|{
 name|this
 operator|.
 name|federationPolicyConfiguration
 operator|=
-name|federationPolicyConfiguration
+name|fedPolicyConfiguration
 expr_stmt|;
 block|}
 comment|/**    * Getter for the {@link SubClusterResolver}.    *    * @return the {@link SubClusterResolver} to be used for initialization.    */

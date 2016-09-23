@@ -406,7 +406,7 @@ name|Exception
 block|{
 name|context
 operator|.
-name|setFederationPolicyConfiguration
+name|setSubClusterPolicyConfiguration
 argument_list|(
 literal|null
 argument_list|)
@@ -509,9 +509,7 @@ specifier|private
 class|class
 name|MockPolicyManager
 implements|implements
-name|FederationPolicyWriter
-implements|,
-name|FederationPolicyConfigurator
+name|FederationPolicyManager
 block|{
 annotation|@
 name|Override
@@ -592,6 +590,29 @@ name|buf
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getQueue ()
+specifier|public
+name|String
+name|getQueue
+parameter_list|()
+block|{
+return|return
+literal|"default"
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setQueue (String queue)
+specifier|public
+name|void
+name|setQueue
+parameter_list|(
+name|String
+name|queue
+parameter_list|)
+block|{      }
 block|}
 block|}
 end_class
