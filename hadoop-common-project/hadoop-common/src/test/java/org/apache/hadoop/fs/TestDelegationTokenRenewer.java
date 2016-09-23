@@ -234,11 +234,6 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-annotation|@
 name|Test
 DECL|method|testAddRemoveRenewAction ()
 specifier|public
@@ -501,11 +496,7 @@ operator|.
 name|setDelegationToken
 argument_list|(
 name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals

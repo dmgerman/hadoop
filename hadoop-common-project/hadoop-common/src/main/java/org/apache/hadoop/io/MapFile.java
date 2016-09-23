@@ -4691,6 +4691,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 name|WritableComparable
+argument_list|<
+name|?
+argument_list|>
 name|key
 init|=
 name|ReflectionUtils

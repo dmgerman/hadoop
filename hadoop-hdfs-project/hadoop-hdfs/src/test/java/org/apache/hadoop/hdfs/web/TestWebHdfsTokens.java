@@ -986,18 +986,8 @@ argument_list|)
 operator|.
 name|setDelegationToken
 argument_list|(
-operator|(
-name|Token
-argument_list|<
-name|?
-argument_list|>
-operator|)
 name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1192,12 +1182,6 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-comment|// for any(Token.class)
-annotation|@
 name|Test
 DECL|method|testLazyTokenFetchForWebhdfs ()
 specifier|public
@@ -1346,12 +1330,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-comment|// for any(Token.class)
 annotation|@
 name|Test
 DECL|method|testLazyTokenFetchForSWebhdfs ()
@@ -2011,11 +1989,6 @@ block|}
 end_class
 
 begin_function
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|validateLazyTokenFetch (final Configuration clusterConf)
 specifier|private
 name|void
@@ -2165,11 +2138,7 @@ operator|.
 name|setDelegationToken
 argument_list|(
 name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2266,11 +2235,7 @@ operator|.
 name|setDelegationToken
 argument_list|(
 name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|token
@@ -2376,11 +2341,7 @@ operator|.
 name|setDelegationToken
 argument_list|(
 name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Token
@@ -2531,11 +2492,7 @@ operator|.
 name|setDelegationToken
 argument_list|(
 name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|token2
@@ -2668,11 +2625,7 @@ operator|.
 name|setDelegationToken
 argument_list|(
 name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|token2
@@ -2794,11 +2747,7 @@ operator|.
 name|setDelegationToken
 argument_list|(
 name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|token2
@@ -2942,11 +2891,7 @@ operator|.
 name|setDelegationToken
 argument_list|(
 name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|token2
@@ -3057,11 +3002,7 @@ operator|.
 name|setDelegationToken
 argument_list|(
 name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verify
@@ -3322,11 +3263,7 @@ operator|.
 name|setDelegationToken
 argument_list|(
 name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|token2
@@ -3489,11 +3426,7 @@ operator|.
 name|setDelegationToken
 argument_list|(
 name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|token2
@@ -3593,11 +3526,7 @@ operator|.
 name|setDelegationToken
 argument_list|(
 name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verify
