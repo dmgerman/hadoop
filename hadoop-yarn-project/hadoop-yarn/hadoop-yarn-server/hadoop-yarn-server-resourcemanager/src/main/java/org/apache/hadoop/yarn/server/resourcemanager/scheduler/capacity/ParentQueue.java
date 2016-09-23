@@ -957,7 +957,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|setupQueueConfigs (Resource clusterResource)
-specifier|synchronized
 name|void
 name|setupQueueConfigs
 parameter_list|(
@@ -967,6 +966,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|super
 operator|.
 name|setupQueueConfigs
@@ -1123,6 +1129,15 @@ name|reservationsContinueLooking
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|field|PRECISION
 specifier|private
 specifier|static
@@ -1133,7 +1148,6 @@ literal|0.0005f
 decl_stmt|;
 comment|// 0.05% precision
 DECL|method|setChildQueues (Collection<CSQueue> childQueues)
-specifier|synchronized
 name|void
 name|setChildQueues
 parameter_list|(
@@ -1144,6 +1158,13 @@ argument_list|>
 name|childQueues
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Validate
 name|float
 name|childCapacities
@@ -1371,6 +1392,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|getQueuePath ()
@@ -1412,7 +1442,6 @@ annotation|@
 name|Override
 DECL|method|getQueueInfo ( boolean includeChildQueues, boolean recursive)
 specifier|public
-specifier|synchronized
 name|QueueInfo
 name|getQueueInfo
 parameter_list|(
@@ -1423,6 +1452,13 @@ name|boolean
 name|recursive
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|QueueInfo
 name|queueInfo
 init|=
@@ -1437,9 +1473,7 @@ name|childQueuesInfo
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|QueueInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 if|if
@@ -1483,9 +1517,17 @@ return|return
 name|queueInfo
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|getUserAclInfo ( UserGroupInformation user)
 specifier|private
-specifier|synchronized
 name|QueueUserACLInfo
 name|getUserAclInfo
 parameter_list|(
@@ -1493,6 +1535,13 @@ name|UserGroupInformation
 name|user
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|QueueUserACLInfo
 name|userAclInfo
 init|=
@@ -1567,11 +1616,19 @@ return|return
 name|userAclInfo
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|getQueueUserAclInfo ( UserGroupInformation user)
 specifier|public
-specifier|synchronized
 name|List
 argument_list|<
 name|QueueUserACLInfo
@@ -1582,6 +1639,13 @@ name|UserGroupInformation
 name|user
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|List
 argument_list|<
 name|QueueUserACLInfo
@@ -1590,9 +1654,7 @@ name|userAcls
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|QueueUserACLInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|// Add parent queue acls
@@ -1631,6 +1693,15 @@ block|}
 return|return
 name|userAcls
 return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|toString ()
 specifier|public
@@ -1701,7 +1772,6 @@ annotation|@
 name|Override
 DECL|method|reinitialize (CSQueue newlyParsedQueue, Resource clusterResource)
 specifier|public
-specifier|synchronized
 name|void
 name|reinitialize
 parameter_list|(
@@ -1714,6 +1784,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Sanity check
 if|if
 condition|(
@@ -1926,6 +2003,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|getQueues (Set<CSQueue> queues)
 name|Map
 argument_list|<
@@ -2003,11 +2089,13 @@ parameter_list|)
 throws|throws
 name|AccessControlException
 block|{
-synchronized|synchronized
-init|(
-name|this
-init|)
+try|try
 block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Sanity check
 if|if
 condition|(
@@ -2061,6 +2149,14 @@ name|applicationId
 argument_list|,
 name|user
 argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 comment|// Inform the parent queue
@@ -2152,7 +2248,6 @@ comment|// finish attempt logic.
 block|}
 DECL|method|addApplication (ApplicationId applicationId, String user)
 specifier|private
-specifier|synchronized
 name|void
 name|addApplication
 parameter_list|(
@@ -2163,6 +2258,13 @@ name|String
 name|user
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 operator|++
 name|numApplications
 expr_stmt|;
@@ -2192,6 +2294,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|finishApplication (ApplicationId application, String user)
@@ -2206,11 +2317,6 @@ name|String
 name|user
 parameter_list|)
 block|{
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
 name|removeApplication
 argument_list|(
 name|application
@@ -2218,7 +2324,6 @@ argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Inform the parent queue
 if|if
 condition|(
@@ -2240,7 +2345,6 @@ block|}
 block|}
 DECL|method|removeApplication (ApplicationId applicationId, String user)
 specifier|private
-specifier|synchronized
 name|void
 name|removeApplication
 parameter_list|(
@@ -2251,6 +2355,13 @@ name|String
 name|user
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 operator|--
 name|numApplications
 expr_stmt|;
@@ -2280,6 +2391,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|getParentName ()
 specifier|private
 name|String
@@ -2305,7 +2425,6 @@ annotation|@
 name|Override
 DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, ResourceLimits resourceLimits, SchedulingMode schedulingMode)
 specifier|public
-specifier|synchronized
 name|CSAssignment
 name|assignContainers
 parameter_list|(
@@ -2322,6 +2441,13 @@ name|SchedulingMode
 name|schedulingMode
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// if our queue cannot access this node, just return
 if|if
 condition|(
@@ -3143,6 +3269,15 @@ return|return
 name|assignment
 return|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|canAssign (Resource clusterResource, FiCaSchedulerNode node)
 specifier|private
 name|boolean
@@ -3447,7 +3582,6 @@ return|;
 block|}
 DECL|method|assignContainersToChildQueues ( Resource cluster, FiCaSchedulerNode node, ResourceLimits limits, SchedulingMode schedulingMode)
 specifier|private
-specifier|synchronized
 name|CSAssignment
 name|assignContainersToChildQueues
 parameter_list|(
@@ -3907,7 +4041,6 @@ block|}
 block|}
 DECL|method|internalReleaseResource (Resource clusterResource, FiCaSchedulerNode node, Resource releasedResource, boolean changeResource, CSQueue completedChildQueue, boolean sortQueues)
 specifier|private
-specifier|synchronized
 name|void
 name|internalReleaseResource
 parameter_list|(
@@ -3930,6 +4063,13 @@ name|boolean
 name|sortQueues
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|super
 operator|.
 name|releaseResource
@@ -4057,6 +4197,15 @@ operator|=
 operator|!
 name|sortQueues
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -4301,7 +4450,6 @@ annotation|@
 name|Override
 DECL|method|updateClusterResource (Resource clusterResource, ResourceLimits resourceLimits)
 specifier|public
-specifier|synchronized
 name|void
 name|updateClusterResource
 parameter_list|(
@@ -4312,6 +4460,13 @@ name|ResourceLimits
 name|resourceLimits
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Update all children
 for|for
 control|(
@@ -4369,11 +4524,19 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|getChildQueues ()
 specifier|public
-specifier|synchronized
 name|List
 argument_list|<
 name|CSQueue
@@ -4381,6 +4544,13 @@ argument_list|>
 name|getChildQueues
 parameter_list|()
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 return|return
 operator|new
 name|ArrayList
@@ -4391,6 +4561,15 @@ argument_list|(
 name|childQueues
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -4427,11 +4606,13 @@ block|{
 return|return;
 block|}
 comment|// Careful! Locking order is important!
-synchronized|synchronized
-init|(
-name|this
-init|)
+try|try
 block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|FiCaSchedulerNode
 name|node
 init|=
@@ -4467,6 +4648,14 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 if|if
@@ -4506,7 +4695,6 @@ annotation|@
 name|Override
 DECL|method|collectSchedulerApplications ( Collection<ApplicationAttemptId> apps)
 specifier|public
-specifier|synchronized
 name|void
 name|collectSchedulerApplications
 parameter_list|(
@@ -4517,6 +4705,13 @@ argument_list|>
 name|apps
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 for|for
 control|(
 name|CSQueue
@@ -4531,6 +4726,15 @@ name|collectSchedulerApplications
 argument_list|(
 name|apps
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -4768,7 +4972,6 @@ block|}
 block|}
 DECL|method|getNumApplications ()
 specifier|public
-specifier|synchronized
 name|int
 name|getNumApplications
 parameter_list|()
@@ -4778,7 +4981,6 @@ name|numApplications
 return|;
 block|}
 DECL|method|allocateResource (Resource clusterResource, Resource resource, String nodePartition, boolean changeContainerResource)
-specifier|synchronized
 name|void
 name|allocateResource
 parameter_list|(
@@ -4795,6 +4997,13 @@ name|boolean
 name|changeContainerResource
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|super
 operator|.
 name|allocateResource
@@ -4808,7 +5017,7 @@ argument_list|,
 name|changeContainerResource
 argument_list|)
 expr_stmt|;
-comment|/**      * check if we need to kill (killable) containers if maximum resource violated.      * Doing this because we will deduct killable resource when going from root.      * For example:      *<pre>      *      Root      *      /   \      *     a     b      *   /  \      *  a1  a2      *</pre>      *      * a: max=10G, used=10G, killable=2G      * a1: used=8G, killable=2G      * a2: used=2G, pending=2G, killable=0G      *      * When we get queue-a to allocate resource, even if queue-a      * reaches its max resource, we deduct its used by killable, so we can allocate      * at most 2G resources. ResourceLimits passed down to a2 has headroom set to 2G.      *      * If scheduler finds a 2G available resource in existing cluster, and assigns it      * to a2, now a2's used= 2G + 2G = 4G, and a's used = 8G + 4G = 12G> 10G      *      * When this happens, we have to preempt killable container (on same or different      * nodes) of parent queue to avoid violating parent's max resource.      */
+comment|/**        * check if we need to kill (killable) containers if maximum resource violated.        * Doing this because we will deduct killable resource when going from root.        * For example:        *<pre>        *      Root        *      /   \        *     a     b        *   /  \        *  a1  a2        *</pre>        *        * a: max=10G, used=10G, killable=2G        * a1: used=8G, killable=2G        * a2: used=2G, pending=2G, killable=0G        *        * When we get queue-a to allocate resource, even if queue-a        * reaches its max resource, we deduct its used by killable, so we can allocate        * at most 2G resources. ResourceLimits passed down to a2 has headroom set to 2G.        *        * If scheduler finds a 2G available resource in existing cluster, and assigns it        * to a2, now a2's used= 2G + 2G = 4G, and a's used = 8G + 4G = 12G> 10G        *        * When this happens, we have to preempt killable container (on same or different        * nodes) of parent queue to avoid violating parent's max resource.        */
 if|if
 condition|(
 name|getQueueCapacities
@@ -4834,6 +5043,15 @@ name|nodePartition
 argument_list|,
 name|clusterResource
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}

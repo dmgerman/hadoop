@@ -86,6 +86,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|ReentrantReadWriteLock
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -644,6 +658,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|parent
+specifier|volatile
 name|CSQueue
 name|parent
 decl_stmt|;
@@ -668,6 +683,7 @@ name|Resource
 name|maximumAllocation
 decl_stmt|;
 DECL|field|state
+specifier|volatile
 name|QueueState
 name|state
 decl_stmt|;
@@ -695,6 +711,7 @@ argument_list|>
 name|accessibleLabels
 decl_stmt|;
 DECL|field|labelManager
+specifier|final
 name|RMNodeLabelsManager
 name|labelManager
 decl_stmt|;
@@ -727,6 +744,7 @@ name|reservationsContinueLooking
 decl_stmt|;
 DECL|field|preemptionDisabled
 specifier|private
+specifier|volatile
 name|boolean
 name|preemptionDisabled
 decl_stmt|;
@@ -771,6 +789,20 @@ DECL|field|activitiesManager
 specifier|protected
 name|ActivitiesManager
 name|activitiesManager
+decl_stmt|;
+DECL|field|readLock
+specifier|protected
+name|ReentrantReadWriteLock
+operator|.
+name|ReadLock
+name|readLock
+decl_stmt|;
+DECL|field|writeLock
+specifier|protected
+name|ReentrantReadWriteLock
+operator|.
+name|WriteLock
+name|writeLock
 decl_stmt|;
 DECL|method|AbstractCSQueue (CapacitySchedulerContext cs, String queueName, CSQueue parent, CSQueue old)
 specifier|public
@@ -919,6 +951,27 @@ operator|==
 literal|null
 argument_list|)
 expr_stmt|;
+name|ReentrantReadWriteLock
+name|lock
+init|=
+operator|new
+name|ReentrantReadWriteLock
+argument_list|()
+decl_stmt|;
+name|readLock
+operator|=
+name|lock
+operator|.
+name|readLock
+argument_list|()
+expr_stmt|;
+name|writeLock
+operator|=
+name|lock
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|setupConfigurableCapacities ()
 specifier|protected
@@ -957,7 +1010,6 @@ annotation|@
 name|Override
 DECL|method|getCapacity ()
 specifier|public
-specifier|synchronized
 name|float
 name|getCapacity
 parameter_list|()
@@ -973,7 +1025,6 @@ annotation|@
 name|Override
 DECL|method|getAbsoluteCapacity ()
 specifier|public
-specifier|synchronized
 name|float
 name|getAbsoluteCapacity
 parameter_list|()
@@ -1074,7 +1125,6 @@ annotation|@
 name|Override
 DECL|method|getState ()
 specifier|public
-specifier|synchronized
 name|QueueState
 name|getState
 parameter_list|()
@@ -1123,7 +1173,6 @@ annotation|@
 name|Override
 DECL|method|getParent ()
 specifier|public
-specifier|synchronized
 name|CSQueue
 name|getParent
 parameter_list|()
@@ -1136,7 +1185,6 @@ annotation|@
 name|Override
 DECL|method|setParent (CSQueue newParentQueue)
 specifier|public
-specifier|synchronized
 name|void
 name|setParent
 parameter_list|(
@@ -1148,9 +1196,6 @@ name|this
 operator|.
 name|parent
 operator|=
-operator|(
-name|ParentQueue
-operator|)
 name|newParentQueue
 expr_stmt|;
 block|}
@@ -1254,7 +1299,6 @@ expr_stmt|;
 block|}
 comment|/**    * Set maximum capacity - used only for testing.    * @param maximumCapacity new max capacity    */
 DECL|method|setMaxCapacity (float maximumCapacity)
-specifier|synchronized
 name|void
 name|setMaxCapacity
 parameter_list|(
@@ -1262,6 +1306,13 @@ name|float
 name|maximumCapacity
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Sanity check
 name|CSQueueUtils
 operator|.
@@ -1320,6 +1371,15 @@ name|absMaxCapacity
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|getDefaultNodeLabelExpression ()
@@ -1333,7 +1393,6 @@ name|defaultLabelExpression
 return|;
 block|}
 DECL|method|setupQueueConfigs (Resource clusterResource)
-specifier|synchronized
 name|void
 name|setupQueueConfigs
 parameter_list|(
@@ -1343,6 +1402,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// get labels
 name|this
 operator|.
@@ -1656,12 +1722,25 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|getQueueInfo ()
 specifier|protected
 name|QueueInfo
 name|getQueueInfo
 parameter_list|()
 block|{
+comment|// Deliberately doesn't use lock here, because this method will be invoked
+comment|// from schedulerApplicationAttempt, to avoid deadlock, sacrifice
+comment|// consistency here.
+comment|// TODO, improve this
 name|QueueInfo
 name|queueInfo
 init|=
@@ -1755,6 +1834,10 @@ name|QueueStatistics
 name|getQueueStatistics
 parameter_list|()
 block|{
+comment|// Deliberately doesn't use lock here, because this method will be invoked
+comment|// from schedulerApplicationAttempt, to avoid deadlock, sacrifice
+comment|// consistency here.
+comment|// TODO, improve this
 name|QueueStatistics
 name|stats
 init|=
@@ -1994,7 +2077,6 @@ name|minimumAllocation
 return|;
 block|}
 DECL|method|allocateResource (Resource clusterResource, Resource resource, String nodePartition, boolean changeContainerResource)
-specifier|synchronized
 name|void
 name|allocateResource
 parameter_list|(
@@ -2011,6 +2093,13 @@ name|boolean
 name|changeContainerResource
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|queueUsage
 operator|.
 name|incUsed
@@ -2048,9 +2137,17 @@ name|nodePartition
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|releaseResource (Resource clusterResource, Resource resource, String nodePartition, boolean changeContainerResource)
 specifier|protected
-specifier|synchronized
 name|void
 name|releaseResource
 parameter_list|(
@@ -2067,6 +2164,13 @@ name|boolean
 name|changeContainerResource
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|queueUsage
 operator|.
 name|decUsed
@@ -2104,6 +2208,15 @@ name|numContainers
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Private
 DECL|method|getReservationContinueLooking ()
@@ -2129,9 +2242,25 @@ argument_list|>
 name|getACLs
 parameter_list|()
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 return|return
 name|acls
 return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Private
@@ -2391,7 +2520,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|canAssignToThisQueue (Resource clusterResource, String nodePartition, ResourceLimits currentResourceLimits, Resource resourceCouldBeUnreserved, SchedulingMode schedulingMode)
-specifier|synchronized
 name|boolean
 name|canAssignToThisQueue
 parameter_list|(
@@ -2411,6 +2539,13 @@ name|SchedulingMode
 name|schedulingMode
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Get current limited resource:
 comment|// - When doing RESPECT_PARTITION_EXCLUSIVITY allocation, we will respect
 comment|// queues' max capacity.
@@ -2707,6 +2842,15 @@ block|}
 return|return
 literal|true
 return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

@@ -2115,7 +2115,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * This method produces an Allocation that includes the current view    * of the resources that will be allocated to and preempted from this    * application.    *    * @param rc    * @param clusterResource    * @param minimumAllocation    * @return an allocation    */
+comment|/**    * This method produces an Allocation that includes the current view    * of the resources that will be allocated to and preempted from this    * application.    *    * @param resourceCalculator    * @param clusterResource    * @param minimumAllocation    * @return an allocation    */
 DECL|method|getAllocation (ResourceCalculator resourceCalculator, Resource clusterResource, Resource minimumAllocation)
 specifier|public
 name|Allocation
