@@ -867,7 +867,7 @@ name|int
 name|fileSizeMb
 init|=
 name|fileSizeKb
-operator|*
+operator|/
 literal|1024
 decl_stmt|;
 name|getLog
