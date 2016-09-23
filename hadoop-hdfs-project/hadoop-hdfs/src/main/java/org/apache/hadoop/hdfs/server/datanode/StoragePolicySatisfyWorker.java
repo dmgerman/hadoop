@@ -352,6 +352,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|Block
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|DatanodeInfo
 import|;
 end_import
@@ -896,13 +912,16 @@ return|return
 name|moverThreadPool
 return|;
 block|}
-DECL|method|processBlockMovingTasks (long trackID, List<BlockMovingInfo> blockMovingInfos)
+DECL|method|processBlockMovingTasks (long trackID, String blockPoolID, List<BlockMovingInfo> blockMovingInfos)
 specifier|public
 name|void
 name|processBlockMovingTasks
 parameter_list|(
 name|long
 name|trackID
+parameter_list|,
+name|String
+name|blockPoolID
 parameter_list|,
 name|List
 argument_list|<
@@ -972,6 +991,8 @@ name|blkMovingInfo
 operator|.
 name|getBlock
 argument_list|()
+argument_list|,
+name|blockPoolID
 argument_list|,
 name|blkMovingInfo
 operator|.
@@ -1086,7 +1107,7 @@ block|{
 DECL|field|block
 specifier|private
 specifier|final
-name|ExtendedBlock
+name|Block
 name|block
 decl_stmt|;
 DECL|field|source
@@ -1107,11 +1128,19 @@ specifier|final
 name|StorageType
 name|targetStorageType
 decl_stmt|;
-DECL|method|BlockMovingTask (ExtendedBlock block, DatanodeInfo source, DatanodeInfo target, StorageType targetStorageType)
+DECL|field|blockPoolID
+specifier|private
+name|String
+name|blockPoolID
+decl_stmt|;
+DECL|method|BlockMovingTask (Block block, String blockPoolID, DatanodeInfo source, DatanodeInfo target, StorageType targetStorageType)
 name|BlockMovingTask
 parameter_list|(
-name|ExtendedBlock
+name|Block
 name|block
+parameter_list|,
+name|String
+name|blockPoolID
 parameter_list|,
 name|DatanodeInfo
 name|source
@@ -1128,6 +1157,12 @@ operator|.
 name|block
 operator|=
 name|block
+expr_stmt|;
+name|this
+operator|.
+name|blockPoolID
+operator|=
+name|blockPoolID
 expr_stmt|;
 name|this
 operator|.
@@ -1296,6 +1331,17 @@ operator|.
 name|getInputStream
 argument_list|()
 decl_stmt|;
+name|ExtendedBlock
+name|extendedBlock
+init|=
+operator|new
+name|ExtendedBlock
+argument_list|(
+name|blockPoolID
+argument_list|,
+name|block
+argument_list|)
+decl_stmt|;
 name|Token
 argument_list|<
 name|BlockTokenIdentifier
@@ -1306,7 +1352,7 @@ name|datanode
 operator|.
 name|getBlockAccessToken
 argument_list|(
-name|block
+name|extendedBlock
 argument_list|,
 name|EnumSet
 operator|.
@@ -1327,7 +1373,7 @@ name|datanode
 operator|.
 name|getDataEncryptionKeyFactoryForBlock
 argument_list|(
-name|block
+name|extendedBlock
 argument_list|)
 decl_stmt|;
 name|IOStreamPair
@@ -1397,7 +1443,7 @@ name|sendRequest
 argument_list|(
 name|out
 argument_list|,
-name|block
+name|extendedBlock
 argument_list|,
 name|accessToken
 argument_list|,
@@ -1413,7 +1459,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Successfully moved block:{} from src:{} to destin:{} for"
 operator|+

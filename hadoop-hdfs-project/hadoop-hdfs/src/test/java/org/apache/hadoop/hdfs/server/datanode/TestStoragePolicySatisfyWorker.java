@@ -188,7 +188,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DatanodeInfo
+name|Block
 import|;
 end_import
 
@@ -204,7 +204,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ExtendedBlock
+name|DatanodeInfo
 import|;
 end_import
 
@@ -507,7 +507,7 @@ block|,
 block|{
 name|StorageType
 operator|.
-name|DISK
+name|ARCHIVE
 block|,
 name|StorageType
 operator|.
@@ -517,7 +517,7 @@ block|,
 block|{
 name|StorageType
 operator|.
-name|DISK
+name|ARCHIVE
 block|,
 name|StorageType
 operator|.
@@ -726,6 +726,9 @@ name|lb
 operator|.
 name|getBlock
 argument_list|()
+operator|.
+name|getLocalBlock
+argument_list|()
 argument_list|,
 name|lb
 operator|.
@@ -780,6 +783,14 @@ argument_list|(
 name|inode
 operator|.
 name|getId
+argument_list|()
+argument_list|,
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockPoolId
 argument_list|()
 argument_list|,
 name|blockMovingInfos
@@ -953,11 +964,11 @@ name|timeout
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|prepareBlockMovingInfo (ExtendedBlock block, DatanodeInfo src, DatanodeInfo destin, StorageType storageType, StorageType targetStorageType)
+DECL|method|prepareBlockMovingInfo (Block block, DatanodeInfo src, DatanodeInfo destin, StorageType storageType, StorageType targetStorageType)
 name|BlockMovingInfo
 name|prepareBlockMovingInfo
 parameter_list|(
-name|ExtendedBlock
+name|Block
 name|block
 parameter_list|,
 name|DatanodeInfo

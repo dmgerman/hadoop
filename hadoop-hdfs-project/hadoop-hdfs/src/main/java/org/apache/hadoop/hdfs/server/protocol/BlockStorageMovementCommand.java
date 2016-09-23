@@ -56,7 +56,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DatanodeInfo
+name|Block
 import|;
 end_import
 
@@ -72,7 +72,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ExtendedBlock
+name|DatanodeInfo
 import|;
 end_import
 
@@ -112,7 +112,7 @@ name|BlockMovingInfo
 block|{
 DECL|field|blk
 specifier|private
-name|ExtendedBlock
+name|Block
 name|blk
 decl_stmt|;
 DECL|field|sourceNodes
@@ -139,11 +139,11 @@ name|StorageType
 index|[]
 name|targetStorageTypes
 decl_stmt|;
-DECL|method|BlockMovingInfo (ExtendedBlock block, DatanodeInfo[] sourceDnInfos, DatanodeInfo[] targetDnInfos, StorageType[] srcStorageTypes, StorageType[] targetStorageTypes)
+DECL|method|BlockMovingInfo (Block block, DatanodeInfo[] sourceDnInfos, DatanodeInfo[] targetDnInfos, StorageType[] srcStorageTypes, StorageType[] targetStorageTypes)
 specifier|public
 name|BlockMovingInfo
 parameter_list|(
-name|ExtendedBlock
+name|Block
 name|block
 parameter_list|,
 name|DatanodeInfo
@@ -194,12 +194,12 @@ operator|=
 name|targetStorageTypes
 expr_stmt|;
 block|}
-DECL|method|addBlock (ExtendedBlock block)
+DECL|method|addBlock (Block block)
 specifier|public
 name|void
 name|addBlock
 parameter_list|(
-name|ExtendedBlock
+name|Block
 name|block
 parameter_list|)
 block|{
@@ -212,7 +212,7 @@ expr_stmt|;
 block|}
 DECL|method|getBlock ()
 specifier|public
-name|ExtendedBlock
+name|Block
 name|getBlock
 parameter_list|()
 block|{
