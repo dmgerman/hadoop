@@ -22,16 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -41,22 +31,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsConstants
 import|;
 end_import
 
@@ -125,63 +99,6 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-comment|/**    * To check if the request id is the same as saved id. Don't check fileId    * with GRANDFATHER_INODE_ID for backward compatibility.    */
-DECL|method|checkId (long requestId, INode inode)
-specifier|public
-specifier|static
-name|void
-name|checkId
-parameter_list|(
-name|long
-name|requestId
-parameter_list|,
-name|INode
-name|inode
-parameter_list|)
-throws|throws
-name|FileNotFoundException
-block|{
-if|if
-condition|(
-name|requestId
-operator|!=
-name|HdfsConstants
-operator|.
-name|GRANDFATHER_INODE_ID
-operator|&&
-name|requestId
-operator|!=
-name|inode
-operator|.
-name|getId
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"ID mismatch. Request id and saved id: "
-operator|+
-name|requestId
-operator|+
-literal|" , "
-operator|+
-name|inode
-operator|.
-name|getId
-argument_list|()
-operator|+
-literal|" for file "
-operator|+
-name|inode
-operator|.
-name|getFullPathName
-argument_list|()
-argument_list|)
-throw|;
-block|}
-block|}
 DECL|method|INodeId ()
 name|INodeId
 parameter_list|()
