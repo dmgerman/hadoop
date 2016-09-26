@@ -8646,6 +8646,18 @@ literal|null
 return|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getEncryptionKey ()
+specifier|public
+name|DataEncryptionKey
+name|getEncryptionKey
+parameter_list|()
+block|{
+return|return
+name|encryptionKey
+return|;
+block|}
 comment|/**    * Get the checksum of the whole file or a range of the file. Note that the    * range always starts from the beginning of the file. The file can be    * in replicated form, or striped mode. It can be used to checksum and compare    * two replicated files, or two striped files, but not applicable for two    * files of different block layout forms.    * @param src The file path    * @param length the length of the range, i.e., the range is [0, length]    * @return The checksum    * @see DistributedFileSystem#getFileChecksum(Path)    */
 DECL|method|getFileChecksum (String src, long length)
 specifier|public

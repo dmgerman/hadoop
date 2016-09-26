@@ -2133,6 +2133,34 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|hasKey (int keyId)
+specifier|public
+specifier|synchronized
+name|boolean
+name|hasKey
+parameter_list|(
+name|int
+name|keyId
+parameter_list|)
+block|{
+name|BlockKey
+name|key
+init|=
+name|allKeys
+operator|.
+name|get
+argument_list|(
+name|keyId
+argument_list|)
+decl_stmt|;
+return|return
+name|key
+operator|!=
+literal|null
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getSerialNoForTesting ()
 specifier|public
 specifier|synchronized
