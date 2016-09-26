@@ -220,24 +220,6 @@ name|STOP_CONTAINER
 init|=
 literal|"Stop Container Request"
 decl_stmt|;
-DECL|field|START_CONTAINER_REINIT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|START_CONTAINER_REINIT
-init|=
-literal|"Container ReInitialization - Started"
-decl_stmt|;
-DECL|field|FINISH_CONTAINER_REINIT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|FINISH_CONTAINER_REINIT
-init|=
-literal|"Container ReInitialization - Finished"
-decl_stmt|;
 DECL|field|FINISH_SUCCESS_CONTAINER
 specifier|public
 specifier|static

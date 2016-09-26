@@ -1328,50 +1328,6 @@ name|testContainerUpgradeProcessFailure
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|testContainerRestart ()
-specifier|public
-name|void
-name|testContainerRestart
-parameter_list|()
-throws|throws
-name|IOException
-throws|,
-name|InterruptedException
-throws|,
-name|YarnException
-block|{
-comment|// Don't run the test if the binary is not available.
-if|if
-condition|(
-operator|!
-name|shouldRunTest
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"LCE binary path is not passed. Not running the test"
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Running testContainerRestart"
-argument_list|)
-expr_stmt|;
-name|super
-operator|.
-name|testContainerRestart
-argument_list|()
-expr_stmt|;
-block|}
 DECL|method|shouldRunTest ()
 specifier|private
 name|boolean

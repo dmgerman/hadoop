@@ -197,7 +197,6 @@ specifier|public
 class|class
 name|NodeManagerMetrics
 block|{
-comment|// CHECKSTYLE:OFF:VisibilityModifier
 DECL|field|containersLaunched
 annotation|@
 name|Metric
@@ -221,21 +220,6 @@ annotation|@
 name|Metric
 name|MutableCounterInt
 name|containersKilled
-decl_stmt|;
-DECL|field|containersRolledBackOnFailure
-annotation|@
-name|Metric
-name|MutableCounterInt
-name|containersRolledBackOnFailure
-decl_stmt|;
-annotation|@
-name|Metric
-argument_list|(
-literal|"# of reInitializing containers"
-argument_list|)
-DECL|field|containersReIniting
-name|MutableGaugeInt
-name|containersReIniting
 decl_stmt|;
 annotation|@
 name|Metric
@@ -336,7 +320,6 @@ DECL|field|goodLogDirsDiskUtilizationPerc
 name|MutableGaugeInt
 name|goodLogDirsDiskUtilizationPerc
 decl_stmt|;
-comment|// CHECKSTYLE:ON:VisibilityModifier
 DECL|field|jvmMetrics
 specifier|private
 name|JvmMetrics
@@ -457,18 +440,6 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|rollbackContainerOnFailure ()
-specifier|public
-name|void
-name|rollbackContainerOnFailure
-parameter_list|()
-block|{
-name|containersRolledBackOnFailure
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-block|}
 DECL|method|failedContainer ()
 specifier|public
 name|void
@@ -536,30 +507,6 @@ name|endRunningContainer
 parameter_list|()
 block|{
 name|containersRunning
-operator|.
-name|decr
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|reInitingContainer ()
-specifier|public
-name|void
-name|reInitingContainer
-parameter_list|()
-block|{
-name|containersReIniting
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|endReInitingContainer ()
-specifier|public
-name|void
-name|endReInitingContainer
-parameter_list|()
-block|{
-name|containersReIniting
 operator|.
 name|decr
 argument_list|()
@@ -1090,36 +1037,6 @@ parameter_list|()
 block|{
 return|return
 name|goodLocalDirsDiskUtilizationPerc
-operator|.
-name|value
-argument_list|()
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getReInitializingContainer ()
-specifier|public
-name|int
-name|getReInitializingContainer
-parameter_list|()
-block|{
-return|return
-name|containersReIniting
-operator|.
-name|value
-argument_list|()
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getContainersRolledbackOnFailure ()
-specifier|public
-name|int
-name|getContainersRolledbackOnFailure
-parameter_list|()
-block|{
-return|return
-name|containersRolledBackOnFailure
 operator|.
 name|value
 argument_list|()
