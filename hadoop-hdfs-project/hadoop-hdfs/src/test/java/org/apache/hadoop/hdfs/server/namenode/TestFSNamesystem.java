@@ -53,6 +53,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|FakeTimer
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -125,16 +139,6 @@ operator|.
 name|net
 operator|.
 name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
 import|;
 end_import
 
@@ -530,7 +534,7 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|TimeoutException
+name|TimeUnit
 import|;
 end_import
 
@@ -540,9 +544,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|regex
+name|concurrent
 operator|.
-name|Matcher
+name|TimeoutException
 import|;
 end_import
 
@@ -2021,6 +2025,12 @@ name|writeLockReportingThreshold
 init|=
 literal|100L
 decl_stmt|;
+specifier|final
+name|long
+name|writeLockSuppressWarningInterval
+init|=
+literal|10000L
+decl_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -2037,6 +2047,21 @@ operator|.
 name|DFS_NAMENODE_WRITE_LOCK_REPORTING_THRESHOLD_MS_KEY
 argument_list|,
 name|writeLockReportingThreshold
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setTimeDuration
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_LOCK_SUPPRESS_WARNING_INTERVAL_KEY
+argument_list|,
+name|writeLockSuppressWarningInterval
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 name|FSImage
@@ -2089,6 +2114,27 @@ argument_list|,
 name|fsImage
 argument_list|)
 decl_stmt|;
+name|FakeTimer
+name|timer
+init|=
+operator|new
+name|FakeTimer
+argument_list|()
+decl_stmt|;
+name|fsn
+operator|.
+name|setTimer
+argument_list|(
+name|timer
+argument_list|)
+expr_stmt|;
+name|timer
+operator|.
+name|advance
+argument_list|(
+name|writeLockSuppressWarningInterval
+argument_list|)
+expr_stmt|;
 name|LogCapturer
 name|logs
 init|=
@@ -2120,15 +2166,6 @@ operator|.
 name|writeLock
 argument_list|()
 expr_stmt|;
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|writeLockReportingThreshold
-operator|/
-literal|2
-argument_list|)
-expr_stmt|;
 name|fsn
 operator|.
 name|writeUnlock
@@ -2150,15 +2187,15 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Report if the write lock is held for a long time
+comment|// Report the first write lock warning if it is held for a long time
 name|fsn
 operator|.
 name|writeLock
 argument_list|()
 expr_stmt|;
-name|Thread
+name|timer
 operator|.
-name|sleep
+name|advance
 argument_list|(
 name|writeLockReportingThreshold
 operator|+
@@ -2191,15 +2228,17 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Report if the write lock is held (interruptibly) for a long time
+comment|// Track but do not Report if the write lock is held (interruptibly) for
+comment|// a long time but time since last report does not exceed the suppress
+comment|// warning interval
 name|fsn
 operator|.
 name|writeLockInterruptibly
 argument_list|()
 expr_stmt|;
-name|Thread
+name|timer
 operator|.
-name|sleep
+name|advance
 argument_list|(
 name|writeLockReportingThreshold
 operator|+
@@ -2216,7 +2255,7 @@ operator|.
 name|writeUnlock
 argument_list|()
 expr_stmt|;
-name|assertTrue
+name|assertFalse
 argument_list|(
 name|logs
 operator|.
@@ -2232,15 +2271,17 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Report if it's held for a long time when re-entering write lock
+comment|// Track but do not Report if it's held for a long time when re-entering
+comment|// write lock but time since last report does not exceed the suppress
+comment|// warning interval
 name|fsn
 operator|.
 name|writeLock
 argument_list|()
 expr_stmt|;
-name|Thread
+name|timer
 operator|.
-name|sleep
+name|advance
 argument_list|(
 name|writeLockReportingThreshold
 operator|/
@@ -2254,9 +2295,9 @@ operator|.
 name|writeLockInterruptibly
 argument_list|()
 expr_stmt|;
-name|Thread
+name|timer
 operator|.
-name|sleep
+name|advance
 argument_list|(
 name|writeLockReportingThreshold
 operator|/
@@ -2270,9 +2311,9 @@ operator|.
 name|writeLock
 argument_list|()
 expr_stmt|;
-name|Thread
+name|timer
 operator|.
-name|sleep
+name|advance
 argument_list|(
 name|writeLockReportingThreshold
 operator|/
@@ -2329,6 +2370,55 @@ operator|.
 name|getMethodName
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|logs
+operator|.
+name|clearOutput
+argument_list|()
+expr_stmt|;
+name|fsn
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|logs
+operator|.
+name|getOutput
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|GenericTestUtils
+operator|.
+name|getMethodName
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Report if it's held for a long time and time since last report exceeds
+comment|// the supress warning interval
+name|timer
+operator|.
+name|advance
+argument_list|(
+name|writeLockSuppressWarningInterval
+argument_list|)
+expr_stmt|;
+name|fsn
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+name|timer
+operator|.
+name|advance
+argument_list|(
+name|writeLockReportingThreshold
+operator|+
+literal|100
 argument_list|)
 expr_stmt|;
 name|logs
@@ -2354,6 +2444,21 @@ name|GenericTestUtils
 operator|.
 name|getMethodName
 argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|logs
+operator|.
+name|getOutput
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Number of suppressed write-lock "
+operator|+
+literal|"reports: 2"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2381,6 +2486,12 @@ init|=
 literal|100L
 decl_stmt|;
 specifier|final
+name|long
+name|readLockSuppressWarningInterval
+init|=
+literal|10000L
+decl_stmt|;
+specifier|final
 name|String
 name|readLockLogStmt
 init|=
@@ -2402,6 +2513,21 @@ operator|.
 name|DFS_NAMENODE_READ_LOCK_REPORTING_THRESHOLD_MS_KEY
 argument_list|,
 name|readLockReportingThreshold
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setTimeDuration
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_LOCK_SUPPRESS_WARNING_INTERVAL_KEY
+argument_list|,
+name|readLockSuppressWarningInterval
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 name|FSImage
@@ -2454,6 +2580,27 @@ argument_list|,
 name|fsImage
 argument_list|)
 decl_stmt|;
+name|FakeTimer
+name|timer
+init|=
+operator|new
+name|FakeTimer
+argument_list|()
+decl_stmt|;
+name|fsn
+operator|.
+name|setTimer
+argument_list|(
+name|timer
+argument_list|)
+expr_stmt|;
+name|timer
+operator|.
+name|advance
+argument_list|(
+name|readLockSuppressWarningInterval
+argument_list|)
+expr_stmt|;
 name|LogCapturer
 name|logs
 init|=
@@ -2484,15 +2631,6 @@ name|fsn
 operator|.
 name|readLock
 argument_list|()
-expr_stmt|;
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|readLockReportingThreshold
-operator|/
-literal|2
-argument_list|)
 expr_stmt|;
 name|fsn
 operator|.
@@ -2525,15 +2663,15 @@ name|readLockLogStmt
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Report if the read lock is held for a long time
+comment|// Report the first read lock warning if it is held for a long time
 name|fsn
 operator|.
 name|readLock
 argument_list|()
 expr_stmt|;
-name|Thread
+name|timer
 operator|.
-name|sleep
+name|advance
 argument_list|(
 name|readLockReportingThreshold
 operator|+
@@ -2576,15 +2714,69 @@ name|readLockLogStmt
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Report if it's held for a long time when re-entering read lock
+comment|// Track but do not Report if the write lock is held for a long time but
+comment|// time since last report does not exceed the suppress warning interval
 name|fsn
 operator|.
 name|readLock
 argument_list|()
 expr_stmt|;
-name|Thread
+name|timer
 operator|.
-name|sleep
+name|advance
+argument_list|(
+name|readLockReportingThreshold
+operator|+
+literal|10
+argument_list|)
+expr_stmt|;
+name|logs
+operator|.
+name|clearOutput
+argument_list|()
+expr_stmt|;
+name|fsn
+operator|.
+name|readUnlock
+argument_list|()
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|logs
+operator|.
+name|getOutput
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|GenericTestUtils
+operator|.
+name|getMethodName
+argument_list|()
+argument_list|)
+operator|&&
+name|logs
+operator|.
+name|getOutput
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|readLockLogStmt
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Track but do not Report if it's held for a long time when re-entering
+comment|// read lock but time since last report does not exceed the suppress
+comment|// warning interval
+name|fsn
+operator|.
+name|readLock
+argument_list|()
+expr_stmt|;
+name|timer
+operator|.
+name|advance
 argument_list|(
 name|readLockReportingThreshold
 operator|/
@@ -2598,9 +2790,9 @@ operator|.
 name|readLock
 argument_list|()
 expr_stmt|;
-name|Thread
+name|timer
 operator|.
-name|sleep
+name|advance
 argument_list|(
 name|readLockReportingThreshold
 operator|/
@@ -2655,7 +2847,7 @@ operator|.
 name|readUnlock
 argument_list|()
 expr_stmt|;
-name|assertTrue
+name|assertFalse
 argument_list|(
 name|logs
 operator|.
@@ -2681,10 +2873,18 @@ name|readLockLogStmt
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Report if it's held for a long time while another thread also has the
+comment|// Report if it's held for a long time (and time since last report
+comment|// exceeds the suppress warning interval) while another thread also has the
 comment|// read lock. Let one thread hold the lock long enough to activate an
 comment|// alert, then have another thread grab the read lock to ensure that this
 comment|// doesn't reset the timing.
+name|timer
+operator|.
+name|advance
+argument_list|(
+name|readLockSuppressWarningInterval
+argument_list|)
+expr_stmt|;
 name|logs
 operator|.
 name|clearOutput
@@ -2729,9 +2929,9 @@ operator|.
 name|readLock
 argument_list|()
 expr_stmt|;
-name|Thread
+name|timer
 operator|.
-name|sleep
+name|advance
 argument_list|(
 name|readLockReportingThreshold
 operator|+
@@ -2934,6 +3134,21 @@ argument_list|)
 operator|.
 name|find
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|logs
+operator|.
+name|getOutput
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Number of suppressed read-lock "
+operator|+
+literal|"reports: 2"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
