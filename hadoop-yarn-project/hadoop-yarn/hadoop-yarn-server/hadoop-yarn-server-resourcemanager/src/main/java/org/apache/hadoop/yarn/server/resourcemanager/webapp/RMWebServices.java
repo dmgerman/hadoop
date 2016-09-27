@@ -6994,7 +6994,7 @@ name|userName
 argument_list|,
 name|AuditConstants
 operator|.
-name|KILL_APP_REQUEST
+name|GET_APP_STATE
 argument_list|,
 literal|"UNKNOWN"
 argument_list|,
@@ -8955,13 +8955,13 @@ name|userName
 argument_list|,
 name|AuditConstants
 operator|.
-name|KILL_APP_REQUEST
+name|GET_APP_PRIORITY
 argument_list|,
 literal|"UNKNOWN"
 argument_list|,
 literal|"RMWebService"
 argument_list|,
-literal|"Trying to get state of an absent application "
+literal|"Trying to get priority of an absent application "
 operator|+
 name|appId
 argument_list|)
@@ -9172,13 +9172,13 @@ name|userName
 argument_list|,
 name|AuditConstants
 operator|.
-name|KILL_APP_REQUEST
+name|UPDATE_APP_PRIORITY
 argument_list|,
 literal|"UNKNOWN"
 argument_list|,
 literal|"RMWebService"
 argument_list|,
-literal|"Trying to move an absent application "
+literal|"Trying to update priority an absent application "
 operator|+
 name|appId
 argument_list|)
@@ -9624,13 +9624,13 @@ name|userName
 argument_list|,
 name|AuditConstants
 operator|.
-name|KILL_APP_REQUEST
+name|GET_APP_QUEUE
 argument_list|,
 literal|"UNKNOWN"
 argument_list|,
 literal|"RMWebService"
 argument_list|,
-literal|"Trying to get state of an absent application "
+literal|"Trying to get queue of an absent application "
 operator|+
 name|appId
 argument_list|)
@@ -9830,7 +9830,7 @@ name|userName
 argument_list|,
 name|AuditConstants
 operator|.
-name|KILL_APP_REQUEST
+name|MOVE_APP_REQUEST
 argument_list|,
 literal|"UNKNOWN"
 argument_list|,
