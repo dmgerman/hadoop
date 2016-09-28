@@ -154,6 +154,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|amazonaws
@@ -974,6 +988,18 @@ DECL|field|inputPolicy
 specifier|private
 name|S3AInputPolicy
 name|inputPolicy
+decl_stmt|;
+DECL|field|closed
+specifier|private
+specifier|final
+name|AtomicBoolean
+name|closed
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
 decl_stmt|;
 comment|// The maximum number of entries that can be deleted in any call to s3
 DECL|field|MAX_ENTRIES_TO_DELETE
@@ -5726,13 +5752,25 @@ annotation|@
 name|Override
 DECL|method|close ()
 specifier|public
-specifier|synchronized
 name|void
 name|close
 parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|closed
+operator|.
+name|getAndSet
+argument_list|(
+literal|true
+argument_list|)
+condition|)
+block|{
+comment|// already closed
+return|return;
+block|}
 try|try
 block|{
 name|super
