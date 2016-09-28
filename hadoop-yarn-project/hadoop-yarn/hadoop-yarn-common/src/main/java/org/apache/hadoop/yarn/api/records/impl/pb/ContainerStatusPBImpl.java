@@ -683,6 +683,37 @@ name|sb
 operator|.
 name|append
 argument_list|(
+literal|"IP: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getIPs
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"Host: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getHost
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
 literal|"]"
 argument_list|)
 expr_stmt|;

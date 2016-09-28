@@ -4662,6 +4662,26 @@ name|DEFAULT_NM_RESOURCE_MON_INTERVAL_MS
 init|=
 literal|3000
 decl_stmt|;
+DECL|field|NM_CONTAINER_MONITOR_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_MONITOR_ENABLED
+init|=
+name|NM_PREFIX
+operator|+
+literal|"container-monitor.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_NM_CONTAINER_MONITOR_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_CONTAINER_MONITOR_ENABLED
+init|=
+literal|true
+decl_stmt|;
 comment|/** How often to monitor containers.*/
 DECL|field|NM_CONTAINER_MON_INTERVAL_MS
 specifier|public

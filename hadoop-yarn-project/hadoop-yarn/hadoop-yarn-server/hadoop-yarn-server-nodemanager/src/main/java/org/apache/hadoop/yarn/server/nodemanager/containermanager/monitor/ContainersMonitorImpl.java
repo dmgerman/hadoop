@@ -1073,7 +1073,7 @@ argument_list|)
 expr_stmt|;
 name|containersMonitorEnabled
 operator|=
-name|isEnabled
+name|isContainerMonitorEnabled
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -1207,10 +1207,31 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|isEnabled ()
+DECL|method|isContainerMonitorEnabled ()
 specifier|private
 name|boolean
-name|isEnabled
+name|isContainerMonitorEnabled
+parameter_list|()
+block|{
+return|return
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_CONTAINER_MONITOR_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_CONTAINER_MONITOR_ENABLED
+argument_list|)
+return|;
+block|}
+DECL|method|isResourceCalculatorAvailable ()
+specifier|private
+name|boolean
+name|isResourceCalculatorAvailable
 parameter_list|()
 block|{
 if|if
@@ -1272,31 +1293,6 @@ name|getName
 argument_list|()
 operator|+
 literal|" is disabled."
-argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
-if|if
-condition|(
-operator|!
-operator|(
-name|isPmemCheckEnabled
-argument_list|()
-operator|||
-name|isVmemCheckEnabled
-argument_list|()
-operator|)
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Neither virtual-memory nor physical-memory monitoring is "
-operator|+
-literal|"needed. Not running the monitor-thread"
 argument_list|)
 expr_stmt|;
 return|return
@@ -2157,6 +2153,10 @@ condition|(
 name|pId
 operator|==
 literal|null
+operator|||
+operator|!
+name|isResourceCalculatorAvailable
+argument_list|()
 condition|)
 block|{
 continue|continue;
