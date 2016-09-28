@@ -2506,7 +2506,7 @@ name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|String
 name|zkHostPort
