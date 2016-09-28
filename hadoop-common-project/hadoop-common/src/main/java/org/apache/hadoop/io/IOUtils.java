@@ -222,6 +222,38 @@ name|ChunkedArrayList
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * An utility class for I/O related functionality.   */
 end_comment
@@ -467,9 +499,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|,
 literal|true
@@ -508,9 +540,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|,
 name|close

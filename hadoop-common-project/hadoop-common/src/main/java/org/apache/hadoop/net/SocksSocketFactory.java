@@ -142,6 +142,22 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SOCKS_SERVER_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * Specialized SocketFactory to create sockets with a SOCKS proxy  */
 end_comment
@@ -563,7 +579,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"hadoop.socks.server"
+name|HADOOP_SOCKS_SERVER_KEY
 argument_list|)
 decl_stmt|;
 if|if

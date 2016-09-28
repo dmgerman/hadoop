@@ -212,6 +212,38 @@ name|Bzip2Factory
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class provides output and input streams for bzip2 compression  * and decompression.  It uses the native bzip2 library on the system  * if possible, else it uses a pure-Java implementation of the bzip2  * algorithm.  The configuration parameter  * io.compression.codec.bzip2.library can be used to control this  * behavior.  *  * In the pure-Java mode, the Compressor and Decompressor interfaces  * are not implemented.  Therefore, in that mode, those methods of  * CompressionCodec which have a Compressor or Decompressor type  * argument, throw UnsupportedOperationException.  *  * Currently, support for splittability is available only in the  * pure-Java mode; therefore, if a SplitCompressionInputStream is  * requested, the pure-Java implementation is used, regardless of the  * setting of the configuration parameter mentioned above.  */
 end_comment
@@ -384,11 +416,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4
-operator|*
-literal|1024
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|)
 else|:
@@ -505,11 +535,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4
-operator|*
-literal|1024
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|)
 else|:

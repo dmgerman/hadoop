@@ -616,7 +616,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-literal|"fs.ftp.host.port"
+name|FS_FTP_HOST_PORT
 argument_list|,
 name|port
 argument_list|)
@@ -644,7 +644,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"fs.ftp.user."
+name|FS_FTP_USER_PREFIX
 operator|+
 name|host
 argument_list|,
@@ -657,7 +657,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"fs.ftp.password."
+name|FS_FTP_PASSWORD_PREFIX
 operator|+
 name|host
 argument_list|,

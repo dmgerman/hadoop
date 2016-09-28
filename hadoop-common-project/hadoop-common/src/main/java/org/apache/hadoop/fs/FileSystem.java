@@ -8919,9 +8919,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-literal|"fs.automatic.close"
+name|FS_AUTOMATIC_CLOSE_KEY
 argument_list|,
-literal|true
+name|FS_AUTOMATIC_CLOSE_DEFAULT
 argument_list|)
 condition|)
 block|{

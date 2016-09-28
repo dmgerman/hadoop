@@ -322,6 +322,38 @@ name|UUID
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * Utilities used across test cases.  */
 end_comment
@@ -349,15 +381,6 @@ name|ContractTestUtils
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-DECL|field|IO_FILE_BUFFER_SIZE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|IO_FILE_BUFFER_SIZE
-init|=
-literal|"io.file.buffer.size"
 decl_stmt|;
 comment|// For scale testing, we can repeatedly write small chunk data to generate
 comment|// a large file.
@@ -645,9 +668,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-name|IO_FILE_BUFFER_SIZE
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|,
 operator|(
