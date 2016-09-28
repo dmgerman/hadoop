@@ -400,22 +400,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|tools
-operator|.
-name|DFSAdmin
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|ErasureCodingPolicy
@@ -423,7 +407,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The public API for performing administrative functions on HDFS. Those writing  * applications against HDFS should prefer this interface to directly accessing  * functionality in DistributedFileSystem or DFSClient.  *   * Note that this is distinct from the similarly-named {@link DFSAdmin}, which  * is a class that provides the functionality for the CLI `hdfs dfsadmin ...'  * commands.  */
+comment|/**  * The public API for performing administrative functions on HDFS. Those writing  * applications against HDFS should prefer this interface to directly accessing  * functionality in DistributedFileSystem or DFSClient.  *  * Note that this is distinct from the similarly-named DFSAdmin, which  * is a class that provides the functionality for the CLI `hdfs dfsadmin ...'  * commands.  */
 end_comment
 
 begin_class
@@ -470,7 +454,7 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-comment|/**    * Create a new HdfsAdmin client.    *     * @param uri the unique URI of the HDFS file system to administer    * @param conf configuration    * @throws IOException in the event the file system could not be created    */
+comment|/**    * Create a new HdfsAdmin client.    *    * @param uri the unique URI of the HDFS file system to administer    * @param conf configuration    * @throws IOException in the event the file system could not be created    */
 DECL|method|HdfsAdmin (URI uri, Configuration conf)
 specifier|public
 name|HdfsAdmin
@@ -529,7 +513,7 @@ name|fs
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set the namespace quota (count of files, directories, and sym links) for a    * directory.    *     * @param src the path to set the quota for    * @param quota the value to set for the quota    * @throws IOException in the event of error    */
+comment|/**    * Set the namespace quota (count of files, directories, and sym links) for a    * directory.    *    * @param src the path to set the quota for    * @param quota the value to set for the quota    * @throws IOException in the event of error    */
 DECL|method|setQuota (Path src, long quota)
 specifier|public
 name|void
@@ -558,7 +542,7 @@ name|QUOTA_DONT_SET
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Clear the namespace quota (count of files, directories and sym links) for a    * directory.    *     * @param src the path to clear the quota of    * @throws IOException in the event of error    */
+comment|/**    * Clear the namespace quota (count of files, directories and sym links) for a    * directory.    *    * @param src the path to clear the quota of    * @throws IOException in the event of error    */
 DECL|method|clearQuota (Path src)
 specifier|public
 name|void
@@ -586,7 +570,7 @@ name|QUOTA_DONT_SET
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set the storage space quota (size of files) for a directory. Note that    * directories and sym links do not occupy storage space.    *     * @param src the path to set the space quota of    * @param spaceQuota the value to set for the space quota    * @throws IOException in the event of error    */
+comment|/**    * Set the storage space quota (size of files) for a directory. Note that    * directories and sym links do not occupy storage space.    *    * @param src the path to set the space quota of    * @param spaceQuota the value to set for the space quota    * @throws IOException in the event of error    */
 DECL|method|setSpaceQuota (Path src, long spaceQuota)
 specifier|public
 name|void
@@ -615,7 +599,7 @@ name|spaceQuota
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Clear the storage space quota (size of files) for a directory. Note that    * directories and sym links do not occupy storage space.    *     * @param src the path to clear the space quota of    * @throws IOException in the event of error    */
+comment|/**    * Clear the storage space quota (size of files) for a directory. Note that    * directories and sym links do not occupy storage space.    *    * @param src the path to clear the space quota of    * @throws IOException in the event of error    */
 DECL|method|clearSpaceQuota (Path src)
 specifier|public
 name|void
@@ -742,7 +726,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add a new CacheDirectiveInfo.    *     * @param info Information about a directive to add.    * @param flags {@link CacheFlag}s to use for this operation.    * @return the ID of the directive that was created.    * @throws IOException if the directive could not be added    */
+comment|/**    * Add a new CacheDirectiveInfo.    *    * @param info Information about a directive to add.    * @param flags {@link CacheFlag}s to use for this operation.    * @return the ID of the directive that was created.    * @throws IOException if the directive could not be added    */
 DECL|method|addCacheDirective (CacheDirectiveInfo info, EnumSet<CacheFlag> flags)
 specifier|public
 name|long
@@ -771,7 +755,7 @@ name|flags
 argument_list|)
 return|;
 block|}
-comment|/**    * Modify a CacheDirective.    *     * @param info Information about the directive to modify. You must set the ID    *          to indicate which CacheDirective you want to modify.    * @param flags {@link CacheFlag}s to use for this operation.    * @throws IOException if the directive could not be modified    */
+comment|/**    * Modify a CacheDirective.    *    * @param info Information about the directive to modify. You must set the ID    *          to indicate which CacheDirective you want to modify.    * @param flags {@link CacheFlag}s to use for this operation.    * @throws IOException if the directive could not be modified    */
 DECL|method|modifyCacheDirective (CacheDirectiveInfo info, EnumSet<CacheFlag> flags)
 specifier|public
 name|void
@@ -799,7 +783,7 @@ name|flags
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove a CacheDirective.    *     * @param id identifier of the CacheDirectiveInfo to remove    * @throws IOException if the directive could not be removed    */
+comment|/**    * Remove a CacheDirective.    *    * @param id identifier of the CacheDirectiveInfo to remove    * @throws IOException if the directive could not be removed    */
 DECL|method|removeCacheDirective (long id)
 specifier|public
 name|void
@@ -819,7 +803,7 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * List cache directives. Incrementally fetches results from the server.    *     * @param filter Filter parameters to use when listing the directives, null to    *               list all directives visible to us.    * @return A RemoteIterator which returns CacheDirectiveInfo objects.    */
+comment|/**    * List cache directives. Incrementally fetches results from the server.    *    * @param filter Filter parameters to use when listing the directives, null to    *               list all directives visible to us.    * @return A RemoteIterator which returns CacheDirectiveInfo objects.    */
 DECL|method|listCacheDirectives ( CacheDirectiveInfo filter)
 specifier|public
 name|RemoteIterator
@@ -843,7 +827,7 @@ name|filter
 argument_list|)
 return|;
 block|}
-comment|/**    * Add a cache pool.    *    * @param info    *          The request to add a cache pool.    * @throws IOException     *          If the request could not be completed.    */
+comment|/**    * Add a cache pool.    *    * @param info    *          The request to add a cache pool.    * @throws IOException    *          If the request could not be completed.    */
 DECL|method|addCachePool (CachePoolInfo info)
 specifier|public
 name|void
@@ -863,7 +847,7 @@ name|info
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Modify an existing cache pool.    *    * @param info    *          The request to modify a cache pool.    * @throws IOException     *          If the request could not be completed.    */
+comment|/**    * Modify an existing cache pool.    *    * @param info    *          The request to modify a cache pool.    * @throws IOException    *          If the request could not be completed.    */
 DECL|method|modifyCachePool (CachePoolInfo info)
 specifier|public
 name|void
@@ -883,7 +867,7 @@ name|info
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove a cache pool.    *    * @param poolName    *          Name of the cache pool to remove.    * @throws IOException     *          if the cache pool did not exist, or could not be removed.    */
+comment|/**    * Remove a cache pool.    *    * @param poolName    *          Name of the cache pool to remove.    * @throws IOException    *          if the cache pool did not exist, or could not be removed.    */
 DECL|method|removeCachePool (String poolName)
 specifier|public
 name|void
