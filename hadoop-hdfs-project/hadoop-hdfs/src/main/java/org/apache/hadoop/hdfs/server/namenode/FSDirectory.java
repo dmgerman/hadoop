@@ -3198,57 +3198,6 @@ operator|==
 literal|null
 return|;
 block|}
-comment|/**    * Check whether the path specifies a directory    */
-DECL|method|isDir (String src)
-name|boolean
-name|isDir
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-block|{
-name|src
-operator|=
-name|normalizePath
-argument_list|(
-name|src
-argument_list|)
-expr_stmt|;
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|INode
-name|node
-init|=
-name|getINode
-argument_list|(
-name|src
-argument_list|,
-literal|false
-argument_list|)
-decl_stmt|;
-return|return
-name|node
-operator|!=
-literal|null
-operator|&&
-name|node
-operator|.
-name|isDirectory
-argument_list|()
-return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Tell the block manager to update the replication factors when delete    * happens. Deleting a file or a snapshot might decrease the replication    * factor of the blocks as the blocks are always replicated to the highest    * replication factor among all snapshots.    */
 DECL|method|updateReplicationFactor (Collection<UpdatedReplicationInfo> blocks)
 name|void
