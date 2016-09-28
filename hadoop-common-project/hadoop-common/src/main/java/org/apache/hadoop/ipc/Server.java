@@ -1226,6 +1226,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|ExitUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|ProtoUtil
 import|;
 end_import
@@ -4967,13 +4981,7 @@ operator|.
 name|remove
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|key
-operator|.
-name|isValid
-argument_list|()
-condition|)
+try|try
 block|{
 if|if
 condition|(
@@ -4989,6 +4997,36 @@ name|key
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+catch|catch
+parameter_list|(
+name|CancelledKeyException
+name|cke
+parameter_list|)
+block|{
+comment|// something else closed the connection, ex. responder or
+comment|// the listener doing an idle scan.  ignore it and let them
+comment|// clean up.
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|": connection aborted from "
+operator|+
+name|key
+operator|.
+name|attachment
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 name|key
 operator|=
@@ -5040,6 +5078,31 @@ argument_list|(
 literal|"Error in Reader"
 argument_list|,
 name|ex
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|re
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Bug in read selector!"
+argument_list|,
+name|re
+argument_list|)
+expr_stmt|;
+name|ExitUtil
+operator|.
+name|terminate
+argument_list|(
+literal|1
+argument_list|,
+literal|"Bug in read selector!"
 argument_list|)
 expr_stmt|;
 block|}
@@ -6078,11 +6141,6 @@ if|if
 condition|(
 name|key
 operator|.
-name|isValid
-argument_list|()
-operator|&&
-name|key
-operator|.
 name|isWritable
 argument_list|()
 condition|)
@@ -6090,6 +6148,54 @@ block|{
 name|doAsyncWrite
 argument_list|(
 name|key
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|CancelledKeyException
+name|cke
+parameter_list|)
+block|{
+comment|// something else closed the connection, ex. reader or the
+comment|// listener doing an idle scan.  ignore it and let them clean
+comment|// up
+name|RpcCall
+name|call
+init|=
+operator|(
+name|RpcCall
+operator|)
+name|key
+operator|.
+name|attachment
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|call
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|": connection aborted from "
+operator|+
+name|call
+operator|.
+name|connection
 argument_list|)
 expr_stmt|;
 block|}
