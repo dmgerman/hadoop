@@ -287,6 +287,15 @@ name|AM_NODE_LABEL_EXPRESSION
 init|=
 literal|"YARN_AM_NODE_LABEL_EXPRESSION"
 decl_stmt|;
+DECL|field|AM_CONTAINER_LAUNCH_COMMAND
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AM_CONTAINER_LAUNCH_COMMAND
+init|=
+literal|"YARN_AM_CONTAINER_LAUNCH_COMMAND"
+decl_stmt|;
 block|}
 end_class
 

@@ -1995,27 +1995,6 @@ name|DEFAULT_RM_SYSTEM_METRICS_PUBLISHER_DISPATCHER_POOL_SIZE
 init|=
 literal|10
 decl_stmt|;
-comment|/**    * The {@code AMLauncher.createAMContainerLaunchContext()} method will log the    * command being executed to the RM log if this property is true. Commands    * may contain sensitive information, such as application or service    * passwords, making logging the commands a security risk. In cases where    * the cluster may be running applications with such commands, this property    * should be set to false. Commands are only logged at the debug level.    */
-DECL|field|RM_AMLAUNCHER_LOG_COMMAND
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RM_AMLAUNCHER_LOG_COMMAND
-init|=
-name|RM_PREFIX
-operator|+
-literal|"amlauncher.log.command"
-decl_stmt|;
-DECL|field|DEFAULT_RM_AMLAUNCHER_LOG_COMMAND
-specifier|public
-specifier|static
-specifier|final
-name|boolean
-name|DEFAULT_RM_AMLAUNCHER_LOG_COMMAND
-init|=
-literal|false
-decl_stmt|;
 comment|//RM delegation token related keys
 DECL|field|RM_DELEGATION_KEY_UPDATE_INTERVAL_KEY
 specifier|public
