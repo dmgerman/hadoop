@@ -336,6 +336,28 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|rmapp
+operator|.
+name|monitor
+operator|.
+name|RMAppLifetimeMonitor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmcontainer
 operator|.
 name|ContainerAllocationExpirer
@@ -830,6 +852,19 @@ function_decl|;
 DECL|method|getNodeManagerQueueLimitCalculator ()
 name|QueueLimitCalculator
 name|getNodeManagerQueueLimitCalculator
+parameter_list|()
+function_decl|;
+DECL|method|setRMAppLifetimeMonitor (RMAppLifetimeMonitor rmAppLifetimeMonitor)
+name|void
+name|setRMAppLifetimeMonitor
+parameter_list|(
+name|RMAppLifetimeMonitor
+name|rmAppLifetimeMonitor
+parameter_list|)
+function_decl|;
+DECL|method|getRMAppLifetimeMonitor ()
+name|RMAppLifetimeMonitor
+name|getRMAppLifetimeMonitor
 parameter_list|()
 function_decl|;
 block|}

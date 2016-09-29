@@ -6508,6 +6508,15 @@ name|long
 operator|.
 name|class
 argument_list|)
+operator|||
+name|type
+operator|.
+name|equals
+argument_list|(
+name|Long
+operator|.
+name|class
+argument_list|)
 condition|)
 block|{
 return|return

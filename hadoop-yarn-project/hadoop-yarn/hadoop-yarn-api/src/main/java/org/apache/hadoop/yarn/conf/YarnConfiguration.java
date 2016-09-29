@@ -5394,6 +5394,27 @@ name|DEFAULT_NM_LINUX_CONTAINER_CGROUPS_STRICT_RESOURCE_USAGE
 init|=
 literal|false
 decl_stmt|;
+comment|// Configurations for applicaiton life time monitor feature
+DECL|field|RM_APPLICATION_LIFETIME_MONITOR_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_APPLICATION_LIFETIME_MONITOR_INTERVAL_MS
+init|=
+name|RM_PREFIX
+operator|+
+literal|"application-timeouts.lifetime-monitor.interval-ms"
+decl_stmt|;
+DECL|field|DEFAULT_RM_APPLICATION_LIFETIME_MONITOR_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_RM_APPLICATION_LIFETIME_MONITOR_INTERVAL_MS
+init|=
+literal|60000
+decl_stmt|;
 comment|/**    * Interval of time the linux container executor should try cleaning up    * cgroups entry when cleaning up a container. This is required due to what     * it seems a race condition because the SIGTERM/SIGKILL is asynch.    */
 DECL|field|NM_LINUX_CONTAINER_CGROUPS_DELETE_TIMEOUT
 specifier|public

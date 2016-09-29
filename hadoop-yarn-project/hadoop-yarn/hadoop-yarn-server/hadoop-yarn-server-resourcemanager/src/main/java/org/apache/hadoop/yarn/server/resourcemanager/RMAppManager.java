@@ -2501,6 +2501,17 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|// fail the submission if configured application timeout value is invalid
+name|RMServerUtils
+operator|.
+name|validateApplicationTimeouts
+argument_list|(
+name|submissionContext
+operator|.
+name|getApplicationTimeouts
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Create RMApp
 name|RMAppImpl
 name|application
