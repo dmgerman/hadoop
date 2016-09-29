@@ -1019,6 +1019,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|rename (Path src, Path dst)
+specifier|protected
 name|boolean
 name|rename
 parameter_list|(

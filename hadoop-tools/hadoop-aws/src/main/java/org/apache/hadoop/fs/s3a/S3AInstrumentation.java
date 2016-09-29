@@ -409,6 +409,12 @@ specifier|final
 name|MutableCounterLong
 name|numberOfFilesDeleted
 decl_stmt|;
+DECL|field|numberOfFakeDirectoryDeletes
+specifier|private
+specifier|final
+name|MutableCounterLong
+name|numberOfFakeDirectoryDeletes
+decl_stmt|;
 DECL|field|numberOfDirectoriesCreated
 specifier|private
 specifier|final
@@ -676,6 +682,13 @@ operator|=
 name|counter
 argument_list|(
 name|FILES_DELETED
+argument_list|)
+expr_stmt|;
+name|numberOfFakeDirectoryDeletes
+operator|=
+name|counter
+argument_list|(
+name|FAKE_DIRECTORIES_DELETED
 argument_list|)
 expr_stmt|;
 name|numberOfDirectoriesCreated
@@ -1156,6 +1169,24 @@ name|count
 parameter_list|)
 block|{
 name|numberOfFilesDeleted
+operator|.
+name|incr
+argument_list|(
+name|count
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Indicate that fake directory request was made.    * @param count number of directory entries included in the delete request.    */
+DECL|method|fakeDirsDeleted (int count)
+specifier|public
+name|void
+name|fakeDirsDeleted
+parameter_list|(
+name|int
+name|count
+parameter_list|)
+block|{
+name|numberOfFakeDirectoryDeletes
 operator|.
 name|incr
 argument_list|(
