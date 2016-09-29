@@ -1359,10 +1359,6 @@ specifier|private
 specifier|final
 name|AssignedRequests
 name|assignedRequests
-init|=
-operator|new
-name|AssignedRequests
-argument_list|()
 decl_stmt|;
 comment|//holds scheduled requests to be fulfilled by RM
 DECL|field|scheduledRequests
@@ -1596,6 +1592,25 @@ operator|.
 name|getClock
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|assignedRequests
+operator|=
+name|createAssignedRequests
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|createAssignedRequests ()
+specifier|protected
+name|AssignedRequests
+name|createAssignedRequests
+parameter_list|()
+block|{
+return|return
+operator|new
+name|AssignedRequests
+argument_list|()
+return|;
 block|}
 annotation|@
 name|Override
@@ -4562,13 +4577,38 @@ range|:
 name|finishedContainers
 control|)
 block|{
+name|processFinishedContainer
+argument_list|(
+name|cont
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|newContainers
+return|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
+name|VisibleForTesting
+DECL|method|processFinishedContainer (ContainerStatus container)
+name|void
+name|processFinishedContainer
+parameter_list|(
+name|ContainerStatus
+name|container
+parameter_list|)
+block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
 literal|"Received completed container "
 operator|+
-name|cont
+name|container
 operator|.
 name|getContainerId
 argument_list|()
@@ -4581,7 +4621,7 @@ name|assignedRequests
 operator|.
 name|get
 argument_list|(
-name|cont
+name|container
 operator|.
 name|getContainerId
 argument_list|()
@@ -4598,9 +4638,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Container complete event for unknown container id "
+literal|"Container complete event for unknown container "
 operator|+
-name|cont
+name|container
 operator|.
 name|getContainerId
 argument_list|()
@@ -4613,7 +4653,7 @@ name|pendingRelease
 operator|.
 name|remove
 argument_list|(
-name|cont
+name|container
 operator|.
 name|getContainerId
 argument_list|()
@@ -4626,28 +4666,15 @@ argument_list|(
 name|attemptID
 argument_list|)
 expr_stmt|;
-comment|// send the container completed event to Task attempt
-name|eventHandler
-operator|.
-name|handle
-argument_list|(
-name|createContainerFinishedEvent
-argument_list|(
-name|cont
-argument_list|,
-name|attemptID
-argument_list|)
-argument_list|)
-expr_stmt|;
 comment|// Send the diagnostics
 name|String
-name|diagnostics
+name|diagnostic
 init|=
 name|StringInterner
 operator|.
 name|weakIntern
 argument_list|(
-name|cont
+name|container
 operator|.
 name|getDiagnostics
 argument_list|()
@@ -4662,7 +4689,20 @@ name|TaskAttemptDiagnosticsUpdateEvent
 argument_list|(
 name|attemptID
 argument_list|,
-name|diagnostics
+name|diagnostic
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// send the container completed event to Task attempt
+name|eventHandler
+operator|.
+name|handle
+argument_list|(
+name|createContainerFinishedEvent
+argument_list|(
+name|container
+argument_list|,
+name|attemptID
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4674,10 +4714,6 @@ name|attemptID
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-return|return
-name|newContainers
-return|;
 block|}
 DECL|method|applyConcurrentTaskLimits ()
 specifier|private
