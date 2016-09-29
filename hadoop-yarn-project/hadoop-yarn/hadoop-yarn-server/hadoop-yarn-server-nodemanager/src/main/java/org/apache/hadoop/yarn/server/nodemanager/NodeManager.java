@@ -2273,7 +2273,7 @@ name|getBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|OPPORTUNISTIC_CONTAINER_ALLOCATION_ENABLED
+name|DIST_SCHEDULING_ENABLED
 argument_list|,
 name|YarnConfiguration
 operator|.

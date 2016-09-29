@@ -800,6 +800,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|RMContainerTokenSecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -980,6 +1000,21 @@ name|YarnConfiguration
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+specifier|public
+name|RMContainerTokenSecretManager
+name|getContainerTokenSecretManager
+parameter_list|()
+block|{
+return|return
+operator|new
+name|RMContainerTokenSecretManager
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
 block|}
 decl_stmt|;
 name|Container
@@ -1137,8 +1172,8 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-comment|// Verify that the DistrubutedSchedulingService can handle vanilla
-comment|// ApplicationMasterProtocol clients
+comment|// Verify that the OpportunisticContainerAllocatorAMSercvice can handle
+comment|// vanilla ApplicationMasterProtocol clients
 name|RPC
 operator|.
 name|setProtocolEngine

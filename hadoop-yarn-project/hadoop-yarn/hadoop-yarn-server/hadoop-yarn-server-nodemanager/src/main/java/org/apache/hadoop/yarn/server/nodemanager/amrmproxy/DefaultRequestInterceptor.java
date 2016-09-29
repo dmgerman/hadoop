@@ -965,7 +965,7 @@ throw|throw
 operator|new
 name|YarnException
 argument_list|(
-literal|"Distributed Scheduling is not enabled !!"
+literal|"Distributed Scheduling is not enabled."
 argument_list|)
 throw|;
 block|}
@@ -1065,7 +1065,7 @@ throw|throw
 operator|new
 name|YarnException
 argument_list|(
-literal|"Distributed Scheduling is not enabled !!"
+literal|"Distributed Scheduling is not enabled."
 argument_list|)
 throw|;
 block|}

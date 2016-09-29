@@ -6529,6 +6529,34 @@ name|config
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|isDistSchedulingEnabled
+argument_list|(
+name|config
+argument_list|)
+operator|&&
+operator|!
+name|YarnConfiguration
+operator|.
+name|isOpportunisticContainerAllocationEnabled
+argument_list|(
+name|config
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+literal|"Invalid parameters: opportunistic container allocation has to "
+operator|+
+literal|"be enabled when distributed scheduling is enabled."
+argument_list|)
+throw|;
+block|}
 name|OpportunisticContainerAllocatorAMService
 name|oppContainerAllocatingAMService
 init|=
@@ -6560,9 +6588,8 @@ argument_list|)
 decl_stmt|;
 comment|// Add an event dispatcher for the
 comment|// OpportunisticContainerAllocatorAMService to handle node
-comment|// updates/additions and removals.
-comment|// Since the SchedulerEvent is currently a super set of theses,
-comment|// we register interest for it..
+comment|// additions, updates and removals. Since the SchedulerEvent is currently
+comment|// a super set of theses, we register interest for it.
 name|addService
 argument_list|(
 name|oppContainerAllocEventDispatcher
