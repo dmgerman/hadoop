@@ -2346,6 +2346,36 @@ else|:
 literal|null
 return|;
 block|}
+DECL|method|getProtocol ()
+specifier|public
+specifier|static
+name|String
+name|getProtocol
+parameter_list|()
+block|{
+name|Call
+name|call
+init|=
+name|CurCall
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
+return|return
+operator|(
+name|call
+operator|!=
+literal|null
+operator|)
+condition|?
+name|call
+operator|.
+name|getProtocol
+argument_list|()
+else|:
+literal|null
+return|;
+block|}
 comment|/** Return true if the invocation was through an RPC.    */
 DECL|method|isRpcInvocation ()
 specifier|public
@@ -3522,6 +3552,32 @@ name|int
 name|priorityLevel
 decl_stmt|;
 comment|// the priority level assigned by scheduler, 0 by default
+DECL|method|Call ()
+name|Call
+parameter_list|()
+block|{
+name|this
+argument_list|(
+name|RpcConstants
+operator|.
+name|INVALID_CALL_ID
+argument_list|,
+name|RpcConstants
+operator|.
+name|INVALID_RETRY_COUNT
+argument_list|,
+name|RPC
+operator|.
+name|RpcKind
+operator|.
+name|RPC_BUILTIN
+argument_list|,
+name|RpcConstants
+operator|.
+name|DUMMY_CLIENT_ID
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|Call (Call call)
 name|Call
 parameter_list|(
@@ -3726,6 +3782,8 @@ operator|+
 name|retryCount
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|Void
@@ -3783,6 +3841,16 @@ operator|.
 name|getHostAddress
 argument_list|()
 else|:
+literal|null
+return|;
+block|}
+DECL|method|getProtocol ()
+specifier|public
+name|String
+name|getProtocol
+parameter_list|()
+block|{
+return|return
 literal|null
 return|;
 block|}
@@ -4148,6 +4216,18 @@ name|rpcRequest
 operator|=
 name|param
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getProtocol ()
+specifier|public
+name|String
+name|getProtocol
+parameter_list|()
+block|{
+return|return
+literal|"rpc"
+return|;
 block|}
 annotation|@
 name|Override
@@ -10939,101 +11019,36 @@ name|call
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|callQueue
-operator|.
-name|isClientBackoffEnabled
-argument_list|()
-condition|)
+try|try
 block|{
-comment|// if RPC queue is full, we will ask the RPC client to back off by
-comment|// throwing RetriableException. Whether RPC client will honor
-comment|// RetriableException and retry depends on client ipc retry policy.
-comment|// For example, FailoverOnNetworkExceptionRetry handles
-comment|// RetriableException.
-name|queueRequestOrAskClientToBackOff
+name|queueCall
 argument_list|(
 name|call
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
-name|callQueue
-operator|.
-name|put
-argument_list|(
-name|call
-argument_list|)
-expr_stmt|;
-comment|// queue the call; maybe blocked here
-block|}
-name|incRpcCount
-argument_list|()
-expr_stmt|;
-comment|// Increment the rpc count
-block|}
-DECL|method|queueRequestOrAskClientToBackOff (Call call)
-specifier|private
-name|void
-name|queueRequestOrAskClientToBackOff
+catch|catch
 parameter_list|(
-name|Call
-name|call
+name|IOException
+name|ioe
 parameter_list|)
-throws|throws
-name|WrappedRpcServerException
-throws|,
-name|InterruptedException
 block|{
-comment|// If rpc scheduler indicates back off based on performance
-comment|// degradation such as response time or rpc queue is full,
-comment|// we will ask the client to back off.
-if|if
-condition|(
-name|callQueue
-operator|.
-name|shouldBackOff
-argument_list|(
-name|call
-argument_list|)
-operator|||
-operator|!
-name|callQueue
-operator|.
-name|offer
-argument_list|(
-name|call
-argument_list|)
-condition|)
-block|{
-name|rpcMetrics
-operator|.
-name|incrClientBackoff
-argument_list|()
-expr_stmt|;
-name|RetriableException
-name|retriableException
-init|=
-operator|new
-name|RetriableException
-argument_list|(
-literal|"Server is too busy."
-argument_list|)
-decl_stmt|;
 throw|throw
 operator|new
-name|WrappedRpcServerExceptionSuppressed
+name|WrappedRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
 name|ERROR_RPC_SERVER
 argument_list|,
-name|retriableException
+name|ioe
 argument_list|)
 throw|;
 block|}
+name|incRpcCount
+argument_list|()
+expr_stmt|;
+comment|// Increment the rpc count
 block|}
 comment|/**      * Establish RPC connection setup by negotiating SASL if required, then      * reading and authorizing the connection header      * @param header - RPC header      * @param dis - stream to request payload      * @throws WrappedRpcServerException - setup failed due to SASL      *         negotiation failure, premature or invalid connection context,      *         or other state errors. This exception needs to be sent to the       *         client.      * @throws IOException - failed to send a response back to the client      * @throws InterruptedException      */
 DECL|method|processRpcOutOfBandRequest (RpcRequestHeaderProto header, RpcWritable.Buffer buffer)
@@ -11509,6 +11524,76 @@ argument_list|,
 name|socket
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+DECL|method|queueCall (Call call)
+specifier|public
+name|void
+name|queueCall
+parameter_list|(
+name|Call
+name|call
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+if|if
+condition|(
+operator|!
+name|callQueue
+operator|.
+name|isClientBackoffEnabled
+argument_list|()
+condition|)
+block|{
+name|callQueue
+operator|.
+name|put
+argument_list|(
+name|call
+argument_list|)
+expr_stmt|;
+comment|// queue the call; maybe blocked here
+block|}
+elseif|else
+if|if
+condition|(
+name|callQueue
+operator|.
+name|shouldBackOff
+argument_list|(
+name|call
+argument_list|)
+operator|||
+operator|!
+name|callQueue
+operator|.
+name|offer
+argument_list|(
+name|call
+argument_list|)
+condition|)
+block|{
+comment|// If rpc scheduler indicates back off based on performance degradation
+comment|// such as response time or rpc queue is full, we will ask the client
+comment|// to back off by throwing RetriableException. Whether the client will
+comment|// honor RetriableException and retry depends the client and its policy.
+comment|// For example, IPC clients using FailoverOnNetworkExceptionRetry handle
+comment|// RetriableException.
+name|rpcMetrics
+operator|.
+name|incrClientBackoff
+argument_list|()
+expr_stmt|;
+throw|throw
+operator|new
+name|RetriableException
+argument_list|(
+literal|"Server is too busy."
+argument_list|)
+throw|;
 block|}
 block|}
 comment|/** Handles queued calls . */
