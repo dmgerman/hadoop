@@ -436,6 +436,23 @@ name|sysInfoSplitCount
 init|=
 literal|11
 decl_stmt|;
+name|int
+name|index
+init|=
+name|sysInfoStr
+operator|.
+name|indexOf
+argument_list|(
+literal|"\r\n"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|index
+operator|>=
+literal|0
+condition|)
+block|{
 name|String
 index|[]
 name|sysInfo
@@ -446,12 +463,7 @@ name|substring
 argument_list|(
 literal|0
 argument_list|,
-name|sysInfoStr
-operator|.
-name|indexOf
-argument_list|(
-literal|"\r\n"
-argument_list|)
+name|index
 argument_list|)
 operator|.
 name|split
@@ -610,7 +622,7 @@ operator|-
 literal|1
 condition|)
 block|{
-comment|/**                * This number will be the aggregated usage across all cores in                * [0.0, 100.0]. For example, it will be 400.0 if there are 8                * cores and each of them is running at 50% utilization.                */
+comment|/**                  * This number will be the aggregated usage across all cores in                  * [0.0, 100.0]. For example, it will be 400.0 if there are 8                  * cores and each of them is running at 50% utilization.                  */
 name|cpuUsage
 operator|=
 operator|(
@@ -657,6 +669,19 @@ operator|+
 name|sysInfo
 operator|.
 name|length
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Wrong output from sysInfo: "
+operator|+
+name|sysInfoStr
 argument_list|)
 expr_stmt|;
 block|}
