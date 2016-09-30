@@ -12146,10 +12146,6 @@ name|re
 operator|.
 name|unwrapRemoteException
 argument_list|(
-name|FileNotFoundException
-operator|.
-name|class
-argument_list|,
 name|AccessControlException
 operator|.
 name|class
