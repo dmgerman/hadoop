@@ -548,9 +548,17 @@ literal|") can not be less than 0."
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 name|YarnConfiguration
 operator|.
@@ -561,6 +569,7 @@ operator|+
 name|maxConnectedNMs
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|maxConnectedNMs
