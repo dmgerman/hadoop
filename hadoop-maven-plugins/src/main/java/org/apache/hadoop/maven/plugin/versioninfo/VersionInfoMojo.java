@@ -949,7 +949,7 @@ name|path
 operator|.
 name|indexOf
 argument_list|(
-literal|"/"
+literal|'/'
 argument_list|,
 name|branchIndex
 argument_list|)
