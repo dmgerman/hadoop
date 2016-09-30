@@ -956,13 +956,6 @@ argument_list|,
 name|src
 argument_list|)
 decl_stmt|;
-name|src
-operator|=
-name|iip
-operator|.
-name|getPath
-argument_list|()
-expr_stmt|;
 comment|// There is no real inode for the path ending in ".snapshot", so return a
 comment|// non-null, unpopulated AclStatus.  This is similar to getFileInfo.
 if|if
@@ -1053,16 +1046,7 @@ name|fsd
 operator|.
 name|getAttributes
 argument_list|(
-name|src
-argument_list|,
-name|inode
-operator|.
-name|getLocalNameBytes
-argument_list|()
-argument_list|,
-name|inode
-argument_list|,
-name|snapshotId
+name|iip
 argument_list|)
 argument_list|)
 decl_stmt|;

@@ -2038,6 +2038,9 @@ name|Preconditions
 operator|.
 name|checkState
 argument_list|(
+name|isDotSnapshotDir
+argument_list|()
+operator|||
 operator|!
 name|isSnapshot
 argument_list|()
