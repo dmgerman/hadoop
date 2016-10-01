@@ -170,6 +170,18 @@ specifier|private
 name|String
 name|reservationName
 decl_stmt|;
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"priority"
+argument_list|)
+DECL|field|priority
+specifier|private
+name|int
+name|priority
+decl_stmt|;
 DECL|method|ReservationDefinitionInfo ()
 specifier|public
 name|ReservationDefinitionInfo
@@ -318,6 +330,32 @@ operator|.
 name|reservationName
 operator|=
 name|reservationName
+expr_stmt|;
+block|}
+DECL|method|getPriority ()
+specifier|public
+name|int
+name|getPriority
+parameter_list|()
+block|{
+return|return
+name|priority
+return|;
+block|}
+DECL|method|setPriority (int priority)
+specifier|public
+name|void
+name|setPriority
+parameter_list|(
+name|int
+name|priority
+parameter_list|)
+block|{
+name|this
+operator|.
+name|priority
+operator|=
+name|priority
 expr_stmt|;
 block|}
 block|}

@@ -48,22 +48,6 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Evolving
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
 name|Unstable
 import|;
 end_import
@@ -103,7 +87,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|newInstance (long arrival, long deadline, ReservationRequests reservationRequests, String name, String recurrenceExpression)
+DECL|method|newInstance (long arrival, long deadline, ReservationRequests reservationRequests, String name, String recurrenceExpression, Priority priority)
 specifier|public
 specifier|static
 name|ReservationDefinition
@@ -123,6 +107,9 @@ name|name
 parameter_list|,
 name|String
 name|recurrenceExpression
+parameter_list|,
+name|Priority
+name|priority
 parameter_list|)
 block|{
 name|ReservationDefinition
@@ -172,6 +159,13 @@ argument_list|(
 name|recurrenceExpression
 argument_list|)
 expr_stmt|;
+name|rDefinition
+operator|.
+name|setPriority
+argument_list|(
+name|priority
+argument_list|)
+expr_stmt|;
 return|return
 name|rDefinition
 return|;
@@ -213,6 +207,10 @@ argument_list|,
 name|name
 argument_list|,
 literal|"0"
+argument_list|,
+name|Priority
+operator|.
+name|UNDEFINED
 argument_list|)
 decl_stmt|;
 return|return
@@ -304,7 +302,7 @@ comment|/**    * Get the name for this reservation. The name need-not be unique,
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Unstable
 DECL|method|getReservationName ()
 specifier|public
 specifier|abstract
@@ -316,7 +314,7 @@ comment|/**    * Set the name for this reservation. The name need-not be unique,
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Unstable
 DECL|method|setReservationName (String name)
 specifier|public
 specifier|abstract
@@ -331,7 +329,7 @@ comment|/**    * Get the recurrence of this reservation representing the time pe
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Unstable
 DECL|method|getRecurrenceExpression ()
 specifier|public
 specifier|abstract
@@ -343,7 +341,7 @@ comment|/**    * Set the recurrence of this reservation representing the time pe
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Unstable
 DECL|method|setRecurrenceExpression (String recurrenceExpression)
 specifier|public
 specifier|abstract
@@ -352,6 +350,33 @@ name|setRecurrenceExpression
 parameter_list|(
 name|String
 name|recurrenceExpression
+parameter_list|)
+function_decl|;
+comment|/**    * Get the priority for this reservation. A lower number for priority    * indicates a higher priority reservation. Recurring reservations are    * always higher priority than non-recurring reservations. Priority for    * non-recurring reservations are only compared with non-recurring    * reservations. Likewise for recurring reservations.    *    * @return int representing the priority of the reserved resource    *         allocation in the scheduler    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getPriority ()
+specifier|public
+specifier|abstract
+name|Priority
+name|getPriority
+parameter_list|()
+function_decl|;
+comment|/**    * Set the priority for this reservation. A lower number for priority    * indicates a higher priority reservation. Recurring reservations are    * always higher priority than non-recurring reservations. Priority for    * non-recurring reservations are only compared with non-recurring    * reservations. Likewise for recurring reservations.    *    * @param priority representing the priority of the reserved resource    *          allocation in the scheduler    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setPriority (Priority priority)
+specifier|public
+specifier|abstract
+name|void
+name|setPriority
+parameter_list|(
+name|Priority
+name|priority
 parameter_list|)
 function_decl|;
 block|}
