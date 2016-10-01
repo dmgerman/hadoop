@@ -256,6 +256,18 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
 begin_comment
 comment|/**  * A Client for the storageContainer protocol.  */
 end_comment
@@ -525,7 +537,15 @@ block|{
 name|group
 operator|.
 name|shutdownGracefully
-argument_list|()
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
 expr_stmt|;
 block|}
 if|if
