@@ -490,7 +490,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|InstrumentedReentrantLock
+name|InstrumentedLock
 import|;
 end_import
 
@@ -2176,7 +2176,7 @@ operator|new
 name|AutoCloseableLock
 argument_list|(
 operator|new
-name|InstrumentedReentrantLock
+name|InstrumentedLock
 argument_list|(
 name|getClass
 argument_list|()
