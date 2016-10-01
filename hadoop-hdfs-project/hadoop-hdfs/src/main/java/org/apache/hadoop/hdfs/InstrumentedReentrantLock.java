@@ -169,7 +169,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is a debugging class that can be used by callers to track  * whether a specifc lock is being held for too long and periodically  * log a warning and stack trace, if so.  *  * The logged warnings are throttled so that logs are not spammed.  *  * A new instance of InstrumentedLock can be created for each object  * that needs to be instrumented.  */
+comment|/**  * This is a debugging class that can be used by callers to track  * whether a specific lock is being held for too long and periodically  * log a warning and stack trace, if so.  *  * The logged warnings are throttled so that logs are not spammed.  *  * A new instance of InstrumentedLock can be created for each object  * that needs to be instrumented.  */
 end_comment
 
 begin_class
@@ -181,17 +181,18 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|class|InstrumentedLock
+DECL|class|InstrumentedReentrantLock
 specifier|public
 class|class
-name|InstrumentedLock
+name|InstrumentedReentrantLock
 implements|implements
 name|Lock
 block|{
+annotation|@
+name|VisibleForTesting
 DECL|field|lock
-specifier|private
 specifier|final
-name|Lock
+name|ReentrantLock
 name|lock
 decl_stmt|;
 DECL|field|logger
@@ -252,9 +253,9 @@ literal|0
 argument_list|)
 decl_stmt|;
 comment|/**    * Create a instrumented lock instance which logs a warning message    * when lock held time is above given threshold.    *    * @param name the identifier of the lock object    * @param logger this class does not have its own logger, will log to the    *               given logger instead    * @param minLoggingGapMs  the minimum time gap between two log messages,    *                         this is to avoid spamming to many logs    * @param lockWarningThresholdMs the time threshold to view lock held    *                               time as being "too long"    */
-DECL|method|InstrumentedLock (String name, Log logger, long minLoggingGapMs, long lockWarningThresholdMs)
+DECL|method|InstrumentedReentrantLock ( String name, Log logger, long minLoggingGapMs, long lockWarningThresholdMs)
 specifier|public
-name|InstrumentedLock
+name|InstrumentedReentrantLock
 parameter_list|(
 name|String
 name|name
@@ -285,9 +286,9 @@ name|lockWarningThresholdMs
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|InstrumentedLock (String name, Log logger, Lock lock, long minLoggingGapMs, long lockWarningThresholdMs)
+DECL|method|InstrumentedReentrantLock ( String name, Log logger, ReentrantLock lock, long minLoggingGapMs, long lockWarningThresholdMs)
 specifier|public
-name|InstrumentedLock
+name|InstrumentedReentrantLock
 parameter_list|(
 name|String
 name|name
@@ -295,7 +296,7 @@ parameter_list|,
 name|Log
 name|logger
 parameter_list|,
-name|Lock
+name|ReentrantLock
 name|lock
 parameter_list|,
 name|long
@@ -325,8 +326,8 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|InstrumentedLock (String name, Log logger, Lock lock, long minLoggingGapMs, long lockWarningThresholdMs, Timer clock)
-name|InstrumentedLock
+DECL|method|InstrumentedReentrantLock ( String name, Log logger, ReentrantLock lock, long minLoggingGapMs, long lockWarningThresholdMs, Timer clock)
+name|InstrumentedReentrantLock
 parameter_list|(
 name|String
 name|name
@@ -334,7 +335,7 @@ parameter_list|,
 name|Log
 name|logger
 parameter_list|,
-name|Lock
+name|ReentrantLock
 name|lock
 parameter_list|,
 name|long
@@ -413,6 +414,16 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|lock
+operator|.
+name|getHoldCount
+argument_list|()
+operator|==
+literal|1
+condition|)
+block|{
 name|lockAcquireTimestamp
 operator|=
 name|clock
@@ -420,6 +431,7 @@ operator|.
 name|monotonicNow
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -436,6 +448,16 @@ operator|.
 name|lockInterruptibly
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|lock
+operator|.
+name|getHoldCount
+argument_list|()
+operator|==
+literal|1
+condition|)
+block|{
 name|lockAcquireTimestamp
 operator|=
 name|clock
@@ -443,6 +465,7 @@ operator|.
 name|monotonicNow
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -458,6 +481,13 @@ name|lock
 operator|.
 name|tryLock
 argument_list|()
+operator|&&
+name|lock
+operator|.
+name|getHoldCount
+argument_list|()
+operator|==
+literal|1
 condition|)
 block|{
 name|lockAcquireTimestamp
@@ -501,6 +531,13 @@ name|time
 argument_list|,
 name|unit
 argument_list|)
+operator|&&
+name|lock
+operator|.
+name|getHoldCount
+argument_list|()
+operator|==
+literal|1
 condition|)
 block|{
 name|lockAcquireTimestamp
@@ -526,6 +563,19 @@ name|void
 name|unlock
 parameter_list|()
 block|{
+specifier|final
+name|boolean
+name|needReport
+init|=
+operator|(
+name|lock
+operator|.
+name|getHoldCount
+argument_list|()
+operator|==
+literal|1
+operator|)
+decl_stmt|;
 name|long
 name|localLockReleaseTime
 init|=
@@ -544,6 +594,11 @@ operator|.
 name|unlock
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|needReport
+condition|)
+block|{
 name|check
 argument_list|(
 name|localLockAcquireTime
@@ -551,6 +606,7 @@ argument_list|,
 name|localLockReleaseTime
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
