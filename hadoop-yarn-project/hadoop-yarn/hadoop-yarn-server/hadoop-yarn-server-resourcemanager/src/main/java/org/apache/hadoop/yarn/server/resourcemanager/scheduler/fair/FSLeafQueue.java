@@ -1466,7 +1466,7 @@ literal|" "
 operator|+
 name|toAdd
 operator|+
-literal|"; Total resource consumption for "
+literal|"; Total resource demand for "
 operator|+
 name|getName
 argument_list|()
