@@ -1576,6 +1576,12 @@ index|[]
 index|[]
 name|path
 decl_stmt|;
+DECL|field|pathname
+specifier|private
+specifier|final
+name|String
+name|pathname
+decl_stmt|;
 comment|/**    * Array with the specified number of INodes resolved for a given path.    */
 DECL|field|inodes
 specifier|private
@@ -1652,6 +1658,17 @@ operator|.
 name|path
 operator|=
 name|path
+expr_stmt|;
+name|this
+operator|.
+name|pathname
+operator|=
+name|DFSUtil
+operator|.
+name|byteArray2PathString
+argument_list|(
+name|path
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -1884,12 +1901,7 @@ name|getPath
 parameter_list|()
 block|{
 return|return
-name|DFSUtil
-operator|.
-name|byteArray2PathString
-argument_list|(
-name|path
-argument_list|)
+name|pathname
 return|;
 block|}
 DECL|method|getParentPath ()
