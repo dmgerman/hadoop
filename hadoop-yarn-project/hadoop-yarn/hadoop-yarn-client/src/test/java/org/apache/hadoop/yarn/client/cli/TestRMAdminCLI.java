@@ -3173,7 +3173,7 @@ literal|"<\"label1(exclusive=true),label2(exclusive=false),label3\">] "
 operator|+
 literal|"[-removeFromClusterNodeLabels<label1,label2,label3>] "
 operator|+
-literal|"[-replaceLabelsOnNode "
+literal|"[-replaceLabelsOnNode [-failOnUnknownNodes] "
 operator|+
 literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] "
 operator|+
@@ -3620,6 +3620,8 @@ operator|+
 literal|"label2(exclusive=false),label3\">]"
 operator|+
 literal|" [-removeFromClusterNodeLabels<label1,label2,label3>] [-replaceLabelsOnNode "
+operator|+
+literal|"[-failOnUnknownNodes] "
 operator|+
 literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] [-directlyAccessNodeLabelStore] "
 operator|+
