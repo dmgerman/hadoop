@@ -3784,7 +3784,10 @@ name|user
 operator|+
 literal|", in queue: "
 operator|+
-name|queueName
+name|queue
+operator|.
+name|getName
+argument_list|()
 operator|+
 literal|", currently num of applications: "
 operator|+
