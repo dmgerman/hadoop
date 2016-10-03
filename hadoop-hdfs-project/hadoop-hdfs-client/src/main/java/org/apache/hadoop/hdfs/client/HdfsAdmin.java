@@ -160,6 +160,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileStatus
 import|;
 end_import
@@ -1074,6 +1088,28 @@ name|dfs
 operator|.
 name|listEncryptionZones
 argument_list|()
+return|;
+block|}
+comment|/**    * Returns the FileEncryptionInfo on the HdfsFileStatus for the given path.    * The return value can be null if the path points to a directory, or a file    * that is not in an encryption zone.    *    * @throws FileNotFoundException if the path does not exist.    * @throws AccessControlException if no execute permission on parent path.    */
+DECL|method|getFileEncryptionInfo (final Path path)
+specifier|public
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
+parameter_list|(
+specifier|final
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|getFileEncryptionInfo
+argument_list|(
+name|path
+argument_list|)
 return|;
 block|}
 comment|/**    * Exposes a stream of namesystem events. Only events occurring after the    * stream is created are available.    * See {@link org.apache.hadoop.hdfs.DFSInotifyEventInputStream}    * for information on stream usage.    * See {@link org.apache.hadoop.hdfs.inotify.Event}    * for information on the available events.    *<p/>    * Inotify users may want to tune the following HDFS parameters to    * ensure that enough extra HDFS edits are saved to support inotify clients    * that fall behind the current state of the namespace while reading events.    * The default parameter values should generally be reasonable. If edits are    * deleted before their corresponding events can be read, clients will see a    * {@link org.apache.hadoop.hdfs.inotify.MissingEventsException} on    * {@link org.apache.hadoop.hdfs.DFSInotifyEventInputStream} method calls.    *    * It should generally be sufficient to tune these parameters:    * dfs.namenode.num.extra.edits.retained    * dfs.namenode.max.extra.edits.segments.retained    *    * Parameters that affect the number of created segments and the number of    * edits that are considered necessary, i.e. do not count towards the    * dfs.namenode.num.extra.edits.retained quota):    * dfs.namenode.checkpoint.period    * dfs.namenode.checkpoint.txns    * dfs.namenode.num.checkpoints.retained    * dfs.ha.log-roll.period    *<p/>    * It is recommended that local journaling be configured    * (dfs.namenode.edits.dir) for inotify (in addition to a shared journal)    * so that edit transfers from the shared journal can be avoided.    *    * @throws IOException If there was an error obtaining the stream.    */
