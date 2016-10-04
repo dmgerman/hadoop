@@ -953,6 +953,8 @@ try|try
 block|{
 name|validateRenameSource
 argument_list|(
+name|fsd
+argument_list|,
 name|srcIIP
 argument_list|)
 expr_stmt|;
@@ -1915,6 +1917,8 @@ argument_list|()
 decl_stmt|;
 name|validateRenameSource
 argument_list|(
+name|fsd
+argument_list|,
 name|srcIIP
 argument_list|)
 expr_stmt|;
@@ -2053,7 +2057,9 @@ name|FSDirSnapshotOp
 operator|.
 name|checkSnapshot
 argument_list|(
-name|dstInode
+name|fsd
+argument_list|,
+name|dstIIP
 argument_list|,
 name|snapshottableDirs
 argument_list|)
@@ -2927,12 +2933,15 @@ throw|;
 block|}
 block|}
 block|}
-DECL|method|validateRenameSource (INodesInPath srcIIP)
+DECL|method|validateRenameSource (FSDirectory fsd, INodesInPath srcIIP)
 specifier|private
 specifier|static
 name|void
 name|validateRenameSource
 parameter_list|(
+name|FSDirectory
+name|fsd
+parameter_list|,
 name|INodesInPath
 name|srcIIP
 parameter_list|)
@@ -3028,7 +3037,9 @@ name|FSDirSnapshotOp
 operator|.
 name|checkSnapshot
 argument_list|(
-name|srcInode
+name|fsd
+argument_list|,
+name|srcIIP
 argument_list|,
 literal|null
 argument_list|)

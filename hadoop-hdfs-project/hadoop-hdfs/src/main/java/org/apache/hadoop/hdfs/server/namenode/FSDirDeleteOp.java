@@ -350,10 +350,9 @@ name|FSDirSnapshotOp
 operator|.
 name|checkSnapshot
 argument_list|(
+name|fsd
+argument_list|,
 name|iip
-operator|.
-name|getLastINode
-argument_list|()
 argument_list|,
 name|snapshottableDirs
 argument_list|)
@@ -705,10 +704,9 @@ name|FSDirSnapshotOp
 operator|.
 name|checkSnapshot
 argument_list|(
+name|fsd
+argument_list|,
 name|iip
-operator|.
-name|getLastINode
-argument_list|()
 argument_list|,
 name|snapshottableDirs
 argument_list|)
