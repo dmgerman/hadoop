@@ -4589,20 +4589,47 @@ name|getNumBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|boolean
+name|isMissing
+decl_stmt|;
 if|if
 condition|(
+name|storedBlock
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+name|isMissing
+operator|=
+name|totalReplicasPerBlock
+operator|<
+name|minReplication
+expr_stmt|;
+block|}
+else|else
+block|{
+name|isMissing
+operator|=
 name|totalReplicasPerBlock
 operator|==
 literal|0
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|isMissing
 operator|&&
 operator|!
 name|isCorrupt
 condition|)
 block|{
 comment|// If the block is corrupted, it means all its available replicas are
-comment|// corrupted. We don't mark it as missing given these available replicas
-comment|// might still be accessible as the block might be incorrectly marked as
-comment|// corrupted by client machines.
+comment|// corrupted in the case of replication, and it means the state of the
+comment|// block group is unrecoverable due to some corrupted intenal blocks in
+comment|// the case of EC. We don't mark it as missing given these available
+comment|// replicas/internal-blocks might still be accessible as the block might
+comment|// be incorrectly marked as corrupted by client machines.
 name|report
 operator|.
 name|append
@@ -4632,6 +4659,54 @@ operator|.
 name|getNumBytes
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|storedBlock
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+name|report
+operator|.
+name|append
+argument_list|(
+literal|" Live_repl="
+operator|+
+name|liveReplicas
+argument_list|)
+expr_stmt|;
+name|String
+name|info
+init|=
+name|getReplicaInfo
+argument_list|(
+name|storedBlock
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|info
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|report
+operator|.
+name|append
+argument_list|(
+literal|" "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|info
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 else|else
 block|{
