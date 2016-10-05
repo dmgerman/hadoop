@@ -1466,7 +1466,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Validate increase/decrease request. This function must be called under    * the queue lock to make sure that the access to container resource is    * atomic. Refer to LeafQueue.decreaseContainer() and    * CapacityScheduelr.updateIncreaseRequests()    *<pre>    * - Throw exception when any other error happens    *</pre>    */
+comment|/**    * Validate increase/decrease request.    *<pre>    * - Throw exception when any other error happens    *</pre>    */
 DECL|method|checkSchedContainerChangeRequest ( SchedContainerChangeRequest request, boolean increase)
 specifier|public
 specifier|static

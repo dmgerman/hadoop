@@ -48,6 +48,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -1439,12 +1449,19 @@ name|this
 operator|.
 name|pendingRelease
 operator|=
+name|Collections
+operator|.
+name|newSetFromMap
+argument_list|(
 operator|new
-name|HashSet
+name|ConcurrentHashMap
 argument_list|<
 name|ContainerId
+argument_list|,
+name|Boolean
 argument_list|>
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -5629,6 +5646,18 @@ block|{
 comment|// Give the specific information which might be applicable for the
 comment|// respective scheduler
 comment|// queue's resource usage for specific partition
+block|}
+DECL|method|getWriteLock ()
+specifier|public
+name|ReentrantReadWriteLock
+operator|.
+name|WriteLock
+name|getWriteLock
+parameter_list|()
+block|{
+return|return
+name|writeLock
+return|;
 block|}
 annotation|@
 name|Override

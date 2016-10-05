@@ -126,6 +126,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|ReentrantReadWriteLock
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -906,28 +920,6 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|capacity
-operator|.
-name|LeafQueue
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|common
 operator|.
 name|QueueEntitlement
@@ -1048,6 +1040,7 @@ name|minimumAllocation
 decl_stmt|;
 DECL|field|rmContext
 specifier|protected
+specifier|volatile
 name|RMContext
 name|rmContext
 decl_stmt|;
@@ -1124,6 +1117,23 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+DECL|field|readLock
+specifier|protected
+specifier|final
+name|ReentrantReadWriteLock
+operator|.
+name|ReadLock
+name|readLock
+decl_stmt|;
+comment|/*    * Use writeLock for any of operations below:    * - queue change (hierarchy / configuration / container allocation)    * - application(add/remove/allocate-container, but not include container    *   finish)    * - node (add/remove/change-resource/container-allocation, but not include    *   container finish)    */
+DECL|field|writeLock
+specifier|protected
+specifier|final
+name|ReentrantReadWriteLock
+operator|.
+name|WriteLock
+name|writeLock
+decl_stmt|;
 comment|/**    * Construct the service.    *    * @param name service name    */
 DECL|method|AbstractYarnScheduler (String name)
 specifier|public
@@ -1137,6 +1147,27 @@ name|super
 argument_list|(
 name|name
 argument_list|)
+expr_stmt|;
+name|ReentrantReadWriteLock
+name|lock
+init|=
+operator|new
+name|ReentrantReadWriteLock
+argument_list|()
+decl_stmt|;
+name|readLock
+operator|=
+name|lock
+operator|.
+name|readLock
+argument_list|()
+expr_stmt|;
+name|writeLock
+operator|=
+name|lock
+operator|.
+name|writeLock
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -1220,6 +1251,7 @@ return|return
 name|nodeTracker
 return|;
 block|}
+comment|/*    * YARN-3136 removed synchronized lock for this method for performance    * purposes    */
 DECL|method|getTransferredContainers ( ApplicationAttemptId currentAttempt)
 specifier|public
 name|List
@@ -1531,7 +1563,6 @@ expr_stmt|;
 block|}
 DECL|method|containerLaunchedOnNode ( ContainerId containerId, SchedulerNode node)
 specifier|protected
-specifier|synchronized
 name|void
 name|containerLaunchedOnNode
 parameter_list|(
@@ -1542,6 +1573,13 @@ name|SchedulerNode
 name|node
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Get the application for the finished container
 name|SchedulerApplicationAttempt
 name|application
@@ -1620,6 +1658,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|containerIncreasedOnNode (ContainerId containerId, SchedulerNode node, Container increasedContainerReportedByNM)
 specifier|protected
 name|void
@@ -1635,6 +1682,7 @@ name|Container
 name|increasedContainerReportedByNM
 parameter_list|)
 block|{
+comment|/*      * No lock is required, as this method is protected by scheduler's writeLock      */
 comment|// Get the application for the finished container
 name|SchedulerApplicationAttempt
 name|application
@@ -1700,22 +1748,6 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-name|LeafQueue
-name|leafQueue
-init|=
-operator|(
-name|LeafQueue
-operator|)
-name|application
-operator|.
-name|getQueue
-argument_list|()
-decl_stmt|;
-synchronized|synchronized
-init|(
-name|leafQueue
-init|)
-block|{
 name|RMContainer
 name|rmContainer
 init|=
@@ -1774,7 +1806,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|getApplicationAttempt (ApplicationAttemptId applicationAttemptId)
 specifier|public
@@ -2171,7 +2202,6 @@ block|}
 block|}
 DECL|method|recoverContainersOnNode ( List<NMContainerStatus> containerReports, RMNode nm)
 specifier|public
-specifier|synchronized
 name|void
 name|recoverContainersOnNode
 parameter_list|(
@@ -2185,6 +2215,13 @@ name|RMNode
 name|nm
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -2301,7 +2338,9 @@ literal|"Skip recovering container  "
 operator|+
 name|container
 operator|+
-literal|" for unknown SchedulerApplication. Application current state is "
+literal|" for unknown SchedulerApplication. "
+operator|+
+literal|"Application current state is "
 operator|+
 name|rmApp
 operator|.
@@ -2535,27 +2574,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-synchronized|synchronized
-init|(
-name|schedulerAttempt
-init|)
-block|{
-name|Set
-argument_list|<
-name|ContainerId
-argument_list|>
-name|releases
-init|=
+if|if
+condition|(
 name|schedulerAttempt
 operator|.
 name|getPendingRelease
 argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|releases
 operator|.
-name|contains
+name|remove
 argument_list|(
 name|container
 operator|.
@@ -2597,16 +2623,6 @@ name|RELEASED
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|releases
-operator|.
-name|remove
-argument_list|(
-name|container
-operator|.
-name|getContainerId
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -2621,6 +2637,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|method|recoverAndCreateContainer (NMContainerStatus status, RMNode node)
@@ -2879,11 +2903,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-synchronized|synchronized
-init|(
-name|attempt
-init|)
-block|{
 for|for
 control|(
 name|ContainerId
@@ -2935,7 +2954,6 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -3178,11 +3196,6 @@ operator|+
 literal|" to the release request cache as it maybe on recovery."
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
-init|(
-name|attempt
-init|)
-block|{
 name|attempt
 operator|.
 name|getPendingRelease
@@ -3193,7 +3206,6 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -3366,7 +3378,6 @@ annotation|@
 name|Override
 DECL|method|moveAllApps (String sourceQueue, String destQueue)
 specifier|public
-specifier|synchronized
 name|void
 name|moveAllApps
 parameter_list|(
@@ -3379,6 +3390,13 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// check if destination queue is a valid leaf queue
 try|try
 block|{
@@ -3504,11 +3522,19 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|killAllAppsInQueue (String queueName)
 specifier|public
-specifier|synchronized
 name|void
 name|killAllAppsInQueue
 parameter_list|(
@@ -3518,6 +3544,13 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// check if queue is a valid
 name|List
 argument_list|<
@@ -3604,10 +3637,18 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Process resource update on a node.    */
 DECL|method|updateNodeResource (RMNode nm, ResourceOption resourceOption)
 specifier|public
-specifier|synchronized
 name|void
 name|updateNodeResource
 parameter_list|(
@@ -3618,6 +3659,13 @@ name|ResourceOption
 name|resourceOption
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|SchedulerNode
 name|node
 init|=
@@ -3740,6 +3788,15 @@ literal|" with the same resource: "
 operator|+
 name|newResource
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -3950,7 +4007,6 @@ annotation|@
 name|Override
 DECL|method|setClusterMaxPriority (Configuration conf)
 specifier|public
-specifier|synchronized
 name|void
 name|setClusterMaxPriority
 parameter_list|(

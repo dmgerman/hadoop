@@ -260,22 +260,6 @@ name|hadoop
 operator|.
 name|classification
 operator|.
-name|InterfaceAudience
-operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
 name|InterfaceStability
 operator|.
 name|Evolving
@@ -2734,10 +2718,9 @@ return|;
 block|}
 annotation|@
 name|Override
-specifier|public
-specifier|synchronized
-name|RMContainerTokenSecretManager
 DECL|method|getContainerTokenSecretManager ()
+specifier|public
+name|RMContainerTokenSecretManager
 name|getContainerTokenSecretManager
 parameter_list|()
 block|{
@@ -2808,7 +2791,6 @@ annotation|@
 name|Override
 DECL|method|getRMContext ()
 specifier|public
-specifier|synchronized
 name|RMContext
 name|getRMContext
 parameter_list|()
@@ -2823,7 +2805,6 @@ annotation|@
 name|Override
 DECL|method|setRMContext (RMContext rmContext)
 specifier|public
-specifier|synchronized
 name|void
 name|setRMContext
 parameter_list|(
@@ -2840,7 +2821,6 @@ expr_stmt|;
 block|}
 DECL|method|initScheduler (Configuration configuration)
 specifier|private
-specifier|synchronized
 name|void
 name|initScheduler
 parameter_list|(
@@ -2850,6 +2830,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|conf
@@ -3049,13 +3036,33 @@ literal|"ms"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|startSchedulerThreads ()
 specifier|private
-specifier|synchronized
 name|void
 name|startSchedulerThreads
 parameter_list|()
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+name|activitiesManager
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|scheduleAsynchronously
@@ -3073,6 +3080,15 @@ expr_stmt|;
 name|asyncSchedulerThread
 operator|.
 name|start
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
 argument_list|()
 expr_stmt|;
 block|}
@@ -3125,11 +3141,6 @@ block|{
 name|startSchedulerThreads
 argument_list|()
 expr_stmt|;
-name|activitiesManager
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 name|super
 operator|.
 name|serviceStart
@@ -3146,11 +3157,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-synchronized|synchronized
-init|(
-name|this
-init|)
+try|try
 block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|scheduleAsynchronously
@@ -3174,6 +3187,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 name|super
 operator|.
 name|serviceStop
@@ -3182,14 +3203,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|reinitialize (Configuration newConf, RMContext rmContext)
 specifier|public
-specifier|synchronized
 name|void
-DECL|method|reinitialize (Configuration conf, RMContext rmContext)
 name|reinitialize
 parameter_list|(
 name|Configuration
-name|conf
+name|newConf
 parameter_list|,
 name|RMContext
 name|rmContext
@@ -3197,13 +3217,20 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|Configuration
 name|configuration
 init|=
 operator|new
 name|Configuration
 argument_list|(
-name|conf
+name|newConf
 argument_list|)
 decl_stmt|;
 name|CapacitySchedulerConfiguration
@@ -3300,6 +3327,15 @@ operator|.
 name|getLazyPreemptionEnabled
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|getAsyncScheduleInterval ()
 name|long
@@ -3552,23 +3588,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Private
-DECL|field|ROOT_QUEUE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|ROOT_QUEUE
-init|=
-name|CapacitySchedulerConfiguration
-operator|.
-name|PREFIX
-operator|+
-name|CapacitySchedulerConfiguration
-operator|.
-name|ROOT
-decl_stmt|;
 DECL|class|QueueHook
 specifier|static
 class|class
@@ -3602,7 +3621,6 @@ decl_stmt|;
 annotation|@
 name|VisibleForTesting
 specifier|public
-specifier|synchronized
 name|UserGroupMappingPlacementRule
 DECL|method|getUserGroupMappingPlacementRule ()
 name|getUserGroupMappingPlacementRule
@@ -3610,6 +3628,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|boolean
 name|overrideWithQueueMappings
 init|=
@@ -3630,8 +3655,6 @@ expr_stmt|;
 comment|// Get new user/group mappings
 name|List
 argument_list|<
-name|UserGroupMappingPlacementRule
-operator|.
 name|QueueMapping
 argument_list|>
 name|newMappings
@@ -3752,6 +3775,15 @@ block|}
 return|return
 literal|null
 return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|updatePlacementRules ()
 specifier|private
@@ -3890,13 +3922,13 @@ name|CapacityScheduler
 operator|.
 name|class
 argument_list|)
-DECL|method|reinitializeQueues (CapacitySchedulerConfiguration conf)
+DECL|method|reinitializeQueues (CapacitySchedulerConfiguration newConf)
 specifier|private
 name|void
 name|reinitializeQueues
 parameter_list|(
 name|CapacitySchedulerConfiguration
-name|conf
+name|newConf
 parameter_list|)
 throws|throws
 name|IOException
@@ -3926,7 +3958,7 @@ name|parseQueue
 argument_list|(
 name|this
 argument_list|,
-name|conf
+name|newConf
 argument_list|,
 literal|null
 argument_list|,
@@ -4783,7 +4815,6 @@ return|;
 block|}
 DECL|method|addApplicationOnRecovery ( ApplicationId applicationId, String queueName, String user, Priority priority)
 specifier|private
-specifier|synchronized
 name|void
 name|addApplicationOnRecovery
 parameter_list|(
@@ -4800,6 +4831,13 @@ name|Priority
 name|priority
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|CSQueue
 name|queue
 init|=
@@ -4871,9 +4909,11 @@ name|queueName
 operator|+
 literal|" missing during application recovery."
 operator|+
-literal|" Queue removal during recovery is not presently supported by the"
+literal|" Queue removal during recovery is not presently "
 operator|+
-literal|" capacity scheduler, please restart with all queues configured"
+literal|"supported by the capacity scheduler, please "
+operator|+
+literal|"restart with all queues configured"
 operator|+
 literal|" which were present before shutdown/restart."
 decl_stmt|;
@@ -5081,9 +5121,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|addApplication (ApplicationId applicationId, String queueName, String user, Priority priority)
 specifier|private
-specifier|synchronized
 name|void
 name|addApplication
 parameter_list|(
@@ -5100,6 +5148,13 @@ name|Priority
 name|priority
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// Sanity checks.
 name|CSQueue
 name|queue
@@ -5358,9 +5413,17 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt, boolean isAttemptRecovering)
 specifier|private
-specifier|synchronized
 name|void
 name|addApplicationAttempt
 parameter_list|(
@@ -5374,6 +5437,13 @@ name|boolean
 name|isAttemptRecovering
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|SchedulerApplication
 argument_list|<
 name|FiCaSchedulerApp
@@ -5582,9 +5652,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|doneApplication (ApplicationId applicationId, RMAppState finalState)
 specifier|private
-specifier|synchronized
 name|void
 name|doneApplication
 parameter_list|(
@@ -5595,6 +5673,13 @@ name|RMAppState
 name|finalState
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|SchedulerApplication
 argument_list|<
 name|FiCaSchedulerApp
@@ -5615,8 +5700,8 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|// The AppRemovedSchedulerEvent maybe sent on recovery for completed apps,
-comment|// ignore it.
+comment|// The AppRemovedSchedulerEvent maybe sent on recovery for completed
+comment|// apps, ignore it.
 name|LOG
 operator|.
 name|warn
@@ -5694,9 +5779,17 @@ name|applicationId
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|doneApplicationAttempt ( ApplicationAttemptId applicationAttemptId, RMAppAttemptState rmAppAttemptFinalState, boolean keepContainers)
 specifier|private
-specifier|synchronized
 name|void
 name|doneApplicationAttempt
 parameter_list|(
@@ -5710,6 +5803,13 @@ name|boolean
 name|keepContainers
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -5948,10 +6048,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// It is crucial to acquire leaf queue lock first to prevent:
-comment|// 1. Race condition when calculating the delta resource in
-comment|//    SchedContainerChangeRequest
-comment|// 2. Deadlock with the scheduling thread.
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|updateIncreaseRequests ( List<UpdateContainerRequest> increaseRequests, FiCaSchedulerApp app)
 specifier|private
 name|LeafQueue
@@ -6008,11 +6113,17 @@ operator|.
 name|getQueue
 argument_list|()
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|leafQueue
-init|)
+try|try
 block|{
+comment|/*        * Acquire application's lock here to make sure application won't        * finish when updateIncreaseRequest is called.        */
+name|app
+operator|.
+name|getWriteLock
+argument_list|()
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// make sure we aren't stopping/removing the application
 comment|// when the allocate comes in
 if|if
@@ -6042,10 +6153,21 @@ return|return
 name|leafQueue
 return|;
 block|}
+block|}
+finally|finally
+block|{
+name|app
+operator|.
+name|getWriteLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -6172,13 +6294,18 @@ expr_stmt|;
 name|Allocation
 name|allocation
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|application
-init|)
-block|{
 comment|// make sure we aren't stopping/removing the application
 comment|// when the allocate comes in
+try|try
+block|{
+name|application
+operator|.
+name|getWriteLock
+argument_list|()
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|application
@@ -6305,6 +6432,17 @@ argument_list|,
 name|getMinimumResourceCapability
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|application
+operator|.
+name|getWriteLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 if|if
@@ -6469,7 +6607,6 @@ return|;
 block|}
 DECL|method|nodeUpdate (RMNode nm)
 specifier|private
-specifier|synchronized
 name|void
 name|nodeUpdate
 parameter_list|(
@@ -6477,6 +6614,13 @@ name|RMNode
 name|nm
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -6868,10 +7012,18 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Process resource update on a node.    */
 DECL|method|updateNodeAndQueueResource (RMNode nm, ResourceOption resourceOption)
 specifier|private
-specifier|synchronized
 name|void
 name|updateNodeAndQueueResource
 parameter_list|(
@@ -6882,6 +7034,13 @@ name|ResourceOption
 name|resourceOption
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|updateNodeResource
 argument_list|(
 name|nm
@@ -6909,10 +7068,18 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Process node labels update on a node.    */
 DECL|method|updateLabelsOnNode (NodeId nodeId, Set<String> newLabels)
 specifier|private
-specifier|synchronized
 name|void
 name|updateLabelsOnNode
 parameter_list|(
@@ -6926,6 +7093,13 @@ argument_list|>
 name|newLabels
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|FiCaSchedulerNode
 name|node
 init|=
@@ -7036,7 +7210,9 @@ name|warn
 argument_list|(
 literal|"There's something wrong, some RMContainers running on"
 operator|+
-literal|" a node, but we cannot find SchedulerApplicationAttempt for it. Node="
+literal|" a node, but we cannot find SchedulerApplicationAttempt "
+operator|+
+literal|"for it. Node="
 operator|+
 name|node
 operator|.
@@ -7084,6 +7260,15 @@ argument_list|(
 name|newLabels
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|updateSchedulerHealth (long now, FiCaSchedulerNode node, CSAssignment assignment)
 specifier|private
@@ -7308,7 +7493,6 @@ annotation|@
 name|VisibleForTesting
 DECL|method|allocateContainersToNode (FiCaSchedulerNode node)
 specifier|public
-specifier|synchronized
 name|void
 name|allocateContainersToNode
 parameter_list|(
@@ -7316,6 +7500,13 @@ name|FiCaSchedulerNode
 name|node
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|rmContext
@@ -7945,6 +8136,15 @@ operator|.
 name|getApplicationAttemptId
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -8587,7 +8787,6 @@ block|}
 block|}
 DECL|method|addNode (RMNode nodeManager)
 specifier|private
-specifier|synchronized
 name|void
 name|addNode
 parameter_list|(
@@ -8595,6 +8794,13 @@ name|RMNode
 name|nodeManager
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|FiCaSchedulerNode
 name|schedulerNode
 init|=
@@ -8694,9 +8900,17 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|removeNode (RMNode nodeInfo)
 specifier|private
-specifier|synchronized
 name|void
 name|removeNode
 parameter_list|(
@@ -8704,6 +8918,13 @@ name|RMNode
 name|nodeInfo
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// update this node to node label manager
 if|if
 condition|(
@@ -8914,6 +9135,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|rollbackContainerResource ( ContainerId containerId)
 specifier|private
 name|void
@@ -8974,7 +9204,9 @@ literal|"Cannot rollback resource for container "
 operator|+
 name|containerId
 operator|+
-literal|". The application that the container belongs to does not exist."
+literal|". The application that the container "
+operator|+
+literal|"belongs to does not exist."
 argument_list|)
 expr_stmt|;
 return|return;
@@ -8988,22 +9220,6 @@ operator|+
 name|containerId
 argument_list|)
 expr_stmt|;
-name|LeafQueue
-name|leafQueue
-init|=
-operator|(
-name|LeafQueue
-operator|)
-name|application
-operator|.
-name|getQueue
-argument_list|()
-decl_stmt|;
-synchronized|synchronized
-init|(
-name|leafQueue
-init|)
-block|{
 name|SchedulerNode
 name|schedulerNode
 init|=
@@ -9042,7 +9258,6 @@ argument_list|,
 name|application
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -9140,6 +9355,37 @@ name|getNodeId
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|node
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container "
+operator|+
+name|container
+operator|+
+literal|" of"
+operator|+
+literal|" removed node "
+operator|+
+name|container
+operator|.
+name|getNodeId
+argument_list|()
+operator|+
+literal|" completed with event "
+operator|+
+name|event
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 comment|// Inform the queue
 name|LeafQueue
 name|queue
@@ -9564,7 +9810,6 @@ block|}
 block|}
 DECL|method|markContainerForKillable ( RMContainer killableContainer)
 specifier|public
-specifier|synchronized
 name|void
 name|markContainerForKillable
 parameter_list|(
@@ -9572,6 +9817,13 @@ name|RMContainer
 name|killableContainer
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -9708,9 +9960,17 @@ expr_stmt|;
 block|}
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|markContainerForNonKillable ( RMContainer nonKillableContainer)
 specifier|private
-specifier|synchronized
 name|void
 name|markContainerForNonKillable
 parameter_list|(
@@ -9718,6 +9978,13 @@ name|RMContainer
 name|nonKillableContainer
 parameter_list|)
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -9819,11 +10086,19 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|checkAccess (UserGroupInformation callerUGI, QueueACL acl, String queueName)
 specifier|public
-specifier|synchronized
 name|boolean
 name|checkAccess
 parameter_list|(
@@ -10048,7 +10323,6 @@ return|;
 block|}
 DECL|method|resolveReservationQueueName (String queueName, ApplicationId applicationId, ReservationId reservationID, boolean isRecovering)
 specifier|private
-specifier|synchronized
 name|String
 name|resolveReservationQueueName
 parameter_list|(
@@ -10065,6 +10339,13 @@ name|boolean
 name|isRecovering
 parameter_list|)
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|CSQueue
 name|queue
 init|=
@@ -10272,11 +10553,19 @@ return|return
 name|queueName
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|removeQueue (String queueName)
 specifier|public
-specifier|synchronized
 name|void
 name|removeQueue
 parameter_list|(
@@ -10286,6 +10575,13 @@ parameter_list|)
 throws|throws
 name|SchedulerDynamicEditException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -10416,11 +10712,19 @@ literal|" has succeeded"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|addQueue (Queue queue)
 specifier|public
-specifier|synchronized
 name|void
 name|addQueue
 parameter_list|(
@@ -10430,6 +10734,13 @@ parameter_list|)
 throws|throws
 name|SchedulerDynamicEditException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -10547,11 +10858,19 @@ literal|" succeeded"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|setEntitlement (String inQueue, QueueEntitlement entitlement)
 specifier|public
-specifier|synchronized
 name|void
 name|setEntitlement
 parameter_list|(
@@ -10562,10 +10881,15 @@ name|QueueEntitlement
 name|entitlement
 parameter_list|)
 throws|throws
-name|SchedulerDynamicEditException
-throws|,
 name|YarnException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|LeafQueue
 name|queue
 init|=
@@ -10682,8 +11006,8 @@ operator|.
 name|EPSILON
 condition|)
 block|{
-comment|// note: epsilon checks here are not ok, as the epsilons might accumulate
-comment|// and become a problem in aggregate
+comment|// note: epsilon checks here are not ok, as the epsilons might
+comment|// accumulate and become a problem in aggregate
 if|if
 condition|(
 name|Math
@@ -10772,11 +11096,19 @@ literal|")"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|moveApplication (ApplicationId appId, String targetQueueName)
 specifier|public
-specifier|synchronized
 name|String
 name|moveApplication
 parameter_list|(
@@ -10789,6 +11121,13 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|FiCaSchedulerApp
 name|app
 init|=
@@ -11000,7 +11339,16 @@ return|return
 name|targetQueueName
 return|;
 block|}
-comment|/**    * Check application can be moved to queue with labels enabled. All labels in    * application life time will be checked    *    * @param appId    * @param dest    * @throws YarnException    */
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Check application can be moved to queue with labels enabled. All labels in    * application life time will be checked    *    * @param app    * @param dest    * @throws YarnException    */
 DECL|method|checkQueuePartition (FiCaSchedulerApp app, LeafQueue dest)
 specifier|private
 name|void
@@ -11862,46 +12210,15 @@ name|getQueue
 argument_list|()
 argument_list|)
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|queue
-init|)
-block|{
 name|queue
 operator|.
-name|getOrderingPolicy
-argument_list|()
-operator|.
-name|removeSchedulableEntity
+name|updateApplicationPriority
 argument_list|(
 name|application
-operator|.
-name|getCurrentAppAttempt
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// Update new priority in SchedulerApplication
-name|application
-operator|.
-name|setPriority
-argument_list|(
+argument_list|,
 name|appPriority
 argument_list|)
 expr_stmt|;
-name|queue
-operator|.
-name|getOrderingPolicy
-argument_list|()
-operator|.
-name|addSchedulableEntity
-argument_list|(
-name|application
-operator|.
-name|getCurrentAppAttempt
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Update the changed application state to timeline server
 name|rmContext
 operator|.
