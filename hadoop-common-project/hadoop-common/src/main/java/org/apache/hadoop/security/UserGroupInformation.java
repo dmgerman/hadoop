@@ -7054,10 +7054,9 @@ name|iter
 operator|.
 name|next
 argument_list|()
-operator|instanceof
-name|Token
 operator|.
-name|PrivateToken
+name|isPrivate
+argument_list|()
 condition|)
 block|{
 name|iter
