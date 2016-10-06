@@ -1119,8 +1119,6 @@ argument_list|(
 name|srcIIP
 argument_list|,
 name|dstIIP
-argument_list|,
-name|src
 argument_list|)
 expr_stmt|;
 comment|// Ensure dst has quota to accommodate rename
@@ -2008,8 +2006,6 @@ argument_list|(
 name|srcIIP
 argument_list|,
 name|dstIIP
-argument_list|,
-name|src
 argument_list|)
 expr_stmt|;
 specifier|final

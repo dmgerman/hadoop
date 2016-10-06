@@ -1032,8 +1032,8 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Throws an exception if the provided path cannot be renamed into the    * destination because of differing parent encryption zones.    *<p/>    * Called while holding the FSDirectory lock.    *    * @param srcIIP source IIP    * @param dstIIP destination IIP    * @param src    source path, used for debugging    * @throws IOException if the src cannot be renamed to the dst    */
-DECL|method|checkMoveValidity (INodesInPath srcIIP, INodesInPath dstIIP, String src)
+comment|/**    * Throws an exception if the provided path cannot be renamed into the    * destination because of differing parent encryption zones.    *<p/>    * Called while holding the FSDirectory lock.    *    * @param srcIIP source IIP    * @param dstIIP destination IIP    * @throws IOException if the src cannot be renamed to the dst    */
+DECL|method|checkMoveValidity (INodesInPath srcIIP, INodesInPath dstIIP)
 name|void
 name|checkMoveValidity
 parameter_list|(
@@ -1042,9 +1042,6 @@ name|srcIIP
 parameter_list|,
 name|INodesInPath
 name|dstIIP
-parameter_list|,
-name|String
-name|src
 parameter_list|)
 throws|throws
 name|IOException
@@ -1055,6 +1052,15 @@ operator|.
 name|hasReadLock
 argument_list|()
 assert|;
+if|if
+condition|(
+operator|!
+name|hasCreatedEncryptionZone
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 specifier|final
 name|EncryptionZoneInt
 name|srcParentEZI
@@ -1105,7 +1111,10 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-name|src
+name|srcIIP
+operator|.
+name|getPath
+argument_list|()
 operator|+
 literal|" can't be moved from an encryption zone."
 argument_list|)
@@ -1124,7 +1133,10 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-name|src
+name|srcIIP
+operator|.
+name|getPath
+argument_list|()
 operator|+
 literal|" can't be moved into an encryption zone."
 argument_list|)
@@ -1167,7 +1179,10 @@ init|=
 operator|new
 name|StringBuilder
 argument_list|(
-name|src
+name|srcIIP
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|sb
@@ -1219,12 +1234,12 @@ block|}
 block|}
 block|}
 comment|/**    * Create a new encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    */
-DECL|method|createEncryptionZone (String src, CipherSuite suite, CryptoProtocolVersion version, String keyName)
+DECL|method|createEncryptionZone (INodesInPath srcIIP, CipherSuite suite, CryptoProtocolVersion version, String keyName)
 name|XAttr
 name|createEncryptionZone
 parameter_list|(
-name|String
-name|src
+name|INodesInPath
+name|srcIIP
 parameter_list|,
 name|CipherSuite
 name|suite
@@ -1245,25 +1260,8 @@ name|hasWriteLock
 argument_list|()
 assert|;
 comment|// Check if src is a valid path for new EZ creation
-specifier|final
-name|INodesInPath
-name|srcIIP
-init|=
-name|dir
-operator|.
-name|getINodesInPath4Write
-argument_list|(
-name|src
-argument_list|,
-literal|false
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|srcIIP
-operator|==
-literal|null
-operator|||
 name|srcIIP
 operator|.
 name|getLastINode
@@ -1278,7 +1276,10 @@ name|FileNotFoundException
 argument_list|(
 literal|"cannot find "
 operator|+
-name|src
+name|srcIIP
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -1349,11 +1350,12 @@ name|IOException
 argument_list|(
 literal|"Directory "
 operator|+
-name|src
+name|srcIIP
+operator|.
+name|getPath
+argument_list|()
 operator|+
-literal|" is already an encryption "
-operator|+
-literal|"zone."
+literal|" is already an encryption zone."
 argument_list|)
 throw|;
 block|}
@@ -1419,7 +1421,7 @@ name|unprotectedSetXAttrs
 argument_list|(
 name|dir
 argument_list|,
-name|src
+name|srcIIP
 argument_list|,
 name|xattrs
 argument_list|,

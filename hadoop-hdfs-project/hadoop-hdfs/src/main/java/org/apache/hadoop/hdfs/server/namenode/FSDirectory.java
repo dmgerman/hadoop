@@ -8174,18 +8174,15 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|checkUnreadableBySuperuser ( FSPermissionChecker pc, INode inode, int snapshotId)
+DECL|method|checkUnreadableBySuperuser (FSPermissionChecker pc, INodesInPath iip)
 name|void
 name|checkUnreadableBySuperuser
 parameter_list|(
 name|FSPermissionChecker
 name|pc
 parameter_list|,
-name|INode
-name|inode
-parameter_list|,
-name|int
-name|snapshotId
+name|INodesInPath
+name|iip
 parameter_list|)
 throws|throws
 name|IOException
@@ -8206,9 +8203,7 @@ name|getXAttrByPrefixedName
 argument_list|(
 name|this
 argument_list|,
-name|inode
-argument_list|,
-name|snapshotId
+name|iip
 argument_list|,
 name|SECURITY_XATTR_UNREADABLE_BY_SUPERUSER
 argument_list|)

@@ -152,17 +152,14 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Reads the extended attribute of an inode by name with prefix.    *<p/>    *    * @param inode INode to read    * @param snapshotId    * @param prefixedName xAttr name with prefix    * @return the xAttr    */
-DECL|method|readINodeXAttrByPrefixedName (INode inode, int snapshotId, String prefixedName)
+DECL|method|readINodeXAttrByPrefixedName (INodesInPath iip, String prefixedName)
 specifier|public
 specifier|static
 name|XAttr
 name|readINodeXAttrByPrefixedName
 parameter_list|(
-name|INode
-name|inode
-parameter_list|,
-name|int
-name|snapshotId
+name|INodesInPath
+name|iip
 parameter_list|,
 name|String
 name|prefixedName
@@ -171,11 +168,17 @@ block|{
 name|XAttrFeature
 name|f
 init|=
-name|inode
+name|iip
+operator|.
+name|getLastINode
+argument_list|()
 operator|.
 name|getXAttrFeature
 argument_list|(
-name|snapshotId
+name|iip
+operator|.
+name|getPathSnapshotId
+argument_list|()
 argument_list|)
 decl_stmt|;
 return|return

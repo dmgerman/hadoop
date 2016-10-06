@@ -81,6 +81,26 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|startFileNoKey ()
+specifier|public
+name|void
+name|startFileNoKey
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
+annotation|@
+name|VisibleForTesting
+DECL|method|startFileBeforeGenerateKey ()
+specifier|public
+name|void
+name|startFileBeforeGenerateKey
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
+annotation|@
+name|VisibleForTesting
 DECL|method|startFileAfterGenerateKey ()
 specifier|public
 name|void

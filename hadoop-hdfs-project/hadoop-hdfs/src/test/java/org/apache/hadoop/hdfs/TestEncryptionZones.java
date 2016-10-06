@@ -42,16 +42,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -6963,6 +6953,7 @@ extends|extends
 name|EncryptionFaultInjector
 block|{
 DECL|field|generateCount
+specifier|volatile
 name|int
 name|generateCount
 decl_stmt|;
@@ -7002,10 +6993,41 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|startFileAfterGenerateKey ()
+DECL|method|startFileNoKey ()
 specifier|public
 name|void
-name|startFileAfterGenerateKey
+name|startFileNoKey
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|generateCount
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+name|syncWithLatches
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|startFileBeforeGenerateKey ()
+specifier|public
+name|void
+name|startFileBeforeGenerateKey
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|syncWithLatches
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|syncWithLatches ()
+specifier|private
+name|void
+name|syncWithLatches
 parameter_list|()
 throws|throws
 name|IOException
@@ -7037,6 +7059,17 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|startFileAfterGenerateKey ()
+specifier|public
+name|void
+name|startFileAfterGenerateKey
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 name|generateCount
 operator|++
 expr_stmt|;
@@ -7204,11 +7237,17 @@ operator|.
 name|await
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// Do the fault
 name|doFault
 argument_list|()
 expr_stmt|;
 comment|// Allow create to proceed
+block|}
+finally|finally
+block|{
+comment|// Always decrement latch to avoid hanging the tests on failure.
 name|injector
 operator|.
 name|wait
@@ -7216,6 +7255,7 @@ operator|.
 name|countDown
 argument_list|()
 expr_stmt|;
+block|}
 name|future
 operator|.
 name|get
@@ -7306,7 +7346,8 @@ operator|.
 name|newSingleThreadExecutor
 argument_list|()
 decl_stmt|;
-comment|// Test when the parent directory becomes an EZ
+comment|// Test when the parent directory becomes an EZ.  With no initial EZ,
+comment|// the fsn lock must not be yielded.
 name|executor
 operator|.
 name|submit
@@ -7319,27 +7360,6 @@ annotation|@
 name|Override
 specifier|public
 name|void
-name|doFault
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|dfsAdmin
-operator|.
-name|createEncryptionZone
-argument_list|(
-name|zone1
-argument_list|,
-name|TEST_KEY
-argument_list|,
-name|NO_TRASH
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-specifier|public
-name|void
 name|doCleanup
 parameter_list|()
 throws|throws
@@ -7347,9 +7367,10 @@ name|Exception
 block|{
 name|assertEquals
 argument_list|(
-literal|"Expected a startFile retry"
+literal|"Expected no startFile key generation"
 argument_list|,
-literal|2
+operator|-
+literal|1
 argument_list|,
 name|injector
 operator|.
@@ -7372,7 +7393,20 @@ operator|.
 name|get
 argument_list|()
 expr_stmt|;
-comment|// Test when the parent directory unbecomes an EZ
+comment|// Test when the parent directory unbecomes an EZ.  The generation of
+comment|// the EDEK will yield the lock, then re-resolve the path and use the
+comment|// previous EDEK.
+name|dfsAdmin
+operator|.
+name|createEncryptionZone
+argument_list|(
+name|zone1
+argument_list|,
+name|TEST_KEY
+argument_list|,
+name|NO_TRASH
+argument_list|)
+expr_stmt|;
 name|executor
 operator|.
 name|submit
@@ -7436,7 +7470,9 @@ operator|.
 name|get
 argument_list|()
 expr_stmt|;
-comment|// Test when the parent directory becomes a different EZ
+comment|// Test when the parent directory becomes a different EZ.  The generation
+comment|// of the EDEK will yield the lock, re-resolve will detect the EZ has
+comment|// changed, and client will be asked to retry a 2nd time
 name|fsWrapper
 operator|.
 name|mkdir
