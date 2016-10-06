@@ -10209,7 +10209,7 @@ name|setTimes
 argument_list|(
 name|dir
 argument_list|,
-name|inode
+name|iip
 argument_list|,
 operator|-
 literal|1
@@ -10217,11 +10217,6 @@ argument_list|,
 name|now
 argument_list|,
 literal|false
-argument_list|,
-name|iip
-operator|.
-name|getLatestSnapshotId
-argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
