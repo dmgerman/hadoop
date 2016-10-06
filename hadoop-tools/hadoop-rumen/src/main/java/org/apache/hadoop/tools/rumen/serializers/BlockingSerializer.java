@@ -22,21 +22,13 @@ end_package
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|codehaus
+name|fasterxml
 operator|.
 name|jackson
+operator|.
+name|core
 operator|.
 name|JsonGenerator
 import|;
@@ -44,11 +36,13 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|codehaus
+name|fasterxml
 operator|.
 name|jackson
+operator|.
+name|core
 operator|.
 name|JsonProcessingException
 import|;
@@ -56,13 +50,13 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|codehaus
+name|fasterxml
 operator|.
 name|jackson
 operator|.
-name|map
+name|databind
 operator|.
 name|JsonSerializer
 import|;
@@ -70,15 +64,25 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|codehaus
+name|fasterxml
 operator|.
 name|jackson
 operator|.
-name|map
+name|databind
 operator|.
 name|SerializerProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 

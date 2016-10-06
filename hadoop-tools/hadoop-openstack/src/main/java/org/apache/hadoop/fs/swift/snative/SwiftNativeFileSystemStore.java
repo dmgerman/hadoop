@@ -22,6 +22,22 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|fasterxml
+operator|.
+name|jackson
+operator|.
+name|databind
+operator|.
+name|type
+operator|.
+name|CollectionType
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -327,22 +343,6 @@ operator|.
 name|util
 operator|.
 name|SwiftUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|codehaus
-operator|.
-name|jackson
-operator|.
-name|map
-operator|.
-name|type
-operator|.
-name|CollectionType
 import|;
 end_import
 

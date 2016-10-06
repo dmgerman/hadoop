@@ -168,6 +168,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|fasterxml
+operator|.
+name|jackson
+operator|.
+name|core
+operator|.
+name|JsonProcessingException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -395,18 +409,6 @@ operator|.
 name|compress
 operator|.
 name|Decompressor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|codehaus
-operator|.
-name|jackson
-operator|.
-name|JsonProcessingException
 import|;
 end_import
 

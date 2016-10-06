@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|fasterxml
+operator|.
+name|jackson
+operator|.
+name|annotation
+operator|.
+name|JsonIgnore
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -101,20 +115,6 @@ operator|.
 name|state
 operator|.
 name|StatePool
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|codehaus
-operator|.
-name|jackson
-operator|.
-name|annotate
-operator|.
-name|JsonIgnore
 import|;
 end_import
 
