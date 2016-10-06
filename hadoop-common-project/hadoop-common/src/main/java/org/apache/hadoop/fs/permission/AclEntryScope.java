@@ -58,7 +58,7 @@ name|Public
 annotation|@
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Stable
 DECL|enum|AclEntryScope
 specifier|public
 enum|enum

@@ -128,7 +128,7 @@ name|Public
 annotation|@
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Stable
 DECL|class|AclEntry
 specifier|public
 class|class
@@ -318,10 +318,28 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|toString ()
 specifier|public
 name|String
 name|toString
+parameter_list|()
+block|{
+comment|// This currently just delegates to the stable string representation, but it
+comment|// is permissible for the output of this method to change across versions.
+return|return
+name|toStringStable
+argument_list|()
+return|;
+block|}
+comment|/**    * Returns a string representation guaranteed to be stable across versions to    * satisfy backward compatibility requirements, such as for shell command    * output or serialization.  The format of this string representation matches    * what is expected by the {@link #parseAclSpec(String, boolean)} and    * {@link #parseAclEntry(String, boolean)} methods.    *    * @return stable, backward compatible string representation    */
+DECL|method|toStringStable ()
+specifier|public
+name|String
+name|toStringStable
 parameter_list|()
 block|{
 name|StringBuilder
@@ -365,7 +383,7 @@ name|toLowerCase
 argument_list|(
 name|type
 operator|.
-name|toString
+name|toStringStable
 argument_list|()
 argument_list|)
 argument_list|)
@@ -614,7 +632,7 @@ operator|=
 name|scope
 expr_stmt|;
 block|}
-comment|/**    * Parses a string representation of an ACL spec into a list of AclEntry    * objects. Example: "user::rwx,user:foo:rw-,group::r--,other::---"    *     * @param aclSpec    *          String representation of an ACL spec.    * @param includePermission    *          for setAcl operations this will be true. i.e. AclSpec should    *          include permissions.<br>    *          But for removeAcl operation it will be false. i.e. AclSpec should    *          not contain permissions.<br>    *          Example: "user:foo,group:bar"    * @return Returns list of {@link AclEntry} parsed    */
+comment|/**    * Parses a string representation of an ACL spec into a list of AclEntry    * objects. Example: "user::rwx,user:foo:rw-,group::r--,other::---"    * The expected format of ACL entries in the string parameter is the same    * format produced by the {@link #toStringStable()} method.    *     * @param aclSpec    *          String representation of an ACL spec.    * @param includePermission    *          for setAcl operations this will be true. i.e. AclSpec should    *          include permissions.<br>    *          But for removeAcl operation it will be false. i.e. AclSpec should    *          not contain permissions.<br>    *          Example: "user:foo,group:bar"    * @return Returns list of {@link AclEntry} parsed    */
 DECL|method|parseAclSpec (String aclSpec, boolean includePermission)
 specifier|public
 specifier|static
@@ -689,7 +707,7 @@ return|return
 name|aclEntries
 return|;
 block|}
-comment|/**    * Parses a string representation of an ACL into a AclEntry object.<br>    *     * @param aclStr    *          String representation of an ACL.<br>    *          Example: "user:foo:rw-"    * @param includePermission    *          for setAcl operations this will be true. i.e. Acl should include    *          permissions.<br>    *          But for removeAcl operation it will be false. i.e. Acl should not    *          contain permissions.<br>    *          Example: "user:foo,group:bar,mask::"    * @return Returns an {@link AclEntry} object    */
+comment|/**    * Parses a string representation of an ACL into a AclEntry object.<br>    * The expected format of ACL entries in the string parameter is the same    * format produced by the {@link #toStringStable()} method.    *     * @param aclStr    *          String representation of an ACL.<br>    *          Example: "user:foo:rw-"    * @param includePermission    *          for setAcl operations this will be true. i.e. Acl should include    *          permissions.<br>    *          But for removeAcl operation it will be false. i.e. Acl should not    *          contain permissions.<br>    *          Example: "user:foo,group:bar,mask::"    * @return Returns an {@link AclEntry} object    */
 DECL|method|parseAclEntry (String aclStr, boolean includePermission)
 specifier|public
 specifier|static

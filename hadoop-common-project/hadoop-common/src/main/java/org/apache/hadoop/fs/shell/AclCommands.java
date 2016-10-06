@@ -687,6 +687,9 @@ operator|.
 name|println
 argument_list|(
 name|entry
+operator|.
+name|toStringStable
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -801,6 +804,9 @@ operator|.
 name|println
 argument_list|(
 name|entry
+operator|.
+name|toStringStable
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -812,6 +818,9 @@ operator|.
 name|println
 argument_list|(
 name|entry
+operator|.
+name|toStringStable
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
