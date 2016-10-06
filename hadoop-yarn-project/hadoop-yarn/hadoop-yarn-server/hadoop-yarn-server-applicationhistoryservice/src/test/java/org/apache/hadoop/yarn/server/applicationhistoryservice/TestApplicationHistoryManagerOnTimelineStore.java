@@ -3894,11 +3894,19 @@ operator|new
 name|TimelineEvent
 argument_list|()
 expr_stmt|;
+name|long
+name|updatedTimeIndex
+init|=
+literal|4L
+decl_stmt|;
 name|createAppModifiedEvent
 argument_list|(
 name|appId
 argument_list|,
 name|tEvent
+argument_list|,
+name|updatedTimeIndex
+operator|++
 argument_list|,
 literal|"changed queue"
 argument_list|,
@@ -3925,6 +3933,9 @@ name|appId
 argument_list|,
 name|tEvent
 argument_list|,
+name|updatedTimeIndex
+operator|++
+argument_list|,
 literal|"changed queue"
 argument_list|,
 literal|6
@@ -3943,6 +3954,9 @@ name|appId
 argument_list|,
 name|tEvent
 argument_list|,
+name|updatedTimeIndex
+operator|++
+argument_list|,
 literal|"changed queue1"
 argument_list|,
 literal|6
@@ -3960,7 +3974,7 @@ return|return
 name|entity
 return|;
 block|}
-DECL|method|createAppModifiedEvent (ApplicationId appId, TimelineEvent tEvent, String queue, int priority)
+DECL|method|createAppModifiedEvent (ApplicationId appId, TimelineEvent tEvent, long updatedTimeIndex, String queue, int priority)
 specifier|private
 specifier|static
 name|void
@@ -3971,6 +3985,9 @@ name|appId
 parameter_list|,
 name|TimelineEvent
 name|tEvent
+parameter_list|,
+name|long
+name|updatedTimeIndex
 parameter_list|,
 name|String
 name|queue
@@ -3996,7 +4013,7 @@ name|Integer
 operator|.
 name|MAX_VALUE
 operator|+
-literal|4L
+name|updatedTimeIndex
 operator|+
 name|appId
 operator|.

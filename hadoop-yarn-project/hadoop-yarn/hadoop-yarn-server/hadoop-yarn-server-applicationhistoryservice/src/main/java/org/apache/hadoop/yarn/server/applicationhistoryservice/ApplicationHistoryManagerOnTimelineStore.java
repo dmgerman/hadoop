@@ -2432,6 +2432,14 @@ argument_list|()
 expr_stmt|;
 end_expr_stmt
 
+begin_decl_stmt
+name|long
+name|updatedTimeStamp
+init|=
+literal|0L
+decl_stmt|;
+end_decl_stmt
+
 begin_if
 if|if
 condition|(
@@ -2487,9 +2495,32 @@ name|UPDATED_EVENT_TYPE
 argument_list|)
 condition|)
 block|{
-comment|// TODO: YARN-5101. This type of events are parsed in
-comment|// time-stamp descending order which means the previous event
-comment|// could override the information from the later same type of event.
+comment|// This type of events are parsed in time-stamp descending order
+comment|// which means the previous event could override the information
+comment|// from the later same type of event. Hence compare timestamp
+comment|// before over writing.
+if|if
+condition|(
+name|event
+operator|.
+name|getTimestamp
+argument_list|()
+operator|>
+name|updatedTimeStamp
+condition|)
+block|{
+name|updatedTimeStamp
+operator|=
+name|event
+operator|.
+name|getTimestamp
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+continue|continue;
+block|}
 name|Map
 argument_list|<
 name|String

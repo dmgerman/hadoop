@@ -6420,9 +6420,11 @@ name|appUpdated
 argument_list|(
 name|app
 argument_list|,
-name|System
+name|app
 operator|.
-name|currentTimeMillis
+name|systemClock
+operator|.
+name|getTime
 argument_list|()
 argument_list|)
 expr_stmt|;
