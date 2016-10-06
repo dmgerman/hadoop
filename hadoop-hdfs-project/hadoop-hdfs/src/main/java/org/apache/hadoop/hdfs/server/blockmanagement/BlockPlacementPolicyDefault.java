@@ -261,6 +261,15 @@ name|class
 operator|.
 name|getName
 argument_list|()
+operator|+
+literal|" and "
+operator|+
+name|NetworkTopology
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
 decl_stmt|;
 DECL|field|debugLoggingBuilder
 specifier|private
