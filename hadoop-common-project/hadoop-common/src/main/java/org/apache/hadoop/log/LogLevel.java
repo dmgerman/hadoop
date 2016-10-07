@@ -390,6 +390,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|GenericOptionsParser
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|ServletUtil
 import|;
 end_import
@@ -405,6 +419,20 @@ operator|.
 name|util
 operator|.
 name|Tool
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ToolRunner
 import|;
 end_import
 
@@ -429,7 +457,7 @@ specifier|final
 name|String
 name|USAGES
 init|=
-literal|"\nUsage: General options are:\n"
+literal|"\nUsage: Command options are:\n"
 operator|+
 literal|"\t[-getlevel<host:port><classname> [-protocol (http|https)]\n"
 operator|+
@@ -484,10 +512,12 @@ name|System
 operator|.
 name|exit
 argument_list|(
-name|cli
+name|ToolRunner
 operator|.
 name|run
 argument_list|(
+name|cli
+argument_list|,
 name|args
 argument_list|)
 argument_list|)
@@ -522,6 +552,15 @@ operator|.
 name|println
 argument_list|(
 name|USAGES
+argument_list|)
+expr_stmt|;
+name|GenericOptionsParser
+operator|.
+name|printGenericCommandUsage
+argument_list|(
+name|System
+operator|.
+name|err
 argument_list|)
 expr_stmt|;
 block|}
@@ -642,9 +681,10 @@ block|{
 name|printUsage
 argument_list|()
 expr_stmt|;
-throw|throw
-name|e
-throw|;
+return|return
+operator|-
+literal|1
+return|;
 block|}
 return|return
 literal|0
