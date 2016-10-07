@@ -18713,11 +18713,6 @@ name|FSNamesystem
 operator|.
 name|this
 argument_list|,
-name|bc
-operator|.
-name|getName
-argument_list|()
-argument_list|,
 name|INodesInPath
 operator|.
 name|fromINode
