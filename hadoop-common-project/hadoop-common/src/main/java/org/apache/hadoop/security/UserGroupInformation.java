@@ -88,6 +88,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UGIExceptionMessages
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|PlatformName
@@ -3684,20 +3700,37 @@ name|LoginException
 name|le
 parameter_list|)
 block|{
-throw|throw
+name|KerberosAuthException
+name|kae
+init|=
 operator|new
-name|IOException
+name|KerberosAuthException
 argument_list|(
-literal|"failure to login using ticket cache file "
-operator|+
-name|ticketCache
+name|FAILURE_TO_LOGIN
 argument_list|,
 name|le
 argument_list|)
+decl_stmt|;
+name|kae
+operator|.
+name|setUser
+argument_list|(
+name|user
+argument_list|)
+expr_stmt|;
+name|kae
+operator|.
+name|setTicketCacheFile
+argument_list|(
+name|ticketCache
+argument_list|)
+expr_stmt|;
+throw|throw
+name|kae
 throw|;
 block|}
 block|}
-comment|/**    * Create a UserGroupInformation from a Subject with Kerberos principal.    *    * @param subject             The KerberosPrincipal to use in UGI    *    * @throws IOException        if the kerberos login fails    */
+comment|/**    * Create a UserGroupInformation from a Subject with Kerberos principal.    *    * @param subject             The KerberosPrincipal to use in UGI    *    * @throws IOException    * @throws KerberosAuthException if the kerberos login fails    */
 DECL|method|getUGIFromSubject (Subject subject)
 specifier|public
 specifier|static
@@ -3719,9 +3752,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|KerberosAuthException
 argument_list|(
-literal|"Subject must not be null"
+name|SUBJECT_MUST_NOT_BE_NULL
 argument_list|)
 throw|;
 block|}
@@ -3742,9 +3775,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|KerberosAuthException
 argument_list|(
-literal|"Provided Subject must contain a KerberosPrincipal"
+name|SUBJECT_MUST_CONTAIN_PRINCIPAL
 argument_list|)
 throw|;
 block|}
@@ -4286,11 +4319,9 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|KerberosAuthException
 argument_list|(
-literal|"failure to login: "
-operator|+
-name|le
+name|FAILURE_TO_LOGIN
 argument_list|,
 name|le
 argument_list|)
@@ -4725,7 +4756,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Log a user in from a keytab file. Loads a user identity from a keytab    * file and logs them in. They become the currently logged-in user.    * @param user the principal name to load from the keytab    * @param path the path to the keytab file    * @throws IOException if the keytab file can't be read    */
+comment|/**    * Log a user in from a keytab file. Loads a user identity from a keytab    * file and logs them in. They become the currently logged-in user.    * @param user the principal name to load from the keytab    * @param path the path to the keytab file    * @throws IOException    * @throws KerberosAuthException if it's a kerberos login exception.    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -4876,24 +4907,33 @@ name|start
 argument_list|)
 expr_stmt|;
 block|}
-throw|throw
+name|KerberosAuthException
+name|kae
+init|=
 operator|new
-name|IOException
+name|KerberosAuthException
 argument_list|(
-literal|"Login failure for "
-operator|+
-name|user
-operator|+
-literal|" from keytab "
-operator|+
-name|path
-operator|+
-literal|": "
-operator|+
-name|le
+name|LOGIN_FAILURE
 argument_list|,
 name|le
 argument_list|)
+decl_stmt|;
+name|kae
+operator|.
+name|setUser
+argument_list|(
+name|user
+argument_list|)
+expr_stmt|;
+name|kae
+operator|.
+name|setKeytabFile
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+throw|throw
+name|kae
 throw|;
 block|}
 name|LOG
@@ -4910,7 +4950,7 @@ name|keytabFile
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Log the current user out who previously logged in using keytab.    * This method assumes that the user logged in by calling    * {@link #loginUserFromKeytab(String, String)}.    *    * @throws IOException if a failure occurred in logout, or if the user did    * not log in by invoking loginUserFromKeyTab() before.    */
+comment|/**    * Log the current user out who previously logged in using keytab.    * This method assumes that the user logged in by calling    * {@link #loginUserFromKeytab(String, String)}.    *    * @throws IOException    * @throws KerberosAuthException if a failure occurred in logout,    * or if the user did not log in by invoking loginUserFromKeyTab() before.    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -4964,9 +5004,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|KerberosAuthException
 argument_list|(
-literal|"loginUserFromKeytab must be done first"
+name|MUST_FIRST_LOGIN_FROM_KEYTAB
 argument_list|)
 throw|;
 block|}
@@ -5011,24 +5051,36 @@ name|LoginException
 name|le
 parameter_list|)
 block|{
-throw|throw
+name|KerberosAuthException
+name|kae
+init|=
 operator|new
-name|IOException
+name|KerberosAuthException
 argument_list|(
-literal|"Logout failure for "
-operator|+
-name|user
-operator|+
-literal|" from keytab "
-operator|+
-name|keytabFile
-operator|+
-literal|": "
-operator|+
-name|le
+name|LOGOUT_FAILURE
 argument_list|,
 name|le
 argument_list|)
+decl_stmt|;
+name|kae
+operator|.
+name|setUser
+argument_list|(
+name|user
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|kae
+operator|.
+name|setKeytabFile
+argument_list|(
+name|keytabFile
+argument_list|)
+expr_stmt|;
+throw|throw
+name|kae
 throw|;
 block|}
 name|LOG
@@ -5045,7 +5097,7 @@ name|keytabFile
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Re-login a user from keytab if TGT is expired or is close to expiry.    *     * @throws IOException    */
+comment|/**    * Re-login a user from keytab if TGT is expired or is close to expiry.    *     * @throws IOException    * @throws KerberosAuthException if it's a kerberos login exception.    */
 DECL|method|checkTGTAndReloginFromKeytab ()
 specifier|public
 specifier|synchronized
@@ -5106,7 +5158,7 @@ name|reloginFromKeytab
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Re-Login a user in from a keytab file. Loads a user identity from a keytab    * file and logs them in. They become the currently logged-in user. This    * method assumes that {@link #loginUserFromKeytab(String, String)} had     * happened already.    * The Subject field of this UserGroupInformation object is updated to have    * the new credentials.    * @throws IOException on a failure    */
+comment|/**    * Re-Login a user in from a keytab file. Loads a user identity from a keytab    * file and logs them in. They become the currently logged-in user. This    * method assumes that {@link #loginUserFromKeytab(String, String)} had     * happened already.    * The Subject field of this UserGroupInformation object is updated to have    * the new credentials.    * @throws IOException    * @throws KerberosAuthException on a failure    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -5210,9 +5262,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|KerberosAuthException
 argument_list|(
-literal|"loginUserFromKeyTab must be done first"
+name|MUST_FIRST_LOGIN_FROM_KEYTAB
 argument_list|)
 throw|;
 block|}
@@ -5362,28 +5414,37 @@ name|start
 argument_list|)
 expr_stmt|;
 block|}
-throw|throw
+name|KerberosAuthException
+name|kae
+init|=
 operator|new
-name|IOException
+name|KerberosAuthException
 argument_list|(
-literal|"Login failure for "
-operator|+
-name|keytabPrincipal
-operator|+
-literal|" from keytab "
-operator|+
-name|keytabFile
-operator|+
-literal|": "
-operator|+
-name|le
+name|LOGIN_FAILURE
 argument_list|,
 name|le
 argument_list|)
+decl_stmt|;
+name|kae
+operator|.
+name|setPrincipal
+argument_list|(
+name|keytabPrincipal
+argument_list|)
+expr_stmt|;
+name|kae
+operator|.
+name|setKeytabFile
+argument_list|(
+name|keytabFile
+argument_list|)
+expr_stmt|;
+throw|throw
+name|kae
 throw|;
 block|}
 block|}
-comment|/**    * Re-Login a user in from the ticket cache.  This    * method assumes that login had happened already.    * The Subject field of this UserGroupInformation object is updated to have    * the new credentials.    * @throws IOException on a failure    */
+comment|/**    * Re-Login a user in from the ticket cache.  This    * method assumes that login had happened already.    * The Subject field of this UserGroupInformation object is updated to have    * the new credentials.    * @throws IOException    * @throws KerberosAuthException on a failure    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -5435,9 +5496,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|KerberosAuthException
 argument_list|(
-literal|"login must be done first"
+name|MUST_FIRST_LOGIN
 argument_list|)
 throw|;
 block|}
@@ -5551,21 +5612,27 @@ name|LoginException
 name|le
 parameter_list|)
 block|{
-throw|throw
+name|KerberosAuthException
+name|kae
+init|=
 operator|new
-name|IOException
+name|KerberosAuthException
 argument_list|(
-literal|"Login failure for "
-operator|+
-name|getUserName
-argument_list|()
-operator|+
-literal|": "
-operator|+
-name|le
+name|LOGIN_FAILURE
 argument_list|,
 name|le
 argument_list|)
+decl_stmt|;
+name|kae
+operator|.
+name|setUser
+argument_list|(
+name|getUserName
+argument_list|()
+argument_list|)
+expr_stmt|;
+throw|throw
+name|kae
 throw|;
 block|}
 block|}
@@ -5737,24 +5804,33 @@ name|start
 argument_list|)
 expr_stmt|;
 block|}
-throw|throw
+name|KerberosAuthException
+name|kae
+init|=
 operator|new
-name|IOException
+name|KerberosAuthException
 argument_list|(
-literal|"Login failure for "
-operator|+
-name|user
-operator|+
-literal|" from keytab "
-operator|+
-name|path
-operator|+
-literal|": "
-operator|+
-name|le
+name|LOGIN_FAILURE
 argument_list|,
 name|le
 argument_list|)
+decl_stmt|;
+name|kae
+operator|.
+name|setUser
+argument_list|(
+name|user
+argument_list|)
+expr_stmt|;
+name|kae
+operator|.
+name|setKeytabFile
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+throw|throw
+name|kae
 throw|;
 block|}
 finally|finally
