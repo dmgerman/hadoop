@@ -146,7 +146,6 @@ extends|extends
 name|SignerSecretProvider
 block|{
 DECL|field|LOG
-specifier|private
 specifier|static
 name|Logger
 name|LOG
