@@ -8268,38 +8268,26 @@ literal|null
 return|;
 block|}
 comment|/**    * Verify that parent directory of src exists.    */
-DECL|method|verifyParentDir (INodesInPath iip, String src)
+DECL|method|verifyParentDir (INodesInPath iip)
 name|void
 name|verifyParentDir
 parameter_list|(
 name|INodesInPath
 name|iip
-parameter_list|,
-name|String
-name|src
 parameter_list|)
 throws|throws
 name|FileNotFoundException
 throws|,
 name|ParentNotDirectoryException
 block|{
-name|Path
-name|parent
-init|=
-operator|new
-name|Path
-argument_list|(
-name|src
-argument_list|)
-operator|.
-name|getParent
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
-name|parent
-operator|!=
-literal|null
+name|iip
+operator|.
+name|length
+argument_list|()
+operator|>
+literal|2
 condition|)
 block|{
 specifier|final
@@ -8327,7 +8315,10 @@ name|FileNotFoundException
 argument_list|(
 literal|"Parent directory doesn't exist: "
 operator|+
-name|parent
+name|iip
+operator|.
+name|getParentPath
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -8339,12 +8330,6 @@ name|parentNode
 operator|.
 name|isDirectory
 argument_list|()
-operator|&&
-operator|!
-name|parentNode
-operator|.
-name|isSymlink
-argument_list|()
 condition|)
 block|{
 throw|throw
@@ -8353,7 +8338,10 @@ name|ParentNotDirectoryException
 argument_list|(
 literal|"Parent path is not a directory: "
 operator|+
-name|parent
+name|iip
+operator|.
+name|getParentPath
+argument_list|()
 argument_list|)
 throw|;
 block|}
