@@ -2117,7 +2117,7 @@ specifier|final
 name|int
 name|DEFAULT_MR_CLIENT_JOB_MAX_RETRIES
 init|=
-literal|0
+literal|3
 decl_stmt|;
 comment|/**    * How long to wait between jobclient retries on failure    */
 DECL|field|MR_CLIENT_JOB_RETRY_INTERVAL
