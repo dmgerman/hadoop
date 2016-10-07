@@ -262,6 +262,13 @@ name|Exception
 block|{
 comment|// Clean up after test completion
 comment|// No need to clean fc1 as fc1 and fc2 points same location
+if|if
+condition|(
+name|fc2
+operator|!=
+literal|null
+condition|)
+block|{
 name|fc2
 operator|.
 name|delete
@@ -271,6 +278,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
