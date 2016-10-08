@@ -9046,6 +9046,22 @@ name|DatanodeDescriptor
 name|target
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"check if target {} increases racks, srcs={}"
+argument_list|,
+name|target
+argument_list|,
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|srcs
+argument_list|)
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|DatanodeDescriptor
@@ -9056,6 +9072,12 @@ control|)
 block|{
 if|if
 condition|(
+operator|!
+name|src
+operator|.
+name|isDecommissionInProgress
+argument_list|()
+operator|&&
 name|src
 operator|.
 name|getNetworkLocation
@@ -9070,6 +9092,17 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"the target {} is in the same rack with src {}"
+argument_list|,
+name|target
+argument_list|,
+name|src
+argument_list|)
+expr_stmt|;
 return|return
 literal|false
 return|;
