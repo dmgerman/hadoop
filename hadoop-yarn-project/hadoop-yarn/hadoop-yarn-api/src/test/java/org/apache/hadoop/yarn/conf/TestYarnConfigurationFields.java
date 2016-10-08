@@ -476,6 +476,16 @@ argument_list|(
 literal|"yarn.app.container"
 argument_list|)
 expr_stmt|;
+comment|// Ignore default file name for resource profiles
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_RESOURCE_PROFILES_SOURCE_FILE
+argument_list|)
+expr_stmt|;
 comment|// Ignore NodeManager "work in progress" variables
 name|configurationPrefixToSkipCompare
 operator|.
