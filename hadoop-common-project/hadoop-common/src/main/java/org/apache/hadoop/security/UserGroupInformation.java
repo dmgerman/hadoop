@@ -4492,26 +4492,25 @@ parameter_list|()
 block|{
 if|if
 condition|(
+operator|!
 name|isSecurityEnabled
 argument_list|()
-condition|)
-block|{
-comment|//spawn thread only if we have kerb credentials
-if|if
-condition|(
+operator|||
 name|user
 operator|.
 name|getAuthenticationMethod
 argument_list|()
-operator|==
+operator|!=
 name|AuthenticationMethod
 operator|.
 name|KERBEROS
-operator|&&
-operator|!
+operator|||
 name|isKeytab
 condition|)
 block|{
+return|return;
+block|}
+comment|//spawn thread only if we have kerb credentials
 name|Thread
 name|t
 init|=
@@ -4753,8 +4752,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-block|}
-block|}
 block|}
 comment|/**    * Log a user in from a keytab file. Loads a user identity from a keytab    * file and logs them in. They become the currently logged-in user.    * @param user the principal name to load from the keytab    * @param path the path to the keytab file    * @throws IOException    * @throws KerberosAuthException if it's a kerberos login exception.    */
 annotation|@
