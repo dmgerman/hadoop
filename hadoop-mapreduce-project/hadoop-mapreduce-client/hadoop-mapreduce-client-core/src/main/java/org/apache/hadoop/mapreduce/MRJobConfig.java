@@ -233,25 +233,6 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-DECL|field|TASK_PROGRESS_REPORT_INTERVAL
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|TASK_PROGRESS_REPORT_INTERVAL
-init|=
-literal|"mapreduce.task.progress-report.interval"
-decl_stmt|;
-comment|/** The number of milliseconds between progress reports. */
-DECL|field|DEFAULT_TASK_PROGRESS_REPORT_INTERVAL
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_TASK_PROGRESS_REPORT_INTERVAL
-init|=
-literal|3000
-decl_stmt|;
 DECL|field|JAR
 specifier|public
 specifier|static
@@ -1018,6 +999,22 @@ name|String
 name|TASK_TIMEOUT
 init|=
 literal|"mapreduce.task.timeout"
+decl_stmt|;
+DECL|field|DEFAULT_TASK_TIMEOUT_MILLIS
+name|long
+name|DEFAULT_TASK_TIMEOUT_MILLIS
+init|=
+literal|5
+operator|*
+literal|60
+operator|*
+literal|1000L
+decl_stmt|;
+DECL|field|TASK_PROGRESS_REPORT_INTERVAL
+name|String
+name|TASK_PROGRESS_REPORT_INTERVAL
+init|=
+literal|"mapreduce.task.progress-report.interval"
 decl_stmt|;
 DECL|field|TASK_TIMEOUT_CHECK_INTERVAL_MS
 specifier|public
@@ -2120,7 +2117,7 @@ specifier|final
 name|int
 name|DEFAULT_MR_CLIENT_JOB_MAX_RETRIES
 init|=
-literal|0
+literal|3
 decl_stmt|;
 comment|/**    * How long to wait between jobclient retries on failure    */
 DECL|field|MR_CLIENT_JOB_RETRY_INTERVAL

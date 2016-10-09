@@ -68,6 +68,24 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+import|;
+end_import
+
 begin_comment
 comment|/**  * An enumeration of logs available on a remote NameNode.  */
 end_comment
@@ -91,14 +109,36 @@ specifier|private
 name|long
 name|committedTxnId
 init|=
-operator|-
-literal|1
+name|HdfsServerConstants
+operator|.
+name|INVALID_TXID
 decl_stmt|;
 DECL|method|RemoteEditLogManifest ()
 specifier|public
 name|RemoteEditLogManifest
 parameter_list|()
 block|{   }
+DECL|method|RemoteEditLogManifest (List<RemoteEditLog> logs)
+specifier|public
+name|RemoteEditLogManifest
+parameter_list|(
+name|List
+argument_list|<
+name|RemoteEditLog
+argument_list|>
+name|logs
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|logs
+argument_list|,
+name|HdfsServerConstants
+operator|.
+name|INVALID_TXID
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|RemoteEditLogManifest (List<RemoteEditLog> logs, long committedTxnId)
 specifier|public
 name|RemoteEditLogManifest

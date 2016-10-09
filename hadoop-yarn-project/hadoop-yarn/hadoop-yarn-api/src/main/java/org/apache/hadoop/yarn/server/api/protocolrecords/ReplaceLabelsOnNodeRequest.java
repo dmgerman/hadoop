@@ -201,6 +201,31 @@ argument_list|>
 name|getNodeToLabels
 parameter_list|()
 function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|setFailOnUnknownNodes (boolean failOnUnknownNodes)
+specifier|public
+specifier|abstract
+name|void
+name|setFailOnUnknownNodes
+parameter_list|(
+name|boolean
+name|failOnUnknownNodes
+parameter_list|)
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|getFailOnUnknownNodes ()
+specifier|public
+specifier|abstract
+name|boolean
+name|getFailOnUnknownNodes
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

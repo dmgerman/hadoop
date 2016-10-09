@@ -341,8 +341,6 @@ operator|.
 name|verifyParentDir
 argument_list|(
 name|iip
-argument_list|,
-name|link
 argument_list|)
 expr_stmt|;
 block|}

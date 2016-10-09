@@ -1284,6 +1284,28 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|rmapp
+operator|.
+name|monitor
+operator|.
+name|RMAppLifetimeMonitor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmcontainer
 operator|.
 name|ContainerAllocationExpirer
@@ -2506,7 +2528,7 @@ name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|String
 name|zkHostPort
@@ -3654,6 +3676,24 @@ operator|.
 name|setAMFinishingMonitor
 argument_list|(
 name|amFinishingMonitor
+argument_list|)
+expr_stmt|;
+name|RMAppLifetimeMonitor
+name|rmAppLifetimeMonitor
+init|=
+name|createRMAppLifetimeMonitor
+argument_list|()
+decl_stmt|;
+name|addService
+argument_list|(
+name|rmAppLifetimeMonitor
+argument_list|)
+expr_stmt|;
+name|rmContext
+operator|.
+name|setRMAppLifetimeMonitor
+argument_list|(
+name|rmAppLifetimeMonitor
 argument_list|)
 expr_stmt|;
 name|RMNodeLabelsManager
@@ -6489,6 +6529,34 @@ name|config
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|isDistSchedulingEnabled
+argument_list|(
+name|config
+argument_list|)
+operator|&&
+operator|!
+name|YarnConfiguration
+operator|.
+name|isOpportunisticContainerAllocationEnabled
+argument_list|(
+name|config
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+literal|"Invalid parameters: opportunistic container allocation has to "
+operator|+
+literal|"be enabled when distributed scheduling is enabled."
+argument_list|)
+throw|;
+block|}
 name|OpportunisticContainerAllocatorAMService
 name|oppContainerAllocatingAMService
 init|=
@@ -6520,9 +6588,8 @@ argument_list|)
 decl_stmt|;
 comment|// Add an event dispatcher for the
 comment|// OpportunisticContainerAllocatorAMService to handle node
-comment|// updates/additions and removals.
-comment|// Since the SchedulerEvent is currently a super set of theses,
-comment|// we register interest for it..
+comment|// additions, updates and removals. Since the SchedulerEvent is currently
+comment|// a super set of theses, we register interest for it.
 name|addService
 argument_list|(
 name|oppContainerAllocEventDispatcher
@@ -7367,6 +7434,22 @@ operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|createRMAppLifetimeMonitor ()
+specifier|protected
+name|RMAppLifetimeMonitor
+name|createRMAppLifetimeMonitor
+parameter_list|()
+block|{
+return|return
+operator|new
+name|RMAppLifetimeMonitor
+argument_list|(
+name|this
+operator|.
+name|rmContext
+argument_list|)
+return|;
 block|}
 block|}
 end_class

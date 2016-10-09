@@ -90,6 +90,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|fasterxml
+operator|.
+name|jackson
+operator|.
+name|annotation
+operator|.
+name|JsonAnySetter
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -103,20 +117,6 @@ operator|.
 name|datatypes
 operator|.
 name|NodeName
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|codehaus
-operator|.
-name|jackson
-operator|.
-name|annotate
-operator|.
-name|JsonAnySetter
 import|;
 end_import
 

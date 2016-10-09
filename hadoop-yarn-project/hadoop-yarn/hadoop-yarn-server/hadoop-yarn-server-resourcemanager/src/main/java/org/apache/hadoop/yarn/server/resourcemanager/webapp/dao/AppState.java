@@ -90,6 +90,11 @@ DECL|field|state
 name|String
 name|state
 decl_stmt|;
+DECL|field|diagnostics
+specifier|private
+name|String
+name|diagnostics
+decl_stmt|;
 DECL|method|AppState ()
 specifier|public
 name|AppState
@@ -137,6 +142,32 @@ name|this
 operator|.
 name|state
 return|;
+block|}
+DECL|method|getDiagnostics ()
+specifier|public
+name|String
+name|getDiagnostics
+parameter_list|()
+block|{
+return|return
+name|diagnostics
+return|;
+block|}
+DECL|method|setDiagnostics (String diagnostics)
+specifier|public
+name|void
+name|setDiagnostics
+parameter_list|(
+name|String
+name|diagnostics
+parameter_list|)
+block|{
+name|this
+operator|.
+name|diagnostics
+operator|=
+name|diagnostics
+expr_stmt|;
 block|}
 block|}
 end_class

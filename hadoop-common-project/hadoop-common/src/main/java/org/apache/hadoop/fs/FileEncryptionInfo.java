@@ -434,6 +434,100 @@ name|toString
 argument_list|()
 return|;
 block|}
+comment|/**    * A frozen version of {@link #toString()} to be backward compatible.    * When backward compatibility is not needed, use {@link #toString()}, which    * provides more info and is supposed to evolve.    * Don't change this method except for major revisions.    *    * NOTE:    * Currently this method is used by CLI for backward compatibility.    */
+DECL|method|toStringStable ()
+specifier|public
+name|String
+name|toStringStable
+parameter_list|()
+block|{
+name|StringBuilder
+name|builder
+init|=
+operator|new
+name|StringBuilder
+argument_list|(
+literal|"{"
+argument_list|)
+decl_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"cipherSuite: "
+operator|+
+name|cipherSuite
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|", cryptoProtocolVersion: "
+operator|+
+name|version
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|", edek: "
+operator|+
+name|Hex
+operator|.
+name|encodeHexString
+argument_list|(
+name|edek
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|", iv: "
+operator|+
+name|Hex
+operator|.
+name|encodeHexString
+argument_list|(
+name|iv
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|", keyName: "
+operator|+
+name|keyName
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|", ezKeyVersionName: "
+operator|+
+name|ezKeyVersionName
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"}"
+argument_list|)
+expr_stmt|;
+return|return
+name|builder
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

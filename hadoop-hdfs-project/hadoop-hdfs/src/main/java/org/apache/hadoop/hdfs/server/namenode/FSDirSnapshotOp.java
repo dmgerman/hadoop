@@ -280,16 +280,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|ListIterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -1381,6 +1371,7 @@ expr_stmt|;
 block|}
 comment|/**    * Check if the given INode (or one of its descendants) is snapshottable and    * already has snapshots.    *    * @param target The given INode    * @param snapshottableDirs The list of directories that are snapshottable    *                          but do not have snapshots yet    */
 DECL|method|checkSnapshot ( INode target, List<INodeDirectory> snapshottableDirs)
+specifier|private
 specifier|static
 name|void
 name|checkSnapshot
@@ -1504,6 +1495,62 @@ name|snapshottableDirs
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|}
+comment|/**    * Check if the given path (or one of its descendants) is snapshottable and    * already has snapshots.    *    * @param fsd the FSDirectory    * @param iip inodes of the path    * @param snapshottableDirs The list of directories that are snapshottable    *                          but do not have snapshots yet    */
+DECL|method|checkSnapshot (FSDirectory fsd, INodesInPath iip, List<INodeDirectory> snapshottableDirs)
+specifier|static
+name|void
+name|checkSnapshot
+parameter_list|(
+name|FSDirectory
+name|fsd
+parameter_list|,
+name|INodesInPath
+name|iip
+parameter_list|,
+name|List
+argument_list|<
+name|INodeDirectory
+argument_list|>
+name|snapshottableDirs
+parameter_list|)
+throws|throws
+name|SnapshotException
+block|{
+comment|// avoid the performance penalty of recursing the tree if snapshots
+comment|// are not in use
+name|SnapshotManager
+name|sm
+init|=
+name|fsd
+operator|.
+name|getFSNamesystem
+argument_list|()
+operator|.
+name|getSnapshotManager
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|sm
+operator|.
+name|getNumSnapshottableDirs
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|checkSnapshot
+argument_list|(
+name|iip
+operator|.
+name|getLastINode
+argument_list|()
+argument_list|,
+name|snapshottableDirs
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}

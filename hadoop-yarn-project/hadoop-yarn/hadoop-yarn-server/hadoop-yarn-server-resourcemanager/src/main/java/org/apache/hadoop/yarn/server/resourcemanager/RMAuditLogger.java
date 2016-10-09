@@ -312,6 +312,33 @@ name|MOVE_APP_REQUEST
 init|=
 literal|"Move Application Request"
 decl_stmt|;
+DECL|field|GET_APP_STATE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GET_APP_STATE
+init|=
+literal|"Get Application State"
+decl_stmt|;
+DECL|field|GET_APP_PRIORITY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GET_APP_PRIORITY
+init|=
+literal|"Get Application Priority"
+decl_stmt|;
+DECL|field|GET_APP_QUEUE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GET_APP_QUEUE
+init|=
+literal|"Get Application Queue"
+decl_stmt|;
 DECL|field|FINISH_SUCCESS_APP
 specifier|public
 specifier|static

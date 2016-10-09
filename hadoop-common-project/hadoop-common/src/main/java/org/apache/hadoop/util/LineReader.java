@@ -102,6 +102,22 @@ name|Text
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * A class that provides a line reader from an input stream.  * Depending on the constructor used, lines will either be terminated by:  *<ul>  *<li>one of the following: '\n' (LF) , '\r' (CR),  * or '\r\n' (CR+LF).</li>  *<li><em>or</em>, a custom byte sequence delimiter</li>  *</ul>  * In both cases, EOF also terminates an otherwise unterminated  * line.  */
 end_comment
@@ -280,7 +296,7 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 name|DEFAULT_BUFFER_SIZE
 argument_list|)
@@ -410,7 +426,7 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 name|DEFAULT_BUFFER_SIZE
 argument_list|)

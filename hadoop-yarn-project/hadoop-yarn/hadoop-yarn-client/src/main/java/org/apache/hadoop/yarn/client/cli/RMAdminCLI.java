@@ -1120,13 +1120,19 @@ argument_list|,
 operator|new
 name|UsageInfo
 argument_list|(
+literal|"[-failOnUnknownNodes] "
+operator|+
 literal|"<\"node1[:port]=label1,label2 node2[:port]=label1,label2\">"
 argument_list|,
 literal|"replace labels on nodes"
 operator|+
 literal|" (please note that we do not support specifying multiple"
 operator|+
-literal|" labels on a single host for now.)"
+literal|" labels on a single host for now.)\n\t\t"
+operator|+
+literal|"[-failOnUnknownNodes] is optional, when we set this"
+operator|+
+literal|" option, it will fail if specified nodes are unknown."
 argument_list|)
 argument_list|)
 decl|.
@@ -1709,9 +1715,9 @@ literal|"label2(exclusive=false),label3\">]"
 operator|+
 literal|" [-removeFromClusterNodeLabels<label1,label2,label3>]"
 operator|+
-literal|" [-replaceLabelsOnNode<\"node1[:port]=label1,label2"
+literal|" [-replaceLabelsOnNode [-failOnUnknownNodes] "
 operator|+
-literal|" node2[:port]=label1\">]"
+literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">]"
 operator|+
 literal|" [-directlyAccessNodeLabelStore]"
 operator|+
@@ -3840,13 +3846,16 @@ return|return
 name|map
 return|;
 block|}
-DECL|method|replaceLabelsOnNodes (String args)
+DECL|method|replaceLabelsOnNodes (String args, boolean failOnUnknownNodes)
 specifier|private
 name|int
 name|replaceLabelsOnNodes
 parameter_list|(
 name|String
 name|args
+parameter_list|,
+name|boolean
+name|failOnUnknownNodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -3873,10 +3882,12 @@ return|return
 name|replaceLabelsOnNodes
 argument_list|(
 name|map
+argument_list|,
+name|failOnUnknownNodes
 argument_list|)
 return|;
 block|}
-DECL|method|replaceLabelsOnNodes (Map<NodeId, Set<String>> map)
+DECL|method|replaceLabelsOnNodes (Map<NodeId, Set<String>> map, boolean failOnUnknownNodes)
 specifier|private
 name|int
 name|replaceLabelsOnNodes
@@ -3891,6 +3902,9 @@ name|String
 argument_list|>
 argument_list|>
 name|map
+parameter_list|,
+name|boolean
+name|failOnUnknownNodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -3932,6 +3946,13 @@ argument_list|(
 name|map
 argument_list|)
 decl_stmt|;
+name|request
+operator|.
+name|setFailOnUnknownNodes
+argument_list|(
+name|failOnUnknownNodes
+argument_list|)
+expr_stmt|;
 name|adminProtocol
 operator|.
 name|replaceLabelsOnNode
@@ -4626,6 +4647,71 @@ operator|-
 literal|1
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+literal|"-failOnUnknownNodes"
+operator|.
+name|equals
+argument_list|(
+name|args
+index|[
+name|i
+index|]
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|i
+operator|+
+literal|1
+operator|>=
+name|args
+operator|.
+name|length
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+name|NO_MAPPING_ERR_MSG
+argument_list|)
+expr_stmt|;
+name|printUsage
+argument_list|(
+literal|""
+argument_list|,
+name|isHAEnabled
+argument_list|)
+expr_stmt|;
+name|exitCode
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+block|}
+else|else
+block|{
+name|exitCode
+operator|=
+name|replaceLabelsOnNodes
+argument_list|(
+name|args
+index|[
+name|i
+operator|+
+literal|1
+index|]
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 else|else
 block|{
 name|exitCode
@@ -4636,6 +4722,8 @@ name|args
 index|[
 name|i
 index|]
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

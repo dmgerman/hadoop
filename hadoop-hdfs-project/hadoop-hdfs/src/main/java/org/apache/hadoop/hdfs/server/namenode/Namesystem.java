@@ -120,6 +120,11 @@ name|long
 name|id
 parameter_list|)
 function_decl|;
+DECL|method|getFSDirectory ()
+name|FSDirectory
+name|getFSDirectory
+parameter_list|()
+function_decl|;
 DECL|method|startSecretManagerIfNecessary ()
 name|void
 name|startSecretManagerIfNecessary

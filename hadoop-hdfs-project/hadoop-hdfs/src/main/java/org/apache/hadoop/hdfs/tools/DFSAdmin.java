@@ -4099,7 +4099,7 @@ literal|" succeeded"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Allow snapshot on a directory.    * Usage: hdfs dfsadmin -disallowSnapshot snapshotDir    * @param argv List of of command line parameters.    * @exception IOException    */
+comment|/**    * Disallow snapshot on a directory.    * Usage: hdfs dfsadmin -disallowSnapshot snapshotDir    * @param argv List of of command line parameters.    * @exception IOException    */
 DECL|method|disallowSnapshot (String[] argv)
 specifier|public
 name|void

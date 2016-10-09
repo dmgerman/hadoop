@@ -42,16 +42,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -1071,6 +1061,18 @@ operator|.
 name|mockito
 operator|.
 name|Mockito
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
 import|;
 end_import
 
@@ -4213,39 +4215,18 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-try|try
-block|{
+name|assertNull
+argument_list|(
+literal|"expected null for nonexistent path"
+argument_list|,
 name|userAdmin
 operator|.
 name|getEncryptionZoneForPath
 argument_list|(
 name|nonexistent
 argument_list|)
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"FileNotFoundException should be thrown for a non-existent"
-operator|+
-literal|" file path"
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|e
-parameter_list|)
-block|{
-name|assertExceptionContains
-argument_list|(
-literal|"Path not found: "
-operator|+
-name|nonexistent
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Check operation with non-ez paths
 name|assertNull
 argument_list|(
@@ -4386,72 +4367,30 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+name|assertNull
+argument_list|(
+literal|"expected null for deleted file path"
+argument_list|,
 name|userAdmin
 operator|.
 name|getEncryptionZoneForPath
 argument_list|(
 name|allPathFile
 argument_list|)
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"FileNotFoundException should be thrown for a non-existent"
-operator|+
-literal|" file path"
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|e
-parameter_list|)
-block|{
-name|assertExceptionContains
+name|assertNull
 argument_list|(
-literal|"Path not found: "
-operator|+
-name|allPathFile
+literal|"expected null for deleted directory path"
 argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-try|try
-block|{
 name|userAdmin
 operator|.
 name|getEncryptionZoneForPath
 argument_list|(
 name|allPath
 argument_list|)
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"FileNotFoundException should be thrown for a non-existent"
-operator|+
-literal|" file path"
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|e
-parameter_list|)
-block|{
-name|assertExceptionContains
-argument_list|(
-literal|"Path not found: "
-operator|+
-name|allPath
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -7014,6 +6953,7 @@ extends|extends
 name|EncryptionFaultInjector
 block|{
 DECL|field|generateCount
+specifier|volatile
 name|int
 name|generateCount
 decl_stmt|;
@@ -7053,10 +6993,41 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|startFileAfterGenerateKey ()
+DECL|method|startFileNoKey ()
 specifier|public
 name|void
-name|startFileAfterGenerateKey
+name|startFileNoKey
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|generateCount
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+name|syncWithLatches
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|startFileBeforeGenerateKey ()
+specifier|public
+name|void
+name|startFileBeforeGenerateKey
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|syncWithLatches
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|syncWithLatches ()
+specifier|private
+name|void
+name|syncWithLatches
 parameter_list|()
 throws|throws
 name|IOException
@@ -7088,6 +7059,17 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|startFileAfterGenerateKey ()
+specifier|public
+name|void
+name|startFileAfterGenerateKey
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 name|generateCount
 operator|++
 expr_stmt|;
@@ -7255,11 +7237,17 @@ operator|.
 name|await
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// Do the fault
 name|doFault
 argument_list|()
 expr_stmt|;
 comment|// Allow create to proceed
+block|}
+finally|finally
+block|{
+comment|// Always decrement latch to avoid hanging the tests on failure.
 name|injector
 operator|.
 name|wait
@@ -7267,6 +7255,7 @@ operator|.
 name|countDown
 argument_list|()
 expr_stmt|;
+block|}
 name|future
 operator|.
 name|get
@@ -7357,7 +7346,8 @@ operator|.
 name|newSingleThreadExecutor
 argument_list|()
 decl_stmt|;
-comment|// Test when the parent directory becomes an EZ
+comment|// Test when the parent directory becomes an EZ.  With no initial EZ,
+comment|// the fsn lock must not be yielded.
 name|executor
 operator|.
 name|submit
@@ -7370,27 +7360,6 @@ annotation|@
 name|Override
 specifier|public
 name|void
-name|doFault
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|dfsAdmin
-operator|.
-name|createEncryptionZone
-argument_list|(
-name|zone1
-argument_list|,
-name|TEST_KEY
-argument_list|,
-name|NO_TRASH
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-specifier|public
-name|void
 name|doCleanup
 parameter_list|()
 throws|throws
@@ -7398,9 +7367,10 @@ name|Exception
 block|{
 name|assertEquals
 argument_list|(
-literal|"Expected a startFile retry"
+literal|"Expected no startFile key generation"
 argument_list|,
-literal|2
+operator|-
+literal|1
 argument_list|,
 name|injector
 operator|.
@@ -7423,7 +7393,20 @@ operator|.
 name|get
 argument_list|()
 expr_stmt|;
-comment|// Test when the parent directory unbecomes an EZ
+comment|// Test when the parent directory unbecomes an EZ.  The generation of
+comment|// the EDEK will yield the lock, then re-resolve the path and use the
+comment|// previous EDEK.
+name|dfsAdmin
+operator|.
+name|createEncryptionZone
+argument_list|(
+name|zone1
+argument_list|,
+name|TEST_KEY
+argument_list|,
+name|NO_TRASH
+argument_list|)
+expr_stmt|;
 name|executor
 operator|.
 name|submit
@@ -7487,7 +7470,9 @@ operator|.
 name|get
 argument_list|()
 expr_stmt|;
-comment|// Test when the parent directory becomes a different EZ
+comment|// Test when the parent directory becomes a different EZ.  The generation
+comment|// of the EDEK will yield the lock, re-resolve will detect the EZ has
+comment|// changed, and client will be asked to retry a 2nd time
 name|fsWrapper
 operator|.
 name|mkdir
@@ -9953,17 +9938,17 @@ name|timeout
 operator|=
 literal|60000
 argument_list|)
-DECL|method|testGetEncryptionZoneOnANonExistentZoneFile ()
+DECL|method|testGetEncryptionZoneOnANonExistentPaths ()
 specifier|public
 name|void
-name|testGetEncryptionZoneOnANonExistentZoneFile
+name|testGetEncryptionZoneOnANonExistentPaths
 parameter_list|()
 throws|throws
 name|Exception
 block|{
 specifier|final
 name|Path
-name|ez
+name|ezPath
 init|=
 operator|new
 name|Path
@@ -9975,14 +9960,14 @@ name|fs
 operator|.
 name|mkdirs
 argument_list|(
-name|ez
+name|ezPath
 argument_list|)
 expr_stmt|;
 name|dfsAdmin
 operator|.
 name|createEncryptionZone
 argument_list|(
-name|ez
+name|ezPath
 argument_list|,
 name|TEST_KEY
 argument_list|,
@@ -9995,46 +9980,30 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|ez
+name|ezPath
 argument_list|,
 literal|"file"
 argument_list|)
 decl_stmt|;
-try|try
-block|{
+name|EncryptionZone
+name|ez
+init|=
 name|fs
 operator|.
 name|getEZForPath
 argument_list|(
 name|zoneFile
 argument_list|)
-expr_stmt|;
-name|fail
+decl_stmt|;
+name|assertNotNull
 argument_list|(
-literal|"FileNotFoundException should be thrown for a non-existent"
-operator|+
-literal|" file path"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|e
-parameter_list|)
-block|{
-name|assertExceptionContains
-argument_list|(
-literal|"Path not found: "
-operator|+
-name|zoneFile
+literal|"Expected EZ for non-existent path in EZ"
 argument_list|,
-name|e
+name|ez
 argument_list|)
 expr_stmt|;
-block|}
-try|try
-block|{
+name|ez
+operator|=
 name|dfsAdmin
 operator|.
 name|getEncryptionZoneForPath
@@ -10042,30 +10011,33 @@ argument_list|(
 name|zoneFile
 argument_list|)
 expr_stmt|;
-name|fail
+name|assertNotNull
 argument_list|(
-literal|"FileNotFoundException should be thrown for a non-existent"
-operator|+
-literal|" file path"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|e
-parameter_list|)
-block|{
-name|assertExceptionContains
-argument_list|(
-literal|"Path not found: "
-operator|+
-name|zoneFile
+literal|"Expected EZ for non-existent path in EZ"
 argument_list|,
-name|e
+name|ez
 argument_list|)
 expr_stmt|;
-block|}
+name|ez
+operator|=
+name|dfsAdmin
+operator|.
+name|getEncryptionZoneForPath
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/does/not/exist"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+literal|"Expected null for non-existent path not in EZ"
+argument_list|,
+name|ez
+argument_list|)
+expr_stmt|;
 block|}
 end_function
 

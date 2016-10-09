@@ -205,7 +205,10 @@ name|secretMgr
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|get (String bpid)
+specifier|public
 specifier|synchronized
 name|BlockTokenSecretManager
 name|get

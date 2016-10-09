@@ -206,6 +206,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|ws
@@ -494,6 +514,22 @@ specifier|private
 name|KMSAudit
 name|kmsAudit
 decl_stmt|;
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|KMS
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|method|KMS ()
 specifier|public
 name|KMS
@@ -697,6 +733,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Entering createKey Method."
+argument_list|)
+expr_stmt|;
 name|KMSWebApp
 operator|.
 name|getAdminCallsMeter
@@ -831,6 +874,23 @@ operator|.
 name|DESCRIPTION_FIELD
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Creating key with name {}, cipher being used{}, "
+operator|+
+literal|"length of key {}, description of key {}"
+argument_list|,
+name|name
+argument_list|,
+name|cipher
+argument_list|,
+name|length
+argument_list|,
+name|description
+argument_list|)
+expr_stmt|;
 name|Map
 argument_list|<
 name|String
@@ -1109,6 +1169,13 @@ argument_list|,
 name|idx
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Exiting createKey Method."
+argument_list|)
+expr_stmt|;
 return|return
 name|Response
 operator|.
@@ -1180,6 +1247,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Entering deleteKey method."
+argument_list|)
+expr_stmt|;
 name|KMSWebApp
 operator|.
 name|getAdminCallsMeter
@@ -1220,6 +1294,15 @@ argument_list|(
 name|name
 argument_list|,
 literal|"name"
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Deleting key with name {}."
+argument_list|,
+name|name
 argument_list|)
 expr_stmt|;
 name|user
@@ -1274,6 +1357,13 @@ argument_list|,
 name|name
 argument_list|,
 literal|""
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Exiting deleteKey method."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1331,6 +1421,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Entering rolloverKey Method."
+argument_list|)
+expr_stmt|;
 name|KMSWebApp
 operator|.
 name|getAdminCallsMeter
@@ -1371,6 +1468,15 @@ argument_list|(
 name|name
 argument_list|,
 literal|"name"
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Rolling key with name {}."
+argument_list|,
+name|name
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -1547,6 +1653,13 @@ argument_list|(
 name|keyVersion
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Exiting rolloverKey Method."
+argument_list|)
+expr_stmt|;
 return|return
 name|Response
 operator|.
@@ -1606,6 +1719,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Entering getKeysMetadata method."
+argument_list|)
+expr_stmt|;
 name|KMSWebApp
 operator|.
 name|getAdminCallsMeter
@@ -1725,6 +1845,13 @@ argument_list|,
 literal|""
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Exiting getKeysMetadata method."
+argument_list|)
+expr_stmt|;
 return|return
 name|Response
 operator|.
@@ -1771,6 +1898,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Entering getKeyNames method."
+argument_list|)
+expr_stmt|;
 name|KMSWebApp
 operator|.
 name|getAdminCallsMeter
@@ -1857,6 +1991,13 @@ argument_list|,
 literal|""
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Exiting getKeyNames method."
+argument_list|)
+expr_stmt|;
 return|return
 name|Response
 operator|.
@@ -1906,6 +2047,29 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Entering getKey method."
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Getting key information for key with name {}."
+argument_list|,
+name|name
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Exiting getKey method."
+argument_list|)
+expr_stmt|;
 return|return
 name|getMetadata
 argument_list|(
@@ -1952,6 +2116,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Entering getMetadata method."
+argument_list|)
+expr_stmt|;
 name|UserGroupInformation
 name|user
 init|=
@@ -1990,6 +2161,15 @@ argument_list|,
 name|KMSOp
 operator|.
 name|GET_METADATA
+argument_list|,
+name|name
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Getting metadata for key with name {}."
 argument_list|,
 name|name
 argument_list|)
@@ -2062,6 +2242,13 @@ argument_list|,
 literal|""
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Exiting getMetadata method."
+argument_list|)
+expr_stmt|;
 return|return
 name|Response
 operator|.
@@ -2123,6 +2310,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Entering getCurrentVersion method."
+argument_list|)
+expr_stmt|;
 name|UserGroupInformation
 name|user
 init|=
@@ -2161,6 +2355,15 @@ argument_list|,
 name|KMSOp
 operator|.
 name|GET_CURRENT_KEY
+argument_list|,
+name|name
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Getting key version for key with name {}."
 argument_list|,
 name|name
 argument_list|)
@@ -2225,6 +2428,13 @@ argument_list|,
 literal|""
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Exiting getCurrentVersion method."
+argument_list|)
+expr_stmt|;
 return|return
 name|Response
 operator|.
@@ -2282,6 +2492,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Entering getKeyVersion method."
+argument_list|)
+expr_stmt|;
 name|UserGroupInformation
 name|user
 init|=
@@ -2320,6 +2537,15 @@ argument_list|,
 name|KMSOp
 operator|.
 name|GET_KEY_VERSION
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Getting key with version name {}."
+argument_list|,
+name|versionName
 argument_list|)
 expr_stmt|;
 name|KeyVersion
@@ -2393,6 +2619,13 @@ argument_list|(
 name|keyVersion
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Exiting getKeyVersion method."
+argument_list|)
+expr_stmt|;
 return|return
 name|Response
 operator|.
@@ -2489,6 +2722,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Entering generateEncryptedKeys method."
+argument_list|)
+expr_stmt|;
 name|UserGroupInformation
 name|user
 init|=
@@ -2515,6 +2755,19 @@ argument_list|,
 literal|"eekOp"
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Generating encrypted key with name {},"
+operator|+
+literal|" the edek Operation is {}."
+argument_list|,
+name|name
+argument_list|,
+name|edekOp
+argument_list|)
+expr_stmt|;
 name|Object
 name|retJSON
 decl_stmt|;
@@ -2530,6 +2783,13 @@ name|EEK_GENERATE
 argument_list|)
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"edek Operation is Generate."
+argument_list|)
+expr_stmt|;
 name|assertAccess
 argument_list|(
 name|KMSACLs
@@ -2583,6 +2843,15 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Generated Encrypted key for {} number of keys."
+argument_list|,
+name|numKeys
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|int
@@ -2625,6 +2894,15 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Exception in generateEncryptedKeys:"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|IOException
@@ -2683,27 +2961,76 @@ block|}
 block|}
 else|else
 block|{
+name|StringBuilder
+name|error
+decl_stmt|;
+name|error
+operator|=
+operator|new
+name|StringBuilder
+argument_list|(
+literal|"IllegalArgumentException Wrong "
+argument_list|)
+expr_stmt|;
+name|error
+operator|.
+name|append
+argument_list|(
+name|KMSRESTConstants
+operator|.
+name|EEK_OP
+argument_list|)
+expr_stmt|;
+name|error
+operator|.
+name|append
+argument_list|(
+literal|" value, it must be "
+argument_list|)
+expr_stmt|;
+name|error
+operator|.
+name|append
+argument_list|(
+name|KMSRESTConstants
+operator|.
+name|EEK_GENERATE
+argument_list|)
+expr_stmt|;
+name|error
+operator|.
+name|append
+argument_list|(
+literal|" or "
+argument_list|)
+expr_stmt|;
+name|error
+operator|.
+name|append
+argument_list|(
+name|KMSRESTConstants
+operator|.
+name|EEK_DECRYPT
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|error
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Wrong "
-operator|+
-name|KMSRESTConstants
+name|error
 operator|.
-name|EEK_OP
-operator|+
-literal|" value, it must be "
-operator|+
-name|KMSRESTConstants
-operator|.
-name|EEK_GENERATE
-operator|+
-literal|" or "
-operator|+
-name|KMSRESTConstants
-operator|.
-name|EEK_DECRYPT
+name|toString
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -2714,6 +3041,13 @@ argument_list|()
 operator|.
 name|mark
 argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Exiting generateEncryptedKeys method."
+argument_list|)
 expr_stmt|;
 return|return
 name|Response
@@ -2794,6 +3128,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Entering decryptEncryptedKey method."
+argument_list|)
+expr_stmt|;
 name|UserGroupInformation
 name|user
 init|=
@@ -2818,6 +3159,17 @@ argument_list|(
 name|eekOp
 argument_list|,
 literal|"eekOp"
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Decrypting key for {}, the edek Operation is {}."
+argument_list|,
+name|versionName
+argument_list|,
+name|eekOp
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -3024,27 +3376,76 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|StringBuilder
+name|error
+decl_stmt|;
+name|error
+operator|=
+operator|new
+name|StringBuilder
+argument_list|(
+literal|"IllegalArgumentException Wrong "
+argument_list|)
+expr_stmt|;
+name|error
+operator|.
+name|append
+argument_list|(
+name|KMSRESTConstants
+operator|.
+name|EEK_OP
+argument_list|)
+expr_stmt|;
+name|error
+operator|.
+name|append
+argument_list|(
+literal|" value, it must be "
+argument_list|)
+expr_stmt|;
+name|error
+operator|.
+name|append
+argument_list|(
+name|KMSRESTConstants
+operator|.
+name|EEK_GENERATE
+argument_list|)
+expr_stmt|;
+name|error
+operator|.
+name|append
+argument_list|(
+literal|" or "
+argument_list|)
+expr_stmt|;
+name|error
+operator|.
+name|append
+argument_list|(
+name|KMSRESTConstants
+operator|.
+name|EEK_DECRYPT
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|error
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Wrong "
-operator|+
-name|KMSRESTConstants
+name|error
 operator|.
-name|EEK_OP
-operator|+
-literal|" value, it must be "
-operator|+
-name|KMSRESTConstants
-operator|.
-name|EEK_GENERATE
-operator|+
-literal|" or "
-operator|+
-name|KMSRESTConstants
-operator|.
-name|EEK_DECRYPT
+name|toString
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -3055,6 +3456,13 @@ argument_list|()
 operator|.
 name|mark
 argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Exiting decryptEncryptedKey method."
+argument_list|)
 expr_stmt|;
 return|return
 name|Response
@@ -3117,6 +3525,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Entering getKeyVersions method."
+argument_list|)
+expr_stmt|;
 name|UserGroupInformation
 name|user
 init|=
@@ -3155,6 +3570,15 @@ argument_list|,
 name|KMSOp
 operator|.
 name|GET_KEY_VERSIONS
+argument_list|,
+name|name
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Getting key versions for key {}"
 argument_list|,
 name|name
 argument_list|)
@@ -3226,6 +3650,13 @@ argument_list|,
 name|name
 argument_list|,
 literal|""
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Exiting getKeyVersions method."
 argument_list|)
 expr_stmt|;
 return|return

@@ -8411,7 +8411,51 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Cannot load filesystem"
+literal|"Cannot load filesystem: "
+operator|+
+name|ee
+argument_list|)
+expr_stmt|;
+name|Throwable
+name|cause
+init|=
+name|ee
+operator|.
+name|getCause
+argument_list|()
+decl_stmt|;
+comment|// print all the nested exception messages
+while|while
+condition|(
+name|cause
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|cause
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|cause
+operator|=
+name|cause
+operator|.
+name|getCause
+argument_list|()
+expr_stmt|;
+block|}
+comment|// and at debug: the full stack
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Stack Trace"
 argument_list|,
 name|ee
 argument_list|)
@@ -8919,9 +8963,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-literal|"fs.automatic.close"
+name|FS_AUTOMATIC_CLOSE_KEY
 argument_list|,
-literal|true
+name|FS_AUTOMATIC_CLOSE_DEFAULT
 argument_list|)
 condition|)
 block|{

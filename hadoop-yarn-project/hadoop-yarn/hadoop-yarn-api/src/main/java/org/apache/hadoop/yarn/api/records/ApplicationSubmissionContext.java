@@ -26,6 +26,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
 import|;
 end_import
@@ -1409,6 +1419,43 @@ name|setReservationID
 parameter_list|(
 name|ReservationId
 name|reservationID
+parameter_list|)
+function_decl|;
+comment|/**    * Get<code>ApplicationTimeouts</code> of the application. Timeout value is    * in seconds.    * @return all<code>ApplicationTimeouts</code> of the application.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getApplicationTimeouts ()
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|ApplicationTimeoutType
+argument_list|,
+name|Long
+argument_list|>
+name|getApplicationTimeouts
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<code>ApplicationTimeouts</code> for the application in seconds.    * All pre-existing Map entries are cleared before adding the new Map.    * @param applicationTimeouts<code>ApplicationTimeouts</code>s for the    *          application    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setApplicationTimeouts ( Map<ApplicationTimeoutType, Long> applicationTimeouts)
+specifier|public
+specifier|abstract
+name|void
+name|setApplicationTimeouts
+parameter_list|(
+name|Map
+argument_list|<
+name|ApplicationTimeoutType
+argument_list|,
+name|Long
+argument_list|>
+name|applicationTimeouts
 parameter_list|)
 function_decl|;
 block|}

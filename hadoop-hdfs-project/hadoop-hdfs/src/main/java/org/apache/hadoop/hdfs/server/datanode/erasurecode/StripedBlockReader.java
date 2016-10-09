@@ -674,7 +674,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Exception while creating remote block reader, datanode {}"
 argument_list|,

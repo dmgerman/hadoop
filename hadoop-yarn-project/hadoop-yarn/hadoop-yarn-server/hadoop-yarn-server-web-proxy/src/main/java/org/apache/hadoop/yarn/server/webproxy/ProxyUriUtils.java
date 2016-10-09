@@ -189,6 +189,16 @@ name|PROXY_BASE
 init|=
 literal|"/proxy/"
 decl_stmt|;
+comment|/**Path component added when the proxy redirects the connection.*/
+DECL|field|REDIRECT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|REDIRECT
+init|=
+literal|"redirect/"
+decl_stmt|;
 comment|/**Path Specification for the proxy servlet.*/
 DECL|field|PROXY_PATH_SPEC
 specifier|public
@@ -264,7 +274,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get the proxied path for an application.    * @param id the application id to use.    * @return the base path to that application through the proxy.    */
+comment|/**    * Get the proxied path for an application.    *    * @param id the application id to use    * @return the base path to that application through the proxy    */
 DECL|method|getPath (ApplicationId id)
 specifier|public
 specifier|static
@@ -273,6 +283,29 @@ name|getPath
 parameter_list|(
 name|ApplicationId
 name|id
+parameter_list|)
+block|{
+return|return
+name|getPath
+argument_list|(
+name|id
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the proxied path for an application.    *    * @param id the application id to use    * @param redirected whether the path should contain the redirect component    * @return the base path to that application through the proxy    */
+DECL|method|getPath (ApplicationId id, boolean redirected)
+specifier|public
+specifier|static
+name|String
+name|getPath
+parameter_list|(
+name|ApplicationId
+name|id
+parameter_list|,
+name|boolean
+name|redirected
 parameter_list|)
 block|{
 if|if
@@ -290,6 +323,27 @@ literal|"Application id cannot be null "
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|redirected
+condition|)
+block|{
+return|return
+name|ujoin
+argument_list|(
+name|PROXY_BASE
+argument_list|,
+name|REDIRECT
+argument_list|,
+name|uriEncode
+argument_list|(
+name|id
+argument_list|)
+argument_list|)
+return|;
+block|}
+else|else
+block|{
 return|return
 name|ujoin
 argument_list|(
@@ -302,7 +356,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the proxied path for an application.    * @param id the application id to use.    * @param path the rest of the path to the application.    * @return the base path to that application through the proxy.    */
+block|}
+comment|/**    * Get the proxied path for an application.    *    * @param id the application id to use    * @param path the rest of the path to the application    * @return the base path to that application through the proxy    */
 DECL|method|getPath (ApplicationId id, String path)
 specifier|public
 specifier|static
@@ -316,6 +371,34 @@ name|String
 name|path
 parameter_list|)
 block|{
+return|return
+name|getPath
+argument_list|(
+name|id
+argument_list|,
+name|path
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the proxied path for an application.    *    * @param id the application id to use    * @param path the rest of the path to the application    * @param redirected whether the path should contain the redirect component    * @return the base path to that application through the proxy    */
+DECL|method|getPath (ApplicationId id, String path, boolean redirected)
+specifier|public
+specifier|static
+name|String
+name|getPath
+parameter_list|(
+name|ApplicationId
+name|id
+parameter_list|,
+name|String
+name|path
+parameter_list|,
+name|boolean
+name|redirected
+parameter_list|)
+block|{
 if|if
 condition|(
 name|path
@@ -327,6 +410,8 @@ return|return
 name|getPath
 argument_list|(
 name|id
+argument_list|,
+name|redirected
 argument_list|)
 return|;
 block|}
@@ -338,6 +423,8 @@ argument_list|(
 name|getPath
 argument_list|(
 name|id
+argument_list|,
+name|redirected
 argument_list|)
 argument_list|,
 name|path

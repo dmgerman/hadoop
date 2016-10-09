@@ -327,11 +327,6 @@ condition|(
 name|deleteAllowed
 argument_list|(
 name|iip
-argument_list|,
-name|iip
-operator|.
-name|getPath
-argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -350,10 +345,9 @@ name|FSDirSnapshotOp
 operator|.
 name|checkSnapshot
 argument_list|(
+name|fsd
+argument_list|,
 name|iip
-operator|.
-name|getLastINode
-argument_list|()
 argument_list|,
 name|snapshottableDirs
 argument_list|)
@@ -486,6 +480,24 @@ operator|.
 name|getPermissionChecker
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|FSDirectory
+operator|.
+name|isExactReservedName
+argument_list|(
+name|src
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidPathException
+argument_list|(
+name|src
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|INodesInPath
 name|iip
@@ -501,36 +513,6 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
-name|src
-operator|=
-name|iip
-operator|.
-name|getPath
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|recursive
-operator|&&
-name|fsd
-operator|.
-name|isNonEmptyDirectory
-argument_list|(
-name|iip
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|PathIsNotEmptyDirectoryException
-argument_list|(
-name|src
-operator|+
-literal|" is non empty"
-argument_list|)
-throw|;
-block|}
 if|if
 condition|(
 name|fsd
@@ -567,8 +549,6 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|recursive
-operator|&&
 name|fsd
 operator|.
 name|isNonEmptyDirectory
@@ -577,11 +557,30 @@ name|iip
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|recursive
+condition|)
+block|{
+throw|throw
+operator|new
+name|PathIsNotEmptyDirectoryException
+argument_list|(
+name|iip
+operator|.
+name|getPath
+argument_list|()
+operator|+
+literal|" is non empty"
+argument_list|)
+throw|;
+block|}
 name|checkProtectedDescendants
 argument_list|(
 name|fsd
 argument_list|,
-name|src
+name|iip
 argument_list|)
 expr_stmt|;
 block|}
@@ -590,8 +589,6 @@ name|deleteInternal
 argument_list|(
 name|fsn
 argument_list|,
-name|src
-argument_list|,
 name|iip
 argument_list|,
 name|logRetryCache
@@ -599,7 +596,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    *<br>    * Note: This is to be used by    * {@link org.apache.hadoop.hdfs.server.namenode.FSEditLog} only.    *<br>    *    * @param fsd the FSDirectory instance    * @param src a string representation of a path to an inode    * @param mtime the time the inode is removed    */
-DECL|method|deleteForEditLog (FSDirectory fsd, String src, long mtime)
+DECL|method|deleteForEditLog (FSDirectory fsd, INodesInPath iip, long mtime)
 specifier|static
 name|void
 name|deleteForEditLog
@@ -607,8 +604,8 @@ parameter_list|(
 name|FSDirectory
 name|fsd
 parameter_list|,
-name|String
-name|src
+name|INodesInPath
+name|iip
 parameter_list|,
 name|long
 name|mtime
@@ -659,32 +656,12 @@ name|ChunkedArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-specifier|final
-name|INodesInPath
-name|iip
-init|=
-name|fsd
-operator|.
-name|getINodesInPath4Write
-argument_list|(
-name|FSDirectory
-operator|.
-name|normalizePath
-argument_list|(
-name|src
-argument_list|)
-argument_list|,
-literal|false
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 operator|!
 name|deleteAllowed
 argument_list|(
 name|iip
-argument_list|,
-name|src
 argument_list|)
 condition|)
 block|{
@@ -705,10 +682,9 @@ name|FSDirSnapshotOp
 operator|.
 name|checkSnapshot
 argument_list|(
+name|fsd
+argument_list|,
 name|iip
-operator|.
-name|getLastINode
-argument_list|()
 argument_list|,
 name|snapshottableDirs
 argument_list|)
@@ -775,17 +751,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Remove a file/directory from the namespace.    *<p>    * For large directories, deletion is incremental. The blocks under    * the directory are collected and deleted a small number at a time holding    * the {@link org.apache.hadoop.hdfs.server.namenode.FSNamesystem} lock.    *<p>    * For small directory or file the deletion is done in one shot.    * @param fsn namespace    * @param src path name to be deleted    * @param iip the INodesInPath instance containing all the INodes for the path    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *          rebuilding    * @return blocks collected from the deleted path    * @throws IOException    */
-DECL|method|deleteInternal ( FSNamesystem fsn, String src, INodesInPath iip, boolean logRetryCache)
+comment|/**    * Remove a file/directory from the namespace.    *<p>    * For large directories, deletion is incremental. The blocks under    * the directory are collected and deleted a small number at a time holding    * the {@link org.apache.hadoop.hdfs.server.namenode.FSNamesystem} lock.    *<p>    * For small directory or file the deletion is done in one shot.    * @param fsn namespace    * @param iip the INodesInPath instance containing all the INodes for the path    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *          rebuilding    * @return blocks collected from the deleted path    * @throws IOException    */
+DECL|method|deleteInternal ( FSNamesystem fsn, INodesInPath iip, boolean logRetryCache)
 specifier|static
 name|BlocksMapUpdateInfo
 name|deleteInternal
 parameter_list|(
 name|FSNamesystem
 name|fsn
-parameter_list|,
-name|String
-name|src
 parameter_list|,
 name|INodesInPath
 name|iip
@@ -820,27 +793,12 @@ name|debug
 argument_list|(
 literal|"DIR* NameSystem.delete: "
 operator|+
-name|src
+name|iip
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-if|if
-condition|(
-name|FSDirectory
-operator|.
-name|isExactReservedName
-argument_list|(
-name|src
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|InvalidPathException
-argument_list|(
-name|src
-argument_list|)
-throw|;
 block|}
 name|FSDirectory
 name|fsd
@@ -922,7 +880,10 @@ argument_list|()
 operator|.
 name|logDelete
 argument_list|(
-name|src
+name|iip
+operator|.
+name|getPath
+argument_list|()
 argument_list|,
 name|mtime
 argument_list|,
@@ -963,7 +924,10 @@ name|debug
 argument_list|(
 literal|"DIR* Namesystem.delete: "
 operator|+
-name|src
+name|iip
+operator|.
+name|getPath
+argument_list|()
 operator|+
 literal|" is removed"
 argument_list|)
@@ -993,7 +957,7 @@ name|count
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|deleteAllowed (final INodesInPath iip, final String src)
+DECL|method|deleteAllowed (final INodesInPath iip)
 specifier|private
 specifier|static
 name|boolean
@@ -1002,10 +966,6 @@ parameter_list|(
 specifier|final
 name|INodesInPath
 name|iip
-parameter_list|,
-specifier|final
-name|String
-name|src
 parameter_list|)
 block|{
 if|if
@@ -1043,7 +1003,10 @@ name|debug
 argument_list|(
 literal|"DIR* FSDirectory.unprotectedDelete: failed to remove "
 operator|+
-name|src
+name|iip
+operator|.
+name|getPath
+argument_list|()
 operator|+
 literal|" because it does not exist"
 argument_list|)
@@ -1073,7 +1036,10 @@ name|warn
 argument_list|(
 literal|"DIR* FSDirectory.unprotectedDelete: failed to remove "
 operator|+
-name|src
+name|iip
+operator|.
+name|getPath
+argument_list|()
 operator|+
 literal|" because the root is not allowed to be deleted"
 argument_list|)
@@ -1256,8 +1222,8 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Throw if the given directory has any non-empty protected descendants    * (including itself).    *    * @param src directory whose descendants are to be checked. The caller    *            must ensure src is not terminated with {@link Path#SEPARATOR}.    * @throws AccessControlException if a non-empty protected descendant    *                                was found.    */
-DECL|method|checkProtectedDescendants (FSDirectory fsd, String src)
+comment|/**    * Throw if the given directory has any non-empty protected descendants    * (including itself).    *    * @param iip directory whose descendants are to be checked.    * @throws AccessControlException if a non-empty protected descendant    *                                was found.    */
+DECL|method|checkProtectedDescendants ( FSDirectory fsd, INodesInPath iip)
 specifier|private
 specifier|static
 name|void
@@ -1266,8 +1232,8 @@ parameter_list|(
 name|FSDirectory
 name|fsd
 parameter_list|,
-name|String
-name|src
+name|INodesInPath
+name|iip
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -1284,6 +1250,24 @@ init|=
 name|fsd
 operator|.
 name|getProtectedDirectories
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|protectedDirs
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
+name|String
+name|src
+init|=
+name|iip
+operator|.
+name|getPath
 argument_list|()
 decl_stmt|;
 comment|// Is src protected? Caller has already checked it is non-empty.

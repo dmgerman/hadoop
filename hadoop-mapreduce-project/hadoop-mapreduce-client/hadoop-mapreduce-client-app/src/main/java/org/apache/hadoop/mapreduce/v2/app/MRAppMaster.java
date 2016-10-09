@@ -2166,22 +2166,6 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
 name|SystemClock
 import|;
 end_import
@@ -7179,94 +7163,27 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|appAttemptID
-operator|.
-name|getAttemptId
-argument_list|()
-operator|==
-literal|1
-condition|)
-block|{
-return|return;
-comment|// no need to recover on the first attempt
-block|}
 name|boolean
-name|recoveryEnabled
+name|attemptRecovery
 init|=
-name|getConfig
+name|shouldAttemptRecovery
 argument_list|()
-operator|.
-name|getBoolean
-argument_list|(
-name|MRJobConfig
-operator|.
-name|MR_AM_JOB_RECOVERY_ENABLE
-argument_list|,
-name|MRJobConfig
-operator|.
-name|MR_AM_JOB_RECOVERY_ENABLE_DEFAULT
-argument_list|)
 decl_stmt|;
 name|boolean
-name|recoverySupportedByCommitter
+name|recoverySucceeded
 init|=
-name|isRecoverySupported
-argument_list|()
-decl_stmt|;
-comment|// If a shuffle secret was not provided by the job client then this app
-comment|// attempt will generate one.  However that disables recovery if there
-comment|// are reducers as the shuffle secret would be app attempt specific.
-name|int
-name|numReduceTasks
-init|=
-name|getConfig
-argument_list|()
-operator|.
-name|getInt
-argument_list|(
-name|MRJobConfig
-operator|.
-name|NUM_REDUCES
-argument_list|,
-literal|0
-argument_list|)
-decl_stmt|;
-name|boolean
-name|shuffleKeyValidForRecovery
-init|=
-name|TokenCache
-operator|.
-name|getShuffleSecretKey
-argument_list|(
-name|jobCredentials
-argument_list|)
-operator|!=
-literal|null
+literal|true
 decl_stmt|;
 if|if
 condition|(
-name|recoveryEnabled
-operator|&&
-name|recoverySupportedByCommitter
-operator|&&
-operator|(
-name|numReduceTasks
-operator|<=
-literal|0
-operator|||
-name|shuffleKeyValidForRecovery
-operator|)
+name|attemptRecovery
 condition|)
 block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Recovery is enabled. "
-operator|+
-literal|"Will try to recover from previous life on best effort basis."
+literal|"Attempting to recover."
 argument_list|)
 expr_stmt|;
 try|try
@@ -7290,7 +7207,27 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-comment|// try to get just the AMInfos
+name|recoverySucceeded
+operator|=
+literal|false
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+operator|!
+name|isFirstAttempt
+argument_list|()
+operator|&&
+operator|(
+operator|!
+name|attemptRecovery
+operator|||
+operator|!
+name|recoverySucceeded
+operator|)
+condition|)
+block|{
 name|amInfos
 operator|.
 name|addAll
@@ -7301,46 +7238,205 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-else|else
+DECL|method|isFirstAttempt ()
+specifier|private
+name|boolean
+name|isFirstAttempt
+parameter_list|()
+block|{
+return|return
+name|appAttemptID
+operator|.
+name|getAttemptId
+argument_list|()
+operator|==
+literal|1
+return|;
+block|}
+comment|/**    * Check if the current job attempt should try to recover from previous    * job attempts if any.    */
+DECL|method|shouldAttemptRecovery ()
+specifier|private
+name|boolean
+name|shouldAttemptRecovery
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|isFirstAttempt
+argument_list|()
+condition|)
+block|{
+return|return
+literal|false
+return|;
+comment|// no need to recover on the first attempt
+block|}
+name|boolean
+name|recoveryEnabled
+init|=
+name|getConfig
+argument_list|()
+operator|.
+name|getBoolean
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_AM_JOB_RECOVERY_ENABLE
+argument_list|,
+name|MRJobConfig
+operator|.
+name|MR_AM_JOB_RECOVERY_ENABLE_DEFAULT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|recoveryEnabled
+condition|)
 block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Will not try to recover. recoveryEnabled: "
+literal|"Not attempting to recover. Recovery disabled. To enable "
 operator|+
-name|recoveryEnabled
+literal|"recovery, set "
 operator|+
-literal|" recoverySupportedByCommitter: "
-operator|+
-name|recoverySupportedByCommitter
-operator|+
-literal|" numReduceTasks: "
-operator|+
-name|numReduceTasks
-operator|+
-literal|" shuffleKeyValidForRecovery: "
-operator|+
-name|shuffleKeyValidForRecovery
-operator|+
-literal|" ApplicationAttemptID: "
-operator|+
-name|appAttemptID
+name|MRJobConfig
 operator|.
-name|getAttemptId
-argument_list|()
+name|MR_AM_JOB_RECOVERY_ENABLE
 argument_list|)
 expr_stmt|;
-comment|// Get the amInfos anyways whether recovery is enabled or not
-name|amInfos
-operator|.
-name|addAll
-argument_list|(
-name|readJustAMInfos
-argument_list|()
-argument_list|)
-expr_stmt|;
+return|return
+literal|false
+return|;
 block|}
+name|boolean
+name|recoverySupportedByCommitter
+init|=
+name|isRecoverySupported
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|recoverySupportedByCommitter
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Not attempting to recover. Recovery is not supported by "
+operator|+
+name|committer
+operator|.
+name|getClass
+argument_list|()
+operator|+
+literal|". Use an OutputCommitter that supports"
+operator|+
+literal|" recovery."
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+name|int
+name|reducerCount
+init|=
+name|getConfig
+argument_list|()
+operator|.
+name|getInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|NUM_REDUCES
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
+comment|// If a shuffle secret was not provided by the job client, one will be
+comment|// generated in this job attempt. However, that disables recovery if
+comment|// there are reducers as the shuffle secret would be job attempt specific.
+name|boolean
+name|shuffleKeyValidForRecovery
+init|=
+name|TokenCache
+operator|.
+name|getShuffleSecretKey
+argument_list|(
+name|jobCredentials
+argument_list|)
+operator|!=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|reducerCount
+operator|>
+literal|0
+operator|&&
+operator|!
+name|shuffleKeyValidForRecovery
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Not attempting to recover. The shuffle key is invalid for "
+operator|+
+literal|"recovery."
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+comment|// If the intermediate data is encrypted, recovering the job requires the
+comment|// access to the key. Until the encryption key is persisted, we should
+comment|// avoid attempts to recover.
+name|boolean
+name|spillEncrypted
+init|=
+name|CryptoUtils
+operator|.
+name|isEncryptedSpillEnabled
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|reducerCount
+operator|>
+literal|0
+operator|&&
+name|spillEncrypted
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Not attempting to recover. Intermediate spill encryption"
+operator|+
+literal|" is enabled."
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+return|return
+literal|true
+return|;
 block|}
 DECL|method|getPreviousJobHistoryStream ( Configuration conf, ApplicationAttemptId appAttemptId)
 specifier|private
@@ -7909,6 +8005,18 @@ block|}
 block|}
 return|return
 name|amInfos
+return|;
+block|}
+DECL|method|recovered ()
+specifier|public
+name|boolean
+name|recovered
+parameter_list|()
+block|{
+return|return
+name|recoveredJobStartTime
+operator|>
+literal|0
 return|;
 block|}
 comment|/**    * This can be overridden to instantiate multiple jobs and create a     * workflow.    *    * TODO:  Rework the design to actually support this.  Currently much of the    * job stuff has been moved to init() above to support uberization (MR-1220).    * In a typical workflow, one presumably would want to uberize only a subset    * of the jobs (the "small" ones), which is awkward with the current design.    */

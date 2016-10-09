@@ -6994,7 +6994,7 @@ name|userName
 argument_list|,
 name|AuditConstants
 operator|.
-name|KILL_APP_REQUEST
+name|GET_APP_STATE
 argument_list|,
 literal|"UNKNOWN"
 argument_list|,
@@ -7269,6 +7269,11 @@ argument_list|,
 name|callerUGI
 argument_list|,
 name|hsr
+argument_list|,
+name|targetState
+operator|.
+name|getDiagnostics
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -8528,7 +8533,7 @@ name|labels
 argument_list|)
 return|;
 block|}
-DECL|method|killApp (RMApp app, UserGroupInformation callerUGI, HttpServletRequest hsr)
+DECL|method|killApp (RMApp app, UserGroupInformation callerUGI, HttpServletRequest hsr, String diagnostic)
 specifier|protected
 name|Response
 name|killApp
@@ -8541,6 +8546,9 @@ name|callerUGI
 parameter_list|,
 name|HttpServletRequest
 name|hsr
+parameter_list|,
+name|String
+name|diagnostic
 parameter_list|)
 throws|throws
 name|IOException
@@ -8620,6 +8628,21 @@ argument_list|(
 name|appid
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|diagnostic
+operator|!=
+literal|null
+condition|)
+block|{
+name|req
+operator|.
+name|setDiagnostics
+argument_list|(
+name|diagnostic
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|rm
 operator|.
@@ -8932,13 +8955,13 @@ name|userName
 argument_list|,
 name|AuditConstants
 operator|.
-name|KILL_APP_REQUEST
+name|GET_APP_PRIORITY
 argument_list|,
 literal|"UNKNOWN"
 argument_list|,
 literal|"RMWebService"
 argument_list|,
-literal|"Trying to get state of an absent application "
+literal|"Trying to get priority of an absent application "
 operator|+
 name|appId
 argument_list|)
@@ -9149,13 +9172,13 @@ name|userName
 argument_list|,
 name|AuditConstants
 operator|.
-name|KILL_APP_REQUEST
+name|UPDATE_APP_PRIORITY
 argument_list|,
 literal|"UNKNOWN"
 argument_list|,
 literal|"RMWebService"
 argument_list|,
-literal|"Trying to move an absent application "
+literal|"Trying to update priority an absent application "
 operator|+
 name|appId
 argument_list|)
@@ -9601,13 +9624,13 @@ name|userName
 argument_list|,
 name|AuditConstants
 operator|.
-name|KILL_APP_REQUEST
+name|GET_APP_QUEUE
 argument_list|,
 literal|"UNKNOWN"
 argument_list|,
 literal|"RMWebService"
 argument_list|,
-literal|"Trying to get state of an absent application "
+literal|"Trying to get queue of an absent application "
 operator|+
 name|appId
 argument_list|)
@@ -9807,7 +9830,7 @@ name|userName
 argument_list|,
 name|AuditConstants
 operator|.
-name|KILL_APP_REQUEST
+name|MOVE_APP_REQUEST
 argument_list|,
 literal|"UNKNOWN"
 argument_list|,

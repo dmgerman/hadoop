@@ -294,6 +294,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -543,23 +553,6 @@ name|containerIdStart
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Sets the underlying Atomic Long. To be used when implementation needs to      * share the underlying AtomicLong of an existing counter.      * @param counter AtomicLong      */
-DECL|method|setContainerIdCounter (AtomicLong counter)
-specifier|public
-name|void
-name|setContainerIdCounter
-parameter_list|(
-name|AtomicLong
-name|counter
-parameter_list|)
-block|{
-name|this
-operator|.
-name|containerIdCounter
-operator|=
-name|counter
-expr_stmt|;
-block|}
 comment|/**      * Generates a new long value. Default implementation increments the      * underlying AtomicLong. Sub classes are encouraged to over-ride this      * behaviour.      * @return Counter.      */
 DECL|method|generateContainerId ()
 specifier|public
@@ -737,6 +730,24 @@ name|getAskList
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|partitionedAsks
+operator|.
+name|getOpportunistic
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+name|Collections
+operator|.
+name|emptyList
+argument_list|()
+return|;
+block|}
 name|List
 argument_list|<
 name|ContainerId
@@ -868,8 +879,8 @@ control|)
 block|{
 comment|// Allocated containers :
 comment|//  Key = Requested Capability,
-comment|//  Value = List of Containers of given Cap (The actual container size
-comment|//          might be different than what is requested.. which is why
+comment|//  Value = List of Containers of given cap (the actual container size
+comment|//          might be different than what is requested, which is why
 comment|//          we need the requested capability (key) to match against
 comment|//          the outstanding reqs)
 name|Map
@@ -1242,6 +1253,23 @@ name|getValue
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|nodesForScheduling
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"No nodes available for allocating opportunistic containers."
+argument_list|)
+expr_stmt|;
+return|return;
 block|}
 name|int
 name|numAllocated

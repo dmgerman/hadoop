@@ -78,6 +78,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|ReentrantReadWriteLock
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -3765,6 +3779,20 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+DECL|method|getWriteLock ()
+specifier|public
+name|ReentrantReadWriteLock
+operator|.
+name|WriteLock
+name|getWriteLock
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|writeLock
+return|;
 block|}
 block|}
 end_class

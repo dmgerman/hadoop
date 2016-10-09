@@ -1995,27 +1995,6 @@ name|DEFAULT_RM_SYSTEM_METRICS_PUBLISHER_DISPATCHER_POOL_SIZE
 init|=
 literal|10
 decl_stmt|;
-comment|/**    * The {@code AMLauncher.createAMContainerLaunchContext()} method will log the    * command being executed to the RM log if this property is true. Commands    * may contain sensitive information, such as application or service    * passwords, making logging the commands a security risk. In cases where    * the cluster may be running applications with such commands, this property    * should be set to false. Commands are only logged at the debug level.    */
-DECL|field|RM_AMLAUNCHER_LOG_COMMAND
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RM_AMLAUNCHER_LOG_COMMAND
-init|=
-name|RM_PREFIX
-operator|+
-literal|"amlauncher.log.command"
-decl_stmt|;
-DECL|field|DEFAULT_RM_AMLAUNCHER_LOG_COMMAND
-specifier|public
-specifier|static
-specifier|final
-name|boolean
-name|DEFAULT_RM_AMLAUNCHER_LOG_COMMAND
-init|=
-literal|false
-decl_stmt|;
 comment|//RM delegation token related keys
 DECL|field|RM_DELEGATION_KEY_UPDATE_INTERVAL_KEY
 specifier|public
@@ -4662,6 +4641,26 @@ name|DEFAULT_NM_RESOURCE_MON_INTERVAL_MS
 init|=
 literal|3000
 decl_stmt|;
+DECL|field|NM_CONTAINER_MONITOR_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_MONITOR_ENABLED
+init|=
+name|NM_PREFIX
+operator|+
+literal|"container-monitor.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_NM_CONTAINER_MONITOR_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_CONTAINER_MONITOR_ENABLED
+init|=
+literal|true
+decl_stmt|;
 comment|/** How often to monitor containers.*/
 DECL|field|NM_CONTAINER_MON_INTERVAL_MS
 specifier|public
@@ -5394,6 +5393,27 @@ name|boolean
 name|DEFAULT_NM_LINUX_CONTAINER_CGROUPS_STRICT_RESOURCE_USAGE
 init|=
 literal|false
+decl_stmt|;
+comment|// Configurations for applicaiton life time monitor feature
+DECL|field|RM_APPLICATION_LIFETIME_MONITOR_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_APPLICATION_LIFETIME_MONITOR_INTERVAL_MS
+init|=
+name|RM_PREFIX
+operator|+
+literal|"application-timeouts.lifetime-monitor.interval-ms"
+decl_stmt|;
+DECL|field|DEFAULT_RM_APPLICATION_LIFETIME_MONITOR_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_RM_APPLICATION_LIFETIME_MONITOR_INTERVAL_MS
+init|=
+literal|60000
 decl_stmt|;
 comment|/**    * Interval of time the linux container executor should try cleaning up    * cgroups entry when cleaning up a container. This is required due to what     * it seems a race condition because the SIGTERM/SIGKILL is asynch.    */
 DECL|field|NM_LINUX_CONTAINER_CGROUPS_DELETE_TIMEOUT

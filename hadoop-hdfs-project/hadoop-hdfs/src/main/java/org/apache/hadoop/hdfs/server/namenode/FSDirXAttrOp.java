@@ -477,7 +477,7 @@ name|unprotectedSetXAttrs
 argument_list|(
 name|fsd
 argument_list|,
-name|src
+name|iip
 argument_list|,
 name|xAttrs
 argument_list|,
@@ -1426,7 +1426,7 @@ return|return
 name|newXAttrs
 return|;
 block|}
-DECL|method|unprotectedSetXAttrs ( FSDirectory fsd, final String src, final List<XAttr> xAttrs, final EnumSet<XAttrSetFlag> flag)
+DECL|method|unprotectedSetXAttrs ( FSDirectory fsd, final INodesInPath iip, final List<XAttr> xAttrs, final EnumSet<XAttrSetFlag> flag)
 specifier|static
 name|INode
 name|unprotectedSetXAttrs
@@ -1435,8 +1435,8 @@ name|FSDirectory
 name|fsd
 parameter_list|,
 specifier|final
-name|String
-name|src
+name|INodesInPath
+name|iip
 parameter_list|,
 specifier|final
 name|List
@@ -1461,23 +1461,6 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-name|INodesInPath
-name|iip
-init|=
-name|fsd
-operator|.
-name|getINodesInPath4Write
-argument_list|(
-name|FSDirectory
-operator|.
-name|normalizePath
-argument_list|(
-name|src
-argument_list|)
-argument_list|,
-literal|true
-argument_list|)
-decl_stmt|;
 name|INode
 name|inode
 init|=
@@ -1487,14 +1470,6 @@ name|resolveLastINode
 argument_list|(
 name|iip
 argument_list|)
-decl_stmt|;
-name|int
-name|snapshotId
-init|=
-name|iip
-operator|.
-name|getLatestSnapshotId
-argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
@@ -1655,7 +1630,10 @@ name|inode
 argument_list|,
 name|newXAttrs
 argument_list|,
-name|snapshotId
+name|iip
+operator|.
+name|getLatestSnapshotId
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -1999,7 +1977,7 @@ return|return
 name|xAttrs
 return|;
 block|}
-DECL|method|getXAttrByPrefixedName (FSDirectory fsd, INode inode, int snapshotId, String prefixedName)
+DECL|method|getXAttrByPrefixedName (FSDirectory fsd, INodesInPath iip, String prefixedName)
 specifier|static
 name|XAttr
 name|getXAttrByPrefixedName
@@ -2007,11 +1985,8 @@ parameter_list|(
 name|FSDirectory
 name|fsd
 parameter_list|,
-name|INode
-name|inode
-parameter_list|,
-name|int
-name|snapshotId
+name|INodesInPath
+name|iip
 parameter_list|,
 name|String
 name|prefixedName
@@ -2031,9 +2006,7 @@ name|XAttrStorage
 operator|.
 name|readINodeXAttrByPrefixedName
 argument_list|(
-name|inode
-argument_list|,
-name|snapshotId
+name|iip
 argument_list|,
 name|prefixedName
 argument_list|)
@@ -2048,16 +2021,13 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|unprotectedGetXAttrByPrefixedName ( INode inode, int snapshotId, String prefixedName)
+DECL|method|unprotectedGetXAttrByPrefixedName ( INodesInPath iip, String prefixedName)
 specifier|static
 name|XAttr
 name|unprotectedGetXAttrByPrefixedName
 parameter_list|(
-name|INode
-name|inode
-parameter_list|,
-name|int
-name|snapshotId
+name|INodesInPath
+name|iip
 parameter_list|,
 name|String
 name|prefixedName
@@ -2070,9 +2040,7 @@ name|XAttrStorage
 operator|.
 name|readINodeXAttrByPrefixedName
 argument_list|(
-name|inode
-argument_list|,
-name|snapshotId
+name|iip
 argument_list|,
 name|prefixedName
 argument_list|)
@@ -2332,32 +2300,6 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|String
-name|src
-init|=
-name|iip
-operator|.
-name|getPath
-argument_list|()
-decl_stmt|;
-name|INode
-name|inode
-init|=
-name|FSDirectory
-operator|.
-name|resolveLastINode
-argument_list|(
-name|iip
-argument_list|)
-decl_stmt|;
-name|int
-name|snapshotId
-init|=
-name|iip
-operator|.
-name|getPathSnapshotId
-argument_list|()
-decl_stmt|;
 return|return
 name|XAttrStorage
 operator|.
@@ -2367,16 +2309,7 @@ name|fsd
 operator|.
 name|getAttributes
 argument_list|(
-name|src
-argument_list|,
-name|inode
-operator|.
-name|getLocalNameBytes
-argument_list|()
-argument_list|,
-name|inode
-argument_list|,
-name|snapshotId
+name|iip
 argument_list|)
 argument_list|)
 return|;

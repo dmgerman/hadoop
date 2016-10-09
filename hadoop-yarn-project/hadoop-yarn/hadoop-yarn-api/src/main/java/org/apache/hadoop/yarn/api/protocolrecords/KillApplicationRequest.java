@@ -60,6 +60,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -178,6 +194,33 @@ name|setApplicationId
 parameter_list|(
 name|ApplicationId
 name|applicationId
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>diagnostics</em> to which the application is being killed.    * @return<em>diagnostics</em> to which the application is being killed    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getDiagnostics ()
+specifier|public
+specifier|abstract
+name|String
+name|getDiagnostics
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<em>diagnostics</em> to which the application is being killed.    * @param diagnostics<em>diagnostics</em> to which the application is being    *          killed    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setDiagnostics (String diagnostics)
+specifier|public
+specifier|abstract
+name|void
+name|setDiagnostics
+parameter_list|(
+name|String
+name|diagnostics
 parameter_list|)
 function_decl|;
 block|}

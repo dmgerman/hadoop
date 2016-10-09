@@ -2537,7 +2537,7 @@ name|add
 argument_list|(
 name|entry
 operator|.
-name|toString
+name|toStringStable
 argument_list|()
 argument_list|)
 expr_stmt|;

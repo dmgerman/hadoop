@@ -2411,6 +2411,42 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testCloseIdempotent ()
+specifier|public
+name|void
+name|testCloseIdempotent
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|conf
+operator|=
+operator|new
+name|Configuration
+argument_list|()
+expr_stmt|;
+name|fs
+operator|=
+name|S3ATestUtils
+operator|.
+name|createTestFileSystem
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|fs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Reads and returns a field from an object using reflection.  If the field    * cannot be found, is null, or is not the expected type, then this method    * fails the test.    *    * @param target object to read    * @param fieldType type of field to read, which will also be the return type    * @param fieldName name of field to read    * @return field that was read    * @throws IllegalAccessException if access not allowed    */
 DECL|method|getField (Object target, Class<T> fieldType, String fieldName)
 specifier|private

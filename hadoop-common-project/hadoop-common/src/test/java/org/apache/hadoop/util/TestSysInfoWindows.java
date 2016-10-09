@@ -685,12 +685,26 @@ operator|new
 name|SysInfoWindowsMock
 argument_list|()
 decl_stmt|;
-comment|// info str derived from windows shell command has \r\n termination
+comment|// info str derived from windows shell command is null
 name|tester
 operator|.
 name|setSysinfoString
 argument_list|(
 literal|null
+argument_list|)
+expr_stmt|;
+comment|// call a method to refresh values
+name|tester
+operator|.
+name|getAvailablePhysicalMemorySize
+argument_list|()
+expr_stmt|;
+comment|// info str derived from windows shell command with no \r\n termination
+name|tester
+operator|.
+name|setSysinfoString
+argument_list|(
+literal|""
 argument_list|)
 expr_stmt|;
 comment|// call a method to refresh values

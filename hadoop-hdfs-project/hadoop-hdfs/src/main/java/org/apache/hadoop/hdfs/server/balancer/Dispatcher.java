@@ -2211,13 +2211,8 @@ argument_list|(
 literal|"Failed to move "
 operator|+
 name|this
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|target

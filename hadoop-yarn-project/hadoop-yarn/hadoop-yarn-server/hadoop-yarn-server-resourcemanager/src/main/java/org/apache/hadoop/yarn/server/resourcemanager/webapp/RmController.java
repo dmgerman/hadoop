@@ -324,6 +324,20 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|failure ()
+specifier|public
+name|void
+name|failure
+parameter_list|()
+block|{
+name|render
+argument_list|(
+name|RedirectionErrorPage
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|nodes ()
 specifier|public
 name|void

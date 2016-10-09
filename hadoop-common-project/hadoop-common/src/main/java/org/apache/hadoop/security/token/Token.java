@@ -1019,17 +1019,57 @@ operator|=
 name|newService
 expr_stmt|;
 block|}
-comment|/**    * Indicates whether the token is a clone.  Used by HA failover proxy    * to indicate a token should not be visible to the user via    * UGI.getCredentials()    */
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
-DECL|class|PrivateToken
+comment|/**    * Whether this is a private token.    * @return false always for non-private tokens    */
+DECL|method|isPrivate ()
 specifier|public
+name|boolean
+name|isPrivate
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|/**    * Whether this is a private clone of a public token.    * @param thePublicService the public service name    * @return false always for non-private tokens    */
+DECL|method|isPrivateCloneOf (Text thePublicService)
+specifier|public
+name|boolean
+name|isPrivateCloneOf
+parameter_list|(
+name|Text
+name|thePublicService
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|/**    * Create a private clone of a public token.    * @param newService the new service name    * @return a private token    */
+DECL|method|privateClone (Text newService)
+specifier|public
+name|Token
+argument_list|<
+name|T
+argument_list|>
+name|privateClone
+parameter_list|(
+name|Text
+name|newService
+parameter_list|)
+block|{
+return|return
+operator|new
+name|PrivateToken
+argument_list|<>
+argument_list|(
+name|this
+argument_list|,
+name|newService
+argument_list|)
+return|;
+block|}
+comment|/**    * Indicates whether the token is a clone.  Used by HA failover proxy    * to indicate a token should not be visible to the user via    * UGI.getCredentials()    */
+DECL|class|PrivateToken
 specifier|static
 class|class
 name|PrivateToken
@@ -1050,42 +1090,104 @@ specifier|private
 name|Text
 name|publicService
 decl_stmt|;
-DECL|method|PrivateToken (Token<T> token)
-specifier|public
+DECL|method|PrivateToken (Token<T> publicToken, Text newService)
 name|PrivateToken
 parameter_list|(
 name|Token
 argument_list|<
 name|T
 argument_list|>
-name|token
+name|publicToken
+parameter_list|,
+name|Text
+name|newService
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|token
+name|publicToken
+operator|.
+name|identifier
+argument_list|,
+name|publicToken
+operator|.
+name|password
+argument_list|,
+name|publicToken
+operator|.
+name|kind
+argument_list|,
+name|newService
 argument_list|)
 expr_stmt|;
+assert|assert
+operator|!
+name|publicToken
+operator|.
+name|isPrivate
+argument_list|()
+assert|;
 name|publicService
 operator|=
-operator|new
-name|Text
-argument_list|(
-name|token
+name|publicToken
 operator|.
-name|getService
+name|service
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
 argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Cloned private token "
+operator|+
+name|this
+operator|+
+literal|" from "
+operator|+
+name|publicToken
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getPublicService ()
+block|}
+comment|/**      * Whether this is a private token.      * @return true always for private tokens      */
+annotation|@
+name|Override
+DECL|method|isPrivate ()
 specifier|public
-name|Text
-name|getPublicService
+name|boolean
+name|isPrivate
 parameter_list|()
 block|{
 return|return
+literal|true
+return|;
+block|}
+comment|/**      * Whether this is a private clone of a public token.      * @param thePublicService the public service name      * @return true when the public service is the same as specified      */
+annotation|@
+name|Override
+DECL|method|isPrivateCloneOf (Text thePublicService)
+specifier|public
+name|boolean
+name|isPrivateCloneOf
+parameter_list|(
+name|Text
+name|thePublicService
+parameter_list|)
+block|{
+return|return
 name|publicService
+operator|.
+name|equals
+argument_list|(
+name|thePublicService
+argument_list|)
 return|;
 block|}
 annotation|@

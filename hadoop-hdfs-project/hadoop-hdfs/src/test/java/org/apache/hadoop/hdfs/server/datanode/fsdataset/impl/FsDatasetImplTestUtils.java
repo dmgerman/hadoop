@@ -2524,6 +2524,8 @@ operator|new
 name|ReplicaMap
 argument_list|(
 name|dataset
+operator|.
+name|datasetLock
 argument_list|)
 decl_stmt|;
 try|try

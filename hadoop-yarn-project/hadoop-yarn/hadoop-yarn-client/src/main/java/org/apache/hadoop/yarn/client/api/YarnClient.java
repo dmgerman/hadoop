@@ -939,6 +939,24 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    *<p>    * Kill an application identified by given ID.    *</p>    * @param applicationId {@link ApplicationId} of the application that needs to    *          be killed    * @param diagnostics for killing an application.    * @throws YarnException in case of errors or if YARN rejects the request due    *           to access-control restrictions.    * @throws IOException    */
+DECL|method|killApplication (ApplicationId applicationId, String diagnostics)
+specifier|public
+specifier|abstract
+name|void
+name|killApplication
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|,
+name|String
+name|diagnostics
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    *<p>    * Get a report of the given Application.    *</p>    *     *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *</p>    *     *<p>    * If the user does not have<code>VIEW_APP</code> access then the following    * fields in the report will be set to stubbed values:    *<ul>    *<li>host - set to "N/A"</li>    *<li>RPC port - set to -1</li>    *<li>client token - set to "N/A"</li>    *<li>diagnostics - set to "N/A"</li>    *<li>tracking URL - set to "N/A"</li>    *<li>original tracking URL - set to "N/A"</li>    *<li>resource usage report - all values are -1</li>    *</ul>    *     * @param appId    *          {@link ApplicationId} of the application that needs a report    * @return application report    * @throws YarnException    * @throws IOException    */
 DECL|method|getApplicationReport (ApplicationId appId)
 specifier|public

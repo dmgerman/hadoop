@@ -145,6 +145,7 @@ name|CachingGetSpaceUsed
 block|{
 DECL|field|duShell
 specifier|private
+specifier|final
 name|DUShell
 name|duShell
 decl_stmt|;
@@ -179,6 +180,14 @@ name|jitter
 argument_list|,
 name|initialUsed
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|duShell
+operator|=
+operator|new
+name|DUShell
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|DU (CachingGetSpaceUsed.Builder builder)
@@ -226,20 +235,6 @@ name|void
 name|refresh
 parameter_list|()
 block|{
-if|if
-condition|(
-name|duShell
-operator|==
-literal|null
-condition|)
-block|{
-name|duShell
-operator|=
-operator|new
-name|DUShell
-argument_list|()
-expr_stmt|;
-block|}
 try|try
 block|{
 name|duShell

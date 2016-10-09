@@ -2855,6 +2855,14 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
 name|getNMTokenCache
 argument_list|()
 operator|.
@@ -2866,7 +2874,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Replacing token for : "
 operator|+
@@ -2878,13 +2886,14 @@ else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Received new token for : "
 operator|+
 name|nodeId
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|getNMTokenCache
 argument_list|()

@@ -416,6 +416,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -1238,9 +1252,9 @@ argument_list|()
 expr_stmt|;
 name|start
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 name|FileSystem
@@ -1297,9 +1311,9 @@ block|{
 name|long
 name|elapsed
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 operator|-
 name|start
@@ -1322,7 +1336,7 @@ name|IOException
 argument_list|(
 name|elapsed
 operator|+
-literal|" seconds passed."
+literal|" milliseconds passed."
 argument_list|,
 name|e
 argument_list|)
@@ -1384,9 +1398,9 @@ index|]
 decl_stmt|;
 name|start
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 try|try
@@ -1426,9 +1440,9 @@ block|{
 name|long
 name|elapsed
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 operator|-
 name|start
@@ -1474,7 +1488,7 @@ name|IOException
 argument_list|(
 name|elapsed
 operator|+
-literal|" seconds passed."
+literal|" milliseconds passed."
 argument_list|,
 name|e
 argument_list|)

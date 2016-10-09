@@ -112,6 +112,22 @@ argument_list|,
 literal|"Total number of files deleted from the object store."
 argument_list|)
 block|,
+DECL|enumConstant|FAKE_DIRECTORIES_CREATED
+name|FAKE_DIRECTORIES_CREATED
+argument_list|(
+literal|"fake_directories_created"
+argument_list|,
+literal|"Total number of fake directory entries created in the object store."
+argument_list|)
+block|,
+DECL|enumConstant|FAKE_DIRECTORIES_DELETED
+name|FAKE_DIRECTORIES_DELETED
+argument_list|(
+literal|"fake_directories_deleted"
+argument_list|,
+literal|"Total number of fake directory deletes submitted to object store."
+argument_list|)
+block|,
 DECL|enumConstant|IGNORED_ERRORS
 name|IGNORED_ERRORS
 argument_list|(

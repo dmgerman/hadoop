@@ -126,6 +126,20 @@ name|FoldedTreeSet
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|AutoCloseableLock
+import|;
+end_import
+
 begin_comment
 comment|/**  * Maintains the replica map.   */
 end_comment
@@ -135,12 +149,12 @@ DECL|class|ReplicaMap
 class|class
 name|ReplicaMap
 block|{
-comment|// Object using which this class is synchronized
-DECL|field|mutex
+comment|// Lock object to synchronize this instance.
+DECL|field|lock
 specifier|private
 specifier|final
-name|Object
-name|mutex
+name|AutoCloseableLock
+name|lock
 decl_stmt|;
 comment|// Map of block pool Id to a set of ReplicaInfo.
 DECL|field|map
@@ -233,16 +247,16 @@ return|;
 block|}
 block|}
 decl_stmt|;
-DECL|method|ReplicaMap (Object mutex)
+DECL|method|ReplicaMap (AutoCloseableLock lock)
 name|ReplicaMap
 parameter_list|(
-name|Object
-name|mutex
+name|AutoCloseableLock
+name|lock
 parameter_list|)
 block|{
 if|if
 condition|(
-name|mutex
+name|lock
 operator|==
 literal|null
 condition|)
@@ -251,15 +265,15 @@ throw|throw
 operator|new
 name|HadoopIllegalArgumentException
 argument_list|(
-literal|"Object to synchronize on cannot be null"
+literal|"Lock to synchronize on cannot be null"
 argument_list|)
 throw|;
 block|}
 name|this
 operator|.
-name|mutex
+name|lock
 operator|=
-name|mutex
+name|lock
 expr_stmt|;
 block|}
 DECL|method|getBlockPoolList ()
@@ -268,9 +282,15 @@ index|[]
 name|getBlockPoolList
 parameter_list|()
 block|{
-synchronized|synchronized
+try|try
 init|(
-name|mutex
+name|AutoCloseableLock
+name|l
+init|=
+name|lock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 return|return
@@ -423,9 +443,15 @@ argument_list|(
 name|bpid
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|mutex
+name|AutoCloseableLock
+name|l
+init|=
+name|lock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|FoldedTreeSet
@@ -486,9 +512,15 @@ argument_list|(
 name|replicaInfo
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|mutex
+name|AutoCloseableLock
+name|l
+init|=
+name|lock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|FoldedTreeSet
@@ -580,9 +612,15 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|mutex
+name|AutoCloseableLock
+name|l
+init|=
+name|lock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|FoldedTreeSet
@@ -669,9 +707,15 @@ argument_list|(
 name|bpid
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|mutex
+name|AutoCloseableLock
+name|l
+init|=
+name|lock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|FoldedTreeSet
@@ -719,9 +763,15 @@ name|String
 name|bpid
 parameter_list|)
 block|{
-synchronized|synchronized
+try|try
 init|(
-name|mutex
+name|AutoCloseableLock
+name|l
+init|=
+name|lock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|FoldedTreeSet
@@ -751,7 +801,7 @@ literal|0
 return|;
 block|}
 block|}
-comment|/**    * Get a collection of the replicas for given block pool    * This method is<b>not synchronized</b>. It needs to be synchronized    * externally using the mutex, both for getting the replicas    * values from the map and iterating over it. Mutex can be accessed using    * {@link #getMutext()} method.    *     * @param bpid block pool id    * @return a collection of the replicas belonging to the block pool    */
+comment|/**    * Get a collection of the replicas for given block pool    * This method is<b>not synchronized</b>. It needs to be synchronized    * externally using the lock, both for getting the replicas    * values from the map and iterating over it. Mutex can be accessed using    * {@link #getLock()} method.    *     * @param bpid block pool id    * @return a collection of the replicas belonging to the block pool    */
 DECL|method|replicas (String bpid)
 name|Collection
 argument_list|<
@@ -785,9 +835,15 @@ argument_list|(
 name|bpid
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|mutex
+name|AutoCloseableLock
+name|l
+init|=
+name|lock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|FoldedTreeSet
@@ -843,9 +899,15 @@ argument_list|(
 name|bpid
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|mutex
+name|AutoCloseableLock
+name|l
+init|=
+name|lock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|map
@@ -857,14 +919,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Give access to mutex used for synchronizing ReplicasMap    * @return object used as lock    */
-DECL|method|getMutex ()
-name|Object
-name|getMutex
+comment|/**    * Get the lock object used for synchronizing ReplicasMap    * @return lock object    */
+DECL|method|getLock ()
+name|AutoCloseableLock
+name|getLock
 parameter_list|()
 block|{
 return|return
-name|mutex
+name|lock
 return|;
 block|}
 block|}

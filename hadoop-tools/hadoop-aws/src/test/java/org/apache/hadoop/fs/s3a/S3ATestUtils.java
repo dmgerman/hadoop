@@ -997,6 +997,39 @@ name|toString
 argument_list|()
 return|;
 block|}
+comment|/**      * Assert that the value of {@link #diff()} matches that expected.      * @param message message to print; metric name is appended      * @param expected expected value.      */
+DECL|method|assertDiffEquals (String message, long expected)
+specifier|public
+name|void
+name|assertDiffEquals
+parameter_list|(
+name|String
+name|message
+parameter_list|,
+name|long
+name|expected
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|message
+operator|+
+literal|": "
+operator|+
+name|statistic
+operator|.
+name|getSymbol
+argument_list|()
+argument_list|,
+name|expected
+argument_list|,
+name|diff
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**      * Assert that the value of {@link #diff()} matches that expected.      * @param expected expected value.      */
 DECL|method|assertDiffEquals (long expected)
 specifier|public
@@ -1007,18 +1040,13 @@ name|long
 name|expected
 parameter_list|)
 block|{
-name|Assert
-operator|.
-name|assertEquals
+name|assertDiffEquals
 argument_list|(
 literal|"Count of "
 operator|+
 name|this
 argument_list|,
 name|expected
-argument_list|,
-name|diff
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

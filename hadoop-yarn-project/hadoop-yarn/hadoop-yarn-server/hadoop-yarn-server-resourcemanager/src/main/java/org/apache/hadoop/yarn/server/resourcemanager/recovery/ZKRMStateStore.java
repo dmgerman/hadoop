@@ -726,22 +726,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|zookeeper
 operator|.
 name|CreateMode
@@ -862,9 +846,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|security
+name|io
 operator|.
-name|NoSuchAlgorithmException
+name|IOException
 import|;
 end_import
 
@@ -874,7 +858,7 @@ name|java
 operator|.
 name|security
 operator|.
-name|SecureRandom
+name|NoSuchAlgorithmException
 import|;
 end_import
 
@@ -925,7 +909,7 @@ extends|extends
 name|RMStateStore
 block|{
 DECL|field|LOG
-specifier|public
+specifier|private
 specifier|static
 specifier|final
 name|Log
@@ -938,41 +922,6 @@ argument_list|(
 name|ZKRMStateStore
 operator|.
 name|class
-argument_list|)
-decl_stmt|;
-DECL|field|random
-specifier|private
-specifier|final
-name|SecureRandom
-name|random
-init|=
-operator|new
-name|SecureRandom
-argument_list|()
-decl_stmt|;
-DECL|field|ROOT_ZNODE_NAME
-specifier|protected
-specifier|static
-specifier|final
-name|String
-name|ROOT_ZNODE_NAME
-init|=
-literal|"ZKRMStateRoot"
-decl_stmt|;
-DECL|field|CURRENT_VERSION_INFO
-specifier|protected
-specifier|static
-specifier|final
-name|Version
-name|CURRENT_VERSION_INFO
-init|=
-name|Version
-operator|.
-name|newInstance
-argument_list|(
-literal|1
-argument_list|,
-literal|3
 argument_list|)
 decl_stmt|;
 DECL|field|RM_DELEGATION_TOKENS_ROOT_ZNODE_NAME
@@ -1002,7 +951,32 @@ name|RM_DT_MASTER_KEYS_ROOT_ZNODE_NAME
 init|=
 literal|"RMDTMasterKeysRoot"
 decl_stmt|;
-comment|/** Znode paths */
+DECL|field|ROOT_ZNODE_NAME
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|ROOT_ZNODE_NAME
+init|=
+literal|"ZKRMStateRoot"
+decl_stmt|;
+DECL|field|CURRENT_VERSION_INFO
+specifier|protected
+specifier|static
+specifier|final
+name|Version
+name|CURRENT_VERSION_INFO
+init|=
+name|Version
+operator|.
+name|newInstance
+argument_list|(
+literal|1
+argument_list|,
+literal|3
+argument_list|)
+decl_stmt|;
+comment|/* Znode paths */
 DECL|field|zkRootNodePath
 specifier|private
 name|String
@@ -1050,7 +1024,7 @@ specifier|protected
 name|String
 name|znodeWorkingPath
 decl_stmt|;
-comment|/** Fencing related variables */
+comment|/* Fencing related variables */
 DECL|field|FENCING_LOCK
 specifier|private
 specifier|static
@@ -1075,7 +1049,7 @@ specifier|private
 name|int
 name|zkSessionTimeout
 decl_stmt|;
-comment|/** ACL and auth info */
+comment|/* ACL and auth info */
 DECL|field|zkAcl
 specifier|private
 name|List
@@ -1099,7 +1073,7 @@ name|String
 name|zkRootNodeUsername
 decl_stmt|;
 DECL|field|CREATE_DELETE_PERMS
-specifier|public
+specifier|private
 specifier|static
 specifier|final
 name|int
@@ -1137,14 +1111,14 @@ specifier|protected
 name|CuratorFramework
 name|curatorFramework
 decl_stmt|;
-comment|/**    * Given the {@link Configuration} and {@link ACL}s used (zkAcl) for    * ZooKeeper access, construct the {@link ACL}s for the store's root node.    * In the constructed {@link ACL}, all the users allowed by zkAcl are given    * rwa access, while the current RM has exclude create-delete access.    *    * To be called only when HA is enabled and the configuration doesn't set ACL    * for the root node.    */
+comment|/**    * Given the {@link Configuration} and {@link ACL}s used (sourceACLs) for    * ZooKeeper access, construct the {@link ACL}s for the store's root node.    * In the constructed {@link ACL}, all the users allowed by sourceACLs are    * given read-write-admin access, while the current RM has exclusive    * create-delete access.    *    * To be called only when HA is enabled and the configuration doesn't set an    * ACL for the root node.    * @param conf the configuration    * @param sourceACLs the source ACLs    * @return ACLs for the store's root node    * @throws java.security.NoSuchAlgorithmException thrown if the digest    * algorithm used by Zookeeper cannot be found    */
 annotation|@
 name|VisibleForTesting
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|constructZkRootNodeACL ( Configuration conf, List<ACL> sourceACLs)
+DECL|method|constructZkRootNodeACL (Configuration conf, List<ACL> sourceACLs)
 specifier|protected
 name|List
 argument_list|<
@@ -1168,7 +1142,7 @@ name|List
 argument_list|<
 name|ACL
 argument_list|>
-name|zkRootNodeAcl
+name|zkRootNodeAclList
 init|=
 operator|new
 name|ArrayList
@@ -1183,7 +1157,7 @@ range|:
 name|sourceACLs
 control|)
 block|{
-name|zkRootNodeAcl
+name|zkRootNodeAclList
 operator|.
 name|add
 argument_list|(
@@ -1250,7 +1224,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|zkRootNodeAcl
+name|zkRootNodeAclList
 operator|.
 name|add
 argument_list|(
@@ -1264,7 +1238,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
-name|zkRootNodeAcl
+name|zkRootNodeAclList
 return|;
 block|}
 annotation|@
@@ -1279,7 +1253,9 @@ name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|Exception
+name|IOException
+throws|,
+name|NoSuchAlgorithmException
 block|{
 comment|/* Initialize fencing related paths, acls, and ops */
 name|znodeWorkingPath
@@ -2303,11 +2279,7 @@ name|planName
 argument_list|,
 operator|new
 name|HashMap
-argument_list|<
-name|ReservationId
-argument_list|,
-name|ReservationAllocationStateProto
-argument_list|>
+argument_list|<>
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2376,8 +2348,9 @@ argument_list|(
 literal|"There is no data saved"
 argument_list|)
 expr_stmt|;
-return|return;
 block|}
+else|else
+block|{
 name|AMRMTokenSecretManagerStatePBImpl
 name|stateData
 init|=
@@ -2411,6 +2384,7 @@ name|getNextMasterKey
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|loadRMDTSecretManagerState (RMState rmState)
 specifier|private
@@ -2518,6 +2492,8 @@ argument_list|(
 name|childData
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|DataInputStream
 name|fsIn
 init|=
@@ -2526,8 +2502,7 @@ name|DataInputStream
 argument_list|(
 name|is
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 if|if
 condition|(
@@ -2594,14 +2569,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-finally|finally
-block|{
-name|is
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|loadRMSequentialNumberState (RMState rmState)
@@ -2640,6 +2607,8 @@ argument_list|(
 name|seqData
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|DataInputStream
 name|seqIn
 init|=
@@ -2648,8 +2617,7 @@ name|DataInputStream
 argument_list|(
 name|seqIs
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 name|rmState
 operator|.
@@ -2660,14 +2628,6 @@ operator|=
 name|seqIn
 operator|.
 name|readInt
-argument_list|()
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|seqIn
-operator|.
-name|close
 argument_list|()
 expr_stmt|;
 block|}
@@ -2751,6 +2711,8 @@ argument_list|(
 name|childData
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|DataInputStream
 name|fsIn
 init|=
@@ -2759,8 +2721,7 @@ name|DataInputStream
 argument_list|(
 name|is
 argument_list|)
-decl_stmt|;
-try|try
+init|)
 block|{
 if|if
 condition|(
@@ -2838,14 +2799,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-finally|finally
-block|{
-name|is
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 block|}
@@ -3209,8 +3162,8 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateData appStateDataPB)
-specifier|public
+DECL|method|updateApplicationStateInternal ( ApplicationId appId, ApplicationStateData appStateDataPB)
+specifier|protected
 specifier|synchronized
 name|void
 name|updateApplicationStateInternal
@@ -3321,7 +3274,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|storeApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateData attemptStateDataPB)
-specifier|public
+specifier|protected
 specifier|synchronized
 name|void
 name|storeApplicationAttemptStateInternal
@@ -3415,7 +3368,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|updateApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateData attemptStateDataPB)
-specifier|public
+specifier|protected
 specifier|synchronized
 name|void
 name|updateApplicationAttemptStateInternal
@@ -3552,7 +3505,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|removeApplicationAttemptInternal ( ApplicationAttemptId appAttemptId)
-specifier|public
+specifier|protected
 specifier|synchronized
 name|void
 name|removeApplicationAttemptInternal
@@ -3628,7 +3581,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|removeApplicationStateInternal ( ApplicationStateData appState)
-specifier|public
+specifier|protected
 specifier|synchronized
 name|void
 name|removeApplicationStateInternal
@@ -3948,22 +3901,6 @@ name|getSequenceNumber
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|ByteArrayOutputStream
-name|seqOs
-init|=
-operator|new
-name|ByteArrayOutputStream
-argument_list|()
-decl_stmt|;
-name|DataOutputStream
-name|seqOut
-init|=
-operator|new
-name|DataOutputStream
-argument_list|(
-name|seqOs
-argument_list|)
-decl_stmt|;
 name|RMDelegationTokenIdentifierData
 name|identifierData
 init|=
@@ -3975,7 +3912,24 @@ argument_list|,
 name|renewDate
 argument_list|)
 decl_stmt|;
+name|ByteArrayOutputStream
+name|seqOs
+init|=
+operator|new
+name|ByteArrayOutputStream
+argument_list|()
+decl_stmt|;
 try|try
+init|(
+name|DataOutputStream
+name|seqOut
+init|=
+operator|new
+name|DataOutputStream
+argument_list|(
+name|seqOs
+argument_list|)
+init|)
 block|{
 if|if
 condition|(
@@ -4106,14 +4060,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-finally|finally
-block|{
-name|seqOs
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -4144,22 +4090,6 @@ name|getKeyId
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|ByteArrayOutputStream
-name|os
-init|=
-operator|new
-name|ByteArrayOutputStream
-argument_list|()
-decl_stmt|;
-name|DataOutputStream
-name|fsOut
-init|=
-operator|new
-name|DataOutputStream
-argument_list|(
-name|os
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|LOG
@@ -4181,6 +4111,25 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|ByteArrayOutputStream
+name|os
+init|=
+operator|new
+name|ByteArrayOutputStream
+argument_list|()
+decl_stmt|;
+try|try
+init|(
+name|DataOutputStream
+name|fsOut
+init|=
+operator|new
+name|DataOutputStream
+argument_list|(
+name|os
+argument_list|)
+init|)
+block|{
 name|delegationKey
 operator|.
 name|write
@@ -4188,8 +4137,6 @@ argument_list|(
 name|fsOut
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|safeCreate
 argument_list|(
 name|nodeCreatePath
@@ -4205,14 +4152,6 @@ name|CreateMode
 operator|.
 name|PERSISTENT
 argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|os
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -4348,7 +4287,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|storeOrUpdateAMRMTokenSecretManagerState ( AMRMTokenSecretManagerState amrmTokenSecretManagerState, boolean isUpdate)
-specifier|public
+specifier|protected
 specifier|synchronized
 name|void
 name|storeOrUpdateAMRMTokenSecretManagerState
@@ -5382,6 +5321,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -5392,17 +5333,11 @@ try|try
 block|{
 while|while
 condition|(
-literal|true
-condition|)
-block|{
-if|if
-condition|(
+operator|!
 name|isFencedState
 argument_list|()
 condition|)
 block|{
-break|break;
-block|}
 comment|// Create and delete fencing node
 operator|new
 name|SafeTransaction
@@ -5430,17 +5365,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|VerifyActiveStatusThread
-operator|.
-name|class
-operator|.
 name|getName
 argument_list|()
 operator|+
-literal|" thread "
-operator|+
-literal|"interrupted! Exiting!"
+literal|" thread interrupted! Exiting!"
 argument_list|)
+expr_stmt|;
+name|interrupt
+argument_list|()
 expr_stmt|;
 block|}
 catch|catch

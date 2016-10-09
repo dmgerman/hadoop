@@ -60,6 +60,38 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_UTIL_HASH_TYPE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_UTIL_HASH_TYPE_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class represents a common API for hashing functions.  */
 end_comment
@@ -175,9 +207,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"hadoop.util.hash.type"
+name|HADOOP_UTIL_HASH_TYPE_KEY
 argument_list|,
-literal|"murmur"
+name|HADOOP_UTIL_HASH_TYPE_DEFAULT
 argument_list|)
 decl_stmt|;
 return|return

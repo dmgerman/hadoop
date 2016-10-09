@@ -187,14 +187,14 @@ decl_stmt|;
 comment|//5 mins
 DECL|field|expireInterval
 specifier|private
-name|int
+name|long
 name|expireInterval
 init|=
 name|DEFAULT_EXPIRE
 decl_stmt|;
 DECL|field|monitorInterval
 specifier|private
-name|int
+name|long
 name|monitorInterval
 init|=
 name|expireInterval
@@ -373,12 +373,28 @@ operator|=
 name|expireInterval
 expr_stmt|;
 block|}
-DECL|method|setMonitorInterval (int monitorInterval)
+DECL|method|getExpireInterval (O o)
+specifier|protected
+name|long
+name|getExpireInterval
+parameter_list|(
+name|O
+name|o
+parameter_list|)
+block|{
+comment|// by-default return for all the registered object interval.
+return|return
+name|this
+operator|.
+name|expireInterval
+return|;
+block|}
+DECL|method|setMonitorInterval (long monitorInterval)
 specifier|protected
 name|void
 name|setMonitorInterval
 parameter_list|(
-name|int
+name|long
 name|monitorInterval
 parameter_list|)
 block|{
@@ -434,9 +450,7 @@ name|O
 name|ob
 parameter_list|)
 block|{
-name|running
-operator|.
-name|put
+name|register
 argument_list|(
 name|ob
 argument_list|,
@@ -444,6 +458,29 @@ name|clock
 operator|.
 name|getTime
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|register (O ob, long monitorStartTime)
+specifier|public
+specifier|synchronized
+name|void
+name|register
+parameter_list|(
+name|O
+name|ob
+parameter_list|,
+name|long
+name|monitorStartTime
+parameter_list|)
+block|{
+name|running
+operator|.
+name|put
+argument_list|(
+name|ob
+argument_list|,
+name|monitorStartTime
 argument_list|)
 expr_stmt|;
 block|}
@@ -560,7 +597,7 @@ operator|.
 name|iterator
 argument_list|()
 decl_stmt|;
-comment|//avoid calculating current time everytime in loop
+comment|// avoid calculating current time everytime in loop
 name|long
 name|currentTime
 init|=
@@ -592,6 +629,22 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+name|O
+name|key
+init|=
+name|entry
+operator|.
+name|getKey
+argument_list|()
+decl_stmt|;
+name|long
+name|interval
+init|=
+name|getExpireInterval
+argument_list|(
+name|key
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|currentTime
@@ -601,7 +654,7 @@ operator|.
 name|getValue
 argument_list|()
 operator|+
-name|expireInterval
+name|interval
 condition|)
 block|{
 name|iterator
@@ -611,10 +664,7 @@ argument_list|()
 expr_stmt|;
 name|expire
 argument_list|(
-name|entry
-operator|.
-name|getKey
-argument_list|()
+name|key
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -633,7 +683,7 @@ argument_list|()
 operator|+
 literal|" Timed out after "
 operator|+
-name|expireInterval
+name|interval
 operator|/
 literal|1000
 operator|+

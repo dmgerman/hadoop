@@ -2076,6 +2076,7 @@ operator|.
 name|connect
 argument_list|()
 expr_stmt|;
+comment|// Because we're not calling from the proxy's address, we'll be redirected
 name|String
 name|expectedURL
 init|=
@@ -2100,6 +2101,8 @@ name|getAppID
 argument_list|()
 argument_list|,
 literal|"/mapreduce"
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|Assert

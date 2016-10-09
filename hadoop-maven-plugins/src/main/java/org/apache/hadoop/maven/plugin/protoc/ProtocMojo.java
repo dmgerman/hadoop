@@ -624,6 +624,18 @@ name|changed
 init|=
 literal|false
 decl_stmt|;
+if|if
+condition|(
+name|listing
+operator|==
+literal|null
+condition|)
+block|{
+comment|// not changed.
+return|return
+literal|false
+return|;
+block|}
 comment|// Do not exit early, since we need to compute and save checksums
 comment|// for each file within the directory.
 for|for

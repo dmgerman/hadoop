@@ -1124,20 +1124,6 @@ name|Answer
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Joiner
-import|;
-end_import
-
 begin_comment
 comment|/**  * These tests make sure that DFSClient retries fetching data from DFS  * properly in case of errors.  */
 end_comment
@@ -3319,24 +3305,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Called complete(: "
-operator|+
-name|Joiner
-operator|.
-name|on
-argument_list|(
-literal|","
-argument_list|)
-operator|.
-name|join
-argument_list|(
-name|invocation
-operator|.
-name|getArguments
-argument_list|()
-argument_list|)
-operator|+
-literal|")"
+literal|"Called complete:"
 argument_list|)
 expr_stmt|;
 if|if

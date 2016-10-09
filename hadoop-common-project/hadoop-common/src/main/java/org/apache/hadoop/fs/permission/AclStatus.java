@@ -110,7 +110,7 @@ name|Public
 annotation|@
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Stable
 DECL|class|AclStatus
 specifier|public
 class|class

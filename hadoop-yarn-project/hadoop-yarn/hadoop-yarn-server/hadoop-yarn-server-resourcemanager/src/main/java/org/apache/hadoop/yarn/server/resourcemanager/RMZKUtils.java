@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -170,7 +180,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Utility method to fetch the ZK ACLs from the configuration    */
+comment|/**    * Utility method to fetch the ZK ACLs from the configuration.    *    * @throws java.io.IOException if the Zookeeper ACLs configuration file    * cannot be read    */
 DECL|method|getZKAcls (Configuration conf)
 specifier|public
 specifier|static
@@ -184,7 +194,7 @@ name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|Exception
+name|IOException
 block|{
 comment|// Parse authentication from configuration.
 name|String
@@ -225,7 +235,11 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IOException
+decl||
+name|ZKUtil
+operator|.
+name|BadAclFormatException
 name|e
 parameter_list|)
 block|{
@@ -245,7 +259,7 @@ name|e
 throw|;
 block|}
 block|}
-comment|/**    * Utility method to fetch ZK auth info from the configuration    */
+comment|/**    * Utility method to fetch ZK auth info from the configuration.    *    * @throws java.io.IOException if the Zookeeper ACLs configuration file    * cannot be read    */
 DECL|method|getZKAuths (Configuration conf)
 specifier|public
 specifier|static
@@ -261,7 +275,7 @@ name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|String
 name|zkAuthConf
@@ -314,7 +328,11 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IOException
+decl||
+name|ZKUtil
+operator|.
+name|BadAuthFormatException
 name|e
 parameter_list|)
 block|{

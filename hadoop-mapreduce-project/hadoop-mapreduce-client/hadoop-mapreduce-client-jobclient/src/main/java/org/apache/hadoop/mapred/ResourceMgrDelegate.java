@@ -2907,6 +2907,34 @@ name|command
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|killApplication (ApplicationId appId, String diagnostics)
+specifier|public
+name|void
+name|killApplication
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|String
+name|diagnostics
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+name|client
+operator|.
+name|killApplication
+argument_list|(
+name|appId
+argument_list|,
+name|diagnostics
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

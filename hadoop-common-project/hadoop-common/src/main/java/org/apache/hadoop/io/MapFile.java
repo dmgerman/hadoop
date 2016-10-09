@@ -254,6 +254,38 @@ name|ReflectionUtils
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_MAP_INDEX_SKIP_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_MAP_INDEX_SKIP_KEY
+import|;
+end_import
+
 begin_comment
 comment|/** A file-based map from keys to values.  *   *<p>A map is a directory containing two files, the<code>data</code> file,  * containing all keys and values in the map, and a smaller<code>index</code>  * file, containing a fraction of the keys.  The fraction is determined by  * {@link Writer#getIndexInterval()}.  *  *<p>The index file is read entirely into memory.  Thus key implementations  * should try to keep themselves small.  *  *<p>Map files are created by adding entries in-order.  To maintain a large  * database, perform updates by copying the previous version of a database and  * merging in a sorted change list, to create a new version of the database in  * a new file.  Sorting large change lists can be done with {@link  * SequenceFile.Sorter}.  */
 end_comment
@@ -1964,9 +1996,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"io.map.index.skip"
+name|IO_MAP_INDEX_SKIP_KEY
 argument_list|,
-literal|0
+name|IO_MAP_INDEX_SKIP_DEFAULT
 argument_list|)
 expr_stmt|;
 name|open
@@ -4691,6 +4723,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 name|WritableComparable
+argument_list|<
+name|?
+argument_list|>
 name|key
 init|=
 name|ReflectionUtils

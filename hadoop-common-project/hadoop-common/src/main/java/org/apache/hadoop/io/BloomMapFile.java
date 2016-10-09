@@ -254,6 +254,70 @@ name|Hash
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_MAPFILE_BLOOM_ERROR_RATE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_MAPFILE_BLOOM_ERROR_RATE_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_MAPFILE_BLOOM_SIZE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_MAPFILE_BLOOM_SIZE_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class extends {@link MapFile} and provides very much the same  * functionality. However, it uses dynamic Bloom filters to provide  * quick membership test for keys, and it offers a fast version of   * {@link Reader#get(WritableComparable, Writable)} operation, especially in  * case of sparsely populated MapFile-s.  */
 end_comment
@@ -1077,11 +1141,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"io.mapfile.bloom.size"
+name|IO_MAPFILE_BLOOM_SIZE_KEY
 argument_list|,
-literal|1024
-operator|*
-literal|1024
+name|IO_MAPFILE_BLOOM_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;
 comment|// vector size should be<code>-kn / (ln(1 - c^(1/k)))</code> bits for
@@ -1096,9 +1158,9 @@ name|conf
 operator|.
 name|getFloat
 argument_list|(
-literal|"io.mapfile.bloom.error.rate"
+name|IO_MAPFILE_BLOOM_ERROR_RATE_KEY
 argument_list|,
-literal|0.005f
+name|IO_MAPFILE_BLOOM_ERROR_RATE_DEFAULT
 argument_list|)
 decl_stmt|;
 name|vectorSize

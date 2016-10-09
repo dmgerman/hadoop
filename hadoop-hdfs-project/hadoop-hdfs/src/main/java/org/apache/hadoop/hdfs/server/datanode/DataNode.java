@@ -13683,6 +13683,18 @@ return|return
 name|directoryScanner
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getBlockPoolTokenSecretManager ()
+specifier|public
+name|BlockPoolTokenSecretManager
+name|getBlockPoolTokenSecretManager
+parameter_list|()
+block|{
+return|return
+name|blockPoolTokenSecretManager
+return|;
+block|}
 DECL|method|secureMain (String args[], SecureResources resources)
 specifier|public
 specifier|static

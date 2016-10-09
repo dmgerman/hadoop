@@ -3402,7 +3402,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Failed to find datanode (scope=\"{}\" excludedScope=\"{}\")."
 argument_list|,
