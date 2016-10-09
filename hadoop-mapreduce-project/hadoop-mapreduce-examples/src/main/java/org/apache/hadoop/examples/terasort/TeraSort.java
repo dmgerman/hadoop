@@ -1574,6 +1574,19 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"If you want to store the output data as "
+operator|+
+literal|"erasure code striping file, just make sure that the parent dir "
+operator|+
+literal|"of<out> has erasure code policy set"
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|run (String[] args)
 specifier|public

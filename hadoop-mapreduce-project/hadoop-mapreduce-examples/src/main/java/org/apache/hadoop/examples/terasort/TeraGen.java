@@ -1325,6 +1325,19 @@ argument_list|(
 literal|"teragen<num rows><output dir>"
 argument_list|)
 expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"If you want to generate data and store them as "
+operator|+
+literal|"erasure code striping file, just make sure that the parent dir "
+operator|+
+literal|"of<output dir> has erasure code policy set"
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Parse a number that optionally has a postfix that denotes a base.    * @param str an string integer with an option base {k,m,b,t}.    * @return the expanded value    */
 DECL|method|parseHumanLong (String str)
