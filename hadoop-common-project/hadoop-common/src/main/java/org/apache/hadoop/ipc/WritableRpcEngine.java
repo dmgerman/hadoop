@@ -311,6 +311,8 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
+annotation|@
+name|Deprecated
 DECL|class|WritableRpcEngine
 specifier|public
 class|class
@@ -1693,6 +1695,8 @@ argument_list|)
 return|;
 block|}
 comment|/** An RPC Server. */
+annotation|@
+name|Deprecated
 DECL|class|Server
 specifier|public
 specifier|static
@@ -2118,6 +2122,8 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Deprecated
 DECL|class|WritableRpcInvoker
 specifier|static
 class|class
