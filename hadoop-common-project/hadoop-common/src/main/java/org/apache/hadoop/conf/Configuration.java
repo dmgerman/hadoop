@@ -3554,7 +3554,7 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Attempts to repeatedly expand the value {@code expr} by replacing the    * left-most substring of the form "${var}" in the following precedence order    *<ol>    *<li>by the value of the environment variable "var" if defined</li>    *<li>by the value of the Java system property "var" if defined</li>    *<li>by the value of the configuration key "var" if defined</li>    *</ol>    *    * If var is unbounded the current state of expansion "prefix${var}suffix" is    * returned.    *    * If a cycle is detected: replacing var1 requires replacing var2 ... requires    * replacing var1, i.e., the cycle is shorter than    * {@link Configuration#MAX_SUBST} then the original expr is returned.    *    * @param expr the literal value of a config key    * @return null if expr is null, otherwise the value resulting from expanding    * expr using the algorithm above.    * @throws IllegalArgumentException when more than    * {@link Configuration#MAX_SUBST} replacements are required    */
+comment|/**    * Attempts to repeatedly expand the value {@code expr} by replacing the    * left-most substring of the form "${var}" in the following precedence order    *<ol>    *<li>by the value of the environment variable "var" if defined</li>    *<li>by the value of the Java system property "var" if defined</li>    *<li>by the value of the configuration key "var" if defined</li>    *</ol>    *    * If var is unbounded the current state of expansion "prefix${var}suffix" is    * returned.    *<p>    * This function also detects self-referential substitutions, i.e.    *<pre>    *   {@code    *   foo.bar = ${foo.bar}    *   }    *</pre>    * If a cycle is detected then the original expr is returned. Loops    * involving multiple substitutions are not detected.    *    * @param expr the literal value of a config key    * @return null if expr is null, otherwise the value resulting from expanding    * expr using the algorithm above.    * @throws IllegalArgumentException when more than    * {@link Configuration#MAX_SUBST} replacements are required    */
 DECL|method|substituteVars (String expr)
 specifier|private
 name|String
@@ -3579,14 +3579,6 @@ name|String
 name|eval
 init|=
 name|expr
-decl_stmt|;
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|evalSet
-init|=
-literal|null
 decl_stmt|;
 for|for
 control|(
@@ -3896,8 +3888,6 @@ name|eval
 return|;
 comment|// return literal ${var}: var is unbound
 block|}
-comment|// prevent recursive resolution
-comment|//
 specifier|final
 name|int
 name|dollar
@@ -3939,29 +3929,12 @@ argument_list|,
 name|afterRightBrace
 argument_list|)
 decl_stmt|;
+comment|// detect self-referential values
 if|if
 condition|(
-name|evalSet
-operator|==
-literal|null
-condition|)
-block|{
-name|evalSet
-operator|=
-operator|new
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-argument_list|()
-expr_stmt|;
-block|}
-if|if
-condition|(
-operator|!
-name|evalSet
+name|val
 operator|.
-name|add
+name|contains
 argument_list|(
 name|refVar
 argument_list|)
