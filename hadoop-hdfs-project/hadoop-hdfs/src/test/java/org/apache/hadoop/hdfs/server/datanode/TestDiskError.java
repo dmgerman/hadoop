@@ -1329,7 +1329,13 @@ name|dir
 init|=
 name|vol
 operator|.
-name|getBasePath
+name|getStorageLocation
+argument_list|()
+operator|.
+name|getFile
+argument_list|()
+operator|.
+name|getAbsolutePath
 argument_list|()
 decl_stmt|;
 name|Path

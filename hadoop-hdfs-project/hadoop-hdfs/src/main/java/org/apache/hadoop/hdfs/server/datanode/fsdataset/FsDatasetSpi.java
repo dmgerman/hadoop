@@ -120,6 +120,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -1075,13 +1085,13 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Removes a collection of volumes from FsDataset.    *    * If the FSDataset supports block scanning, this function removes    * the volumes from the block scanner.    *    * @param volumes  The paths of the volumes to be removed.    * @param clearFailure set true to clear the failure information about the    *                     volumes.    */
-DECL|method|removeVolumes (Set<File> volumes, boolean clearFailure)
+DECL|method|removeVolumes (Collection<StorageLocation> volumes, boolean clearFailure)
 name|void
 name|removeVolumes
 parameter_list|(
-name|Set
+name|Collection
 argument_list|<
-name|File
+name|StorageLocation
 argument_list|>
 name|volumes
 parameter_list|,
@@ -1547,7 +1557,7 @@ comment|/**      * Check if all the data directories are healthy      * @return 
 DECL|method|checkDataDir ()
 name|Set
 argument_list|<
-name|File
+name|StorageLocation
 argument_list|>
 name|checkDataDir
 parameter_list|()

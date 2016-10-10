@@ -909,9 +909,6 @@ operator|+
 literal|"scanner is disabled."
 argument_list|,
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return;
@@ -943,9 +940,6 @@ argument_list|(
 literal|"Already have a scanner for volume {}."
 argument_list|,
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return;
@@ -957,9 +951,6 @@ argument_list|(
 literal|"Adding scanner for volume {} (StorageID {})"
 argument_list|,
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|,
 name|volume
 operator|.
@@ -1098,9 +1089,6 @@ argument_list|(
 literal|"Removing scanner for volume {} (StorageID {})"
 argument_list|,
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|,
 name|volume
 operator|.

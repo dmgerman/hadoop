@@ -496,24 +496,30 @@ name|nsInfos
 parameter_list|)
 throws|throws
 name|IOException
-block|{    }
+block|{   }
 annotation|@
 name|Override
-DECL|method|removeVolumes (Set<File> volumes, boolean clearFailure)
+DECL|method|removeVolumes (Collection<StorageLocation> volumes, boolean clearFailure)
 specifier|public
 name|void
 name|removeVolumes
 parameter_list|(
-name|Set
+name|Collection
 argument_list|<
-name|File
+name|StorageLocation
 argument_list|>
 name|volumes
 parameter_list|,
 name|boolean
 name|clearFailure
 parameter_list|)
-block|{   }
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
 annotation|@
 name|Override
 DECL|method|getStorage (String storageUuid)
@@ -1257,7 +1263,7 @@ DECL|method|checkDataDir ()
 specifier|public
 name|Set
 argument_list|<
-name|File
+name|StorageLocation
 argument_list|>
 name|checkDataDir
 parameter_list|()

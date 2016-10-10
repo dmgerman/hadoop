@@ -919,9 +919,6 @@ name|getStorageID
 argument_list|()
 argument_list|,
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1166,9 +1163,6 @@ argument_list|,
 name|scanner
 operator|.
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
@@ -1213,9 +1207,6 @@ argument_list|,
 name|block
 argument_list|,
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1242,9 +1233,6 @@ argument_list|(
 literal|"Volume {}: block {} is no longer in the dataset."
 argument_list|,
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|,
 name|block
 argument_list|)
@@ -1273,9 +1261,6 @@ operator|+
 literal|"FileNotFoundException.  This may be due to a race with write."
 argument_list|,
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|,
 name|block
 argument_list|)
@@ -1286,18 +1271,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Reporting bad "
-operator|+
-name|block
-operator|+
-literal|" with volume "
-operator|+
-name|volume
-operator|.
-name|getBasePath
-argument_list|()
+literal|"Reporting bad {} on {}"
 argument_list|,
-name|e
+name|block
+argument_list|,
+name|volume
 argument_list|)
 expr_stmt|;
 try|try
@@ -1427,9 +1405,6 @@ argument_list|(
 literal|"VolumeScannerThread("
 operator|+
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 operator|+
 literal|")"
 argument_list|)
@@ -1732,9 +1707,6 @@ name|getBlockPoolId
 argument_list|()
 argument_list|,
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|curBlockIter
@@ -1792,9 +1764,6 @@ name|getBlockPoolId
 argument_list|()
 argument_list|,
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|,
 name|TimeUnit
 operator|.
@@ -1907,9 +1876,6 @@ argument_list|,
 name|cblock
 argument_list|,
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1945,9 +1911,6 @@ argument_list|,
 name|cblock
 argument_list|,
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1966,9 +1929,6 @@ argument_list|,
 name|cblock
 argument_list|,
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2897,9 +2857,6 @@ return|return
 literal|"VolumeScanner("
 operator|+
 name|volume
-operator|.
-name|getBasePath
-argument_list|()
 operator|+
 literal|", "
 operator|+

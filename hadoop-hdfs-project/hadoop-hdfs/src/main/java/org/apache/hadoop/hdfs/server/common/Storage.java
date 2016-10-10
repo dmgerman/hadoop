@@ -312,6 +312,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|StorageLocation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|nativeio
@@ -1203,6 +1221,12 @@ init|=
 literal|null
 decl_stmt|;
 comment|// Storage directory identifier.
+DECL|field|location
+specifier|private
+specifier|final
+name|StorageLocation
+name|location
+decl_stmt|;
 DECL|method|StorageDirectory (File dir)
 specifier|public
 name|StorageDirectory
@@ -1219,6 +1243,30 @@ argument_list|,
 literal|null
 argument_list|,
 literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|StorageDirectory (StorageLocation location)
+specifier|public
+name|StorageDirectory
+parameter_list|(
+name|StorageLocation
+name|location
+parameter_list|)
+block|{
+comment|// default dirType is null
+name|this
+argument_list|(
+name|location
+operator|.
+name|getFile
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|false
+argument_list|,
+name|location
 argument_list|)
 expr_stmt|;
 block|}
@@ -1285,6 +1333,35 @@ name|isShared
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|dir
+argument_list|,
+name|dirType
+argument_list|,
+name|isShared
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|StorageDirectory (File dir, StorageDirType dirType, boolean isShared, StorageLocation location)
+specifier|public
+name|StorageDirectory
+parameter_list|(
+name|File
+name|dir
+parameter_list|,
+name|StorageDirType
+name|dirType
+parameter_list|,
+name|boolean
+name|isShared
+parameter_list|,
+name|StorageLocation
+name|location
+parameter_list|)
+block|{
+name|this
 operator|.
 name|root
 operator|=
@@ -1308,6 +1385,35 @@ name|isShared
 operator|=
 name|isShared
 expr_stmt|;
+name|this
+operator|.
+name|location
+operator|=
+name|location
+expr_stmt|;
+assert|assert
+name|location
+operator|==
+literal|null
+operator|||
+name|dir
+operator|.
+name|getAbsolutePath
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+name|location
+operator|.
+name|getFile
+argument_list|()
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+operator|:
+literal|"The storage location and directory should be equal"
+assert|;
 block|}
 comment|/**      * Get root directory of this storage      */
 DECL|method|getRoot ()
@@ -3126,6 +3232,16 @@ block|}
 block|}
 return|return
 literal|false
+return|;
+block|}
+DECL|method|getStorageLocation ()
+specifier|public
+name|StorageLocation
+name|getStorageLocation
+parameter_list|()
+block|{
+return|return
+name|location
 return|;
 block|}
 block|}

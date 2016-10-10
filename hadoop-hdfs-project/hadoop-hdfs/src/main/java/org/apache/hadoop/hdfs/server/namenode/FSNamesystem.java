@@ -25139,7 +25139,7 @@ name|innerinfo
 operator|.
 name|put
 argument_list|(
-literal|"failedStorageLocations"
+literal|"failedStorageIDs"
 argument_list|,
 name|volumeFailureSummary
 operator|.

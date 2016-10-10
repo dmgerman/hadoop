@@ -1455,7 +1455,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|loadStorageDirectory (DataNode datanode, NamespaceInfo nsInfo, File dataDir, StartupOption startOpt, List<Callable<StorageDirectory>> callables)
+DECL|method|loadStorageDirectory (DataNode datanode, NamespaceInfo nsInfo, File dataDir, StorageLocation location, StartupOption startOpt, List<Callable<StorageDirectory>> callables)
 specifier|private
 name|StorageDirectory
 name|loadStorageDirectory
@@ -1468,6 +1468,9 @@ name|nsInfo
 parameter_list|,
 name|File
 name|dataDir
+parameter_list|,
+name|StorageLocation
+name|location
 parameter_list|,
 name|StartupOption
 name|startOpt
@@ -1495,6 +1498,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|false
+argument_list|,
+name|location
 argument_list|)
 decl_stmt|;
 try|try
@@ -1650,8 +1655,8 @@ name|ioe
 throw|;
 block|}
 block|}
-comment|/**    * Prepare a storage directory. It creates a builder which can be used to add    * to the volume. If the volume cannot be added, it is OK to discard the    * builder later.    *    * @param datanode DataNode object.    * @param volume the root path of a storage directory.    * @param nsInfos an array of namespace infos.    * @return a VolumeBuilder that holds the metadata of this storage directory    * and can be added to DataStorage later.    * @throws IOException if encounters I/O errors.    *    * Note that if there is IOException, the state of DataStorage is not modified.    */
-DECL|method|prepareVolume (DataNode datanode, File volume, List<NamespaceInfo> nsInfos)
+comment|/**    * Prepare a storage directory. It creates a builder which can be used to add    * to the volume. If the volume cannot be added, it is OK to discard the    * builder later.    *    * @param datanode DataNode object.    * @param location the StorageLocation for the storage directory.    * @param nsInfos an array of namespace infos.    * @return a VolumeBuilder that holds the metadata of this storage directory    * and can be added to DataStorage later.    * @throws IOException if encounters I/O errors.    *    * Note that if there is IOException, the state of DataStorage is not modified.    */
+DECL|method|prepareVolume (DataNode datanode, StorageLocation location, List<NamespaceInfo> nsInfos)
 specifier|public
 name|VolumeBuilder
 name|prepareVolume
@@ -1659,8 +1664,8 @@ parameter_list|(
 name|DataNode
 name|datanode
 parameter_list|,
-name|File
-name|volume
+name|StorageLocation
+name|location
 parameter_list|,
 name|List
 argument_list|<
@@ -1671,6 +1676,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|File
+name|volume
+init|=
+name|location
+operator|.
+name|getFile
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|containsStorageDir
@@ -1717,6 +1730,8 @@ literal|0
 argument_list|)
 argument_list|,
 name|volume
+argument_list|,
+name|location
 argument_list|,
 name|StartupOption
 operator|.
@@ -1808,6 +1823,8 @@ argument_list|(
 name|nsInfo
 argument_list|,
 name|bpDataDirs
+argument_list|,
+name|location
 argument_list|,
 name|StartupOption
 operator|.
@@ -2190,6 +2207,8 @@ name|nsInfo
 argument_list|,
 name|root
 argument_list|,
+name|dataDir
+argument_list|,
 name|startOpt
 argument_list|,
 name|callables
@@ -2547,6 +2566,8 @@ name|nsInfo
 argument_list|,
 name|bpDataDirs
 argument_list|,
+name|dataDir
+argument_list|,
 name|startOpt
 argument_list|,
 name|callables
@@ -2733,24 +2754,24 @@ name|success
 return|;
 block|}
 comment|/**    * Remove storage dirs from DataStorage. All storage dirs are removed even when the    * IOException is thrown.    *    * @param dirsToRemove a set of storage directories to be removed.    * @throws IOException if I/O error when unlocking storage directory.    */
-DECL|method|removeVolumes (final Set<File> dirsToRemove)
+DECL|method|removeVolumes ( final Collection<StorageLocation> storageLocations)
 specifier|synchronized
 name|void
 name|removeVolumes
 parameter_list|(
 specifier|final
-name|Set
+name|Collection
 argument_list|<
-name|File
+name|StorageLocation
 argument_list|>
-name|dirsToRemove
+name|storageLocations
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 if|if
 condition|(
-name|dirsToRemove
+name|storageLocations
 operator|.
 name|isEmpty
 argument_list|()
@@ -2795,16 +2816,21 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+name|StorageLocation
+name|sdLocation
+init|=
+name|sd
+operator|.
+name|getStorageLocation
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
-name|dirsToRemove
+name|storageLocations
 operator|.
 name|contains
 argument_list|(
-name|sd
-operator|.
-name|getRoot
-argument_list|()
+name|sdLocation
 argument_list|)
 condition|)
 block|{

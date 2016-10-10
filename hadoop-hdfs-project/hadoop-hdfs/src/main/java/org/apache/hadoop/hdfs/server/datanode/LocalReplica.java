@@ -292,9 +292,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DirectoryScanner
+name|fsdataset
 operator|.
-name|ScanInfo
+name|FsVolumeSpi
 import|;
 end_import
 
@@ -315,6 +315,8 @@ operator|.
 name|fsdataset
 operator|.
 name|FsVolumeSpi
+operator|.
+name|ScanInfo
 import|;
 end_import
 

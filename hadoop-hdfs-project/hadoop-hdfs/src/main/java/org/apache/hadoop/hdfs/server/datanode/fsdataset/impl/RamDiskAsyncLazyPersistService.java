@@ -315,7 +315,7 @@ DECL|field|executors
 specifier|private
 name|Map
 argument_list|<
-name|File
+name|String
 argument_list|,
 name|ThreadPoolExecutor
 argument_list|>
@@ -324,7 +324,7 @@ init|=
 operator|new
 name|HashMap
 argument_list|<
-name|File
+name|String
 argument_list|,
 name|ThreadPoolExecutor
 argument_list|>
@@ -379,14 +379,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addExecutorForVolume (final File volume)
+DECL|method|addExecutorForVolume (final String storageId)
 specifier|private
 name|void
 name|addExecutorForVolume
 parameter_list|(
 specifier|final
-name|File
-name|volume
+name|String
+name|storageId
 parameter_list|)
 block|{
 name|ThreadFactory
@@ -421,9 +421,11 @@ name|t
 operator|.
 name|setName
 argument_list|(
-literal|"Async RamDisk lazy persist worker for volume "
+literal|"Async RamDisk lazy persist worker "
 operator|+
-name|volume
+literal|" for volume with id "
+operator|+
+name|storageId
 argument_list|)
 expr_stmt|;
 return|return
@@ -470,22 +472,30 @@ name|executors
 operator|.
 name|put
 argument_list|(
-name|volume
+name|storageId
 argument_list|,
 name|executor
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Starts AsyncLazyPersistService for a new volume    * @param volume the root of the new data volume.    */
-DECL|method|addVolume (File volume)
+DECL|method|addVolume (FsVolumeImpl volume)
 specifier|synchronized
 name|void
 name|addVolume
 parameter_list|(
-name|File
+name|FsVolumeImpl
 name|volume
 parameter_list|)
 block|{
+name|String
+name|storageId
+init|=
+name|volume
+operator|.
+name|getStorageID
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|executors
@@ -508,7 +518,7 @@ name|executors
 operator|.
 name|get
 argument_list|(
-name|volume
+name|storageId
 argument_list|)
 decl_stmt|;
 if|if
@@ -532,20 +542,28 @@ throw|;
 block|}
 name|addExecutorForVolume
 argument_list|(
-name|volume
+name|storageId
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Stops AsyncLazyPersistService for a volume.    * @param volume the root of the volume.    */
-DECL|method|removeVolume (File volume)
+DECL|method|removeVolume (FsVolumeImpl volume)
 specifier|synchronized
 name|void
 name|removeVolume
 parameter_list|(
-name|File
+name|FsVolumeImpl
 name|volume
 parameter_list|)
 block|{
+name|String
+name|storageId
+init|=
+name|volume
+operator|.
+name|getStorageID
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|executors
@@ -568,7 +586,7 @@ name|executors
 operator|.
 name|get
 argument_list|(
-name|volume
+name|storageId
 argument_list|)
 decl_stmt|;
 if|if
@@ -582,9 +600,9 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Can not find volume "
+literal|"Can not find volume with storage id "
 operator|+
-name|volume
+name|storageId
 operator|+
 literal|" to remove."
 argument_list|)
@@ -601,21 +619,29 @@ name|executors
 operator|.
 name|remove
 argument_list|(
-name|volume
+name|storageId
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/**    * Query if the thread pool exist for the volume    * @param volume the root of a volume    * @return true if there is one thread pool for the volume    *         false otherwise    */
-DECL|method|queryVolume (File volume)
+DECL|method|queryVolume (FsVolumeImpl volume)
 specifier|synchronized
 name|boolean
 name|queryVolume
 parameter_list|(
-name|File
+name|FsVolumeImpl
 name|volume
 parameter_list|)
 block|{
+name|String
+name|storageId
+init|=
+name|volume
+operator|.
+name|getStorageID
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|executors
@@ -638,7 +664,7 @@ name|executors
 operator|.
 name|get
 argument_list|(
-name|volume
+name|storageId
 argument_list|)
 decl_stmt|;
 return|return
@@ -650,13 +676,13 @@ operator|)
 return|;
 block|}
 comment|/**    * Execute the task sometime in the future, using ThreadPools.    */
-DECL|method|execute (File root, Runnable task)
+DECL|method|execute (String storageId, Runnable task)
 specifier|synchronized
 name|void
 name|execute
 parameter_list|(
-name|File
-name|root
+name|String
+name|storageId
 parameter_list|,
 name|Runnable
 name|task
@@ -684,7 +710,7 @@ name|executors
 operator|.
 name|get
 argument_list|(
-name|root
+name|storageId
 argument_list|)
 decl_stmt|;
 if|if
@@ -698,9 +724,9 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Cannot find root "
+literal|"Cannot find root storage volume with id "
 operator|+
-name|root
+name|storageId
 operator|+
 literal|" for execution of task "
 operator|+
@@ -756,7 +782,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|File
+name|String
 argument_list|,
 name|ThreadPoolExecutor
 argument_list|>
@@ -839,66 +865,6 @@ name|blockId
 argument_list|)
 expr_stmt|;
 block|}
-name|FsVolumeImpl
-name|volume
-init|=
-operator|(
-name|FsVolumeImpl
-operator|)
-name|target
-operator|.
-name|getVolume
-argument_list|()
-decl_stmt|;
-name|File
-name|lazyPersistDir
-init|=
-name|volume
-operator|.
-name|getLazyPersistDir
-argument_list|(
-name|bpId
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|lazyPersistDir
-operator|.
-name|exists
-argument_list|()
-operator|&&
-operator|!
-name|lazyPersistDir
-operator|.
-name|mkdirs
-argument_list|()
-condition|)
-block|{
-name|FsDatasetImpl
-operator|.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"LazyWriter failed to create "
-operator|+
-name|lazyPersistDir
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"LazyWriter fail to find or create lazy persist dir: "
-operator|+
-name|lazyPersistDir
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-throw|;
-block|}
 name|ReplicaLazyPersistTask
 name|lazyPersistTask
 init|=
@@ -916,15 +882,24 @@ argument_list|,
 name|replica
 argument_list|,
 name|target
-argument_list|,
-name|lazyPersistDir
 argument_list|)
+decl_stmt|;
+name|FsVolumeImpl
+name|volume
+init|=
+operator|(
+name|FsVolumeImpl
+operator|)
+name|target
+operator|.
+name|getVolume
+argument_list|()
 decl_stmt|;
 name|execute
 argument_list|(
 name|volume
 operator|.
-name|getCurrentDir
+name|getStorageID
 argument_list|()
 argument_list|,
 name|lazyPersistTask
@@ -973,13 +948,7 @@ specifier|final
 name|FsVolumeReference
 name|targetVolume
 decl_stmt|;
-DECL|field|lazyPersistDir
-specifier|private
-specifier|final
-name|File
-name|lazyPersistDir
-decl_stmt|;
-DECL|method|ReplicaLazyPersistTask (String bpId, long blockId, long genStamp, long creationTime, ReplicaInfo replicaInfo, FsVolumeReference targetVolume, File lazyPersistDir)
+DECL|method|ReplicaLazyPersistTask (String bpId, long blockId, long genStamp, long creationTime, ReplicaInfo replicaInfo, FsVolumeReference targetVolume)
 name|ReplicaLazyPersistTask
 parameter_list|(
 name|String
@@ -999,9 +968,6 @@ name|replicaInfo
 parameter_list|,
 name|FsVolumeReference
 name|targetVolume
-parameter_list|,
-name|File
-name|lazyPersistDir
 parameter_list|)
 block|{
 name|this
@@ -1039,12 +1005,6 @@ operator|.
 name|targetVolume
 operator|=
 name|targetVolume
-expr_stmt|;
-name|this
-operator|.
-name|lazyPersistDir
-operator|=
-name|lazyPersistDir
 expr_stmt|;
 block|}
 annotation|@
@@ -1129,24 +1089,32 @@ argument_list|(
 name|EMPTY_HDFS_CONF
 argument_list|)
 decl_stmt|;
-comment|// No FsDatasetImpl lock for the file copy
-name|File
-name|targetFiles
-index|[]
+name|FsVolumeImpl
+name|volume
 init|=
-name|FsDatasetImpl
+operator|(
+name|FsVolumeImpl
+operator|)
+name|ref
 operator|.
-name|copyBlockFiles
+name|getVolume
+argument_list|()
+decl_stmt|;
+name|File
+index|[]
+name|targetFiles
+init|=
+name|volume
+operator|.
+name|copyBlockToLazyPersistLocation
 argument_list|(
+name|bpId
+argument_list|,
 name|blockId
 argument_list|,
 name|genStamp
 argument_list|,
 name|replicaInfo
-argument_list|,
-name|lazyPersistDir
-argument_list|,
-literal|true
 argument_list|,
 name|smallBufferSize
 argument_list|,
@@ -1166,13 +1134,7 @@ name|creationTime
 argument_list|,
 name|targetFiles
 argument_list|,
-operator|(
-name|FsVolumeImpl
-operator|)
-name|ref
-operator|.
-name|getVolume
-argument_list|()
+name|volume
 argument_list|)
 expr_stmt|;
 name|succeeded

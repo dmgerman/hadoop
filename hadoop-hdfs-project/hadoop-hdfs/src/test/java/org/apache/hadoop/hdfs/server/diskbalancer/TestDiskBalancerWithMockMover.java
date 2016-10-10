@@ -1918,7 +1918,10 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getBasePath
+name|getBaseURI
+argument_list|()
+operator|.
+name|getPath
 argument_list|()
 expr_stmt|;
 name|destName
@@ -1930,7 +1933,10 @@ argument_list|(
 literal|1
 argument_list|)
 operator|.
-name|getBasePath
+name|getBaseURI
+argument_list|()
+operator|.
+name|getPath
 argument_list|()
 expr_stmt|;
 name|sourceUUID

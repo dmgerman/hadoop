@@ -24,6 +24,24 @@ name|impl
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|StorageLocation
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tracks information about failure of a data volume.  */
 end_comment
@@ -37,7 +55,7 @@ block|{
 DECL|field|failedStorageLocation
 specifier|private
 specifier|final
-name|String
+name|StorageLocation
 name|failedStorageLocation
 decl_stmt|;
 DECL|field|failureDate
@@ -53,11 +71,11 @@ name|long
 name|estimatedCapacityLost
 decl_stmt|;
 comment|/**    * Creates a new VolumeFailureInfo, when the capacity lost from this volume    * failure is unknown.  Typically, this means the volume failed immediately at    * startup, so there was never a chance to query its capacity.    *    * @param failedStorageLocation storage location that has failed    * @param failureDate date/time of failure in milliseconds since epoch    */
-DECL|method|VolumeFailureInfo (String failedStorageLocation, long failureDate)
+DECL|method|VolumeFailureInfo (StorageLocation failedStorageLocation, long failureDate)
 specifier|public
 name|VolumeFailureInfo
 parameter_list|(
-name|String
+name|StorageLocation
 name|failedStorageLocation
 parameter_list|,
 name|long
@@ -75,11 +93,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Creates a new VolumeFailureInfo.    *    * @param failedStorageLocation storage location that has failed    * @param failureDate date/time of failure in milliseconds since epoch    * @param estimatedCapacityLost estimate of capacity lost in bytes    */
-DECL|method|VolumeFailureInfo (String failedStorageLocation, long failureDate, long estimatedCapacityLost)
+DECL|method|VolumeFailureInfo (StorageLocation failedStorageLocation, long failureDate, long estimatedCapacityLost)
 specifier|public
 name|VolumeFailureInfo
 parameter_list|(
-name|String
+name|StorageLocation
 name|failedStorageLocation
 parameter_list|,
 name|long
@@ -111,7 +129,7 @@ block|}
 comment|/**    * Returns the storage location that has failed.    *    * @return storage location that has failed    */
 DECL|method|getFailedStorageLocation ()
 specifier|public
-name|String
+name|StorageLocation
 name|getFailedStorageLocation
 parameter_list|()
 block|{

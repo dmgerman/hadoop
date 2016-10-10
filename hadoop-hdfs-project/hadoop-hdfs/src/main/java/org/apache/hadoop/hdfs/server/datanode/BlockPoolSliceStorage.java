@@ -745,7 +745,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Load one storage directory. Recover from previous transitions if required.    *    * @param nsInfo namespace information    * @param dataDir the root path of the storage directory    * @param startOpt startup option    * @return the StorageDirectory successfully loaded.    * @throws IOException    */
-DECL|method|loadStorageDirectory (NamespaceInfo nsInfo, File dataDir, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
+DECL|method|loadStorageDirectory (NamespaceInfo nsInfo, File dataDir, StorageLocation location, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 specifier|private
 name|StorageDirectory
 name|loadStorageDirectory
@@ -755,6 +755,9 @@ name|nsInfo
 parameter_list|,
 name|File
 name|dataDir
+parameter_list|,
+name|StorageLocation
+name|location
 parameter_list|,
 name|StartupOption
 name|startOpt
@@ -785,6 +788,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|true
+argument_list|,
+name|location
 argument_list|)
 decl_stmt|;
 try|try
@@ -964,7 +969,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Analyze and load storage directories. Recover from previous transitions if    * required.    *    * The block pool storages are either all analyzed or none of them is loaded.    * Therefore, a failure on loading any block pool storage results a faulty    * data volume.    *    * @param nsInfo namespace information    * @param dataDirs storage directories of block pool    * @param startOpt startup option    * @return an array of loaded block pool directories.    * @throws IOException on error    */
-DECL|method|loadBpStorageDirectories (NamespaceInfo nsInfo, Collection<File> dataDirs, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
+DECL|method|loadBpStorageDirectories (NamespaceInfo nsInfo, Collection<File> dataDirs, StorageLocation location, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 name|List
 argument_list|<
 name|StorageDirectory
@@ -979,6 +984,9 @@ argument_list|<
 name|File
 argument_list|>
 name|dataDirs
+parameter_list|,
+name|StorageLocation
+name|location
 parameter_list|,
 name|StartupOption
 name|startOpt
@@ -1049,6 +1057,8 @@ name|nsInfo
 argument_list|,
 name|dataDir
 argument_list|,
+name|location
+argument_list|,
 name|startOpt
 argument_list|,
 name|callables
@@ -1094,7 +1104,7 @@ name|succeedDirs
 return|;
 block|}
 comment|/**    * Analyze storage directories. Recover from previous transitions if required.    *    * The block pool storages are either all analyzed or none of them is loaded.    * Therefore, a failure on loading any block pool storage results a faulty    * data volume.    *    * @param nsInfo namespace information    * @param dataDirs storage directories of block pool    * @param startOpt startup option    * @throws IOException on error    */
-DECL|method|recoverTransitionRead (NamespaceInfo nsInfo, Collection<File> dataDirs, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
+DECL|method|recoverTransitionRead (NamespaceInfo nsInfo, Collection<File> dataDirs, StorageLocation location, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 name|List
 argument_list|<
 name|StorageDirectory
@@ -1109,6 +1119,9 @@ argument_list|<
 name|File
 argument_list|>
 name|dataDirs
+parameter_list|,
+name|StorageLocation
+name|location
 parameter_list|,
 name|StartupOption
 name|startOpt
@@ -1152,6 +1165,8 @@ argument_list|(
 name|nsInfo
 argument_list|,
 name|dataDirs
+argument_list|,
+name|location
 argument_list|,
 name|startOpt
 argument_list|,

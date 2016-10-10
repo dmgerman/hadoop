@@ -413,7 +413,7 @@ DECL|field|executors
 specifier|private
 name|Map
 argument_list|<
-name|File
+name|String
 argument_list|,
 name|ThreadPoolExecutor
 argument_list|>
@@ -422,7 +422,7 @@ init|=
 operator|new
 name|HashMap
 argument_list|<
-name|File
+name|String
 argument_list|,
 name|ThreadPoolExecutor
 argument_list|>
@@ -507,13 +507,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addExecutorForVolume (final File volume)
+DECL|method|addExecutorForVolume (final FsVolumeImpl volume)
 specifier|private
 name|void
 name|addExecutorForVolume
 parameter_list|(
 specifier|final
-name|File
+name|FsVolumeImpl
 name|volume
 parameter_list|)
 block|{
@@ -622,18 +622,21 @@ operator|.
 name|put
 argument_list|(
 name|volume
+operator|.
+name|getStorageID
+argument_list|()
 argument_list|,
 name|executor
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Starts AsyncDiskService for a new volume    * @param volume the root of the new data volume.    */
-DECL|method|addVolume (File volume)
+DECL|method|addVolume (FsVolumeImpl volume)
 specifier|synchronized
 name|void
 name|addVolume
 parameter_list|(
-name|File
+name|FsVolumeImpl
 name|volume
 parameter_list|)
 block|{
@@ -652,6 +655,21 @@ literal|"AsyncDiskService is already shutdown"
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|volume
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Attempt to add a null volume"
+argument_list|)
+throw|;
+block|}
 name|ThreadPoolExecutor
 name|executor
 init|=
@@ -660,6 +678,9 @@ operator|.
 name|get
 argument_list|(
 name|volume
+operator|.
+name|getStorageID
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -688,13 +709,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Stops AsyncDiskService for a volume.    * @param volume the root of the volume.    */
-DECL|method|removeVolume (File volume)
+DECL|method|removeVolume (String storageId)
 specifier|synchronized
 name|void
 name|removeVolume
 parameter_list|(
-name|File
-name|volume
+name|String
+name|storageId
 parameter_list|)
 block|{
 if|if
@@ -719,7 +740,7 @@ name|executors
 operator|.
 name|get
 argument_list|(
-name|volume
+name|storageId
 argument_list|)
 decl_stmt|;
 if|if
@@ -733,9 +754,9 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Can not find volume "
+literal|"Can not find volume with storageId "
 operator|+
-name|volume
+name|storageId
 operator|+
 literal|" to remove."
 argument_list|)
@@ -752,7 +773,7 @@ name|executors
 operator|.
 name|remove
 argument_list|(
-name|volume
+name|storageId
 argument_list|)
 expr_stmt|;
 block|}
@@ -797,13 +818,13 @@ name|count
 return|;
 block|}
 comment|/**    * Execute the task sometime in the future, using ThreadPools.    */
-DECL|method|execute (File root, Runnable task)
+DECL|method|execute (FsVolumeImpl volume, Runnable task)
 specifier|synchronized
 name|void
 name|execute
 parameter_list|(
-name|File
-name|root
+name|FsVolumeImpl
+name|volume
 parameter_list|,
 name|Runnable
 name|task
@@ -824,6 +845,21 @@ literal|"AsyncDiskService is already shutdown"
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|volume
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"A null volume does not have a executor"
+argument_list|)
+throw|;
+block|}
 name|ThreadPoolExecutor
 name|executor
 init|=
@@ -831,7 +867,10 @@ name|executors
 operator|.
 name|get
 argument_list|(
-name|root
+name|volume
+operator|.
+name|getStorageID
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -845,9 +884,9 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Cannot find root "
+literal|"Cannot find volume "
 operator|+
-name|root
+name|volume
 operator|+
 literal|" for execution of task "
 operator|+
@@ -903,7 +942,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|File
+name|String
 argument_list|,
 name|ThreadPoolExecutor
 argument_list|>
@@ -966,9 +1005,6 @@ block|{
 name|execute
 argument_list|(
 name|volume
-operator|.
-name|getCurrentDir
-argument_list|()
 argument_list|,
 operator|new
 name|Runnable
@@ -1082,9 +1118,6 @@ operator|.
 name|getVolume
 argument_list|()
 operator|)
-operator|.
-name|getCurrentDir
-argument_list|()
 argument_list|,
 name|deletionTask
 argument_list|)
