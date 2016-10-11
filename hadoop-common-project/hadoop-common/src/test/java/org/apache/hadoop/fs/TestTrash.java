@@ -3688,6 +3688,23 @@ parameter_list|()
 block|{ }
 annotation|@
 name|Override
+DECL|method|initialize (Configuration conf, FileSystem fs, Path home)
+specifier|public
+name|void
+name|initialize
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|FileSystem
+name|fs
+parameter_list|,
+name|Path
+name|home
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
 DECL|method|initialize (Configuration conf, FileSystem fs)
 specifier|public
 name|void

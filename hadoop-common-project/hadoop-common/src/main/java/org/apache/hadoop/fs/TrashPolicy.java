@@ -135,6 +135,25 @@ name|long
 name|deletionInterval
 decl_stmt|;
 comment|// deletion interval for Emptier
+comment|/**    * Used to setup the trash policy. Must be implemented by all TrashPolicy    * implementations.    * @param conf the configuration to be used    * @param fs the filesystem to be used    * @param home the home directory    * @deprecated Use {@link #initialize(Configuration, FileSystem)} instead.    */
+annotation|@
+name|Deprecated
+DECL|method|initialize (Configuration conf, FileSystem fs, Path home)
+specifier|public
+specifier|abstract
+name|void
+name|initialize
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|FileSystem
+name|fs
+parameter_list|,
+name|Path
+name|home
+parameter_list|)
+function_decl|;
 comment|/**    * Used to setup the trash policy. Must be implemented by all TrashPolicy    * implementations. Different from initialize(conf, fs, home), this one does    * not assume trash always under /user/$USER due to HDFS encryption zone.    * @param conf the configuration to be used    * @param fs the filesystem to be used    * @throws IOException    */
 DECL|method|initialize (Configuration conf, FileSystem fs)
 specifier|public
@@ -233,6 +252,76 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get an instance of the configured TrashPolicy based on the value    * of the configuration parameter fs.trash.classname.    *    * @param conf the configuration to be used    * @param fs the file system to be used    * @param home the home directory    * @return an instance of TrashPolicy    * @deprecated Use {@link #getInstance(Configuration, FileSystem)} instead.    */
+annotation|@
+name|Deprecated
+DECL|method|getInstance (Configuration conf, FileSystem fs, Path home)
+specifier|public
+specifier|static
+name|TrashPolicy
+name|getInstance
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|FileSystem
+name|fs
+parameter_list|,
+name|Path
+name|home
+parameter_list|)
+block|{
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|TrashPolicy
+argument_list|>
+name|trashClass
+init|=
+name|conf
+operator|.
+name|getClass
+argument_list|(
+literal|"fs.trash.classname"
+argument_list|,
+name|TrashPolicyDefault
+operator|.
+name|class
+argument_list|,
+name|TrashPolicy
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|TrashPolicy
+name|trash
+init|=
+name|ReflectionUtils
+operator|.
+name|newInstance
+argument_list|(
+name|trashClass
+argument_list|,
+name|conf
+argument_list|)
+decl_stmt|;
+name|trash
+operator|.
+name|initialize
+argument_list|(
+name|conf
+argument_list|,
+name|fs
+argument_list|,
+name|home
+argument_list|)
+expr_stmt|;
+comment|// initialize TrashPolicy
+return|return
+name|trash
+return|;
+block|}
 comment|/**    * Get an instance of the configured TrashPolicy based on the value    * of the configuration parameter fs.trash.classname.    *    * @param conf the configuration to be used    * @param fs the file system to be used    * @return an instance of TrashPolicy    */
 DECL|method|getInstance (Configuration conf, FileSystem fs)
 specifier|public
