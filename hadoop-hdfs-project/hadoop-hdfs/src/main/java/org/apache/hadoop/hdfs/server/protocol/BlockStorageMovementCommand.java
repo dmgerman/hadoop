@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -77,7 +87,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A BlockStorageMovementCommand is an instruction to a DataNode to move the  * given set of blocks to specified target DataNodes to fulfill the block  * storage policy.  *  * Upon receiving this command, this DataNode coordinates all the block movement  * by passing the details to  * {@link org.apache.hadoop.hdfs.server.datanode.StoragePolicySatisfyWorker}  * service. After the block movement this DataNode sends response back to the  * NameNode about the movement status.  */
+comment|/**  * A BlockStorageMovementCommand is an instruction to a DataNode to move the  * given set of blocks to specified target DataNodes to fulfill the block  * storage policy.  *  * Upon receiving this command, this DataNode coordinates all the block movement  * by passing the details to  * {@link org.apache.hadoop.hdfs.server.datanode.StoragePolicySatisfyWorker}  * service. After the block movement this DataNode sends response back to the  * NameNode about the movement status.  *  * The coordinator datanode will use 'trackId' identifier to coordinate the block  * movement of the given set of blocks. TrackId is a unique identifier that  * represents a group of blocks. Namenode will generate this unique value and  * send it to the coordinator datanode along with the  * BlockStorageMovementCommand. Datanode will monitor the completion of the  * block movements that grouped under this trackId and notifies Namenode about  * the completion status.  */
 end_comment
 
 begin_class
@@ -88,13 +98,46 @@ name|BlockStorageMovementCommand
 extends|extends
 name|DatanodeCommand
 block|{
-comment|// TODO: constructor needs to be refined based on the block movement data
-comment|// structure.
-DECL|method|BlockStorageMovementCommand (int action)
+DECL|field|trackID
+specifier|private
+specifier|final
+name|long
+name|trackID
+decl_stmt|;
+DECL|field|blockPoolId
+specifier|private
+specifier|final
+name|String
+name|blockPoolId
+decl_stmt|;
+DECL|field|blockMovingTasks
+specifier|private
+specifier|final
+name|Collection
+argument_list|<
+name|BlockMovingInfo
+argument_list|>
+name|blockMovingTasks
+decl_stmt|;
+comment|/**    * Block storage movement command constructor.    *    * @param action    *          protocol specific action    * @param trackID    *          unique identifier to monitor the given set of block movements    * @param blockPoolId    *          block pool ID    * @param blockMovingInfos    *          block to storage info that will be used for movement    */
+DECL|method|BlockStorageMovementCommand (int action, long trackID, String blockPoolId, Collection<BlockMovingInfo> blockMovingInfos)
+specifier|public
 name|BlockStorageMovementCommand
 parameter_list|(
 name|int
 name|action
+parameter_list|,
+name|long
+name|trackID
+parameter_list|,
+name|String
+name|blockPoolId
+parameter_list|,
+name|Collection
+argument_list|<
+name|BlockMovingInfo
+argument_list|>
+name|blockMovingInfos
 parameter_list|)
 block|{
 name|super
@@ -102,6 +145,60 @@ argument_list|(
 name|action
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|trackID
+operator|=
+name|trackID
+expr_stmt|;
+name|this
+operator|.
+name|blockPoolId
+operator|=
+name|blockPoolId
+expr_stmt|;
+name|this
+operator|.
+name|blockMovingTasks
+operator|=
+name|blockMovingInfos
+expr_stmt|;
+block|}
+comment|/**    * Returns trackID, which will be used to monitor the block movement assigned    * to this coordinator datanode.    */
+DECL|method|getTrackID ()
+specifier|public
+name|long
+name|getTrackID
+parameter_list|()
+block|{
+return|return
+name|trackID
+return|;
+block|}
+comment|/**    * Returns block pool ID.    */
+DECL|method|getBlockPoolId ()
+specifier|public
+name|String
+name|getBlockPoolId
+parameter_list|()
+block|{
+return|return
+name|blockPoolId
+return|;
+block|}
+comment|/**    * Returns the list of blocks to be moved.    */
+DECL|method|getBlockMovingTasks ()
+specifier|public
+name|Collection
+argument_list|<
+name|BlockMovingInfo
+argument_list|>
+name|getBlockMovingTasks
+parameter_list|()
+block|{
+return|return
+name|blockMovingTasks
+return|;
 block|}
 comment|/**    * Stores block to storage info that can be used for block movement.    */
 DECL|class|BlockMovingInfo
@@ -121,17 +218,17 @@ name|DatanodeInfo
 index|[]
 name|sourceNodes
 decl_stmt|;
-DECL|field|sourceStorageTypes
-specifier|private
-name|StorageType
-index|[]
-name|sourceStorageTypes
-decl_stmt|;
 DECL|field|targetNodes
 specifier|private
 name|DatanodeInfo
 index|[]
 name|targetNodes
+decl_stmt|;
+DECL|field|sourceStorageTypes
+specifier|private
+name|StorageType
+index|[]
+name|sourceStorageTypes
 decl_stmt|;
 DECL|field|targetStorageTypes
 specifier|private
@@ -139,6 +236,7 @@ name|StorageType
 index|[]
 name|targetStorageTypes
 decl_stmt|;
+comment|/**      * Block to storage info constructor.      *      * @param block      *          block      * @param sourceDnInfos      *          node that can be the sources of a block move      * @param targetDnInfos      *          target datanode info      * @param srcStorageTypes      *          type of source storage media      * @param targetStorageTypes      *          type of destin storage media      */
 DECL|method|BlockMovingInfo (Block block, DatanodeInfo[] sourceDnInfos, DatanodeInfo[] targetDnInfos, StorageType[] srcStorageTypes, StorageType[] targetStorageTypes)
 specifier|public
 name|BlockMovingInfo

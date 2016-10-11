@@ -134,6 +134,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|EnumSet
 import|;
 end_import
@@ -912,7 +922,8 @@ return|return
 name|moverThreadPool
 return|;
 block|}
-DECL|method|processBlockMovingTasks (long trackID, String blockPoolID, List<BlockMovingInfo> blockMovingInfos)
+comment|/**    * Handles the given set of block movement tasks. This will iterate over the    * block movement list and submit each block movement task asynchronously in a    * separate thread. Each task will move the block replica to the target node&    * wait for the completion.    *    * TODO: Presently this function is a blocking call, this has to be refined by    * moving the tracking logic to another tracker thread. HDFS-10884 jira    * addresses the same.    *    * @param trackID    *          unique tracking identifier    * @param blockPoolID    *          block pool ID    * @param blockMovingInfos    *          list of blocks to be moved    */
+DECL|method|processBlockMovingTasks (long trackID, String blockPoolID, Collection<BlockMovingInfo> blockMovingInfos)
 specifier|public
 name|void
 name|processBlockMovingTasks
@@ -923,7 +934,7 @@ parameter_list|,
 name|String
 name|blockPoolID
 parameter_list|,
-name|List
+name|Collection
 argument_list|<
 name|BlockMovingInfo
 argument_list|>
@@ -1037,8 +1048,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// TODO: Presently this function act as a blocking call, this has to be
-comment|// refined by moving the tracking logic to another tracker thread.
 for|for
 control|(
 name|int
