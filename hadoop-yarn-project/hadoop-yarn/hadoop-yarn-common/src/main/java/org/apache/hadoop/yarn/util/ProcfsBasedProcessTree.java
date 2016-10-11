@@ -2035,28 +2035,13 @@ condition|)
 block|{
 continue|continue;
 block|}
+comment|// Account for anonymous to know the amount of
+comment|// memory reclaimable by killing the process
 name|total
 operator|+=
-name|Math
-operator|.
-name|min
-argument_list|(
 name|info
 operator|.
-name|sharedDirty
-argument_list|,
-name|info
-operator|.
-name|pss
-argument_list|)
-operator|+
-name|info
-operator|.
-name|privateDirty
-operator|+
-name|info
-operator|.
-name|privateClean
+name|anonymous
 expr_stmt|;
 if|if
 condition|(
@@ -2081,29 +2066,12 @@ operator|.
 name|getPid
 argument_list|()
 operator|+
-literal|", SharedDirty : "
+literal|", info : "
 operator|+
 name|info
 operator|.
-name|sharedDirty
-operator|+
-literal|", PSS : "
-operator|+
-name|info
-operator|.
-name|pss
-operator|+
-literal|", Private_Dirty : "
-operator|+
-name|info
-operator|.
-name|privateDirty
-operator|+
-literal|", Private_Clean : "
-operator|+
-name|info
-operator|.
-name|privateClean
+name|toString
+argument_list|()
 operator|+
 literal|", total : "
 operator|+
@@ -4140,6 +4108,11 @@ specifier|private
 name|int
 name|privateDirty
 decl_stmt|;
+DECL|field|anonymous
+specifier|private
+name|int
+name|anonymous
+decl_stmt|;
 DECL|field|referenced
 specifier|private
 name|int
@@ -4284,6 +4257,16 @@ parameter_list|()
 block|{
 return|return
 name|referenced
+return|;
+block|}
+DECL|method|getAnonymous ()
+specifier|public
+name|int
+name|getAnonymous
+parameter_list|()
+block|{
+return|return
+name|anonymous
 return|;
 block|}
 DECL|method|setMemInfo (String key, String value)
@@ -4444,6 +4427,14 @@ case|case
 name|REFERENCED
 case|:
 name|referenced
+operator|=
+name|val
+expr_stmt|;
+break|break;
+case|case
+name|ANONYMOUS
+case|:
+name|anonymous
 operator|=
 name|val
 expr_stmt|;
@@ -4720,7 +4711,7 @@ name|append
 argument_list|(
 name|MemInfo
 operator|.
-name|PRIVATE_DIRTY
+name|ANONYMOUS
 operator|.
 name|name
 operator|+
@@ -4728,35 +4719,7 @@ literal|":"
 operator|+
 name|this
 operator|.
-name|getPrivateDirty
-argument_list|()
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|" kB\n"
-argument_list|)
-expr_stmt|;
-name|sb
-operator|.
-name|append
-argument_list|(
-literal|"\t"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|MemInfo
-operator|.
-name|PRIVATE_DIRTY
-operator|.
-name|name
-operator|+
-literal|":"
-operator|+
-name|this
-operator|.
-name|getPrivateDirty
+name|getAnonymous
 argument_list|()
 argument_list|)
 operator|.

@@ -2157,6 +2157,9 @@ literal|"rw-p 00010000 08:02 40371558                   "
 operator|+
 literal|"/grid/0/jdk1.7.0_25/jre/lib/amd64/libnio.so"
 argument_list|,
+comment|// Format: size, rss, pss, shared_clean, shared_dirty, private_clean
+comment|// private_dirty, referenced, anon, anon-huge-pages, swap,
+comment|// kernel_page_size, mmu_page_size
 operator|new
 name|String
 index|[]
@@ -2177,7 +2180,7 @@ literal|"10"
 block|,
 literal|"4"
 block|,
-literal|"0"
+literal|"10"
 block|,
 literal|"0"
 block|,
@@ -2220,7 +2223,7 @@ literal|"10"
 block|,
 literal|"4"
 block|,
-literal|"0"
+literal|"10"
 block|,
 literal|"0"
 block|,
@@ -2261,7 +2264,7 @@ literal|"10"
 block|,
 literal|"4"
 block|,
-literal|"0"
+literal|"10"
 block|,
 literal|"0"
 block|,
@@ -2302,7 +2305,7 @@ literal|"10"
 block|,
 literal|"4"
 block|,
-literal|"0"
+literal|"10"
 block|,
 literal|"0"
 block|,
@@ -2761,8 +2764,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-comment|// RSS=Min(shared_dirty,PSS)+PrivateClean+PrivateDirty (exclude r-xs,
-comment|// r--s)
+comment|// anon (exclude r-xs,r--s)
 name|Assert
 operator|.
 name|assertEquals
@@ -2770,7 +2772,7 @@ argument_list|(
 literal|"rss memory does not match"
 argument_list|,
 operator|(
-literal|100
+literal|20
 operator|*
 name|KB_TO_BYTES
 operator|*
@@ -2791,7 +2793,7 @@ argument_list|(
 literal|"rss memory (old API) does not match"
 argument_list|,
 operator|(
-literal|100
+literal|20
 operator|*
 name|KB_TO_BYTES
 operator|*
@@ -3581,7 +3583,7 @@ name|assertEquals
 argument_list|(
 literal|"rssmem does not include new process"
 argument_list|,
-literal|100
+literal|20
 operator|*
 name|KB_TO_BYTES
 operator|*
@@ -3600,7 +3602,7 @@ name|assertEquals
 argument_list|(
 literal|"rssmem (old API) does not include new process"
 argument_list|,
-literal|100
+literal|20
 operator|*
 name|KB_TO_BYTES
 operator|*
@@ -3714,7 +3716,7 @@ name|assertEquals
 argument_list|(
 literal|"rssmem shouldn't have included new process"
 argument_list|,
-literal|100
+literal|20
 operator|*
 name|KB_TO_BYTES
 operator|*
@@ -3735,7 +3737,7 @@ name|assertEquals
 argument_list|(
 literal|"rssmem (old API) shouldn't have included new process"
 argument_list|,
-literal|100
+literal|20
 operator|*
 name|KB_TO_BYTES
 operator|*
@@ -3945,7 +3947,7 @@ name|assertEquals
 argument_list|(
 literal|"rssmem shouldn't have included new processes"
 argument_list|,
-literal|100
+literal|20
 operator|*
 name|KB_TO_BYTES
 operator|*
@@ -3966,7 +3968,7 @@ name|assertEquals
 argument_list|(
 literal|"rssmem (old API) shouldn't have included new processes"
 argument_list|,
-literal|100
+literal|20
 operator|*
 name|KB_TO_BYTES
 operator|*
@@ -4083,7 +4085,7 @@ name|assertEquals
 argument_list|(
 literal|"rssmem shouldn't have included new processes"
 argument_list|,
-literal|100
+literal|20
 operator|*
 name|KB_TO_BYTES
 operator|*
@@ -4103,7 +4105,7 @@ name|assertEquals
 argument_list|(
 literal|"rssmem (old API) shouldn't have included new processes"
 argument_list|,
-literal|100
+literal|20
 operator|*
 name|KB_TO_BYTES
 operator|*
