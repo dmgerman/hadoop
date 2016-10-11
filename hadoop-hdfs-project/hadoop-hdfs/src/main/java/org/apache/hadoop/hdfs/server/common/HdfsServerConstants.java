@@ -1389,7 +1389,7 @@ DECL|field|XATTR_ERASURECODING_POLICY
 name|String
 name|XATTR_ERASURECODING_POLICY
 init|=
-literal|"raw.hdfs.erasurecoding.policy"
+literal|"system.hdfs.erasurecoding.policy"
 decl_stmt|;
 DECL|field|BLOCK_GROUP_INDEX_MASK
 name|long
