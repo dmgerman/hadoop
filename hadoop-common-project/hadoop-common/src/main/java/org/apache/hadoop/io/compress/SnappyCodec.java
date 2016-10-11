@@ -225,12 +225,6 @@ condition|(
 operator|!
 name|NativeCodeLoader
 operator|.
-name|isNativeCodeLoaded
-argument_list|()
-operator|||
-operator|!
-name|NativeCodeLoader
-operator|.
 name|buildSupportsSnappy
 argument_list|()
 condition|)
@@ -244,6 +238,23 @@ operator|+
 literal|"this version of libhadoop was built without "
 operator|+
 literal|"snappy support."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+operator|!
+name|NativeCodeLoader
+operator|.
+name|isNativeCodeLoaded
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Failed to load libhadoop."
 argument_list|)
 throw|;
 block|}
