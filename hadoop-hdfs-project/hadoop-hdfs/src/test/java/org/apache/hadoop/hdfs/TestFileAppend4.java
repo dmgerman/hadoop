@@ -20,6 +20,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IPC_CLIENT_CONNECT_MAX_RETRIES_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -644,7 +660,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-literal|"ipc.client.connect.max.retries"
+name|IPC_CLIENT_CONNECT_MAX_RETRIES_KEY
 argument_list|,
 literal|1
 argument_list|)

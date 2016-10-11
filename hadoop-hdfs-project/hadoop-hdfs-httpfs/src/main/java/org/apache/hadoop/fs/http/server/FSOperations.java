@@ -400,6 +400,38 @@ name|Entry
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|HTTPFS_BUFFER_SIZE_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|HTTP_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
 begin_comment
 comment|/**  * FileSystem operation executors used by {@link HttpFSServer}.  */
 end_comment
@@ -2147,9 +2179,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"httpfs.buffer.size"
+name|HTTPFS_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|HTTP_BUFFER_SIZE_DEFAULT
 argument_list|)
 decl_stmt|;
 name|OutputStream
@@ -2981,9 +3013,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"httpfs.buffer.size"
+name|HTTPFS_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|HTTP_BUFFER_SIZE_DEFAULT
 argument_list|)
 decl_stmt|;
 return|return

@@ -6287,6 +6287,24 @@ name|DFS_DISK_BALANCER_PLAN_THRESHOLD_DEFAULT
 init|=
 literal|10
 decl_stmt|;
+DECL|field|HTTPFS_BUFFER_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HTTPFS_BUFFER_SIZE_KEY
+init|=
+literal|"httpfs.buffer.size"
+decl_stmt|;
+DECL|field|HTTP_BUFFER_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HTTP_BUFFER_SIZE_DEFAULT
+init|=
+literal|4096
+decl_stmt|;
 comment|// dfs.client.retry confs are moved to HdfsClientConfigKeys.Retry
 annotation|@
 name|Deprecated
