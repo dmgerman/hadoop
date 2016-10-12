@@ -283,7 +283,7 @@ operator|=
 name|id
 expr_stmt|;
 block|}
-comment|/**    * Artifact type, like docker, tarball, etc. (optional)    **/
+comment|/**    * Artifact type, like docker, tarball, etc. (optional).    **/
 DECL|method|type (TypeEnum type)
 specifier|public
 name|Artifact
@@ -312,7 +312,7 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"Artifact type, like docker, tarball, etc. (optional)"
+literal|"Artifact type, like docker, tarball, etc. (optional)."
 argument_list|)
 annotation|@
 name|JsonProperty

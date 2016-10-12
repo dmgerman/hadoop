@@ -20,11 +20,45 @@ name|resource
 package|;
 end_package
 
+begin_import
+import|import
+name|io
+operator|.
+name|swagger
+operator|.
+name|annotations
+operator|.
+name|ApiModel
+import|;
+end_import
+
 begin_comment
 comment|/**  * The current state of an application.  **/
 end_comment
 
 begin_enum
+annotation|@
+name|ApiModel
+argument_list|(
+name|description
+operator|=
+literal|"The current state of an application."
+argument_list|)
+annotation|@
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Generated
+argument_list|(
+name|value
+operator|=
+literal|"class io.swagger.codegen.languages.JavaClientCodegen"
+argument_list|,
+name|date
+operator|=
+literal|"2016-06-02T08:15:05.615-07:00"
+argument_list|)
 DECL|enum|ApplicationState
 specifier|public
 enum|enum

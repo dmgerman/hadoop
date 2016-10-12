@@ -120,6 +120,10 @@ name|JsonProperty
 import|;
 end_import
 
+begin_comment
+comment|/**  * An instance of a running application container.  **/
+end_comment
+
 begin_class
 annotation|@
 name|ApiModel
@@ -227,7 +231,7 @@ name|resource
 init|=
 literal|null
 decl_stmt|;
-comment|/**    * Unique container id of a running application, e.g.    * container_e3751_1458061340047_0008_01_000002    **/
+comment|/**    * Unique container id of a running application, e.g.    * container_e3751_1458061340047_0008_01_000002.    **/
 DECL|method|id (String id)
 specifier|public
 name|Container
@@ -256,7 +260,7 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"Unique container id of a running application, e.g. container_e3751_1458061340047_0008_01_000002"
+literal|"Unique container id of a running application, e.g. container_e3751_1458061340047_0008_01_000002."
 argument_list|)
 annotation|@
 name|JsonProperty
@@ -289,7 +293,7 @@ operator|=
 name|id
 expr_stmt|;
 block|}
-comment|/**    * The time when the container was created, e.g. 2016-03-16T01:01:49.000Z. This will most likely be different from cluster launch time.    **/
+comment|/**    * The time when the container was created, e.g. 2016-03-16T01:01:49.000Z.    * This will most likely be different from cluster launch time.    **/
 DECL|method|launchTime (Date launchTime)
 specifier|public
 name|Container
@@ -485,7 +489,7 @@ operator|=
 name|hostname
 expr_stmt|;
 block|}
-comment|/**    * The bare node or host in which the container is running, e.g.    * cn008.example.com    **/
+comment|/**    * The bare node or host in which the container is running, e.g.    * cn008.example.com.    **/
 DECL|method|bareHost (String bareHost)
 specifier|public
 name|Container
@@ -514,7 +518,7 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"The bare node or host in which the container is running, e.g. cn008.example.com"
+literal|"The bare node or host in which the container is running, e.g. cn008.example.com."
 argument_list|)
 annotation|@
 name|JsonProperty

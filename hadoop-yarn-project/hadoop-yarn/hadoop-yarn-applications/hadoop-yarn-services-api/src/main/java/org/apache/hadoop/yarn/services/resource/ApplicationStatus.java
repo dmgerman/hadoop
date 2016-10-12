@@ -64,20 +64,6 @@ name|bind
 operator|.
 name|annotation
 operator|.
-name|XmlElement
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|xml
-operator|.
-name|bind
-operator|.
-name|annotation
-operator|.
 name|XmlRootElement
 import|;
 end_import
@@ -120,7 +106,7 @@ name|ApiModel
 argument_list|(
 name|description
 operator|=
-literal|"The current status of a submitted application, returned as a response to the GET api"
+literal|"The current status of a submitted application, returned as a response to the GET API."
 argument_list|)
 annotation|@
 name|javax
@@ -232,13 +218,6 @@ return|return
 name|diagnostics
 return|;
 block|}
-annotation|@
-name|XmlElement
-argument_list|(
-name|name
-operator|=
-literal|"diagnostics"
-argument_list|)
 DECL|method|setDiagnostics (String diagnostics)
 specifier|public
 name|void
@@ -255,7 +234,7 @@ operator|=
 name|diagnostics
 expr_stmt|;
 block|}
-comment|/**    * Application state    **/
+comment|/**    * Application state.    **/
 DECL|method|state (ApplicationState state)
 specifier|public
 name|ApplicationStatus
@@ -284,7 +263,7 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"Application state"
+literal|"Application state."
 argument_list|)
 annotation|@
 name|JsonProperty

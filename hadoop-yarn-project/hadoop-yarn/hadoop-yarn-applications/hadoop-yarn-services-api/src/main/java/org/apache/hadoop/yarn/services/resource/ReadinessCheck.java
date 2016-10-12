@@ -180,7 +180,7 @@ name|artifact
 init|=
 literal|null
 decl_stmt|;
-comment|/**    * http (YARN will perform a simple REST call at a regular interval and expect    * a 204 No content).    **/
+comment|/**    * E.g. HTTP (YARN will perform a simple REST call at a regular interval and    * expect a 204 No content).    **/
 DECL|method|type (TypeEnum type)
 specifier|public
 name|ReadinessCheck
@@ -209,7 +209,7 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"http (YARN will perform a simple REST call at a regular interval and expect a 204 No content)."
+literal|"E.g. HTTP (YARN will perform a simple REST call at a regular interval and expect a 204 No content)."
 argument_list|)
 annotation|@
 name|JsonProperty
