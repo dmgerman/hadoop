@@ -154,7 +154,7 @@ name|Path
 name|home
 parameter_list|)
 function_decl|;
-comment|/**    * Used to setup the trash policy. Must be implemented by all TrashPolicy    * implementations. Different from initialize(conf, fs, home), this one does    * not assume trash always under /user/$USER due to HDFS encryption zone.    * @param conf the configuration to be used    * @param fs the filesystem to be used    * @throws IOException    */
+comment|/**    * Used to setup the trash policy. Must be implemented by all TrashPolicy    * implementations. Different from initialize(conf, fs, home), this one does    * not assume trash always under /user/$USER due to HDFS encryption zone.    * @param conf the configuration to be used    * @param fs the filesystem to be used    */
 DECL|method|initialize (Configuration conf, FileSystem fs)
 specifier|public
 name|void
@@ -166,8 +166,6 @@ parameter_list|,
 name|FileSystem
 name|fs
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 throw|throw
 operator|new
@@ -335,8 +333,6 @@ parameter_list|,
 name|FileSystem
 name|fs
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|Class
 argument_list|<
