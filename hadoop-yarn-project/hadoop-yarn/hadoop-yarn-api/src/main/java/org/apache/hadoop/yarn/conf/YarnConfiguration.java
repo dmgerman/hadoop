@@ -2826,7 +2826,7 @@ name|DEFAULT_RM_LEVELDB_COMPACTION_INTERVAL_SECS
 init|=
 literal|3600
 decl_stmt|;
-comment|/** The maximum number of completed applications RM keeps. */
+comment|/**    * The maximum number of completed applications RM keeps. By default equals    * to {@link #DEFAULT_RM_MAX_COMPLETED_APPLICATIONS}.    */
 DECL|field|RM_MAX_COMPLETED_APPLICATIONS
 specifier|public
 specifier|static
@@ -2845,9 +2845,9 @@ specifier|final
 name|int
 name|DEFAULT_RM_MAX_COMPLETED_APPLICATIONS
 init|=
-literal|10000
+literal|1000
 decl_stmt|;
-comment|/**    * The maximum number of completed applications RM state store keeps, by    * default equals to DEFAULT_RM_MAX_COMPLETED_APPLICATIONS    */
+comment|/**    * The maximum number of completed applications RM state store keeps. By    * default equals to value of {@link #RM_MAX_COMPLETED_APPLICATIONS}.    */
 DECL|field|RM_STATE_STORE_MAX_COMPLETED_APPLICATIONS
 specifier|public
 specifier|static
@@ -2859,6 +2859,9 @@ name|RM_PREFIX
 operator|+
 literal|"state-store.max-completed-applications"
 decl_stmt|;
+comment|/**    * The default value for    * {@code yarn.resourcemanager.state-store.max-completed-applications}.    * @deprecated This default value is ignored and will be removed in a future    * release. The default value of    * {@code yarn.resourcemanager.state-store.max-completed-applications} is the    * value of {@link #RM_MAX_COMPLETED_APPLICATIONS}.    */
+annotation|@
+name|Deprecated
 DECL|field|DEFAULT_RM_STATE_STORE_MAX_COMPLETED_APPLICATIONS
 specifier|public
 specifier|static

@@ -1006,9 +1006,9 @@ name|YarnConfiguration
 operator|.
 name|RM_STATE_STORE_MAX_COMPLETED_APPLICATIONS
 argument_list|,
-name|YarnConfiguration
+name|this
 operator|.
-name|DEFAULT_RM_STATE_STORE_MAX_COMPLETED_APPLICATIONS
+name|maxCompletedAppsInMemory
 argument_list|)
 expr_stmt|;
 if|if
