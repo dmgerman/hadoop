@@ -366,6 +366,24 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|//10 minutes
+DECL|field|DFS_WEBHDFS_USE_IPC_CALLQ
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_WEBHDFS_USE_IPC_CALLQ
+init|=
+literal|"dfs.webhdfs.use.ipc.callq"
+decl_stmt|;
+DECL|field|DFS_WEBHDFS_USE_IPC_CALLQ_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_WEBHDFS_USE_IPC_CALLQ_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|// HA related configuration
 DECL|field|DFS_DATANODE_RESTART_REPLICA_EXPIRY_KEY
 specifier|public
