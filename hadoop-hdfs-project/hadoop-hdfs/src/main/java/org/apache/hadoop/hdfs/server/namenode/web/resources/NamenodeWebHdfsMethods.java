@@ -2483,10 +2483,7 @@ name|namenode
 argument_list|,
 name|ugi
 argument_list|,
-name|userPrincipal
-operator|.
-name|getName
-argument_list|()
+literal|null
 argument_list|)
 decl_stmt|;
 name|delegationQuery
