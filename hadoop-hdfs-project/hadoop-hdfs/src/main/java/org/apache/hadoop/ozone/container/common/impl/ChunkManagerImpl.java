@@ -98,7 +98,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
 name|container
 operator|.

@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.common.transport.client
+DECL|package|org.apache.hadoop.scm
 package|package
 name|org
 operator|.
@@ -12,15 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|transport
-operator|.
-name|client
+name|scm
 package|;
 end_package
 
@@ -56,9 +48,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|conf
 operator|.
-name|OzoneConfiguration
+name|Configuration
 import|;
 end_import
 
@@ -70,7 +62,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
 name|container
 operator|.
@@ -92,18 +84,19 @@ specifier|public
 class|class
 name|XceiverClientManager
 block|{
+comment|//TODO : change this to SCM configuration class
 DECL|field|conf
 specifier|private
 specifier|final
-name|OzoneConfiguration
+name|Configuration
 name|conf
 decl_stmt|;
 comment|/**    * Creates a new XceiverClientManager.    *    * @param conf configuration    */
-DECL|method|XceiverClientManager (OzoneConfiguration conf)
+DECL|method|XceiverClientManager (Configuration conf)
 specifier|public
 name|XceiverClientManager
 parameter_list|(
-name|OzoneConfiguration
+name|Configuration
 name|conf
 parameter_list|)
 block|{

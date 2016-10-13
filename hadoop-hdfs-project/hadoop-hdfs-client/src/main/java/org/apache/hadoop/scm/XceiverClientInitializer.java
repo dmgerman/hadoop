@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.common.transport.client
+DECL|package|org.apache.hadoop.scm
 package|package
 name|org
 operator|.
@@ -12,15 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|transport
-operator|.
-name|client
+name|scm
 package|;
 end_package
 
@@ -134,15 +126,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
 name|ozone
 operator|.
-name|container
+name|protocol
 operator|.
-name|common
+name|proto
 operator|.
-name|helpers
-operator|.
-name|Pipeline
+name|ContainerProtos
 import|;
 end_import
 
@@ -154,15 +146,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|scm
 operator|.
-name|ozone
+name|container
 operator|.
-name|protocol
+name|common
 operator|.
-name|proto
+name|helpers
 operator|.
-name|ContainerProtos
+name|Pipeline
 import|;
 end_import
 

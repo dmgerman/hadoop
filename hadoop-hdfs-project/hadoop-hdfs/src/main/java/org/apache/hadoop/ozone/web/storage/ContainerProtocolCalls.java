@@ -316,15 +316,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|transport
-operator|.
-name|client
+name|scm
 operator|.
 name|XceiverClient
 import|;
