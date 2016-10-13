@@ -537,19 +537,6 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-name|DFSTestUtil
-operator|.
-name|waitForReplication
-argument_list|(
-name|dfs
-argument_list|,
-name|foo
-argument_list|,
-name|REPLICATION
-argument_list|,
-literal|10000
-argument_list|)
-expr_stmt|;
 comment|// restart NN
 name|cluster
 operator|.
@@ -631,11 +618,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|waitForNumPendingDeletionBlocks
-argument_list|(
-name|REPLICATION
-argument_list|)
-expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
@@ -693,10 +675,8 @@ operator|.
 name|getInvalidationDelay
 argument_list|()
 expr_stmt|;
-name|waitForNumPendingDeletionBlocks
-argument_list|(
-literal|0
-argument_list|)
+name|waitForBlocksToDelete
+argument_list|()
 expr_stmt|;
 name|Assert
 operator|.
@@ -1223,10 +1203,8 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|waitForNumPendingDeletionBlocks
-argument_list|(
-literal|0
-argument_list|)
+name|waitForBlocksToDelete
+argument_list|()
 expr_stmt|;
 name|Assert
 operator|.
@@ -1325,14 +1303,11 @@ name|getUnderReplicatedBlocks
 argument_list|()
 return|;
 block|}
-DECL|method|waitForNumPendingDeletionBlocks (int numBlocks)
+DECL|method|waitForBlocksToDelete ()
 specifier|private
 name|void
-name|waitForNumPendingDeletionBlocks
-parameter_list|(
-name|int
-name|numBlocks
-parameter_list|)
+name|waitForBlocksToDelete
+parameter_list|()
 throws|throws
 name|Exception
 block|{
@@ -1371,7 +1346,7 @@ operator|.
 name|getPendingDeletionBlocks
 argument_list|()
 operator|==
-name|numBlocks
+literal|0
 condition|)
 block|{
 return|return
