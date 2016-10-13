@@ -373,7 +373,10 @@ name|get
 argument_list|(
 name|vol
 operator|.
-name|getBasePath
+name|getBaseURI
+argument_list|()
+operator|.
+name|getPath
 argument_list|()
 argument_list|)
 argument_list|)
