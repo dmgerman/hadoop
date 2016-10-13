@@ -5208,19 +5208,17 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
-name|System
-operator|.
-name|err
-operator|.
-name|println
+throw|throw
+operator|new
+name|IOException
 argument_list|(
-literal|"Datanode unreachable."
+literal|"Datanode unreachable. "
+operator|+
+name|ioe
+argument_list|,
+name|ioe
 argument_list|)
-expr_stmt|;
-return|return
-operator|-
-literal|1
-return|;
+throw|;
 block|}
 return|return
 literal|0
@@ -12378,10 +12376,17 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
-return|return
-operator|-
-literal|1
-return|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Datanode unreachable. "
+operator|+
+name|ioe
+argument_list|,
+name|ioe
+argument_list|)
+throw|;
 block|}
 return|return
 literal|0
@@ -12442,19 +12447,17 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
-name|System
-operator|.
-name|err
-operator|.
-name|println
+throw|throw
+operator|new
+name|IOException
 argument_list|(
-literal|"Datanode unreachable."
+literal|"Datanode unreachable. "
+operator|+
+name|ioe
+argument_list|,
+name|ioe
 argument_list|)
-expr_stmt|;
-return|return
-operator|-
-literal|1
-return|;
+throw|;
 block|}
 return|return
 literal|0
