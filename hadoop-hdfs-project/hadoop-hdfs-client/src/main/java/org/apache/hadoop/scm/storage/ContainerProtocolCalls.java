@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.web.storage
+DECL|package|org.apache.hadoop.scm.storage
 package|package
 name|org
 operator|.
@@ -12,9 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
-operator|.
-name|web
+name|scm
 operator|.
 name|storage
 package|;
@@ -322,72 +320,19 @@ name|XceiverClient
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|web
-operator|.
-name|exceptions
-operator|.
-name|ErrorTable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|web
-operator|.
-name|exceptions
-operator|.
-name|OzoneException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|web
-operator|.
-name|handlers
-operator|.
-name|UserArgs
-import|;
-end_import
-
 begin_comment
-comment|/**  * Implementation of all container protocol calls performed by  * {@link DistributedStorageHandler}.  */
+comment|/**  * Implementation of all container protocol calls performed by  * .  */
 end_comment
 
 begin_class
 DECL|class|ContainerProtocolCalls
+specifier|public
 specifier|final
 class|class
 name|ContainerProtocolCalls
 block|{
-comment|/**    * Calls the container protocol to get a container key.    *    * @param xceiverClient client to perform call    * @param containerKeyData key data to identify container    * @param args container protocol call args    * @returns container protocol get key response    * @throws IOException if there is an I/O error while performing the call    * @throws OzoneException if the container protocol call failed    */
-DECL|method|getKey (XceiverClient xceiverClient, KeyData containerKeyData, UserArgs args)
+comment|/**    * Calls the container protocol to get a container key.    *    * @param xceiverClient client to perform call    * @param containerKeyData key data to identify container    * @param traceID container protocol call args    * @return container protocol get key response    * @throws IOException if there is an I/O error while performing the call    */
+DECL|method|getKey (XceiverClient xceiverClient, KeyData containerKeyData, String traceID)
 specifier|public
 specifier|static
 name|GetKeyResponseProto
@@ -399,13 +344,11 @@ parameter_list|,
 name|KeyData
 name|containerKeyData
 parameter_list|,
-name|UserArgs
-name|args
+name|String
+name|traceID
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|OzoneException
 block|{
 name|GetKeyRequestProto
 operator|.
@@ -450,10 +393,7 @@ argument_list|)
 operator|.
 name|setTraceID
 argument_list|(
-name|args
-operator|.
-name|getRequestID
-argument_list|()
+name|traceID
 argument_list|)
 operator|.
 name|setGetKey
@@ -478,7 +418,7 @@ name|validateContainerResponse
 argument_list|(
 name|response
 argument_list|,
-name|args
+name|traceID
 argument_list|)
 expr_stmt|;
 return|return
@@ -488,8 +428,8 @@ name|getGetKey
 argument_list|()
 return|;
 block|}
-comment|/**    * Calls the container protocol to put a container key.    *    * @param xceiverClient client to perform call    * @param containerKeyData key data to identify container    * @param args container protocol call args    * @throws IOException if there is an I/O error while performing the call    * @throws OzoneException if the container protocol call failed    */
-DECL|method|putKey (XceiverClient xceiverClient, KeyData containerKeyData, UserArgs args)
+comment|/**    * Calls the container protocol to put a container key.    *    * @param xceiverClient client to perform call    * @param containerKeyData key data to identify container    * @param traceID container protocol call args    * @throws IOException if there is an I/O error while performing the call    */
+DECL|method|putKey (XceiverClient xceiverClient, KeyData containerKeyData, String traceID)
 specifier|public
 specifier|static
 name|void
@@ -501,13 +441,11 @@ parameter_list|,
 name|KeyData
 name|containerKeyData
 parameter_list|,
-name|UserArgs
-name|args
+name|String
+name|traceID
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|OzoneException
 block|{
 name|PutKeyRequestProto
 operator|.
@@ -552,10 +490,7 @@ argument_list|)
 operator|.
 name|setTraceID
 argument_list|(
-name|args
-operator|.
-name|getRequestID
-argument_list|()
+name|traceID
 argument_list|)
 operator|.
 name|setPutKey
@@ -580,12 +515,12 @@ name|validateContainerResponse
 argument_list|(
 name|response
 argument_list|,
-name|args
+name|traceID
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Calls the container protocol to read a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to read    * @param key the key name    * @param args container protocol call args    * @returns container protocol read chunk response    * @throws IOException if there is an I/O error while performing the call    * @throws OzoneException if the container protocol call failed    */
-DECL|method|readChunk (XceiverClient xceiverClient, ChunkInfo chunk, String key, UserArgs args)
+comment|/**    * Calls the container protocol to read a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to read    * @param key the key name    * @param traceID container protocol call args    * @return container protocol read chunk response    * @throws IOException if there is an I/O error while performing the call    */
+DECL|method|readChunk (XceiverClient xceiverClient, ChunkInfo chunk, String key, String traceID)
 specifier|public
 specifier|static
 name|ReadChunkResponseProto
@@ -600,13 +535,11 @@ parameter_list|,
 name|String
 name|key
 parameter_list|,
-name|UserArgs
-name|args
+name|String
+name|traceID
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|OzoneException
 block|{
 name|ReadChunkRequestProto
 operator|.
@@ -656,10 +589,7 @@ argument_list|)
 operator|.
 name|setTraceID
 argument_list|(
-name|args
-operator|.
-name|getRequestID
-argument_list|()
+name|traceID
 argument_list|)
 operator|.
 name|setReadChunk
@@ -684,7 +614,7 @@ name|validateContainerResponse
 argument_list|(
 name|response
 argument_list|,
-name|args
+name|traceID
 argument_list|)
 expr_stmt|;
 return|return
@@ -694,8 +624,8 @@ name|getReadChunk
 argument_list|()
 return|;
 block|}
-comment|/**    * Calls the container protocol to write a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to write    * @param key the key name    * @param data the data of the chunk to write    * @param args container protocol call args    * @throws IOException if there is an I/O error while performing the call    * @throws OzoneException if the container protocol call failed    */
-DECL|method|writeChunk (XceiverClient xceiverClient, ChunkInfo chunk, String key, ByteString data, UserArgs args)
+comment|/**    * Calls the container protocol to write a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to write    * @param key the key name    * @param data the data of the chunk to write    * @param traceID container protocol call args    * @throws IOException if there is an I/O error while performing the call    */
+DECL|method|writeChunk (XceiverClient xceiverClient, ChunkInfo chunk, String key, ByteString data, String traceID)
 specifier|public
 specifier|static
 name|void
@@ -713,13 +643,11 @@ parameter_list|,
 name|ByteString
 name|data
 parameter_list|,
-name|UserArgs
-name|args
+name|String
+name|traceID
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|OzoneException
 block|{
 name|WriteChunkRequestProto
 operator|.
@@ -774,10 +702,7 @@ argument_list|)
 operator|.
 name|setTraceID
 argument_list|(
-name|args
-operator|.
-name|getRequestID
-argument_list|()
+name|traceID
 argument_list|)
 operator|.
 name|setWriteChunk
@@ -802,12 +727,12 @@ name|validateContainerResponse
 argument_list|(
 name|response
 argument_list|,
-name|args
+name|traceID
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Validates a response from a container protocol call.  Any non-successful    * return code is mapped to a corresponding exception and thrown.    *    * @param response container protocol call response    * @param args container protocol call args    * @throws OzoneException if the container protocol call failed    */
-DECL|method|validateContainerResponse ( ContainerCommandResponseProto response, UserArgs args)
+comment|/**    * Validates a response from a container protocol call.  Any non-successful    * return code is mapped to a corresponding exception and thrown.    *    * @param response container protocol call response    * @param traceID container protocol call args    * @throws IOException if the container protocol call failed    */
+DECL|method|validateContainerResponse ( ContainerCommandResponseProto response, String traceID )
 specifier|private
 specifier|static
 name|void
@@ -816,12 +741,13 @@ parameter_list|(
 name|ContainerCommandResponseProto
 name|response
 parameter_list|,
-name|UserArgs
-name|args
+name|String
+name|traceID
 parameter_list|)
 throws|throws
-name|OzoneException
+name|IOException
 block|{
+comment|// TODO : throw the right type of exception
 switch|switch
 condition|(
 name|response
@@ -838,82 +764,54 @@ case|case
 name|MALFORMED_REQUEST
 case|:
 throw|throw
-name|ErrorTable
-operator|.
-name|newError
-argument_list|(
 operator|new
-name|OzoneException
+name|IOException
 argument_list|(
 name|HTTP_BAD_REQUEST
-argument_list|,
-literal|"badRequest"
-argument_list|,
-literal|"Bad container request."
-argument_list|)
-argument_list|,
-name|args
+operator|+
+literal|":Bad container request: "
+operator|+
+name|traceID
 argument_list|)
 throw|;
 case|case
 name|UNSUPPORTED_REQUEST
 case|:
 throw|throw
-name|ErrorTable
-operator|.
-name|newError
-argument_list|(
 operator|new
-name|OzoneException
+name|IOException
 argument_list|(
 name|HTTP_INTERNAL_ERROR
-argument_list|,
-literal|"internalServerError"
-argument_list|,
-literal|"Unsupported container request."
-argument_list|)
-argument_list|,
-name|args
+operator|+
+literal|"Unsupported container request: "
+operator|+
+name|traceID
 argument_list|)
 throw|;
 case|case
 name|CONTAINER_INTERNAL_ERROR
 case|:
 throw|throw
-name|ErrorTable
-operator|.
-name|newError
-argument_list|(
 operator|new
-name|OzoneException
+name|IOException
 argument_list|(
 name|HTTP_INTERNAL_ERROR
-argument_list|,
-literal|"internalServerError"
-argument_list|,
-literal|"Container internal error."
-argument_list|)
-argument_list|,
-name|args
+operator|+
+literal|"Container internal error:"
+operator|+
+name|traceID
 argument_list|)
 throw|;
 default|default:
 throw|throw
-name|ErrorTable
-operator|.
-name|newError
-argument_list|(
 operator|new
-name|OzoneException
+name|IOException
 argument_list|(
 name|HTTP_INTERNAL_ERROR
-argument_list|,
-literal|"internalServerError"
-argument_list|,
-literal|"Unrecognized container response."
-argument_list|)
-argument_list|,
-name|args
+operator|+
+literal|"Unrecognized container response:"
+operator|+
+name|traceID
 argument_list|)
 throw|;
 block|}

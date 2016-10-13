@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.web.storage
+DECL|package|org.apache.hadoop.scm.storage
 package|package
 name|org
 operator|.
@@ -12,9 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
-operator|.
-name|web
+name|scm
 operator|.
 name|storage
 package|;
@@ -28,9 +26,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
-operator|.
-name|web
+name|scm
 operator|.
 name|storage
 operator|.
@@ -164,48 +160,13 @@ name|XceiverClientManager
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|web
-operator|.
-name|exceptions
-operator|.
-name|OzoneException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|web
-operator|.
-name|handlers
-operator|.
-name|UserArgs
-import|;
-end_import
-
 begin_comment
-comment|/**  * An {@link InputStream} used by the REST service in combination with the  * {@link DistributedStorageHandler} to read the value of a key from a sequence  * of container chunks.  All bytes of the key value are stored in container  * chunks.  Each chunk may contain multiple underlying {@link ByteBuffer}  * instances.  This class encapsulates all state management for iterating  * through the sequence of chunks and the sequence of buffers within each chunk.  */
+comment|/**  * An {@link InputStream} used by the REST service in combination with the  * SCMClient to read the value of a key from a sequence  * of container chunks.  All bytes of the key value are stored in container  * chunks.  Each chunk may contain multiple underlying {@link ByteBuffer}  * instances.  This class encapsulates all state management for iterating  * through the sequence of chunks and the sequence of buffers within each chunk.  */
 end_comment
 
 begin_class
 DECL|class|ChunkInputStream
+specifier|public
 class|class
 name|ChunkInputStream
 extends|extends
@@ -227,11 +188,11 @@ specifier|final
 name|String
 name|key
 decl_stmt|;
-DECL|field|args
+DECL|field|traceID
 specifier|private
 specifier|final
-name|UserArgs
-name|args
+name|String
+name|traceID
 decl_stmt|;
 DECL|field|xceiverClientManager
 specifier|private
@@ -269,8 +230,8 @@ specifier|private
 name|int
 name|bufferOffset
 decl_stmt|;
-comment|/**    * Creates a new ChunkInputStream.    *    * @param key chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param chunks list of chunks to read    * @param args container protocol call args    */
-DECL|method|ChunkInputStream (String key, XceiverClientManager xceiverClientManager, XceiverClient xceiverClient, List<ChunkInfo> chunks, UserArgs args)
+comment|/**    * Creates a new ChunkInputStream.    *    * @param key chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param chunks list of chunks to read    * @param traceID container protocol call traceID    */
+DECL|method|ChunkInputStream (String key, XceiverClientManager xceiverClientManager, XceiverClient xceiverClient, List<ChunkInfo> chunks, String traceID)
 specifier|public
 name|ChunkInputStream
 parameter_list|(
@@ -289,8 +250,8 @@ name|ChunkInfo
 argument_list|>
 name|chunks
 parameter_list|,
-name|UserArgs
-name|args
+name|String
+name|traceID
 parameter_list|)
 block|{
 name|this
@@ -301,9 +262,9 @@ name|key
 expr_stmt|;
 name|this
 operator|.
-name|args
+name|traceID
 operator|=
-name|args
+name|traceID
 expr_stmt|;
 name|this
 operator|.
@@ -765,13 +726,13 @@ argument_list|)
 argument_list|,
 name|key
 argument_list|,
-name|args
+name|traceID
 argument_list|)
 expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|OzoneException
+name|IOException
 name|e
 parameter_list|)
 block|{

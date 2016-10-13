@@ -81,6 +81,21 @@ name|DFS_CONTAINER_IPC_PORT_DEFAULT
 init|=
 literal|50011
 decl_stmt|;
+comment|// TODO : this is copied from OzoneConsts, may need to move to a better place
+DECL|field|CHUNK_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|CHUNK_SIZE
+init|=
+literal|1
+operator|*
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
+comment|// 1 MB
 block|}
 end_class
 
