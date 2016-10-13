@@ -140,6 +140,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|common
+operator|.
+name|SliderKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -690,10 +704,14 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-name|PROPERTY_COMPONENT_TYPE
+name|SliderKeys
+operator|.
+name|COMPONENT_TYPE_KEY
 argument_list|)
 argument_list|,
-name|COMPONENT_TYPE_EXTERNAL
+name|SliderKeys
+operator|.
+name|COMPONENT_TYPE_EXTERNAL_APP
 argument_list|)
 expr_stmt|;
 comment|// unset artifact type, default component and no of containers to test other
