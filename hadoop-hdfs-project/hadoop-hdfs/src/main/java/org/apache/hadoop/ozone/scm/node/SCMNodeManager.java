@@ -44,6 +44,20 @@ name|common
 operator|.
 name|base
 operator|.
+name|Optional
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
 name|Preconditions
 import|;
 end_import
@@ -241,18 +255,6 @@ operator|.
 name|concurrent
 operator|.
 name|ConcurrentLinkedQueue
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|Executors
 import|;
 end_import
 
@@ -476,16 +478,24 @@ specifier|private
 name|long
 name|lastHBProcessedCount
 decl_stmt|;
-DECL|field|safeModeNodeCount
+DECL|field|chillModeNodeCount
 specifier|private
 name|int
-name|safeModeNodeCount
+name|chillModeNodeCount
 decl_stmt|;
 DECL|field|maxHBToProcessPerLoop
 specifier|private
 specifier|final
 name|int
 name|maxHBToProcessPerLoop
+decl_stmt|;
+DECL|field|inManualChillMode
+specifier|private
+name|Optional
+argument_list|<
+name|Boolean
+argument_list|>
+name|inManualChillMode
 decl_stmt|;
 comment|/**    * Constructs SCM machine Manager.    */
 DECL|method|SCMNodeManager (Configuration conf)
@@ -564,7 +574,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 comment|// TODO: Support this value as a Percentage of known machines.
-name|safeModeNodeCount
+name|chillModeNodeCount
 operator|=
 literal|1
 expr_stmt|;
@@ -638,6 +648,15 @@ operator|.
 name|build
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|inManualChillMode
+operator|=
+name|Optional
+operator|.
+name|absent
+argument_list|()
 expr_stmt|;
 name|Preconditions
 operator|.
@@ -1022,58 +1041,61 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the minimum number of nodes to get out of safe mode.    *    * @return int    */
+comment|/**    * Get the minimum number of nodes to get out of Chill mode.    *    * @return int    */
 annotation|@
 name|Override
-DECL|method|getMinimumSafeModeNodes ()
+DECL|method|getMinimumChillModeNodes ()
 specifier|public
 name|int
-name|getMinimumSafeModeNodes
+name|getMinimumChillModeNodes
 parameter_list|()
 block|{
 return|return
-name|safeModeNodeCount
+name|chillModeNodeCount
 return|;
 block|}
-comment|/**    * Sets the Minimum SafeModeNode count, used only in testing.    *    * @param count  - Number of nodes.    */
+comment|/**    * Sets the Minimum chill mode nodes count, used only in testing.    *    * @param count  - Number of nodes.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|setMinimumSafeModeNodes (int count)
+DECL|method|setMinimumChillModeNodes (int count)
 specifier|public
 name|void
-name|setMinimumSafeModeNodes
+name|setMinimumChillModeNodes
 parameter_list|(
 name|int
 name|count
 parameter_list|)
 block|{
-name|safeModeNodeCount
+name|chillModeNodeCount
 operator|=
 name|count
 expr_stmt|;
 block|}
-comment|/**    * Reports if we have exited out of safe mode.    *    * @return true if we are out of safe mode.    */
+comment|/**    * Reports if we have exited out of chill mode.    *    * @return true if we are out of chill mode.    */
 annotation|@
 name|Override
-DECL|method|isOutOfNodeSafeMode ()
+DECL|method|isOutOfNodeChillMode ()
 specifier|public
 name|boolean
-name|isOutOfNodeSafeMode
+name|isOutOfNodeChillMode
 parameter_list|()
 block|{
-name|LOG
+if|if
+condition|(
+name|inManualChillMode
 operator|.
-name|trace
-argument_list|(
-literal|"Node count : {}"
-argument_list|,
-name|totalNodes
+name|isPresent
+argument_list|()
+condition|)
+block|{
+return|return
+operator|!
+name|inManualChillMode
 operator|.
 name|get
 argument_list|()
-argument_list|)
-expr_stmt|;
-comment|//TODO : Support a boolean to force getting out of Safe mode.
+return|;
+block|}
 return|return
 operator|(
 name|totalNodes
@@ -1081,10 +1103,208 @@ operator|.
 name|get
 argument_list|()
 operator|>=
-name|getMinimumSafeModeNodes
+name|getMinimumChillModeNodes
 argument_list|()
 operator|)
 return|;
+block|}
+comment|/**    * Clears the manual chill mode.    */
+annotation|@
+name|Override
+DECL|method|clearChillModeFlag ()
+specifier|public
+name|void
+name|clearChillModeFlag
+parameter_list|()
+block|{
+name|this
+operator|.
+name|inManualChillMode
+operator|=
+name|Optional
+operator|.
+name|absent
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Returns chill mode Status string.    * @return String    */
+annotation|@
+name|Override
+DECL|method|getChillModeStatus ()
+specifier|public
+name|String
+name|getChillModeStatus
+parameter_list|()
+block|{
+if|if
+condition|(
+name|inManualChillMode
+operator|.
+name|isPresent
+argument_list|()
+operator|&&
+name|inManualChillMode
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
+return|return
+literal|"Manual chill mode is set to true."
+operator|+
+name|getNodeStatus
+argument_list|()
+return|;
+block|}
+if|if
+condition|(
+name|inManualChillMode
+operator|.
+name|isPresent
+argument_list|()
+operator|&&
+operator|!
+name|inManualChillMode
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
+return|return
+literal|"Manual chill mode is set to false."
+operator|+
+name|getNodeStatus
+argument_list|()
+return|;
+block|}
+if|if
+condition|(
+name|isOutOfNodeChillMode
+argument_list|()
+condition|)
+block|{
+return|return
+literal|"Out of chill mode."
+operator|+
+name|getNodeStatus
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|"Still in chill mode. Waiting on nodes to report in."
+operator|+
+name|getNodeStatus
+argument_list|()
+return|;
+block|}
+block|}
+comment|/**    * Returns a node status string.    * @return - String    */
+DECL|method|getNodeStatus ()
+specifier|private
+name|String
+name|getNodeStatus
+parameter_list|()
+block|{
+specifier|final
+name|String
+name|chillModeStatus
+init|=
+literal|" %d of out of total "
+operator|+
+literal|"%d nodes have reported in."
+decl_stmt|;
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+name|chillModeStatus
+argument_list|,
+name|totalNodes
+operator|.
+name|get
+argument_list|()
+argument_list|,
+name|getMinimumChillModeNodes
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns the status of Manual chill Mode flag.    *    * @return true if forceEnterChillMode has been called, false if    * forceExitChillMode or status is not set. eg. clearChillModeFlag.    */
+annotation|@
+name|Override
+DECL|method|isInManualChillMode ()
+specifier|public
+name|boolean
+name|isInManualChillMode
+parameter_list|()
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|inManualChillMode
+operator|.
+name|isPresent
+argument_list|()
+condition|)
+block|{
+return|return
+name|this
+operator|.
+name|inManualChillMode
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+comment|/**    * Forcefully exits the chill mode even if we have not met the minimum    * criteria of exiting the chill mode.    */
+annotation|@
+name|Override
+DECL|method|forceExitChillMode ()
+specifier|public
+name|void
+name|forceExitChillMode
+parameter_list|()
+block|{
+name|this
+operator|.
+name|inManualChillMode
+operator|=
+name|Optional
+operator|.
+name|of
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Forcefully enters chill mode, even if all chill mode conditions are met.    */
+annotation|@
+name|Override
+DECL|method|forceEnterChillMode ()
+specifier|public
+name|void
+name|forceEnterChillMode
+parameter_list|()
+block|{
+name|this
+operator|.
+name|inManualChillMode
+operator|=
+name|Optional
+operator|.
+name|of
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Returns the Number of Datanodes by State they are in.    *    * @return int -- count    */
 annotation|@

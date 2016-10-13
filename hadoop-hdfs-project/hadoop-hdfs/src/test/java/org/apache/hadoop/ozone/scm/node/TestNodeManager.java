@@ -122,6 +122,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|BeforeClass
 import|;
 end_import
@@ -609,11 +619,11 @@ argument_list|)
 decl_stmt|;
 name|assertFalse
 argument_list|(
-literal|"Node manager should be in safe mode"
+literal|"Node manager should be in chill mode"
 argument_list|,
 name|nodeManager
 operator|.
-name|isOutOfNodeSafeMode
+name|isOutOfNodeChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -621,7 +631,7 @@ return|return
 name|nodeManager
 return|;
 block|}
-comment|/**    * Tests that Node manager handles heartbeats correctly, and comes out of Safe    * Mode.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
+comment|/**    * Tests that Node manager handles heartbeats correctly, and comes out of    * chill Mode.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
 annotation|@
 name|Test
 DECL|method|testScmHeartbeat ()
@@ -660,7 +670,7 @@ name|x
 operator|<
 name|nodeManager
 operator|.
-name|getMinimumSafeModeNodes
+name|getMinimumChillModeNodes
 argument_list|()
 condition|;
 name|x
@@ -699,17 +709,17 @@ name|assertTrue
 argument_list|(
 literal|"Heartbeat thread should have picked up the scheduled "
 operator|+
-literal|"heartbeats and transitioned out of safe mode."
+literal|"heartbeats and transitioned out of chill mode."
 argument_list|,
 name|nodeManager
 operator|.
-name|isOutOfNodeSafeMode
+name|isOutOfNodeChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * asserts that if we send no heartbeats node manager stays in safemode.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
+comment|/**    * asserts that if we send no heartbeats node manager stays in chillmode.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
 annotation|@
 name|Test
 DECL|method|testScmNoHeartbeats ()
@@ -756,17 +766,17 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-literal|"No heartbeats, Node manager should have been in safe mode."
+literal|"No heartbeats, Node manager should have been in chill mode."
 argument_list|,
 name|nodeManager
 operator|.
-name|isOutOfNodeSafeMode
+name|isOutOfNodeChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Asserts that if we don't get enough unique nodes we stay in safemode.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
+comment|/**    * Asserts that if we don't get enough unique nodes we stay in chillmode.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
 annotation|@
 name|Test
 DECL|method|testScmNotEnoughHeartbeats ()
@@ -793,10 +803,10 @@ argument_list|()
 argument_list|)
 init|)
 block|{
-comment|// Need 100 nodes to come out of safe mode, only one node is sending HB.
+comment|// Need 100 nodes to come out of chill mode, only one node is sending HB.
 name|nodeManager
 operator|.
-name|setMinimumSafeModeNodes
+name|setMinimumChillModeNodes
 argument_list|(
 literal|100
 argument_list|)
@@ -831,11 +841,11 @@ name|assertFalse
 argument_list|(
 literal|"Not enough heartbeat, Node manager should have been in "
 operator|+
-literal|"safemode."
+literal|"chillmode."
 argument_list|,
 name|nodeManager
 operator|.
-name|isOutOfNodeSafeMode
+name|isOutOfNodeChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -870,7 +880,7 @@ init|)
 block|{
 name|nodeManager
 operator|.
-name|setMinimumSafeModeNodes
+name|setMinimumChillModeNodes
 argument_list|(
 literal|3
 argument_list|)
@@ -881,7 +891,7 @@ init|=
 name|getDatanodeID
 argument_list|()
 decl_stmt|;
-comment|// Send 10 heartbeat from same node, and assert we never leave safe mode.
+comment|// Send 10 heartbeat from same node, and assert we never leave chill mode.
 for|for
 control|(
 name|int
@@ -929,7 +939,7 @@ literal|"Not enough nodes have send heartbeat to node manager."
 argument_list|,
 name|nodeManager
 operator|.
-name|isOutOfNodeSafeMode
+name|isOutOfNodeChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1003,11 +1013,11 @@ name|assertFalse
 argument_list|(
 literal|"Node manager executor service is shutdown, should never exit"
 operator|+
-literal|" safe mode"
+literal|" chill mode"
 argument_list|,
 name|nodeManager
 operator|.
-name|isOutOfNodeSafeMode
+name|isOutOfNodeChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3431,6 +3441,278 @@ literal|"flooded by heartbeats. Not able to keep up with the heartbeat "
 operator|+
 literal|"counts."
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Test
+DECL|method|testScmEnterAndExistChillMode ()
+specifier|public
+name|void
+name|testScmEnterAndExistChillMode
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+name|Configuration
+name|conf
+init|=
+name|getConf
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS
+argument_list|,
+literal|100
+argument_list|)
+expr_stmt|;
+try|try
+init|(
+name|SCMNodeManager
+name|nodeManager
+init|=
+name|createNodeManager
+argument_list|(
+name|conf
+argument_list|)
+init|)
+block|{
+name|nodeManager
+operator|.
+name|setMinimumChillModeNodes
+argument_list|(
+literal|10
+argument_list|)
+expr_stmt|;
+name|nodeManager
+operator|.
+name|updateHeartbeat
+argument_list|(
+name|getDatanodeID
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|String
+name|status
+init|=
+name|nodeManager
+operator|.
+name|getChillModeStatus
+argument_list|()
+decl_stmt|;
+name|Assert
+operator|.
+name|assertThat
+argument_list|(
+name|status
+argument_list|,
+name|CoreMatchers
+operator|.
+name|containsString
+argument_list|(
+literal|"Still in chill "
+operator|+
+literal|"mode. Waiting on nodes to report in."
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Should not exist chill mode since 10 nodes have not heartbeat yet.
+name|assertFalse
+argument_list|(
+name|nodeManager
+operator|.
+name|isOutOfNodeChillMode
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+operator|(
+name|nodeManager
+operator|.
+name|isInManualChillMode
+argument_list|()
+operator|)
+argument_list|)
+expr_stmt|;
+comment|// Force exit chill mode.
+name|nodeManager
+operator|.
+name|forceExitChillMode
+argument_list|()
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|nodeManager
+operator|.
+name|isOutOfNodeChillMode
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|status
+operator|=
+name|nodeManager
+operator|.
+name|getChillModeStatus
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|assertThat
+argument_list|(
+name|status
+argument_list|,
+name|CoreMatchers
+operator|.
+name|containsString
+argument_list|(
+literal|"Manual chill mode is set to false."
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+operator|(
+name|nodeManager
+operator|.
+name|isInManualChillMode
+argument_list|()
+operator|)
+argument_list|)
+expr_stmt|;
+comment|// Enter back to into chill mode.
+name|nodeManager
+operator|.
+name|forceEnterChillMode
+argument_list|()
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|nodeManager
+operator|.
+name|isOutOfNodeChillMode
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|status
+operator|=
+name|nodeManager
+operator|.
+name|getChillModeStatus
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|assertThat
+argument_list|(
+name|status
+argument_list|,
+name|CoreMatchers
+operator|.
+name|containsString
+argument_list|(
+literal|"Manual chill mode is set to true."
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+operator|(
+name|nodeManager
+operator|.
+name|isInManualChillMode
+argument_list|()
+operator|)
+argument_list|)
+expr_stmt|;
+comment|// Assert that node manager force enter cannot be overridden by nodes HBs.
+for|for
+control|(
+name|int
+name|x
+init|=
+literal|0
+init|;
+name|x
+operator|<
+literal|20
+condition|;
+name|x
+operator|++
+control|)
+block|{
+name|nodeManager
+operator|.
+name|updateHeartbeat
+argument_list|(
+name|getDatanodeID
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|500
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|nodeManager
+operator|.
+name|isOutOfNodeChillMode
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Make sure that once we clear the manual chill mode flag, we fall back
+comment|// to the number of nodes to get out chill mode.
+name|nodeManager
+operator|.
+name|clearChillModeFlag
+argument_list|()
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|nodeManager
+operator|.
+name|isOutOfNodeChillMode
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|status
+operator|=
+name|nodeManager
+operator|.
+name|getChillModeStatus
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|assertThat
+argument_list|(
+name|status
+argument_list|,
+name|CoreMatchers
+operator|.
+name|containsString
+argument_list|(
+literal|"Out of chill mode."
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|nodeManager
+operator|.
+name|isInManualChillMode
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
