@@ -1542,6 +1542,14 @@ name|numBlocksChecked
 init|=
 literal|0
 decl_stmt|;
+comment|/**      * The number of blocks checked after (re)holding lock.      */
+DECL|field|numBlocksCheckedPerLock
+specifier|private
+name|int
+name|numBlocksCheckedPerLock
+init|=
+literal|0
+decl_stmt|;
 comment|/**      * The number of nodes that have been checked on this tick. Used for       * statistics.      */
 DECL|field|numNodesChecked
 specifier|private
@@ -1652,6 +1660,10 @@ return|return;
 block|}
 comment|// Reset the checked count at beginning of each iteration
 name|numBlocksChecked
+operator|=
+literal|0
+expr_stmt|;
+name|numBlocksCheckedPerLock
 operator|=
 literal|0
 expr_stmt|;
@@ -1803,6 +1815,11 @@ argument_list|()
 operator|&&
 operator|!
 name|exceededNumBlocksPerCheck
+argument_list|()
+operator|&&
+name|namesystem
+operator|.
+name|isRunning
 argument_list|()
 condition|)
 block|{
@@ -2268,7 +2285,71 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|insufficientList
+operator|==
+literal|null
+operator|&&
+name|numBlocksCheckedPerLock
+operator|>=
+name|numBlocksPerCheck
+condition|)
+block|{
+comment|// During fullscan insufficientlyReplicated will NOT be null, iterator
+comment|// will be DN's iterator. So should not yield lock, otherwise
+comment|// ConcurrentModificationException could occur.
+comment|// Once the fullscan done, iterator will be a copy. So can yield the
+comment|// lock.
+comment|// Yielding is required in case of block number is greater than the
+comment|// configured per-iteration-limit.
+name|namesystem
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Yielded lock during decommission check"
+argument_list|)
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|0
+argument_list|,
+literal|500
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ignored
+parameter_list|)
+block|{
+return|return;
+block|}
+comment|// reset
+name|numBlocksCheckedPerLock
+operator|=
+literal|0
+expr_stmt|;
+name|namesystem
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+block|}
 name|numBlocksChecked
+operator|++
+expr_stmt|;
+name|numBlocksCheckedPerLock
 operator|++
 expr_stmt|;
 specifier|final
