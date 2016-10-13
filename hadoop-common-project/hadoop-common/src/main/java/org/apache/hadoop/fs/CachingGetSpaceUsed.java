@@ -645,9 +645,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Thread Interrupted waiting to refresh disk information"
-argument_list|,
+literal|"Thread Interrupted waiting to refresh disk information: "
+operator|+
 name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Thread
