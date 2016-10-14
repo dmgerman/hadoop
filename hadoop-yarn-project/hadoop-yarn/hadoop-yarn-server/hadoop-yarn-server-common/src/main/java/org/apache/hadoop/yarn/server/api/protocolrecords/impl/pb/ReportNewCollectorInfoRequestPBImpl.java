@@ -60,7 +60,7 @@ name|proto
 operator|.
 name|YarnServerCommonServiceProtos
 operator|.
-name|AppCollectorsMapProto
+name|AppCollectorDataProto
 import|;
 end_import
 
@@ -136,7 +136,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|AppCollectorsMap
+name|AppCollectorData
 import|;
 end_import
 
@@ -160,7 +160,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|AppCollectorsMapPBImpl
+name|AppCollectorDataPBImpl
 import|;
 end_import
 
@@ -202,7 +202,7 @@ DECL|field|collectorsList
 specifier|private
 name|List
 argument_list|<
-name|AppCollectorsMap
+name|AppCollectorData
 argument_list|>
 name|collectorsList
 init|=
@@ -443,20 +443,20 @@ argument_list|()
 expr_stmt|;
 name|List
 argument_list|<
-name|AppCollectorsMapProto
+name|AppCollectorDataProto
 argument_list|>
 name|protoList
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|AppCollectorsMapProto
+name|AppCollectorDataProto
 argument_list|>
 argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|AppCollectorsMap
+name|AppCollectorData
 name|m
 range|:
 name|this
@@ -500,7 +500,7 @@ name|builder
 decl_stmt|;
 name|List
 argument_list|<
-name|AppCollectorsMapProto
+name|AppCollectorDataProto
 argument_list|>
 name|list
 init|=
@@ -516,13 +516,13 @@ operator|=
 operator|new
 name|ArrayList
 argument_list|<
-name|AppCollectorsMap
+name|AppCollectorData
 argument_list|>
 argument_list|()
 expr_stmt|;
 for|for
 control|(
-name|AppCollectorsMapProto
+name|AppCollectorDataProto
 name|m
 range|:
 name|list
@@ -548,7 +548,7 @@ DECL|method|getAppCollectorsList ()
 specifier|public
 name|List
 argument_list|<
-name|AppCollectorsMap
+name|AppCollectorData
 argument_list|>
 name|getAppCollectorsList
 parameter_list|()
@@ -574,14 +574,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setAppCollectorsList (List<AppCollectorsMap> appCollectorsList)
+DECL|method|setAppCollectorsList (List<AppCollectorData> appCollectorsList)
 specifier|public
 name|void
 name|setAppCollectorsList
 parameter_list|(
 name|List
 argument_list|<
-name|AppCollectorsMap
+name|AppCollectorData
 argument_list|>
 name|appCollectorsList
 parameter_list|)
@@ -609,36 +609,36 @@ operator|=
 name|appCollectorsList
 expr_stmt|;
 block|}
-DECL|method|convertFromProtoFormat ( AppCollectorsMapProto p)
+DECL|method|convertFromProtoFormat ( AppCollectorDataProto p)
 specifier|private
-name|AppCollectorsMapPBImpl
+name|AppCollectorDataPBImpl
 name|convertFromProtoFormat
 parameter_list|(
-name|AppCollectorsMapProto
+name|AppCollectorDataProto
 name|p
 parameter_list|)
 block|{
 return|return
 operator|new
-name|AppCollectorsMapPBImpl
+name|AppCollectorDataPBImpl
 argument_list|(
 name|p
 argument_list|)
 return|;
 block|}
-DECL|method|convertToProtoFormat ( AppCollectorsMap m)
+DECL|method|convertToProtoFormat ( AppCollectorData m)
 specifier|private
-name|AppCollectorsMapProto
+name|AppCollectorDataProto
 name|convertToProtoFormat
 parameter_list|(
-name|AppCollectorsMap
+name|AppCollectorData
 name|m
 parameter_list|)
 block|{
 return|return
 operator|(
 operator|(
-name|AppCollectorsMapPBImpl
+name|AppCollectorDataPBImpl
 operator|)
 name|m
 operator|)

@@ -806,6 +806,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|AppCollectorData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|resourcemanager
 operator|.
 name|ApplicationMasterService
@@ -1906,11 +1926,10 @@ name|nextAttemptId
 init|=
 literal|1
 decl_stmt|;
-DECL|field|collectorAddr
+DECL|field|collectorData
 specifier|private
-specifier|volatile
-name|String
-name|collectorAddr
+name|AppCollectorData
+name|collectorData
 decl_stmt|;
 comment|// This field isn't protected by readlock now.
 DECL|field|currentAttempt
@@ -4231,47 +4250,43 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getCollectorAddr ()
+DECL|method|getCollectorData ()
 specifier|public
-name|String
-name|getCollectorAddr
+name|AppCollectorData
+name|getCollectorData
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|collectorAddr
+name|collectorData
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|setCollectorAddr (String collectorAddress)
+DECL|method|setCollectorData (AppCollectorData incomingData)
 specifier|public
 name|void
-name|setCollectorAddr
+name|setCollectorData
 parameter_list|(
-name|String
-name|collectorAddress
+name|AppCollectorData
+name|incomingData
 parameter_list|)
 block|{
 name|this
 operator|.
-name|collectorAddr
+name|collectorData
 operator|=
-name|collectorAddress
+name|incomingData
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|removeCollectorAddr ()
+DECL|method|removeCollectorData ()
 specifier|public
 name|void
-name|removeCollectorAddr
+name|removeCollectorData
 parameter_list|()
 block|{
 name|this
 operator|.
-name|collectorAddr
+name|collectorData
 operator|=
 literal|null
 expr_stmt|;

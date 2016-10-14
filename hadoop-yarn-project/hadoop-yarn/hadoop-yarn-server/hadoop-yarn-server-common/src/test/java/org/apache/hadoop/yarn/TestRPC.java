@@ -1004,7 +1004,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|AppCollectorsMap
+name|AppCollectorData
 import|;
 end_import
 
@@ -2845,7 +2845,7 @@ name|IOException
 block|{
 name|List
 argument_list|<
-name|AppCollectorsMap
+name|AppCollectorData
 argument_list|>
 name|appCollectors
 init|=
@@ -2865,7 +2865,7 @@ literal|1
 condition|)
 block|{
 comment|// check default appID and collectorAddr
-name|AppCollectorsMap
+name|AppCollectorData
 name|appCollector
 init|=
 name|appCollectors

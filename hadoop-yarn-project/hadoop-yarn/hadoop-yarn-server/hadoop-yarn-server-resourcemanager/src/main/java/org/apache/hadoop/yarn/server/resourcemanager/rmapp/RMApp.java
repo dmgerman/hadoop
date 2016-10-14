@@ -70,6 +70,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|CallerContext
@@ -358,6 +386,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|AppCollectorData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|resourcemanager
 operator|.
 name|rmapp
@@ -528,25 +576,18 @@ name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
-comment|/**    * The collector address for the application. It should be used only if the    * timeline service v.2 is enabled.    *    * @return the address for the application's collector, or null if the    * timeline service v.2 is not enabled.    */
-DECL|method|getCollectorAddr ()
-name|String
-name|getCollectorAddr
-parameter_list|()
-function_decl|;
-comment|/**    * Set collector address for the application. It should be used only if the    * timeline service v.2 is enabled.    *    * @param collectorAddr the address of collector    */
-DECL|method|setCollectorAddr (String collectorAddr)
-name|void
-name|setCollectorAddr
-parameter_list|(
-name|String
-name|collectorAddr
-parameter_list|)
-function_decl|;
-comment|/**    * Remove collector address when application is finished or killed. It should    * be used only if the timeline service v.2 is enabled.    */
-DECL|method|removeCollectorAddr ()
-name|void
-name|removeCollectorAddr
+comment|/**    * The timeline collector information for the application. It should be used    * only if the timeline service v.2 is enabled.    *    * @return the data for the application's collector, including collector    * address, collector ID. Return null if the timeline service v.2 is not    * enabled.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|getCollectorData ()
+name|AppCollectorData
+name|getCollectorData
 parameter_list|()
 function_decl|;
 comment|/**    * The original tracking url for the application master.    * @return the original tracking url for the application master.    */

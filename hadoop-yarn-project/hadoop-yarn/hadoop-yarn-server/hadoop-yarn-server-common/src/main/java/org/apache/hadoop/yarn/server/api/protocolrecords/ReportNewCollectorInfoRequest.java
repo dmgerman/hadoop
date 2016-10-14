@@ -92,7 +92,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|AppCollectorsMap
+name|AppCollectorData
 import|;
 end_import
 
@@ -121,7 +121,7 @@ specifier|abstract
 class|class
 name|ReportNewCollectorInfoRequest
 block|{
-DECL|method|newInstance ( List<AppCollectorsMap> appCollectorsList)
+DECL|method|newInstance ( List<AppCollectorData> appCollectorsList)
 specifier|public
 specifier|static
 name|ReportNewCollectorInfoRequest
@@ -129,7 +129,7 @@ name|newInstance
 parameter_list|(
 name|List
 argument_list|<
-name|AppCollectorsMap
+name|AppCollectorData
 argument_list|>
 name|appCollectorsList
 parameter_list|)
@@ -190,7 +190,7 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-name|AppCollectorsMap
+name|AppCollectorData
 operator|.
 name|newInstance
 argument_list|(
@@ -210,12 +210,12 @@ specifier|public
 specifier|abstract
 name|List
 argument_list|<
-name|AppCollectorsMap
+name|AppCollectorData
 argument_list|>
 name|getAppCollectorsList
 parameter_list|()
 function_decl|;
-DECL|method|setAppCollectorsList ( List<AppCollectorsMap> appCollectorsList)
+DECL|method|setAppCollectorsList ( List<AppCollectorData> appCollectorsList)
 specifier|public
 specifier|abstract
 name|void
@@ -223,7 +223,7 @@ name|setAppCollectorsList
 parameter_list|(
 name|List
 argument_list|<
-name|AppCollectorsMap
+name|AppCollectorData
 argument_list|>
 name|appCollectorsList
 parameter_list|)

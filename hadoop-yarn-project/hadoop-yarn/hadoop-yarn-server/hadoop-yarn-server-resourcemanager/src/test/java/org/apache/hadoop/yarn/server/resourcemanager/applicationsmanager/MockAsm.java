@@ -440,6 +440,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|AppCollectorData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|resourcemanager
 operator|.
 name|rmapp
@@ -738,45 +758,10 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getCollectorAddr ()
+DECL|method|getCollectorData ()
 specifier|public
-name|String
-name|getCollectorAddr
-parameter_list|()
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Not supported yet."
-argument_list|)
-throw|;
-block|}
-annotation|@
-name|Override
-DECL|method|setCollectorAddr (String collectorAddr)
-specifier|public
-name|void
-name|setCollectorAddr
-parameter_list|(
-name|String
-name|collectorAddr
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Not supported yet."
-argument_list|)
-throw|;
-block|}
-annotation|@
-name|Override
-DECL|method|removeCollectorAddr ()
-specifier|public
-name|void
-name|removeCollectorAddr
+name|AppCollectorData
+name|getCollectorData
 parameter_list|()
 block|{
 throw|throw
