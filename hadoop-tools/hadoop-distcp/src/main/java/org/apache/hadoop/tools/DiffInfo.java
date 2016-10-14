@@ -186,9 +186,22 @@ block|}
 decl_stmt|;
 comment|/** The source file/dir of the rename or deletion op */
 DECL|field|source
-specifier|final
+specifier|private
 name|Path
 name|source
+decl_stmt|;
+comment|/** The target file/dir of the rename op. Null means the op is deletion. */
+DECL|field|target
+specifier|private
+name|Path
+name|target
+decl_stmt|;
+DECL|field|type
+specifier|private
+name|SnapshotDiffReport
+operator|.
+name|DiffType
+name|type
 decl_stmt|;
 comment|/**    * The intermediate file/dir for the op. For a rename or a delete op,    * we first rename the source to this tmp file/dir.    */
 DECL|field|tmp
@@ -196,39 +209,14 @@ specifier|private
 name|Path
 name|tmp
 decl_stmt|;
-comment|/** The target file/dir of the rename op. Null means the op is deletion. */
-DECL|field|target
-name|Path
-name|target
-decl_stmt|;
-DECL|field|type
-specifier|private
-specifier|final
-name|SnapshotDiffReport
-operator|.
-name|DiffType
-name|type
-decl_stmt|;
-DECL|method|getType ()
-specifier|public
-name|SnapshotDiffReport
-operator|.
-name|DiffType
-name|getType
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|type
-return|;
-block|}
-DECL|method|DiffInfo (Path source, Path target, SnapshotDiffReport.DiffType type)
+DECL|method|DiffInfo (final Path source, final Path target, SnapshotDiffReport.DiffType type)
 name|DiffInfo
 parameter_list|(
+specifier|final
 name|Path
 name|source
 parameter_list|,
+specifier|final
 name|Path
 name|target
 parameter_list|,
@@ -262,6 +250,87 @@ operator|=
 name|type
 expr_stmt|;
 block|}
+DECL|method|setSource (final Path source)
+name|void
+name|setSource
+parameter_list|(
+specifier|final
+name|Path
+name|source
+parameter_list|)
+block|{
+name|this
+operator|.
+name|source
+operator|=
+name|source
+expr_stmt|;
+block|}
+DECL|method|getSource ()
+name|Path
+name|getSource
+parameter_list|()
+block|{
+return|return
+name|source
+return|;
+block|}
+DECL|method|setTarget (final Path target)
+name|void
+name|setTarget
+parameter_list|(
+specifier|final
+name|Path
+name|target
+parameter_list|)
+block|{
+name|this
+operator|.
+name|target
+operator|=
+name|target
+expr_stmt|;
+block|}
+DECL|method|getTarget ()
+name|Path
+name|getTarget
+parameter_list|()
+block|{
+return|return
+name|target
+return|;
+block|}
+DECL|method|setType (final SnapshotDiffReport.DiffType type)
+specifier|public
+name|void
+name|setType
+parameter_list|(
+specifier|final
+name|SnapshotDiffReport
+operator|.
+name|DiffType
+name|type
+parameter_list|)
+block|{
+name|this
+operator|.
+name|type
+operator|=
+name|type
+expr_stmt|;
+block|}
+DECL|method|getType ()
+specifier|public
+name|SnapshotDiffReport
+operator|.
+name|DiffType
+name|getType
+parameter_list|()
+block|{
+return|return
+name|type
+return|;
+block|}
 DECL|method|setTmp (Path tmp)
 name|void
 name|setTmp
@@ -284,6 +353,45 @@ parameter_list|()
 block|{
 return|return
 name|tmp
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|type
+operator|+
+literal|": src="
+operator|+
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|source
+argument_list|)
+operator|+
+literal|" tgt="
+operator|+
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|target
+argument_list|)
+operator|+
+literal|" tmp="
+operator|+
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|tmp
+argument_list|)
 return|;
 block|}
 block|}

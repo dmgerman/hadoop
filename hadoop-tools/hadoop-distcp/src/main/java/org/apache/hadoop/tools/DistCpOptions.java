@@ -22,6 +22,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
@@ -166,6 +180,10 @@ name|blocking
 init|=
 literal|true
 decl_stmt|;
+comment|// When "-diff s1 s2 src tgt" is passed, apply forward snapshot diff (from s1
+comment|// to s2) of source cluster to the target cluster to sync target cluster with
+comment|// the source cluster. Referred to as "Fdiff" in the code.
+comment|// It's required that s2 is newer than s1.
 DECL|field|useDiff
 specifier|private
 name|boolean
@@ -173,6 +191,27 @@ name|useDiff
 init|=
 literal|false
 decl_stmt|;
+comment|// When "-rdiff s2 s1 src tgt" is passed, apply reversed snapshot diff (from
+comment|// s2 to s1) of target cluster to the target cluster, so to make target
+comment|// cluster go back to s1. Referred to as "Rdiff" in the code.
+comment|// It's required that s2 is newer than s1, and src and tgt have exact same
+comment|// content at their s1, if src is not the same as tgt.
+DECL|field|useRdiff
+specifier|private
+name|boolean
+name|useRdiff
+init|=
+literal|false
+decl_stmt|;
+comment|// For both -diff and -rdiff, given the example command line switches, two
+comment|// steps are taken:
+comment|//   1. Sync Step. This step does renaming/deletion ops in the snapshot diff,
+comment|//      so to avoid copying files copied already but renamed later(HDFS-7535)
+comment|//   2. Copy Step. This step copy the necessary files from src to tgt
+comment|//      2.1 For -diff, it copies from snapshot s2 of src (HDFS-8828)
+comment|//      2.2 For -rdiff, it copies from snapshot s1 of src, where the src
+comment|//          could be the tgt itself (HDFS-9820).
+comment|//
 DECL|field|maxNumListstatusThreads
 specifier|public
 specifier|static
@@ -544,6 +583,22 @@ name|blocking
 expr_stmt|;
 name|this
 operator|.
+name|useDiff
+operator|=
+name|that
+operator|.
+name|useDiff
+expr_stmt|;
+name|this
+operator|.
+name|useRdiff
+operator|=
+name|that
+operator|.
+name|useRdiff
+expr_stmt|;
+name|this
+operator|.
 name|numListstatusThreads
 operator|=
 name|that
@@ -863,6 +918,32 @@ operator|.
 name|useDiff
 return|;
 block|}
+DECL|method|shouldUseRdiff ()
+specifier|public
+name|boolean
+name|shouldUseRdiff
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|useRdiff
+return|;
+block|}
+DECL|method|shouldUseSnapshotDiff ()
+specifier|public
+name|boolean
+name|shouldUseSnapshotDiff
+parameter_list|()
+block|{
+return|return
+name|shouldUseDiff
+argument_list|()
+operator|||
+name|shouldUseRdiff
+argument_list|()
+return|;
+block|}
 DECL|method|getFromSnapshot ()
 specifier|public
 name|String
@@ -887,51 +968,66 @@ operator|.
 name|toSnapshot
 return|;
 block|}
-DECL|method|setUseDiff (boolean useDiff, String fromSnapshot, String toSnapshot)
+DECL|method|setUseDiff (String fromSS, String toSS)
 specifier|public
 name|void
 name|setUseDiff
 parameter_list|(
-name|boolean
-name|useDiff
+name|String
+name|fromSS
 parameter_list|,
 name|String
-name|fromSnapshot
-parameter_list|,
-name|String
-name|toSnapshot
+name|toSS
 parameter_list|)
 block|{
 name|this
 operator|.
 name|useDiff
 operator|=
-name|useDiff
+literal|true
 expr_stmt|;
 name|this
 operator|.
 name|fromSnapshot
 operator|=
-name|fromSnapshot
+name|fromSS
 expr_stmt|;
 name|this
 operator|.
 name|toSnapshot
 operator|=
-name|toSnapshot
+name|toSS
 expr_stmt|;
 block|}
-DECL|method|disableUsingDiff ()
+DECL|method|setUseRdiff (String fromSS, String toSS)
 specifier|public
 name|void
-name|disableUsingDiff
-parameter_list|()
+name|setUseRdiff
+parameter_list|(
+name|String
+name|fromSS
+parameter_list|,
+name|String
+name|toSS
+parameter_list|)
 block|{
 name|this
 operator|.
-name|useDiff
+name|useRdiff
 operator|=
-literal|false
+literal|true
+expr_stmt|;
+name|this
+operator|.
+name|fromSnapshot
+operator|=
+name|fromSS
+expr_stmt|;
+name|this
+operator|.
+name|toSnapshot
+operator|=
+name|toSS
 expr_stmt|;
 block|}
 comment|/**    * Should CRC/checksum check be skipped while checking files are identical    *    * @return true if checksum check should be skipped while checking files are    *         identical. false otherwise    */
@@ -1412,21 +1508,25 @@ parameter_list|()
 block|{
 if|if
 condition|(
+operator|(
 name|useDiff
+operator|||
+name|useRdiff
+operator|)
 operator|&&
 name|deleteMissing
 condition|)
 block|{
-comment|// -delete and -diff are mutually exclusive. For backward compatibility,
-comment|// we ignore the -delete option here, instead of throwing an
-comment|// IllegalArgumentException. See HDFS-10397 for more discussion.
+comment|// -delete and -diff/-rdiff are mutually exclusive. For backward
+comment|// compatibility, we ignore the -delete option here, instead of throwing
+comment|// an IllegalArgumentException. See HDFS-10397 for more discussion.
 name|OptionsParser
 operator|.
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"-delete and -diff are mutually exclusive. "
+literal|"-delete and -diff/-rdiff are mutually exclusive. "
 operator|+
 literal|"The -delete option will be ignored."
 argument_list|)
@@ -1545,19 +1645,73 @@ condition|(
 operator|!
 name|syncFolder
 operator|&&
+operator|(
 name|useDiff
+operator|||
+name|useRdiff
+operator|)
 condition|)
 block|{
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Diff is valid only with update options"
+literal|"-diff/-rdiff is valid only with -update option"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|useDiff
+operator|||
+name|useRdiff
+condition|)
+block|{
+if|if
+condition|(
+name|StringUtils
+operator|.
+name|isBlank
+argument_list|(
+name|fromSnapshot
+argument_list|)
+operator|||
+name|StringUtils
+operator|.
+name|isBlank
+argument_list|(
+name|toSnapshot
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Must provide both the starting and ending "
+operator|+
+literal|"snapshot names for -diff/-rdiff"
 argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Add options to configuration. These will be used in the Mapper/committer    *    * @param conf - Configruation object to which the options need to be added    */
+if|if
+condition|(
+name|useDiff
+operator|&&
+name|useRdiff
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"-diff and -rdiff are mutually exclusive"
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Add options to configuration. These will be used in the Mapper/committer    *    * @param conf - Configuration object to which the options need to be added    */
 DECL|method|appendToConf (Configuration conf)
 specifier|public
 name|void
@@ -1701,6 +1855,24 @@ name|conf
 argument_list|,
 name|DistCpOptionSwitch
 operator|.
+name|RDIFF
+argument_list|,
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|useRdiff
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|DistCpOptionSwitch
+operator|.
+name|addToConf
+argument_list|(
+name|conf
+argument_list|,
+name|DistCpOptionSwitch
+operator|.
 name|SKIP_CRC
 argument_list|,
 name|String
@@ -1816,6 +1988,10 @@ operator|+
 literal|", useDiff="
 operator|+
 name|useDiff
+operator|+
+literal|", useRdiff="
+operator|+
+name|useRdiff
 operator|+
 literal|", fromSnapshot="
 operator|+

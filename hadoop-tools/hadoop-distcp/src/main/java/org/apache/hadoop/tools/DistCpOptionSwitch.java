@@ -373,6 +373,26 @@ argument_list|,
 literal|2
 argument_list|)
 block|,
+DECL|enumConstant|RDIFF
+name|RDIFF
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_RDIFF
+argument_list|,
+operator|new
+name|Option
+argument_list|(
+literal|"rdiff"
+argument_list|,
+literal|false
+argument_list|,
+literal|"Use target snapshot diff report to identify changes made on target"
+argument_list|)
+argument_list|,
+literal|2
+argument_list|)
+block|,
 comment|/**    * Should DisctpExecution be blocking    */
 DECL|enumConstant|BLOCKING
 name|BLOCKING
