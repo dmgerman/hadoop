@@ -998,6 +998,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|StandbyException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|NetUtils
@@ -2936,6 +2950,49 @@ argument_list|(
 name|m
 argument_list|)
 decl_stmt|;
+comment|//check if exception is due to communication with a Standby name node
+if|if
+condition|(
+name|re
+operator|.
+name|getMessage
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|re
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|endsWith
+argument_list|(
+name|StandbyException
+operator|.
+name|class
+operator|.
+name|getSimpleName
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Detected StandbyException"
+argument_list|,
+name|re
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|re
+argument_list|)
+throw|;
+block|}
 comment|// extract UGI-related exceptions and unwrap InvalidToken
 comment|// the NN mangles these exceptions but the DN does not and may need
 comment|// to re-fetch a token if either report the token is expired
