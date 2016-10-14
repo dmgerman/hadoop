@@ -566,7 +566,7 @@ name|statistics
 operator|.
 name|incrementBytesRead
 argument_list|(
-literal|1
+name|byteRead
 argument_list|)
 expr_stmt|;
 block|}
