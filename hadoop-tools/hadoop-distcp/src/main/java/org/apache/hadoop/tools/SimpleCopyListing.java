@@ -1105,7 +1105,7 @@ if|if
 condition|(
 name|options
 operator|.
-name|shouldUseDiff
+name|shouldUseSnapshotDiff
 argument_list|()
 condition|)
 block|{
@@ -1393,7 +1393,7 @@ name|diffList
 init|=
 name|distCpSync
 operator|.
-name|prepareDiffList
+name|prepareDiffListForCopyListing
 argument_list|()
 decl_stmt|;
 name|Path
@@ -1444,8 +1444,8 @@ block|{
 comment|// add snapshot paths prefix
 name|diff
 operator|.
-name|target
-operator|=
+name|setTarget
+argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -1461,7 +1461,9 @@ argument_list|)
 argument_list|,
 name|diff
 operator|.
-name|target
+name|getTarget
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -1486,7 +1488,8 @@ name|sourceRoot
 argument_list|,
 name|diff
 operator|.
-name|target
+name|getTarget
+argument_list|()
 argument_list|,
 name|options
 argument_list|)
@@ -1515,7 +1518,8 @@ name|sourceRoot
 argument_list|,
 name|diff
 operator|.
-name|target
+name|getTarget
+argument_list|()
 argument_list|,
 name|options
 argument_list|)
@@ -1529,7 +1533,8 @@ name|getFileStatus
 argument_list|(
 name|diff
 operator|.
-name|target
+name|getTarget
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -1573,7 +1578,8 @@ name|getTraverseExcludeList
 argument_list|(
 name|diff
 operator|.
-name|source
+name|getSource
+argument_list|()
 argument_list|,
 name|options
 operator|.
