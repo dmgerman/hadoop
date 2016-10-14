@@ -26,6 +26,26 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -118,28 +138,8 @@ name|SubClusterId
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
 begin_comment
-comment|/**  * Implementors of this interface provide logic to split the list of {@link  * ResourceRequest}s received by the AM among various RMs.  */
+comment|/**  * Implementors of this interface provide logic to split the list of  * {@link ResourceRequest}s received by the AM among various RMs.  */
 end_comment
 
 begin_interface
@@ -150,7 +150,7 @@ name|FederationAMRMProxyPolicy
 extends|extends
 name|ConfigurableFederationPolicy
 block|{
-comment|/**    * Splits the {@link ResourceRequest}s from the client across one or more    * sub-clusters based on the policy semantics (e.g., broadcast, load-based).    *    * @param resourceRequests the list of {@link ResourceRequest}s from the    *                         AM to be split    *    * @return map of sub-cluster as identified by {@link SubClusterId} to the    * list of {@link ResourceRequest}s that should be forwarded to it    *    * @throws YarnException in case the request is malformed or no viable    *                       sub-clusters can be found.    */
+comment|/**    * Splits the {@link ResourceRequest}s from the client across one or more    * sub-clusters based on the policy semantics (e.g., broadcast, load-based).    *    * @param resourceRequests the list of {@link ResourceRequest}s from the AM to    *          be split    *    * @return map of sub-cluster as identified by {@link SubClusterId} to the    *         list of {@link ResourceRequest}s that should be forwarded to it    *    * @throws YarnException in case the request is malformed or no viable    *           sub-clusters can be found.    */
 DECL|method|splitResourceRequests ( List<ResourceRequest> resourceRequests)
 name|Map
 argument_list|<

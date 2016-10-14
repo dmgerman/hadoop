@@ -240,7 +240,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getNodeToSubCluster ()
-specifier|protected
+specifier|public
 name|Map
 argument_list|<
 name|String
@@ -255,7 +255,7 @@ name|nodeToSubCluster
 return|;
 block|}
 DECL|method|getRackToSubClusters ()
-specifier|protected
+specifier|public
 name|Map
 argument_list|<
 name|String

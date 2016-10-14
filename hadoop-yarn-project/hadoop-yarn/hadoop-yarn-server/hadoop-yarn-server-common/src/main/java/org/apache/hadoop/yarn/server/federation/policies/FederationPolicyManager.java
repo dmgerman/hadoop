@@ -111,7 +111,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *  * Implementors need to provide the ability to serliaze a policy and its  * configuration as a {@link SubClusterPolicyConfiguration}, as well as  * provide (re)initialization mechanics for the underlying  * {@link FederationAMRMProxyPolicy} and {@link FederationRouterPolicy}.  *  * The serialization aspects are used by admin APIs or a policy engine to  * store a serialized configuration in the {@code FederationStateStore},  * while the getters methods are used to obtain a propertly inizialized  * policy in the {@code Router} and {@code AMRMProxy} respectively.  *  * This interface by design binds together  * {@link FederationAMRMProxyPolicy} and {@link FederationRouterPolicy} and  * provide lifecycle support for serialization and deserialization, to reduce  * configuration mistakes (combining incompatible policies).  *  */
+comment|/**  *  * Implementors need to provide the ability to serliaze a policy and its  * configuration as a {@link SubClusterPolicyConfiguration}, as well as provide  * (re)initialization mechanics for the underlying  * {@link FederationAMRMProxyPolicy} and {@link FederationRouterPolicy}.  *  * The serialization aspects are used by admin APIs or a policy engine to store  * a serialized configuration in the {@code FederationStateStore}, while the  * getters methods are used to obtain a propertly inizialized policy in the  * {@code Router} and {@code AMRMProxy} respectively.  *  * This interface by design binds together {@link FederationAMRMProxyPolicy} and  * {@link FederationRouterPolicy} and provide lifecycle support for  * serialization and deserialization, to reduce configuration mistakes  * (combining incompatible policies).  *  */
 end_comment
 
 begin_interface
@@ -120,13 +120,13 @@ specifier|public
 interface|interface
 name|FederationPolicyManager
 block|{
-comment|/**    * If the current instance is compatible, this method returns the same    * instance of {@link FederationAMRMProxyPolicy} reinitialized with the    * current context, otherwise a new instance initialized with the current    * context is provided. If the instance is compatible with the current class    * the implementors should attempt to reinitalize (retaining state). To affect    * a complete policy reset oldInstance should be null.    *    * @param federationPolicyInitializationContext the current context    * @param oldInstance                           the existing (possibly null)    *                                              instance.    *    * @return an updated {@link FederationAMRMProxyPolicy   }.    *    * @throws FederationPolicyInitializationException if the initialization    *                                                 cannot be completed    *                                                 properly. The oldInstance    *                                                 should be still valid in    *                                                 case of failed    *                                                 initialization.    */
-DECL|method|getAMRMPolicy ( FederationPolicyInitializationContext federationPolicyInitializationContext, FederationAMRMProxyPolicy oldInstance)
+comment|/**    * If the current instance is compatible, this method returns the same    * instance of {@link FederationAMRMProxyPolicy} reinitialized with the    * current context, otherwise a new instance initialized with the current    * context is provided. If the instance is compatible with the current class    * the implementors should attempt to reinitalize (retaining state). To affect    * a complete policy reset oldInstance should be null.    *    * @param policyContext the current context    * @param oldInstance the existing (possibly null) instance.    *    * @return an updated {@link FederationAMRMProxyPolicy }.    *    * @throws FederationPolicyInitializationException if the initialization    *           cannot be completed properly. The oldInstance should be still    *           valid in case of failed initialization.    */
+DECL|method|getAMRMPolicy ( FederationPolicyInitializationContext policyContext, FederationAMRMProxyPolicy oldInstance)
 name|FederationAMRMProxyPolicy
 name|getAMRMPolicy
 parameter_list|(
 name|FederationPolicyInitializationContext
-name|federationPolicyInitializationContext
+name|policyContext
 parameter_list|,
 name|FederationAMRMProxyPolicy
 name|oldInstance
@@ -134,13 +134,13 @@ parameter_list|)
 throws|throws
 name|FederationPolicyInitializationException
 function_decl|;
-comment|/**    * If the current instance is compatible, this method returns the same    * instance of {@link FederationRouterPolicy} reinitialized with the current    * context, otherwise a new instance initialized with the current context is    * provided. If the instance is compatible with the current class the    * implementors should attempt to reinitalize (retaining state). To affect a    * complete policy reset oldInstance shoulb be set to null.    *    * @param federationPolicyInitializationContext the current context    * @param oldInstance                           the existing (possibly null)    *                                              instance.    *    * @return an updated {@link FederationRouterPolicy}.    *    * @throws FederationPolicyInitializationException if the initalization cannot    *                                                 be completed properly. The    *                                                 oldInstance should be still    *                                                 valid in case of failed    *                                                 initialization.    */
-DECL|method|getRouterPolicy ( FederationPolicyInitializationContext federationPolicyInitializationContext, FederationRouterPolicy oldInstance)
+comment|/**    * If the current instance is compatible, this method returns the same    * instance of {@link FederationRouterPolicy} reinitialized with the current    * context, otherwise a new instance initialized with the current context is    * provided. If the instance is compatible with the current class the    * implementors should attempt to reinitalize (retaining state). To affect a    * complete policy reset oldInstance shoulb be set to null.    *    * @param policyContext the current context    * @param oldInstance the existing (possibly null) instance.    *    * @return an updated {@link FederationRouterPolicy}.    *    * @throws FederationPolicyInitializationException if the initalization cannot    *           be completed properly. The oldInstance should be still valid in    *           case of failed initialization.    */
+DECL|method|getRouterPolicy ( FederationPolicyInitializationContext policyContext, FederationRouterPolicy oldInstance)
 name|FederationRouterPolicy
 name|getRouterPolicy
 parameter_list|(
 name|FederationPolicyInitializationContext
-name|federationPolicyInitializationContext
+name|policyContext
 parameter_list|,
 name|FederationRouterPolicy
 name|oldInstance
@@ -148,7 +148,7 @@ parameter_list|)
 throws|throws
 name|FederationPolicyInitializationException
 function_decl|;
-comment|/**    * This method is invoked to derive a {@link SubClusterPolicyConfiguration}.    * This is to be used when writing a policy object in the federation policy    * store.    *    * @return a valid policy configuration representing this object    * parametrization.    *    * @throws FederationPolicyInitializationException if the current state cannot    *                                                 be serialized properly    */
+comment|/**    * This method is invoked to derive a {@link SubClusterPolicyConfiguration}.    * This is to be used when writing a policy object in the federation policy    * store.    *    * @return a valid policy configuration representing this object    *         parametrization.    *    * @throws FederationPolicyInitializationException if the current state cannot    *           be serialized properly    */
 DECL|method|serializeConf ()
 name|SubClusterPolicyConfiguration
 name|serializeConf
@@ -156,13 +156,13 @@ parameter_list|()
 throws|throws
 name|FederationPolicyInitializationException
 function_decl|;
-comment|/**    * This method returns the queue this policy is configured for.    * @return the name of the queue.    */
+comment|/**    * This method returns the queue this policy is configured for.    *    * @return the name of the queue.    */
 DECL|method|getQueue ()
 name|String
 name|getQueue
 parameter_list|()
 function_decl|;
-comment|/**    * This methods provides a setter for the queue this policy is specified for.    * @param queue the name of the queue.    */
+comment|/**    * This methods provides a setter for the queue this policy is specified for.    *    * @param queue the name of the queue.    */
 DECL|method|setQueue (String queue)
 name|void
 name|setQueue

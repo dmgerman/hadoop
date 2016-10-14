@@ -54,13 +54,13 @@ specifier|public
 interface|interface
 name|ConfigurableFederationPolicy
 block|{
-comment|/**    * This method is invoked to initialize of update the configuration of    * policies. The implementor should provide try-n-swap semantics, and retain    * state if possible.    *    * @param federationPolicyInitializationContext the new context to provide to    *                                              implementor.    *    * @throws FederationPolicyInitializationException in case the initialization    *                                                 fails.    */
-DECL|method|reinitialize ( FederationPolicyInitializationContext federationPolicyInitializationContext)
+comment|/**    * This method is invoked to initialize of update the configuration of    * policies. The implementor should provide try-n-swap semantics, and retain    * state if possible.    *    * @param policyContext the new context to provide to implementor.    *    * @throws FederationPolicyInitializationException in case the initialization    *           fails.    */
+DECL|method|reinitialize (FederationPolicyInitializationContext policyContext)
 name|void
 name|reinitialize
 parameter_list|(
 name|FederationPolicyInitializationContext
-name|federationPolicyInitializationContext
+name|policyContext
 parameter_list|)
 throws|throws
 name|FederationPolicyInitializationException

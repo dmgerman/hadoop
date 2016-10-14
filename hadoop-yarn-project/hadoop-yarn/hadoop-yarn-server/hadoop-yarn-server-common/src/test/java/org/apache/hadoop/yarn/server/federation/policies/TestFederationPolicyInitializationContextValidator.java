@@ -24,6 +24,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -187,16 +197,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|ByteBuffer
 import|;
 end_import
 
@@ -513,13 +513,13 @@ name|FederationPolicyManager
 block|{
 annotation|@
 name|Override
-DECL|method|getAMRMPolicy ( FederationPolicyInitializationContext federationPolicyInitializationContext, FederationAMRMProxyPolicy oldInstance)
+DECL|method|getAMRMPolicy ( FederationPolicyInitializationContext policyContext, FederationAMRMProxyPolicy oldInstance)
 specifier|public
 name|FederationAMRMProxyPolicy
 name|getAMRMPolicy
 parameter_list|(
 name|FederationPolicyInitializationContext
-name|federationPolicyInitializationContext
+name|policyContext
 parameter_list|,
 name|FederationAMRMProxyPolicy
 name|oldInstance
@@ -533,13 +533,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getRouterPolicy ( FederationPolicyInitializationContext federationPolicyInitializationContext, FederationRouterPolicy oldInstance)
+DECL|method|getRouterPolicy ( FederationPolicyInitializationContext policyContext, FederationRouterPolicy oldInstance)
 specifier|public
 name|FederationRouterPolicy
 name|getRouterPolicy
 parameter_list|(
 name|FederationPolicyInitializationContext
-name|federationPolicyInitializationContext
+name|policyContext
 parameter_list|,
 name|FederationRouterPolicy
 name|oldInstance

@@ -60,16 +60,16 @@ specifier|private
 name|FederationPolicyInitializationContextValidator
 parameter_list|()
 block|{
-comment|//disable constructor per checkstyle
+comment|// disable constructor per checkstyle
 block|}
-DECL|method|validate ( FederationPolicyInitializationContext federationPolicyInitializationContext, String myType)
+DECL|method|validate ( FederationPolicyInitializationContext policyContext, String myType)
 specifier|public
 specifier|static
 name|void
 name|validate
 parameter_list|(
 name|FederationPolicyInitializationContext
-name|federationPolicyInitializationContext
+name|policyContext
 parameter_list|,
 name|String
 name|myType
@@ -96,7 +96,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|federationPolicyInitializationContext
+name|policyContext
 operator|==
 literal|null
 condition|)
@@ -115,7 +115,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|federationPolicyInitializationContext
+name|policyContext
 operator|.
 name|getFederationStateStoreFacade
 argument_list|()
@@ -135,7 +135,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|federationPolicyInitializationContext
+name|policyContext
 operator|.
 name|getFederationSubclusterResolver
 argument_list|()
@@ -155,7 +155,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|federationPolicyInitializationContext
+name|policyContext
 operator|.
 name|getSubClusterPolicyConfiguration
 argument_list|()
@@ -176,7 +176,7 @@ block|}
 name|String
 name|intendedType
 init|=
-name|federationPolicyInitializationContext
+name|policyContext
 operator|.
 name|getSubClusterPolicyConfiguration
 argument_list|()

@@ -1,10 +1,10 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.federation.policies.router
+DECL|package|org.apache.hadoop.yarn.server.federation.policies
 package|package
 name|org
 operator|.
@@ -19,10 +19,18 @@ operator|.
 name|federation
 operator|.
 name|policies
-operator|.
-name|router
 package|;
 end_package
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
 
 begin_import
 import|import
@@ -37,46 +45,6 @@ operator|.
 name|exceptions
 operator|.
 name|YarnException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|federation
-operator|.
-name|policies
-operator|.
-name|FederationPolicyInitializationContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|federation
-operator|.
-name|policies
-operator|.
-name|FederationPolicyInitializationContextValidator
 import|;
 end_import
 
@@ -186,54 +154,22 @@ name|store
 operator|.
 name|records
 operator|.
-name|SubClusterIdInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|federation
-operator|.
-name|store
-operator|.
-name|records
-operator|.
 name|SubClusterInfo
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
 begin_comment
-comment|/**  * Abstract class provides common validation of reinitialize(), for all  * policies that are "weight-based".  */
+comment|/**  * Base abstract class for a weighted {@link ConfigurableFederationPolicy}.  */
 end_comment
 
 begin_class
-DECL|class|BaseWeightedRouterPolicy
+DECL|class|AbstractConfigurableFederationPolicy
 specifier|public
 specifier|abstract
 class|class
-name|BaseWeightedRouterPolicy
+name|AbstractConfigurableFederationPolicy
 implements|implements
-name|FederationRouterPolicy
+name|ConfigurableFederationPolicy
 block|{
 DECL|field|policyInfo
 specifier|private
@@ -247,29 +183,38 @@ specifier|private
 name|FederationPolicyInitializationContext
 name|policyContext
 decl_stmt|;
-DECL|method|BaseWeightedRouterPolicy ()
+DECL|field|isDirty
+specifier|private
+name|boolean
+name|isDirty
+decl_stmt|;
+DECL|method|AbstractConfigurableFederationPolicy ()
 specifier|public
-name|BaseWeightedRouterPolicy
+name|AbstractConfigurableFederationPolicy
 parameter_list|()
 block|{   }
 annotation|@
 name|Override
-DECL|method|reinitialize (FederationPolicyInitializationContext federationPolicyContext)
+DECL|method|reinitialize ( FederationPolicyInitializationContext initializationContext)
 specifier|public
 name|void
 name|reinitialize
 parameter_list|(
 name|FederationPolicyInitializationContext
-name|federationPolicyContext
+name|initializationContext
 parameter_list|)
 throws|throws
 name|FederationPolicyInitializationException
 block|{
+name|isDirty
+operator|=
+literal|true
+expr_stmt|;
 name|FederationPolicyInitializationContextValidator
 operator|.
 name|validate
 argument_list|(
-name|federationPolicyContext
+name|initializationContext
 argument_list|,
 name|this
 operator|.
@@ -288,7 +233,7 @@ name|WeightedPolicyInfo
 operator|.
 name|fromByteBuffer
 argument_list|(
-name|federationPolicyContext
+name|initializationContext
 operator|.
 name|getSubClusterPolicyConfiguration
 argument_list|()
@@ -298,6 +243,7 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// if nothing has changed skip the rest of initialization
+comment|// and signal to childs that the reinit is free via isDirty var.
 if|if
 condition|(
 name|policyInfo
@@ -312,6 +258,10 @@ name|newPolicyInfo
 argument_list|)
 condition|)
 block|{
+name|isDirty
+operator|=
+literal|false
+expr_stmt|;
 return|return;
 block|}
 name|validate
@@ -328,10 +278,10 @@ name|this
 operator|.
 name|policyContext
 operator|=
-name|federationPolicyContext
+name|initializationContext
 expr_stmt|;
 block|}
-comment|/**    * Overridable validation step for the policy configuration.    * @param newPolicyInfo the configuration to test.    * @throws FederationPolicyInitializationException if the configuration is    * not valid.    */
+comment|/**    * Overridable validation step for the policy configuration.    *    * @param newPolicyInfo the configuration to test.    *    * @throws FederationPolicyInitializationException if the configuration is not    *           valid.    */
 DECL|method|validate (WeightedPolicyInfo newPolicyInfo)
 specifier|public
 name|void
@@ -360,43 +310,19 @@ literal|"validate should not be null."
 argument_list|)
 throw|;
 block|}
-name|Map
-argument_list|<
-name|SubClusterIdInfo
-argument_list|,
-name|Float
-argument_list|>
-name|newWeights
-init|=
-name|newPolicyInfo
-operator|.
-name|getRouterPolicyWeights
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|newWeights
-operator|==
-literal|null
-operator|||
-name|newWeights
-operator|.
-name|size
-argument_list|()
-operator|<
-literal|1
-condition|)
+block|}
+comment|/**    * Returns true whether the last reinitialization requires actual changes, or    * was "free" as the weights have not changed. This is used by subclasses    * overriding reinitialize and calling super.reinitialize() to know wheter to    * quit early.    *    * @return whether more work is needed to initialize.    */
+DECL|method|getIsDirty ()
+specifier|public
+name|boolean
+name|getIsDirty
+parameter_list|()
 block|{
-throw|throw
-operator|new
-name|FederationPolicyInitializationException
-argument_list|(
-literal|"Weight vector cannot be null/empty."
-argument_list|)
-throw|;
+return|return
+name|isDirty
+return|;
 block|}
-block|}
-comment|/**    * Getter method for the configuration weights.    *    * @return the {@link WeightedPolicyInfo} representing the policy    * configuration.    */
+comment|/**    * Getter method for the configuration weights.    *    * @return the {@link WeightedPolicyInfo} representing the policy    *         configuration.    */
 DECL|method|getPolicyInfo ()
 specifier|public
 name|WeightedPolicyInfo
@@ -407,8 +333,8 @@ return|return
 name|policyInfo
 return|;
 block|}
-comment|/**    * Setter method for the configuration weights.    *    * @param policyInfo the {@link WeightedPolicyInfo} representing the policy    *                   configuration.    */
-DECL|method|setPolicyInfo ( WeightedPolicyInfo policyInfo)
+comment|/**    * Setter method for the configuration weights.    *    * @param policyInfo the {@link WeightedPolicyInfo} representing the policy    *          configuration.    */
+DECL|method|setPolicyInfo (WeightedPolicyInfo policyInfo)
 specifier|public
 name|void
 name|setPolicyInfo
@@ -424,7 +350,7 @@ operator|=
 name|policyInfo
 expr_stmt|;
 block|}
-comment|/**    * Getter method for the {@link FederationPolicyInitializationContext}.    * @return the context for this policy.    */
+comment|/**    * Getter method for the {@link FederationPolicyInitializationContext}.    *    * @return the context for this policy.    */
 DECL|method|getPolicyContext ()
 specifier|public
 name|FederationPolicyInitializationContext
@@ -435,7 +361,7 @@ return|return
 name|policyContext
 return|;
 block|}
-comment|/**    * Setter method for the {@link FederationPolicyInitializationContext}.    * @param policyContext the context to assign to this policy.    */
+comment|/**    * Setter method for the {@link FederationPolicyInitializationContext}.    *    * @param policyContext the context to assign to this policy.    */
 DECL|method|setPolicyContext ( FederationPolicyInitializationContext policyContext)
 specifier|public
 name|void
@@ -452,7 +378,7 @@ operator|=
 name|policyContext
 expr_stmt|;
 block|}
-comment|/**    * This methods gets active subclusters map from the {@code    * FederationStateStoreFacade} and validate it not being null/empty.    *    * @return the map of ids to info for all active subclusters.    * @throws YarnException if we can't get the list.    */
+comment|/**    * This methods gets active subclusters map from the {@code    * FederationStateStoreFacade} and validate it not being null/empty.    *    * @return the map of ids to info for all active subclusters.    *    * @throws YarnException if we can't get the list.    */
 DECL|method|getActiveSubclusters ()
 specifier|protected
 name|Map

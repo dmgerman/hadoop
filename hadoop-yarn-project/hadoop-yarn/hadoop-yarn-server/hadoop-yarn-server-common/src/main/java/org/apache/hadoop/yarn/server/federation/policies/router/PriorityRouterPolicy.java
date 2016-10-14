@@ -26,29 +26,11 @@ end_package
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|Map
 import|;
 end_import
 
@@ -152,16 +134,6 @@ name|SubClusterInfo
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
 begin_comment
 comment|/**  * This implements a policy that interprets "weights" as a ordered list of  * preferences among sub-clusters. Highest weight among active subclusters is  * chosen.  */
 end_comment
@@ -172,24 +144,8 @@ specifier|public
 class|class
 name|PriorityRouterPolicy
 extends|extends
-name|BaseWeightedRouterPolicy
+name|AbstractRouterPolicy
 block|{
-DECL|field|LOG
-specifier|private
-specifier|static
-specifier|final
-name|Log
-name|LOG
-init|=
-name|LogFactory
-operator|.
-name|getLog
-argument_list|(
-name|PriorityRouterPolicy
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 annotation|@
 name|Override
 DECL|method|getHomeSubcluster ( ApplicationSubmissionContext appSubmissionContext)

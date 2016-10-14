@@ -112,7 +112,7 @@ name|FederationRouterPolicy
 extends|extends
 name|ConfigurableFederationPolicy
 block|{
-comment|/**    * Determines the sub-cluster that the user application submision should be    * routed to.    *    * @param appSubmissionContext the context for the app being submitted.    *    * @return the sub-cluster as identified by {@link SubClusterId} to route the    * request to.    *    * @throws YarnException if the policy cannot determine a viable subcluster.    */
+comment|/**    * Determines the sub-cluster that the user application submision should be    * routed to.    *    * @param appSubmissionContext the context for the app being submitted.    *    * @return the sub-cluster as identified by {@link SubClusterId} to route the    *         request to.    *    * @throws YarnException if the policy cannot determine a viable subcluster.    */
 DECL|method|getHomeSubcluster ( ApplicationSubmissionContext appSubmissionContext)
 name|SubClusterId
 name|getHomeSubcluster

@@ -1,10 +1,10 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *  * http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
+comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.federation.policies.router
+DECL|package|org.apache.hadoop.yarn.server.federation.policies.amrmproxy
 package|package
 name|org
 operator|.
@@ -20,7 +20,7 @@ name|federation
 operator|.
 name|policies
 operator|.
-name|router
+name|amrmproxy
 package|;
 end_package
 
@@ -30,7 +30,17 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashSet
 import|;
 end_import
 
@@ -60,7 +70,25 @@ name|java
 operator|.
 name|util
 operator|.
-name|Random
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|AllocateResponse
 import|;
 end_import
 
@@ -78,7 +106,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationSubmissionContext
+name|ResourceRequest
 import|;
 end_import
 
@@ -157,6 +185,28 @@ operator|.
 name|exceptions
 operator|.
 name|FederationPolicyInitializationException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|policies
+operator|.
+name|exceptions
+operator|.
+name|UnknownSubclusterException
 import|;
 end_import
 
@@ -205,39 +255,30 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This simple policy picks at uniform random among any of the currently active  * subclusters. This policy is easy to use and good for testing.  *  * NOTE: this is "almost" subsumed by the {@code WeightedRandomRouterPolicy}.  * Behavior only diverges when there are active sub-clusters that are not part  * of the "weights", in which case the {@link UniformRandomRouterPolicy} send  * load to them, while {@code WeightedRandomRouterPolicy} does not.  */
+comment|/**  * An implementation of the {@link FederationAMRMProxyPolicy} that simply  * broadcasts each {@link ResourceRequest} to all the available sub-clusters.  */
 end_comment
 
 begin_class
-DECL|class|UniformRandomRouterPolicy
+DECL|class|BroadcastAMRMProxyPolicy
 specifier|public
 class|class
-name|UniformRandomRouterPolicy
+name|BroadcastAMRMProxyPolicy
 extends|extends
-name|AbstractRouterPolicy
+name|AbstractAMRMProxyPolicy
 block|{
-DECL|field|rand
+DECL|field|knownClusterIds
 specifier|private
-name|Random
-name|rand
-decl_stmt|;
-DECL|method|UniformRandomRouterPolicy ()
-specifier|public
-name|UniformRandomRouterPolicy
-parameter_list|()
-block|{
-name|rand
-operator|=
+name|Set
+argument_list|<
+name|SubClusterId
+argument_list|>
+name|knownClusterIds
+init|=
 operator|new
-name|Random
-argument_list|(
-name|System
-operator|.
-name|currentTimeMillis
+name|HashSet
+argument_list|<>
 argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|reinitialize ( FederationPolicyInitializationContext policyContext)
@@ -251,6 +292,8 @@ parameter_list|)
 throws|throws
 name|FederationPolicyInitializationException
 block|{
+comment|// overrides initialize to avoid weight checks that do no apply for
+comment|// this policy.
 name|FederationPolicyInitializationContextValidator
 operator|.
 name|validate
@@ -266,21 +309,32 @@ name|getCanonicalName
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// note: this overrides AbstractRouterPolicy and ignores the weights
 name|setPolicyContext
 argument_list|(
 name|policyContext
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Simply picks a random active subcluster to start the AM (this does NOT    * depend on the weights in the policy).    *    * @param appSubmissionContext the context for the app being submitted    *          (ignored).    *    * @return a randomly chosen subcluster.    *    * @throws YarnException if there are no active subclusters.    */
-DECL|method|getHomeSubcluster ( ApplicationSubmissionContext appSubmissionContext)
+annotation|@
+name|Override
+DECL|method|splitResourceRequests ( List<ResourceRequest> resourceRequests)
 specifier|public
+name|Map
+argument_list|<
 name|SubClusterId
-name|getHomeSubcluster
+argument_list|,
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+argument_list|>
+name|splitResourceRequests
 parameter_list|(
-name|ApplicationSubmissionContext
-name|appSubmissionContext
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|resourceRequests
 parameter_list|)
 throws|throws
 name|YarnException
@@ -296,38 +350,93 @@ init|=
 name|getActiveSubclusters
 argument_list|()
 decl_stmt|;
-name|List
+name|Map
 argument_list|<
 name|SubClusterId
+argument_list|,
+name|List
+argument_list|<
+name|ResourceRequest
 argument_list|>
-name|list
+argument_list|>
+name|answer
 init|=
 operator|new
-name|ArrayList
+name|HashMap
 argument_list|<>
-argument_list|(
+argument_list|()
+decl_stmt|;
+comment|// simply broadcast the resource request to all sub-clusters
+for|for
+control|(
+name|SubClusterId
+name|subClusterId
+range|:
 name|activeSubclusters
 operator|.
 name|keySet
 argument_list|()
+control|)
+block|{
+name|answer
+operator|.
+name|put
+argument_list|(
+name|subClusterId
+argument_list|,
+name|resourceRequests
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+name|knownClusterIds
+operator|.
+name|add
+argument_list|(
+name|subClusterId
+argument_list|)
+expr_stmt|;
+block|}
 return|return
-name|list
-operator|.
-name|get
-argument_list|(
-name|rand
-operator|.
-name|nextInt
-argument_list|(
-name|list
-operator|.
-name|size
-argument_list|()
-argument_list|)
-argument_list|)
+name|answer
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|notifyOfResponse (SubClusterId subClusterId, AllocateResponse response)
+specifier|public
+name|void
+name|notifyOfResponse
+parameter_list|(
+name|SubClusterId
+name|subClusterId
+parameter_list|,
+name|AllocateResponse
+name|response
+parameter_list|)
+throws|throws
+name|YarnException
+block|{
+if|if
+condition|(
+operator|!
+name|knownClusterIds
+operator|.
+name|contains
+argument_list|(
+name|subClusterId
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnknownSubclusterException
+argument_list|(
+literal|"The response is received from a subcluster that is unknown to this "
+operator|+
+literal|"policy."
+argument_list|)
+throw|;
+block|}
+comment|// stateless policy does not care about responses
 block|}
 block|}
 end_class

@@ -26,6 +26,26 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -220,28 +240,8 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
 begin_comment
-comment|/**  * Simple test class for the {@link LoadBasedRouterPolicy}. Test that the  * load is properly considered for allocation.  */
+comment|/**  * Simple test class for the {@link LoadBasedRouterPolicy}. Test that the load  * is properly considered for allocation.  */
 end_comment
 
 begin_class
@@ -499,7 +499,7 @@ operator|-
 literal|1
 argument_list|)
 decl_stmt|;
-comment|//plant a best cluster
+comment|// plant a best cluster
 if|if
 condition|(
 name|id

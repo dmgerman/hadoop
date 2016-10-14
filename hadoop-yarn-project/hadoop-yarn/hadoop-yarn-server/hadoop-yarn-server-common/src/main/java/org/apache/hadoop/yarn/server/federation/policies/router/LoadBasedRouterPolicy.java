@@ -26,29 +26,11 @@ end_package
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|Map
 import|;
 end_import
 
@@ -244,16 +226,6 @@ name|JSONObject
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
 begin_comment
 comment|/**  * This implements a simple load-balancing policy. The policy "weights" are  * binary 0/1 values that enable/disable each sub-cluster, and the policy peaks  * the sub-cluster with the least load to forward this application.  */
 end_comment
@@ -264,33 +236,17 @@ specifier|public
 class|class
 name|LoadBasedRouterPolicy
 extends|extends
-name|BaseWeightedRouterPolicy
+name|AbstractRouterPolicy
 block|{
-DECL|field|LOG
-specifier|private
-specifier|static
-specifier|final
-name|Log
-name|LOG
-init|=
-name|LogFactory
-operator|.
-name|getLog
-argument_list|(
-name|LoadBasedRouterPolicy
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 annotation|@
 name|Override
-DECL|method|reinitialize (FederationPolicyInitializationContext federationPolicyContext)
+DECL|method|reinitialize (FederationPolicyInitializationContext policyContext)
 specifier|public
 name|void
 name|reinitialize
 parameter_list|(
 name|FederationPolicyInitializationContext
-name|federationPolicyContext
+name|policyContext
 parameter_list|)
 throws|throws
 name|FederationPolicyInitializationException
@@ -302,15 +258,15 @@ init|=
 name|getPolicyInfo
 argument_list|()
 decl_stmt|;
-comment|//attempt new initialization
+comment|// attempt new initialization
 name|super
 operator|.
 name|reinitialize
 argument_list|(
-name|federationPolicyContext
+name|policyContext
 argument_list|)
 expr_stmt|;
-comment|//check extra constraints
+comment|// check extra constraints
 for|for
 control|(
 name|Float
@@ -337,7 +293,7 @@ operator|!=
 literal|1
 condition|)
 block|{
-comment|//reset to old policyInfo if check fails
+comment|// reset to old policyInfo if check fails
 name|setPolicyInfo
 argument_list|(
 name|tempPolicy

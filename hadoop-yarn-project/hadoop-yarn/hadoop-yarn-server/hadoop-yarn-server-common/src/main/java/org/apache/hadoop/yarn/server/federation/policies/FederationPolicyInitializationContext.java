@@ -60,6 +60,28 @@ name|store
 operator|.
 name|records
 operator|.
+name|SubClusterId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|store
+operator|.
+name|records
+operator|.
 name|SubClusterPolicyConfiguration
 import|;
 end_import
@@ -109,6 +131,11 @@ specifier|private
 name|FederationStateStoreFacade
 name|federationStateStoreFacade
 decl_stmt|;
+DECL|field|homeSubcluster
+specifier|private
+name|SubClusterId
+name|homeSubcluster
+decl_stmt|;
 DECL|method|FederationPolicyInitializationContext ()
 specifier|public
 name|FederationPolicyInitializationContext
@@ -127,7 +154,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|FederationPolicyInitializationContext (SubClusterPolicyConfiguration policy, SubClusterResolver resolver, FederationStateStoreFacade storeFacade)
+DECL|method|FederationPolicyInitializationContext ( SubClusterPolicyConfiguration policy, SubClusterResolver resolver, FederationStateStoreFacade storeFacade)
 specifier|public
 name|FederationPolicyInitializationContext
 parameter_list|(
@@ -160,7 +187,7 @@ operator|=
 name|storeFacade
 expr_stmt|;
 block|}
-comment|/**    * Getter for the {@link SubClusterPolicyConfiguration}.    *    * @return the {@link SubClusterPolicyConfiguration} to be used for    * initialization.    */
+comment|/**    * Getter for the {@link SubClusterPolicyConfiguration}.    *    * @return the {@link SubClusterPolicyConfiguration} to be used for    *         initialization.    */
 DECL|method|getSubClusterPolicyConfiguration ()
 specifier|public
 name|SubClusterPolicyConfiguration
@@ -171,7 +198,7 @@ return|return
 name|federationPolicyConfiguration
 return|;
 block|}
-comment|/**    * Setter for the {@link SubClusterPolicyConfiguration}.    *    * @param fedPolicyConfiguration the {@link SubClusterPolicyConfiguration}    *                               to be used for initialization.    */
+comment|/**    * Setter for the {@link SubClusterPolicyConfiguration}.    *    * @param fedPolicyConfiguration the {@link SubClusterPolicyConfiguration} to    *          be used for initialization.    */
 DECL|method|setSubClusterPolicyConfiguration ( SubClusterPolicyConfiguration fedPolicyConfiguration)
 specifier|public
 name|void
@@ -199,7 +226,7 @@ return|return
 name|federationSubclusterResolver
 return|;
 block|}
-comment|/**    * Setter for the {@link SubClusterResolver}.    *    * @param federationSubclusterResolver the {@link SubClusterResolver} to be    *                                     used for initialization.    */
+comment|/**    * Setter for the {@link SubClusterResolver}.    *    * @param federationSubclusterResolver the {@link SubClusterResolver} to be    *          used for initialization.    */
 DECL|method|setFederationSubclusterResolver ( SubClusterResolver federationSubclusterResolver)
 specifier|public
 name|void
@@ -242,6 +269,34 @@ operator|.
 name|federationStateStoreFacade
 operator|=
 name|federationStateStoreFacade
+expr_stmt|;
+block|}
+comment|/**    * Returns the current home sub-cluster. Useful for default policy behaviors.    *    * @return the home sub-cluster.    */
+DECL|method|getHomeSubcluster ()
+specifier|public
+name|SubClusterId
+name|getHomeSubcluster
+parameter_list|()
+block|{
+return|return
+name|homeSubcluster
+return|;
+block|}
+comment|/**    * Sets in the context the home sub-cluster. Useful for default policy    * behaviors.    *    * @param homeSubcluster value to set.    */
+DECL|method|setHomeSubcluster (SubClusterId homeSubcluster)
+specifier|public
+name|void
+name|setHomeSubcluster
+parameter_list|(
+name|SubClusterId
+name|homeSubcluster
+parameter_list|)
+block|{
+name|this
+operator|.
+name|homeSubcluster
+operator|=
+name|homeSubcluster
 expr_stmt|;
 block|}
 block|}
