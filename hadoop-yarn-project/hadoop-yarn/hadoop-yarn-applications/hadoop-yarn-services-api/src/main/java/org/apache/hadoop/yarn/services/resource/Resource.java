@@ -101,6 +101,8 @@ class|class
 name|Resource
 extends|extends
 name|BaseResource
+implements|implements
+name|Cloneable
 block|{
 DECL|field|serialVersionUID
 specifier|private
