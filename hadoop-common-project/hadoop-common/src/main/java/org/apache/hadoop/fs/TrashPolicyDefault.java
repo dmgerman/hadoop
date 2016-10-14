@@ -282,6 +282,20 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/** Provides a<i>trash</i> feature.  Files are moved to a user's trash  * directory, a subdirectory of their home directory named ".Trash".  Files are  * initially moved to a<i>current</i> sub-directory of the trash directory.  * Within that sub-directory their original path is preserved.  Periodically  * one may checkpoint the current trash and remove older checkpoints.  (This  * design permits trash management without enumeration of the full trash  * content, without date support in the filesystem, and without clock  * synchronization.)  */
 end_comment
@@ -1142,7 +1156,7 @@ argument_list|)
 return|;
 block|}
 DECL|class|Emptier
-specifier|private
+specifier|protected
 class|class
 name|Emptier
 implements|implements
@@ -1189,7 +1203,7 @@ operator|>
 name|deletionInterval
 operator|||
 name|emptierInterval
-operator|==
+operator|<=
 literal|0
 condition|)
 block|{
@@ -1515,6 +1529,22 @@ name|interval
 operator|)
 operator|*
 name|interval
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getEmptierInterval ()
+specifier|protected
+name|long
+name|getEmptierInterval
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|emptierInterval
+operator|/
+name|MSECS_PER_MINUTE
 return|;
 block|}
 block|}
