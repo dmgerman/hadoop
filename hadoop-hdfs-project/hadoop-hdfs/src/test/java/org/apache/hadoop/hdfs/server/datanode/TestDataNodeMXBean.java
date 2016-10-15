@@ -674,6 +674,35 @@ argument_list|,
 name|xceiverCount
 argument_list|)
 expr_stmt|;
+comment|// Ensure mxbean's XmitsInProgress is same as the DataNode's
+comment|// live value.
+name|int
+name|xmitsInProgress
+init|=
+operator|(
+name|Integer
+operator|)
+name|mbs
+operator|.
+name|getAttribute
+argument_list|(
+name|mxbeanName
+argument_list|,
+literal|"XmitsInProgress"
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|datanode
+operator|.
+name|getXmitsInProgress
+argument_list|()
+argument_list|,
+name|xmitsInProgress
+argument_list|)
+expr_stmt|;
 name|String
 name|bpActorInfo
 init|=

@@ -144,6 +144,13 @@ name|int
 name|getXceiverCount
 parameter_list|()
 function_decl|;
+comment|/**    * Returns an estimate of the number of data replication/reconstruction tasks    * running currently.    */
+DECL|method|getXmitsInProgress ()
+specifier|public
+name|int
+name|getXmitsInProgress
+parameter_list|()
+function_decl|;
 comment|/**    * Gets the network error counts on a per-Datanode basis.    */
 DECL|method|getDatanodeNetworkCounts ()
 specifier|public

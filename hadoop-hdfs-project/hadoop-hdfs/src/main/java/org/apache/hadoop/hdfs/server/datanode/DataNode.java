@@ -10949,7 +10949,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
+comment|//DataNodeMXBean
 DECL|method|getXmitsInProgress ()
+specifier|public
 name|int
 name|getXmitsInProgress
 parameter_list|()
