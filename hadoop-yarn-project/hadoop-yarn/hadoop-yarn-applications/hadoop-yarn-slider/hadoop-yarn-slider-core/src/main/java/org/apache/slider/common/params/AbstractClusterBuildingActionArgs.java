@@ -416,6 +416,26 @@ name|String
 name|queue
 decl_stmt|;
 annotation|@
+name|Parameter
+argument_list|(
+name|names
+operator|=
+block|{
+name|ARG_LIFETIME
+block|}
+argument_list|,
+name|description
+operator|=
+literal|"Life time of the application since application started at"
+operator|+
+literal|" running state"
+argument_list|)
+DECL|field|lifetime
+specifier|public
+name|long
+name|lifetime
+decl_stmt|;
+annotation|@
 name|ParametersDelegate
 DECL|field|componentDelegate
 specifier|public

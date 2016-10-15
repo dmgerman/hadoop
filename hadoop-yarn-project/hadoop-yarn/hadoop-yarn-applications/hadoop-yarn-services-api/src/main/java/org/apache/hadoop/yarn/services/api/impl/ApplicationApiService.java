@@ -2524,6 +2524,15 @@ name|trim
 argument_list|()
 expr_stmt|;
 block|}
+name|createArgs
+operator|.
+name|lifetime
+operator|=
+name|application
+operator|.
+name|getLifetime
+argument_list|()
+expr_stmt|;
 return|return
 name|invokeSliderClientRunnable
 argument_list|(
@@ -7977,7 +7986,7 @@ block|}
 argument_list|)
 return|;
 block|}
-DECL|method|startSliderApplication (final String appName)
+DECL|method|startSliderApplication (final String appName, Application app)
 specifier|private
 name|Response
 name|startSliderApplication
@@ -7985,6 +7994,9 @@ parameter_list|(
 specifier|final
 name|String
 name|appName
+parameter_list|,
+name|Application
+name|app
 parameter_list|)
 throws|throws
 name|IOException
@@ -8026,6 +8038,33 @@ operator|new
 name|ActionThawArgs
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|app
+operator|.
+name|getLifetime
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+name|app
+operator|.
+name|setLifetime
+argument_list|(
+name|DEFAULT_UNLIMITED_LIFETIME
+argument_list|)
+expr_stmt|;
+block|}
+name|thawArgs
+operator|.
+name|lifetime
+operator|=
+name|app
+operator|.
+name|getLifetime
+argument_list|()
+expr_stmt|;
 name|int
 name|returnCode
 init|=
@@ -8507,6 +8546,8 @@ return|return
 name|startSliderApplication
 argument_list|(
 name|appName
+argument_list|,
+name|updateAppData
 argument_list|)
 return|;
 block|}

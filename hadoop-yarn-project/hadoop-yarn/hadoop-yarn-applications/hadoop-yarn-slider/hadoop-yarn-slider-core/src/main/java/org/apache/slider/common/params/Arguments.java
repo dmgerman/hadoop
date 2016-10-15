@@ -473,6 +473,12 @@ name|ARG_QUEUE
 init|=
 literal|"--queue"
 decl_stmt|;
+DECL|field|ARG_LIFETIME
+name|String
+name|ARG_LIFETIME
+init|=
+literal|"--lifetime"
+decl_stmt|;
 DECL|field|ARG_REPLACE_PKG
 name|String
 name|ARG_REPLACE_PKG

@@ -590,6 +590,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationTimeoutType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -4976,6 +4994,10 @@ argument_list|(
 name|clustername
 argument_list|,
 name|createArgs
+argument_list|,
+name|createArgs
+operator|.
+name|lifetime
 argument_list|)
 return|;
 block|}
@@ -11834,8 +11856,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Load and start a cluster specification.    * This assumes that all validation of args and cluster state    * have already taken place    *    * @param clustername name of the cluster.    * @param launchArgs launch arguments    * @return the exit code    * @throws YarnException    * @throws IOException    */
-DECL|method|startCluster (String clustername, LaunchArgsAccessor launchArgs)
+comment|/**    * Load and start a cluster specification.    * This assumes that all validation of args and cluster state    * have already taken place    *    * @param clustername name of the cluster.    * @param launchArgs launch arguments    * @param lifetime    * @return the exit code    * @throws YarnException    * @throws IOException    */
+DECL|method|startCluster (String clustername, LaunchArgsAccessor launchArgs, long lifetime)
 specifier|protected
 name|int
 name|startCluster
@@ -11845,6 +11867,9 @@ name|clustername
 parameter_list|,
 name|LaunchArgsAccessor
 name|launchArgs
+parameter_list|,
+name|long
+name|lifetime
 parameter_list|)
 throws|throws
 name|YarnException
@@ -11886,6 +11911,8 @@ name|serviceArgs
 operator|.
 name|isDebug
 argument_list|()
+argument_list|,
+name|lifetime
 argument_list|)
 decl_stmt|;
 if|if
@@ -12091,7 +12118,7 @@ return|return
 name|instanceDefinition
 return|;
 block|}
-DECL|method|setupAppMasterLauncher (String clustername, Path clusterDirectory, AggregateConf instanceDefinition, boolean debugAM)
+DECL|method|setupAppMasterLauncher (String clustername, Path clusterDirectory, AggregateConf instanceDefinition, boolean debugAM, long lifetime)
 specifier|protected
 name|AppMasterLauncher
 name|setupAppMasterLauncher
@@ -12107,6 +12134,9 @@ name|instanceDefinition
 parameter_list|,
 name|boolean
 name|debugAM
+parameter_list|,
+name|long
+name|lifetime
 parameter_list|)
 throws|throws
 name|YarnException
@@ -12417,6 +12447,40 @@ operator|.
 name|setKeepContainersOverRestarts
 argument_list|(
 literal|true
+argument_list|)
+expr_stmt|;
+comment|// set lifetime in submission context;
+name|Map
+argument_list|<
+name|ApplicationTimeoutType
+argument_list|,
+name|Long
+argument_list|>
+name|appTimeout
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|appTimeout
+operator|.
+name|put
+argument_list|(
+name|ApplicationTimeoutType
+operator|.
+name|LIFETIME
+argument_list|,
+name|lifetime
+argument_list|)
+expr_stmt|;
+name|amLauncher
+operator|.
+name|submissionContext
+operator|.
+name|setApplicationTimeouts
+argument_list|(
+name|appTimeout
 argument_list|)
 expr_stmt|;
 name|int
@@ -13468,8 +13532,8 @@ return|return
 name|amLauncher
 return|;
 block|}
-comment|/**    *    * @param clustername name of the cluster    * @param clusterDirectory cluster dir    * @param instanceDefinition the instance definition    * @param debugAM enable debug AM options    * @return the launched application    * @throws YarnException    * @throws IOException    */
-DECL|method|launchApplication (String clustername, Path clusterDirectory, AggregateConf instanceDefinition, boolean debugAM)
+comment|/**    *    * @param clustername name of the cluster    * @param clusterDirectory cluster dir    * @param instanceDefinition the instance definition    * @param debugAM enable debug AM options    * @param lifetime    * @return the launched application    * @throws YarnException    * @throws IOException    */
+DECL|method|launchApplication (String clustername, Path clusterDirectory, AggregateConf instanceDefinition, boolean debugAM, long lifetime)
 specifier|public
 name|LaunchedApplication
 name|launchApplication
@@ -13485,6 +13549,9 @@ name|instanceDefinition
 parameter_list|,
 name|boolean
 name|debugAM
+parameter_list|,
+name|long
+name|lifetime
 parameter_list|)
 throws|throws
 name|YarnException
@@ -13503,6 +13570,8 @@ argument_list|,
 name|instanceDefinition
 argument_list|,
 name|debugAM
+argument_list|,
+name|lifetime
 argument_list|)
 decl_stmt|;
 name|applicationId
@@ -16833,6 +16902,10 @@ argument_list|(
 name|clustername
 argument_list|,
 name|thaw
+argument_list|,
+name|thaw
+operator|.
+name|lifetime
 argument_list|)
 return|;
 block|}
