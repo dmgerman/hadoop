@@ -6272,14 +6272,12 @@ name|DFSClient
 operator|.
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"Access token was invalid when connecting to "
-operator|+
+literal|"Access token was invalid when connecting to {}: {}"
+argument_list|,
 name|targetAddr
-operator|+
-literal|" : "
-operator|+
+argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
