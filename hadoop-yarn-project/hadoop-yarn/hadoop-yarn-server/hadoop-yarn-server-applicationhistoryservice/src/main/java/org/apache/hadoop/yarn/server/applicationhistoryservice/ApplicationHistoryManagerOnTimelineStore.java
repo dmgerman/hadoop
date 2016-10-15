@@ -3063,7 +3063,7 @@ name|containsKey
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|HOST_EVENT_INFO
+name|HOST_INFO
 argument_list|)
 condition|)
 block|{
@@ -3075,7 +3075,7 @@ name|get
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|HOST_EVENT_INFO
+name|HOST_INFO
 argument_list|)
 operator|.
 name|toString
@@ -3090,7 +3090,7 @@ name|containsKey
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|RPC_PORT_EVENT_INFO
+name|RPC_PORT_INFO
 argument_list|)
 condition|)
 block|{
@@ -3105,7 +3105,7 @@ name|get
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|RPC_PORT_EVENT_INFO
+name|RPC_PORT_INFO
 argument_list|)
 expr_stmt|;
 block|}
@@ -3117,7 +3117,7 @@ name|containsKey
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|MASTER_CONTAINER_EVENT_INFO
+name|MASTER_CONTAINER_INFO
 argument_list|)
 condition|)
 block|{
@@ -3133,7 +3133,7 @@ name|get
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|MASTER_CONTAINER_EVENT_INFO
+name|MASTER_CONTAINER_INFO
 argument_list|)
 operator|.
 name|toString
@@ -3188,7 +3188,7 @@ name|containsKey
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|TRACKING_URL_EVENT_INFO
+name|TRACKING_URL_INFO
 argument_list|)
 condition|)
 block|{
@@ -3200,7 +3200,7 @@ name|get
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|TRACKING_URL_EVENT_INFO
+name|TRACKING_URL_INFO
 argument_list|)
 operator|.
 name|toString
@@ -3215,7 +3215,7 @@ name|containsKey
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|ORIGINAL_TRACKING_URL_EVENT_INFO
+name|ORIGINAL_TRACKING_URL_INFO
 argument_list|)
 condition|)
 block|{
@@ -3227,7 +3227,7 @@ name|get
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|ORIGINAL_TRACKING_URL_EVENT_INFO
+name|ORIGINAL_TRACKING_URL_INFO
 argument_list|)
 operator|.
 name|toString
@@ -3242,7 +3242,7 @@ name|containsKey
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|DIAGNOSTICS_INFO_EVENT_INFO
+name|DIAGNOSTICS_INFO
 argument_list|)
 condition|)
 block|{
@@ -3254,7 +3254,7 @@ name|get
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|DIAGNOSTICS_INFO_EVENT_INFO
+name|DIAGNOSTICS_INFO
 argument_list|)
 operator|.
 name|toString
@@ -3269,7 +3269,7 @@ name|containsKey
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|STATE_EVENT_INFO
+name|STATE_INFO
 argument_list|)
 condition|)
 block|{
@@ -3285,7 +3285,7 @@ name|get
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|STATE_EVENT_INFO
+name|STATE_INFO
 argument_list|)
 operator|.
 name|toString
@@ -3301,7 +3301,7 @@ name|containsKey
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|MASTER_CONTAINER_EVENT_INFO
+name|MASTER_CONTAINER_INFO
 argument_list|)
 condition|)
 block|{
@@ -3317,7 +3317,7 @@ name|get
 argument_list|(
 name|AppAttemptMetricsConstants
 operator|.
-name|MASTER_CONTAINER_EVENT_INFO
+name|MASTER_CONTAINER_INFO
 argument_list|)
 operator|.
 name|toString
@@ -3464,7 +3464,7 @@ name|containsKey
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|ALLOCATED_MEMORY_ENTITY_INFO
+name|ALLOCATED_MEMORY_INFO
 argument_list|)
 condition|)
 block|{
@@ -3479,7 +3479,7 @@ name|get
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|ALLOCATED_MEMORY_ENTITY_INFO
+name|ALLOCATED_MEMORY_INFO
 argument_list|)
 expr_stmt|;
 block|}
@@ -3491,7 +3491,7 @@ name|containsKey
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|ALLOCATED_VCORE_ENTITY_INFO
+name|ALLOCATED_VCORE_INFO
 argument_list|)
 condition|)
 block|{
@@ -3506,7 +3506,7 @@ name|get
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|ALLOCATED_VCORE_ENTITY_INFO
+name|ALLOCATED_VCORE_INFO
 argument_list|)
 expr_stmt|;
 block|}
@@ -3518,7 +3518,7 @@ name|containsKey
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|ALLOCATED_HOST_ENTITY_INFO
+name|ALLOCATED_HOST_INFO
 argument_list|)
 condition|)
 block|{
@@ -3530,7 +3530,7 @@ name|get
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|ALLOCATED_HOST_ENTITY_INFO
+name|ALLOCATED_HOST_INFO
 argument_list|)
 operator|.
 name|toString
@@ -3545,7 +3545,7 @@ name|containsKey
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|ALLOCATED_PORT_ENTITY_INFO
+name|ALLOCATED_PORT_INFO
 argument_list|)
 condition|)
 block|{
@@ -3560,7 +3560,7 @@ name|get
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|ALLOCATED_PORT_ENTITY_INFO
+name|ALLOCATED_PORT_INFO
 argument_list|)
 expr_stmt|;
 block|}
@@ -3572,7 +3572,7 @@ name|containsKey
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|ALLOCATED_PRIORITY_ENTITY_INFO
+name|ALLOCATED_PRIORITY_INFO
 argument_list|)
 condition|)
 block|{
@@ -3587,7 +3587,7 @@ name|get
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|ALLOCATED_PRIORITY_ENTITY_INFO
+name|ALLOCATED_PRIORITY_INFO
 argument_list|)
 expr_stmt|;
 block|}
@@ -3599,7 +3599,7 @@ name|containsKey
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|ALLOCATED_HOST_HTTP_ADDRESS_ENTITY_INFO
+name|ALLOCATED_HOST_HTTP_ADDRESS_INFO
 argument_list|)
 condition|)
 block|{
@@ -3614,7 +3614,7 @@ name|get
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|ALLOCATED_HOST_HTTP_ADDRESS_ENTITY_INFO
+name|ALLOCATED_HOST_HTTP_ADDRESS_INFO
 argument_list|)
 expr_stmt|;
 block|}
@@ -3721,7 +3721,7 @@ name|containsKey
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|DIAGNOSTICS_INFO_EVENT_INFO
+name|DIAGNOSTICS_INFO
 argument_list|)
 condition|)
 block|{
@@ -3733,7 +3733,7 @@ name|get
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|DIAGNOSTICS_INFO_EVENT_INFO
+name|DIAGNOSTICS_INFO
 argument_list|)
 operator|.
 name|toString
@@ -3748,7 +3748,7 @@ name|containsKey
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|EXIT_STATUS_EVENT_INFO
+name|EXIT_STATUS_INFO
 argument_list|)
 condition|)
 block|{
@@ -3763,7 +3763,7 @@ name|get
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|EXIT_STATUS_EVENT_INFO
+name|EXIT_STATUS_INFO
 argument_list|)
 expr_stmt|;
 block|}
@@ -3775,7 +3775,7 @@ name|containsKey
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|STATE_EVENT_INFO
+name|STATE_INFO
 argument_list|)
 condition|)
 block|{
@@ -3791,7 +3791,7 @@ name|get
 argument_list|(
 name|ContainerMetricsConstants
 operator|.
-name|STATE_EVENT_INFO
+name|STATE_INFO
 argument_list|)
 operator|.
 name|toString
