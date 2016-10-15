@@ -268,12 +268,25 @@ name|ReportCommand
 extends|extends
 name|Command
 block|{
-DECL|field|out
-specifier|private
-name|PrintStream
+DECL|method|ReportCommand (Configuration conf)
+specifier|public
+name|ReportCommand
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|conf
+argument_list|,
+name|System
+operator|.
 name|out
-decl_stmt|;
-DECL|method|ReportCommand (Configuration conf, final PrintStream out)
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|ReportCommand (Configuration conf, final PrintStream ps)
 specifier|public
 name|ReportCommand
 parameter_list|(
@@ -282,19 +295,15 @@ name|conf
 parameter_list|,
 specifier|final
 name|PrintStream
-name|out
+name|ps
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|conf
+argument_list|,
+name|ps
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|out
-operator|=
-name|out
 expr_stmt|;
 name|addValidCommandParameters
 argument_list|(
@@ -465,7 +474,8 @@ name|nodeFormat
 argument_list|)
 expr_stmt|;
 block|}
-name|out
+name|getPrintStream
+argument_list|()
 operator|.
 name|println
 argument_list|(

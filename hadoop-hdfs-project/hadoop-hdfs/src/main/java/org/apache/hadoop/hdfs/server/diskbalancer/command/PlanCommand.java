@@ -38,6 +38,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Throwables
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -75,6 +89,22 @@ operator|.
 name|lang
 operator|.
 name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|text
+operator|.
+name|StrBuilder
 import|;
 end_import
 
@@ -218,6 +248,16 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|PrintStream
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class that implements Plan Command.  *<p>  * Plan command reads the Cluster Info and creates a plan for specified data  * node or a set of Data nodes.  *<p>  * It writes the output to a default location unless changed by the user.  */
 end_comment
@@ -254,9 +294,34 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|conf
+argument_list|,
+name|System
+operator|.
+name|out
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Constructs a plan command.    */
+DECL|method|PlanCommand (Configuration conf, final PrintStream ps)
+specifier|public
+name|PlanCommand
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+specifier|final
+name|PrintStream
+name|ps
+parameter_list|)
+block|{
 name|super
 argument_list|(
 name|conf
+argument_list|,
+name|ps
 argument_list|)
 expr_stmt|;
 name|this
@@ -338,7 +403,7 @@ literal|"Plan Command"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Runs the plan command. This command can be run with various options like    *<p>    * -plan -node IP -plan -node hostName -plan -node DatanodeUUID    *    * @param cmd - CommandLine    */
+comment|/**    * Runs the plan command. This command can be run with various options like    *<p>    * -plan -node IP -plan -node hostName -plan -node DatanodeUUID    *    * @param cmd - CommandLine    * @throws Exception    */
 annotation|@
 name|Override
 DECL|method|execute (CommandLine cmd)
@@ -352,6 +417,18 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|StrBuilder
+name|result
+init|=
+operator|new
+name|StrBuilder
+argument_list|()
+decl_stmt|;
+name|String
+name|outputLine
+init|=
+literal|""
+decl_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -669,6 +746,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+try|try
+block|{
 if|if
 condition|(
 name|plan
@@ -686,14 +765,23 @@ operator|>
 literal|0
 condition|)
 block|{
-name|LOG
+name|outputLine
+operator|=
+name|String
 operator|.
-name|info
+name|format
 argument_list|(
-literal|"Writing plan to : {}"
+literal|"Writing plan to: %s"
 argument_list|,
 name|getOutputPath
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|recordOutput
+argument_list|(
+name|result
+argument_list|,
+name|outputLine
 argument_list|)
 expr_stmt|;
 try|try
@@ -744,13 +832,15 @@ block|}
 block|}
 else|else
 block|{
-name|LOG
+name|outputLine
+operator|=
+name|String
 operator|.
-name|info
+name|format
 argument_list|(
-literal|"No plan generated. DiskBalancing not needed for node: {} "
+literal|"No plan generated. DiskBalancing not needed for node: %s"
 operator|+
-literal|"threshold used: {}"
+literal|" threshold used: %s"
 argument_list|,
 name|cmd
 operator|.
@@ -764,6 +854,13 @@ argument_list|,
 name|this
 operator|.
 name|thresholdPercentage
+argument_list|)
+expr_stmt|;
+name|recordOutput
+argument_list|(
+name|result
+argument_list|,
+name|outputLine
 argument_list|)
 expr_stmt|;
 block|}
@@ -792,6 +889,59 @@ name|plans
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+specifier|final
+name|String
+name|errMsg
+init|=
+literal|"Errors while recording the output of plan command."
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|errMsg
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|result
+operator|.
+name|appendln
+argument_list|(
+name|errMsg
+argument_list|)
+expr_stmt|;
+name|result
+operator|.
+name|appendln
+argument_list|(
+name|Throwables
+operator|.
+name|getStackTraceAsString
+argument_list|(
+name|e
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+name|getPrintStream
+argument_list|()
+operator|.
+name|println
+argument_list|(
+name|result
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Gets extended help for this command.    */
 annotation|@

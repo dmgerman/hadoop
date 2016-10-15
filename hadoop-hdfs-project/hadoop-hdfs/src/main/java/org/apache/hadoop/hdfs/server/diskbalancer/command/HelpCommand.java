@@ -315,8 +315,6 @@ name|ReportCommand
 argument_list|(
 name|getConf
 argument_list|()
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 break|break;

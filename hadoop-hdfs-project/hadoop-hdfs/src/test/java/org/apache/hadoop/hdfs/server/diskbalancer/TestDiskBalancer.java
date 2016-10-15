@@ -1662,11 +1662,19 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Helper class that allows us to create different kinds of MiniDFSClusters    * and populate data.    */

@@ -599,6 +599,13 @@ specifier|final
 name|PrintStream
 name|printStream
 decl_stmt|;
+DECL|field|currentCommand
+specifier|private
+name|Command
+name|currentCommand
+init|=
+literal|null
+decl_stmt|;
 comment|/**    * Construct a DiskBalancer.    *    * @param conf    */
 DECL|method|DiskBalancerCLI (Configuration conf)
 specifier|public
@@ -1545,6 +1552,17 @@ name|argv
 argument_list|)
 return|;
 block|}
+comment|/**    * Gets current command associated with this instance of DiskBalancer.    */
+DECL|method|getCurrentCommand ()
+specifier|public
+name|Command
+name|getCurrentCommand
+parameter_list|()
+block|{
+return|return
+name|currentCommand
+return|;
+block|}
 comment|/**    * Dispatches calls to the right command Handler classes.    *    * @param cmd  - CommandLine    * @param opts options of command line    * @param out  the output stream used for printing    */
 DECL|method|dispatch (CommandLine cmd, Options opts)
 specifier|private
@@ -1561,7 +1579,7 @@ throws|throws
 name|Exception
 block|{
 name|Command
-name|currentCommand
+name|dbCmd
 init|=
 literal|null
 decl_stmt|;
@@ -1577,13 +1595,15 @@ name|PLAN
 argument_list|)
 condition|)
 block|{
-name|currentCommand
+name|dbCmd
 operator|=
 operator|new
 name|PlanCommand
 argument_list|(
 name|getConf
 argument_list|()
+argument_list|,
+name|printStream
 argument_list|)
 expr_stmt|;
 block|}
@@ -1599,7 +1619,7 @@ name|EXECUTE
 argument_list|)
 condition|)
 block|{
-name|currentCommand
+name|dbCmd
 operator|=
 operator|new
 name|ExecuteCommand
@@ -1621,7 +1641,7 @@ name|QUERY
 argument_list|)
 condition|)
 block|{
-name|currentCommand
+name|dbCmd
 operator|=
 operator|new
 name|QueryCommand
@@ -1643,7 +1663,7 @@ name|CANCEL
 argument_list|)
 condition|)
 block|{
-name|currentCommand
+name|dbCmd
 operator|=
 operator|new
 name|CancelCommand
@@ -1665,7 +1685,7 @@ name|REPORT
 argument_list|)
 condition|)
 block|{
-name|currentCommand
+name|dbCmd
 operator|=
 operator|new
 name|ReportCommand
@@ -1691,7 +1711,7 @@ name|HELP
 argument_list|)
 condition|)
 block|{
-name|currentCommand
+name|dbCmd
 operator|=
 operator|new
 name|HelpCommand
@@ -1704,7 +1724,7 @@ block|}
 comment|// Invoke main help here.
 if|if
 condition|(
-name|currentCommand
+name|dbCmd
 operator|==
 literal|null
 condition|)
@@ -1725,7 +1745,7 @@ return|return
 literal|1
 return|;
 block|}
-name|currentCommand
+name|dbCmd
 operator|.
 name|execute
 argument_list|(

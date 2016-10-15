@@ -526,6 +526,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|PrintStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -773,6 +783,11 @@ specifier|private
 name|int
 name|topNodes
 decl_stmt|;
+DECL|field|ps
+specifier|private
+name|PrintStream
+name|ps
+decl_stmt|;
 DECL|field|DEFAULT_LOG_DIR
 specifier|private
 specifier|static
@@ -800,6 +815,29 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|conf
+argument_list|,
+name|System
+operator|.
+name|out
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Constructs a command.    */
+DECL|method|Command (Configuration conf, final PrintStream ps)
+specifier|public
+name|Command
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+specifier|final
+name|PrintStream
+name|ps
+parameter_list|)
+block|{
 name|super
 argument_list|(
 name|conf
@@ -810,6 +848,22 @@ name|topNodes
 operator|=
 literal|0
 expr_stmt|;
+name|this
+operator|.
+name|ps
+operator|=
+name|ps
+expr_stmt|;
+block|}
+comment|/**    * Gets printing stream.    * @return print stream    */
+DECL|method|getPrintStream ()
+name|PrintStream
+name|getPrintStream
+parameter_list|()
+block|{
+return|return
+name|ps
+return|;
 block|}
 comment|/**    * Executes the Client Calls.    *    * @param cmd - CommandLine    * @throws Exception    */
 DECL|method|execute (CommandLine cmd)
@@ -2016,8 +2070,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Returns the cluster.    *    * @return Cluster.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getCluster ()
-specifier|protected
 name|DiskBalancerCluster
 name|getCluster
 parameter_list|()
