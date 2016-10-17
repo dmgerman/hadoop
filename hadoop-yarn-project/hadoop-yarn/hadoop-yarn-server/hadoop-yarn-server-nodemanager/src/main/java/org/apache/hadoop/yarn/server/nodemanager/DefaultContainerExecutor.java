@@ -670,6 +670,10 @@ name|Optional
 import|;
 end_import
 
+begin_comment
+comment|/**  * The {@code DefaultContainerExecuter} class offers generic container  * execution services. Process execution is handled in a platform-independent  * way via {@link ProcessBuilder}.  */
+end_comment
+
 begin_class
 DECL|class|DefaultContainerExecutor
 specifier|public
@@ -703,6 +707,7 @@ name|WIN_MAX_PATH
 init|=
 literal|260
 decl_stmt|;
+comment|/**    * A {@link FileContext} for the local file system.    */
 DECL|field|lfs
 specifier|protected
 specifier|final
@@ -716,6 +721,9 @@ name|logDirPermissions
 init|=
 literal|null
 decl_stmt|;
+comment|/**    * Default constructor for use in testing.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|DefaultContainerExecutor ()
 specifier|public
 name|DefaultContainerExecutor
@@ -748,6 +756,7 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Create an instance with a given {@link FileContext}.    *    * @param lfs the given {@link FileContext}    */
 DECL|method|DefaultContainerExecutor (FileContext lfs)
 name|DefaultContainerExecutor
 parameter_list|(
@@ -762,6 +771,7 @@ operator|=
 name|lfs
 expr_stmt|;
 block|}
+comment|/**    * Copy a file using the {@link #lfs} {@link FileContext}.    *    * @param src the file to copy    * @param dst where to copy the file    * @param owner the owner of the new copy. Used only in secure Windows    * clusters    * @throws IOException when the copy fails    * @see WindowsSecureContainerExecutor    */
 DECL|method|copyFile (Path src, Path dst, String owner)
 specifier|protected
 name|void
@@ -796,6 +806,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Make a file executable using the {@link #lfs} {@link FileContext}.    *    * @param script the path to make executable    * @param owner the new owner for the file. Used only in secure Windows    * clusters    * @throws IOException when the change mode operation fails    * @see WindowsSecureContainerExecutor    */
 DECL|method|setScriptExecutable (Path script, String owner)
 specifier|protected
 name|void
@@ -1085,6 +1096,7 @@ name|nmAddr
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Create a new {@link ContainerLocalizer} instance.    *    * @param user the user who owns the job for which the localization is being    * run    * @param appId the ID of the application for which the localization is being    * run    * @param locId the ID of the container for which the localization is being    * run    * @param localDirs a list of directories to use as destinations for the    * localization    * @param localizerFc the {@link FileContext} to use when localizing files    * @return the new {@link ContainerLocalizer} instance    * @throws IOException if {@code user} or {@code locId} is {@code null} or if    * the container localizer has an initialization failure    */
 annotation|@
 name|Private
 annotation|@
@@ -1737,9 +1749,15 @@ operator|.
 name|append
 argument_list|(
 literal|"Container id: "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|containerId
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -1748,9 +1766,15 @@ operator|.
 name|append
 argument_list|(
 literal|"Exit code: "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|exitCode
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -1781,12 +1805,20 @@ operator|.
 name|append
 argument_list|(
 literal|"Exception message: "
-operator|+
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
 name|e
 operator|.
 name|getMessage
 argument_list|()
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -1796,14 +1828,22 @@ operator|.
 name|append
 argument_list|(
 literal|"Stack trace: "
-operator|+
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
 name|StringUtils
 operator|.
 name|stringifyException
 argument_list|(
 name|e
 argument_list|)
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -1824,12 +1864,20 @@ operator|.
 name|append
 argument_list|(
 literal|"Shell output: "
-operator|+
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
 name|shExec
 operator|.
 name|getOutput
 argument_list|()
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -1901,7 +1949,8 @@ return|return
 literal|0
 return|;
 block|}
-DECL|method|buildCommandExecutor (String wrapperScriptPath, String containerIdStr, String user, Path pidFile, Resource resource, File wordDir, Map<String, String> environment)
+comment|/**    * Create a new {@link ShellCommandExecutor} using the parameters.    *    * @param wrapperScriptPath the path to the script to execute    * @param containerIdStr the container ID    * @param user the application owner's username    * @param pidFile the path to the container's PID file    * @param resource this parameter controls memory and CPU limits.    * @param workDir If not-null, specifies the directory which should be set    * as the current working directory for the command. If null,    * the current working directory is not modified.    * @param environment the container environment    * @return the new {@link ShellCommandExecutor}    * @see ShellCommandExecutor    */
+DECL|method|buildCommandExecutor (String wrapperScriptPath, String containerIdStr, String user, Path pidFile, Resource resource, File workDir, Map<String, String> environment)
 specifier|protected
 name|CommandExecutor
 name|buildCommandExecutor
@@ -1922,7 +1971,7 @@ name|Resource
 name|resource
 parameter_list|,
 name|File
-name|wordDir
+name|workDir
 parameter_list|,
 name|Map
 argument_list|<
@@ -1932,8 +1981,6 @@ name|String
 argument_list|>
 name|environment
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|String
 index|[]
@@ -1977,7 +2024,7 @@ name|ShellCommandExecutor
 argument_list|(
 name|command
 argument_list|,
-name|wordDir
+name|workDir
 argument_list|,
 name|environment
 argument_list|,
@@ -1987,6 +2034,7 @@ literal|false
 argument_list|)
 return|;
 block|}
+comment|/**    * Create a {@link LocalWrapperScriptBuilder} for the given container ID    * and path that is appropriate to the current platform.    *    * @param containerIdStr the container ID    * @param containerWorkDir the container's working directory    * @return a new {@link LocalWrapperScriptBuilder}    */
 DECL|method|getLocalWrapperScriptBuilder ( String containerIdStr, Path containerWorkDir)
 specifier|protected
 name|LocalWrapperScriptBuilder
@@ -2019,6 +2067,7 @@ name|containerWorkDir
 argument_list|)
 return|;
 block|}
+comment|/**    * This class is a utility to create a wrapper script that is platform    * appropriate.    */
 DECL|class|LocalWrapperScriptBuilder
 specifier|protected
 specifier|abstract
@@ -2031,6 +2080,7 @@ specifier|final
 name|Path
 name|wrapperScriptPath
 decl_stmt|;
+comment|/**      * Return the path for the wrapper script.      *      * @return the path for the wrapper script      */
 DECL|method|getWrapperScriptPath ()
 specifier|public
 name|Path
@@ -2041,6 +2091,7 @@ return|return
 name|wrapperScriptPath
 return|;
 block|}
+comment|/**      * Write out the wrapper script for the container launch script. This method      * will create the script at the configured wrapper script path.      *      * @param launchDst the script to launch      * @param pidFile the file that will hold the PID      * @throws IOException if the wrapper script cannot be created      * @see #getWrapperScriptPath      */
 DECL|method|writeLocalWrapperScript (Path launchDst, Path pidFile)
 specifier|public
 name|void
@@ -2122,6 +2173,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**      * Write out the wrapper script for the container launch script.      *      * @param launchDst the script to launch      * @param pidFile the file that will hold the PID      * @param pout the stream to use to write out the wrapper script      */
 DECL|method|writeLocalWrapperScript (Path launchDst, Path pidFile, PrintStream pout)
 specifier|protected
 specifier|abstract
@@ -2138,6 +2190,7 @@ name|PrintStream
 name|pout
 parameter_list|)
 function_decl|;
+comment|/**      * Create an instance for the given container working directory.      *      * @param containerWorkDir the working directory for the container      */
 DECL|method|LocalWrapperScriptBuilder (Path containerWorkDir)
 specifier|protected
 name|LocalWrapperScriptBuilder
@@ -2165,6 +2218,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * This class is an instance of {@link LocalWrapperScriptBuilder} for    * non-Windows hosts.    */
 DECL|class|UnixLocalWrapperScriptBuilder
 specifier|private
 specifier|final
@@ -2179,6 +2233,7 @@ specifier|final
 name|Path
 name|sessionScriptPath
 decl_stmt|;
+comment|/**      * Create an instance for the given container path.      *      * @param containerWorkDir the container's working directory      */
 DECL|method|UnixLocalWrapperScriptBuilder (Path containerWorkDir)
 specifier|public
 name|UnixLocalWrapperScriptBuilder
@@ -2456,12 +2511,12 @@ literal|"exec"
 decl_stmt|;
 name|pout
 operator|.
-name|println
+name|printf
 argument_list|(
+literal|"%s /bin/bash \"%s\""
+argument_list|,
 name|exec
-operator|+
-literal|" /bin/bash \""
-operator|+
+argument_list|,
 name|launchDst
 operator|.
 name|toUri
@@ -2469,11 +2524,6 @@ argument_list|()
 operator|.
 name|getPath
 argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|"\""
 argument_list|)
 expr_stmt|;
 block|}
@@ -2504,6 +2554,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * This class is an instance of {@link LocalWrapperScriptBuilder} for    * Windows hosts.    */
 DECL|class|WindowsLocalWrapperScriptBuilder
 specifier|private
 specifier|final
@@ -2518,6 +2569,7 @@ specifier|final
 name|String
 name|containerIdStr
 decl_stmt|;
+comment|/**      * Create an instance for the given container and working directory.      *      * @param containerIdStr the container ID      * @param containerWorkDir the container's working directory      */
 DECL|method|WindowsLocalWrapperScriptBuilder (String containerIdStr, Path containerWorkDir)
 specifier|public
 name|WindowsLocalWrapperScriptBuilder
@@ -2754,7 +2806,7 @@ name|pid
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns true if the process with the specified pid is alive.    *     * @param pid String pid    * @return boolean true if the process is alive    */
+comment|/**    * Returns true if the process with the specified pid is alive.    *     * @param pid String pid    * @return boolean true if the process is alive    * @throws IOException if the command to test process liveliness fails    */
 annotation|@
 name|VisibleForTesting
 DECL|method|containerIsAlive (String pid)
@@ -2802,7 +2854,7 @@ literal|false
 return|;
 block|}
 block|}
-comment|/**    * Send a specified signal to the specified pid    *    * @param pid the pid of the process [group] to signal.    * @param signal signal to send    * (for logging).    */
+comment|/**    * Send a specified signal to the specified pid    *    * @param pid the pid of the process [group] to signal.    * @param signal signal to send    * @throws IOException if the command to kill the process fails    */
 DECL|method|killContainer (String pid, Signal signal)
 specifier|protected
 name|void
@@ -3020,7 +3072,7 @@ name|symlink
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Permissions for user dir.    * $local.dir/usercache/$user */
+comment|/**    * Permissions for user dir.    * $local.dir/usercache/$user    */
 DECL|field|USER_PERM
 specifier|static
 specifier|final
@@ -3032,7 +3084,7 @@ name|short
 operator|)
 literal|0750
 decl_stmt|;
-comment|/** Permissions for user appcache dir.    * $local.dir/usercache/$user/appcache */
+comment|/**    * Permissions for user appcache dir.    * $local.dir/usercache/$user/appcache    */
 DECL|field|APPCACHE_PERM
 specifier|static
 specifier|final
@@ -3044,7 +3096,7 @@ name|short
 operator|)
 literal|0710
 decl_stmt|;
-comment|/** Permissions for user filecache dir.    * $local.dir/usercache/$user/filecache */
+comment|/**    * Permissions for user filecache dir.    * $local.dir/usercache/$user/filecache    */
 DECL|field|FILECACHE_PERM
 specifier|static
 specifier|final
@@ -3056,7 +3108,7 @@ name|short
 operator|)
 literal|0710
 decl_stmt|;
-comment|/** Permissions for user app dir.    * $local.dir/usercache/$user/appcache/$appId */
+comment|/**    * Permissions for user app dir.    * $local.dir/usercache/$user/appcache/$appId    */
 DECL|field|APPDIR_PERM
 specifier|static
 specifier|final
@@ -3209,6 +3261,7 @@ name|FILECACHE
 argument_list|)
 return|;
 block|}
+comment|/**    * Return a randomly chosen application directory from a list of local storage    * directories. The probability of selecting a directory is proportional to    * its size.    *    * @param localDirs the target directories from which to select    * @param user the user who owns the application    * @param appId the application ID    * @return the selected directory    * @throws IOException if no application directories for the user can be    * found    */
 DECL|method|getWorkingDir (List<String> localDirs, String user, String appId)
 specifier|protected
 name|Path
@@ -3229,11 +3282,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Path
-name|appStorageDir
-init|=
-literal|null
-decl_stmt|;
 name|long
 name|totalAvailable
 init|=
@@ -3406,8 +3454,7 @@ operator|++
 index|]
 expr_stmt|;
 block|}
-name|appStorageDir
-operator|=
+return|return
 name|getApplicationDir
 argument_list|(
 operator|new
@@ -3425,11 +3472,9 @@ name|user
 argument_list|,
 name|appId
 argument_list|)
-expr_stmt|;
-return|return
-name|appStorageDir
 return|;
 block|}
+comment|/**    * Use the {@link #lfs} {@link FileContext} to create the target directory.    *    * @param dirPath the target directory    * @param perms the target permissions for the target directory    * @param createParent whether the parent directories should also be created    * @param user the user as whom the target directory should be created.    * Used only on secure Windows hosts.    * @throws IOException if there's a failure performing a file operation    * @see WindowsSecureContainerExecutor    */
 DECL|method|createDir (Path dirPath, FsPermission perms, boolean createParent, String user)
 specifier|protected
 name|void
@@ -3491,7 +3536,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Initialize the local directories for a particular user.    *<ul>.mkdir    *<li>$local.dir/usercache/$user</li>    *</ul>    */
+comment|/**    * Initialize the local directories for a particular user.    *<ul>.mkdir    *<li>$local.dir/usercache/$user</li>    *</ul>    *    * @param localDirs the target directories to create    * @param user the user whose local cache directories should be initialized    * @throws IOException if there's an issue initializing the user local    * directories    */
 DECL|method|createUserLocalDirs (List<String> localDirs, String user)
 name|void
 name|createUserLocalDirs
@@ -3597,7 +3642,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Initialize the local cache directories for a particular user.    *<ul>    *<li>$local.dir/usercache/$user</li>    *<li>$local.dir/usercache/$user/appcache</li>    *<li>$local.dir/usercache/$user/filecache</li>    *</ul>    */
+comment|/**    * Initialize the local cache directories for a particular user.    *<ul>    *<li>$local.dir/usercache/$user</li>    *<li>$local.dir/usercache/$user/appcache</li>    *<li>$local.dir/usercache/$user/filecache</li>    *</ul>    *    * @param localDirs the target directories to create    * @param user the user whose local cache directories should be initialized    * @throws IOException if there's an issue initializing the cache    * directories    */
 DECL|method|createUserCacheDirs (List<String> localDirs, String user)
 name|void
 name|createUserCacheDirs
@@ -3802,7 +3847,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Initialize the local directories for a particular user.    *<ul>    *<li>$local.dir/usercache/$user/appcache/$appid</li>    *</ul>    * @param localDirs     */
+comment|/**    * Initialize the local directories for a particular user.    *<ul>    *<li>$local.dir/usercache/$user/appcache/$appid</li>    *</ul>    *    * @param localDirs the target directories to create    * @param user the user whose local cache directories should be initialized    * @param appId the application ID    * @throws IOException if there's an issue initializing the application    * directories    */
 DECL|method|createAppDirs (List<String> localDirs, String user, String appId)
 name|void
 name|createAppDirs
@@ -3923,7 +3968,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create application log directories on all disks.    */
+comment|/**    * Create application log directories on all disks.    *    * @param appId the application ID    * @param logDirs the target directories to create    * @param user the user whose local cache directories should be initialized    * @throws IOException if there's an issue initializing the application log    * directories    */
 DECL|method|createAppLogDirs (String appId, List<String> logDirs, String user)
 name|void
 name|createAppLogDirs
@@ -4035,7 +4080,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create application log directories on all disks.    */
+comment|/**    * Create application log directories on all disks.    *    * @param appId the application ID    * @param containerId the container ID    * @param logDirs the target directories to create    * @param user the user as whom the directories should be created.    * Used only on secure Windows hosts.    * @throws IOException if there's an issue initializing the container log    * directories    */
 DECL|method|createContainerLogDirs (String appId, String containerId, List<String> logDirs, String user)
 name|void
 name|createContainerLogDirs
@@ -4161,7 +4206,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Return default container log directory permissions.    */
+comment|/**    * Return the default container log directory permissions.    *    * @return the default container log directory permissions    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getLogDirPermissions ()
@@ -4220,7 +4265,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|/**    * @return the list of paths of given local directories    */
+comment|/**    * Return the list of paths of given local directories.    *    * @return the list of paths of given local directories    */
 DECL|method|getPaths (List<String> dirs)
 specifier|private
 specifier|static
@@ -4245,9 +4290,7 @@ name|paths
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Path
-argument_list|>
+argument_list|<>
 argument_list|(
 name|dirs
 operator|.

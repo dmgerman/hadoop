@@ -3781,8 +3781,6 @@ name|String
 argument_list|>
 name|environment
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 operator|new
