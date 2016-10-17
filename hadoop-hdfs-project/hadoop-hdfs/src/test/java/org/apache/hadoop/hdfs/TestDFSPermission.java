@@ -1792,8 +1792,16 @@ literal|0777
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|fs
+operator|=
+name|DFSTestUtil
+operator|.
 name|login
 argument_list|(
+name|fs
+argument_list|,
+name|conf
+argument_list|,
 name|USER1
 argument_list|)
 expr_stmt|;
@@ -1878,8 +1886,16 @@ block|{
 comment|// login as user2, attempt to delete /BSS/user1
 comment|// this should fail because user2 has no permission to
 comment|// its sub directory.
+name|fs
+operator|=
+name|DFSTestUtil
+operator|.
 name|login
 argument_list|(
+name|fs
+argument_list|,
+name|conf
+argument_list|,
 name|USER2
 argument_list|)
 expr_stmt|;
@@ -1938,8 +1954,16 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+name|fs
+operator|=
+name|DFSTestUtil
+operator|.
 name|login
 argument_list|(
+name|fs
+argument_list|,
+name|conf
+argument_list|,
 name|SUPERUSER
 argument_list|)
 expr_stmt|;
@@ -2016,8 +2040,16 @@ expr_stmt|;
 comment|// login as user2, attempt to move /BSS/user1 to trash
 comment|// this should also fail otherwise the directory will be
 comment|// removed by trash emptier (emptier is running by superuser)
+name|fs
+operator|=
+name|DFSTestUtil
+operator|.
 name|login
 argument_list|(
+name|fs
+argument_list|,
+name|conf
+argument_list|,
 name|USER2
 argument_list|)
 expr_stmt|;
@@ -2112,8 +2144,16 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+name|fs
+operator|=
+name|DFSTestUtil
+operator|.
 name|login
 argument_list|(
+name|fs
+argument_list|,
+name|conf
+argument_list|,
 name|SUPERUSER
 argument_list|)
 expr_stmt|;
@@ -2332,8 +2372,16 @@ literal|false
 argument_list|)
 expr_stmt|;
 comment|// case 3: user1 changes FILE_DIR_PATH's owner to be user2
+name|fs
+operator|=
+name|DFSTestUtil
+operator|.
 name|login
 argument_list|(
+name|fs
+argument_list|,
+name|conf
+argument_list|,
 name|USER1
 argument_list|)
 expr_stmt|;
@@ -2378,8 +2426,16 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// case 6: user2 (non-owner) changes FILE_DIR_PATH's group to be group3
+name|fs
+operator|=
+name|DFSTestUtil
+operator|.
 name|login
 argument_list|(
+name|fs
+argument_list|,
+name|conf
+argument_list|,
 name|USER2
 argument_list|)
 expr_stmt|;
@@ -2410,8 +2466,16 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// delete the file/directory
+name|fs
+operator|=
+name|DFSTestUtil
+operator|.
 name|login
 argument_list|(
+name|fs
+argument_list|,
+name|conf
+argument_list|,
 name|SUPERUSER
 argument_list|)
 expr_stmt|;
@@ -3940,8 +4004,16 @@ index|[
 name|NUM_TEST_PERMISSIONS
 index|]
 decl_stmt|;
+name|fs
+operator|=
+name|DFSTestUtil
+operator|.
 name|login
 argument_list|(
+name|fs
+argument_list|,
+name|conf
+argument_list|,
 name|SUPERUSER
 argument_list|)
 expr_stmt|;
@@ -4094,8 +4166,16 @@ literal|0
 operator|)
 expr_stmt|;
 block|}
+name|fs
+operator|=
+name|DFSTestUtil
+operator|.
 name|login
 argument_list|(
+name|fs
+argument_list|,
+name|conf
+argument_list|,
 name|ugi
 argument_list|)
 expr_stmt|;
@@ -6806,45 +6886,6 @@ operator|.
 name|verifyPermission
 argument_list|(
 name|ugi
-argument_list|)
-expr_stmt|;
-block|}
-comment|/* log into dfs as the given user */
-DECL|method|login (UserGroupInformation ugi)
-specifier|private
-name|void
-name|login
-parameter_list|(
-name|UserGroupInformation
-name|ugi
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|InterruptedException
-block|{
-if|if
-condition|(
-name|fs
-operator|!=
-literal|null
-condition|)
-block|{
-name|fs
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-name|fs
-operator|=
-name|DFSTestUtil
-operator|.
-name|getFileSystemAs
-argument_list|(
-name|ugi
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 block|}
