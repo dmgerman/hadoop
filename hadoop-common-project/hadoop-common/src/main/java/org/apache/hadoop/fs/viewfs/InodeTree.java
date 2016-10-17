@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -223,7 +223,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * InodeTree implements a mount-table as a tree of inodes.  * It is used to implement ViewFs and ViewFileSystem.  * In order to use it the caller must subclass it and implement  * the abstract methods {@link #getTargetFileSystem(INodeDir)}, etc.  *   * The mountable is initialized from the config variables as   * specified in {@link ViewFs}  *  * @param<T> is AbstractFileSystem or FileSystem  *   * The three main methods are  * {@link #InodeTreel(Configuration)} // constructor  * {@link #InodeTree(Configuration, String)} // constructor  * {@link #resolve(String, boolean)}   */
+comment|/**  * InodeTree implements a mount-table as a tree of inodes.  * It is used to implement ViewFs and ViewFileSystem.  * In order to use it the caller must subclass it and implement  * the abstract methods {@link #getTargetFileSystem(INodeDir)}, etc.  *  * The mountable is initialized from the config variables as   * specified in {@link ViewFs}  *  * @param<T> is AbstractFileSystem or FileSystem  *  * The two main methods are  * {@link #InodeTree(Configuration, String)} // constructor  * {@link #resolve(String, boolean)}   */
 end_comment
 
 begin_class
@@ -244,17 +244,15 @@ name|T
 parameter_list|>
 block|{
 DECL|enum|ResultKind
-DECL|enumConstant|isInternalDir
-DECL|enumConstant|isExternalDir
-specifier|static
 enum|enum
 name|ResultKind
 block|{
-name|isInternalDir
+DECL|enumConstant|INTERNAL_DIR
+name|INTERNAL_DIR
 block|,
-name|isExternalDir
-block|;}
-empty_stmt|;
+DECL|enumConstant|EXTERNAL_DIR
+name|EXTERNAL_DIR
+block|}
 DECL|field|SlashPath
 specifier|static
 specifier|final
@@ -268,6 +266,7 @@ literal|"/"
 argument_list|)
 decl_stmt|;
 DECL|field|root
+specifier|private
 specifier|final
 name|INodeDir
 argument_list|<
@@ -277,12 +276,14 @@ name|root
 decl_stmt|;
 comment|// the root of the mount table
 DECL|field|homedirPrefix
+specifier|private
 specifier|final
 name|String
 name|homedirPrefix
 decl_stmt|;
-comment|// the homedir config value for this mount table
+comment|// the homedir for this mount table
 DECL|field|mountPoints
+specifier|private
 name|List
 argument_list|<
 name|MountPoint
@@ -406,7 +407,6 @@ name|pathToNode
 expr_stmt|;
 block|}
 block|}
-empty_stmt|;
 comment|/**    * Internal class to represent an internal dir of the mount table    * @param<T>    */
 DECL|class|INodeDir
 specifier|static
@@ -478,49 +478,6 @@ argument_list|,
 name|aUgi
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|resolve (final String pathComponent)
-name|INode
-argument_list|<
-name|T
-argument_list|>
-name|resolve
-parameter_list|(
-specifier|final
-name|String
-name|pathComponent
-parameter_list|)
-throws|throws
-name|FileNotFoundException
-block|{
-specifier|final
-name|INode
-argument_list|<
-name|T
-argument_list|>
-name|result
-init|=
-name|resolveInternal
-argument_list|(
-name|pathComponent
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|result
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|()
-throw|;
-block|}
-return|return
-name|result
-return|;
 block|}
 DECL|method|resolveInternal (final String pathComponent)
 name|INode
@@ -663,7 +620,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * In internal class to represent a mount link    * A mount link can be single dir link or a merge dir link.     * A merge dir link is  a merge (junction) of links to dirs:    * example :<merge of 2 dirs    *     /users -> hdfs:nn1//users    *     /users -> hdfs:nn2//users    *     * For a merge, each target is checked to be dir when created but if target    * is changed later it is then ignored (a dir with null entries)    */
+comment|/**    * An internal class to represent a mount link.    * A mount link can be single dir link or a merge dir link.     * A merge dir link is  a merge (junction) of links to dirs:    * example : merge of 2 dirs    *     /users -> hdfs:nn1//users    *     /users -> hdfs:nn2//users    *    * For a merge, each target is checked to be dir when created but if target    * is changed later it is then ignored (a dir with null entries)    */
 DECL|class|INodeLink
 specifier|static
 class|class
@@ -695,7 +652,7 @@ name|T
 name|targetFileSystem
 decl_stmt|;
 comment|// file system object created from the link.
-comment|/**      * Construct a mergeLink      */
+comment|/**      * Construct a mergeLink.      */
 DECL|method|INodeLink (final String pathToNode, final UserGroupInformation aUgi, final T targetMergeFs, final URI[] aTargetDirLinkList)
 name|INodeLink
 parameter_list|(
@@ -737,7 +694,7 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-comment|/**      * Construct a simple link (i.e. not a mergeLink)      */
+comment|/**      * Construct a simple link (i.e. not a mergeLink).      */
 DECL|method|INodeLink (final String pathToNode, final UserGroupInformation aUgi, final T targetFs, final URI aTargetDirLink)
 name|INodeLink
 parameter_list|(
@@ -789,14 +746,12 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-comment|/**      * Get the target of the link      * If a merge link then it returned as "," separated URI list.      */
+comment|/**      * Get the target of the link. If a merge link then it returned      * as "," separated URI list.      */
 DECL|method|getTargetLink ()
 name|Path
 name|getTargetLink
 parameter_list|()
 block|{
-comment|// is merge link - use "," as separator between the merged URIs
-comment|//String result = targetDirLinkList[0].toString();
 name|StringBuilder
 name|result
 init|=
@@ -812,6 +767,7 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// If merge link, use "," as separator between the merged URIs
 for|for
 control|(
 name|int
@@ -914,7 +870,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"ViewFs:Non absolute mount name in config:"
+literal|"ViewFs: Non absolute mount name in config:"
 operator|+
 name|src
 argument_list|)
@@ -1300,8 +1256,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Below the "public" methods of InodeTree    */
-comment|/**    * The user of this class must subclass and implement the following    * 3 abstract methods.    * @throws IOException     */
+comment|/**    * The user of this class must subclass and implement the following    * 3 abstract methods.    * @throws IOException    */
 DECL|method|getTargetFileSystem (final URI uri)
 specifier|protected
 specifier|abstract
@@ -1610,7 +1565,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"ViewFs: Cannot initialize: Invalid entry in Mount table in config: "
+literal|"ViewFs: Cannot initialize: Invalid entry in "
+operator|+
+literal|"Mount table in config: "
 operator|+
 name|src
 argument_list|)
@@ -1660,7 +1617,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Resolve returns ResolveResult.    * The caller can continue the resolution of the remainingPath    * in the targetFileSystem.    *     * If the input pathname leads to link to another file system then    * the targetFileSystem is the one denoted by the link (except it is    * file system chrooted to link target.    * If the input pathname leads to an internal mount-table entry then    * the target file system is one that represents the internal inode.    */
+comment|/**    * Resolve returns ResolveResult.    * The caller can continue the resolution of the remainingPath    * in the targetFileSystem.    *    * If the input pathname leads to link to another file system then    * the targetFileSystem is the one denoted by the link (except it is    * file system chrooted to link target.    * If the input pathname leads to an internal mount-table entry then    * the target file system is one that represents the internal inode.    */
 DECL|class|ResolveResult
 specifier|static
 class|class
@@ -1727,7 +1684,7 @@ operator|=
 name|remainingP
 expr_stmt|;
 block|}
-comment|// isInternalDir of path resolution completed within the mount table
+comment|// Internal dir path resolution completed within the mount table
 DECL|method|isInternalDir ()
 name|boolean
 name|isInternalDir
@@ -1739,12 +1696,12 @@ name|kind
 operator|==
 name|ResultKind
 operator|.
-name|isInternalDir
+name|INTERNAL_DIR
 operator|)
 return|;
 block|}
 block|}
-comment|/**    * Resolve the pathname p relative to root InodeDir    * @param p - inout path    * @param resolveLastComponent     * @return ResolveResult which allows further resolution of the remaining path    * @throws FileNotFoundException    */
+comment|/**    * Resolve the pathname p relative to root InodeDir    * @param p - inout path    * @param resolveLastComponent    * @return ResolveResult which allows further resolution of the remaining path    * @throws FileNotFoundException    */
 DECL|method|resolve (final String p, final boolean resolveLastComponent)
 name|ResolveResult
 argument_list|<
@@ -1763,7 +1720,6 @@ parameter_list|)
 throws|throws
 name|FileNotFoundException
 block|{
-comment|// TO DO: - more efficient to not split the path, but simply compare
 name|String
 index|[]
 name|path
@@ -1797,7 +1753,7 @@ argument_list|>
 argument_list|(
 name|ResultKind
 operator|.
-name|isInternalDir
+name|INTERNAL_DIR
 argument_list|,
 name|root
 operator|.
@@ -2051,7 +2007,7 @@ argument_list|>
 argument_list|(
 name|ResultKind
 operator|.
-name|isExternalDir
+name|EXTERNAL_DIR
 argument_list|,
 name|link
 operator|.
@@ -2184,7 +2140,7 @@ argument_list|>
 argument_list|(
 name|ResultKind
 operator|.
-name|isInternalDir
+name|INTERNAL_DIR
 argument_list|,
 name|curInode
 operator|.
@@ -2216,7 +2172,7 @@ return|return
 name|mountPoints
 return|;
 block|}
-comment|/**    *     * @return home dir value from mount table; null if no config value    * was found.    */
+comment|/**    *    * @return home dir value from mount table; null if no config value    * was found.    */
 DECL|method|getHomeDirPrefixValue ()
 name|String
 name|getHomeDirPrefixValue

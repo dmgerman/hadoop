@@ -734,19 +734,19 @@ specifier|public
 class|class
 name|MountPoint
 block|{
+comment|/**      *  The source of the mount.      */
 DECL|field|src
 specifier|private
 name|Path
 name|src
 decl_stmt|;
-comment|// the src of the mount
+comment|/**      * One or more targets of the mount.      * Multiple targets imply MergeMount.      */
 DECL|field|targets
 specifier|private
 name|URI
 index|[]
 name|targets
 decl_stmt|;
-comment|//  target of the mount; Multiple targets imply mergeMount
 DECL|method|MountPoint (Path srcPath, URI[] targetURIs)
 name|MountPoint
 parameter_list|(
@@ -905,7 +905,7 @@ name|now
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>viewfs</code>    */
+comment|/**    * Return the protocol scheme for the FileSystem.    *    * @return<code>viewfs</code>    */
 annotation|@
 name|Override
 DECL|method|getScheme ()
@@ -915,10 +915,12 @@ name|getScheme
 parameter_list|()
 block|{
 return|return
-literal|"viewfs"
+name|FsConstants
+operator|.
+name|VIEWFS_SCHEME
 return|;
 block|}
-comment|/**    * Called after a new FileSystem instance is constructed.    * @param theUri a uri whose authority section names the host, port, etc. for    *          this FileSystem    * @param conf the configuration    */
+comment|/**    * Called after a new FileSystem instance is constructed.    * @param theUri a uri whose authority section names the host, port, etc. for    *        this FileSystem    * @param conf the configuration    */
 annotation|@
 name|Override
 DECL|method|initialize (final URI theUri, final Configuration conf)
@@ -4518,7 +4520,7 @@ return|return
 name|allPolicies
 return|;
 block|}
-comment|/*    * An instance of this class represents an internal dir of the viewFs     * that is internal dir of the mount table.    * It is a read only mount tables and create, mkdir or delete operations    * are not allowed.    * If called on create or mkdir then this target is the parent of the    * directory in which one is trying to create or mkdir; hence    * in this case the path name passed in is the last component.     * Otherwise this target is the end point of the path and hence    * the path name passed in is null.     */
+comment|/**    * An instance of this class represents an internal dir of the viewFs    * that is internal dir of the mount table.    * It is a read only mount tables and create, mkdir or delete operations    * are not allowed.    * If called on create or mkdir then this target is the parent of the    * directory in which one is trying to create or mkdir; hence    * in this case the path name passed in is the last component.     * Otherwise this target is the end point of the path and hence    * the path name passed in is null.     */
 DECL|class|InternalDirOfViewFs
 specifier|static
 class|class
