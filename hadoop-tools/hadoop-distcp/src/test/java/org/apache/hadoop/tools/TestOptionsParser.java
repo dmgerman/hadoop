@@ -1698,9 +1698,7 @@ literal|"DistCpOptions{atomicCommit=false, syncFolder=false, "
 operator|+
 literal|"deleteMissing=false, ignoreFailures=false, overwrite=false, "
 operator|+
-literal|"append=false, useDiff=false, useRdiff=false, "
-operator|+
-literal|"fromSnapshot=null, toSnapshot=null, "
+literal|"append=false, useDiff=false, fromSnapshot=null, toSnapshot=null, "
 operator|+
 literal|"skipCRC=false, blocking=true, numListstatusThreads=0, maxMaps=20, "
 operator|+
@@ -3926,46 +3924,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Test -diff or -rdiff
-DECL|method|testSnapshotDiffOption (boolean isDiff)
-specifier|private
+annotation|@
+name|Test
+DECL|method|testDiffOption ()
+specifier|public
 name|void
-name|testSnapshotDiffOption
-parameter_list|(
-name|boolean
-name|isDiff
-parameter_list|)
+name|testDiffOption
+parameter_list|()
 block|{
-specifier|final
-name|String
-name|optionStr
-init|=
-name|isDiff
-condition|?
-literal|"-diff"
-else|:
-literal|"-rdiff"
-decl_stmt|;
-specifier|final
-name|String
-name|optionLabel
-init|=
-name|isDiff
-condition|?
-name|DistCpOptionSwitch
-operator|.
-name|DIFF
-operator|.
-name|getConfigLabel
-argument_list|()
-else|:
-name|DistCpOptionSwitch
-operator|.
-name|RDIFF
-operator|.
-name|getConfigLabel
-argument_list|()
-decl_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -3981,7 +3947,12 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|optionLabel
+name|DistCpOptionSwitch
+operator|.
+name|DIFF
+operator|.
+name|getConfigLabel
+argument_list|()
 argument_list|,
 literal|false
 argument_list|)
@@ -4000,7 +3971,7 @@ index|[]
 block|{
 literal|"-update"
 block|,
-name|optionStr
+literal|"-diff"
 block|,
 literal|"s1"
 block|,
@@ -4027,7 +3998,12 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|optionLabel
+name|DistCpOptionSwitch
+operator|.
+name|DIFF
+operator|.
+name|getConfigLabel
+argument_list|()
 argument_list|,
 literal|false
 argument_list|)
@@ -4037,16 +4013,9 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|isDiff
-condition|?
 name|options
 operator|.
 name|shouldUseDiff
-argument_list|()
-else|:
-name|options
-operator|.
-name|shouldUseRdiff
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4084,7 +4053,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|optionStr
+literal|"-diff"
 block|,
 literal|"s1"
 block|,
@@ -4113,7 +4082,12 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|optionLabel
+name|DistCpOptionSwitch
+operator|.
+name|DIFF
+operator|.
+name|getConfigLabel
+argument_list|()
 argument_list|,
 literal|false
 argument_list|)
@@ -4123,16 +4097,9 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|isDiff
-condition|?
 name|options
 operator|.
 name|shouldUseDiff
-argument_list|()
-else|:
-name|options
-operator|.
-name|shouldUseRdiff
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4160,7 +4127,7 @@ name|getToSnapshot
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// -diff/-rdiff requires two option values
+comment|// -diff requires two option values
 try|try
 block|{
 name|OptionsParser
@@ -4171,7 +4138,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|optionStr
+literal|"-diff"
 block|,
 literal|"s1"
 block|,
@@ -4185,9 +4152,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-name|optionStr
-operator|+
-literal|" should fail with only one snapshot name"
+literal|"-diff should fail with only one snapshot name"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4207,7 +4172,7 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-comment|// make sure -diff/-rdiff is only valid when -update is specified
+comment|// make sure -diff is only valid when -update is specified
 try|try
 block|{
 name|OptionsParser
@@ -4218,7 +4183,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|optionStr
+literal|"-diff"
 block|,
 literal|"s1"
 block|,
@@ -4232,9 +4197,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-name|optionStr
-operator|+
-literal|" should fail if -update option is not specified"
+literal|"-diff should fail if -update option is not specified"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4248,7 +4211,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"-diff/-rdiff is valid only with -update option"
+literal|"Diff is valid only with update options"
 argument_list|,
 name|e
 argument_list|)
@@ -4266,7 +4229,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|optionStr
+literal|"-diff"
 block|,
 literal|"s1"
 block|,
@@ -4284,11 +4247,7 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-literal|"-delete should be ignored when "
-operator|+
-name|optionStr
-operator|+
-literal|" is specified"
+literal|"-delete should be ignored when -diff is specified"
 argument_list|,
 name|options
 operator|.
@@ -4326,7 +4285,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|optionStr
+literal|"-diff"
 block|,
 literal|"s1"
 block|,
@@ -4342,9 +4301,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-name|optionStr
-operator|+
-literal|" should fail if -update option is not specified"
+literal|"-diff should fail if -update option is not specified"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4368,7 +4325,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"-diff/-rdiff is valid only with -update option"
+literal|"Diff is valid only with update options"
 argument_list|,
 name|e
 argument_list|)
@@ -4384,7 +4341,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|optionStr
+literal|"-diff"
 block|,
 literal|"s1"
 block|,
@@ -4402,9 +4359,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-name|optionStr
-operator|+
-literal|" should fail if -update option is not specified"
+literal|"-diff should fail if -update option is not specified"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4418,108 +4373,12 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"-diff/-rdiff is valid only with -update option"
+literal|"Diff is valid only with update options"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
 block|}
-specifier|final
-name|String
-name|optionStrOther
-init|=
-name|isDiff
-condition|?
-literal|"-rdiff"
-else|:
-literal|"-diff"
-decl_stmt|;
-try|try
-block|{
-name|OptionsParser
-operator|.
-name|parse
-argument_list|(
-operator|new
-name|String
-index|[]
-block|{
-name|optionStr
-block|,
-literal|"s1"
-block|,
-literal|"s2"
-block|,
-name|optionStrOther
-block|,
-literal|"s2"
-block|,
-literal|"s1"
-block|,
-literal|"-update"
-block|,
-literal|"hdfs://localhost:9820/source/first"
-block|,
-literal|"hdfs://localhost:9820/target/"
-block|}
-argument_list|)
-expr_stmt|;
-name|fail
-argument_list|(
-name|optionStr
-operator|+
-literal|" should fail if "
-operator|+
-name|optionStrOther
-operator|+
-literal|" is also specified"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IllegalArgumentException
-name|e
-parameter_list|)
-block|{
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
-argument_list|(
-literal|"-diff and -rdiff are mutually exclusive"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-annotation|@
-name|Test
-DECL|method|testDiffOption ()
-specifier|public
-name|void
-name|testDiffOption
-parameter_list|()
-block|{
-name|testSnapshotDiffOption
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testRdiffOption ()
-specifier|public
-name|void
-name|testRdiffOption
-parameter_list|()
-block|{
-name|testSnapshotDiffOption
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
 block|}
 annotation|@
 name|Test

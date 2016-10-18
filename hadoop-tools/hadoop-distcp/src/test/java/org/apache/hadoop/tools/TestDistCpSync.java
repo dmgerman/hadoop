@@ -479,6 +479,8 @@ name|options
 operator|.
 name|setUseDiff
 argument_list|(
+literal|true
+argument_list|,
 literal|"s1"
 argument_list|,
 literal|"s2"
@@ -1981,6 +1983,8 @@ name|options
 operator|.
 name|setUseDiff
 argument_list|(
+literal|true
+argument_list|,
 literal|"s1"
 argument_list|,
 literal|"."

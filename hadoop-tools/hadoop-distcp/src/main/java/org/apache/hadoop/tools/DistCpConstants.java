@@ -225,15 +225,6 @@ name|CONF_LABEL_DIFF
 init|=
 literal|"distcp.copy.diff"
 decl_stmt|;
-DECL|field|CONF_LABEL_RDIFF
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|CONF_LABEL_RDIFF
-init|=
-literal|"distcp.copy.rdiff"
-decl_stmt|;
 DECL|field|CONF_LABEL_BANDWIDTH_MB
 specifier|public
 specifier|static
