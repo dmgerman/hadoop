@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.s3a
+DECL|package|org.apache.hadoop.fs.s3a.scale
 package|package
 name|org
 operator|.
@@ -15,6 +15,8 @@ operator|.
 name|fs
 operator|.
 name|s3a
+operator|.
+name|scale
 package|;
 end_package
 
@@ -26,53 +28,52 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|fs
 operator|.
-name|Configuration
+name|s3a
+operator|.
+name|Constants
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Constants
+operator|.
+name|FAST_UPLOAD_BYTEBUFFER
 import|;
 end_import
 
 begin_comment
-comment|/**  * Run the encryption tests against the Fast output stream.  * This verifies that both file writing paths can encrypt their data.  */
+comment|/**  * Use {@link Constants#FAST_UPLOAD_BYTEBUFFER} for buffering.  */
 end_comment
 
 begin_class
-DECL|class|ITestS3AEncryptionFastOutputStream
+DECL|class|ITestS3AHugeFilesByteBufferBlocks
 specifier|public
 class|class
-name|ITestS3AEncryptionFastOutputStream
+name|ITestS3AHugeFilesByteBufferBlocks
 extends|extends
-name|ITestS3AEncryption
+name|AbstractSTestS3AHugeFiles
 block|{
-annotation|@
-name|Override
-DECL|method|createConfiguration ()
+DECL|method|getBlockOutputBufferName ()
 specifier|protected
-name|Configuration
-name|createConfiguration
+name|String
+name|getBlockOutputBufferName
 parameter_list|()
 block|{
-name|Configuration
-name|conf
-init|=
-name|super
-operator|.
-name|createConfiguration
-argument_list|()
-decl_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|Constants
-operator|.
-name|FAST_UPLOAD
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 return|return
-name|conf
+name|FAST_UPLOAD_BYTEBUFFER
 return|;
 block|}
 block|}

@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *<p/>  * http://www.apache.org/licenses/LICENSE-2.0  *<p/>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *<p/>  * http://www.apache.org/licenses/LICENSE-2.0  *<p/>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -54,7 +54,39 @@ name|org
 operator|.
 name|junit
 operator|.
-name|*
+name|AfterClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
 import|;
 end_import
 
@@ -98,6 +130,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ExecutorService
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|TimeUnit
 import|;
 end_import
@@ -127,7 +171,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Basic unit test for S3A's blocking executor service.  */
+comment|/**  * Basic test for S3A's blocking executor service.  */
 end_comment
 
 begin_class
@@ -220,8 +264,21 @@ specifier|private
 specifier|static
 name|BlockingThreadPoolExecutorService
 name|tpe
+decl_stmt|;
+annotation|@
+name|Rule
+DECL|field|testTimeout
+specifier|public
+name|Timeout
+name|testTimeout
 init|=
-literal|null
+operator|new
+name|Timeout
+argument_list|(
+literal|60
+operator|*
+literal|1000
+argument_list|)
 decl_stmt|;
 annotation|@
 name|AfterClass
@@ -295,13 +352,29 @@ block|{
 name|ensureCreated
 argument_list|()
 expr_stmt|;
-name|int
-name|totalTasks
-init|=
+name|verifyQueueSize
+argument_list|(
+name|tpe
+argument_list|,
 name|NUM_ACTIVE_TASKS
 operator|+
 name|NUM_WAITING_TASKS
-decl_stmt|;
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Verify the size of the executor's queue, by verifying that the first    * submission to block is {@code expectedQueueSize + 1}.    * @param executorService executor service to test    * @param expectedQueueSize size of queue    */
+DECL|method|verifyQueueSize (ExecutorService executorService, int expectedQueueSize)
+specifier|protected
+name|void
+name|verifyQueueSize
+parameter_list|(
+name|ExecutorService
+name|executorService
+parameter_list|,
+name|int
+name|expectedQueueSize
+parameter_list|)
+block|{
 name|StopWatch
 name|stopWatch
 init|=
@@ -321,13 +394,13 @@ literal|0
 init|;
 name|i
 operator|<
-name|totalTasks
+name|expectedQueueSize
 condition|;
 name|i
 operator|++
 control|)
 block|{
-name|tpe
+name|executorService
 operator|.
 name|submit
 argument_list|(
@@ -340,7 +413,7 @@ name|stopWatch
 argument_list|)
 expr_stmt|;
 block|}
-name|tpe
+name|executorService
 operator|.
 name|submit
 argument_list|(
@@ -379,6 +452,45 @@ argument_list|()
 expr_stmt|;
 name|ensureDestroyed
 argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testChainedQueue ()
+specifier|public
+name|void
+name|testChainedQueue
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|ensureCreated
+argument_list|()
+expr_stmt|;
+name|int
+name|size
+init|=
+literal|2
+decl_stmt|;
+name|ExecutorService
+name|wrapper
+init|=
+operator|new
+name|SemaphoredDelegatingExecutor
+argument_list|(
+name|tpe
+argument_list|,
+name|size
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+name|verifyQueueSize
+argument_list|(
+name|wrapper
+argument_list|,
+name|size
+argument_list|)
 expr_stmt|;
 block|}
 comment|// Helper functions, etc.
@@ -593,8 +705,9 @@ argument_list|)
 expr_stmt|;
 name|tpe
 operator|=
-operator|new
 name|BlockingThreadPoolExecutorService
+operator|.
+name|newInstance
 argument_list|(
 name|NUM_ACTIVE_TASKS
 argument_list|,

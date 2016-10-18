@@ -253,6 +253,11 @@ operator|.
 name|teardown
 argument_list|()
 expr_stmt|;
+name|describe
+argument_list|(
+literal|"closing file system"
+argument_list|)
+expr_stmt|;
 name|IOUtils
 operator|.
 name|closeStream

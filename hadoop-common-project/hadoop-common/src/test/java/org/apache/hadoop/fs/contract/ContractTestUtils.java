@@ -3536,11 +3536,15 @@ name|durationNS
 parameter_list|)
 block|{
 return|return
-operator|(
 name|bytes
+operator|/
+operator|(
+literal|1024.0
 operator|*
-literal|1000.0
+literal|1024
 operator|)
+operator|*
+literal|1.0e9
 operator|/
 name|durationNS
 return|;
@@ -5144,6 +5148,20 @@ operator|-
 name|startTime
 return|;
 block|}
+comment|/**      * Intermediate duration of the operation.      * @return how much time has passed since the start (in nanos).      */
+DECL|method|elapsedTime ()
+specifier|public
+name|long
+name|elapsedTime
+parameter_list|()
+block|{
+return|return
+name|now
+argument_list|()
+operator|-
+name|startTime
+return|;
+block|}
 DECL|method|bandwidth (long bytes)
 specifier|public
 name|double
@@ -5163,7 +5181,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**      * Bandwidth as bytes per second.      * @param bytes bytes in      * @return the number of bytes per second this operation timed.      */
+comment|/**      * Bandwidth as bytes per second.      * @param bytes bytes in      * @return the number of bytes per second this operation.      *         0 if duration == 0.      */
 DECL|method|bandwidthBytes (long bytes)
 specifier|public
 name|double
@@ -5173,15 +5191,22 @@ name|long
 name|bytes
 parameter_list|)
 block|{
-return|return
-operator|(
-name|bytes
-operator|*
-literal|1.0
-operator|)
-operator|/
+name|double
+name|duration
+init|=
 name|duration
 argument_list|()
+decl_stmt|;
+return|return
+name|duration
+operator|>
+literal|0
+condition|?
+name|bytes
+operator|/
+name|duration
+else|:
+literal|0
 return|;
 block|}
 comment|/**      * How many nanoseconds per IOP, byte, etc.      * @param operations operations processed in this time period      * @return the nanoseconds it took each byte to be processed      */

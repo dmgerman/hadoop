@@ -34,25 +34,7 @@ name|s3a
 operator|.
 name|Constants
 operator|.
-name|MIN_MULTIPART_THRESHOLD
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|Constants
-operator|.
-name|MULTIPART_SIZE
+name|*
 import|;
 end_import
 
@@ -87,7 +69,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Contract test suite covering S3A integration with DistCp.  */
+comment|/**  * Contract test suite covering S3A integration with DistCp.  * Uses the block output stream, buffered to disk. This is the  * recommended output mechanism for DistCP due to its scalability.  */
 end_comment
 
 begin_class
@@ -105,13 +87,8 @@ specifier|final
 name|long
 name|MULTIPART_SETTING
 init|=
-literal|8
-operator|*
-literal|1024
-operator|*
-literal|1024
+name|MULTIPART_MIN_SIZE
 decl_stmt|;
-comment|// 8 MB
 annotation|@
 name|Override
 DECL|method|createConfiguration ()
@@ -132,18 +109,27 @@ name|newConf
 operator|.
 name|setLong
 argument_list|(
-name|MIN_MULTIPART_THRESHOLD
+name|MULTIPART_SIZE
 argument_list|,
 name|MULTIPART_SETTING
 argument_list|)
 expr_stmt|;
 name|newConf
 operator|.
-name|setLong
+name|setBoolean
 argument_list|(
-name|MULTIPART_SIZE
+name|FAST_UPLOAD
 argument_list|,
-name|MULTIPART_SETTING
+literal|true
+argument_list|)
+expr_stmt|;
+name|newConf
+operator|.
+name|set
+argument_list|(
+name|FAST_UPLOAD_BUFFER
+argument_list|,
+name|FAST_UPLOAD_BUFFER_DISK
 argument_list|)
 expr_stmt|;
 return|return

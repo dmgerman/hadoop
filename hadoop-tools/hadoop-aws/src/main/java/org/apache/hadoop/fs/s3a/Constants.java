@@ -70,6 +70,20 @@ specifier|private
 name|Constants
 parameter_list|()
 block|{   }
+comment|/** The minimum multipart size which S3 supports. */
+DECL|field|MULTIPART_MIN_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|MULTIPART_MIN_SIZE
+init|=
+literal|5
+operator|*
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
 comment|// s3 access key
 DECL|field|ACCESS_KEY
 specifier|public
@@ -459,7 +473,7 @@ name|BUFFER_DIR
 init|=
 literal|"fs.s3a.buffer.dir"
 decl_stmt|;
-comment|// should we upload directly from memory rather than using a file buffer
+comment|// switch to the fast block-by-block upload mechanism
 DECL|field|FAST_UPLOAD
 specifier|public
 specifier|static
@@ -479,6 +493,8 @@ init|=
 literal|false
 decl_stmt|;
 comment|//initial size of memory buffer for a fast upload
+annotation|@
+name|Deprecated
 DECL|field|FAST_BUFFER_SIZE
 specifier|public
 specifier|static
@@ -498,6 +514,104 @@ init|=
 literal|1048576
 decl_stmt|;
 comment|//1MB
+comment|/**    * What buffer to use.    * Default is {@link #FAST_UPLOAD_BUFFER_DISK}    * Value: {@value}    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|FAST_UPLOAD_BUFFER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FAST_UPLOAD_BUFFER
+init|=
+literal|"fs.s3a.fast.upload.buffer"
+decl_stmt|;
+comment|/**    * Buffer blocks to disk: {@value}.    * Capacity is limited to available disk space.    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|FAST_UPLOAD_BUFFER_DISK
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FAST_UPLOAD_BUFFER_DISK
+init|=
+literal|"disk"
+decl_stmt|;
+comment|/**    * Use an in-memory array. Fast but will run of heap rapidly: {@value}.    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|FAST_UPLOAD_BUFFER_ARRAY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FAST_UPLOAD_BUFFER_ARRAY
+init|=
+literal|"array"
+decl_stmt|;
+comment|/**    * Use a byte buffer. May be more memory efficient than the    * {@link #FAST_UPLOAD_BUFFER_ARRAY}: {@value}.    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|FAST_UPLOAD_BYTEBUFFER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FAST_UPLOAD_BYTEBUFFER
+init|=
+literal|"bytebuffer"
+decl_stmt|;
+comment|/**    * Default buffer option: {@value}.    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|DEFAULT_FAST_UPLOAD_BUFFER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_FAST_UPLOAD_BUFFER
+init|=
+name|FAST_UPLOAD_BUFFER_DISK
+decl_stmt|;
+comment|/**    * Maximum Number of blocks a single output stream can have    * active (uploading, or queued to the central FileSystem    * instance's pool of queued operations.    * This stops a single stream overloading the shared thread pool.    * {@value}    *<p>    * Default is {@link #DEFAULT_FAST_UPLOAD_ACTIVE_BLOCKS}    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|FAST_UPLOAD_ACTIVE_BLOCKS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FAST_UPLOAD_ACTIVE_BLOCKS
+init|=
+literal|"fs.s3a.fast.upload.active.blocks"
+decl_stmt|;
+comment|/**    * Limit of queued block upload operations before writes    * block. Value: {@value}    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|DEFAULT_FAST_UPLOAD_ACTIVE_BLOCKS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_FAST_UPLOAD_ACTIVE_BLOCKS
+init|=
+literal|4
+decl_stmt|;
 comment|// Private | PublicRead | PublicReadWrite | AuthenticatedRead |
 comment|// LogDeliveryWrite | BucketOwnerRead | BucketOwnerFullControl
 DECL|field|CANNED_ACL
@@ -554,7 +668,7 @@ specifier|final
 name|long
 name|DEFAULT_PURGE_EXISTING_MULTIPART_AGE
 init|=
-literal|14400
+literal|86400
 decl_stmt|;
 comment|// s3 server-side encryption
 DECL|field|SERVER_SIDE_ENCRYPTION_ALGORITHM
@@ -751,6 +865,20 @@ operator|.
 name|DefaultS3ClientFactory
 operator|.
 name|class
+decl_stmt|;
+comment|/**    * Maximum number of partitions in a multipart upload: {@value}.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|field|MAX_MULTIPART_COUNT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|MAX_MULTIPART_COUNT
+init|=
+literal|10000
 decl_stmt|;
 block|}
 end_class

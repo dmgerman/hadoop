@@ -302,12 +302,36 @@ argument_list|,
 literal|"Object put/multipart upload count"
 argument_list|)
 block|,
+DECL|enumConstant|OBJECT_PUT_REQUESTS_COMPLETED
+name|OBJECT_PUT_REQUESTS_COMPLETED
+argument_list|(
+literal|"object_put_requests_completed"
+argument_list|,
+literal|"Object put/multipart upload completed count"
+argument_list|)
+block|,
+DECL|enumConstant|OBJECT_PUT_REQUESTS_ACTIVE
+name|OBJECT_PUT_REQUESTS_ACTIVE
+argument_list|(
+literal|"object_put_requests_active"
+argument_list|,
+literal|"Current number of active put requests"
+argument_list|)
+block|,
 DECL|enumConstant|OBJECT_PUT_BYTES
 name|OBJECT_PUT_BYTES
 argument_list|(
 literal|"object_put_bytes"
 argument_list|,
 literal|"number of bytes uploaded"
+argument_list|)
+block|,
+DECL|enumConstant|OBJECT_PUT_BYTES_PENDING
+name|OBJECT_PUT_BYTES_PENDING
+argument_list|(
+literal|"object_put_bytes_pending"
+argument_list|,
+literal|"number of bytes queued for upload/being actively uploaded"
 argument_list|)
 block|,
 DECL|enumConstant|STREAM_ABORTED
@@ -321,7 +345,7 @@ block|,
 DECL|enumConstant|STREAM_BACKWARD_SEEK_OPERATIONS
 name|STREAM_BACKWARD_SEEK_OPERATIONS
 argument_list|(
-literal|"stream_backward_seek_pperations"
+literal|"stream_backward_seek_operations"
 argument_list|,
 literal|"Number of executed seek operations which went backwards in a stream"
 argument_list|)
@@ -436,6 +460,86 @@ argument_list|(
 literal|"stream_bytes_discarded_in_abort"
 argument_list|,
 literal|"Count of bytes discarded by aborting the stream"
+argument_list|)
+block|,
+DECL|enumConstant|STREAM_WRITE_FAILURES
+name|STREAM_WRITE_FAILURES
+argument_list|(
+literal|"stream_write_failures"
+argument_list|,
+literal|"Count of stream write failures reported"
+argument_list|)
+block|,
+DECL|enumConstant|STREAM_WRITE_BLOCK_UPLOADS
+name|STREAM_WRITE_BLOCK_UPLOADS
+argument_list|(
+literal|"stream_write_block_uploads"
+argument_list|,
+literal|"Count of block/partition uploads completed"
+argument_list|)
+block|,
+DECL|enumConstant|STREAM_WRITE_BLOCK_UPLOADS_ACTIVE
+name|STREAM_WRITE_BLOCK_UPLOADS_ACTIVE
+argument_list|(
+literal|"stream_write_block_uploads_active"
+argument_list|,
+literal|"Count of block/partition uploads completed"
+argument_list|)
+block|,
+DECL|enumConstant|STREAM_WRITE_BLOCK_UPLOADS_COMMITTED
+name|STREAM_WRITE_BLOCK_UPLOADS_COMMITTED
+argument_list|(
+literal|"stream_write_block_uploads_committed"
+argument_list|,
+literal|"Count of number of block uploads committed"
+argument_list|)
+block|,
+DECL|enumConstant|STREAM_WRITE_BLOCK_UPLOADS_ABORTED
+name|STREAM_WRITE_BLOCK_UPLOADS_ABORTED
+argument_list|(
+literal|"stream_write_block_uploads_aborted"
+argument_list|,
+literal|"Count of number of block uploads aborted"
+argument_list|)
+block|,
+DECL|enumConstant|STREAM_WRITE_BLOCK_UPLOADS_PENDING
+name|STREAM_WRITE_BLOCK_UPLOADS_PENDING
+argument_list|(
+literal|"stream_write_block_uploads_pending"
+argument_list|,
+literal|"Gauge of block/partitions uploads queued to be written"
+argument_list|)
+block|,
+DECL|enumConstant|STREAM_WRITE_BLOCK_UPLOADS_DATA_PENDING
+name|STREAM_WRITE_BLOCK_UPLOADS_DATA_PENDING
+argument_list|(
+literal|"stream_write_block_uploads_data_pending"
+argument_list|,
+literal|"Gauge of block/partitions data uploads queued to be written"
+argument_list|)
+block|,
+DECL|enumConstant|STREAM_WRITE_TOTAL_TIME
+name|STREAM_WRITE_TOTAL_TIME
+argument_list|(
+literal|"stream_write_total_time"
+argument_list|,
+literal|"Count of total time taken for uploads to complete"
+argument_list|)
+block|,
+DECL|enumConstant|STREAM_WRITE_TOTAL_DATA
+name|STREAM_WRITE_TOTAL_DATA
+argument_list|(
+literal|"stream_write_total_data"
+argument_list|,
+literal|"Count of total data uploaded in block output"
+argument_list|)
+block|,
+DECL|enumConstant|STREAM_WRITE_QUEUE_DURATION
+name|STREAM_WRITE_QUEUE_DURATION
+argument_list|(
+literal|"stream_write_queue_duration"
+argument_list|,
+literal|"Total queue duration of all block uploads"
 argument_list|)
 block|;
 DECL|field|SYMBOL_MAP

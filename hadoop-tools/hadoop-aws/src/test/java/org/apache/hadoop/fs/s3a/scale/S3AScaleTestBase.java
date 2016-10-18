@@ -58,6 +58,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|contract
 operator|.
 name|ContractTestUtils
@@ -77,20 +91,6 @@ operator|.
 name|s3a
 operator|.
 name|S3AFileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Path
 import|;
 end_import
 
@@ -154,7 +154,23 @@ name|fs
 operator|.
 name|s3a
 operator|.
-name|S3ATestUtils
+name|Statistic
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|lib
+operator|.
+name|MutableGaugeLong
 import|;
 end_import
 
@@ -184,7 +200,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Before
+name|Assume
 import|;
 end_import
 
@@ -194,7 +210,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|BeforeClass
+name|Before
 import|;
 end_import
 
@@ -262,6 +278,24 @@ name|InputStream
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
 comment|/**  * Base class for scale tests; here is where the common scale configuration  * keys are defined.  */
 end_comment
@@ -280,6 +314,7 @@ annotation|@
 name|Rule
 DECL|field|methodName
 specifier|public
+specifier|final
 name|TestName
 name|methodName
 init|=
@@ -294,21 +329,13 @@ specifier|public
 name|Timeout
 name|testTimeout
 init|=
-operator|new
-name|Timeout
-argument_list|(
-literal|30
-operator|*
-literal|60
-operator|*
-literal|1000
-argument_list|)
+name|createTestTimeout
+argument_list|()
 decl_stmt|;
 annotation|@
-name|BeforeClass
+name|Before
 DECL|method|nameThread ()
 specifier|public
-specifier|static
 name|void
 name|nameThread
 parameter_list|()
@@ -324,114 +351,25 @@ literal|"JUnit"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The number of operations to perform: {@value}.    */
-DECL|field|KEY_OPERATION_COUNT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|KEY_OPERATION_COUNT
-init|=
-name|SCALE_TEST
-operator|+
-literal|"operation.count"
-decl_stmt|;
-comment|/**    * The number of directory operations to perform: {@value}.    */
-DECL|field|KEY_DIRECTORY_COUNT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|KEY_DIRECTORY_COUNT
-init|=
-name|SCALE_TEST
-operator|+
-literal|"directory.count"
-decl_stmt|;
-comment|/**    * The readahead buffer: {@value}.    */
-DECL|field|KEY_READ_BUFFER_SIZE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|KEY_READ_BUFFER_SIZE
-init|=
-name|S3A_SCALE_TEST
-operator|+
-literal|"read.buffer.size"
-decl_stmt|;
-DECL|field|DEFAULT_READ_BUFFER_SIZE
+DECL|field|_1KB
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DEFAULT_READ_BUFFER_SIZE
+name|_1KB
 init|=
-literal|16384
+literal|1024
 decl_stmt|;
-comment|/**    * Key for a multi MB test file: {@value}.    */
-DECL|field|KEY_CSVTEST_FILE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|KEY_CSVTEST_FILE
-init|=
-name|S3A_SCALE_TEST
-operator|+
-literal|"csvfile"
-decl_stmt|;
-comment|/**    * Default path for the multi MB test file: {@value}.    */
-DECL|field|DEFAULT_CSVTEST_FILE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_CSVTEST_FILE
-init|=
-literal|"s3a://landsat-pds/scene_list.gz"
-decl_stmt|;
-comment|/**    * Endpoint for the S3 CSV/scale tests. This defaults to    * being us-east.    */
-DECL|field|KEY_CSVTEST_ENDPOINT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|KEY_CSVTEST_ENDPOINT
-init|=
-name|S3A_SCALE_TEST
-operator|+
-literal|"csvfile.endpoint"
-decl_stmt|;
-comment|/**    * Endpoint for the S3 CSV/scale tests. This defaults to    * being us-east.    */
-DECL|field|DEFAULT_CSVTEST_ENDPOINT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_CSVTEST_ENDPOINT
-init|=
-literal|"s3.amazonaws.com"
-decl_stmt|;
-comment|/**    * The default number of operations to perform: {@value}.    */
-DECL|field|DEFAULT_OPERATION_COUNT
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|DEFAULT_OPERATION_COUNT
-init|=
-literal|2005
-decl_stmt|;
-comment|/**    * Default number of directories to create when performing    * directory performance/scale tests.    */
-DECL|field|DEFAULT_DIRECTORY_COUNT
+DECL|field|_1MB
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DEFAULT_DIRECTORY_COUNT
+name|_1MB
 init|=
-literal|2
+name|_1KB
+operator|*
+name|_1KB
 decl_stmt|;
 DECL|field|fs
 specifier|protected
@@ -459,6 +397,11 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|enabled
+specifier|private
+name|boolean
+name|enabled
+decl_stmt|;
 comment|/**    * Configuration generator. May be overridden to inject    * some custom options.    * @return a configuration with which to create FS instances    */
 DECL|method|createConfiguration ()
 specifier|protected
@@ -483,6 +426,7 @@ return|return
 name|conf
 return|;
 block|}
+comment|/**    * Setup. This triggers creation of the configuration.    */
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -493,9 +437,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|conf
-operator|=
-name|createConfiguration
+name|demandCreateConfiguration
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -508,15 +450,65 @@ name|getOperationCount
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// multipart purges are disabled on the scale tests
 name|fs
 operator|=
-name|S3ATestUtils
-operator|.
 name|createTestFileSystem
 argument_list|(
 name|conf
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
+comment|// check for the test being enabled
+name|enabled
+operator|=
+name|getTestPropertyBool
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|,
+name|KEY_SCALE_TESTS_ENABLED
+argument_list|,
+name|DEFAULT_SCALE_TESTS_ENABLED
+argument_list|)
+expr_stmt|;
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+literal|"Scale test disabled: to enable set property "
+operator|+
+name|KEY_SCALE_TESTS_ENABLED
+argument_list|,
+name|enabled
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create the configuration if it is not already set up.    * @return the configuration.    */
+DECL|method|demandCreateConfiguration ()
+specifier|private
+specifier|synchronized
+name|Configuration
+name|demandCreateConfiguration
+parameter_list|()
+block|{
+if|if
+condition|(
+name|conf
+operator|==
+literal|null
+condition|)
+block|{
+name|conf
+operator|=
+name|createConfiguration
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|conf
+return|;
 block|}
 annotation|@
 name|After
@@ -599,7 +591,47 @@ name|DEFAULT_OPERATION_COUNT
 argument_list|)
 return|;
 block|}
-comment|/**    * Describe a test in the logs    * @param text text to print    * @param args arguments to format in the printing    */
+comment|/**    * Create the timeout for tests. Some large tests may need a larger value.    * @return the test timeout to use    */
+DECL|method|createTestTimeout ()
+specifier|protected
+name|Timeout
+name|createTestTimeout
+parameter_list|()
+block|{
+name|demandCreateConfiguration
+argument_list|()
+expr_stmt|;
+return|return
+operator|new
+name|Timeout
+argument_list|(
+name|getTestTimeoutSeconds
+argument_list|()
+operator|*
+literal|1000
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the test timeout in seconds.    * @return the test timeout as set in system properties or the default.    */
+DECL|method|getTestTimeoutSeconds ()
+specifier|protected
+specifier|static
+name|int
+name|getTestTimeoutSeconds
+parameter_list|()
+block|{
+return|return
+name|getTestPropertyInt
+argument_list|(
+literal|null
+argument_list|,
+name|KEY_TEST_TIMEOUT
+argument_list|,
+name|DEFAULT_TEST_TIMEOUT
+argument_list|)
+return|;
+block|}
+comment|/**    * Describe a test in the logs.    * @param text text to print    * @param args arguments to format in the printing    */
 DECL|method|describe (String text, Object... args)
 specifier|protected
 name|void
@@ -693,6 +725,96 @@ return|return
 literal|null
 return|;
 block|}
+block|}
+comment|/**    * Get the gauge value of a statistic. Raises an assertion if    * there is no such gauge.    * @param statistic statistic to look up    * @return the value.    */
+DECL|method|gaugeValue (Statistic statistic)
+specifier|public
+name|long
+name|gaugeValue
+parameter_list|(
+name|Statistic
+name|statistic
+parameter_list|)
+block|{
+name|S3AInstrumentation
+name|instrumentation
+init|=
+name|fs
+operator|.
+name|getInstrumentation
+argument_list|()
+decl_stmt|;
+name|MutableGaugeLong
+name|gauge
+init|=
+name|instrumentation
+operator|.
+name|lookupGauge
+argument_list|(
+name|statistic
+operator|.
+name|getSymbol
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"No gauge "
+operator|+
+name|statistic
+operator|+
+literal|" in "
+operator|+
+name|instrumentation
+operator|.
+name|dump
+argument_list|(
+literal|""
+argument_list|,
+literal|" = "
+argument_list|,
+literal|"\n"
+argument_list|,
+literal|true
+argument_list|)
+argument_list|,
+name|gauge
+argument_list|)
+expr_stmt|;
+return|return
+name|gauge
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|isEnabled ()
+specifier|protected
+name|boolean
+name|isEnabled
+parameter_list|()
+block|{
+return|return
+name|enabled
+return|;
+block|}
+comment|/**    * Flag to indicate that this test is being used sequentially. This    * is used by some of the scale tests to validate test time expectations.    * @return true if the build indicates this test is being run in parallel.    */
+DECL|method|isParallelExecution ()
+specifier|protected
+name|boolean
+name|isParallelExecution
+parameter_list|()
+block|{
+return|return
+name|Boolean
+operator|.
+name|getBoolean
+argument_list|(
+name|S3ATestConstants
+operator|.
+name|KEY_PARALLEL_TEST_EXECUTION
+argument_list|)
+return|;
 block|}
 block|}
 end_class
