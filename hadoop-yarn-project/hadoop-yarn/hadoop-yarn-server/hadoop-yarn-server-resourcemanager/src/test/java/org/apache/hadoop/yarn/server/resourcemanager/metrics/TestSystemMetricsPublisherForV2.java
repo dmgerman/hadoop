@@ -1584,6 +1584,8 @@ argument_list|,
 name|ApplicationMetricsConstants
 operator|.
 name|CREATED_EVENT_TYPE
+argument_list|,
+literal|6
 argument_list|)
 expr_stmt|;
 block|}
@@ -1789,6 +1791,8 @@ argument_list|,
 name|AppAttemptMetricsConstants
 operator|.
 name|REGISTERED_EVENT_TYPE
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -1978,6 +1982,8 @@ argument_list|,
 name|ContainerMetricsConstants
 operator|.
 name|CREATED_IN_RM_EVENT_TYPE
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -2030,7 +2036,7 @@ return|return
 name|app
 return|;
 block|}
-DECL|method|verifyEntity (File entityFile, long expectedEvents, String eventForCreatedTime)
+DECL|method|verifyEntity (File entityFile, long expectedEvents, String eventForCreatedTime, long expectedMetrics)
 specifier|private
 specifier|static
 name|void
@@ -2044,6 +2050,9 @@ name|expectedEvents
 parameter_list|,
 name|String
 name|eventForCreatedTime
+parameter_list|,
+name|long
+name|expectedMetrics
 parameter_list|)
 throws|throws
 name|IOException
@@ -2058,6 +2067,11 @@ name|strLine
 decl_stmt|;
 name|long
 name|count
+init|=
+literal|0
+decl_stmt|;
+name|long
+name|metricsCount
 init|=
 literal|0
 decl_stmt|;
@@ -2119,6 +2133,16 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|metricsCount
+operator|=
+name|entity
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|size
+argument_list|()
+expr_stmt|;
 for|for
 control|(
 name|TimelineEvent
@@ -2178,9 +2202,22 @@ name|expectedEvents
 operator|+
 literal|" events to be published"
 argument_list|,
-name|count
-argument_list|,
 name|expectedEvents
+argument_list|,
+name|count
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Expected "
+operator|+
+name|expectedMetrics
+operator|+
+literal|" metrics is incorrect"
+argument_list|,
+name|expectedMetrics
+argument_list|,
+name|metricsCount
 argument_list|)
 expr_stmt|;
 block|}
@@ -2475,7 +2512,14 @@ argument_list|(
 operator|new
 name|RMAppMetrics
 argument_list|(
-literal|null
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
 argument_list|,
 literal|0
 argument_list|,
