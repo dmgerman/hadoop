@@ -164,6 +164,72 @@ name|NumberReplicas
 operator|.
 name|StoredReplicaState
 operator|.
+name|MAINTENANCE_FOR_READ
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|NumberReplicas
+operator|.
+name|StoredReplicaState
+operator|.
+name|MAINTENANCE_NOT_FOR_READ
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|NumberReplicas
+operator|.
+name|StoredReplicaState
+operator|.
+name|READONLY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|NumberReplicas
+operator|.
+name|StoredReplicaState
+operator|.
 name|REDUNDANT
 import|;
 end_import
@@ -187,28 +253,6 @@ operator|.
 name|StoredReplicaState
 operator|.
 name|STALESTORAGE
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|NumberReplicas
-operator|.
-name|StoredReplicaState
-operator|.
-name|READONLY
 import|;
 end_import
 
@@ -247,6 +291,18 @@ name|DECOMMISSIONING
 block|,
 DECL|enumConstant|DECOMMISSIONED
 name|DECOMMISSIONED
+block|,
+comment|// We need live ENTERING_MAINTENANCE nodes to continue
+comment|// to serve read request while it is being transitioned to live
+comment|// IN_MAINTENANCE if these are the only replicas left.
+comment|// MAINTENANCE_NOT_FOR_READ == maintenanceReplicas -
+comment|// Live ENTERING_MAINTENANCE.
+DECL|enumConstant|MAINTENANCE_NOT_FOR_READ
+name|MAINTENANCE_NOT_FOR_READ
+block|,
+comment|// Live ENTERING_MAINTENANCE nodes to serve read requests.
+DECL|enumConstant|MAINTENANCE_FOR_READ
+name|MAINTENANCE_FOR_READ
 block|,
 DECL|enumConstant|CORRUPT
 name|CORRUPT
@@ -428,6 +484,75 @@ operator|)
 name|get
 argument_list|(
 name|REDUNDANT
+argument_list|)
+return|;
+block|}
+DECL|method|maintenanceNotForReadReplicas ()
+specifier|public
+name|int
+name|maintenanceNotForReadReplicas
+parameter_list|()
+block|{
+return|return
+operator|(
+name|int
+operator|)
+name|get
+argument_list|(
+name|MAINTENANCE_NOT_FOR_READ
+argument_list|)
+return|;
+block|}
+DECL|method|maintenanceReplicas ()
+specifier|public
+name|int
+name|maintenanceReplicas
+parameter_list|()
+block|{
+return|return
+call|(
+name|int
+call|)
+argument_list|(
+name|get
+argument_list|(
+name|MAINTENANCE_NOT_FOR_READ
+argument_list|)
+operator|+
+name|get
+argument_list|(
+name|MAINTENANCE_FOR_READ
+argument_list|)
+argument_list|)
+return|;
+block|}
+DECL|method|outOfServiceReplicas ()
+specifier|public
+name|int
+name|outOfServiceReplicas
+parameter_list|()
+block|{
+return|return
+name|maintenanceReplicas
+argument_list|()
+operator|+
+name|decommissionedAndDecommissioning
+argument_list|()
+return|;
+block|}
+DECL|method|liveEnteringMaintenanceReplicas ()
+specifier|public
+name|int
+name|liveEnteringMaintenanceReplicas
+parameter_list|()
+block|{
+return|return
+operator|(
+name|int
+operator|)
+name|get
+argument_list|(
+name|MAINTENANCE_FOR_READ
 argument_list|)
 return|;
 block|}

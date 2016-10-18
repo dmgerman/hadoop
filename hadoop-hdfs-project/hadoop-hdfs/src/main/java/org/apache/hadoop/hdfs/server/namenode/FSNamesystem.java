@@ -25458,11 +25458,13 @@ literal|"underReplicatedBlocks"
 argument_list|,
 name|node
 operator|.
-name|decommissioningStatus
+name|getLeavingServiceStatus
+argument_list|()
 operator|.
 name|getUnderReplicatedBlocks
 argument_list|()
 argument_list|)
+comment|// TODO use another property name for outOfServiceOnlyReplicas.
 decl|.
 name|put
 argument_list|(
@@ -25470,9 +25472,10 @@ literal|"decommissionOnlyReplicas"
 argument_list|,
 name|node
 operator|.
-name|decommissioningStatus
+name|getLeavingServiceStatus
+argument_list|()
 operator|.
-name|getDecommissionOnlyReplicas
+name|getOutOfServiceOnlyReplicas
 argument_list|()
 argument_list|)
 decl|.
@@ -25482,7 +25485,8 @@ literal|"underReplicateInOpenFiles"
 argument_list|,
 name|node
 operator|.
-name|decommissioningStatus
+name|getLeavingServiceStatus
+argument_list|()
 operator|.
 name|getUnderReplicatedInOpenFiles
 argument_list|()
@@ -25897,14 +25901,10 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+operator|!
 name|node
 operator|.
-name|isDecommissionInProgress
-argument_list|()
-operator|||
-name|node
-operator|.
-name|isDecommissioned
+name|isInService
 argument_list|()
 condition|)
 block|{

@@ -1521,7 +1521,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Keeps information related to the blocks stored in the Hadoop cluster.  */
+comment|/**  * Keeps information related to the blocks stored in the Hadoop cluster.  * For block state management, it tries to maintain the  safety  * property of "# of live replicas == # of expected redundancy" under  * any events such as decommission, namenode failover, datanode failure.  *  * The motivation of maintenance mode is to allow admins quickly repair nodes  * without paying the cost of decommission. Thus with maintenance mode,  * # of live replicas doesn't have to be equal to # of expected redundancy.  * If any of the replica is in maintenance mode, the safety property  * is extended as follows. These property still apply for the case of zero  * maintenance replicas, thus we can use these safe property for all scenarios.  * a. # of live replicas>= # of min replication for maintenance.  * b. # of live replicas<= # of expected redundancy.  * c. # of live replicas and maintenance replicas>= # of expected redundancy.  *  * For regular replication, # of min live replicas for maintenance is determined  * by DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_KEY. This number has to<=  * DFS_NAMENODE_REPLICATION_MIN_KEY.  * For erasure encoding, # of min live replicas for maintenance is  * BlockInfoStriped#getRealDataBlockNum.  *  * Another safety property is to satisfy the block placement policy. While the  * policy is configurable, the replicas the policy is applied to are the live  * replicas + maintenance replicas.  */
 end_comment
 
 begin_class
@@ -2085,6 +2085,13 @@ specifier|final
 name|BlockIdManager
 name|blockIdManager
 decl_stmt|;
+comment|/** Minimum live replicas needed for the datanode to be transitioned    * from ENTERING_MAINTENANCE to IN_MAINTENANCE.    */
+DECL|field|minReplicationToBeInMaintenance
+specifier|private
+specifier|final
+name|short
+name|minReplicationToBeInMaintenance
+decl_stmt|;
 DECL|method|BlockManager (final Namesystem namesystem, boolean haEnabled, final Configuration conf)
 specifier|public
 name|BlockManager
@@ -2608,6 +2615,90 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BALANCER_GETBLOCKS_MIN_BLOCK_SIZE_DEFAULT
 argument_list|)
+expr_stmt|;
+specifier|final
+name|int
+name|minMaintenanceR
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_DEFAULT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|minMaintenanceR
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unexpected configuration parameters: "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_KEY
+operator|+
+literal|" = "
+operator|+
+name|minMaintenanceR
+operator|+
+literal|"< 0"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|minMaintenanceR
+operator|>
+name|minR
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unexpected configuration parameters: "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_KEY
+operator|+
+literal|" = "
+operator|+
+name|minMaintenanceR
+operator|+
+literal|"> "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_MIN_KEY
+operator|+
+literal|" = "
+operator|+
+name|minR
+argument_list|)
+throw|;
+block|}
+name|this
+operator|.
+name|minReplicationToBeInMaintenance
+operator|=
+operator|(
+name|short
+operator|)
+name|minMaintenanceR
 expr_stmt|;
 name|this
 operator|.
@@ -4185,6 +4276,52 @@ name|minReplication
 return|;
 block|}
 block|}
+DECL|method|getMinReplicationToBeInMaintenance ()
+specifier|public
+name|short
+name|getMinReplicationToBeInMaintenance
+parameter_list|()
+block|{
+return|return
+name|minReplicationToBeInMaintenance
+return|;
+block|}
+DECL|method|getMinMaintenanceStorageNum (BlockInfo block)
+specifier|private
+name|short
+name|getMinMaintenanceStorageNum
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|)
+block|{
+if|if
+condition|(
+name|block
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|BlockInfoStriped
+operator|)
+name|block
+operator|)
+operator|.
+name|getRealDataBlockNum
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+name|minReplicationToBeInMaintenance
+return|;
+block|}
+block|}
 DECL|method|hasMinStorage (BlockInfo block)
 specifier|public
 name|boolean
@@ -4878,10 +5015,10 @@ argument_list|()
 argument_list|,
 name|replicas
 operator|.
-name|decommissionedAndDecommissioning
+name|outOfServiceReplicas
 argument_list|()
 argument_list|,
-name|getRedundancy
+name|getExpectedRedundancyNum
 argument_list|(
 name|lastBlock
 argument_list|)
@@ -5694,7 +5831,6 @@ operator|==
 name|numNodes
 expr_stmt|;
 block|}
-specifier|final
 name|int
 name|numMachines
 init|=
@@ -5706,6 +5842,13 @@ name|numNodes
 operator|-
 name|numCorruptReplicas
 decl_stmt|;
+name|numMachines
+operator|-=
+name|numReplicas
+operator|.
+name|maintenanceNotForReadReplicas
+argument_list|()
+expr_stmt|;
 name|DatanodeStorageInfo
 index|[]
 name|machines
@@ -5785,6 +5928,39 @@ operator|.
 name|FAILED
 condition|)
 block|{
+specifier|final
+name|DatanodeDescriptor
+name|d
+init|=
+name|storage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+decl_stmt|;
+comment|// Don't pick IN_MAINTENANCE or dead ENTERING_MAINTENANCE states.
+if|if
+condition|(
+name|d
+operator|.
+name|isInMaintenance
+argument_list|()
+operator|||
+operator|(
+name|d
+operator|.
+name|isEnteringMaintenance
+argument_list|()
+operator|&&
+operator|!
+name|d
+operator|.
+name|isAlive
+argument_list|()
+operator|)
+condition|)
+block|{
+continue|continue;
+block|}
 if|if
 condition|(
 name|noCorrupt
@@ -5814,15 +5990,6 @@ expr_stmt|;
 block|}
 else|else
 block|{
-specifier|final
-name|DatanodeDescriptor
-name|d
-init|=
-name|storage
-operator|.
-name|getDatanodeDescriptor
-argument_list|()
-decl_stmt|;
 specifier|final
 name|boolean
 name|replicaCorrupt
@@ -8618,7 +8785,9 @@ return|return
 name|scheduledWork
 return|;
 block|}
-DECL|method|hasEnoughEffectiveReplicas (BlockInfo block, NumberReplicas numReplicas, int pendingReplicaNum, int required)
+comment|// Check if the number of live + pending replicas satisfies
+comment|// the expected redundancy.
+DECL|method|hasEnoughEffectiveReplicas (BlockInfo block, NumberReplicas numReplicas, int pendingReplicaNum)
 name|boolean
 name|hasEnoughEffectiveReplicas
 parameter_list|(
@@ -8630,11 +8799,18 @@ name|numReplicas
 parameter_list|,
 name|int
 name|pendingReplicaNum
-parameter_list|,
-name|int
-name|required
 parameter_list|)
 block|{
+name|int
+name|required
+init|=
+name|getExpectedLiveRedundancyNum
+argument_list|(
+name|block
+argument_list|,
+name|numReplicas
+argument_list|)
+decl_stmt|;
 name|int
 name|numEffectiveReplicas
 init|=
@@ -8705,14 +8881,6 @@ return|return
 literal|null
 return|;
 block|}
-name|short
-name|requiredRedundancy
-init|=
-name|getExpectedRedundancyNum
-argument_list|(
-name|block
-argument_list|)
-decl_stmt|;
 comment|// get a source data-node
 name|List
 argument_list|<
@@ -8772,6 +8940,16 @@ argument_list|,
 name|liveBlockIndices
 argument_list|,
 name|priority
+argument_list|)
+decl_stmt|;
+name|short
+name|requiredRedundancy
+init|=
+name|getExpectedLiveRedundancyNum
+argument_list|(
+name|block
+argument_list|,
+name|numReplicas
 argument_list|)
 decl_stmt|;
 if|if
@@ -8837,8 +9015,6 @@ argument_list|,
 name|numReplicas
 argument_list|,
 name|pendingNum
-argument_list|,
-name|requiredRedundancy
 argument_list|)
 condition|)
 block|{
@@ -8938,6 +9114,11 @@ name|numReplicas
 operator|.
 name|decommissioning
 argument_list|()
+operator|-
+name|numReplicas
+operator|.
+name|liveEnteringMaintenanceReplicas
+argument_list|()
 operator|>
 literal|0
 condition|)
@@ -8949,6 +9130,11 @@ operator|-
 name|numReplicas
 operator|.
 name|decommissioning
+argument_list|()
+operator|-
+name|numReplicas
+operator|.
+name|liveEnteringMaintenanceReplicas
 argument_list|()
 expr_stmt|;
 block|}
@@ -9183,21 +9369,23 @@ literal|false
 return|;
 block|}
 comment|// do not schedule more if enough replicas is already pending
-specifier|final
-name|short
-name|requiredRedundancy
-init|=
-name|getExpectedRedundancyNum
-argument_list|(
-name|block
-argument_list|)
-decl_stmt|;
 name|NumberReplicas
 name|numReplicas
 init|=
 name|countNodes
 argument_list|(
 name|block
+argument_list|)
+decl_stmt|;
+specifier|final
+name|short
+name|requiredRedundancy
+init|=
+name|getExpectedLiveRedundancyNum
+argument_list|(
+name|block
+argument_list|,
+name|numReplicas
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -9220,8 +9408,6 @@ argument_list|,
 name|numReplicas
 argument_list|,
 name|pendingNum
-argument_list|,
-name|requiredRedundancy
 argument_list|)
 condition|)
 block|{
@@ -9542,7 +9728,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Choose target datanodes for creating a new block.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      Set, long, List, BlockStoragePolicy)    */
+comment|/**    * Choose target datanodes for creating a new block.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      Set, long, List, BlockStoragePolicy, EnumSet)    */
 DECL|method|chooseTarget4NewBlock (final String src, final int numOfReplicas, final Node client, final Set<Node> excludedNodes, final long blocksize, final List<String> favoredNodes, final byte storagePolicyID, final boolean isStriped, final EnumSet<AddBlockFlag> flags)
 specifier|public
 name|DatanodeStorageInfo
@@ -9993,7 +10179,8 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|// never use already decommissioned nodes or unknown state replicas
+comment|// never use already decommissioned nodes, maintenance node not
+comment|// suitable for read or unknown state replicas.
 if|if
 condition|(
 name|state
@@ -10005,6 +10192,12 @@ operator|==
 name|StoredReplicaState
 operator|.
 name|DECOMMISSIONED
+operator|||
+name|state
+operator|==
+name|StoredReplicaState
+operator|.
+name|MAINTENANCE_NOT_FOR_READ
 condition|)
 block|{
 continue|continue;
@@ -10017,11 +10210,19 @@ name|LowRedundancyBlocks
 operator|.
 name|QUEUE_HIGHEST_PRIORITY
 operator|&&
+operator|(
 operator|!
 name|node
 operator|.
 name|isDecommissionInProgress
 argument_list|()
+operator|&&
+operator|!
+name|node
+operator|.
+name|isEnteringMaintenance
+argument_list|()
+operator|)
 operator|&&
 name|node
 operator|.
@@ -10274,9 +10475,6 @@ argument_list|(
 name|bi
 argument_list|,
 name|num
-operator|.
-name|liveReplicas
-argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -10298,10 +10496,10 @@ argument_list|()
 argument_list|,
 name|num
 operator|.
-name|decommissionedAndDecommissioning
+name|outOfServiceReplicas
 argument_list|()
 argument_list|,
-name|getRedundancy
+name|getExpectedRedundancyNum
 argument_list|(
 name|bi
 argument_list|)
@@ -14609,7 +14807,9 @@ name|isNeededReconstruction
 argument_list|(
 name|storedBlock
 argument_list|,
-name|numCurrentReplica
+name|num
+argument_list|,
+name|pendingNum
 argument_list|)
 condition|)
 block|{
@@ -14628,7 +14828,7 @@ argument_list|()
 argument_list|,
 name|num
 operator|.
-name|decommissionedAndDecommissioning
+name|outOfServiceReplicas
 argument_list|()
 argument_list|,
 name|fileRedundancy
@@ -14743,6 +14943,10 @@ return|return
 name|storedBlock
 return|;
 block|}
+comment|// If there is any maintenance replica, we don't have to restore
+comment|// the condition of live + maintenance == expected. We allow
+comment|// live + maintenance>= expected. The extra redundancy will be removed
+comment|// when the maintenance node changes to live.
 DECL|method|shouldProcessExtraRedundancy (NumberReplicas num, int expectedNum)
 specifier|private
 name|boolean
@@ -15564,7 +15768,7 @@ name|isNeededReconstruction
 argument_list|(
 name|block
 argument_list|,
-name|numCurrentReplica
+name|num
 argument_list|)
 condition|)
 block|{
@@ -15585,7 +15789,7 @@ argument_list|()
 argument_list|,
 name|num
 operator|.
-name|decommissionedAndDecommissioning
+name|outOfServiceReplicas
 argument_list|()
 argument_list|,
 name|expectedRedundancy
@@ -15690,6 +15894,14 @@ argument_list|(
 name|newRepl
 argument_list|)
 expr_stmt|;
+name|NumberReplicas
+name|num
+init|=
+name|countNodes
+argument_list|(
+name|b
+argument_list|)
+decl_stmt|;
 name|updateNeededReconstructions
 argument_list|(
 name|b
@@ -15703,9 +15915,12 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|oldRepl
-operator|>
+name|shouldProcessExtraRedundancy
+argument_list|(
+name|num
+argument_list|,
 name|newRepl
+argument_list|)
 condition|)
 block|{
 name|processExtraRedundancyBlock
@@ -15833,7 +16048,7 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"BLOCK* processOverReplicatedBlock: Postponing {}"
+literal|"BLOCK* processExtraRedundancyBlock: Postponing {}"
 operator|+
 literal|" since storage {} does not yet have up-to-date information."
 argument_list|,
@@ -15862,16 +16077,9 @@ condition|)
 block|{
 if|if
 condition|(
-operator|!
 name|cur
 operator|.
-name|isDecommissionInProgress
-argument_list|()
-operator|&&
-operator|!
-name|cur
-operator|.
-name|isDecommissioned
+name|isInService
 argument_list|()
 condition|)
 block|{
@@ -17945,7 +18153,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|countNodes (BlockInfo b, boolean inStartupSafeMode)
-specifier|private
 name|NumberReplicas
 name|countNodes
 parameter_list|(
@@ -18159,6 +18366,46 @@ name|StoredReplicaState
 operator|.
 name|DECOMMISSIONED
 expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|node
+operator|.
+name|isMaintenance
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|node
+operator|.
+name|isInMaintenance
+argument_list|()
+operator|||
+operator|!
+name|node
+operator|.
+name|isAlive
+argument_list|()
+condition|)
+block|{
+name|s
+operator|=
+name|StoredReplicaState
+operator|.
+name|MAINTENANCE_NOT_FOR_READ
+expr_stmt|;
+block|}
+else|else
+block|{
+name|s
+operator|=
+name|StoredReplicaState
+operator|.
+name|MAINTENANCE_FOR_READ
+expr_stmt|;
+block|}
 block|}
 elseif|else
 if|if
@@ -18455,10 +18702,10 @@ name|liveReplicas
 argument_list|()
 return|;
 block|}
-comment|/**    * On stopping decommission, check if the node has excess replicas.    * If there are any excess replicas, call processExtraRedundancyBlock().    * Process extra redundancy blocks only when active NN is out of safe mode.    */
-DECL|method|processExtraRedundancyBlocksOnReCommission ( final DatanodeDescriptor srcNode)
+comment|/**    * On putting the node in service, check if the node has excess replicas.    * If there are any excess replicas, call processExtraRedundancyBlock().    * Process extra redundancy blocks only when active NN is out of safe mode.    */
+DECL|method|processExtraRedundancyBlocksOnInService ( final DatanodeDescriptor srcNode)
 name|void
-name|processExtraRedundancyBlocksOnReCommission
+name|processExtraRedundancyBlocksOnInService
 parameter_list|(
 specifier|final
 name|DatanodeDescriptor
@@ -18513,7 +18760,7 @@ name|expectedReplication
 init|=
 name|this
 operator|.
-name|getRedundancy
+name|getExpectedRedundancyNum
 argument_list|(
 name|block
 argument_list|)
@@ -18568,14 +18815,14 @@ literal|" extra redundancy blocks on "
 operator|+
 name|srcNode
 operator|+
-literal|" during recommissioning"
+literal|" after it is in service"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns whether a node can be safely decommissioned based on its     * liveness. Dead nodes cannot always be safely decommissioned.    */
-DECL|method|isNodeHealthyForDecommission (DatanodeDescriptor node)
+comment|/**    * Returns whether a node can be safely decommissioned or in maintenance    * based on its liveness. Dead nodes cannot always be safely decommissioned    * or in maintenance.    */
+DECL|method|isNodeHealthyForDecommissionOrMaintenance (DatanodeDescriptor node)
 name|boolean
-name|isNodeHealthyForDecommission
+name|isNodeHealthyForDecommissionOrMaintenance
 parameter_list|(
 name|DatanodeDescriptor
 name|node
@@ -18635,7 +18882,9 @@ name|info
 argument_list|(
 literal|"Node {} is dead and there are no low redundancy"
 operator|+
-literal|" blocks or blocks pending reconstruction. Safe to decommission."
+literal|" blocks or blocks pending reconstruction. Safe to decommission or"
+argument_list|,
+literal|" put in maintenance."
 argument_list|,
 name|node
 argument_list|)
@@ -18650,17 +18899,22 @@ name|warn
 argument_list|(
 literal|"Node {} is dead "
 operator|+
-literal|"while decommission is in progress. Cannot be safely "
+literal|"while in {}. Cannot be safely "
 operator|+
-literal|"decommissioned since there is risk of reduced "
+literal|"decommissioned or be in maintenance since there is risk of reduced "
 operator|+
-literal|"data durability or data loss. Either restart the failed node or"
+literal|"data durability or data loss. Either restart the failed node or "
 operator|+
-literal|" force decommissioning by removing, calling refreshNodes, "
+literal|"force decommissioning or maintenance by removing, calling "
 operator|+
-literal|"then re-adding to the excludes files."
+literal|"refreshNodes, then re-adding to the excludes or host config files."
 argument_list|,
 name|node
+argument_list|,
+name|node
+operator|.
+name|getAdminState
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -19000,7 +19254,7 @@ decl_stmt|;
 name|int
 name|curExpectedReplicas
 init|=
-name|getRedundancy
+name|getExpectedRedundancyNum
 argument_list|(
 name|block
 argument_list|)
@@ -19015,8 +19269,6 @@ argument_list|,
 name|repl
 argument_list|,
 name|pendingNum
-argument_list|,
-name|curExpectedReplicas
 argument_list|)
 condition|)
 block|{
@@ -19040,7 +19292,7 @@ argument_list|()
 argument_list|,
 name|repl
 operator|.
-name|decommissionedAndDecommissioning
+name|outOfServiceReplicas
 argument_list|()
 argument_list|,
 name|curExpectedReplicas
@@ -19087,7 +19339,7 @@ argument_list|()
 argument_list|,
 name|repl
 operator|.
-name|decommissionedAndDecommissioning
+name|outOfServiceReplicas
 argument_list|()
 argument_list|,
 name|oldExpectedReplicas
@@ -19163,8 +19415,6 @@ argument_list|,
 name|n
 argument_list|,
 name|pending
-argument_list|,
-name|expected
 argument_list|)
 condition|)
 block|{
@@ -19188,7 +19438,7 @@ argument_list|()
 argument_list|,
 name|n
 operator|.
-name|decommissionedAndDecommissioning
+name|outOfServiceReplicas
 argument_list|()
 argument_list|,
 name|expected
@@ -19219,23 +19469,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-comment|/**     * @return 0 if the block is not found;    *         otherwise, return the replication factor of the block.    */
-DECL|method|getRedundancy (BlockInfo block)
-specifier|private
-name|int
-name|getRedundancy
-parameter_list|(
-name|BlockInfo
-name|block
-parameter_list|)
-block|{
-return|return
-name|getExpectedRedundancyNum
-argument_list|(
-name|block
-argument_list|)
-return|;
 block|}
 comment|/**    * Get blocks to invalidate for<i>nodeId</i>    * in {@link #invalidateBlocks}.    *    * @return number of blocks scheduled for removal during this iteration.    */
 DECL|method|invalidateWorkForOneNode (DatanodeInfo dn)
@@ -19474,6 +19707,8 @@ operator|.
 name|getDatanodeDescriptor
 argument_list|()
 decl_stmt|;
+comment|// Nodes under maintenance should be counted as valid replicas from
+comment|// rack policy point of view.
 if|if
 condition|(
 operator|!
@@ -19582,26 +19817,17 @@ name|isPlacementPolicySatisfied
 argument_list|()
 return|;
 block|}
-comment|/**    * A block needs reconstruction if the number of redundancies is less than    * expected or if it does not have enough racks.    */
-DECL|method|isNeededReconstruction (BlockInfo storedBlock, int current)
+DECL|method|isNeededReconstructionForMaintenance (BlockInfo storedBlock, NumberReplicas numberReplicas)
 name|boolean
-name|isNeededReconstruction
+name|isNeededReconstructionForMaintenance
 parameter_list|(
 name|BlockInfo
 name|storedBlock
 parameter_list|,
-name|int
-name|current
+name|NumberReplicas
+name|numberReplicas
 parameter_list|)
 block|{
-name|int
-name|expected
-init|=
-name|getExpectedRedundancyNum
-argument_list|(
-name|storedBlock
-argument_list|)
-decl_stmt|;
 return|return
 name|storedBlock
 operator|.
@@ -19609,9 +19835,15 @@ name|isComplete
 argument_list|()
 operator|&&
 operator|(
-name|current
+name|numberReplicas
+operator|.
+name|liveReplicas
+argument_list|()
 operator|<
-name|expected
+name|getMinMaintenanceStorageNum
+argument_list|(
+name|storedBlock
+argument_list|)
 operator|||
 operator|!
 name|isPlacementPolicySatisfied
@@ -19619,6 +19851,105 @@ argument_list|(
 name|storedBlock
 argument_list|)
 operator|)
+return|;
+block|}
+DECL|method|isNeededReconstruction (BlockInfo storedBlock, NumberReplicas numberReplicas)
+name|boolean
+name|isNeededReconstruction
+parameter_list|(
+name|BlockInfo
+name|storedBlock
+parameter_list|,
+name|NumberReplicas
+name|numberReplicas
+parameter_list|)
+block|{
+return|return
+name|isNeededReconstruction
+argument_list|(
+name|storedBlock
+argument_list|,
+name|numberReplicas
+argument_list|,
+literal|0
+argument_list|)
+return|;
+block|}
+comment|/**    * A block needs reconstruction if the number of redundancies is less than    * expected or if it does not have enough racks.    */
+DECL|method|isNeededReconstruction (BlockInfo storedBlock, NumberReplicas numberReplicas, int pending)
+name|boolean
+name|isNeededReconstruction
+parameter_list|(
+name|BlockInfo
+name|storedBlock
+parameter_list|,
+name|NumberReplicas
+name|numberReplicas
+parameter_list|,
+name|int
+name|pending
+parameter_list|)
+block|{
+return|return
+name|storedBlock
+operator|.
+name|isComplete
+argument_list|()
+operator|&&
+operator|!
+name|hasEnoughEffectiveReplicas
+argument_list|(
+name|storedBlock
+argument_list|,
+name|numberReplicas
+argument_list|,
+name|pending
+argument_list|)
+return|;
+block|}
+comment|// Exclude maintenance, but make sure it has minimal live replicas
+comment|// to satisfy the maintenance requirement.
+DECL|method|getExpectedLiveRedundancyNum (BlockInfo block, NumberReplicas numberReplicas)
+specifier|public
+name|short
+name|getExpectedLiveRedundancyNum
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|,
+name|NumberReplicas
+name|numberReplicas
+parameter_list|)
+block|{
+specifier|final
+name|short
+name|expectedRedundancy
+init|=
+name|getExpectedRedundancyNum
+argument_list|(
+name|block
+argument_list|)
+decl_stmt|;
+return|return
+operator|(
+name|short
+operator|)
+name|Math
+operator|.
+name|max
+argument_list|(
+name|expectedRedundancy
+operator|-
+name|numberReplicas
+operator|.
+name|maintenanceReplicas
+argument_list|()
+argument_list|,
+name|getMinMaintenanceStorageNum
+argument_list|(
+name|block
+argument_list|)
+argument_list|)
 return|;
 block|}
 DECL|method|getExpectedRedundancyNum (BlockInfo block)

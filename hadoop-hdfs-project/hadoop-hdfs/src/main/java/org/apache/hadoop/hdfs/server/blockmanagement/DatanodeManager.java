@@ -1798,14 +1798,16 @@ condition|?
 operator|new
 name|DFSUtil
 operator|.
-name|DecomStaleComparator
+name|ServiceAndStaleComparator
 argument_list|(
 name|staleInterval
 argument_list|)
 else|:
+operator|new
 name|DFSUtil
 operator|.
-name|DECOM_COMPARATOR
+name|ServiceComparator
+argument_list|()
 decl_stmt|;
 comment|// sort located block
 for|for
@@ -2947,6 +2949,27 @@ name|DatanodeDescriptor
 name|nodeInfo
 parameter_list|)
 block|{
+name|removeDatanode
+argument_list|(
+name|nodeInfo
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Remove a datanode descriptor.    * @param nodeInfo datanode descriptor.    */
+DECL|method|removeDatanode (DatanodeDescriptor nodeInfo, boolean removeBlocksFromBlocksMap)
+specifier|private
+name|void
+name|removeDatanode
+parameter_list|(
+name|DatanodeDescriptor
+name|nodeInfo
+parameter_list|,
+name|boolean
+name|removeBlocksFromBlocksMap
+parameter_list|)
+block|{
 assert|assert
 name|namesystem
 operator|.
@@ -2960,6 +2983,11 @@ argument_list|(
 name|nodeInfo
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|removeBlocksFromBlocksMap
+condition|)
+block|{
 name|blockManager
 operator|.
 name|removeBlocksAssociatedTo
@@ -2967,6 +2995,7 @@ argument_list|(
 name|nodeInfo
 argument_list|)
 expr_stmt|;
+block|}
 name|networktopology
 operator|.
 name|remove
@@ -3055,6 +3084,8 @@ block|{
 name|removeDatanode
 argument_list|(
 name|descriptor
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -3085,13 +3116,16 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Remove a dead datanode. */
-DECL|method|removeDeadDatanode (final DatanodeID nodeID)
+DECL|method|removeDeadDatanode (final DatanodeID nodeID, boolean removeBlocksFromBlockMap)
 name|void
 name|removeDeadDatanode
 parameter_list|(
 specifier|final
 name|DatanodeID
 name|nodeID
+parameter_list|,
+name|boolean
+name|removeBlocksFromBlockMap
 parameter_list|)
 block|{
 name|DatanodeDescriptor
@@ -3139,11 +3173,17 @@ argument_list|(
 literal|"BLOCK* removeDeadDatanode: lost heartbeat from "
 operator|+
 name|d
+operator|+
+literal|", removeBlocksFromBlockMap "
+operator|+
+name|removeBlocksFromBlockMap
 argument_list|)
 expr_stmt|;
 name|removeDatanode
 argument_list|(
 name|d
+argument_list|,
+name|removeBlocksFromBlockMap
 argument_list|)
 expr_stmt|;
 block|}
@@ -4903,7 +4943,7 @@ name|refresh
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * 1. Added to hosts  --> no further work needed here.    * 2. Removed from hosts --> mark AdminState as decommissioned.     * 3. Added to exclude --> start decommission.    * 4. Removed from exclude --> stop decommission.    */
+comment|/**    * Reload datanode membership and the desired admin operations from    * host files. If a node isn't allowed, hostConfigManager.isIncluded returns    * false and the node can't be used.    * If a node is allowed and the desired admin operation is defined,    * it will transition to the desired admin state.    * If a node is allowed and upgrade domain is defined,    * the upgrade domain will be set on the node.    * To use maintenance mode or upgrade domain, set    * DFS_NAMENODE_HOSTS_PROVIDER_CLASSNAME_KEY to    * CombinedHostFileManager.class.    */
 DECL|method|refreshDatanodes ()
 specifier|private
 name|void
@@ -4964,7 +5004,6 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-comment|// case 2.
 block|}
 else|else
 block|{
@@ -5016,7 +5055,6 @@ argument_list|(
 name|node
 argument_list|)
 expr_stmt|;
-comment|// case 3.
 block|}
 else|else
 block|{
@@ -5034,7 +5072,6 @@ argument_list|(
 name|node
 argument_list|)
 expr_stmt|;
-comment|// case 4.
 block|}
 block|}
 name|node

@@ -840,7 +840,8 @@ expr_stmt|;
 block|}
 name|node
 operator|.
-name|decommissioningStatus
+name|getLeavingServiceStatus
+argument_list|()
 operator|.
 name|setStartTime
 argument_list|(
@@ -920,7 +921,7 @@ condition|)
 block|{
 name|blockManager
 operator|.
-name|processExtraRedundancyBlocksOnReCommission
+name|processExtraRedundancyBlocksOnInService
 argument_list|(
 name|node
 argument_list|)
@@ -1001,6 +1002,57 @@ argument_list|(
 name|node
 argument_list|)
 expr_stmt|;
+comment|// hbManager.startMaintenance will set dead node to IN_MAINTENANCE.
+if|if
+condition|(
+name|node
+operator|.
+name|isEnteringMaintenance
+argument_list|()
+condition|)
+block|{
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storage
+range|:
+name|node
+operator|.
+name|getStorageInfos
+argument_list|()
+control|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting maintenance of {} {} with {} blocks"
+argument_list|,
+name|node
+argument_list|,
+name|storage
+argument_list|,
+name|storage
+operator|.
+name|numBlocks
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|node
+operator|.
+name|getLeavingServiceStatus
+argument_list|()
+operator|.
+name|setStartTime
+argument_list|(
+name|monotonicNow
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Track the node regardless whether it is ENTERING_MAINTENANCE or
+comment|// IN_MAINTENANCE to support maintenance expiration.
 name|pendingNodes
 operator|.
 name|add
@@ -1055,8 +1107,56 @@ argument_list|(
 name|node
 argument_list|)
 expr_stmt|;
-comment|// TODO HDFS-9390 remove replicas from block maps
-comment|// or handle over replicated blocks.
+comment|// extra redundancy blocks will be detected and processed when
+comment|// the dead node comes back and send in its full block report.
+if|if
+condition|(
+operator|!
+name|node
+operator|.
+name|isAlive
+argument_list|()
+condition|)
+block|{
+comment|// The node became dead when it was in maintenance, at which point
+comment|// the replicas weren't removed from block maps.
+comment|// When the node leaves maintenance, the replicas should be removed
+comment|// from the block maps to trigger the necessary replication to
+comment|// maintain the safety property of "# of live replicas + maintenance
+comment|// replicas">= the expected redundancy.
+name|blockManager
+operator|.
+name|removeBlocksAssociatedTo
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Even though putting nodes in maintenance node doesn't cause live
+comment|// replicas to match expected replication factor, it is still possible
+comment|// to have over replicated when the node leaves maintenance node.
+comment|// First scenario:
+comment|// a. Node became dead when it is at AdminStates.NORMAL, thus
+comment|//    block is replicated so that 3 replicas exist on other nodes.
+comment|// b. Admins put the dead node into maintenance mode and then
+comment|//    have the node rejoin the cluster.
+comment|// c. Take the node out of maintenance mode.
+comment|// Second scenario:
+comment|// a. With replication factor 3, set one replica to maintenance node,
+comment|//    thus block has 1 maintenance replica and 2 live replicas.
+comment|// b. Change the replication factor to 2. The block will still have
+comment|//    1 maintenance replica and 2 live replicas.
+comment|// c. Take the node out of maintenance mode.
+name|blockManager
+operator|.
+name|processExtraRedundancyBlocksOnInService
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Remove from tracking in DecommissionManager
 name|pendingNodes
 operator|.
@@ -1115,8 +1215,32 @@ name|dn
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|setInMaintenance (DatanodeDescriptor dn)
+specifier|private
+name|void
+name|setInMaintenance
+parameter_list|(
+name|DatanodeDescriptor
+name|dn
+parameter_list|)
+block|{
+name|dn
+operator|.
+name|setInMaintenance
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Node {} has entered maintenance mode."
+argument_list|,
+name|dn
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Checks whether a block is sufficiently replicated/stored for    * decommissioning. For replicated blocks or striped blocks, full-strength    * replication or storage is not always necessary, hence "sufficient".    * @return true if sufficient, else false.    */
-DECL|method|isSufficient (BlockInfo block, BlockCollection bc, NumberReplicas numberReplicas)
+DECL|method|isSufficient (BlockInfo block, BlockCollection bc, NumberReplicas numberReplicas, boolean isDecommission)
 specifier|private
 name|boolean
 name|isSufficient
@@ -1129,39 +1253,22 @@ name|bc
 parameter_list|,
 name|NumberReplicas
 name|numberReplicas
+parameter_list|,
+name|boolean
+name|isDecommission
 parameter_list|)
 block|{
-specifier|final
-name|int
-name|numExpected
-init|=
-name|blockManager
-operator|.
-name|getExpectedRedundancyNum
-argument_list|(
-name|block
-argument_list|)
-decl_stmt|;
-specifier|final
-name|int
-name|numLive
-init|=
-name|numberReplicas
-operator|.
-name|liveReplicas
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
-name|numLive
-operator|>=
-name|numExpected
-operator|&&
 name|blockManager
 operator|.
-name|isPlacementPolicySatisfied
+name|hasEnoughEffectiveReplicas
 argument_list|(
 name|block
+argument_list|,
+name|numberReplicas
+argument_list|,
+literal|0
 argument_list|)
 condition|)
 block|{
@@ -1179,6 +1286,28 @@ return|return
 literal|true
 return|;
 block|}
+specifier|final
+name|int
+name|numExpected
+init|=
+name|blockManager
+operator|.
+name|getExpectedLiveRedundancyNum
+argument_list|(
+name|block
+argument_list|,
+name|numberReplicas
+argument_list|)
+decl_stmt|;
+specifier|final
+name|int
+name|numLive
+init|=
+name|numberReplicas
+operator|.
+name|liveReplicas
+argument_list|()
+decl_stmt|;
 comment|// Block is under-replicated
 name|LOG
 operator|.
@@ -1195,6 +1324,8 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|isDecommission
+operator|&&
 name|numExpected
 operator|>
 name|numLive
@@ -1437,6 +1568,20 @@ operator|.
 name|decommissioning
 argument_list|()
 operator|+
+literal|", maintenance replicas: "
+operator|+
+name|num
+operator|.
+name|maintenanceReplicas
+argument_list|()
+operator|+
+literal|", live entering maintenance replicas: "
+operator|+
+name|num
+operator|.
+name|liveEnteringMaintenanceReplicas
+argument_list|()
+operator|+
 literal|", excess replicas: "
 operator|+
 name|num
@@ -1464,6 +1609,13 @@ operator|+
 name|srcNode
 operator|.
 name|isDecommissionInProgress
+argument_list|()
+operator|+
+literal|", Is current datanode entering maintenance: "
+operator|+
+name|srcNode
+operator|.
+name|isEnteringMaintenance
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1671,7 +1823,7 @@ name|numNodesChecked
 operator|=
 literal|0
 expr_stmt|;
-comment|// Check decom progress
+comment|// Check decommission or maintenance progress.
 name|namesystem
 operator|.
 name|writeLock
@@ -1876,19 +2028,14 @@ name|dn
 operator|.
 name|isMaintenance
 argument_list|()
-condition|)
-block|{
-comment|// TODO HDFS-9390 make sure blocks are minimally replicated
-comment|// before transitioning the node to IN_MAINTENANCE state.
-comment|// If maintenance expires, stop tracking it.
-if|if
-condition|(
+operator|&&
 name|dn
 operator|.
 name|maintenanceExpired
 argument_list|()
 condition|)
 block|{
+comment|// If maintenance expires, stop tracking it.
 name|stopMaintenance
 argument_list|(
 name|dn
@@ -1901,7 +2048,17 @@ argument_list|(
 name|dn
 argument_list|)
 expr_stmt|;
+continue|continue;
 block|}
+if|if
+condition|(
+name|dn
+operator|.
+name|isInMaintenance
+argument_list|()
+condition|)
+block|{
+comment|// The dn is IN_MAINTENANCE and the maintenance hasn't expired yet.
 continue|continue;
 block|}
 if|if
@@ -1954,7 +2111,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Processing decommission-in-progress node {}"
+literal|"Processing {} node {}"
+argument_list|,
+name|dn
+operator|.
+name|getAdminState
+argument_list|()
 argument_list|,
 name|dn
 argument_list|)
@@ -2025,7 +2187,7 @@ name|isHealthy
 init|=
 name|blockManager
 operator|.
-name|isNodeHealthyForDecommission
+name|isNodeHealthyForDecommissionOrMaintenance
 argument_list|(
 name|dn
 argument_list|)
@@ -2042,6 +2204,14 @@ operator|&&
 name|isHealthy
 condition|)
 block|{
+if|if
+condition|(
+name|dn
+operator|.
+name|isDecommissionInProgress
+argument_list|()
+condition|)
+block|{
 name|setDecommissioned
 argument_list|(
 name|dn
@@ -2054,15 +2224,48 @@ argument_list|(
 name|dn
 argument_list|)
 expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|dn
+operator|.
+name|isEnteringMaintenance
+argument_list|()
+condition|)
+block|{
+comment|// IN_MAINTENANCE node remains in the outOfServiceNodeBlocks to
+comment|// to track maintenance expiration.
+name|setInMaintenance
+argument_list|(
+name|dn
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+literal|false
+argument_list|,
+literal|"A node is in an invalid state!"
+argument_list|)
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Node {} is sufficiently replicated and healthy, "
 operator|+
-literal|"marked as decommissioned."
+literal|"marked as {}."
 argument_list|,
 name|dn
+operator|.
+name|getAdminState
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2076,7 +2279,7 @@ literal|"Node {} {} healthy."
 operator|+
 literal|" It needs to replicate {} more blocks."
 operator|+
-literal|" Decommissioning is still in progress."
+literal|" {} is still in progress."
 argument_list|,
 name|dn
 argument_list|,
@@ -2090,6 +2293,11 @@ name|blocks
 operator|.
 name|size
 argument_list|()
+argument_list|,
+name|dn
+operator|.
+name|getAdminState
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2102,13 +2310,18 @@ name|debug
 argument_list|(
 literal|"Node {} still has {} blocks to replicate "
 operator|+
-literal|"before it is a candidate to finish decommissioning."
+literal|"before it is a candidate to finish {}."
 argument_list|,
 name|dn
 argument_list|,
 name|blocks
 operator|.
 name|size
+argument_list|()
+argument_list|,
+name|dn
+operator|.
+name|getAdminState
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2171,7 +2384,7 @@ argument_list|>
 name|blocks
 parameter_list|)
 block|{
-name|processBlocksForDecomInternal
+name|processBlocksInternal
 argument_list|(
 name|datanode
 argument_list|,
@@ -2211,7 +2424,7 @@ name|ChunkedArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-name|processBlocksForDecomInternal
+name|processBlocksInternal
 argument_list|(
 name|datanode
 argument_list|,
@@ -2230,10 +2443,10 @@ name|insufficient
 return|;
 block|}
 comment|/**      * Used while checking if decommission-in-progress datanodes can be marked      * as decommissioned. Combines shared logic of       * pruneReliableBlocks and handleInsufficientlyStored.      *      * @param datanode                    Datanode      * @param it                          Iterator over the blocks on the      *                                    datanode      * @param insufficientList            Return parameter. If it's not null,      *                                    will contain the insufficiently      *                                    replicated-blocks from the list.      * @param pruneReliableBlocks         whether to remove blocks reliable      *                                    enough from the iterator      */
-DECL|method|processBlocksForDecomInternal ( final DatanodeDescriptor datanode, final Iterator<BlockInfo> it, final List<BlockInfo> insufficientList, boolean pruneReliableBlocks)
+DECL|method|processBlocksInternal ( final DatanodeDescriptor datanode, final Iterator<BlockInfo> it, final List<BlockInfo> insufficientList, boolean pruneReliableBlocks)
 specifier|private
 name|void
-name|processBlocksForDecomInternal
+name|processBlocksInternal
 parameter_list|(
 specifier|final
 name|DatanodeDescriptor
@@ -2268,7 +2481,7 @@ init|=
 literal|0
 decl_stmt|;
 name|int
-name|decommissionOnlyReplicas
+name|outOfServiceOnlyReplicas
 init|=
 literal|0
 decl_stmt|;
@@ -2446,16 +2659,40 @@ argument_list|()
 decl_stmt|;
 comment|// Schedule low redundancy blocks for reconstruction if not already
 comment|// pending
-if|if
-condition|(
+name|boolean
+name|isDecommission
+init|=
+name|datanode
+operator|.
+name|isDecommissionInProgress
+argument_list|()
+decl_stmt|;
+name|boolean
+name|neededReconstruction
+init|=
+name|isDecommission
+condition|?
 name|blockManager
 operator|.
 name|isNeededReconstruction
 argument_list|(
 name|block
 argument_list|,
-name|liveReplicas
+name|num
 argument_list|)
+else|:
+name|blockManager
+operator|.
+name|isNeededReconstructionForMaintenance
+argument_list|(
+name|block
+argument_list|,
+name|num
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|neededReconstruction
 condition|)
 block|{
 if|if
@@ -2505,7 +2742,7 @@ argument_list|()
 argument_list|,
 name|num
 operator|.
-name|decommissionedAndDecommissioning
+name|outOfServiceReplicas
 argument_list|()
 argument_list|,
 name|blockManager
@@ -2529,6 +2766,8 @@ argument_list|,
 name|bc
 argument_list|,
 name|num
+argument_list|,
+name|isDecommission
 argument_list|)
 condition|)
 block|{
@@ -2619,27 +2858,28 @@ operator|&&
 operator|(
 name|num
 operator|.
-name|decommissionedAndDecommissioning
+name|outOfServiceReplicas
 argument_list|()
 operator|>
 literal|0
 operator|)
 condition|)
 block|{
-name|decommissionOnlyReplicas
+name|outOfServiceOnlyReplicas
 operator|++
 expr_stmt|;
 block|}
 block|}
 name|datanode
 operator|.
-name|decommissioningStatus
+name|getLeavingServiceStatus
+argument_list|()
 operator|.
 name|set
 argument_list|(
 name|lowRedundancyBlocks
 argument_list|,
-name|decommissionOnlyReplicas
+name|outOfServiceOnlyReplicas
 argument_list|,
 name|lowRedundancyInOpenFiles
 argument_list|)

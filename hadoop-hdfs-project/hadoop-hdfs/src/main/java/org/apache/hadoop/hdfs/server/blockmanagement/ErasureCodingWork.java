@@ -699,12 +699,21 @@ block|}
 elseif|else
 if|if
 condition|(
+operator|(
 name|numberReplicas
 operator|.
 name|decommissioning
 argument_list|()
 operator|>
 literal|0
+operator|||
+name|numberReplicas
+operator|.
+name|liveEnteringMaintenanceReplicas
+argument_list|()
+operator|>
+literal|0
+operator|)
 operator|&&
 name|hasAllInternalBlocks
 argument_list|()
@@ -714,9 +723,9 @@ name|List
 argument_list|<
 name|Integer
 argument_list|>
-name|decommissioningSources
+name|leavingServiceSources
 init|=
-name|findDecommissioningSources
+name|findLeavingServiceSources
 argument_list|()
 decl_stmt|;
 comment|// decommissioningSources.size() should be>= targets.length
@@ -728,7 +737,7 @@ name|Math
 operator|.
 name|min
 argument_list|(
-name|decommissioningSources
+name|leavingServiceSources
 operator|.
 name|size
 argument_list|()
@@ -755,7 +764,7 @@ control|)
 block|{
 name|createReplicationWork
 argument_list|(
-name|decommissioningSources
+name|leavingServiceSources
 operator|.
 name|get
 argument_list|(
@@ -937,13 +946,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|findDecommissioningSources ()
+DECL|method|findLeavingServiceSources ()
 specifier|private
 name|List
 argument_list|<
 name|Integer
 argument_list|>
-name|findDecommissioningSources
+name|findLeavingServiceSources
 parameter_list|()
 block|{
 name|List
@@ -985,6 +994,26 @@ index|]
 operator|.
 name|isDecommissionInProgress
 argument_list|()
+operator|||
+operator|(
+name|getSrcNodes
+argument_list|()
+index|[
+name|i
+index|]
+operator|.
+name|isEnteringMaintenance
+argument_list|()
+operator|&&
+name|getSrcNodes
+argument_list|()
+index|[
+name|i
+index|]
+operator|.
+name|isAlive
+argument_list|()
+operator|)
 condition|)
 block|{
 name|srcIndices

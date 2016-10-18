@@ -353,6 +353,10 @@ argument_list|,
 name|dir
 argument_list|)
 expr_stmt|;
+name|cleanup
+argument_list|()
+expr_stmt|;
+comment|// In case there is some left over from previous run.
 name|assertTrue
 argument_list|(
 name|localFileSys

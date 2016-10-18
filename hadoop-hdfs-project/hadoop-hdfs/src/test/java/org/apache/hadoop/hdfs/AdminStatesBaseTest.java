@@ -678,7 +678,44 @@ name|shutdownCluster
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|writeIncompleteFile (FileSystem fileSys, Path name, short repl, short numOfBlocks)
+specifier|static
+specifier|public
+name|FSDataOutputStream
+name|writeIncompleteFile
+parameter_list|(
+name|FileSystem
+name|fileSys
+parameter_list|,
+name|Path
+name|name
+parameter_list|,
+name|short
+name|repl
+parameter_list|,
+name|short
+name|numOfBlocks
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|writeFile
+argument_list|(
+name|fileSys
+argument_list|,
+name|name
+argument_list|,
+name|repl
+argument_list|,
+name|numOfBlocks
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
 DECL|method|writeFile (FileSystem fileSys, Path name, int repl)
+specifier|static
 specifier|protected
 name|void
 name|writeFile
@@ -708,6 +745,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|writeFile (FileSystem fileSys, Path name, int repl, int numOfBlocks)
+specifier|static
 specifier|protected
 name|void
 name|writeFile
@@ -742,6 +780,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|writeFile (FileSystem fileSys, Path name, int repl, int numOfBlocks, boolean completeFile)
+specifier|static
 specifier|protected
 name|FSDataOutputStream
 name|writeFile
@@ -864,6 +903,11 @@ return|;
 block|}
 else|else
 block|{
+name|stm
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 comment|// Do not close stream, return it
 comment|// so that it is not garbage collected
 return|return
@@ -2003,7 +2047,9 @@ block|{
 name|cluster
 operator|.
 name|shutdown
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -2039,7 +2085,8 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getDatanodeDesriptor ( final FSNamesystem ns, final String datanodeUuid)
-specifier|protected
+specifier|static
+specifier|private
 name|DatanodeDescriptor
 name|getDatanodeDesriptor
 parameter_list|(
@@ -2068,7 +2115,8 @@ argument_list|)
 return|;
 block|}
 DECL|method|cleanupFile (FileSystem fileSys, Path name)
-specifier|protected
+specifier|static
+specifier|public
 name|void
 name|cleanupFile
 parameter_list|(

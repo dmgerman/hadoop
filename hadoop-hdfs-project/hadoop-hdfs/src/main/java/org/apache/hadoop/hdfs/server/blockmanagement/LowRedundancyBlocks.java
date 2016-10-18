@@ -429,7 +429,7 @@ literal|false
 return|;
 block|}
 comment|/** Return the priority of a block    * @param curReplicas current number of replicas of the block    * @param expectedReplicas expected number of replicas of the block    * @return the priority for the blocks, between 0 and ({@link #LEVEL}-1)    */
-DECL|method|getPriority (BlockInfo block, int curReplicas, int readOnlyReplicas, int decommissionedReplicas, int expectedReplicas)
+DECL|method|getPriority (BlockInfo block, int curReplicas, int readOnlyReplicas, int outOfServiceReplicas, int expectedReplicas)
 specifier|private
 name|int
 name|getPriority
@@ -444,7 +444,7 @@ name|int
 name|readOnlyReplicas
 parameter_list|,
 name|int
-name|decommissionedReplicas
+name|outOfServiceReplicas
 parameter_list|,
 name|int
 name|expectedReplicas
@@ -490,7 +490,7 @@ name|getPriorityStriped
 argument_list|(
 name|curReplicas
 argument_list|,
-name|decommissionedReplicas
+name|outOfServiceReplicas
 argument_list|,
 name|sblk
 operator|.
@@ -513,14 +513,14 @@ name|curReplicas
 argument_list|,
 name|readOnlyReplicas
 argument_list|,
-name|decommissionedReplicas
+name|outOfServiceReplicas
 argument_list|,
 name|expectedReplicas
 argument_list|)
 return|;
 block|}
 block|}
-DECL|method|getPriorityContiguous (int curReplicas, int readOnlyReplicas, int decommissionedReplicas, int expectedReplicas)
+DECL|method|getPriorityContiguous (int curReplicas, int readOnlyReplicas, int outOfServiceReplicas, int expectedReplicas)
 specifier|private
 name|int
 name|getPriorityContiguous
@@ -532,7 +532,7 @@ name|int
 name|readOnlyReplicas
 parameter_list|,
 name|int
-name|decommissionedReplicas
+name|outOfServiceReplicas
 parameter_list|,
 name|int
 name|expectedReplicas
@@ -546,10 +546,10 @@ literal|0
 condition|)
 block|{
 comment|// If there are zero non-decommissioned replicas but there are
-comment|// some decommissioned replicas, then assign them highest priority
+comment|// some out of service replicas, then assign them highest priority
 if|if
 condition|(
-name|decommissionedReplicas
+name|outOfServiceReplicas
 operator|>
 literal|0
 condition|)
@@ -616,7 +616,7 @@ name|QUEUE_LOW_REDUNDANCY
 return|;
 block|}
 block|}
-DECL|method|getPriorityStriped (int curReplicas, int decommissionedReplicas, short dataBlkNum, short parityBlkNum)
+DECL|method|getPriorityStriped (int curReplicas, int outOfServiceReplicas, short dataBlkNum, short parityBlkNum)
 specifier|private
 name|int
 name|getPriorityStriped
@@ -625,7 +625,7 @@ name|int
 name|curReplicas
 parameter_list|,
 name|int
-name|decommissionedReplicas
+name|outOfServiceReplicas
 parameter_list|,
 name|short
 name|dataBlkNum
@@ -646,7 +646,7 @@ if|if
 condition|(
 name|curReplicas
 operator|+
-name|decommissionedReplicas
+name|outOfServiceReplicas
 operator|>=
 name|dataBlkNum
 condition|)
@@ -702,8 +702,8 @@ name|QUEUE_LOW_REDUNDANCY
 return|;
 block|}
 block|}
-comment|/**    * Add a block to insufficiently redundant queue according to its priority.    *    * @param block a low redundancy block    * @param curReplicas current number of replicas of the block    * @param decomissionedReplicas the number of decommissioned replicas    * @param expectedReplicas expected number of replicas of the block    * @return true if the block was added to a queue.    */
-DECL|method|add (BlockInfo block, int curReplicas, int readOnlyReplicas, int decomissionedReplicas, int expectedReplicas)
+comment|/**    * Add a block to insufficiently redundant queue according to its priority.    *    * @param block a low redundancy block    * @param curReplicas current number of replicas of the block    * @param outOfServiceReplicas the number of out-of-service replicas    * @param expectedReplicas expected number of replicas of the block    * @return true if the block was added to a queue.    */
+DECL|method|add (BlockInfo block, int curReplicas, int readOnlyReplicas, int outOfServiceReplicas, int expectedReplicas)
 specifier|synchronized
 name|boolean
 name|add
@@ -718,19 +718,12 @@ name|int
 name|readOnlyReplicas
 parameter_list|,
 name|int
-name|decomissionedReplicas
+name|outOfServiceReplicas
 parameter_list|,
 name|int
 name|expectedReplicas
 parameter_list|)
 block|{
-assert|assert
-name|curReplicas
-operator|>=
-literal|0
-operator|:
-literal|"Negative replicas!"
-assert|;
 specifier|final
 name|int
 name|priLevel
@@ -743,7 +736,7 @@ name|curReplicas
 argument_list|,
 name|readOnlyReplicas
 argument_list|,
-name|decomissionedReplicas
+name|outOfServiceReplicas
 argument_list|,
 name|expectedReplicas
 argument_list|)
@@ -808,7 +801,7 @@ literal|false
 return|;
 block|}
 comment|/** Remove a block from a low redundancy queue. */
-DECL|method|remove (BlockInfo block, int oldReplicas, int oldReadOnlyReplicas, int decommissionedReplicas, int oldExpectedReplicas)
+DECL|method|remove (BlockInfo block, int oldReplicas, int oldReadOnlyReplicas, int outOfServiceReplicas, int oldExpectedReplicas)
 specifier|synchronized
 name|boolean
 name|remove
@@ -823,7 +816,7 @@ name|int
 name|oldReadOnlyReplicas
 parameter_list|,
 name|int
-name|decommissionedReplicas
+name|outOfServiceReplicas
 parameter_list|,
 name|int
 name|oldExpectedReplicas
@@ -841,7 +834,7 @@ name|oldReplicas
 argument_list|,
 name|oldReadOnlyReplicas
 argument_list|,
-name|decommissionedReplicas
+name|outOfServiceReplicas
 argument_list|,
 name|oldExpectedReplicas
 argument_list|)
@@ -1003,8 +996,8 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Recalculate and potentially update the priority level of a block.    *    * If the block priority has changed from before an attempt is made to    * remove it from the block queue. Regardless of whether or not the block    * is in the block queue of (recalculate) priority, an attempt is made    * to add it to that queue. This ensures that the block will be    * in its expected priority queue (and only that queue) by the end of the    * method call.    * @param block a low redundancy block    * @param curReplicas current number of replicas of the block    * @param decommissionedReplicas  the number of decommissioned replicas    * @param curExpectedReplicas expected number of replicas of the block    * @param curReplicasDelta the change in the replicate count from before    * @param expectedReplicasDelta the change in the expected replica count    *        from before    */
-DECL|method|update (BlockInfo block, int curReplicas, int readOnlyReplicas, int decommissionedReplicas, int curExpectedReplicas, int curReplicasDelta, int expectedReplicasDelta)
+comment|/**    * Recalculate and potentially update the priority level of a block.    *    * If the block priority has changed from before an attempt is made to    * remove it from the block queue. Regardless of whether or not the block    * is in the block queue of (recalculate) priority, an attempt is made    * to add it to that queue. This ensures that the block will be    * in its expected priority queue (and only that queue) by the end of the    * method call.    * @param block a low redundancy block    * @param curReplicas current number of replicas of the block    * @param outOfServiceReplicas  the number of out-of-service replicas    * @param curExpectedReplicas expected number of replicas of the block    * @param curReplicasDelta the change in the replicate count from before    * @param expectedReplicasDelta the change in the expected replica count    *        from before    */
+DECL|method|update (BlockInfo block, int curReplicas, int readOnlyReplicas, int outOfServiceReplicas, int curExpectedReplicas, int curReplicasDelta, int expectedReplicasDelta)
 specifier|synchronized
 name|void
 name|update
@@ -1019,7 +1012,7 @@ name|int
 name|readOnlyReplicas
 parameter_list|,
 name|int
-name|decommissionedReplicas
+name|outOfServiceReplicas
 parameter_list|,
 name|int
 name|curExpectedReplicas
@@ -1056,7 +1049,7 @@ name|curReplicas
 argument_list|,
 name|readOnlyReplicas
 argument_list|,
-name|decommissionedReplicas
+name|outOfServiceReplicas
 argument_list|,
 name|curExpectedReplicas
 argument_list|)
@@ -1072,7 +1065,7 @@ name|oldReplicas
 argument_list|,
 name|readOnlyReplicas
 argument_list|,
-name|decommissionedReplicas
+name|outOfServiceReplicas
 argument_list|,
 name|oldExpectedReplicas
 argument_list|)

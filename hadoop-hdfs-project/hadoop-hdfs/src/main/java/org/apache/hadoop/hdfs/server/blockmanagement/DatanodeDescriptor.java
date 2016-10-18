@@ -832,14 +832,14 @@ block|}
 block|}
 comment|// Stores status of decommissioning.
 comment|// If node is not decommissioning, do not use this object for anything.
-DECL|field|decommissioningStatus
-specifier|public
+DECL|field|leavingServiceStatus
+specifier|private
 specifier|final
-name|DecommissioningStatus
-name|decommissioningStatus
+name|LeavingServiceStatus
+name|leavingServiceStatus
 init|=
 operator|new
-name|DecommissioningStatus
+name|LeavingServiceStatus
 argument_list|()
 decl_stmt|;
 DECL|field|storageMap
@@ -1247,6 +1247,16 @@ name|needKeyUpdate
 operator|=
 name|needKeyUpdate
 expr_stmt|;
+block|}
+DECL|method|getLeavingServiceStatus ()
+specifier|public
+name|LeavingServiceStatus
+name|getLeavingServiceStatus
+parameter_list|()
+block|{
+return|return
+name|leavingServiceStatus
+return|;
 block|}
 annotation|@
 name|VisibleForTesting
@@ -3178,21 +3188,21 @@ name|obj
 argument_list|)
 return|;
 block|}
-comment|/** Decommissioning status */
-DECL|class|DecommissioningStatus
+comment|/** Leaving service status. */
+DECL|class|LeavingServiceStatus
 specifier|public
 class|class
-name|DecommissioningStatus
+name|LeavingServiceStatus
 block|{
 DECL|field|underReplicatedBlocks
 specifier|private
 name|int
 name|underReplicatedBlocks
 decl_stmt|;
-DECL|field|decommissionOnlyReplicas
+DECL|field|outOfServiceOnlyReplicas
 specifier|private
 name|int
-name|decommissionOnlyReplicas
+name|outOfServiceOnlyReplicas
 decl_stmt|;
 DECL|field|underReplicatedInOpenFiles
 specifier|private
@@ -3224,6 +3234,10 @@ condition|(
 operator|!
 name|isDecommissionInProgress
 argument_list|()
+operator|&&
+operator|!
+name|isEnteringMaintenance
+argument_list|()
 condition|)
 block|{
 return|return;
@@ -3232,7 +3246,7 @@ name|underReplicatedBlocks
 operator|=
 name|underRep
 expr_stmt|;
-name|decommissionOnlyReplicas
+name|outOfServiceOnlyReplicas
 operator|=
 name|onlyRep
 expr_stmt|;
@@ -3254,6 +3268,10 @@ condition|(
 operator|!
 name|isDecommissionInProgress
 argument_list|()
+operator|&&
+operator|!
+name|isEnteringMaintenance
+argument_list|()
 condition|)
 block|{
 return|return
@@ -3264,18 +3282,22 @@ return|return
 name|underReplicatedBlocks
 return|;
 block|}
-comment|/** @return the number of decommission-only replicas */
-DECL|method|getDecommissionOnlyReplicas ()
+comment|/** @return the number of blocks with out-of-service-only replicas */
+DECL|method|getOutOfServiceOnlyReplicas ()
 specifier|public
 specifier|synchronized
 name|int
-name|getDecommissionOnlyReplicas
+name|getOutOfServiceOnlyReplicas
 parameter_list|()
 block|{
 if|if
 condition|(
 operator|!
 name|isDecommissionInProgress
+argument_list|()
+operator|&&
+operator|!
+name|isEnteringMaintenance
 argument_list|()
 condition|)
 block|{
@@ -3284,7 +3306,7 @@ literal|0
 return|;
 block|}
 return|return
-name|decommissionOnlyReplicas
+name|outOfServiceOnlyReplicas
 return|;
 block|}
 comment|/** @return the number of under-replicated blocks in open files */
@@ -3299,6 +3321,10 @@ if|if
 condition|(
 operator|!
 name|isDecommissionInProgress
+argument_list|()
+operator|&&
+operator|!
+name|isEnteringMaintenance
 argument_list|()
 condition|)
 block|{
@@ -3321,6 +3347,19 @@ name|long
 name|time
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|isDecommissionInProgress
+argument_list|()
+operator|&&
+operator|!
+name|isEnteringMaintenance
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 name|startTime
 operator|=
 name|time
@@ -3338,6 +3377,10 @@ if|if
 condition|(
 operator|!
 name|isDecommissionInProgress
+argument_list|()
+operator|&&
+operator|!
+name|isEnteringMaintenance
 argument_list|()
 condition|)
 block|{

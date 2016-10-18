@@ -1135,6 +1135,28 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|testXceiverCountInternal
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|testXceiverCountInternal
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testXceiverCountInternal (int minMaintenanceR)
+specifier|public
+name|void
+name|testXceiverCountInternal
+parameter_list|(
+name|int
+name|minMaintenanceR
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 name|Configuration
 name|conf
 init|=
@@ -1154,6 +1176,17 @@ operator|.
 name|LOCATEFOLLOWINGBLOCK_RETRIES_KEY
 argument_list|,
 literal|1
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_KEY
+argument_list|,
+name|minMaintenanceR
 argument_list|)
 expr_stmt|;
 name|MiniDFSCluster
@@ -1281,8 +1314,8 @@ argument_list|,
 name|expectedInServiceLoad
 argument_list|)
 expr_stmt|;
-comment|// shutdown half the nodes and force a heartbeat check to ensure
-comment|// counts are accurate
+comment|// Shutdown half the nodes followed by admin operations on those nodes.
+comment|// Ensure counts are accurate.
 for|for
 control|(
 name|int
@@ -1345,15 +1378,20 @@ name|getBlockManager
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//Verify decommission of dead node won't impact nodesInService metrics.
-name|dnm
-operator|.
-name|getDecomManager
-argument_list|()
-operator|.
-name|startDecommission
+comment|//Admin operations on dead nodes won't impact nodesInService metrics.
+name|startDecommissionOrMaintenance
 argument_list|(
+name|dnm
+argument_list|,
 name|dnd
+argument_list|,
+operator|(
+name|i
+operator|%
+literal|2
+operator|==
+literal|0
+operator|)
 argument_list|)
 expr_stmt|;
 name|expectedInServiceNodes
@@ -1379,15 +1417,19 @@ name|namesystem
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//Verify recommission of dead node won't impact nodesInService metrics.
-name|dnm
-operator|.
-name|getDecomManager
-argument_list|()
-operator|.
-name|stopDecommission
+name|stopDecommissionOrMaintenance
 argument_list|(
+name|dnm
+argument_list|,
 name|dnd
+argument_list|,
+operator|(
+name|i
+operator|%
+literal|2
+operator|==
+literal|0
+operator|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1554,8 +1596,8 @@ argument_list|,
 name|expectedInServiceLoad
 argument_list|)
 expr_stmt|;
-comment|// decomm a few nodes, substract their load from the expected load,
-comment|// trigger heartbeat to force load update
+comment|// admin operations on a few nodes, substract their load from the
+comment|// expected load, trigger heartbeat to force load update.
 for|for
 control|(
 name|int
@@ -1599,14 +1641,19 @@ operator|.
 name|getXceiverCount
 argument_list|()
 expr_stmt|;
-name|dnm
-operator|.
-name|getDecomManager
-argument_list|()
-operator|.
-name|startDecommission
+name|startDecommissionOrMaintenance
 argument_list|(
+name|dnm
+argument_list|,
 name|dnd
+argument_list|,
+operator|(
+name|i
+operator|%
+literal|2
+operator|==
+literal|0
+operator|)
 argument_list|)
 expr_stmt|;
 name|DataNodeTestUtils
@@ -1660,7 +1707,7 @@ operator|++
 control|)
 block|{
 name|int
-name|decomm
+name|adminOps
 init|=
 literal|0
 decl_stmt|;
@@ -1694,18 +1741,14 @@ literal|2
 expr_stmt|;
 if|if
 condition|(
+operator|!
 name|dnd
 operator|.
-name|isDecommissionInProgress
-argument_list|()
-operator|||
-name|dnd
-operator|.
-name|isDecommissioned
+name|isInService
 argument_list|()
 condition|)
 block|{
-name|decomm
+name|adminOps
 operator|++
 expr_stmt|;
 block|}
@@ -1739,7 +1782,7 @@ comment|// other locations are decommissioned too.  we'll ignore that
 comment|// bug for now
 if|if
 condition|(
-name|decomm
+name|adminOps
 operator|<
 name|fileRepl
 condition|)
@@ -1769,7 +1812,7 @@ name|expectedInServiceLoad
 argument_list|)
 expr_stmt|;
 block|}
-comment|// shutdown each node, verify node counts based on decomm state
+comment|// shutdown each node, verify node counts based on admin state
 for|for
 control|(
 name|int
@@ -1929,6 +1972,100 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+block|}
+DECL|method|startDecommissionOrMaintenance (DatanodeManager dnm, DatanodeDescriptor dnd, boolean decomm)
+specifier|private
+name|void
+name|startDecommissionOrMaintenance
+parameter_list|(
+name|DatanodeManager
+name|dnm
+parameter_list|,
+name|DatanodeDescriptor
+name|dnd
+parameter_list|,
+name|boolean
+name|decomm
+parameter_list|)
+block|{
+if|if
+condition|(
+name|decomm
+condition|)
+block|{
+name|dnm
+operator|.
+name|getDecomManager
+argument_list|()
+operator|.
+name|startDecommission
+argument_list|(
+name|dnd
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|dnm
+operator|.
+name|getDecomManager
+argument_list|()
+operator|.
+name|startMaintenance
+argument_list|(
+name|dnd
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|stopDecommissionOrMaintenance (DatanodeManager dnm, DatanodeDescriptor dnd, boolean decomm)
+specifier|private
+name|void
+name|stopDecommissionOrMaintenance
+parameter_list|(
+name|DatanodeManager
+name|dnm
+parameter_list|,
+name|DatanodeDescriptor
+name|dnd
+parameter_list|,
+name|boolean
+name|decomm
+parameter_list|)
+block|{
+if|if
+condition|(
+name|decomm
+condition|)
+block|{
+name|dnm
+operator|.
+name|getDecomManager
+argument_list|()
+operator|.
+name|stopDecommission
+argument_list|(
+name|dnd
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|dnm
+operator|.
+name|getDecomManager
+argument_list|()
+operator|.
+name|stopMaintenance
+argument_list|(
+name|dnd
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|checkClusterHealth ( int numOfLiveNodes, FSNamesystem namesystem, double expectedTotalLoad, int expectedInServiceNodes, double expectedInServiceLoad)

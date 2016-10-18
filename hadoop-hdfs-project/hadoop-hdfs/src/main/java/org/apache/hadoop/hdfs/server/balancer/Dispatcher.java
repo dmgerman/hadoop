@@ -5114,24 +5114,15 @@ name|DatanodeInfo
 name|dn
 parameter_list|)
 block|{
-comment|// ignore decommissioned nodes
+comment|// ignore out-of-service nodes
 specifier|final
 name|boolean
-name|decommissioned
+name|outOfService
 init|=
+operator|!
 name|dn
 operator|.
-name|isDecommissioned
-argument_list|()
-decl_stmt|;
-comment|// ignore decommissioning nodes
-specifier|final
-name|boolean
-name|decommissioning
-init|=
-name|dn
-operator|.
-name|isDecommissionInProgress
+name|isInService
 argument_list|()
 decl_stmt|;
 comment|// ignore nodes in exclude list
@@ -5165,9 +5156,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|decommissioned
-operator|||
-name|decommissioning
+name|outOfService
 operator|||
 name|excluded
 operator|||
@@ -5190,13 +5179,9 @@ literal|"Excluding datanode "
 operator|+
 name|dn
 operator|+
-literal|": decommissioned="
+literal|": outOfService="
 operator|+
-name|decommissioned
-operator|+
-literal|", decommissioning="
-operator|+
-name|decommissioning
+name|outOfService
 operator|+
 literal|", excluded="
 operator|+

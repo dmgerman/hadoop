@@ -3092,14 +3092,10 @@ continue|continue;
 block|}
 if|if
 condition|(
+operator|!
 name|datanode
 operator|.
-name|isDecommissioned
-argument_list|()
-operator|||
-name|datanode
-operator|.
-name|isDecommissionInProgress
+name|isInService
 argument_list|()
 condition|)
 block|{

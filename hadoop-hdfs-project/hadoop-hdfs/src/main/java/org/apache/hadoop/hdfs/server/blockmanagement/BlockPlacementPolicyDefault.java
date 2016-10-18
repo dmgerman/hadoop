@@ -4000,14 +4000,10 @@ block|{
 comment|// check if the node is (being) decommissioned
 if|if
 condition|(
+operator|!
 name|node
 operator|.
-name|isDecommissionInProgress
-argument_list|()
-operator|||
-name|node
-operator|.
-name|isDecommissioned
+name|isInService
 argument_list|()
 condition|)
 block|{
@@ -4015,7 +4011,7 @@ name|logNodeIsNotChosen
 argument_list|(
 name|node
 argument_list|,
-literal|"the node is (being) decommissioned "
+literal|"the node isn't in service."
 argument_list|)
 expr_stmt|;
 return|return
