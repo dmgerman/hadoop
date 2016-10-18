@@ -111,7 +111,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Print statistics about path in specified format.  * Format sequences:<br>  *   %b: Size of file in blocks<br>  *   %F: Type<br>  *   %g: Group name of owner<br>  *   %n: Filename<br>  *   %o: Block size<br>  *   %r: replication<br>  *   %u: User name of owner<br>  *   %y: UTC date as&quot;yyyy-MM-dd HH:mm:ss&quot;<br>  *   %Y: Milliseconds since January 1, 1970 UTC<br>  * If the format is not specified, %y is used by default.  */
+comment|/**  * Print statistics about path in specified format.  * Format sequences:<br>  *   %a: Permissions in octal<br>  *   %A: Permissions in symbolic style<br>  *   %b: Size of file in blocks<br>  *   %F: Type<br>  *   %g: Group name of owner<br>  *   %n: Filename<br>  *   %o: Block size<br>  *   %r: replication<br>  *   %u: User name of owner<br>  *   %y: UTC date as&quot;yyyy-MM-dd HH:mm:ss&quot;<br>  *   %Y: Milliseconds since January 1, 1970 UTC<br>  * If the format is not specified, %y is used by default.  */
 end_comment
 
 begin_class
@@ -194,7 +194,11 @@ literal|"Print statistics about the file/directory at<path>"
 operator|+
 name|NEWLINE
 operator|+
-literal|"in the specified format. Format accepts filesize in"
+literal|"in the specified format. Format accepts permissions in"
+operator|+
+name|NEWLINE
+operator|+
+literal|"octal (%a) and symbolic (%A), filesize in"
 operator|+
 name|NEWLINE
 operator|+
@@ -431,6 +435,37 @@ name|i
 index|]
 condition|)
 block|{
+case|case
+literal|'a'
+case|:
+name|buf
+operator|.
+name|append
+argument_list|(
+name|stat
+operator|.
+name|getPermission
+argument_list|()
+operator|.
+name|toOctal
+argument_list|()
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+literal|'A'
+case|:
+name|buf
+operator|.
+name|append
+argument_list|(
+name|stat
+operator|.
+name|getPermission
+argument_list|()
+argument_list|)
+expr_stmt|;
+break|break;
 case|case
 literal|'b'
 case|:
