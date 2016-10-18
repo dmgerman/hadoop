@@ -42,11 +42,25 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|erasurecode
 operator|.
-name|ECSchema
+name|ErasureCodecOptions
 import|;
 end_import
 
@@ -64,7 +78,25 @@ name|erasurecode
 operator|.
 name|coder
 operator|.
-name|ErasureCoder
+name|ErasureDecoder
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|coder
+operator|.
+name|ErasureEncoder
 import|;
 end_import
 
@@ -118,24 +150,32 @@ specifier|public
 class|class
 name|XORErasureCodec
 extends|extends
-name|AbstractErasureCodec
+name|ErasureCodec
 block|{
-DECL|method|XORErasureCodec (ECSchema schema)
+DECL|method|XORErasureCodec (Configuration conf, ErasureCodecOptions options)
 specifier|public
 name|XORErasureCodec
 parameter_list|(
-name|ECSchema
-name|schema
+name|Configuration
+name|conf
+parameter_list|,
+name|ErasureCodecOptions
+name|options
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|schema
+name|conf
+argument_list|,
+name|options
 argument_list|)
 expr_stmt|;
 assert|assert
 operator|(
-name|schema
+name|options
+operator|.
+name|getSchema
+argument_list|()
 operator|.
 name|getNumParityUnits
 argument_list|()
@@ -148,7 +188,7 @@ annotation|@
 name|Override
 DECL|method|createEncoder ()
 specifier|public
-name|ErasureCoder
+name|ErasureEncoder
 name|createEncoder
 parameter_list|()
 block|{
@@ -156,7 +196,7 @@ return|return
 operator|new
 name|XORErasureEncoder
 argument_list|(
-name|getSchema
+name|getCoderOptions
 argument_list|()
 argument_list|)
 return|;
@@ -165,7 +205,7 @@ annotation|@
 name|Override
 DECL|method|createDecoder ()
 specifier|public
-name|ErasureCoder
+name|ErasureDecoder
 name|createDecoder
 parameter_list|()
 block|{
@@ -173,7 +213,7 @@ return|return
 operator|new
 name|XORErasureDecoder
 argument_list|(
-name|getSchema
+name|getCoderOptions
 argument_list|()
 argument_list|)
 return|;

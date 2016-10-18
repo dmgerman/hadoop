@@ -42,6 +42,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configured
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|erasurecode
@@ -78,7 +92,7 @@ name|io
 operator|.
 name|erasurecode
 operator|.
-name|ECSchema
+name|ErasureCoderOptions
 import|;
 end_import
 
@@ -91,45 +105,65 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|AbstractErasureDecoder
+DECL|class|ErasureDecoder
 specifier|public
 specifier|abstract
 class|class
-name|AbstractErasureDecoder
+name|ErasureDecoder
 extends|extends
-name|AbstractErasureCoder
+name|Configured
+implements|implements
+name|ErasureCoder
 block|{
-DECL|method|AbstractErasureDecoder (int numDataUnits, int numParityUnits)
-specifier|public
-name|AbstractErasureDecoder
-parameter_list|(
+DECL|field|numDataUnits
+specifier|private
+specifier|final
 name|int
 name|numDataUnits
-parameter_list|,
+decl_stmt|;
+DECL|field|numParityUnits
+specifier|private
+specifier|final
 name|int
 name|numParityUnits
+decl_stmt|;
+DECL|field|options
+specifier|private
+specifier|final
+name|ErasureCoderOptions
+name|options
+decl_stmt|;
+DECL|method|ErasureDecoder (ErasureCoderOptions options)
+specifier|public
+name|ErasureDecoder
+parameter_list|(
+name|ErasureCoderOptions
+name|options
 parameter_list|)
 block|{
-name|super
-argument_list|(
-name|numDataUnits
-argument_list|,
-name|numParityUnits
-argument_list|)
+name|this
+operator|.
+name|options
+operator|=
+name|options
 expr_stmt|;
-block|}
-DECL|method|AbstractErasureDecoder (ECSchema schema)
-specifier|public
-name|AbstractErasureDecoder
-parameter_list|(
-name|ECSchema
-name|schema
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|schema
-argument_list|)
+name|this
+operator|.
+name|numDataUnits
+operator|=
+name|options
+operator|.
+name|getNumDataUnits
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|numParityUnits
+operator|=
+name|options
+operator|.
+name|getNumParityUnits
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -151,17 +185,46 @@ name|blockGroup
 argument_list|)
 return|;
 block|}
-comment|/**    * Perform decoding against a block blockGroup.    * @param blockGroup    * @return decoding step for caller to do the real work    */
-DECL|method|prepareDecodingStep ( ECBlockGroup blockGroup)
-specifier|protected
-specifier|abstract
-name|ErasureCodingStep
-name|prepareDecodingStep
-parameter_list|(
-name|ECBlockGroup
-name|blockGroup
-parameter_list|)
-function_decl|;
+annotation|@
+name|Override
+DECL|method|getNumDataUnits ()
+specifier|public
+name|int
+name|getNumDataUnits
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|numDataUnits
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNumParityUnits ()
+specifier|public
+name|int
+name|getNumParityUnits
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|numParityUnits
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getOptions ()
+specifier|public
+name|ErasureCoderOptions
+name|getOptions
+parameter_list|()
+block|{
+return|return
+name|options
+return|;
+block|}
 comment|/**    * We have all the data blocks and parity blocks as input blocks for    * recovering by default. It's codec specific    * @param blockGroup    * @return input blocks    */
 DECL|method|getInputBlocks (ECBlockGroup blockGroup)
 specifier|protected
@@ -355,6 +418,39 @@ return|return
 name|outputBlocks
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|preferDirectBuffer ()
+specifier|public
+name|boolean
+name|preferDirectBuffer
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|release ()
+specifier|public
+name|void
+name|release
+parameter_list|()
+block|{
+comment|// Nothing to do by default
+block|}
+comment|/**    * Perform decoding against a block blockGroup.    * @param blockGroup    * @return decoding step for caller to do the real work    */
+DECL|method|prepareDecodingStep ( ECBlockGroup blockGroup)
+specifier|protected
+specifier|abstract
+name|ErasureCodingStep
+name|prepareDecodingStep
+parameter_list|(
+name|ECBlockGroup
+name|blockGroup
+parameter_list|)
+function_decl|;
 comment|/**    * Get the number of erased blocks in the block group.    * @param blockGroup    * @return number of erased blocks    */
 DECL|method|getNumErasedBlocks (ECBlockGroup blockGroup)
 specifier|protected

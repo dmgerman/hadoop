@@ -82,7 +82,6 @@ name|ErasureCodingStep
 block|{
 comment|/**    * Input blocks of readable data involved in this step, may be data blocks    * or parity blocks.    * @return input blocks    */
 DECL|method|getInputBlocks ()
-specifier|public
 name|ECBlock
 index|[]
 name|getInputBlocks
@@ -90,7 +89,6 @@ parameter_list|()
 function_decl|;
 comment|/**    * Output blocks of writable buffers involved in this step, may be data    * blocks or parity blocks.    * @return output blocks    */
 DECL|method|getOutputBlocks ()
-specifier|public
 name|ECBlock
 index|[]
 name|getOutputBlocks
@@ -98,7 +96,6 @@ parameter_list|()
 function_decl|;
 comment|/**    * Perform encoding or decoding given the input chunks, and generated results    * will be written to the output chunks.    * @param inputChunks    * @param outputChunks    */
 DECL|method|performCoding (ECChunk[] inputChunks, ECChunk[] outputChunks)
-specifier|public
 name|void
 name|performCoding
 parameter_list|(
@@ -113,7 +110,6 @@ parameter_list|)
 function_decl|;
 comment|/**    * Notify erasure coder that all the chunks of input blocks are processed so    * the coder can be able to update internal states, considering next step.    */
 DECL|method|finish ()
-specifier|public
 name|void
 name|finish
 parameter_list|()

@@ -51,7 +51,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Abstract class for common facilities shared by {@link ErasureEncodingStep}  * and {@link ErasureDecodingStep}.  *  * It implements {@link ErasureEncodingStep}.  */
+comment|/**  * Abstract class for Hitchhiker common facilities shared by  * {@link HHXORErasureEncodingStep}and {@link HHXORErasureDecodingStep}.  *  * It implements {@link ErasureCodingStep}.  */
 end_comment
 
 begin_class
@@ -59,11 +59,11 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|AbstractErasureCodingStep
+DECL|class|HHErasureCodingStep
 specifier|public
 specifier|abstract
 class|class
-name|AbstractErasureCodingStep
+name|HHErasureCodingStep
 implements|implements
 name|ErasureCodingStep
 block|{
@@ -79,10 +79,19 @@ name|ECBlock
 index|[]
 name|outputBlocks
 decl_stmt|;
-comment|/**    * Constructor given input blocks and output blocks.    * @param inputBlocks    * @param outputBlocks    */
-DECL|method|AbstractErasureCodingStep (ECBlock[] inputBlocks, ECBlock[] outputBlocks)
+DECL|field|SUB_PACKET_SIZE
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|SUB_PACKET_SIZE
+init|=
+literal|2
+decl_stmt|;
+comment|/**    * Constructor given input blocks and output blocks.    *    * @param inputBlocks    * @param outputBlocks    */
+DECL|method|HHErasureCodingStep (ECBlock[] inputBlocks, ECBlock[] outputBlocks)
 specifier|public
-name|AbstractErasureCodingStep
+name|HHErasureCodingStep
 parameter_list|(
 name|ECBlock
 index|[]
@@ -105,6 +114,16 @@ name|outputBlocks
 operator|=
 name|outputBlocks
 expr_stmt|;
+block|}
+DECL|method|getSubPacketSize ()
+specifier|protected
+name|int
+name|getSubPacketSize
+parameter_list|()
+block|{
+return|return
+name|SUB_PACKET_SIZE
+return|;
 block|}
 annotation|@
 name|Override
@@ -140,7 +159,7 @@ name|void
 name|finish
 parameter_list|()
 block|{
-comment|// NOOP by default
+comment|// TODO: Finalize encoder/decoder if necessary
 block|}
 block|}
 end_class

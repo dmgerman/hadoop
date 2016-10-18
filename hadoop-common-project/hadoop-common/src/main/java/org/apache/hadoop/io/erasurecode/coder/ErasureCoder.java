@@ -64,6 +64,22 @@ name|ECBlockGroup
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ErasureCoderOptions
+import|;
+end_import
+
 begin_comment
 comment|/**  * An erasure coder to perform encoding or decoding given a group. Generally it  * involves calculating necessary internal steps according to codec logic. For  * each step,it calculates necessary input blocks to read chunks from and output  * parity blocks to write parity chunks into from the group. It also takes care  * of appropriate raw coder to use for the step. And encapsulates all the  * necessary info (input blocks, output blocks and raw coder) into a step  * represented by {@link ErasureCodingStep}. ErasureCoder callers can use the  * step to do the real work with retrieved input and output chunks.  *  * Note, currently only one coding step is supported. Will support complex cases  * of multiple coding steps.  *  */
 end_comment
@@ -80,23 +96,26 @@ name|ErasureCoder
 extends|extends
 name|Configurable
 block|{
-comment|/**    * The number of data input units for the coding. A unit can be a byte,    * chunk or buffer or even a block.    * @return count of data input units    */
+comment|/**    * The number of data input units for the coding. A unit can be a byte, chunk    * or buffer or even a block.    * @return count of data input units    */
 DECL|method|getNumDataUnits ()
-specifier|public
 name|int
 name|getNumDataUnits
 parameter_list|()
 function_decl|;
 comment|/**    * The number of parity output units for the coding. A unit can be a byte,    * chunk, buffer or even a block.    * @return count of parity output units    */
 DECL|method|getNumParityUnits ()
-specifier|public
 name|int
 name|getNumParityUnits
 parameter_list|()
 function_decl|;
+comment|/**    * The options of erasure coder. This option is passed to    * raw erasure coder as it is.    * @return erasure coder options    */
+DECL|method|getOptions ()
+name|ErasureCoderOptions
+name|getOptions
+parameter_list|()
+function_decl|;
 comment|/**    * Calculate the encoding or decoding steps given a block blockGroup.    *    * Note, currently only one coding step is supported. Will support complex    * cases of multiple coding steps.    *    * @param blockGroup the erasure coding block group containing all necessary    *                   information for codec calculation    */
 DECL|method|calculateCoding (ECBlockGroup blockGroup)
-specifier|public
 name|ErasureCodingStep
 name|calculateCoding
 parameter_list|(
@@ -106,14 +125,12 @@ parameter_list|)
 function_decl|;
 comment|/**    * Tell if direct or off-heap buffer is preferred or not. It's for callers to    * decide how to allocate coding chunk buffers, either on heap or off heap.    * It will return false by default.    * @return true if direct buffer is preferred for performance consideration,    * otherwise false.    */
 DECL|method|preferDirectBuffer ()
-specifier|public
 name|boolean
 name|preferDirectBuffer
 parameter_list|()
 function_decl|;
-comment|/**    * Release the resources if any. Good chance to invoke RawErasureCoder#release.    */
+comment|/**    * Release the resources if any. Good chance to invoke    * RawErasureCoder#release.    */
 DECL|method|release ()
-specifier|public
 name|void
 name|release
 parameter_list|()

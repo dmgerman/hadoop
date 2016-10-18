@@ -146,7 +146,7 @@ specifier|public
 class|class
 name|HHXORErasureDecodingStep
 extends|extends
-name|AbstractHHErasureCodingStep
+name|HHErasureCodingStep
 block|{
 DECL|field|pbIndex
 specifier|private

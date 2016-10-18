@@ -92,6 +92,7 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|CoderUtil
+specifier|public
 specifier|final
 class|class
 name|CoderUtil

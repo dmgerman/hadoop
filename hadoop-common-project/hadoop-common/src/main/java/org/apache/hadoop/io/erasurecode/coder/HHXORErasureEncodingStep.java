@@ -128,7 +128,7 @@ specifier|public
 class|class
 name|HHXORErasureEncodingStep
 extends|extends
-name|AbstractHHErasureCodingStep
+name|HHErasureCodingStep
 block|{
 DECL|field|piggyBackIndex
 specifier|private

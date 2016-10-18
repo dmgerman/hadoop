@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.io.erasurecode.coder
+DECL|package|org.apache.hadoop.io.erasurecode
 package|package
 name|org
 operator|.
@@ -15,8 +15,6 @@ operator|.
 name|io
 operator|.
 name|erasurecode
-operator|.
-name|coder
 package|;
 end_package
 
@@ -34,24 +32,8 @@ name|InterfaceAudience
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
-name|ECBlock
-import|;
-end_import
-
 begin_comment
-comment|/**  * Abstract class for Hitchhiker common facilities shared by  * {@link HHXORErasureEncodingStep}and {@link HHXORErasureDecodingStep}.  *  * It implements {@link AbstractErasureCodingStep}.  */
+comment|/**  * Erasure codec options.  */
 end_comment
 
 begin_class
@@ -59,53 +41,39 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|AbstractHHErasureCodingStep
+DECL|class|ErasureCodecOptions
 specifier|public
-specifier|abstract
 class|class
-name|AbstractHHErasureCodingStep
-extends|extends
-name|AbstractErasureCodingStep
+name|ErasureCodecOptions
 block|{
-DECL|field|SUB_PACKET_SIZE
+DECL|field|schema
 specifier|private
-specifier|static
-specifier|final
-name|int
-name|SUB_PACKET_SIZE
-init|=
-literal|2
+name|ECSchema
+name|schema
 decl_stmt|;
-comment|/**    * Constructor given input blocks and output blocks.    *    * @param inputBlocks    * @param outputBlocks    */
-DECL|method|AbstractHHErasureCodingStep (ECBlock[] inputBlocks, ECBlock[] outputBlocks)
+DECL|method|ErasureCodecOptions (ECSchema schema)
 specifier|public
-name|AbstractHHErasureCodingStep
+name|ErasureCodecOptions
 parameter_list|(
-name|ECBlock
-index|[]
-name|inputBlocks
-parameter_list|,
-name|ECBlock
-index|[]
-name|outputBlocks
+name|ECSchema
+name|schema
 parameter_list|)
 block|{
-name|super
-argument_list|(
-name|inputBlocks
-argument_list|,
-name|outputBlocks
-argument_list|)
+name|this
+operator|.
+name|schema
+operator|=
+name|schema
 expr_stmt|;
 block|}
-DECL|method|getSubPacketSize ()
-specifier|protected
-name|int
-name|getSubPacketSize
+DECL|method|getSchema ()
+specifier|public
+name|ECSchema
+name|getSchema
 parameter_list|()
 block|{
 return|return
-name|SUB_PACKET_SIZE
+name|schema
 return|;
 block|}
 block|}

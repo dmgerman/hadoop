@@ -61,6 +61,15 @@ name|XOR_CODEC_NAME
 init|=
 literal|"xor"
 decl_stmt|;
+DECL|field|HHXOR_CODEC_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HHXOR_CODEC_NAME
+init|=
+literal|"hhxor"
+decl_stmt|;
 DECL|field|RS_6_3_SCHEMA
 specifier|public
 specifier|static

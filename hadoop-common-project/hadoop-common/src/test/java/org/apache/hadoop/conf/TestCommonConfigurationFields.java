@@ -170,6 +170,22 @@ name|hadoop
 operator|.
 name|io
 operator|.
+name|erasurecode
+operator|.
+name|CodecUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
 name|nativeio
 operator|.
 name|NativeIO
@@ -251,7 +267,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Unit test class to compare the following Hadoop Configuration classes:  *<p></p>  * {@link org.apache.hadoop.fs.AbstractFileSystem}  * {@link org.apache.hadoop.fs.CommonConfigurationKeys}  * {@link org.apache.hadoop.fs.CommonConfigurationKeysPublic}  * {@link org.apache.hadoop.fs.ftp.FtpConfigKeys}  * {@link org.apache.hadoop.fs.local.LocalConfigKeys}  * {@link org.apache.hadoop.ha.SshFenceByTcpPort}  * {@link org.apache.hadoop.http.HttpServer2}  * {@link org.apache.hadoop.security.LdapGroupsMapping}  * {@link org.apache.hadoop.security.http.CrossOriginFilter}  * {@link org.apache.hadoop.security.ssl.SSLFactory}  *<p></p>  * against core-site.xml for missing properties.  Currently only  * throws an error if the class is missing a property.  *<p></p>  * Refer to {@link org.apache.hadoop.conf.TestConfigurationFieldsBase}  * for how this class works.  */
+comment|/**  * Unit test class to compare the following Hadoop Configuration classes:  *<p></p>  * {@link org.apache.hadoop.fs.AbstractFileSystem}  * {@link org.apache.hadoop.fs.CommonConfigurationKeys}  * {@link org.apache.hadoop.fs.CommonConfigurationKeysPublic}  * {@link org.apache.hadoop.fs.ftp.FtpConfigKeys}  * {@link org.apache.hadoop.fs.local.LocalConfigKeys}  * {@link org.apache.hadoop.ha.SshFenceByTcpPort}  * {@link org.apache.hadoop.http.HttpServer2}  * {@link org.apache.hadoop.security.LdapGroupsMapping}  * {@link org.apache.hadoop.security.http.CrossOriginFilter}  * {@link org.apache.hadoop.security.ssl.SSLFactory}  * {@link org.apache.hadoop.io.erasurecode.rawcoder.CoderUtil}  *<p></p>  * against core-site.xml for missing properties.  Currently only  * throws an error if the class is missing a property.  *<p></p>  * Refer to {@link org.apache.hadoop.conf.TestConfigurationFieldsBase}  * for how this class works.  */
 end_comment
 
 begin_class
@@ -322,6 +338,10 @@ operator|.
 name|class
 block|,
 name|CompositeGroupsMapping
+operator|.
+name|class
+block|,
+name|CodecUtil
 operator|.
 name|class
 block|}

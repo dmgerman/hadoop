@@ -42,9 +42,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|io
 operator|.
-name|CommonConfigurationKeys
+name|erasurecode
+operator|.
+name|CodecUtil
 import|;
 end_import
 
@@ -227,7 +229,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|CommonConfigurationKeys
+name|CodecUtil
 operator|.
 name|IO_ERASURECODE_CODEC_RS_DEFAULT_RAWCODER_KEY
 argument_list|,

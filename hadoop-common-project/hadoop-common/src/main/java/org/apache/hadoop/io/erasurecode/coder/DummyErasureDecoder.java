@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.io.erasurecode.codec
+DECL|package|org.apache.hadoop.io.erasurecode.coder
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|io
 operator|.
 name|erasurecode
 operator|.
-name|codec
+name|coder
 package|;
 end_package
 
@@ -28,23 +28,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|io
 operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|erasurecode
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
+name|ECBlock
 import|;
 end_import
 
@@ -60,7 +48,7 @@ name|io
 operator|.
 name|erasurecode
 operator|.
-name|ErasureCodecOptions
+name|ECBlockGroup
 import|;
 end_import
 
@@ -76,9 +64,7 @@ name|io
 operator|.
 name|erasurecode
 operator|.
-name|coder
-operator|.
-name|ErasureDecoder
+name|ErasureCoderOptions
 import|;
 end_import
 
@@ -94,9 +80,9 @@ name|io
 operator|.
 name|erasurecode
 operator|.
-name|coder
+name|rawcoder
 operator|.
-name|ErasureEncoder
+name|DummyRawDecoder
 import|;
 end_import
 
@@ -112,96 +98,85 @@ name|io
 operator|.
 name|erasurecode
 operator|.
-name|coder
+name|rawcoder
 operator|.
-name|HHXORErasureDecoder
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
-name|coder
-operator|.
-name|HHXORErasureEncoder
+name|RawErasureDecoder
 import|;
 end_import
 
 begin_comment
-comment|/**  * A Hitchhiker-XOR erasure codec.  */
+comment|/**  * Dummy erasure decoder does no real computation. Instead, it just returns  * zero bytes. This decoder can be used to isolate the performance issue to  * HDFS side logic instead of codec, and is intended for test only.  */
 end_comment
 
 begin_class
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-DECL|class|HHXORErasureCodec
+DECL|class|DummyErasureDecoder
 specifier|public
 class|class
-name|HHXORErasureCodec
+name|DummyErasureDecoder
 extends|extends
-name|ErasureCodec
+name|ErasureDecoder
 block|{
-DECL|method|HHXORErasureCodec (Configuration conf, ErasureCodecOptions options)
+DECL|method|DummyErasureDecoder (ErasureCoderOptions options)
 specifier|public
-name|HHXORErasureCodec
+name|DummyErasureDecoder
 parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
-name|ErasureCodecOptions
+name|ErasureCoderOptions
 name|options
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|conf
-argument_list|,
 name|options
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|createEncoder ()
-specifier|public
-name|ErasureEncoder
-name|createEncoder
-parameter_list|()
+DECL|method|prepareDecodingStep (ECBlockGroup blockGroup)
+specifier|protected
+name|ErasureCodingStep
+name|prepareDecodingStep
+parameter_list|(
+name|ECBlockGroup
+name|blockGroup
+parameter_list|)
 block|{
-return|return
+name|RawErasureDecoder
+name|rawDecoder
+init|=
 operator|new
-name|HHXORErasureEncoder
+name|DummyRawDecoder
 argument_list|(
-name|getCoderOptions
+name|getOptions
 argument_list|()
 argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|createDecoder ()
-specifier|public
-name|ErasureDecoder
-name|createDecoder
-parameter_list|()
-block|{
+decl_stmt|;
+name|ECBlock
+index|[]
+name|inputBlocks
+init|=
+name|getInputBlocks
+argument_list|(
+name|blockGroup
+argument_list|)
+decl_stmt|;
 return|return
 operator|new
-name|HHXORErasureDecoder
+name|ErasureDecodingStep
 argument_list|(
-name|getCoderOptions
-argument_list|()
+name|inputBlocks
+argument_list|,
+name|getErasedIndexes
+argument_list|(
+name|inputBlocks
+argument_list|)
+argument_list|,
+name|getOutputBlocks
+argument_list|(
+name|blockGroup
+argument_list|)
+argument_list|,
+name|rawDecoder
 argument_list|)
 return|;
 block|}
