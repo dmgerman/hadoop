@@ -897,6 +897,20 @@ name|queryString
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|method
+operator|.
+name|equals
+argument_list|(
+literal|"OPTIONS"
+argument_list|)
+condition|)
+block|{
+comment|// an HTTP OPTIONS request is made as part of the SPNEGO authentication
+comment|// sequence. We do not need to audit log it, since it doesn't belong
+comment|// to KMS context. KMS server doesn't handle OPTIONS either.
 name|KMSWebApp
 operator|.
 name|getKMSAudit
@@ -921,6 +935,7 @@ operator|.
 name|msg
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
