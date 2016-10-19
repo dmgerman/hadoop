@@ -5064,7 +5064,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    * @param f given path    * @return the statuses of the files/directories in the given patch    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    *<p>    * Will not return null. Expect IOException upon access error.    * @param f given path    * @return the statuses of the files/directories in the given patch    * @throws FileNotFoundException when the path does not exist    * @throws IOException see specific implementation    */
 DECL|method|listStatus (Path f)
 specifier|public
 specifier|abstract
@@ -5076,8 +5076,6 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
-name|FileNotFoundException
-throws|,
 name|IOException
 function_decl|;
 comment|/**    * Represents a batch of directory entries when iteratively listing a    * directory. This is a private API not meant for use by end users.    *<p>    * For internal use by FileSystem subclasses that override    * {@link FileSystem#listStatusBatch(Path, byte[])} to implement iterative    * listing.    */
@@ -5277,23 +5275,15 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|listing
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
+name|Preconditions
+operator|.
+name|checkNotNull
 argument_list|(
-literal|"Error accessing "
-operator|+
-name|f
+name|listing
+argument_list|,
+literal|"listStatus should not return NULL"
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 for|for
 control|(
 name|int

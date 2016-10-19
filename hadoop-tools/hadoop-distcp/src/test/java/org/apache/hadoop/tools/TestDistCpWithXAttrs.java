@@ -1353,7 +1353,11 @@ throws|throws
 name|IOException
 block|{
 return|return
-literal|null
+operator|new
+name|FileStatus
+index|[
+literal|0
+index|]
 return|;
 block|}
 annotation|@
