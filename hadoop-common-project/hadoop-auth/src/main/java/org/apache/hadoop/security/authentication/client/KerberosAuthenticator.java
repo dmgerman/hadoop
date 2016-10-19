@@ -48,6 +48,24 @@ name|security
 operator|.
 name|authentication
 operator|.
+name|server
+operator|.
+name|HttpConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authentication
+operator|.
 name|util
 operator|.
 name|AuthToken
@@ -349,7 +367,9 @@ specifier|final
 name|String
 name|WWW_AUTHENTICATE
 init|=
-literal|"WWW-Authenticate"
+name|HttpConstants
+operator|.
+name|WWW_AUTHENTICATE_HEADER
 decl_stmt|;
 comment|/**    * HTTP header used by the SPNEGO client endpoint during an authentication sequence.    */
 DECL|field|AUTHORIZATION
@@ -359,7 +379,9 @@ specifier|final
 name|String
 name|AUTHORIZATION
 init|=
-literal|"Authorization"
+name|HttpConstants
+operator|.
+name|AUTHORIZATION_HEADER
 decl_stmt|;
 comment|/**    * HTTP header prefix used by the SPNEGO client/server endpoints during an authentication sequence.    */
 DECL|field|NEGOTIATE
@@ -369,7 +391,9 @@ specifier|final
 name|String
 name|NEGOTIATE
 init|=
-literal|"Negotiate"
+name|HttpConstants
+operator|.
+name|NEGOTIATE
 decl_stmt|;
 DECL|field|AUTH_HTTP_METHOD
 specifier|private
