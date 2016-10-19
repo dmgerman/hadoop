@@ -2135,6 +2135,7 @@ return|;
 block|}
 DECL|method|getChecksumType (Configuration conf)
 specifier|private
+specifier|static
 name|DataChecksum
 operator|.
 name|Type
@@ -2201,7 +2202,8 @@ block|}
 block|}
 comment|// Construct a checksum option from conf
 DECL|method|getChecksumOptFromConf (Configuration conf)
-specifier|private
+specifier|public
+specifier|static
 name|ChecksumOpt
 name|getChecksumOptFromConf
 parameter_list|(

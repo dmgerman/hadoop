@@ -5695,7 +5695,6 @@ return|;
 block|}
 comment|/**    * Compute and store the checksum for a block file that does not already have    * its checksum computed.    *    * @param srcReplica source {@link ReplicaInfo}, containing only the checksum    *     header, not a calculated checksum    * @param dstMeta destination meta file, into which this method will write a    *     full computed checksum    * @param smallBufferSize buffer size to use    * @param conf the {@link Configuration}    * @throws IOException    */
 DECL|method|computeChecksum (ReplicaInfo srcReplica, File dstMeta, int smallBufferSize, final Configuration conf)
-specifier|private
 specifier|static
 name|void
 name|computeChecksum
