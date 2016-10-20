@@ -599,7 +599,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|DFSAdmin
+name|TestDFSAdmin
 operator|.
 name|class
 argument_list|)
