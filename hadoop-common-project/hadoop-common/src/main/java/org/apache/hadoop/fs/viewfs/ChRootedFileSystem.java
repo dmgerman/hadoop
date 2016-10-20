@@ -1850,6 +1850,36 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|truncate (Path path, long newLength)
+specifier|public
+name|boolean
+name|truncate
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|long
+name|newLength
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|super
+operator|.
+name|truncate
+argument_list|(
+name|fullPath
+argument_list|(
+name|path
+argument_list|)
+argument_list|,
+name|newLength
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|listXAttrs (Path path)
 specifier|public
 name|List

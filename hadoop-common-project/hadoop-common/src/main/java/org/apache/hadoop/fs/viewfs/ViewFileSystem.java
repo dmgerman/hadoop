@@ -2685,7 +2685,9 @@ name|targetFileSystem
 operator|.
 name|truncate
 argument_list|(
-name|f
+name|res
+operator|.
+name|remainingPath
 argument_list|,
 name|newLength
 argument_list|)
