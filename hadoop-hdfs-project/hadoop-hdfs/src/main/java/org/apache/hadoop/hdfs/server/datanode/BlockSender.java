@@ -2698,7 +2698,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 name|datanode
 operator|.
 name|getBlockScanner
@@ -2717,6 +2716,7 @@ argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 throw|throw
 name|ioeToSocketException
