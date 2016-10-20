@@ -1626,11 +1626,12 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * List then delete the children of a path, but not the path itself.    * This can be used to delete the entries under a root path when that    * FS does not support {@code delete("/")}.    * @param fileSystem filesystem    * @param path path to delete    * @param recursive flag to indicate child entry deletion should be recursive    * @return the number of child entries found and deleted (not including    * any recursive children of those entries)    * @throws IOException problem in the deletion process.    */
+comment|/**    * List then delete the children of a path, but not the path itself.    * This can be used to delete the entries under a root path when that    * FS does not support {@code delete("/")}.    * @param fileSystem filesystem    * @param path path to delete    * @param recursive flag to indicate child entry deletion should be recursive    * @return the immediate child entries found and deleted (not including    * any recursive children of those entries)    * @throws IOException problem in the deletion process.    */
 DECL|method|deleteChildren (FileSystem fileSystem, Path path, boolean recursive)
 specifier|public
 specifier|static
-name|int
+name|FileStatus
+index|[]
 name|deleteChildren
 parameter_list|(
 name|FileSystem
@@ -1679,8 +1680,6 @@ expr_stmt|;
 block|}
 return|return
 name|children
-operator|.
-name|length
 return|;
 block|}
 comment|/**    * List all children of a path, but not the path itself in the case    * that the path refers to a file or empty directory.    * @param fileSystem FS    * @param path path    * @return a list of children, and never the path itself.    * @throws IOException problem in the list process    */
