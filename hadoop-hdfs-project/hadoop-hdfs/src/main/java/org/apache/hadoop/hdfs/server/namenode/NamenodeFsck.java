@@ -506,6 +506,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|ErasureCodingPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|ExtendedBlock
 import|;
 end_import
@@ -3552,6 +3568,51 @@ operator|.
 name|locatedBlockCount
 argument_list|()
 expr_stmt|;
+name|String
+name|redundancyPolicy
+decl_stmt|;
+name|ErasureCodingPolicy
+name|ecPolicy
+init|=
+name|file
+operator|.
+name|getErasureCodingPolicy
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|ecPolicy
+operator|==
+literal|null
+condition|)
+block|{
+comment|// a replicated file
+name|redundancyPolicy
+operator|=
+literal|"replicated: replication="
+operator|+
+name|file
+operator|.
+name|getReplication
+argument_list|()
+operator|+
+literal|","
+expr_stmt|;
+block|}
+else|else
+block|{
+name|redundancyPolicy
+operator|=
+literal|"erasure-coded: policy="
+operator|+
+name|ecPolicy
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|","
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|showOpenFiles
@@ -3570,6 +3631,10 @@ operator|+
 name|fileLen
 operator|+
 literal|" bytes, "
+operator|+
+name|redundancyPolicy
+operator|+
+literal|" "
 operator|+
 name|blocks
 operator|.
@@ -3597,6 +3662,10 @@ operator|+
 name|fileLen
 operator|+
 literal|" bytes, "
+operator|+
+name|redundancyPolicy
+operator|+
+literal|" "
 operator|+
 name|blocks
 operator|.
