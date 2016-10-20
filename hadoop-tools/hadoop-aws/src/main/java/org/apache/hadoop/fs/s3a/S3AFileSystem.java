@@ -2740,7 +2740,9 @@ argument_list|,
 name|instrumentation
 operator|.
 name|newOutputStreamStatistics
-argument_list|()
+argument_list|(
+name|statistics
+argument_list|)
 argument_list|,
 operator|new
 name|WriteOperationHelper

@@ -241,6 +241,22 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileSystem
+operator|.
+name|Statistics
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -2287,15 +2303,20 @@ return|;
 block|}
 block|}
 comment|/**    * Create a stream output statistics instance.    * @return the new instance    */
-DECL|method|newOutputStreamStatistics ()
+DECL|method|newOutputStreamStatistics (Statistics statistics)
 name|OutputStreamStatistics
 name|newOutputStreamStatistics
-parameter_list|()
+parameter_list|(
+name|Statistics
+name|statistics
+parameter_list|)
 block|{
 return|return
 operator|new
 name|OutputStreamStatistics
-argument_list|()
+argument_list|(
+name|statistics
+argument_list|)
 return|;
 block|}
 comment|/**    * Merge in the statistics of a single output stream into    * the filesystem-wide statistics.    * @param statistics stream statistics    */
@@ -2483,6 +2504,26 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+DECL|field|statistics
+specifier|private
+name|Statistics
+name|statistics
+decl_stmt|;
+DECL|method|OutputStreamStatistics (Statistics statistics)
+specifier|public
+name|OutputStreamStatistics
+parameter_list|(
+name|Statistics
+name|statistics
+parameter_list|)
+block|{
+name|this
+operator|.
+name|statistics
+operator|=
+name|statistics
+expr_stmt|;
+block|}
 comment|/**      * Block is queued for upload.      */
 DECL|method|blockUploadQueued (int blockSize)
 name|void
@@ -2639,6 +2680,13 @@ block|{
 name|bytesUploaded
 operator|.
 name|addAndGet
+argument_list|(
+name|byteCount
+argument_list|)
+expr_stmt|;
+name|statistics
+operator|.
+name|incrementBytesWritten
 argument_list|(
 name|byteCount
 argument_list|)
