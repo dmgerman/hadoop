@@ -2973,8 +2973,6 @@ operator|.
 name|restartDataNode
 argument_list|(
 name|dnprop
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
