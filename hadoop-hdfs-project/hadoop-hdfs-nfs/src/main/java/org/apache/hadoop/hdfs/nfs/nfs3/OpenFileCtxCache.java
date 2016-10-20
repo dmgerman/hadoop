@@ -367,8 +367,6 @@ name|trace
 argument_list|(
 literal|"openFileMap size:"
 operator|+
-name|openFileMap
-operator|.
 name|size
 argument_list|()
 argument_list|)
@@ -599,8 +597,6 @@ name|Preconditions
 operator|.
 name|checkState
 argument_list|(
-name|openFileMap
-operator|.
 name|size
 argument_list|()
 operator|<=
@@ -610,8 +606,6 @@ name|maxStreams
 argument_list|,
 literal|"stream cache size "
 operator|+
-name|openFileMap
-operator|.
 name|size
 argument_list|()
 operator|+
@@ -624,8 +618,6 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|openFileMap
-operator|.
 name|size
 argument_list|()
 operator|==
@@ -791,8 +783,6 @@ name|trace
 argument_list|(
 literal|"openFileMap size:"
 operator|+
-name|openFileMap
-operator|.
 name|size
 argument_list|()
 argument_list|)
@@ -919,8 +909,6 @@ argument_list|()
 operator|+
 literal|", the stream number:"
 operator|+
-name|openFileMap
-operator|.
 name|size
 argument_list|()
 argument_list|)
@@ -1050,8 +1038,6 @@ name|trace
 argument_list|(
 literal|"openFileMap size:"
 operator|+
-name|openFileMap
-operator|.
 name|size
 argument_list|()
 argument_list|)

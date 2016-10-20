@@ -3803,9 +3803,7 @@ name|NetUtils
 operator|.
 name|getHostPortString
 argument_list|(
-name|rpcServer
-operator|.
-name|getRpcAddress
+name|getNameNodeAddress
 argument_list|()
 argument_list|)
 argument_list|,
@@ -4056,9 +4054,7 @@ name|NetUtils
 operator|.
 name|getHostPortString
 argument_list|(
-name|rpcServer
-operator|.
-name|getRpcAddress
+name|getNameNodeAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4419,9 +4415,7 @@ argument_list|()
 operator|+
 literal|" RPC up at: "
 operator|+
-name|rpcServer
-operator|.
-name|getRpcAddress
+name|getNameNodeAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5321,9 +5315,7 @@ name|NetUtils
 operator|.
 name|getHostPortString
 argument_list|(
-name|rpcServer
-operator|.
-name|getRpcAddress
+name|getNameNodeAddress
 argument_list|()
 argument_list|)
 return|;
@@ -5349,9 +5341,7 @@ name|serviceAddr
 operator|==
 literal|null
 condition|?
-name|rpcServer
-operator|.
-name|getRpcAddress
+name|getNameNodeAddress
 argument_list|()
 else|:
 name|serviceAddr

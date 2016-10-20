@@ -361,9 +361,6 @@ operator|+
 literal|"{} by {} {}"
 argument_list|,
 name|blk
-operator|.
-name|getBlockName
-argument_list|()
 argument_list|,
 name|dn
 argument_list|,
@@ -389,9 +386,6 @@ operator|+
 literal|" {} to add as corrupt on {} by {} {}"
 argument_list|,
 name|blk
-operator|.
-name|getBlockName
-argument_list|()
 argument_list|,
 name|dn
 argument_list|,
