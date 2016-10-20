@@ -90,6 +90,13 @@ name|capacityUsed
 init|=
 literal|0L
 decl_stmt|;
+DECL|field|capacityNonDfsUsed
+specifier|private
+name|long
+name|capacityNonDfsUsed
+init|=
+literal|0L
+decl_stmt|;
 DECL|field|capacityRemaining
 specifier|private
 name|long
@@ -119,6 +126,8 @@ literal|"capacityTotal"
 block|,
 literal|"capacityUsed"
 block|,
+literal|"capacityNonDfsUsed"
+block|,
 literal|"capacityRemaining"
 block|,
 literal|"blockPoolUsed"
@@ -126,7 +135,7 @@ block|,
 literal|"nodesInService"
 block|}
 argument_list|)
-DECL|method|StorageTypeStats (long capacityTotal, long capacityUsed, long capacityRemaining, long blockPoolUsed, int nodesInService)
+DECL|method|StorageTypeStats ( long capacityTotal, long capacityUsed, long capacityNonDfsUsedUsed, long capacityRemaining, long blockPoolUsed, int nodesInService)
 specifier|public
 name|StorageTypeStats
 parameter_list|(
@@ -135,6 +144,9 @@ name|capacityTotal
 parameter_list|,
 name|long
 name|capacityUsed
+parameter_list|,
+name|long
+name|capacityNonDfsUsedUsed
 parameter_list|,
 name|long
 name|capacityRemaining
@@ -157,6 +169,12 @@ operator|.
 name|capacityUsed
 operator|=
 name|capacityUsed
+expr_stmt|;
+name|this
+operator|.
+name|capacityNonDfsUsed
+operator|=
+name|capacityNonDfsUsedUsed
 expr_stmt|;
 name|this
 operator|.
@@ -195,6 +213,16 @@ parameter_list|()
 block|{
 return|return
 name|capacityUsed
+return|;
+block|}
+DECL|method|getCapacityNonDfsUsed ()
+specifier|public
+name|long
+name|getCapacityNonDfsUsed
+parameter_list|()
+block|{
+return|return
+name|capacityNonDfsUsed
 return|;
 block|}
 DECL|method|getCapacityRemaining ()
@@ -250,6 +278,12 @@ name|other
 operator|.
 name|capacityUsed
 expr_stmt|;
+name|capacityNonDfsUsed
+operator|=
+name|other
+operator|.
+name|capacityNonDfsUsed
+expr_stmt|;
 name|capacityRemaining
 operator|=
 name|other
@@ -287,6 +321,13 @@ operator|+=
 name|info
 operator|.
 name|getDfsUsed
+argument_list|()
+expr_stmt|;
+name|capacityNonDfsUsed
+operator|+=
+name|info
+operator|.
+name|getNonDfsUsed
 argument_list|()
 expr_stmt|;
 name|blockPoolUsed
@@ -370,6 +411,13 @@ operator|-=
 name|info
 operator|.
 name|getDfsUsed
+argument_list|()
+expr_stmt|;
+name|capacityNonDfsUsed
+operator|-=
+name|info
+operator|.
+name|getNonDfsUsed
 argument_list|()
 expr_stmt|;
 name|blockPoolUsed
