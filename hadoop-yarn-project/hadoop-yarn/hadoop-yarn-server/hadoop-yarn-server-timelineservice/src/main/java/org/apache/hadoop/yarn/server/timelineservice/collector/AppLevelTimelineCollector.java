@@ -367,6 +367,11 @@ specifier|private
 name|ScheduledThreadPoolExecutor
 name|appAggregationExecutor
 decl_stmt|;
+DECL|field|appAggregator
+specifier|private
+name|AppLevelAggregator
+name|appAggregator
+decl_stmt|;
 DECL|method|AppLevelTimelineCollector (ApplicationId appId)
 specifier|public
 name|AppLevelTimelineCollector
@@ -573,13 +578,17 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|appAggregator
+operator|=
+operator|new
+name|AppLevelAggregator
+argument_list|()
+expr_stmt|;
 name|appAggregationExecutor
 operator|.
 name|scheduleAtFixedRate
 argument_list|(
-operator|new
-name|AppLevelAggregator
-argument_list|()
+name|appAggregator
 argument_list|,
 name|AppLevelTimelineCollector
 operator|.
@@ -643,6 +652,12 @@ name|shutdownNow
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Perform one round of aggregation after the aggregation executor is done.
+name|appAggregator
+operator|.
+name|aggregate
+argument_list|()
+expr_stmt|;
 name|super
 operator|.
 name|serviceStop
@@ -683,12 +698,10 @@ name|AppLevelAggregator
 implements|implements
 name|Runnable
 block|{
-annotation|@
-name|Override
-DECL|method|run ()
-specifier|public
+DECL|method|aggregate ()
+specifier|private
 name|void
-name|run
+name|aggregate
 parameter_list|()
 block|{
 if|if
@@ -870,6 +883,18 @@ literal|"App-level real-time aggregation complete"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|run ()
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|aggregate
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}
