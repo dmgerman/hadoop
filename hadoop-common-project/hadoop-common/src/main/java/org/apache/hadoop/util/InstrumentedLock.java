@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.util
 package|package
 name|org
 operator|.
@@ -12,7 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 package|;
 end_package
 
@@ -128,34 +128,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Timer
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -169,7 +141,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is a debugging class that can be used by callers to track  * whether a specifc lock is being held for too long and periodically  * log a warning and stack trace, if so.  *  * The logged warnings are throttled so that logs are not spammed.  *  * A new instance of InstrumentedLock can be created for each object  * that needs to be instrumented.  */
+comment|/**  * This is a debugging class that can be used by callers to track  * whether a specific lock is being held for too long and periodically  * log a warning and stack trace, if so.  *  * The logged warnings are throttled so that logs are not spammed.  *  * A new instance of InstrumentedLock can be created for each object  * that needs to be instrumented.  */
 end_comment
 
 begin_class
@@ -413,11 +385,7 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
-name|lockAcquireTimestamp
-operator|=
-name|clock
-operator|.
-name|monotonicNow
+name|startLockTiming
 argument_list|()
 expr_stmt|;
 block|}
@@ -436,11 +404,7 @@ operator|.
 name|lockInterruptibly
 argument_list|()
 expr_stmt|;
-name|lockAcquireTimestamp
-operator|=
-name|clock
-operator|.
-name|monotonicNow
+name|startLockTiming
 argument_list|()
 expr_stmt|;
 block|}
@@ -460,11 +424,7 @@ name|tryLock
 argument_list|()
 condition|)
 block|{
-name|lockAcquireTimestamp
-operator|=
-name|clock
-operator|.
-name|monotonicNow
+name|startLockTiming
 argument_list|()
 expr_stmt|;
 return|return
@@ -503,11 +463,7 @@ name|unit
 argument_list|)
 condition|)
 block|{
-name|lockAcquireTimestamp
-operator|=
-name|clock
-operator|.
-name|monotonicNow
+name|startLockTiming
 argument_list|()
 expr_stmt|;
 return|return
@@ -615,9 +571,24 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Starts timing for the instrumented lock.    */
+DECL|method|startLockTiming ()
+specifier|protected
+name|void
+name|startLockTiming
+parameter_list|()
+block|{
+name|lockAcquireTimestamp
+operator|=
+name|clock
+operator|.
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Log a warning if the lock was held for too long.    *    * Should be invoked by the caller immediately AFTER releasing the lock.    *    * @param acquireTime  - timestamp just after acquiring the lock.    * @param releaseTime - timestamp just before releasing the lock.    */
 DECL|method|check (long acquireTime, long releaseTime)
-specifier|private
+specifier|protected
 name|void
 name|check
 parameter_list|(
@@ -734,6 +705,26 @@ name|suppressed
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|getLock ()
+specifier|protected
+name|Lock
+name|getLock
+parameter_list|()
+block|{
+return|return
+name|lock
+return|;
+block|}
+DECL|method|getTimer ()
+specifier|protected
+name|Timer
+name|getTimer
+parameter_list|()
+block|{
+return|return
+name|clock
+return|;
 block|}
 block|}
 end_class

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.util
 package|package
 name|org
 operator|.
@@ -12,7 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 package|;
 end_package
 
@@ -55,34 +55,6 @@ operator|.
 name|locks
 operator|.
 name|Lock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|AutoCloseableLock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Timer
 import|;
 end_import
 
