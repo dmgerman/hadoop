@@ -1769,16 +1769,6 @@ argument_list|,
 name|storageContainerList
 argument_list|,
 name|context
-argument_list|,
-name|r
-operator|==
-operator|(
-name|reports
-operator|.
-name|length
-operator|-
-literal|1
-operator|)
 argument_list|)
 expr_stmt|;
 block|}
