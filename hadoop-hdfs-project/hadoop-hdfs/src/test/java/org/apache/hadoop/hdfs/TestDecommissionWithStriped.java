@@ -1837,8 +1837,6 @@ operator|.
 name|restartDataNode
 argument_list|(
 name|dnp
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 name|LOG
